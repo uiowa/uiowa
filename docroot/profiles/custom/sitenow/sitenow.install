@@ -2995,7 +2995,6 @@ function sitenow_update_9009() {
  * Update existing uiowa_banner blocks to have a default headline_size style.
  */
 function sitenow_update_9011() {
-  // @todo check all of the following for instances of "%uiowa_banner%"
   // @todo check the temp storage
   $db = \Drupal::database();
   $block_storage = \Drupal::entityTypeManager()
@@ -3051,6 +3050,63 @@ function sitenow_update_9011() {
           $section_column => serialize($section),
         ])
         ->execute();
+    }
+
+    // Only continue with this section if we have a key_value_expire
+    // table to work with.
+    if ($db->schema()->tableExists('key_value_expire')) {
+      // Check if we have a tempstore of this node.
+      // Temp store is saved in the db in the key_value_expire,
+      // And holds a serialized blob with the unsaved changes.
+      // Might be a better method of accessing this through the Layout Builder API
+      // and layoutTempstoreRepository, but have not found it yet.
+      $query = $db->select('key_value_expire', 'kve')
+        ->fields('kve', ['name', 'value', 'expire'])
+        ->condition('value', '%uiowa_banner%', 'LIKE');
+
+      $count = $query->countQuery()->execute()->fetchField();
+
+      \Drupal::messenger()
+        ->addMessage('Tempstore records found: ' . $count);
+
+      $results = $query
+        ->execute();
+
+      foreach ($results as $record) {
+        // Unserialize and replace the section in question with our updated one.
+        $stored_data = unserialize($record->value);
+        /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
+        $section_storage = $stored_data->data['section_storage'];
+
+        // Loop through sections in the storage.
+        foreach ($section_storage->getSections() as $delta => &$section) {
+          // Loop through the components in the section.
+          foreach ($section->getComponents() as &$component) {
+
+            // Limit this to only the uiowa_banner block component.
+            if ($component->getPluginId() !== 'inline_block:uiowa_banner') {
+              continue;
+            }
+
+            // Pull the layout builder styles from the component.
+            $styles = $component->get('layout_builder_styles_style');
+            // Add key for new layout builder style.
+            $styles[] = 'headline_large';
+            // Set the layout builder styles on the component.
+            $component->set('layout_builder_styles_style', $styles);
+          }
+        }
+        $stored_data->data['section_storage'] = $section_storage;
+
+        // Insert the updated tempstore.
+        $db->update('key_value_expire')
+          ->condition('name', $record->name, '=')
+          ->condition('expire', $record->expire, '=')
+          ->fields([
+            'value' => serialize($stored_data),
+          ])
+          ->execute();
+      }
     }
   }
 }
