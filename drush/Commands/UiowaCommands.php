@@ -204,11 +204,12 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
    * @bootstrap full
    *
    * @field-labels
+   *   name: Username
    *   email: User Email
    *
    * @table-style default
    *
-   * @default-fields email
+   * @default-fields name
    *
    * @return \Consolidation\OutputFormatters\StructuredData\RowsOfFields
    */
@@ -242,7 +243,8 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
       // Get a list of webmaster emails for contact.
       foreach (User::loadMultiple($ids) as $user) {
         $rows[] = [
-         'email' => $user->getEmail()
+          'name' => $user->getAccountName(),
+          'email' => $user->getEmail()
         ];
       }
 
