@@ -10,7 +10,6 @@ use Consolidation\AnnotatedCommand\AnnotationData;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\SiteAlias\SiteAliasManagerAwareInterface;
 use Consolidation\SiteAlias\SiteAliasManagerAwareTrait;
-use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\user\Entity\User;
 use Drush\Drupal\Commands\sql\SanitizePluginInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,7 +20,6 @@ use Symfony\Component\Console\Input\InputInterface;
 class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterface, ProcessManagerAwareInterface, SanitizePluginInterface {
   use SiteAliasManagerAwareTrait;
   use ProcessManagerAwareTrait;
-  use StringTranslationTrait;
 
   /**
    * Configuration that should sanitized.
@@ -233,7 +231,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
     $inactive = empty($query->execute());
 
     if ($inactive) {
-      $this->logger()->notice($this->t('Non-admins <comment>have not</comment> accessed @site recently.', [
+      $this->logger()->notice(dt('Non-admins <comment>have not</comment> accessed @site recently.', [
         '@site' => $selfRecord->uri(),
       ]));
 
@@ -266,7 +264,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
 
     }
     else {
-      $this->logger()->notice($this->t('Non-admins <comment>have</comment> accessed @site recently.', [
+      $this->logger()->notice(dt('Non-admins <comment>have</comment> accessed @site recently.', [
         '@site' => $selfRecord->uri(),
       ]));
     }
