@@ -223,7 +223,9 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
     $active = !empty($query->execute());
 
     if (!$active) {
-      $this->logger()->info('Non-admins HAVE NOT accessed the site recently.');
+      $this->logger()->notice(t('Non-admins <comment>have not</comment> accessed @site recently.', [
+        '@site' => $selfRecord->uri(),
+      ]));
 
       // Get a list of webmaster emails for contacting.
       $query = \Drupal::entityQuery('user')
@@ -253,7 +255,9 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
 
     }
     else {
-      $this->logger()->notice('Non-admins HAVE accessed the site recently.');
+      $this->logger()->notice(t('Non-admins <comment>have</comment> accessed @site recently.', [
+        '@site' => $selfRecord->uri(),
+      ]));
     }
   }
 
