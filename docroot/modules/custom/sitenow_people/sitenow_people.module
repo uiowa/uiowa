@@ -127,6 +127,38 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
       }
 
       break;
+    case 'layout_builder_add_block':
+    case 'layout_builder_update_block':
+      // Add custom process callback for certain blocks to alter form elements.
+      $form['settings']['block_form']['#process'][] = '_sitenow_people_process_element';
+      break;
+  }
+}
+
+/**
+ * Custom process block form elements.
+ *
+ * @param array $element
+ *   The current block element.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current form state.
+ *
+ * @return array
+ *   The processed block element.
+ */
+function _sitenow_people_process_element(array $element, FormStateInterface $form_state) {
+  /** @var \Drupal\layout_builder\SectionComponent $component */
+  $component = $form_state
+    ->getFormObject()
+    ->getCurrentComponent();
+  $block = $component
+    ->getPlugin();
+
+  switch ($block->getPluginId()) {
+    case 'views_block:people_list_block-list_card':
+      // This isn't working because we don't have access to the $form to modify
+      // the person types field into a select field.
+      break;
   }
 }
 
@@ -529,29 +561,33 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
   if ($view->id() == 'people') {
     $person_type_filter = 'type';
     if (isset($form[$person_type_filter])) {
-      // Get available person type configuration entities.
-      $storage = Drupal::getContainer()->get('entity_type.manager')->getStorage('person_type');
-      $types = $storage->getQuery();
-      $types = $types->condition('status', 1)
-        ->sort('title')
-        ->execute();
-
-      // Build a list of person type options.
-      $options = [];
-      $person_types = $storage->loadMultiple($types);
-      foreach ($person_types as $type) {
-        $options[$type->id()] = $type->label();
-      }
-      asort($options);
-
-      // Rebuild the person type text filter as select list.
-      $form[$person_type_filter]['#type'] = 'select';
-      $form[$person_type_filter]['#multiple'] = FALSE;
-      $form[$person_type_filter]['#empty_option'] = t('- Any -');
-      $form[$person_type_filter]['#options'] = $options;
-      unset($form[$person_type_filter]['#size']);
+      _sitenow_people_person_type_filter_select($form[$person_type_filter]);
     }
   }
+}
+
+function _sitenow_people_person_type_filter_select(&$form) {
+  // Get available person type configuration entities.
+  $storage = Drupal::getContainer()->get('entity_type.manager')->getStorage('person_type');
+  $types = $storage->getQuery();
+  $types = $types->condition('status', 1)
+    ->sort('title')
+    ->execute();
+
+  // Build a list of person type options.
+  $options = [];
+  $person_types = $storage->loadMultiple($types);
+  foreach ($person_types as $type) {
+    $options[$type->id()] = $type->label();
+  }
+  asort($options);
+
+  // Rebuild the person type text filter as select list.
+  $form['#type'] = 'select';
+  $form['#multiple'] = FALSE;
+  $form['#empty_option'] = t('- Any -');
+  $form['#options'] = $options;
+  unset($form['#size']);
 }
 
 /**
