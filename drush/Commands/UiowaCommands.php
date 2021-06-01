@@ -209,7 +209,8 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
    *
    * @return \Consolidation\OutputFormatters\StructuredData\RowsOfFields
    */
-  public function inactive($last_login = '6 months ago') {
+  public function inactive($last_login = '9 months ago') {
+    $selfRecord = $this->siteAliasManager()->getSelf();
     $timestamp = strtotime($last_login);
 
     $query = \Drupal::entityQuery('user')
