@@ -387,6 +387,11 @@ function uids_base_preprocess_field(&$variables) {
     $bundle = $variables['element']['#bundle'];
     $variables['headline_class'] = str_replace('_', '-', $bundle) . '--headline';
   }
+
+  // Add core drupal.tableheader library for sticky table headers
+  if ($variables['element']['#field_type'] == 'text_long' && $variables['element']['#formatter'] == 'text_default') {
+    $variables['#attached']['library'][] = 'core/drupal.tableheader';
+  }
 }
 
 /**
