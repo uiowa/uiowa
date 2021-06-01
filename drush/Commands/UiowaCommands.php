@@ -2,6 +2,8 @@
 
 namespace Drush\Commands;
 
+use Consolidation\OutputFormatters\Options\FormatterOptions;
+use Consolidation\OutputFormatters\StructuredData\AbstractStructuredList;
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Consolidation\SiteProcess\ProcessManagerAwareInterface;
 use Consolidation\SiteProcess\ProcessManagerAwareTrait;
@@ -10,6 +12,7 @@ use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\SiteAlias\SiteAliasManagerAwareInterface;
 use Consolidation\SiteAlias\SiteAliasManagerAwareTrait;
 use Consolidation\SiteProcess\SiteProcess;
+use Drupal\user\Entity\User;
 use Drush\Drupal\Commands\sql\SanitizePluginInterface;
 use Symfony\Component\Console\Input\InputInterface;
 
@@ -186,6 +189,71 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
     });
 
     return $data;
+  }
+
+  /**
+   * Determine if a site is inactive based on user activity.
+   *
+   * @command uiowa:site:inactive
+   *
+   * @aliases usi
+   *
+   * @bootstrap full
+   *
+   * @field-labels
+   *   email: User Email
+   *
+   * @table-style default
+   *
+   * @default-fields email
+   *
+   * @return \Consolidation\OutputFormatters\StructuredData\RowsOfFields
+   */
+  public function inactive($last_login = '6 months ago') {
+    $timestamp = strtotime($last_login);
+
+    $query = \Drupal::entityQuery('user')
+      ->condition('uid', 0, '!=')
+      ->condition('roles', 'administrator', 'NOT IN')
+      ->condition('login', $timestamp, '>=');
+
+
+    // If the query is empty, there are no active non-admin users.
+    $active = !empty($query->execute());
+
+    if (!$active) {
+      $this->logger()->info('Non-admins HAVE NOT accessed the site recently.');
+
+      // Get a list of webmaster emails for contacting.
+      $query = \Drupal::entityQuery('user')
+        ->condition('uid', 0, '!=')
+        ->condition('roles', 'webmaster', 'IN');
+
+      $ids = $query->execute();
+
+      $rows = [];
+
+      // Get a list of webmaster emails for contact.
+      foreach (User::loadMultiple($ids) as $user) {
+        $rows[] = [
+         'email' => $user->getEmail()
+        ];
+      }
+
+      $result = new RowsOfFields($rows);
+      $result->addRendererFunction(function ($key, $cellData, FormatterOptions $options) {
+        if (is_array($cellData)) {
+          return implode("\n", $cellData);
+        }
+        return $cellData;
+      });
+
+      return $result;
+
+    }
+    else {
+      $this->logger()->notice('Non-admins HAVE accessed the site recently.');
+    }
   }
 
   /**
