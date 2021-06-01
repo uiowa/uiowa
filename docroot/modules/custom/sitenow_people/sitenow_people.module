@@ -158,6 +158,10 @@ function _sitenow_people_process_element(array $element, FormStateInterface $for
     case 'views_block:people_list_block-list_card':
       // This isn't working because we don't have access to the $form to modify
       // the person types field into a select field.
+      $form = $form_state->getCompleteForm();
+      if (isset($form['settings']['override']['exposed_filters']['field_person_types_target_id'])) {
+        _sitenow_people_person_type_filter_select($form['settings']['override']['exposed_filters']['field_person_types_target_id']);
+      }
       break;
   }
 }
