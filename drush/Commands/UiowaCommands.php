@@ -215,7 +215,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
 
     $query = \Drupal::entityQuery('user')
       ->condition('uid', 0, '!=')
-      ->condition('roles', 'administrator', 'NOT IN')
+      ->condition('roles', ['administrator'], 'NOT IN')
       ->condition('login', $timestamp, '>=');
 
 
