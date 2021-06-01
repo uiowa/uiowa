@@ -194,6 +194,9 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
   /**
    * Determine if a site is inactive based on user activity.
    *
+   * @param string $last_login
+   *   The timeframe to filter user login by. Can be relative.
+   *
    * @command uiowa:site:inactive
    *
    * @aliases usi
