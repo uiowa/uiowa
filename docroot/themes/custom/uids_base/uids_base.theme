@@ -618,7 +618,7 @@ function uids_base_preprocess_block(&$variables) {
 
     // Remove headline classes from attributes.
     $variables['headline_classes'] = array_filter($variables['elements']['#attributes']['class'], function ($v) {
-      return substr($v, 0, 13) === 'headline--';
+      return substr($v, 0, 8) === 'headline';
     });
 
     // Change link style to match highlight, if set.
