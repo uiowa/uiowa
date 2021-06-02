@@ -129,8 +129,15 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
       break;
     case 'layout_builder_add_block':
     case 'layout_builder_update_block':
-      // Add custom process callback for certain blocks to alter form elements.
-      $form['settings']['block_form']['#process'][] = '_sitenow_people_process_element';
+      if (isset($form['settings'])
+        && isset($form['settings']['override'])
+        && isset($form['settings']['override']['exposed_filters'])
+      ) {
+        $form['#prefix'] = '<div id="form-ajax-wrapper">';
+        $form['#suffix'] = '</div>';
+        // Add custom process callback for certain blocks to alter form elements.
+        $form['settings']['override']['exposed_filters']['#process'][] = '_sitenow_people_process_people_block_filters';
+      }
       break;
   }
 }
@@ -146,7 +153,7 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
  * @return array
  *   The processed block element.
  */
-function _sitenow_people_process_element(array $element, FormStateInterface $form_state) {
+function _sitenow_people_process_people_block_filters(array $element, FormStateInterface $form_state) {
   /** @var \Drupal\layout_builder\SectionComponent $component */
   $component = $form_state
     ->getFormObject()
@@ -158,12 +165,51 @@ function _sitenow_people_process_element(array $element, FormStateInterface $for
     case 'views_block:people_list_block-list_card':
       // This isn't working because we don't have access to the $form to modify
       // the person types field into a select field.
-      $form = $form_state->getCompleteForm();
-      if (isset($form['settings']['override']['exposed_filters']['field_person_types_target_id'])) {
-        _sitenow_people_person_type_filter_select($form['settings']['override']['exposed_filters']['field_person_types_target_id']);
+
+      if (isset($element['field_person_types_target_id'])) {
+        _sitenow_people_person_type_filter_select($element['field_person_types_target_id']);
+        // Show/hide person type statuses based on person type selections.
+        $element['field_person_types_target_id']['#ajax'] = [
+          'callback' => '_person_types_callback',
+          'event' => 'change',
+          'wrapper' => 'form-ajax-wrapper',
+          'speed' => 'fast',
+          'progress' => [
+            'type' => 'throbber',
+            'message' => t('Please wait...'),
+          ],
+        ];
+
+        $type_selections = [];
+
+        $type = $form_state->getValue([
+          'settings',
+          'override',
+          'exposed_filters',
+          'field_person_types_target_id',
+        ]);
+
+        if (!$type && !empty($element['field_person_types_target_id']['#default_value'])) {
+          $type = $element['field_person_types_target_id']['#default_value'];
+        }
+        else {
+          $element['field_person_type_status_value']['#access'] = FALSE;
+        }
+
+        if ($type) {
+          $person_type_status_options = $element['field_person_type_status_value']['#options'];
+          foreach ($person_type_status_options as $key => $option) {
+            // Unset options that aren't associated with selected person type.
+            if ($type != $key) {
+              unset($person_type_status_options[$key]);
+            }
+          }
+          $element['field_person_type_status_value']['#options'] = $person_type_status_options;
+        }
       }
       break;
   }
+  return $element;
 }
 
 /**
