@@ -2687,3 +2687,21 @@ $sites['lawjcl.local.drupal.uiowa.edu'] = 'jcl.law.uiowa.edu';
 $sites['lawjcl.dev.drupal.uiowa.edu'] = 'jcl.law.uiowa.edu';
 $sites['lawjcl.stage.drupal.uiowa.edu'] = 'jcl.law.uiowa.edu';
 $sites['lawjcl.prod.drupal.uiowa.edu'] = 'jcl.law.uiowa.edu';
+
+// Directory aliases for enrollment.uiowa.edu.
+$sites['enrollment.local.drupal.uiowa.edu'] = 'enrollment.uiowa.edu';
+$sites['enrollment.dev.drupal.uiowa.edu'] = 'enrollment.uiowa.edu';
+$sites['enrollment.stage.drupal.uiowa.edu'] = 'enrollment.uiowa.edu';
+$sites['enrollment.prod.drupal.uiowa.edu'] = 'enrollment.uiowa.edu';
+
+// Directory aliases for engage.uiowa.edu.
+$sites['engage.local.drupal.uiowa.edu'] = 'engage.uiowa.edu';
+$sites['engage.dev.drupal.uiowa.edu'] = 'engage.uiowa.edu';
+$sites['engage.stage.drupal.uiowa.edu'] = 'engage.uiowa.edu';
+$sites['engage.prod.drupal.uiowa.edu'] = 'engage.uiowa.edu';
+
+// Directory aliases for uichr.uiowa.edu.
+$sites['uichr.local.drupal.uiowa.edu'] = 'uichr.uiowa.edu';
+$sites['uichr.dev.drupal.uiowa.edu'] = 'uichr.uiowa.edu';
+$sites['uichr.stage.drupal.uiowa.edu'] = 'uichr.uiowa.edu';
+$sites['uichr.prod.drupal.uiowa.edu'] = 'uichr.uiowa.edu';
