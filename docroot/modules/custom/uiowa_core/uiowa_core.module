@@ -10,6 +10,17 @@ use Drupal\google_tag\Entity\Container;
 use Drupal\uiowa_core\HeadlineHelper;
 
 /**
+ * Implements hook_config_schema_info_alter().
+ */
+function uiowa_core_config_schema_info_alter(&$definitions) {
+  // Make sure that the order of filters in the config export file is always
+  // the same, to avoid false positive differences.
+  // @see https://www.drupal.org/project/drupal/issues/2852557#comment-12703225
+  // @todo Remove this after https://www.drupal.org/project/drupal/issues/2855675.
+  $definitions['filter.format.*']['mapping']['filters']['orderby'] = 'key';
+}
+
+/**
  * Implements hook_theme().
  */
 function uiowa_core_theme($existing, $type, $theme, $path) {

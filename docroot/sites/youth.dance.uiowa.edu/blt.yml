@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: danceyouth.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: danceyouth
+  human_name: youth.dance.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: danceyouth.prod
+drupal:
+  db:
+    database: youth_dance_uiowa_edu
+uiowa:
+  requester: dquam
