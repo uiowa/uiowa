@@ -6,7 +6,9 @@
     width: 100%;
   }
   .card__media {
-    margin-top: 0;
+    @include breakpoint(sm) {
+      margin-top: 0;
+    }
   }
   .view-content {
     @include list-group;
@@ -28,6 +30,15 @@
 
 
 .view-display-id-page_people_table {
+  table {
+    @include breakpoint(sm) {
+      display: block;
+    }
+    tbody tr:not(.is-selected):nth-child(2n),
+    tbody tr:not(.is-selected):nth-child(2n) th {
+      background-color: #fff;
+    }
+  }
   .tabledrag-changed-warning {
     // @extend .alert;
     // @extend .alert-warning;

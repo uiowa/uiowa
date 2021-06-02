@@ -119,6 +119,11 @@
       width: 100%;
     }
     .views-exposed-form {
+      .form--inline {
+        @include breakpoint(sm) {
+          flex-wrap: wrap;
+        }
+      }
       &.uids-content:not(.uids-search) {
         padding: 19px;
         .form-item {
