@@ -45,6 +45,9 @@ global-styling:
 status-messages:
   js:
     assets/js/uids.status-messages.js: { preprocess: false }
+tables:
+  js:
+    https://asvd.github.io/syncscroll/syncscroll.js: { type: external, attributes: { async: true } }
 logo:
   css:
     component:
@@ -380,13 +383,3 @@ global-serif:
   css:
     component:
       assets/css/components/typography/global-serif.css: { preprocess: false }
-drupal.tableheader:
-  version: VERSION
-  js:
-    misc/tableheader.js: {}
-  dependencies:
-    - core/jquery
-    - core/drupal
-    - core/drupalSettings
-    - core/jquery.once
-    - core/drupal.displace
