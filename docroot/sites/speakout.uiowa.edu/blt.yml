@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: speakout.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: speakout
+  human_name: speakout.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: speakout.prod
+drupal:
+  db:
+    database: speakout_uiowa_edu
+uiowa:
+  requester: dquam

@@ -78,26 +78,30 @@
     node.isSticky() ? 'node--sticky',
     not node.isPublished() ? 'node--unpublished',
     view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-    'media'
+    'card--list',
 ]
 %}
+
+{% set headline_level = heading_size ?: 'h3' %}
 {{ attach_library('classy/node') }}
 {{ attach_library('uids_base/node-type-page') }}
-<article{{ attributes.addClass(classes) }}>
-  {% if content.field_image %}
-    <figure class="content-image">
-      {{ content.field_image }}
-    </figure>
-  {% endif %}
-  <div{{ content_attributes.addClass('node__content media-body') }}>
-    {{ title_prefix }}
-    {% if not page %}
-      <h3{{ title_attributes }}>
-        <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-      </h3>
-    {% endif %}
-    {{ title_suffix }}
 
+{% set page_card = {
+  'attributes': attributes.addClass(classes),
+  'card_image' : content.field_image|render,
+  'card_title': label,
+  'content': content,
+  'card_link_url': url,
+  'media_styles': media_classes,
+  'headline_level': headline_level,
+} %}
+
+{% embed '@uids_base/uids/card.html.twig' with page_card only %}
+
+  {# @todo Add content_attributes.addClass('node__content media-body') #}
+
+  {% block card_content %}
     {{ content|without('field_image', 'links') }}
-  </div>
-</article>
+  {% endblock %}
+
+{% endembed %}
