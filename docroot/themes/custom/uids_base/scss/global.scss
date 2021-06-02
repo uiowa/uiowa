@@ -10,8 +10,16 @@ $imgpath: '../../uids/assets/images';
 .layout__region {
 
   .block,
-  .view {
+  .view,
+  .card,
+  .banner,
+  .cta__wrapper,
+  .slider,
+  .stat {
     flex-basis: 100%;
+  }
+  .events-empty {
+    margin-right: 10px;
   }
 }
 
@@ -121,9 +129,6 @@ $imgpath: '../../uids/assets/images';
 
   // @todo Where should this live?
   .block-inline-blockuiowa-text-area {
-    //width: 100%;
-    //flex: 1 0 auto;
-    flex-basis: 100%;
     min-width: 0;
 
     &[class*="bg--"],
