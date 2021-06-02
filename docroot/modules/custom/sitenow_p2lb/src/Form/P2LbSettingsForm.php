@@ -77,6 +77,9 @@ class P2LbSettingsForm extends ConfigFormBase {
       '#submit' => [
         [$this, 'magicButton'],
       ],
+      '#attributes' => [
+        'onclick' => 'if(!confirm("Are you ready to be amazed?")){return false};'
+      ],
     ];
 
     // Unset the original, unused submit button.
