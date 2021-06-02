@@ -56,7 +56,9 @@
   .node--type-article,
   .card--list {
     display: flex;
-    flex-direction: row-reverse;
+    @include breakpoint(sm) {
+      flex-direction: row-reverse;
+    }
   }
 }
 
@@ -65,10 +67,6 @@
   .field--name-field-featured-content {
     @include list-group;
     @include list-group-flush;
-  }
-
-  .featured-content-item {
-    // @include list-group-item;
   }
 
   .content-image,
@@ -142,6 +140,11 @@
       display: flex;
       flex-direction: row-reverse;
     }
+    &.card--person-teaser {
+      @include breakpoint(sm) {
+        margin-top: 1.6rem;
+      }
+    }
   }
 }
 
@@ -153,6 +156,7 @@
   .card--person-teaser {
     @include breakpoint(sm) {
       padding: 2rem!important;
+      margin-top: 0;
     }
   }
 }
@@ -168,7 +172,6 @@
   }
 
   .views-row {
-    @include list-group-item;
 
     &:first-child {
       border-top: none;

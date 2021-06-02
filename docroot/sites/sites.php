@@ -2669,3 +2669,39 @@ $sites['labnejadnik.local.drupal.uiowa.edu'] = 'nejadnik.lab.uiowa.edu';
 $sites['labnejadnik.dev.drupal.uiowa.edu'] = 'nejadnik.lab.uiowa.edu';
 $sites['labnejadnik.stage.drupal.uiowa.edu'] = 'nejadnik.lab.uiowa.edu';
 $sites['labnejadnik.prod.drupal.uiowa.edu'] = 'nejadnik.lab.uiowa.edu';
+
+// Directory aliases for wkrajewski.iihr.uiowa.edu.
+$sites['iihrwkrajewski.local.drupal.uiowa.edu'] = 'wkrajewski.iihr.uiowa.edu';
+$sites['iihrwkrajewski.dev.drupal.uiowa.edu'] = 'wkrajewski.iihr.uiowa.edu';
+$sites['iihrwkrajewski.stage.drupal.uiowa.edu'] = 'wkrajewski.iihr.uiowa.edu';
+$sites['iihrwkrajewski.prod.drupal.uiowa.edu'] = 'wkrajewski.iihr.uiowa.edu';
+
+// Directory aliases for howes.lab.uiowa.edu.
+$sites['labhowes.local.drupal.uiowa.edu'] = 'howes.lab.uiowa.edu';
+$sites['labhowes.dev.drupal.uiowa.edu'] = 'howes.lab.uiowa.edu';
+$sites['labhowes.stage.drupal.uiowa.edu'] = 'howes.lab.uiowa.edu';
+$sites['labhowes.prod.drupal.uiowa.edu'] = 'howes.lab.uiowa.edu';
+
+// Directory aliases for jcl.law.uiowa.edu.
+$sites['lawjcl.local.drupal.uiowa.edu'] = 'jcl.law.uiowa.edu';
+$sites['lawjcl.dev.drupal.uiowa.edu'] = 'jcl.law.uiowa.edu';
+$sites['lawjcl.stage.drupal.uiowa.edu'] = 'jcl.law.uiowa.edu';
+$sites['lawjcl.prod.drupal.uiowa.edu'] = 'jcl.law.uiowa.edu';
+
+// Directory aliases for enrollment.uiowa.edu.
+$sites['enrollment.local.drupal.uiowa.edu'] = 'enrollment.uiowa.edu';
+$sites['enrollment.dev.drupal.uiowa.edu'] = 'enrollment.uiowa.edu';
+$sites['enrollment.stage.drupal.uiowa.edu'] = 'enrollment.uiowa.edu';
+$sites['enrollment.prod.drupal.uiowa.edu'] = 'enrollment.uiowa.edu';
+
+// Directory aliases for engage.uiowa.edu.
+$sites['engage.local.drupal.uiowa.edu'] = 'engage.uiowa.edu';
+$sites['engage.dev.drupal.uiowa.edu'] = 'engage.uiowa.edu';
+$sites['engage.stage.drupal.uiowa.edu'] = 'engage.uiowa.edu';
+$sites['engage.prod.drupal.uiowa.edu'] = 'engage.uiowa.edu';
+
+// Directory aliases for uichr.uiowa.edu.
+$sites['uichr.local.drupal.uiowa.edu'] = 'uichr.uiowa.edu';
+$sites['uichr.dev.drupal.uiowa.edu'] = 'uichr.uiowa.edu';
+$sites['uichr.stage.drupal.uiowa.edu'] = 'uichr.uiowa.edu';
+$sites['uichr.prod.drupal.uiowa.edu'] = 'uichr.uiowa.edu';
