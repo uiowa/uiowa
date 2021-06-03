@@ -194,9 +194,13 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
           $person_type_status_options = $element['field_person_type_status_value']['#options'];
           foreach ($person_type_status_options as $key => $option) {
             // Unset options that aren't associated with selected person type.
-            if ($type != $key) {
+            if ($key !== 'All' && $type != $key) {
               unset($person_type_status_options[$key]);
             }
+          }
+          // More than just the "All/Any" option.
+          if (count($person_type_status_options) > 1) {
+            $element['field_person_type_status_value']['#access'] = TRUE;
           }
           $element['field_person_type_status_value']['#options'] = $person_type_status_options;
         }
