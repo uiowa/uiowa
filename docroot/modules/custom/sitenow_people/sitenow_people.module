@@ -19,7 +19,6 @@ use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\views\Entity\View;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
@@ -125,8 +124,8 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
           $form['field_person_website']['widget'][$k]['title']['#title'] = t('Label');
         }
       }
-
       break;
+
     case 'layout_builder_add_block':
     case 'layout_builder_update_block':
       if (isset($form['settings'])
@@ -135,7 +134,7 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
       ) {
         $form['#prefix'] = '<div id="form-ajax-wrapper">';
         $form['#suffix'] = '</div>';
-        // Add custom process callback for certain blocks to alter form elements.
+        // Add custom process callback to alter exposed filters.
         $form['settings']['override']['exposed_filters']['#process'][] = '_sitenow_people_process_people_block_filters';
       }
       break;
@@ -163,9 +162,6 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
 
   switch ($block->getPluginId()) {
     case 'views_block:people_list_block-list_card':
-      // This isn't working because we don't have access to the $form to modify
-      // the person types field into a select field.
-
       if (isset($element['field_person_types_target_id'])) {
         _sitenow_people_person_type_filter_select($element['field_person_types_target_id']);
         // Show/hide person type statuses based on person type selections.
@@ -179,8 +175,6 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
             'message' => t('Please wait...'),
           ],
         ];
-
-        $type_selections = [];
 
         $type = $form_state->getValue([
           'settings',
@@ -616,7 +610,10 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
   }
 }
 
-function _sitenow_people_person_type_filter_select(&$form) {
+/**
+ * Helper function to add person types as select options.
+ */
+function _sitenow_people_person_type_filter_select(array &$form) {
   // Get available person type configuration entities.
   $storage = Drupal::getContainer()->get('entity_type.manager')->getStorage('person_type');
   $types = $storage->getQuery();
