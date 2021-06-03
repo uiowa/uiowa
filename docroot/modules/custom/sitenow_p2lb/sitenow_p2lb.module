@@ -536,7 +536,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
               $block->set('field_collection_heading_size', $matches[1])
                 ->save();
             }
-            // Grab the new headline, and pull it out of the rest of the content.
+            // Grab the new headline, and pull it out of the content.
             $headline = $matches[2];
             $caption['value'] = str_replace(
               $matches[0],

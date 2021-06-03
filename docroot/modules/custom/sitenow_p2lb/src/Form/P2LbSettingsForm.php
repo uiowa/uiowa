@@ -2,15 +2,47 @@
 
 namespace Drupal\sitenow_p2lb\Form;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\FileStorage;
+use Drupal\Core\Config\StorageInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Site\Settings;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Primary paragraphs2layoutbuilder class.
  */
 class P2LbSettingsForm extends ConfigFormBase {
+  /**
+   * The config.storage service.
+   *
+   * @var \Drupal\Core\Config\StorageInterface
+   */
+  protected $configStorage;
+
+  /**
+   * Form constructor.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The config.factory service.
+   * @param \Drupal\Core\Config\StorageInterface $configStorage
+   *   The config.storage service.
+   */
+  public function __construct(ConfigFactoryInterface $config_factory, StorageInterface $configStorage) {
+    parent::__construct($config_factory);
+    $this->configStorage = $configStorage;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('config.factory'),
+      $container->get('config.storage'),
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -78,7 +110,7 @@ class P2LbSettingsForm extends ConfigFormBase {
         [$this, 'magicButton'],
       ],
       '#attributes' => [
-        'onclick' => 'if(!confirm("Are you ready to be amazed?")){return false};'
+        'onclick' => 'if(!confirm("Are you ready to be amazed?")){return false};',
       ],
     ];
 
@@ -119,8 +151,7 @@ class P2LbSettingsForm extends ConfigFormBase {
     // Update config to enable layout builder for page layouts.
     $config_path = Settings::get('config_sync_directory');
     $source = new FileStorage($config_path);
-    $config_storage = \Drupal::service('config.storage');
-    $config_storage->write('core.entity_view_display.node.page.default', $source->read('core.entity_view_display.node.page.default'));
+    $this->configStorage->write('core.entity_view_display.node.page.default', $source->read('core.entity_view_display.node.page.default'));
 
     // Grab all nids for nodes with paragraphs.
     $nids = sitenow_p2lb_paragraph_nodes();
