@@ -859,7 +859,7 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
       ],
       'field_uiowa_banner_link' => $link,
     ]);
-  // If we have a block save it, and check that it saved succesfully.
+  // If we have a block save it, and check that it saved successfully.
   if (isset($block) && $block->save()) {
     // Create the config that will be used to set the block in its section.
     $uuid = $block->get('uuid')->getValue()[0]['value'];
