@@ -162,6 +162,20 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
 
   switch ($block->getPluginId()) {
     case 'views_block:people_list_block-list_card':
+
+      // Keep exposed filters open while filters have values.
+      foreach (Element::children($element) as $field_name) {
+        $filter = $form_state->getValue([
+          'settings',
+          'override',
+          'exposed_filters',
+          $field_name,
+        ]);
+        if ($filter) {
+          $element['#open'] = TRUE;
+        }
+      }
+
       if (isset($element['field_person_types_target_id'])) {
         _sitenow_people_person_type_filter_select($element['field_person_types_target_id']);
         // Show/hide person type statuses based on person type selections.
