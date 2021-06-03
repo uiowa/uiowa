@@ -113,7 +113,13 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
               unset($person_type_status_options[$key]);
             }
           }
-          $form['field_person_type_status']['widget']['#options'] = $person_type_status_options;
+          if (!empty($person_type_status_options)) {
+            $form['field_person_type_status']['widget']['#options'] = $person_type_status_options;
+          }
+          else {
+            $form['field_person_type_status']['#access'] = FALSE;
+          }
+
         }
       }
 
