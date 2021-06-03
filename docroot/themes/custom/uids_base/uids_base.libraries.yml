@@ -45,9 +45,15 @@ global-styling:
 status-messages:
   js:
     assets/js/uids.status-messages.js: { preprocess: false }
-scrollsync:
+tablescroll:
   js:
-    https://asvd.github.io/syncscroll/syncscroll.js: { type: external, attributes: { async: true } }
+    assets/js/tablescroll.js: { preprocess: false }
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+    - core/jquery.once
+    - core/drupal.displace
 logo:
   css:
     component:
