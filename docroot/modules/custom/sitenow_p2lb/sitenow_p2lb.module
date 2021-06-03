@@ -118,11 +118,13 @@ function sitenow_p2lb_process_section($section_id, $layout, $node) {
   $section_image_fid = ($section_object->get('field_section_image')[0]) ?
     $section_object->get('field_section_image')[0]->getValue()['target_id'] : 0;
   $banner_text = NULL;
+
   if ($section_image_fid) {
     // If the first (or only) paragraph is text, use it for the created banner.
     if (!empty($paragraphs) && reset($paragraphs)->getType() === 'text') {
       $banner_text = array_shift($paragraphs);
     }
+
     // Append our new background image section.
     $section_array = sitenow_p2lb_section_image($section_image_fid, $banner_text, $node);
     if (!empty($section_array)) {
@@ -799,7 +801,11 @@ function sitenow_p2lb_section_styles($section_object) {
 function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
   $section_array = [];
 
-  $text = (!is_null($banner_text)) ? $banner_text->get('field_text_body')->getValue()[0] : '';
+  $text = (!is_null($banner_text)) ? $banner_text->get('field_text_body')->getValue()[0] : [
+    'value' => '',
+    'format' => NULL,
+  ];
+
   $h_level = 'h2';
   $title = '';
 
