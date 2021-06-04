@@ -172,7 +172,13 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
       // Keep exposed filters open while filters have values.
       foreach (Element::children($element) as $field_name) {
         $default = $element[$field_name]['#default_value'];
-        if (!empty($default)) {
+        $filter = $form_state->getValue([
+          'settings',
+          'override',
+          'exposed_filters',
+          $field_name,
+        ]);
+        if ($filter || !empty($default)) {
           $element['#open'] = TRUE;
         }
       }
