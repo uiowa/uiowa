@@ -198,6 +198,19 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
           ],
         ];
 
+        $person_type_options = $element['field_person_types_target_id']['#options'];
+        $person_type_status_options = $element['field_person_type_status_value']['#options'];
+
+        foreach ($person_type_options as $key => $option) {
+          if (isset($person_type_status_options[$key])) {
+            $element['field_person_type_status_value']['#states']['visible'][] = [
+              ':input[name="settings[override][exposed_filters][field_person_types_target_id]"]' => [
+                'value' => $key,
+              ],
+            ];
+          }
+        }
+
         $type = $form_state->getValue([
           'settings',
           'override',
@@ -205,20 +218,12 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
           'field_person_types_target_id',
         ]);
 
+
         if (!$type && !empty($element['field_person_types_target_id']['#default_value'])) {
           $type = $element['field_person_types_target_id']['#default_value'];
         }
 
-        $element['field_person_type_status_value']['#states'] = [
-          'visible' => [
-            ':input[name="settings[override][exposed_filters][field_person_types_target_id]"]' => [
-              'filled' => TRUE,
-            ],
-          ],
-        ];
-
         if ($type) {
-          $person_type_status_options = $element['field_person_type_status_value']['#options'];
           foreach ($person_type_status_options as $key => $option) {
             // Unset options that aren't associated with selected person type.
             if ($key !== 'All' && $type != $key) {
