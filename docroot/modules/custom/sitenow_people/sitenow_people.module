@@ -208,9 +208,14 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
         if (!$type && !empty($element['field_person_types_target_id']['#default_value'])) {
           $type = $element['field_person_types_target_id']['#default_value'];
         }
-        else {
-          $element['field_person_type_status_value']['#access'] = FALSE;
-        }
+
+        $element['field_person_type_status_value']['#states'] = [
+          'visible' => [
+            ':input[name="settings[override][exposed_filters][field_person_types_target_id]"]' => [
+              'filled' => TRUE,
+            ],
+          ],
+        ];
 
         if ($type) {
           $person_type_status_options = $element['field_person_type_status_value']['#options'];
@@ -219,10 +224,6 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
             if ($key !== 'All' && $type != $key) {
               unset($person_type_status_options[$key]);
             }
-          }
-          // More than just the "All/Any" option.
-          if (count($person_type_status_options) > 1) {
-            $element['field_person_type_status_value']['#access'] = TRUE;
           }
           $element['field_person_type_status_value']['#options'] = $person_type_status_options;
         }
