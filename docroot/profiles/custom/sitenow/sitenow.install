@@ -3175,6 +3175,7 @@ function sitenow_update_9011() {
       // and layoutTempstoreRepository, but have not found it yet.
       $query = $db->select('key_value_expire', 'kve')
         ->fields('kve', ['name', 'value', 'expire'])
+        ->condition('collection', 'tempstore.shared.layout_builder.section_storage.overrides', '=')
         ->condition('value', '%uiowa_banner%', 'LIKE');
 
       $count = $query->countQuery()->execute()->fetchField();
