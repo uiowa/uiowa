@@ -180,6 +180,7 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
         ]);
         if ($filter || !empty($default)) {
           $element['#open'] = TRUE;
+          break;
         }
       }
 
