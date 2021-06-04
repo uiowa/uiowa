@@ -1,14 +1,19 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
 @import "assets/scss/_local-fonts.scss";
-@import url('../../../../../core/themes/claro/css/components/dropbutton.css');
 $imgpath: '../../uids/assets/images';
 
+.block-local-tasks-block {
+  nav.tabs {
+    border-bottom: 1px solid rgba(0,0,0,.125);
+  }
+}
 
 .tabs>li>a.local-task-icon {
   &:hover,
   &:focus {
     background: #f3f3f3;
+    text-decoration: underline;
   }
   &.is-active {
     background: none;
