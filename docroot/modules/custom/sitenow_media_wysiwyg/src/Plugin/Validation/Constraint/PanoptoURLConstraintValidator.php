@@ -8,7 +8,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 /**
  * Validates the PanoptoUrl constraint.
  */
-class PanoptoUrlConstraintValidator extends ConstraintValidator {
+class PanoptoURLConstraintValidator extends ConstraintValidator {
 
   /**
    * {@inheritdoc}

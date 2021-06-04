@@ -2,8 +2,6 @@
 
 namespace Drupal\sitenow_media_wysiwyg\Plugin\Field\FieldWidget;
 
-use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
 
 /**

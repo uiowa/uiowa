@@ -2,9 +2,6 @@
 
 namespace Drupal\sitenow_media_wysiwyg\Plugin\Field\FieldType;
 
-use Drupal\Core\Field\FieldStorageDefinitionInterface;
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\TypedData\DataDefinition;
 use Drupal\link\Plugin\Field\FieldType\LinkItem;
 
 /**
