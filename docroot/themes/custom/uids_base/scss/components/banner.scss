@@ -35,6 +35,16 @@
   }
 }
 
+
+// Adjust small padding for layout banner headers
+.layout--onecol--background.banner--small {
+  &::before {
+    float: left;
+    padding-top: 17.75%;
+    content: '';
+  }
+}
+
 // Layout specific sizing overrides
 .layout--threecol,
 .layout--fourcol,
@@ -44,12 +54,27 @@
 .layout--twocol--67-33 .layout__region--second {
   .banner {
 
-    .bold-headline {
-      @include breakpoint(menu) {
-        //font-size: 2.4rem;
-      }
+    .headline--large.headline--serif,
+    .headline--large {
+      font-size: 2.6rem;
+      font-size: containerClamp(2.6rem, 2.6rem);
+    }
 
-      &.bold-headline--highlight {
+    // Set medium heading size
+    .headline--medium.headline--serif,
+    .headline--medium {
+      font-size: 2.2rem;
+      font-size: containerClamp(2.1rem, 2.1rem);
+    }
+
+    // Set small heading size
+    .headline--small.headline--serif,
+    .headline--small {
+      font-size: 1.8rem;
+      font-size: containerClamp(1.6rem, 1.6rem);
+    }
+
+      &.headline--highlight {
         @include breakpoint(menu) {
           //font-size: 1.8rem;
         }
