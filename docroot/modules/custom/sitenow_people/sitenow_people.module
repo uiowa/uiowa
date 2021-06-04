@@ -218,6 +218,12 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
           'field_person_types_target_id',
         ]);
 
+        // If we're editing a previously saved form,
+        // we need to check the current user input for updated selections.
+        if (!$type) {
+          $type = $form_state->getUserInput()['settings']['override']['exposed_filters']['field_person_types_target_id'];
+        }
+
         if (!$type && !empty($element['field_person_types_target_id']['#default_value'])) {
           $type = $element['field_person_types_target_id']['#default_value'];
         }
