@@ -210,6 +210,21 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
             ];
           }
         }
+//
+//        $current_status = $form_state->getValue([
+//          'settings',
+//          'override',
+//          'exposed_filters',
+//          'field_person_type_status_value',
+//        ]);
+//        if (!in_array($current_status, $person_type_status_options)) {
+//          $form_state->setValue([
+//            'settings',
+//            'override',
+//            'exposed_filters',
+//            'field_person_type_status_value',
+//          ], 'All');
+//        }
 
         $type = $form_state->getValue([
           'settings',
@@ -220,9 +235,9 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
 
         // If we're editing a previously saved form,
         // we need to check the current user input for updated selections.
-        if (!$type) {
-          $type = $form_state->getUserInput()['settings']['override']['exposed_filters']['field_person_types_target_id'];
-        }
+//        if (!$type) {
+//          $type = $form_state->getUserInput()['settings']['override']['exposed_filters']['field_person_types_target_id'];
+//        }
 
         if (!$type && !empty($element['field_person_types_target_id']['#default_value'])) {
           $type = $element['field_person_types_target_id']['#default_value'];
@@ -234,6 +249,20 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
             if ($key !== 'All' && $type != $key) {
               unset($person_type_status_options[$key]);
             }
+          }
+          $current_status = $form_state->getValue([
+            'settings',
+            'override',
+            'exposed_filters',
+            'field_person_type_status_value',
+          ]);
+          if ($current_status != $type) {
+            $form_state->setValue([
+              'settings',
+              'override',
+              'exposed_filters',
+              'field_person_type_status_value',
+            ], 'All');
           }
           $element['field_person_type_status_value']['#options'] = $person_type_status_options;
         }
