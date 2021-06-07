@@ -233,7 +233,8 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
         }
 
         // Set person type status options based on the type.
-        if ($type) {
+        $process = $form_state->isProcessingInput();
+        if ($type && $process = FALSE) {
           _person_type_status_filter_options($element['field_person_type_status_value']['#options'], $type);
         }
       }
