@@ -169,7 +169,8 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
   switch ($block->getPluginId()) {
     case 'views_block:people_list_block-list_card':
 
-      // Keep exposed filters open while filters have values.
+      // Check if values or defaults are set for exposed filters
+      // and leave the container open if so.
       foreach (Element::children($element) as $field_name) {
         $default = $element[$field_name]['#default_value'];
         $filter = $form_state->getValue([
@@ -184,32 +185,36 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
         }
       }
 
-      if (isset($element['field_person_types_target_id'])) {
-        _sitenow_people_person_type_filter_select($element['field_person_types_target_id']);
-        // Show/hide person type statuses based on person type selections.
-        $element['field_person_types_target_id']['#ajax'] = [
-          'callback' => '_person_types_callback',
-          'event' => 'change',
-          'wrapper' => 'form-ajax-wrapper',
-          'speed' => 'fast',
-          'progress' => [
-            'type' => 'throbber',
-            'message' => t('Please wait...'),
-          ],
-        ];
+      // Only continue if person type filter exists.
+      if (!isset($element['field_person_types_target_id'])) {
+        break;
+      }
 
-        $person_type_options = $element['field_person_types_target_id']['#options'];
-        $person_type_status_options = $element['field_person_type_status_value']['#options'];
+      _sitenow_people_person_type_filter_select($element['field_person_types_target_id']);
+      // Show/hide person type statuses based on person type selections.
+      $element['field_person_types_target_id']['#ajax'] = [
+        'callback' => '_person_types_callback',
+        'event' => 'change',
+        'wrapper' => 'form-ajax-wrapper',
+        'speed' => 'fast',
+        'progress' => [
+          'type' => 'throbber',
+          'message' => t('Please wait...'),
+        ],
+      ];
 
-        foreach ($person_type_options as $key => $option) {
-          if (isset($person_type_status_options[$key])) {
-            $element['field_person_type_status_value']['#states']['visible'][] = [
-              ':input[name="settings[override][exposed_filters][field_person_types_target_id]"]' => [
-                'value' => $key,
-              ],
-            ];
-          }
+      $person_type_options = $element['field_person_types_target_id']['#options'];
+      $person_type_status_options = $element['field_person_type_status_value']['#options'];
+
+      foreach ($person_type_options as $key => $option) {
+        if (isset($person_type_status_options[$key])) {
+          $element['field_person_type_status_value']['#states']['visible'][] = [
+            ':input[name="settings[override][exposed_filters][field_person_types_target_id]"]' => [
+              'value' => $key,
+            ],
+          ];
         }
+      }
 //
 //        $current_status = $form_state->getValue([
 //          'settings',
@@ -226,46 +231,45 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
 //          ], 'All');
 //        }
 
-        $type = $form_state->getValue([
-          'settings',
-          'override',
-          'exposed_filters',
-          'field_person_types_target_id',
-        ]);
+      $type = $form_state->getValue([
+        'settings',
+        'override',
+        'exposed_filters',
+        'field_person_types_target_id',
+      ]);
 
-        // If we're editing a previously saved form,
-        // we need to check the current user input for updated selections.
+      // If we're editing a previously saved form,
+      // we need to check the current user input for updated selections.
 //        if (!$type) {
 //          $type = $form_state->getUserInput()['settings']['override']['exposed_filters']['field_person_types_target_id'];
 //        }
 
-        if (!$type && !empty($element['field_person_types_target_id']['#default_value'])) {
-          $type = $element['field_person_types_target_id']['#default_value'];
-        }
+      if (!$type && !empty($element['field_person_types_target_id']['#default_value'])) {
+        $type = $element['field_person_types_target_id']['#default_value'];
+      }
 
-        if ($type) {
-          foreach ($person_type_status_options as $key => $option) {
-            // Unset options that aren't associated with selected person type.
-            if ($key !== 'All' && $type != $key) {
-              unset($person_type_status_options[$key]);
-            }
+      if ($type) {
+        foreach ($person_type_status_options as $key => $option) {
+          // Unset options that aren't associated with selected person type.
+          if ($key !== 'All' && $type != $key) {
+            unset($person_type_status_options[$key]);
           }
-          $current_status = $form_state->getValue([
+        }
+        $current_status = $form_state->getValue([
+          'settings',
+          'override',
+          'exposed_filters',
+          'field_person_type_status_value',
+        ]);
+        if ($current_status != $type) {
+          $form_state->setValue([
             'settings',
             'override',
             'exposed_filters',
             'field_person_type_status_value',
-          ]);
-          if ($current_status != $type) {
-            $form_state->setValue([
-              'settings',
-              'override',
-              'exposed_filters',
-              'field_person_type_status_value',
-            ], 'All');
-          }
-          $element['field_person_type_status_value']['#options'] = $person_type_status_options;
+          ], 'All');
         }
+        $element['field_person_type_status_value']['#options'] = $person_type_status_options;
       }
       break;
   }
