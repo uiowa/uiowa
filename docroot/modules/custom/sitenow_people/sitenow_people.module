@@ -138,6 +138,8 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
         && isset($form['settings']['override'])
         && isset($form['settings']['override']['exposed_filters'])
       ) {
+        // Add custom validation for certain blocks/regions to validate.
+        $form['#validate'][] = '_sitenow_people_exposed_filters_validate';
         $form['#prefix'] = '<div id="form-ajax-wrapper">';
         $form['#suffix'] = '</div>';
         // Add custom process callback to alter exposed filters.
@@ -215,72 +217,71 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
           ];
         }
       }
-//
-//        $current_status = $form_state->getValue([
-//          'settings',
-//          'override',
-//          'exposed_filters',
-//          'field_person_type_status_value',
-//        ]);
-//        if (!in_array($current_status, $person_type_status_options)) {
-//          $form_state->setValue([
-//            'settings',
-//            'override',
-//            'exposed_filters',
-//            'field_person_type_status_value',
-//          ], 'All');
-//        }
 
-      $type = $form_state->getValue([
-        'settings',
-        'override',
-        'exposed_filters',
-        'field_person_types_target_id',
-      ]);
-
-      // If we're editing a previously saved form,
-      // we need to check the current user input for updated selections.
-//        if (!$type) {
-//          $type = $form_state->getUserInput()['settings']['override']['exposed_filters']['field_person_types_target_id'];
-//        }
-
-      if (!$type && !empty($element['field_person_types_target_id']['#default_value'])) {
-        $type = $element['field_person_types_target_id']['#default_value'];
-      }
-
-      if ($type) {
-        foreach ($person_type_status_options as $key => $option) {
-          // Unset options that aren't associated with selected person type.
-          if ($key !== 'All' && $type != $key) {
-            unset($person_type_status_options[$key]);
-          }
-        }
-        $current_status = $form_state->getValue([
+      if ($form['#form_id'] === 'layout_builder_update_block') {
+        // Check if $form_state has person type value set.
+        $type = $form_state->getValue([
           'settings',
           'override',
           'exposed_filters',
-          'field_person_type_status_value',
+          'field_person_types_target_id',
         ]);
-        if ($current_status != $type) {
-          $form_state->setValue([
-            'settings',
-            'override',
-            'exposed_filters',
-            'field_person_type_status_value',
-          ], 'All');
+
+        // If not, check if the default value is set.
+        if (!$type && !empty($element['field_person_types_target_id']['#default_value'])) {
+          $type = $element['field_person_types_target_id']['#default_value'];
         }
-        $element['field_person_type_status_value']['#options'] = $person_type_status_options;
+
+        // Set person type status options based on the type.
+        if ($type) {
+          _person_type_status_filter_options($element['field_person_type_status_value']['#options'], $type);
+        }
       }
       break;
+
   }
   return $element;
+}
+
+/**
+ * Validation callback.
+ */
+function _sitenow_people_exposed_filters_validate(array &$form, FormStateInterface $form_state) {
+  // @todo Potentially set the correct values here?
 }
 
 /**
  * Custom callback for person types field.
  */
 function _person_types_callback(array &$form, FormStateInterface $form_state) {
+  // @todo Do these modifications need to be scoped to just run when
+  //   the triggering element is the person types filter?
+  $type = $form_state->getValue([
+    'settings',
+    'override',
+    'exposed_filters',
+    'field_person_types_target_id',
+  ]);
+
+  $person_type_status_options = $form['settings']['override']['exposed_filters']['field_person_type_status_value']['#options'];
+
+  _person_type_status_filter_options($person_type_status_options, $type);
+
+  $form['settings']['override']['exposed_filters']['field_person_type_status_value']['#options'] = $person_type_status_options;
+
   return $form;
+}
+
+/**
+ * Helper function to remove all options except for 'Any' and $type.
+ */
+function _person_type_status_filter_options(array &$options, $type) {
+  foreach ($options as $key => $option) {
+    // Unset options that aren't associated with selected person type.
+    if ($key !== 'All' && $type != $key) {
+      unset($options[$key]);
+    }
+  }
 }
 
 /**
