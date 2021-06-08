@@ -28,9 +28,13 @@ class PanoptoUrlFormatter extends LinkFormatter {
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = parent::viewElements($items, $langcode);
     $values = $items->getValue();
+    $parent = $items->getParent()->getEntity();
+    $parent_id = $parent->id();
 
     foreach ($elements as $delta => $entity) {
       $parsed_url = UrlHelper::parse($values[$delta]['uri']);
+      // @todo replace 'panopto_player-1' id with $unique_id.
+      $unique_id = 'media-' . $parent_id . '-'. $delta;
       $elements[$delta] = [
         '#type' => 'markup',
         '#markup' => '
@@ -39,6 +43,7 @@ class PanoptoUrlFormatter extends LinkFormatter {
             data-width="720"
             data-height="405"
             id="panopto_player-1"
+            class="panopto-player"
           ></div>
         ',
         '#allowed_tags' => ['div'],
