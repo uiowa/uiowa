@@ -300,12 +300,6 @@ $sites['labwu.dev.drupal.uiowa.edu'] = 'wu.lab.uiowa.edu';
 $sites['labwu.stage.drupal.uiowa.edu'] = 'wu.lab.uiowa.edu';
 $sites['labwu.prod.drupal.uiowa.edu'] = 'wu.lab.uiowa.edu';
 
-// Directory aliases for gsab.org.uiowa.edu.
-$sites['orggsab.local.drupal.uiowa.edu'] = 'gsab.org.uiowa.edu';
-$sites['orggsab.dev.drupal.uiowa.edu'] = 'gsab.org.uiowa.edu';
-$sites['orggsab.stage.drupal.uiowa.edu'] = 'gsab.org.uiowa.edu';
-$sites['orggsab.prod.drupal.uiowa.edu'] = 'gsab.org.uiowa.edu';
-
 // Directory aliases for cogaresearch.lab.uiowa.edu.
 $sites['labcogaresearch.local.drupal.uiowa.edu'] = 'cogaresearch.lab.uiowa.edu';
 $sites['labcogaresearch.dev.drupal.uiowa.edu'] = 'cogaresearch.lab.uiowa.edu';
@@ -2705,3 +2699,9 @@ $sites['uichr.local.drupal.uiowa.edu'] = 'uichr.uiowa.edu';
 $sites['uichr.dev.drupal.uiowa.edu'] = 'uichr.uiowa.edu';
 $sites['uichr.stage.drupal.uiowa.edu'] = 'uichr.uiowa.edu';
 $sites['uichr.prod.drupal.uiowa.edu'] = 'uichr.uiowa.edu';
+
+// Directory aliases for peacebypeace.org.uiowa.edu.
+$sites['orgpeacebypeace.local.drupal.uiowa.edu'] = 'peacebypeace.org.uiowa.edu';
+$sites['orgpeacebypeace.dev.drupal.uiowa.edu'] = 'peacebypeace.org.uiowa.edu';
+$sites['orgpeacebypeace.stage.drupal.uiowa.edu'] = 'peacebypeace.org.uiowa.edu';
+$sites['orgpeacebypeace.prod.drupal.uiowa.edu'] = 'peacebypeace.org.uiowa.edu';

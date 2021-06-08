@@ -144,8 +144,10 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       // so it can take advantage of the logic there.
       array_unshift($form['#submit'], '_layout_builder_custom_block_submit');
 
-      // Add custom process callback for certain blocks to alter form elements.
-      $form['settings']['block_form']['#process'][] = '_layout_builder_custom_process_element';
+      if (isset($form['settings']) && isset($form['settings']['override'])) {
+        // Add custom process callback for certain blocks to alter form elements.
+        $form['settings']['block_form']['#process'][] = '_layout_builder_custom_process_element';
+      }
 
       // Add our LBS heading before style options.
       _layout_builder_custom_add_lbs_heading($form);
@@ -682,7 +684,6 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       break;
 
     case 'inline_block:uiowa_articles':
-    case 'inline_block:uiowa_people':
     case 'inline_block:uiowa_events':
       if (isset($element['field_collection_more_path'])) {
         $element['field_collection_more_path']['#states'] = [
