@@ -36,8 +36,8 @@ class PanoptoUrlFormatter extends LinkFormatter {
         '#markup' => '
           <div
             data-link="' . $parsed_url['query']['id'] . '"
-            data-width="700"
-            data-height="422"
+            data-width="720"
+            data-height="405"
             id="panopto_player-1"
           ></div>
         ',
