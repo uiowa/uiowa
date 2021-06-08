@@ -22,6 +22,7 @@ class PanoptoUrlFormatter extends LinkFormatter {
 
   /**
    * Short description message...
+   *
    * @inheritDoc
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
