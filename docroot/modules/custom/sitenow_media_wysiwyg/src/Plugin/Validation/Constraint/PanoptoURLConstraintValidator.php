@@ -2,6 +2,7 @@
 
 namespace Drupal\sitenow_media_wysiwyg\Plugin\Validation\Constraint;
 
+use Drupal\Component\Utility\UrlHelper;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -19,8 +20,10 @@ class PanoptoURLConstraintValidator extends ConstraintValidator {
     $value = reset($value);
     $uri = $value['uri'];
     $url = parse_url($uri);
-
-    if ($url['host'] !== 'uicapture.hosted.panopto.com') {
+    $parsed_url = UrlHelper::parse($uri);
+    // Limit to UICapture and Panopto video type (id) for now.
+    $no_id = !array_key_exists( 'id', $parsed_url['query']);
+    if ($url['host'] !== 'uicapture.hosted.panopto.com' || $no_id) {
       // This doesn't properly target the URL/uri field.
       $this->context->buildViolation($constraint->message)
         ->atPath('uri')
