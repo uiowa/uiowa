@@ -192,7 +192,14 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
         break;
       }
 
+      // Display person types as a select list.
       _sitenow_people_person_type_filter_select($element['field_person_types_target_id']);
+
+      // Only continue if person type status filter exists.
+      if (!isset($element['field_person_type_status_value'])) {
+        break;
+      }
+
       // Show/hide person type statuses based on person type selections.
       $element['field_person_types_target_id']['#ajax'] = [
         'callback' => '_person_types_callback',
@@ -218,7 +225,11 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
         }
       }
 
-      if ($form['#form_id'] === 'layout_builder_update_block') {
+      // If this is the update form and the form has not been
+      // submitted.
+      if ($form['#form_id'] === 'layout_builder_update_block'
+        && !$form_state->isProcessingInput()
+      ) {
         // Check if $form_state has person type value set.
         $type = $form_state->getValue([
           'settings',
@@ -233,8 +244,7 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
         }
 
         // Set person type status options based on the type.
-        $process = $form_state->isProcessingInput();
-        if ($type && $process = FALSE) {
+        if ($type) {
           _person_type_status_filter_options($element['field_person_type_status_value']['#options'], $type);
         }
       }
