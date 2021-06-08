@@ -22,7 +22,7 @@ class PanoptoURLConstraintValidator extends ConstraintValidator {
     $url = parse_url($uri);
     $parsed_url = UrlHelper::parse($uri);
     // Limit to UICapture and Panopto video type (id) for now.
-    $no_id = !array_key_exists( 'id', $parsed_url['query']);
+    $no_id = !array_key_exists('id', $parsed_url['query']);
     if ($url['host'] !== 'uicapture.hosted.panopto.com' || $no_id) {
       // This doesn't properly target the URL/uri field.
       $this->context->buildViolation($constraint->message)
