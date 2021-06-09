@@ -690,7 +690,30 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       break;
 
     case 'image_gallery':
-      // @todo Create an image gallery block.
+      $styles = [];
+      $type = 'uiowa_image_gallery';
+      $images = $paragraph->field_image;
+      $title = $paragraph->field_uip_title->value;
+      $display_title = $paragraph->field_uip_display_title->value;
+
+      $block = \Drupal::entityTypeManager()
+        ->getStorage('block_content')
+        ->create([
+          'type' => $type,
+          'langcode' => 'en',
+          'status' => $paragraph->get('status')->getValue(),
+          'reusable' => 0,
+          'default_langcode' => 1,
+          'field_uiowa_gallery_image' => $images,
+          // Build a headline out of the title
+          // and display title options.
+          'field_uiowa_headline' => [
+            'headline' => $title,
+            'heading_size' => 'h2',
+            'hide_headline' => $display_title,
+            'headline_style' => 'default',
+          ],
+        ]);
       break;
 
     case 'people':
