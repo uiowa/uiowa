@@ -165,3 +165,14 @@ figure.caption .media--type-panopto.media--view-mode-small iframe,
 .media--type-panopto.media--view-mode-full__no-crop {
   @extend .embed-responsive-16by9;
 }
+
+
+figure.caption-drupal-media {
+  width: calc(100%);
+  margin: 0;
+
+  @include breakpoint(sm) {
+    width: unset;
+    margin: inherit;
+  }
+}
