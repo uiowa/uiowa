@@ -798,15 +798,22 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
     case 'text':
       $type = 'uiowa_text_area';
       $styles = sitenow_p2lb_section_styles($paragraph);
-      // @todo update labeling methodology and decide how to title.
       $label = 'Text block';
       $display_label = 0;
       $text = $paragraph->get('field_text_body')->getValue();
 
-      // @todo While we're already processing this text block,
-      //   do we want to also check and see if it starts with a
-      //   title and set a headline from it then strip that from
-      //   the field?
+      // If the text block begins with a headline, grab it and
+      // create a title from it.
+      if (preg_match('|\A<(h\d)>(.*?)<\/h\d>|', $text['value'], $matches)) {
+        $h_level = $matches[1];
+        $title = $matches[2];
+        $text['value'] = str_replace(
+          $matches[0],
+          '',
+          $text['value']
+        );
+      }
+
       $block = \Drupal::entityTypeManager()
         ->getStorage('block_content')
         ->create([
@@ -817,6 +824,12 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
           'default_langcode' => 1,
           // getValue sets both the text value and the format.
           'field_uiowa_text_area' => $text,
+          'field_uiowa_headline' => [
+            'headline' => isset($title) ? $title : '',
+            'heading_size' => isset($h_level) ? $h_level : 'h2',
+            'hide_headline' => 0,
+            'headline_style' => 'default',
+          ],
         ]);
       break;
 
