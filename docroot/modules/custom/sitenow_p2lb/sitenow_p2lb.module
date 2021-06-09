@@ -731,11 +731,34 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       $display_label = 0;
       $more = $paragraph->field_people_more->value;
       $more_path = $paragraph->field_people_more_path->value;
-      $sort = $paragraph->field_people_sort->value;
-      // @todo Map the sort methodology.
       $title = $paragraph->field_uip_title->value;
       $display_title = $paragraph->field_uip_display_title->value;
       $pager = $paragraph->field_uip_pager->value;
+      // Number of results that should be displayed.
+      $results = $paragraph->field_uip_items->value;
+
+      // The sort is either Sticky/First/Last
+      // or Sticky/Last/First. Default to SLF.
+      $sort = [
+        'sticky' => [
+          'order' => 'DESC',
+          'weight' => '0',
+        ],
+        'field_person_last_name_value' => [
+          'order' => 'ASC',
+          'weight' => '0',
+        ],
+        'field_person_first_name_value' => [
+          'order' => 'ASC',
+          'weight' => '0',
+        ],
+      ];
+      // Check if we need to change the last and first name positions.
+      if ($paragraph->field_people_sort->value === 'block_people_sfl') {
+        $last_name['field_person_last_name_value'] = $sort['field_person_last_name_value'];
+        unset($sort['field_person_last_name_value']);
+        $sort = array_merge($sort, $last_name);
+      }
 
       // Build out the new view block configuration.
       $config = [
@@ -744,30 +767,16 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         'provider' => 'views',
         'label_display' => $display_label,
         'views_label' => '',
-        // @todo Update this with the items per page.
         // If we were displaying the title before, then add it as a headline.
         'headline' => ($display_title) ? $title : '',
-        // @todo Make sure this maps correctly.
         'pager' => $pager,
         // 'pager' => $block->field_collection_pager->value ? 'full' : 'some',
         'pager_offset' => 0,
+        'items_per_page' => $results,
         // @todo Make sure $more and $more_path map correctly.
         'use_more' => $more,
         'use_more_link_url' => $more_path,
-        'sort' => [
-          'sticky' => [
-            'order' => 'DESC',
-            'weight' => 0,
-          ],
-          'field_person_last_name_value' => [
-            'order' => 'ASC',
-            'weight' => 0,
-          ],
-          'field_person_first_name_value' => [
-            'order' => 'ASC',
-            'weight' => 0,
-          ],
-        ],
+        'sort' => $sort,
         'exposed_filter_values' => [
           'field_tags_target_id' => [],
         ],
