@@ -54,6 +54,7 @@ function sitenow_p2lb_node_p2lb(int $nid, $remove = FALSE) {
 
   // Need to set with an array of sections, retrieved with getSections().
   if ($layout) {
+    // @todo Save as a new draft.
     $node->set('layout_builder__layout', $layout->getSections())
       ->save();
 
@@ -92,7 +93,7 @@ function sitenow_p2lb_fetch_child_ids($parent) {
   $content = $parent->get($field);
   if (!is_null($content)) {
     foreach ($content as $content_ref) {
-      $ids[] = $content_ref->getValue()['target_id'];
+      $ids[] = $content_ref->target_id;
     }
   }
   return $ids;
@@ -396,8 +397,47 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       break;
 
     case 'articles':
+      $type = 'uiowa_articles';
+      $label = NULL;
+      $display_label = 0;
+      // Default styles.
+      $styles = [
+        'list_format_list',
+        'block_grid_threecol_33_34_33',
+      ];
+      $more = $paragraph->field_articles_more->value;
+      $more_path = $paragraph->field_articles_more_path->value;
+      $title = $paragraph->field_uip_title->value;
+      $display_title = $paragraph->field_uip_display_title->value;
+      $pager = $paragraph->field_uip_pager->value;
+
+      $block = \Drupal::entityTypeManager()
+        ->getStorage('block_content')
+        ->create([
+          'type' => $type,
+          'langcode' => 'en',
+          'status' => $paragraph->get('status')->getValue(),
+          'reusable' => 0,
+          'default_langcode' => 1,
+          // @todo Make sure these are mapped correctly.
+          'field_collection_more' => $more,
+          'field_collection_more_path' => $more_path,
+          'field_collection_pager' => $pager,
+          // @todo Update this from default to a previous value.
+          'field_collection_results' => 10,
+          // Build a headline out of the title
+          // and display title options.
+          'field_uiowa_headline' => [
+            'headline' => $title,
+            'heading_size' => 'h2',
+            'hide_headline' => $display_title,
+            'headline_style' => 'default',
+          ],
+        ]);
+      break;
+
     case 'events':
-      // @todo Create these view-based blocks.
+      // @todo Create events blocks.
       break;
 
     case 'people':
