@@ -618,11 +618,11 @@ function uids_base_preprocess_block(&$variables) {
 
     // Remove headline classes from attributes.
     $variables['headline_classes'] = array_filter($variables['elements']['#attributes']['class'], function ($v) {
-      return substr($v, 0, 13) === 'bold-headline';
+      return substr($v, 0, 8) === 'headline';
     });
 
     // Change link style to match highlight, if set.
-    if (in_array('bold-headline--highlight', $variables['headline_classes'])) {
+    if (in_array('headline--highlight', $variables['headline_classes'])) {
       $highlight_classes = 'bttn bttn--secondary bttn--caps';
     }
     else {
