@@ -2,6 +2,7 @@
 
 namespace Drupal\sitenow_media_wysiwyg\Plugin\Field\FieldFormatter;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\link\Plugin\Field\FieldFormatter\LinkFormatter;
@@ -28,21 +29,21 @@ class PanoptoUrlFormatter extends LinkFormatter {
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = parent::viewElements($items, $langcode);
     $values = $items->getValue();
-    $parent = $items->getParent()->getEntity();
-    $parent_id = $parent->id();
+
+
 
     foreach ($elements as $delta => $entity) {
       $parsed_url = UrlHelper::parse($values[$delta]['uri']);
-      // @todo replace 'panopto_player-1' id with $unique_id.
-      $unique_id = 'media-' . $parent_id . '-' . $delta;
+
+      $unique_id = Html::getUniqueId('panopto-media');
       $elements[$delta] = [
         '#type' => 'markup',
         '#markup' => '
           <div
             data-link="' . $parsed_url['query']['id'] . '"
-            data-width="720"
-            data-height="405"
-            id="panopto_player-1"
+            data-width="1920"
+            data-height="1080"
+            id=' . $unique_id . '
             class="panopto-player"
           ></div>
         ',
