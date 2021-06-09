@@ -34,7 +34,7 @@ class PanoptoUrlFormatter extends LinkFormatter {
     foreach ($elements as $delta => $entity) {
       $parsed_url = UrlHelper::parse($values[$delta]['uri']);
       // @todo replace 'panopto_player-1' id with $unique_id.
-      $unique_id = 'media-' . $parent_id . '-'. $delta;
+      $unique_id = 'media-' . $parent_id . '-' . $delta;
       $elements[$delta] = [
         '#type' => 'markup',
         '#markup' => '
