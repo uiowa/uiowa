@@ -3109,6 +3109,16 @@ function sitenow_update_9010() {
  */
 function sitenow_update_9011() {
   sitenow_update_9009();
+
+  // Delete remaining orphans?
+  $result = \Drupal::entityQuery('block_content')
+    ->condition('type', 'uiowa_people')
+    ->execute();
+  if ($result) {
+    $storage_handler = \Drupal::entityTypeManager()->getStorage('block_content');
+    $entities = $storage_handler->loadMultiple($result);
+    $storage_handler->delete($entities);
+  }
 }
 
 /**
