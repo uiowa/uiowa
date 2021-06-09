@@ -871,7 +871,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 
   }
   // If we have a block save it, and check that it saved successfully.
-  $view_mode = isset($view_mode) ? $view_mode : '';
   if (isset($block) && $block->save()) {
     $uuid = $block->get('uuid')->getValue()[0]['value'];
     $config = [
@@ -880,14 +879,11 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       'provider' => 'layout_builder',
       'label_display' => $display_label,
       'block_revision_id' => $block->getRevisionId(),
-      'view_mode' => $view_mode,
+      'view_mode' => isset($view_mode) ? $view_mode : '',
     ];
 
     // Set the block usage to the node.
     $use_controller->addUsage($block->id(), $node);
-
-    // @todo make sure styles is set before this for all block types.
-    $styles = isset($styles) ? $styles : [];
 
     // Now that we have a saved block and it has an id,
     // set the parent_id for each of our children.
@@ -899,7 +895,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
     return [
       'configuration' => $config,
       'uuid' => $uuid,
-      'styles' => $styles,
+      'styles' => isset($styles) ? $styles : [],
     ];
   }
 
@@ -1014,7 +1010,6 @@ function sitenow_p2lb_section_styles($section_object) {
     ->get('field_uip_classes')
     ->getValue();
 
-  // @todo Check that these are still accurate.
   $style_matcher = [
     'bg-light' => 'section_background_style_gray',
     'bg-dark' => 'section_background_style_gray',
