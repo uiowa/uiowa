@@ -397,9 +397,74 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 
     case 'articles':
     case 'events':
-    case 'people':
       // @todo Create these view-based blocks.
       break;
+
+    case 'people':
+      $type = 'views_block:people_list_block-list_card';
+      // Default LB styles for the people block.
+      $styles = [
+        'card_media_position_right',
+        'media_format_circle',
+        'content_alignment_left',
+        'card_image_small',
+        'list_format_list',
+        'block_grid_threecol_33_34_33',
+      ];
+      $label = NULL;
+      $display_label = 0;
+      $more = $paragraph->field_people_more->value;
+      $more_path = $paragraph->field_people_more_path->value;
+      $sort = $paragraph->field_people_sort->value;
+      // @todo Map the sort methodology.
+      $title = $paragraph->field_uip_title->value;
+      $display_title = $paragraph->field_uip_display_title->value;
+      $pager = $paragraph->field_uip_pager->value;
+
+      // Build out the new view block configuration.
+      $config = [
+        'id' => 'views_block:people_list_block-list_card',
+        'label' => $label,
+        'provider' => 'views',
+        'label_display' => $display_label,
+        'views_label' => '',
+        // @todo Update this with the items per page.
+        // If we were displaying the title before, then add it as a headline.
+        'headline' => ($display_title) ? $title : '',
+        // @todo Make sure this maps correctly.
+        'pager' => $pager,
+        // 'pager' => $block->field_collection_pager->value ? 'full' : 'some',
+        'pager_offset' => 0,
+        // @todo Make sure $more and $more_path map correctly.
+        'use_more' => $more,
+        'use_more_link_url' => $more_path,
+        'sort' => [
+          'sticky' => [
+            'order' => 'DESC',
+            'weight' => 0,
+          ],
+          'field_person_last_name_value' => [
+            'order' => 'ASC',
+            'weight' => 0,
+          ],
+          'field_person_first_name_value' => [
+            'order' => 'ASC',
+            'weight' => 0,
+          ],
+        ],
+        'exposed_filter_values' => [
+          'field_tags_target_id' => [],
+        ],
+        'layout_builder_styles' => $styles,
+        'context_mapping' => [],
+      ];
+
+      return [
+        'configuration' => $config,
+        // @todo Figure out what to return for the uuid.
+        'uuid' => '',
+        'styles' => $styles,
+      ];
 
     case 'blockquote':
       $type = 'uiowa_text_area';
@@ -683,7 +748,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 
     // Now that we have a saved block and it has an id,
     // set the parent_id for each of our children.
-    foreach($children as $child) {
+    foreach ($children as $child) {
       $child->set('parent_id', $block->id())
         ->save();
     }
