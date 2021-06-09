@@ -343,6 +343,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
   }
 
   $display_label = 0;
+  $children = [];
 
   // Initialize a usage controller for later.
   $database = \Drupal::database();
@@ -361,7 +362,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       $display_label = 0;
       $view_mode = 'accordion';
       $accordion_items = $paragraph->get('field_accordion_item');
-      $children = [];
       foreach ($accordion_items as $accordion_item) {
         $accordion_paragraph = $paragraph->load($accordion_item->target_id);
         $body = $accordion_paragraph->get('field_accordion_item_body')->getValue()[0];
@@ -370,7 +370,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
           'langcode' => 'en',
           'type' => 'uiowa_collection_item',
           'status' => 1,
-          // @todo parent_id (block) should be added here.
           'parent_type' => 'block_content',
           'parent_field_name' => 'field_uiowa_collection_items',
           'field_collection_body' => $body,
@@ -681,6 +680,14 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 
     // @todo make sure styles is set before this for all block types.
     $styles = isset($styles) ? $styles : [];
+
+    // Now that we have a saved block and it has an id,
+    // set the parent_id for each of our children.
+    foreach($children as $child) {
+      $child->set('parent_id', $block->id())
+        ->save();
+    }
+
     return [
       'configuration' => $config,
       'uuid' => $uuid,
