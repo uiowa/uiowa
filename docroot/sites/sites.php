@@ -2711,3 +2711,27 @@ $sites['classtrategicplan.local.drupal.uiowa.edu'] = 'strategicplan.clas.uiowa.e
 $sites['classtrategicplan.dev.drupal.uiowa.edu'] = 'strategicplan.clas.uiowa.edu';
 $sites['classtrategicplan.stage.drupal.uiowa.edu'] = 'strategicplan.clas.uiowa.edu';
 $sites['classtrategicplan.prod.drupal.uiowa.edu'] = 'strategicplan.clas.uiowa.edu';
+
+// Directory aliases for cjones.iihr.uiowa.edu.
+$sites['iihrcjones.local.drupal.uiowa.edu'] = 'cjones.iihr.uiowa.edu';
+$sites['iihrcjones.dev.drupal.uiowa.edu'] = 'cjones.iihr.uiowa.edu';
+$sites['iihrcjones.stage.drupal.uiowa.edu'] = 'cjones.iihr.uiowa.edu';
+$sites['iihrcjones.prod.drupal.uiowa.edu'] = 'cjones.iihr.uiowa.edu';
+
+// Directory aliases for glefevre.iihr.uiowa.edu.
+$sites['iihrglefevre.local.drupal.uiowa.edu'] = 'glefevre.iihr.uiowa.edu';
+$sites['iihrglefevre.dev.drupal.uiowa.edu'] = 'glefevre.iihr.uiowa.edu';
+$sites['iihrglefevre.stage.drupal.uiowa.edu'] = 'glefevre.iihr.uiowa.edu';
+$sites['iihrglefevre.prod.drupal.uiowa.edu'] = 'glefevre.iihr.uiowa.edu';
+
+// Directory aliases for efre.iihr.uiowa.edu.
+$sites['iihrefre.local.drupal.uiowa.edu'] = 'efre.iihr.uiowa.edu';
+$sites['iihrefre.dev.drupal.uiowa.edu'] = 'efre.iihr.uiowa.edu';
+$sites['iihrefre.stage.drupal.uiowa.edu'] = 'efre.iihr.uiowa.edu';
+$sites['iihrefre.prod.drupal.uiowa.edu'] = 'efre.iihr.uiowa.edu';
+
+// Directory aliases for gconstantinescu.iihr.uiowa.edu.
+$sites['iihrgconstantinescu.local.drupal.uiowa.edu'] = 'gconstantinescu.iihr.uiowa.edu';
+$sites['iihrgconstantinescu.dev.drupal.uiowa.edu'] = 'gconstantinescu.iihr.uiowa.edu';
+$sites['iihrgconstantinescu.stage.drupal.uiowa.edu'] = 'gconstantinescu.iihr.uiowa.edu';
+$sites['iihrgconstantinescu.prod.drupal.uiowa.edu'] = 'gconstantinescu.iihr.uiowa.edu';
