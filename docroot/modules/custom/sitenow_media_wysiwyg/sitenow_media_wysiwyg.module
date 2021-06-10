@@ -87,8 +87,9 @@ function sitenow_media_wysiwyg_file_presave(FileInterface $file) {
   if ($file->isNew() && $file->getMimeType() == 'image/jpeg') {
     $fmdm = \Drupal::service('file_metadata_manager');
     $metadata = $fmdm->uri($file->getFileUri());
-    $orientation = $metadata->getMetaData('exif', 'Orientation');
-    if ($orientation) {
+
+    if ($metadata) {
+      $orientation = $metadata->getMetaData('exif', 'Orientation');
 
       // EXIF: 1 is standard.
       // 6 and 8 are rotated 90, cw and ccw respectively
