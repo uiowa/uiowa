@@ -2717,3 +2717,9 @@ $sites['iihrglefevre.local.drupal.uiowa.edu'] = 'glefevre.iihr.uiowa.edu';
 $sites['iihrglefevre.dev.drupal.uiowa.edu'] = 'glefevre.iihr.uiowa.edu';
 $sites['iihrglefevre.stage.drupal.uiowa.edu'] = 'glefevre.iihr.uiowa.edu';
 $sites['iihrglefevre.prod.drupal.uiowa.edu'] = 'glefevre.iihr.uiowa.edu';
+
+// Directory aliases for efre.iihr.uiowa.edu.
+$sites['iihrefre.local.drupal.uiowa.edu'] = 'efre.iihr.uiowa.edu';
+$sites['iihrefre.dev.drupal.uiowa.edu'] = 'efre.iihr.uiowa.edu';
+$sites['iihrefre.stage.drupal.uiowa.edu'] = 'efre.iihr.uiowa.edu';
+$sites['iihrefre.prod.drupal.uiowa.edu'] = 'efre.iihr.uiowa.edu';
