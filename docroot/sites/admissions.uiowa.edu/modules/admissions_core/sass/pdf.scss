@@ -68,6 +68,12 @@ em {
       display: inline;
       color: #999;
     }
+    // Internal links, beginning with "/"
+    &[href^="/"] {
+      &:after {
+        content: " (https://admissions.uiowa.edu" attr(href) ")";
+      }
+    }
   }
 }
 
