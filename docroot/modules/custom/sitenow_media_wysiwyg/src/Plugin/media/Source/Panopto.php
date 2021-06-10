@@ -100,7 +100,6 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
    * {@inheritdoc}
    */
   public function getMetadata(MediaInterface $media, $attribute_name) {
-    $uuid = $media->uuid();
     $source = $media->get($this->configuration['source_field']);
 
     // The source is a required, single value field so we can make assumptions.
@@ -111,7 +110,7 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
     switch ($attribute_name) {
       // @todo: Leverage the API or another mechanism to get a better name.
       case 'default_name':
-        return 'media:' . $media->bundle() . ':' . $uuid;
+        return 'media:' . $media->bundle() . ':' . $media->uuid();
 
       // @todo: Leverage the API or another mechanism to get the thumbnail.
       case 'thumbnail_uri':
