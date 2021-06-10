@@ -2711,3 +2711,9 @@ $sites['iihrcjones.local.drupal.uiowa.edu'] = 'cjones.iihr.uiowa.edu';
 $sites['iihrcjones.dev.drupal.uiowa.edu'] = 'cjones.iihr.uiowa.edu';
 $sites['iihrcjones.stage.drupal.uiowa.edu'] = 'cjones.iihr.uiowa.edu';
 $sites['iihrcjones.prod.drupal.uiowa.edu'] = 'cjones.iihr.uiowa.edu';
+
+// Directory aliases for glefevre.iihr.uiowa.edu.
+$sites['iihrglefevre.local.drupal.uiowa.edu'] = 'glefevre.iihr.uiowa.edu';
+$sites['iihrglefevre.dev.drupal.uiowa.edu'] = 'glefevre.iihr.uiowa.edu';
+$sites['iihrglefevre.stage.drupal.uiowa.edu'] = 'glefevre.iihr.uiowa.edu';
+$sites['iihrglefevre.prod.drupal.uiowa.edu'] = 'glefevre.iihr.uiowa.edu';
