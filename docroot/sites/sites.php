@@ -2723,3 +2723,9 @@ $sites['iihrefre.local.drupal.uiowa.edu'] = 'efre.iihr.uiowa.edu';
 $sites['iihrefre.dev.drupal.uiowa.edu'] = 'efre.iihr.uiowa.edu';
 $sites['iihrefre.stage.drupal.uiowa.edu'] = 'efre.iihr.uiowa.edu';
 $sites['iihrefre.prod.drupal.uiowa.edu'] = 'efre.iihr.uiowa.edu';
+
+// Directory aliases for gconstantinescu.iihr.uiowa.edu.
+$sites['iihrgconstantinescu.local.drupal.uiowa.edu'] = 'gconstantinescu.iihr.uiowa.edu';
+$sites['iihrgconstantinescu.dev.drupal.uiowa.edu'] = 'gconstantinescu.iihr.uiowa.edu';
+$sites['iihrgconstantinescu.stage.drupal.uiowa.edu'] = 'gconstantinescu.iihr.uiowa.edu';
+$sites['iihrgconstantinescu.prod.drupal.uiowa.edu'] = 'gconstantinescu.iihr.uiowa.edu';
