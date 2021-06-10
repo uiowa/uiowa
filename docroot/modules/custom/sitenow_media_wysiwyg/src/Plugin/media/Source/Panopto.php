@@ -2,13 +2,18 @@
 
 namespace Drupal\sitenow_media_wysiwyg\Plugin\media\Source;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Render\RendererInterface;
+use Drupal\media\MediaInterface;
 use Drupal\media\MediaSourceBase;
 use Drupal\media\MediaTypeInterface;
 use Drupal\media\MediaSourceFieldConstraintsInterface;
+use GuzzleHttp\Client;
+use GuzzleHttp\RedirectMiddleware;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Field\FieldTypePluginManagerInterface;
 
@@ -88,6 +93,45 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
    */
   public function createSourceField(MediaTypeInterface $type) {
     return parent::createSourceField($type)->set('label', 'Panopto Url');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getMetadata(MediaInterface $media, $attribute_name) {
+    $uuid = $media->uuid();
+    $source = $media->get($this->configuration['source_field']);
+
+    // The source is a required, single value field so we can make assumptions.
+    // @see: PanoptoURLConstraintValidator.
+    $parsed = UrlHelper::parse($source->getValue()[0]['uri']);
+    $id = $parsed['query']['id'];
+
+    switch ($attribute_name) {
+      // @todo: Leverage the API or another mechanism to get a better name.
+      case 'default_name':
+        return 'media:' . $media->bundle() . ':' . $uuid;
+
+      // @todo: Leverage the API or another mechanism to get the thumbnail.
+      case 'thumbnail_uri':
+        $client = new Client([
+          'allow_redirects' => [
+            'track_redirects' => TRUE,
+          ],
+          'base_uri' => 'https://uicapture.hosted.panopto.com',
+        ]);
+
+        $response = $client->get("/Panopto/Services/FrameGrabber.svc/FrameRedirect?objectId={$id}&mode=Delivery&random=0.304899272650899&usePng=False");
+        $redirects = $response->getHeader(RedirectMiddleware::HISTORY_HEADER);
+        $source = end($redirects);
+
+        // @todo: Put this in a subfolder that is created by this module.
+        /** @var \Drupal\File\FileInterface $file */
+        $file = system_retrieve_file($source, NULL, TRUE, FileSystemInterface::EXISTS_REPLACE);
+        return $file->getFileUri();
+    }
+
+    return NULL;
   }
 
 }
