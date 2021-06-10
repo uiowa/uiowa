@@ -109,7 +109,7 @@ class HeadlineHelper {
       '#options' => [
         'default' => t('Default'),
         'headline_bold_serif' => t('Bold serif'),
-        'headline_bold_serif_underline' => t('Bold serif, highlighted'),
+        'headline_bold_serif_underline' => t('Bold serif, underlined'),
       ],
       '#default_value' => $defaults['headline_style'],
       '#states' => [
