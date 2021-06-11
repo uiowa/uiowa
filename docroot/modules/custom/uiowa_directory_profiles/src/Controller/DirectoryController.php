@@ -173,7 +173,7 @@ class DirectoryController extends ControllerBase {
       ],
     ];
 
-    $build['profilesClientJS'] = [
+    $build['profilesClientCSS'] = [
       '#type' => 'html_tag',
       '#tag' => 'link',
       '#attributes' => [
