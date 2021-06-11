@@ -6,27 +6,30 @@ use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\uiowa_apr\Apr;
+use Drupal\Core\Logger\LoggerChannelTrait;
+use Drupal\uiowa_directory_profiles\DirectoryProfiles;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * Returns responses for uiowa_directory_profiles routes.
+ * Returns responses for APR routes.
  */
-class UiowaDirectoryProfilesController extends ControllerBase {
+class DirectoryController extends ControllerBase {
+  use LoggerChannelTrait;
 
   /**
    * The APR service.
    *
-   * @var \Drupal\uiowa_apr\Apr
+   * @var \Drupal\uiowa_directory_profiles\DirectoryProfiles
    */
-  protected $apr;
+  protected $directory_profiles;
 
   /**
-   * The uiowa_apr config.
+   * The uiowa_directory_profiles config.
    *
    * @var \Drupal\Core\Config\ImmutableConfig
    */
@@ -40,7 +43,7 @@ class UiowaDirectoryProfilesController extends ControllerBase {
   protected $client;
 
   /**
-   * The uiowa_apr logger channel.
+   * The uiowa_directory_profiles logger channel.
    *
    * @var \Psr\Log\LoggerInterface
    */
@@ -49,18 +52,18 @@ class UiowaDirectoryProfilesController extends ControllerBase {
   /**
    * DirectoryController constructor.
    *
-   * @param \Drupal\uiowa_apr\Apr $apr
+   * @param \Drupal\uiowa_directory_profiles\DirectoryProfiles $directory_profiles
    *   The APR service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config
    *   The config factory service.
    * @param \GuzzleHttp\ClientInterface $client
    *   The Guzzle HTTP client.
    */
-  public function __construct(Apr $apr, ConfigFactoryInterface $config, ClientInterface $client) {
-    $this->apr = $apr;
-    $this->config = $config->get('uiowa_apr.settings');
+  public function __construct(DirectoryProfiles $directory_profiles, ConfigFactoryInterface $config, ClientInterface $client) {
+    $this->directory_profiles = $directory_profiles;
+    $this->config = $config->get('uiowa_directory_profiles.settings');
     $this->client = $client;
-    $this->logger = $this->getLogger('uiowa_apr');
+    $this->logger = $this->getLogger('uiowa_directory_profiles');
   }
 
   /**
@@ -68,7 +71,7 @@ class UiowaDirectoryProfilesController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('uiowa_apr.apr'),
+      $container->get('uiowa_directory_profiles.directory_profiles'),
       $container->get('config.factory'),
       $container->get('http_client')
     );
@@ -89,11 +92,11 @@ class UiowaDirectoryProfilesController extends ControllerBase {
     $build = [
       '#attached' => [
         'library' => [
-          "uiowa_apr/apr.directory.{$this->apr->environment}",
-          'uiowa_apr/styles',
+          "uiowa_directory_profiles/directory_profiles.directory.{$this->directory_profiles->environment}",
+          'uiowa_directory_profiles/styles',
         ],
         'drupalSettings' => [
-          'uiowaApr' => [
+          'uiowaDirectoryProfiles' => [
             'pageSize' => Html::escape($this->config->get('directory.page_size')),
           ],
         ],
@@ -180,7 +183,7 @@ class UiowaDirectoryProfilesController extends ControllerBase {
       $params = UrlHelper::buildQuery(['key' => $this->config->get('api_key')]);
 
       try {
-        $response = $this->client->request('GET', "{$this->apr->endpoint}/people/{$slug}/meta?{$params}", [
+        $response = $this->client->request('GET', "{$this->directory_profiles->endpoint}/people/{$slug}/meta?{$params}", [
           'headers' => [
             'Accept' => 'text/plain',
             'Referer' => $request->getSchemeAndHttpHost(),

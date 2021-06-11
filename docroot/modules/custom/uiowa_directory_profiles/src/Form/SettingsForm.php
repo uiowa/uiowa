@@ -12,7 +12,7 @@ use Drupal\pathauto\AliasCleanerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Configure uiowa_directory_profiles settings for this site.
+ * Configure APR settings for this site.
  */
 class SettingsForm extends ConfigFormBase {
   /**
@@ -89,19 +89,19 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('API Key'),
       '#default_value' => $this->config('uiowa_directory_profiles.settings')->get('api_key'),
-      '#description' => $this->t('The API key provided by the ITS-AIS Directory Profiles team.'),
+      '#description' => $this->t('The API key provided by the ITS-AIS APR team.'),
       '#required' => TRUE,
     ];
-// @todo Implement the sitemap controller.
-//    $form['directory_path'] = [
-//      '#type' => 'textfield',
-//      '#title' => $this->t('Directory Path'),
-//      '#default_value' => $this->config('uiowa_directory_profiles.settings')->get('directory.path') ?? '/directory_profiles/people',
-//      '#description' => $this->t('Path for the primary profiles directory. Serves as the base for all profiles and an additional <a href=":url">sitemap</a> to submit to search engines.', [
-//        ':url' => Url::fromRoute('uiowa_directory_profiles.sitemap')->toString(),
-//      ]),
-//      '#required' => TRUE,
-//    ];
+
+    $form['directory_path'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Directory Path'),
+      '#default_value' => $this->config('uiowa_directory_profiles.settings')->get('directory.path') ?? '/directory_profiles/people',
+      '#description' => $this->t('Path for the primary APR directory. Serves as the base for all profiles and an additional <a href=":url">sitemap</a> to submit to search engines.', [
+        ':url' => Url::fromRoute('uiowa_directory_profiles.sitemap')->toString(),
+      ]),
+      '#required' => TRUE,
+    ];
 
     $form['directory_canonical'] = [
       '#type' => 'textfield',
@@ -116,7 +116,7 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Directory Title'),
       '#default_value' => $this->config('uiowa_directory_profiles.settings')->get('directory.title') ?? 'People',
-      '#description' => $this->t("Title for the site's primary profiles directory. Will be set as Drupal's page title."),
+      '#description' => $this->t("Title for the site's primary APR directory. Will be set as Drupal's page title."),
       '#required' => TRUE,
     ];
 
@@ -142,12 +142,12 @@ class SettingsForm extends ConfigFormBase {
         'filtered_html',
       ],
       '#default_value' => $intro['value'] ?? '',
-      '#description' => $this->t('HTML to be included at top of directory. Will be enclosed in a <em>div</em> element with the class directory-profiles-introduction.'),
+      '#description' => $this->t('HTML to be included at top of directory. Will be enclosed in a <em>div</em> element with the class apr-directory-introduction.'),
       '#required' => FALSE,
     ];
 
     // The grid display was never fully implemented. The images returned from
-    // the Directory Profiles API are not the same size which makes it difficult to style.
+    // the APR API are not the same size which makes it difficult to style.
     $form['directory_show_switcher'] = [
       '#access' => FALSE,
       '#type' => 'checkbox',
@@ -157,42 +157,6 @@ class SettingsForm extends ConfigFormBase {
       '#description' => $this->t('Flag to show or hide the control that allows the user to switch between list views.'),
     ];
 
-    $form['publications_path'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Publications Path'),
-      '#default_value' => $this->config('uiowa_directory_profiles.settings')->get('publications.path') ?? '/directory_profiles/publications',
-      '#description' => $this->t("Path for the site's Directory Profiles publications directory."),
-      '#required' => TRUE,
-    ];
-
-    $form['publications_title'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Publications Title'),
-      '#default_value' => $this->config('uiowa_directory_profiles.settings')->get('publications.title') ?? 'Research',
-      '#description' => $this->t("Page title for the site's primary publications directory."),
-      '#required' => TRUE,
-    ];
-
-    $form['publications_page_size'] = [
-      '#type' => 'number',
-      '#title' => $this->t('Publications Page Size'),
-      '#default_value' => $this->config('uiowa_directory_profiles.settings')->get('publications.page_size') ?? 10,
-      '#min' => 5,
-      '#max' => 50,
-      '#description' => $this->t('Number of entries per page of the publications directory. Min: 5, Max: 50.'),
-      '#required' => TRUE,
-    ];
-
-    $form['publications_departments'] = [
-      '#type' => 'textarea',
-      '#rows' => '5',
-      '#cols' => '100',
-      '#title' => $this->t('Publications Departments'),
-      '#default_value' => $this->config('uiowa_directory_profiles.settings')->get('publications.departments') ?? '',
-      '#description' => $this->t('Customize the list of departments exposed by the publications tool. Enter one department per line. The department must match a name in Directory Profiles.'),
-      '#attributes' => ['placeholder' => "Economics\rAccounting\rFinance"],
-      '#required' => FALSE,
-    ];
 
     return parent::buildForm($form, $form_state);
   }
@@ -203,7 +167,6 @@ class SettingsForm extends ConfigFormBase {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $fields = [
       'directory_path',
-      'publications_path',
     ];
 
     foreach ($fields as $field) {
@@ -236,10 +199,6 @@ class SettingsForm extends ConfigFormBase {
       ->set('directory.page_size', $form_state->getValue('directory_page_size'))
       ->set('directory.intro', $form_state->getValue('directory_intro'))
       ->set('directory.show_switcher', $form_state->getValue('directory_show_switcher'))
-      ->set('publications.path', $form_state->getValue('publications_path'))
-      ->set('publications.title', $form_state->getValue('publications_title'))
-      ->set('publications.page_size', $form_state->getValue('publications_page_size'))
-      ->set('publications.departments', $form_state->getValue('publications_departments'))
       ->save();
 
     parent::submitForm($form, $form_state);

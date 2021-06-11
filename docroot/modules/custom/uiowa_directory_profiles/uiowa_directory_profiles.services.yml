@@ -1,0 +1,7 @@
+services:
+  logger.channel.uiowa_directory_profiles:
+    parent: logger.channel_base
+    arguments: ['uiowa_directory_profiles']
+  uiowa_directory_profiles.directory_profiles:
+    class: Drupal\uiowa_directory_profiles\DirectoryProfiles
+    arguments: ['@config.factory', '@logger.channel.uiowa_directory_profiles']

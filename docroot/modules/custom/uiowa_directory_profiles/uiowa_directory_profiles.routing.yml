@@ -1,15 +1,10 @@
-uiowa_directory_profiles.example:
-  path: '/uiowa-directory-profiles/example'
-  defaults:
-    _title: 'Example'
-    _controller: '\Drupal\uiowa_directory_profiles\Controller\UiowaDirectoryProfilesController::build'
-  requirements:
-    _permission: 'access content'
-
 uiowa_directory_profiles.settings_form:
-  path: '/admin/config/system/uiowa-directory-profiles'
+  path: '/admin/config/content/uiowa-directory-profiles'
   defaults:
-    _title: 'Uiowa Directory Profiles settings'
+    _title: 'Directory Profiles settings'
     _form: 'Drupal\uiowa_directory_profiles\Form\SettingsForm'
   requirements:
     _permission: 'administer uiowa_directory_profiles configuration'
+
+route_callbacks:
+  - '\Drupal\uiowa_directory_profiles\Routing\DirectoryProfilesDynamic::routes'
