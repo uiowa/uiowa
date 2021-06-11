@@ -39,9 +39,9 @@ class HeadlineHelper {
    */
   public static function getStyles() {
     return [
-      'default' => 'headline',
-      'headline_bold_serif' => 'headline bold-headline bold-headline--serif',
-      'headline_bold_serif_underline' => 'headline bold-headline bold-headline--serif bold-headline--underline',
+      'default' => 'headline block__headline',
+      'headline_bold_serif' => 'headline bold-headline bold-headline--serif block__headline',
+      'headline_bold_serif_underline' => 'headline bold-headline bold-headline--serif bold-headline--underline block__headline',
     ];
   }
 
