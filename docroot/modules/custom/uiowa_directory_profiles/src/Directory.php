@@ -111,10 +111,10 @@ class Directory {
     $endpoint = '';
 
     if ($this->environment == 'test') {
-      $endpoint = 'https://test.its.uiowa.edu/apr';
+      $endpoint = 'https://profiles-test.uiowa.edu';
     }
     elseif ($this->environment == 'prod') {
-      $endpoint = 'https://apps.its.uiowa.edu/apr';
+      $endpoint = 'https://profiles.uiowa.edu';
     }
 
     if (!isset($endpoint)) {

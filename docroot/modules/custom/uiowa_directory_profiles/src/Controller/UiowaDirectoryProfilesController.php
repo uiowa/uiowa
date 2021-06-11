@@ -181,7 +181,7 @@ class UiowaDirectoryProfilesController extends ControllerBase {
       $params = UrlHelper::buildQuery(['key' => $this->config->get('api_key')]);
 
       try {
-        $response = $this->client->request('GET', "{$this->apr->endpoint}/people/{$slug}/meta?{$params}", [
+        $response = $this->client->request('GET', "{$this->directory->endpoint}/people/{$slug}/meta?{$params}", [
           'headers' => [
             'Accept' => 'text/plain',
             'Referer' => $request->getSchemeAndHttpHost(),
