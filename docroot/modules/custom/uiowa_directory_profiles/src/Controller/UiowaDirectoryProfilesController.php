@@ -7,6 +7,7 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\uiowa_apr\Apr;
+use Drupal\uiowa_directory_profiles\Directory;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -21,9 +22,9 @@ class UiowaDirectoryProfilesController extends ControllerBase {
   /**
    * The APR service.
    *
-   * @var \Drupal\uiowa_apr\Apr
+   * @var \Drupal\uiowa_directory_profiles\Directory
    */
-  protected $apr;
+  protected $directory;
 
   /**
    * The uiowa_apr config.
@@ -49,18 +50,18 @@ class UiowaDirectoryProfilesController extends ControllerBase {
   /**
    * DirectoryController constructor.
    *
-   * @param \Drupal\uiowa_apr\Apr $apr
-   *   The APR service.
+   * @param \Drupal\uiowa_apr\Apr $directory
+   *   The Directory Profiles service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config
    *   The config factory service.
    * @param \GuzzleHttp\ClientInterface $client
    *   The Guzzle HTTP client.
    */
-  public function __construct(Apr $apr, ConfigFactoryInterface $config, ClientInterface $client) {
-    $this->apr = $apr;
-    $this->config = $config->get('uiowa_apr.settings');
+  public function __construct(Directory $directory, ConfigFactoryInterface $config, ClientInterface $client) {
+    $this->directory = $directory;
+    $this->config = $config->get('uiowa_directory_profiles.settings');
     $this->client = $client;
-    $this->logger = $this->getLogger('uiowa_apr');
+    $this->logger = $this->getLogger('uiowa_directory_profiles');
   }
 
   /**
@@ -68,7 +69,7 @@ class UiowaDirectoryProfilesController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('uiowa_apr.apr'),
+      $container->get('uiowa_directory_profiles.directory'),
       $container->get('config.factory'),
       $container->get('http_client')
     );
@@ -89,11 +90,11 @@ class UiowaDirectoryProfilesController extends ControllerBase {
     $build = [
       '#attached' => [
         'library' => [
-          "uiowa_apr/apr.directory.{$this->apr->environment}",
-          'uiowa_apr/styles',
+          "uiowa_directory_profiles/uiowa_directory_profiles.directory.{$this->directory->environment}",
+          'uiowa_directory_profiles/styles',
         ],
         'drupalSettings' => [
-          'uiowaApr' => [
+          'uiowaDirectoryProfiles' => [
             'pageSize' => Html::escape($this->config->get('directory.page_size')),
           ],
         ],
@@ -118,7 +119,7 @@ class UiowaDirectoryProfilesController extends ControllerBase {
           ],
         ],
         'markup' => [
-          '#markup' => $this->t('APR people listing in a scrolling container.'),
+          '#markup' => $this->t('Directory Profiles people listing in a scrolling container.'),
         ],
       ],
     ];
