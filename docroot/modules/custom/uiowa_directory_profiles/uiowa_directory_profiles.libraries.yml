@@ -1,37 +1,20 @@
-# Custom module library for general purposes.
-uiowa_directory_profiles:
-  js:
-    js/uiowa-directory-profiles.js: {}
+styles:
+  remote: https://profiles.uiowa.edu
+  version: VERSION
+  license: MIT
   css:
-    component:
-      css/uiowa-directory-profiles.css: {}
-  dependencies:
-    - core/drupalSettings
-    - uiowa_directory_profiles/jquery-labelauty
+    https://profiles.uiowa.edu/lib/profiles-client.css: { type: external, minified: true }
 
-# Third-party library (self hosted).
-jquery-labelauty:
-  remote: https://github.com/fntneves/jquery-labelauty
-  version: 1.1.0
-  license:
-    name: MIT
-    url: https://github.com/fntneves/jquery-labelauty/blob/v1.1.0/LICENSE
-    gpl-compatible: true
+apr.directory.test:
+  remote: https://profiles-test.uiowa.edu
+  version: VERSION
+  license: MIT
   js:
-    /libraries/jquery-labelauty/source/jquery-labelauty.js: {}
-  css:
-    component:
-      /libraries/jquery-labelauty/source/jquery-labelauty.css: {}
-  dependencies:
-    - core/jquery
+    https://profiles-test.uiowa.edu/lib/profiles-client.umd.min.js: { type: external, minified: true }
 
-# Third-party library (CDN).
-vuejs:
-  remote: https://vuejs.org
-  version: 2.0.5
-  license:
-    name: MIT
-    url: https://github.com/vuejs/vue/blob/dev/LICENSE
-    gpl-compatible: true
+apr.directory.prod:
+  remote: https://profiles.uiowa.edu
+  version: VERSION
+  license: MIT
   js:
-    https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js: {type: external, minified: true}
+    https://profiles.uiowa.edu/lib/profiles-client.umd.min.js: { type: external, minified: true }
