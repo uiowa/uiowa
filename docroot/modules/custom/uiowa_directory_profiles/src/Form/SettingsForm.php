@@ -96,7 +96,7 @@ class SettingsForm extends ConfigFormBase {
     $form['directory_path'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Directory Path'),
-      '#default_value' => $this->config('uiowa_directory_profiles.settings')->get('directory.path') ?? '/directory_profiles/people',
+      '#default_value' => $this->config('uiowa_directory_profiles.settings')->get('directory.path') ?? '/directory-profiles/people',
       '#description' => $this->t('Path for the primary APR directory. Serves as the base for all profiles and an additional <a href=":url">sitemap</a> to submit to search engines.', [
         ':url' => Url::fromRoute('uiowa_directory_profiles.sitemap')->toString(),
       ]),
