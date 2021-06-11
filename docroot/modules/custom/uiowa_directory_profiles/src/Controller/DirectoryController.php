@@ -103,10 +103,10 @@ class DirectoryController extends ControllerBase {
       ],
       '#type' => 'container',
       '#attributes' => [
-        'id' => 'apr-directory-service',
+        'id' => 'uiprof',
         'role' => 'region',
         'aria-live' => 'polite',
-        'aria-labelled-by' => 'apr-table-label',
+        'aria-labelled-by' => 'directory-profiles-table-label',
         'tabindex' => 0,
         'class' => [
           'uids-content',
@@ -115,13 +115,13 @@ class DirectoryController extends ControllerBase {
       'label' => [
         '#type' => 'container',
         '#attributes' => [
-          'id' => 'apr-table-label',
+          'id' => 'directory-profiles-table-label',
           'class' => [
             'visually-hidden',
           ],
         ],
         'markup' => [
-          '#markup' => $this->t('APR people listing in a scrolling container.'),
+          '#markup' => $this->t('Directory Profiles people listing in a scrolling container.'),
         ],
       ],
     ];
@@ -130,30 +130,58 @@ class DirectoryController extends ControllerBase {
     // in the APR element attribute values.
     $show_switcher = var_export($this->config->get('directory.show_switcher'), TRUE);
 
+//    <profiles-client
+//        api-key="cc484e0a-f93f-4fb5-be6e-f92478b3ce03"
+//        site-name="Pediatrics"
+//        :host="host"
+//        :environment="environment"
+//      >
+//    </profiles-client>
+
     $build['directory'] = [
       '#type' => 'html_tag',
-      '#tag' => 'apr-directory',
+      '#tag' => 'profiles-client',
       '#attributes' => [
         'api-key' => Html::escape($this->config->get('api_key')),
-        'title' => Html::escape($this->config->get('directory.title')),
-        'title-selector' => 'h1.page-title',
-        ':page-size' => Html::escape($this->config->get('directory.page_size')),
-        ':show-title' => 'false',
-        ':show-switcher' => "{$show_switcher}",
-      ],
-      'intro' => [
-        '#type' => 'html_tag',
-        '#tag' => 'template',
-        '#attributes' => [
-          'v-slot:introduction' => TRUE,
-        ],
-        'text' => [
-          '#type' => 'processed_text',
-          '#text' => $this->config->get('directory.intro')['value'],
-          '#format' => $this->config->get('directory.intro')['format'],
-        ],
+        'site-name' => \Drupal::config('system.site')->get('name'),
+        ':host' => "host",
+        ':environment' => "environment"
       ],
     ];
+
+    $build['vue'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'script',
+      '#attributes' => [
+        'src' => "https://cdn.jsdelivr.net/npm/vue/dist/vue.js",
+      ],
+    ];
+
+    $build['uiProfiles'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'script',
+      'markup' => [
+        '#markup' => "uiProfiles = { basePath: '/' }",
+      ],
+    ];
+
+    $build['profilesClientJS'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'script',
+      '#attributes' => [
+        'src' => "https://profiles-test.uiowa.edu/api/lib/profiles-client.umd.min.js",
+      ],
+    ];
+
+    $build['profilesClientJS'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'link',
+      '#attributes' => [
+        'href' => 'https://profiles-test.uiowa.edu/api/lib/profiles-client.css',
+        'rel' => 'stylesheet'
+      ],
+    ];
+
 
     if ($slug) {
       $build['directory']['#attributes']['slug'] = Html::escape($slug);
