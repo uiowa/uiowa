@@ -144,8 +144,8 @@ function uiowa_aggregator_preprocess_block(&$variables) {
         '#suffix' => '</div>',
       ];
       // Unset classes meant for children that are being applied to entire block.
-      if (isset($variables["attributes"]["class"])) {
-        foreach ($variables["attributes"]["class"] as $key => $style) {
+      if (isset($variables['attributes']['class'])) {
+        foreach ($variables['attributes']['class'] as $key => $style) {
           foreach ([
             'bg',
             'card',
