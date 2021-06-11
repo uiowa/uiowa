@@ -22,7 +22,10 @@ body:not(.page-node-type-article, .page-node-type-page) #block-uids-base-page-ti
 
 .headline.block__headline {
   margin-bottom: 1.25rem;
-  line-height: 1.3;
+  &:not(.bold-headline--underline) {
+    margin-top: .4rem;
+    padding-bottom: .4rem;
+  }
 }
 
 .bg-pattern--brain-black [class*="bg--white"] .bold-headline--underline,
