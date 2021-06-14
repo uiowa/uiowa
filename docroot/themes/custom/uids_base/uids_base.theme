@@ -267,7 +267,10 @@ function uids_base_preprocess_node(&$variables) {
         case 'page':
         case 'article':
           $variables['attributes']['class'][] = 'card--media-right';
-          $variables['media_classes'] = ['media--widescreen', 'card__media--small'];
+          $variables['media_classes'] = [
+            'media--widescreen',
+            'card__media--small',
+          ];
           break;
       }
     }
