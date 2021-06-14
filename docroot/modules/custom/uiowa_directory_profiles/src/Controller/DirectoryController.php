@@ -92,7 +92,7 @@ class DirectoryController extends ControllerBase {
     $build = [
       '#attached' => [
         'library' => [
-          "uiowa_directory_profiles/directory_profiles.directory.{$this->directory_profiles->environment}",
+          "uiowa_directory_profiles/uiowa_directory_profiles.directory.{$this->directory_profiles->environment}",
           'uiowa_directory_profiles/styles',
         ],
         'drupalSettings' => [
@@ -149,38 +149,38 @@ class DirectoryController extends ControllerBase {
       ],
     ];
 
-    $build['vue'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'script',
-      '#attributes' => [
-        'src' => "https://cdn.jsdelivr.net/npm/vue/dist/vue.js",
-      ],
-    ];
+//    $build['vue'] = [
+//      '#type' => 'html_tag',
+//      '#tag' => 'script',
+//      '#attributes' => [
+//        'src' => "https://cdn.jsdelivr.net/npm/vue/dist/vue.js",
+//      ],
+//    ];
 
-    $build['uiProfiles'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'script',
-      'markup' => [
-        '#markup' => "uiProfiles = { basePath: '/' }",
-      ],
-    ];
+//    $build['uiProfiles'] = [
+//      '#type' => 'html_tag',
+//      '#tag' => 'script',
+//      'markup' => [
+//        '#markup' => "uiProfiles = { basePath: '/' }",
+//      ],
+//    ];
 
-    $build['profilesClientJS'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'script',
-      '#attributes' => [
-        'src' => "https://profiles-test.uiowa.edu/api/lib/profiles-client.umd.min.js",
-      ],
-    ];
+//    $build['profilesClientJS'] = [
+//      '#type' => 'html_tag',
+//      '#tag' => 'script',
+//      '#attributes' => [
+//        'src' => "https://profiles-test.uiowa.edu/api/lib/profiles-client.umd.min.js",
+//      ],
+//    ];
 
-    $build['profilesClientCSS'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'link',
-      '#attributes' => [
-        'href' => 'https://profiles-test.uiowa.edu/api/lib/profiles-client.css',
-        'rel' => 'stylesheet'
-      ],
-    ];
+//    $build['profilesClientCSS'] = [
+//      '#type' => 'html_tag',
+//      '#tag' => 'link',
+//      '#attributes' => [
+//        'href' => 'https://profiles-test.uiowa.edu/api/lib/profiles-client.css',
+//        'rel' => 'stylesheet'
+//      ],
+//    ];
 
 
     if ($slug) {
