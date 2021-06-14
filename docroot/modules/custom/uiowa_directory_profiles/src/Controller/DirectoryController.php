@@ -130,14 +130,6 @@ class DirectoryController extends ControllerBase {
     // in the APR element attribute values.
     $show_switcher = var_export($this->config->get('directory.show_switcher'), TRUE);
 
-//    <profiles-client
-//        api-key="cc484e0a-f93f-4fb5-be6e-f92478b3ce03"
-//        site-name="Pediatrics"
-//        :host="host"
-//        :environment="environment"
-//      >
-//    </profiles-client>
-
     $build['directory'] = [
       '#type' => 'html_tag',
       '#tag' => 'profiles-client',
@@ -148,39 +140,6 @@ class DirectoryController extends ControllerBase {
         ':environment' => "environment"
       ],
     ];
-
-//    $build['vue'] = [
-//      '#type' => 'html_tag',
-//      '#tag' => 'script',
-//      '#attributes' => [
-//        'src' => "https://cdn.jsdelivr.net/npm/vue/dist/vue.js",
-//      ],
-//    ];
-
-//    $build['uiProfiles'] = [
-//      '#type' => 'html_tag',
-//      '#tag' => 'script',
-//      'markup' => [
-//        '#markup' => "uiProfiles = { basePath: '/' }",
-//      ],
-//    ];
-
-//    $build['profilesClientJS'] = [
-//      '#type' => 'html_tag',
-//      '#tag' => 'script',
-//      '#attributes' => [
-//        'src' => "https://profiles-test.uiowa.edu/api/lib/profiles-client.umd.min.js",
-//      ],
-//    ];
-
-//    $build['profilesClientCSS'] = [
-//      '#type' => 'html_tag',
-//      '#tag' => 'link',
-//      '#attributes' => [
-//        'href' => 'https://profiles-test.uiowa.edu/api/lib/profiles-client.css',
-//        'rel' => 'stylesheet'
-//      ],
-//    ];
 
 
     if ($slug) {
