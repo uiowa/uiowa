@@ -29,8 +29,7 @@ class PanoptoUrlFormatter extends LinkFormatter {
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = parent::viewElements($items, $langcode);
     $values = $items->getValue();
-
-
+    $host = \Drupal::request()->getHost();
 
     foreach ($elements as $delta => $entity) {
       $parsed_url = UrlHelper::parse($values[$delta]['uri']);
@@ -45,10 +44,19 @@ class PanoptoUrlFormatter extends LinkFormatter {
             data-height="1080"
             id=' . $unique_id . '
             class="panopto-player"
-          ></div>
+          >
+          <iframe
+            src="https://uicapture.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=' . $parsed_url['query']['id'] . '&remoteEmbed=true&remoteHost=https://' . $host . ';embedApiId=' . $unique_id . '&interactivity=none&showtitle=false"
+            width="1920"
+            height="1080"
+            allow="autoplay; fullscreen"
+            frameborder="0"
+            class=""
+          >
+          </iframe>
+          </div>
         ',
-        '#allowed_tags' => ['div'],
-        '#attached' => ['library' => ['sitenow_media_wysiwyg/panopto']],
+        '#allowed_tags' => ['div', 'iframe'],
       ];
     }
 
