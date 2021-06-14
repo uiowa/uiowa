@@ -20,8 +20,12 @@ body:not(.page-node-type-article, .page-node-type-page) #block-uids-base-page-ti
   font-weight: 700;
 }
 
-.headline.headline--parent {
-  margin-bottom: 2rem;
+.headline.block__headline {
+  margin-bottom: 1.25rem;
+  &:not(.bold-headline--underline) {
+    margin-top: .4rem;
+    padding-bottom: .4rem;
+  }
 }
 
 .bg-pattern--brain-black [class*="bg--white"] .bold-headline--underline,

@@ -14,6 +14,7 @@ dependencies:
     - taxonomy.vocabulary.tags
   module:
     - node
+    - options
     - taxonomy
     - telephone
     - user
@@ -645,7 +646,7 @@ display:
           empty: true
           tokenize: false
           content:
-            value: 'There are currently no results to display.'
+            value: '<p>There are currently no results to display.</p>'
             format: filtered_html
           plugin_id: text
       relationships: {  }
@@ -715,6 +716,7 @@ display:
           expose:
             operator_limit_selection: false
             operator_list: {  }
+          group: 1
         field_person_hide_value:
           id: field_person_hide_value
           table: node__field_person_hide
@@ -811,6 +813,97 @@ display:
           required_depth: 0
           none_label: '- Please select -'
           plugin_id: taxonomy_index_tid
+        field_person_types_target_id:
+          id: field_person_types_target_id
+          table: node__field_person_types
+          field: field_person_types_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_person_types_target_id_op
+            label: 'Person type'
+            description: ''
+            use_operator: false
+            operator: field_person_types_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_person_types_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: string
+        field_person_type_status_value:
+          id: field_person_type_status_value
+          table: node__field_person_type_status
+          field: field_person_type_status_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_person_type_status_value_op
+            label: 'Person type status'
+            description: ''
+            use_operator: false
+            operator: field_person_type_status_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_person_type_status_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          plugin_id: list_field
       defaults:
         filters: false
         filter_groups: false
@@ -820,6 +913,8 @@ display:
           1: AND
       filter_in_block:
         - field_tags_target_id
+        - field_person_types_target_id
+        - field_person_type_status_value
       more_link_help_text: 'Check to include a ''display more'' link. To use the default <a href="/admin/config/system/sitenow-people">people path set within SiteNow People</a>, make sure the ‘Enable people listing’ box is checked. Alternatively, a custom URL path can be provided in the ‘Path’ text box below. '
       display_description: ''
       block_description: 'People list'
