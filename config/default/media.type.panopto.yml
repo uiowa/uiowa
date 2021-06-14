@@ -3,10 +3,14 @@ langcode: en
 status: true
 dependencies:
   module:
+    - crop
     - sitenow_media_wysiwyg
+third_party_settings:
+  crop:
+    image_field: null
 id: panopto
-label: Panopto
-description: 'A remotely hosted Panopto'
+label: UICapture
+description: 'A remotely-hosted Panopto video from https://uicapture.hosted.panopto.com/.'
 source: panopto
 queue_thumbnail_downloads: false
 new_revision: false
