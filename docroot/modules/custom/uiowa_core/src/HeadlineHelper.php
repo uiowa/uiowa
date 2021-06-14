@@ -39,9 +39,9 @@ class HeadlineHelper {
    */
   public static function getStyles() {
     return [
-      'default' => 'headline',
-      'headline_bold_serif' => 'headline bold-headline bold-headline--serif',
-      'headline_bold_serif_underline' => 'headline bold-headline bold-headline--serif bold-headline--underline',
+      'default' => 'headline block__headline',
+      'headline_bold_serif' => 'headline bold-headline bold-headline--serif block__headline',
+      'headline_bold_serif_underline' => 'headline bold-headline bold-headline--serif bold-headline--underline block__headline',
     ];
   }
 
@@ -109,7 +109,7 @@ class HeadlineHelper {
       '#options' => [
         'default' => t('Default'),
         'headline_bold_serif' => t('Bold serif'),
-        'headline_bold_serif_underline' => t('Bold serif, highlighted'),
+        'headline_bold_serif_underline' => t('Bold serif, underlined'),
       ],
       '#default_value' => $defaults['headline_style'],
       '#states' => [
