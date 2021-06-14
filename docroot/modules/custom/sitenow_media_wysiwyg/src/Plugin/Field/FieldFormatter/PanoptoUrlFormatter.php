@@ -22,9 +22,7 @@ use Drupal\link\Plugin\Field\FieldFormatter\LinkFormatter;
 class PanoptoUrlFormatter extends LinkFormatter {
 
   /**
-   * Short description message...
-   *
-   * @inheritDoc
+   * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = parent::viewElements($items, $langcode);
