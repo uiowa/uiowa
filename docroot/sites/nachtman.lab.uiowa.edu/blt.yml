@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labnachtman.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labnachtman
+  human_name: nachtman.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labnachtman.prod
+drupal:
+  db:
+    database: nachtman_lab_uiowa_edu
+uiowa:
+  requester: gmccrory
