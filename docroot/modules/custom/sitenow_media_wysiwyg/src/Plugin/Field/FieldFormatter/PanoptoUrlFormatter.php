@@ -29,34 +29,33 @@ class PanoptoUrlFormatter extends LinkFormatter {
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = parent::viewElements($items, $langcode);
     $values = $items->getValue();
-    $host = \Drupal::request()->getHost();
 
     foreach ($elements as $delta => $entity) {
       $parsed_url = UrlHelper::parse($values[$delta]['uri']);
+      $id = $parsed_url['query']['id'];
 
-      $unique_id = Html::getUniqueId('panopto-media');
       $elements[$delta] = [
-        '#type' => 'markup',
-        '#markup' => '
-          <div
-            data-link="' . $parsed_url['query']['id'] . '"
-            data-width="1920"
-            data-height="1080"
-            id=' . $unique_id . '
-            class="panopto-player"
-          >
-          <iframe
-            src="https://uicapture.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=' . $parsed_url['query']['id'] . '&remoteEmbed=true&remoteHost=https://' . $host . ';embedApiId=' . $unique_id . '&interactivity=none&showtitle=false"
-            width="1920"
-            height="1080"
-            allow="autoplay; fullscreen"
-            frameborder="0"
-            class=""
-          >
-          </iframe>
-          </div>
-        ',
-        '#allowed_tags' => ['div', 'iframe'],
+        'wrapper' => [
+          '#type' => 'container',
+          '#attributes' => [
+            'data-link' => $id,
+            'data-width' => '1920',
+            'data-height' => '1080',
+            'id' => Html::getUniqueId('panopto-media'),
+            'class' => 'panopto-player',
+          ],
+        ],
+        'frame' => [
+          '#type' => 'html_tag',
+          '#tag' => 'iframe',
+          '#attributes' => [
+            'src' => "https://uicapture.hosted.panopto.com/Panopto/Pages/Embed.aspx?id={$id}&&autoplay=false&offerviewer=true&showtitle=false&showbrand=false&start=0&interactivity=none",
+            'width' => '1920',
+            'height' => '1080',
+            'allow' => 'autoplay; fullscreen',
+            'frameborder' => '0',
+          ],
+        ],
       ];
     }
 

@@ -35,6 +35,7 @@ class PanoptoForm extends AddFormBase {
       '#size' => 80,
       '#maxlength' => 1024,
     ];
+
     $form['container']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Add'),
