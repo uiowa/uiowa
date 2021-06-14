@@ -2741,3 +2741,9 @@ $sites['labsewell.local.drupal.uiowa.edu'] = 'sewell.lab.uiowa.edu';
 $sites['labsewell.dev.drupal.uiowa.edu'] = 'sewell.lab.uiowa.edu';
 $sites['labsewell.stage.drupal.uiowa.edu'] = 'sewell.lab.uiowa.edu';
 $sites['labsewell.prod.drupal.uiowa.edu'] = 'sewell.lab.uiowa.edu';
+
+// Directory aliases for nachtman.lab.uiowa.edu.
+$sites['labnachtman.local.drupal.uiowa.edu'] = 'nachtman.lab.uiowa.edu';
+$sites['labnachtman.dev.drupal.uiowa.edu'] = 'nachtman.lab.uiowa.edu';
+$sites['labnachtman.stage.drupal.uiowa.edu'] = 'nachtman.lab.uiowa.edu';
+$sites['labnachtman.prod.drupal.uiowa.edu'] = 'nachtman.lab.uiowa.edu';
