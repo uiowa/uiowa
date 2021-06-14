@@ -618,11 +618,11 @@ function uids_base_preprocess_block(&$variables) {
 
     // Remove headline classes from attributes.
     $variables['headline_classes'] = array_filter($variables['elements']['#attributes']['class'], function ($v) {
-      return substr($v, 0, 13) === 'bold-headline';
+      return substr($v, 0, 8) === 'headline';
     });
 
     // Change link style to match highlight, if set.
-    if (in_array('bold-headline--highlight', $variables['headline_classes'])) {
+    if (in_array('headline--highlight', $variables['headline_classes'])) {
       $highlight_classes = 'bttn bttn--secondary bttn--caps';
     }
     else {
@@ -690,7 +690,33 @@ function uids_base_preprocess_menu(&$variables) {
       break;
 
   }
+}
 
+/**
+ * Implements hook_preprocess_menu_local_task().
+ */
+function uids_base_preprocess_menu_local_task(&$variables) {
+  $url = $variables['link']['#url'];
+
+  if ($url instanceof Url) {
+    $route_name = $url->getRouteName();
+
+    $route_icon_map = [
+      'entity.node.canonical' => 'view',
+      'entity.node.edit_form' => 'edit',
+      'entity.node.delete_form' => 'delete',
+      'layout_builder.overrides.node.view' => 'layout',
+      'entity.node.version_history' => 'history',
+      'entity.node.entity_usage' => 'usage',
+      'entity.node.devel_load' => 'devel',
+    ];
+
+    // Set the icon if the route matches an entry in the map.
+    if (isset($route_icon_map[$route_name])) {
+      $variables['link']['#options']['attributes']['class'][] = 'local-task-icon';
+      $variables['link']['#options']['attributes']['class'][] = 'local-task-icon--' . $route_icon_map[$route_name];
+    }
+  }
 }
 
 /**
