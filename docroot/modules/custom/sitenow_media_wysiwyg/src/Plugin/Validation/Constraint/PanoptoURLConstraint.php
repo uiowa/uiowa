@@ -15,10 +15,17 @@ use Symfony\Component\Validator\Constraint;
  */
 class PanoptoURLConstraint extends Constraint {
   /**
-   * The default violation message.
+   * The message shown when the value does not start with the Panopto base URL.
    *
    * @var string
    */
-  public $message = 'Not a valid URL.';
+  public $noBaseUrl = 'The URL must start with %base.';
+
+  /**
+   * The message shown when the value does not include an ID.
+   *
+   * @var string
+   */
+  public $noId = 'The URL must include an %id parameter.';
 
 }
