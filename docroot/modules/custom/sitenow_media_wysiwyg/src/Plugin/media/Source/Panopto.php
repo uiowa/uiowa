@@ -25,7 +25,6 @@ use Drupal\Core\Field\FieldTypePluginManagerInterface;
  *   label = @Translation("Panopto"),
  *   description = @Translation("Use Panopto for reusable media."),
  *   allowed_field_types = {"string", "string_long", "link"},
- *   default_thumbnail_filename = "no-thumbnail.png",
  *   forms = {
  *     "media_library_add" = "Drupal\sitenow_media_wysiwyg\Form\PanoptoForm",
  *   },
