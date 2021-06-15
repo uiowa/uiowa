@@ -7,12 +7,14 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\media\MediaInterface;
 use Drupal\media\MediaSourceBase;
 use Drupal\media\MediaTypeInterface;
 use Drupal\media\MediaSourceFieldConstraintsInterface;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\RedirectMiddleware;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Field\FieldTypePluginManagerInterface;
@@ -32,6 +34,16 @@ use Drupal\Core\Field\FieldTypePluginManagerInterface;
  * )
  */
 class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInterface {
+  use LoggerChannelTrait;
+
+  const BASE_URL = 'https://uicapture.hosted.panopto.com';
+
+  /**
+   * @var Client
+   *
+   * The http_client service.
+   */
+  protected $client;
 
   /**
    * Constructs a new class instance.
@@ -53,8 +65,9 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The renderer.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, FieldTypePluginManagerInterface $field_type_manager, ConfigFactoryInterface $config_factory, RendererInterface $renderer) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, FieldTypePluginManagerInterface $field_type_manager, ConfigFactoryInterface $config_factory, RendererInterface $renderer, Client $client) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $entity_type_manager, $entity_field_manager, $field_type_manager, $config_factory);
+    $this->client = $client;
   }
 
   /**
@@ -69,7 +82,8 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
       $container->get('entity_field.manager'),
       $container->get('plugin.manager.field.field_type'),
       $container->get('config.factory'),
-      $container->get('renderer')
+      $container->get('renderer'),
+      $container->get('http_client')
     );
   }
 
@@ -101,7 +115,7 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
   public function getMetadata(MediaInterface $media, $attribute_name) {
     $source = $media->get($this->configuration['source_field']);
 
-    // The source is a required, single value field so we can make assumptions.
+    // The source is a required, single value field so we make some assumptions.
     // @see: PanoptoURLConstraintValidator.
     $parsed = UrlHelper::parse($source->getValue()[0]['uri']);
     $id = $parsed['query']['id'];
@@ -113,21 +127,32 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
 
       // @todo: Leverage the API or another mechanism to get the thumbnail.
       case 'thumbnail_uri':
-        $client = new Client([
-          'allow_redirects' => [
-            'track_redirects' => TRUE,
-          ],
-          'base_uri' => 'https://uicapture.hosted.panopto.com',
-        ]);
+        try {
+          $response = $this->client->get(
+            self::BASE_URL . "/Panopto/Services/FrameGrabber.svc/FrameRedirect?objectId={$id}&mode=Delivery&random=0.304899272650899&usePng=False",
+            [
+              'allow_redirects' => [
+                'track_redirects' => TRUE,
+              ],
+            ],
+          );
 
-        $response = $client->get("/Panopto/Services/FrameGrabber.svc/FrameRedirect?objectId={$id}&mode=Delivery&random=0.304899272650899&usePng=False");
-        $redirects = $response->getHeader(RedirectMiddleware::HISTORY_HEADER);
-        $source = end($redirects);
+          $redirects = $response->getHeader(RedirectMiddleware::HISTORY_HEADER);
+          $source = end($redirects);
 
-        // @todo: Put this in a subfolder that is created by this module.
-        /** @var \Drupal\File\FileInterface $file */
-        $file = system_retrieve_file($source, NULL, TRUE, FileSystemInterface::EXISTS_REPLACE);
-        return $file->getFileUri();
+          // @todo: Put this in a subfolder that is created by this module.
+          /** @var \Drupal\File\FileInterface $file */
+          $file = system_retrieve_file($source, NULL, TRUE, FileSystemInterface::EXISTS_REPLACE);
+          return $file->getFileUri();
+        }
+        catch (ClientException $e) {
+          $this->getLogger('sitenow_media_wysiwyg')->warning($this->t('Unable to get thumbnail image for @media.', [
+            '@media' => $media->uuid(),
+          ]));
+
+          // Use the default thumbnail if we can't get one.
+          return NULL;
+        }
     }
 
     return NULL;
