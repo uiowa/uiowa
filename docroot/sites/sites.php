@@ -2747,3 +2747,9 @@ $sites['labnachtman.local.drupal.uiowa.edu'] = 'nachtman.lab.uiowa.edu';
 $sites['labnachtman.dev.drupal.uiowa.edu'] = 'nachtman.lab.uiowa.edu';
 $sites['labnachtman.stage.drupal.uiowa.edu'] = 'nachtman.lab.uiowa.edu';
 $sites['labnachtman.prod.drupal.uiowa.edu'] = 'nachtman.lab.uiowa.edu';
+
+// Directory aliases for jaynesresearchgroup.lab.uiowa.edu.
+$sites['labjaynesresearchgroup.local.drupal.uiowa.edu'] = 'jaynesresearchgroup.lab.uiowa.edu';
+$sites['labjaynesresearchgroup.dev.drupal.uiowa.edu'] = 'jaynesresearchgroup.lab.uiowa.edu';
+$sites['labjaynesresearchgroup.stage.drupal.uiowa.edu'] = 'jaynesresearchgroup.lab.uiowa.edu';
+$sites['labjaynesresearchgroup.prod.drupal.uiowa.edu'] = 'jaynesresearchgroup.lab.uiowa.edu';

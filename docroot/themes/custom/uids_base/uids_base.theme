@@ -224,7 +224,9 @@ function uids_base_preprocess_page(&$variables) {
  * Implements hook_preprocess_HOOK() for node.html.twig.
  */
 function uids_base_preprocess_node(&$variables) {
-  /** @var \Drupal\node\Entity\Node $node */
+  /**
+   * @var \Drupal\node\Entity\Node $node
+   */
   $node = $variables['node'];
 
   if ($variables['view_mode'] == 'teaser') {
@@ -260,9 +262,17 @@ function uids_base_preprocess_node(&$variables) {
           unset($variables['media_classes']);
       }
     }
-    elseif (!$is_v2 && $node->getType() == 'page' || 'article') {
-      $variables['attributes']['class'][] = 'card--media-right';
-      $variables['media_classes'] = ['media--widescreen', 'card__media--small'];
+    elseif (!$is_v2) {
+      switch ($node->getType()) {
+        case 'page':
+        case 'article':
+          $variables['attributes']['class'][] = 'card--media-right';
+          $variables['media_classes'] = [
+            'media--widescreen',
+            'card__media--small',
+          ];
+          break;
+      }
     }
   }
 
@@ -709,6 +719,11 @@ function uids_base_preprocess_menu_local_task(&$variables) {
       'entity.node.version_history' => 'history',
       'entity.node.entity_usage' => 'usage',
       'entity.node.devel_load' => 'devel',
+      'entity.taxonomy_term.canonical' => 'view',
+      'entity.taxonomy_term.edit_form' => 'edit',
+      'entity.taxonomy_term.delete_form' => 'delete',
+      'entity.taxonomy_term.entity_usage' => 'usage',
+      'entity.taxonomy_term.devel_load' => 'devel',
     ];
 
     // Set the icon if the route matches an entry in the map.
