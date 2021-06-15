@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labsewell.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labsewell
+  human_name: sewell.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labsewell.prod
+drupal:
+  db:
+    database: sewell_lab_uiowa_edu
+uiowa:
+  requester: dksewell

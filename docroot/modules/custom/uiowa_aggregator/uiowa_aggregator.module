@@ -143,6 +143,21 @@ function uiowa_aggregator_preprocess_block(&$variables) {
         '#prefix' => '<div class="uiowa-aggregator-no-results">',
         '#suffix' => '</div>',
       ];
+      // Unset classes meant for children that are being applied to entire block.
+      if (isset($variables['attributes']['class'])) {
+        foreach ($variables['attributes']['class'] as $key => $style) {
+          foreach ([
+            'bg',
+            'card',
+            'media',
+            'hide',
+          ] as $check) {
+            if (substr($style, 0, strlen($check)) === $check) {
+              unset($variables['attributes']['class'][$key]);
+            }
+          }
+        }
+      }
     }
 
     $variables['#attached']['feed'][] = [
