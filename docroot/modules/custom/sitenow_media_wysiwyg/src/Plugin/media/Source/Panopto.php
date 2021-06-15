@@ -39,16 +39,16 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
   const BASE_URL = 'https://uicapture.hosted.panopto.com';
 
   /**
-   * @var Client
-   *
    * The http_client service.
+   *
+   * @var \GuzzleHttp\Client
    */
   protected $client;
 
   /**
-   * @var FileSystemInterface
-   *
    * The file_system service.
+   *
+   * @var \Drupal\Core\File\FileSystemInterface
    */
   protected $fs;
 
@@ -71,6 +71,10 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
    *   Config factory service.
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The renderer.
+   * @param \GuzzleHttp\Client $client
+   *   The http_client service.
+   * @param \Drupal\Core\File\FileSystemInterface $fs
+   *   The file_system service.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, FieldTypePluginManagerInterface $field_type_manager, ConfigFactoryInterface $config_factory, RendererInterface $renderer, Client $client, FileSystemInterface $fs) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $entity_type_manager, $entity_field_manager, $field_type_manager, $config_factory);
@@ -131,7 +135,7 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
     $id = $parsed['query']['id'];
 
     switch ($attribute_name) {
-      // @todo: Leverage the API or another mechanism to get a better name.
+      // @todo Leverage the API or another mechanism to get a better name.
       case 'default_name':
         return 'media:' . $media->bundle() . ':' . $uuid;
 
