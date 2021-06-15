@@ -1,0 +1,38 @@
+uuid: d5570a6c-ed66-4507-949e-a6b1919c26a3
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.small
+    - field.field.media.panopto.field_media_panopto_url
+    - media.type.panopto
+  module:
+    - layout_builder
+    - sitenow_media_wysiwyg
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+id: media.panopto.small
+targetEntityType: media
+bundle: panopto
+mode: small
+content:
+  field_media_panopto_url:
+    weight: 1
+    label: hidden
+    settings:
+      trim_length: '80'
+      url_only: ''
+      url_plain: ''
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: panopto_url_formatter
+    region: content
+hidden:
+  created: true
+  name: true
+  search_api_excerpt: true
+  thumbnail: true
+  uid: true

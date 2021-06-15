@@ -2,7 +2,6 @@
 
 namespace Drush\Commands;
 
-use Consolidation\OutputFormatters\Options\FormatterOptions;
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Consolidation\SiteProcess\ProcessManagerAwareInterface;
 use Consolidation\SiteProcess\ProcessManagerAwareTrait;
@@ -10,7 +9,6 @@ use Consolidation\AnnotatedCommand\AnnotationData;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\SiteAlias\SiteAliasManagerAwareInterface;
 use Consolidation\SiteAlias\SiteAliasManagerAwareTrait;
-use Drupal\user\Entity\User;
 use Drush\Drupal\Commands\sql\SanitizePluginInterface;
 use Symfony\Component\Console\Input\InputInterface;
 
