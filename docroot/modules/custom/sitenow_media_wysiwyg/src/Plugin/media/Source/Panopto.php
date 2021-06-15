@@ -46,6 +46,13 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
   protected $client;
 
   /**
+   * @var FileSystemInterface
+   *
+   * The file_system service.
+   */
+  protected $fs;
+
+  /**
    * Constructs a new class instance.
    *
    * @param array $configuration
@@ -65,9 +72,10 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The renderer.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, FieldTypePluginManagerInterface $field_type_manager, ConfigFactoryInterface $config_factory, RendererInterface $renderer, Client $client) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, FieldTypePluginManagerInterface $field_type_manager, ConfigFactoryInterface $config_factory, RendererInterface $renderer, Client $client, FileSystemInterface $fs) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $entity_type_manager, $entity_field_manager, $field_type_manager, $config_factory);
     $this->client = $client;
+    $this->fs = $fs;
   }
 
   /**
@@ -83,7 +91,8 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
       $container->get('plugin.manager.field.field_type'),
       $container->get('config.factory'),
       $container->get('renderer'),
-      $container->get('http_client')
+      $container->get('http_client'),
+      $container->get('file_system')
     );
   }
 
@@ -113,6 +122,7 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
    * {@inheritdoc}
    */
   public function getMetadata(MediaInterface $media, $attribute_name) {
+    $uuid = $media->uuid();
     $source = $media->get($this->configuration['source_field']);
 
     // The source is a required, single value field so we make some assumptions.
@@ -123,9 +133,8 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
     switch ($attribute_name) {
       // @todo: Leverage the API or another mechanism to get a better name.
       case 'default_name':
-        return 'media:' . $media->bundle() . ':' . $media->uuid();
+        return 'media:' . $media->bundle() . ':' . $uuid;
 
-      // @todo: Leverage the API or another mechanism to get the thumbnail.
       case 'thumbnail_uri':
         try {
           $response = $this->client->get(
@@ -139,11 +148,14 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
 
           $redirects = $response->getHeader(RedirectMiddleware::HISTORY_HEADER);
           $source = end($redirects);
+          $destination = 'public://panopto_thumbnails/';
+          $realpath = $this->fs->realpath($destination);
 
-          // @todo: Put this in a subfolder that is created by this module.
-          /** @var \Drupal\File\FileInterface $file */
-          $file = system_retrieve_file($source, NULL, TRUE, FileSystemInterface::EXISTS_REPLACE);
-          return $file->getFileUri();
+          if ($this->fs->prepareDirectory($realpath, FileSystemInterface::CREATE_DIRECTORY)) {
+            /** @var \Drupal\File\FileInterface $file */
+            $file = system_retrieve_file($source, "{$destination}{$uuid}.jpg", TRUE, FileSystemInterface::EXISTS_REPLACE);
+            return $file->getFileUri();
+          }
         }
         catch (ClientException $e) {
           $this->getLogger('sitenow_media_wysiwyg')->warning($this->t('Unable to get thumbnail image for @media.', [
