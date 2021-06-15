@@ -1,0 +1,32 @@
+uuid: 05273800-baa5-4217-af0a-6643c274e40a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.media.panopto.field_media_panopto_url
+    - media.type.panopto
+  module:
+    - sitenow_media_wysiwyg
+id: media.panopto.default
+targetEntityType: media
+bundle: panopto
+mode: default
+content:
+  field_media_panopto_url:
+    weight: 1
+    label: hidden
+    settings:
+      trim_length: '80'
+      url_only: ''
+      url_plain: ''
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: panopto_url_formatter
+    region: content
+hidden:
+  created: true
+  name: true
+  search_api_excerpt: true
+  thumbnail: true
+  uid: true
