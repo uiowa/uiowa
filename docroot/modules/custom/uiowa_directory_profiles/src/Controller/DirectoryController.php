@@ -127,10 +127,6 @@ class DirectoryController extends ControllerBase {
       ],
     ];
 
-    // Apparently, booleans need to be a string representation of the variable
-    // in the APR element attribute values.
-    $show_switcher = var_export($this->config->get('directory.show_switcher'), TRUE);
-
     $build['directory'] = [
       '#type' => 'html_tag',
       '#tag' => 'profiles-client',

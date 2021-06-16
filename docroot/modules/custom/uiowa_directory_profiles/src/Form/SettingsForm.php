@@ -146,18 +146,6 @@ class SettingsForm extends ConfigFormBase {
       '#required' => FALSE,
     ];
 
-    // The grid display was never fully implemented. The images returned from
-    // the APR API are not the same size which makes it difficult to style.
-    $form['directory_show_switcher'] = [
-      '#access' => FALSE,
-      '#type' => 'checkbox',
-      '#title' => $this->t('Show List Switcher'),
-      '#return_value' => TRUE,
-      '#default_value' => $this->config('uiowa_directory_profiles.settings')->get('directory.show_switcher') ?? FALSE,
-      '#description' => $this->t('Flag to show or hide the control that allows the user to switch between list views.'),
-    ];
-
-
     return parent::buildForm($form, $form_state);
   }
 
@@ -198,7 +186,6 @@ class SettingsForm extends ConfigFormBase {
       ->set('directory.title', $form_state->getValue('directory_title'))
       ->set('directory.page_size', $form_state->getValue('directory_page_size'))
       ->set('directory.intro', $form_state->getValue('directory_intro'))
-      ->set('directory.show_switcher', $form_state->getValue('directory_show_switcher'))
       ->save();
 
     parent::submitForm($form, $form_state);
