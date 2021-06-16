@@ -146,7 +146,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
       // Add custom process callback for certain blocks to alter form elements.
       $form['settings']['block_form']['#process'][] = '_layout_builder_custom_process_element';
-      
+
       // Add our LBS heading before style options.
       _layout_builder_custom_add_lbs_heading($form);
 
