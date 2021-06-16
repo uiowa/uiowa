@@ -269,7 +269,7 @@ function _person_types_callback(array &$form, FormStateInterface $form_state) {
   //   the triggering element is the person types filter? Currently
   //   we're skipping if we're on a node form, but scoping could be
   //   more specific.
-  if ($form['#form_id'] === 'node_person_form') {
+  if (in_array($form['#form_id'], ['node_person_form', 'node_person_edit_form'])) {
     return $form;
   }
   $type = $form_state->getValue([
