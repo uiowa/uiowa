@@ -163,8 +163,9 @@ class SettingsForm extends ConfigFormBase {
       /** @var \Drupal\Core\Url $url */
       $url = $this->pathValidator->getUrlIfValid($path);
 
-      // If $url is anything besides FALSE then the path is already in use.
-      if ($url && substr($url->getRouteName(), 0, 9) != 'uiowa_directory_profiles') {
+      // If $url is anything besides FALSE then the path is already in use. We
+      // also check if the route belongs to another module.
+      if ($url && !str_starts_with($url->getRouteName(), 'uiowa_directory_profiles')) {
         $form_state->setErrorByName($field, 'This path is already in use.');
       }
       else {
