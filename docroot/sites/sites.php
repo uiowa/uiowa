@@ -2759,3 +2759,9 @@ $sites['labtucker.local.drupal.uiowa.edu'] = 'tucker.lab.uiowa.edu';
 $sites['labtucker.dev.drupal.uiowa.edu'] = 'tucker.lab.uiowa.edu';
 $sites['labtucker.stage.drupal.uiowa.edu'] = 'tucker.lab.uiowa.edu';
 $sites['labtucker.prod.drupal.uiowa.edu'] = 'tucker.lab.uiowa.edu';
+
+// Directory aliases for arts.uiowa.edu.
+$sites['arts.local.drupal.uiowa.edu'] = 'arts.uiowa.edu';
+$sites['arts.dev.drupal.uiowa.edu'] = 'arts.uiowa.edu';
+$sites['arts.stage.drupal.uiowa.edu'] = 'arts.uiowa.edu';
+$sites['arts.prod.drupal.uiowa.edu'] = 'arts.uiowa.edu';
