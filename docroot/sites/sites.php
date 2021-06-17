@@ -2771,3 +2771,9 @@ $sites['iihriowafloodmaps.local.drupal.uiowa.edu'] = 'iowafloodmaps.iihr.uiowa.e
 $sites['iihriowafloodmaps.dev.drupal.uiowa.edu'] = 'iowafloodmaps.iihr.uiowa.edu';
 $sites['iihriowafloodmaps.stage.drupal.uiowa.edu'] = 'iowafloodmaps.iihr.uiowa.edu';
 $sites['iihriowafloodmaps.prod.drupal.uiowa.edu'] = 'iowafloodmaps.iihr.uiowa.edu';
+
+// Directory aliases for lweber.iihr.uiowa.edu.
+$sites['iihrlweber.local.drupal.uiowa.edu'] = 'lweber.iihr.uiowa.edu';
+$sites['iihrlweber.dev.drupal.uiowa.edu'] = 'lweber.iihr.uiowa.edu';
+$sites['iihrlweber.stage.drupal.uiowa.edu'] = 'lweber.iihr.uiowa.edu';
+$sites['iihrlweber.prod.drupal.uiowa.edu'] = 'lweber.iihr.uiowa.edu';
