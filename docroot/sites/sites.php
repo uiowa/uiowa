@@ -2783,3 +2783,9 @@ $sites['hipaa.local.drupal.uiowa.edu'] = 'hipaa.uiowa.edu';
 $sites['hipaa.dev.drupal.uiowa.edu'] = 'hipaa.uiowa.edu';
 $sites['hipaa.stage.drupal.uiowa.edu'] = 'hipaa.uiowa.edu';
 $sites['hipaa.prod.drupal.uiowa.edu'] = 'hipaa.uiowa.edu';
+
+// Directory aliases for president.uiowa.edu.
+$sites['president.local.drupal.uiowa.edu'] = 'president.uiowa.edu';
+$sites['president.dev.drupal.uiowa.edu'] = 'president.uiowa.edu';
+$sites['president.stage.drupal.uiowa.edu'] = 'president.uiowa.edu';
+$sites['president.prod.drupal.uiowa.edu'] = 'president.uiowa.edu';
