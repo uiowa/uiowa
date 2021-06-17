@@ -2765,3 +2765,9 @@ $sites['arts.local.drupal.uiowa.edu'] = 'arts.uiowa.edu';
 $sites['arts.dev.drupal.uiowa.edu'] = 'arts.uiowa.edu';
 $sites['arts.stage.drupal.uiowa.edu'] = 'arts.uiowa.edu';
 $sites['arts.prod.drupal.uiowa.edu'] = 'arts.uiowa.edu';
+
+// Directory aliases for iowafloodmaps.iihr.uiowa.edu.
+$sites['iihriowafloodmaps.local.drupal.uiowa.edu'] = 'iowafloodmaps.iihr.uiowa.edu';
+$sites['iihriowafloodmaps.dev.drupal.uiowa.edu'] = 'iowafloodmaps.iihr.uiowa.edu';
+$sites['iihriowafloodmaps.stage.drupal.uiowa.edu'] = 'iowafloodmaps.iihr.uiowa.edu';
+$sites['iihriowafloodmaps.prod.drupal.uiowa.edu'] = 'iowafloodmaps.iihr.uiowa.edu';
