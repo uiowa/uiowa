@@ -2,7 +2,15 @@
 @import "../../../themes/custom/uids_base/uids/assets/scss/utilities";
 
 #uiprof {
-  h1.page-title {
+  h1.page-title:not(.profile-title) {
     display: none;
+  }
+
+  .crumbs {
+    display: none;
+  }
+
+  ol {
+    list-style-type: none;
   }
 }
