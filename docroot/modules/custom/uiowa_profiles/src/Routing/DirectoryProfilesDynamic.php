@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\uiowa_directory_profiles\Routing;
+namespace Drupal\uiowa_profiles\Routing;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
@@ -8,24 +8,24 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Route;
 
 /**
- * Dynamic APR routes.
+ * Dynamic Profiles routes.
  */
-class DirectoryProfilesDynamic implements ContainerInjectionInterface {
+class ProfilesDynamic implements ContainerInjectionInterface {
   /**
-   * The APR config.
+   * The Profiles config.
    *
    * @var \Drupal\Core\Config\ImmutableConfig
    */
   protected $config;
 
   /**
-   * Dynamic APR routes constructor.
+   * Dynamic Profiles routes constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config
    *   The config factory service.
    */
   public function __construct(ConfigFactoryInterface $config) {
-    $this->config = $config->get('uiowa_directory_profiles.settings');
+    $this->config = $config->get('uiowa_profiles.settings');
   }
 
   /**
@@ -43,13 +43,13 @@ class DirectoryProfilesDynamic implements ContainerInjectionInterface {
   public function routes() {
     $routes = [];
 
-    $directory = $this->config->get('directory.path') ?? '/directory-profiles/people';
+    $directory = $this->config->get('directory.path') ?? '/profiles';
 
-    $routes['uiowa_directory_profiles.directory'] = new Route(
+    $routes['uiowa_profiles.directory'] = new Route(
       "{$directory}/{slug}",
       [
-        '_controller' => 'Drupal\uiowa_directory_profiles\Controller\DirectoryController::build',
-        '_title_callback' => 'Drupal\uiowa_directory_profiles\Controller\DirectoryController::title',
+        '_controller' => 'Drupal\uiowa_profiles\Controller\DirectoryController::build',
+        '_title_callback' => 'Drupal\uiowa_profiles\Controller\DirectoryController::title',
         'slug' => NULL,
       ],
       [
@@ -57,10 +57,10 @@ class DirectoryProfilesDynamic implements ContainerInjectionInterface {
       ]
     );
 
-    $routes['uiowa_directory_profiles.sitemap'] = new Route(
+    $routes['uiowa_profiles.sitemap'] = new Route(
       "{$directory}/sitemap.txt",
       [
-        '_controller' => 'Drupal\uiowa_directory_profiles\Controller\SitemapController::build',
+        '_controller' => 'Drupal\uiowa_profiles\Controller\SitemapController::build',
       ],
       [
         '_permission' => 'access content',

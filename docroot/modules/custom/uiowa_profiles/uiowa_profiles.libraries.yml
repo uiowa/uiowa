@@ -1,12 +1,9 @@
 styles:
-  remote: https://profiles.uiowa.edu
-  version: VERSION
-  license: MIT
   css:
     theme:
-      https://profiles.uiowa.edu/api/lib/profiles-client.css: { type: external, minified: true }
+      assets/css/styles.css: { }
 
-uiowa_directory_profiles.directory.test:
+profiles.test:
   remote: https://profiles-test.uiowa.edu
   version: VERSION
   license: MIT
@@ -16,8 +13,11 @@ uiowa_directory_profiles.directory.test:
     https://profiles-test.uiowa.edu/api/lib/profiles-client.umd.min.js: { type: external, minified: true }
   dependencies:
     - core/drupalSettings
+  css:
+    theme:
+      https://profiles-test.uiowa.edu/api/lib/profiles-client.css: { type: external, minified: true }
 
-uiowa_directory_profiles.directory.prod:
+profiles.prod:
   remote: https://profiles.uiowa.edu
   version: VERSION
   license: MIT
@@ -27,3 +27,6 @@ uiowa_directory_profiles.directory.prod:
     https://profiles.uiowa.edu/api/lib/profiles-client.umd.min.js: { type: external, minified: true }
   dependencies:
     - core/drupalSettings
+  css:
+    theme:
+      https://profiles.uiowa.edu/api/lib/profiles-client.css: { type: external, minified: true }

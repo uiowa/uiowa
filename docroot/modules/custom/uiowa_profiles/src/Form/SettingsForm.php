@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\uiowa_directory_profiles\Form;
+namespace Drupal\uiowa_profiles\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
@@ -12,7 +12,7 @@ use Drupal\pathauto\AliasCleanerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Configure APR settings for this site.
+ * Configure Profiles settings for this site.
  */
 class SettingsForm extends ConfigFormBase {
   /**
@@ -71,14 +71,14 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'uiowa_directory_profiles_settings';
+    return 'uiowa_profiles_settings';
   }
 
   /**
    * {@inheritdoc}
    */
   protected function getEditableConfigNames() {
-    return ['uiowa_directory_profiles.settings'];
+    return ['uiowa_profiles.settings'];
   }
 
   /**
@@ -88,17 +88,17 @@ class SettingsForm extends ConfigFormBase {
     $form['api_key'] = [
       '#type' => 'textfield',
       '#title' => $this->t('API Key'),
-      '#default_value' => $this->config('uiowa_directory_profiles.settings')->get('api_key'),
-      '#description' => $this->t('The API key provided by the ITS-AIS APR team.'),
+      '#default_value' => $this->config('uiowa_profiles.settings')->get('api_key'),
+      '#description' => $this->t('The API key provided by the ITS-AIS Profiles team.'),
       '#required' => TRUE,
     ];
 
     $form['directory_path'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Directory Path'),
-      '#default_value' => $this->config('uiowa_directory_profiles.settings')->get('directory.path') ?? '/directory-profiles/people',
-      '#description' => $this->t('Path for the primary APR directory. Serves as the base for all profiles and an additional <a href=":url">sitemap</a> to submit to search engines.', [
-        ':url' => Url::fromRoute('uiowa_directory_profiles.sitemap')->toString(),
+      '#default_value' => $this->config('uiowa_profiles.settings')->get('directory.path') ?? '/directory-profiles/people',
+      '#description' => $this->t('Path for the primary Profiles directory. Serves as the base for all profiles and an additional <a href=":url">sitemap</a> to submit to search engines.', [
+        ':url' => Url::fromRoute('uiowa_profiles.sitemap')->toString(),
       ]),
       '#required' => TRUE,
     ];
@@ -106,7 +106,7 @@ class SettingsForm extends ConfigFormBase {
     $form['directory_canonical'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Canonical Link Base URL'),
-      '#default_value' => $this->config('uiowa_directory_profiles.settings')->get('directory.canonical') ?? '',
+      '#default_value' => $this->config('uiowa_profiles.settings')->get('directory.canonical') ?? '',
       '#description' => $this->t('The Base URL to generate the canonical link to a profile for SEO. Trailing slash should be included. Leave blank if this site is the canonical source.'),
       '#required' => FALSE,
       '#placeholder' => $this->getRequest()->getHost(),
@@ -115,22 +115,22 @@ class SettingsForm extends ConfigFormBase {
     $form['directory_title'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Directory Title'),
-      '#default_value' => $this->config('uiowa_directory_profiles.settings')->get('directory.title') ?? 'People',
-      '#description' => $this->t("Title for the site's primary APR directory. Will be set as Drupal's page title."),
+      '#default_value' => $this->config('uiowa_profiles.settings')->get('directory.title') ?? 'People',
+      '#description' => $this->t("Title for the site's primary Profiles directory. Will be set as Drupal's page title."),
       '#required' => TRUE,
     ];
 
     $form['directory_page_size'] = [
       '#type' => 'number',
       '#title' => $this->t('Directory Page Size'),
-      '#default_value' => $this->config('uiowa_directory_profiles.settings')->get('directory.page_size') ?? 30,
+      '#default_value' => $this->config('uiowa_profiles.settings')->get('directory.page_size') ?? 30,
       '#min' => 5,
       '#max' => 50,
       '#description' => $this->t('Number of entries per page of the directory. Min: 5, Max: 50'),
       '#required' => TRUE,
     ];
 
-    $intro = $this->config('uiowa_directory_profiles.settings')->get('directory.intro');
+    $intro = $this->config('uiowa_profiles.settings')->get('directory.intro');
 
     $form['directory_intro'] = [
       '#type' => 'text_format',
@@ -165,7 +165,7 @@ class SettingsForm extends ConfigFormBase {
 
       // If $url is anything besides FALSE then the path is already in use. We
       // also check if the route belongs to another module.
-      if ($url && !str_starts_with($url->getRouteName(), 'uiowa_directory_profiles')) {
+      if ($url && !str_starts_with($url->getRouteName(), 'uiowa_profiles')) {
         $form_state->setErrorByName($field, 'This path is already in use.');
       }
       else {
@@ -180,7 +180,7 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $this->config('uiowa_directory_profiles.settings')
+    $this->config('uiowa_profiles.settings')
       ->set('api_key', $form_state->getValue('api_key'))
       ->set('directory.path', $form_state->getValue('directory_path'))
       ->set('directory.canonical', $form_state->getValue('directory_canonical'))

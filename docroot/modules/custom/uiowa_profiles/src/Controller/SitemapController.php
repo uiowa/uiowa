@@ -1,12 +1,12 @@
 <?php
 
-namespace Drupal\uiowa_directory_profiles\Controller;
+namespace Drupal\uiowa_profiles\Controller;
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Logger\LoggerChannelTrait;
-use Drupal\uiowa_directory_profiles\DirectoryProfiles;
+use Drupal\uiowa_profiles\DirectoryProfiles;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -24,7 +24,7 @@ class SitemapController extends ControllerBase {
   /**
    * The APR service.
    *
-   * @var \Drupal\uiowa_directory_profiles\DirectoryProfiles
+   * @var \Drupal\uiowa_profiles\DirectoryProfiles
    */
   protected $directory_profiles;
 
@@ -43,7 +43,7 @@ class SitemapController extends ControllerBase {
   protected $httpClient;
 
   /**
-   * The uiowa_directory_profiles logger channel.
+   * The uiowa_profiles logger channel.
    *
    * @var \Psr\Log\LoggerInterface
    */
@@ -52,8 +52,8 @@ class SitemapController extends ControllerBase {
   /**
    * The controller constructor.
    *
-   * @param \Drupal\uiowa_directory_profiles\DirectoryProfiles $directory_profiles
-   *   The uiowa_directory_profiles.directory_profiles service.
+   * @param \Drupal\uiowa_profiles\DirectoryProfiles $directory_profiles
+   *   The uiowa_profiles.directory_profiles service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config
    *   The config factory service.
    * @param \GuzzleHttp\ClientInterface $httpClient
@@ -61,9 +61,9 @@ class SitemapController extends ControllerBase {
    */
   public function __construct(DirectoryProfiles $directory_profiles, ConfigFactoryInterface $config, ClientInterface $httpClient) {
     $this->directory_profiles = $directory_profiles;
-    $this->config = $config->get('uiowa_directory_profiles.settings');
+    $this->config = $config->get('uiowa_profiles.settings');
     $this->httpClient = $httpClient;
-    $this->logger = $this->getLogger('uiowa_directory_profiles');
+    $this->logger = $this->getLogger('uiowa_profiles');
   }
 
   /**
@@ -71,7 +71,7 @@ class SitemapController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('uiowa_directory_profiles.directory_profiles'),
+      $container->get('uiowa_profiles.directory_profiles'),
       $container->get('config.factory'),
       $container->get('http_client')
     );

@@ -1,57 +1,57 @@
 <?php
 
-namespace Drupal\uiowa_directory_profiles;
+namespace Drupal\uiowa_profiles;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * The APR service sets some dynamic properties based on the environment.
+ * The Profiles service sets some dynamic properties based on the environment.
  *
- * @property string $environment The APR environment.
- * @property string $endpoint The APR API endpoint.
+ * @property string $environment The Profiles environment.
+ * @property string $endpoint The Profiles API endpoint.
  */
-class DirectoryProfiles {
+class Profiles {
   /**
-   * The APR settings config.
+   * The Profiles settings config.
    *
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   private $config;
 
   /**
-   * The uiowa_directory_profiles logger channel.
+   * The uiowa_profiles logger channel.
    *
    * @var \Psr\Log\LoggerInterface
    */
   private $logger;
 
   /**
-   * The APR environment.
+   * The Profiles environment.
    *
    * @var string
    */
   protected $environment;
 
   /**
-   * The APR API endpoint.
+   * The Profiles API endpoint.
    *
    * @var string
    */
   protected $endpoint;
 
   /**
-   * Constructs an DirectoryProfiles service object.
+   * Constructs a Profiles service object.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory.
    * @param \Psr\Log\LoggerInterface $logger
-   *   The uiowa_directory_profiles logger channel.
+   *   The uiowa_profiles logger channel.
    *
    * @throws \Exception
    */
   public function __construct(ConfigFactoryInterface $config_factory, LoggerInterface $logger) {
-    $this->config = $config_factory->get('uiowa_directory_profiles.settings');
+    $this->config = $config_factory->get('uiowa_profiles.settings');
     $this->logger = $logger;
     $this->environment = $this->setEnvironment();
     $this->endpoint = $this->setEndpoint();
@@ -75,7 +75,7 @@ class DirectoryProfiles {
    */
   protected function setEnvironment() {
     if ($env = $this->config->get('environment')) {
-      $this->logger->info('APR environment configuration set to @env. Using config instead of AH environment.', [
+      $this->logger->info('Profiles environment configuration set to @env. Using config instead of AH environment.', [
         '@env' => $env,
       ]);
 
