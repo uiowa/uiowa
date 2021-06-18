@@ -91,7 +91,7 @@ class SitemapController extends ControllerBase {
     $path = $this->config->get('directory.path');
 
     $params = UrlHelper::buildQuery([
-      'key' => $this->config->get('api_key'),
+      'api-key' => $this->config->get('api_key'),
       'path' => ltrim($path, '/'),
     ]);
 

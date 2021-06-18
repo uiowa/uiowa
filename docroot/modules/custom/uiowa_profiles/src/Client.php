@@ -111,10 +111,10 @@ class Client {
     $endpoint = '';
 
     if ($this->environment == 'test') {
-      $endpoint = 'https://profiles-test.uiowa.edu';
+      $endpoint = 'https://profiles-test.uiowa.edu/api';
     }
     elseif ($this->environment == 'prod') {
-      $endpoint = 'https://profiles.uiowa.edu';
+      $endpoint = 'https://profiles.uiowa.edu/api';
     }
 
     if (!isset($endpoint)) {
