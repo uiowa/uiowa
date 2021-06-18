@@ -250,6 +250,16 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
           _person_type_status_filter_options($element[PERSON_TYPE_STATUS_FILTER . '_wrapper'][PERSON_TYPE_STATUS_FILTER], $type);
         }
       }
+
+      // @todo Clean this up. We are
+      //   manually updating the default values
+      //   to match the previously set filter values,
+      //   which are available in the saved block config.
+      //   This ensures the exposed filters on the form
+      //   properly match the previously selected filter values.
+      $element['field_person_type_status_value_wrapper']['field_person_type_status_value_op']['#default_value'] = $block->getConfiguration()['exposed_filter_values'][PERSON_TYPE_STATUS_FILTER . '_wrapper']['field_person_type_status_value_op'];
+      $element['field_person_type_status_value_wrapper']['field_person_type_status_value']['#default_value'] = $block->getConfiguration()['exposed_filter_values'][PERSON_TYPE_STATUS_FILTER . '_wrapper']['field_person_type_status_value'];
+
       break;
 
   }
@@ -261,7 +271,10 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
  */
 function _sitenow_people_exposed_filters_validate(array &$form, FormStateInterface $form_state) {
   // @todo Potentially set the correct values here?
-  // Take our filter operators out of their wrapper.
+  //    Also potentially need to scope the following:
+  //    We take our filter operators out of their wrapper,
+  //    and place them within their parent container to be
+  //    passed to the view.
   $form_state->setValue(
     ['settings',
       'override',
