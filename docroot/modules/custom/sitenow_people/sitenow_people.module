@@ -176,7 +176,7 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
       // Check if values or defaults are set for exposed filters
       // and leave the container open if so.
       foreach (Element::children($element) as $field_name) {
-        $default = $element[$field_name]['#default_value'] ?: null;
+        $default = $element[$field_name]['#default_value'] ?: NULL;
         $filter = $form_state->getValue([
           'settings',
           'override',
@@ -271,23 +271,23 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
  */
 function _sitenow_people_exposed_filters_validate(array &$form, FormStateInterface $form_state) {
   // @todo Potentially set the correct values here?
-  //    Also potentially need to scope the following:
-  //    We take our filter operators out of their wrapper,
-  //    and place them within their parent container to be
-  //    passed to the view.
+  //   Also potentially need to scope the following:
+  //   We take our filter operators out of their wrapper,
+  //   and place them within their parent container to be
+  //   passed to the view.
   $form_state->setValue(
     ['settings',
       'override',
       'exposed_filters',
       'field_person_type_status_value',
-      ],
+    ],
     $form_state->getValue(
       ['settings',
         'override',
         'exposed_filters',
         'field_person_type_status_value_wrapper',
         'field_person_type_status_value',
-        ]
+      ]
     )
   );
   $form_state->setValue(
