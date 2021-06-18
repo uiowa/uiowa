@@ -6,7 +6,7 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Logger\LoggerChannelTrait;
-use Drupal\uiowa_profiles\DirectoryProfiles;
+use Drupal\uiowa_profiles\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -24,9 +24,9 @@ class SitemapController extends ControllerBase {
   /**
    * The APR service.
    *
-   * @var \Drupal\uiowa_profiles\DirectoryProfiles
+   * @var \Drupal\uiowa_profiles\Client
    */
-  protected $directory_profiles;
+  protected $profiles;
 
   /**
    * The APR settings immutable config.
@@ -52,15 +52,15 @@ class SitemapController extends ControllerBase {
   /**
    * The controller constructor.
    *
-   * @param \Drupal\uiowa_profiles\DirectoryProfiles $directory_profiles
-   *   The uiowa_profiles.directory_profiles service.
+   * @param \Drupal\uiowa_profiles\Client $profiles
+   *   The uiowa_profiles.profiles service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config
    *   The config factory service.
    * @param \GuzzleHttp\ClientInterface $httpClient
    *   The HTTP client service.
    */
-  public function __construct(DirectoryProfiles $directory_profiles, ConfigFactoryInterface $config, ClientInterface $httpClient) {
-    $this->directory_profiles = $directory_profiles;
+  public function __construct(Client $profiles, ConfigFactoryInterface $config, ClientInterface $httpClient) {
+    $this->profiles = $profiles;
     $this->config = $config->get('uiowa_profiles.settings');
     $this->httpClient = $httpClient;
     $this->logger = $this->getLogger('uiowa_profiles');
@@ -71,7 +71,7 @@ class SitemapController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('uiowa_profiles.directory_profiles'),
+      $container->get('uiowa_profiles.client'),
       $container->get('config.factory'),
       $container->get('http_client')
     );
@@ -96,7 +96,7 @@ class SitemapController extends ControllerBase {
     ]);
 
     try {
-      $response = $this->httpClient->request('GET', "{$this->directory_profiles->endpoint}/people/sitemap?{$params}", [
+      $response = $this->httpClient->request('GET', "{$this->profiles->endpoint}/people/sitemap?{$params}", [
         'headers' => [
           'Accept' => 'text/plain',
           'Referer' => $request->getSchemeAndHttpHost(),

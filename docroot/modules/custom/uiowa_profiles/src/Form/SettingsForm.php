@@ -96,7 +96,7 @@ class SettingsForm extends ConfigFormBase {
     $form['directory_path'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Directory Path'),
-      '#default_value' => $this->config('uiowa_profiles.settings')->get('directory.path') ?? '/directory-profiles/people',
+      '#default_value' => $this->config('uiowa_profiles.settings')->get('directory.path') ?? '/profiles/people',
       '#description' => $this->t('Path for the primary Profiles directory. Serves as the base for all profiles and an additional <a href=":url">sitemap</a> to submit to search engines.', [
         ':url' => Url::fromRoute('uiowa_profiles.sitemap')->toString(),
       ]),
@@ -142,7 +142,7 @@ class SettingsForm extends ConfigFormBase {
         'filtered_html',
       ],
       '#default_value' => $intro['value'] ?? '',
-      '#description' => $this->t('HTML to be included at top of directory. Will be enclosed in a <em>div</em> element with the class apr-directory-introduction.'),
+      '#description' => $this->t('HTML to be included at top of directory. Will be enclosed in a <em>div</em> element with the class directory-introduction.'),
       '#required' => FALSE,
     ];
 

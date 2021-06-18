@@ -1,1 +1,1 @@
-uiProfiles = { basePath: drupalSettings.uiowaDirectoryProfiles.basePath };
+uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };

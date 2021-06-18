@@ -6,12 +6,12 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * The Profiles service sets some dynamic properties based on the environment.
+ * The profiles client sets some dynamic properties based on the environment.
  *
- * @property string $environment The Profiles environment.
- * @property string $endpoint The Profiles API endpoint.
+ * @property string $environment The Profiles client environment.
+ * @property string $endpoint The Profiles client API endpoint.
  */
-class Profiles {
+class Client {
   /**
    * The Profiles settings config.
    *

@@ -7,7 +7,7 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Logger\LoggerChannelTrait;
-use Drupal\uiowa_profiles\DirectoryProfiles;
+use Drupal\uiowa_profiles\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -16,17 +16,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * Returns responses for APR routes.
+ * Returns responses for Profiles routes.
  */
 class DirectoryController extends ControllerBase {
   use LoggerChannelTrait;
 
   /**
-   * The APR service.
+   * The Profiles service.
    *
-   * @var \Drupal\uiowa_profiles\DirectoryProfiles
+   * @var \Drupal\uiowa_profiles\Client
    */
-  protected $directory_profiles;
+  protected $profiles;
 
   /**
    * The uiowa_profiles config.
@@ -52,15 +52,15 @@ class DirectoryController extends ControllerBase {
   /**
    * DirectoryController constructor.
    *
-   * @param \Drupal\uiowa_profiles\DirectoryProfiles $directory_profiles
-   *   The APR service.
+   * @param \Drupal\uiowa_profiles\Client $profiles
+   *   The Profiles service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config
    *   The config factory service.
    * @param \GuzzleHttp\ClientInterface $client
    *   The Guzzle HTTP client.
    */
-  public function __construct(DirectoryProfiles $directory_profiles, ConfigFactoryInterface $config, ClientInterface $client) {
-    $this->directory_profiles = $directory_profiles;
+  public function __construct(Client $profiles, ConfigFactoryInterface $config, ClientInterface $client) {
+    $this->profiles = $profiles;
     $this->config = $config->get('uiowa_profiles.settings');
     $this->client = $client;
     $this->logger = $this->getLogger('uiowa_profiles');
@@ -71,7 +71,7 @@ class DirectoryController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('uiowa_profiles.directory_profiles'),
+      $container->get('uiowa_profiles.client'),
       $container->get('config.factory'),
       $container->get('http_client')
     );
@@ -92,11 +92,11 @@ class DirectoryController extends ControllerBase {
     $build = [
       '#attached' => [
         'library' => [
-          "uiowa_profiles/profiles.{$this->directory_profiles->environment}",
+          "uiowa_profiles/client.{$this->profiles->environment}",
           'uiowa_profiles/styles',
         ],
         'drupalSettings' => [
-          'uiowaDirectoryProfiles' => [
+          'uiowaProfiles' => [
             'basePath' => Html::escape($this->config->get('directory.path')),
             'pageSize' => Html::escape($this->config->get('directory.page_size')),
           ],
@@ -107,7 +107,7 @@ class DirectoryController extends ControllerBase {
         'id' => 'uiprof',
         'role' => 'region',
         'aria-live' => 'polite',
-        'aria-labelled-by' => 'directory-profiles-table-label',
+        'aria-labelled-by' => 'profiles-table-label',
         'tabindex' => 0,
         'class' => [
           'uids-content',
@@ -116,13 +116,13 @@ class DirectoryController extends ControllerBase {
       'label' => [
         '#type' => 'container',
         '#attributes' => [
-          'id' => 'directory-profiles-table-label',
+          'id' => 'profiles-table-label',
           'class' => [
             'visually-hidden',
           ],
         ],
         'markup' => [
-          '#markup' => $this->t('Directory Profiles people listing in a scrolling container.'),
+          '#markup' => $this->t('Profiles people listing in a scrolling container.'),
         ],
       ],
     ];
@@ -167,7 +167,7 @@ class DirectoryController extends ControllerBase {
       $params = UrlHelper::buildQuery(['key' => $this->config->get('api_key')]);
 
       try {
-        $response = $this->client->request('GET', "{$this->directory_profiles->endpoint}/people/{$slug}/meta?{$params}", [
+        $response = $this->client->request('GET', "{$this->profiles->endpoint}/people/{$slug}/meta?{$params}", [
           'headers' => [
             'Accept' => 'text/plain',
             'Referer' => $request->getSchemeAndHttpHost(),
