@@ -268,7 +268,12 @@ function _sitenow_people_exposed_filters_validate(array &$form, FormStateInterfa
  */
 function _person_types_callback(array &$form, FormStateInterface $form_state) {
   // @todo Do these modifications need to be scoped to just run when
-  //   the triggering element is the person types filter?
+  //   the triggering element is the person types filter? Currently
+  //   we're skipping if we're on a node form, but scoping could be
+  //   more specific.
+  if (in_array($form['#form_id'], ['node_person_form', 'node_person_edit_form'])) {
+    return $form;
+  }
   $type = $form_state->getValue([
     'settings',
     'override',

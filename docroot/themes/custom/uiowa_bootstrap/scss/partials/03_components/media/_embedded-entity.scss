@@ -30,32 +30,39 @@ body:not(.cke_editable) {
       margin-right: 1rem;
     }
 
-    .align-right.media--type-remote-video {
+    .align-right.media--type-remote-video,
+    .align-right.media--type-panopto {
       width: auto;
       margin-left: 1rem;
 
-      .field--name-field-media-oembed-video iframe {
+      .field--name-field-media-oembed-video iframe,
+      .field--name-field-media-panopto-url iframe {
         float: right;
       }
     }
-    .align-left.media--type-remote-video {
+    .align-left.media--type-remote-video,
+    .align-left.media--type-panopto {
       width: auto;
       margin-right: 1rem;
 
-      .field--name-field-media-oembed-video iframe {
+      .field--name-field-media-oembed-video iframe,
+      .field--name-field-media-panopto-url iframe {
         float: left;
       }
     }
 
   }
 
-  .align-center.media--type-remote-video {
-    & .field--name-field-media-oembed-video iframe {
+  .align-center.media--type-remote-video,
+  .align-center.media--type-panopto {
+    & .field--name-field-media-oembed-video iframe,
+    & .field--name-field-media-panopto-url iframe {
       margin: 0 auto;
     }
   }
 
-  .media--type-remote-video {
+  .media--type-remote-video,
+  .media--type-panopto {
     @extend .embed-responsive;
     padding-bottom: 56.25%;
 
@@ -80,7 +87,14 @@ body:not(.cke_editable) {
   .media--type-remote-video.media--view-mode-image-small iframe,
   .media--type-remote-video.media--view-mode-medium iframe,
   .media--type-remote-video.media--view-mode-large iframe,
-  .media--type-remote-video.media--view-mode-small iframe {
+  .media--type-remote-video.media--view-mode-small iframe,
+  figure.caption .media--type-panopto iframe,
+  .media--type-panopto.media--view-mode-image-medium iframe,
+  .media--type-panopto.media--view-mode-image-large iframe,
+  .media--type-panopto.media--view-mode-image-small iframe,
+  .media--type-panopto.media--view-mode-medium iframe,
+  .media--type-panopto.media--view-mode-large iframe,
+  .media--type-panopto.media--view-mode-small iframe {
     @include media-breakpoint-up(sm) {
       position: unset;
       display: inherit;
@@ -95,7 +109,12 @@ body:not(.cke_editable) {
   figure.caption .media--type-remote-video.media--view-mode-large iframe,
   figure.caption .media--type-remote-video.media--view-mode-full iframe,
   .media--type-remote-video.media--view-mode-large iframe,
-  .media--type-remote-video.media--view-mode-image-large iframe {
+  .media--type-remote-video.media--view-mode-image-large iframe,
+  figure.caption .media--type-panopto.media--view-mode-image-large iframe,
+  figure.caption .media--type-panopto.media--view-mode-large iframe,
+  figure.caption .media--type-panopto.media--view-mode-full iframe,
+  .media--type-panopto.media--view-mode-large iframe,
+  .media--type-panopto.media--view-mode-image-large iframe {
     @include media-breakpoint-up(sm) {
       width: 854px;
       height: 480px;
@@ -105,7 +124,11 @@ body:not(.cke_editable) {
   figure.caption .media--type-remote-video.media--view-mode-image-medium iframe,
   figure.caption .media--type-remote-video.media--view-mode-medium iframe,
   .media--type-remote-video.media--view-mode-image-medium iframe,
-  .media--type-remote-video.media--view-mode-medium iframe {
+  .media--type-remote-video.media--view-mode-medium iframe,
+  figure.caption .media--type-panopto.media--view-mode-image-medium iframe,
+  figure.caption .media--type-panopto.media--view-mode-medium iframe,
+  .media--type-panopto.media--view-mode-image-medium iframe,
+  .media--type-panopto.media--view-mode-medium iframe {
     @include media-breakpoint-up(sm) {
       width: 640px;
       height: 360px;
@@ -115,7 +138,11 @@ body:not(.cke_editable) {
   figure.caption .media--type-remote-video.media--view-mode-image-small iframe,
   figure.caption .media--type-remote-video.media--view-mode-small iframe,
   .media--type-remote-video.media--view-mode-small iframe,
-  .media--type-remote-video.media--view-mode-image-small iframe {
+  .media--type-remote-video.media--view-mode-image-small iframe,
+  figure.caption .media--type-panopto.media--view-mode-image-small iframe,
+  figure.caption .media--type-panopto.media--view-mode-small iframe,
+  .media--type-panopto.media--view-mode-small iframe,
+  .media--type-panopto.media--view-mode-image-small iframe {
     @include media-breakpoint-up(sm) {
       width: 426px;
       height: 240px;
@@ -143,7 +170,8 @@ body:not(.cke_editable) {
   .embedded-entity.align-center,
   .media.align-center {
     .field--name-field-media-oembed-video iframe,
-    .field--name-field-media-instagram iframe {
+    .field--name-field-media-instagram iframe,
+    .field--name-field-media-panopto-url iframe {
       margin: 0 auto !important;
     }
   }
@@ -261,7 +289,9 @@ body:not(.cke_editable) {
   }
 
   .media--type-remote-video.media--view-mode-default,
-  .media--type-remote-video.media--view-mode-full {
+  .media--type-remote-video.media--view-mode-full,
+  .media--type-panopto.media--view-mode-default,
+  .media--type-panopto.media--view-mode-full {
     padding-bottom: 56.25%;
   }
   .align-left.media--view-mode-default,
