@@ -166,10 +166,10 @@ class DirectoryController extends ControllerBase {
 
     // If a slug is set, this is a profile page. Otherwise, its the directory.
     if ($slug) {
-      $params = UrlHelper::buildQuery(['key' => $this->config->get('api_key')]);
+      $params = UrlHelper::buildQuery(['api-key' => $this->config->get('api_key')]);
 
       try {
-        $response = $this->client->request('GET', "{$this->profiles->endpoint}/people/{$slug}/meta?{$params}", [
+        $response = $this->client->request('GET', "{$this->profiles->endpoint}/people/{$slug}/name?{$params}", [
           'headers' => [
             'Accept' => 'text/plain',
             'Referer' => $request->getSchemeAndHttpHost(),
@@ -184,11 +184,8 @@ class DirectoryController extends ControllerBase {
 
       $contents = $response->getBody()->getContents();
 
-      /** @var object $meta */
-      $meta = json_decode($contents);
-
       $build['#markup'] = $this->t('@title', [
-        '@title' => $meta->name,
+        '@title' => $contents,
       ]);
 
       $build['#attached']['html_head_link'][][] = [
