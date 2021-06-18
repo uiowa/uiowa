@@ -102,32 +102,34 @@ class DirectoryController extends ControllerBase {
           ],
         ],
       ],
-      '#type' => 'container',
-      '#attributes' => [
-        'id' => 'uiprof',
-        'role' => 'region',
-        'aria-live' => 'polite',
-        'aria-labelled-by' => 'profiles-table-label',
-        'tabindex' => 0,
-        'class' => [
-          'uids-content',
-        ],
-      ],
-      'label' => [
+      'uiprof' => [
         '#type' => 'container',
         '#attributes' => [
-          'id' => 'profiles-table-label',
+          'id' => 'uiprof',
+          'role' => 'region',
+          'aria-live' => 'polite',
+          'aria-labelled-by' => 'profiles-table-label',
+          'tabindex' => 0,
           'class' => [
-            'visually-hidden',
+            'uids-content',
           ],
         ],
-        'markup' => [
-          '#markup' => $this->t('Profiles people listing in a scrolling container.'),
+        'label' => [
+          '#type' => 'container',
+          '#attributes' => [
+            'id' => 'profiles-table-label',
+            'class' => [
+              'visually-hidden',
+            ],
+          ],
+          'markup' => [
+            '#markup' => $this->t('Profiles people listing in a scrolling container.'),
+          ],
         ],
       ],
     ];
 
-    $build['directory'] = [
+    $build['uiprof']['client'] = [
       '#type' => 'html_tag',
       '#tag' => 'profiles-client',
       '#attributes' => [
@@ -140,7 +142,7 @@ class DirectoryController extends ControllerBase {
 
 
     if ($slug) {
-      $build['directory']['#attributes']['slug'] = Html::escape($slug);
+      $build['uiprof']['client']['#attributes']['slug'] = Html::escape($slug);
     }
 
     return $build;
