@@ -14,8 +14,6 @@ use AcquiaCloudApi\Endpoints\Environments;
 use AcquiaCloudApi\Endpoints\SslCertificates;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
-use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
@@ -706,9 +704,20 @@ EOD;
         ->printOutput(FALSE)
         ->printMetadata(FALSE)
         ->run();
-      $steps += [
-        'Push this branch and merge via a pull request.',
-        'Coordinate a new release and deploy to the test and prod environments.',
+
+      $result = $this->taskGit()
+        ->dir($this->getConfigValue('repo.root'))
+        ->exec('git rev-parse --abbrev-ref HEAD')
+        ->interactive(FALSE)
+        ->printOutput(FALSE)
+        ->printMetadata(FALSE)
+        ->run();
+
+      $branch = $result->getMessage();
+
+      $steps = [
+        0 => "Push this branch and merge via a pull request: <comment>git push --set-upstream origin {$branch}</comment>",
+        1 => 'Coordinate a new release and deploy to the test and prod environments.',
       ];
     }
 
@@ -716,9 +725,9 @@ EOD;
     $this->say("Continue initializing additional multisites or follow the next steps below.");
 
     $steps += [
-      'Deploy a release to production as per usual.',
-      'Once deployed, invoke the uiowa:multisite:install BLT command in the production environment on the appropriate application(s)',
-      'Add the multisite domains to environments as needed.',
+      1 => 'Deploy a release to production as per usual.',
+      2 => 'Once deployed, invoke the <comment>uiowa:multisite:install</comment> BLT command in the production environment on the appropriate application(s)',
+      3 => 'Add the multisite domains to environments as needed.',
     ];
 
     $this->io()->listing($steps);

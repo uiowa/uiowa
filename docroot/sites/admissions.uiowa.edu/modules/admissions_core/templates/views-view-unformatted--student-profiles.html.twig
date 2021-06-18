@@ -107,7 +107,6 @@
         'card--person-teaser',
         'card--list',
         'card--stacked',
-        'media--circle',
         'media--border',
         'card--enclosed',
         'bg--white',
@@ -126,7 +125,7 @@
         'person_hometown': view.style_plugin.getField(key, 'field_person_hometown'),
         'person_territory': view.style_plugin.getField(key, 'field_student_profile_state'),
         'person_country': view.style_plugin.getField(key, 'field_student_profile_country'),
-        'media_attributes': media_attributes.addClass('card__media--medium card__media'),
+        'media_attributes': media_attributes.addClass('card__media--medium card__media media--circle'),
     } %}
 
     {% embed '@uids_base/uids/card.html.twig' with person_card_view only %}
@@ -139,13 +138,13 @@
 
     {% block card_subtitle %}
         {% if card_subtitle|striptags|trim is not empty %}
-            <div class="card__subtitle"><span class="fas fa-book"></span>{{ card_subtitle }}</div>
+            <div class="card__subtitle"><span role="presentation" class="fas fa-book"></span>{{ card_subtitle }}</div>
         {% endif %}
     {% endblock %}
 
     {% block card_tag %}
         {% if person_hometown|striptags|trim is not empty %}
-            <div class="card__date"><span class="fas fa-map-marker-alt"></span>{{ person_hometown }}</div>
+            <div class="card__date"><span role="presentation" class="fas fa-map-marker-alt"></span>{{ person_hometown }}</div>
         {% endif %}
     {% endblock %}
 

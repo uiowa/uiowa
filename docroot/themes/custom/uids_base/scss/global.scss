@@ -10,11 +10,22 @@ $imgpath: '../../uids/assets/images';
 .layout__region {
 
   .block,
-  .view {
+  .view,
+  .card,
+  .banner,
+  .cta__wrapper,
+  .slider,
+  .stat {
     flex-basis: 100%;
   }
 }
 
+// Unset equal height columns
+.section-alignment__start {
+  .layout__spacing_container {
+    align-items: flex-start;
+  }
+}
 
 // Layout container padding
 
@@ -115,9 +126,7 @@ $imgpath: '../../uids/assets/images';
 
   // @todo Where should this live?
   .block-inline-blockuiowa-text-area {
-    //width: 100%;
-    //flex: 1 0 auto;
-    flex-basis: 100%;
+    min-width: 0;
 
     &[class*="bg--"],
     &[class*="bg-pattern--"] {
@@ -225,6 +234,13 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   }
 }
 
+// Container fix for responsive tables
+
+.layout__spacing_container {
+  min-width: 0;
+}
+
+
 // Block Margins / Padding
 
 .block-padding {
@@ -277,6 +293,14 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   }
 }
 
+// No results text
+.view-empty,
+.events-empty,
+.uiowa-aggregator-no-results {
+  p {
+    font-size: 1rem;
+  }
+}
 // mobile search
 
 .search-button[aria-expanded="true"] {
@@ -402,6 +426,13 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
 .views-element-container {
   @include margin($top: $lg);
+  flex-basis: 100%;
+
+  // todo remove after https://github.com/uiowa/uiowa/issues/2706 is completed.
+  .inner--list &,
+  .inner--grid & {
+    margin-top: 0;
+  }
 
   .views-element-container {
     margin-top: inherit;
@@ -513,6 +544,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
 .block-inline-blockuiowa-collection {
   flex-basis: 100%;
+  min-width: 0;
 }
 
 .screen-reader-text {

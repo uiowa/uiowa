@@ -56,7 +56,9 @@
   .node--type-article,
   .card--list {
     display: flex;
-    flex-direction: row-reverse;
+    @include breakpoint(sm) {
+      flex-direction: row-reverse;
+    }
   }
 }
 
@@ -67,16 +69,17 @@
     @include list-group-flush;
   }
 
-  .featured-content-item {
-    // @include list-group-item;
-  }
-
-  .card__media,
-  .content-image {
+  .content-image,
+  .card__media {
     @include card-media-horizontal-right;
 
     @include breakpoint(sm) {
       margin-top: $lg;
+    }
+    &.media--circle {
+      @include breakpoint(sm) {
+        margin-top: 0;
+      }
     }
   }
 }
@@ -133,8 +136,15 @@
 */
   .node--type-article,
   .card--list {
-    display: flex;
-    flex-direction: row-reverse;
+    @include breakpoint(sm) {
+      display: flex;
+      flex-direction: row-reverse;
+    }
+    &.card--person-teaser {
+      @include breakpoint(sm) {
+        margin-top: 1.6rem;
+      }
+    }
   }
 }
 
@@ -146,14 +156,14 @@
   .card--person-teaser {
     @include breakpoint(sm) {
       padding: 2rem!important;
+      margin-top: 0;
     }
   }
 }
 
 // Articles List
 .paragraph--type--articles.list,
-.paragraph--type--people.list,
-.view-display-id-page_articles {
+.paragraph--type--people.list {
   .view-content {
     @include list-group;
     @include list-group-flush;
@@ -161,8 +171,7 @@
   }
 
   .views-row {
-    @include list-group-item;
-    
+
     &:first-child {
       border-top: none;
     }
@@ -283,6 +292,12 @@
   .node--view-mode-teaser.media {
     @include card-enclosed;
     border: 1px solid rgba(0,0,0,.125)!important;
+    .media--circle {
+      margin-top: 2rem;
+      @include breakpoint(sm) {
+        margin-top: 0;
+      }
+    }
     &.card--person-teaser {
       .card__body {
         @include breakpoint(sm) {
@@ -445,6 +460,9 @@
 
   .card {
     @include card-enclosed;
+    .card__body {
+      padding: 0;
+    }
   }
 }
 
@@ -478,6 +496,12 @@
     .card, .node--view-mode-teaser.media  {
       border: 1px solid;
       border-color: rgba(0,0,0,.125) !important;
+      .media--circle {
+        margin-top: 2rem;
+        @include breakpoint(sm) {
+          margin-top: 0;
+        }
+      }
     }
   }
 
@@ -573,6 +597,9 @@
     display: inline-block;
     width: 100%;
     margin-bottom: $gutter;
+    .card__body {
+      padding: 0;
+    }
   }
 }
 

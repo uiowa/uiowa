@@ -42,13 +42,10 @@ ul {
 }
 
 p,
-ul {
-  line-height: $reduced-line-height;
+ul,
+em {
   font-size: 0.7rem;
-  margin-top: 0;
-  margin-bottom: 0.7rem;
   color: #666;
-  line-height: 1;
   word-wrap: break-word;
 
   strong {
@@ -71,6 +68,12 @@ ul {
       display: inline;
       color: #999;
     }
+    // Internal links, beginning with "/"
+    &[href^="/"] {
+      &:after {
+        content: " (https://admissions.uiowa.edu" attr(href) ")";
+      }
+    }
   }
 }
 
@@ -90,7 +93,6 @@ h5,
 h6 {
   font-family: Roboto,sans-serif;
   font-size: 0.8rem;
-  font-weight: 700;
   font-weight: bold;
 }
 
@@ -147,8 +149,6 @@ h6 {
 .print__container {
   position: relative;
   width: 100%;
-  page-break-inside: auto;
-  page-break-before: auto;
 
   &:after {
     display: block;
@@ -164,9 +164,6 @@ h6 {
   float: left;
   margin-top: -15px;
   word-wrap: break-word;
-  page-break-inside: auto;
-  page-break-before: avoid;
-  page-break-after: avoid;
 
   &:after {
     display: block;
@@ -274,6 +271,13 @@ h6 {
   h5,
   h6 {
     margin: 0;
+  }
+
+  p,
+  ul {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    line-height: 1;
   }
 
   ul {
@@ -391,11 +395,16 @@ h6 {
   .field--name-field-area-of-study-scholarship,
   .field--name-field-area-of-study-selective,
   .field--name-field-area-of-study-subprogram,
-  .field--name-field-area-of-study-teaching {
+  .field--name-field-area-of-study-teaching,
+  .field--name-field-area-of-study-course-work {
+    page-break-inside: avoid;
+    page-break-before: auto;
+
     .field__label {
       @extend .element--bold-intro;
       font-family: $font-family-caps;
       text-transform: uppercase;
+      page-break-after: avoid;
     }
 
     .field__item {
@@ -404,6 +413,8 @@ h6 {
       font-family: 'Roboto', sans-serif!important;
       color: #666;
       line-height: 1;
+      page-break-inside: auto;
+      page-break-before: avoid;
     }
   }
 
@@ -468,6 +479,15 @@ h6 {
   }
 }
 .node--type-page {
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: $font-family-serif;
+    font-size: 0.8rem;
+    page-break-after: avoid;
+  }
 
   table, .table {
     font-size: 10px;
@@ -475,46 +495,56 @@ h6 {
     color: black;
     background-color: $white;
     border-collapse: collapse;
+    margin-top: 5px;
+    width: 100%;
 
     td,
-    p {
-      vertical-align: middle;
+    p,
+    em,
+    strong,
+    span {
+      word-wrap: normal;
       font-size: 10px;
       color: black;
+    }
+    td, th {
       padding: 5px;
+      min-width: 50px;
+    }
+    td {
+      padding: 10px;
+      font-family: 'Roboto', sans-serif;
+
+      p,
+      ul {
+        &:first-of-type {
+          margin-top: 0;
+        }
+
+        &:last-of-type {
+          margin-bottom: 0;
+        }
+      }
+
+    }
+    tr {
+      page-break-inside: avoid;
+      page-break-before: auto;
+      border: solid 0.5px black;
     }
 
     thead td,
-    thead th {
-      background-color: $light;
+    thead th,
+    th,
+    caption,
+    caption strong {
+      font-family: 'Roboto', sans-serif;
       text-transform: uppercase;
+      background-color: $light;
       color: black;
-      font-size: 10px;
+      font-size: 10px !important;
       padding: 10px;
-    }
-
-    &.is-striped {
-      thead th {
-        background-color: $light;
-        text-transform: uppercase;
-        color: black;
-        font-size: 10px;
-        padding: 10px;
-      }
-      
-      td, th {
-        padding: 5px;
-        min-width: 50px;
-      }
-
-      p, td {
-        font-size: 10px;
-        color: black;
-      }
-
-      tr {
-        border: solid 0.5px black;
-      }
+      line-height: $reduced-line-height;
     }
   }
 }

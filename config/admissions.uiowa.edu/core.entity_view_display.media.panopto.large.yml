@@ -1,0 +1,41 @@
+uuid: 238def25-b0a2-414e-8333-305975587686
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.large
+    - field.field.media.panopto.field_media_panopto_url
+    - media.type.panopto
+  module:
+    - layout_builder
+    - sitenow_media_wysiwyg
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+id: media.panopto.large
+targetEntityType: media
+bundle: panopto
+mode: large
+content:
+  field_media_panopto_url:
+    weight: 1
+    label: hidden
+    settings:
+      trim_length: '80'
+      url_only: ''
+      url_plain: ''
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: panopto_url_formatter
+    region: content
+hidden:
+  created: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  name: true
+  search_api_excerpt: true
+  thumbnail: true
+  uid: true
