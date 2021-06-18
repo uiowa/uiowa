@@ -261,6 +261,37 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
  */
 function _sitenow_people_exposed_filters_validate(array &$form, FormStateInterface $form_state) {
   // @todo Potentially set the correct values here?
+  // Take our filter operators out of their wrapper.
+  $form_state->setValue(
+    ['settings',
+      'override',
+      'exposed_filters',
+      'field_person_type_status_value',
+      ],
+    $form_state->getValue(
+      ['settings',
+        'override',
+        'exposed_filters',
+        'field_person_type_status_value_wrapper',
+        'field_person_type_status_value',
+        ]
+    )
+  );
+  $form_state->setValue(
+    ['settings',
+      'override',
+      'exposed_filters',
+      'field_person_type_status_value_op',
+    ],
+    $form_state->getValue(
+      ['settings',
+        'override',
+        'exposed_filters',
+        'field_person_type_status_value_wrapper',
+        'field_person_type_status_value_op',
+      ]
+    )
+  );
 }
 
 /**
