@@ -26,14 +26,13 @@ drupal_login_roles:
   administrator: '0'
 error_redirect_url: ''
 error_throw: false
-sp_entity_id: ''
+sp_entity_id: OVERRIDDEN
 sp_name_id_format: 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient'
-sp_x509_certificate: Overridden
-sp_private_key: Overridden
-sp_cert_folder: ''
-idp_entity_id: ''
-idp_single_sign_on_service: ''
-idp_single_log_out_service: ''
+sp_x509_certificate: OVERRIDDEN
+sp_private_key: OVERRIDDEN
+idp_entity_id: OVERRIDDEN
+idp_single_sign_on_service: 'https://overridden.drupal.prod.uiowa.edu'
+idp_single_log_out_service: 'https://overridden.drupal.prod.uiowa.edu'
 idp_change_password_service: 'https://apps.its.uiowa.edu/pwtool/change'
 idp_cert_type: single
 idp_x509_certificate: ''
@@ -62,3 +61,12 @@ debug_log_saml_out: false
 debug_log_saml_in: false
 debug_log_in: false
 debug_phpsaml: false
+sp_new_certificate: ''
+idp_certs:
+  - OVERRIDDEN
+idp_cert_encryption: ''
+security_metadata_sign: false
+security_nameid_encrypt: false
+security_nameid_encrypted: false
+security_assertions_signed: false
+security_encryption_algorithm: ''
