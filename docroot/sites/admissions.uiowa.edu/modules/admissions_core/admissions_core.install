@@ -331,3 +331,30 @@ function admissions_core_update_9002() {
       '@report' => implode($output_report, "\n"),
     ]));
 }
+
+/**
+ * Solves the error: "Mismatched entity and/or field definitions".
+ */
+function admissions_core_update_9003() {
+
+  $module_name = 'admissions_core';
+  $entity_type = 'node';
+  $fields = [
+    'field_area_of_study_college',
+  ];
+
+  $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+  $field_definitions = \Drupal::service('entity_field.manager')
+    ->getFieldDefinitions($entity_type, $entity_type);
+  foreach ($fields as $field_name) {
+    if (!empty($field_definitions[$field_name]) && $field_definitions[$field_name] instanceof FieldStorageDefinitionInterface) {
+      $entity_definition_update_manager
+        ->installFieldStorageDefinition(
+          $field_name,
+          $entity_type,
+          $module_name,
+          $field_definitions[$field_name]);
+    }
+  }
+
+}
