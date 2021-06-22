@@ -336,25 +336,19 @@ function admissions_core_update_9002() {
  * Solves the error: "Mismatched entity and/or field definitions".
  */
 function admissions_core_update_9003() {
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $entity_type_manager->clearCachedDefinitions();
 
-  $module_name = 'admissions_core';
-  $entity_type = 'node';
-  $fields = [
-    'field_area_of_study_college',
-  ];
-
-  $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
-  $field_definitions = \Drupal::service('entity_field.manager')
-    ->getFieldDefinitions($entity_type, $entity_type);
-  foreach ($fields as $field_name) {
-    if (!empty($field_definitions[$field_name]) && $field_definitions[$field_name] instanceof FieldStorageDefinitionInterface) {
-      $entity_definition_update_manager
-        ->installFieldStorageDefinition(
-          $field_name,
-          $entity_type,
-          $module_name,
-          $field_definitions[$field_name]);
-    }
+  $entity_type_ids = [];
+  $change_summary = \Drupal::service('entity.definition_update_manager')->getChangeSummary();
+  foreach ($change_summary as $entity_type_id => $change_list) {
+    $entity_type = $entity_type_manager->getDefinition($entity_type_id);
+    \Drupal::entityDefinitionUpdateManager()->installEntityType($entity_type);
+    $entity_type_ids[] = $entity_type_id;
   }
+  drupal_flush_all_caches();
 
+  return t("Installed/Updated the entity type(s): @entity_type_ids", [
+    '@entity_type_ids' => implode(', ', $entity_type_ids),
+  ]);
 }
