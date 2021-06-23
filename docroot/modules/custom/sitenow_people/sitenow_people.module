@@ -202,6 +202,18 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
         break;
       }
 
+      /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+      $check = \Drupal::service('uiowa_core.access_checker');
+
+      /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+      $access = $check->access(\Drupal::currentUser()->getAccount());
+
+      // Only allow admins access to the person type status filter for now.
+      if ($access->isForbidden()) {
+        $element[PERSON_TYPE_STATUS_FILTER . '_wrapper']['#access'] = FALSE;
+        break;
+      }
+
       // Show/hide person type statuses based on person type selections.
       $element['field_person_types_target_id']['#ajax'] = [
         'callback' => '_person_types_callback',

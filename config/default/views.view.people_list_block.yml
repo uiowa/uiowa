@@ -616,7 +616,7 @@ display:
             identifier: field_tags_target_id
             required: false
             remember: false
-            multiple: false
+            multiple: true
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
@@ -835,7 +835,7 @@ display:
   list_card:
     display_plugin: block
     id: list_card
-    display_title: 'People List'
+    display_title: 'People list'
     position: 3
     display_options:
       display_extenders:
@@ -857,7 +857,7 @@ display:
         - field_person_type_status_value
       more_link_help_text: 'Check to include a ''display more'' link. To use the default <a href="/admin/config/system/sitenow-people">people path set within SiteNow People</a>, make sure the ‘Enable people listing’ box is checked. Alternatively, a custom URL path can be provided in the ‘Path’ text box below. '
       display_description: ''
-      block_description: 'People list'
+      block_description: People
     cache_metadata:
       max-age: -1
       contexts:
