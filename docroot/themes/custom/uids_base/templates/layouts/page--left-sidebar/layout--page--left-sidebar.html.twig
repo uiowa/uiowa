@@ -26,35 +26,6 @@
 %}
 {{ attach_library('uids_base/page--left-sidebar') }}
 
-{% if content %}
-  <div{{ attributes.addClass(classes) }}>
-    <div class="layout__spacing_container">
-      {% if sidebar %}
-        <div class="layout__region layout__region--sidebar">
-          {% if region_attributes.sidebar.storage['data-region'] %}
-          {{ attach_library('uids_base/admin') }}
-          <div {{ region_attributes.sidebar.addClass('flex__wrapper') }}>
-            {% endif %}
-            {{ sidebar }}
-            {% if region_attributes.sidebar.storage['data-region'] %}
-          </div>
-          {% endif %}
-        </div>
-      {% endif %}
+{% set attributes = attributes.addClass(classes) %}
 
-      {% if content.content %}
-        <div class="layout__region layout__region--main">
-          {% if region_attributes.content.storage['data-region'] %}
-          {{ attach_library('uids_base/admin') }}
-          <div {{ region_attributes.content.addClass('flex__wrapper') }}>
-            {% endif %}
-            {{ content.content }}
-            {% if region_attributes.content.storage['data-region'] %}
-          </div>
-          {% endif %}
-        </div>
-      {% endif %}
-    </div>
-  </div>
-
-{% endif %}
+{% include '@uids_base/layouts/layout.html.twig' %}
