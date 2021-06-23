@@ -272,23 +272,23 @@ form#node-page-layout-builder-form {
     background: $secondary;
   }
 
-  &.bg-pattern--brain {
+  &[class*="bg--gold"] {
+    background: $primary;
+  }
+
+  &.bg--white--pattern--brain {
     background: #fff url("#{$imgpath}/brain-pattern.svg");
     background-size: auto auto;
   }
 
-  &.bg-pattern--brain-reversed {
+  &.bg--gold--pattern--brain {
     background: $primary url("#{$imgpath}/brain-pattern-reversed.svg");
     background-size: auto auto;
   }
 
-  &.bg-pattern--brain-black {
+  &.bg--black--pattern--brain {
     background: $secondary url("#{$imgpath}/brain-pattern-black.svg");
     background-size: auto auto;
-  }
-
-  &[class*="bg--gold"] {
-    background: $primary;
   }
 }
 
