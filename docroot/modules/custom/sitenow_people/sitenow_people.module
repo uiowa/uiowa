@@ -23,6 +23,8 @@ use Drupal\views\Entity\View;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
 
+define('PERSON_TYPE_STATUS_FILTER', 'field_person_type_status_value');
+
 /**
  * Implements hook_form_alter().
  */
@@ -174,14 +176,14 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
       // Check if values or defaults are set for exposed filters
       // and leave the container open if so.
       foreach (Element::children($element) as $field_name) {
-        $default = $element[$field_name]['#default_value'];
+        $default = $element[$field_name]['#default_value'] ?: NULL;
         $filter = $form_state->getValue([
           'settings',
           'override',
           'exposed_filters',
           $field_name,
         ]);
-        if ($filter || !empty($default)) {
+        if ($filter || $default) {
           $element['#open'] = TRUE;
           break;
         }
@@ -196,7 +198,19 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
       _sitenow_people_person_type_filter_select($element['field_person_types_target_id']);
 
       // Only continue if person type status filter exists.
-      if (!isset($element['field_person_type_status_value'])) {
+      if (!isset($element[PERSON_TYPE_STATUS_FILTER])) {
+        break;
+      }
+
+      /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+      $check = \Drupal::service('uiowa_core.access_checker');
+
+      /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+      $access = $check->access(\Drupal::currentUser()->getAccount());
+
+      // Only allow admins access to the person type status filter for now.
+      if ($access->isForbidden()) {
+        $element[PERSON_TYPE_STATUS_FILTER . '_wrapper']['#access'] = FALSE;
         break;
       }
 
@@ -213,11 +227,11 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
       ];
 
       $person_type_options = $element['field_person_types_target_id']['#options'];
-      $person_type_status_options = $element['field_person_type_status_value']['#options'];
+      $person_type_status_options = $element[PERSON_TYPE_STATUS_FILTER . '_wrapper'][PERSON_TYPE_STATUS_FILTER]['#options'];
 
       foreach ($person_type_options as $key => $option) {
         if (isset($person_type_status_options[$key])) {
-          $element['field_person_type_status_value']['#states']['visible'][] = [
+          $element[PERSON_TYPE_STATUS_FILTER . '_wrapper']['#states']['visible'][] = [
             ':input[name="settings[override][exposed_filters][field_person_types_target_id]"]' => [
               'value' => $key,
             ],
@@ -245,9 +259,23 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
 
         // Set person type status options based on the type.
         if ($type) {
-          _person_type_status_filter_options($element['field_person_type_status_value']['#options'], $type);
+          _person_type_status_filter_options($element[PERSON_TYPE_STATUS_FILTER . '_wrapper'][PERSON_TYPE_STATUS_FILTER], $type);
         }
       }
+
+      // @todo Clean this up. We are
+      //   manually updating the default values
+      //   to match the previously set filter values,
+      //   which are available in the saved block config.
+      //   This ensures the exposed filters on the form
+      //   properly match the previously selected filter values.
+      foreach ([
+        'field_person_type_status_value',
+        'field_person_type_status_value_op',
+      ] as $field) {
+        $element[PERSON_TYPE_STATUS_FILTER . '_wrapper'][$field]['#default_value'] = $block->getConfiguration()['exposed_filter_values'][PERSON_TYPE_STATUS_FILTER . '_wrapper'][$field];
+      }
+
       break;
 
   }
@@ -259,6 +287,30 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
  */
 function _sitenow_people_exposed_filters_validate(array &$form, FormStateInterface $form_state) {
   // @todo Potentially set the correct values here?
+  //   Also potentially need to scope the following:
+  //   We take our filter operators out of their wrapper,
+  //   and place them within their parent container to be
+  //   passed to the view.
+  foreach ([
+    'field_person_type_status_value',
+    'field_person_type_status_value_op',
+  ] as $field) {
+    $form_state->setValue(
+      ['settings',
+        'override',
+        'exposed_filters',
+        $field,
+      ],
+      $form_state->getValue(
+        ['settings',
+          'override',
+          'exposed_filters',
+          'field_person_type_status_value_wrapper',
+          $field,
+        ]
+      )
+    );
+  }
 }
 
 /**
@@ -279,11 +331,7 @@ function _person_types_callback(array &$form, FormStateInterface $form_state) {
     'field_person_types_target_id',
   ]);
 
-  $person_type_status_options = $form['settings']['override']['exposed_filters']['field_person_type_status_value']['#options'];
-
-  _person_type_status_filter_options($person_type_status_options, $type);
-
-  $form['settings']['override']['exposed_filters']['field_person_type_status_value']['#options'] = $person_type_status_options;
+  _person_type_status_filter_options($form['settings']['override']['exposed_filters'][PERSON_TYPE_STATUS_FILTER . '_wrapper'][PERSON_TYPE_STATUS_FILTER], $type);
 
   return $form;
 }
@@ -291,11 +339,14 @@ function _person_types_callback(array &$form, FormStateInterface $form_state) {
 /**
  * Helper function to remove all options except for 'Any' and $type.
  */
-function _person_type_status_filter_options(array &$options, $type) {
-  foreach ($options as $key => $option) {
-    // Unset options that aren't associated with selected person type.
-    if ($key !== 'All' && $type != $key) {
-      unset($options[$key]);
+function _person_type_status_filter_options(array &$field, $type) {
+  if (isset($field['#options'])) {
+
+    foreach ($field['#options'] as $key => $option) {
+      // Unset options that aren't associated with selected person type.
+      if ($key !== 'All' && $type != $key) {
+        unset($field['#options'][$key]);
+      }
     }
   }
 }
