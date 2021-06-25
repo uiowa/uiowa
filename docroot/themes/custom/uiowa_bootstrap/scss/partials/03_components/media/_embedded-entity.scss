@@ -1,27 +1,130 @@
-body:not(.cke_editable) {
-  .embed-responsive {
-    position: relative;
-    display: block;
-    width: 100%;
-    padding: 0;
-    overflow: hidden;
-  }
+.embed-responsive {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+}
 
+.embed-responsive embed,
+.embed-responsive iframe,
+.embed-responsive object,
+.embed-responsive video {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+body.cke_editable {
+  // Adjust responsive positioning to make room for edit button
   .embed-responsive embed,
   .embed-responsive iframe,
   .embed-responsive object,
-  .embed-responsive video {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
+  .embed-responsive video,
+  .media--type-panopto embed,
+  .media--type-panopto iframe,
+  .media--type-panopto object,
+  .media--type-panopto video,
+  .media--type-remote-video embed,
+  .media--type-remote-video iframe,
+  .media--type-remote-video object,
+  .media--type-remote-video video {
+    top: 40px;
   }
 
-  @media (min-width: 576px) {
+  figure.caption-drupal-media {
+    width: 100%;
+    margin: 0;
+  }
+}
 
+.align-center.media--type-remote-video,
+.align-center.media--type-panopto {
+  & .field--name-field-media-oembed-video iframe,
+  & .field--name-field-media-panopto-url iframe {
+    margin: 0 auto;
+  }
+}
+
+.media--type-remote-video,
+.media--type-panopto {
+  @extend .embed-responsive;
+  padding-bottom: 56.25%;
+}
+
+.embedded-entity {
+  max-width: 100%;
+  margin-bottom: 0;
+
+  figure & {
+    margin-bottom: 0;
+  }
+
+  figcaption {
+    margin-top: 0.5rem;
+  }
+}
+
+
+.embedded-entity + p {
+  margin-top: 1rem !important;
+}
+
+.embedded-entity.align-center,
+.media.align-center {
+  .field--name-field-media-oembed-video iframe,
+  .field--name-field-media-instagram iframe,
+  .field--name-field-media-panopto-url iframe {
+    margin: 0 auto !important;
+  }
+}
+
+figure.caption .embedded-entity + figcaption {
+  font-size: 90%;
+  color: $gray-900;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.align-center {
+  text-align: center;
+}
+
+.embedded-entity.align-center {
+
+  .media--type-image,
+  .field--name-field-media-image {
+    margin: 0 auto;
+  }
+}
+
+.field--name-field-media-image {
+  min-width: 1px;
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+.media--type-remote-video.media--view-mode-default,
+.media--type-remote-video.media--view-mode-full,
+.media--type-panopto.media--view-mode-default,
+.media--type-panopto.media--view-mode-full {
+  padding-bottom: 56.25%;
+}
+.align-left.media--view-mode-default,
+.align-right.media--view-mode-default {
+  float: none;
+  margin: 0;
+}
+
+body:not(.cke_editable) {
+  @media (min-width: 576px) {
     .align-right.media {
       margin-left: 1rem;
     }
@@ -51,14 +154,6 @@ body:not(.cke_editable) {
       }
     }
 
-  }
-
-  .align-center.media--type-remote-video,
-  .align-center.media--type-panopto {
-    & .field--name-field-media-oembed-video iframe,
-    & .field--name-field-media-panopto-url iframe {
-      margin: 0 auto;
-    }
   }
 
   .media--type-remote-video,
@@ -149,33 +244,6 @@ body:not(.cke_editable) {
     }
   }
 
-  .embedded-entity {
-    max-width: 100%;
-    margin-bottom: 0;
-
-    figure & {
-      margin-bottom: 0;
-    }
-
-    figcaption {
-      margin-top: 0.5rem;
-    }
-  }
-
-
-  .embedded-entity + p {
-    margin-top: 1rem !important;
-  }
-
-  .embedded-entity.align-center,
-  .media.align-center {
-    .field--name-field-media-oembed-video iframe,
-    .field--name-field-media-instagram iframe,
-    .field--name-field-media-panopto-url iframe {
-      margin: 0 auto !important;
-    }
-  }
-
   figure.caption {
     display: block;
 
@@ -231,13 +299,6 @@ body:not(.cke_editable) {
     }
   }
 
-  figure.caption .embedded-entity + figcaption {
-    font-size: 90%;
-    color: $gray-900;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-  }
-
   figure.caption.align-right .embedded-entity + figcaption {
     @include media-breakpoint-up(sm) {
       text-align: right;
@@ -264,40 +325,6 @@ body:not(.cke_editable) {
       margin-right: 1rem;
     }
 
-  }
-
-
-  .align-center {
-    text-align: center;
-  }
-
-  .embedded-entity.align-center {
-
-    .media--type-image,
-    .field--name-field-media-image {
-      margin: 0 auto;
-    }
-  }
-
-  .field--name-field-media-image {
-    min-width: 1px;
-
-    img {
-      max-width: 100%;
-      height: auto;
-    }
-  }
-
-  .media--type-remote-video.media--view-mode-default,
-  .media--type-remote-video.media--view-mode-full,
-  .media--type-panopto.media--view-mode-default,
-  .media--type-panopto.media--view-mode-full {
-    padding-bottom: 56.25%;
-  }
-  .align-left.media--view-mode-default,
-  .align-right.media--view-mode-default {
-    float: none;
-    margin: 0;
   }
 
 }
