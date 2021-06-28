@@ -9,8 +9,8 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 
 /**
-* Implements hook_allowed_values_function().
-*/
+ * Implements hook_allowed_values_function().
+ */
 function sppa_states_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
   $options = [
     'AL' => 'Alabama',
@@ -65,6 +65,18 @@ function sppa_states_allowed_values(FieldStorageConfig $definition, ContentEntit
     'WY' => 'Wyoming',
     'US' => 'United States',
     'INTL' => 'International',
+  ];
+  return $options;
+}
+
+/**
+ * Implements hook_allowed_values_function().
+ */
+function sppa_opportunities_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  $options = [
+    'Jobs' => 'Jobs',
+    'Internships' => 'Internships',
+    'Fellowships' => 'Fellowships',
   ];
   return $options;
 }
