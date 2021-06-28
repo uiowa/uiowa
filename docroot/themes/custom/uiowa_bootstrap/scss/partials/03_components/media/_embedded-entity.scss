@@ -88,9 +88,13 @@
   @extend .embed-responsive-16by9;
 
   &.media--view-mode-image-large,
+  &.media--view-mode-image-default,
+  &.media--view-mode-image-full,
   &.media--view-mode-image-medium,
   &.media--view-mode-image-small,
   &.media--view-mode-large,
+  &.media--view-mode-default,
+  &.media--view-mode-full,
   &.media--view-mode-medium,
   &.media--view-mode-small,
   figure.caption & {
@@ -104,12 +108,18 @@ figure.caption .media--type-remote-video iframe,
 figure.caption .media--type-panopto iframe,
 .media--type-remote-video.media--view-mode-image-medium iframe,
 .media--type-remote-video.media--view-mode-image-large iframe,
+.media--type-remote-video.media--view-mode-image-full iframe,
+.media--type-remote-video.media--view-mode-image-default iframe,
 .media--type-remote-video.media--view-mode-image-small iframe,
 .media--type-remote-video.media--view-mode-medium iframe,
 .media--type-remote-video.media--view-mode-large iframe,
+.media--type-remote-video.media--view-mode-full iframe,
+.media--type-remote-video.media--view-mode-default iframe,
 .media--type-remote-video.media--view-mode-small iframe,
 .media--type-panopto.media--view-mode-medium iframe,
 .media--type-panopto.media--view-mode-large iframe,
+.media--type-panopto.media--view-mode-full iframe,
+.media--type-panopto.media--view-mode-default iframe,
 .media--type-panopto.media--view-mode-small iframe {
   @include media-breakpoint-up(sm) {
     position: unset;
@@ -120,14 +130,28 @@ figure.caption .media--type-panopto iframe,
     overflow: auto;
   }
 }
+figure.caption .media--type-remote-video.media--view-mode-image-default iframe,
+figure.caption .media--type-remote-video.media--view-mode-image-full iframe,
+figure.caption .media--type-panopto.media--view-mode-full iframe,
+figure.caption .media--type-panopto.media--view-mode-default iframe,
+.media--type-remote-video.media--view-mode-full iframe,
+.media--type-remote-video.media--view-mode-default iframe,
+.media--type-remote-video.media--view-mode-image-full iframe,
+.media--type-remote-video.media--view-mode-image-default iframe,
+.media--type-panopto.media--view-mode-full iframe,
+.media--type-panopto.media--view-mode-default iframe {
+  @include media-breakpoint-up(sm) {
+    width: 1100px;
+    max-width: 100%;
+    height: 619px;
+  }
+}
 
 figure.caption .media--type-remote-video.media--view-mode-image-large iframe,
 figure.caption .media--type-remote-video.media--view-mode-large iframe,
 figure.caption .media--type-remote-video.media--view-mode-full iframe,
 figure.caption .media--type-remote-video.media--view-mode-default iframe,
 figure.caption .media--type-panopto.media--view-mode-large iframe,
-figure.caption .media--type-panopto.media--view-mode-full iframe,
-figure.caption .media--type-panopto.media--view-mode-default iframe,
 .media--type-remote-video.media--view-mode-large iframe,
 .media--type-remote-video.media--view-mode-image-large iframe,
 .media--type-panopto.media--view-mode-large iframe {
@@ -167,10 +191,12 @@ figure.caption .media--type-panopto.media--view-mode-small iframe,
 .media--type-remote-video.media--view-mode-small__ultrawide,
 .media--type-remote-video.media--view-mode-medium__ultrawide,
 .media--type-remote-video.media--view-mode-large__ultrawide,
+.media--type-remote-video.media--view-mode-default__ultrawide,
 .media--type-remote-video.media--view-mode-full__ultrawide,
 .media--type-panopto.media--view-mode-small__ultrawide,
 .media--type-panopto.media--view-mode-medium__ultrawide,
 .media--type-panopto.media--view-mode-large__ultrawide,
+.media--type-panopto.media--view-mode-default__ultrawide,
 .media--type-panopto.media--view-mode-full__ultrawide {
   @extend .embed-responsive-21by9;
 }
@@ -178,10 +204,12 @@ figure.caption .media--type-panopto.media--view-mode-small iframe,
 .media--type-remote-video.media--view-mode-small__widescreen,
 .media--type-remote-video.media--view-mode-medium__widescreen,
 .media--type-remote-video.media--view-mode-large__widescreen,
+.media--type-remote-video.media--view-mode-default__widescreen,
 .media--type-remote-video.media--view-mode-full__widescreen,
 .media--type-panopto.media--view-mode-small__widescreen,
 .media--type-panopto.media--view-mode-medium__widescreen,
 .media--type-panopto.media--view-mode-large__widescreen,
+.media--type-panopto.media--view-mode-default__widescreen,
 .media--type-panopto.media--view-mode-full__widescreen {
   @extend .embed-responsive-16by9;
 }
@@ -189,10 +217,12 @@ figure.caption .media--type-panopto.media--view-mode-small iframe,
 .media--type-remote-video.media--view-mode-small__square,
 .media--type-remote-video.media--view-mode-medium__square,
 .media--type-remote-video.media--view-mode-large__square,
+.media--type-remote-video.media--view-mode-default__square,
 .media--type-remote-video.media--view-mode-full__square,
 .media--type-panopto.media--view-mode-small__square,
 .media--type-panopto.media--view-mode-medium__square,
 .media--type-panopto.media--view-mode-large__square,
+.media--type-panopto.media--view-mode-default__square,
 .media--type-panopto.media--view-mode-full__square {
   @extend .embed-responsive-4by3;
 }
@@ -201,11 +231,13 @@ figure.caption .media--type-panopto.media--view-mode-small iframe,
 .media--type-remote-video.media--view-mode-small__no-crop,
 .media--type-remote-video.media--view-mode-medium__no-crop,
 .media--type-remote-video.media--view-mode-large__no-crop,
+.media--type-remote-video.media--view-mode-default__no-crop,
 .media--type-remote-video.media--view-mode-full__no-crop,
 .media--type-panopto.media--view-mode-default,
 .media--type-panopto.media--view-mode-small__no-crop,
 .media--type-panopto.media--view-mode-medium__no-crop,
 .media--type-panopto.media--view-mode-large__no-crop,
+.media--type-panopto.media--view-mode-default__no-crop,
 .media--type-panopto.media--view-mode-full__no-crop {
   @extend .embed-responsive-16by9;
 }
