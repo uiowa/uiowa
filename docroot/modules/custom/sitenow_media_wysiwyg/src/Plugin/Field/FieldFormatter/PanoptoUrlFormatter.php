@@ -34,16 +34,6 @@ class PanoptoUrlFormatter extends LinkFormatter {
       $id = Html::escape($parsed_url['query']['id']);
 
       $elements[$delta] = [
-        'wrapper' => [
-          '#type' => 'container',
-          '#attributes' => [
-            'data-link' => $id,
-            'data-width' => '1920',
-            'data-height' => '1080',
-            'id' => Html::getUniqueId('panopto-media'),
-            'class' => 'panopto-player',
-          ],
-        ],
         'frame' => [
           '#type' => 'html_tag',
           '#tag' => 'iframe',
@@ -52,6 +42,8 @@ class PanoptoUrlFormatter extends LinkFormatter {
             'width' => '1920',
             'height' => '1080',
             'allow' => 'autoplay; fullscreen',
+            'id' => Html::getUniqueId('panopto-media'),
+            'class' => 'panopto-player',
             'frameborder' => '0',
           ],
         ],
