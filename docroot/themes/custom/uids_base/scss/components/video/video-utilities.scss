@@ -5,16 +5,17 @@
 // Media alignment
 
 @media (min-width: 576px) {
-  .caption .media .field, .caption .media .field.field--name-field-media-panopto-url {
-    margin-right: 1.25rem;
+  .align-right{
+    &.media, .media, figcaption {
+      margin-left: $gutter;
+    }
   }
 
-  .align-right.media {
-    margin-left: $gutter;
-  }
+  .align-left {
+    &.media, .media, figcaption {
+      margin-right: $gutter;
+    }
 
-  .align-left.media {
-    margin-right: $gutter;
   }
 
   .align-right.media--type-remote-video
