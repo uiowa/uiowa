@@ -5,13 +5,17 @@
 // Media alignment
 
 @media (min-width: 576px) {
-
-  .align-right.media {
-    margin-left: $gutter;
+  .align-right{
+    &.media, .media, figcaption {
+      margin-left: $gutter;
+    }
   }
 
-  .align-left.media {
-    margin-right: $gutter;
+  .align-left {
+    &.media, .media, figcaption {
+      margin-right: $gutter;
+    }
+
   }
 
   .align-right.media--type-remote-video
