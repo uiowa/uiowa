@@ -52,6 +52,12 @@
   @extend .embed-responsive;
   @extend .embed-responsive-16by9;
 
+  &.media--view-mode-default,
+  &.media--view-mode-full {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+  }
+
   &.media--view-mode-image-large,
   &.media--view-mode-image-medium,
   &.media--view-mode-image-small,
