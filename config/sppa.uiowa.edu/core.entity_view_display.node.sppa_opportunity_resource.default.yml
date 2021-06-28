@@ -1,0 +1,51 @@
+uuid: 1bde386c-68ac-4e16-a681-bec98ebf4c13
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.sppa_opportunity_resource.field_sppa_opportunities
+    - field.field.node.sppa_opportunity_resource.field_sppa_states
+    - field.field.node.sppa_opportunity_resource.field_sppa_website
+    - node.type.sppa_opportunity_resource
+  module:
+    - link
+    - options
+    - user
+id: node.sppa_opportunity_resource.default
+targetEntityType: node
+bundle: sppa_opportunity_resource
+mode: default
+content:
+  field_sppa_opportunities:
+    weight: 103
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_sppa_states:
+    weight: 104
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_sppa_website:
+    weight: 102
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  search_api_excerpt: true
