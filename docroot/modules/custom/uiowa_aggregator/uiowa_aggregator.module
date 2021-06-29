@@ -107,8 +107,8 @@ function uiowa_aggregator_preprocess_block(&$variables) {
         $variables['content']['aggregator']['items'] = \Drupal::entityTypeManager()->getViewBuilder('aggregator_item')->viewMultiple($items, 'default');
 
         // Get block layout builder styles if they exist.
-        if (isset($variables["elements"]["#layout_builder_style"]) && !empty($variables["elements"]["#layout_builder_style"])) {
-          $parent_lb_styles = $variables["elements"]["#layout_builder_style"];
+        if (isset($variables['elements']['#attributes']['class']) && !empty($variables['elements']['#attributes']['class'])) {
+          $parent_lb_styles = $variables['elements']['#attributes']['class'];
           $parent_lb_styles[] = 'list-item';
         }
 
@@ -143,6 +143,21 @@ function uiowa_aggregator_preprocess_block(&$variables) {
         '#prefix' => '<div class="uiowa-aggregator-no-results">',
         '#suffix' => '</div>',
       ];
+      // Unset classes meant for children that are being applied to entire block.
+      if (isset($variables['attributes']['class'])) {
+        foreach ($variables['attributes']['class'] as $key => $style) {
+          foreach ([
+            'bg',
+            'card',
+            'media',
+            'hide',
+          ] as $check) {
+            if (substr($style, 0, strlen($check)) === $check) {
+              unset($variables['attributes']['class'][$key]);
+            }
+          }
+        }
+      }
     }
 
     $variables['#attached']['feed'][] = [

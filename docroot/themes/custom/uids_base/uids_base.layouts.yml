@@ -1,7 +1,6 @@
 layout_onecol:
   label: 'One column'
-  path: templates/layouts/onecol/layout--onecol
-  template: templates/layouts/onecol/layout--onecol
+  template: templates/layouts/layout--onecol
   library: uids_base/onecol
   category: 'Columns: 1'
   default_region: content
@@ -13,10 +12,8 @@ layout_onecol:
 
 layout_twocol:
   label: 'Two column'
-  path: templates/layouts/twocol/layout--twocol
-  template: layout--twocol
+  template: templates/layouts/layout--twocol
   library: uids_base/twocol
-  default_region: first
   class: '\Drupal\layout_builder\Plugin\Layout\TwoColumnLayout'
   category: 'Columns: 2'
   default_region: first
@@ -30,8 +27,7 @@ layout_twocol:
 
 layout_threecol:
   label: 'Three column'
-  path: templates/layouts/threecol/threecol
-  template: layout--threecol
+  template: templates/layouts/layout--threecol
   library: uids_base/threecol
   class: '\Drupal\layout_builder\Plugin\Layout\ThreeColumnLayout'
   category: 'Columns: 3'
@@ -48,8 +44,7 @@ layout_threecol:
 
 layout_fourcol:
   label: 'Four column'
-  path: templates/layouts/fourcol/fourcol
-  template: layout--fourcol
+  template: templates/layouts/layout--fourcol
   library: uids_base/fourcol
   category: 'Columns: 4'
   default_region: first
@@ -67,8 +62,7 @@ layout_fourcol:
 
 layout_header:
   label: 'Header layout with background media'
-  path: templates/layouts/onecol--background
-  template: layout--onecol--background
+  template: templates/layouts/layout--onecol--background
   library: uids_base/onecol--background
   category: 'Columns: 1'
   default_region: content
@@ -82,8 +76,7 @@ layout_header:
 
 layout_page:
   label: 'Page w/ left sidebar'
-  path: templates/layouts/page--left-sidebar'
-  template: layout--page--left-sidebar
+  template: templates/layouts/layout--page--left-sidebar
   library: uids_base/page--left-sidebar
   category: 'Columns: 2'
   default_region: content

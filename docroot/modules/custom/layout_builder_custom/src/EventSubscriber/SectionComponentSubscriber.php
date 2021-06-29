@@ -75,13 +75,13 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
       }
     }
 
-    // For cards or other blocks, we are going to programmatically set the view mode for
-    // the image field. This is necessary to allow selection of different
-    // image formats.
+    // For cards or other blocks, we are going to programmatically set the
+    // view mode for the image field. This is necessary to allow selection
+    // of different image formats.
     if (isset($build['#derivative_plugin_id'])) {
       switch ($build['#derivative_plugin_id']) {
         case 'uiowa_card':
-          if (isset($build['#layout_builder_style'])) {
+          if (isset($build["#attributes"]["class"])) {
             // Map the layout builder styles to the view mode to be used.
             $media_formats = [
               'media--widescreen' => 'large__widescreen',
@@ -92,7 +92,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
             // Loop through the map to check if any of them are being used and
             // adjust the view mode accordingly.
             foreach ($media_formats as $style => $view_mode) {
-              if (in_array($style, $build['#layout_builder_style'])) {
+              if (in_array($style, $build["#attributes"]["class"])) {
                 // Change the view mode to match the format.
                 $build['content']['field_' . $build['#derivative_plugin_id'] . '_image'][0]['#view_mode'] = $view_mode;
                 // Important: Delete the cache keys to prevent this from being

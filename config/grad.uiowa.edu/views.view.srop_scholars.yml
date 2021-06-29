@@ -5,11 +5,9 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.storage.node.field_image
-    - field.storage.node.field_person_scholar_mentor_link
-    - field.storage.node.field_person_scholar_srop_year
-    - node.type.person
+    - node.type.scholar
+    - system.menu.main
   module:
-    - link
     - node
     - options
     - user
@@ -175,135 +173,6 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_person_scholar_srop_year:
-          id: field_person_scholar_srop_year
-          table: node__field_person_scholar_srop_year
-          field: field_person_scholar_srop_year
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: list_default
-          settings: {  }
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
-        field_person_scholar_mentor_link:
-          id: field_person_scholar_mentor_link
-          table: node__field_person_scholar_mentor_link
-          field: field_person_scholar_mentor_link
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: Mentor
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: uri
-          type: link
-          settings:
-            trim_length: 80
-            url_only: false
-            url_plain: false
-            rel: '0'
-            target: '0'
-          group_column: ''
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 2
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
       filters:
         status:
           value: '1'
@@ -322,23 +191,12 @@ display:
           id: type
           table: node_field_data
           field: type
-          value:
-            person: person
-          entity_type: node
-          entity_field: type
-          plugin_id: bundle
-          expose:
-            operator_limit_selection: false
-            operator_list: {  }
-        field_person_types_target_id:
-          id: field_person_types_target_id
-          table: node__field_person_types
-          field: field_person_types_target_id
           relationship: none
           group_type: group
           admin_label: ''
-          operator: '='
-          value: Scholar
+          operator: in
+          value:
+            scholar: scholar
           group: 1
           exposed: false
           expose:
@@ -355,7 +213,7 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-            placeholder: ''
+            reduce: false
           is_grouped: false
           group_info:
             label: ''
@@ -368,12 +226,14 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: string
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
       sorts:
-        field_person_scholar_srop_year_value:
-          id: field_person_scholar_srop_year_value
-          table: node__field_person_scholar_srop_year
-          field: field_person_scholar_srop_year_value
+        field_scholar_participation_year_value:
+          id: field_scholar_participation_year_value
+          table: node__field_scholar_participation_year
+          field: field_scholar_participation_year_value
           relationship: none
           group_type: group
           admin_label: ''
@@ -413,10 +273,10 @@ display:
           plugin_id: text
       relationships: {  }
       arguments:
-        field_person_scholar_srop_year_value:
-          id: field_person_scholar_srop_year_value
-          table: node__field_person_scholar_srop_year
-          field: field_person_scholar_srop_year_value
+        field_scholar_participation_year_value:
+          id: field_scholar_participation_year_value
+          table: node__field_scholar_participation_year
+          field: field_scholar_participation_year_value
           relationship: none
           group_type: group
           admin_label: ''
@@ -424,7 +284,7 @@ display:
           exception:
             value: all
             title_enable: false
-            title: 'Past SROP Scholars %1'
+            title: All
           title_enable: false
           title: ''
           default_argument_type: fixed
@@ -437,7 +297,7 @@ display:
             items_per_page: 25
             override: false
           summary:
-            sort_order: asc
+            sort_order: desc
             number_of_records: 0
             format: default_summary
             human: true
@@ -464,8 +324,6 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.node.field_image'
-        - 'config:field.storage.node.field_person_scholar_mentor_link'
-        - 'config:field.storage.node.field_person_scholar_srop_year'
   page_1:
     display_plugin: page
     id: page_1
@@ -478,6 +336,15 @@ display:
       defaults:
         style: true
         row: true
+      menu:
+        type: normal
+        title: 'Past Scholars'
+        description: 'Past SROP scholars'
+        expanded: false
+        parent: 'menu_link_content:db6f1b42-8b75-4726-99d3-be6e736bd415'
+        weight: 0
+        context: '0'
+        menu_name: main
     cache_metadata:
       max-age: -1
       contexts:
@@ -488,5 +355,3 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.node.field_image'
-        - 'config:field.storage.node.field_person_scholar_mentor_link'
-        - 'config:field.storage.node.field_person_scholar_srop_year'

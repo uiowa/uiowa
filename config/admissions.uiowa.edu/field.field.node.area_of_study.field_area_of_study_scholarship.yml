@@ -1,0 +1,31 @@
+uuid: de9e87cc-b4c1-41a3-a403-d8a645a5a3fc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_area_of_study_scholarship
+    - node.type.area_of_study
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    filtered_html: '0'
+    minimal: '0'
+    full_html: '0'
+    plain_text: '0'
+id: node.area_of_study.field_area_of_study_scholarship
+field_name: field_area_of_study_scholarship
+entity_type: node
+bundle: area_of_study
+label: Scholarships
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: "<p>The University of Iowa provides a variety of scholarships to eligible undergraduate students through the <a href=\"https://scholarships.uiowa.edu/\">Iowa Scholarship Portal</a>. Scholarships are available to first-year, transfer, and currently enrolled students. For additional details on scholarships for your program of study, check directly with the department or college.</p>\r\n\r\n<p>The <a href=\"/node/71\">Office of Admissions</a> and the <a href=\"https://financialaid.uiowa.edu/types/scholarships\">Office of Student Financial Aid</a> are great resources for students seeking scholarships.</p>\r\n"
+    format: filtered_html
+default_value_callback: ''
+settings: {  }
+field_type: text_long

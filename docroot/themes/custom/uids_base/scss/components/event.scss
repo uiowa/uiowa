@@ -12,14 +12,11 @@
   }
 }
 
-// Events.
-.block-inline-blockuiowa-events {
-  margin-top: $gutter;
-}
-
 // Event block
 .uiowa-card-event.card.card--media-left {
-  flex-direction: unset;
+  @include breakpoint(sm) {
+    flex-direction: unset;
+  }
   margin-bottom: 0;
 
   .layout--fourcol &,
@@ -34,15 +31,7 @@
 .block-inline-blockuiowa-events,
 .uiowa-events,
 .uiowa-card-event {
-  .card {
-    @include breakpoint(sm) {
-
-      &__title.headline {
-        font-size: 1.4rem;
-      }
-    }
-  }
-
+  
   .card {
     &__row {
       @include breakpoint(sm) {
@@ -52,28 +41,6 @@
         border: none;
         padding: 1.5rem 0;
         background: transparent;
-      }
-    }
-  }
-
-  .layout--twocol .layout__spacing_container & {
-    @media screen and (min-width: 40em) {
-      .card__media img {
-        border-radius: 50%;
-        margin-top: 0;
-        height: auto;
-        padding: 8px;
-      }
-    }
-  }
-
-  .layout--fourcol .layout__spacing_container & {
-    @media screen and (min-width: 40em) {
-      .card__media img {
-        border-radius: 50%;
-        margin-top: 0;
-        height: auto;
-        padding: 8px;
       }
     }
   }

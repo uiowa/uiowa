@@ -10,6 +10,7 @@ use Drupal\Core\Url;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Component\Utility\Html;
+use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\views\Entity\View;
 use Drupal\views\Views;
 use Drupal\Core\Form\FormStateInterface;
@@ -226,11 +227,21 @@ function sitenow_articles_node_view(array &$build, EntityInterface $entity, Enti
  * Implements hook_preprocess_HOOK().
  */
 function sitenow_articles_preprocess_views_view(&$variables) {
-  switch ($variables["id"]) {
+  switch ($variables['id']) {
     case 'articles':
-      if (empty($variables["header"]["area"]["#text"])) {
-        unset($variables["header"]["area"]);
+      /** @var  \Drupal\views\ViewExecutable $view */
+      $view = $variables['view'];
+
+      if (empty($variables['header']['area']['#text'])) {
+        unset($variables['header']['area']);
       }
+
+      // If this is the page display and arguments were provided, hide the
+      // feed icons since we don't want to promote those filtered RSS feeds.
+      if ($view->current_display == 'page_articles' && !empty($view->args)) {
+        $variables['feed_icons'] = [];
+      }
+
       break;
 
   }
@@ -322,6 +333,7 @@ function sitenow_articles_preprocess_paragraph(&$variables) {
 
         $view = Views::getView('articles_block');
         $view->setDisplay('block_articles');
+        $view->display_handler->setOption('parent_entity', $paragraph);
 
         if ($paragraph->hasField('field_reference') && !$paragraph->get('field_reference')->isEmpty()) {
           $tids = $paragraph->get('field_reference')->getValue();
@@ -465,14 +477,8 @@ function sitenow_articles_preprocess_block(&$variables) {
             $view->display_handler->setOption('heading_size', $headline_field['child_heading_size']);
           }
           else {
-            $options = [
-              'h2' => 'h3',
-              'h3' => 'h4',
-              'h4' => 'h5',
-              'h5' => 'h6',
-              'h6' => 'h6',
-            ];
-            $view->display_handler->setOption('heading_size', $options[$headline_field['heading_size']]);
+            $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
+            $view->display_handler->setOption('heading_size', $heading_size);
           }
         }
       }

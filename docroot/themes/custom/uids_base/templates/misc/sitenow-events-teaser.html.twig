@@ -5,10 +5,10 @@
 
 {# Set the event icon #}
 {% if event.virtual %}
-  {% set event_icon = '<span class="fas fa-laptop"></span>' %}
+  {% set event_icon = '<span role="presentation" class="fas fa-laptop"></span>' %}
   {% set event_location = 'Virtual' %}
 {% else %}
-  {% set event_icon = '<span class="fas fa-map-marker-alt"></span>' %}
+  {% set event_icon = '<span role="presentation" class="fas fa-map-marker-alt"></span>' %}
   {% set event_location = event.location_name %}
 {% endif %}
 {% set style_classes = [] %}
@@ -43,7 +43,7 @@
   'card_link_url': event.url,
   'card_date': event.date_string,
   'headline_level': event.heading_size,
-  'card_text': event.description_text,
+  'card_text': event.description_text|render,
   'event_icon': event_icon|trans,
   'card_tag': event_location|render,
 } %}

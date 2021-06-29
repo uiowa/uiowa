@@ -1,0 +1,13 @@
+project:
+  local:
+    hostname: geography.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: geography
+  human_name: geography.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: geography.prod
+drupal:
+  db:
+    database: geography_uiowa_edu

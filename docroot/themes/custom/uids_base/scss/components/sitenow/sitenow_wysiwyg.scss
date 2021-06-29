@@ -5,3 +5,41 @@
 @import "uids/components/typography/lists/lists.scss";
 @import "uids/components/button/button.scss";
 @import "scss/sitenow.scss";
+@import "scss/components/typography/global-serif.scss";
+
+.cke_contents_ltr {
+  table,
+  table caption,
+  table > tr > td,
+  table > tr > th,
+  table > tbody > tr > td,
+  table > tbody > tr > th,
+  table > thead > tr > td,
+  table > thead > tr > th,
+  table > tfoot > tr > td,
+  table > tfoot > tr > th
+  {
+    border: #d3d3d3 1px dotted;
+  }
+}
+
+.cke_editable img {
+  max-width: 100%;
+  height: auto;
+}
+
+// Adjust responsive positioning to make room for edit button
+.embed-responsive embed,
+.embed-responsive iframe,
+.embed-responsive object,
+.embed-responsive video, 
+.media--type-panopto embed,
+.media--type-panopto iframe,
+.media--type-panopto object,
+.media--type-panopto video,
+.media--type-remote-video embed,
+.media--type-remote-video iframe,
+.media--type-remote-video object,
+.media--type-remote-video video {
+  top: 40px;
+}

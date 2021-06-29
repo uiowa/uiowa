@@ -9,7 +9,6 @@ env:
 
 cache:
   directories:
-    - "$HOME/.composer/cache"
     - "$HOME/.drush/cache"
     - "$TRAVIS_BUILD_DIR/node_modules/"
 
@@ -40,7 +39,8 @@ install:
   - source ${BLT_DIR}/scripts/travis/setup_project
 
 script:
-  - source ${TRAVIS_BUILD_DIR}/tests/travis_run_tests
+  - blt blt:telemetry:disable --no-interaction
+  - source ${BLT_DIR}/scripts/travis/run_tests
 
 deploy:
   - provider: script

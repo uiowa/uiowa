@@ -41,8 +41,10 @@
 {% for item in items %}
   {{ item.content }}
 {% endfor %}
-{# @todo Should caption should be per image? #}
-{% if caption|render %}
-    {{ caption }}
-{% endif %}
+{# Only show on lb full. #}
+{#{% if element['#view_mode'] == '_custom' %}#}
+{#  {% if caption|render %}#}
+{#      {{ caption }}#}
+{#  {% endif %}#}
+{#{% endif %}#}
 

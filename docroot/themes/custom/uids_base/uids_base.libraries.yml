@@ -8,6 +8,7 @@ global-styling:
     layout:
       assets/css/components/page-layouts.css: {}
     component:
+      assets/css/components/badge.css: {}
       assets/css/components/breadcrumbs.css: {}
       assets/css/components/colors.css: {}
       assets/css/components/blockquote.css: {}
@@ -32,7 +33,7 @@ global-styling:
       assets/css/components/uiowa-bar.css: {}
       assets/css/components/image-gallery-block.css: {}
       assets/css/fields/fields.css: {}
-      assets/css/components/background.css: {}
+      assets/css/components/background.css: { weight: 200 }
       assets/css/components/grid.css: {}
     theme:
       assets/css/theme/print.css: { media: print }
@@ -91,7 +92,7 @@ banner:
     component:
       assets/css/components/banner.css: { preprocess: false }
   js:
-    uids/components/banner/banner.js: { preprocess: false }
+    uids/assets/js/click-a11y.js: { preprocess: false }
 video-cookie:
   js:
     assets/js/video-cookie.js: { preprocess: false }
@@ -161,7 +162,7 @@ card:
       assets/css/components/card.css: { preprocess: false }
       assets/css/paragraphs/uiowa-paragraphs-card.css: { preprocess: false }
   js:
-    uids/components/card/card.js: { preprocess: false }
+    uids/assets/js/click-a11y.js: { preprocess: false }
 media:
   css:
     component:
@@ -204,6 +205,10 @@ slick:
     /libraries/slick-carousel/slick/slick.min.js: {}
   dependencies:
     - core/jquery
+badge:
+  css:
+    component:
+      assets/css/components/badge.css: { preprocess: false }
 cta:
   css:
     component:
@@ -314,10 +319,6 @@ node-type-article:
   css:
     component:
       assets/css/content/node--type--article.css: { preprocess: false }
-node-type-area-of-study:
-  css:
-    component:
-      assets/css/content/node--type--area-of-study.css: { preprocess: false }
 node-type-page:
   css:
     component:
@@ -338,6 +339,7 @@ admin:
   css:
     component:
       assets/css/admin.css: { weight: 200 }
+      assets/css/local-tasks.css: {}
       assets/css/components/badge.css: {}
 
 # CSS libraries for Layout plugins.
@@ -371,11 +373,11 @@ page--left-sidebar:
   css:
     theme:
       assets/css/layouts/page--left-sidebar.css: { preprocess: false }
-tables:
-  js:
-    uids/components/tables/tables.js: { preprocess: false  }
-    assets/js/tables.js: { preprocess: false  }
 person:
   css:
     theme:
       assets/css/content/person.css: { }
+global-serif:
+  css:
+    component:
+      assets/css/components/typography/global-serif.css: { preprocess: false }

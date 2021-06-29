@@ -1,0 +1,31 @@
+uuid: 29b95175-429b-416f-a75f-3c89b46b7760
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_area_of_study_opportunity
+    - node.type.area_of_study
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    filtered_html: '0'
+    minimal: '0'
+    full_html: '0'
+    plain_text: '0'
+id: node.area_of_study.field_area_of_study_opportunity
+field_name: field_area_of_study_opportunity
+entity_type: node
+bundle: area_of_study
+label: 'Student Opportunities'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: "<p>In addition to having nearly 500 <a href=\"https://uiowa.campuslabs.com/engage/\">Student Organizations</a>, Iowa students choose from multiple <a href=\"https://housing.uiowa.edu/communities\">Living-Learning Communities</a>, <a href=\"http://international.uiowa.edu/study-abroad\">Study Abroad Programs</a>, and <a href=\"https://icru.research.uiowa.edu/\">Undergraduate Research Opportunities</a>.</p>\r\n"
+    format: filtered_html
+default_value_callback: ''
+settings: {  }
+field_type: text_long

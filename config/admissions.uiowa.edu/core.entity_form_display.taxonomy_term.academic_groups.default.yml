@@ -1,0 +1,61 @@
+uuid: dc555fc7-fcd3-40b4-962d-3be61f6d180a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.academic_groups.field_academic_groups_media
+    - field.field.taxonomy_term.academic_groups.field_image
+    - taxonomy.vocabulary.academic_groups
+  module:
+    - media_library
+    - path
+    - text
+id: taxonomy_term.academic_groups.default
+targetEntityType: taxonomy_term
+bundle: academic_groups
+mode: default
+content:
+  description:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      placeholder: ''
+      rows: 5
+    third_party_settings: {  }
+  field_academic_groups_media:
+    type: media_library_widget
+    weight: 3
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+    region: content
+  field_image:
+    type: media_library_widget
+    weight: 2
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+    region: content
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 5
+    region: content
+    third_party_settings: {  }
+hidden: {  }

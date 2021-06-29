@@ -32,10 +32,17 @@ disable-targets:
       run: true
     frontend:
       run: true
+    security-drupal: true
 tests:
   phpunit:
     - config: '${repo.root}'
 validate:
+  lint:
+    filesets:
+      - files.php.custom.modules
+      - files.php.custom.themes
+      - files.php.tests
+      - files.php.multisites
   twig:
     functions:
       - drupal_image

@@ -13,6 +13,7 @@ migration_group: sitenow_migrate
 label: 'Basic page migration from Drupal 7'
 source:
   plugin: pages
+  node_type: page
 process:
   langcode:
     plugin: static_map
@@ -32,11 +33,10 @@ process:
   changed: changed
   promote: promote
   sticky: sticky
+  body: body
   field_teaser: body_summary
   moderation_state: moderation_state
 destination:
   plugin: 'entity:node'
   type: page
-migration_dependencies:
-  required:
-    - d7_file
+migration_dependencies: null
