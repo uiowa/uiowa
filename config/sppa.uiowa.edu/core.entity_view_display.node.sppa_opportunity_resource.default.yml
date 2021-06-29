@@ -17,22 +17,22 @@ bundle: sppa_opportunity_resource
 mode: default
 content:
   field_sppa_opportunities:
-    weight: 103
+    weight: 0
     label: above
     settings: {  }
     third_party_settings: {  }
     type: list_default
     region: content
   field_sppa_states:
-    weight: 104
+    weight: 1
     label: above
     settings: {  }
     third_party_settings: {  }
     type: list_default
     region: content
   field_sppa_website:
-    weight: 102
-    label: above
+    weight: 2
+    label: visually_hidden
     settings:
       trim_length: 80
       url_only: false
@@ -43,9 +43,9 @@ content:
     type: link
     region: content
   links:
-    weight: 100
+    weight: 3
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
   search_api_excerpt: true
