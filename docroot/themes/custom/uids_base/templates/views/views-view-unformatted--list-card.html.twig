@@ -42,7 +42,8 @@
     {% endif %}
 
   {% endfor %}
-  <div{{ row.attributes.addClass(row_classes) }}>
+
+    <div{{ row.attributes.addClass(row_classes) }}>
 
     {% set media_attributes = media_attributes ?: create_attribute() %}
 
@@ -53,6 +54,7 @@
       'card_title': view.style_plugin.getField(key, 'title'),
       'card_image': view.style_plugin.getField(key, 'field_image'),
       'card_tag': view.style_plugin.getField(key, 'field_person_email'),
+      'card_image_default': 'https://user-images.githubusercontent.com/52135878/123816247-c544be00-d8bc-11eb-986b-5485c479c2e4.png',
       'card_text': view.style_plugin.getField(key, 'field_teaser'),
       'card_subtitle': view.style_plugin.getField(key, 'field_person_position'),
       'person_phone': view.style_plugin.getField(key, 'field_person_phone'),
@@ -65,6 +67,10 @@
       {% block card_img %}
         {% if card_image|striptags('<img><picture>')|trim is not empty %}
           {{ parent() }}
+          {% else %}
+            <div {{ media_attributes.addClass(media_styles, media_sizes, 'card__media') }}>
+                <img src="{{ card_image_default }}" />
+            </div>
         {% endif %}
       {% endblock %}
 
