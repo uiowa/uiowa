@@ -253,6 +253,34 @@ body.cke_editable {
       display: inherit;
       padding: 0;
       overflow: auto;
+
+      .field--name-field-media-oembed-video,
+      .field--name-field-media-panopto-url {
+        height: 100%;
+
+        &>iframe {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+  // Since render is small, make preview for original captions small.
+  figure.caption {
+    .media:not(.align-left):not(.align-right):not(.align-center) {
+      &.media--type-remote-video.media--view-mode-default,
+      &.media--type-remote-video.media--view-mode-full,
+      &.media--type-panopto.media--view-mode-default,
+      &.media--type-panopto.media--view-mode-full {
+        width: 300px;
+        // 150px + edit button + border/padding.
+        height: calc(150px + 40px + 9px);
+
+        .field--name-field-media-oembed-video,
+        .field--name-field-media-panopto-url {
+          height: unset;
+        }
+      }
     }
   }
 }
@@ -275,7 +303,6 @@ figure.caption .embedded-entity + figcaption {
   text-align: center;
 }
 .embedded-entity.align-center {
-
   .media--type-image,
   .field--name-field-media-image {
     margin: 0 auto;
