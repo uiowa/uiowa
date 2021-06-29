@@ -91,6 +91,7 @@
 {% set person_card = {
   'attributes': attributes.addClass(classes),
   'card_image': content.field_image | render,
+  'card_image_default': 'https://user-images.githubusercontent.com/52135878/123816247-c544be00-d8bc-11eb-986b-5485c479c2e4.png',
   'card_text': content.field_teaser | render,
   'card_subtitle': content.field_person_position | render,
   'card_date': content.field_person_email | render,
@@ -102,6 +103,15 @@
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with person_card only %}
+  {% block card_img %}
+    {% if card_image is not empty %}
+      {{ parent() }}
+    {% else %}
+      <div {{ media_attributes.addClass(media_styles, media_sizes, 'card__media') }}>
+        <img src="{{ card_image_default }}" />
+      </div>
+    {% endif %}
+  {% endblock %}
   {% block card_tag %}
     {% if card_tag is not empty %}
       <div class="card__date">
