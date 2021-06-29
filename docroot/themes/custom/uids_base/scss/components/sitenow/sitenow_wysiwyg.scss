@@ -53,6 +53,24 @@ body.cke_editable {
       }
     }
   }
+
+  figure.caption {
+    .media:not(.align-left):not(.align-right):not(.align-center) {
+      &.media--type-remote-video.media--view-mode-default,
+      &.media--type-remote-video.media--view-mode-full,
+      &.media--type-panopto.media--view-mode-default,
+      &.media--type-panopto.media--view-mode-full {
+        width: 300px;
+        // 150px + edit button + border/padding.
+        height: calc(150px + 40px + 9px);
+
+        .field--name-field-media-oembed-video,
+        .field--name-field-media-panopto-url {
+          height: unset;
+        }
+      }
+    }
+  }
 }
 
 .cke_editable img {
