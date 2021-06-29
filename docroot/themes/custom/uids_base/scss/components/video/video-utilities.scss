@@ -71,6 +71,27 @@
   }
 }
 
+figure.caption.caption-drupal-media {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+
+  .media--type-remote-video.media--view-mode-full,
+  .media--type-remote-video.media--view-mode-default,
+  .media--type-panopto.media--view-mode-default,
+  .media--type-panopto.media--view-mode-full {
+    .field--name-field-media-panopto-url,
+    .field--name-field-media-oembed-video {
+      height: 100%;
+
+      &>iframe.panopto-player,
+      &>iframe.media-oembed-content {
+        height: 100%;
+        width: 100%;
+      }
+    }
+  }
+}
+
 figure.caption .media--type-remote-video iframe,
 figure.caption .media--type-panopto iframe,
 .media--type-remote-video.media--view-mode-image-medium iframe,

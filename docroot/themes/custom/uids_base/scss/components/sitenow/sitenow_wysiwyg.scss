@@ -23,6 +23,10 @@
   }
 }
 
+drupal-media {
+  max-width: 100%;
+}
+
 body.cke_editable {
   // Deal with drupal-media wysiwyg issue for align none originals.
   .media:not(.align-left):not(.align-right):not(.align-center) {
@@ -37,6 +41,16 @@ body.cke_editable {
       display: inherit;
       padding: 0;
       overflow: auto;
+
+      .field--name-field-media-oembed-video,
+      .field--name-field-media-panopto-url {
+        height: 100%;
+
+        &>iframe {
+          width: 100%;
+          height: 100%;
+        }
+      }
     }
   }
 }
