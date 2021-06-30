@@ -211,17 +211,12 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
       drupal_static_reset();
 
       // Entity storage can blow up with caches so clear them out.
-      $manager = $this->entityTypeManager;
-      foreach ($manager->getDefinitions() as $id => $definition) {
-        $manager
-          ->getStorage($id)
-          ->resetCache();
-      }
+      \Drupal::service('entity.memory_cache')->deleteAll();
 
       // Run garbage collector to further reduce memory.
       gc_collect_cycles();
-      return memory_get_usage();
     }
+    return memory_get_usage();
   }
 
   /**
