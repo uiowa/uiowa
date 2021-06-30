@@ -30,4 +30,5 @@ class RemoveXFrameOptionsSubscriber implements EventSubscriberInterface {
     $events[KernelEvents::RESPONSE][] = ['removeFrameOptions', -10];
     return $events;
   }
+
 }
