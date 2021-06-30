@@ -91,7 +91,6 @@
 {% set person_card = {
   'attributes': attributes.addClass(classes),
   'card_image': content.field_image | render,
-  'card_image_default': 'https://user-images.githubusercontent.com/52135878/123816247-c544be00-d8bc-11eb-986b-5485c479c2e4.png',
   'card_text': content.field_teaser | render,
   'card_subtitle': content.field_person_position | render,
   'card_date': content.field_person_email | render,
@@ -108,7 +107,7 @@
       {{ parent() }}
     {% else %}
       <div {{ media_attributes.addClass(media_styles, media_sizes, 'card__media') }}>
-        <img src="{{ card_image_default }}" />
+        <div class="img--empty">&nbsp;</div>
       </div>
     {% endif %}
   {% endblock %}
