@@ -2789,3 +2789,9 @@ $sites['president.local.drupal.uiowa.edu'] = 'president.uiowa.edu';
 $sites['president.dev.drupal.uiowa.edu'] = 'president.uiowa.edu';
 $sites['president.stage.drupal.uiowa.edu'] = 'president.uiowa.edu';
 $sites['president.prod.drupal.uiowa.edu'] = 'president.uiowa.edu';
+
+// Directory aliases for zabner.lab.uiowa.edu.
+$sites['labzabner.local.drupal.uiowa.edu'] = 'zabner.lab.uiowa.edu';
+$sites['labzabner.dev.drupal.uiowa.edu'] = 'zabner.lab.uiowa.edu';
+$sites['labzabner.stage.drupal.uiowa.edu'] = 'zabner.lab.uiowa.edu';
+$sites['labzabner.prod.drupal.uiowa.edu'] = 'zabner.lab.uiowa.edu';
