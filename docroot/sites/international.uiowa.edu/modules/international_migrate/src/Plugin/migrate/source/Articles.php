@@ -3,8 +3,10 @@
 namespace Drupal\international_migrate\Plugin\migrate\source;
 
 use Drupal\Component\Utility\Html;
+use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
+use Drupal\sitenow_migrate\Plugin\migrate\source\LinkReplaceTrait;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
 
 /**
@@ -17,6 +19,9 @@ use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
  */
 class Articles extends BaseNodeSource {
   use ProcessMediaTrait;
+  use LinkReplaceTrait;
+
+  protected $oldies = 0;
 
   /**
    * {@inheritdoc}
@@ -25,6 +30,7 @@ class Articles extends BaseNodeSource {
     $query = parent::query();
     $query->leftJoin('url_alias', 'alias', "alias.source = CONCAT('node/', n.nid)");
     $query->fields('alias', ['alias']);
+    $query->orderBy('nid');
     return $query;
   }
 
@@ -41,11 +47,27 @@ class Articles extends BaseNodeSource {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
+    $last_migrated_query = \Drupal::database()->select('migrate_map_international_articles', 'm')
+      ->fields('m', ['sourceid1'])
+      ->orderBy('sourceid1', 'DESC');
+    $last_migrated = $last_migrated_query->execute()->fetch()->sourceid1;
+
+    $this->logger->notice('Preparing row: @nid. Last migrated: @last',
+      ['@nid' => $row->getSourceProperty('nid'),
+        '@last' => $last_migrated]);
+    if ($row->getSourceProperty('nid') < $last_migrated) {
+      $this->logger->notice('Migrated node: Skipping.');
+      return FALSE;
+    }
     parent::prepareRow($row);
+    $this->logger->notice("Memory usage: @mem",
+      ['@mem' => $this->clearMemory(10)]);
 
     // Only import news newer than January 2015.
     $created_year = date('Y', $row->getSourceProperty('created'));
     if ($created_year < 2015) {
+      $this->logger->notice('Total skipped: @oldies',
+        ['@oldies' => ++$this->oldies]);
       return FALSE;
     }
 
@@ -54,7 +76,7 @@ class Articles extends BaseNodeSource {
     if (!empty($body)) {
       // Search for D7 inline embeds and replace with D8 inline entities.
       $this->viewMode = 'large__no_crop';
-      $body[0]['value'] = $this->replaceInlineFiles($body[0]['value']);
+//      $body[0]['value'] = $this->replaceInlineFiles($body[0]['value']);
 
       // Parse links.
       $doc = Html::load($body[0]['value']);
@@ -88,6 +110,10 @@ class Articles extends BaseNodeSource {
     }
 
     return TRUE;
+  }
+
+  public function postImport(MigrateImportEvent $event) {
+    $this->reportPossibleLinkBreaks(['node__body' => ['body_value']]);
   }
 
 }
