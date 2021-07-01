@@ -2807,3 +2807,9 @@ $sites['physicshalosat.local.drupal.uiowa.edu'] = 'halosat.physics.uiowa.edu';
 $sites['physicshalosat.dev.drupal.uiowa.edu'] = 'halosat.physics.uiowa.edu';
 $sites['physicshalosat.stage.drupal.uiowa.edu'] = 'halosat.physics.uiowa.edu';
 $sites['physicshalosat.prod.drupal.uiowa.edu'] = 'halosat.physics.uiowa.edu';
+
+// Directory aliases for asg.clas.uiowa.edu.
+$sites['clasasg.local.drupal.uiowa.edu'] = 'asg.clas.uiowa.edu';
+$sites['clasasg.dev.drupal.uiowa.edu'] = 'asg.clas.uiowa.edu';
+$sites['clasasg.stage.drupal.uiowa.edu'] = 'asg.clas.uiowa.edu';
+$sites['clasasg.prod.drupal.uiowa.edu'] = 'asg.clas.uiowa.edu';
