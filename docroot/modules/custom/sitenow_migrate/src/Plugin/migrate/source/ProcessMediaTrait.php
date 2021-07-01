@@ -131,6 +131,7 @@ trait ProcessMediaTrait {
       }
 
       unset($file_data);
+      unset($file_properties);
       return isset($uuid) ? $this->constructInlineEntity($uuid, $align) : '';
     }
 
@@ -287,8 +288,9 @@ trait ProcessMediaTrait {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function createMediaEntity($fid, array $meta, $owner_id = 1) {
+    $file_manager = $this->entityTypeManager->getStorage('file');
     /** @var \Drupal\file\FileInterface $file */
-    $file = $this->entityTypeManager->getStorage('file')->load($fid);
+    $file = $file_manager->load($fid);
 
     if ($file) {
       $fileType = explode('/', $file->getMimeType())[0];
@@ -297,8 +299,9 @@ trait ProcessMediaTrait {
       switch ($fileType) {
 
         case 'image':
+          $media_manager = $this->entityTypeManager->getStorage('media');
           /** @var \Drupal\Media\MediaInterface $media */
-          $media = $this->entityTypeManager->getStorage('media')->create([
+          $media = $media_manager->create([
             'bundle' => 'image',
             'field_media_image' => [
               'target_id' => $fid,
@@ -326,15 +329,18 @@ trait ProcessMediaTrait {
           // Minor memory cleanup.
           unset($media);
           unset($file);
-          $this->entityTypeManager->getStorage('media')->resetCache([$id]);
-          $this->entityTypeManager->getStorage('file')->resetCache([$fid]);
+          $media_manager->resetCache([$id]);
+          unset($media_manager);
+          $file_manager->resetCache([$fid]);
+          unset($file_manager);
           return $id;
 
         case 'application':
         case 'document':
         case 'file':
+          $media_manager = $this->entityTypeManager->getStorage('media');
           /** @var \Drupal\Media\MediaInterface $media */
-          $media = $this->entityTypeManager->getStorage('media')->create([
+          $media = $media_manager->create([
             'bundle' => 'file',
             'field_media_file' => [
               'target_id' => $fid,
@@ -352,8 +358,10 @@ trait ProcessMediaTrait {
           // Minor memory cleanup.
           unset($media);
           unset($file);
-          $this->entityTypeManager->getStorage('media')->resetCache([$id]);
-          $this->entityTypeManager->getStorage('file')->resetCache([$fid]);
+          $media_manager->resetCache([$id]);
+          unset($media_manager);
+          $file_manager->resetCache([$fid]);
+          unset($file_manager);
           return $id;
 
         default:
