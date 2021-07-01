@@ -1,0 +1,13 @@
+project:
+  local:
+    hostname: biologyiba.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: biologyiba
+  human_name: iba.biology.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: biologyiba.prod
+drupal:
+  db:
+    database: iba_biology_uiowa_edu
