@@ -855,12 +855,19 @@ function layout_builder_custom_preprocess_block(&$variables) {
         $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
       }
 
+      // Custom cache tag to combat stale heading size cache.
+      $block->addCacheTags(['featured_content_block_content:' . $block->id()]);
+
       foreach ($block->get('field_featured_content_item') as $item) {
         $entity = $item->getProperties(TRUE)['entity']->getTarget()->getEntity();
 
         // Associate the block's cache tags with each entity so that the
         // appropriate render cache ID is cleared when the block changes.
-        $entity->addCacheTags($variables['content']['#cache']['tags']);
+        $cache_tags = $block->getCacheTags();
+        $entity->addCacheTags($cache_tags);
+        // Grab a fresh copy of the node.
+        $id = $entity->id();
+        Cache::invalidateTags(['node:' . $id]);
 
         // Construct the entity teaser markup manually to pass in the heading
         // size variable for the template and append it to the block content.

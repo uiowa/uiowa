@@ -5,6 +5,7 @@
  * Article configuration for the University of Iowa.
  */
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\Core\Entity\EntityInterface;
@@ -481,13 +482,8 @@ function sitenow_articles_preprocess_block(&$variables) {
             $view->display_handler->setOption('heading_size', $heading_size);
           }
         }
-        // If the block is brand new, we need to save it before it will have an id.
-        $cache_tags = [];
-        if ($block->isNew() && $block->save()) {
-          // Manually construct the tag with the newly generated id,
-          // because the tag isn't yet in our variables.
-          $cache_tags = ['block_content:' . $block->id()];
-        }
+        // Custom cache tag to combat stale heading size cache.
+        $block->addCacheTags(['sitenow_articles_block_content:' . $block->id()]);
       }
 
       if ($block->hasField('field_collection_results') && !$block->get('field_collection_results')->isEmpty()) {
@@ -516,11 +512,14 @@ function sitenow_articles_preprocess_block(&$variables) {
       // that the appropriate render cache ID is cleared when the block changes.
       foreach ($view->result as $result_row) {
         $entity = $result_row->_entity;
-        $entity->addCacheTags($variables['content']['#cache']['tags']);
-        // If we have an additional cache tags, add them.
-        if (!empty($cache_tags)) {
-          $entity->addCacheTags($cache_tags);
-        }
+        // Associate the block's cache tags with each entity so that the
+        // appropriate render cache ID is cleared when the block changes.
+        $cache_tags = $block->getCacheTags();
+        $entity->addCacheTags($cache_tags);
+        // Grab a fresh copy of the node.
+        $id = $entity->id();
+        Cache::invalidateTags(['node:' . $id]);
+
       }
 
       $variables['content']['view'] = $view->render();
