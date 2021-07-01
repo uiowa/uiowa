@@ -855,9 +855,6 @@ function layout_builder_custom_preprocess_block(&$variables) {
         $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
       }
 
-      // Custom cache tag to combat stale heading size cache.
-      $block->addCacheTags(['featured_content_block_content:' . $block->id()]);
-
       foreach ($block->get('field_featured_content_item') as $item) {
         $entity = $item->getProperties(TRUE)['entity']->getTarget()->getEntity();
 
