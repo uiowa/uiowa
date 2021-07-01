@@ -141,7 +141,14 @@
 // Fallback (current, using padding hack)
 @supports not (aspect-ratio: 16 / 9) {
   .media--border .img--empty {
-    padding-top: 100%;
+    padding-top: 85%;
+  }
+  .card__media--large.media--border .img--empty,
+  .card__media--medium.media--border .img--empty {
+    padding-top: 90%;
+    @include breakpoint(sm) {
+      padding-top: 95%;
+    }
   }
 
   .media--widescreen .img--empty {
