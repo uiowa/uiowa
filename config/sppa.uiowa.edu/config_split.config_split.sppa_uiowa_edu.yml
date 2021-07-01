@@ -4,18 +4,16 @@ status: true
 dependencies: {  }
 id: sppa_uiowa_edu
 label: SPPA
-description: 'SPPA custom site split'
+description: 'SPPA custom site split.'
 folder: ../config/sppa.uiowa.edu
 module:
   sppa_core: 0
 theme: {  }
 blacklist:
   - config_split.config_split.sppa_uiowa_edu
-  - node.type.sppa_opportunity_resource
-  - 'field.storage.node.field_sppa_*'
+  - node.type.opportunity
+  - 'field.storage.node.field_opportunity_*'
 graylist:
-  - 'core.entity_form_display.node.sppa_opportunity_resource.*'
-  - 'core.entity_view_display.node.sppa_opportunity_resource.*'
   - 'user.role.*'
 graylist_dependents: true
 graylist_skip_equal: true

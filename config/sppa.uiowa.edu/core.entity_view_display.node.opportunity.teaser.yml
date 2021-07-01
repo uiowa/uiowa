@@ -1,0 +1,29 @@
+uuid: c81ea1cf-8dbf-4462-8d7f-95541c4eb4b2
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.opportunity.body
+    - field.field.node.opportunity.field_opportunity_states
+    - field.field.node.opportunity.field_opportunity_type
+    - field.field.node.opportunity.field_opportunity_website
+    - node.type.opportunity
+  module:
+    - user
+id: node.opportunity.teaser
+targetEntityType: node
+bundle: opportunity
+mode: teaser
+content:
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  body: true
+  field_opportunity_states: true
+  field_opportunity_type: true
+  field_opportunity_website: true
+  search_api_excerpt: true

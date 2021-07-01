@@ -3,15 +3,15 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_sppa_opportunities
-    - node.type.sppa_opportunity_resource
+    - field.storage.node.field_opportunity_type
+    - node.type.opportunity
   module:
     - options
-id: node.sppa_opportunity_resource.field_sppa_opportunities
-field_name: field_sppa_opportunities
+id: node.opportunity.field_opportunity_type
+field_name: field_opportunity_type
 entity_type: node
-bundle: sppa_opportunity_resource
-label: 'Opportunities Offered'
+bundle: opportunity
+label: Types
 description: ''
 required: false
 translatable: false

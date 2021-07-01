@@ -3,35 +3,44 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.sppa_opportunity_resource.field_sppa_opportunities
-    - field.field.node.sppa_opportunity_resource.field_sppa_states
-    - field.field.node.sppa_opportunity_resource.field_sppa_website
-    - node.type.sppa_opportunity_resource
+    - field.field.node.opportunity.body
+    - field.field.node.opportunity.field_opportunity_states
+    - field.field.node.opportunity.field_opportunity_type
+    - field.field.node.opportunity.field_opportunity_website
+    - node.type.opportunity
   module:
     - link
     - options
+    - text
     - user
-id: node.sppa_opportunity_resource.default
+id: node.opportunity.default
 targetEntityType: node
-bundle: sppa_opportunity_resource
+bundle: opportunity
 mode: default
 content:
-  field_sppa_opportunities:
-    weight: 0
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
-    region: content
-  field_sppa_states:
-    weight: 1
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
-    region: content
-  field_sppa_website:
+  body:
     weight: 2
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_opportunity_states:
+    weight: 1
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_opportunity_type:
+    weight: 0
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+  field_opportunity_website:
+    weight: 3
     label: visually_hidden
     settings:
       trim_length: 80
@@ -43,7 +52,7 @@ content:
     type: link
     region: content
   links:
-    weight: 3
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
