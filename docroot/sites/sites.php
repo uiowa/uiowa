@@ -2813,3 +2813,9 @@ $sites['clasasg.local.drupal.uiowa.edu'] = 'asg.clas.uiowa.edu';
 $sites['clasasg.dev.drupal.uiowa.edu'] = 'asg.clas.uiowa.edu';
 $sites['clasasg.stage.drupal.uiowa.edu'] = 'asg.clas.uiowa.edu';
 $sites['clasasg.prod.drupal.uiowa.edu'] = 'asg.clas.uiowa.edu';
+
+// Directory aliases for iba.biology.uiowa.edu.
+$sites['biologyiba.local.drupal.uiowa.edu'] = 'iba.biology.uiowa.edu';
+$sites['biologyiba.dev.drupal.uiowa.edu'] = 'iba.biology.uiowa.edu';
+$sites['biologyiba.stage.drupal.uiowa.edu'] = 'iba.biology.uiowa.edu';
+$sites['biologyiba.prod.drupal.uiowa.edu'] = 'iba.biology.uiowa.edu';
