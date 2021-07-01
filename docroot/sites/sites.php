@@ -2789,3 +2789,21 @@ $sites['president.local.drupal.uiowa.edu'] = 'president.uiowa.edu';
 $sites['president.dev.drupal.uiowa.edu'] = 'president.uiowa.edu';
 $sites['president.stage.drupal.uiowa.edu'] = 'president.uiowa.edu';
 $sites['president.prod.drupal.uiowa.edu'] = 'president.uiowa.edu';
+
+// Directory aliases for zabner.lab.uiowa.edu.
+$sites['labzabner.local.drupal.uiowa.edu'] = 'zabner.lab.uiowa.edu';
+$sites['labzabner.dev.drupal.uiowa.edu'] = 'zabner.lab.uiowa.edu';
+$sites['labzabner.stage.drupal.uiowa.edu'] = 'zabner.lab.uiowa.edu';
+$sites['labzabner.prod.drupal.uiowa.edu'] = 'zabner.lab.uiowa.edu';
+
+// Directory aliases for stoltz.lab.uiowa.edu.
+$sites['labstoltz.local.drupal.uiowa.edu'] = 'stoltz.lab.uiowa.edu';
+$sites['labstoltz.dev.drupal.uiowa.edu'] = 'stoltz.lab.uiowa.edu';
+$sites['labstoltz.stage.drupal.uiowa.edu'] = 'stoltz.lab.uiowa.edu';
+$sites['labstoltz.prod.drupal.uiowa.edu'] = 'stoltz.lab.uiowa.edu';
+
+// Directory aliases for halosat.physics.uiowa.edu.
+$sites['physicshalosat.local.drupal.uiowa.edu'] = 'halosat.physics.uiowa.edu';
+$sites['physicshalosat.dev.drupal.uiowa.edu'] = 'halosat.physics.uiowa.edu';
+$sites['physicshalosat.stage.drupal.uiowa.edu'] = 'halosat.physics.uiowa.edu';
+$sites['physicshalosat.prod.drupal.uiowa.edu'] = 'halosat.physics.uiowa.edu';
