@@ -237,4 +237,20 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
     }
   }
 
+  /**
+   * Return the nid of the last-most migrated node.
+   *
+   * @param string $migration_id
+   *   The migration id, used to construct the migrate_map_ table name.
+   *
+   * @return int
+   *   The node id of the last-most migrated node.
+   */
+  public function getLastMigrated(string $migration_id) {
+    $last_migrated_query = \Drupal::database()->select('migrate_map_' . $migration_id, 'm')
+      ->fields('m', ['sourceid1'])
+      ->orderBy('sourceid1', 'DESC');
+    return $last_migrated_query->execute()->fetch()->sourceid1;
+  }
+
 }

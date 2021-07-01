@@ -30,7 +30,10 @@ class Articles extends BaseNodeSource {
     $query = parent::query();
     $query->leftJoin('url_alias', 'alias', "alias.source = CONCAT('node/', n.nid)");
     $query->fields('alias', ['alias']);
-    $query->orderBy('nid');
+    // Make sure our nodes are retrieved in order,
+    // and force a highwater mark of our last-most migrated node.
+    $query->orderBy('nid')
+      ->condition('n.nid', $this->getLastMigrated('international_articles'), '>');
     return $query;
   }
 
@@ -47,15 +50,7 @@ class Articles extends BaseNodeSource {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
-    $last_migrated_query = \Drupal::database()->select('migrate_map_international_articles', 'm')
-      ->fields('m', ['sourceid1'])
-      ->orderBy('sourceid1', 'DESC');
-    $last_migrated = $last_migrated_query->execute()->fetch()->sourceid1;
-
-    $this->logger->notice('Preparing row: @nid. Last migrated: @last',
-      ['@nid' => $row->getSourceProperty('nid'),
-        '@last' => $last_migrated]);
-    if ($row->getSourceProperty('nid') < $last_migrated) {
+    if ($row->getSourceProperty('nid') < $this->getLastMigrated('international_articles')) {
       $this->logger->notice('Migrated node: Skipping.');
       return FALSE;
     }
