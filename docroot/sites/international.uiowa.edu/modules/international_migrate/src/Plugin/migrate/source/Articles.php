@@ -65,6 +65,11 @@ class Articles extends BaseNodeSource {
       return FALSE;
     }
 
+    // Minor adjustments to keep formatting consistent.
+    $author = $row->getSourceProperty('field_author_value');
+    $author = preg_replace('|by:?\s|i', '', $author);
+    $row->setSourceProperty('field_author_value', $author);
+
     $body = $row->getSourceProperty('body');
 
     if (!empty($body)) {
