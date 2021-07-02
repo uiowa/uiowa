@@ -32,8 +32,7 @@ class Articles extends BaseNodeSource {
     $query->fields('alias', ['alias']);
     // Make sure our nodes are retrieved in order,
     // and force a highwater mark of our last-most migrated node.
-    $query->orderBy('nid')
-      ->condition('n.nid', $this->getLastMigrated('international_articles'), '>');
+    $query->orderBy('nid');
     return $query;
   }
 
@@ -50,7 +49,7 @@ class Articles extends BaseNodeSource {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
-    if ($row->getSourceProperty('nid') < $this->getLastMigrated('international_articles')) {
+    if ($row->getSourceProperty('nid') < $this->getLastMigrated()) {
       $this->logger->notice('Migrated node: Skipping.');
       return FALSE;
     }
