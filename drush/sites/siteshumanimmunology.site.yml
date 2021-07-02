@@ -1,0 +1,32 @@
+local:
+  root: /var/www/uiowa/docroot
+  uri: siteshumanimmunology.local.drupal.uiowa.edu
+  paths:
+    files: sites/humanimmunology.sites.uiowa.edu/files
+dev:
+  uri: siteshumanimmunology.dev.drupal.uiowa.edu
+  host: uiowa02dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/humanimmunology.sites.uiowa.edu/files
+  root: /var/www/html/uiowa02.dev/docroot
+  user: uiowa02.dev
+prod:
+  uri: humanimmunology.sites.uiowa.edu
+  host: uiowa02.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/humanimmunology.sites.uiowa.edu/files
+  root: /var/www/html/uiowa02.prod/docroot
+  user: uiowa02.prod
+test:
+  uri: siteshumanimmunology.stage.drupal.uiowa.edu
+  host: uiowa02stg.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/humanimmunology.sites.uiowa.edu/files
+  root: /var/www/html/uiowa02.test/docroot
+  user: uiowa02.test
