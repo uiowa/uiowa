@@ -21,7 +21,12 @@ class Articles extends BaseNodeSource {
   use ProcessMediaTrait;
   use LinkReplaceTrait;
 
-  protected $oldies = 0;
+  /**
+   * Term-to-name mapping for authors.
+   *
+   * @var array
+   */
+  protected $termMapping;
 
   /**
    * {@inheritdoc}
@@ -60,15 +65,31 @@ class Articles extends BaseNodeSource {
     // Only import news newer than January 2015.
     $created_year = date('Y', $row->getSourceProperty('created'));
     if ($created_year < 2015) {
-      $this->logger->notice('Total skipped: @oldies',
-        ['@oldies' => ++$this->oldies]);
+      $this->logger->notice('Older than 2015. Skipping.');
       return FALSE;
     }
 
-    // Minor adjustments to keep formatting consistent.
-    $author = $row->getSourceProperty('field_author_value');
-    $author = preg_replace('|by:?\s|i', '', $author);
-    $row->setSourceProperty('field_author_value', $author);
+    // Get the author tags to build into our mapped
+    // field_news_authors value.
+    $tables = [
+      'field_data_field_news_author' => ['field_news_author_tid'],
+    ];
+    $this->fetchAdditionalFields($row, $tables);
+    $author_tids = $row->getSource('field_news_author_tid');
+    if (!empty($author_tids)) {
+      $authors = [];
+      foreach ($author_tids as $tid) {
+        if (!isset($this->termMapping[$tid])) {
+          $source_query = $this->select('taxonomy_term_data', 't');
+          $source_query = $source_query->fields('t', ['name'])
+            ->condition('t.tid', $tid, '=');
+          $this->termMapping[$tid] = $source_query->execute()->fetchCol()[0];
+        }
+        $authors[] = $this->termMapping[$tid];
+      }
+      $source_org_text = implode(', ', $authors);
+      $row->setSourceProperty('field_news_authors', $source_org_text);
+    }
 
     $body = $row->getSourceProperty('body');
 
