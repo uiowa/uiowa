@@ -2825,3 +2825,9 @@ $sites['siteshumanimmunology.local.drupal.uiowa.edu'] = 'humanimmunology.sites.u
 $sites['siteshumanimmunology.dev.drupal.uiowa.edu'] = 'humanimmunology.sites.uiowa.edu';
 $sites['siteshumanimmunology.stage.drupal.uiowa.edu'] = 'humanimmunology.sites.uiowa.edu';
 $sites['siteshumanimmunology.prod.drupal.uiowa.edu'] = 'humanimmunology.sites.uiowa.edu';
+
+// Directory aliases for jtucker.lab.uiowa.edu.
+$sites['labjtucker.local.drupal.uiowa.edu'] = 'jtucker.lab.uiowa.edu';
+$sites['labjtucker.dev.drupal.uiowa.edu'] = 'jtucker.lab.uiowa.edu';
+$sites['labjtucker.stage.drupal.uiowa.edu'] = 'jtucker.lab.uiowa.edu';
+$sites['labjtucker.prod.drupal.uiowa.edu'] = 'jtucker.lab.uiowa.edu';
