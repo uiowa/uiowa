@@ -12,9 +12,12 @@ module:
   sitenow_card: 0
   sitenow_carousel: 0
   sitenow_events_paragraph: 0
+  sitenow_p2lb: 0
   sitenow_paragraphs: 0
 theme: {  }
-blacklist: {  }
+blacklist:
+  - views.view.v2_converter
+  - system.action.sitenow_p2lb_convert
 graylist:
   - core.entity_view_display.media.image.edgy
   - core.entity_view_display.media.image.image_large
