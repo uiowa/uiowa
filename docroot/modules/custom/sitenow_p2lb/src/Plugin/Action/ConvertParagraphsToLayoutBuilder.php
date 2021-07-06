@@ -1,31 +1,32 @@
 <?php
 
-namespace sitenow_p2lb\Plugin\Action;
+namespace Drupal\sitenow_p2lb\Plugin\Action;
 
+use Drupal\Core\Action\ActionBase;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\views_bulk_operations\Action\ViewsBulkOperationsActionBase;
 
 /**
  * Action to convert page nodes from Paragraphs to Layout Builder.
  *
  * @Action(
  *   id = "sitenow_p2lb_convert_paragraphs_to_layout_builder",
- *   label = @Translation("Convert Paragraphs to Layout Builder"),
- *   type = "",
+ *   label = @Translation("Convert V2 pages to V3"),
+ *   type = "node",
  *   confirm = TRUE,
- *   requirements = {
- *     "_permission" = "some permission",
- *     "_custom_access" = TRUE,
- *   },
  * )
  */
-class ConvertParagraphsToLayoutBuilder extends ViewsBulkOperationsActionBase {
+class ConvertParagraphsToLayoutBuilder extends ActionBase {
 
   public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
-    // TODO: Implement access() method.
+    /** @var \Drupal\node\NodeInterface $object */
+    $result = $object->access('update', $account, TRUE)
+      ->andIf($object->field_page_content_block->access('edit', $account, TRUE));
+
+    return $return_as_object ? $result : $result->isAllowed();
   }
 
-  public function execute() {
-    // TODO: Implement execute() method.
+  public function execute(ContentEntityInterface $entity = NULL) {
+    sitenow_p2lb_node_p2lb($entity);
   }
 }

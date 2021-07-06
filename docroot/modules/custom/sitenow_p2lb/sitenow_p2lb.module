@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Database\Database;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\layout_builder\Section;
 use Drupal\layout_builder\InlineBlockUsage;
 
@@ -34,13 +35,13 @@ function sitenow_p2lb_paragraph_nodes() {
  * @param bool $remove
  *   Indicator whether old paragraphs should be removed following processing.
  */
-function sitenow_p2lb_node_p2lb(int $nid, $remove = FALSE) {
-  $node = \Drupal::service('entity_type.manager')
-    ->getStorage('node')
-    ->load($nid);
-  if (!$node) {
-    return FALSE;
-  }
+function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = FALSE) {
+//  $node = \Drupal::service('entity_type.manager')
+//    ->getStorage('node')
+//    ->load($nid);
+//  if (!$node) {
+//    return FALSE;
+//  }
   // Get sections from the page.
   $section_ids = sitenow_p2lb_fetch_child_ids($node);
   // Grab the layout. We should have sections to process,
