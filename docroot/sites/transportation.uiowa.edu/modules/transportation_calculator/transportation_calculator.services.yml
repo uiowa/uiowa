@@ -1,0 +1,5 @@
+services:
+  remove_x_frame_options_subscriber:
+    class: Drupal\transportation_calculator\EventSubscriber\RemoveXFrameOptionsSubscriber
+    tags:
+      - { name: event_subscriber }

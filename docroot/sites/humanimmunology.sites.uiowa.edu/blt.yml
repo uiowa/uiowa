@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: siteshumanimmunology.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: siteshumanimmunology
+  human_name: humanimmunology.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: siteshumanimmunology.prod
+drupal:
+  db:
+    database: humanimmunology_sites_uiowa_edu
+uiowa:
+  requester: zzacharias

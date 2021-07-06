@@ -115,9 +115,25 @@ function sitenow_events_preprocess_block(&$variables) {
       }
     }
     else {
-      $variables['content'] = [
+      $variables['content']['no_results'] = [
         '#markup' => '<div class="events-empty"><p>There are currently no events to display.</p></div>',
       ];
+
+      // Unset classes meant for children.
+      if (isset($variables['attributes']['class'])) {
+        foreach ($variables['attributes']['class'] as $key => $style) {
+          foreach ([
+            'bg',
+            'card',
+            'media',
+            'hide',
+          ] as $check) {
+            if (substr($style, 0, strlen($check)) === $check) {
+              unset($variables['attributes']['class'][$key]);
+            }
+          }
+        }
+      }
     }
 
     // If we have more link checked and link provided, pass it.

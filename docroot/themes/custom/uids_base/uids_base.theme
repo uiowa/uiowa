@@ -224,7 +224,9 @@ function uids_base_preprocess_page(&$variables) {
  * Implements hook_preprocess_HOOK() for node.html.twig.
  */
 function uids_base_preprocess_node(&$variables) {
-  /** @var \Drupal\node\Entity\Node $node */
+  /**
+   * @var \Drupal\node\Entity\Node $node
+   */
   $node = $variables['node'];
 
   if ($variables['view_mode'] == 'teaser') {
@@ -260,9 +262,17 @@ function uids_base_preprocess_node(&$variables) {
           unset($variables['media_classes']);
       }
     }
-    elseif (!$is_v2 && $node->getType() == 'page' || 'article') {
-      $variables['attributes']['class'][] = 'card--media-right';
-      $variables['media_classes'] = ['media--widescreen', 'card__media--small'];
+    elseif (!$is_v2) {
+      switch ($node->getType()) {
+        case 'page':
+        case 'article':
+          $variables['attributes']['class'][] = 'card--media-right';
+          $variables['media_classes'] = [
+            'media--widescreen',
+            'card__media--small',
+          ];
+          break;
+      }
     }
   }
 
@@ -618,11 +628,11 @@ function uids_base_preprocess_block(&$variables) {
 
     // Remove headline classes from attributes.
     $variables['headline_classes'] = array_filter($variables['elements']['#attributes']['class'], function ($v) {
-      return substr($v, 0, 13) === 'bold-headline';
+      return substr($v, 0, 8) === 'headline';
     });
 
     // Change link style to match highlight, if set.
-    if (in_array('bold-headline--highlight', $variables['headline_classes'])) {
+    if (in_array('headline--highlight', $variables['headline_classes'])) {
       $highlight_classes = 'bttn bttn--secondary bttn--caps';
     }
     else {
@@ -690,7 +700,38 @@ function uids_base_preprocess_menu(&$variables) {
       break;
 
   }
+}
 
+/**
+ * Implements hook_preprocess_menu_local_task().
+ */
+function uids_base_preprocess_menu_local_task(&$variables) {
+  $url = $variables['link']['#url'];
+
+  if ($url instanceof Url) {
+    $route_name = $url->getRouteName();
+
+    $route_icon_map = [
+      'entity.node.canonical' => 'view',
+      'entity.node.edit_form' => 'edit',
+      'entity.node.delete_form' => 'delete',
+      'layout_builder.overrides.node.view' => 'layout',
+      'entity.node.version_history' => 'history',
+      'entity.node.entity_usage' => 'usage',
+      'entity.node.devel_load' => 'devel',
+      'entity.taxonomy_term.canonical' => 'view',
+      'entity.taxonomy_term.edit_form' => 'edit',
+      'entity.taxonomy_term.delete_form' => 'delete',
+      'entity.taxonomy_term.entity_usage' => 'usage',
+      'entity.taxonomy_term.devel_load' => 'devel',
+    ];
+
+    // Set the icon if the route matches an entry in the map.
+    if (isset($route_icon_map[$route_name])) {
+      $variables['link']['#options']['attributes']['class'][] = 'local-task-icon';
+      $variables['link']['#options']['attributes']['class'][] = 'local-task-icon--' . $route_icon_map[$route_name];
+    }
+  }
 }
 
 /**

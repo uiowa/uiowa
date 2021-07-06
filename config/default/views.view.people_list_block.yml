@@ -14,6 +14,7 @@ dependencies:
     - taxonomy.vocabulary.tags
   module:
     - node
+    - options
     - taxonomy
     - telephone
     - user
@@ -525,7 +526,7 @@ display:
           delta_reversed: false
           delta_first_last: false
           multi_type: separator
-          separator: ', '
+          separator: '<br />'
           field_api_classes: false
           plugin_id: field
       filters:
@@ -554,167 +555,7 @@ display:
           expose:
             operator_limit_selection: false
             operator_list: {  }
-        field_person_hide_value:
-          id: field_person_hide_value
-          table: node__field_person_hide
-          field: field_person_hide_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: '!='
-          value: '1'
           group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          plugin_id: boolean
-      sorts:
-        sticky:
-          id: sticky
-          table: node_field_data
-          field: sticky
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: DESC
-          exposed: false
-          expose:
-            label: ''
-          entity_type: node
-          entity_field: sticky
-          plugin_id: standard
-        field_person_last_name_value:
-          id: field_person_last_name_value
-          table: node__field_person_last_name
-          field: field_person_last_name_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: false
-          expose:
-            label: ''
-          plugin_id: standard
-        field_person_first_name_value:
-          id: field_person_first_name_value
-          table: node__field_person_first_name
-          field: field_person_first_name_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: false
-          expose:
-            label: ''
-          plugin_id: standard
-      title: None
-      header: {  }
-      footer: {  }
-      empty:
-        area:
-          id: area
-          table: views
-          field: area
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: true
-          tokenize: false
-          content:
-            value: 'There are currently no results to display.'
-            format: filtered_html
-          plugin_id: text
-      relationships: {  }
-      arguments: {  }
-      display_extenders: {  }
-      use_ajax: true
-      group_by: false
-      use_more: true
-      use_more_always: false
-      use_more_text: 'View more'
-      link_url: '{{ sitenow_people.path }}'
-      link_display: custom_url
-    cache_metadata:
-      max-age: -1
-      contexts:
-        - 'languages:language_content'
-        - 'languages:language_interface'
-        - url.query_args
-        - 'user.node_grants:view'
-        - user.permissions
-      tags:
-        - 'config:field.storage.node.field_image'
-        - 'config:field.storage.node.field_person_credential'
-        - 'config:field.storage.node.field_person_email'
-        - 'config:field.storage.node.field_person_phone'
-        - 'config:field.storage.node.field_person_position'
-        - 'config:field.storage.node.field_teaser'
-  list_card:
-    display_plugin: block
-    id: list_card
-    display_title: 'People List'
-    position: 3
-    display_options:
-      display_extenders:
-        metatag_display_extender: {  }
-      block_category: Lists
-      allow:
-        items_per_page: true
-        offset: offset
-        pager: pager
-        hide_fields: hide_fields
-        configure_sorts: configure_sorts
-        use_more: use_more
-      filters:
-        status:
-          value: '1'
-          table: node_field_data
-          field: status
-          plugin_id: boolean
-          entity_type: node
-          entity_field: status
-          id: status
-          expose:
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-          group: 1
-        type:
-          id: type
-          table: node_field_data
-          field: type
-          value:
-            person: person
-          entity_type: node
-          entity_field: type
-          plugin_id: bundle
-          expose:
-            operator_limit_selection: false
-            operator_list: {  }
         field_person_hide_value:
           id: field_person_hide_value
           table: node__field_person_hide
@@ -797,7 +638,7 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          reduce_duplicates: true
+          reduce_duplicates: false
           type: textfield
           limit: true
           vid: tags
@@ -811,18 +652,212 @@ display:
           required_depth: 0
           none_label: '- Please select -'
           plugin_id: taxonomy_index_tid
-      defaults:
-        filters: false
-        filter_groups: false
+        field_person_types_target_id:
+          id: field_person_types_target_id
+          table: node__field_person_types
+          field: field_person_types_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_person_types_target_id_op
+            label: 'Person type'
+            description: ''
+            use_operator: false
+            operator: field_person_types_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_person_types_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: string
+        field_person_type_status_value:
+          id: field_person_type_status_value
+          table: node__field_person_type_status
+          field: field_person_type_status_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_person_type_status_value_op
+            label: 'Person type status'
+            description: ''
+            use_operator: true
+            operator: field_person_type_status_value_op
+            operator_limit_selection: true
+            operator_list:
+              or: or
+              not: not
+            identifier: field_person_type_status_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          plugin_id: list_field
+      sorts:
+        sticky:
+          id: sticky
+          table: node_field_data
+          field: sticky
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: ''
+          entity_type: node
+          entity_field: sticky
+          plugin_id: standard
+        field_person_last_name_value:
+          id: field_person_last_name_value
+          table: node__field_person_last_name
+          field: field_person_last_name_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: false
+          expose:
+            label: ''
+          plugin_id: standard
+        field_person_first_name_value:
+          id: field_person_first_name_value
+          table: node__field_person_first_name
+          field: field_person_first_name_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: false
+          expose:
+            label: ''
+          plugin_id: standard
+      title: None
+      header: {  }
+      footer: {  }
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content:
+            value: 'There are currently no results to display.'
+            format: filtered_html
+          plugin_id: text
+      relationships: {  }
+      arguments: {  }
+      display_extenders: {  }
+      use_ajax: true
+      group_by: false
+      use_more: true
+      use_more_always: false
+      use_more_text: 'View more'
+      link_url: '{{ sitenow_people.path }}'
+      link_display: custom_url
       filter_groups:
         operator: AND
         groups:
           1: AND
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - url.query_args
+        - user
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:field.storage.node.field_image'
+        - 'config:field.storage.node.field_person_credential'
+        - 'config:field.storage.node.field_person_email'
+        - 'config:field.storage.node.field_person_phone'
+        - 'config:field.storage.node.field_person_position'
+        - 'config:field.storage.node.field_teaser'
+  list_card:
+    display_plugin: block
+    id: list_card
+    display_title: 'People list'
+    position: 3
+    display_options:
+      display_extenders:
+        metatag_display_extender: {  }
+      block_category: Lists
+      allow:
+        items_per_page: true
+        offset: offset
+        pager: pager
+        hide_fields: hide_fields
+        configure_sorts: configure_sorts
+        use_more: use_more
+      defaults:
+        filters: true
+        filter_groups: true
       filter_in_block:
         - field_tags_target_id
+        - field_person_types_target_id
+        - field_person_type_status_value
       more_link_help_text: 'Check to include a ''display more'' link. To use the default <a href="/admin/config/system/sitenow-people">people path set within SiteNow People</a>, make sure the ‘Enable people listing’ box is checked. Alternatively, a custom URL path can be provided in the ‘Path’ text box below. '
       display_description: ''
-      block_description: 'People list'
+      block_description: People
     cache_metadata:
       max-age: -1
       contexts:
