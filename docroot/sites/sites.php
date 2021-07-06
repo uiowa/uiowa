@@ -2819,3 +2819,9 @@ $sites['biologyiba.local.drupal.uiowa.edu'] = 'iba.biology.uiowa.edu';
 $sites['biologyiba.dev.drupal.uiowa.edu'] = 'iba.biology.uiowa.edu';
 $sites['biologyiba.stage.drupal.uiowa.edu'] = 'iba.biology.uiowa.edu';
 $sites['biologyiba.prod.drupal.uiowa.edu'] = 'iba.biology.uiowa.edu';
+
+// Directory aliases for humanimmunology.sites.uiowa.edu.
+$sites['siteshumanimmunology.local.drupal.uiowa.edu'] = 'humanimmunology.sites.uiowa.edu';
+$sites['siteshumanimmunology.dev.drupal.uiowa.edu'] = 'humanimmunology.sites.uiowa.edu';
+$sites['siteshumanimmunology.stage.drupal.uiowa.edu'] = 'humanimmunology.sites.uiowa.edu';
+$sites['siteshumanimmunology.prod.drupal.uiowa.edu'] = 'humanimmunology.sites.uiowa.edu';
