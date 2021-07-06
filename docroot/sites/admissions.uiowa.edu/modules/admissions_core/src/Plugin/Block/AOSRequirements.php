@@ -89,8 +89,8 @@ class AOSRequirements extends BlockBase implements ContainerFactoryPluginInterfa
     if ($show) {
       return [
         '#markup' => $this->t('Admission Process'),
-        '#prefix' => '<div class="element--bold-intro text-align-center">',
-        '#suffix' => '</div>',
+        '#prefix' => '<div class="h2 headline headline--serif element--bold-intro text-align-center">',
+        '#suffix' => '</div><hr class="element--spacer-separator" />',
       ];
     }
     return [];
