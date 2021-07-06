@@ -2789,3 +2789,39 @@ $sites['president.local.drupal.uiowa.edu'] = 'president.uiowa.edu';
 $sites['president.dev.drupal.uiowa.edu'] = 'president.uiowa.edu';
 $sites['president.stage.drupal.uiowa.edu'] = 'president.uiowa.edu';
 $sites['president.prod.drupal.uiowa.edu'] = 'president.uiowa.edu';
+
+// Directory aliases for zabner.lab.uiowa.edu.
+$sites['labzabner.local.drupal.uiowa.edu'] = 'zabner.lab.uiowa.edu';
+$sites['labzabner.dev.drupal.uiowa.edu'] = 'zabner.lab.uiowa.edu';
+$sites['labzabner.stage.drupal.uiowa.edu'] = 'zabner.lab.uiowa.edu';
+$sites['labzabner.prod.drupal.uiowa.edu'] = 'zabner.lab.uiowa.edu';
+
+// Directory aliases for stoltz.lab.uiowa.edu.
+$sites['labstoltz.local.drupal.uiowa.edu'] = 'stoltz.lab.uiowa.edu';
+$sites['labstoltz.dev.drupal.uiowa.edu'] = 'stoltz.lab.uiowa.edu';
+$sites['labstoltz.stage.drupal.uiowa.edu'] = 'stoltz.lab.uiowa.edu';
+$sites['labstoltz.prod.drupal.uiowa.edu'] = 'stoltz.lab.uiowa.edu';
+
+// Directory aliases for halosat.physics.uiowa.edu.
+$sites['physicshalosat.local.drupal.uiowa.edu'] = 'halosat.physics.uiowa.edu';
+$sites['physicshalosat.dev.drupal.uiowa.edu'] = 'halosat.physics.uiowa.edu';
+$sites['physicshalosat.stage.drupal.uiowa.edu'] = 'halosat.physics.uiowa.edu';
+$sites['physicshalosat.prod.drupal.uiowa.edu'] = 'halosat.physics.uiowa.edu';
+
+// Directory aliases for asg.clas.uiowa.edu.
+$sites['clasasg.local.drupal.uiowa.edu'] = 'asg.clas.uiowa.edu';
+$sites['clasasg.dev.drupal.uiowa.edu'] = 'asg.clas.uiowa.edu';
+$sites['clasasg.stage.drupal.uiowa.edu'] = 'asg.clas.uiowa.edu';
+$sites['clasasg.prod.drupal.uiowa.edu'] = 'asg.clas.uiowa.edu';
+
+// Directory aliases for iba.biology.uiowa.edu.
+$sites['biologyiba.local.drupal.uiowa.edu'] = 'iba.biology.uiowa.edu';
+$sites['biologyiba.dev.drupal.uiowa.edu'] = 'iba.biology.uiowa.edu';
+$sites['biologyiba.stage.drupal.uiowa.edu'] = 'iba.biology.uiowa.edu';
+$sites['biologyiba.prod.drupal.uiowa.edu'] = 'iba.biology.uiowa.edu';
+
+// Directory aliases for humanimmunology.sites.uiowa.edu.
+$sites['siteshumanimmunology.local.drupal.uiowa.edu'] = 'humanimmunology.sites.uiowa.edu';
+$sites['siteshumanimmunology.dev.drupal.uiowa.edu'] = 'humanimmunology.sites.uiowa.edu';
+$sites['siteshumanimmunology.stage.drupal.uiowa.edu'] = 'humanimmunology.sites.uiowa.edu';
+$sites['siteshumanimmunology.prod.drupal.uiowa.edu'] = 'humanimmunology.sites.uiowa.edu';
