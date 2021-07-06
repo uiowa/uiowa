@@ -33,7 +33,7 @@ drush config-split:export mysitesplit
 
 Deploy the code changes to each environment per the normal process and import
 the configuration from the split manually.
-```drush @mysite.dev config:import --source ../config/www.mysite.uiowa.edu --partial```
+```drush @mysite.dev config:import --source ../config/mysite.uiowa.edu --partial```
 
 ## Feature Splits
 ### Weight: 80 (varies)

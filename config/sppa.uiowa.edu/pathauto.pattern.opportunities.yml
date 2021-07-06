@@ -1,0 +1,22 @@
+uuid: 53798ad1-e73a-4b7a-8a0a-fc7b101cb2b4
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: opportunities
+label: Opportunity
+type: 'canonical_entities:node'
+pattern: 'opportunities/[node:title]'
+selection_criteria:
+  11773b81-63f3-41fd-aec4-a546a950d89f:
+    id: node_type
+    bundles:
+      opportunity: opportunity
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 11773b81-63f3-41fd-aec4-a546a950d89f
+selection_logic: and
+weight: -5
+relationships: {  }
