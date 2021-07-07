@@ -2849,3 +2849,9 @@ $sites['studentwellness.local.drupal.uiowa.edu'] = 'studentwellness.uiowa.edu';
 $sites['studentwellness.dev.drupal.uiowa.edu'] = 'studentwellness.uiowa.edu';
 $sites['studentwellness.stage.drupal.uiowa.edu'] = 'studentwellness.uiowa.edu';
 $sites['studentwellness.prod.drupal.uiowa.edu'] = 'studentwellness.uiowa.edu';
+
+// Directory aliases for wrac.uiowa.edu.
+$sites['wrac.local.drupal.uiowa.edu'] = 'wrac.uiowa.edu';
+$sites['wrac.dev.drupal.uiowa.edu'] = 'wrac.uiowa.edu';
+$sites['wrac.stage.drupal.uiowa.edu'] = 'wrac.uiowa.edu';
+$sites['wrac.prod.drupal.uiowa.edu'] = 'wrac.uiowa.edu';
