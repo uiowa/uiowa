@@ -2861,3 +2861,9 @@ $sites['govrel.local.drupal.uiowa.edu'] = 'govrel.uiowa.edu';
 $sites['govrel.dev.drupal.uiowa.edu'] = 'govrel.uiowa.edu';
 $sites['govrel.stage.drupal.uiowa.edu'] = 'govrel.uiowa.edu';
 $sites['govrel.prod.drupal.uiowa.edu'] = 'govrel.uiowa.edu';
+
+// Directory aliases for hawkeyecaucus.com.
+$sites['com-hawkeyecaucus.local.drupal.uiowa.edu'] = 'hawkeyecaucus.com';
+$sites['com-hawkeyecaucus.dev.drupal.uiowa.edu'] = 'hawkeyecaucus.com';
+$sites['com-hawkeyecaucus.stage.drupal.uiowa.edu'] = 'hawkeyecaucus.com';
+$sites['com-hawkeyecaucus.prod.drupal.uiowa.edu'] = 'hawkeyecaucus.com';
