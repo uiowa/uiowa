@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: usg.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: usg
+  human_name: usg.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: usg.prod
+drupal:
+  db:
+    database: usg_uiowa_edu
+uiowa:
+  requester: dquam

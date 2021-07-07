@@ -2831,3 +2831,9 @@ $sites['labjtucker.local.drupal.uiowa.edu'] = 'jtucker.lab.uiowa.edu';
 $sites['labjtucker.dev.drupal.uiowa.edu'] = 'jtucker.lab.uiowa.edu';
 $sites['labjtucker.stage.drupal.uiowa.edu'] = 'jtucker.lab.uiowa.edu';
 $sites['labjtucker.prod.drupal.uiowa.edu'] = 'jtucker.lab.uiowa.edu';
+
+// Directory aliases for usg.uiowa.edu.
+$sites['usg.local.drupal.uiowa.edu'] = 'usg.uiowa.edu';
+$sites['usg.dev.drupal.uiowa.edu'] = 'usg.uiowa.edu';
+$sites['usg.stage.drupal.uiowa.edu'] = 'usg.uiowa.edu';
+$sites['usg.prod.drupal.uiowa.edu'] = 'usg.uiowa.edu';
