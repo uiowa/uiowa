@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.page.field_publish_options
     - field.field.node.page.field_tags
     - field.field.node.page.field_teaser
+    - field.field.node.page.field_v3_conversion_revision_id
     - field.field.node.page.layout_builder__layout
     - node.type.page
     - workflows.workflow.editorial
@@ -32,7 +33,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_featured_image_display:
-    weight: 26
+    weight: 15
     settings: {  }
     third_party_settings: {  }
     type: options_select
@@ -71,7 +72,7 @@ content:
     third_party_settings: {  }
     region: content
   field_publish_options:
-    weight: 14
+    weight: 13
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
@@ -96,7 +97,7 @@ content:
     region: content
   moderation_state:
     type: moderation_state_default
-    weight: 15
+    weight: 14
     settings: {  }
     region: content
     third_party_settings: {  }
@@ -152,4 +153,5 @@ content:
     third_party_settings: {  }
 hidden:
   body: true
+  field_v3_conversion_revision_id: true
   layout_builder__layout: true
