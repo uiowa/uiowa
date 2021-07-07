@@ -18,6 +18,9 @@ use Drupal\Core\Session\AccountInterface;
  */
 class ConvertParagraphsToLayoutBuilder extends ActionBase {
 
+  /**
+   * {@inheritdoc}
+   */
   public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
     /** @var \Drupal\node\NodeInterface $object */
     $result = $object->access('update', $account, TRUE)
@@ -26,7 +29,11 @@ class ConvertParagraphsToLayoutBuilder extends ActionBase {
     return $return_as_object ? $result : $result->isAllowed();
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function execute(ContentEntityInterface $entity = NULL) {
     sitenow_p2lb_node_p2lb($entity);
   }
+
 }

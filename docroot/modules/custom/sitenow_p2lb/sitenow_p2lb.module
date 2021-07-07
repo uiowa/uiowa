@@ -30,18 +30,12 @@ function sitenow_p2lb_paragraph_nodes() {
 /**
  * Convert a node from paragraphs to layout builder.
  *
- * @param int $nid
- *   Id for the node that should be processed.
+ * @param Drupal\Core\Entity\ContentEntityInterface $node
+ *   Node being processed.
  * @param bool $remove
  *   Indicator whether old paragraphs should be removed following processing.
  */
 function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = FALSE) {
-//  $node = \Drupal::service('entity_type.manager')
-//    ->getStorage('node')
-//    ->load($nid);
-//  if (!$node) {
-//    return FALSE;
-//  }
   // Get sections from the page.
   $section_ids = sitenow_p2lb_fetch_child_ids($node);
   // Grab the layout. We should have sections to process,
