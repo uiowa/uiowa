@@ -132,6 +132,9 @@ class Articles extends BaseNodeSource {
     return TRUE;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function postImport(MigrateImportEvent $event) {
     $this->reportPossibleLinkBreaks(['node__body' => ['body_value']]);
   }

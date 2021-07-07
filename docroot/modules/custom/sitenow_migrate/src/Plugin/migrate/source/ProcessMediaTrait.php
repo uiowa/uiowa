@@ -331,9 +331,7 @@ trait ProcessMediaTrait {
           // Minor memory cleanup.
           $media = NULL;
           $file = NULL;
-//          $media_manager->resetCache([$id]);
           $media_manager = NULL;
-//          $file_manager->resetCache([$fid]);
           $file_manager = NULL;
           return $id;
 
@@ -360,9 +358,7 @@ trait ProcessMediaTrait {
           // Minor memory cleanup.
           $media = NULL;
           $file = NULL;
-//          $media_manager->resetCache([$id]);
           $media_manager = NULL;
-//          $file_manager->resetCache([$fid]);
           $file_manager = NULL;
           return $id;
 
