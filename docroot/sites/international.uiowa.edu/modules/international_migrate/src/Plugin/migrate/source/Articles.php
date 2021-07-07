@@ -75,7 +75,7 @@ class Articles extends BaseNodeSource {
       'field_data_field_news_author' => ['field_news_author_tid'],
     ];
     $this->fetchAdditionalFields($row, $tables);
-    $author_tids = $row->getSource('field_news_author_tid');
+    $author_tids = $row->getSourceProperty('field_news_author_tid');
     if (!empty($author_tids)) {
       $authors = [];
       foreach ($author_tids as $tid) {
