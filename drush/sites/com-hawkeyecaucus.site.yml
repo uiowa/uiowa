@@ -1,0 +1,32 @@
+local:
+  root: /var/www/uiowa/docroot
+  uri: com-hawkeyecaucus.local.drupal.uiowa.edu
+  paths:
+    files: sites/hawkeyecaucus.com/files
+dev:
+  uri: com-hawkeyecaucus.dev.drupal.uiowa.edu
+  host: uiowa02dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/hawkeyecaucus.com/files
+  root: /var/www/html/uiowa02.dev/docroot
+  user: uiowa02.dev
+prod:
+  uri: hawkeyecaucus.com
+  host: uiowa02.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/hawkeyecaucus.com/files
+  root: /var/www/html/uiowa02.prod/docroot
+  user: uiowa02.prod
+test:
+  uri: com-hawkeyecaucus.stage.drupal.uiowa.edu
+  host: uiowa02stg.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/hawkeyecaucus.com/files
+  root: /var/www/html/uiowa02.test/docroot
+  user: uiowa02.test

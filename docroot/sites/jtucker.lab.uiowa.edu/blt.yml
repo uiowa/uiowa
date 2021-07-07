@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labjtucker.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labjtucker
+  human_name: jtucker.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labjtucker.prod
+drupal:
+  db:
+    database: jtucker_lab_uiowa_edu
+uiowa:
+  requester: chernndez
