@@ -5,6 +5,7 @@ namespace Drupal\sitenow_p2lb\Form;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Config\StorageInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Site\Settings;
@@ -22,6 +23,13 @@ class P2LbSettingsForm extends ConfigFormBase {
   protected $configStorage;
 
   /**
+   * The entity_type.manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
    * Form constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -29,9 +37,10 @@ class P2LbSettingsForm extends ConfigFormBase {
    * @param \Drupal\Core\Config\StorageInterface $configStorage
    *   The config.storage service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, StorageInterface $configStorage) {
+  public function __construct(ConfigFactoryInterface $config_factory, StorageInterface $configStorage, EntityTypeManagerInterface $entityTypeManager) {
     parent::__construct($config_factory);
     $this->configStorage = $configStorage;
+    $this->entityTypeManager = $entityTypeManager;
   }
 
   /**
@@ -41,6 +50,7 @@ class P2LbSettingsForm extends ConfigFormBase {
     return new static(
       $container->get('config.factory'),
       $container->get('config.storage'),
+      $container->get('entity_type.manager')
     );
   }
 
@@ -125,8 +135,11 @@ class P2LbSettingsForm extends ConfigFormBase {
   public function deleteButton(array &$form, FormStateInterface $form_state) {
     // Grab nids for all boxes that were checked (0s are filtered out).
     $nids = array_filter(array_values($form_state->getValue('nodes_w_paragraphs')));
-    foreach ($nids as $nid) {
-      sitenow_p2lb_remove_attached_paragraphs($nid);
+    $nodes = $this->entityTypeManager
+      ->getStorage('node')
+      ->loadMultiple($nids);
+    foreach ($nodes as $node) {
+      sitenow_p2lb_remove_attached_paragraphs($node);
     }
     return $form_state;
   }
@@ -137,8 +150,11 @@ class P2LbSettingsForm extends ConfigFormBase {
   public function updateButton(array &$form, FormStateInterface $form_state) {
     // Grab nids for all boxes that were checked (0s are filtered out).
     $nids = array_filter(array_values($form_state->getValue('nodes_w_paragraphs')));
-    foreach ($nids as $nid) {
-      sitenow_p2lb_node_p2lb($nid);
+    $nodes = $this->entityTypeManager
+      ->getStorage('node')
+      ->loadMultiple($nids);
+    foreach ($nodes as $node) {
+      sitenow_p2lb_node_p2lb($node);
     }
     // @todo Option to remove paragraphs after migrate, or review first?
     return $form_state;

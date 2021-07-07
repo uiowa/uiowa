@@ -55,7 +55,7 @@ function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = F
 
     // Remove the attached paragraphs from the node.
     if ($remove) {
-      sitenow_p2lb_remove_attached_paragraphs($nid);
+      sitenow_p2lb_remove_attached_paragraphs($node);
     }
     return TRUE;
   }
@@ -901,10 +901,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 /**
  * Removes all attached paragraphs from a node.
  */
-function sitenow_p2lb_remove_attached_paragraphs($nid) {
-  $node = \Drupal::service('entity_type.manager')
-    ->getStorage('node')
-    ->load($nid);
+function sitenow_p2lb_remove_attached_paragraphs($node) {
   $section_ids = sitenow_p2lb_fetch_child_ids($node);
 
   // Grab paragraphs attached to each of the given sections.
