@@ -2831,3 +2831,27 @@ $sites['labjtucker.local.drupal.uiowa.edu'] = 'jtucker.lab.uiowa.edu';
 $sites['labjtucker.dev.drupal.uiowa.edu'] = 'jtucker.lab.uiowa.edu';
 $sites['labjtucker.stage.drupal.uiowa.edu'] = 'jtucker.lab.uiowa.edu';
 $sites['labjtucker.prod.drupal.uiowa.edu'] = 'jtucker.lab.uiowa.edu';
+
+// Directory aliases for usg.uiowa.edu.
+$sites['usg.local.drupal.uiowa.edu'] = 'usg.uiowa.edu';
+$sites['usg.dev.drupal.uiowa.edu'] = 'usg.uiowa.edu';
+$sites['usg.stage.drupal.uiowa.edu'] = 'usg.uiowa.edu';
+$sites['usg.prod.drupal.uiowa.edu'] = 'usg.uiowa.edu';
+
+// Directory aliases for indianstudentalliance.org.uiowa.edu.
+$sites['orgindianstudentalliance.local.drupal.uiowa.edu'] = 'indianstudentalliance.org.uiowa.edu';
+$sites['orgindianstudentalliance.dev.drupal.uiowa.edu'] = 'indianstudentalliance.org.uiowa.edu';
+$sites['orgindianstudentalliance.stage.drupal.uiowa.edu'] = 'indianstudentalliance.org.uiowa.edu';
+$sites['orgindianstudentalliance.prod.drupal.uiowa.edu'] = 'indianstudentalliance.org.uiowa.edu';
+
+// Directory aliases for studentwellness.uiowa.edu.
+$sites['studentwellness.local.drupal.uiowa.edu'] = 'studentwellness.uiowa.edu';
+$sites['studentwellness.dev.drupal.uiowa.edu'] = 'studentwellness.uiowa.edu';
+$sites['studentwellness.stage.drupal.uiowa.edu'] = 'studentwellness.uiowa.edu';
+$sites['studentwellness.prod.drupal.uiowa.edu'] = 'studentwellness.uiowa.edu';
+
+// Directory aliases for wrac.uiowa.edu.
+$sites['wrac.local.drupal.uiowa.edu'] = 'wrac.uiowa.edu';
+$sites['wrac.dev.drupal.uiowa.edu'] = 'wrac.uiowa.edu';
+$sites['wrac.stage.drupal.uiowa.edu'] = 'wrac.uiowa.edu';
+$sites['wrac.prod.drupal.uiowa.edu'] = 'wrac.uiowa.edu';
