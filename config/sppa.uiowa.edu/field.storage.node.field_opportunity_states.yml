@@ -1,0 +1,21 @@
+uuid: ec49c93d-6624-4e7a-84fc-0cdfcaf90b72
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_opportunity_states
+field_name: field_opportunity_states
+entity_type: node
+type: list_string
+settings:
+  allowed_values: {  }
+  allowed_values_function: sppa_states_allowed_values
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
