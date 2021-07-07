@@ -2837,3 +2837,9 @@ $sites['usg.local.drupal.uiowa.edu'] = 'usg.uiowa.edu';
 $sites['usg.dev.drupal.uiowa.edu'] = 'usg.uiowa.edu';
 $sites['usg.stage.drupal.uiowa.edu'] = 'usg.uiowa.edu';
 $sites['usg.prod.drupal.uiowa.edu'] = 'usg.uiowa.edu';
+
+// Directory aliases for indianstudentalliance.org.uiowa.edu.
+$sites['orgindianstudentalliance.local.drupal.uiowa.edu'] = 'indianstudentalliance.org.uiowa.edu';
+$sites['orgindianstudentalliance.dev.drupal.uiowa.edu'] = 'indianstudentalliance.org.uiowa.edu';
+$sites['orgindianstudentalliance.stage.drupal.uiowa.edu'] = 'indianstudentalliance.org.uiowa.edu';
+$sites['orgindianstudentalliance.prod.drupal.uiowa.edu'] = 'indianstudentalliance.org.uiowa.edu';
