@@ -36,6 +36,8 @@ class P2LbSettingsForm extends ConfigFormBase {
    *   The config.factory service.
    * @param \Drupal\Core\Config\StorageInterface $configStorage
    *   The config.storage service.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity_type.manager service.
    */
   public function __construct(ConfigFactoryInterface $config_factory, StorageInterface $configStorage, EntityTypeManagerInterface $entityTypeManager) {
     parent::__construct($config_factory);
