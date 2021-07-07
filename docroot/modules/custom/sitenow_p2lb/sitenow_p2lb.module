@@ -49,14 +49,23 @@ function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = F
 
   // Need to set with an array of sections, retrieved with getSections().
   if ($layout) {
+    $node->set('layout_builder__layout', $layout->getSections());
+
+    // Set value of field_v3_conversion_revision_id to current revision ID
+    $node->field_v3_conversion_revision_id->value = $node->getLoadedRevisionId();
+
     // @todo Save as a new draft.
-    $node->set('layout_builder__layout', $layout->getSections())
-      ->save();
+    $node->setNewRevision(TRUE);
+    $node->revision_log = 'Converted page to v3.';
+    $node->moderation_state->value = 'draft';
+
+    $node->save();
 
     // Remove the attached paragraphs from the node.
     if ($remove) {
       sitenow_p2lb_remove_attached_paragraphs($node);
     }
+
     return TRUE;
   }
   // Should be good to go, but if there was anything weird,
@@ -799,6 +808,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 
       // If the text block begins with a headline, grab it and
       // create a title from it.
+      // @todo Check if 'value' key is set.
       if (preg_match('|\A<(h\d)>(.*?)<\/h\d>|', $text['value'], $matches)) {
         $h_level = $matches[1];
         $title = $matches[2];
