@@ -51,7 +51,7 @@ function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = F
   if ($layout) {
     $node->set('layout_builder__layout', $layout->getSections());
 
-    // Set value of field_v3_conversion_revision_id to current revision ID
+    // Set value of field_v3_conversion_revision_id to current revision ID.
     $node->field_v3_conversion_revision_id->value = $node->getLoadedRevisionId();
 
     // @todo Save as a new draft.
