@@ -110,6 +110,27 @@
   }
 }
 
+// Fallback (current, using padding hack)
+@supports not (aspect-ratio: 16 / 9) {
+  .media--type-remote-video,
+  .media--type-panopto {
+    &.media--view-mode-default,
+    &.media--view-mode-full {
+      &:before {
+        display: block;
+        float: left;
+        padding-top: 56.25%;
+        content: "";
+      }
+      &:after {
+        display: block;
+        content: "";
+        clear: both;
+      }
+    }
+  }
+}
+
 figure.caption .media--type-remote-video iframe,
 figure.caption .media--type-panopto iframe,
 .media--type-remote-video.media--view-mode-image-medium iframe,
