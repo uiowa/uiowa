@@ -353,6 +353,11 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
   // Initialize a usage controller for later.
   $database = \Drupal::database();
   $use_controller = new InlineBlockUsage($database);
+  $block = NULL;
+  $styles = [];
+  $config = [];
+  $block_definition = [];
+  $children = [];
 
   // Handle each type of paragraph separately.
   switch ($paragraph->get('type')->getString()) {
@@ -361,8 +366,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       break;
 
     case 'accordion':
-      $type = 'uiowa_collection';
-      $styles = [];
       $label = 'Accordion collection';
       $display_label = 0;
       $view_mode = 'accordion';
@@ -384,16 +387,14 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
           $children[] = $child;
         }
       }
-      $block = \Drupal::entityTypeManager()
-        ->getStorage('block_content')
-        ->create([
-          'type' => $type,
-          'langcode' => 'en',
-          'status' => $paragraph->get('status')->getValue(),
-          'reusable' => 0,
-          'default_langcode' => 1,
-          'field_uiowa_collection_items' => $children,
-        ]);
+      $block_definition = [
+        'type' => 'uiowa_collection',
+        'langcode' => 'en',
+        'status' => $paragraph->get('status')->getValue(),
+        'reusable' => 0,
+        'default_langcode' => 1,
+        'field_uiowa_collection_items' => $children,
+      ];
       break;
 
     case 'accordion_item':
@@ -415,34 +416,32 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       $display_title = $paragraph->field_uip_display_title->value;
       $pager = $paragraph->field_uip_pager->value;
 
-      $block = \Drupal::entityTypeManager()
-        ->getStorage('block_content')
-        ->create([
-          'type' => $type,
-          'langcode' => 'en',
-          'status' => $paragraph->get('status')->getValue(),
-          'reusable' => 0,
-          'default_langcode' => 1,
-          // @todo Make sure these are mapped correctly.
-          'field_collection_more' => $more,
-          'field_collection_more_path' => $more_path,
-          'field_collection_pager' => $pager,
-          // @todo Update this from default to a previous value.
-          'field_collection_results' => 10,
-          // Build a headline out of the title
-          // and display title options.
-          'field_uiowa_headline' => [
-            'headline' => $title,
-            'heading_size' => 'h2',
-            'hide_headline' => $display_title,
-            'headline_style' => 'default',
-          ],
-        ]);
+      $block_definition = [
+        'type' => $type,
+        'langcode' => 'en',
+        'status' => $paragraph->get('status')->getValue(),
+        'reusable' => 0,
+        'default_langcode' => 1,
+        // @todo Make sure these are mapped correctly.
+        'field_collection_more' => $more,
+        'field_collection_more_path' => $more_path,
+        'field_collection_pager' => $pager,
+        // @todo Update this from default to a previous value.
+        'field_collection_results' => 10,
+        // Build a headline out of the title
+        // and display title options.
+        'field_uiowa_headline' => [
+          'headline' => $title,
+          'heading_size' => 'h2',
+          'hide_headline' => $display_title,
+          'headline_style' => 'default',
+        ],
+      ];
+
       break;
 
     case 'blockquote':
       $type = 'uiowa_text_area';
-      $styles = [];
       // @todo update labeling methodology and decide how to title.
       $label = 'Text block';
       $display_label = 0;
@@ -472,17 +471,16 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
           . '</p>';
       }
 
-      $block = \Drupal::entityTypeManager()
-        ->getStorage('block_content')
-        ->create([
-          'type' => $type,
-          'langcode' => 'en',
-          'status' => $paragraph->get('status')->getValue(),
-          'reusable' => 0,
-          'default_langcode' => 1,
-          // getValue sets both the text value and the format.
-          'field_uiowa_text_area' => $text,
-        ]);
+      $block_definition = [
+        'type' => $type,
+        'langcode' => 'en',
+        'status' => $paragraph->get('status')->getValue(),
+        'reusable' => 0,
+        'default_langcode' => 1,
+        // getValue sets both the text value and the format.
+        'field_uiowa_text_area' => $text,
+      ];
+
       break;
 
     case 'card':
@@ -525,48 +523,32 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         $excerpt['value'] = '<p>' . $subtitle . '</p>' . $excerpt['value'];
       }
 
-      $block = \Drupal::entityTypeManager()
-        ->getStorage('block_content')
-        ->create([
-          'type' => $type,
-          'langcode' => 'en',
-          'status' => $paragraph->get('status')->getString(),
-          'info' => 'Card',
-          'reusable' => 0,
-          'default_langcode' => 1,
-          'field_uiowa_card_author' => [],
-          'field_uiowa_card_excerpt' => $excerpt,
-          'field_uiowa_card_image' => $image,
-          'field_uiowa_card_link' => $link,
-          'field_uiowa_card_title' => [
-            // Size not set in paragraphs. Defaulting to h2. Can change later.
-            'size' => 'h2',
-            'text' => $label,
-          ],
-        ]);
+      $block_definition = [
+        'type' => $type,
+        'langcode' => 'en',
+        'status' => $paragraph->get('status')->getString(),
+        'info' => 'Card',
+        'reusable' => 0,
+        'default_langcode' => 1,
+        'field_uiowa_card_author' => [],
+        'field_uiowa_card_excerpt' => $excerpt,
+        'field_uiowa_card_image' => $image,
+        'field_uiowa_card_link' => $link,
+        'field_uiowa_card_title' => [
+          // Size not set in paragraphs. Defaulting to h2. Can change later.
+          'size' => 'h2',
+          'text' => $label,
+        ],
+      ];
+
       break;
 
     case 'carousel':
       $type = 'uiowa_slider';
-      $styles = [];
       $label = $paragraph->get('field_uip_title')->getString();
       $display_label = $paragraph->get('field_uip_display_title')->getString();
 
-      $block = \Drupal::entityTypeManager()
-        ->getStorage('block_content')
-        ->create([
-          'type' => $type,
-          'langcode' => 'en',
-          'status' => 1,
-          'reusable' => 0,
-          'default_langcode' => 1,
-          'metatag' => [],
-          'field_collection_heading_size' => 'h2',
-          'field_uiowa_slider_slides' => [],
-        ]);
-      $block->save();
-      $parent_id = $block->get('id')->getString();
-      $parent_slides_field = [];
+
 
       $carousel_image_ids = $paragraph->get('field_carousel_item')->getValue();
       // Grab the actual ids to pass to our loader.
@@ -606,7 +588,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
               'type' => 'uiowa_slide',
               'langcode' => 'en',
               'status' => 1,
-              'parent_id' => $parent_id,
               'parent_type' => 'block_content',
               'parent_field_name' => 'field_uiowa_slider_slides',
               'default_langcode' => 1,
@@ -615,16 +596,23 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
               'field_uiowa_slide_image' => $image_fid,
             ]);
             if ($slide->save()) {
-              $parent_slides_field[] = [
-                'target_id' => $slide->get('id')->getString(),
-                'target_revision_id' => $slide->get('revision_id')->getString(),
-              ];
+              $children[] = $slide;
             };
           }
         }
       }
-      $block->set('field_uiowa_slider_slides', $parent_slides_field)
-        ->save();
+
+      $block_definition = [
+        'type' => $type,
+        'langcode' => 'en',
+        'status' => 1,
+        'reusable' => 0,
+        'default_langcode' => 1,
+        'metatag' => [],
+        'field_collection_heading_size' => 'h2',
+        'field_uiowa_slider_slides' => $children,
+      ];
+
       break;
 
     case 'carousel_image':
@@ -658,66 +646,62 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       $title = $paragraph->field_uip_title->value;
       $display_title = $paragraph->field_uip_display_title->value;
 
-      $block = \Drupal::entityTypeManager()
-        ->getStorage('block_content')
-        ->create([
-          'type' => $type,
-          'langcode' => 'en',
-          'status' => $paragraph->get('status')->getValue(),
-          'reusable' => 0,
-          'default_langcode' => 1,
-          // @todo Make sure these are mapped correctly.
-          'field_collection_more' => $more,
-          'field_collection_more_path' => $more_path,
-          'field_collection_pager' => $pager,
-          // @todo Update this from default to a previous value.
-          'field_collection_results' => 10,
-          'field_uiowa_events_audiences' => $audiences,
-          'field_uiowa_events_department' => $department,
-          'field_uiowa_events_interests' => $interests,
-          'field_uiowa_events_keywords' => $keywords,
-          'field_uiowa_events_place' => [],
-          'field_uiowa_events_types' => $types,
-          // Build a headline out of the title
-          // and display title options.
-          'field_uiowa_headline' => [
-            'headline' => $title,
-            'heading_size' => 'h2',
-            'hide_headline' => $display_title,
-            'headline_style' => 'default',
-          ],
-        ]);
+      $block_definition = [
+        'type' => 'uiowa_events',
+        'langcode' => 'en',
+        'status' => $paragraph->get('status')->getValue(),
+        'reusable' => 0,
+        'default_langcode' => 1,
+        // @todo Make sure these are mapped correctly.
+        'field_collection_more' => $more,
+        'field_collection_more_path' => $more_path,
+        'field_collection_pager' => $pager,
+        // @todo Update this from default to a previous value.
+        'field_collection_results' => 10,
+        'field_uiowa_events_audiences' => $audiences,
+        'field_uiowa_events_department' => $department,
+        'field_uiowa_events_interests' => $interests,
+        'field_uiowa_events_keywords' => $keywords,
+        'field_uiowa_events_place' => [],
+        'field_uiowa_events_types' => $types,
+        // Build a headline out of the title
+        // and display title options.
+        'field_uiowa_headline' => _sitenow_p2lb_headline_config($title, $display_title),
+      ];
+
       break;
 
     case 'featured_content':
+      $type = 'featured_content';
+      $title = $paragraph->field_uip_title->value;
+      $display_title = $paragraph->field_uip_display_title->value;
+
+      $items = $paragraph->field_featured_content;
+
+      $block_definition = [];
+
       // @todo Create a Featured Content block.
+
       break;
 
     case 'image_gallery':
-      $styles = [];
       $type = 'uiowa_image_gallery';
       $images = $paragraph->field_image;
       $title = $paragraph->field_uip_title->value;
       $display_title = $paragraph->field_uip_display_title->value;
 
-      $block = \Drupal::entityTypeManager()
-        ->getStorage('block_content')
-        ->create([
-          'type' => $type,
-          'langcode' => 'en',
-          'status' => $paragraph->get('status')->getValue(),
-          'reusable' => 0,
-          'default_langcode' => 1,
-          'field_uiowa_gallery_image' => $images,
-          // Build a headline out of the title
-          // and display title options.
-          'field_uiowa_headline' => [
-            'headline' => $title,
-            'heading_size' => 'h2',
-            'hide_headline' => $display_title,
-            'headline_style' => 'default',
-          ],
-        ]);
+      $block_definition = [
+        'type' => $type,
+        'langcode' => 'en',
+        'status' => $paragraph->get('status')->getValue(),
+        'reusable' => 0,
+        'default_langcode' => 1,
+        'field_uiowa_gallery_image' => $images,
+        // Build a headline out of the title
+        // and display title options.
+        'field_uiowa_headline' => _sitenow_p2lb_headline_config($title, $display_title),
+      ];
+
       break;
 
     case 'people':
@@ -788,16 +772,9 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         'context_mapping' => [],
       ];
 
-      // This is provided by views and not layout builder,
-      // so we don't need to create and save block content
-      // like we do with the other paragraph conversions.
-      // Instead, we just need to return the config and styles.
-      return [
-        'configuration' => $config,
-        // @todo Figure out what to return for the uuid.
-        'uuid' => '',
-        'styles' => $styles,
-      ];
+      // @todo Figure out what to return for the uuid.
+      $uuid = '';
+      break;
 
     case 'text':
       $type = 'uiowa_text_area';
@@ -819,23 +796,17 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         );
       }
 
-      $block = \Drupal::entityTypeManager()
-        ->getStorage('block_content')
-        ->create([
-          'type' => $type,
-          'langcode' => 'en',
-          'status' => $paragraph->get('status')->getValue(),
-          'reusable' => 0,
-          'default_langcode' => 1,
-          // getValue sets both the text value and the format.
-          'field_uiowa_text_area' => $text,
-          'field_uiowa_headline' => [
-            'headline' => isset($title) ? $title : '',
-            'heading_size' => isset($h_level) ? $h_level : 'h2',
-            'hide_headline' => 0,
-            'headline_style' => 'default',
-          ],
-        ]);
+      $block_definition = [
+        'type' => $type,
+        'langcode' => 'en',
+        'status' => $paragraph->get('status')->getValue(),
+        'reusable' => 0,
+        'default_langcode' => 1,
+        // getValue sets both the text value and the format.
+        'field_uiowa_text_area' => $text,
+        'field_uiowa_headline' => _sitenow_p2lb_headline_config($title, 0, $h_level),
+      ];
+
       break;
 
     case 'webform':
@@ -865,21 +836,20 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         'webform_id' => $webform_data['target_id'],
       ];
 
-      // Can skip the followup, because no block needs to be created.
-      return [
-        'configuration' => $config,
-        'uuid' => $uuid,
-        'styles' => [],
-      ];
-
     default:
 
   }
   // If we have a block save it, and check that it saved successfully.
+
+  if (!$block && !empty($block_definition)) {
+    $block = \Drupal::entityTypeManager()
+      ->getStorage('block_content')
+      ->create($block_definition);
+  }
   if (isset($block) && $block->save()) {
     $uuid = $block->get('uuid')->getValue()[0]['value'];
     $config = [
-      'id' => 'inline_block:' . $type,
+      'id' => 'inline_block:' . $block->id(),
       'label' => $label,
       'provider' => 'layout_builder',
       'label_display' => $display_label,
@@ -896,11 +866,13 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       $child->set('parent_id', $block->id())
         ->save();
     }
+  }
 
+  if (!empty($config)) {
     return [
       'configuration' => $config,
       'uuid' => $uuid,
-      'styles' => isset($styles) ? $styles : [],
+      'styles' => $styles,
     ];
   }
 
@@ -1139,4 +1111,13 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
 
   }
   return $section_array;
+}
+
+function _sitenow_p2lb_headline_config($title = '', $display_title = 0, $heading_size = 'h2') {
+  return [
+    'headline' => $title,
+    'heading_size' => $heading_size,
+    'hide_headline' => $display_title,
+    'headline_style' => 'default',
+  ];
 }
