@@ -105,6 +105,15 @@
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with person_card only %}
+  {% block card_img %}
+    {% if card_image is not empty %}
+      {{ parent() }}
+    {% else %}
+      <div {{ media_attributes.addClass(media_styles, media_sizes, 'card__media') }}>
+        <div class="img--empty">&nbsp;</div>
+      </div>
+    {% endif %}
+  {% endblock %}
   {% block card_tag %}
     {% if card_tag is not empty %}
       <div class="card__date">
