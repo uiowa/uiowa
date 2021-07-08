@@ -79,9 +79,12 @@
 ]
 %}
 
-{% set headline_level = heading_size ?: 'h3' %}
+{% set headline_level = 'h3 '%}
 {% if view %}
   {% set headline_level = view.display_handler.getOption('heading_size') %}
+{% endif %}
+{% if heading_size %}
+  {% set headline_level = heading_size %}
 {% endif %}
 
 {{ attach_library('classy/node') }}
