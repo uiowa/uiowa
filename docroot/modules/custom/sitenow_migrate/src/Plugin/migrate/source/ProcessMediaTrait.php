@@ -87,55 +87,58 @@ trait ProcessMediaTrait {
     $align = isset($file_properties['fields']['alignment']) ? $file_properties['fields']['alignment'] : '';
     $file_data = $this->fidQuery($fid);
 
-    if ($file_data) {
-      $filename = $file_data['filename'];
-      $uuid = $this->getMid($filename)['uuid'];
-      if (!$uuid) {
-        $new_fid = \Drupal::database()->select('file_managed', 'f')
-          ->fields('f', ['fid'])
-          ->condition('f.filename', $filename)
-          ->execute()
-          ->fetchField();
-
-        $meta = [
-          'title' => isset($file_properties['attributes']['title']) ? $file_properties['attributes']['title'] : $filename,
-          'alt' => isset($file_properties['attributes']['alt']) ? $file_properties['attributes']['alt'] : explode('.', $filename)[0],
-        ];
-
-        // If there's no fid in the D8 database,
-        // then we'll need to fetch it from the source.
-        if (!$new_fid) {
-          $uri = $file_data['uri'];
-          $filename_w_subdir = str_replace('public://', '', $uri);
-
-          // Split apart the filename from the subdirectory path.
-          $filename_w_subdir = explode('/', $filename_w_subdir);
-          $filename = array_pop($filename_w_subdir);
-          $subdir = implode('/', $filename_w_subdir) . '/';
-          unset($filename_w_subdir);
-          $new_fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $subdir, $this->getDrupalFileDirectory() . $subdir);
-          if ($new_fid) {
-            $this->createMediaEntity($new_fid, $meta, 1);
-            $uuid = $this->getMid($filename)['uuid'];
-          }
-        }
-        else {
-          $uuid = $this->getMid($filename)['uuid'];
-
-          // And in case we had the file, but not the media entity.
-          if (!$uuid) {
-            $this->createMediaEntity($new_fid, $meta, 1);
-            $uuid = $this->getMid($filename)['uuid'];
-          }
-        }
-      }
-
-      unset($file_data);
-      return isset($uuid) ? $this->constructInlineEntity($uuid, $align) : '';
+    if (!$file_data) {
+      // Failed to find a file, so let's leave the content unchanged.
+      return $match;
     }
 
-    // Failed to find a file, so let's leave the content unchanged.
-    return $match;
+    $filename = $file_data['filename'];
+    $uuid = $this->getMid($filename)['uuid'];
+
+    if (!$uuid) {
+      $new_fid = \Drupal::database()->select('file_managed', 'f')
+        ->fields('f', ['fid'])
+        ->condition('f.filename', $filename)
+        ->execute()
+        ->fetchField();
+
+      $meta = [
+        'title' => isset($file_properties['attributes']['title']) ? $file_properties['attributes']['title'] : $filename,
+        'alt' => isset($file_properties['attributes']['alt']) ? $file_properties['attributes']['alt'] : explode('.', $filename)[0],
+      ];
+
+      // If there's no fid in the D8 database,
+      // then we'll need to fetch it from the source.
+      if (!$new_fid) {
+        $uri = $file_data['uri'];
+        $filename_w_subdir = str_replace('public://', '', $uri);
+
+        // Split apart the filename from the subdirectory path.
+        $filename_w_subdir = explode('/', $filename_w_subdir);
+        $filename = array_pop($filename_w_subdir);
+        $subdir = implode('/', $filename_w_subdir) . '/';
+        $filename_w_subdir = NULL;
+        $new_fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $subdir, $this->getDrupalFileDirectory() . $subdir);
+        if ($new_fid) {
+          $this->createMediaEntity($new_fid, $meta, 1);
+          $uuid = $this->getMid($filename)['uuid'];
+        }
+      }
+      else {
+        $uuid = $this->getMid($filename)['uuid'];
+
+        // And in case we had the file, but not the media entity.
+        if (!$uuid) {
+          $this->createMediaEntity($new_fid, $meta, 1);
+          $uuid = $this->getMid($filename)['uuid'];
+        }
+      }
+    }
+
+    $file_data = NULL;
+    $file_properties = NULL;
+    return isset($uuid) ? $this->constructInlineEntity($uuid, $align) : '';
+
   }
 
   /**
@@ -197,7 +200,7 @@ trait ProcessMediaTrait {
       ->execute()
       ->fetchAssoc();
 
-    unset($query);
+    $query = NULL;
     return $results;
   }
 
@@ -211,7 +214,7 @@ trait ProcessMediaTrait {
       ->condition('mm.sourceid1', $original_fid)
       ->execute()
       ->fetchField();
-    unset($query);
+    $query = NULL;
     return $results;
   }
 
@@ -258,7 +261,7 @@ trait ProcessMediaTrait {
     if ($file) {
       // Drop the file out of memory for a little cleanup.
       Cache::invalidateTags($file->getCacheTagsToInvalidate());
-      unset($file);
+      $file = NULL;
       // Get a connection for the destination database
       // and retrieve the id for the newly created file.
       return \Drupal::database()->select('file_managed', 'f')
@@ -287,8 +290,9 @@ trait ProcessMediaTrait {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function createMediaEntity($fid, array $meta, $owner_id = 1) {
+    $file_manager = $this->entityTypeManager->getStorage('file');
     /** @var \Drupal\file\FileInterface $file */
-    $file = $this->entityTypeManager->getStorage('file')->load($fid);
+    $file = $file_manager->load($fid);
 
     if ($file) {
       $fileType = explode('/', $file->getMimeType())[0];
@@ -297,8 +301,9 @@ trait ProcessMediaTrait {
       switch ($fileType) {
 
         case 'image':
+          $media_manager = $this->entityTypeManager->getStorage('media');
           /** @var \Drupal\Media\MediaInterface $media */
-          $media = $this->entityTypeManager->getStorage('media')->create([
+          $media = $media_manager->create([
             'bundle' => 'image',
             'field_media_image' => [
               'target_id' => $fid,
@@ -324,17 +329,18 @@ trait ProcessMediaTrait {
           $media->save();
           $id = $media->id();
           // Minor memory cleanup.
-          unset($media);
-          unset($file);
-          $this->entityTypeManager->getStorage('media')->resetCache([$id]);
-          $this->entityTypeManager->getStorage('file')->resetCache([$fid]);
+          $media = NULL;
+          $file = NULL;
+          $media_manager = NULL;
+          $file_manager = NULL;
           return $id;
 
         case 'application':
         case 'document':
         case 'file':
+          $media_manager = $this->entityTypeManager->getStorage('media');
           /** @var \Drupal\Media\MediaInterface $media */
-          $media = $this->entityTypeManager->getStorage('media')->create([
+          $media = $media_manager->create([
             'bundle' => 'file',
             'field_media_file' => [
               'target_id' => $fid,
@@ -350,10 +356,10 @@ trait ProcessMediaTrait {
           $media->save();
           $id = $media->id();
           // Minor memory cleanup.
-          unset($media);
-          unset($file);
-          $this->entityTypeManager->getStorage('media')->resetCache([$id]);
-          $this->entityTypeManager->getStorage('file')->resetCache([$fid]);
+          $media = NULL;
+          $file = NULL;
+          $media_manager = NULL;
+          $file_manager = NULL;
           return $id;
 
         default:
@@ -387,7 +393,7 @@ trait ProcessMediaTrait {
     $filename_w_subdir = explode('/', $filename_w_subdir);
     $filename = array_pop($filename_w_subdir);
     $subdir = implode('/', $filename_w_subdir) . '/';
-    unset($filename_w_subdir);
+    $filename_w_subdir = NULL;
 
     // Get a connection for the destination database
     // and retrieve the associated fid.
@@ -407,7 +413,7 @@ trait ProcessMediaTrait {
     if (!$new_fid) {
       // Use the filename, update the source base path with the subdirectory.
       $new_fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $subdir, $this->getDrupalFileDirectory() . $subdir);
-      unset($subdir);
+      $subdir = NULL;
 
       if ($new_fid) {
         $mid = $this->createMediaEntity($new_fid, $meta, 1);
@@ -415,12 +421,12 @@ trait ProcessMediaTrait {
     }
     else {
       $mid = $this->getMid($filename)['mid'];
-      unset($filename);
+      $filename = NULL;
 
       // And in case we had the file, but not the media entity.
       if (!$mid) {
         $mid = $this->createMediaEntity($new_fid, $meta, 1);
-        unset($meta);
+        $meta = NULL;
       }
     }
 
@@ -539,13 +545,13 @@ trait ProcessMediaTrait {
         }
       }
 
-      unset($token);
-      unset($img);
-      unset($file_path);
-      unset($filename);
-      unset($src);
-      unset($prefix_path);
-      unset($meta);
+      $token = NULL;
+      $img = NULL;
+      $file_path = NULL;
+      $filename = NULL;
+      $src = NULL;
+      $prefix_path = NULL;
+      $meta = NULL;
 
       $i--;
     }
@@ -553,8 +559,8 @@ trait ProcessMediaTrait {
     // Convert back into a string and return it.
     $html = Html::serialize($document);
     // Do a little bit of cleanup.
-    unset($images);
-    unset($document);
+    $images = NULL;
+    $document = NULL;
 
     return $html;
   }
