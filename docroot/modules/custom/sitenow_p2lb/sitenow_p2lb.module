@@ -116,7 +116,7 @@ function sitenow_p2lb_process_section($section_id, $layout, $node) {
 
   // Grab section title and styles.
   $section_title = ($section_object->field_section_title) ?
-    $section_object->field_section_title[0]->value : '';
+    $section_object->field_section_title->value : '';
   $section_styles = sitenow_p2lb_section_styles($section_object);
 
   // Get all paragraphs attached to this section.
@@ -548,8 +548,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       $label = $paragraph->get('field_uip_title')->getString();
       $display_label = $paragraph->get('field_uip_display_title')->getString();
 
-
-
       $carousel_image_ids = $paragraph->get('field_carousel_item')->getValue();
       // Grab the actual ids to pass to our loader.
       $carousel_image_ids = array_map(
@@ -676,11 +674,18 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       $title = $paragraph->field_uip_title->value;
       $display_title = $paragraph->field_uip_display_title->value;
 
-      $items = $paragraph->field_featured_content;
-
-      $block_definition = [];
+      $content_items = $paragraph->field_featured_content->value;
 
       // @todo Create a Featured Content block.
+      $block_definition = [
+        'type' => 'featured_content',
+        'langcode' => 'en',
+        'reusable' => 0,
+        'default_langcode' => 1,
+        'status' => $paragraph->get('status')->getValue(),
+        'field_featured_content_item' => $content_items,
+        'field_uiowa_headline' => _sitenow_p2lb_headline_config($title, $display_title),
+      ];
 
       break;
 
@@ -693,9 +698,9 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       $block_definition = [
         'type' => $type,
         'langcode' => 'en',
-        'status' => $paragraph->get('status')->getValue(),
         'reusable' => 0,
         'default_langcode' => 1,
+        'status' => $paragraph->get('status')->getValue(),
         'field_uiowa_gallery_image' => $images,
         // Build a headline out of the title
         // and display title options.
@@ -782,11 +787,12 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       $label = 'Text block';
       $display_label = 0;
       $text = $paragraph->get('field_text_body')->getValue();
+      $title = '';
+      $h_level = 'h2';
 
       // If the text block begins with a headline, grab it and
       // create a title from it.
-      // @todo Check if 'value' key is set.
-      if (preg_match('|\A<(h\d)>(.*?)<\/h\d>|', $text['value'], $matches)) {
+      if (isset($text['value']) && preg_match('|\A<(h\d)>(.*?)<\/h\d>|', $text['value'], $matches)) {
         $h_level = $matches[1];
         $title = $matches[2];
         $text['value'] = str_replace(
@@ -849,7 +855,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
   if (isset($block) && $block->save()) {
     $uuid = $block->get('uuid')->getValue()[0]['value'];
     $config = [
-      'id' => 'inline_block:' . $block->id(),
+      'id' => 'inline_block:' . $block->bundle(),
       'label' => $label,
       'provider' => 'layout_builder',
       'label_display' => $display_label,
