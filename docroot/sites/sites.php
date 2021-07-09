@@ -2873,3 +2873,9 @@ $sites['iwpshse.local.drupal.uiowa.edu'] = 'shse.iwp.uiowa.edu';
 $sites['iwpshse.dev.drupal.uiowa.edu'] = 'shse.iwp.uiowa.edu';
 $sites['iwpshse.stage.drupal.uiowa.edu'] = 'shse.iwp.uiowa.edu';
 $sites['iwpshse.prod.drupal.uiowa.edu'] = 'shse.iwp.uiowa.edu';
+
+// Directory aliases for publishing-gallery.iwp.uiowa.edu.
+$sites['iwppublishing-gallery.local.drupal.uiowa.edu'] = 'publishing-gallery.iwp.uiowa.edu';
+$sites['iwppublishing-gallery.dev.drupal.uiowa.edu'] = 'publishing-gallery.iwp.uiowa.edu';
+$sites['iwppublishing-gallery.stage.drupal.uiowa.edu'] = 'publishing-gallery.iwp.uiowa.edu';
+$sites['iwppublishing-gallery.prod.drupal.uiowa.edu'] = 'publishing-gallery.iwp.uiowa.edu';
