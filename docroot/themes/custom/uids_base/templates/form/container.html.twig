@@ -25,20 +25,13 @@
     has_parent ? 'form-wrapper',
   ]
 %}
-{# @todo This is a temporary solution #}
-{%
-  set style_classes = [
-  'bg--black',
-  'bg--black--pattern--brain',
-  'bg-pattern--brain-black',
-  'bg--gold',
-  'bg--gold--pattern--brain',
-  'bg-pattern--brain-reversed',
-  'bg--gray',
-  'bg--white',
-  'bg--white--pattern--brain',
-  'bg-pattern--brain',
-]
-%}
+
+{% set style_classes = [] %}
+{% for style in attributes.class %}
+  {# Remove bg classes from being printed on layout-builder__section div  #}
+  {% if style starts with 'bg--' %}
+    {% set style_classes = style_classes|merge([style]) %}
+  {% endif %}
+{% endfor %}
 
 <div{{ attributes.removeClass(style_classes).addClass(classes) }}>{{ children }}</div>
