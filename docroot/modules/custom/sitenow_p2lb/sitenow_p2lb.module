@@ -46,10 +46,12 @@ function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = F
 
   // Get default page sections config.
   $default_sections = _sitenow_p2lb_get_page_lb_sections_config();
-  // Append content moderation section.
-  $layout->appendSection($default_sections[0]);
-  // Append header section.
-  $layout->appendSection($default_sections[1]);
+
+  // Append content moderation and header sections
+  // from default config.
+  foreach (['content_moderation', 'header'] as $i => $default_section) {
+    $layout->appendSection(Section::fromArray($default_sections[$i]));
+  }
 
   // Process all of the individual sections and update the layout.
   foreach ($section_ids as $section_id) {
