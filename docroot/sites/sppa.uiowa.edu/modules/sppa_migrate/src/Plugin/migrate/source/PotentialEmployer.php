@@ -11,7 +11,7 @@ use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
  * Migrate Source plugin.
  *
  * @MigrateSource(
- *   id = "sppa_employers",
+ *   id = "sppa_potential_employer",
  *   source_module = "node"
  * )
  */

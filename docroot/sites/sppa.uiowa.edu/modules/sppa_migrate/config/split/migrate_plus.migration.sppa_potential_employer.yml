@@ -4,7 +4,7 @@ dependencies:
   enforced:
     module:
       - sppa_migrate
-id: sppa_employers
+id: sppa_potential_employer
 class: null
 field_plugin_method: null
 cck_plugin_method: null
@@ -13,8 +13,8 @@ migration_tags:
 migration_group: sitenow_migrate
 label: Employers
 source:
-  plugin: sppa_employers
-  node_type: news_story
+  plugin: sppa_potential_employer
+  node_type: employer
   constants:
     uid_admin: 1
 process:
