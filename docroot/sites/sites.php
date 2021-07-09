@@ -2867,3 +2867,9 @@ $sites['com-hawkeyecaucus.local.drupal.uiowa.edu'] = 'hawkeyecaucus.com';
 $sites['com-hawkeyecaucus.dev.drupal.uiowa.edu'] = 'hawkeyecaucus.com';
 $sites['com-hawkeyecaucus.stage.drupal.uiowa.edu'] = 'hawkeyecaucus.com';
 $sites['com-hawkeyecaucus.prod.drupal.uiowa.edu'] = 'hawkeyecaucus.com';
+
+// Directory aliases for shse.iwp.uiowa.edu.
+$sites['iwpshse.local.drupal.uiowa.edu'] = 'shse.iwp.uiowa.edu';
+$sites['iwpshse.dev.drupal.uiowa.edu'] = 'shse.iwp.uiowa.edu';
+$sites['iwpshse.stage.drupal.uiowa.edu'] = 'shse.iwp.uiowa.edu';
+$sites['iwpshse.prod.drupal.uiowa.edu'] = 'shse.iwp.uiowa.edu';
