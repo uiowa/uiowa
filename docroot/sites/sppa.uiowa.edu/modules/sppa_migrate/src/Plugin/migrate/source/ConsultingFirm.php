@@ -1,11 +1,10 @@
 <?php
 
-namespace Drupal\sppa_migrate\Plugin\migrate\source;
+/**
+ * @file
+ */
 
-use Drupal\Component\Utility\Html;
-use Drupal\migrate\Row;
-use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
-use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
+namespace Drupal\sppa_migrate\Plugin\migrate\source;
 
 /**
  * Migrate Source plugin.
