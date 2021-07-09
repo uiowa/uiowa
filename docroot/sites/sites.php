@@ -2855,3 +2855,33 @@ $sites['wrac.local.drupal.uiowa.edu'] = 'wrac.uiowa.edu';
 $sites['wrac.dev.drupal.uiowa.edu'] = 'wrac.uiowa.edu';
 $sites['wrac.stage.drupal.uiowa.edu'] = 'wrac.uiowa.edu';
 $sites['wrac.prod.drupal.uiowa.edu'] = 'wrac.uiowa.edu';
+
+// Directory aliases for govrel.uiowa.edu.
+$sites['govrel.local.drupal.uiowa.edu'] = 'govrel.uiowa.edu';
+$sites['govrel.dev.drupal.uiowa.edu'] = 'govrel.uiowa.edu';
+$sites['govrel.stage.drupal.uiowa.edu'] = 'govrel.uiowa.edu';
+$sites['govrel.prod.drupal.uiowa.edu'] = 'govrel.uiowa.edu';
+
+// Directory aliases for hawkeyecaucus.com.
+$sites['com-hawkeyecaucus.local.drupal.uiowa.edu'] = 'hawkeyecaucus.com';
+$sites['com-hawkeyecaucus.dev.drupal.uiowa.edu'] = 'hawkeyecaucus.com';
+$sites['com-hawkeyecaucus.stage.drupal.uiowa.edu'] = 'hawkeyecaucus.com';
+$sites['com-hawkeyecaucus.prod.drupal.uiowa.edu'] = 'hawkeyecaucus.com';
+
+// Directory aliases for shse.iwp.uiowa.edu.
+$sites['iwpshse.local.drupal.uiowa.edu'] = 'shse.iwp.uiowa.edu';
+$sites['iwpshse.dev.drupal.uiowa.edu'] = 'shse.iwp.uiowa.edu';
+$sites['iwpshse.stage.drupal.uiowa.edu'] = 'shse.iwp.uiowa.edu';
+$sites['iwpshse.prod.drupal.uiowa.edu'] = 'shse.iwp.uiowa.edu';
+
+// Directory aliases for publishing-gallery.iwp.uiowa.edu.
+$sites['iwppublishing-gallery.local.drupal.uiowa.edu'] = 'publishing-gallery.iwp.uiowa.edu';
+$sites['iwppublishing-gallery.dev.drupal.uiowa.edu'] = 'publishing-gallery.iwp.uiowa.edu';
+$sites['iwppublishing-gallery.stage.drupal.uiowa.edu'] = 'publishing-gallery.iwp.uiowa.edu';
+$sites['iwppublishing-gallery.prod.drupal.uiowa.edu'] = 'publishing-gallery.iwp.uiowa.edu';
+
+// Directory aliases for silkroutes.iwp.uiowa.edu.
+$sites['iwpsilkroutes.local.drupal.uiowa.edu'] = 'silkroutes.iwp.uiowa.edu';
+$sites['iwpsilkroutes.dev.drupal.uiowa.edu'] = 'silkroutes.iwp.uiowa.edu';
+$sites['iwpsilkroutes.stage.drupal.uiowa.edu'] = 'silkroutes.iwp.uiowa.edu';
+$sites['iwpsilkroutes.prod.drupal.uiowa.edu'] = 'silkroutes.iwp.uiowa.edu';
