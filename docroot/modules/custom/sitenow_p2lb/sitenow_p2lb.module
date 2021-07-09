@@ -40,7 +40,16 @@ function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = F
   $section_ids = sitenow_p2lb_fetch_child_ids($node);
   // Grab the layout. We should have sections to process,
   // but just in case, $layout will just re-set itself.
+  /** @var \Drupal\layout_builder\Field\LayoutSectionItemList $layout */
   $layout = $node->get('layout_builder__layout');
+
+  // @todo Add content moderation section.
+
+  // Add header section if title is not visually hidden.
+  $publish_options = $node->field_publish_options->getValue();
+  if (!in_array('title_hidden', $publish_options)) {
+    $layout->appendSection(_sitenow_p2lb_heading_section_config());
+  }
 
   // Process all of the individual sections and update the layout.
   foreach ($section_ids as $section_id) {
@@ -1119,6 +1128,9 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
   return $section_array;
 }
 
+/**
+ * Headline field configuration.
+ */
 function _sitenow_p2lb_headline_config($title = '', $display_title = 0, $heading_size = 'h2') {
   return [
     'headline' => $title,
@@ -1126,4 +1138,99 @@ function _sitenow_p2lb_headline_config($title = '', $display_title = 0, $heading
     'hide_headline' => $display_title,
     'headline_style' => 'default',
   ];
+}
+
+/**
+ * Header section configuration.
+ */
+function _sitenow_p2lb_heading_section_config() {
+  $layout_settings = [
+    'label' => 'Header',
+    'column_widths' => [],
+    'layout_builder_styles_style' => [
+      'section_margin_edge_to_edge' => 'section_margin_edge_to_edge',
+    ],
+  ];
+
+  $section_array = sitenow_p2lb_create_section_array('layout_header', $layout_settings);
+
+  $section_array['components'] = [
+    '40b768ff-6e34-4257-9398-d83430b061e8' => [
+      'uuid' => '40b768ff-6e34-4257-9398-d83430b061e8',
+      'region' => 'content',
+      'configuration' => [
+        'id' => 'system_breadcrumb_block',
+        'label' => 'Breadcrumbs',
+        'provider' => 'system',
+        'label_display' => 0,
+        'context_mapping' => [],
+      ],
+      'weight' => 0,
+      'additional' => [],
+    ],
+    '56a58312-d93e-4d32-84a0-39b2a2fc89fb' => [
+      'uuid' => '56a58312-d93e-4d32-84a0-39b2a2fc89fb',
+      'region' => 'content',
+      'configuration' => [
+        'id' => 'field_block:node:page:title',
+        'label' => 'Title',
+        'provider' => 'layout_builder',
+        'label_display' => 0,
+        'formatter' => [
+          'label' => 'visually_hidden',
+          'type' => 'string',
+          'settings' => [
+            'link_to_entity' => FALSE,
+          ],
+          'third_party_settings' => [],
+        ],
+        'context_mapping' => [
+          'entity' => 'layout_builder.entity',
+          'view_mode' => 'view_mode',
+        ],
+      ],
+      'weight' => 1,
+      'additional' => [],
+    ],
+    'b444f835-62e1-4e31-b433-22fe88ef3372' => [
+      'uuid' => 'b444f835-62e1-4e31-b433-22fe88ef3372',
+      'region' => 'background',
+      'configuration' => [
+        'id' => 'field_block:node:page:field_image',
+        'label' => 'Featured Image',
+        'provider' => 'layout_builder',
+        'label_display' => 0,
+        'formatter' => [
+          'label' => 'visually_hidden',
+          'type' => 'entity_reference_entity_view',
+          'settings' => [
+            'view_mode' => 'full_ultrawide',
+          ],
+          'third_party_settings' => [],
+        ],
+        'context_mapping' => [
+          'entity' => 'layout_builder.entity',
+          'view_mode' => 'view_mode',
+        ],
+      ],
+      'weight' => 0,
+      'additional' => [],
+    ],
+  ];
+
+  $section_array['thirdPartySettings'] = [
+    'layout_builder_lock' => [
+      'lock' => [
+        1 => 1,
+        2 => 2,
+        3 => 3,
+        4 => 4,
+        5 => 5,
+        6 => 6,
+        8 => 8,
+      ],
+    ],
+  ];
+
+  return $section_array;
 }
