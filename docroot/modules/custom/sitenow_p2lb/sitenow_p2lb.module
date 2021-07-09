@@ -356,7 +356,9 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
     return [];
   }
 
+  // Set a few defaults. Can override later if needed.
   $display_label = 0;
+  $label = NULL;
   $children = [];
 
   // Initialize a usage controller for later.
@@ -412,7 +414,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 
     case 'articles':
       $type = 'uiowa_articles';
-      $label = NULL;
       $display_label = 0;
       // Default styles.
       $styles = [
@@ -628,8 +629,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 
     case 'events':
       $type = 'uiowa_events';
-      $label = NULL;
-      $display_label = 0;
       // Default styles.
       $styles = [
         'block_background_style_light',
@@ -729,8 +728,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         'list_format_list',
         'block_grid_threecol_33_34_33',
       ];
-      $label = NULL;
-      $display_label = 0;
       $more = $paragraph->field_people_more->value;
       $more_path = $paragraph->field_people_more_path->value;
       $title = $paragraph->field_uip_title->value;
