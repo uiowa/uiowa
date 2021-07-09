@@ -1,0 +1,118 @@
+uuid: d0efe5ef-67c7-4e35-b8b5-e7f8b501562f
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.token
+    - field.field.node.event.body
+    - field.field.node.event.field_event_category
+    - field.field.node.event.field_event_hide
+    - field.field.node.event.field_event_location
+    - field.field.node.event.field_event_virtual
+    - field.field.node.event.field_event_when
+    - field.field.node.event.field_image
+    - field.field.node.event.field_meta_tags
+    - field.field.node.event.field_tags
+    - field.field.node.event.field_teaser
+    - node.type.event
+  module:
+    - address
+    - layout_builder
+    - link
+    - smart_date
+    - text
+    - user
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+_core:
+  default_config_hash: ppIsOjQ5tKp_SD6BztnDSr18eW9MqwFx1xjOcNUIWyI
+id: node.event.token
+targetEntityType: node
+bundle: event
+mode: token
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_event_category:
+    type: entity_reference_label
+    weight: 3
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_event_location:
+    weight: 2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: address_default
+    region: content
+  field_event_virtual:
+    type: link
+    weight: 6
+    region: content
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+  field_event_when:
+    weight: 0
+    label: above
+    settings:
+      timezone_override: ''
+      format: default
+      force_chronological: false
+      format_type: medium
+      add_classes: false
+    third_party_settings: {  }
+    type: smartdate_default
+    region: content
+  field_image:
+    type: entity_reference_entity_view
+    weight: 7
+    region: content
+    label: hidden
+    settings:
+      view_mode: large__widescreen
+      link: false
+    third_party_settings: {  }
+  field_tags:
+    type: entity_reference_label
+    weight: 4
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_teaser:
+    type: basic_string
+    weight: 5
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  links:
+    weight: 8
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  content_moderation_control: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_event_hide: true
+  field_meta_tags: true
+  search_api_excerpt: true
