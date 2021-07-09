@@ -2879,3 +2879,9 @@ $sites['iwppublishing-gallery.local.drupal.uiowa.edu'] = 'publishing-gallery.iwp
 $sites['iwppublishing-gallery.dev.drupal.uiowa.edu'] = 'publishing-gallery.iwp.uiowa.edu';
 $sites['iwppublishing-gallery.stage.drupal.uiowa.edu'] = 'publishing-gallery.iwp.uiowa.edu';
 $sites['iwppublishing-gallery.prod.drupal.uiowa.edu'] = 'publishing-gallery.iwp.uiowa.edu';
+
+// Directory aliases for silkroutes.iwp.uiowa.edu.
+$sites['iwpsilkroutes.local.drupal.uiowa.edu'] = 'silkroutes.iwp.uiowa.edu';
+$sites['iwpsilkroutes.dev.drupal.uiowa.edu'] = 'silkroutes.iwp.uiowa.edu';
+$sites['iwpsilkroutes.stage.drupal.uiowa.edu'] = 'silkroutes.iwp.uiowa.edu';
+$sites['iwpsilkroutes.prod.drupal.uiowa.edu'] = 'silkroutes.iwp.uiowa.edu';
