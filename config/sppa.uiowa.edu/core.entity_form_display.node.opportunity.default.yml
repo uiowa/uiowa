@@ -4,6 +4,10 @@ status: true
 dependencies:
   config:
     - field.field.node.opportunity.body
+    - field.field.node.opportunity.field_opportunity_city
+    - field.field.node.opportunity.field_opportunity_deadline
+    - field.field.node.opportunity.field_opportunity_degree
+    - field.field.node.opportunity.field_opportunity_length
     - field.field.node.opportunity.field_opportunity_locations
     - field.field.node.opportunity.field_opportunity_type
     - field.field.node.opportunity.field_opportunity_website
@@ -34,6 +38,36 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_opportunity_city:
+    weight: 27
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_opportunity_deadline:
+    weight: 28
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_opportunity_degree:
+    weight: 26
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_opportunity_length:
+    weight: 29
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_opportunity_locations:
     weight: 4
     settings: {  }
