@@ -18,6 +18,9 @@ source:
   constants:
     uid_admin: 1
     format: minimal
+    degrees:
+      - URP
+      - MPA
 process:
   langcode:
     plugin: static_map
@@ -118,6 +121,7 @@ process:
       J: jobs
       I: internships
       H: fellowships
+  field_opportunity_degree: constants/degrees
 destination:
   plugin: 'entity:node'
   default_bundle: opportunity

@@ -18,6 +18,12 @@ source:
   constants:
     uid_admin: 1
     format: minimal
+    types:
+      - jobs
+      - internships
+    degrees:
+      - URP
+      - MPA
 process:
   langcode:
     plugin: static_map
@@ -41,6 +47,7 @@ process:
       - 0
       - value
   body/format: constants/format
+  field_opportunity_type: constants/types
   field_opportunity_website:
     plugin: field_link
     source: field_consultfirm_url
@@ -103,6 +110,7 @@ process:
       International: INTL
       Puerto Rico: INTL
       United States: US
+  field_opportunity_degree: constants/degrees
 destination:
   plugin: 'entity:node'
   default_bundle: opportunity
