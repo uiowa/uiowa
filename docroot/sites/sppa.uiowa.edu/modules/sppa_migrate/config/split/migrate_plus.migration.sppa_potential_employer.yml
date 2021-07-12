@@ -34,13 +34,21 @@ process:
   promote: promote
   uid: constants/uid_admin
   title: title
-  body/value:
-    plugin: extract
+  body:
+    plugin: sub_process
     source: field_pot_empl_desc
-    index:
-      - 0
-      - value
-  body/format: constants/format
+    process:
+      value: value
+      summary: summary
+      format:
+        plugin: static_map
+        source: format
+        map:
+          full_html: minimal
+          filtered_html: minimal
+          plain_text: minimal
+          null: minimal
+          2: minimal
   field_opportunity_locations:
     plugin: static_map
     source: field_pot_empl_loc
@@ -95,10 +103,11 @@ process:
       West Virginia: WV
       Wisconsin: WI
       Wyoming: WY
-      District of Columbia: DC
+      District Of Columbia: DC
       Guam: INTL
       International: INTL
       Puerto Rico: INTL
+      United States: US
   field_opportunity_website:
     plugin: field_link
     source: field_pot_empl_url
