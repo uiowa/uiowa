@@ -860,7 +860,11 @@ function layout_builder_custom_preprocess_block(&$variables) {
 
         // Associate the block's cache tags with each entity so that the
         // appropriate render cache ID is cleared when the block changes.
-        $entity->addCacheTags($variables['content']['#cache']['tags']);
+        $cache_tags = $block->getCacheTags();
+        $entity->addCacheTags($cache_tags);
+        // Grab a fresh copy of the node.
+        $id = $entity->id();
+        Cache::invalidateTags(['node:' . $id]);
 
         // Construct the entity teaser markup manually to pass in the heading
         // size variable for the template and append it to the block content.

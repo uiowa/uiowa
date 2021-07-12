@@ -1,0 +1,32 @@
+local:
+  root: /var/www/uiowa/docroot
+  uri: iwppublishing-gallery.local.drupal.uiowa.edu
+  paths:
+    files: sites/publishing-gallery.iwp.uiowa.edu/files
+dev:
+  uri: iwppublishing-gallery.dev.drupal.uiowa.edu
+  host: uiowa02dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/publishing-gallery.iwp.uiowa.edu/files
+  root: /var/www/html/uiowa02.dev/docroot
+  user: uiowa02.dev
+prod:
+  uri: publishing-gallery.iwp.uiowa.edu
+  host: uiowa02.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/publishing-gallery.iwp.uiowa.edu/files
+  root: /var/www/html/uiowa02.prod/docroot
+  user: uiowa02.prod
+test:
+  uri: iwppublishing-gallery.stage.drupal.uiowa.edu
+  host: uiowa02stg.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/publishing-gallery.iwp.uiowa.edu/files
+  root: /var/www/html/uiowa02.test/docroot
+  user: uiowa02.test
