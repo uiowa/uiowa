@@ -17,6 +17,7 @@ source:
   node_type: employer
   constants:
     uid_admin: 1
+    format: minimal
 process:
   langcode:
     plugin: static_map
@@ -33,10 +34,13 @@ process:
   promote: promote
   uid: constants/uid_admin
   title: title
-  body:
-    plugin: default_value
-    default_value: minimal_html
+  body/value:
+    plugin: extract
     source: field_pot_empl_desc
+    index:
+      - 0
+      - value
+  body/format: constants/format
   field_opportunity_locations:
     plugin: static_map
     source: field_pot_empl_loc
