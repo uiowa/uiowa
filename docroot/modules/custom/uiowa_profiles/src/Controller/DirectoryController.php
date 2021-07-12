@@ -4,6 +4,7 @@ namespace Drupal\uiowa_profiles\Controller;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Breadcrumb\BreadcrumbManager;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Logger\LoggerChannelTrait;
@@ -129,6 +130,18 @@ class DirectoryController extends ControllerBase {
       ],
     ];
 
+    /** @var BreadcrumbManager $breadcrumb_manager */
+    $breadcrumb_manager = \Drupal::service('breadcrumb');
+    $links = $breadcrumb_manager->build(\Drupal::routeMatch())->getLinks();
+    $breadcrumbs = [];
+
+    foreach ($links as $link) {
+      $breadcrumbs[] = [
+        'label' => $link->getText(),
+        'url' => $link->getUrl()->toString(),
+      ];
+    }
+
     $build['uiprof']['client'] = [
       '#type' => 'html_tag',
       '#tag' => 'profiles-client',
@@ -136,12 +149,7 @@ class DirectoryController extends ControllerBase {
         'api-key' => Html::escape($this->config->get('api_key')),
         'site-name' => \Drupal::config('system.site')->get('name'),
         'directory-name' => Html::escape($this->config->get('directory.title')),
-        ':breadcrumbs' => json_encode([
-          [
-            'label' => 'Profiles',
-            'url' => '/profiles',
-          ]
-        ]),
+        ':breadcrumbs' => json_encode($breadcrumbs),
         ':host' => 'host',
         ':environment' => 'environment',
       ],
