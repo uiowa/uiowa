@@ -17,6 +17,7 @@ source:
   node_type: consult_firm
   constants:
     uid_admin: 1
+    format: minimal
 process:
   langcode:
     plugin: static_map
@@ -33,7 +34,13 @@ process:
   promote: promote
   uid: constants/uid_admin
   title: title
-  body: body
+  body/value:
+    plugin: extract
+    source: body
+    index:
+      - 0
+      - value
+  body/format: constants/format
   field_teaser: body_summary
   field_opportunity_website:
     plugin: field_link
