@@ -680,11 +680,10 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       break;
 
     case 'featured_content':
-      $type = 'featured_content';
       $title = $paragraph->field_uip_title->value;
       $display_title = $paragraph->field_uip_display_title->value;
 
-      $content_items = $paragraph->field_featured_content->value;
+      $content_items = $paragraph->field_featured_content;
 
       // @todo Create a Featured Content block.
       $block_definition = [
