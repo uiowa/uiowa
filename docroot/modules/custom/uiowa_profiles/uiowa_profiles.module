@@ -1,0 +1,16 @@
+<?php
+/**
+ * @file
+ * Module code for uiowa_profiles.
+ */
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uiowa_profiles_preprocess_page(&$variables) {
+  $route = \Drupal::routeMatch()->getRouteName();
+
+  if ($route == 'uiowa_profiles.directory') {
+   unset($variables['page']['breadcrumb']);
+  }
+}
