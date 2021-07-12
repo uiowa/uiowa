@@ -5,25 +5,44 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.opportunity.body
-    - field.field.node.opportunity.field_opportunity_states
+    - field.field.node.opportunity.field_opportunity_locations
     - field.field.node.opportunity.field_opportunity_type
     - field.field.node.opportunity.field_opportunity_website
     - node.type.opportunity
   module:
+    - smart_trim
     - user
 id: node.opportunity.teaser
 targetEntityType: node
 bundle: opportunity
 mode: teaser
 content:
+  body:
+    type: smart_trim
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      trim_length: 300
+      trim_type: chars
+      trim_suffix: ''
+      wrap_class: trimmed
+      more_text: More
+      more_class: more-link
+      summary_handler: full
+      trim_options:
+        text: true
+        trim_zero: false
+      wrap_output: false
+      more_link: false
+    third_party_settings: {  }
   links:
-    weight: 100
+    weight: 1
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
-  body: true
-  field_opportunity_states: true
+  field_opportunity_locations: true
   field_opportunity_type: true
   field_opportunity_website: true
   search_api_excerpt: true
