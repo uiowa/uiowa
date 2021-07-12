@@ -135,8 +135,27 @@ class DirectoryController extends ControllerBase {
       '#attributes' => [
         'api-key' => Html::escape($this->config->get('api_key')),
         'site-name' => \Drupal::config('system.site')->get('name'),
-        ':host' => "host",
-        ':environment' => "environment"
+        'directory-name' => Html::escape($this->config->get('directory.title')),
+        ':breadcrumbs' => json_encode([
+          [
+            'label' => 'Profiles',
+            'url' => '/profiles',
+          ]
+        ]),
+        ':host' => 'host',
+        ':environment' => 'environment',
+      ],
+      'intro' => [
+        '#type' => 'html_tag',
+        '#tag' => 'template',
+        '#attributes' => [
+          'v-slot:intro' => TRUE,
+        ],
+        'text' => [
+          '#type' => 'processed_text',
+          '#text' => $this->config->get('directory.intro')['value'],
+          '#format' => $this->config->get('directory.intro')['format'],
+        ],
       ],
     ];
 
