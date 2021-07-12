@@ -3,18 +3,14 @@
 namespace Drupal\uiowa_profiles\Controller;
 
 use Drupal\Component\Utility\Html;
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Breadcrumb\BreadcrumbManager;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\uiowa_profiles\Client;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Returns responses for Profiles routes.
