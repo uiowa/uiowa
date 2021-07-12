@@ -13,7 +13,7 @@ migration_tags:
 migration_group: sitenow_migrate
 label: Employers
 source:
-  plugin: sppa_potential_employer
+  plugin: d7_node
   node_type: employer
   constants:
     uid_admin: 1
@@ -34,9 +34,16 @@ process:
   uid: constants/uid_admin
   title: title
   body: field_pot_empl_desc
-  field_opportunity_website: field_pot_empl_url
-  field_opportunity_states: field_pot_empl_loc
-  field_opportunity_type: field_pot_empl_type
+  field_opportunity_website:
+    plugin: field_link
+    source: field_pot_empl_url
+  field_opportunity_type:
+    plugin: static_map
+    source: field_pot_empl_type
+    map:
+      J: jobs
+      I: internships
+      H: fellowships
 destination:
   plugin: 'entity:node'
   default_bundle: opportunity
