@@ -49,7 +49,6 @@ class ProfilesDynamic implements ContainerInjectionInterface {
       "{$directory}/{slug}",
       [
         '_controller' => 'Drupal\uiowa_profiles\Controller\DirectoryController::build',
-        '_title_callback' => 'Drupal\uiowa_profiles\Controller\DirectoryController::title',
         'slug' => NULL,
       ],
       [
