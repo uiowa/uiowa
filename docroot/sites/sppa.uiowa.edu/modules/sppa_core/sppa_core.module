@@ -11,7 +11,7 @@ use Drupal\field\Entity\FieldStorageConfig;
 /**
  * Implements hook_allowed_values_function().
  */
-function sppa_states_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+function sppa_locations_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
   $options = [
     'AL' => 'Alabama',
     'AK' => 'Alaska',
@@ -63,6 +63,7 @@ function sppa_states_allowed_values(FieldStorageConfig $definition, ContentEntit
     'WV' => 'West Virginia',
     'WI' => 'Wisconsin',
     'WY' => 'Wyoming',
+    'DC' => 'Washington D.C.',
     'US' => 'United States',
     'INTL' => 'International',
   ];
@@ -72,11 +73,11 @@ function sppa_states_allowed_values(FieldStorageConfig $definition, ContentEntit
 /**
  * Implements hook_allowed_values_function().
  */
-function sppa_opportunities_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+function sppa_opportunity_types_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
   $options = [
-    'Jobs' => 'Jobs',
-    'Internships' => 'Internships',
-    'Fellowships' => 'Fellowships',
+    'jobs' => 'Jobs',
+    'internships' => 'Internships',
+    'fellowships' => 'Fellowships',
   ];
   return $options;
 }
