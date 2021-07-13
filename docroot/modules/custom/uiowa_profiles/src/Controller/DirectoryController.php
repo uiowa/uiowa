@@ -7,8 +7,8 @@ use Drupal\Core\Breadcrumb\BreadcrumbManager;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Logger\LoggerChannelTrait;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\uiowa_profiles\Client;
-use GuzzleHttp\ClientInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -33,11 +33,11 @@ class DirectoryController extends ControllerBase {
   protected $config;
 
   /**
-   * The HTTP client.
+   * The breadcrumb manager service.
    *
-   * @var \GuzzleHttp\ClientInterface
+   * @var \Drupal\Core\Breadcrumb\BreadcrumbManager
    */
-  protected $client;
+  protected $breadcrumb;
 
   /**
    * The uiowa_profiles logger channel.
@@ -47,20 +47,30 @@ class DirectoryController extends ControllerBase {
   protected $logger;
 
   /**
+   * The current route match.
+   *
+   * @var \Drupal\Core\Routing\RouteMatchInterface
+   */
+  protected $routeMatch;
+
+  /**
    * DirectoryController constructor.
    *
    * @param \Drupal\uiowa_profiles\Client $profiles
    *   The Profiles service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config
    *   The config factory service.
-   * @param \GuzzleHttp\ClientInterface $client
+   * @param \Drupal\Core\Breadcrumb\BreadcrumbManager $breadcrumb
    *   The Guzzle HTTP client.
+   * @param \Drupal\Core\Routing\RouteMatchInterface $routeMatch
+   *   The current route match.
    */
-  public function __construct(Client $profiles, ConfigFactoryInterface $config, ClientInterface $client) {
+  public function __construct(Client $profiles, ConfigFactoryInterface $config, BreadcrumbManager $breadcrumb, RouteMatchInterface $routeMatch) {
     $this->profiles = $profiles;
     $this->config = $config->get('uiowa_profiles.settings');
-    $this->client = $client;
+    $this->breadcrumb = $breadcrumb;
     $this->logger = $this->getLogger('uiowa_profiles');
+    $this->routeMatch = $routeMatch;
   }
 
   /**
@@ -70,7 +80,8 @@ class DirectoryController extends ControllerBase {
     return new static(
       $container->get('uiowa_profiles.client'),
       $container->get('config.factory'),
-      $container->get('http_client')
+      $container->get('breadcrumb'),
+      $container->get('current_route_match')
     );
   }
 
@@ -126,12 +137,9 @@ class DirectoryController extends ControllerBase {
       ],
     ];
 
-    /** @var BreadcrumbManager $breadcrumb_manager */
-    $breadcrumb_manager = \Drupal::service('breadcrumb');
-    $links = $breadcrumb_manager->build(\Drupal::routeMatch())->getLinks();
     $breadcrumbs = [];
 
-    foreach ($links as $link) {
+    foreach ($this->breadcrumb->build($this->routeMatch)->getLinks() as $link) {
       $breadcrumbs[] = [
         'label' => $link->getText(),
         'url' => $link->getUrl()->toString(),
@@ -143,7 +151,7 @@ class DirectoryController extends ControllerBase {
       '#tag' => 'profiles-client',
       '#attributes' => [
         'api-key' => Html::escape($this->config->get('api_key')),
-        'site-name' => \Drupal::config('system.site')->get('name'),
+        'site-name' => $this->config('system.site')->get('name'),
         'directory-name' => Html::escape($this->config->get('directory.title')),
         ':breadcrumbs' => json_encode($breadcrumbs),
         ':host' => 'host',
@@ -162,7 +170,6 @@ class DirectoryController extends ControllerBase {
         ],
       ],
     ];
-
 
     if ($slug) {
       $build['uiprof']['client']['#attributes']['slug'] = Html::escape($slug);
