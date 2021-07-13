@@ -3,6 +3,13 @@
 
 @media screen and (min-width: 40em) {
 
+  .layout--fourcol .layout__spacing_container {
+    gap: 3rem;
+  }
+  .layout--fourcol.column-spacing__removed .layout__spacing_container {
+    gap: 0;
+  }
+
   .layout--fourcol,
   .layout--fourcol .layout__spacing_container {
     display: flex;
@@ -19,38 +26,16 @@
     }
   }
 
-
   .layout--fourcol .layout__region {
-    flex: 0 1 24.25%;
+    flex: 0 1 22.25%;
   }
 
   .layout--fourcol.column-spacing__removed .layout__region {
     flex: 0 1 25%;
   }
-
-  .layout--fourcol .layout__region--second {
-    margin-left: 3rem;
-    margin-right: 1.5rem;
-  }
-
-  .layout--fourcol .layout__region--third {
-    margin-left: 1.5rem;
-    margin-right: 3rem;
-  }
-
-  .layout--fourcol.column-spacing__removed .layout__region--second {
-    margin-left: 0;
-    margin-right: 0;
-  }
-
-  .layout--fourcol.column-spacing__removed .layout__region--third {
-    margin-left: 0;
-    margin-right: 0;
-  }
 }
 
 @media (min-width: 40em) and (max-width: 68.125em) {
-
   .layout--fourcol,
   .layout--fourcol .layout__spacing_container {
     flex-wrap: wrap;
@@ -60,20 +45,11 @@
     flex: 0 1 46.50%;
     margin-bottom: 3rem;
   }
-
-  .layout--fourcol .layout__region--second {
-    margin-left: 6%;
-    margin-right: 0;
-  }
-
-  .layout--fourcol .layout__region--third {
-    margin-left: 0;
-    margin-right: 6%;
-  }
 }
 
-@media (min-width: 0em) and (max-width: 40em) {
+// Grid layout adjustments
 
+@media (min-width: 0em) and (max-width: 40em) {
   .layout--fourcol.grid--1-3 .layout__region--first,
   .layout--fourcol.grid--1-3.column-spacing__removed .layout__region--first {
     flex-basis: 100%;
@@ -82,8 +58,8 @@
   }
 }
 
-@media (min-width: 40em) and (max-width: 84.375em) {
 
+@media (min-width: 40em) and (max-width: 84.375em) {
   .layout--fourcol.grid--1-3,
   .layout--fourcol.grid--1-3 .layout__spacing_container {
     flex-wrap: wrap;
@@ -111,4 +87,43 @@
     margin-left: 3%;
     margin-right: 3%;
   }
+}
+
+// IE
+
+@media all and (min-width: 0px) and (max-width: 855px) and (-ms-high-contrast: none),
+(-ms-high-contrast: active) {
+
+  .layout--fourcol .layout__region--second {
+    margin-left: 3rem;
+    margin-right: 1.5rem;
+  }
+
+  .layout--fourcol .layout__region--third {
+    margin-left: 1.5rem;
+    margin-right: 3rem;
+  }
+
+  .layout--fourcol.column-spacing__removed .layout__region--second {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .layout--fourcol.column-spacing__removed .layout__region--third {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  // Add media query?
+
+  .layout--fourcol .layout__region--second {
+    margin-left: 6%;
+    margin-right: 0;
+  }
+
+  .layout--fourcol .layout__region--third {
+    margin-left: 0;
+    margin-right: 6%;
+  }
+
 }

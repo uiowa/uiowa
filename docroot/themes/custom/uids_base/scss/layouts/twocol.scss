@@ -8,6 +8,13 @@
     display: flex;
   }
 
+  .layout--twocol .layout__spacing_container {
+    gap: 3rem;
+  }
+  .layout--twocol.column-spacing__removed .layout__spacing_container {
+    gap: 0;
+  }
+
   .layout__region details.set[open] {
     order: -1;
   }
@@ -78,7 +85,13 @@
     flex: 0 1 75%;
     @include inner-grid(75);
   }
+}
 
+
+// IE
+
+@media all and (min-width: 0px) and (max-width: 855px) and (-ms-high-contrast: none),
+(-ms-high-contrast: active) {
   .layout--twocol--75-25 .layout__region--first + .layout__region--second,
   .layout--twocol--25-75 .layout__region--first + .layout__region--second,
   .layout--twocol--67-33 .layout__region--first + .layout__region--second,
