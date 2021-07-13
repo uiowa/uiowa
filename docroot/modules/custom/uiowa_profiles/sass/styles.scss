@@ -1,5 +1,6 @@
 @import "../../../themes/custom/uids_base/uids/assets/scss/variables";
 @import "../../../themes/custom/uids_base/uids/assets/scss/utilities";
+@import "../../../themes/custom/uids_base/uids/components/breadcrumbs/breadcrumbs";
 
 #block-uids-base-local-tasks nav {
   border-bottom: none;
@@ -8,6 +9,10 @@
 #uiprof {
   h2 a {
     text-decoration: none;
+  }
+
+  .crumbs {
+    @extend .breadcrumb;
   }
 
   .svg-inline--fa.fa-w-16 {
