@@ -2885,3 +2885,9 @@ $sites['iwpsilkroutes.local.drupal.uiowa.edu'] = 'silkroutes.iwp.uiowa.edu';
 $sites['iwpsilkroutes.dev.drupal.uiowa.edu'] = 'silkroutes.iwp.uiowa.edu';
 $sites['iwpsilkroutes.stage.drupal.uiowa.edu'] = 'silkroutes.iwp.uiowa.edu';
 $sites['iwpsilkroutes.prod.drupal.uiowa.edu'] = 'silkroutes.iwp.uiowa.edu';
+
+// Directory aliases for 91stmeridian.iwp.uiowa.edu.
+$sites['iwp91stmeridian.local.drupal.uiowa.edu'] = '91stmeridian.iwp.uiowa.edu';
+$sites['iwp91stmeridian.dev.drupal.uiowa.edu'] = '91stmeridian.iwp.uiowa.edu';
+$sites['iwp91stmeridian.stage.drupal.uiowa.edu'] = '91stmeridian.iwp.uiowa.edu';
+$sites['iwp91stmeridian.prod.drupal.uiowa.edu'] = '91stmeridian.iwp.uiowa.edu';
