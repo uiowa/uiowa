@@ -127,10 +127,10 @@ class ReplaceCommands extends BltTasks {
 
     foreach ($paths as $path => $exclude) {
       if (!empty($exclude)) {
-        $cmd = "$bin/drupal-check -e {$exclude} -d {$path}";
+        $cmd = "$bin/drupal-check --memory-limit=-1 -e {$exclude} -d {$path}";
       }
       else {
-        $cmd = "$bin/drupal-check -d {$path}";
+        $cmd = "$bin/drupal-check --memory-limit=-1 -d {$path}";
       }
 
       $result = $this->taskExecStack()
