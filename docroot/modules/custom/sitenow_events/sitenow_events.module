@@ -21,12 +21,51 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
     case 'node_event_form':
     case 'node_event_edit_form':
       _sitenow_node_form_defaults($form, $form_state);
+      array_unshift($form['actions']['submit']['#submit'], '_sitenow_events_form_submit');
       $form['field_event_category']['#group'] = 'node_relations';
       if (isset($form['field_event_hide'])) {
         // Set field_event_hide to options group (promotion options).
         $form['field_event_hide']['#group'] = 'options';
       }
       break;
+  }
+}
+
+/**
+ * Custom submit handler for node event forms.
+ */
+function _sitenow_events_form_submit(array &$form, FormStateInterface $form_state) {
+  // Don't save event location if only country is set.
+  $event_location = $form_state->getValue('field_event_location');
+  if (!is_null($event_location)) {
+    foreach ($event_location as $delta => $location) {
+      if (isset($location['address'])) {
+        $has_info = FALSE;
+        // Loop through all the details of the address to
+        // check if any of them have been set besides the
+        // country.
+        foreach ($location['address'] as $key => $details) {
+          if ($key === 'country_code') {
+            continue;
+          }
+          // If we find a non-empty value, we can stop looping.
+          if (!empty($details)) {
+            $has_info = TRUE;
+            break;
+          }
+        }
+        // If no other fields have been set, then unset the address.
+        if (!$has_info) {
+          // Set country code to empty string.
+          $form_state->setValue([
+            'field_event_location',
+            $delta,
+            'address',
+            'country_code',
+          ], '');
+        }
+      }
+    }
   }
 }
 
