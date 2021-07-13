@@ -97,7 +97,7 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Directory Path'),
       '#default_value' => $this->config('uiowa_profiles.settings')->get('directory.path') ?? '/profiles/people',
-      '#description' => $this->t('Path for the primary Profiles directory. Serves as the base for all profiles and an additional <a href=":url">sitemap</a> to submit to search engines.', [
+      '#description' => $this->t('The path for the Profiles directory. Serves as the base for all profiles and an additional <a href=":url">sitemap</a> to submit to search engines.', [
         ':url' => Url::fromRoute('uiowa_profiles.sitemap')->toString(),
       ]),
       '#required' => TRUE,
@@ -116,7 +116,7 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Directory Title'),
       '#default_value' => $this->config('uiowa_profiles.settings')->get('directory.title') ?? 'People',
-      '#description' => $this->t("Title for the site's primary Profiles directory. Will be set as Drupal's page title."),
+      '#description' => $this->t('The page title to display on the Profiles directory.'),
       '#required' => TRUE,
     ];
 
@@ -142,7 +142,7 @@ class SettingsForm extends ConfigFormBase {
         'filtered_html',
       ],
       '#default_value' => $intro['value'] ?? '',
-      '#description' => $this->t('HTML to be included at top of directory. Will be enclosed in a <em>div</em> element with the class directory-introduction.'),
+      '#description' => $this->t('Introductory text to be included at the top of the Profiles directory.'),
       '#required' => FALSE,
     ];
 
