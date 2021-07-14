@@ -88,25 +88,6 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function query() {
-    $query = parent::query();
-    $query->join('url_alias', 'alias', "alias.source = CONCAT('node/', n.nid)");
-    $query->fields('alias', ['alias']);
-    return $query;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function fields() {
-    $fields = parent::fields();
-    $fields['alias'] = $this->t('The URL alias for this node.');
-    return $fields;
-  }
-
-  /**
    * Extract a plain text summary from a block of text.
    *
    * @todo Use smart_trim for this.
