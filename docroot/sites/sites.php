@@ -2897,3 +2897,9 @@ $sites['labwei.local.drupal.uiowa.edu'] = 'wei.lab.uiowa.edu';
 $sites['labwei.dev.drupal.uiowa.edu'] = 'wei.lab.uiowa.edu';
 $sites['labwei.stage.drupal.uiowa.edu'] = 'wei.lab.uiowa.edu';
 $sites['labwei.prod.drupal.uiowa.edu'] = 'wei.lab.uiowa.edu';
+
+// Directory aliases for cerebralvascular.lab.uiowa.edu.
+$sites['labcerebralvascular.local.drupal.uiowa.edu'] = 'cerebralvascular.lab.uiowa.edu';
+$sites['labcerebralvascular.dev.drupal.uiowa.edu'] = 'cerebralvascular.lab.uiowa.edu';
+$sites['labcerebralvascular.stage.drupal.uiowa.edu'] = 'cerebralvascular.lab.uiowa.edu';
+$sites['labcerebralvascular.prod.drupal.uiowa.edu'] = 'cerebralvascular.lab.uiowa.edu';
