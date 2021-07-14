@@ -2,9 +2,6 @@
 
 namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
-use Drupal\migrate\Event\MigrateImportEvent;
-use Drupal\migrate\Row;
-
 /**
  * Basic implementation of the source plugin.
  *
@@ -14,6 +11,7 @@ use Drupal\migrate\Row;
  * )
  */
 class AliasRedirect extends BaseNodeSource {
+
   /**
    * {@inheritdoc}
    */
@@ -32,4 +30,5 @@ class AliasRedirect extends BaseNodeSource {
     $fields['alias'] = $this->t('The URL alias for this node.');
     return $fields;
   }
+
 }
