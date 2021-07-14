@@ -92,7 +92,7 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
    */
   public function query() {
     $query = parent::query();
-    $query->leftJoin('url_alias', 'alias', "alias.source = CONCAT('node/', n.nid)");
+    $query->join('url_alias', 'alias', "alias.source = CONCAT('node/', n.nid)");
     $query->fields('alias', ['alias']);
     return $query;
   }
