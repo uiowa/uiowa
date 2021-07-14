@@ -2921,3 +2921,9 @@ $sites['labprahlad.local.drupal.uiowa.edu'] = 'prahlad.lab.uiowa.edu';
 $sites['labprahlad.dev.drupal.uiowa.edu'] = 'prahlad.lab.uiowa.edu';
 $sites['labprahlad.stage.drupal.uiowa.edu'] = 'prahlad.lab.uiowa.edu';
 $sites['labprahlad.prod.drupal.uiowa.edu'] = 'prahlad.lab.uiowa.edu';
+
+// Directory aliases for forbes.lab.uiowa.edu.
+$sites['labforbes.local.drupal.uiowa.edu'] = 'forbes.lab.uiowa.edu';
+$sites['labforbes.dev.drupal.uiowa.edu'] = 'forbes.lab.uiowa.edu';
+$sites['labforbes.stage.drupal.uiowa.edu'] = 'forbes.lab.uiowa.edu';
+$sites['labforbes.prod.drupal.uiowa.edu'] = 'forbes.lab.uiowa.edu';
