@@ -13,6 +13,14 @@
 
   .crumbs {
     @extend .breadcrumb;
+    li:before {
+      content: "";
+      margin-left: 0!important;
+      padding-right: 0!important;
+    }
+    a {
+      color: $secondary!important;
+    }
   }
 
   .svg-inline--fa.fa-w-16 {
