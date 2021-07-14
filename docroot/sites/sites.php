@@ -2933,3 +2933,9 @@ $sites['labdailey.local.drupal.uiowa.edu'] = 'dailey.lab.uiowa.edu';
 $sites['labdailey.dev.drupal.uiowa.edu'] = 'dailey.lab.uiowa.edu';
 $sites['labdailey.stage.drupal.uiowa.edu'] = 'dailey.lab.uiowa.edu';
 $sites['labdailey.prod.drupal.uiowa.edu'] = 'dailey.lab.uiowa.edu';
+
+// Directory aliases for comeron.lab.uiowa.edu.
+$sites['labcomeron.local.drupal.uiowa.edu'] = 'comeron.lab.uiowa.edu';
+$sites['labcomeron.dev.drupal.uiowa.edu'] = 'comeron.lab.uiowa.edu';
+$sites['labcomeron.stage.drupal.uiowa.edu'] = 'comeron.lab.uiowa.edu';
+$sites['labcomeron.prod.drupal.uiowa.edu'] = 'comeron.lab.uiowa.edu';
