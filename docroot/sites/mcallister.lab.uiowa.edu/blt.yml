@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labmcallister.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labmcallister
+  human_name: mcallister.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmcallister.prod
+drupal:
+  db:
+    database: mcallister_lab_uiowa_edu
+uiowa:
+  requester: afilerio
