@@ -2909,3 +2909,9 @@ $sites['labmcallister.local.drupal.uiowa.edu'] = 'mcallister.lab.uiowa.edu';
 $sites['labmcallister.dev.drupal.uiowa.edu'] = 'mcallister.lab.uiowa.edu';
 $sites['labmcallister.stage.drupal.uiowa.edu'] = 'mcallister.lab.uiowa.edu';
 $sites['labmcallister.prod.drupal.uiowa.edu'] = 'mcallister.lab.uiowa.edu';
+
+// Directory aliases for neiman.lab.uiowa.edu.
+$sites['labneiman.local.drupal.uiowa.edu'] = 'neiman.lab.uiowa.edu';
+$sites['labneiman.dev.drupal.uiowa.edu'] = 'neiman.lab.uiowa.edu';
+$sites['labneiman.stage.drupal.uiowa.edu'] = 'neiman.lab.uiowa.edu';
+$sites['labneiman.prod.drupal.uiowa.edu'] = 'neiman.lab.uiowa.edu';
