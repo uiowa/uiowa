@@ -156,6 +156,7 @@ class DirectoryController extends ControllerBase {
         ':breadcrumbs' => json_encode($breadcrumbs),
         ':host' => 'host',
         ':environment' => 'environment',
+        ':page-size' => Html::escape($this->config->get('directory.page_size'))
       ],
       'intro' => [
         '#type' => 'html_tag',
