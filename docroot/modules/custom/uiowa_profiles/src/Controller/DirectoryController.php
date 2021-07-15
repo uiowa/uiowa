@@ -97,6 +97,12 @@ class DirectoryController extends ControllerBase {
    *   The render array.
    */
   public function build(Request $request, $slug = NULL) {
+    $canonical = $this->config->get('directory.canonical');
+
+    if (empty($canonical)) {
+      $canonical = $request->getHost();
+    }
+
     $build = [
       '#attached' => [
         'library' => [
@@ -106,7 +112,7 @@ class DirectoryController extends ControllerBase {
         'drupalSettings' => [
           'uiowaProfiles' => [
             'basePath' => Html::escape($this->config->get('directory.path')),
-            'canonical' => Html::escape($this->config->get('directory.canonical')),
+            'canonical' => Html::escape($canonical),
           ],
         ],
       ],
