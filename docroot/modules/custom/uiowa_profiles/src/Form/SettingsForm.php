@@ -107,7 +107,7 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Canonical Link Base URL'),
       '#default_value' => $this->config('uiowa_profiles.settings')->get('directory.canonical') ?? '',
-      '#description' => $this->t('The Base URL to generate the canonical link to a profile for SEO. Trailing slash should be included. Leave blank if this site is the canonical source.'),
+      '#description' => $this->t('The Base URL to generate the canonical link to a profile for SEO. Leave blank if this site is the canonical source.'),
       '#required' => FALSE,
       '#placeholder' => $this->getRequest()->getHost(),
     ];
