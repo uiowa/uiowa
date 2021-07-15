@@ -21,6 +21,7 @@ function sppa_locations_allowed_values(FieldStorageConfig $definition, ContentEn
     'CO' => 'Colorado',
     'CT' => 'Connecticut',
     'DE' => 'Delaware',
+    'DC' => 'District of Columbia',
     'FL' => 'Florida',
     'GA' => 'Georgia',
     'HI' => 'Hawaii',
@@ -63,7 +64,6 @@ function sppa_locations_allowed_values(FieldStorageConfig $definition, ContentEn
     'WV' => 'West Virginia',
     'WI' => 'Wisconsin',
     'WY' => 'Wyoming',
-    'DC' => 'Washington D.C.',
     'US' => 'United States',
     'INTL' => 'International',
   ];
@@ -78,6 +78,17 @@ function sppa_opportunity_types_allowed_values(FieldStorageConfig $definition, C
     'jobs' => 'Jobs',
     'internships' => 'Internships',
     'fellowships' => 'Fellowships',
+  ];
+  return $options;
+}
+
+/**
+ * Implements hook_allowed_values_function().
+ */
+function sppa_degrees_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  $options = [
+    'URP' => 'URP',
+    'MPA' => 'MPA',
   ];
   return $options;
 }
