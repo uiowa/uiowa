@@ -153,7 +153,6 @@ class DirectoryController extends ControllerBase {
         'api-key' => Html::escape($this->config->get('api_key')),
         'site-name' => $this->config('system.site')->get('name'),
         'directory-name' => Html::escape($this->config->get('directory.title')),
-        ':breadcrumbs' => json_encode($breadcrumbs),
         ':host' => 'host',
         ':environment' => 'environment',
         ':page-size' => Html::escape($this->config->get('directory.page_size'))
@@ -174,8 +173,13 @@ class DirectoryController extends ControllerBase {
 
     if ($slug) {
       $build['uiprof']['client']['#attributes']['slug'] = Html::escape($slug);
+
+      // The Profiles client will add the directory breadcrumb so we need to
+      // remove ours when a slug is present, i.e. a full page load.
+      array_pop($breadcrumbs);
     }
 
+    $build['uiprof']['client']['#attributes'][':breadcrumbs'] = json_encode($breadcrumbs);
     return $build;
   }
 
