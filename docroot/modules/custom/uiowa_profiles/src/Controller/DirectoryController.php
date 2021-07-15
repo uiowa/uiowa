@@ -155,7 +155,7 @@ class DirectoryController extends ControllerBase {
         'directory-name' => Html::escape($this->config->get('directory.title')),
         ':host' => 'host',
         ':environment' => 'environment',
-        ':page-size' => Html::escape($this->config->get('directory.page_size'))
+        ':page-size' => Html::escape($this->config->get('directory.page_size')),
       ],
       'intro' => [
         '#type' => 'html_tag',
