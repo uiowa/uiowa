@@ -11,8 +11,8 @@ uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
 
   Drupal.uiowaProfiles = {};
 
-  Drupal.uiowaProfiles.updateCanonical = function (settings, uri) {
-    let url = new URL(uri);
+  Drupal.uiowaProfiles.updateCanonical = function (settings, url) {
+    url = new URL(url);
     let path = url.pathname;
 
     // Trim any trailing slash.
@@ -50,9 +50,16 @@ uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
       $(document, context).once('uiowaProfiles').each(function() {
         Drupal.uiowaProfiles.updateCanonical(settings, document.URL);
 
-        document.addEventListener('click', function (event) {
-          Drupal.uiowaProfiles.updateCanonical(settings, event.target.href);
-        }, false);
+        const root = document.getElementById('profiles-root');
+        const observer = new MutationObserver(function() {
+          Drupal.uiowaProfiles.updateCanonical(settings, document.URL);
+        });
+
+        observer.observe(root, {
+          attributes: true,
+          childList: true,
+          subtree: true
+        });
       });
     }
   };
