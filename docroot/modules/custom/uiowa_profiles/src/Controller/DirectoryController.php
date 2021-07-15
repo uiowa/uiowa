@@ -106,7 +106,7 @@ class DirectoryController extends ControllerBase {
         'drupalSettings' => [
           'uiowaProfiles' => [
             'basePath' => Html::escape($this->config->get('directory.path')),
-            'pageSize' => Html::escape($this->config->get('directory.page_size')),
+            'canonical' => Html::escape($this->config->get('directory.canonical')),
           ],
         ],
       ],
