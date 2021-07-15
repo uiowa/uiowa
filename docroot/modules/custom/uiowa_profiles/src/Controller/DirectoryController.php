@@ -152,6 +152,13 @@ class DirectoryController extends ControllerBase {
       ];
     }
 
+    // The Profiles client will add the directory breadcrumb itself using the
+    // directory title. We need to remove that last item then only when the
+    // configured directory path is two levels deep, i.e. not off of home (/).
+    if (count($breadcrumbs) > 1) {
+      array_pop($breadcrumbs);
+    }
+
     $build['uiprof']['client'] = [
       '#type' => 'html_tag',
       '#tag' => 'profiles-client',
@@ -162,6 +169,7 @@ class DirectoryController extends ControllerBase {
         ':host' => 'host',
         ':environment' => 'environment',
         ':page-size' => Html::escape($this->config->get('directory.page_size')),
+        ':breadcrumbs' => json_encode($breadcrumbs),
       ],
       'intro' => [
         '#type' => 'html_tag',
@@ -179,13 +187,8 @@ class DirectoryController extends ControllerBase {
 
     if ($slug) {
       $build['uiprof']['client']['#attributes']['slug'] = Html::escape($slug);
-
-      // The Profiles client will add the directory breadcrumb so we need to
-      // remove ours when a slug is present, i.e. a full page load.
-      array_pop($breadcrumbs);
     }
 
-    $build['uiprof']['client']['#attributes'][':breadcrumbs'] = json_encode($breadcrumbs);
     return $build;
   }
 
