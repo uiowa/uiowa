@@ -104,12 +104,12 @@ class SettingsForm extends ConfigFormBase {
     ];
 
     $form['directory_canonical'] = [
-      '#type' => 'textfield',
+      '#type' => 'url',
       '#title' => $this->t('Canonical Link Base URL'),
       '#default_value' => $this->config('uiowa_profiles.settings')->get('directory.canonical') ?? '',
       '#description' => $this->t('The Base URL to generate the canonical link to a profile for SEO. Leave blank if this site is the canonical source.'),
       '#required' => FALSE,
-      '#placeholder' => $this->getRequest()->getHost(),
+      '#placeholder' => $this->getRequest()->getSchemeAndHttpHost(),
     ];
 
     $form['directory_title'] = [

@@ -100,7 +100,7 @@ class DirectoryController extends ControllerBase {
     $canonical = $this->config->get('directory.canonical');
 
     if (empty($canonical)) {
-      $canonical = $request->getHost();
+      $canonical = $request->getSchemeAndHttpHost();
     }
 
     $build = [
