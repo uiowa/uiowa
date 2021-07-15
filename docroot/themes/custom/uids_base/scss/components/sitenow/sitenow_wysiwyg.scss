@@ -23,6 +23,56 @@
   }
 }
 
+drupal-media {
+  max-width: 100%;
+}
+
+body.cke_editable {
+  // Deal with drupal-media wysiwyg issue for align none originals.
+  .media:not(.align-left):not(.align-right):not(.align-center) {
+    &.media--type-remote-video.media--view-mode-default,
+    &.media--type-remote-video.media--view-mode-full,
+    &.media--type-panopto.media--view-mode-default,
+    &.media--type-panopto.media--view-mode-full {
+      width: 854px;
+      max-width: 100%;
+      height: 480px;
+      position: unset;
+      display: inherit;
+      padding: 0;
+      overflow: auto;
+
+      .field--name-field-media-oembed-video,
+      .field--name-field-media-panopto-url {
+        height: 100%;
+
+        &>iframe {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+
+  figure.caption {
+    .media:not(.align-left):not(.align-right):not(.align-center) {
+      &.media--type-remote-video.media--view-mode-default,
+      &.media--type-remote-video.media--view-mode-full,
+      &.media--type-panopto.media--view-mode-default,
+      &.media--type-panopto.media--view-mode-full {
+        width: 300px;
+        // 150px + edit button + border/padding.
+        height: calc(150px + 40px + 9px);
+
+        .field--name-field-media-oembed-video,
+        .field--name-field-media-panopto-url {
+          height: unset;
+        }
+      }
+    }
+  }
+}
+
 .cke_editable img {
   max-width: 100%;
   height: auto;
@@ -32,7 +82,7 @@
 .embed-responsive embed,
 .embed-responsive iframe,
 .embed-responsive object,
-.embed-responsive video, 
+.embed-responsive video,
 .media--type-panopto embed,
 .media--type-panopto iframe,
 .media--type-panopto object,

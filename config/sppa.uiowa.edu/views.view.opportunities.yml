@@ -481,6 +481,54 @@ display:
             group_items: {  }
           reduce_duplicates: false
           plugin_id: list_field
+        field_opportunity_degree_value:
+          id: field_opportunity_degree_value
+          table: node__field_opportunity_degree
+          field: field_opportunity_degree_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value:
+            URP: URP
+            MPA: MPA
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_opportunity_degree_value_op
+            label: Degree
+            description: ''
+            use_operator: false
+            operator: field_opportunity_degree_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: degree
+            required: false
+            remember: false
+            multiple: true
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: true
+          plugin_id: list_field
       sorts:
         sticky:
           id: sticky

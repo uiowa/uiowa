@@ -79,6 +79,7 @@
   not node.isPublished() ? 'node--unpublished',
   view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
   'event-item',
+  'card--list',
 ]
 %}
 
@@ -90,9 +91,12 @@
   {% set event_location = content.field_event_location.0.organization %}
 {% endif %}
 
-{% set headline_level = heading_size ?: 'h3' %}
+{% set headline_level = 'h3 '%}
 {% if view %}
   {% set headline_level = view.display_handler.getOption('heading_size') %}
+{% endif %}
+{% if heading_size %}
+  {% set headline_level = heading_size %}
 {% endif %}
 
 {{ attach_library('classy/node') }}
@@ -102,10 +106,9 @@
 
 {% set event_card = {
   'attributes': attributes.addClass(classes),
-  'card_image' : content.field_image|render,
   'card_title': label,
   'content': content,
-  'card_link_url': node_link,
+  'card_link_url': url,
   'headline_level': headline_level,
   'card_date': content.field_event_when,
   'event_icon': event_icon|trans,
