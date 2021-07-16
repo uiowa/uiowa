@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labhoadley.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labhoadley
+  human_name: hoadley.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labhoadley.prod
+drupal:
+  db:
+    database: hoadley_lab_uiowa_edu
+uiowa:
+  requester: gmccrory
