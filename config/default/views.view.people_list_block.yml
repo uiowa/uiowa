@@ -11,6 +11,7 @@ dependencies:
     - field.storage.node.field_person_position
     - field.storage.node.field_teaser
     - node.type.person
+    - taxonomy.vocabulary.research_areas
     - taxonomy.vocabulary.tags
   module:
     - node
@@ -205,7 +206,7 @@ display:
             thousand_separator: ''
             prefix_suffix: false
           group_column: value
-          group_columns: { }
+          group_columns: {  }
           group_rows: true
           delta_limit: 0
           delta_offset: 0
@@ -718,6 +719,64 @@ display:
           required_depth: 0
           none_label: '- Please select -'
           plugin_id: taxonomy_index_tid
+        field_person_research_areas_target_id:
+          id: field_person_research_areas_target_id
+          table: node__field_person_research_areas
+          field: field_person_research_areas_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_person_research_areas_target_id_op
+            label: 'Research areas'
+            description: ''
+            use_operator: false
+            operator: field_person_research_areas_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: people_research_areas
+            required: false
+            remember: false
+            multiple: true
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: true
+          type: textfield
+          limit: true
+          vid: research_areas
+          hierarchy: false
+          error_message: true
+          parent: 0
+          level_labels: ''
+          force_deepest: false
+          save_lineage: false
+          hierarchy_depth: 0
+          required_depth: 0
+          none_label: '- Please select -'
+          plugin_id: taxonomy_index_tid
         field_person_types_target_id:
           id: field_person_types_target_id
           table: node__field_person_types
@@ -919,6 +978,7 @@ display:
         filter_groups: true
       filter_in_block:
         - field_tags_target_id
+        - field_person_research_areas_target_id
         - field_person_types_target_id
         - field_person_type_status_value
       more_link_help_text: 'Check to include a ''display more'' link. To use the default <a href="/admin/config/system/sitenow-people">people path set within SiteNow People</a>, make sure the ‘Enable people listing’ box is checked. Alternatively, a custom URL path can be provided in the ‘Path’ text box below. '
