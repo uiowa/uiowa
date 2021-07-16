@@ -28,10 +28,10 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form['example'] = [
+    $form['API_key'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Example'),
-      '#default_value' => $this->config('sitenow_dispatch.settings')->get('example'),
+      '#title' => $this->t('API key'),
+      '#default_value' => $this->config('sitenow_dispatch.settings')->get('API_key'),
     ];
     return parent::buildForm($form, $form_state);
   }
@@ -39,19 +39,9 @@ class SettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    if ($form_state->getValue('example') != 'example') {
-      $form_state->setErrorByName('example', $this->t('The value is not correct.'));
-    }
-    parent::validateForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->config('sitenow_dispatch.settings')
-      ->set('example', $form_state->getValue('example'))
+      ->set('API_key', $form_state->getValue('API_key'))
       ->save();
     parent::submitForm($form, $form_state);
   }
