@@ -2622,12 +2622,6 @@ $sites['danceyouth.dev.drupal.uiowa.edu'] = 'youth.dance.uiowa.edu';
 $sites['danceyouth.stage.drupal.uiowa.edu'] = 'youth.dance.uiowa.edu';
 $sites['danceyouth.prod.drupal.uiowa.edu'] = 'youth.dance.uiowa.edu';
 
-// Directory aliases for legal.studentlife.uiowa.edu.
-$sites['studentlifelegal.local.drupal.uiowa.edu'] = 'legal.studentlife.uiowa.edu';
-$sites['studentlifelegal.dev.drupal.uiowa.edu'] = 'legal.studentlife.uiowa.edu';
-$sites['studentlifelegal.stage.drupal.uiowa.edu'] = 'legal.studentlife.uiowa.edu';
-$sites['studentlifelegal.prod.drupal.uiowa.edu'] = 'legal.studentlife.uiowa.edu';
-
 // Directory aliases for parents.uiowa.edu.
 $sites['parents.local.drupal.uiowa.edu'] = 'parents.uiowa.edu';
 $sites['parents.dev.drupal.uiowa.edu'] = 'parents.uiowa.edu';
@@ -2945,3 +2939,9 @@ $sites['labsabharwal.local.drupal.uiowa.edu'] = 'sabharwal.lab.uiowa.edu';
 $sites['labsabharwal.dev.drupal.uiowa.edu'] = 'sabharwal.lab.uiowa.edu';
 $sites['labsabharwal.stage.drupal.uiowa.edu'] = 'sabharwal.lab.uiowa.edu';
 $sites['labsabharwal.prod.drupal.uiowa.edu'] = 'sabharwal.lab.uiowa.edu';
+
+// Directory aliases for hoadley.lab.uiowa.edu.
+$sites['labhoadley.local.drupal.uiowa.edu'] = 'hoadley.lab.uiowa.edu';
+$sites['labhoadley.dev.drupal.uiowa.edu'] = 'hoadley.lab.uiowa.edu';
+$sites['labhoadley.stage.drupal.uiowa.edu'] = 'hoadley.lab.uiowa.edu';
+$sites['labhoadley.prod.drupal.uiowa.edu'] = 'hoadley.lab.uiowa.edu';
