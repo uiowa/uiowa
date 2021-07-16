@@ -5,16 +5,20 @@
 // Media alignment
 
 @media (min-width: 576px) {
-
-  .align-right.media {
-    margin-left: $gutter;
+  .align-right{
+    &.media, .media, figcaption {
+      margin-left: $gutter;
+    }
   }
 
-  .align-left.media {
-    margin-right: $gutter;
+  .align-left {
+    &.media, .media, figcaption {
+      margin-right: $gutter;
+    }
+
   }
 
-  .align-right.media--type-remote-video
+  .align-right.media--type-remote-video,
   .align-right.media--type-panopto {
     width: auto;
     margin-left: $gutter;
@@ -47,6 +51,12 @@
 .media--type-panopto {
   @extend .embed-responsive;
   @extend .embed-responsive-16by9;
+
+  &.media--view-mode-default,
+  &.media--view-mode-full {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+  }
 
   &.media--view-mode-image-large,
   &.media--view-mode-image-medium,

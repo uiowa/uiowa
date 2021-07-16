@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labprahlad.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labprahlad
+  human_name: prahlad.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labprahlad.prod
+drupal:
+  db:
+    database: prahlad_lab_uiowa_edu
+uiowa:
+  requester: afilerio
