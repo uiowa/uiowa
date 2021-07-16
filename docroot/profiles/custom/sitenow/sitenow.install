@@ -3254,15 +3254,15 @@ function sitenow_update_9013() {
  * Redo 9009.
  */
 function sitenow_update_9014() {
- sitenow_update_9009();
+  sitenow_update_9009();
 
- // Delete remaining orphans?
- $result = \Drupal::entityQuery('block_content')
-   ->condition('type', 'uiowa_people')
-   ->execute();
- if ($result) {
-   $storage_handler = \Drupal::entityTypeManager()->getStorage('block_content');
-   $entities = $storage_handler->loadMultiple($result);
-   $storage_handler->delete($entities);
- }
+  // Delete remaining orphans?
+  $result = \Drupal::entityQuery('block_content')
+    ->condition('type', 'uiowa_people')
+    ->execute();
+  if ($result) {
+    $storage_handler = \Drupal::entityTypeManager()->getStorage('block_content');
+    $entities = $storage_handler->loadMultiple($result);
+    $storage_handler->delete($entities);
+  }
 }
