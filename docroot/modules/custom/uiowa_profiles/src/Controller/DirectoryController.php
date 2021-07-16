@@ -166,8 +166,6 @@ class DirectoryController extends ControllerBase {
         'api-key' => Html::escape($this->config->get('api_key')),
         'site-name' => $this->config('system.site')->get('name'),
         'directory-name' => Html::escape($this->config->get('directory.title')),
-        ':host' => 'host',
-        ':environment' => 'environment',
         ':page-size' => Html::escape($this->config->get('directory.page_size')),
         ':breadcrumbs' => json_encode($breadcrumbs),
       ],
