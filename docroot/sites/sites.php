@@ -2939,3 +2939,9 @@ $sites['labcomeron.local.drupal.uiowa.edu'] = 'comeron.lab.uiowa.edu';
 $sites['labcomeron.dev.drupal.uiowa.edu'] = 'comeron.lab.uiowa.edu';
 $sites['labcomeron.stage.drupal.uiowa.edu'] = 'comeron.lab.uiowa.edu';
 $sites['labcomeron.prod.drupal.uiowa.edu'] = 'comeron.lab.uiowa.edu';
+
+// Directory aliases for sabharwal.lab.uiowa.edu.
+$sites['labsabharwal.local.drupal.uiowa.edu'] = 'sabharwal.lab.uiowa.edu';
+$sites['labsabharwal.dev.drupal.uiowa.edu'] = 'sabharwal.lab.uiowa.edu';
+$sites['labsabharwal.stage.drupal.uiowa.edu'] = 'sabharwal.lab.uiowa.edu';
+$sites['labsabharwal.prod.drupal.uiowa.edu'] = 'sabharwal.lab.uiowa.edu';
