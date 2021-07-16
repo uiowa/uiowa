@@ -2622,12 +2622,6 @@ $sites['danceyouth.dev.drupal.uiowa.edu'] = 'youth.dance.uiowa.edu';
 $sites['danceyouth.stage.drupal.uiowa.edu'] = 'youth.dance.uiowa.edu';
 $sites['danceyouth.prod.drupal.uiowa.edu'] = 'youth.dance.uiowa.edu';
 
-// Directory aliases for legal.studentlife.uiowa.edu.
-$sites['studentlifelegal.local.drupal.uiowa.edu'] = 'legal.studentlife.uiowa.edu';
-$sites['studentlifelegal.dev.drupal.uiowa.edu'] = 'legal.studentlife.uiowa.edu';
-$sites['studentlifelegal.stage.drupal.uiowa.edu'] = 'legal.studentlife.uiowa.edu';
-$sites['studentlifelegal.prod.drupal.uiowa.edu'] = 'legal.studentlife.uiowa.edu';
-
 // Directory aliases for parents.uiowa.edu.
 $sites['parents.local.drupal.uiowa.edu'] = 'parents.uiowa.edu';
 $sites['parents.dev.drupal.uiowa.edu'] = 'parents.uiowa.edu';
