@@ -3243,18 +3243,26 @@ function sitenow_update_9012() {
 }
 
 /**
- * Redo 9009.
+ * Rebuilding permissions after https://github.com/uiowa/uiowa/pull/3776 deployed.
  */
 function sitenow_update_9013() {
-  sitenow_update_9009();
+  // Batch it.
+  node_access_rebuild(TRUE);
+}
 
-  // Delete remaining orphans?
-  $result = \Drupal::entityQuery('block_content')
-    ->condition('type', 'uiowa_people')
-    ->execute();
-  if ($result) {
-    $storage_handler = \Drupal::entityTypeManager()->getStorage('block_content');
-    $entities = $storage_handler->loadMultiple($result);
-    $storage_handler->delete($entities);
-  }
+/**
+ * Redo 9009.
+ */
+function sitenow_update_9014() {
+ sitenow_update_9009();
+
+ // Delete remaining orphans?
+ $result = \Drupal::entityQuery('block_content')
+   ->condition('type', 'uiowa_people')
+   ->execute();
+ if ($result) {
+   $storage_handler = \Drupal::entityTypeManager()->getStorage('block_content');
+   $entities = $storage_handler->loadMultiple($result);
+   $storage_handler->delete($entities);
+ }
 }
