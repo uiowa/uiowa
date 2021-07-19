@@ -669,9 +669,14 @@ class ListBlock extends CoreBlock {
    * {@inheritdoc}
    */
   public function displaysExposed(): bool {
+    $display = $this->view->getDisplay();
+    // If we need to expose filters, return true
+    // and we're done.
+    if ($display->getOption('expose_form')) {
+      return TRUE;
+    }
     // Hotfix shim to not display exposed blocks, necessary because of the hotfix above.
     // @todo Remove this exception when these view displays are removed.
-    $display = $this->view->getDisplay();
     $exceptions = [
       'block_people_slf',
       'block_people_sfl',
