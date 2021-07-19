@@ -19,6 +19,9 @@
         min-width: 0;
         flex: 0 1 calc(26% - 3rem);
       }
+      @include breakpoint(container) {
+        flex: 0 1 calc(25.8% - 3rem);
+      }
     }
   }
 
@@ -41,7 +44,7 @@
   }
 
 
-// Turn four columns to a two-column grid for tablet/portrait breakpoint.
+  // Turn four columns to a two-column grid for tablet/portrait breakpoint.
 @media (min-width: 40em) and (max-width: 69.125em) {
   .layout--fourcol,
   .layout--fourcol .layout__spacing_container {

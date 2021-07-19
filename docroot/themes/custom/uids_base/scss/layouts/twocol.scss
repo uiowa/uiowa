@@ -30,6 +30,9 @@
     flex: 0 1 calc(52% - 3rem);
     @include inner-grid(50);
   }
+  @include breakpoint(container) {
+    flex: 0 1 calc(51.3% - 3rem);
+  }
 }
 
 .layout--twocol--50-50.column-spacing__removed .layout__region--first,
@@ -112,7 +115,6 @@
 
 .layout--twocol--50-50 .layout__region:first-child:last-child {
   @include breakpoint(sm) {
-    flex: 0 1 calc(52% - 3rem);
     margin: 0;
   }
 }

@@ -25,8 +25,19 @@
 .layout--threecol--25-50-25 .layout__region--second,
 .layout--threecol--50-25-25 .layout__region--first {
   @include breakpoint(sm) {
-    flex: 0 1 calc(50% - 3rem);
+    flex: 0 1 calc(54% - 3rem);
     @include inner-grid(50);
+  }
+  @include breakpoint(container) {
+    flex: 0 1 calc(53% - 3rem);
+  }
+}
+
+.layout--threecol--25-25-50 .layout__region--third:first-child:last-child,
+.layout--threecol--25-50-25 .layout__region--second:first-child:last-child,
+.layout--threecol--50-25-25 .layout__region--first:first-child:last-child  {
+  @include breakpoint(sm) {
+    flex: 0 1 48.3%;
   }
 }
 
@@ -34,7 +45,10 @@
 .layout--threecol--33-34-33 .layout__region--second,
 .layout--threecol--33-34-33 .layout__region--third {
   @include breakpoint(sm) {
-    flex: 0 1 calc(34.5% - 3rem);
+    flex: 0 1 calc(34.6% - 3rem);
+  }
+  @include breakpoint(container) {
+    flex: 0 1 calc(34.3% - 3rem);
   }
 }
 
@@ -53,7 +67,18 @@
 .layout--threecol--50-25-25 .layout__region--second,
 .layout--threecol--50-25-25 .layout__region--third {
   @include breakpoint(sm) {
-    flex: 0 1 calc(31% - 3rem);
+    flex: 0 1 calc(24.5% - 3rem);
+  }
+}
+
+.layout--threecol--25-25-50.column-spacing__removed .layout__region--first:first-child:last-child,
+.layout--threecol--25-25-50.column-spacing__removed .layout__region--second:first-child:last-child,
+.layout--threecol--25-50-25.column-spacing__removed .layout__region--first:first-child:last-child,
+.layout--threecol--25-50-25.column-spacing__removed .layout__region--third:first-child:last-child,
+.layout--threecol--50-25-25.column-spacing__removed .layout__region--second:first-child:last-child,
+.layout--threecol--50-25-25.column-spacing__removed .layout__region--third:first-child:last-child  {
+  @include breakpoint(sm) {
+    flex: 0 1 26%;
   }
 }
 
