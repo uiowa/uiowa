@@ -94,8 +94,8 @@
     flex-wrap: wrap;
   }
 
-  .layout--fourcol.grid--1-3 .layout__spacing_container  .layout__region,
-  .layout--fourcol.grid--1-3.column-spacing__removed .layout__region {
+  .layout--fourcol.grid--1-3 .layout__spacing_container  .layout__region:not(.layout__region--first),
+  .layout--fourcol.grid--1-3.column-spacing__removed .layout__region:not(.layout__region--first) {
     flex: 0 1 31.3%;
   }
 
