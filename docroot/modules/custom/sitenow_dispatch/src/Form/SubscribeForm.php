@@ -52,7 +52,7 @@ class SubscribeForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, $population = null) {
+  public function buildForm(array $form, FormStateInterface $form_state, $population = NULL) {
     $form['email'] = [
       '#type' => 'email',
       '#title' => $this->t('Email'),
@@ -91,10 +91,10 @@ class SubscribeForm extends ConfigFormBase {
           'x-dispatch-api-key' => $this->configFactory->get('sitenow_dispatch.settings')->get('API_key'),
         ],
         'body' => json_encode([
-            "toAddress" => $form_state->getValue('email'),
-            "firstName" => $form_state->getValue('first'),
-            "lastName" => $form_state->getValue('last'),
-        ])
+          "toAddress" => $form_state->getValue('email'),
+          "firstName" => $form_state->getValue('first'),
+          "lastName" => $form_state->getValue('last'),
+        ]),
       ]);
     }
     catch (RequestException | GuzzleException $e) {
@@ -103,4 +103,5 @@ class SubscribeForm extends ConfigFormBase {
     $this->messenger()->addStatus($this->t("You've been Aardvarked!"));
     parent::submitForm($form, $form_state);
   }
+
 }

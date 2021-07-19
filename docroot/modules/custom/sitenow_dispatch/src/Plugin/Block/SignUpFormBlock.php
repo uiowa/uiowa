@@ -73,7 +73,7 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
     foreach ($populations as $population) {
       $response = $this->getFromDispatch($population);
       if ($response->dataSourceType == "SubscriptionList") {
-        $populationOptions[$response->id] =$response->name;
+        $populationOptions[$response->id] = $response->name;
       }
     }
 
@@ -115,4 +115,5 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
     $this->configuration['population'] = $form_state->getValue('population');
     parent::blockSubmit($form, $form_state);
   }
+
 }
