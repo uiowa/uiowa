@@ -416,6 +416,8 @@ class ListBlock extends CoreBlock {
       $form['override']['exposed_filters'][$filter_id]['#states'] = [
         'disabled' => [
           [
+            // @todo Update this to work with Research Areas and
+            //   Person Type Status fields.
             "input[name='settings[override][exposed_filters][" . $filter_id_expose . "]']" => [
               'checked' => TRUE,
             ],
@@ -477,6 +479,24 @@ class ListBlock extends CoreBlock {
         'use_more_link_url',
       ]));
     }
+
+    // Check if we are exposing any filters to the site visitor.
+    $expose_form = FALSE;
+    $exposed_inputs = $form_state->getValue([
+      'override',
+      'exposed_filters',
+    ]);
+    $exposed_filter_values = [];
+    foreach ($exposed_inputs as $input) {
+      if (str_ends_with($input, '_expose')) {
+        $expose_form = TRUE;
+      }
+      else {
+        $exposed_filter_values[] = $input;
+      }
+    }
+    $block->setConfigurationValue('exposed_filter_values', $exposed_filter_values);
+    $block->setConfigurationValue('expose_form', $expose_form);
 
     // Save "Configure sorts" setting.
     if (!empty($allow_settings['configure_sorts'])) {
