@@ -6,6 +6,7 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\sitenow_media_wysiwyg\Plugin\media\Source\Panopto;
@@ -39,20 +40,7 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
    * {@inheritdoc}
    */
   public function build() {
-    $population = $this->configuration['population'];
-    $build['content'] = [
-      'frame' => [
-        '#type' => 'html_tag',
-        '#tag' => 'iframe',
-        '#attributes' => [
-          'src' => "https://apps.its.uiowa.edu/dispatch/subscriptionLists/" . $population . "/signup",
-          'width' => '100%',
-          'height' => '400px',
-          'id' => Html::getUniqueId('sign_up_form_block'),
-          'frameborder' => '0',
-        ],
-      ],
-    ];
+    $build['content'] = \Drupal::formBuilder()->getForm('Drupal\sitenow_dispatch\Form\SubscribeForm', $this->configuration['population']);
     return $build;
   }
 
@@ -99,7 +87,7 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
         'headers' => [
           'Accept' => 'application/json',
           'x-dispatch-api-key' => $this->configFactory->get('sitenow_dispatch.settings')->get('API_key'),
-        ],
+        ]
       ]);
     }
     catch (RequestException | GuzzleException $e) {
