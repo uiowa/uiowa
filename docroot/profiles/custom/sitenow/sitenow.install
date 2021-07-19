@@ -3249,3 +3249,24 @@ function sitenow_update_9013() {
   // Batch it.
   node_access_rebuild(TRUE);
 }
+
+/**
+ * Redo 9009.
+ */
+function sitenow_update_9014() {
+  sitenow_update_9009();
+
+  // Delete remaining orphans?
+  $result = \Drupal::entityQuery('block_content')
+    ->condition('type', 'uiowa_people')
+    ->execute();
+
+  \Drupal::messenger()
+    ->addMessage('Orphaned records found: ' . count($result));
+
+  if ($result) {
+    $storage_handler = \Drupal::entityTypeManager()->getStorage('block_content');
+    $entities = $storage_handler->loadMultiple($result);
+    $storage_handler->delete($entities);
+  }
+}
