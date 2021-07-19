@@ -406,7 +406,9 @@ class ListBlock extends CoreBlock {
       $filter_id_expose = $filter_id . '_expose';
       $form['override'][$filter_id_expose] = [
         '#type' => 'checkbox',
-        '#title' => $this->t('Expose ' . $filter_label . ' filter to site visitors.'),
+        '#title' => $this->t('Expose @filter_label filter to site visitors.', [
+          '@filter_label' => $filter_label,
+        ]),
         '#default_value' => 0,
       ];
 
