@@ -404,7 +404,7 @@ class ListBlock extends CoreBlock {
     // to the end user.
     foreach ($this->getListOfExposedFilters() as $filter_id => $filter_label) {
       $filter_id_expose = $filter_id . '_expose';
-      $form['override'][$filter_id_expose] = [
+      $form['override']['exposed_filters'][$filter_id_expose] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Expose @filter_label filter to site visitors.', [
           '@filter_label' => $filter_label,
@@ -413,10 +413,10 @@ class ListBlock extends CoreBlock {
       ];
 
       // Add states to disable a filter if it is exposed to visitors.
-      $form['override'][$filter_id]['#states'] = [
+      $form['override']['exposed_filters'][$filter_id]['#states'] = [
         'disabled' => [
           [
-            "input[name='settings[override][" . $filter_id_expose . "]']" => [
+            "input[name='settings[override][exposed_filters][" . $filter_id_expose . "]']" => [
               'checked' => TRUE,
             ],
           ],
