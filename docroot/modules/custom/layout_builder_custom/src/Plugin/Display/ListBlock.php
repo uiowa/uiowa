@@ -487,14 +487,15 @@ class ListBlock extends CoreBlock {
       'exposed_filters',
     ]);
     $exposed_filter_values = [];
-    foreach ($exposed_inputs as $input) {
-      if (str_ends_with($input, '_expose')) {
+    foreach ($exposed_inputs as $input_name => $input_value) {
+      if (str_ends_with($input_name, '_expose') && $input_value) {
         $expose_form = TRUE;
       }
       else {
-        $exposed_filter_values[] = $input;
+        $exposed_filter_values[$input_name] = $input_value;
       }
     }
+    // Save "Filter in block" settings to block configuration.
     $block->setConfigurationValue('exposed_filter_values', $exposed_filter_values);
     $block->setConfigurationValue('expose_form', $expose_form);
 
@@ -519,12 +520,6 @@ class ListBlock extends CoreBlock {
         $block->setConfigurationValue('fields', $fields);
       }
     }
-
-    // Save "Filter in block" settings to block configuration.
-    $block->setConfigurationValue('exposed_filter_values', $form_state->getValue([
-      'override',
-      'exposed_filters',
-    ]));
 
     if ($form_state instanceof SubformStateInterface) {
       $styles = $this->getLayoutBuilderStyles($form, $form_state->getCompleteFormState());
