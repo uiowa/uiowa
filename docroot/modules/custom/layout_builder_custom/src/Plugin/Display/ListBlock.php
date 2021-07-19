@@ -409,7 +409,7 @@ class ListBlock extends CoreBlock {
         '#title' => $this->t('Expose @filter_label filter to site visitors.', [
           '@filter_label' => $filter_label,
         ]),
-        '#default_value' => 0,
+        '#default_value' => isset($block_configuration['expose_form'][$filter_id_expose]) ? $block_configuration['expose_form'][$filter_id_expose] : 0,
       ];
 
       // Add states to disable a filter if it is exposed to visitors.
@@ -481,15 +481,15 @@ class ListBlock extends CoreBlock {
     }
 
     // Check if we are exposing any filters to the site visitor.
-    $expose_form = FALSE;
     $exposed_inputs = $form_state->getValue([
       'override',
       'exposed_filters',
     ]);
+    $expose_form = [];
     $exposed_filter_values = [];
     foreach ($exposed_inputs as $input_name => $input_value) {
       if (str_ends_with($input_name, '_expose') && $input_value) {
-        $expose_form = TRUE;
+        $expose_form[$input_name] = TRUE;
       }
       else {
         $exposed_filter_values[$input_name] = $input_value;
