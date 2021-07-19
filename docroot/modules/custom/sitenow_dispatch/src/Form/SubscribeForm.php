@@ -21,15 +21,13 @@ class SubscribeForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container)
-  {
+  public static function create(ContainerInterface $container) {
     return new static($container->get('config.factory'), $container->get('http_client'));
   }
   /**
    * {@inheritdoc}
    */
-  public function __construct(ConfigFactoryInterface $config_factory, $client)
-  {
+  public function __construct(ConfigFactoryInterface $config_factory, $client) {
     parent::__construct($config_factory);
     $this->client = $client;
   }

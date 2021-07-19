@@ -44,20 +44,26 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
     return $build;
   }
 
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition)
-  {
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static($configuration, $plugin_id, $plugin_definition, $container->get('config.factory'), $container->get('http_client'));
   }
 
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $configFactory, ClientInterface $client)
-  {
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $configFactory, ClientInterface $client) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->configFactory = $configFactory;
     $this->client = $client;
   }
 
-  public function blockForm($form, FormStateInterface $form_state)
-  {
+  /**
+   * {@inheritdoc}
+   */
+  public function blockForm($form, FormStateInterface $form_state) {
     // The returned populations.
     $populations = $this->getFromDispatch("https://apps.its.uiowa.edu/dispatch/api/v1/populations");
 
@@ -81,6 +87,9 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
     return $form;
   }
 
+  /**
+   * Helper function for doing get commands from dispatch.
+   */
   public function getFromDispatch(string $request) {
     try {
       $response = $this->client->request('GET', $request, [
@@ -97,8 +106,7 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
     return json_decode($response->getBody()->getContents());
   }
 
-  public function blockSubmit($form, FormStateInterface $form_state)
-  {
+  public function blockSubmit($form, FormStateInterface $form_state) {
     $this->configuration['population'] = $form_state->getValue('population');
     parent::blockSubmit($form, $form_state);
   }
