@@ -412,6 +412,9 @@ class ListBlock extends CoreBlock {
         '#default_value' => isset($block_configuration['expose_form'][$filter_id_expose]) ? $block_configuration['expose_form'][$filter_id_expose] : 0,
       ];
 
+      // Add the wrapper if we need it to accurately target the field.
+      $filter_id = ($filter_id === 'field_person_type_status_value') ? 'field_person_type_status_value_wrapper' : $filter_id;
+
       // Add states to disable a filter if it is exposed to visitors.
       $form['override']['exposed_filters'][$filter_id]['#states'] = [
         'disabled' => [
