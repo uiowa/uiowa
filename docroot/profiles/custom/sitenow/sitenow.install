@@ -3260,6 +3260,10 @@ function sitenow_update_9014() {
   $result = \Drupal::entityQuery('block_content')
     ->condition('type', 'uiowa_people')
     ->execute();
+
+  \Drupal::messenger()
+    ->addMessage('Orphaned records found: ' . count($result));
+
   if ($result) {
     $storage_handler = \Drupal::entityTypeManager()->getStorage('block_content');
     $entities = $storage_handler->loadMultiple($result);
