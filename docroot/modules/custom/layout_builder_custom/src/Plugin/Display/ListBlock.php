@@ -592,6 +592,15 @@ class ListBlock extends CoreBlock {
       }
     }
 
+    // Check if we need to expose form filter to site visitors.
+    if (isset($config['expose_form']) && in_array(TRUE, $config['expose_form'])) {
+      $this->view->display_handler->setOption('expose_form', TRUE);
+    }
+    // Set to false in case it was previously exposed but no longer.
+    else {
+      $this->view->display_handler->setOption('expose_form', FALSE);
+    }
+
     // Change sorts based on block configuration.
     if (!empty($allow_settings['configure_sorts'])) {
       $sorts = $this->view->getHandlers('sort', $display_id);
