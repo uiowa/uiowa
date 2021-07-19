@@ -1,67 +1,67 @@
 @import "uids/assets/scss/_variables.scss";
 @import "uids/assets/scss/_utilities.scss";
 
-@media screen and (min-width: 40em) {
+
   .layout--fourcol,
   .layout--fourcol .layout__spacing_container {
-    display: flex;
-    flex-basis: 100%;
+    @include breakpoint(sm) {
+      display: flex;
+      flex-basis: 100%;
+    }
   }
 
   .layout--fourcol {
     .layout__region {
-      flex: 0 1 100%;
-      display: flex;
-      flex-wrap: wrap;
-      align-content: unset;
-      min-width: 0;
+      @include breakpoint(sm) {
+        flex: 0 1 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: unset;
+        min-width: 0;
+        flex: 0 1 calc(26% - 3rem);
+      }
     }
   }
 
-  .layout--fourcol .layout__region {
-    flex: 0 1 calc(26% - 3rem);
-  }
-
   .layout--fourcol.column-spacing__removed .layout__region {
-    flex: 0 1 25%;
+    @include breakpoint(sm) {
+      flex: 0 1 25%;
+    }
   }
 
   .layout--fourcol .layout__spacing_container > .layout__region + .layout__region {
-    margin: 0 0 0 3rem;
+    @include breakpoint(sm) {
+      margin: 0 0 0 3rem;
+    }
   }
 
   .layout--fourcol.column-spacing__removed .layout__spacing_container > .layout__region + .layout__region {
-    margin: 0;
+    @include breakpoint(sm) {
+      margin: 0;
+    }
   }
 
-  .layout--fourcol .layout__region:first-child:last-child {
-    flex: 0 1 calc(26% - 3rem);
-  }
-}
 
-// Turn four columns to a stacked grid for tablet/portrait breakpoint.
-@media (min-width: 40em) and (max-width: 68.125em) {
+// Turn four columns to a two-column grid for tablet/portrait breakpoint.
+@media (min-width: 40em) and (max-width: 69.125em) {
   .layout--fourcol,
   .layout--fourcol .layout__spacing_container {
     flex-wrap: wrap;
   }
 
   .layout--fourcol .layout__region {
-    flex: 0 1 46.50%;
+    flex: 0 1 calc(52% - 3rem);
+  }
+
+  .layout--fourcol .layout__spacing_container .layout__region.layout__region--second,
+  .layout--fourcol .layout__spacing_container .layout__region.layout__region--first {
     margin-bottom: 3rem;
   }
 
-  .layout--fourcol .layout__region--second {
-    margin-left: 6%;
-    margin-right: 0;
-  }
-
-  .layout--fourcol .layout__region--third {
+  .layout--fourcol .layout__spacing_container .layout__region.layout__region--third {
     margin-left: 0;
-    margin-right: 6%;
   }
 }
-
 
 // Special settings for the section layout grid used for stats on home page.
 @media (min-width: 0em) and (max-width: 40em) {
