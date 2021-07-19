@@ -12,18 +12,21 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Configure sitenow_dispatch settings for this site.
  */
 class SubscribeForm extends ConfigFormBase {
+
   /**
    * The config factory service.
    *
    * @var \GuzzleHttp\ClientInterface
    */
   protected $client;
+
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
     return new static($container->get('config.factory'), $container->get('http_client'));
   }
+
   /**
    * {@inheritdoc}
    */
@@ -31,6 +34,7 @@ class SubscribeForm extends ConfigFormBase {
     parent::__construct($config_factory);
     $this->client = $client;
   }
+
   /**
    * {@inheritdoc}
    */

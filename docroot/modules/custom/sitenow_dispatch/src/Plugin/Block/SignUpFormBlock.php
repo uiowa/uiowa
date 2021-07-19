@@ -23,12 +23,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterface {
+
   /**
    * The config factory service.
    *
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   protected $configFactory;
+
   /**
    * The config factory service.
    *
@@ -106,6 +108,9 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
     return json_decode($response->getBody()->getContents());
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function blockSubmit($form, FormStateInterface $form_state) {
     $this->configuration['population'] = $form_state->getValue('population');
     parent::blockSubmit($form, $form_state);
