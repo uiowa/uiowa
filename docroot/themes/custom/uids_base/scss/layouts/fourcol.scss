@@ -48,9 +48,12 @@
     flex-wrap: wrap;
   }
 
-  .layout--fourcol .layout__region,
-  .layout--fourcol.column-spacing__removed .layout__region {
+  .layout--fourcol .layout__region {
     flex: 0 1 calc(52% - 3rem);
+  }
+
+  .layout--fourcol.column-spacing__removed .layout__region {
+    flex: 0 1 50%;
   }
 
   .layout--fourcol .layout__spacing_container .layout__region.layout__region--first,
@@ -69,7 +72,7 @@
 }
 
 // Special settings for the section layout grid used for stats on home page.
-// @todo remove when https://github.com/uiowa/uiowa/issues/3141 is implemented. 
+// @todo remove when a yarn workspace is built for uiowa.edu.
 @media (min-width: 0em) and (max-width: 40em) {
   .layout--fourcol.grid--1-3 .layout__region--first,
   .layout--fourcol.grid--1-3.column-spacing__removed  .layout__region--first {
