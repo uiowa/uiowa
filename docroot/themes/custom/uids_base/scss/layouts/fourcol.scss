@@ -1,7 +1,6 @@
 @import "uids/assets/scss/_variables.scss";
 @import "uids/assets/scss/_utilities.scss";
 
-
   .layout--fourcol,
   .layout--fourcol .layout__spacing_container {
     @include breakpoint(sm) {
@@ -49,13 +48,19 @@
     flex-wrap: wrap;
   }
 
-  .layout--fourcol .layout__region {
+  .layout--fourcol .layout__region,
+  .layout--fourcol.column-spacing__removed .layout__region {
     flex: 0 1 calc(52% - 3rem);
   }
 
-  .layout--fourcol .layout__spacing_container .layout__region.layout__region--second,
-  .layout--fourcol .layout__spacing_container .layout__region.layout__region--first {
+  .layout--fourcol .layout__spacing_container .layout__region.layout__region--first,
+  .layout--fourcol .layout__spacing_container .layout__region.layout__region--second {
     margin-bottom: 3rem;
+  }
+
+  .layout--fourcol.column-spacing__removed  .layout__spacing_container .layout__region.layout__region--first,
+  .layout--fourcol.column-spacing__removed  .layout__spacing_container .layout__region.layout__region--second {
+    margin-bottom: 0;
   }
 
   .layout--fourcol .layout__spacing_container .layout__region.layout__region--third {
