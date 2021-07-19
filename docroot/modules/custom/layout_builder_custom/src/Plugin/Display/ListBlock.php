@@ -414,13 +414,12 @@ class ListBlock extends CoreBlock {
 
       // Add the wrapper if we need it to accurately target the field.
       $filter_id = ($filter_id === 'field_person_type_status_value') ? 'field_person_type_status_value_wrapper' : $filter_id;
+      $filter_id = ($filter_id === 'field_person_research_areas_target_id') ? 'people_research_areas' : $filter_id;
 
       // Add states to disable a filter if it is exposed to visitors.
       $form['override']['exposed_filters'][$filter_id]['#states'] = [
         'disabled' => [
           [
-            // @todo Update this to work with Research Areas and
-            //   Person Type Status fields.
             "input[name='settings[override][exposed_filters][" . $filter_id_expose . "]']" => [
               'checked' => TRUE,
             ],
