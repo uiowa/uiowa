@@ -20,12 +20,12 @@
 
   .layout--threecol--50-25-25 .layout__region--second,
   .layout--threecol--50-25-25 .layout__region--third {
-    flex: 0 1 24.25%;
+    flex: 0 1 calc(25% - 3rem);
   }
 
   .layout--threecol--50-25-25.column-spacing__removed .layout__region--second,
   .layout--threecol--50-25-25.column-spacing__removed .layout__region--third {
-    flex: 0 1 25%;
+    flex: 0 1 calc(25% - 3rem);
   }
 
   .layout--threecol--50-25-25.column-spacing__removed .layout__region--first {
@@ -34,14 +34,14 @@
   }
 
   .layout--threecol--50-25-25 .layout__region--first {
-    flex: 0 1 50%;
+    flex: 0 1 calc(50% - 3rem);
     @include inner-grid(50);
   }
 
   .layout--threecol--33-34-33 .layout__region--first,
   .layout--threecol--33-34-33 .layout__region--second,
   .layout--threecol--33-34-33 .layout__region--third {
-    flex: 0 1 31%;
+    flex: 0 1 calc(34.5% - 3rem);
   }
 
   .layout--threecol--33-34-33.column-spacing__removed .layout__region--first,
@@ -52,7 +52,7 @@
 
   .layout--threecol--25-25-50 .layout__region--first,
   .layout--threecol--25-25-50 .layout__region--second {
-    flex: 0 1 24.5%;
+    flex: 0 1 calc(28% - 3rem);
   }
 
   .layout--threecol--25-25-50.column-spacing__removed .layout__region--first,
@@ -60,9 +60,8 @@
     flex: 0 1 25%;
   }
 
-
   .layout--threecol--25-25-50 .layout__region--third {
-    flex: 0 1 50%;
+    flex: 0 1 calc(50% - 3rem);
     @include inner-grid(50);
   }
 
@@ -73,16 +72,16 @@
 
   .layout--threecol--25-50-25 .layout__region--first,
   .layout--threecol--25-50-25 .layout__region--third {
-    flex: 0 1 28.25%;
+    flex: 0 1 calc(28% - 3rem);
   }
 
   .layout--threecol--25-50-25.column-spacing__removed .layout__region--first,
   .layout--threecol--25-50-25.column-spacing__removed .layout__region--third {
-    flex: 0 1 25%;
+    flex: 0 1 calc(28% - 3rem);
   }
 
   .layout--threecol--25-50-25 .layout__region--second {
-    flex: 0 1 41.75%;
+    flex: 0 1 calc(50% - 3rem);
     @include inner-grid(50);
   }
 
@@ -103,7 +102,6 @@
     margin-left: 0;
   }
 }
-
 
 @media (min-width: 40em) and (max-width: 58.125em) {
   .layout--threecol,
