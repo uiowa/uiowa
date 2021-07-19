@@ -4,11 +4,16 @@ status: true
 dependencies:
   config:
     - field.field.node.opportunity.body
+    - field.field.node.opportunity.field_opportunity_city
+    - field.field.node.opportunity.field_opportunity_deadline
+    - field.field.node.opportunity.field_opportunity_degree
+    - field.field.node.opportunity.field_opportunity_length
     - field.field.node.opportunity.field_opportunity_locations
     - field.field.node.opportunity.field_opportunity_type
     - field.field.node.opportunity.field_opportunity_website
     - node.type.opportunity
   module:
+    - field_delimiter
     - link
     - options
     - text
@@ -19,28 +24,65 @@ bundle: opportunity
 mode: default
 content:
   body:
-    weight: 2
-    label: visually_hidden
+    weight: 1
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
-  field_opportunity_locations:
-    weight: 1
-    label: visually_hidden
-    settings: {  }
+  field_opportunity_city:
+    weight: 4
+    label: inline
+    settings:
+      link_to_entity: false
     third_party_settings: {  }
+    type: string
+    region: content
+  field_opportunity_deadline:
+    weight: 6
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_opportunity_degree:
+    weight: 5
+    label: above
+    settings: {  }
+    third_party_settings:
+      field_delimiter:
+        delimiter: ', '
+    type: list_default
+    region: content
+  field_opportunity_length:
+    weight: 7
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_opportunity_locations:
+    weight: 3
+    label: above
+    settings: {  }
+    third_party_settings:
+      field_delimiter:
+        delimiter: ', '
     type: list_default
     region: content
   field_opportunity_type:
     weight: 0
-    label: hidden
+    label: above
     settings: {  }
-    third_party_settings: {  }
+    third_party_settings:
+      field_delimiter:
+        delimiter: ', '
     type: list_default
     region: content
   field_opportunity_website:
-    weight: 3
+    weight: 2
     label: visually_hidden
     settings:
       trim_length: 80
@@ -52,7 +94,7 @@ content:
     type: link
     region: content
   links:
-    weight: 4
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }

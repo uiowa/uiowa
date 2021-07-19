@@ -1,0 +1,84 @@
+@import "../../../../../themes/custom/uids_base/uids/assets/scss/_variables.scss";
+@import "../../../../../themes/custom/uids_base/uids/assets/scss/_utilities.scss";
+
+.view-id-events {
+  display: flex;
+  flex-wrap: wrap;
+
+  .view-header {
+    width: 100%;
+  }
+  .view-content,
+  .view-empty  {
+    flex: 1 0 0;
+  }
+  .view-filters {
+    flex: 0 0 100%;
+    max-width: 100%;
+
+    @include breakpoint(sm) {
+      flex: 0 0 25%;
+      max-width: 25%;
+      margin-right: $desktop-width-gutter;
+    }
+    .form-item {
+      width: 100%;
+    }
+    .views-exposed-form {
+      .form--inline {
+        @include breakpoint(sm) {
+          flex-wrap: wrap;
+        }
+      }
+      &.uids-content:not(.uids-search) {
+        padding: 19px;
+        .form-item {
+          margin: 0;
+        }
+        input, select, fieldset {
+          &.form-item {
+            margin-bottom: 19px;
+          }
+        }
+        fieldset {
+          border: 0;
+          padding: 0;
+          .fieldset-legend {
+            display: block;
+            margin: 0;
+            font-size: .8rem;
+            font-weight: 700;
+            line-height: 1.8;
+          }
+          .fieldset-wrapper {
+            padding: 0.75rem;
+          }
+          .form-type-checkbox {
+            display: flex;
+            align-items: baseline;
+          }
+        }
+        .form-actions {
+          width: 100%;
+          margin: 0;
+          display: flex;
+          gap: 19px;
+
+          .button {
+            flex: 46% 1 1;
+            margin-bottom: 0;
+          }
+          input[id^='edit-submit-events'] {
+            @include bttn--primary;
+          }
+        }
+      }
+    }
+  }
+  .pager {
+    flex: 0 0 100%;
+    max-width: 100%;
+    order: 1;
+  }
+
+}

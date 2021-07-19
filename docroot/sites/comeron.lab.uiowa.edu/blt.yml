@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labcomeron.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labcomeron
+  human_name: comeron.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labcomeron.prod
+drupal:
+  db:
+    database: comeron_lab_uiowa_edu
+uiowa:
+  requester: afilerio

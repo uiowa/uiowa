@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labcerebralvascular.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labcerebralvascular
+  human_name: cerebralvascular.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labcerebralvascular.prod
+drupal:
+  db:
+    database: cerebralvascular_lab_uiowa_edu
+uiowa:
+  requester: ecryn
