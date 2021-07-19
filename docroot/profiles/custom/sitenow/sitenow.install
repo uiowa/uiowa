@@ -3241,3 +3241,11 @@ function sitenow_update_9012() {
     }
   }
 }
+
+/**
+ * Rebuilding permissions after https://github.com/uiowa/uiowa/pull/3776 deployed.
+ */
+function sitenow_update_9013() {
+  // Batch it.
+  node_access_rebuild(TRUE);
+}
