@@ -2945,3 +2945,9 @@ $sites['labhoadley.local.drupal.uiowa.edu'] = 'hoadley.lab.uiowa.edu';
 $sites['labhoadley.dev.drupal.uiowa.edu'] = 'hoadley.lab.uiowa.edu';
 $sites['labhoadley.stage.drupal.uiowa.edu'] = 'hoadley.lab.uiowa.edu';
 $sites['labhoadley.prod.drupal.uiowa.edu'] = 'hoadley.lab.uiowa.edu';
+
+// Directory aliases for studentlegal.uiowa.edu.
+$sites['studentlegal.local.drupal.uiowa.edu'] = 'studentlegal.uiowa.edu';
+$sites['studentlegal.dev.drupal.uiowa.edu'] = 'studentlegal.uiowa.edu';
+$sites['studentlegal.stage.drupal.uiowa.edu'] = 'studentlegal.uiowa.edu';
+$sites['studentlegal.prod.drupal.uiowa.edu'] = 'studentlegal.uiowa.edu';
