@@ -200,6 +200,10 @@ class ListBlock extends CoreBlock {
       foreach ($customizable_filters as $filter_id) {
         /** @var \Drupal\views\Plugin\views\filter\FilterPluginBase $filter */
         $filter = $filter_plugins[$filter_id];
+        // If an identifier is set for the filter, use that as the $filter_id.
+        if (!empty($filter->options['expose']['identifier'])) {
+          $filter_id = $filter->options['expose']['identifier'];
+        }
         $filter->buildExposedForm($form['override']['exposed_filters'], $subform_state);
 
         // Set the label and default values of the form element, based on the
