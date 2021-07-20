@@ -1,12 +1,19 @@
 @import "uids/assets/scss/_variables.scss";
 @import "uids/assets/scss/_utilities.scss";
 
-.layout.layout--twocol,
-.layout.layout--twocol .layout__spacing_container {
-  @include breakpoint(sm) {
-    display: flex;
+.layout--twocol {
+  .layout__spacing_container {
+    @include grid-base;
+  }
+  &.layout--twocol--50-50 {
+    .layout__spacing_container {
+      @include breakpoint(sm) {
+        @include twocol-grid;
+      }
+    }
   }
 }
+
 
 .layout__region details.set[open] {
   order: -1;
@@ -15,41 +22,12 @@
 .layout--twocol {
   .layout__region {
     @include breakpoint(sm) {
-      flex: 0 1 100%;
-      display: flex;
-      flex-wrap: wrap;
+      //flex: 0 1 100%;
+     // display: flex;
+      //flex-wrap: wrap;
       align-content: unset;
       min-width: 0;
     }
-  }
-}
-
-.layout--twocol--50-50 .layout__region--first,
-.layout--twocol--50-50 .layout__region--second {
-  @include breakpoint(sm) {
-    flex: 0 1 calc(52% - 3rem);
-    @include inner-grid(50);
-  }
-  @include breakpoint(container) {
-    flex: 0 1 calc(51.5% - 3rem);
-  }
-  @include breakpoint(xlg) {
-    flex: 0 1 calc(51.2% - 3rem);
-  }
-}
-
-.layout--twocol--50-50.page__container--normal .layout__region--first,
-.layout--twocol--50-50.page__container--normal .layout__region--second {
-  @include breakpoint(sm) {
-    flex: 0 1 calc(52% - 3rem);
-  }
-}
-
-.layout--twocol--50-50.column-spacing__removed .layout__region--first,
-.layout--twocol--50-50.column-spacing__removed .layout__region--second {
-  @include breakpoint(sm) {
-    flex: 0 1 50%;
-    @include inner-grid(50);
   }
 }
 
@@ -123,15 +101,3 @@
   margin: 0;
 }
 
-.layout--twocol--50-50 .layout__region:first-child:last-child {
-  @include breakpoint(sm) {
-    margin: 0;
-  }
-}
-
-.layout--twocol--50-50.column-spacing__removed .layout__region:first-child:last-child {
-  @include breakpoint(sm) {
-    flex: 0 1 50%;
-    margin: 0;
-  }
-}
