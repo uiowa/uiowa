@@ -60,8 +60,9 @@
     flex-wrap: wrap;
   }
 
-  .layout--fourcol .layout__region {
-    flex: 0 1 calc(52% - 3rem);
+  .layout--fourcol .layout__region,
+  .layout--fourcol.page__container--normal .layout__region{
+    flex: 0 1 calc(52.3% - 3rem);
   }
 
   .layout--fourcol.column-spacing__removed .layout__region {
