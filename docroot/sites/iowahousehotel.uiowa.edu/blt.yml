@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: iowahousehotel.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: iowahousehotel
+  human_name: iowahousehotel.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: iowahousehotel.prod
+drupal:
+  db:
+    database: iowahousehotel_uiowa_edu
+uiowa:
+  requester: dquam
