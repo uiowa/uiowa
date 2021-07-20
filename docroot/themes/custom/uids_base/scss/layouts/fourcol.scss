@@ -28,6 +28,12 @@
     }
   }
 
+.layout--fourcol.page__container--normal .layout__region {
+  @include breakpoint(sm) {
+    flex: 0 1 calc(26% - 3rem);
+  }
+}
+
   .layout--fourcol.column-spacing__removed .layout__region {
     @include breakpoint(sm) {
       flex: 0 1 25%;
@@ -129,9 +135,4 @@
     margin-left: 3%;
     margin-right: 3%;
   }
-}
-
-
-.content__container .layout__spacing_container {
-  background: red;
 }

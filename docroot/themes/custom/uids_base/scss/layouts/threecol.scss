@@ -43,9 +43,18 @@
     flex: 0 1 48.1%;
   }
   @include breakpoint(xlg) {
-    flex: 0 1 48.3%;
+    flex: 0 1 48.4%;
   }
 }
+
+.layout--threecol--25-25-50.page__container--normal .layout__region--third:first-child:last-child,
+.layout--threecol--25-50-25.page__container--normal .layout__region--second:first-child:last-child,
+.layout--threecol--50-25-25.page__container--normal .layout__region--first:first-child:last-child  {
+  @include breakpoint(sm) {
+    flex: 0 1 48%;
+  }
+}
+
 
 .layout--threecol--33-34-33 .layout__region--first,
 .layout--threecol--33-34-33 .layout__region--second,
@@ -57,9 +66,18 @@
     flex: 0 1 calc(34.3% - 3rem);
   }
   @include breakpoint(xlg) {
-    flex: 0 1 calc(34.2% - 3rem);
+    flex: 0 1 calc(34.1% - 3rem);
   }
 }
+
+.layout--threecol--33-34-33.page__container--normal .layout__region--first,
+.layout--threecol--33-34-33.page__container--normal .layout__region--second,
+.layout--threecol--33-34-33.page__container--normal .layout__region--third {
+  @include breakpoint(sm) {
+    flex: 0 1 calc(34.7% - 3rem);
+  }
+}
+
 
 .layout--threecol--33-34-33.column-spacing__removed .layout__region--first,
 .layout--threecol--33-34-33.column-spacing__removed .layout__region--second,
@@ -79,7 +97,7 @@
     flex: 0 1 calc(27% - 3rem);
   }
   @include breakpoint(container) {
-    flex: 0 1 calc(25.7% - 3rem);
+    flex: 0 1 calc(26.4% - 3rem);
   }
 }
 
@@ -93,7 +111,10 @@
     flex: 0 1 calc(26% - 3rem);
   }
   @include breakpoint(container) {
-    flex: 0 1 22%;
+    flex: 0 1 calc(25.8% - 3rem);
+  }
+  @include breakpoint(container) {
+    flex: 0 1 calc(25.6% - 3rem);
   }
 }
 

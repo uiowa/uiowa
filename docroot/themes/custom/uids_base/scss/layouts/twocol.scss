@@ -34,7 +34,14 @@
     flex: 0 1 calc(51.5% - 3rem);
   }
   @include breakpoint(xlg) {
-    flex: 0 1 calc(51.5% - 3rem);
+    flex: 0 1 calc(51.2% - 3rem);
+  }
+}
+
+.layout--twocol--50-50.page__container--normal .layout__region--first,
+.layout--twocol--50-50.page__container--normal .layout__region--second {
+  @include breakpoint(sm) {
+    flex: 0 1 calc(52% - 3rem);
   }
 }
 
