@@ -1,0 +1,4 @@
+services:
+  sitenow_dispatch.dispatch:
+    class: Drupal\sitenow_dispatch\Dispatch
+    arguments: ['@http_client', '@config.factory']
