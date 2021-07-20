@@ -2963,3 +2963,9 @@ $sites['rvap.local.drupal.uiowa.edu'] = 'rvap.uiowa.edu';
 $sites['rvap.dev.drupal.uiowa.edu'] = 'rvap.uiowa.edu';
 $sites['rvap.stage.drupal.uiowa.edu'] = 'rvap.uiowa.edu';
 $sites['rvap.prod.drupal.uiowa.edu'] = 'rvap.uiowa.edu';
+
+// Directory aliases for mlk.uiowa.edu.
+$sites['mlk.local.drupal.uiowa.edu'] = 'mlk.uiowa.edu';
+$sites['mlk.dev.drupal.uiowa.edu'] = 'mlk.uiowa.edu';
+$sites['mlk.stage.drupal.uiowa.edu'] = 'mlk.uiowa.edu';
+$sites['mlk.prod.drupal.uiowa.edu'] = 'mlk.uiowa.edu';
