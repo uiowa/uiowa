@@ -606,7 +606,13 @@ class ListBlock extends CoreBlock {
       $this->view->display_handler->setOption('expose_form', TRUE);
       // Run through our exposed filters and turn their handlers on or off.
       foreach ($config['expose_form'] as $key => $value) {
-        $this->view->setHandlerOption($display_id, 'filter', basename($key, '_expose'), 'expose', $value);
+        // Remove the '_expose' suffix, and if necessary
+        // manually adjust for various naming inconsistencies.
+        $key = basename($key, '_expose');
+        $key = ($key === 'field_person_type_status_value_wrapper') ? 'field_person_type_status_value' : $key;
+        $key = ($key === 'people_research_areas') ? 'field_person_research_areas_target_id' : $key;
+
+        $this->view->setHandlerOption($display_id, 'filter', $key, 'exposed', $value);
       }
     }
     // Set to false in case it was previously exposed but no longer.
