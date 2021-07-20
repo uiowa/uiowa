@@ -2,14 +2,10 @@
 
 namespace Drupal\sitenow_dispatch\Plugin\Block;
 
-use Drupal\Component\Utility\Html;
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\sitenow_media_wysiwyg\Plugin\media\Source\Panopto;
 use GuzzleHttp\ClientInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -98,7 +94,7 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
         'headers' => [
           'Accept' => 'application/json',
           'x-dispatch-api-key' => $this->configFactory->get('sitenow_dispatch.settings')->get('API_key'),
-        ]
+        ],
       ]);
     }
     catch (RequestException | GuzzleException $e) {
