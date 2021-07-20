@@ -45,9 +45,10 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
   /**
    * {@inheritdoc}
    */
-  public function build() {
-    $build['content'] = $this->formBuilder->getForm('Drupal\sitenow_dispatch\Form\SubscribeForm', $this->configuration['population']);
-    return $build;
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $configFactory, ClientInterface $client, FormBuilderInterface $formBuilder) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->configFactory = $configFactory;
+    $this->client = $client;
   }
 
   /**
@@ -62,15 +63,6 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
       $container->get('http_client'),
       $container->get('form_builder')
     );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $configFactory, ClientInterface $client, FormBuilderInterface $formBuilder) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->configFactory = $configFactory;
-    $this->client = $client;
   }
 
   /**
@@ -98,6 +90,14 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
     ];
 
     return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function build() {
+    $build['content'] = $this->formBuilder->getForm('Drupal\sitenow_dispatch\Form\SubscribeForm', $this->configuration['population']);
+    return $build;
   }
 
   /**
