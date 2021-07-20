@@ -403,6 +403,11 @@ class ListBlock extends CoreBlock {
     // Add checkboxes to allow exposed filters to be shown
     // to the end user.
     foreach ($this->getListOfExposedFilters() as $filter_id => $filter_label) {
+      // Add the wrapper if we need it to accurately target the field.
+      $filter_id = ($filter_id === 'field_person_type_status_value') ? 'field_person_type_status_value_wrapper' : $filter_id;
+      $filter_id = ($filter_id === 'field_person_research_areas_target_id') ? 'people_research_areas' : $filter_id;
+
+      // Create our "expose form" checkbox.
       $filter_id_expose = $filter_id . '_expose';
       $form['override']['exposed_filters'][$filter_id_expose] = [
         '#type' => 'checkbox',
@@ -411,10 +416,6 @@ class ListBlock extends CoreBlock {
         ]),
         '#default_value' => isset($block_configuration['expose_form'][$filter_id_expose]) ? $block_configuration['expose_form'][$filter_id_expose] : 0,
       ];
-
-      // Add the wrapper if we need it to accurately target the field.
-      $filter_id = ($filter_id === 'field_person_type_status_value') ? 'field_person_type_status_value_wrapper' : $filter_id;
-      $filter_id = ($filter_id === 'field_person_research_areas_target_id') ? 'people_research_areas' : $filter_id;
 
       // Add states to disable a filter if it is exposed to visitors.
       $form['override']['exposed_filters'][$filter_id]['#states'] = [
@@ -490,10 +491,14 @@ class ListBlock extends CoreBlock {
     $expose_form = [];
     $exposed_filter_values = [];
     foreach ($exposed_inputs as $input_name => $input_value) {
-      if (str_ends_with($input_name, '_expose') && $input_value) {
-        $expose_form[$input_name] = TRUE;
+      // Check if it's an "expose form" checkbox,
+      // and add its value to our expose form array.
+      if (str_ends_with($input_name, '_expose')) {
+        $expose_form[$input_name] = ($input_value);
       }
       else {
+        // If it's not an "expose form" field,
+        // then we need to fetch the field's value for later use.
         $exposed_filter_values[$input_name] = $input_value;
       }
     }
@@ -599,6 +604,10 @@ class ListBlock extends CoreBlock {
       is_array($config['expose_form']) &&
       in_array(TRUE, $config['expose_form'])) {
       $this->view->display_handler->setOption('expose_form', TRUE);
+      // Run through our exposed filters and turn their handlers on or off.
+      foreach ($config['expose_form'] as $key => $value) {
+        $this->view->setHandlerOption($display_id, 'filter', basename($key, '_expose'), 'expose', $value);
+      }
     }
     // Set to false in case it was previously exposed but no longer.
     else {
