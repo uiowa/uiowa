@@ -15,23 +15,24 @@ class SubscribeForm extends ConfigFormBase {
   /**
    * The config factory service.
    *
-   * @var \GuzzleHttp\ClientInterface
+   * @var Dispatch
    */
-  protected $client;
+  protected $dispatch;
 
   /**
    * {@inheritdoc}
    */
-  public function __construct(ConfigFactoryInterface $config_factory, $client) {
+  public function __construct(ConfigFactoryInterface $config_factory, $client, $dispatch) {
     parent::__construct($config_factory);
     $this->client = $client;
+    $this->dispatch = $dispatch;
   }
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static($container->get('config.factory'), $container->get('http_client'));
+    return new static($container->get('config.factory'), $container->get('http_client'), $container->get('sitenow_dispatch.dispatch'));
   }
 
   /**
@@ -83,6 +84,7 @@ class SubscribeForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    // This try block will add someone to the subscriber list.
     try {
       $response = $this->client->request('POST', 'https://apps.its.uiowa.edu/dispatch/api/v1/populations/' . $form_state->getValue('population') . '/subscribers', [
         'headers' => [
