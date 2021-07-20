@@ -24,6 +24,13 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
   /**
    * The config factory service.
    *
+   * @var \GuzzleHttp\ClientInterface
+   */
+  protected $client;
+
+  /**
+   * The config factory service.
+   *
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   protected $configFactory;
@@ -31,9 +38,9 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
   /**
    * The config factory service.
    *
-   * @var \GuzzleHttp\ClientInterface
+   * @var Dispatch
    */
-  protected $client;
+  protected $dispatch;
 
   /**
    * The form builder service.
@@ -45,10 +52,11 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $configFactory, ClientInterface $client, FormBuilderInterface $formBuilder) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $configFactory, FormBuilderInterface $formBuilder, $dispatch) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->configFactory = $configFactory;
-    $this->client = $client;
+    $this->formBuilder = $formBuilder;
+    $this->dispatch = $dispatch;
   }
 
   /**
@@ -60,8 +68,8 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
       $plugin_id,
       $plugin_definition,
       $container->get('config.factory'),
-      $container->get('http_client'),
-      $container->get('form_builder')
+      $container->get('form_builder'),
+      $container->get('sitenow_dispatch.dispatch')
     );
   }
 
@@ -70,11 +78,19 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
    */
   public function blockForm($form, FormStateInterface $form_state) {
     // The returned populations.
-    $populations = $this->getFromDispatch("https://apps.its.uiowa.edu/dispatch/api/v1/populations");
+    $populations = $this->dispatch->getFromDispatch("https://apps.its.uiowa.edu/dispatch/api/v1/populations");
+
+    if ($populations == []) {
+      $form['invalid_api_key'] = [
+        '#markup' => '<div>Either there is no API key for SiteNow Dispatch currently configured, or the one you currently have is not valid.</div></br><a href="/admin/config/system/sitenow-dispatch">Please verify that there is a valid API key here.</a></p>'
+      ];
+
+      return $form;
+    }
 
     $populationOptions = [];
     foreach ($populations as $population) {
-      $response = $this->getFromDispatch($population);
+      $response = $this->dispatch->getFromDispatch($population);
       if ($response->dataSourceType == "SubscriptionList") {
         $populationOptions[$response->id] = $response->name;
       }
@@ -98,25 +114,6 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
   public function build() {
     $build['content'] = $this->formBuilder->getForm('Drupal\sitenow_dispatch\Form\SubscribeForm', $this->configuration['population']);
     return $build;
-  }
-
-  /**
-   * Helper function for doing get commands from dispatch.
-   */
-  public function getFromDispatch(string $request) {
-    try {
-      $response = $this->client->request('GET', $request, [
-        'headers' => [
-          'Accept' => 'application/json',
-          'x-dispatch-api-key' => $this->configFactory->get('sitenow_dispatch.settings')->get('API_key'),
-        ],
-      ]);
-    }
-    catch (RequestException | GuzzleException $e) {
-      $this->logger->error($e->getMessage());
-    }
-
-    return json_decode($response->getBody()->getContents());
   }
 
   /**
