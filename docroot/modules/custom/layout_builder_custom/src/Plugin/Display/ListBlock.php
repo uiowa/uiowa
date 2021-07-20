@@ -582,6 +582,7 @@ class ListBlock extends CoreBlock {
     if (!empty($config['pager'])) {
       $pager = $this->view->display_handler->getOption('pager');
       $pager['type'] = $config['pager'];
+      $pager["options"]["expose"]["items_per_page"] = FALSE;
       $this->view->display_handler->setOption('pager', $pager);
     }
 
