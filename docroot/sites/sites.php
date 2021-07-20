@@ -2951,3 +2951,9 @@ $sites['studentlegal.local.drupal.uiowa.edu'] = 'studentlegal.uiowa.edu';
 $sites['studentlegal.dev.drupal.uiowa.edu'] = 'studentlegal.uiowa.edu';
 $sites['studentlegal.stage.drupal.uiowa.edu'] = 'studentlegal.uiowa.edu';
 $sites['studentlegal.prod.drupal.uiowa.edu'] = 'studentlegal.uiowa.edu';
+
+// Directory aliases for iowahousehotel.uiowa.edu.
+$sites['iowahousehotel.local.drupal.uiowa.edu'] = 'iowahousehotel.uiowa.edu';
+$sites['iowahousehotel.dev.drupal.uiowa.edu'] = 'iowahousehotel.uiowa.edu';
+$sites['iowahousehotel.stage.drupal.uiowa.edu'] = 'iowahousehotel.uiowa.edu';
+$sites['iowahousehotel.prod.drupal.uiowa.edu'] = 'iowahousehotel.uiowa.edu';
