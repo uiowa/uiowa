@@ -56,6 +56,9 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $form['description_text'] = [
+      '#markup' => '<p>This API key is for the Dispatch service, references are listed below for ease of use.</p><p><a href="https://apps.its.uiowa.edu/dispatch/help">Dispatch documentation</a></p><p><a href="https://apps.its.uiowa.edu/dispatch/api-ref">API reference</a></p>'
+    ];
     $form['API_key'] = [
       '#type' => 'textfield',
       '#title' => $this->t('API key'),
