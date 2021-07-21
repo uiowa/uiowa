@@ -22,6 +22,7 @@ use Drupal\filter\Plugin\FilterBase;
  * )
  */
 class FilterIframe extends FilterBase {
+
   /**
    * {@inheritdoc}
    */
@@ -70,4 +71,5 @@ class FilterIframe extends FilterBase {
     $text = Html::serialize($html);
     return new FilterProcessResult($text);
   }
+
 }
