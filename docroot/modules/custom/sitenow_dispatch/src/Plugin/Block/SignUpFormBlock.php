@@ -80,6 +80,7 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
     // The returned populations.
     $populations = $this->dispatch->getFromDispatch("https://apps.its.uiowa.edu/dispatch/api/v1/populations");
 
+    // If the population is empty, we have an invalid API key.
     if ($populations == []) {
       $form['invalid_api_key'] = [
         '#markup' => '<div>Either there is no API key for SiteNow Dispatch currently configured, or the one you currently have is not valid.</div></br><a href="/admin/config/system/sitenow-dispatch">Please verify that there is a valid API key here.</a></p>'
