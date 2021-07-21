@@ -41,14 +41,18 @@ class FilterIframe extends FilterBase {
    * {@inheritdoc}
    */
   public function process($text, $langcode) {
-    $html = Html::load($text);
+    $dom = Html::load($text);
+    $iframes = $dom->getElementsByTagName('iframe');
 
-    $iframes = $html->getElementsByTagName('iframe');
-    $disallowed = [];
+    // Use a regressive loop to count through the elements.
+    // See https://www.php.net/manual/en/domnode.replacechild.php#50500.
+    $i = $iframes->length - 1;
 
-    /** @var \DOMElement $iframe */
-    foreach ($iframes as $iframe) {
-      if ($iframe->hasAttribute('src')) {
+    while ($i >= 0) {
+      /** @var \DOMElement $iframe */
+      $iframe = $iframes->item($i);
+
+      if ($iframe && $iframe->hasAttribute('src')) {
         $allowed = explode(PHP_EOL, $this->settings['allowed_sources']);
         $allowed = array_filter($allowed);
 
@@ -59,16 +63,19 @@ class FilterIframe extends FilterBase {
         $src = parse_url($iframe->getAttribute('src'), PHP_URL_HOST);
 
         if (!in_array($src, $allowed)) {
-          $disallowed[] = $iframe;
+          $iframe->parentNode->removeChild($iframe);
+        } else {
+          $wrapper = $dom->createElement('div');
+          $wrapper->setAttribute('class', 'media--type-remote-video');
+          $iframe->parentNode->replaceChild($wrapper, $iframe);
+          $wrapper->appendChild($iframe);
         }
       }
+
+      $i--;
     }
 
-    foreach ($disallowed as $node) {
-      $node->parentNode->removeChild($node);
-    }
-
-    $text = Html::serialize($html);
+    $text = Html::serialize($dom);
     return new FilterProcessResult($text);
   }
 
