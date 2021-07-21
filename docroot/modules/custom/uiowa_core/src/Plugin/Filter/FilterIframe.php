@@ -72,6 +72,10 @@ class FilterIframe extends FilterBase {
           $wrapper->appendChild($iframe);
         }
       }
+      else {
+        // Remove any iframes without a src attribute.
+        $iframe->parentNode->removeChild($iframe);
+      }
 
       $i--;
     }
