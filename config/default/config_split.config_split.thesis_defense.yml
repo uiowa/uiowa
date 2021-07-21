@@ -6,12 +6,15 @@ id: thesis_defense
 label: 'Thesis Defense'
 description: 'Thesis Defense content type.'
 folder: ../config/features/thesis_defense
-module: {  }
+module:
+  grad_custom: 0
+  smart_date: 0
 theme: {  }
 blacklist:
   - node.type.thesis_defense
   - pathauto.pattern.thesis_defense
   - simple_sitemap.bundle_settings.default.node.thesis_defense
+  - views.view.thesis_defenses
   - 'field.storage.node.field_thesis_defense_*'
 graylist: {  }
 graylist_dependents: true
