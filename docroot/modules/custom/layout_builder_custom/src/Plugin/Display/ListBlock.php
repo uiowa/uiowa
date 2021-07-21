@@ -727,7 +727,8 @@ class ListBlock extends CoreBlock {
     /** @var \Drupal\views\ViewExecutable $view */
     $view = $element['#view'];
     if (!empty($view->exposed_widgets['#action']) && !$view->ajaxEnabled()) {
-      $view->exposed_widgets['#action'] = $this->request->getRequestUri();
+      $uri = \Drupal::request()->getRequestUri();
+      $view->exposed_widgets['#action'] = $uri;
     }
     return parent::elementPreRender($element);
   }
