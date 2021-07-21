@@ -740,7 +740,8 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
     }
   }
 
-  if ($view->id() == 'people') {
+  if ($view->id() == 'people' || $view->id() == 'people_list_block') {
+    $foo = $form;
     $person_type_filter = 'type';
     if (isset($form[$person_type_filter])) {
       _sitenow_people_person_type_filter_select($form[$person_type_filter]);
