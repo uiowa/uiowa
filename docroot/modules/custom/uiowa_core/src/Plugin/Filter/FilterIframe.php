@@ -64,7 +64,8 @@ class FilterIframe extends FilterBase {
 
         if (!in_array($src, $allowed)) {
           $iframe->parentNode->removeChild($iframe);
-        } else {
+        }
+        else {
           $wrapper = $dom->createElement('div');
           $wrapper->setAttribute('class', 'media--type-remote-video');
           $iframe->parentNode->replaceChild($wrapper, $iframe);
