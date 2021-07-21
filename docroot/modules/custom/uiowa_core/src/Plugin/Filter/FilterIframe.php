@@ -3,6 +3,7 @@
 namespace Drupal\uiowa_core\Plugin\Filter;
 
 use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\filter\FilterProcessResult;
 use Drupal\filter\Plugin\FilterBase;
@@ -54,13 +55,12 @@ class FilterIframe extends FilterBase {
 
       if ($iframe && $iframe->hasAttribute('src')) {
         $allowed = explode(PHP_EOL, $this->settings['allowed_sources']);
-        $allowed = array_filter($allowed);
 
         $allowed = array_map(function ($v) {
-          return parse_url($v, PHP_URL_HOST);
+          $url = trim(UrlHelper::parse($v)['path']);
         }, $allowed);
 
-        $src = parse_url($iframe->getAttribute('src'), PHP_URL_HOST);
+        $src = trim(UrlHelper::parse($iframe->getAttribute('src'))['path']);
 
         if (!in_array($src, $allowed)) {
           $iframe->parentNode->removeChild($iframe);
