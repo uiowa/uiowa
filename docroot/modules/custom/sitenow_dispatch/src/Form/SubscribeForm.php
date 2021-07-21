@@ -97,7 +97,7 @@ class SubscribeForm extends ConfigFormBase {
     $email      = $form_state->getValue('email');
     $first      = $form_state->getValue('first');
     $last       = $form_state->getValue('last');
-    $APIkey     = $this->configFactory->get('sitenow_dispatch.settings')->get('API_key');
+    $api_key     = $this->configFactory->get('sitenow_dispatch.settings')->get('API_key');
     $population = $form_state->getValue('population');
 
     // This try block will add someone to the subscriber list.
@@ -105,7 +105,7 @@ class SubscribeForm extends ConfigFormBase {
       $response = $this->client->request('POST', 'https://apps.its.uiowa.edu/dispatch/api/v1/populations/' . $population . '/subscribers', [
         'headers' => [
           'Accept' => 'application/json',
-          'x-dispatch-api-key' => $APIkey,
+          'x-dispatch-api-key' => $api_key,
         ],
         'body' => json_encode([
           "toAddress" => $email,
@@ -117,7 +117,7 @@ class SubscribeForm extends ConfigFormBase {
     catch (RequestException | GuzzleException $e) {
       $this->logger->error($e->getMessage());
     }
-    $this->messenger()->addStatus($this->t('"' . $first . ' ' . $last . '" has been added to the subscription list with the email "' . $email . '"'));
+    $this->messenger()->addStatus($this->t('"@first @last" has been added to the subscription list with the email "@email"', ['@first' => $first, '@last' => $last, '@email' => $email]));
     parent::submitForm($form, $form_state);
   }
 

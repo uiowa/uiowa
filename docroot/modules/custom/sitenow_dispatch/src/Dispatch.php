@@ -53,10 +53,10 @@ class Dispatch {
   /**
    * Helper function for doing get commands from dispatch.
    */
-  public function getFromDispatch(string $request, string $API_key = NULL) {
+  public function getFromDispatch(string $request, string $api_key = NULL) {
 
-    if (!isset($API_key)) {
-      $API_key = $this->configFactory->get('sitenow_dispatch.settings')->get('API_key');
+    if (!isset($api_key)) {
+      $api_key = $this->configFactory->get('sitenow_dispatch.settings')->get('API_key');
     }
 
     $response = NULL;
@@ -65,7 +65,7 @@ class Dispatch {
       $response = $this->client->request('GET', $request, [
         'headers' => [
           'Accept' => 'application/json',
-          'x-dispatch-api-key' => $API_key,
+          'x-dispatch-api-key' => $api_key,
         ],
       ]);
     }
