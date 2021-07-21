@@ -4,100 +4,61 @@
 .layout--twocol {
   .layout__spacing_container {
     @include grid-base;
+    row-gap: 0;
+  }
+  &.layout--twocol--33-67 {
+    .layout__spacing_container {
+      @include breakpoint(sm) {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .layout__region--first { grid-area: 1 / 1 / 6 / 2;  }
+      .layout__region--second {  grid-area: 1 / 2 / 6 / 4;  @include inner-grid(67);}
+    }
+  }
+  &.layout--twocol--67-33 {
+    .layout__spacing_container {
+      @include breakpoint(sm) {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .layout__region--first { grid-area: 1 / 1 / 6 / 3; @include inner-grid(67); }
+      .layout__region--second { grid-area: 1 / 3 / 6 / 4; }
+    }
+  }
+  &.layout--twocol--25-75 {
+    .layout__spacing_container {
+      @include breakpoint(sm) {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .layout__region--first { grid-area: 1 / 1 / 6 / 2; }
+      .layout__region--second { grid-area: 1 / 2 / 6 / 5; @include inner-grid(75);}
+    }
+  }
+  &.layout--twocol--75-25 {
+    .layout__spacing_container {
+      @include breakpoint(sm) {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .layout__region--first {  grid-area: 1 / 1 / 6 / 4;  @include inner-grid(75);}
+      .layout__region--second { grid-area: 1 / 4 / 6 / 5;  }
+    }
   }
   &.layout--twocol--50-50 {
     .layout__spacing_container {
       @include breakpoint(sm) {
         @include twocol-grid;
+
       }
     }
   }
-}
-
-
-.layout__region details.set[open] {
-  order: -1;
-}
-
-.layout--twocol {
-  .layout__region {
-    @include breakpoint(sm) {
-      //flex: 0 1 100%;
-     // display: flex;
-      //flex-wrap: wrap;
-      align-content: unset;
-      min-width: 0;
+  &.column-spacing__removed {
+    .layout__spacing_container {
+      gap: 0;
+      column-gap: 0;
     }
   }
 }
 
-.layout--twocol--33-67 .layout__region--first,
-.layout--twocol--67-33 .layout__region--second {
-  @include breakpoint(sm) {
-    flex: 0 1 40%;
-  }
-}
-
-.layout--twocol--33-67 .layout__region--second,
-.layout--twocol--67-33 .layout__region--first {
-  @include breakpoint(sm) {
-    flex: 0 1 60%;
-    @include inner-grid(67);
-  }
-}
-
-.layout--twocol--25-75 .layout__region--first,
-.layout--twocol--75-25 .layout__region--second {
-  @include breakpoint(sm) {
-    flex: 0 1 24.25%;
-  }
-}
-
-.layout--twocol--25-75 .layout__region--second,
-.layout--twocol--75-25 .layout__region--first {
-  @include breakpoint(sm) {
-    flex: 0 1 74.75%;
-    @include inner-grid(75);
-  }
-}
-
-.layout--twocol--33-67.column-spacing__removed .layout__region--first,
-.layout--twocol--67-33.column-spacing__removed .layout__region--second {
-  @include breakpoint(sm) {
-    flex: 0 1 33%;
-  }
-}
-
-.layout--twocol--33-67.column-spacing__removed .layout__region--second,
-.layout--twocol--67-33.column-spacing__removed .layout__region--first {
-  @include breakpoint(sm) {
-    flex: 0 1 67%;
-    @include inner-grid(67);
-  }
-}
-
-.layout--twocol--25-75.column-spacing__removed .layout__region--first,
-.layout--twocol--75-25.column-spacing__removed .layout__region--second {
-  @include breakpoint(sm) {
-    flex: 0 1 25%;
-  }
-}
-
-.layout--twocol--25-75.column-spacing__removed .layout__region--second,
-.layout--twocol--75-25.column-spacing__removed .layout__region--first {
-  @include breakpoint(sm) {
-    flex: 0 1 75%;
-    @include inner-grid(75);
-  }
-}
-
-.layout--twocol .layout__spacing_container > .layout__region + .layout__region {
-  @include breakpoint(sm) {
-    margin: 0 0 0 3rem;
-  }
-}
-
-.layout--twocol.column-spacing__removed .layout__spacing_container > .layout__region + .layout__region {
-  margin: 0;
+.layout__region details.set[open] {
+  order: -1;
 }
 

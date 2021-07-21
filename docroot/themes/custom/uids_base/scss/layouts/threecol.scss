@@ -6,6 +6,11 @@
   .layout__spacing_container {
     @include grid-base;
   }
+  &.column-spacing__removed {
+    .layout__spacing_container {
+      gap: 0;
+    }
+  }
   &.layout--threecol--50-25-25 {
     .layout__spacing_container {
       @include breakpoint(sm) {
@@ -15,6 +20,7 @@
       .layout__region--first { grid-area: 1 / 1 / 6 / 3; }
       .layout__region--second { grid-area: 1 / 3 / 6 / 4; }
       .layout__region--third { grid-area: 1 / 4 / 6 / 5; }
+      .layout__region--third:first-child:last-child { grid-area: 1 / 1 / 6 / 2; }
     }
   }
   &.layout--threecol--25-25-50 {
@@ -26,6 +32,8 @@
       .layout__region--first  { grid-area: 1 / 1 / 6 / 2; }
       .layout__region--second  { grid-area: 1 / 2 / 6 / 3; }
       .layout__region--third { grid-area: 1 / 3 / 6 / 5; }
+      .layout__region--second:first-child:last-child { grid-area: 1 / 1 / 6 / 2; }
+      .layout__region--third:first-child:last-child { grid-area: 1 / 1 / 6 / 3; }
     }
   }
   &.layout--threecol--25-50-25 {
@@ -37,6 +45,8 @@
       .layout__region--first { grid-area: 1 / 1 / 6 / 2; }
       .layout__region--second  { grid-area: 1 / 2 / 6 / 4; }
       .layout__region--third { grid-area: 1 / 4 / 6 / 5; }
+      .layout__region--third:first-child:last-child { grid-area: 1 / 1 / 6 / 2; }
+      .layout__region--second:first-child:last-child { grid-area: 1 / 1 / 6 / 3; }
     }
   }
   &.layout--threecol--33-34-33 {

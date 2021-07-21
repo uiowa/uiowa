@@ -3,11 +3,20 @@
 
 
   .layout--fourcol {
+    .layout__region {
+      height: 100%;
+    }
     .layout__spacing_container {
       @include grid-base;
       @include breakpoint(sm) {
         gap: $desktop-width-gutter;
         grid-template-columns: repeat(auto-fill, minmax(21%, 1fr));
+      }
+    }
+    &.column-spacing__removed {
+      .layout__spacing_container {
+        gap: 0;
+        column-gap: 0;
       }
     }
   }
