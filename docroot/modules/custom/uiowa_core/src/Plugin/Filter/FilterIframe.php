@@ -57,7 +57,7 @@ class FilterIframe extends FilterBase {
         $allowed = explode(PHP_EOL, $this->settings['allowed_sources']);
 
         $allowed = array_map(function ($v) {
-          $url = trim(UrlHelper::parse($v)['path']);
+          return trim(UrlHelper::parse($v)['path']);
         }, $allowed);
 
         $src = trim(UrlHelper::parse($iframe->getAttribute('src'))['path']);
