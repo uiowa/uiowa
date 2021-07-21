@@ -40,6 +40,9 @@ class Dispatch {
    *
    * @param \GuzzleHttp\ClientInterface $http_client
    *   The HTTP client.
+   *
+   * {@inheritdoc}
+   *
    */
   public function __construct(ClientInterface $http_client, ConfigFactoryInterface $configFactory, $logger) {
     $this->client = $http_client;
@@ -63,7 +66,7 @@ class Dispatch {
         'headers' => [
           'Accept' => 'application/json',
           'x-dispatch-api-key' => $API_key,
-        ]
+        ],
       ]);
     }
     catch (RequestException | GuzzleException | ClientException $e) {
