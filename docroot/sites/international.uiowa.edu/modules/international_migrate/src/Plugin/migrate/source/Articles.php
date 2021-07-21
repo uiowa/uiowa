@@ -2,7 +2,6 @@
 
 namespace Drupal\international_migrate\Plugin\migrate\source;
 
-use Drupal\Component\Utility\Html;
 use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;

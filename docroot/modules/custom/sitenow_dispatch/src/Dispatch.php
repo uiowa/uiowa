@@ -7,7 +7,6 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\ClientException;
-use Psr\Log\LoggerInterface;
 
 /**
  * Dispatch service.
@@ -31,7 +30,7 @@ class Dispatch {
   /**
    * The config factory service.
    *
-   * @var LoggerInterface
+   * @var Psr\Log\LoggerInterface
    */
   protected $logger;
 
@@ -40,9 +39,12 @@ class Dispatch {
    *
    * @param \GuzzleHttp\ClientInterface $http_client
    *   The HTTP client.
-   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   *   The Config Factory object.
+   * @param Psr\Log\LoggerInterface $logger
+   *   The logger.
    */
-  public function __construct(ClientInterface $http_client, ConfigFactoryInterface $configFactory, $logger) {
+  public function __construct(ClientInterface $http_client, ConfigFactoryInterface $configFactory, LoggerInterface $logger) {
     $this->client = $http_client;
     $this->configFactory = $configFactory;
     $this->logger = $logger;
