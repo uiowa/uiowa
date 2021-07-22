@@ -9,7 +9,9 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\ClientException;
 
 /**
- * Dispatch service.
+ * A Dispatch API service.
+ *
+ * @see: https://apps.its.uiowa.edu/dispatch/api-ref#/
  */
 class Dispatch {
 
