@@ -120,8 +120,9 @@ class SubscribeForm extends ConfigFormBase {
 
     $this->messenger()->addStatus(
       $this->t(
-        '"@first @last" has been added to the subscription list with the email "@email"',
-        ['@first' => $first, '@last' => $last, '@email' => $email]
+        '@email has been added to the subscription list.', [
+          '@email' => $email,
+        ]
       )
     );
   }
