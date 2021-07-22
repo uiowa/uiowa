@@ -96,7 +96,7 @@ class SubscribeForm extends ConfigFormBase {
     $email      = $form_state->getValue('email');
     $first      = $form_state->getValue('first');
     $last       = $form_state->getValue('last');
-    $api_key    = $this->configFactory->get('sitenow_dispatch.settings')->get('API_key');
+    $api_key    = $this->configFactory->get('sitenow_dispatch.settings')->get('api_key');
     $population = $form_state->getValue('population');
 
     // This try block will add someone to the subscriber list.

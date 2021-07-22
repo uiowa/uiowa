@@ -59,7 +59,7 @@ class Dispatch {
   public function getFromDispatch(string $request, string $api_key = NULL) {
 
     if (!isset($api_key)) {
-      $api_key = $this->configFactory->get('sitenow_dispatch.settings')->get('API_key');
+      $api_key = $this->configFactory->get('sitenow_dispatch.settings')->get('api_key');
     }
 
     $response = NULL;
