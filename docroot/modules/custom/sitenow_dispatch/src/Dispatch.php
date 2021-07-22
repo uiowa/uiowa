@@ -7,9 +7,12 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\ClientException;
+use Psr\Log\LoggerInterface;
 
 /**
- * Dispatch service.
+ * A Dispatch API service.
+ *
+ * @see: https://apps.its.uiowa.edu/dispatch/api-ref#/
  */
 class Dispatch {
 
@@ -30,7 +33,7 @@ class Dispatch {
   /**
    * The config factory service.
    *
-   * @var Psr\Log\LoggerInterface
+   * @var \Psr\Log\LoggerInterface
    */
   protected $logger;
 
@@ -56,7 +59,7 @@ class Dispatch {
   public function getFromDispatch(string $request, string $api_key = NULL) {
 
     if (!isset($api_key)) {
-      $api_key = $this->configFactory->get('sitenow_dispatch.settings')->get('API_key');
+      $api_key = $this->configFactory->get('sitenow_dispatch.settings')->get('api_key');
     }
 
     $response = NULL;
