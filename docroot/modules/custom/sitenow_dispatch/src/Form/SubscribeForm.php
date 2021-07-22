@@ -116,13 +116,13 @@ class SubscribeForm extends ConfigFormBase {
     catch (RequestException | GuzzleException $e) {
       $this->logger->error($e->getMessage());
     }
+
     $this->messenger()->addStatus(
       $this->t(
         '"@first @last" has been added to the subscription list with the email "@email"',
         ['@first' => $first, '@last' => $last, '@email' => $email]
       )
     );
-    parent::submitForm($form, $form_state);
   }
 
   /**
