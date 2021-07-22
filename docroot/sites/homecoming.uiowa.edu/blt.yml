@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: homecoming.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: homecoming
+  human_name: homecoming.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: homecoming.prod
+drupal:
+  db:
+    database: homecoming_uiowa_edu
+uiowa:
+  requester: dquam
