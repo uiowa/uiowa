@@ -101,7 +101,7 @@ class SubscribeForm extends ConfigFormBase {
 
     // This try block will add someone to the subscriber list.
     try {
-      $response = $this->client->request('POST', 'https://apps.its.uiowa.edu/dispatch/api/v1/populations/' . $population . '/subscribers', [
+      $this->client->request('POST', 'https://apps.its.uiowa.edu/dispatch/api/v1/populations/' . $population . '/subscribers', [
         'headers' => [
           'Accept' => 'application/json',
           'x-dispatch-api-key' => $api_key,
