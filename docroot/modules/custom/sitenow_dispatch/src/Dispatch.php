@@ -7,6 +7,7 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\ClientException;
+use Psr\Log\LoggerInterface;
 
 /**
  * A Dispatch API service.
@@ -32,7 +33,7 @@ class Dispatch {
   /**
    * The config factory service.
    *
-   * @var Psr\Log\LoggerInterface
+   * @var \Psr\Log\LoggerInterface
    */
   protected $logger;
 
