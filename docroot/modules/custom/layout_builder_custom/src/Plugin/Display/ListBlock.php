@@ -404,8 +404,19 @@ class ListBlock extends CoreBlock {
     // to the end user.
     foreach ($this->getListOfExposedFilters() as $filter_id => $filter_label) {
       // Add the wrapper if we need it to accurately target the field.
-      $filter_id = ($filter_id === 'field_person_type_status_value') ? 'field_person_type_status_value_wrapper' : $filter_id;
-      $filter_id = ($filter_id === 'field_person_research_areas_target_id') ? 'people_research_areas' : $filter_id;
+      switch ($filter_id) {
+        case 'field_person_type_status_value':
+          $filter_id = 'field_person_type_status_value_wrapper';
+          break;
+
+        case 'field_person_research_areas_target_id':
+          $filter_id = 'people_research_areas';
+          break;
+
+        case 'field_person_types_target_id':
+          $filter_id = 'type';
+          break;
+      }
 
       // Create our "expose form" checkbox.
       $filter_id_expose = $filter_id . '_expose';
@@ -611,8 +622,19 @@ class ListBlock extends CoreBlock {
         // Remove the '_expose' suffix, and if necessary
         // manually adjust for various naming inconsistencies.
         $key = basename($key, '_expose');
-        $key = ($key === 'field_person_type_status_value_wrapper') ? 'field_person_type_status_value' : $key;
-        $key = ($key === 'people_research_areas') ? 'field_person_research_areas_target_id' : $key;
+        switch ($key) {
+          case 'field_person_type_status_value_wrapper':
+            $key = 'field_person_type_status_value';
+            break;
+
+          case 'people_research_areas':
+            $key = 'field_person_research_areas_target_id';
+            break;
+
+          case 'type':
+            $key = 'field_person_types_target_id';
+            break;
+        }
 
         $this->view->setHandlerOption($display_id, 'filter', $key, 'exposed', $value);
       }
