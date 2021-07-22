@@ -2969,3 +2969,9 @@ $sites['mlk.local.drupal.uiowa.edu'] = 'mlk.uiowa.edu';
 $sites['mlk.dev.drupal.uiowa.edu'] = 'mlk.uiowa.edu';
 $sites['mlk.stage.drupal.uiowa.edu'] = 'mlk.uiowa.edu';
 $sites['mlk.prod.drupal.uiowa.edu'] = 'mlk.uiowa.edu';
+
+// Directory aliases for homecoming.uiowa.edu.
+$sites['homecoming.local.drupal.uiowa.edu'] = 'homecoming.uiowa.edu';
+$sites['homecoming.dev.drupal.uiowa.edu'] = 'homecoming.uiowa.edu';
+$sites['homecoming.stage.drupal.uiowa.edu'] = 'homecoming.uiowa.edu';
+$sites['homecoming.prod.drupal.uiowa.edu'] = 'homecoming.uiowa.edu';
