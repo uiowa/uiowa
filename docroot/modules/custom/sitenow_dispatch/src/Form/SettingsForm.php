@@ -56,12 +56,14 @@ class SettingsForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form['description_text'] = [
-      '#markup' => '<p>This API key is for the Dispatch service, references are listed below for ease of use.</p><p><a href="https://apps.its.uiowa.edu/dispatch/help">Dispatch documentation</a></p><p><a href="https://apps.its.uiowa.edu/dispatch/api-ref">API reference</a></p>',
+      '#markup' => '<p><a href="https://its.uiowa.edu/dispatch">Dispatch</a> is a web service that allows users to create and manage campaigns to generate PDF content, email messages, SMS messages, or voice calls. You must have a Dispatch <a href="https://apps.its.uiowa.edu/dispatch/help/faq#q1">client and account</a> to use Dispatch functionality within your site.</p>',
     ];
+
     $form['api_key'] = [
       '#type' => 'textfield',
       '#title' => $this->t('API key'),
       '#default_value' => $this->config('sitenow_dispatch.settings')->get('api_key'),
+      '#description' => $this->t('A valid Dispatch client API key. See the Dispatch <a href="https://apps.its.uiowa.edu/dispatch/help/api">API key documentation</a> for more information.'),
     ];
     return parent::buildForm($form, $form_state);
   }
