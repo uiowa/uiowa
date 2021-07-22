@@ -7,6 +7,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -82,7 +83,11 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
     // If the population is empty, we have an invalid API key.
     if ($populations == []) {
       $form['invalid_api_key'] = [
-        '#markup' => '<div>Either there is no API key for SiteNow Dispatch currently configured, or the one you currently have is not valid.</div></br><a href="/admin/config/system/sitenow-dispatch">Please verify that there is a valid API key here.</a></p>',
+        '#prefix' => '<div>',
+        '#suffix' => '</div>',
+        '#markup' => $this->t('Either there is no API key for SiteNow Dispatch currently configured, or the one you currently have is not valid. Please double check the API key set in the <a href=":url">Dispatch configuration</a>.', [
+          ':url' => Url::fromRoute('sitenow_dispatch.settings_form')->toString(),
+        ]),
       ];
 
       return $form;
