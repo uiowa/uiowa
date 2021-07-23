@@ -629,6 +629,11 @@ class ListBlock extends CoreBlock {
 
           case 'people_research_areas':
             $key = 'field_person_research_areas_target_id';
+            // Adjust to a single-select field.
+            $this->view->setHandlerOption($display_id, 'filter', $key, 'type', 'select');
+            $expose = $this->view->getHandler($display_id, 'filter', $key)['expose'];
+            $expose['multiple'] = FALSE;
+            $this->view->setHandlerOption($display_id, 'filter', $key, 'expose', $expose);
             break;
 
           case 'type':
