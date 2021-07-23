@@ -91,7 +91,7 @@ function grad_custom_form_alter(&$form, FormStateInterface $form_state, $form_id
     case 'node_thesis_defense_form':
       // Our submit handler must execute before the layout_builder_styles one
       // so it can take advantage of the logic there.
-      array_unshift($form['actions']['submit']['#submit'], '_grad_core_thesis_defense_submit');
+      array_unshift($form['actions']['submit']['#submit'], '_grad_custom_thesis_defense_submit');
       // Currently errors on save.
       // @todo Get this to work so that duration of 0 with no end date can occur.
       // if (isset($form['field_thesis_defense_date'])) {
