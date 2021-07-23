@@ -49,8 +49,8 @@ EOD;
     $this->assertStringNotContainsString('<iframe src="http://foo.com/bar?nohttps=yes"></iframe>', $processed);
 
     // These should.
-    $this->assertStringContainsString('<iframe src="https://foo.com/bar?baz=qux"></iframe>', $processed);
-    $this->assertStringContainsString('<iframe src="https://baz.me/qux?quux=bar&amp;foo=bar"></iframe>', $processed);
+    $this->assertStringContainsString('<iframe src="https://foo.com/bar?baz=qux"', $processed);
+    $this->assertStringContainsString('<iframe src="https://baz.me/qux?quux=bar&amp;foo=bar"', $processed);
   }
 
 }
