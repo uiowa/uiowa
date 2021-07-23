@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * Contains sitenow_dispatch.module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_alter().
+ */
+function sitenow_dispatch_form_layout_builder_add_block_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Checks to see if there is an API key set, and if not we shouldn't be able to add the block, so remove the button.
+  if (empty(\Drupal::config('sitenow_dispatch.settings')->get('api_key'))) {
+    $form['actions']['submit']['#access'] = FALSE;
+  }
+}

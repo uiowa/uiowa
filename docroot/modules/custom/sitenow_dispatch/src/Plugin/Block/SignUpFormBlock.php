@@ -8,6 +8,7 @@ use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Url;
+use Drupal\uiowa_core\HeadlineHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -101,6 +102,13 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
       }
     }
 
+    $form['headline'] = HeadlineHelper::getElement([
+      'headline' => $this->configuration['headline'] ?? NULL,
+      'hide_headline' => $this->configuration['hide_headline'] ?? 0,
+      'heading_size' => $this->configuration['heading_size'] ?? 'h2',
+      'headline_style' => $this->configuration['headline_style'] ?? 'default',
+    ], FALSE);
+
     $form['population'] = [
       '#type' => 'select',
       '#title' => $this->t('Population'),
@@ -116,17 +124,29 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
   /**
    * {@inheritdoc}
    */
-  public function build() {
-    $build['content'] = $this->formBuilder->getForm('Drupal\sitenow_dispatch\Form\SubscribeForm', $this->configuration['population']);
-    return $build;
+  public function blockSubmit($form, FormStateInterface $form_state) {
+    foreach ($form_state->getValues()['headline']['container'] as $name => $value) {
+      $this->configuration[$name] = $value;
+    }
+
+    $this->configuration['population'] = $form_state->getValue('population');
+    parent::blockSubmit($form, $form_state);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function blockSubmit($form, FormStateInterface $form_state) {
-    $this->configuration['population'] = $form_state->getValue('population');
-    parent::blockSubmit($form, $form_state);
+  public function build() {
+    $build['heading'] = [
+      '#theme' => 'uiowa_core_headline',
+      '#headline' => $this->configuration['headline'],
+      '#hide_headline' => $this->configuration['hide_headline'],
+      '#heading_size' => $this->configuration['heading_size'],
+      '#headline_style' => $this->configuration['headline_style'],
+    ];
+
+    $build['form'] = $this->formBuilder->getForm('Drupal\sitenow_dispatch\Form\SubscribeForm', $this->configuration['population']);
+    return $build;
   }
 
 }
