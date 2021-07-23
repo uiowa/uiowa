@@ -415,6 +415,13 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           $form['settings']['menu_levels']['level']['#default_value'] = 2;
           $form['settings']['advanced']['follow']['#default_value'] = 1;
           break;
+
+        case 'sitenow_dispatch_sign_up_form':
+          // Checks to see if there is an API key set, and if not we shouldn't be able to add the block, so remove the button.
+          if (empty(\Drupal::config('sitenow_dispatch.settings')->get('api_key'))) {
+            $form['actions']['submit']['#access'] = FALSE;
+          }
+          break;
       }
 
       $form['settings'] += [
