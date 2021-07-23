@@ -231,6 +231,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
 
     $configs = [
       'migrate_plus.migration_group.sitenow_migrate',
+      'sitenow_dispatch.settings',
     ];
 
     foreach ($configs as $config) {
