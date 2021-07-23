@@ -65,6 +65,7 @@ class SubscribeForm extends ConfigFormBase {
       '#type' => 'email',
       '#title' => $this->t('Email'),
       '#default_value' => $this->config('sitenow_dispatch.subscribe_form')->get('email'),
+      '#required' => TRUE,
     ];
     $form['first'] = [
       '#type' => 'textfield',
@@ -119,8 +120,9 @@ class SubscribeForm extends ConfigFormBase {
 
     $this->messenger()->addStatus(
       $this->t(
-        '"@first @last" has been added to the subscription list with the email "@email"',
-        ['@first' => $first, '@last' => $last, '@email' => $email]
+        '@email has been added to the subscription list.', [
+          '@email' => $email,
+        ]
       )
     );
   }
