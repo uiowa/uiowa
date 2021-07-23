@@ -110,7 +110,11 @@ class FilterIframe extends FilterBase {
     }
 
     $text = Html::serialize($dom);
-    return new FilterProcessResult($text);
+    $result = new FilterProcessResult($text);
+    $result->setAttachments([
+      'library' => ['uids_base/embed'],
+    ]);
+    return $result;
   }
 
   /**
