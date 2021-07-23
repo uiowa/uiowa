@@ -11,9 +11,9 @@ module:
   fullcalendar_view: 0
   grad_custom: 0
   smart_date: 0
+  uiowa_maui: 0
 theme: {  }
 blacklist:
-  - field.storage.node.field_grad_program_phd
   - fullcalendar.settings
   - node.type.thesis_defense
   - pathauto.pattern.thesis_defense
@@ -21,8 +21,10 @@ blacklist:
   - views.view.thesis_defenses
   - 'field.storage.node.field_thesis_defense_*'
   - fullcalendar_options.settings
+  - 'fullcalendar_options.settings.*'
 graylist:
   - core.entity_view_display.node.page.default
+  - field.storage.node.field_grad_program_phd
   - field.storage.node.field_person_first_name
   - field.storage.node.field_person_last_name
   - node.type.person
