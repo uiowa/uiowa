@@ -20,3 +20,30 @@
       }
     }
   }
+
+
+
+@media (min-width: 0em) and (max-width: 84.375em) {
+  // Special settings used for the vertical videos section on uiowa.edu home page.
+  .layout--fourcol.grid--1-3 .layout__spacing_container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .layout--fourcol.grid--1-3  .layout__region--first {
+    grid-area: 1 / 1 / 2 / 5;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .layout--fourcol.grid--1-3  .layout__region--second {
+    grid-area: 2 / 1 / 6 / 2;
+  }
+  .layout--fourcol.grid--1-3  .layout__region--third {
+    grid-area: 2 / 2 / 6 / 3;
+  }
+  .layout--fourcol.grid--1-3  .layout__region--fourth {
+    grid-area: 2 / 3 / 6 / 4;
+  }
+  // Events padding for uiowa.edu home page.
+  .layout--fourcol.grid--1-3.page__container--edge .layout__region:not(.layout__region--first) {
+    padding: 2rem;
+  }
+}
