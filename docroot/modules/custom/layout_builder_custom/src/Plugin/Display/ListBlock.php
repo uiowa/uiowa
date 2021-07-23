@@ -670,10 +670,6 @@ class ListBlock extends CoreBlock {
       }
     }
 
-    // Set view filter based on "Filter" setting.
-    $exposed_filter_values = !empty($config['exposed_filter_values']) ? $config['exposed_filter_values'] : [];
-    $this->view->setExposedInput($exposed_filter_values);
-
     if (!empty($allow_settings['use_more'])) {
       if (isset($config['use_more']) && $config['use_more']) {
         $this->view->display_handler->setOption('use_more', TRUE);
