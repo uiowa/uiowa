@@ -17,14 +17,22 @@ $imgpath: '../../uids/assets/images';
   .slider,
   .stat {
     flex-basis: 100%;
-    height: 100%;
-    .section-alignment__start & {
-      height: auto;
+  }
+}
+
+// set equal height columns
+.layout {
+  .layout__region {
+    display: grid;
+  }
+  &.section-alignment__start {
+    .layout__region {
+      display: inherit;
     }
   }
 }
 
-// Unset equal height columns
+  // Unset equal height columns
 .section-alignment__start {
   .layout__spacing_container {
     align-items: flex-start;
