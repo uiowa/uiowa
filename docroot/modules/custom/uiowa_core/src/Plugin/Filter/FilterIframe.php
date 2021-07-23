@@ -72,6 +72,14 @@ class FilterIframe extends FilterBase {
           $iframe->setAttribute('seamless', 'seamless');
           $iframe->setAttribute('sandbox', 'allow-same-origin allow-scripts allow-popups');
 
+          // Borrowed from iframe_title_filter module.
+          if (!$iframe->hasAttribute('title')) {
+            $url_pieces = parse_url($src);
+            $host = $url_pieces['host'];
+            $title = $this->t("Embedded content from @host", ['@host' => $host]);
+            $iframe->setAttribute('title', $title);
+          }
+
           $wrapper = $dom->createElement('div');
 
           // Try to set responsive styling based on width/height attributes.
@@ -103,6 +111,25 @@ class FilterIframe extends FilterBase {
 
     $text = Html::serialize($dom);
     return new FilterProcessResult($text);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function tips($long = FALSE) {
+    $allowed = explode(PHP_EOL, $this->settings['allowed_sources']);
+    $allowed_list = [
+      '#theme' => 'item_list',
+      '#list_type' => 'ul',
+      '#items' => $allowed,
+    ];
+    if ($long) {
+      $markup = '<p>You can embed iFrames from the following sources:</p>' . \Drupal::service('renderer')->render(($allowed_list));
+      return $this->t($markup);
+    }
+    else {
+      return $this->t('You can embed certain iFrames.');
+    }
   }
 
 }
