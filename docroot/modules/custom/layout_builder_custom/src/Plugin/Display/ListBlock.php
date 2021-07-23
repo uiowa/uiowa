@@ -429,6 +429,7 @@ class ListBlock extends CoreBlock {
       ];
 
       // Add states to disable a filter if it is exposed to visitors.
+      // @todo Fix Person Type Status field visibility state.
       $form['override']['exposed_filters'][$filter_id]['#states'] = [
         'disabled' => [
           [
