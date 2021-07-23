@@ -66,8 +66,29 @@ class FilterIframe extends FilterBase {
           $iframe->parentNode->removeChild($iframe);
         }
         else {
+          // Set attributes for all iFrames for better performance, styling, security.
+          // This will overwrite anything that was previously set by the editor.
+          $iframe->setAttribute('loading', 'lazy');
+          $iframe->setAttribute('seamless', 'seamless');
+          $iframe->setAttribute('sandbox', 'allow-same-origin allow-scripts allow-popups');
+
           $wrapper = $dom->createElement('div');
-          $wrapper->setAttribute('class', 'media--type-remote-video');
+
+          // Try to set responsive styling based on width/height attributes.
+          if ($iframe->hasAttribute('width') && $iframe->hasAttribute('height')) {
+            $width = $iframe->getAttribute('width');
+            $height = $iframe->getAttribute('height');
+            $aspect_ratio = round($width / $height, 3);
+            if ($aspect_ratio == '1') {
+              $wrapper->setAttribute('class', 'embed-responsive embed-responsive-1by1');
+            }
+            elseif ($aspect_ratio == '1.333') {
+              $wrapper->setAttribute('class', 'embed-responsive embed-responsive-4by3');
+            }
+            elseif ($aspect_ratio == '1.776') {
+              $wrapper->setAttribute('class', 'embed-responsive embed-responsive-16by9');
+            }
+          }
           $iframe->parentNode->replaceChild($wrapper, $iframe);
           $wrapper->appendChild($iframe);
         }
