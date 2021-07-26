@@ -75,6 +75,8 @@ class FilterIframeTest extends UnitTestCase {
 
     foreach ($attributes as $attribute => $value) {
       $this->assertEquals($value, $iframe->getAttribute($attribute));
+
+      // Every iframe should have a title.
       $this->assertTrue($iframe->hasAttribute('title'));
     }
   }
@@ -92,8 +94,10 @@ class FilterIframeTest extends UnitTestCase {
     /** @var \DOMElement $iframe */
     $iframe = $html->getElementsByTagName('iframe')->item(0);
     $classes = explode(' ', $iframe->parentNode->getAttribute('class'));
-    $this->assertContains('embed-responsive', $classes);
     $this->assertContains('embed-responsive-', $aspectRatio, $classes);
+
+    // Every parent div should at least have this class.
+    $this->assertContains('embed-responsive', $classes);
   }
 
   /**
