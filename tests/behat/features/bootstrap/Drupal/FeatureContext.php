@@ -119,8 +119,7 @@ class FeatureContext extends RawDrupalContext {
       ]);
 
       $menu_link->save();
-      \Drupal::cache('menu')->invalidateAll();
-      \Drupal::cache('block')->invalidateAll();
+      drupal_flush_all_caches();
     }
   }
 
