@@ -27,7 +27,7 @@ class FilterIframeTest extends UnitTestCase {
       'allowed_sources' => "https://foo.com/bar\r\nhttps://baz.me/qux",
     ];
 
-    $sut = new FilterIframe($configuration, 'filter_iframe', ['provider' => 'test']);
+    $sut = new FilterIframe($configuration, 'filter_iframe', ['provider' => 'uiowa_core']);
     $sut->setStringTranslation($this->getStringTranslationStub());
 
     $text = <<<EOD
