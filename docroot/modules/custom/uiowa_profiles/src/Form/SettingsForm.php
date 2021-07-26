@@ -236,15 +236,14 @@ class SettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $profiles_fieldset = $form_state->getValue('profiles_fieldset')['instances'];
     foreach ($profiles_fieldset as $key => $profiles_instance) {
-      $profiles_instance;
 
       $this->config('uiowa_profiles.settings')
-      ->set([$key, 'api_key'], $profiles_instance['profiles_instance']->getValue('api_key'))
-      ->set([$key, 'directory.path'], $profiles_instance['profiles_instance']->getValue('directory_path'))
-      ->set([$key, 'directory.canonical'], $profiles_instance['profiles_instance']->getValue('directory_canonical'))
-      ->set([$key, 'directory.title'], $profiles_instance['profiles_instance']->getValue('directory_title'))
-      ->set([$key, 'directory.page_size'], $profiles_instance['profiles_instance']->getValue('directory_page_size'))
-      ->set([$key, 'directory.intro'], $profiles_instance['profiles_instance']->getValue('directory_intro'))
+      ->set($key, $profiles_instance['profiles_instance'])
+//      ->set('directory.path', $profiles_instance['profiles_instance']['directory_path'])
+//      ->set('directory.canonical', $profiles_instance['profiles_instance']['directory_canonical'])
+//      ->set('directory.title', $profiles_instance['profiles_instance']['directory_title'])
+//      ->set('directory.page_size', $profiles_instance['profiles_instance']['directory_page_size'])
+//      ->set('directory.intro', $profiles_instance['profiles_instance']['directory_intro'])
       ->save();
     }
 
