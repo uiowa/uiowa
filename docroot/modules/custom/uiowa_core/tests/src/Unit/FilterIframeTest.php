@@ -61,6 +61,15 @@ class FilterIframeTest extends UnitTestCase {
   }
 
   /**
+   * Test iframe removed if the src is an allowed domain but path is different.
+   */
+  public function testIframeRemovedIfPathIsDifferent() {
+    $text = '<iframe src="https://baz.me/?quux=bar&foo=bar"></iframe>';
+    $processed = $this->sut->process($text, 'en')->getProcessedText();
+    $this->assertStringNotContainsString($text, $processed);
+  }
+
+  /**
    * Test iframe allowed and attributes are set.
    */
   public function testIframeAllowedAndAttributesSet() {
