@@ -4,6 +4,8 @@ namespace Drupal;
 
 use Behat\Behat\Hook\Scope\AfterFeatureScope;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
+use Drupal\node\Entity\Node;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
 
@@ -66,6 +68,59 @@ class FeatureContext extends RawDrupalContext {
     }
 
     $element->click();
+  }
+
+  /**
+   * @Given no :menu menu links
+   *
+   * Delete all menu links in a given menu.
+   */
+  public function noMenuLinks($menu) {
+    $mids = \Drupal::entityQuery('menu_link_content')
+      ->condition('menu_name', $menu)
+      ->execute();
+
+    $controller = \Drupal::entityTypeManager()->getStorage('menu_link_content');
+    $entities = $controller->loadMultiple($mids);
+    $controller->delete($entities);
+  }
+
+  /**
+   * @Given all unpublished :menu menu links
+   *
+   * Create some menu links in a given menu.
+   */
+  public function allUnpublishedMenuLinks($menu) {
+    $this->noMenuLinks($menu);
+
+    // @todo: Allow passing this content in.
+    $items = [
+      'Foo',
+      'Bar',
+      'Baz',
+    ];
+
+    foreach($items as $title) {
+      $node = Node::create([
+        'type' => 'page',
+        'title' => $title,
+        'langcode' => 'en',
+        'uid' => '1',
+        'status' => 0,
+      ]);
+
+      $node->save();
+
+      $menu_link = MenuLinkContent::create([
+        'title' => $title,
+        'link' => ['uri' => 'internal:/node/' . $node->id()],
+        'menu_name' => 'main',
+        'expanded' => TRUE,
+      ]);
+
+      $menu_link->save();
+      drupal_flush_all_caches();
+    }
   }
 
   /**
