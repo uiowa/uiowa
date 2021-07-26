@@ -8,6 +8,7 @@
 use Drupal\block\Entity\Block;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Menu\MenuLinkTreeElement;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\media\Entity\Media;
@@ -694,7 +695,7 @@ function uids_base_preprocess_block_content__uiowa_collection__accordion(&$varia
  * Implements hook_preprocess_HOOK().
  */
 function uids_base_preprocess_menu(&$variables) {
-  switch ($variables["menu_name"]) {
+  switch ($variables['menu_name']) {
     case 'top-links':
       $variables['limit'] = theme_get_setting('header.top_links_limit');
       break;
@@ -977,6 +978,20 @@ function uids_base_preprocess_input(&$variables) {
   // browsers that do not support the HTML date element.
   if (isset($variables['element']['#type']) && $variables['element']['#type'] === 'date') {
     $variables['attributes']['placeholder'] = 'YYYY-MM-DD';
+  }
+}
+
+function uids_base_preprocess_superfish(&$variables) {
+  // An access-aware boolean of whether the menu is empty or not.
+  $variables['menu_is_empty'] = FALSE;
+
+  /** @var MenuLinkTreeElement $item */
+  $items = array_filter($variables['menu_items']['#tree'], function($item) {
+    return $item->access->isAllowed();
+  });
+
+  if (empty($items)) {
+    $variables['menu_is_empty'] = TRUE;
   }
 }
 
