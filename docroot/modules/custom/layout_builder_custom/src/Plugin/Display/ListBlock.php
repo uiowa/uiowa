@@ -415,6 +415,8 @@ class ListBlock extends CoreBlock {
 
         case 'field_person_types_target_id':
           $filter_id = 'type';
+          // Need to make the Person Type field a select list.
+          _sitenow_people_person_type_filter_select($form['override']['exposed_filters']['type']);
           break;
       }
 
