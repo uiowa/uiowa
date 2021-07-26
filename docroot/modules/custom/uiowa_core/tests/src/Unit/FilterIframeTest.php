@@ -95,9 +95,6 @@ class FilterIframeTest extends UnitTestCase {
     $iframe = $html->getElementsByTagName('iframe')->item(0);
     $classes = explode(' ', $iframe->parentNode->getAttribute('class'));
     $this->assertContains('embed-responsive-', $aspectRatio, $classes);
-
-    // Every parent div should at least have this class.
-    $this->assertContains('embed-responsive', $classes);
   }
 
   /**
