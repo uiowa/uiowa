@@ -104,7 +104,7 @@ class FilterIframeTest extends UnitTestCase {
     return [
       ['1by1', 500, 500],
       ['4by3', 1024, 768],
-      ['16x9', 1920, 1080],
+      ['16by9', 1920, 1080],
     ];
   }
 
