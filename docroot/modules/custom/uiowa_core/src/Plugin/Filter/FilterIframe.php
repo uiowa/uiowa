@@ -66,8 +66,9 @@ class FilterIframe extends FilterBase {
           $iframe->parentNode->removeChild($iframe);
         }
         else {
-          // Set attributes for all iFrames for better performance, styling, security.
-          // This will overwrite anything that was previously set by the editor.
+          // Set attributes for all iFrames for better performance, styling,
+          // and security. This will overwrite anything that was previously
+          // set by the editor.
           $iframe->setAttribute('loading', 'lazy');
           $iframe->setAttribute('seamless', 'seamless');
           $iframe->setAttribute('sandbox', 'allow-same-origin allow-scripts allow-popups');
@@ -128,8 +129,9 @@ class FilterIframe extends FilterBase {
       '#items' => $allowed,
     ];
     if ($long) {
-      $markup = '<p>You can embed iFrames from the following sources:</p>' . \Drupal::service('renderer')->render(($allowed_list));
-      return $this->t($markup);
+      return $this->t('<p>You can embed iFrames from the following sources: @sources</p>', [
+        '@sources' => \Drupal::service('renderer')->render(($allowed_list)),
+      ]);
     }
     else {
       return $this->t('You can embed certain iFrames.');
