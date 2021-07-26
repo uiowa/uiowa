@@ -144,12 +144,12 @@ class FeatureContext extends RawDrupalContext {
   /**
    * Clear the cache.
    *
-   * @param \Behat\Behat\Hook\Scope\AfterFeatureScope $scope
+   * @param \Behat\Behat\Hook\Scope\AfterScenarioScope $scope
    *   The scope.
    *
    * @AfterScenario @menu
    */
-  public static function menuClearCache(AfterScenarioScope $scenarioScope) {
+  public static function menuTearDown(AfterScenarioScope $scope) {
     drupal_flush_all_caches();
   }
 
