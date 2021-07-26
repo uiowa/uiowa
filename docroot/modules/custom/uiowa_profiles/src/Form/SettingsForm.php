@@ -103,11 +103,11 @@ class SettingsForm extends ConfigFormBase {
     }
 
     for ($i = 0; $i < $profiles_field; $i++) {
-      $form['profiles_fieldset'][$i]['profiles_instance'] = [
+      $form['profiles_fieldset']['instances'][$i]['profiles_instance'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('Profiles instance'),
       ];
-      $form['profiles_fieldset'][$i]['profiles_instance']['api_key'] = [
+      $form['profiles_fieldset']['instances'][$i]['profiles_instance']['api_key'] = [
         '#type' => 'textfield',
         '#title' => $this->t('API Key'),
         '#default_value' => $this->config('uiowa_profiles.settings')->get('api_key'),
@@ -115,7 +115,7 @@ class SettingsForm extends ConfigFormBase {
         '#required' => TRUE,
       ];
 
-      $form['profiles_fieldset'][$i]['profiles_instance']['directory_path'] = [
+      $form['profiles_fieldset']['instances'][$i]['profiles_instance']['directory_path'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Directory Path'),
         '#default_value' => $this->config('uiowa_profiles.settings')->get('directory.path') ?? '/profiles/people',
@@ -125,7 +125,7 @@ class SettingsForm extends ConfigFormBase {
         '#required' => TRUE,
       ];
 
-      $form['profiles_fieldset'][$i]['profiles_instance']['directory_canonical'] = [
+      $form['profiles_fieldset']['instances'][$i]['profiles_instance']['directory_canonical'] = [
         '#type' => 'url',
         '#title' => $this->t('Canonical Link Base URL'),
         '#default_value' => $this->config('uiowa_profiles.settings')->get('directory.canonical') ?? '',
@@ -134,7 +134,7 @@ class SettingsForm extends ConfigFormBase {
         '#placeholder' => $this->getRequest()->getSchemeAndHttpHost(),
       ];
 
-      $form['profiles_fieldset'][$i]['profiles_instance']['directory_title'] = [
+      $form['profiles_fieldset']['instances'][$i]['profiles_instance']['directory_title'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Directory Title'),
         '#default_value' => $this->config('uiowa_profiles.settings')->get('directory.title') ?? 'People',
@@ -142,7 +142,7 @@ class SettingsForm extends ConfigFormBase {
         '#required' => TRUE,
       ];
 
-      $form['profiles_fieldset'][$i]['profiles_instance']['directory_page_size'] = [
+      $form['profiles_fieldset']['instances'][$i]['profiles_instance']['directory_page_size'] = [
         '#type' => 'number',
         '#title' => $this->t('Directory Page Size'),
         '#default_value' => $this->config('uiowa_profiles.settings')->get('directory.page_size') ?? 10,
@@ -154,7 +154,7 @@ class SettingsForm extends ConfigFormBase {
 
       $intro = $this->config('uiowa_profiles.settings')->get('directory.intro');
 
-      $form['profiles_fieldset'][$i]['profiles_instance']['directory_intro'] = [
+      $form['profiles_fieldset']['instances'][$i]['profiles_instance']['directory_intro'] = [
         '#type' => 'text_format',
         '#rows' => '10',
         '#cols' => '100',
@@ -200,6 +200,9 @@ class SettingsForm extends ConfigFormBase {
     return parent::buildForm($form, $form_state);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function addOne(array &$form, FormStateInterface $form_state) {
     $profiles_field = $form_state->get('num_prof_instances');
     $add_button = $profiles_field + 1;
@@ -207,11 +210,17 @@ class SettingsForm extends ConfigFormBase {
     $form_state->setRebuild();
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function addmoreCallback(array &$form, FormStateInterface $form_state) {
     $profiles_field = $form_state->get('num_prof_instances');
     return $form['profiles_fieldset'];
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function removeCallback(array &$form, FormStateInterface $form_state) {
     $profiles_field = $form_state->get('num_prof_instances');
     if ($profiles_field > 1) {
@@ -221,14 +230,28 @@ class SettingsForm extends ConfigFormBase {
     $form_state->setRebuild();
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $values = $form_state->getValue(array('profiles_fieldset', 'name'));
+    $profiles_fieldset = $form_state->getValue('profiles_fieldset')['instances'];
+    foreach ($profiles_fieldset as $key => $profiles_instance) {
+      $profiles_instance;
 
-    $output = t('These people are coming to the picnic: @names', array(
-        '@names' => implode(', ', $values),
-      )
-    );
-    drupal_set_message($output);
+      $this->config('uiowa_profiles.settings')
+      ->set([$key, 'api_key'], $profiles_instance['profiles_instance']->getValue('api_key'))
+      ->set([$key, 'directory.path'], $profiles_instance['profiles_instance']->getValue('directory_path'))
+      ->set([$key, 'directory.canonical'], $profiles_instance['profiles_instance']->getValue('directory_canonical'))
+      ->set([$key, 'directory.title'], $profiles_instance['profiles_instance']->getValue('directory_title'))
+      ->set([$key, 'directory.page_size'], $profiles_instance['profiles_instance']->getValue('directory_page_size'))
+      ->set([$key, 'directory.intro'], $profiles_instance['profiles_instance']->getValue('directory_intro'))
+      ->save();
+    }
+
+    parent::submitForm($form, $form_state);
+//
+//    // Rebuild routes so any path changes are applied.
+//    $this->routeBuilder->rebuild();
   }
 
 
@@ -263,25 +286,6 @@ class SettingsForm extends ConfigFormBase {
 //    }
 //
 //    parent::validateForm($form, $form_state);
-//  }
-
-//  /**
-//   * {@inheritdoc}
-//   */
-//  public function submitForm(array &$form, FormStateInterface $form_state) {
-//    $this->config('uiowa_profiles.settings')
-//      ->set('api_key', $form_state->getValue('api_key'))
-//      ->set('directory.path', $form_state->getValue('directory_path'))
-//      ->set('directory.canonical', $form_state->getValue('directory_canonical'))
-//      ->set('directory.title', $form_state->getValue('directory_title'))
-//      ->set('directory.page_size', $form_state->getValue('directory_page_size'))
-//      ->set('directory.intro', $form_state->getValue('directory_intro'))
-//      ->save();
-//
-//    parent::submitForm($form, $form_state);
-//
-//    // Rebuild routes so any path changes are applied.
-//    $this->routeBuilder->rebuild();
 //  }
 
 }
