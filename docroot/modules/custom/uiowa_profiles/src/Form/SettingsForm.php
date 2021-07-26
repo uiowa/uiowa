@@ -103,6 +103,8 @@ class SettingsForm extends ConfigFormBase {
     }
 
     for ($i = 0; $i < $profiles_field; $i++) {
+      $instance_values = $this->config('uiowa_profiles.settings')->get($i);
+
       $form['profiles_fieldset']['instances'][$i]['profiles_instance'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('Profiles instance'),
@@ -110,7 +112,7 @@ class SettingsForm extends ConfigFormBase {
       $form['profiles_fieldset']['instances'][$i]['profiles_instance']['api_key'] = [
         '#type' => 'textfield',
         '#title' => $this->t('API Key'),
-        '#default_value' => $this->config('uiowa_profiles.settings')->get('api_key'),
+        '#default_value' => $instance_values['api_key'],
         '#description' => $this->t('The API key provided by the ITS-AIS Profiles team.'),
         '#required' => TRUE,
       ];
@@ -118,8 +120,9 @@ class SettingsForm extends ConfigFormBase {
       $form['profiles_fieldset']['instances'][$i]['profiles_instance']['directory_path'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Directory Path'),
-        '#default_value' => $this->config('uiowa_profiles.settings')->get('directory.path') ?? '/profiles/people',
+        '#default_value' => $instance_values['directory.path'] ?? '/profiles/people',
         '#description' => $this->t('The path for the Profiles directory. Serves as the base for all profiles and an additional <a href=":url">sitemap</a> to submit to search engines.', [
+          // @TODO: is this the right thing we are getting here for multiple directory instances?
           ':url' => Url::fromRoute('uiowa_profiles.sitemap')->toString(),
         ]),
         '#required' => TRUE,
@@ -128,7 +131,7 @@ class SettingsForm extends ConfigFormBase {
       $form['profiles_fieldset']['instances'][$i]['profiles_instance']['directory_canonical'] = [
         '#type' => 'url',
         '#title' => $this->t('Canonical Link Base URL'),
-        '#default_value' => $this->config('uiowa_profiles.settings')->get('directory.canonical') ?? '',
+        '#default_value' => $instance_values['directory.canonical'] ?? '',
         '#description' => $this->t('The Base URL to generate the canonical link to a profile for SEO. Leave blank if this site is the canonical source.'),
         '#required' => FALSE,
         '#placeholder' => $this->getRequest()->getSchemeAndHttpHost(),
@@ -137,7 +140,7 @@ class SettingsForm extends ConfigFormBase {
       $form['profiles_fieldset']['instances'][$i]['profiles_instance']['directory_title'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Directory Title'),
-        '#default_value' => $this->config('uiowa_profiles.settings')->get('directory.title') ?? 'People',
+        '#default_value' => $instance_values['directory.title'] ?? 'People',
         '#description' => $this->t('The page title to display on the Profiles directory.'),
         '#required' => TRUE,
       ];
@@ -145,14 +148,14 @@ class SettingsForm extends ConfigFormBase {
       $form['profiles_fieldset']['instances'][$i]['profiles_instance']['directory_page_size'] = [
         '#type' => 'number',
         '#title' => $this->t('Directory Page Size'),
-        '#default_value' => $this->config('uiowa_profiles.settings')->get('directory.page_size') ?? 10,
+        '#default_value' => $instance_values['directory.page_size'] ?? 10,
         '#min' => 5,
         '#max' => 50,
         '#description' => $this->t('Number of entries per page of the directory. Min: 5, Max: 50'),
         '#required' => TRUE,
       ];
 
-      $intro = $this->config('uiowa_profiles.settings')->get('directory.intro');
+      $intro = $instance_values['directory.intro'];
 
       $form['profiles_fieldset']['instances'][$i]['profiles_instance']['directory_intro'] = [
         '#type' => 'text_format',
@@ -239,11 +242,6 @@ class SettingsForm extends ConfigFormBase {
 
       $this->config('uiowa_profiles.settings')
       ->set($key, $profiles_instance['profiles_instance'])
-//      ->set('directory.path', $profiles_instance['profiles_instance']['directory_path'])
-//      ->set('directory.canonical', $profiles_instance['profiles_instance']['directory_canonical'])
-//      ->set('directory.title', $profiles_instance['profiles_instance']['directory_title'])
-//      ->set('directory.page_size', $profiles_instance['profiles_instance']['directory_page_size'])
-//      ->set('directory.intro', $profiles_instance['profiles_instance']['directory_intro'])
       ->save();
     }
 
