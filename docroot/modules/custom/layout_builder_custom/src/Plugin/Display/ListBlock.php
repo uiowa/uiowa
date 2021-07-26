@@ -686,8 +686,12 @@ class ListBlock extends CoreBlock {
       }
     }
 
+    // We need to get both the values from the exposed filter form
+    // as well as any pre-set filter values from the block form.
     $inputs = $this->view->getExposedInput();
     $exposed_filter_values = !empty($config['exposed_filter_values']) ? $config['exposed_filter_values'] : [];
+    // Inputs are the second arg here, so if we have an exposed input,
+    // it will replace any value from the config array.
     $exposed_filter_values = array_merge($exposed_filter_values, $inputs);
     $this->view->setExposedInput($exposed_filter_values);
 
