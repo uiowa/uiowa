@@ -69,9 +69,9 @@ class FilterIframe extends FilterBase {
           // Set attributes for all iFrames for better performance, styling,
           // and security. This will overwrite anything that was previously
           // set by the editor.
-          $iframe->setAttribute('loading', 'lazy');
-          $iframe->setAttribute('seamless', 'seamless');
-          $iframe->setAttribute('sandbox', 'allow-same-origin allow-scripts allow-popups');
+          foreach ($this->getIframeAttributes() as $attribute => $value) {
+            $iframe->setAttribute($attribute, $value);
+          }
 
           // Borrowed from iframe_title_filter module.
           if (!$iframe->hasAttribute('title')) {
@@ -98,6 +98,7 @@ class FilterIframe extends FilterBase {
               $wrapper->setAttribute('class', 'embed-responsive embed-responsive-16by9');
             }
           }
+
           $iframe->parentNode->replaceChild($wrapper, $iframe);
           $wrapper->appendChild($iframe);
         }
@@ -136,6 +137,14 @@ class FilterIframe extends FilterBase {
     else {
       return $this->t('You can embed certain iFrames.');
     }
+  }
+
+  public function getIframeAttributes() {
+    return [
+      'loading' => 'lazy',
+      'seamless' => 'seamless',
+      'sandbox' => 'allow-same-origin allow-scripts allow-popups',
+    ];
   }
 
 }
