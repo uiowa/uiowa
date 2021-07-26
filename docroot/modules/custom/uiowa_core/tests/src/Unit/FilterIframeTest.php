@@ -94,7 +94,7 @@ class FilterIframeTest extends UnitTestCase {
     /** @var \DOMElement $iframe */
     $iframe = $html->getElementsByTagName('iframe')->item(0);
     $classes = explode(' ', $iframe->parentNode->getAttribute('class'));
-    $this->assertContains('embed-responsive-', $aspectRatio, $classes);
+    $this->assertContains("embed-responsive-{$aspectRatio}", $classes);
   }
 
   /**
