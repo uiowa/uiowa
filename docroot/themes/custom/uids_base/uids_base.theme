@@ -8,7 +8,6 @@
 use Drupal\block\Entity\Block;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Menu\MenuLinkTreeElement;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\media\Entity\Media;
@@ -798,7 +797,8 @@ function uids_base_preprocess_paragraph(&$variables) {
         }
       }
 
-      // If our bundle is the collection item and we have a 'field_automatically_open' value set...
+      // If our bundle is the collection item and we have a
+      // 'field_automatically_open' value set...
       if ($paragraph->bundle() == 'uiowa_collection_item' &&
         $opened = $paragraph->field_automatically_open->value) {
         // Pass a true or false based upon the value to the template.
@@ -981,12 +981,15 @@ function uids_base_preprocess_input(&$variables) {
   }
 }
 
+/**
+ * Implements hook_preprocess_HOOK().
+ */
 function uids_base_preprocess_superfish(&$variables) {
   // An access-aware boolean of whether the menu is empty or not.
   $variables['menu_is_empty'] = FALSE;
 
-  /** @var MenuLinkTreeElement $item */
-  $items = array_filter($variables['menu_items']['#tree'], function($item) {
+  /** @var \Drupal\Core\Menu\MenuLinkTreeElement $item */
+  $items = array_filter($variables['menu_items']['#tree'], function ($item) {
     return $item->access->isAllowed();
   });
 
