@@ -130,7 +130,7 @@ class FilterIframe extends FilterBase {
       '#items' => $allowed,
     ];
     if ($long) {
-      return $this->t('<p>You can embed iFrames from the following sources: @sources</p>', [
+      return $this->t('<p>This functionality is only available by using source mode. You can embed iFrames from the following sources: @sources</p>', [
         '@sources' => \Drupal::service('renderer')->render(($allowed_list)),
       ]);
     }
