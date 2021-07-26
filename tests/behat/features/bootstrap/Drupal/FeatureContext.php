@@ -119,8 +119,9 @@ class FeatureContext extends RawDrupalContext {
       ]);
 
       $menu_link->save();
-      drupal_flush_all_caches();
     }
+
+    drupal_flush_all_caches();
   }
 
   /**
