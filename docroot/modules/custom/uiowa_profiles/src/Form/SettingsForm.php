@@ -85,11 +85,12 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $config = $this->config('uiowa_profiles.settings');
+
     $form['description'] = array(
       '#markup' => '<div>'. t('This example shows an add-more and a remove-last button.').'</div>',
     );
 
-    $profiles_field = $form_state->get('num_prof_instances');
     $form['#tree'] = TRUE;
     $form['profiles_fieldset'] = [
       '#type' => 'fieldset',
@@ -98,14 +99,14 @@ class SettingsForm extends ConfigFormBase {
       '#suffix' => '</div>',
     ];
 
-    if (empty($profiles_field)) {
-      $profiles_field = $form_state->set('num_prof_instances', 1);
+    $num_prof_instances = ($form_state->get('num_prof_instances')) ? $form_state->get('num_prof_instances') : $config->get('num_prof_instances');
+    if ($num_prof_instances === NULL) {
+      $form_state->set('num_prof_instances', 1);
+      $num_prof_instances = 1;
     }
 
-    $profiles_field = $form_state->get('num_prof_instances');
-
-    for ($i = 0; $i < $profiles_field; $i++) {
-      $instance_values = $this->config('uiowa_profiles.settings')->get($i);
+    for ($i = 0; $i < $num_prof_instances; $i++) {
+      $instance_values = $config->get()[$i];
 
       $form['profiles_fieldset']['instances'][$i]['profiles_instance'] = [
         '#type' => 'fieldset',
@@ -157,7 +158,7 @@ class SettingsForm extends ConfigFormBase {
         '#required' => TRUE,
       ];
 
-      $intro = $instance_values['directory.intro'];
+//      $intro = $instance_values['directory.intro'];
 
       $form['profiles_fieldset']['instances'][$i]['profiles_instance']['directory_intro'] = [
         '#type' => 'text_format',
@@ -185,7 +186,7 @@ class SettingsForm extends ConfigFormBase {
         'wrapper' => 'profiles-fieldset',
       ],
     ];
-    if ($profiles_field > 1) {
+    if ($num_prof_instances > 1) {
       $form['profiles_fieldset']['actions']['remove_name'] = [
         '#type' => 'submit',
         '#value' => t('Remove one'),
@@ -244,6 +245,7 @@ class SettingsForm extends ConfigFormBase {
 
       $this->config('uiowa_profiles.settings')
       ->set($key, $profiles_instance['profiles_instance'])
+      ->set('num_prof_instances', $form_state->get('num_prof_instances'))
       ->save();
     }
 
