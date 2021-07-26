@@ -7,7 +7,6 @@ use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\Entity\Node;
 use Drupal\user\Entity\User;
-use Drupal\user\UserInterface;
 
 /**
  * FeatureContext class defines custom step definitions for Behat.
@@ -25,9 +24,9 @@ class FeatureContext extends RawDrupalContext {
   }
 
   /**
-   * @Given I am logged in as a user with role :role
-   *
    * Do a one-time login and assign the given role.
+   *
+   * @Given I am logged in as a user with role :role
    *
    * This is necessary because the profile disables local Drupal accounts
    * making regular Behat login useless. Must be run against the default site.
@@ -37,7 +36,7 @@ class FeatureContext extends RawDrupalContext {
     $user = user_load_by_name($name);
 
     if (!$user) {
-      /** @var UserInterface $user */
+      /** @var \Drupal\user\Entity\UserInterface $user */
       $user = User::create([
         'name' => $name,
         'mail' => 'noreply@default.local.drupal.uiowa.edu',
@@ -53,13 +52,14 @@ class FeatureContext extends RawDrupalContext {
   }
 
   /**
+   * Click an element given a selector.
+   *
    * @Given I click the :arg1 element
    *
    * This is necessary as Behat only supports clicking certain links and buttons
    * out of the box.
    */
-  public function iClickTheElement($selector)
-  {
+  public function iClickTheElement($selector) {
     $page = $this->getSession()->getPage();
     $element = $page->find('css', $selector);
 
@@ -71,9 +71,9 @@ class FeatureContext extends RawDrupalContext {
   }
 
   /**
-   * @Given no :menu menu links
+   * Delete all menu links from a given menu.
    *
-   * Delete all menu links in a given menu.
+   * @Given no :menu menu links
    */
   public function noMenuLinks($menu) {
     $mids = \Drupal::entityQuery('menu_link_content')
@@ -86,21 +86,21 @@ class FeatureContext extends RawDrupalContext {
   }
 
   /**
-   * @Given all unpublished :menu menu links
-   *
    * Create some menu links in a given menu.
+   *
+   * @Given all unpublished :menu menu links
    */
   public function allUnpublishedMenuLinks($menu) {
     $this->noMenuLinks($menu);
 
-    // @todo: Allow passing this content in.
+    // @todo Allow passing this content in.
     $items = [
       'Foo',
       'Bar',
       'Baz',
     ];
 
-    foreach($items as $title) {
+    foreach ($items as $title) {
       $node = Node::create([
         'type' => 'page',
         'title' => $title,
@@ -124,13 +124,17 @@ class FeatureContext extends RawDrupalContext {
   }
 
   /**
-   * @AfterFeature @alerts
+   * Clear out the alerts settings.
    *
-   * @param AfterFeatureScope $scope
+   * @param \Behat\Behat\Hook\Scope\AfterFeatureScope $scope
+   *   The scope.
+   *
+   * @AfterFeature @alerts
    */
   public static function alertsTearDown(AfterFeatureScope $scope) {
     \Drupal::configFactory()->getEditable('uiowa_alerts.settings')
-      ->set('custom_alert.display', false)
+      ->set('custom_alert.display', FALSE)
       ->save();
   }
+
 }
