@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\uiowa_core\Unit;
 
+use Drupal\Component\Utility\Html;
+use Drupal\filter\Plugin\FilterBase;
 use Drupal\Tests\UnitTestCase;
 use Drupal\uiowa_core\Plugin\Filter\FilterIframe;
 
@@ -11,46 +13,92 @@ use Drupal\uiowa_core\Plugin\Filter\FilterIframe;
  * @group uiowa_core
  */
 class FilterIframeTest extends UnitTestCase {
+  protected $sut;
 
   /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
     parent::setUp();
-  }
 
-  /**
-   * Tests that iframes are stripped from HTML text.
-   */
-  public function testIframesRemovedIfNotAllowed() {
     $configuration['settings'] = [
       'allowed_sources' => "https://foo.com/bar\r\nhttps://baz.me/qux",
     ];
 
-    $sut = new FilterIframe($configuration, 'filter_iframe', ['provider' => 'uiowa_core']);
-    $sut->setStringTranslation($this->getStringTranslationStub());
+    $this->sut = new FilterIframe($configuration, 'filter_iframe', ['provider' => 'uiowa_core']);
+    $this->sut->setStringTranslation($this->getStringTranslationStub());
+  }
 
-    $text = <<<EOD
-<div class="foo">
-<a href="#bar">Baz</a>
-<iframe bogus="yes"></iframe>
-<iframe src="https://bogus.com" allow="video microphone"></iframe>
-<iframe src="https://foo.com/bar?baz=qux"></iframe>
-<iframe src="http://foo.com/bar?nohttps=yes"></iframe>
-<iframe src="https://baz.me/qux?quux=bar&foo=bar"></iframe>
-</div>
-EOD;
+  /**
+   * Test iframe removed if no src attribute.
+   */
+  public function testIframeRemovedIfNoSrc() {
+    $text = '<iframe bogus="yes"></iframe>';
+    $processed = $this->sut->process($text, 'en')->getProcessedText();
+    $this->assertStringNotContainsString($text, $processed);
+  }
 
-    $processed = $sut->process($text, 'en')->getProcessedText();
+  /**
+   * Test iframe removed if no HTTPS.
+   */
+  public function testIframeRemovedIfNoHttps() {
+    $text = '<iframe src="<iframe src="http://foo.com/bar?nohttps=yes"></iframe>">';
+    $processed = $this->sut->process($text, 'en')->getProcessedText();
+    $this->assertStringNotContainsString($text, $processed);
+  }
 
-    // These should not be present.
-    $this->assertStringNotContainsString('<iframe bogus="yes"></iframe>', $processed);
-    $this->assertStringNotContainsString('<iframe src="https://bogus.com" allow="video microphone"></iframe>', $processed);
-    $this->assertStringNotContainsString('<iframe src="http://foo.com/bar?nohttps=yes"></iframe>', $processed);
+  /**
+   * Test iframe removed if not allowed.
+   */
+  public function testIframeRemovedIfNotAllowed() {
+    $text = '<iframe src="https://bogus.com" allow="video microphone"></iframe>';
+    $processed = $this->sut->process($text, 'en')->getProcessedText();
+    $this->assertStringNotContainsString($text, $processed);
+  }
 
-    // These should.
-    $this->assertStringContainsString('<iframe src="https://foo.com/bar?baz=qux" loading="lazy" seamless="seamless" sandbox="allow-same-origin allow-scripts allow-popups" title="Embedded content from foo.com"></iframe>', $processed);
-    $this->assertStringContainsString('<iframe src="https://baz.me/qux?quux=bar&amp;foo=bar" loading="lazy" seamless="seamless" sandbox="allow-same-origin allow-scripts allow-popups" title="Embedded content from baz.me"></iframe>', $processed);
+  /**
+   * Test iframe allowed and attributes are set.
+   */
+  public function testIframeAllowedAndAttributesSet() {
+    $text = '<iframe src="https://baz.me/qux?quux=bar&foo=bar"></iframe>';
+    $processed = $this->sut->process($text, 'en')->getProcessedText();
+    $html = Html::load($processed);
+
+    /** @var \DOMElement $iframe */
+    $iframe = $html->getElementsByTagName('iframe')->item(0);
+
+    $attributes = $this->sut->getIframeAttributes();
+
+    foreach ($attributes as $attribute => $value) {
+      $this->assertEquals($value, $iframe->getAttribute($attribute));
+      $this->assertTrue($iframe->hasAttribute('title'));
+    }
+  }
+
+  /**
+   * Test iframe allowed and responsive classes are set on parent div.
+   *
+   * @dataProvider providerDimensions
+   */
+  public function testIframeAllowedAndClassesSet($aspectRatio, $width, $height) {
+    $text = "<iframe src='https://foo.com/bar?baz=qux' width='{$width}' height='{$height}'></iframe>";
+    $processed = $this->sut->process($text, 'en')->getProcessedText();
+    $html = Html::load($processed);
+
+    /** @var \DOMElement $iframe */
+    $iframe = $html->getElementsByTagName('iframe')->item(0);
+    $classes = explode(' ', $iframe->parentNode->getAttribute('class'));
+    $this->assertContains('embed-responsive', $classes);
+    $this->assertContains('embed-responsive-' , $aspectRatio, $classes);
+  }
+
+  public function providerDimensions()
+  {
+    return [
+      ['1by1', 500, 500],
+      ['4by3', 1024, 768],
+      ['16x9', 1920, 1080],
+    ];
   }
 
 }
