@@ -2981,3 +2981,9 @@ $sites['neuroimaging.local.drupal.uiowa.edu'] = 'neuroimaging.uiowa.edu';
 $sites['neuroimaging.dev.drupal.uiowa.edu'] = 'neuroimaging.uiowa.edu';
 $sites['neuroimaging.stage.drupal.uiowa.edu'] = 'neuroimaging.uiowa.edu';
 $sites['neuroimaging.prod.drupal.uiowa.edu'] = 'neuroimaging.uiowa.edu';
+
+// Directory aliases for rodgers.sites.uiowa.edu.
+$sites['sitesrodgers.local.drupal.uiowa.edu'] = 'rodgers.sites.uiowa.edu';
+$sites['sitesrodgers.dev.drupal.uiowa.edu'] = 'rodgers.sites.uiowa.edu';
+$sites['sitesrodgers.stage.drupal.uiowa.edu'] = 'rodgers.sites.uiowa.edu';
+$sites['sitesrodgers.prod.drupal.uiowa.edu'] = 'rodgers.sites.uiowa.edu';
