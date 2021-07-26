@@ -3,6 +3,7 @@
 namespace Drupal;
 
 use Behat\Behat\Hook\Scope\AfterFeatureScope;
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Drupal\DrupalExtension\Context\RawDrupalContext;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\Entity\Node;
@@ -88,10 +89,11 @@ class FeatureContext extends RawDrupalContext {
   /**
    * Create some menu links in a given menu.
    *
-   * @Given all unpublished :menu menu links
+   * @Given :menu menu links to content with :status status
    */
-  public function allUnpublishedMenuLinks($menu) {
+  public function menuLinksWithStatus($menu, $status) {
     $this->noMenuLinks($menu);
+    $status = ($status == 'published');
 
     // @todo Allow passing this content in.
     $items = [
@@ -104,24 +106,25 @@ class FeatureContext extends RawDrupalContext {
       $node = Node::create([
         'type' => 'page',
         'title' => $title,
-        'langcode' => 'en',
         'uid' => '1',
-        'status' => 0,
       ]);
+
+      if ($status) {
+        $node->set('status', TRUE);
+        $node->set('moderation_state', 'published');
+      }
 
       $node->save();
 
       $menu_link = MenuLinkContent::create([
         'title' => $title,
         'link' => ['uri' => 'internal:/node/' . $node->id()],
-        'menu_name' => 'main',
+        'menu_name' => $menu,
         'expanded' => TRUE,
       ]);
 
       $menu_link->save();
     }
-
-    drupal_flush_all_caches();
   }
 
   /**
@@ -136,6 +139,18 @@ class FeatureContext extends RawDrupalContext {
     \Drupal::configFactory()->getEditable('uiowa_alerts.settings')
       ->set('custom_alert.display', FALSE)
       ->save();
+  }
+
+  /**
+   * Clear the cache.
+   *
+   * @param \Behat\Behat\Hook\Scope\AfterFeatureScope $scope
+   *   The scope.
+   *
+   * @AfterScenario @menu
+   */
+  public static function menuClearCache(AfterScenarioScope $scenarioScope) {
+    drupal_flush_all_caches();
   }
 
 }
