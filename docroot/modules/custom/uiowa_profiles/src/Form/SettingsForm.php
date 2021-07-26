@@ -102,6 +102,8 @@ class SettingsForm extends ConfigFormBase {
       $profiles_field = $form_state->set('num_prof_instances', 1);
     }
 
+    $profiles_field = $form_state->get('num_prof_instances');
+
     for ($i = 0; $i < $profiles_field; $i++) {
       $instance_values = $this->config('uiowa_profiles.settings')->get($i);
 
