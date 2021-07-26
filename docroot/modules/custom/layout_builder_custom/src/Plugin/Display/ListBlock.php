@@ -405,12 +405,16 @@ class ListBlock extends CoreBlock {
     foreach ($this->getListOfExposedFilters() as $filter_id => $filter_label) {
       // Add the wrapper if we need it to accurately target the field.
       switch ($filter_id) {
+        case 'field_tags_target_id':
+          $filter_id = 'tag';
+          break;
+
         case 'field_person_type_status_value':
-          $filter_id = 'field_person_type_status_value_wrapper';
+          $filter_id = 'type_status_value_wrapper';
           break;
 
         case 'field_person_research_areas_target_id':
-          $filter_id = 'people_research_areas';
+          $filter_id = 'research';
           break;
 
         case 'field_person_types_target_id':
@@ -626,12 +630,18 @@ class ListBlock extends CoreBlock {
         // manually adjust for various naming inconsistencies.
         $key = basename($key, '_expose');
         switch ($key) {
-          case 'field_person_type_status_value_wrapper':
-            $key = 'field_person_type_status_value';
+
+          case 'research':
+            $key = 'field_person_research_areas_target_id';
+            // Adjust to a single-select field.
+            $this->view->setHandlerOption($display_id, 'filter', $key, 'type', 'select');
+            $expose = $this->view->getHandler($display_id, 'filter', $key)['expose'];
+            $expose['multiple'] = FALSE;
+            $this->view->setHandlerOption($display_id, 'filter', $key, 'expose', $expose);
             break;
 
-          case 'people_research_areas':
-            $key = 'field_person_research_areas_target_id';
+          case 'tag':
+            $key = 'field_tags_target_id';
             // Adjust to a single-select field.
             $this->view->setHandlerOption($display_id, 'filter', $key, 'type', 'select');
             $expose = $this->view->getHandler($display_id, 'filter', $key)['expose'];
@@ -641,6 +651,10 @@ class ListBlock extends CoreBlock {
 
           case 'type':
             $key = 'field_person_types_target_id';
+            break;
+
+          case 'type_status_value_wrapper':
+            $key = 'field_person_type_status_value';
             break;
         }
 
@@ -671,6 +685,11 @@ class ListBlock extends CoreBlock {
         }
       }
     }
+
+    $inputs = $this->view->getExposedInput();
+    $exposed_filter_values = !empty($config['exposed_filter_values']) ? $config['exposed_filter_values'] : [];
+    $exposed_filter_values = array_merge($exposed_filter_values, $inputs);
+    $this->view->setExposedInput($exposed_filter_values);
 
     if (!empty($allow_settings['use_more'])) {
       if (isset($config['use_more']) && $config['use_more']) {
