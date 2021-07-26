@@ -139,6 +139,12 @@ class FilterIframe extends FilterBase {
     }
   }
 
+  /**
+   * Helper method to get the attributes to set on every iframe.
+   *
+   * @return array
+   *   Key/value pairs of attributes.
+   */
   public function getIframeAttributes() {
     return [
       'loading' => 'lazy',

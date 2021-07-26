@@ -3,7 +3,6 @@
 namespace Drupal\Tests\uiowa_core\Unit;
 
 use Drupal\Component\Utility\Html;
-use Drupal\filter\Plugin\FilterBase;
 use Drupal\Tests\UnitTestCase;
 use Drupal\uiowa_core\Plugin\Filter\FilterIframe;
 
@@ -13,6 +12,11 @@ use Drupal\uiowa_core\Plugin\Filter\FilterIframe;
  * @group uiowa_core
  */
 class FilterIframeTest extends UnitTestCase {
+  /**
+   * The system under test.
+   *
+   * @var \Drupal\uiowa_core\Plugin\Filter\FilterIframe
+   */
   protected $sut;
 
   /**
@@ -89,11 +93,13 @@ class FilterIframeTest extends UnitTestCase {
     $iframe = $html->getElementsByTagName('iframe')->item(0);
     $classes = explode(' ', $iframe->parentNode->getAttribute('class'));
     $this->assertContains('embed-responsive', $classes);
-    $this->assertContains('embed-responsive-' , $aspectRatio, $classes);
+    $this->assertContains('embed-responsive-', $aspectRatio, $classes);
   }
 
-  public function providerDimensions()
-  {
+  /**
+   * Data provider for testIframeAllowedAndClassesSet.
+   */
+  public function providerDimensions() {
     return [
       ['1by1', 500, 500],
       ['4by3', 1024, 768],
