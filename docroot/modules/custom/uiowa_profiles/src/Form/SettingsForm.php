@@ -85,114 +85,203 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form['api_key'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('API Key'),
-      '#default_value' => $this->config('uiowa_profiles.settings')->get('api_key'),
-      '#description' => $this->t('The API key provided by the ITS-AIS Profiles team.'),
-      '#required' => TRUE,
+    $form['description'] = array(
+      '#markup' => '<div>'. t('This example shows an add-more and a remove-last button.').'</div>',
+    );
+
+    $profiles_field = $form_state->get('num_prof_instances');
+    $form['#tree'] = TRUE;
+    $form['profiles_fieldset'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('PEOPLE COMING TO THE PICNIC'),
+      '#prefix' => '<div id="profiles-fieldset">',
+      '#suffix' => '</div>',
     ];
 
-    $form['directory_path'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Directory Path'),
-      '#default_value' => $this->config('uiowa_profiles.settings')->get('directory.path') ?? '/profiles/people',
-      '#description' => $this->t('The path for the Profiles directory. Serves as the base for all profiles and an additional <a href=":url">sitemap</a> to submit to search engines.', [
-        ':url' => Url::fromRoute('uiowa_profiles.sitemap')->toString(),
-      ]),
-      '#required' => TRUE,
+    if (empty($profiles_field)) {
+      $profiles_field = $form_state->set('num_prof_instances', 1);
+    }
+
+    for ($i = 0; $i < $profiles_field; $i++) {
+      $form['profiles_fieldset'][$i]['profiles_instance'] = [
+        '#type' => 'fieldset',
+        '#title' => $this->t('Profiles instance'),
+      ];
+      $form['profiles_fieldset'][$i]['profiles_instance']['api_key'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('API Key'),
+        '#default_value' => $this->config('uiowa_profiles.settings')->get('api_key'),
+        '#description' => $this->t('The API key provided by the ITS-AIS Profiles team.'),
+        '#required' => TRUE,
+      ];
+
+      $form['profiles_fieldset'][$i]['profiles_instance']['directory_path'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Directory Path'),
+        '#default_value' => $this->config('uiowa_profiles.settings')->get('directory.path') ?? '/profiles/people',
+        '#description' => $this->t('The path for the Profiles directory. Serves as the base for all profiles and an additional <a href=":url">sitemap</a> to submit to search engines.', [
+          ':url' => Url::fromRoute('uiowa_profiles.sitemap')->toString(),
+        ]),
+        '#required' => TRUE,
+      ];
+
+      $form['profiles_fieldset'][$i]['profiles_instance']['directory_canonical'] = [
+        '#type' => 'url',
+        '#title' => $this->t('Canonical Link Base URL'),
+        '#default_value' => $this->config('uiowa_profiles.settings')->get('directory.canonical') ?? '',
+        '#description' => $this->t('The Base URL to generate the canonical link to a profile for SEO. Leave blank if this site is the canonical source.'),
+        '#required' => FALSE,
+        '#placeholder' => $this->getRequest()->getSchemeAndHttpHost(),
+      ];
+
+      $form['profiles_fieldset'][$i]['profiles_instance']['directory_title'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Directory Title'),
+        '#default_value' => $this->config('uiowa_profiles.settings')->get('directory.title') ?? 'People',
+        '#description' => $this->t('The page title to display on the Profiles directory.'),
+        '#required' => TRUE,
+      ];
+
+      $form['profiles_fieldset'][$i]['profiles_instance']['directory_page_size'] = [
+        '#type' => 'number',
+        '#title' => $this->t('Directory Page Size'),
+        '#default_value' => $this->config('uiowa_profiles.settings')->get('directory.page_size') ?? 10,
+        '#min' => 5,
+        '#max' => 50,
+        '#description' => $this->t('Number of entries per page of the directory. Min: 5, Max: 50'),
+        '#required' => TRUE,
+      ];
+
+      $intro = $this->config('uiowa_profiles.settings')->get('directory.intro');
+
+      $form['profiles_fieldset'][$i]['profiles_instance']['directory_intro'] = [
+        '#type' => 'text_format',
+        '#rows' => '10',
+        '#cols' => '100',
+        '#title' => $this->t('Introduction'),
+        '#format' => 'filtered_html',
+        '#allowed_formats' => [
+          'filtered_html',
+        ],
+        '#default_value' => $intro['value'] ?? '',
+        '#description' => $this->t('Introductory text to be included at the top of the Profiles directory.'),
+        '#required' => FALSE,
+      ];
+    }
+    $form['actions'] = [
+      '#type' => 'actions',
     ];
-
-    $form['directory_canonical'] = [
-      '#type' => 'url',
-      '#title' => $this->t('Canonical Link Base URL'),
-      '#default_value' => $this->config('uiowa_profiles.settings')->get('directory.canonical') ?? '',
-      '#description' => $this->t('The Base URL to generate the canonical link to a profile for SEO. Leave blank if this site is the canonical source.'),
-      '#required' => FALSE,
-      '#placeholder' => $this->getRequest()->getSchemeAndHttpHost(),
-    ];
-
-    $form['directory_title'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Directory Title'),
-      '#default_value' => $this->config('uiowa_profiles.settings')->get('directory.title') ?? 'People',
-      '#description' => $this->t('The page title to display on the Profiles directory.'),
-      '#required' => TRUE,
-    ];
-
-    $form['directory_page_size'] = [
-      '#type' => 'number',
-      '#title' => $this->t('Directory Page Size'),
-      '#default_value' => $this->config('uiowa_profiles.settings')->get('directory.page_size') ?? 10,
-      '#min' => 5,
-      '#max' => 50,
-      '#description' => $this->t('Number of entries per page of the directory. Min: 5, Max: 50'),
-      '#required' => TRUE,
-    ];
-
-    $intro = $this->config('uiowa_profiles.settings')->get('directory.intro');
-
-    $form['directory_intro'] = [
-      '#type' => 'text_format',
-      '#rows' => '10',
-      '#cols' => '100',
-      '#title' => $this->t('Introduction'),
-      '#format' => 'filtered_html',
-      '#allowed_formats' => [
-        'filtered_html',
+    $form['profiles_fieldset']['actions']['add_name'] = [
+      '#type' => 'submit',
+      '#value' => t('Add one more'),
+      '#submit' => array('::addOne'),
+      '#ajax' => [
+        'callback' => '::addmoreCallback',
+        'wrapper' => 'profiles-fieldset',
       ],
-      '#default_value' => $intro['value'] ?? '',
-      '#description' => $this->t('Introductory text to be included at the top of the Profiles directory.'),
-      '#required' => FALSE,
+    ];
+    if ($profiles_field > 1) {
+      $form['profiles_fieldset']['actions']['remove_name'] = [
+        '#type' => 'submit',
+        '#value' => t('Remove one'),
+        '#submit' => array('::removeCallback'),
+        '#ajax' => [
+          'callback' => '::addmoreCallback',
+          'wrapper' => 'profiles-fieldset',
+        ]
+      ];
+    }
+    $form_state->setCached(FALSE);
+    $form['actions']['submit'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Submit'),
     ];
 
     return parent::buildForm($form, $form_state);
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    $fields = [
-      'directory_path',
-    ];
+  public function addOne(array &$form, FormStateInterface $form_state) {
+    $profiles_field = $form_state->get('num_prof_instances');
+    $add_button = $profiles_field + 1;
+    $form_state->set('num_prof_instances', $add_button);
+    $form_state->setRebuild();
+  }
 
-    foreach ($fields as $field) {
-      $path = $this->aliasCleaner->cleanAlias($form_state->getValue($field));
+  public function addmoreCallback(array &$form, FormStateInterface $form_state) {
+    $profiles_field = $form_state->get('num_prof_instances');
+    return $form['profiles_fieldset'];
+  }
 
-      /** @var \Drupal\Core\Url $url */
-      $url = $this->pathValidator->getUrlIfValid($path);
-
-      // If $url is anything besides FALSE then the path is already in use. We
-      // also check if the route belongs to another module.
-      if ($url && !str_starts_with($url->getRouteName(), 'uiowa_profiles')) {
-        $form_state->setErrorByName($field, 'This path is already in use.');
-      }
-      else {
-        $form_state->setValue($field, $path);
-      }
+  public function removeCallback(array &$form, FormStateInterface $form_state) {
+    $profiles_field = $form_state->get('num_prof_instances');
+    if ($profiles_field > 1) {
+      $remove_button = $profiles_field - 1;
+      $form_state->set('num_prof_instances', $remove_button);
     }
-
-    parent::validateForm($form, $form_state);
+    $form_state->setRebuild();
   }
 
-  /**
-   * {@inheritdoc}
-   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $this->config('uiowa_profiles.settings')
-      ->set('api_key', $form_state->getValue('api_key'))
-      ->set('directory.path', $form_state->getValue('directory_path'))
-      ->set('directory.canonical', $form_state->getValue('directory_canonical'))
-      ->set('directory.title', $form_state->getValue('directory_title'))
-      ->set('directory.page_size', $form_state->getValue('directory_page_size'))
-      ->set('directory.intro', $form_state->getValue('directory_intro'))
-      ->save();
+    $values = $form_state->getValue(array('profiles_fieldset', 'name'));
 
-    parent::submitForm($form, $form_state);
-
-    // Rebuild routes so any path changes are applied.
-    $this->routeBuilder->rebuild();
+    $output = t('These people are coming to the picnic: @names', array(
+        '@names' => implode(', ', $values),
+      )
+    );
+    drupal_set_message($output);
   }
+
+
+
+
+
+
+
+
+//  /**
+//   * {@inheritDoc}
+//   */
+//  public function validateForm(array &$form, FormStateInterface $form_state) {
+//    $fields = [
+//      'directory_path',
+//    ];
+//
+//    foreach ($fields as $field) {
+//      $path = $this->aliasCleaner->cleanAlias($form_state->getValue($field));
+//
+//      /** @var \Drupal\Core\Url $url */
+//      $url = $this->pathValidator->getUrlIfValid($path);
+//
+//      // If $url is anything besides FALSE then the path is already in use. We
+//      // also check if the route belongs to another module.
+//      if ($url && !str_starts_with($url->getRouteName(), 'uiowa_profiles')) {
+//        $form_state->setErrorByName($field, 'This path is already in use.');
+//      }
+//      else {
+//        $form_state->setValue($field, $path);
+//      }
+//    }
+//
+//    parent::validateForm($form, $form_state);
+//  }
+
+//  /**
+//   * {@inheritdoc}
+//   */
+//  public function submitForm(array &$form, FormStateInterface $form_state) {
+//    $this->config('uiowa_profiles.settings')
+//      ->set('api_key', $form_state->getValue('api_key'))
+//      ->set('directory.path', $form_state->getValue('directory_path'))
+//      ->set('directory.canonical', $form_state->getValue('directory_canonical'))
+//      ->set('directory.title', $form_state->getValue('directory_title'))
+//      ->set('directory.page_size', $form_state->getValue('directory_page_size'))
+//      ->set('directory.intro', $form_state->getValue('directory_intro'))
+//      ->save();
+//
+//    parent::submitForm($form, $form_state);
+//
+//    // Rebuild routes so any path changes are applied.
+//    $this->routeBuilder->rebuild();
+//  }
 
 }
