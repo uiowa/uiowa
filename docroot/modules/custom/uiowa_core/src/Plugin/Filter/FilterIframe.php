@@ -94,7 +94,8 @@ class FilterIframe extends FilterBase {
             elseif ($aspect_ratio == '1.333') {
               $wrapper->setAttribute('class', 'embed-responsive embed-responsive-4by3');
             }
-            elseif ($aspect_ratio == '1.776') {
+            // 16:9 has a bit of variation when rounded.
+            elseif ($aspect_ratio >= 1.775 && $aspect_ratio <= 1.779) {
               $wrapper->setAttribute('class', 'embed-responsive embed-responsive-16by9');
             }
           }
