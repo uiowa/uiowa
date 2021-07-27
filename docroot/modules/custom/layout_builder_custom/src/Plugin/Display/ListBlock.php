@@ -648,7 +648,7 @@ class ListBlock extends CoreBlock {
             $key = 'field_person_types_target_id';
             break;
 
-          case 'type_status_value_wrapper':
+          case 'type_status':
             $key = 'field_person_type_status_value';
             break;
         }
