@@ -97,6 +97,25 @@ class SettingsForm extends ConfigFormBase {
       '#title' => $this->t('PEOPLE COMING TO THE PICNIC'),
       '#prefix' => '<div id="profiles-fieldset">',
       '#suffix' => '</div>',
+      '#attached' => [
+        'library' => 'uiowa_profiles/settings-form'
+      ]
+    ];
+
+    $form['profiles_fieldset']['instances'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => ['tabs'],
+      ],
+    ];
+
+    $form['profiles_fieldset']['instances']['tablist'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => ['tabs--list'],
+        'role' => 'tablist',
+        'aria-label' => 'Profiles instance tabs'
+      ],
     ];
 
     $num_prof_instances = ($form_state->get('num_prof_instances')) ? $form_state->get('num_prof_instances') : $config->get('num_prof_instances');
@@ -107,11 +126,41 @@ class SettingsForm extends ConfigFormBase {
 
     for ($i = 0; $i < $num_prof_instances; $i++) {
       $instance_values = $config->get()[$i];
+      $is_first_tab = $i === 0;
+
+      $form['profiles_fieldset']['instances']['tablist']['tab-button-' . $i] = [
+        '#type' => 'button',
+        '#value' => $this->t($instance_values['directory.title'] ?? 'People-' . $i),
+        '#attributes' => [
+          'role' => 'tab',
+          'aria-selected' => $is_first_tab ? 'true' : 'false',
+          'aria-controls' => 'profiles-instance-fieldset-' . $i,
+          'id' => 'tab-' . $i,
+          'tabindex' => $is_first_tab ? 0 : -1,
+          'onclick' => 'return (false);',
+        ],
+      ];
 
       $form['profiles_fieldset']['instances'][$i]['profiles_instance'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('Profiles instance'),
+        '#attributes' => [
+          'id' => 'profiles-instance-fieldset-' . $i,
+          'class' => ['profiles-instance-fieldset'],
+          'role' => 'tabpanel',
+          'tabindex' => 0,
+          'aria-labelledby' => 'tab-' . $i,
+        ],
       ];
+
+      $form['profiles_fieldset']['instances'][$i]['profiles_instance']['directory_title'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Directory Title'),
+        '#default_value' => $instance_values['directory.title'] ?? 'People',
+        '#description' => $this->t('The page title to display on the Profiles directory.'),
+        '#required' => TRUE,
+      ];
+
       $form['profiles_fieldset']['instances'][$i]['profiles_instance']['api_key'] = [
         '#type' => 'textfield',
         '#title' => $this->t('API Key'),
@@ -138,14 +187,6 @@ class SettingsForm extends ConfigFormBase {
         '#description' => $this->t('The Base URL to generate the canonical link to a profile for SEO. Leave blank if this site is the canonical source.'),
         '#required' => FALSE,
         '#placeholder' => $this->getRequest()->getSchemeAndHttpHost(),
-      ];
-
-      $form['profiles_fieldset']['instances'][$i]['profiles_instance']['directory_title'] = [
-        '#type' => 'textfield',
-        '#title' => $this->t('Directory Title'),
-        '#default_value' => $instance_values['directory.title'] ?? 'People',
-        '#description' => $this->t('The page title to display on the Profiles directory.'),
-        '#required' => TRUE,
       ];
 
       $form['profiles_fieldset']['instances'][$i]['profiles_instance']['directory_page_size'] = [
