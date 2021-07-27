@@ -233,7 +233,7 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
       foreach ($person_type_options as $key => $option) {
         if (isset($person_type_status_options[$key])) {
           $element[PERSON_TYPE_STATUS_FILTER . '_wrapper']['#states']['visible'][] = [
-            ':input[name="settings[override][exposed_filters]['. PERSON_TYPE_FILTER . ']"]' => [
+            ':input[name="settings[override][exposed_filters][' . PERSON_TYPE_FILTER . ']"]' => [
               'value' => $key,
             ],
           ];
