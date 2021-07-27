@@ -1,4 +1,20 @@
 window.addEventListener("DOMContentLoaded", () => {
+  attachBehaviors();
+
+  // select the target node
+  let target = document.getElementById("uiowa-profiles-settings");
+  // create an observer instance
+  let observer = new MutationObserver(function(mutations) {
+    // If the internals of the form mutate, re-attach the JS for tabs.
+    attachBehaviors();
+  });
+  // configuration of the observer:
+  let config = { attributes: true, childList: true, characterData: true };
+  // pass in the target node, as well as the observer options
+  observer.observe(target, config);
+});
+
+function attachBehaviors() {
   const tabs = document.querySelectorAll('.tabs [role="tab"]');
   const tabList = document.querySelector('.tabs [role="tablist"]');
 
@@ -33,7 +49,8 @@ window.addEventListener("DOMContentLoaded", () => {
       tabs[tabFocus].focus();
     }
   });
-});
+}
+
 
 function changeTabs(e) {
   const target = e.target;

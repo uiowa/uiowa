@@ -130,7 +130,7 @@ class SettingsForm extends ConfigFormBase {
 
       $form['profiles_fieldset']['instances']['tablist']['tab-button-' . $i] = [
         '#type' => 'button',
-        '#value' => $this->t($instance_values['directory.title'] ?? 'People-' . $i),
+        '#value' => !empty($instance_values['directory_title']) ? $instance_values['directory_title'] : 'People-' . $i,
         '#attributes' => [
           'role' => 'tab',
           'aria-selected' => $is_first_tab ? 'true' : 'false',
@@ -153,10 +153,14 @@ class SettingsForm extends ConfigFormBase {
         ],
       ];
 
+      if (!$is_first_tab) {
+        $form['profiles_fieldset']['instances'][$i]['profiles_instance']['#attributes']['hidden'] = 'true';
+      }
+
       $form['profiles_fieldset']['instances'][$i]['profiles_instance']['directory_title'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Directory Title'),
-        '#default_value' => $instance_values['directory.title'] ?? 'People',
+        '#default_value' => !empty($instance_values['directory_title']) ? $instance_values['directory_title'] : 'People',
         '#description' => $this->t('The page title to display on the Profiles directory.'),
         '#required' => TRUE,
       ];
@@ -172,7 +176,7 @@ class SettingsForm extends ConfigFormBase {
       $form['profiles_fieldset']['instances'][$i]['profiles_instance']['directory_path'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Directory Path'),
-        '#default_value' => $instance_values['directory.path'] ?? '/profiles/people',
+        '#default_value' => $instance_values['directory_path'] ?? '/profiles/people',
         '#description' => $this->t('The path for the Profiles directory. Serves as the base for all profiles and an additional <a href=":url">sitemap</a> to submit to search engines.', [
           // @TODO: is this the right thing we are getting here for multiple directory instances?
           ':url' => Url::fromRoute('uiowa_profiles.sitemap')->toString(),
@@ -183,7 +187,7 @@ class SettingsForm extends ConfigFormBase {
       $form['profiles_fieldset']['instances'][$i]['profiles_instance']['directory_canonical'] = [
         '#type' => 'url',
         '#title' => $this->t('Canonical Link Base URL'),
-        '#default_value' => $instance_values['directory.canonical'] ?? '',
+        '#default_value' => $instance_values['directory_canonical'] ?? '',
         '#description' => $this->t('The Base URL to generate the canonical link to a profile for SEO. Leave blank if this site is the canonical source.'),
         '#required' => FALSE,
         '#placeholder' => $this->getRequest()->getSchemeAndHttpHost(),
@@ -192,7 +196,7 @@ class SettingsForm extends ConfigFormBase {
       $form['profiles_fieldset']['instances'][$i]['profiles_instance']['directory_page_size'] = [
         '#type' => 'number',
         '#title' => $this->t('Directory Page Size'),
-        '#default_value' => $instance_values['directory.page_size'] ?? 10,
+        '#default_value' => $instance_values['directory_page_size'] ?? 10,
         '#min' => 5,
         '#max' => 50,
         '#description' => $this->t('Number of entries per page of the directory. Min: 5, Max: 50'),
@@ -218,7 +222,7 @@ class SettingsForm extends ConfigFormBase {
     $form['actions'] = [
       '#type' => 'actions',
     ];
-    $form['profiles_fieldset']['actions']['add_name'] = [
+    $form['profiles_fieldset']['actions']['add_instance'] = [
       '#type' => 'submit',
       '#value' => t('Add one more'),
       '#submit' => array('::addOne'),
@@ -228,7 +232,7 @@ class SettingsForm extends ConfigFormBase {
       ],
     ];
     if ($num_prof_instances > 1) {
-      $form['profiles_fieldset']['actions']['remove_name'] = [
+      $form['profiles_fieldset']['actions']['remove_instance'] = [
         '#type' => 'submit',
         '#value' => t('Remove one'),
         '#submit' => array('::removeCallback'),
