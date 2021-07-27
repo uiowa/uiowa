@@ -16,8 +16,6 @@ module:
 theme: {  }
 blacklist:
   - field.storage.node.field_grad_program_phd
-  - field.storage.node.field_person_first_name
-  - field.storage.node.field_person_last_name
   - fullcalendar.settings
   - node.type.thesis_defense
   - pathauto.pattern.thesis_defense
@@ -28,6 +26,8 @@ blacklist:
   - 'fullcalendar_options.settings.*'
   - 'views.view.thesis_defenses.*'
 graylist:
+  - field.storage.node.field_person_first_name
+  - field.storage.node.field_person_last_name
   - node.type.person
   - simple_sitemap.bundle_settings.default.node.person
   - sitenow_people.field_settings
