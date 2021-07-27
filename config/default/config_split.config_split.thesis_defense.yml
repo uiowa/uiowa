@@ -1,0 +1,31 @@
+uuid: 18364701-4f8d-4a43-b7a1-e371720f6d97
+langcode: en
+status: false
+dependencies: {  }
+id: thesis_defense
+label: 'Grad - Thesis defense'
+description: 'Thesis defense content type.'
+folder: ../config/features/thesis_defense
+module:
+  fullcalendar: 0
+  fullcalendar_view: 0
+  grad_custom: 0
+  grad_thesis_defense: 0
+  smart_date: 0
+  uiowa_maui: 0
+theme: {  }
+blacklist:
+  - field.storage.node.field_grad_program_phd
+  - fullcalendar.settings
+  - node.type.thesis_defense
+  - pathauto.pattern.thesis_defense
+  - simple_sitemap.bundle_settings.default.node.thesis_defense
+  - views.view.thesis_defenses
+  - 'field.storage.node.field_thesis_defense_*'
+  - 'views.view.thesis_defenses.*'
+graylist:
+  - sitenow_people.field_settings
+  - 'user.role.*'
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 80
