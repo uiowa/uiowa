@@ -123,6 +123,9 @@ class SettingsForm extends ConfigFormBase {
       $form_state->set('num_prof_instances', 1);
       $num_prof_instances = 1;
     }
+    else {
+      $form_state->set('num_prof_instances', $num_prof_instances);
+    }
 
     for ($i = 0; $i < $num_prof_instances; $i++) {
       $instance_values = $config->get()[$i];
@@ -168,7 +171,7 @@ class SettingsForm extends ConfigFormBase {
       $form['profiles_fieldset']['tabs_container']['instances'][$i]['profiles_instance']['api_key'] = [
         '#type' => 'textfield',
         '#title' => $this->t('API Key'),
-        '#default_value' => $instance_values['api_key'],
+        '#default_value' => $instance_values['api_key'] ?? '',
         '#description' => $this->t('The API key provided by the ITS-AIS Profiles team.'),
         '#required' => TRUE,
       ];
