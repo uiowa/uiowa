@@ -6,12 +6,14 @@ use Drupal\Core\Entity\Element\EntityAutocomplete;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
 use Drupal\Core\Form\SubformStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Render\Element\Checkboxes;
 use Drupal\Core\Url;
 use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\views\Plugin\Block\ViewsBlock;
 use Drupal\views\Plugin\views\display\Block as CoreBlock;
+use Drupal\views\Plugin\views\filter\FilterPluginBase;
 
 /**
  * Provides a List Block display plugin override.
@@ -200,16 +202,26 @@ class ListBlock extends CoreBlock {
       foreach ($customizable_filters as $filter_id) {
         /** @var \Drupal\views\Plugin\views\filter\FilterPluginBase $filter */
         $filter = $filter_plugins[$filter_id];
-        // If an identifier is set for the filter, use that as the $filter_id.
-        if (!empty($filter->options['expose']['identifier'])) {
-          $filter_id = $filter->options['expose']['identifier'];
-        }
-        $filter->buildExposedForm($form['override']['exposed_filters'], $subform_state);
+
+        $filter_id = $this->getFilterCustomId($filter);
 
         // Set the label and default values of the form element, based on the
         // block configuration.
         $exposed_info = $filter->exposedInfo();
-        $form['override']['exposed_filters'][$filter_id]['#title'] = $exposed_info['label'];
+
+        // Add checkboxes to allow exposed filter to be shown
+        // to the end user.
+        $filter_id_expose = $filter_id . '_expose';
+        $form['override']['exposed_filters'][$filter_id_expose] = [
+          '#type' => 'checkbox',
+          '#title' => $this->t('Expose @filter_label filter to site visitors.', [
+            '@filter_label' => $exposed_info['label'],
+          ]),
+          '#default_value' => isset($block_configuration['expose_form'][$filter_id_expose]) ? $block_configuration['expose_form'][$filter_id_expose] : 0,
+        ];
+
+        $filter->buildExposedForm($form['override']['exposed_filters'], $subform_state);
+
         // The following is essentially using this patch:
         // https://www.drupal.org/project/views_block_placement_exposed_form_defaults/issues/3158789
         if ($form['override']['exposed_filters'][$filter_id]['#type'] == 'entity_autocomplete') {
@@ -221,6 +233,36 @@ class ListBlock extends CoreBlock {
         }
         else {
           $form['override']['exposed_filters'][$filter_id]['#default_value'] = !empty($exposed_filter_values[$filter_id]) ? $exposed_filter_values[$filter_id] : [];
+        }
+
+        // If the filter has an exposed operator, it will render in a wrapper.
+        if ($filter->options['expose']['use_operator']) {
+          $wrapper_id = $filter_id . '_wrapper';
+          foreach (Element::children($form['override']['exposed_filters'][$wrapper_id]) as $filter_name) {
+            // Add states to disable a filter if it is exposed to visitors.
+            $form['override']['exposed_filters'][$wrapper_id][$filter_name]['#states'] = [
+              'disabled' => [
+                [
+                  "input[name='settings[override][exposed_filters][" . $filter_id_expose . "]']" => [
+                    'checked' => TRUE,
+                  ],
+                ],
+              ],
+            ];
+          }
+        }
+        else {
+          $form['override']['exposed_filters'][$filter_id]['#title'] = $exposed_info['label'];
+          // Add states to disable a filter if it is exposed to visitors.
+          $form['override']['exposed_filters'][$filter_id]['#states'] = [
+            'disabled' => [
+              [
+                "input[name='settings[override][exposed_filters][" . $filter_id_expose . "]']" => [
+                  'checked' => TRUE,
+                ],
+              ],
+            ],
+          ];
         }
       }
     }
@@ -394,53 +436,6 @@ class ListBlock extends CoreBlock {
               "input[name='settings[override][use_more]']" => [
                 'checked' => TRUE,
               ],
-            ],
-          ],
-        ],
-      ];
-    }
-
-    // Add checkboxes to allow exposed filters to be shown
-    // to the end user.
-    foreach ($this->getListOfExposedFilters() as $filter_id => $filter_label) {
-      // Add the wrapper if we need it to accurately target the field.
-      switch ($filter_id) {
-        case 'field_tags_target_id':
-          $filter_id = 'tag';
-          break;
-
-        case 'field_person_type_status_value':
-          $filter_id = 'type_status_value_wrapper';
-          break;
-
-        case 'field_person_research_areas_target_id':
-          $filter_id = 'research';
-          break;
-
-        case 'field_person_types_target_id':
-          $filter_id = 'type';
-          // Need to make the Person Type field a select list.
-          _sitenow_people_person_type_filter_select($form['override']['exposed_filters']['type']);
-          break;
-      }
-
-      // Create our "expose form" checkbox.
-      $filter_id_expose = $filter_id . '_expose';
-      $form['override']['exposed_filters'][$filter_id_expose] = [
-        '#type' => 'checkbox',
-        '#title' => $this->t('Expose @filter_label filter to site visitors.', [
-          '@filter_label' => $filter_label,
-        ]),
-        '#default_value' => isset($block_configuration['expose_form'][$filter_id_expose]) ? $block_configuration['expose_form'][$filter_id_expose] : 0,
-      ];
-
-      // Add states to disable a filter if it is exposed to visitors.
-      // @todo Fix Person Type Status field visibility state.
-      $form['override']['exposed_filters'][$filter_id]['#states'] = [
-        'disabled' => [
-          [
-            "input[name='settings[override][exposed_filters][" . $filter_id_expose . "]']" => [
-              'checked' => TRUE,
             ],
           ],
         ],
@@ -806,6 +801,18 @@ class ListBlock extends CoreBlock {
       }
     }
     return $styles;
+  }
+
+  /**
+   * Get custom ID for a filter.
+   */
+  protected function getFilterCustomId(FilterPluginBase $filter) {
+    // If an identifier is set for the filter, use that as the $filter_id.
+    if (!empty($filter->options['expose']['identifier'])) {
+      return $filter->options['expose']['identifier'];
+    }
+
+    return $filter->options['id'];
   }
 
   /**
