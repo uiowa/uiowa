@@ -988,8 +988,8 @@ function uids_base_preprocess_superfish(array &$variables) {
   // An access-aware boolean of whether the menu is empty or not.
   $variables['menu_is_empty'] = FALSE;
 
-  /** @var \Drupal\Core\Menu\MenuLinkTreeElement $item */
   $items = array_filter($variables['menu_items']['#tree'], function ($item) {
+    /** @var \Drupal\Core\Menu\MenuLinkTreeElement $item */
     return $item->access->isAllowed();
   });
 
