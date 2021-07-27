@@ -23,7 +23,8 @@ use Drupal\views\Entity\View;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
 
-define('PERSON_TYPE_STATUS_FILTER', 'field_person_type_status_value');
+define('PERSON_TYPE_FILTER', 'type');
+define('PERSON_TYPE_STATUS_FILTER', 'type_status');
 
 /**
  * Implements hook_form_alter().
@@ -190,12 +191,12 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
       }
 
       // Only continue if person type filter exists.
-      if (!isset($element['field_person_types_target_id'])) {
+      if (!isset($element[PERSON_TYPE_FILTER])) {
         break;
       }
 
       // Display person types as a select list.
-      _sitenow_people_person_type_filter_select($element['field_person_types_target_id']);
+      _sitenow_people_person_type_filter_select($element[PERSON_TYPE_FILTER]);
 
       // Only continue if person type status filter exists.
       if (!isset($element[PERSON_TYPE_STATUS_FILTER])) {
@@ -215,7 +216,7 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
       }
 
       // Show/hide person type statuses based on person type selections.
-      $element['field_person_types_target_id']['#ajax'] = [
+      $element[PERSON_TYPE_FILTER]['#ajax'] = [
         'callback' => '_person_types_callback',
         'event' => 'change',
         'wrapper' => 'form-ajax-wrapper',
@@ -226,13 +227,13 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
         ],
       ];
 
-      $person_type_options = $element['field_person_types_target_id']['#options'];
+      $person_type_options = $element[PERSON_TYPE_FILTER]['#options'];
       $person_type_status_options = $element[PERSON_TYPE_STATUS_FILTER . '_wrapper'][PERSON_TYPE_STATUS_FILTER]['#options'];
 
       foreach ($person_type_options as $key => $option) {
         if (isset($person_type_status_options[$key])) {
           $element[PERSON_TYPE_STATUS_FILTER . '_wrapper']['#states']['visible'][] = [
-            ':input[name="settings[override][exposed_filters][field_person_types_target_id]"]' => [
+            ':input[name="settings[override][exposed_filters]['. PERSON_TYPE_FILTER . ']"]' => [
               'value' => $key,
             ],
           ];
@@ -249,12 +250,12 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
           'settings',
           'override',
           'exposed_filters',
-          'field_person_types_target_id',
+          PERSON_TYPE_FILTER,
         ]);
 
         // If not, check if the default value is set.
-        if (!$type && !empty($element['field_person_types_target_id']['#default_value'])) {
-          $type = $element['field_person_types_target_id']['#default_value'];
+        if (!$type && !empty($element[PERSON_TYPE_FILTER]['#default_value'])) {
+          $type = $element[PERSON_TYPE_FILTER]['#default_value'];
         }
 
         // Set person type status options based on the type.
@@ -270,7 +271,7 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
       //   This ensures the exposed filters on the form
       //   properly match the previously selected filter values.
       foreach ([
-        'field_person_type_status_value',
+        'type_status',
         'field_person_type_status_value_op',
       ] as $field) {
         $element[PERSON_TYPE_STATUS_FILTER . '_wrapper'][$field]['#default_value'] = $block->getConfiguration()['exposed_filter_values'][PERSON_TYPE_STATUS_FILTER . '_wrapper'][$field];
