@@ -3,8 +3,8 @@ langcode: en
 status: true
 dependencies: {  }
 id: thesis_defense
-label: 'Grad - Thesis Defense'
-description: 'Thesis Defense content type.'
+label: 'Grad - Thesis defense'
+description: 'Thesis defense content type.'
 folder: ../config/features/thesis_defense
 module:
   fullcalendar: 0
@@ -22,17 +22,10 @@ blacklist:
   - simple_sitemap.bundle_settings.default.node.thesis_defense
   - views.view.thesis_defenses
   - 'field.storage.node.field_thesis_defense_*'
-  - fullcalendar_options.settings
-  - 'fullcalendar_options.settings.*'
   - 'views.view.thesis_defenses.*'
 graylist:
-  - field.storage.node.field_person_first_name
-  - field.storage.node.field_person_last_name
-  - node.type.person
-  - simple_sitemap.bundle_settings.default.node.person
   - sitenow_people.field_settings
   - 'user.role.*'
-  - core.entity_view_display.block_content.uiowa_people.default
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 80
