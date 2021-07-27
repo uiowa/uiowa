@@ -102,14 +102,14 @@ class SettingsForm extends ConfigFormBase {
       ]
     ];
 
-    $form['profiles_fieldset']['instances'] = [
+    $form['profiles_fieldset']['tabs_container'] = [
       '#type' => 'container',
       '#attributes' => [
         'class' => ['tabs'],
       ],
     ];
 
-    $form['profiles_fieldset']['instances']['tablist'] = [
+    $form['profiles_fieldset']['tabs_container']['tablist'] = [
       '#type' => 'container',
       '#attributes' => [
         'class' => ['tabs--list'],
@@ -128,7 +128,7 @@ class SettingsForm extends ConfigFormBase {
       $instance_values = $config->get()[$i];
       $is_first_tab = $i === 0;
 
-      $form['profiles_fieldset']['instances']['tablist']['tab-button-' . $i] = [
+      $form['profiles_fieldset']['tabs_container']['tablist']['tab-button-' . $i] = [
         '#type' => 'button',
         '#value' => !empty($instance_values['directory_title']) ? $instance_values['directory_title'] : 'People-' . $i,
         '#attributes' => [
@@ -141,7 +141,7 @@ class SettingsForm extends ConfigFormBase {
         ],
       ];
 
-      $form['profiles_fieldset']['instances'][$i]['profiles_instance'] = [
+      $form['profiles_fieldset']['tabs_container']['instances'][$i]['profiles_instance'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('Profiles instance'),
         '#attributes' => [
@@ -154,10 +154,10 @@ class SettingsForm extends ConfigFormBase {
       ];
 
       if (!$is_first_tab) {
-        $form['profiles_fieldset']['instances'][$i]['profiles_instance']['#attributes']['hidden'] = 'true';
+        $form['profiles_fieldset']['tabs_container']['instances'][$i]['profiles_instance']['#attributes']['hidden'] = 'true';
       }
 
-      $form['profiles_fieldset']['instances'][$i]['profiles_instance']['directory_title'] = [
+      $form['profiles_fieldset']['tabs_container']['instances'][$i]['profiles_instance']['directory_title'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Directory Title'),
         '#default_value' => !empty($instance_values['directory_title']) ? $instance_values['directory_title'] : 'People',
@@ -165,7 +165,7 @@ class SettingsForm extends ConfigFormBase {
         '#required' => TRUE,
       ];
 
-      $form['profiles_fieldset']['instances'][$i]['profiles_instance']['api_key'] = [
+      $form['profiles_fieldset']['tabs_container']['instances'][$i]['profiles_instance']['api_key'] = [
         '#type' => 'textfield',
         '#title' => $this->t('API Key'),
         '#default_value' => $instance_values['api_key'],
@@ -173,7 +173,7 @@ class SettingsForm extends ConfigFormBase {
         '#required' => TRUE,
       ];
 
-      $form['profiles_fieldset']['instances'][$i]['profiles_instance']['directory_path'] = [
+      $form['profiles_fieldset']['tabs_container']['instances'][$i]['profiles_instance']['directory_path'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Directory Path'),
         '#default_value' => $instance_values['directory_path'] ?? '/profiles/people',
@@ -184,7 +184,7 @@ class SettingsForm extends ConfigFormBase {
         '#required' => TRUE,
       ];
 
-      $form['profiles_fieldset']['instances'][$i]['profiles_instance']['directory_canonical'] = [
+      $form['profiles_fieldset']['tabs_container']['instances'][$i]['profiles_instance']['directory_canonical'] = [
         '#type' => 'url',
         '#title' => $this->t('Canonical Link Base URL'),
         '#default_value' => $instance_values['directory_canonical'] ?? '',
@@ -193,7 +193,7 @@ class SettingsForm extends ConfigFormBase {
         '#placeholder' => $this->getRequest()->getSchemeAndHttpHost(),
       ];
 
-      $form['profiles_fieldset']['instances'][$i]['profiles_instance']['directory_page_size'] = [
+      $form['profiles_fieldset']['tabs_container']['instances'][$i]['profiles_instance']['directory_page_size'] = [
         '#type' => 'number',
         '#title' => $this->t('Directory Page Size'),
         '#default_value' => $instance_values['directory_page_size'] ?? 10,
@@ -205,7 +205,7 @@ class SettingsForm extends ConfigFormBase {
 
 //      $intro = $instance_values['directory.intro'];
 
-      $form['profiles_fieldset']['instances'][$i]['profiles_instance']['directory_intro'] = [
+      $form['profiles_fieldset']['tabs_container']['instances'][$i]['profiles_instance']['directory_intro'] = [
         '#type' => 'text_format',
         '#rows' => '10',
         '#cols' => '100',
@@ -285,7 +285,7 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $profiles_fieldset = $form_state->getValue('profiles_fieldset')['instances'];
+    $profiles_fieldset = $form_state->getValue('profiles_fieldset')['tabs_container']['instances'];
     foreach ($profiles_fieldset as $key => $profiles_instance) {
 
       $this->config('uiowa_profiles.settings')
