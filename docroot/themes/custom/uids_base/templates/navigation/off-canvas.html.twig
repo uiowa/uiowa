@@ -1,13 +1,15 @@
 {{ attach_library('uids_base/off-canvas') }}
 {{ attach_library('uids_base/vertical') }}
 
-<div class="o-canvas__group">
-  <div class="o-canvas__wrapper">
-    {% include '@uids_base/navigation/off-canvas--bttn.twig' %}
-    {% embed '@uids_base/navigation/off-canvas--drawer.html.twig' %}
-      {% block drawer %}
-          {{ page.primary_menu }}
-      {% endblock %}
-    {% endembed %}
+{% if page.primary_menu|render|striptags|trim is not empty %}
+  <div class="o-canvas__group">
+    <div class="o-canvas__wrapper">
+      {% include '@uids_base/navigation/off-canvas--bttn.twig' %}
+      {% embed '@uids_base/navigation/off-canvas--drawer.html.twig' %}
+        {% block drawer %}
+            {{ page.primary_menu }}
+        {% endblock %}
+      {% endembed %}
+    </div>
   </div>
-</div>
+{% endif %}

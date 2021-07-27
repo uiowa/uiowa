@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: sitesrodgers.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sitesrodgers
+  human_name: rodgers.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesrodgers.prod
+drupal:
+  db:
+    database: rodgers_sites_uiowa_edu
+uiowa:
+  requester: gmccrory
