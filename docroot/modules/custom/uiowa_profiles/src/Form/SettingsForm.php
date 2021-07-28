@@ -87,14 +87,11 @@ class SettingsForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('uiowa_profiles.settings');
 
-    $form['description'] = array(
-      '#markup' => '<div>'. t('This example shows an add-more and a remove-last button.').'</div>',
-    );
-
     $form['#tree'] = TRUE;
+
     $form['profiles_fieldset'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('PEOPLE COMING TO THE PICNIC'),
+      '#title' => $this->t('Directories'),
       '#prefix' => '<div id="profiles-fieldset">',
       '#suffix' => '</div>',
       '#attached' => [
@@ -114,146 +111,147 @@ class SettingsForm extends ConfigFormBase {
       '#attributes' => [
         'class' => ['tabs--list'],
         'role' => 'tablist',
-        'aria-label' => 'Profiles instance tabs'
+        'aria-label' => 'Profiles directory tabs'
       ],
     ];
 
-    $num_prof_instances = ($form_state->get('num_prof_instances')) ? $form_state->get('num_prof_instances') : $config->get('num_prof_instances');
-    if ($num_prof_instances === NULL) {
-      $form_state->set('num_prof_instances', 1);
-      $num_prof_instances = 1;
+    $directories = $form_state->getValue(['profiles_fieldset', 'tabs_container', 'directories']) ?? $config->get('directories') ?? [];
+    $count = count($directories);
+
+    foreach ($directories as $key => $directory) {
+        $is_first_tab = ($key === array_key_first($directories));
+
+        $form['profiles_fieldset']['tabs_container']['tablist']['tab-button-' . $key] = [
+          '#type' => 'button',
+          '#value' => !empty($directory['title']) ? $directory['title'] : 'People-' . $key,
+          '#attributes' => [
+            'role' => 'tab',
+            'aria-selected' => $is_first_tab ? 'true' : 'false',
+            'aria-controls' => 'profiles-directory-fieldset-' . $key,
+            'id' => 'tab-' . $key,
+            'tabindex' => $is_first_tab ? 0 : -1,
+            'onclick' => 'return (false);',
+          ],
+        ];
+
+        $form['profiles_fieldset']['tabs_container']['directories'][$key] = [
+          '#type' => 'fieldset',
+          '#attributes' => [
+            'id' => 'profiles-directory-fieldset-' . $key,
+            'class' => ['profiles-directory-fieldset'],
+            'role' => 'tabpanel',
+            'tabindex' => 0,
+            'aria-labelledby' => 'tab-' . $key,
+          ],
+        ];
+
+        if (!$is_first_tab) {
+          $form['profiles_fieldset']['tabs_container']['directories'][$key]['#attributes']['hidden'] = 'true';
+        }
+
+        $form['profiles_fieldset']['tabs_container']['directories'][$key]['title'] = [
+          '#type' => 'textfield',
+          '#title' => $this->t('Title'),
+          '#default_value' => !empty($directory['title']) ? $directory['title'] : 'People',
+          '#description' => $this->t('The page title to display on the Profiles directory.'),
+          '#required' => TRUE,
+        ];
+
+        $form['profiles_fieldset']['tabs_container']['directories'][$key]['api_key'] = [
+          '#type' => 'textfield',
+          '#title' => $this->t('API Key'),
+          '#default_value' => $directory['api_key'] ?? '',
+          '#description' => $this->t('The API key provided by the ITS-AIS Profiles team.'),
+          '#required' => TRUE,
+        ];
+
+        $form['profiles_fieldset']['tabs_container']['directories'][$key]['path'] = [
+          '#type' => 'textfield',
+          '#title' => $this->t('Path'),
+          '#default_value' => $directory['path'] ?? '/profiles/people',
+          '#description' => $this->t('The path for the Profiles directory. Serves as the base for all profiles and an additional <a href=":url">sitemap</a> to submit to search engines.', [
+            // @TODO: is this the right thing we are getting here for multiple directory directories?
+            ':url' => Url::fromRoute('uiowa_profiles.sitemap')->toString(),
+          ]),
+          '#required' => TRUE,
+        ];
+
+        $form['profiles_fieldset']['tabs_container']['directories'][$key]['canonical'] = [
+          '#type' => 'url',
+          '#title' => $this->t('Canonical Link Base URL'),
+          '#default_value' => $directory['canonical'] ?? '',
+          '#description' => $this->t('The Base URL to generate the canonical link to a profile for SEO. Leave blank if this site is the canonical source.'),
+          '#required' => FALSE,
+          '#placeholder' => $this->getRequest()->getSchemeAndHttpHost(),
+        ];
+
+        $form['profiles_fieldset']['tabs_container']['directories'][$key]['page_size'] = [
+          '#type' => 'number',
+          '#title' => $this->t('Page Size'),
+          '#default_value' => $directory['page_size'] ?? 10,
+          '#min' => 5,
+          '#max' => 50,
+          '#description' => $this->t('Number of entries per page of the directory. Min: 5, Max: 50'),
+          '#required' => TRUE,
+        ];
+
+        $intro = $directory['intro'];
+
+        $form['profiles_fieldset']['tabs_container']['directories'][$key]['intro'] = [
+          '#type' => 'text_format',
+          '#rows' => '10',
+          '#cols' => '100',
+          '#title' => $this->t('Introduction'),
+          '#format' => 'filtered_html',
+          '#allowed_formats' => [
+            'filtered_html',
+          ],
+          '#default_value' => $intro['value'] ?? '',
+          '#description' => $this->t('Introductory text to be included at the top of the directory.'),
+          '#required' => FALSE,
+        ];
+
+        if ($count > 1) {
+          // The #value is important here. It is used to differentiate the
+          // form action so that the triggering element is set correctly.
+          $form['profiles_fieldset']['tabs_container']['directories'][$key]['delete'] = [
+            '#type' => 'submit',
+            '#value' => t('Delete @directory', [
+              '@directory' => $directory['title'],
+            ]),
+            '#submit' => ['::removeSubmit'],
+            '#ajax' => [
+              'callback' => '::addRemoveCallback',
+              'wrapper' => 'profiles-fieldset',
+            ],
+            '#attributes' => [
+              'data-directory-index' => $key,
+            ],
+          ];
+        }
     }
-    else {
-      $form_state->set('num_prof_instances', $num_prof_instances);
-    }
 
-    for ($i = 0; $i < $num_prof_instances; $i++) {
-      $instance_values = $config->get()[$i];
-      $is_first_tab = $i === 0;
-
-      $form['profiles_fieldset']['tabs_container']['tablist']['tab-button-' . $i] = [
-        '#type' => 'button',
-        '#value' => !empty($instance_values['directory_title']) ? $instance_values['directory_title'] : 'People-' . $i,
-        '#attributes' => [
-          'role' => 'tab',
-          'aria-selected' => $is_first_tab ? 'true' : 'false',
-          'aria-controls' => 'profiles-instance-fieldset-' . $i,
-          'id' => 'tab-' . $i,
-          'tabindex' => $is_first_tab ? 0 : -1,
-          'onclick' => 'return (false);',
-        ],
-      ];
-
-      $form['profiles_fieldset']['tabs_container']['instances'][$i]['profiles_instance'] = [
-        '#type' => 'fieldset',
-        '#title' => $this->t('Profiles instance'),
-        '#attributes' => [
-          'id' => 'profiles-instance-fieldset-' . $i,
-          'class' => ['profiles-instance-fieldset'],
-          'role' => 'tabpanel',
-          'tabindex' => 0,
-          'aria-labelledby' => 'tab-' . $i,
-        ],
-      ];
-
-      if (!$is_first_tab) {
-        $form['profiles_fieldset']['tabs_container']['instances'][$i]['profiles_instance']['#attributes']['hidden'] = 'true';
-      }
-
-      $form['profiles_fieldset']['tabs_container']['instances'][$i]['profiles_instance']['directory_title'] = [
-        '#type' => 'textfield',
-        '#title' => $this->t('Directory Title'),
-        '#default_value' => !empty($instance_values['directory_title']) ? $instance_values['directory_title'] : 'People',
-        '#description' => $this->t('The page title to display on the Profiles directory.'),
-        '#required' => TRUE,
-      ];
-
-      $form['profiles_fieldset']['tabs_container']['instances'][$i]['profiles_instance']['api_key'] = [
-        '#type' => 'textfield',
-        '#title' => $this->t('API Key'),
-        '#default_value' => $instance_values['api_key'] ?? '',
-        '#description' => $this->t('The API key provided by the ITS-AIS Profiles team.'),
-        '#required' => TRUE,
-      ];
-
-      $form['profiles_fieldset']['tabs_container']['instances'][$i]['profiles_instance']['directory_path'] = [
-        '#type' => 'textfield',
-        '#title' => $this->t('Directory Path'),
-        '#default_value' => $instance_values['directory_path'] ?? '/profiles/people',
-        '#description' => $this->t('The path for the Profiles directory. Serves as the base for all profiles and an additional <a href=":url">sitemap</a> to submit to search engines.', [
-          // @TODO: is this the right thing we are getting here for multiple directory instances?
-          ':url' => Url::fromRoute('uiowa_profiles.sitemap')->toString(),
-        ]),
-        '#required' => TRUE,
-      ];
-
-      $form['profiles_fieldset']['tabs_container']['instances'][$i]['profiles_instance']['directory_canonical'] = [
-        '#type' => 'url',
-        '#title' => $this->t('Canonical Link Base URL'),
-        '#default_value' => $instance_values['directory_canonical'] ?? '',
-        '#description' => $this->t('The Base URL to generate the canonical link to a profile for SEO. Leave blank if this site is the canonical source.'),
-        '#required' => FALSE,
-        '#placeholder' => $this->getRequest()->getSchemeAndHttpHost(),
-      ];
-
-      $form['profiles_fieldset']['tabs_container']['instances'][$i]['profiles_instance']['directory_page_size'] = [
-        '#type' => 'number',
-        '#title' => $this->t('Directory Page Size'),
-        '#default_value' => $instance_values['directory_page_size'] ?? 10,
-        '#min' => 5,
-        '#max' => 50,
-        '#description' => $this->t('Number of entries per page of the directory. Min: 5, Max: 50'),
-        '#required' => TRUE,
-      ];
-
-//      $intro = $instance_values['directory.intro'];
-
-      $form['profiles_fieldset']['tabs_container']['instances'][$i]['profiles_instance']['directory_intro'] = [
-        '#type' => 'text_format',
-        '#rows' => '10',
-        '#cols' => '100',
-        '#title' => $this->t('Introduction'),
-        '#format' => 'filtered_html',
-        '#allowed_formats' => [
-          'filtered_html',
-        ],
-        '#default_value' => $intro['value'] ?? '',
-        '#description' => $this->t('Introductory text to be included at the top of the Profiles directory.'),
-        '#required' => FALSE,
-      ];
-    }
     $form['actions'] = [
       '#type' => 'actions',
     ];
-    $form['profiles_fieldset']['tabs_container']['tablist']['add_instance']  = [
+
+    $form['profiles_fieldset']['tabs_container']['tablist']['add']  = [
       '#type' => 'submit',
-      '#value' => t('Add one more'),
-      '#submit' => array('::addOne'),
+      '#value' => t('+'),
+      '#submit' => ['::addSubmit'],
       '#ajax' => [
-        'callback' => '::addmoreCallback',
+        'callback' => '::addRemoveCallback',
         'wrapper' => 'profiles-fieldset',
       ],
       '#attributes' => [
         'class' => [
           'button',
-          'add-instance'
+          'add-directory'
         ],
         'aria-selected' => 'false',
       ],
     ];
 
-    if ($num_prof_instances > 1) {
-      $form['profiles_fieldset']['actions']['remove_instance'] = [
-        '#type' => 'submit',
-        '#value' => t('Remove one'),
-        '#submit' => array('::removeCallback'),
-        '#ajax' => [
-          'callback' => '::addmoreCallback',
-          'wrapper' => 'profiles-fieldset',
-        ]
-      ];
-    }
-    $form_state->setCached(FALSE);
     $form['actions']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Submit'),
@@ -262,72 +260,60 @@ class SettingsForm extends ConfigFormBase {
     return parent::buildForm($form, $form_state);
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function addOne(array &$form, FormStateInterface $form_state) {
-    $profiles_field = $form_state->get('num_prof_instances');
-    $add_button = $profiles_field + 1;
-    $form_state->set('num_prof_instances', $add_button);
-    $form_state->setRebuild();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function addmoreCallback(array &$form, FormStateInterface $form_state) {
-    $profiles_field = $form_state->get('num_prof_instances');
+  public function addRemoveCallback(array &$form, FormStateInterface $form_state) {
     return $form['profiles_fieldset'];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function removeCallback(array &$form, FormStateInterface $form_state) {
-    $profiles_field = $form_state->get('num_prof_instances');
-    if ($profiles_field > 1) {
-      $remove_button = $profiles_field - 1;
-      $form_state->set('num_prof_instances', $remove_button);
-    }
+  public function addSubmit(array &$form, FormStateInterface $form_state) {
+    $directories = $form_state->getValue(['profiles_fieldset', 'tabs_container', 'directories']);
+    $directories[] = [];
+    $form_state->setValue(['profiles_fieldset', 'tabs_container', 'directories'], $directories);
     $form_state->setRebuild();
+    return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function removeSubmit(array &$form, FormStateInterface $form_state) {
+    $delete = $form_state->getTriggeringElement()['#attributes']['data-directory-index'];
+    $directories = $form_state->getValue(['profiles_fieldset', 'tabs_container', 'directories']);
+    unset($directories[$delete]);
+    $form_state->setValue(['profiles_fieldset', 'tabs_container', 'directories'], $directories);
+    $form_state->setRebuild();
+    return $form;
   }
 
   /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $profiles_fieldset = $form_state->getValue('profiles_fieldset')['tabs_container']['instances'];
-    foreach ($profiles_fieldset as $key => $profiles_instance) {
+    $directories = [];
 
-      $this->config('uiowa_profiles.settings')
-      ->set($key, $profiles_instance['profiles_instance'])
-      ->set('num_prof_instances', $form_state->get('num_prof_instances'))
-      ->save();
+    foreach ($form_state->getValue(['profiles_fieldset', 'tabs_container', 'directories']) as $directory) {
+      unset($directory['delete']);
+      $directories[] = $directory;
     }
 
+    $this->config('uiowa_profiles.settings')
+      ->set('directories', $directories)
+      ->save();
+
     parent::submitForm($form, $form_state);
-//
-//    // Rebuild routes so any path changes are applied.
-//    $this->routeBuilder->rebuild();
+
+    // Rebuild routes so any path changes are applied.
+    $this->routeBuilder->rebuild();
   }
 
-
-
-
-
-
-
-
-//  /**
-//   * {@inheritDoc}
-//   */
-//  public function validateForm(array &$form, FormStateInterface $form_state) {
-//    $fields = [
-//      'directory_path',
-//    ];
-//
-//    foreach ($fields as $field) {
-//      $path = $this->aliasCleaner->cleanAlias($form_state->getValue($field));
+  /**
+   * {@inheritDoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+//    foreach ($form_state->getValue(['profiles_fieldset', 'tabs_container', 'directories']) as $directory) {
+//      $path = $this->aliasCleaner->cleanAlias($directory['path']);
 //
 //      /** @var \Drupal\Core\Url $url */
 //      $url = $this->pathValidator->getUrlIfValid($path);
@@ -335,14 +321,14 @@ class SettingsForm extends ConfigFormBase {
 //      // If $url is anything besides FALSE then the path is already in use. We
 //      // also check if the route belongs to another module.
 //      if ($url && !str_starts_with($url->getRouteName(), 'uiowa_profiles')) {
-//        $form_state->setErrorByName($field, 'This path is already in use.');
+//        $form_state->setErrorByName('path', 'This path is already in use.');
 //      }
 //      else {
-//        $form_state->setValue($field, $path);
+//        $form_state->setValue('path', $path);
 //      }
 //    }
 //
 //    parent::validateForm($form, $form_state);
-//  }
+  }
 
 }
