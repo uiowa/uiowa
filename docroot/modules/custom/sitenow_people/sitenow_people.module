@@ -329,7 +329,7 @@ function _person_types_callback(array &$form, FormStateInterface $form_state) {
     'settings',
     'override',
     'exposed_filters',
-    'field_person_types_target_id',
+    PERSON_TYPE_FILTER,
   ]);
 
   _person_type_status_filter_options($form['settings']['override']['exposed_filters'][PERSON_TYPE_STATUS_FILTER . '_wrapper'][PERSON_TYPE_STATUS_FILTER], $type);
