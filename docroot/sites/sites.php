@@ -2987,3 +2987,9 @@ $sites['sitesrodgers.local.drupal.uiowa.edu'] = 'rodgers.sites.uiowa.edu';
 $sites['sitesrodgers.dev.drupal.uiowa.edu'] = 'rodgers.sites.uiowa.edu';
 $sites['sitesrodgers.stage.drupal.uiowa.edu'] = 'rodgers.sites.uiowa.edu';
 $sites['sitesrodgers.prod.drupal.uiowa.edu'] = 'rodgers.sites.uiowa.edu';
+
+// Directory aliases for coworkcommons.uiowa.edu.
+$sites['coworkcommons.local.drupal.uiowa.edu'] = 'coworkcommons.uiowa.edu';
+$sites['coworkcommons.dev.drupal.uiowa.edu'] = 'coworkcommons.uiowa.edu';
+$sites['coworkcommons.stage.drupal.uiowa.edu'] = 'coworkcommons.uiowa.edu';
+$sites['coworkcommons.prod.drupal.uiowa.edu'] = 'coworkcommons.uiowa.edu';
