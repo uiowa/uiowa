@@ -11,14 +11,35 @@
 .tabs .tabs--list {
   margin-bottom: -1px;
   z-index: 1;
+  overflow-x: auto;
+  display: flex;
+  border: 1px solid #d4d4d8 !important;
+  position: relative;
+}
+
+.tabs .tabs--list .ajax-progress--throbber {
+  position: absolute;
+  width: calc(100% - 2px);
+  height: calc(100% - 20px);
+  padding: 10px;
+  right: 0;
+  background-color: rgba(255,255,255,.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .tabs .tabs--list .button {
   margin: 0;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  border: 1px solid #d4d4d8 !important;
+  border-radius: 0;
+  border: none !important;
+  border-right: 1px solid #bfbfbf !important;
   border-bottom: none !important;
+  flex: auto;
+}
+
+.tabs .tabs--list .button.add-instance {
+  border-right: none !important;
 }
 
 .tabs .tabs--list .button[aria-selected="true"] {
@@ -28,6 +49,5 @@
 
 .tabs .tabs--list .button[aria-selected="false"] {
   background-color: #d4d4d8;
-  border-color: #bfbfbf !important;
   box-shadow: none;
 }

@@ -234,7 +234,10 @@ class SettingsForm extends ConfigFormBase {
         'wrapper' => 'profiles-fieldset',
       ],
       '#attributes' => [
-        'class' => ['button'],
+        'class' => [
+          'button',
+          'add-instance'
+        ],
         'aria-selected' => 'false',
       ],
     ];
