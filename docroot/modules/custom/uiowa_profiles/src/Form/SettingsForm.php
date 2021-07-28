@@ -225,7 +225,7 @@ class SettingsForm extends ConfigFormBase {
     $form['actions'] = [
       '#type' => 'actions',
     ];
-    $form['profiles_fieldset']['actions']['add_instance'] = [
+    $form['profiles_fieldset']['tabs_container']['tablist']['add_instance']  = [
       '#type' => 'submit',
       '#value' => t('Add one more'),
       '#submit' => array('::addOne'),
@@ -233,7 +233,12 @@ class SettingsForm extends ConfigFormBase {
         'callback' => '::addmoreCallback',
         'wrapper' => 'profiles-fieldset',
       ],
+      '#attributes' => [
+        'class' => ['button'],
+        'aria-selected' => 'false',
+      ],
     ];
+
     if ($num_prof_instances > 1) {
       $form['profiles_fieldset']['actions']['remove_instance'] = [
         '#type' => 'submit',
