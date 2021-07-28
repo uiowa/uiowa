@@ -565,6 +565,10 @@ function admissions_core_preprocess_views_view(&$variables) {
       $variables['#attached']['library'][] = 'admissions_core/area-of-study';
       break;
 
+    case 'events':
+      $variables['#attached']['library'][] = 'admissions_core/events';
+      break;
+
   }
 }
 

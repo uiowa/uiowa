@@ -3,27 +3,43 @@ local_task_enabled_entity_types:
   - media
   - node
   - taxonomy_term
-  - webform
+usage_controller_items_per_page: 25
 _core:
   default_config_hash: D0RcOA_aIiwSPXOZSHQOTm5FXzziEsJHdfXGaF4nhIQ
 track_enabled_source_entity_types:
+  - aggregator_feed
+  - aggregator_item
   - block_content
+  - content_moderation_state
+  - crop
+  - entity_embed_fake_entity
   - media
   - node
+  - path_alias
+  - redirect
+  - search_api_task
   - taxonomy_term
+  - webform_submission
+  - menu_link_content
+  - paragraph
 track_enabled_target_entity_types:
+  - aggregator_feed
+  - aggregator_item
+  - block_content
+  - content_moderation_state
+  - crop
+  - entity_embed_fake_entity
   - media
   - node
+  - path_alias
+  - redirect
+  - search_api_task
   - taxonomy_term
-  - webform
-edit_warning_message_entity_types:
-  - media
-  - taxonomy_term
-  - webform
-delete_warning_message_entity_types:
-  - media
-  - node
-  - taxonomy_term
+  - webform_submission
+  - menu_link_content
+  - paragraph
+edit_warning_message_entity_types: {  }
+delete_warning_message_entity_types: {  }
 track_enabled_plugins:
   - dynamic_entity_reference
   - media_embed
@@ -35,4 +51,3 @@ track_enabled_plugins:
   - html_link
   - block_field
 site_domains: {  }
-usage_controller_items_per_page: 25

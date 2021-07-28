@@ -79,9 +79,12 @@
 ]
 %}
 
-{% set headline_level = heading_size ?: 'h3' %}
+{% set headline_level = 'h3 '%}
 {% if view %}
   {% set headline_level = view.display_handler.getOption('heading_size') %}
+{% endif %}
+{% if heading_size %}
+  {% set headline_level = heading_size %}
 {% endif %}
 
 {{ attach_library('classy/node') }}
@@ -102,6 +105,15 @@
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with person_card only %}
+  {% block card_img %}
+    {% if card_image is not empty %}
+      {{ parent() }}
+    {% else %}
+      <div {{ media_attributes.addClass(media_styles, media_sizes, 'card__media') }}>
+        <div class="img--empty">&nbsp;</div>
+      </div>
+    {% endif %}
+  {% endblock %}
   {% block card_tag %}
     {% if card_tag is not empty %}
       <div class="card__date">

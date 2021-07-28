@@ -152,7 +152,7 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
           ->condition('entity_id', $nid, '=')
           ->execute()
           ->fetchCol());
-        unset($field);
+        $field = NULL;
       }
     }
   }
@@ -211,17 +211,12 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
       drupal_static_reset();
 
       // Entity storage can blow up with caches so clear them out.
-      $manager = $this->entityTypeManager;
-      foreach ($manager->getDefinitions() as $id => $definition) {
-        $manager
-          ->getStorage($id)
-          ->resetCache();
-      }
+      \Drupal::service('entity.memory_cache')->deleteAll();
 
       // Run garbage collector to further reduce memory.
       gc_collect_cycles();
-      return memory_get_usage();
     }
+    return memory_get_usage();
   }
 
   /**
@@ -240,6 +235,23 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
     else {
       return $field[0]['summary'];
     }
+  }
+
+  /**
+   * Return the nid of the last-most migrated node.
+   *
+   * @return int
+   *   The node id of the last-most migrated node.
+   */
+  public function getLastMigrated() {
+    $db = \Drupal::database();
+    if (!$db->schema()->tableExists('migrate_map_' . $this->pluginId)) {
+      return 0;
+    }
+    $last_migrated_query = $db->select('migrate_map_' . $this->pluginId, 'm')
+      ->fields('m', ['sourceid1'])
+      ->orderBy('sourceid1', 'DESC');
+    return $last_migrated_query->execute()->fetch()->sourceid1;
   }
 
 }

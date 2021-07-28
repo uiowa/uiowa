@@ -113,9 +113,6 @@ remote-video:
     component:
       assets/css/components/video/video-utilities.css: { preprocess: false }
 video:
-  css:
-    component:
-      assets/css/components/video/video.css: { preprocess: false }
   js:
     uids/components/video/video.js: { preprocess: false }
 hero:
@@ -299,6 +296,10 @@ webforms:
   css:
     component:
       assets/css/webforms/webforms.css: { preprocess: false }
+embed:
+  css:
+    component:
+      assets/css/components/embed.css: { preprocess: false }
 embedded-entity:
   css:
     component:
@@ -341,6 +342,11 @@ admin:
       assets/css/admin.css: { weight: 200 }
       assets/css/local-tasks.css: {}
       assets/css/components/badge.css: {}
+sftouchscreen:
+  js:
+    assets/js/sftouchscreen.js: { }
+  dependencies:
+    - superfish/init
 
 # CSS libraries for Layout plugins.
 onecol:

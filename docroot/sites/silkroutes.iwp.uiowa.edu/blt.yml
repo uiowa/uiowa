@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: iwpsilkroutes.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: iwpsilkroutes
+  human_name: silkroutes.iwp.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: iwpsilkroutes.prod
+drupal:
+  db:
+    database: silkroutes_iwp_uiowa_edu
+uiowa:
+  requester: sadamshiett

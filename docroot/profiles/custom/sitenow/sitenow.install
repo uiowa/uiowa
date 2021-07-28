@@ -16,10 +16,12 @@ use Drupal\Core\Entity\Sql\SqlContentEntityStorageException;
 use Drupal\Core\Site\Settings;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\file\Entity\File;
 use Drupal\filter\Plugin\Filter\FilterHtmlCorrector;
 use Drupal\layout_builder\InlineBlockUsage;
 use Drupal\layout_builder\Section;
 use Drupal\layout_builder\SectionComponent;
+use Drupal\media\Entity\Media;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\Entity\Node;
 use Drupal\paragraphs\Entity\Paragraph;
@@ -3237,6 +3239,70 @@ function sitenow_update_9012() {
             'value' => serialize($stored_data),
           ])
           ->execute();
+      }
+    }
+  }
+}
+
+/**
+ * Rebuilding permissions after https://github.com/uiowa/uiowa/pull/3776 deployed.
+ */
+function sitenow_update_9013() {
+  // Batch it.
+  node_access_rebuild(TRUE);
+}
+
+/**
+ * Redo 9009.
+ */
+function sitenow_update_9014() {
+  sitenow_update_9009();
+
+  // Delete remaining orphans?
+  $result = \Drupal::entityQuery('block_content')
+    ->condition('type', 'uiowa_people')
+    ->execute();
+
+  \Drupal::messenger()
+    ->addMessage('Orphaned records found: ' . count($result));
+
+  if ($result) {
+    $storage_handler = \Drupal::entityTypeManager()->getStorage('block_content');
+    $entities = $storage_handler->loadMultiple($result);
+    $storage_handler->delete($entities);
+  }
+}
+
+/**
+ * Clear cache for lazy update and update engineering migrated files metadata.
+ */
+function sitenow_update_9015() {
+  drupal_flush_all_caches();
+
+  $site_path = \Drupal::service('site.path');
+
+  if ($site_path == 'sites/engineering.uiowa.edu') {
+    $query = \Drupal::entityTypeManager()->getStorage('media')->getQuery();
+
+    $ids = $query
+      ->condition('bundle', 'image')
+      ->condition('name', 'title')
+      ->execute();
+
+    if ($ids) {
+      $controller = \Drupal::entityTypeManager()->getStorage('media');
+      $entities = $controller->loadMultiple($ids);
+
+      /** @var Media $media */
+      foreach ($entities as $media) {
+        $file = File::load($media->get('field_media_image')->target_id);
+
+        if ($file && $filename = $file->getFilename()) {
+          $no_ext = pathinfo($filename, PATHINFO_FILENAME);
+          $media->field_media_image->alt = $no_ext;
+          $media->setName($no_ext);
+          $media->save();
+        }
       }
     }
   }
