@@ -126,10 +126,32 @@ class ListBlock extends CoreBlock {
    */
   protected function getListOfExposedFilters() {
     $filter_options = [];
-    foreach ($this->getHandlers('filter') as $filer_name => $filter_plugin) {
+    foreach ($this->getHandlers('filter') as $filter_name => $filter_plugin) {
       if ($filter_plugin->isExposed() && $exposed_info = $filter_plugin->exposedInfo()) {
-        $filter_options[$filer_name] = $exposed_info['label'];
+        $filter_options[$filter_name] = $exposed_info['label'];
       }
+    }
+    return $filter_options;
+  }
+
+  /**
+   * Get custom ID for a filter.
+   */
+  protected function getFilterCustomId(FilterPluginBase $filter) {
+    // If an identifier is set for the filter, use that as the $filter_id.
+    if (!empty($filter->options['expose']['identifier'])) {
+      return $filter->options['expose']['identifier'];
+    }
+
+    return $filter->options['id'];
+  }
+
+  /**
+   * Get a map of exposed filters keyed by custom ID.
+   */
+  protected function getFilterCustomIdMap() {
+    foreach ($this->getHandlers('filter') as $filter_name => $filter_plugin) {
+      $filter_options[$this->getFilterCustomId($filter_plugin)] = $filter_name;
     }
     return $filter_options;
   }
@@ -199,9 +221,9 @@ class ListBlock extends CoreBlock {
 
       $filter_plugins = $this->getHandlers('filter');
 
-      foreach ($customizable_filters as $filter_id) {
+      foreach ($customizable_filters as $original_filter_id) {
         /** @var \Drupal\views\Plugin\views\filter\FilterPluginBase $filter */
-        $filter = $filter_plugins[$filter_id];
+        $filter = $filter_plugins[$original_filter_id];
 
         $filter_id = $this->getFilterCustomId($filter);
 
@@ -217,7 +239,7 @@ class ListBlock extends CoreBlock {
           '#title' => $this->t('Expose @filter_label filter to site visitors.', [
             '@filter_label' => $exposed_info['label'],
           ]),
-          '#default_value' => isset($block_configuration['expose_form'][$filter_id_expose]) ? $block_configuration['expose_form'][$filter_id_expose] : 0,
+          '#default_value' => $block_configuration['expose_form'][$original_filter_id] ?: 0,
         ];
 
         $filter->buildExposedForm($form['override']['exposed_filters'], $subform_state);
@@ -227,12 +249,12 @@ class ListBlock extends CoreBlock {
         if ($form['override']['exposed_filters'][$filter_id]['#type'] == 'entity_autocomplete') {
           $form['override']['exposed_filters'][$filter_id]['#default_value'] = EntityAutocomplete::valueCallback(
             $form['override']['exposed_filters'][$filter_id],
-            $exposed_filter_values[$filter_id],
+            $exposed_filter_values[$original_filter_id],
             $form_state
           );
         }
         else {
-          $form['override']['exposed_filters'][$filter_id]['#default_value'] = !empty($exposed_filter_values[$filter_id]) ? $exposed_filter_values[$filter_id] : [];
+          $form['override']['exposed_filters'][$filter_id]['#default_value'] = $exposed_filter_values[$original_filter_id] ?: [];
         }
 
         // If the filter has an exposed operator, it will render in a wrapper.
@@ -496,6 +518,9 @@ class ListBlock extends CoreBlock {
       ]));
     }
 
+    // Display exposed filters to allow them to be set for the block.
+    $customizable_filters = $this->getOption('filter_in_block');
+
     // Check if we are exposing any filters to the site visitor.
     $exposed_inputs = $form_state->getValue([
       'override',
@@ -507,12 +532,14 @@ class ListBlock extends CoreBlock {
       // Check if it's an "expose form" checkbox,
       // and add its value to our expose form array.
       if (str_ends_with($input_name, '_expose')) {
-        $expose_form[$input_name] = ($input_value);
+        $input_name = basename($input_name, '_expose');
+        $expose_form[$this->getFilterCustomIdMap()[$input_name]] = ($input_value);
       }
       else {
         // If it's not an "expose form" field,
         // then we need to fetch the field's value for later use.
-        $exposed_filter_values[$input_name] = $input_value;
+        // @todo Probably need some validation here.
+        $exposed_filter_values[$this->getFilterCustomIdMap()[$input_name]] = $input_value;
       }
     }
     // Save "Filter in block" settings to block configuration.
@@ -621,38 +648,6 @@ class ListBlock extends CoreBlock {
       $this->view->display_handler->setOption('expose_form', TRUE);
       // Run through our exposed filters and turn their handlers on or off.
       foreach ($config['expose_form'] as $key => $value) {
-        // Remove the '_expose' suffix, and if necessary
-        // manually adjust for various naming inconsistencies.
-        $key = basename($key, '_expose');
-        switch ($key) {
-
-          case 'research':
-            $key = 'field_person_research_areas_target_id';
-            // Adjust to a single-select field.
-            $this->view->setHandlerOption($display_id, 'filter', $key, 'type', 'select');
-            $expose = $this->view->getHandler($display_id, 'filter', $key)['expose'];
-            $expose['multiple'] = FALSE;
-            $this->view->setHandlerOption($display_id, 'filter', $key, 'expose', $expose);
-            break;
-
-          case 'tag':
-            $key = 'field_tags_target_id';
-            // Adjust to a single-select field.
-            $this->view->setHandlerOption($display_id, 'filter', $key, 'type', 'select');
-            $expose = $this->view->getHandler($display_id, 'filter', $key)['expose'];
-            $expose['multiple'] = FALSE;
-            $this->view->setHandlerOption($display_id, 'filter', $key, 'expose', $expose);
-            break;
-
-          case 'type':
-            $key = 'field_person_types_target_id';
-            break;
-
-          case 'type_status':
-            $key = 'field_person_type_status_value';
-            break;
-        }
-
         $this->view->setHandlerOption($display_id, 'filter', $key, 'exposed', $value);
       }
     }
@@ -801,18 +796,6 @@ class ListBlock extends CoreBlock {
       }
     }
     return $styles;
-  }
-
-  /**
-   * Get custom ID for a filter.
-   */
-  protected function getFilterCustomId(FilterPluginBase $filter) {
-    // If an identifier is set for the filter, use that as the $filter_id.
-    if (!empty($filter->options['expose']['identifier'])) {
-      return $filter->options['expose']['identifier'];
-    }
-
-    return $filter->options['id'];
   }
 
   /**
