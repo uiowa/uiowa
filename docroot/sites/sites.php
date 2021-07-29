@@ -2993,3 +2993,9 @@ $sites['coworkcommons.local.drupal.uiowa.edu'] = 'coworkcommons.uiowa.edu';
 $sites['coworkcommons.dev.drupal.uiowa.edu'] = 'coworkcommons.uiowa.edu';
 $sites['coworkcommons.stage.drupal.uiowa.edu'] = 'coworkcommons.uiowa.edu';
 $sites['coworkcommons.prod.drupal.uiowa.edu'] = 'coworkcommons.uiowa.edu';
+
+// Directory aliases for grad.admissions.uiowa.edu.
+$sites['admissionsgrad.local.drupal.uiowa.edu'] = 'grad.admissions.uiowa.edu';
+$sites['admissionsgrad.dev.drupal.uiowa.edu'] = 'grad.admissions.uiowa.edu';
+$sites['admissionsgrad.stage.drupal.uiowa.edu'] = 'grad.admissions.uiowa.edu';
+$sites['admissionsgrad.prod.drupal.uiowa.edu'] = 'grad.admissions.uiowa.edu';
