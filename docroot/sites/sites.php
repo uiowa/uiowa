@@ -2999,3 +2999,9 @@ $sites['admissionsgrad.local.drupal.uiowa.edu'] = 'grad.admissions.uiowa.edu';
 $sites['admissionsgrad.dev.drupal.uiowa.edu'] = 'grad.admissions.uiowa.edu';
 $sites['admissionsgrad.stage.drupal.uiowa.edu'] = 'grad.admissions.uiowa.edu';
 $sites['admissionsgrad.prod.drupal.uiowa.edu'] = 'grad.admissions.uiowa.edu';
+
+// Directory aliases for nsfurmsts.sites.uiowa.edu.
+$sites['sitesnsfurmsts.local.drupal.uiowa.edu'] = 'nsfurmsts.sites.uiowa.edu';
+$sites['sitesnsfurmsts.dev.drupal.uiowa.edu'] = 'nsfurmsts.sites.uiowa.edu';
+$sites['sitesnsfurmsts.stage.drupal.uiowa.edu'] = 'nsfurmsts.sites.uiowa.edu';
+$sites['sitesnsfurmsts.prod.drupal.uiowa.edu'] = 'nsfurmsts.sites.uiowa.edu';

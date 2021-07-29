@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: sitesnsfurmsts.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sitesnsfurmsts
+  human_name: nsfurmsts.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesnsfurmsts.prod
+drupal:
+  db:
+    database: nsfurmsts_sites_uiowa_edu
+uiowa:
+  requester: apennathur
