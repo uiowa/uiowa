@@ -971,8 +971,11 @@ display:
         offset: offset
         pager: pager
         hide_fields: hide_fields
+        configure_filters: configure_filters
         configure_sorts: configure_sorts
         use_more: use_more
+        sort_fields: '0'
+        disable_filters: '0'
       defaults:
         filters: true
         filter_groups: true
@@ -984,6 +987,11 @@ display:
       more_link_help_text: 'Check to include a ''display more'' link. To use the default <a href="/admin/config/system/sitenow-people">people path set within SiteNow People</a>, make sure the ‘Enable people listing’ box is checked. Alternatively, a custom URL path can be provided in the ‘Path’ text box below. '
       display_description: ''
       block_description: People
+      configurable_filters:
+        - field_tags_target_id
+        - field_person_research_areas_target_id
+        - field_person_types_target_id
+        - field_person_type_status_value
     cache_metadata:
       max-age: -1
       contexts:
