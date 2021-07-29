@@ -89,13 +89,6 @@ AddEncoding gzip svgz
   RewriteCond %{HTTP_HOST} iconsortium\.subst-abuse\.uiowa\.edu$ [NC]
   RewriteRule ^ https://icsa.uiowa.edu/ [L,R=301]
 
-  # Redirect www.(cs|math|stat).uiowa.edu/~ to homepage.divms.uiowa.edu for CS, Math, Stats
-  RewriteCond %{HTTP_HOST} ^(www\.)?(cs|math|stat)\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_URI} /~(.*)
-  RewriteRule ^(.*)$ http://homepage.divms.uiowa.edu/$1 [L,R=301]
-
   # Set "protossl" to "s" if we were accessed via https://.  This is used later
   # if you enable "www." stripping or enforcement, in order to ensure that
   # you don't bounce between http and https.
