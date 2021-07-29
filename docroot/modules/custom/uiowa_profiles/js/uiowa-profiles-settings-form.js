@@ -18,9 +18,16 @@ function attachBehaviors() {
   const tabs = document.querySelectorAll('.tabs [role="tab"]');
   const tabList = document.querySelector('.tabs [role="tablist"]');
 
+  const profiles_titles = document.querySelectorAll('.tabs .profiles-fieldset-title');
+
   // Add a click event handler to each tab
   tabs.forEach(tab => {
     tab.addEventListener("click", changeTabs);
+  });
+
+  profiles_titles.forEach(profile_title => {
+    profile_title.addEventListener("keydown", changeTabText);
+    profile_title.addEventListener("keyup"  , changeTabText);
   });
 
   // Enable arrow navigation between tabs in the tab list
@@ -74,4 +81,15 @@ function changeTabs(e) {
   grandparent.parentNode
     .querySelector(`#${target.getAttribute("aria-controls")}`)
     .removeAttribute("hidden");
+}
+
+// Function to change the text of the Tab Title and the button Text of an instance.
+function changeTabText(e) {
+  const target = e.target;
+  const user_text = (target.value === '') ? 'People' : target.value;
+  const fieldset_id = target.dataset.profilesFieldsetTitleIndex;
+  const tab = document.getElementById('tab-' + fieldset_id);
+  const delete_button = document.getElementById('delete-profiles-instance-' + fieldset_id);
+  tab.value = user_text;
+  delete_button.value = 'Delete ' + user_text;
 }

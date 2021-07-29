@@ -155,6 +155,12 @@ class SettingsForm extends ConfigFormBase {
           '#default_value' => !empty($directory['title']) ? $directory['title'] : 'People',
           '#description' => $this->t('The page title to display on the Profiles directory.'),
           '#required' => TRUE,
+          '#attributes' => [
+            'class' => [
+              'profiles-fieldset-title',
+            ],
+            'data-profiles-fieldset-title-index' => $key,
+          ],
         ];
 
         $form['profiles_fieldset']['tabs_container']['directories'][$key]['api_key'] = [
@@ -226,6 +232,10 @@ class SettingsForm extends ConfigFormBase {
             ],
             '#attributes' => [
               'data-directory-index' => $key,
+              'id' => 'delete-profiles-instance-' . $key,
+              'class' => [
+                'delete-profiles-instance',
+              ],
             ],
           ];
         }
