@@ -45,7 +45,7 @@ display:
         type: basic
         options:
           submit_button: Apply
-          reset_button: false
+          reset_button: true
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
           expose_sort_order: true
@@ -297,7 +297,7 @@ display:
             trim_suffix: ''
             wrap_output: false
             wrap_class: trimmed
-            more_link: true
+            more_link: false
             more_text: 'Read more'
             more_class: more-link
             summary_handler: full
@@ -363,16 +363,18 @@ display:
             operator_list: {  }
             identifier: name
             required: false
-            remember: false
+            remember: true
             multiple: false
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
+              requester: '0'
               viewer: '0'
               editor: '0'
               publisher: '0'
               webmaster: '0'
               administrator: '0'
+              student: '0'
             placeholder: ''
           is_grouped: false
           group_info:
@@ -410,16 +412,18 @@ display:
             operator_list: {  }
             identifier: locations
             required: false
-            remember: false
+            remember: true
             multiple: false
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
+              requester: '0'
               viewer: '0'
               editor: '0'
               publisher: '0'
               webmaster: '0'
               administrator: '0'
+              student: '0'
             reduce: false
           is_grouped: false
           group_info:
@@ -456,16 +460,18 @@ display:
             operator_list: {  }
             identifier: type
             required: false
-            remember: false
+            remember: true
             multiple: false
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
+              requester: '0'
               viewer: '0'
               editor: '0'
               publisher: '0'
               webmaster: '0'
               administrator: '0'
+              student: '0'
             reduce: false
           is_grouped: false
           group_info:
@@ -504,16 +510,18 @@ display:
             operator_list: {  }
             identifier: degree
             required: false
-            remember: false
+            remember: true
             multiple: true
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
+              requester: '0'
               viewer: '0'
               editor: '0'
               publisher: '0'
               webmaster: '0'
               administrator: '0'
+              student: '0'
             reduce: false
           is_grouped: false
           group_info:
@@ -576,7 +584,7 @@ display:
       relationships: {  }
       arguments: {  }
       display_extenders: {  }
-      use_ajax: true
+      use_ajax: false
       filter_groups:
         operator: AND
         groups:
