@@ -281,7 +281,6 @@ class SettingsForm extends ConfigFormBase {
     $directories[] = [];
     $form_state->setValue(['profiles_fieldset', 'tabs_container', 'directories'], $directories);
     $form_state->setRebuild();
-    return $form;
   }
 
   /**
@@ -293,7 +292,6 @@ class SettingsForm extends ConfigFormBase {
     unset($directories[$delete]);
     $form_state->setValue(['profiles_fieldset', 'tabs_container', 'directories'], $directories);
     $form_state->setRebuild();
-    return $form;
   }
 
   /**
