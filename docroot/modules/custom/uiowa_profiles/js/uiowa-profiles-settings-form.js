@@ -1,31 +1,41 @@
+// Wait until the dom is loaded.
 window.addEventListener("DOMContentLoaded", () => {
+  // Attach behaviors after DOM is loaded.
   attachBehaviors();
 
-  // select the target node
+  // select the #uiowa-profiles-settings element.
   let target = document.getElementById("uiowa-profiles-settings");
-  // create an observer instance
+  // create an observer instance to watch for changes in the markup.
   let observer = new MutationObserver(function(mutations) {
     // If the internals of the form mutate, re-attach the JS for tabs.
     attachBehaviors();
   });
+
   // configuration of the observer:
   let config = { attributes: true, childList: true, characterData: true };
-  // pass in the target node, as well as the observer options
+  // Tell the observer to observe
+  // Pass in the target node, as well as the observer options.
   observer.observe(target, config);
 });
 
+// Attach relevant behaviors to elements in the form markup.
 function attachBehaviors() {
+  // An array of the content of each tab, holding a form.
   const tabs = document.querySelectorAll('.tabs [role="tab"]');
+  // The container for the tab buttons that allow the user to swap tabs.
   const tabList = document.querySelector('.tabs [role="tablist"]');
-
+  // An array of profiles titles.
   const profiles_titles = document.querySelectorAll('.tabs .profiles-fieldset-title');
 
-  // Add a click event handler to each tab
+  // Add a click event handler to each tab.
   tabs.forEach(tab => {
+    // On click shange to the tab that was clicked with changeTabsFromEvent().
     tab.addEventListener("click", changeTabsFromEvent);
   });
 
+  // Add a click event handler to each title.
   profiles_titles.forEach(profile_title => {
+    // On keydown or keyup change the text of the tab button and the delete button for each profiles instance.
     profile_title.addEventListener("keydown", changeTabText);
     profile_title.addEventListener("keyup"  , changeTabText);
   });
@@ -33,6 +43,7 @@ function attachBehaviors() {
   // Enable arrow navigation between tabs in the tab list
   let tabFocus = 0;
 
+  // Add a click event handler to the tablist.
   tabList.addEventListener("keydown", e => {
     // Move right
     if (e.keyCode === 39 || e.keyCode === 37) {
@@ -57,21 +68,20 @@ function attachBehaviors() {
     }
   });
 
+  // If this is the first load...
   if(!document.body.dataset["directoryProfilesAfterFirstLoad"]) {
+    // Add an attribute to the body that says the first load has occured.
     document.body.setAttribute('data-directory-profiles-after-first-load', 'true');
   }
+  // Else if it is not the first load...
   else if (document.body.dataset["directoryProfilesAfterFirstLoad"] === 'true') {
+    // Change focus to the last tab.
     const tabs = document.querySelectorAll('.tabs [role="tab"]');
     changeTabs(tabs[tabs.length -1]);
   }
 }
 
-
-function changeTabsFromEvent(e) {
-  const target = e.target;
-  changeTabs(target)
-}
-
+//Change focus to a certain tab given its element.
 function changeTabs(element) {
   const parent = element.parentNode;
   const grandparent = parent.parentNode;
@@ -93,6 +103,13 @@ function changeTabs(element) {
   grandparent.parentNode
     .querySelector(`#${element.getAttribute("aria-controls")}`)
     .removeAttribute("hidden");
+}
+
+// Function wrapper for changeTabs() that passes an event target through.
+// Useful for event listeners.
+function changeTabsFromEvent(e) {
+  const target = e.target;
+  changeTabs(target)
 }
 
 // Function to change the text of the Tab Title and the button Text of an instance.
