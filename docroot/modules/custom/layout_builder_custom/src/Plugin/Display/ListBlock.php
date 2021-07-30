@@ -4,7 +4,6 @@ namespace Drupal\layout_builder_custom\Plugin\Display;
 
 use Drupal\Core\Entity\Element\EntityAutocomplete;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Form\SubformState;
 use Drupal\Core\Form\SubformStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Render\Element\Checkboxes;
@@ -278,10 +277,8 @@ class ListBlock extends BlockDisplay {
       foreach (Element::children($form['exposed']) as $id) {
         $form['exposed'][$id]['expose_' . $id] = [
           '#type' => 'checkbox',
-          '#title' => $this->t('Expose filter to site visitors.', [
-            '@filter_label' => $form['exposed'][$id]['label'],
-          ]),
-          '#default_value' => $block_configuration['expose_form'][$id] ?: 0,
+          '#title' => $this->t('Expose filter to site visitors.'),
+          '#default_value' => $block_configuration['exposed'][$id]['expose_' . $id] ?: 0,
           '#weight' => -1,
         ];
 
@@ -359,16 +356,14 @@ class ListBlock extends BlockDisplay {
     return $form;
   }
 
+  public function blockValidate(ViewsBlock $block, array $form, FormStateInterface $form_state) {
+
+  }
+
   /**
    * {@inheritdoc}
    */
   public function blockSubmit(ViewsBlock $block, $form, FormStateInterface $form_state) {
-
-    // Set default value for items_per_page if left blank.
-    if (empty($form_state->getValue(['override', 'items_per_page']))) {
-      $form_state->setValue(['override', 'items_per_page'], 'none');
-    }
-
     parent::blockSubmit($block, $form, $form_state);
     $allow_settings = array_filter($this->getOption('allow'));
 
@@ -385,14 +380,6 @@ class ListBlock extends BlockDisplay {
     }
     $block->setConfigurationValue('pager', $pager);
 
-    // Save "Pager offset" settings to block configuration.
-    if (!empty($allow_settings['offset'])) {
-      $block->setConfigurationValue('pager_offset', $form_state->getValue([
-        'override',
-        'pager_offset',
-      ]));
-    }
-
     if (!empty($allow_settings['use_more'])) {
 
       $block->setConfigurationValue('use_more', $form_state->getValue([
@@ -406,34 +393,6 @@ class ListBlock extends BlockDisplay {
         'use_more_link_url',
       ]));
     }
-
-    // Display exposed filters to allow them to be set for the block.
-    $customizable_filters = $this->getOption('configurable_filters');
-
-    // Check if we are exposing any filters to the site visitor.
-    $exposed_inputs = $form_state->getValue([
-      'override',
-      'exposed_filters',
-    ]);
-    $expose_form = [];
-    $exposed_filter_values = [];
-    foreach ($exposed_inputs as $input_name => $input_value) {
-      // Check if it's an "expose form" checkbox,
-      // and add its value to our expose form array.
-      if (str_ends_with($input_name, '_expose')) {
-        $input_name = basename($input_name, '_expose');
-        $expose_form[$this->getFilterCustomIdMap()[$input_name]] = ($input_value);
-      }
-      else {
-        // If it's not an "expose form" field,
-        // then we need to fetch the field's value for later use.
-        // @todo Probably need some validation here.
-        $exposed_filter_values[$this->getFilterCustomIdMap()[$input_name]] = $input_value;
-      }
-    }
-    // Save "Filter in block" settings to block configuration.
-    $block->setConfigurationValue('exposed_filter_values', $exposed_filter_values);
-    $block->setConfigurationValue('expose_form', $expose_form);
 
     // Save "Configure sorts" setting.
     if (!empty($allow_settings['configure_sorts'])) {
@@ -477,6 +436,9 @@ class ListBlock extends BlockDisplay {
     $allow_settings = array_filter($this->getOption('allow'));
     $config = $block->getConfiguration();
     [, $display_id] = explode('-', $block->getDerivativeId(), 2);
+    $people_types_filter = $this->view->getDisplay()->getHandler('filter', 'field_person_types_target_id');
+    $people_types_filter->value = ['All'];
+    $this->view->setHandler($display_id, 'filter', 'field_person_types_target_id', $people_types_filter);
 
     if (!empty($config['layout_builder_styles'])) {
       $this->view->display_handler->setOption('row_styles', $config['layout_builder_styles']);
@@ -502,11 +464,6 @@ class ListBlock extends BlockDisplay {
       $this->view->display_handler->setOption('heading_size', $child_heading_size);
     }
 
-    // Change pager offset settings based on block configuration.
-    if (!empty($allow_settings['offset'])) {
-      $this->view->setOffset($config['pager_offset']);
-    }
-
     // Change pager style settings based on block configuration.
     if (!empty($config['pager'])) {
       $pager = $this->view->display_handler->getOption('pager');
@@ -514,35 +471,6 @@ class ListBlock extends BlockDisplay {
       $pager['options']['expose']['items_per_page'] = FALSE;
       $pager['options']['expose']['offset'] = FALSE;
       $this->view->display_handler->setOption('pager', $pager);
-    }
-
-    // Change fields output based on block configuration.
-    if ($this->view->getStyle()->usesFields() &&
-      !empty($allow_settings['hide_fields']) &&
-      !empty($config['fields'])) {
-      $fields = $this->view->getHandlers('field');
-      foreach (array_keys($fields) as $field_name) {
-        // Remove each field in sequence and re-add them if not hidden.
-        $this->view->removeHandler($display_id, 'field', $field_name);
-        if (empty($config['fields'][$field_name]['hide'])) {
-          $this->view->addHandler($display_id, 'field', $fields[$field_name]['table'], $fields[$field_name]['field'], $fields[$field_name], $field_name);
-        }
-      }
-    }
-
-    // Check if we need to expose form filter to site visitors.
-    if (isset($config['expose_form']) &&
-      is_array($config['expose_form']) &&
-      in_array(TRUE, $config['expose_form'])) {
-      $this->view->display_handler->setOption('expose_form', TRUE);
-      // Run through our exposed filters and turn their handlers on or off.
-      foreach ($config['expose_form'] as $key => $value) {
-        $this->view->setHandlerOption($display_id, 'filter', $key, 'exposed', $value);
-      }
-    }
-    // Set to false in case it was previously exposed but no longer.
-    else {
-      $this->view->display_handler->setOption('expose_form', FALSE);
     }
 
     // Change sorts based on block configuration.
@@ -565,14 +493,28 @@ class ListBlock extends BlockDisplay {
       }
     }
 
-    // We need to get both the values from the exposed filter form
-    // as well as any pre-set filter values from the block form.
-    $inputs = $this->view->getExposedInput();
-    $exposed_filter_values = !empty($config['exposed_filter_values']) ? $config['exposed_filter_values'] : [];
-    // Inputs are the second arg here, so if we have an exposed input,
-    // it will replace any value from the config array.
-    $exposed_filter_values = array_merge($exposed_filter_values, $inputs);
-    $this->view->setExposedInput($exposed_filter_values);
+    // Override some filter settings.
+    if (!empty($allow_settings['configure_filters'])) {
+      // Loop over the exposed filter settings in the block configuration.
+      foreach ($config['exposed'] as $key => $value) {
+        // Load the handler related to the exposed filter.
+        [$handler_type, $handler_name] = explode('-', $key, 2);
+        /** @var \Drupal\views\Plugin\views\HandlerBase $handler */
+        $handler = $this->view->getDisplay()->getHandler($handler_type, $handler_name);
+
+        // Set exposed filter input directly where they were entered in the
+        // block configuration. Otherwise only set them if they haven't been set
+        // already.
+        if ($handler) {
+          if (isset($config['exposed'][$key]['expose_' . $key]) && $config['exposed'][$key]['expose_' . $key]) {
+            unset($handler->options['value_from_block_configuration']);
+          }
+          else {
+            $handler->options['exposed'] = FALSE;
+          }
+        }
+      }
+    }
 
     if (!empty($allow_settings['use_more'])) {
       if (isset($config['use_more']) && $config['use_more']) {
@@ -593,73 +535,55 @@ class ListBlock extends BlockDisplay {
   /**
    * {@inheritdoc}
    */
-  public function usesExposed(): bool {
-    $filters = $this->getHandlers('filter');
-    foreach ($filters as $filter) {
-      if ($filter->isExposed() && !empty($filter->exposedInfo())) {
-        return TRUE;
-      }
-    }
-    // Hotfix shim to keep these pagers working for now.
-    // @todo Remove this exception when these view displays are removed.
-    $display = $this->view->getDisplay();
-    $exceptions = [
-      'block_people_slf',
-      'block_people_sfl',
-      'block_articles',
-    ];
-    if (in_array($display->display['id'], $exceptions)) {
-      return TRUE;
-    }
-    return FALSE;
-  }
+//  public function usesExposed(): bool {
+//    $filters = $this->getHandlers('filter');
+//    foreach ($filters as $filter) {
+//      if ($filter->isExposed() && !empty($filter->exposedInfo())) {
+//        return TRUE;
+//      }
+//    }
+//    // Hotfix shim to keep these pagers working for now.
+//    // @todo Remove this exception when these view displays are removed.
+//    $display = $this->view->getDisplay();
+//    $exceptions = [
+//      'block_people_slf',
+//      'block_people_sfl',
+//      'block_articles',
+//    ];
+//    if (in_array($display->display['id'], $exceptions)) {
+//      return TRUE;
+//    }
+//    return FALSE;
+//  }
 
   /**
    * {@inheritdoc}
    */
-  public function displaysExposed(): bool {
-    $display = $this->view->getDisplay();
-    // If we need to expose filters, return true
-    // and we're done.
-    if ($display->getOption('expose_form')) {
-      return TRUE;
-    }
-    // Hotfix shim to not display exposed blocks, necessary because of the hotfix above.
-    // @todo Remove this exception when these view displays are removed.
-    $exceptions = [
-      'block_people_slf',
-      'block_people_sfl',
-      'block_articles',
-    ];
-    if (in_array($display->display['id'], $exceptions)) {
-      return FALSE;
-    }
-    // If we are not utilizing the filter in block option,
-    // then use the default behavior. Otherwise, do not display
-    // exposed filters.
-    if (empty($this->options['configurable_filters'])) {
-      return parent::displaysExposed();
-    }
-    return FALSE;
-  }
-
-  /**
-   * {@inheritdoc}
-   *
-   * Exposed widgets typically only work with ajax in Drupal core, however
-   * #2605218 totally breaks the rest of the functionality in this display and
-   * in Core's Block display as well, so we allow non-ajax block views to use
-   * exposed filters and manually set the #action to the current request uri.
-   */
-  public function elementPreRender(array $element): array {
-    /** @var \Drupal\views\ViewExecutable $view */
-    $view = $element['#view'];
-    if (!empty($view->exposed_widgets['#action']) && !$view->ajaxEnabled()) {
-      $uri = \Drupal::request()->getRequestUri();
-      $view->exposed_widgets['#action'] = $uri;
-    }
-    return parent::elementPreRender($element);
-  }
+//  public function displaysExposed(): bool {
+//    $display = $this->view->getDisplay();
+//    // If we need to expose filters, return true
+//    // and we're done.
+//    if ($display->getOption('expose_form')) {
+//      return TRUE;
+//    }
+//    // Hotfix shim to not display exposed blocks, necessary because of the hotfix above.
+//    // @todo Remove this exception when these view displays are removed.
+//    $exceptions = [
+//      'block_people_slf',
+//      'block_people_sfl',
+//      'block_articles',
+//    ];
+//    if (in_array($display->display['id'], $exceptions)) {
+//      return FALSE;
+//    }
+//    // If we are not utilizing the filter in block option,
+//    // then use the default behavior. Otherwise, do not display
+//    // exposed filters.
+//    if (empty($this->options['configurable_filters'])) {
+//      return parent::displaysExposed();
+//    }
+//    return FALSE;
+//  }
 
   /**
    * Get Layout Builder Styles from the form state.
