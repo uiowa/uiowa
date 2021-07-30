@@ -201,8 +201,8 @@ class SettingsForm extends ConfigFormBase {
       $form['profiles_fieldset']['tabs_container']['directories'][$key]['path'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Path'),
-        //If the API key doesn't exist, default it to '/profiles/people'.
-        '#default_value' => $directory['path'] ?? '/profiles/people',
+        //If the API key doesn't exist, default it to ''.
+        '#default_value' => $directory['path'] ?? '',
         '#description' => $this->t('The path for the Profiles directory. Serves as the base for all profiles.'),
         '#required' => TRUE,
       ];
