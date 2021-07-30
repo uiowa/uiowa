@@ -1,8 +1,8 @@
 diff --git a/docroot/.htaccess b/docroot/.htaccess
-index b1ee36bf4..d04682751 100644
+index b1ee36bf4..383f5c384 100644
 --- a/docroot/.htaccess
 +++ b/docroot/.htaccess
-@@ -62,6 +62,33 @@ AddEncoding gzip svgz
+@@ -62,6 +62,40 @@ AddEncoding gzip svgz
  <IfModule mod_rewrite.c>
    RewriteEngine on
  
@@ -32,6 +32,13 @@ index b1ee36bf4..d04682751 100644
 +  # Redirect iconsortium.subst-abuse.uiowa.edu to icsa.uiowa.edu
 +  RewriteCond %{HTTP_HOST} iconsortium\.subst-abuse\.uiowa\.edu$ [NC]
 +  RewriteRule ^ https://icsa.uiowa.edu/ [L,R=301]
++
++  # Redirect www.(cs|math|stat).uiowa.edu/~ to homepage.divms.uiowa.edu for CS, Math, Stats
++  RewriteCond %{HTTP_HOST} ^(www\.)?(cs|math|stat)\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
++  RewriteCond %{REQUEST_FILENAME} !-f
++  RewriteCond %{REQUEST_FILENAME} !-d
++  RewriteCond %{REQUEST_URI} /~(.*)
++  RewriteRule ^(.*)$ http://homepage.divms.uiowa.edu/$1 [L,R=301]
 +
    # Set "protossl" to "s" if we were accessed via https://.  This is used later
    # if you enable "www." stripping or enforcement, in order to ensure that
