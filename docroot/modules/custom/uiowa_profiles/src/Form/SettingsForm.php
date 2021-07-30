@@ -7,6 +7,7 @@ use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Path\PathValidatorInterface;
 use Drupal\Core\Routing\RouteBuilderInterface;
+use Drupal\Core\Routing\RouteProviderInterface;
 use Drupal\Core\Url;
 use Drupal\pathauto\AliasCleanerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -37,6 +38,13 @@ class SettingsForm extends ConfigFormBase {
   protected $routeBuilder;
 
   /**
+   * The router.route_provider service.
+   *
+   * @var \Drupal\Core\Routing\RouteProviderInterface
+   */
+  protected $routeProvider;
+
+  /**
    * Settings form constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -46,13 +54,16 @@ class SettingsForm extends ConfigFormBase {
    * @param \Drupal\Core\Path\PathValidatorInterface $pathValidator
    *   The path.validator service.
    * @param \Drupal\Core\Routing\RouteBuilderInterface $routeBuilder
-   *   The route.builder service.
+   *   The router.builder service.
+   * @param \Drupal\Core\Routing\RouteProviderInterface $routeProvider
+   *   The router.route_provider service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, AliasCleanerInterface $aliasCleaner, PathValidatorInterface $pathValidator, RouteBuilderInterface $routeBuilder) {
+  public function __construct(ConfigFactoryInterface $config_factory, AliasCleanerInterface $aliasCleaner, PathValidatorInterface $pathValidator, RouteBuilderInterface $routeBuilder, RouteProviderInterface $routeProvider) {
     parent::__construct($config_factory);
     $this->aliasCleaner = $aliasCleaner;
     $this->pathValidator = $pathValidator;
     $this->routeBuilder = $routeBuilder;
+    $this->routeProvider = $routeProvider;
   }
 
   /**
@@ -63,7 +74,8 @@ class SettingsForm extends ConfigFormBase {
       $container->get('config.factory'),
       $container->get('pathauto.alias_cleaner'),
       $container->get('path.validator'),
-      $container->get('router.builder')
+      $container->get('router.builder'),
+      $container->get('router.route_provider')
     );
   }
 
@@ -184,13 +196,12 @@ class SettingsForm extends ConfigFormBase {
         '#required' => TRUE,
       ];
 
-      /** @var \Drupal\Core\Routing\RouteProviderInterface $route_provider */
-      $route_provider = \Drupal::service('router.route_provider');
+      // Add link to sitemap if route exists, i.e. the form has been saved.
       $route = "uiowa_profiles.sitemap.{$key}";
-      $exists = count($route_provider->getRoutesByNames([$route])) === 1;
+      $exists = count($this->routeProvider->getRoutesByNames([$route])) === 1;
 
       if ($exists) {
-        $form['profiles_fieldset']['tabs_container']['directories'][$key]['path']['#description'] .= t(' It also creates an additional <a href=":url">sitemap</a> to submit to search engines.', [
+        $form['profiles_fieldset']['tabs_container']['directories'][$key]['path']['#description'] .= $this->t('&nbsp;It also creates an additional <a href=":url">sitemap</a> to submit to search engines.', [
           ':url' => Url::fromRoute($route)->toString(),
         ]);
       }
@@ -235,7 +246,7 @@ class SettingsForm extends ConfigFormBase {
         // form action so that the triggering element is set correctly.
         $form['profiles_fieldset']['tabs_container']['directories'][$key]['delete'] = [
           '#type' => 'submit',
-          '#value' => t('Delete @directory', [
+          '#value' => $this->t('Delete @directory', [
             '@directory' => $directory['title'],
           ]),
           '#submit' => ['::removeSubmit'],
@@ -259,7 +270,7 @@ class SettingsForm extends ConfigFormBase {
 
     $form['profiles_fieldset']['tabs_container']['tablist']['add'] = [
       '#type' => 'submit',
-      '#value' => t('+'),
+      '#value' => $this->t('+'),
       '#submit' => ['::addSubmit'],
       '#ajax' => [
         'callback' => '::addRemoveCallback',
