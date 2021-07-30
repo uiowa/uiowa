@@ -43,28 +43,32 @@ class ProfilesDynamic implements ContainerInjectionInterface {
   public function routes() {
     $routes = [];
 
-    $directory = $this->config->get('directory.path') ?? '/profiles';
+    $directories = $this->config->get('directories');
 
-    $routes['uiowa_profiles.directory'] = new Route(
-      "{$directory}/{slug}",
-      [
-        '_controller' => 'Drupal\uiowa_profiles\Controller\DirectoryController::build',
-        'slug' => NULL,
-      ],
-      [
-        '_permission' => 'access content',
-      ]
-    );
+    foreach ($directories as $key => $directory) {
+      $routes["uiowa_profiles.directory.{$key}"] = new Route(
+        "{$directory['path']}/{slug}",
+        [
+          '_controller' => 'Drupal\uiowa_profiles\Controller\DirectoryController::build',
+          'key' => $key,
+          'slug' => NULL,
+        ],
+        [
+          '_permission' => 'access content',
+        ]
+      );
 
-    $routes['uiowa_profiles.sitemap'] = new Route(
-      "{$directory}/sitemap.txt",
-      [
-        '_controller' => 'Drupal\uiowa_profiles\Controller\SitemapController::build',
-      ],
-      [
-        '_permission' => 'access content',
-      ]
-    );
+      $routes["uiowa_profiles.sitemap.{$key}"] = new Route(
+        "{$directory['path']}/sitemap.txt",
+        [
+          '_controller' => 'Drupal\uiowa_profiles\Controller\SitemapController::build',
+          'key' => $key,
+        ],
+        [
+          '_permission' => 'access content',
+        ]
+      );
+    }
 
     return $routes;
   }
