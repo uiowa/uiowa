@@ -123,7 +123,7 @@ class SettingsForm extends ConfigFormBase {
 
         $form['profiles_fieldset']['tabs_container']['tablist']['tab-button-' . $key] = [
           '#type' => 'button',
-          '#value' => !empty($directory['title']) ? $directory['title'] : 'People-' . $key,
+          '#value' => !empty($directory['title']) ? $directory['title'] : 'People-' . strval($key+1),
           '#attributes' => [
             'role' => 'tab',
             'aria-selected' => $is_first_tab ? 'true' : 'false',
@@ -232,7 +232,6 @@ class SettingsForm extends ConfigFormBase {
             ],
             '#attributes' => [
               'data-directory-index' => $key,
-              'id' => 'delete-profiles-instance-' . $key,
               'class' => [
                 'delete-profiles-instance',
               ],

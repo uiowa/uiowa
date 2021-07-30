@@ -89,7 +89,7 @@ function changeTabText(e) {
   const user_text = (target.value === '') ? 'People' : target.value;
   const fieldset_id = target.dataset.profilesFieldsetTitleIndex;
   const tab = document.getElementById('tab-' + fieldset_id);
-  const delete_button = document.getElementById('delete-profiles-instance-' + fieldset_id);
+  const delete_button = document.querySelector('.delete-profiles-instance[data-directory-index="' + fieldset_id + '"]');
   tab.value = user_text;
   delete_button.value = 'Delete ' + user_text;
 }
