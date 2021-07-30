@@ -82,6 +82,8 @@ class SitemapController extends ControllerBase {
    *
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   The request object.
+   * @param int $key
+   *   The directory key.
    *
    * @return \Symfony\Component\HttpFoundation\Response
    *   The response object.

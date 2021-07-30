@@ -21,7 +21,6 @@ use Drupal\filter\Plugin\Filter\FilterHtmlCorrector;
 use Drupal\layout_builder\InlineBlockUsage;
 use Drupal\layout_builder\Section;
 use Drupal\layout_builder\SectionComponent;
-use Drupal\media\Entity\Media;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\Entity\Node;
 use Drupal\paragraphs\Entity\Paragraph;
@@ -3304,7 +3303,7 @@ function sitenow_update_9015() {
       $controller = \Drupal::entityTypeManager()->getStorage('media');
       $entities = $controller->loadMultiple($ids);
 
-      /** @var Media $media */
+      /** @var \Drupal\media\Entity\Media $media */
       foreach ($entities as $media) {
         $file = File::load($media->get('field_media_image')->target_id);
 

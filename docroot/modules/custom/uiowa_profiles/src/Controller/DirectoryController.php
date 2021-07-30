@@ -90,6 +90,8 @@ class DirectoryController extends ControllerBase {
    *
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   The current request.
+   * @param int $key
+   *   The directory key.
    * @param string $slug
    *   The optional person slug. Determines if the directory or profile prints.
    *
