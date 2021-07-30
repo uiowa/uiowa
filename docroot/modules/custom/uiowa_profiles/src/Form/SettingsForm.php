@@ -342,7 +342,7 @@ class SettingsForm extends ConfigFormBase {
     }
 
     foreach ($directories as $key => $directory) {
-      $path = $this->aliasCleaner->cleanAlias($directory[$key]['path']);
+      $path = $this->aliasCleaner->cleanAlias($directory['path']);
 
       /** @var \Drupal\Core\Url $url */
       $url = $this->pathValidator->getUrlIfValid($path);
