@@ -86,13 +86,13 @@ class SitemapController extends ControllerBase {
    * @return \Symfony\Component\HttpFoundation\Response
    *   The response object.
    */
-  public function build(Request $request) {
+  public function build(Request $request, $key) {
     // The returned sitemap URLs already include a slash so remove ours.
-    $path = $this->config->get('directory.path');
+    $directory = $this->config->get('directories')[$key];
 
     $params = UrlHelper::buildQuery([
-      'api-key' => $this->config->get('api_key'),
-      'path' => ltrim($path, '/'),
+      'api-key' => $directory['api_key'],
+      'path' => ltrim($directory['path'], '/'),
     ]);
 
     try {
