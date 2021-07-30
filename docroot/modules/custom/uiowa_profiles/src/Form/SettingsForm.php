@@ -329,10 +329,12 @@ class SettingsForm extends ConfigFormBase {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $directories = $form_state->getValue(['profiles_fieldset', 'tabs_container', 'directories']);
 
+    // Get all the directory paths as an array.
     $paths = array_map(function ($v) {
       return $v['path'];
     }, $directories);
 
+    // Count how many times each path occurs and mark it as a duplicate if > 1.
     $dups = [];
 
     foreach (array_count_values($paths) as $val => $c) {
@@ -346,7 +348,8 @@ class SettingsForm extends ConfigFormBase {
       $url = $this->pathValidator->getUrlIfValid($path);
 
       // If $url is anything besides FALSE then the path is already in use. We
-      // also check if the route belongs to another module.
+      // also check if the route belongs to another module or is a duplicate
+      // of another directory.
       if ($url &&
         !str_starts_with($url->getRouteName(), 'uiowa_profiles')) {
         $form_state->setErrorByName("profiles_fieldset][tabs_container][directories][{$key}][path", 'This path is already in use.');
