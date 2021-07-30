@@ -323,31 +323,28 @@ class SettingsForm extends ConfigFormBase {
     $this->routeBuilder->rebuild();
   }
 
-//  /**
-//   * {@inheritDoc}
-//   */
-//  public function validateForm(array &$form, FormStateInterface $form_state) {
-//    $fields = [
-//      'path',
-//    ];
-//
-//    foreach ($fields as $field) {
-//      $path = $this->aliasCleaner->cleanAlias($form_state->getValue($field));
-//
-//      /** @var \Drupal\Core\Url $url */
-//      $url = $this->pathValidator->getUrlIfValid($path);
-//
-//      // If $url is anything besides FALSE then the path is already in use. We
-//      // also check if the route belongs to another module.
-//      if ($url && !str_starts_with($url->getRouteName(), 'uiowa_profiles')) {
-//        $form_state->setErrorByName($field, 'This path is already in use.');
-//      }
-//      else {
-//        $form_state->setValue($field, $path);
-//      }
-//    }
-//
-//    parent::validateForm($form, $form_state);
-//  }
+  /**
+   * {@inheritDoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    foreach ($form_state->getValue(['profiles_fieldset', 'tabs_container', 'directories']) as $key => $directory) {
+      $path = $this->aliasCleaner->cleanAlias($form_state->getValue(['profiles_fieldset', 'tabs_container', 'directories', $key, 'path']));
+
+      /** @var \Drupal\Core\Url $url */
+      $url = $this->pathValidator->getUrlIfValid($path);
+
+      // If $url is anything besides FALSE then the path is already in use. We
+      // also check if the route belongs to another module.
+      // @todo: Validate against other directories paths in $form_state.
+      if ($url && !str_starts_with($url->getRouteName(), 'uiowa_profiles')) {
+        $form_state->setErrorByName("profiles_fieldset][tabs_container][directories][{$key}][path", 'This path is already in use.');
+      }
+      else {
+        $form_state->setValue(['profiles_fieldset', 'tabs_container', 'directories', $key, 'path'], $path);
+      }
+    }
+
+    parent::validateForm($form, $form_state);
+  }
 
 }
