@@ -91,5 +91,7 @@ function changeTabText(e) {
   const tab = document.getElementById('tab-' + fieldset_id);
   const delete_button = document.querySelector('.delete-profiles-instance[data-directory-index="' + fieldset_id + '"]');
   tab.value = user_text;
-  delete_button.value = 'Delete ' + user_text;
+  if (delete_button) {
+    delete_button.value = 'Delete ' + user_text;
+  }
 }
