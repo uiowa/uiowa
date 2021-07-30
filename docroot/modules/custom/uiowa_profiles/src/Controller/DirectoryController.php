@@ -96,8 +96,9 @@ class DirectoryController extends ControllerBase {
    * @return array
    *   The render array.
    */
-  public function build(Request $request, $slug = NULL) {
-    $canonical = $this->config->get('directory.canonical');
+  public function build(Request $request, $key, $slug = NULL) {
+    $directory = $this->config->get('directories')[$key];
+    $canonical = $directory['canonical'];
 
     if (empty($canonical)) {
       $canonical = $request->getSchemeAndHttpHost();
@@ -163,10 +164,10 @@ class DirectoryController extends ControllerBase {
       '#type' => 'html_tag',
       '#tag' => 'profiles-client',
       '#attributes' => [
-        'api-key' => Html::escape($this->config->get('api_key')),
+        'api-key' => Html::escape($directory['api_key']),
         'site-name' => $this->config('system.site')->get('name'),
-        'directory-name' => Html::escape($this->config->get('directory.title')),
-        ':page-size' => Html::escape($this->config->get('directory.page_size')),
+        'directory-name' => Html::escape($directory['title']),
+        ':page-size' => Html::escape($directory['page_size']),
         ':breadcrumbs' => json_encode($breadcrumbs),
       ],
       'intro' => [
@@ -177,8 +178,8 @@ class DirectoryController extends ControllerBase {
         ],
         'text' => [
           '#type' => 'processed_text',
-          '#text' => $this->config->get('directory.intro')['value'],
-          '#format' => $this->config->get('directory.intro')['format'],
+          '#text' => $directory['intro']['value'],
+          '#format' => $directory['intro']['format'],
         ],
       ],
     ];
