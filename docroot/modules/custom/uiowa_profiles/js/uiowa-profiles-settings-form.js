@@ -22,7 +22,7 @@ function attachBehaviors() {
 
   // Add a click event handler to each tab
   tabs.forEach(tab => {
-    tab.addEventListener("click", changeTabs);
+    tab.addEventListener("click", changeTabsFromEvent);
   });
 
   profiles_titles.forEach(profile_title => {
@@ -56,12 +56,24 @@ function attachBehaviors() {
       tabs[tabFocus].focus();
     }
   });
+
+  if(!document.body.dataset["directoryProfilesAfterFirstLoad"]) {
+    document.body.setAttribute('data-directory-profiles-after-first-load', 'true');
+  }
+  else if (document.body.dataset["directoryProfilesAfterFirstLoad"] === 'true') {
+    const tabs = document.querySelectorAll('.tabs [role="tab"]');
+    changeTabs(tabs[tabs.length -1]);
+  }
 }
 
 
-function changeTabs(e) {
+function changeTabsFromEvent(e) {
   const target = e.target;
-  const parent = target.parentNode;
+  changeTabs(target)
+}
+
+function changeTabs(element) {
+  const parent = element.parentNode;
   const grandparent = parent.parentNode;
 
   // Remove all current selected tabs
@@ -70,7 +82,7 @@ function changeTabs(e) {
     .forEach(t => t.setAttribute("aria-selected", false));
 
   // Set this tab as selected
-  target.setAttribute("aria-selected", true);
+  element.setAttribute("aria-selected", true);
 
   // Hide all tab panels
   grandparent
@@ -79,7 +91,7 @@ function changeTabs(e) {
 
   // Show the selected panel
   grandparent.parentNode
-    .querySelector(`#${target.getAttribute("aria-controls")}`)
+    .querySelector(`#${element.getAttribute("aria-controls")}`)
     .removeAttribute("hidden");
 }
 
