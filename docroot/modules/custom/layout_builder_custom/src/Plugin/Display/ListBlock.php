@@ -356,6 +356,9 @@ class ListBlock extends BlockDisplay {
     return $form;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function blockValidate(ViewsBlock $block, array $form, FormStateInterface $form_state) {
 
   }
@@ -531,59 +534,6 @@ class ListBlock extends BlockDisplay {
       }
     }
   }
-
-  /**
-   * {@inheritdoc}
-   */
-//  public function usesExposed(): bool {
-//    $filters = $this->getHandlers('filter');
-//    foreach ($filters as $filter) {
-//      if ($filter->isExposed() && !empty($filter->exposedInfo())) {
-//        return TRUE;
-//      }
-//    }
-//    // Hotfix shim to keep these pagers working for now.
-//    // @todo Remove this exception when these view displays are removed.
-//    $display = $this->view->getDisplay();
-//    $exceptions = [
-//      'block_people_slf',
-//      'block_people_sfl',
-//      'block_articles',
-//    ];
-//    if (in_array($display->display['id'], $exceptions)) {
-//      return TRUE;
-//    }
-//    return FALSE;
-//  }
-
-  /**
-   * {@inheritdoc}
-   */
-//  public function displaysExposed(): bool {
-//    $display = $this->view->getDisplay();
-//    // If we need to expose filters, return true
-//    // and we're done.
-//    if ($display->getOption('expose_form')) {
-//      return TRUE;
-//    }
-//    // Hotfix shim to not display exposed blocks, necessary because of the hotfix above.
-//    // @todo Remove this exception when these view displays are removed.
-//    $exceptions = [
-//      'block_people_slf',
-//      'block_people_sfl',
-//      'block_articles',
-//    ];
-//    if (in_array($display->display['id'], $exceptions)) {
-//      return FALSE;
-//    }
-//    // If we are not utilizing the filter in block option,
-//    // then use the default behavior. Otherwise, do not display
-//    // exposed filters.
-//    if (empty($this->options['configurable_filters'])) {
-//      return parent::displaysExposed();
-//    }
-//    return FALSE;
-//  }
 
   /**
    * Get Layout Builder Styles from the form state.
