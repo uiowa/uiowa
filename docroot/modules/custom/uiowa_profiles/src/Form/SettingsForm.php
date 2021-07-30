@@ -327,17 +327,32 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritDoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    foreach ($form_state->getValue(['profiles_fieldset', 'tabs_container', 'directories']) as $key => $directory) {
-      $path = $this->aliasCleaner->cleanAlias($form_state->getValue(['profiles_fieldset', 'tabs_container', 'directories', $key, 'path']));
+    $directories = $form_state->getValue(['profiles_fieldset', 'tabs_container', 'directories']);
+
+    $paths = array_map(function ($v) {
+      return $v['path'];
+    }, $directories);
+
+    $dups = [];
+
+    foreach (array_count_values($paths) as $val => $c) {
+      if ($c > 1) $dups[] = $val;
+    }
+
+    foreach ($directories as $key => $directory) {
+      $path = $this->aliasCleaner->cleanAlias($directory[$key]['path']);
 
       /** @var \Drupal\Core\Url $url */
       $url = $this->pathValidator->getUrlIfValid($path);
 
       // If $url is anything besides FALSE then the path is already in use. We
       // also check if the route belongs to another module.
-      // @todo: Validate against other directories paths in $form_state.
-      if ($url && !str_starts_with($url->getRouteName(), 'uiowa_profiles')) {
+      if ($url &&
+        !str_starts_with($url->getRouteName(), 'uiowa_profiles')) {
         $form_state->setErrorByName("profiles_fieldset][tabs_container][directories][{$key}][path", 'This path is already in use.');
+      }
+      if (in_array($path, $dups)) {
+        $form_state->setErrorByName("profiles_fieldset][tabs_container][directories][{$key}][path", 'This path is a duplicate of another directory path.');
       }
       else {
         $form_state->setValue(['profiles_fieldset', 'tabs_container', 'directories', $key, 'path'], $path);
