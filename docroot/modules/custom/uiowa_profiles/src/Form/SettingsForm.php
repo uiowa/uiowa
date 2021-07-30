@@ -175,12 +175,20 @@ class SettingsForm extends ConfigFormBase {
           '#type' => 'textfield',
           '#title' => $this->t('Path'),
           '#default_value' => $directory['path'] ?? '/profiles/people',
-          '#description' => $this->t('The path for the Profiles directory. Serves as the base for all profiles and an additional <a href=":url">sitemap</a> to submit to search engines.', [
-            // @TODO: is this the right thing we are getting here for multiple directory directories?
-            ':url' => Url::fromRoute("uiowa_profiles.sitemap.{$key}")->toString(),
-          ]),
+          '#description' => $this->t('The path for the Profiles directory. Serves as the base for all profiles.'),
           '#required' => TRUE,
         ];
+
+        /* @var \Drupal\Core\Routing\RouteProviderInterface $route_provider */
+        $route_provider = \Drupal::service('router.route_provider');
+        $route = "uiowa_profiles.sitemap.{$key}";
+        $exists = count($route_provider->getRoutesByNames([$route])) === 1;
+
+        if ($exists) {
+          $form['profiles_fieldset']['tabs_container']['directories'][$key]['path']['#description'] .= t(' It also creates an additional <a href=":url">sitemap</a> to submit to search engines.', [
+            ':url' => Url::fromRoute($route)->toString(),
+          ]);
+        }
 
         $form['profiles_fieldset']['tabs_container']['directories'][$key]['canonical'] = [
           '#type' => 'url',
