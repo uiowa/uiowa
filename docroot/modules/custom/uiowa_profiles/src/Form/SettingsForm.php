@@ -133,20 +133,27 @@ class SettingsForm extends ConfigFormBase {
       'directories',
     ]) ?? $config->get('directories') ?? [];
 
+    // We need to keep count of the directories for later so that we can determine if we need the delete button or not.
     $count = count($directories);
 
+    // For each directory...
     foreach ($directories as $key => $directory) {
+      // Detect if this is the first tab, we will use this for the tabindex setting later.
       $is_first_tab = ($key === array_key_first($directories));
 
       $form['profiles_fieldset']['tabs_container']['tablist']['tab-button-' . $key] = [
         '#type' => 'button',
+        // On this tab button, if the title is not empty, set the text to the title.
+        //If it is empty, set it to 'People-' + $key + 1.
         '#value' => !empty($directory['title']) ? $directory['title'] : 'People-' . strval($key + 1),
         '#attributes' => [
           'role' => 'tab',
           'aria-selected' => $is_first_tab ? 'true' : 'false',
           'aria-controls' => 'profiles-directory-fieldset-' . $key,
           'id' => 'tab-' . $key,
+          // If this is the first tab button, make sure it has the correct tabindex for accessibility.
           'tabindex' => $is_first_tab ? 0 : -1,
+          // We dont want this tab button to submit the form, so we set it to `return(false)` on click.
           'onclick' => 'return (false);',
         ],
       ];
@@ -162,6 +169,7 @@ class SettingsForm extends ConfigFormBase {
         ],
       ];
 
+      // If it is not the first tab, we want to hide the contents, because the first tab is focused/open.
       if (!$is_first_tab) {
         $form['profiles_fieldset']['tabs_container']['directories'][$key]['#attributes']['hidden'] = 'true';
       }
@@ -169,6 +177,7 @@ class SettingsForm extends ConfigFormBase {
       $form['profiles_fieldset']['tabs_container']['directories'][$key]['title'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Title'),
+        //If the title doesn't exist, default it to 'People'.
         '#default_value' => !empty($directory['title']) ? $directory['title'] : 'People',
         '#description' => $this->t('The page title to display on the Profiles directory.'),
         '#required' => TRUE,
@@ -183,6 +192,7 @@ class SettingsForm extends ConfigFormBase {
       $form['profiles_fieldset']['tabs_container']['directories'][$key]['api_key'] = [
         '#type' => 'textfield',
         '#title' => $this->t('API Key'),
+        //If the API key doesn't exist, default it to ''.
         '#default_value' => $directory['api_key'] ?? '',
         '#description' => $this->t('The API key provided by the ITS-AIS Profiles team.'),
         '#required' => TRUE,
@@ -191,6 +201,7 @@ class SettingsForm extends ConfigFormBase {
       $form['profiles_fieldset']['tabs_container']['directories'][$key]['path'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Path'),
+        //If the API key doesn't exist, default it to '/profiles/people'.
         '#default_value' => $directory['path'] ?? '/profiles/people',
         '#description' => $this->t('The path for the Profiles directory. Serves as the base for all profiles.'),
         '#required' => TRUE,
@@ -209,6 +220,7 @@ class SettingsForm extends ConfigFormBase {
       $form['profiles_fieldset']['tabs_container']['directories'][$key]['canonical'] = [
         '#type' => 'url',
         '#title' => $this->t('Canonical Link Base URL'),
+        //If the canonical URL doesn't exist, default it to ''.
         '#default_value' => $directory['canonical'] ?? '',
         '#description' => $this->t('The Base URL to generate the canonical link to a profile for SEO. Leave blank if this site is the canonical source.'),
         '#required' => FALSE,
@@ -218,6 +230,7 @@ class SettingsForm extends ConfigFormBase {
       $form['profiles_fieldset']['tabs_container']['directories'][$key]['page_size'] = [
         '#type' => 'number',
         '#title' => $this->t('Page Size'),
+        //If the page size doesn't exist, default it to 10.
         '#default_value' => $directory['page_size'] ?? 10,
         '#min' => 5,
         '#max' => 50,
@@ -236,6 +249,7 @@ class SettingsForm extends ConfigFormBase {
         '#allowed_formats' => [
           'filtered_html',
         ],
+        //If the intro doesn't exist, default it to ''.
         '#default_value' => $intro['value'] ?? '',
         '#description' => $this->t('Introductory text to be included at the top of the directory.'),
         '#required' => FALSE,
@@ -268,6 +282,7 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'actions',
     ];
 
+    // This button allows a user to add another directory instance.
     $form['profiles_fieldset']['tabs_container']['tablist']['add'] = [
       '#type' => 'submit',
       '#value' => $this->t('+'),

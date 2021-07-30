@@ -108,19 +108,28 @@ function changeTabs(element) {
 // Function wrapper for changeTabs() that passes an event target through.
 // Useful for event listeners.
 function changeTabsFromEvent(e) {
+  // Get target of tab button click, pas it to changeTabs().
   const target = e.target;
   changeTabs(target)
 }
 
 // Function to change the text of the Tab Title and the button Text of an instance.
 function changeTabText(e) {
+  // Grab the title field that is being edited.
   const target = e.target;
+  // If the title string is not empty, use that, otherwise default to 'People so that no buttons or tab text is empty.
   const user_text = (target.value === '') ? 'People' : target.value;
+  // Get the fieldset id so that we can target the right elements.
   const fieldset_id = target.dataset.profilesFieldsetTitleIndex;
+  // Get the right tab element using the fieldset Id.
   const tab = document.getElementById('tab-' + fieldset_id);
+  // Try and get the right delete button element using the fieldset Id.
   const delete_button = document.querySelector('.delete-profiles-instance[data-directory-index="' + fieldset_id + '"]');
+  // Set the tab text to the text the user has input in the title field.
   tab.value = user_text;
+  // If the delete button exists...
   if (delete_button) {
+    // Set the delete button text to the text the user has input in the title field.
     delete_button.value = 'Delete ' + user_text;
   }
 }
