@@ -25,6 +25,10 @@ class BrandCoreCommands extends DrushCommands {
    *  Ideally this is done as a crontab that is only sent once a day.
    */
   public function lockupDigest($options = ['msg' => FALSE]) {
+    // Switch to the admin user to get hidden view result.
+    $accountSwitcher = \Drupal::service('account_switcher');
+    $accountSwitcher->switchTo(new \Drupal\Core\Session\UserSession(['uid' => 1]));
+
     $view = views_get_view_result('lockup_moderation', 'block_review');
     if (!empty($view)) {
       $results = count($view);
@@ -66,6 +70,8 @@ class BrandCoreCommands extends DrushCommands {
     if ($options['msg']) {
       $this->output()->writeln('Hey! Way to go above and beyond!');
     }
+    // Switch user back.
+    $accountSwitcher->switchBack();
   }
 
 }
