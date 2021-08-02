@@ -2975,3 +2975,33 @@ $sites['homecoming.local.drupal.uiowa.edu'] = 'homecoming.uiowa.edu';
 $sites['homecoming.dev.drupal.uiowa.edu'] = 'homecoming.uiowa.edu';
 $sites['homecoming.stage.drupal.uiowa.edu'] = 'homecoming.uiowa.edu';
 $sites['homecoming.prod.drupal.uiowa.edu'] = 'homecoming.uiowa.edu';
+
+// Directory aliases for neuroimaging.uiowa.edu.
+$sites['neuroimaging.local.drupal.uiowa.edu'] = 'neuroimaging.uiowa.edu';
+$sites['neuroimaging.dev.drupal.uiowa.edu'] = 'neuroimaging.uiowa.edu';
+$sites['neuroimaging.stage.drupal.uiowa.edu'] = 'neuroimaging.uiowa.edu';
+$sites['neuroimaging.prod.drupal.uiowa.edu'] = 'neuroimaging.uiowa.edu';
+
+// Directory aliases for rodgers.sites.uiowa.edu.
+$sites['sitesrodgers.local.drupal.uiowa.edu'] = 'rodgers.sites.uiowa.edu';
+$sites['sitesrodgers.dev.drupal.uiowa.edu'] = 'rodgers.sites.uiowa.edu';
+$sites['sitesrodgers.stage.drupal.uiowa.edu'] = 'rodgers.sites.uiowa.edu';
+$sites['sitesrodgers.prod.drupal.uiowa.edu'] = 'rodgers.sites.uiowa.edu';
+
+// Directory aliases for coworkcommons.uiowa.edu.
+$sites['coworkcommons.local.drupal.uiowa.edu'] = 'coworkcommons.uiowa.edu';
+$sites['coworkcommons.dev.drupal.uiowa.edu'] = 'coworkcommons.uiowa.edu';
+$sites['coworkcommons.stage.drupal.uiowa.edu'] = 'coworkcommons.uiowa.edu';
+$sites['coworkcommons.prod.drupal.uiowa.edu'] = 'coworkcommons.uiowa.edu';
+
+// Directory aliases for grad.admissions.uiowa.edu.
+$sites['admissionsgrad.local.drupal.uiowa.edu'] = 'grad.admissions.uiowa.edu';
+$sites['admissionsgrad.dev.drupal.uiowa.edu'] = 'grad.admissions.uiowa.edu';
+$sites['admissionsgrad.stage.drupal.uiowa.edu'] = 'grad.admissions.uiowa.edu';
+$sites['admissionsgrad.prod.drupal.uiowa.edu'] = 'grad.admissions.uiowa.edu';
+
+// Directory aliases for nsfurmsts.sites.uiowa.edu.
+$sites['sitesnsfurmsts.local.drupal.uiowa.edu'] = 'nsfurmsts.sites.uiowa.edu';
+$sites['sitesnsfurmsts.dev.drupal.uiowa.edu'] = 'nsfurmsts.sites.uiowa.edu';
+$sites['sitesnsfurmsts.stage.drupal.uiowa.edu'] = 'nsfurmsts.sites.uiowa.edu';
+$sites['sitesnsfurmsts.prod.drupal.uiowa.edu'] = 'nsfurmsts.sites.uiowa.edu';
