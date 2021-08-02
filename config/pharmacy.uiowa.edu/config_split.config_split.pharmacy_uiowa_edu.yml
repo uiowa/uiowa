@@ -6,10 +6,17 @@ id: pharmacy_uiowa_edu
 label: pharmacy.uiowa.edu
 description: 'Split configuration for pharmacy.uiowa.edu.'
 folder: ../config/pharmacy.uiowa.edu
-module: {  }
+module:
+  pharmacy_core: 0
 theme: {  }
-blacklist: {  }
-graylist: {  }
+blacklist:
+  - sitenow_people.person_type.palliative_grad
+  - views.view.palliative_grad
+graylist:
+  - core.entity_form_display.node.page.default
+  - core.entity_form_display.node.person.default
+  - core.entity_view_display.node.page.default
+  - field.field.node.person.field_person_types
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 90
