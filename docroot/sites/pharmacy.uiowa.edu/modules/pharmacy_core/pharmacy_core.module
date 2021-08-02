@@ -6,14 +6,8 @@
  */
 
 use Drupal\Core\Cache\Cache;
-use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element;
-use Drupal\Core\Template\Attribute;
-use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\Node;
-use Drupal\node\NodeInterface;
 use Drupal\views\ViewExecutable;
 
 /**
@@ -86,7 +80,7 @@ function pharmacy_core_views_pre_render(ViewExecutable $view) {
   if ($view->id() == "palliative_grad") {
     switch ($view->current_display) {
       case 'block_palliative_grad':
-//      case 'page_palliative_grad':
+        // Case 'page_palliative_grad':
         $view->element['#attached']['library'][] = 'pharmacy_core/palliative-grad-list';
         $view->element['#attached']['library'][] = 'pharmacy_core/person';
         break;
