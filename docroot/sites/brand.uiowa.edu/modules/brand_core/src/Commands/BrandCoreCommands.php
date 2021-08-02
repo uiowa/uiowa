@@ -2,6 +2,7 @@
 
 namespace Drupal\brand_core\Commands;
 
+use Drupal\Core\Session\UserSession;
 use Drush\Commands\DrushCommands;
 use Drupal\Core\Url;
 
@@ -27,7 +28,7 @@ class BrandCoreCommands extends DrushCommands {
   public function lockupDigest($options = ['msg' => FALSE]) {
     // Switch to the admin user to get hidden view result.
     $accountSwitcher = \Drupal::service('account_switcher');
-    $accountSwitcher->switchTo(new \Drupal\Core\Session\UserSession(['uid' => 1]));
+    $accountSwitcher->switchTo(new UserSession(['uid' => 1]));
 
     $view = views_get_view_result('lockup_moderation', 'block_review');
     if (!empty($view)) {
