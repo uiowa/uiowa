@@ -13,9 +13,16 @@ $imgpath: '../../uids/assets/images';
     }
   }
 }
-// Responsive images within drupal-off-canvas.
-#drupal-off-canvas img {
+// Responsive images within drupal-off-canvas and cursor move for media library grid.
+#drupal-off-canvas {
+  img {
   width: 100%;
+  }
+  .media-library-item--grid[draggable="true"] {
+    img {
+      cursor: move;
+    }
+  }
 }
 
 // lb claro styles
