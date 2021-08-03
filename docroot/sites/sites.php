@@ -3017,3 +3017,9 @@ $sites['gpsg.local.drupal.uiowa.edu'] = 'gpsg.uiowa.edu';
 $sites['gpsg.dev.drupal.uiowa.edu'] = 'gpsg.uiowa.edu';
 $sites['gpsg.stage.drupal.uiowa.edu'] = 'gpsg.uiowa.edu';
 $sites['gpsg.prod.drupal.uiowa.edu'] = 'gpsg.uiowa.edu';
+
+// Directory aliases for omicron.engineering.uiowa.edu.
+$sites['engineeringomicron.local.drupal.uiowa.edu'] = 'omicron.engineering.uiowa.edu';
+$sites['engineeringomicron.dev.drupal.uiowa.edu'] = 'omicron.engineering.uiowa.edu';
+$sites['engineeringomicron.stage.drupal.uiowa.edu'] = 'omicron.engineering.uiowa.edu';
+$sites['engineeringomicron.prod.drupal.uiowa.edu'] = 'omicron.engineering.uiowa.edu';
