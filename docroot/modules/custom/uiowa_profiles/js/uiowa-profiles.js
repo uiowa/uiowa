@@ -20,6 +20,10 @@ uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
       path = path.substr(0, path.length - 1);
     }
 
+
+
+
+
     let link = document.head.querySelector('link[rel="canonical"]');
 
     // We only need to set the canonical link on individual profile pages.
@@ -28,8 +32,26 @@ uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
         return el !== '';
       });
 
-      let canonical = settings.uiowaProfiles.canonical + '/' + parts.pop();
-      link.setAttribute('href', canonical);
+      let person = parts.pop();
+
+      let environment = drupalSettings.uiowaProfiles.environment;
+      let endpoint = 'https://profiles' + (environment === 'test' ? '-test' : '') + '.uiowa.edu/api/people/';
+      let params = 'api-key=' + drupalSettings.uiowaProfiles.api_key;
+      let url = endpoint + person + '/metadata?' + params;
+
+      const request = new XMLHttpRequest();
+      request.open("GET", url);
+      request.onload = ()=>{
+        if (request.status === 200) {
+          let response = JSON.parse(request.response);
+          let canonical = response.canonical_url;
+          link.setAttribute('href', canonical);
+        }
+        else {
+          console.log(`error ${request.status}`);
+        }
+      }
+      request.send();
     }
     else {
       let original = url.toString();

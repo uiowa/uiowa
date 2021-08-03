@@ -116,6 +116,8 @@ class DirectoryController extends ControllerBase {
           'uiowaProfiles' => [
             'basePath' => Html::escape($directory['path']),
             'canonical' => Html::escape($canonical),
+            'api_key' => Html::escape($directory['api_key']),
+            'environment' => $this->profiles->environment,
           ],
         ],
       ],
