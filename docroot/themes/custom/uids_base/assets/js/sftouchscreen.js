@@ -37,6 +37,8 @@
             var
             // Cloning the hyperlink of the parent menu item.
             cloneLink = parent.children('a.menuparent,span.nolink.menuparent').clone(),
+            // Remove "menuparent" class from cloned parent menu item.
+            cloneLink = cloneLink.removeClass('menuparent'),
             // Wrapping the hyerplinks in <li>.
             cloneLink = $('<li class="sf-clone-parent" />').html(cloneLink);
             // Removing unnecessary stuff.

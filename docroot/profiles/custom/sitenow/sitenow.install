@@ -3293,7 +3293,7 @@ function sitenow_update_9015() {
       $controller = \Drupal::entityTypeManager()->getStorage('media');
       $entities = $controller->loadMultiple($ids);
 
-      /** @var Media $media */
+      /** @var Drupal\media\Entity\Media $media */
       foreach ($entities as $media) {
         $file = File::load($media->get('field_media_image')->target_id);
 
