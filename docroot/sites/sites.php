@@ -3011,3 +3011,9 @@ $sites['multicultural.local.drupal.uiowa.edu'] = 'multicultural.uiowa.edu';
 $sites['multicultural.dev.drupal.uiowa.edu'] = 'multicultural.uiowa.edu';
 $sites['multicultural.stage.drupal.uiowa.edu'] = 'multicultural.uiowa.edu';
 $sites['multicultural.prod.drupal.uiowa.edu'] = 'multicultural.uiowa.edu';
+
+// Directory aliases for gpsg.uiowa.edu.
+$sites['gpsg.local.drupal.uiowa.edu'] = 'gpsg.uiowa.edu';
+$sites['gpsg.dev.drupal.uiowa.edu'] = 'gpsg.uiowa.edu';
+$sites['gpsg.stage.drupal.uiowa.edu'] = 'gpsg.uiowa.edu';
+$sites['gpsg.prod.drupal.uiowa.edu'] = 'gpsg.uiowa.edu';
