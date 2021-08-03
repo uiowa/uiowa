@@ -3,8 +3,29 @@
 @import "assets/scss/_local-fonts.scss";
 @import url('../../../../../core/themes/claro/css/components/dropbutton.css');
 $imgpath: '../../uids/assets/images';
-// lb claro styles
 
+// Grid for image gallery block.
+#drupal-off-canvas  {
+  .media-library-selection {
+    @include grid-base;
+    @include breakpoint(sm) {
+      @include threecol-grid;
+    }
+  }
+}
+// Responsive images within drupal-off-canvas and cursor move for media library grid.
+#drupal-off-canvas {
+  img {
+  width: 100%;
+  }
+  .media-library-item--grid[draggable="true"] {
+    img {
+      cursor: move;
+    }
+  }
+}
+
+// lb claro styles
 .search-field {
   background: #fff !important;
 }
