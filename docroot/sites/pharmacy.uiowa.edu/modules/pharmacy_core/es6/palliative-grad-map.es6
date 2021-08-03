@@ -7,7 +7,7 @@
   // Attach palliative-grad-map behavior.
   Drupal.behaviors.palliativeGradMap = {
     attach: (context, settings) => {
-      $('.block-pharmacy-core-palliative-grad-map', context).once('palliativeGradMap').each(() => {})
+      $('.block-pharmacy-core-palliative-care-map', context).once('palliativeGradMap').each(() => {})
     }
   };
 })(jQuery, Drupal, drupalSettings);
