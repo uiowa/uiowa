@@ -217,16 +217,6 @@ class SettingsForm extends ConfigFormBase {
         ]);
       }
 
-      $form['profiles_fieldset']['tabs_container']['directories'][$key]['canonical'] = [
-        '#type' => 'url',
-        '#title' => $this->t('Canonical Link Base URL'),
-        //If the canonical URL doesn't exist, default it to ''.
-        '#default_value' => $directory['canonical'] ?? '',
-        '#description' => $this->t('The Base URL to generate the canonical link to a profile for SEO. Leave blank if this site is the canonical source.'),
-        '#required' => FALSE,
-        '#placeholder' => $this->getRequest()->getSchemeAndHttpHost(),
-      ];
-
       $form['profiles_fieldset']['tabs_container']['directories'][$key]['page_size'] = [
         '#type' => 'number',
         '#title' => $this->t('Page Size'),
