@@ -3005,3 +3005,9 @@ $sites['sitesnsfurmsts.local.drupal.uiowa.edu'] = 'nsfurmsts.sites.uiowa.edu';
 $sites['sitesnsfurmsts.dev.drupal.uiowa.edu'] = 'nsfurmsts.sites.uiowa.edu';
 $sites['sitesnsfurmsts.stage.drupal.uiowa.edu'] = 'nsfurmsts.sites.uiowa.edu';
 $sites['sitesnsfurmsts.prod.drupal.uiowa.edu'] = 'nsfurmsts.sites.uiowa.edu';
+
+// Directory aliases for multicultural.uiowa.edu.
+$sites['multicultural.local.drupal.uiowa.edu'] = 'multicultural.uiowa.edu';
+$sites['multicultural.dev.drupal.uiowa.edu'] = 'multicultural.uiowa.edu';
+$sites['multicultural.stage.drupal.uiowa.edu'] = 'multicultural.uiowa.edu';
+$sites['multicultural.prod.drupal.uiowa.edu'] = 'multicultural.uiowa.edu';
