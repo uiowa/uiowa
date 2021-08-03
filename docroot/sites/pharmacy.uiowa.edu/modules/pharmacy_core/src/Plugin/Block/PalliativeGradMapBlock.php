@@ -20,13 +20,13 @@ class PalliativeGradMapBlock extends BlockBase {
    */
   public function build() {
     $html = '<div id="pharmacy-palliative-grad-map">&nbsp;</div>';
-    // Load persons tagged with the Counselor person type
+    // Load persons tagged with the Palliative Care Graduate person type
     // and create array of unique territory values.
     $territories = [];
     $node_storage = \Drupal::entityTypeManager()->getStorage('node');
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'person')
-      ->condition('field_person_types', 'counselor');
+      ->condition('field_person_types', 'palliative_grad');
     $nids = $query->execute();
     if (!empty($nids)) {
       $nodes = $node_storage->loadMultiple($nids);
