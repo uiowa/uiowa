@@ -28,7 +28,6 @@ function attachBehaviors() {
   const profiles_titles = document.querySelectorAll('.tabs .profiles-fieldset-title');
   // An array of error links.
   const error_links = document.querySelectorAll('.messages--error .messages__content .item-list__comma-list a');
-  console.log(error_links);
 
   // Add a click event handler to each tab.
   tabs.forEach(tab => {
