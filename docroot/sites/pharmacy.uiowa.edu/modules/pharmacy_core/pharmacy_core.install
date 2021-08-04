@@ -1,0 +1,354 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Admissions Core module.
+ */
+
+use Drupal\Component\Utility\Html;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+
+/**
+ * Implements hook_install().
+ */
+function admissions_core_install() {
+  \Drupal::messenger()->addStatus(__FUNCTION__);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function admissions_core_uninstall() {
+  \Drupal::messenger()->addStatus(__FUNCTION__);
+}
+
+/**
+ * Set weights to 0 for existing scholarships content.
+ */
+function admissions_core_update_8001() {
+  $query = \Drupal::entityQuery('node')
+    ->condition('type', 'scholarship');
+
+  $results = $query->execute();
+  $nodes = Drupal::entityTypeManager()->getStorage('node')->loadMultiple($results);
+
+  // Set field_weight to 0 for all existing scholarships.
+  foreach ($nodes as $node) {
+    if (empty($node->get('field_weight')->getValue())) {
+      $node->set('field_weight', 0)
+        ->save();
+    }
+  }
+}
+
+/**
+ * Update the counselor select list to remove several options.
+ */
+function admissions_core_update_8002() {
+  // Statically defining the field to be updated.
+  $field_name = 'field_person_territory';
+
+  // Get the field and revision storage table names for each field.
+  $table_mapping = \Drupal::service('entity_type.manager')
+    ->getStorage('node')
+    ->getTableMapping();
+  $storage_definitions = \Drupal::service('entity_field.manager')
+    ->getActiveFieldStorageDefinitions('node');
+  $field_definition = $storage_definitions[$field_name];
+
+  $table = $table_mapping->getDedicatedDataTableName($field_definition);
+  $revision_table = $table_mapping->getDedicatedRevisionTableName($field_definition);
+  $field_storage = FieldStorageConfig::loadByName('node', $field_name);
+
+  // Fetch data currently stored in the field and save for later.
+  $database = \Drupal::database();
+  $rows = NULL;
+  $revision_rows = NULL;
+  if ($database->schema()->tableExists($table)) {
+    $rows = $database
+      ->select($table, 't')
+      ->fields('t')
+      ->execute()
+      ->fetchAll();
+    if ($database->schema()->tableExists($revision_table)) {
+      $revision_rows = $database
+        ->select($revision_table, 'r')
+        ->fields('r')
+        ->execute()
+        ->fetchAll();
+    }
+
+    $new_fields = [];
+    $weights = [];
+    foreach ($field_storage->getBundles() as $bundle => $label) {
+      $old_field = FieldConfig::loadByName('node', $bundle, $field_name);
+      $new_field = $old_field->toArray();
+      $new_fields[] = $new_field;
+      // Get the view display weights so we can re-set them later.
+      $entity_view = 'node.' . $bundle . '.default';
+      $view_display = \Drupal::entityTypeManager()
+        ->getStorage('entity_view_display')
+        ->load($entity_view)
+        ->getComponent($field_name);
+      $weights['entity_view_display'][$entity_view] = $view_display['weight'];
+      // Get the form display weights so we can re-set them later.
+      $form_display = \Drupal::entityTypeManager()
+        ->getStorage('entity_form_display')
+        ->load('node.' . $bundle . '.default')
+        ->getComponent($field_name);
+      $weights['entity_form_display']['node.' . $bundle . '.default'] = $form_display['weight'];
+    }
+
+    // Store the old field settings and update with new settings.
+    $new_field_storage = $field_storage->toArray();
+    // Our statically defined list of items to remove, including
+    // American Samoa, Guam, Northern Mariana Islands,
+    // Puerto Rico, United States Minor Outlying Islands, and
+    // Virgin Islands, U.S.
+    $to_remove = [
+      'AS',
+      'GU',
+      'MP',
+      'PR',
+      'UM',
+      'VI',
+    ];
+    foreach ($to_remove as $location) {
+      unset($new_field_storage['settings']['allowed_values'][$location]);
+    }
+    // Use a union to move 'intl' to the front of the array.
+    $new_field_storage['settings']['allowed_values'] = ['intl' => 'International Recruitment'] + $new_field_storage['settings']['allowed_values'];
+
+    // Deleting at the field_storage level takes care of the bundles as well.
+    $field_storage->delete();
+
+    // Purge in order for new field to be created after deleting the old.
+    field_purge_batch(100);
+
+    // Save our new, updated field storage.
+    $new_field_storage = FieldStorageConfig::create($new_field_storage);
+    $new_field_storage->save();
+
+    // Create our new fields to match the field storages.
+    $new_field_config = FieldConfig::create($new_field);
+    $new_field_config->save();
+
+    // Replace into the new fields data we saved from the old fields.
+    if (!is_null($rows)) {
+      foreach ($rows as $row) {
+        $row = (array) $row;
+        $database
+          ->insert($table)
+          ->fields($row)
+          ->execute();
+      }
+    }
+    if (!is_null($revision_rows)) {
+      foreach ($revision_rows as $row) {
+        $row = (array) $row;
+        $database
+          ->insert($revision_table)
+          ->fields($row)
+          ->execute();
+      }
+    }
+
+    // Update the view and form display weights, which enables the new fields.
+    foreach ($weights as $display_mode => $view_modes) {
+      foreach ($view_modes as $view_mode => $weight) {
+        if ($weight) {
+          \Drupal::entityTypeManager()
+            ->getStorage($display_mode)
+            ->load($view_mode)
+            ->setComponent($field_name, [
+              'weight' => $weight,
+            ])
+            ->save();
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Update orgsync link in field_area_of_study_opportunity.
+ */
+function admissions_core_update_9001() {
+  $query = \Drupal::entityTypeManager()->getStorage('node')->getQuery();
+
+  $ids = $query
+    ->condition('type', 'area_of_study')
+    ->execute();
+
+  if ($ids) {
+    $controller = \Drupal::entityTypeManager()->getStorage('node');
+    $entities = $controller->loadMultiple($ids);
+
+    foreach ($entities as $entity) {
+      $document = Html::load($entity->field_area_of_study_opportunity->value);
+      $links = $document->getElementsByTagName('a');
+
+      foreach ($links as $link) {
+        if ($url = parse_url($link->getAttribute('href'))) {
+          if ($url['host'] == 'uiowa.orgsync.com') {
+            $link->setAttribute('href', "https://uiowa.campuslabs.com/engage");
+            $link->parentNode->replaceChild($link, $link);
+
+            $document->saveHTML();
+            $html = Html::serialize($document);
+            $entity->field_area_of_study_opportunity->value = $html;
+            $entity->save();
+
+            \Drupal::logger('admissions_core')->info('Replaced link @link on @oas.', [
+              '@link' => $url['host'],
+              '@aos' => $entity->label(),
+            ]);
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Update text field formats in appropriate content types.
+ *
+ * Provide a list of instances of nodes that contain long text
+ * fields with full_html as the format. Additionally convert
+ * any of these that are Area of Study nodes to use filtered_html.
+ */
+function admissions_core_update_9002() {
+  // Grab some services for later use.
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $entity_field_manager = \Drupal::service('entity_field.manager');
+
+  // Get lists of fields grouped by entity type and matching the 'text_long'
+  // and 'text_with_summary' field types and merge them.
+  $text_long = $entity_field_manager->getFieldMapByFieldType('text_long');
+  $text_with_summary = $entity_field_manager->getFieldMapByFieldType('text_with_summary');
+  $entity_field_map = array_merge_recursive($text_long, $text_with_summary);
+
+  $output_report = [];
+
+  // Loop through each entity type in our field map.
+  foreach ($entity_field_map as $entity_type_id => $field_map) {
+    // We are limiting this to nodes.
+    if ($entity_type_id !== 'node') {
+      continue;
+    }
+    $entity_storage = $entity_type_manager->getStorage($entity_type_id);
+
+    // Get the entity type definition.
+    $entity_type = $entity_type_manager->getDefinition($entity_type_id);
+    // Get the list of field storage definitions for the entity type.
+    $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
+    // Get the table mapping for the field storage definitions.
+    $table_mapping = $entity_storage->getTableMapping($field_storage_definitions);
+
+    // Loop through field definitions for the entity type, making
+    // sure they match the field storage definitions.
+    foreach (array_intersect_key($field_storage_definitions, $field_map) as $field_storage_definition) {
+
+      // Initialize a list of tables we will query against.
+      $tables = [];
+      $field_name = $field_storage_definition->getName();
+      try {
+        // Add the table to the list.
+        $tables[] = $table_mapping->getFieldTableName($field_name);
+        // Get the names of the table columns for value and format.
+        $value_column = $table_mapping->getFieldColumnName($field_storage_definition, 'value');
+        $format_column = $table_mapping->getFieldColumnName($field_storage_definition, 'format');
+      }
+      catch (SqlContentEntityStorageException $e) {
+        continue;
+      }
+
+      // See if the field has a revision table.
+      $revision_table = NULL;
+      if ($entity_type->isRevisionable() && $field_storage_definition->isRevisionable()) {
+        // Determine the appropriate revision table to use.
+        if ($table_mapping->requiresDedicatedTableStorage($field_storage_definition)) {
+          $revision_table = $table_mapping->getDedicatedRevisionTableName($field_storage_definition);
+        }
+        elseif ($table_mapping->allowsSharedTableStorage($field_storage_definition)) {
+          $revision_table = $entity_type->getRevisionDataTable() ?: $entity_type->getRevisionTable();
+        }
+
+        $tables[] = $revision_table;
+      }
+
+      // We have a table, continue...
+      if (!empty($tables)) {
+        $db = \Drupal::database();
+        foreach ($tables as $i => $table) {
+          // Update the format for area_of_study and transfer_tips nodes.
+          $update_count = $db->update($table)
+            ->condition($format_column, 'full_html')
+            ->condition('bundle', [
+              'area_of_study',
+              'transfer_tips',
+            ], 'IN')
+            ->fields([
+              $format_column => 'filtered_html',
+            ])
+            ->execute();
+
+          // If we updated any items, display a message.
+          if ($update_count) {
+            \Drupal::messenger()
+              ->addMessage(t('Updated @update_count matches(s) for @table table @value_column column.', [
+                '@update_count' => $update_count,
+                '@table' => $table,
+                '@value_column' => $value_column,
+              ]));
+          }
+
+          // If this is not the revision table, then we want to collect
+          // any nodes that are not area_of_study or transfer_tips to
+          // report.
+          if ($i === 0) {
+            $results = $db->select($table, 't')
+              ->condition($format_column, 'full_html')
+              ->condition('bundle', [
+                'area_of_study',
+                'transfer_tips',
+              ], 'NOT IN')
+              ->fields('t')
+              ->execute();
+
+            foreach ($results as $result) {
+              $output_report[] = "https://admissions.prod.drupal.uiowa.edu/node/{$result->entity_id}";
+            }
+          }
+        }
+      }
+    }
+  }
+
+  \Drupal::messenger()
+    ->addMessage(t("Admissions nodes using the full_html format:\n@report", [
+      '@report' => implode($output_report, "\n"),
+    ]));
+}
+
+/**
+ * Solves the error: "Mismatched entity and/or field definitions".
+ */
+function admissions_core_update_9003() {
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $entity_type_manager->clearCachedDefinitions();
+
+  $entity_type_ids = [];
+  $change_summary = \Drupal::service('entity.definition_update_manager')->getChangeSummary();
+  foreach ($change_summary as $entity_type_id => $change_list) {
+    $entity_type = $entity_type_manager->getDefinition($entity_type_id);
+    \Drupal::entityDefinitionUpdateManager()->installEntityType($entity_type);
+    $entity_type_ids[] = $entity_type_id;
+  }
+  drupal_flush_all_caches();
+
+  return t("Installed/Updated the entity type(s): @entity_type_ids", [
+    '@entity_type_ids' => implode(', ', $entity_type_ids),
+  ]);
+}
