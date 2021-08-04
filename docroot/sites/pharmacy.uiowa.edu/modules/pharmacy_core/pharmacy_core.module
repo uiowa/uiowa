@@ -24,9 +24,6 @@ function pharmacy_core_form_views_exposed_form_alter(&$form, FormStateInterface 
 
 /**
  * Implements hook_ENTITY_TYPE_delete().
- *
- * @param \Drupal\node\Entity\Node $node
- *   Get straight to the node instead of through entity.
  */
 function pharmacy_core_node_delete(Node $node) {
   // Used on Pharmacy palliative grads map.
@@ -38,9 +35,6 @@ function pharmacy_core_node_delete(Node $node) {
 
 /**
  * Implements hook_ENTITY_TYPE_presave().
- *
- * @param \Drupal\node\Entity\Node $node
- *   Get straight to the node instead of through entity.
  */
 function pharmacy_core_node_presave(Node $node) {
   // Used on Pharmacy palliative grad map.
@@ -51,7 +45,7 @@ function pharmacy_core_node_presave(Node $node) {
 }
 
 /**
- * Implements hook_theme for Scholarship teaser.
+ * Implements hook_theme().
  */
 function pharmacy_core_theme($existing, $type, $theme, $path) {
   return [
