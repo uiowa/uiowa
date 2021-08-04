@@ -156,7 +156,7 @@ class SettingsForm extends ConfigFormBase {
           // If this is the first tab button, make sure it has the correct
           // tabindex for accessibility.
           'tabindex' => $is_first_tab ? 0 : -1,
-          // We dont want this tab button to submit the form, so we set it to
+          // We don't want this tab button to submit the form, so we set it to
           // `return(false)` on click.
           'onclick' => 'return (false);',
         ],
