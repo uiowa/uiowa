@@ -26,6 +26,9 @@ function attachBehaviors() {
   const tabList = document.querySelector('.tabs [role="tablist"]');
   // An array of profiles titles.
   const profiles_titles = document.querySelectorAll('.tabs .profiles-fieldset-title');
+  // An array of error links.
+  const error_links = document.querySelectorAll('.messages--error .messages__content .item-list__comma-list a');
+  console.log(error_links);
 
   // Add a click event handler to each tab.
   tabs.forEach(tab => {
@@ -38,6 +41,12 @@ function attachBehaviors() {
     // On keydown or keyup change the text of the tab button and the delete button for each profiles instance.
     profile_title.addEventListener("keydown", changeTabText);
     profile_title.addEventListener("keyup"  , changeTabText);
+  });
+
+  // Add a click event handler to each error link in the errors message.
+  error_links.forEach(error_link => {
+    // On keydown or keyup change the text of the tab button and the delete button for each profiles instance.
+    error_link.addEventListener("click", errorLinkTabChange);
   });
 
   // Enable arrow navigation between tabs in the tab list
@@ -132,4 +141,22 @@ function changeTabText(e) {
     // Set the delete button text to the text the user has input in the title field.
     delete_button.value = 'Delete ' + user_text;
   }
+}
+
+// function to change tabs on error link click.
+function errorLinkTabChange(e) {
+  // Prevent the link from trying to move to a focusable element.
+  e.preventDefault();
+  // Get the targeted link of the click
+  let anchor = e.target;
+  // Get the href of the link clicked.
+  let href = anchor.getAttribute("href");
+  // Get the ID of the tab that is referenced in the error link.
+  let tab_id = href.split('-')[6];
+  // Get the tab we want to focus.
+  let tab = document.getElementById('tab-' + tab_id);
+  // Focus relevant tab.
+  changeTabs(tab);
+  // Finally, after the relevant tab has been focused, go to the href defined before.
+  window.location.replace(href);
 }
