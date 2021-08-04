@@ -378,7 +378,7 @@ class SettingsForm extends ConfigFormBase {
 
     // Get all the directory paths as an array.
     $paths = array_map(function ($v) {
-      return $v['path'];
+      return $this->aliasCleaner->cleanAlias($v['path']);
     }, $directories);
 
     // Count how many times each path occurs and mark it as a duplicate if > 1.
