@@ -144,7 +144,7 @@ class SettingsForm extends ConfigFormBase {
       $form['profiles_fieldset']['tabs_container']['tablist']['tab-button-' . $key] = [
         '#type' => 'button',
         // On this tab button, if the title is not empty, set the text to the title.
-        //If it is empty, set it to 'People-' + $key + 1.
+        // If it is empty, set it to 'People-' + $key + 1.
         '#value' => !empty($directory['title']) ? $directory['title'] : 'People-' . strval($key + 1),
         '#attributes' => [
           'role' => 'tab',
@@ -177,7 +177,7 @@ class SettingsForm extends ConfigFormBase {
       $form['profiles_fieldset']['tabs_container']['directories'][$key]['title'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Title'),
-        //If the title doesn't exist, default it to 'People'.
+        // If the title doesn't exist, default it to 'People'.
         '#default_value' => !empty($directory['title']) ? $directory['title'] : 'People',
         '#description' => $this->t('The page title to display on the Profiles directory.'),
         '#required' => TRUE,
@@ -192,7 +192,7 @@ class SettingsForm extends ConfigFormBase {
       $form['profiles_fieldset']['tabs_container']['directories'][$key]['api_key'] = [
         '#type' => 'textfield',
         '#title' => $this->t('API Key'),
-        //If the API key doesn't exist, default it to ''.
+        // If the API key doesn't exist, default it to ''.
         '#default_value' => $directory['api_key'] ?? '',
         '#description' => $this->t('The API key provided by the ITS-AIS Profiles team.'),
         '#required' => TRUE,
@@ -201,7 +201,7 @@ class SettingsForm extends ConfigFormBase {
       $form['profiles_fieldset']['tabs_container']['directories'][$key]['path'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Path'),
-        //If the API key doesn't exist, default it to ''.
+        // If the API key doesn't exist, default it to ''.
         '#default_value' => $directory['path'] ?? '',
         '#description' => $this->t('The path for the Profiles directory. Serves as the base for all profiles.'),
         '#required' => TRUE,
@@ -220,7 +220,7 @@ class SettingsForm extends ConfigFormBase {
       $form['profiles_fieldset']['tabs_container']['directories'][$key]['page_size'] = [
         '#type' => 'number',
         '#title' => $this->t('Page Size'),
-        //If the page size doesn't exist, default it to 10.
+        // If the page size doesn't exist, default it to 10.
         '#default_value' => $directory['page_size'] ?? 10,
         '#min' => 5,
         '#max' => 50,
@@ -239,7 +239,7 @@ class SettingsForm extends ConfigFormBase {
         '#allowed_formats' => [
           'filtered_html',
         ],
-        //If the intro doesn't exist, default it to ''.
+        // If the intro doesn't exist, default it to ''.
         '#default_value' => $intro['value'] ?? '',
         '#description' => $this->t('Introductory text to be included at the top of the directory.'),
         '#required' => FALSE,
