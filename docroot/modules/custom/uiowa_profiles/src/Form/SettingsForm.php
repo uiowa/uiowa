@@ -311,7 +311,7 @@ class SettingsForm extends ConfigFormBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Submit button submit handler.
    */
   public function addSubmit(array &$form, FormStateInterface $form_state) {
     $directories = $form_state->getValue([
@@ -326,7 +326,7 @@ class SettingsForm extends ConfigFormBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Remove button submit handler.
    */
   public function removeSubmit(array &$form, FormStateInterface $form_state) {
     $delete = $form_state->getTriggeringElement()['#attributes']['data-directory-index'];
