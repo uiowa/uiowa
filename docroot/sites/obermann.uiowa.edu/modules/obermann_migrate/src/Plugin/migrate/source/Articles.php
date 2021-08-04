@@ -80,12 +80,30 @@ class Articles extends BaseNodeSource {
     }
 
     // Process the image field.
-    $image = $row->getSourceProperty('field_image_attach');
+    $image = $row->getSourceProperty('field_image');
 
     if (!empty($image)) {
-      $fid = $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']);
-      $row->setSourceProperty('field_image_attach_fid', $fid);
+      $mid = $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']);
+      $row->setSourceProperty('field_image_mid', $mid);
     }
+
+    // Create combined array of taxonomy terms to map to tags.
+    $tags = [];
+
+    $reference_fields = [
+      'field_featured_program',
+      'field_tags',
+    ];
+
+    foreach ($reference_fields as $field_name) {
+      if ($refs = $row->getSourceProperty($field_name)) {
+        foreach ($refs as $ref) {
+          $tags[] = $ref['tid'];
+        }
+      }
+    }
+
+    $row->setSourceProperty('tags', $tags);
 
     return TRUE;
   }
