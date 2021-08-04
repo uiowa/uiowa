@@ -13,6 +13,7 @@
 
 {% set style_classes = [] %}
 {% set size_classes = [] %}
+
 {% for style in row_item_classes %}
   {% if style starts with 'media--' %}
     {% set style_classes = style_classes | merge([style]) %}
