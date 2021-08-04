@@ -147,7 +147,7 @@ class SettingsForm extends ConfigFormBase {
         '#type' => 'button',
         // On this tab button, if the title is not empty, set the text to
         // the title. If it is empty, set it to 'People-' + $key + 1.
-        '#value' => !empty($directory['title']) ? $directory['title'] : 'People-' . strval($key + 1),
+        '#value' => !empty($directory['title']) ? $directory['title'] : 'People-' . ($key + 1),
         '#attributes' => [
           'role' => 'tab',
           'aria-selected' => $is_first_tab ? 'true' : 'false',
