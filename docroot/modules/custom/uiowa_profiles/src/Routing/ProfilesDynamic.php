@@ -43,7 +43,7 @@ class ProfilesDynamic implements ContainerInjectionInterface {
   public function routes() {
     $routes = [];
 
-    $directories = $this->config->get('directories');
+    $directories = $this->config->get('directories') ?? [];
 
     foreach ($directories as $key => $directory) {
       $routes["uiowa_profiles.directory.{$key}"] = new Route(
