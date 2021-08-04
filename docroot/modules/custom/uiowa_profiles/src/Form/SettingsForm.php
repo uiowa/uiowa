@@ -133,27 +133,31 @@ class SettingsForm extends ConfigFormBase {
       'directories',
     ]) ?? $config->get('directories') ?? [];
 
-    // We need to keep count of the directories for later so that we can determine if we need the delete button or not.
+    // We need to keep count of the directories for later so that we can
+    // determine if we need the delete button or not.
     $count = count($directories);
 
     // For each directory...
     foreach ($directories as $key => $directory) {
-      // Detect if this is the first tab, we will use this for the tabindex setting later.
+      // Detect if this is the first tab, we will use this for the
+      // tabindex setting later.
       $is_first_tab = ($key === array_key_first($directories));
 
       $form['profiles_fieldset']['tabs_container']['tablist']['tab-button-' . $key] = [
         '#type' => 'button',
-        // On this tab button, if the title is not empty, set the text to the title.
-        // If it is empty, set it to 'People-' + $key + 1.
-        '#value' => !empty($directory['title']) ? $directory['title'] : 'People-' . strval($key + 1),
+        // On this tab button, if the title is not empty, set the text to
+        // the title. If it is empty, set it to 'People-' + $key + 1.
+        '#value' => !empty($directory['title']) ? $directory['title'] : 'People-' . ($key + 1),
         '#attributes' => [
           'role' => 'tab',
           'aria-selected' => $is_first_tab ? 'true' : 'false',
           'aria-controls' => 'profiles-directory-fieldset-' . $key,
           'id' => 'tab-' . $key,
-          // If this is the first tab button, make sure it has the correct tabindex for accessibility.
+          // If this is the first tab button, make sure it has the correct
+          // tabindex for accessibility.
           'tabindex' => $is_first_tab ? 0 : -1,
-          // We dont want this tab button to submit the form, so we set it to `return(false)` on click.
+          // We don't want this tab button to submit the form, so we set it to
+          // `return(false)` on click.
           'onclick' => 'return (false);',
         ],
       ];
@@ -169,7 +173,8 @@ class SettingsForm extends ConfigFormBase {
         ],
       ];
 
-      // If it is not the first tab, we want to hide the contents, because the first tab is focused/open.
+      // If it is not the first tab, we want to hide the contents,
+      // because the first tab is focused/open.
       if (!$is_first_tab) {
         $form['profiles_fieldset']['tabs_container']['directories'][$key]['#attributes']['hidden'] = 'true';
       }
@@ -306,7 +311,7 @@ class SettingsForm extends ConfigFormBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Submit button submit handler.
    */
   public function addSubmit(array &$form, FormStateInterface $form_state) {
     $directories = $form_state->getValue([
@@ -321,7 +326,7 @@ class SettingsForm extends ConfigFormBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Remove button submit handler.
    */
   public function removeSubmit(array &$form, FormStateInterface $form_state) {
     $delete = $form_state->getTriggeringElement()['#attributes']['data-directory-index'];

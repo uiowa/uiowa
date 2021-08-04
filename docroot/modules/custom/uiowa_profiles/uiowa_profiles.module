@@ -13,7 +13,8 @@ function uiowa_profiles_preprocess_page(&$variables) {
 
   // If the route contains 'uiowa_profiles.directory'...
   if (strpos($route, 'uiowa_profiles.directory') === 0) {
-    // We know it is a directory instance, and we want to remove the original breadcrumbs so the app can handle them.
+    // We know it is a directory instance, and we want to remove the original
+    // breadcrumbs so the app can handle them.
     unset($variables['page']['breadcrumb']);
   }
 }
