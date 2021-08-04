@@ -295,6 +295,16 @@ trait ProcessMediaTrait {
     $file = $file_manager->load($fid);
 
     if ($file) {
+      // Check if we have a title/alt,
+      // and create them if not.
+      foreach (['title', 'alt'] as $name) {
+        if (empty($meta[$name])) {
+          // If no title, set it to the filename.
+          // If no alt, set it to the title
+          // (which may be the filename).
+          $meta[$name] = (isset($meta['title'])) ? $meta['title'] : $file->getFilename();
+        }
+      }
       $fileType = explode('/', $file->getMimeType())[0];
       // Currently handles images and documents.
       // May need to check for other file types.
@@ -403,8 +413,14 @@ trait ProcessMediaTrait {
       ->execute()
       ->fetchField();
 
+    // If we don't have a title, set it as the filename.
+    if (empty($title)) {
+      $title = $filename;
+    }
+    // If there isn't an alt, default to the title
+    // (which may be the filename).
     $meta = [
-      'alt' => $alt ?? $filename,
+      'alt' => $alt ?? $title,
       'title' => $title,
     ];
 
@@ -501,11 +517,17 @@ trait ProcessMediaTrait {
           // Download the file and create the file record.
           $fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $prefix_path, $drupal_file_directory . $prefix_path);
 
-          // Get meta data an create the media entity.
+          // Get meta data and create the media entity.
           $meta = [];
-          foreach (['alt', 'title'] as $name) {
+          foreach (['title', 'alt'] as $name) {
             if ($prop = $img->getAttribute($name)) {
               $meta[$name] = $prop;
+            }
+            // If we don't have a defined attribute,
+            // then set it to match the title (if it's there)
+            // or default to the filename as a final fallback.
+            else {
+              $meta[$name] = (isset($meta['title'])) ? $meta['title'] : $filename;
             }
           }
           // If we successfully downloaded the file, create the media entity.

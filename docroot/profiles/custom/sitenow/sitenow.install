@@ -2168,7 +2168,6 @@ function sitenow_update_9002() {
  * Set menu links to expanded by default.
  */
 function sitenow_update_9003(&$sandbox) {
-
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('menu_link_content')
       ->condition('expanded', 0, '=')
