@@ -6,6 +6,8 @@ use Drupal\Component\Utility\Html;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
+use Drupal\sitenow_migrate\Plugin\migrate\source\LinkReplaceTrait;
+use Drupal\migrate\Event\MigrateImportEvent;
 
 /**
  * Migrate Source plugin.
@@ -17,6 +19,7 @@ use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
  */
 class Articles extends BaseNodeSource {
   use ProcessMediaTrait;
+  use LinkReplaceTrait;
 
   /**
    * {@inheritdoc}
@@ -139,6 +142,13 @@ class Articles extends BaseNodeSource {
     $row->setSourceProperty('field_custom_tags', $tags);
 
     return TRUE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function postImport(MigrateImportEvent $event) {
+    $this->reportPossibleLinkBreaks(['node__body' => ['body_value']]);
   }
 
 }
