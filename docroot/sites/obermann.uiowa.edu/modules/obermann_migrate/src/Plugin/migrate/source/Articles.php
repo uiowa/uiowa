@@ -100,18 +100,17 @@ class Articles extends BaseNodeSource {
       $row->setSourceProperty('field_image_mid', $mid);
     }
 
-    // Lookup taxonomy terms by name from the source database.
+    // Lookup taxonomy terms by name of referenced source node.
     $tags = [];
 
-    foreach ($row->getSourceProperty('field_tags') as $tag) {
-      $result = $this->database->select('taxonomy_term_data', 't')
-        ->fields('t', ['name'])
-        ->condition('t.tid', $tag['target_id'])
+    foreach ($row->getSourceProperty('field_featured_program') as $program) {
+      $result = $this->database->select('node', 'n')
+        ->fields('n', ['title'])
+        ->condition('n.type', 'programs')
+        ->condition('n.nid', $program['target_id'])
         ->execute();
 
-      if ($result) {
-        $name = $result->fetchField();
-
+      if ($name = $result->fetchField()) {
         $term = $this->entityTypeManager->getStorage('taxonomy_term')
           ->loadByProperties(['name' => $name, 'vid' => 'tags']);
 
@@ -125,14 +124,14 @@ class Articles extends BaseNodeSource {
           ]);
         }
         else {
-          $this->logger->warning('Term name lookup failed for term "@name".', [
+          $this->logger->warning('Term lookup failed for program "@name".', [
             '@name' => $name,
           ]);
         }
       }
       else {
-        $this->logger->warning('Query failed for term lookup: @term', [
-          '@term' => $tag['target_id'],
+        $this->logger->warning('Query failed for program lookup: @program', [
+          '@program' => $program['target_id'],
         ]);
       }
     }
