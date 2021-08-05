@@ -21,13 +21,32 @@ class Articles extends BaseNodeSource {
   /**
    * {@inheritdoc}
    */
+  public function query() {
+    $query = parent::query();
+    $query->leftJoin('url_alias', 'alias', "alias.source = CONCAT('node/', n.nid)");
+    $query->fields('alias', ['alias']);
+    return $query;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function fields() {
+    $fields = parent::fields();
+    $fields['alias'] = $this->t('The URL alias for this node.');
+    return $fields;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
 
-    // Only import articles if made before January 2020.
-    $created_year = date('Y', $row->getSourceProperty('created'));
-    if ($created_year > 2020) {
-      $this->logger->notice('Made in 2020. Skipping.');
+    // Only import articles if made before September 28 2020.
+    $created_date = date('Y-m-d', $row->getSourceProperty('created'));
+    if ($created_date > "2020-09-28") {
+      $this->logger->notice('Made after 09/28/2020. Skipping.');
       return FALSE;
     }
 
@@ -86,24 +105,6 @@ class Articles extends BaseNodeSource {
       $mid = $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']);
       $row->setSourceProperty('field_image_mid', $mid);
     }
-
-    // Create combined array of taxonomy terms to map to tags.
-    $tags = [];
-
-    $reference_fields = [
-      'field_featured_program',
-      'field_tags',
-    ];
-
-    foreach ($reference_fields as $field_name) {
-      if ($refs = $row->getSourceProperty($field_name)) {
-        foreach ($refs as $ref) {
-          $tags[] = $ref['tid'];
-        }
-      }
-    }
-
-    $row->setSourceProperty('tags', $tags);
 
     return TRUE;
   }
