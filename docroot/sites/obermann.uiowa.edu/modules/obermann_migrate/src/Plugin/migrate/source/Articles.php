@@ -100,6 +100,45 @@ class Articles extends BaseNodeSource {
       $row->setSourceProperty('field_image_mid', $mid);
     }
 
+    // Lookup taxonomy terms by name from the source database.
+    $tags = [];
+
+    foreach ($row->getSourceProperty('field_tags') as $tag) {
+      $result = $this->database->select('taxonomy_term_data', 't')
+        ->fields('t', ['name'])
+        ->condition('t.tid', $tag['target_id'])
+        ->execute();
+
+      if ($result) {
+        $name = $result->fetchField();
+
+        $term = $this->entityTypeManager->getStorage('taxonomy_term')
+          ->loadByProperties(['name' => $name, 'vid' => 'tags']);
+
+        if (!empty($term)) {
+          $tags[] = [
+            'target_id' => array_key_first($term),
+          ];
+
+          $this->logger->info('Term "@name" found.', [
+            '@name' => $name,
+          ]);
+        }
+        else {
+          $this->logger->warning('Term name lookup failed for term "@name".', [
+            '@name' => $name,
+          ]);
+        }
+      }
+      else {
+        $this->logger->warning('Query failed for term lookup: @term', [
+          '@term' => $tag['target_id'],
+        ]);
+      }
+    }
+
+    $row->setSourceProperty('field_custom_tags', $tags);
+
     return TRUE;
   }
 
