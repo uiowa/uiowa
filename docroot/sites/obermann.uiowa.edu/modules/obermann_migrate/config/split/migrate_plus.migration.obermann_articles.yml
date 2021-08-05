@@ -36,7 +36,38 @@ process:
   body: body
   field_teaser: body_summary
   field_image: field_image_mid
-  field_tags: tags
+  field_tags:
+    plugin: static_map
+    source: field_featured_program
+    map:
+      Cmiel Semester: Cmiel Semester
+      Fellows-in-Residence: Fellows-in-Residence
+      Graduate Institute on Engagement and the Academy: Graduate Institute on Engagement and the Academy
+      Interdisciplinary Research Grants: Interdisciplinary Research Grants
+      Humanities Symposium: Humanities Symposium
+      Summer Seminar: Summer Seminar
+      Working Groups: Working Groups
+      Co-Sponsorships: Co-Sponsorships
+      Iowa Humanities Festival: Iowa Humanities Festival
+      Obermann Conversations: Obermann Conversations
+      Public Scholar: Public Scholar
+      Humanities Without Walls: Humanities Without Walls
+      Working Symposia: Working Symposia
+      Laura Spelman Rockefeller Grants: Laura Spelman Rockefeller Grants
+      HASTAC: HASTAC
+      OberFriends: OberFriends
+      Theme Semesters: Theme Semesters
+      Digital Bridges for Humanistic Inquiry: Digital Bridges for Humanistic Inquiry
+      Humanities and Public Life Book Series: Humanities and Public Life Book Series
+      Obermann Courses: Obermann Courses
+      Andrew W. Mellon Sawyer Seminar: Andrew W. Mellon Sawyer Seminar
+      GET IT DONE! Lunchtime Workshop Series: GET IT DONE! Lunchtime Workshop Series
+      Book Ends—Obermann/OVPR Book Completion Workshop: Book Ends—Obermann/OVPR Book Completion Workshop
+      Workshop in Latina/o/x Studies: Workshop in Latina/o/x Studies
+      Humanities for the Public Good: Humanities for the Public Good
+      3MT (3-Minute Thesis): 3MT (3-Minute Thesis)
+      Faculty Institute on Engagement & the Academy: Faculty Institute on Engagement & the Academy
+      null: null
 destination:
   plugin: 'entity:node'
   default_bundle: article
