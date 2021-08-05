@@ -279,12 +279,12 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
       //   which are available in the saved block config.
       //   This ensures the exposed filters on the form
       //   properly match the previously selected filter values.
-      foreach ([
-        VIEWS_PERSON_TYPE_STATUS_FILTER_EXPOSE_ID,
-        'field_person_type_status_value_op',
-      ] as $field) {
-        $element['filter-' . VIEWS_PERSON_TYPE_STATUS_FILTER_ID][$field]['#default_value'] = $block->getConfiguration()['exposed']['filter-' . VIEWS_PERSON_TYPE_STATUS_FILTER_ID][$field];
-      }
+//      foreach ([
+//        VIEWS_PERSON_TYPE_STATUS_FILTER_EXPOSE_ID,
+//        'field_person_type_status_value_op',
+//      ] as $field) {
+//        $element['filter-' . VIEWS_PERSON_TYPE_STATUS_FILTER_ID][$field]['#default_value'] = $block->getConfiguration()['exposed']['filter-' . VIEWS_PERSON_TYPE_STATUS_FILTER_ID][$field];
+//      }
 
       break;
 
