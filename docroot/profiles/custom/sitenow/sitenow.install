@@ -21,7 +21,6 @@ use Drupal\filter\Plugin\Filter\FilterHtmlCorrector;
 use Drupal\layout_builder\InlineBlockUsage;
 use Drupal\layout_builder\Section;
 use Drupal\layout_builder\SectionComponent;
-use Drupal\media\Entity\Media;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\Entity\Node;
 use Drupal\paragraphs\Entity\Paragraph;
@@ -2168,7 +2167,7 @@ function sitenow_update_9002() {
 /**
  * Set menu links to expanded by default.
  */
-function sitenow_update_9003(&$sandbox) {// Process all nodes that have a filled field_reference.
+function sitenow_update_9003(&$sandbox) {
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('menu_link_content')
       ->condition('expanded', 0, '=')
@@ -2217,7 +2216,10 @@ function sitenow_update_9004(&$sandbox) {
 
   // We need to adjust the records for the current node
   // version and previous revisions.
-  foreach (['node_revision__layout_builder__layout', 'node__layout_builder__layout'] as $table_name) {
+  foreach ([
+    'node_revision__layout_builder__layout',
+    'node__layout_builder__layout',
+  ] as $table_name) {
     $query = $connection->select($table_name, 'n');
     $orGroup = $query->orConditionGroup()
       ->condition('layout_builder__layout_section', '%s:5:"depth";i:0;%', 'LIKE')
@@ -2499,7 +2501,8 @@ function sitenow_update_9007() {
         try {
           $tables[] = $table_mapping->getFieldTableName($field_name);
           $value_column = $table_mapping->getFieldColumnName($field_storage_definition, 'value');
-        } catch (SqlContentEntityStorageException $e) {
+        }
+        catch (SqlContentEntityStorageException $e) {
           continue;
         }
         // See if the field has a revision table.
@@ -2519,7 +2522,7 @@ function sitenow_update_9007() {
           foreach ($tables as $table) {
             $update_count = 0;
             $query = $db->select($table, 't')
-            ->fields('t');
+              ->fields('t');
 
             $or_group = $query->orConditionGroup();
 
@@ -2532,7 +2535,7 @@ function sitenow_update_9007() {
             }
 
             $results = $query->condition($or_group)
-            ->execute();
+              ->execute();
 
             foreach ($results as $record) {
 
@@ -2557,6 +2560,7 @@ function sitenow_update_9007() {
                         $class = str_replace($needle, $replace, $class);
                       }
                       break;
+
                     case 'table':
                       foreach ($table_search as $needle) {
                         $class = str_replace($needle, '', $class);
@@ -2647,7 +2651,8 @@ function sitenow_update_9008() {
         try {
           $tables[] = $table_mapping->getFieldTableName($field_name);
           $value_column = $table_mapping->getFieldColumnName($field_storage_definition, 'value');
-        } catch (SqlContentEntityStorageException $e) {
+        }
+        catch (SqlContentEntityStorageException $e) {
           continue;
         }
         // See if the field has a revision table.
@@ -2708,8 +2713,7 @@ function sitenow_update_9008() {
 }
 
 /**
- * Helper function to convert an existing people block
- * component into a people list view block.
+ * Helper function to convert an existing people block to a list view block.
  */
 function _convert_people_block_component(SectionComponent &$component, BlockContentInterface $block) {
 
@@ -2786,9 +2790,9 @@ function _convert_people_block_component(SectionComponent &$component, BlockCont
 
   // Process tags.
   if (isset($block->get('field_collection_reference')
-      ->getValue()[0])) {
+    ->getValue()[0])) {
     foreach ($block->get('field_collection_reference')
-               ->getValue()[0] as $target) {
+      ->getValue()[0] as $target) {
       $config['exposed_filter_values']['field_tags_target_id'][] = ['target_id' => $target];
     }
   }
@@ -2803,7 +2807,7 @@ function _convert_people_block_component(SectionComponent &$component, BlockCont
     'field_person_position',
   ];
 
-  // Process field visibility settings
+  // Process field visibility settings.
   foreach ($fields as $field) {
     $hide = 0;
     if (isset($styles)) {
@@ -2813,17 +2817,19 @@ function _convert_people_block_component(SectionComponent &$component, BlockCont
             $hide = 1;
           }
           break;
+
         case 'field_teaser':
           if (in_array('block_hide_descriptions', $styles)) {
             $hide = 1;
           }
           break;
+
         case 'field_person_email':
         case 'field_person_phone':
-        if (in_array('block_hide_details', $styles)) {
-          $hide = 1;
-        }
-        break;
+          if (in_array('block_hide_details', $styles)) {
+            $hide = 1;
+          }
+          break;
       }
     }
 
@@ -2877,7 +2883,7 @@ function sitenow_update_9009() {
     foreach ($results as $record) {
 
       // Unserialize the section field into it's class object.
-      /** @var Section $section */
+      /** @var \Drupal\layout_builder\Section $section */
       $section = unserialize($record->layout_builder__layout_section);
 
       // Loop through the components in the section.
@@ -3001,7 +3007,10 @@ function sitenow_update_9010() {
 
   // We need to adjust the records for the current node
   // version and previous revisions.
-  foreach (['node_revision__layout_builder__layout', 'node__layout_builder__layout'] as $table_name) {
+  foreach ([
+    'node_revision__layout_builder__layout',
+    'node__layout_builder__layout',
+  ] as $table_name) {
     // If the section has a "section_margin_*" style, we can ignore it.
     // It already has a container style selected.
     $query = $connection->select($table_name, 'n')
@@ -3154,7 +3163,7 @@ function sitenow_update_9012() {
     // Loop through the results.
     foreach ($results as $record) {
       // Unserialize the section field into it's class object.
-      /** @var Section $section */
+      /** @var \Drupal\layout_builder\Section $section */
       $section = unserialize($record->layout_builder__layout_section);
 
       // Loop through the components in the section.
@@ -3293,7 +3302,7 @@ function sitenow_update_9015() {
       $controller = \Drupal::entityTypeManager()->getStorage('media');
       $entities = $controller->loadMultiple($ids);
 
-      /** @var Drupal\media\Entity\Media $media */
+      /** @var \Drupal\media\Entity\Media $media */
       foreach ($entities as $media) {
         $file = File::load($media->get('field_media_image')->target_id);
 
