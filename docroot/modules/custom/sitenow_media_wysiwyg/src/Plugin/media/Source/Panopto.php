@@ -156,7 +156,7 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
           $realpath = $this->fs->realpath($destination);
 
           if ($this->fs->prepareDirectory($realpath, FileSystemInterface::CREATE_DIRECTORY)) {
-            /** @var \Drupal\File\FileInterface $file */
+            /** @var \Drupal\file\FileInterface $file */
             $file = system_retrieve_file($source, "{$destination}{$uuid}.jpg", TRUE, FileSystemInterface::EXISTS_REPLACE);
             return $file->getFileUri();
           }
