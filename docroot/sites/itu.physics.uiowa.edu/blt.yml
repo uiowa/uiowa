@@ -1,0 +1,13 @@
+project:
+  local:
+    hostname: physicsitu.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: physicsitu
+  human_name: itu.physics.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: physicsitu.prod
+drupal:
+  db:
+    database: itu_physics_uiowa_edu
