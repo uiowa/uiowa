@@ -1,0 +1,46 @@
+@import "../../../themes/custom/uids_base/uids/assets/scss/variables";
+@import "../../../themes/custom/uids_base/uids/assets/scss/utilities";
+@import "../../../themes/custom/uids_base/uids/components/breadcrumbs/breadcrumbs";
+
+#block-uids-base-local-tasks nav {
+  border-bottom: none;
+}
+
+#uiprof {
+  h2 a {
+    text-decoration: none;
+  }
+
+  .crumbs {
+    @extend .breadcrumb;
+    li:before {
+      content: "";
+      margin-left: 0!important;
+      padding-right: 0!important;
+    }
+    a {
+      color: $secondary!important;
+    }
+  }
+
+  .svg-inline--fa.fa-w-16 {
+    color: $secondary;
+  }
+
+  ol {
+    list-style-type: none;
+    margin-left: 0;
+  }
+
+  figure {
+    @include breakpoint(sm) {
+      margin: 0;
+    }
+  }
+
+  form {
+   input, select {
+     margin-bottom: 0;
+   }
+  }
+}

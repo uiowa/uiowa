@@ -96,6 +96,19 @@ AddEncoding gzip svgz
   RewriteCond %{REQUEST_URI} /~(.*)
   RewriteRule ^(.*)$ http://homepage.divms.uiowa.edu/$1 [L,R=301]
 
+  # Redirect physics.uiowa.edu/~ to homepage.physics.uiowa.edu for Physics and Astronomy
+  RewriteCond %{HTTP_HOST} physics\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} /~(.*)
+  RewriteRule ^(.*)$ http://homepage.physics.uiowa.edu/$1 [L,R=301]
+
+  # Redirect physics.uiowa.edu/itu/* to itu.physics.uiowa.edu/* for Physics and Astronomy ITU
+  RewriteCond %{HTTP_HOST} physics\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
+  RewriteCond %{REQUEST_URI} ^/itu/(.*) [NC,OR]
+  RewriteCond %{REQUEST_URI} ^/itu$ [NC]
+  RewriteRule ^itu(.*)$ https://itu.physics.uiowa.edu/$1 [L,R=301]
+
   # Set "protossl" to "s" if we were accessed via https://.  This is used later
   # if you enable "www." stripping or enforcement, in order to ensure that
   # you don't bounce between http and https.
