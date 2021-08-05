@@ -1,0 +1,29 @@
+uuid: 2e63f336-1e75-46a9-a1c7-d3f2288518e5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_image
+    - media.type.image
+    - node.type.private_page
+id: node.private_page.field_image
+field_name: field_image
+entity_type: node
+bundle: private_page
+label: 'Featured Image'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

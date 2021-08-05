@@ -1,0 +1,21 @@
+uuid: f619acbe-a37e-4989-a49c-e9cebf6f716c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_featured_image_display
+    - node.type.private_page
+  module:
+    - options
+id: node.private_page.field_featured_image_display
+field_name: field_featured_image_display
+entity_type: node
+bundle: private_page
+label: 'Display setting'
+description: 'This setting only has an effect when a "Featured image" is uploaded.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string
