@@ -23,6 +23,7 @@ class Articles extends BaseNodeSource {
    */
   public function query() {
     $query = parent::query();
+    $query->condition('created', strtotime('2020-09-28'), '<=');
     $query->leftJoin('url_alias', 'alias', "alias.source = CONCAT('node/', n.nid)");
     $query->fields('alias', ['alias']);
     return $query;
@@ -42,13 +43,6 @@ class Articles extends BaseNodeSource {
    */
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
-
-    // Only import articles if made before September 28 2020.
-    $created_date = date('Y-m-d', $row->getSourceProperty('created'));
-    if ($created_date > "2020-09-28") {
-      $this->logger->notice('Made after 09/28/2020. Skipping.');
-      return FALSE;
-    }
 
     $body = $row->getSourceProperty('body');
 
