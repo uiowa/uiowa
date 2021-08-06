@@ -5,16 +5,19 @@ dependencies:
   config:
     - field.field.node.area_of_study.body
     - field.field.node.area_of_study.field_area_of_study_certificates
+    - field.field.node.area_of_study.field_area_of_study_link_direct
     - field.field.node.area_of_study.field_area_of_study_majors
     - field.field.node.area_of_study.field_area_of_study_minors
     - field.field.node.area_of_study.field_area_of_study_online
     - field.field.node.area_of_study.field_area_of_study_preprof
+    - field.field.node.area_of_study.field_area_of_study_source_link
     - field.field.node.area_of_study.field_image
     - node.type.area_of_study
   module:
     - entity_reference_revisions
     - layout_builder
     - layout_builder_restrictions
+    - link
     - system
     - text
     - user
@@ -161,6 +164,26 @@ third_party_settings:
                 type: string
             additional: {  }
             weight: 6
+          -
+            uuid: ea4ae76a-a7d5-4dae-a3ed-ac60ba415b10
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:area_of_study:field_area_of_study_source_link'
+              formatter:
+                label: above
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: ''
+                  target: ''
+                third_party_settings: {  }
+                type: link
+            additional: {  }
+            weight: 7
         third_party_settings: {  }
       -
         layout_id: layout_twocol
@@ -198,8 +221,11 @@ third_party_settings:
       - Devel
       - Forms
       - 'Inline blocks'
+      - Lists
       - 'Lists (Views)'
       - Menus
+      - 'Site custom'
+      - 'SiteNow Dispatch'
       - Superfish
       - System
       - 'University of Iowa Alerts'
@@ -210,19 +236,19 @@ third_party_settings:
       whitelisted_blocks:
         'Chaos Tools': {  }
         'Content fields':
-          - 'field_block:node:area_of_study:field_area_of_study_college'
-          - 'field_block:node:area_of_study:field_area_of_study_degrees'
           - 'field_block:node:area_of_study:body'
           - 'field_block:node:area_of_study:field_image'
-          - 'field_block:node:area_of_study:field_area_of_study_related'
           - 'field_block:node:area_of_study:title'
         'Custom block types': {  }
         'Custom blocks': {  }
         Devel: {  }
         Forms: {  }
         'Inline blocks': {  }
+        Lists: {  }
         'Lists (Views)': {  }
         Menus: {  }
+        'Site custom': {  }
+        'SiteNow Dispatch': {  }
         Superfish: {  }
         System:
           - system_breadcrumb_block
@@ -263,6 +289,16 @@ content:
     third_party_settings: {  }
     type: string
     region: content
+  field_area_of_study_link_direct:
+    weight: 14
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
   field_area_of_study_majors:
     type: entity_reference_revisions_entity_view
     weight: 8
@@ -295,6 +331,18 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
+  field_area_of_study_source_link:
+    weight: 15
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
     region: content
   field_image:
     weight: 1

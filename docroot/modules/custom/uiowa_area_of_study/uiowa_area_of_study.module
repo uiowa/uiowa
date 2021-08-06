@@ -23,8 +23,25 @@ function uiowa_area_of_study_form_alter(&$form, FormStateInterface $form_state, 
     case 'node_area_of_study_form':
     case 'node_area_of_study_edit_form':
       _sitenow_node_form_defaults($form, $form_state);
+      $form['field_area_of_study_link_direct']['#states'] = [
+        'visible' => [
+          ':input[name="field_area_of_study_source_link[0][uri]"]' => ['filled' => TRUE],
+        ],
+      ];
       break;
   }
+}
+
+/**
+ * Implements hook_theme for Areas of Study.
+ */
+function uiowa_area_of_study_theme($existing, $type, $theme, $path) {
+  return [
+    'node__area_of_study__teaser' => [
+      'template' => 'node--area-of-study--teaser',
+      'base hook' => 'node',
+    ],
+  ];
 }
 
 /**
@@ -94,5 +111,55 @@ function uiowa_area_of_study_preprocess_block(&$variables) {
         ->buildForm('\Drupal\views\Form\ViewsExposedForm', $form_state);
     }
     $variables['content']['form'] = $form;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uiowa_area_of_study_preprocess_views_view_field(&$variables) {
+  if (isset($variables['view']) && ($variables['view']->id() == 'areas_of_study') && ($variables['view']->current_display == 'areas_of_study')) {
+    if (isset($variables['view']->field) && $variables['field']->realField == 'nothing') {
+      $nid = $variables["row"]->_entity->get('nid')->value;
+      $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+      $markup = '';
+      // For each program type, load the value(s) and string them together for the view result.
+      $degrees = [];
+      $degree_options = '';
+      foreach ($node->get('field_area_of_study_majors') as $paragraph) {
+        if ($paragraph->entity->getType() == 'degree') {
+          $paragraph_item = $paragraph->entity;
+          if (!empty($paragraph_item->field_degree_abbreviation)) {
+            $degrees[] = $paragraph_item->field_degree_abbreviation->value;
+          }
+        }
+      }
+      $degrees = array_unique($degrees);
+      foreach ($degrees as $item) {
+        $degree_options .= $item . ', ';
+      }
+      if (!empty($degree_options)) {
+        $markup .= $degree_options;
+      }
+      // AoS Program Type text fields.
+      $fields = [
+        'Minor' => 'field_area_of_study_minors',
+        'Certificate' => 'field_area_of_study_certificates',
+        'Online Option' => 'field_area_of_study_online',
+      ];
+      foreach ($fields as $label => $field) {
+        $value = $node->get($field)->value;
+        if ($value) {
+          $markup .= $label . ', ';
+        }
+      }
+      $markup = trim($markup, ', ');
+      $markup = '<div class="degree-options">' . $markup . '</div>';
+      if (!empty($markup)) {
+        $variables['output'] = [
+          '#markup' => $markup,
+        ];
+      }
+    }
   }
 }

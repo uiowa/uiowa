@@ -5,15 +5,18 @@ dependencies:
   config:
     - field.field.node.area_of_study.body
     - field.field.node.area_of_study.field_area_of_study_certificates
+    - field.field.node.area_of_study.field_area_of_study_link_direct
     - field.field.node.area_of_study.field_area_of_study_majors
     - field.field.node.area_of_study.field_area_of_study_minors
     - field.field.node.area_of_study.field_area_of_study_online
     - field.field.node.area_of_study.field_area_of_study_preprof
+    - field.field.node.area_of_study.field_area_of_study_source_link
     - field.field.node.area_of_study.field_image
     - node.type.area_of_study
   module:
     - content_moderation
     - field_group
+    - link
     - media_library
     - paragraphs
     - path
@@ -28,7 +31,7 @@ third_party_settings:
         - field_area_of_study_preprof
         - field_area_of_study_online
       parent_name: ''
-      weight: 2
+      weight: 4
       format_type: fieldset
       region: content
       format_settings:
@@ -44,7 +47,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 1
+    weight: 3
     settings:
       rows: 9
       summary_rows: 3
@@ -65,6 +68,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_area_of_study_link_direct:
+    weight: 2
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
     region: content
   field_area_of_study_majors:
     type: paragraphs
@@ -108,6 +118,14 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_area_of_study_source_link:
+    weight: 1
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
     region: content
   field_image:
     weight: 13
