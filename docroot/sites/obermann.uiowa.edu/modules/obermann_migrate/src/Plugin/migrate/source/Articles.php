@@ -140,7 +140,7 @@ class Articles extends BaseNodeSource {
     }
 
     $row->setSourceProperty('field_custom_tags', $tags);
-
+    $this->clearMemory();
     return TRUE;
   }
 
