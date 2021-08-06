@@ -16,8 +16,8 @@ label: Courses
 source:
   plugin: itu_physics_courses
 #  node_type: news
-#  constants:
-#    uid_admin: 41
+  constants:
+    uid_admin: 1
 process:
   langcode:
     plugin: static_map
@@ -30,8 +30,8 @@ process:
   changed: changed
   status: status
   promote: promote
-#  uid: constants/uid_admin
-  title: title
+  uid: constants/uid_admin
+  title: name
   body/value: body/value
   body/format: body/format
   field_teaser: description
