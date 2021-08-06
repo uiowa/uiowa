@@ -67,6 +67,12 @@ class Courses extends BaseNodeSource {
         ->condition('t.tid', $category_tid, '=');
       $row->setSourceProperty('field_physics_itu_taxonomy_category_tid', $source_query->execute()->fetchCol()[0]);
     }
+    // Process the image field and set it as a dest property.
+    $row->setDestinationProperty('field_image', $this->processImageField(
+      $row->getSourceProperty('field_physics_itu_taxonomy_image_fid'),
+      $row->getSourceProperty('field_physics_itu_taxonomy_image_alt'),
+      $row->getSourceProperty('field_physics_itu_taxonomy_image_title')
+    ));
 
     // @todo Update the fields here to handle the taxonomy body field instead.
     $body = $row->getSourceProperty('body');
