@@ -11,12 +11,15 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_comp_txt
     - field.field.node.area_of_study.field_area_of_study_competitive
     - field.field.node.area_of_study.field_area_of_study_course_work
+    - field.field.node.area_of_study.field_area_of_study_degree_types
     - field.field.node.area_of_study.field_area_of_study_first_year
     - field.field.node.area_of_study.field_area_of_study_four_txt
     - field.field.node.area_of_study.field_area_of_study_four_year
     - field.field.node.area_of_study.field_area_of_study_honors
     - field.field.node.area_of_study.field_area_of_study_intl
     - field.field.node.area_of_study.field_area_of_study_link
+    - field.field.node.area_of_study.field_area_of_study_link_direct
+    - field.field.node.area_of_study.field_area_of_study_locations
     - field.field.node.area_of_study.field_area_of_study_mail_code
     - field.field.node.area_of_study.field_area_of_study_majors
     - field.field.node.area_of_study.field_area_of_study_minors
@@ -29,6 +32,7 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_scholarship
     - field.field.node.area_of_study.field_area_of_study_select_txt
     - field.field.node.area_of_study.field_area_of_study_selective
+    - field.field.node.area_of_study.field_area_of_study_source_link
     - field.field.node.area_of_study.field_area_of_study_stat
     - field.field.node.area_of_study.field_area_of_study_stories
     - field.field.node.area_of_study.field_area_of_study_sub_type
@@ -104,6 +108,16 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: -9
+          -
+            uuid: 608f4d09-6e67-4035-99e4-cbf3117107f3
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'extra_field_block:node:area_of_study:content_moderation_control'
+            additional: {  }
+            weight: -8
         third_party_settings: {  }
       -
         layout_id: layout_onecol
@@ -571,6 +585,11 @@ content:
     settings: {  }
     third_party_settings: {  }
     region: content
+  content_moderation_control:
+    weight: -20
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   field_area_of_study_academic_gp:
     weight: 40
     label: above
@@ -855,5 +874,9 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_area_of_study_degree_types: true
+  field_area_of_study_link_direct: true
+  field_area_of_study_locations: true
+  field_area_of_study_source_link: true
   field_area_of_study_stat: true
   search_api_excerpt: true
