@@ -58,21 +58,14 @@ class Courses extends BaseNodeSource {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
-    // @todo Use the author mapping code to map the category data.
-    $author_tids = $row->getSourceProperty('field_news_author_tid');
-    if (!empty($author_tids)) {
-      $authors = [];
-      foreach ($author_tids as $tid) {
-        if (!isset($this->termMapping[$tid])) {
-          $source_query = $this->select('taxonomy_term_data', 't');
-          $source_query = $source_query->fields('t', ['name'])
-            ->condition('t.tid', $tid, '=');
-          $this->termMapping[$tid] = $source_query->execute()->fetchCol()[0];
-        }
-        $authors[] = $this->termMapping[$tid];
-      }
-      $source_org_text = implode(', ', $authors);
-      $row->setSourceProperty('field_news_authors', $source_org_text);
+    // @todo Do we need to map this category anywhere,
+    //   or perhaps append it to the body?
+    $category_tid = $row->getSourceProperty('field_physics_itu_taxonomy_category_tid');
+    if (!empty($category_tid)) {
+      $source_query = $this->select('taxonomy_term_data', 't');
+      $source_query = $source_query->fields('t', ['name'])
+        ->condition('t.tid', $category_tid, '=');
+      $row->setSourceProperty('field_physics_itu_taxonomy_category_tid', $source_query->execute()->fetchCol()[0]);
     }
 
     // @todo Update the fields here to handle the taxonomy body field instead.
