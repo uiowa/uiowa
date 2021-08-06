@@ -391,6 +391,15 @@ class SettingsForm extends ConfigFormBase {
     }
 
     foreach ($directories as $key => $directory) {
+      // Make sure the API key does not have any extra spaces before/after it.
+      $form_state->setValue([
+        'profiles_fieldset',
+        'tabs_container',
+        'directories',
+        $key,
+        'api_key',
+      ], trim($directory['api_key']));
+
       $path = $this->aliasCleaner->cleanAlias($directory['path']);
 
       /** @var \Drupal\Core\Url $url */
