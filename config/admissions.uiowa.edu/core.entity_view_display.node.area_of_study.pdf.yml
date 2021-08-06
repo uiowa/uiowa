@@ -18,6 +18,7 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_honors
     - field.field.node.area_of_study.field_area_of_study_intl
     - field.field.node.area_of_study.field_area_of_study_link
+    - field.field.node.area_of_study.field_area_of_study_link_direct
     - field.field.node.area_of_study.field_area_of_study_mail_code
     - field.field.node.area_of_study.field_area_of_study_majors
     - field.field.node.area_of_study.field_area_of_study_minors
@@ -30,6 +31,7 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_scholarship
     - field.field.node.area_of_study.field_area_of_study_select_txt
     - field.field.node.area_of_study.field_area_of_study_selective
+    - field.field.node.area_of_study.field_area_of_study_source_link
     - field.field.node.area_of_study.field_area_of_study_stat
     - field.field.node.area_of_study.field_area_of_study_stories
     - field.field.node.area_of_study.field_area_of_study_sub_type
@@ -119,6 +121,11 @@ content:
     weight: 0
     region: content
     label: above
+    settings: {  }
+    third_party_settings: {  }
+  content_moderation_control:
+    weight: -20
+    region: content
     settings: {  }
     third_party_settings: {  }
   field_area_of_study_career:
@@ -319,9 +326,11 @@ hidden:
   field_area_of_study_college: true
   field_area_of_study_intl: true
   field_area_of_study_link: true
+  field_area_of_study_link_direct: true
   field_area_of_study_mail_code: true
   field_area_of_study_pretty_title: true
   field_area_of_study_program_type: true
+  field_area_of_study_source_link: true
   field_area_of_study_stat: true
   field_area_of_study_stories: true
   field_area_of_study_transfer: true

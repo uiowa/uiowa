@@ -17,6 +17,7 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_honors
     - field.field.node.area_of_study.field_area_of_study_intl
     - field.field.node.area_of_study.field_area_of_study_link
+    - field.field.node.area_of_study.field_area_of_study_link_direct
     - field.field.node.area_of_study.field_area_of_study_mail_code
     - field.field.node.area_of_study.field_area_of_study_majors
     - field.field.node.area_of_study.field_area_of_study_minors
@@ -29,6 +30,7 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_scholarship
     - field.field.node.area_of_study.field_area_of_study_select_txt
     - field.field.node.area_of_study.field_area_of_study_selective
+    - field.field.node.area_of_study.field_area_of_study_source_link
     - field.field.node.area_of_study.field_area_of_study_stat
     - field.field.node.area_of_study.field_area_of_study_stories
     - field.field.node.area_of_study.field_area_of_study_sub_type
@@ -41,6 +43,7 @@ dependencies:
     - field.field.node.area_of_study.field_image
     - field.field.node.area_of_study.field_meta_tags
     - node.type.area_of_study
+    - workflows.workflow.editorial
   module:
     - content_moderation
     - field_group
@@ -491,4 +494,6 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_area_of_study_link_direct: true
+  field_area_of_study_source_link: true

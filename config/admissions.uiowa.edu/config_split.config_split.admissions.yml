@@ -24,10 +24,14 @@ blacklist:
   - metatag.metatag_defaults.node__area_of_study
   - metatag.metatag_defaults.node__student_profile
   - metatag.metatag_defaults.node__transfer_tips
+  - node.type.area_of_study
+  - paragraphs.paragraphs_type.degree
   - simple_sitemap.bundle_settings.default.taxonomy_term.colleges
   - taxonomy.vocabulary.colleges
   - views.view.colleges_taxonomy_term
   - 'field.storage.taxonomy_term.field_college_*'
+  - 'field.storage.node.field_area_of_study_*'
+  - 'field.storage.paragraph.field_degree*'
 graylist:
   - config_split.config_split.admissions
   - core.entity_form_display.node.student_profile.default
@@ -110,7 +114,6 @@ graylist:
   - field.storage.taxonomy_term.field_image
   - image.style.grid_gallery
   - metatag.settings
-  - node.type.area_of_study
   - node.type.student_profile
   - node.type.transfer_tips
   - paragraphs.paragraphs_type.admissions_card
@@ -125,6 +128,7 @@ graylist:
   - taxonomy.vocabulary.academic_groups
   - views.view.academic_groups_block
   - views.view.academic_groups_taxonomy_term
+  - views.view.areas_of_study
   - views.view.areas_of_study_block
   - views.view.area_of_study_college_block
   - views.view.counselors
@@ -140,9 +144,13 @@ graylist:
   - 'core.entity_view_display.*'
   - field.field.node.student_profile.field_person_territory
   - 'field.storage.fragment.field_stat_*'
-  - 'field.storage.node.field_area_of_study_*'
   - fragment.fragment_type.stat
   - 'user.role.*'
+  - 'core.base_field_override.node.area_of_study.*'
+  - 'core.entity_form_display.node.area_of_study.*'
+  - 'core.entity_view_display.node.area_of_study.*'
+  - 'field.field.node.area_of_study.*'
+  - 'field.storage.node.field_area_of_study_*'
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 90
