@@ -1,0 +1,34 @@
+uuid: e9dad229-0807-48e3-b484-049518be4bea
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.uiowa_timeline_item.field_timeline_body
+    - field.field.paragraph.uiowa_timeline_item.field_timeline_heading
+    - paragraphs.paragraphs_type.uiowa_timeline_item
+  module:
+    - text
+id: paragraph.uiowa_timeline_item.default
+targetEntityType: paragraph
+bundle: uiowa_timeline_item
+mode: default
+content:
+  field_timeline_body:
+    weight: 0
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_timeline_heading:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true

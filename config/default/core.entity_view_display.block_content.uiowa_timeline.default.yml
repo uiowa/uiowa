@@ -1,0 +1,25 @@
+uuid: 528a4ca3-9da2-4a7d-884d-01e01156763c
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_timeline
+    - field.field.block_content.uiowa_timeline.field_uiowa_timeline_items
+  module:
+    - entity_reference_revisions
+id: block_content.uiowa_timeline.default
+targetEntityType: block_content
+bundle: uiowa_timeline
+mode: default
+content:
+  field_uiowa_timeline_items:
+    type: entity_reference_revisions_entity_view
+    weight: 1
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+hidden:
+  search_api_excerpt: true
