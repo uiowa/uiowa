@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies: {  }
+id: obermann_migrate
+label: 'Obermann Migrate'
+description: 'Migrations for Obermann'
+folder: ./sites/obermann.uiowa.edu/modules/obermann_migrate/config/split
+module:
+  migrate: 0
+  migrate_drupal: 0
+  migrate_plus: 0
+  migrate_tools: 0
+  obermann_migrate: 0
+  sitenow_migrate: 0
+theme: {  }
+blacklist:
+  - config_split.config_split.obermann_migrate
+  - 'migrate_plus.migration.obermann_*'
+graylist: {  }
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 80
