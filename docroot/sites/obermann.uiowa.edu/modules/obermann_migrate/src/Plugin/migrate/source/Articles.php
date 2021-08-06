@@ -122,18 +122,18 @@ class Articles extends BaseNodeSource {
             'target_id' => array_key_first($term),
           ];
 
-          $this->logger->info('Term "@name" found.', [
+          $this->logger->info('Custom tag "@name" found.', [
             '@name' => $name,
           ]);
         }
         else {
-          $this->logger->warning('Term lookup failed for program "@name".', [
+          $this->logger->warning('Custom tag lookup failed for program "@name".', [
             '@name' => $name,
           ]);
         }
       }
       else {
-        $this->logger->warning('Query failed for program lookup: @program', [
+        $this->logger->warning('Custom tag query failed for program lookup: @program', [
           '@program' => $program['target_id'],
         ]);
       }
