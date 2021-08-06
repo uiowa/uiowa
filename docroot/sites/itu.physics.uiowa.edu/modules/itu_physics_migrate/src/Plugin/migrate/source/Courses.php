@@ -74,21 +74,16 @@ class Courses extends BaseNodeSource {
       $row->getSourceProperty('field_physics_itu_taxonomy_image_title')
     ));
 
-    // @todo Update the fields here to handle the taxonomy body field instead.
-    $body = $row->getSourceProperty('body');
+    $body_value = $row->getSourceProperty('field_physics_itu_taxonomy_body_value');
+    $body = [];
 
     if (!empty($body)) {
       // Search for D7 inline embeds and replace with D8 inline entities.
       $this->viewMode = 'large__no_crop';
-      $body[0]['value'] = $this->replaceInlineFiles($body[0]['value']);
-
-      // Set the format to filtered_html while we have it.
-      $body[0]['format'] = 'filtered_html';
+      $body['value'] = $this->replaceInlineFiles($body_value);
+      $body['format'] = 'filtered_html';
 
       $row->setSourceProperty('body', $body);
-
-      // Extract the summary.
-      $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));
     }
 
     return TRUE;
