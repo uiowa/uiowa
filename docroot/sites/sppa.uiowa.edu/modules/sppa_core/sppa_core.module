@@ -138,12 +138,12 @@ function _sppa_node_form_defaults(&$form, $form_state) {
  * Implements hook_form_alter().
  */
 function sppa_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  switch ($form_id) { 
+  switch ($form_id) {
     case 'node_private_page_form':
     case 'node_private_page_edit_form':
       // Set form defaults if they exist.
       _sppa_node_form_defaults($form, $form_state);
-    break;
+      break;
 
     case 'fragment_stat_edit_form':
     case 'fragment_stat_add_form':
