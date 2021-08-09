@@ -49,7 +49,7 @@
 <div class="timeline--wrapper">
 {% set card_attributes = create_attribute() %}
   {% set paragraph_card = {
-    'attributes': card_attributes.addClass(['card--enclosed timeline--card']),
+    'attributes': card_attributes.addClass(['card--enclosed bg--white timeline--card']),
     'card_tag': content.field_timeline_icon|render,
     'card_image': content.field_timeline_media|render,
     'card_text': content.field_timeline_body|render,
