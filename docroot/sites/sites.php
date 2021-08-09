@@ -3035,3 +3035,9 @@ $sites['physicsitu.local.drupal.uiowa.edu'] = 'itu.physics.uiowa.edu';
 $sites['physicsitu.dev.drupal.uiowa.edu'] = 'itu.physics.uiowa.edu';
 $sites['physicsitu.stage.drupal.uiowa.edu'] = 'itu.physics.uiowa.edu';
 $sites['physicsitu.prod.drupal.uiowa.edu'] = 'itu.physics.uiowa.edu';
+
+// Directory aliases for studenthealth.uiowa.edu.
+$sites['studenthealth.local.drupal.uiowa.edu'] = 'studenthealth.uiowa.edu';
+$sites['studenthealth.dev.drupal.uiowa.edu'] = 'studenthealth.uiowa.edu';
+$sites['studenthealth.stage.drupal.uiowa.edu'] = 'studenthealth.uiowa.edu';
+$sites['studenthealth.prod.drupal.uiowa.edu'] = 'studenthealth.uiowa.edu';
