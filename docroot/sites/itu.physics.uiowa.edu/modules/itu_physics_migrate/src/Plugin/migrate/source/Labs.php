@@ -101,9 +101,14 @@ class Labs extends BaseNodeSource {
       $this->viewMode = 'large__no_crop';
       $body['value'] = $this->replaceInlineFiles($body_value);
       $body['format'] = 'filtered_html';
+      $body['value'] = preg_replace('|^<p.*?>&nbsp;<\/p>|i', '', $body['value']);
 
       $row->setSourceProperty('body', $body);
     }
+    $row->setSourceProperty('description', preg_replace('|^<p.*?>&nbsp;<\/p>|i', '', $row->getSourceProperty('description')));
+    // @todo Need to update the description. In existing site,
+    //   it allowed filtered HTML elements, and that doesn't work
+    //   for the page teaser.
 
     return TRUE;
   }
