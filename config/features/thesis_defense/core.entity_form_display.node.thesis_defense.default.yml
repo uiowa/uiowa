@@ -8,11 +8,13 @@ dependencies:
     - field.field.node.thesis_defense.field_person_last_name
     - field.field.node.thesis_defense.field_thesis_defense_chairs
     - field.field.node.thesis_defense.field_thesis_defense_date
+    - field.field.node.thesis_defense.field_thesis_defense_file
     - field.field.node.thesis_defense.field_thesis_defense_location
     - field.field.node.thesis_defense.field_thesis_defense_title
     - node.type.thesis_defense
   module:
     - content_moderation
+    - media_library
     - path
     - smart_date
 id: node.thesis_defense.default
@@ -65,6 +67,13 @@ content:
       show_extra: true
     third_party_settings: {  }
     type: smartdate_default
+    region: content
+  field_thesis_defense_file:
+    type: media_library_widget
+    weight: 26
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
     region: content
   field_thesis_defense_location:
     weight: 12
