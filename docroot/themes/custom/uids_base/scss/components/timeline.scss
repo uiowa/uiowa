@@ -22,14 +22,16 @@
 .timeline--wrapper {
   .card__icon {
     position: absolute;
-    font-size: 30px;
-    background: gold;
-    padding: 5px 20px 20px 16px;
+    font-size: 25px;
+    background: $primary;
+    justify-content: center;
+    display: flex;
+    align-items: center;
     border-radius: 50%;
     width: 60px;
     height: 60px;
-    top: -100px;
-    right: -40px;
+    top: -90px;
+    right: -35px;
     @include breakpoint(sm) {
       top: -30px;
       right: inherit;
@@ -63,7 +65,7 @@
     &:after {
       bottom: 100%;
       left: 50%;
-      margin-left: -15px;
+      margin-left: -10px;
       border: solid transparent;
       content: "";
       height: 0;
@@ -97,8 +99,10 @@
       }
     }
     .timeline--card {
-      margin-left: 3.5rem;
-      margin-right: $desktop-width-gutter;
+      @include breakpoint(sm) {
+        margin-left: 3.5rem;
+        margin-right: $desktop-width-gutter;
+      }
       &:after {
         @include breakpoint(sm) {
           right: 100%;
@@ -122,8 +126,10 @@
       }
     }
     .timeline--card {
-      margin-right: 3.5rem;
-      margin-left: $desktop-width-gutter;
+      @include breakpoint(sm) {
+        margin-right: 3.5rem;
+        margin-left: $desktop-width-gutter;
+      }
       &:after {
         @include breakpoint(sm) {
           left: 100%;
