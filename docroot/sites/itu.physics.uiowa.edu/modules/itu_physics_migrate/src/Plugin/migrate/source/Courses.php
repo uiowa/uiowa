@@ -57,6 +57,15 @@ class Courses extends BaseNodeSource {
   /**
    * {@inheritdoc}
    */
+  public function getIds() {
+    $ids['tid']['type'] = 'integer';
+    $ids['tid']['alias'] = 't';
+    return $ids;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function prepareRow(Row $row) {
     // @todo Do we need to map this category anywhere,
     //   or perhaps append it to the body?
