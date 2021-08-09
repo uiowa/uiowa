@@ -55,29 +55,6 @@ function _sppa_node_form_defaults(&$form, $form_state) {
       $form['field_image_caption']['#group'] = 'node_image';
     }
   }
-  if (isset($form['field_image'])) {
-    // Create node_image group in the advanced container.
-    $form['node_image'] = [
-      '#type' => 'details',
-      '#title' => $form["field_image"]["widget"]["#title"],
-      '#group' => 'advanced',
-      '#attributes' => [
-        'class' => ['node-form-image'],
-      ],
-      '#attached' => [
-        'library' => ['node/drupal.node'],
-      ],
-      '#weight' => -10,
-      '#optional' => TRUE,
-      '#open' => FALSE,
-    ];
-    // Set field_image to node_image group.
-    $form['field_image']['#group'] = 'node_image';
-    if (isset($form['field_image_caption'])) {
-      // Set field_image_caption to node_image group.
-      $form['field_image_caption']['#group'] = 'node_image';
-    }
-  }
   if (isset($form['field_featured_image_display'])) {
     $form['field_featured_image_display']['#group'] = 'node_image';
     $form['field_featured_image_display']['widget']['#options']['_none'] = 'Site-wide default';
@@ -150,6 +127,18 @@ function sppa_core_form_alter(&$form, FormStateInterface $form_state, $form_id) 
       $form['#attached']['library'][] = 'sppa_core/admin';
       break;
   }
+}
+
+/**
+ * Implements hook_theme for Scholarship teaser.
+ */
+function sppa_core_theme($existing, $type, $theme, $path) {
+  return [
+    'node__private_page__full' => [
+      'template' => 'node--private-page--full',
+      'base hook' => 'node',
+    ],
+  ];
 }
 
 /**
