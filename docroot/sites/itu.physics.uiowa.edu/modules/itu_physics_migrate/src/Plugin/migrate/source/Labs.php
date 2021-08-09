@@ -56,6 +56,9 @@ class Labs extends BaseNodeSource {
     return $ids;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function fetchUrlAliases(Row &$row) {
     $tid = $row->getSourceProperty('tid');
     $row->setSourceProperty('alias', $this->select('url_alias', 'alias')
@@ -105,10 +108,10 @@ class Labs extends BaseNodeSource {
 
       $row->setSourceProperty('body', $body);
     }
-    $row->setSourceProperty('description', preg_replace('|^<p.*?>&nbsp;<\/p>|i', '', $row->getSourceProperty('description')));
     // @todo Need to update the description. In existing site,
     //   it allowed filtered HTML elements, and that doesn't work
     //   for the page teaser.
+    $row->setSourceProperty('description', preg_replace('|^<p.*?>&nbsp;<\/p>|i', '', $row->getSourceProperty('description')));
 
     return TRUE;
   }

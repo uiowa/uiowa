@@ -56,6 +56,9 @@ class Courses extends BaseNodeSource {
     return $ids;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function fetchUrlAliases(Row &$row) {
     $tid = $row->getSourceProperty('tid');
     $row->setSourceProperty('alias', $this->select('url_alias', 'alias')
