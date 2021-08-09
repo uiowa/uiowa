@@ -9,7 +9,7 @@
   grid-gap: $desktop-width-gutter;
   &:before {
     content: "";
-    width: 10px;
+    width: 5px;
     height: 100%;
     background: $primary;
     position: absolute;
@@ -23,7 +23,7 @@
   .card__icon {
     position: absolute;
     font-size: 25px;
-    background: $primary;
+    background: $light;
     justify-content: center;
     display: flex;
     align-items: center;
@@ -37,7 +37,7 @@
       right: inherit;
     }
   }
-  .card__details {
+  .card__icon-wrapper {
     position: absolute;
     top: 0;
     left: 50%;
@@ -84,16 +84,16 @@
       }
     }
   }
-  &:nth-child(2n+1) {
+  &:nth-child(odd) {
     @include breakpoint(sm) {
       margin-left: auto;
     }
     .card__icon {
       @include breakpoint(sm) {
-        right: 22px;
+        right: 25px;
       }
     }
-    .card__details {
+    .card__icon-wrapper {
       @include breakpoint(sm) {
         left: 0;
       }
@@ -111,7 +111,7 @@
       }
     }
   }
-  &:nth-child(2n+2) {
+  &:nth-child(even) {
     @include breakpoint(sm) {
       margin-right: auto;
     }
@@ -120,7 +120,7 @@
         right: -90px;
       }
     }
-    .card__details {
+    .card__icon-wrapper {
       @include breakpoint(sm) {
         right: 0;
       }
