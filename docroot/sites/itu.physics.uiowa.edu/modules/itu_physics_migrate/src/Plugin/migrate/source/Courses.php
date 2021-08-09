@@ -29,7 +29,7 @@ class Courses extends BaseNodeSource {
    */
   public function query() {
     // Select node in its last revision.
-    $query = $this->select('taxonomy_term_data', 't')
+    $query = $this->select('taxonomy_term_data', 't');
     $query->leftJoin('field_data_field_physics_itu_taxonomy_body', 'b', 'b.entity_id = t.tid');
     $query->leftJoin('field_data_field_physics_itu_taxonomy_image', 'i', 'i.entity_id = t.tid');
     $query->leftJoin('field_data_field_physics_itu_category', 'c', 'c.entity_id = t.tid');
