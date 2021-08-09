@@ -10,11 +10,11 @@ use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
  * Migrate Source plugin.
  *
  * @MigrateSource(
- *   id = "itu_physics_courses",
+ *   id = "itu_physics_labs",
  *   source_module = "node"
  * )
  */
-class Courses extends BaseNodeSource {
+class Labs extends BaseNodeSource {
   use ProcessMediaTrait;
 
   /**
@@ -25,7 +25,7 @@ class Courses extends BaseNodeSource {
     $query = $this->select('taxonomy_term_data', 't');
     $query->leftJoin('field_data_field_physics_itu_taxonomy_body', 'b', 'b.entity_id = t.tid');
     $query->leftJoin('field_data_field_physics_itu_taxonomy_image', 'i', 'i.entity_id = t.tid');
-    $query->leftJoin('field_data_field_physics_itu_category', 'c', 'c.entity_id = t.tid');
+    $query->leftJoin('field_data_field_physics_itu_labs_category', 'c', 'c.entity_id = t.tid');
     $query = $query->fields('t', [
       'tid',
       'name',
@@ -40,9 +40,9 @@ class Courses extends BaseNodeSource {
         'field_physics_itu_taxonomy_image_title',
       ])
       ->fields('c', [
-        'field_physics_itu_category_tid',
+        'field_physics_itu_labs_category_tid',
       ])
-      ->condition('t.vid', 11, '=');
+      ->condition('t.vid', 16, '=');
 
     return $query;
   }
@@ -74,12 +74,12 @@ class Courses extends BaseNodeSource {
 
     // @todo Do we need to map this category anywhere,
     //   or perhaps append it to the body?
-    $category_tid = $row->getSourceProperty('field_physics_itu_category_tid');
+    $category_tid = $row->getSourceProperty('field_physics_itu_labs_category_tid');
     if (!empty($category_tid)) {
       $source_query = $this->select('taxonomy_term_data', 't');
       $source_query = $source_query->fields('t', ['name'])
         ->condition('t.tid', $category_tid, '=');
-      $row->setSourceProperty('field_physics_itu_category_tid', $source_query->execute()->fetchCol()[0]);
+      $row->setSourceProperty('field_physics_itu_labs_category_tid', $source_query->execute()->fetchCol()[0]);
     }
     // Process the image field and set it as a dest property.
     $row->setDestinationProperty('field_image', $this->processImageField(
