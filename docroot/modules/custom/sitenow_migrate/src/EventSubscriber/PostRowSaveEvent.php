@@ -2,6 +2,7 @@
 
 namespace Drupal\sitenow_migrate\EventSubscriber;
 
+use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\layout_builder\Section;
 use Drupal\migrate\Event\MigrateEvents;
@@ -143,11 +144,24 @@ class PostRowSaveEvent implements EventSubscriberInterface {
       ->getStorage('node')
       ->load($nid);
     $layout = $node->get('layout_builder__layout');
+    // Get default page sections config.
+    $config_path = DRUPAL_ROOT . '/../config/default';
+    $source = new FileStorage($config_path);
+    $config = $source->read('core.entity_view_display.node.page.default');
+    $default_sections = $config['third_party_settings']['layout_builder']['sections'];
+
+    // Append content moderation, header, and body content sections
+    // from default config.
+    foreach (['content_moderation', 'header', 'body_content'] as $i => $default_section) {
+      $layout->appendSection(Section::fromArray($default_sections[$i]));
+    }
 
     $layout_settings = [
       'label' => '',
       'column_widths' => [],
-      'layout_builder_styles_style' => [],
+      'layout_builder_styles_style' => [
+        'section_background_style_gray',
+      ],
     ];
     $section_array = [
       'layout_id' => 'layout_onecol',
@@ -155,7 +169,8 @@ class PostRowSaveEvent implements EventSubscriberInterface {
       'layout_settings' => $layout_settings,
     ];
 
-    $text = $row->getSourceProperty('description');
+    $text['value'] = $row->getSourceProperty('description');
+    $text['format'] = 'filtered_html';
     // If the text block begins with a headline, grab it and
     // create a title from it.
     if (isset($text['value']) && preg_match('|\A<(h\d)>(.*?)<\/h\d>|', $text['value'], $matches)) {
@@ -183,12 +198,9 @@ class PostRowSaveEvent implements EventSubscriberInterface {
       'field_uiowa_text_area' => $text,
       'field_uiowa_headline' => $headline,
     ];
-
-    if (!empty($block_definition)) {
-      $block = \Drupal::entityTypeManager()
-        ->getStorage('block_content')
-        ->create($block_definition);
-    }
+    $block = \Drupal::entityTypeManager()
+      ->getStorage('block_content')
+      ->create($block_definition);
     if (isset($block) && $block->save()) {
       $uuid = $block->get('uuid')->getValue()[0]['value'];
       $config = [
