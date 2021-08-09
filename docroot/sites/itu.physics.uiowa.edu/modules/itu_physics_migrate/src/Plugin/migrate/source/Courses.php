@@ -67,6 +67,9 @@ class Courses extends BaseNodeSource {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
+    // Set the moderation state to 'published' as default.
+    $row->setSourceProperty('moderation_state', 'published');
+
     // @todo Do we need to map this category anywhere,
     //   or perhaps append it to the body?
     $category_tid = $row->getSourceProperty('field_physics_itu_taxonomy_category_tid');
@@ -86,7 +89,7 @@ class Courses extends BaseNodeSource {
     $body_value = $row->getSourceProperty('field_physics_itu_taxonomy_body_value');
     $body = [];
 
-    if (!empty($body)) {
+    if (!empty($body_value)) {
       // Search for D7 inline embeds and replace with D8 inline entities.
       $this->viewMode = 'large__no_crop';
       $body['value'] = $this->replaceInlineFiles($body_value);
