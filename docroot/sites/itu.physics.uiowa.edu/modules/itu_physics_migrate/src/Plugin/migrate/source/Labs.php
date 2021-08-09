@@ -72,6 +72,11 @@ class Labs extends BaseNodeSource {
     // Set the moderation state to 'published' as default.
     $row->setSourceProperty('moderation_state', 'published');
 
+    $this->fetchUrlAliases($row);
+    $alias = $row->getSourceProperty('alias');
+    // Remove the extra 'itu/' from the path alias.
+    $row->setSourceProperty('alias', str_replace('itu/', '', $alias));
+
     // @todo Do we need to map this category anywhere,
     //   or perhaps append it to the body?
     $category_tid = $row->getSourceProperty('field_physics_itu_labs_category_tid');
