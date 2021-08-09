@@ -4,12 +4,14 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.uiowa_timeline_item.field_timeline_body
+    - field.field.paragraph.uiowa_timeline_item.field_timeline_date
     - field.field.paragraph.uiowa_timeline_item.field_timeline_heading
     - field.field.paragraph.uiowa_timeline_item.field_timeline_icon
     - field.field.paragraph.uiowa_timeline_item.field_timeline_link
     - field.field.paragraph.uiowa_timeline_item.field_timeline_media
     - paragraphs.paragraphs_type.uiowa_timeline_item
   module:
+    - datetime
     - fontawesome
     - link
     - text
@@ -24,6 +26,15 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: text_default
+    region: content
+  field_timeline_date:
+    weight: 5
+    label: hidden
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
     region: content
   field_timeline_heading:
     weight: 1
