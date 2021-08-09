@@ -33,6 +33,9 @@
 {{ attach_library('uids_base/timeline') }}
 {{ content.field_uiowa_headline }}
 <div{{ attributes.addClass(classes) }}>
+  {% if title_prefix or title_suffix %}
+    <div>&nbsp;</div>
+  {% endif %}
   {{ title_prefix }}
   {{ title_suffix }}
   {{ content|without('field_uiowa_headline') }}
