@@ -46,6 +46,7 @@
     not paragraph.isPublished() ? 'paragraph--unpublished'
   ]
 %}
+<div class="timeline--wrapper">
 {% set card_attributes = create_attribute() %}
   {% set paragraph_card = {
     'attributes': card_attributes.addClass(['card--enclosed timeline--card']),
@@ -69,3 +70,4 @@
       {% endif %}
     {% endblock %}
   {% endembed %}
+</div>
