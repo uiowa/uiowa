@@ -1,23 +1,86 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
-@import "components/tables/tables.scss";
 
-.lb__container .table-responsive {
-  margin-right: auto;
-}
-
-// @todo Move this to UIDS
-table a {
-  [class*="bg--gray"] &,
-  [class*="bg--white"] &,
-  [class*="bg--black"] &,
-  [class*="bg--gold"] &,
-  .bg-pattern--brain-reversed &,
-  .bg--gold--pattern--brain &,
-  .bg-pattern--brain &,
-  .bg--white--pattern--brain &,
-  .bg--black--pattern--brain &,
-  .bg-pattern--brain-black & {
-    color: #00558c;
+// Timeline block
+.timeline {
+  transition: all 0.4s ease;
+  position: relative;
+  display: grid;
+  grid-gap: $desktop-width-gutter;
+  &:before {
+    content: "";
+    width: 10px;
+    height: 100%;
+    background: $primary;
+    position: absolute;
+    top: 0;
+    left: 50%;
   }
 }
+
+// Timeline icon wrapper
+.timeline--card {
+  .card__details {
+    position: absolute;
+    top: 50%;
+  }
+  &:nth-child(2n+1) .card__details {
+    left: 0;
+  }
+  &:nth-child(2n+2) .card__details {
+    right: 0;
+  }
+}
+
+// Timeline icon
+.timeline--card {
+  .card__icon {
+    position: absolute;
+    font-size: 30px;
+    background: gold;
+    padding: 5px 20px 20px 16px;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+  }
+  &:nth-child(2n+1) .card__icon {
+    top: -30px;
+    right: 22px;
+  }
+  &:nth-child(2n+2) .card__icon {
+    top: -30px;
+    right: -90px;
+  }
+}
+
+// Timeline paragraph item and arrow
+.timeline--card {
+  width: 47%;
+  &:after {
+    top: 50%;
+    border: solid transparent;
+    content: "";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: transparent;
+    border-width: 15px;
+    margin-top: -15px;
+  }
+  &:nth-child(2n+1) {
+    margin-left: auto;
+    &:after {
+      right: 100%;
+      border-right-color: $brand-cool-gray;
+    }
+  }
+  &:nth-child(2n+2) {
+    margin-right: auto;
+    &:after {
+      left: 100%;
+      border-left-color: $brand-cool-gray;
+    }
+  }
+}
+
