@@ -23,11 +23,13 @@ function uiowa_area_of_study_form_alter(&$form, FormStateInterface $form_state, 
     case 'node_area_of_study_form':
     case 'node_area_of_study_edit_form':
       _sitenow_node_form_defaults($form, $form_state);
-      $form['field_area_of_study_link_direct']['#states'] = [
-        'visible' => [
-          ':input[name="field_area_of_study_source_link[0][uri]"]' => ['filled' => TRUE],
-        ],
-      ];
+      if (isset($form['field_area_of_study_link_direct'])) {
+        $form['field_area_of_study_link_direct']['#states'] = [
+          'visible' => [
+            ':input[name="field_area_of_study_source_link[0][uri]"]' => ['filled' => TRUE],
+          ],
+        ];
+      }
       break;
   }
 }
