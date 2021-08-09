@@ -47,7 +47,7 @@ class Courses extends BaseNodeSource {
         'field_physics_itu_taxonomy_image_title',
       ])
       ->fields('c', [
-        'field_physics_itu_taxonomy_category_tid',
+        'field_physics_itu_category_tid',
       ])
       ->condition('t.vid', 11, '=');
 
