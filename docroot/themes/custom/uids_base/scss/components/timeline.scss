@@ -88,6 +88,7 @@
     @include breakpoint(sm) {
       position: absolute;
       width: 50%;
+      bottom: 48%;
     }
   }
   &:nth-child(odd) {
@@ -102,7 +103,6 @@
     .field--name-field-timeline-date {
       @include breakpoint(sm) {
         left: -70%;
-        top: 48%;
         text-align: right;
       }
     }
@@ -136,7 +136,6 @@
     .field--name-field-timeline-date {
       @include breakpoint(sm) {
         right: -70%;
-        top: 46%;
       }
     }
     .card__icon-wrapper {
@@ -159,4 +158,17 @@
   }
 }
 
+.timeline--card.js-scroll {
+  opacity: 0;
+  transition: opacity 500ms;
+}
 
+.timeline--card.js-scroll.scrolled {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion) {
+  .timeline--card.js-scroll {
+    opacity: 1;
+  }
+}
