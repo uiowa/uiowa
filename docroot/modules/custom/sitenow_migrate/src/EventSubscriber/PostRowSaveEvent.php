@@ -66,6 +66,24 @@ class PostRowSaveEvent implements EventSubscriberInterface {
         $nids = $event->getDestinationIdValues();
         $this->addBlock($row, $nids[0]);
         break;
+
+      // @todo Remove this after ITU Physics migrate.
+      case 'itu_physics_courses':
+        $row = $event->getRow();
+        $nids = $event->getDestinationIdValues();
+        $nid = $nids[0];
+        $node = $this->entityTypeManager
+          ->getStorage('node')
+          ->load($nid);
+        // Create our path alias.
+        PathAlias::create([
+          'path' => '/node/' . $nid,
+          'alias' => $row->getSourceProperty('alias'),
+        ])
+          ->save();
+        // Uncheck the "generate automatic path alias" option.
+        $node->path->pathauto = 0;
+        $node->save();
     }
   }
 
@@ -139,6 +157,8 @@ class PostRowSaveEvent implements EventSubscriberInterface {
 
   /**
    * Add description block to the newly created node.
+   *
+   * @todo Remove this after ITU Physics migrate.
    */
   public function addBlock($row, $nid) {
     $node = $this->entityTypeManager
