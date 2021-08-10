@@ -110,8 +110,10 @@ class Labs extends BaseNodeSource {
       $row->setSourceProperty('body', $body);
     }
 
-    // Clean up the description a bit for the extra body block.
-    $row->setSourceProperty('description', preg_replace('|^<p.*?>&nbsp;<\/p>|i', '', $row->getSourceProperty('description')));
+    // Clean up the description a bit for the extra body block,
+    // and replace inline files.
+    $description = $this->replaceInlineFiles($row->getSourceProperty('description'));
+    $row->setSourceProperty('description', preg_replace('|^<p.*?>&nbsp;<\/p>|i', '', $description));
 
     // Create a cleaned teaser from the filtered_html description field.
     $new_summary = Html::decodeEntities($row->getSourceProperty('description'));
