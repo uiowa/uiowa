@@ -33,6 +33,12 @@
 {{ attach_library('uids_base/timeline') }}
 {{ content.field_uiowa_headline }}
 <div{{ attributes.addClass(classes) }}>
+  <div id='line-container'>
+    <div id='line'>
+      <div id='fill'>
+      </div>
+    </div>
+  </div>
   {% if title_prefix or title_suffix %}
     <div>&nbsp;</div>
   {% endif %}

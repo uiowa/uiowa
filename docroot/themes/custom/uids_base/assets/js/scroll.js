@@ -41,7 +41,7 @@
 
       const handleScrollAnimation = () => {
         scrollElements.forEach((el) => {
-          if (elementInView(el, 1.25)) {
+          if (elementInView(el, 2)) {
             displayScrollElement(el);
           }
         })

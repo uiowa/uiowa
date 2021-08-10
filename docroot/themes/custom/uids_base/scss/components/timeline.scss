@@ -223,3 +223,26 @@
     opacity: 1;
   }
 }
+
+#line-container {
+  position: absolute;
+  left: 50%;
+  height: 100%;
+}
+
+#line {
+  position: absolute;
+  width: 8px;
+  height: 100%;
+  background-color: #fafafa;
+  clip: rect(0, auto, auto, 0);
+  -webkit-mask-image: -webkit-linear-gradient(top, #ffffff 0%,#ffffff 100%);
+}
+
+#fill {
+  background-color: #FFCD00;
+  height: 53%;
+  width: 8px;
+  position: fixed;
+  top: 0;
+}
