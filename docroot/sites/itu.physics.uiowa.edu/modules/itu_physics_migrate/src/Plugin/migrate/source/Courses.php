@@ -2,6 +2,7 @@
 
 namespace Drupal\itu_physics_migrate\Plugin\migrate\source;
 
+use Drupal\Component\Utility\Html;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
@@ -102,6 +103,13 @@ class Courses extends BaseNodeSource {
 
       $row->setSourceProperty('body', $body);
     }
+
+    // Create a cleaned teaser from the filtered_html description field.
+    $new_summary = Html::decodeEntities($row->getSourceProperty('description'));
+    $new_summary = str_replace('&nbsp;', ' ', $new_summary);
+    // Also want to remove any excess whitespace on the left
+    // that might cause weird spacing for our summaries.
+    $row->setSourceProperty('description', ltrim(strip_tags($new_summary)));
 
     return TRUE;
   }

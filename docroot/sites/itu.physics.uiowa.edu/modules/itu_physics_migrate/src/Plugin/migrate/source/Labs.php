@@ -2,6 +2,7 @@
 
 namespace Drupal\itu_physics_migrate\Plugin\migrate\source;
 
+use Drupal\Component\Utility\Html;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
@@ -108,10 +109,16 @@ class Labs extends BaseNodeSource {
 
       $row->setSourceProperty('body', $body);
     }
-    // @todo Need to update the description. In existing site,
-    //   it allowed filtered HTML elements, and that doesn't work
-    //   for the page teaser.
+
+    // Clean up the description a bit for the extra body block.
     $row->setSourceProperty('description', preg_replace('|^<p.*?>&nbsp;<\/p>|i', '', $row->getSourceProperty('description')));
+
+    // Create a cleaned teaser from the filtered_html description field.
+    $new_summary = Html::decodeEntities($row->getSourceProperty('description'));
+    $new_summary = str_replace('&nbsp;', ' ', $new_summary);
+    // Also want to remove any excess whitespace on the left
+    // that might cause weird spacing for our summaries.
+    $row->setSourceProperty('teaser', ltrim(strip_tags($new_summary)));
 
     return TRUE;
   }
