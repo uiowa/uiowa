@@ -6,20 +6,59 @@
   transition: all 0.4s ease;
   position: relative;
   display: grid;
-  grid-gap: $desktop-width-gutter;
+  //grid-gap: $desktop-width-gutter;
   &:before {
+    /*
     content: "";
-    width: 5px;
+    width: 3px;
     height: 100%;
-    background: $primary;
+    background: $light-gray;
     position: absolute;
     top: 0;
     left: 50%;
+     */
+  }
+}
+.timeline--wrapper {
+  //padding-top: $desktop-width-gutter;
+  .timeline--line {
+    &:before {
+      content: "";
+      width: 3px;
+      height: 100%;
+      background: $primary;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      @include breakpoint(menu) {
+        left: 0;
+      }
+    }
+
+    &.js-scroll {
+      opacity: 0;
+      transition: opacity 500ms;
+    }
+
+    &.js-scroll.scrolled {
+      opacity: 1;
+    }
+  }
+  &:nth-child(even) {
+    .timeline--line {
+      &:before {
+        @include breakpoint(menu) {
+          right: -3px;
+          left: unset;
+        }
+      }
+    }
   }
 }
 
 // Timeline icon
 .timeline--wrapper {
+  position: relative;
   .card__icon {
     position: absolute;
     font-size: 25px;
@@ -31,8 +70,8 @@
     width: 60px;
     height: 60px;
     top: -90px;
-    right: -35px;
-    @include breakpoint(sm) {
+    right: -31px;
+    @include breakpoint(menu) {
       top: -30px;
       right: inherit;
     }
@@ -41,25 +80,29 @@
     position: absolute;
     top: 0;
     left: 50%;
-    @include breakpoint(sm) {
+    @include breakpoint(menu) {
       top: 50%;
     }
   }
 }
 
 .timeline--wrapper {
-  @include breakpoint(sm) {
+  @include breakpoint(menu) {
     width: 50%;
   }
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
   &:first-child {
-    margin-top: $desktop-width-gutter;
+    @include breakpoint(menu) {
+      margin-top: $desktop-width-gutter;
+    }
   }
   &:last-child {
     margin-bottom: $desktop-width-gutter;
   }
   .timeline--card {
     margin-top: $desktop-width-gutter;
-    @include breakpoint(sm) {
+    @include breakpoint(menu) {
       margin-top: inherit;
     }
     &:after {
@@ -75,7 +118,7 @@
       border-color: transparent;
       border-width: 15px;
       //border-bottom-color: #63666a;
-      @include breakpoint(sm) {
+      @include breakpoint(menu) {
         top: 50%;
         border-bottom-color: transparent;
         margin-top: -15px;
@@ -85,39 +128,45 @@
     }
   }
   .field--name-field-timeline-date {
-    @include breakpoint(sm) {
+    @include breakpoint(menu) {
       position: absolute;
-      width: 50%;
       bottom: 48%;
+      width: 90%;
+    }
+    @include breakpoint(container) {
+      width: 100%;
     }
   }
   &:nth-child(odd) {
-    @include breakpoint(sm) {
+    @include breakpoint(menu) {
       margin-left: auto;
     }
     .card__icon {
-      @include breakpoint(sm) {
+      @include breakpoint(menu) {
         right: 25px;
       }
     }
     .field--name-field-timeline-date {
-      @include breakpoint(sm) {
-        left: -70%;
+      @include breakpoint(menu) {
+        margin-left: -130%;
         text-align: right;
       }
+      @include breakpoint(container) {
+        margin-left: -125%;
+      }
+
     }
     .card__icon-wrapper {
-      @include breakpoint(sm) {
+      @include breakpoint(menu) {
         left: 0;
       }
     }
     .timeline--card {
-      @include breakpoint(sm) {
+      @include breakpoint(menu) {
         margin-left: 3.5rem;
-        margin-right: $desktop-width-gutter;
       }
       &:after {
-        @include breakpoint(sm) {
+        @include breakpoint(menu) {
           right: 100%;
           border-right-color: $brand-cool-gray;
         }
@@ -125,31 +174,33 @@
     }
   }
   &:nth-child(even) {
-    @include breakpoint(sm) {
+    @include breakpoint(menu) {
       margin-right: auto;
     }
     .card__icon {
-      @include breakpoint(sm) {
+      @include breakpoint(menu) {
         right: -90px;
       }
     }
     .field--name-field-timeline-date {
-      @include breakpoint(sm) {
-        right: -70%;
+      @include breakpoint(menu) {
+        margin-left: 125%;
+      }
+      @include breakpoint(container) {
+        margin-left: 113%;
       }
     }
     .card__icon-wrapper {
-      @include breakpoint(sm) {
+      @include breakpoint(menu) {
         right: 0;
       }
     }
     .timeline--card {
-      @include breakpoint(sm) {
+      @include breakpoint(menu) {
         margin-right: 3.5rem;
-        margin-left: $desktop-width-gutter;
       }
       &:after {
-        @include breakpoint(sm) {
+        @include breakpoint(menu) {
           left: 100%;
           border-left-color: $brand-cool-gray;
         }
