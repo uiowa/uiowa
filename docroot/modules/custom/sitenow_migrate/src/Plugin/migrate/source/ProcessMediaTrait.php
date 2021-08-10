@@ -168,7 +168,9 @@ trait ProcessMediaTrait {
     $filename = array_pop($exploded);
     $filepath = implode('/', $exploded);
     // Check if we have the file in the D8 database.
-    $uuid = $this->getMid($filename, 'file')['uuid'];
+    $file_data = $this->getMid($filename, 'file');
+    $uuid = $file_data['uuid'];
+    $id = $file_data['mid'];
 
     if (!$uuid) {
       $new_fid = \Drupal::database()->select('file_managed', 'f')
@@ -189,7 +191,7 @@ trait ProcessMediaTrait {
         // @todo Remove the hardcoding for physics.uiowa.edu/itu.
         $new_fid = $this->downloadFile($filename, "https://physics.uiowa.edu/sites/" . $filepath . '/', $this->getDrupalFileDirectory());
         if ($new_fid) {
-          $this->createMediaEntity($new_fid, $meta, 1);
+          $id = $this->createMediaEntity($new_fid, $meta, 1);
           $uuid = $this->getMid($filename, 'file')['uuid'];
         }
       }
@@ -198,7 +200,7 @@ trait ProcessMediaTrait {
 
         // And in case we had the file, but not the media entity.
         if (!$uuid) {
-          $this->createMediaEntity($new_fid, $meta, 1);
+          $id = $this->createMediaEntity($new_fid, $meta, 1);
           $uuid = $this->getMid($filename, 'file')['uuid'];
         }
       }
@@ -206,7 +208,9 @@ trait ProcessMediaTrait {
 
     $file_data = NULL;
     $file_properties = NULL;
-    return isset($uuid) ? $this->constructInlineEntity($uuid, 'center') : '';
+    return isset($uuid) && isset($id) ? $this->constructInlineRelEntity($uuid, $id) .
+      $match[2] .
+      '</a>': '';
 
   }
 
@@ -241,6 +245,28 @@ trait ProcessMediaTrait {
   }
 
   /**
+   * Build the new inline embed entity format for Drupal 8 images.
+   *
+   * @param string $uuid
+   *   The unique identifier for the media to embed.
+   * @param string $id
+   *   The file id for the media to embed.
+   *
+   * @return string
+   *   Returns markup as a plaintext string.
+   */
+  public function constructInlineRelEntity(string $uuid, string $id) {
+    $media = [
+      'data-entity-substitution="media"',
+      'data-entity-type="media"',
+      'data-entity-uuid="' . $uuid . '"',
+      'href="/media/' . $id . '"',
+    ];
+
+    return '<a ' . implode(' ', $media) . '>';
+  }
+
+  /**
    * Simple query to get info on the Drupal 7 file based on fid.
    *
    * @param int $fid
@@ -261,24 +287,26 @@ trait ProcessMediaTrait {
    * Fetch the media uuid based on the provided filename.
    */
   public function getMid($filename, $type = 'image') {
-    $query = \Drupal::database()->select('file_managed', 'f');
-    switch ($type) {
-      case 'image':
-        $query->join('media__field_media_image', 'fmi', 'f.fid = fmi.field_media_image_target_id');
-        $query->join('media', 'm', 'fmi.entity_id = m.mid');
-        $results = $query->fields('m', ['uuid', 'mid'])
-          ->condition('f.filename', $filename)
-          ->execute()
-          ->fetchAssoc();
-        break;
+    $tables = [
+      'audio_file' => 'media__field_media_audio_file',
+      'caption' => 'media__field_media_caption',
+      'facebook' => 'media__field_media_facebook',
+      'file' => 'media__field_media_file',
+      'image' => 'media__field_media_image',
+      'instagram' => 'media__field_media_instagram',
+      'oembed_video' => 'media__field_media_oembed_video',
+      'panopto_url' => 'media__field_media_panopto_url',
+      'twitter' => 'media__field_media_twitter',
+      'video_file' => 'media__field_media_video_file',
+    ];
 
-      default:
-        $query->addField('f', 'uuid');
-        $query->addField('f', 'fid', 'mid');
-        $results = $query->condition('f.filename', $filename)
-          ->execute()
-          ->fetchAssoc();
-    }
+    $query = \Drupal::database()->select('file_managed', 'f');
+    $query->join($tables[$type], 'fm', 'f.fid = ' . 'fm.field_media_' . $type . '_target_id');
+    $query->join('media', 'm', 'fm.entity_id = m.mid');
+    $results = $query->fields('m', ['uuid', 'mid'])
+      ->condition('f.filename', $filename)
+      ->execute()
+      ->fetchAssoc();
 
     $query = NULL;
     return $results;
