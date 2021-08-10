@@ -8,6 +8,7 @@
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\layout_builder_custom;
 
 /**
  * Custom node content type form defaults.
@@ -181,6 +182,13 @@ function sppa_core_preprocess_layout(&$variables) {
       }
     }
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function sppa_core_form_node_private_page_layout_builder_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['#attached']['library'][] = 'layout_builder_custom/layout_builder_custom.overrides';
 }
 
 /**
