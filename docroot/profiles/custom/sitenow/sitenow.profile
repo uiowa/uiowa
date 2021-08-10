@@ -377,7 +377,7 @@ function sitenow_config_split_prepare_form(EntityInterface $entity, $operation, 
 /**
  * Custom node content type form defaults.
  */
-function _sitenow_node_form_defaults(&$form, $form_state) {
+function _sitenow_node_form_defaults(&$form, $form_state, $module_name = NULL) {
   if (isset($form['field_teaser'])) {
     // Create node_teaser group in the advanced container.
     $form['node_teaser'] = [
@@ -426,10 +426,23 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
 
     $form_object = $form_state->getFormObject();
 
-    if ($form_object && $node = $form_object->getEntity()) {
+    if (isset($module_name)) {
+      $route = $module_name . '.settings_form';
+    }
+    elseif ($form_object && $node = $form_object->getEntity()) {
       $type = $node->getType() . 's';
+      $route = 'sitenow_' . $type . '.settings_form';
+    }
+
+    if ($route) {
+      /** @var \Drupal\Core\Routing\RouteProviderInterface $route_provider */
+      $route_provider = \Drupal::service('router.route_provider');
+      $route_exists = count($route_provider->getRoutesByNames([$route])) === 1;
+    }
+
+    if ($route_exists) {
       $form['field_featured_image_display']['widget']['#description'] .= t('&nbsp;If "Site-wide default" is selected, this setting can be changed on the <a href="@settings_url">SiteNow @types settings</a>.', [
-        '@settings_url' => Url::fromRoute("sitenow_$type.settings_form")->toString(),
+        '@settings_url' => Url::fromRoute($route)->toString(),
         '@types' => ucfirst($type),
       ]);
     }

@@ -10,107 +10,6 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Custom node content type form defaults.
- */
-function _sppa_node_form_defaults(&$form, $form_state) {
-  if (isset($form['field_teaser'])) {
-    // Create node_teaser group in the advanced container.
-    $form['node_teaser'] = [
-      '#type' => 'details',
-      '#title' => $form["field_teaser"]["widget"][0]["#title"],
-      '#group' => 'advanced',
-      '#attributes' => [
-        'class' => ['node-form-teaser'],
-      ],
-      '#attached' => [
-        'library' => ['node/drupal.node'],
-      ],
-      '#weight' => -10,
-      '#optional' => TRUE,
-      '#open' => FALSE,
-    ];
-    // Set field_teaser to node_teaser group.
-    $form['field_teaser']['#group'] = 'node_teaser';
-  }
-  if (isset($form['field_image'])) {
-    // Create node_image group in the advanced container.
-    $form['node_image'] = [
-      '#type' => 'details',
-      '#title' => $form["field_image"]["widget"]["#title"],
-      '#group' => 'advanced',
-      '#attributes' => [
-        'class' => ['node-form-image'],
-      ],
-      '#attached' => [
-        'library' => ['node/drupal.node'],
-      ],
-      '#weight' => -10,
-      '#optional' => TRUE,
-      '#open' => FALSE,
-    ];
-    // Set field_image to node_image group.
-    $form['field_image']['#group'] = 'node_image';
-    if (isset($form['field_image_caption'])) {
-      // Set field_image_caption to node_image group.
-      $form['field_image_caption']['#group'] = 'node_image';
-    }
-  }
-  if (isset($form['field_featured_image_display'])) {
-    $form['field_featured_image_display']['#group'] = 'node_image';
-
-    $form_object = $form_state->getFormObject();
-  }
-  if (isset($form['field_tags'])) {
-    // Create node_relations group in the advanced container.
-    $form['node_relations'] = [
-      '#type' => 'details',
-      '#title' => t('Relationships'),
-      '#group' => 'advanced',
-      '#attributes' => [
-        'class' => ['node-form-relations'],
-      ],
-      '#attached' => [
-        'library' => ['node/drupal.node'],
-      ],
-      '#weight' => -10,
-      '#optional' => TRUE,
-      '#open' => FALSE,
-    ];
-    // Set field_tags to node_reference group.
-    $form['field_tags']['#group'] = 'node_relations';
-  }
-  if (isset($form['field_publish_options'])) {
-    // Place field in advanced options group.
-    if (!empty($form["field_publish_options"]["widget"]["#options"])) {
-      // Create node_publish group in the advanced container.
-      $form['node_publish'] = [
-        '#type' => 'details',
-        '#title' => t('Page Options'),
-        '#group' => 'advanced',
-        '#attributes' => [
-          'class' => ['node-form-publish'],
-        ],
-        '#attached' => [
-          'library' => ['node/drupal.node'],
-        ],
-        '#weight' => 99,
-        '#optional' => TRUE,
-        '#open' => FALSE,
-      ];
-      // Set field_publish_options to node_publish group.
-      $form['field_publish_options']['#group'] = 'node_publish';
-      // Hide label. Redundant with group label.
-      $form['field_publish_options']['widget']['#title_display'] = 'invisible';
-    }
-    else {
-      // If no field options, set access to false.
-      $form["field_publish_options"]['#access'] = FALSE;
-    }
-  }
-  return $form;
-}
-
-/**
  * Implements hook_form_alter().
  */
 function sppa_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
@@ -118,7 +17,7 @@ function sppa_core_form_alter(&$form, FormStateInterface $form_state, $form_id) 
     case 'node_private_page_form':
     case 'node_private_page_edit_form':
       // Set form defaults if they exist.
-      _sppa_node_form_defaults($form, $form_state);
+      _sitenow_node_form_defaults($form, $form_state, 'sppa_core');
       break;
 
     case 'fragment_stat_edit_form':
