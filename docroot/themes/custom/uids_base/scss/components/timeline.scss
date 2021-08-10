@@ -74,7 +74,7 @@
       pointer-events: none;
       border-color: transparent;
       border-width: 15px;
-      border-bottom-color: #63666a;
+      //border-bottom-color: #63666a;
       @include breakpoint(sm) {
         top: 50%;
         border-bottom-color: transparent;
@@ -84,6 +84,12 @@
       }
     }
   }
+  .field--name-field-timeline-date {
+    @include breakpoint(sm) {
+      position: absolute;
+      width: 50%;
+    }
+  }
   &:nth-child(odd) {
     @include breakpoint(sm) {
       margin-left: auto;
@@ -91,6 +97,13 @@
     .card__icon {
       @include breakpoint(sm) {
         right: 25px;
+      }
+    }
+    .field--name-field-timeline-date {
+      @include breakpoint(sm) {
+        left: -70%;
+        top: 48%;
+        text-align: right;
       }
     }
     .card__icon-wrapper {
@@ -118,6 +131,12 @@
     .card__icon {
       @include breakpoint(sm) {
         right: -90px;
+      }
+    }
+    .field--name-field-timeline-date {
+      @include breakpoint(sm) {
+        right: -70%;
+        top: 46%;
       }
     }
     .card__icon-wrapper {
