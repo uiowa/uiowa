@@ -113,6 +113,7 @@ class Labs extends BaseNodeSource {
     // Clean up the description a bit for the extra body block,
     // and replace inline files.
     $description = $this->replaceInlineFiles($row->getSourceProperty('description'));
+    $description = $this->replaceRelLinkedFiles($description);
     $row->setSourceProperty('description', preg_replace('|^<p.*?>&nbsp;<\/p>|i', '', $description));
 
     // Create a cleaned teaser from the filtered_html description field.

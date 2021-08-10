@@ -74,6 +74,22 @@ trait ProcessMediaTrait {
   }
 
   /**
+   * Regex replace for inline files using relative links.
+   *
+   * @param string $content
+   *   Body content that should be checked and updated.
+   *
+   * @return string
+   *   The updated body content with inline replacements.
+   */
+  public function replaceRelLinkedFiles($content) {
+    return preg_replace_callback("|<a href=\"\/sites\/(.*?)\">(.*?)<\/a>|", [
+      $this,
+      'relLinkReplace',
+    ], $content);
+  }
+
+  /**
    * Regex to find Drupal 7 JSON for inline embedded files.
    */
   public function entityReplace($match) {
@@ -141,6 +157,59 @@ trait ProcessMediaTrait {
 
   }
 
+
+  /**
+   * Regex to find Drupal 7 JSON for relatively linked embedded files.
+   */
+  public function relLinkReplace($match) {
+    // Filepath minus the /sites is the matched subgroup.
+    $filepath = $match[1];
+    $exploded = explode('/', $filepath);
+    $filename = array_pop($exploded);
+    $filepath = implode('/', $exploded);
+    // Check if we have the file in the D8 database.
+    $uuid = $this->getMid($filename, 'file')['uuid'];
+
+    if (!$uuid) {
+      $new_fid = \Drupal::database()->select('file_managed', 'f')
+        ->fields('f', ['fid'])
+        ->condition('f.filename', $filename)
+        ->execute()
+        ->fetchField();
+
+      $meta = [
+        'title' => $filename,
+        'alt' => explode('.', $filename)[0],
+      ];
+
+      // If there's no fid in the D8 database,
+      // then we'll need to fetch it from the source.
+      if (!$new_fid) {
+
+        // @todo Remove the hardcoding for physics.uiowa.edu/itu.
+        $new_fid = $this->downloadFile($filename, "https://physics.uiowa.edu/sites/" . $filepath . '/', $this->getDrupalFileDirectory());
+        if ($new_fid) {
+          $this->createMediaEntity($new_fid, $meta, 1);
+          $uuid = $this->getMid($filename, 'file')['uuid'];
+        }
+      }
+      else {
+        $uuid = $this->getMid($filename, 'file')['uuid'];
+
+        // And in case we had the file, but not the media entity.
+        if (!$uuid) {
+          $this->createMediaEntity($new_fid, $meta, 1);
+          $uuid = $this->getMid($filename, 'file')['uuid'];
+        }
+      }
+    }
+
+    $file_data = NULL;
+    $file_properties = NULL;
+    return isset($uuid) ? $this->constructInlineEntity($uuid, 'center') : '';
+
+  }
+
   /**
    * Build the new inline embed entity format for Drupal 8 images.
    *
@@ -191,14 +260,25 @@ trait ProcessMediaTrait {
   /**
    * Fetch the media uuid based on the provided filename.
    */
-  public function getMid($filename) {
+  public function getMid($filename, $type = 'image') {
     $query = \Drupal::database()->select('file_managed', 'f');
-    $query->join('media__field_media_image', 'fmi', 'f.fid = fmi.field_media_image_target_id');
-    $query->join('media', 'm', 'fmi.entity_id = m.mid');
-    $results = $query->fields('m', ['uuid', 'mid'])
-      ->condition('f.filename', $filename)
-      ->execute()
-      ->fetchAssoc();
+    switch ($type) {
+      case 'image':
+        $query->join('media__field_media_image', 'fmi', 'f.fid = fmi.field_media_image_target_id');
+        $query->join('media', 'm', 'fmi.entity_id = m.mid');
+        $results = $query->fields('m', ['uuid', 'mid'])
+          ->condition('f.filename', $filename)
+          ->execute()
+          ->fetchAssoc();
+        break;
+
+      default:
+        $query->addField('f', 'uuid');
+        $query->addField('f', 'fid', 'mid');
+        $results = $query->condition('f.filename', $filename)
+          ->execute()
+          ->fetchAssoc();
+    }
 
     $query = NULL;
     return $results;
