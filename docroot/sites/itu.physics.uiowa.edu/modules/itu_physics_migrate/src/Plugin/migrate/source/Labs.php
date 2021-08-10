@@ -79,7 +79,7 @@ class Labs extends BaseNodeSource {
     $this->fetchUrlAliases($row);
     $alias = $row->getSourceProperty('alias');
     // Remove the extra 'itu/' from the path alias.
-    $row->setSourceProperty('alias', str_replace('itu/', '', $alias));
+    $row->setSourceProperty('alias', str_replace('itu/', '', $alias[0]));
 
     // @todo Do we need to map this category anywhere,
     //   or perhaps append it to the body?

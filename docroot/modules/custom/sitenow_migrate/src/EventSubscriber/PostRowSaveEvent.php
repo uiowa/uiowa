@@ -78,7 +78,8 @@ class PostRowSaveEvent implements EventSubscriberInterface {
         // Create our path alias.
         PathAlias::create([
           'path' => '/node/' . $nid,
-          'alias' => $row->getSourceProperty('alias'),
+          'alias' => '/' . $row->getSourceProperty('alias'),
+          'langcode' => 'en',
         ])
           ->save();
         // Uncheck the "generate automatic path alias" option.
@@ -256,7 +257,8 @@ class PostRowSaveEvent implements EventSubscriberInterface {
     // Create our path alias.
     PathAlias::create([
       'path' => '/node/' . $nid,
-      'alias' => $row->getSourceProperty('alias'),
+      'alias' => '/' . $row->getSourceProperty('alias'),
+      'langcode' => 'en',
     ])
       ->save();
     // Uncheck the "generate automatic path alias" option.
