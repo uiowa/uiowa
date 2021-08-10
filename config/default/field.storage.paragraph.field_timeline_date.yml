@@ -1,17 +1,18 @@
-uuid: 91c9c17e-53b4-4d01-8a00-24dcb299e61b
+uuid: 840da935-697b-40d0-9337-fd5a8f5c7c2e
 langcode: en
 status: true
 dependencies:
   module:
-    - datetime
     - paragraphs
 id: paragraph.field_timeline_date
 field_name: field_timeline_date
 entity_type: paragraph
-type: datetime
+type: string
 settings:
-  datetime_type: date
-module: datetime
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
 locked: false
 cardinality: 1
 translatable: true

@@ -11,7 +11,6 @@ dependencies:
     - field.field.paragraph.uiowa_timeline_item.field_timeline_media
     - paragraphs.paragraphs_type.uiowa_timeline_item
   module:
-    - datetime
     - fontawesome
     - link
     - text
@@ -31,10 +30,9 @@ content:
     weight: 5
     label: hidden
     settings:
-      format_type: medium
-      timezone_override: ''
+      link_to_entity: false
     third_party_settings: {  }
-    type: datetime_default
+    type: string
     region: content
   field_timeline_heading:
     weight: 1

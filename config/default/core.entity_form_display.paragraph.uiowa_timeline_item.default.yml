@@ -11,7 +11,6 @@ dependencies:
     - field.field.paragraph.uiowa_timeline_item.field_timeline_media
     - paragraphs.paragraphs_type.uiowa_timeline_item
   module:
-    - datetime
     - fontawesome
     - link
     - media_library
@@ -22,7 +21,7 @@ bundle: uiowa_timeline_item
 mode: default
 content:
   field_timeline_body:
-    weight: 3
+    weight: 4
     settings:
       rows: 5
       placeholder: ''
@@ -30,13 +29,15 @@ content:
     type: text_textarea
     region: content
   field_timeline_date:
-    weight: 5
-    settings: {  }
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
-    type: datetime_default
+    type: string_textfield
     region: content
   field_timeline_heading:
-    weight: 2
+    weight: 3
     settings:
       size: 60
       placeholder: ''
@@ -50,7 +51,7 @@ content:
     type: fontawesome_icon_widget
     region: content
   field_timeline_link:
-    weight: 4
+    weight: 5
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -59,7 +60,7 @@ content:
     region: content
   field_timeline_media:
     type: media_library_widget
-    weight: 1
+    weight: 2
     settings:
       media_types: {  }
     third_party_settings: {  }
