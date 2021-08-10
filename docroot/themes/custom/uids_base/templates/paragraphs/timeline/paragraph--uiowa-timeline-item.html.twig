@@ -7,7 +7,7 @@
 ]
 %}
 
-<div class="timeline--wrapper">
+<li class="timeline--wrapper">
   {% set card_attributes = create_attribute() %}
   {% set paragraph_card = {
     'attributes': card_attributes.addClass(classes),
@@ -32,4 +32,4 @@
       {% endif %}
     {% endblock %}
   {% endembed %}
-</div>
+</li>
