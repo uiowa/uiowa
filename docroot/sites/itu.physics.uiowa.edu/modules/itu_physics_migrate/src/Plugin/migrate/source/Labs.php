@@ -112,7 +112,7 @@ class Labs extends BaseNodeSource {
 
     // Clean up the description a bit for the extra body block,
     // and replace inline files.
-    $description = $this->replaceInlineFiles($row->getSourceProperty('description'));
+    $description = $this->replaceInlineImages($row->getSourceProperty('description'), '/sites/physics.uiowa.edu/files/itu/');
     $description = $this->replaceRelLinkedFiles($description);
     $row->setSourceProperty('description', preg_replace('|^<p.*?>&nbsp;<\/p>|i', '', $description));
 
