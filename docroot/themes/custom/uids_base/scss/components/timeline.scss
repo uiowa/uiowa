@@ -19,42 +19,6 @@
      */
   }
 }
-.timeline--wrapper {
-  //padding-top: $desktop-width-gutter;
-  .timeline--line {
-    &:before {
-      content: "";
-      width: 3px;
-      height: 100%;
-      background: $primary;
-      position: absolute;
-      top: 0;
-      left: 50%;
-      @include breakpoint(menu) {
-        left: 0;
-      }
-    }
-
-    &.js-scroll {
-      opacity: 0;
-      transition: opacity 500ms;
-    }
-
-    &.js-scroll.scrolled {
-      opacity: 1;
-    }
-  }
-  &:nth-child(even) {
-    .timeline--line {
-      &:before {
-        @include breakpoint(menu) {
-          right: -3px;
-          left: unset;
-        }
-      }
-    }
-  }
-}
 
 // Timeline icon
 .timeline--wrapper {
@@ -224,25 +188,25 @@
   }
 }
 
-#line-container {
+.timeline-line {
   position: absolute;
   left: 50%;
   height: 100%;
 }
 
-#line {
+.timeline-line__mask {
   position: absolute;
-  width: 8px;
+  width: 5px;
   height: 100%;
   background-color: #fafafa;
   clip: rect(0, auto, auto, 0);
   -webkit-mask-image: -webkit-linear-gradient(top, #ffffff 0%,#ffffff 100%);
 }
 
-#fill {
+.timeline-line__fill {
   background-color: #FFCD00;
   height: 53%;
-  width: 8px;
+  width: 5px;
   position: fixed;
   top: 0;
 }
