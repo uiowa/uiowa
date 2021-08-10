@@ -14,7 +14,6 @@ migration_group: sitenow_migrate
 label: Labs
 source:
   plugin: itu_physics_labs
-#  node_type: news
   constants:
     uid_admin: 11
 process:
@@ -35,7 +34,6 @@ process:
   body/format: body/format
   field_teaser: description
   field_image: field_image
-  path: alias
 destination:
   plugin: 'entity:node'
   default_bundle: page

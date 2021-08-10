@@ -6,6 +6,7 @@ use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\layout_builder\Section;
 use Drupal\migrate\Event\MigrateEvents;
+use Drupal\path_alias\Entity\PathAlias;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Drupal\layout_builder\InlineBlockUsage;
 
@@ -231,8 +232,16 @@ class PostRowSaveEvent implements EventSubscriberInterface {
       $section = Section::fromArray($section_array);
       $layout->appendSection($section);
       $node->set('layout_builder__layout', $layout->getSections());
-      $node->save();
     }
+    // Create our path alias.
+    PathAlias::create([
+      'path' => '/node/' . $nid,
+      'alias' => $row->getSourceProperty('alias'),
+    ])
+      ->save();
+    // Uncheck the "generate automatic path alias" option.
+    $node->path->pathauto = 0;
+    $node->save();
   }
 
 }
