@@ -3041,3 +3041,9 @@ $sites['studenthealth.local.drupal.uiowa.edu'] = 'studenthealth.uiowa.edu';
 $sites['studenthealth.dev.drupal.uiowa.edu'] = 'studenthealth.uiowa.edu';
 $sites['studenthealth.stage.drupal.uiowa.edu'] = 'studenthealth.uiowa.edu';
 $sites['studenthealth.prod.drupal.uiowa.edu'] = 'studenthealth.uiowa.edu';
+
+// Directory aliases for korn.uiowa.edu.
+$sites['korn.local.drupal.uiowa.edu'] = 'korn.uiowa.edu';
+$sites['korn.dev.drupal.uiowa.edu'] = 'korn.uiowa.edu';
+$sites['korn.stage.drupal.uiowa.edu'] = 'korn.uiowa.edu';
+$sites['korn.prod.drupal.uiowa.edu'] = 'korn.uiowa.edu';
