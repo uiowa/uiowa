@@ -76,12 +76,14 @@ class PostRowSaveEvent implements EventSubscriberInterface {
           ->getStorage('node')
           ->load($nid);
         // Create our path alias.
-        PathAlias::create([
-          'path' => '/node/' . $nid,
-          'alias' => '/' . $row->getSourceProperty('alias'),
-          'langcode' => 'en',
-        ])
-          ->save();
+        $path_aliases = \Drupal::entityTypeManager()
+          ->getStorage('path_alias')
+          ->loadByProperties([
+            'path' => '/node/' . $nid,
+          ]);
+        $path_alias = array_pop($path_aliases);
+        $path_alias->setAlias('/' . $row->getSourceProperty('alias'));
+        $path_alias->save();
         // Uncheck the "generate automatic path alias" option.
         $node->path->pathauto = 0;
         $node->save();
@@ -255,12 +257,15 @@ class PostRowSaveEvent implements EventSubscriberInterface {
       $node->set('layout_builder__layout', $layout->getSections());
     }
     // Create our path alias.
-    PathAlias::create([
-      'path' => '/node/' . $nid,
-      'alias' => '/' . $row->getSourceProperty('alias'),
-      'langcode' => 'en',
-    ])
-      ->save();
+    $path_aliases = \Drupal::entityTypeManager()
+      ->getStorage('path_alias')
+      ->loadByProperties([
+        'path' => '/node/' . $nid,
+      ]);
+    $path_alias = array_pop($path_aliases);
+    $path_alias->setAlias('/' . $row->getSourceProperty('alias'));
+    $path_alias->save();
+
     // Uncheck the "generate automatic path alias" option.
     $node->path->pathauto = 0;
     $node->save();
