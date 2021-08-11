@@ -85,6 +85,9 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
     parent::prepareRow($row);
     $moderation_state = $row->getSourceProperty('status') == 1 ? 'published' : 'draft';
     $row->setSourceProperty('moderation_state', $moderation_state);
+    if (empty($row->getSourceProperty('body_summary'))) {
+      $row->setSourceProperty('body_summary', $this->extractSummaryFromText($row->getSourceProperty('body_value')));
+    }
   }
 
   /**
@@ -106,7 +109,7 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
     // that might cause weird spacing for our summaries.
     $new_summary = ltrim(strip_tags($new_summary));
 
-    $new_summary = substr($new_summary, 0, 200);
+    $new_summary = substr($new_summary, 0, 400);
 
     $looper = TRUE;
 
