@@ -453,7 +453,18 @@ function uids_base_preprocess_layout(&$variables) {
             }
           }
           else {
-            $site_wide_setting = \Drupal::config("sitenow_{$node->getType()}s.settings")->get('featured_image_display_default');
+            if (isset($variables['featured_image_module_name'])) {
+              $module_name = $variables['featured_image_module_name'];
+              $config = $module_name . '.settings';
+            }
+            else {
+              $type = $node->getType() . 's';
+              $config = 'sitenow_' . $type . '.settings';
+            }
+
+            // Limitation of only on display setting per module...
+            // @todo Make settings type specific and update existing.
+            $site_wide_setting = \Drupal::config($config)->get('featured_image_display_default');
             if ($site_wide_setting && $site_wide_setting !== 'do_not_display') {
               // Use the site-wide default.
               $variables['featured_image_display'] = $site_wide_setting;

@@ -8,6 +8,7 @@
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\node\NodeInterface;
 
 /**
  * Implements hook_form_alter().
@@ -53,7 +54,7 @@ function sppa_core_preprocess_layout(&$variables) {
   // Process the header layout.
   if ($layout->id() === 'layout_header') {
     $node = \Drupal::routeMatch()->getParameter('node');
-    $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
+    $node = ($node ?? \Drupal::routeMatch()->getParameter('node_preview'));
     if ($node instanceof NodeInterface) {
       if (in_array($node->getType(), [
         'private_page',
@@ -67,8 +68,8 @@ function sppa_core_preprocess_layout(&$variables) {
 
           if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
 
-            // Set the featured image display.
-            $variables['featured_image_display'] = 'small';
+            // Provide module name for featured image functionality.
+            $variables['featured_image_module_name'] = 'sppa_core';
 
             // Set banner defaults.
             $variables['banner_settings']['transparent'] = TRUE;
