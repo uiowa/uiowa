@@ -798,6 +798,20 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
         $element['top']['type']['label']['#markup'] = $headline;
         break;
 
+      case 'uiowa_timeline_item':
+        $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["style"]['#disabled'] = TRUE;
+        $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["size"]['#disabled'] = TRUE;
+        $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["fixed-width"]['#disabled'] = TRUE;
+        $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["border"]['#disabled'] = TRUE;
+        $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["invert"]['#disabled'] = TRUE;
+        $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["animation"]['#disabled'] = TRUE;
+        $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["additional_classes"]['#disabled'] = TRUE;
+        $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["duotone"]['#disabled'] = TRUE;
+        $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["masking"]['#disabled'] = TRUE;
+        $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["power_transforms"]['#disabled'] = TRUE;
+        $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["pull"]['#disabled'] = TRUE;
+        break;
+
     }
   }
 }
