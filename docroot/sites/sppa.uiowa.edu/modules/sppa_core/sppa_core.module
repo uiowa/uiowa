@@ -56,9 +56,7 @@ function sppa_core_preprocess_layout(&$variables) {
     $node = \Drupal::routeMatch()->getParameter('node');
     $node = ($node ?? \Drupal::routeMatch()->getParameter('node_preview'));
     if ($node instanceof NodeInterface) {
-      if (in_array($node->getType(), [
-        'private_page',
-      ])) {
+      if ($node->getType() == 'private_page') {
         if (!isset($variables['banner_attributes'])) {
           $variables['banner_settings'] = [];
         }
