@@ -2,9 +2,13 @@
 
 namespace Drupal\sitenow_migrate\EventSubscriber;
 
+use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\layout_builder\Section;
 use Drupal\migrate\Event\MigrateEvents;
+use Drupal\path_alias\Entity\PathAlias;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Drupal\layout_builder\InlineBlockUsage;
 
 /**
  * Event subscriber for post-row save migrate event.
@@ -55,6 +59,34 @@ class PostRowSaveEvent implements EventSubscriberInterface {
         $fids = $event->getDestinationIdValues();
         $this->makeEntity($row, $fids);
         break;
+
+      // @todo Remove this after ITU Physics migrate.
+      case 'itu_physics_labs':
+        $row = $event->getRow();
+        $nids = $event->getDestinationIdValues();
+        $this->addBlock($row, $nids[0]);
+        break;
+
+      // @todo Remove this after ITU Physics migrate.
+      case 'itu_physics_courses':
+        $row = $event->getRow();
+        $nids = $event->getDestinationIdValues();
+        $nid = $nids[0];
+        $node = $this->entityTypeManager
+          ->getStorage('node')
+          ->load($nid);
+        // Create our path alias.
+        $path_aliases = \Drupal::entityTypeManager()
+          ->getStorage('path_alias')
+          ->loadByProperties([
+            'path' => '/node/' . $nid,
+          ]);
+        $path_alias = array_pop($path_aliases);
+        $path_alias->setAlias('/' . $row->getSourceProperty('alias'));
+        $path_alias->save();
+        // Uncheck the "generate automatic path alias" option.
+        $node->path->pathauto = 0;
+        $node->save();
     }
   }
 
@@ -124,6 +156,119 @@ class PostRowSaveEvent implements EventSubscriberInterface {
           return;
       }
     }
+  }
+
+  /**
+   * Add description block to the newly created node.
+   *
+   * @todo Remove this after ITU Physics migrate.
+   */
+  public function addBlock($row, $nid) {
+    $node = $this->entityTypeManager
+      ->getStorage('node')
+      ->load($nid);
+    $layout = $node->get('layout_builder__layout');
+    // Get default page sections config.
+    $config_path = DRUPAL_ROOT . '/../config/default';
+    $source = new FileStorage($config_path);
+    $config = $source->read('core.entity_view_display.node.page.default');
+    $default_sections = $config['third_party_settings']['layout_builder']['sections'];
+
+    // Append content moderation, header, and body content sections
+    // from default config.
+    foreach (['content_moderation', 'header', 'body_content'] as $i => $default_section) {
+      $layout->appendSection(Section::fromArray($default_sections[$i]));
+    }
+
+    $layout_settings = [
+      'label' => '',
+      'column_widths' => [],
+      'layout_builder_styles_style' => [
+        'section_background_style_gray',
+      ],
+    ];
+    $section_array = [
+      'layout_id' => 'layout_onecol',
+      'components' => [],
+      'layout_settings' => $layout_settings,
+    ];
+
+    $text['value'] = $row->getSourceProperty('description');
+    $text['format'] = 'filtered_html';
+    // If the text block begins with a headline, grab it and
+    // create a title from it.
+    if (isset($text['value']) && preg_match('|\A<(h\d)>(.*?)<\/h\d>|', $text['value'], $matches)) {
+      $h_level = $matches[1];
+      $title = $matches[2];
+      $text['value'] = str_replace(
+        $matches[0],
+        '',
+        $text['value']
+      );
+    }
+    $headline = [
+      'headline' => isset($title) ? $title : '',
+      'heading_size' => isset($h_level) ? $h_level : 'h2',
+      'hide_headline' => 0,
+      'headline_style' => 'default',
+    ];
+    $block_definition = [
+      'type' => 'uiowa_text_area',
+      'langcode' => 'en',
+      'status' => 1,
+      'reusable' => 0,
+      'default_langcode' => 1,
+      // getValue sets both the text value and the format.
+      'field_uiowa_text_area' => $text,
+      'field_uiowa_headline' => $headline,
+    ];
+    $block = \Drupal::entityTypeManager()
+      ->getStorage('block_content')
+      ->create($block_definition);
+    if (isset($block) && $block->save()) {
+      $uuid = $block->get('uuid')->getValue()[0]['value'];
+      $config = [
+        'id' => 'inline_block:' . $block->bundle(),
+        'label' => 'Text area',
+        'provider' => 'layout_builder',
+        'label_display' => 0,
+        'block_revision_id' => $block->getRevisionId(),
+        'view_mode' => '',
+      ];
+
+      // Set the block usage to the node.
+      $database = \Drupal::database();
+      $use_controller = new InlineBlockUsage($database);
+      $use_controller->addUsage($block->id(), $node);
+    }
+
+    if (!empty($config)) {
+      $section_array['components'][$uuid] = [
+        'uuid' => $uuid,
+        'region' => 'content',
+        'configuration' => $config,
+        'additional' => [
+          'layout_builder_styles_style' => []
+        ],
+        'weight' => 0
+      ];
+      $section = Section::fromArray($section_array);
+      $layout->appendSection($section);
+      $node->set('layout_builder__layout', $layout->getSections());
+    }
+    // Create our path alias.
+    $path_aliases = \Drupal::entityTypeManager()
+      ->getStorage('path_alias')
+      ->loadByProperties([
+        'path' => '/node/' . $nid,
+      ]);
+    $path_alias = array_pop($path_aliases);
+    $path_alias->setAlias('/' . $row->getSourceProperty('alias'));
+    $path_alias->save();
+
+    // Uncheck the "generate automatic path alias" option.
+    $node->path->pathauto = 0;
+    $node->save();
   }
 
 }
