@@ -409,6 +409,14 @@ trait ProcessMediaTrait {
           // (which may be the filename).
           $meta[$name] = (isset($meta['title'])) ? $meta['title'] : $file->getFilename();
         }
+        // Need to truncate the title prior to setting the media name
+        // due to media.name column schema restriction.
+        if (strlen($meta[$name]) > 255) {
+          // Break at a word. Doesn't make a perfect title,
+          // but preserves some of the original intention.
+          $meta[$name] = wordwrap($meta[$name], 255);
+          $meta[$name] = substr($meta[$name], 0, strpos($meta[$name], '\n'));
+        }
       }
       $fileType = explode('/', $file->getMimeType())[0];
       // Currently handles images and documents.
@@ -428,18 +436,7 @@ trait ProcessMediaTrait {
             'langcode' => 'en',
           ]);
 
-          // Need to truncate the title prior to setting the media name
-          // due to media.name column schema restriction.
-          if (strlen($meta['title']) > 255) {
-            // Break at a word. Doesn't make a perfect title,
-            // but preserves some of the original intention.
-            $title = wordwrap($meta['title'], 255);
-            $title = substr($title, 0, strpos($title, '\n'));
-          }
-          else {
-            $title = $meta['title'];
-          }
-          $media->setName($title);
+          $media->setName($meta['title']);
           $media->setOwnerId($owner_id);
           $media->save();
           $id = $media->id();

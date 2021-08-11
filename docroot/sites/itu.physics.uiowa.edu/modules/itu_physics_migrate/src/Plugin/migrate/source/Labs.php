@@ -73,6 +73,9 @@ class Labs extends BaseNodeSource {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
+    if ($row->getSourceProperty('tid') == 516) {
+      $test = TRUE;
+    }
     // Set the moderation state to 'published' as default.
     $row->setSourceProperty('moderation_state', 'published');
 
@@ -103,7 +106,7 @@ class Labs extends BaseNodeSource {
     if (!empty($body_value)) {
       // Search for D7 inline embeds and replace with D8 inline entities.
       $this->viewMode = 'large__no_crop';
-      $body['value'] = $this->replaceInlineImages($body_value, '/sites/physics.uiowa.edu/files/itu/');
+      $body['value'] = $this->replaceInlineImages($body_value, '/sites/physics.uiowa.edu/files/');
       $body['value'] = $this->replaceRelLinkedFiles($body['value']);
       $body['format'] = 'filtered_html';
       $body['value'] = preg_replace('|^<p.*?>&nbsp;<\/p>|i', '', $body['value']);
