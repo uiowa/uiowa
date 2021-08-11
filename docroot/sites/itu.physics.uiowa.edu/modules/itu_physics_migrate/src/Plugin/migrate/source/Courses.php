@@ -102,7 +102,8 @@ class Courses extends BaseNodeSource {
     if (!empty($body_value)) {
       // Search for D7 inline embeds and replace with D8 inline entities.
       $this->viewMode = 'large__no_crop';
-      $body['value'] = $this->replaceInlineFiles($body_value);
+      $body['value'] = $this->replaceInlineImages($body_value, '/sites/physics.uiowa.edu/files/itu/');
+      $body['value'] = $this->replaceRelLinkedFiles($body['value']);
       $body['format'] = 'filtered_html';
 
       $row->setSourceProperty('body', $body);
