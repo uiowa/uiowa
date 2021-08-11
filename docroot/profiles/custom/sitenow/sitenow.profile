@@ -427,6 +427,7 @@ function _sitenow_node_form_defaults(&$form, $form_state, $module_name = NULL) {
     $form_object = $form_state->getFormObject();
 
     if (isset($module_name)) {
+      $type = $module_name;
       $route = $module_name . '.settings_form';
     }
     elseif ($form_object && $node = $form_object->getEntity()) {
@@ -441,7 +442,7 @@ function _sitenow_node_form_defaults(&$form, $form_state, $module_name = NULL) {
     }
 
     if ($route_exists) {
-      $form['field_featured_image_display']['widget']['#description'] .= t('&nbsp;If "Site-wide default" is selected, this setting can be changed on the <a href="@settings_url">SiteNow @types settings</a>.', [
+      $form['field_featured_image_display']['widget']['#description'] .= t('&nbsp;If "Site-wide default" is selected, this setting can be changed on the <a href="@settings_url">@types settings</a>.', [
         '@settings_url' => Url::fromRoute($route)->toString(),
         '@types' => ucfirst($type),
       ]);
