@@ -766,6 +766,20 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       }
       break;
 
+    case 'inline_block:uiowa_event':
+      $element["field_uiowa_event_icon"]["widget"][0]["settings"]["style"]['#access'] = FALSE;
+      $element["field_uiowa_event_icon"]["widget"][0]["settings"]["size"]['#access'] = FALSE;
+      $element["field_uiowa_event_icon"]["widget"][0]["settings"]["fixed-width"]['#access'] = FALSE;
+      $element["field_uiowa_event_icon"]["widget"][0]["settings"]["border"]['#access'] = FALSE;
+      $element["field_uiowa_event_icon"]["widget"][0]["settings"]["invert"]['#access'] = FALSE;
+      $element["field_uiowa_event_icon"]["widget"][0]["settings"]["animation"]['#access'] = FALSE;
+      $element["field_uiowa_event_icon"]["widget"][0]["settings"]["additional_classes"]['#access'] = FALSE;
+      $element["field_uiowa_event_icon"]["widget"][0]["settings"]["duotone"]['#access'] = FALSE;
+      $element["field_uiowa_event_icon"]["widget"][0]["settings"]["masking"]['#access'] = FALSE;
+      $element["field_uiowa_event_icon"]["widget"][0]["settings"]["power_transforms"]['#access'] = FALSE;
+      $element["field_uiowa_event_icon"]["widget"][0]["settings"]["pull"]['#access'] = FALSE;
+      break;
+
   }
   return $element;
 }
