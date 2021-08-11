@@ -157,7 +157,6 @@ trait ProcessMediaTrait {
 
   }
 
-
   /**
    * Regex to find Drupal 7 JSON for relatively linked embedded files.
    */
@@ -207,11 +206,9 @@ trait ProcessMediaTrait {
     }
 
     $file_data = NULL;
-    $file_properties = NULL;
     return isset($uuid) && isset($id) ? $this->constructInlineRelEntity($uuid, $id) .
       $match[2] .
-      '</a>': '';
-
+      '</a>' : '';
   }
 
   /**
