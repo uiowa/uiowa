@@ -124,7 +124,7 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
     $truncate = new TruncateHTML();
 
     // Truncate to 400 characters with an ellipses.
-    $output = $truncate->truncateChars($output, 400, '...'));
+    $output = $truncate->truncateChars($output, 400, '...');
 
     return $output;
   }
