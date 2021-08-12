@@ -767,17 +767,25 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       break;
 
     case 'inline_block:uiowa_event':
-      $element["field_uiowa_event_icon"]["widget"][0]["settings"]["style"]['#disabled'] = TRUE;
-      $element["field_uiowa_event_icon"]["widget"][0]["settings"]["size"]['#disabled'] = TRUE;
-      $element["field_uiowa_event_icon"]["widget"][0]["settings"]["fixed-width"]['#disabled'] = TRUE;
-      $element["field_uiowa_event_icon"]["widget"][0]["settings"]["border"]['#disabled'] = TRUE;
-      $element["field_uiowa_event_icon"]["widget"][0]["settings"]["invert"]['#disabled'] = TRUE;
-      $element["field_uiowa_event_icon"]["widget"][0]["settings"]["animation"]['#disabled'] = TRUE;
-      $element["field_uiowa_event_icon"]["widget"][0]["settings"]["additional_classes"]['#disabled'] = TRUE;
-      $element["field_uiowa_event_icon"]["widget"][0]["settings"]["duotone"]['#disabled'] = TRUE;
-      $element["field_uiowa_event_icon"]["widget"][0]["settings"]["masking"]['#disabled'] = TRUE;
-      $element["field_uiowa_event_icon"]["widget"][0]["settings"]["power_transforms"]['#disabled'] = TRUE;
-      $element["field_uiowa_event_icon"]["widget"][0]["settings"]["pull"]['#disabled'] = TRUE;
+      /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+      $check = \Drupal::service('uiowa_core.access_checker');
+
+      /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+      $access = $check->access(\Drupal::currentUser()->getAccount());
+
+      if ($access->isForbidden()) {
+        $element["field_uiowa_event_icon"]["widget"][0]["settings"]["style"]['#disabled'] = TRUE;
+        $element["field_uiowa_event_icon"]["widget"][0]["settings"]["size"]['#disabled'] = TRUE;
+        $element["field_uiowa_event_icon"]["widget"][0]["settings"]["fixed-width"]['#disabled'] = TRUE;
+        $element["field_uiowa_event_icon"]["widget"][0]["settings"]["border"]['#disabled'] = TRUE;
+        $element["field_uiowa_event_icon"]["widget"][0]["settings"]["invert"]['#disabled'] = TRUE;
+        $element["field_uiowa_event_icon"]["widget"][0]["settings"]["animation"]['#disabled'] = TRUE;
+        $element["field_uiowa_event_icon"]["widget"][0]["settings"]["additional_classes"]['#disabled'] = TRUE;
+        $element["field_uiowa_event_icon"]["widget"][0]["settings"]["duotone"]['#disabled'] = TRUE;
+        $element["field_uiowa_event_icon"]["widget"][0]["settings"]["masking"]['#disabled'] = TRUE;
+        $element["field_uiowa_event_icon"]["widget"][0]["settings"]["power_transforms"]['#disabled'] = TRUE;
+        $element["field_uiowa_event_icon"]["widget"][0]["settings"]["pull"]['#disabled'] = TRUE;
+      }
       break;
 
   }
@@ -799,17 +807,25 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
         break;
 
       case 'uiowa_timeline_item':
-        $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["style"]['#disabled'] = TRUE;
-        $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["size"]['#disabled'] = TRUE;
-        $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["fixed-width"]['#disabled'] = TRUE;
-        $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["border"]['#disabled'] = TRUE;
-        $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["invert"]['#disabled'] = TRUE;
-        $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["animation"]['#disabled'] = TRUE;
-        $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["additional_classes"]['#disabled'] = TRUE;
-        $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["duotone"]['#disabled'] = TRUE;
-        $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["masking"]['#disabled'] = TRUE;
-        $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["power_transforms"]['#disabled'] = TRUE;
-        $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["pull"]['#disabled'] = TRUE;
+        /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+        $check = \Drupal::service('uiowa_core.access_checker');
+
+        /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+        $access = $check->access(\Drupal::currentUser()->getAccount());
+
+        if ($access->isForbidden()) {
+          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["style"]['#disabled'] = TRUE;
+          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["size"]['#disabled'] = TRUE;
+          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["fixed-width"]['#disabled'] = TRUE;
+          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["border"]['#disabled'] = TRUE;
+          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["invert"]['#disabled'] = TRUE;
+          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["animation"]['#disabled'] = TRUE;
+          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["additional_classes"]['#disabled'] = TRUE;
+          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["duotone"]['#disabled'] = TRUE;
+          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["masking"]['#disabled'] = TRUE;
+          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["power_transforms"]['#disabled'] = TRUE;
+          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["pull"]['#disabled'] = TRUE;
+        }
         break;
 
     }
