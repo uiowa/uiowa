@@ -18,7 +18,7 @@
     'card_title': content.field_timeline_heading|render,
     'card_link_url': content.field_timeline_link[0]['#url'],
     'card_link_title': content.field_timeline_link[0]['#title']|render,
-    'headline_level': 'h2'
+    'headline_level': h_size ?: 'h2',
   } %}
 
   {% embed '@uids_base/uids/card.html.twig' with paragraph_card only %}
