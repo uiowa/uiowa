@@ -19,6 +19,7 @@ function sppa_core_form_alter(&$form, FormStateInterface $form_state, $form_id) 
     case 'node_private_page_edit_form':
       // Set form defaults if they exist.
       _sitenow_node_form_defaults($form, $form_state, 'sppa_core');
+      \Drupal::messenger()->addWarning(t('All files used within the Private Page content type will not be private.'));
       break;
 
     case 'fragment_stat_edit_form':
@@ -85,6 +86,7 @@ function sppa_core_preprocess_layout(&$variables) {
  * Implements hook_form_FORM_ID_alter().
  */
 function sppa_core_form_node_private_page_layout_builder_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  \Drupal::messenger()->addWarning(t('All files used within the Private Page content type will not be private.'));
   $form['#attached']['library'][] = 'layout_builder_custom/layout_builder_custom.overrides';
 }
 
