@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * Hooks for UIowa Profiles module.
+ */
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uiowa_profiles_preprocess_page(&$variables) {
+  $route = \Drupal::routeMatch()->getRouteName();
+
+  // If the route contains 'uiowa_profiles.directory'...
+  if (strpos($route, 'uiowa_profiles.directory') === 0) {
+    // We know it is a directory instance, and we want to remove the original
+    // breadcrumbs so the app can handle them.
+    unset($variables['page']['breadcrumb']);
+  }
+}

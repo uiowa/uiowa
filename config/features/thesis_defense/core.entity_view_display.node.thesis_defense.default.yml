@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.thesis_defense.field_person_last_name
     - field.field.node.thesis_defense.field_thesis_defense_chairs
     - field.field.node.thesis_defense.field_thesis_defense_date
+    - field.field.node.thesis_defense.field_thesis_defense_file
     - field.field.node.thesis_defense.field_thesis_defense_location
     - field.field.node.thesis_defense.field_thesis_defense_title
     - node.type.thesis_defense
@@ -47,6 +48,15 @@ content:
       format_type: medium
     third_party_settings: {  }
     type: smartdate_default
+    region: content
+  field_thesis_defense_file:
+    type: entity_reference_entity_view
+    weight: 5
+    label: visually_hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
     region: content
   field_thesis_defense_location:
     weight: 2

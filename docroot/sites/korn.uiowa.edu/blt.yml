@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: korn.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: korn
+  human_name: korn.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: korn.prod
+drupal:
+  db:
+    database: korn_uiowa_edu
+uiowa:
+  requester: hyachoi

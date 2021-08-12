@@ -16,6 +16,7 @@ use Drupal\migrate\Row;
  * )
  */
 class Files extends File {
+
   /**
    * {@inheritdoc}
    */
@@ -54,7 +55,7 @@ class Files extends File {
   /**
    * Pre-rollback event to delete the migration-created media entities.
    *
-   * @param MigrateRollbackEvent $event
+   * @param \Drupal\migrate\Event\MigrateRollbackEvent $event
    *   The migration event.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
