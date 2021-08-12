@@ -88,48 +88,6 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
   }
 
   /**
-   * Extract a plain text summary from a block of text.
-   *
-   * @param string $output
-   *   The text to convert to a trimmed plain text version.
-   *
-   * @return string
-   *   The plain text string.
-   */
-  protected function extractSummaryFromText(string $output) {
-    // The following is the processing from
-    // Drupal\smart_trim\Plugin\Field\FieldFormatter.
-    // Strip caption.
-    $output = preg_replace('/<figcaption[^>]*>.*?<\/figcaption>/is', ' ', $output);
-
-    // Strip script.
-    $output = preg_replace('/<script[^>]*>.*?<\/script>/is', ' ', $output);
-
-    // Strip style.
-    $output = preg_replace('/<style[^>]*>.*?<\/style>/is', ' ', $output);
-
-    // Strip tags.
-    $output = strip_tags($output);
-
-    // Strip out line breaks.
-    $output = preg_replace('/\n|\r|\t/m', ' ', $output);
-
-    // Strip out non-breaking spaces.
-    $output = str_replace('&nbsp;', ' ', $output);
-    $output = str_replace("\xc2\xa0", ' ', $output);
-
-    // Strip out extra spaces.
-    $output = trim(preg_replace('/\s\s+/', ' ', $output));
-
-    $truncate = new TruncateHTML();
-
-    // Truncate to 400 characters with an ellipses.
-    $output = $truncate->truncateChars($output, 400, '...');
-
-    return $output;
-  }
-
-  /**
    * Fetch additional multi-value fields from our database.
    *
    * @param \Drupal\migrate\Row $row
@@ -218,17 +176,63 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
    *
    * @param array $field
    *   A text field array that includes value, format and summary keys.
+   * @param int $length
+   *   The desired summary length, if new summaries are to be created.
    *
    * @return string
    *   The summary if set or an extraction of the body value if not.
    */
-  public function getSummaryFromTextField(array $field): string {
+  public function getSummaryFromTextField(array $field, int $length = 400): string {
     if (empty($field[0]['summary'])) {
-      return $this->extractSummaryFromText($field[0]['value']);
+      return $this->extractSummaryFromText($field[0]['value'], $length);
     }
     else {
       return $field[0]['summary'];
     }
+  }
+
+  /**
+   * Extract a plain text summary from a block of text.
+   *
+   * @param string $output
+   *   The text to convert to a trimmed plain text version.
+   * @param int $length
+   *   The desired summary length.
+   *
+   * @return string
+   *   The plain text string.
+   */
+  protected function extractSummaryFromText(string $output, int $length = 400) {
+    // The following is the processing from
+    // Drupal\smart_trim\Plugin\Field\FieldFormatter.
+    // Strip caption.
+    $output = preg_replace('/<figcaption[^>]*>.*?<\/figcaption>/is', ' ', $output);
+
+    // Strip script.
+    $output = preg_replace('/<script[^>]*>.*?<\/script>/is', ' ', $output);
+
+    // Strip style.
+    $output = preg_replace('/<style[^>]*>.*?<\/style>/is', ' ', $output);
+
+    // Strip tags.
+    $output = strip_tags($output);
+
+    // Strip out line breaks.
+    $output = preg_replace('/\n|\r|\t/m', ' ', $output);
+
+    // Strip out non-breaking spaces.
+    $output = str_replace('&nbsp;', ' ', $output);
+    $output = str_replace("\xc2\xa0", ' ', $output);
+
+    // Strip out extra spaces.
+    $output = trim(preg_replace('/\s\s+/', ' ', $output));
+
+    $truncate = new TruncateHTML();
+
+    // Truncate to 400 characters with an ellipses.
+    $output = $truncate->truncateChars($output, $length, '...');
+
+    return $output;
   }
 
   /**
