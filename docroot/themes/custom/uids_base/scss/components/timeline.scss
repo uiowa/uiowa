@@ -1,0 +1,203 @@
+@import "assets/scss/_variables.scss";
+@import "assets/scss/_utilities.scss";
+
+// Timeline block
+.timeline {
+  transition: all 0.4s ease;
+  position: relative;
+  display: grid;
+  list-style: none;
+  margin: 0;
+}
+
+// Timeline icon
+.timeline--wrapper {
+  position: relative;
+  list-style: none;
+  .card__icon {
+    position: absolute;
+    font-size: 25px;
+    background: $light;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    top: -90px;
+    right: -31px;
+    @include breakpoint(menu) {
+      top: -30px;
+      right: inherit;
+    }
+  }
+  .card__icon-wrapper {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    @include breakpoint(menu) {
+      top: 50%;
+    }
+  }
+}
+
+.timeline--wrapper {
+  @include breakpoint(menu) {
+    width: 50%;
+  }
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  &:first-child {
+    @include breakpoint(menu) {
+      margin-top: $desktop-width-gutter;
+    }
+  }
+  &:last-child {
+    margin-bottom: $desktop-width-gutter;
+  }
+  .timeline--card {
+    margin-top: $desktop-width-gutter;
+    @include breakpoint(menu) {
+      margin-top: inherit;
+    }
+    &:after {
+      bottom: 100%;
+      left: 50%;
+      margin-left: -12px;
+      border: solid transparent;
+      content: "";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+      border-color: transparent;
+      border-width: 15px;
+      //border-bottom-color: #63666a;
+      @include breakpoint(menu) {
+        top: 50%;
+        border-bottom-color: transparent;
+        margin-top: -15px;
+        margin-left: unset;
+        left: unset;
+      }
+    }
+  }
+  .field--name-field-timeline-date {
+    @include breakpoint(menu) {
+      position: absolute;
+      bottom: 48%;
+      width: 90%;
+    }
+    @include breakpoint(container) {
+      width: 100%;
+    }
+  }
+  &:nth-child(odd) {
+    @include breakpoint(menu) {
+      margin-left: auto;
+    }
+    .card__icon {
+      @include breakpoint(menu) {
+        right: 25px;
+      }
+    }
+    .field--name-field-timeline-date {
+      @include breakpoint(menu) {
+        margin-left: -130%;
+        text-align: right;
+      }
+      @include breakpoint(container) {
+        margin-left: -125%;
+      }
+
+    }
+    .card__icon-wrapper {
+      @include breakpoint(menu) {
+        left: 0;
+      }
+    }
+    .timeline--card {
+      @include breakpoint(menu) {
+        margin-left: 3.5rem;
+      }
+      &:after {
+        @include breakpoint(menu) {
+          right: 100%;
+          border-right-color: $brand-cool-gray;
+        }
+      }
+    }
+  }
+  &:nth-child(even) {
+    @include breakpoint(menu) {
+      margin-right: auto;
+    }
+    .card__icon {
+      @include breakpoint(menu) {
+        right: -90px;
+      }
+    }
+    .field--name-field-timeline-date {
+      @include breakpoint(menu) {
+        margin-left: 125%;
+      }
+      @include breakpoint(container) {
+        margin-left: 113%;
+      }
+    }
+    .card__icon-wrapper {
+      @include breakpoint(menu) {
+        right: 0;
+      }
+    }
+    .timeline--card {
+      @include breakpoint(menu) {
+        margin-right: 3.5rem;
+      }
+      &:after {
+        @include breakpoint(menu) {
+          left: 100%;
+          border-left-color: $brand-cool-gray;
+        }
+      }
+    }
+  }
+}
+
+.timeline--card.js-scroll {
+  opacity: 0;
+  transition: opacity 500ms;
+}
+
+.timeline--card.js-scroll.scrolled {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion) {
+  .timeline--card.js-scroll {
+    opacity: 1;
+  }
+}
+
+.timeline-line {
+  position: absolute;
+  left: 50%;
+  height: 100%;
+}
+
+.timeline-line__mask {
+  position: absolute;
+  width: 5px;
+  height: 100%;
+  background-color: #fafafa;
+  clip: rect(0, auto, auto, 0);
+  -webkit-mask-image: -webkit-linear-gradient(top, #ffffff 0%,#ffffff 100%);
+}
+
+.timeline-line__fill {
+  background-color: #FFCD00;
+  height: 53%;
+  width: 5px;
+  position: fixed;
+  top: 0;
+}

@@ -1,0 +1,35 @@
+{%
+  set classes = [
+  'card--enclosed',
+  'bg--white',
+  'timeline--card',
+  'js-scroll'
+]
+%}
+
+<li class="timeline--wrapper">
+  {% set card_attributes = create_attribute() %}
+  {% set paragraph_card = {
+    'attributes': card_attributes.addClass(classes),
+    'card_tag': content.field_timeline_icon|render,
+    'card_image': content.field_timeline_media|render,
+    'card_subtitle': content.field_timeline_date|render,
+    'card_text': content.field_timeline_body|render,
+    'card_title': content.field_timeline_heading|render,
+    'card_link_url': content.field_timeline_link[0]['#url'],
+    'card_link_title': content.field_timeline_link[0]['#title']|render,
+    'headline_level': h_size ?: 'h2',
+  } %}
+
+  {% embed '@uids_base/uids/card.html.twig' with paragraph_card only %}
+    {% block card_tag %}
+      {% if card_tag is not empty %}
+        <div class="card__icon-wrapper">
+          <div class="card__icon">
+            {{ card_tag }}
+          </div>
+        </div>
+      {% endif %}
+    {% endblock %}
+  {% endembed %}
+</li>
