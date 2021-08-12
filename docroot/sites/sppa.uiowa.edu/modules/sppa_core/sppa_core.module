@@ -46,6 +46,37 @@ function sppa_core_theme($existing, $type, $theme, $path) {
 }
 
 /**
+ * Implements hook_preprocess_block().
+ */
+function sppa_core_preprocess_block(&$variables) {
+  $classes = $variables["elements"]["#configuration"]["block_classes"] ?? FALSE;
+  if ($classes) {
+    $variables["attributes"]["class"] = array_merge($variables["attributes"]["class"], $classes);
+  }
+  switch ($variables["elements"]["#plugin_id"]) {
+    // Visually hide page title if page option is set.
+    case 'field_block:node:private_page:title':
+    case 'private_page_title_block':
+      $admin_context = \Drupal::service('router.admin_context');
+      if (!$admin_context->isAdminRoute()) {
+        $node = \Drupal::routeMatch()->getParameter('node');
+        $node = ($node ?? \Drupal::routeMatch()->getParameter('node_preview'));
+        if ($node instanceof NodeInterface) {
+          if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
+            $publish_options = $node->get('field_publish_options')->getValue();
+            if (array_search('title_hidden', array_column($publish_options, 'value')) !== FALSE) {
+              // For uids_base.
+              $variables["attributes"]['class'][] = 'element-invisible';
+            }
+          }
+        }
+      }
+      break;
+
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK().
  */
 function sppa_core_preprocess_layout(&$variables) {
@@ -88,6 +119,19 @@ function sppa_core_preprocess_layout(&$variables) {
 function sppa_core_form_node_private_page_layout_builder_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   \Drupal::messenger()->addWarning(t('All files used within the Private Page content type will not be private.'));
   $form['#attached']['library'][] = 'layout_builder_custom/layout_builder_custom.overrides';
+}
+
+/**
+ * Implements hook_publish_options_alter().
+ */
+function sppa_core_publish_options_alter(&$options, $entity, $bundle) {
+  switch ($bundle) {
+    case 'private_page':
+      $options['title_hidden'] = 'Visually hide title';
+      $options['no_sidebars'] = 'Remove sidebar regions';
+      break;
+
+  }
 }
 
 /**
