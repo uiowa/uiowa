@@ -1,0 +1,78 @@
+uuid: c5daddb9-3cc2-4860-af90-966c0340c797
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.uiowa_timeline_item.field_timeline_body
+    - field.field.paragraph.uiowa_timeline_item.field_timeline_date
+    - field.field.paragraph.uiowa_timeline_item.field_timeline_heading
+    - field.field.paragraph.uiowa_timeline_item.field_timeline_icon
+    - field.field.paragraph.uiowa_timeline_item.field_timeline_link
+    - field.field.paragraph.uiowa_timeline_item.field_timeline_media
+    - paragraphs.paragraphs_type.uiowa_timeline_item
+  module:
+    - fontawesome
+    - link
+    - text
+id: paragraph.uiowa_timeline_item.default
+targetEntityType: paragraph
+bundle: uiowa_timeline_item
+mode: default
+content:
+  field_timeline_body:
+    weight: 0
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_timeline_date:
+    weight: 5
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_timeline_heading:
+    weight: 1
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_timeline_icon:
+    weight: 4
+    label: hidden
+    settings:
+      layers: false
+    third_party_settings: {  }
+    type: fontawesome_icon_formatter
+    region: content
+  field_timeline_link:
+    weight: 3
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_timeline_media:
+    type: entity_reference_entity_view
+    weight: 2
+    label: hidden
+    settings:
+      view_mode: large__widescreen
+      link: false
+    third_party_settings: {  }
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

@@ -108,7 +108,7 @@
       {% block card_bttn %}
         {% if card_link_url is not empty and show_button %}
           {% if link_element == 'button' %}
-            <a class="bttn bttn--outline bttn--sans-serif bttn--full" href="{{ card_link_url }}">
+            <a class="bttn bttn--outline bttn--sans-serif bttn--full click-target" href="{{ card_link_url }}">
               {{ card_link_title }}
               <i role="presentation" class="fas fa-arrow-right"></i>
             </a>
