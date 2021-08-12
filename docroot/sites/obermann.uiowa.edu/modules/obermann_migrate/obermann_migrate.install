@@ -40,3 +40,20 @@ function obermann_migrate_uninstall() {
   $config_factory->getEditable('migrate_plus.migration_group.default')->delete();
   $config_factory->getEditable('migrate_plus.migration_group.sitenow_migrate')->delete();
 }
+
+/**
+ * Update article summaries from the migration.
+ */
+function obermann_migrate_update_9001() {
+  $nids = \Drupal::database()->select('migrate_map_obermann_articles', 'mm')
+    ->fields('mm', ['destid1'])
+    ->execute()
+    ->fetchCol();
+  $nodes = \Drupal::service('entity_type.manager')
+    ->getStorage('node')
+    ->loadMultiple($nids);
+  foreach ($nodes as $node) {
+    //@ todo Do the things.
+    $node->save();
+  }
+}
