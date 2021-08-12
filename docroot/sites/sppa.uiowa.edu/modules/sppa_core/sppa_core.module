@@ -11,6 +11,19 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\NodeInterface;
 
 /**
+ * Implements hook_node_presave().
+ */
+function sppa_core_node_presave(NodeInterface $entity) {
+  switch ($entity->bundle()) {
+    case 'private_page':
+      $output = "Private " . $entity->get('title')->value;
+      $entity->setTitle($output);
+      break;
+
+  }
+}
+
+/**
  * Implements hook_form_alter().
  */
 function sppa_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
