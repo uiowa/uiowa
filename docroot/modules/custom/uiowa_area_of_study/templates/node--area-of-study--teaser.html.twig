@@ -91,9 +91,9 @@
     <div{{ content_attributes.addClass('node__content') }}>
         {{ title_prefix }}
         {% if not page %}
-            <h3{{ title_attributes }}>
+            <div{{ title_attributes }}>
                 <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-            </h3>
+            </div>
         {% endif %}
         {{ title_suffix }}
 
