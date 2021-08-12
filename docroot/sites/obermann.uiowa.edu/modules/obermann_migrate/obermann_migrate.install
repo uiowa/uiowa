@@ -72,6 +72,7 @@ function obermann_migrate_update_9001(&$sandbox) {
     return;
   }
   foreach ($batch as $nid) {
+    /** @var \Drupal\node\Entity\Node $node */
     $node = Node::load($nid);
     $output = $node->body->value;
     // The following is the processing from
