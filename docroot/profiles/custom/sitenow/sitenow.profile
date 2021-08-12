@@ -238,7 +238,7 @@ function sitenow_preprocess_block(&$variables) {
       $admin_context = \Drupal::service('router.admin_context');
       if (!$admin_context->isAdminRoute()) {
         $node = \Drupal::routeMatch()->getParameter('node');
-        $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
+        $node = ($node ?? \Drupal::routeMatch()->getParameter('node_preview'));
         if ($node instanceof NodeInterface) {
           if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
             $publish_options = $node->get('field_publish_options')->getValue();
