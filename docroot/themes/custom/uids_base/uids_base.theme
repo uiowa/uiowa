@@ -771,6 +771,7 @@ function uids_base_preprocess_paragraph(&$variables) {
     $collection_types = [
       'uiowa_slide' => 'field_uiowa_slider_slides',
       'uiowa_collection_item' => 'field_uiowa_collection_items',
+      'uiowa_timeline_item' => 'field_uiowa_timeline_items',
     ];
 
     if (in_array($paragraph->bundle(), array_keys($collection_types))) {
@@ -793,7 +794,7 @@ function uids_base_preprocess_paragraph(&$variables) {
             }
           }
         }
-        // This works for collections and sliders, not other blocks.
+        // This works for collections, sliders, and timeline not other blocks.
         if ($parent->hasField('field_uiowa_headline')) {
           $headline_fields = $parent->get('field_uiowa_headline')->getValue();
           foreach ($headline_fields as $headline_field) {
