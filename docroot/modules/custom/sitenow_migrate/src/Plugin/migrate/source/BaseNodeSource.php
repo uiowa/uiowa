@@ -2,7 +2,6 @@
 
 namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
-use Drupal\Component\Utility\Html;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Entity\EntityTypeManager;
@@ -14,6 +13,7 @@ use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
 use Drupal\node\Plugin\migrate\source\d7\Node;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\smart_trim\Truncate\TruncateHTML;
 
 /**
  * Provides base node source abstract class with additional functionality.
@@ -90,49 +90,43 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
   /**
    * Extract a plain text summary from a block of text.
    *
-   * @todo Use smart_trim for this.
-   *
-   * @param string $text
+   * @param string $output
    *   The text to convert to a trimmed plain text version.
    *
    * @return string
    *   The plain text string.
    */
-  protected function extractSummaryFromText(string $text) {
-    // Strip out any HTML, decode special characters and replace spaces.
-    $new_summary = Html::decodeEntities($text);
-    $new_summary = str_replace('&nbsp;', ' ', $new_summary);
-    // Also want to remove any excess whitespace on the left
-    // that might cause weird spacing for our summaries.
-    $new_summary = ltrim(strip_tags($new_summary));
+  protected function extractSummaryFromText(string $output) {
+    // The following is the processing from
+    // Drupal\smart_trim\Plugin\Field\FieldFormatter.
+    // Strip caption.
+    $output = preg_replace('/<figcaption[^>]*>.*?<\/figcaption>/is', ' ', $output);
 
-    $new_summary = substr($new_summary, 0, 200);
+    // Strip script.
+    $output = preg_replace('/<script[^>]*>.*?<\/script>/is', ' ', $output);
 
-    $looper = TRUE;
+    // Strip style.
+    $output = preg_replace('/<style[^>]*>.*?<\/style>/is', ' ', $output);
 
-    // Shorten the string until we reach a natural(ish) breaking point.
-    while ($looper && strlen($new_summary) > 0) {
-      switch (substr($new_summary, -1)) {
+    // Strip tags.
+    $output = strip_tags($output);
 
-        case '.':
-        case '!':
-        case '?':
-          $looper = FALSE;
-          break;
+    // Strip out line breaks.
+    $output = preg_replace('/\n|\r|\t/m', ' ', $output);
 
-        case ';':
-        case ':':
-        case '"':
-          $looper = FALSE;
-          $new_summary = $new_summary . '...';
-          break;
+    // Strip out non-breaking spaces.
+    $output = str_replace('&nbsp;', ' ', $output);
+    $output = str_replace("\xc2\xa0", ' ', $output);
 
-        default:
-          $new_summary = substr($new_summary, 0, -1);
-      }
-    }
+    // Strip out extra spaces.
+    $output = trim(preg_replace('/\s\s+/', ' ', $output));
 
-    return $new_summary;
+    $truncate = new TruncateHTML();
+
+    // Truncate to 400 characters with an ellipses.
+    $output = $truncate->truncateChars($output, 400, '...'));
+
+    return $output;
   }
 
   /**
