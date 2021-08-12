@@ -234,13 +234,11 @@ function sitenow_preprocess_block(&$variables) {
   switch ($variables["elements"]["#plugin_id"]) {
     // Visually hide page title if page option is set.
     case 'field_block:node:page:title':
-    case 'field_block:node:private_page:title':
     case 'page_title_block':
-    case 'private_page_title_block':
       $admin_context = \Drupal::service('router.admin_context');
       if (!$admin_context->isAdminRoute()) {
         $node = \Drupal::routeMatch()->getParameter('node');
-        $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
+        $node = ($node ?? \Drupal::routeMatch()->getParameter('node_preview'));
         if ($node instanceof NodeInterface) {
           if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
             $publish_options = $node->get('field_publish_options')->getValue();
@@ -750,7 +748,6 @@ function publish_options_allowed_values(FieldStorageConfig $definition, ContentE
 
     switch ($bundle) {
       case 'page':
-      case 'private_page':
         $options['title_hidden'] = 'Visually hide title';
         $options['no_sidebars'] = 'Remove sidebar regions';
         break;
