@@ -102,5 +102,16 @@ function obermann_migrate_update_9001(&$sandbox) {
     // and re-set into the node.
     $node->set('field_teaser', $truncate->truncateChars($output, 400, '...'));
     $node->save();
+
+    $sandbox['current']++;
+  }
+  \Drupal::messenger()
+    ->addMessage($sandbox['current'] . ' nodes processed.');
+
+  if ($sandbox['current'] >= $sandbox['total']) {
+    $sandbox['#finished'] = 1;
+  }
+  else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
   }
 }
