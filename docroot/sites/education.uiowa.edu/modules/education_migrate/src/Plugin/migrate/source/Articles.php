@@ -148,6 +148,10 @@ class Articles extends BaseNodeSource {
       }
       // Check if we've already found a mapping for each term.
       foreach ($tids as $identifier => $tid) {
+        // @todo If the migration needs to run in multiple batches,
+        //   we need to query to see if we've already created it,
+        //   otherwise we'll duplicate (or triplicate, quadruplicate...)
+        //   all of our terms.
         if (isset($this->termMapping[$tid['target_id']])) {
           $new_tids[] = $this->termMapping[$tid['target_id']];
         } else {
