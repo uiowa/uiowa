@@ -126,6 +126,13 @@ class Articles extends BaseNodeSource {
       $row->setSourceProperty('field_image_mid', $mid);
     }
 
+    // If we have a linked source, split it up into our 2 separate fields.
+    $source = $row->getSourceProperty('field_article_source');
+    if ($source) {
+      $row->setSourceProperty('source_org', $source[0]['title']);
+      $row->setSourceProperty('source_url', $source[0]['url']);
+    }
+
     $this->clearMemory();
     return TRUE;
   }
