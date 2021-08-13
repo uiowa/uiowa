@@ -36,6 +36,9 @@ class Articles extends BaseNodeSource {
     $query = parent::query();
     $query->leftJoin('url_alias', 'alias', "alias.source = CONCAT('node/', n.nid)");
     $query->fields('alias', ['alias']);
+    // Make sure our nodes are retrieved in order,
+    // and force a highwater mark of our last-most migrated node.
+    $query->orderBy('nid');
     return $query;
   }
 
@@ -52,6 +55,10 @@ class Articles extends BaseNodeSource {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
+    // Skip this node if it comes after our last migrated.
+    if ($row->getSourceProperty('nid') < $this->getLastMigrated()) {
+      return FALSE;
+    }
     parent::prepareRow($row);
 
     // Process the image field.
@@ -127,7 +134,7 @@ class Articles extends BaseNodeSource {
    * {@inheritdoc}
    */
   public function postImport(MigrateImportEvent $event) {
-    $this->reportPossibleLinkBreaks(['node__body' => ['body_value']]);
+    // $this->reportPossibleLinkBreaks(['node__body' => ['body_value']]);
   }
 
   /**
@@ -148,13 +155,10 @@ class Articles extends BaseNodeSource {
       }
       // Check if we've already found a mapping for each term.
       foreach ($tids as $identifier => $tid) {
-        // @todo If the migration needs to run in multiple batches,
-        //   we need to query to see if we've already created it,
-        //   otherwise we'll duplicate (or triplicate, quadruplicate...)
-        //   all of our terms.
         if (isset($this->termMapping[$tid['target_id']])) {
           $new_tids[] = $this->termMapping[$tid['target_id']];
-        } else {
+        }
+        else {
           $source_tids[] = $tid['target_id'];
         }
       }
@@ -172,6 +176,21 @@ class Articles extends BaseNodeSource {
         ->execute()
         ->fetchAllAssoc('tid');
       foreach ($terms as $tid => $details) {
+        // Attempt to query the new database with the name
+        // to see if we've already created it.
+        $dest_tid = \Drupal::database()->select('taxonomy_term_field_data', 't')
+          ->fields('t', ['tid'])
+          ->condition('t.name', $details['name'], '=')
+          ->execute()
+          ->fetchCol();
+        // If found, add to new_tids and break out.
+        if (!empty($dest_tid)) {
+          $this->termMapping[$tid] = $dest_tid[0];
+          $new_tids[] = $dest_tid[0];
+          continue;
+        }
+        // We didn't find a previously created term,
+        // so we're making it now.
         $new_term = Term::create([
           'name' => $details['name'],
           'vid' => 'tags',
