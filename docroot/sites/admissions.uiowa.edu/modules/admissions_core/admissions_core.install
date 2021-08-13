@@ -328,7 +328,7 @@ function admissions_core_update_9002() {
 
   \Drupal::messenger()
     ->addMessage(t("Admissions nodes using the full_html format:\n@report", [
-      '@report' => implode($output_report, "\n"),
+      '@report' => implode("\n", $output_report),
     ]));
 }
 
