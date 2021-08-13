@@ -48,7 +48,6 @@ class AdmissionsCounselorsMapBlock extends BlockBase implements ContainerFactory
    * {@inheritdoc}
    */
   public function build() {
-    $html = '<div id="admissions-counselors-map">&nbsp;</div>';
     // Load persons tagged with the Counselor person type
     // and create array of unique territory values.
     $territories = [];
@@ -76,7 +75,7 @@ class AdmissionsCounselorsMapBlock extends BlockBase implements ContainerFactory
 
     return [
       '#type' => 'markup',
-      '#markup' => $this->t($html),
+      '#markup' => $this->t('<div id="admissions-counselors-map">&nbsp;</div>'),
       '#cache' => [
         'tags' => ['node_type:person'],
       ],
