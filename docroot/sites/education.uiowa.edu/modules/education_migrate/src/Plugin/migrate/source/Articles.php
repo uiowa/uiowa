@@ -113,12 +113,23 @@ class Articles extends BaseNodeSource {
 
       $html = Html::serialize($doc);
       $body[0]['value'] = $html;
+
+      // Take the short description and prepend it to the body.
+      $short_description = $row->getSourceProperty('field_header_short_description');
+      if ($short_description) {
+        $short_description = '<p class="uids-component--light-intro">' . $short_description[0]['value'] . '</p>';
+        $body[0]['value'] = $short_description . $body[0]['value'];
+      }
       // Take the body and prepend the byline.
       $byline = $row->getSourceProperty('field_article_byline');
       if ($byline) {
         $byline = '<p>' . $byline[0]['value'] . '</p>';
         $body[0]['value'] = $byline . $body[0]['value'];
       }
+      // Replace "btn-primary" and "btn-long" with "bttn bttn--caps bttn--primary."
+      $body[0]['value'] = str_replace('btn-primary', 'bttn bttn--caps bttn--primary', $body[0]['value']);
+      $body[0]['value'] = str_replace('btn-long', 'bttn bttn--caps bttn--primary', $body[0]['value']);
+      // Set the body format.
       $body[0]['format'] = 'filtered_html';
 
       $row->setSourceProperty('body', $body);
