@@ -3047,3 +3047,9 @@ $sites['korn.local.drupal.uiowa.edu'] = 'korn.uiowa.edu';
 $sites['korn.dev.drupal.uiowa.edu'] = 'korn.uiowa.edu';
 $sites['korn.stage.drupal.uiowa.edu'] = 'korn.uiowa.edu';
 $sites['korn.prod.drupal.uiowa.edu'] = 'korn.uiowa.edu';
+
+// Directory aliases for startalkchinese.sites.uiowa.edu.
+$sites['sitesstartalkchinese.local.drupal.uiowa.edu'] = 'startalkchinese.sites.uiowa.edu';
+$sites['sitesstartalkchinese.dev.drupal.uiowa.edu'] = 'startalkchinese.sites.uiowa.edu';
+$sites['sitesstartalkchinese.stage.drupal.uiowa.edu'] = 'startalkchinese.sites.uiowa.edu';
+$sites['sitesstartalkchinese.prod.drupal.uiowa.edu'] = 'startalkchinese.sites.uiowa.edu';
