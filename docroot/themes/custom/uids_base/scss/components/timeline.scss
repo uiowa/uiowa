@@ -15,7 +15,9 @@
   position: relative;
   list-style: none;
   .card__details {
-    margin: 0;
+    @include breakpoint(menu) {
+      margin: 0;
+    }
   }
   .card__icon {
     position: absolute;
