@@ -46,6 +46,14 @@ class Articles extends BaseNodeSource {
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
 
+    // Process the image field.
+    $image = $row->getSourceProperty('field_image');
+
+    if (!empty($image)) {
+      $mid = $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']);
+      $row->setSourceProperty('field_image_mid', $mid);
+    }
+
     $body = $row->getSourceProperty('body');
 
     if (!empty($body)) {
