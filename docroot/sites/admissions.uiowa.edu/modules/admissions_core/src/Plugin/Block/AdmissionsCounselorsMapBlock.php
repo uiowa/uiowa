@@ -3,6 +3,9 @@
 namespace Drupal\admissions_core\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides an admissions counselors map block.
@@ -13,7 +16,33 @@ use Drupal\Core\Block\BlockBase;
  *   category = @Translation("Site custom")
  * )
  */
-class AdmissionsCounselorsMapBlock extends BlockBase {
+class AdmissionsCounselorsMapBlock extends BlockBase implements ContainerFactoryPluginInterface {
+  /**
+   * The entity_type.manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entityTypeManager) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->entityTypeManager = $entityTypeManager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('entity_type.manager')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -23,10 +52,11 @@ class AdmissionsCounselorsMapBlock extends BlockBase {
     // Load persons tagged with the Counselor person type
     // and create array of unique territory values.
     $territories = [];
-    $node_storage = \Drupal::entityTypeManager()->getStorage('node');
-    $query = \Drupal::entityQuery('node')
+    $node_storage = $this->entityTypeManager->getStorage('node');
+    $query = $node_storage->getQuery()
       ->condition('type', 'person')
       ->condition('field_person_types', 'counselor');
+
     $nids = $query->execute();
     if (!empty($nids)) {
       $nodes = $node_storage->loadMultiple($nids);
