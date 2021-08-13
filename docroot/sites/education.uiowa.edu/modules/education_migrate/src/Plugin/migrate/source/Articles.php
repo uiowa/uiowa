@@ -120,10 +120,18 @@ class Articles extends BaseNodeSource {
 
     // Process the image field.
     $image = $row->getSourceProperty('field_image');
-
     if (!empty($image)) {
       $mid = $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']);
       $row->setSourceProperty('field_image_mid', $mid);
+    }
+
+    // D7 image caption used filtered_html with up to 3 rows of characters.
+    // We need to truncate and strip tags,
+    // using the summary extraction function.
+    $image_caption = $row->getSourceProperty('field_article_image_caption');
+    if ($image_caption) {
+      $image_caption = $this->extractSummaryFromText($image_caption[0]['value'], 252);
+      $row->setSourceProperty('field_article_image_caption', $image_caption);
     }
 
     // If we have a linked source, split it up into our 2 separate fields.
