@@ -113,6 +113,12 @@ class Articles extends BaseNodeSource {
 
       $html = Html::serialize($doc);
       $body[0]['value'] = $html;
+      // Take the body and prepend the byline.
+      $byline = $row->getSourceProperty('field_article_byline');
+      if ($byline) {
+        $byline = '<p>' . $byline[0]['value'] . '</p>';
+        $body[0]['value'] = $byline . $body[0]['value'];
+      }
       $body[0]['format'] = 'filtered_html';
 
       $row->setSourceProperty('body', $body);
@@ -138,7 +144,8 @@ class Articles extends BaseNodeSource {
     $source = $row->getSourceProperty('field_article_source');
     if ($source) {
       $row->setSourceProperty('source_org', $source[0]['title']);
-      $row->setSourceProperty('source_url', $source[0]['url']);
+      // Let's try and fix some http:// to https:// while we're at it.
+      $row->setSourceProperty('source_url', str_replace('http://', 'https://', $source[0]['url']));
     }
 
     $this->clearMemory();
