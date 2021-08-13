@@ -132,7 +132,7 @@ class Articles extends BaseNodeSource {
       // Add in the missing blockquote class.
       $body[0]['value'] = str_replace('<blockquote>', '<blockquote class="blockquote">', $body[0]['value']);
 
-      $body[0]['value'] = preg_replace('|(?<=<p).*?pull-quote.*?>(.*?)<\/p>|ism', '$1<blockquote class="blockquote">$2</blockquote>', $body[0]['value']);
+      $body[0]['value'] = preg_replace('|<p class="pull-quote.*?>(.*?)<\/p>|is', '<blockquote class="blockquote">$1</blockquote>', $body[0]['value']);
 
       // Set the body format.
       $body[0]['format'] = 'filtered_html';
