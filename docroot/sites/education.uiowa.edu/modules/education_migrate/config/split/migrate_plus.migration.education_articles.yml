@@ -36,11 +36,7 @@ process:
   body: body
   field_teaser: body_summary
   field_image: field_image_mid
-  field_tags:
-    plugin: sub_process
-    source: field_custom_tags
-    process:
-      target_id: target_id
+  field_tags: article_tids
 destination:
   plugin: 'entity:node'
   default_bundle: article

@@ -8,6 +8,7 @@ use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
 use Drupal\sitenow_migrate\Plugin\migrate\source\LinkReplaceTrait;
 use Drupal\migrate\Event\MigrateImportEvent;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Migrate Source plugin.
@@ -20,6 +21,13 @@ use Drupal\migrate\Event\MigrateImportEvent;
 class Articles extends BaseNodeSource {
   use ProcessMediaTrait;
   use LinkReplaceTrait;
+
+  /**
+   * Term-to-term mapping for tags.
+   *
+   * @var array
+   */
+  protected $termMapping;
 
   /**
    * {@inheritdoc}
@@ -48,11 +56,12 @@ class Articles extends BaseNodeSource {
 
     // Process the image field.
     $image = $row->getSourceProperty('field_image');
-
     if (!empty($image)) {
       $mid = $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']);
       $row->setSourceProperty('field_image_mid', $mid);
     }
+
+    $this->getTags($row);
 
     $body = $row->getSourceProperty('body');
 
@@ -119,6 +128,63 @@ class Articles extends BaseNodeSource {
    */
   public function postImport(MigrateImportEvent $event) {
     $this->reportPossibleLinkBreaks(['node__body' => ['body_value']]);
+  }
+
+  /**
+   * Map taxonomy to a tag.
+   */
+  protected function getTags(&$row) {
+    // Get the author tags to build into our mapped
+    // field_news_authors value.
+    $tables = [
+      'field_data_field_tags' => ['field_tags_tid'],
+      'field_data_field_article_affiliation' => ['field_article_affiliation_target_id'],
+    ];
+    $this->fetchAdditionalFields($row, $tables);
+    foreach (['field_tags', 'field_article_affiliation'] as $field) {
+      $tids = $row->getSourceProperty($field);
+      if (empty($tids)) {
+        continue;
+      }
+      // Check if we've already found a mapping for each term.
+      foreach ($tids as $identifier => $tid) {
+        if (isset($this->termMapping[$tid['target_id']])) {
+          $new_tids[] = $this->termMapping[$tid['target_id']];
+        } else {
+          $source_tids[] = $tid['target_id'];
+        }
+      }
+    }
+    // If we have unmigrated source terms, create new.
+    if (!empty($source_tids)) {
+      $source_query = $this->select('taxonomy_term_data', 't');
+      $source_query = $source_query->fields('t', [
+        'tid',
+        'name',
+        'description',
+      ])
+        ->condition('t.tid', $source_tids, 'in');
+      $terms = $source_query->distinct()
+        ->execute()
+        ->fetchAllAssoc('tid');
+      foreach ($terms as $tid => $details) {
+        $new_term = Term::create([
+          'name' => $details['name'],
+          'vid' => 'tags',
+          'description' => $details['description'],
+        ]);
+        if ($new_term->save()) {
+          $this->termMapping[$tid] = $new_term->id();
+          $new_tids[] = $new_term->id();
+        }
+      }
+    }
+
+    // And, if we have any existing or newly created terms,
+    // add them back to the field.
+    if (!empty($new_tids)) {
+      $row->setSourceProperty('article_tids', $new_tids);
+    }
   }
 
 }
