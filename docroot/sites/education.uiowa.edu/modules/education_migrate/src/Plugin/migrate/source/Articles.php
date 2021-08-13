@@ -61,9 +61,6 @@ class Articles extends BaseNodeSource {
     }
     parent::prepareRow($row);
 
-    if (!in_array($row->getSourceProperty('nid'), [8586, 11651, 8636])) {
-      return FALSE;
-    }
     // Process the image field.
     $image = $row->getSourceProperty('field_image');
     if (!empty($image)) {
@@ -135,7 +132,7 @@ class Articles extends BaseNodeSource {
       // Add in the missing blockquote class.
       $body[0]['value'] = str_replace('<blockquote>', '<blockquote class="blockquote">', $body[0]['value']);
 
-      $body[0]['value'] = preg_replace('|(?<=<p).*?pull-quote.*?>(.*?)<\/p>|is', '$1<blockquote class="blockquote">$2</blockquote>', $body[0]['value']);
+      $body[0]['value'] = preg_replace('|(?<=<p).*?pull-quote.*?>(.*?)<\/p>|ism', '$1<blockquote class="blockquote">$2</blockquote>', $body[0]['value']);
 
       // Set the body format.
       $body[0]['format'] = 'filtered_html';
