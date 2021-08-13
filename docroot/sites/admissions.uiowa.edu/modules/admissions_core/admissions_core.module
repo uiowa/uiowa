@@ -37,7 +37,8 @@ function admissions_core_entity_presave(EntityInterface $entity) {
     case 'transfer_tips':
       // Assumes this stays a required field.
       $area_of_study = $entity->field_transfer_tips_aos->entity->title->value;
-      // Setting the transfer tips title with the aos field value + transfer tip verbiate.
+      // Setting the transfer tips title with the aos field value +
+      // transfer tip verbiate.
       $output = $area_of_study . " Transfer Tips";
       $entity->setTitle($output);
       break;
@@ -151,9 +152,6 @@ function admissions_core_form_views_exposed_form_alter(&$form, FormStateInterfac
 
 /**
  * Implements hook_ENTITY_TYPE_delete().
- *
- * @param \Drupal\node\Entity\Node $node
- *   Get straight to the node instead of through entity.
  */
 function admissions_core_node_delete(Node $node) {
   // Used on Admissions counselors map.
@@ -165,9 +163,6 @@ function admissions_core_node_delete(Node $node) {
 
 /**
  * Implements hook_ENTITY_TYPE_presave().
- *
- * @param \Drupal\node\Entity\Node $node
- *   Get straight to the node instead of through entity.
  */
 function admissions_core_node_presave(Node $node) {
   // Used on Admissions counselors map.
@@ -292,7 +287,8 @@ function admissions_core_preprocess_paragraph__admissions_requirement(&$variable
                 if (!empty($nids)) {
                   // Get the first array item. We aren't going for perfection.
                   $transfer_tip = reset($nids);
-                  // Get and pass the transfer tip path to the template if it exists.
+                  // Get and pass the transfer tip path to the template
+                  // if it exists.
                   $variables['transfer_tip'] = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $transfer_tip);
                 }
               }
@@ -371,7 +367,7 @@ function admissions_core_preprocess_layout(&$variables) {
 }
 
 /**
- * Implements hook_theme for Scholarship teaser.
+ * Implements hook_theme().
  */
 function admissions_core_theme($existing, $type, $theme, $path) {
   return [
@@ -581,7 +577,8 @@ function admissions_core_preprocess_views_view_field(&$variables) {
       $nid = $variables["row"]->_entity->get('nid')->value;
       $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
       $markup = '';
-      // For each program type, load the value(s) and string them together for the view result.
+      // For each program type, load the value(s) and string them
+      // together for the view result.
       $degrees = [];
       $degree_options = '';
       foreach ($node->get('field_area_of_study_majors') as $paragraph) {
