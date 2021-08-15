@@ -14,6 +14,11 @@
 .timeline--wrapper {
   position: relative;
   list-style: none;
+  .card__details {
+    @include breakpoint(menu) {
+      margin: 0;
+    }
+  }
   .card__icon {
     position: absolute;
     font-size: 25px;
