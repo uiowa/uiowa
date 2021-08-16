@@ -870,12 +870,6 @@ $sites['orgtrans-resources.dev.drupal.uiowa.edu'] = 'trans-resources.org.uiowa.e
 $sites['orgtrans-resources.stage.drupal.uiowa.edu'] = 'trans-resources.org.uiowa.edu';
 $sites['orgtrans-resources.prod.drupal.uiowa.edu'] = 'trans-resources.org.uiowa.edu';
 
-// Directory aliases for uwc.org.uiowa.edu.
-$sites['orguwc.local.drupal.uiowa.edu'] = 'uwc.org.uiowa.edu';
-$sites['orguwc.dev.drupal.uiowa.edu'] = 'uwc.org.uiowa.edu';
-$sites['orguwc.stage.drupal.uiowa.edu'] = 'uwc.org.uiowa.edu';
-$sites['orguwc.prod.drupal.uiowa.edu'] = 'uwc.org.uiowa.edu';
-
 // Directory aliases for intermediatechinesereader.sites.uiowa.edu.
 $sites['sitesintermediatechinesereader.local.drupal.uiowa.edu'] = 'intermediatechinesereader.sites.uiowa.edu';
 $sites['sitesintermediatechinesereader.dev.drupal.uiowa.edu'] = 'intermediatechinesereader.sites.uiowa.edu';
@@ -3047,3 +3041,9 @@ $sites['korn.local.drupal.uiowa.edu'] = 'korn.uiowa.edu';
 $sites['korn.dev.drupal.uiowa.edu'] = 'korn.uiowa.edu';
 $sites['korn.stage.drupal.uiowa.edu'] = 'korn.uiowa.edu';
 $sites['korn.prod.drupal.uiowa.edu'] = 'korn.uiowa.edu';
+
+// Directory aliases for startalkchinese.sites.uiowa.edu.
+$sites['sitesstartalkchinese.local.drupal.uiowa.edu'] = 'startalkchinese.sites.uiowa.edu';
+$sites['sitesstartalkchinese.dev.drupal.uiowa.edu'] = 'startalkchinese.sites.uiowa.edu';
+$sites['sitesstartalkchinese.stage.drupal.uiowa.edu'] = 'startalkchinese.sites.uiowa.edu';
+$sites['sitesstartalkchinese.prod.drupal.uiowa.edu'] = 'startalkchinese.sites.uiowa.edu';
