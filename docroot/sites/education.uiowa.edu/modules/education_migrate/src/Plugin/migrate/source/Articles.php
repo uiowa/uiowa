@@ -62,10 +62,6 @@ class Articles extends BaseNodeSource {
     }
     parent::prepareRow($row);
 
-    if (!in_array($row->getSourceProperty('nid'), [2041, 2536, 6521])) {
-      return FALSE;
-    }
-
     // Process the image field.
     $image = $row->getSourceProperty('field_image');
     if (!empty($image)) {
