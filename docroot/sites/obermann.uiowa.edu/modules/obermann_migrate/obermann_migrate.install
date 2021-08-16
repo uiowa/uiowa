@@ -1,0 +1,118 @@
+<?php
+
+/**
+ * @file
+ * Installation functions for module.
+ */
+
+use Drupal\Core\Config\FileStorage;
+use Drupal\smart_trim\Truncate\TruncateHTML;
+use Drupal\node\Entity\Node;
+
+/**
+ * Implements hook_install().
+ */
+function obermann_migrate_install() {
+  $config_path = drupal_get_path('module', 'obermann_migrate') . '/config/split';
+  $source = new FileStorage($config_path);
+
+  $config_storage = \Drupal::service('config.storage');
+
+  foreach ($source->listAll() as $config) {
+    $config_storage->write($config, $source->read($config));
+  }
+
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('config_split.config_split.obermann_migrate');
+  $config->set('status', TRUE);
+  $config->save(TRUE);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function obermann_migrate_uninstall() {
+  // Disable the split.
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('config_split.config_split.obermann_migrate');
+  $config->set('status', FALSE);
+  $config->save(TRUE);
+
+  // Delete config-ignore entities that cause CM dependency problems on import.
+  $config_factory->getEditable('migrate_plus.migration_group.default')->delete();
+  $config_factory->getEditable('migrate_plus.migration_group.sitenow_migrate')->delete();
+}
+
+/**
+ * Update article summaries from the migration.
+ */
+function obermann_migrate_update_9001(&$sandbox) {
+  // Process all nodes that have a filled field_reference.
+  if (!isset($sandbox['total'])) {
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'article', '=')
+      ->execute();
+    $sandbox['total'] = count($query);
+    $sandbox['current'] = 0;
+    $sandbox['query'] = $query;
+
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+
+  $truncate = new TruncateHTML();
+
+  // Loop through the same nodes in batches.
+  $nodes_per_batch = 25;
+  $batch = array_slice($sandbox['query'], $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
+  if (empty($batch)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+  foreach ($batch as $nid) {
+    /** @var \Drupal\node\Entity\Node $node */
+    $node = Node::load($nid);
+    $output = $node->body->value;
+    // The following is the processing from
+    // Drupal\smart_trim\Plugin\Field\FieldFormatter.
+    // Strip caption.
+    $output = preg_replace('/<figcaption[^>]*>.*?<\/figcaption>/is', ' ', $output);
+
+    // Strip script.
+    $output = preg_replace('/<script[^>]*>.*?<\/script>/is', ' ', $output);
+
+    // Strip style.
+    $output = preg_replace('/<style[^>]*>.*?<\/style>/is', ' ', $output);
+
+    // Strip tags.
+    $output = strip_tags($output);
+
+    // Strip out line breaks.
+    $output = preg_replace('/\n|\r|\t/m', ' ', $output);
+
+    // Strip out non-breaking spaces.
+    $output = str_replace('&nbsp;', ' ', $output);
+    $output = str_replace("\xc2\xa0", ' ', $output);
+
+    // Strip out extra spaces.
+    $output = trim(preg_replace('/\s\s+/', ' ', $output));
+
+    // Truncate to 400 characters with an ellipses,
+    // and re-set into the node.
+    $node->set('field_teaser', $truncate->truncateChars($output, 400, '...'));
+    $node->save();
+
+    $sandbox['current']++;
+  }
+  \Drupal::messenger()
+    ->addMessage($sandbox['current'] . ' nodes processed.');
+
+  if ($sandbox['current'] >= $sandbox['total']) {
+    $sandbox['#finished'] = 1;
+  }
+  else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  }
+}

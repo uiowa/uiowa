@@ -161,6 +161,8 @@ third_party_settings:
         Devel: {  }
         'Entity Print': {  }
         Forms: {  }
+        Lists:
+          - 'views_block:people_list_block-list_card'
         'Lists (Views)':
           - 'views_block:academic_groups_block-block_1'
           - 'views_block:areas_of_study_block-block_information'
@@ -202,6 +204,7 @@ third_party_settings:
       - 'Entity Print'
       - Forms
       - 'Inline blocks'
+      - Lists
       - 'Lists (Views)'
       - Menus
       - 'Site custom'
@@ -223,8 +226,10 @@ third_party_settings:
           all_regions:
             'Custom block types':
               - uiowa_slider
+              - uiowa_timeline
             'Inline blocks':
               - 'inline_block:uiowa_slider'
+              - 'inline_block:uiowa_timeline'
         layout_onecol: {  }
         layout_page:
           all_regions:
@@ -236,15 +241,31 @@ third_party_settings:
           all_regions:
             'Custom block types':
               - uiowa_slider
+              - uiowa_timeline
             'Inline blocks':
               - 'inline_block:uiowa_slider'
+              - 'inline_block:uiowa_timeline'
         layout_twocol:
           all_regions:
             'Custom block types':
               - uiowa_slider
+              - uiowa_timeline
             'Inline blocks':
               - 'inline_block:uiowa_slider'
-      whitelisted_blocks: {  }
+              - 'inline_block:uiowa_timeline'
+      whitelisted_blocks:
+        layout_fourcol:
+          all_regions:
+            Lists:
+              - 'views_block:people_list_block-list_card'
+        layout_threecol:
+          all_regions:
+            Lists:
+              - 'views_block:people_list_block-list_card'
+        layout_twocol:
+          all_regions:
+            Lists:
+              - 'views_block:people_list_block-list_card'
 _core:
   default_config_hash: 0AcX0F0voV5TKB6_GPZxJpAfbKCnDU7er_5TWcqIgSw
 id: node.page.default
