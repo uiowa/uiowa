@@ -3317,9 +3317,13 @@ function sitenow_update_9015() {
   }
 }
 
+/**
+ * Uninstall node_view_permissions, import role configs, and rebuild permissions.
+ */
 function sitenow_update_9016() {
   // Uninstall node_view_permissions module.
   \Drupal::service('module_installer')->uninstall(['node_view_permissions']);
+
   // Import role configs.
   $config_factory = \Drupal::configFactory();
   $config_namess = $config_factory->listAll('user.role');
@@ -3331,6 +3335,7 @@ function sitenow_update_9016() {
   foreach ($config_namess as $config_name) {
     $config_storage->write($config_name, $source->read($config_name));
   }
+
   // Rebuild node permissions.
   node_access_rebuild(TRUE);
 }
