@@ -75,7 +75,7 @@ class Pages extends BaseNodeSource {
         }
       }
     }
-    return isset($mapping[$nid]) ? $mapping[$nid] : FALSE;
+    return $mapping[$nid] ?? FALSE;
   }
 
 }
