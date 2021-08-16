@@ -3,6 +3,7 @@
 namespace Drupal\sitenow_migrate\EventSubscriber;
 
 use Drupal\Core\Config\FileStorage;
+use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\layout_builder\Section;
 use Drupal\migrate\Event\MigrateEvents;
@@ -24,13 +25,23 @@ class PostRowSaveEvent implements EventSubscriberInterface {
   protected $entityTypeManager;
 
   /**
+   * The active database connection.
+   *
+   * @var \Drupal\Core\Database\Connection
+   */
+  protected $database;
+
+  /**
    * PostRowSaveEvent constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeManager $entityTypeManager
    *   The EntityTypeManager service.
+   * @param \Drupal\Core\Database\Connection $database
+   *   The active database connection.
    */
-  public function __construct(EntityTypeManager $entityTypeManager) {
+  public function __construct(EntityTypeManager $entityTypeManager, Connection $database) {
     $this->entityTypeManager = $entityTypeManager;
+    $this->database = $database;
   }
 
   /**
@@ -75,7 +86,7 @@ class PostRowSaveEvent implements EventSubscriberInterface {
           ->getStorage('node')
           ->load($nid);
         // Create our path alias.
-        $path_aliases = \Drupal::entityTypeManager()
+        $path_aliases = $this->entityTypeManager
           ->getStorage('path_alias')
           ->loadByProperties([
             'path' => '/node/' . $nid,
@@ -221,7 +232,7 @@ class PostRowSaveEvent implements EventSubscriberInterface {
       'field_uiowa_text_area' => $text,
       'field_uiowa_headline' => $headline,
     ];
-    $block = \Drupal::entityTypeManager()
+    $block = $this->entityTypeManager
       ->getStorage('block_content')
       ->create($block_definition);
     if (isset($block) && $block->save()) {
@@ -236,8 +247,7 @@ class PostRowSaveEvent implements EventSubscriberInterface {
       ];
 
       // Set the block usage to the node.
-      $database = \Drupal::database();
-      $use_controller = new InlineBlockUsage($database);
+      $use_controller = new InlineBlockUsage($this->database);
       $use_controller->addUsage($block->id(), $node);
     }
 
@@ -256,7 +266,7 @@ class PostRowSaveEvent implements EventSubscriberInterface {
       $node->set('layout_builder__layout', $layout->getSections());
     }
     // Create our path alias.
-    $path_aliases = \Drupal::entityTypeManager()
+    $path_aliases = $this->entityTypeManager
       ->getStorage('path_alias')
       ->loadByProperties([
         'path' => '/node/' . $nid,
