@@ -1,5 +1,6 @@
 services:
   drush9_example.commands:
     class: \Drupal\brand_core\Commands\BrandCoreCommands
+    arguments: ['@account_switcher', '@date.formatter', '@plugin.manager.mail']
     tags:
       - { name: drush.command }
