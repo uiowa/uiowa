@@ -9,7 +9,6 @@ use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
 use Drupal\sitenow_migrate\Plugin\migrate\source\LinkReplaceTrait;
 use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\taxonomy\Entity\Term;
-use Svg\Document;
 
 /**
  * Migrate Source plugin.
@@ -112,7 +111,7 @@ class Articles extends BaseNodeSource {
         $i--;
       }
 
-      // Grab all the paragraph tags. Check if they have the pull-quote attribute.
+      // Grab all the paragraph tags. Check if there's a pull-quote attribute.
       $paragraphs = $doc->getElementsByTagName('p');
       $i = $paragraphs->length - 1;
       while ($i >= 0) {
@@ -131,8 +130,8 @@ class Articles extends BaseNodeSource {
           // Create an empty blockquote element.
           $blockquote = $doc->createElement('blockquote');
           // Copy and append each of our fetched children nodes.
-          foreach ($child_nodes as $child){
-            $new_child = $paragraph->ownerDocument->importNode($child, true);
+          foreach ($child_nodes as $child) {
+            $new_child = $paragraph->ownerDocument->importNode($child, TRUE);
             $blockquote->appendChild($new_child);
           }
           // Replace the paragraph with the new blockquote.
@@ -227,7 +226,7 @@ class Articles extends BaseNodeSource {
    * {@inheritdoc}
    */
   public function postImport(MigrateImportEvent $event) {
-     $this->reportPossibleLinkBreaks(['node__body' => ['body_value']]);
+    $this->reportPossibleLinkBreaks(['node__body' => ['body_value']]);
   }
 
   /**

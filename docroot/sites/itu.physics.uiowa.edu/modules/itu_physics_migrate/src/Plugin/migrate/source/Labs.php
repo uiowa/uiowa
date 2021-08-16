@@ -73,9 +73,6 @@ class Labs extends BaseNodeSource {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
-    if ($row->getSourceProperty('tid') == 516) {
-      $test = TRUE;
-    }
     // Set the moderation state to 'published' as default.
     $row->setSourceProperty('moderation_state', 'published');
 
