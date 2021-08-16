@@ -2,6 +2,7 @@
 
 namespace Drupal\brand_core\Commands;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Mail\MailManagerInterface;
@@ -42,6 +43,13 @@ class BrandCoreCommands extends DrushCommands {
   protected $mailManager;
 
   /**
+   * The config.factory service.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
    * Drush command constructor.
    *
    * @param \Drupal\Core\Session\AccountSwitcherInterface $accountSwitcher
@@ -50,11 +58,14 @@ class BrandCoreCommands extends DrushCommands {
    *   The date_formatter service.
    * @param \Drupal\Core\Mail\MailManagerInterface $mailManager
    *   The plugin.manager.mail service.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   *   The config.factory service.
    */
-  public function __construct(AccountSwitcherInterface $accountSwitcher, DateFormatterInterface $dateFormatter, MailManagerInterface $mailManager) {
+  public function __construct(AccountSwitcherInterface $accountSwitcher, DateFormatterInterface $dateFormatter, MailManagerInterface $mailManager, ConfigFactoryInterface $configFactory) {
     $this->accountSwitcher = $accountSwitcher;
     $this->dateFormatter = $dateFormatter;
     $this->mailManager = $mailManager;
+    $this->configFactory = $configFactory;
   }
 
   /**
@@ -94,7 +105,7 @@ class BrandCoreCommands extends DrushCommands {
       ];
 
       $params['login'] = Url::fromUri($base_url . '/saml/login', $url_options)->toString();
-      $site_email = $this->config->get('system.site')->get('mail');
+      $site_email = $this->configFactory->get('system.site')->get('mail');
       $result = $this->mailManager->mail('brand_core', 'lockup-review-digest', $site_email, 'en', $params, NULL, TRUE);
 
       if ($result['result'] !== TRUE) {
