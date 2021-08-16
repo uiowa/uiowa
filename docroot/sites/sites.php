@@ -3047,3 +3047,9 @@ $sites['sitesstartalkchinese.local.drupal.uiowa.edu'] = 'startalkchinese.sites.u
 $sites['sitesstartalkchinese.dev.drupal.uiowa.edu'] = 'startalkchinese.sites.uiowa.edu';
 $sites['sitesstartalkchinese.stage.drupal.uiowa.edu'] = 'startalkchinese.sites.uiowa.edu';
 $sites['sitesstartalkchinese.prod.drupal.uiowa.edu'] = 'startalkchinese.sites.uiowa.edu';
+
+// Directory aliases for asce.engineering.uiowa.edu.
+$sites['engineeringasce.local.drupal.uiowa.edu'] = 'asce.engineering.uiowa.edu';
+$sites['engineeringasce.dev.drupal.uiowa.edu'] = 'asce.engineering.uiowa.edu';
+$sites['engineeringasce.stage.drupal.uiowa.edu'] = 'asce.engineering.uiowa.edu';
+$sites['engineeringasce.prod.drupal.uiowa.edu'] = 'asce.engineering.uiowa.edu';
