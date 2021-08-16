@@ -53,12 +53,10 @@ function grad_thesis_defense_form_alter(&$form, FormStateInterface $form_state, 
       // Our submit handler must execute before the layout_builder_styles one
       // so it can take advantage of the logic there.
       array_unshift($form['actions']['submit']['#submit'], '_grad_thesis_defense_thesis_defense_submit');
-      // Currently errors on save.
-      // @todo Get this to work so that duration of 0 with no end date can occur.
-      // if (isset($form['field_thesis_defense_date'])) {
-      // $form['field_thesis_defense_date']['widget'][0]['end_value']['#access'] = FALSE;
-      // $form['field_thesis_defense_date']['widget'][0]['duration']['#access'] = FALSE;
-      // }
+      // @todo Allow for duration of 0 with no end date.
+      // Initially, we checked if field_thesis_defense_date was set and if so,
+      // access was set to FALSE for the field end_value and duration. This
+      // threw an error when saving the form though unfortunately.
       break;
   }
 }
