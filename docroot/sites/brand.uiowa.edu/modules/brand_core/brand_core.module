@@ -402,10 +402,10 @@ function brand_core_node_update(EntityInterface $entity) {
         $lockup_controller = new LockupController();
         $lockup_controller->generate($nid);
 
-        // Try to get away with just clearing the render cache to fetch updated svgs.
+        // Try to get away with clearing the render cache to fetch updated svgs.
         \Drupal::service('cache.render')->invalidateAll();
 
-        // If available (not Local), try to clear the varnish cache for the files.
+        // If not Local, try to clear the varnish cache for the files.
         if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
           $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
           $purgeQueuers = \Drupal::service('purge.queuers');
