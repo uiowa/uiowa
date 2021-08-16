@@ -18,13 +18,24 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class AreasOfStudySearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
+  /**
+   * The form_builder service.
+   *
+   * @var FormBuilderInterface $formBuilder
+   */
   protected $formBuilder;
 
+  /**
+   * AOS block constructor.
+   */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, FormBuilderInterface $formBuilder) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->formBuilder = $formBuilder;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
       $configuration,
@@ -41,4 +52,5 @@ class AreasOfStudySearchBlock extends BlockBase implements ContainerFactoryPlugi
     $form_state = new FormState();
     return $this->formBuilder->buildForm('Drupal\uiowa_area_of_study\Form\AreasOfStudySearchForm', $form_state);
   }
+
 }
