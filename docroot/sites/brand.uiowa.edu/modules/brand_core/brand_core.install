@@ -116,3 +116,10 @@ function brand_core_update_8002(&$sandbox) {
     $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
   }
 }
+
+/**
+ * Flush all caches after changing service constructor.
+ */
+function brand_core_update_9001() {
+  drupal_flush_all_caches();
+}
