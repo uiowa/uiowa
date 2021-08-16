@@ -21,7 +21,7 @@ class AreasOfStudySearchBlock extends BlockBase implements ContainerFactoryPlugi
   /**
    * The form_builder service.
    *
-   * @var FormBuilderInterface $formBuilder
+   * @var \Drupal\Core\Form\FormBuilderInterface
    */
   protected $formBuilder;
 
