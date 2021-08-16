@@ -9,6 +9,7 @@ use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
 use Drupal\sitenow_migrate\Plugin\migrate\source\LinkReplaceTrait;
 use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\taxonomy\Entity\Term;
+use Svg\Document;
 
 /**
  * Migrate Source plugin.
@@ -61,6 +62,10 @@ class Articles extends BaseNodeSource {
     }
     parent::prepareRow($row);
 
+    if (!in_array($row->getSourceProperty('nid'), [2041, 2536, 6521])) {
+      return FALSE;
+    }
+
     // Process the image field.
     $image = $row->getSourceProperty('field_image');
     if (!empty($image)) {
@@ -111,6 +116,62 @@ class Articles extends BaseNodeSource {
         $i--;
       }
 
+      // Grab all the paragraph tags. Check if they have the pull-quote attribute.
+      $paragraphs = $doc->getElementsByTagName('p');
+      $i = $paragraphs->length - 1;
+      while ($i >= 0) {
+        $paragraph = $paragraphs->item($i);
+        $classes = $paragraph->getAttribute('class');
+        // If it is a pull-quote, then convert it to a blockquote.
+        if (str_contains($classes, 'pull-quote')) {
+          // We either need to fetch the child nodes into an array first,
+          // and then traverse them, or traverse in reverse.
+          // Otherwise, once we import the node,
+          // We'll lose the reference in $paragraph->childNodes.
+          $child_nodes = [];
+          foreach ($paragraph->childNodes as $child) {
+            $child_nodes[] = $child;
+          }
+          // Create an empty blockquote element.
+          $blockquote = $doc->createElement('blockquote');
+          // Copy and append each of our fetched children nodes.
+          foreach ($child_nodes as $child){
+            $new_child = $paragraph->ownerDocument->importNode($child, true);
+            $blockquote->appendChild($new_child);
+          }
+          // Replace the paragraph with the new blockquote.
+          $paragraph->parentNode->replaceChild($blockquote, $paragraph);
+        }
+
+        $i--;
+      }
+
+      // Grab all the div tags. Check if they have the pull-quote attribute.
+      $divs = $doc->getElementsByTagName('div');
+      $i = $divs->length - 1;
+      while ($i >= 0) {
+        $div = $divs->item($i);
+        $classes = $div->getAttribute('class');
+
+        if (str_contains($classes, 'pull-quote')) {
+          $child_nodes = [];
+          // Loop through the children to grab the image and its caption.
+          foreach ($div->childNodes as $child) {
+            $child_nodes[$child->nodeName] = $child;
+          }
+          // Update the D8 entity embed code to align left and include
+          // the caption.
+          if (isset($child_nodes['drupal-media']) && isset($child_nodes['p'])) {
+            $child_nodes['drupal-media']->setAttribute('data-align', 'left');
+            $child_nodes['drupal-media']->setAttribute('data-caption', $child_nodes['p']->nodeValue);
+          }
+          // Replace the div with the newly updated media entity.
+          $div->parentNode->replaceChild($child_nodes['drupal-media'], $div);
+        }
+
+        $i--;
+      }
+
       $html = Html::serialize($doc);
       $body[0]['value'] = $html;
 
@@ -131,14 +192,6 @@ class Articles extends BaseNodeSource {
       $body[0]['value'] = str_replace('btn-long', 'bttn bttn--caps bttn--primary', $body[0]['value']);
       // Add in the missing blockquote class.
       $body[0]['value'] = str_replace('<blockquote>', '<blockquote class="blockquote">', $body[0]['value']);
-
-      // Need to update our former pull-quotes, which appear in two flavors.
-      // Paragraph pull-quotes were plain text, and can go straight
-      // into a blockquote. Div pull-quotes featured an image with a caption,
-      // and need a bit more processing.
-      $body[0]['value'] = preg_replace('|<p class="pull-quote.*?>(.*?)<\/p>|is', '<blockquote class="blockquote">$1</blockquote>', $body[0]['value']);
-      // @todo Find the right mapping path for div pull-quotes.
-      $body[0]['value'] = preg_replace('|<div class="pull-quote.*?>(.*?)<\/p>|is', '<blockquote class="blockquote">$1</blockquote>', $body[0]['value']);
 
       // Set the body format.
       $body[0]['format'] = 'filtered_html';
@@ -178,7 +231,7 @@ class Articles extends BaseNodeSource {
    * {@inheritdoc}
    */
   public function postImport(MigrateImportEvent $event) {
-    // $this->reportPossibleLinkBreaks(['node__body' => ['body_value']]);
+     $this->reportPossibleLinkBreaks(['node__body' => ['body_value']]);
   }
 
   /**
