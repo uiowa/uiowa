@@ -132,7 +132,13 @@ class Articles extends BaseNodeSource {
       // Add in the missing blockquote class.
       $body[0]['value'] = str_replace('<blockquote>', '<blockquote class="blockquote">', $body[0]['value']);
 
+      // Need to update our former pull-quotes, which appear in two flavors.
+      // Paragraph pull-quotes were plain text, and can go straight
+      // into a blockquote. Div pull-quotes featured an image with a caption,
+      // and need a bit more processing.
       $body[0]['value'] = preg_replace('|<p class="pull-quote.*?>(.*?)<\/p>|is', '<blockquote class="blockquote">$1</blockquote>', $body[0]['value']);
+      // @todo Find the right mapping path for div pull-quotes.
+      $body[0]['value'] = preg_replace('|<div class="pull-quote.*?>(.*?)<\/p>|is', '<blockquote class="blockquote">$1</blockquote>', $body[0]['value']);
 
       // Set the body format.
       $body[0]['format'] = 'filtered_html';
