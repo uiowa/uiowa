@@ -352,3 +352,10 @@ function admissions_core_update_9003() {
     '@entity_type_ids' => implode(', ', $entity_type_ids),
   ]);
 }
+
+/**
+ * Flush all caches after changing service constructors.
+ */
+function admissions_core_update_9004() {
+  drupal_flush_all_caches();
+}
