@@ -3325,15 +3325,36 @@ function sitenow_update_9016() {
   \Drupal::service('module_installer')->uninstall(['node_view_permissions']);
 
   // Import role configs.
-  $config_factory = \Drupal::configFactory();
-  $config_namess = $config_factory->listAll('user.role');
+  $config_storage = \Drupal::service('config.storage');
   $config_path = DRUPAL_ROOT . '/../config/default';
   $source = new FileStorage($config_path);
+  $config_names = $source->listAll('user.role');
 
-  $config_storage = \Drupal::service('config.storage');
+  foreach ($config_names as $config_name) {
+    $config = $source->read($config_name);
 
-  foreach ($config_namess as $config_name) {
-    $config_storage->write($config_name, $source->read($config_name));
+    if ($config) {
+      $config_storage->write($config_name, $config);
+    }
+  }
+
+  // Loop through filters to find all the config splits that are
+  // in use.
+  /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
+  $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+
+  foreach ($filters as $filter) {
+    if ($filter['status'] && isset($filter['config_name'])) {
+      $config_split = $source->read($filter['config_name']);
+      if (isset($config_split['folder'])) {
+        $source = new FileStorage($config_split['folder']);
+        // Loop through user.role.* config in the split folder and import them.
+        $config_names = $source->listAll('user.role');
+        foreach ($config_names as $config_name) {
+          $config_storage->write($config_name, $source->read($config_name));
+        }
+      }
+    }
   }
 
   // Rebuild node permissions.
