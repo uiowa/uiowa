@@ -99,7 +99,7 @@ function brand_core_update_8002(&$sandbox) {
     $moderation_state = $node->get('moderation_state')->value;
     if ($moderation_state == 'published') {
       $nid = $node->id();
-      $lockup_controller = new LockupController();
+      $lockup_controller = new LockupController(\Drupal::entityTypeManager(), \Drupal::service('file_system'));
       $lockup_controller->generate($nid);
     }
     $sandbox['current']++;
