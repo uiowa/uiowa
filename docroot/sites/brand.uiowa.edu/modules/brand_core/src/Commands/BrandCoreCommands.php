@@ -44,11 +44,11 @@ class BrandCoreCommands extends DrushCommands {
   /**
    * Drush command constructor.
    *
-   * @param AccountSwitcherInterface $accountSwitcher
+   * @param \Drupal\Core\Session\AccountSwitcherInterface $accountSwitcher
    *   The account_switcher service.
-   * @param DateFormatterInterface $dateFormatter
+   * @param \Drupal\Core\Datetime\DateFormatterInterface $dateFormatter
    *   The date_formatter service.
-   * @param MailManagerInterface $mailManager
+   * @param \Drupal\Core\Mail\MailManagerInterface $mailManager
    *   The plugin.manager.mail service.
    */
   public function __construct(AccountSwitcherInterface $accountSwitcher, DateFormatterInterface $dateFormatter, MailManagerInterface $mailManager) {
