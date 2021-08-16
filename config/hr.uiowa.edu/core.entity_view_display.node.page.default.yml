@@ -16,6 +16,7 @@ dependencies:
     - field.field.node.page.layout_builder__layout
     - node.type.page
     - system.menu.main
+    - views.view.units
   module:
     - entity_reference_revisions
     - layout_builder
@@ -23,6 +24,7 @@ dependencies:
     - menu_block
     - system
     - user
+    - views
   theme:
     - uids_base
 third_party_settings:
@@ -161,6 +163,20 @@ third_party_settings:
                 third_party_settings: {  }
             additional: {  }
             weight: -9
+          -
+            uuid: 87d81829-e9d1-42c3-979f-1f1d12647dfa
+            region: sidebar
+            configuration:
+              id: 'views_block:units-block_contact_info'
+              label: null
+              provider: views
+              label_display: null
+              views_label: ''
+              items_per_page: '1'
+              context_mapping:
+                nid: layout_builder.entity
+            additional: {  }
+            weight: 1
         third_party_settings: {  }
   layout_builder_restrictions:
     allowed_block_categories: {  }
