@@ -3316,3 +3316,21 @@ function sitenow_update_9015() {
     }
   }
 }
+
+function sitenow_update_9016() {
+  // Uninstall node_view_permissions module.
+  \Drupal::service('module_installer')->uninstall(['node_view_permissions']);
+  // Import role configs.
+  $config_factory = \Drupal::configFactory();
+  $config_namess = $config_factory->listAll('user.role');
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+
+  $config_storage = \Drupal::service('config.storage');
+
+  foreach ($config_namess as $config_name) {
+    $config_storage->write($config_name, $source->read($config_name));
+  }
+  // Rebuild node permissions.
+  node_access_rebuild(TRUE);
+}
