@@ -273,7 +273,7 @@ function admissions_core_preprocess_paragraph__admissions_requirement(&$variable
       $id = $paragraph->id();
       foreach ($admissions_requirements as $requirement => $label) {
         if ($parent->hasField($requirement)) {
-          foreach ($parent->get($requirement)->getValue() as $delta => $item) {
+          foreach ($parent->get($requirement)->getValue() as $item) {
             if ($item['target_id'] === $id) {
               $variables['requirement_card_label'] = $label;
               // Look up any published transfer tips with the AoS id.
