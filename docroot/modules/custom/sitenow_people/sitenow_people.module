@@ -106,7 +106,7 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
           return $form;
         }
 
-        if (!empty($type_selections)) {
+        if (!empty($type_selections) && isset($form['field_person_type_status'])) {
           $person_type_status_options = $form['field_person_type_status']['widget']['#options'];
           foreach ($person_type_status_options as $key => $option) {
             // Unset options that aren't associated with selected person type.
