@@ -3054,8 +3054,20 @@ $sites['engineeringasce.dev.drupal.uiowa.edu'] = 'asce.engineering.uiowa.edu';
 $sites['engineeringasce.stage.drupal.uiowa.edu'] = 'asce.engineering.uiowa.edu';
 $sites['engineeringasce.prod.drupal.uiowa.edu'] = 'asce.engineering.uiowa.edu';
 
-// Directory aliases for iowalakesidelab.org.
-$sites['org-iowalakesidelab.local.drupal.uiowa.edu'] = 'iowalakesidelab.org';
-$sites['org-iowalakesidelab.dev.drupal.uiowa.edu'] = 'iowalakesidelab.org';
-$sites['org-iowalakesidelab.stage.drupal.uiowa.edu'] = 'iowalakesidelab.org';
-$sites['org-iowalakesidelab.prod.drupal.uiowa.edu'] = 'iowalakesidelab.org';
+// Directory aliases for desmoines.uiowa.edu.
+$sites['desmoines.local.drupal.uiowa.edu'] = 'desmoines.uiowa.edu';
+$sites['desmoines.dev.drupal.uiowa.edu'] = 'desmoines.uiowa.edu';
+$sites['desmoines.stage.drupal.uiowa.edu'] = 'desmoines.uiowa.edu';
+$sites['desmoines.prod.drupal.uiowa.edu'] = 'desmoines.uiowa.edu';
+
+// Directory aliases for newstudents.uiowa.edu.
+$sites['newstudents.local.drupal.uiowa.edu'] = 'newstudents.uiowa.edu';
+$sites['newstudents.dev.drupal.uiowa.edu'] = 'newstudents.uiowa.edu';
+$sites['newstudents.stage.drupal.uiowa.edu'] = 'newstudents.uiowa.edu';
+$sites['newstudents.prod.drupal.uiowa.edu'] = 'newstudents.uiowa.edu';
+
+// Directory aliases for oniowa.uiowa.edu.
+$sites['oniowa.local.drupal.uiowa.edu'] = 'oniowa.uiowa.edu';
+$sites['oniowa.dev.drupal.uiowa.edu'] = 'oniowa.uiowa.edu';
+$sites['oniowa.stage.drupal.uiowa.edu'] = 'oniowa.uiowa.edu';
+$sites['oniowa.prod.drupal.uiowa.edu'] = 'oniowa.uiowa.edu';
