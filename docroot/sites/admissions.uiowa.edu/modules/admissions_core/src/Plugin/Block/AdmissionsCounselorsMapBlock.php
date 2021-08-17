@@ -54,6 +54,7 @@ class AdmissionsCounselorsMapBlock extends BlockBase implements ContainerFactory
     $node_storage = $this->entityTypeManager->getStorage('node');
     $query = $node_storage->getQuery()
       ->condition('type', 'person')
+      ->condition('status', 1)
       ->condition('field_person_types', 'counselor');
 
     $nids = $query->execute();
