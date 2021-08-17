@@ -3071,3 +3071,9 @@ $sites['desmoines.local.drupal.uiowa.edu'] = 'desmoines.uiowa.edu';
 $sites['desmoines.dev.drupal.uiowa.edu'] = 'desmoines.uiowa.edu';
 $sites['desmoines.stage.drupal.uiowa.edu'] = 'desmoines.uiowa.edu';
 $sites['desmoines.prod.drupal.uiowa.edu'] = 'desmoines.uiowa.edu';
+
+// Directory aliases for newstudents.uiowa.edu.
+$sites['newstudents.local.drupal.uiowa.edu'] = 'newstudents.uiowa.edu';
+$sites['newstudents.dev.drupal.uiowa.edu'] = 'newstudents.uiowa.edu';
+$sites['newstudents.stage.drupal.uiowa.edu'] = 'newstudents.uiowa.edu';
+$sites['newstudents.prod.drupal.uiowa.edu'] = 'newstudents.uiowa.edu';
