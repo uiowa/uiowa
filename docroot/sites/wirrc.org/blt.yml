@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: org-wirrc.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: org-wirrc
+  human_name: wirrc.org
+drush:
+  aliases:
+    local: self
+    remote: org-wirrc.prod
+drupal:
+  db:
+    database: wirrc_org
+uiowa:
+  requester: albeck

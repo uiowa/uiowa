@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: desmoines.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: desmoines
+  human_name: desmoines.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: desmoines.prod
+drupal:
+  db:
+    database: desmoines_uiowa_edu
+uiowa:
+  requester: albeck
