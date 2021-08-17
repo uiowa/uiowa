@@ -3047,3 +3047,9 @@ $sites['sitesstartalkchinese.local.drupal.uiowa.edu'] = 'startalkchinese.sites.u
 $sites['sitesstartalkchinese.dev.drupal.uiowa.edu'] = 'startalkchinese.sites.uiowa.edu';
 $sites['sitesstartalkchinese.stage.drupal.uiowa.edu'] = 'startalkchinese.sites.uiowa.edu';
 $sites['sitesstartalkchinese.prod.drupal.uiowa.edu'] = 'startalkchinese.sites.uiowa.edu';
+
+// Directory aliases for wirrc.org.
+$sites['org-wirrc.local.drupal.uiowa.edu'] = 'wirrc.org';
+$sites['org-wirrc.dev.drupal.uiowa.edu'] = 'wirrc.org';
+$sites['org-wirrc.stage.drupal.uiowa.edu'] = 'wirrc.org';
+$sites['org-wirrc.prod.drupal.uiowa.edu'] = 'wirrc.org';
