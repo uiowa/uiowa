@@ -3053,3 +3053,9 @@ $sites['org-wirrc.local.drupal.uiowa.edu'] = 'wirrc.org';
 $sites['org-wirrc.dev.drupal.uiowa.edu'] = 'wirrc.org';
 $sites['org-wirrc.stage.drupal.uiowa.edu'] = 'wirrc.org';
 $sites['org-wirrc.prod.drupal.uiowa.edu'] = 'wirrc.org';
+
+// Directory aliases for desmoines.uiowa.edu.
+$sites['desmoines.local.drupal.uiowa.edu'] = 'desmoines.uiowa.edu';
+$sites['desmoines.dev.drupal.uiowa.edu'] = 'desmoines.uiowa.edu';
+$sites['desmoines.stage.drupal.uiowa.edu'] = 'desmoines.uiowa.edu';
+$sites['desmoines.prod.drupal.uiowa.edu'] = 'desmoines.uiowa.edu';
