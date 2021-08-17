@@ -243,10 +243,10 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
    */
   public function getLastMigrated() {
     $db = \Drupal::database();
-    if (!$db->schema()->tableExists('migrate_map_' . $this->pluginId)) {
+    if (!$db->schema()->tableExists('migrate_map_' . $this->migration->id())) {
       return 0;
     }
-    $last_migrated_query = $db->select('migrate_map_' . $this->pluginId, 'm')
+    $last_migrated_query = $db->select('migrate_map_' . $this->migration->id(), 'm')
       ->fields('m', ['sourceid1'])
       ->orderBy('sourceid1', 'DESC');
     return $last_migrated_query->execute()->fetch()->sourceid1;
