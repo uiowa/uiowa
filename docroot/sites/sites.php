@@ -3060,12 +3060,6 @@ $sites['org-iowalakesidelab.dev.drupal.uiowa.edu'] = 'iowalakesidelab.org';
 $sites['org-iowalakesidelab.stage.drupal.uiowa.edu'] = 'iowalakesidelab.org';
 $sites['org-iowalakesidelab.prod.drupal.uiowa.edu'] = 'iowalakesidelab.org';
 
-// Directory aliases for wirrc.org.
-$sites['org-wirrc.local.drupal.uiowa.edu'] = 'wirrc.org';
-$sites['org-wirrc.dev.drupal.uiowa.edu'] = 'wirrc.org';
-$sites['org-wirrc.stage.drupal.uiowa.edu'] = 'wirrc.org';
-$sites['org-wirrc.prod.drupal.uiowa.edu'] = 'wirrc.org';
-
 // Directory aliases for desmoines.uiowa.edu.
 $sites['desmoines.local.drupal.uiowa.edu'] = 'desmoines.uiowa.edu';
 $sites['desmoines.dev.drupal.uiowa.edu'] = 'desmoines.uiowa.edu';
