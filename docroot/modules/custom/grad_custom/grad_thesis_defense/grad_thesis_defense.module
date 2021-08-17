@@ -54,6 +54,7 @@ function grad_thesis_defense_form_alter(&$form, FormStateInterface $form_state, 
       // so it can take advantage of the logic there.
       array_unshift($form['actions']['submit']['#submit'], '_grad_thesis_defense_thesis_defense_submit');
       // @todo Allow for duration of 0 with no end date.
+      // Related issue: https://github.com/uiowa/uiowa/issues/2899.
       // Initially, we checked if field_thesis_defense_date was set and if so,
       // access was set to FALSE for the field end_value and duration. This
       // threw an error when saving the form though unfortunately.
