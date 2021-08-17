@@ -55,6 +55,11 @@ class Articles extends BaseNodeSource {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
+    // If we're running redirects, we can skip
+    // the rest of this prepareRow processing.
+    if (str_ends_with($this->migration->id(), '_redirects')) {
+      return parent::prepareRow($row);
+    }
     // Skip this node if it comes after our last migrated.
     if ($row->getSourceProperty('nid') < $this->getLastMigrated()) {
       return FALSE;
