@@ -53,29 +53,4 @@ class Pages extends BaseNodeSource {
     }
   }
 
-  /**
-   * Override for manual lookup tables of pre-migrated content.
-   */
-  private function manualLookup(int $nid) {
-    static $mapping = [];
-    if (empty($mapping)) {
-      $database = \Drupal::database();
-      // The following works if all destination content is of a NODE type.
-      $tables = [
-        'migrate_map_d7_article',
-        'migrate_map_d7_page',
-        'migrate_map_d7_person',
-      ];
-      foreach ($tables as $table) {
-        if ($database->schema()->tableExists($table)) {
-          $mapping += $database->select($table, 'mm')
-            ->fields('mm', ['sourceid1', 'destid1'])
-            ->execute()
-            ->fetchAllKeyed();
-        }
-      }
-    }
-    return isset($mapping[$nid]) ? $mapping[$nid] : FALSE;
-  }
-
 }
