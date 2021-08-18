@@ -20,7 +20,7 @@ function uiowa_edu_core_form_taxonomy_term_a_z_list_form_alter(&$form, FormState
   // Change the label of the name field.
   $form['name']['widget'][0]['value']['#title'] = t('Administrative Name');
   // Add a description to the name field.
-  $form["name"]["widget"][0]["value"]["#description"] = 'The first character of the administrative name is used to filter the A-Z List.<br>Terms beginning with a number should be prefaced with a hash tag, example: <em>#2 Plus 2 Guaranteed Graduation Plan</em>.';
+  $form['name']['widget'][0]['value']['#description'] = t('The first character of the administrative name is used to filter the A-Z List.<br>Terms beginning with a number should be prefaced with a hash tag, example: <em>#2 Plus 2 Guaranteed Graduation Plan</em>.');
 }
 
 /**

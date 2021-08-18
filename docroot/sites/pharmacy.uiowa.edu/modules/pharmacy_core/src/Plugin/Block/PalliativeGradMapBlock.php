@@ -54,6 +54,7 @@ class PalliativeGradMapBlock extends BlockBase implements ContainerFactoryPlugin
     $node_storage = $this->entityTypeManager->getStorage('node');
     $query = $node_storage->getQuery()
       ->condition('type', 'person')
+      ->condition('status', 1)
       ->condition('field_person_types', 'palliative_grad');
 
     $nids = $query->execute();
