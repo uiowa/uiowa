@@ -8,6 +8,7 @@ dependencies:
     - field.storage.node.field_person_first_name
     - field.storage.node.field_person_last_name
     - field.storage.node.field_person_phone
+    - field.storage.node.field_person_research_areas
     - field.storage.node.field_pt_student_advisor
     - field.storage.node.field_pt_student_cur_pos_inst
     - field.storage.node.field_pt_student_cur_pos_title
@@ -16,11 +17,13 @@ dependencies:
     - field.storage.paragraph.field_uiowa_contact_phone
     - node.type.person
     - system.menu.main
+    - taxonomy.vocabulary.research_areas
   module:
     - datetime
     - node
     - options
     - paragraphs
+    - taxonomy
     - telephone
     - user
 id: person_custom
@@ -529,6 +532,69 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+        field_person_research_areas:
+          id: field_person_research_areas
+          table: node__field_person_research_areas
+          field: field_person_research_areas
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Research areas'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: true
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
       filters:
         status:
           value: '1'
@@ -721,6 +787,7 @@ display:
         - 'config:field.storage.node.field_person_first_name'
         - 'config:field.storage.node.field_person_last_name'
         - 'config:field.storage.node.field_person_phone'
+        - 'config:field.storage.node.field_person_research_areas'
   faculty:
     display_plugin: page
     id: faculty
@@ -900,6 +967,64 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           plugin_id: string
+        field_person_research_areas_target_id:
+          id: field_person_research_areas_target_id
+          table: node__field_person_research_areas
+          field: field_person_research_areas_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_person_research_areas_target_id_op
+            label: 'Research areas'
+            description: ''
+            use_operator: false
+            operator: field_person_research_areas_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: research_areas
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: textfield
+          limit: true
+          vid: research_areas
+          hierarchy: false
+          error_message: true
+          parent: 0
+          level_labels: ''
+          force_deepest: false
+          save_lineage: false
+          hierarchy_depth: 0
+          required_depth: 0
+          none_label: '- Please select -'
+          plugin_id: taxonomy_index_tid
       filter_groups:
         operator: AND
         groups:
@@ -911,6 +1036,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -919,6 +1045,7 @@ display:
         - 'config:field.storage.node.field_person_first_name'
         - 'config:field.storage.node.field_person_last_name'
         - 'config:field.storage.node.field_person_phone'
+        - 'config:field.storage.node.field_person_research_areas'
   past_students:
     display_plugin: page
     id: past_students
