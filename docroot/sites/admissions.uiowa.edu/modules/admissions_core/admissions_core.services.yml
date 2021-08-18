@@ -1,6 +1,7 @@
 services:
   admissions_core.section_component_subscriber:
     class: Drupal\admissions_core\EventSubscriber\SectionComponentSubscriber
+    arguments: ['@country_manager']
     tags:
       - { name: event_subscriber }
   admissions_core.entity_print_subscriber:

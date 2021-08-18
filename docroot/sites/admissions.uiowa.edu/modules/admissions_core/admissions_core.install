@@ -328,7 +328,7 @@ function admissions_core_update_9002() {
 
   \Drupal::messenger()
     ->addMessage(t("Admissions nodes using the full_html format:\n@report", [
-      '@report' => implode($output_report, "\n"),
+      '@report' => implode("\n", $output_report),
     ]));
 }
 
@@ -351,4 +351,11 @@ function admissions_core_update_9003() {
   return t("Installed/Updated the entity type(s): @entity_type_ids", [
     '@entity_type_ids' => implode(', ', $entity_type_ids),
   ]);
+}
+
+/**
+ * Flush all caches after changing service constructors.
+ */
+function admissions_core_update_9004() {
+  drupal_flush_all_caches();
 }
