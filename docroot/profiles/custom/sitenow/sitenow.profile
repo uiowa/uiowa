@@ -382,7 +382,7 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
     // Create node_teaser group in the advanced container.
     $form['node_teaser'] = [
       '#type' => 'details',
-      '#title' => $form["field_teaser"]["widget"][0]["#title"],
+      '#title' => $form['field_teaser']['widget'][0]['#title'],
       '#group' => 'advanced',
       '#attributes' => [
         'class' => ['node-form-teaser'],
@@ -401,7 +401,7 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
     // Create node_image group in the advanced container.
     $form['node_image'] = [
       '#type' => 'details',
-      '#title' => $form["field_image"]["widget"]["#title"],
+      '#title' => $form['field_image']['widget']['#title'],
       '#group' => 'advanced',
       '#attributes' => [
         'class' => ['node-form-image'],

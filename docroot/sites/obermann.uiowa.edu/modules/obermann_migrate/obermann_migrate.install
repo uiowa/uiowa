@@ -116,3 +116,55 @@ function obermann_migrate_update_9001(&$sandbox) {
     $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
   }
 }
+
+/**
+ * Update article summaries from the migration.
+ */
+function obermann_migrate_update_9002(&$sandbox) {
+  if (!isset($sandbox['total'])) {
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'article', '=')
+      ->execute();
+
+    $sandbox['total'] = count($query);
+    $sandbox['current'] = 0;
+    $sandbox['query'] = $query;
+
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+
+  // Loop through the same nodes in batches.
+  $nodes_per_batch = 25;
+  $batch = array_slice($sandbox['query'], $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
+  if (empty($batch)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  foreach ($batch as $nid) {
+    /** @var \Drupal\node\Entity\Node $node */
+    $node = Node::load($nid);
+    $output = $node->field_teaser->value;
+
+    if (str_contains($output, '&#13;')) {
+      $output = str_replace('&#13;', '', $output);
+      $node->set('field_teaser', $output);
+      $node->save();
+    }
+
+    $sandbox['current']++;
+  }
+
+  \Drupal::messenger()
+    ->addMessage($sandbox['current'] . ' nodes processed.');
+
+  if ($sandbox['current'] >= $sandbox['total']) {
+    $sandbox['#finished'] = 1;
+  }
+  else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  }
+}
