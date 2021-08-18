@@ -30,6 +30,13 @@ class Articles extends BaseNodeSource {
   protected $termMapping;
 
   /**
+   * Node-to-term mapping for affiliations.
+   *
+   * @var array
+   */
+  protected $affiliationMapping;
+
+  /**
    * {@inheritdoc}
    */
   public function query() {
@@ -58,6 +65,7 @@ class Articles extends BaseNodeSource {
     }
 
     $this->getTags($row);
+    $this->getAffiliations($row);
 
     $body = $row->getSourceProperty('body');
 
@@ -222,29 +230,22 @@ class Articles extends BaseNodeSource {
    * Map taxonomy to a tag.
    */
   protected function getTags(&$row) {
-    // Get the author tags to build into our mapped
-    // field_news_authors value.
     $tables = [
       'field_data_field_tags' => ['field_tags_tid'],
-      'field_data_field_article_affiliation' => ['field_article_affiliation_target_id'],
     ];
     $this->fetchAdditionalFields($row, $tables);
-    foreach (['field_tags', 'field_article_affiliation'] as $field) {
-      $tids = $row->getSourceProperty($field);
-      if (empty($tids)) {
-        continue;
+    $tids = $row->getSourceProperty('field_tags');
+    if (empty($tids)) {
+      return;
+    }
+    // Check if we've already found a mapping for each term.
+    foreach ($tids as $tid) {
+      $id = $tid['tid'];
+      if (isset($this->termMapping[$id])) {
+        $new_tids[] = $this->termMapping[$id];
       }
-      // Check if we've already found a mapping for each term.
-      foreach ($tids as $tid) {
-        // The fields store their target ids differently,
-        // so make sure we pull from the right index.
-        $id = $tid['tid'] ?? $tid['target_id'];
-        if (isset($this->termMapping[$id])) {
-          $new_tids[] = $this->termMapping[$id];
-        }
-        else {
-          $source_tids[] = $id;
-        }
+      else {
+        $source_tids[] = $id;
       }
     }
     // If we have unmigrated source terms, create new.
@@ -291,6 +292,74 @@ class Articles extends BaseNodeSource {
     // add them back to the field.
     if (!empty($new_tids)) {
       $row->setSourceProperty('article_tids', $new_tids);
+    }
+  }
+
+  /**
+   * Map affiliations to a tag.
+   */
+  protected function getAffiliations(&$row) {
+    $tables = [
+      'field_data_field_article_affiliation' => ['field_article_affiliation_target_id'],
+    ];
+    $this->fetchAdditionalFields($row, $tables);
+    $tids = $row->getSourceProperty('field_article_affiliation');
+    if (empty($tids)) {
+      return;
+    }
+    // Check if we've already found a mapping for each term.
+    foreach ($tids as $tid) {
+      $id = $tid['target_id'];
+      if (isset($this->affiliationMapping[$id])) {
+        $new_tids[] = $this->affiliationMapping[$id];
+      }
+      else {
+        $source_tids[] = $id;
+      }
+    }
+    // If we have unmigrated source affiliations, create new.
+    if (!empty($source_tids)) {
+      $source_query = $this->select('node', 'n');
+      $source_query = $source_query->fields('n', [
+        'nid',
+        'title',
+      ])
+        ->condition('n.nid', $source_tids, 'in');
+      $terms = $source_query->distinct()
+        ->execute()
+        ->fetchAllKeyed(0, 1);
+      foreach ($terms as $nid => $title) {
+        // Attempt to query the new database with the name
+        // to see if we've already created it.
+        $dest_tid = \Drupal::database()->select('taxonomy_term_field_data', 't')
+          ->fields('t', ['tid'])
+          ->condition('t.name', $title, '=')
+          ->execute()
+          ->fetchCol();
+        // If found, add to new_tids and break out.
+        if (!empty($dest_tid)) {
+          $this->affiliationMapping[$nid] = $dest_tid[0];
+          $new_tids[] = $dest_tid[0];
+          continue;
+        }
+        // We didn't find a previously created term,
+        // so we're making it now.
+        $new_term = Term::create([
+          'name' => $title,
+          'vid' => 'tags',
+          'description' => '',
+        ]);
+        if ($new_term->save()) {
+          $this->affiliationMapping[$nid] = $new_term->id();
+          $new_tids[] = $new_term->id();
+        }
+      }
+    }
+
+    // And, if we have any existing or newly created terms,
+    // add them back to the field.
+    if (!empty($new_tids)) {
+      $row->setSourceProperty('article_tids', array_merge((array) $row->getSourceProperty('article_tids'), $new_tids));
     }
   }
 
