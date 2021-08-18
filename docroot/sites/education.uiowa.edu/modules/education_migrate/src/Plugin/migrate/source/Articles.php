@@ -235,12 +235,15 @@ class Articles extends BaseNodeSource {
         continue;
       }
       // Check if we've already found a mapping for each term.
-      foreach ($tids as $identifier => $tid) {
-        if (isset($this->termMapping[$tid['target_id']])) {
-          $new_tids[] = $this->termMapping[$tid['target_id']];
+      foreach ($tids as $tid) {
+        // The fields store their target ids differently,
+        // so make sure we pull from the right index.
+        $id = $tid['tid'] ?? $tid['target_id'];
+        if (isset($this->termMapping[$id])) {
+          $new_tids[] = $this->termMapping[$id];
         }
         else {
-          $source_tids[] = $tid['target_id'];
+          $source_tids[] = $id;
         }
       }
     }
