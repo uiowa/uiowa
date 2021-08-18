@@ -1,0 +1,36 @@
+@import "../../../../../themes/custom/uids_base/uids/assets/scss/_variables.scss";
+@import "../../../../../themes/custom/uids_base/uids/assets/scss/_utilities.scss";
+@import "../../../../../themes/custom/uids_base/uids/assets/scss/_grid.scss";
+
+.block-views-blockunits-block-contact-info {
+  .view-id-block_contact_info,
+  .view-id-units {
+    padding: 1.25rem;
+
+    .field__label {
+      text-transform: uppercase;
+      &:after {
+        content: "";
+      }
+    }
+    .field__item {
+      display: inline;
+    }
+    .content, .h4:not(:first-child), h4:not(:first-child) {
+      margin-top: $sm;
+    }
+  }
+
+  .view-display-id-block_contact_info {
+    display: flex;
+    flex-wrap: wrap;
+
+    .view-header {
+      width: 100%;
+    }
+    .view-content,
+    .view-empty  {
+      flex: 1 0 0;
+    }
+  }
+}
