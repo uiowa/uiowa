@@ -246,10 +246,12 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
     if (!$db->schema()->tableExists('migrate_map_' . $this->migration->id())) {
       return 0;
     }
-    $last_migrated_query = $db->select('migrate_map_' . $this->migration->id(), 'm')
+    $last_migrated = $db->select('migrate_map_' . $this->migration->id(), 'm')
       ->fields('m', ['sourceid1'])
-      ->orderBy('sourceid1', 'DESC');
-    return $last_migrated_query->execute()->fetch()->sourceid1;
+      ->orderBy('sourceid1', 'DESC')
+      ->execute()
+      ->fetch();
+    return $last_migrated->sourceid1 ?? 0;
   }
 
 }
