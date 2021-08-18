@@ -34,8 +34,6 @@ class Articles extends BaseNodeSource {
    */
   public function query() {
     $query = parent::query();
-    $query->leftJoin('url_alias', 'alias', "alias.source = CONCAT('node/', n.nid)");
-    $query->fields('alias', ['alias']);
     // Make sure our nodes are retrieved in order,
     // and force a highwater mark of our last-most migrated node.
     $query->orderBy('nid');
@@ -45,21 +43,7 @@ class Articles extends BaseNodeSource {
   /**
    * {@inheritdoc}
    */
-  public function fields() {
-    $fields = parent::fields();
-    $fields['alias'] = $this->t('The URL alias for this node.');
-    return $fields;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function prepareRow(Row $row) {
-    // If we're running redirects, we can skip
-    // the rest of this prepareRow processing.
-    if (str_ends_with($this->migration->id(), '_redirects')) {
-      return parent::prepareRow($row);
-    }
     // Skip this node if it comes after our last migrated.
     if ($row->getSourceProperty('nid') < $this->getLastMigrated()) {
       return FALSE;
