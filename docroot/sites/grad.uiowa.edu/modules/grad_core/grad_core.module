@@ -13,6 +13,7 @@ use Drupal\Core\Form\FormStateInterface;
  */
 function grad_core_entity_presave(EntityInterface $entity) {
   switch ($entity->bundle()) {
+    case 'mentor':
     case 'scholar':
       // Setting the title with the first/last name values.
       $output = $entity->get('field_person_first_name')->value . " " . $entity->get('field_person_last_name')->value;
