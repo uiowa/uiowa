@@ -7,6 +7,7 @@ label: SPPA
 description: 'SPPA custom site split.'
 folder: ../config/sppa.uiowa.edu
 module:
+  private_content: 0
   sppa_core: 0
 theme: {  }
 blacklist:
@@ -21,6 +22,6 @@ graylist:
   - administerusersbyrole.settings
   - uiowa_auth.settings
   - 'user.role.*'
-graylist_dependents: true
+graylist_dependents: false
 graylist_skip_equal: true
-weight: 110
+weight: 90
