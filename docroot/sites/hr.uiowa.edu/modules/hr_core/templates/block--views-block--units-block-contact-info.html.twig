@@ -37,12 +37,12 @@
     'block-' ~ plugin_id|clean_class,
   ]
 %}
+{{ attach_library('hr_core/contact-info') }}
 {# Need to striptags/trim this until https://www.drupal.org/project/drupal/issues/953034 is fixed.
 Despite hide if empty on all the things, this block with styles still renders and with optional
 fields we can't allow it. #}
 {% set content_rendered = content|render|striptags|trim %}
 {% if content_rendered is not empty %}
-  <div class="block-views-blockunits-block-contact-info">
     <div{{ attributes.addClass(classes) }}>
       {{ title_prefix }}
       {% if label %}
@@ -53,5 +53,4 @@ fields we can't allow it. #}
         {{ content }}
       {% endblock %}
     </div>
-  </div>
 {% endif %}
