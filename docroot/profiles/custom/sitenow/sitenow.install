@@ -2005,8 +2005,6 @@ function sitenow_update_8050() {
                   // Get all <drupal-entity> instances.
                   $de_instances = $document->getElementsByTagName('drupal-entity');
 
-                  // DE Example: <drupal-entity data-align="center" data-embed-button="media_entity_embed" data-entity-embed-display="view_mode:media.full" data-entity-embed-display-settings="" data-entity-type="media" data-entity-uuid="463f699b-e367-48b1-9a30-5df1fbe88762"></drupal-entity>.
-                  // DM Example: <drupal-media data-align="center" data-entity-type="media" data-entity-uuid="10e236e2-b20c-4b6c-9c60-f5f1ad1e316d" data-view-mode="large__no_crop"></drupal-media>.
                   // As we replace the inline images, they are actually
                   // removed in the DOMNodeList $images, so we have to
                   // use a regressive loop to count through them.
@@ -2018,7 +2016,7 @@ function sitenow_update_8050() {
                     $de_instance = $de_instances->item($i);
                     $dm_instance = $document->createElement('drupal-media');
 
-                    // Loop through attributes that are the same for both formats.
+                    // Loop through attributes that are same for both formats.
                     foreach ([
                       'data-align',
                       'data-entity-type',
@@ -2026,7 +2024,7 @@ function sitenow_update_8050() {
                     ] as $attr_name) {
                       $attribute = $de_instance->getAttribute($attr_name);
 
-                      // Set the attribute on the new instance if it has a value set.
+                      // Set the attribute on new instance if it has a value.
                       if (!empty($attribute)) {
                         $dm_instance->setAttribute($attr_name, $attribute);
                       }
@@ -2034,7 +2032,7 @@ function sitenow_update_8050() {
 
                     $old_view_mode = $de_instance->getAttribute('data-entity-embed-display');
                     if (!empty($old_view_mode)) {
-                      // @todo Parse out the view mode from the existing embed attribute.
+                      // @todo Parse out view mode from the existing embed.
                       $old_view_mode = str_replace('view_mode:media.', '', $old_view_mode);
                       $old_view_mode = str_replace('image_', '', $old_view_mode);
                       $dm_instance->setAttribute('data-view-mode', $old_view_mode);
@@ -2324,9 +2322,6 @@ function sitenow_update_9006(&$sandbox) {
     return t('person_extended split is not active, so no update to run.');
   }
 
-  // @todo Remove when debugging is removed.
-  define('CHECK_NID', 616);
-
   // Process all nodes that have a filled person.
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('node')
@@ -2579,7 +2574,8 @@ function sitenow_update_9007() {
                 }
               }
 
-              // Run database update to store updated $value_column as Html::serialize($document)
+              // Run database update to store updated $value_column as
+              // Html::serialize($document).
               $db->update($table)
                 ->fields([
                   $value_column => Html::serialize($document),
@@ -2950,7 +2946,7 @@ function sitenow_update_9009() {
       $section_storage = $stored_data->data['section_storage'];
 
       // Loop through sections in the storage.
-      foreach ($section_storage->getSections() as $delta => &$section) {
+      foreach ($section_storage->getSections() as &$section) {
         // Loop through the components in the section.
         foreach ($section->getComponents() as &$component) {
 
@@ -3085,7 +3081,7 @@ function sitenow_update_9010() {
     /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
     $section_storage = $stored_data->data['section_storage'];
     // Loop through sections in the storage.
-    foreach ($section_storage->getSections() as $delta => &$section) {
+    foreach ($section_storage->getSections() as &$section) {
       $layout_settings = $section->getLayoutSettings();
       // Check if we have any section_margin_ layout builder styles,
       // and skip if we do.
@@ -3138,8 +3134,6 @@ function sitenow_update_9011() {
 function sitenow_update_9012() {
   // @todo check the temp storage
   $db = \Drupal::database();
-  $block_storage = \Drupal::entityTypeManager()
-    ->getStorage('block_content');
 
   $section_column = 'layout_builder__layout_section';
   $tables = [
@@ -3199,8 +3193,8 @@ function sitenow_update_9012() {
       // Check if we have a tempstore of this node.
       // Temp store is saved in the db in the key_value_expire,
       // And holds a serialized blob with the unsaved changes.
-      // Might be a better method of accessing this through the Layout Builder API
-      // and layoutTempstoreRepository, but have not found it yet.
+      // Might be a better method of accessing this through the Layout
+      // Builder API and layoutTempstoreRepository, but have not found it yet.
       $query = $db->select('key_value_expire', 'kve')
         ->fields('kve', ['name', 'value', 'expire'])
         ->condition('collection', 'tempstore.shared.layout_builder.section_storage.overrides', '=')
@@ -3221,7 +3215,7 @@ function sitenow_update_9012() {
         $section_storage = $stored_data->data['section_storage'];
 
         // Loop through sections in the storage.
-        foreach ($section_storage->getSections() as $delta => &$section) {
+        foreach ($section_storage->getSections() as &$section) {
           // Loop through the components in the section.
           foreach ($section->getComponents() as &$component) {
 
@@ -3254,7 +3248,7 @@ function sitenow_update_9012() {
 }
 
 /**
- * Rebuilding permissions after https://github.com/uiowa/uiowa/pull/3776 deployed.
+ * Rebuilding permissions after https://github.com/uiowa/uiowa/pull/3776.
  */
 function sitenow_update_9013() {
   // Batch it.

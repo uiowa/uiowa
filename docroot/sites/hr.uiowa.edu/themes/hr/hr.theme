@@ -42,7 +42,8 @@ function hr_preprocess_menu_local_task(&$variables) {
   if (!isset($variables['attributes']['class'])) {
     $variables['attributes']['class'] = [];
   }
-  // Merge with any classes that may have been set by other hook_preprocess_menu invocations.
+  // Merge with any classes that may have been set by other
+  // hook_preprocess_menu invocations.
   $variables['attributes']['class'] = array_merge($variables['attributes']['class'], ['nav-item']);
 }
 

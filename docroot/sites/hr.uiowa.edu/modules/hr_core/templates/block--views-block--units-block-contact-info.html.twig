@@ -29,6 +29,9 @@
 {%
   set classes = [
     'bg--gray',
+    'block-margin--bottom',
+    'block-margin--top',
+    'block-padding__all',
     'block',
     'block-' ~ configuration.provider|clean_class,
     'block-' ~ plugin_id|clean_class,
@@ -39,7 +42,6 @@ Despite hide if empty on all the things, this block with styles still renders an
 fields we can't allow it. #}
 {% set content_rendered = content|render|striptags|trim %}
 {% if content_rendered is not empty %}
-{{ attach_library('hr/hr_styles') }}
   <div class="block-views-blockunits-block-contact-info">
     <div{{ attributes.addClass(classes) }}>
       {{ title_prefix }}

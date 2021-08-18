@@ -29,11 +29,11 @@ class ScholarshipsJumpMenu extends FormBase {
       '#type' => 'select',
       '#title' => $this->t('Type of Student'),
       '#options' => [
-        'first-year' => 'First Year',
-        'transfer' => 'Transfer',
-        'international' => 'International',
+        'first-year' => $this->t('First Year'),
+        'transfer' => $this->t('Transfer'),
+        'international' => $this->t('International'),
       ],
-      "#empty_option" => t('- Select -'),
+      "#empty_option" => $this->t('- Select -'),
       '#ajax' => [
         'callback' => [$this, 'scholarshipTypeCallback'],
         'event' => 'change',
@@ -43,10 +43,10 @@ class ScholarshipsJumpMenu extends FormBase {
       '#type' => 'select',
       '#title' => $this->t('Resident'),
       '#options' => [
-        'resident' => 'From Iowa',
-        'nonresident' => 'From Outside Iowa',
+        'resident' => $this->t('From Iowa'),
+        'nonresident' => $this->t('From Outside Iowa'),
       ],
-      "#empty_option" => t('- Select Residency -'),
+      "#empty_option" => $this->t('- Select Residency -'),
       '#states' => [
         'visible' => [
           ':input[name="scholarship_type"]' => ['value' => 'first-year'],
