@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: dancescreendancefest.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: dancescreendancefest
+  human_name: screendancefest.dance.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: dancescreendancefest.prod
+drupal:
+  db:
+    database: screendancefest_dance_uiowa_edu
+uiowa:
+  requester: barragan
