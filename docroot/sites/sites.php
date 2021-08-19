@@ -3071,3 +3071,9 @@ $sites['oniowa.local.drupal.uiowa.edu'] = 'oniowa.uiowa.edu';
 $sites['oniowa.dev.drupal.uiowa.edu'] = 'oniowa.uiowa.edu';
 $sites['oniowa.stage.drupal.uiowa.edu'] = 'oniowa.uiowa.edu';
 $sites['oniowa.prod.drupal.uiowa.edu'] = 'oniowa.uiowa.edu';
+
+// Directory aliases for screendancefest.dance.uiowa.edu.
+$sites['dancescreendancefest.local.drupal.uiowa.edu'] = 'screendancefest.dance.uiowa.edu';
+$sites['dancescreendancefest.dev.drupal.uiowa.edu'] = 'screendancefest.dance.uiowa.edu';
+$sites['dancescreendancefest.stage.drupal.uiowa.edu'] = 'screendancefest.dance.uiowa.edu';
+$sites['dancescreendancefest.prod.drupal.uiowa.edu'] = 'screendancefest.dance.uiowa.edu';
