@@ -1,0 +1,70 @@
+{{ attach_library('studentlife_topics/topics') }}
+{% set image_field = content.field_image[0]['#media'].field_image.entity.uri.value %}
+{% set background_image = file_url(node.field_image.entity.field_media_image[0].entity.uri.value) %}
+{% set terms = node.field_topic_landing_page_tags %}
+
+<div class="tlp-search-bg" style="background-image: url({{ background_image }}">
+  <div class="tlp-search-container">
+    <h1 class="tlp-search-bg__title">{{ label }}</h1>
+    <form class="tlp-search-form tlp-search-form--large" aria-label="Search for a topic" role="search" data-drupal-selector="uiowa-search-form" action="/search" method="get" id="uiowa-search-form" accept-charset="UTF-8">
+        <div class="tlp-search-form__fields">
+          <input class="tlp-search-form__input tlp-search-form__input--large" placeholder="Search for entries on this website" data-drupal-selector="edit-search-terms" type="search" name="terms" value="" size="15" maxlength="256">
+          <button type="submit" name="action_results" value="Search" class="tlp-search-button bttn bttn--caps bttn--primary">Search</button>
+        </div>
+    </form>
+    <h2 class="tlp-search-tags__heading">Browse by tag:</h2>
+    <p>
+    {% for term in terms %}
+        {% set link = path('entity.taxonomy_term.canonical', {'taxonomy_term': term.entity.id}) %}
+        {% set label = term.entity.label %}
+        <span class="tlp-search-tags__item"><a class="tlp-search-tags__link" href="{{ link }}" class="button-link">{{ label }}</a></span>
+    {% endfor %}
+    </p>
+  </div>
+</div>
+
+<div class="tlp-content">
+  {{  content  }}
+  <div class="layout layout--onecol layout__container">
+    <div class="layout__spacing_container">
+      <h2 class="tlp-section__heading">Browse by...</h2>
+      <div class="tlp-browse-by-filter__grid">
+        {% for term in terms %}
+          {% set link = path('entity.taxonomy_term.canonical', {'taxonomy_term': term.entity.id}) %}
+          {% set label = term.entity.label %}
+          {% set nodes = getNodesByTaxonomyTermIds(term.entity.id) %}
+          <a href="{{ link}}" class="tlp-filter-button"><span>{{ label }}&nbsp;({{nodes|length}})</span></a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="tlp-section tlp-section--gray">
+  <div class="tlp-content">
+    <div class="layout layout--onecol layout__container">
+      <div class="layout__spacing_container">
+        <h2 class="tlp-section__heading">Browse by tag:</h2>
+        <ul class="tlp-all-list">
+         {% for term in terms %}
+            {% set link = path('entity.taxonomy_term.canonical', {'taxonomy_term': term.entity.id}) %}
+            {% set label = term.entity.label %}
+            {% set nodes = getNodesByTaxonomyTermIds(term.entity.id, node.id) %}
+            {%  if node|length > 0 %}
+              <li class="tlp-all-list__item"><h3 class="tlp-all-list__item-heading"><a href="{{ link }}">{{ label }}</a></h3>
+                <ul class="tlp-nodelist">
+                  {% for node in nodes |slice(0, 4) %}
+                    <li class="tlp-nodelist__item"><a href="{{ path('entity.node.canonical', {'node': node.id}) }}">{{ node.label }}</a></li>
+                  {% endfor %}
+                  {%  if nodes|length > 4 %}
+                    <li class="tlp-nodelist__item tlp-nodelist__item--bold"><a href="{{ link }}">More items under "{{ label }}"</a></li>
+                  {% endif %}
+                </ul>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

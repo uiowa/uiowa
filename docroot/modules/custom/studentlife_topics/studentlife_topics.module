@@ -1,0 +1,26 @@
+<?php
+
+/**
+ * @file
+ * Contains the sitenow_student_profile module.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Component\Utility\Timer;
+
+/**
+ * Implements hook_theme().
+ */
+function studentlife_topics_theme() {
+  return [
+    'node__topic_landing_page__full' => [
+      'template' => 'node--topic-landing-page--full',
+      'base hook' => 'node'
+    ],
+    'node__topic_landing_page__teaser' => [
+      'template' => 'node--topic-landing-page--teaser',
+      'base hook' => 'node'
+    ],
+  ];
+}

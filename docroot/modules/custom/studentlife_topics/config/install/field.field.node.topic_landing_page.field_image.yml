@@ -1,0 +1,29 @@
+uuid: 653ba43a-40d9-4d8b-afee-71b0933be91a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_image
+    - media.type.image
+    - node.type.topic_landing_page
+id: node.topic_landing_page.field_image
+field_name: field_image
+entity_type: node
+bundle: topic_landing_page
+label: 'Featured Image'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
