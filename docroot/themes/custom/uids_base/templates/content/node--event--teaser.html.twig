@@ -83,7 +83,7 @@
 ]
 %}
 
-{% if '1' in content.field_event_series_link_direct.0 %}
+{% if '1' in content.field_event_series_link_direct.0 and node.field_event_series_link.0.uri %}
   {% set node_link = content.field_event_series_link[0]['#url'] %}
 {% else %}
   {% set node_link = url %}
