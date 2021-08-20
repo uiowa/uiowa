@@ -70,44 +70,6 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: 2
-          -
-            uuid: 2889151e-8ee0-4d95-ab5b-f115b0fabcc3
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:event:field_event_series_link'
-              formatter:
-                label: above
-                settings:
-                  trim_length: 80
-                  url_only: false
-                  url_plain: false
-                  rel: ''
-                  target: ''
-                third_party_settings: {  }
-                type: link
-            additional: {  }
-            weight: 3
-          -
-            uuid: cb131d8f-d257-4b10-86c6-b3eb6fbf4f85
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:event:field_event_series_link_direct'
-              formatter:
-                label: above
-                settings:
-                  format: default
-                  format_custom_false: ''
-                  format_custom_true: ''
-                third_party_settings: {  }
-                type: boolean
-            additional: {  }
-            weight: 5
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -221,6 +183,29 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: 1
+          -
+            uuid: 2889151e-8ee0-4d95-ab5b-f115b0fabcc3
+            region: second
+            configuration:
+              id: 'field_block:node:event:field_event_series_link'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: visually_hidden
+                type: link
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: '0'
+                  target: '0'
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 5
         third_party_settings:
           layout_builder_lock:
             lock: {  }
