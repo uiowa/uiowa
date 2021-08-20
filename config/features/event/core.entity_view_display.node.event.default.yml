@@ -7,6 +7,8 @@ dependencies:
     - field.field.node.event.field_event_category
     - field.field.node.event.field_event_hide
     - field.field.node.event.field_event_location
+    - field.field.node.event.field_event_series_link
+    - field.field.node.event.field_event_series_link_direct
     - field.field.node.event.field_event_virtual
     - field.field.node.event.field_event_when
     - field.field.node.event.field_image
@@ -68,6 +70,44 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: 2
+          -
+            uuid: 2889151e-8ee0-4d95-ab5b-f115b0fabcc3
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:event:field_event_series_link'
+              formatter:
+                label: above
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: ''
+                  target: ''
+                third_party_settings: {  }
+                type: link
+            additional: {  }
+            weight: 3
+          -
+            uuid: cb131d8f-d257-4b10-86c6-b3eb6fbf4f85
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:event:field_event_series_link_direct'
+              formatter:
+                label: above
+                settings:
+                  format: default
+                  format_custom_false: ''
+                  format_custom_true: ''
+                third_party_settings: {  }
+                type: boolean
+            additional: {  }
+            weight: 5
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -213,6 +253,28 @@ content:
     third_party_settings: {  }
     type: address_default
     region: content
+  field_event_series_link:
+    weight: 6
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_event_series_link_direct:
+    weight: 8
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
   field_event_virtual:
     weight: 3
     label: above
@@ -253,6 +315,9 @@ content:
     third_party_settings: {  }
 hidden:
   content_moderation_control: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_event_category: true
   field_event_hide: true
   field_meta_tags: true
