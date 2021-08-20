@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: licensing.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: licensing
+  human_name: licensing.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: licensing.prod
+drupal:
+  db:
+    database: licensing_uiowa_edu
+uiowa:
+  requester: wdecora

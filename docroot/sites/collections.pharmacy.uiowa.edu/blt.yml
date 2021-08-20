@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: pharmacycollections.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: pharmacycollections
+  human_name: collections.pharmacy.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: pharmacycollections.prod
+drupal:
+  db:
+    database: collections_pharmacy_uiowa_edu
+uiowa:
+  requester: schwartz

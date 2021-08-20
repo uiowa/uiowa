@@ -3,21 +3,13 @@
 
 .layout--onecol .layout__region {
   width: 100%;
+  @include inner-grid(100);
 }
 
 .layout--onecol {
   display: flex;
-  .lb__container {
+
+  .layout__spacing_container {
     flex-basis: 100%;
   }
-}
-
-.layout--onecol--no--background+.layout--onecol:not([class*="bg--"]) .block-field-blocknodepagebody,
-.layout--onecol--no--background+.layout--onecol:not([class*="bg--"]) .block-inline-blockuiowa-text-area {
-  margin-top: $gutter;
-}
-
-.layout--onecol--background+.layout--onecol:not([class*="bg--"]) .block-field-blocknodepagebody,
-.layout--onecol--background+.layout--onecol:not([class*="bg--"]) .block-inline-blockuiowa-text-area {
-  margin-top: 2rem;
 }

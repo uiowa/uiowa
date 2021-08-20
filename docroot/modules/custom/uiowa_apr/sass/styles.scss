@@ -1,0 +1,227 @@
+@import "../../../themes/custom/uids_base/uids/assets/scss/variables";
+@import "../../../themes/custom/uids_base/uids/assets/scss/utilities";
+@import "../../../themes/custom/uids_base/uids/components/card/_card-mixins.scss";
+@import "../../../themes/custom/uids_base/uids/components/headline/headline-mixins";
+@import "../../../themes/custom/uids_base/uids/components/pagination/pagination";
+
+
+.apr-filter {
+  min-height: 20px;
+  padding: 1rem;
+  margin: $gutter 0;
+  background-color: $light;
+
+  .form-inline {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    flex-wrap: wrap;
+  }
+
+  [type="button"].btn {
+    padding-top: 14px;
+    padding-bottom: 14px;
+    width: 100%;
+    &.btn-default {
+      background-color: $primary;
+    }
+  }
+
+  .form-group {
+    flex: 0 1 100%;
+    @include breakpoint(menu) {
+      flex: 0 1 auto;
+      margin: 0 1rem 1rem 0;
+    }
+    @include breakpoint(container) {
+      flex: auto 1 1;
+      margin: 0;
+    }
+    + .form-group {
+      @include breakpoint(container) {
+        margin-left: 1rem;
+      }
+    }
+    select, #apr-query-input.form-control {
+      margin: 0;
+    }
+  }
+}
+
+
+#apr-directory-service {
+  .apr.directory>div:first-child>a {
+    display: none;
+  }
+
+  .apr-profile .apr-section.summary {
+    ul {
+      @extend %no-ul-list;
+      li {
+        margin-bottom: $md;
+      }
+    }
+  }
+
+  .apr-profile.apr-profile-grid .groups {
+    figure {
+      margin: 0;
+    }
+    @include breakpoint(sm) {
+      grid-template-columns: 300px auto;
+      column-gap: 1.5em;
+    }
+  }
+  .apr-profile .apr-section.intro {
+    @include breakpoint(sm) {
+      grid-column: 1 /2;
+    }
+  }
+  .apr-profile .apr-section.profile-details {
+    @include breakpoint(sm) {
+      grid-row: 1 / span 5;
+      grid-column: 2 / 3;
+      margin-left: 1rem;
+    }
+  }
+  .apr-profile div.groups,
+  .apr-profile .apr-section {
+    @include breakpoint(sm) {
+      display: grid;
+      grid-gap: 1.5em;
+      row-gap: 1em;
+      align-content: start;
+    }
+  }
+
+  .apr-profile #apr-sites li,
+  .profiles ul>li {
+    display: block;
+  }
+
+  .apr-profile .profile-image figcaption {
+    text-align: left;
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding-top: .5em;
+    margin-bottom: .5em;
+  }
+
+  .apr-profile .apr-section.summary li.apr-contact {
+    display: block;
+
+    .apr-phone.apr-detail {
+      display: block;
+
+      &:before {
+        content:'Phone';
+        position: relative;
+        font-size: 1.3rem;
+        font-weight: 500;
+        display: block;
+      }
+    }
+  } 
+
+  .apr-profile
+
+  .list-view {
+    margin: $gutter 0;
+  }
+
+  .profiles {
+    ul, ol {
+      @extend %no-ul-list;
+    }
+
+    overflow: auto;
+
+    table {
+      &:focus {
+        outline: .1em solid rgba(0,0,0,.1);
+      }
+
+      // Last TD is not wrapped in anything for some reason.
+      td:last-child {
+        font-size: $content-font-size;
+        line-height: 1.7;
+      }
+    }
+
+    .apr-cards {
+      @include grid-base;
+      @include breakpoint(sm) {
+        @include threecol-grid;
+      }
+
+      .card {
+        @include card;
+      }
+    }
+  }
+
+  nav {
+    text-align: center;
+    @extend .pager;
+
+    .pagination {
+      @extend %no-ul-list;
+    }
+
+    li.active {
+      font-weight: $font-weight-bold;
+    }
+  }
+
+  h2, .h2 {
+    font-size: 1.5rem;
+  }
+
+  h3, .h3 {
+    font-size: 1.3rem;
+  }
+
+  h4, .h4 {
+    font-size: 1rem;
+    margin-top: 0px;
+    font-weight: 300;
+  }
+}
+
+#apr-publication-service {
+
+  .apr-publication-list {
+    ul {
+      @extend %no-ul-list;
+
+      li {
+        margin: $gutter 0;
+        .pub-author {
+          @include card-header;
+          @include headline;
+          margin-bottom: 0;
+        }
+        .pub-department {
+          @include card-subtitle;
+        }
+        .pub-citation {
+          @include card-paragraph;
+          margin-top: $sm;
+        }
+      }
+    }
+  }
+
+  nav {
+    text-align: center;
+    @extend .pager;
+
+    .pagination {
+      @extend %no-ul-list;
+    }
+
+    li.active {
+      font-weight: $font-weight-bold;
+    }
+  }
+}

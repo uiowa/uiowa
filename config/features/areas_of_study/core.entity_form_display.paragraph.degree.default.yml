@@ -1,0 +1,30 @@
+uuid: 997c636f-e54c-4e07-aa05-865698e9e43e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.degree.field_degree_abbreviation
+    - field.field.paragraph.degree.field_degree_label
+    - paragraphs.paragraphs_type.degree
+id: paragraph.degree.default
+targetEntityType: paragraph
+bundle: degree
+mode: default
+content:
+  field_degree_abbreviation:
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_degree_label:
+    weight: 2
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true

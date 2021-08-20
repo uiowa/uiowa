@@ -1,0 +1,22 @@
+uuid: 4187a5e0-1806-4808-8127-5617e30c2fe5
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: mentors
+label: Mentors
+type: 'canonical_entities:node'
+pattern: 'dei/srop/mentors/[node:title]'
+selection_criteria:
+  75f1b613-2a6f-43fb-8d32-8cae3e282563:
+    id: node_type
+    bundles:
+      mentor: mentor
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 75f1b613-2a6f-43fb-8d32-8cae3e282563
+selection_logic: and
+weight: -5
+relationships: {  }

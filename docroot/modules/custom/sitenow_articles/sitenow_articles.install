@@ -16,3 +16,21 @@ function sitenow_articles_update_8001() {
     ->set('display.page_articles.display_options.display_extenders.metatag_display_extender.metatags.description', 'The latest articles from [site:name].')
     ->save();
 }
+
+/**
+ * Add numeric validation to articles view arguments.
+ */
+function sitenow_articles_update_9101() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('views.view.articles');
+
+  $config
+    ->clear('core')
+    ->set('display.default.display_options.arguments.created_year.validate.type', 'numeric')
+    ->set('display.default.display_options.arguments.created_month.validate.type', 'numeric')
+    ->set('display.default.display_options.filters.status.expose.operator_limit_selection', FALSE)
+    ->set('display.default.display_options.filters.status.expose.operator_list', [])
+    ->set('display.default.display_options.filters.type.expose.operator_limit_selection', FALSE)
+    ->set('display.default.display_options.filters.type.expose.operator_list', [])
+    ->save();
+}

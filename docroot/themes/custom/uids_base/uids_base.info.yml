@@ -5,11 +5,10 @@ description: UIDS (UIowa Design System) base theme
 package: Custom
 core_version_requirement: ^8.8 || ^9
 screenshot: screenshot.png
-stylesheets-remove:
-  - modules/custom/uiowa_bar/css/uiowa-bar.css
 libraries-override:
   classy/base: false
   colorbox/colorbox: uids_base/colorbox
+  superfish/superfish_touchscreen: uids_base/sftouchscreen
 libraries:
   - uids_base/global-styling
   - uids_base/layouts
@@ -31,10 +30,10 @@ regions:
   footer_second: 'Footer menus'
   page_bottom: 'Page bottom'
 # Components
-component-libraries:
-  uids:
-    paths:
-      - uids/components
+components:
+  namespaces:
+    uids: uids/components
 # Ckeditor styling for lead paragraphs and alerts
 ckeditor_stylesheets:
+  - assets/css/components/video/video-utilities.css
   - assets/css/components/sitenow/sitenow_wysiwyg.css

@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: courseventilator.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: courseventilator
+  human_name: ventilator.course.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: courseventilator.prod
+drupal:
+  db:
+    database: ventilator_course_uiowa_edu
+uiowa:
+  requester: pmester

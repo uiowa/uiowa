@@ -1,0 +1,25 @@
+uuid: cafe33ac-54cc-47bc-86e4-4c0e2514b03a
+langcode: en
+status: true
+dependencies: {  }
+id: admissions_migrate
+label: 'Admissions Migrate'
+description: 'Migrations for Admissions'
+folder: ./sites/admissions.uiowa.edu/modules/admissions_migrate/config/split
+module:
+  admissions_migrate: 0
+  migrate: 0
+  migrate_drupal: 0
+  migrate_plus: 0
+  migrate_tools: 0
+  sitenow_migrate: 0
+theme: {  }
+blacklist:
+  - config_split.config_split.admissions_migrate
+  - migrate_plus.migration.d7_admissions_academic_groups
+  - migrate_plus.migration.d7_admissions_aos
+  - migrate_plus.migration.d7_admissions_aos_redirect
+graylist: {  }
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 80

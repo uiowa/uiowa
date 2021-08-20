@@ -1,0 +1,18 @@
+uuid: 1e5f7de0-8233-4539-8ece-ab9974b8faf2
+langcode: en
+status: false
+dependencies: {  }
+id: profiles
+label: Profiles
+description: 'Profiles module and configuration. This feature requires an API key and previous data setup with Profiles team.'
+folder: ../config/features/profiles
+module:
+  uiowa_profiles: 0
+theme: {  }
+blacklist:
+  - uiowa_profiles.settings
+graylist:
+  - user.role.webmaster
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 80

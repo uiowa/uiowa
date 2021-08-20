@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: siteslungimaging.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: siteslungimaging
+  human_name: lungimaging.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: siteslungimaging.prod
+drupal:
+  db:
+    database: lungimaging_sites_uiowa_edu
+uiowa:
+  requester: jlobb

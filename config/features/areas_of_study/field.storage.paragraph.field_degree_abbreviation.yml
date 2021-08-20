@@ -1,0 +1,21 @@
+uuid: 8e1950d3-0a64-48e3-953c-2904e47d348d
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_degree_abbreviation
+field_name: field_degree_abbreviation
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values: {  }
+  allowed_values_function: uiowa_area_of_study_allowed_values_function
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

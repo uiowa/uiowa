@@ -2,12 +2,36 @@
 @import "uids/assets/scss/_utilities.scss";
 
 .view-taxonomy-term {
+  &.grid--threecol--33-34-33,
+  &.grid--twocol--50-50 {
+    .view-content.list-container {
+      .views-row {
+        border: none;
+      }
+      @include breakpoint(sm) {
+        display: grid;
+      }
+    }
+  }
   .view-content {
     @include list-group;
     @include list-group-flush;
 
     .views-row {
       @include list-group-item;
+      padding: 0;
+      .card--media-left,
+      .card--media-right {
+        margin-top: 1.6rem;
+      }
+      &:first-child {
+        border-top: none;
+        .card--media-left,
+        .card--media-right {
+          margin-top: 0;
+        }
+      }
     }
   }
 }
+

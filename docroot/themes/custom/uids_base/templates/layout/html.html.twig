@@ -44,20 +44,13 @@
   <body{{ attributes.addClass(body_classes) }}>
 
 <div class="skip-link-region" role="region" aria-label="skip-link">
-    <a href="#main-content" class="visually-hidden focusable skip-link" role="link" aria-label="skip to main content">
-        {{ 'Skip to main content'|t }}
-    </a>
+  <a href="#main-content" class="visually-hidden focusable skip-link" role="link" aria-label="skip to main content">
+    {{ 'Skip to main content'|t }}
+  </a>
 </div>
 
 {% set uiowa_attribute = create_attribute() %}
-
-{% if layout_container == 'page__container' %}
-    {% set header_classes = ['uiowa__container'] %}
-{% elseif layout_container == 'page__container--full' %}
-    {% set header_classes = ['uiowa__container--full'] %}
-{% else %}
-    {% set header_classes = ['uiowa__container--full'] %}
-{% endif %}
+{% set header_classes = ['uiowa__container'] %}
 
 {{ page_top }}
 {{ page }}

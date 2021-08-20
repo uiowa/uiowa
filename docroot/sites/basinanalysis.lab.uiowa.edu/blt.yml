@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labbasinanalysis.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labbasinanalysis
+  human_name: basinanalysis.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labbasinanalysis.prod
+drupal:
+  db:
+    database: basinanalysis_lab_uiowa_edu
+uiowa:
+  requester: efinzel

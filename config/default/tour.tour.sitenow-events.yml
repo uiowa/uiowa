@@ -1,0 +1,44 @@
+uuid: 13f5a9a4-dd71-46ae-bfda-b81701d5a533
+langcode: en
+status: true
+dependencies:
+  module:
+    - sitenow
+id: sitenow-events
+label: 'SiteNow Events'
+module: sitenow
+routes:
+  -
+    route_name: sitenow_events.settings_form
+tips:
+  page:
+    id: page
+    plugin: text
+    label: 'SiteNow Events'
+    weight: 0
+    body: '<p>On this tour, we''ll explain how to modify an event displayed on your site.</p><p>Let''s get going!</p>'
+    location: top
+  link-option:
+    id: link-option
+    plugin: text
+    label: 'Link Option'
+    weight: 1
+    attributes:
+      data-class: js-form-item-sitenow-events-event-link
+    body: '<p>Choose to have events link to events.uiowa.edu or an event page on this site.</p>'
+    location: bottom
+  event-path:
+    id: event-path
+    plugin: text
+    label: 'Single Event Path'
+    weight: 2
+    attributes:
+      data-class: js-form-item-sitenow-events-single-event-path
+    body: '<p>The base path component for a single event. Defaults to event.</p>'
+    location: bottom
+  events-next-step:
+    id: events-next-step
+    plugin: text
+    label: 'That''s It!'
+    weight: 3
+    body: '<p>Note: These settings affect all event lists and single instances.</p><p>As you are using the site, look for the tour icon which designates a tour is available on that page, otherwise, <a href="//sitenow.uiowa.edu/node/36"> view our documentation</a> for more information.</p>'

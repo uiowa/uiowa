@@ -1,0 +1,29 @@
+uuid: 509e866f-6962-4c90-aafa-936c880652fb
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.content_list
+    - field.storage.block_content.field_content_list_items
+    - node.type.student_profile
+id: block_content.content_list.field_content_list_items
+field_name: field_content_list_items
+entity_type: block_content
+bundle: content_list
+label: Items
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      student_profile: student_profile
+    sort:
+      field: field_thesis_defense_title
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: article
+field_type: entity_reference

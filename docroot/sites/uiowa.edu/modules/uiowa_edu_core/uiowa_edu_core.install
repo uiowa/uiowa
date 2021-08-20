@@ -33,7 +33,7 @@ function uiowa_edu_core_update_8001(&$sandbox) {
       'vid' => 'a_z_list',
       'name' => $link[0],
     ]);
-    $new_term->set('field_a_z_list_link',  [
+    $new_term->set('field_a_z_list_link', [
       'uri' => $link[2],
       'title' => $link[1],
     ]);
@@ -93,6 +93,16 @@ function uiowa_edu_core_update_8004() {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('uids_base.settings');
   $config->set('header.top_links_limit', 3);
+  $config->save();
+}
+
+/**
+ * Set search config to not limit to uiowa.edu domain.
+ */
+function uiowa_edu_core_update_8005() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_search.settings');
+  $config->set('uiowa_search.cse_scope', 0);
   $config->save();
 }
 

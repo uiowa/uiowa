@@ -15,21 +15,21 @@
 {% endif %}
 
 <header data-uids-header {{ attributes.addClass(header_classes) }}>
-    <div class="iowa-bar__container">
-      {% block logo %}
-        {{ attach_library('uids_base/logo') }}
-        {% include '@uids_base/uids/logo.twig' with {
-          path: uiowa_url,
-          logo_classes: 'logo--tab',
-          logo_path: uiowa_logo_path,
-          logo_path_png: uiowa_logo_path_png,
-          logo_id: 'header',
-        } %}
-      {% endblock %}
+  <div class="iowa-bar__container">
+    {% block logo %}
+      {{ attach_library('uids_base/logo') }}
+      {% include '@uids_base/uids/logo.twig' with {
+        path: uiowa_url,
+        logo_classes: 'logo--tab',
+        logo_path: uiowa_logo_path,
+        logo_path_png: uiowa_logo_path_png,
+        logo_id: 'header',
+      } %}
+    {% endblock %}
 
-      {% block uiowa_bar %}
-        {# UIowa bar content #}
-      {% endblock %}
+    {% block uiowa_bar %}
+      {# UIowa bar content #}
+    {% endblock %}
   </div>
 
   {% block tertiary_content %}

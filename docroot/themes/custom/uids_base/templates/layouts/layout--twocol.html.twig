@@ -1,0 +1,21 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a two-column layout.
+ *
+ * Available variables:
+ * - content: The content for this layout.
+ * - attributes: HTML attributes for the layout <div>.
+ *
+ * @ingroup themeable
+ */
+#}
+{%
+  set classes = [
+  settings.extra_classes,
+]
+%}
+
+{% set attributes = attributes.addClass(classes) %}
+
+{% include '@uids_base/layouts/layout.html.twig' %}

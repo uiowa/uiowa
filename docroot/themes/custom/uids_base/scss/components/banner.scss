@@ -2,26 +2,254 @@
 @import "assets/scss/_utilities.scss";
 @import "components/banner/banner.scss";
 
-.banner--reversed *:not(.bttn) {
-  color: #fff;
+.banner.banner--gradient-left-reversed .bold-headline.bold-headline--negative {
+  text-shadow: none;
+  color: $secondary;
 }
 
-.banner__summary {
-  line-height: 1.7;
 
-  p {
-    font-weight: 300;
-    font-size: 1.3rem;
-    margin-top: 1.05rem;
-    margin-bottom: 1.875rem;
+.layout--onecol,
+.layout--twocol--75-25 .layout__region--first,
+.layout--twocol--25-75 .layout__region--second,
+.layout--twocol--67-33 .layout__region--first,
+.layout--twocol--33-67 .layout__region--second,
+.layout--twocol--50-50 {
+  .banner {
+
+    // Set layout text width for onecol containers only excluding the rule below
+    &:not([class*="banner--horizontal-left"]) {
+      .banner__text {
+        @include breakpoint(sm) {
+          width: 100%;
+        }
+
+        @include breakpoint(menu) {
+          width: 80%;
+        }
+
+        @include breakpoint(container) {
+          width: 60%;
+        }
+      }
+    }
+  }
+}
+
+
+// Adjust small padding for layout banner headers
+.layout--onecol--background.banner--small {
+  &::before {
+    float: left;
+    padding-top: 17.75%;
+    content: '';
+  }
+}
+
+// Layout specific sizing overrides
+.layout--threecol,
+.layout--fourcol,
+.layout--twocol--25-75 .layout__region--first,
+.layout--twocol--75-25 .layout__region--second,
+.layout--twocol--33-67 .layout__region--first,
+.layout--twocol--67-33 .layout__region--second {
+  .banner {
+    // Set large heading size
+    .headline--large.headline--serif,
+    .headline--large {
+      font-size: 2.6rem;
+      font-size: containerClamp(2.6rem, 2.6rem);
+    }
+
+    // Set medium heading size
+    .headline--medium.headline--serif,
+    .headline--medium {
+      font-size: 2.2rem;
+      font-size: containerClamp(2.1rem, 2.1rem);
+    }
+
+    // Set small heading size
+    .headline--small.headline--serif,
+    .headline--small {
+      font-size: 1.8rem;
+      font-size: containerClamp(1.6rem, 1.6rem);
+    }
   }
 
-  strong {
-    font-weight: $font-weight-medium-bold;
+  .banner__content {
+    @include breakpoint(sm) {
+      padding: 2rem;
+    }
+  }
+}
+
+.layout--onecol,
+.layout--twocol--25-75 .layout__region--second,
+.layout--twocol--75-25 .layout__region--first,
+.layout--twocol--33-67 .layout__region--second,
+.layout--twocol--67-33 .layout__region--first,
+.layout--twocol--50-50 {
+  .banner .banner__content {
+    @include breakpoint(sm) {
+      padding: 1.5rem;
+    }
   }
 
-  a {
-    font-weight: $font-weight-medium;
+  // Set banner content width if centered left is selected
+  .banner--vertical-center.banner--horizontal-left {
+    .banner__content {
+      @include breakpoint(sm) {
+        width: 100%;
+      }
+
+      @include breakpoint(menu) {
+        width: 80%;
+      }
+
+      @include breakpoint(container) {
+        width: 50%;
+      }
+    }
+  }
+}
+
+// Adjust padding for left aligned bottom content
+.layout--onecol {
+  &[class*=page__container--edge] {
+    .slider__slide {
+      .banner.banner--vertical-bottom.banner--horizontal-left {
+        .banner__content {
+          @include breakpoint(container) {
+            padding: 3rem 1.5rem 4rem;
+          }
+        }
+      }
+    }
+    .banner.banner--vertical-bottom.banner--horizontal-left {
+      .banner__content {
+        @include breakpoint(container) {
+          padding: 3rem 1.5rem 4rem 0rem;
+        }
+      }
+    }
+  }
+  .banner {
+    &.banner--vertical-bottom.banner--horizontal-left {
+      .banner__content {
+        @include breakpoint(sm) {
+          padding: 3rem 1.5rem 4rem 1.5rem;
+        }
+      }
+    }
+  }
+}
+
+  // Remove left/right padding if edge-to-edge is selected
+  .layout--onecol[class*=page__container--edge] {
+    .banner__content {
+      @include breakpoint(container) {
+        padding: 3rem 0;
+      }
+    }
   }
 
+// Set large heading size for page titles in banner
+.layout--title.banner .bold-headline {
+  font-size: 4.7rem;
+  font-size: containerClamp(2.5rem, 4.7rem);
+}
+
+.banner__image {
+  .contextual-region {
+    // Remove contextual position for logged in view of banner image
+    position: unset;
+  }
+  .field--name-field-media-image img {
+    // Override height:auto set in media--type-image.scss
+    height: 100%;
+  }
+}
+
+// Video override
+.banner video {
+  width: 100% !important;
+}
+
+.media--video .video-controls {
+  z-index: 2;
+  .banner--vertical-bottom.banner--horizontal-left & {
+    @include breakpoint(sm) {
+      left: 1.5rem;
+      bottom: 1.5rem;
+    }
+  }
+}
+
+// Contrast fixes
+.bg-pattern--brain-reversed .banner.bg-pattern--brain-black .bttn--primary,
+.bg-pattern--brain-reversed  .banner[class*="bg--black"] .bttn--primary,
+[class*="bg--gold"] .banner.bg-pattern--brain-black .bttn--primary,
+[class*="bg--gold"] .banner[class*="bg--black"] .bttn--primary {
+  color: $primary;
+}
+
+// Default padding fixes
+.layout:not([class*="bg-"]) {
+  .banner.bg--white {
+    .banner__content {
+      padding: 1.5rem 0;
+    }
+  }
+}
+
+.layout.bg--black {
+  .banner.bg--black {
+    .banner__content {
+      padding: 1.5rem 0;
+    }
+  }
+}
+
+.layout.bg--gray {
+  .banner.bg--gray {
+    .banner__content {
+      padding: 1.5rem 0;
+    }
+  }
+}
+
+.layout.bg--gold {
+  .banner.bg--gold {
+    .banner__content {
+      padding: 1.5rem 0;
+    }
+  }
+}
+
+.layout[class*="bg--gold--pattern--brain"] {
+  .banner[class*="bg--gold--pattern--brain"] {
+    .banner__content {
+      padding: 1.5rem 0;
+    }
+  }
+}
+
+.layout[class*="bg--white--pattern--brain"] {
+  .banner[class*="bg--white--pattern--brain"] {
+    .banner__content {
+      padding: 1.5rem 0;
+    }
+  }
+}
+
+.layout[class*="bg--black--pattern--brain"] {
+  .banner[class*="bg--black--pattern--brain"] {
+    .banner__content {
+      padding: 1.5rem 0;
+    }
+  }
+}
+
+//Button hover fix for gold backgrounds
+.banner[class*="bg--gold"] .bttn--primary::after {
+  background-color: #fff;
 }

@@ -18,7 +18,7 @@ git:
     commit-msg: false
     pre-commit: false
 deploy:
-  tag_source: true
+  tag_source: false
 drush:
   aliases:
     ci: self
@@ -36,6 +36,12 @@ tests:
   phpunit:
     - config: '${repo.root}'
 validate:
+  lint:
+    filesets:
+      - files.php.custom.modules
+      - files.php.custom.themes
+      - files.php.tests
+      - files.php.multisites
   twig:
     functions:
       - drupal_image
@@ -46,7 +52,7 @@ validate:
 command-hooks:
   frontend-reqs:
     dir: ${docroot}
-    command: 'yarn install --production --ignore-optional --non-interactive'
+    command: 'yarn install --production --ignore-optional --frozen-lockfile --non-interactive'
   frontend-assets:
     dir: ${docroot}
     command: 'yarn workspaces run build'

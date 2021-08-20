@@ -5,7 +5,7 @@ namespace Uiowa;
 use Symfony\Component\Finder\Finder;
 
 /**
- * Multisite class.
+ * Static class with various helper methods related multisite management.
  */
 class Multisite {
 

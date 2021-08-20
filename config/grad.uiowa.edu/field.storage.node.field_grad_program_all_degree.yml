@@ -1,0 +1,21 @@
+uuid: 6b66b134-a988-4593-b65b-40268064bf3d
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_grad_program_all_degree
+field_name: field_grad_program_all_degree
+entity_type: node
+type: list_string
+settings:
+  allowed_values: {  }
+  allowed_values_function: grad_custom_programs_all_majors_allowed_values
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

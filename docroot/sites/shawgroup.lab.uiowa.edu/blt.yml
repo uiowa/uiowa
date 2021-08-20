@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labshawgroup.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labshawgroup
+  human_name: shawgroup.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labshawgroup.prod
+drupal:
+  db:
+    database: shawgroup_lab_uiowa_edu
+uiowa:
+  requester: scottkshaw

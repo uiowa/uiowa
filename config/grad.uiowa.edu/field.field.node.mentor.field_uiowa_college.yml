@@ -1,0 +1,25 @@
+uuid: cf1dc883-821d-4944-bf54-2cac050cd425
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_uiowa_college
+    - node.type.mentor
+  module:
+    - uiowa_entities
+id: node.mentor.field_uiowa_college
+field_name: field_uiowa_college
+entity_type: node
+bundle: mentor
+label: College
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:uiowa_academic_unit'
+  handler_settings:
+    target_bundles: null
+    auto_create: 0
+field_type: uiowa_academic_units

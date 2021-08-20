@@ -78,6 +78,7 @@
   node.isSticky() ? 'node--sticky',
   not node.isPublished() ? 'node--unpublished',
   view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+  'card--list',
 ]
 %}
 
@@ -87,9 +88,12 @@
   {% set node_link = url %}
 {% endif %}
 
-{% set heading_level = content_heading ?: 'h3' %}
+{% set headline_level = 'h3 '%}
 {% if view %}
-  {% set heading_level = view.display_handler.getOption('content_heading') %}
+  {% set headline_level = view.display_handler.getOption('heading_size') %}
+{% endif %}
+{% if heading_size %}
+  {% set headline_level = heading_size %}
 {% endif %}
 
 {{ attach_library('classy/node') }}
@@ -102,21 +106,22 @@
   'card_title': label,
   'content': content,
   'card_link_url': node_link,
-  'heading_level': heading_level,
+  'media_styles': media_classes,
+  'headline_level': headline_level,
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with article_card only %}
 
-	{# @todo Add content_attributes.addClass('node__content media-body') #}
+  {# @todo Add content_attributes.addClass('node__content media-body') #}
 
-	{% block card_author %}
-		<div class="article-meta">
-			{{ content.article_created_date }}{{ content.article_author }}{{ content.field_article_source_org }}{{ content.field_article_source_link }}
-		</div>
-	{% endblock %}
+  {% block card_details %}
+    <div class="article-meta">
+      {{ content.article_created_date }}{{ content.article_author }}{{ content.field_article_source_org }}{{ content.field_article_source_link }}
+    </div>
+  {% endblock %}
 
-	{% block card_content %}
-		{{ content|without('field_image', 'links', 'article_created_date', 'article_author', 'field_article_source_org', 'field_article_source_link', 'field_article_source_link_direct') }}
-	{% endblock %}
+  {% block card_content %}
+    {{ content|without('field_image', 'links', 'article_created_date', 'article_author', 'field_article_source_org', 'field_article_source_link', 'field_article_source_link_direct') }}
+  {% endblock %}
 
 {% endembed %}

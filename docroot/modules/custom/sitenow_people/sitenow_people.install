@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Config\FileStorage;
+use Drupal\Core\Site\Settings;
 use Drupal\node\Entity\Node;
 
 /**
@@ -49,4 +50,128 @@ function sitenow_people_update_8001() {
         ->save();
     }
   }
+}
+
+/**
+ * Moves data from 'person_type' to 'person_types' field.
+ *
+ * Only runs on sites that have 'person_extended' enabled.
+ */
+function sitenow_people_update_8002() {
+  /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
+  $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+  $split = 'config_split:person_extended';
+
+  // This site has the 'person_extended' split enabled.
+  if (isset($filters[$split]) && $filters[$split]['status']) {
+    $config_path = DRUPAL_ROOT . '/../config/default';
+    $source = new FileStorage($config_path);
+
+    // Create field storage from new config.
+    \Drupal::entityTypeManager()->getStorage('field_storage_config')
+      ->create($source->read('field.storage.node.field_person_types'))
+      ->save();
+
+    // Create field instance from new config.
+    \Drupal::entityTypeManager()->getStorage('field_config')
+      ->create($source->read('field.field.node.person.field_person_types'))
+      ->save();
+
+    // Get all the person nodes.
+    $nids = \Drupal::entityQuery('node')
+      ->condition('type', 'person')
+      ->execute();
+
+    $nodes = Node::loadMultiple($nids);
+
+    // Get an array of person type config data.
+    $list = $source->readMultiple($source->listAll('sitenow_people.person_type'));
+
+    // Create a map from person type labels (which correspond
+    // to the terms being used previously) to the id of the
+    // person type.
+    $map = [];
+    foreach ($list as $config) {
+      $map[$config['label']] = $config['id'];
+    }
+
+    foreach ($nodes as $node) {
+      if (!is_null($person_type_field = $node->field_person_type) && $term = $person_type_field->entity) {
+        // Use the map to set the value of the new field
+        // from the old one.
+        $node
+          ->set('field_person_types', $map[$term->getName()])
+          ->save();
+      }
+    }
+
+    // Delete all the person type terms so that
+    // the vocabulary can be removed.
+    /** @var \Drupal\taxonomy\Entity\Vocabulary $terms */
+    $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('person_types', 0, NULL, TRUE);
+    /** @var \Drupal\taxonomy\Entity\Term $term */
+    foreach ($terms as $term) {
+      $term->delete();
+    }
+  }
+}
+
+/**
+ * Add people filters to existing sites.
+ */
+function sitenow_people_update_9101() {
+  // Get the current stuff.
+  $current_view = \Drupal::entityTypeManager()->getStorage('view')->load('people');
+  $current_default =& $current_view->getDisplay('default');
+  $current_displays = $current_view->get('display');
+  if ($current_view->get('status') == TRUE) {
+    $current_status = 1;
+  }
+  else {
+    $current_status = 0;
+  }
+  foreach ($current_displays as $current_display) {
+    // Override the default sort value. Assumes only one display is enabled...
+    if (isset($current_display["display_options"]["enabled"]) && $current_display["display_options"]["enabled"] == 1) {
+      $enabled_id = $current_display['id'];
+      $current_path = $current_display['display_options']['path'];
+    }
+  }
+  $current_title = $current_default['display_options']['title'];
+  $current_header = $current_default["display_options"]["header"]["area"]["content"]["value"];
+
+  // Load the new config. Wiping everything else out.
+  $config_path = Settings::get('config_sync_directory');
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('views.view.people', $source->read('views.view.people'));
+  drupal_flush_all_caches();
+
+  // Set the existing config again.
+  $view = \Drupal::entityTypeManager()->getStorage('view')->load('people');
+  $default =& $view->getDisplay('default');
+  $default["display_options"]["header"]["area"]["content"]["value"] = $current_header;
+  $default['display_options']['title'] = $current_title;
+  if ($current_status == 1) {
+    $view->set('status', TRUE);
+    $displays = $view->get('display');
+    unset($displays['default']);
+    foreach ($displays as $display) {
+      $display[$display['id']] =& $view->getDisplay($display['id']);
+      if (isset($current_path)) {
+        $display[$display['id']]['display_options']['path'] = $current_path;
+      }
+      $display[$display['id']]["display_options"]["enabled"] = FALSE;
+    }
+    if (isset($enabled_id)) {
+      $enabled_display =& $view->getDisplay($enabled_id);
+      $enabled_display["display_options"]["enabled"] = TRUE;
+    }
+  }
+  else {
+    $view->set('status', FALSE);
+  }
+
+  $view->save();
+
 }

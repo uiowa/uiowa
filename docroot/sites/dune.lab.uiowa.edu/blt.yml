@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labdune.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labdune
+  human_name: dune.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labdune.prod
+drupal:
+  db:
+    database: dune_lab_uiowa_edu
+uiowa:
+  requester: gmccrory

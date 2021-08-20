@@ -33,7 +33,7 @@ drush config-split:export mysitesplit
 
 Deploy the code changes to each environment per the normal process and import
 the configuration from the split manually.
-```drush @mysite.dev config:import --source ../config/www.mysite.uiowa.edu --partial```
+```drush @mysite.dev config:import --source ../config/mysite.uiowa.edu --partial```
 
 ## Feature Splits
 ### Weight: 80 (varies)
@@ -48,14 +48,21 @@ See config/features/README.md for more information.
 
 ## Caveats
 **DO NOT** split core.extension for your site. This will only lead to problems.
-You can blacklist individual modules that your site needs and Config Split will
-enable them.
+You can complete-split individual modules that your site needs and Config
+Split will enable them.
 
 **DO NOT** share theme-dependent configuration in the sync directory if your
-site split has blacklisted a custom theme. The shared configuration will be
+site split has complete-split a custom theme. The shared configuration will be
 deleted on export which will break BLT's configuration integrity checks. An
 example of this would be a block.
 
-**DO NOT** graylist configuration that depends on blacklisted configuration
-unless you intend to discard changes to the sync directory after every export.
-See https://www.drupal.org/project/config_split/issues/3117841 for more information.
+## Best Practices
+### Complete Split vs. Conditional Split ?
+You will need to decide whether to add your config items to the Complete Split or Conditional Split sections. Following these practices makes it easier for another developer to see at a glance which configuration is new and which is overriding existing configuration.
+* Completely split any configuration that is completely unique and not duplicated in the default configuration or another split. This would include custom content types, custom vocabularies, and custom fields added to existing content types.
+* Conditionally split configuration that is overriding existing settings, content types, etc. This would include `user.role.*.yml`, re-ordering of fields in the entity display, or the entity form.
+
+### How to split a custom content type
+A custom content type consists of several types of interrelated configuration: `node.type.*.yml`, `field.storage.*.*.yml`, `field.field.*.*.*.yml`, `core.entity_form_display.*.*.yml`, and `core.entity_view_display.*.*.yml` at a minimum. The rules of configuration dependencies mean that if you add some of these items, the others will be inferred from that. After you set up your content type, it is a good idea to run `drush @site.local cst` to see a list of the config items that are new or have changed.
+* Add the `node.type.*.yml` to the config split first. After that, run `drush @site.local csex split_name`. You will notice that many config files get exported that were not added to the split.
+* Run `drush @site.local cst` again to see what additional config elements need to be added.

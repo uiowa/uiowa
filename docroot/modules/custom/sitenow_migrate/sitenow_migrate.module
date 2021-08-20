@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @file
+ * Migrate hooks.
+ */
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function sitenow_migrate_module_implements_alter(&$implementations, $hook) {
+  if ($hook == 'migration_plugins_alter') {
+    // The migrate_drupal module alter throws an error during initial migrate
+    // commands. It seems to be caused by us not having the migrate database key
+    // set in settings.php. In any case, we don't need the migrations defined
+    // in migrate_drupal, only the plugins and classes.
+    unset($implementations['migrate_drupal']);
+
+    // Make sure our alter hook runs last.
+    $group = $implementations['sitenow_migrate'];
+    unset($implementations['sitenow_migrate']);
+    $implementations['sitenow_migrate'] = $group;
+  }
+}
+
+/**
+ * Implements hook_migration_plugins_alter().
+ */
+function sitenow_migrate_migration_plugins_alter(array &$migrations) {
+  // Filter out the default migrations provided by migrate_drupal.
+  $migrations = array_filter($migrations, function (array $migration) {
+    $group = $migration['migration_group'] ?? '';
+    return ($group != 'default');
+  });
+}

@@ -1,0 +1,32 @@
+local:
+  root: /var/www/uiowa/docroot
+  uri: labkawai.local.drupal.uiowa.edu
+  paths:
+    files: sites/kawai.lab.uiowa.edu/files
+dev:
+  uri: labkawai.dev.drupal.uiowa.edu
+  host: uiowa02dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/kawai.lab.uiowa.edu/files
+  root: /var/www/html/uiowa02.dev/docroot
+  user: uiowa02.dev
+prod:
+  uri: kawai.lab.uiowa.edu
+  host: uiowa02.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/kawai.lab.uiowa.edu/files
+  root: /var/www/html/uiowa02.prod/docroot
+  user: uiowa02.prod
+test:
+  uri: labkawai.stage.drupal.uiowa.edu
+  host: uiowa02stg.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/kawai.lab.uiowa.edu/files
+  root: /var/www/html/uiowa02.test/docroot
+  user: uiowa02.test

@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: siteschtc.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: siteschtc
+  human_name: chtc.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: siteschtc.prod
+drupal:
+  db:
+    database: chtc_sites_uiowa_edu
+uiowa:
+  requester: elitton

@@ -1,0 +1,37 @@
+@import "assets/scss/_variables.scss";
+@import "assets/scss/_utilities.scss";
+@import "components/card/_card-mixins.scss";
+
+.aggregator-feed {
+
+  .feed-description {
+    @include card-header;
+    padding-top: $md;
+  }
+
+  .field--type-timestamp {
+    display: table;
+    margin-bottom: $desktop-width-gutter;
+
+    .field__item {
+      font-weight: $font-weight-light;
+    }
+
+    .field__label {
+      &:after {
+        content: ":";
+        padding-right: $xsm;
+      }
+    }
+
+    >* {
+      display: inline;
+    }
+  }
+
+  .feed-icon {
+    @include bttn;
+    @include bttn--primary;
+    font-family: $font-family-caps-bold;
+  }
+}

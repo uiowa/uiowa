@@ -4,16 +4,6 @@ services:
     arguments: ['sitenow_migrate']
   post_rowsave_subscriber:
     class: 'Drupal\sitenow_migrate\EventSubscriber\PostRowSaveEvent'
-    arguments: [ '@entity_type.manager' ]
-    tags:
-      - { name: 'event_subscriber' }
-  post_migration_subscriber:
-    class: 'Drupal\sitenow_migrate\EventSubscriber\MigratePostImportEvent'
-    arguments: [ '@entity_type.manager', '@logger.channel.sitenow_migrate', '@database' ]
-    tags:
-      - { name: 'event_subscriber' }
-  pre_rollback_subscriber:
-    class: 'Drupal\sitenow_migrate\EventSubscriber\MigratePreRollbackEvent'
-    arguments: [ '@entity_type.manager', '@logger.channel.sitenow_migrate' ]
+    arguments: [ '@entity_type.manager', '@database' ]
     tags:
       - { name: 'event_subscriber' }

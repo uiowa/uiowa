@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: conferenceuiprehealth.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: conferenceuiprehealth
+  human_name: uiprehealth.conference.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: conferenceuiprehealth.prod
+drupal:
+  db:
+    database: uiprehealth_conference_uiowa_edu
+uiowa:
+  requester: njchen

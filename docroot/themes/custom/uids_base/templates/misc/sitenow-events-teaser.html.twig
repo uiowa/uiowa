@@ -1,33 +1,62 @@
-{%
-  set classes = [
-  'card--list'
-]
-%}
-
 {{ attach_library('classy/node') }}
 {{ attach_library('uids_base/paragraphs-lists') }}
+{{ attach_library('uids_base/event') }}
+{{ attach_library('uids_base/media') }}
 
-{% set events_card = {
-  'attributes': attributes.addClass(classes),
-  'card_image': event.image | render,
-  'card_text': event.description_text,
-  'card_author': event.date_string,
-  'card_title': event.title | render,
-  'card_subtitle': event.subtitle | render,
+{# Set the event icon #}
+{% if event.virtual %}
+  {% set event_icon = '<span role="presentation" class="fas fa-laptop"></span>' %}
+  {% set event_location = 'Virtual' %}
+{% else %}
+  {% set event_icon = '<span role="presentation" class="fas fa-map-marker-alt"></span>' %}
+  {% set event_location = event.location_name %}
+{% endif %}
+{% set style_classes = [] %}
+{% set size_classes = [] %}
+{%
+  set classes = [
+  'event-item',
+]
+%}
+{% for style in event.parent_lb_styles %}
+
+  {% set classes = classes|merge([style]) %}
+
+  {% if style starts with 'media--' %}
+    {% set style_classes = style_classes|merge([style]) %}
+  {% endif %}
+
+  {% if style starts with 'card__media' %}
+    {% set size_classes = size_classes|merge([style]) %}
+  {% endif %}
+
+{% endfor %}
+
+{% set block_card = {
+  'attributes': attributes.addClass(classes).removeClass(style_classes, size_classes),
+  'media_styles': style_classes,
+  'media_sizes': size_classes,
+  'card_image': event.image|render,
+  'card_title': event.title|render,
+  'title_prefix': title_prefix,
+  'title_suffix': title_suffix,
   'card_link_url': event.url,
-  'heading_level': event.heading_size,
-  'event_location': event.location_name|render,
-  'event_virtual': event.virtual,
+  'card_date': event.date_string,
+  'headline_level': event.heading_size,
+  'card_text': event.description_text|render,
+  'event_icon': event_icon|trans,
+  'card_tag': event_location|render,
 } %}
 
-{% embed '@uids_base/uids/card.html.twig' with events_card only %}
-  {% block card_content %}
-    {% if event_virtual %}
-      <div class="event-location"><span class="fas fa-map-marker-alt"></span> Virtual Event</div>
-    {% elseif event_location is not empty %}
-      <div class="event-location"><span class="fas fa-map-marker-alt"></span> {{ event_location }}</div>
-    {% endif %}
+{% embed '@uids_base/uids/card.html.twig' with block_card only %}
 
-    <p>{{ card_text }}</p>
+  {% block card_tag %}
+    {% if card_tag is not empty %}
+      <div class="card__label">
+        {{ event_icon }}
+        {{ card_tag }}
+      </div>
+    {% endif %}
   {% endblock %}
+
 {% endembed %}

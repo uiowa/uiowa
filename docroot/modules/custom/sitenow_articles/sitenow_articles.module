@@ -5,11 +5,13 @@
  * Article configuration for the University of Iowa.
  */
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Component\Utility\Html;
+use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\views\Entity\View;
 use Drupal\views\Views;
 use Drupal\Core\Form\FormStateInterface;
@@ -188,7 +190,7 @@ function sitenow_articles_preprocess_node(&$variables) {
           $route_name = $current_route->getRouteName();
           $variables['#cache']['contexts'][] = 'route.name';
           if (strpos($route_name, 'view.articles.') === 0) {
-            $variables['content_heading'] = 'h2';
+            $variables['heading_size'] = 'h2';
           }
 
           if ($node->hasField('field_article_source_link_direct')) {
@@ -226,11 +228,21 @@ function sitenow_articles_node_view(array &$build, EntityInterface $entity, Enti
  * Implements hook_preprocess_HOOK().
  */
 function sitenow_articles_preprocess_views_view(&$variables) {
-  switch ($variables["id"]) {
+  switch ($variables['id']) {
     case 'articles':
-      if (empty($variables["header"]["area"]["#text"])) {
-        unset($variables["header"]["area"]);
+      /** @var  \Drupal\views\ViewExecutable $view */
+      $view = $variables['view'];
+
+      if (empty($variables['header']['area']['#text'])) {
+        unset($variables['header']['area']);
       }
+
+      // If this is the page display and arguments were provided, hide the
+      // feed icons since we don't want to promote those filtered RSS feeds.
+      if ($view->current_display == 'page_articles' && !empty($view->args)) {
+        $variables['feed_icons'] = [];
+      }
+
       break;
 
   }
@@ -317,11 +329,12 @@ function sitenow_articles_preprocess_paragraph(&$variables) {
         }
         // Get field_uip_id value.
         if ($paragraph->hasField('field_uip_id')) {
-          $variables['attributes']['id'][] = Html::getUniqueId($paragraph->field_uip_id->value);
+          $variables['attributes']['id'][] = Html::getClass($paragraph->field_uip_id->value);
         }
 
         $view = Views::getView('articles_block');
         $view->setDisplay('block_articles');
+        $view->display_handler->setOption('parent_entity', $paragraph);
 
         if ($paragraph->hasField('field_reference') && !$paragraph->get('field_reference')->isEmpty()) {
           $tids = $paragraph->get('field_reference')->getValue();
@@ -457,8 +470,18 @@ function sitenow_articles_preprocess_block(&$variables) {
       $view->setArguments([$args]);
 
       // Set custom view variable to send to article teaser template.
-      if ($block->hasField('field_collection_heading_size')) {
-        $view->display_handler->setOption('content_heading', $block->field_collection_heading_size->value);
+      if ($block->hasField('field_uiowa_headline')) {
+        $headline_fields = $block->get('field_uiowa_headline')->getValue();
+        foreach ($headline_fields as $headline_field) {
+          // There isn't a headline, so set the children to this heading size.
+          if (empty($headline_field['headline'])) {
+            $view->display_handler->setOption('heading_size', $headline_field['child_heading_size']);
+          }
+          else {
+            $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
+            $view->display_handler->setOption('heading_size', $heading_size);
+          }
+        }
       }
 
       if ($block->hasField('field_collection_results') && !$block->get('field_collection_results')->isEmpty()) {
@@ -487,7 +510,14 @@ function sitenow_articles_preprocess_block(&$variables) {
       // that the appropriate render cache ID is cleared when the block changes.
       foreach ($view->result as $result_row) {
         $entity = $result_row->_entity;
-        $entity->addCacheTags($variables['content']['#cache']['tags']);
+        // Associate the block's cache tags with each entity so that the
+        // appropriate render cache ID is cleared when the block changes.
+        $cache_tags = $block->getCacheTags();
+        $entity->addCacheTags($cache_tags);
+        // Grab a fresh copy of the node.
+        $id = $entity->id();
+        Cache::invalidateTags(['node:' . $id]);
+
       }
 
       $variables['content']['view'] = $view->render();

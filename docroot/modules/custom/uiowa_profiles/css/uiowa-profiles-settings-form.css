@@ -1,0 +1,67 @@
+.tabs.form-wrapper {
+  border: none;
+  box-shadow: none;
+}
+
+.tabs .profiles-directory-fieldset {
+  margin: 0;
+  box-shadow: none;
+}
+
+.tabs .delete-profiles-instance {
+  background-color: #d94040;
+  color: #fff;
+}
+
+.tabs .delete-profiles-instance:hover {
+  background-color: #c93c3c;
+}
+
+.tabs .delete-profiles-instance:active {
+  background-color: #aa3333;
+}
+
+.tabs .tabs--list {
+  margin-bottom: -1px;
+  z-index: 1;
+  overflow-x: auto;
+  display: flex;
+  border: 1px solid #d4d4d8 !important;
+  position: relative;
+}
+
+.tabs .tabs--list .ajax-progress--throbber {
+  position: absolute;
+  width: calc(100% - 2px);
+  height: calc(100% - 20px);
+  padding: 10px;
+  right: 0;
+  background-color: rgba(255,255,255,.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tabs .tabs--list .button {
+  margin: 0;
+  border-radius: 0;
+  border: none !important;
+  border-right: 1px solid #bfbfbf !important;
+  border-bottom: none !important;
+  flex: auto;
+}
+
+.tabs .tabs--list .button.add-directory[aria-selected="false"]  {
+  border-right: none !important;
+  background-color: #e9e9e9;
+}
+
+.tabs .tabs--list .button[aria-selected="true"] {
+  background-color: white;
+  box-shadow: none;
+}
+
+.tabs .tabs--list .button[aria-selected="false"] {
+  background-color: #d4d4d8;
+  box-shadow: none;
+}

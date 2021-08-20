@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: cdd.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: cdd
+  human_name: cdd.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: cdd.prod
+drupal:
+  db:
+    database: cdd_uiowa_edu
+uiowa:
+  requester: lstrathearn

@@ -1,0 +1,69 @@
+uuid: 690981b3-3952-4fb6-88ec-3adcf7165890
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.fragment.stat.field_stat_content
+    - field.field.fragment.stat.field_stat_excerpt
+    - field.field.fragment.stat.field_stat_figure
+    - field.field.fragment.stat.field_stat_figure_pre
+    - field.field.fragment.stat.field_stat_figure_suf
+    - fragments.fragment_type.stat
+  module:
+    - heading
+    - user
+id: fragment.stat.default
+targetEntityType: fragment
+bundle: stat
+mode: default
+content:
+  field_stat_content:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_stat_excerpt:
+    weight: 2
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_stat_figure:
+    weight: 5
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: heading
+    region: content
+  field_stat_figure_pre:
+    weight: 3
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_stat_figure_suf:
+    weight: 4
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  user_id:
+    label: hidden
+    type: author
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true
+  title: true

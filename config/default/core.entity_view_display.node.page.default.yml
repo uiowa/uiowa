@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.page.body
+    - field.field.node.page.field_featured_image_display
     - field.field.node.page.field_image
     - field.field.node.page.field_meta_tags
     - field.field.node.page.field_publish_options
@@ -34,7 +35,7 @@ third_party_settings:
             section_margin_remove_default_margins: section_margin_remove_default_margins
             0: ''
         components:
-          051b1326-800c-40ca-b518-98ce13ca4e6f:
+          -
             uuid: 051b1326-800c-40ca-b518-98ce13ca4e6f
             region: content
             configuration:
@@ -59,10 +60,10 @@ third_party_settings:
         layout_settings:
           label: Header
           layout_builder_styles_style:
-            section_margin_edge_to_edge: section_margin_edge_to_edge
-            0: ''
+            - ''
+            - section_margin_edge_to_edge
         components:
-          40b768ff-6e34-4257-9398-d83430b061e8:
+          -
             uuid: 40b768ff-6e34-4257-9398-d83430b061e8
             region: content
             configuration:
@@ -73,7 +74,7 @@ third_party_settings:
               context_mapping: {  }
             additional: {  }
             weight: 0
-          56a58312-d93e-4d32-84a0-39b2a2fc89fb:
+          -
             uuid: 56a58312-d93e-4d32-84a0-39b2a2fc89fb
             region: content
             configuration:
@@ -92,7 +93,7 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: 1
-          b444f835-62e1-4e31-b433-22fe88ef3372:
+          -
             uuid: b444f835-62e1-4e31-b433-22fe88ef3372
             region: background
             configuration:
@@ -118,6 +119,7 @@ third_party_settings:
               2: 2
               3: 3
               4: 4
+              5: 5
               6: 6
               8: 8
       -
@@ -125,7 +127,7 @@ third_party_settings:
         layout_settings:
           label: Content
         components:
-          c8d974cb-667f-4e0d-8716-d2a77004e0e1:
+          -
             uuid: c8d974cb-667f-4e0d-8716-d2a77004e0e1
             region: sidebar
             configuration:
@@ -133,11 +135,11 @@ third_party_settings:
               label: 'Main navigation'
               provider: menu_block
               label_display: '0'
-              follow: 1
+              follow: true
               follow_parent: '0'
               level: 2
               depth: 0
-              expand: 0
+              expand: false
               parent: 'main:'
               suggestion: main
               context_mapping: {  }
@@ -145,7 +147,7 @@ third_party_settings:
               layout_builder_styles_style:
                 block_menu_vertical: block_menu_vertical
             weight: 0
-          e6fa78b4-cacc-4d27-baa3-f29dde0b845b:
+          -
             uuid: e6fa78b4-cacc-4d27-baa3-f29dde0b845b
             region: content
             configuration:
@@ -182,8 +184,8 @@ third_party_settings:
         Forms: {  }
         'Lists (Views)': {  }
         Menus:
-          - 'menu_block:main'
           - 'system_menu_block:main'
+          - 'menu_block:main'
         Superfish: {  }
         System: {  }
         'University of Iowa Alerts': {  }
@@ -193,9 +195,11 @@ third_party_settings:
         core: {  }
       blacklisted_blocks:
         'Custom block types':
+          - uiowa_hero
           - uiowa_page_title_hero
           - uiowa_spacer_separator
         'Inline blocks':
+          - 'inline_block:uiowa_hero'
           - 'inline_block:uiowa_page_title_hero'
           - 'inline_block:uiowa_spacer_separator'
     allowed_block_categories:
@@ -206,8 +210,11 @@ third_party_settings:
       - Devel
       - Forms
       - 'Inline blocks'
+      - Lists
       - 'Lists (Views)'
       - Menus
+      - 'Site custom'
+      - 'SiteNow Dispatch'
       - Superfish
       - System
       - 'University of Iowa Alerts'
@@ -222,39 +229,39 @@ third_party_settings:
         - layout_fourcol
         - layout_page
       blacklisted_blocks:
-        layout_onecol: {  }
-        layout_twocol:
-          all_regions:
-            'Custom block types':
-              - uiowa_banner
-              - uiowa_hero
-            'Inline blocks':
-              - 'inline_block:uiowa_banner'
-              - 'inline_block:uiowa_hero'
-        layout_threecol:
-          all_regions:
-            'Custom block types':
-              - uiowa_banner
-              - uiowa_hero
-            'Inline blocks':
-              - 'inline_block:uiowa_banner'
-              - 'inline_block:uiowa_hero'
         layout_fourcol:
           all_regions:
             'Custom block types':
-              - uiowa_banner
-              - uiowa_hero
+              - uiowa_slider
+              - uiowa_timeline
             'Inline blocks':
-              - 'inline_block:uiowa_banner'
-              - 'inline_block:uiowa_hero'
+              - 'inline_block:uiowa_slider'
+              - 'inline_block:uiowa_timeline'
+        layout_onecol: {  }
         layout_page:
           all_regions:
             'Custom block types':
-              - uiowa_banner
-              - uiowa_hero
+              - uiowa_slider
+              - uiowa_timeline
             'Inline blocks':
-              - 'inline_block:uiowa_banner'
-              - 'inline_block:uiowa_hero'
+              - 'inline_block:uiowa_slider'
+              - 'inline_block:uiowa_timeline'
+        layout_threecol:
+          all_regions:
+            'Custom block types':
+              - uiowa_slider
+              - uiowa_timeline
+            'Inline blocks':
+              - 'inline_block:uiowa_slider'
+              - 'inline_block:uiowa_timeline'
+        layout_twocol:
+          all_regions:
+            'Custom block types':
+              - uiowa_slider
+              - uiowa_timeline
+            'Inline blocks':
+              - 'inline_block:uiowa_slider'
+              - 'inline_block:uiowa_timeline'
       whitelisted_blocks: {  }
 _core:
   default_config_hash: 0AcX0F0voV5TKB6_GPZxJpAfbKCnDU7er_5TWcqIgSw
@@ -290,6 +297,7 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_featured_image_display: true
   field_meta_tags: true
   field_publish_options: true
   field_tags: true

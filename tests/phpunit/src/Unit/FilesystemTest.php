@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\sitenow\Unit;
+namespace Uiowa\Tests\PHPUnit\Unit;
 
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Drupal\Tests\UnitTestCase;
@@ -29,7 +29,14 @@ class FilesystemTest extends UnitTestCase {
    * Test that the robots.txt file does not exist.
    */
   public function testRobotsTxtDoesNotExist() {
-    $this->assertFileNotExists($this->root . '/robots.txt');
+    $this->assertFileDoesNotExist($this->root . '/robots.txt');
+  }
+
+  /**
+   * Test that the hash salt exists.
+   */
+  public function testHashSaltExists() {
+    $this->assertFileExists($this->root . '/../salt.txt');
   }
 
   /**
@@ -52,7 +59,7 @@ class FilesystemTest extends UnitTestCase {
 \$sites['$test'] = '$site';
 \$sites['$prod'] = '$site';
 EOD;
-      $this->assertContains($needle, $haystack);
+      $this->assertStringContainsString($needle, $haystack);
     }
   }
 
@@ -70,7 +77,7 @@ if (isset(\$config_directories['vcs'])) {
 }
 EOD;
 
-    $this->assertContains($needle, $haystack);
+    $this->assertStringContainsString($needle, $haystack);
 
     $needle = <<<EOD
 if (InstallerKernel::installationAttempted() && php_sapi_name() != 'cli') {
@@ -78,7 +85,7 @@ if (InstallerKernel::installationAttempted() && php_sapi_name() != 'cli') {
 }
 EOD;
 
-    $this->assertContains($needle, $haystack);
+    $this->assertStringContainsString($needle, $haystack);
   }
 
   /**
@@ -89,9 +96,6 @@ EOD;
 
     foreach ($sites as $site) {
       $path = "docroot/sites/{$site}";
-
-      // Output the site to the console to identify test failures.
-      fwrite(STDERR, $site . PHP_EOL);
 
       $this->assertFileExists("{$path}/blt.yml");
       $this->assertFileExists("{$path}/default.local.drush.yml");
@@ -127,7 +131,7 @@ EOD;
       $file = "{$path}/settings.php";
       $this->assertFileExists($file);
       $haystack = file_get_contents($file);
-      $this->assertContains($needle, $haystack);
+      $this->assertStringContainsString($needle, $haystack);
 
       // Test Drush aliases.
       $yaml = Yaml::parseFile($this->root . "/../drush/sites/{$id}.site.yml");

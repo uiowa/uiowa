@@ -1,5 +1,6 @@
 @import "uids/assets/scss/_variables.scss";
 @import "uids/assets/scss/_utilities.scss";
+@import "components/card/_card-mixins.scss";
 
 article.node--type-article,
 div[role=article].node--type-article {
@@ -130,7 +131,7 @@ div[role=article].node--type-article {
 
 article.node--type-article {
   .block-extra-field-blocknodearticlearticle-created-date {
-    margin: $gutter 0 $sm;
+    margin: 0 0 $sm;
   }
 
   .block-field-blocknodearticlefield-article-source-org+.block-field-blocknodearticlefield-article-source-link:before {
@@ -191,7 +192,6 @@ div[role=article].node--type-article.node--view-mode-teaser {
 .page-node-type-article .hero {
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
-  margin-bottom: $gutter;
   box-sizing: border-box;
   -webkit-transform: translateX(calc(50vw - 50%));
   transform: translateX(calc(50vw - 50%));

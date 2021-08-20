@@ -1,0 +1,28 @@
+uuid: d24e47b2-3199-4a53-b189-daf2fc6ae72a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_ar_intro
+    - paragraphs.paragraphs_type.admissions_requirement
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    minimal: minimal
+    plain_text: plain_text
+    filtered_html: '0'
+    full_html: '0'
+id: paragraph.admissions_requirement.field_ar_intro
+field_name: field_ar_intro
+entity_type: paragraph
+bundle: admissions_requirement
+label: Introduction
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

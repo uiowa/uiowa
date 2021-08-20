@@ -1,0 +1,22 @@
+uuid: cafe33ac-54cc-47bc-86e4-4c0e2514b03a
+langcode: en
+status: true
+dependencies: {  }
+id: writinguniversity_migrate
+label: 'Writing University Migrate'
+description: 'Migrations for the Writing University'
+folder: ./modules/custom/writinguniversity_migrate/config/split
+module:
+  migrate: 0
+  migrate_plus: 0
+  migrate_tools: 0
+  sitenow_migrate: 0
+theme: {  }
+blacklist:
+  - config_split.config_split.writinguniversity_migrate
+  - migrate_plus.migration.d7_writinguniversity_blog
+  - migrate_plus.migration.d7_writinguniversity_blog_redirect
+graylist: {  }
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 80

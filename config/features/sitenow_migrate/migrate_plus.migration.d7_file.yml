@@ -13,12 +13,10 @@ migration_tags:
   - Content
   - Files
 migration_group: sitenow_migrate
-label: Files
+label: Public files
 source:
   plugin: files
-  constants:
-    SOURCE_BASE_PATH: ''
-    DRUPAL_FILE_DIRECTORY: ''
+  scheme: public
 process:
   filename:
     plugin: get
@@ -28,8 +26,8 @@ process:
       plugin: concat
       delimiter: /
       source:
-        - constants/SOURCE_BASE_PATH
-        - uri
+        - constants/source_base_path
+        - filepath
     -
       plugin: urlencode
   destination_full_path:
@@ -37,7 +35,7 @@ process:
       plugin: concat
       delimiter: /
       source:
-        - constants/DRUPAL_FILE_DIRECTORY
+        - constants/drupal_file_directory
         - filename
     -
       plugin: urlencode

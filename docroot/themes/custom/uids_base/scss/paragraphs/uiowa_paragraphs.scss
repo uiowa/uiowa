@@ -100,7 +100,6 @@
 
   .paragraph--type--accordion,
   .paragraph--type--card,
-  .paragraph--type--events,
   .paragraph--type--articles,
   .paragraph--type--featured-content,
   .paragraph--type--carousel {
@@ -221,9 +220,10 @@ div.example2 p.special {
 
   .paragraph--type--text.col-md-12 {
     padding-top: 0;
-      &[class*="bg-"] {
-        padding-top: $gutter;
-      }
+
+    &[class*="bg-"] {
+      padding-top: $gutter;
+    }
   }
 }
 
@@ -238,15 +238,16 @@ div.example2 p.special {
   }
 }
 
-.layout--page--paragraph.title-invisible .block-field-blocknodepagefield-page-content-block .field__item:first-child .paragraph--type--section {
-
-  &.bg-light:first-child,
-  &.bg-dark:first-child,
-  &.bg-black:first-child,
-  &.bg-yellow:first-child {
-    margin-top: 0;
-  }
-}
+// @todo Remove if unnecessary.
+//.layout--page--paragraph.title-invisible .block-field-blocknodepagefield-page-content-block .field__item:first-child .paragraph--type--section {
+//
+//  &.bg-light:first-child,
+//  &.bg-dark:first-child,
+//  &.bg-black:first-child,
+//  &.bg-yellow:first-child {
+//    margin-top: 0;
+//  }
+//}
 
 .layout--onecol--background+.layout--page--paragraph .block-field-blocknodepagefield-page-content-block .field__item:first-child .paragraph--type--section {
 
@@ -268,12 +269,22 @@ div.example2 p.special {
   }
 }
 
-.layout--onecol--no--background.title-invisible+.layout--page--paragraph .block-field-blocknodepagefield-page-content-block .field__item:first-child .paragraph--type--section {
+.layout--onecol--no--background+.layout__container.page__container--edge.layout--no-sidebar:not([class*=bg-]) {
+  padding-top: 0;
+  padding-bottom: 0;
+}
 
-  &.paragraph--type--text &.bg-light:first-child,
-  &.bg-dark:first-child,
-  &.bg-black:first-child,
-  &.bg-yellow:first-child {
-    margin-top: 0;
+/*
+   * @todo Should this be moved to scss/layouts/onecol.scss or
+   *   scss/layouts/onecol--background.scss?
+   */
+
+// Removes container padding from paragraph pages like https://hawkeyemarchingband.local.drupal.uiowa.edu/auditions
+.layout__container {
+  &.layout--onecol--no--background:not([class*="layout--title"]),
+  &.layout--no-sidebar,
+  &.layout--has-sidebar.sidebar-invisible {
+    padding-top: 0;
+    padding-bottom: 0;
   }
 }

@@ -7,6 +7,49 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\google_tag\Entity\Container;
+use Drupal\uiowa_core\HeadlineHelper;
+
+/**
+ * Implements hook_config_schema_info_alter().
+ */
+function uiowa_core_config_schema_info_alter(&$definitions) {
+  // Make sure that the order of filters in the config export file is always
+  // the same, to avoid false positive differences.
+  // @see https://www.drupal.org/project/drupal/issues/2852557#comment-12703225
+  // @todo Remove this after https://www.drupal.org/project/drupal/issues/2855675.
+  $definitions['filter.format.*']['mapping']['filters']['orderby'] = 'key';
+}
+
+/**
+ * Implements hook_theme().
+ */
+function uiowa_core_theme($existing, $type, $theme, $path) {
+  return [
+    'uiowa_core_headline' => [
+      'variables' => [
+        'headline' => NULL,
+        'hide_headline' => FALSE,
+        'heading_size' => 'h2',
+        'headline_style' => 'default',
+      ],
+    ],
+  ];
+}
+
+/**
+ * Preprocess function uiowa_core_headline.
+ */
+function template_preprocess_uiowa_core_headline(&$variables) {
+  if ($variables['hide_headline'] == TRUE) {
+    $style = 'sr-only';
+  }
+  else {
+    $style = HeadlineHelper::getStyles()[$variables['headline_style']];
+  }
+
+  $variables['headline_style'] = $style;
+
+}
 
 /**
  * Implements hook_page_attachments().
@@ -19,6 +62,11 @@ function uiowa_core_page_attachments(&$page) {
     if ($env == 1) {
       $page['#attached']['library'][] = 'uiowa_core/gtag';
     }
+  }
+
+  $theme = \Drupal::theme()->getActiveTheme()->getName();
+  if ($theme === 'claro') {
+    $page['#attached']['library'][] = 'uiowa_core/claro-node-form';
   }
 }
 
@@ -33,7 +81,7 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       // currently being blocked from being inserted.
       if ($uiowa_core_gtag == '0') {
         \Drupal::messenger()
-          ->addWarning(t('Local Google Tag Manager container snippets are are currently blocked from being inserted on this website. Please contact the ITS HelpDesk about enabling this functionality.'));
+          ->addWarning(t('Local Google Tag Manager container snippets are currently blocked from being inserted on this website. Please contact the ITS Help Desk about enabling this functionality.'));
       }
       break;
 
@@ -61,6 +109,38 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       }
       break;
 
+    case 'menu_link_content_menu_link_content_form':
+      // All checked or unchecked this seems to do the same. Hide until we
+      // have a use-case.
+      if (isset($form["menu_per_role__show_role"])) {
+        $form["menu_per_role__show_role"]['#access'] = FALSE;
+      }
+      // Allow menu items to be hidden to anonymous user with an opt-in process.
+      if (isset($form["menu_per_role__hide_role"])) {
+        // Show message if hidden.
+        if (!empty($form["menu_per_role__hide_role"]["widget"]["#default_value"])) {
+          \Drupal::messenger()
+            ->addWarning(t('This menu item is currently being hidden. Please contact an user with the "administer menu link visibility" permission.'));
+        }
+
+        // Only want folks controlling anonymous visibility.
+        $options = [];
+        foreach ($form["menu_per_role__hide_role"]["widget"]["#options"] as $key => $option) {
+          if ($key == 'anonymous') {
+            $options[$key] = $option;
+            break;
+          }
+        }
+        $form["menu_per_role__hide_role"]["widget"]["#options"] = $options;
+
+        // Put functionality behind permission.
+        if (!\Drupal::currentUser()
+          ->hasPermission('administer menu link visibility')) {
+          $form["menu_per_role__hide_role"]['#access'] = FALSE;
+        }
+      }
+      break;
+
   }
 }
 
@@ -73,5 +153,38 @@ function uiowa_core_google_tag_insert_alter(&$satisfied, Container $container) {
   // Determine if site specific Google Tag should be inserted.
   if ($uiowa_core_gtag == '0' || $env == 0) {
     $satisfied = FALSE;
+  }
+}
+
+/**
+ * Implements hook_preprocess_html().
+ */
+function uiowa_core_preprocess_html(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if ($admin_context->isAdminRoute()) {
+    /** @var \Drupal\Core\Theme\ActiveTheme $active_theme */
+    $active_theme_name = \Drupal::service('theme.manager')->getActiveTheme()->getName();
+    $default_theme_name = \Drupal::config('system.theme')->get('default');
+    if ($active_theme_name === 'claro' && $default_theme_name === 'uids_base') {
+      $config_factory = \Drupal::configFactory();
+      $config = $config_factory->getEditable('uids_base.settings');
+
+      // Only set 'text--serif' if 'fonts.font-family' setting is set to serif.
+      if ($config->get('fonts.font-family') === 'serif') {
+        $variables['attributes']['class'][] = 'text--serif';
+        $variables['#attached']['library'][] = 'uids_base/global-serif';
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_local_tasks_alter().
+ */
+function uiowa_core_menu_local_tasks_alter(&$variables) {
+  $logged_in = \Drupal::currentUser()->isAuthenticated();
+  if ($logged_in) {
+    $variables['tabs'][0]['entity.node.delete_form']['#weight'] = 100;
+    $variables['tabs'][0]['entity.taxonomy_term.delete_form']['#weight'] = 100;
   }
 }

@@ -1,0 +1,23 @@
+uuid: de43c4ba-c615-47fb-853f-e06c79aec2b0
+langcode: en
+status: true
+dependencies: {  }
+id: international_migrate
+label: 'International Migrate'
+description: 'Migrations for International'
+folder: ./sites/international.uiowa.edu/modules/internationl_migrate/config/split
+module:
+  migrate: 0
+  migrate_drupal: 0
+  migrate_plus: 0
+  migrate_tools: 0
+  international_migrate: 0
+  sitenow_migrate: 0
+theme: {  }
+blacklist:
+  - config_split.config_split.international_migrate
+  - 'migrate_plus.migration.international_*'
+graylist: {  }
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 80

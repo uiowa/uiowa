@@ -7,6 +7,10 @@
     'site_url': path('<front>'),
   } %}
 
+  {% if page.action_menu %}
+    {{ page.action_menu }}
+  {% endif %}
+
   {% if page.search_menu %}
     {{ page.header_search }}
   {% endif %}

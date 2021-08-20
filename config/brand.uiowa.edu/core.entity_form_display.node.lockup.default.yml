@@ -9,7 +9,7 @@ dependencies:
     - field.field.node.lockup.field_lockup_s_unit_stacked
     - field.field.node.lockup.field_lockup_sub_unit
     - node.type.lockup
-    - workflows.workflow.editorial
+    - workflows.workflow.lockup
   module:
     - content_moderation
     - path
@@ -26,13 +26,9 @@ content:
     third_party_settings: {  }
   field_lockup_org:
     weight: 1
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-      match_limit: 10
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: options_select
     region: content
   field_lockup_p_unit_stacked:
     weight: 4

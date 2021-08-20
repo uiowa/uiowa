@@ -3,6 +3,17 @@
 
 .uids-content {
 
+  .button--primary {
+
+
+    [class*="bg--gray"] &,
+    [class*="bg--white"] &,
+    .bg-pattern--brain &,
+    .bg--white--pattern--brain & {
+      background: $primary;
+    }
+  }
+
   fieldset {
     margin: 1rem 0;
     padding: 1.11111rem;
@@ -125,6 +136,7 @@
   [type='time'],
   [type='url'],
   [type='color'],
+  #apr-query-input.form-control,
   textarea {
     display: block;
     box-sizing: border-box;
@@ -256,7 +268,6 @@
   label {
     display: block;
     margin: 0;
-    color: $secondary;
     font-size: $small-font-size;
     font-weight: $font-weight-bold;
     line-height: 1.8;
@@ -673,21 +684,28 @@
   font-family: $font-family-caps-bold;
   border: 1px solid #FFCD00;
 }
+
 .uids-content .help-text,
 .uids-content .description {
   font-style: normal;
 }
+
 .views-exposed-form.uids-content:not(.uids-search) {
   padding: 5px 19px;
+
   .form--inline {
     align-items: flex-start;
   }
-  .form-item, .form-actions {
+
+  .form-item,
+  .form-actions {
     margin-right: 1em;
   }
+
   .form-actions {
     margin-top: 2.5em;
   }
+
   .button {
     @include bttn--secondary;
     border: 0;
@@ -696,14 +714,11 @@
   }
 }
 
-.bg--gold,
+[class*="bg--gold"],
 .bg--brain-reversed,
 .bg-pattern--brain-reversed,
 .bg-yellow {
   & .block-webform {
-    label {
-      color: $secondary;
-    }
 
     input[id^='edit-actions-submit'],
     input#edit-actions-submit {
@@ -719,13 +734,10 @@
   }
 }
 
-.bg--black,
+[class*="bg--black"],
 .bg-pattern--brain-black,
 .bg-dark {
   & .block-webform {
-    label {
-      color: $white;
-    }
 
     input[id^='edit-actions-submit'],
     input#edit-actions-submit {

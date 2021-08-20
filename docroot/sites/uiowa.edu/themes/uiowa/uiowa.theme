@@ -1,10 +1,14 @@
 <?php
 
 /**
- * Implements hook_theme_suggestions_HOOK_alter for blocks.
+ * @file
+ * Theme functions for uiowa theme.
+ */
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
  */
 function uiowa_theme_suggestions_block_alter(&$suggestions, $variables) {
-
   // Load theme suggestions for blocks from parent theme.
   foreach ($suggestions as &$suggestion) {
     $suggestion = str_replace('uiowa_', 'uids_base_', $suggestion);

@@ -13,7 +13,7 @@ field_name: field_uiowa_slider_slides
 entity_type: block_content
 bundle: uiowa_slider
 label: Slides
-description: ''
+description: 'Add Slides to the Slider to increase the amount of content.'
 required: false
 translatable: false
 default_value: {  }
@@ -25,52 +25,13 @@ settings:
     target_bundles:
       uiowa_slide: uiowa_slide
     target_bundles_drag_drop:
-      accordion:
-        weight: 17
+      uiowa_collection_item:
+        weight: 4
         enabled: false
-      accordion_item:
-        weight: 18
-        enabled: false
-      articles:
-        weight: 19
-        enabled: false
-      blockquote:
-        weight: 20
-        enabled: false
-      card:
-        weight: 21
-        enabled: false
-      carousel:
-        weight: 22
-        enabled: false
-      carousel_image:
-        weight: 23
-        enabled: false
-      events:
-        weight: 24
-        enabled: false
-      featured_content:
-        weight: 25
-        enabled: false
-      image_gallery:
-        weight: 26
-        enabled: false
-      people:
-        weight: 27
-        enabled: false
-      section:
-        weight: 28
-        enabled: false
-      text:
-        weight: 29
-        enabled: false
-      uiowa_panel:
-        weight: 30
+      uiowa_contact:
+        weight: 5
         enabled: false
       uiowa_slide:
         enabled: true
         weight: 31
-      webform:
-        weight: 32
-        enabled: false
 field_type: entity_reference_revisions

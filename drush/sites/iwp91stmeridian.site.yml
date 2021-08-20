@@ -1,0 +1,32 @@
+local:
+  root: /var/www/uiowa/docroot
+  uri: iwp91stmeridian.local.drupal.uiowa.edu
+  paths:
+    files: sites/91stmeridian.iwp.uiowa.edu/files
+dev:
+  uri: iwp91stmeridian.dev.drupal.uiowa.edu
+  host: uiowa02dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/91stmeridian.iwp.uiowa.edu/files
+  root: /var/www/html/uiowa02.dev/docroot
+  user: uiowa02.dev
+prod:
+  uri: 91stmeridian.iwp.uiowa.edu
+  host: uiowa02.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/91stmeridian.iwp.uiowa.edu/files
+  root: /var/www/html/uiowa02.prod/docroot
+  user: uiowa02.prod
+test:
+  uri: iwp91stmeridian.stage.drupal.uiowa.edu
+  host: uiowa02stg.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/91stmeridian.iwp.uiowa.edu/files
+  root: /var/www/html/uiowa02.test/docroot
+  user: uiowa02.test

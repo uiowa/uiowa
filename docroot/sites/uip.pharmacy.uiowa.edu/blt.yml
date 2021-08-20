@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: pharmacyuip.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: pharmacyuip
+  human_name: uip.pharmacy.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: pharmacyuip.prod
+drupal:
+  db:
+    database: uip_pharmacy_uiowa_edu
+uiowa:
+  requester: btra

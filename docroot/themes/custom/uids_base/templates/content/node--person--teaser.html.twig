@@ -73,27 +73,59 @@
 
 {%
   set classes = [
-  'card--list'
+  'card--list',
+  'card--media-right',
+  'card--person-teaser',
 ]
 %}
 
-{% set heading_level = content_heading ?: 'h3' %}
+{% set headline_level = 'h3 '%}
 {% if view %}
-  {% set heading_level = view.display_handler.getOption('content_heading') %}
+  {% set headline_level = view.display_handler.getOption('heading_size') %}
+{% endif %}
+{% if heading_size %}
+  {% set headline_level = heading_size %}
 {% endif %}
 
 {{ attach_library('classy/node') }}
 {{ attach_library('uids_base/paragraphs-lists') }}
-{{ attach_library('uids_base/node-type-person') }}
+{{ attach_library('uids_base/person') }}
 
 {% set person_card = {
   'attributes': attributes.addClass(classes),
   'card_image': content.field_image | render,
-  'card_text': content|without('field_image', 'field_image', 'field_person_credential', 'links'),
-  'card_author': content.field_person_credential.0,
-  'card_title': label | render,
+  'card_text': content.field_teaser | render,
+  'card_subtitle': content.field_person_position | render,
+  'card_date': content.field_person_email | render,
+  'card_tag': content.field_person_phone | render,
+  'media_styles': ['media--circle', 'card__media--small', 'media--border'],
+  'card_title': label,
   'card_link_url': url,
-  'heading_level': heading_level,
+  'headline_level': headline_level,
 } %}
 
-{% embed '@uids_base/uids/card.html.twig' with person_card only %}{% endembed %}
+{% embed '@uids_base/uids/card.html.twig' with person_card only %}
+  {% block card_img %}
+    {% if card_image is not empty %}
+      {{ parent() }}
+    {% else %}
+      <div {{ media_attributes.addClass(media_styles, media_sizes, 'card__media') }}>
+        <div class="img--empty">&nbsp;</div>
+      </div>
+    {% endif %}
+  {% endblock %}
+  {% block card_tag %}
+    {% if card_tag is not empty %}
+      <div class="card__date">
+        {{ card_tag }}
+      </div>
+    {% endif %}
+  {% endblock %}
+  {% block card_date %}
+    {% if card_date is not empty %}
+      <div class="card__date">
+        {{ card_date }}
+      </div>
+    {% endif %}
+  {% endblock %}
+{% endembed %}

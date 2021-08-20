@@ -1,5 +1,6 @@
 services:
   uiowa_core.commands:
     class: \Drupal\uiowa_core\Commands\UiowaCoreCommands
+    arguments: ['@logger.channel.uiowa_core', '@config.factory', '@module_handler', '@purge.invalidation.factory', '@purge.queuers', '@purge.queue']
     tags:
       - { name: drush.command }

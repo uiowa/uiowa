@@ -5,13 +5,18 @@
   .view-header {
     width: 100%;
   }
+  .card__media {
+    @include breakpoint(sm) {
+      margin-top: 0;
+    }
+  }
   .view-content {
     @include list-group;
     @include list-group-flush;
   }
 
   .views-row {
-    @include list-group-item;
+    //@include list-group-item;
   }
 
   .view-content:first-child .views-row:first-child {
@@ -25,6 +30,15 @@
 
 
 .view-display-id-page_people_table {
+  table {
+    @include breakpoint(sm) {
+      display: block;
+    }
+    tbody tr:not(.is-selected):nth-child(2n),
+    tbody tr:not(.is-selected):nth-child(2n) th {
+      background-color: #fff;
+    }
+  }
   .tabledrag-changed-warning {
     // @extend .alert;
     // @extend .alert-warning;
@@ -77,5 +91,12 @@
     &.drag {
       box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     }
+  }
+}
+
+// Draggableviews weight inputs are not hidden to site visitors...
+body:not(.user-logged-in) {
+  .draggableviews-weight {
+    @include element-invisible;
   }
 }

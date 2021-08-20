@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.uiowa_collection_item.field_automatically_open
     - field.field.paragraph.uiowa_collection_item.field_collection_body
     - field.field.paragraph.uiowa_collection_item.field_collection_headline
     - paragraphs.paragraphs_type.uiowa_collection_item
@@ -13,6 +14,13 @@ targetEntityType: paragraph
 bundle: uiowa_collection_item
 mode: default
 content:
+  field_automatically_open:
+    weight: 2
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
   field_collection_body:
     weight: 1
     settings:

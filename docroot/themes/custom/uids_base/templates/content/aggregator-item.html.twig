@@ -1,0 +1,74 @@
+{#
+/**
+ * @file
+ * Theme override to present a feed item in an aggregator page.
+ *
+ * Available variables:
+ * - url: URL to the originating feed item.
+ * - title: (optional) Title of the feed item.
+ * - content: All field items. Use {{ content }} to print them all,
+ *   or print a subset such as {{ content.field_example }}. Use
+ *   {{ content|without('field_example') }} to temporarily suppress the printing
+ *   of a given element.
+ * - attributes: HTML attributes for the wrapper.
+ * - title_prefix: Additional output populated by modules, intended to be
+ *   displayed in front of the main title tag that appears in the template.
+ * - title_suffix: Additional output populated by modules, intended to be
+ *   displayed after the main title tag that appears in the template.
+ *
+ * @see template_preprocess_aggregator_item()
+ */
+#}
+{%
+  set classes = [
+  'aggregator-item',
+]
+%}
+
+{% set style_classes = [] %}
+{% set size_classes = [] %}
+{% for style in parent_lb_styles %}
+
+  {% set classes = classes|merge([style]) %}
+
+  {% if style starts with 'media--' %}
+    {% set style_classes = style_classes|merge([style]) %}
+  {% endif %}
+
+  {% if style starts with 'card__media' %}
+    {% set size_classes = size_classes|merge([style]) %}
+  {% endif %}
+
+{% endfor %}
+
+{# Set the event icon #}
+{% set event_icon = '<span role="presentation" class="fas fa-user"></span>' %}
+
+{% set aggregator_card = {
+  'attributes': attributes.addClass(classes).removeClass(style_classes, size_classes),
+  'media_styles': style_classes,
+  'media_sizes': size_classes,
+  'card_image': feed_image|render,
+  'card_title': title|render,
+  'title_prefix': title_prefix,
+  'title_suffix': title_suffix,
+  'card_link_url': url,
+  'card_date': post_date,
+  'card_tag': content.author|render,
+  'event_icon': event_icon|trans,
+  'headline_level': heading_size,
+  'card_text': content.description|render,
+} %}
+
+{% embed '@uids_base/uids/card.html.twig' with aggregator_card only %}
+
+{% block card_tag %}
+	{% if card_tag is not empty %}
+		<div class="card__label">
+			{{ event_icon }}
+			{{ card_tag }}
+		</div>
+	{% endif %}
+{% endblock %}
+
+{% endembed %}

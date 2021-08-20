@@ -1,0 +1,173 @@
+uuid: 90b3207e-dafd-4145-9e72-c7dc528f83c2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.student_profile.body
+    - field.field.node.student_profile.field_image
+    - field.field.node.student_profile.field_meta_tags
+    - field.field.node.student_profile.field_person_first_name
+    - field.field.node.student_profile.field_person_hometown
+    - field.field.node.student_profile.field_person_last_name
+    - field.field.node.student_profile.field_student_profile_attributes
+    - field.field.node.student_profile.field_student_profile_blurb
+    - field.field.node.student_profile.field_student_profile_country
+    - field.field.node.student_profile.field_student_profile_gender
+    - field.field.node.student_profile.field_student_profile_grad_date
+    - field.field.node.student_profile.field_student_profile_image
+    - field.field.node.student_profile.field_student_profile_major
+    - field.field.node.student_profile.field_student_profile_state
+    - field.field.node.student_profile.field_student_profile_videos
+    - node.type.student_profile
+  module:
+    - address
+    - content_moderation
+    - media_library
+    - metatag
+    - path
+    - text
+id: node.student_profile.default
+targetEntityType: node
+bundle: student_profile
+mode: default
+content:
+  body:
+    type: text_textarea_with_summary
+    weight: 12
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+      show_summary: false
+    third_party_settings: {  }
+    region: content
+  field_image:
+    weight: 2
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+    type: media_library_widget
+    region: content
+  field_meta_tags:
+    weight: 26
+    settings:
+      sidebar: true
+    third_party_settings: {  }
+    type: metatag_firehose
+    region: content
+  field_person_first_name:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_person_hometown:
+    weight: 5
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_person_last_name:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_student_profile_attributes:
+    weight: 11
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_student_profile_blurb:
+    weight: 10
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_student_profile_country:
+    weight: 7
+    settings: {  }
+    third_party_settings: {  }
+    type: address_country_default
+    region: content
+  field_student_profile_gender:
+    weight: 4
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_student_profile_grad_date:
+    weight: 9
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_student_profile_image:
+    type: media_library_widget
+    weight: 3
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+    region: content
+  field_student_profile_major:
+    weight: 8
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_student_profile_state:
+    weight: 6
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_student_profile_videos:
+    type: media_library_widget
+    weight: 13
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+    region: content
+  moderation_state:
+    type: moderation_state_default
+    weight: 16
+    settings: {  }
+    region: content
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 14
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 17
+    region: content
+    third_party_settings: {  }
+  url_redirects:
+    weight: 15
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  promote: true
+  sticky: true
+  title: true
+  uid: true

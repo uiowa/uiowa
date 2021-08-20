@@ -9,6 +9,7 @@
  * @see https://www.drupal.org/node/2217931
  */
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Link;
 use Drupal\Core\Render\BubbleableMetadata;
@@ -18,6 +19,9 @@ use Drupal\user\Entity\User;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\brand_core\Controller\LockupController;
 
+/**
+ * Implements hook_toolbar_alter().
+ */
 function brand_core_toolbar_alter(&$items) {
   $items["administration"]['#attached']['library'][] = 'brand_core/toolbar-overrides';
   return $items;
@@ -144,7 +148,7 @@ function brand_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
           $uid = $record->revision_uid;
           $user = User::load($uid);
           $email = $user->getEmail();
-          $username = $user->getUsername();
+          $username = $user->getAccountName();
           $timestamp = $record->revision_timestamp;
           $date = \Drupal::service('date.formatter')->format($timestamp, 'short');
           if (!empty($record->revision_log)) {
@@ -180,7 +184,7 @@ function brand_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
 /**
  * Implements hook_ENTITY_TYPE_presave().
  */
-function brand_core_node_presave(Drupal\Core\Entity\EntityInterface $entity) {
+function brand_core_node_presave(EntityInterface $entity) {
   $bundle = $entity->bundle();
   if ($bundle == 'lockup') {
     // Trim the right of values (extra, empty lines).
@@ -188,7 +192,7 @@ function brand_core_node_presave(Drupal\Core\Entity\EntityInterface $entity) {
       'field_lockup_primary_unit',
       'field_lockup_sub_unit',
       'field_lockup_p_unit_stacked',
-      'field_lockup_s_unit_stacked'
+      'field_lockup_s_unit_stacked',
     ];
     foreach ($fields as $field) {
       $value = $entity->get($field)->value;
@@ -212,7 +216,7 @@ function _brand_core_lockup_submit(array $form, FormStateInterface $form_state) 
     case 'published':
       // Generate Lockup Files if approved/published.
       $nid = $entity->id();
-      $lockup_controller = new LockupController();
+      $lockup_controller = new LockupController(\Drupal::entityTypeManager(), \Drupal::service('file_system'));
       $lockup_controller->generate($nid);
       break;
   }
@@ -270,9 +274,9 @@ function brand_core_preprocess_node(&$variables) {
             $name = Html::cleanCssIdentifier($path);
             $state = $node->get('moderation_state')->value;
             if ($state == 'published') {
-              $alias = \Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $nid);
+              $alias = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
               $variables['content']['download'] = [
-                '#markup' => '<div class="my-2"><a class="btn btn-primary" href="' . $alias . '/download">Download <span class="fas fa-cloud-download-alt"></span></a></div>',
+                '#markup' => '<div class="my-2"><a class="btn btn-primary" href="' . $alias . '/download">Download <span role="presentation" class="fas fa-cloud-download-alt"></span></a></div>',
                 '#weight' => 999,
               ];
               $variables['content']['stacked'] = ['#markup' => file_create_url($lockup_dir . $nid . '/' . $name . '-LockupStacked-BLACK.svg')];
@@ -294,9 +298,9 @@ function brand_core_preprocess_views_view_field(&$variables) {
       $state = $variables["row"]->_entity->get('moderation_state')->value;
       if ($state == 'published') {
         $nid = $variables["row"]->_entity->get('nid')->value;
-        $alias = \Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $nid);
+        $alias = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
         $variables['output'] = [
-          '#markup' => '<a class="btn btn-primary" href="' . $alias . '/download">Download <span class="fas fa-cloud-download-alt"></span></a>',
+          '#markup' => '<a class="btn btn-primary" href="' . $alias . '/download">Download <span role="presentation" class="fas fa-cloud-download-alt"></span></a>',
         ];
       }
     }
@@ -356,18 +360,26 @@ function brand_core_tokens($type, $tokens, array $data, array $options, Bubbleab
  */
 function brand_core_mail($key, &$message, $params) {
   $message['from'] = \Drupal::config('system.site')->get('mail');
+  $message['reply-to'] = $message['from'];
   $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
+
   $options = [
     'langcode' => $message['langcode'],
   ];
+
   switch ($key) {
     case 'lockup-review-digest':
-      $message['subject'] = t('Brand Manual - You have @results @label to review', ['@results' => $params['results'], '@label' => $params['label']], $options);
+      $message['subject'] = t('Brand Manual - You have @results @label to review', [
+        '@results' => $params['results'],
+        '@label' => $params['label'],
+      ], $options);
+
       $message['body'][] = t('You have @results @label to review:', [
         '@results' => $params['results'],
         '@label' => $params['label'],
         '@login' => $params['login'],
       ], $options);
+
       foreach ($params['lockups'] as $lockup) {
         $message['body'][] = t('- @lockup', ['@lockup' => $lockup], $options);
       }
@@ -379,7 +391,7 @@ function brand_core_mail($key, &$message, $params) {
 /**
  * Implements hook_ENTITY_TYPE_update().
  */
-function brand_core_node_update(Drupal\Core\Entity\EntityInterface $entity) {
+function brand_core_node_update(EntityInterface $entity) {
   $type = $entity->bundle();
   if ($type == 'lockup') {
     $state = $entity->get('moderation_state')->value;
@@ -387,14 +399,14 @@ function brand_core_node_update(Drupal\Core\Entity\EntityInterface $entity) {
       case 'published':
         // Generate Lockup Files if approved/published.
         $nid = $entity->id();
-        $lockup_controller = new LockupController();
+        $lockup_controller = new LockupController(\Drupal::entityTypeManager(), \Drupal::service('file_system'));
         $lockup_controller->generate($nid);
 
-        // Try to get away with just clearing the render cache to fetch updated svgs.
+        // Try to get away with clearing the render cache to fetch updated svgs.
         \Drupal::service('cache.render')->invalidateAll();
 
-        // If available (not Local), try to clear the varnish cache for the files.
-        if (\Drupal::moduleHandler()->moduleExists('purge')) {
+        // If not Local, try to clear the varnish cache for the files.
+        if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
           $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
           $purgeQueuers = \Drupal::service('purge.queuers');
           $purgeQueue = \Drupal::service('purge.queue');

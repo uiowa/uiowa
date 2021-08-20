@@ -1,0 +1,28 @@
+uuid: 811eb779-6f0c-40d6-8874-a5251068b333
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_scholarship_renewal
+    - node.type.scholarship
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    minimal: '0'
+    filtered_html: '0'
+    full_html: '0'
+    plain_text: '0'
+id: node.scholarship.field_scholarship_renewal
+field_name: field_scholarship_renewal
+entity_type: node
+bundle: scholarship
+label: Renewal
+description: 'Information on renewal.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

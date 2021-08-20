@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: freespeech.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: freespeech
+  human_name: freespeech.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: freespeech.prod
+drupal:
+  db:
+    database: freespeech_uiowa_edu
+uiowa:
+  requester: bdlewis

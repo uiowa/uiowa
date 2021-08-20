@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labhot.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labhot
+  human_name: hot.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labhot.prod
+drupal:
+  db:
+    database: hot_lab_uiowa_edu
+uiowa:
+  requester: dbenson

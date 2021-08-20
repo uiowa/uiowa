@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labipol.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labipol
+  human_name: ipol.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labipol.prod
+drupal:
+  db:
+    database: ipol_lab_uiowa_edu
+uiowa:
+  requester: kdalrymple

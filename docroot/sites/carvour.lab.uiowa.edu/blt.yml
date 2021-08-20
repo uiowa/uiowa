@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labcarvour.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labcarvour
+  human_name: carvour.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labcarvour.prod
+drupal:
+  db:
+    database: carvour_lab_uiowa_edu
+uiowa:
+  requester: strommerl

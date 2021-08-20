@@ -1,0 +1,7 @@
+services:
+  logger.channel.uiowa_profiles:
+    parent: logger.channel_base
+    arguments: ['uiowa_profiles']
+  uiowa_profiles.client:
+    class: Drupal\uiowa_profiles\Client
+    arguments: ['@config.factory', '@logger.channel.uiowa_profiles']

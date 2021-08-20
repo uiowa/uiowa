@@ -25,51 +25,49 @@
 * @see template_preprocess_block()
 */
 #}
+{{ attach_library('uids_base/event') }}
 
-{% set event_url = content.field_uiowa_event_link[0]['#url'] %}
-{% set event_location = content.field_uiowa_event_location[0]['#context']['value'] %}
+{%
+  set classes = [
+  'card--media-left',
+  'media--border',
+  'uiowa-card-event',
+  'card--centered-left',
+  'card--alignment-left',
+]
+%}
 
+{% set event_block = {
+  'attributes': attributes.addClass(classes),
+  'card_title': content.field_uiowa_event_title[0]['#text']|render,
+  'card_image': content.field_uiowa_event_image|render,
+  'media_styles': 'media--circle',
+  'media_sizes': 'card__media--small',
+  'card_tag': content.field_uiowa_event_location[0]['#context']['value'],
+  'card_icon': content.field_uiowa_event_icon|render,
+  'card_date': content.field_uiowa_event_date|render,
+  'heading_level': content.field_uiowa_event_title[0]['#size'],
+  'card_link_url': content.field_uiowa_event_link[0]['#url'],
+  'title_prefix': title_prefix,
+  'title_suffix': title_suffix,
+} %}
 
-{% block content %}
+{% embed '@uids_base/uids/card.html.twig' with event_block only %}
 
-	{{ attach_library('uids_base/event') }}
+  {% block headline %}
+    {{ title_prefix }}
+    {{ parent() }}
+    {{ title_suffix }}
+  {% endblock %}
 
-	<div class="events-card events-card__row {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
+  {% block card_tag %}
+    {% if card_tag is not empty %}
+      <div class="card__label">
+        {{ card_icon }}
+        {{ card_tag }}
+      </div>
+    {% endif %}
+  {% endblock %}
 
-		{{ title_prefix }}
-		{{ title_suffix }}
+{% endembed %}
 
-		{% block events_card_img %}
-			{% if content.field_uiowa_event_image %}
-				<div class="events-card__image">
-					{{ content.field_uiowa_event_image }}
-				</div>
-			{% endif %}
-		{% endblock %}
-		<div class="events-card__body">
-      {% set event_headline = {
-        'heading_level' : content.field_uiowa_event_title[0]['#size'],
-        'heading_class' : 'events-card__title',
-        'heading' : content.field_uiowa_event_title[0]['#text'],
-        'heading_url' : event_url,
-      } %}
-			{% include "@uids_base/uids/heading.html.twig" with event_headline only %}
-
-			<div class="events-card__details">
-				<div class="events-card__date">
-					{{ content.field_uiowa_event_date }}
-				</div>
-
-					{% if event_location is not empty %}
-				<div class="events-card__label">
-				  {{ content.field_uiowa_event_icon }}
-					{{ content.field_uiowa_event_location }}
-				</div>
-					{% endif %}
-
-			</div>
-
-		</div>
-	</div>
-
-{% endblock %}

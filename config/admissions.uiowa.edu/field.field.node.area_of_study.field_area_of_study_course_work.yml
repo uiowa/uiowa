@@ -1,0 +1,28 @@
+uuid: baf40e3d-0b0f-4f55-8390-2674878d8b85
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_area_of_study_course_work
+    - node.type.area_of_study
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    filtered_html: '0'
+    minimal: '0'
+    full_html: '0'
+    plain_text: '0'
+id: node.area_of_study.field_area_of_study_course_work
+field_name: field_area_of_study_course_work
+entity_type: node
+bundle: area_of_study
+label: 'Course Work'
+description: "For the print version, the following adjustments can be made:\r\n<ul>\r\n<li>Pull a block of text out and display it on the right side of the page in a gray box by wrapping the content in <strong>&lt;div class=\"print__sidebar--right\"&gt;&lt;/div&gt;</strong> </li>\r\n<li>Force a set of lists to display side-by-side by wrapping each one in <strong>&lt;div class=\"print__list--column\"&gt;&lt;/div&gt;</strong>  </li>\r\n</ul>"
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

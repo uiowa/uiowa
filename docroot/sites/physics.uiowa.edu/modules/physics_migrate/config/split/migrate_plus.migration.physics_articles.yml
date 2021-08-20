@@ -1,0 +1,45 @@
+uuid: 5e37324d-8132-45c8-bd4c-9eeec52bfa68
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - physics_migrate
+id: physics_articles
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - physics
+migration_group: sitenow_migrate
+label: Articles
+source:
+  plugin: physics_articles
+  node_type: clas_news
+  constants:
+    uid_admin: 41
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  moderation_state: moderation_state
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid: constants/uid_admin
+  title: title
+  body: body
+  field_teaser: body_summary
+  field_article_source_link:
+    plugin: field_link
+    source: field_clas_news_link
+  field_article_source_link_direct: field_article_source_link_direct
+  field_tags: tags
+destination:
+  plugin: 'entity:node'
+  default_bundle: article
+migration_dependencies: null

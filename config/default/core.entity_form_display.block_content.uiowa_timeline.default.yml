@@ -1,0 +1,50 @@
+uuid: ff8bd2e9-45d4-4cd6-876d-becad07c03d2
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_timeline
+    - field.field.block_content.uiowa_timeline.field_uiowa_headline
+    - field.field.block_content.uiowa_timeline.field_uiowa_timeline_items
+  module:
+    - layout_builder_custom
+    - paragraphs
+id: block_content.uiowa_timeline.default
+targetEntityType: block_content
+bundle: uiowa_timeline
+mode: default
+content:
+  field_uiowa_headline:
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    type: uiowa_headline_widget
+    region: content
+  field_uiowa_timeline_items:
+    type: paragraphs
+    weight: 2
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: all
+      closed_mode_threshold: 0
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: uiowa_timeline_item
+      features:
+        add_above: '0'
+        collapse_edit_all: collapse_edit_all
+        duplicate: duplicate
+    third_party_settings: {  }
+    region: content
+  info:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

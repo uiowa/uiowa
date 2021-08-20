@@ -1,0 +1,22 @@
+uuid: cafe33ac-54cc-47bc-86e4-4c0e2514b03a
+langcode: en
+status: true
+dependencies: {  }
+id: engineering_migrate
+label: 'Engineering Migrate'
+description: 'Migrations for Engineering'
+folder: ./modules/custom/engineering_migrate/config/split
+module:
+  migrate: 0
+  migrate_plus: 0
+  migrate_tools: 0
+  sitenow_migrate: 0
+theme: {  }
+blacklist:
+  - config_split.config_split.engineering_migrate
+  - migrate_plus.migration.d7_engineering_article
+  - migrate_plus.migration.d7_engineering_article_redirect
+graylist: {  }
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 80

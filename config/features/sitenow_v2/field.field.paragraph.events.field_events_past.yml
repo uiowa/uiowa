@@ -1,0 +1,23 @@
+uuid: 469a1568-be2b-4058-8581-df40d87867d6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_events_past
+    - paragraphs.paragraphs_type.events
+id: paragraph.events.field_events_past
+field_name: field_events_past
+entity_type: paragraph
+bundle: events
+label: 'Display past events'
+description: 'Past events will display instead of upcoming events.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

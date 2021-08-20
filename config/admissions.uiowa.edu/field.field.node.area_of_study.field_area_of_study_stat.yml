@@ -1,0 +1,28 @@
+uuid: 60374369-88ae-4dbc-ac28-795934221836
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_area_of_study_stat
+    - fragments.fragment_type.stat
+    - node.type.area_of_study
+id: node.area_of_study.field_area_of_study_stat
+field_name: field_area_of_study_stat
+entity_type: node
+bundle: area_of_study
+label: Statistic
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:fragment'
+  handler_settings:
+    target_bundles:
+      stat: stat
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

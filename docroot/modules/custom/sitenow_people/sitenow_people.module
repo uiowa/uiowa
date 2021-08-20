@@ -9,15 +9,20 @@
  * @see https://www.drupal.org/node/2217931
  */
 
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
-use Drupal\Core\Url;
-use Drupal\views\ViewExecutable;
-use Drupal\Component\Utility\Html;
-use Drupal\views\Views;
-use Drupal\views\Entity\View;
+use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Url;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\sitenow_people\PersonTypeInterface;
+use Drupal\views\Entity\View;
+use Drupal\views\ViewExecutable;
+use Drupal\views\Views;
 
 /**
  * Implements hook_form_alter().
@@ -26,49 +31,96 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
   switch ($form_id) {
     case 'node_person_edit_form':
     case 'node_person_form':
+      $form['#prefix'] = '<div id="form-ajax-wrapper">';
+      $form['#suffix'] = '</div>';
+      // Our submit handler must execute before the layout_builder_styles one
+      // so it can take advantage of the logic there.
+      array_unshift($form['actions']['submit']['#submit'], '_sitenow_people_person_form_submit');
+
       if (isset($form['field_person_hide'])) {
         // Set field_person_hide to options group (promotion options).
         $form['field_person_hide']['#group'] = 'options';
       }
 
-      // Extended person functionality.
-      /** @var \Drupal\taxonomy\Entity\Vocabulary $terms */
-      $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('person_types');
-
-      if (empty($terms)) {
-        // If there are no terms, field_person_type is not required.
-        $form['field_person_type']['#widget']['#required'] = FALSE;
-        $form['field_person_type']['#access'] = FALSE;
-
-        // Loop through fields.
-        foreach (Element::children($form) as $field_name) {
-          // If the field name matches the pattern for person type
-          // specific fields, make it not required and set it to
-          // not be visible.
-          if (strpos($field_name, 'pt_') !== FALSE) {
-            $form[$field_name]['#widget']['#required'] = FALSE;
-            $form[$field_name]['#access'] = FALSE;
+      if (isset($form['field_person_types'])) {
+        // Remove disabled person types from select list.
+        $disabled_types = \Drupal::entityTypeManager()
+          ->getStorage('person_type')->loadByProperties(['status' => FALSE]);
+        foreach ($form['field_person_types']['widget']['#options'] as $key => $option) {
+          if (array_key_exists($key, $disabled_types)) {
+            unset($form['field_person_types']['widget']['#options'][$key]);
           }
         }
-      }
-      else {
-        // Loop through terms.
-        foreach ($terms as $term) {
-          // Loop through fields.
-          foreach (Element::children($form) as $field_name) {
-            // Check for match of term name (lower-cased) in the field name.
-            if (strpos($field_name, 'pt_' . strtolower($term->name)) !== FALSE) {
-              // Add '#states' condition to matching fields to be visible
-              // when tid is selected in field_person_type.
-              // @todo Do we need to account for the possibility of changing
-              //   the widget type?
-              $form[$field_name]['#states']['visible'][] = [
-                ':input[name="field_person_type[' . $term->tid . ']"]' => [
+        $allowed_types = \Drupal::entityTypeManager()
+          ->getStorage('person_type')->loadByProperties(['status' => TRUE]);
+        // Loop through fields.
+        foreach (Element::children($form) as $field_name) {
+          $conditions = [];
+          // Loop through allowed types looking for field name.
+          foreach ($allowed_types as $key => $type) {
+            $allowed_fields = $type->getAllowedFields();
+            // If match, create a visibility condition.
+            if (in_array($field_name, $allowed_fields)) {
+              $conditions[] = [
+                ':input[name="field_person_types[' . $key . ']"]' => [
                   'checked' => TRUE,
                 ],
               ];
             }
           }
+          // If any conditions have been set, add them to the field.
+          if (!empty($conditions)) {
+            $form[$field_name] += [
+              '#states' => [
+                'visible' => $conditions,
+              ],
+            ];
+          }
+        }
+        // Show/hide person type statuses based on person type selections.
+        $form['field_person_types']['widget']['#ajax'] = [
+          'callback' => '_person_types_callback',
+          'event' => 'change',
+          'wrapper' => 'form-ajax-wrapper',
+          'speed' => 'fast',
+          'progress' => [
+            'type' => 'throbber',
+            'message' => t('Please wait...'),
+          ],
+        ];
+
+        $type_selections = [];
+
+        if (!empty($form_state->getValue('field_person_types'))) {
+          $types = $form_state->getValue('field_person_types');
+          // Adjust structure of array.
+          foreach ($types as $value) {
+            $type_selections[] = $value['target_id'];
+          }
+        }
+        elseif (!empty($form['field_person_types']['widget']['#default_value'])) {
+          $type_selections = $form['field_person_types']['widget']['#default_value'];
+        }
+        else {
+          $form['field_person_type_status']['#access'] = FALSE;
+          return $form;
+        }
+
+        if (!empty($type_selections) && isset($form['field_person_type_status'])) {
+          $person_type_status_options = $form['field_person_type_status']['widget']['#options'];
+          foreach ($person_type_status_options as $key => $option) {
+            // Unset options that aren't associated with selected person type.
+            if (!in_array($key, $type_selections)) {
+              unset($person_type_status_options[$key]);
+            }
+          }
+          if (!empty($person_type_status_options)) {
+            $form['field_person_type_status']['widget']['#options'] = $person_type_status_options;
+          }
+          else {
+            $form['field_person_type_status']['#access'] = FALSE;
+          }
+
         }
       }
 
@@ -79,9 +131,230 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
           $form['field_person_website']['widget'][$k]['title']['#title'] = t('Label');
         }
       }
+      break;
 
+    case 'layout_builder_add_block':
+    case 'layout_builder_update_block':
+      if (isset($form['settings'])
+        && isset($form['settings']['override'])
+        && isset($form['settings']['override']['exposed_filters'])
+      ) {
+        // Add custom validation for certain blocks/regions to validate.
+        $form['#validate'][] = '_sitenow_people_exposed_filters_validate';
+        $form['#prefix'] = '<div id="form-ajax-wrapper">';
+        $form['#suffix'] = '</div>';
+        // Add custom process callback to alter exposed filters.
+        $form['settings']['override']['exposed_filters']['#process'][] = '_sitenow_people_process_people_block_filters';
+      }
       break;
   }
+}
+
+/**
+ * Custom process block form elements.
+ *
+ * @param array $element
+ *   The current block element.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current form state.
+ *
+ * @return array
+ *   The processed block element.
+ */
+function _sitenow_people_process_people_block_filters(array $element, FormStateInterface $form_state, array &$form) {
+  /** @var \Drupal\layout_builder\SectionComponent $component */
+  $component = $form_state
+    ->getFormObject()
+    ->getCurrentComponent();
+  $block = $component
+    ->getPlugin();
+
+  switch ($block->getPluginId()) {
+    case 'views_block:people_list_block-list_card':
+
+      // Check if values or defaults are set for exposed filters
+      // and leave the container open if so.
+      foreach (Element::children($element) as $field_name) {
+        $default = $element[$field_name]['#default_value'] ?: NULL;
+        $filter = $form_state->getValue([
+          'settings',
+          'override',
+          'exposed_filters',
+          $field_name,
+        ]);
+        if ($filter || $default) {
+          $element['#open'] = TRUE;
+          break;
+        }
+      }
+
+      // Only continue if person type filter exists.
+      if (!isset($element['field_person_types_target_id'])) {
+        break;
+      }
+
+      // Display person types as a select list.
+      _sitenow_people_person_type_filter_select($element['field_person_types_target_id']);
+
+      // Only continue if person type status filter exists.
+      if (!isset($element[PersonTypeInterface::STATUS_FILTER])) {
+        break;
+      }
+
+      /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+      $check = \Drupal::service('uiowa_core.access_checker');
+
+      /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+      $access = $check->access(\Drupal::currentUser()->getAccount());
+
+      // Only allow admins access to the person type status filter for now.
+      if ($access->isForbidden()) {
+        $element[PersonTypeInterface::STATUS_FILTER . '_wrapper']['#access'] = FALSE;
+        break;
+      }
+
+      // Show/hide person type statuses based on person type selections.
+      $element['field_person_types_target_id']['#ajax'] = [
+        'callback' => '_person_types_callback',
+        'event' => 'change',
+        'wrapper' => 'form-ajax-wrapper',
+        'speed' => 'fast',
+        'progress' => [
+          'type' => 'throbber',
+          'message' => t('Please wait...'),
+        ],
+      ];
+
+      $person_type_options = $element['field_person_types_target_id']['#options'];
+      $person_type_status_options = $element[PersonTypeInterface::STATUS_FILTER . '_wrapper'][PersonTypeInterface::STATUS_FILTER]['#options'];
+
+      foreach ($person_type_options as $key => $option) {
+        if (isset($person_type_status_options[$key])) {
+          $element[PersonTypeInterface::STATUS_FILTER . '_wrapper']['#states']['visible'][] = [
+            ':input[name="settings[override][exposed_filters][field_person_types_target_id]"]' => [
+              'value' => $key,
+            ],
+          ];
+        }
+      }
+
+      // If this is the update form and the form has not been
+      // submitted.
+      if ($form['#form_id'] === 'layout_builder_update_block'
+        && !$form_state->isProcessingInput()
+      ) {
+        // Check if $form_state has person type value set.
+        $type = $form_state->getValue([
+          'settings',
+          'override',
+          'exposed_filters',
+          'field_person_types_target_id',
+        ]);
+
+        // If not, check if the default value is set.
+        if (!$type && !empty($element['field_person_types_target_id']['#default_value'])) {
+          $type = $element['field_person_types_target_id']['#default_value'];
+        }
+
+        // Set person type status options based on the type.
+        if ($type) {
+          _person_type_status_filter_options($element[PersonTypeInterface::STATUS_FILTER . '_wrapper'][PersonTypeInterface::STATUS_FILTER], $type);
+        }
+      }
+
+      // @todo Clean this up. We are
+      //   manually updating the default values
+      //   to match the previously set filter values,
+      //   which are available in the saved block config.
+      //   This ensures the exposed filters on the form
+      //   properly match the previously selected filter values.
+      foreach ([
+        'field_person_type_status_value',
+        'field_person_type_status_value_op',
+      ] as $field) {
+        $element[PersonTypeInterface::STATUS_FILTER . '_wrapper'][$field]['#default_value'] = $block->getConfiguration()['exposed_filter_values'][PersonTypeInterface::STATUS_FILTER . '_wrapper'][$field];
+      }
+
+      break;
+
+  }
+  return $element;
+}
+
+/**
+ * Validation callback.
+ */
+function _sitenow_people_exposed_filters_validate(array &$form, FormStateInterface $form_state) {
+  // @todo Potentially set the correct values here?
+  //   Also potentially need to scope the following:
+  //   We take our filter operators out of their wrapper,
+  //   and place them within their parent container to be
+  //   passed to the view.
+  foreach ([
+    'field_person_type_status_value',
+    'field_person_type_status_value_op',
+  ] as $field) {
+    $form_state->setValue(
+      ['settings',
+        'override',
+        'exposed_filters',
+        $field,
+      ],
+      $form_state->getValue(
+        ['settings',
+          'override',
+          'exposed_filters',
+          'field_person_type_status_value_wrapper',
+          $field,
+        ]
+      )
+    );
+  }
+}
+
+/**
+ * Custom callback for person types field.
+ */
+function _person_types_callback(array &$form, FormStateInterface $form_state) {
+  // @todo Do these modifications need to be scoped to just run when
+  //   the triggering element is the person types filter? Currently
+  //   we're skipping if we're on a node form, but scoping could be
+  //   more specific.
+  if (in_array($form['#form_id'], ['node_person_form', 'node_person_edit_form'])) {
+    return $form;
+  }
+  $type = $form_state->getValue([
+    'settings',
+    'override',
+    'exposed_filters',
+    'field_person_types_target_id',
+  ]);
+
+  _person_type_status_filter_options($form['settings']['override']['exposed_filters'][PersonTypeInterface::STATUS_FILTER . '_wrapper'][PersonTypeInterface::STATUS_FILTER], $type);
+
+  return $form;
+}
+
+/**
+ * Helper function to remove all options except for 'Any' and $type.
+ */
+function _person_type_status_filter_options(array &$field, $type) {
+  if (isset($field['#options'])) {
+
+    foreach ($field['#options'] as $key => $option) {
+      // Unset options that aren't associated with selected person type.
+      if ($key !== 'All' && $type != $key) {
+        unset($field['#options'][$key]);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function sitenow_people_form_views_ui_edit_display_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['options']['link_url']['#description'][2]['#items'][] = '{{ sitenow_people.path }} == SiteNow People path setting';
 }
 
 /**
@@ -95,6 +368,32 @@ function sitenow_people_entity_presave(EntityInterface $entity) {
       $entity->setTitle($output);
       break;
 
+  }
+}
+
+/**
+ * Implements hook_entity_view_alter().
+ */
+function sitenow_people_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    // @todo Remove this line and just use $entity->bundle() instead.
+    if (isset($build['#node']) && $node = $build['#node']) {
+      switch ($node->getType()) {
+        case 'person':
+          if (!is_null($advisor_field = $node->field_pt_student_advisor) && $advisor = $advisor_field->entity) {
+            $hide_person = $advisor->field_person_hide->value;
+
+            if ($hide_person) {
+              // Display advisor name as plain text.
+              $build['field_pt_student_advisor'][0] = [
+                '#plain_text' => $advisor->getTitle(),
+              ];
+            }
+          }
+          break;
+      }
+    }
   }
 }
 
@@ -223,12 +522,12 @@ function sitenow_people_preprocess_node(&$variables) {
       case 'person':
         switch ($variables['view_mode']) {
           case 'teaser':
-            // Heading needs to change based on placement. Defaults to h3 in twig.
+            // Heading needs to change by placement. Defaults to h3 in twig.
             $current_route = \Drupal::routeMatch();
             $route_name = $current_route->getRouteName();
             $variables['#cache']['contexts'][] = 'route.name';
             if (strpos($route_name, 'view.people.') === 0) {
-              $variables['content_heading'] = 'h2';
+              $variables['heading_size'] = 'h2';
             }
             break;
         }
@@ -278,9 +577,11 @@ function sitenow_people_uip_classes_alter(&$options, $entity, $bundle) {
 function sitenow_people_views_pre_render(ViewExecutable $view) {
   // Add <th> label for Draggable Views, otherwise it is flagged
   // for accessibility.
-  if ($view->id() == "people" && $view->current_display == 'page_people_table') {
-    $view->field["draggableviews"]->options["label"] = 'Sort Control';
+  if ($view->id() == 'people' && $view->current_display == 'page_people_table') {
+    $view->field['draggableviews']->options['label'] = 'Sort Control';
   }
+  // Add replacement token for people page path.
+  $view->build_info['substitutions']['{{ sitenow_people.path }}'] = _sitenow_people_path_token_value();
 }
 
 /**
@@ -323,7 +624,7 @@ function sitenow_people_preprocess_paragraph(&$variables) {
         }
         // Get field_uip_id value.
         if ($paragraph->hasField('field_uip_id')) {
-          $variables['attributes']['id'][] = Html::getUniqueId($paragraph->field_uip_id->value);
+          $variables['attributes']['id'][] = Html::getClass($paragraph->field_uip_id->value);
         }
 
         if ($paragraph->hasField('field_people_sort') && !$paragraph->get('field_people_sort')->isEmpty()) {
@@ -391,12 +692,13 @@ function sitenow_people_preprocess_paragraph(&$variables) {
               $url = Url::fromUri($more_path[0]['uri']);
             }
 
-            // Check to see if other displays are enabled before setting more link.
+            // Only render more link if one other display is enabled.
             $displays = [
               'page_people_sfl',
               'page_people_slf',
               'page_people_table',
             ];
+
             foreach ($displays as $display) {
               if ($view->getDisplay($display)['display_options']['enabled'] == TRUE) {
                 $url = Url::fromRoute('view.people.' . $display);
@@ -430,12 +732,46 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
   if ($view->id() == 'people_block') {
     if ($view->current_display == 'block_people_sfl' || $view->current_display == 'block_people_slf') {
       $exposed_input = $view->getExposedInput();
-      if (isset($exposed_input["items_per_page"])) {
-        $form["items_per_page"]["#options"] = [$exposed_input["items_per_page"] => $exposed_input["items_per_page"]];
-        $form["#attributes"]["class"][] = 'hidden';
+      if (isset($exposed_input['items_per_page'])) {
+        $form['items_per_page']['#options'] = [$exposed_input['items_per_page'] => $exposed_input['items_per_page']];
+        $form['#attributes']['class'][] = 'hidden';
       }
     }
   }
+
+  if ($view->id() == 'people') {
+    $person_type_filter = 'type';
+    if (isset($form[$person_type_filter])) {
+      _sitenow_people_person_type_filter_select($form[$person_type_filter]);
+    }
+  }
+}
+
+/**
+ * Helper function to add person types as select options.
+ */
+function _sitenow_people_person_type_filter_select(array &$form) {
+  // Get available person type configuration entities.
+  $storage = Drupal::getContainer()->get('entity_type.manager')->getStorage('person_type');
+  $types = $storage->getQuery();
+  $types = $types->condition('status', 1)
+    ->sort('title')
+    ->execute();
+
+  // Build a list of person type options.
+  $options = [];
+  $person_types = $storage->loadMultiple($types);
+  foreach ($person_types as $type) {
+    $options[$type->id()] = $type->label();
+  }
+  asort($options);
+
+  // Rebuild the person type text filter as select list.
+  $form['#type'] = 'select';
+  $form['#multiple'] = FALSE;
+  $form['#empty_option'] = t('- Any -');
+  $form['#options'] = $options;
+  unset($form['#size']);
 }
 
 /**
@@ -464,112 +800,151 @@ function sitenow_people_field_widget_paragraphs_form_alter(&$element, &$form_sta
  */
 function sitenow_people_preprocess_block(&$variables) {
   switch ($variables['elements']['#plugin_id']) {
-    case 'inline_block:uiowa_people':
-      $variables['#attached']['library'][] = 'uids_base/people';
-      $block = $variables['elements']['content']['#block_content'];
-      if ($block->hasField('field_collection_sort') && !$block->get('field_collection_sort')->isEmpty()) {
-        if ($block->field_collection_sort->value == 'block_people_slf') {
-          $view = Views::getView('people_block');
-          $view->setDisplay('block_people_slf');
-        }
-        elseif ($block->field_collection_sort->value == 'block_people_sfl') {
-          $view = Views::getView('people_block');
-          $view->setDisplay('block_people_sfl');
-        }
-      }
-
-      if ($block->hasField('field_collection_reference') && !$block->get('field_collection_reference')->isEmpty()) {
-        $tids = $block->get('field_collection_reference')->getValue();
-        // Clean array of tids selected.
-        $tids = array_column($tids, 'target_id');
-      }
-      else {
-        $tids = ['all'];
-      }
-      // Contextual relationship filter.
-      $args = implode('+', $tids);
-      $view->setArguments([$args]);
-
-      // Set custom view variable to send to person teaser template.
-      if ($block->hasField('field_collection_heading_size')) {
-        $view->display_handler->setOption('content_heading', $block->field_collection_heading_size->value);
-      }
-
-      if ($block->hasField('field_collection_results') && !$block->get('field_collection_results')->isEmpty()) {
-        $items = $block->field_collection_results->value;
-        $view->setItemsPerPage($items);
-        $view->setExposedInput([
-          'items_per_page' => $items,
-        ]);
-      }
-      $pager_type = 'some';
-      // Show pager if it exists and is set.
-      if ($block->hasField('field_collection_pager')) {
-        if ($block->field_collection_pager->value == 1) {
-          $pager_type = 'full';
-        }
-      }
-
-      $pager = $view->display_handler->getOption('pager');
-      // IF show pager, change pager_type to 'full'.
-      $pager['type'] = $pager_type;
-      $view->display_handler->setOption('pager', $pager);
-
-      $view->preExecute();
-      $view->execute();
-
-      // Associate the block's cache tags with each entity in the view result so
-      // that the appropriate render cache ID is cleared when the block changes.
-      foreach ($view->result as $result_row) {
-        $entity = $result_row->_entity;
-        $entity->addCacheTags($variables['content']['#cache']['tags']);
-      }
-
-      $variables['content']['view'] = $view->render();
-
-      // If we have more link checked and link provided, pass it.
-      if ($block->hasField('field_collection_more')) {
-        $more = ($block->field_collection_more->value == 1) ? TRUE : FALSE;
-        if ($more == TRUE) {
-          $variables['content']['more'] = [
-            '#type' => 'container',
-            '#attributes' => [
-              'class' => 'more-link',
-            ],
-          ];
-
-          $view = View::load('people');
-          $default =& $view->getDisplay('default');
-
-          if (!empty($more_path = $block->get('field_collection_more_path')->getValue())) {
-            $url = Url::fromUri($more_path[0]['uri']);
+    case 'views_block:people_list_block-list_card':
+      if (isset($variables['attributes']['class'])) {
+        // Unset classes meant for children.
+        foreach ($variables['attributes']['class'] as $key => $style) {
+          foreach ([
+            'bg',
+            'card',
+            'media',
+            'hide',
+          ] as $check) {
+            if (substr($style, 0, strlen($check)) === $check) {
+              unset($variables['attributes']['class'][$key]);
+            }
           }
+        }
+      }
 
-          // Check to see if other displays are enabled before setting more link.
-          $displays = [
-            'page_people_sfl',
-            'page_people_slf',
-            'page_people_table',
-          ];
-          foreach ($displays as $display) {
-            if ($view->getDisplay($display)['display_options']['enabled'] == TRUE) {
-              $url = Url::fromRoute('view.people.' . $display);
+      break;
+  }
+}
+
+/**
+ * Custom submit handler for node person forms.
+ */
+function _sitenow_people_person_form_submit(array &$form, FormStateInterface $form_state) {
+  // Get all instances of field_uiowa_contact_address.
+  $contact_addresses = $form_state->getValue('field_person_contact_information');
+
+  if (!is_null($contact_addresses)) {
+    // Loop through each address.
+    foreach ($contact_addresses as $delta => $contact_address_subform) {
+      if (isset($contact_address_subform['subform'])) {
+        $contact_address = $contact_address_subform['subform']['field_uiowa_contact_address'][0];
+        if (isset($contact_address['address'])) {
+          $has_info = FALSE;
+          // Loop through all the details of the address to
+          // check if any of them have been set besides the
+          // country.
+          foreach ($contact_address['address'] as $key => $details) {
+            if ($key === 'country_code') {
+              continue;
+            }
+            // If we find a non-empty value, we can stop looping.
+            if (!empty($details)) {
+              $has_info = TRUE;
               break;
             }
           }
 
-          if (isset($url)) {
-            $variables['content']['more']['bttn'] = [
-              '#type' => 'link',
-              '#title' => 'View more ' . strtolower($default['display_options']['title']),
-              '#url' => $url,
-              '#attributes' => [
-                'class' => ['bttn', 'bttn--primary', 'bttn--caps'],
-              ],
-            ];
+          // If no other fields have been set, then unset the address.
+          if (!$has_info) {
+            // Set country code to empty string.
+            $form_state->setValue([
+              'field_person_contact_information',
+              $delta,
+              'subform',
+              'field_uiowa_contact_address',
+              0,
+              'address',
+              'country_code',
+            ], '');
           }
         }
       }
-      break;
+    }
   }
+}
+
+/**
+ * Implements hook_allowed_values_function().
+ */
+function sitenow_people_person_type_statuses_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  $allowed_types = \Drupal::entityTypeManager()
+    ->getStorage('person_type')->loadByProperties([
+      'status' => TRUE,
+      'allow_former' => TRUE,
+    ]);
+
+  $types = [];
+
+  foreach ($allowed_types as $type) {
+    $types[$type->id()] = t('Former @type', [
+      '@type' => $type->label(),
+    ]);
+  }
+
+  return $types;
+}
+
+/**
+ * Implements hook_token_info().
+ */
+function sitenow_people_token_info(): array {
+  $info = [];
+  $info['types']['sitenow_people'] = [
+    'name' => t('SiteNow People'),
+    'description' => t('Tokens for SiteNow People.'),
+  ];
+  $info['tokens']['sitenow_people']['path'] = [
+    'name' => 'SiteNow People path',
+    'description' => 'A token to display the SiteNow People page path.',
+  ];
+  return $info;
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function sitenow_people_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
+  $replacements = [];
+  if ($type == 'sitenow_people') {
+
+    foreach ($tokens as $name => $original) {
+      // Find the desired token by name.
+      switch ($name) {
+        case 'sitenow_people_path':
+          $replacements[$original] = _sitenow_people_path_token_value();
+          break;
+      }
+    }
+  }
+  return $replacements;
+}
+
+/**
+ * Callback to get the SiteNow People view path.
+ */
+function _sitenow_people_path_token_value() {
+
+  // Load people listing view.
+  $view = Drupal::entityTypeManager()->getStorage('view')->load('people');
+
+  // Loop through displays except Master.
+  $displays = $view->get('display');
+  unset($displays['default']);
+  foreach ($displays as $display) {
+    // If display is not enabled, skip this display.
+    if (!$display['display_options']['enabled']) {
+      continue;
+    }
+
+    // @todo Do we need to do anything besides this?
+    return '/' . $display['display_options']['path'];
+  }
+
+  // @todo Is this appropriate when there is no value?
+  return '';
 }

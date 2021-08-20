@@ -1,6 +1,6 @@
 language: php
 dist: xenial
-php: '7.3'
+php: '7.4'
 
 env:
   global:
@@ -9,7 +9,6 @@ env:
 
 cache:
   directories:
-    - "$HOME/.composer/cache"
     - "$HOME/.drush/cache"
     - "$TRAVIS_BUILD_DIR/node_modules/"
 
@@ -28,20 +27,20 @@ before_install:
   - mv deploy_key $HOME/.ssh/id_rsa
   - chmod 600 $HOME/.ssh/id_rsa
   - phpenv config-rm xdebug.ini
-  - yes | pecl install memcache
-  - composer self-update
-  - composer global require hirak/prestissimo
+  - yes | pecl install memcache-4.0.5.2
 
 install:
-  - nvm install 10
-  - nvm use 10
+  - nvm install
+  - nvm use
+  - yarn --version
   - composer install
   - source ${BLT_DIR}/scripts/travis/exit_early
   - source ${BLT_DIR}/scripts/travis/setup_environment
   - source ${BLT_DIR}/scripts/travis/setup_project
 
 script:
-  - source ${TRAVIS_BUILD_DIR}/tests/travis_run_tests
+  - blt blt:telemetry:disable --no-interaction
+  - source ${BLT_DIR}/scripts/travis/run_tests
 
 deploy:
   - provider: script
@@ -49,16 +48,16 @@ deploy:
     skip_cleanup: true
     on:
       branch: develop
-      php: 7.3
+      php: 7.4
   - provider: script
     script: "${BLT_DIR}/scripts/travis/deploy_branch"
     skip_cleanup: true
     on:
       branch: main
-      php: 7.3
+      php: 7.4
   - provider: script
     script: "${BLT_DIR}/scripts/travis/deploy_tag"
     skip_cleanup: true
     on:
       tags: true
-      php: 7.3
+      php: 7.4

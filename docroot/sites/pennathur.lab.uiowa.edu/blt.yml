@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labpennathur.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labpennathur
+  human_name: pennathur.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labpennathur.prod
+drupal:
+  db:
+    database: pennathur_lab_uiowa_edu
+uiowa:
+  requester: ppennathur

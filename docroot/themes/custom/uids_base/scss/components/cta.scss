@@ -34,6 +34,10 @@
   }
 }
 
+.cta__content p {
+  margin: 0;
+}
+
 // ie11
 @media all and (-ms-high-contrast: none),
 (-ms-high-contrast: active) {
@@ -56,16 +60,12 @@
   margin: .5rem 0 0 0;
 }
 
-.bg--black,
-.bg-pattern--brain-black,
-.bg-dark {
-  .cta__wrapper:not(.bg--black):not(.bg-pattern--brain-black):not(.bg--gold):not(.bg--gray) {
-    .bold-headline {
-      color: $primary;
-    }
-    .cta__summary {
-      color: $white;
-    }
-  }
+
+
+.cta__wrapper[class*="bg--black"] .bttn {
+  background: $primary;
 }
 
+.cta__wrapper[class*="bg--gold"] .bttn {
+  color: $secondary;
+}

@@ -1,0 +1,13 @@
+project:
+  local:
+    hostname: communicationstudies.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: communicationstudies
+  human_name: communicationstudies.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: communicationstudies.prod
+drupal:
+  db:
+    database: communicationstudies_uiowa_edu

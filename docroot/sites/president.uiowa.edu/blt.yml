@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: president.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: president
+  human_name: president.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: president.prod
+drupal:
+  db:
+    database: president_uiowa_edu
+uiowa:
+  requester: bosto

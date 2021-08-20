@@ -1,0 +1,25 @@
+uiowa_entities.academic_unit.*:
+  type: config_entity
+  label: Academic Unit
+  mapping:
+    id:
+      type: string
+      label: ID
+    label:
+      type: label
+      label: Label
+    type:
+      type: string
+      label: Type of academic unit
+    uuid:
+      type: string
+    homepage:
+      type: string
+      label: Academic unit homepage link
+
+field.widget.settings.uiowa_academic_units_widget:
+  type: mapping
+  label: Uiowa Academic Units Widget settings
+  mapping:
+    type: string
+    label: Types of academic units to include

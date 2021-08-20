@@ -1,0 +1,28 @@
+uuid: b059ad5a-af1a-467c-9eb5-59bf40b281e9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_admissions_card_content
+    - paragraphs.paragraphs_type.admissions_card
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    minimal: minimal
+    plain_text: plain_text
+    filtered_html: '0'
+    full_html: '0'
+id: paragraph.admissions_card.field_admissions_card_content
+field_name: field_admissions_card_content
+entity_type: paragraph
+bundle: admissions_card
+label: Content
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

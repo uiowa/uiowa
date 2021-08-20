@@ -1,0 +1,43 @@
+uuid: 0b4a74ec-077a-4ffb-b8a0-2eb349ecd33b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_area_of_study_stories
+    - node.type.area_of_study
+    - paragraphs.paragraphs_type.admissions_card
+  module:
+    - entity_reference_revisions
+id: node.area_of_study.field_area_of_study_stories
+field_name: field_area_of_study_stories
+entity_type: node
+bundle: area_of_study
+label: Stories
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      admissions_card: admissions_card
+    target_bundles_drag_drop:
+      admissions_card:
+        enabled: true
+        weight: 6
+      degree:
+        weight: 7
+        enabled: false
+      uiowa_collection_item:
+        weight: 8
+        enabled: false
+      uiowa_contact:
+        weight: 9
+        enabled: false
+      uiowa_slide:
+        weight: 10
+        enabled: false
+field_type: entity_reference_revisions

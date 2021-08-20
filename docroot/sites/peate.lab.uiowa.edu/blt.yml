@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labpeate.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labpeate
+  human_name: peate.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labpeate.prod
+drupal:
+  db:
+    database: peate_lab_uiowa_edu
+uiowa:
+  requester: dpeate

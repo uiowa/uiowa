@@ -1,0 +1,25 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a one column layout.
+ *
+ * Available variables:
+ * - content: The content for this layout.
+ * - attributes: HTML attributes for the layout <div>.
+ *
+ * @ingroup themeable
+ * @see https://www.drupal.org/docs/8/api/layout-api/how-to-register-layouts
+ * @see https://v4-alpha.getbootstrap.com/layout/grid/
+ */
+#}
+{%
+  set classes = [
+  'layout',
+  'layout--onecol',
+  settings.extra_classes,
+]
+%}
+
+{% set attributes = attributes.addClass(classes) %}
+
+{% include '@uids_base/layouts/layout.html.twig' %}

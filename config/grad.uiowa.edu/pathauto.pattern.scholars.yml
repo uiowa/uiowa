@@ -1,0 +1,22 @@
+uuid: 06a174be-0b8f-4f6a-a200-1a0e2ef59aba
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: scholars
+label: Scholars
+type: 'canonical_entities:node'
+pattern: 'dei/srop/past-scholars/[node:title]'
+selection_criteria:
+  877eda73-6de5-4bc4-adcf-c77b77fd5b94:
+    id: node_type
+    bundles:
+      scholar: scholar
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 877eda73-6de5-4bc4-adcf-c77b77fd5b94
+selection_logic: and
+weight: -5
+relationships: {  }

@@ -19,7 +19,6 @@ description: 'All articles, feed'
 tag: default
 base_table: node_field_data
 base_field: nid
-core: '8'
 display:
   default:
     id: default
@@ -134,7 +133,7 @@ display:
             format: default_summary
           specify_validation: true
           validate:
-            type: none
+            type: numeric
             fail: 'not found'
           validate_options: {  }
           entity_type: node
@@ -168,7 +167,7 @@ display:
             format: default_summary
           specify_validation: true
           validate:
-            type: none
+            type: numeric
             fail: 'not found'
           validate_options: {  }
           entity_type: node
@@ -182,6 +181,8 @@ display:
           group: 0
           expose:
             operator: '0'
+            operator_limit_selection: false
+            operator_list: {  }
           plugin_id: boolean
           entity_type: node
           entity_field: status
@@ -210,6 +211,8 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''

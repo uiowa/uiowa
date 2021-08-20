@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: siteshealthydata.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: siteshealthydata
+  human_name: healthydata.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: siteshealthydata.prod
+drupal:
+  db:
+    database: healthydata_sites_uiowa_edu
+uiowa:
+  requester: ebrakke

@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: orgavclub.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: orgavclub
+  human_name: avclub.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgavclub.prod
+drupal:
+  db:
+    database: avclub_org_uiowa_edu
+uiowa:
+  requester: dankanich
+  config:
+    split: sitenow_v2

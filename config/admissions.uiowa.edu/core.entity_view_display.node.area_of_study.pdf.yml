@@ -1,0 +1,330 @@
+uuid: 987b6779-8983-4c17-adc1-cbec056edb83
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.pdf
+    - field.field.node.area_of_study.body
+    - field.field.node.area_of_study.field_area_of_study_academic_gp
+    - field.field.node.area_of_study.field_area_of_study_career
+    - field.field.node.area_of_study.field_area_of_study_certificates
+    - field.field.node.area_of_study.field_area_of_study_college
+    - field.field.node.area_of_study.field_area_of_study_comp_txt
+    - field.field.node.area_of_study.field_area_of_study_competitive
+    - field.field.node.area_of_study.field_area_of_study_course_work
+    - field.field.node.area_of_study.field_area_of_study_first_year
+    - field.field.node.area_of_study.field_area_of_study_four_txt
+    - field.field.node.area_of_study.field_area_of_study_four_year
+    - field.field.node.area_of_study.field_area_of_study_honors
+    - field.field.node.area_of_study.field_area_of_study_intl
+    - field.field.node.area_of_study.field_area_of_study_link
+    - field.field.node.area_of_study.field_area_of_study_mail_code
+    - field.field.node.area_of_study.field_area_of_study_majors
+    - field.field.node.area_of_study.field_area_of_study_minors
+    - field.field.node.area_of_study.field_area_of_study_online
+    - field.field.node.area_of_study.field_area_of_study_opportunity
+    - field.field.node.area_of_study.field_area_of_study_preprof
+    - field.field.node.area_of_study.field_area_of_study_pretty_title
+    - field.field.node.area_of_study.field_area_of_study_program_type
+    - field.field.node.area_of_study.field_area_of_study_requirement
+    - field.field.node.area_of_study.field_area_of_study_scholarship
+    - field.field.node.area_of_study.field_area_of_study_select_txt
+    - field.field.node.area_of_study.field_area_of_study_selective
+    - field.field.node.area_of_study.field_area_of_study_stat
+    - field.field.node.area_of_study.field_area_of_study_stories
+    - field.field.node.area_of_study.field_area_of_study_sub_type
+    - field.field.node.area_of_study.field_area_of_study_subprogram
+    - field.field.node.area_of_study.field_area_of_study_subtitle
+    - field.field.node.area_of_study.field_area_of_study_teaching
+    - field.field.node.area_of_study.field_area_of_study_teaching_txt
+    - field.field.node.area_of_study.field_area_of_study_transfer
+    - field.field.node.area_of_study.field_area_of_study_why
+    - field.field.node.area_of_study.field_image
+    - field.field.node.area_of_study.field_meta_tags
+    - node.type.area_of_study
+  module:
+    - entity_reference_revisions
+    - layout_builder
+    - layout_builder_restrictions
+    - options
+    - text
+    - user
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+  layout_builder_restrictions:
+    allowed_block_categories:
+      - 'Chaos Tools'
+      - 'Content fields'
+      - 'Custom block types'
+      - 'Custom blocks'
+      - Devel
+      - 'Entity Print'
+      - Forms
+      - 'Inline blocks'
+      - 'Lists (Views)'
+      - Menus
+      - 'Site custom'
+      - Superfish
+      - System
+      - 'University of Iowa Alerts'
+      - User
+      - Webform
+      - core
+    entity_view_mode_restriction:
+      whitelisted_blocks:
+        'Chaos Tools': {  }
+        'Content fields':
+          - 'field_block:node:area_of_study:field_image'
+          - 'field_block:node:area_of_study:body'
+          - 'field_block:node:area_of_study:title'
+        'Custom block types': {  }
+        'Custom blocks': {  }
+        Devel: {  }
+        'Entity Print':
+          - print_links
+        Forms: {  }
+        'Inline blocks': {  }
+        'Lists (Views)': {  }
+        Menus: {  }
+        'Site custom': {  }
+        Superfish: {  }
+        System:
+          - system_breadcrumb_block
+        User: {  }
+        Webform: {  }
+        core: {  }
+      blacklisted_blocks: {  }
+      allowed_layouts:
+        - layout_onecol
+        - layout_twocol
+        - layout_threecol
+        - layout_fourcol
+        - layout_header
+    entity_view_mode_restriction_by_region:
+      allowed_layouts:
+        - layout_onecol
+        - layout_twocol
+        - layout_threecol
+        - layout_fourcol
+        - layout_header
+id: node.area_of_study.pdf
+targetEntityType: node
+bundle: area_of_study
+mode: pdf
+content:
+  body:
+    type: text_default
+    weight: 0
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_area_of_study_career:
+    weight: 11
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_area_of_study_certificates:
+    weight: 3
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_area_of_study_comp_txt:
+    type: string
+    weight: 16
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_area_of_study_competitive:
+    type: list_default
+    weight: 15
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_area_of_study_course_work:
+    type: text_default
+    weight: 7
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_area_of_study_first_year:
+    type: entity_reference_revisions_entity_view
+    weight: 19
+    region: content
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+  field_area_of_study_four_txt:
+    type: string
+    weight: 22
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_area_of_study_four_year:
+    type: list_default
+    weight: 21
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_area_of_study_honors:
+    type: list_default
+    weight: 20
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_area_of_study_majors:
+    type: entity_reference_revisions_entity_view
+    weight: 1
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+  field_area_of_study_minors:
+    weight: 2
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_area_of_study_online:
+    weight: 5
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_area_of_study_opportunity:
+    weight: 12
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_area_of_study_preprof:
+    weight: 4
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_area_of_study_requirement:
+    weight: 9
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_area_of_study_scholarship:
+    type: text_default
+    weight: 8
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_area_of_study_select_txt:
+    type: string
+    weight: 17
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_area_of_study_selective:
+    type: list_default
+    weight: 18
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_area_of_study_sub_type:
+    type: list_default
+    weight: 25
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_area_of_study_subprogram:
+    type: string
+    weight: 24
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_area_of_study_subtitle:
+    type: text_default
+    weight: 22
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_area_of_study_teaching:
+    type: list_default
+    weight: 13
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_area_of_study_teaching_txt:
+    type: string
+    weight: 14
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_area_of_study_why:
+    weight: 6
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_image:
+    type: entity_reference_entity_view
+    weight: 23
+    region: content
+    label: hidden
+    settings:
+      view_mode: small__widescreen
+      link: false
+    third_party_settings: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_area_of_study_academic_gp: true
+  field_area_of_study_college: true
+  field_area_of_study_intl: true
+  field_area_of_study_link: true
+  field_area_of_study_mail_code: true
+  field_area_of_study_pretty_title: true
+  field_area_of_study_program_type: true
+  field_area_of_study_stat: true
+  field_area_of_study_stories: true
+  field_area_of_study_transfer: true
+  field_meta_tags: true
+  links: true
+  search_api_excerpt: true

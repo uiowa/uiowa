@@ -48,15 +48,15 @@ main {
   }
 }
 
-.grid--3-2 .lb__container>:nth-child(1) {
+.grid--3-2 .layout__region>:nth-child(1) {
   order: 1;
 }
 
-.grid--3-2 .lb__container>:nth-child(2) {
+.grid--3-2 .layout__region>:nth-child(2) {
   order: 2;
 }
 
-.grid--3-2 .lb__container>:nth-child(3) {
+.grid--3-2 .layout__region>:nth-child(3) {
   order: 4;
 
   @include breakpoint(sm) {
@@ -64,7 +64,7 @@ main {
   }
 }
 
-.grid--3-2 .lb__container>:nth-child(4) {
+.grid--3-2 .layout__region>:nth-child(4) {
   order: 3;
 
   @include breakpoint(sm) {
@@ -72,15 +72,15 @@ main {
   }
 }
 
-.grid--3-2 .lb__container>:nth-child(5) {
+.grid--3-2 .layout__region>:nth-child(5) {
   order: 5;
 }
 
-.grid--3-2 .lb__container>:nth-child(6) {
+.grid--3-2 .layout__region>:nth-child(6) {
   order: 6;
 }
 
-.grid--3-2 .lb__container {
+.grid--3-2 .layout__region {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
 
@@ -90,7 +90,7 @@ main {
   }
 }
 
-.grid--3-2.grid--3-2-stacked .lb__container {
+.grid--3-2.grid--3-2-stacked .layout__region {
   display: block;
 
   >:nth-child(3) {
@@ -126,13 +126,13 @@ main {
 @media all and (-ms-high-contrast: none),
 (-ms-high-contrast: active) {
 
-  .grid--3-2 .lb__container,
-  .grid--3-2.grid--3-2-stacked .lb__container {
+  .grid--3-2 .layout__region,
+  .grid--3-2.grid--3-2-stacked .layout__region {
     display: flex;
     flex-wrap: wrap;
   }
 
-  .grid--3-2 .lb__container>div {
+  .grid--3-2 .layout__region>div {
     flex: 1 0 auto;
     width: 33.3%;
   }

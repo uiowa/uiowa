@@ -1,0 +1,52 @@
+uuid: 05a6c9c9-a0c5-4f68-be6f-4e5696824322
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.taxonomy_term.teaser
+    - field.field.taxonomy_term.academic_groups.field_academic_groups_media
+    - field.field.taxonomy_term.academic_groups.field_image
+    - taxonomy.vocabulary.academic_groups
+  module:
+    - layout_builder
+    - layout_builder_restrictions
+    - text
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      whitelisted_blocks: {  }
+      blacklisted_blocks: {  }
+      allowed_layouts: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts: {  }
+id: taxonomy_term.academic_groups.teaser
+targetEntityType: taxonomy_term
+bundle: academic_groups
+mode: teaser
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_image:
+    type: entity_reference_entity_view
+    weight: 0
+    label: hidden
+    settings:
+      view_mode: full__widescreen
+      link: false
+    third_party_settings: {  }
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_academic_groups_media: true
+  search_api_excerpt: true

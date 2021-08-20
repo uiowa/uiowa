@@ -7,8 +7,6 @@
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\media\Entity\Media;
-use Drupal\file\Entity\File;
 use Drupal\views\Views;
 
 /**
@@ -142,7 +140,7 @@ function hr_core_preprocess_paragraph(&$variables) {
         }
         // Get field_uip_id value.
         if ($paragraph->hasField('field_uip_id')) {
-          $variables['attributes']['id'][] = Html::getUniqueId($paragraph->field_uip_id->value);
+          $variables['attributes']['id'][] = Html::getClass($paragraph->field_uip_id->value);
         }
 
         $view = Views::getView('faqs');

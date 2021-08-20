@@ -1,0 +1,11 @@
+{%
+  set classes = [
+  'headline',
+  'headline--serif',
+]
+%}
+<h3 {{ attributes.addClass(classes) }}>
+  {%- for item in items -%}
+    {{ item.content }}
+  {%- endfor -%}
+</h3>

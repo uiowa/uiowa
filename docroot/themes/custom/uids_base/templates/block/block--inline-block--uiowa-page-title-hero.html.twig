@@ -34,7 +34,10 @@
 	{% endblock %}
 	{% block hero_content %}
 		{{ breadcrumb }}
-		<h1 class="bold-headline--serif bold-headline">{{ drupal_title() }}</h1>
+
+    {% if page_title %}
+		<h1 class="bold-headline--serif bold-headline">{{ page_title }}</h1>
+    {% endif %}
 	{% endblock %}
 
 {% endembed %}

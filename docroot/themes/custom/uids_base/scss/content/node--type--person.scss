@@ -1,11 +1,19 @@
 @import "uids/assets/scss/_variables.scss";
 @import "uids/assets/scss/_utilities.scss";
+@import "components/card/_card-mixins.scss";
+@import "components/headline/_headline-mixins.scss";
+@import "components/media/_media-mixins.scss";
 
 article.node--type-person.node--view-mode-full,
 div[role=article].node--type-person.node--view-mode-full {
   .content-image img {
     max-width: 100%;
     height: auto;
+  }
+
+  .field a {
+    line-height: 1.7;
+    font-size: 1.2rem;
   }
 }
 
@@ -55,11 +63,12 @@ div[role=article].node--type-person.node--view-mode-teaser {
 }
 
 // Subtitle
-  .subtitle {
-    @include card-subtitle;
-    display: block;
-    font-size: 1.6rem;
-  }
+.subtitle {
+  @include card-subtitle;
+  display: block;
+  font-size: 1.6rem;
+}
+
 
 // Person Meta
 .person-meta {
@@ -84,6 +93,25 @@ div[role=article].node--type-person.node--view-mode-teaser {
     margin-top: 0;
     margin-bottom: 1rem;
   }
+
+  .h5.field--name-field-person-position .field__item {
+    margin-bottom: 1rem;
+  }
+}
+
+.field--name-field-person-contact-information {
+  margin-bottom: .7rem;
+}
+
+.field--name-field-uiowa-contact-label {
+  margin-top: .7rem;
+  font-weight: $font-weight-bold;
+  line-height: 1.7;
+  font-size: 1.2rem;
+
+  &:after {
+    content: ":";
+  }
 }
 
 // paragraph teaser
@@ -96,8 +124,6 @@ div[role=article].node--type-person.node--view-mode-teaser {
     margin-top: .7rem;
     margin-bottom: 1.5rem;
   }
-
-  .field--name-field-person-position {}
 
   .field--name-field-teaser {
     margin-top: $gutter;

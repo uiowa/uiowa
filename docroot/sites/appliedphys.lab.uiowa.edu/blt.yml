@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: labappliedphys.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labappliedphys
+  human_name: appliedphys.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labappliedphys.prod
+drupal:
+  db:
+    database: appliedphys_lab_uiowa_edu
+uiowa:
+  requester: ndjenkins
+  config:
+    split: sitenow_v2

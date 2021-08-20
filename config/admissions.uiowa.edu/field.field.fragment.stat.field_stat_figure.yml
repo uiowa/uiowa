@@ -1,0 +1,32 @@
+uuid: c5baa8fc-eb5a-49bb-9bc0-c4758b16807a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.fragment.field_stat_figure
+    - fragments.fragment_type.stat
+  module:
+    - heading
+id: fragment.stat.field_stat_figure
+field_name: field_stat_figure
+entity_type: fragment
+bundle: stat
+label: Figure
+description: 'Enter the main ranking, achievement, or data into this field (e.g. 95%, 500+, 1 of 3, etc.)'
+required: true
+translatable: false
+default_value:
+  -
+    size: h2
+    text: ''
+default_value_callback: ''
+settings:
+  label: Heading
+  allowed_sizes:
+    h2: h2
+    h3: h3
+    h4: h4
+    h5: h5
+    h6: h6
+    h1: 0
+field_type: heading

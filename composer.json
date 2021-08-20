@@ -6,35 +6,15 @@
     "prefer-stable": true,
     "license": "GPL-2.0-only",
     "repositories": {
-        "block_content_template": {
-            "type": "git",
-            "url": "git@github.com:uiowa/block_content_template.git"
-        },
-        "drupal": {
-            "type": "composer",
-            "url": "https://packages.drupal.org/8"
-        },
         "asset-packagist": {
             "type": "composer",
             "url": "https://asset-packagist.org"
         },
-        "easysvg": {
+        "block_content_template": {
             "type": "git",
-            "url": "git@github.com:joewhitsitt/easysvg"
+            "url": "git@github.com:uiowa/block_content_template.git"
         },
-        "uiowa_bar": {
-            "type": "git",
-            "url": "git@github.com:uiowa/uiowa_bar"
-        },
-        "uiowa_auth": {
-            "type": "git",
-            "url": "git@github.com:uiowa/uiowa_auth"
-        },
-        "uiowa_footer": {
-            "type": "git",
-            "url": "git@github.com:uiowa/uiowa_footer"
-        },
-        "colorbox":{
+        "colorbox": {
             "type": "package",
             "package": {
                 "name": "jackmoore/colorbox",
@@ -45,6 +25,47 @@
                     "type": "zip"
                 }
             }
+        },
+        "drupal": {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        },
+        "drupal-pyrello/views_tree": {
+            "type": "package",
+            "package": {
+                "name": "drupal-pyrello/views_tree",
+                "version": "1.0.0",
+                "type": "drupal-module",
+                "source": {
+                    "url": "https://git.drupalcode.org/sandbox/pyrello-3195611.git",
+                    "type": "git",
+                    "reference": "1.0.x"
+                }
+            }
+        },
+        "leaflet": {
+            "type": "package",
+            "package": {
+                "name": "Leaflet/Leaflet",
+                "version": "1.7.1",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://github.com/Leaflet/Leaflet/archive/v1.7.1.zip",
+                    "type": "zip"
+                }
+            }
+        },
+        "uiowa_auth": {
+            "type": "git",
+            "url": "git@github.com:uiowa/uiowa_auth"
+        },
+        "uiowa_bar": {
+            "type": "git",
+            "url": "git@github.com:uiowa/uiowa_bar"
+        },
+        "uiowa_footer": {
+            "type": "git",
+            "url": "git@github.com:uiowa/uiowa_footer"
         }
     },
     "autoload": {
@@ -58,120 +79,146 @@
         }
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "php": "7.4"
+        }
     },
     "require": {
-        "acquia/blt": "^11.0.1",
+        "ext-json": "*",
+        "acquia/blt": "^12.7",
+        "acquia/blt-drupal-test": "^1.0",
         "acquia/memcache-settings": "*",
         "bower-asset/chosen": "^1.8",
         "bower-asset/fontawesome": "^5.14",
         "bower-asset/lazysizes": "^5.2",
-        "drupal-composer/drupal-scaffold": "^2.5.4",
-        "drupal/acquia_connector": "^1.5.0",
+        "cweagans/composer-patches": "^1.7",
+        "dompdf/dompdf": "0.8.5",
+        "drupal-pyrello/views_tree": "^1.0",
+        "drupal/acquia_connector": "^3.0@RC",
         "drupal/acquia_purge": "^1.0",
-        "drupal/address": "^1.7",
+        "drupal/address": "^1.8",
         "drupal/administerusersbyrole": "^3.0",
         "drupal/allowed_formats": "^1.1",
+        "drupal/antibot": "^1.4",
+        "drupal/better_exposed_filters": "^5.0@beta",
         "drupal/better_normalizers": "^1.0@beta",
-        "drupal/big_pipe_sessionless": "^1.2",
+        "drupal/big_pipe_sessionless": "^2.0",
         "drupal/block_content_permissions": "^1.9",
         "drupal/colorbox": "^1.4",
-        "drupal/components": "^1.0",
+        "drupal/components": "^2",
         "drupal/config_ignore": "^2.2.0",
         "drupal/config_inspector": "^1.0",
         "drupal/config_split": "^1.4",
-        "drupal/core": "^8.9.3",
-        "drupal/cshs": "^1.0@beta",
-        "drupal/date_recur_modular": "^2.0",
-        "drupal/default_content": "^1.0@alpha",
-        "drupal/devel": "^2.1",
+        "drupal/core-composer-scaffold": "^9.0.0",
+        "drupal/core-recommended": "^9.0.0",
+        "drupal/cshs": "^2.0",
+        "drupal/default_content": "^2.0",
+        "drupal/devel": "^4.0",
         "drupal/diff": "^1.0@RC",
-        "drupal/draggableviews": "^1.2",
+        "drupal/draggableviews": "^2.0",
         "drupal/editor_advanced_link": "^1.4",
         "drupal/entity_browser": "^2.4.0",
         "drupal/entity_embed": "^1.0@RC",
+        "drupal/entity_print": "^2.2",
         "drupal/entity_reference_revisions": "^1.5",
         "drupal/entity_reference_unpublished": "^1.1",
-        "drupal/entity_usage": "^2.0@alpha",
-        "drupal/features": "^3.8",
+        "drupal/entity_usage": "^2.0@beta",
+        "drupal/field_delimiter": "^1.1",
         "drupal/field_group": "^3.0",
         "drupal/file_mdm": "^2.1",
         "drupal/focal_point": "^1.5",
         "drupal/fontawesome": "^2.9",
-        "drupal/fragments": "^1.0@beta",
+        "drupal/fragments": "^2.0",
+        "drupal/fullcalendar": "^1.0@alpha",
+        "drupal/fullcalendar_view": "^5.0",
         "drupal/google_analytics": "^3.0",
         "drupal/google_tag": "^1.3",
         "drupal/heading": "^1.4",
         "drupal/honeypot": "^2.0",
-        "drupal/imagecache_external": "^1.0",
+        "drupal/imagecache_external": "^3.0",
         "drupal/imagemagick": "^3.0",
         "drupal/inline_entity_form": "^1.0.0-rc2",
         "drupal/layout_builder_lock": "^1.0@RC",
         "drupal/layout_builder_operation_link": "^1.0",
         "drupal/layout_builder_restrictions": "^2.6",
+        "drupal/layout_builder_shortcuts": "^1.0.0",
         "drupal/layout_builder_styles": "^1.0@beta",
-        "drupal/lazy": "^3.4",
-        "drupal/lb_direct_add": "1.x-dev",
-        "drupal/linkit": "^5.0",
+        "drupal/lazy": "^3.6",
+        "drupal/lb_direct_add": "2.x-dev#c60b756193f8608c9bc7d77b13bc14db49fe5421",
+        "drupal/linkit": "^6.0.0",
         "drupal/linkit_media_library": "^1.0",
         "drupal/mailsystem": "^4.1",
         "drupal/masquerade": "^2.0@beta",
-        "drupal/media_entity_facebook": "^2.0",
-        "drupal/media_entity_file_replace": "1.x-dev",
-        "drupal/media_entity_instagram": "3.x-dev",
+        "drupal/media_entity_facebook": "^3.0@beta",
+        "drupal/media_entity_file_replace": "^1.0@beta",
+        "drupal/media_entity_instagram": "^3.0",
         "drupal/media_entity_twitter": "^2.4",
         "drupal/media_library_theme_reset": "^1.0",
+        "drupal/media_thumbnails_video": "^1.0@alpha",
         "drupal/menu_admin_per_menu": "^1.0",
-        "drupal/menu_block": "1.x-dev#fbfb8fe",
+        "drupal/menu_block": "1.x-dev#17bc5a2094dec85a921fdac6aff0030bfe004744",
         "drupal/menu_breadcrumb": "^1.7",
         "drupal/menu_link_weight": "^1.0@beta",
-        "drupal/metatag": "1.x-dev",
-        "drupal/migrate_plus": "^4.2",
-        "drupal/migrate_tools": "^4.3",
+        "drupal/menu_per_role": "^1.2",
+        "drupal/metatag": "^1.15",
+        "drupal/migrate_plus": "^5.1",
+        "drupal/migrate_tools": "^5.0",
         "drupal/mimemail": "^1.0@alpha",
+        "drupal/moderated_content_bulk_publish": "^2.0",
+        "drupal/mysql56": "^1.1",
         "drupal/node_revision_delete": "^1.0@beta",
+        "drupal/node_view_permissions": "^1.5",
         "drupal/override_node_options": "^2.4",
         "drupal/paragraphs": "^1.10",
         "drupal/pathauto": "^1.6",
+        "drupal/private_content": "^2.0@RC",
         "drupal/purge": "^3.0@beta",
         "drupal/rabbit_hole": "^1.0@beta",
-        "drupal/redirect": "1.x-dev",
-        "drupal/reroute_email": "^1.1",
+        "drupal/redirect": "1.x-dev#e5201ca519bd947ee5478d9dee88af0c5d6fec89",
+        "drupal/reroute_email": "^2.0",
+        "drupal/responsive_table_filter": "^1.2",
         "drupal/robotstxt": "^1.2",
-        "drupal/schema_metatag": "^1.2",
+        "drupal/schema_metatag": "^2.1",
         "drupal/search_api_autocomplete": "^1.2",
         "drupal/simple_sitemap": "^3.5",
         "drupal/simplei": "^1.1",
         "drupal/siteimprove": "^1.5",
+        "drupal/smart_date": "^3.1",
         "drupal/smart_trim": "^1.1",
         "drupal/stage_file_proxy": "^1.0",
-        "drupal/superfish": "^1.2",
-        "drupal/swiftmailer": "^1.0@beta",
-        "drupal/twig_tweak": "^2.4",
-        "drupal/upgrade_status": "^2.0",
+        "drupal/superfish": "^1.4",
+        "drupal/swiftmailer": "^2.0@beta",
+        "drupal/theme_permission": "^2.0",
+        "drupal/tvi": "^1.0@RC",
         "drupal/views_ical": "^1.0@alpha",
-        "drupal/views_tree": "^2.0@alpha",
-        "drupal/webform": "^5.12",
-        "drupal/workbench_email": "^1.2",
+        "drupal/webform": "^6.0",
+        "drupal/weight": "^3.2",
+        "drupal/workbench_email": "^2.2",
         "drush/drush": "^10",
         "jackmoore/colorbox": "^1.6",
-        "kartsims/easysvg": "dev-master",
+        "kartsims/easysvg": "dev-master#8f4b75cfb950efd242dc889fb965e3765fea1a29",
         "npm-asset/fontawesome-iconpicker": "^3.2",
         "npm-asset/jquery-collapse": "^1.1",
-        "npm-asset/moment": "^2.24",
+        "npm-asset/leaflet": "^1.7",
         "npm-asset/slick-carousel": "^1.8",
+        "oomphinc/composer-installers-extender": "^2.0",
         "richardbporter/drush-users-commands": "^2.0",
-        "uiowa/block_content_template": "dev-master",
-        "uiowa/uiowa_auth": "^1.0",
+        "uiowa/block_content_template": "dev-master#ab06f7d5254b1d9a805c0717747e25f0ef508e59",
+        "uiowa/uiowa_auth": "^1.1",
         "uiowa/uiowa_bar": "^1.0.0",
         "uiowa/uiowa_footer": "^1.0"
     },
     "require-dev": {
-        "acquia/blt-require-dev": "11.x-dev",
-        "drupal/core-dev": "^8.8",
+        "acquia/blt-behat": "^1.1",
+        "acquia/blt-drupal-vm": "dev-master",
+        "acquia/blt-phpcs": "^1.0",
+        "drupal/core-dev": "^9.0.0",
         "geerlingguy/drupal-vm": "~6.0",
-        "typhonius/acquia-php-sdk-v2": "^2.0.0",
-        "zaporylie/composer-drupal-optimizations": "^1.1"
+        "mglaman/drupal-check": "^1.1.7",
+        "phpcompatibility/php-compatibility": "^9.3",
+        "phpspec/prophecy-phpunit": "^2",
+        "typhonius/acquia-php-sdk-v2": "^2.0.0"
     },
     "extra": {
         "enable-patching": true,
@@ -180,28 +227,8 @@
             "drupal/core": "-p2"
         },
         "patches": {
-            "drupal/inline_entity_form": {
-                "Custom blocks created in inline forms should not be reusable": "https://www.drupal.org/files/issues/2020-05-04/3002175-26.patch"
-            },
-            "drupal/menu_block": {
-                "Add option to make the starting level follow the active menu item": "https://www.drupal.org/files/issues/2018-05-01/menu_block-follow-2756675-43.patch",
-                "Hide block title if menu tree contains no links": "https://www.drupal.org/files/issues/2018-05-08/menu_block-hide_block_if_no_links-2757215-9.patch",
-                "Suppress display of regular system menu blocks in Layout Builder": "https://www.drupal.org/files/issues/2019-12-11/menu_block-remove_duplicates-3062278-11.patch"
-            },
-            "drupal/metatag": {
-                "Allow each tag to have its own permission": "https://www.drupal.org/files/issues/metatag-n2782797-16.patch"
-            },
-            "drupal/schema_metatag": {
-                "Webpage > SearchAction missing target": "https://www.drupal.org/files/issues/2020-02-17/3055278-7.patch"
-            },
-            "drupal/default_content": {
-                "Respect revision ids for entity_reference_revisions": "https://www.drupal.org/files/issues/2018-08-06/exported_revision_ids-2989887-6.patch"
-            },
-            "drupal/purge": {
-                "Port purge commands to Drush 9": "https://www.drupal.org/files/issues/2921309-17-port-purge-drush-9.patch"
-            },
             "drupal/config_ignore": {
-                "Support for export filtering via Drush": "https://www.drupal.org/files/issues/2018-10-14/support-for-export-2857247-24.patch"
+                "Support for export filtering via Drush": "https://www.drupal.org/files/issues/2021-01-04/config_ignore_2857247-61.patch"
             },
             "drupal/core": {
                 "The Media library doesn't modify the 'media' view if installed in a profile": "https://www.drupal.org/files/issues/2019-05-12/2992056.patch",
@@ -209,25 +236,60 @@
                 "Allow alter oembed providers": "https://www.drupal.org/files/issues/2019-05-15/drupal-allow_alter_oembed_providers-3008119-4.patch",
                 "save edits to media embeds": "https://www.drupal.org/files/issues/2019-12-19/3102249-fix-media-ckeditor-snapshop.patch",
                 "add img dimensions": "https://www.drupal.org/files/issues/2019-11-19/responsive_image-provide_dimensions_for_image_tag-3095126-4.patch",
-                "fix duplicate drag handles in claro": "https://www.drupal.org/files/issues/2020-05-28/3092181-87-89x.patch",
-                "[PP-1] Reverting entity revisions that contain custom blocks erroneously triggers EntityChangedConstraint": "https://www.drupal.org/files/issues/2019-05-13/3053881-11.patch",
+                "fix duplicate drag handles in claro": "https://www.drupal.org/files/issues/2020-12-08/3092181-142-9X_0.patch",
+                "[PP-1] Reverting entity revisions that contain custom blocks erroneously triggers EntityChangedConstraint": "https://www.drupal.org/files/issues/2021-01-27/3053881-42.patch",
                 "Hidden buttons in off-canvas dialog are not being hidden": "https://www.drupal.org/files/issues/2020-02-28/3070375-4.patch",
-                "Off-canvas style resets are overriding styles (especially SVGs) in Safari resulting in display issues": "https://www.drupal.org/files/issues/2019-05-07/off-canvas-style-resets-2958588-13.patch",
-                "Media viewmode control": "https://www.drupal.org/files/issues/2020-01-31/3097416-ckeditor-view-modes-8.9-combined.patch"
+                "Media viewmode control": "https://www.drupal.org/files/issues/2020-01-31/3097416-ckeditor-view-modes-8.9-combined.patch",
+                "Expose Layout Builder data to REST and JSON:API": "https://www.drupal.org/files/issues/2020-07-07/2942975-116.patch",
+                "Temporary Hotfix for YouTube oEmbeds": "https://www.drupal.org/files/issues/2020-12-04/3186415-8.9.x-youtube-headers-html.patch",
+                "Themes have no context of the entity being rendered in preprocessing a layout when using Layout builder": "https://www.drupal.org/files/issues/2020-02-11/3111192-entity-14.patch",
+                "Add Views EntityReference filter to be available for all entity reference fields": "https://www.drupal.org/files/issues/2021-06-15/2429699-414.patch",
+                "Views Block Display skips preBlockBuild() call on ajax rebuild": "https://www.drupal.org/files/issues/2021-03-05/2605218-61.patch"
             },
-            "drupal/layout_builder_styles": {
-                "Section dependency on layout plugin configuration form": "https://www.drupal.org/files/issues/2019-08-23/layout_builder_styles-3062261-%2310.patch",
-                "Grouping of layout builder styles": "https://www.drupal.org/files/issues/2020-06-22/style_groups_for_layout_builder_styles-3075502--beta2.patch",
-                "Block theme suggestions not working for layout builder blocks using styles": "https://www.drupal.org/files/issues/2020-04-10/block-theme-suggestions-not-working-for-layout-builder-blocks-using-styles-3126609_0.patch"
-            },
-            "drupal/redirect": {
-                "Match redirect": "https://www.drupal.org/files/issues/2020-04-13/redirect-n2831605-31.patch"
+            "drupal/default_content": {
+                "Add a Normalizer and Denormalizer to support Layout Builder": "https://www.drupal.org/files/issues/2020-08-24/default_content-add-normalizer-denormalizer-for-layout-builder-3160146-25.patch",
+                "Predictable order of content import": "https://www.drupal.org/files/issues/2020-10-08/3175870.patch"
             },
             "drupal/entity_embed": {
                 "Logs flooded with warning messages Invalid display settings encountered": "https://www.drupal.org/files/issues/2019-12-11/3077225-10.reduce-invalid-config-logs.patch"
             },
-            "drupal/media_entity_facebook": {
-                "Allow creation of new Facebook media entities using the Media Browser": "https://www.drupal.org/files/issues/2020-03-31/3120085-media-library-add-5.patch"
+            "drupal/entity_print": {
+                "Error on layout builder": "https://www.drupal.org/files/issues/2020-02-06/3111643-1.patch"
+            },
+            "drupal/google_analytics": {
+                "Add possibility to add G-ID to the existing ID-Field": "https://www.drupal.org/files/issues/2020-11-19/3178179-13.patch"
+            },
+            "drupal/inline_entity_form": {
+                "Custom blocks created in inline forms should not be reusable": "https://www.drupal.org/files/issues/2020-05-04/3002175-26.patch"
+            },
+            "drupal/layout_builder_styles": {
+                "Section dependency on layout plugin configuration form": "https://www.drupal.org/files/issues/2019-08-23/layout_builder_styles-3062261-%2310.patch",
+                "Grouping of layout builder styles": "https://www.drupal.org/files/issues/2021-03-16/3075502-18_0.patch"
+            },
+            "drupal/menu_block": {
+                "Hide block title if menu tree contains no links": "https://www.drupal.org/files/issues/2020-02-12/menu_block-hide_block_if_no_links-2757215-13.patch",
+                "Suppress display of regular system menu blocks in Layout Builder": "https://www.drupal.org/files/issues/2019-12-11/menu_block-remove_duplicates-3062278-11.patch"
+            },
+            "drupal/moderated_content_bulk_publish": {
+                "Remove or make optional the node edit form confirmation dialog": "https://www.drupal.org/files/issues/2020-12-01/no_confirmation_dialog-3185848-3.patch"
+            },
+            "drupal/paragraphs": {
+                "Langcode error when switching away from IEF for paragraphs in LB": "https://www.drupal.org/files/issues/2020-06-25/paragraphs-2901390-51.patch"
+            },
+            "drupal/purge": {
+                "Port purge commands to Drush 9": "https://www.drupal.org/files/issues/2921309-17-port-purge-drush-9.patch"
+            },
+            "drupal/redirect": {
+                "Match redirect": "https://www.drupal.org/files/issues/2020-04-13/redirect-n2831605-31.patch"
+            },
+            "jackmoore/colorbox": {
+                "Accessibility improvements": "https://patch-diff.githubusercontent.com/raw/jackmoore/colorbox/pull/832.diff"
+            },
+            "drupal/jquery_ui_touch_punch": {
+                "JQuery UI TouchPunch for D9": "https://www.drupal.org/files/issues/2021-02-26/jquery_ui_touch_punch.patch"
+            },
+            "drupal/better_exposed_filters": {
+                "Fixed focus of textfield for bef in views": "https://www.drupal.org/files/issues/2020-09-16/3103626-12.patch"
             }
         },
         "installer-types": [
@@ -266,13 +328,22 @@
             ]
         },
         "drupal-scaffold": {
-            "initial": {
-                "sites/default/default.services.yml": "sites/default/services.yml",
-                "sites/default/default.settings.php": "sites/default/settings.php"
+            "locations": {
+                "web-root": "./docroot"
             },
-            "excludes": [
-                "robots.txt"
-            ]
+            "file-mapping": {
+                "[web-root]/robots.txt": false,
+                "[web-root]/sites/default/default.services.yml": {
+                    "mode": "replace",
+                    "path": "docroot/core/assets/scaffold/files/default.services.yml",
+                    "overwrite": false
+                },
+                "[web-root]/sites/default/default.settings.php": {
+                    "mode": "replace",
+                    "path": "docroot/core/assets/scaffold/files/default.settings.php",
+                    "overwrite": false
+                }
+            }
         }
     },
     "scripts": {

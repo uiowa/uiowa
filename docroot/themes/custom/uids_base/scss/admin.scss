@@ -3,8 +3,29 @@
 @import "assets/scss/_local-fonts.scss";
 @import url('../../../../../core/themes/claro/css/components/dropbutton.css');
 $imgpath: '../../uids/assets/images';
-// lb claro styles
 
+// Grid for image gallery block.
+#drupal-off-canvas  {
+  .media-library-selection {
+    @include grid-base;
+    @include breakpoint(sm) {
+      @include threecol-grid;
+    }
+  }
+}
+// Responsive images within drupal-off-canvas and cursor move for media library grid.
+#drupal-off-canvas {
+  img {
+  width: 100%;
+  }
+  .media-library-item--grid[draggable="true"] {
+    img {
+      cursor: move;
+    }
+  }
+}
+
+// lb claro styles
 .search-field {
   background: #fff !important;
 }
@@ -20,6 +41,18 @@ $imgpath: '../../uids/assets/images';
   border: none !important;
   outline: none !important;
   width: 100% !important;
+}
+
+// Override classy negative bottom margin.
+#drupal-off-canvas table {
+  margin: 0 -20px 0 -20px;
+}
+
+#drupal-off-canvas .layout-builder-style-heading {
+  border-bottom: 1px solid #999;
+  font-size: 15px;
+  padding-bottom: 10px;
+  padding-top: 10px;
 }
 
 #drupal-off-canvas .ui-autocomplete {
@@ -60,12 +93,22 @@ $imgpath: '../../uids/assets/images';
   width: 20px
 }
 
+.uiowa-headline--container {
+  border: 1px solid #999;
+  padding: 0 10px;
+}
+
 /*
  * Layout builder overrides
  */
 .layout-builder-enabled .vertical-tabs {
   border: none;
   display: none;
+}
+
+// Add some space at the top of the LB controls form.
+form#node-page-layout-builder-form {
+  margin-top: 1.25rem;
 }
 
 // admin styles layout builder container reset
@@ -79,19 +122,15 @@ $imgpath: '../../uids/assets/images';
     margin-bottom: 0;
     padding: 2px;
 
-    .hero {
-      height: auto;
-      min-height: 500px;
-    }
-
     // When hovering over a section, show the structure of it.
     &:hover,
     &:focus {
       .layout-builder__layout {
-        .lb__container {
-          outline: 2px dashed #0036b1;
-        }
+        //.layout__spacing_container {
+        outline: 2px dashed #0036b1;
+        //}
       }
+
       .layout-builder__link {
         opacity: 1;
       }
@@ -135,6 +174,10 @@ $imgpath: '../../uids/assets/images';
     }
   }
 
+  .layout-builder__link:focus {
+    opacity: 1;
+  }
+
   &__add-block {
     background-color: transparent;
     margin-top: 0;
@@ -158,7 +201,7 @@ $imgpath: '../../uids/assets/images';
   }
 
   &__link {
-    color: #545454;
+    color: #545454!important;
     font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
     font-weight: bold;
     border-bottom: 0;
@@ -206,6 +249,7 @@ $imgpath: '../../uids/assets/images';
       outline: 1px dashed #222222;
       outline-offset: -1px;
     }
+
     &.focus {
       outline: 1px dashed #0036b1;
       outline-offset: -1px;
@@ -217,8 +261,7 @@ $imgpath: '../../uids/assets/images';
   outline: none;
 }
 
-.layout-builder__section {
-}
+.layout-builder__section {}
 
 .layout-builder-block {
   padding: 0;
@@ -230,43 +273,48 @@ $imgpath: '../../uids/assets/images';
     padding: $gutter 0;
   }
 
-  &.bg--gray {
+  &.block-padding__all--extra {
+    padding: 6rem;
+  }
+
+  &.block-padding__all {
+    padding: 3rem;
+  }
+
+  &[class*="bg--gray"] {
     background: $light;
   }
 
-  &.bg--black {
+  &[class*="bg--white"] {
+    background: #fff;
+  }
+
+  &[class*="bg--black"] {
     background: $secondary;
   }
 
-  &.bg-pattern--brain {
+  &[class*="bg--gold"] {
+    background: $primary;
+  }
+
+  &.bg--white--pattern--brain {
     background: #fff url("#{$imgpath}/brain-pattern.svg");
     background-size: auto auto;
   }
 
-  &.bg-pattern--brain-reversed {
+  &.bg--gold--pattern--brain {
     background: $primary url("#{$imgpath}/brain-pattern-reversed.svg");
     background-size: auto auto;
   }
 
-  &.bg-pattern--brain-black {
+  &.bg--black--pattern--brain {
     background: $secondary url("#{$imgpath}/brain-pattern-black.svg");
     background-size: auto auto;
   }
-
-  &.bg--gold {
-    background: $primary;
-  }
 }
 
-.layout-builder-block.card {
-  background-color: $white;
-  blockquote {
-    color: $secondary;
-    a {
-      color: $link-color;
-    }
-  }
-}
+// Add background and text styling.
+//@include add-backgrounds();
 
 .chosen-container-multi .chosen-choices {
   position: relative;
@@ -319,19 +367,19 @@ $imgpath: '../../uids/assets/images';
 // Layout Builder Editor Styles
 
 .layout-builder__region,
-.layout-builder__region .lb__container {
+.layout-builder__region .layout__spacing_container {
   width: 100%;
 }
 
-.layout--fourcol .lb__container>.layout__region.js-layout-builder-region {
+.layout--fourcol .layout__spacing_container>.layout__region.js-layout-builder-region {
   display: block !important;
 }
 
-.layout--threecol .lb__container>.layout__region.js-layout-builder-region {
+.layout--threecol .layout__spacing_container>.layout__region.js-layout-builder-region {
   display: block !important;
 }
 
-.layout__container .lb__container {
+.layout__container .layout__spacing_container {
 
   .layout-builder-block,
   .layout-builder__add-block {
@@ -344,6 +392,42 @@ $imgpath: '../../uids/assets/images';
     .layout-builder__add-block {
       flex: 1 1 0%;
       flex-basis: unset;
+    }
+  }
+}
+
+.layout__spacing_container {
+  // Loop through all the background options and create a
+  // rule to remove top padding from the second one.
+  $backgrounds:
+    ':not([class*="bg-"])',
+    '[class*="bg--gold"]',
+    '[class*="bg--black"]',
+    '[class*="bg--gray"]',
+    '[class*="bg--white"]',
+    '.bg-pattern--brain',
+    '.bg-pattern--brain-reversed',
+    '.bg-pattern--brain-black';
+
+  @each $background in $backgrounds {
+
+    // This targets the second item in a pair that match the rule.
+    &#{$background}+.layout-builder__add-section+&#{$background} {
+
+      >.layout__container {
+        padding-top: 0;
+
+        // Necessary to restore padding
+        &.section-padding {
+          &__top-restored {
+            padding-top: $desktop-width-gutter;
+          }
+
+          &__top-extra {
+            padding-top: 6rem;
+          }
+        }
+      }
     }
   }
 }
@@ -363,62 +447,11 @@ $imgpath: '../../uids/assets/images';
   font-family: "Lucida Grande", "Lucida Sans Unicode", "liberation sans", sans-serif;
 }
 
-// admin styles for responsive layout sections for container
-
-.content__container .layout-builder__section,
-.content__mixed .layout-builder__section {
-  .layout__container .lb__container {
-    margin: 0;
-
-    @include breakpoint(container) {
-      position: relative;
-      max-width: 81.875em;
-      margin: 0 auto;
-    }
-  }
-
-  .layout__container {
-    margin-bottom: 0;
-  }
-
-  .layout__container.page__container--full .lb__container {
-    max-width: 100%;
-    margin-right: 0;
-    margin-left: 0;
-  }
-
-  .layout__container.page__container--edge .lb__container {
-    max-width: 100%;
-    margin-right: 0;
-    margin-left: 0;
-  }
-}
-
-// admin styles for responsive layout sections for full width or mixed settings
-
-.content__full .layout-builder__section {
-  .layout__container .lb__container {
-    margin: 0;
-  }
-
-  .layout__container .page__container .lb__container {
-    @include breakpoint(container) {
-      position: relative;
-      max-width: 84.375em;
-      margin: 0 auto;
-    }
-  }
-
-}
-
-// admin styles for container setting local drupal admin blocks
-
-.content__container,
-.content__mixed {
+.content__container {
 
   .block-local-tasks-block,
   .block-help-block,
-  .form-actions,
+  :not([class*="views-exposed-form"]) .form-actions,
   .layout-builder__message,
   .form-type-vertical-tabs,
   #edit-moderation-state-0,
@@ -428,7 +461,7 @@ $imgpath: '../../uids/assets/images';
   }
 
   // Remove margin-top from .layout--has-sidebar
-  .layout__container.layout--has-sidebar {
+  .layout-builder__layout.layout__container.layout--has-sidebar {
     margin-top: 0 !important;
   }
 }
@@ -782,7 +815,7 @@ body.toolbar-vertical.toolbar-tray-open {
   display: none;
 }
 
-.bg--black,
+[class*="bg--black"],
 .bg-pattern--brain-black,
 .bg-dark {
   & .layout-builder-block--placeholder {
@@ -858,6 +891,65 @@ div[data-drupal-selector="edit-moderation-state-0"] {
   padding: 0;
 }
 
+
+// Paragraphs widget admin UX. Collections and Slider.
+
+.paragraphs-tabs-wrapper {
+  .field-multiple-drag {
+    width: 48px !important;
+    padding: 6px 8px !important;
+  }
+
+  [id*="settings-block-form-field-uiowa-"][id*="-item-wrapper-"] {
+    padding: 12px;
+    margin: 6px;
+  }
+
+  .paragraph-top {
+    grid-template-columns: auto 10px auto 100px;
+  }
+
+  .summary-content {
+    display: inline-block;
+    width: 100%;
+  }
+
+  .paragraphs-dropdown-toggle {
+    width: 26px !important;
+    height: 26px !important;
+    border: none !important;
+    background: url(/modules/contrib/paragraphs/icons/icon-actions.svg) no-repeat center !important;
+  }
+
+  .paragraphs-dropdown-actions {
+    border: none;
+    top: 1px;
+    right: 26px;
+    width: 98px;
+    box-shadow: none;
+    background: inherit;
+  }
+}
+
+
+// Statistic admin UX.
+#drupal-off-canvas {
+  [id*="edit-settings-block-form-group-uiowa-statistic-title--"] {
+
+    .fieldset-legend {
+      display: none !important;
+    }
+
+    .fieldset-wrapper {
+      display: grid;
+      grid-template-columns: 19% 56% 19%;
+      grid-gap: 3%;
+    }
+  }
+}
+
+
+
 // Claro Dropbutton
 
 .dropbutton-wrapper {
@@ -869,6 +961,15 @@ div[data-drupal-selector="edit-moderation-state-0"] {
 
 .dropbutton-arrow {
   right: 25%;
+  border-right-color: transparent !important;
+  border-bottom-color: transparent !important;
+  border-left-color: transparent !important;
+
+  [class*="bg--black"] &,
+  .bg--black--pattern--brain &,
+  .bg-pattern--brain-black & {
+    color: $secondary;
+  }
 }
 
 
@@ -882,6 +983,10 @@ div[data-drupal-selector="edit-moderation-state-0"] {
   font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   font-weight: bold;
   font-size: 1rem;
+}
+
+.dropbutton-multiple.open .dropbutton-arrow {
+  border-top-color: inherit;
 }
 
 .js .dropbutton {
@@ -905,13 +1010,17 @@ ul.dropbutton li {
 .joyride-tip-guide {
   z-index: 550;
 
-  a.btn.btn-primary.btn-block {
-    color: $secondary;
-    margin-bottom: $md;
+  a {
+    background: transparent;
 
-    &:hover,
-    &:focus {
+    .btn.btn-primary.btn-block {
       color: $secondary;
+      margin-bottom: $md;
+
+      &:hover,
+      &:focus {
+        color: $secondary;
+      }
     }
   }
 }
@@ -1446,3 +1555,92 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 /* @end */
+
+// Contrast issues within the layout edit screen
+[class*="bg--black"] [class*="bg--black"] .bttn--primary,
+[class*="bg--black"] [class*="bg--black"] .cta__wrapper[class*="bg--gold"] .bttn--primary {
+  color: #151515;
+}
+
+[class*="bg--black"] [class*="bg--black"] [class*="bg--gold"] .bttn--primary,
+[class*="bg--black"] [class*="bg--black"] .bg-pattern--brain-reversed .bttn--primary {
+  color: #fff;
+}
+
+[class*="bg--gold"] [class*="bg--gold"] .block-inline-blockuiowa-text-area .bttn--primary,
+[class*="bg--gold"] [class*="bg--gold"] .block-field-blocknodepagebody .bttn--primary,
+[class*="bg--gold"] [class*="bg--gold"] .cta__wrapper:not([class*="bg-"]) .bttn--primary{
+  color: $primary;
+}
+
+[class*="bg--black"] [class*="bg--black"]  :before {
+  color: $secondary;
+}
+
+// lb_direct_add overrides
+
+.layout-builder__direct-add__toggle {
+  border: 1px solid #ccc;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
+  padding: 1rem;
+  text-decoration: underline;
+  color: #545454;
+  font-family: BlinkMacSystemFont,-apple-system,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+
+  &:hover,
+  &:focus {
+    border-bottom-style: solid;
+    border-color: #aaa;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.20);
+  }
+}
+
+.layout-builder__direct-add__list li a {
+  font-size: 16px;
+  color: #000;
+  font-weight: 500;
+  font-family: BlinkMacSystemFont,-apple-system,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;
+
+  &:hover,
+  &:focus {
+    border-color: #aaa;
+    text-decoration: underline;
+  }
+}
+
+.layout-builder__direct-add__list:after {
+  border-bottom-color: #fff!important;
+}
+
+.layout-builder__direct-add__list:before {
+  border-color: rgba(153, 153, 153, 0)!important;
+  border-bottom-color: #e2e4e7!important;
+}
+
+[class*="bg--"] .layout-builder__direct-add__list:before,
+[class*="bg--"] .layout-builder__direct-add__list:after,
+[class*="bg--"] [class*="bg--"] .layout-builder__direct-add__list:before,
+[class*="bg--"] [class*="bg--"] .layout-builder__direct-add__list:after {
+  border-color: transparent;
+}
+
+// Edit layout for textblock not displaying correctly
+.block-inline-blockuiowa-text-area {
+  min-height: 40px;
+}
+
+// Layouts not covered by lb_direct_add module
+.layout--page--left-sidebar .layout__region--main .layout-builder__add-block.open .layout-builder__direct-add__list > .links {
+  @include breakpoint(sm) {
+    display: grid;
+    gap: 10px 10px;
+    grid-template-columns: repeat(auto-fit, minmax(29.74%, 1fr));
+  }
+}
+
+// @todo Remove this when a corresponding change is made to lb_direct_add module.
+.layout-builder__direct-add__list {
+  top: auto;
+}

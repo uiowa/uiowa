@@ -1,0 +1,52 @@
+uuid: 06f5d544-d636-4e2b-b745-7db12609162e
+langcode: en
+status: true
+dependencies: {  }
+id: d7_grad_thesis_defense_redirect
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - redirect
+  - thesis_defense
+migration_group: sitenow_migrate
+label: 'Thesis Defense redirects'
+source:
+  plugin: d7_grad_thesis_defense
+  node_type: thesis_defense
+  constants:
+    source_prefix: thesis-defense/
+    redirect_prefix: 'internal:/node/'
+    dash: '-'
+    uid_admin: 1
+    status_code: 301
+process:
+  temp_nid:
+    plugin: migration_lookup
+    source: nid
+    migration: d7_grad_thesis_defense
+  temp_name_slug:
+    - plugin: concat
+      source:
+        - field_thesis_firstname_value
+        - constants/dash
+        - field_thesis_lastname_value
+    - plugin: callback
+      callable:
+        - 'Drupal\Component\Utility\Html'
+        - getClass
+  redirect_source:
+    plugin: concat
+    source:
+      - constants/source_prefix
+      - '@temp_name_slug'
+  redirect_redirect:
+    plugin: concat
+    source:
+      - constants/redirect_prefix
+      - '@temp_nid'
+  status_code: constants/status_code
+destination:
+  plugin: 'entity:redirect'
+migration_dependencies:
+  required: {  }

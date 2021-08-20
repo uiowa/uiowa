@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: nursing.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: nursing
+  human_name: nursing.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: nursing.prod
+drupal:
+  db:
+    database: nursing_uiowa_edu
+uiowa:
+  requester: smhatre

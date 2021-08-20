@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: uichr.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: uichr
+  human_name: uichr.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: uichr.prod
+drupal:
+  db:
+    database: uichr_uiowa_edu
+uiowa:
+  requester: dquam

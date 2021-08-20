@@ -8,6 +8,7 @@ global-styling:
     layout:
       assets/css/components/page-layouts.css: {}
     component:
+      assets/css/components/badge.css: {}
       assets/css/components/breadcrumbs.css: {}
       assets/css/components/colors.css: {}
       assets/css/components/blockquote.css: {}
@@ -32,6 +33,8 @@ global-styling:
       assets/css/components/uiowa-bar.css: {}
       assets/css/components/image-gallery-block.css: {}
       assets/css/fields/fields.css: {}
+      assets/css/components/background.css: { weight: 200 }
+      assets/css/components/grid.css: {}
     theme:
       assets/css/theme/print.css: { media: print }
   dependencies:
@@ -88,6 +91,15 @@ banner:
   css:
     component:
       assets/css/components/banner.css: { preprocess: false }
+  js:
+    uids/assets/js/click-a11y.js: { preprocess: false }
+video-cookie:
+  js:
+    assets/js/video-cookie.js: { preprocess: false }
+  dependencies:
+    - core/jquery
+    - core/jquery.cookie
+    - uids_base/video
 slider:
   css:
     component:
@@ -96,10 +108,13 @@ slider:
     uids/components/slider/slider.js: { preprocess: false }
   dependencies:
     - uids_base/banner
-video:
+remote-video:
   css:
     component:
       assets/css/components/video/video-utilities.css: { preprocess: false }
+video:
+  js:
+    uids/components/video/video.js: { preprocess: false }
 hero:
   css:
     component:
@@ -112,10 +127,18 @@ events:
   css:
     component:
       assets/css/blocks/events.css: { preprocess: false }
+aggregator:
+  css:
+    component:
+      assets/css/blocks/aggregator.css: { preprocess: false }
+aggregator-feed:
+  css:
+    component:
+      assets/css/content/aggregator-feed.css: { preprocess: false }
 hero-block-video:
   js:
-    uids/components/hero/hero.js: { preprocess: false }
-    assets/js/hero-video-cookie.js: { preprocess: false }
+    uids/components/video/video.js: { preprocess: false }
+    assets/js/video-cookie.js: { preprocess: false }
   dependencies:
     - core/jquery
     - core/jquery.once
@@ -136,7 +159,15 @@ card:
       assets/css/components/card.css: { preprocess: false }
       assets/css/paragraphs/uiowa-paragraphs-card.css: { preprocess: false }
   js:
-    uids/components/card/card.js: { preprocess: false }
+    uids/assets/js/click-a11y.js: { preprocess: false }
+media:
+  css:
+    component:
+      assets/css/components/media.css: { preprocess: false }
+text-area:
+  css:
+    component:
+      assets/css/blocks/text-area.css: { preprocess: false }
 colorbox:
   remote: http://github.com/jackmoore/colorbox
   version: VERSION
@@ -144,12 +175,25 @@ colorbox:
     name: MIT
     gpl-compatible: false
   js:
-    colorbox/jquery.colorbox-min.js: { minified: true }
+    /libraries/colorbox/jquery.colorbox-min.js: { minified: true }
     assets/js/colorbox_overrides.behavior.js: {}
   dependencies:
     - core/jquery
     - core/jquery.once
     - colorbox/init
+leaflet:
+  remote: http://leafletjs.com/
+  version: 1.7.1
+  license:
+    name: Leaflet-License
+    url: https://github.com/Leaflet/Leaflet/blob/v1.7.1/LICENSE
+    gpl-compatible: true
+  js:
+    /libraries/leaflet/dist/leaflet.js: {}
+  css:
+    component:
+      /libraries/leaflet/dist/leaflet.css: {}
+      assets/css/components/leaflet.css: { preprocess: false }
 slick:
   css:
     theme:
@@ -158,6 +202,10 @@ slick:
     /libraries/slick-carousel/slick/slick.min.js: {}
   dependencies:
     - core/jquery
+badge:
+  css:
+    component:
+      assets/css/components/badge.css: { preprocess: false }
 cta:
   css:
     component:
@@ -168,6 +216,12 @@ stat:
       assets/css/components/stat.css: { preprocess: false }
   js:
     uids/components/stat/stat.js: { preprocess: false }
+timeline:
+  css:
+    component:
+      assets/css/components/timeline.css: { preprocess: false }
+  js:
+    assets/js/scroll.js: { preprocess: false }
 main-menu:
   css:
     component:
@@ -248,6 +302,10 @@ webforms:
   css:
     component:
       assets/css/webforms/webforms.css: { preprocess: false }
+embed:
+  css:
+    component:
+      assets/css/components/embed.css: { preprocess: false }
 embedded-entity:
   css:
     component:
@@ -288,7 +346,13 @@ admin:
   css:
     component:
       assets/css/admin.css: { weight: 200 }
+      assets/css/local-tasks.css: {}
       assets/css/components/badge.css: {}
+sftouchscreen:
+  js:
+    assets/js/sftouchscreen.js: { }
+  dependencies:
+    - superfish/init
 
 # CSS libraries for Layout plugins.
 onecol:
@@ -321,3 +385,11 @@ page--left-sidebar:
   css:
     theme:
       assets/css/layouts/page--left-sidebar.css: { preprocess: false }
+person:
+  css:
+    theme:
+      assets/css/content/person.css: { }
+global-serif:
+  css:
+    component:
+      assets/css/components/typography/global-serif.css: { preprocess: false }

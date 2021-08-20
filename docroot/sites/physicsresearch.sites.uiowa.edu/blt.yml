@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: sitesphysicsresearch.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sitesphysicsresearch
+  human_name: physicsresearch.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesphysicsresearch.prod
+drupal:
+  db:
+    database: physicsresearch_sites_uiowa_edu
+uiowa:
+  requester: gmccrory

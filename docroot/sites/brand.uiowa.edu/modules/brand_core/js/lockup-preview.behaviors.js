@@ -99,7 +99,7 @@
             function requiredWarning()  {
                 let emptyRequired = '\
                         <div id="required-warning" class="warning-hidden">\
-                            <h3><i class="fas fa-exclamation"></i>Required fields are empty</h3>\
+                            <h3><i role="presentation" class="fas fa-exclamation"></i>Required fields are empty</h3>\
                             <div class="warning-body">\
                                 <p>\
                                     Make sure you fill out all required fields within each step.\
@@ -497,7 +497,7 @@
             function warningHTML()  {
                 let warningHTML = '\
                     <div id="valid-text-lockup-warning" class="warning-hidden">\
-                        <h3><i class="fas fa-exclamation"></i>Invalid text</h3>\
+                        <h3><i role="presentation" class="fas fa-exclamation"></i>Invalid text</h3>\
                         <div class="warning-body">\
                             <p>\
                                 Correct primary unit or subunit fields to meet the following criteria:\

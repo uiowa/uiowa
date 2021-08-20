@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: rvap.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: rvap
+  human_name: rvap.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: rvap.prod
+drupal:
+  db:
+    database: rvap_uiowa_edu
+uiowa:
+  requester: dquam

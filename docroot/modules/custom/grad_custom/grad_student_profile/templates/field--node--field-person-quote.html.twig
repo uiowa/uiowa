@@ -1,0 +1,9 @@
+{% embed '@uids_base/uids/blockquote.html.twig' with {
+  'blockquote_attributes': create_attribute().addClass(['blockquote--no-left-margin']),
+} %}
+  {% block blockquote_text %}
+    {% for item in items %}
+      {{ item.content }}
+    {% endfor %}
+  {% endblock %}
+{% endembed %}

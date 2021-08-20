@@ -22,11 +22,71 @@ function sitenow_seo_form_google_analytics_admin_settings_alter(&$form, FormStat
 /**
  * Implements hook_metatags_alter().
  */
-function sitenow_metatags_alter(array &$metatags, array &$context) {
+function sitenow_seo_metatags_alter(array &$metatags, array &$context) {
   // Append the page number to the title, if it is set and greater than 0.
   $page = \Drupal::service('pager.parameters')->findPage();
 
   if ($page) {
     $metatags['title'] .= " | Page {$page}";
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function sitenow_seo_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    // Node form modifications.
+    case 'node_page_edit_form':
+    case 'node_page_form':
+    case 'node_article_edit_form':
+    case 'node_article_form':
+    case 'node_person_edit_form':
+    case 'node_person_form':
+      // Collapse inner SEO field groups.
+      if (isset($form["field_meta_tags"])) {
+        if ($form["field_meta_tags"]["widget"][0]["advanced"]) {
+          $form["field_meta_tags"]["widget"][0]["advanced"]["#open"] = FALSE;
+        }
+        if (isset($form["field_meta_tags"]["widget"][0]["open_graph"])) {
+          $form["field_meta_tags"]["widget"][0]["open_graph"]["#open"] = FALSE;
+        }
+        if (isset($form["field_meta_tags"]["widget"][0]["twitter_cards"])) {
+          $form["field_meta_tags"]["widget"][0]["twitter_cards"]["#open"] = FALSE;
+        }
+      }
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function sitenow_seo_page_attachments_alter(array &$attachments) {
+  // Unset related resources that we don't want bots to crawl.
+  $unset_html_head_link = [
+    'latest-version',
+    'delete-form',
+    'edit-form',
+    'version-history',
+    'revision',
+  ];
+
+  foreach ($attachments['#attached']['html_head_link'] as $key => $value) {
+    if (isset($value[0]['rel']) && in_array($value[0]['rel'], $unset_html_head_link)) {
+      unset($attachments['#attached']['html_head_link'][$key]);
+    }
+  }
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function sitenow_seo_module_implements_alter(&$implementations, $hook) {
+  if ($hook === 'page_attachments_alter') {
+    $group = $implementations['sitenow_seo'];
+    unset($implementations['sitenow_seo']);
+    $implementations['sitenow_seo'] = $group;
   }
 }

@@ -1,0 +1,22 @@
+uuid: 55189b4f-edc0-4bb4-8ec8-1b3a194c28b5
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: transfer_tips
+label: 'Transfer Tips'
+type: 'canonical_entities:node'
+pattern: '/academics/[node:field_transfer_tips_aos]/transfer-tips'
+selection_criteria:
+  fb0c3892-ac9e-49a5-bada-0c1eef94057a:
+    id: node_type
+    bundles:
+      transfer_tips: transfer_tips
+    negate: false
+    context_mapping:
+      node: node
+    uuid: fb0c3892-ac9e-49a5-bada-0c1eef94057a
+selection_logic: and
+weight: -5
+relationships: {  }

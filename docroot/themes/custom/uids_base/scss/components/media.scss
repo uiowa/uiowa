@@ -1,0 +1,17 @@
+@import "assets/scss/_variables.scss";
+@import "assets/scss/_utilities.scss";
+@import "components/media/_media-mixins.scss";
+
+.media {
+  &--border {
+      img {
+          @include media-border;
+      }
+  }
+
+  &--circle {
+      img, .img--empty  {
+          @include media-circle;
+      }
+  }
+}

@@ -1,0 +1,28 @@
+uuid: c4d024fb-686f-48a0-a629-56d2f64b6f55
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_scholarship_requirements
+    - node.type.scholarship
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    minimal: '0'
+    filtered_html: '0'
+    full_html: '0'
+    plain_text: '0'
+id: node.scholarship.field_scholarship_requirements
+field_name: field_scholarship_requirements
+entity_type: node
+bundle: scholarship
+label: 'Minimum Requirements'
+description: 'Minimum requirements that need to be met to qualify.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

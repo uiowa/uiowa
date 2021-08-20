@@ -28,10 +28,8 @@ docroot/libraries
 drush/Commands/contrib
 
 # Ignore custom theme and module build artifacts.
-docroot/sites/*/themes/*/assets
-docroot/sites/*/modules/*/assets
-docroot/themes/custom/*/assets
-docroot/modules/custom/*/assets
+**/assets/css
+**/assets/js
 docroot/themes/custom/*/uids
 docroot/themes/custom/*/styleguide
 
@@ -148,3 +146,4 @@ drush/sites/.checksums
 
 # Ignore customized PHPUnit configuration.
 phpunit.xml
+.phpunit.result.cache

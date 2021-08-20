@@ -1,0 +1,54 @@
+{#
+/**
+ * @file
+ * Template for a generic layout.
+ */
+#}
+{%
+  set classes = [
+  'layout__container',
+  'layout',
+  layout.template|clean_class,
+]
+%}
+
+{% set admin = false %}
+{% set render_sections = [] %}
+
+{% for region in layout.getRegionNames %}
+  {% if content[region] %}
+    {% set region_rendered = content[region]|render %}
+
+    {% if region_rendered|striptags('<embed><hr><iframe><img><input>')|trim %}
+      {% set render_sections = render_sections|merge({ (region): region_rendered }) %}
+    {% endif %}
+  {% endif %}
+
+  {% if region_attributes[region] and region[region].storage['data-region'] %}
+    {% set admin = true %}
+  {% endif %}
+{% endfor %}
+
+{# @todo Remove this when it is possible to add the library via preprocess. #}
+{% if admin %}
+  {{ attach_library('uids_base/admin') }}
+{% endif %}
+
+{% if render_sections is not empty %}
+  {# Exterior container is necessary so that background colors can go all the way to the edge. #}
+  <div{{ attributes.addClass(classes) }}>
+    {# Middle container is necessary for having a fixed width container inside a section with a visible background. #}
+    <div class="layout__spacing_container">
+      {% for region in layout.getRegionNames %}
+
+        {% if render_sections[region] %}
+          {# The inner container for each region is necessary for putting space between columns. #}
+          <div {{ region_attributes[region].addClass('layout__region', 'layout__region--' ~ region|clean_class) }}>
+            {{ render_sections[region] }}
+          </div>
+        {% endif %}
+
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}

@@ -14,8 +14,6 @@ use AcquiaCloudApi\Endpoints\Environments;
 use AcquiaCloudApi\Endpoints\SslCertificates;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
-use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
@@ -44,82 +42,6 @@ class MultisiteCommands extends BltTasks {
    */
   public function noop() {
 
-  }
-
-  /**
-   * Run cron via a request to the site's cron URL.
-   *
-   * We use this approach to avoid Drush cache clear collisions as well as to
-   * provide more visibility into cron task warnings and errors in the logs.
-   *
-   * @command uiowa:multisite:cron
-   *
-   * @aliases umcron
-   */
-  public function cron() {
-    if (!$this->confirm("You will execute cron on all multisites. Are you sure?", TRUE)) {
-      throw new \Exception('Aborted.');
-    }
-    else {
-      $app = EnvironmentDetector::getAhGroup() ? EnvironmentDetector::getAhGroup() : 'local';
-      $env = EnvironmentDetector::getAhEnv() ? EnvironmentDetector::getAhEnv() : 'local';
-
-      foreach ($this->getConfigValue('multisites') as $multisite) {
-        $this->switchSiteContext($multisite);
-        $db = $this->getConfigValue('drupal.db.database');
-
-        // Skip sites whose database do not exist on the application in AH env.
-        if (EnvironmentDetector::isAhEnv() && !file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
-          $this->say("Skipping {$multisite}. Database {$db} does not exist.");
-          continue;
-        }
-
-        // Skip sites that are not installed since we cannot retrieve state.
-        if (!$this->getInspector()->isDrupalInstalled()) {
-          continue;
-        }
-
-        // Define a site-specific cache directory.
-        // @see: https://github.com/drush-ops/drush/pull/4345
-        $tmp = "/tmp/.drush-cache-{$app}/{$env}/{$multisite}";
-
-        $result = $this->taskDrush()
-          ->drush('state:get')
-          ->arg('system.cron_key')
-          ->option('define', "drush.paths.cache-directory={$tmp}")
-          ->run();
-
-        $cron_key = trim($result->getMessage());
-
-        $id = Multisite::getIdentifier("//{$multisite}");
-        $domain = Multisite::getInternalDomains($id)[$env];
-
-        // Don't verify self-signed SSL certificate in the local environment.
-        $client = new GuzzleClient([
-          'verify' => ($app == 'local') ? FALSE : TRUE,
-        ]);
-
-        try {
-          $client->get("https://{$domain}/cron/{$cron_key}");
-        }
-        catch (RequestException $e) {
-          if ($env == 'prod') {
-            try {
-              $client->get("https://{$multisite}/cron/{$cron_key}");
-            }
-            catch (RequestException $e) {
-              $message = $e->getMessage();
-              $this->logger->error("Cannot run cron for site {$multisite}: {$message}.");
-            }
-          }
-          else {
-            $message = $e->getMessage();
-            $this->logger->error("Cannot run cron for site {$domain}: {$message}.");
-          }
-        }
-
-      }
-    }
   }
 
   /**
@@ -184,6 +106,7 @@ class MultisiteCommands extends BltTasks {
    *
    * @param array $options
    *   Command options.
+   *
    * @option envs
    *   Array of allowed environments for installation to happen on.
    * @option dry-run
@@ -215,9 +138,17 @@ class MultisiteCommands extends BltTasks {
       return new CommandError("Multisite installation not allowed on {$env} environment. Must be one of {$allowed}. Use option to override.");
     }
 
+    $multisites = $this->getConfigValue('multisites');
+
+    $this->say('Finding uninstalled sites...');
+    $progress = $this->io()->createProgressBar();
+    $progress->setMaxSteps(count($multisites));
+    $progress->start();
+
     $uninstalled = [];
 
-    foreach ($this->getConfigValue('multisites') as $multisite) {
+    foreach ($multisites as $multisite) {
+      $progress->advance();
       $this->switchSiteContext($multisite);
       $db = $this->getConfigValue('drupal.db.database');
 
@@ -231,6 +162,8 @@ class MultisiteCommands extends BltTasks {
         $uninstalled[] = $multisite;
       }
     }
+
+    $progress->finish();
 
     if (!empty($uninstalled)) {
       $this->io()->listing($uninstalled);
@@ -265,43 +198,6 @@ class MultisiteCommands extends BltTasks {
             }
             catch (BltException $e) {
               $this->say('<comment>Note:</comment> file permission error on Acquia Cloud can be safely ignored.');
-            }
-
-            // The site name option used during drush site:install is
-            // overwritten if installed from existing configuration.
-            $this->taskDrush()
-              ->stopOnFail(FALSE)
-              ->drush('config:set')
-              ->args([
-                'system.site',
-                'name',
-                $multisite,
-              ])
-              ->run();
-
-            // If a requester was added, add them as a webmaster for the site.
-            if ($requester = $this->getConfigValue('uiowa.requester')) {
-              $this->taskDrush()
-                ->stopOnFail(FALSE)
-                ->drush('user:create')
-                ->args($requester)
-                ->drush('user:role:add')
-                ->args([
-                  'webmaster',
-                  $requester,
-                ])
-                ->run();
-            }
-
-            // Activate and import any config splits.
-            if ($split = $this->getConfigValue('uiowa.config.split')) {
-              $this->taskDrush()
-                ->stopOnFail(FALSE)
-                ->drush('config:set')
-                ->args("config_split.config_split.{$split}", 'status', TRUE)
-                ->drush('cache:rebuild')
-                ->drush('config:import')
-                ->run();
             }
           }
 
@@ -545,7 +441,15 @@ EOD
     $certificates = new SslCertificates($client);
 
     $table = new Table($this->output);
-    $table->setHeaders(['Application', 'DBs', 'SANs', 'SSL Coverage']);
+
+    $table->setHeaders([
+      'Application',
+      'DBs',
+      'SANs',
+      'SSL - Coverage',
+      'SSL - Related Domain',
+    ]);
+
     $rows = [];
 
     // A boolean to track whether any application covers this domain.
@@ -557,6 +461,11 @@ EOD
     $host_parts = explode('.', $host, 2);
     $sans_search = '*.' . $host_parts[1];
 
+    // Consider the parent domain related and search for it since it could
+    // be covered with one SSL SAN while double subdomains cannot. However,
+    // uiowa.edu is the exception because we cannot cover *.uiowa.edu.
+    $related_search = ($host_parts[1] == 'uiowa.edu') ? NULL : $host_parts[1];
+
     // If the host is one subdomain off uiowa.edu or a vanity domain,
     // search for the host instead.
     // Ex. foo.uiowa.edu -> search for foo.uiowa.edu.
@@ -566,9 +475,13 @@ EOD
     }
 
     foreach ($applications as $name => $uuid) {
-      $row = [];
-      $row[] = $name;
-      $row[] = count($databases->getAll($uuid));
+      $row = [
+        'app' => $name,
+        'dbs' => count($databases->getAll($uuid)),
+        'sans' => NULL,
+        'ssl' => NULL,
+        'related' => NULL,
+      ];
 
       $envs = $environments->getAll($uuid);
 
@@ -578,13 +491,18 @@ EOD
 
           foreach ($certs as $cert) {
             if ($cert->flags->active == TRUE) {
-              $row[] = count($cert->domains);
+              $row['sans'] = count($cert->domains);
 
               if ($sans_search) {
                 foreach ($cert->domains as $domain) {
                   if ($domain == $sans_search) {
-                    $row[] = $domain;
+                    $row['ssl'] = $domain;
                     $has_ssl_coverage = TRUE;
+                    break;
+                  }
+
+                  if ($domain == $related_search) {
+                    $row['related'] = $domain;
                     break;
                   }
                 }
@@ -602,7 +520,7 @@ EOD
 
     // If we did not find any SSL coverage, log an error.
     if (!$has_ssl_coverage) {
-      $this->logger->error("No SSL coverage found on any application for {$host}. Be sure to install new SSL certificate before updating DNS.");
+      $this->logger->error("No SSL coverage found on any application for {$host}. Be sure to check existing SSL certificates for related domains and install a new one before updating DNS.");
     }
 
     $app = $this->askChoice('Which cloud application should be used?', array_keys($applications));
@@ -786,9 +704,20 @@ EOD;
         ->printOutput(FALSE)
         ->printMetadata(FALSE)
         ->run();
-      $steps += [
-        'Push this branch and merge via a pull request.',
-        'Coordinate a new release and deploy to the test and prod environments.',
+
+      $result = $this->taskGit()
+        ->dir($this->getConfigValue('repo.root'))
+        ->exec('git rev-parse --abbrev-ref HEAD')
+        ->interactive(FALSE)
+        ->printOutput(FALSE)
+        ->printMetadata(FALSE)
+        ->run();
+
+      $branch = $result->getMessage();
+
+      $steps = [
+        0 => "Push this branch and merge via a pull request: <comment>git push --set-upstream origin {$branch}</comment>",
+        1 => 'Coordinate a new release and deploy to the test and prod environments.',
       ];
     }
 
@@ -796,9 +725,9 @@ EOD;
     $this->say("Continue initializing additional multisites or follow the next steps below.");
 
     $steps += [
-      'Deploy a release to production as per usual.',
-      'Once deployed, invoke the uiowa:multisite:install BLT command in the production environment on the appropriate application(s)',
-      'Add the multisite domains to environments as needed.',
+      1 => 'Deploy a release to production as per usual.',
+      2 => 'Once deployed, invoke the <comment>uiowa:multisite:install</comment> BLT command in the production environment on the appropriate application(s)',
+      3 => 'Add the multisite domains to environments as needed.',
     ];
 
     $this->io()->listing($steps);
@@ -849,6 +778,56 @@ EOD;
     }
     else {
       $this->logger->warning("Slack webhook URL not configured. Cannot send message: {$message}");
+    }
+  }
+
+  /**
+   * Run post-install tasks.
+   *
+   * @throws \Robo\Exception\TaskException
+   *
+   * @hook post-command drupal:install
+   */
+  public function postDrupalInstall($result, CommandData $commandData) {
+    if ($multisite = $this->input->getOption('site')) {
+      $this->switchSiteContext($multisite);
+
+      // The site name option used during drush site:install is
+      // overwritten if installed from existing configuration.
+      $this->taskDrush()
+        ->stopOnFail(FALSE)
+        ->drush('config:set')
+        ->args([
+          'system.site',
+          'name',
+          $multisite,
+        ])
+        ->run();
+
+      // If a requester was added, add them as a webmaster for the site.
+      if ($requester = $this->getConfigValue('uiowa.requester')) {
+        $this->taskDrush()
+          ->stopOnFail(FALSE)
+          ->drush('user:create')
+          ->args($requester)
+          ->drush('user:role:add')
+          ->args([
+            'webmaster',
+            $requester,
+          ])
+          ->run();
+      }
+
+      // Activate and import any config splits.
+      if ($split = $this->getConfigValue('uiowa.config.split')) {
+        $this->taskDrush()
+          ->stopOnFail(FALSE)
+          ->drush('config:set')
+          ->args("config_split.config_split.{$split}", 'status', TRUE)
+          ->drush('cache:rebuild')
+          ->drush('config:import')
+          ->run();
+      }
     }
   }
 

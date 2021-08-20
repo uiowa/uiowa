@@ -7,10 +7,18 @@
 # setup.dump-file: /tmp/my-dump-file.sql
 tests.run-server: true
 tests.drupal.sudo-run-tests: false
-
 # The local.hostname must be set to 127.0.0.1:8888 because we are using drush runserver to test the site.
-project.local:
-  hostname: 127.0.0.1:8888
-  protocol: http
-
+project.local.hostname: 127.0.0.1:8888
+project.local.protocol: http
 drush.debug: false
+
+# Disable some commands that do not need to run in CI.
+disable-targets:
+  blt:
+    shell-alias:
+      init: true
+    init:
+      git-hooks: true
+  source:
+    build:
+      settings: true

@@ -1,0 +1,22 @@
+uuid: e7a7db18-2855-47b3-a37f-446056ec0bea
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: scholarship
+label: Scholarship
+type: 'canonical_entities:node'
+pattern: 'scholarship/[node:title]'
+selection_criteria:
+  88a0539e-68b2-4b5d-b6e9-4bc2617adef9:
+    id: node_type
+    bundles:
+      scholarship: scholarship
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 88a0539e-68b2-4b5d-b6e9-4bc2617adef9
+selection_logic: and
+weight: -5
+relationships: {  }

@@ -1,0 +1,110 @@
+uuid: 4b2e2370-d132-49bc-8194-3e3ce3fe126c
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.area_of_study.body
+    - field.field.node.area_of_study.field_area_of_study_academic_gp
+    - field.field.node.area_of_study.field_area_of_study_career
+    - field.field.node.area_of_study.field_area_of_study_certificates
+    - field.field.node.area_of_study.field_area_of_study_college
+    - field.field.node.area_of_study.field_area_of_study_comp_txt
+    - field.field.node.area_of_study.field_area_of_study_competitive
+    - field.field.node.area_of_study.field_area_of_study_course_work
+    - field.field.node.area_of_study.field_area_of_study_first_year
+    - field.field.node.area_of_study.field_area_of_study_four_txt
+    - field.field.node.area_of_study.field_area_of_study_four_year
+    - field.field.node.area_of_study.field_area_of_study_honors
+    - field.field.node.area_of_study.field_area_of_study_intl
+    - field.field.node.area_of_study.field_area_of_study_link
+    - field.field.node.area_of_study.field_area_of_study_mail_code
+    - field.field.node.area_of_study.field_area_of_study_majors
+    - field.field.node.area_of_study.field_area_of_study_minors
+    - field.field.node.area_of_study.field_area_of_study_online
+    - field.field.node.area_of_study.field_area_of_study_opportunity
+    - field.field.node.area_of_study.field_area_of_study_preprof
+    - field.field.node.area_of_study.field_area_of_study_pretty_title
+    - field.field.node.area_of_study.field_area_of_study_program_type
+    - field.field.node.area_of_study.field_area_of_study_requirement
+    - field.field.node.area_of_study.field_area_of_study_scholarship
+    - field.field.node.area_of_study.field_area_of_study_select_txt
+    - field.field.node.area_of_study.field_area_of_study_selective
+    - field.field.node.area_of_study.field_area_of_study_stat
+    - field.field.node.area_of_study.field_area_of_study_stories
+    - field.field.node.area_of_study.field_area_of_study_sub_type
+    - field.field.node.area_of_study.field_area_of_study_subprogram
+    - field.field.node.area_of_study.field_area_of_study_subtitle
+    - field.field.node.area_of_study.field_area_of_study_teaching
+    - field.field.node.area_of_study.field_area_of_study_teaching_txt
+    - field.field.node.area_of_study.field_area_of_study_transfer
+    - field.field.node.area_of_study.field_area_of_study_why
+    - field.field.node.area_of_study.field_image
+    - field.field.node.area_of_study.field_meta_tags
+    - node.type.area_of_study
+  module:
+    - text
+    - user
+id: node.area_of_study.teaser
+targetEntityType: node
+bundle: area_of_study
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 0
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  field_image:
+    type: entity_reference_entity_view
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      view_mode: medium__ultrawide
+      link: false
+    third_party_settings: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_area_of_study_academic_gp: true
+  field_area_of_study_career: true
+  field_area_of_study_certificates: true
+  field_area_of_study_college: true
+  field_area_of_study_comp_txt: true
+  field_area_of_study_competitive: true
+  field_area_of_study_course_work: true
+  field_area_of_study_first_year: true
+  field_area_of_study_four_txt: true
+  field_area_of_study_four_year: true
+  field_area_of_study_honors: true
+  field_area_of_study_intl: true
+  field_area_of_study_link: true
+  field_area_of_study_mail_code: true
+  field_area_of_study_majors: true
+  field_area_of_study_minors: true
+  field_area_of_study_online: true
+  field_area_of_study_opportunity: true
+  field_area_of_study_preprof: true
+  field_area_of_study_pretty_title: true
+  field_area_of_study_program_type: true
+  field_area_of_study_requirement: true
+  field_area_of_study_scholarship: true
+  field_area_of_study_select_txt: true
+  field_area_of_study_selective: true
+  field_area_of_study_stat: true
+  field_area_of_study_stories: true
+  field_area_of_study_sub_type: true
+  field_area_of_study_subprogram: true
+  field_area_of_study_subtitle: true
+  field_area_of_study_teaching: true
+  field_area_of_study_teaching_txt: true
+  field_area_of_study_transfer: true
+  field_area_of_study_why: true
+  field_meta_tags: true
+  links: true
+  search_api_excerpt: true

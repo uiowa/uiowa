@@ -1,186 +1,161 @@
 @import "uids/assets/scss/_variables.scss";
 @import "uids/assets/scss/_utilities.scss";
 
-@media screen and (min-width: 40em) {
-
-  .layout--threecol,
-  .layout--threecol .lb__container {
+.layout--threecol,
+.layout--threecol .layout__spacing_container {
+  @include breakpoint(sm) {
     display: flex;
     flex-basis: 100%;
   }
+}
 
-  .layout--threecol {
-    .layout__region {
+.layout--threecol {
+  .layout__region {
+    @include breakpoint(sm) {
       flex: 0 1 100%;
       display: flex;
       flex-wrap: wrap;
       align-content: unset;
-    }
-
-    &.section-alignment__start {
-      .layout__region {
-        align-content: start;
-      }
+      min-width: 0;
     }
   }
+}
 
-  .layout--threecol--50-25-25 .layout__region--second,
-  .layout--threecol--50-25-25 .layout__region--third {
-    flex: 0 1 24.25%;
+.layout--threecol--25-25-50 .layout__region--third,
+.layout--threecol--25-50-25 .layout__region--second,
+.layout--threecol--50-25-25 .layout__region--first {
+  @include breakpoint(sm) {
+    flex: 0 1 calc(54% - 3rem);
+    @include inner-grid(50);
   }
-
-  .layout--threecol--50-25-25.section-margin__removed .layout__region--second,
-  .layout--threecol--50-25-25.section-margin__removed .layout__region--third {
-    flex: 0 1 25%;
+  @include breakpoint(container) {
+    flex: 0 1 calc(53% - 3rem);
   }
-
-  .layout--threecol--50-25-25 .layout__region--first {
-    margin-right: 1.5rem;
+  @include breakpoint(xlg) {
+    flex: 0 1 calc(53% - 3rem);
   }
+}
 
-  .layout--threecol--50-25-25.section-margin__removed .layout__region--first {
-    margin-right: 0;
+.layout--threecol--25-25-50 .layout__region--third:first-child:last-child,
+.layout--threecol--25-50-25 .layout__region--second:first-child:last-child,
+.layout--threecol--50-25-25 .layout__region--first:first-child:last-child  {
+  @include breakpoint(sm) {
+    flex: 0 1 48.1%;
   }
-
-  .layout--threecol--50-25-25 .layout__region--second {
-    margin: 0 1.5rem;
+  @include breakpoint(xlg) {
+    flex: 0 1 48.4%;
   }
+}
 
-  .layout--threecol--50-25-25.section-margin__removed .layout__region--second {
-    margin: 0;
-  }
-
-  .layout--threecol--50-25-25 .layout__region--third {
-    margin-left: 1.5rem;
-  }
-
-  .layout--threecol--50-25-25.section-margin__removed .layout__region--third {
-    margin-left: 0;
-  }
-
-
-  .layout--threecol--50-25-25.section-margin__removed .layout__region--second {
-    margin: 0;
-  }
-
-  .layout--threecol--50-25-25.section-margin__removed .layout__region--first {
-    flex: 0 1 50%;
-  }
-
-  .layout--threecol--50-25-25 .layout__region--first {
-    flex: 0 1 50%;
-  }
-
-  .layout--threecol--33-34-33 .layout__region--first,
-  .layout--threecol--33-34-33 .layout__region--second,
-  .layout--threecol--33-34-33 .layout__region--third {
-    flex: 0 1 32.66%;
-  }
-
-  .layout--threecol--33-34-33.section-margin__removed .layout__region--first,
-  .layout--threecol--33-34-33.section-margin__removed .layout__region--second,
-  .layout--threecol--33-34-33.section-margin__removed .layout__region--third {
-    flex: 0 1 33.3%;
-  }
-
-  .layout--threecol--33-34-33 .layout__region--first {
-    margin-right: 1.5rem;
-  }
-
-  .layout--threecol--33-34-33 .layout__region--second {
-    margin: 0 1.5rem;
-  }
-
-  .layout--threecol--33-34-33 .layout__region--third {
-    margin-left: 1.5rem;
-  }
-
-  .layout--threecol--33-34-33.section-margin__removed .layout__region {
-    margin: 0;
-  }
-
-  .layout--threecol--25-25-50 .layout__region--first,
-  .layout--threecol--25-25-50 .layout__region--second {
-    flex: 0 1 24.5%;
-  }
-
-  .layout--threecol--25-25-50.section-margin__removed .layout__region--first,
-  .layout--threecol--25-25-50.section-margin__removed .layout__region--second {
-    flex: 0 1 25%;
-  }
-
-  .layout--threecol--25-25-50 .layout__region--first {
-    margin-right: 1.5rem;
-  }
-
-  .layout--threecol--25-25-50 .layout__region--second {
-    margin: 0 1.5rem;
-  }
-
-  .layout--threecol--25-25-50 .layout__region--third {
-    margin-left: 1.5rem;
-  }
-
-  .layout--threecol--25-25-50.section-margin__removed .layout__region {
-    margin: 0;
-  }
-
-  .layout--threecol--25-25-50 .layout__region--third {
-    flex: 0 1 50%;
-  }
-
-  .layout--threecol--25-25-50.section-margin__removed .layout__region--third {
-    flex: 0 1 50%;
-  }
-
-  .layout--threecol--25-50-25 .layout__region--first,
-  .layout--threecol--25-50-25 .layout__region--third {
-    flex: 0 1 28.25%;
-  }
-
-  .layout--threecol--25-50-25.section-margin__removed .layout__region--first,
-  .layout--threecol--25-50-25.section-margin__removed .layout__region--third {
-    flex: 0 1 25%;
-
-    margin: 0;
-  }
-
-  .layout--threecol--25-50-25 .layout__region--first {
-    margin-right: 1.5rem;
-  }
-
-  .layout--threecol--25-50-25 .layout__region--second {
-    flex: 0 1 41.75%;
-
-    margin: 0 1.5rem;
-  }
-
-  .layout--threecol--25-50-25 .layout__region--third {
-    margin-left: 1.5rem;
-  }
-
-  .layout--threecol--25-50-25.section-margin__removed .layout__region--second {
-    flex: 0 1 50%;
-
-    margin: 0;
+.layout--threecol--25-25-50.page__container--normal .layout__region--third:first-child:last-child,
+.layout--threecol--25-50-25.page__container--normal .layout__region--second:first-child:last-child,
+.layout--threecol--50-25-25.page__container--normal .layout__region--first:first-child:last-child  {
+  @include breakpoint(sm) {
+    flex: 0 1 48%;
   }
 }
 
 
-@media (min-width: 40em) and (max-width: 58.125em) {
-
-  .layout--threecol,
-  .layout--threecol .lb__container {
-    flex-wrap: wrap;
+.layout--threecol--33-34-33 .layout__region--first,
+.layout--threecol--33-34-33 .layout__region--second,
+.layout--threecol--33-34-33 .layout__region--third {
+  @include breakpoint(sm) {
+    flex: 0 1 calc(34.6% - 3rem);
   }
-
-  .layout--threecol .layout__region {
-    margin-right: 0;
-    margin-left: 0;
-    flex-basis: 100%;
+  @include breakpoint(container) {
+    flex: 0 1 calc(34.3% - 3rem);
   }
-
-  .layout--threecol .layout__region .card {
-    margin-bottom: 3rem;
+  @include breakpoint(xlg) {
+    flex: 0 1 calc(34.1% - 3rem);
   }
 }
+
+.layout--threecol--33-34-33.page__container--normal .layout__region--first,
+.layout--threecol--33-34-33.page__container--normal .layout__region--second,
+.layout--threecol--33-34-33.page__container--normal .layout__region--third {
+  @include breakpoint(sm) {
+    flex: 0 1 calc(34.7% - 3rem);
+  }
+}
+
+
+.layout--threecol--33-34-33.column-spacing__removed .layout__region--first,
+.layout--threecol--33-34-33.column-spacing__removed .layout__region--second,
+.layout--threecol--33-34-33.column-spacing__removed .layout__region--third {
+  @include breakpoint(sm) {
+    flex: 0 1 33.333%;
+  }
+}
+
+.layout--threecol--25-25-50 .layout__region--first,
+.layout--threecol--25-25-50 .layout__region--second,
+.layout--threecol--25-50-25 .layout__region--first,
+.layout--threecol--25-50-25 .layout__region--third,
+.layout--threecol--50-25-25 .layout__region--second,
+.layout--threecol--50-25-25 .layout__region--third {
+  @include breakpoint(sm) {
+    flex: 0 1 calc(27% - 3rem);
+  }
+  @include breakpoint(container) {
+    flex: 0 1 calc(26.4% - 3rem);
+  }
+}
+
+.layout--threecol--25-25-50 .layout__region--first:first-child:last-child,
+.layout--threecol--25-25-50 .layout__region--second:first-child:last-child,
+.layout--threecol--25-50-25 .layout__region--first:first-child:last-child,
+.layout--threecol--25-50-25 .layout__region--third:first-child:last-child,
+.layout--threecol--50-25-25 .layout__region--second:first-child:last-child,
+.layout--threecol--50-25-25 .layout__region--third:first-child:last-child {
+  @include breakpoint(sm) {
+    flex: 0 1 calc(26% - 3rem);
+  }
+  @include breakpoint(container) {
+    flex: 0 1 calc(25.8% - 3rem);
+  }
+  @include breakpoint(container) {
+    flex: 0 1 calc(25.6% - 3rem);
+  }
+}
+
+.layout--threecol--25-25-50.column-spacing__removed .layout__region--first:first-child:last-child,
+.layout--threecol--25-25-50.column-spacing__removed .layout__region--second:first-child:last-child,
+.layout--threecol--25-50-25.column-spacing__removed .layout__region--first:first-child:last-child,
+.layout--threecol--25-50-25.column-spacing__removed .layout__region--third:first-child:last-child,
+.layout--threecol--50-25-25.column-spacing__removed .layout__region--second:first-child:last-child,
+.layout--threecol--50-25-25.column-spacing__removed .layout__region--third:first-child:last-child  {
+  @include breakpoint(sm) {
+    flex: 0 1 26%;
+  }
+}
+
+.layout--threecol--25-25-50.column-spacing__removed .layout__region--first,
+.layout--threecol--25-25-50.column-spacing__removed .layout__region--second,
+.layout--threecol--25-50-25.column-spacing__removed .layout__region--first,
+.layout--threecol--25-50-25.column-spacing__removed .layout__region--third,
+.layout--threecol--50-25-25.column-spacing__removed .layout__region--second,
+.layout--threecol--50-25-25.column-spacing__removed .layout__region--third {
+  @include breakpoint(sm) {
+    flex: 0 1 27%;
+  }
+}
+
+.layout--threecol .layout__spacing_container > .layout__region + .layout__region {
+  @include breakpoint(sm) {
+    margin: 0 0 0 3rem;
+  }
+}
+
+.layout--threecol.column-spacing__removed .layout__spacing_container > .layout__region + .layout__region {
+  @include breakpoint(sm) {
+    margin: 0;
+  }
+}
+
+.layout--threecol .layout__region:first-child:last-child {
+  @include breakpoint(sm) {
+    margin-right: 0;
+    margin-left: 0;
+  }
+}
+

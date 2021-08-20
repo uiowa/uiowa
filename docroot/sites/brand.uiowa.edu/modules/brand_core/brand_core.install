@@ -5,6 +5,7 @@
  * Install, update and uninstall functions for the brand_core module.
  */
 
+use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\Core\Config\FileStorage;
 use Drupal\brand_core\Controller\LockupController;
@@ -72,7 +73,7 @@ function brand_core_update_8002(&$sandbox) {
   // Process all nodes that have a filled person.
   if (!isset($sandbox['total'])) {
     $query = \Drupal::entityQuery('node')
-      ->condition('type','lockup')
+      ->condition('type', 'lockup')
       ->execute();
     $sandbox['total'] = count($query);
     $sandbox['current'] = 0;
@@ -93,12 +94,12 @@ function brand_core_update_8002(&$sandbox) {
     return;
   }
 
-  foreach($batch as $nid) {
-    $node = \Drupal\node\Entity\Node::load($nid);
+  foreach ($batch as $nid) {
+    $node = Node::load($nid);
     $moderation_state = $node->get('moderation_state')->value;
     if ($moderation_state == 'published') {
       $nid = $node->id();
-      $lockup_controller = new LockupController();
+      $lockup_controller = new LockupController(\Drupal::entityTypeManager(), \Drupal::service('file_system'));
       $lockup_controller->generate($nid);
     }
     $sandbox['current']++;
@@ -110,7 +111,15 @@ function brand_core_update_8002(&$sandbox) {
   if ($sandbox['current'] >= $sandbox['total']) {
     drupal_flush_all_caches();
     $sandbox['#finished'] = 1;
-  } else {
+  }
+  else {
     $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
   }
+}
+
+/**
+ * Flush all caches after changing service constructor.
+ */
+function brand_core_update_9001() {
+  drupal_flush_all_caches();
 }

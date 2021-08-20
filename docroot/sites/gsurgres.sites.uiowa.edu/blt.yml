@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: sitesgsurgres.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sitesgsurgres
+  human_name: gsurgres.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesgsurgres.prod
+drupal:
+  db:
+    database: gsurgres_sites_uiowa_edu
+uiowa:
+  requester: sbraden

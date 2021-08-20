@@ -29,15 +29,25 @@
 {% set video_field = content.field_uiowa_hero_video[0]['#media'].field_media_video_file.entity.uri.value %}
 {% set video_url = file_url(content.field_uiowa_hero_video[0]['#media'].field_media_video_file.entity.uri.value) %}
 {% set video_thumbnail = file_url(content.field_uiowa_hero_image[0]['#media'].field_media_image.entity.uri.value) %}
-
 {# @todo Replace this with adding classes to <section> via attributes. #}
-{% if elements['#layout_builder_style'][0] == 'hero__container-bottom' %}
+{% if elements['#layout_builder_style'][0] == 'block_style_hero_left_aligned' %}
 	{% set vertical_align = 'bottom' %}
-{% elseif  elements['#layout_builder_style'][0] == 'hero__container-grid' %}
+{% elseif  elements['#layout_builder_style'][0] == 'block_style_hero_grid' %}
 	{% set vertical_align = 'grid' %}
 {% else %}
 	{% set vertical_align = 'center' %}
 {% endif %}
+
+
+{% if elements['#layout_builder_style'][0] == 'block_style_hero_left_aligned' %}
+	{% set vertical_align = 'bottom' %}
+{% elseif  elements['#layout_builder_style'][0] == 'block_style_hero_grid' %}
+	{% set vertical_align = 'grid' %}
+{% else %}
+	{% set vertical_align = 'center' %}
+{% endif %}
+
+
 
 {% embed "@uids_base/uids/hero.html.twig" with {
 	hero_alignment: vertical_align
@@ -46,9 +56,14 @@
 	{% block hero_image %}
 		{% if video_field is not empty %}
 			{{ attach_library('uids_base/hero-block-video') }}
-			<video class="hero__video" autoplay="autoplay" muted="muted" loop="loop" id="video-container" poster="{{ video_thumbnail }}">
+			<video class="media__video" autoplay="autoplay" muted="muted" loop="loop" id="video-container" poster="{{ video_thumbnail }}">
 				<source src="{{ video_url }}" type="video/mp4">
 			</video>
+      <div class="video-controls video">
+        <button class="video-btn video-btn__pause" aria-label="Pause" id="video-btn">
+          <span class="element-invisible">Pause</span>
+        </button>
+      </div>
 		{% else %}
 			{{ content.field_uiowa_hero_image }}
 		{% endif %}
@@ -57,25 +72,13 @@
 	{% block hero_content %}
 		{% if content.field_uiowa_hero_title[0]['#text'] is not empty %}
       {% set hero_headline = {
-        'heading_level' : content.field_uiowa_hero_title[0]['#size'],
-        'heading_class' : 'bold-headline--serif bold-headline',
-        'heading' : content.field_uiowa_hero_title[0]['#text'],
+        'headline_level' : content.field_uiowa_hero_title[0]['#size'],
+        'headline_class' : 'headline bold-headline--serif bold-headline',
+        'headline_text' : content.field_uiowa_hero_title[0]['#text'],
       } %}
-			{% include '@uids_base/uids/heading.html.twig' with hero_headline only %}
+			{% include '@uids_base/uids/headline.html.twig' with hero_headline only %}
 		{% endif %}
 		{{ content.field_uiowa_hero_excerpt }}
 	{% endblock %}
-
-
-	{% block hero_footer %}
-		{% if video_field is not empty %}
-			<div class="video-controls video">
-				<button class="video-btn video-btn__pause" aria-label="Pause" id="video-btn">
-					<span class="element-invisible">Pause</span>
-				</button>
-			</div>
-		{% endif %}
-	{% endblock %}
-
 
 {% endembed %}

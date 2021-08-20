@@ -5,6 +5,7 @@
  * Profile code.
  */
 
+use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -16,6 +17,8 @@ use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\layout_builder\InlineBlockUsage;
 
 /**
  * Implements hook_preprocess_HOOK().
@@ -33,7 +36,10 @@ function sitenow_preprocess_html(&$variables) {
     ],
   ];
 
-  $variables['page']['#attached']['html_head'][] = [$meta_web_author, 'web-author'];
+  $variables['page']['#attached']['html_head'][] = [
+    $meta_web_author,
+    'web-author',
+  ];
   $variables['page']['#attached']['library'][] = 'sitenow/global-scripts';
   $variables['page']['#attached']['drupalSettings']['sitenow']['version'] = $version;
 }
@@ -48,6 +54,32 @@ function sitenow_toolbar_alter(&$items) {
 
   if (isset($items['tour'])) {
     $items['tour']['#attached']['library'][] = 'claro/tour-styling';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_preprocess_breadcrumb(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $routes = [];
+    foreach ($variables["links"] as $key => $link) {
+      $url = $link->getURL();
+      // Test for external paths.
+      if ($url->isRouted()) {
+        $routes[$key] = $link->getUrl()->getRouteName();
+      }
+    }
+    // For webforms, remove all system routes and the webform route.
+    if (($key = array_search("entity.webform.collection", $routes)) !== FALSE) {
+      unset($variables["breadcrumb"][$key]);
+      foreach ($routes as $key => $value) {
+        if (substr($value, 0, strlen('system')) === 'system') {
+          unset($variables["breadcrumb"][$key]);
+        }
+      }
+    }
   }
 }
 
@@ -77,7 +109,7 @@ function sitenow_preprocess_select(&$variables) {
  */
 function sitenow_module_implements_alter(&$implementations, $hook) {
   // Unset administerusersbyrole query alter which over-filters the people page.
-  // @todo: Refactor this to move sitenow last and then alter the altered query.
+  // @todo Refactor this to move sitenow last and then alter the altered query.
   if ($hook == 'query_alter' && isset($implementations['administerusersbyrole'])) {
     unset($implementations['administerusersbyrole']);
   }
@@ -332,107 +364,152 @@ function sitenow_form_config_split_edit_form_alter(&$form, FormStateInterface $f
 }
 
 /**
+ * Implements hook_ENTITY_TYPE_prepare_form().
+ */
+function sitenow_config_split_prepare_form(EntityInterface $entity, $operation, FormStateInterface $form_state) {
+  // Set a state variable to ensure config_split uses our Chosen
+  // select implementation instead of checkboxes.
+  if (!\Drupal::state()->get('config_split_use_select')) {
+    \Drupal::state()->set('config_split_use_select', TRUE);
+  }
+}
+
+/**
+ * Custom node content type form defaults.
+ */
+function _sitenow_node_form_defaults(&$form, $form_state) {
+  if (isset($form['field_teaser'])) {
+    // Create node_teaser group in the advanced container.
+    $form['node_teaser'] = [
+      '#type' => 'details',
+      '#title' => $form['field_teaser']['widget'][0]['#title'],
+      '#group' => 'advanced',
+      '#attributes' => [
+        'class' => ['node-form-teaser'],
+      ],
+      '#attached' => [
+        'library' => ['node/drupal.node'],
+      ],
+      '#weight' => -10,
+      '#optional' => TRUE,
+      '#open' => FALSE,
+    ];
+    // Set field_teaser to node_teaser group.
+    $form['field_teaser']['#group'] = 'node_teaser';
+  }
+  if (isset($form['field_image'])) {
+    // Create node_image group in the advanced container.
+    $form['node_image'] = [
+      '#type' => 'details',
+      '#title' => $form['field_image']['widget']['#title'],
+      '#group' => 'advanced',
+      '#attributes' => [
+        'class' => ['node-form-image'],
+      ],
+      '#attached' => [
+        'library' => ['node/drupal.node'],
+      ],
+      '#weight' => -10,
+      '#optional' => TRUE,
+      '#open' => FALSE,
+    ];
+    // Set field_image to node_image group.
+    $form['field_image']['#group'] = 'node_image';
+    if (isset($form['field_image_caption'])) {
+      // Set field_image_caption to node_image group.
+      $form['field_image_caption']['#group'] = 'node_image';
+    }
+  }
+  if (isset($form['field_featured_image_display'])) {
+    $form['field_featured_image_display']['#group'] = 'node_image';
+    $form['field_featured_image_display']['widget']['#options']['_none'] = 'Site-wide default';
+
+    $form_object = $form_state->getFormObject();
+
+    if ($form_object && $node = $form_object->getEntity()) {
+      $type = $node->getType() . 's';
+      $form['field_featured_image_display']['widget']['#description'] .= t('&nbsp;If "Site-wide default" is selected, this setting can be changed on the <a href="@settings_url">SiteNow @types settings</a>.', [
+        '@settings_url' => Url::fromRoute("sitenow_$type.settings_form")->toString(),
+        '@types' => ucfirst($type),
+      ]);
+    }
+  }
+  if (isset($form['field_tags'])) {
+    // Create node_relations group in the advanced container.
+    $form['node_relations'] = [
+      '#type' => 'details',
+      '#title' => t('Relationships'),
+      '#group' => 'advanced',
+      '#attributes' => [
+        'class' => ['node-form-relations'],
+      ],
+      '#attached' => [
+        'library' => ['node/drupal.node'],
+      ],
+      '#weight' => -10,
+      '#optional' => TRUE,
+      '#open' => FALSE,
+    ];
+    // Set field_tags to node_reference group.
+    $form['field_tags']['#group'] = 'node_relations';
+  }
+  if (isset($form['field_publish_options'])) {
+    // Place field in advanced options group.
+    if (!empty($form["field_publish_options"]["widget"]["#options"])) {
+      // Create node_publish group in the advanced container.
+      $form['node_publish'] = [
+        '#type' => 'details',
+        '#title' => t('Page Options'),
+        '#group' => 'advanced',
+        '#attributes' => [
+          'class' => ['node-form-publish'],
+        ],
+        '#attached' => [
+          'library' => ['node/drupal.node'],
+        ],
+        '#weight' => 99,
+        '#optional' => TRUE,
+        '#open' => FALSE,
+      ];
+      // Set field_publish_options to node_publish group.
+      $form['field_publish_options']['#group'] = 'node_publish';
+      // Hide label. Redundant with group label.
+      $form['field_publish_options']['widget']['#title_display'] = 'invisible';
+    }
+    else {
+      // If no field options, set access to false.
+      $form["field_publish_options"]['#access'] = FALSE;
+    }
+  }
+  return $form;
+}
+
+/**
  * Implements hook_form_alter().
  */
 function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
+    // Restrict theme settings form for non-admins.
+    case 'system_theme_settings':
+      if (!sitenow_is_user_admin(\Drupal::currentUser())) {
+        $form["theme_settings"]['#access'] = FALSE;
+        $form["logo"]['#access'] = FALSE;
+        $form["favicon"]['#access'] = FALSE;
+        $form["layout"]['#access'] = FALSE;
+      }
+      break;
+
+    // Node form modifications.
     case 'node_page_edit_form':
     case 'node_page_form':
     case 'node_article_edit_form':
     case 'node_article_form':
     case 'node_person_edit_form':
     case 'node_person_form':
-      if (isset($form['field_teaser'])) {
-        // Create node_teaser group in the advanced container.
-        $form['node_teaser'] = [
-          '#type' => 'details',
-          '#title' => $form["field_teaser"]["widget"][0]["#title"],
-          '#group' => 'advanced',
-          '#attributes' => [
-            'class' => ['node-form-teaser'],
-          ],
-          '#attached' => [
-            'library' => ['node/drupal.node'],
-          ],
-          '#weight' => -10,
-          '#optional' => TRUE,
-          '#open' => FALSE,
-        ];
-        // Set field_teaser to node_teaser group.
-        $form['field_teaser']['#group'] = 'node_teaser';
-      }
-      if (isset($form['field_image'])) {
-        // Create node_image group in the advanced container.
-        $form['node_image'] = [
-          '#type' => 'details',
-          '#title' => $form["field_image"]["widget"]["#title"],
-          '#group' => 'advanced',
-          '#attributes' => [
-            'class' => ['node-form-image'],
-          ],
-          '#attached' => [
-            'library' => ['node/drupal.node'],
-          ],
-          '#weight' => -10,
-          '#optional' => TRUE,
-          '#open' => FALSE,
-        ];
-        // Set field_image to node_image group.
-        $form['field_image']['#group'] = 'node_image';
-        if (isset($form['field_image_caption'])) {
-          // Set field_image_caption to node_image group.
-          $form['field_image_caption']['#group'] = 'node_image';
-        }
-      }
-      if (isset($form['field_tags'])) {
-        // Create node_relations group in the advanced container.
-        $form['node_relations'] = [
-          '#type' => 'details',
-          '#title' => t('Relationships'),
-          '#group' => 'advanced',
-          '#attributes' => [
-            'class' => ['node-form-relations'],
-          ],
-          '#attached' => [
-            'library' => ['node/drupal.node'],
-          ],
-          '#weight' => -10,
-          '#optional' => TRUE,
-          '#open' => FALSE,
-        ];
-        // Set field_tags to node_reference group.
-        $form['field_tags']['#group'] = 'node_relations';
-      }
-      if (isset($form['field_publish_options'])) {
-        // Place field in advanced options group.
-        if (!empty($form["field_publish_options"]["widget"]["#options"])) {
-          // Create node_publish group in the advanced container.
-          $form['node_publish'] = [
-            '#type' => 'details',
-            '#title' => t('Page Options'),
-            '#group' => 'advanced',
-            '#attributes' => [
-              'class' => ['node-form-publish'],
-            ],
-            '#attached' => [
-              'library' => ['node/drupal.node'],
-            ],
-            '#weight' => 99,
-            '#optional' => TRUE,
-            '#open' => FALSE,
-          ];
-          // Set field_publish_options to node_publish group.
-          $form['field_publish_options']['#group'] = 'node_publish';
-          // Hide label. Redundant with group label.
-          $form['field_publish_options']['widget']['#title_display'] = 'invisible';
-        }
-        else {
-          // If no field options, set access to false.
-          $form["field_publish_options"]['#access'] = FALSE;
-        }
-      }
+      _sitenow_node_form_defaults($form, $form_state);
       break;
 
+    // Restrict certain webform component options.
     case 'webform_ui_element_form':
       if (!sitenow_is_user_admin(\Drupal::currentUser())) {
         // Remove access to wrapper, element, label attributes.
@@ -490,6 +567,32 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
     ->get('default');
 
   if ($default_theme === 'uids_base') {
+    $form['uiowa_footer_block'] = [
+      '#type' => 'details',
+      '#title' => t('Footer Contact Information'),
+      '#open' => TRUE,
+    ];
+    // Add link to Footer Contact Information block since block id is not
+    // always "1". Contextual link does not show if block is empty.
+    $footer_contact_block = \Drupal::service('entity.repository')->loadEntityByUuid('block_content', '0c0c1f36-3804-48b0-b384-6284eed8c67e');
+    if ($footer_contact_block) {
+      $destination = Url::fromRoute('<front>')->toString();
+      $footer_contact_block_link = Url::fromRoute(
+        'entity.block_content.edit_form',
+        ['block_content' => $footer_contact_block->id()],
+        [
+          'query' => ['destination' => $destination],
+          'absolute' => TRUE,
+        ])->toString();
+
+      $form['uiowa_footer_block']['uiowa_footer_contact_info_edit'] = [
+        '#type' => 'item',
+        '#markup' => t('<a href="@menu_link">Edit Footer Contact Information</a>.', [
+          '@menu_link' => $footer_contact_block_link,
+        ]),
+      ];
+    }
+
     $form['uiowa_footer_menus'] = [
       '#type' => 'details',
       '#title' => t('Footer Menus'),
@@ -501,7 +604,10 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
       $menu_link = Url::fromRoute('entity.menu.edit_form', ['menu' => $social_media_menu])->toString();
       $form['uiowa_footer_menus']['uiowa_footer_social_media_menu_help'] = [
         '#type' => 'item',
-        '#markup' => t('Links in the social media section are managed via the <a href="@menu_link">@menu_name menu</a>.', ['@menu_link' => $menu_link, '@menu_name' => $menus[$social_media_menu]]),
+        '#markup' => t('Links in the social media section are managed via the <a href="@menu_link">@menu_name menu</a>.', [
+          '@menu_link' => $menu_link,
+          '@menu_name' => $menus[$social_media_menu],
+        ]),
       ];
     }
 
@@ -510,7 +616,10 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
       $menu_link = Url::fromRoute('entity.menu.edit_form', ['menu' => $custom_menu])->toString();
       $form['uiowa_footer_menus']['uiowa_footer_custom_menu_help'] = [
         '#type' => 'item',
-        '#markup' => t('Links in the left column are managed via the <a href="@menu_link">@menu_name menu</a>.', ['@menu_link' => $menu_link, '@menu_name' => $menus[$custom_menu]]),
+        '#markup' => t('Links in the left column are managed via the <a href="@menu_link">@menu_name menu</a>.', [
+          '@menu_link' => $menu_link,
+          '@menu_name' => $menus[$custom_menu],
+        ]),
       ];
     }
 
@@ -519,7 +628,10 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
       $menu_link = Url::fromRoute('entity.menu.edit_form', ['menu' => $custom_menu_2])->toString();
       $form['uiowa_footer_menus']['uiowa_footer_custom_menu_2_help'] = [
         '#type' => 'item',
-        '#markup' => t('Links in the middle column are managed via the <a href="@menu_link">@menu_name menu</a>.', ['@menu_link' => $menu_link, '@menu_name' => $menus[$custom_menu_2]]),
+        '#markup' => t('Links in the middle column are managed via the <a href="@menu_link">@menu_name menu</a>.', [
+          '@menu_link' => $menu_link,
+          '@menu_name' => $menus[$custom_menu_2],
+        ]),
       ];
     }
 
@@ -528,7 +640,10 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
       $menu_link = Url::fromRoute('entity.menu.edit_form', ['menu' => $custom_menu_3])->toString();
       $form['uiowa_footer_menus']['uiowa_footer_custom_menu_3_help'] = [
         '#type' => 'item',
-        '#markup' => t('Links in the right column are managed via the <a href="@menu_link">@menu_name menu</a>.', ['@menu_link' => $menu_link, '@menu_name' => $menus[$custom_menu_3]]),
+        '#markup' => t('Links in the right column are managed via the <a href="@menu_link">@menu_name menu</a>.', [
+          '@menu_link' => $menu_link,
+          '@menu_name' => $menus[$custom_menu_3],
+        ]),
       ];
     }
 
@@ -541,7 +656,10 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
       $menu_link = Url::fromRoute('entity.menu.edit_form', ['menu' => $social_media_menu])->toString();
       $form['uiowa_footer']['uiowa_footer_menus']['uiowa_footer_social_media_menu_help'] = [
         '#type' => 'item',
-        '#markup' => t('Links in the social media section are managed via the <a href="@menu_link">@menu_name menu</a>.', ['@menu_link' => $menu_link, '@menu_name' => $menus[$social_media_menu]]),
+        '#markup' => t('Links in the social media section are managed via the <a href="@menu_link">@menu_name menu</a>.', [
+          '@menu_link' => $menu_link,
+          '@menu_name' => $menus[$social_media_menu],
+        ]),
       ];
     }
 
@@ -550,7 +668,10 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
       $menu_link = Url::fromRoute('entity.menu.edit_form', ['menu' => $custom_menu])->toString();
       $form['uiowa_footer']['uiowa_footer_menus']['uiowa_footer_custom_menu_help'] = [
         '#type' => 'item',
-        '#markup' => t('Links in the left column are managed via the <a href="@menu_link">@menu_name menu</a>.', ['@menu_link' => $menu_link, '@menu_name' => $menus[$custom_menu]]),
+        '#markup' => t('Links in the left column are managed via the <a href="@menu_link">@menu_name menu</a>.', [
+          '@menu_link' => $menu_link,
+          '@menu_name' => $menus[$custom_menu],
+        ]),
       ];
     }
 
@@ -559,7 +680,10 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
       $menu_link = Url::fromRoute('entity.menu.edit_form', ['menu' => $custom_menu_2])->toString();
       $form['uiowa_footer']['uiowa_footer_menus']['uiowa_footer_custom_menu_2_help'] = [
         '#type' => 'item',
-        '#markup' => t('Links in the right column are managed via the <a href="@menu_link">@menu_name menu</a>.', ['@menu_link' => $menu_link, '@menu_name' => $menus[$custom_menu_2]]),
+        '#markup' => t('Links in the right column are managed via the <a href="@menu_link">@menu_name menu</a>.', [
+          '@menu_link' => $menu_link,
+          '@menu_name' => $menus[$custom_menu_2],
+        ]),
       ];
     }
   }
@@ -664,16 +788,23 @@ function sitenow_preprocess_node(&$variables) {
       $moderation_state = $revision->get('moderation_state')->getString();
       $status = $revision->get('status')->value;
       if ($status == 0) {
-        $pre_vowel = (in_array($moderation_state[0], [
-          'a',
-          'e',
-          'i',
-          'o',
-          'u',
-        ]) ? 'n' : '');
-        $warning_text = t('This content is currently in a@pre_vowel @moderation_state state.', [
+        if ($moderation_state) {
+          $pre_vowel = (in_array($moderation_state[0], [
+            'a',
+            'e',
+            'i',
+            'o',
+            'u',
+          ]) ? 'n' : '');
+          $state = $moderation_state;
+        }
+        else {
+          $pre_vowel = 'n';
+          $state = 'unpublished';
+        }
+        $warning_text = t('This content is currently in a@pre_vowel @state state.', [
           '@pre_vowel' => $pre_vowel,
-          '@moderation_state' => $moderation_state,
+          '@state' => $state,
         ]);
 
         switch ($variables['view_mode']) {
@@ -760,7 +891,7 @@ function sitenow_link_alter(&$variables) {
   if (!empty($variables['options']['fa_icon'])) {
     $variables['options']['attributes']['class'][] = 'fa-icon';
 
-    $variables['text'] = t('<span class="fa @icon" aria-hidden="true"></span> <span class="menu-link-title">@title</span>', [
+    $variables['text'] = t('<span role="presentation" class="fa @icon" aria-hidden="true"></span> <span class="menu-link-title">@title</span>', [
       '@icon' => $variables['options']['fa_icon'],
       '@title' => $variables['text'],
     ]);
@@ -834,6 +965,8 @@ function sitenow_toolbar() {
  *
  * @return bool
  *   Boolean indicating whether or not current user is an admin.
+ *
+ * @todo Replace this with uiowa_core access checker service.
  */
 function sitenow_is_user_admin(AccountProxy $current_user) {
   if ($current_user->id() == 1 || in_array('administrator', $current_user->getRoles())) {
@@ -847,7 +980,7 @@ function sitenow_is_user_admin(AccountProxy $current_user) {
 /**
  * Determine the version of SiteNow based on what config is active.
  *
- * @todo: Return additional information like if any other splits are active that might impact functionality.
+ * @todo Return additional information like if any other splits are active that might impact functionality.
  */
 function sitenow_get_version() {
   $version = 'v3';
@@ -859,4 +992,111 @@ function sitenow_get_version() {
   }
 
   return $version;
+}
+
+/**
+ * Implements hook_entity_insert().
+ */
+function sitenow_entity_insert(EntityInterface $entity) {
+  // UUIDs for default content Home and About pages.
+  $uuids = [
+    '922b3b26-306a-457c-ba18-2c00966f81cf',
+    'f44a17cb-a187-4286-ad9f-aae44a8e9f85',
+  ];
+  if (in_array($entity->uuid(), $uuids)) {
+    $database = \Drupal::database();
+    $use_controller = new InlineBlockUsage($database);
+    $block_controller = \Drupal::service('entity_type.manager')
+      ->getStorage('block_content');
+
+    // Load the node and grab the layout information.
+    $node = \Drupal::service('entity.repository')
+      ->loadEntityByUuid('node', $entity->uuid());
+    $layouts = $node->get('layout_builder__layout');
+
+    foreach ($layouts as $layout) {
+      $section = $layout->getValue()['section'];
+      // Pull out individual components.
+      foreach ($section->getComponents() as $component) {
+        // Grab the associated block's uuid.
+        $config = $component->get('configuration');
+        if (isset($config['block_revision_id'])) {
+          $rev_id = $config['block_revision_id'];
+          $block = $block_controller->loadRevision($rev_id);
+          if ($block) {
+            $use_controller->addUsage($block->id(), $node);
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Set dynamic allowed values for the alignment field.
+ *
+ * @param \Drupal\field\Entity\FieldStorageConfig $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function featured_image_size_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  $options = [
+    'do_not_display' => 'Do not display',
+    'small' => 'Small',
+    'medium' => 'Medium',
+    'large' => 'Large',
+  ];
+
+  return $options;
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function sitenow_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
+  $replacements = [];
+  if (!empty($data['node'])) {
+    // Limit this to content types that have 'field_teaser' field.
+    if ($data['node']->hasField('field_teaser')) {
+      foreach ($tokens as $name => $original) {
+        switch ($name) {
+          // Not consistent across content types which
+          // token is used for meta description.
+          case 'field_teaser':
+          case 'field_teaser:value':
+            $field_teaser = $data['node']->get('field_teaser')->value;
+            if (empty($field_teaser)) {
+              // Person content type.
+              if ($data["node"]->hasField('field_person_bio') && !empty($data['node']->get('field_person_bio')->value)) {
+                $replacement_value = $data['node']->get('field_person_bio')->value;
+              }
+              // Article content type, v3 Page content type.
+              if ($data["node"]->hasField('body') && !empty($data['node']->get('body')->value)) {
+                $replacement_value = $data['node']->get('body')->value;
+              }
+              if (!empty($replacement_value)) {
+                // Plain text doesn't do faulty html correction, and don't
+                // want tags counting towards limit.
+                $replacement_value = trim(strip_tags($replacement_value));
+                // Using text.module text_summary().
+                // @todo Make length a configuration setting.
+                $replacements[$original] = text_summary($replacement_value, "plain_text", "300");
+              }
+            }
+            break;
+
+        }
+      }
+    }
+  }
+
+  return $replacements;
 }

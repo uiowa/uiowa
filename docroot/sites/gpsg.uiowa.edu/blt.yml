@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: gpsg.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: gpsg
+  human_name: gpsg.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: gpsg.prod
+drupal:
+  db:
+    database: gpsg_uiowa_edu
+uiowa:
+  requester: dquam

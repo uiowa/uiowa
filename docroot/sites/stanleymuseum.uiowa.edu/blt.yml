@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: stanleymuseum.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: stanleymuseum
+  human_name: stanleymuseum.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: stanleymuseum.prod
+drupal:
+  db:
+    database: stanleymuseum_uiowa_edu
+uiowa:
+  requester: emwallace

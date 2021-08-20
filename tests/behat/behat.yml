@@ -2,15 +2,13 @@ default:
   suites:
     default:
       paths:
-        - %paths.base%/features
+        - "%paths.base%/features"
   extensions:
     Behat\MinkExtension:
       default_session: goutte
       browser_name: chrome
       javascript_session: default
-      goutte:
-        guzzle_parameters:
-          verify: false
+      goutte: ~
       files_path: "%paths.base%/media"
     Drupal\DrupalExtension:
       blackbox: ~
@@ -22,10 +20,9 @@ default:
         error_message_selector: '.messages.messages--error'
     jarnaiz\JUnitFormatter\JUnitFormatterExtension:
         filename: report.xml
-        outputDir: %paths.base%/build/tests
+        outputDir: "%paths.base%/build/tests"
     Bex\Behat\ScreenshotExtension:
       screenshot_taking_mode: failed_steps
       image_drivers:
         local:
           screenshot_directory: /var/www/uiowa/reports
-

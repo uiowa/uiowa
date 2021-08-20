@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: endingviolence.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: endingviolence
+  human_name: endingviolence.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: endingviolence.prod
+drupal:
+  db:
+    database: endingviolence_uiowa_edu
+uiowa:
+  requester: dquam

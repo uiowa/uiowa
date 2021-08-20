@@ -1,0 +1,64 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for uiowa_maui module.
+ */
+
+use Drupal\Component\Utility\Xss;
+use Drupal\Core\Template\Attribute;
+
+/**
+ * Implements hook_theme().
+ */
+function uiowa_maui_theme($existing, $type, $theme, $path) {
+  return [
+    'uiowa_maui_session_dates' => [
+      'variables' => [
+        'data' => [],
+        'child_heading_size' => 'h3',
+      ],
+    ],
+  ];
+}
+
+/**
+ * Theme preprocess function for uiowa_maui_session_dates.
+ */
+function template_preprocess_uiowa_maui_session_dates(&$variables) {
+  $dates = [];
+
+  foreach ($variables['data'] as $date) {
+    $start = strtotime($date->beginDate);
+    $end = strtotime($date->endDate);
+    $key = $start . $end;
+
+    // Web description is not always set. The subsession takes priority if set.
+    $subsession = $date->subSession ?? FALSE;
+
+    $item = (object) [
+      'description' => Xss::filter($date->dateLookup->webDescription ?? $date->dateLookup->description),
+      'session' => Xss::filter($subsession ?: $date->session->shortDescription),
+      'attributes' => new Attribute([
+        'class' => $subsession ? 'badge badge--primary subsession' : 'badge badge--primary session',
+      ]),
+    ];
+
+    // Group items by date.
+    if (isset($dates[$key])) {
+      $dates[$key]['items'][] = $item;
+    }
+    else {
+      $dates[$key] = [
+        'start' => date('F j, Y', $start),
+        'end' => date('F j, Y', $end),
+        'items' => [$item],
+      ];
+    }
+  }
+
+  $variables['dates'] = $dates;
+
+  // Remove raw data availability in template.
+  unset($variables['data']);
+}

@@ -1,6 +1,8 @@
 {{ attach_library('uids_base/card') }}
+{{ attach_library('uids_base/media') }}
 {% set attributes = attributes ?: create_attribute() %}
-{% set card_classes = ['card'] %}
+{% set card_classes = ['card', 'click-container'] %}
+{% set media_attributes = media_attributes ?: create_attribute() %}
 
 {# The following code is to determine where a link should be attached, if it exists. #}
 {% set link_element, show_button = false, false %}
@@ -11,6 +13,10 @@
     {# If we also have link text, then we'll show a psuedo-button. #}
     {% if card_link_title is not empty %}
       {% set show_button = true %}
+      {# If card_no_link is set, use button as link element. #}
+      {% if card_no_link %}
+        {% set link_element = 'button' %}
+      {% endif %}
     {% endif %}
   {% elseif card_link_title is not empty %}
     {# Title is not set, but there is link text, so use that instead. #}
@@ -31,13 +37,13 @@
 {% set card_aria_describedby = '' %}
 {% endif %}
 
-<div{{ attributes.addclass(card_classes) }}>
+<div{{ attributes.addclass(card_classes) }}{% if card_no_link %} data-uids-no-link{% endif %}>
   {{ title_prefix }}
   {{ title_suffix }}
   {% block card_img %}
     {% if card_image is not empty %}
       {# @todo Add image template #}
-      <div class="card__media">
+      <div {{ media_attributes.addClass(media_styles, media_sizes, 'card__media') }}>
         {% if link_element == 'image' %}
         <a href="{{ card_link_url }}">
           {% endif %}
@@ -49,53 +55,71 @@
     {% endif %}
   {% endblock %}
 
-  <div class="card__body">
-    {% block heading %}
-      {% if card_title %}
-        {# @todo Determine if it is better to programatically set level and class via preprocess. #}
-        {% set card_heading = {
-          'heading_level': heading_level ?: 'h2',
-          'heading_class': heading_class ?: 'card__title',
-          'heading': card_title,
-          'heading_url': card_link_url,
-          'heading_aria': card_aria_describedby,
-        } %}
-        {% include '@uids_base/uids/heading.html.twig' with card_heading only %}
-      {% endif %}
-    {% endblock %}
+  {% block card_body %}
+    <div class="card__body">
+      {% block heading %}
+        {% if card_title %}
+          {# @todo Determine if it is better to programatically set level and class via preprocess. #}
+          {% set card_heading = {
+            'headline_level': headline_level ?: 'h2',
+            'headline_class': headline_class ?: 'card__title headline',
+            'headline_text': card_title,
+            'headline_url': card_link_url,
+            'headline_aria': card_aria_describedby,
+            'headline_url_class': link_element == 'title' ? 'click-target' : null,
+          } %}
+          {% include '@uids_base/uids/headline.html.twig' with card_heading only %}
+        {% endif %}
+      {% endblock %}
 
-    {% block subheading %}
-      {% if card_subtitle is not empty %}
-        {{ card_subtitle }}
-      {% endif %}
-    {% endblock %}
-
-    {% block card_author %}
-      {% if card_author is not empty %}
-        <div class="card__author">{{ card_author }}</div>
-      {% endif %}
-    {% endblock %}
-
-    {% block card_content %}
-      {% if card_text is not empty %}
-        <p>{{ card_text }}</p>
-      {% endif %}
-    {% endblock %}
-
-    {% block card_bttn %}
-      {% if card_link_url is not empty and show_button %}
-        {% if link_element == 'button' %}
-          <a class="bttn bttn--outline bttn--tertiary bttn--sans-serif bttn--full" href="{{ card_link_url }}">
-            {{ card_link_title }}
-            <i class="fas fa-arrow-right"></i>
-          </a>
-        {% else %}
-          <div aria-hidden="true" class="bttn bttn--outline bttn--tertiary bttn--sans-serif"{% if card_aria_describedby %} id="{{ card_aria_describedby }}"{% endif %}>
-            {{ card_link_title }}
-            <i class="fas fa-arrow-right"></i>
+      {% block card_details %}
+        {% if card_subtitle or card_tag or card_date is not empty %}
+          <div class="card__details">
+            {% block card_subtitle %}
+              {% if card_subtitle is not empty %}
+                <div class="card__subtitle">{{ card_subtitle }}</div>
+              {% endif %}
+            {% endblock %}
+            {% block card_date %}
+              {% if card_date is not empty %}
+                <div class="card__date">
+                  {{ card_date }}
+                </div>
+              {% endif %}
+            {% endblock %}
+            {% block card_tag %}
+              {% if card_tag is not empty %}
+                <div class="card__label">
+                  <i role="presentation" class="fas fa-map-marker-alt"></i>
+                  {{ card_tag }}
+                </div>
+              {% endif %}
+            {% endblock %}
           </div>
         {% endif %}
-      {% endif %}
-    {% endblock %}
-  </div>
+      {% endblock %}
+
+      {% block card_content %}
+        {% if card_text|striptags|trim is not empty %}
+          <div class="card__description">{{ card_text }}</div>
+        {% endif %}
+      {% endblock %}
+
+      {% block card_bttn %}
+        {% if card_link_url is not empty and show_button %}
+          {% if link_element == 'button' %}
+            <a class="bttn bttn--outline bttn--sans-serif bttn--full click-target" href="{{ card_link_url }}">
+              {{ card_link_title }}
+              <i role="presentation" class="fas fa-arrow-right"></i>
+            </a>
+          {% else %}
+            <div aria-hidden="true" class="bttn bttn--outline bttn--sans-serif"{% if card_aria_describedby %} id="{{ card_aria_describedby }}"{% endif %}>
+              {{ card_link_title }}
+              <i role="presentation" class="fas fa-arrow-right"></i>
+            </div>
+          {% endif %}
+        {% endif %}
+      {% endblock %}
+    </div>
+  {% endblock %}
 </div>

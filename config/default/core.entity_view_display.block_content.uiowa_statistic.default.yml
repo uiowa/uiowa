@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_statistic
+    - field.field.block_content.uiowa_statistic.field_uiowa_statistic_content
     - field.field.block_content.uiowa_statistic.field_uiowa_statistic_excerpt
     - field.field.block_content.uiowa_statistic.field_uiowa_statistic_title
     - field.field.block_content.uiowa_statistic.field_uiowa_statistic_title_pre
@@ -17,6 +18,13 @@ targetEntityType: block_content
 bundle: uiowa_statistic
 mode: default
 content:
+  field_uiowa_statistic_content:
+    weight: 6
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
   field_uiowa_statistic_excerpt:
     weight: 1
     label: hidden

@@ -1,22 +1,28 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
+@import "components/card/_card-mixins.scss";
 
 .block-inline-blockuiowa-people {
+
   &.hide-images .card__media,
   &.hide-images .content-image {
     display: none;
   }
+
   &.hide-details {
+
     .field--name-field-person-email,
     .field--name-field-person-phone {
       display: none;
     }
   }
+
   &.hide-descriptions {
     .field--name-field-teaser {
       display: none;
     }
   }
+
   p {
     display: none;
   }
@@ -31,16 +37,22 @@
   .field--name-field-teaser {
     margin-top: $gutter;
   }
+
   .more-link {
     margin-top: $gutter;
     margin-bottom: $gutter;
   }
+
   .card__media {
     @include card-media-horizontal-right;
 
     @include breakpoint(sm) {
-      margin-top: $lg;
+      margin-top: 0;
       margin-bottom: $gutter;
+
+      [class*="bg-"] & {
+        margin-right: $gutter;
+      }
     }
   }
 
@@ -56,7 +68,9 @@
 
   .card--list {
     display: flex;
-    flex-direction: row-reverse;
+    @include breakpoint(sm) {
+      flex-direction: row-reverse;
+    }
   }
 
   .view-content {
@@ -67,9 +81,15 @@
 
   .views-row {
     @include list-group-item;
+    background: inherit;
+    border-color: inherit;
+    border: none;
+    padding: 0;
+
     &:first-child {
       border-top: none;
     }
+
     &:last-child {
       border-bottom: none;
     }

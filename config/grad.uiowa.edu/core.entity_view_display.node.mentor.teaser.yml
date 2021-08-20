@@ -1,0 +1,83 @@
+uuid: 347ea138-f6f7-4344-adb5-80cc9004b84d
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.mentor.field_grad_program_all_degree
+    - field.field.node.mentor.field_image
+    - field.field.node.mentor.field_person_credential
+    - field.field.node.mentor.field_person_email
+    - field.field.node.mentor.field_person_first_name
+    - field.field.node.mentor.field_person_last_name
+    - field.field.node.mentor.field_person_mentor_qualif
+    - field.field.node.mentor.field_person_mentor_ug_role
+    - field.field.node.mentor.field_person_phone
+    - field.field.node.mentor.field_person_position
+    - field.field.node.mentor.field_person_research_assistants
+    - field.field.node.mentor.field_person_website
+    - field.field.node.mentor.field_scholar_bio
+    - field.field.node.mentor.field_scholar_bio_headline
+    - field.field.node.mentor.field_uiowa_college
+    - node.type.mentor
+  module:
+    - telephone
+    - user
+id: node.mentor.teaser
+targetEntityType: node
+bundle: mentor
+mode: teaser
+content:
+  field_image:
+    type: entity_reference_entity_view
+    weight: 4
+    region: content
+    label: visually_hidden
+    settings:
+      view_mode: small__square
+      link: false
+    third_party_settings: {  }
+  field_person_email:
+    type: email_mailto
+    weight: 2
+    region: content
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_person_phone:
+    type: telephone_link
+    weight: 3
+    region: content
+    label: visually_hidden
+    settings:
+      title: ''
+    third_party_settings: {  }
+  field_person_position:
+    type: string
+    weight: 0
+    region: content
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_scholar_bio_headline:
+    type: string
+    weight: 1
+    region: content
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  field_grad_program_all_degree: true
+  field_person_credential: true
+  field_person_first_name: true
+  field_person_last_name: true
+  field_person_mentor_qualif: true
+  field_person_mentor_ug_role: true
+  field_person_research_assistants: true
+  field_person_website: true
+  field_scholar_bio: true
+  field_uiowa_college: true
+  links: true
+  search_api_excerpt: true

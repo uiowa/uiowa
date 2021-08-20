@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: studentwellness.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: studentwellness
+  human_name: studentwellness.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: studentwellness.prod
+drupal:
+  db:
+    database: studentwellness_uiowa_edu
+uiowa:
+  requester: dquam

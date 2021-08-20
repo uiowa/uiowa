@@ -33,7 +33,7 @@ tips:
     weight: 2
     attributes:
       data-id: edit-sitenow-articles-title
-    body: '<p>First off, you can give your page a title. This is a required field. Other required fields are marked with a red asterisk. This will display above the published articles</p>'
+    body: '<p>First off, you can give your Article page a title. This is a required field. Other required fields are marked with a red asterisk. This will display above the published articles.</p>'
     location: bottom
   path:
     id: path
@@ -50,9 +50,9 @@ tips:
     label: 'Header Content'
     weight: 4
     attributes:
-      data-class: form-item-sitenow-articles-header-content-value
-    body: '<p>The Header Content text will display above the articles on the news page.</p>'
-    location: right
+      data-class: js-form-type-textarea
+    body: '<p>The Header Content text will display above the rendered articles on the news page.</p>'
+    location: top
   wysiwyg:
     id: wysiwyg
     plugin: text
@@ -60,7 +60,7 @@ tips:
     weight: 5
     attributes:
       data-id: cke_edit-sitenow-articles-header-content-value
-    body: '<p>The What-You-See-Is-What-You-Get (WYSIWYG) text editor gives you the ability to format your content and add links/media. This editor is available on most text areas around the site.</p><p>For more details, <a href="https://sitenow.uiowa.edu/node/136">view our documentation section about the WYSIWYG</a>.</p>'
+    body: '<p>The What-You-See-Is-What-You-Get (WYSIWYG) text editor gives you the ability to add additional content to the header on the Articles page.</p><p>For more details, <a href="https://sitenow.uiowa.edu/node/136">view our documentation section about the WYSIWYG</a>.</p>'
     location: top
   archive:
     id: archive
@@ -81,11 +81,11 @@ tips:
   page-actions:
     id: page-actions
     plugin: text
-    label: Publish/Save/Preview
+    label: 'Save Article Settings'
     weight: 8
     attributes:
       data-id: edit-actions
-    body: '<p>You can Save configuration here.</p><p>Site visitors will only see the article content marked as published.</p>'
+    body: '<p>You can Save the changes you made to the Article configuration here.</p>'
     location: top
   next-step:
     id: next-step

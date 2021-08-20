@@ -1,0 +1,13 @@
+project:
+  local:
+    hostname: physics.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: physics
+  human_name: physics.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: physics.prod
+drupal:
+  db:
+    database: physics_uiowa_edu

@@ -1,0 +1,336 @@
+uuid: 5b8e21c2-9f34-4bf4-98b9-e0d7597a0d11
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.scholarship.body
+    - field.field.node.scholarship.field_scholarship_application
+    - field.field.node.scholarship.field_scholarship_contact
+    - field.field.node.scholarship.field_scholarship_deadline
+    - field.field.node.scholarship.field_scholarship_more_info
+    - field.field.node.scholarship.field_scholarship_renewal
+    - field.field.node.scholarship.field_scholarship_requirements
+    - field.field.node.scholarship.field_scholarship_value
+    - node.type.scholarship
+    - system.menu.main
+  module:
+    - layout_builder
+    - link
+    - menu_block
+    - system
+    - text
+    - user
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: true
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: 'Moderation control'
+          layout_builder_styles_style:
+            section_margin_remove_default_margins: section_margin_remove_default_margins
+        components:
+          -
+            uuid: 051b1326-800c-40ca-b518-98ce13ca4e6f
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'extra_field_block:node:page:content_moderation_control'
+            additional: {  }
+            weight: 0
+        third_party_settings:
+          layout_builder_lock:
+            lock:
+              1: 1
+              2: 2
+              3: 3
+              4: 4
+              5: 5
+              6: 6
+              8: 8
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: Header
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+        components:
+          -
+            uuid: 40b768ff-6e34-4257-9398-d83430b061e8
+            region: content
+            configuration:
+              id: system_breadcrumb_block
+              label: Breadcrumbs
+              provider: system
+              label_display: '0'
+              context_mapping: {  }
+            additional: {  }
+            weight: 0
+          -
+            uuid: 56a58312-d93e-4d32-84a0-39b2a2fc89fb
+            region: content
+            configuration:
+              id: 'field_block:node:page:title'
+              label: Title
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: visually_hidden
+                type: string
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 1
+        third_party_settings:
+          layout_builder_lock:
+            lock:
+              1: 1
+              2: 2
+              3: 3
+              4: 4
+              5: 5
+              6: 6
+              8: 8
+      -
+        layout_id: layout_page
+        layout_settings:
+          label: Content
+        components:
+          -
+            uuid: 7cae8197-63fb-4ea0-b58f-a6c0e458e50b
+            region: sidebar
+            configuration:
+              id: 'menu_block:main'
+              label: 'Main navigation'
+              provider: menu_block
+              label_display: '0'
+              follow: true
+              follow_parent: '0'
+              level: 2
+              depth: 0
+              expand: false
+              parent: 'main:'
+              suggestion: main
+              context_mapping: {  }
+            additional:
+              layout_builder_styles_style:
+                block_menu_vertical: block_menu_vertical
+            weight: 0
+          -
+            uuid: 42c10420-3c41-4f70-b57f-19674e82dd10
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:scholarship:field_scholarship_value'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: text_default
+            additional: {  }
+            weight: -7
+          -
+            uuid: 736c3c12-304d-4926-bcec-f0368985048c
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:scholarship:field_scholarship_requirements'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: text_default
+            additional: {  }
+            weight: -6
+          -
+            uuid: 6dec8e86-00b9-481f-9f36-3f9db6e7739f
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:scholarship:field_scholarship_application'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: text_default
+            additional: {  }
+            weight: -5
+          -
+            uuid: fa545645-7ee9-42a6-9ea7-5d791ee7f6d6
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:scholarship:field_scholarship_deadline'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: text_default
+            additional: {  }
+            weight: -4
+          -
+            uuid: 7c5956e0-6ce8-4fe3-9d7e-79e6e363e647
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:scholarship:field_scholarship_renewal'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: text_default
+            additional: {  }
+            weight: -3
+          -
+            uuid: 9018128c-570e-4b86-a2f2-711a79395472
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:scholarship:field_scholarship_more_info'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: text_default
+            additional: {  }
+            weight: -2
+          -
+            uuid: 7621544a-9792-4406-b471-389d9393e485
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:scholarship:field_scholarship_contact'
+              formatter:
+                label: above
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: ''
+                  target: ''
+                third_party_settings: {  }
+                type: link
+            additional: {  }
+            weight: -1
+          -
+            uuid: 93c65c44-60b6-47e6-b26a-2229086118a1
+            region: content
+            configuration:
+              id: 'field_block:node:scholarship:body'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: -8
+        third_party_settings: {  }
+id: node.scholarship.default
+targetEntityType: node
+bundle: scholarship
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  content_moderation_control:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_scholarship_application:
+    weight: 4
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_scholarship_contact:
+    weight: 8
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_scholarship_deadline:
+    weight: 5
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_scholarship_more_info:
+    weight: 7
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_scholarship_renewal:
+    weight: 6
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_scholarship_requirements:
+    weight: 3
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_scholarship_value:
+    weight: 2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  links:
+    weight: 9
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  search_api_excerpt: true

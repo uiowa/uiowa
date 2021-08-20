@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * @file
+ * Installation functions for sitenow_migrate module.
+ */
+
+use Drupal\Core\File\Exception\FileException;
+use Drupal\Core\File\FileSystemInterface;
+
+/**
+ * Implements hook_install().
+ */
+function sitenow_migrate_install() {
+  // Recreation of media.install to ensure the generic file image is available
+  // in the local environment prior to migration.
+  // Helps with memory issues and errors during migration, if the file
+  // doesn't already exist.
+  $source = drupal_get_path('module', 'sitenow_migrate') . '/images/icons';
+  $destination = \Drupal::config('media.settings')->get('icon_base_uri');
+  /** @var \Drupal\Core\File\FileSystemInterface $file_system */
+  $file_system = \Drupal::service('file_system');
+  $file_system->prepareDirectory($destination, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
+
+  $files = $file_system->scanDirectory($source, '/.*\.(svg|png|jpg|jpeg|gif)$/');
+  foreach ($files as $file) {
+    // When reinstalling the media module we don't want to copy the icons when
+    // they already exist. The icons could be replaced (by a contrib module or
+    // manually), so we don't want to replace the existing files. Removing the
+    // files when we uninstall could also be a problem if the files are
+    // referenced somewhere else. Since showing an error that it was not
+    // possible to copy the files is also confusing, we silently do nothing.
+    if (!file_exists($destination . DIRECTORY_SEPARATOR . $file->filename)) {
+      try {
+        $file_system->copy($file->uri, $destination, FileSystemInterface::EXISTS_ERROR);
+      }
+      catch (FileException $e) {
+        // Ignore and continue.
+      }
+
+    }
+  }
+}

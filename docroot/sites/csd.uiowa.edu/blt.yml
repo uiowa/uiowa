@@ -1,0 +1,13 @@
+project:
+  local:
+    hostname: csd.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: csd
+  human_name: csd.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: csd.prod
+drupal:
+  db:
+    database: csd_uiowa_edu

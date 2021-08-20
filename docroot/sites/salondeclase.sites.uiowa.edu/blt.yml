@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: sitessalondeclase.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sitessalondeclase
+  human_name: salondeclase.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitessalondeclase.prod
+drupal:
+  db:
+    database: salondeclase_sites_uiowa_edu
+uiowa:
+  requester: gzimotti

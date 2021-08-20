@@ -1,0 +1,29 @@
+uuid: 0fbbcb41-74ce-4001-8a31-ed4c27678f5a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_image
+    - media.type.image
+    - node.type.event
+id: node.event.field_image
+field_name: field_image
+entity_type: node
+bundle: event
+label: 'Featured Image'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

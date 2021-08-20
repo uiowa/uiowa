@@ -1,0 +1,13 @@
+project:
+  local:
+    hostname: environmentalsciences.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: environmentalsciences
+  human_name: environmentalsciences.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: environmentalsciences.prod
+drupal:
+  db:
+    database: environmentalsciences_uiowa_edu

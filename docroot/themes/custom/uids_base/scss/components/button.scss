@@ -1,3 +1,38 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
 @import "components/button/button.scss";
+
+// @todo is this still necessary?
+a.bttn {
+  span {
+    margin-left: $sm;
+    color: $primary;
+  }
+
+  &.bttn--primary {
+    span {
+      color: white;
+    }
+  }
+}
+
+.block-inline-blockuiowa-text-area,
+.block-field-blocknodepagebody {
+  .bttn {
+    margin: 0 1rem 1rem 0;
+    @include breakpoint(sm) {
+      margin: inherit;
+    }
+    + .bttn {
+      @include breakpoint(sm) {
+        margin: inherit;
+      }
+    }
+  }
+}
+
+[class*=bg--] {
+  .bttn--secondary {
+    color: $white;
+  }
+}

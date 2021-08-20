@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: tippie.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: tippie
+  human_name: tippie.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: tippie.prod
+drupal:
+  db:
+    database: tippie_uiowa_edu
+uiowa:
+  requester: mjain

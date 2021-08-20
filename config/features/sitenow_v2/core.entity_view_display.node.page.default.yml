@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.page.body
+    - field.field.node.page.field_featured_image_display
     - field.field.node.page.field_image
     - field.field.node.page.field_meta_tags
     - field.field.node.page.field_page_content_block
@@ -35,7 +36,7 @@ third_party_settings:
             section_margin_remove_default_margins: section_margin_remove_default_margins
             0: ''
         components:
-          051b1326-800c-40ca-b518-98ce13ca4e6f:
+          -
             uuid: 051b1326-800c-40ca-b518-98ce13ca4e6f
             region: content
             configuration:
@@ -53,7 +54,7 @@ third_party_settings:
           layout_builder_styles_style:
             section_margin_edge_to_edge: section_margin_edge_to_edge
         components:
-          40b768ff-6e34-4257-9398-d83430b061e8:
+          -
             uuid: 40b768ff-6e34-4257-9398-d83430b061e8
             region: content
             configuration:
@@ -64,7 +65,7 @@ third_party_settings:
               context_mapping: {  }
             additional: {  }
             weight: 1
-          56a58312-d93e-4d32-84a0-39b2a2fc89fb:
+          -
             uuid: 56a58312-d93e-4d32-84a0-39b2a2fc89fb
             region: content
             configuration:
@@ -83,7 +84,7 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: 2
-          b444f835-62e1-4e31-b433-22fe88ef3372:
+          -
             uuid: b444f835-62e1-4e31-b433-22fe88ef3372
             region: background
             configuration:
@@ -119,27 +120,29 @@ third_party_settings:
           layout_builder_styles_style:
             section_margin_edge_to_edge: section_margin_edge_to_edge
         components:
-          c8d974cb-667f-4e0d-8716-d2a77004e0e1:
+          -
             uuid: c8d974cb-667f-4e0d-8716-d2a77004e0e1
             region: sidebar
             configuration:
               id: 'menu_block:main'
               label: 'Main navigation'
               provider: menu_block
-              label_display: '0'
-              follow: 1
+              label_display: null
+              follow: true
               follow_parent: '0'
               level: 2
-              depth: 0
-              expand: 0
+              depth: 1
+              expand_all_items: false
               parent: 'main:'
               suggestion: main
+              label_type: block
+              label_link: false
               context_mapping: {  }
             additional:
               layout_builder_styles_style:
                 block_menu_vertical: block_menu_vertical
             weight: 0
-          3f4b0485-7cd7-40eb-b4e0-244cc6817881:
+          -
             uuid: 3f4b0485-7cd7-40eb-b4e0-244cc6817881
             region: content
             configuration:
@@ -202,6 +205,7 @@ content:
     third_party_settings: {  }
 hidden:
   body: true
+  field_featured_image_display: true
   field_meta_tags: true
   field_publish_options: true
   field_tags: true

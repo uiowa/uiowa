@@ -29,14 +29,12 @@
 {% set block_banner = {
   'banner_image': content.field_uiowa_banner_image,
   'banner_summary': content.field_uiowa_banner_excerpt,
-  'attributes': attributes,
+  'attributes': attributes.removeClass(headline_classes,background_classes),
   'banner_title': content.field_uiowa_banner_title[0]['#text'],
-  'heading_level': content.field_uiowa_banner_title[0]['#size'],
-  'link': {
-    'link_url': content.field_uiowa_banner_link[0]['#url'],
-    'link_text': content.field_uiowa_banner_link[0]['#title'],
-    'link_classes': ['bttn', 'bttn--primary', 'bttn--caps'],
-  },
+  'headline_level': content.field_uiowa_banner_title[0]['#size'],
+  'headline_class' : headline_classes,
+  'banner_aria_describedby': content.field_uiowa_banner_title[0]['#text']|clean_id,
+  'links': links,
   'title_prefix': title_prefix,
   'title_suffix': title_suffix,
 } %}
@@ -44,10 +42,14 @@
 {% embed '@uids_base/uids/banner.html.twig' with block_banner only %}
 
   {% block banner_image %}
-  {{ parent() }}
-  {# Embed contextual links so that they'll show up in the upper right-hand corner. #}
-  {{ title_prefix }}
-  {{ title_suffix }}
-  {% endblock banner_image %}
+    {# Embed contextual links so that they'll show up in the upper right-hand corner. #}
+    {{ title_prefix }}
+    {{ title_suffix }}
+    {% if banner_image  %}
+      <div class="banner__image">
+        {{ banner_image }}
+      </div>
+    {% endif %}
+  {% endblock %}
 
 {% endembed %}

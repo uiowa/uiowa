@@ -38,7 +38,7 @@ function hr_core_update_8002() {
 
   // Obtain the storage manager for vocabularies.
   // Create a new vocabulary from the yaml configuration and save.
-  \Drupal::entityManager()->getStorage('taxonomy_vocabulary')
+  \Drupal::entityTypeManager()->getStorage('taxonomy_vocabulary')
     ->create($source->read('taxonomy.vocabulary.faq_categories'))
     ->save();
 
@@ -138,7 +138,11 @@ function hr_core_update_8002() {
   }
 
   // Compensation and Classification tree.
-  $parent = Term::create(['vid' => 'faq_categories', 'name' => 'Compensation and Classification']);
+  $parent = Term::create([
+    'vid' => 'faq_categories',
+    'name' => 'Compensation and Classification',
+  ]);
+
   $parent->enforceIsNew();
   $parent->save();
   $parent_tid = $parent->id();
@@ -162,7 +166,11 @@ function hr_core_update_8002() {
   }
 
   // Disaster Preparedness tree.
-  $parent = Term::create(['vid' => 'faq_categories', 'name' => 'Disaster Preparedness']);
+  $parent = Term::create([
+    'vid' => 'faq_categories',
+    'name' => 'Disaster Preparedness',
+  ]);
+
   $parent->enforceIsNew();
   $parent->save();
   $parent_tid = $parent->id();
@@ -326,7 +334,7 @@ function hr_core_update_8005() {
 }
 
 /**
- * Add uiowa_bootstrap to complete split so cim does not error on UIBS block deletion.
+ * Add uiowa_bootstrap to split so cim does not error on UIBS block deletion.
  */
 function hr_core_update_8006() {
   $config_factory = \Drupal::configFactory();
@@ -337,4 +345,14 @@ function hr_core_update_8006() {
     ->save();
 
   drupal_flush_all_caches();
+}
+
+/**
+ * Import HR split config_ignore.settings so uiowa_bar.settings are kept.
+ */
+function hr_core_update_8007() {
+  $config_path = \Drupal::configFactory()->get('config_split.config_split.hr')->get('folder');
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
 }

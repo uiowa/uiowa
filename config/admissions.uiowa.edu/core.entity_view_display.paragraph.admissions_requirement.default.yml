@@ -1,0 +1,53 @@
+uuid: 9d9938a8-6bd0-446f-8d93-7df0a7c96938
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.admissions_requirement.field_ar_intro
+    - field.field.paragraph.admissions_requirement.field_ar_process
+    - field.field.paragraph.admissions_requirement.field_ar_requirement
+    - paragraphs.paragraphs_type.admissions_requirement
+  module:
+    - link
+    - text
+id: paragraph.admissions_requirement.default
+targetEntityType: paragraph
+bundle: admissions_requirement
+mode: default
+content:
+  field_ar_intro:
+    weight: 0
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_ar_process:
+    weight: 2
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_ar_requirement:
+    weight: 1
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

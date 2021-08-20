@@ -43,7 +43,7 @@ class SitenowDcvController extends ControllerBase {
    * Returns file content.
    */
   public function dcvFile($filename) {
-    /* @var \Drupal\file\Entity\File[] $file */
+    /** @var \Drupal\file\Entity\File[] $file */
     $file = $this->entityTypeManager
       ->getStorage('file')
       ->loadByProperties(['filename' => $filename]);

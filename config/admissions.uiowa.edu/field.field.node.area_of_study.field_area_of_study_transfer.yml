@@ -1,0 +1,46 @@
+uuid: 85ef2b4f-c822-4ffe-a8f1-a226fa757389
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_area_of_study_transfer
+    - node.type.area_of_study
+    - paragraphs.paragraphs_type.admissions_requirement
+  module:
+    - entity_reference_revisions
+id: node.area_of_study.field_area_of_study_transfer
+field_name: field_area_of_study_transfer
+entity_type: node
+bundle: area_of_study
+label: Transfer
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      admissions_requirement: admissions_requirement
+    target_bundles_drag_drop:
+      admissions_card:
+        weight: 7
+        enabled: false
+      admissions_requirement:
+        enabled: true
+        weight: 8
+      degree:
+        weight: 9
+        enabled: false
+      uiowa_collection_item:
+        weight: 10
+        enabled: false
+      uiowa_contact:
+        weight: 11
+        enabled: false
+      uiowa_slide:
+        weight: 12
+        enabled: false
+field_type: entity_reference_revisions

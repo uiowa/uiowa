@@ -40,17 +40,17 @@
 #}
 
 {% set slide = {
-  'attributes': attributes.addClass('banner--reversed'),
+  'attributes': attributes.addClass('banner--vertical-bottom banner--horizontal-left banner--gradient-bottom banner--medium'),
   'slide_delta': delta,
   'slide_expanded': delta == 0 ? true : false,
   'slide_image': content.field_uiowa_slide_image,
   'slide_summary': content.field_uiowa_slide_content,
   'slide_title': content.field_collection_headline|render|striptags,
-  'heading_level': h_size,
+  'headline_level': h_size,
   'link': {
     'link_url': content.field_uiowa_slide_link[0]['#url'],
     'link_text' : content.field_uiowa_slide_link[0]['#title'],
-    'link_classes': ['bttn', 'bttn--primary', 'bttn--caps'],
+    'link_classes': 'bttn bttn--primary bttn--caps',
   },
 } %}
 

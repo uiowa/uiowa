@@ -1,0 +1,72 @@
+@import "assets/scss/_variables.scss";
+@import "assets/scss/_utilities.scss";
+@import "assets/scss/_local-fonts.scss";
+$imgpath: '../../uids/assets/images';
+
+.block-local-tasks-block {
+  nav.tabs {
+    border-bottom: 1px solid rgba(0,0,0,.125);
+  }
+}
+
+.tabs>li>a.local-task-icon {
+  &:hover,
+  &:focus {
+    background: #f3f3f3;
+    text-decoration: underline;
+  }
+  &.is-active {
+    background: none;
+    position: relative;
+    &:after {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: $primary;
+      content: "";
+    }
+  }
+}
+
+.local-task-icon {
+  &.local-task-icon--delete {
+    color: $danger;
+  }
+  &:hover:before,
+  &:focus:before {
+    color: $secondary;
+  }
+  &:before {
+    @include fas();
+    margin-right: 15px;
+    color: $grey;
+    font-size: 13px;
+  }
+  &.local-task-icon--view::before {
+    content: "\f06e";
+  }
+  &.local-task-icon--edit::before {
+    content: "\f044";
+  }
+  &.local-task-icon--delete::before {
+    content: "\f2ed";
+    color: $danger;
+  }
+  &.local-task-icon--layout::before {
+    content: "\f009";
+  }
+  &.local-task-icon--history::before {
+    content: "\f1da";
+  }
+  &.local-task-icon--usage::before {
+    content: "\f0c1";
+  }
+  &.local-task-icon--devel::before {
+    content: "\f121";
+  }
+}
+
+
+

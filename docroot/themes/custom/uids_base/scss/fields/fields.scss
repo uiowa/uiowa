@@ -1,6 +1,7 @@
 @import "uids/assets/scss/_variables.scss";
 @import "uids/assets/scss/_utilities.scss";
 
+.field--label-above .field__label::after,
 .field--label-inline .field__label::after {
   content: ":";
 }
@@ -11,8 +12,135 @@
 
 .field__label {
   font-weight: bold;
+  line-height: 1.7;
+  font-size: 1.2rem;
+  margin-bottom: $xsm;
+
+  [class*="card__"] & {
+    font-size: inherit;
+    line-height: inherit;
+  }
 }
 
-.field--label-inline>* {
-  display: inline;
+.field--label-inline {
+  margin-bottom: $sm;
+  .svg-inline--fa {
+    margin-right: .3rem;
+  }
+}
+
+.field--label-inline {
+  * {
+    display: inline;
+  }
+}
+
+.field__item {
+  line-height: 1.7;
+  margin-top: 0;
+
+  &.h1, &.h2, &.h3, &.h4, &.h5, &.h6, &[class*="element--"] {
+    line-height: inherit;
+  }
+
+  [class*="card__"] & {
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  @at-root {
+    div#{&},
+    p#{&} {
+      font-size: 1.2rem;
+      [class*="element--"] &,
+      .h1 &, .h2 &, .h3 &, .h4 &, .h5 &, .h6 & {
+        font-size: inherit;
+        line-height: inherit;
+      }
+    }
+  }
+}
+
+
+.field--label-above {
+  margin-bottom: $sm;
+  ul {
+    margin-top: 0;
+  }
+}
+
+.field--label-visually_hidden {
+  .svg-inline--fa {
+    margin-right: .3rem;
+  }
+  .field__items {
+    display: inline;
+  }
+  .field__item {
+    display: inline;
+  }
+}
+
+.field--type-text-long.field--label-inline {
+  p {
+    display: inline;
+  }
+}
+
+.field--label-inline.field--type-string,
+.field--label-inline.field--type-entity-reference,
+.field--label-visually_hidden.field--type-entity-reference,
+.field--label-inline.field--type-link,
+.field--label-visually_hidden.field--type-link {
+  .field__item  + .field__item {
+    &:before {
+      content: ",";
+      padding-right: $xsm;
+      margin-left: -3px;
+    }
+  }
+}
+
+.field--label-inline.field--type-link {
+  .link-title {
+    margin-right: $xsm;
+  }
+}
+
+.field--label-hidden.field__items + .field--label-inline {
+  margin-top: $sm;
+}
+
+.field--label-hidden.field__item + .field--label-hidden.field__item,
+.field--label-hidden.field__items + .field--label-hidden.field__item,
+.field--label-hidden.field__items + .field--label-hidden.field__items {
+  margin-bottom: $sm;
+}
+
+.field--label-hidden.field__item + .field--label-hidden.field__item {
+  margin-top: $sm;
+}
+
+.field--label-visually_hidden + .field--label-above,
+.field--label-hidden + .field--label-above,
+.field--label-hidden + .field--label-inline {
+  margin-top: $md;
+}
+
+.text-formatted.field--type-text {
+  div {
+    margin-bottom: $sm;
+  }
+  p {
+    margin-bottom: 0;
+  }
+}
+
+// Wrap long links by allow them to break mid-word.
+// @todo When #2325 is closed, either delete this comment
+//   or remove the item below if it is no longer necessary.
+.field--type-link {
+  // @todo Add a general mixin for link fields
+  //   and replace this with that.
+  word-break: break-word;
 }

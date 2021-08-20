@@ -1,0 +1,550 @@
+// The dompdf library has VERY limited CSS 3 support.
+// @see: https://github.com/dompdf/dompdf/wiki/CSSCompatibility.
+// Many UIDS components include selectors/properties that are not supported
+// by dompdf. Unsupported selectors will break PDF generation. To be safe, we
+// only import variables and utilities and recreate styles as necessary.
+@import "../../../../themes/custom/uids_base/uids/assets/scss/variables";
+@import "../../../../themes/custom/uids_base/uids/assets/scss/utilities";
+@font-face {
+  font-family: 'Antonio';
+  font-variant: normal;
+  font-weight: bold;
+  src: local('Antonio-Bold'), url("../fonts/Antonio-Bold.ttf") format('truetype');
+}
+@font-face {
+  font-family: 'Zilla Slab';
+  font-variant: normal;
+  font-weight: bold;
+  src: local('ZillaSlab-Bold'), url("../fonts/ZillaSlab-Bold.ttf") format('truetype');
+}
+@font-face {
+  font-family: 'Roboto';
+  font-variant: normal;
+  font-weight: normal;
+  src: local('Roboto-Regular'), url("../fonts/Roboto-Regular.ttf") format('truetype');
+}
+@font-face {
+  font-family: 'Roboto';
+  font-variant: normal;
+  font-weight: bold;
+  src: local('Roboto-Bold'), url("../fonts/Roboto-Bold.ttf") format('truetype');
+}
+$reduced-line-height: 1.3;
+
+blockquote,
+dl,
+ol,
+p,
+pre,
+table,
+ul {
+  font-family: 'Roboto', sans-serif;
+}
+
+p,
+ul,
+em {
+  font-size: 0.7rem;
+  color: $secondary;
+  word-wrap: break-word;
+
+  strong {
+    color: $secondary;
+    font-size: 0.7rem;
+    font-family: Roboto,sans-serif;
+    font-weight: 700;
+    font-weight: bold;
+  }
+
+  a {
+    word-wrap: break-word;
+    display: inline;
+    text-decoration: none;
+    color: #666;
+
+    &::after {
+      content: " (" attr(href) ")";
+      word-wrap: break-word;
+      display: inline;
+      color: #999;
+    }
+    // Internal links, beginning with "/"
+    &[href^="/"] {
+      &:after {
+        content: " (https://admissions.uiowa.edu" attr(href) ")";
+      }
+    }
+  }
+}
+
+h1 {
+  font-family: $font-family-caps;
+  text-transform: uppercase;
+  font-size: 30px;
+  line-height: 20px;
+  margin: 0;
+  color: #000;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: Roboto,sans-serif;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.element--bold-intro,
+.uids-component--bold-intro {
+  font-family: $font-family-serif;
+  font-weight: bold;
+  line-height: $reduced-line-height;
+  font-size: 1rem;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.element--spacer-separator {
+  clear: both;
+  float: none;
+  width: 100%;
+  height: 0;
+  margin: 0;
+  border: 1px solid transparent;
+}
+
+.element--light-intro,
+.uids-component--light-intro {
+  font-weight: normal;
+  line-height: $reduced-line-height;
+  font-size: 1.4rem;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.print__logo {
+  display: block;
+  text-align: right;
+}
+
+// Sidebar used for majors/minors and list items
+.print__sidebar--right {
+  width: 25%;
+  display: inline-block;
+  float: right;
+  background: #ccc;
+  padding: 15px 25px;
+  margin: 10px 0 10px 10px;
+  clear: right;
+
+  img {
+    display: inline;
+    clear: left;
+  }
+}
+
+// Top two column layout for page title and logo
+.print__container {
+  position: relative;
+  width: 100%;
+
+  &:after {
+    display: block;
+    height: 1px;
+    clear: both;
+  }
+}
+
+.print__container--left {
+  display: inline-block;
+  width: 75%;
+  margin-right: -75%;
+  float: left;
+  margin-top: -15px;
+  word-wrap: break-word;
+
+  &:after {
+    display: block;
+    float: left;
+    height: 1px;
+    clear: right;
+  }
+
+  img {
+    display: inline;
+    clear: left;
+  }
+
+  a {
+    word-wrap: break-word;
+  }
+}
+
+.print__container--right {
+  display: inline-block;
+  float: left;
+  font-size: 13px;
+  margin-left: 75%;
+  padding-left: 12px;
+  width: 25%;
+  word-wrap: break-word;
+
+  &:before {
+    display: block;
+    float: left;
+    height: 1px;
+    clear: left;
+  }
+
+  a {
+    word-wrap: break-word;
+
+    &::after {
+      word-wrap: break-word;
+    }
+  }
+}
+
+// Added class for creating columns for groupings of lists
+.print__list--column {
+  float: left;
+  margin-right: 25px;
+
+  & + p {
+    clear: both;
+  }
+}
+
+
+.print__contact {
+  position: absolute;
+  bottom: 40px;
+  width: 100%;
+  border-top: 3px solid $primary;
+
+  span {
+    margin: 0 $gutter 0 0;
+    color: #000;
+  }
+
+  img {
+    margin: 0 $xsm 0 0;
+  }
+
+  p {
+    padding-top: 10px;
+  }
+
+  h2 {
+    font-family: $font-family-caps;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    line-height: $reduced-line-height;
+    margin: 0.5rem 0.5rem 0 0;
+    display: inline-block;
+  }
+}
+
+.print__contact--statement {
+  position: absolute;
+  bottom: 0;
+
+  p {
+    margin-top: 10px;
+
+    small {
+      font-size: 0.4rem;
+      color: #000;
+      margin-top: 10px;
+    }
+  }
+}
+
+// AOS styles
+.node--type-area-of-study {
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0;
+  }
+
+  p,
+  ul {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    line-height: 1;
+  }
+
+  ul {
+    margin-left: -10px;
+  }
+
+  .field--name-field-area-of-study-minors {
+    clear: both;
+  }
+
+  .field--name-field-area-of-study-why {
+    margin-top: -10px;
+  }
+
+  // Majors
+  .field--name-field-area-of-study-majors {
+    .field__items {
+      .field__item {
+        clear: both;
+
+        .field__item {
+          display: inline;
+          clear: none;
+        }
+
+        &:first-child {
+          .paragraph--type--degree {
+            margin-right: -.025rem;
+            padding-left: 0;
+
+            &:before {
+              content: "";
+              padding: 0;
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .field--name-field-area-of-study-majors {
+    .field__item {
+      .paragraph--type--degree {
+        clear: both;
+      }
+    }
+
+    .paragraph--type--degree {
+      display: inline;
+
+      .field--name-field-degree-abbreviation.field--label-hidden.field__item {
+        margin: 0 $xsm;
+        display: inline;
+
+        &:before {
+          content: "(";
+        }
+
+        &:after {
+          content: ")";
+        }
+      }
+    }
+  }
+
+  .field--name-field-area-of-study-certificates,
+  .field--name-field-area-of-study-minors,
+  .field--name-field-area-of-study-online,
+  .field--name-field-area-of-study-preprof {
+    line-height: 0.5;
+
+    .field__item {
+      display: inline;
+      font-size: 0.7rem;
+
+      &:before {
+        content: ",";
+        padding-right: $xsm;
+        margin-left: -.125rem;
+      }
+
+      &:first-child {
+        margin-right: 0;
+        padding-left: 0;
+
+        &:before {
+          content: "";
+          padding: 0;
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  .field--name-field-area-of-study-certificates,
+  .field--name-field-area-of-study-link,
+  .field--name-field-area-of-study-majors,
+  .field--name-field-area-of-study-minors,
+  .field--name-field-area-of-study-online,
+  .field--name-field-area-of-study-preprof,
+  .field--name-field-area-of-study-subprogram {
+    margin-bottom: $sm;
+  }
+
+  .field--name-field-area-of-study-certificates,
+  .field--name-field-area-of-study-competitive,
+  .field--name-field-area-of-study-four-year,
+  .field--name-field-area-of-study-honors,
+  .field--name-field-area-of-study-link,
+  .field--name-field-area-of-study-majors,
+  .field--name-field-area-of-study-minors,
+  .field--name-field-area-of-study-online,
+  .field--name-field-area-of-study-preprof,
+  .field--name-field-area-of-study-scholarship,
+  .field--name-field-area-of-study-selective,
+  .field--name-field-area-of-study-subprogram,
+  .field--name-field-area-of-study-teaching,
+  .field--name-field-area-of-study-course-work {
+    page-break-inside: avoid;
+    page-break-before: auto;
+
+    .field__label {
+      @extend .element--bold-intro;
+      font-family: $font-family-caps;
+      text-transform: uppercase;
+      page-break-after: avoid;
+    }
+
+    .field__item {
+      line-height: $reduced-line-height;
+      font-size: 0.7rem;
+      font-family: 'Roboto', sans-serif!important;
+      color: $secondary;
+      line-height: 1;
+      page-break-inside: auto;
+      page-break-before: avoid;
+    }
+  }
+
+  // Sidebar adjustments
+  .field--name-field-area-of-study-certificates,
+  .field--name-field-area-of-study-majors,
+  .field--name-field-area-of-study-minors,
+  .field--name-field-area-of-study-online,
+  .field--name-field-area-of-study-preprof,
+  .field--name-field-area-of-study-scholarship,
+  .field--name-field-area-of-study-subprogram {
+    .field__label {
+      font-size: 0.8rem;
+      font-family: $font-family-caps;
+      text-transform: uppercase;
+    }
+
+    .field__item {
+      font-size: 0.7rem;
+
+      p {
+        font-size: 0.7rem;
+      }
+    }
+  }
+
+  .field--name-field-area-of-study-scholarship {
+    margin-top: $sm;
+
+    p {
+      line-height: 1;
+    }
+  }
+
+  .field--name-field-area-of-study-competitive,
+  .field--name-field-area-of-study-four-year,
+  .field--name-field-area-of-study-honors,
+  .field--name-field-area-of-study-selective,
+  .field--name-field-area-of-study-teaching {
+    display: inline;
+
+    .field__item {
+      display: inline;
+    }
+  }
+
+  .field--name-field-area-of-study-comp-txt,
+  .field--name-field-area-of-study-four-txt,
+  .field--name-field-area-of-study-select-txt,
+  .field--name-field-area-of-study-teaching-txt {
+    line-height: $reduced-line-height;
+    font-size: 0.7rem;
+    font-family: 'Roboto', sans-serif!important;
+    color: $secondary;
+    display: inline;
+
+    &:before {
+      content: ":";
+      padding-right: $xsm;
+      margin-left: -.4rem;
+    }
+  }
+}
+.node--type-page {
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: $font-family-serif;
+    font-size: 0.8rem;
+    page-break-after: avoid;
+  }
+
+  table, .table {
+    font-size: 10px;
+    border-spacing: 0;
+    color: black;
+    background-color: $white;
+    border-collapse: collapse;
+    margin-top: 5px;
+    width: 100%;
+
+    td,
+    p,
+    em,
+    strong,
+    span {
+      word-wrap: normal;
+      font-size: 10px;
+      color: black;
+    }
+    td, th {
+      padding: 5px;
+      min-width: 50px;
+    }
+    td {
+      padding: 10px;
+      font-family: 'Roboto', sans-serif;
+
+      p,
+      ul {
+        &:first-of-type {
+          margin-top: 0;
+        }
+
+        &:last-of-type {
+          margin-bottom: 0;
+        }
+      }
+
+    }
+    tr {
+      page-break-inside: avoid;
+      page-break-before: auto;
+      border: solid 0.5px black;
+    }
+
+    thead td,
+    thead th,
+    th,
+    caption,
+    caption strong {
+      font-family: 'Roboto', sans-serif;
+      text-transform: uppercase;
+      background-color: $light;
+      color: black;
+      font-size: 10px !important;
+      padding: 10px;
+      line-height: $reduced-line-height;
+    }
+  }
+}

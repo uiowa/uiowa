@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labkawai.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labkawai
+  human_name: kawai.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labkawai.prod
+drupal:
+  db:
+    database: kawai_lab_uiowa_edu
+uiowa:
+  requester: kawaim

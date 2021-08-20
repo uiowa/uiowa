@@ -182,7 +182,7 @@ handlers:
     settings:
       states:
         - completed
-      to_mail: '[webform_submission:values:email:raw]'
+      to_mail: '[current-user:mail]'
       to_options: {  }
       cc_mail: ''
       cc_options: {  }

@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labschnieders.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labschnieders
+  human_name: schnieders.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labschnieders.prod
+drupal:
+  db:
+    database: schnieders_lab_uiowa_edu
+uiowa:
+  requester: laverman

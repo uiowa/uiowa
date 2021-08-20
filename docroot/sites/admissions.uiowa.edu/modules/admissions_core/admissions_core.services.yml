@@ -1,0 +1,16 @@
+services:
+  admissions_core.section_component_subscriber:
+    class: Drupal\admissions_core\EventSubscriber\SectionComponentSubscriber
+    arguments: ['@country_manager']
+    tags:
+      - { name: event_subscriber }
+  admissions_core.entity_print_subscriber:
+    class: Drupal\admissions_core\EventSubscriber\EntityPrintSubscriber
+    tags:
+      - { name: event_subscriber }
+  admissions_core.mailcode_filename_generator:
+    class: Drupal\admissions_core\MailcodeFilenameGenerator
+    public: false
+    decorates: 'entity_print.filename_generator'
+    decoration_priority: 9
+    arguments: ['@admissions_core.mailcode_filename_generator.inner',  '@transliteration' ]

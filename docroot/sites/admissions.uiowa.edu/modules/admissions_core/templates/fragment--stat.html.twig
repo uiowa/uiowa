@@ -1,0 +1,63 @@
+{#
+/**
+ * @file fragment.html.twig
+ * Default theme implementation to present fragment data.
+ *
+ * This template is used when viewing fragment pages.
+ *
+ *
+ * Available variables:
+ * - content: A list of content items. Use 'content' to print all content, or
+ * - attributes: HTML attributes for the container element.
+ *
+ * @see template_preprocess_fragment()
+ *
+ * @ingroup themeable
+ */
+#}
+{#
+/**
+ * @file
+ * Default theme implementation to present a bit entity.
+ *
+ * This template is used when viewing a registered bit's page,
+ * e.g., /admin/content/bit)/123. 123 being the bit's ID.
+ *
+ * Available variables:
+ * - content: A list of content items. Use 'content' to print all content, or
+ *   print a subset such as 'content.title'.
+ * - attributes: HTML attributes for the container element.
+ *
+ * @see template_preprocess_bit()
+ */
+#}
+{% set stat_classes = [
+  'stat--static',
+] %}
+{% if has_hover_effect and content.field_stat_content[0]['#context']['value'] is not null %}
+  {% set stat_classes = 'stat stat__grid stat--transform' %}
+{% endif %}
+
+{% set stat = {
+  'attributes': attributes,
+  'stat_summary': content.field_stat_excerpt.0,
+  'stat_content': content.field_stat_content.0,
+  'stat_title': content.field_stat_figure[0]['#text']|render,
+  'stat_prefix': content.field_stat_figure_pre.0,
+  'stat_suffix': content.field_stat_figure_suf.0,
+  'stat_classes': stat_classes ?: 'stat stat__grid',
+  'headline_text' : content.field_stat_figure[0]['#text'],
+  'headline_level': content.field_stat_figure[0]['#size'],
+  'title_prefix': title_prefix,
+  'title_suffix': title_suffix,
+} %}
+
+{% embed '@uids_base/uids/stat.html.twig' with stat only %}
+
+  {% block heading %}
+    {{ title_prefix }}
+    {{ parent() }}
+    {{ title_suffix }}
+  {% endblock %}
+
+{% endembed %}
