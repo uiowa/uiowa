@@ -45,18 +45,6 @@ function pharmacy_core_node_presave(Node $node) {
 }
 
 /**
- * Implements hook_theme().
- */
-function pharmacy_core_theme($existing, $type, $theme, $path) {
-  return [
-    'views_view_unformatted__palliative_grad' => [
-      'template' => 'views-view-unformatted--palliative-grad',
-      'base hook' => 'view',
-    ],
-  ];
-}
-
-/**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
 function pharmacy_core_theme_suggestions_field_alter(array &$suggestions, array $variables) {
@@ -64,6 +52,18 @@ function pharmacy_core_theme_suggestions_field_alter(array &$suggestions, array 
     case 'field_person_territory':
       $suggestions[] = 'field__comma_separated';
       break;
+  }
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function pharmacy_core_theme_registry_alter(&$theme_registry) {
+  $theme = \Drupal::theme()->getActiveTheme()->getName();
+  if ($theme == 'uids_base') {
+    // Favor module template over uids_base template.
+    $theme_registry['node__person__teaser']['path'] =
+      drupal_get_path('module', 'pharmacy_core') . '/templates';
   }
 }
 
