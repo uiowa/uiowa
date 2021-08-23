@@ -6,6 +6,8 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -256,7 +258,7 @@ class CovidDataBlock extends BlockBase implements ContainerFactoryPluginInterfac
       $data = json_decode($response->getBody()->getContents());
       return $data;
     }
-    catch (RequestException $e) {
+    catch (RequestException | GuzzleException | ClientException $e) {
       watchdog_exception('uiowa_covid', $e);
     }
 
