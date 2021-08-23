@@ -28,7 +28,7 @@ class CovidDataBlock extends BlockBase implements ContainerFactoryPluginInterfac
   protected $client;
 
   /**
-   * The config.factory serice.
+   * The config factory service.
    *
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
@@ -46,7 +46,7 @@ class CovidDataBlock extends BlockBase implements ContainerFactoryPluginInterfac
    * @param \GuzzleHttp\Client $client
    *   The http_client service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
-   *   The config.factory service.
+   *   The config factory service.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, Client $client, ConfigFactoryInterface $configFactory) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
