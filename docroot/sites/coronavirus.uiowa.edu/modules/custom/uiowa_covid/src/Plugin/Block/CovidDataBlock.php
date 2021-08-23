@@ -5,6 +5,7 @@ namespace Drupal\uiowa_covid\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
@@ -21,67 +22,17 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
  *   category = @Translation("uiowa_covid")
  * )
  */
-class CovidDataBlock extends BlockBase implements ContainerFactoryPluginInterface {
-  /**
-   * The http_client service.
-   *
-   * @var \GuzzleHttp\Client
-   */
-  protected $client;
-
-  /**
-   * The config factory service.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected $configFactory;
-
-  /**
-   * CovidDataBlock constructor.
-   *
-   * @param array $configuration
-   *   The block config.
-   * @param string $plugin_id
-   *   The plugin ID.
-   * @param mixed $plugin_definition
-   *   The plugin definition.
-   * @param \GuzzleHttp\Client $client
-   *   The http_client service.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
-   *   The config factory service.
-   */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, Client $client, ConfigFactoryInterface $configFactory) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->client = $client;
-    $this->configFactory = $configFactory;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('http_client'),
-      $container->get('config.factory')
-    );
-  }
-
+class CovidDataBlock extends BlockBase {
   /**
    * {@inheritdoc}
    */
   public function blockForm($form, FormStateInterface $form_state) {
     $form = parent::blockForm($form, $form_state);
-    $config = $this->getConfiguration();
 
     $form['covid_data_date'] = [
-      '#type' => 'date',
-      '#title' => $this->t('Date'),
-      '#description' => $this->t('Enter the date for which to retrieve data from.'),
-      '#default_value' => $config['covid_data_date'] ?? NULL,
-      '#required' => TRUE,
+      '#type' => 'html',
+      '#title' => $this->t('COVID Data'),
+      '#description' => $this->t('This block gets data from the CIMT self-reporting database and renders it. It will refresh automatically.'),
     ];
 
     return $form;
@@ -90,50 +41,21 @@ class CovidDataBlock extends BlockBase implements ContainerFactoryPluginInterfac
   /**
    * {@inheritdoc}
    */
-  public function blockSubmit($form, FormStateInterface $form_state) {
-    $values = $form_state->getValues();
-    $this->configuration['covid_data_date'] = $values['covid_data_date'];
-    parent::blockSubmit($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function blockValidate($form, FormStateInterface $form_state) {
-    $values = $form_state->getValues();
-    $timestamp = strtotime($values['covid_data_date']);
-    $data = $this->getData($timestamp);
-
-    $null = [];
-
-    foreach ($data as $name => $datum) {
-      if (is_null($datum)) {
-        $null[] = $name;
-      }
-    }
-
-    if (!empty($null)) {
-      $form_state->setErrorByName('covid_data_date', $this->t('COVID data contains empty values. Please try again later. Empty data: @data', [
-        '@data' => implode(', ', $null),
-      ]));
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function build() {
-    $timestamp = strtotime($this->configuration['covid_data_date']);
-    $data = $this->getData($timestamp);
-
-    $build = [];
-
-    if (isset($data)) {
-      $build['content'] = [
+    $build = [
+      '#attached' => [
+        'library' => [
+          'uiowa_covid/uiowa_covid'
+        ],
+        'drupalSettings' => [
+          'uiowaCovid' => [
+            'endpoint' => Url::fromRoute('uiowa_covid.data')->toString()
+          ]
+        ],
+      ],
+      'content' => [
         'disclaimer' => [
-          '#markup' => $this->t('The data below reflects new cases since @date.', [
-            '@date' => date('F j, Y', $timestamp),
-          ]),
+          '#markup' => $this->t('The data below reflects new cases since <span id="uiowa-covid-date">-</span>.'),
           '#prefix' => '<em>',
           '#suffix' => '</em>',
         ],
@@ -155,12 +77,8 @@ class CovidDataBlock extends BlockBase implements ContainerFactoryPluginInterfac
           ],
           '#rows' => [
             [
-              $this->t('@new', [
-                '@new' => number_format($data->studentNew),
-              ]),
-              $this->t('@total', [
-                '@total' => number_format($data->studentTotal),
-              ]),
+              $this->t('<span id="uiowa-covid-studentNew">-</span>'),
+              $this->t('<span id="uiowa-covid-studentTotal">-</span>'),
             ],
           ],
           '#attributes' => [
@@ -183,12 +101,8 @@ class CovidDataBlock extends BlockBase implements ContainerFactoryPluginInterfac
           ],
           '#rows' => [
             [
-              $this->t('@new', [
-                '@new' => number_format($data->employeeNew),
-              ]),
-              $this->t('@total', [
-                '@total' => number_format($data->employeeTotal),
-              ]),
+              $this->t('<span id="uiowa-covid-employeeNew">-</span>'),
+              $this->t('<span id="uiowa-covid-employeeTotal">-</span>'),
             ],
           ],
           '#attributes' => [
@@ -204,62 +118,19 @@ class CovidDataBlock extends BlockBase implements ContainerFactoryPluginInterfac
           '#suffix' => '</h3>',
         ],
         'rh_quarantine' => [
-          '#markup' => $this->t('Number of residence hall students in quarantine: @quarantine*', [
-            '@quarantine' => number_format($data->rhStudentQuarantine),
-          ]),
+          '#markup' => $this->t('Number of residence hall students in quarantine: <span id="uiowa-covid-rhStudentQuarantine">-</span>*'),
           '#prefix' => '<p>',
           '#suffix' => '</p>',
         ],
         'rh_isolation' => [
-          '#markup' => $this->t('Number of residence hall students in isolation: @isolation**', [
-            '@isolation' => number_format($data->rhStudentIsolation),
-          ]),
+          '#markup' => $this->t('Number of residence hall students in isolation: <span id="uiowa-covid-rhStudentIsolation">-</span>**'),
           '#prefix' => '<p>',
           '#suffix' => '</p>',
         ],
-      ];
-    }
-    else {
-      $build['content'] = [
-        '#markup' => $this->t('There is no data at this time.'),
-        '#prefix' => '<p>',
-        '#suffix' => '</p>',
-      ];
-    }
+      ],
+    ];
 
     return $build;
-  }
-
-  /**
-   * Get API data.
-   *
-   * @param int $timestamp
-   *   The timestamp to get data for.
-   *
-   * @throws \GuzzleHttp\Exception\GuzzleException
-   */
-  protected function getData($timestamp) {
-    $endpoint = $this->configFactory->get('uiowa.covid')->get('endpoint');
-    $user = $this->configFactory->get('uiowa.covid')->get('user');
-    $key = $this->configFactory->get('uiowa.covid')->get('key');
-    $date = date('m-d-Y', $timestamp);
-
-    try {
-      $response = $this->client->request('GET', "{$endpoint}/{$date}", [
-        'auth' => [
-          $user,
-          $key,
-        ],
-      ]);
-
-      // @todo Verify status/messages/JSON.
-      $data = json_decode($response->getBody()->getContents());
-      return $data;
-    }
-    catch (RequestException | GuzzleException | ClientException $e) {
-      watchdog_exception('uiowa_covid', $e);
-    }
-
   }
 
 }
