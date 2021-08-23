@@ -78,7 +78,7 @@ class CovidDataBlock extends BlockBase implements ContainerFactoryPluginInterfac
       '#type' => 'date',
       '#title' => $this->t('Date'),
       '#description' => $this->t('Enter the date for which to retrieve data from.'),
-      '#default_value' => isset($config['covid_data_date']) ? $config['covid_data_date'] : NULL,
+      '#default_value' => $config['covid_data_date'] ?? NULL,
       '#required' => TRUE,
     ];
 
