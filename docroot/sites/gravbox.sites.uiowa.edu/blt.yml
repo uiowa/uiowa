@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: sitesgravbox.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sitesgravbox
+  human_name: gravbox.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesgravbox.prod
+drupal:
+  db:
+    database: gravbox_sites_uiowa_edu
+uiowa:
+  requester: gmccrory
