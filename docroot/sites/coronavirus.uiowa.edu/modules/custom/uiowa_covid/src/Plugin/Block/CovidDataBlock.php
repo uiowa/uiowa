@@ -3,8 +3,7 @@
 namespace Drupal\uiowa_covid\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Block\BlockPluginInterface;
-use Drupal\Core\Config\ConfigFactory;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
@@ -22,11 +21,15 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
  */
 class CovidDataBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
+   * The http_client service.
+   *
    * @var \GuzzleHttp\Client
    */
   protected $client;
 
   /**
+   * The config.factory serice.
+   *
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   protected $configFactory;
@@ -35,25 +38,24 @@ class CovidDataBlock extends BlockBase implements ContainerFactoryPluginInterfac
    * CovidDataBlock constructor.
    *
    * @param array $configuration
-   * @param $plugin_id
-   * @param $plugin_definition
-   * @param \GuzzleHttp\Client
-   * @param \Drupal\Core\Config\ConfigFactoryInterface
+   *   The block config.
+   * @param string $plugin_id
+   *   The plugin ID.
+   * @param mixed $plugin_definition
+   *   The plugin definition.
+   * @param \GuzzleHttp\Client $client
+   *   The http_client service.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   *   The config.factory service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, Client $client, ConfigFactory $configFactory)
-  {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, Client $client, ConfigFactoryInterface $configFactory) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->client = $client;
     $this->configFactory = $configFactory;
   }
 
   /**
-   * @param ContainerInterface $container
-   * @param array $configuration
-   * @param $plugin_id
-   * @param $plugin_definition
-   *
-   * @return static
+   * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
@@ -92,6 +94,9 @@ class CovidDataBlock extends BlockBase implements ContainerFactoryPluginInterfac
     parent::blockSubmit($form, $form_state);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function blockValidate($form, FormStateInterface $form_state) {
     $values = $form_state->getValues();
     $timestamp = strtotime($values['covid_data_date']);
@@ -150,12 +155,12 @@ class CovidDataBlock extends BlockBase implements ContainerFactoryPluginInterfac
           '#rows' => [
             [
               $this->t('@new', [
-                '@new' => number_format($data->studentNew)
+                '@new' => number_format($data->studentNew),
               ]),
               $this->t('@total', [
-                '@total' => number_format($data->studentTotal)
+                '@total' => number_format($data->studentTotal),
               ]),
-            ]
+            ],
           ],
           '#attributes' => [
             'class' => [
@@ -179,12 +184,12 @@ class CovidDataBlock extends BlockBase implements ContainerFactoryPluginInterfac
           '#rows' => [
             [
               $this->t('@new', [
-                '@new' => number_format($data->employeeNew)
+                '@new' => number_format($data->employeeNew),
               ]),
               $this->t('@total', [
-                '@total' => number_format($data->employeeTotal)
+                '@total' => number_format($data->employeeTotal),
               ]),
-            ]
+            ],
           ],
           '#attributes' => [
             'class' => [
@@ -228,7 +233,9 @@ class CovidDataBlock extends BlockBase implements ContainerFactoryPluginInterfac
   /**
    * Get API data.
    *
-   * @param $timestamp
+   * @param int $timestamp
+   *   The timestamp to get data for.
+   *
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
   protected function getData($timestamp) {
@@ -237,21 +244,19 @@ class CovidDataBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $key = $this->configFactory->get('uiowa.covid')->get('key');
     $date = date('m-d-Y', $timestamp);
 
-    /** @var \GuzzleHttp\Client $client */
-    $client = \Drupal::httpClient();
-
     try {
-      $response = $client->request('GET', "{$endpoint}/{$date}", [
+      $response = $this->client->request('GET', "{$endpoint}/{$date}", [
         'auth' => [
           $user,
           $key,
-        ]
+        ],
       ]);
 
-      // @todo: Verify status/messages/JSON.
+      // @todo Verify status/messages/JSON.
       $data = json_decode($response->getBody()->getContents());
       return $data;
-    } catch (RequestException $e) {
+    }
+    catch (RequestException $e) {
       watchdog_exception('uiowa_covid', $e);
     }
 
