@@ -149,7 +149,6 @@ class CovidDataBlock extends BlockBase implements ContainerFactoryPluginInterfac
         ],
         'students' => [
           '#type' => 'table',
-          '#caption' => $this->t('Students'),
           '#header' => [
             $this->t('New Cases'),
             $this->t('Semester to Date'),
@@ -178,7 +177,6 @@ class CovidDataBlock extends BlockBase implements ContainerFactoryPluginInterfac
         ],
         'employees' => [
           '#type' => 'table',
-          '#caption' => $this->t('Employees'),
           '#header' => [
             $this->t('New Cases'),
             $this->t('Semester to Date'),
