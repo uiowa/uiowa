@@ -1,0 +1,46 @@
+uuid: 2d4a37b5-6575-41a5-a6ac-09e07996554e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.event_series.body
+    - field.field.node.event_series.field_event_series_summary
+    - field.field.node.event_series.field_image
+    - node.type.event_series
+  module:
+    - text
+    - user
+id: node.event_series.default
+targetEntityType: node
+bundle: event_series
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_event_series_summary:
+    weight: 103
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_image:
+    weight: 102
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  search_api_excerpt: true
