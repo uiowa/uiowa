@@ -3,15 +3,8 @@
 namespace Drupal\uiowa_covid\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\RequestException;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 
 /**
  * Custom COVID data block.
@@ -23,6 +16,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
  * )
  */
 class CovidDataBlock extends BlockBase {
+
   /**
    * {@inheritdoc}
    */
@@ -45,12 +39,12 @@ class CovidDataBlock extends BlockBase {
     $build = [
       '#attached' => [
         'library' => [
-          'uiowa_covid/uiowa_covid'
+          'uiowa_covid/uiowa_covid',
         ],
         'drupalSettings' => [
           'uiowaCovid' => [
-            'endpoint' => Url::fromRoute('uiowa_covid.data')->toString()
-          ]
+            'endpoint' => Url::fromRoute('uiowa_covid.data')->toString(),
+          ],
         ],
       ],
       'content' => [

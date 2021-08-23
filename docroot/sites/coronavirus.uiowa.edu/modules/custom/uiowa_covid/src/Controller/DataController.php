@@ -32,9 +32,9 @@ class DataController extends ControllerBase {
   /**
    * The controller constructor.
    *
-   * @param \GuzzleHttp\ClientInterface $http_client
+   * @param \GuzzleHttp\ClientInterface $client
    *   The HTTP client.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The config factory.
    */
   public function __construct(ClientInterface $client, ConfigFactoryInterface $configFactory) {
