@@ -3083,3 +3083,9 @@ $sites['lablynch.local.drupal.uiowa.edu'] = 'lynch.lab.uiowa.edu';
 $sites['lablynch.dev.drupal.uiowa.edu'] = 'lynch.lab.uiowa.edu';
 $sites['lablynch.stage.drupal.uiowa.edu'] = 'lynch.lab.uiowa.edu';
 $sites['lablynch.prod.drupal.uiowa.edu'] = 'lynch.lab.uiowa.edu';
+
+// Directory aliases for csars.org.uiowa.edu.
+$sites['orgcsars.local.drupal.uiowa.edu'] = 'csars.org.uiowa.edu';
+$sites['orgcsars.dev.drupal.uiowa.edu'] = 'csars.org.uiowa.edu';
+$sites['orgcsars.stage.drupal.uiowa.edu'] = 'csars.org.uiowa.edu';
+$sites['orgcsars.prod.drupal.uiowa.edu'] = 'csars.org.uiowa.edu';
