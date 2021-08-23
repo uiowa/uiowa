@@ -9,6 +9,7 @@ dependencies:
     - node.type.event_series
   module:
     - content_moderation
+    - media_library
     - path
     - text
 id: node.event_series.default
@@ -43,12 +44,9 @@ content:
   field_image:
     weight: 122
     settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
+      media_types: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: media_library_widget
     region: content
   moderation_state:
     type: moderation_state_default
@@ -103,7 +101,7 @@ content:
     third_party_settings: {  }
   url_redirects:
     weight: 50
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden: {  }
