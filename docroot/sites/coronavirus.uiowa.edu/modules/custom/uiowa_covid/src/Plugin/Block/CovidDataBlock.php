@@ -20,7 +20,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
  *   category = @Translation("uiowa_covid")
  * )
  */
-class CovidDataBlock extends BlockBase implements BlockPluginInterface, ContainerFactoryPluginInterface {
+class CovidDataBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * @var \GuzzleHttp\Client
    */
