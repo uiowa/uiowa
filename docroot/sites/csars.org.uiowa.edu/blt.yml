@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: orgcsars.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: orgcsars
+  human_name: csars.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgcsars.prod
+drupal:
+  db:
+    database: csars_org_uiowa_edu
+uiowa:
+  requester: cblasar
