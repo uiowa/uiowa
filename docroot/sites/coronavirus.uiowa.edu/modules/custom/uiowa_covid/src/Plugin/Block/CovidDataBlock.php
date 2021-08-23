@@ -165,7 +165,7 @@ class CovidDataBlock extends BlockBase implements ContainerFactoryPluginInterfac
           ],
           '#attributes' => [
             'class' => [
-              'is-striped',
+              'table--is-striped',
               'table',
             ],
           ],
