@@ -81,6 +81,13 @@ AddEncoding gzip svgz
   RewriteCond %{HTTP_HOST} ^uiowa.edu$
   RewriteRule ^stories(.*)$  https://stories.uiowa.edu$1 [R,L]
 
+  # Redirect engineering.uiowa.edu/~ to user.engineering.uiowa.edu for Engineering
+  RewriteCond %{HTTP_HOST} engineering\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} /~(.*)
+  RewriteRule ^(.*)$ https://user.engineering.uiowa.edu/$1 [L,R=301]
+
   # Redirect veterans.org.uiowa.edu to veterans.uiowa.edu/uiva.
   RewriteCond %{HTTP_HOST} veterans.org.uiowa.edu [NC]
   RewriteRule ^ https://veterans.uiowa.edu/uiva%{REQUEST_URI} [L,R=301]

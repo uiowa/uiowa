@@ -1,8 +1,8 @@
 diff --git a/docroot/.htaccess b/docroot/.htaccess
-index b1ee36bf4..a32aab29c 100644
+index b1ee36bf4..4d5f58364 100644
 --- a/docroot/.htaccess
 +++ b/docroot/.htaccess
-@@ -62,6 +62,53 @@ AddEncoding gzip svgz
+@@ -62,6 +62,60 @@ AddEncoding gzip svgz
  <IfModule mod_rewrite.c>
    RewriteEngine on
  
@@ -24,6 +24,13 @@ index b1ee36bf4..a32aab29c 100644
 +  # Redirect legacy stories site for the homepage.
 +  RewriteCond %{HTTP_HOST} ^uiowa.edu$
 +  RewriteRule ^stories(.*)$  https://stories.uiowa.edu$1 [R,L]
++
++  # Redirect engineering.uiowa.edu/~ to user.engineering.uiowa.edu for Engineering
++  RewriteCond %{HTTP_HOST} engineering\.((prod|stage|dev)\.drupal\.)?uiowa\.edu$ [NC]
++  RewriteCond %{REQUEST_FILENAME} !-f
++  RewriteCond %{REQUEST_FILENAME} !-d
++  RewriteCond %{REQUEST_URI} /~(.*)
++  RewriteRule ^(.*)$ https://user.engineering.uiowa.edu/$1 [L,R=301]
 +
 +  # Redirect veterans.org.uiowa.edu to veterans.uiowa.edu/uiva.
 +  RewriteCond %{HTTP_HOST} veterans.org.uiowa.edu [NC]
