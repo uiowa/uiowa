@@ -79,7 +79,7 @@ class DataController extends ControllerBase {
     }
 
     return new JsonResponse($data, 200, [
-      'Cache-Control' => 'public, max-age=60, must-revalidate'
+      'Cache-Control' => 'public, max-age=60, must-revalidate',
     ]);
   }
 
