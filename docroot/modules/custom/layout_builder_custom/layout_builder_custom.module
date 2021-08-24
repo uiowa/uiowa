@@ -890,7 +890,6 @@ function _layout_builder_custom_add_lbs_heading(&$form) {
 function layout_builder_custom_preprocess_block(&$variables) {
 
   switch ($variables['elements']['#plugin_id']) {
-
     case 'inline_block:featured_content':
       // Take control of the referenced entity renders to pass in heading size.
       unset($variables['content']['field_featured_content_item']);
