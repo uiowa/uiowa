@@ -56,6 +56,12 @@ class DataController extends ControllerBase {
 
   /**
    * Builds the response.
+   *
+   * @param Symfony\Component\HttpFoundation\Request $request
+   *   The request.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   The JSON.
    */
   public function build(Request $request) {
     $pause = $request->query->get('pause') ?? FALSE;
@@ -105,9 +111,11 @@ class DataController extends ControllerBase {
   /**
    * Get the previous reporting date based on the day of the week.
    *
-   * @param $dow
+   * @param string $dow
    *   The day of the week as a string (en).
+   *
    * @return string
+   *   The previous reporting date string.
    */
   private function getPreviousReportingDate($dow): string {
     $dow = ucfirst(strtolower($dow));
