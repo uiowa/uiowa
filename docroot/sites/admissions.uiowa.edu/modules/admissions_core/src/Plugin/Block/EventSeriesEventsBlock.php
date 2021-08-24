@@ -88,6 +88,7 @@ class EventSeriesEventsBlock extends BlockBase implements ContainerFactoryPlugin
       }
 
       $block = [
+        '#title' => $this->t('<span class="h5"><span class="fa-calendar far"></span> &nbsp; Event details</span>'),
         '#theme' => 'item_list',
         '#list_type' => 'ul',
         '#cache' => [
