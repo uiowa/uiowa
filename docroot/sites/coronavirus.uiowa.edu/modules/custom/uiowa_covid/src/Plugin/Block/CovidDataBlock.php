@@ -28,7 +28,21 @@ class CovidDataBlock extends BlockBase {
       '#markup' => $this->t('<p>This block gets data from the CIMT self-reporting database and renders it. The data will update around 10am on M/W/F.</p>'),
     ];
 
+    $form['pause'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Pause'),
+      '#description' => $this->t('Checking this will pause the M/W/F update and show data from the previous reporting date <strong>until</strong> 12am the next day.'),
+      '#default_value' => $this->configuration['pause'] ?? FALSE,
+    ];
+
     return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function blockSubmit($form, FormStateInterface $form_state) {
+    $this->configuration['pause'] = $form_state->getValue('pause');
   }
 
   /**
