@@ -3,9 +3,12 @@
 namespace Drupal\admissions_core\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\node\NodeInterface;
+use Drupal\path_alias\AliasManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -23,14 +26,38 @@ class EventSeriesEventsBlock extends BlockBase implements ContainerFactoryPlugin
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $entityTypeManager;
+  protected EntityTypeManagerInterface $entityTypeManager;
+
+  /**
+   * The routeMatch.
+   *
+   * @var \Drupal\Core\Routing\RouteMatchInterface
+   */
+  protected RouteMatchInterface $routeMatch;
+
+  /**
+   * The path_alias.manager service.
+   *
+   * @var \Drupal\path_alias\AliasManagerInterface
+   */
+  protected AliasManagerInterface $aliasManager;
+
+  /**
+   * The date.formatter service.
+   *
+   * @var \Drupal\Core\Datetime\DateFormatterInterface
+   */
+  protected DateFormatterInterface $dateFormat;
 
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entityTypeManager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entityTypeManager, RouteMatchInterface $routeMatch, AliasManagerInterface $aliasManager, DateFormatterInterface $dateFormatter) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entityTypeManager;
+    $this->routeMatch = $routeMatch;
+    $this->aliasManager = $aliasManager;
+    $this->dateFormat = $dateFormatter;
   }
 
   /**
@@ -41,7 +68,11 @@ class EventSeriesEventsBlock extends BlockBase implements ContainerFactoryPlugin
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('current_route_match'),
+      $container->get('path_alias.manager'),
+      $container->get('date.formatter'),
+
     );
   }
 
@@ -53,14 +84,14 @@ class EventSeriesEventsBlock extends BlockBase implements ContainerFactoryPlugin
     // and create array of unique values.
     $dates = [];
     $node_storage = $this->entityTypeManager->getStorage('node');
-    $node = \Drupal::routeMatch()->getParameter('node');
+    $node = $this->routeMatch->getParameter('node');
     if ($node instanceof NodeInterface) {
       $nid = $node->id();
       $query = $node_storage->getQuery()
         ->condition('type', 'event')
         ->condition('status', 1)
         ->condition('field_event_series_link.uri', 'entity:node/' . $nid, '=')
-        ->sort('field_event_when.value' , 'ASC');
+        ->sort('field_event_when.value', 'ASC');
 
       $nids = $query->execute();
       if (!empty($nids)) {
@@ -70,9 +101,9 @@ class EventSeriesEventsBlock extends BlockBase implements ContainerFactoryPlugin
           if ($node->hasField('field_event_when') &&
             !$node->get('field_event_when')->isEmpty()) {
             $nid = $node->id();
-            $alias = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
+            $alias = $this->aliasManager->getAliasByPath('/node/' . $nid);
             $node_when = $node->get('field_event_when')->getValue();
-            $date = \Drupal::service('date.formatter')->format($node_when[0]['value'], 'medium');
+            $date = $this->dateFormat->format($node_when[0]['value'], 'medium');
             $markup = [
               '#markup' => '<a href="' . $alias . '">' . $date . '</a>',
             ];
@@ -100,7 +131,6 @@ class EventSeriesEventsBlock extends BlockBase implements ContainerFactoryPlugin
           ],
         ],
       ];
-
 
     }
     else {
