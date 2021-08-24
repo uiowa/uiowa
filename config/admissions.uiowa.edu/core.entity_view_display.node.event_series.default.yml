@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.event_series.field_meta_tags
     - node.type.event_series
   module:
+    - admissions_core
     - layout_builder
     - layout_builder_restrictions
     - metatag
@@ -26,7 +27,7 @@ third_party_settings:
         layout_id: layout_header
         layout_settings:
           label: ''
-          layout_builder_styles_style: { }
+          layout_builder_styles_style: {  }
         components:
           -
             uuid: abd7062b-38b4-428c-9833-bfa66edfb688
@@ -55,8 +56,8 @@ third_party_settings:
               label: Breadcrumbs
               provider: system
               label_display: '0'
-              context_mapping: { }
-            additional: { }
+              context_mapping: {  }
+            additional: {  }
             weight: -10
           -
             uuid: d75c28a9-d252-47df-86e8-206190ec5052
@@ -116,7 +117,7 @@ third_party_settings:
                 third_party_settings: {  }
                 type: text_default
             additional: {  }
-            weight: 1
+            weight: 2
           -
             uuid: 06f1244d-4a4d-439b-afc8-b8db0e679b8c
             region: first
@@ -127,6 +128,17 @@ third_party_settings:
               id: 'extra_field_block:node:event_series:links'
             additional: {  }
             weight: 0
+          -
+            uuid: 0df26ed5-dd2e-430a-831a-5b6c8a18ef5d
+            region: second
+            configuration:
+              id: admissions_core_event_series_events
+              label: null
+              provider: admissions_core
+              label_display: null
+              context_mapping: {  }
+            additional: {  }
+            weight: 1
         third_party_settings:
           layout_builder_lock:
             lock: {  }
