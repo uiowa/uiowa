@@ -106,15 +106,18 @@ third_party_settings:
             uuid: a52f2e6a-1104-4879-8e67-1b4036e9ee17
             region: second
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
               id: 'field_block:node:event_series:field_event_series_summary'
+              label: null
+              provider: layout_builder
+              label_display: null
               formatter:
-                label: above
+                label: visually_hidden
+                type: text_default
                 settings: {  }
                 third_party_settings: {  }
-                type: text_default
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
             additional:
               layout_builder_styles_style:
                 block_background_style_gray: block_background_style_gray
