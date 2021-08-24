@@ -6,11 +6,11 @@ dependencies:
     - field.field.node.event_series.body
     - field.field.node.event_series.field_event_series_summary
     - field.field.node.event_series.field_image
+    - field.field.node.event_series.field_meta_tags
     - node.type.event_series
   module:
     - layout_builder
     - layout_builder_restrictions
-    - system
     - text
     - user
   theme:
@@ -23,8 +23,10 @@ third_party_settings:
       -
         layout_id: layout_header
         layout_settings:
-          label: Header
-          layout_builder_styles_style: {  }
+          label: ''
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
         components:
           -
             uuid: 3ff442b4-712e-47e2-9c38-13f178f28440
@@ -49,7 +51,7 @@ third_party_settings:
                 label: hidden
                 type: entity_reference_entity_view
                 settings:
-                  view_mode: full__ultrawide
+                  view_mode: default
                 third_party_settings: {  }
               context_mapping:
                 entity: layout_builder.entity
@@ -168,6 +170,13 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_meta_tags:
+    weight: 104
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_empty_formatter
     region: content
   links:
     weight: 100
