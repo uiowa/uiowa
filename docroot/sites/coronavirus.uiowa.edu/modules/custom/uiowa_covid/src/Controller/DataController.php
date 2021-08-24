@@ -10,6 +10,7 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Returns responses for UIowa COVID routes.
@@ -56,8 +57,26 @@ class DataController extends ControllerBase {
   /**
    * Builds the response.
    */
-  public function build() {
-    $date = $this->getDataDate();
+  public function build(Request $request) {
+    $pause = $request->query->get('pause') ?? FALSE;
+    $weekdays = DateHelper::weekDaysUntranslated();
+    $dow = $weekdays[date('w')];
+    $time = date('G');
+
+    // If explicitly paused, get the previous reporting date. Note that pause
+    // is designed to be used on M/W/F until 12am the next day.
+    if ($pause) {
+      $date = $this->getPreviousReportingDate($dow);
+    }
+    // If Monday, Wednesday or Friday past 10am.
+    elseif ($dow == 'Monday' || $dow == 'Wednesday' || $dow == 'Friday' && $time >= 10) {
+      $date = date('m-d-Y');
+    }
+    // Anything else should go back to the previous reporting date.
+    else {
+      $date = $this->getPreviousReportingDate($dow);
+    }
+
     $data = [];
 
     $endpoint = $this->configFactory->get('uiowa.covid')->get('endpoint');
@@ -84,41 +103,35 @@ class DataController extends ControllerBase {
   }
 
   /**
-   * Calculate the day to get data for based on the day of the week.
+   * Get the previous reporting date based on the day of the week.
+   *
+   * @param $dow
+   *   The day of the week as a string (en).
+   * @return string
    */
-  private function getDataDate() {
-    $weekdays = DateHelper::weekDaysUntranslated();
-    $dow = $weekdays[date('w')];
-    $time = date('G');
+  private function getPreviousReportingDate($dow): string {
+    $dow = ucfirst(strtolower($dow));
+    $previous = NULL;
 
-    // If Monday, Wednesday or Friday past 10am.
-    if ($dow == 'Monday' || $dow == 'Wednesday' || $dow == 'Friday' && $time >= 10) {
-      $date = date('m-d-Y');
-    }
-    else {
-      // Anything else should go back to the previous reporting date.
-      switch ($dow) {
-        case 'Sunday':
-        case 'Monday':
-          $previous = 'last Friday';
-          break;
+    switch ($dow) {
+      case 'Sunday':
+      case 'Monday':
+        $previous = 'last Friday';
+        break;
 
-        case 'Tuesday':
-        case 'Thursday':
-        case 'Saturday':
-          $previous = 'yesterday';
-          break;
+      case 'Tuesday':
+      case 'Thursday':
+      case 'Saturday':
+        $previous = 'yesterday';
+        break;
 
-        case 'Wednesday':
-        case 'Friday':
-          $previous = 'two days ago';
-          break;
-      }
-
-      $date = date('m-d-Y', strtotime($previous));
+      case 'Wednesday':
+      case 'Friday':
+        $previous = 'two days ago';
+        break;
     }
 
-    return $date;
+    return date('m-d-Y', strtotime($previous));
   }
 
 }
