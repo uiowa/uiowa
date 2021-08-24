@@ -51,6 +51,11 @@ function admissions_core_entity_presave(EntityInterface $entity) {
  */
 function admissions_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
+    case 'node_event_series_form':
+    case 'node_event_series_edit_form':
+      // Set form defaults if they exist.
+      _sitenow_node_form_defaults($form, $form_state);
+      break;
     case 'node_student_profile_form':
     case 'node_student_profile_edit_form':
       // Set form defaults if they exist.
@@ -425,6 +430,10 @@ function admissions_core_theme($existing, $type, $theme, $path) {
     ],
     'field__node__field_area_of_study_scholarship__area_of_study__default' => [
       'template' => 'field--node--field-area-of-study-scholarship--area-of-study--default',
+      'base hook' => 'field',
+    ],
+    'field__node__title__event_series__default' => [
+      'template' => 'field--node--title--event-series--default',
       'base hook' => 'field',
     ],
     'field__node__field_transfer_tips_aos__transfer_tips' => [
