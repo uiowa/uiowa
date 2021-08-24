@@ -5,6 +5,7 @@ namespace Drupal\admissions_core\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -53,52 +54,61 @@ class EventSeriesEventsBlock extends BlockBase implements ContainerFactoryPlugin
     $dates = [];
     $node_storage = $this->entityTypeManager->getStorage('node');
     $node = \Drupal::routeMatch()->getParameter('node');
-    $nid = $node->id();
-    $query = $node_storage->getQuery()
-      ->condition('type', 'event')
-      ->condition('status', 1)
-      ->condition('field_event_series_link.uri', 'entity:node/' . $nid, '=')
-      ->sort('field_event_when.value' , 'ASC');
+    if ($node instanceof NodeInterface) {
+      $nid = $node->id();
+      $query = $node_storage->getQuery()
+        ->condition('type', 'event')
+        ->condition('status', 1)
+        ->condition('field_event_series_link.uri', 'entity:node/' . $nid, '=')
+        ->sort('field_event_when.value' , 'ASC');
 
-    $nids = $query->execute();
-    if (!empty($nids)) {
-      $nodes = $node_storage->loadMultiple($nids);
-      foreach ($nodes as $node) {
-        // Get the field_event_series values and assign them to an array.
-        if ($node->hasField('field_event_when') &&
-          !$node->get('field_event_when')->isEmpty()) {
-          $nid = $node->id();
-          $alias = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
-          $node_when = $node->get('field_event_when')->getValue();
-          $date = \Drupal::service('date.formatter')->format($node_when[0]['value'], 'medium');
-          $markup = [
-            '#markup' => '<a href="' . $alias . '">' . $date . '</a>',
-          ];
-          $dates[$nid] = $markup;
+      $nids = $query->execute();
+      if (!empty($nids)) {
+        $nodes = $node_storage->loadMultiple($nids);
+        foreach ($nodes as $node) {
+          // Get the field_event_series values and assign them to an array.
+          if ($node->hasField('field_event_when') &&
+            !$node->get('field_event_when')->isEmpty()) {
+            $nid = $node->id();
+            $alias = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
+            $node_when = $node->get('field_event_when')->getValue();
+            $date = \Drupal::service('date.formatter')->format($node_when[0]['value'], 'medium');
+            $markup = [
+              '#markup' => '<a href="' . $alias . '">' . $date . '</a>',
+            ];
+            $dates[$nid] = $markup;
+          }
         }
       }
-    }
+      if (empty($dates)) {
+        $markup = [
+          '#markup' => '<p>There are currently no events to display.</p>',
+        ];
+        $dates[] = $markup;
+      }
 
-    if (empty($dates)) {
-      $markup = [
-        '#markup' => '<p>There are currently no events to display.</p>',
-      ];
-      $dates[] = $markup;
-    }
-
-    return [
-      '#theme' => 'item_list',
-      '#list_type' => 'ul',
-      '#cache' => [
-        'tags' => ['node_type:event'],
-      ],
-      '#items' => $dates,
-      '#attached' => [
-        'library' => [
-          'admissions_core/event-series',
+      $block = [
+        '#theme' => 'item_list',
+        '#list_type' => 'ul',
+        '#cache' => [
+          'tags' => ['node_type:event'],
         ],
-      ],
-    ];
+        '#items' => $dates,
+        '#attached' => [
+          'library' => [
+            'admissions_core/event-series',
+          ],
+        ],
+      ];
+
+
+    }
+    else {
+      $block = [
+        '#markup' => '<p>Placeholder for Event Series block</p>',
+      ];
+    }
+    return $block;
   }
 
 }
