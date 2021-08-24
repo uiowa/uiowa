@@ -331,6 +331,7 @@ function admissions_core_preprocess_layout(&$variables) {
       if (in_array($node->getType(), [
         'area_of_study',
         'student_profile',
+        'event_series',
       ])) {
         if (!isset($variables['banner_attributes'])) {
           $variables['banner_settings'] = [];
@@ -350,6 +351,14 @@ function admissions_core_preprocess_layout(&$variables) {
             $variables['banner_settings']['transparent'] = TRUE;
             $variables['banner_settings']['horizontal_align'] = 'center';
             $variables['banner_settings']['vertical_align'] = 'center';
+          }
+          break;
+
+        case 'event_series':
+          if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+
+            // Set the featured image display.
+            $variables['featured_image_display'] = 'medium';
           }
           break;
 
