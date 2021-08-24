@@ -49,6 +49,12 @@ class CovidDataBlock extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
+    $query = UrlHelper::buildQuery([
+      'pause' => $this->configuration['pause'] ?? FALSE,
+    ]);
+
+    $endpoint = Url::fromRoute('uiowa_covid.data')->toString() . "?$query";
+
     $build = [
       '#attached' => [
         'library' => [
@@ -56,7 +62,7 @@ class CovidDataBlock extends BlockBase {
         ],
         'drupalSettings' => [
           'uiowaCovid' => [
-            'endpoint' => Url::fromRoute('uiowa_covid.data')->toString(),
+            'endpoint' => $endpoint,
           ],
         ],
       ],
