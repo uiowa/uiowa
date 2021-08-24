@@ -26,7 +26,7 @@ class CovidDataBlock extends BlockBase {
     $form['covid_data_date'] = [
       '#type' => 'html',
       '#title' => $this->t('COVID Data'),
-      '#description' => $this->t('This block gets data from the CIMT self-reporting database and renders it. It will refresh automatically.'),
+      '#description' => $this->t('This block gets data from the CIMT self-reporting database and renders it. It will refresh automatically around 10am on M/W/F.'),
     ];
 
     return $form;
