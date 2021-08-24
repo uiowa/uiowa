@@ -10,6 +10,7 @@ dependencies:
   module:
     - layout_builder
     - layout_builder_restrictions
+    - system
     - text
     - user
   theme:
@@ -22,11 +23,20 @@ third_party_settings:
       -
         layout_id: layout_header
         layout_settings:
-          label: ''
-          layout_builder_styles_style:
-            - ''
-            - section_margin_fixed_width_container
+          label: Header
+          layout_builder_styles_style: {  }
         components:
+          -
+            uuid: 3ff442b4-712e-47e2-9c38-13f178f28440
+            region: content
+            configuration:
+              id: system_breadcrumb_block
+              label: Breadcrumbs
+              provider: system
+              label_display: '0'
+              context_mapping: {  }
+            additional: {  }
+            weight: -10
           -
             uuid: abd7062b-38b4-428c-9833-bfa66edfb688
             region: background
@@ -39,13 +49,32 @@ third_party_settings:
                 label: hidden
                 type: entity_reference_entity_view
                 settings:
-                  view_mode: default
+                  view_mode: full__ultrawide
                 third_party_settings: {  }
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
             weight: 0
+          -
+            uuid: d75c28a9-d252-47df-86e8-206190ec5052
+            region: content
+            configuration:
+              id: 'field_block:node:event_series:title'
+              label: Title
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: visually_hidden
+                type: string
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: -9
         third_party_settings: {  }
       -
         layout_id: layout_twocol
