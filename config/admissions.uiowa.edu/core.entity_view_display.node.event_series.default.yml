@@ -85,8 +85,7 @@ third_party_settings:
           label: ''
           column_widths: 75-25
           layout_builder_styles_style:
-            - ''
-            - section_margin_fixed_width_container
+            section_alignment_start: section_alignment_start
         components:
           -
             uuid: 6cdd28d1-0503-462a-ab27-7338b23e2295
@@ -116,7 +115,10 @@ third_party_settings:
                 settings: {  }
                 third_party_settings: {  }
                 type: text_default
-            additional: {  }
+            additional:
+              layout_builder_styles_style:
+                block_background_style_gray: block_background_style_gray
+                block_padding_all: block_padding_all
             weight: 2
           -
             uuid: 06f1244d-4a4d-439b-afc8-b8db0e679b8c
@@ -137,7 +139,10 @@ third_party_settings:
               provider: admissions_core
               label_display: null
               context_mapping: {  }
-            additional: {  }
+            additional:
+              layout_builder_styles_style:
+                block_background_style_gray: block_background_style_gray
+                block_padding_all: block_padding_all
             weight: 1
         third_party_settings:
           layout_builder_lock:
