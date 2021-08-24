@@ -5,8 +5,9 @@ namespace Drupal\brand_core\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\brand_core\BrandSVG;
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\FileSystemInterface;
-use Drupal\node\Entity\Node;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -14,16 +15,52 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * Generates Lockup.
  */
 class LockupController extends ControllerBase {
+  /**
+   * The entity_type.manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * The file_system service.
+   *
+   * @var \Drupal\Core\File\FileSystemInterface
+   */
+  protected $fs;
+
+  /**
+   * Lockup controller constructor.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity_type.manager service.
+   * @param \Drupal\Core\File\FileSystemInterface $fileSystem
+   *   The file_system service.
+   */
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, FileSystemInterface $fileSystem) {
+    $this->entityTypeManager = $entityTypeManager;
+    $this->fs = $fileSystem;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('entity_type.manager'),
+      $container->get('file_system')
+    );
+  }
 
   /**
    * Generate Lockup.
    */
   public function generate($nid) {
-    $is_node = \Drupal::entityQuery('node')->condition('nid', $nid)->execute();
+    $is_node = $this->entityTypeManager->getStorage('node')->getQuery()->condition('nid', $nid)->execute();
 
     if ($is_node) {
-      \Drupal::entityTypeManager()->getStorage('node')->resetCache([$nid]);
-      $node = Node::load($nid);
+      $this->entityTypeManager->getStorage('node')->resetCache([$nid]);
+      $node = $this->entityTypeManager->getStorage('node')->load($nid);
 
       $path = $node->getTitle();
       $name = Html::cleanCssIdentifier($path);
@@ -31,51 +68,48 @@ class LockupController extends ControllerBase {
       $directories['lockups'] = 'public://lockups';
       $directories['lockup'] = $directories['lockups'] . '/' . $nid;
 
-      /** @var \Drupal\Core\File\FileSystemInterface $file_system */
-      $file_system = \Drupal::service('file_system');
-
       foreach ($directories as $dir) {
-        $file_system->prepareDirectory($dir, FileSystemInterface::CREATE_DIRECTORY);
+        $this->fs->prepareDirectory($dir, FileSystemInterface::CREATE_DIRECTORY);
       }
 
-      $tmp_dir = $file_system->getTempDirectory();
+      $tmp_dir = $this->fs->getTempDirectory();
 
       // Create the different lockup versions.
       $lockup_stacked_black = LockupController::generateLockup($node, '#000000', "#000000", 'stacked');
       $lockup_stacked_black_file = $name . '-LockupStacked-BLACK.svg';
       fwrite(fopen($tmp_dir . '/' . $lockup_stacked_black_file, 'w'), $lockup_stacked_black);
-      $file_system->copy($tmp_dir . '/' . $lockup_stacked_black_file, $directories['lockup'] . '/' . $lockup_stacked_black_file, FileSystemInterface::EXISTS_REPLACE);
+      $this->fs->copy($tmp_dir . '/' . $lockup_stacked_black_file, $directories['lockup'] . '/' . $lockup_stacked_black_file, FileSystemInterface::EXISTS_REPLACE);
 
       $lockup_stacked_rgb = LockupController::generateLockup($node, '#FFCD00', "#000000", 'stacked');
       $lockup_stacked_rgb_file = $name . '-LockupStacked-RGB.svg';
       fwrite(fopen($tmp_dir . '/' . $lockup_stacked_rgb_file, 'w'), $lockup_stacked_rgb);
-      $file_system->copy($tmp_dir . '/' . $lockup_stacked_rgb_file, $directories['lockup'] . '/' . $lockup_stacked_rgb_file, FileSystemInterface::EXISTS_REPLACE);
+      $this->fs->copy($tmp_dir . '/' . $lockup_stacked_rgb_file, $directories['lockup'] . '/' . $lockup_stacked_rgb_file, FileSystemInterface::EXISTS_REPLACE);
 
       $lockup_stacked_reversed = LockupController::generateLockup($node, '#FFCD00', "#FFFFFF", 'stacked');
       $lockup_stacked_reversed_file = $name . '-LockupStacked-RGB-REVERSED.svg';
       fwrite(fopen($tmp_dir . '/' . $lockup_stacked_reversed_file, 'w'), $lockup_stacked_reversed);
-      $file_system->copy($tmp_dir . '/' . $lockup_stacked_reversed_file, $directories['lockup'] . '/' . $lockup_stacked_reversed_file, FileSystemInterface::EXISTS_REPLACE);
+      $this->fs->copy($tmp_dir . '/' . $lockup_stacked_reversed_file, $directories['lockup'] . '/' . $lockup_stacked_reversed_file, FileSystemInterface::EXISTS_REPLACE);
 
       $lockup_horizontal_black = LockupController::generateLockup($node, '#000000', "#000000", 'horizontal');
       $lockup_horizontal_black_file = $name . '-LockupHorizontal-BLACK.svg';
       fwrite(fopen($tmp_dir . '/' . $lockup_horizontal_black_file, 'w'), $lockup_horizontal_black);
-      $file_system->copy($tmp_dir . '/' . $lockup_horizontal_black_file, $directories['lockup'] . '/' . $lockup_horizontal_black_file, FileSystemInterface::EXISTS_REPLACE);
+      $this->fs->copy($tmp_dir . '/' . $lockup_horizontal_black_file, $directories['lockup'] . '/' . $lockup_horizontal_black_file, FileSystemInterface::EXISTS_REPLACE);
 
       $lockup_horizontal_rgb = LockupController::generateLockup($node, '#FFCD00', "#000000", 'horizontal');
       $lockup_horizontal_rgb_file = $name . '-LockupHorizontal-RGB.svg';
       fwrite(fopen($tmp_dir . '/' . $lockup_horizontal_rgb_file, 'w'), $lockup_horizontal_rgb);
-      $file_system->copy($tmp_dir . '/' . $lockup_horizontal_rgb_file, $directories['lockup'] . '/' . $lockup_horizontal_rgb_file, FileSystemInterface::EXISTS_REPLACE);
+      $this->fs->copy($tmp_dir . '/' . $lockup_horizontal_rgb_file, $directories['lockup'] . '/' . $lockup_horizontal_rgb_file, FileSystemInterface::EXISTS_REPLACE);
 
       $lockup_horizontal_reversed = LockupController::generateLockup($node, '#FFCD00', "#FFFFFF", 'horizontal');
       $lockup_horizontal_reversed_file = $name . '-LockupHorizontal-RGB-REVERSED.svg';
       fwrite(fopen($tmp_dir . '/' . $lockup_horizontal_reversed_file, 'w'), $lockup_horizontal_reversed);
-      $file_system->copy($tmp_dir . '/' . $lockup_horizontal_reversed_file, $directories['lockup'] . '/' . $lockup_horizontal_reversed_file, FileSystemInterface::EXISTS_REPLACE);
+      $this->fs->copy($tmp_dir . '/' . $lockup_horizontal_reversed_file, $directories['lockup'] . '/' . $lockup_horizontal_reversed_file, FileSystemInterface::EXISTS_REPLACE);
 
       $zip = new \ZipArchive();
 
       $zip_filename = 'temporary://lockup.zip';
 
-      if ($zip->open(\Drupal::service('file_system')->realpath($zip_filename), \ZipArchive::CREATE) !== TRUE) {
+      if ($zip->open($this->fs->realpath($zip_filename), \ZipArchive::CREATE) !== TRUE) {
         exit("cannot open <$zip_filename>\n");
       }
 
@@ -91,7 +125,7 @@ class LockupController extends ControllerBase {
       $zip->addFile($instructions, $name . "-Lockup/lockup-instructions.docx");
       $zip->close();
 
-      $file_system->copy($zip_filename, $directories['lockup'] . '/' . $nid . '.zip', FileSystemInterface::EXISTS_REPLACE);
+      $this->fs->copy($zip_filename, $directories['lockup'] . '/' . $nid . '.zip', FileSystemInterface::EXISTS_REPLACE);
 
       unlink($zip_filename);
       unlink($tmp_dir . '/' . $lockup_stacked_black_file);
@@ -628,10 +662,10 @@ class LockupController extends ControllerBase {
    * Download Lockup.
    */
   public function download($nid) {
-    $is_node = \Drupal::entityQuery('node')->condition('nid', $nid)->execute();
+    $is_node = $this->entityTypeManager->getStorage('node')->getQuery()->condition('nid', $nid)->execute();
 
     if ($is_node) {
-      $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+      $node = $this->entityTypeManager->getStorage('node')->load($nid);
 
       $path = $node->getTitle();
       $name = Html::cleanCssIdentifier($path);

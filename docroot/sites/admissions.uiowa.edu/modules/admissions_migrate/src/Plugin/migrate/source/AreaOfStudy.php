@@ -166,7 +166,7 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
                     $nid = explode('node/', $href)[1];
                     $lookup = $map->lookupDestinationIds(['nid' => $nid]);
 
-                    // Fallback to a manual map of NIDs provided by the customer.
+                    // Fallback to a manual map of NIDs provided by customer.
                     if (empty($lookup)) {
                       $lookup = $this->manualLookup($nid);
                     }

@@ -83,6 +83,12 @@
 ]
 %}
 
+{% if '1' in content.field_event_series_link_direct.0 and node.field_event_series_link.0.uri %}
+  {% set node_link = content.field_event_series_link[0]['#url'] %}
+{% else %}
+  {% set node_link = url %}
+{% endif %}
+
 {% if node.field_event_virtual.0.uri is not empty %}
   {% set event_icon = '<span role="presentation" class="fas fa-laptop"></span>' %}
   {% set event_location = 'Virtual' %}
@@ -108,7 +114,7 @@
   'attributes': attributes.addClass(classes),
   'card_title': label,
   'content': content,
-  'card_link_url': url,
+  'card_link_url': node_link,
   'headline_level': headline_level,
   'card_date': content.field_event_when,
   'event_icon': event_icon|trans,
@@ -129,7 +135,7 @@
   {% endblock %}
 
   {% block card_content %}
-    {{ content|without('field_image', 'links', 'field_event_when', 'field_event_virtual', 'field_event_location') }}
+    {{ content|without('field_image', 'links', 'field_event_when', 'field_event_virtual', 'field_event_location', 'field_event_series_link', 'field_event_series_link_direct') }}
   {% endblock %}
 
 {% endembed %}

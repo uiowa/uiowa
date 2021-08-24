@@ -145,7 +145,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       array_unshift($form['#submit'], '_layout_builder_custom_block_submit');
 
       if (isset($form['settings'])) {
-        // Add custom process callback for certain blocks to alter form elements.
+        // Add custom process callback for certain blocks to alter elements.
         $form['settings']['block_form']['#process'][] = '_layout_builder_custom_process_element';
       }
 
@@ -417,7 +417,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           break;
 
         case 'sitenow_dispatch_sign_up_form':
-          // Checks to see if there is an API key set, and if not we shouldn't be able to add the block, so remove the button.
+          // Checks to see if there is an API key set, and if not we
+          // shouldn't be able to add the block, so remove the button.
           if (empty(\Drupal::config('sitenow_dispatch.settings')->get('api_key'))) {
             $form['actions']['submit']['#access'] = FALSE;
           }
@@ -750,7 +751,8 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         ],
       ];
 
-      // Now that we have view mode on the block form, place the fields in the right order.
+      // Now that we have view mode on the block form, place the fields
+      // in the right order.
       $element["view_mode"]["#weight"] = 2;
       $element["field_accordion_type"]["#weight"] = 3;
       $element["field_uiowa_collection_items"]["#weight"] = 4;
@@ -950,7 +952,8 @@ function layout_builder_custom_preprocess_media(&$variables) {
   switch ($media->bundle()) {
     case 'image':
       $referring_item = $media->_referringItem;
-      // So far, only way to get media viewmode switching lb block > view > node > media deep.
+      // So far, only way to get media viewmode switching lb
+      // block > view > node > media deep.
       if ($referring_item) {
         /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
         $referring_field = $referring_item->getParent();
@@ -1025,7 +1028,7 @@ function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
     $item_classes = [
       'card_media_position' => 'card--media-right',
     ];
-    $item_media_classes = [];
+
     foreach ($row_styles as $style_id) {
       // Account for incorrectly configured component configuration which may
       // have a NULL style ID. We cannot pass NULL to the storage handler or
@@ -1064,7 +1067,8 @@ function layout_builder_custom_views_plugins_display_alter(&$displays) {
  * Implements hook_views_pre_render().
  */
 function layout_builder_custom_views_pre_render(ViewExecutable $view) {
-  // Hotfix shim to not display exposed blocks, necessary because of the hotfix above.
+  // Hotfix shim to not display exposed blocks, necessary because
+  // of the hotfix above.
   // @todo Remove this exception when these view displays are removed.
   $display = $view->getDisplay();
   $exceptions = [
