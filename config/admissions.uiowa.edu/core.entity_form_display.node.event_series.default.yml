@@ -4,12 +4,14 @@ status: true
 dependencies:
   config:
     - field.field.node.event_series.body
+    - field.field.node.event_series.field_event_series_button_link
     - field.field.node.event_series.field_event_series_summary
     - field.field.node.event_series.field_image
     - field.field.node.event_series.field_meta_tags
     - node.type.event_series
   module:
     - content_moderation
+    - link
     - media_library
     - metatag
     - path
@@ -35,6 +37,14 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_event_series_button_link:
+    weight: 125
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
   field_event_series_summary:
     weight: 123
     settings:

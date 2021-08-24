@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.event_series.body
+    - field.field.node.event_series.field_event_series_button_link
     - field.field.node.event_series.field_event_series_summary
     - field.field.node.event_series.field_image
     - field.field.node.event_series.field_meta_tags
@@ -12,6 +13,7 @@ dependencies:
     - admissions_core
     - layout_builder
     - layout_builder_restrictions
+    - link
     - metatag
     - system
     - text
@@ -122,7 +124,7 @@ third_party_settings:
               layout_builder_styles_style:
                 block_background_style_gray: block_background_style_gray
                 block_padding_all: block_padding_all
-            weight: 2
+            weight: 3
           -
             uuid: 06f1244d-4a4d-439b-afc8-b8db0e679b8c
             region: first
@@ -147,6 +149,29 @@ third_party_settings:
                 block_background_style_gray: block_background_style_gray
                 block_padding_all: block_padding_all
             weight: 1
+          -
+            uuid: fdcd85e2-46ad-4565-9d21-fe66d87d8033
+            region: second
+            configuration:
+              id: 'field_block:node:event_series:field_event_series_button_link'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: visually_hidden
+                type: link
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: '0'
+                  target: '0'
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 4
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -175,6 +200,18 @@ content:
     weight: 101
     settings: {  }
     third_party_settings: {  }
+    region: content
+  field_event_series_button_link:
+    weight: 105
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
     region: content
   field_event_series_summary:
     weight: 103
