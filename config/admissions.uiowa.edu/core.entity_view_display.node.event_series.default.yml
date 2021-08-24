@@ -26,21 +26,8 @@ third_party_settings:
         layout_id: layout_header
         layout_settings:
           label: ''
-          layout_builder_styles_style:
-            - ''
-            - section_margin_fixed_width_container
+          layout_builder_styles_style: { }
         components:
-          -
-            uuid: 3ff442b4-712e-47e2-9c38-13f178f28440
-            region: content
-            configuration:
-              id: system_breadcrumb_block
-              label: Breadcrumbs
-              provider: system
-              label_display: '0'
-              context_mapping: {  }
-            additional: {  }
-            weight: -10
           -
             uuid: abd7062b-38b4-428c-9833-bfa66edfb688
             region: background
@@ -60,6 +47,17 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: 0
+          -
+            uuid: 3ff442b4-712e-47e2-9c38-13f178f28440
+            region: content
+            configuration:
+              id: system_breadcrumb_block
+              label: Breadcrumbs
+              provider: system
+              label_display: '0'
+              context_mapping: { }
+            additional: { }
+            weight: -10
           -
             uuid: d75c28a9-d252-47df-86e8-206190ec5052
             region: content
