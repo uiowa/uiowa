@@ -160,8 +160,8 @@ function admissions_core_form_views_exposed_form_alter(&$form, FormStateInterfac
  * Implements hook_ENTITY_TYPE_delete().
  */
 function admissions_core_node_delete(Node $node) {
-  // Used on Admissions counselors map.
-  if ($node->getType() == 'person') {
+  // Used on Admissions counselors map and event series blocks.
+  if ($node->getType() == 'person' || $node->getType() == 'event') {
     $tags = ['node_type:' . $node->getType()];
     Cache::invalidateTags($tags);
   }
@@ -171,8 +171,8 @@ function admissions_core_node_delete(Node $node) {
  * Implements hook_ENTITY_TYPE_presave().
  */
 function admissions_core_node_presave(Node $node) {
-  // Used on Admissions counselors map.
-  if ($node->getType() == 'person') {
+  // Used on Admissions counselors map and event series blocks.
+  if ($node->getType() == 'person' || $node->getType() == 'event') {
     $tags = ['node_type:' . $node->getType()];
     Cache::invalidateTags($tags);
   }
