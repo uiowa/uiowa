@@ -73,7 +73,6 @@ class DataController extends ControllerBase {
       ]);
 
       $data = ['date' => $date] + json_decode($response->getBody()->getContents(), TRUE);
-      ;
     }
     catch (RequestException | GuzzleException | ClientException $e) {
       watchdog_exception('uiowa_covid', $e);
