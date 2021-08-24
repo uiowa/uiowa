@@ -890,15 +890,6 @@ function _layout_builder_custom_add_lbs_heading(&$form) {
 function layout_builder_custom_preprocess_block(&$variables) {
 
   switch ($variables['elements']['#plugin_id']) {
-    case 'inline_block:uiowa_card':
-      if (isset($variables['content']['field_uiowa_card_link']) &&
-        !empty($variables['content']['field_uiowa_card_link'][0]['#url'])) {
-        $variables['content']['field_uiowa_card_link'][0]['#url'] = [
-          '#markup' => $variables['content']['field_uiowa_card_link'][0]['#url']->getUri(),
-          '#type' => 'markup',
-        ];
-      }
-      break;
 
     case 'inline_block:featured_content':
       // Take control of the referenced entity renders to pass in heading size.
