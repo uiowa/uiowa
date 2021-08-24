@@ -6,10 +6,12 @@ dependencies:
     - field.field.node.event_series.body
     - field.field.node.event_series.field_event_series_summary
     - field.field.node.event_series.field_image
+    - field.field.node.event_series.field_meta_tags
     - node.type.event_series
   module:
     - layout_builder
     - layout_builder_restrictions
+    - metatag
     - text
     - user
   theme:
@@ -139,6 +141,13 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_meta_tags:
+    weight: 104
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_empty_formatter
     region: content
   links:
     weight: 100

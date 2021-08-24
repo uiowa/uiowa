@@ -6,10 +6,12 @@ dependencies:
     - field.field.node.event_series.body
     - field.field.node.event_series.field_event_series_summary
     - field.field.node.event_series.field_image
+    - field.field.node.event_series.field_meta_tags
     - node.type.event_series
   module:
     - content_moderation
     - media_library
+    - metatag
     - path
     - text
 id: node.event_series.default
@@ -47,6 +49,13 @@ content:
       media_types: {  }
     third_party_settings: {  }
     type: media_library_widget
+    region: content
+  field_meta_tags:
+    weight: 124
+    settings:
+      sidebar: true
+    third_party_settings: {  }
+    type: metatag_firehose
     region: content
   moderation_state:
     type: moderation_state_default
