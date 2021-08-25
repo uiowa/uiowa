@@ -25,6 +25,13 @@
                 element.innerText = data[datum];
               }
             }
+          })
+          .catch((error) => {
+            let element = document.getElementById('uiowa-covid-disclaimer');
+
+            if (element) {
+              element.innerText = '<p>Unable to retrieve COVID data at this time. Please try again later.</p>';
+            }
           });
       });
     }
