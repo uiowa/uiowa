@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labbcbl.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labbcbl
+  human_name: bcbl.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labbcbl.prod
+drupal:
+  db:
+    database: bcbl_lab_uiowa_edu
+uiowa:
+  requester: andringak
