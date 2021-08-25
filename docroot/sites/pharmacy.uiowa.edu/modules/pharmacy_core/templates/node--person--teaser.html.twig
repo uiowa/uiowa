@@ -70,32 +70,14 @@
  *   in different view modes.
  */
 #}
+
 {%
   set classes = [
-  'node',
-  'node--type-' ~ node.bundle|clean_class,
-  node.isPromoted() ? 'node--promoted',
-  node.isSticky() ? 'node--sticky',
-  not node.isPublished() ? 'node--unpublished',
-  view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-  'event-item',
   'card--list',
+  'card--media-left',
+  'card--person-teaser',
 ]
 %}
-
-{% if '1' in content.field_event_series_link_direct.0 and node.field_event_series_link.0.uri %}
-  {% set node_link = content.field_event_series_link[0]['#url'] %}
-{% else %}
-  {% set node_link = url %}
-{% endif %}
-
-{% if node.field_event_virtual.0.uri is not empty %}
-  {% set event_icon = '<span role="presentation" class="fas fa-laptop"></span>' %}
-  {% set event_location = 'Virtual' %}
-{% else %}
-  {% set event_icon = '<span role="presentation" class="fas fa-map-marker-alt"></span>' %}
-  {% set event_location = content.field_event_location.0.organization %}
-{% endif %}
 
 {% set headline_level = 'h3 '%}
 {% if view %}
@@ -107,35 +89,51 @@
 
 {{ attach_library('classy/node') }}
 {{ attach_library('uids_base/paragraphs-lists') }}
-{{ attach_library('uids_base/event') }}
-{{ attach_library('uids_base/media') }}
+{{ attach_library('uids_base/person') }}
 
-{% set event_card = {
+{% set person_card = {
   'attributes': attributes.addClass(classes),
+  'card_image': content.field_image | render,
+  'card_text': content.field_teaser | render,
+  'card_subtitle': content.field_person_position | render,
+  'card_date': content.field_person_email | render,
+  'card_tag': content.field_person_phone | render,
+  'media_styles': ['media--circle', 'card__media--small', 'media--border'],
   'card_title': label,
-  'content': content,
-  'card_link_url': node_link,
+  'card_link_url': url,
   'headline_level': headline_level,
-  'card_date': content.field_event_when,
-  'event_icon': event_icon|trans,
-  'card_tag': event_location|render,
+  'territory': content.field_person_territory | render,
 } %}
 
-{% embed '@uids_base/uids/card.html.twig' with event_card only %}
-
-  {# @todo Add content_attributes.addClass('node__content media-body') #}
-
+{% embed '@uids_base/uids/card.html.twig' with person_card only %}
+  {% block card_img %}
+    {% if card_image is not empty %}
+      {{ parent() }}
+    {% else %}
+      <div {{ media_attributes.addClass(media_styles, media_sizes, 'card__media') }}>
+        <div class="img--empty">&nbsp;</div>
+      </div>
+    {% endif %}
+  {% endblock %}
   {% block card_tag %}
     {% if card_tag is not empty %}
-      <div class="card__label">
-        {{ event_icon }}
+      <div class="card__date">
         {{ card_tag }}
       </div>
     {% endif %}
   {% endblock %}
-
-  {% block card_content %}
-    {{ content|without('field_image', 'links', 'field_event_when', 'field_event_virtual', 'field_event_location', 'field_event_series_link', 'field_event_series_link_direct') }}
+  {% block card_date %}
+    {% if card_date is not empty %}
+      <div class="card__date">
+        {{ card_date }}
+      </div>
+    {% endif %}
   {% endblock %}
-
+  {% block card_content %}
+    {% if territory is not empty %}
+      <div class="card__description">
+        {{ territory }}
+      </div>
+    {% endif %}
+  {% endblock %}
 {% endembed %}

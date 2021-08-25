@@ -3089,3 +3089,9 @@ $sites['orgcsars.local.drupal.uiowa.edu'] = 'csars.org.uiowa.edu';
 $sites['orgcsars.dev.drupal.uiowa.edu'] = 'csars.org.uiowa.edu';
 $sites['orgcsars.stage.drupal.uiowa.edu'] = 'csars.org.uiowa.edu';
 $sites['orgcsars.prod.drupal.uiowa.edu'] = 'csars.org.uiowa.edu';
+
+// Directory aliases for gravbox.sites.uiowa.edu.
+$sites['sitesgravbox.local.drupal.uiowa.edu'] = 'gravbox.sites.uiowa.edu';
+$sites['sitesgravbox.dev.drupal.uiowa.edu'] = 'gravbox.sites.uiowa.edu';
+$sites['sitesgravbox.stage.drupal.uiowa.edu'] = 'gravbox.sites.uiowa.edu';
+$sites['sitesgravbox.prod.drupal.uiowa.edu'] = 'gravbox.sites.uiowa.edu';
