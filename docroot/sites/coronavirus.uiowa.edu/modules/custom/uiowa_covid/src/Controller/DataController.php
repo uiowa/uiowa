@@ -65,8 +65,8 @@ class DataController extends ControllerBase {
    *   The JSON.
    */
   public function build(Request $request) {
-    $pause = $request->query->get('pause') ?? FALSE;
-    $since = date('m-d-Y', $request->query->get('since') ?? strtotime('2021/08/23'));
+    $pause = $request->query->get('pause', FALSE);
+    $since = date('m-d-Y', $request->query->get('since', strtotime('2021/08/23')));
     $weekdays = DateHelper::weekDaysUntranslated();
     $dow = $weekdays[date('w')];
     $time = date('G');
