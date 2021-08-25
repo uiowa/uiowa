@@ -99,13 +99,15 @@ class CovidDataBlock extends BlockBase {
           '#type' => 'table',
           '#header' => [
             $this->t('New Cases'),
-            $this->t('Since <span id="uiowa-covid-semesterStart"></span>'),
-            $this->t('Total Cases (<span id="uiowa-covid-totalStart"></span>)'),
+            $this->t('Since @since', [
+              '@since' => date('M. j, Y', $since)
+            ]),
+            $this->t('Total Cases Since Aug. 18, 2020'),
           ],
           '#rows' => [
             [
               $this->t('<span id="uiowa-covid-studentNew">-</span>'),
-              $this->t('<span id="uiowa-covid-studentSemester">-</span>'),
+              $this->t('<span id="uiowa-covid-studentSince">-</span>'),
               $this->t('<span id="uiowa-covid-studentTotal">-</span>'),
             ],
           ],
@@ -125,13 +127,15 @@ class CovidDataBlock extends BlockBase {
           '#type' => 'table',
           '#header' => [
             $this->t('New Cases'),
-            $this->t('Since <span id="uiowa-covid-semesterStart"></span>'),
-            $this->t('Total Cases (<span id="uiowa-covid-totalStart"></span>)'),
+            $this->t('Since @since', [
+              '@since' => date('M. j, Y', $since),
+            ]),
+            $this->t('Total Cases Since Aug. 18, 2020'),
           ],
           '#rows' => [
             [
               $this->t('<span id="uiowa-covid-employeeNew">-</span>'),
-              $this->t('<span id="uiowa-covid-employeeSemester">-</span>'),
+              $this->t('<span id="uiowa-covid-employeeSince">-</span>'),
               $this->t('<span id="uiowa-covid-employeeTotal">-</span>'),
             ],
           ],
