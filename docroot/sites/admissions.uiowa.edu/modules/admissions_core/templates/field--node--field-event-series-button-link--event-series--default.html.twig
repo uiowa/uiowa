@@ -1,5 +1,6 @@
 {% embed '@uids_base/field/field.html.twig' %}
-  {% block field_icon %}
+{% set attributes = attributes.addClass('bttn bttn--primary bttn--caps bttn--full') %}
+  {% block field_icon_after %}
     <i role="presentation" class="fa fa-map-marker-alt" aria-hidden="true"></i>
   {% endblock %}
 {% endembed %}
