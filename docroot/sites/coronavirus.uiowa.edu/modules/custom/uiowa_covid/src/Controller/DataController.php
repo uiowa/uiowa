@@ -65,6 +65,7 @@ class DataController extends ControllerBase {
    */
   public function build(Request $request) {
     $pause = $request->query->get('pause') ?? FALSE;
+    $since = date('m-d-Y', $request->query->get('since') ?? strtotime('2021/08/23'));
     $weekdays = DateHelper::weekDaysUntranslated();
     $dow = $weekdays[date('w')];
     $time = date('G');
@@ -90,7 +91,7 @@ class DataController extends ControllerBase {
     $key = $this->configFactory->get('uiowa.covid')->get('key');
 
     try {
-      $response = $this->client->request('GET', "$endpoint/$date", [
+      $response = $this->client->request('GET', "$endpoint/$date/$since", [
         'auth' => [
           $user,
           $key,
