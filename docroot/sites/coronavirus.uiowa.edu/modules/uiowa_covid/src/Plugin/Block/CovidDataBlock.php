@@ -13,7 +13,7 @@ use Drupal\Core\Url;
  * @Block(
  *   id = "uiowa_covid_data",
  *   admin_label = @Translation("COVID Data"),
- *   category = @Translation("uiowa_covid")
+ *   category = @Translation("UIowa COVID")
  * )
  */
 class CovidDataBlock extends BlockBase {
