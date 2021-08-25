@@ -100,9 +100,9 @@ class CovidDataBlock extends BlockBase {
           '#header' => [
             $this->t('New Cases'),
             $this->t('Since @since', [
-              '@since' => date('M. j, Y', $since)
+              '@since' => date('M. j', $since)
             ]),
-            $this->t('Total Cases Since Aug. 18, 2020'),
+            $this->t('Total Cases (Since Aug. 18, 2020)'),
           ],
           '#rows' => [
             [
@@ -128,9 +128,9 @@ class CovidDataBlock extends BlockBase {
           '#header' => [
             $this->t('New Cases'),
             $this->t('Since @since', [
-              '@since' => date('M. j, Y', $since),
+              '@since' => date('M. j', $since),
             ]),
-            $this->t('Total Cases Since Aug. 18, 2020'),
+            $this->t('Total Cases (Since Aug. 18, 2020)'),
           ],
           '#rows' => [
             [
