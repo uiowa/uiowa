@@ -29,7 +29,13 @@ class CovidDataBlock extends BlockBase {
       '#markup' => $this->t('<p>This block gets data from the CIMT self-reporting database and renders it. The data will update around 10am on M/W/F.</p>'),
     ];
 
-    // @todo Add date field for since argument to pass to JS and then API.
+    $form['since_date'] = [
+      '#type' => 'date',
+      '#title' => $this->t('Since Date'),
+      '#description' => $this->t('Enter the start of the semester date to use for the sinceDate.'),
+      '#default_value' => $this->configuration['since_date'] ?? NULL,
+      '#required' => TRUE,
+    ];
 
     $form['pause'] = [
       '#type' => 'checkbox',
@@ -46,14 +52,18 @@ class CovidDataBlock extends BlockBase {
    */
   public function blockSubmit($form, FormStateInterface $form_state) {
     $this->configuration['pause'] = $form_state->getValue('pause');
+    $this->configuration['since_date'] = $form_state->getValue('since_date');
   }
 
   /**
    * {@inheritdoc}
    */
   public function build() {
+    $since = strtotime($this->configuration['since_date'] ?? '2021/08/23');
+
     $query = UrlHelper::buildQuery([
       'pause' => $this->configuration['pause'] ?? FALSE,
+      'since' => $since,
     ]);
 
     $endpoint = Url::fromRoute('uiowa_covid.data')->toString() . "?$query";
