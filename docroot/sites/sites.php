@@ -3095,3 +3095,9 @@ $sites['sitesgravbox.local.drupal.uiowa.edu'] = 'gravbox.sites.uiowa.edu';
 $sites['sitesgravbox.dev.drupal.uiowa.edu'] = 'gravbox.sites.uiowa.edu';
 $sites['sitesgravbox.stage.drupal.uiowa.edu'] = 'gravbox.sites.uiowa.edu';
 $sites['sitesgravbox.prod.drupal.uiowa.edu'] = 'gravbox.sites.uiowa.edu';
+
+// Directory aliases for ohsc.lab.uiowa.edu.
+$sites['labohsc.local.drupal.uiowa.edu'] = 'ohsc.lab.uiowa.edu';
+$sites['labohsc.dev.drupal.uiowa.edu'] = 'ohsc.lab.uiowa.edu';
+$sites['labohsc.stage.drupal.uiowa.edu'] = 'ohsc.lab.uiowa.edu';
+$sites['labohsc.prod.drupal.uiowa.edu'] = 'ohsc.lab.uiowa.edu';
