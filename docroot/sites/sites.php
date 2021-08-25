@@ -3101,3 +3101,9 @@ $sites['labohsc.local.drupal.uiowa.edu'] = 'ohsc.lab.uiowa.edu';
 $sites['labohsc.dev.drupal.uiowa.edu'] = 'ohsc.lab.uiowa.edu';
 $sites['labohsc.stage.drupal.uiowa.edu'] = 'ohsc.lab.uiowa.edu';
 $sites['labohsc.prod.drupal.uiowa.edu'] = 'ohsc.lab.uiowa.edu';
+
+// Directory aliases for bcbl.lab.uiowa.edu.
+$sites['labbcbl.local.drupal.uiowa.edu'] = 'bcbl.lab.uiowa.edu';
+$sites['labbcbl.dev.drupal.uiowa.edu'] = 'bcbl.lab.uiowa.edu';
+$sites['labbcbl.stage.drupal.uiowa.edu'] = 'bcbl.lab.uiowa.edu';
+$sites['labbcbl.prod.drupal.uiowa.edu'] = 'bcbl.lab.uiowa.edu';
