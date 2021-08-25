@@ -314,6 +314,10 @@ function admissions_core_preprocess_block(&$variables) {
     case 'views_block:student_card-block_student_grid':
       $variables['#attached']['library'][] = 'admissions_core/student-profile';
       break;
+
+    case 'admissions_core_event_series_events':
+      $variables['title_attributes']['class'] = 'h4 headline headline--serif headline--underline';
+      break;
   }
 }
 
@@ -448,6 +452,10 @@ function admissions_core_theme($existing, $type, $theme, $path) {
     ],
     'field__node__field_event_series_button_link__event_series' => [
       'template' => 'field--node--field-event-series-button-link--event-series--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_event_series_summary__event_series' => [
+      'template' => 'field--node--field-event-series-summary--event-series--default',
       'base hook' => 'field',
     ],
     'field__node__field_transfer_tips_aos__transfer_tips' => [
