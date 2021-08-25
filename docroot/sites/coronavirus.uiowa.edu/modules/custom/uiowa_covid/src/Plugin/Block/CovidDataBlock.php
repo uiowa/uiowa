@@ -29,6 +29,8 @@ class CovidDataBlock extends BlockBase {
       '#markup' => $this->t('<p>This block gets data from the CIMT self-reporting database and renders it. The data will update around 10am on M/W/F.</p>'),
     ];
 
+    // @todo Add date field for since argument to pass to JS and then API.
+
     $form['pause'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Pause'),
