@@ -70,7 +70,7 @@ class DataController extends ControllerBase {
     $time = date('G');
 
     // If explicitly paused, get the previous reporting date. Note that pause
-    // is designed to be used on M/W/F until 12am the next day.
+    // is designed to be used on M/W/F and works only until 12am the next day.
     if ($pause) {
       $date = $this->getPreviousReportingDate($dow);
     }
