@@ -124,7 +124,7 @@ class DataController extends ControllerBase {
     switch ($dow) {
       case 'Sunday':
       case 'Monday':
-        $previous = 'last Friday';
+        $previous = 'previous Friday';
         break;
 
       case 'Tuesday':
@@ -135,7 +135,7 @@ class DataController extends ControllerBase {
 
       case 'Wednesday':
       case 'Friday':
-        $previous = 'two days ago';
+        $previous = '-2 days';
         break;
     }
 
