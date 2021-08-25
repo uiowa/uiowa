@@ -2,6 +2,7 @@
 
 namespace Drupal\uiowa_covid\Controller;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Datetime\DateHelper;
@@ -99,6 +100,14 @@ class DataController extends ControllerBase {
       ]);
 
       $data = ['date' => $date] + json_decode($response->getBody()->getContents(), TRUE);
+
+      foreach ($data as $key => $value) {
+        if (is_numeric($value)) {
+          $value = number_format($value);
+        }
+
+        $data[$key] = Html::escape($value);
+      }
     }
     catch (RequestException | GuzzleException | ClientException $e) {
       watchdog_exception('uiowa_covid', $e);
