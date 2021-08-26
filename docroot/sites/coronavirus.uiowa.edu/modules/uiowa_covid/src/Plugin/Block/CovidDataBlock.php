@@ -80,92 +80,100 @@ class CovidDataBlock extends BlockBase {
         ],
       ],
       'content' => [
-        'disclaimer' => [
+        'disclaimer_wrapper' => [
           '#type' => 'container',
           '#attributes' => [
             'id' => 'uiowa-covid-disclaimer',
           ],
-          'content' => [
+          'disclaimer' => [
             '#markup' => $this->t('<em>The table below reflects data collected as of <span id="uiowa-covid-reportDate"><i role="presentation" class="fas fa-spinner fa-spin"></i></span>.</em>'),
             '#prefix' => '<p>',
             '#suffix' => '</p>',
           ],
         ],
-        'reported_heading' => [
-          '#markup' => $this->t('Self-reported COVID-19 positive test results'),
-          '#prefix' => '<h3 class="h5">',
-          '#suffix' => '</h3>',
-        ],
-        'students_heading' => [
-          '#markup' => $this->t('Students'),
-          '#prefix' => '<h4 class="h6">',
-          '#suffix' => '</h4>',
-        ],
-        'students' => [
-          '#type' => 'table',
-          '#header' => [
-            $this->t('New Cases'),
-            $this->t('Since @since', [
-              '@since' => date('M. j', $since)
-            ]),
-            $this->t('Total Cases (<span class="uiowa-covid-totalDate">-</span>)'),
-          ],
-          '#rows' => [
-            [
-              $this->t('<span id="uiowa-covid-studentNew">-</span>'),
-              $this->t('<span id="uiowa-covid-studentSince">-</span>'),
-              $this->t('<span id="uiowa-covid-studentTotal">-</span>'),
-            ],
-          ],
+        'report_wrapper' => [
+          '#type' => 'container',
           '#attributes' => [
-            'class' => [
-              'table--is-striped',
-              'table',
+            'id' => 'uiowa-covid-report',
+          ],
+          'report' => [
+            'reported_heading' => [
+              '#markup' => $this->t('Self-reported COVID-19 positive test results'),
+              '#prefix' => '<h3 class="h5">',
+              '#suffix' => '</h3>',
+            ],
+            'students_heading' => [
+              '#markup' => $this->t('Students'),
+              '#prefix' => '<h4 class="h6">',
+              '#suffix' => '</h4>',
+            ],
+            'students' => [
+              '#type' => 'table',
+              '#header' => [
+                $this->t('New Cases'),
+                $this->t('Since @since', [
+                  '@since' => date('M. j', $since)
+                ]),
+                $this->t('Total Cases (<span class="uiowa-covid-totalDate">-</span>)'),
+              ],
+              '#rows' => [
+                [
+                  $this->t('<span id="uiowa-covid-studentNew">-</span>'),
+                  $this->t('<span id="uiowa-covid-studentSince">-</span>'),
+                  $this->t('<span id="uiowa-covid-studentTotal">-</span>'),
+                ],
+              ],
+              '#attributes' => [
+                'class' => [
+                  'table--is-striped',
+                  'table',
+                ],
+              ],
+            ],
+            'employees_heading' => [
+              '#markup' => $this->t('Employees'),
+              '#prefix' => '<h4 class="h6">',
+              '#suffix' => '</h4>',
+            ],
+            'employees' => [
+              '#type' => 'table',
+              '#header' => [
+                $this->t('New Cases'),
+                $this->t('Since @since', [
+                  '@since' => date('M. j', $since),
+                ]),
+                $this->t('Total Cases (<span class="uiowa-covid-totalDate">-</span>)'),
+              ],
+              '#rows' => [
+                [
+                  $this->t('<span id="uiowa-covid-employeeNew">-</span>'),
+                  $this->t('<span id="uiowa-covid-employeeSince">-</span>'),
+                  $this->t('<span id="uiowa-covid-employeeTotal">-</span>'),
+                ],
+              ],
+              '#attributes' => [
+                'class' => [
+                  'is-striped',
+                  'table',
+                ],
+              ],
+            ],
+            'rh_heading' => [
+              '#markup' => $this->t('Resident Hall students in quarantine and self-isolation'),
+              '#prefix' => '<h3 class="h5">',
+              '#suffix' => '</h3>',
+            ],
+            'rh_quarantine' => [
+              '#markup' => $this->t('Number of residence hall students in quarantine: <span id="uiowa-covid-rhStudentQuarantine">-</span>*'),
+              '#prefix' => '<p>',
+              '#suffix' => '</p>',
+            ],
+            'rh_isolation' => [
+              '#markup' => $this->t('Number of residence hall students in isolation: <span id="uiowa-covid-rhStudentIsolation">-</span>**'),
+              '#prefix' => '<p>',
+              '#suffix' => '</p>',
             ],
           ],
-        ],
-        'employees_heading' => [
-          '#markup' => $this->t('Employees'),
-          '#prefix' => '<h4 class="h6">',
-          '#suffix' => '</h4>',
-        ],
-        'employees' => [
-          '#type' => 'table',
-          '#header' => [
-            $this->t('New Cases'),
-            $this->t('Since @since', [
-              '@since' => date('M. j', $since),
-            ]),
-            $this->t('Total Cases (<span class="uiowa-covid-totalDate">-</span>)'),
-          ],
-          '#rows' => [
-            [
-              $this->t('<span id="uiowa-covid-employeeNew">-</span>'),
-              $this->t('<span id="uiowa-covid-employeeSince">-</span>'),
-              $this->t('<span id="uiowa-covid-employeeTotal">-</span>'),
-            ],
-          ],
-          '#attributes' => [
-            'class' => [
-              'is-striped',
-              'table',
-            ],
-          ],
-        ],
-        'rh_heading' => [
-          '#markup' => $this->t('Resident Hall students in quarantine and self-isolation'),
-          '#prefix' => '<h3 class="h5">',
-          '#suffix' => '</h3>',
-        ],
-        'rh_quarantine' => [
-          '#markup' => $this->t('Number of residence hall students in quarantine: <span id="uiowa-covid-rhStudentQuarantine">-</span>*'),
-          '#prefix' => '<p>',
-          '#suffix' => '</p>',
-        ],
-        'rh_isolation' => [
-          '#markup' => $this->t('Number of residence hall students in isolation: <span id="uiowa-covid-rhStudentIsolation">-</span>**'),
-          '#prefix' => '<p>',
-          '#suffix' => '</p>',
         ],
       ],
     ];
