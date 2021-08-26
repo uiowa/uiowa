@@ -3131,3 +3131,9 @@ $sites['labaudiogenomics.local.drupal.uiowa.edu'] = 'audiogenomics.lab.uiowa.edu
 $sites['labaudiogenomics.dev.drupal.uiowa.edu'] = 'audiogenomics.lab.uiowa.edu';
 $sites['labaudiogenomics.stage.drupal.uiowa.edu'] = 'audiogenomics.lab.uiowa.edu';
 $sites['labaudiogenomics.prod.drupal.uiowa.edu'] = 'audiogenomics.lab.uiowa.edu';
+
+// Directory aliases for cld.lab.uiowa.edu.
+$sites['labcld.local.drupal.uiowa.edu'] = 'cld.lab.uiowa.edu';
+$sites['labcld.dev.drupal.uiowa.edu'] = 'cld.lab.uiowa.edu';
+$sites['labcld.stage.drupal.uiowa.edu'] = 'cld.lab.uiowa.edu';
+$sites['labcld.prod.drupal.uiowa.edu'] = 'cld.lab.uiowa.edu';
