@@ -3113,3 +3113,9 @@ $sites['labarsc.local.drupal.uiowa.edu'] = 'arsc.lab.uiowa.edu';
 $sites['labarsc.dev.drupal.uiowa.edu'] = 'arsc.lab.uiowa.edu';
 $sites['labarsc.stage.drupal.uiowa.edu'] = 'arsc.lab.uiowa.edu';
 $sites['labarsc.prod.drupal.uiowa.edu'] = 'arsc.lab.uiowa.edu';
+
+// Directory aliases for firstgen.uiowa.edu.
+$sites['firstgen.local.drupal.uiowa.edu'] = 'firstgen.uiowa.edu';
+$sites['firstgen.dev.drupal.uiowa.edu'] = 'firstgen.uiowa.edu';
+$sites['firstgen.stage.drupal.uiowa.edu'] = 'firstgen.uiowa.edu';
+$sites['firstgen.prod.drupal.uiowa.edu'] = 'firstgen.uiowa.edu';
