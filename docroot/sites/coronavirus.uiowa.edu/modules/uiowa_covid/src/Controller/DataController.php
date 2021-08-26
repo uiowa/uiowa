@@ -106,6 +106,10 @@ class DataController extends ControllerBase {
           $value = number_format($value);
         }
 
+        if (stristr($key, 'date')) {
+          $value = date('M. j, Y', strtotime($value));
+        }
+
         $data[$key] = Html::escape($value);
       }
     }
