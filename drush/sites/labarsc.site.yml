@@ -1,0 +1,32 @@
+local:
+  root: /var/www/uiowa/docroot
+  uri: labarsc.local.drupal.uiowa.edu
+  paths:
+    files: sites/arsc.lab.uiowa.edu/files
+dev:
+  uri: labarsc.dev.drupal.uiowa.edu
+  host: uiowa02dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/arsc.lab.uiowa.edu/files
+  root: /var/www/html/uiowa02.dev/docroot
+  user: uiowa02.dev
+prod:
+  uri: arsc.lab.uiowa.edu
+  host: uiowa02.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/arsc.lab.uiowa.edu/files
+  root: /var/www/html/uiowa02.prod/docroot
+  user: uiowa02.prod
+test:
+  uri: labarsc.stage.drupal.uiowa.edu
+  host: uiowa02stg.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/arsc.lab.uiowa.edu/files
+  root: /var/www/html/uiowa02.test/docroot
+  user: uiowa02.test
