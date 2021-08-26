@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labfskiff.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labfskiff
+  human_name: fskiff.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labfskiff.prod
+drupal:
+  db:
+    database: fskiff_lab_uiowa_edu
+uiowa:
+  requester: fskiff
