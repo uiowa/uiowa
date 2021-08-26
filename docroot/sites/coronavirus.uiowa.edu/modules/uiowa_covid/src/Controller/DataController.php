@@ -99,7 +99,7 @@ class DataController extends ControllerBase {
         ],
       ]);
 
-      $data = ['date' => $date] + json_decode($response->getBody()->getContents(), TRUE);
+      $data = json_decode($response->getBody()->getContents(), TRUE);
 
       foreach ($data as $key => $value) {
         if (is_numeric($value)) {
