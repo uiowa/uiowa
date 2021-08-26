@@ -102,7 +102,7 @@ class CovidDataBlock extends BlockBase {
             $this->t('Since @since', [
               '@since' => date('M. j', $since)
             ]),
-            $this->t('Total Cases (Since Aug. 18, 2020)'),
+            $this->t('Total Cases (<span class="uiowa-covid-totalDate">-</span>)'),
           ],
           '#rows' => [
             [
