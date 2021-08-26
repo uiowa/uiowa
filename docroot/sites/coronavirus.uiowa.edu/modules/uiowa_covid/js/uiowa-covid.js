@@ -3,15 +3,13 @@
  * UIowa COVID behaviors.
  */
 
-(function ($, Drupal) {
+(($, Drupal, drupalSettings) => {
 
   'use strict';
 
-  /**
-   * Query our shim API for data and update placeholders.
-   */
+  // Query our shim API for data and update placeholders.
   Drupal.behaviors.uiowaCovid = {
-    attach: function (context, settings) {
+    attach: (context, settings) => {
       $('.block-uiowa-covid').once('uiowaCovid').each(() => {
         fetch(settings.uiowaCovid.endpoint)
           .then(response => response.json())
@@ -52,4 +50,4 @@
     }
   };
 
-} (jQuery, Drupal));
+})(jQuery, Drupal, drupalSettings);
