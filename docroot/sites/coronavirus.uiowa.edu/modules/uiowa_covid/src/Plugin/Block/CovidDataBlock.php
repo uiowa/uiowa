@@ -81,7 +81,7 @@ class CovidDataBlock extends BlockBase {
       ],
       'content' => [
         'disclaimer' => [
-          '#markup' => $this->t('<p><em>The table below reflects data collected as of <span id="uiowa-covid-date">-</span>.</em></p>'),
+          '#markup' => $this->t('<p><em>The table below reflects data collected as of <span id="uiowa-covid-reportDate">-</span>.</em></p>'),
           '#prefix' => '<div id="uiowa-covid-disclaimer">',
           '#suffix' => '</div>',
         ],
