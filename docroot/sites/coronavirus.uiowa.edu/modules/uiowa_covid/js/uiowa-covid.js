@@ -4,16 +4,14 @@
  */
 
 (($, Drupal, drupalSettings) => {
-
-  'use strict';
-
   // Query our shim API for data and update placeholders.
   Drupal.behaviors.uiowaCovid = {
     attach: (context, settings) => {
       $('.block-uiowa-covid').once('uiowaCovid').each(() => {
-        fetch(settings.uiowaCovid.endpoint)
-          .then(response => response.json())
-          .then(data => {
+        $.ajax({
+          url: settings.uiowaCovid.endpoint,
+          dataType: "json",
+          success: (data) => {
             for (const datum in data) {
               // Check for a matching ID first and then classes second.
               // @see: Drupal\uiowa_covid\Plugin\Block\CovidDataBlock::build().
@@ -32,8 +30,8 @@
                 }
               }
             }
-          })
-          .catch((error) => {
+          },
+          error: (request, status, error) => {
             let disclaimer = document.getElementById('uiowa-covid-disclaimer');
 
             if (disclaimer) {
@@ -45,7 +43,8 @@
             if (report) {
               report.style.display = 'none';
             }
-          });
+          }
+        });
       });
     }
   };
