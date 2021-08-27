@@ -32,7 +32,7 @@ class CovidDataBlock extends BlockBase {
     $form['since_date'] = [
       '#type' => 'date',
       '#title' => $this->t('Since Date'),
-      '#description' => $this->t('Enter the start of the semester date to use for the sinceDate.'),
+      '#description' => $this->t('Cases since this date. Typically, the start of the semester.'),
       '#default_value' => $this->configuration['since_date'] ?? NULL,
       '#required' => TRUE,
     ];
@@ -40,7 +40,7 @@ class CovidDataBlock extends BlockBase {
     $form['pause'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Pause'),
-      '#description' => $this->t('Checking this will pause the M/W/F update and show data from the previous reporting date <strong>until</strong> 12am the next day.'),
+      '#description' => $this->t('Checking this before 10am on M/W/F will pause that update and show data from the previous reporting date <strong>until</strong> 12am the next day. Remember to uncheck.'),
       '#default_value' => $this->configuration['pause'] ?? FALSE,
     ];
 
