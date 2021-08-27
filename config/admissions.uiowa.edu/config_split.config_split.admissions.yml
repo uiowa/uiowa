@@ -25,6 +25,9 @@ blacklist:
   - core.entity_form_display.block_content.area_of_study_search.default
   - core.entity_view_display.block_content.area_of_study_search.default
   - core.entity_view_mode.node.pdf
+  - metatag.metatag_defaults.node__area_of_study
+  - metatag.metatag_defaults.node__event
+  - metatag.metatag_defaults.node__event_series
   - metatag.metatag_defaults.node__student_profile
   - metatag.metatag_defaults.node__transfer_tips
   - node.type.area_of_study
@@ -42,6 +45,7 @@ blacklist:
 graylist:
   - block_content.type.uiowa_timeline
   - config_split.config_split.admissions
+  - core.entity_form_display.node.event_series.default
   - core.entity_form_display.node.student_profile.default
   - core.entity_form_display.node.transfer_tips.default
   - core.entity_form_display.paragraph.admissions_card.default
@@ -57,6 +61,9 @@ graylist:
   - core.entity_view_display.paragraph.admissions_requirement.default
   - core.entity_view_mode.media.grid_gallery
   - core.entity_view_mode.node.pdf
+  - field.field.node.event_series.body
+  - field.field.node.event_series.field_event_series_summary
+  - field.field.node.event_series.field_image
   - field.field.node.person.field_person_hometown
   - field.field.node.person.field_person_territory
   - field.field.node.scholarship.field_scholarship_resident
@@ -90,6 +97,8 @@ graylist:
   - field.field.taxonomy_term.academic_groups.field_academic_groups_media
   - field.field.taxonomy_term.academic_groups.field_image
   - field.storage.node.body
+  - field.storage.node.field_event_series_button_link
+  - field.storage.node.field_event_series_summary
   - field.storage.node.field_image
   - field.storage.node.field_meta_tags
   - field.storage.node.field_person_first_name
@@ -123,6 +132,8 @@ graylist:
   - image.style.grid_gallery
   - metatag.metatag_defaults.node__area_of_study
   - metatag.settings
+  - node.type.area_of_study
+  - node.type.event_series
   - node.type.student_profile
   - node.type.transfer_tips
   - paragraphs.paragraphs_type.admissions_card

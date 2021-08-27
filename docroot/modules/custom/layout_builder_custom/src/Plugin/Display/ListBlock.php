@@ -621,7 +621,8 @@ class ListBlock extends CoreBlock {
    * {@inheritdoc}
    */
   public function displaysExposed(): bool {
-    // Hotfix shim to not display exposed blocks, necessary because of the hotfix above.
+    // Hotfix shim to not display exposed blocks, necessary because of
+    // the hotfix above.
     // @todo Remove this exception when these view displays are removed.
     $display = $this->view->getDisplay();
     $exceptions = [

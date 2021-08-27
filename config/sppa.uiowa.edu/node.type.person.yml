@@ -1,0 +1,25 @@
+uuid: b8162bfb-ace7-4c6c-83f9-e0efd4ceac28
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+    - node_revision_delete
+    - private_content
+third_party_settings:
+  menu_ui:
+    available_menus: {  }
+    parent: ''
+  node_revision_delete:
+    minimum_revisions_to_keep: 10
+    minimum_age_to_delete: 0
+    when_to_delete: 0
+  private_content:
+    private: 0
+name: Person
+type: person
+description: 'Use <em>person</em> to create individual profiles of people. This is <strong>not</strong> used to give users access to your site.'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: false
