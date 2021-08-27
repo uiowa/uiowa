@@ -1,52 +1,41 @@
 /**
  * @file
  * UIowa COVID behaviors.
+ *
+ * Using jQuery here since it was deemed necessary for this to work in IE11.
  */
 
-(($, Drupal, drupalSettings) => {
+(function ($, Drupal, drupalSettings) {
   // Query our shim API for data and update placeholders.
   Drupal.behaviors.uiowaCovid = {
-    attach: (context, settings) => {
-      $('.block-uiowa-covid').once('uiowaCovid').each(() => {
+    attach: function (context, settings) {
+      $('.block-uiowa-covid').once('uiowaCovid').each(function () {
         $.ajax({
           url: settings.uiowaCovid.endpoint,
           dataType: "json",
-          success: (data) => {
-            for (const datum in data) {
+          success: function (data) {
+            $.each(data, function (key, value) {
               // Check for a matching ID first and then classes second.
               // @see: Drupal\uiowa_covid\Plugin\Block\CovidDataBlock::build().
-              let element = document.getElementById(`uiowa-covid-${datum}`);
+              let element = $('#uiowa-covid-' + key);
 
-              if (element) {
-                element.innerText = data[datum];
+              if (element.length) {
+                $(element).text(value);
               }
               else {
-                let elements = document.getElementsByClassName(`uiowa-covid-${datum}`);
-
-                if (elements) {
-                  for (const element of elements) {
-                    element.innerText = data[datum];
-                  }
-                }
+                $('.uiowa-covid-' + key).each(function() {
+                  $(this).text(value);
+                });
               }
-            }
+            });
           },
-          error: (request, status, error) => {
-            let disclaimer = document.getElementById('uiowa-covid-disclaimer');
-
-            if (disclaimer) {
-              disclaimer.innerText = '<p>Unable to retrieve COVID data at this time. Please try again later.</p>';
-            }
-
-            let report = document.getElementById('uiowa-covid-report');
-
-            if (report) {
-              report.style.display = 'none';
-            }
+          error: function (request, status, error) {
+            $('#uiowa-covid-disclaimer').text('<p>Unable to retrieve COVID data at this time. Please try again later.</p>');
+            $('#uiowa-covid-report').hide();
           }
         });
       });
     }
   };
 
-})(jQuery, Drupal, drupalSettings);
+}(jQuery, Drupal, drupalSettings));
