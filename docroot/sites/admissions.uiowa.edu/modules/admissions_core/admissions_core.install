@@ -352,3 +352,13 @@ function admissions_core_update_9003() {
     '@entity_type_ids' => implode(', ', $entity_type_ids),
   ]);
 }
+
+/**
+ * Disable the areas_of_study config split.
+ */
+function admissions_core_update_9005() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('config_split.config_split.areas_of_study');
+  $config->set('status', FALSE);
+  $config->save(TRUE);
+}
