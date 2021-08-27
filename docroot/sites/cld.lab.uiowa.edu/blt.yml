@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labcld.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labcld
+  human_name: cld.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labcld.prod
+drupal:
+  db:
+    database: cld_lab_uiowa_edu
+uiowa:
+  requester: amontelius
