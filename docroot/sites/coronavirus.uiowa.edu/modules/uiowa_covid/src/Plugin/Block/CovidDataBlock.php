@@ -32,7 +32,7 @@ class CovidDataBlock extends BlockBase {
     $form['since_date'] = [
       '#type' => 'date',
       '#title' => $this->t('Since Date'),
-      '#description' => $this->t('Cases since this date. Typically, the start of the semester.'),
+      '#description' => $this->t('Used to display cases since this date. Typically, the start of the semester.'),
       '#default_value' => $this->configuration['since_date'] ?? NULL,
       '#required' => TRUE,
     ];
