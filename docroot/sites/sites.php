@@ -3161,3 +3161,9 @@ $sites['studentspace.local.drupal.uiowa.edu'] = 'studentspace.uiowa.edu';
 $sites['studentspace.dev.drupal.uiowa.edu'] = 'studentspace.uiowa.edu';
 $sites['studentspace.stage.drupal.uiowa.edu'] = 'studentspace.uiowa.edu';
 $sites['studentspace.prod.drupal.uiowa.edu'] = 'studentspace.uiowa.edu';
+
+// Directory aliases for mentalhealth.uiowa.edu.
+$sites['mentalhealth.local.drupal.uiowa.edu'] = 'mentalhealth.uiowa.edu';
+$sites['mentalhealth.dev.drupal.uiowa.edu'] = 'mentalhealth.uiowa.edu';
+$sites['mentalhealth.stage.drupal.uiowa.edu'] = 'mentalhealth.uiowa.edu';
+$sites['mentalhealth.prod.drupal.uiowa.edu'] = 'mentalhealth.uiowa.edu';
