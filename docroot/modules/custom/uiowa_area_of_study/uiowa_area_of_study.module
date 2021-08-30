@@ -12,6 +12,13 @@
 use Drupal\Core\Form\FormStateInterface;
 
 /**
+ * Implements hook_preprocess_HOOK() for html.html.twig.
+ */
+function uiowa_area_of_study_preprocess_html(&$variables) {
+  $variables['#attached']['library'][] = 'uiowa_area_of_study/global';
+}
+
+/**
  * Implements hook_form_alter().
  */
 function uiowa_area_of_study_form_alter(&$form, FormStateInterface $form_state, $form_id) {
