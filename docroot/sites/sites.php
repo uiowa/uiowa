@@ -3143,3 +3143,9 @@ $sites['sitesqueerhorrorfestival2021.local.drupal.uiowa.edu'] = 'queerhorrorfest
 $sites['sitesqueerhorrorfestival2021.dev.drupal.uiowa.edu'] = 'queerhorrorfestival2021.sites.uiowa.edu';
 $sites['sitesqueerhorrorfestival2021.stage.drupal.uiowa.edu'] = 'queerhorrorfestival2021.sites.uiowa.edu';
 $sites['sitesqueerhorrorfestival2021.prod.drupal.uiowa.edu'] = 'queerhorrorfestival2021.sites.uiowa.edu';
+
+// Directory aliases for recserv.uiowa.edu.
+$sites['recserv.local.drupal.uiowa.edu'] = 'recserv.uiowa.edu';
+$sites['recserv.dev.drupal.uiowa.edu'] = 'recserv.uiowa.edu';
+$sites['recserv.stage.drupal.uiowa.edu'] = 'recserv.uiowa.edu';
+$sites['recserv.prod.drupal.uiowa.edu'] = 'recserv.uiowa.edu';
