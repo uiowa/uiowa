@@ -7,8 +7,6 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\FileInterface;
-use Drupal\file_mdm\FileMetadata;
-use Drupal\file_mdm\FileMetadataManager;
 
 /**
  * Implements hook_field_widget_WIDGET_TYPE_form_alter().
@@ -101,7 +99,7 @@ function sitenow_media_wysiwyg_file_presave(FileInterface $file) {
   // FMDM only parses jpeg correctly for EXIF, not TIFF. Luckily,
   // should see very few TIFF orientation issues.
   if ($file->isNew() && $file->getMimeType() == 'image/jpeg') {
-    /** @var FileMetadataManager $fmdm */
+    /** @var \Drupal\file_mdm\FileMetadataManager $fmdm */
     $fmdm = \Drupal::service('file_metadata_manager');
 
     if ($metadata = $fmdm->uri($file->getFileUri())) {
