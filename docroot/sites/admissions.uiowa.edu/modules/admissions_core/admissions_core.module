@@ -90,6 +90,14 @@ function admissions_core_form_alter(&$form, FormStateInterface $form_state, $for
 
     case 'node_area_of_study_form':
     case 'node_area_of_study_edit_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      if (isset($form['field_area_of_study_link_direct'])) {
+        $form['field_area_of_study_link_direct']['#states'] = [
+          'visible' => [
+            ':input[name="field_area_of_study_source_link[0][uri]"]' => ['filled' => TRUE],
+          ],
+        ];
+      }
       $form['field_area_of_study_majors']['#states'] = [
         'visible' => [
           'input[name="field_area_of_study_program_type[major]"]' => ['checked' => TRUE],
@@ -709,6 +717,45 @@ function admissions_core_state_options(FieldStorageConfig $definition, ContentEn
   ];
   return $options;
 }
+
+/**
+ * Implements hook_allowed_values_function().
+ */
+function admissions_core_allowed_values_function(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  // Available degree abbreviations.
+  // Can be moved to store in a config file later.
+  $options = [
+    'AuD' => 'AuD',
+    'BA' => 'BA',
+    'BAS' => 'BAS',
+    'BBA' => 'BBA',
+    'BFA' => 'BFA',
+    'BM' => 'BM',
+    'BS' => 'BS',
+    'BSE' => 'BSE',
+    'BSN' => 'BSN',
+    'DDS' => 'DDS',
+    'DNP' => 'DNP',
+    'EdD' => 'EdD',
+    'JD' => 'JD',
+    'LLM' => 'LLM',
+    'MA' => 'MA',
+    'MAc' => 'MAc',
+    'MAT' => 'MAT',
+    'MCA' => 'MCA',
+    'MCS' => 'MCS',
+    'MFA' => 'MFA',
+    'MHA' => 'MHA',
+    'MPH' => 'MPH',
+    'MS' => 'MS',
+    'MSL' => 'MSL',
+    'PhD' => 'PhD',
+    'PHR' => 'PHR',
+    'SJD' => 'SJD',
+  ];
+  return $options;
+}
+
 
 /**
  * Added allowed values function for AoS Subprogram type.
