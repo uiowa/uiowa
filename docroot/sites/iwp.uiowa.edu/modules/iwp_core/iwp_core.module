@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Admissions Core module.
+ */
+
+use Drupal\Core\Cache\Caches;
+
+/**
+ * Implements hook_theme().
+ */
+function iwp_core_theme($existing, $type, $theme, $path) {
+  return [
+    'block__language_block' => [
+      'template' => 'block--language-block',
+      'base hook' => 'block',
+    ],
+  ];
+}
