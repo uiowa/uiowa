@@ -4,8 +4,11 @@ namespace Drupal\uiowa_covid\Plugin\Block;
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Url;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Custom COVID data block.
@@ -16,7 +19,33 @@ use Drupal\Core\Url;
  *   category = @Translation("UIowa COVID")
  * )
  */
-class CovidDataBlock extends BlockBase {
+class CovidDataBlock extends BlockBase implements ContainerFactoryPluginInterface {
+  /**
+   * Config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $configFactory) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->configFactory = $configFactory;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('config.factory')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -45,6 +74,17 @@ class CovidDataBlock extends BlockBase {
     ];
 
     return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function blockValidate($form, FormStateInterface $form_state) {
+    foreach (['endpoint', 'user', 'key'] as $required) {
+      if (!$this->configFactory->get('uiowa.covid')->get($required)) {
+        $form_state->setErrorByName('covid_data', $this->t('The required credentials for accessing the CIMT database have not been set in configuration.'));
+      }
+    }
   }
 
   /**
