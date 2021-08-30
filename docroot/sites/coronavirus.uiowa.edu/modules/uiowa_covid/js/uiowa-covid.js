@@ -14,7 +14,7 @@
           url: settings.uiowaCovid.endpoint,
           dataType: "json",
           success: function (data) {
-            if (data.length) {
+            if (!$.isEmptyObject(data)) {
               $.each(data, function (key, value) {
                 // Check for a matching ID first and then classes second.
                 // @see: Drupal\uiowa_covid\Plugin\Block\CovidDataBlock::build().
