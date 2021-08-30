@@ -3149,3 +3149,9 @@ $sites['recserv.local.drupal.uiowa.edu'] = 'recserv.uiowa.edu';
 $sites['recserv.dev.drupal.uiowa.edu'] = 'recserv.uiowa.edu';
 $sites['recserv.stage.drupal.uiowa.edu'] = 'recserv.uiowa.edu';
 $sites['recserv.prod.drupal.uiowa.edu'] = 'recserv.uiowa.edu';
+
+// Directory aliases for advancedcognitiveengineering.lab.uiowa.edu.
+$sites['labadvancedcognitiveengineering.local.drupal.uiowa.edu'] = 'advancedcognitiveengineering.lab.uiowa.edu';
+$sites['labadvancedcognitiveengineering.dev.drupal.uiowa.edu'] = 'advancedcognitiveengineering.lab.uiowa.edu';
+$sites['labadvancedcognitiveengineering.stage.drupal.uiowa.edu'] = 'advancedcognitiveengineering.lab.uiowa.edu';
+$sites['labadvancedcognitiveengineering.prod.drupal.uiowa.edu'] = 'advancedcognitiveengineering.lab.uiowa.edu';
