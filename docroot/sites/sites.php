@@ -3155,3 +3155,9 @@ $sites['labadvancedcognitiveengineering.local.drupal.uiowa.edu'] = 'advancedcogn
 $sites['labadvancedcognitiveengineering.dev.drupal.uiowa.edu'] = 'advancedcognitiveengineering.lab.uiowa.edu';
 $sites['labadvancedcognitiveengineering.stage.drupal.uiowa.edu'] = 'advancedcognitiveengineering.lab.uiowa.edu';
 $sites['labadvancedcognitiveengineering.prod.drupal.uiowa.edu'] = 'advancedcognitiveengineering.lab.uiowa.edu';
+
+// Directory aliases for studentspace.uiowa.edu.
+$sites['studentspace.local.drupal.uiowa.edu'] = 'studentspace.uiowa.edu';
+$sites['studentspace.dev.drupal.uiowa.edu'] = 'studentspace.uiowa.edu';
+$sites['studentspace.stage.drupal.uiowa.edu'] = 'studentspace.uiowa.edu';
+$sites['studentspace.prod.drupal.uiowa.edu'] = 'studentspace.uiowa.edu';
