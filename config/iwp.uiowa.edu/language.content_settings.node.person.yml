@@ -1,0 +1,18 @@
+uuid: 455de5fb-fda3-47b7-a4ac-9ba7de47b20d
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.person
+  module:
+    - content_translation
+third_party_settings:
+  content_translation:
+    enabled: true
+    bundle_settings:
+      untranslatable_fields_hide: '1'
+id: node.person
+target_entity_type_id: node
+target_bundle: person
+default_langcode: site_default
+language_alterable: true

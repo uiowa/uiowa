@@ -1,0 +1,30 @@
+uuid: ecbeb65d-1498-4c4f-91a9-be47fb79012b
+langcode: en
+status: false
+dependencies:
+  module:
+    - ctools
+    - language
+  theme:
+    - uids_base
+id: languageswitcherinterfacetext
+theme: uids_base
+region: primary_menu
+weight: -5
+provider: null
+plugin: 'language_block:language_interface'
+settings:
+  id: 'language_block:language_interface'
+  label: 'Language (Interface)'
+  provider: language
+  label_display: visible
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    bundles:
+      article: article
+      page: page
+      person: person
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'

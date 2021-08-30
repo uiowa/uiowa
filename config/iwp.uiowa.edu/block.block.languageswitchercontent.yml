@@ -1,0 +1,30 @@
+uuid: b58c394e-c2e4-49e7-8047-08d89a2ffe92
+langcode: en
+status: true
+dependencies:
+  module:
+    - ctools
+    - language
+  theme:
+    - uids_base
+id: languageswitchercontent
+theme: uids_base
+region: primary_menu
+weight: -10
+provider: null
+plugin: 'language_block:language_content'
+settings:
+  id: 'language_block:language_content'
+  label: Language
+  provider: language
+  label_display: visible
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    bundles:
+      article: article
+      page: page
+      person: person
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
