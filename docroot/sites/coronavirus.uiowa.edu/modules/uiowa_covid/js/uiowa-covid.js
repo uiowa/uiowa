@@ -14,27 +14,34 @@
           url: settings.uiowaCovid.endpoint,
           dataType: "json",
           success: function (data) {
-            $.each(data, function (key, value) {
-              // Check for a matching ID first and then classes second.
-              // @see: Drupal\uiowa_covid\Plugin\Block\CovidDataBlock::build().
-              let element = $('#uiowa-covid-' + key);
+            if (data.length) {
+              $.each(data, function (key, value) {
+                // Check for a matching ID first and then classes second.
+                // @see: Drupal\uiowa_covid\Plugin\Block\CovidDataBlock::build().
+                let element = $('#uiowa-covid-' + key);
 
-              if (element.length) {
-                $(element).text(value);
-              }
-              else {
-                $('.uiowa-covid-' + key).each(function() {
-                  $(this).text(value);
-                });
-              }
-            });
+                if (element.length) {
+                  $(element).text(value);
+                }
+                else {
+                  $('.uiowa-covid-' + key).each(function() {
+                    $(this).text(value);
+                  });
+                }
+              });
+            }
+            else {
+              Drupal.behaviors.uiowaCovid.setErrorReport();
+            }
           },
           error: function (request, status, error) {
-            $('#uiowa-covid-disclaimer').text('<p>Unable to retrieve COVID data at this time. Please try again later.</p>');
-            $('#uiowa-covid-report').hide();
+            Drupal.behaviors.uiowaCovid.setErrorReport();
           }
         });
       });
+    },
+    setErrorReport: function () {
+      $('#uiowa-covid-disclaimer').html('<p><i class="fas fa-exclamation-circle"></i> Unable to retrieve COVID data at this time. Please try again later.</p>');
     }
   };
 
