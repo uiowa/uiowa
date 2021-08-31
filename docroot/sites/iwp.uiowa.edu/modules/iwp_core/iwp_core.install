@@ -1,4 +1,3 @@
-
 <?php
 
 /**
@@ -7,6 +6,9 @@
  * @see: https://www.drupal.org/project/drupal/issues/2982052
  */
 
+/**
+ * Make sure split is turned on.
+ */
 function iwp_core_update_8001() {
   $config_path = DRUPAL_ROOT . '/../config/iwp.uiowa.edu';
   $source = new FileStorage($config_path);

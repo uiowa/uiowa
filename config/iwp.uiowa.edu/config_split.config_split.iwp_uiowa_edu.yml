@@ -12,8 +12,11 @@ module:
   content_translation: 10
 theme: {  }
 blacklist:
+  - block.block.languageswitchercontent
   - config_split.config_split.iwp_uiowa_edu
-graylist: {  }
+graylist:
+  - 'language.entity.*'
+  - 'language.content_settings.*'
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 90
