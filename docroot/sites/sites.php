@@ -3149,3 +3149,21 @@ $sites['recserv.local.drupal.uiowa.edu'] = 'recserv.uiowa.edu';
 $sites['recserv.dev.drupal.uiowa.edu'] = 'recserv.uiowa.edu';
 $sites['recserv.stage.drupal.uiowa.edu'] = 'recserv.uiowa.edu';
 $sites['recserv.prod.drupal.uiowa.edu'] = 'recserv.uiowa.edu';
+
+// Directory aliases for advancedcognitiveengineering.lab.uiowa.edu.
+$sites['labadvancedcognitiveengineering.local.drupal.uiowa.edu'] = 'advancedcognitiveengineering.lab.uiowa.edu';
+$sites['labadvancedcognitiveengineering.dev.drupal.uiowa.edu'] = 'advancedcognitiveengineering.lab.uiowa.edu';
+$sites['labadvancedcognitiveengineering.stage.drupal.uiowa.edu'] = 'advancedcognitiveengineering.lab.uiowa.edu';
+$sites['labadvancedcognitiveengineering.prod.drupal.uiowa.edu'] = 'advancedcognitiveengineering.lab.uiowa.edu';
+
+// Directory aliases for studentspace.uiowa.edu.
+$sites['studentspace.local.drupal.uiowa.edu'] = 'studentspace.uiowa.edu';
+$sites['studentspace.dev.drupal.uiowa.edu'] = 'studentspace.uiowa.edu';
+$sites['studentspace.stage.drupal.uiowa.edu'] = 'studentspace.uiowa.edu';
+$sites['studentspace.prod.drupal.uiowa.edu'] = 'studentspace.uiowa.edu';
+
+// Directory aliases for mentalhealth.uiowa.edu.
+$sites['mentalhealth.local.drupal.uiowa.edu'] = 'mentalhealth.uiowa.edu';
+$sites['mentalhealth.dev.drupal.uiowa.edu'] = 'mentalhealth.uiowa.edu';
+$sites['mentalhealth.stage.drupal.uiowa.edu'] = 'mentalhealth.uiowa.edu';
+$sites['mentalhealth.prod.drupal.uiowa.edu'] = 'mentalhealth.uiowa.edu';
