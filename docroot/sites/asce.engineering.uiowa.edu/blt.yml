@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: engineeringasce.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: engineeringasce
+  human_name: asce.engineering.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: engineeringasce.prod
+drupal:
+  db:
+    database: asce_engineering_uiowa_edu
+uiowa:
+  requester: djw

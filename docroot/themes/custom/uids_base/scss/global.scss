@@ -151,6 +151,12 @@ $imgpath: '../../uids/assets/images';
   }
 }
 
+// For sidebars: remove padding from adjacent blocks if they are the same
+.block[class*="bg--gray"].block-padding__all + .block[class*="bg--gray"].block-padding__all {
+  margin-top: -1.5rem;
+  padding-top: 0;
+}
+
 // default spacing for pages without layout builder
 
 // Neither Paragraphs or Layout Builder.

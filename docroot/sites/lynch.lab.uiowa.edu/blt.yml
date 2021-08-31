@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: lablynch.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: lablynch
+  human_name: lynch.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lablynch.prod
+drupal:
+  db:
+    database: lynch_lab_uiowa_edu
+uiowa:
+  requester: saba

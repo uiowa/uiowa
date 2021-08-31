@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: mentalhealth.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: mentalhealth
+  human_name: mentalhealth.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: mentalhealth.prod
+drupal:
+  db:
+    database: mentalhealth_uiowa_edu
+uiowa:
+  requester: dquam

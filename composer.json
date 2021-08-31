@@ -81,7 +81,7 @@
     "config": {
         "sort-packages": true,
         "platform": {
-            "php": "7.3"
+            "php": "7.4"
         }
     },
     "require": {
@@ -172,6 +172,7 @@
         "drupal/override_node_options": "^2.4",
         "drupal/paragraphs": "^1.10",
         "drupal/pathauto": "^1.6",
+        "drupal/private_content": "^2.0@RC",
         "drupal/purge": "^3.0@beta",
         "drupal/rabbit_hole": "^1.0@beta",
         "drupal/redirect": "1.x-dev#e5201ca519bd947ee5478d9dee88af0c5d6fec89",
@@ -215,6 +216,7 @@
         "drupal/core-dev": "^9.0.0",
         "geerlingguy/drupal-vm": "~6.0",
         "mglaman/drupal-check": "^1.1.7",
+        "phpcompatibility/php-compatibility": "^9.3",
         "phpspec/prophecy-phpunit": "^2",
         "typhonius/acquia-php-sdk-v2": "^2.0.0"
     },
@@ -242,7 +244,8 @@
                 "Temporary Hotfix for YouTube oEmbeds": "https://www.drupal.org/files/issues/2020-12-04/3186415-8.9.x-youtube-headers-html.patch",
                 "Themes have no context of the entity being rendered in preprocessing a layout when using Layout builder": "https://www.drupal.org/files/issues/2020-02-11/3111192-entity-14.patch",
                 "Add Views EntityReference filter to be available for all entity reference fields": "https://www.drupal.org/files/issues/2021-06-15/2429699-414.patch",
-                "Views Block Display skips preBlockBuild() call on ajax rebuild": "https://www.drupal.org/files/issues/2021-03-05/2605218-61.patch"
+                "Views Block Display skips preBlockBuild() call on ajax rebuild": "https://www.drupal.org/files/issues/2021-03-05/2605218-61.patch",
+                "Periods in query strings are replaced by underscores": "https://www.drupal.org/files/issues/2020-06-25/fix-mangled-query-parameter-names-2984272-36.patch"
             },
             "drupal/default_content": {
                 "Add a Normalizer and Denormalizer to support Layout Builder": "https://www.drupal.org/files/issues/2020-08-24/default_content-add-normalizer-denormalizer-for-layout-builder-3160146-25.patch",
