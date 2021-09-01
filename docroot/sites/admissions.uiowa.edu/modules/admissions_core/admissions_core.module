@@ -51,6 +51,12 @@ function admissions_core_entity_presave(EntityInterface $entity) {
  */
 function admissions_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
+    case 'node_event_series_form':
+    case 'node_event_series_edit_form':
+      // Set form defaults if they exist.
+      _sitenow_node_form_defaults($form, $form_state);
+      break;
+
     case 'node_student_profile_form':
     case 'node_student_profile_edit_form':
       // Set form defaults if they exist.
@@ -154,8 +160,8 @@ function admissions_core_form_views_exposed_form_alter(&$form, FormStateInterfac
  * Implements hook_ENTITY_TYPE_delete().
  */
 function admissions_core_node_delete(Node $node) {
-  // Used on Admissions counselors map.
-  if ($node->getType() == 'person') {
+  // Used on Admissions counselors map and event series blocks.
+  if ($node->getType() == 'person' || $node->getType() == 'event') {
     $tags = ['node_type:' . $node->getType()];
     Cache::invalidateTags($tags);
   }
@@ -165,8 +171,8 @@ function admissions_core_node_delete(Node $node) {
  * Implements hook_ENTITY_TYPE_presave().
  */
 function admissions_core_node_presave(Node $node) {
-  // Used on Admissions counselors map.
-  if ($node->getType() == 'person') {
+  // Used on Admissions counselors map and event series blocks.
+  if ($node->getType() == 'person' || $node->getType() == 'event') {
     $tags = ['node_type:' . $node->getType()];
     Cache::invalidateTags($tags);
   }
@@ -308,6 +314,10 @@ function admissions_core_preprocess_block(&$variables) {
     case 'views_block:student_card-block_student_grid':
       $variables['#attached']['library'][] = 'admissions_core/student-profile';
       break;
+
+    case 'admissions_core_event_series_events':
+      $variables['title_attributes']['class'] = 'h4 headline headline--serif headline--underline';
+      break;
   }
 }
 
@@ -326,6 +336,7 @@ function admissions_core_preprocess_layout(&$variables) {
       if (in_array($node->getType(), [
         'area_of_study',
         'student_profile',
+        'event_series',
       ])) {
         if (!isset($variables['banner_attributes'])) {
           $variables['banner_settings'] = [];
@@ -345,6 +356,14 @@ function admissions_core_preprocess_layout(&$variables) {
             $variables['banner_settings']['transparent'] = TRUE;
             $variables['banner_settings']['horizontal_align'] = 'center';
             $variables['banner_settings']['vertical_align'] = 'center';
+          }
+          break;
+
+        case 'event_series':
+          if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+
+            // Set the featured image display.
+            $variables['featured_image_display'] = 'medium';
           }
           break;
 
@@ -425,6 +444,18 @@ function admissions_core_theme($existing, $type, $theme, $path) {
     ],
     'field__node__field_area_of_study_scholarship__area_of_study__default' => [
       'template' => 'field--node--field-area-of-study-scholarship--area-of-study--default',
+      'base hook' => 'field',
+    ],
+    'field__node__title__event_series__default' => [
+      'template' => 'field--node--title--event-series--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_event_series_button_link__event_series' => [
+      'template' => 'field--node--field-event-series-button-link--event-series--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_event_series_summary__event_series' => [
+      'template' => 'field--node--field-event-series-summary--event-series--default',
       'base hook' => 'field',
     ],
     'field__node__field_transfer_tips_aos__transfer_tips' => [
