@@ -1,0 +1,37 @@
+uuid: 2b897ba8-1cc1-4f7e-9fd9-d08a63d9d9d3
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.topic_landing_page.body
+    - field.field.node.topic_landing_page.field_image
+    - field.field.node.topic_landing_page.field_topic_landing_page_tags
+    - node.type.topic_landing_page
+  module:
+    - text
+    - user
+_core:
+  default_config_hash: a3kMkBHiH645RlOzRwHGLIu79_W9oSaxHmKCO-m5P3k
+id: node.topic_landing_page.teaser
+targetEntityType: node
+bundle: topic_landing_page
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_image: true
+  field_topic_landing_page_tags: true
+  search_api_excerpt: true

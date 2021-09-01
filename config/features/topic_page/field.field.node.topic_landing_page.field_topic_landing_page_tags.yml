@@ -1,0 +1,31 @@
+uuid: df4cb5c1-6bd2-4aaa-8464-ae0242207611
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_topic_landing_page_tags
+    - node.type.topic_landing_page
+    - taxonomy.vocabulary.tags
+_core:
+  default_config_hash: NmNu0hAx5tJ4U6dNPt3Ao5rn5272EBgeRxiaCjhM6zg
+id: node.topic_landing_page.field_topic_landing_page_tags
+field_name: field_topic_landing_page_tags
+entity_type: node
+bundle: topic_landing_page
+label: Tags
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      tags: tags
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference
