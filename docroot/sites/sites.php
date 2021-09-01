@@ -3173,3 +3173,9 @@ $sites['orgquench.local.drupal.uiowa.edu'] = 'quench.org.uiowa.edu';
 $sites['orgquench.dev.drupal.uiowa.edu'] = 'quench.org.uiowa.edu';
 $sites['orgquench.stage.drupal.uiowa.edu'] = 'quench.org.uiowa.edu';
 $sites['orgquench.prod.drupal.uiowa.edu'] = 'quench.org.uiowa.edu';
+
+// Directory aliases for attanasio.lab.uiowa.edu.
+$sites['labattanasio.local.drupal.uiowa.edu'] = 'attanasio.lab.uiowa.edu';
+$sites['labattanasio.dev.drupal.uiowa.edu'] = 'attanasio.lab.uiowa.edu';
+$sites['labattanasio.stage.drupal.uiowa.edu'] = 'attanasio.lab.uiowa.edu';
+$sites['labattanasio.prod.drupal.uiowa.edu'] = 'attanasio.lab.uiowa.edu';
