@@ -3167,3 +3167,9 @@ $sites['mentalhealth.local.drupal.uiowa.edu'] = 'mentalhealth.uiowa.edu';
 $sites['mentalhealth.dev.drupal.uiowa.edu'] = 'mentalhealth.uiowa.edu';
 $sites['mentalhealth.stage.drupal.uiowa.edu'] = 'mentalhealth.uiowa.edu';
 $sites['mentalhealth.prod.drupal.uiowa.edu'] = 'mentalhealth.uiowa.edu';
+
+// Directory aliases for quench.org.uiowa.edu.
+$sites['orgquench.local.drupal.uiowa.edu'] = 'quench.org.uiowa.edu';
+$sites['orgquench.dev.drupal.uiowa.edu'] = 'quench.org.uiowa.edu';
+$sites['orgquench.stage.drupal.uiowa.edu'] = 'quench.org.uiowa.edu';
+$sites['orgquench.prod.drupal.uiowa.edu'] = 'quench.org.uiowa.edu';
