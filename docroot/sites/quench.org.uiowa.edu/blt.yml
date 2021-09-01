@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: orgquench.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: orgquench
+  human_name: quench.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgquench.prod
+drupal:
+  db:
+    database: quench_org_uiowa_edu
+uiowa:
+  requester: rmorpano
