@@ -1,4 +1,4 @@
-uuid: 06000af0-7614-44db-a4a4-e31c26deafb1
+uuid: 2d4a37b5-6575-41a5-a6ac-09e07996554e
 langcode: en
 status: true
 dependencies:
@@ -7,11 +7,13 @@ dependencies:
     - field.field.node.topic_landing_page.field_image
     - field.field.node.topic_landing_page.field_topic_landing_page_tags
     - node.type.topic_landing_page
+    - views.view.topic_page_browse_by_tag
   module:
     - layout_builder
     - layout_builder_restrictions
     - text
     - user
+    - views
   theme:
     - uids_base
 third_party_settings:
@@ -23,36 +25,18 @@ third_party_settings:
         layout_id: layout_header
         layout_settings:
           label: ''
+          layout_builder_styles_style: {  }
         components:
           -
-            uuid: b444f835-62e1-4e31-b433-22fe88ef3372
-            region: background
+            uuid: d75c28a9-d252-47df-86e8-206190ec5052
+            region: content
             configuration:
-              id: 'field_block:node:topic_landing_page:field_image'
-              label: 'Featured Image'
+              id: 'field_block:node:topic_landing_page:title'
+              label: Title
               provider: layout_builder
               label_display: '0'
               formatter:
                 label: visually_hidden
-                type: entity_reference_entity_view
-                settings:
-                  view_mode: full__ultrawide
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: 0
-          -
-            uuid: 3754b33a-2d79-412a-b509-ba1e7113a72f
-            region: content
-            configuration:
-              id: 'field_block:node:topic_landing_page:title'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: hidden
                 type: string
                 settings:
                   link_to_entity: false
@@ -61,7 +45,48 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 0
+            weight: -9
+          -
+            uuid: abd7062b-38b4-428c-9833-bfa66edfb688
+            region: background
+            configuration:
+              id: 'field_block:node:topic_landing_page:field_image'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: entity_reference_entity_view
+                settings:
+                  view_mode: full__ultrawide
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 3
+          -
+            uuid: f8654b56-71c1-4dda-a83f-5a74c64dd0a7
+            region: content
+            configuration:
+              id: 'views_block:topic_page_browse_by_tag-block_1'
+              label: null
+              provider: views
+              label_display: null
+              views_label: ''
+              items_per_page: none
+              headline:
+                headline: 'Browse by tag'
+                hide_headline: 0
+                heading_size: h2
+                headline_style: default
+                child_heading_size: h3
+              pager: some
+              exposed_filter_values: null
+              layout_builder_styles: {  }
+              context_mapping: {  }
+            additional: {  }
+            weight: -8
         third_party_settings: {  }
       -
         layout_id: layout_onecol
@@ -72,7 +97,7 @@ third_party_settings:
             - section_margin_fixed_width_container
         components:
           -
-            uuid: 3f63eba4-63e5-439c-818f-c500cc482940
+            uuid: 6cdd28d1-0503-462a-ab27-7338b23e2295
             region: content
             configuration:
               label_display: '0'
@@ -85,8 +110,72 @@ third_party_settings:
                 settings: {  }
                 third_party_settings: {  }
             additional: {  }
+            weight: 3
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+        components:
+          -
+            uuid: 72d44709-fdb0-4d69-bf47-f40d1ab69262
+            region: content
+            configuration:
+              id: 'views_block:topic_page_browse_by_tag-block_3'
+              label: null
+              provider: views
+              label_display: null
+              views_label: ''
+              items_per_page: none
+              headline:
+                headline: 'Browse by tag w/count'
+                hide_headline: 0
+                heading_size: h2
+                headline_style: default
+                child_heading_size: h3
+              pager: some
+              exposed_filter_values: null
+              layout_builder_styles: {  }
+              context_mapping: {  }
+            additional: {  }
             weight: 0
         third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          layout_builder_styles_style:
+            - section_background_style_gray
+            - section_margin_fixed_width_container
+        components:
+          -
+            uuid: 5fde834e-0dd0-4ace-8d35-e08d22cba5cf
+            region: content
+            configuration:
+              id: 'views_block:topic_page_browse_by_tag-block_2'
+              label: null
+              provider: views
+              label_display: null
+              views_label: ''
+              items_per_page: none
+              headline:
+                headline: 'Browse all topics'
+                hide_headline: 0
+                heading_size: h2
+                headline_style: default
+                child_heading_size: h3
+              pager: some
+              exposed_filter_values: null
+              layout_builder_styles: {  }
+              context_mapping: {  }
+            additional: {  }
+            weight: 0
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
   layout_builder_restrictions:
     allowed_block_categories: {  }
     entity_view_mode_restriction:
@@ -95,8 +184,6 @@ third_party_settings:
       allowed_layouts: {  }
     entity_view_mode_restriction_by_region:
       allowed_layouts: {  }
-_core:
-  default_config_hash: 78NQIFgVqQtKHrH0jhUrP-ruPBzVTWeR1ObgzxMAtl0
 id: node.topic_landing_page.default
 targetEntityType: node
 bundle: topic_landing_page
@@ -110,14 +197,6 @@ content:
     third_party_settings: {  }
     region: content
   field_image:
-    weight: 103
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_topic_landing_page_tags:
     weight: 102
     label: above
     settings:
@@ -125,11 +204,40 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_meta_tags:
+    weight: 104
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_empty_formatter
+    region: content
+  field_topic_landing_page_button_link:
+    weight: 105
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_topic_landing_page_summary:
+    weight: 103
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
   links:
     weight: 100
     settings: {  }
     third_party_settings: {  }
     region: content
 hidden:
-  layout_builder__layout: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_topic_landing_page_tags: true
   search_api_excerpt: true
