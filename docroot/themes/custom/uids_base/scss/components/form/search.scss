@@ -13,6 +13,7 @@
   display: flex;
 }
 
+
 // Custom Search Block
 .uiowa-search-form {
   padding: 5px 19px;
@@ -34,11 +35,25 @@
       margin-right: 0;
       margin-top: 0;
     }
+    [type="submit"],
     input#edit-submit {
-      @include bttn--secondary;
+      .layout__container:not([class*="bg-"]) & {
+        @include bttn--primary;
+        border: 1px solid $primary;
+      }
+      [class*=bg--black] & {
+        @include bttn--primary;
+        border: 1px solid $primary;
+      }
+      [class*=bg--gray] &,
+      [class*=bg--gold] &,
+      [class*=bg--white] &{
+        @include bttn--secondary;
+        border: 1px solid $secondary;
+      }
+
       padding-top: 13px;
       padding-bottom: 13px;
-      border: 1px solid $secondary;
     }
   }
   .js-form-item {
