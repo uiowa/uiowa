@@ -1,0 +1,27 @@
+uuid: e38a8d8d-8b29-4d8d-9721-300a6a6960ff
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_timeline
+    - field.storage.block_content.field_uiowa_headline
+  module:
+    - layout_builder_custom
+id: block_content.uiowa_timeline.field_uiowa_headline
+field_name: field_uiowa_headline
+entity_type: block_content
+bundle: uiowa_timeline
+label: Headline
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    headline: ''
+    child_heading_size: h2
+    heading_size: h2
+    hide_headline: 0
+    headline_style: default
+default_value_callback: ''
+settings: {  }
+field_type: uiowa_headline

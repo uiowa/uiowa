@@ -1,0 +1,29 @@
+uuid: 460131c6-8dcf-4f8e-aecc-2fcbde0f591d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_article_author
+    - node.type.article
+    - node.type.person
+id: node.article.field_article_author
+field_name: field_article_author
+entity_type: node
+bundle: article
+label: 'Article Authors'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: unpublished
+  handler_settings:
+    target_bundles:
+      person: person
+    sort:
+      field: title
+      direction: ASC
+    auto_create: 1
+    auto_create_bundle: ''
+field_type: entity_reference

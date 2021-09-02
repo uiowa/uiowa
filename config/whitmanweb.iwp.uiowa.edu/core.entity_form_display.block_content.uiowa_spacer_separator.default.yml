@@ -1,0 +1,40 @@
+uuid: fc4780ac-9f96-41f5-ac1e-35e8c57fc35c
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_spacer_separator
+    - field.field.block_content.uiowa_spacer_separator.field_uiowa_spacer_separator_txt
+  module:
+    - text
+_core:
+  default_config_hash: SGjSrWJl_twRGYcPg7rQMPgD23aK3zCXEDYpls8DT8c
+id: block_content.uiowa_spacer_separator.default
+targetEntityType: block_content
+bundle: uiowa_spacer_separator
+mode: default
+content:
+  field_uiowa_spacer_separator_txt:
+    weight: 27
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  info:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+hidden: {  }

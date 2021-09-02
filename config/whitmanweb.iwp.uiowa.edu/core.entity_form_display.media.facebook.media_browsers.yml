@@ -1,0 +1,34 @@
+uuid: dc3a0e1a-b0f5-4ec1-b806-bcb91d9e8a8a
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.media.media_browsers
+    - field.field.media.facebook.field_media_facebook
+    - media.type.facebook
+id: media.facebook.media_browsers
+targetEntityType: media
+bundle: facebook
+mode: media_browsers
+content:
+  field_media_facebook:
+    weight: 0
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+hidden:
+  created: true
+  name: true
+  path: true
+  status: true
+  uid: true

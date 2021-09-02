@@ -1,0 +1,23 @@
+uuid: 5bbf8554-3880-407f-a379-4fd47dc378da
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_meta_tags
+    - node.type.person
+  module:
+    - metatag
+id: node.person.field_meta_tags
+field_name: field_meta_tags
+entity_type: node
+bundle: person
+label: 'SEO Settings'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 'a:1:{s:19:"schema_person_image";s:143:"a:3:{s:5:"@type";s:11:"ImageObject";s:20:"representativeOfPage";s:4:"True";s:3:"url";s:49:"[node:field_image:entity:field_media_image:large]";}";}'
+default_value_callback: ''
+settings: {  }
+field_type: metatag

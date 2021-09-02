@@ -1,0 +1,28 @@
+uuid: 804d81b0-416a-4341-973b-31891c2c6970
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_image_gallery
+    - field.storage.block_content.field_uiowa_gallery_image
+    - media.type.image
+id: block_content.uiowa_image_gallery.field_uiowa_gallery_image
+field_name: field_uiowa_gallery_image
+entity_type: block_content
+bundle: uiowa_image_gallery
+label: Images
+description: 'Add images with optional captions. Once uploaded, image order can be adjusted using the drag-and-drop menu.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

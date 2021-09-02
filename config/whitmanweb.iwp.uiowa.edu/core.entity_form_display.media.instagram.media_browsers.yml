@@ -1,0 +1,36 @@
+uuid: c160c42d-201d-47cf-ad88-9c6e0b8c4e97
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.media.media_browsers
+    - field.field.media.instagram.field_media_instagram
+    - media.type.instagram
+  module:
+    - media
+id: media.instagram.media_browsers
+targetEntityType: media
+bundle: instagram
+mode: media_browsers
+content:
+  field_media_instagram:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: oembed_textfield
+    region: content
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+hidden:
+  created: true
+  name: true
+  path: true
+  status: true
+  uid: true

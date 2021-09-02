@@ -1,0 +1,32 @@
+uuid: 5e6c3e83-6578-4e0d-a629-01c72440ffb6
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_banner
+    - field.storage.block_content.field_uiowa_banner_image
+    - media.type.image
+    - media.type.video
+_core:
+  default_config_hash: 5p6OV6Y82r_HCWFChYgC_16p6citYJZuLw4s19VdGqc
+id: block_content.uiowa_banner.field_uiowa_banner_image
+field_name: field_uiowa_banner_image
+entity_type: block_content
+bundle: uiowa_banner
+label: Image
+description: 'Add a background image. Image files below 1MB are recommended (Max size 2000x2000 px).'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+      video: video
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: image
+field_type: entity_reference

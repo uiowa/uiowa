@@ -1,0 +1,55 @@
+uuid: b252476b-b6bc-4a8b-bb1c-1762f883f6d0
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_hero
+    - field.field.block_content.uiowa_hero.field_uiowa_hero_excerpt
+    - field.field.block_content.uiowa_hero.field_uiowa_hero_image
+    - field.field.block_content.uiowa_hero.field_uiowa_hero_title
+    - field.field.block_content.uiowa_hero.field_uiowa_hero_video
+  module:
+    - heading
+    - text
+_core:
+  default_config_hash: R-f8p8Mch7SymgSh9IdjAbUoB_NQ-9xf_6kSmAHga8c
+id: block_content.uiowa_hero.default
+targetEntityType: block_content
+bundle: uiowa_hero
+mode: default
+content:
+  field_uiowa_hero_excerpt:
+    weight: 3
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_uiowa_hero_image:
+    type: entity_reference_entity_view
+    weight: 4
+    label: visually_hidden
+    settings:
+      view_mode: full__ultrawide
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_uiowa_hero_title:
+    weight: 1
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: heading
+    region: content
+  field_uiowa_hero_video:
+    type: entity_reference_entity_view
+    weight: 5
+    label: visually_hidden
+    settings:
+      view_mode: full__ultrawide
+      link: false
+    third_party_settings: {  }
+    region: content
+hidden:
+  langcode: true
+  search_api_excerpt: true

@@ -1,0 +1,30 @@
+uuid: f132eec0-db22-42af-bd40-e97ff42755b3
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_banner
+    - field.storage.block_content.field_uiowa_banner_excerpt
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    minimal: minimal
+    plain_text: plain_text
+    filtered_html: '0'
+    full_html: '0'
+_core:
+  default_config_hash: R12wgVOfQanvzxQM2QVSOwZE86dXdnY1K6gGkV-7KlE
+id: block_content.uiowa_banner.field_uiowa_banner_excerpt
+field_name: field_uiowa_banner_excerpt
+entity_type: block_content
+bundle: uiowa_banner
+label: Excerpt
+description: 'Compose and display body copy.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

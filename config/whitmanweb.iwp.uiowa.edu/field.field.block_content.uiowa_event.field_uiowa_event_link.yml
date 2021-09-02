@@ -1,0 +1,23 @@
+uuid: edc2489b-8526-4a26-a369-c0d7eb04bffc
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_event
+    - field.storage.block_content.field_uiowa_event_link
+  module:
+    - link
+id: block_content.uiowa_event.field_uiowa_event_link
+field_name: field_uiowa_event_link
+entity_type: block_content
+bundle: uiowa_event
+label: Link
+description: 'Add a URL for further details about the event.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 0
+field_type: link

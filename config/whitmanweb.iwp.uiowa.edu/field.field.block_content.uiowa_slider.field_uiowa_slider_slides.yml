@@ -1,0 +1,37 @@
+uuid: 1f9797c6-1b00-46e0-9eba-d268e092fed8
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_slider
+    - field.storage.block_content.field_uiowa_slider_slides
+    - paragraphs.paragraphs_type.uiowa_slide
+  module:
+    - entity_reference_revisions
+id: block_content.uiowa_slider.field_uiowa_slider_slides
+field_name: field_uiowa_slider_slides
+entity_type: block_content
+bundle: uiowa_slider
+label: Slides
+description: 'Add Slides to the Slider to increase the amount of content.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      uiowa_slide: uiowa_slide
+    target_bundles_drag_drop:
+      uiowa_collection_item:
+        weight: 4
+        enabled: false
+      uiowa_contact:
+        weight: 5
+        enabled: false
+      uiowa_slide:
+        enabled: true
+        weight: 31
+field_type: entity_reference_revisions

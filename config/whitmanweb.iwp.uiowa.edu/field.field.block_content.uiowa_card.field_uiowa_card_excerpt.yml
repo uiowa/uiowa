@@ -1,0 +1,30 @@
+uuid: 49fe08ad-5bab-4858-a49a-2bc0f8911e51
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_card
+    - field.storage.block_content.field_uiowa_card_excerpt
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    minimal: minimal
+    plain_text: plain_text
+    filtered_html: '0'
+    full_html: '0'
+_core:
+  default_config_hash: d7-oWkJwADXKLY9QldFK28pif5n_srH-0UsqsZrZFrA
+id: block_content.uiowa_card.field_uiowa_card_excerpt
+field_name: field_uiowa_card_excerpt
+entity_type: block_content
+bundle: uiowa_card
+label: Excerpt
+description: 'Compose and display teaser or intro text for your content.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

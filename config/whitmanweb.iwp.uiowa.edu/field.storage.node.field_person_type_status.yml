@@ -1,0 +1,21 @@
+uuid: a50c9514-b218-46c9-bd79-aca14ad70f2c
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_person_type_status
+field_name: field_person_type_status
+entity_type: node
+type: list_string
+settings:
+  allowed_values: {  }
+  allowed_values_function: sitenow_people_person_type_statuses_allowed_values
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

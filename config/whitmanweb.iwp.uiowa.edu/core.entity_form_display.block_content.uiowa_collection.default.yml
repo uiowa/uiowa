@@ -1,0 +1,64 @@
+uuid: 0921b82a-bc68-4750-a415-fff136b24126
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_collection
+    - field.field.block_content.uiowa_collection.field_accordion_type
+    - field.field.block_content.uiowa_collection.field_uiowa_collection_items
+    - field.field.block_content.uiowa_collection.field_uiowa_headline
+  module:
+    - layout_builder_custom
+    - paragraphs
+id: block_content.uiowa_collection.default
+targetEntityType: block_content
+bundle: uiowa_collection
+mode: default
+content:
+  field_accordion_type:
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_uiowa_collection_items:
+    type: paragraphs
+    weight: 3
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: all
+      closed_mode_threshold: 0
+      add_mode: button
+      form_display_mode: default
+      default_paragraph_type: uiowa_collection_item
+      features:
+        add_above: '0'
+        collapse_edit_all: '0'
+        duplicate: '0'
+    third_party_settings: {  }
+    region: content
+  field_uiowa_headline:
+    type: uiowa_headline_widget
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  info:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+hidden: {  }

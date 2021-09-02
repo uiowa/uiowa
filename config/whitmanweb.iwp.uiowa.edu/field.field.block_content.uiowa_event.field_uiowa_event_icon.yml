@@ -1,0 +1,25 @@
+uuid: 9a8847e6-d241-4416-a346-99155dfba249
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_event
+    - field.storage.block_content.field_uiowa_event_icon
+  module:
+    - fontawesome
+id: block_content.uiowa_event.field_uiowa_event_icon
+field_name: field_uiowa_event_icon
+entity_type: block_content
+bundle: uiowa_event
+label: 'Location Icon'
+description: 'Choose an icon from the FontAwesome icon library to display next to the "location" field. Common options are "map-marker", "map-marker-alt", and "laptop". Use the "Additional Settings" field to further customize your icon.'
+required: true
+translatable: false
+default_value:
+  -
+    icon_name: map-marker-alt
+    settings: 'a:3:{s:7:"duotone";a:3:{s:12:"swap-opacity";i:0;s:7:"opacity";a:2:{s:7:"primary";s:0:"";s:9:"secondary";s:0:"";}s:5:"color";a:2:{s:7:"primary";s:7:"#000000";s:9:"secondary";s:7:"#000000";}}s:7:"masking";a:2:{s:4:"mask";s:0:"";s:5:"style";s:3:"fas";}s:16:"power_transforms";a:3:{s:5:"scale";a:2:{s:4:"type";s:0:"";s:5:"value";s:0:"";}s:10:"position_y";a:2:{s:4:"type";s:0:"";s:5:"value";s:0:"";}s:10:"position_x";a:2:{s:4:"type";s:0:"";s:5:"value";s:0:"";}}}'
+    style: fas
+default_value_callback: ''
+settings: {  }
+field_type: fontawesome_icon

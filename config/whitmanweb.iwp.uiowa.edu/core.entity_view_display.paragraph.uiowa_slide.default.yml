@@ -1,0 +1,56 @@
+uuid: 4e997bca-e1f5-4cf5-a783-32c99a117c52
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.uiowa_slide.field_collection_headline
+    - field.field.paragraph.uiowa_slide.field_uiowa_slide_content
+    - field.field.paragraph.uiowa_slide.field_uiowa_slide_image
+    - field.field.paragraph.uiowa_slide.field_uiowa_slide_link
+    - paragraphs.paragraphs_type.uiowa_slide
+  module:
+    - link
+    - text
+id: paragraph.uiowa_slide.default
+targetEntityType: paragraph
+bundle: uiowa_slide
+mode: default
+content:
+  field_collection_headline:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_uiowa_slide_content:
+    weight: 2
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_uiowa_slide_image:
+    type: entity_reference_entity_view
+    weight: 1
+    label: hidden
+    settings:
+      view_mode: full__ultrawide
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_uiowa_slide_link:
+    weight: 3
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+hidden:
+  search_api_excerpt: true

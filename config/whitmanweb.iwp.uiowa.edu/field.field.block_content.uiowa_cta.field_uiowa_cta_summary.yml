@@ -1,0 +1,30 @@
+uuid: 5c2d8f12-3440-49f2-a69d-da8b3862d7dc
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_cta
+    - field.storage.block_content.field_uiowa_cta_summary
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    minimal: minimal
+    plain_text: plain_text
+    filtered_html: '0'
+    full_html: '0'
+_core:
+  default_config_hash: 4vFszaUxeTr6om6ugZ2o6nBn7Atao3aOwmts5uj1mAY
+id: block_content.uiowa_cta.field_uiowa_cta_summary
+field_name: field_uiowa_cta_summary
+entity_type: block_content
+bundle: uiowa_cta
+label: Summary
+description: 'Enter a single line of summary or teaser text to the call-to-action block.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

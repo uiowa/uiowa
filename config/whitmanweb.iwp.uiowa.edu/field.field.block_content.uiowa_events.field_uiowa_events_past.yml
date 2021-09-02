@@ -1,0 +1,23 @@
+uuid: c70e25e7-3b46-413a-97fe-3c1900ee90d4
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_events
+    - field.storage.block_content.field_uiowa_events_past
+id: block_content.uiowa_events.field_uiowa_events_past
+field_name: field_uiowa_events_past
+entity_type: block_content
+bundle: uiowa_events
+label: 'Display past events'
+description: 'Past events will display instead of upcoming events.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

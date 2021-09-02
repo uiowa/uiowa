@@ -1,0 +1,34 @@
+uuid: 258943ec-6d5b-43de-9fc2-1e475f19202c
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.featured_content
+    - field.field.block_content.featured_content.field_featured_content_item
+    - field.field.block_content.featured_content.field_uiowa_headline
+  module:
+    - layout_builder_custom
+id: block_content.featured_content.default
+targetEntityType: block_content
+bundle: featured_content
+mode: default
+content:
+  field_featured_content_item:
+    weight: 1
+    label: hidden
+    settings:
+      view_mode: teaser
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+    region: content
+  field_uiowa_headline:
+    weight: 0
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: uiowa_headline_formatter
+    region: content
+hidden:
+  langcode: true
+  search_api_excerpt: true

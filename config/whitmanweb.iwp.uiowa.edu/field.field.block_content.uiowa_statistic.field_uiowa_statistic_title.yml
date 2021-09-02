@@ -1,0 +1,34 @@
+uuid: c45d451f-71e2-43c7-85f9-7aa57abb1fa5
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_statistic
+    - field.storage.block_content.field_uiowa_statistic_title
+  module:
+    - heading
+_core:
+  default_config_hash: Ka0kV9fzHgOqk8b78OtmhiAnTO2sWjxlNIOIZvxFVo0
+id: block_content.uiowa_statistic.field_uiowa_statistic_title
+field_name: field_uiowa_statistic_title
+entity_type: block_content
+bundle: uiowa_statistic
+label: Figure
+description: 'Enter the main ranking, achievement, or data into this field (e.g. 95%, 500+, 1 of 3, etc.)'
+required: true
+translatable: false
+default_value:
+  -
+    size: h2
+    text: ''
+default_value_callback: ''
+settings:
+  label: Heading
+  allowed_sizes:
+    h2: h2
+    h3: h3
+    h4: h4
+    h5: h5
+    h6: h6
+    h1: 0
+field_type: heading

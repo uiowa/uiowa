@@ -1,0 +1,28 @@
+uuid: 117822a2-065c-4470-b25f-75429e75c90c
+langcode: en
+status: true
+dependencies:
+  module:
+    - language
+  theme:
+    - uids_base
+id: languageswitchercontent
+theme: uids_base
+region: primary_menu
+weight: 0
+provider: null
+plugin: 'language_block:language_content'
+settings:
+  id: 'language_block:language_content'
+  label: Language
+  provider: language
+  label_display: visible
+visibility:
+  language:
+    id: language
+    langcodes:
+      en: en
+      ar: ar
+    negate: false
+    context_mapping:
+      language: '@language.current_language_context:language_content'

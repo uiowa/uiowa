@@ -1,0 +1,20 @@
+uuid: 9a94e198-9c6d-4305-ad04-6c723eb29b39
+langcode: en
+status: true
+dependencies:
+  config:
+    - media.type.panopto
+id: media.panopto.uid
+field_name: uid
+entity_type: media
+bundle: panopto
+label: 'Authored by'
+description: 'The user ID of the author.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: 'Drupal\media\Entity\Media::getDefaultEntityOwner'
+settings:
+  handler: default
+  handler_settings: {  }
+field_type: entity_reference

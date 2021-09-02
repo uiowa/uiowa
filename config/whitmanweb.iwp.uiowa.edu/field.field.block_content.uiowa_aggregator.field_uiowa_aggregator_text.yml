@@ -1,0 +1,31 @@
+uuid: 5a5d066d-3f0a-45af-b896-b0d0c2a7fc61
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_aggregator
+    - field.storage.block_content.field_uiowa_aggregator_text
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    minimal: minimal
+    filtered_html: '0'
+    full_html: '0'
+    plain_text: '0'
+id: block_content.uiowa_aggregator.field_uiowa_aggregator_text
+field_name: field_uiowa_aggregator_text
+entity_type: block_content
+bundle: uiowa_aggregator
+label: 'No results text'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: "<p>There are no results at this time.</p>\r\n"
+    format: minimal
+default_value_callback: ''
+settings: {  }
+field_type: text_long

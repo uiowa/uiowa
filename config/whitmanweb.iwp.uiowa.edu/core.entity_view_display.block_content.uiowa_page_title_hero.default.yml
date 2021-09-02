@@ -1,0 +1,26 @@
+uuid: 4a0fdc0e-2873-49e8-9224-bc0774bb2a90
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_page_title_hero
+    - field.field.block_content.uiowa_page_title_hero.field_uiowa_page_title_hero_img
+_core:
+  default_config_hash: vNmVGmPJsLI7zJS1MQ5nKdSKcERMg5rI4QfLVNJnNw4
+id: block_content.uiowa_page_title_hero.default
+targetEntityType: block_content
+bundle: uiowa_page_title_hero
+mode: default
+content:
+  field_uiowa_page_title_hero_img:
+    type: entity_reference_entity_view
+    weight: 1
+    label: visually_hidden
+    settings:
+      view_mode: full__ultrawide
+      link: false
+    third_party_settings: {  }
+    region: content
+hidden:
+  langcode: true
+  search_api_excerpt: true

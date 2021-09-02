@@ -1,0 +1,30 @@
+uuid: 510ffad7-54e7-47ff-94de-9afb0a24abd6
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_hero
+    - field.storage.block_content.field_uiowa_hero_image
+    - media.type.image
+_core:
+  default_config_hash: pfRP6RsDZ5s42IHDBtFWxXggaDzdW2-nFqVhPq41em8
+id: block_content.uiowa_hero.field_uiowa_hero_image
+field_name: field_uiowa_hero_image
+entity_type: block_content
+bundle: uiowa_hero
+label: Image
+description: 'Choose an image for this slide (16:9 aspect ratio, 2592x1458px max, 1MB file size or less)'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: image
+field_type: entity_reference

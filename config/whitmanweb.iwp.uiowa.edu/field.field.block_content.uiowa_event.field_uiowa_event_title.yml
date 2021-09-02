@@ -1,0 +1,32 @@
+uuid: 8ac655b9-d7ee-4f53-a008-d9335c1ca37b
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_event
+    - field.storage.block_content.field_uiowa_event_title
+  module:
+    - heading
+id: block_content.uiowa_event.field_uiowa_event_title
+field_name: field_uiowa_event_title
+entity_type: block_content
+bundle: uiowa_event
+label: Title
+description: 'Choose a headline or title text.'
+required: true
+translatable: false
+default_value:
+  -
+    size: h2
+    text: ''
+default_value_callback: ''
+settings:
+  label: Heading
+  allowed_sizes:
+    h2: h2
+    h3: h3
+    h4: h4
+    h5: h5
+    h6: h6
+    h1: 0
+field_type: heading
