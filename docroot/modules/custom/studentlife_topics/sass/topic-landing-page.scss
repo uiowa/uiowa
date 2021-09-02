@@ -1,211 +1,40 @@
-.tlp-search-container {
-    max-width: 700px;
-    width: 100%;
-    margin: auto;
-    text-align: center;
-    z-index: 1;
-    position: relative;
-}
+@import "../../../themes/custom/uids_base/uids/assets/scss/variables";
+@import "../../../themes/custom/uids_base/uids/assets/scss/utilities";
+@import "../../../themes/custom/uids_base/uids/components/breadcrumbs/breadcrumbs";
 
-.tlp-search-bg {
-    display: flex;
-    align-items: center;
-    background-color: #333;
-    padding-top: 10px;
-    min-height: 300px;
-    min-height: 55vh;
-    background-color: #000;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    color: #fff;
-    overflow: hidden;
-    position: relative;
 
-    &:after {
-        background: rgb(0, 0, 0);
-        background: linear-gradient(0deg, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 100%);
-        opacity: .75;
-        content: '';
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        top: 0;
+// Custom Search Block
+.topics-search-form {
+  padding: 5px 19px;
+  border-radius: 0;
+  border: none;
+  background: transparent;
+  margin-bottom: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  &.uids-content:not(.uids-search) {
+    padding: 5px 0;
+    .form-item {
+      margin-top: 0;
+      margin-right: 0;
     }
-
-    &__title {
-        color: white;
-        margin-bottom: 20px;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    .form-actions {
+      margin-right: 0;
+      margin-top: 0;
     }
-
-    &.background-image {
-        background-color: transparent;
+    input#edit-submit {
+      @include bttn--secondary;
+      padding-top: 13px;
+      padding-bottom: 13px;
+      border: 1px solid $secondary;
     }
-}
-
-.tlp-search-tags {
-    color: white;
-    font-size: 16px;
-    line-height: 2;
-
-    &__item {
-        display: inline-block;
-        margin: 0 2px;
-
-        a {
-            color: white;
-            text-decoration: underline;
-        }
+  }
+  .js-form-item {
+    flex: 1;
+    label {
+      @include element-invisible;
     }
-
-    &__link {
-        color: white;
-        text-decoration: underline;
-    }
-
-    &__heading {
-        margin-top: 20px;
-        font-size: 16px;
-    }
-}
-
-.tlp-search-form {
-    width: 100%;
-
-    &__input {
-        border: none;
-        width: 100%;
-        padding: 5px;
-        background: rgba(#fff, 0.85);
-        backdrop-filter: blur(5px);
-        color: #000;
-
-        &:focus {
-            background: white;
-        }
-    }
-
-    &__input::placeholder {
-        color: #000;
-    }
-
-    &__fields {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-    }
-}
-
-.tlp-nodelist {
-    margin-left: 0;
-
-    &__item {
-        list-style-type: square;
-        list-style-position: inside;
-        margin-bottom: 5px;
-        font-size: 18px;
-
-        a {
-            color: #222;
-        }
-
-        &--bold{
-            font-weight: bold;
-        }
-    }
-
-    &__heading {
-        font-size: 18px;
-        font-weight: normal;
-        margin: 0;
-    }
-}
-
-.tlp-search-form__search-button {
-    border: none;
-    background-color: #ffcd00;
-    color: #222;
-    height: 55px;
-    border-radius: 0;
-    padding: 0 20px;
-    width: 30%;
-
-    &:hover {
-        cursor: pointer;
-    }
-}
-
-.tlp-content {
-    max-width: 1160px;
-    margin: auto;
-    margin-top: 20px;
-}
-
-.tlp-section {
-    &--light-gray {
-        background: #f6f6f6;
-    }
-
-    &--gray {
-        background: #eee;
-    }
-}
-
-.tlp-all-list {
-    margin-left: 0;
-    display: grid;
-    grid-gap: 10px;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    list-style-position: inside;
-
-    a {
-        text-decoration: none;
-    }
-
-    &__item {
-        list-style-type: none;
-        margin-bottom: 20px;
-        padding: 0 5px;
-    }
-
-    &__item-heading {
-        font-weight: 800;
-        font-size: 24px;
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-}
-
-.tlp-filter-grid-container {
-    max-width: 1160px;
-}
-
-.tlp-browse-by-filter__grid {
-    display: grid;
-    grid-gap: 10px;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-}
-
-.tlp-filter-button {
-    border: 1px solid #000;
-    padding: 20px;
-    text-align: center;
-    text-decoration: none;
-    color: #000;
-    display: block;
-    display: grid;
-    align-items: center;
-
-    span {
-        display: inline-block;
-    }
-}
-
-.tlp-section__heading {
-    text-transform: uppercase;
-    font-size: 1em;
-    font-weight: bold;
-    margin-top: 20px;
+  }
 }
