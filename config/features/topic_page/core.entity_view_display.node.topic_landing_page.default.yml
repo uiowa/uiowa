@@ -11,6 +11,7 @@ dependencies:
   module:
     - layout_builder
     - layout_builder_restrictions
+    - studentlife_topics
     - text
     - user
     - views
@@ -86,7 +87,18 @@ third_party_settings:
               layout_builder_styles: {  }
               context_mapping: {  }
             additional: {  }
-            weight: -8
+            weight: -6
+          -
+            uuid: 9d186c17-9b4b-4a7b-b92a-96bbea18569a
+            region: content
+            configuration:
+              id: topic_page_search
+              label: null
+              provider: studentlife_topics
+              label_display: null
+              context_mapping: {  }
+            additional: {  }
+            weight: -7
         third_party_settings: {  }
       -
         layout_id: layout_onecol
