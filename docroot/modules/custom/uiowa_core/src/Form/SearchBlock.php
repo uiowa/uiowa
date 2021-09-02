@@ -45,7 +45,7 @@ class SearchBlock extends FormBase {
     $build_info = $form_state->getBuildInfo();
     $values = $form_state->getValues();
     $query = $values['search'];
-    $url = Url::fromRoute('entity.node.canonical', ['node' => $build_info['search_config']['endpoint']], [$build_info['search_config']['query_parameter'] => $query]);
+    $url = Url::fromUserInput($build_info['search_config']['endpoint'], ['query' => [$build_info['search_config']['query_parameter'] => $query]]);
     $form_state->setRedirectUrl($url);
   }
 

@@ -3,7 +3,6 @@
 namespace Drupal\uiowa_core\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
@@ -29,19 +28,11 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
   protected $formBuilder;
 
   /**
-   * The entity_type.manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, FormBuilderInterface $formBuilder, EntityTypeManagerInterface $entityTypeManager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, FormBuilderInterface $formBuilder) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->formBuilder = $formBuilder;
-    $this->entityTypeManager = $entityTypeManager;
   }
 
   /**
@@ -53,7 +44,6 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
       $plugin_id,
       $plugin_definition,
       $container->get('form_builder'),
-      $container->get('entity_type.manager')
     );
   }
 
@@ -80,35 +70,34 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
     $form = parent::blockForm($form, $form_state);
 
     $config = $this->getConfiguration();
-    if (isset($config['endpoint'])) {
-      $endpoint = $this->entityTypeManager->getStorage('node')->load($config['endpoint']);
-    }
     $form['endpoint'] = [
-      '#type' => 'entity_autocomplete',
-      '#title' => $this->t('Endpoint'),
-      '#description' => $this->t('Page to send query to'),
-      '#target_type' => 'node',
-      '#selection_handler' => 'default',
-      '#selection_settings' => [
-        'target_bundles' => ['page'],
+      '#type' => 'linkit',
+      '#title' => $this->t('Endpoint Path'),
+      '#description' => $this->t('Start typing to see a list of results. Click to select.'),
+      '#autocomplete_route_name' => 'linkit.autocomplete',
+      '#autocomplete_route_parameters' => [
+        'linkit_profile_id' => 'default',
       ],
-      '#default_value' => isset($endpoint) ? $endpoint : NULL,
+      '#default_value' => isset($config['endpoint']) ? $config['endpoint'] : '/search',
       '#required' => TRUE,
     ];
     $form['query_parameter'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Query Parameter'),
-      '#default_value' => isset($config['query_parameter']) ? $config['query_parameter'] : '',
+      '#description' => $this->t('<em>title</em> is common for content filtering, <em>terms</em> is used for search on this site'),
+      '#default_value' => isset($config['query_parameter']) ? $config['query_parameter'] : 'terms',
     ];
     $form['search_label'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Search Label'),
-      '#default_value' => isset($config['search_label']) ? $config['search_label'] : '',
+      '#default_value' => isset($config['search_label']) ? $config['search_label'] : 'Search',
+      '#required' => TRUE,
     ];
     $form['button_text'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Button Text'),
-      '#default_value' => isset($config['button_text']) ? $config['button_text'] : '',
+      '#default_value' => isset($config['button_text']) ? $config['button_text'] : 'Search',
+      '#required' => TRUE,
     ];
 
     return $form;
