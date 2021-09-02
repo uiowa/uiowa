@@ -23,7 +23,7 @@ class SearchBlock extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $build_info = $form_state->getBuildInfo();
-    $form['#attributes']['class'][] = 'form-inline clearfix';
+    $form['#attributes']['class'][] = 'form-inline clearfix uiowa-search-form';
     $form['search'] = [
       '#type' => 'search',
       '#title' => $build_info['search_config']['search_label'],
