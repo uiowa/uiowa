@@ -30,8 +30,8 @@ tests:
   drupal:
     # This is required for running functional-javascript tests.
     web-driver: chromedriver
-    # The default sqllite DB URL that BLT configures was not working.
-    simpletest-db: 'mysql://drupal:drupal@localhost/drupal'
+    # Use MySQL. The default sqlite DB URL that BLT configures was not working.
+    simpletest-db: 'mysql://${drupal.db.username}:${drupal.db.password}@${drupal.db.host}/${drupal.db.database}'
     phpunit:
       -
         # The directory to scan for tests. Change to what you want to test.
