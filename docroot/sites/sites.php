@@ -3173,3 +3173,9 @@ $sites['labattanasio.local.drupal.uiowa.edu'] = 'attanasio.lab.uiowa.edu';
 $sites['labattanasio.dev.drupal.uiowa.edu'] = 'attanasio.lab.uiowa.edu';
 $sites['labattanasio.stage.drupal.uiowa.edu'] = 'attanasio.lab.uiowa.edu';
 $sites['labattanasio.prod.drupal.uiowa.edu'] = 'attanasio.lab.uiowa.edu';
+
+// Directory aliases for uiarc.uiowa.edu.
+$sites['uiarc.local.drupal.uiowa.edu'] = 'uiarc.uiowa.edu';
+$sites['uiarc.dev.drupal.uiowa.edu'] = 'uiarc.uiowa.edu';
+$sites['uiarc.stage.drupal.uiowa.edu'] = 'uiarc.uiowa.edu';
+$sites['uiarc.prod.drupal.uiowa.edu'] = 'uiarc.uiowa.edu';
