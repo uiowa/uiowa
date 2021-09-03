@@ -2,6 +2,7 @@
 
 namespace Drupal\uiowa_core\Plugin\Block;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormState;
@@ -73,7 +74,7 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
     $form['endpoint'] = [
       '#type' => 'linkit',
       '#title' => $this->t('Endpoint Path'),
-      '#description' => $this->t('Start typing to see a list of results. Click to select.'),
+      '#description' => $this->t('Start typing to see a list of results. Click to select. Relative paths are allowed. External links are not allowed.'),
       '#autocomplete_route_name' => 'linkit.autocomplete',
       '#autocomplete_route_parameters' => [
         'linkit_profile_id' => 'default',
@@ -102,6 +103,17 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
     return $form;
 
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function blockValidate($form, FormStateInterface $form_state) {
+    $values = $form_state->getValues();
+    $external = UrlHelper::isExternal($values['endpoint']);
+    if ($external) {
+      $form_state->setErrorByName('endpoint', $this->t('External links are not allowed.'));
+    }
   }
 
   /**

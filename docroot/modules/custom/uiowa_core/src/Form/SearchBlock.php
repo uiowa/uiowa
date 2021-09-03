@@ -44,8 +44,13 @@ class SearchBlock extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $build_info = $form_state->getBuildInfo();
     $values = $form_state->getValues();
+    $uri = $build_info['search_config']['endpoint'];
     $query = $values['search'];
-    $url = Url::fromUserInput($build_info['search_config']['endpoint'], ['query' => [$build_info['search_config']['query_parameter'] => $query]]);
+    // Support root-relative URLs.
+    if (str_starts_with($uri, '/')) {
+      $uri = 'base:' . substr($uri, 1);
+    }
+    $url = Url::fromUri($uri, ['query' => [$build_info['search_config']['query_parameter'] => $query]]);
     $form_state->setRedirectUrl($url);
   }
 
