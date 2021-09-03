@@ -19,7 +19,7 @@ Follow the Git instructions on the drupal.org issue you're working on for
 setting up another remote within that project directory.
 
 ### Run tests
-Tests are run with the `blt tests:drupal` command. Verbose logging with te `-v`
+Tests are run with the `blt tests:drupal` command. Verbose logging with the `-v`
 option can be useful. By default, no tests will run because there are none
 specified in BLT configuration. You can pick and choose what tests to run by
 modifying your `blt/local.blt.yml` file as documented in the BLT docs. Here is
