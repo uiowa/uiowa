@@ -71,6 +71,11 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
     $form = parent::blockForm($form, $form_state);
 
     $config = $this->getConfiguration();
+    $form['markup'] = [
+      '#type' => 'markup',
+      '#markup' => $this->t('<p>This is a generic search block you can use to send queries to site search or a view filter.</p>'),
+    ];
+    $form['#attached']['library'][] = 'linkit/linkit.autocomplete';
     $form['endpoint'] = [
       '#type' => 'linkit',
       '#title' => $this->t('Endpoint Path'),
