@@ -38,7 +38,7 @@ tests:
         directory: '${docroot}/modules/contrib/entity_usage'
         # Use the core PHPUnit config file.
         config: ${docroot}/core/phpunit.xml.dist
-        # Filter by a specific test class, test name. etc.
+        # Filter by a specific test type, class, name, etc.
         filter: EmbeddedContentTest
 ```
 
