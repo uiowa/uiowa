@@ -7,7 +7,7 @@
  * @see example.sites.php
  */
 
-// Directory aliases for default site. Note that we use the local for testing.
+// Directory aliases for default site.
 $sites['local.drupal.uiowa.edu'] = 'simpletest';
 $sites['dev.drupal.uiowa.edu'] = 'default';
 $sites['stage.drupal.uiowa.edu'] = 'default';
