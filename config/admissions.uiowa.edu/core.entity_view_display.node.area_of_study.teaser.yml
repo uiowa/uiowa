@@ -58,11 +58,6 @@ content:
       trim_length: 600
     third_party_settings: {  }
     region: content
-  content_moderation_control:
-    weight: -20
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   field_image:
     type: entity_reference_entity_view
     weight: 1
@@ -73,6 +68,7 @@ content:
       link: false
     third_party_settings: {  }
 hidden:
+  content_moderation_control: true
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
