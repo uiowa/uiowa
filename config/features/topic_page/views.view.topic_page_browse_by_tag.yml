@@ -202,7 +202,7 @@ display:
           element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
-          element_default_classes: false
+          element_default_classes: true
           empty: ''
           hide_empty: false
           empty_zero: false
@@ -282,9 +282,10 @@ display:
       row:
         type: fields
         options:
-          default_field_elements: false
-          inline: {  }
-          separator: ''
+          default_field_elements: true
+          inline:
+            name: name
+          separator: ','
           hide_empty: false
       css_class: topic-page--tag
     cache_metadata:
