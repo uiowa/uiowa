@@ -71,13 +71,14 @@
  */
 #}
 {%
-    set classes = [
-    'node',
-    'node--type-' ~ node.bundle|clean_class,
-    node.isPromoted() ? 'node--promoted',
-    node.isSticky() ? 'node--sticky',
-    not node.isPublished() ? 'node--unpublished',
-    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+  set classes = [
+  'node',
+  'node--type-' ~ node.bundle|clean_class,
+  node.isPromoted() ? 'node--promoted',
+  node.isSticky() ? 'node--sticky',
+  not node.isPublished() ? 'node--unpublished',
+  view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+  'card--list',
 ]
 %}
 
@@ -85,18 +86,25 @@
   {% set url = node.field_area_of_study_source_link.0.url %}
 {% endif %}
 
-{{ attach_library('classy/node') }}
-{{ attach_library('uids_base/node-view-teaser') }}
-<article{{ attributes.addClass(classes) }}>
-    <div{{ content_attributes.addClass('node__content') }}>
-        {{ title_prefix }}
-        {% if not page %}
-            <div{{ title_attributes }}>
-                <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-            </div>
-        {% endif %}
-        {{ title_suffix }}
+{% set headline_level = heading_size ?: 'h3' %}
 
-        {{ content|without('links', 'field_area_of_study_link_direct', 'field_area_of_study_source_link') }}
-    </div>
-</article>
+{{ attach_library('classy/node') }}
+{{ attach_library('uids_base/paragraphs-lists') }}
+
+{% set aos_card = {
+  'attributes': attributes.addClass(classes),
+  'card_title': label,
+  'content': content,
+  'card_link_url': url,
+  'headline_level': headline_level,
+} %}
+
+{% embed '@uids_base/uids/card.html.twig' with aos_card only %}
+
+  {# @todo Add content_attributes.addClass('node__content media-body') #}
+
+  {% block card_content %}
+    {{ content|without('links', 'field_area_of_study_link_direct', 'field_area_of_study_source_link') }}
+  {% endblock %}
+
+{% endembed %}
