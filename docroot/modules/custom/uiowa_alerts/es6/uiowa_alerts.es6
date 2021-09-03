@@ -13,7 +13,7 @@
         const updateAlerts = () => {
           // Get the alerts feed and track IDs as "new" alerts.
           $.ajax({
-            url: drupalSettings.uiowaAlerts.source,
+            url: settings.uiowaAlerts.source,
             dataType: "json",
             success: (response) => {
               let new_alerts = [];
