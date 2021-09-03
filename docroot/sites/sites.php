@@ -8,7 +8,7 @@
  */
 
 // Directory aliases for default site.
-$sites['local.drupal.uiowa.edu'] = 'simpletest';
+$sites['local.drupal.uiowa.edu'] = 'default';
 $sites['dev.drupal.uiowa.edu'] = 'default';
 $sites['stage.drupal.uiowa.edu'] = 'default';
 $sites['prod.drupal.uiowa.edu'] = 'default';
