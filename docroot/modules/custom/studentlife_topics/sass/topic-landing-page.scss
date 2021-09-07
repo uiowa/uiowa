@@ -1,43 +1,13 @@
 @import "../../../themes/custom/uids_base/uids/assets/scss/variables";
 @import "../../../themes/custom/uids_base/uids/assets/scss/utilities";
-@import "../../../themes/custom/uids_base/uids/components/breadcrumbs/breadcrumbs";
 
-
-// Custom Search Block
-.topics-search-form {
-  padding: 5px 19px;
-  border-radius: 0;
-  border: none;
-  background: transparent;
-  margin-bottom: 0;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  &.uids-content:not(.uids-search) {
-    padding: 5px 0;
-    .form-item {
-      margin-top: 0;
-      margin-right: 0;
-    }
-    .form-actions {
-      margin-right: 0;
-      margin-top: 0;
-    }
-    input#edit-submit {
-      @include bttn--primary;
-      padding-top: 13px;
-      padding-bottom: 13px;
-      border: 1px solid $primary;
-    }
-  }
-  .js-form-item {
-    flex: 1;
-    label {
-      @include element-invisible;
-    }
-  }
+.banner .uiowa-search-form.uids-content:not(.uids-search) input#edit-submit {
+  border: 1px solid #ffcd00;
 }
+.banner .block-uiowa-core-search-block {
+  max-width: 700px;
+}
+
 .block-views-blocktopic-page-browse-by-tag-block-1{
   .headline__heading{
     color: white;
@@ -62,9 +32,6 @@
   margin-bottom: 20px;
 }
 
-.block-topic-page-search{
-  max-width: 700px;
-}
 
 .block-views-blocktopic-page-browse-by-tag-block-3 .headline__heading,
 .block-views-blocktopic-page-browse-by-tag-block-2 .headline__heading {

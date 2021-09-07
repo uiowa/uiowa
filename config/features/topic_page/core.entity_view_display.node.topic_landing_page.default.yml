@@ -11,8 +11,8 @@ dependencies:
   module:
     - layout_builder
     - layout_builder_restrictions
-    - studentlife_topics
     - text
+    - uiowa_core
     - user
     - views
   theme:
@@ -67,17 +67,6 @@ third_party_settings:
             additional: {  }
             weight: 4
           -
-            uuid: 9d186c17-9b4b-4a7b-b92a-96bbea18569a
-            region: content
-            configuration:
-              id: topic_page_search
-              label: null
-              provider: studentlife_topics
-              label_display: null
-              context_mapping: {  }
-            additional: {  }
-            weight: -7
-          -
             uuid: 4155b5f3-5ddd-4c84-b687-0f5ea256f28c
             region: content
             configuration:
@@ -96,6 +85,21 @@ third_party_settings:
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
+            additional: {  }
+            weight: -5
+          -
+            uuid: 9ea10fa1-6f6b-448a-974f-5fff1b257d5b
+            region: content
+            configuration:
+              id: uiowa_core_search_block
+              label: null
+              provider: uiowa_core
+              label_display: null
+              endpoint: /search
+              query_parameter: terms
+              button_text: Search
+              search_label: Search
+              context_mapping: {  }
             additional: {  }
             weight: -6
         third_party_settings: {  }
