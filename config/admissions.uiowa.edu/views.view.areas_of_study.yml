@@ -88,7 +88,7 @@ display:
                   is_secondary: false
                 select_all_none: false
                 select_all_none_nested: false
-                display_inline: 0
+                display_inline: false
               field_area_of_study_college_target_id:
                 plugin_id: default
                 advanced:
@@ -564,6 +564,7 @@ display:
         empty: false
         header: false
         title: false
+        css_class: false
       filter_groups:
         operator: AND
         groups:
@@ -836,6 +837,7 @@ display:
             format: filtered_html
           plugin_id: text
       title: 'Majors, Minors, and Certificates'
+      css_class: table-responsive
     cache_metadata:
       max-age: -1
       contexts:
