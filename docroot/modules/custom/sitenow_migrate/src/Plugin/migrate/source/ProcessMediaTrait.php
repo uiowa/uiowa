@@ -282,6 +282,14 @@ trait ProcessMediaTrait {
 
   /**
    * Fetch the media uuid based on the provided filename.
+   *
+   * @param string $filename
+   *   The filename.
+   * @param string $type
+   *   The file type. Must be one of the keys in $tables.
+   *
+   * @return array
+   *   An array consisting of mid, uuid for the file. Values false if not found.
    */
   public function getMid($filename, $type = 'image') {
     $tables = [
@@ -306,7 +314,16 @@ trait ProcessMediaTrait {
       ->fetchAssoc();
 
     $query = NULL;
-    return $results;
+
+    if ($results) {
+      return $results;
+    }
+    else {
+      return [
+        'uuid' => FALSE,
+        'mid' => FALSE,
+      ];
+    }
   }
 
   /**
