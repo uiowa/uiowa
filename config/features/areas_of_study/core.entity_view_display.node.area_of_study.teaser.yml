@@ -5,39 +5,52 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.area_of_study.body
-    - field.field.node.area_of_study.field_area_of_study_certificates
-    - field.field.node.area_of_study.field_area_of_study_majors
-    - field.field.node.area_of_study.field_area_of_study_minors
-    - field.field.node.area_of_study.field_area_of_study_online
-    - field.field.node.area_of_study.field_area_of_study_preprof
+    - field.field.node.area_of_study.field_area_of_study_degree_types
+    - field.field.node.area_of_study.field_area_of_study_link_direct
+    - field.field.node.area_of_study.field_area_of_study_locations
+    - field.field.node.area_of_study.field_area_of_study_source_link
     - field.field.node.area_of_study.field_image
+    - field.field.node.area_of_study.field_meta_tags
     - node.type.area_of_study
   module:
-    - text
+    - link
     - user
 id: node.area_of_study.teaser
 targetEntityType: node
 bundle: area_of_study
 mode: teaser
 content:
-  body:
-    label: hidden
-    type: text_summary_or_trimmed
-    weight: 101
-    settings:
-      trim_length: 600
-    third_party_settings: {  }
+  field_area_of_study_link_direct:
+    type: boolean
+    weight: 1
     region: content
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+  field_area_of_study_source_link:
+    type: link
+    weight: 2
+    region: content
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
   links:
-    weight: 100
+    weight: 0
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
-  field_area_of_study_certificates: true
-  field_area_of_study_majors: true
-  field_area_of_study_minors: true
-  field_area_of_study_online: true
-  field_area_of_study_preprof: true
+  body: true
+  field_area_of_study_degree_types: true
+  field_area_of_study_locations: true
   field_image: true
+  field_meta_tags: true
   search_api_excerpt: true

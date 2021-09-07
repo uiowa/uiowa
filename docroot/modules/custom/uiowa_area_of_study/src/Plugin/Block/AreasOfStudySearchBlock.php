@@ -9,7 +9,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides the Areas of Study Search block.
+ * DEPRECATED - Provides the Areas of Study Search block for Admissions only.
  *
  * @Block(
  *   id = "uiowa_area_of_study_search",

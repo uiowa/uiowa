@@ -11,10 +11,12 @@ module:
 theme: {  }
 blacklist:
   - block_content.type.area_of_study_search
+  - metatag.metatag_defaults.node__area_of_study
   - node.type.area_of_study
-  - paragraphs.paragraphs_type.degree
   - pathauto.pattern.areas_of_study
-  - simple_sitemap.bundle_settings.default.node.areas_of_study
+  - simple_sitemap.bundle_settings.default.node.area_of_study
+  - taxonomy.vocabulary.degree_types
+  - taxonomy.vocabulary.locations
   - views.view.areas_of_study
   - 'core.base_field_override.node.area_of_study.*'
   - 'core.entity_form_display.node.area_of_study.*'
@@ -22,9 +24,9 @@ blacklist:
   - 'field.field.node.area_of_study.*'
   - 'field.field.node.area_of_study.*'
   - 'field.storage.node.field_area_of_study_*'
-  - 'field.storage.paragraph.field_degree*'
 graylist:
   - core.entity_view_display.node.page.default
+  - metatag.settings
   - 'user.role.*'
 graylist_dependents: true
 graylist_skip_equal: true
