@@ -2,14 +2,14 @@
 @import "../../../themes/custom/uids_base/uids/assets/scss/utilities";
 
 .banner .uiowa-search-form.uids-content:not(.uids-search) input#edit-submit {
-  border: 1px solid #ffcd00;
+  border: 1px solid $primary;
 }
 .banner .block-uiowa-core-search-block {
   max-width: 700px;
 }
 
-.block-views-blocktopic-page-browse-by-tag-block-1{
-  .headline__heading{
+.block-views-blocktopic-page-browse-by-tag-block-1 {
+  .headline__heading {
     color: white;
     font-size: 16px;
   }
@@ -28,7 +28,7 @@
   }
 }
 
-.block-field-blocknodetopic-landing-pagetitle{
+.block-field-blocknodetopic-landing-pagetitle {
   margin-bottom: 20px;
 }
 
@@ -44,4 +44,8 @@
   .views-element-container {
     margin-top: 0;
   }
+}
+
+.page-node-type-topic-landing-page .bg--gray :is(h1, h2, h3, h4, h5, h6)  a {
+  color: $link-color;
 }
