@@ -12,3 +12,54 @@
 .container-inline .uids-search label {
   display: flex;
 }
+
+
+// Custom Search Block
+.uiowa-search-form {
+  padding: 5px 19px;
+  border-radius: 0;
+  border: none;
+  background: transparent;
+  margin-bottom: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  &.uids-content:not(.uids-search) {
+    padding: 5px 0;
+    .form-item {
+      margin-top: 0;
+      margin-right: 0;
+    }
+    .form-actions {
+      margin-right: 0;
+      margin-top: 0;
+    }
+    [type="submit"],
+    input#edit-submit {
+      .layout__container:not([class*="bg-"]) & {
+        @include bttn--primary;
+        border: 1px solid $primary;
+      }
+      [class*=bg--black] & {
+        @include bttn--primary;
+        border: 1px solid $primary;
+      }
+      [class*=bg--gray] &,
+      [class*=bg--gold] &,
+      [class*=bg--white] &{
+        @include bttn--secondary;
+        border: 1px solid $secondary;
+      }
+
+      padding-top: 13px;
+      padding-bottom: 13px;
+    }
+  }
+  .js-form-item {
+    flex: 1;
+    label {
+      @include element-invisible;
+    }
+  }
+}

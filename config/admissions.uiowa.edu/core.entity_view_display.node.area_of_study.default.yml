@@ -104,6 +104,16 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: -9
+          -
+            uuid: 608f4d09-6e67-4035-99e4-cbf3117107f3
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'extra_field_block:node:area_of_study:content_moderation_control'
+            additional: {  }
+            weight: -8
         third_party_settings: {  }
       -
         layout_id: layout_onecol
@@ -568,6 +578,11 @@ content:
     label: hidden
     type: text_default
     weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  content_moderation_control:
+    weight: -20
     settings: {  }
     third_party_settings: {  }
     region: content
