@@ -549,9 +549,56 @@ display:
       title: 'Areas of Study'
       header: {  }
       footer: {  }
-      empty: {  }
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content: 'There are currently no results.'
+          plugin_id: text_custom
       relationships: {  }
-      arguments: {  }
+      arguments:
+        nid:
+          id: nid
+          table: node_field_data
+          field: nid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          default_action: default
+          exception:
+            value: all
+            title_enable: false
+            title: All
+          title_enable: false
+          title: ''
+          default_argument_type: node
+          default_argument_options: {  }
+          default_argument_skip_url: false
+          summary_options:
+            base_path: ''
+            count: true
+            items_per_page: 25
+            override: false
+          summary:
+            sort_order: asc
+            number_of_records: 0
+            format: default_summary
+          specify_validation: true
+          validate:
+            type: none
+            fail: 'not found'
+          validate_options: {  }
+          break_phrase: false
+          not: false
+          entity_type: node
+          entity_field: nid
+          plugin_id: node_nid
       display_extenders: {  }
       use_ajax: true
     cache_metadata:
@@ -571,7 +618,7 @@ display:
     display_plugin: page
     id: areas_of_study
     display_title: Page
-    position: 2
+    position: 1
     display_options:
       display_extenders:
         metatag_display_extender: {  }
@@ -776,6 +823,10 @@ display:
         empty: false
         header: false
         title: false
+        pager: false
+        style: false
+        row: false
+        arguments: false
       filter_groups:
         operator: AND
         groups:
@@ -1132,6 +1183,71 @@ display:
           plugin_id: text_custom
       header: {  }
       title: 'Areas of Study'
+      pager:
+        type: none
+        options:
+          offset: 0
+      style:
+        type: table
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
+          override: true
+          sticky: true
+          caption: ''
+          summary: ''
+          description: ''
+          columns:
+            field_area_of_study_source_link: field_area_of_study_source_link
+            nid: nid
+            title: title
+            field_area_of_study_link_direct: field_area_of_study_link_direct
+            body: body
+          info:
+            field_area_of_study_source_link:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            nid:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            title:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_area_of_study_link_direct:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            body:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          default: '-1'
+          empty_table: false
+      row:
+        type: fields
+        options:
+          default_field_elements: true
+          inline: {  }
+          separator: ''
+          hide_empty: false
+      arguments: {  }
     cache_metadata:
       max-age: -1
       contexts:
@@ -1149,7 +1265,7 @@ display:
     display_plugin: block
     id: areas_of_study_block
     display_title: Block
-    position: 1
+    position: 2
     display_options:
       display_extenders:
         metatag_display_extender: {  }
@@ -1346,6 +1462,11 @@ display:
         filters: false
         filter_groups: false
         fields: false
+        css_class: false
+        arguments: false
+        pager: false
+        header: false
+        use_ajax: false
       filter_groups:
         operator: AND
         groups:
@@ -1688,6 +1809,64 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+      css_class: 'block-margin__bottom block-margin__top bg--gray block-padding__all'
+      arguments:
+        nid:
+          id: nid
+          table: node_field_data
+          field: nid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          default_action: default
+          exception:
+            value: all
+            title_enable: false
+            title: All
+          title_enable: false
+          title: ''
+          default_argument_type: node
+          default_argument_options: {  }
+          default_argument_skip_url: false
+          summary_options:
+            base_path: ''
+            count: true
+            items_per_page: 25
+            override: false
+          summary:
+            sort_order: asc
+            number_of_records: 0
+            format: default_summary
+          specify_validation: true
+          validate:
+            type: none
+            fail: 'not found'
+          validate_options: {  }
+          break_phrase: false
+          not: false
+          entity_type: node
+          entity_field: nid
+          plugin_id: node_nid
+      pager:
+        type: some
+        options:
+          items_per_page: 1
+          offset: 0
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: false
+          content:
+            value: '<h4 class="headline headline--serif headline--underline"><span class="fa-info-circle fas"></span> &nbsp;Information</h4>'
+            format: filtered_html
+          plugin_id: text
+      use_ajax: false
     cache_metadata:
       max-age: -1
       contexts:
