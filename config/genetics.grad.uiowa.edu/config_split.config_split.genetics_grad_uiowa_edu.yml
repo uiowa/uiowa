@@ -10,8 +10,15 @@ module: {  }
 theme: {  }
 blacklist:
   - config_split.config_split.genetics_grad_uiowa_edu
+  - field.field.node.person.field_person_department
+  - field.storage.node.field_person_department
+  - taxonomy.vocabulary.department
   - views.view.person_custom
-graylist: {  }
+  - 'core.entity_form_display.node.person.*'
+  - 'core.entity_view_display.node.person.*'
+graylist:
+  - sitenow_people.person_type.faculty
+  - sitenow_people.person_type.student
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 90
