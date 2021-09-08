@@ -14,8 +14,8 @@ use Drupal\node\NodeInterface;
  */
 function studentlife_topics_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
-    case 'node_topic_landing_page_form':
-    case 'node_topic_landing_page_edit_form':
+    case 'node_topic_collection_form':
+    case 'node_topic_collection_edit_form':
       // Set form defaults if they exist.
       _sitenow_node_form_defaults($form, $form_state);
       break;
@@ -42,7 +42,7 @@ function studentlife_topics_preprocess_layout(&$variables) {
     $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
     if ($node instanceof NodeInterface) {
       if (in_array($node->getType(), [
-        'topic_landing_page',
+        'topic_collection',
       ])) {
         if (!isset($variables['banner_attributes'])) {
           $variables['banner_settings'] = [];
@@ -50,7 +50,7 @@ function studentlife_topics_preprocess_layout(&$variables) {
       }
 
       switch ($node->getType()) {
-        case 'topic_landing_page':
+        case 'topic_collection':
           if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
             // Set the featured image display.
             $variables['featured_image_display'] = 'medium';
@@ -72,7 +72,7 @@ function studentlife_topics_preprocess_layout(&$variables) {
  */
 function studentlife_topics_theme_suggestions_field_alter(array &$suggestions, array $variables) {
   switch ($variables["element"]["#field_name"]) {
-    case 'field_topic_landing_page_tags':
+    case 'field_topic_collection_tags':
       $suggestions[] = 'field__comma_separated';
       break;
   }
@@ -83,12 +83,12 @@ function studentlife_topics_theme_suggestions_field_alter(array &$suggestions, a
  */
 function studentlife_topics_theme($existing, $type, $theme, $path) {
   return [
-    'field__node__title__topic_landing_page__default' => [
-      'template' => 'field--node--title--topic-landing-page--default',
+    'field__node__title__topic_collection__default' => [
+      'template' => 'field--node--title--topic-collection--default',
       'base hook' => 'field',
     ],
-    'node__topic_landing_page__teaser' => [
-      'template' => 'node--topic-landing-page--teaser',
+    'node__topic_collection__teaser' => [
+      'template' => 'node--topic-collection--teaser',
       'base hook' => 'node',
     ],
   ];

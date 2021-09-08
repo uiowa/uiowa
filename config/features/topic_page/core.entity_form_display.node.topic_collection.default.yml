@@ -3,10 +3,10 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.topic_landing_page.body
-    - field.field.node.topic_landing_page.field_image
-    - field.field.node.topic_landing_page.field_topic_landing_page_tags
-    - node.type.topic_landing_page
+    - field.field.node.topic_collection.body
+    - field.field.node.topic_collection.field_image
+    - field.field.node.topic_collection.field_topic_collection_tags
+    - node.type.topic_collection
   module:
     - content_moderation
     - media_library
@@ -14,9 +14,9 @@ dependencies:
     - text
 _core:
   default_config_hash: TMA7GFSRsmP9d81ndES98Ambl6CsSP25R02l9pP3KCU
-id: node.topic_landing_page.default
+id: node.topic_collection.default
 targetEntityType: node
-bundle: topic_landing_page
+bundle: topic_collection
 mode: default
 content:
   body:
@@ -42,7 +42,7 @@ content:
     third_party_settings: {  }
     type: media_library_widget
     region: content
-  field_topic_landing_page_tags:
+  field_topic_collection_tags:
     weight: 122
     settings:
       match_operator: CONTAINS

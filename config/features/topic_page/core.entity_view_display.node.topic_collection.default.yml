@@ -3,10 +3,10 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.topic_landing_page.body
-    - field.field.node.topic_landing_page.field_image
-    - field.field.node.topic_landing_page.field_topic_landing_page_tags
-    - node.type.topic_landing_page
+    - field.field.node.topic_collection.body
+    - field.field.node.topic_collection.field_image
+    - field.field.node.topic_collection.field_topic_collection_tags
+    - node.type.topic_collection
     - views.view.topic_page_browse_by_tag
   module:
     - layout_builder
@@ -32,7 +32,7 @@ third_party_settings:
             uuid: d75c28a9-d252-47df-86e8-206190ec5052
             region: content
             configuration:
-              id: 'field_block:node:topic_landing_page:title'
+              id: 'field_block:node:topic_collection:title'
               label: Title
               provider: layout_builder
               label_display: '0'
@@ -51,7 +51,7 @@ third_party_settings:
             uuid: abd7062b-38b4-428c-9833-bfa66edfb688
             region: background
             configuration:
-              id: 'field_block:node:topic_landing_page:field_image'
+              id: 'field_block:node:topic_collection:field_image'
               label: null
               provider: layout_builder
               label_display: null
@@ -70,7 +70,7 @@ third_party_settings:
             uuid: 4155b5f3-5ddd-4c84-b687-0f5ea256f28c
             region: content
             configuration:
-              id: 'field_block:node:topic_landing_page:field_topic_landing_page_tags'
+              id: 'field_block:node:topic_collection:field_topic_collection_tags'
               label: null
               provider: layout_builder
               label_display: null
@@ -118,7 +118,7 @@ third_party_settings:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-              id: 'field_block:node:topic_landing_page:body'
+              id: 'field_block:node:topic_collection:body'
               formatter:
                 label: hidden
                 type: text_default
@@ -199,9 +199,9 @@ third_party_settings:
       allowed_layouts: {  }
     entity_view_mode_restriction_by_region:
       allowed_layouts: {  }
-id: node.topic_landing_page.default
+id: node.topic_collection.default
 targetEntityType: node
-bundle: topic_landing_page
+bundle: topic_collection
 mode: default
 content:
   body:
@@ -226,7 +226,7 @@ content:
     third_party_settings: {  }
     type: metatag_empty_formatter
     region: content
-  field_topic_landing_page_button_link:
+  field_topic_collection_button_link:
     weight: 105
     label: above
     settings:
@@ -238,7 +238,7 @@ content:
     third_party_settings: {  }
     type: link
     region: content
-  field_topic_landing_page_summary:
+  field_topic_collection_summary:
     weight: 103
     label: above
     settings: {  }
@@ -254,5 +254,5 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
-  field_topic_landing_page_tags: true
+  field_topic_collection_tags: true
   search_api_excerpt: true
