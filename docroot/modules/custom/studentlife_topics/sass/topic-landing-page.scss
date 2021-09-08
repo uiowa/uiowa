@@ -16,9 +16,13 @@
 }
 
 .field--name-field-topic-landing-page-tags {
+  max-width: 700px;
+  margin: 0 auto;
   .field__label {
-    display: block;
     color: white;
+  }
+  span.field__item  {
+    font-size: 1.2rem;
   }
   .field__items {
     color: white;
@@ -32,13 +36,11 @@
   margin-bottom: 20px;
 }
 
-
 .block-views-blocktopic-page-browse-by-tag-block-3 .headline__heading,
 .block-views-blocktopic-page-browse-by-tag-block-2 .headline__heading {
   text-transform: uppercase;
   font-size: 16px;
 }
-
 
 [class*=block-views-blocktopic] {
   .views-element-container {
@@ -48,8 +50,27 @@
 
 .page-node-type-topic-landing-page .bg--gray :is(h1, h2, h3, h4, h5, h6)  a {
   color: $link-color;
+  text-decoration: none;
+  font-family: $font-family-serif;
+  font-weight: $font-weight-medium-bold;
 }
 
 .grid--fourcol--25.topic-page--count .list-container {
   gap: 1.5rem;
+}
+
+.col--fourcol--25.topic-page--all .list-container {
+  gap: $desktop-width-gutter;
+  @include breakpoint(sm) {
+    column-count: 2;
+  }
+  @include breakpoint(menu) {
+    column-count: 3;
+  }
+  .item-list {
+    break-inside: avoid;
+    ul {
+      break-inside: avoid;
+    }
+  }
 }
