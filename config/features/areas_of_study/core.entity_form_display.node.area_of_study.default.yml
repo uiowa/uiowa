@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_link_direct
     - field.field.node.area_of_study.field_area_of_study_locations
     - field.field.node.area_of_study.field_area_of_study_source_link
+    - field.field.node.area_of_study.field_area_of_study_synonyms
     - field.field.node.area_of_study.field_image
     - field.field.node.area_of_study.field_meta_tags
     - node.type.area_of_study
@@ -73,6 +74,14 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
+    region: content
+  field_area_of_study_synonyms:
+    weight: 27
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
     region: content
   field_image:
     weight: 14
