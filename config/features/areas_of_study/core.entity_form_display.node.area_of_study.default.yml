@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.area_of_study.body
     - field.field.node.area_of_study.field_area_of_study_degree_types
+    - field.field.node.area_of_study.field_area_of_study_delivery
     - field.field.node.area_of_study.field_area_of_study_link_direct
     - field.field.node.area_of_study.field_area_of_study_locations
     - field.field.node.area_of_study.field_area_of_study_source_link
@@ -49,6 +50,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
+  field_area_of_study_delivery:
+    weight: 28
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
     region: content
   field_area_of_study_link_direct:
     weight: 2

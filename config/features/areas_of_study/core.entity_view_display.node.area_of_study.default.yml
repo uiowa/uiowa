@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.area_of_study.body
     - field.field.node.area_of_study.field_area_of_study_degree_types
+    - field.field.node.area_of_study.field_area_of_study_delivery
     - field.field.node.area_of_study.field_area_of_study_link_direct
     - field.field.node.area_of_study.field_area_of_study_locations
     - field.field.node.area_of_study.field_area_of_study_source_link
@@ -17,6 +18,7 @@ dependencies:
     - layout_builder_restrictions
     - link
     - metatag
+    - options
     - system
     - text
     - user
@@ -242,6 +244,13 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_area_of_study_delivery:
+    weight: 20
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
     region: content
   field_area_of_study_link_direct:
     weight: 14
