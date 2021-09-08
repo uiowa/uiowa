@@ -22,7 +22,7 @@ class AreasOfStudySearchForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form['#attributes']['class'][] = 'form-inline clearfix';
+    $form['#attributes']['class'][] = 'form-inline clearfix uiowa-search-form';
     $form['search'] = [
       '#type' => 'search',
       '#title' => $this->t('Search for an Area of Study'),
