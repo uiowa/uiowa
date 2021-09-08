@@ -90,6 +90,7 @@ class MultisiteCommands extends BltTasks {
           $this->taskDrush()
             ->drush($cmd)
             ->option('define', "drush.paths.cache-directory={$tmp}")
+            ->printMetadata(FALSE)
             ->run();
         }
         else {
