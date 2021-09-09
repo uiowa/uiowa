@@ -38,3 +38,14 @@
 .inner--grid .more-link {
   margin-top: $mobile-height-gutter;
 }
+
+// @todo Move to UIDS
+.grid--fourcol--25 {
+  .list-container {
+    @include grid-base;
+    @include breakpoint(sm) {
+      gap: $desktop-width-gutter;
+      grid-template-columns: repeat(auto-fill, minmax(21%, 1fr));
+    }
+  }
+}

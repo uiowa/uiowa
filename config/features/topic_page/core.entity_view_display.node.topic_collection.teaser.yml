@@ -1,0 +1,39 @@
+uuid: 2b897ba8-1cc1-4f7e-9fd9-d08a63d9d9d3
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.topic_collection.body
+    - field.field.node.topic_collection.field_image
+    - field.field.node.topic_collection.field_meta_tags
+    - field.field.node.topic_collection.field_topic_collection_tags
+    - node.type.topic_collection
+  module:
+    - text
+    - user
+_core:
+  default_config_hash: a3kMkBHiH645RlOzRwHGLIu79_W9oSaxHmKCO-m5P3k
+id: node.topic_collection.teaser
+targetEntityType: node
+bundle: topic_collection
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_image: true
+  field_meta_tags: true
+  field_topic_collection_tags: true
+  search_api_excerpt: true

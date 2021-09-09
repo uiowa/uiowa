@@ -1,0 +1,22 @@
+uuid: 8749e99c-28c2-41dc-8894-32f409e7250f
+langcode: en
+status: false
+dependencies: {  }
+id: topic_page
+label: 'Topic page'
+description: ''
+folder: ../config/features/topic_page
+module:
+  studentlife_topics: 0
+theme: {  }
+blacklist:
+  - node.type.topic_collection
+  - views.view.topic_page_browse_by_tag
+  - 'field.storage.node.field_topic_collection*'
+graylist:
+  - metatag.settings
+  - simple_sitemap.bundle_settings.default.node.topic_collection
+  - 'user.role.*'
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 80
