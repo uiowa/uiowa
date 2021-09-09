@@ -141,6 +141,13 @@ class ListBlock extends CoreBlock {
     $allow_settings = array_filter($this->getOption('allow'));
     $block_configuration = $block->getConfiguration();
 
+    if ($block->getViewExecutable()->getStyle()->getPluginId() == 'table') {
+      $has_children = FALSE;
+    }
+    else {
+      $has_children = TRUE;
+    }
+
     // @todo Possibly wire this up to the views title?
     $form['headline'] = HeadlineHelper::getElement([
       'headline' => $block_configuration['headline']['headline'] ?? NULL,
@@ -148,7 +155,7 @@ class ListBlock extends CoreBlock {
       'heading_size' => $block_configuration['headline']['heading_size'] ?? 'h2',
       'headline_style' => $block_configuration['headline']['headline_style'] ?? 'default',
       'child_heading_size' => $block_configuration['headline']['child_heading_size'] ?? 'h3',
-    ]);
+    ], $has_children);
     $form['headline']['#weight'] = 1;
 
     // Modify "Items per page" block settings form.
