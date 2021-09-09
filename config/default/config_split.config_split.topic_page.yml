@@ -13,7 +13,8 @@ blacklist:
   - node.type.topic_collection
   - views.view.topic_page_browse_by_tag
   - 'field.storage.node.field_topic_collection*'
-graylist: {  }
+graylist:
+  - 'user.role.*'
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 80
