@@ -1,0 +1,17 @@
+uuid: 30f705dd-7132-458e-82d6-ca3663e0fe9e
+langcode: en
+status: true
+dependencies: {  }
+id: uiowa_kaltura
+label: 'University of Iowa'
+provider_url: 'http://mediaspace.uiowa.edu'
+endpoints:
+  -
+    schemes:
+      - 'http://mediaspace.uiowa.edu/*'
+      - 'https://mediaspace.uiowa.edu/*'
+    url: 'http://mediaspace.uiowa.edu/oembed'
+    discovery: true
+    formats:
+      json: false
+      xml: false
