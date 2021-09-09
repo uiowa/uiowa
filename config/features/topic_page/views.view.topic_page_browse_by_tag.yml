@@ -2,8 +2,6 @@ uuid: c778cc6e-65f7-4c01-94c1-b203b2114730
 langcode: en
 status: true
 dependencies:
-  config:
-    - field.storage.node.field_topic_collection_tags
   module:
     - node
     - taxonomy
@@ -752,7 +750,7 @@ display:
           exclude: false
           alter:
             alter_text: false
-            text: '<a class="bttn bttn--full bttn--outline bttn--tertiary bttn--sans-serif bttn--lowercase" href="{{ view_taxonomy_term }}">{{ name }} ({{ nid }})</a> '
+            text: ''
             make_link: false
             path: ''
             absolute: false
