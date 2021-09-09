@@ -48,6 +48,14 @@ class HeadlineHelper {
   /**
    * Provide the render array structure for a headline element.
    *
+   * @param array $defaults
+   *   An array of default values to set for each form element.
+   * @param bool $has_children
+   *   Whether to return child heading size form elements.
+   *
+   * @return array
+   *   The render array of headline form elements.
+   *
    * @todo Investigate creating a custom render element for this.
    */
   public static function getElement(array $defaults, $has_children = TRUE) {
