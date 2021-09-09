@@ -141,12 +141,8 @@ class ListBlock extends CoreBlock {
     $allow_settings = array_filter($this->getOption('allow'));
     $block_configuration = $block->getConfiguration();
 
-    if ($this->view->getStyle()->getPluginId() == 'table') {
-      $has_children = FALSE;
-    }
-    else {
-      $has_children = TRUE;
-    }
+    // Hide headline child form elements for table displays.
+    $has_children = !($this->view->getStyle()->getPluginId() == 'table');
 
     // @todo Possibly wire this up to the views title?
     $form['headline'] = HeadlineHelper::getElement([
