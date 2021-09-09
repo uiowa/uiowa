@@ -141,6 +141,9 @@ class ListBlock extends CoreBlock {
     $allow_settings = array_filter($this->getOption('allow'));
     $block_configuration = $block->getConfiguration();
 
+    // Hide headline child form elements for table displays.
+    $has_children = !($this->view->getStyle()->getPluginId() == 'table');
+
     // @todo Possibly wire this up to the views title?
     $form['headline'] = HeadlineHelper::getElement([
       'headline' => $block_configuration['headline']['headline'] ?? NULL,
@@ -148,7 +151,7 @@ class ListBlock extends CoreBlock {
       'heading_size' => $block_configuration['headline']['heading_size'] ?? 'h2',
       'headline_style' => $block_configuration['headline']['headline_style'] ?? 'default',
       'child_heading_size' => $block_configuration['headline']['child_heading_size'] ?? 'h3',
-    ]);
+    ], $has_children);
     $form['headline']['#weight'] = 1;
 
     // Modify "Items per page" block settings form.
@@ -621,7 +624,8 @@ class ListBlock extends CoreBlock {
    * {@inheritdoc}
    */
   public function displaysExposed(): bool {
-    // Hotfix shim to not display exposed blocks, necessary because of the hotfix above.
+    // Hotfix shim to not display exposed blocks, necessary because of
+    // the hotfix above.
     // @todo Remove this exception when these view displays are removed.
     $display = $this->view->getDisplay();
     $exceptions = [

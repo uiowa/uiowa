@@ -1,0 +1,83 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Pharmacy Core module.
+ */
+
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\node\Entity\Node;
+use Drupal\views\ViewExecutable;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function pharmacy_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $view = $form_state->get('view');
+  if ($view->id() == 'palliative_grad') {
+    if ($view->current_display == 'block_palliative_grad') {
+      $form["territory"]["#options"]["All"] = t("- All -");
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function pharmacy_core_node_delete(Node $node) {
+  // Used on Pharmacy palliative grads map.
+  if ($node->getType() == 'person') {
+    $tags = ['node_type:' . $node->getType()];
+    Cache::invalidateTags($tags);
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function pharmacy_core_node_presave(Node $node) {
+  // Used on Pharmacy palliative grad map.
+  if ($node->getType() == 'person') {
+    $tags = ['node_type:' . $node->getType()];
+    Cache::invalidateTags($tags);
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function pharmacy_core_theme_suggestions_field_alter(array &$suggestions, array $variables) {
+  switch ($variables["element"]["#field_name"]) {
+    case 'field_person_territory':
+      $suggestions[] = 'field__comma_separated';
+      break;
+  }
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function pharmacy_core_theme_registry_alter(&$theme_registry) {
+  $theme = \Drupal::theme()->getActiveTheme()->getName();
+  if ($theme == 'uids_base') {
+    // Favor module template over uids_base template.
+    $theme_registry['node__person__teaser']['path'] =
+      drupal_get_path('module', 'pharmacy_core') . '/templates';
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function pharmacy_core_views_pre_render(ViewExecutable $view) {
+  if ($view->id() == "palliative_grad") {
+    switch ($view->current_display) {
+      case 'block_palliative_grad':
+        // Case 'page_palliative_grad':
+        $view->element['#attached']['library'][] = 'pharmacy_core/palliative-grad-list';
+        $view->element['#attached']['library'][] = 'pharmacy_core/person';
+        break;
+    }
+  }
+}

@@ -499,7 +499,7 @@ function uids_base_preprocess_layout(&$variables) {
         }
       }
 
-      if (!isset($variables['banner_attributes'])) {
+      if (!isset($variables['banner_settings'])) {
         $variables['banner_settings'] = [];
       }
       $defaults = [
@@ -694,7 +694,7 @@ function uids_base_preprocess_block_content__uiowa_collection__accordion(&$varia
  * Implements hook_preprocess_HOOK().
  */
 function uids_base_preprocess_menu(&$variables) {
-  switch ($variables["menu_name"]) {
+  switch ($variables['menu_name']) {
     case 'top-links':
       $variables['limit'] = theme_get_setting('header.top_links_limit');
       break;
@@ -760,6 +760,7 @@ function uids_base_preprocess_paragraph(&$variables) {
     $collection_types = [
       'uiowa_slide' => 'field_uiowa_slider_slides',
       'uiowa_collection_item' => 'field_uiowa_collection_items',
+      'uiowa_timeline_item' => 'field_uiowa_timeline_items',
     ];
 
     if (in_array($paragraph->bundle(), array_keys($collection_types))) {
@@ -782,7 +783,7 @@ function uids_base_preprocess_paragraph(&$variables) {
             }
           }
         }
-        // This works for collections and sliders, not other blocks.
+        // This works for collections, sliders, and timeline not other blocks.
         if ($parent->hasField('field_uiowa_headline')) {
           $headline_fields = $parent->get('field_uiowa_headline')->getValue();
           foreach ($headline_fields as $headline_field) {
@@ -797,7 +798,8 @@ function uids_base_preprocess_paragraph(&$variables) {
         }
       }
 
-      // If our bundle is the collection item and we have a 'field_automatically_open' value set...
+      // If our bundle is the collection item and we have a
+      // 'field_automatically_open' value set...
       if ($paragraph->bundle() == 'uiowa_collection_item' &&
         $opened = $paragraph->field_automatically_open->value) {
         // Pass a true or false based upon the value to the template.
@@ -977,6 +979,23 @@ function uids_base_preprocess_input(&$variables) {
   // browsers that do not support the HTML date element.
   if (isset($variables['element']['#type']) && $variables['element']['#type'] === 'date') {
     $variables['attributes']['placeholder'] = 'YYYY-MM-DD';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uids_base_preprocess_superfish(array &$variables) {
+  // An access-aware boolean of whether the menu is empty or not.
+  $variables['menu_is_empty'] = FALSE;
+
+  $items = array_filter($variables['menu_items']['#tree'], function ($item) {
+    /** @var \Drupal\Core\Menu\MenuLinkTreeElement $item */
+    return $item->access->isAllowed();
+  });
+
+  if (empty($items)) {
+    $variables['menu_is_empty'] = TRUE;
   }
 }
 

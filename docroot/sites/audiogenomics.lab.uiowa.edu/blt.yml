@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labaudiogenomics.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labaudiogenomics
+  human_name: audiogenomics.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labaudiogenomics.prod
+drupal:
+  db:
+    database: audiogenomics_lab_uiowa_edu
+uiowa:
+  requester: amontelius

@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies: {  }
+id: education_migrate
+label: 'Education Migrate'
+description: 'Migrations for Education'
+folder: ./sites/education.uiowa.edu/modules/education_migrate/config/split
+module:
+  migrate: 0
+  migrate_drupal: 0
+  migrate_plus: 0
+  migrate_tools: 0
+  education_migrate: 0
+  sitenow_migrate: 0
+theme: {  }
+blacklist:
+  - config_split.config_split.education_migrate
+  - 'migrate_plus.migration.education_*'
+graylist: {  }
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 80

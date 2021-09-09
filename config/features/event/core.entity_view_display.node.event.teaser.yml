@@ -8,6 +8,8 @@ dependencies:
     - field.field.node.event.field_event_category
     - field.field.node.event.field_event_hide
     - field.field.node.event.field_event_location
+    - field.field.node.event.field_event_series_link
+    - field.field.node.event.field_event_series_link_direct
     - field.field.node.event.field_event_virtual
     - field.field.node.event.field_event_when
     - field.field.node.event.field_image
@@ -34,6 +36,28 @@ content:
     label: above
     settings: {  }
     third_party_settings: {  }
+  field_event_series_link:
+    type: link
+    weight: 7
+    region: content
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+  field_event_series_link_direct:
+    type: boolean
+    weight: 6
+    region: content
+    label: above
+    settings:
+      format: boolean
+      format_custom_true: ''
+      format_custom_false: ''
+    third_party_settings: {  }
   field_event_virtual:
     type: link
     weight: 4
@@ -57,6 +81,7 @@ content:
       timezone_override: ''
       force_chronological: false
       add_classes: false
+      time_wrapper: true
     third_party_settings: {  }
   field_image:
     type: entity_reference_entity_view

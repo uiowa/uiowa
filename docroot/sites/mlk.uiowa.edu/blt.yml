@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: mlk.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: mlk
+  human_name: mlk.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: mlk.prod
+drupal:
+  db:
+    database: mlk_uiowa_edu
+uiowa:
+  requester: dquam

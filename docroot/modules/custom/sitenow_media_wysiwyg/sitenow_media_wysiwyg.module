@@ -99,47 +99,48 @@ function sitenow_media_wysiwyg_file_presave(FileInterface $file) {
   // FMDM only parses jpeg correctly for EXIF, not TIFF. Luckily,
   // should see very few TIFF orientation issues.
   if ($file->isNew() && $file->getMimeType() == 'image/jpeg') {
+    /** @var \Drupal\file_mdm\FileMetadataManager $fmdm */
     $fmdm = \Drupal::service('file_metadata_manager');
-    $metadata = $fmdm->uri($file->getFileUri());
 
-    if ($metadata) {
-      $orientation = $metadata->getMetaData('exif', 'Orientation');
+    if ($metadata = $fmdm->uri($file->getFileUri())) {
+      if ($orientation = $metadata->getMetaData('exif', 'Orientation')) {
+        // EXIF: 1 is standard.
+        // 6 and 8 are rotated 90, cw and ccw respectively
+        // 5 and 7 are 6 and 8, but then flipped over the x-axis
+        // 3 is rotated 180
+        // 2 and 4 are 1 and 3, but then flipped over the x-axis
+        // Currently not addressing any flipping.
+        switch ($orientation['value']) {
+          case 5:
+          case 6:
+            $degrees = 90;
+            break;
 
-      // EXIF: 1 is standard.
-      // 6 and 8 are rotated 90, cw and ccw respectively
-      // 5 and 7 are 6 and 8, but then flipped over the x-axis
-      // 3 is rotated 180
-      // 2 and 4 are 1 and 3, but then flipped over the x-axis
-      // Currently not addressing any flipping.
-      switch ($orientation['value']) {
-        case 5:
-        case 6:
-          $degrees = 90;
-          break;
+          case 7:
+          case 8:
+            $degrees = 270;
+            break;
 
-        case 7:
-        case 8:
-          $degrees = 270;
-          break;
+          case 3:
+          case 4:
+            $degrees = 180;
+            break;
 
-        case 3:
-        case 4:
-          $degrees = 180;
-          break;
+          default:
+            $degrees = 0;
+        }
 
-        default:
-          $degrees = 0;
-      }
-      if ($degrees != 0) {
-        $image = \Drupal::service('image.factory')->get($file->getFileUri());
+        if ($degrees != 0) {
+          $image = \Drupal::service('image.factory')->get($file->getFileUri());
 
-        // Replace the old EXIF data, so that downloaded images or other
-        // render methods won't overcorrect.
-        $metadata->setMetadata('exif', 'Orientation', 1);
-        $metadata->saveMetadataToFile('exif');
-        // Save only if rotate() completed successfully.
-        if ($image->rotate($degrees)) {
-          $image->save();
+          // Replace the old EXIF data, so that downloaded images or other
+          // render methods won't overcorrect.
+          $metadata->setMetadata('exif', 'Orientation', 1);
+          $metadata->saveMetadataToFile('exif');
+          // Save only if rotate() completed successfully.
+          if ($image->rotate($degrees)) {
+            $image->save();
+          }
         }
       }
     }

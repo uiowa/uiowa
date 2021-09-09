@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: firstgen.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: firstgen
+  human_name: firstgen.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: firstgen.prod
+drupal:
+  db:
+    database: firstgen_uiowa_edu
+uiowa:
+  requester: lamba

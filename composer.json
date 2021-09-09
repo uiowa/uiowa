@@ -81,14 +81,14 @@
     "config": {
         "sort-packages": true,
         "platform": {
-            "php": "7.3"
+            "php": "7.4"
         }
     },
     "require": {
         "ext-json": "*",
         "acquia/blt": "^12.7",
         "acquia/blt-drupal-test": "^1.0",
-        "acquia/memcache-settings": "*",
+        "acquia/memcache-settings": "^1.1",
         "bower-asset/chosen": "^1.8",
         "bower-asset/fontawesome": "^5.14",
         "bower-asset/lazysizes": "^5.2",
@@ -150,7 +150,7 @@
         "drupal/linkit_media_library": "^1.0",
         "drupal/mailsystem": "^4.1",
         "drupal/masquerade": "^2.0@beta",
-        "drupal/media_entity_facebook": "^2.0@beta",
+        "drupal/media_entity_facebook": "^3.0@beta",
         "drupal/media_entity_file_replace": "^1.0@beta",
         "drupal/media_entity_instagram": "^3.0",
         "drupal/media_entity_twitter": "^2.4",
@@ -172,6 +172,7 @@
         "drupal/override_node_options": "^2.4",
         "drupal/paragraphs": "^1.10",
         "drupal/pathauto": "^1.6",
+        "drupal/private_content": "^2.0@RC",
         "drupal/purge": "^3.0@beta",
         "drupal/rabbit_hole": "^1.0@beta",
         "drupal/redirect": "1.x-dev#e5201ca519bd947ee5478d9dee88af0c5d6fec89",
@@ -215,7 +216,9 @@
         "drupal/core-dev": "^9.0.0",
         "geerlingguy/drupal-vm": "~6.0",
         "mglaman/drupal-check": "^1.1.7",
+        "phpcompatibility/php-compatibility": "^9.3",
         "phpspec/prophecy-phpunit": "^2",
+        "se/selenium-server-standalone": "^3.141",
         "typhonius/acquia-php-sdk-v2": "^2.0.0"
     },
     "extra": {
@@ -241,8 +244,9 @@
                 "Expose Layout Builder data to REST and JSON:API": "https://www.drupal.org/files/issues/2020-07-07/2942975-116.patch",
                 "Temporary Hotfix for YouTube oEmbeds": "https://www.drupal.org/files/issues/2020-12-04/3186415-8.9.x-youtube-headers-html.patch",
                 "Themes have no context of the entity being rendered in preprocessing a layout when using Layout builder": "https://www.drupal.org/files/issues/2020-02-11/3111192-entity-14.patch",
-                "Add Views EntityReference filter to be available for all entity reference fields": "https://www.drupal.org/files/issues/2021-03-06/2429699-389.patch",
-                "Views Block Display skips preBlockBuild() call on ajax rebuild": "https://www.drupal.org/files/issues/2021-03-05/2605218-61.patch"
+                "Add Views EntityReference filter to be available for all entity reference fields": "https://www.drupal.org/files/issues/2021-06-15/2429699-414.patch",
+                "Views Block Display skips preBlockBuild() call on ajax rebuild": "https://www.drupal.org/files/issues/2021-03-05/2605218-61.patch",
+                "Periods in query strings are replaced by underscores": "https://www.drupal.org/files/issues/2020-06-25/fix-mangled-query-parameter-names-2984272-36.patch"
             },
             "drupal/default_content": {
                 "Add a Normalizer and Denormalizer to support Layout Builder": "https://www.drupal.org/files/issues/2020-08-24/default_content-add-normalizer-denormalizer-for-layout-builder-3160146-25.patch",
@@ -250,6 +254,9 @@
             },
             "drupal/entity_embed": {
                 "Logs flooded with warning messages Invalid display settings encountered": "https://www.drupal.org/files/issues/2019-12-11/3077225-10.reduce-invalid-config-logs.patch"
+            },
+            "drupal/entity_usage": {
+                "fatal error after saveing the page not have a reuse entity": "https://www.drupal.org/files/issues/2021-09-03/3098733-fatal-error-13.patch"
             },
             "drupal/entity_print": {
                 "Error on layout builder": "https://www.drupal.org/files/issues/2020-02-06/3111643-1.patch"
@@ -263,11 +270,6 @@
             "drupal/layout_builder_styles": {
                 "Section dependency on layout plugin configuration form": "https://www.drupal.org/files/issues/2019-08-23/layout_builder_styles-3062261-%2310.patch",
                 "Grouping of layout builder styles": "https://www.drupal.org/files/issues/2021-03-16/3075502-18_0.patch"
-            },
-            "drupal/media_entity_facebook": {
-                "Allow creation of new Facebook media entities using the Media Browser": "https://www.drupal.org/files/issues/2020-03-31/3120085-media-library-add-5.patch",
-                "Support for Facebook API - Not a long term solution": "https://www.drupal.org/files/issues/2020-10-26/3176739-4.patch",
-                "undefined function file_unmanaged_copy": "https://www.drupal.org/files/issues/2020-07-19/3160072-6.patch"
             },
             "drupal/menu_block": {
                 "Hide block title if menu tree contains no links": "https://www.drupal.org/files/issues/2020-02-12/menu_block-hide_block_if_no_links-2757215-13.patch",
@@ -284,9 +286,6 @@
             },
             "drupal/redirect": {
                 "Match redirect": "https://www.drupal.org/files/issues/2020-04-13/redirect-n2831605-31.patch"
-            },
-            "drupal/schema_metatag": {
-                "Illegal offset type": "https://www.drupal.org/files/issues/2020-09-30/schema_metatag-undefined_index_objectinfo-3174103-2.patch"
             },
             "jackmoore/colorbox": {
                 "Accessibility improvements": "https://patch-diff.githubusercontent.com/raw/jackmoore/colorbox/pull/832.diff"

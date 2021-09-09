@@ -7,6 +7,7 @@ label: SPPA
 description: 'SPPA custom site split.'
 folder: ../config/sppa.uiowa.edu
 module:
+  private_content: 0
   sppa_core: 0
 theme: {  }
 blacklist:
@@ -14,10 +15,14 @@ blacklist:
   - node.type.opportunity
   - pathauto.pattern.opportunities
   - simple_sitemap.bundle_settings.default.node.opportunity
+  - user.role.requester
   - user.role.student
   - 'field.storage.node.field_opportunity_*'
 graylist:
+  - administerusersbyrole.settings
+  - uiowa_auth.settings
   - 'user.role.*'
-graylist_dependents: true
+  - 'core.entity_view_display.*'
+graylist_dependents: false
 graylist_skip_equal: true
-weight: 110
+weight: 90

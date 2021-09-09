@@ -328,7 +328,7 @@ function admissions_core_update_9002() {
 
   \Drupal::messenger()
     ->addMessage(t("Admissions nodes using the full_html format:\n@report", [
-      '@report' => implode($output_report, "\n"),
+      '@report' => implode("\n", $output_report),
     ]));
 }
 
@@ -351,4 +351,21 @@ function admissions_core_update_9003() {
   return t("Installed/Updated the entity type(s): @entity_type_ids", [
     '@entity_type_ids' => implode(', ', $entity_type_ids),
   ]);
+}
+
+/**
+ * Flush all caches after changing service constructors.
+ */
+function admissions_core_update_9004() {
+  drupal_flush_all_caches();
+}
+
+/**
+ * Disable the areas_of_study config split.
+ */
+function admissions_core_update_9005() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('config_split.config_split.areas_of_study');
+  $config->set('status', FALSE);
+  $config->save(TRUE);
 }
