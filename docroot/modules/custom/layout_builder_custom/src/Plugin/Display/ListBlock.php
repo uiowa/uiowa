@@ -141,7 +141,7 @@ class ListBlock extends CoreBlock {
     $allow_settings = array_filter($this->getOption('allow'));
     $block_configuration = $block->getConfiguration();
 
-    if ($block->getViewExecutable()->getStyle()->getPluginId() == 'table') {
+    if ($this->view->getStyle()->getPluginId() == 'table') {
       $has_children = FALSE;
     }
     else {
