@@ -5,12 +5,14 @@ dependencies:
   config:
     - field.field.node.topic_collection.body
     - field.field.node.topic_collection.field_image
+    - field.field.node.topic_collection.field_meta_tags
     - field.field.node.topic_collection.field_topic_collection_tags
     - node.type.topic_collection
     - views.view.topic_page_browse_by_tag
   module:
     - layout_builder
     - layout_builder_restrictions
+    - metatag
     - text
     - uiowa_core
     - user
@@ -102,6 +104,21 @@ third_party_settings:
               context_mapping: {  }
             additional: {  }
             weight: -6
+          -
+            uuid: 0276b159-ed1e-43b2-a750-7c4b61c86cad
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:topic_collection:field_meta_tags'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: metatag_empty_formatter
+            additional: {  }
+            weight: -4
         third_party_settings: {  }
       -
         layout_id: layout_onecol
@@ -220,7 +237,7 @@ content:
     type: entity_reference_label
     region: content
   field_meta_tags:
-    weight: 104
+    weight: 106
     label: above
     settings: {  }
     third_party_settings: {  }
