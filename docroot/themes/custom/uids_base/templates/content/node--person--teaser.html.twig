@@ -94,7 +94,7 @@
 {% set person_card = {
   'attributes': attributes.addClass(classes),
   'card_image': content.field_image | render,
-  'card_text': content.field_teaser | render,
+  'card_text': content | render,
   'card_subtitle': content.field_person_position | render,
   'card_date': content.field_person_email | render,
   'card_tag': content.field_person_phone | render,
@@ -126,6 +126,11 @@
       <div class="card__date">
         {{ card_date }}
       </div>
+    {% endif %}
+  {% endblock %}
+  {% block card_content %}
+    {% if card_text|striptags|trim is not empty %}
+      <div class="card__description">{{ card_text }}</div>
     {% endif %}
   {% endblock %}
 {% endembed %}
