@@ -37,11 +37,14 @@
   .field__item {
     display: inline;
   }
-  .views-row  + .views-row {
-    &:before {
+  .views-row {
+    &:after {
       content: ",";
       padding-right: $xsm;
       margin-left: -3px;
+    }
+    &:last-child:after {
+      content: "";
     }
   }
 }
