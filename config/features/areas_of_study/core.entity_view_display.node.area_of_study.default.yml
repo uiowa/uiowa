@@ -4,17 +4,21 @@ status: true
 dependencies:
   config:
     - field.field.node.area_of_study.body
-    - field.field.node.area_of_study.field_area_of_study_certificates
-    - field.field.node.area_of_study.field_area_of_study_majors
-    - field.field.node.area_of_study.field_area_of_study_minors
-    - field.field.node.area_of_study.field_area_of_study_online
-    - field.field.node.area_of_study.field_area_of_study_preprof
+    - field.field.node.area_of_study.field_area_of_study_degree_types
+    - field.field.node.area_of_study.field_area_of_study_delivery
+    - field.field.node.area_of_study.field_area_of_study_link_direct
+    - field.field.node.area_of_study.field_area_of_study_locations
+    - field.field.node.area_of_study.field_area_of_study_source_link
+    - field.field.node.area_of_study.field_area_of_study_synonyms
     - field.field.node.area_of_study.field_image
+    - field.field.node.area_of_study.field_meta_tags
     - node.type.area_of_study
   module:
-    - entity_reference_revisions
     - layout_builder
     - layout_builder_restrictions
+    - link
+    - metatag
+    - options
     - system
     - text
     - user
@@ -62,105 +66,7 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 1
-          -
-            uuid: d5628205-7805-460b-b65e-9d15b3d94e71
-            region: background
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_image'
-              formatter:
-                label: hidden
-                settings:
-                  view_mode: medium__square
-                  link: false
-                third_party_settings: {  }
-                type: entity_reference_entity_view
-            additional: {  }
-            weight: 0
-          -
-            uuid: 4662491f-9799-481e-aab0-cfe9e5dc3fa8
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_area_of_study_majors'
-              formatter:
-                type: entity_reference_revisions_entity_view
-                label: above
-                settings:
-                  view_mode: default
-                  link: ''
-                third_party_settings: {  }
-            additional: {  }
-            weight: 2
-          -
-            uuid: 7b79f9d2-739d-4ca8-b868-a5aa2f3adf13
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_area_of_study_minors'
-              formatter:
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-                type: string
-            additional: {  }
-            weight: 3
-          -
-            uuid: 569e5bc6-063a-41d1-aba6-898af65e7270
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_area_of_study_certificates'
-              formatter:
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-                type: string
-            additional: {  }
-            weight: 4
-          -
-            uuid: b2b883ff-d241-46a6-82b2-1b8e020fb2ba
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_area_of_study_preprof'
-              formatter:
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-                type: string
-            additional: {  }
-            weight: 5
-          -
-            uuid: 6c8e45b2-5729-447c-a807-f351855d6695
-            region: content
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_area_of_study_online'
-              formatter:
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-                type: string
-            additional: {  }
-            weight: 6
+            weight: 7
         third_party_settings: {  }
       -
         layout_id: layout_twocol
@@ -168,8 +74,9 @@ third_party_settings:
           label: ''
           column_widths: 67-33
           layout_builder_styles_style:
-            - ''
-            - ''
+            0: ''
+            1: section_margin_fixed_width_container
+            section_alignment_start: section_alignment_start
         components:
           -
             uuid: bd18ff33-3031-499c-97e8-bfa321c9dd68
@@ -186,6 +93,78 @@ third_party_settings:
                 third_party_settings: {  }
             additional: {  }
             weight: 0
+          -
+            uuid: d5628205-7805-460b-b65e-9d15b3d94e71
+            region: second
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:area_of_study:field_image'
+              formatter:
+                label: hidden
+                settings:
+                  view_mode: medium__square
+                  link: false
+                third_party_settings: {  }
+                type: entity_reference_entity_view
+            additional: {  }
+            weight: 0
+          -
+            uuid: ea4ae76a-a7d5-4dae-a3ed-ac60ba415b10
+            region: second
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_source_link'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: visually_hidden
+                type: link
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: '0'
+                  target: '0'
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 4
+          -
+            uuid: 6f234918-3d0f-4023-8908-6e151ead2bf9
+            region: first
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:area_of_study:field_area_of_study_degree_types'
+              formatter:
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+                type: entity_reference_label
+            additional: {  }
+            weight: 1
+          -
+            uuid: 7d3d7aba-b341-4099-89ef-0b93624dce5e
+            region: first
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:area_of_study:field_area_of_study_locations'
+              formatter:
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+                type: entity_reference_label
+            additional: {  }
+            weight: 2
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -198,8 +177,11 @@ third_party_settings:
       - Devel
       - Forms
       - 'Inline blocks'
+      - Lists
       - 'Lists (Views)'
       - Menus
+      - 'Site custom'
+      - 'SiteNow Dispatch'
       - Superfish
       - System
       - 'University of Iowa Alerts'
@@ -210,19 +192,19 @@ third_party_settings:
       whitelisted_blocks:
         'Chaos Tools': {  }
         'Content fields':
-          - 'field_block:node:area_of_study:field_area_of_study_college'
-          - 'field_block:node:area_of_study:field_area_of_study_degrees'
           - 'field_block:node:area_of_study:body'
           - 'field_block:node:area_of_study:field_image'
-          - 'field_block:node:area_of_study:field_area_of_study_related'
           - 'field_block:node:area_of_study:title'
         'Custom block types': {  }
         'Custom blocks': {  }
         Devel: {  }
         Forms: {  }
         'Inline blocks': {  }
+        Lists: {  }
         'Lists (Views)': {  }
         Menus: {  }
+        'Site custom': {  }
+        'SiteNow Dispatch': {  }
         Superfish: {  }
         System:
           - system_breadcrumb_block
@@ -255,46 +237,57 @@ content:
     settings: {  }
     third_party_settings: {  }
     region: content
-  field_area_of_study_certificates:
-    weight: 10
+  field_area_of_study_degree_types:
+    weight: 17
     label: above
     settings:
-      link_to_entity: false
+      link: true
     third_party_settings: {  }
-    type: string
+    type: entity_reference_label
     region: content
-  field_area_of_study_majors:
-    type: entity_reference_revisions_entity_view
-    weight: 8
+  field_area_of_study_delivery:
+    weight: 20
     label: above
-    settings:
-      view_mode: default
-      link: ''
+    settings: {  }
     third_party_settings: {  }
+    type: list_default
     region: content
-  field_area_of_study_minors:
-    weight: 9
+  field_area_of_study_link_direct:
+    weight: 14
     label: above
     settings:
-      link_to_entity: false
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
     third_party_settings: {  }
-    type: string
+    type: boolean
     region: content
-  field_area_of_study_online:
-    weight: 12
+  field_area_of_study_locations:
+    weight: 16
     label: above
     settings:
-      link_to_entity: false
+      link: true
     third_party_settings: {  }
-    type: string
+    type: entity_reference_label
     region: content
-  field_area_of_study_preprof:
-    weight: 11
+  field_area_of_study_source_link:
+    weight: 15
     label: above
     settings:
-      link_to_entity: false
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
     third_party_settings: {  }
-    type: string
+    type: link
+    region: content
+  field_area_of_study_synonyms:
+    weight: 19
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
     region: content
   field_image:
     weight: 1
@@ -304,6 +297,13 @@ content:
       link: false
     third_party_settings: {  }
     type: entity_reference_entity_view
+    region: content
+  field_meta_tags:
+    weight: 18
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_empty_formatter
     region: content
   links:
     weight: 0

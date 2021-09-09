@@ -16,20 +16,31 @@ module:
   jquery_ui_datepicker: 0
   jquery_ui_slider: 0
   jquery_ui_touch_punch: 0
+  uiowa_area_of_study: 0
   weight: 0
   tvi: 15
 theme: {  }
 blacklist:
+  - block_content.type.area_of_study_search
+  - core.base_field_override.node.area_of_study.promote
+  - core.entity_form_display.block_content.area_of_study_search.default
+  - core.entity_view_display.block_content.area_of_study_search.default
   - core.entity_view_mode.node.pdf
   - metatag.metatag_defaults.node__area_of_study
   - metatag.metatag_defaults.node__event
   - metatag.metatag_defaults.node__event_series
   - metatag.metatag_defaults.node__student_profile
   - metatag.metatag_defaults.node__transfer_tips
+  - node.type.area_of_study
+  - paragraphs.paragraphs_type.degree
+  - simple_sitemap.bundle_settings.default.node.area_of_study
   - simple_sitemap.bundle_settings.default.taxonomy_term.colleges
   - taxonomy.vocabulary.colleges
   - views.view.colleges_taxonomy_term
   - 'field.storage.taxonomy_term.field_college_*'
+  - 'field.storage.node.field_area_of_study_*'
+  - 'field.storage.paragraph.field_degree*'
+  - 'field.field.node.area_of_study.*'
 graylist:
   - block_content.type.uiowa_timeline
   - config_split.config_split.admissions
@@ -115,9 +126,12 @@ graylist:
   - field.storage.paragraph.field_ar_intro
   - field.storage.paragraph.field_ar_process
   - field.storage.paragraph.field_ar_requirement
+  - field.storage.paragraph.field_degree_abbreviation
+  - field.storage.paragraph.field_degree_label
   - field.storage.taxonomy_term.field_academic_groups_media
   - field.storage.taxonomy_term.field_image
   - image.style.grid_gallery
+  - metatag.metatag_defaults.node__area_of_study
   - metatag.settings
   - node.type.area_of_study
   - node.type.event_series
@@ -135,6 +149,7 @@ graylist:
   - taxonomy.vocabulary.academic_groups
   - views.view.academic_groups_block
   - views.view.academic_groups_taxonomy_term
+  - views.view.areas_of_study
   - views.view.areas_of_study_block
   - views.view.area_of_study_college_block
   - views.view.counselors
@@ -150,9 +165,13 @@ graylist:
   - 'core.entity_view_display.*'
   - field.field.node.student_profile.field_person_territory
   - 'field.storage.fragment.field_stat_*'
-  - 'field.storage.node.field_area_of_study_*'
   - fragment.fragment_type.stat
   - 'user.role.*'
+  - 'core.base_field_override.node.area_of_study.*'
+  - 'core.entity_form_display.node.area_of_study.*'
+  - 'core.entity_view_display.node.area_of_study.*'
+  - 'field.field.node.area_of_study.*'
+  - 'field.storage.node.field_area_of_study_*'
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 90

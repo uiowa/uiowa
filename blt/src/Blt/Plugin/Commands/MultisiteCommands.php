@@ -78,11 +78,13 @@ class MultisiteCommands extends BltTasks {
 
         // Skip sites whose database do not exist on the application in AH env.
         if (EnvironmentDetector::isAhEnv() && !file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
-          $this->say("Skipping {$multisite}. Database {$db} does not exist.");
+          $this->logger->info("Skipping {$multisite}. Database {$db} does not exist on this application.");
           continue;
         }
 
         if (!in_array($multisite, $options['exclude'])) {
+          $this->say("<info>Executing on {$multisite}...</info>");
+
           // Define a site-specific cache directory.
           // @see: https://github.com/drush-ops/drush/pull/4345
           $tmp = "/tmp/.drush-cache-{$app}/{$env}/{$multisite}";
@@ -90,6 +92,7 @@ class MultisiteCommands extends BltTasks {
           $this->taskDrush()
             ->drush($cmd)
             ->option('define', "drush.paths.cache-directory={$tmp}")
+            ->printMetadata(FALSE)
             ->run();
         }
         else {
