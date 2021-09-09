@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: wrac.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: wrac
+  human_name: wrac.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: wrac.prod
+drupal:
+  db:
+    database: wrac_uiowa_edu
+uiowa:
+  requester: dquam

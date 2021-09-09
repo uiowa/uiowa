@@ -78,6 +78,7 @@
   node.isSticky() ? 'node--sticky',
   not node.isPublished() ? 'node--unpublished',
   view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+  'card--list',
 ]
 %}
 
@@ -87,9 +88,12 @@
   {% set node_link = url %}
 {% endif %}
 
-{% set headline_level = heading_size ?: 'h3' %}
+{% set headline_level = 'h3 '%}
 {% if view %}
   {% set headline_level = view.display_handler.getOption('heading_size') %}
+{% endif %}
+{% if heading_size %}
+  {% set headline_level = heading_size %}
 {% endif %}
 
 {{ attach_library('classy/node') }}
@@ -102,6 +106,7 @@
   'card_title': label,
   'content': content,
   'card_link_url': node_link,
+  'media_styles': media_classes,
   'headline_level': headline_level,
 } %}
 

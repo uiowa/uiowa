@@ -3,6 +3,9 @@
 @import "components/grid/grid.scss";
 
 .list-container {
+  [class*="grid--"].view & {
+    margin-bottom: $mobile-height-gutter;;
+  }
   .card {
     height: 100%;
     .section-alignment__start & {
@@ -11,7 +14,16 @@
   }
 }
 
-// These override the grid settings in grid.scss from UIDS
+// Set first item within list-container to full width
+.grid--first-item-full-width {
+  .list-container {
+    :first-child {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+  // These override the grid settings in grid.scss from UIDS
 .inner--list.grid--threecol--33-34-33 .list-container,
 .inner--list.grid--twocol--50-50 .list-container {
   display: inherit;
@@ -20,4 +32,20 @@
 .inner--grid.grid--threecol--33-34-33 .list-container,
 .inner--grid.grid--twocol--50-50 .list-container{
   grid-template-columns: inherit;
+  gap: $mobile-height-gutter;
+}
+
+.inner--grid .more-link {
+  margin-top: $mobile-height-gutter;
+}
+
+// @todo Move to UIDS
+.grid--fourcol--25 {
+  .list-container {
+    @include grid-base;
+    @include breakpoint(sm) {
+      gap: $desktop-width-gutter;
+      grid-template-columns: repeat(auto-fill, minmax(21%, 1fr));
+    }
+  }
 }

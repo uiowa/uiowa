@@ -97,6 +97,16 @@ function uiowa_edu_core_update_8004() {
 }
 
 /**
+ * Set search config to not limit to uiowa.edu domain.
+ */
+function uiowa_edu_core_update_8005() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_search.settings');
+  $config->set('uiowa_search.cse_scope', 0);
+  $config->save();
+}
+
+/**
  * Implements hook_uninstall().
  */
 function uiowa_edu_core_uninstall() {

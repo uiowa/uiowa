@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: sitesimfaculty.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sitesimfaculty
+  human_name: imfaculty.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesimfaculty.prod
+drupal:
+  db:
+    database: imfaculty_sites_uiowa_edu
+uiowa:
+  requester: strommerl

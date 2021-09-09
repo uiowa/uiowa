@@ -1,273 +1,349 @@
-body:not(.cke_editable) {
-  .embed-responsive {
-    position: relative;
-    display: block;
-    width: 100%;
-    padding: 0;
-    overflow: hidden;
+.embed-responsive {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  &:before {
+    display: none;
   }
+}
 
-  .embed-responsive embed,
-  .embed-responsive iframe,
-  .embed-responsive object,
-  .embed-responsive video {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
-  }
+.embed-responsive embed,
+.embed-responsive iframe,
+.embed-responsive object,
+.embed-responsive video {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
 
-  @media (min-width: 576px) {
+.embed-responsive-1by1 {
+  padding-bottom: 100%;
+}
 
-    .align-right.media {
-      margin-left: 1rem;
-    }
+.embed-responsive-4by3 {
+  padding-bottom: 75%;
+}
 
-    .align-left.media {
-      margin-right: 1rem;
-    }
+.embed-responsive-16by9 {
+  padding-bottom: 56.25%;
+}
 
-    .align-right.media--type-remote-video {
-      width: auto;
-      margin-left: 1rem;
+.embed-responsive-21by9 {
+  padding-bottom: 42.85714286%;
+}
 
-      .field--name-field-media-oembed-video iframe {
-        float: right;
-      }
-    }
-    .align-left.media--type-remote-video {
-      width: auto;
-      margin-right: 1rem;
+// Media alignment
 
-      .field--name-field-media-oembed-video iframe {
-        float: left;
-      }
-    }
-
-  }
-
-  .align-center.media--type-remote-video {
-    & .field--name-field-media-oembed-video iframe {
-      margin: 0 auto;
+@media (min-width: 576px) {
+  .align-right {
+    &.media, .media, figcaption {
+      margin-left: 20px;
     }
   }
 
-  .media--type-remote-video {
-    @extend .embed-responsive;
-    padding-bottom: 56.25%;
-
-    &.media--view-mode-full,
-    &.media--view-mode-default,
-    &.media--view-mode-image-large,
-    &.media--view-mode-image-medium,
-    &.media--view-mode-image-small,
-    &.media--view-mode-large,
-    &.media--view-mode-medium,
-    &.media--view-mode-small,
-    figure.caption & {
-      @include media-breakpoint-up(sm) {
-        padding-bottom: 0;
-      }
+  .align-left {
+    &.media, .media, figcaption {
+      margin-right: 20px;
     }
   }
 
-  figure.caption .media--type-remote-video iframe,
-  .media--type-remote-video.media--view-mode-image-medium iframe,
-  .media--type-remote-video.media--view-mode-image-large iframe,
-  .media--type-remote-video.media--view-mode-image-small iframe,
-  .media--type-remote-video.media--view-mode-medium iframe,
-  .media--type-remote-video.media--view-mode-large iframe,
-  .media--type-remote-video.media--view-mode-small iframe {
-    @include media-breakpoint-up(sm) {
-      position: unset;
-      display: inherit;
-      width: auto;
-      height: auto;
-      padding: 0;
-      overflow: auto;
-    }
-  }
-
-  figure.caption .media--type-remote-video.media--view-mode-image-large iframe,
-  figure.caption .media--type-remote-video.media--view-mode-large iframe,
-  figure.caption .media--type-remote-video.media--view-mode-full iframe,
-  .media--type-remote-video.media--view-mode-large iframe,
-  .media--type-remote-video.media--view-mode-image-large iframe {
-    @include media-breakpoint-up(sm) {
-      width: 854px;
-      height: 480px;
-    }
-  }
-
-  figure.caption .media--type-remote-video.media--view-mode-image-medium iframe,
-  figure.caption .media--type-remote-video.media--view-mode-medium iframe,
-  .media--type-remote-video.media--view-mode-image-medium iframe,
-  .media--type-remote-video.media--view-mode-medium iframe {
-    @include media-breakpoint-up(sm) {
-      width: 640px;
-      height: 360px;
-    }
-  }
-
-  figure.caption .media--type-remote-video.media--view-mode-image-small iframe,
-  figure.caption .media--type-remote-video.media--view-mode-small iframe,
-  .media--type-remote-video.media--view-mode-small iframe,
-  .media--type-remote-video.media--view-mode-image-small iframe {
-    @include media-breakpoint-up(sm) {
-      width: 426px;
-      height: 240px;
-    }
-  }
-
-  .embedded-entity {
-    max-width: 100%;
-    margin-bottom: 0;
-
-    figure & {
-      margin-bottom: 0;
-    }
-
-    figcaption {
-      margin-top: 0.5rem;
-    }
-  }
-
-
-  .embedded-entity + p {
-    margin-top: 1rem !important;
-  }
-
-  .embedded-entity.align-center,
-  .media.align-center {
+  .align-right.media--type-remote-video,
+  .align-right.media--type-panopto {
+    width: auto;
+    margin-left: 20px;
     .field--name-field-media-oembed-video iframe,
-    .field--name-field-media-instagram iframe {
-      margin: 0 auto !important;
+    .field--name-field-media-panopto-url iframe {
+      float: right;
     }
   }
-
-  figure.caption {
-    display: block;
-
-    @include media-breakpoint-up(sm) {
-      display: table;
-    }
-
-    margin: 0;
-    margin-bottom: .5rem;
-
-    &.align-center {
-      margin-right: auto;
-      margin-left: auto;
-    }
-
-    figcaption {
-      display: block;
-
-      @include media-breakpoint-up(sm) {
-        display: table-caption;
-      }
-
-      max-width: none;
-      caption-side: bottom;
-    }
-  }
-
-  .align-left,
-  figure.align-left,
-  .align-left.embedded-entity,
-  .align-left .embedded-entity {
-    float: none;
-    margin: 0;
-
-    @include media-breakpoint-up(sm) {
-      margin-right: 1rem;
-      margin-bottom: .5rem;
+  .align-left.media--type-remote-video,
+  .align-left.media--type-panopto {
+    width: auto;
+    margin-right: 20px;
+    .field--name-field-media-oembed-video iframe,
+    .field--name-field-media-panopto-url iframe {
       float: left;
     }
   }
 
-  .align-right,
-  figure.align-right,
-  .align-right.embedded-entity,
-  .align-right .embedded-entity {
-    float: none;
-    margin: 0;
+}
 
+.align-center.media--type-remote-video,
+.align-center.media--type-panopto {
+  & .field--name-field-media-oembed-video iframe,
+  & .field--name-field-media-panopto-url iframe {
+    margin: 0 auto;
+  }
+}
+
+.media--type-remote-video,
+.media--type-panopto {
+  @extend .embed-responsive;
+  @extend .embed-responsive-16by9;
+
+  &.media--view-mode-default,
+  &.media--view-mode-full {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+  }
+
+  &.media--view-mode-image-large,
+  &.media--view-mode-image-default,
+  &.media--view-mode-image-full,
+  &.media--view-mode-image-medium,
+  &.media--view-mode-image-small,
+  &.media--view-mode-large,
+  &.media--view-mode-default,
+  &.media--view-mode-full,
+  &.media--view-mode-medium,
+  &.media--view-mode-small,
+  figure.caption & {
     @include media-breakpoint-up(sm) {
-      margin-left: 1rem;
-      margin-bottom: .5rem;
-      float: right;
+      padding-bottom: 0;
+    }
+  }
+}
+
+// Fallback (current, using padding hack)
+@supports not (aspect-ratio: 16 / 9) {
+  .media--type-remote-video,
+  .media--type-panopto {
+    &.media--view-mode-default,
+    &.media--view-mode-full {
+      &:before {
+        @include media-breakpoint-up(sm) {
+          display: block;
+          float: left;
+          padding-top: 56.25%;
+          content: "";
+        }
+      }
+      &:after {
+        display: block;
+        content: "";
+        clear: both;
+      }
+    }
+  }
+}
+
+figure.caption .media--type-remote-video iframe,
+figure.caption .media--type-panopto iframe,
+.media--type-remote-video.media--view-mode-image-medium iframe,
+.media--type-remote-video.media--view-mode-image-large iframe,
+.media--type-remote-video.media--view-mode-image-small iframe,
+.media--type-remote-video.media--view-mode-medium iframe,
+.media--type-remote-video.media--view-mode-large iframe,
+.media--type-remote-video.media--view-mode-small iframe,
+.media--type-panopto.media--view-mode-medium iframe,
+.media--type-panopto.media--view-mode-large iframe,
+.media--type-panopto.media--view-mode-small iframe {
+  @include media-breakpoint-up(sm) {
+    position: unset;
+    display: inherit;
+    width: auto;
+    height: auto;
+    padding: 0;
+    overflow: auto;
+  }
+}
+
+figure.caption .media--type-remote-video.media--view-mode-image-large iframe,
+figure.caption .media--type-remote-video.media--view-mode-large iframe,
+figure.caption .media--type-panopto.media--view-mode-large iframe,
+.media--type-remote-video.media--view-mode-large iframe,
+.media--type-remote-video.media--view-mode-image-large iframe,
+.media--type-panopto.media--view-mode-large iframe {
+  @include media-breakpoint-up(sm) {
+    width: 854px;
+    max-width: 100%;
+    height: 480px;
+  }
+}
+
+figure.caption .media--type-remote-video.media--view-mode-image-medium iframe,
+figure.caption .media--type-remote-video.media--view-mode-medium iframe,
+figure.caption .media--type-panopto.media--view-mode-medium iframe,
+.media--type-remote-video.media--view-mode-image-medium iframe,
+.media--type-remote-video.media--view-mode-medium iframe,
+.media--type-panopto.media--view-mode-medium iframe{
+  @include media-breakpoint-up(sm) {
+    width: 640px;
+    max-width: 100%;
+    height: 360px;
+  }
+}
+
+figure.caption .media--type-remote-video.media--view-mode-image-small iframe,
+figure.caption .media--type-remote-video.media--view-mode-small iframe,
+figure.caption .media--type-panopto.media--view-mode-small iframe,
+.media--type-remote-video.media--view-mode-small iframe,
+.media--type-panopto.media--view-mode-small iframe,
+.media--type-remote-video.media--view-mode-image-small iframe {
+  @include media-breakpoint-up(sm) {
+    width: 426px;
+    max-width: 100%;
+    height: 240px;
+  }
+}
+
+.media--type-remote-video.media--view-mode-small__ultrawide,
+.media--type-remote-video.media--view-mode-medium__ultrawide,
+.media--type-remote-video.media--view-mode-large__ultrawide,
+.media--type-panopto.media--view-mode-small__ultrawide,
+.media--type-panopto.media--view-mode-medium__ultrawide,
+.media--type-panopto.media--view-mode-large__ultrawide {
+  @extend .embed-responsive-21by9;
+}
+
+.media--type-remote-video.media--view-mode-small__widescreen,
+.media--type-remote-video.media--view-mode-medium__widescreen,
+.media--type-remote-video.media--view-mode-large__widescreen,
+.media--type-panopto.media--view-mode-small__widescreen,
+.media--type-panopto.media--view-mode-medium__widescreen,
+.media--type-panopto.media--view-mode-large__widescreen {
+  @extend .embed-responsive-16by9;
+}
+
+.media--type-remote-video.media--view-mode-small__square,
+.media--type-remote-video.media--view-mode-medium__square,
+.media--type-remote-video.media--view-mode-large__square,
+.media--type-panopto.media--view-mode-small__square,
+.media--type-panopto.media--view-mode-medium__square,
+.media--type-panopto.media--view-mode-large__square {
+  @extend .embed-responsive-4by3;
+}
+
+.media--type-remote-video.media--view-mode-default,
+.media--type-remote-video.media--view-mode-small__no-crop,
+.media--type-remote-video.media--view-mode-medium__no-crop,
+.media--type-remote-video.media--view-mode-large__no-crop,
+.media--type-panopto.media--view-mode-default,
+.media--type-panopto.media--view-mode-small__no-crop,
+.media--type-panopto.media--view-mode-medium__no-crop,
+.media--type-panopto.media--view-mode-large__no-crop {
+  @extend .embed-responsive-16by9;
+}
+
+
+figure.caption-drupal-media {
+  width: calc(100%);
+  margin: 0;
+
+  @include media-breakpoint-up(sm) {
+    width: unset;
+    margin: inherit;
+  }
+}
+
+body.cke_editable {
+  // Minimum selectable border top and bottom.
+  .cke_widget_wrapper {
+    margin: 20px 0;
+  }
+  // Adjust responsive positioning to make room for edit button.
+  .embed-responsive embed,
+  .embed-responsive iframe,
+  .embed-responsive object,
+  .embed-responsive video,
+  .media--type-panopto embed,
+  .media--type-panopto iframe,
+  .media--type-panopto object,
+  .media--type-panopto video,
+  .media--type-remote-video embed,
+  .media--type-remote-video iframe,
+  .media--type-remote-video object,
+  .media--type-remote-video video {
+    top: 40px;
+    figure.caption-drupal-media {
+      width: 100%;
+      margin: 0;
     }
   }
 
-  figure.caption .embedded-entity + figcaption {
-    font-size: 90%;
-    color: $gray-900;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-  }
-
-  figure.caption.align-right .embedded-entity + figcaption {
-    @include media-breakpoint-up(sm) {
-      text-align: right;
-    }
-  }
-
-  .alert {
-    figure.caption .embedded-entity + figcaption {
-      color: $gray-900;
-    }
-  }
-
-  // Media alignment
-
-  @media (min-width: 576px) {
-
-    .align-right.embedded-entity,
-    .align-right .embedded-entity {
-      margin-left: 1rem;
-    }
-
-    .align-left.embedded-entity,
-    .align-left .embedded-entity {
-      margin-right: 1rem;
-    }
-
-  }
-
-
-  .align-center {
-    text-align: center;
-  }
-
-  .embedded-entity.align-center {
-
-    .media--type-image,
-    .field--name-field-media-image {
-      margin: 0 auto;
-    }
-  }
-
-  .field--name-field-media-image {
-    min-width: 1px;
-
-    img {
+  // Deal with drupal-media wysiwyg issue for align none originals.
+  .media:not(.align-left):not(.align-right):not(.align-center) {
+    &.media--type-remote-video.media--view-mode-default,
+    &.media--type-remote-video.media--view-mode-full,
+    &.media--type-panopto.media--view-mode-default,
+    &.media--type-panopto.media--view-mode-full {
+      width: 854px;
       max-width: 100%;
-      height: auto;
+      height: 480px;
+      position: unset;
+      display: inherit;
+      padding: 0;
+      overflow: auto;
+
+      .field--name-field-media-oembed-video,
+      .field--name-field-media-panopto-url {
+        height: 100%;
+
+        &>iframe {
+          width: 100%;
+          height: 100%;
+        }
+      }
     }
   }
+  // Since render is small, make preview for original captions small.
+  figure.caption {
+    .media:not(.align-left):not(.align-right):not(.align-center) {
+      &.media--type-remote-video.media--view-mode-default,
+      &.media--type-remote-video.media--view-mode-full,
+      &.media--type-panopto.media--view-mode-default,
+      &.media--type-panopto.media--view-mode-full {
+        width: 300px;
+        // 150px + edit button + border/padding.
+        height: calc(150px + 40px + 9px);
 
-  .media--type-remote-video.media--view-mode-default,
-  .media--type-remote-video.media--view-mode-full {
-    padding-bottom: 56.25%;
+        .field--name-field-media-oembed-video,
+        .field--name-field-media-panopto-url {
+          height: unset;
+        }
+      }
+    }
   }
-  .align-left.media--view-mode-default,
-  .align-right.media--view-mode-default {
-    float: none;
-    margin: 0;
-  }
+}
 
+// Misc embed styles.
+// @todo Clean up.
+.embedded-entity.align-center,
+.media.align-center {
+  .field--name-field-media-instagram iframe {
+    margin: 0 auto !important;
+  }
+}
+figure.caption .embedded-entity + figcaption {
+  font-size: 90%;
+  color: $gray-900;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.align-center {
+  text-align: center;
+}
+.embedded-entity.align-center {
+  .media--type-image,
+  .field--name-field-media-image {
+    margin: 0 auto;
+  }
+}
+.field--name-field-media-image {
+  min-width: 1px;
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+.alert {
+  figure.caption .embedded-entity + figcaption {
+    color: $gray-900;
+  }
 }

@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: studentlegal.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: studentlegal
+  human_name: studentlegal.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: studentlegal.prod
+drupal:
+  db:
+    database: studentlegal_uiowa_edu
+uiowa:
+  requester: dquam

@@ -104,24 +104,61 @@
 .card--person-teaser {
   .card__date,
   .card__subtitle {
+    a {
+      word-break: break-word;
+    }
     .svg-inline--fa {
       margin-right: .3rem;
     }
   }
-  &.card .card__title {
-    margin: 0;
-  }
   .card__subtitle {
     padding-bottom: .5rem;
+    margin-top: -.3rem;
     .svg-inline--fa {
       font-size: 1.1rem;
     }
-  }
-  .card__description {
-    font-size: $small-font-size;
-    color: $text-muted;
-    strong {
-      color: $secondary;
+
+    .field--label-visually_hidden .field__items {
+      display: grid;
     }
+  }
+}
+
+.img--empty {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-size: 75%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: $light;
+  background-image: url('/themes/custom/uids_base/assets/images/person-one.svg');
+  .media--border & {
+    aspect-ratio: 1 / 1;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,.125), inset 0 0 0 9px #fff;
+    background-position: 50% 105%;
+  }
+  .media--widescreen & {
+    background-position: 50% -5%;
+    aspect-ratio: 16 / 9;
+  }
+}
+
+// Fallback (current, using padding hack)
+@supports not (aspect-ratio: 16 / 9) {
+  .media--border .img--empty {
+    padding-top: 85%;
+  }
+  .card__media--large.media--circle .img--empty,
+  .card__media--medium.media--circle .img--empty {
+    padding-top: 90%;
+    @include breakpoint(sm) {
+      padding-top: 95%;
+    }
+  }
+  .media--widescreen .img--empty {
+    padding-top: 45%;
+  }
+  .media--square .img--empty {
+    padding-top: 100%;
   }
 }

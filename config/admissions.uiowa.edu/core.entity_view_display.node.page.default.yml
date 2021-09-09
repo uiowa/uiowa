@@ -150,18 +150,26 @@ third_party_settings:
         - layout_threecol
         - layout_fourcol
       whitelisted_blocks:
+        'Admissions Core': {  }
         'Area of Study': {  }
         'Chaos Tools': {  }
         'Content fields':
           - 'field_block:node:page:body'
+          - 'extra_field_block:node:page:entity_print_view_pdf'
+          - 'extra_field_block:user:user:entity_print_view_pdf'
         'Custom blocks': {  }
         Devel: {  }
         'Entity Print': {  }
         Forms: {  }
+        Lists:
+          - 'views_block:people_list_block-list_card'
         'Lists (Views)':
-          - 'views_block:area_of_study_college_block-block_1'
+          - 'views_block:academic_groups_block-block_1'
           - 'views_block:areas_of_study_block-block_information'
+          - 'views_block:area_of_study_college_block-block_1'
           - 'views_block:counselors-block_counselors'
+          - 'views_block:student_card-block_student_grid'
+          - 'views_block:transfer_tips_list-block_transfer_tips'
         Menus:
           - 'system_menu_block:main'
           - 'menu_block:main'
@@ -186,6 +194,7 @@ third_party_settings:
           - 'inline_block:uiowa_page_title_hero'
           - 'inline_block:uiowa_spacer_separator'
     allowed_block_categories:
+      - 'Admissions Core'
       - 'Area of Study'
       - 'Chaos Tools'
       - 'Content fields'
@@ -195,9 +204,11 @@ third_party_settings:
       - 'Entity Print'
       - Forms
       - 'Inline blocks'
+      - Lists
       - 'Lists (Views)'
       - Menus
       - 'Site custom'
+      - 'SiteNow Dispatch'
       - Superfish
       - System
       - 'University of Iowa Alerts'
@@ -215,8 +226,10 @@ third_party_settings:
           all_regions:
             'Custom block types':
               - uiowa_slider
+              - uiowa_timeline
             'Inline blocks':
               - 'inline_block:uiowa_slider'
+              - 'inline_block:uiowa_timeline'
         layout_onecol: {  }
         layout_page:
           all_regions:
@@ -228,15 +241,31 @@ third_party_settings:
           all_regions:
             'Custom block types':
               - uiowa_slider
+              - uiowa_timeline
             'Inline blocks':
               - 'inline_block:uiowa_slider'
+              - 'inline_block:uiowa_timeline'
         layout_twocol:
           all_regions:
             'Custom block types':
               - uiowa_slider
+              - uiowa_timeline
             'Inline blocks':
               - 'inline_block:uiowa_slider'
-      whitelisted_blocks: {  }
+              - 'inline_block:uiowa_timeline'
+      whitelisted_blocks:
+        layout_fourcol:
+          all_regions:
+            Lists:
+              - 'views_block:people_list_block-list_card'
+        layout_threecol:
+          all_regions:
+            Lists:
+              - 'views_block:people_list_block-list_card'
+        layout_twocol:
+          all_regions:
+            Lists:
+              - 'views_block:people_list_block-list_card'
 _core:
   default_config_hash: 0AcX0F0voV5TKB6_GPZxJpAfbKCnDU7er_5TWcqIgSw
 id: node.page.default

@@ -299,7 +299,7 @@ class Article extends BaseNodeSource {
           $prefix_path = str_replace('/sites/gc/files/', '', substr($src, 0, strpos($src, $file_path)));
 
           // Download the file and create the file record.
-          $fid = $this->downloadFile($file_path, $this->getSourceBasePath() . $prefix_path, $drupal_file_directory);
+          $fid = $this->downloadFile($file_path, $this->getSourcePublicFilesUrl() . $prefix_path, $drupal_file_directory);
 
           // Get meta data an create the media entity.
           $meta = [];

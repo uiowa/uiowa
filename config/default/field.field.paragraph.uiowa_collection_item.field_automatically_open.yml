@@ -1,0 +1,23 @@
+uuid: 7cf696bd-8223-4f7b-be26-deab60e80789
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_automatically_open
+    - paragraphs.paragraphs_type.uiowa_collection_item
+id: paragraph.uiowa_collection_item.field_automatically_open
+field_name: field_automatically_open
+entity_type: paragraph
+bundle: uiowa_collection_item
+label: 'Automatically open'
+description: 'If Accordion and this option are selected, this item will be open on page load.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: Open
+  off_label: Closed
+field_type: boolean

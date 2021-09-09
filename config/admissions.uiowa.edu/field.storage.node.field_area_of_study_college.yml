@@ -1,15 +1,16 @@
-uuid: cd91c312-b307-4679-ac2b-3c24bc7bdffb
+uuid: a7441e8d-f019-424c-921e-539ace5e764a
 langcode: en
 status: true
 dependencies:
   module:
     - node
+    - taxonomy
 id: node.field_area_of_study_college
 field_name: field_area_of_study_college
 entity_type: node
 type: entity_reference
 settings:
-  target_type: node
+  target_type: taxonomy_term
 module: core
 locked: false
 cardinality: -1

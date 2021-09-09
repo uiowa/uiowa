@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: arts.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: arts
+  human_name: arts.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: arts.prod
+drupal:
+  db:
+    database: arts_uiowa_edu
+uiowa:
+  requester: arp

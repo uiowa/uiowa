@@ -28,13 +28,8 @@ disable-targets:
     toggle:
       modules: true
   tests:
-    drupal:
-      run: true
     frontend:
       run: true
-    security:
-      check:
-        composer: true
 tests:
   phpunit:
     - config: '${repo.root}'

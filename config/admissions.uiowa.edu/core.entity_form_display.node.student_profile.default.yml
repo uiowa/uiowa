@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.student_profile.body
     - field.field.node.student_profile.field_image
+    - field.field.node.student_profile.field_meta_tags
     - field.field.node.student_profile.field_person_first_name
     - field.field.node.student_profile.field_person_hometown
     - field.field.node.student_profile.field_person_last_name
@@ -22,6 +23,7 @@ dependencies:
     - address
     - content_moderation
     - media_library
+    - metatag
     - path
     - text
 id: node.student_profile.default
@@ -45,6 +47,13 @@ content:
       media_types: {  }
     third_party_settings: {  }
     type: media_library_widget
+    region: content
+  field_meta_tags:
+    weight: 26
+    settings:
+      sidebar: true
+    third_party_settings: {  }
+    type: metatag_firehose
     region: content
   field_person_first_name:
     weight: 0

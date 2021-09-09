@@ -10,10 +10,13 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\views\Views;
-use Drupal\Core\Form\FormState;
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uiowa_area_of_study_preprocess_html(&$variables) {
+  $variables['#attached']['library'][] = 'uiowa_area_of_study/global';
+}
 
 /**
  * Implements hook_form_alter().
@@ -23,76 +26,42 @@ function uiowa_area_of_study_form_alter(&$form, FormStateInterface $form_state, 
     case 'node_area_of_study_form':
     case 'node_area_of_study_edit_form':
       _sitenow_node_form_defaults($form, $form_state);
+      if (isset($form['field_area_of_study_link_direct'])) {
+        $form['field_area_of_study_link_direct']['#states'] = [
+          'visible' => [
+            ':input[name="field_area_of_study_source_link[0][uri]"]' => ['filled' => TRUE],
+          ],
+        ];
+      }
       break;
   }
 }
 
 /**
- * Implements hook_allowed_values_function().
+ * Implements hook_theme().
  */
-function uiowa_area_of_study_allowed_values_function(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
-  // Available degree abbreviations.
-  // Can be moved to store in a config file later.
-  $options = [
-    'AuD' => 'AuD',
-    'BA' => 'BA',
-    'BAS' => 'BAS',
-    'BBA' => 'BBA',
-    'BFA' => 'BFA',
-    'BM' => 'BM',
-    'BS' => 'BS',
-    'BSE' => 'BSE',
-    'BSN' => 'BSN',
-    'DDS' => 'DDS',
-    'DNP' => 'DNP',
-    'EdD' => 'EdD',
-    'JD' => 'JD',
-    'LLM' => 'LLM',
-    'MA' => 'MA',
-    'MAc' => 'MAc',
-    'MAT' => 'MAT',
-    'MCA' => 'MCA',
-    'MCS' => 'MCS',
-    'MFA' => 'MFA',
-    'MHA' => 'MHA',
-    'MPH' => 'MPH',
-    'MS' => 'MS',
-    'MSL' => 'MSL',
-    'PhD' => 'PhD',
-    'PHR' => 'PHR',
-    'SJD' => 'SJD',
+function uiowa_area_of_study_theme($existing, $type, $theme, $path) {
+  return [
+    'node__area_of_study__teaser' => [
+      'template' => 'node--area-of-study--teaser',
+      'base hook' => 'node',
+    ],
   ];
-  return $options;
 }
 
 /**
  * Implements hook_preprocess_HOOK().
  */
-function uiowa_area_of_study_preprocess_block(&$variables) {
-  if ($variables['elements']['#plugin_id'] == 'inline_block:area_of_study_search') {
-    // @todo Does this field need a headline field option?
-    // Using a process described here:
-    // https://drupal.stackexchange.com/a/274383/6066
-    $form = [];
-    $view_id = 'areas_of_study';
-    $display_id = 'areas_of_study';
-    $view = Views::getView($view_id);
-    if ($view) {
-      $view->setDisplay($display_id);
-      $view->initHandlers();
-      $form_state = (new FormState())
-        ->setStorage([
-          'view' => $view,
-          'display' => &$view->display_handler->display,
-          'rerender' => TRUE,
-        ])
-        ->setMethod('get')
-        ->setAlwaysProcess()
-        ->disableRedirect();
-      $form_state->set('rerender', NULL);
-      $form = \Drupal::formBuilder()
-        ->buildForm('\Drupal\views\Form\ViewsExposedForm', $form_state);
-    }
-    $variables['content']['form'] = $form;
+function uiowa_area_of_study_preprocess_field(&$variables) {
+  switch ($variables["element"]["#field_name"]) {
+    // Make it button!
+    case 'field_area_of_study_source_link':
+      switch ($variables["element"]["#view_mode"]) {
+        case '_custom':
+          // Assumes single link.
+          $variables['items'][0]['content']['#options']['attributes']['class'][] = 'bttn bttn--full bttn--primary bttn--caps';
+          break;
+      }
+      break;
   }
 }

@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labboudreau.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labboudreau
+  human_name: boudreau.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labboudreau.prod
+drupal:
+  db:
+    database: boudreau_lab_uiowa_edu
+uiowa:
+  requester: strommerl

@@ -1,0 +1,29 @@
+uuid: 6af3f49a-9d3f-44a8-8fe5-167f3bc3b5f2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_area_of_study_academic_gp
+    - node.type.area_of_study
+    - taxonomy.vocabulary.academic_groups
+id: node.area_of_study.field_area_of_study_academic_gp
+field_name: field_area_of_study_academic_gp
+entity_type: node
+bundle: area_of_study
+label: 'Academic Group'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      academic_groups: academic_groups
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

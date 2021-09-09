@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: multicultural.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: multicultural
+  human_name: multicultural.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: multicultural.prod
+drupal:
+  db:
+    database: multicultural_uiowa_edu
+uiowa:
+  requester: dquam

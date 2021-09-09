@@ -3,8 +3,29 @@
 @import "assets/scss/_local-fonts.scss";
 @import url('../../../../../core/themes/claro/css/components/dropbutton.css');
 $imgpath: '../../uids/assets/images';
-// lb claro styles
 
+// Grid for image gallery block.
+#drupal-off-canvas  {
+  .media-library-selection {
+    @include grid-base;
+    @include breakpoint(sm) {
+      @include threecol-grid;
+    }
+  }
+}
+// Responsive images within drupal-off-canvas and cursor move for media library grid.
+#drupal-off-canvas {
+  img {
+  width: 100%;
+  }
+  .media-library-item--grid[draggable="true"] {
+    img {
+      cursor: move;
+    }
+  }
+}
+
+// lb claro styles
 .search-field {
   background: #fff !important;
 }
@@ -20,6 +41,11 @@ $imgpath: '../../uids/assets/images';
   border: none !important;
   outline: none !important;
   width: 100% !important;
+}
+
+// Override classy negative bottom margin.
+#drupal-off-canvas table {
+  margin: 0 -20px 0 -20px;
 }
 
 #drupal-off-canvas .layout-builder-style-heading {
@@ -255,35 +281,35 @@ form#node-page-layout-builder-form {
     padding: 3rem;
   }
 
-  &.bg--gray {
+  &[class*="bg--gray"] {
     background: $light;
   }
 
-  &.bg--white {
+  &[class*="bg--white"] {
     background: #fff;
   }
 
-  &.bg--black {
+  &[class*="bg--black"] {
     background: $secondary;
   }
 
-  &.bg-pattern--brain {
+  &[class*="bg--gold"] {
+    background: $primary;
+  }
+
+  &.bg--white--pattern--brain {
     background: #fff url("#{$imgpath}/brain-pattern.svg");
     background-size: auto auto;
   }
 
-  &.bg-pattern--brain-reversed {
+  &.bg--gold--pattern--brain {
     background: $primary url("#{$imgpath}/brain-pattern-reversed.svg");
     background-size: auto auto;
   }
 
-  &.bg-pattern--brain-black {
+  &.bg--black--pattern--brain {
     background: $secondary url("#{$imgpath}/brain-pattern-black.svg");
     background-size: auto auto;
-  }
-
-  &.bg--gold {
-    background: $primary;
   }
 }
 
@@ -375,9 +401,10 @@ form#node-page-layout-builder-form {
   // rule to remove top padding from the second one.
   $backgrounds:
     ':not([class*="bg-"])',
-    '.bg--gold',
-    '.bg--black',
-    '.bg--gray',
+    '[class*="bg--gold"]',
+    '[class*="bg--black"]',
+    '[class*="bg--gray"]',
+    '[class*="bg--white"]',
     '.bg-pattern--brain',
     '.bg-pattern--brain-reversed',
     '.bg-pattern--brain-black';
@@ -424,7 +451,7 @@ form#node-page-layout-builder-form {
 
   .block-local-tasks-block,
   .block-help-block,
-  .form-actions,
+  :not([class*="views-exposed-form"]) .form-actions,
   .layout-builder__message,
   .form-type-vertical-tabs,
   #edit-moderation-state-0,
@@ -788,7 +815,7 @@ body.toolbar-vertical.toolbar-tray-open {
   display: none;
 }
 
-.bg--black,
+[class*="bg--black"],
 .bg-pattern--brain-black,
 .bg-dark {
   & .layout-builder-block--placeholder {
@@ -889,33 +916,38 @@ div[data-drupal-selector="edit-moderation-state-0"] {
 
   .paragraphs-dropdown-toggle {
     width: 26px !important;
+    height: 26px !important;
+    border: none !important;
     background: url(/modules/contrib/paragraphs/icons/icon-actions.svg) no-repeat center !important;
   }
 
   .paragraphs-dropdown-actions {
     border: none;
-    top: 0;
+    top: 1px;
     right: 26px;
-    width: 128px;
+    width: 98px;
     box-shadow: none;
+    background: inherit;
   }
 }
 
 
 // Statistic admin UX.
+#drupal-off-canvas {
+  [id*="edit-settings-block-form-group-uiowa-statistic-title--"] {
 
-[id*="edit-settings-block-form-group-uiowa-statistic-title--"] {
+    .fieldset-legend {
+      display: none !important;
+    }
 
-  .fieldset-legend {
-    display: none;
-  }
-
-  .fieldset-wrapper {
-    display: grid;
-    grid-template-columns: 19% 56% 19%;
-    grid-gap: 3%;
+    .fieldset-wrapper {
+      display: grid;
+      grid-template-columns: 19% 56% 19%;
+      grid-gap: 3%;
+    }
   }
 }
+
 
 
 // Claro Dropbutton
@@ -933,7 +965,7 @@ div[data-drupal-selector="edit-moderation-state-0"] {
   border-bottom-color: transparent !important;
   border-left-color: transparent !important;
 
-  .bg--black &,
+  [class*="bg--black"] &,
   .bg--black--pattern--brain &,
   .bg-pattern--brain-black & {
     color: $secondary;
@@ -1523,3 +1555,92 @@ only screen and (min-resolution: 1.5dppx) {
 }
 
 /* @end */
+
+// Contrast issues within the layout edit screen
+[class*="bg--black"] [class*="bg--black"] .bttn--primary,
+[class*="bg--black"] [class*="bg--black"] .cta__wrapper[class*="bg--gold"] .bttn--primary {
+  color: #151515;
+}
+
+[class*="bg--black"] [class*="bg--black"] [class*="bg--gold"] .bttn--primary,
+[class*="bg--black"] [class*="bg--black"] .bg-pattern--brain-reversed .bttn--primary {
+  color: #fff;
+}
+
+[class*="bg--gold"] [class*="bg--gold"] .block-inline-blockuiowa-text-area .bttn--primary,
+[class*="bg--gold"] [class*="bg--gold"] .block-field-blocknodepagebody .bttn--primary,
+[class*="bg--gold"] [class*="bg--gold"] .cta__wrapper:not([class*="bg-"]) .bttn--primary{
+  color: $primary;
+}
+
+[class*="bg--black"] [class*="bg--black"]  :before {
+  color: $secondary;
+}
+
+// lb_direct_add overrides
+
+.layout-builder__direct-add__toggle {
+  border: 1px solid #ccc;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
+  padding: 1rem;
+  text-decoration: underline;
+  color: #545454;
+  font-family: BlinkMacSystemFont,-apple-system,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+
+  &:hover,
+  &:focus {
+    border-bottom-style: solid;
+    border-color: #aaa;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.20);
+  }
+}
+
+.layout-builder__direct-add__list li a {
+  font-size: 16px;
+  color: #000;
+  font-weight: 500;
+  font-family: BlinkMacSystemFont,-apple-system,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;
+
+  &:hover,
+  &:focus {
+    border-color: #aaa;
+    text-decoration: underline;
+  }
+}
+
+.layout-builder__direct-add__list:after {
+  border-bottom-color: #fff!important;
+}
+
+.layout-builder__direct-add__list:before {
+  border-color: rgba(153, 153, 153, 0)!important;
+  border-bottom-color: #e2e4e7!important;
+}
+
+[class*="bg--"] .layout-builder__direct-add__list:before,
+[class*="bg--"] .layout-builder__direct-add__list:after,
+[class*="bg--"] [class*="bg--"] .layout-builder__direct-add__list:before,
+[class*="bg--"] [class*="bg--"] .layout-builder__direct-add__list:after {
+  border-color: transparent;
+}
+
+// Edit layout for textblock not displaying correctly
+.block-inline-blockuiowa-text-area {
+  min-height: 40px;
+}
+
+// Layouts not covered by lb_direct_add module
+.layout--page--left-sidebar .layout__region--main .layout-builder__add-block.open .layout-builder__direct-add__list > .links {
+  @include breakpoint(sm) {
+    display: grid;
+    gap: 10px 10px;
+    grid-template-columns: repeat(auto-fit, minmax(29.74%, 1fr));
+  }
+}
+
+// @todo Remove this when a corresponding change is made to lb_direct_add module.
+.layout-builder__direct-add__list {
+  top: auto;
+}

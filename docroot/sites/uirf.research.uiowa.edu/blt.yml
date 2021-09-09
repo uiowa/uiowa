@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: researchuirf.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: researchuirf
+  human_name: uirf.research.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: researchuirf.prod
+drupal:
+  db:
+    database: uirf_research_uiowa_edu
+uiowa:
+  requester: makyea

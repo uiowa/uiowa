@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: obermann.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: obermann
+  human_name: obermann.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: obermann.prod
+drupal:
+  db:
+    database: obermann_uiowa_edu
+uiowa:
+  requester: jhammeri

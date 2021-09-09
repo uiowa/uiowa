@@ -1,0 +1,23 @@
+uuid: dca15144-c866-48b6-9442-14412ab23d65
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_event_hide
+    - node.type.event
+id: node.event.field_event_hide
+field_name: field_event_hide
+entity_type: node
+bundle: event
+label: 'Hide on lists'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

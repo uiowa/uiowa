@@ -10,11 +10,22 @@ $imgpath: '../../uids/assets/images';
 .layout__region {
 
   .block,
-  .view {
+  .view,
+  .card,
+  .banner,
+  .cta__wrapper,
+  .slider,
+  .stat {
     flex-basis: 100%;
   }
 }
 
+// Unset equal height columns
+.section-alignment__start {
+  .layout__spacing_container {
+    align-items: flex-start;
+  }
+}
 
 // Layout container padding
 
@@ -24,7 +35,7 @@ $imgpath: '../../uids/assets/images';
   // This will be overridden by a subsequent style for 1+n containers.
   padding-top: $mobile-width-gutter;
 
-  @include breakpoint(container) {
+  @include breakpoint(sm) {
     padding-top: $desktop-width-gutter;
     padding-bottom: $desktop-width-gutter;
   }
@@ -115,9 +126,7 @@ $imgpath: '../../uids/assets/images';
 
   // @todo Where should this live?
   .block-inline-blockuiowa-text-area {
-    //width: 100%;
-    //flex: 1 0 auto;
-    flex-basis: 100%;
+    min-width: 0;
 
     &[class*="bg--"],
     &[class*="bg-pattern--"] {
@@ -128,6 +137,12 @@ $imgpath: '../../uids/assets/images';
       padding: 6rem;
     }
   }
+}
+
+// For sidebars: remove padding from adjacent blocks if they are the same
+.block[class*="bg--gray"].block-padding__all + .block[class*="bg--gray"].block-padding__all {
+  margin-top: -1.5rem;
+  padding-top: 0;
 }
 
 // default spacing for pages without layout builder
@@ -225,6 +240,13 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   }
 }
 
+// Container fix for responsive tables
+
+.layout__spacing_container {
+  min-width: 0;
+}
+
+
 // Block Margins / Padding
 
 .block-padding {
@@ -249,28 +271,42 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 }
 
 .block-margin {
-  @include breakpoint(sm) {
-    &__top {
+  &__top {
+    margin-top: $md;
+
+    &--extra {
       margin-top: $md;
-      &--extra {
+      @include breakpoint(sm) {
         margin-top: $mobile-height-gutter;
       }
     }
+  }
 
-    &__right {
+  &__right {
+    @include breakpoint(sm) {
       margin-right: $md;
     }
+  }
 
-    &__bottom {
-      margin-bottom: $md;
-    }
+  &__bottom {
+    margin-bottom: $md;
+  }
 
-    &__left {
+  &__left {
+    @include breakpoint(sm) {
       margin-left: $md;
     }
   }
 }
 
+// No results text
+.view-empty,
+.events-empty,
+.uiowa-aggregator-no-results {
+  p {
+    font-size: 1rem;
+  }
+}
 // mobile search
 
 .search-button[aria-expanded="true"] {
@@ -396,6 +432,13 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
 .views-element-container {
   @include margin($top: $lg);
+  flex-basis: 100%;
+
+  // todo remove after https://github.com/uiowa/uiowa/issues/2706 is completed.
+  .inner--list &,
+  .inner--grid & {
+    margin-top: 0;
+  }
 
   .views-element-container {
     margin-top: inherit;
@@ -507,6 +550,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
 .block-inline-blockuiowa-collection {
   flex-basis: 100%;
+  min-width: 0;
 }
 
 .screen-reader-text {

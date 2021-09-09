@@ -43,7 +43,7 @@
   'media_styles' : style_classes,
   'media_sizes' : size_classes,
   'card_image': content.field_uiowa_card_image|render,
-  'card_text': content.field_uiowa_card_excerpt,
+  'card_text': content.field_uiowa_card_excerpt|render,
   'card_link_url': content.field_uiowa_card_link[0]['#url'],
   'card_link_title': content.field_uiowa_card_link[0]['#title']|render,
   'card_title': content.field_uiowa_card_title[0]['#text'],

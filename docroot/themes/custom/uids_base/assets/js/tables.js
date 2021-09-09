@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Make sure triggerTableRespond is defined just in case.
     if (typeof triggerTableRespond === "function") {
         // Get all tables in accordions.
-        let accordionTables = document.querySelectorAll('.accordion__content .table__responsive-container');
+        let accordionTables = document.querySelectorAll('.accordion__content .table-responsive');
         // If we find tables that exist inside accordions...
         if (accordionTables.length > 0) {
             // For each one.

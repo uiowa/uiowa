@@ -8,7 +8,9 @@
     @include flex(0, 1, 100%);
     @include flex-wrap(wrap);
     .field__item {
-      flex: 1;
+      @include breakpoint(sm) {
+        flex: 1;
+      }
     }
     .field__item:not(:last-child) {
       margin-right: $md;
@@ -27,12 +29,25 @@
   .field--name-field-area-of-study-first-year,
   .field--name-field-area-of-study-transfer,
   .field--name-field-area-of-study-intl {
-    display: flex;
+    @include breakpoint(sm) {
+      display: flex;
+    }
+    .media--circle img {
+      border-radius: unset;
+    }
   }
-  .bttn.bttn--link {
-    padding-left: 0;
-    text-align: left;
+  .field--name-field-area-of-study-first-year,
+  .field--name-field-area-of-study-transfer,
+  .field--name-field-area-of-study-intl {
+    .card__body ul.fa-ul {
+      margin-left: 1.875rem;
+      li {
+        margin-bottom: $sm;
+        line-height: 1.4;
+      }
+    }
   }
+
   .views-field-field-area-of-study-teaching,
   .views-field-field-area-of-study-honors,
   .views-field-field-area-of-study-competitive,
@@ -68,4 +83,103 @@
       }
     }
   }
+}
+
+.view-display-id-areas_of_study {
+  display: flex;
+  flex-wrap: wrap;
+
+  .views-field {
+    .degree-options {
+      margin-top: $sm;
+      text-transform: uppercase;
+      font-size: $small-font-size;
+    }
+  }
+  .view-header {
+    width: 100%;
+  }
+  .view-content,
+  .view-empty  {
+    flex: 1 0 0;
+  }
+  .view-filters {
+    flex: 0 0 100%;
+    max-width: 100%;
+
+    @include breakpoint(sm) {
+      flex: 0 0 25%;
+      max-width: 25%;
+      margin-right: $desktop-width-gutter;
+    }
+    .form-item {
+      width: 100%;
+    }
+    .views-exposed-form {
+      .form--inline {
+        @include breakpoint(sm) {
+          flex-wrap: wrap;
+        }
+      }
+      &.uids-content:not(.uids-search) {
+        padding: 19px;
+        .form-item {
+          margin: 0;
+        }
+        input, select, fieldset {
+          &.form-item {
+            margin-bottom: 19px;
+          }
+        }
+        fieldset {
+          border: 0;
+          padding: 0;
+          .fieldset-legend {
+            display: block;
+            margin: 0;
+            font-size: .8rem;
+            font-weight: 700;
+            line-height: 1.8;
+          }
+          .fieldset-wrapper {
+            padding: 0.75rem;
+          }
+          .form-type-checkbox {
+            display: flex;
+            align-items: baseline;
+          }
+        }
+        .form-actions {
+          width: 100%;
+          margin: 0;
+          display: flex;
+          gap: 19px;
+
+          .button {
+            flex: 46% 1 1;
+            margin-bottom: 0;
+          }
+          input[id^='edit-submit-areas-of-study'] {
+            @include bttn--primary;
+          }
+        }
+      }
+    }
+  }
+  .pager {
+    flex: 0 0 100%;
+    max-width: 100%;
+    order: 1;
+  }
+
+}
+
+// Card p styles extended.
+.transfer-tip {
+  margin-bottom: 0;
+  margin-top: 0;
+  font-size: 1rem;
+  line-height: 1.7;
+  font-weight: 400;
+  display: block;
 }

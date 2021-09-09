@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: medicinefrrbp.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: medicinefrrbp
+  human_name: frrbp.medicine.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: medicinefrrbp.prod
+drupal:
+  db:
+    database: frrbp_medicine_uiowa_edu
+uiowa:
+  requester: smithgr

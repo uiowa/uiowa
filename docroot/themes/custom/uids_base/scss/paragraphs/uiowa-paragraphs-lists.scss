@@ -56,7 +56,9 @@
   .node--type-article,
   .card--list {
     display: flex;
-    flex-direction: row-reverse;
+    @include breakpoint(sm) {
+      flex-direction: row-reverse;
+    }
   }
 }
 
@@ -67,16 +69,17 @@
     @include list-group-flush;
   }
 
-  .featured-content-item {
-    // @include list-group-item;
-  }
-
-  .card__media,
-  .content-image {
+  .content-image,
+  .card__media {
     @include card-media-horizontal-right;
 
     @include breakpoint(sm) {
       margin-top: $lg;
+    }
+    &.media--circle {
+      @include breakpoint(sm) {
+        margin-top: 0;
+      }
     }
   }
 }
@@ -133,8 +136,15 @@
 */
   .node--type-article,
   .card--list {
-    display: flex;
-    flex-direction: row-reverse;
+    @include breakpoint(sm) {
+      display: flex;
+      flex-direction: row-reverse;
+    }
+    &.card--person-teaser {
+      @include breakpoint(sm) {
+        margin-top: 1.6rem;
+      }
+    }
   }
 }
 
@@ -143,12 +153,17 @@
   .media-body {
     padding: 2rem;
   }
+  .card--person-teaser {
+    @include breakpoint(sm) {
+      padding: 2rem!important;
+      margin-top: 0;
+    }
+  }
 }
 
 // Articles List
 .paragraph--type--articles.list,
-.paragraph--type--people.list,
-.view-display-id-page_articles {
+.paragraph--type--people.list {
   .view-content {
     @include list-group;
     @include list-group-flush;
@@ -156,7 +171,10 @@
   }
 
   .views-row {
-    @include list-group-item;
+
+    &:first-child {
+      border-top: none;
+    }
 
     &:last-child {
       border-bottom: none;
@@ -165,6 +183,12 @@
 
   .node__content {
     @include media-body;
+  }
+}
+
+.paragraph--type--people.list {
+  .views-row {
+    border-bottom: none;
   }
 }
 
@@ -202,13 +226,6 @@
   .field--name-field-teaser {
     @include card-paragraph;
     margin-top: $gutter;
-  }
-
-  tr {
-    @include breakpoint(sm) {
-      border-bottom: 1px solid #ccc;
-    }
-
   }
 
   .card__media {
@@ -274,7 +291,20 @@
   .card,
   .node--view-mode-teaser.media {
     @include card-enclosed;
-    display: block;
+    border: 1px solid rgba(0,0,0,.125)!important;
+    .media--circle {
+      margin-top: 2rem;
+      @include breakpoint(sm) {
+        margin-top: 0;
+      }
+    }
+    &.card--person-teaser {
+      .card__body {
+        @include breakpoint(sm) {
+          padding: 0;
+        }
+      }
+    }
   }
 }
 
@@ -287,7 +317,19 @@
   }
 }
 
-
+.paragraph--type--people.grid,
+.paragraph--type--people.masonry {
+  .card {
+    @include breakpoint(sm) {
+      padding: 2rem !important;
+    }
+  }
+  &.hide-images .card  {
+    @include breakpoint(sm) {
+      padding: 2rem !important;
+    }
+  }
+}
 
 // Articles Grid
 .paragraph--type--articles.grid,
@@ -349,6 +391,14 @@
 
   .card {
     @include card-enclosed;
+    border-color: rgba(0,0,0,.125) !important;
+    &.card--person-teaser {
+      .card__body {
+        @include breakpoint(sm) {
+          padding: 0;
+        }
+      }
+    }
   }
 }
 
@@ -410,6 +460,9 @@
 
   .card {
     @include card-enclosed;
+    .card__body {
+      padding: 0;
+    }
   }
 }
 
@@ -428,10 +481,28 @@
   }
 
   .featured-content-item {
-    @include card-enclosed;
     display: inline-block;
+    @include card-enclosed;
+    border: none!important;
     width: 100%;
     margin-bottom: $gutter;
+    .card.card--person-teaser {
+      .card__body {
+        @include breakpoint(sm) {
+          padding: 0;
+        }
+      }
+    }
+    .card, .node--view-mode-teaser.media  {
+      border: 1px solid;
+      border-color: rgba(0,0,0,.125) !important;
+      .media--circle {
+        margin-top: 2rem;
+        @include breakpoint(sm) {
+          margin-top: 0;
+        }
+      }
+    }
   }
 
   .node--type-article {
@@ -488,6 +559,17 @@
   .card__body {
     padding: 2rem;
   }
+  .card {
+    border: 1px solid;
+    border-color: rgba(0,0,0,.125)!important;
+  }
+  .card.card--person-teaser {
+    .card__body {
+      @include breakpoint(sm) {
+        padding: 0;
+      }
+    }
+  }
 
   .node__content .field--name-title {
     @include card-title;
@@ -515,6 +597,9 @@
     display: inline-block;
     width: 100%;
     margin-bottom: $gutter;
+    .card__body {
+      padding: 0;
+    }
   }
 }
 

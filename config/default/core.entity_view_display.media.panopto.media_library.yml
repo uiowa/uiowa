@@ -1,0 +1,31 @@
+uuid: 49021ec0-bc2d-4784-8f4a-134a1ced1717
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.media_library
+    - field.field.media.panopto.field_media_panopto_url
+    - image.style.medium
+    - media.type.panopto
+  module:
+    - image
+id: media.panopto.media_library
+targetEntityType: media
+bundle: panopto
+mode: media_library
+content:
+  thumbnail:
+    type: image
+    label: hidden
+    settings:
+      image_style: medium
+      image_link: ''
+    weight: 0
+    third_party_settings: {  }
+    region: content
+hidden:
+  created: true
+  field_media_panopto_url: true
+  name: true
+  search_api_excerpt: true
+  uid: true

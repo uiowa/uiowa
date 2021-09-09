@@ -3,9 +3,12 @@
 namespace Drupal\admissions_core\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\node\Entity\Node;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides the Scholarships "Jump Menu" block.
@@ -16,7 +19,43 @@ use Drupal\node\Entity\Node;
  *   category = @Translation("Site custom")
  * )
  */
-class ScholarshipsJumpMenuBlock extends BlockBase {
+class ScholarshipsJumpMenuBlock extends BlockBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * The form_builder service.
+   *
+   * @var \Drupal\Core\Form\FormBuilderInterface
+   */
+  protected $formBuilder;
+
+  /**
+   * The entity_type.manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, FormBuilderInterface $formBuilder, EntityTypeManagerInterface $entityTypeManager) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->formBuilder = $formBuilder;
+    $this->entityTypeManager = $entityTypeManager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('form_builder'),
+      $container->get('entity_type.manager')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -31,7 +70,7 @@ class ScholarshipsJumpMenuBlock extends BlockBase {
     ];
     $form_state = new FormState();
     $form_state->addBuildInfo('scholarship_paths', $paths);
-    return \Drupal::formBuilder()->buildForm('Drupal\admissions_core\Form\ScholarshipsJumpMenu', $form_state);
+    return $this->formBuilder->buildForm('Drupal\admissions_core\Form\ScholarshipsJumpMenu', $form_state);
   }
 
   /**
@@ -42,7 +81,7 @@ class ScholarshipsJumpMenuBlock extends BlockBase {
 
     $config = $this->getConfiguration();
     if (isset($config['transfer_path'])) {
-      $transfer_entity = Node::load($config['transfer_path']);
+      $transfer_entity = $this->entityTypeManager->getStorage('node')->load($config['transfer_path']);
     }
     $form['transfer_path'] = [
       '#type' => 'entity_autocomplete',
@@ -57,7 +96,7 @@ class ScholarshipsJumpMenuBlock extends BlockBase {
       '#required' => TRUE,
     ];
     if (isset($config['international_path'])) {
-      $international_entity = Node::load($config['international_path']);
+      $international_entity = $this->entityTypeManager->getStorage('node')->load($config['international_path']);
     }
     $form['international_path'] = [
       '#type' => 'entity_autocomplete',
@@ -72,7 +111,7 @@ class ScholarshipsJumpMenuBlock extends BlockBase {
       '#required' => TRUE,
     ];
     if (isset($config['resident_path'])) {
-      $resident_entity = Node::load($config['resident_path']);
+      $resident_entity = $this->entityTypeManager->getStorage('node')->load($config['resident_path']);
     }
     $form['resident_path'] = [
       '#type' => 'entity_autocomplete',
@@ -87,7 +126,7 @@ class ScholarshipsJumpMenuBlock extends BlockBase {
       '#required' => TRUE,
     ];
     if (isset($config['nonresident_path'])) {
-      $nonresident_entity = Node::load($config['nonresident_path']);
+      $nonresident_entity = $this->entityTypeManager->getStorage('node')->load($config['nonresident_path']);
     }
     $form['nonresident_path'] = [
       '#type' => 'entity_autocomplete',

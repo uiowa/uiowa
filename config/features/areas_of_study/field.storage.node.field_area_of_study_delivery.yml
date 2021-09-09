@@ -1,0 +1,30 @@
+uuid: bad725af-1fa0-4282-b9ce-34db5a12afe1
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_area_of_study_delivery
+field_name: field_area_of_study_delivery
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: online
+      label: Online
+    -
+      value: in_person
+      label: 'In Person'
+    -
+      value: hybrid
+      label: Hybrid
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

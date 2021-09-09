@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labkidneeds.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labkidneeds
+  human_name: kidneeds.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labkidneeds.prod
+drupal:
+  db:
+    database: kidneeds_lab_uiowa_edu
+uiowa:
+  requester: kleink

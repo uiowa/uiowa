@@ -1,0 +1,182 @@
+uuid: d4ac9978-c059-420b-b956-a360f43f70ee
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: DlFAuL2oveqROI4eNhsgkiDLP3bjztpzCO2z40OKjA0
+id: d7_admissions_aos
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - admissions
+migration_group: sitenow_migrate
+label: 'Area of Study node migration from Drupal 7'
+source:
+  plugin: d7_admissions_aos
+  node_type: undergraduate_majors_programs
+process:
+  path/pathauto:
+    plugin: default_value
+    default_value: 0
+  path/alias: custom_alias
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  title:
+    plugin: extract
+    source: field_alt_names
+    index:
+      - 0
+      - value
+  type:
+    plugin: default_value
+    default_value: area_of_study
+  uid:
+    plugin: default_value
+    default_value: 1
+  status: status
+  created: created
+  changed: changed
+  promote: promote
+  sticky: sticky
+  body: body
+  field_teaser: body_summary
+  field_image:
+    plugin: default_value
+    default_value: '1126'
+  moderation_state: moderation_state
+  field_area_of_study_pretty_title:
+    plugin: skip_on_empty
+    method: process
+    source: custom_alt_title
+  field_area_of_study_academic_gp:
+    plugin: sub_process
+    source: field_academic_group
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: d7_admissions_academic_groups
+        source: tid
+  field_area_of_study_college:
+    plugin: sub_process
+    source: field_college
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: d7_admissions_colleges
+        source: tid
+  field_area_of_study_subtitle: field_sub_title
+  field_area_of_study_mail_code: field_mail_item_code
+  field_area_of_study_program_type:
+    plugin: static_map
+    source: field_program_types
+    map:
+      0: major
+      1: minor
+      2: certificate
+      3: preprofessional_program
+      4: online_offcampus_program
+  field_area_of_study_majors:
+    plugin: create_degrees
+    source: field_degree
+  field_area_of_study_minors:
+    plugin: sub_process
+    source: field_minor
+    process:
+      value: value
+      format: format
+  field_area_of_study_certificates:
+    plugin: sub_process
+    source: field_certificates
+    process:
+      value: value
+      format: format
+  field_area_of_study_preprof:
+    plugin: sub_process
+    source: field_preprofessional
+    process:
+      value: value
+      format: format
+  field_area_of_study_online:
+    plugin: sub_process
+    source: field_online
+    process:
+      value: value
+      format: format
+  field_area_of_study_subprogram:
+    plugin: sub_process
+    source: field_tracks
+    process:
+      value: value
+      format: format
+  field_area_of_study_sub_type:
+    plugin: static_map
+    source: field_track_type_name
+    map:
+      0: areas_of_emphasis
+      1: areas_of_specialization
+      2: focus_areas
+      3: interest_areas
+      4: tracks
+      5: concentrations
+  field_area_of_study_teaching:
+    plugin: static_map
+    source: field_teacher_license
+    map:
+      0: teaching_licensure
+  field_area_of_study_teaching_txt: field_teaching_desc
+  field_area_of_study_honors:
+    plugin: static_map
+    source: field_honors_courses
+    map:
+      0: honors_courses
+  field_area_of_study_four_year:
+    plugin: static_map
+    source: field_four_year_grad
+    map:
+      0: four_year_graduate_plan
+  field_area_of_study_four_txt: field_fouryear_desc
+  field_area_of_study_selective:
+    plugin: static_map
+    source: field_selective
+    map:
+      0: selective_admission
+  field_area_of_study_select_txt: field_selective_description
+  field_area_of_study_competitive:
+    plugin: static_map
+    source: field_competitive
+    map:
+      0: competitive_admission
+  field_area_of_study_comp_txt: field_competitive_description
+  field_area_of_study_link:
+    plugin: sub_process
+    source: custom_related_links
+    process:
+      uri: url
+      title: title
+  field_area_of_study_why: field_why
+  field_area_of_study_course_work: field_coursework
+  field_area_of_study_requirement: field_requirements_intro
+  field_area_of_study_opportunity: field_studopps
+  field_area_of_study_career: field_careers
+  field_area_of_study_scholarship: field_scholarships
+  field_area_of_study_first_year:
+    plugin: create_requirement
+    source: field_requirements
+  field_area_of_study_transfer:
+    plugin: create_requirement
+    source: field_requirements_trans
+  field_area_of_study_intl:
+    plugin: create_requirement
+    source: field_requirements_intl
+destination:
+  plugin: 'entity:node'
+  default_bundle: area_of_study
+migration_dependencies:
+  required:
+    - d7_admissions_academic_groups
+    - d7_admissions_colleges

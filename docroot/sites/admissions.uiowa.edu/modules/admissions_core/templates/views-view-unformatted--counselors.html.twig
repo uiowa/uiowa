@@ -106,7 +106,6 @@
       set classes = [
       'card--list',
       'card--person-teaser',
-      'bg--white',
       'card--media-left',
       'media--border',
       'card--centered-left',
@@ -145,22 +144,22 @@
 
       {% block card_tag %}
         {% if card_tag|striptags|trim is not empty %}
-           <div class="card__date"><span class="fas fa-envelope"></span> {{ card_tag }}</div>
+           <div class="card__date"><span role="presentation" class="fas fa-envelope"></span> {{ card_tag }}</div>
         {% endif %}
         {% if person_phone|striptags|trim is not empty %}
-          <div class="card__date"><span class="fas fa-phone"></span> {{ person_phone }}</div>
+          <div class="card__date"><span role="presentation" class="fas fa-phone"></span> {{ person_phone }}</div>
         {% endif %}
         {% if person_hometown|striptags|trim is not empty %}
-          <div class="card__date"><span class="fas fa-globe-americas"></span> {{ person_hometown }}</div>
+          <div class="card__date"><span role="presentation" class="fas fa-globe-americas"></span> {{ person_hometown }}</div>
         {% endif %}
         {% if person_website|striptags|trim is not empty %}
-          <div class="card__date"><span class="fas fa-desktop"></span> {{ person_website }}</div>
+          <div class="card__date"><span role="presentation" class="fas fa-desktop"></span> {{ person_website }}</div>
         {% endif %}
         {% if person_education|striptags|trim is not empty %}
-          <div class="card__date"><span class="fas fa-university"></span> {{ person_education }}</div>
+          <div class="card__date"><span role="presentation" class="fas fa-university"></span> {{ person_education }}</div>
         {% endif %}
         {% if person_contact|striptags|trim is not empty %}
-          <div class="card__date"><span class="fas fa-map-marker"></span> {{ person_contact }}</div>
+          <div class="card__date"><span role="presentation" class="fas fa-map-marker"></span> {{ person_contact }}</div>
         {% endif %}
       {% endblock %}
 

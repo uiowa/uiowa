@@ -1,0 +1,65 @@
+version: 2
+updates:
+- package-ecosystem: composer
+  directory: "/"
+  schedule:
+    interval: monthly
+    time: "14:00"
+    timezone: America/Chicago
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: uiowa/uiowa_bar
+    versions:
+    - ">= 7.a, < 8"
+  - dependency-name: drupal/core-composer-scaffold
+    versions:
+    - 9.1.5
+  - dependency-name: drupal/acquia_connector
+    versions:
+    - 3.0.1
+  - dependency-name: dompdf/dompdf
+    versions:
+    - 0.8.6
+  - dependency-name: drupal/media_entity_twitter
+    versions:
+    - 2.6.0
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: monthly
+    time: "14:00"
+    timezone: America/Chicago
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: bootstrap
+    versions:
+    - "> 4.5.0"
+  - dependency-name: jquery
+    versions:
+    - "> 3.5.1"
+  - dependency-name: "@babel/cli"
+    versions:
+    - 7.13.16
+  - dependency-name: "@babel/core"
+    versions:
+    - 7.13.16
+  - dependency-name: "@babel/preset-env"
+    versions:
+    - 7.13.15
+    - 7.13.8
+  - dependency-name: gulp-mode
+    versions:
+    - 1.1.0
+  - dependency-name: gulp-notify
+    versions:
+    - 4.0.0
+  - dependency-name: cssnano
+    versions:
+    - 5.0.2
+  - dependency-name: autoprefixer
+    versions:
+    - 10.2.4
+    - 10.2.5
+  - dependency-name: "@fortawesome/fontawesome-free"
+    versions:
+    - 5.15.2

@@ -39,18 +39,26 @@ class HeadlineHelper {
    */
   public static function getStyles() {
     return [
-      'default' => 'headline',
-      'headline_bold_serif' => 'headline bold-headline bold-headline--serif',
-      'headline_bold_serif_underline' => 'headline bold-headline bold-headline--serif bold-headline--underline',
+      'default' => 'headline block__headline',
+      'headline_bold_serif' => 'headline bold-headline bold-headline--serif block__headline',
+      'headline_bold_serif_underline' => 'headline bold-headline bold-headline--serif bold-headline--underline block__headline',
     ];
   }
 
   /**
    * Provide the render array structure for a headline element.
    *
+   * @param array $defaults
+   *   An array of default values to set for each form element.
+   * @param bool $has_children
+   *   Whether to return child heading size form elements.
+   *
+   * @return array
+   *   The render array of headline form elements.
+   *
    * @todo Investigate creating a custom render element for this.
    */
-  public static function getElement(array $defaults) {
+  public static function getElement(array $defaults, $has_children = TRUE) {
     $heading_size_options = self::getHeadingOptions();
 
     $element['container'] = [
@@ -64,7 +72,7 @@ class HeadlineHelper {
     $element['container']['headline'] = [
       '#type' => 'textfield',
       '#title' => t('Headline'),
-      '#description' => $element['#description'],
+      '#description' => $defaults['description'],
       '#size' => 80,
       '#default_value' => $defaults['headline'],
       '#attributes' => [
@@ -92,7 +100,7 @@ class HeadlineHelper {
       '#type' => 'select',
       '#title' => t('Headline size'),
       '#options' => $heading_size_options,
-      '#description' => t('The heading size for the block title. Children headings will be set one level lower.'),
+      '#description' => t('The heading size for the block title.'),
       '#default_value' => $defaults['heading_size'],
       '#states' => [
         'visible' => [
@@ -109,7 +117,7 @@ class HeadlineHelper {
       '#options' => [
         'default' => t('Default'),
         'headline_bold_serif' => t('Bold serif'),
-        'headline_bold_serif_underline' => t('Bold serif, highlighted'),
+        'headline_bold_serif_underline' => t('Bold serif, underlined'),
       ],
       '#default_value' => $defaults['headline_style'],
       '#states' => [
@@ -121,23 +129,27 @@ class HeadlineHelper {
       ],
     ];
 
-    // Add an additional option for children headings.
-    $heading_size_options['h6'] = 'Heading 6';
+    if ($has_children) {
+      $element['container']['heading_size']['#description'] .= ' Children headings will be set one level lower.';
 
-    $element['container']['child_heading_size'] = [
-      '#type' => 'select',
-      '#title' => t('Child content heading size'),
-      '#options' => $heading_size_options,
-      '#default_value' => $defaults['child_heading_size'],
-      '#description' => t('The heading size for all children headings.'),
-      '#states' => [
-        'visible' => [
-          ':input[id="uiowa-headline-field"]' => [
-            'filled' => FALSE,
+      // Add an additional option for children headings.
+      $heading_size_options['h6'] = 'Heading 6';
+
+      $element['container']['child_heading_size'] = [
+        '#type' => 'select',
+        '#title' => t('Child content heading size'),
+        '#options' => $heading_size_options,
+        '#default_value' => $defaults['child_heading_size'],
+        '#description' => t('The heading size for all children headings.'),
+        '#states' => [
+          'visible' => [
+            ':input[id="uiowa-headline-field"]' => [
+              'filled' => FALSE,
+            ],
           ],
         ],
-      ],
-    ];
+      ];
+    }
 
     return $element;
   }

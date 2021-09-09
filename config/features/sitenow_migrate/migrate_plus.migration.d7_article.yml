@@ -13,6 +13,7 @@ migration_group: sitenow_migrate
 label: 'Article node migration from Drupal 7'
 source:
   plugin: articles
+  node_type: article
 process:
   langcode:
     plugin: static_map
@@ -32,13 +33,11 @@ process:
   changed: changed
   promote: promote
   sticky: sticky
-  body: field_article_body_value
+  body: field_article_body
   field_teaser: field_article_body_summary
   moderation_state: moderation_state
   field_image: field_image_fid
 destination:
   plugin: 'entity:node'
   type: article
-migration_dependencies:
-  required:
-    - d7_file
+migration_dependencies: null

@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: iwpwhitmanweb.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: iwpwhitmanweb
+  human_name: whitmanweb.iwp.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: iwpwhitmanweb.prod
+drupal:
+  db:
+    database: whitmanweb_iwp_uiowa_edu
+uiowa:
+  requester: sadamshiett

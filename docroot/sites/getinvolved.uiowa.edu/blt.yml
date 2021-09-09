@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: getinvolved.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: getinvolved
+  human_name: getinvolved.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: getinvolved.prod
+drupal:
+  db:
+    database: getinvolved_uiowa_edu
+uiowa:
+  requester: dquam

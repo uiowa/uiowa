@@ -7,8 +7,10 @@ dependencies:
     - image.style.square__384_x_384
     - node.type.student_profile
   module:
+    - address
     - media
     - node
+    - options
     - user
 id: student_card
 label: 'Student Card'
@@ -64,7 +66,7 @@ display:
           col_class_default: true
           col_class_custom: ''
           row_class_default: true
-          row_class_custom: 'block-padding__left block-padding__right  bg--gray'
+          row_class_custom: ''
       row:
         type: fields
         options:
@@ -124,7 +126,7 @@ display:
           click_sort_column: value
           type: string
           settings:
-            link_to_entity: true
+            link_to_entity: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -182,15 +184,15 @@ display:
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
-          empty: ''
+          empty: '<div class="empty-img"></div>'
           hide_empty: false
           empty_zero: false
-          hide_alter_empty: true
+          hide_alter_empty: false
           click_sort_column: target_id
           type: media_thumbnail
           settings:
             image_style: square__384_x_384
-            image_link: content
+            image_link: ''
           group_column: target_id
           group_columns: {  }
           group_rows: true
@@ -228,6 +230,189 @@ display:
           expose:
             operator_limit_selection: false
             operator_list: {  }
+        field_student_profile_gender_value:
+          id: field_student_profile_gender_value
+          table: node__field_student_profile_gender
+          field: field_student_profile_gender_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_student_profile_gender_value_op
+            label: Gender
+            description: ''
+            use_operator: false
+            operator: field_student_profile_gender_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_student_profile_gender_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          plugin_id: list_field
+        field_student_profile_country_value:
+          id: field_student_profile_country_value
+          table: node__field_student_profile_country
+          field: field_student_profile_country_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_student_profile_country_value_op
+            label: 'Home country'
+            description: ''
+            use_operator: false
+            operator: field_student_profile_country_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_student_profile_country_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: country
+        field_student_profile_state_value:
+          id: field_student_profile_state_value
+          table: node__field_student_profile_state
+          field: field_student_profile_state_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_student_profile_state_value_op
+            label: 'Home state'
+            description: ''
+            use_operator: false
+            operator: field_student_profile_state_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_student_profile_state_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          plugin_id: list_field
+        field_student_profile_attributes_value:
+          id: field_student_profile_attributes_value
+          table: node__field_student_profile_attributes
+          field: field_student_profile_attributes_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_student_profile_attributes_value_op
+            label: 'Student attribute'
+            description: ''
+            use_operator: false
+            operator: field_student_profile_attributes_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_student_profile_attributes_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          plugin_id: list_field
       sorts:
         random:
           id: random
@@ -241,38 +426,48 @@ display:
           expose:
             label: ''
           plugin_id: random
-      title: 'Student Grid'
-      header:
-        area:
-          id: area
-          table: views
-          field: area
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: false
-          tokenize: false
-          content:
-            value: "<div class=\"bg--white  block-padding__bottom\"><a class=\"bttn bttn--full bttn--primary bttn--caps\" href=\"https://apply.admissions.uiowa.edu/admissions/login.page\">Apply Now <span class=\"fa-arrow-right fas\"></span> </a></p></div>\r\n<div class=\"bg--gray block-padding__top block-padding__right block-padding__left\"><h4 class=\"headline headline--serif headline--underline\"><span class=\"fas fa-user\"></span> &nbsp;<a href=\"/student-profiles\">Student Profiles</a></h4></div>"
-            format: filtered_html
-          plugin_id: text
-      footer:
-        area:
-          id: area
-          table: views
-          field: area
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: false
-          tokenize: false
-          content:
-            value: '<br /><br />'
-            format: filtered_html
-          plugin_id: text
+      title: ''
+      header: {  }
+      footer: {  }
       empty: {  }
       relationships: {  }
-      arguments: {  }
+      arguments:
+        nid:
+          id: nid
+          table: node_field_data
+          field: nid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          default_action: default
+          exception:
+            value: all
+            title_enable: false
+            title: All
+          title_enable: false
+          title: ''
+          default_argument_type: node
+          default_argument_options: {  }
+          default_argument_skip_url: false
+          summary_options:
+            base_path: ''
+            count: true
+            items_per_page: 25
+            override: false
+          summary:
+            sort_order: asc
+            number_of_records: 0
+            format: default_summary
+          specify_validation: false
+          validate:
+            type: none
+            fail: 'not found'
+          validate_options: {  }
+          break_phrase: false
+          not: true
+          entity_type: node
+          entity_field: nid
+          plugin_id: node_nid
       display_extenders: {  }
       css_class: bg--gray
     cache_metadata:
@@ -280,6 +475,7 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -292,11 +488,21 @@ display:
     display_options:
       display_extenders:
         metatag_display_extender: {  }
+      allow:
+        items_per_page: true
+      filter_in_block:
+        - field_student_profile_gender_value
+        - field_student_profile_country_value
+        - field_student_profile_state_value
+        - field_student_profile_attributes_value
+      block_description: 'Student Profiles Grid'
+      block_hide_empty: true
     cache_metadata:
       max-age: 0
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - 'user.node_grants:view'
         - user.permissions
       tags:

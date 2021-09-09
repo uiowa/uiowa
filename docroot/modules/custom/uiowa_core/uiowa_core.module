@@ -10,6 +10,17 @@ use Drupal\google_tag\Entity\Container;
 use Drupal\uiowa_core\HeadlineHelper;
 
 /**
+ * Implements hook_config_schema_info_alter().
+ */
+function uiowa_core_config_schema_info_alter(&$definitions) {
+  // Make sure that the order of filters in the config export file is always
+  // the same, to avoid false positive differences.
+  // @see https://www.drupal.org/project/drupal/issues/2852557#comment-12703225
+  // @todo Remove this after https://www.drupal.org/project/drupal/issues/2855675.
+  $definitions['filter.format.*']['mapping']['filters']['orderby'] = 'key';
+}
+
+/**
  * Implements hook_theme().
  */
 function uiowa_core_theme($existing, $type, $theme, $path) {
@@ -98,6 +109,38 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       }
       break;
 
+    case 'menu_link_content_menu_link_content_form':
+      // All checked or unchecked this seems to do the same. Hide until we
+      // have a use-case.
+      if (isset($form["menu_per_role__show_role"])) {
+        $form["menu_per_role__show_role"]['#access'] = FALSE;
+      }
+      // Allow menu items to be hidden to anonymous user with an opt-in process.
+      if (isset($form["menu_per_role__hide_role"])) {
+        // Show message if hidden.
+        if (!empty($form["menu_per_role__hide_role"]["widget"]["#default_value"])) {
+          \Drupal::messenger()
+            ->addWarning(t('This menu item is currently being hidden. Please contact an user with the "administer menu link visibility" permission.'));
+        }
+
+        // Only want folks controlling anonymous visibility.
+        $options = [];
+        foreach ($form["menu_per_role__hide_role"]["widget"]["#options"] as $key => $option) {
+          if ($key == 'anonymous') {
+            $options[$key] = $option;
+            break;
+          }
+        }
+        $form["menu_per_role__hide_role"]["widget"]["#options"] = $options;
+
+        // Put functionality behind permission.
+        if (!\Drupal::currentUser()
+          ->hasPermission('administer menu link visibility')) {
+          $form["menu_per_role__hide_role"]['#access'] = FALSE;
+        }
+      }
+      break;
+
   }
 }
 
@@ -132,5 +175,16 @@ function uiowa_core_preprocess_html(&$variables) {
         $variables['#attached']['library'][] = 'uids_base/global-serif';
       }
     }
+  }
+}
+
+/**
+ * Implements hook_local_tasks_alter().
+ */
+function uiowa_core_menu_local_tasks_alter(&$variables) {
+  $logged_in = \Drupal::currentUser()->isAuthenticated();
+  if ($logged_in) {
+    $variables['tabs'][0]['entity.node.delete_form']['#weight'] = 100;
+    $variables['tabs'][0]['entity.taxonomy_term.delete_form']['#weight'] = 100;
   }
 }

@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labicarc.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labicarc
+  human_name: icarc.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labicarc.prod
+drupal:
+  db:
+    database: icarc_lab_uiowa_edu
+uiowa:
+  requester: bhlai

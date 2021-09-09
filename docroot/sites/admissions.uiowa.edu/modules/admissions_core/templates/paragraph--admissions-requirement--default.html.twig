@@ -41,9 +41,6 @@
 
 {%
   set classes = [
-  'card--list',
-  'card--enclosed',
-  'bg--white',
   'card--centered-left',
   'card--alignment-left',
   'card--media-left',
@@ -57,15 +54,18 @@
   'attributes': attributes.addClass(classes),
   'card_image': requirement_card_label|lower,
   'card_title': requirement_card_label,
-  'card_text': content.field_ar_intro,
+  'card_text': content.field_ar_intro|render,
   'base_path': base_path ~ directory,
   'headline_level': 'h2',
   'requirement_label': content.field_ar_requirement[0]['#title']|render,
   'requirement_url': content.field_ar_requirement[0]['#url'],
   'process_label': content.field_ar_process[0]['#title']|render,
   'process_url': content.field_ar_process[0]['#url'],
-  'media_sizes': 'card__media--small',
+  'media_sizes': 'media--circle card__media--small',
+  'transfer_tip': transfer_tip,
+  'card_no_link': true,
 } %}
+
 {% embed '@uids_base/uids/card.html.twig' with admissions_requirement only %}
   {% block card_img %}
     {% if card_image is not empty %}
@@ -75,15 +75,23 @@
     {% endif %}
   {% endblock %}
 
+
   {% block card_content %}
     {% if card_text is not empty %}
       {{ card_text }}
     {% endif %}
-    {% if requirement_url is not empty %}
-      <a href="{{ requirement_url }}" class="bttn bttn--link bttn--sans-serif">{{ requirement_label }} <i class="fas fa-arrow-right"></i></a>
-    {% endif %}
-    {% if process_url is not empty %}
-      <a href="{{ process_url }}" class="bttn bttn--outline bttn--sans-serif">{{ process_label }} <i class="fas fa-arrow-right"></i></a>
+    {% if transfer_tip or requirement_url or process_url is not empty %}
+      <ul class="element--list-none fa-ul">
+      {% if transfer_tip is not empty %}
+        <li><a href="{{ transfer_tip }}" class=""><span class="fa-li"><i role="presentation" class="fas fa-lightbulb"></i></span> Transfer tips</a></li>
+      {% endif %}
+      {% if requirement_url is not empty %}
+        <li><a href="{{ requirement_url }}" class=""><span class="fa-li"><i role="presentation" class="fas fa-arrow-right"></i></span> {{ requirement_label }} </a></li>
+      {% endif %}
+      {% if process_url is not empty %}
+        <li> <a href="{{ process_url }}" class=""><span class="fa-li"><i role="presentation" class="fas fa-arrow-right"></i></span>{{ process_label }}</a></li>
+      {% endif %}
+      </ul>
     {% endif %}
   {% endblock %}
 {% endembed %}

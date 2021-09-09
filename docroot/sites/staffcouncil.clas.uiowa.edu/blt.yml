@@ -1,0 +1,13 @@
+project:
+  local:
+    hostname: classtaffcouncil.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: classtaffcouncil
+  human_name: staffcouncil.clas.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: classtaffcouncil.prod
+drupal:
+  db:
+    database: staffcouncil_clas_uiowa_edu

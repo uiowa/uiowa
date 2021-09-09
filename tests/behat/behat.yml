@@ -8,9 +8,7 @@ default:
       default_session: goutte
       browser_name: chrome
       javascript_session: default
-      goutte:
-        guzzle_parameters:
-          verify: false
+      goutte: ~
       files_path: "%paths.base%/media"
     Drupal\DrupalExtension:
       blackbox: ~
@@ -28,4 +26,3 @@ default:
       image_drivers:
         local:
           screenshot_directory: /var/www/uiowa/reports
-

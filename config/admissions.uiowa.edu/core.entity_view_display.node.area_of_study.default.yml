@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.area_of_study.body
+    - field.field.node.area_of_study.field_area_of_study_academic_gp
     - field.field.node.area_of_study.field_area_of_study_career
     - field.field.node.area_of_study.field_area_of_study_certificates
     - field.field.node.area_of_study.field_area_of_study_college
@@ -22,6 +23,8 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_online
     - field.field.node.area_of_study.field_area_of_study_opportunity
     - field.field.node.area_of_study.field_area_of_study_preprof
+    - field.field.node.area_of_study.field_area_of_study_pretty_title
+    - field.field.node.area_of_study.field_area_of_study_program_type
     - field.field.node.area_of_study.field_area_of_study_requirement
     - field.field.node.area_of_study.field_area_of_study_scholarship
     - field.field.node.area_of_study.field_area_of_study_select_txt
@@ -36,6 +39,7 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_transfer
     - field.field.node.area_of_study.field_area_of_study_why
     - field.field.node.area_of_study.field_image
+    - field.field.node.area_of_study.field_meta_tags
     - node.type.area_of_study
     - views.view.areas_of_study_block
   module:
@@ -44,6 +48,7 @@ dependencies:
     - layout_builder
     - layout_builder_restrictions
     - link
+    - metatag
     - options
     - text
     - user
@@ -99,6 +104,16 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: -9
+          -
+            uuid: 608f4d09-6e67-4035-99e4-cbf3117107f3
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'extra_field_block:node:area_of_study:content_moderation_control'
+            additional: {  }
+            weight: -8
         third_party_settings: {  }
       -
         layout_id: layout_onecol
@@ -125,7 +140,7 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 2
+            weight: 3
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -162,7 +177,7 @@ third_party_settings:
                 block_margin_bottom: block_margin_bottom
                 block_margin_top: block_margin_top
                 block_margin_right: block_margin_right
-            weight: 3
+            weight: 6
           -
             uuid: 32b68e28-f595-45a5-a247-b3b7c6613d30
             region: second
@@ -191,7 +206,7 @@ third_party_settings:
                 block_margin_top: block_margin_top
                 block_margin_bottom: block_margin_bottom
                 block_margin_right: block_margin_left
-            weight: 8
+            weight: 11
           -
             uuid: b4d948cb-4c09-4224-bd33-436b6b200a70
             region: second
@@ -206,20 +221,7 @@ third_party_settings:
             additional:
               layout_builder_styles_style:
                 block_margin_right: block_margin_left
-            weight: 7
-          -
-            uuid: 088e48b0-97ec-479c-ae31-bac797a7e224
-            region: second
-            configuration:
-              id: aosbuttons_block
-              label: null
-              provider: admissions_core
-              label_display: null
-              context_mapping: {  }
-            additional:
-              layout_builder_styles_style:
-                block_margin_right: block_margin_left
-            weight: 6
+            weight: 10
           -
             uuid: 0eeb1ce7-7903-4640-89a5-cd8d147d3244
             region: first
@@ -239,7 +241,7 @@ third_party_settings:
             additional:
               layout_builder_styles_style:
                 block_margin_right: block_margin_right
-            weight: 0
+            weight: 2
           -
             uuid: f99d4ffa-b056-484b-bc4b-caf2a203cfc0
             region: first
@@ -261,7 +263,7 @@ third_party_settings:
                 block_margin_top: block_margin_top
                 block_margin_bottom: block_margin_bottom
                 block_margin_right: block_margin_right
-            weight: 1
+            weight: 4
           -
             uuid: 616b3735-14cb-45ac-8d36-f0ed42845915
             region: first
@@ -282,7 +284,36 @@ third_party_settings:
               layout_builder_styles_style:
                 block_margin_top: block_margin_top
                 block_margin_right: block_margin_right
-            weight: 4
+            weight: 7
+          -
+            uuid: b9b2c71a-d021-4f7a-8984-3fbed7d276c3
+            region: second
+            configuration:
+              id: applybutton_block
+              label: null
+              provider: admissions_core
+              label_display: null
+              context_mapping: {  }
+            additional:
+              layout_builder_styles_style:
+                block_margin_left: block_margin_left
+                block_margin_bottom: block_margin_bottom
+            weight: 8
+          -
+            uuid: 72a16b6d-a7e1-418d-ba24-3ed9c93504cc
+            region: second
+            configuration:
+              id: requestinfobutton_block
+              label: null
+              provider: admissions_core
+              label_display: null
+              context_mapping: {  }
+            additional:
+              layout_builder_styles_style:
+                block_margin_left: block_margin_left
+                block_margin_bottom: block_margin_bottom
+                block_margin_top: block_margin_top
+            weight: 9
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -452,6 +483,7 @@ third_party_settings:
               layout_builder_styles_style:
                 block_background_style_gray: block_background_style_gray
                 block_padding_all: block_padding_all
+                block_margin_left: block_margin_left
             weight: 0
         third_party_settings:
           layout_builder_lock:
@@ -549,6 +581,19 @@ content:
     settings: {  }
     third_party_settings: {  }
     region: content
+  content_moderation_control:
+    weight: -20
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_area_of_study_academic_gp:
+    weight: 40
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
   field_area_of_study_career:
     weight: 18
     label: above
@@ -565,7 +610,7 @@ content:
     type: string
     region: content
   field_area_of_study_college:
-    weight: 39
+    weight: 42
     label: above
     settings:
       link: true
@@ -694,6 +739,21 @@ content:
     third_party_settings: {  }
     type: string
     region: content
+  field_area_of_study_pretty_title:
+    weight: 41
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_area_of_study_program_type:
+    weight: 43
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
   field_area_of_study_requirement:
     weight: 16
     label: above
@@ -793,6 +853,13 @@ content:
       link: false
     third_party_settings: {  }
     type: entity_reference_entity_view
+    region: content
+  field_meta_tags:
+    weight: 42
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_empty_formatter
     region: content
   links:
     weight: 0

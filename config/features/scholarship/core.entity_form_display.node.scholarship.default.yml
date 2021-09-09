@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.scholarship.body
+    - field.field.node.scholarship.field_meta_tags
     - field.field.node.scholarship.field_scholarship_application
     - field.field.node.scholarship.field_scholarship_contact
     - field.field.node.scholarship.field_scholarship_deadline
@@ -17,6 +18,7 @@ dependencies:
     - allowed_formats
     - content_moderation
     - link
+    - metatag
     - path
     - text
 id: node.scholarship.default
@@ -40,6 +42,13 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_meta_tags:
+    weight: 27
+    settings:
+      sidebar: true
+    third_party_settings: {  }
+    type: metatag_firehose
+    region: content
   field_scholarship_application:
     weight: 12
     settings:
@@ -71,7 +80,9 @@ content:
     type: text_textarea
     region: content
   field_scholarship_more_info:
+    type: text_textarea
     weight: 15
+    region: content
     settings:
       rows: 3
       placeholder: ''
@@ -79,8 +90,6 @@ content:
       allowed_formats:
         hide_help: '0'
         hide_guidelines: '0'
-    type: text_textarea
-    region: content
   field_scholarship_renewal:
     weight: 14
     settings:

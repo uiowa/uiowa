@@ -15,3 +15,36 @@ a.bttn {
     }
   }
 }
+
+.block-inline-blockuiowa-text-area,
+.block-field-blocknodepagebody {
+  .bttn {
+    margin: 0 1rem 1rem 0;
+    @include breakpoint(sm) {
+      margin: inherit;
+    }
+    + .bttn {
+      @include breakpoint(sm) {
+        margin: inherit;
+      }
+    }
+  }
+}
+
+[class*=bg--] {
+  .bttn--secondary {
+    color: $white;
+  }
+}
+
+// @todo move back to UIDS
+.bttn--sans-serif.bttn--full {
+  display: flex;
+  height: 100%;
+}
+
+.bttn--lowercase{
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 1rem;
+}

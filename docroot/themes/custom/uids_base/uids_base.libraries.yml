@@ -92,7 +92,7 @@ banner:
     component:
       assets/css/components/banner.css: { preprocess: false }
   js:
-    uids/components/banner/banner.js: { preprocess: false }
+    uids/assets/js/click-a11y.js: { preprocess: false }
 video-cookie:
   js:
     assets/js/video-cookie.js: { preprocess: false }
@@ -113,9 +113,6 @@ remote-video:
     component:
       assets/css/components/video/video-utilities.css: { preprocess: false }
 video:
-  css:
-    component:
-      assets/css/components/video/video.css: { preprocess: false }
   js:
     uids/components/video/video.js: { preprocess: false }
 hero:
@@ -162,7 +159,7 @@ card:
       assets/css/components/card.css: { preprocess: false }
       assets/css/paragraphs/uiowa-paragraphs-card.css: { preprocess: false }
   js:
-    uids/components/card/card.js: { preprocess: false }
+    uids/assets/js/click-a11y.js: { preprocess: false }
 media:
   css:
     component:
@@ -219,6 +216,12 @@ stat:
       assets/css/components/stat.css: { preprocess: false }
   js:
     uids/components/stat/stat.js: { preprocess: false }
+timeline:
+  css:
+    component:
+      assets/css/components/timeline.css: { preprocess: false }
+  js:
+    assets/js/scroll.js: { preprocess: false }
 main-menu:
   css:
     component:
@@ -299,6 +302,10 @@ webforms:
   css:
     component:
       assets/css/webforms/webforms.css: { preprocess: false }
+embed:
+  css:
+    component:
+      assets/css/components/embed.css: { preprocess: false }
 embedded-entity:
   css:
     component:
@@ -339,7 +346,13 @@ admin:
   css:
     component:
       assets/css/admin.css: { weight: 200 }
+      assets/css/local-tasks.css: {}
       assets/css/components/badge.css: {}
+sftouchscreen:
+  js:
+    assets/js/sftouchscreen.js: { }
+  dependencies:
+    - superfish/init
 
 # CSS libraries for Layout plugins.
 onecol:
@@ -372,10 +385,6 @@ page--left-sidebar:
   css:
     theme:
       assets/css/layouts/page--left-sidebar.css: { preprocess: false }
-tables:
-  js:
-    uids/components/tables/tables.js: { preprocess: false  }
-    assets/js/tables.js: { preprocess: false  }
 person:
   css:
     theme:

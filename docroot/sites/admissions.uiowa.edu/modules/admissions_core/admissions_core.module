@@ -17,6 +17,13 @@ use Drupal\node\NodeInterface;
 use Drupal\views\ViewExecutable;
 
 /**
+ * Implements hook_preprocess_HOOK() for html.html.twig.
+ */
+function admissions_core_preprocess_html(&$variables) {
+  $variables['#attached']['library'][] = 'admissions_core/global';
+}
+
+/**
  * Implements hook_entity_presave().
  */
 function admissions_core_entity_presave(EntityInterface $entity) {
@@ -26,6 +33,16 @@ function admissions_core_entity_presave(EntityInterface $entity) {
       $output = $entity->get('field_person_first_name')->value . " " . $entity->get('field_person_last_name')->value;
       $entity->setTitle($output);
       break;
+
+    case 'transfer_tips':
+      // Assumes this stays a required field.
+      $area_of_study = $entity->field_transfer_tips_aos->entity->title->value;
+      // Setting the transfer tips title with the aos field value +
+      // transfer tip verbiate.
+      $output = $area_of_study . " Transfer Tips";
+      $entity->setTitle($output);
+      break;
+
   }
 }
 
@@ -34,6 +51,12 @@ function admissions_core_entity_presave(EntityInterface $entity) {
  */
 function admissions_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
+    case 'node_event_series_form':
+    case 'node_event_series_edit_form':
+      // Set form defaults if they exist.
+      _sitenow_node_form_defaults($form, $form_state);
+      break;
+
     case 'node_student_profile_form':
     case 'node_student_profile_edit_form':
       // Set form defaults if they exist.
@@ -67,6 +90,39 @@ function admissions_core_form_alter(&$form, FormStateInterface $form_state, $for
 
     case 'node_area_of_study_form':
     case 'node_area_of_study_edit_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      if (isset($form['field_area_of_study_link_direct'])) {
+        $form['field_area_of_study_link_direct']['#states'] = [
+          'visible' => [
+            ':input[name="field_area_of_study_source_link[0][uri]"]' => ['filled' => TRUE],
+          ],
+        ];
+      }
+      $form['field_area_of_study_majors']['#states'] = [
+        'visible' => [
+          'input[name="field_area_of_study_program_type[major]"]' => ['checked' => TRUE],
+        ],
+      ];
+      $form["field_area_of_study_certificates"]['#states'] = [
+        'visible' => [
+          'input[name="field_area_of_study_program_type[certificate]"]' => ['checked' => TRUE],
+        ],
+      ];
+      $form["field_area_of_study_minors"]['#states'] = [
+        'visible' => [
+          'input[name="field_area_of_study_program_type[minor]"]' => ['checked' => TRUE],
+        ],
+      ];
+      $form["field_area_of_study_preprof"]['#states'] = [
+        'visible' => [
+          'input[name="field_area_of_study_program_type[preprofessional_program]"]' => ['checked' => TRUE],
+        ],
+      ];
+      $form["field_area_of_study_online"]['#states'] = [
+        'visible' => [
+          'input[name="field_area_of_study_program_type[online_offcampus_program]"]' => ['checked' => TRUE],
+        ],
+      ];
       $form['field_area_of_study_teaching_txt']['#states'] = [
         'visible' => [
           'input[name="field_area_of_study_teaching[teaching_licensure]"]' => ['checked' => TRUE],
@@ -95,20 +151,25 @@ function admissions_core_form_alter(&$form, FormStateInterface $form_state, $for
  * Implements hook_form_FORM_ID_alter().
  */
 function admissions_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if ($form['#id'] == 'views-exposed-form-counselors-block-counselors') {
-    $form["territory"]["#options"]["All"] = t("- All -");
+  $view = $form_state->get('view');
+  if ($view->id() == 'student_card') {
+    if ($view->current_display == 'block_student_grid') {
+      $form['#attributes']['class'][] = 'hidden';
+    }
+  }
+  if ($view->id() == 'counselors') {
+    if ($view->current_display == 'block_counselors') {
+      $form["territory"]["#options"]["All"] = t("- All -");
+    }
   }
 }
 
 /**
  * Implements hook_ENTITY_TYPE_delete().
- *
- * @param \Drupal\node\Entity\Node $node
- *   Get straight to the node instead of through entity.
  */
 function admissions_core_node_delete(Node $node) {
-  // Used on Admissions counselors map.
-  if ($node->getType() == 'person') {
+  // Used on Admissions counselors map and event series blocks.
+  if ($node->getType() == 'person' || $node->getType() == 'event') {
     $tags = ['node_type:' . $node->getType()];
     Cache::invalidateTags($tags);
   }
@@ -116,13 +177,10 @@ function admissions_core_node_delete(Node $node) {
 
 /**
  * Implements hook_ENTITY_TYPE_presave().
- *
- * @param \Drupal\node\Entity\Node $node
- *   Get straight to the node instead of through entity.
  */
 function admissions_core_node_presave(Node $node) {
-  // Used on Admissions counselors map.
-  if ($node->getType() == 'person') {
+  // Used on Admissions counselors map and event series blocks.
+  if ($node->getType() == 'person' || $node->getType() == 'event') {
     $tags = ['node_type:' . $node->getType()];
     Cache::invalidateTags($tags);
   }
@@ -132,8 +190,9 @@ function admissions_core_node_presave(Node $node) {
  * Implements hook_preprocess_HOOK().
  */
 function admissions_core_preprocess_entity_print(&$variables) {
-  if ($variables['theme_hook_original'] == 'entity_print__node__area_of_study') {
-    // The debug path nests this differently for some reason.
+  // Change the default PDF title from "View PDF" to the node title.
+  if ($variables['theme_hook_original'] == 'entity_print__node__area_of_study'
+    || $variables['theme_hook_original'] == 'entity_print__node__page') {
     $node = $variables['content'][0]['#node'] ?? $variables['content'][0][0]['#node'] ?? NULL;
 
     if ($node) {
@@ -228,14 +287,45 @@ function admissions_core_preprocess_paragraph__admissions_requirement(&$variable
       $id = $paragraph->id();
       foreach ($admissions_requirements as $requirement => $label) {
         if ($parent->hasField($requirement)) {
-          foreach ($parent->get($requirement)->getValue() as $delta => $item) {
+          foreach ($parent->get($requirement)->getValue() as $item) {
             if ($item['target_id'] === $id) {
               $variables['requirement_card_label'] = $label;
+              // Look up any published transfer tips with the AoS id.
+              if ($requirement == 'field_area_of_study_transfer') {
+                $query = \Drupal::entityQuery('node')
+                  ->condition('status', 1)
+                  ->condition('type', 'transfer_tips')
+                  ->condition('field_transfer_tips_aos', $parent->id());
+                $nids = $query->execute();
+
+                if (!empty($nids)) {
+                  // Get the first array item. We aren't going for perfection.
+                  $transfer_tip = reset($nids);
+                  // Get and pass the transfer tip path to the template
+                  // if it exists.
+                  $variables['transfer_tip'] = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $transfer_tip);
+                }
+              }
             }
           }
         }
       }
     }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function admissions_core_preprocess_block(&$variables) {
+  switch ($variables['plugin_id']) {
+    case 'views_block:student_card-block_student_grid':
+      $variables['#attached']['library'][] = 'admissions_core/student-profile';
+      break;
+
+    case 'admissions_core_event_series_events':
+      $variables['title_attributes']['class'] = 'h4 headline headline--serif headline--underline';
+      break;
   }
 }
 
@@ -254,6 +344,7 @@ function admissions_core_preprocess_layout(&$variables) {
       if (in_array($node->getType(), [
         'area_of_study',
         'student_profile',
+        'event_series',
       ])) {
         if (!isset($variables['banner_attributes'])) {
           $variables['banner_settings'] = [];
@@ -276,6 +367,14 @@ function admissions_core_preprocess_layout(&$variables) {
           }
           break;
 
+        case 'event_series':
+          if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+
+            // Set the featured image display.
+            $variables['featured_image_display'] = 'medium';
+          }
+          break;
+
         case 'student_profile':
           if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
 
@@ -295,7 +394,7 @@ function admissions_core_preprocess_layout(&$variables) {
 }
 
 /**
- * Implements hook_theme for Scholarship teaser.
+ * Implements hook_theme().
  */
 function admissions_core_theme($existing, $type, $theme, $path) {
   return [
@@ -303,12 +402,24 @@ function admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'block--views-block--areas-of-study-block-block-information',
       'base hook' => 'block',
     ],
+    'block__views_block__student_card_block_student_grid' => [
+      'template' => 'block--views-block--student-card-block-student-grid',
+      'base hook' => 'block',
+    ],
     'node__scholarship__teaser' => [
       'template' => 'node--scholarship--teaser',
       'base hook' => 'node',
     ],
+    'node__transfer_tips__teaser' => [
+      'template' => 'node--transfer-tips--teaser',
+      'base hook' => 'node',
+    ],
     'views_view_unformatted__scholarships__block_scholarships' => [
       'template' => 'views-view-unformatted--scholarships--block-scholarships',
+      'base hook' => 'view',
+    ],
+    'views_view_unformatted__transfer_tips_list__block_transfer_tips' => [
+      'template' => 'views-view-unformatted--transfer-tips-list--block-transfer-tips',
       'base hook' => 'view',
     ],
     'views_view_unformatted__counselors' => [
@@ -343,6 +454,22 @@ function admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--field-area-of-study-scholarship--area-of-study--default',
       'base hook' => 'field',
     ],
+    'field__node__title__event_series__default' => [
+      'template' => 'field--node--title--event-series--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_event_series_button_link__event_series' => [
+      'template' => 'field--node--field-event-series-button-link--event-series--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_event_series_summary__event_series' => [
+      'template' => 'field--node--field-event-series-summary--event-series--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_transfer_tips_aos__transfer_tips' => [
+      'template' => 'field--node--field-transfer-tips-aos--transfer-tips',
+      'base hook' => 'field',
+    ],
     'field__field_student_profile_blurb' => [
       'template' => 'field--field-student-profile-blurb',
       'base hook' => 'field',
@@ -357,6 +484,10 @@ function admissions_core_theme($existing, $type, $theme, $path) {
     ],
     'field__node__title__student_profile__default' => [
       'template' => 'field--node--title--student-profile--default',
+      'base hook' => 'field',
+    ],
+    'field__taxonomy_term__field_college_website__colleges__default' => [
+      'template' => 'field--taxonomy-term--field-college-website--colleges--default',
       'base hook' => 'field',
     ],
     'fragment__stat' => [
@@ -377,6 +508,22 @@ function admissions_core_theme($existing, $type, $theme, $path) {
     ],
     'node__area_of_study__pdf' => [
       'template' => 'node--area-of-study--pdf',
+      'base hook' => 'node',
+    ],
+    'node__page__pdf' => [
+      'template' => 'node--page--pdf',
+      'base hook' => 'node',
+    ],
+    'entity_print__node__page' => [
+      'template' => 'entity-print--node--page',
+      'base hook' => 'entity_print',
+    ],
+    'node__area_of_study__teaser' => [
+      'template' => 'node--area-of-study--teaser',
+      'base hook' => 'node',
+    ],
+    'taxonomy_term__teaser' => [
+      'template' => 'taxonomy-term--teaser',
       'base hook' => 'node',
     ],
   ];
@@ -405,6 +552,14 @@ function admissions_core_theme_suggestions_field_alter(array &$suggestions, arra
  * Implements hook_views_pre_render().
  */
 function admissions_core_views_pre_render(ViewExecutable $view) {
+  if ($view->id() == 'student_card') {
+    if (isset($view->element["headline"]["#headline"]) && !empty($view->element["headline"]["#headline"])) {
+      $headline_markup = [
+        '#markup' => '<span role="presentation" class="fas fa-user"></span> &nbsp;<a href="/student-profiles">' . $view->element["headline"]["#headline"] . '</a>',
+      ];
+      $view->element["headline"]["#headline"] = $headline_markup;
+    }
+  }
   if ($view->id() == "counselors") {
     switch ($view->current_display) {
       case 'block_counselors':
@@ -412,7 +567,93 @@ function admissions_core_views_pre_render(ViewExecutable $view) {
         $view->element['#attached']['library'][] = 'admissions_core/counselors-list';
         $view->element['#attached']['library'][] = 'admissions_core/person';
         break;
+    }
+  }
+  if ($view->id() == "areas_of_study") {
+    $view->element['#attached']['library'][] = 'uids_base/stat';
+    $view->element['#attached']['library'][] = 'uids_base/twocol';
+  }
+}
 
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for taxonomies.
+ */
+function admissions_core_theme_suggestions_taxonomy_term_alter(&$suggestions, $variables) {
+  if ($variables['elements']['#view_mode'] == 'teaser') {
+    $suggestions[] = 'taxonomy_term__teaser';
+  }
+}
+
+/**
+ * Implements hook_preprocess_views_view().
+ */
+function admissions_core_preprocess_views_view(&$variables) {
+  $view = $variables['view'];
+  $id = $view->storage->id();
+  switch ($id) {
+    case 'academic_groups_block':
+    case 'academic_groups_taxonomy_term':
+      $variables['attributes']['class'][] = 'grid--threecol--33-34-33';
+      break;
+
+    case 'areas_of_study':
+      $variables['#attached']['library'][] = 'admissions_core/area-of-study';
+      break;
+
+    case 'events':
+      $variables['#attached']['library'][] = 'admissions_core/events';
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function admissions_core_preprocess_views_view_field(&$variables) {
+  if (isset($variables['view']) && ($variables['view']->id() == 'areas_of_study') && ($variables['view']->current_display == 'areas_of_study')) {
+    if (isset($variables['view']->field) && $variables['field']->realField == 'nothing') {
+      $nid = $variables["row"]->_entity->get('nid')->value;
+      $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+      $markup = '';
+      // For each program type, load the value(s) and string them
+      // together for the view result.
+      $degrees = [];
+      $degree_options = '';
+      foreach ($node->get('field_area_of_study_majors') as $paragraph) {
+        if ($paragraph->entity->getType() == 'degree') {
+          $paragraph_item = $paragraph->entity;
+          if (!empty($paragraph_item->field_degree_abbreviation)) {
+            $degrees[] = $paragraph_item->field_degree_abbreviation->value;
+          }
+        }
+      }
+      $degrees = array_unique($degrees);
+      foreach ($degrees as $item) {
+        $degree_options .= $item . ', ';
+      }
+      if (!empty($degree_options)) {
+        $markup .= $degree_options;
+      }
+      // AoS Program Type text fields.
+      $fields = [
+        'Minor' => 'field_area_of_study_minors',
+        'Certificate' => 'field_area_of_study_certificates',
+        'Online Option' => 'field_area_of_study_online',
+      ];
+      foreach ($fields as $label => $field) {
+        $value = $node->get($field)->value;
+        if ($value) {
+          $markup .= $label . ', ';
+        }
+      }
+      $markup = trim($markup, ', ');
+      $markup = '<div class="degree-options">' . $markup . '</div>';
+      if (!empty($markup)) {
+        $variables['output'] = [
+          '#markup' => $markup,
+        ];
+      }
     }
   }
 }
@@ -473,6 +714,44 @@ function admissions_core_state_options(FieldStorageConfig $definition, ContentEn
     'WI' => 'Wisconsin',
     'WY' => 'Wyoming',
     'DC' => 'District of Columbia',
+  ];
+  return $options;
+}
+
+/**
+ * Implements hook_allowed_values_function().
+ */
+function admissions_core_allowed_values_function(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  // Available degree abbreviations.
+  // Can be moved to store in a config file later.
+  $options = [
+    'AuD' => 'AuD',
+    'BA' => 'BA',
+    'BAS' => 'BAS',
+    'BBA' => 'BBA',
+    'BFA' => 'BFA',
+    'BM' => 'BM',
+    'BS' => 'BS',
+    'BSE' => 'BSE',
+    'BSN' => 'BSN',
+    'DDS' => 'DDS',
+    'DNP' => 'DNP',
+    'EdD' => 'EdD',
+    'JD' => 'JD',
+    'LLM' => 'LLM',
+    'MA' => 'MA',
+    'MAc' => 'MAc',
+    'MAT' => 'MAT',
+    'MCA' => 'MCA',
+    'MCS' => 'MCS',
+    'MFA' => 'MFA',
+    'MHA' => 'MHA',
+    'MPH' => 'MPH',
+    'MS' => 'MS',
+    'MSL' => 'MSL',
+    'PhD' => 'PhD',
+    'PHR' => 'PHR',
+    'SJD' => 'SJD',
   ];
   return $options;
 }

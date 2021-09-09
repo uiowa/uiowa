@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: csw.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: csw
+  human_name: csw.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: csw.prod
+drupal:
+  db:
+    database: csw_uiowa_edu
+uiowa:
+  requester: dquam

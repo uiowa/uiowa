@@ -6,11 +6,10 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\views\Views;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides the Areas of Study Search block.
+ * DEPRECATED - Provides the Areas of Study Search block for Admissions only.
  *
  * @Block(
  *   id = "uiowa_area_of_study_search",
@@ -27,16 +26,7 @@ class AreasOfStudySearchBlock extends BlockBase implements ContainerFactoryPlugi
   protected $formBuilder;
 
   /**
-   * Override the construction method.
-   *
-   * @param array $configuration
-   *   The block configuration.
-   * @param string $plugin_id
-   *   The plugin ID.
-   * @param mixed $plugin_definition
-   *   The plugin definition.
-   * @param \Drupal\Core\Form\FormBuilderInterface $formBuilder
-   *   The form_builder service.
+   * AOS block constructor.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, FormBuilderInterface $formBuilder) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
@@ -44,18 +34,7 @@ class AreasOfStudySearchBlock extends BlockBase implements ContainerFactoryPlugi
   }
 
   /**
-   * Override the create method.
-   *
-   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
-   *   The application container.
-   * @param array $configuration
-   *   The block configuration.
-   * @param string $plugin_id
-   *   The plugin ID.
-   * @param mixed $plugin_definition
-   *   The plugin definition.
-   *
-   * @return static
+   * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
@@ -70,30 +49,8 @@ class AreasOfStudySearchBlock extends BlockBase implements ContainerFactoryPlugi
    * {@inheritdoc}
    */
   public function build() {
-    // Using a process described here:
-    // https://drupal.stackexchange.com/a/274383/6066
-    $form = [];
-    $view_id = 'areas_of_study';
-    $display_id = 'areas_of_study';
-    $view = Views::getView($view_id);
-    if ($view) {
-      $view->setDisplay($display_id);
-      $view->initHandlers();
-      $form_state = (new FormState())
-        ->setStorage([
-          'view' => $view,
-          'display' => &$view->display_handler->display,
-          'rerender' => TRUE,
-        ])
-        ->setMethod('get')
-        ->setAlwaysProcess()
-        ->disableRedirect();
-      $form_state->set('rerender', NULL);
-      $form = $this->formBuilder
-        ->buildForm('\Drupal\views\Form\ViewsExposedForm', $form_state);
-    }
-
-    return $form;
+    $form_state = new FormState();
+    return $this->formBuilder->buildForm('Drupal\uiowa_area_of_study\Form\AreasOfStudySearchForm', $form_state);
   }
 
 }

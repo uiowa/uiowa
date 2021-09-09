@@ -2,9 +2,13 @@
 
 namespace Drupal\sitenow_migrate\EventSubscriber;
 
+use Drupal\Core\Config\FileStorage;
+use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\layout_builder\Section;
 use Drupal\migrate\Event\MigrateEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Drupal\layout_builder\InlineBlockUsage;
 
 /**
  * Event subscriber for post-row save migrate event.
@@ -21,13 +25,23 @@ class PostRowSaveEvent implements EventSubscriberInterface {
   protected $entityTypeManager;
 
   /**
+   * The active database connection.
+   *
+   * @var \Drupal\Core\Database\Connection
+   */
+  protected $database;
+
+  /**
    * PostRowSaveEvent constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeManager $entityTypeManager
    *   The EntityTypeManager service.
+   * @param \Drupal\Core\Database\Connection $database
+   *   The active database connection.
    */
-  public function __construct(EntityTypeManager $entityTypeManager) {
+  public function __construct(EntityTypeManager $entityTypeManager, Connection $database) {
     $this->entityTypeManager = $entityTypeManager;
+    $this->database = $database;
   }
 
   /**
@@ -56,30 +70,32 @@ class PostRowSaveEvent implements EventSubscriberInterface {
         $this->makeEntity($row, $fids);
         break;
 
-      // Body content needs to be put into paragraph for Basic Pages.
-      case 'd7_page-deprecated':
+      // @todo Remove this after ITU Physics migrate.
+      case 'itu_physics_labs':
         $row = $event->getRow();
         $nids = $event->getDestinationIdValues();
-        $this->createParagraph($row, $nids);
-
+        $this->addBlock($row, $nids[0]);
         break;
 
-      // Inefficient node_load but body/format migration won't correctly attach.
-      case 'd7_article':
-      case 'd7_person':
-      case 'd7_page':
+      // @todo Remove this after ITU Physics migrate.
+      case 'itu_physics_courses':
+        $row = $event->getRow();
         $nids = $event->getDestinationIdValues();
-
-        /** @var \Drupal\node\NodeInterface $node */
-        $node = $this->entityTypeManager->getStorage('node')->load($nids[0]);
-
-        if ($node->getType() == 'article' || $node->getType() == 'page') {
-          $node->body->format = 'filtered_html';
-        }
-        else {
-          $node->field_person_bio->format = 'filtered_html';
-        }
-
+        $nid = $nids[0];
+        $node = $this->entityTypeManager
+          ->getStorage('node')
+          ->load($nid);
+        // Create our path alias.
+        $path_aliases = $this->entityTypeManager
+          ->getStorage('path_alias')
+          ->loadByProperties([
+            'path' => '/node/' . $nid,
+          ]);
+        $path_alias = array_pop($path_aliases);
+        $path_alias->setAlias('/' . $row->getSourceProperty('alias'));
+        $path_alias->save();
+        // Uncheck the "generate automatic path alias" option.
+        $node->path->pathauto = 0;
         $node->save();
     }
   }
@@ -99,14 +115,24 @@ class PostRowSaveEvent implements EventSubscriberInterface {
 
         case 'image':
           $meta = $row->getSourceProperty('meta');
+          $title = 'field_file_image_title_text_value';
+          $alt = 'field_file_image_alt_text_value';
+          foreach ([$title, $alt] as $name) {
+            if (empty($meta[$name])) {
+              // If no title, set it to the filename.
+              // If no alt, set it to the title
+              // (which may be the filename).
+              $meta[$name] = (isset($meta[$title])) ? $meta[$title] : $file->getFilename();
+            }
+          }
 
           /** @var \Drupal\Media\MediaInterface $media */
           $media = $this->entityTypeManager->getStorage('media')->create([
             'bundle' => 'image',
             'field_media_image' => [
               'target_id' => $fids[0],
-              'alt' => $meta['field_file_image_alt_text_value'],
-              'title' => $meta['field_file_image_title_text_value'],
+              'alt' => $meta[$alt],
+              'title' => $meta[$title],
             ],
             'langcode' => 'en',
           ]);
@@ -143,33 +169,114 @@ class PostRowSaveEvent implements EventSubscriberInterface {
   }
 
   /**
-   * Edits the empty text paragraph associated with the new node.
+   * Add description block to the newly created node.
    *
-   * Rollback functionality is preserved this way, as well.
+   * @todo Remove this after ITU Physics migrate.
    */
-  public function createParagraph($row, $nids) {
-    $newContent = $row->getSourceProperty('body_value');
+  public function addBlock($row, $nid) {
+    $node = $this->entityTypeManager
+      ->getStorage('node')
+      ->load($nid);
+    $layout = $node->get('layout_builder__layout');
+    // Get default page sections config.
+    $config_path = DRUPAL_ROOT . '/../config/default';
+    $source = new FileStorage($config_path);
+    $config = $source->read('core.entity_view_display.node.page.default');
+    $default_sections = $config['third_party_settings']['layout_builder']['sections'];
 
-    // Load our newly created node and get the default content block.
-    /** @var \Drupal\node\NodeInterface $node */
-    $node = $this->entityTypeManager->getStorage('node')->load($nids[0]);
+    // Append content moderation, header, and body content sections
+    // from default config.
+    foreach (['content_moderation', 'header', 'body_content'] as $i => $default_section) {
+      $layout->appendSection(Section::fromArray($default_sections[$i]));
+    }
 
-    $section_target = end($node->get('field_page_content_block')->getValue());
+    $layout_settings = [
+      'label' => '',
+      'column_widths' => [],
+      'layout_builder_styles_style' => [
+        'section_background_style_gray',
+      ],
+    ];
+    $section_array = [
+      'layout_id' => 'layout_onecol',
+      'components' => [],
+      'layout_settings' => $layout_settings,
+    ];
 
-    /** @var \Drupal\paragraphs\ParagraphInterface $section */
-    $section = $this->entityTypeManager->getStorage('paragraph')->load($section_target['target_id']);
+    $text['value'] = $row->getSourceProperty('description');
+    $text['format'] = 'filtered_html';
+    // If the text block begins with a headline, grab it and
+    // create a title from it.
+    if (isset($text['value']) && preg_match('|\A<(h\d)>(.*?)<\/h\d>|', $text['value'], $matches)) {
+      $h_level = $matches[1];
+      $title = $matches[2];
+      $text['value'] = str_replace(
+        $matches[0],
+        '',
+        $text['value']
+      );
+    }
+    $headline = [
+      'headline' => isset($title) ? $title : '',
+      'heading_size' => isset($h_level) ? $h_level : 'h2',
+      'hide_headline' => 0,
+      'headline_style' => 'default',
+    ];
+    $block_definition = [
+      'type' => 'uiowa_text_area',
+      'langcode' => 'en',
+      'status' => 1,
+      'reusable' => 0,
+      'default_langcode' => 1,
+      // getValue sets both the text value and the format.
+      'field_uiowa_text_area' => $text,
+      'field_uiowa_headline' => $headline,
+    ];
+    $block = $this->entityTypeManager
+      ->getStorage('block_content')
+      ->create($block_definition);
+    if (isset($block) && $block->save()) {
+      $uuid = $block->get('uuid')->getValue()[0]['value'];
+      $config = [
+        'id' => 'inline_block:' . $block->bundle(),
+        'label' => 'Text area',
+        'provider' => 'layout_builder',
+        'label_display' => 0,
+        'block_revision_id' => $block->getRevisionId(),
+        'view_mode' => '',
+      ];
 
-    $paragraph_target = end($section->get('field_section_content_block')->getValue());
+      // Set the block usage to the node.
+      $use_controller = new InlineBlockUsage($this->database);
+      $use_controller->addUsage($block->id(), $node);
+    }
 
-    /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
-    $paragraph = $this->entityTypeManager->getStorage('paragraph')->load($paragraph_target['target_id']);
+    if (!empty($config)) {
+      $section_array['components'][$uuid] = [
+        'uuid' => $uuid,
+        'region' => 'content',
+        'configuration' => $config,
+        'additional' => [
+          'layout_builder_styles_style' => [],
+        ],
+        'weight' => 0,
+      ];
+      $section = Section::fromArray($section_array);
+      $layout->appendSection($section);
+      $node->set('layout_builder__layout', $layout->getSections());
+    }
+    // Create our path alias.
+    $path_aliases = $this->entityTypeManager
+      ->getStorage('path_alias')
+      ->loadByProperties([
+        'path' => '/node/' . $nid,
+      ]);
+    $path_alias = array_pop($path_aliases);
+    $path_alias->setAlias('/' . $row->getSourceProperty('alias'));
+    $path_alias->save();
 
-    $paragraph->set('field_text_body', [
-      'value' => $newContent,
-      'format' => 'filtered_html',
-    ]);
-
-    $paragraph->save();
+    // Uncheck the "generate automatic path alias" option.
+    $node->path->pathauto = 0;
     $node->save();
   }
 

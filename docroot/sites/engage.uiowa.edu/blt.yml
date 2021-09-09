@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: engage.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: engage
+  human_name: engage.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: engage.prod
+drupal:
+  db:
+    database: engage_uiowa_edu
+uiowa:
+  requester: dquam

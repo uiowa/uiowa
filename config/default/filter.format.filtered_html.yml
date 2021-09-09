@@ -27,6 +27,8 @@ dependencies:
     - entity_embed
     - linkit
     - media
+    - responsive_table_filter
+    - uiowa_core
 _core:
   default_config_hash: yA6WNEdG-8nJeOmDKvvJehwG-BwwchNYeLXOg6QjiY8
 name: 'Filtered HTML'
@@ -38,6 +40,12 @@ filters:
     provider: editor
     status: true
     weight: -44
+    settings: {  }
+  entity_embed:
+    id: entity_embed
+    provider: entity_embed
+    status: true
+    weight: -46
     settings: {  }
   filter_align:
     id: filter_align
@@ -63,15 +71,9 @@ filters:
     status: true
     weight: -49
     settings:
-      allowed_html: '<a href hreflang title class id target rel data-*> <em> <strong> <cite> <blockquote class cite> <code> <ul type class> <ol start type class> <li> <dl> <dt> <dd> <h2 id class> <h3 id class> <h4 id class> <h5 id class> <h6 id class> <s> <sup> <sub> <p class> <pre class> <div class> <span class> <hr class> <table class border summary> <caption> <tbody class> <thead class> <tfoot class> <th align valign colspan rowspan scope class> <td align valign colspan rowspan class> <tr align valign class> <drupal-media data-entity-type data-entity-uuid data-align data-caption data-view-mode title alt> <br> <mark> <small class>'
+      allowed_html: '<a href hreflang title class id target aria-label rel data-*> <em> <strong> <cite> <blockquote class cite> <code> <ul type class> <ol start type class> <li> <dl> <dt> <dd> <h2 id class> <h3 id class> <h4 id class> <h5 id class> <h6 id class> <s> <sup> <sub> <p class> <pre class> <div class> <span class> <hr class> <table class border summary id role="presentation, grid" aria-label aria-labelledby> <caption id> <tbody class> <thead class> <tfoot class> <th id align valign colspan rowspan scope class> <td align valign colspan rowspan class headers> <tr align valign class> <drupal-media data-entity-type data-entity-uuid data-align data-caption data-view-mode title alt> <br> <mark> <small class> <iframe src width height allowfullscreen title loading="lazy" seamless sandbox="allow-same-origin allow-scripts allow-popups">'
       filter_html_help: true
       filter_html_nofollow: false
-  filter_htmlcorrector:
-    id: filter_htmlcorrector
-    provider: filter
-    status: true
-    weight: -45
-    settings: {  }
   filter_html_escape:
     id: filter_html_escape
     provider: filter
@@ -84,6 +86,33 @@ filters:
     status: false
     weight: -40
     settings: {  }
+  filter_htmlcorrector:
+    id: filter_htmlcorrector
+    provider: filter
+    status: true
+    weight: -45
+    settings: {  }
+  filter_icon:
+    id: filter_icon
+    provider: uiowa_core
+    status: true
+    weight: -30
+    settings: {  }
+  filter_iframe:
+    id: filter_iframe
+    provider: uiowa_core
+    status: true
+    weight: -40
+    settings:
+      allowed_sources: "https://www.candidcareer.com/embed.php\r\nhttps://www.google.com/maps/embed"
+  filter_responsive_table:
+    id: filter_responsive_table
+    provider: responsive_table_filter
+    status: true
+    weight: 0
+    settings:
+      wrapper_element: div
+      wrapper_classes: table-responsive
   filter_url:
     id: filter_url
     provider: filter
@@ -91,12 +120,6 @@ filters:
     weight: -41
     settings:
       filter_url_length: 72
-  entity_embed:
-    id: entity_embed
-    provider: entity_embed
-    status: true
-    weight: -46
-    settings: {  }
   linkit:
     id: linkit
     provider: linkit
@@ -116,6 +139,7 @@ filters:
         facebook: facebook
         image: image
         instagram: instagram
+        panopto: panopto
         remote_video: remote_video
         twitter: twitter
       allowed_view_modes:

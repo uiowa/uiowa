@@ -12,7 +12,7 @@ entity_type: node
 bundle: student_profile
 label: 'Featured image'
 description: 'Banner that displays on the full student profile page'
-required: false
+required: true
 translatable: true
 default_value: {  }
 default_value_callback: ''
@@ -23,6 +23,7 @@ settings:
       image: image
     sort:
       field: _none
+      direction: ASC
     auto_create: true
     auto_create_bundle: ''
 field_type: entity_reference

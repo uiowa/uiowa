@@ -1,11 +1,11 @@
-uuid: e24bb1e2-b1a8-473f-9e63-f9fefd23837d
+uuid: 08c1e337-6807-420d-95b8-9d8701bdfad2
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_area_of_study_college
     - node.type.area_of_study
-    - node.type.page
+    - taxonomy.vocabulary.colleges
 id: node.area_of_study.field_area_of_study_college
 field_name: field_area_of_study_college
 entity_type: node
@@ -17,13 +17,13 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:node'
+  handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      page: page
+      colleges: colleges
     sort:
-      field: _none
-      direction: ASC
-    auto_create: false
+      field: name
+      direction: asc
+    auto_create: true
     auto_create_bundle: ''
 field_type: entity_reference

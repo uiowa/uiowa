@@ -7,6 +7,7 @@ dependencies:
     - entity_embed
     - linkit
     - media
+    - uiowa_core
 name: 'Minimal HTML'
 format: minimal
 weight: -9
@@ -47,15 +48,9 @@ filters:
     status: true
     weight: -49
     settings:
-      allowed_html: '<em> <strong> <cite> <blockquote cite> <code> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <a href hreflang data-entity-substitution data-entity-type data-entity-uuid title> <u> <s> <sup> <sub> <div class="lead alert alert-success alert-info alert-warning alert-danger"> <p> <span class="fa*"> <hr class> <br> <small class>'
+      allowed_html: '<em> <strong> <cite> <blockquote cite> <code> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <a href hreflang data-entity-substitution data-entity-type data-entity-uuid title id target aria-label rel data-*> <u> <s> <sup> <sub> <div class="lead alert alert-success alert-info alert-warning alert-danger"> <p> <span role class="fa*"> <hr class=""> <br> <small class="">'
       filter_html_help: true
       filter_html_nofollow: false
-  filter_htmlcorrector:
-    id: filter_htmlcorrector
-    provider: filter
-    status: true
-    weight: -41
-    settings: {  }
   filter_html_escape:
     id: filter_html_escape
     provider: filter
@@ -68,6 +63,25 @@ filters:
     status: false
     weight: -42
     settings: {  }
+  filter_htmlcorrector:
+    id: filter_htmlcorrector
+    provider: filter
+    status: true
+    weight: -41
+    settings: {  }
+  filter_icon:
+    id: filter_icon
+    provider: uiowa_core
+    status: true
+    weight: -30
+    settings: {  }
+  filter_iframe:
+    id: filter_iframe
+    provider: uiowa_core
+    status: false
+    weight: -40
+    settings:
+      allowed_sources: ''
   filter_url:
     id: filter_url
     provider: filter

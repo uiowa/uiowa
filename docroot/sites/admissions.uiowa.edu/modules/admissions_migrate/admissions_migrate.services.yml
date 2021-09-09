@@ -1,0 +1,6 @@
+services:
+  admissions_migrate.event_subscriber:
+    class: Drupal\admissions_migrate\EventSubscriber\MigrateEventSubscriber
+    arguments: ['@entity_type.manager']
+    tags:
+      - { name: event_subscriber }

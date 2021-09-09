@@ -382,7 +382,7 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
     // Create node_teaser group in the advanced container.
     $form['node_teaser'] = [
       '#type' => 'details',
-      '#title' => $form["field_teaser"]["widget"][0]["#title"],
+      '#title' => $form['field_teaser']['widget'][0]['#title'],
       '#group' => 'advanced',
       '#attributes' => [
         'class' => ['node-form-teaser'],
@@ -401,7 +401,7 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
     // Create node_image group in the advanced container.
     $form['node_image'] = [
       '#type' => 'details',
-      '#title' => $form["field_image"]["widget"]["#title"],
+      '#title' => $form['field_image']['widget']['#title'],
       '#group' => 'advanced',
       '#attributes' => [
         'class' => ['node-form-image'],
@@ -788,16 +788,23 @@ function sitenow_preprocess_node(&$variables) {
       $moderation_state = $revision->get('moderation_state')->getString();
       $status = $revision->get('status')->value;
       if ($status == 0) {
-        $pre_vowel = (in_array($moderation_state[0], [
-          'a',
-          'e',
-          'i',
-          'o',
-          'u',
-        ]) ? 'n' : '');
-        $warning_text = t('This content is currently in a@pre_vowel @moderation_state state.', [
+        if ($moderation_state) {
+          $pre_vowel = (in_array($moderation_state[0], [
+            'a',
+            'e',
+            'i',
+            'o',
+            'u',
+          ]) ? 'n' : '');
+          $state = $moderation_state;
+        }
+        else {
+          $pre_vowel = 'n';
+          $state = 'unpublished';
+        }
+        $warning_text = t('This content is currently in a@pre_vowel @state state.', [
           '@pre_vowel' => $pre_vowel,
-          '@moderation_state' => $moderation_state,
+          '@state' => $state,
         ]);
 
         switch ($variables['view_mode']) {
@@ -884,7 +891,7 @@ function sitenow_link_alter(&$variables) {
   if (!empty($variables['options']['fa_icon'])) {
     $variables['options']['attributes']['class'][] = 'fa-icon';
 
-    $variables['text'] = t('<span class="fa @icon" aria-hidden="true"></span> <span class="menu-link-title">@title</span>', [
+    $variables['text'] = t('<span role="presentation" class="fa @icon" aria-hidden="true"></span> <span class="menu-link-title">@title</span>', [
       '@icon' => $variables['options']['fa_icon'],
       '@title' => $variables['text'],
     ]);

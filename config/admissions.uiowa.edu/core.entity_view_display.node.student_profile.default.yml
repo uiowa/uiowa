@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.student_profile.body
     - field.field.node.student_profile.field_image
+    - field.field.node.student_profile.field_meta_tags
     - field.field.node.student_profile.field_person_first_name
     - field.field.node.student_profile.field_person_hometown
     - field.field.node.student_profile.field_person_last_name
@@ -21,9 +22,11 @@ dependencies:
     - views.view.student_card
   module:
     - address
+    - admissions_core
     - heading
     - layout_builder
     - layout_builder_restrictions
+    - metatag
     - options
     - text
     - user
@@ -175,7 +178,21 @@ third_party_settings:
             additional: {  }
             weight: -6
           -
-            uuid: f445c4a1-ce0b-4ebc-a6f6-2105893b26ab
+            uuid: 4914dc87-747a-48fc-b2e2-fd702a68de5e
+            region: second
+            configuration:
+              id: applybutton_block
+              label: null
+              provider: admissions_core
+              label_display: null
+              context_mapping: {  }
+            additional:
+              layout_builder_styles_style:
+                block_margin_left: block_margin_left
+                block_margin_bottom: block_margin_bottom
+            weight: 1
+          -
+            uuid: 64b3c147-5687-45f9-a7df-7c7f84d71c2e
             region: second
             configuration:
               id: 'views_block:student_card-block_student_grid'
@@ -183,10 +200,26 @@ third_party_settings:
               provider: views
               label_display: null
               views_label: ''
-              items_per_page: none
+              items_per_page: '9'
+              headline:
+                headline: 'Student Profiles'
+                hide_headline: 0
+                heading_size: h4
+                headline_style: headline_bold_serif_underline
+                child_heading_size: h3
+              exposed_filter_values:
+                field_student_profile_gender_value: All
+                field_student_profile_country_value: All
+                field_student_profile_state_value: All
+                field_student_profile_attributes_value: All
               context_mapping: {  }
-            additional: {  }
-            weight: 1
+            additional:
+              layout_builder_styles_style:
+                block_background_style_gray: block_background_style_gray
+                block_padding_all: block_padding_all
+                block_margin_left: block_margin_left
+                block_margin_top: block_margin_top
+            weight: 3
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -260,6 +293,13 @@ content:
     third_party_settings: {  }
     type: entity_reference_entity_view
     region: content
+  field_meta_tags:
+    weight: 14
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_empty_formatter
+    region: content
   field_person_first_name:
     weight: 1
     label: visually_hidden
@@ -331,6 +371,9 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_person_last_name: true
   field_student_profile_gender: true
   field_student_profile_grad_date: true

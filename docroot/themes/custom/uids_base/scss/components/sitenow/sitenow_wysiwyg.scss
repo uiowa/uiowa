@@ -6,3 +6,90 @@
 @import "uids/components/button/button.scss";
 @import "scss/sitenow.scss";
 @import "scss/components/typography/global-serif.scss";
+
+.cke_contents_ltr {
+  table,
+  table caption,
+  table > tr > td,
+  table > tr > th,
+  table > tbody > tr > td,
+  table > tbody > tr > th,
+  table > thead > tr > td,
+  table > thead > tr > th,
+  table > tfoot > tr > td,
+  table > tfoot > tr > th
+  {
+    border: #d3d3d3 1px dotted;
+  }
+}
+
+drupal-media {
+  max-width: 100%;
+}
+
+body.cke_editable {
+  // Deal with drupal-media wysiwyg issue for align none originals.
+  .media:not(.align-left):not(.align-right):not(.align-center) {
+    &.media--type-remote-video.media--view-mode-default,
+    &.media--type-remote-video.media--view-mode-full,
+    &.media--type-panopto.media--view-mode-default,
+    &.media--type-panopto.media--view-mode-full {
+      width: 854px;
+      max-width: 100%;
+      height: 480px;
+      position: unset;
+      display: inherit;
+      padding: 0;
+      overflow: auto;
+
+      .field--name-field-media-oembed-video,
+      .field--name-field-media-panopto-url {
+        height: 100%;
+
+        &>iframe {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+
+  figure.caption {
+    .media:not(.align-left):not(.align-right):not(.align-center) {
+      &.media--type-remote-video.media--view-mode-default,
+      &.media--type-remote-video.media--view-mode-full,
+      &.media--type-panopto.media--view-mode-default,
+      &.media--type-panopto.media--view-mode-full {
+        width: 300px;
+        // 150px + edit button + border/padding.
+        height: calc(150px + 40px + 9px);
+
+        .field--name-field-media-oembed-video,
+        .field--name-field-media-panopto-url {
+          height: unset;
+        }
+      }
+    }
+  }
+}
+
+.cke_editable img {
+  max-width: 100%;
+  height: auto;
+}
+
+// Adjust responsive positioning to make room for edit button
+.embed-responsive embed,
+.embed-responsive iframe,
+.embed-responsive object,
+.embed-responsive video,
+.media--type-panopto embed,
+.media--type-panopto iframe,
+.media--type-panopto object,
+.media--type-panopto video,
+.media--type-remote-video embed,
+.media--type-remote-video iframe,
+.media--type-remote-video object,
+.media--type-remote-video video {
+  top: 40px;
+}

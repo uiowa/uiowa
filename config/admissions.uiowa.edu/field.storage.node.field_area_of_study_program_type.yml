@@ -1,0 +1,36 @@
+uuid: be0141b5-3b8b-4b6b-920d-b267a42dec49
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_area_of_study_program_type
+field_name: field_area_of_study_program_type
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: major
+      label: Major
+    -
+      value: minor
+      label: Minor
+    -
+      value: certificate
+      label: Certificate
+    -
+      value: preprofessional_program
+      label: 'Preprofessional Program'
+    -
+      value: online_offcampus_program
+      label: 'Online/Off-campus Program'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

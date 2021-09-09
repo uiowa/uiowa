@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.person.field_grad_program_all_degree
     - field.field.node.person.field_image
     - field.field.node.person.field_meta_tags
     - field.field.node.person.field_person_bio
@@ -15,17 +16,12 @@ dependencies:
     - field.field.node.person.field_person_first_name
     - field.field.node.person.field_person_hide
     - field.field.node.person.field_person_hometown
-    - field.field.node.person.field_person_lab_building
-    - field.field.node.person.field_person_lab_phone
-    - field.field.node.person.field_person_lab_room
     - field.field.node.person.field_person_last_name
-    - field.field.node.person.field_person_office_building
-    - field.field.node.person.field_person_office_phone
-    - field.field.node.person.field_person_office_room
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
     - field.field.node.person.field_person_publications_link
     - field.field.node.person.field_person_research_areas
+    - field.field.node.person.field_person_type_status
     - field.field.node.person.field_person_types
     - field.field.node.person.field_person_university_id
     - field.field.node.person.field_person_website
@@ -34,7 +30,6 @@ dependencies:
     - field.field.node.person.field_pt_student_cur_pos_dept
     - field.field.node.person.field_pt_student_cur_pos_inst
     - field.field.node.person.field_pt_student_cur_pos_title
-    - field.field.node.person.field_pt_student_current
     - field.field.node.person.field_pt_student_defense_date
     - field.field.node.person.field_pt_student_program_start
     - field.field.node.person.field_tags
@@ -103,6 +98,7 @@ content:
     third_party_settings: {  }
 hidden:
   content_moderation_control: true
+  field_grad_program_all_degree: true
   field_meta_tags: true
   field_person_bio: true
   field_person_contact_information: true
@@ -111,15 +107,10 @@ hidden:
   field_person_first_name: true
   field_person_hide: true
   field_person_hometown: true
-  field_person_lab_building: true
-  field_person_lab_phone: true
-  field_person_lab_room: true
   field_person_last_name: true
-  field_person_office_building: true
-  field_person_office_phone: true
-  field_person_office_room: true
   field_person_publications_link: true
   field_person_research_areas: true
+  field_person_type_status: true
   field_person_types: true
   field_person_university_id: true
   field_person_website: true
@@ -128,7 +119,6 @@ hidden:
   field_pt_student_cur_pos_dept: true
   field_pt_student_cur_pos_inst: true
   field_pt_student_cur_pos_title: true
-  field_pt_student_current: true
   field_pt_student_defense_date: true
   field_pt_student_program_start: true
   field_tags: true

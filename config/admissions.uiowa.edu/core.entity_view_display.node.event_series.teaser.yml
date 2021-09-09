@@ -1,0 +1,42 @@
+uuid: ff0bf061-f999-470c-8030-0b867e877662
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.event_series.body
+    - field.field.node.event_series.field_event_series_button_link
+    - field.field.node.event_series.field_event_series_summary
+    - field.field.node.event_series.field_image
+    - field.field.node.event_series.field_meta_tags
+    - node.type.event_series
+  module:
+    - text
+    - user
+id: node.event_series.teaser
+targetEntityType: node
+bundle: event_series
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_event_series_button_link: true
+  field_event_series_summary: true
+  field_image: true
+  field_meta_tags: true
+  search_api_excerpt: true

@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Config\FileStorage;
+use Drupal\Core\Site\Settings;
 use Drupal\node\Entity\Node;
 
 /**
@@ -113,4 +114,64 @@ function sitenow_people_update_8002() {
       $term->delete();
     }
   }
+}
+
+/**
+ * Add people filters to existing sites.
+ */
+function sitenow_people_update_9101() {
+  // Get the current stuff.
+  $current_view = \Drupal::entityTypeManager()->getStorage('view')->load('people');
+  $current_default =& $current_view->getDisplay('default');
+  $current_displays = $current_view->get('display');
+  if ($current_view->get('status') == TRUE) {
+    $current_status = 1;
+  }
+  else {
+    $current_status = 0;
+  }
+  foreach ($current_displays as $current_display) {
+    // Override the default sort value. Assumes only one display is enabled...
+    if (isset($current_display["display_options"]["enabled"]) && $current_display["display_options"]["enabled"] == 1) {
+      $enabled_id = $current_display['id'];
+      $current_path = $current_display['display_options']['path'];
+    }
+  }
+  $current_title = $current_default['display_options']['title'];
+  $current_header = $current_default["display_options"]["header"]["area"]["content"]["value"];
+
+  // Load the new config. Wiping everything else out.
+  $config_path = Settings::get('config_sync_directory');
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('views.view.people', $source->read('views.view.people'));
+  drupal_flush_all_caches();
+
+  // Set the existing config again.
+  $view = \Drupal::entityTypeManager()->getStorage('view')->load('people');
+  $default =& $view->getDisplay('default');
+  $default["display_options"]["header"]["area"]["content"]["value"] = $current_header;
+  $default['display_options']['title'] = $current_title;
+  if ($current_status == 1) {
+    $view->set('status', TRUE);
+    $displays = $view->get('display');
+    unset($displays['default']);
+    foreach ($displays as $display) {
+      $display[$display['id']] =& $view->getDisplay($display['id']);
+      if (isset($current_path)) {
+        $display[$display['id']]['display_options']['path'] = $current_path;
+      }
+      $display[$display['id']]["display_options"]["enabled"] = FALSE;
+    }
+    if (isset($enabled_id)) {
+      $enabled_display =& $view->getDisplay($enabled_id);
+      $enabled_display["display_options"]["enabled"] = TRUE;
+    }
+  }
+  else {
+    $view->set('status', FALSE);
+  }
+
+  $view->save();
+
 }

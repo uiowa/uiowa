@@ -31,6 +31,7 @@ class UiowaHeadlineWidget extends WidgetBase {
       'heading_size' => $items[$delta]->heading_size ?? 'h2',
       'headline_style' => $items[$delta]->headline_style ?? 'default',
       'child_heading_size' => $items[$delta]->child_heading_size ?? 'h2',
+      'description' => $items[$delta]->getFieldDefinition()->getDescription() ?? '',
     ]);
 
     return $element;

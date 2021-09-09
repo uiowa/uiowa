@@ -7,22 +7,26 @@
  */
 
 use Drupal\block\Entity\Block;
+use Drupal\block_content\BlockContentInterface;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Config\FileStorage;
-use Drupal\node\Entity\Node;
-use Drupal\taxonomy\Entity\Term;
-use Drupal\user\Entity\User;
-use Drupal\menu_link_content\Entity\MenuLinkContent;
-use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\field\Entity\FieldConfig;
-use Drupal\paragraphs\ParagraphInterface;
-use Drupal\paragraphs\Entity\Paragraph;
-use Drupal\filter\Plugin\Filter\FilterHtmlCorrector;
 use Drupal\Core\Database\Database;
+use Drupal\Core\Entity\Sql\SqlContentEntityStorage;
+use Drupal\Core\Entity\Sql\SqlContentEntityStorageException;
+use Drupal\Core\Site\Settings;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\file\Entity\File;
+use Drupal\filter\Plugin\Filter\FilterHtmlCorrector;
+use Drupal\layout_builder\InlineBlockUsage;
 use Drupal\layout_builder\Section;
 use Drupal\layout_builder\SectionComponent;
-use Drupal\layout_builder\InlineBlockUsage;
-use Drupal\Core\Site\Settings;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
+use Drupal\node\Entity\Node;
+use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\paragraphs\ParagraphInterface;
+use Drupal\taxonomy\Entity\Term;
+use Drupal\user\Entity\User;
 
 /**
  * Update some uiowa_footer settings which are ignored.
@@ -2001,8 +2005,6 @@ function sitenow_update_8050() {
                   // Get all <drupal-entity> instances.
                   $de_instances = $document->getElementsByTagName('drupal-entity');
 
-                  // DE Example: <drupal-entity data-align="center" data-embed-button="media_entity_embed" data-entity-embed-display="view_mode:media.full" data-entity-embed-display-settings="" data-entity-type="media" data-entity-uuid="463f699b-e367-48b1-9a30-5df1fbe88762"></drupal-entity>.
-                  // DM Example: <drupal-media data-align="center" data-entity-type="media" data-entity-uuid="10e236e2-b20c-4b6c-9c60-f5f1ad1e316d" data-view-mode="large__no_crop"></drupal-media>.
                   // As we replace the inline images, they are actually
                   // removed in the DOMNodeList $images, so we have to
                   // use a regressive loop to count through them.
@@ -2014,7 +2016,7 @@ function sitenow_update_8050() {
                     $de_instance = $de_instances->item($i);
                     $dm_instance = $document->createElement('drupal-media');
 
-                    // Loop through attributes that are the same for both formats.
+                    // Loop through attributes that are same for both formats.
                     foreach ([
                       'data-align',
                       'data-entity-type',
@@ -2022,7 +2024,7 @@ function sitenow_update_8050() {
                     ] as $attr_name) {
                       $attribute = $de_instance->getAttribute($attr_name);
 
-                      // Set the attribute on the new instance if it has a value set.
+                      // Set the attribute on new instance if it has a value.
                       if (!empty($attribute)) {
                         $dm_instance->setAttribute($attr_name, $attribute);
                       }
@@ -2030,7 +2032,7 @@ function sitenow_update_8050() {
 
                     $old_view_mode = $de_instance->getAttribute('data-entity-embed-display');
                     if (!empty($old_view_mode)) {
-                      // @todo Parse out the view mode from the existing embed attribute.
+                      // @todo Parse out view mode from the existing embed.
                       $old_view_mode = str_replace('view_mode:media.', '', $old_view_mode);
                       $old_view_mode = str_replace('image_', '', $old_view_mode);
                       $dm_instance->setAttribute('data-view-mode', $old_view_mode);
@@ -2158,4 +2160,1197 @@ function sitenow_update_9002() {
   $config = $config_factory->getEditable('uids_base.settings');
   $config->set('fonts.font-family', 'sans-serif');
   $config->save();
+}
+
+/**
+ * Set menu links to expanded by default.
+ */
+function sitenow_update_9003(&$sandbox) {
+  if (!isset($sandbox['total'])) {
+    $query = \Drupal::entityQuery('menu_link_content')
+      ->condition('expanded', 0, '=')
+      ->execute();
+    $sandbox['total'] = count($query);
+    $sandbox['current'] = 0;
+    $sandbox['query'] = $query;
+
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+  // Loop through menu links in batches.
+  $per_batch = 100;
+  $batch = array_slice($sandbox['query'], $sandbox['current'], $sandbox['current'] + $per_batch);
+  if (empty($batch)) {
+    $sandbox['#finished'] = 1;
+    \Drupal::service('router.builder')->rebuild();
+    return;
+  }
+
+  foreach ($batch as $mcid) {
+    $menu_item = MenuLinkContent::load($mcid);
+    $menu_item->expanded = 1;
+    $menu_item->save();
+    $sandbox['current']++;
+  }
+
+  \Drupal::messenger()
+    ->addMessage($sandbox['current'] . ' menu items processed.');
+
+  if ($sandbox['current'] >= $sandbox['total']) {
+    $sandbox['#finished'] = 1;
+  }
+  else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  }
+}
+
+/**
+ * Update menu block instance settings to show 1 level of menu.
+ */
+function sitenow_update_9004(&$sandbox) {
+  $connection = Database::getConnection();
+
+  // We need to adjust the records for the current node
+  // version and previous revisions.
+  foreach ([
+    'node_revision__layout_builder__layout',
+    'node__layout_builder__layout',
+  ] as $table_name) {
+    $query = $connection->select($table_name, 'n');
+    $orGroup = $query->orConditionGroup()
+      ->condition('layout_builder__layout_section', '%s:5:"depth";i:0;%', 'LIKE')
+      ->condition('layout_builder__layout_section', '%s:5:"depth";s:1:"0"%', 'LIKE');
+
+    $query->fields('n', ['entity_id'])
+      ->condition($orGroup);
+    $count = $query->countQuery()->execute()->fetchField();
+
+    \Drupal::messenger()
+      ->addMessage($table_name . ' records found (before): ' . $count);
+
+    // For reasons I can't quite understand,
+    // the depth config in the menu block settings
+    // get serialized as an integer in some cases
+    // and as a string in others. We have to handle
+    // both.
+    // Handle integer case.
+    $connection->update($table_name)
+      ->condition('layout_builder__layout_section', '%menu_block:main%', 'LIKE')
+      ->expression('layout_builder__layout_section', 'REPLACE(layout_builder__layout_section, :old, :new)', [
+        ':old' => 's:5:"depth";i:0;',
+        ':new' => 's:5:"depth";i:1;',
+      ])
+      ->execute();
+    // Handle string case.
+    $connection->update($table_name)
+      ->condition('layout_builder__layout_section', '%menu_block:main%', 'LIKE')
+      ->expression('layout_builder__layout_section', 'REPLACE(layout_builder__layout_section, :old, :new)', [
+        ':old' => 's:5:"depth";s:1:"0"',
+        ':new' => 's:5:"depth";s:1:"1"',
+      ])
+      ->execute();
+
+    $count = $query->countQuery()->execute()->fetchField();
+
+    \Drupal::messenger()
+      ->addMessage($table_name . ' records found (after): ' . $count);
+  }
+}
+
+/**
+ * Enable grad_person_extended split.
+ *
+ * In cases where the person_extended split was being used,
+ * enable the grad_person_extended split to take its place.
+ */
+function sitenow_update_9005() {
+
+  /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
+  $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+  $split = 'config_split:person_extended';
+
+  // If person_extended split isn't registered or
+  // isn't active, return early.
+  if (!isset($filters[$split]) || !$filters[$split]['status']) {
+    return t('person_extended split is not active, so no update to run.');
+  }
+
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+
+  // Create field storage for new person type status field.
+  \Drupal::entityTypeManager()
+    ->getStorage('field_storage_config')
+    ->create($source->read('field.storage.node.field_person_type_status'))
+    ->save();
+
+  // Create field instance for 'field_person_type_status'.
+  \Drupal::entityTypeManager()->getStorage('field_config')
+    ->create($source->read('field.field.node.person.field_person_type_status'))
+    ->save();
+
+  // The following config is needed for the next update.
+  $config_names = [
+    'config_ignore.settings',
+    'config_split.config_split.grad_person_extended',
+  ];
+  $config_storage = \Drupal::service('config.storage');
+  foreach ($config_names as $config_name) {
+    $config_storage->write($config_name, $source->read($config_name));
+  }
+
+  // Enable the 'person_extended' split.
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('config_split.config_split.grad_person_extended');
+  $config->set('status', TRUE);
+  $config->save(TRUE);
+}
+
+/**
+ * Update sites using the person_extended to reflect changes to that split.
+ */
+function sitenow_update_9006(&$sandbox) {
+  /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
+  $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+  $split = 'config_split:person_extended';
+
+  // If person_extended split isn't registered or
+  // isn't active, return early.
+  if (!isset($filters[$split]) || !$filters[$split]['status']) {
+    return t('person_extended split is not active, so no update to run.');
+  }
+
+  // Process all nodes that have a filled person.
+  if (!isset($sandbox['total'])) {
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'person')
+      ->execute();
+
+    $sandbox['total'] = count($query);
+    $sandbox['current'] = 0;
+    $sandbox['query'] = $query;
+
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+  // Loop through the same nodes in batches.
+  $nodes_per_batch = 25;
+  $batch = array_slice($sandbox['query'], $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
+  if (empty($batch)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  foreach ($batch as $nid) {
+    // Load the node, set a flag for whether we need to save the node.
+    $node = Node::load($nid);
+    // Unset any gremlins.
+    $node->set('field_person_contact_information', NULL);
+    $save_node = FALSE;
+    $field_fragments = [
+      'room',
+      'building',
+      'phone',
+    ];
+    foreach ([
+      'lab',
+      'office',
+    ] as $location_type) {
+      $location = [];
+      foreach ($field_fragments as $fragment_name) {
+        $field_name = "field_person_{$location_type}_{$fragment_name}";
+        if ($node->hasField($field_name) && $node->{$field_name}->value) {
+          $location[$fragment_name] = $node->{$field_name}->value;
+          // Remove field instances from node.
+          $node->set($field_name, NULL);
+          // Now we need to save the node.
+          $save_node = TRUE;
+        }
+      }
+
+      if (!empty($location)) {
+        // Create a Contact Info paragraph instance.
+        // and populate with location info.
+        $contact_info = Paragraph::create([
+          'type' => 'uiowa_contact',
+          'field_uiowa_contact_label' => [
+            'value' => ucfirst($location_type),
+          ],
+        ]);
+
+        // If a phone number is present, pop it off the array
+        // and add it.
+        if (isset($location['phone'])) {
+          $contact_info->field_uiowa_contact_phone = array_pop($location);
+        }
+
+        // Create the address_line1 string.
+        $address = implode(' ', $location);
+
+        // If there is an address_line1, build the address object.
+        if ($address !== '') {
+          $field_uiowa_contact_address = [
+            'country_code' => 'US',
+            'address_line1' => $address,
+          ];
+          $contact_info->set('field_uiowa_contact_address', $field_uiowa_contact_address);
+        }
+        // Save the contact info.
+        $contact_info->save();
+
+        // Attach the contact info to the node.
+        $node->field_person_contact_information[] = [
+          'target_id' => $contact_info->id(),
+          'target_revision_id' => $contact_info->getRevisionId(),
+        ];
+        $save_node = TRUE;
+      }
+    }
+
+    // Check if we have the current student field and
+    // the person types field.
+    if ($node->hasField('field_pt_student_current') && $node->hasField('field_person_types')) {
+      // If the person type includes 'student' and
+      // current student is FALSE, set the person type status.
+      $existing_types = array_column($node->field_person_types->getValue(), 'target_id');
+      if (in_array('student', $existing_types) && !$node->field_pt_student_current->value) {
+        $node->field_person_type_status->setValue(['value' => 'student']);
+        $save_node = TRUE;
+      }
+    }
+
+    // Save node if there were changes.
+    if ($save_node) {
+      // Set revision message and save.
+      $node->setRevisionLogMessage('Automated save.');
+      $node->save();
+    }
+    $sandbox['current']++;
+  }
+
+  \Drupal::messenger()
+    ->addMessage($sandbox['current'] . ' nodes processed.');
+
+  if ($sandbox['current'] >= $sandbox['total']) {
+    $sandbox['#finished'] = 1;
+  }
+  else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  }
+}
+
+/**
+ * Update button classes.
+ */
+function sitenow_update_9007() {
+  $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
+
+  // Limit to just sites running uids_base.
+  if ($active_theme->getName() === 'uids_base') {
+
+    $secondary = 'bttn--secondary bttn--caps';
+    $search_replace = [
+      'btn-primary' => 'bttn--primary bttn--caps',
+      'btn-secondary' => $secondary,
+      'btn-success' => $secondary,
+      'btn-danger' => $secondary,
+      'btn-info' => $secondary,
+      'btn-warning' => $secondary,
+      'btn-light' => $secondary,
+      'btn-dark' => $secondary,
+      'btn-link' => '',
+      'btn-lg' => '',
+      'btn-sm' => '',
+      'btn-block' => '',
+      'btn' => 'bttn',
+    ];
+    // Table classes to remove.
+    $table_search = [
+      'table--static',
+      'table--is-striped',
+      'is-striped',
+      'table',
+    ];
+    $entity_type_manager = \Drupal::entityTypeManager();
+    $entity_field_manager = \Drupal::service('entity_field.manager');
+    $text_long = $entity_field_manager->getFieldMapByFieldType('text_long');
+    $text_with_summary = $entity_field_manager->getFieldMapByFieldType('text_with_summary');
+    $entity_field_map = array_merge($text_long, $text_with_summary);
+
+    foreach ($entity_field_map as $entity_type_id => $field_map) {
+      $entity_storage = $entity_type_manager->getStorage($entity_type_id);
+      if (!($entity_storage instanceof SqlContentEntityStorage)) {
+        continue;
+      }
+
+      $entity_type = $entity_type_manager->getDefinition($entity_type_id);
+      $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
+      $table_mapping = $entity_storage->getTableMapping($field_storage_definitions);
+      foreach (array_intersect_key($field_storage_definitions, $field_map) as $field_storage_definition) {
+        $tables = [];
+        $field_name = $field_storage_definition->getName();
+        try {
+          $tables[] = $table_mapping->getFieldTableName($field_name);
+          $value_column = $table_mapping->getFieldColumnName($field_storage_definition, 'value');
+        }
+        catch (SqlContentEntityStorageException $e) {
+          continue;
+        }
+        // See if the field has a revision table.
+        $revision_table = NULL;
+        if ($entity_type->isRevisionable() && $field_storage_definition->isRevisionable()) {
+          if ($table_mapping->requiresDedicatedTableStorage($field_storage_definition)) {
+            $revision_table = $table_mapping->getDedicatedRevisionTableName($field_storage_definition);
+          }
+          elseif ($table_mapping->allowsSharedTableStorage($field_storage_definition)) {
+            $revision_table = $entity_type->getRevisionDataTable() ?: $entity_type->getRevisionTable();
+          }
+          $tables[] = $revision_table;
+        }
+        if (!empty($tables)) {
+          $db = \Drupal::database();
+
+          foreach ($tables as $table) {
+            $update_count = 0;
+            $query = $db->select($table, 't')
+              ->fields('t');
+
+            $or_group = $query->orConditionGroup();
+
+            foreach ($search_replace as $needle => $string) {
+              $or_group->condition($value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE');
+            }
+
+            foreach ($table_search as $needle) {
+              $or_group->condition($value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE');
+            }
+
+            $results = $query->condition($or_group)
+              ->execute();
+
+            foreach ($results as $record) {
+
+              $document = Html::load($record->{$value_column});
+
+              foreach (['a', 'table'] as $tag) {
+                $instances = $document->getElementsByTagName($tag);
+
+                // We don't actually need the regressive loop
+                // here, but its copied/pasted.
+                $i = $instances->length - 1;
+
+                while ($i >= 0) {
+                  // The current inline image element.
+                  $dom_element = $instances->item($i);
+
+                  $class = $dom_element->getAttribute('class');
+
+                  switch ($tag) {
+                    case 'a':
+                      foreach ($search_replace as $needle => $replace) {
+                        $class = str_replace($needle, $replace, $class);
+                      }
+                      break;
+
+                    case 'table':
+                      foreach ($table_search as $needle) {
+                        $class = str_replace($needle, '', $class);
+                      }
+                      break;
+                  }
+
+                  if (trim($class)) {
+                    $dom_element->setAttribute('class', $class);
+                  }
+                  else {
+                    $dom_element->removeAttribute('class');
+                  }
+
+                  $i--;
+                }
+              }
+
+              // Run database update to store updated $value_column as
+              // Html::serialize($document).
+              $db->update($table)
+                ->fields([
+                  $value_column => Html::serialize($document),
+                ])
+                ->condition('entity_id', $record->entity_id)
+                ->condition('revision_id', $record->revision_id)
+                ->execute();
+
+              $update_count++;
+            }
+
+            if ($update_count) {
+              \Drupal::messenger()
+                ->addMessage('Processed ' . $update_count . ' update(s) for ' . $table . ' table ' . $value_column . ' column.');
+            }
+          }
+        }
+      }
+    }
+
+    // Loop through SiteNow config ignored views.
+    $views = ['articles', 'people'];
+    foreach ($views as $view) {
+      $view = \Drupal::entityTypeManager()->getStorage('view')->load('people');
+      $default =& $view->getDisplay('default');
+      $header_content = $default["display_options"]["header"]["area"]["content"]["value"];
+      foreach ($search_replace as $needle => $string) {
+        $header_content = str_replace($needle, $string, $header_content);
+      }
+      $default["display_options"]["header"]["area"]["content"]["value"] = $header_content;
+      $view->save();
+    }
+
+  }
+}
+
+/**
+ * Fix table classes that were inadvertently broken.
+ */
+function sitenow_update_9008() {
+  $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
+
+  // Limit to just sites running uids_base.
+  if ($active_theme->getName() === 'uids_base') {
+
+    $table_search = [
+      '--gray-borders' => 'table--gray-borders',
+      '--hover-highlight' => 'table--hover-highlight',
+      '--width-default' => 'table--width-default',
+    ];
+    $entity_type_manager = \Drupal::entityTypeManager();
+    $entity_field_manager = \Drupal::service('entity_field.manager');
+    $text_long = $entity_field_manager->getFieldMapByFieldType('text_long');
+    $text_with_summary = $entity_field_manager->getFieldMapByFieldType('text_with_summary');
+    $entity_field_map = array_merge($text_long, $text_with_summary);
+
+    foreach ($entity_field_map as $entity_type_id => $field_map) {
+      $entity_storage = $entity_type_manager->getStorage($entity_type_id);
+      if (!($entity_storage instanceof SqlContentEntityStorage)) {
+        continue;
+      }
+
+      $entity_type = $entity_type_manager->getDefinition($entity_type_id);
+      $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
+      $table_mapping = $entity_storage->getTableMapping($field_storage_definitions);
+      foreach (array_intersect_key($field_storage_definitions, $field_map) as $field_storage_definition) {
+        $tables = [];
+        $field_name = $field_storage_definition->getName();
+        try {
+          $tables[] = $table_mapping->getFieldTableName($field_name);
+          $value_column = $table_mapping->getFieldColumnName($field_storage_definition, 'value');
+        }
+        catch (SqlContentEntityStorageException $e) {
+          continue;
+        }
+        // See if the field has a revision table.
+        $revision_table = NULL;
+        if ($entity_type->isRevisionable() && $field_storage_definition->isRevisionable()) {
+          if ($table_mapping->requiresDedicatedTableStorage($field_storage_definition)) {
+            $revision_table = $table_mapping->getDedicatedRevisionTableName($field_storage_definition);
+          }
+          elseif ($table_mapping->allowsSharedTableStorage($field_storage_definition)) {
+            $revision_table = $entity_type->getRevisionDataTable() ?: $entity_type->getRevisionTable();
+          }
+          $tables[] = $revision_table;
+        }
+        if (!empty($tables)) {
+          $db = \Drupal::database();
+
+          foreach ($tables as $table) {
+            $update_count = 0;
+
+            foreach ($table_search as $needle => $replace) {
+              $update_count += $db->update($table)
+                ->condition($value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE')
+                ->expression($value_column, "REPLACE($value_column, :old, :new)", [
+                  ':old' => $needle,
+                  ':new' => $replace,
+                ])
+                ->execute();
+            }
+
+            if ($update_count) {
+              \Drupal::messenger()
+                ->addMessage(t('Processed @update_count update(s) for @table table @value_column column.', [
+                  '@update_count' => $update_count,
+                  '@table' => $table,
+                  '@value_column' => $value_column,
+                ]));
+
+              $fix_count = $db->update($table)
+                ->condition($value_column, '%' . $db->escapeLike('tabletable--') . '%', 'LIKE')
+                ->expression($value_column, "REPLACE($value_column, :old, :new)", [
+                  ':old' => 'tabletable--',
+                  ':new' => 'table--',
+                ])
+                ->execute();
+
+              \Drupal::messenger()
+                ->addMessage(t('Fixed @fix_count instance(s) where the customer had manually changed the table class in @table table @value_column column.', [
+                  '@fix_count' => $fix_count,
+                  '@table' => $table,
+                  '@value_column' => $value_column,
+                ]));
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Helper function to convert an existing people block to a list view block.
+ */
+function _convert_people_block_component(SectionComponent &$component, BlockContentInterface $block) {
+
+  $styles = $component->get('layout_builder_styles_style');
+
+  // Default LB styles for new block.
+  $new_styles = [
+    'card_media_position_right',
+    'media_format_circle',
+    'content_alignment_left',
+    'card_image_small',
+    'list_format_list',
+    'block_grid_threecol_33_34_33',
+  ];
+
+  if (is_array($styles)) {
+
+    $style_update_map = [
+      'block_hide_descriptions' => 'delete',
+      'block_hide_details' => 'delete',
+      'block_hide_image' => 'delete',
+      'block_grid_twocol_50_50' => 'block_grid_threecol_33_34_33',
+      'list_format_grid' => 'list_format_list',
+    ];
+
+    foreach ($styles as $style) {
+      if (isset($style_update_map[$style])) {
+        if ($style_update_map[$style] === 'delete') {
+          continue;
+        }
+        if ($key = array_search($style_update_map[$style], $new_styles)) {
+          $new_styles[$key] = $style;
+        }
+      }
+    }
+
+    $new_styles = array_unique($new_styles);
+  }
+
+  // Build out the new view block configuration.
+  $config = [
+    'id' => 'views_block:people_list_block-list_card',
+    'label' => NULL,
+    'provider' => 'views',
+    'label_display' => NULL,
+    'views_label' => '',
+    'items_per_page' => $block->field_collection_results->value ?: 'none',
+    'headline' => $block->get('field_uiowa_headline')
+      ->getValue()[0],
+    'pager' => $block->field_collection_pager->value ? 'full' : 'some',
+    'pager_offset' => 0,
+    'use_more' => $block->field_collection_more->value,
+    'use_more_link_url' => $block->field_collection_more_path->value,
+    'sort' => [
+      'sticky' => [
+        'order' => 'DESC',
+        'weight' => 0,
+      ],
+      'field_person_last_name_value' => [
+        'order' => 'ASC',
+        'weight' => 0,
+      ],
+      'field_person_first_name_value' => [
+        'order' => 'ASC',
+        'weight' => 0,
+      ],
+    ],
+    'exposed_filter_values' => [
+      'field_tags_target_id' => [],
+    ],
+    'layout_builder_styles' => $new_styles,
+    'context_mapping' => [],
+  ];
+
+  // Process tags.
+  if (isset($block->get('field_collection_reference')
+    ->getValue()[0])) {
+    foreach ($block->get('field_collection_reference')
+      ->getValue()[0] as $target) {
+      $config['exposed_filter_values']['field_tags_target_id'][] = ['target_id' => $target];
+    }
+  }
+
+  $fields = [
+    'field_person_credential',
+    'title',
+    'field_teaser',
+    'field_person_email',
+    'field_image',
+    'field_person_phone',
+    'field_person_position',
+  ];
+
+  // Process field visibility settings.
+  foreach ($fields as $field) {
+    $hide = 0;
+    if (isset($styles)) {
+      switch ($field) {
+        case 'field_image':
+          if (in_array('block_hide_image', $styles)) {
+            $hide = 1;
+          }
+          break;
+
+        case 'field_teaser':
+          if (in_array('block_hide_descriptions', $styles)) {
+            $hide = 1;
+          }
+          break;
+
+        case 'field_person_email':
+        case 'field_person_phone':
+          if (in_array('block_hide_details', $styles)) {
+            $hide = 1;
+          }
+          break;
+      }
+    }
+
+    $config['fields'][$field]['hide'] = $hide;
+  }
+
+  // Process sorting defaults.
+  $current_sort = $block->field_collection_sort->value;
+  if ($current_sort == 'block_people_sfl') {
+    $last_name_sort = $config['sort']['field_person_last_name_value'];
+    unset($config['sort']['field_person_last_name_value']);
+    $config['sort']['field_person_last_name_value'] = $last_name_sort;
+  }
+
+  // Repurpose the existing component and set new styles.
+  $component->setConfiguration($config);
+  $component->set('layout_builder_styles_style', $new_styles);
+}
+
+/**
+ * Update all LB people blocks to views block.
+ */
+function sitenow_update_9009() {
+  $db = \Drupal::database();
+  $block_storage = \Drupal::entityTypeManager()
+    ->getStorage('block_content');
+
+  $section_column = 'layout_builder__layout_section';
+  $tables = [
+    'node__layout_builder__layout',
+    'node_revision__layout_builder__layout',
+  ];
+
+  // Collect all the block instances so we can delete them at the end.
+  $blocks = [];
+
+  foreach ($tables as $table_name) {
+    // Select instances where the section contains a uiowa_people block.
+    $query = $db->select($table_name, 'n')
+      ->condition($section_column, '%uiowa_people%', 'LIKE')
+      ->fields('n', ['entity_id', 'revision_id', 'delta', $section_column]);
+
+    $count = $query->countQuery()->execute()->fetchField();
+
+    \Drupal::messenger()
+      ->addMessage('People block records found: ' . $count);
+
+    $results = $query->execute();
+
+    // Loop through the results.
+    foreach ($results as $record) {
+
+      // Unserialize the section field into it's class object.
+      /** @var \Drupal\layout_builder\Section $section */
+      $section = unserialize($record->layout_builder__layout_section);
+
+      // Loop through the components in the section.
+      foreach ($section->getComponents() as &$component) {
+
+        // Limit this to only the uiowa_people block component.
+        if ($component->getPluginId() !== 'inline_block:uiowa_people') {
+          continue;
+        }
+
+        $component_arr = $component->toArray();
+        $revision_id = $component_arr['configuration']['block_revision_id'];
+
+        if (!$revision_id) {
+          continue;
+        }
+
+        if (empty($blocks[$revision_id])) {
+          $blocks[$revision_id] = $block_storage->loadRevision($revision_id);
+        }
+
+        if (is_null($blocks[$revision_id])) {
+          continue;
+        }
+
+        _convert_people_block_component($component, $blocks[$revision_id]);
+      }
+
+      // Replace the old section with our newly created one.
+      $db->update($table_name)
+        ->condition('revision_id', $record->revision_id)
+        ->condition('delta', $record->delta)
+        ->fields([
+          $section_column => serialize($section),
+        ])
+        ->execute();
+    }
+  }
+
+  // Only continue with this section if we have a key_value_expire
+  // table to work with.
+  if ($db->schema()->tableExists('key_value_expire')) {
+    // Check if we have a tempstore of this node.
+    // Temp store is saved in the db in the key_value_expire,
+    // And holds a serialized blob with the unsaved changes.
+    // Might be a better method of accessing this through the Layout Builder API
+    // and layoutTempstoreRepository, but have not found it yet.
+    $query = $db->select('key_value_expire', 'kve')
+      ->fields('kve', ['name', 'value', 'expire'])
+      ->condition('value', '%uiowa_people%', 'LIKE');
+
+    $count = $query->countQuery()->execute()->fetchField();
+
+    \Drupal::messenger()
+      ->addMessage('Tempstore records found: ' . $count);
+
+    $results = $query
+      ->execute();
+
+    foreach ($results as $record) {
+      // Unserialize and replace the section in question with our updated one.
+      $stored_data = unserialize($record->value);
+      /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
+      $section_storage = $stored_data->data['section_storage'];
+
+      // Loop through sections in the storage.
+      foreach ($section_storage->getSections() as &$section) {
+        // Loop through the components in the section.
+        foreach ($section->getComponents() as &$component) {
+
+          // Limit this to only the uiowa_people block component.
+          if ($component->getPluginId() !== 'inline_block:uiowa_people') {
+            continue;
+          }
+
+          $component_arr = $component->toArray();
+          $revision_id = $component_arr['configuration']['block_revision_id'];
+
+          if ($revision_id) {
+            if (empty($blocks[$revision_id])) {
+              $blocks[$revision_id] = $block_storage->loadRevision($revision_id);
+            }
+            $block = $blocks[$revision_id];
+          }
+          else {
+            $block = unserialize($component_arr['configuration']['block_serialized']);
+          }
+
+          if (!$block instanceof BlockContentInterface) {
+            continue;
+          }
+
+          _convert_people_block_component($component, $block);
+        }
+      }
+      $stored_data->data['section_storage'] = $section_storage;
+
+      // Insert the updated tempstore.
+      $db->update('key_value_expire')
+        ->condition('name', $record->name, '=')
+        ->condition('expire', $record->expire, '=')
+        ->fields([
+          'value' => serialize($stored_data),
+        ])
+        ->execute();
+    }
+  }
+  // Delete all the blocks.
+  foreach ($blocks as $block) {
+    if (!is_null($block)) {
+      $block->delete();
+    }
+  }
+}
+
+/**
+ * Set - None - section container options to Normal.
+ */
+function sitenow_update_9010() {
+  $connection = Database::getConnection();
+
+  // We need to adjust the records for the current node
+  // version and previous revisions.
+  foreach ([
+    'node_revision__layout_builder__layout',
+    'node__layout_builder__layout',
+  ] as $table_name) {
+    // If the section has a "section_margin_*" style, we can ignore it.
+    // It already has a container style selected.
+    $query = $connection->select($table_name, 'n')
+      ->fields('n', ['entity_id', 'delta', 'layout_builder__layout_section'])
+      ->condition('layout_builder__layout_section', '%section_margin_%', 'NOT LIKE');
+
+    $records = $query->execute()->fetchAll();
+
+    \Drupal::messenger()
+      ->addMessage($table_name . ' records found (before): ' . count($records));
+
+    // We'll want to collect NIDs for pages we're updating
+    // to check against the temp store later.
+    $nids = [];
+
+    // @todo Batch this.
+    foreach ($records as $record) {
+      // Add the entity ID to our update list.
+      $nids[$record->entity_id] = $record->entity_id;
+
+      // Unserialize the record and extract the layout settings.
+      $stored_data = unserialize($record->layout_builder__layout_section);
+      $layout_settings = $stored_data->getLayoutSettings();
+      // Add in the 'Normal' container style.
+      // We only pulled records that didn't have a container style,
+      // so this can simply be appended.
+      $layout_settings['layout_builder_styles_style']['section_margin_fixed_width_container'] = 'section_margin_fixed_width_container';
+      $stored_data->setLayoutSettings($layout_settings);
+
+      // Insert the updated settings back into the DB.
+      $connection->update($table_name)
+        ->condition('entity_id', $record->entity_id, '=')
+        ->condition('delta', $record->delta, '=')
+        ->fields([
+          'layout_builder__layout_section' => serialize($stored_data),
+        ])
+        ->execute();
+    }
+    $query = $connection->select($table_name, 'n')
+      ->fields('n', ['entity_id', 'delta', 'layout_builder__layout_section'])
+      ->condition('layout_builder__layout_section', '%section_margin_%', 'NOT LIKE');
+
+    $count = $query->countQuery()->execute()->fetchField();
+
+    \Drupal::messenger()
+      ->addMessage($table_name . ' records found (after): ' . $count);
+  }
+
+  // If the key_value_expire table doesn't exist, we're done.
+  if (!$connection->schema()->tableExists('key_value_expire')) {
+    return;
+  }
+
+  // Update sections w/no section_margin_ that might be in the temp store.
+  $query = $connection->select('key_value_expire', 'kve')
+    ->fields('kve', ['name', 'value', 'expire'])
+    ->condition('collection', 'tempstore.shared.layout_builder.section_storage.overrides', '=');
+  $records = $query->execute()->fetchAll();
+
+  // Create a helper for regex later.
+  $nid_matcher = '(' . implode('|', array_keys($nids)) . ')';
+
+  foreach ($records as $record) {
+    $replaced = FALSE;
+
+    // If it's not in our list of updated nodes, skip it.
+    if (!preg_match("@node\." . $nid_matcher . "\.default\.en@", $record->name)) {
+      continue;
+    }
+    // Unserialize and replace the section in question with our updated one.
+    $stored_data = unserialize($record->value);
+    /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
+    $section_storage = $stored_data->data['section_storage'];
+    // Loop through sections in the storage.
+    foreach ($section_storage->getSections() as &$section) {
+      $layout_settings = $section->getLayoutSettings();
+      // Check if we have any section_margin_ layout builder styles,
+      // and skip if we do.
+      if (preg_match('@section_margin_@', implode(',', array_keys($layout_settings['layout_builder_styles_style'])))) {
+        continue;
+      }
+      $layout_settings['layout_builder_styles_style']['section_margin_fixed_width_container'] = 'section_margin_fixed_width_container';
+      $section->setLayoutSettings($layout_settings);
+      $replaced = TRUE;
+    }
+    // If we didn't update any sections,
+    // let's continue without touching the DB.
+    if (!$replaced) {
+      continue;
+    }
+
+    $stored_data->data['section_storage'] = $section_storage;
+
+    // Insert the updated tempstore.
+    $connection->update('key_value_expire')
+      ->condition('name', $record->name, '=')
+      ->condition('expire', $record->expire, '=')
+      ->fields([
+        'value' => serialize($stored_data),
+      ])
+      ->execute();
+  }
+}
+
+/**
+ * Redo 9009.
+ */
+function sitenow_update_9011() {
+  sitenow_update_9009();
+
+  // Delete remaining orphans?
+  $result = \Drupal::entityQuery('block_content')
+    ->condition('type', 'uiowa_people')
+    ->execute();
+  if ($result) {
+    $storage_handler = \Drupal::entityTypeManager()->getStorage('block_content');
+    $entities = $storage_handler->loadMultiple($result);
+    $storage_handler->delete($entities);
+  }
+}
+
+/**
+ * Update existing uiowa_banner blocks to have a default headline_size style.
+ */
+function sitenow_update_9012() {
+  // @todo check the temp storage
+  $db = \Drupal::database();
+
+  $section_column = 'layout_builder__layout_section';
+  $tables = [
+    'node__layout_builder__layout',
+    'node_revision__layout_builder__layout',
+  ];
+
+  foreach ($tables as $table_name) {
+    // Select instances where the section contains a uiowa_banner block.
+    $query = $db->select($table_name, 'n')
+      ->condition($section_column, '%uiowa_banner%', 'LIKE')
+      ->fields('n', ['entity_id', 'revision_id', 'delta', $section_column]);
+
+    $count = $query->countQuery()->execute()->fetchField();
+
+    \Drupal::messenger()
+      ->addMessage('Banner block records found: ' . $count);
+
+    $results = $query->execute();
+
+    // Loop through the results.
+    foreach ($results as $record) {
+      // Unserialize the section field into it's class object.
+      /** @var \Drupal\layout_builder\Section $section */
+      $section = unserialize($record->layout_builder__layout_section);
+
+      // Loop through the components in the section.
+      foreach ($section->getComponents() as &$component) {
+
+        // Limit this to only the uiowa_people block component.
+        if ($component->getPluginId() !== 'inline_block:uiowa_banner') {
+          continue;
+        }
+
+        // Pull the layout builder styles from the component.
+        $styles = $component->get('layout_builder_styles_style');
+        // Add key for new layout builder style.
+        $styles[] = 'headline_large';
+        // Set the layout builder styles on the component.
+        $component->set('layout_builder_styles_style', $styles);
+
+      }
+      // Serialize section component and update section component db record.
+      // Replace the old section with our newly created one.
+      $db->update($table_name)
+        ->condition('revision_id', $record->revision_id)
+        ->condition('delta', $record->delta)
+        ->fields([
+          $section_column => serialize($section),
+        ])
+        ->execute();
+    }
+
+    // Only continue with this section if we have a key_value_expire
+    // table to work with.
+    if ($db->schema()->tableExists('key_value_expire')) {
+      // Check if we have a tempstore of this node.
+      // Temp store is saved in the db in the key_value_expire,
+      // And holds a serialized blob with the unsaved changes.
+      // Might be a better method of accessing this through the Layout
+      // Builder API and layoutTempstoreRepository, but have not found it yet.
+      $query = $db->select('key_value_expire', 'kve')
+        ->fields('kve', ['name', 'value', 'expire'])
+        ->condition('collection', 'tempstore.shared.layout_builder.section_storage.overrides', '=')
+        ->condition('value', '%uiowa_banner%', 'LIKE');
+
+      $count = $query->countQuery()->execute()->fetchField();
+
+      \Drupal::messenger()
+        ->addMessage('Tempstore records found: ' . $count);
+
+      $results = $query
+        ->execute();
+
+      foreach ($results as $record) {
+        // Unserialize and replace the section in question with our updated one.
+        $stored_data = unserialize($record->value);
+        /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
+        $section_storage = $stored_data->data['section_storage'];
+
+        // Loop through sections in the storage.
+        foreach ($section_storage->getSections() as &$section) {
+          // Loop through the components in the section.
+          foreach ($section->getComponents() as &$component) {
+
+            // Limit this to only the uiowa_banner block component.
+            if ($component->getPluginId() !== 'inline_block:uiowa_banner') {
+              continue;
+            }
+
+            // Pull the layout builder styles from the component.
+            $styles = $component->get('layout_builder_styles_style');
+            // Add key for new layout builder style.
+            $styles[] = 'headline_large';
+            // Set the layout builder styles on the component.
+            $component->set('layout_builder_styles_style', $styles);
+          }
+        }
+        $stored_data->data['section_storage'] = $section_storage;
+
+        // Insert the updated tempstore.
+        $db->update('key_value_expire')
+          ->condition('name', $record->name, '=')
+          ->condition('expire', $record->expire, '=')
+          ->fields([
+            'value' => serialize($stored_data),
+          ])
+          ->execute();
+      }
+    }
+  }
+}
+
+/**
+ * Rebuilding permissions after https://github.com/uiowa/uiowa/pull/3776.
+ */
+function sitenow_update_9013() {
+  // Batch it.
+  node_access_rebuild(TRUE);
+}
+
+/**
+ * Redo 9009.
+ */
+function sitenow_update_9014() {
+  sitenow_update_9009();
+
+  // Delete remaining orphans?
+  $result = \Drupal::entityQuery('block_content')
+    ->condition('type', 'uiowa_people')
+    ->execute();
+
+  \Drupal::messenger()
+    ->addMessage('Orphaned records found: ' . count($result));
+
+  if ($result) {
+    $storage_handler = \Drupal::entityTypeManager()->getStorage('block_content');
+    $entities = $storage_handler->loadMultiple($result);
+    $storage_handler->delete($entities);
+  }
+}
+
+/**
+ * Clear cache for lazy update and update engineering migrated files metadata.
+ */
+function sitenow_update_9015() {
+  drupal_flush_all_caches();
+
+  $site_path = \Drupal::service('site.path');
+
+  if ($site_path == 'sites/engineering.uiowa.edu') {
+    $query = \Drupal::entityTypeManager()->getStorage('media')->getQuery();
+
+    $ids = $query
+      ->condition('bundle', 'image')
+      ->condition('name', 'title')
+      ->execute();
+
+    if ($ids) {
+      $controller = \Drupal::entityTypeManager()->getStorage('media');
+      $entities = $controller->loadMultiple($ids);
+
+      /** @var \Drupal\media\Entity\Media $media */
+      foreach ($entities as $media) {
+        $file = File::load($media->get('field_media_image')->target_id);
+
+        if ($file && $filename = $file->getFilename()) {
+          $no_ext = pathinfo($filename, PATHINFO_FILENAME);
+          $media->field_media_image->alt = $no_ext;
+          $media->setName($no_ext);
+          $media->save();
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Uninstall node_view_permissions, import role configs, and rebuild permissions.
+ */
+function sitenow_update_9016() {
+  // Uninstall node_view_permissions module.
+  \Drupal::service('module_installer')->uninstall(['node_view_permissions']);
+
+  // Import role configs.
+  $config_storage = \Drupal::service('config.storage');
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+  $config_names = $source->listAll('user.role');
+
+  foreach ($config_names as $config_name) {
+    $config = $source->read($config_name);
+
+    if ($config) {
+      $config_storage->write($config_name, $config);
+    }
+  }
+
+  // Loop through filters to find all the config splits that are
+  // in use.
+  /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
+  $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+
+  foreach ($filters as $filter) {
+    if ($filter['status'] && isset($filter['config_name'])) {
+      $config_split = $source->read($filter['config_name']);
+      if (isset($config_split['folder'])) {
+        $source = new FileStorage($config_split['folder']);
+        // Loop through user.role.* config in the split folder and import them.
+        $config_names = $source->listAll('user.role');
+        foreach ($config_names as $config_name) {
+          $config_storage->write($config_name, $source->read($config_name));
+        }
+      }
+    }
+  }
+
+  // Rebuild node permissions.
+  node_access_rebuild(TRUE);
 }

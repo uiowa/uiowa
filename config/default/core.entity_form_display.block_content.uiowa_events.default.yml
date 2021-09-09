@@ -7,13 +7,14 @@ dependencies:
     - field.field.block_content.uiowa_events.field_collection_more
     - field.field.block_content.uiowa_events.field_collection_more_path
     - field.field.block_content.uiowa_events.field_collection_results
-    - field.field.block_content.uiowa_events.field_uiowa_headline
     - field.field.block_content.uiowa_events.field_uiowa_events_audiences
     - field.field.block_content.uiowa_events.field_uiowa_events_department
     - field.field.block_content.uiowa_events.field_uiowa_events_interests
     - field.field.block_content.uiowa_events.field_uiowa_events_keywords
+    - field.field.block_content.uiowa_events.field_uiowa_events_past
     - field.field.block_content.uiowa_events.field_uiowa_events_place
     - field.field.block_content.uiowa_events.field_uiowa_events_types
+    - field.field.block_content.uiowa_events.field_uiowa_headline
   module:
     - layout_builder_custom
     - link
@@ -23,14 +24,14 @@ bundle: uiowa_events
 mode: default
 content:
   field_collection_more:
-    weight: 9
+    weight: 10
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
   field_collection_more_path:
-    weight: 10
+    weight: 11
     settings:
       placeholder_url: ''
       placeholder_title: ''
@@ -67,6 +68,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: options_select
+    region: content
+  field_uiowa_events_past:
+    weight: 9
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
     region: content
   field_uiowa_events_place:
     weight: 7

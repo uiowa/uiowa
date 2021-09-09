@@ -43,6 +43,7 @@ use Drupal\sitenow_people\PersonTypeInterface;
  *     "id",
  *     "label",
  *     "description",
+ *     "allow_former",
  *     "allowed_fields"
  *   }
  * )
@@ -83,6 +84,20 @@ class PersonType extends ConfigEntityBase implements PersonTypeInterface {
    * @var array
    */
   protected $allowed_fields;
+
+  /**
+   * Whether to allow a status property for this person type.
+   *
+   * @var bool
+   */
+  protected $allow_former;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getAllowFormer() {
+    return $this->allow_former ?: 0;
+  }
 
   /**
    * {@inheritdoc}

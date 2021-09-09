@@ -1,0 +1,23 @@
+uuid: 96b7183b-2520-4d3c-b124-7392108a8d14
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_collection
+    - field.storage.block_content.field_accordion_type
+  module:
+    - options
+id: block_content.uiowa_collection.field_accordion_type
+field_name: field_accordion_type
+entity_type: block_content
+bundle: uiowa_collection
+label: 'Accordion Type'
+description: 'The type of accordion, determining the open/closed behavior of individual items. <i>Multi select</i> accordions may have many accordion items open. <i>Single select</i> accordions will only have one accordion item open at a time. For <i>Single select</i> to function as expected, ensure that only one collection item has the <i>Automatically open</i> field checked.'
+required: true
+translatable: false
+default_value:
+  -
+    value: multi_select
+default_value_callback: ''
+settings: {  }
+field_type: list_string

@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labstrathearn.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labstrathearn
+  human_name: strathearn.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labstrathearn.prod
+drupal:
+  db:
+    database: strathearn_lab_uiowa_edu
+uiowa:
+  requester: lstrathearn

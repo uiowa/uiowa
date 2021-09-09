@@ -9,15 +9,22 @@ use Consolidation\AnnotatedCommand\AnnotationData;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\SiteAlias\SiteAliasManagerAwareInterface;
 use Consolidation\SiteAlias\SiteAliasManagerAwareTrait;
-use Consolidation\SiteProcess\SiteProcess;
+use Drush\Drupal\Commands\sql\SanitizePluginInterface;
 use Symfony\Component\Console\Input\InputInterface;
 
 /**
  * General policy commands and hooks for the application.
  */
-class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterface, ProcessManagerAwareInterface {
+class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterface, ProcessManagerAwareInterface, SanitizePluginInterface {
   use SiteAliasManagerAwareTrait;
   use ProcessManagerAwareTrait;
+
+  /**
+   * Configuration that should sanitized.
+   *
+   * @var array
+   */
+  protected $sanitizedConfig = [];
 
   /**
    * Add additional fields to status command output.
@@ -106,12 +113,17 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
    *   size: Size
    *
    * @return string
+   *   The size of the database in megabytes.
    */
   public function databaseSize() {
     $selfRecord = $this->siteAliasManager()->getSelf();
 
-    /** @var SiteProcess $process */
-    $process = $this->processManager()->drush($selfRecord, 'core-status', [], ['fields' => 'db-name', 'format' => 'json']);
+    /** @var \Consolidation\SiteProcess\SiteProcess $process */
+    $process = $this->processManager()->drush($selfRecord, 'core-status', [], [
+      'fields' => 'db-name',
+      'format' => 'json',
+    ]);
+
     $process->run();
     $result = $process->getOutputAsJson();
 
@@ -178,6 +190,66 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
     });
 
     return $data;
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @hook post-command sql-sanitize
+   */
+  public function sanitize($result, CommandData $commandData) {
+    $record = $this->siteAliasManager()->getSelf();
+
+    foreach ($this->sanitizedConfig as $config) {
+      /** @var \Consolidation\SiteProcess\SiteProcess $process */
+      $process = $this->processManager()->drush($record, 'config:delete', [
+        $config,
+      ]);
+
+      $process->run();
+
+      if ($process->isSuccessful()) {
+        $this->logger()->success(dt('Deleted @config configuration.', [
+          '@config' => $config,
+        ]));
+      }
+      else {
+        $this->logger()->warning(dt('Unable to delete @config configuration.'), [
+          '@config' => $config,
+        ]);
+      }
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @hook on-event sql-sanitize-confirms
+   */
+  public function messages(&$messages, InputInterface $input) {
+    $record = $this->siteAliasManager()->getSelf();
+
+    $configs = [
+      'migrate_plus.migration_group.sitenow_migrate',
+      'sitenow_dispatch.settings',
+    ];
+
+    foreach ($configs as $config) {
+      /** @var \Consolidation\SiteProcess\SiteProcess $process */
+      $process = $this->processManager()->drush($record, 'config:get', [
+        $config,
+      ]);
+
+      $process->run();
+
+      if ($process->isSuccessful()) {
+        $this->sanitizedConfig[] = $config;
+
+        $messages[] = dt('Delete the @config configuration.', [
+          '@config' => $config,
+        ]);
+      }
+    }
   }
 
 }

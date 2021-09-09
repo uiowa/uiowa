@@ -47,7 +47,7 @@
     @include card-media-horizontal-right;
 
     @include breakpoint(sm) {
-      margin-top: $lg;
+      margin-top: 0;
       margin-bottom: $gutter;
 
       [class*="bg-"] & {
@@ -68,7 +68,9 @@
 
   .card--list {
     display: flex;
-    flex-direction: row-reverse;
+    @include breakpoint(sm) {
+      flex-direction: row-reverse;
+    }
   }
 
   .view-content {

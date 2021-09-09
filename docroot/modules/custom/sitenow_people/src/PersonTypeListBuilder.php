@@ -17,6 +17,7 @@ class PersonTypeListBuilder extends ConfigEntityListBuilder {
     $header['label'] = $this->t('Label');
     $header['id'] = $this->t('Machine name');
     $header['status'] = $this->t('Status');
+    $header['allow_former'] = $this->t('Allow former');
     return $header + parent::buildHeader();
   }
 
@@ -28,6 +29,7 @@ class PersonTypeListBuilder extends ConfigEntityListBuilder {
     $row['label'] = $entity->label();
     $row['id'] = $entity->id();
     $row['status'] = $entity->status() ? $this->t('Enabled') : $this->t('Disabled');
+    $row['allow_former'] = $entity->get('allow_former') ? $this->t('Enabled') : $this->t('Disabled');
     return $row + parent::buildRow($entity);
   }
 

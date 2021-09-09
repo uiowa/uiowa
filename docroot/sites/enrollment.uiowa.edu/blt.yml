@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: enrollment.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: enrollment
+  human_name: enrollment.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: enrollment.prod
+drupal:
+  db:
+    database: enrollment_uiowa_edu
+uiowa:
+  requester: sfiddelk

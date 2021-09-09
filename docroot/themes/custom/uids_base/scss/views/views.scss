@@ -7,14 +7,15 @@
   padding: 19px;
   margin-bottom: 20px;
   background-color: $light;
-  border: 1px solid $grey;
-  border-radius: 4px;
 
   .form--inline {
     display: flex;
     justify-content: flex-start;
     align-items: flex-end;
     flex-wrap: wrap;
+    @include breakpoint(sm) {
+      flex-wrap: unset;
+    }
   }
 
   .js-form-item {

@@ -64,4 +64,8 @@ if (document.getElementsByTagName("body")[0].classList.contains('text--serif')) 
   });
 }
 
+// This was not working properly when a user first added a table.
+// Removed and functionality duplicated for all CKE tables in docroot/themes/custom/uids_base/scss/components/tables.scss .
+CKEDITOR.config.removePlugins = 'showborders';
+
 

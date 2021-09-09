@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labhistoryoftechnology.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labhistoryoftechnology
+  human_name: historyoftechnology.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labhistoryoftechnology.prod
+drupal:
+  db:
+    database: historyoftechnology_lab_uiowa_edu
+uiowa:
+  requester: dbenson

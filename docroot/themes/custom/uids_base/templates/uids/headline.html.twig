@@ -3,7 +3,7 @@
 {% set headline_class = headline_class ?: [] %}
 <{{ headline_level }}{{ headline_attributes.addClass(headline_class) }}>
 {% if headline_url %}
-<a href="{{ headline_url }}" {% if headline_aria %}aria-describedby="{{ headline_aria }}"{% endif %}>
+<a href="{{ headline_url }}" {% if headline_url_class %} class="{{ headline_url_class }}"{% endif %} {% if headline_aria %}aria-describedby="{{ headline_aria }}"{% endif %}>
   {% endif %}
   {% if headline_prefix %}
     <span class="headline__prefix">{{ headline_prefix }}</span>

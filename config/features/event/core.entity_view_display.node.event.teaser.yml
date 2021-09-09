@@ -1,0 +1,114 @@
+uuid: 97267359-5092-4c84-b790-b0a4d874ed58
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.event.body
+    - field.field.node.event.field_event_category
+    - field.field.node.event.field_event_hide
+    - field.field.node.event.field_event_location
+    - field.field.node.event.field_event_series_link
+    - field.field.node.event.field_event_series_link_direct
+    - field.field.node.event.field_event_virtual
+    - field.field.node.event.field_event_when
+    - field.field.node.event.field_image
+    - field.field.node.event.field_meta_tags
+    - field.field.node.event.field_tags
+    - field.field.node.event.field_teaser
+    - node.type.event
+  module:
+    - address
+    - link
+    - smart_date
+    - user
+_core:
+  default_config_hash: GE8vxA9J85JTlqiqDwrBsmkZq8HXuJ5QEESclO3u8N8
+id: node.event.teaser
+targetEntityType: node
+bundle: event
+mode: teaser
+content:
+  field_event_location:
+    type: address_default
+    weight: 3
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_event_series_link:
+    type: link
+    weight: 7
+    region: content
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+  field_event_series_link_direct:
+    type: boolean
+    weight: 6
+    region: content
+    label: above
+    settings:
+      format: boolean
+      format_custom_true: ''
+      format_custom_false: ''
+    third_party_settings: {  }
+  field_event_virtual:
+    type: link
+    weight: 4
+    region: content
+    label: inline
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+  field_event_when:
+    type: smartdate_default
+    weight: 1
+    region: content
+    label: inline
+    settings:
+      format: default
+      format_type: medium
+      timezone_override: ''
+      force_chronological: false
+      add_classes: false
+      time_wrapper: true
+    third_party_settings: {  }
+  field_image:
+    type: entity_reference_entity_view
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      view_mode: large__widescreen
+      link: false
+    third_party_settings: {  }
+  field_teaser:
+    type: basic_string
+    weight: 2
+    region: content
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+  links:
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  body: true
+  content_moderation_control: true
+  field_event_category: true
+  field_event_hide: true
+  field_meta_tags: true
+  field_tags: true
+  search_api_excerpt: true

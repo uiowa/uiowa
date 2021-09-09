@@ -4,8 +4,9 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_collection
-    - field.field.block_content.uiowa_collection.field_uiowa_headline
+    - field.field.block_content.uiowa_collection.field_accordion_type
     - field.field.block_content.uiowa_collection.field_uiowa_collection_items
+    - field.field.block_content.uiowa_collection.field_uiowa_headline
   module:
     - entity_reference_revisions
     - layout_builder_custom
@@ -31,4 +32,5 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_accordion_type: true
   search_api_excerpt: true

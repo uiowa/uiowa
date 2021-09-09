@@ -1,0 +1,40 @@
+uuid: e9504573-157a-498d-b1b9-94f89c4a971a
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_timeline
+    - field.storage.block_content.field_uiowa_timeline_items
+    - paragraphs.paragraphs_type.uiowa_timeline_item
+  module:
+    - entity_reference_revisions
+id: block_content.uiowa_timeline.field_uiowa_timeline_items
+field_name: field_uiowa_timeline_items
+entity_type: block_content
+bundle: uiowa_timeline
+label: 'UIowa Timeline Items'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      uiowa_timeline_item: uiowa_timeline_item
+    target_bundles_drag_drop:
+      uiowa_collection_item:
+        weight: 5
+        enabled: false
+      uiowa_contact:
+        weight: 6
+        enabled: false
+      uiowa_slide:
+        weight: 7
+        enabled: false
+      uiowa_timeline_item:
+        enabled: true
+        weight: 8
+field_type: entity_reference_revisions

@@ -13,6 +13,7 @@ migration_group: sitenow_migrate
 label: 'Basic person migration from Drupal 7'
 source:
   plugin: people
+  node_type: people
 process:
   langcode:
     plugin: static_map
@@ -34,16 +35,24 @@ process:
   sticky: sticky
   moderation_state: moderation_state
   field_image: person_mid
-  field_person_bio: field_person_bio_value
-  field_person_email: field_person_email_email
-  field_person_first_name: field_people_first_name_value
-  field_person_last_name: field_people_last_name_value
-  field_person_phone: field_person_phone_value
-  field_person_position: field_person_position_value
+  field_person_bio: field_person_bio
+  field_person_email:
+    plugin: sub_process
+    source: field_person_email
+    process:
+      value: email
+  field_person_website:
+    plugin: sub_process
+    source: field_person_website
+    process:
+      uri: url
+      title: title
+  field_person_first_name: field_people_first_name
+  field_person_last_name: field_people_last_name
+  field_person_phone: field_person_phone
+  field_person_position: field_person_position
   field_teaser: field_person_bio_summary
 destination:
   plugin: 'entity:node'
   type: person
-migration_dependencies:
-  required:
-    - d7_file
+migration_dependencies: null
