@@ -6,7 +6,7 @@
 }
 
 .page-node-type-topic-collection .layout--onecol--background .block-uiowa-core-search-block,
-.page-node-type-topic-collection .layout--onecol--background .field--name-field-topic-collection-tags {
+.page-node-type-topic-collection .layout--onecol--background .block-views-blocktopic-page-browse-by-tag-block-4  {
   max-width: 700px;
   margin: 0 auto;
 }
@@ -26,18 +26,47 @@
   }
 }
 
-.page-node-type-topic-collection .banner {
-  .field--name-field-topic-collection-tags {
-    .field__label {
-      color: white;
+.block-views-blocktopic-page-browse-by-tag-block-4 {
+  .headline {
+    font-size: 1.2rem;
+  }
+}
+
+.topic-page--tag {
+  .views-row,
+  .field__item {
+    display: inline;
+  }
+  .views-row  + .views-row {
+    &:before {
+      content: ",";
+      padding-right: $xsm;
+      margin-left: -3px;
     }
-    .field__items {
+  }
+}
+
+
+.page-node-type-topic-collection .banner {
+  .block-views-blocktopic-page-browse-by-tag-block-4  {
+    .headline {
+      color: #fff;
+    }
+    .views-row  + .views-row {
+      &:before {
+        color: #fff;
+      }
+    }
+    .field__item {
+      color: #fff;
       a {
         color: #fff;
       }
     }
   }
 }
+
+
 
 .page-node-type-topic-collection {
   .field--name-field-topic-collection-tags {
