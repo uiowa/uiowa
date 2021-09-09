@@ -5,14 +5,16 @@ dependencies: {  }
 id: event
 label: Event
 description: 'Event content type.'
+storage: folder
 folder: ../config/features/event
 module:
   schema_event: 0
   smart_date: 0
   smart_date_recur: 0
 theme: {  }
-blacklist: {  }
-graylist:
+weight: 80
+complete_list: {  }
+partial_list:
   - field.storage.node.field_event_category
   - field.storage.node.field_event_hide
   - field.storage.node.field_event_location
@@ -27,6 +29,3 @@ graylist:
   - views.view.events
   - 'smart_date.*'
   - 'user.role.*'
-graylist_dependents: true
-graylist_skip_equal: true
-weight: 80

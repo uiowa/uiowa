@@ -5,11 +5,13 @@ dependencies: {  }
 id: scholarship
 label: Scholarship
 description: 'Scholarship content type.'
+storage: folder
 folder: ../config/features/scholarship
 module: {  }
 theme: {  }
-blacklist: {  }
-graylist:
+weight: 80
+complete_list: {  }
+partial_list:
   - core.base_field_override.node.scholarship.promote
   - field.field.node.scholarship.body
   - metatag.metatag_defaults.node__scholarship
@@ -23,6 +25,3 @@ graylist:
   - 'field.field.node.scholarship.*'
   - 'field.storage.node.field_scholarship_*'
   - 'user.role.*'
-graylist_dependents: true
-graylist_skip_equal: true
-weight: 80

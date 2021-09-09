@@ -5,15 +5,14 @@ dependencies: {  }
 id: additional_person_types
 label: 'Additional Person Types'
 description: 'Adding additional person types beyond standard types.'
+storage: folder
 folder: ../config/features/additional_person_types
 module: {  }
 theme: {  }
-blacklist:
+weight: 90
+complete_list:
   - sitenow_people.person_type.adjunct_faculty
   - sitenow_people.person_type.alumni
   - sitenow_people.person_type.postdoc
   - sitenow_people.person_type.visiting_faculty
-graylist: {  }
-graylist_dependents: true
-graylist_skip_equal: true
-weight: 90
+partial_list: {  }

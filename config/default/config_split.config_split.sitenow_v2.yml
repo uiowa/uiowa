@@ -5,6 +5,7 @@ dependencies: {  }
 id: sitenow_v2
 label: 'SiteNow V2'
 description: 'Features related to Paragraph-based layout functionality.'
+storage: folder
 folder: ../config/features/sitenow_v2
 module:
   sitenow_accordion: 0
@@ -14,8 +15,9 @@ module:
   sitenow_events_paragraph: 0
   sitenow_paragraphs: 0
 theme: {  }
-blacklist: {  }
-graylist:
+weight: 80
+complete_list: {  }
+partial_list:
   - core.entity_view_display.media.image.edgy
   - core.entity_view_display.media.image.image_large
   - core.entity_view_display.media.image.image_medium
@@ -50,6 +52,3 @@ graylist:
   - 'field.storage.paragraph.*'
   - 'image.style.ui_edgy_no_crop_*'
   - 'paragraphs.paragraphs_type.*'
-graylist_dependents: true
-graylist_skip_equal: true
-weight: 80

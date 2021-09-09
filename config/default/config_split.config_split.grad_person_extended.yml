@@ -5,11 +5,13 @@ dependencies: {  }
 id: grad_person_extended
 label: 'Grad - Person extended'
 description: 'Additional fields and functionality for the person content type on Grad websites.'
+storage: folder
 folder: ../config/features/grad_person_extended
 module:
   grad_custom: 0
 theme: {  }
-blacklist:
+weight: 80
+complete_list:
   - core.date_format.month_day_year
   - core.date_format.month_year
   - core.entity_view_display.node.person.default
@@ -25,7 +27,4 @@ blacklist:
   - field.storage.node.field_pt_student_program_start
   - field.storage.node.pt_student_dissertation_title
   - views.view.person_reference
-graylist: {  }
-graylist_dependents: true
-graylist_skip_equal: true
-weight: 80
+partial_list: {  }
