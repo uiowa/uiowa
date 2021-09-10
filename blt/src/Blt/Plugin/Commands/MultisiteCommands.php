@@ -596,6 +596,7 @@ EOD
 
     // Remove some files that we don't need or will be regenerated below.
     $files = [
+      "{$root}/config/{$host}",
       "{$root}/docroot/sites/{$host}/default.services.yml",
       "{$root}/docroot/sites/{$host}/services.yml",
       "{$root}/drush/sites/{$host}.site.yml",
@@ -685,12 +686,6 @@ EOD;
       '--site' => $host,
     ]);
 
-    // Create the config directory with a file to commit.
-    $this->taskFilesystemStack()
-      ->mkdir("{$root}/config/{$host}")
-      ->touch("{$root}/config/{$host}/.gitkeep")
-      ->run();
-
     // Initialize next steps.
     $steps = [];
 
@@ -701,7 +696,6 @@ EOD;
         ->add('docroot/sites/sites.php')
         ->add("docroot/sites/{$host}")
         ->add("drush/sites/{$id}.site.yml")
-        ->add("config/{$host}")
         ->commit("Initialize {$host} multisite on {$app}")
         ->interactive(FALSE)
         ->printOutput(FALSE)
