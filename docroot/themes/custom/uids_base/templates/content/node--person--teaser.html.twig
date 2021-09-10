@@ -94,7 +94,7 @@
 {% set person_card = {
   'attributes': attributes.addClass(classes),
   'card_image': content.field_image | render,
-  'card_text':  content | without('field_image', 'links', 'field_person_credential', 'field_person_position', 'field_person_email', 'field_person_phone', 'field_teaser') | render,
+  'card_text':  content | without('field_image', 'links', 'field_person_credential', 'field_person_position', 'field_person_email', 'field_person_phone') | render,
   'card_subtitle': content.field_person_position | render,
   'card_date': content.field_person_email | render,
   'card_tag': content.field_person_phone | render,
