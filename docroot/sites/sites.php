@@ -3191,3 +3191,9 @@ $sites['studentlifesds.local.drupal.uiowa.edu'] = 'sds.studentlife.uiowa.edu';
 $sites['studentlifesds.dev.drupal.uiowa.edu'] = 'sds.studentlife.uiowa.edu';
 $sites['studentlifesds.stage.drupal.uiowa.edu'] = 'sds.studentlife.uiowa.edu';
 $sites['studentlifesds.prod.drupal.uiowa.edu'] = 'sds.studentlife.uiowa.edu';
+
+// Directory aliases for mew.conference.uiowa.edu.
+$sites['conferencemew.local.drupal.uiowa.edu'] = 'mew.conference.uiowa.edu';
+$sites['conferencemew.dev.drupal.uiowa.edu'] = 'mew.conference.uiowa.edu';
+$sites['conferencemew.stage.drupal.uiowa.edu'] = 'mew.conference.uiowa.edu';
+$sites['conferencemew.prod.drupal.uiowa.edu'] = 'mew.conference.uiowa.edu';
