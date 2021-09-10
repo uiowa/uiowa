@@ -17,13 +17,9 @@ environment splits. Use Drupal's [configuration override system](https://www.dru
 
 ## Site Split
 ### Weight: 90
-Site split directories are created when a site is provisioned. However, the
-Config Split configuration is not created by default. A multisite can create
-one and it should be named the same as the multisite URI host. BLT will activate
-the split, if it exists.
-
-Site splits are stored in the `../config/` directory relative from
-the docroot.
+Developers can create site split directories if a multisite needs to break away
+from the default configuration. The machine name of the split should be `site`
+and the directory should be the URL host, e.g. `../config/mysite.uiowa.edu`.
 
 To register a configuration split for a multisite, create the split locally in
 the UI and export to the site split directory.
