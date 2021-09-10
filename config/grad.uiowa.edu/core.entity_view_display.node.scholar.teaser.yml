@@ -24,16 +24,23 @@ mode: teaser
 content:
   field_image:
     type: entity_reference_entity_view
-    weight: 4
+    weight: 5
     region: content
     label: visually_hidden
     settings:
       view_mode: small__square
       link: false
     third_party_settings: {  }
+  field_person_education:
+    type: basic_string
+    weight: 0
+    region: content
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
   field_scholar_bio:
     type: text_summary_or_trimmed
-    weight: 3
+    weight: 4
     region: content
     label: visually_hidden
     settings:
@@ -41,7 +48,7 @@ content:
     third_party_settings: {  }
   field_scholar_bio_headline:
     type: string
-    weight: 2
+    weight: 3
     region: content
     label: visually_hidden
     settings:
@@ -49,7 +56,7 @@ content:
     third_party_settings: {  }
   field_scholar_mentor:
     type: string
-    weight: 1
+    weight: 2
     region: content
     label: inline
     settings:
@@ -57,13 +64,12 @@ content:
     third_party_settings: {  }
   field_scholar_participation_year:
     type: list_default
-    weight: 0
+    weight: 1
     region: content
     label: inline
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_person_education: true
   field_person_first_name: true
   field_person_last_name: true
   links: true
