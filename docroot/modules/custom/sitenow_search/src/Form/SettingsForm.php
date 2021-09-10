@@ -51,13 +51,6 @@ class SettingsForm extends ConfigFormBase {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
-  }
-
-  /**
    * Perform a search with the given needle..
    */
   public function searchButton(array &$form, FormStateInterface $form_state) {
