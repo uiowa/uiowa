@@ -9,9 +9,17 @@
  * @see https://www.drupal.org/node/2217931
  */
 
-function getAllTextFields() {
+/**
+ * Grab field names and mappings for all text-based fields.
+ *
+ * @return array
+ *   The field names => info mapping for all text-based fields.
+ */
+function get_all_text_fields() {
   $entity_field_manager = \Drupal::service('entity_field.manager');
   $fields = [];
+  // Go through all our text-based field types,
+  // get their field information, and bundle 'em.
   foreach (['string', 'string_long', 'text_long', 'text_with_summary', 'link'] as $type) {
     $new_fields = $entity_field_manager->getFieldMapByFieldType($type);
     foreach ($new_fields as $bundle => $bundle_fields) {
@@ -21,24 +29,42 @@ function getAllTextFields() {
   return $fields;
 }
 
-function searchFields($fields, $needle) {
+/**
+ * Search all fields for a needle.
+ *
+ * @param array $fields
+ *   The field names and info to be searched.
+ * @param string $needle
+ *   The string for which to search.
+ *
+ * @return array
+ *   The search results.
+ */
+function search_fields(array $fields, string $needle) {
   $tables = [];
   $results = [];
   foreach ($fields as $entity_type_id => $field_map) {
+    // Tables and columns may be constructed slightly differently
+    // depending on the field type. Additionally, how they are
+    // connected to a parent node may be different.
     switch ($entity_type_id) {
       case 'block_content':
         foreach ($field_map as $name => $info) {
           if (str_starts_with($name, 'field')) {
-            $tables['block_content__' . $name] = valueColumns($name, $info['type']);
+            $tables['block_content__' . $name] = value_columns($name, $info['type']);
           }
         }
         break;
+
       case 'node':
         foreach ($field_map as $name => $info) {
           if (str_starts_with($name, 'field')) {
-            $tables['node__' . $name] = valueColumns($name, $info['type']);
+            $tables['node__' . $name] = value_columns($name, $info['type']);
           }
           if ($name == 'body') {
+            // @todo Abstract this to handle all possible text_with_summary
+            //   field types. Not urgent, as these should only be body values
+            //   on nodes at this time.
             $tables['node__body'] = ['body_value', 'body_summary'];
           }
           if ($name == 'title') {
@@ -49,7 +75,9 @@ function searchFields($fields, $needle) {
     }
   }
   $db = \Drupal::database();
+  // @todo Determine and return the node on which the field is found.
   foreach ($tables as $table => $value_columns) {
+    // @todo Allow for more complicated regex searches.
     $query = $db->select($table)
       ->fields($table, $value_columns);
     foreach ($value_columns as $value_column) {
@@ -64,7 +92,20 @@ function searchFields($fields, $needle) {
   return $results;
 }
 
-function valueColumns($name, $type) {
+/**
+ * Helper function to construct field value column names.
+ *
+ * @param string $name
+ *   The field name.
+ * @param string $type
+ *   The type of field.
+ *
+ * @return string[]
+ *   An array of value columns to retreive from the database table.
+ */
+function value_columns(string $name, string $type) {
+  // @todo Check if we need to handle any of the other
+  //   field types differently, like text_with_summary.
   if ($type == 'link') {
     return [
       $name . '_uri',

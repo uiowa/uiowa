@@ -43,6 +43,10 @@ class SettingsForm extends ConfigFormBase {
         [$this, 'searchButton'],
       ],
     ];
+
+    // Unset the original, currently unused submit button.
+    // It might be used at another time if settings are needed.
+    unset($form['actions']['submit']);
     return $form;
   }
 
@@ -58,9 +62,9 @@ class SettingsForm extends ConfigFormBase {
    */
   public function searchButton(array &$form, FormStateInterface $form_state) {
     // Grab all the fields.
-    $fields = getAllTextFields();
+    $fields = get_all_text_fields();
     $needle = $form_state->getValue('needle');
-    $results = searchFields($fields, $needle);
+    $results = search_fields($fields, $needle);
     return $form_state;
   }
 
