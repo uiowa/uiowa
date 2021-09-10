@@ -51,7 +51,11 @@ function search_fields(array $fields, string $needle) {
       case 'block_content':
         foreach ($field_map as $name => $info) {
           if (str_starts_with($name, 'field')) {
-            $tables['block_content__' . $name] = value_columns($name, $info['type']);
+            $tables['block_content__' . $name] = [
+              'values' => value_columns($name, $info['type']),
+              'parent' => ['entity_id'],
+              'type' => $entity_type_id,
+            ];
           }
         }
         break;
@@ -59,32 +63,56 @@ function search_fields(array $fields, string $needle) {
       case 'node':
         foreach ($field_map as $name => $info) {
           if (str_starts_with($name, 'field')) {
-            $tables['node__' . $name] = value_columns($name, $info['type']);
-          }
-          if ($name == 'body') {
-            // @todo Abstract this to handle all possible text_with_summary
-            //   field types. Not urgent, as these should only be body values
-            //   on nodes at this time.
-            $tables['node__body'] = ['body_value', 'body_summary'];
+            $tables['node__' . $name] = [
+              'values' => value_columns($name, $info['type']),
+              'parent' => ['entity_id'],
+              'type' => $entity_type_id,
+            ];
           }
           if ($name == 'title') {
-            $tables['node_field_data'] = ['title'];
+            $tables['node_field_data'] = [
+              'values' => ['title'],
+              'parent' => ['nid'],
+              'type' => $entity_type_id,
+            ];
           }
         }
         break;
     }
   }
   $db = \Drupal::database();
-  // @todo Determine and return the node on which the field is found.
-  foreach ($tables as $table => $value_columns) {
+  foreach ($tables as $table => $details) {
+    $value_columns = $details['values'];
+    $parent = $details['parent'];
     // @todo Allow for more complicated regex searches.
     $query = $db->select($table)
-      ->fields($table, $value_columns);
+      ->fields($table, array_merge($parent, $value_columns));
     foreach ($value_columns as $value_column) {
       $query->condition($table . '.' . $value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE');
     }
     $temp_results = $query->execute()
-      ->fetchAll();
+      ->fetchAllKeyed(0);
+    // If the table is of a node type, we're done. Otherwise, we need
+    // to find the parent.
+    if ($details['type'] != 'node') {
+      $with_nid = [];
+      foreach ($temp_results as $target_id => $value) {
+        // Find the target_id, which will be the nid of the parent node
+        // in this case.
+        $nid = $db->select('entity_usage')
+          ->fields('entity_usage', ['source_id'])
+          ->condition('target_type', 'block_content', '=')
+          ->condition('target_id', $target_id, '=')
+          // Currently we're not handling revisions, so we're likely to have
+          // duplicate entries for the same node; one for each revision.
+          ->distinct()
+          ->execute()
+          ->fetchCol();
+        $with_nid[$nid[0]] = $value;
+      }
+      $temp_results = $with_nid;
+    }
+
     if (!empty($temp_results)) {
       $results[] = $temp_results;
     }
@@ -110,6 +138,12 @@ function value_columns(string $name, string $type) {
     return [
       $name . '_uri',
       $name . '_title',
+    ];
+  }
+  if ($type == 'text_with_summary') {
+    return [
+      $name . '_value',
+      $name . '_summary',
     ];
   }
   return [$name . '_value'];
