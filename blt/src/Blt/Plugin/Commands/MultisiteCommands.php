@@ -685,12 +685,6 @@ EOD;
       '--site' => $host,
     ]);
 
-    // Create the config directory with a file to commit.
-    $this->taskFilesystemStack()
-      ->mkdir("{$root}/config/{$host}")
-      ->touch("{$root}/config/{$host}/.gitkeep")
-      ->run();
-
     // Initialize next steps.
     $steps = [];
 
@@ -701,7 +695,6 @@ EOD;
         ->add('docroot/sites/sites.php')
         ->add("docroot/sites/{$host}")
         ->add("drush/sites/{$id}.site.yml")
-        ->add("config/{$host}")
         ->commit("Initialize {$host} multisite on {$app}")
         ->interactive(FALSE)
         ->printOutput(FALSE)
