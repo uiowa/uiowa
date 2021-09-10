@@ -54,7 +54,6 @@
   }
 
   .node--type-article {
-  //.card--list
     display: flex;
     @include breakpoint(sm) {
       flex-direction: row-reverse;
@@ -125,17 +124,14 @@
     }
   }
 
-  /*
-  .node--view-mode-teaser.media {
-    flex-direction: row-reverse;
-    flex-wrap: wrap-reverse;
-    @include breakpoint(sm) {
-      flex-direction: inherit;
+  .card--list {
+    &.card--person-teaser {
+      @include breakpoint(sm) {
+        margin-top: 1.6rem;
+      }
     }
   }
-*/
-  .node--type-article,
-  .card--list {
+  .node--type-article {
     @include breakpoint(sm) {
       display: flex;
       flex-direction: row-reverse;
