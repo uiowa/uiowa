@@ -1,0 +1,75 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Sitenow Search module.
+ *
+ * @DCG
+ * This file is no longer required in Drupal 8.
+ * @see https://www.drupal.org/node/2217931
+ */
+
+function getAllTextFields() {
+  $entity_field_manager = \Drupal::service('entity_field.manager');
+  $fields = [];
+  foreach (['string', 'string_long', 'text_long', 'text_with_summary', 'link'] as $type) {
+    $new_fields = $entity_field_manager->getFieldMapByFieldType($type);
+    foreach ($new_fields as $bundle => $bundle_fields) {
+      $fields[$bundle] = isset($fields[$bundle]) ? array_merge($fields[$bundle], $bundle_fields) : $bundle_fields;
+    }
+  }
+  return $fields;
+}
+
+function searchFields($fields, $needle) {
+  $tables = [];
+  $results = [];
+  foreach ($fields as $entity_type_id => $field_map) {
+    switch ($entity_type_id) {
+      case 'block_content':
+        foreach ($field_map as $name => $info) {
+          if (str_starts_with($name, 'field')) {
+            $tables['block_content__' . $name] = valueColumns($name, $info['type']);
+          }
+        }
+        break;
+      case 'node':
+        foreach ($field_map as $name => $info) {
+          if (str_starts_with($name, 'field')) {
+            $tables['node__' . $name] = valueColumns($name, $info['type']);
+          }
+          if ($name == 'body') {
+            $tables['node__body'] = ['body_value', 'body_summary'];
+          }
+          if ($name == 'title') {
+            $tables['node_field_data'] = ['title'];
+          }
+        }
+        break;
+    }
+  }
+  $db = \Drupal::database();
+  foreach ($tables as $table => $value_columns) {
+    $query = $db->select($table)
+      ->fields($table, $value_columns);
+    foreach ($value_columns as $value_column) {
+      $query->condition($table . '.' . $value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE');
+    }
+    $temp_results = $query->execute()
+      ->fetchAll();
+    if (!empty($temp_results)) {
+      $results[] = $temp_results;
+    }
+  }
+  return $results;
+}
+
+function valueColumns($name, $type) {
+  if ($type == 'link') {
+    return [
+      $name . '_uri',
+      $name . '_title',
+    ];
+  }
+  return [$name . '_value'];
+}

@@ -1,0 +1,6 @@
+services:
+  sitenow_search.event_subscriber:
+    class: Drupal\sitenow_search\EventSubscriber\SitenowSearchSubscriber
+    arguments: ['@messenger']
+    tags:
+      - { name: event_subscriber }
