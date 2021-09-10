@@ -596,6 +596,7 @@ EOD
 
     // Remove some files that we don't need or will be regenerated below.
     $files = [
+      "{$root}/config/{$host}",
       "{$root}/docroot/sites/{$host}/default.services.yml",
       "{$root}/docroot/sites/{$host}/services.yml",
       "{$root}/drush/sites/{$host}.site.yml",
