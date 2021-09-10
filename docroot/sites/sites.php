@@ -3179,3 +3179,9 @@ $sites['uiarc.local.drupal.uiowa.edu'] = 'uiarc.uiowa.edu';
 $sites['uiarc.dev.drupal.uiowa.edu'] = 'uiarc.uiowa.edu';
 $sites['uiarc.stage.drupal.uiowa.edu'] = 'uiarc.uiowa.edu';
 $sites['uiarc.prod.drupal.uiowa.edu'] = 'uiarc.uiowa.edu';
+
+// Directory aliases for fblynn.sites.uiowa.edu.
+$sites['sitesfblynn.local.drupal.uiowa.edu'] = 'fblynn.sites.uiowa.edu';
+$sites['sitesfblynn.dev.drupal.uiowa.edu'] = 'fblynn.sites.uiowa.edu';
+$sites['sitesfblynn.stage.drupal.uiowa.edu'] = 'fblynn.sites.uiowa.edu';
+$sites['sitesfblynn.prod.drupal.uiowa.edu'] = 'fblynn.sites.uiowa.edu';
