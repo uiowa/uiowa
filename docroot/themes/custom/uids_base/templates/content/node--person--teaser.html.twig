@@ -94,7 +94,7 @@
 {% set person_card = {
   'attributes': attributes.addClass(classes),
   'card_image': content.field_image | render,
-  'card_text': content | render,
+  'card_text':  content | without('field_image', 'links', 'field_person_credential', 'field_person_position', 'field_person_email', 'field_person_phone', 'field_teaser') | render,
   'card_subtitle': content.field_person_position | render,
   'card_date': content.field_person_email | render,
   'card_tag': content.field_person_phone | render,
@@ -129,7 +129,7 @@
     {% endif %}
   {% endblock %}
   {% block card_content %}
-    {% if card_text|striptags|trim is not empty %}
+    {% if card_text is not empty %}
       <div class="card__description">{{ card_text }}</div>
     {% endif %}
   {% endblock %}
