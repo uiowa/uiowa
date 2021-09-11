@@ -556,3 +556,31 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .screen-reader-text {
   @include element-invisible;
 }
+
+.sliding-popup-bottom, .sliding-popup-top {
+  background: $secondary;
+  opacity: 95%;
+  
+  .eu-cookie-compliance-content {
+    max-width: 90%;
+
+    .eu-cookie-compliance-message {
+      font-size: small;
+      margin-top: 1.05rem;
+      color: $primary;
+    }
+    a {
+      color: $primary;
+    }
+    .eu-cookie-compliance-buttons {
+      padding-top: 1.05rem;
+
+      button, .button {
+        @include bttn;
+        @include bttn--primary;
+        @include bttn--focus;
+        border: 1px solid;
+      }
+    }
+  }
+}
