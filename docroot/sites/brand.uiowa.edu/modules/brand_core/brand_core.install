@@ -123,3 +123,12 @@ function brand_core_update_8002(&$sandbox) {
 function brand_core_update_9001() {
   drupal_flush_all_caches();
 }
+
+/**
+ * Activate the new site split prior to import so config remains the same.
+ */
+function brand_core_update_9002() {
+  $source = new FileStorage('../config/sites/brand.uiowa.edu/');
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('config_split.config_split.site', $source->read('config_split.config_split.site'));
+}
