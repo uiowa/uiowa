@@ -116,8 +116,8 @@ function search_fields(array $fields, string $needle) {
       $temp_results = $with_nid;
     }
 
-    if (!empty($temp_results)) {
-      $results[] = $temp_results;
+    foreach ($temp_results as $nid => $value) {
+      $results[$nid][] = $value;
     }
   }
   return $results;
