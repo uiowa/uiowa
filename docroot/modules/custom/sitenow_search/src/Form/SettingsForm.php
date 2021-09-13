@@ -34,6 +34,11 @@ class SettingsForm extends ConfigFormBase {
       '#title' => $this->t('Needle'),
       '#default_value' => '',
     ];
+    $form['regexed'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('REGEXP?'),
+      '#default_value' => 0,
+    ];
     $form['search'] = [
       '#type' => 'submit',
       '#value' => $this->t('Search'),
@@ -57,7 +62,8 @@ class SettingsForm extends ConfigFormBase {
     // Grab all the fields.
     $fields = get_all_text_fields();
     $needle = $form_state->getValue('needle');
-    $results = search_fields($fields, $needle);
+    $regexed = $form_state->getValue('regexed');
+    $results = search_fields($fields, $needle, $regexed);
     return $form_state;
   }
 

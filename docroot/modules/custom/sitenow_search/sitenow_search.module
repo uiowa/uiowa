@@ -36,11 +36,13 @@ function get_all_text_fields() {
  *   The field names and info to be searched.
  * @param string $needle
  *   The string for which to search.
+ * @param bool $regexed
+ *   Whether a regex condition should be used over base LIKE.
  *
  * @return array
  *   The search results.
  */
-function search_fields(array $fields, string $needle) {
+function search_fields(array $fields, string $needle, bool $regexed = FALSE) {
   $tables = [];
   $results = [];
   foreach ($fields as $entity_type_id => $field_map) {
@@ -89,7 +91,12 @@ function search_fields(array $fields, string $needle) {
     $query = $db->select($table)
       ->fields($table, array_merge($parent, $value_columns));
     foreach ($value_columns as $value_column) {
-      $query->condition($table . '.' . $value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE');
+      if ($regexed) {
+        $query->condition($table . '.' . $value_column, $needle, 'REGEXP');
+      }
+      else {
+        $query->condition($table . '.' . $value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE');
+      }
     }
     $temp_results = $query->execute()
       ->fetchAllKeyed(0);
