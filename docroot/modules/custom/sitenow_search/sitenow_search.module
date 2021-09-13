@@ -49,9 +49,10 @@ function search_fields(array $fields, string $needle) {
     // connected to a parent node may be different.
     switch ($entity_type_id) {
       case 'block_content':
+      case 'paragraph':
         foreach ($field_map as $name => $info) {
           if (str_starts_with($name, 'field')) {
-            $tables['block_content__' . $name] = [
+            $tables[$entity_type_id . '__' . $name] = [
               'values' => value_columns($name, $info['type']),
               'parent' => ['entity_id'],
               'type' => $entity_type_id,
