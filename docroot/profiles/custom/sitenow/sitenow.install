@@ -3354,3 +3354,37 @@ function sitenow_update_9016() {
   // Rebuild node permissions.
   node_access_rebuild(TRUE);
 }
+
+/**
+ * Activate new site splits prior to import so config remains constant.
+ */
+function sitenow_update_9017() {
+  $splits = [
+    'admissions.uiowa.edu',
+    'brand.uiowa.edu',
+    'coronavirus.uiowa.edu',
+    'genetics.grad.uiowa.edu',
+    'grad.uiowa.edu',
+    'hr.uiowa.edu',
+    'icsa.uiowa.edu',
+    'ighn.uiowa.edu',
+    'immuno.grad.uiowa.edu',
+    'iowasuperfund.uiowa.edu',
+    'pharmacy.uiowa.edu',
+    'policy.clas.uiowa.edu',
+    'presidentialsearch.uiowa.edu',
+    'sitenow.uiowa.edu',
+    'sppa.uiowa.edu',
+    'tippie.uiowa.edu',
+    'transportation.uiowa.edu',
+    'uiowa.edu',
+  ];
+
+  $site = explode('/', \Drupal::service('site.path'))[1];
+
+  if (in_array($site, $splits)) {
+    $source = new FileStorage("../config/sites/$site");
+    $config_storage = \Drupal::service('config.storage');
+    $config_storage->write('config_split.config_split.site', $source->read('config_split.config_split.site'));
+  }
+}

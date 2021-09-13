@@ -370,12 +370,3 @@ function admissions_core_update_9005() {
   $config->set('status', FALSE);
   $config->save(TRUE);
 }
-
-/**
- * Activate the new site split prior to import so config remains the same.
- */
-function admissions_core_update_9006() {
-  $source = new FileStorage('../config/sites/admissions.uiowa.edu/');
-  $config_storage = \Drupal::service('config.storage');
-  $config_storage->write('config_split.config_split.site', $source->read('config_split.config_split.site'));
-}
