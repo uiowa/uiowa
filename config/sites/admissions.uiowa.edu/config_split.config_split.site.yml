@@ -2,10 +2,10 @@ uuid: 1aa7f804-a75a-4201-bb26-1a50922ec5dd
 langcode: en
 status: true
 dependencies: {  }
-id: admissions
-label: Admissions
-description: 'The Admissions site split.'
-folder: ../config/admissions.uiowa.edu
+id: site
+label: Site
+description: 'The admissions.uiowa.edu site split.'
+folder: ../config/sites/admissions.uiowa.edu
 module:
   admissions_core: 0
   better_exposed_filters: 0
@@ -43,7 +43,6 @@ blacklist:
   - 'field.field.node.area_of_study.*'
 graylist:
   - block_content.type.uiowa_timeline
-  - config_split.config_split.admissions
   - core.entity_form_display.node.event_series.default
   - core.entity_form_display.node.student_profile.default
   - core.entity_form_display.node.transfer_tips.default
@@ -160,6 +159,7 @@ graylist:
   - views.view.student_profiles
   - views.view.transfer_tips_list
   - workflows.workflow.editorial
+  - config_split.config_split.site
   - 'core.entity_form_display.node.person.*'
   - 'core.entity_form_display.node.scholarship.*'
   - 'core.entity_view_display.*'
