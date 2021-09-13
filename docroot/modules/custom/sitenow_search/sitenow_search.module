@@ -109,7 +109,9 @@ function search_fields(array $fields, string $needle) {
           ->distinct()
           ->execute()
           ->fetchCol();
-        $with_nid[$nid[0]] = $value;
+        if (isset($nid[0])) {
+          $with_nid[$nid[0]] = $value;
+        }
       }
       $temp_results = $with_nid;
     }
