@@ -1,0 +1,59 @@
+uuid: bc58f769-8f2d-494d-97c5-2ef8e9123616
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: Site
+description: 'The grad.uiowa.edu site split.'
+folder: ../config/sites/grad.uiowa.edu
+module:
+  fragments: 0
+  grad_core: 0
+  grad_custom: 0
+  grad_student_profile: 0
+  grad_thesis_defense: 0
+  uiowa_maui: 0
+theme: {  }
+blacklist:
+  - block_content.type.content_list
+  - config_split.config_split.site
+  - metatag.metatag_defaults.node__mentor
+  - metatag.metatag_defaults.node__scholar
+  - metatag.metatag_defaults.node__student_profile
+  - node.type.mentor
+  - node.type.scholar
+  - node.type.student_profile
+  - pathauto.pattern.mentors
+  - pathauto.pattern.scholars
+  - pathauto.pattern.student_profiles
+  - simple_sitemap.bundle_settings.default.node.mentor
+  - simple_sitemap.bundle_settings.default.node.scholar
+  - views.view.srop_mentors
+  - views.view.srop_scholars
+  - sitenow_people.person_type.mentor
+  - fragment.fragment_type.program
+  - 'field.storage.fragment.field_program_*'
+  - 'field.storage.node.field_scholar_*'
+  - 'field.storage.node.field_student_profile_*'
+  - 'field.storage.block_content.field_content_list_*'
+graylist:
+  - core.entity_view_display.node.page.default
+  - core.entity_view_mode.node.card
+  - field.storage.node.field_uiowa_college
+  - node.type.person
+  - node.type.scholarship
+  - simple_sitemap.bundle_settings.default.node.person
+  - sitenow_people.field_settings
+  - user.role.anonymous
+  - user.role.authenticated
+  - user.role.editor
+  - user.role.publisher
+  - user.role.webmaster
+  - views.view.srop_scholars
+  - core.entity_view_display.block_content.uiowa_people.default
+  - 'field.storage.node.field_person_*'
+  - 'field.storage.node.field_grad_*'
+  - 'field.storage.fragment.field_grad_*'
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 90
