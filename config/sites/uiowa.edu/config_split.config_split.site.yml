@@ -1,0 +1,36 @@
+uuid: ab71cea9-fc2a-4a3f-a2b7-26ce610e0e5d
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: Site
+description: 'The uiowa.edu site split.'
+folder: ../config/sites/uiowa.edu
+module:
+  media_library_theme_reset: 0
+  schema_organization: 0
+  uiowa_edu_core: 0
+  eu_cookie_compliance: 1001
+theme: {  }
+blacklist: {  }
+graylist:
+  - block_content.type.uiowa_vertical_video
+  - config_split.config_split.site
+  - core.entity_form_display.taxonomy_term.a_z_list.default
+  - core.entity_view_display.taxonomy_term.a_z_list.default
+  - eu_cookie_compliance.settings
+  - field.field.taxonomy_term.a_z_list.field_a_z_list_link
+  - field.storage.block_content.field_uiowa_vertical_video
+  - field.storage.block_content.field_uiowa_vertical_video_cap
+  - field.storage.block_content.field_uiowa_vertical_video_image
+  - field.storage.block_content.field_uiowa_vertical_video_sub
+  - field.storage.block_content.field_uiowa_vertical_video_title
+  - field.storage.taxonomy_term.field_a_z_list_link
+  - metatag.metatag_defaults.front
+  - simple_sitemap.custom_links.default
+  - taxonomy.vocabulary.a_z_list
+  - views.view.a_z_list
+  - 'user.role.*'
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 90
