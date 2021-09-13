@@ -10,6 +10,7 @@ module:
   media_library_theme_reset: 0
   schema_organization: 0
   uiowa_edu_core: 0
+  eu_cookie_compliance: 1001
 theme: {  }
 blacklist: {  }
 graylist:
@@ -17,6 +18,7 @@ graylist:
   - config_split.config_split.uiowa_edu
   - core.entity_form_display.taxonomy_term.a_z_list.default
   - core.entity_view_display.taxonomy_term.a_z_list.default
+  - eu_cookie_compliance.settings
   - field.field.taxonomy_term.a_z_list.field_a_z_list_link
   - field.storage.block_content.field_uiowa_vertical_video
   - field.storage.block_content.field_uiowa_vertical_video_cap
@@ -27,8 +29,8 @@ graylist:
   - metatag.metatag_defaults.front
   - simple_sitemap.custom_links.default
   - taxonomy.vocabulary.a_z_list
-  - user.role.webmaster
   - views.view.a_z_list
+  - 'user.role.*'
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 90
