@@ -146,31 +146,3 @@ function sitenow_media_wysiwyg_file_presave(FileInterface $file) {
     }
   }
 }
-
-/**
- * Implements hook_oembed_providers_alter().
- */
-function sitenow_media_wysiwyg_oembed_providers_alter(array &$providers) {
-  // Add "University of Iowa" Kalutra/MediaSpace provider.
-  $providers[] = [
-    'provider_name' => 'University of Iowa',
-    'provider_url' => 'http://mediaspace.uiowa.edu',
-    'endpoints' => [
-      [
-        'schemes' => [
-          'http://mediaspace.uiowa.edu/*',
-          'https://mediaspace.uiowa.edu/*',
-        ],
-        'url' => 'http://mediaspace.uiowa.edu/oembed',
-        'discovery' => 'true',
-      ],
-    ],
-  ];
-}
-
-/**
- * Implements hook_media_source_info_alter().
- */
-function sitenow_media_wysiwyg_media_source_info_alter(array &$sources) {
-  $sources["oembed:video"]["providers"][] = 'University of Iowa';
-}
