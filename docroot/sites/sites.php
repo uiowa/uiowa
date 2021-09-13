@@ -3179,3 +3179,21 @@ $sites['uiarc.local.drupal.uiowa.edu'] = 'uiarc.uiowa.edu';
 $sites['uiarc.dev.drupal.uiowa.edu'] = 'uiarc.uiowa.edu';
 $sites['uiarc.stage.drupal.uiowa.edu'] = 'uiarc.uiowa.edu';
 $sites['uiarc.prod.drupal.uiowa.edu'] = 'uiarc.uiowa.edu';
+
+// Directory aliases for fblynn.sites.uiowa.edu.
+$sites['sitesfblynn.local.drupal.uiowa.edu'] = 'fblynn.sites.uiowa.edu';
+$sites['sitesfblynn.dev.drupal.uiowa.edu'] = 'fblynn.sites.uiowa.edu';
+$sites['sitesfblynn.stage.drupal.uiowa.edu'] = 'fblynn.sites.uiowa.edu';
+$sites['sitesfblynn.prod.drupal.uiowa.edu'] = 'fblynn.sites.uiowa.edu';
+
+// Directory aliases for sds.studentlife.uiowa.edu.
+$sites['studentlifesds.local.drupal.uiowa.edu'] = 'sds.studentlife.uiowa.edu';
+$sites['studentlifesds.dev.drupal.uiowa.edu'] = 'sds.studentlife.uiowa.edu';
+$sites['studentlifesds.stage.drupal.uiowa.edu'] = 'sds.studentlife.uiowa.edu';
+$sites['studentlifesds.prod.drupal.uiowa.edu'] = 'sds.studentlife.uiowa.edu';
+
+// Directory aliases for mew.conference.uiowa.edu.
+$sites['conferencemew.local.drupal.uiowa.edu'] = 'mew.conference.uiowa.edu';
+$sites['conferencemew.dev.drupal.uiowa.edu'] = 'mew.conference.uiowa.edu';
+$sites['conferencemew.stage.drupal.uiowa.edu'] = 'mew.conference.uiowa.edu';
+$sites['conferencemew.prod.drupal.uiowa.edu'] = 'mew.conference.uiowa.edu';
