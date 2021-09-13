@@ -9,7 +9,6 @@ dependencies:
     - field.field.node.person.field_person_bio
     - field.field.node.person.field_person_contact_information
     - field.field.node.person.field_person_credential
-    - field.field.node.person.field_person_department
     - field.field.node.person.field_person_education
     - field.field.node.person.field_person_email
     - field.field.node.person.field_person_first_name
@@ -272,25 +271,6 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: -2
-          -
-            uuid: 31f15d82-6d21-4df8-a1c2-398bdb374ee8
-            region: first
-            configuration:
-              id: 'field_block:node:person:field_person_department'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: inline
-                type: entity_reference_label
-                settings:
-                  link: false
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: -9
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -417,7 +397,6 @@ content:
 hidden:
   field_grad_program_all_degree: true
   field_person_credential: true
-  field_person_department: true
   field_person_first_name: true
   field_person_hide: true
   field_person_hometown: true
