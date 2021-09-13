@@ -3360,30 +3360,30 @@ function sitenow_update_9016() {
  */
 function sitenow_update_9017() {
   $splits = [
-    'admissions.uiowa.edu',
-    'brand.uiowa.edu',
-    'coronavirus.uiowa.edu',
-    'genetics.grad.uiowa.edu',
-    'grad.uiowa.edu',
-    'hr.uiowa.edu',
-    'icsa.uiowa.edu',
-    'ighn.uiowa.edu',
-    'immuno.grad.uiowa.edu',
-    'iowasuperfund.uiowa.edu',
-    'pharmacy.uiowa.edu',
-    'policy.clas.uiowa.edu',
-    'presidentialsearch.uiowa.edu',
-    'sitenow.uiowa.edu',
-    'sppa.uiowa.edu',
-    'tippie.uiowa.edu',
-    'transportation.uiowa.edu',
-    'uiowa.edu',
+     'sites/admissions.uiowa.edu' => 'admissions.uiowa.edu',
+     'sites/brand.uiowa.edu' => 'brand.uiowa.edu',
+     'sites/coronavirus.uiowa.edu' => 'coronavirus.uiowa.edu',
+     'sites/genetics.grad.uiowa.edu' => 'genetics.grad.uiowa.edu',
+     'sites/grad.uiowa.edu' => 'grad.uiowa.edu',
+     'sites/hr.uiowa.edu' => 'hr.uiowa.edu',
+     'sites/icsa.uiowa.edu' => 'icsa.uiowa.edu',
+     'sites/ighn.uiowa.edu' => 'ighn.uiowa.edu',
+     'sites/immuno.grad.uiowa.edu' => 'immuno.grad.uiowa.edu',
+     'sites/iowasuperfund.uiowa.edu' => 'iowasuperfund.uiowa.edu',
+     'sites/pharmacy.uiowa.edu' => 'pharmacy.uiowa.edu',
+     'sites/policy.clas.uiowa.edu' => 'policy.clas.uiowa.edu',
+     'sites/presidentialsearch.uiowa.edu' => 'presidentialsearch.uiowa.edu',
+     'sites/sitenow.uiowa.edu' => 'sitenow.uiowa.edu',
+     'sites/sppa.uiowa.edu' => 'sppa.uiowa.edu',
+     'sites/tippie.uiowa.edu' => 'tippie.uiowa.edu',
+     'sites/transportation.uiowa.edu' => 'transportation.uiowa.edu',
+     'sites/uiowa.edu' => 'uiowa.edu',
   ];
 
-  $site = explode('/', \Drupal::service('site.path'))[1];
+  $path = Drupal::service('site.path');
 
-  if (in_array($site, $splits)) {
-    $source = new FileStorage("../config/sites/$site");
+  if (isset($splits[$path])) {
+    $source = new FileStorage('../config/sites/' . $splits[$path]);
     $config_storage = \Drupal::service('config.storage');
     $config_storage->write('config_split.config_split.site', $source->read('config_split.config_split.site'));
   }
