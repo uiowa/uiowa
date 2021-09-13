@@ -742,7 +742,6 @@ function uids_base_theme_suggestions_page_title_alter(array &$suggestions, array
   // Add page title suggestion for nodes
   if (!empty($node) && is_object($node)) {
     $suggestions[] = 'page_title__node';
-    $suggestions[] = 'page_title__node_' . $node->getType();
   }
 }
 
