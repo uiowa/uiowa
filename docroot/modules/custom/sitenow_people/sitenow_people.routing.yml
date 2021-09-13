@@ -37,3 +37,11 @@ sitenow_people.settings_form:
     _form: 'Drupal\sitenow_people\Form\SettingsForm'
   requirements:
     _permission: 'administer sitenow people'
+
+sitenow_people.people_sort_tag:
+  path: /admin/config/system/sitenow-people/tag
+  defaults:
+    _title: 'Sort People by tag'
+    _view: people_block
+  requirements:
+    _permission: 'administer sitenow people'
