@@ -7,9 +7,11 @@ $imgpath: '../../uids/assets/images';
   nav.tabs {
     li {
       border-bottom: 1px solid rgba(0,0,0,.125);
-      @include breakpoint(sm) {
-        margin-bottom: $md;
-        margin-top: $md;
+      .layout-builder-disabled & {
+        @include breakpoint(sm) {
+          margin-bottom: $md;
+          margin-top: $md;
+        }
       }
     }
   }
