@@ -23,7 +23,9 @@ $imgpath: '../../uids/assets/images';
 // set equal height columns
 .layout {
   .layout__region {
-    display: grid;
+    @include breakpoint(sm) {
+      display: grid;
+    }
   }
   &.section-alignment__start {
     .layout__region {
