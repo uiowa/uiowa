@@ -58,3 +58,160 @@
   }
 }
 
+
+// @todo remove when IE11 support is dropped.
+// IE 11
+@media all and (-ms-high-contrast: none),
+(-ms-high-contrast: active) {
+
+  .layout--threecol,
+  .layout--threecol .layout__spacing_container {
+    display: flex;
+    flex-basis: 100%;
+  }
+
+  .layout--threecol .layout__region {
+    flex: 0 1 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: unset;
+    min-width: 0;
+  }
+
+  .layout--threecol--50-25-25 .layout__region--second,
+  .layout--threecol--50-25-25 .layout__region--third {
+    flex: 0 1 24.25%;
+  }
+
+  .layout--threecol--50-25-25.column-spacing__removed .layout__region--second,
+  .layout--threecol--50-25-25.column-spacing__removed .layout__region--third {
+    flex: 0 1 25%;
+  }
+
+  .layout--threecol--50-25-25 .layout__region--first {
+    margin-right: 1.5rem;
+  }
+
+  .layout--threecol--50-25-25.column-spacing__removed .layout__region--first {
+    margin-right: 0;
+  }
+
+  .layout--threecol--50-25-25 .layout__region--second {
+    margin: 0 1.5rem;
+  }
+
+  .layout--threecol--50-25-25.column-spacing__removed .layout__region--second {
+    margin: 0;
+  }
+
+  .layout--threecol--50-25-25 .layout__region--third {
+    margin-left: 1.5rem;
+  }
+
+  .layout--threecol--50-25-25.column-spacing__removed .layout__region--third {
+    margin-left: 0;
+  }
+
+  .layout--threecol--50-25-25.column-spacing__removed .layout__region--second {
+    margin: 0;
+  }
+
+  .layout--threecol--50-25-25.column-spacing__removed .layout__region--first {
+    flex: 0 1 50%;
+  }
+
+  .layout--threecol--50-25-25 .layout__region--first {
+    flex: 0 1 50%;
+  }
+
+  .layout--threecol--33-34-33 .layout__region--first,
+  .layout--threecol--33-34-33 .layout__region--second,
+  .layout--threecol--33-34-33 .layout__region--third {
+    flex: 0 1 32.66%;
+  }
+
+  .layout--threecol--33-34-33.column-spacing__removed .layout__region--first,
+  .layout--threecol--33-34-33.column-spacing__removed .layout__region--second,
+  .layout--threecol--33-34-33.column-spacing__removed .layout__region--third {
+    flex: 0 1 33.3%;
+  }
+
+  .layout--threecol--33-34-33 .layout__region--first {
+    margin-right: 1.5rem;
+  }
+
+  .layout--threecol--33-34-33 .layout__region--second {
+    margin: 0 1.5rem;
+  }
+
+  .layout--threecol--33-34-33 .layout__region--third {
+    margin-left: 1.5rem;
+  }
+
+  .layout--threecol--33-34-33.column-spacing__removed .layout__region {
+    margin: 0;
+  }
+
+  .layout--threecol--25-25-50 .layout__region--first,
+  .layout--threecol--25-25-50 .layout__region--second {
+    flex: 0 1 24.5%;
+  }
+
+  .layout--threecol--25-25-50.column-spacing__removed .layout__region--first,
+  .layout--threecol--25-25-50.column-spacing__removed .layout__region--second {
+    flex: 0 1 25%;
+  }
+
+  .layout--threecol--25-25-50 .layout__region--first {
+    margin-right: 1.5rem;
+  }
+
+  .layout--threecol--25-25-50 .layout__region--second {
+    margin: 0 1.5rem;
+  }
+
+  .layout--threecol--25-25-50 .layout__region--third {
+    margin-left: 1.5rem;
+  }
+
+  .layout--threecol--25-25-50.column-spacing__removed .layout__region {
+    margin: 0;
+  }
+
+  .layout--threecol--25-25-50 .layout__region--third {
+    flex: 0 1 50%;
+  }
+
+  .layout--threecol--25-25-50.column-spacing__removed .layout__region--third {
+    flex: 0 1 50%;
+  }
+
+  .layout--threecol--25-50-25 .layout__region--first,
+  .layout--threecol--25-50-25 .layout__region--third {
+    flex: 0 1 28.25%;
+  }
+
+  .layout--threecol--25-50-25.column-spacing__removed .layout__region--first,
+  .layout--threecol--25-50-25.column-spacing__removed .layout__region--third {
+    flex: 0 1 25%;
+    margin: 0;
+  }
+
+  .layout--threecol--25-50-25 .layout__region--first {
+    margin-right: 1.5rem;
+  }
+
+  .layout--threecol--25-50-25 .layout__region--second {
+    flex: 0 1 41.75%;
+    margin: 0 1.5rem;
+  }
+
+  .layout--threecol--25-50-25 .layout__region--third {
+    margin-left: 1.5rem;
+  }
+
+  .layout--threecol--25-50-25.column-spacing__removed .layout__region--second {
+    flex: 0 1 50%;
+    margin: 0;
+  }
+}
