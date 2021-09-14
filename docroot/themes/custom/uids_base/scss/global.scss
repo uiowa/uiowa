@@ -559,6 +559,16 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
 .sliding-popup-bottom, .sliding-popup-top {
   background: $secondary;
+
+  .eu-cookie-withdraw-tab {
+    @include bttn;
+    @include bttn--primary;
+    @include bttn--focus;
+    transform: translate(0%, -100%);
+    right: 0%;
+    left: 0;  
+    float: right; 
+  }
   
   .eu-cookie-compliance-content {
     max-width: 90%;
