@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: conferencemew.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: conferencemew
+  human_name: mew.conference.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: conferencemew.prod
+drupal:
+  db:
+    database: mew_conference_uiowa_edu
+uiowa:
+  requester: amjennings
