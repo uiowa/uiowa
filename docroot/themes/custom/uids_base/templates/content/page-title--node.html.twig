@@ -12,16 +12,8 @@
  *   displayed after the main title tag that appears in the template.
  */
 #}
-{%
-  set classes = [
-  'page-title',
-  'bold-headline--serif bold-headline',
-]
-%}
 {{ title_prefix }}
 {% if title %}
-  <h1{{ title_attributes.addClass(classes) }}>
-    {{ title }}
-  </h1>
+  {% include '@uids_base/field/field--node--title.html.twig' %}
 {% endif %}
 {{ title_suffix }}
