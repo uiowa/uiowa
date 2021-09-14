@@ -71,10 +71,6 @@ function studentlife_topics_preprocess_layout(&$variables) {
  */
 function studentlife_topics_theme($existing, $type, $theme, $path) {
   return [
-    'field__node__title__topic_collection__default' => [
-      'template' => 'field--node--title--topic-collection--default',
-      'base hook' => 'field',
-    ],
     'node__topic_collection__teaser' => [
       'template' => 'node--topic-collection--teaser',
       'base hook' => 'node',
