@@ -78,11 +78,13 @@ class MultisiteCommands extends BltTasks {
 
         // Skip sites whose database do not exist on the application in AH env.
         if (EnvironmentDetector::isAhEnv() && !file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
-          $this->say("Skipping {$multisite}. Database {$db} does not exist.");
+          $this->logger->info("Skipping {$multisite}. Database {$db} does not exist on this application.");
           continue;
         }
 
         if (!in_array($multisite, $options['exclude'])) {
+          $this->say("<info>Executing on {$multisite}...</info>");
+
           // Define a site-specific cache directory.
           // @see: https://github.com/drush-ops/drush/pull/4345
           $tmp = "/tmp/.drush-cache-{$app}/{$env}/{$multisite}";
@@ -90,6 +92,7 @@ class MultisiteCommands extends BltTasks {
           $this->taskDrush()
             ->drush($cmd)
             ->option('define', "drush.paths.cache-directory={$tmp}")
+            ->printMetadata(FALSE)
             ->run();
         }
         else {
@@ -593,6 +596,7 @@ EOD
 
     // Remove some files that we don't need or will be regenerated below.
     $files = [
+      "{$root}/config/{$host}",
       "{$root}/docroot/sites/{$host}/default.services.yml",
       "{$root}/docroot/sites/{$host}/services.yml",
       "{$root}/drush/sites/{$host}.site.yml",
@@ -682,12 +686,6 @@ EOD;
       '--site' => $host,
     ]);
 
-    // Create the config directory with a file to commit.
-    $this->taskFilesystemStack()
-      ->mkdir("{$root}/config/{$host}")
-      ->touch("{$root}/config/{$host}/.gitkeep")
-      ->run();
-
     // Initialize next steps.
     $steps = [];
 
@@ -698,7 +696,6 @@ EOD;
         ->add('docroot/sites/sites.php')
         ->add("docroot/sites/{$host}")
         ->add("drush/sites/{$id}.site.yml")
-        ->add("config/{$host}")
         ->commit("Initialize {$host} multisite on {$app}")
         ->interactive(FALSE)
         ->printOutput(FALSE)

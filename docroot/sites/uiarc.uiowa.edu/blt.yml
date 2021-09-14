@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: uiarc.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: uiarc
+  human_name: uiarc.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: uiarc.prod
+drupal:
+  db:
+    database: uiarc_uiowa_edu
+uiowa:
+  requester: saba
