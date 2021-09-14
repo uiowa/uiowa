@@ -43,7 +43,7 @@ class ReplaceCommands extends BltTasks {
       }
       else {
         if ($this->getInspector()->isDrupalInstalled()) {
-          $this->say("Deploying updates to <comment>{$multisite}</comment>...");
+          $this->logger->info("Deploying updates to <comment>{$multisite}</comment>...");
 
           // Invalidate the Twig cache if on AH env. This happens automatically
           // for the default site but not multisites. We don't need to pass
@@ -65,7 +65,7 @@ class ReplaceCommands extends BltTasks {
             // @see: https://github.com/drush-ops/drush/pull/4345
             $_ENV['DRUSH_PATHS_CACHE_DIRECTORY'] = "/tmp/.drush-cache-{$app}/{$env}/{$multisite}";
             $this->invokeCommand('drupal:update');
-            $this->say("Finished deploying updates to {$multisite}.");
+            $this->logger->info("Finished deploying updates to <comment>{$multisite}</comment>.");
           }
           catch (BltException $e) {
             $this->logger->error("Failed deploying updates to {$multisite}.");
@@ -95,11 +95,11 @@ class ReplaceCommands extends BltTasks {
 
       // Trigger drupal:update for this site.
       if ($db_name == $db) {
-        $this->say("Deploying updates to <comment>{$multisite}</comment>...");
+        $this->logger->info("Deploying updates to <comment>{$multisite}</comment>...");
         $this->switchSiteContext($multisite);
         $this->taskDrush()->drush('cache:rebuild')->run();
         $this->invokeCommand('drupal:update');
-        $this->say("Finished deploying updates to {$multisite}.");
+        $this->logger->info("Finished deploying updates to <comment>{$multisite}</comment>.");
 
         break;
       }
