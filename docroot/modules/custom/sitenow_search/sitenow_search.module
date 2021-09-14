@@ -58,6 +58,7 @@ function search_fields(array $fields, string $needle, bool $regexed = FALSE) {
               'values' => value_columns($name, $info['type']),
               'parent' => ['entity_id'],
               'type' => $entity_type_id,
+              'field' => $name,
             ];
           }
         }
@@ -70,6 +71,7 @@ function search_fields(array $fields, string $needle, bool $regexed = FALSE) {
               'values' => value_columns($name, $info['type']),
               'parent' => ['entity_id'],
               'type' => $entity_type_id,
+              'field' => $name,
             ];
           }
           if ($name == 'title') {
@@ -77,6 +79,7 @@ function search_fields(array $fields, string $needle, bool $regexed = FALSE) {
               'values' => ['title'],
               'parent' => ['nid'],
               'type' => $entity_type_id,
+              'field' => $name,
             ];
           }
         }
@@ -100,6 +103,9 @@ function search_fields(array $fields, string $needle, bool $regexed = FALSE) {
     }
     $temp_results = $query->execute()
       ->fetchAllKeyed(0);
+    foreach ($temp_results as &$row) {
+      $row = implode(': ', [$details['field'], $row]);
+    }
     // If the table is of a node type, we're done. Otherwise, we need
     // to find the parent.
     if ($details['type'] != 'node') {
