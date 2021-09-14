@@ -1,35 +1,35 @@
-uuid: 49021ec0-bc2d-4784-8f4a-134a1ced1717
+uuid: 94b85165-d0c1-4920-af2f-9219ba38e5e4
 langcode: en
 status: true
 dependencies:
   config:
     - core.entity_view_mode.media.media_library
-    - field.field.media.panopto.field_media_panopto_url
-    - field.field.media.panopto.field_tags
-    - image.style.medium
-    - media.type.panopto
+    - field.field.media.remote_video.field_media_oembed_video
+    - field.field.media.remote_video.field_tags
+    - image.style.square__384_x_384
+    - media.type.remote_video
   module:
     - image
-id: media.panopto.media_library
+id: media.remote_video.media_library
 targetEntityType: media
-bundle: panopto
+bundle: remote_video
 mode: media_library
 content:
   thumbnail:
     type: image
+    weight: 0
     label: hidden
     settings:
-      image_style: medium
+      image_style: square__384_x_384
       image_link: ''
-    weight: 0
-    third_party_settings: {  }
     region: content
+    third_party_settings: {  }
 hidden:
   created: true
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
-  field_media_panopto_url: true
+  field_media_oembed_video: true
   field_tags: true
   name: true
   search_api_excerpt: true

@@ -1,35 +1,32 @@
-uuid: e68ef800-2553-4df1-b7f0-434c46560fcd
+uuid: e3381ee3-5145-4f65-9635-f3509be9643b
 langcode: en
 status: true
 dependencies:
   config:
     - core.entity_view_mode.media.medium
-    - field.field.media.panopto.field_media_panopto_url
-    - field.field.media.panopto.field_tags
-    - media.type.panopto
+    - field.field.media.remote_video.field_media_oembed_video
+    - field.field.media.remote_video.field_tags
+    - media.type.remote_video
   module:
     - layout_builder
-    - sitenow_media_wysiwyg
+    - media
 third_party_settings:
   layout_builder:
     allow_custom: false
     enabled: false
-id: media.panopto.medium
+id: media.remote_video.medium
 targetEntityType: media
-bundle: panopto
+bundle: remote_video
 mode: medium
 content:
-  field_media_panopto_url:
-    weight: 1
+  field_media_oembed_video:
+    type: oembed
+    weight: 0
     label: hidden
     settings:
-      trim_length: '80'
-      url_only: ''
-      url_plain: ''
-      rel: ''
-      target: ''
+      max_width: 640
+      max_height: 360
     third_party_settings: {  }
-    type: panopto_url_formatter
     region: content
 hidden:
   created: true

@@ -1,42 +1,40 @@
-uuid: 9ff6ad3a-ee14-4ddf-9adb-560dd4964d8f
+uuid: e665cb1e-4c06-41a4-948a-b41d55b8cfba
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.media.large
+    - core.entity_view_mode.media.small__square
     - field.field.media.image.field_media_caption
     - field.field.media.image.field_media_image
     - field.field.media.image.field_tags
-    - image.style.large
     - media.type.image
+    - responsive_image.styles.small__square
   module:
-    - image
     - layout_builder
     - lazy
+    - responsive_image
 third_party_settings:
   layout_builder:
     allow_custom: false
     enabled: false
 _core:
   default_config_hash: qxh_4kI5XZJ_t8OOI3OEqnRP5iL5WaD7cCfGRLbmPjw
-id: media.image.large
+id: media.image.small__square
 targetEntityType: media
 bundle: image
-mode: large
+mode: small__square
 content:
   field_media_image:
-    type: image
+    type: responsive_image
     weight: 0
     region: content
     label: hidden
     settings:
-      image_style: large
+      responsive_image_style: small__square
       image_link: ''
     third_party_settings:
       lazy:
         lazy_image: '1'
-        placeholder_style: ''
-        data_uri: false
 hidden:
   created: true
   entity_print_view_epub: true

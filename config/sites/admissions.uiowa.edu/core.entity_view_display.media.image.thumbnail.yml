@@ -1,28 +1,22 @@
-uuid: 9ff6ad3a-ee14-4ddf-9adb-560dd4964d8f
+uuid: 5b0bb1ef-c39d-4f75-9520-98d016e787c9
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.media.large
+    - core.entity_view_mode.media.thumbnail
     - field.field.media.image.field_media_caption
     - field.field.media.image.field_media_image
     - field.field.media.image.field_tags
-    - image.style.large
+    - image.style.thumbnail
     - media.type.image
   module:
     - image
-    - layout_builder
-    - lazy
-third_party_settings:
-  layout_builder:
-    allow_custom: false
-    enabled: false
 _core:
-  default_config_hash: qxh_4kI5XZJ_t8OOI3OEqnRP5iL5WaD7cCfGRLbmPjw
-id: media.image.large
+  default_config_hash: ikrzEAkwgO1kK0W5lQkWkxDICe2UkGsWFHErDMcnSbg
+id: media.image.thumbnail
 targetEntityType: media
 bundle: image
-mode: large
+mode: thumbnail
 content:
   field_media_image:
     type: image
@@ -30,13 +24,9 @@ content:
     region: content
     label: hidden
     settings:
-      image_style: large
+      image_style: thumbnail
       image_link: ''
-    third_party_settings:
-      lazy:
-        lazy_image: '1'
-        placeholder_style: ''
-        data_uri: false
+    third_party_settings: {  }
 hidden:
   created: true
   entity_print_view_epub: true
