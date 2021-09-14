@@ -59,7 +59,7 @@ class SearchForm extends ConfigFormBase {
         'method' => 'html',
         'disable-refocus' => TRUE,
         'effect' => 'fade',
-      ]
+      ],
     ];
 
     // Unset the original, currently unused submit button.
@@ -106,16 +106,16 @@ class SearchForm extends ConfigFormBase {
         'nid' => [
           'data' => $node_value,
           // Stretch the node row to cover all its matches.
-          'rowspan' => count($matches)
+          'rowspan' => count($matches),
         ],
         // Shift the first element out of the ray to match
         // to the node row.
-        array_shift($matches),
+        'field' => array_shift($matches),
       ];
       // If we have more matches after the shift, we need to
       // add each to its own row.
       foreach ($matches as $match) {
-        $rows[] = [$match];
+        $rows[] = ['field' => $match];
       }
     }
     return [
