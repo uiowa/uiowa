@@ -51,6 +51,9 @@ command-hooks:
   frontend-assets:
     dir: ${docroot}
     command: 'yarn workspaces run build'
+  frontend-test:
+    dir: ${repo.root}
+    command: 'npx percy snapshot snapshots.yml'
   post-deploy-build:
     dir: ${repo.root}
     command: './vendor/bin/blt uiowa:post:build'
