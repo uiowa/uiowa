@@ -38,7 +38,7 @@ class ReplaceCommands extends BltTasks {
 
       // Check for database include on this application.
       if (EnvironmentDetector::isAhEnv() && !file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
-        $this->say("Skipping {$multisite} on AH environment. Database {$db} does not exist.");
+        $this->logger->debug("Skipping {$multisite} on AH environment. Database {$db} does not exist.");
         continue;
       }
       else {
