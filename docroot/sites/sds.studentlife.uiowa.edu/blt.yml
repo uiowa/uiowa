@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: studentlifesds.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: studentlifesds
+  human_name: sds.studentlife.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: studentlifesds.prod
+drupal:
+  db:
+    database: sds_studentlife_uiowa_edu
+uiowa:
+  requester: dquam
