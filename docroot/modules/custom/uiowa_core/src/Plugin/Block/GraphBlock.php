@@ -44,7 +44,6 @@ class GraphBlock extends BlockBase {
 
     $build['graph_container']['graph_table'] = [
       '#theme' => 'table',
-//      '#caption' => 'My Table Caption',
       '#attributes' => array('class' => ['graph-table', 'sr-only']),
 
     ];
@@ -66,23 +65,6 @@ class GraphBlock extends BlockBase {
       }
     }
 
-
-//    $build['#header'] = [
-//      ['data' => 'Cell Value'], /* Cell */
-//      ['data' => 'Cell Value', '#attributes' => ['class' => 'text-align-right']], /* Cell aligned right */
-//      ['data' => 'Cell Value'], /* Cell */
-//    ];
-//    $build['#rows'] = [
-//      'data' => [ /* Row */
-//        [ 'data' => 'Cell Value'], /* Cell */
-//        [ 'data' => 'Cell Value', '#attributes' => ['class' => 'text-align-right']], /* Cell aligned right */
-//        [ 'data' => 'Cell Value'], /* Cell */
-//      ],
-//    ];
-//    return [
-//      '#markup' =>
-//        '<div>' . $csv_text . ' </div>',
-//    ];
     return $build;
   }
 
