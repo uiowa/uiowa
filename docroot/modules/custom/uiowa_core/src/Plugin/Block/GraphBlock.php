@@ -44,7 +44,7 @@ class GraphBlock extends BlockBase {
 
     $build['graph_container']['graph_table'] = [
       '#theme' => 'table',
-      '#attributes' => array('class' => ['graph-table', 'sr-only']),
+      '#attributes' => ['class' => ['graph-table', 'sr-only']],
 
     ];
 
@@ -53,13 +53,13 @@ class GraphBlock extends BlockBase {
 
     foreach ($rows as $row_key => $row) {
       if ($row_key == 0) {
-        foreach (explode( ',', $row) as $column_key => $column) {
+        foreach (explode(',', $row) as $column_key => $column) {
           array_push($build['graph_container']['graph_table']['#header'], ['data' => $column]);
         }
       }
       else {
         $build['graph_container']['graph_table']['#rows']['row-' . $row_key] = [];
-        foreach (explode( ',', $row) as $column_key => $column) {
+        foreach (explode(',', $row) as $column_key => $column) {
           array_push($build['graph_container']['graph_table']['#rows']['row-' . $row_key], ['data' => $column]);
         }
       }
@@ -94,4 +94,5 @@ class GraphBlock extends BlockBase {
     $values = $form_state->getValues();
     $this->configuration['graph_CSV_data'] = $values['graph_CSV_data'];
   }
+
 }
