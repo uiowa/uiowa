@@ -5,6 +5,10 @@ $imgpath: '../../uids/assets/images';
 @import "../uids/assets/scss/_base.scss";
 
 
+a {
+  word-break: break-word;
+}
+
 // Flex basis for all blocks and views
 
 .layout__region {
@@ -267,6 +271,9 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   }
   &__all--extra {
     padding: 6rem;
+  }
+  &__all--md {
+    padding: 2rem;
   }
 }
 
@@ -543,6 +550,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
 .sliding-popup-bottom, .sliding-popup-top {
   background: $secondary;
+  width: 100%;
   
   .eu-cookie-compliance-content {
     max-width: 90%;
@@ -550,7 +558,6 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     .eu-cookie-compliance-message {
       font-size: 1rem;
       margin-top: 1.05rem;
-      width: 100%;
       color: rgb(255, 255, 255);
       font-family: $font-family-sans-serif;
     }
@@ -558,7 +565,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       color: $primary;
     }
     .eu-cookie-compliance-buttons {
-      padding-top: 1.05rem;
+      margin: 1.05rem auto;
 
       button, .button {
         @include bttn;
