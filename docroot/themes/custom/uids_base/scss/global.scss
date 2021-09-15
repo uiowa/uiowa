@@ -548,9 +548,10 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     max-width: 90%;
 
     .eu-cookie-compliance-message {
-      font-size: small;
+      font-size: 1rem;
       margin-top: 1.05rem;
       color: $primary;
+      font-family: $font-family-sans-serif;
     }
     a {
       color: $primary;
@@ -561,8 +562,16 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       button, .button {
         @include bttn;
         @include bttn--primary;
+        border: 1px solid $primary;
         @include bttn--focus;
-        border: 1px solid;
+        font-family: $font-family-caps-bold;
+
+        &:after {
+          background-color: $secondary;
+        }
+        span {
+          color: $secondary !important;
+        }
       }
     }
   }
