@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.media.twitter.field_media_twitter
+    - field.field.media.twitter.field_tags
     - media.type.twitter
   module:
     - media_entity_twitter
@@ -15,12 +16,14 @@ content:
   field_media_twitter:
     weight: 0
     label: hidden
-    settings: {  }
+    settings:
+      conversation: false
     third_party_settings: {  }
     type: twitter_embed
     region: content
 hidden:
   created: true
+  field_tags: true
   name: true
   search_api_excerpt: true
   thumbnail: true

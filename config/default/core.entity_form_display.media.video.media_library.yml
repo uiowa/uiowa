@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_form_mode.media.media_library
     - field.field.media.video.field_media_video_file
+    - field.field.media.video.field_tags
     - media.type.video
 _core:
   default_config_hash: tDAk5WjHHzEBR0eK2k8ZlWr7Ji5lCSh_ddgoQnmfsCY
@@ -13,6 +14,16 @@ targetEntityType: media
 bundle: video
 mode: media_library
 content:
+  field_tags:
+    type: entity_reference_autocomplete_tags
+    weight: 1
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   name:
     type: string_textfield
     weight: 0

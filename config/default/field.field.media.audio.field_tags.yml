@@ -1,0 +1,29 @@
+uuid: 9043c807-e6ad-40ff-bde1-a791a39fde8f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_tags
+    - media.type.audio
+    - taxonomy.vocabulary.tags
+id: media.audio.field_tags
+field_name: field_tags
+entity_type: media
+bundle: audio
+label: Tags
+description: 'Enter a comma-separated list.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      tags: tags
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference
