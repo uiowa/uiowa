@@ -99,7 +99,7 @@ class SearchForm extends ConfigFormBase {
     $rows = [];
     foreach ($results as $nid => $matches) {
       // Form our edit link with the node id.
-      $node_value = new FormattableMarkup('<a href="/node/@nid/edit">@nid</a>', [
+      $node_value = new FormattableMarkup('@nid (<a href="/node/@nid/edit">edit</a>) (<a href="/node/@nid/layout">layout</a>)', [
         '@nid' => $nid,
       ]);
       $rows[] = [
