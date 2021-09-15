@@ -2,6 +2,21 @@ gtag:
   version: 1.x
   js:
     js/tag-manager.js: {}
+graph:
+  version: 1.x
+  js:
+    js/csv_graph.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupalSettings
+chartjs:
+  version: 3.5.1
+  js:
+    //cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js: { type: external, minified: true }
+  css:
+    theme:
+      css/csv_graph.css: { }
 claro-node-form:
   version: 1.x
   css:
