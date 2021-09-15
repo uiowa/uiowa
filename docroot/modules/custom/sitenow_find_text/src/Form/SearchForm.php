@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\sitenow_search\Form;
+namespace Drupal\sitenow_find_text\Form;
 
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Form\ConfigFormBase;
@@ -15,7 +15,7 @@ class SearchForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'sitenow_search';
+    return 'sitenow_find_text';
   }
 
   /**
@@ -37,13 +37,14 @@ class SearchForm extends ConfigFormBase {
     ];
     $form['needle'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Needle'),
+      '#title' => $this->t('Search Text'),
       '#default_value' => '',
-      '#description' => $this->t('The string to search against. Basic SQL LIKE operator modifiers may be used, including _ and % wildcards, [a-z]/[^a-z] ranges, and [AB]/[^AB] character options. % wildcards are prepended and appended automatically when not using regex.')
+      '#description' => $this->t('The string to search against in the pre-rendered text area markup (some characters may be different; for instance, "&amp;" may match where "&" will not). Basic SQL LIKE operator modifiers may be used, including _ and % wildcards, [a-z]/[^a-z] ranges, and [AB]/[^AB] character options. % wildcards are prepended and appended automatically when not using regex.')
     ];
     $form['regexed'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('REGEXP?'),
+      '#description' => $this->t('Is the Search Text entered as a regular expression?'),
       '#default_value' => 0,
     ];
     $form['search'] = [
