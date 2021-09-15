@@ -3197,3 +3197,9 @@ $sites['conferencemew.local.drupal.uiowa.edu'] = 'mew.conference.uiowa.edu';
 $sites['conferencemew.dev.drupal.uiowa.edu'] = 'mew.conference.uiowa.edu';
 $sites['conferencemew.stage.drupal.uiowa.edu'] = 'mew.conference.uiowa.edu';
 $sites['conferencemew.prod.drupal.uiowa.edu'] = 'mew.conference.uiowa.edu';
+
+// Directory aliases for star.org.uiowa.edu.
+$sites['orgstar.local.drupal.uiowa.edu'] = 'star.org.uiowa.edu';
+$sites['orgstar.dev.drupal.uiowa.edu'] = 'star.org.uiowa.edu';
+$sites['orgstar.stage.drupal.uiowa.edu'] = 'star.org.uiowa.edu';
+$sites['orgstar.prod.drupal.uiowa.edu'] = 'star.org.uiowa.edu';
