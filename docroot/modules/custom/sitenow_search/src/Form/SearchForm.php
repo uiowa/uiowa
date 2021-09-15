@@ -96,6 +96,12 @@ class SearchForm extends ConfigFormBase {
    *   The renderable table array.
    */
   public function buildResultsTable(array $results) {
+    if (empty($results)) {
+      return [
+        '#type' => 'markup',
+        '#markup' => '<p class="text-align-center">No results found.</p>',
+      ];
+    }
     $rows = [];
     foreach ($results as $nid => $matches) {
       // Form our edit link with the node id.
