@@ -521,7 +521,7 @@ class ListBlock extends CoreBlock {
         '#headline_style' => $headline['headline_style'],
       ];
       if (empty($headline['headline'])) {
-        $child_heading_size = $headline['child_heading_size'];
+        $child_heading_size = $headline['child_heading_size'] ?? 'h3';
       }
       else {
         $child_heading_size = HeadlineHelper::getHeadingSizeUp($headline['heading_size']);
