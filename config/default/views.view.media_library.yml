@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_view_mode.media.media_library
     - image.style.media_library
+    - taxonomy.vocabulary.tags
   enforced:
     module:
       - media_library
@@ -12,6 +13,7 @@ dependencies:
     - image
     - media
     - media_library
+    - taxonomy
     - user
 _core:
   default_config_hash: 1F1cSZ5MlvxdwjdyrwnH2I8CWngOp8Pu2SXDzix2QUc
@@ -409,6 +411,64 @@ display:
           plugin_id: media_status
           id: status_extra
           group_type: group
+        field_tags_target_id:
+          id: field_tags_target_id
+          table: media__field_tags
+          field: field_tags_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_tags_target_id_op
+            label: Tags
+            description: ''
+            use_operator: false
+            operator: field_tags_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_tags_target_id
+            required: false
+            remember: false
+            multiple: true
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: true
+          type: textfield
+          limit: true
+          vid: tags
+          hierarchy: false
+          error_message: true
+          parent: 0
+          level_labels: ''
+          force_deepest: false
+          save_lineage: false
+          hierarchy_depth: 0
+          required_depth: 0
+          none_label: '- Please select -'
+          plugin_id: taxonomy_index_tid
       sorts:
         created:
           id: created
@@ -489,14 +549,43 @@ display:
         - 'config:core.entity_view_display.media.file.default'
         - 'config:core.entity_view_display.media.file.media_library'
         - 'config:core.entity_view_display.media.image.default'
+        - 'config:core.entity_view_display.media.image.full__no_crop'
+        - 'config:core.entity_view_display.media.image.full__square'
+        - 'config:core.entity_view_display.media.image.full__ultrawide'
+        - 'config:core.entity_view_display.media.image.full__widescreen'
+        - 'config:core.entity_view_display.media.image.image_gallery'
+        - 'config:core.entity_view_display.media.image.large'
+        - 'config:core.entity_view_display.media.image.large__no_crop'
+        - 'config:core.entity_view_display.media.image.large__square'
+        - 'config:core.entity_view_display.media.image.large__ultrawide'
+        - 'config:core.entity_view_display.media.image.large__widescreen'
         - 'config:core.entity_view_display.media.image.media_library'
+        - 'config:core.entity_view_display.media.image.medium'
+        - 'config:core.entity_view_display.media.image.medium__no_crop'
+        - 'config:core.entity_view_display.media.image.medium__square'
+        - 'config:core.entity_view_display.media.image.medium__ultrawide'
+        - 'config:core.entity_view_display.media.image.medium__widescreen'
+        - 'config:core.entity_view_display.media.image.small'
+        - 'config:core.entity_view_display.media.image.small__no_crop'
+        - 'config:core.entity_view_display.media.image.small__square'
+        - 'config:core.entity_view_display.media.image.small__ultrawide'
+        - 'config:core.entity_view_display.media.image.small__widescreen'
         - 'config:core.entity_view_display.media.image.thumbnail'
         - 'config:core.entity_view_display.media.instagram.default'
         - 'config:core.entity_view_display.media.instagram.media_library'
+        - 'config:core.entity_view_display.media.panopto.default'
+        - 'config:core.entity_view_display.media.panopto.large'
+        - 'config:core.entity_view_display.media.panopto.media_library'
+        - 'config:core.entity_view_display.media.panopto.medium'
+        - 'config:core.entity_view_display.media.panopto.small'
         - 'config:core.entity_view_display.media.remote_video.default'
+        - 'config:core.entity_view_display.media.remote_video.large'
         - 'config:core.entity_view_display.media.remote_video.media_library'
+        - 'config:core.entity_view_display.media.remote_video.medium'
+        - 'config:core.entity_view_display.media.remote_video.small'
         - 'config:core.entity_view_display.media.twitter.default'
         - 'config:core.entity_view_display.media.twitter.media_library'
+        - 'config:core.entity_view_display.media.video.default'
         - 'config:core.entity_view_display.media.video.media_library'
   page:
     display_plugin: page
@@ -802,14 +891,43 @@ display:
         - 'config:core.entity_view_display.media.file.default'
         - 'config:core.entity_view_display.media.file.media_library'
         - 'config:core.entity_view_display.media.image.default'
+        - 'config:core.entity_view_display.media.image.full__no_crop'
+        - 'config:core.entity_view_display.media.image.full__square'
+        - 'config:core.entity_view_display.media.image.full__ultrawide'
+        - 'config:core.entity_view_display.media.image.full__widescreen'
+        - 'config:core.entity_view_display.media.image.image_gallery'
+        - 'config:core.entity_view_display.media.image.large'
+        - 'config:core.entity_view_display.media.image.large__no_crop'
+        - 'config:core.entity_view_display.media.image.large__square'
+        - 'config:core.entity_view_display.media.image.large__ultrawide'
+        - 'config:core.entity_view_display.media.image.large__widescreen'
         - 'config:core.entity_view_display.media.image.media_library'
+        - 'config:core.entity_view_display.media.image.medium'
+        - 'config:core.entity_view_display.media.image.medium__no_crop'
+        - 'config:core.entity_view_display.media.image.medium__square'
+        - 'config:core.entity_view_display.media.image.medium__ultrawide'
+        - 'config:core.entity_view_display.media.image.medium__widescreen'
+        - 'config:core.entity_view_display.media.image.small'
+        - 'config:core.entity_view_display.media.image.small__no_crop'
+        - 'config:core.entity_view_display.media.image.small__square'
+        - 'config:core.entity_view_display.media.image.small__ultrawide'
+        - 'config:core.entity_view_display.media.image.small__widescreen'
         - 'config:core.entity_view_display.media.image.thumbnail'
         - 'config:core.entity_view_display.media.instagram.default'
         - 'config:core.entity_view_display.media.instagram.media_library'
+        - 'config:core.entity_view_display.media.panopto.default'
+        - 'config:core.entity_view_display.media.panopto.large'
+        - 'config:core.entity_view_display.media.panopto.media_library'
+        - 'config:core.entity_view_display.media.panopto.medium'
+        - 'config:core.entity_view_display.media.panopto.small'
         - 'config:core.entity_view_display.media.remote_video.default'
+        - 'config:core.entity_view_display.media.remote_video.large'
         - 'config:core.entity_view_display.media.remote_video.media_library'
+        - 'config:core.entity_view_display.media.remote_video.medium'
+        - 'config:core.entity_view_display.media.remote_video.small'
         - 'config:core.entity_view_display.media.twitter.default'
         - 'config:core.entity_view_display.media.twitter.media_library'
+        - 'config:core.entity_view_display.media.video.default'
         - 'config:core.entity_view_display.media.video.media_library'
   widget:
     display_plugin: page
@@ -1057,6 +1175,64 @@ display:
           entity_type: media
           entity_field: default_langcode
           plugin_id: boolean
+        field_tags_target_id:
+          id: field_tags_target_id
+          table: media__field_tags
+          field: field_tags_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_tags_target_id_op
+            label: Tags
+            description: ''
+            use_operator: false
+            operator: field_tags_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_tags_target_id
+            required: false
+            remember: false
+            multiple: true
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: true
+          type: textfield
+          limit: true
+          vid: tags
+          hierarchy: false
+          error_message: true
+          parent: 0
+          level_labels: ''
+          force_deepest: false
+          save_lineage: false
+          hierarchy_depth: 0
+          required_depth: 0
+          none_label: '- Please select -'
+          plugin_id: taxonomy_index_tid
       filter_groups:
         operator: AND
         groups:
@@ -1129,6 +1305,7 @@ display:
         - url
         - url.query_args
         - 'url.query_args:sort_by'
+        - user
         - user.permissions
       tags:
         - 'config:core.entity_view_display.media.audio.default'
@@ -1138,14 +1315,43 @@ display:
         - 'config:core.entity_view_display.media.file.default'
         - 'config:core.entity_view_display.media.file.media_library'
         - 'config:core.entity_view_display.media.image.default'
+        - 'config:core.entity_view_display.media.image.full__no_crop'
+        - 'config:core.entity_view_display.media.image.full__square'
+        - 'config:core.entity_view_display.media.image.full__ultrawide'
+        - 'config:core.entity_view_display.media.image.full__widescreen'
+        - 'config:core.entity_view_display.media.image.image_gallery'
+        - 'config:core.entity_view_display.media.image.large'
+        - 'config:core.entity_view_display.media.image.large__no_crop'
+        - 'config:core.entity_view_display.media.image.large__square'
+        - 'config:core.entity_view_display.media.image.large__ultrawide'
+        - 'config:core.entity_view_display.media.image.large__widescreen'
         - 'config:core.entity_view_display.media.image.media_library'
+        - 'config:core.entity_view_display.media.image.medium'
+        - 'config:core.entity_view_display.media.image.medium__no_crop'
+        - 'config:core.entity_view_display.media.image.medium__square'
+        - 'config:core.entity_view_display.media.image.medium__ultrawide'
+        - 'config:core.entity_view_display.media.image.medium__widescreen'
+        - 'config:core.entity_view_display.media.image.small'
+        - 'config:core.entity_view_display.media.image.small__no_crop'
+        - 'config:core.entity_view_display.media.image.small__square'
+        - 'config:core.entity_view_display.media.image.small__ultrawide'
+        - 'config:core.entity_view_display.media.image.small__widescreen'
         - 'config:core.entity_view_display.media.image.thumbnail'
         - 'config:core.entity_view_display.media.instagram.default'
         - 'config:core.entity_view_display.media.instagram.media_library'
+        - 'config:core.entity_view_display.media.panopto.default'
+        - 'config:core.entity_view_display.media.panopto.large'
+        - 'config:core.entity_view_display.media.panopto.media_library'
+        - 'config:core.entity_view_display.media.panopto.medium'
+        - 'config:core.entity_view_display.media.panopto.small'
         - 'config:core.entity_view_display.media.remote_video.default'
+        - 'config:core.entity_view_display.media.remote_video.large'
         - 'config:core.entity_view_display.media.remote_video.media_library'
+        - 'config:core.entity_view_display.media.remote_video.medium'
+        - 'config:core.entity_view_display.media.remote_video.small'
         - 'config:core.entity_view_display.media.twitter.default'
         - 'config:core.entity_view_display.media.twitter.media_library'
+        - 'config:core.entity_view_display.media.video.default'
         - 'config:core.entity_view_display.media.video.media_library'
   widget_table:
     display_plugin: page
@@ -1362,6 +1568,64 @@ display:
           entity_type: media
           entity_field: default_langcode
           plugin_id: boolean
+        field_tags_target_id:
+          id: field_tags_target_id
+          table: media__field_tags
+          field: field_tags_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_tags_target_id_op
+            label: Tags
+            description: ''
+            use_operator: false
+            operator: field_tags_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_tags_target_id
+            required: false
+            remember: false
+            multiple: true
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: true
+          type: textfield
+          limit: true
+          vid: tags
+          hierarchy: false
+          error_message: true
+          parent: 0
+          level_labels: ''
+          force_deepest: false
+          save_lineage: false
+          hierarchy_depth: 0
+          required_depth: 0
+          none_label: '- Please select -'
+          plugin_id: taxonomy_index_tid
       filter_groups:
         operator: AND
         groups:
@@ -1433,5 +1697,6 @@ display:
         - url
         - url.query_args
         - 'url.query_args:sort_by'
+        - user
         - user.permissions
       tags: {  }
