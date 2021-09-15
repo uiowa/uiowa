@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: orgstar.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: orgstar
+  human_name: star.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgstar.prod
+drupal:
+  db:
+    database: star_org_uiowa_edu
+uiowa:
+  requester: lhllr
