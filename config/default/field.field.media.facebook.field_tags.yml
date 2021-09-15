@@ -1,0 +1,29 @@
+uuid: 6a4c787d-914e-4275-b10c-a9d4384053fa
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_tags
+    - media.type.facebook
+    - taxonomy.vocabulary.tags
+id: media.facebook.field_tags
+field_name: field_tags
+entity_type: media
+bundle: facebook
+label: Tags
+description: 'Enter a comma-separated list.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      tags: tags
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference
