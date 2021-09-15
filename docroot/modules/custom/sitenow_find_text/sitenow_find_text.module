@@ -101,7 +101,7 @@ function search_fields(array $fields, string $needle, bool $regexed = FALSE) {
         // to allow for the option of including wildcards in the provided string.
         // Otherwise we may need to include extra options, such as a non-escaped option,
         // or specifying word boundaries.
-        $query->condition($table . '.' . $value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE');
+        $query->condition($table . '.' . $value_column, '%' . $needle . '%', 'LIKE');
       }
     }
     $temp_results = $query->execute()

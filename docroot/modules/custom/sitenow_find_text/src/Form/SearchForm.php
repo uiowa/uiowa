@@ -35,16 +35,45 @@ class SearchForm extends ConfigFormBase {
       '#prefix' => '<div id="' . $wrapper_id . '" aria-live="polite">',
       '#suffix' => '</div>',
     ];
+    $form['intro'] = [
+      '#type' => 'markup',
+      '#markup' => <<< 'EOD'
+        <p>Search text fields for a provided string. The search is not case-sensitive.</p>
+        <p>Pre-rendered text area markup is searched, so some characters may be different; for instance, `&amp ;` may match ampersands where `&` will not.
+        Node fields and content blocks are included, but Some areas such as menu links will not be searched.</p>
+        <p>Basic SQL LIKE wildcards may be used.</p>
+        <table class="responsive-enabled" data-striping="1">
+            <thead>
+                <tr>
+                    <th>Operator</th>
+                    <th>Use</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>%</td>
+                    <td>Wildcard that matches any zero, one, or many characters.<br/>
+                    `f%r` will match `fr`, `for`, `four`, and `forever`.</td>
+                </tr>
+                <tr>
+                    <td>_</td>
+                    <td>Wildcard that matches exactly one character.<br/>
+                    `f_r` will match `for`, but not `fr`, `four`, or `forever`.</td>
+                </tr>
+            </tbody>
+        </table>
+      EOD,
+    ];
     $form['needle'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Search Text'),
       '#default_value' => '',
-      '#description' => $this->t('The string to search against in the pre-rendered text area markup (some characters may be different; for instance, "&amp;" may match where "&" will not). Basic SQL LIKE operator modifiers may be used, including _ and % wildcards, [a-z]/[^a-z] ranges, and [AB]/[^AB] character options. % wildcards are prepended and appended automatically when not using regex.')
+      '#description' => $this->t('The string to search against. % wildcards are prepended and appended automatically when not using regex. % and _ are always treated as wildcards, and cannot be searched for directly at this time. A search for `100%` will return matches for `100`, `100%`, and `100.0`, for instance.')
     ];
     $form['regexed'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('REGEXP?'),
-      '#description' => $this->t('Is the Search Text entered as a regular expression?'),
+      '#description' => $this->t('% wildcards will not be prepended or appended, and the search will be performed as a REGEXP search rather than LIKE. Use only if a full regular expression is required.'),
       '#default_value' => 0,
     ];
     $form['search'] = [
@@ -130,7 +159,7 @@ class SearchForm extends ConfigFormBase {
       '#type' => 'table',
       '#header' => [
         'nid' => 'Node',
-        'field' => 'Field',
+        'field' => 'Field: Contents',
       ],
       '#rows' => $rows,
       '#attributes' => NULL,
