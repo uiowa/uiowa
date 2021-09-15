@@ -106,8 +106,6 @@
             }
           });
 
-          console.log(myChart);
-
           let canvas__container = canvas.parentElement;
           $( window ).resize(function() {
             let layout__region = canvas__container.parentElement.parentElement.parentElement;
