@@ -39,6 +39,7 @@ class SearchForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Needle'),
       '#default_value' => '',
+      '#description' => $this->t('The string to search against. Basic SQL LIKE operator modifiers may be used, including _ and % wildcards, [a-z]/[^a-z] ranges, and [AB]/[^AB] character options. % wildcards are prepended and appended automatically when not using regex.')
     ];
     $form['regexed'] = [
       '#type' => 'checkbox',

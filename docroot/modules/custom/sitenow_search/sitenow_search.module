@@ -90,7 +90,6 @@ function search_fields(array $fields, string $needle, bool $regexed = FALSE) {
   foreach ($tables as $table => $details) {
     $value_columns = $details['values'];
     $parent = $details['parent'];
-    // @todo Allow for more complicated regex searches.
     $query = $db->select($table)
       ->fields($table, array_merge($parent, $value_columns));
     foreach ($value_columns as $value_column) {
@@ -98,6 +97,10 @@ function search_fields(array $fields, string $needle, bool $regexed = FALSE) {
         $query->condition($table . '.' . $value_column, $needle, 'REGEXP');
       }
       else {
+        // Note: We are not using $db->escapeLike($needle) here, at least currently,
+        // to allow for the option of including wildcards in the provided string.
+        // Otherwise we may need to include extra options, such as a non-escaped option,
+        // or specifying word boundaries.
         $query->condition($table . '.' . $value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE');
       }
     }
