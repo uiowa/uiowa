@@ -79,7 +79,7 @@ class GraphBlock extends BlockBase {
     $form['graph_CSV_data'] = [
       '#type' => 'textarea',
       '#title' => $this->t('CSV data'),
-      '#description' => $this->t('Copy and paste your properly formatted CSV file here.'),
+      '#description' => $this->t('Copy and paste your properly formatted CSV file here. An example of a properly formatted csv file can be found <a href="https://sitenow.uiowa.edu/sites/sitenow.uiowa.edu/files/2021-09/airtravel.csv">here</a>'),
       '#default_value' => isset($config['graph_CSV_data']) ? $config['graph_CSV_data'] : '',
     ];
 
