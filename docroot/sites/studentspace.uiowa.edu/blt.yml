@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: studentspace.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: studentspace
+  human_name: studentspace.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: studentspace.prod
+drupal:
+  db:
+    database: studentspace_uiowa_edu
+uiowa:
+  requester: dquam

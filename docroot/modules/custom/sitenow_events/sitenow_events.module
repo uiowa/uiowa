@@ -27,6 +27,11 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
         // Set field_event_hide to options group (promotion options).
         $form['field_event_hide']['#group'] = 'options';
       }
+      $form['field_event_series_link_direct']['#states'] = [
+        'visible' => [
+          ':input[name="field_event_series_link[0][uri]"]' => ['filled' => TRUE],
+        ],
+      ];
       break;
   }
 }

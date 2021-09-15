@@ -1,0 +1,20 @@
+uuid: 0170e929-6c95-4092-b9be-e8851f251717
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: Site
+description: 'The sitenow.uiowa.edu site split.'
+folder: ../config/sites/sitenow.uiowa.edu
+module:
+  sitenow_core: 0
+theme: {  }
+blacklist: {  }
+graylist:
+  - config_split.config_split.site
+  - uiowa_auth.settings
+  - user.role.requester
+  - 'block.block.*'
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 0

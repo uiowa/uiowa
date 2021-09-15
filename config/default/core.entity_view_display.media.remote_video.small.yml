@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_view_mode.media.small
     - field.field.media.remote_video.field_media_oembed_video
+    - field.field.media.remote_video.field_tags
     - media.type.remote_video
   module:
     - layout_builder
@@ -29,6 +30,7 @@ content:
     region: content
 hidden:
   created: true
+  field_tags: true
   name: true
   search_api_excerpt: true
   thumbnail: true

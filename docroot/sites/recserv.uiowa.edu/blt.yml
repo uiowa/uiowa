@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: recserv.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: recserv
+  human_name: recserv.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: recserv.prod
+drupal:
+  db:
+    database: recserv_uiowa_edu
+uiowa:
+  requester: mgohl
