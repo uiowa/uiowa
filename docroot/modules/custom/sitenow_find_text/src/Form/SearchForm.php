@@ -134,11 +134,23 @@ class SearchForm extends ConfigFormBase {
       ];
     }
     $rows = [];
+    $node_manager = \Drupal::service('entity_type.manager')
+      ->getStorage('node');
     foreach ($results as $nid => $matches) {
-      // Form our edit link with the node id.
-      $node_value = new FormattableMarkup('@nid (<a href="/node/@nid/edit">edit</a>) (<a href="/node/@nid/layout">layout</a>)', [
-        '@nid' => $nid,
-      ]);
+      // @todo Clean this up. Right now, we're checking for field existence
+      //   to determine if we allow layout builder editing. It's better than
+      //   hardcoding it to entity types we've allowed, but...only just.
+      $has_lb = $node_manager->load($nid)->hasField('layout_builder__layout');
+      if ($has_lb) {
+        $node_value = new FormattableMarkup('@nid (<a href="/node/@nid/edit">edit</a>) (<a href="/node/@nid/layout">layout</a>)', [
+          '@nid' => $nid,
+        ]);
+      }
+      else {
+        $node_value = new FormattableMarkup('@nid (<a href="/node/@nid/edit">edit</a>)', [
+          '@nid' => $nid,
+        ]);
+      }
       $rows[] = [
         'nid' => [
           'data' => $node_value,
