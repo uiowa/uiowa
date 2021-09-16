@@ -82,6 +82,14 @@ function search_fields(array $fields, string $needle, bool $regexed = FALSE) {
               'field' => $name,
             ];
           }
+          if ($name == 'body') {
+            $tables['node__body'] = [
+              'values' => ['body_value'],
+              'parent' => ['entity_id'],
+              'type' => $entity_type_id,
+              'field' => $name,
+            ];
+          }
         }
         break;
     }
