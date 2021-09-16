@@ -233,7 +233,7 @@ class ListBlock extends CoreBlock {
       $form['override']['sort'] = [
         '#type' => 'details',
         '#title' => $this->t('Sort options'),
-        '#description' => $this->t('Choose the order of the available sorts by dragging the drag handle ([icon]) and moving it up or down. For each sort, select "Ascending" to display results from first to last (e.g. A-Z), or "Descending" to display results from last to first (e.g. Z-A).'),
+        '#description' => $this->t('Choose the order of the available sorts by dragging the drag handle ([icon]) and moving it up or down. For each sort, select "Ascending" to display results from first to last (e.g. A-Z), or "Descending" to display results from last to first (e.g. Z-A). If "Sorted by tag weight" is ordered first, the display will attempt to list people by tag weight.'),
       ];
       $options = [
         'ASC' => $this->t('Ascending'),
