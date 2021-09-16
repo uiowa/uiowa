@@ -959,8 +959,27 @@ function _sitenow_people_path_token_value() {
 function sitenow_people_menu_local_tasks_alter(&$data, $route_name) {
   if ($route_name == 'entity.taxonomy_term.canonical') {
     $taxonomy_term = \Drupal::routeMatch()->getParameter('taxonomy_term');
+    // Only show the people_sort_tag tab on the Tags vocabulary.
     if ($taxonomy_term->bundle() !== 'tags') {
-      $data['tabs'][0]['sitenow_people.sort']['#access'] = FALSE;
+      $data['tabs'][0]['sitenow_people.people_sort_tag']['#access'] = FALSE;
+    }
+  }
+}
+
+/**
+ * Implements hook_views_pre_view().
+ */
+function sitenow_people_views_pre_view(ViewExecutable $view, $display_id, array &$args) {
+  if ($view->id() == 'people_list_block') {
+    $sorts = $view->getHandlers('sort');
+    // If draggableviews weight sort is first and a tag is provided, pass as arg.
+    if (array_key_first($sorts) == 'weight') {
+      $filters = $view->getExposedInput();
+      if (isset($filters['field_tags_target_id'])) {
+        $tids = array_column((array) $filters['field_tags_target_id'], 'target_id');
+        $arguments = implode('+', $tids);
+        $args = [$arguments];
+      }
     }
   }
 }

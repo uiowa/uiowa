@@ -1,7 +1,11 @@
 sitenow_people.people_sort_tag:
+  route_name: view.people_sort.page_sort_people_tag
   title: 'Sort People'
-  route_name: sitenow_people.people_sort_tag
-  parent_id: entity.taxonomy_term.canonical
   base_route: entity.taxonomy_term.canonical
-  weight: 10
+  options:
+    attributes:
+      class:
+        - 'local-task-icon'
+        - 'local-task-icon--sort-people'
+  weight: 3
 
