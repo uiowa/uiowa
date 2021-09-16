@@ -13,19 +13,15 @@ module:
   smart_date: 0
   smart_date_recur: 0
 theme: {  }
-complete_list: {  }
-partial_list:
-  - field.storage.node.field_event_category
-  - field.storage.node.field_event_hide
-  - field.storage.node.field_event_location
-  - field.storage.node.field_event_virtual
-  - field.storage.node.field_event_when
+complete_list:
   - metatag.metatag_defaults.node__event
-  - metatag.settings
   - node.type.event
   - pathauto.pattern.event
   - simple_sitemap.bundle_settings.default.node.event
   - taxonomy.vocabulary.event_categories
   - views.view.events
+  - 'field.storage.node.field_event_*'
+partial_list:
+  - metatag.settings
   - 'smart_date.*'
   - 'user.role.*'
