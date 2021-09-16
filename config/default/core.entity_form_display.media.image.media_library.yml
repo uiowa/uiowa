@@ -6,6 +6,7 @@ dependencies:
     - core.entity_form_mode.media.media_library
     - field.field.media.image.field_media_caption
     - field.field.media.image.field_media_image
+    - field.field.media.image.field_tags
     - image.style.thumbnail
     - media.type.image
   module:
@@ -35,6 +36,16 @@ content:
       preview_image_style: thumbnail
       preview_link: true
       offsets: '50,50'
+    third_party_settings: {  }
+  field_tags:
+    type: entity_reference_autocomplete_tags
+    weight: 3
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   name:
     type: string_textfield
