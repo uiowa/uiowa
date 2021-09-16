@@ -14,6 +14,7 @@ dependencies:
     - taxonomy.vocabulary.research_areas
     - taxonomy.vocabulary.tags
   module:
+    - draggableviews
     - node
     - options
     - taxonomy
@@ -909,6 +910,21 @@ display:
           expose:
             label: ''
           plugin_id: standard
+        weight:
+          id: weight
+          table: draggableviews_structure
+          field: weight
+          relationship: none
+          group_type: group
+          admin_label: 'Sorted by tag weight'
+          order: ASC
+          exposed: false
+          expose:
+            label: ''
+          draggable_views_reference: 'people_sort:page_sort_people_tag'
+          draggable_views_null_order: after
+          draggable_views_pass_arguments: true
+          plugin_id: draggable_views_sort_default
       title: None
       header: {  }
       footer: {  }
