@@ -1,0 +1,31 @@
+add_on_import: {  }
+remove_on_import:
+  dependencies:
+    config:
+      - field.field.node.event.field_event_when
+    module:
+      - smart_date
+      - smart_date_recur
+  content:
+    field_event_when:
+      weight: 1
+      settings:
+        default_tz: ''
+        custom_tz: America/Chicago
+        show_extra: false
+        allowed_timezones: {  }
+        modal: false
+        default_duration: 60
+        default_duration_increments: "30\n60|1 hour\n90\n120|2 hours\ncustom"
+      third_party_settings:
+        smart_date_recur:
+          modal: true
+          allowed_recur_freq_values:
+            DAILY: DAILY
+            WEEKLY: WEEKLY
+            MONTHLY: MONTHLY
+            YEARLY: YEARLY
+            MINUTELY: '0'
+            HOURLY: '0'
+      type: smartdate_timezone
+      region: content
