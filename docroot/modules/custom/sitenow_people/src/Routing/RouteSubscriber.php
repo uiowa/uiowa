@@ -19,4 +19,5 @@ class RouteSubscriber extends RouteSubscriberBase {
       $route->setOption('_admin_route', TRUE);
     }
   }
+
 }
