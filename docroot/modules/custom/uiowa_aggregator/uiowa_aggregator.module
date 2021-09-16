@@ -181,6 +181,7 @@ function _uiowa_aggregator_get_feeds() {
   }
   else {
     $options = ['no-results' => 'No feeds available'];
+    \Drupal::messenger()->addError(t('Add an rss feed <a href="/admin/config/services/aggregator">here</a>'));
   }
 
   return $options;
