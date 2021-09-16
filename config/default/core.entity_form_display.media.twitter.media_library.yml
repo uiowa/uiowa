@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_form_mode.media.media_library
     - field.field.media.twitter.field_media_twitter
+    - field.field.media.twitter.field_tags
     - media.type.twitter
 id: media.twitter.media_library
 targetEntityType: media
@@ -16,6 +17,16 @@ content:
     weight: 0
     region: content
     settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_tags:
+    type: entity_reference_autocomplete_tags
+    weight: 1
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
