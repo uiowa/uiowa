@@ -121,20 +121,41 @@ function search_fields(array $fields, string $needle, bool $regexed = FALSE) {
     // to find the parent.
     if ($details['type'] != 'node') {
       $with_nid = [];
+      // @todo Update this. Some entities have useful getParentEntity methods,
+      //   but not all do. Inline blocks in particular make this tricky,
+      //   but there is likely a better way than this.
       foreach ($temp_results as $target_id => $value) {
-        // Find the target_id, which will be the nid of the parent node
-        // in this case.
-        $nid = $db->select('entity_usage')
-          ->fields('entity_usage', ['source_id'])
-          ->condition('target_type', 'block_content', '=')
-          ->condition('target_id', $target_id, '=')
-          // Currently we're not handling revisions, so we're likely to have
-          // duplicate entries for the same node; one for each revision.
-          ->distinct()
-          ->execute()
-          ->fetchCol();
-        if (isset($nid[0])) {
-          $with_nid[$nid[0]] = $value;
+        $target_type = $details['type'];
+        // We need to loop through it, as we may have nested entities,
+        // like a paragraph under a block under a node.
+        while (TRUE) {
+          // Find the target_id, which will be the id of the parent entity.
+          $nid = $db->select('entity_usage')
+            ->fields('entity_usage', ['source_id', 'source_type'])
+            ->condition('target_type', $target_type, '=')
+            ->condition('target_id', $target_id, '=')
+            // Currently we're not handling revisions, so we're likely to have
+            // duplicate entries for the same node; one for each revision.
+            ->distinct()
+            ->execute()
+            ->fetchAll();
+          // If we don't have a result, then we hit a dead end and
+          // didn't find our parent entity.
+          if (!isset($nid[0])) {
+            break;
+          }
+          // If we found a node, then we're done. Grab the source_id result,
+          // which will be the nid, and append it to our results list.
+          if ($nid[0]->source_type == 'node') {
+            $with_nid[$nid[0]->source_id] = $value;
+            break;
+          }
+          // If we found a parent, but it wasn't the node, then
+          // we need to loop again. The new target_type will be this
+          // result's source_type, and the new target_id this result's
+          // source_id. Set these, and loop again.
+          $target_type = $nid[0]->source_type;
+          $target_id = $nid[0]->source_id;
         }
       }
       $temp_results = $with_nid;
