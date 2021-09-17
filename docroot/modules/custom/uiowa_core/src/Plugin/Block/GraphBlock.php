@@ -39,8 +39,8 @@ class GraphBlock extends BlockBase {
       '#markup' => '<div class="graph-canvas__container"><canvas class="graph-canvas"></canvas></div>',
       '#allowed_tags' => array_merge(Xss::getHtmlTagList(), ['canvas', 'div']),
     ];
-    $build['graph_container']['#attached']['library'][] = 'uiowa_core/graph';
     $build['graph_container']['#attached']['library'][] = 'uiowa_core/chartjs';
+    $build['graph_container']['#attached']['library'][] = 'uiowa_core/graph';
 
     $build['graph_container']['graph_table'] = [
       '#theme' => 'table',

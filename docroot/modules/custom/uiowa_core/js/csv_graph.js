@@ -4,9 +4,12 @@
     attach: (context, settings) => {
       $('.graph-container', context).once('csv_graph').each((index) => {
         // .----start behavior container----.
-
         let graph_container = document.querySelectorAll('.graph-container')[index];
-        setupGraph(graph_container);
+
+        // This function waits for charts.js to load completely, then executes our functions.
+        // If this is not there, the library will load after this file.
+        // Thus, the calls will not function because the library is not loaded.
+        continuous_wait_for_charts();
 
         async function getTableData(element) {
           let graphTable = element;
@@ -134,6 +137,22 @@
 
         function setHeightCanvas(canvas, canvas__container) {
           canvas__container.style.height = parseInt(canvas.style.width, 10)/2 + "px";
+        }
+
+        function continuous_wait_for_charts(count = 0) {
+          let timeout = 300;
+          let limit = 50;
+          setTimeout(function () {
+            if (typeof Chart === 'function') {
+              setupGraph(graph_container);
+            }
+            else if (count < limit) {
+              continuous_wait_for_charts(count + 1);
+            }
+            else {
+              console.error('The chart.js library did not seem to load properly.');
+            }
+          }, timeout);
         }
 
         // .----end behavior container----.
