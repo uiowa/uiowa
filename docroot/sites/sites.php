@@ -3197,3 +3197,21 @@ $sites['conferencemew.local.drupal.uiowa.edu'] = 'mew.conference.uiowa.edu';
 $sites['conferencemew.dev.drupal.uiowa.edu'] = 'mew.conference.uiowa.edu';
 $sites['conferencemew.stage.drupal.uiowa.edu'] = 'mew.conference.uiowa.edu';
 $sites['conferencemew.prod.drupal.uiowa.edu'] = 'mew.conference.uiowa.edu';
+
+// Directory aliases for star.org.uiowa.edu.
+$sites['orgstar.local.drupal.uiowa.edu'] = 'star.org.uiowa.edu';
+$sites['orgstar.dev.drupal.uiowa.edu'] = 'star.org.uiowa.edu';
+$sites['orgstar.stage.drupal.uiowa.edu'] = 'star.org.uiowa.edu';
+$sites['orgstar.prod.drupal.uiowa.edu'] = 'star.org.uiowa.edu';
+
+// Directory aliases for upsa.org.uiowa.edu.
+$sites['orgupsa.local.drupal.uiowa.edu'] = 'upsa.org.uiowa.edu';
+$sites['orgupsa.dev.drupal.uiowa.edu'] = 'upsa.org.uiowa.edu';
+$sites['orgupsa.stage.drupal.uiowa.edu'] = 'upsa.org.uiowa.edu';
+$sites['orgupsa.prod.drupal.uiowa.edu'] = 'upsa.org.uiowa.edu';
+
+// Directory aliases for brogden.lab.uiowa.edu.
+$sites['labbrogden.local.drupal.uiowa.edu'] = 'brogden.lab.uiowa.edu';
+$sites['labbrogden.dev.drupal.uiowa.edu'] = 'brogden.lab.uiowa.edu';
+$sites['labbrogden.stage.drupal.uiowa.edu'] = 'brogden.lab.uiowa.edu';
+$sites['labbrogden.prod.drupal.uiowa.edu'] = 'brogden.lab.uiowa.edu';
