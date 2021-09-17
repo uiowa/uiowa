@@ -1,0 +1,305 @@
+add_on_import:
+  third_party_settings:
+    layout_builder:
+      sections:
+        -
+          layout_id: layout_twocol
+          layout_settings:
+            label: Content
+            column_widths: 67-33
+            layout_builder_styles_style:
+              section_alignment_start: section_alignment_start
+          components:
+            -
+              uuid: e0cbb1a7-b222-44d0-9dae-c6d78d5e74c2
+              region: first
+              configuration:
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+                id: 'field_block:node:person:field_person_bio'
+                formatter:
+                  label: visually_hidden
+                  settings: {  }
+                  third_party_settings: {  }
+                  type: text_default
+              additional: {  }
+              weight: -6
+            -
+              uuid: 532de6e6-fc41-4b7d-a135-5d1cf2c63cf3
+              region: first
+              configuration:
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+                id: 'field_block:node:person:field_person_research_areas'
+                formatter:
+                  type: entity_reference_label
+                  label: above
+                  settings:
+                    link: false
+                  third_party_settings: {  }
+              additional: {  }
+              weight: -5
+            -
+              uuid: 234062aa-1d55-4cb2-a398-7cdf98e7de79
+              region: second
+              configuration:
+                id: 'views_block:person_card-block_1'
+                label: null
+                provider: views
+                label_display: null
+                views_label: ''
+                items_per_page: none
+                context_mapping: {  }
+              additional: {  }
+              weight: 0
+          third_party_settings:
+            layout_builder_lock:
+              lock: {  }
+remove_on_import:
+  dependencies:
+    config:
+      - field.field.node.person.field_grad_program_all_degree
+      - field.field.node.person.field_person_university_id
+      - field.field.node.person.field_pt_student_advisor
+      - field.field.node.person.field_pt_student_cur_pos_inst
+      - field.field.node.person.field_pt_student_cur_pos_title
+      - field.field.node.person.field_pt_student_defense_date
+      - field.field.node.person.field_pt_student_program_start
+      - field.field.node.person.pt_student_dissertation_title
+  third_party_settings:
+    layout_builder:
+      sections:
+        -
+          layout_id: layout_onecol
+          layout_settings:
+            label: Moderation
+            layout_builder_styles_style: {  }
+          components:
+            -
+              uuid: 61c49641-a81f-417f-b400-4112c693eafa
+              region: content
+              configuration:
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+                id: 'extra_field_block:node:person:content_moderation_control'
+              additional: {  }
+              weight: 0
+          third_party_settings: {  }
+        -
+          layout_id: layout_onecol
+          layout_settings:
+            label: Header
+            layout_builder_styles_style:
+              - ''
+              - ''
+          components:
+            -
+              uuid: ea6c6fe6-713c-407b-9389-bc6638854cf5
+              region: content
+              configuration:
+                id: system_breadcrumb_block
+                label: Breadcrumbs
+                provider: system
+                label_display: '0'
+                context_mapping: {  }
+              additional: {  }
+              weight: 1
+            -
+              uuid: 67a1e643-c773-4015-a856-3609f77513e8
+              region: content
+              configuration:
+                id: 'field_block:node:page:title'
+                label: Title
+                provider: layout_builder
+                label_display: '0'
+                formatter:
+                  label: visually_hidden
+                  type: string
+                  settings:
+                    link_to_entity: false
+                  third_party_settings: {  }
+                context_mapping:
+                  entity: layout_builder.entity
+                  view_mode: view_mode
+              additional: {  }
+              weight: 2
+            -
+              uuid: 479fe452-b32a-4e0b-917b-64a1a1b69792
+              region: content
+              configuration:
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+                id: 'field_block:node:person:field_person_position'
+                formatter:
+                  label: hidden
+                  settings:
+                    link_to_entity: false
+                  third_party_settings: {  }
+                  type: string
+              additional: {  }
+              weight: 3
+          third_party_settings:
+            layout_builder_lock:
+              lock: {  }
+        -
+          layout_id: layout_twocol
+          layout_settings:
+            label: Content
+            column_widths: 67-33
+            layout_builder_styles_style:
+              section_alignment_start: section_alignment_start
+          components:
+            -
+              uuid: e0cbb1a7-b222-44d0-9dae-c6d78d5e74c2
+              region: first
+              configuration:
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+                id: 'field_block:node:person:field_person_bio'
+                formatter:
+                  label: visually_hidden
+                  settings: {  }
+                  third_party_settings: {  }
+                  type: text_default
+              additional: {  }
+              weight: -6
+            -
+              uuid: 532de6e6-fc41-4b7d-a135-5d1cf2c63cf3
+              region: first
+              configuration:
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+                id: 'field_block:node:person:field_person_research_areas'
+                formatter:
+                  type: entity_reference_label
+                  label: above
+                  settings:
+                    link: false
+                  third_party_settings: {  }
+              additional: {  }
+              weight: -5
+            -
+              uuid: 234062aa-1d55-4cb2-a398-7cdf98e7de79
+              region: second
+              configuration:
+                id: 'views_block:person_card-block_1'
+                label: null
+                provider: views
+                label_display: null
+                views_label: ''
+                items_per_page: none
+                context_mapping: {  }
+              additional: {  }
+              weight: 0
+            -
+              uuid: 92ff4f7e-44da-4f93-88cc-c2f2826a2eb2
+              region: first
+              configuration:
+                id: 'field_block:node:person:field_grad_program_all_degree'
+                label: null
+                provider: layout_builder
+                label_display: null
+                formatter:
+                  label: above
+                  type: list_default
+                  settings: {  }
+                  third_party_settings: {  }
+                context_mapping:
+                  entity: layout_builder.entity
+                  view_mode: view_mode
+              additional: {  }
+              weight: -4
+            -
+              uuid: 818688bb-29f9-427a-9a4d-6219c0d94716
+              region: first
+              configuration:
+                id: 'field_block:node:person:field_pt_student_advisor'
+                label: null
+                provider: layout_builder
+                label_display: null
+                formatter:
+                  label: inline
+                  type: entity_reference_label
+                  settings:
+                    link: true
+                  third_party_settings: {  }
+                context_mapping:
+                  entity: layout_builder.entity
+                  view_mode: view_mode
+              additional: {  }
+              weight: -8
+            -
+              uuid: bbd4f534-265e-4580-b812-8547b009d607
+              region: first
+              configuration:
+                id: 'field_block:node:person:pt_student_dissertation_title'
+                label: null
+                provider: layout_builder
+                label_display: null
+                formatter:
+                  label: hidden
+                  type: string
+                  settings:
+                    link_to_entity: false
+                  third_party_settings: {  }
+                context_mapping:
+                  entity: layout_builder.entity
+                  view_mode: view_mode
+              additional: {  }
+              weight: -7
+            -
+              uuid: 2b91b7dd-b411-4008-b91a-2b48c25f2820
+              region: first
+              configuration:
+                id: 'field_block:node:person:field_pt_student_cur_pos_title'
+                label: null
+                provider: layout_builder
+                label_display: null
+                formatter:
+                  label: hidden
+                  type: string
+                  settings:
+                    link_to_entity: false
+                  third_party_settings: {  }
+                context_mapping:
+                  entity: layout_builder.entity
+                  view_mode: view_mode
+              additional: {  }
+              weight: -3
+            -
+              uuid: b7b7815d-6515-41d8-a5aa-47823048b3ff
+              region: first
+              configuration:
+                id: 'field_block:node:person:field_pt_student_cur_pos_inst'
+                label: null
+                provider: layout_builder
+                label_display: null
+                formatter:
+                  label: hidden
+                  type: string
+                  settings:
+                    link_to_entity: false
+                  third_party_settings: {  }
+                context_mapping:
+                  entity: layout_builder.entity
+                  view_mode: view_mode
+              additional: {  }
+              weight: -2
+          third_party_settings:
+            layout_builder_lock:
+              lock: {  }
+  hidden:
+    field_grad_program_all_degree: true
+    field_person_university_id: true
+    field_pt_student_advisor: true
+    field_pt_student_cur_pos_inst: true
+    field_pt_student_cur_pos_title: true
+    field_pt_student_defense_date: true
+    field_pt_student_program_start: true
+    pt_student_dissertation_title: true
