@@ -495,8 +495,6 @@ function admissions_core_update_9006() {
           if (!$block instanceof BlockContentInterface) {
             continue;
           }
-
-          _convert_people_block_component($component, $block);
         }
       }
       $stored_data->data['section_storage'] = $section_storage;
