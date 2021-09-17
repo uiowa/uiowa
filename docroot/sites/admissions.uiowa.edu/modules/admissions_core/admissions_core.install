@@ -415,21 +415,7 @@ function admissions_core_update_9006() {
           continue;
         }
 
-        $component_arr = $component->toArray();
-        $revision_id = $component_arr['configuration']['block_revision_id'];
-
-        if (!$revision_id) {
-          continue;
-        }
-
-        if (empty($blocks[$revision_id])) {
-          $blocks[$revision_id] = $block_storage->loadRevision($revision_id);
-        }
-
-        if (is_null($blocks[$revision_id])) {
-          continue;
-        }
-
+        $section->removeComponent($component->getUuid());
       }
 
       // Replace the old section with our newly created one.
@@ -475,26 +461,12 @@ function admissions_core_update_9006() {
         foreach ($section->getComponents() as &$component) {
 
           // Limit this to only the uiowa_area_of_study_search block component.
-          if ($component->getPluginId() !== 'inline_block:uiowa_area_of_study_search') {
+          if ($component->getPluginId() !== 'uiowa_area_of_study_search') {
             continue;
           }
 
-          $component_arr = $component->toArray();
-          $revision_id = $component_arr['configuration']['block_revision_id'];
+          $section->removeComponent($component->getUuid());
 
-          if ($revision_id) {
-            if (empty($blocks[$revision_id])) {
-              $blocks[$revision_id] = $block_storage->loadRevision($revision_id);
-            }
-            $block = $blocks[$revision_id];
-          }
-          else {
-            $block = unserialize($component_arr['configuration']['block_serialized']);
-          }
-
-          if (!$block instanceof BlockContentInterface) {
-            continue;
-          }
         }
       }
       $stored_data->data['section_storage'] = $section_storage;
