@@ -3209,3 +3209,15 @@ $sites['orgupsa.local.drupal.uiowa.edu'] = 'upsa.org.uiowa.edu';
 $sites['orgupsa.dev.drupal.uiowa.edu'] = 'upsa.org.uiowa.edu';
 $sites['orgupsa.stage.drupal.uiowa.edu'] = 'upsa.org.uiowa.edu';
 $sites['orgupsa.prod.drupal.uiowa.edu'] = 'upsa.org.uiowa.edu';
+
+// Directory aliases for brogden.lab.uiowa.edu.
+$sites['labbrogden.local.drupal.uiowa.edu'] = 'brogden.lab.uiowa.edu';
+$sites['labbrogden.dev.drupal.uiowa.edu'] = 'brogden.lab.uiowa.edu';
+$sites['labbrogden.stage.drupal.uiowa.edu'] = 'brogden.lab.uiowa.edu';
+$sites['labbrogden.prod.drupal.uiowa.edu'] = 'brogden.lab.uiowa.edu';
+
+// Directory aliases for police.uiowa.edu.
+$sites['police.local.drupal.uiowa.edu'] = 'police.uiowa.edu';
+$sites['police.dev.drupal.uiowa.edu'] = 'police.uiowa.edu';
+$sites['police.stage.drupal.uiowa.edu'] = 'police.uiowa.edu';
+$sites['police.prod.drupal.uiowa.edu'] = 'police.uiowa.edu';
