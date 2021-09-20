@@ -5,6 +5,7 @@ namespace Drupal\uiowa_core\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\Xss;
+use Drupal\Component\Utility\Html;
 
 /**
  * Provides the Graph block.
@@ -24,43 +25,62 @@ class GraphBlock extends BlockBase {
     $config = $this->getConfiguration();
 
     $csv_text = isset($config['graph_CSV_data']) ? $config['graph_CSV_data'] : '';
+    $graph_summary = isset($config['graph_summary']) ? $config['graph_summary'] : '';
 
     $rows = preg_split("/\r\n|\n|\r/", $csv_text);
+
+    $unique_id = Html::getUniqueId('graph');
 
     $build['graph_container'] = [
       '#type' => 'container',
       '#attributes' => [
+        'id' => $unique_id,
         'class' => ['graph-container'], /* Class on the wrapping DIV element */
       ],
 
     ];
     $build['graph_container']['canvas'] = [
       '#type' => 'markup',
-      '#markup' => '<div class="graph-canvas__container"><canvas class="graph-canvas"></canvas></div>',
+      '#markup' =>
+        '<div class="graph-canvas__container">
+            <canvas class="graph-canvas" aria-describedby="' . $unique_id . '-summary"></canvas>
+        </div>',
       '#allowed_tags' => array_merge(Xss::getHtmlTagList(), ['canvas', 'div']),
     ];
     $build['graph_container']['#attached']['library'][] = 'uiowa_core/chartjs';
     $build['graph_container']['#attached']['library'][] = 'uiowa_core/graph';
 
-    $build['graph_container']['graph_table'] = [
-      '#theme' => 'table',
-      '#attributes' => ['class' => ['graph-table', 'sr-only']],
-
+    $build['graph_container']['graph_details'] = [
+      '#type' => 'details',
+      '#title' => $this
+        ->t('Show tabulated data.'),
+      '#attributes' => ['class' => ['graph-table__details']],
     ];
 
-    $build['graph_container']['graph_table']['#header'] = [];
-    $build['graph_container']['graph_table']['#rows'] = [];
+    $build['graph_container']['graph_details']['graph_table'] = [
+      '#theme' => 'table',
+      '#attributes' => ['class' => ['graph-table']],
+    ];
+
+    $build['graph_container']['graph_details']['graph_table']['#caption'] = [
+      '#type' => 'markup',
+      '#markup' => '<span id="' . $unique_id . '-summary">' . t($graph_summary) . '</span>',
+      '#allowed_tags' => array_merge(Xss::getHtmlTagList(), ['caption', 'span']),
+    ];
+
+    $build['graph_container']['graph_details']['graph_table']['#header'] = [];
+    $build['graph_container']['graph_details']['graph_table']['#rows'] = [];
 
     foreach ($rows as $row_key => $row) {
       if ($row_key == 0) {
         foreach (explode(',', $row) as $column_key => $column) {
-          array_push($build['graph_container']['graph_table']['#header'], ['data' => $column]);
+          array_push($build['graph_container']['graph_details']['graph_table']['#header'], ['data' => $column]);
         }
       }
       else {
-        $build['graph_container']['graph_table']['#rows']['row-' . $row_key] = [];
+        $build['graph_container']['graph_details']['graph_table']['#rows']['row-' . $row_key] = [];
         foreach (explode(',', $row) as $column_key => $column) {
-          array_push($build['graph_container']['graph_table']['#rows']['row-' . $row_key], ['data' => $column]);
+          array_push($build['graph_container']['graph_details']['graph_table']['#rows']['row-' . $row_key], ['data' => $column]);
         }
       }
     }
@@ -75,6 +95,13 @@ class GraphBlock extends BlockBase {
     $form = parent::blockForm($form, $form_state);
 
     $config = $this->getConfiguration();
+
+    $form['graph_summary'] =[
+      '#type' => 'textfield',
+      '#title' => $this->t('Graph summary'),
+      '#description' => $this->t('Provide a short description for the graph data.'),
+      '#default_value' => isset($config['graph_summary']) ? $config['graph_summary'] : '',
+    ];
 
     $form['graph_CSV_data'] = [
       '#type' => 'textarea',
@@ -92,6 +119,7 @@ class GraphBlock extends BlockBase {
   public function blockSubmit($form, FormStateInterface $form_state) {
     parent::blockSubmit($form, $form_state);
     $values = $form_state->getValues();
+    $this->configuration['graph_summary'] = $values['graph_summary'];
     $this->configuration['graph_CSV_data'] = $values['graph_CSV_data'];
   }
 
