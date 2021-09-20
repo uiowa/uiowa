@@ -3221,3 +3221,9 @@ $sites['police.local.drupal.uiowa.edu'] = 'police.uiowa.edu';
 $sites['police.dev.drupal.uiowa.edu'] = 'police.uiowa.edu';
 $sites['police.stage.drupal.uiowa.edu'] = 'police.uiowa.edu';
 $sites['police.prod.drupal.uiowa.edu'] = 'police.uiowa.edu';
+
+// Directory aliases for imu.uiowa.edu.
+$sites['imu.local.drupal.uiowa.edu'] = 'imu.uiowa.edu';
+$sites['imu.dev.drupal.uiowa.edu'] = 'imu.uiowa.edu';
+$sites['imu.stage.drupal.uiowa.edu'] = 'imu.uiowa.edu';
+$sites['imu.prod.drupal.uiowa.edu'] = 'imu.uiowa.edu';
