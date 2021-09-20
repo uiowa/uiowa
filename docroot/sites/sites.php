@@ -3257,3 +3257,9 @@ $sites['asian-slavic.local.drupal.uiowa.edu'] = 'asian-slavic.uiowa.edu';
 $sites['asian-slavic.dev.drupal.uiowa.edu'] = 'asian-slavic.uiowa.edu';
 $sites['asian-slavic.stage.drupal.uiowa.edu'] = 'asian-slavic.uiowa.edu';
 $sites['asian-slavic.prod.drupal.uiowa.edu'] = 'asian-slavic.uiowa.edu';
+
+// Directory aliases for spanish-portuguese.uiowa.edu.
+$sites['spanish-portuguese.local.drupal.uiowa.edu'] = 'spanish-portuguese.uiowa.edu';
+$sites['spanish-portuguese.dev.drupal.uiowa.edu'] = 'spanish-portuguese.uiowa.edu';
+$sites['spanish-portuguese.stage.drupal.uiowa.edu'] = 'spanish-portuguese.uiowa.edu';
+$sites['spanish-portuguese.prod.drupal.uiowa.edu'] = 'spanish-portuguese.uiowa.edu';
