@@ -3239,3 +3239,9 @@ $sites['counseling.local.drupal.uiowa.edu'] = 'counseling.uiowa.edu';
 $sites['counseling.dev.drupal.uiowa.edu'] = 'counseling.uiowa.edu';
 $sites['counseling.stage.drupal.uiowa.edu'] = 'counseling.uiowa.edu';
 $sites['counseling.prod.drupal.uiowa.edu'] = 'counseling.uiowa.edu';
+
+// Directory aliases for dwllc.uiowa.edu.
+$sites['dwllc.local.drupal.uiowa.edu'] = 'dwllc.uiowa.edu';
+$sites['dwllc.dev.drupal.uiowa.edu'] = 'dwllc.uiowa.edu';
+$sites['dwllc.stage.drupal.uiowa.edu'] = 'dwllc.uiowa.edu';
+$sites['dwllc.prod.drupal.uiowa.edu'] = 'dwllc.uiowa.edu';
