@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: imu.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: imu
+  human_name: imu.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: imu.prod
+drupal:
+  db:
+    database: imu_uiowa_edu
+uiowa:
+  requester: dquam
