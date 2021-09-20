@@ -5,6 +5,7 @@
  * Installation functions for sitenow_migrate module.
  */
 
+use Drupal\Core\Config\FileStorage;
 use Drupal\Core\File\Exception\FileException;
 use Drupal\Core\File\FileSystemInterface;
 
@@ -40,4 +41,48 @@ function sitenow_migrate_install() {
 
     }
   }
+}
+
+/**
+ * Implements hook_install().
+ */
+function sitenow_migrate_migration_install($sitename) {
+  if (!$sitename) {
+    return;
+  }
+  if ('' === $module_path = drupal_get_path('module', "${sitename}_migrate")) {
+    return;
+  }
+  $config_path = $module_path . '/config/split';
+  // @todo Do we need to catch if this directory doesn't exist?
+  $source = new FileStorage($config_path);
+
+  $config_storage = \Drupal::service('config.storage');
+
+  foreach ($source->listAll() as $config) {
+    $config_storage->write($config, $source->read($config));
+  }
+
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable("config_split.config_split.${sitename}_migrate");
+  $config->set('status', TRUE);
+  $config->save(TRUE);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function sitenow_migrate_migration_uninstall($sitename) {
+  if (!$sitename) {
+    return;
+  }
+  // Disable the split.
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable("config_split.config_split.${sitename}_migrate");
+  $config->set('status', FALSE);
+  $config->save(TRUE);
+
+  // Delete config-ignore entities that cause CM dependency problems on import.
+  $config_factory->getEditable('migrate_plus.migration_group.default')->delete();
+  $config_factory->getEditable('migrate_plus.migration_group.sitenow_migrate')->delete();
 }
