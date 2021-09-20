@@ -3269,3 +3269,9 @@ $sites['french-italian.local.drupal.uiowa.edu'] = 'french-italian.uiowa.edu';
 $sites['french-italian.dev.drupal.uiowa.edu'] = 'french-italian.uiowa.edu';
 $sites['french-italian.stage.drupal.uiowa.edu'] = 'french-italian.uiowa.edu';
 $sites['french-italian.prod.drupal.uiowa.edu'] = 'french-italian.uiowa.edu';
+
+// Directory aliases for german.uiowa.edu.
+$sites['german.local.drupal.uiowa.edu'] = 'german.uiowa.edu';
+$sites['german.dev.drupal.uiowa.edu'] = 'german.uiowa.edu';
+$sites['german.stage.drupal.uiowa.edu'] = 'german.uiowa.edu';
+$sites['german.prod.drupal.uiowa.edu'] = 'german.uiowa.edu';
