@@ -3287,3 +3287,9 @@ $sites['linguistics.local.drupal.uiowa.edu'] = 'linguistics.uiowa.edu';
 $sites['linguistics.dev.drupal.uiowa.edu'] = 'linguistics.uiowa.edu';
 $sites['linguistics.stage.drupal.uiowa.edu'] = 'linguistics.uiowa.edu';
 $sites['linguistics.prod.drupal.uiowa.edu'] = 'linguistics.uiowa.edu';
+
+// Directory aliases for translation.uiowa.edu.
+$sites['translation.local.drupal.uiowa.edu'] = 'translation.uiowa.edu';
+$sites['translation.dev.drupal.uiowa.edu'] = 'translation.uiowa.edu';
+$sites['translation.stage.drupal.uiowa.edu'] = 'translation.uiowa.edu';
+$sites['translation.prod.drupal.uiowa.edu'] = 'translation.uiowa.edu';
