@@ -8,6 +8,7 @@
   .layout__spacing_container {
     @include grid-base;
     @include breakpoint(sm) {
+      // @todo Move to UIDS as a four column mixin.
       gap: $desktop-width-gutter;
       grid-template-columns: repeat(auto-fill, minmax(21%, 1fr));
     }
