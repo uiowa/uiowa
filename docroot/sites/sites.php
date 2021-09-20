@@ -3281,3 +3281,9 @@ $sites['flare.local.drupal.uiowa.edu'] = 'flare.uiowa.edu';
 $sites['flare.dev.drupal.uiowa.edu'] = 'flare.uiowa.edu';
 $sites['flare.stage.drupal.uiowa.edu'] = 'flare.uiowa.edu';
 $sites['flare.prod.drupal.uiowa.edu'] = 'flare.uiowa.edu';
+
+// Directory aliases for linguistics.uiowa.edu.
+$sites['linguistics.local.drupal.uiowa.edu'] = 'linguistics.uiowa.edu';
+$sites['linguistics.dev.drupal.uiowa.edu'] = 'linguistics.uiowa.edu';
+$sites['linguistics.stage.drupal.uiowa.edu'] = 'linguistics.uiowa.edu';
+$sites['linguistics.prod.drupal.uiowa.edu'] = 'linguistics.uiowa.edu';
