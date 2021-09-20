@@ -3227,3 +3227,9 @@ $sites['imu.local.drupal.uiowa.edu'] = 'imu.uiowa.edu';
 $sites['imu.dev.drupal.uiowa.edu'] = 'imu.uiowa.edu';
 $sites['imu.stage.drupal.uiowa.edu'] = 'imu.uiowa.edu';
 $sites['imu.prod.drupal.uiowa.edu'] = 'imu.uiowa.edu';
+
+// Directory aliases for 47things.uiowa.edu.
+$sites['47things.local.drupal.uiowa.edu'] = '47things.uiowa.edu';
+$sites['47things.dev.drupal.uiowa.edu'] = '47things.uiowa.edu';
+$sites['47things.stage.drupal.uiowa.edu'] = '47things.uiowa.edu';
+$sites['47things.prod.drupal.uiowa.edu'] = '47things.uiowa.edu';
