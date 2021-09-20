@@ -3275,3 +3275,9 @@ $sites['german.local.drupal.uiowa.edu'] = 'german.uiowa.edu';
 $sites['german.dev.drupal.uiowa.edu'] = 'german.uiowa.edu';
 $sites['german.stage.drupal.uiowa.edu'] = 'german.uiowa.edu';
 $sites['german.prod.drupal.uiowa.edu'] = 'german.uiowa.edu';
+
+// Directory aliases for flare.uiowa.edu.
+$sites['flare.local.drupal.uiowa.edu'] = 'flare.uiowa.edu';
+$sites['flare.dev.drupal.uiowa.edu'] = 'flare.uiowa.edu';
+$sites['flare.stage.drupal.uiowa.edu'] = 'flare.uiowa.edu';
+$sites['flare.prod.drupal.uiowa.edu'] = 'flare.uiowa.edu';
