@@ -1,0 +1,13 @@
+project:
+  local:
+    hostname: german.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: german
+  human_name: german.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: german.prod
+drupal:
+  db:
+    database: german_uiowa_edu

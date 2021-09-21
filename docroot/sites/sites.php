@@ -3239,3 +3239,63 @@ $sites['counseling.local.drupal.uiowa.edu'] = 'counseling.uiowa.edu';
 $sites['counseling.dev.drupal.uiowa.edu'] = 'counseling.uiowa.edu';
 $sites['counseling.stage.drupal.uiowa.edu'] = 'counseling.uiowa.edu';
 $sites['counseling.prod.drupal.uiowa.edu'] = 'counseling.uiowa.edu';
+
+// Directory aliases for dwllc.uiowa.edu.
+$sites['dwllc.local.drupal.uiowa.edu'] = 'dwllc.uiowa.edu';
+$sites['dwllc.dev.drupal.uiowa.edu'] = 'dwllc.uiowa.edu';
+$sites['dwllc.stage.drupal.uiowa.edu'] = 'dwllc.uiowa.edu';
+$sites['dwllc.prod.drupal.uiowa.edu'] = 'dwllc.uiowa.edu';
+
+// Directory aliases for asl.uiowa.edu.
+$sites['asl.local.drupal.uiowa.edu'] = 'asl.uiowa.edu';
+$sites['asl.dev.drupal.uiowa.edu'] = 'asl.uiowa.edu';
+$sites['asl.stage.drupal.uiowa.edu'] = 'asl.uiowa.edu';
+$sites['asl.prod.drupal.uiowa.edu'] = 'asl.uiowa.edu';
+
+// Directory aliases for asian-slavic.uiowa.edu.
+$sites['asian-slavic.local.drupal.uiowa.edu'] = 'asian-slavic.uiowa.edu';
+$sites['asian-slavic.dev.drupal.uiowa.edu'] = 'asian-slavic.uiowa.edu';
+$sites['asian-slavic.stage.drupal.uiowa.edu'] = 'asian-slavic.uiowa.edu';
+$sites['asian-slavic.prod.drupal.uiowa.edu'] = 'asian-slavic.uiowa.edu';
+
+// Directory aliases for spanish-portuguese.uiowa.edu.
+$sites['spanish-portuguese.local.drupal.uiowa.edu'] = 'spanish-portuguese.uiowa.edu';
+$sites['spanish-portuguese.dev.drupal.uiowa.edu'] = 'spanish-portuguese.uiowa.edu';
+$sites['spanish-portuguese.stage.drupal.uiowa.edu'] = 'spanish-portuguese.uiowa.edu';
+$sites['spanish-portuguese.prod.drupal.uiowa.edu'] = 'spanish-portuguese.uiowa.edu';
+
+// Directory aliases for french-italian.uiowa.edu.
+$sites['french-italian.local.drupal.uiowa.edu'] = 'french-italian.uiowa.edu';
+$sites['french-italian.dev.drupal.uiowa.edu'] = 'french-italian.uiowa.edu';
+$sites['french-italian.stage.drupal.uiowa.edu'] = 'french-italian.uiowa.edu';
+$sites['french-italian.prod.drupal.uiowa.edu'] = 'french-italian.uiowa.edu';
+
+// Directory aliases for german.uiowa.edu.
+$sites['german.local.drupal.uiowa.edu'] = 'german.uiowa.edu';
+$sites['german.dev.drupal.uiowa.edu'] = 'german.uiowa.edu';
+$sites['german.stage.drupal.uiowa.edu'] = 'german.uiowa.edu';
+$sites['german.prod.drupal.uiowa.edu'] = 'german.uiowa.edu';
+
+// Directory aliases for flare.uiowa.edu.
+$sites['flare.local.drupal.uiowa.edu'] = 'flare.uiowa.edu';
+$sites['flare.dev.drupal.uiowa.edu'] = 'flare.uiowa.edu';
+$sites['flare.stage.drupal.uiowa.edu'] = 'flare.uiowa.edu';
+$sites['flare.prod.drupal.uiowa.edu'] = 'flare.uiowa.edu';
+
+// Directory aliases for linguistics.uiowa.edu.
+$sites['linguistics.local.drupal.uiowa.edu'] = 'linguistics.uiowa.edu';
+$sites['linguistics.dev.drupal.uiowa.edu'] = 'linguistics.uiowa.edu';
+$sites['linguistics.stage.drupal.uiowa.edu'] = 'linguistics.uiowa.edu';
+$sites['linguistics.prod.drupal.uiowa.edu'] = 'linguistics.uiowa.edu';
+
+// Directory aliases for translation.uiowa.edu.
+$sites['translation.local.drupal.uiowa.edu'] = 'translation.uiowa.edu';
+$sites['translation.dev.drupal.uiowa.edu'] = 'translation.uiowa.edu';
+$sites['translation.stage.drupal.uiowa.edu'] = 'translation.uiowa.edu';
+$sites['translation.prod.drupal.uiowa.edu'] = 'translation.uiowa.edu';
+
+// Directory aliases for clcl.uiowa.edu.
+$sites['clcl.local.drupal.uiowa.edu'] = 'clcl.uiowa.edu';
+$sites['clcl.dev.drupal.uiowa.edu'] = 'clcl.uiowa.edu';
+$sites['clcl.stage.drupal.uiowa.edu'] = 'clcl.uiowa.edu';
+$sites['clcl.prod.drupal.uiowa.edu'] = 'clcl.uiowa.edu';

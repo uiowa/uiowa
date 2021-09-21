@@ -1,0 +1,13 @@
+project:
+  local:
+    hostname: linguistics.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: linguistics
+  human_name: linguistics.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: linguistics.prod
+drupal:
+  db:
+    database: linguistics_uiowa_edu

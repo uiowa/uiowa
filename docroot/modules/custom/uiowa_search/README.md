@@ -7,4 +7,4 @@ The UIowa Search module provides a standard search form and related settings. Th
 
 Enable the module as usual.
 
-Settings for the module can be found when logged into your site at admin/config/system/uiowa-search
+Settings for the module can be found when logged into your site at admin/config/sitenow/uiowa-search
