@@ -11,7 +11,6 @@ dependencies:
     - user.role.authenticated
   module:
     - better_exposed_filters
-    - entity_print_views
     - node
     - options
     - taxonomy
@@ -1368,19 +1367,7 @@ display:
             value: "<hr class=\"element--spacer-separator\" />\r\n<h2>Tests</h2>\r\n<table>\r\n  <thead>\r\n    <tr>\r\n      <th scope=\"col\">Page Name</th>\r\n      <th scope=\"col\">Operations</th>\r\n    </tr>\r\n  </thead>\r\n  <tbody>\r\n    <tr>\r\n      <td><a href=\"/print/pdf/node/461\" title=\"Cambridge International Exams (CIE)\">Cambridge International Exams (CIE)</a></td>\r\n      <td><a href=\"/node/461/edit\" media_library=\"Media Library\">edit</a></td>\r\n    </tr>\r\n    <tr>\r\n      <td><a href=\"/print/pdf/node/451\" title=\"College Level Examination Program (CLEP)\">College Level Examination Program (CLEP)</a></td>\r\n      <td><a href=\"/node/451/edit\" media_library=\"Media Library\">edit</a></td>\r\n    </tr>\r\n    <tr>\r\n      <td><a href=\"/print/pdf/node/456\" title=\"International Baccalaureate Program (IB)\">International Baccalaureate Program (IB)</a></td>\r\n      <td><a href=\"/node/456/edit\" media_library=\"Media Library\">edit</a></td>\r\n    </tr>\r\n    <tr>\r\n      <td><a href=\"/print/pdf/node/446\">Advanced Placement Program (AP)</a></td>\r\n      <td><a href=\"/node/446/edit\" media_library=\"Media Library\">edit</a></td>\r\n    </tr>\r\n    <tr>\r\n      <td><a href=\"/print/pdf/node/4211\">Global Assessment Certificate Program (GAC)</a></td>\r\n      <td><a href=\"/node/4211/edit\" media_library=\"Media Library\">edit</a></td>\r\n    </tr>\r\n  </tbody>\r\n</table>"
             format: filtered_html
           plugin_id: text
-      header:
-        area_entity_print_views:
-          id: area_entity_print_views
-          table: views
-          field: area_entity_print_views
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: false
-          export_type: pdf
-          link_text: 'Print PDF'
-          display_id: kiosk
-          plugin_id: entity_print_views_link
+      header: {  }
     cache_metadata:
       max-age: 0
       contexts:
