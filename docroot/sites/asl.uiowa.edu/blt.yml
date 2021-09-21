@@ -1,0 +1,13 @@
+project:
+  local:
+    hostname: asl.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: asl
+  human_name: asl.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: asl.prod
+drupal:
+  db:
+    database: asl_uiowa_edu

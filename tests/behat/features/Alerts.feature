@@ -8,7 +8,7 @@ Feature: Alerts
   @api
   Scenario: Create a custom alert
     Given I am logged in as a user with role webmaster
-    And I am on "/admin/config/system/uiowa-alerts"
+    And I am on "/admin/config/sitenow/uiowa-alerts"
     And I check the box "Display Custom Alert"
     And I fill in "Custom Alert Message" with "<h2>TEST</h2><p>This is a custom alert.</p>"
     And I press the "Save configuration" button
