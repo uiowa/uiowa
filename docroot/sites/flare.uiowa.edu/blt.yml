@@ -1,0 +1,13 @@
+project:
+  local:
+    hostname: flare.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: flare
+  human_name: flare.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: flare.prod
+drupal:
+  db:
+    database: flare_uiowa_edu

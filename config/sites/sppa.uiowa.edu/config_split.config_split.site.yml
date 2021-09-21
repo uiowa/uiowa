@@ -1,0 +1,28 @@
+uuid: e6eb550b-93b8-4d28-8c2c-3dd66ed5768a
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: Site
+description: 'The sppa.uiowa.edu site split.'
+folder: ../config/sites/sppa.uiowa.edu
+module:
+  private_content: 0
+  sppa_core: 0
+theme: {  }
+blacklist:
+  - config_split.config_split.site
+  - node.type.opportunity
+  - pathauto.pattern.opportunities
+  - simple_sitemap.bundle_settings.default.node.opportunity
+  - user.role.requester
+  - user.role.student
+  - 'field.storage.node.field_opportunity_*'
+graylist:
+  - administerusersbyrole.settings
+  - uiowa_auth.settings
+  - 'user.role.*'
+  - 'core.entity_view_display.*'
+graylist_dependents: false
+graylist_skip_equal: true
+weight: 90

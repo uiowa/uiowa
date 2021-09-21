@@ -67,25 +67,10 @@ function studentlife_topics_preprocess_layout(&$variables) {
 }
 
 /**
- * Implements hook_theme_suggestions_HOOK_alter().
- */
-function studentlife_topics_theme_suggestions_field_alter(array &$suggestions, array $variables) {
-  switch ($variables["element"]["#field_name"]) {
-    case 'field_topic_collection_tags':
-      $suggestions[] = 'field__comma_separated';
-      break;
-  }
-}
-
-/**
  * Implements hook_theme().
  */
 function studentlife_topics_theme($existing, $type, $theme, $path) {
   return [
-    'field__node__title__topic_collection__default' => [
-      'template' => 'field--node--title--topic-collection--default',
-      'base hook' => 'field',
-    ],
     'node__topic_collection__teaser' => [
       'template' => 'node--topic-collection--teaser',
       'base hook' => 'node',

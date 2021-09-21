@@ -1,4 +1,18 @@
- {%- for item in items -%}
+{% if view_mode == 'teaser' %}
+  {%- for item in items -%}
     {{ item.content }}
   {%- endfor -%}
-
+{% else %}
+  {%
+    set classes = [
+    'page-title',
+    'bold-headline--serif bold-headline',
+  ]
+  %}
+  {%- for item in items -%}
+    <h1 {{ attributes.addClass(classes) }}>{{ item.content }}</h1>
+  {%- endfor -%}
+  {% if title %}
+    {{ title }}
+  {% endif %}
+{% endif %}
