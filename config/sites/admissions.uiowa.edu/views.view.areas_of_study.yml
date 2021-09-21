@@ -1112,3 +1112,265 @@ display:
         - 'user.node_grants:view'
         - user.roles
       tags: {  }
+  kiosk:
+    display_plugin: page
+    id: kiosk
+    display_title: 'Kiosk Print'
+    position: 2
+    display_options:
+      display_extenders:
+        metatag_display_extender: {  }
+      display_description: ''
+      access:
+        type: role
+        options:
+          role:
+            authenticated: authenticated
+      defaults:
+        access: false
+        fields: false
+        title: false
+        filters: false
+        filter_groups: false
+        footer: false
+      fields:
+        nid:
+          id: nid
+          table: node_field_data
+          field: nid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: number_integer
+          settings:
+            thousand_separator: ''
+            prefix_suffix: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: node
+          entity_field: nid
+          plugin_id: field
+        node_bulk_form:
+          id: node_bulk_form
+          table: node
+          field: node_bulk_form
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          action_title: Action
+          include_exclude: include
+          selected_actions:
+            - entity_print_pdf_download_action
+          entity_type: node
+          plugin_id: node_bulk_form
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Area of Study'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: true
+            path: '/print/pdf/node/{{ nid }}'
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: false
+            ellipsis: false
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: node
+          entity_field: title
+          plugin_id: field
+      path: areas-of-study/kiosk
+      title: 'Areas of Study'
+      filters:
+        status:
+          value: '1'
+          table: node_field_data
+          field: status
+          plugin_id: boolean
+          entity_type: node
+          entity_field: status
+          id: status
+          expose:
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+          group: 1
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          value:
+            area_of_study: area_of_study
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
+          expose:
+            operator_limit_selection: false
+            operator_list: {  }
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+      footer:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: false
+          content:
+            value: "<hr class=\"element--spacer-separator\" />\r\n<h2>Tests</h2>\r\n<table>\r\n  <thead>\r\n    <tr>\r\n      <th scope=\"col\">Page Name</th>\r\n      <th scope=\"col\">Operations</th>\r\n    </tr>\r\n  </thead>\r\n  <tbody>\r\n    <tr>\r\n      <td><a href=\"/print/pdf/node/461\" title=\"Cambridge International Exams (CIE)\">Cambridge International Exams (CIE)</a></td>\r\n      <td><a href=\"/node/461/edit\" media_library=\"Media Library\">edit</a></td>\r\n    </tr>\r\n    <tr>\r\n      <td><a href=\"/print/pdf/node/451\" title=\"College Level Examination Program (CLEP)\">College Level Examination Program (CLEP)</a></td>\r\n      <td><a href=\"/node/451/edit\" media_library=\"Media Library\">edit</a></td>\r\n    </tr>\r\n    <tr>\r\n      <td><a href=\"/print/pdf/node/456\" title=\"International Baccalaureate Program (IB)\">International Baccalaureate Program (IB)</a></td>\r\n      <td><a href=\"/node/456/edit\" media_library=\"Media Library\">edit</a></td>\r\n    </tr>\r\n    <tr>\r\n      <td><a href=\"/print/pdf/node/446\">Advanced Placement Program (AP)</a></td>\r\n      <td><a href=\"/node/446/edit\" media_library=\"Media Library\">edit</a></td>\r\n    </tr>\r\n    <tr>\r\n      <td><a href=\"/print/pdf/node/4211\">Global Assessment Certificate Program (GAC)</a></td>\r\n      <td><a href=\"/node/4211/edit\" media_library=\"Media Library\">edit</a></td>\r\n    </tr>\r\n  </tbody>\r\n</table>"
+            format: filtered_html
+          plugin_id: text
+    cache_metadata:
+      max-age: 0
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url.query_args
+        - 'user.node_grants:view'
+        - user.roles
+      tags: {  }
