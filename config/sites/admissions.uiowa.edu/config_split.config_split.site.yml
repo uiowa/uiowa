@@ -16,7 +16,6 @@ module:
   jquery_ui_datepicker: 0
   jquery_ui_slider: 0
   jquery_ui_touch_punch: 0
-  uiowa_area_of_study: 0
   weight: 0
   tvi: 15
 theme: {  }
@@ -43,6 +42,7 @@ blacklist:
   - 'field.field.node.area_of_study.*'
 graylist:
   - block_content.type.uiowa_timeline
+  - config_split.config_split.site
   - core.entity_form_display.node.event_series.default
   - core.entity_form_display.node.student_profile.default
   - core.entity_form_display.node.transfer_tips.default
@@ -159,7 +159,6 @@ graylist:
   - views.view.student_profiles
   - views.view.transfer_tips_list
   - workflows.workflow.editorial
-  - config_split.config_split.site
   - 'core.entity_form_display.node.person.*'
   - 'core.entity_form_display.node.scholarship.*'
   - 'core.entity_view_display.*'

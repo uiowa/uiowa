@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labbrogden.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labbrogden
+  human_name: brogden.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labbrogden.prod
+drupal:
+  db:
+    database: brogden_lab_uiowa_edu
+uiowa:
+  requester: clinkenb
