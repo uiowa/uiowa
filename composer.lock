@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8704fd79f5377f36b3def3767affcfa7",
+    "content-hash": "c8c98b76c606bead80151cbcf2a80f9e",
     "packages": [
         {
             "name": "acquia/blt",
@@ -5488,21 +5488,22 @@
         },
         {
             "name": "drupal/entity_print",
-            "version": "2.2.0",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/entity_print.git",
-                "reference": "8.x-2.2"
+                "reference": "8.x-2.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/entity_print-8.x-2.2.zip",
-                "reference": "8.x-2.2",
-                "shasum": "5bd7671e2563a68925ab7f6ecd8dc8e8e396a0ea"
+                "url": "https://ftp.drupal.org/files/projects/entity_print-8.x-2.3.zip",
+                "reference": "8.x-2.3",
+                "shasum": "d7d094403952aa948f358a2670d690a2d70a357a"
             },
             "require": {
-                "dompdf/dompdf": "~0.8.0",
-                "drupal/core": "^8 || ^9"
+                "dompdf/dompdf": "~0.8.4 || ^1.0",
+                "drupal/core": "^8 || ^9",
+                "php": "^7.1 || ^8.0"
             },
             "suggest": {
                 "mikehaertl/phpwkhtmltopdf": "PhpWkhtmlToPdf provides the PHP library to use Wkhtmltopdf"
@@ -5510,8 +5511,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.2",
-                    "datestamp": "1592533892",
+                    "version": "8.x-2.3",
+                    "datestamp": "1632108169",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5528,8 +5529,16 @@
                     "homepage": "https://www.drupal.org/u/benjy"
                 },
                 {
+                    "name": "VladimirAus",
+                    "homepage": "https://www.drupal.org/user/673120"
+                },
+                {
                     "name": "benjy",
                     "homepage": "https://www.drupal.org/user/1852732"
+                },
+                {
+                    "name": "larowlan",
+                    "homepage": "https://www.drupal.org/user/395439"
                 },
                 {
                     "name": "pameeela",
@@ -7177,6 +7186,66 @@
             "homepage": "https://www.drupal.org/project/layout_builder_styles",
             "support": {
                 "source": "https://git.drupalcode.org/project/layout_builder_styles"
+            }
+        },
+        {
+            "name": "drupal/layout_library",
+            "version": "1.0.0-beta2",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/layout_library.git",
+                "reference": "8.x-1.0-beta2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/layout_library-8.x-1.0-beta2.zip",
+                "reference": "8.x-1.0-beta2",
+                "shasum": "dc0dd30247768d285bc5d9861982bdb3b452bb59"
+            },
+            "require": {
+                "drupal/core": "^8.8 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.0-beta2",
+                    "datestamp": "1582217387",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "EclipseGc",
+                    "homepage": "https://www.drupal.org/user/61203"
+                },
+                {
+                    "name": "larowlan",
+                    "homepage": "https://www.drupal.org/user/395439"
+                },
+                {
+                    "name": "samuel.mortenson",
+                    "homepage": "https://www.drupal.org/user/2582268"
+                },
+                {
+                    "name": "tim.plunkett",
+                    "homepage": "https://www.drupal.org/user/241634"
+                },
+                {
+                    "name": "xjm",
+                    "homepage": "https://www.drupal.org/user/65776"
+                }
+            ],
+            "description": "Provides a library of layouts for content-editors to select from",
+            "homepage": "https://www.drupal.org/project/layout_library",
+            "support": {
+                "source": "https://git.drupalcode.org/project/layout_library"
             }
         },
         {
@@ -22025,6 +22094,7 @@
         "drupal/fullcalendar": 15,
         "drupal/layout_builder_lock": 5,
         "drupal/layout_builder_styles": 10,
+        "drupal/layout_library": 10,
         "drupal/lb_direct_add": 20,
         "drupal/masquerade": 10,
         "drupal/media_entity_facebook": 10,
