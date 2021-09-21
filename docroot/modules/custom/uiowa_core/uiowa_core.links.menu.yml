@@ -1,7 +1,7 @@
 uiowa_core.settings_form:
-  title: 'Uiowa Core Settings'
-  parent: system.admin_config_system
-  description: 'Configuration for Uiowa Core.'
+  title: 'Core Settings'
+  parent: system.admin_config_sitenow
+  description: 'Manage core settings'
   route_name: uiowa_core.settings_form
 
 # 'Add content' menu item definition
@@ -11,3 +11,9 @@ node.add_page:
   description: 'Add a content item.'
   parent: system.admin_content
   weight: 50
+
+system.admin_config_sitenow:
+  title: 'SiteNow'
+  parent: system.admin_config
+  route_name: system.admin_config_sitenow
+  weight: -100

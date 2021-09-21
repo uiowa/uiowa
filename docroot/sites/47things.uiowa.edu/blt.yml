@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: 47things.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: 47things
+  human_name: 47things.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: 47things.prod
+drupal:
+  db:
+    database: 47things_uiowa_edu
+uiowa:
+  requester: dquam

@@ -1,0 +1,13 @@
+project:
+  local:
+    hostname: translation.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: translation
+  human_name: translation.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: translation.prod
+drupal:
+  db:
+    database: translation_uiowa_edu
