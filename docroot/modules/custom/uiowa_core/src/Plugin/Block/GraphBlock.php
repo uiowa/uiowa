@@ -41,10 +41,7 @@ class GraphBlock extends BlockBase {
     ];
     $build['graph_container']['canvas'] = [
       '#type' => 'markup',
-      '#markup' =>
-        '<div class="graph-canvas__container">
-            <canvas class="graph-canvas" aria-describedby="' . $unique_id . '-summary"></canvas>
-        </div>',
+      '#markup' => '<div class="graph-canvas__container"><canvas class="graph-canvas" aria-describedby="' . $unique_id . '-summary"></canvas></div>',
       '#allowed_tags' => array_merge(Xss::getHtmlTagList(), ['canvas', 'div']),
     ];
     $build['graph_container']['#attached']['library'][] = 'uiowa_core/chartjs';
@@ -96,7 +93,7 @@ class GraphBlock extends BlockBase {
 
     $config = $this->getConfiguration();
 
-    $form['graph_summary'] =[
+    $form['graph_summary'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Graph summary'),
       '#description' => $this->t('Provide a short description for the graph data.'),
