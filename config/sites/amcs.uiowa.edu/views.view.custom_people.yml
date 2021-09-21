@@ -81,8 +81,11 @@ display:
             field_person_credential: field_person_credential
             field_person_first_name: field_person_first_name
             field_person_last_name: field_person_last_name
-            field_person_email: field_person_email
-            field_person_research_areas: field_person_research_areas
+            field_pt_student_advisor: field_pt_student_advisor
+            field_pt_student_defense_date: field_pt_student_defense_date
+            pt_student_dissertation_title: pt_student_dissertation_title
+            field_pt_student_cur_pos_inst: field_pt_student_cur_pos_inst
+            field_pt_student_cur_pos_title: field_pt_student_cur_pos_title
           info:
             view_node:
               sortable: false
@@ -112,19 +115,40 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            field_person_email:
+            field_pt_student_advisor:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_pt_student_defense_date:
+              sortable: true
+              default_sort_order: desc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            pt_student_dissertation_title:
               sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-            field_person_research_areas:
+            field_pt_student_cur_pos_inst:
+              sortable: false
+              default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-          default: field_person_last_name
+            field_pt_student_cur_pos_title:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          default: field_pt_student_defense_date
           empty_table: false
       row:
         type: fields
@@ -1204,6 +1228,7 @@ display:
         filter_groups: false
         fields: false
         title: false
+        pager: false
       filter_groups:
         operator: AND
         groups:
@@ -1768,6 +1793,11 @@ display:
           field_api_classes: false
           plugin_id: field
       title: Graduates
+      pager:
+        type: some
+        options:
+          items_per_page: 50
+          offset: 0
     cache_metadata:
       max-age: -1
       contexts:
