@@ -53,7 +53,6 @@ command-hooks:
   frontend-assets:
     dir: ${docroot}
     command: 'yarn workspaces run build'
-
   post-deploy-build:
     dir: ${repo.root}
     command: './vendor/bin/blt uiowa:post:build'
