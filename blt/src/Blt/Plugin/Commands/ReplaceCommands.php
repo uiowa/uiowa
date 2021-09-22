@@ -147,4 +147,23 @@ class ReplaceCommands extends BltTasks {
     }
   }
 
+  /**
+   * Replace frontend tests command so we can do more than just a oneline exec.
+   *
+   * Note that the frontend-test command hook does not need to be in blt.yml.
+   *
+   * @hook replace-command tests:frontend:run
+   */
+  public function testsFrontend() {
+    if (EnvironmentDetector::isCiEnv()) {
+      $this->taskExecStack()
+        ->dir($this->getConfigValue('repo.root'))
+        ->exec('npx percy snapshot snapshots.yml')
+        ->run();
+    }
+    else {
+      $this->logger->notice('Skipping percy snapshot in non-CI environment.');
+    }
+  }
+
 }
