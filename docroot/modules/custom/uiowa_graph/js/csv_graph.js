@@ -1,8 +1,8 @@
-(($, Drupal, drupalSettings) => {
+(function ($, Drupal, drupalSettings) {
   // Attach csv_graph behavior.
   Drupal.behaviors.csv_graph = {
-    attach: (context, settings) => {
-      $('.graph-container', context).once('csv_graph').each((index) => {
+    attach: function (context, settings) {
+      $('.graph-container', context).once('csv_graph').each(function (index) {
         // .----start behavior container----.
         let graph_container = document.querySelectorAll('.graph-container')[index];
 
@@ -20,12 +20,12 @@
           // Get each row.
           let rows = graphTable.querySelectorAll('tr');
           // For each row...
-          rows.forEach(row => {
+          rows.forEach(function(row) {
             let rowData = [];
             // Get the elements in that row.
             let rowEls = row.querySelectorAll('th,td');
             // For each element in that row...
-            rowEls.forEach(element =>  {
+            rowEls.forEach(function(element) {
               // Add that elements text to the row data.
               let text = element.textContent;
               if (text == '') {
@@ -43,13 +43,13 @@
           if (function() {
             let equalLength = true;
 
-            tableDataByRow.forEach( row => {
+            tableDataByRow.forEach( function(row) {
               equalLength = equalLength && (row.length = tableDataByRow[0].length);
             });
 
             return equalLength;
           }) {
-            tableDataByRow[0].forEach( (header, headerIndex) => {
+            tableDataByRow[0].forEach( function(header, headerIndex) {
               tableDataByColumn[header] = [];
               for (row = 1; row <tableDataByRow.length; row++) {
                 tableDataByColumn[header].push(tableDataByRow[row][headerIndex]);
