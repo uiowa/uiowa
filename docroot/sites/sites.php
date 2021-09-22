@@ -3299,3 +3299,9 @@ $sites['clcl.local.drupal.uiowa.edu'] = 'clcl.uiowa.edu';
 $sites['clcl.dev.drupal.uiowa.edu'] = 'clcl.uiowa.edu';
 $sites['clcl.stage.drupal.uiowa.edu'] = 'clcl.uiowa.edu';
 $sites['clcl.prod.drupal.uiowa.edu'] = 'clcl.uiowa.edu';
+
+// Directory aliases for rise.uiowa.edu.
+$sites['rise.local.drupal.uiowa.edu'] = 'rise.uiowa.edu';
+$sites['rise.dev.drupal.uiowa.edu'] = 'rise.uiowa.edu';
+$sites['rise.stage.drupal.uiowa.edu'] = 'rise.uiowa.edu';
+$sites['rise.prod.drupal.uiowa.edu'] = 'rise.uiowa.edu';
