@@ -117,7 +117,7 @@ class GraphBlock extends BlockBase {
     parent::blockSubmit($form, $form_state);
     $values = $form_state->getValues();
     $this->configuration['graph_summary'] = $values['graph_summary'];
-    $this->configuration['graph_CSV_data'] = $values['graph_CSV_data'];
+    $this->configuration['graph_CSV_data'] = trim($values['graph_CSV_data']);
   }
 
 }
