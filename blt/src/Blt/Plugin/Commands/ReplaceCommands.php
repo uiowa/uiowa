@@ -63,6 +63,8 @@ class ReplaceCommands extends BltTasks {
             // @see: https://github.com/drush-ops/drush/pull/4345
             $tmp = "/tmp/.drush-cache-{$app}/{$env}/{$multisite}";
 
+            // Clear the plugin cache for discovery and potential layout issue.
+            // @see: https://github.com/uiowa/uiowa/issues/3585.
             $this->taskDrush()
               ->drush('cc plugin')
               ->option('define', "drush.paths.cache-directory={$tmp}")
