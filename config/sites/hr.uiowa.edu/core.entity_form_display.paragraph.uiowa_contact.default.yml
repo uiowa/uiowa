@@ -1,0 +1,41 @@
+uuid: 7639b9b5-60a8-4e84-866f-501c24ce2aa6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.uiowa_contact.field_uiowa_contact_address
+    - field.field.paragraph.uiowa_contact.field_uiowa_contact_label
+    - field.field.paragraph.uiowa_contact.field_uiowa_contact_phone
+    - paragraphs.paragraphs_type.uiowa_contact
+  module:
+    - address
+    - telephone
+id: paragraph.uiowa_contact.default
+targetEntityType: paragraph
+bundle: uiowa_contact
+mode: default
+content:
+  field_uiowa_contact_address:
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    type: address_default
+    region: content
+  field_uiowa_contact_label:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_uiowa_contact_phone:
+    weight: 2
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: telephone_default
+    region: content
+hidden:
+  created: true
+  status: true
