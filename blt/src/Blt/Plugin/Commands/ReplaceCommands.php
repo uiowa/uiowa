@@ -59,11 +59,21 @@ class ReplaceCommands extends BltTasks {
           }
 
           try {
-            // Define a site-specific cache directory. For some reason, putenv
-            // did not work here. This would not be necessary if Drush
-            // supported per-site config file loading.
+            // Define a site-specific cache directory.
             // @see: https://github.com/drush-ops/drush/pull/4345
-            $_ENV['DRUSH_PATHS_CACHE_DIRECTORY'] = "/tmp/.drush-cache-{$app}/{$env}/{$multisite}";
+            $tmp = "/tmp/.drush-cache-{$app}/{$env}/{$multisite}";
+
+            // Clear the plugin cache for discovery and potential layout issue.
+            // @see: https://github.com/uiowa/uiowa/issues/3585.
+            $this->taskDrush()
+              ->drush('cc plugin')
+              ->option('define', "drush.paths.cache-directory={$tmp}")
+              ->run();
+
+            // Ensure BLT uses the site-specific cache directory. For some
+            // reason, putenv did not work here. This would not be necessary if
+            // Drush supported per-site config file loading.
+            $_ENV['DRUSH_PATHS_CACHE_DIRECTORY'] = $tmp;
             $this->invokeCommand('drupal:update');
             $this->logger->info("Finished deploying updates to <comment>{$multisite}</comment>.");
           }
