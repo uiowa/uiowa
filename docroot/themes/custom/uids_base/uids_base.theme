@@ -425,8 +425,6 @@ function uids_base_preprocess_layout(&$variables) {
     if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
       $publish_options = $node->get('field_publish_options')->getValue();
       if (array_search('title_hidden', array_column($publish_options, 'value')) !== FALSE) {
-        // For uiowa_bootstrap/classy default.
-        // @todo Can this be removed?
         $title_hidden = TRUE;
       }
       if (array_search('no_sidebars', array_column($publish_options, 'value')) !== FALSE) {
