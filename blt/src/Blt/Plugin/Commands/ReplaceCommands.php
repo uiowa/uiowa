@@ -166,13 +166,20 @@ class ReplaceCommands extends BltTasks {
    */
   public function testsFrontend() {
     if (EnvironmentDetector::isCiEnv()) {
-      $this->taskExecStack()
-        ->dir($this->getConfigValue('repo.root'))
-        ->exec('npx percy snapshot snapshots.yml')
-        ->run();
+      $is_pr = getenv('TRAVIS_PULL_REQUEST');
+
+      if ($is_pr) {
+        $this->taskExecStack()
+          ->dir($this->getConfigValue('repo.root'))
+          ->exec('npx percy snapshot snapshots.yml')
+          ->run();
+      }
+      else {
+        $this->logger->notice('Skipping Percy snapshot for non-PR build.');
+      }
     }
     else {
-      $this->logger->notice('Skipping percy snapshot in non-CI environment.');
+      $this->logger->notice('Skipping Percy snapshot in non-CI environment.');
     }
   }
 
