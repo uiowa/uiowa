@@ -41,7 +41,7 @@ class GraphBlock extends BlockBase {
     ];
     $build['graph_container']['canvas'] = [
       '#type' => 'markup',
-      '#markup' => '<div class="graph-canvas__container"><canvas class="graph-canvas" aria-describedby="' . $unique_id . '-summary"></canvas></div>',
+      '#markup' => '<div class="graph-canvas__container"><canvas class="graph-canvas" role="img" aria-labelledby="' . $unique_id . '-summary"></canvas></div>',
       '#allowed_tags' => array_merge(Xss::getHtmlTagList(), ['canvas', 'div']),
     ];
     $build['graph_container']['#attached']['library'][] = 'uiowa_core/chartjs';
