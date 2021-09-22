@@ -3305,3 +3305,9 @@ $sites['rise.local.drupal.uiowa.edu'] = 'rise.uiowa.edu';
 $sites['rise.dev.drupal.uiowa.edu'] = 'rise.uiowa.edu';
 $sites['rise.stage.drupal.uiowa.edu'] = 'rise.uiowa.edu';
 $sites['rise.prod.drupal.uiowa.edu'] = 'rise.uiowa.edu';
+
+// Directory aliases for passport.uiowa.edu.
+$sites['passport.local.drupal.uiowa.edu'] = 'passport.uiowa.edu';
+$sites['passport.dev.drupal.uiowa.edu'] = 'passport.uiowa.edu';
+$sites['passport.stage.drupal.uiowa.edu'] = 'passport.uiowa.edu';
+$sites['passport.prod.drupal.uiowa.edu'] = 'passport.uiowa.edu';
