@@ -145,13 +145,6 @@ class SettingsForm extends ConfigFormBase {
       '#collapsible' => FALSE,
     ];
 
-    // @todo remove when hr adopts uids_base.
-    // https://github.com/uiowa/uiowa/issues/2629
-    $site_path = \Drupal::service('site.path');
-    if ($site_path === 'sites/hr.uiowa.edu') {
-      $form['article_node']['#access'] = FALSE;
-    }
-
     $featured_image_display_default = $config->get('featured_image_display_default');
 
     $form['article_node']['featured_image_display_default'] = [
