@@ -7,31 +7,31 @@
   margin-bottom: $desktop-width-gutter;
 }
 
-/* Adds backgrounds colors to links if within a pattern background */
 .pager a {
-  [class*=white--pattern] &,
-  [class*=gold--pattern] & {
+  color: $secondary;
+  [class*=bg--black] & {
+    background-color: $secondary;
+  }
+  [class*=bg--white] & {
+    background-color: $white;
+  }
+  [class*=bg--gold] & {
+    background-color: $primary;
+  }
+  [class*=bg--gray] & {
     background-color: $light;
   }
-  [class*=black--pattern] & {
-    background-color: $dark-gray;
-  }
-  [class*=gray--pattern] & {
-    background-color: $lighter-gray;
-  }
 }
-
 .pager a:hover,
 .pager a:focus {
   background-color: $light;
-  [class*=bg--black] & {
-    background-color: $light;
-    color: $secondary;
+  color: $secondary;
+  [class*=bg--black] &,
+  [class*=bg--gold] & {
+    background-color: $white;
   }
-  [class*=bg--gray] &,
-  [class*=gold--pattern] &,
-  [class*=white--pattern] & {
-    background-color: $grey-light;
+  [class*=bg--gray] & {
+    background-color: $lighter-gray;
   }
 }
 
@@ -39,10 +39,12 @@
 .pager .is-active a {
   background-color: $secondary;
   color: $white;
+
   [class*=bg--black] & {
     background-color: $primary;
     color: $secondary;
   }
+  
   /* Active Hover/Focus States */
   &:hover, &:focus {
     background-color: $primary;
