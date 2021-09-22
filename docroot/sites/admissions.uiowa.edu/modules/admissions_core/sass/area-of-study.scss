@@ -79,10 +79,11 @@
   }
 }
 
-.view-display-id-areas_of_study {
+.view-id-areas_of_study_kiosk,
+.view-display-id-areas_of_study{
   display: flex;
   flex-wrap: wrap;
-
+    
   .views-field {
     .degree-options {
       margin-top: $sm;
@@ -176,4 +177,14 @@
   line-height: 1.7;
   font-weight: 400;
   display: block;
+}
+
+select#edit-action {
+  display: none;
+}
+.checkbox-kiosk {
+  .form-checkbox {
+    height: 5rem;
+    width: 5rem;
+  }
 }
