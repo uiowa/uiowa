@@ -68,7 +68,6 @@ class ReplaceCommands extends BltTasks {
             $this->taskDrush()
               ->drush('cc plugin')
               ->option('define', "drush.paths.cache-directory={$tmp}")
-              ->printMetadata(FALSE)
               ->run();
 
             // Ensure BLT uses the site-specific cache directory. For some
