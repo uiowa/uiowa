@@ -3311,3 +3311,9 @@ $sites['passport.local.drupal.uiowa.edu'] = 'passport.uiowa.edu';
 $sites['passport.dev.drupal.uiowa.edu'] = 'passport.uiowa.edu';
 $sites['passport.stage.drupal.uiowa.edu'] = 'passport.uiowa.edu';
 $sites['passport.prod.drupal.uiowa.edu'] = 'passport.uiowa.edu';
+
+// Directory aliases for sportsmedicine.athletics.uiowa.edu.
+$sites['athleticssportsmedicine.local.drupal.uiowa.edu'] = 'sportsmedicine.athletics.uiowa.edu';
+$sites['athleticssportsmedicine.dev.drupal.uiowa.edu'] = 'sportsmedicine.athletics.uiowa.edu';
+$sites['athleticssportsmedicine.stage.drupal.uiowa.edu'] = 'sportsmedicine.athletics.uiowa.edu';
+$sites['athleticssportsmedicine.prod.drupal.uiowa.edu'] = 'sportsmedicine.athletics.uiowa.edu';
