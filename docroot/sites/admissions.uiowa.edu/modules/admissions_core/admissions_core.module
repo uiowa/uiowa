@@ -15,6 +15,8 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\views\ViewExecutable;
+use Drupal\Core\StringTranslation;
+use Drupal\Core\Render\Element\RenderCallbackInterface;
 
 /**
  * Implements hook_preprocess_HOOK() for html.html.twig.
@@ -144,7 +146,13 @@ function admissions_core_form_alter(&$form, FormStateInterface $form_state, $for
         ],
       ];
       break;
-  }
+
+    case 'views-form-areas-of-study-kiosk-print':
+    case 'views_form_areas_of_study_kiosk_print':
+
+      $form["actions"]["submit"]["#value"] = t('Print');
+      break;
+    }
 }
 
 /**
