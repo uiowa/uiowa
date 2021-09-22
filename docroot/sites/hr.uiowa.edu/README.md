@@ -12,8 +12,6 @@ Customizations
 ---
 
 - Units taxonomy for internal organization and contact block displays.
-- Card Image Icon option to handle icon images in cards. (DEPRECATED - Remove from db/hr_core)
-- Card Image Title Overlay options. (DEPRECATED - Remove from db/hr_core)
 - Frequently Asked Question content type, view, taxononmy, paragraph bundle to create reusable accordion items.
 - Related Content field (not displayed).
 - Initial redirects import.

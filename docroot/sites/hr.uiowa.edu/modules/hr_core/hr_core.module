@@ -84,21 +84,6 @@ function hr_core_theme($existing, $type, $theme, $path) {
 }
 
 /**
- * Implements hook_uip_classes_alter().
- */
-function hr_core_uip_classes_alter(&$options, $entity, $bundle) {
-  switch ($bundle) {
-    case 'card':
-      // @TODO Remove values from the db so we can remove these options.
-      $options['card--img-icon'] = 'Card Image Icon';
-      $options['card--title-overlay-bottom-left'] = 'Title Overlay Bottom Left';
-      $options['card--title-overlay-top-right'] = 'Title Overlay Top right';
-      break;
-
-  }
-}
-
-/**
  * Implements hook_preprocess_HOOK().
  */
 function hr_core_preprocess_paragraph(&$variables) {
