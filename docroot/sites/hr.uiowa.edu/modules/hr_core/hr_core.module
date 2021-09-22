@@ -56,9 +56,29 @@ function hr_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
  */
 function hr_core_theme($existing, $type, $theme, $path) {
   return [
+    'block__views_block__units_block_contact_info' => [
+      'template' => 'block--views-block--units-block-contact-info',
+      'base hook' => 'block',
+    ],
+    'field__taxonomy_term__name__units__teaser' => [
+      'template' => 'field--taxonomy-term--name--units--teaser',
+      'base hook' => 'field',
+    ],
     'paragraph__faqs__default' => [
       'template' => 'paragraph--faqs--default',
       'base hook' => 'paragraph',
+    ],
+    'node__faq__teaser' => [
+      'template' => 'node--faq--teaser',
+      'base hook' => 'node',
+    ],
+    'taxonomy_term__units' => [
+      'template' => 'taxonomy-term--units',
+      'base hook' => 'taxonomy_term',
+    ],
+    'views_view_unformatted__faqs__block_faqs' => [
+      'template' => 'views-view-unformatted--faqs--block-faqs',
+      'base hook' => 'view',
     ],
   ];
 }
