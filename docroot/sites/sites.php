@@ -3329,3 +3329,9 @@ $sites['athleticsacademics.local.drupal.uiowa.edu'] = 'academics.athletics.uiowa
 $sites['athleticsacademics.dev.drupal.uiowa.edu'] = 'academics.athletics.uiowa.edu';
 $sites['athleticsacademics.stage.drupal.uiowa.edu'] = 'academics.athletics.uiowa.edu';
 $sites['athleticsacademics.prod.drupal.uiowa.edu'] = 'academics.athletics.uiowa.edu';
+
+// Directory aliases for strength.athletics.uiowa.edu.
+$sites['athleticsstrength.local.drupal.uiowa.edu'] = 'strength.athletics.uiowa.edu';
+$sites['athleticsstrength.dev.drupal.uiowa.edu'] = 'strength.athletics.uiowa.edu';
+$sites['athleticsstrength.stage.drupal.uiowa.edu'] = 'strength.athletics.uiowa.edu';
+$sites['athleticsstrength.prod.drupal.uiowa.edu'] = 'strength.athletics.uiowa.edu';
