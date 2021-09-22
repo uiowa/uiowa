@@ -191,6 +191,7 @@ function sitenow_preprocess_block(&$variables) {
   }
   switch ($variables["elements"]["#plugin_id"]) {
     // Visually hide page title if page option is set.
+    case 'field_block:node:page:title':
     case 'page_title_block':
       $admin_context = \Drupal::service('router.admin_context');
       if (!$admin_context->isAdminRoute()) {
@@ -200,7 +201,6 @@ function sitenow_preprocess_block(&$variables) {
           if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
             $publish_options = $node->get('field_publish_options')->getValue();
             if (array_search('title_hidden', array_column($publish_options, 'value')) !== FALSE) {
-              // For uids_base.
               $variables["attributes"]['class'][] = 'element-invisible';
             }
           }
