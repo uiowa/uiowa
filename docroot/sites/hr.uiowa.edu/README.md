@@ -21,8 +21,6 @@ clrson
 Customizations
 ---
 
-- uiowa_bootstrap subtheme (hr) to mimic jobs.uiowa.edu
-  - Custom regions to allow sidebar to start at the top of the content area.
 - Units taxonomy for internal organization and contact block displays.
 - Card Image Icon option to handle icon images in cards.
 - Card Image Title Overlay options.
