@@ -3317,3 +3317,9 @@ $sites['athleticssportsmedicine.local.drupal.uiowa.edu'] = 'sportsmedicine.athle
 $sites['athleticssportsmedicine.dev.drupal.uiowa.edu'] = 'sportsmedicine.athletics.uiowa.edu';
 $sites['athleticssportsmedicine.stage.drupal.uiowa.edu'] = 'sportsmedicine.athletics.uiowa.edu';
 $sites['athleticssportsmedicine.prod.drupal.uiowa.edu'] = 'sportsmedicine.athletics.uiowa.edu';
+
+// Directory aliases for compliance.athletics.uiowa.edu.
+$sites['athleticscompliance.local.drupal.uiowa.edu'] = 'compliance.athletics.uiowa.edu';
+$sites['athleticscompliance.dev.drupal.uiowa.edu'] = 'compliance.athletics.uiowa.edu';
+$sites['athleticscompliance.stage.drupal.uiowa.edu'] = 'compliance.athletics.uiowa.edu';
+$sites['athleticscompliance.prod.drupal.uiowa.edu'] = 'compliance.athletics.uiowa.edu';
