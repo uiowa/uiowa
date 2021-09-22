@@ -8,39 +8,23 @@ Overview
 
 Primary website for University of Iowa Human Resources.
 
-Primary Developer
----
-
-[jwhitsit](https://github.com/joewhitsitt)
-
-Primary Customer Contact
----
-
-clrson
-
 Customizations
 ---
 
 - Units taxonomy for internal organization and contact block displays.
-- Card Image Icon option to handle icon images in cards.
-- Card Image Title Overlay options.
-- Featured image/caption output and style difference.
+- Card Image Icon option to handle icon images in cards. (DEPRECATED - Remove from db/hr_core)
+- Card Image Title Overlay options. (DEPRECATED - Remove from db/hr_core)
 - Frequently Asked Question content type, view, taxononmy, paragraph bundle to create reusable accordion items.
-- Related Content - Sidebar view block based on field_related_content (page).
+- Related Content field (not displayed).
 - Initial redirects import.
 - Custom permissions based on all of the above.
 
 Misc Notes
 ---
 
-- uiowa703 DEV hosts a copy of their old website (Deprovision after 2020-07-31)
 - Google CSE instance exists but is not currently used
 - First SiteNow v2 custom website.
-
-Lastest Development Round
----
-
-2019-07-30
+- HR will be working to find a new home for related content and faqs to make for an easier transition to SiteNow v3.
 
 Original Launch Date
 ---
