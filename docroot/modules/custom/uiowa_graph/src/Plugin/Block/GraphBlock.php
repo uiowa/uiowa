@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\uiowa_core\Plugin\Block;
+namespace Drupal\uiowa_graph\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -11,7 +11,7 @@ use Drupal\Component\Utility\Html;
  * Provides the Graph block.
  *
  * @Block(
- *   id = "uiowa_core_graph",
+ *   id = "uiowa_graph",
  *   admin_label = @Translation("Graph"),
  *   category = @Translation("Site custom")
  * )
@@ -44,8 +44,8 @@ class GraphBlock extends BlockBase {
       '#markup' => '<div class="graph-canvas__container"><canvas class="graph-canvas" role="img" aria-labelledby="' . $unique_id . '-summary"></canvas></div>',
       '#allowed_tags' => array_merge(Xss::getHtmlTagList(), ['canvas', 'div']),
     ];
-    $build['graph_container']['#attached']['library'][] = 'uiowa_core/chartjs';
-    $build['graph_container']['#attached']['library'][] = 'uiowa_core/graph';
+    $build['graph_container']['#attached']['library'][] = 'uiowa_graph/chartjs';
+    $build['graph_container']['#attached']['library'][] = 'uiowa_graph/graph';
 
     $build['graph_container']['graph_details'] = [
       '#type' => 'details',
