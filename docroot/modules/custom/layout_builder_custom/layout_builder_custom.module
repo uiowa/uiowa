@@ -144,8 +144,10 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       // so it can take advantage of the logic there.
       array_unshift($form['#submit'], '_layout_builder_custom_block_submit');
 
-      // Add custom process callback for certain blocks to alter form elements.
-      $form['settings']['block_form']['#process'][] = '_layout_builder_custom_process_element';
+      if (isset($form['settings'])) {
+        // Add custom process callback for certain blocks to alter elements.
+        $form['settings']['block_form']['#process'][] = '_layout_builder_custom_process_element';
+      }
 
       // Add our LBS heading before style options.
       _layout_builder_custom_add_lbs_heading($form);
@@ -195,6 +197,11 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           'single' => TRUE,
           'remove_none' => TRUE,
           'default' => 'headline_bold_serif',
+        ],
+        'headline_size' => [
+          'single' => TRUE,
+          'remove_none' => FALSE,
+          'default' => 'headline_large',
         ],
         'list_format' => [
           'single' => TRUE,
@@ -282,6 +289,10 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           if (isset($form['layout_builder_style_background'])) {
             $form['layout_builder_style_background']['#access'] = FALSE;
           }
+          // Move headline size option to top of display options.
+          if (isset($form['layout_builder_style_headline_size'])) {
+            $form['layout_builder_style_headline_size']['#weight'] = 89;
+          }
 
           $form['#attached']['library'][] = 'layout_builder_custom/banner-block-form';
           break;
@@ -351,7 +362,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               $form['layout_builder_style_card_image_size']['#default_value'] = 'card_image_small';
               $form['layout_builder_style_content_alignment']['#default_value'] = 'content_alignment_left';
             }
-
             if (isset($form['layout_builder_style_list_format'])) {
               $form['layout_builder_style_list_format']['#default_value'] = 'list_format_list';
             }
@@ -404,6 +414,14 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           // Set defaults.
           $form['settings']['menu_levels']['level']['#default_value'] = 2;
           $form['settings']['advanced']['follow']['#default_value'] = 1;
+          break;
+
+        case 'sitenow_dispatch_sign_up_form':
+          // Checks to see if there is an API key set, and if not we
+          // shouldn't be able to add the block, so remove the button.
+          if (empty(\Drupal::config('sitenow_dispatch.settings')->get('api_key'))) {
+            $form['actions']['submit']['#access'] = FALSE;
+          }
           break;
       }
 
@@ -602,6 +620,11 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       break;
 
     case 'inline_block:uiowa_banner':
+      if (isset($element['field_uiowa_banner_title'])) {
+        // Update the label for the Heading sizes to remove Size label.
+        $element['field_uiowa_banner_title']['widget'][0]['container']['size']['#title'] =
+          t('Heading');
+      }
       // @todo Should this be scoped to a condition checking if layout_builder_styles is enabled?
       $all_styles = _layout_builder_styles_retrieve_by_type(LayoutBuilderStyleInterface::TYPE_COMPONENT);
 
@@ -682,7 +705,6 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       break;
 
     case 'inline_block:uiowa_articles':
-    case 'inline_block:uiowa_people':
     case 'inline_block:uiowa_events':
       if (isset($element['field_collection_more_path'])) {
         $element['field_collection_more_path']['#states'] = [
@@ -729,7 +751,8 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         ],
       ];
 
-      // Now that we have view mode on the block form, place the fields in the right order.
+      // Now that we have view mode on the block form, place the fields
+      // in the right order.
       $element["view_mode"]["#weight"] = 2;
       $element["field_accordion_type"]["#weight"] = 3;
       $element["field_uiowa_collection_items"]["#weight"] = 4;
@@ -742,6 +765,28 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       // unless we're editing a block with existing content.
       if (isset($element['field_uiowa_cta_summary']) && empty($element['field_uiowa_cta_summary']['widget'][0]['#default_value'])) {
         $element['field_uiowa_cta_summary']['widget'][0]['#format'] = 'plain_text';
+      }
+      break;
+
+    case 'inline_block:uiowa_event':
+      /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+      $check = \Drupal::service('uiowa_core.access_checker');
+
+      /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+      $access = $check->access(\Drupal::currentUser()->getAccount());
+
+      if ($access->isForbidden()) {
+        $element["field_uiowa_event_icon"]["widget"][0]["settings"]["style"]['#disabled'] = TRUE;
+        $element["field_uiowa_event_icon"]["widget"][0]["settings"]["size"]['#disabled'] = TRUE;
+        $element["field_uiowa_event_icon"]["widget"][0]["settings"]["fixed-width"]['#disabled'] = TRUE;
+        $element["field_uiowa_event_icon"]["widget"][0]["settings"]["border"]['#disabled'] = TRUE;
+        $element["field_uiowa_event_icon"]["widget"][0]["settings"]["invert"]['#disabled'] = TRUE;
+        $element["field_uiowa_event_icon"]["widget"][0]["settings"]["animation"]['#disabled'] = TRUE;
+        $element["field_uiowa_event_icon"]["widget"][0]["settings"]["additional_classes"]['#disabled'] = TRUE;
+        $element["field_uiowa_event_icon"]["widget"][0]["settings"]["duotone"]['#disabled'] = TRUE;
+        $element["field_uiowa_event_icon"]["widget"][0]["settings"]["masking"]['#disabled'] = TRUE;
+        $element["field_uiowa_event_icon"]["widget"][0]["settings"]["power_transforms"]['#disabled'] = TRUE;
+        $element["field_uiowa_event_icon"]["widget"][0]["settings"]["pull"]['#disabled'] = TRUE;
       }
       break;
 
@@ -761,6 +806,28 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
         // Pop the headline and place it in the label.
         $headline = array_shift($element['top']['summary']['fields_info']['#summary']['content']);
         $element['top']['type']['label']['#markup'] = $headline;
+        break;
+
+      case 'uiowa_timeline_item':
+        /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+        $check = \Drupal::service('uiowa_core.access_checker');
+
+        /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+        $access = $check->access(\Drupal::currentUser()->getAccount());
+
+        if ($access->isForbidden()) {
+          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["style"]['#disabled'] = TRUE;
+          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["size"]['#disabled'] = TRUE;
+          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["fixed-width"]['#disabled'] = TRUE;
+          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["border"]['#disabled'] = TRUE;
+          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["invert"]['#disabled'] = TRUE;
+          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["animation"]['#disabled'] = TRUE;
+          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["additional_classes"]['#disabled'] = TRUE;
+          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["duotone"]['#disabled'] = TRUE;
+          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["masking"]['#disabled'] = TRUE;
+          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["power_transforms"]['#disabled'] = TRUE;
+          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["pull"]['#disabled'] = TRUE;
+        }
         break;
 
     }
@@ -846,7 +913,11 @@ function layout_builder_custom_preprocess_block(&$variables) {
 
         // Associate the block's cache tags with each entity so that the
         // appropriate render cache ID is cleared when the block changes.
-        $entity->addCacheTags($variables['content']['#cache']['tags']);
+        $cache_tags = $block->getCacheTags();
+        $entity->addCacheTags($cache_tags);
+        // Grab a fresh copy of the node.
+        $id = $entity->id();
+        Cache::invalidateTags(['node:' . $id]);
 
         // Construct the entity teaser markup manually to pass in the heading
         // size variable for the template and append it to the block content.
@@ -881,7 +952,8 @@ function layout_builder_custom_preprocess_media(&$variables) {
   switch ($media->bundle()) {
     case 'image':
       $referring_item = $media->_referringItem;
-      // So far, only way to get media viewmode switching lb block > view > node > media deep.
+      // So far, only way to get media viewmode switching lb
+      // block > view > node > media deep.
       if ($referring_item) {
         /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
         $referring_field = $referring_item->getParent();
@@ -956,7 +1028,7 @@ function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
     $item_classes = [
       'card_media_position' => 'card--media-right',
     ];
-    $item_media_classes = [];
+
     foreach ($row_styles as $style_id) {
       // Account for incorrectly configured component configuration which may
       // have a NULL style ID. We cannot pass NULL to the storage handler or
@@ -995,7 +1067,8 @@ function layout_builder_custom_views_plugins_display_alter(&$displays) {
  * Implements hook_views_pre_render().
  */
 function layout_builder_custom_views_pre_render(ViewExecutable $view) {
-  // Hotfix shim to not display exposed blocks, necessary because of the hotfix above.
+  // Hotfix shim to not display exposed blocks, necessary because
+  // of the hotfix above.
   // @todo Remove this exception when these view displays are removed.
   $display = $view->getDisplay();
   $exceptions = [

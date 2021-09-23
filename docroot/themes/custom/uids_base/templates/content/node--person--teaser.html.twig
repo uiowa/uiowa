@@ -74,14 +74,17 @@
 {%
   set classes = [
   'card--list',
-  'card--media-right',
+  'card--media-left',
   'card--person-teaser',
 ]
 %}
 
-{% set headline_level = heading_size ?: 'h3' %}
+{% set headline_level = 'h3 '%}
 {% if view %}
   {% set headline_level = view.display_handler.getOption('heading_size') %}
+{% endif %}
+{% if heading_size %}
+  {% set headline_level = heading_size %}
 {% endif %}
 
 {{ attach_library('classy/node') }}
@@ -91,7 +94,7 @@
 {% set person_card = {
   'attributes': attributes.addClass(classes),
   'card_image': content.field_image | render,
-  'card_text': content.field_teaser | render,
+  'card_text':  content | without('field_image', 'links', 'field_person_credential', 'field_person_position', 'field_person_email', 'field_person_phone') | render,
   'card_subtitle': content.field_person_position | render,
   'card_date': content.field_person_email | render,
   'card_tag': content.field_person_phone | render,
@@ -102,6 +105,15 @@
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with person_card only %}
+  {% block card_img %}
+    {% if card_image is not empty %}
+      {{ parent() }}
+    {% else %}
+      <div {{ media_attributes.addClass(media_styles, media_sizes, 'card__media') }}>
+        <div class="img--empty">&nbsp;</div>
+      </div>
+    {% endif %}
+  {% endblock %}
   {% block card_tag %}
     {% if card_tag is not empty %}
       <div class="card__date">
@@ -114,6 +126,11 @@
       <div class="card__date">
         {{ card_date }}
       </div>
+    {% endif %}
+  {% endblock %}
+  {% block card_content %}
+    {% if card_text is not empty %}
+      <div class="card__description">{{ card_text }}</div>
     {% endif %}
   {% endblock %}
 {% endembed %}

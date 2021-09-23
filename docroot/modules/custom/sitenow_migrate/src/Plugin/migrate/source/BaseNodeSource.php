@@ -2,7 +2,6 @@
 
 namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
-use Drupal\Component\Utility\Html;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Entity\EntityTypeManager;
@@ -14,6 +13,7 @@ use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
 use Drupal\node\Plugin\migrate\source\d7\Node;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\smart_trim\Truncate\TruncateHTML;
 
 /**
  * Provides base node source abstract class with additional functionality.
@@ -88,54 +88,6 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
   }
 
   /**
-   * Extract a plain text summary from a block of text.
-   *
-   * @todo Use smart_trim for this.
-   *
-   * @param string $text
-   *   The text to convert to a trimmed plain text version.
-   *
-   * @return string
-   *   The plain text string.
-   */
-  protected function extractSummaryFromText(string $text) {
-    // Strip out any HTML, decode special characters and replace spaces.
-    $new_summary = Html::decodeEntities($text);
-    $new_summary = str_replace('&nbsp;', ' ', $new_summary);
-    // Also want to remove any excess whitespace on the left
-    // that might cause weird spacing for our summaries.
-    $new_summary = ltrim(strip_tags($new_summary));
-
-    $new_summary = substr($new_summary, 0, 200);
-
-    $looper = TRUE;
-
-    // Shorten the string until we reach a natural(ish) breaking point.
-    while ($looper && strlen($new_summary) > 0) {
-      switch (substr($new_summary, -1)) {
-
-        case '.':
-        case '!':
-        case '?':
-          $looper = FALSE;
-          break;
-
-        case ';':
-        case ':':
-        case '"':
-          $looper = FALSE;
-          $new_summary = $new_summary . '...';
-          break;
-
-        default:
-          $new_summary = substr($new_summary, 0, -1);
-      }
-    }
-
-    return $new_summary;
-  }
-
-  /**
    * Fetch additional multi-value fields from our database.
    *
    * @param \Drupal\migrate\Row $row
@@ -152,7 +104,7 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
           ->condition('entity_id', $nid, '=')
           ->execute()
           ->fetchCol());
-        unset($field);
+        $field = NULL;
       }
     }
   }
@@ -211,17 +163,12 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
       drupal_static_reset();
 
       // Entity storage can blow up with caches so clear them out.
-      $manager = $this->entityTypeManager;
-      foreach ($manager->getDefinitions() as $id => $definition) {
-        $manager
-          ->getStorage($id)
-          ->resetCache();
-      }
+      \Drupal::service('entity.memory_cache')->deleteAll();
 
       // Run garbage collector to further reduce memory.
       gc_collect_cycles();
-      return memory_get_usage();
     }
+    return memory_get_usage();
   }
 
   /**
@@ -229,17 +176,82 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
    *
    * @param array $field
    *   A text field array that includes value, format and summary keys.
+   * @param int $length
+   *   The desired summary length, if new summaries are to be created.
    *
    * @return string
    *   The summary if set or an extraction of the body value if not.
    */
-  public function getSummaryFromTextField(array $field): string {
+  public function getSummaryFromTextField(array $field, int $length = 400): string {
     if (empty($field[0]['summary'])) {
-      return $this->extractSummaryFromText($field[0]['value']);
+      return $this->extractSummaryFromText($field[0]['value'], $length);
     }
     else {
       return $field[0]['summary'];
     }
+  }
+
+  /**
+   * Extract a plain text summary from a block of text.
+   *
+   * @param string $output
+   *   The text to convert to a trimmed plain text version.
+   * @param int $length
+   *   The desired summary length.
+   *
+   * @return string
+   *   The plain text string.
+   */
+  protected function extractSummaryFromText(string $output, int $length = 400) {
+    // The following is the processing from
+    // Drupal\smart_trim\Plugin\Field\FieldFormatter.
+    // Strip caption.
+    $output = preg_replace('/<figcaption[^>]*>.*?<\/figcaption>/is', ' ', $output);
+
+    // Strip script.
+    $output = preg_replace('/<script[^>]*>.*?<\/script>/is', ' ', $output);
+
+    // Strip style.
+    $output = preg_replace('/<style[^>]*>.*?<\/style>/is', ' ', $output);
+
+    // Strip tags.
+    $output = strip_tags($output);
+
+    // Strip out line breaks.
+    $output = preg_replace('/\n|\r|\t/m', ' ', $output);
+
+    // Strip out non-breaking spaces.
+    $output = str_replace('&nbsp;', ' ', $output);
+    $output = str_replace("\xc2\xa0", ' ', $output);
+
+    // Strip out extra spaces.
+    $output = trim(preg_replace('/\s\s+/', ' ', $output));
+
+    $truncate = new TruncateHTML();
+
+    // Truncate to 400 characters with an ellipses.
+    $output = $truncate->truncateChars($output, $length, '...');
+
+    return $output;
+  }
+
+  /**
+   * Return the nid of the last-most migrated node.
+   *
+   * @return int
+   *   The node id of the last-most migrated node.
+   */
+  public function getLastMigrated() {
+    $db = \Drupal::database();
+    if (!$db->schema()->tableExists('migrate_map_' . $this->migration->id())) {
+      return 0;
+    }
+    $last_migrated = $db->select('migrate_map_' . $this->migration->id(), 'm')
+      ->fields('m', ['sourceid1'])
+      ->orderBy('sourceid1', 'DESC')
+      ->execute()
+      ->fetch();
+    return $last_migrated->sourceid1 ?? 0;
   }
 
 }

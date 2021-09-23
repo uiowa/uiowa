@@ -1,0 +1,40 @@
+@import "../../../../../themes/custom/uids_base/uids/assets/scss/_variables.scss";
+@import "../../../../../themes/custom/uids_base/uids/assets/scss/_utilities.scss";
+@import "../../../../../themes/custom/uids_base/uids/assets/scss/_grid.scss";
+
+.block-views-blockunits-block-contact-info {
+  .views-element-container {
+    margin-top: 0;
+    .view-id-block_contact_info,
+    .view-id-units {
+      a {
+        text-decoration: none;
+      }
+      .field__label {
+        text-transform: uppercase;
+        &:after {
+          content: "";
+        }
+      }
+      .field__item {
+        display: inline;
+      }
+      .h5:not(:first-child), h5:not(:first-child) {
+        margin: $sm 0 $md;
+      }
+    }
+  }
+
+  .view-display-id-block_contact_info {
+    display: flex;
+    flex-wrap: wrap;
+
+    .view-header {
+      width: 100%;
+    }
+    .view-content,
+    .view-empty  {
+      flex: 1 0 0;
+    }
+  }
+}

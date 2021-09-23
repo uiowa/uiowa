@@ -9,6 +9,20 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\FileInterface;
 
 /**
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ */
+function sitenow_media_wysiwyg_field_widget_panopto_url_widget_form_alter(&$element, FormStateInterface $form_state, $context) {
+  // There is a second help message that adds more confusion to the link field.
+  // @see: LinkWidget::formElement().
+  // Extra checking due to "Cannot use object of type
+  // Drupal\Core\StringTranslation\TranslatableMarkup as array"
+  // error when editing field.
+  if (isset($element['uri']['#description']) && is_array($element['uri']['#description']) && isset($element['uri']['#description']['#items'][1])) {
+    unset($element['uri']['#description']['#items'][1]);
+  }
+}
+
+/**
  * Implements hook_editor_js_settings_alter().
  */
 function sitenow_media_wysiwyg_editor_js_settings_alter(array &$settings) {
@@ -85,76 +99,50 @@ function sitenow_media_wysiwyg_file_presave(FileInterface $file) {
   // FMDM only parses jpeg correctly for EXIF, not TIFF. Luckily,
   // should see very few TIFF orientation issues.
   if ($file->isNew() && $file->getMimeType() == 'image/jpeg') {
+    /** @var \Drupal\file_mdm\FileMetadataManager $fmdm */
     $fmdm = \Drupal::service('file_metadata_manager');
-    $metadata = $fmdm->uri($file->getFileUri());
-    $orientation = $metadata->getMetaData('exif', 'Orientation');
-    if ($orientation) {
 
-      // EXIF: 1 is standard.
-      // 6 and 8 are rotated 90, cw and ccw respectively
-      // 5 and 7 are 6 and 8, but then flipped over the x-axis
-      // 3 is rotated 180
-      // 2 and 4 are 1 and 3, but then flipped over the x-axis
-      // Currently not addressing any flipping.
-      switch ($orientation['value']) {
-        case 5:
-        case 6:
-          $degrees = 90;
-          break;
+    if ($metadata = $fmdm->uri($file->getFileUri())) {
+      if ($orientation = $metadata->getMetaData('exif', 'Orientation')) {
+        // EXIF: 1 is standard.
+        // 6 and 8 are rotated 90, cw and ccw respectively
+        // 5 and 7 are 6 and 8, but then flipped over the x-axis
+        // 3 is rotated 180
+        // 2 and 4 are 1 and 3, but then flipped over the x-axis
+        // Currently not addressing any flipping.
+        switch ($orientation['value']) {
+          case 5:
+          case 6:
+            $degrees = 90;
+            break;
 
-        case 7:
-        case 8:
-          $degrees = 270;
-          break;
+          case 7:
+          case 8:
+            $degrees = 270;
+            break;
 
-        case 3:
-        case 4:
-          $degrees = 180;
-          break;
+          case 3:
+          case 4:
+            $degrees = 180;
+            break;
 
-        default:
-          $degrees = 0;
-      }
-      if ($degrees != 0) {
-        $image = \Drupal::service('image.factory')->get($file->getFileUri());
+          default:
+            $degrees = 0;
+        }
 
-        // Replace the old EXIF data, so that downloaded images or other
-        // render methods won't overcorrect.
-        $metadata->setMetadata('exif', 'Orientation', 1);
-        $metadata->saveMetadataToFile('exif');
-        // Save only if rotate() completed successfully.
-        if ($image->rotate($degrees)) {
-          $image->save();
+        if ($degrees != 0) {
+          $image = \Drupal::service('image.factory')->get($file->getFileUri());
+
+          // Replace the old EXIF data, so that downloaded images or other
+          // render methods won't overcorrect.
+          $metadata->setMetadata('exif', 'Orientation', 1);
+          $metadata->saveMetadataToFile('exif');
+          // Save only if rotate() completed successfully.
+          if ($image->rotate($degrees)) {
+            $image->save();
+          }
         }
       }
     }
   }
-}
-
-/**
- * Implements hook_oembed_providers_alter().
- */
-function sitenow_media_wysiwyg_oembed_providers_alter(array &$providers) {
-  // Add "University of Iowa" Kalutra/MediaSpace provider.
-  $providers[] = [
-    'provider_name' => 'University of Iowa',
-    'provider_url' => 'http://mediaspace.uiowa.edu',
-    'endpoints' => [
-      [
-        'schemes' => [
-          'http://mediaspace.uiowa.edu/*',
-          'https://mediaspace.uiowa.edu/*',
-        ],
-        'url' => 'http://mediaspace.uiowa.edu/oembed',
-        'discovery' => 'true',
-      ],
-    ],
-  ];
-}
-
-/**
- * Implements hook_media_source_info_alter().
- */
-function sitenow_media_wysiwyg_media_source_info_alter(array &$sources) {
-  $sources["oembed:video"]["providers"][] = 'University of Iowa';
 }

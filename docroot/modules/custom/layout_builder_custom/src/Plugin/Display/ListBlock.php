@@ -141,6 +141,9 @@ class ListBlock extends CoreBlock {
     $allow_settings = array_filter($this->getOption('allow'));
     $block_configuration = $block->getConfiguration();
 
+    // Hide headline child form elements for table displays.
+    $has_children = !($this->view->getStyle()->getPluginId() == 'table');
+
     // @todo Possibly wire this up to the views title?
     $form['headline'] = HeadlineHelper::getElement([
       'headline' => $block_configuration['headline']['headline'] ?? NULL,
@@ -148,7 +151,7 @@ class ListBlock extends CoreBlock {
       'heading_size' => $block_configuration['headline']['heading_size'] ?? 'h2',
       'headline_style' => $block_configuration['headline']['headline_style'] ?? 'default',
       'child_heading_size' => $block_configuration['headline']['child_heading_size'] ?? 'h3',
-    ]);
+    ], $has_children);
     $form['headline']['#weight'] = 1;
 
     // Modify "Items per page" block settings form.
@@ -200,6 +203,10 @@ class ListBlock extends CoreBlock {
       foreach ($customizable_filters as $filter_id) {
         /** @var \Drupal\views\Plugin\views\filter\FilterPluginBase $filter */
         $filter = $filter_plugins[$filter_id];
+        // If an identifier is set for the filter, use that as the $filter_id.
+        if (!empty($filter->options['expose']['identifier'])) {
+          $filter_id = $filter->options['expose']['identifier'];
+        }
         $filter->buildExposedForm($form['override']['exposed_filters'], $subform_state);
 
         // Set the label and default values of the form element, based on the
@@ -514,7 +521,7 @@ class ListBlock extends CoreBlock {
         '#headline_style' => $headline['headline_style'],
       ];
       if (empty($headline['headline'])) {
-        $child_heading_size = $headline['child_heading_size'];
+        $child_heading_size = $headline['child_heading_size'] ?? 'h3';
       }
       else {
         $child_heading_size = HeadlineHelper::getHeadingSizeUp($headline['heading_size']);
@@ -617,7 +624,8 @@ class ListBlock extends CoreBlock {
    * {@inheritdoc}
    */
   public function displaysExposed(): bool {
-    // Hotfix shim to not display exposed blocks, necessary because of the hotfix above.
+    // Hotfix shim to not display exposed blocks, necessary because of
+    // the hotfix above.
     // @todo Remove this exception when these view displays are removed.
     $display = $this->view->getDisplay();
     $exceptions = [

@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: iwppublishing-gallery.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: iwppublishing-gallery
+  human_name: publishing-gallery.iwp.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: iwppublishing-gallery.prod
+drupal:
+  db:
+    database: publishing_gallery_iwp_uiowa_edu
+uiowa:
+  requester: sadamshiett

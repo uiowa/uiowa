@@ -60,25 +60,12 @@
   margin: .5rem 0 0 0;
 }
 
-.bg--black,
-.bg-pattern--brain-black,
-.bg-dark {
-  .cta__wrapper:not(.bg--black):not(.bg-pattern--brain-black):not(.bg--gold):not(.bg--gray) {
-    .bold-headline {
-      color: $primary;
-    }
 
-    .cta__summary {
-      color: $white;
-    }
-  }
-}
 
-.cta__wrapper.bg--black .bttn,
-.cta__wrapper.bg-pattern--brain-black .bttn {
+.cta__wrapper[class*="bg--black"] .bttn {
   background: $primary;
 }
 
-.cta__wrapper.bg--gold .bttn {
+.cta__wrapper[class*="bg--gold"] .bttn {
   color: $secondary;
 }

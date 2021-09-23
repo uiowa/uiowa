@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: sitesstartalkchinese.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sitesstartalkchinese
+  human_name: startalkchinese.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesstartalkchinese.prod
+drupal:
+  db:
+    database: startalkchinese_sites_uiowa_edu
+uiowa:
+  requester: cfrances

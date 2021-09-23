@@ -1,0 +1,85 @@
+<?php
+
+/**
+ * @file
+ * Contains grad_srop.module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Implements hook_entity_presave().
+ */
+function grad_thesis_defense_entity_presave(EntityInterface $entity) {
+  switch ($entity->bundle()) {
+    case 'thesis_defense':
+      // Setting the title with the first/last name values.
+      $output = $entity->get('field_person_first_name')->value . " " . $entity->get('field_person_last_name')->value;
+      $entity->setTitle($output);
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function grad_thesis_defense_theme($existing, $type, $theme, $path) {
+  return [
+    'field__field_thesis_defense_date' => [
+      'template' => 'field--node--field-thesis-defense-date',
+      'base hook' => 'field',
+    ],
+    'field__field_thesis_defense_location' => [
+      'template' => 'field--node--field-thesis-defense-location',
+      'base hook' => 'field',
+    ],
+    'node__thesis_defense__teaser' => [
+      'template' => 'node--thesis-defense--teaser',
+      'base hook' => 'node',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function grad_thesis_defense_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    // Node form modifications.
+    case 'node_thesis_defense_edit_form':
+    case 'node_thesis_defense_form':
+      // Our submit handler must execute before the layout_builder_styles one
+      // so it can take advantage of the logic there.
+      array_unshift($form['actions']['submit']['#submit'], '_grad_thesis_defense_thesis_defense_submit');
+      // @todo Allow for duration of 0 with no end date.
+      // Related issue: https://github.com/uiowa/uiowa/issues/2899.
+      // Initially, we checked if field_thesis_defense_date was set and if so,
+      // access was set to FALSE for the field end_value and duration. This
+      // threw an error when saving the form though unfortunately.
+      break;
+  }
+}
+
+/**
+ * Custom form submit function for thesis_defense.
+ *
+ * If the start and end date don't match, set them to the same value.
+ *
+ * @param array $form
+ *   The form element.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
+ */
+function _grad_thesis_defense_thesis_defense_submit(array &$form, FormStateInterface $form_state) {
+  if ($date_field = $form_state->getValue(['field_thesis_defense_date', 0])) {
+    $start = $date_field['value'];
+    $end = $date_field['end_value'];
+
+    // If these values don't match, make them match.
+    if ($end->getPhpDateTime() != $start->getPhpDateTime()) {
+      $form_state->setValue(['field_thesis_defense_date', 0, 'end_value'], $start);
+    }
+  }
+}

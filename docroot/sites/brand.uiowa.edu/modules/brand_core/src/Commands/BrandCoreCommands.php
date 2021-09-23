@@ -2,6 +2,12 @@
 
 namespace Drupal\brand_core\Commands;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Datetime\DateFormatterInterface;
+use Drupal\Core\Logger\LoggerChannelTrait;
+use Drupal\Core\Mail\MailManagerInterface;
+use Drupal\Core\Session\AccountSwitcherInterface;
+use Drupal\Core\Session\UserSession;
 use Drush\Commands\DrushCommands;
 use Drupal\Core\Url;
 
@@ -13,6 +19,54 @@ use Drupal\Core\Url;
  * of the services file to use.
  */
 class BrandCoreCommands extends DrushCommands {
+  use LoggerChannelTrait;
+
+  /**
+   * The account_switcher service.
+   *
+   * @var \Drupal\Core\Session\AccountSwitcherInterface
+   */
+  protected $accountSwitcher;
+
+  /**
+   * The date_formatter service.
+   *
+   * @var \Drupal\Core\Datetime\DateFormatterInterface
+   */
+  protected $dateFormatter;
+
+  /**
+   * The plugin.manager.mail service.
+   *
+   * @var \Drupal\Core\Mail\MailManagerInterface
+   */
+  protected $mailManager;
+
+  /**
+   * The config.factory service.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * Drush command constructor.
+   *
+   * @param \Drupal\Core\Session\AccountSwitcherInterface $accountSwitcher
+   *   The account_switcher service.
+   * @param \Drupal\Core\Datetime\DateFormatterInterface $dateFormatter
+   *   The date_formatter service.
+   * @param \Drupal\Core\Mail\MailManagerInterface $mailManager
+   *   The plugin.manager.mail service.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   *   The config.factory service.
+   */
+  public function __construct(AccountSwitcherInterface $accountSwitcher, DateFormatterInterface $dateFormatter, MailManagerInterface $mailManager, ConfigFactoryInterface $configFactory) {
+    $this->accountSwitcher = $accountSwitcher;
+    $this->dateFormatter = $dateFormatter;
+    $this->mailManager = $mailManager;
+    $this->configFactory = $configFactory;
+  }
 
   /**
    * Triggers the Lockup Digest.
@@ -25,7 +79,10 @@ class BrandCoreCommands extends DrushCommands {
    *  Ideally this is done as a crontab that is only sent once a day.
    */
   public function lockupDigest($options = ['msg' => FALSE]) {
+    // Switch to the admin user to get hidden view result.
+    $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
     $view = views_get_view_result('lockup_moderation', 'block_review');
+
     if (!empty($view)) {
       $results = count($view);
       $params['lockups'] = [];
@@ -33,39 +90,45 @@ class BrandCoreCommands extends DrushCommands {
       foreach ($view as $row) {
         $entity = $row->_entity;
         $timestamp = $entity->get('revision_timestamp');
-        $date = \Drupal::service('date.formatter')->format($timestamp->value, 'short', NULL, 'America/Chicago');
+        $date = $this->dateFormatter->format($timestamp->value, 'short', NULL, 'America/Chicago');
         $params['lockups'][] = $entity->getTitle() . ' - Last updated: ' . $date;
       }
+
       $label = $results > 1 ? 'lockups' : 'lockup';
+
       // Prepare params for digest email.
-      $mailManager = \Drupal::service('plugin.manager.mail');
       $params['label'] = $label;
       $params['results'] = (string) $results;
       global $base_url;
       $url_options = [
         'query' => ['destination' => '/admin/content/lockups'],
       ];
+
       $params['login'] = Url::fromUri($base_url . '/saml/login', $url_options)->toString();
-      $system_site_config = \Drupal::config('system.site');
-      $site_email = $system_site_config->get('mail');
-      $result = $mailManager->mail('brand_core', 'lockup-review-digest', $site_email, 'en', $params, NULL, TRUE);
+      $site_email = $this->configFactory->get('system.site')->get('mail');
+      $result = $this->mailManager->mail('brand_core', 'lockup-review-digest', $site_email, 'en', $params, NULL, TRUE);
+
       if ($result['result'] !== TRUE) {
-        \Drupal::logger('brand_core')->error('Lockup Review Digest Not Sent');
+        $this->getLogger('brand_core')->error('Lockup Review Digest Not Sent');
         $this->output()->writeln('Lockup Review Digest Not Sent');
       }
       else {
-        \Drupal::logger('brand_core')->notice('Lockup Review Digest Sent');
+        $this->getLogger('brand_core')->notice('Lockup Review Digest Sent');
         $this->output()->writeln('Lockup Review Digest Sent');
       }
     }
     else {
-      \Drupal::logger('brand_core')->notice('Lockup Review Digest - No items to review');
+      $this->getLogger('brand_core')->notice('Lockup Review Digest - No items to review');
       $this->output()->writeln('Lockup Review Digest - No items to review');
       return;
     }
+
     if ($options['msg']) {
       $this->output()->writeln('Hey! Way to go above and beyond!');
     }
+
+    // Switch user back.
+    $this->accountSwitcher->switchBack();
   }
 
 }

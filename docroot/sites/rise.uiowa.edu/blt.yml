@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: rise.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: rise
+  human_name: rise.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: rise.prod
+drupal:
+  db:
+    database: rise_uiowa_edu
+uiowa:
+  requester: asukalsk

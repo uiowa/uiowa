@@ -35,6 +35,16 @@
   }
 }
 
+
+// Adjust small padding for layout banner headers
+.layout--onecol--background.banner--small {
+  &::before {
+    float: left;
+    padding-top: 17.75%;
+    content: '';
+  }
+}
+
 // Layout specific sizing overrides
 .layout--threecol,
 .layout--fourcol,
@@ -43,23 +53,31 @@
 .layout--twocol--33-67 .layout__region--first,
 .layout--twocol--67-33 .layout__region--second {
   .banner {
-
-    .bold-headline {
-      @include breakpoint(menu) {
-        font-size: 2.4rem;
-      }
-
-      &.bold-headline--highlight {
-        @include breakpoint(menu) {
-          font-size: 1.8rem;
-        }
-      }
+    // Set large heading size
+    .headline--large.headline--serif,
+    .headline--large {
+      font-size: 2.6rem;
+      font-size: containerClamp(2.6rem, 2.6rem);
     }
 
-    .banner__content {
-      @include breakpoint(sm) {
-        padding: 2rem;
-      }
+    // Set medium heading size
+    .headline--medium.headline--serif,
+    .headline--medium {
+      font-size: 2.2rem;
+      font-size: containerClamp(2.1rem, 2.1rem);
+    }
+
+    // Set small heading size
+    .headline--small.headline--serif,
+    .headline--small {
+      font-size: 1.8rem;
+      font-size: containerClamp(1.6rem, 1.6rem);
+    }
+  }
+
+  .banner__content {
+    @include breakpoint(sm) {
+      padding: 2rem;
     }
   }
 }
@@ -134,14 +152,10 @@
     }
   }
 
-// Set larger heading size for large banner only
-.banner--large,
-.layout--title.banner {
-  .bold-headline {
-    @include breakpoint(md) {
-      font-size: calc(100% + 3.5vw);
-    }
-  }
+// Set large heading size for page titles in banner
+.layout--title.banner .bold-headline {
+  font-size: 4.7rem;
+  font-size: containerClamp(2.5rem, 4.7rem);
 }
 
 .banner__image {
@@ -176,4 +190,66 @@
 [class*="bg--gold"] .banner.bg-pattern--brain-black .bttn--primary,
 [class*="bg--gold"] .banner[class*="bg--black"] .bttn--primary {
   color: $primary;
+}
+
+// Default padding fixes
+.layout:not([class*="bg-"]) {
+  .banner.bg--white {
+    .banner__content {
+      padding: 1.5rem 0;
+    }
+  }
+}
+
+.layout.bg--black {
+  .banner.bg--black {
+    .banner__content {
+      padding: 1.5rem 0;
+    }
+  }
+}
+
+.layout.bg--gray {
+  .banner.bg--gray {
+    .banner__content {
+      padding: 1.5rem 0;
+    }
+  }
+}
+
+.layout.bg--gold {
+  .banner.bg--gold {
+    .banner__content {
+      padding: 1.5rem 0;
+    }
+  }
+}
+
+.layout[class*="bg--gold--pattern--brain"] {
+  .banner[class*="bg--gold--pattern--brain"] {
+    .banner__content {
+      padding: 1.5rem 0;
+    }
+  }
+}
+
+.layout[class*="bg--white--pattern--brain"] {
+  .banner[class*="bg--white--pattern--brain"] {
+    .banner__content {
+      padding: 1.5rem 0;
+    }
+  }
+}
+
+.layout[class*="bg--black--pattern--brain"] {
+  .banner[class*="bg--black--pattern--brain"] {
+    .banner__content {
+      padding: 1.5rem 0;
+    }
+  }
+}
+
+//Button hover fix for gold backgrounds
+.banner[class*="bg--gold"] .bttn--primary::after {
+  background-color: #fff;
 }

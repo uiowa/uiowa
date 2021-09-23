@@ -1,7 +1,55 @@
 @import "uids/assets/scss/_variables.scss";
 @import "uids/assets/scss/_utilities.scss";
 
-@media screen and (min-width: 40em) {
+.layout--fourcol {
+  .layout__region {
+    height: 100%;
+  }
+  .layout__spacing_container {
+    @include grid-base;
+    @include breakpoint(sm) {
+      // @todo Move to UIDS as a four column mixin.
+      gap: $desktop-width-gutter;
+      grid-template-columns: repeat(auto-fill, minmax(21%, 1fr));
+    }
+  }
+  &.column-spacing__removed {
+    .layout__spacing_container {
+      gap: 0;
+      column-gap: 0;
+    }
+  }
+}
+
+@media (min-width: 0em) and (max-width: 84.375em) {
+  // Special settings used for the vertical videos section on uiowa.edu home page.
+  .layout--fourcol.grid--1-3 .layout__spacing_container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .layout--fourcol.grid--1-3  .layout__region--first {
+    grid-area: 1 / 1 / 2 / 5;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .layout--fourcol.grid--1-3  .layout__region--second {
+    grid-area: 2 / 1 / 6 / 2;
+  }
+  .layout--fourcol.grid--1-3  .layout__region--third {
+    grid-area: 2 / 2 / 6 / 3;
+  }
+  .layout--fourcol.grid--1-3  .layout__region--fourth {
+    grid-area: 2 / 3 / 6 / 4;
+  }
+  // Events padding for uiowa.edu home page.
+  .layout--fourcol.grid--1-3.page__container--edge .layout__region:not(.layout__region--first) {
+    padding: 2rem;
+  }
+}
+
+// @todo remove when IE11 support is dropped.
+// IE 11
+@media all and (-ms-high-contrast: none),
+(-ms-high-contrast: active) {
 
   .layout--fourcol,
   .layout--fourcol .layout__spacing_container {
@@ -9,16 +57,13 @@
     flex-basis: 100%;
   }
 
-  .layout--fourcol {
-    .layout__region {
-      flex: 0 1 100%;
-      display: flex;
-      flex-wrap: wrap;
-      align-content: unset;
-      min-width: 0;
-    }
+  .layout--fourcol .layout__region {
+    flex: 0 1 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: unset;
+    min-width: 0;
   }
-
 
   .layout--fourcol .layout__region {
     flex: 0 1 24.25%;
@@ -46,69 +91,5 @@
   .layout--fourcol.column-spacing__removed .layout__region--third {
     margin-left: 0;
     margin-right: 0;
-  }
-}
-
-@media (min-width: 40em) and (max-width: 68.125em) {
-
-  .layout--fourcol,
-  .layout--fourcol .layout__spacing_container {
-    flex-wrap: wrap;
-  }
-
-  .layout--fourcol .layout__region {
-    flex: 0 1 46.50%;
-    margin-bottom: 3rem;
-  }
-
-  .layout--fourcol .layout__region--second {
-    margin-left: 6%;
-    margin-right: 0;
-  }
-
-  .layout--fourcol .layout__region--third {
-    margin-left: 0;
-    margin-right: 6%;
-  }
-}
-
-@media (min-width: 0em) and (max-width: 40em) {
-
-  .layout--fourcol.grid--1-3 .layout__region--first,
-  .layout--fourcol.grid--1-3.column-spacing__removed .layout__region--first {
-    flex-basis: 100%;
-    text-align: center;
-    margin-bottom: 3rem;
-  }
-}
-
-@media (min-width: 40em) and (max-width: 84.375em) {
-
-  .layout--fourcol.grid--1-3,
-  .layout--fourcol.grid--1-3 .layout__spacing_container {
-    flex-wrap: wrap;
-  }
-
-  .layout--fourcol.grid--1-3 .layout__region,
-  .layout--fourcol.grid--1-3.column-spacing__removed .layout__region {
-    flex: 0 1 31.3%;
-    margin-bottom: 3rem;
-  }
-
-  .layout--fourcol.grid--1-3 .layout__region--first,
-  .layout--fourcol.grid--1-3.column-spacing__removed .layout__region--first {
-    flex-basis: 100%;
-    text-align: center;
-    margin-bottom: 3rem;
-  }
-
-  .layout--fourcol.grid--1-3 .layout__region--second {
-    margin-left: 0;
-    margin-right: 0;
-  }
-
-  .layout--fourcol.grid--1-3 .layout__region--third {
-    margin-left: 3%;
-    margin-right: 3%;
   }
 }

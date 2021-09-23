@@ -551,4 +551,30 @@ EOD;
     $this->setSchemaVersion(1014);
   }
 
+  /**
+   * Update 1015.
+   *
+   * @Update(
+   *   version = "1015",
+   *   description = "Delete empty config split directories."
+   * )
+   */
+  protected function update1015() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+
+    foreach ($sites as $site) {
+      $config_dir = "{$root}/config/{$site}";
+
+      if (!file_exists("{$config_dir}/.htaccess")) {
+        $empty[] = $site;
+        $this->taskFilesystemStack()
+          ->remove($config_dir)
+          ->run();
+      }
+    }
+
+    $this->setSchemaVersion(1015);
+  }
+
 }

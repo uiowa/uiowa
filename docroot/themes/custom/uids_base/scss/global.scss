@@ -5,6 +5,10 @@ $imgpath: '../../uids/assets/images';
 @import "../uids/assets/scss/_base.scss";
 
 
+.block--word-break a {
+  word-break: break-word;
+}
+
 // Flex basis for all blocks and views
 
 .layout__region {
@@ -18,12 +22,26 @@ $imgpath: '../../uids/assets/images';
   .stat {
     flex-basis: 100%;
   }
-  .events-empty {
-    margin-right: 10px;
+}
+
+// set equal height columns
+.layout {
+  .layout__region--first,
+  .layout__region--second,
+  .layout__region--third,
+  .layout__region--fourth {
+    @include breakpoint(sm) {
+      display: grid;
+    }
+  }
+  &.section-alignment__start {
+    .layout__region {
+      display: inherit;
+    }
   }
 }
 
-// Unset equal height columns
+  // Unset equal height columns
 .section-alignment__start {
   .layout__spacing_container {
     align-items: flex-start;
@@ -38,7 +56,7 @@ $imgpath: '../../uids/assets/images';
   // This will be overridden by a subsequent style for 1+n containers.
   padding-top: $mobile-width-gutter;
 
-  @include breakpoint(container) {
+  @include breakpoint(sm) {
     padding-top: $desktop-width-gutter;
     padding-bottom: $desktop-width-gutter;
   }
@@ -140,6 +158,12 @@ $imgpath: '../../uids/assets/images';
       padding: 6rem;
     }
   }
+}
+
+// For sidebars: remove padding from adjacent blocks if they are the same
+.block[class*="bg--gray"].block-padding__all + .block[class*="bg--gray"].block-padding__all {
+  margin-top: -1.5rem;
+  padding-top: 0;
 }
 
 // default spacing for pages without layout builder
@@ -265,6 +289,9 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   &__all--extra {
     padding: 6rem;
   }
+  &__all--md {
+    padding: 2rem;
+  }
 }
 
 .block-margin {
@@ -296,6 +323,14 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   }
 }
 
+// No results text
+.view-empty,
+.events-empty,
+.uiowa-aggregator-no-results {
+  p {
+    font-size: 1rem;
+  }
+}
 // mobile search
 
 .search-button[aria-expanded="true"] {
@@ -418,16 +453,6 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     }
   }
 }
-
-.views-element-container {
-  @include margin($top: $lg);
-  flex-basis: 100%;
-
-  .views-element-container {
-    margin-top: inherit;
-  }
-}
-
 
 // @todo remove
 

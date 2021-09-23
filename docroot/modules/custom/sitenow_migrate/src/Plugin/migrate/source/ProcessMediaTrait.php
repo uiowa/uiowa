@@ -74,6 +74,22 @@ trait ProcessMediaTrait {
   }
 
   /**
+   * Regex replace for inline files using relative links.
+   *
+   * @param string $content
+   *   Body content that should be checked and updated.
+   *
+   * @return string
+   *   The updated body content with inline replacements.
+   */
+  public function replaceRelLinkedFiles($content) {
+    return preg_replace_callback("|<a href=\"\/sites\/(.*?)\">(.*?)<\/a>|", [
+      $this,
+      'relLinkReplace',
+    ], $content);
+  }
+
+  /**
    * Regex to find Drupal 7 JSON for inline embedded files.
    */
   public function entityReplace($match) {
@@ -87,55 +103,112 @@ trait ProcessMediaTrait {
     $align = isset($file_properties['fields']['alignment']) ? $file_properties['fields']['alignment'] : '';
     $file_data = $this->fidQuery($fid);
 
-    if ($file_data) {
-      $filename = $file_data['filename'];
-      $uuid = $this->getMid($filename)['uuid'];
-      if (!$uuid) {
-        $new_fid = \Drupal::database()->select('file_managed', 'f')
-          ->fields('f', ['fid'])
-          ->condition('f.filename', $filename)
-          ->execute()
-          ->fetchField();
-
-        $meta = [
-          'title' => isset($file_properties['attributes']['title']) ? $file_properties['attributes']['title'] : $filename,
-          'alt' => isset($file_properties['attributes']['alt']) ? $file_properties['attributes']['alt'] : explode('.', $filename)[0],
-        ];
-
-        // If there's no fid in the D8 database,
-        // then we'll need to fetch it from the source.
-        if (!$new_fid) {
-          $uri = $file_data['uri'];
-          $filename_w_subdir = str_replace('public://', '', $uri);
-
-          // Split apart the filename from the subdirectory path.
-          $filename_w_subdir = explode('/', $filename_w_subdir);
-          $filename = array_pop($filename_w_subdir);
-          $subdir = implode('/', $filename_w_subdir) . '/';
-          unset($filename_w_subdir);
-          $new_fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $subdir, $this->getDrupalFileDirectory() . $subdir);
-          if ($new_fid) {
-            $this->createMediaEntity($new_fid, $meta, 1);
-            $uuid = $this->getMid($filename)['uuid'];
-          }
-        }
-        else {
-          $uuid = $this->getMid($filename)['uuid'];
-
-          // And in case we had the file, but not the media entity.
-          if (!$uuid) {
-            $this->createMediaEntity($new_fid, $meta, 1);
-            $uuid = $this->getMid($filename)['uuid'];
-          }
-        }
-      }
-
-      unset($file_data);
-      return isset($uuid) ? $this->constructInlineEntity($uuid, $align) : '';
+    if (!$file_data) {
+      // Failed to find a file, so let's leave the content unchanged.
+      return $match;
     }
 
-    // Failed to find a file, so let's leave the content unchanged.
-    return $match;
+    $filename = $file_data['filename'];
+    $uuid = $this->getMid($filename)['uuid'];
+
+    if (!$uuid) {
+      $new_fid = \Drupal::database()->select('file_managed', 'f')
+        ->fields('f', ['fid'])
+        ->condition('f.filename', $filename)
+        ->execute()
+        ->fetchField();
+
+      $meta = [
+        'title' => isset($file_properties['attributes']['title']) ? $file_properties['attributes']['title'] : $filename,
+        'alt' => isset($file_properties['attributes']['alt']) ? $file_properties['attributes']['alt'] : explode('.', $filename)[0],
+      ];
+
+      // If there's no fid in the D8 database,
+      // then we'll need to fetch it from the source.
+      if (!$new_fid) {
+        $uri = $file_data['uri'];
+        $filename_w_subdir = str_replace('public://', '', $uri);
+
+        // Split apart the filename from the subdirectory path.
+        $filename_w_subdir = explode('/', $filename_w_subdir);
+        $filename = array_pop($filename_w_subdir);
+        $subdir = implode('/', $filename_w_subdir) . '/';
+        $filename_w_subdir = NULL;
+        $new_fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $subdir, $this->getDrupalFileDirectory() . $subdir);
+        if ($new_fid) {
+          $this->createMediaEntity($new_fid, $meta, 1);
+          $uuid = $this->getMid($filename)['uuid'];
+        }
+      }
+      else {
+        $uuid = $this->getMid($filename)['uuid'];
+
+        // And in case we had the file, but not the media entity.
+        if (!$uuid) {
+          $this->createMediaEntity($new_fid, $meta, 1);
+          $uuid = $this->getMid($filename)['uuid'];
+        }
+      }
+    }
+
+    $file_data = NULL;
+    $file_properties = NULL;
+    return isset($uuid) ? $this->constructInlineEntity($uuid, $align) : '';
+
+  }
+
+  /**
+   * Regex to find Drupal 7 JSON for relatively linked embedded files.
+   */
+  public function relLinkReplace($match) {
+    // Filepath minus the /sites is the matched subgroup.
+    $filepath = $match[1];
+    $exploded = explode('/', $filepath);
+    $filename = array_pop($exploded);
+    $filepath = implode('/', $exploded);
+    // Check if we have the file in the D8 database.
+    $file_data = $this->getMid($filename, 'file');
+    $uuid = $file_data['uuid'];
+    $id = $file_data['mid'];
+
+    if (!$uuid) {
+      $new_fid = \Drupal::database()->select('file_managed', 'f')
+        ->fields('f', ['fid'])
+        ->condition('f.filename', $filename)
+        ->execute()
+        ->fetchField();
+
+      $meta = [
+        'title' => $filename,
+        'alt' => explode('.', $filename)[0],
+      ];
+
+      // If there's no fid in the D8 database,
+      // then we'll need to fetch it from the source.
+      if (!$new_fid) {
+
+        // @todo Remove the hardcoding for physics.uiowa.edu/itu.
+        $new_fid = $this->downloadFile($filename, "https://physics.uiowa.edu/sites/" . $filepath . '/', $this->getDrupalFileDirectory());
+        if ($new_fid) {
+          $id = $this->createMediaEntity($new_fid, $meta, 1);
+          $uuid = $this->getMid($filename, 'file')['uuid'];
+        }
+      }
+      else {
+        $uuid = $this->getMid($filename, 'file')['uuid'];
+
+        // And in case we had the file, but not the media entity.
+        if (!$uuid) {
+          $id = $this->createMediaEntity($new_fid, $meta, 1);
+          $uuid = $this->getMid($filename, 'file')['uuid'];
+        }
+      }
+    }
+
+    $file_data = NULL;
+    return isset($uuid) && isset($id) ? $this->constructInlineRelEntity($uuid, $id) .
+      $match[2] .
+      '</a>' : '';
   }
 
   /**
@@ -169,6 +242,28 @@ trait ProcessMediaTrait {
   }
 
   /**
+   * Build the new inline embed entity format for Drupal 8 images.
+   *
+   * @param string $uuid
+   *   The unique identifier for the media to embed.
+   * @param string $id
+   *   The file id for the media to embed.
+   *
+   * @return string
+   *   Returns markup as a plaintext string.
+   */
+  public function constructInlineRelEntity(string $uuid, string $id) {
+    $media = [
+      'data-entity-substitution="media"',
+      'data-entity-type="media"',
+      'data-entity-uuid="' . $uuid . '"',
+      'href="/media/' . $id . '"',
+    ];
+
+    return '<a ' . implode(' ', $media) . '>';
+  }
+
+  /**
    * Simple query to get info on the Drupal 7 file based on fid.
    *
    * @param int $fid
@@ -187,18 +282,48 @@ trait ProcessMediaTrait {
 
   /**
    * Fetch the media uuid based on the provided filename.
+   *
+   * @param string $filename
+   *   The filename.
+   * @param string $type
+   *   The file type. Must be one of the keys in $tables.
+   *
+   * @return array
+   *   An array consisting of mid, uuid for the file. Values false if not found.
    */
-  public function getMid($filename) {
+  public function getMid($filename, $type = 'image') {
+    $tables = [
+      'audio_file' => 'media__field_media_audio_file',
+      'caption' => 'media__field_media_caption',
+      'facebook' => 'media__field_media_facebook',
+      'file' => 'media__field_media_file',
+      'image' => 'media__field_media_image',
+      'instagram' => 'media__field_media_instagram',
+      'oembed_video' => 'media__field_media_oembed_video',
+      'panopto_url' => 'media__field_media_panopto_url',
+      'twitter' => 'media__field_media_twitter',
+      'video_file' => 'media__field_media_video_file',
+    ];
+
     $query = \Drupal::database()->select('file_managed', 'f');
-    $query->join('media__field_media_image', 'fmi', 'f.fid = fmi.field_media_image_target_id');
-    $query->join('media', 'm', 'fmi.entity_id = m.mid');
+    $query->join($tables[$type], 'fm', 'f.fid = ' . 'fm.field_media_' . $type . '_target_id');
+    $query->join('media', 'm', 'fm.entity_id = m.mid');
     $results = $query->fields('m', ['uuid', 'mid'])
       ->condition('f.filename', $filename)
       ->execute()
       ->fetchAssoc();
 
-    unset($query);
-    return $results;
+    $query = NULL;
+
+    if ($results) {
+      return $results;
+    }
+    else {
+      return [
+        'uuid' => FALSE,
+        'mid' => FALSE,
+      ];
+    }
   }
 
   /**
@@ -211,7 +336,7 @@ trait ProcessMediaTrait {
       ->condition('mm.sourceid1', $original_fid)
       ->execute()
       ->fetchField();
-    unset($query);
+    $query = NULL;
     return $results;
   }
 
@@ -258,7 +383,7 @@ trait ProcessMediaTrait {
     if ($file) {
       // Drop the file out of memory for a little cleanup.
       Cache::invalidateTags($file->getCacheTagsToInvalidate());
-      unset($file);
+      $file = NULL;
       // Get a connection for the destination database
       // and retrieve the id for the newly created file.
       return \Drupal::database()->select('file_managed', 'f')
@@ -287,18 +412,38 @@ trait ProcessMediaTrait {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function createMediaEntity($fid, array $meta, $owner_id = 1) {
+    $file_manager = $this->entityTypeManager->getStorage('file');
     /** @var \Drupal\file\FileInterface $file */
-    $file = $this->entityTypeManager->getStorage('file')->load($fid);
+    $file = $file_manager->load($fid);
 
     if ($file) {
+      // Check if we have a title/alt,
+      // and create them if not.
+      foreach (['title', 'alt'] as $name) {
+        if (empty($meta[$name])) {
+          // If no title, set it to the filename.
+          // If no alt, set it to the title
+          // (which may be the filename).
+          $meta[$name] = (isset($meta['title'])) ? $meta['title'] : $file->getFilename();
+        }
+        // Need to truncate the title prior to setting the media name
+        // due to media.name column schema restriction.
+        if (strlen($meta[$name]) > 255) {
+          // Break at a word. Doesn't make a perfect title,
+          // but preserves some of the original intention.
+          $meta[$name] = wordwrap($meta[$name], 255);
+          $meta[$name] = substr($meta[$name], 0, strpos($meta[$name], '\n'));
+        }
+      }
       $fileType = explode('/', $file->getMimeType())[0];
       // Currently handles images and documents.
       // May need to check for other file types.
       switch ($fileType) {
 
         case 'image':
+          $media_manager = $this->entityTypeManager->getStorage('media');
           /** @var \Drupal\Media\MediaInterface $media */
-          $media = $this->entityTypeManager->getStorage('media')->create([
+          $media = $media_manager->create([
             'bundle' => 'image',
             'field_media_image' => [
               'target_id' => $fid,
@@ -308,33 +453,23 @@ trait ProcessMediaTrait {
             'langcode' => 'en',
           ]);
 
-          // Need to truncate the title prior to setting the media name
-          // due to media.name column schema restriction.
-          if (strlen($meta['title']) > 255) {
-            // Break at a word. Doesn't make a perfect title,
-            // but preserves some of the original intention.
-            $title = wordwrap($meta['title'], 255);
-            $title = substr($title, 0, strpos($title, '\n'));
-          }
-          else {
-            $title = $meta['title'];
-          }
-          $media->setName($title);
+          $media->setName($meta['title']);
           $media->setOwnerId($owner_id);
           $media->save();
           $id = $media->id();
           // Minor memory cleanup.
-          unset($media);
-          unset($file);
-          $this->entityTypeManager->getStorage('media')->resetCache([$id]);
-          $this->entityTypeManager->getStorage('file')->resetCache([$fid]);
+          $media = NULL;
+          $file = NULL;
+          $media_manager = NULL;
+          $file_manager = NULL;
           return $id;
 
         case 'application':
         case 'document':
         case 'file':
+          $media_manager = $this->entityTypeManager->getStorage('media');
           /** @var \Drupal\Media\MediaInterface $media */
-          $media = $this->entityTypeManager->getStorage('media')->create([
+          $media = $media_manager->create([
             'bundle' => 'file',
             'field_media_file' => [
               'target_id' => $fid,
@@ -350,10 +485,10 @@ trait ProcessMediaTrait {
           $media->save();
           $id = $media->id();
           // Minor memory cleanup.
-          unset($media);
-          unset($file);
-          $this->entityTypeManager->getStorage('media')->resetCache([$id]);
-          $this->entityTypeManager->getStorage('file')->resetCache([$fid]);
+          $media = NULL;
+          $file = NULL;
+          $media_manager = NULL;
+          $file_manager = NULL;
           return $id;
 
         default:
@@ -387,7 +522,7 @@ trait ProcessMediaTrait {
     $filename_w_subdir = explode('/', $filename_w_subdir);
     $filename = array_pop($filename_w_subdir);
     $subdir = implode('/', $filename_w_subdir) . '/';
-    unset($filename_w_subdir);
+    $filename_w_subdir = NULL;
 
     // Get a connection for the destination database
     // and retrieve the associated fid.
@@ -397,8 +532,14 @@ trait ProcessMediaTrait {
       ->execute()
       ->fetchField();
 
+    // If we don't have a title, set it as the filename.
+    if (empty($title)) {
+      $title = $filename;
+    }
+    // If there isn't an alt, default to the title
+    // (which may be the filename).
     $meta = [
-      'alt' => $alt ?? $filename,
+      'alt' => $alt ?? $title,
       'title' => $title,
     ];
 
@@ -407,7 +548,7 @@ trait ProcessMediaTrait {
     if (!$new_fid) {
       // Use the filename, update the source base path with the subdirectory.
       $new_fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $subdir, $this->getDrupalFileDirectory() . $subdir);
-      unset($subdir);
+      $subdir = NULL;
 
       if ($new_fid) {
         $mid = $this->createMediaEntity($new_fid, $meta, 1);
@@ -415,12 +556,12 @@ trait ProcessMediaTrait {
     }
     else {
       $mid = $this->getMid($filename)['mid'];
-      unset($filename);
+      $filename = NULL;
 
       // And in case we had the file, but not the media entity.
       if (!$mid) {
         $mid = $this->createMediaEntity($new_fid, $meta, 1);
-        unset($meta);
+        $meta = NULL;
       }
     }
 
@@ -495,11 +636,17 @@ trait ProcessMediaTrait {
           // Download the file and create the file record.
           $fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $prefix_path, $drupal_file_directory . $prefix_path);
 
-          // Get meta data an create the media entity.
+          // Get meta data and create the media entity.
           $meta = [];
-          foreach (['alt', 'title'] as $name) {
+          foreach (['title', 'alt'] as $name) {
             if ($prop = $img->getAttribute($name)) {
               $meta[$name] = $prop;
+            }
+            // If we don't have a defined attribute,
+            // then set it to match the title (if it's there)
+            // or default to the filename as a final fallback.
+            else {
+              $meta[$name] = (isset($meta['title'])) ? $meta['title'] : $filename;
             }
           }
           // If we successfully downloaded the file, create the media entity.
@@ -539,13 +686,13 @@ trait ProcessMediaTrait {
         }
       }
 
-      unset($token);
-      unset($img);
-      unset($file_path);
-      unset($filename);
-      unset($src);
-      unset($prefix_path);
-      unset($meta);
+      $token = NULL;
+      $img = NULL;
+      $file_path = NULL;
+      $filename = NULL;
+      $src = NULL;
+      $prefix_path = NULL;
+      $meta = NULL;
 
       $i--;
     }
@@ -553,8 +700,8 @@ trait ProcessMediaTrait {
     // Convert back into a string and return it.
     $html = Html::serialize($document);
     // Do a little bit of cleanup.
-    unset($images);
-    unset($document);
+    $images = NULL;
+    $document = NULL;
 
     return $html;
   }

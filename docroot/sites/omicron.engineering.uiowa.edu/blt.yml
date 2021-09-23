@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: engineeringomicron.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: engineeringomicron
+  human_name: omicron.engineering.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: engineeringomicron.prod
+drupal:
+  db:
+    database: omicron_engineering_uiowa_edu
+uiowa:
+  requester: rhuehnergarth

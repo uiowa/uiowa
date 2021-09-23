@@ -7,6 +7,8 @@ dependencies:
     - field.field.node.event.field_event_category
     - field.field.node.event.field_event_hide
     - field.field.node.event.field_event_location
+    - field.field.node.event.field_event_series_link
+    - field.field.node.event.field_event_series_link_direct
     - field.field.node.event.field_event_virtual
     - field.field.node.event.field_event_when
     - field.field.node.event.field_image
@@ -71,6 +73,21 @@ content:
     third_party_settings: {  }
     type: address_default
     region: content
+  field_event_series_link:
+    weight: 27
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  field_event_series_link_direct:
+    weight: 29
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
   field_event_virtual:
     weight: 3
     settings:
@@ -91,14 +108,14 @@ content:
       default_duration_increments: "30\n60|1 hour\n90\n120|2 hours\ncustom"
     third_party_settings:
       smart_date_recur:
-        modal: '1'
+        modal: true
         allowed_recur_freq_values:
           DAILY: DAILY
           WEEKLY: WEEKLY
           MONTHLY: MONTHLY
           YEARLY: YEARLY
-          MINUTELY: 0
-          HOURLY: 0
+          MINUTELY: '0'
+          HOURLY: '0'
     type: smartdate_timezone
     region: content
   field_image:

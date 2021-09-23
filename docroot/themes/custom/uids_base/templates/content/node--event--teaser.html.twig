@@ -79,8 +79,15 @@
   not node.isPublished() ? 'node--unpublished',
   view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
   'event-item',
+  'card--list',
 ]
 %}
+
+{% if '1' in content.field_event_series_link_direct.0 and node.field_event_series_link.0.uri %}
+  {% set node_link = content.field_event_series_link[0]['#url'] %}
+{% else %}
+  {% set node_link = url %}
+{% endif %}
 
 {% if node.field_event_virtual.0.uri is not empty %}
   {% set event_icon = '<span role="presentation" class="fas fa-laptop"></span>' %}
@@ -90,9 +97,12 @@
   {% set event_location = content.field_event_location.0.organization %}
 {% endif %}
 
-{% set headline_level = heading_size ?: 'h3' %}
+{% set headline_level = 'h3 '%}
 {% if view %}
   {% set headline_level = view.display_handler.getOption('heading_size') %}
+{% endif %}
+{% if heading_size %}
+  {% set headline_level = heading_size %}
 {% endif %}
 
 {{ attach_library('classy/node') }}
@@ -102,7 +112,6 @@
 
 {% set event_card = {
   'attributes': attributes.addClass(classes),
-  'card_image' : content.field_image|render,
   'card_title': label,
   'content': content,
   'card_link_url': node_link,
@@ -126,7 +135,7 @@
   {% endblock %}
 
   {% block card_content %}
-    {{ content|without('field_image', 'links', 'field_event_when', 'field_event_virtual', 'field_event_location') }}
+    {{ content|without('field_image', 'links', 'field_event_when', 'field_event_virtual', 'field_event_location', 'field_event_series_link', 'field_event_series_link_direct') }}
   {% endblock %}
 
 {% endembed %}

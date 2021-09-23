@@ -1,0 +1,10 @@
+uiowa_profiles.settings_form:
+  path: '/admin/config/sitenow/uiowa-profiles'
+  defaults:
+    _title: 'Profiles settings'
+    _form: 'Drupal\uiowa_profiles\Form\SettingsForm'
+  requirements:
+    _permission: 'administer uiowa_profiles configuration'
+
+route_callbacks:
+  - '\Drupal\uiowa_profiles\Routing\ProfilesDynamic::routes'

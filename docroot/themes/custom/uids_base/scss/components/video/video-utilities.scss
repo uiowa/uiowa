@@ -5,41 +5,58 @@
 // Media alignment
 
 @media (min-width: 576px) {
-
-  .align-right.media {
-    margin-left: $gutter;
+  .align-right{
+    &.media, .media, figcaption {
+      margin-left: $gutter;
+    }
   }
 
-  .align-left.media {
-    margin-right: $gutter;
+  .align-left {
+    &.media, .media, figcaption {
+      margin-right: $gutter;
+    }
+
   }
 
-  .align-right.media--type-remote-video {
+  .align-right.media--type-remote-video,
+  .align-right.media--type-panopto {
     width: auto;
     margin-left: $gutter;
-    .field--name-field-media-oembed-video iframe {
+    .field--name-field-media-oembed-video iframe,
+    .field--name-field-media-panopto-url iframe {
       float: right;
     }
   }
-  .align-left.media--type-remote-video {
+  .align-left.media--type-remote-video,
+  .align-left.media--type-panopto {
     width: auto;
     margin-right: $gutter;
-    .field--name-field-media-oembed-video iframe {
+    .field--name-field-media-oembed-video iframe,
+    .field--name-field-media-panopto-url iframe {
       float: left;
     }
   }
 
 }
 
-.align-center.media--type-remote-video {
-  & .field--name-field-media-oembed-video iframe {
+.align-center.media--type-remote-video,
+.align-center.media--type-panopto {
+  & .field--name-field-media-oembed-video iframe,
+  & .field--name-field-media-panopto-url iframe {
     margin: 0 auto;
   }
 }
 
-.media--type-remote-video {
+.media--type-remote-video,
+.media--type-panopto {
   @extend .embed-responsive;
   @extend .embed-responsive-16by9;
+
+  &.media--view-mode-default,
+  &.media--view-mode-full {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+  }
 
   &.media--view-mode-image-large,
   &.media--view-mode-image-medium,
@@ -55,12 +72,16 @@
 }
 
 figure.caption .media--type-remote-video iframe,
+figure.caption .media--type-panopto iframe,
 .media--type-remote-video.media--view-mode-image-medium iframe,
 .media--type-remote-video.media--view-mode-image-large iframe,
 .media--type-remote-video.media--view-mode-image-small iframe,
 .media--type-remote-video.media--view-mode-medium iframe,
 .media--type-remote-video.media--view-mode-large iframe,
-.media--type-remote-video.media--view-mode-small iframe {
+.media--type-remote-video.media--view-mode-small iframe,
+.media--type-panopto.media--view-mode-medium iframe,
+.media--type-panopto.media--view-mode-large iframe,
+.media--type-panopto.media--view-mode-small iframe {
   @include breakpoint(sm) {
     position: unset;
     display: inherit;
@@ -74,8 +95,11 @@ figure.caption .media--type-remote-video iframe,
 figure.caption .media--type-remote-video.media--view-mode-image-large iframe,
 figure.caption .media--type-remote-video.media--view-mode-large iframe,
 figure.caption .media--type-remote-video.media--view-mode-full iframe,
+figure.caption .media--type-panopto.media--view-mode-large iframe,
+figure.caption .media--type-panopto.media--view-mode-full iframe,
 .media--type-remote-video.media--view-mode-large iframe,
-.media--type-remote-video.media--view-mode-image-large iframe {
+.media--type-remote-video.media--view-mode-image-large iframe,
+.media--type-panopto.media--view-mode-large iframe {
   @include breakpoint(sm) {
     width: 854px;
     height: 480px;
@@ -84,8 +108,10 @@ figure.caption .media--type-remote-video.media--view-mode-full iframe,
 
 figure.caption .media--type-remote-video.media--view-mode-image-medium iframe,
 figure.caption .media--type-remote-video.media--view-mode-medium iframe,
+figure.caption .media--type-panopto.media--view-mode-medium iframe,
 .media--type-remote-video.media--view-mode-image-medium iframe,
-.media--type-remote-video.media--view-mode-medium iframe {
+.media--type-remote-video.media--view-mode-medium iframe,
+.media--type-panopto.media--view-mode-medium iframe{
   @include breakpoint(sm) {
     width: 640px;
     height: 360px;
@@ -94,7 +120,9 @@ figure.caption .media--type-remote-video.media--view-mode-medium iframe,
 
 figure.caption .media--type-remote-video.media--view-mode-image-small iframe,
 figure.caption .media--type-remote-video.media--view-mode-small iframe,
+figure.caption .media--type-panopto.media--view-mode-small iframe,
 .media--type-remote-video.media--view-mode-small iframe,
+.media--type-panopto.media--view-mode-small iframe,
 .media--type-remote-video.media--view-mode-image-small iframe {
   @include breakpoint(sm) {
     width: 426px;
@@ -105,21 +133,33 @@ figure.caption .media--type-remote-video.media--view-mode-small iframe,
 .media--type-remote-video.media--view-mode-small__ultrawide,
 .media--type-remote-video.media--view-mode-medium__ultrawide,
 .media--type-remote-video.media--view-mode-large__ultrawide,
-.media--type-remote-video.media--view-mode-full__ultrawide {
+.media--type-remote-video.media--view-mode-full__ultrawide,
+.media--type-panopto.media--view-mode-small__ultrawide,
+.media--type-panopto.media--view-mode-medium__ultrawide,
+.media--type-panopto.media--view-mode-large__ultrawide,
+.media--type-panopto.media--view-mode-full__ultrawide {
   @extend .embed-responsive-21by9;
 }
 
 .media--type-remote-video.media--view-mode-small__widescreen,
 .media--type-remote-video.media--view-mode-medium__widescreen,
 .media--type-remote-video.media--view-mode-large__widescreen,
-.media--type-remote-video.media--view-mode-full__widescreen {
+.media--type-remote-video.media--view-mode-full__widescreen,
+.media--type-panopto.media--view-mode-small__widescreen,
+.media--type-panopto.media--view-mode-medium__widescreen,
+.media--type-panopto.media--view-mode-large__widescreen,
+.media--type-panopto.media--view-mode-full__widescreen {
   @extend .embed-responsive-16by9;
 }
 
 .media--type-remote-video.media--view-mode-small__square,
 .media--type-remote-video.media--view-mode-medium__square,
 .media--type-remote-video.media--view-mode-large__square,
-.media--type-remote-video.media--view-mode-full__square {
+.media--type-remote-video.media--view-mode-full__square,
+.media--type-panopto.media--view-mode-small__square,
+.media--type-panopto.media--view-mode-medium__square,
+.media--type-panopto.media--view-mode-large__square,
+.media--type-panopto.media--view-mode-full__square {
   @extend .embed-responsive-4by3;
 }
 
@@ -127,6 +167,22 @@ figure.caption .media--type-remote-video.media--view-mode-small iframe,
 .media--type-remote-video.media--view-mode-small__no-crop,
 .media--type-remote-video.media--view-mode-medium__no-crop,
 .media--type-remote-video.media--view-mode-large__no-crop,
-.media--type-remote-video.media--view-mode-full__no-crop {
+.media--type-remote-video.media--view-mode-full__no-crop,
+.media--type-panopto.media--view-mode-default,
+.media--type-panopto.media--view-mode-small__no-crop,
+.media--type-panopto.media--view-mode-medium__no-crop,
+.media--type-panopto.media--view-mode-large__no-crop,
+.media--type-panopto.media--view-mode-full__no-crop {
   @extend .embed-responsive-16by9;
+}
+
+
+figure.caption-drupal-media {
+  width: calc(100%);
+  margin: 0;
+
+  @include breakpoint(sm) {
+    width: unset;
+    margin: inherit;
+  }
 }

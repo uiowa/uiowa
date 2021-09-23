@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: neuroimaging.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: neuroimaging
+  human_name: neuroimaging.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: neuroimaging.prod
+drupal:
+  db:
+    database: neuroimaging_uiowa_edu
+uiowa:
+  requester: sslevinski

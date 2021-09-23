@@ -39,15 +39,12 @@
   .field--name-field-area-of-study-first-year,
   .field--name-field-area-of-study-transfer,
   .field--name-field-area-of-study-intl {
-    .card .bttn.bttn--link.bttn--outline {
-      border-color: rgba(0,0,0,.225);
-      margin-right: $md;
-      &:hover, &:focus {
-        border: 1px solid rgba(0,0,0,.225);
+    .card__body ul.fa-ul {
+      margin-left: 1.875rem;
+      li {
+        margin-bottom: $sm;
+        line-height: 1.4;
       }
-    }
-    .card .bttn {
-      margin-top: $md;
     }
   }
 
@@ -60,12 +57,6 @@
     .field__label {
       margin-bottom: 0;
     }
-  }
-
-
-  // @todo remove after https://github.com/uiowa/uiowa/issues/2706 is fixed.
-  .views-element-container {
-    margin-top: 0;
   }
 }
 

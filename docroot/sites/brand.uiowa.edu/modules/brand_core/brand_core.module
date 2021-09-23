@@ -216,7 +216,7 @@ function _brand_core_lockup_submit(array $form, FormStateInterface $form_state) 
     case 'published':
       // Generate Lockup Files if approved/published.
       $nid = $entity->id();
-      $lockup_controller = new LockupController();
+      $lockup_controller = new LockupController(\Drupal::entityTypeManager(), \Drupal::service('file_system'));
       $lockup_controller->generate($nid);
       break;
   }
@@ -360,6 +360,7 @@ function brand_core_tokens($type, $tokens, array $data, array $options, Bubbleab
  */
 function brand_core_mail($key, &$message, $params) {
   $message['from'] = \Drupal::config('system.site')->get('mail');
+  $message['reply-to'] = $message['from'];
   $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
 
   $options = [
@@ -398,13 +399,13 @@ function brand_core_node_update(EntityInterface $entity) {
       case 'published':
         // Generate Lockup Files if approved/published.
         $nid = $entity->id();
-        $lockup_controller = new LockupController();
+        $lockup_controller = new LockupController(\Drupal::entityTypeManager(), \Drupal::service('file_system'));
         $lockup_controller->generate($nid);
 
-        // Try to get away with just clearing the render cache to fetch updated svgs.
+        // Try to get away with clearing the render cache to fetch updated svgs.
         \Drupal::service('cache.render')->invalidateAll();
 
-        // If available (not Local), try to clear the varnish cache for the files.
+        // If not Local, try to clear the varnish cache for the files.
         if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
           $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
           $purgeQueuers = \Drupal::service('purge.queuers');

@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labarsc.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labarsc
+  human_name: arsc.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labarsc.prod
+drupal:
+  db:
+    database: arsc_lab_uiowa_edu
+uiowa:
+  requester: andringak

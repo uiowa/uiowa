@@ -7,6 +7,8 @@ dependencies:
     - field.field.node.event.field_event_category
     - field.field.node.event.field_event_hide
     - field.field.node.event.field_event_location
+    - field.field.node.event.field_event_series_link
+    - field.field.node.event.field_event_series_link_direct
     - field.field.node.event.field_event_virtual
     - field.field.node.event.field_event_when
     - field.field.node.event.field_image
@@ -155,7 +157,7 @@ third_party_settings:
                   timezone_override: ''
                   format: default
                   force_chronological: true
-                  add_classes: 0
+                  add_classes: false
                 third_party_settings: {  }
               context_mapping:
                 entity: layout_builder.entity
@@ -181,6 +183,29 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: 1
+          -
+            uuid: a2156fb3-3292-49e6-8f38-84428cc124a9
+            region: second
+            configuration:
+              id: 'field_block:node:event:field_event_series_link'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: link
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: '0'
+                  target: '0'
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 5
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -233,7 +258,7 @@ content:
       format: default
       force_chronological: false
       format_type: medium
-      add_classes: 0
+      add_classes: false
     third_party_settings: {  }
     type: smartdate_default
     region: content
@@ -255,6 +280,8 @@ hidden:
   content_moderation_control: true
   field_event_category: true
   field_event_hide: true
+  field_event_series_link: true
+  field_event_series_link_direct: true
   field_meta_tags: true
   field_tags: true
   field_teaser: true
