@@ -3335,3 +3335,9 @@ $sites['athleticsstrength.local.drupal.uiowa.edu'] = 'strength.athletics.uiowa.e
 $sites['athleticsstrength.dev.drupal.uiowa.edu'] = 'strength.athletics.uiowa.edu';
 $sites['athleticsstrength.stage.drupal.uiowa.edu'] = 'strength.athletics.uiowa.edu';
 $sites['athleticsstrength.prod.drupal.uiowa.edu'] = 'strength.athletics.uiowa.edu';
+
+// Directory aliases for edgeofspace.sites.uiowa.edu.
+$sites['sitesedgeofspace.local.drupal.uiowa.edu'] = 'edgeofspace.sites.uiowa.edu';
+$sites['sitesedgeofspace.dev.drupal.uiowa.edu'] = 'edgeofspace.sites.uiowa.edu';
+$sites['sitesedgeofspace.stage.drupal.uiowa.edu'] = 'edgeofspace.sites.uiowa.edu';
+$sites['sitesedgeofspace.prod.drupal.uiowa.edu'] = 'edgeofspace.sites.uiowa.edu';
