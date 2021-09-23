@@ -1,2 +1,13 @@
-- http://localhost:8888
-- http://localhost:8888/about
+- name: Frontpage
+  url: /
+- name: About with search toggle
+  url: /about
+  execute: "document.querySelector('.search-button').click()"
+- name: People
+  url: /people
+- name: Person
+  url: /people/herky-hawk
+- name: Articles
+  url: /news
+- name: Article
+  url: /news/2019/09/keep-moving-forward
