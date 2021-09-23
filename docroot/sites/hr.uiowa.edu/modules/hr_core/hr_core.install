@@ -389,3 +389,17 @@ function hr_core_update_9001() {
     $config->delete();
   }
 }
+
+/**
+ * Delete deprecated card options from content.
+ */
+function hr_core_update_9002() {
+  // There are no default card style options so these can be completely removed.
+  $database = \Drupal::database();
+  $database->delete('paragraph_revision__field_uip_classes')
+    ->condition('bundle', 'card')
+    ->execute();
+  $database->delete('paragraph__field_uip_classes')
+    ->condition('bundle', 'card')
+    ->execute();
+}
