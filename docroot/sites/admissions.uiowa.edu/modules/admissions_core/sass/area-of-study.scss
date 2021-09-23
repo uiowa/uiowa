@@ -81,22 +81,9 @@
 
 .view-id-areas_of_study_kiosk,
 .view-display-id-areas_of_study{
-  input#edit-submit,
-  input#edit-actions-submit {
-    transition: padding .5s;
-    padding: 1.05rem;
-    font-size: 1rem;
-    background: #ffcd00;
-    margin: 0;
-    position: fixed;
-    bottom: 0;
-    z-index: 100;
-    width: 65%;
-    box-shadow: 0 0 10px rgba(0,0,0,.4);
-  }
   display: flex;
   flex-wrap: wrap;
-    
+
   .views-field {
     .degree-options {
       margin-top: $sm;
@@ -194,4 +181,47 @@
 
 select#edit-action {
   display: none;
+}
+
+// Kiosk print button
+.view-id-areas_of_study_kiosk {
+  #edit-actions--2{
+    &:before {
+      @include fas();
+      margin-right: 15px;
+      color: $primary;
+      content: "\f02f";
+      left: 40px;
+      position: absolute;
+      top: 40px;
+    }
+    transition: padding .5s;
+    padding: 1.05rem;
+    font-size: 1rem;
+    margin: 0;
+    right: 0;
+    position: fixed;
+    text-align: center;
+    bottom: 0;
+    z-index: 101;
+  }
+  .uids-content {
+    input#edit-submit {
+      @include bttn--outline;
+      @include bttn--secondary;
+      background: none;
+      text-align: center;
+      padding-left:60px;
+    }
+  }
+}
+
+.cta-row__container {
+  background: $secondary;
+  position: fixed;
+  bottom: 0;
+  z-index: 100;
+  width: 100%;
+  min-height: 100px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, .4);
 }
