@@ -111,6 +111,10 @@ function search_fields(string $needle, bool $regexed = FALSE) {
     }
     $temp_results = $query->execute()
       ->fetchAllKeyed(0);
+    // If we don't have results, hop out of this loop early.
+    if (empty($temp_results)) {
+      continue;
+    }
     foreach ($temp_results as &$row) {
       $row = implode(': ', [$details['field_name'], $row]);
     }
