@@ -81,11 +81,8 @@ display:
             field_person_credential: field_person_credential
             field_person_first_name: field_person_first_name
             field_person_last_name: field_person_last_name
-            field_pt_student_advisor: field_pt_student_advisor
-            field_pt_student_defense_date: field_pt_student_defense_date
-            pt_student_dissertation_title: pt_student_dissertation_title
-            field_pt_student_cur_pos_inst: field_pt_student_cur_pos_inst
-            field_pt_student_cur_pos_title: field_pt_student_cur_pos_title
+            field_person_email: field_person_email
+            field_person_research_areas: field_person_research_areas
           info:
             view_node:
               sortable: false
@@ -115,40 +112,19 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            field_pt_student_advisor:
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_pt_student_defense_date:
-              sortable: true
-              default_sort_order: desc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            pt_student_dissertation_title:
+            field_person_email:
               sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-            field_pt_student_cur_pos_inst:
-              sortable: false
-              default_sort_order: asc
+            field_person_research_areas:
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-            field_pt_student_cur_pos_title:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-          default: field_pt_student_defense_date
+          default: field_person_last_name
           empty_table: false
       row:
         type: fields
@@ -1229,6 +1205,8 @@ display:
         fields: false
         title: false
         pager: false
+        style: false
+        row: false
       filter_groups:
         operator: AND
         groups:
@@ -1798,6 +1776,94 @@ display:
         options:
           items_per_page: 50
           offset: 0
+      style:
+        type: table
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
+          override: true
+          sticky: false
+          caption: ''
+          summary: ''
+          description: ''
+          columns:
+            view_node: view_node
+            field_person_credential: field_person_credential
+            field_person_first_name: field_person_first_name
+            field_person_last_name: field_person_last_name
+            field_pt_student_advisor: field_pt_student_advisor
+            field_pt_student_defense_date: field_pt_student_defense_date
+            pt_student_dissertation_title: pt_student_dissertation_title
+            field_pt_student_cur_pos_inst: field_pt_student_cur_pos_inst
+            field_pt_student_cur_pos_title: field_pt_student_cur_pos_title
+          info:
+            view_node:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_person_credential:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_person_first_name:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_person_last_name:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_pt_student_advisor:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_pt_student_defense_date:
+              sortable: true
+              default_sort_order: desc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            pt_student_dissertation_title:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_pt_student_cur_pos_inst:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_pt_student_cur_pos_title:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          default: field_pt_student_defense_date
+          empty_table: false
+      row:
+        type: fields
+        options: {  }
     cache_metadata:
       max-age: -1
       contexts:
