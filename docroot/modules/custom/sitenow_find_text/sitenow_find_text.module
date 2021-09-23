@@ -9,15 +9,19 @@
  * @see https://www.drupal.org/node/2217931
  */
 
+use Drupal\Core\Entity\Sql\SqlContentEntityStorageException;
+
 /**
- * Grab field names and mappings for all text-based fields.
+ * Grab field tables and value mappings for all text-based fields.
  *
  * @return array
  *   The field names => info mapping for all text-based fields.
  */
-function get_all_text_fields() {
+function get_text_field_tables() {
   $entity_field_manager = \Drupal::service('entity_field.manager');
+  $entity_type_manager = \Drupal::entityTypeManager();
   $fields = [];
+  $tables = [];
   // Go through all our text-based field types,
   // get their field information, and bundle 'em.
   foreach (['string', 'string_long', 'text_long', 'text_with_summary', 'link'] as $type) {
@@ -26,14 +30,54 @@ function get_all_text_fields() {
       $fields[$bundle] = isset($fields[$bundle]) ? array_merge($fields[$bundle], $bundle_fields) : $bundle_fields;
     }
   }
-  return $fields;
+  foreach ($fields as $entity_type_id => $field_map) {
+    // Currently we're only searching the major content areas.
+    // This will leave out things like menu areas, taxonomies, etc.
+    // which we may want to add later.
+    if (!in_array($entity_type_id, ['block_content', 'node', 'paragraph'])) {
+      continue;
+    }
+    // Grab the storage, field, and table definitions/mappings.
+    $entity_storage = $entity_type_manager->getStorage($entity_type_id);
+    $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
+    $table_mapping = $entity_storage->getTableMapping($field_storage_definitions);
+    foreach (array_intersect_key($field_storage_definitions, $field_map) as $field_storage_definition) {
+      $field_name = $field_storage_definition->getName();
+      try {
+        $table_name = $table_mapping->getFieldTableName($field_name);
+        // We use a custom value function here. The built-in value fetcher
+        // will leave out extra columns for link and text_with_summary fields.
+        $value_columns = value_columns($field_name, $field_storage_definition->getType());
+        $parent_type = ['entity_id'];
+        // Titles are handled a little differently, and at this time
+        // are the only fields handled this way.
+        if ($field_name == 'title') {
+          $parent_type = ['nid'];
+          $value_columns = ['title'];
+        }
+        // Set our table info that will get used in various places later.
+        $tables[$table_name] = [
+          'values' => $value_columns,
+          'parent' => $parent_type,
+          'type' => $entity_type_id,
+          'field_name' => $field_name,
+        ];
+      }
+      catch (SqlContentEntityStorageException $e) {
+        continue;
+      }
+    }
+  }
+  // This function can be used to clean up some extra tables
+  // that don't need to be traversed. This is an easy way
+  // to avoid issues down the line later.
+  cleanup_tables($tables);
+  return $tables;
 }
 
 /**
  * Search all fields for a needle.
  *
- * @param array $fields
- *   The field names and info to be searched.
  * @param string $needle
  *   The string for which to search.
  * @param bool $regexed
@@ -42,58 +86,10 @@ function get_all_text_fields() {
  * @return array
  *   The search results.
  */
-function search_fields(array $fields, string $needle, bool $regexed = FALSE) {
+function search_fields(string $needle, bool $regexed = FALSE) {
   $tables = [];
   $results = [];
-  foreach ($fields as $entity_type_id => $field_map) {
-    // Tables and columns may be constructed slightly differently
-    // depending on the field type. Additionally, how they are
-    // connected to a parent node may be different.
-    switch ($entity_type_id) {
-      case 'block_content':
-      case 'paragraph':
-        foreach ($field_map as $name => $info) {
-          if (str_starts_with($name, 'field')) {
-            $tables[$entity_type_id . '__' . $name] = [
-              'values' => value_columns($name, $info['type']),
-              'parent' => ['entity_id'],
-              'type' => $entity_type_id,
-              'field' => $name,
-            ];
-          }
-        }
-        break;
-
-      case 'node':
-        foreach ($field_map as $name => $info) {
-          if (str_starts_with($name, 'field')) {
-            $tables['node__' . $name] = [
-              'values' => value_columns($name, $info['type']),
-              'parent' => ['entity_id'],
-              'type' => $entity_type_id,
-              'field' => $name,
-            ];
-          }
-          if ($name == 'title') {
-            $tables['node_field_data'] = [
-              'values' => ['title'],
-              'parent' => ['nid'],
-              'type' => $entity_type_id,
-              'field' => $name,
-            ];
-          }
-          if ($name == 'body') {
-            $tables['node__body'] = [
-              'values' => ['body_value'],
-              'parent' => ['entity_id'],
-              'type' => $entity_type_id,
-              'field' => $name,
-            ];
-          }
-        }
-        break;
-    }
-  }
+  $tables = get_text_field_tables();
   $db = \Drupal::database();
   foreach ($tables as $table => $details) {
     $value_columns = $details['values'];
@@ -105,17 +101,18 @@ function search_fields(array $fields, string $needle, bool $regexed = FALSE) {
         $query->condition($table . '.' . $value_column, $needle, 'REGEXP');
       }
       else {
-        // Note: We are not using $db->escapeLike($needle) here, at least currently,
-        // to allow for the option of including wildcards in the provided string.
-        // Otherwise we may need to include extra options, such as a non-escaped option,
-        // or specifying word boundaries.
+        // Note: We are not using $db->escapeLike($needle) here,
+        // at least currently to allow for the option of
+        // including wildcards in the provided string.
+        // Otherwise we may need to include extra options,
+        // such as a non-escaped option, or specifying word boundaries.
         $query->condition($table . '.' . $value_column, '%' . $needle . '%', 'LIKE');
       }
     }
     $temp_results = $query->execute()
       ->fetchAllKeyed(0);
     foreach ($temp_results as &$row) {
-      $row = implode(': ', [$details['field'], $row]);
+      $row = implode(': ', [$details['field_name'], $row]);
     }
     // If the table is of a node type, we're done. Otherwise, we need
     // to find the parent.
@@ -123,7 +120,9 @@ function search_fields(array $fields, string $needle, bool $regexed = FALSE) {
       $with_nid = [];
       // @todo Update this. Some entities have useful getParentEntity methods,
       //   but not all do. Inline blocks in particular make this tricky,
-      //   but there is likely a better way than this.
+      //   but there is likely a better way than this. Will also need
+      //   to readdress this if we add different types of content areas,
+      //   like taxonomies, menu items, etc.
       foreach ($temp_results as $target_id => $value) {
         $target_type = $details['type'];
         // We need to loop through it, as we may have nested entities,
@@ -181,7 +180,7 @@ function search_fields(array $fields, string $needle, bool $regexed = FALSE) {
  */
 function value_columns(string $name, string $type) {
   // @todo Check if we need to handle any of the other
-  //   field types differently, like text_with_summary.
+  //   field types differently.
   if ($type == 'link') {
     return [
       $name . '_uri',
@@ -195,4 +194,26 @@ function value_columns(string $name, string $type) {
     ];
   }
   return [$name . '_value'];
+}
+
+/**
+ * Helper function to remove some errant tables.
+ *
+ * @param array $tables
+ *   List of tables to clean up.
+ */
+function cleanup_tables(array &$tables) {
+  // At this time, these tables are not needed,
+  // and will lead to errors in how we grab the value columns
+  // later on in the process.
+  foreach ([
+    'block_content_revision',
+    'block_content_field_data',
+    'node_revision',
+    'paragraphs_item_field_data',
+   ] as $to_remove) {
+    if (isset($tables[$to_remove])) {
+      unset($tables[$to_remove]);
+    }
+  }
 }

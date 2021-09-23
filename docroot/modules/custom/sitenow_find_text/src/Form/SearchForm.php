@@ -103,11 +103,9 @@ class SearchForm extends ConfigFormBase {
    * Perform a search with the given needle..
    */
   public function searchButton(array &$form, FormStateInterface $form_state) {
-    // Grab all the fields.
-    $fields = get_all_text_fields();
     $needle = $form_state->getValue('needle');
     $regexed = $form_state->getValue('regexed');
-    $results = search_fields($fields, $needle, $regexed);
+    $results = search_fields($needle, $regexed);
     $table = $this->buildResultsTable($results);
     $markup = \Drupal::service('renderer')->render($table);
     $form['results'] = [
