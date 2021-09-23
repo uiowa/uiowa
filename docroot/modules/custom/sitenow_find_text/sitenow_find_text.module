@@ -211,7 +211,7 @@ function cleanup_tables(array &$tables) {
     'block_content_field_data',
     'node_revision',
     'paragraphs_item_field_data',
-   ] as $to_remove) {
+  ] as $to_remove) {
     if (isset($tables[$to_remove])) {
       unset($tables[$to_remove]);
     }

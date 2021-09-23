@@ -68,7 +68,7 @@ class SearchForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Search Text'),
       '#default_value' => '',
-      '#description' => $this->t('The string to search against. % wildcards are prepended and appended automatically when not using regex. % and _ are always treated as wildcards, and cannot be searched for directly at this time. A search for `100%` will return matches for `100`, `100%`, and `100.0`, for instance.')
+      '#description' => $this->t('The string to search against. % wildcards are prepended and appended automatically when not using regex. % and _ are always treated as wildcards, and cannot be searched for directly at this time. A search for `100%` will return matches for `100`, `100%`, and `100.0`, for instance.'),
     ];
     $form['regexed'] = [
       '#type' => 'checkbox',
