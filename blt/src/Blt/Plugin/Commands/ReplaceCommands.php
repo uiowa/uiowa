@@ -168,7 +168,7 @@ class ReplaceCommands extends BltTasks {
     if (EnvironmentDetector::isCiEnv()) {
       $this->taskExecStack()
         ->dir($this->getConfigValue('repo.root'))
-        ->exec('npx percy snapshot snapshots.yml')
+        ->exec('npx percy snapshot --base-url http://localhost:8888 snapshots.yml')
         ->run();
     }
     else {
