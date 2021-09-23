@@ -56,58 +56,31 @@ function hr_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
  */
 function hr_core_theme($existing, $type, $theme, $path) {
   return [
+    'block__views_block__units_block_contact_info' => [
+      'template' => 'block--views-block--units-block-contact-info',
+      'base hook' => 'block',
+    ],
+    'field__taxonomy_term__name__units__teaser' => [
+      'template' => 'field--taxonomy-term--name--units--teaser',
+      'base hook' => 'field',
+    ],
     'paragraph__faqs__default' => [
       'template' => 'paragraph--faqs--default',
       'base hook' => 'paragraph',
     ],
+    'node__faq__teaser' => [
+      'template' => 'node--faq--teaser',
+      'base hook' => 'node',
+    ],
+    'taxonomy_term__units' => [
+      'template' => 'taxonomy-term--units',
+      'base hook' => 'taxonomy_term',
+    ],
+    'views_view_unformatted__faqs__block_faqs' => [
+      'template' => 'views-view-unformatted--faqs--block-faqs',
+      'base hook' => 'view',
+    ],
   ];
-}
-
-/**
- * Implements hook_uip_classes_alter().
- */
-function hr_core_uip_classes_alter(&$options, $entity, $bundle) {
-  switch ($bundle) {
-    case 'card':
-      $options['card--img-icon'] = 'Card Image Icon';
-      $options['card--title-overlay-bottom-left'] = 'Title Overlay Bottom Left';
-      $options['card--title-overlay-top-right'] = 'Title Overlay Top right';
-      break;
-
-  }
-}
-
-/**
- * Implements hook_theme_suggestions_HOOK_alter().
- */
-function hr_core_theme_suggestions_paragraph_alter(&$suggestions, $variables) {
-  $admin_context = \Drupal::service('router.admin_context');
-  if (!$admin_context->isAdminRoute()) {
-    $paragraph = $variables["elements"]["#paragraph"];
-    $bundle = $paragraph->bundle();
-    switch ($bundle) {
-      case 'card':
-        if ($paragraph->hasField('field_uip_classes') && !$paragraph->get('field_uip_classes')->isEmpty()) {
-          $classes = $paragraph->get('field_uip_classes')->getValue();
-          // Clean array of classes selected.
-          $classes = array_column($classes, 'value');
-          // Check for title-overlay classes and provide template.
-          $title_overlay_options = [
-            'card--title-overlay-top-right',
-            'card--title-overlay-bottom-left',
-          ];
-          $result = array_intersect($title_overlay_options, $classes);
-          if ($result) {
-            $suggestions[] = 'paragraph__card__title_overlay';
-          }
-          if (in_array('card--img-icon', $classes)) {
-            $suggestions[] = 'paragraph__card__icon';
-          }
-        }
-        break;
-
-    }
-  }
 }
 
 /**

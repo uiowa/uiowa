@@ -6,7 +6,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Theme\ThemeNegotiatorInterface;
 
 /**
- * Use uiowa_bootstrap theme for Lockup form instead of admin theme.
+ * Use uids_base theme for Lockup form instead of admin theme.
  */
 class LockupForm implements ThemeNegotiatorInterface {
 
