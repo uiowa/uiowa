@@ -3341,3 +3341,9 @@ $sites['sitesedgeofspace.local.drupal.uiowa.edu'] = 'edgeofspace.sites.uiowa.edu
 $sites['sitesedgeofspace.dev.drupal.uiowa.edu'] = 'edgeofspace.sites.uiowa.edu';
 $sites['sitesedgeofspace.stage.drupal.uiowa.edu'] = 'edgeofspace.sites.uiowa.edu';
 $sites['sitesedgeofspace.prod.drupal.uiowa.edu'] = 'edgeofspace.sites.uiowa.edu';
+
+// Directory aliases for ci.lab.uiowa.edu.
+$sites['labci.local.drupal.uiowa.edu'] = 'ci.lab.uiowa.edu';
+$sites['labci.dev.drupal.uiowa.edu'] = 'ci.lab.uiowa.edu';
+$sites['labci.stage.drupal.uiowa.edu'] = 'ci.lab.uiowa.edu';
+$sites['labci.prod.drupal.uiowa.edu'] = 'ci.lab.uiowa.edu';
