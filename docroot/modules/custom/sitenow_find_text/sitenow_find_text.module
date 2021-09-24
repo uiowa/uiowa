@@ -92,6 +92,10 @@ function search_fields(string $needle, bool $regexed = FALSE) {
   $tables = get_text_field_tables();
   $db = Database::getConnection();
   foreach ($tables as $table => $details) {
+    // @todo Separate value column queries to help narrow
+    //   results down later. Right now, a match for one
+    //   means a match for all, and makes discerning them
+    //   more difficult later.
     $value_columns = $details['values'];
     $parent = $details['parent'];
     $query = $db->select($table)
@@ -117,6 +121,7 @@ function search_fields(string $needle, bool $regexed = FALSE) {
     if (empty($temp_results)) {
       continue;
     }
+    // @todo Clean this up if we separate the value queries.
     foreach ($temp_results as &$row) {
       $matches = [];
       // We may have multiple value columns to sort through,
@@ -242,6 +247,7 @@ function fetch_parents(array $temp_results, array $details) {
       break;
 
     case 'block_content':
+      // @todo Fix this for link fields.
       $with_nid = [];
       foreach ($temp_results as $id => $value) {
         $target_id = $value->revision_id;
