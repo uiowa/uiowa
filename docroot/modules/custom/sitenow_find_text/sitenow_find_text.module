@@ -118,7 +118,14 @@ function search_fields(string $needle, bool $regexed = FALSE) {
       continue;
     }
     foreach ($temp_results as &$row) {
-      $row->value = implode(': ', [$details['field_name'], $row->$value_column]);
+      $matches = [];
+      // We may have multiple value columns to sort through,
+      // for fields like link fields.
+      foreach ($value_columns as $value_column) {
+        // Prepend the field type/value to the matched value.
+        $matches[] = implode(': ', [$value_column, $row->$value_column]);
+      }
+      $row->value = implode('   ', $matches);
     }
     // If the table is of a node type, we're done. Otherwise, we need
     // to find the parent.
