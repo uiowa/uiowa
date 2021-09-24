@@ -11,7 +11,7 @@ use Drupal\Core\Url;
 use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\views\Plugin\Block\ViewsBlock;
-use Drupal\views\Plugin\views\display\Block as CoreBlock;
+use Drupal\ctools_views\Plugin\Display\Block as CoreBlock;
 
 /**
  * Provides a List Block display plugin override.
@@ -27,13 +27,9 @@ class ListBlock extends CoreBlock {
   public function optionsSummary(&$categories, &$options) {
     parent::optionsSummary($categories, $options);
     $filtered_allow = array_filter($this->getOption('allow'));
+    // @todo Add single option for filtering.
     $filter_options = [
-      // We are just changing the label here to be consistent current use.
-      'items_per_page' => $this->t('Items to display'),
-      'pager' => $this->t('Show pager'),
-      'offset' => $this->t('Offset'),
-      'hide_fields' => $this->t('Hide fields'),
-      'configure_sorts' => $this->t('Adjust the order of sorts'),
+      // Adding use_more option.
       'use_more' => $this->t('Display more link'),
     ];
     $filter_intersect = array_intersect_key($filter_options, $filtered_allow);
@@ -43,10 +39,6 @@ class ListBlock extends CoreBlock {
       'title' => $this->t('Allow settings'),
       'value' => empty($filtered_allow) ? $this->t('None') : implode(', ', $filter_intersect),
     ];
-
-    $customizable_filters = $this->getOption('filter_in_block');
-    $filter_count = !empty($customizable_filters) ? count($customizable_filters) : 0;
-    $options['allow']['value'] .= ', ' . $this->formatPlural($filter_count, '1 filter in block', '@count filters in block');
   }
 
   /**
@@ -58,20 +50,13 @@ class ListBlock extends CoreBlock {
       return;
     }
 
-    // Making the label more user-friendly.
-    $form['allow']['#options']['items_per_page'] = $this->t('Items to display');
-    $form['allow']['#options']['offset'] = $this->t('Pager offset');
-    $form['allow']['#options']['pager'] = $this->t('Show pager');
-    $form['allow']['#options']['hide_fields'] = $this->t('Hide fields');
-    $form['allow']['#options']['configure_sorts'] = $this->t('Configure sorts');
+    // @todo Add configure filter option.
+    // Adding use_more option.
     $form['allow']['#options']['use_more'] = $this->t('Display more link');
 
     $defaults = [];
     if (!empty($form['allow']['#default_value'])) {
       $defaults = array_filter($form['allow']['#default_value']);
-      if (!empty($defaults['items_per_page'])) {
-        $defaults['items_per_page'] = 'items_per_page';
-      }
     }
 
     $form['allow']['#default_value'] = $defaults;
@@ -93,17 +78,7 @@ class ListBlock extends CoreBlock {
         ],
       ],
     ];
-
-    // Show exposed filters that can be set in the block form.
-    $customized_filters = $this->getOption('filter_in_block');
-    $form['filter_in_block'] = [
-      '#type' => 'checkboxes',
-      '#options' => $this->getListOfExposedFilters(),
-      '#title' => $this->t('Filter in block'),
-      '#description' => $this->t('Select the filters which users should be able to customize default values for when placing the views block into a layout.'),
-      '#default_value' => !empty($customized_filters) ? $customized_filters : [],
-    ];
-  }
+}
 
   /**
    * {@inheritdoc}
@@ -111,25 +86,9 @@ class ListBlock extends CoreBlock {
   public function submitOptionsForm(&$form, FormStateInterface $form_state) {
     parent::submitOptionsForm($form, $form_state);
     if ($form_state->get('section') === 'allow') {
-      $this->setOption('filter_in_block', Checkboxes::getCheckedCheckboxes($form_state->getValue('filter_in_block')));
+      // @todo Save configure filter option.
       $this->setOption('more_link_help_text', $form_state->getValue('more_link_help_text'));
     }
-  }
-
-  /**
-   * Get a list of exposed filters.
-   *
-   * @return array
-   *   An array of filters keyed by machine name with label values.
-   */
-  protected function getListOfExposedFilters() {
-    $filter_options = [];
-    foreach ($this->getHandlers('filter') as $filer_name => $filter_plugin) {
-      if ($filter_plugin->isExposed() && $exposed_info = $filter_plugin->exposedInfo()) {
-        $filter_options[$filer_name] = $exposed_info['label'];
-      }
-    }
-    return $filter_options;
   }
 
   /**
@@ -156,21 +115,15 @@ class ListBlock extends CoreBlock {
 
     // Modify "Items per page" block settings form.
     if (!empty($allow_settings['items_per_page'])) {
-      $form['override']['items_per_page']['#type'] = 'number';
+      // @todo Remove once exposed filters patch is added.
       $form['override']['items_per_page']['#min'] = 0;
       $form['override']['items_per_page']['#title'] = $this->t('Items to display');
       $form['override']['items_per_page']['#description'] = $this->t('Select the number of entries to display');
-      unset($form['override']['items_per_page']['#options']);
     }
 
     // Provide "Pager offset" block settings form.
     if (!empty($allow_settings['offset'])) {
-      $form['override']['pager_offset'] = [
-        '#type' => 'number',
-        '#title' => $this->t('Offset'),
-        '#default_value' => isset($block_configuration['pager_offset']) ? $block_configuration['pager_offset'] : 0,
-        '#description' => $this->t('For example, set this to 3 and the first 3 items will not be displayed.'),
-      ];
+      $form['override']['pager_offset']['#title'] = $this->t('Offset');
     }
 
     // Provide "Show pager" block setting.
