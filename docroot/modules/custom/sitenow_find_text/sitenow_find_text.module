@@ -172,7 +172,7 @@ function search_fields(string $needle, bool $regexed = FALSE) {
           // Find the target_id, which will be the id of the parent entity.
           $nid = $db->select('node__layout_builder__layout')
             ->fields('node__layout_builder__layout', ['entity_id'])
-            ->condition('layout_builder__layout_section', '%"block_revision_id";s:3:"' . $target_id . '"%')
+            ->condition('layout_builder__layout_section', '%"block_revision_id";s:_:"' . $target_id . '";%', 'LIKE')
             ->execute()
             ->fetchAll();
           // If we don't have a result, then we hit a dead end and

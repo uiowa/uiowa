@@ -131,6 +131,12 @@ class SearchForm extends ConfigFormBase {
         '#markup' => '<p class="text-align-center">No results found.</p>',
       ];
     }
+    // Clear out the excess to make printing easier.
+    foreach (array_keys($results) as $key) {
+      foreach (array_keys($results[$key]) as $secondary_key) {
+        $results[$key][$secondary_key] = $results[$key][$secondary_key]->value;
+      }
+    }
     $rows = [];
     $node_manager = \Drupal::service('entity_type.manager')
       ->getStorage('node');
