@@ -881,20 +881,20 @@ display:
           entity_type: node
           entity_field: nid
           plugin_id: field
-        node_bulk_form:
-          id: node_bulk_form
-          table: node
-          field: node_bulk_form
+        nothing_1:
+          id: nothing_1
+          table: views
+          field: nothing
           relationship: none
           group_type: group
-          admin_label: ''
+          admin_label: checkbox
           label: ''
           exclude: false
           alter:
-            alter_text: false
-            text: ''
+            alter_text: true
+            text: '{{nid}}'
             make_link: false
-            path: '/{{ title }}'
+            path: ''
             absolute: false
             external: false
             replace_spaces: false
@@ -917,8 +917,8 @@ display:
             trim: false
             preserve_tags: ''
             html: false
-          element_type: div
-          element_class: checkbox-kiosk
+          element_type: ''
+          element_class: ''
           element_label_type: ''
           element_label_class: ''
           element_label_colon: false
@@ -928,13 +928,8 @@ display:
           empty: ''
           hide_empty: false
           empty_zero: false
-          hide_alter_empty: true
-          action_title: ''
-          include_exclude: include
-          selected_actions:
-            - entity_print_pdf_print_action
-          entity_type: node
-          plugin_id: node_bulk_form
+          hide_alter_empty: false
+          plugin_id: custom
         field_area_of_study_pretty_title:
           id: field_area_of_study_pretty_title
           table: node__field_area_of_study_pretty_title
@@ -986,7 +981,7 @@ display:
           click_sort_column: value
           type: string
           settings:
-            link_to_entity: true
+            link_to_entity: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -1049,7 +1044,7 @@ display:
           click_sort_column: value
           type: string
           settings:
-            link_to_entity: true
+            link_to_entity: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -1187,11 +1182,24 @@ display:
           tokenize: false
           content: 'There are currently no results.'
           plugin_id: text_custom
-      header: {  }
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: false
+          content:
+            value: "<button class=\"btn\" type=\"button\" onclick=\"printJS(\"/print/view/pdf/areas_of_study_kiosk/filtered_print_page?view_args[0]=2586 2576\")\">\r\n    Print PDF\r\n </button>"
+            format: full_html
+          plugin_id: text
       title: 'Areas of Study'
       css_class: 'table-responsive block-margin__top--extra'
     cache_metadata:
-      max-age: 0
+      max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
