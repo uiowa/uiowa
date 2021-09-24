@@ -224,6 +224,22 @@ select#edit-action {
   p, a, table th, table td, .fieldset-legend, .uids-content label {
     font-size: $content-font-size !important;
   }
+
+  .checkbox-kiosk {
+    a, p {
+      font-size: $content-font-size;
+    }
+  }
+
+  .view-filters .views-exposed-form.uids-content:not(.uids-search) fieldset .form-type-checkbox {
+    align-items: flex-start;
+  }
+
+  .form-checkbox {
+    height: 1cm;
+    width: 1cm;
+    flex-shrink: 0;
+  }
 }
 
 .cta-row__container {
@@ -234,14 +250,4 @@ select#edit-action {
   width: 100%;
   min-height: 100px;
   box-shadow: 0 0 4px rgba(0, 0, 0, .4);
-}
-
-.checkbox-kiosk {
-  a, p {
-    font-size: $content-font-size;
-  }
-  .form-checkbox {
-    height: 2rem;
-    width: 2rem;
-  }
 }

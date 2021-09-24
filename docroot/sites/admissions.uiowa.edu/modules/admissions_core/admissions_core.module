@@ -601,6 +601,7 @@ function admissions_core_preprocess_views_view(&$variables) {
     case 'areas_of_study':
     case 'areas_of_study_kiosk':
       $variables['#attached']['library'][] = 'admissions_core/area-of-study';
+      $variables['#attached']['library'][] = 'admissions_core/print_js';
       break;
 
     case 'events':
