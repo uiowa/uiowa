@@ -6,7 +6,6 @@ use Drupal\Core\Entity\Element\EntityAutocomplete;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
 use Drupal\Core\Form\SubformStateInterface;
-use Drupal\Core\Render\Element\Checkboxes;
 use Drupal\Core\Url;
 use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
 use Drupal\uiowa_core\HeadlineHelper;
@@ -78,7 +77,7 @@ class ListBlock extends CoreBlock {
         ],
       ],
     ];
-}
+  }
 
   /**
    * {@inheritdoc}
