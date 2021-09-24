@@ -98,48 +98,37 @@ function search_fields(string $needle, bool $regexed = FALSE) {
     //   more difficult later.
     $value_columns = $details['values'];
     $parent = $details['parent'];
-    $query = $db->select($table)
-      ->fields($table, array_merge($parent, $value_columns));
-    $orGroup = $query->orConditionGroup();
     foreach ($value_columns as $value_column) {
+      $query = $db->select($table)
+        ->fields($table, array_merge($parent, $value_columns));
       if ($regexed) {
-        $orGroup->condition($table . '.' . $value_column, $needle, 'REGEXP');
-      }
-      else {
+        $query->condition($table . '.' . $value_column, $needle, 'REGEXP');
+      } else {
         // Note: We are not using $db->escapeLike($needle) here,
         // at least currently to allow for the option of
         // including wildcards in the provided string.
         // Otherwise we may need to include extra options,
         // such as a non-escaped option, or specifying word boundaries.
-        $orGroup->condition($table . '.' . $value_column, '%' . $needle . '%', 'LIKE');
+        $query->condition($table . '.' . $value_column, '%' . $needle . '%', 'LIKE');
       }
-    }
-    $query->condition($orGroup);
-    $temp_results = $query->execute()
-      ->fetchAllAssoc($parent[0]);
-    // If we don't have results, hop out of this loop early.
-    if (empty($temp_results)) {
-      continue;
-    }
-    // @todo Clean this up if we separate the value queries.
-    foreach ($temp_results as &$row) {
-      $matches = [];
-      // We may have multiple value columns to sort through,
-      // for fields like link fields.
-      foreach ($value_columns as $value_column) {
-        // Prepend the field type/value to the matched value.
-        $matches[] = implode(': ', [$value_column, $row->$value_column]);
+      $temp_results = $query->execute()
+        ->fetchAllAssoc($parent[0]);
+      // If we don't have results, hop out of this loop early.
+      if (empty($temp_results)) {
+        continue;
       }
-      $row->value = implode('   ', $matches);
-    }
-    // If the table is of a node type, we're done. Otherwise, we need
-    // to find the parent.
-    $temp_results = fetch_parents($temp_results, $details);
+      foreach ($temp_results as &$row) {
+        $row->value = implode(': ', [$value_column, $row->$value_column]);
+      }
+      // If the table is of a node type, we're done. Otherwise, we need
+      // to find the parent.
+      $temp_results = fetch_parents($temp_results, $details);
 
-    // Add our new results to our collected results, keyed
-    // by node id.
-    foreach ($temp_results as $nid => $value) {
-      $results[$nid][] = $value;
+      // Add our new results to our collected results, keyed
+      // by node id.
+      foreach ($temp_results as $nid => $value) {
+        $results[$nid][] = $value;
+      }
     }
   }
   return $results;
