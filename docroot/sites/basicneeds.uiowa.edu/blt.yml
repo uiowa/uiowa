@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: basicneeds.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: basicneeds
+  human_name: basicneeds.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: basicneeds.prod
+drupal:
+  db:
+    database: basicneeds_uiowa_edu
+uiowa:
+  requester: dquam
