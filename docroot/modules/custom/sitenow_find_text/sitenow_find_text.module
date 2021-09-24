@@ -48,7 +48,7 @@ function get_text_field_tables() {
         // We use a custom value function here. The built-in value fetcher
         // will leave out extra columns for link and text_with_summary fields.
         $value_columns = value_columns($field_name, $field_storage_definition->getType());
-        $parent_type = ['entity_id'];
+        $parent_type = ['entity_id', 'revision_id'];
         // Titles are handled a little differently, and at this time
         // are the only fields handled this way.
         if ($field_name == 'title') {
@@ -110,58 +110,83 @@ function search_fields(string $needle, bool $regexed = FALSE) {
       }
     }
     $temp_results = $query->execute()
-      ->fetchAllKeyed(0);
+      ->fetchAllAssoc($parent[0]);
     // If we don't have results, hop out of this loop early.
     if (empty($temp_results)) {
       continue;
     }
     foreach ($temp_results as &$row) {
-      $row = implode(': ', [$details['field_name'], $row]);
+      $row->value = implode(': ', [$details['field_name'], $row->$value_column]);
     }
     // If the table is of a node type, we're done. Otherwise, we need
     // to find the parent.
-    if ($details['type'] != 'node') {
-      $with_nid = [];
-      // @todo Update this. Some entities have useful getParentEntity methods,
-      //   but not all do. Inline blocks in particular make this tricky,
-      //   but there is likely a better way than this. Will also need
-      //   to readdress this if we add different types of content areas,
-      //   like taxonomies, menu items, etc.
-      foreach ($temp_results as $target_id => $value) {
-        $target_type = $details['type'];
-        // We need to loop through it, as we may have nested entities,
-        // like a paragraph under a block under a node.
-        while (TRUE) {
+    switch ($details['type']) {
+      case 'paragraph':
+        $with_nid = [];
+        // @todo Update this. Some entities have useful getParentEntity methods,
+        //   but not all do. Inline blocks in particular make this tricky,
+        //   but there is likely a better way than this. Will also need
+        //   to readdress this if we add different types of content areas,
+        //   like taxonomies, menu items, etc.
+        foreach ($temp_results as $target_id => $value) {
+          $target_type = $details['type'];
+          // We need to loop through it, as we may have nested entities,
+          // like a paragraph under a block under a node.
+          while (TRUE) {
+            // Find the target_id, which will be the id of the parent entity.
+            $nid = $db->select('entity_usage')
+              ->fields('entity_usage', ['source_id', 'source_type'])
+              ->condition('target_type', $target_type, '=')
+              ->condition('target_id', $target_id, '=')
+              // Currently we're not handling revisions, so we're likely to have
+              // duplicate entries for the same node; one for each revision.
+              ->distinct()
+              ->execute()
+              ->fetchAll();
+            // If we don't have a result, then we hit a dead end and
+            // didn't find our parent entity.
+            if (!isset($nid[0])) {
+              break;
+            }
+            // If we found a node, then we're done. Grab the source_id result,
+            // which will be the nid, and append it to our results list.
+            if ($nid[0]->source_type == 'node') {
+              $with_nid[$nid[0]->source_id] = $value;
+              break;
+            }
+            // If we found a parent, but it wasn't the node, then
+            // we need to loop again. The new target_type will be this
+            // result's source_type, and the new target_id this result's
+            // source_id. Set these, and loop again.
+            $target_type = $nid[0]->source_type;
+            $target_id = $nid[0]->source_id;
+          }
+        }
+        $temp_results = $with_nid;
+        break;
+
+      case 'block_content':
+        $with_nid = [];
+        foreach ($temp_results as $id => $value) {
+          $target_id = $value->revision_id;
           // Find the target_id, which will be the id of the parent entity.
-          $nid = $db->select('entity_usage')
-            ->fields('entity_usage', ['source_id', 'source_type'])
-            ->condition('target_type', $target_type, '=')
-            ->condition('target_id', $target_id, '=')
-            // Currently we're not handling revisions, so we're likely to have
-            // duplicate entries for the same node; one for each revision.
-            ->distinct()
+          $nid = $db->select('node__layout_builder__layout')
+            ->fields('node__layout_builder__layout', ['entity_id'])
+            ->condition('layout_builder__layout_section', '%"block_revision_id";s:3:"' . $target_id . '"%')
             ->execute()
             ->fetchAll();
           // If we don't have a result, then we hit a dead end and
           // didn't find our parent entity.
           if (!isset($nid[0])) {
-            break;
+            continue;
           }
-          // If we found a node, then we're done. Grab the source_id result,
-          // which will be the nid, and append it to our results list.
-          if ($nid[0]->source_type == 'node') {
-            $with_nid[$nid[0]->source_id] = $value;
-            break;
-          }
-          // If we found a parent, but it wasn't the node, then
-          // we need to loop again. The new target_type will be this
-          // result's source_type, and the new target_id this result's
-          // source_id. Set these, and loop again.
-          $target_type = $nid[0]->source_type;
-          $target_id = $nid[0]->source_id;
+          $with_nid[$nid[0]->entity_id] = $value;
         }
-      }
-      $temp_results = $with_nid;
+        $temp_results = $with_nid;
+        break;
+
+      case 'node':
+        break;
     }
 
     foreach ($temp_results as $nid => $value) {
