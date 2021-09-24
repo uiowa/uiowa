@@ -96,9 +96,10 @@ function search_fields(string $needle, bool $regexed = FALSE) {
     $parent = $details['parent'];
     $query = $db->select($table)
       ->fields($table, array_merge($parent, $value_columns));
+    $orGroup = $query->orConditionGroup();
     foreach ($value_columns as $value_column) {
       if ($regexed) {
-        $query->condition($table . '.' . $value_column, $needle, 'REGEXP');
+        $orGroup->condition($table . '.' . $value_column, $needle, 'REGEXP');
       }
       else {
         // Note: We are not using $db->escapeLike($needle) here,
@@ -106,9 +107,10 @@ function search_fields(string $needle, bool $regexed = FALSE) {
         // including wildcards in the provided string.
         // Otherwise we may need to include extra options,
         // such as a non-escaped option, or specifying word boundaries.
-        $query->condition($table . '.' . $value_column, '%' . $needle . '%', 'LIKE');
+        $orGroup->condition($table . '.' . $value_column, '%' . $needle . '%', 'LIKE');
       }
     }
+    $query->condition($orGroup);
     $temp_results = $query->execute()
       ->fetchAllAssoc($parent[0]);
     // If we don't have results, hop out of this loop early.
