@@ -217,7 +217,7 @@ class ListBlock extends CoreBlock {
       $sorted_sorts = [];
       if (isset($block_configuration['sort'])) {
 
-        uasort($block_configuration['sort'], '\Drupal\layout_builder_custom\Plugin\Display\Block::sortByWeight');
+        uasort($block_configuration['sort'], '\Drupal\ctools_views\Plugin\Display\Block::sortFieldsByWeight');
 
         foreach (array_keys($block_configuration['sort']) as $sort_name) {
           if (!empty($sorts[$sort_name])) {
@@ -516,7 +516,7 @@ class ListBlock extends CoreBlock {
         $this->view->removeHandler($display_id, 'sort', $sort_name);
       }
       if (!empty($config['sort'])) {
-        uasort($config['sort'], '\Drupal\layout_builder_custom\Plugin\Display\ListBlock::sortByWeight');
+        uasort($config['sort'], '\Drupal\ctools_views\Plugin\Display\Block::sortFieldsByWeight');
         foreach ($config['sort'] as $sort_name => $sort) {
           if (!empty($config['sort'][$sort_name]) && !empty($sorts[$sort_name])) {
             $sort = $sorts[$sort_name];
@@ -638,26 +638,6 @@ class ListBlock extends CoreBlock {
       }
     }
     return $styles;
-  }
-
-  /**
-   * Sort array by weight.
-   *
-   * @param int $a
-   *   The field a.
-   * @param int $b
-   *   The field b.
-   *
-   * @return int
-   *   Return the more weight
-   */
-  public static function sortByWeight($a, $b): int {
-    $a_weight = isset($a['weight']) ? $a['weight'] : 0;
-    $b_weight = isset($b['weight']) ? $b['weight'] : 0;
-    if ($a_weight == $b_weight) {
-      return 0;
-    }
-    return ($a_weight < $b_weight) ? -1 : 1;
   }
 
   /**
