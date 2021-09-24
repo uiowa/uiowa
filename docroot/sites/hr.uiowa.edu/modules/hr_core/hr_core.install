@@ -356,3 +356,50 @@ function hr_core_update_8007() {
   $config_storage = \Drupal::service('config.storage');
   $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
 }
+
+/**
+ * Delete config that is no longer needed.
+ */
+function hr_core_update_9001() {
+  $config_files = [
+    'block.block.views_block__units_block_contact_info',
+    'block.block.views_block__content_related_block_content_related',
+    'block.block.hr_mainnavigation',
+    'block.block.hr_sidebar_mainnavigation',
+    'block.block.footersecond',
+    'block.block.footer',
+    'block.block.hr_breadcrumbs',
+    'block.block.hr_content',
+    'block.block.hr_messages',
+    'block.block.hr_local_actions',
+    'block.block.hr_page_title',
+    'block.block.hr_primary_local_tasks',
+    'block.block.hr_secondary_local_tasks',
+    'hr.settings',
+    'uiowa_bar.settings',
+    'uiowa_bootstrap.settings',
+    'uiowa_footer.settings',
+  ];
+
+  $config_factory = \Drupal::configFactory();
+
+  foreach ($config_files as $config) {
+    $config = $config_factory->getEditable($config);
+
+    $config->delete();
+  }
+}
+
+/**
+ * Delete deprecated card options from content.
+ */
+function hr_core_update_9002() {
+  // There are no default card style options so these can be completely removed.
+  $database = \Drupal::database();
+  $database->delete('paragraph_revision__field_uip_classes')
+    ->condition('bundle', 'card')
+    ->execute();
+  $database->delete('paragraph__field_uip_classes')
+    ->condition('bundle', 'card')
+    ->execute();
+}
