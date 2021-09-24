@@ -3353,3 +3353,9 @@ $sites['conferencembhd2022.local.drupal.uiowa.edu'] = 'mbhd2022.conference.uiowa
 $sites['conferencembhd2022.dev.drupal.uiowa.edu'] = 'mbhd2022.conference.uiowa.edu';
 $sites['conferencembhd2022.stage.drupal.uiowa.edu'] = 'mbhd2022.conference.uiowa.edu';
 $sites['conferencembhd2022.prod.drupal.uiowa.edu'] = 'mbhd2022.conference.uiowa.edu';
+
+// Directory aliases for basicneeds.uiowa.edu.
+$sites['basicneeds.local.drupal.uiowa.edu'] = 'basicneeds.uiowa.edu';
+$sites['basicneeds.dev.drupal.uiowa.edu'] = 'basicneeds.uiowa.edu';
+$sites['basicneeds.stage.drupal.uiowa.edu'] = 'basicneeds.uiowa.edu';
+$sites['basicneeds.prod.drupal.uiowa.edu'] = 'basicneeds.uiowa.edu';
