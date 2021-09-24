@@ -10,6 +10,7 @@
  */
 
 use Drupal\Core\Entity\Sql\SqlContentEntityStorageException;
+use Drupal\Core\Database\Database;
 
 /**
  * Grab field tables and value mappings for all text-based fields.
@@ -89,7 +90,7 @@ function get_text_field_tables() {
 function search_fields(string $needle, bool $regexed = FALSE) {
   $results = [];
   $tables = get_text_field_tables();
-  $db = \Drupal::database();
+  $db = Database::getConnection();
   foreach ($tables as $table => $details) {
     $value_columns = $details['values'];
     $parent = $details['parent'];
@@ -190,7 +191,7 @@ function cleanup_tables(array &$tables) {
  *   Details regarding the type of entity we're working with.
  */
 function fetch_parents(array $temp_results, array $details) {
-  $db = \Drupal::database();
+  $db = Database::getConnection();
   switch ($details['type']) {
     case 'paragraph':
       $with_nid = [];
