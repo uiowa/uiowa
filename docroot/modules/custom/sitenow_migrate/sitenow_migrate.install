@@ -44,7 +44,7 @@ function sitenow_migrate_install() {
 }
 
 /**
- * Implements hook_install().
+ * Helper function for installing config related to a migration.
  */
 function sitenow_migrate_migration_install($sitename) {
   if (!$sitename) {
@@ -70,7 +70,7 @@ function sitenow_migrate_migration_install($sitename) {
 }
 
 /**
- * Implements hook_uninstall().
+ * Helper function for uninstalling config related to a migration.
  */
 function sitenow_migrate_migration_uninstall($sitename) {
   if (!$sitename) {
