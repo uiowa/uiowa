@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: conferencembhd2022.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: conferencembhd2022
+  human_name: mbhd2022.conference.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: conferencembhd2022.prod
+drupal:
+  db:
+    database: mbhd2022_conference_uiowa_edu
+uiowa:
+  requester: azaiezh
