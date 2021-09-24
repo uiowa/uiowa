@@ -365,12 +365,6 @@ class ListBlock extends CoreBlock {
    * {@inheritdoc}
    */
   public function blockSubmit(ViewsBlock $block, $form, FormStateInterface $form_state) {
-
-    // Set default value for items_per_page if left blank.
-    if (empty($form_state->getValue(['override', 'items_per_page']))) {
-      $form_state->setValue(['override', 'items_per_page'], 'none');
-    }
-
     parent::blockSubmit($block, $form, $form_state);
     $allow_settings = array_filter($this->getOption('allow'));
 
@@ -595,23 +589,6 @@ class ListBlock extends CoreBlock {
       return parent::displaysExposed();
     }
     return FALSE;
-  }
-
-  /**
-   * {@inheritdoc}
-   *
-   * Exposed widgets typically only work with ajax in Drupal core, however
-   * #2605218 totally breaks the rest of the functionality in this display and
-   * in Core's Block display as well, so we allow non-ajax block views to use
-   * exposed filters and manually set the #action to the current request uri.
-   */
-  public function elementPreRender(array $element): array {
-    /** @var \Drupal\views\ViewExecutable $view */
-    $view = $element['#view'];
-    if (!empty($view->exposed_widgets['#action']) && !$view->ajaxEnabled()) {
-      $view->exposed_widgets['#action'] = $this->request->getRequestUri();
-    }
-    return parent::elementPreRender($element);
   }
 
   /**
