@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: passport.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: passport
+  human_name: passport.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: passport.prod
+drupal:
+  db:
+    database: passport_uiowa_edu
+uiowa:
+  requester: ron

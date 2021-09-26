@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @file
+ * Installation functions for sppa_migrate module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function slis_migrate_install() {
+  module_load_install('sitenow_migrate');
+  sitenow_migrate_migration_install('slis');
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function slis_migrate_uninstall() {
+  module_load_install('sitenow_migrate');
+  sitenow_migrate_migration_uninstall('slis');
+}
