@@ -26,7 +26,10 @@ $imgpath: '../../uids/assets/images';
 
 // set equal height columns
 .layout {
-  .layout__region {
+  .layout__region--first,
+  .layout__region--second,
+  .layout__region--third,
+  .layout__region--fourth {
     @include breakpoint(sm) {
       display: grid;
     }
