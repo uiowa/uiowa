@@ -616,6 +616,10 @@ function sitenow_people_preprocess_paragraph(&$variables) {
             $view = Views::getView('people_block');
             $view->setDisplay('block_people_sfl');
           }
+          elseif ($paragraph->field_people_sort->value == 'block_people_tag') {
+            $view = Views::getView('people_block');
+            $view->setDisplay('block_people_tag');
+          }
         }
 
         if ($paragraph->hasField('field_reference') && !$paragraph->get('field_reference')->isEmpty()) {
@@ -710,7 +714,7 @@ function sitenow_people_preprocess_paragraph(&$variables) {
 function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $view = $form_state->get('view');
   if ($view->id() == 'people_block') {
-    if ($view->current_display == 'block_people_sfl' || $view->current_display == 'block_people_slf') {
+    if ($view->current_display == 'block_people_sfl' || $view->current_display == 'block_people_slf' || $view->current_display == 'block_people_tag') {
       $exposed_input = $view->getExposedInput();
       if (isset($exposed_input['items_per_page'])) {
         $form['items_per_page']['#options'] = [$exposed_input['items_per_page'] => $exposed_input['items_per_page']];
@@ -927,4 +931,35 @@ function _sitenow_people_path_token_value() {
 
   // @todo Is this appropriate when there is no value?
   return '';
+}
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function sitenow_people_menu_local_tasks_alter(&$data, $route_name) {
+  if ($route_name == 'entity.taxonomy_term.canonical') {
+    $taxonomy_term = \Drupal::routeMatch()->getParameter('taxonomy_term');
+    // Only show the people_sort_tag tab on the Tags vocabulary.
+    if ($taxonomy_term->bundle() !== 'tags') {
+      $data['tabs'][0]['sitenow_people.people_sort_tag']['#access'] = FALSE;
+    }
+  }
+}
+
+/**
+ * Implements hook_views_pre_view().
+ */
+function sitenow_people_views_pre_view(ViewExecutable $view, $display_id, array &$args) {
+  if ($view->id() == 'people_list_block') {
+    $sorts = $view->getHandlers('sort');
+    // If draggableviews weight sort is first and a tag is provided, pass as arg.
+    if (array_key_first($sorts) == 'weight') {
+      $filters = $view->getExposedInput();
+      if (isset($filters['field_tags_target_id'])) {
+        $tids = array_column((array) $filters['field_tags_target_id'], 'target_id');
+        $arguments = implode('+', $tids);
+        $args = [$arguments];
+      }
+    }
+  }
 }

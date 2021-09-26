@@ -1,0 +1,5 @@
+services:
+  sitenow_people.route_subscriber:
+    class: Drupal\sitenow_people\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }
