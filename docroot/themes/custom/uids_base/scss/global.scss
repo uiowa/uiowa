@@ -5,6 +5,10 @@ $imgpath: '../../uids/assets/images';
 @import "../uids/assets/scss/_base.scss";
 
 
+.block--word-break a {
+  word-break: break-word;
+}
+
 // Flex basis for all blocks and views
 
 .layout__region {
@@ -20,7 +24,24 @@ $imgpath: '../../uids/assets/images';
   }
 }
 
-// Unset equal height columns
+// set equal height columns
+.layout {
+  .layout__region--first,
+  .layout__region--second,
+  .layout__region--third,
+  .layout__region--fourth {
+    @include breakpoint(sm) {
+      display: grid;
+    }
+  }
+  &.section-alignment__start {
+    .layout__region {
+      display: inherit;
+    }
+  }
+}
+
+  // Unset equal height columns
 .section-alignment__start {
   .layout__spacing_container {
     align-items: flex-start;
@@ -267,6 +288,9 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   }
   &__all--extra {
     padding: 6rem;
+  }
+  &__all--md {
+    padding: 2rem;
   }
 }
 
