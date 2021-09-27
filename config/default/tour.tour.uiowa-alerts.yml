@@ -16,37 +16,33 @@ tips:
     plugin: text
     label: Page
     weight: 0
-    attributes:
-      data-class: js-form-item-custom-alert-display
     body: '<p>On this tour, we''ll explain how to add an alert to your site.</p><p>Let''s get going!</p>'
-    location: top
+    selector: .js-form-item-custom-alert-display
+    position: top-start
   display-alert:
     id: display-alert
     plugin: text
     label: 'Display Alert'
     weight: 1
-    attributes:
-      data-class: form-item--custom-alert-display
     body: '<p>Check to display a custom alert at the top of every page. This is an optional display setting for your site.</p>'
-    location: bottom
+    selector: .form-item--custom-alert-display
+    position: bottom-start
   alert-class:
     id: alert-class
     plugin: text
     label: 'Alert Level'
     weight: 2
-    attributes:
-      data-class: js-form-item-custom-alert-level
     body: '<p>Determines the color of the alert banner based on the UIDS styles.</p>'
-    location: bottom
+    selector: .js-form-item-custom-alert-level
+    position: bottom-start
   alert-message:
     id: alert-message
     plugin: text
     label: 'Alert Message'
     weight: 3
-    attributes:
-      data-id: cke_edit-custom-alert-message-value
     body: '<p>The message to be displayed. The first heading in the message will have an associated icon based on the alert level.</p>'
-    location: bottom
+    selector: '#cke_edit-custom-alert-message-value'
+    position: bottom-start
   alerts-next-step:
     id: alerts-next-step
     plugin: text

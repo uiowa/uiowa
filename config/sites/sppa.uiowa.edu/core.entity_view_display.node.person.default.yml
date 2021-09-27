@@ -3,13 +3,11 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.person.field_grad_program_all_degree
     - field.field.node.person.field_image
     - field.field.node.person.field_meta_tags
     - field.field.node.person.field_person_bio
     - field.field.node.person.field_person_contact_information
     - field.field.node.person.field_person_credential
-    - field.field.node.person.field_person_department
     - field.field.node.person.field_person_education
     - field.field.node.person.field_person_email
     - field.field.node.person.field_person_first_name
@@ -18,31 +16,21 @@ dependencies:
     - field.field.node.person.field_person_last_name
     - field.field.node.person.field_person_phone
     - field.field.node.person.field_person_position
-    - field.field.node.person.field_person_publications_link
     - field.field.node.person.field_person_research_areas
     - field.field.node.person.field_person_type_status
     - field.field.node.person.field_person_types
-    - field.field.node.person.field_person_university_id
     - field.field.node.person.field_person_website
-    - field.field.node.person.field_pt_faculty_type
-    - field.field.node.person.field_pt_student_advisor
-    - field.field.node.person.field_pt_student_cur_pos_dept
-    - field.field.node.person.field_pt_student_cur_pos_inst
-    - field.field.node.person.field_pt_student_cur_pos_title
-    - field.field.node.person.field_pt_student_defense_date
-    - field.field.node.person.field_pt_student_program_start
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
-    - field.field.node.person.pt_student_dissertation_title
     - node.type.person
     - views.view.person_card
   module:
     - entity_reference_revisions
-    - field_group
     - layout_builder
     - layout_builder_restrictions
     - link
     - metatag
+    - private_content
     - system
     - telephone
     - text
@@ -51,27 +39,6 @@ dependencies:
   theme:
     - uids_base
 third_party_settings:
-  field_group:
-    group_student_current_position:
-      children:
-        - field_pt_student_cur_pos_title
-        - field_pt_student_cur_pos_dept
-        - field_pt_student_cur_pos_inst
-      parent_name: ''
-      weight: 19
-      format_type: html_element
-      region: content
-      format_settings:
-        element: div
-        show_label: true
-        label_element: strong
-        label_element_classes: ''
-        attributes: ''
-        effect: none
-        speed: fast
-        id: ''
-        classes: ''
-      label: 'Current position'
   layout_builder:
     allow_custom: false
     enabled: true
@@ -81,7 +48,6 @@ third_party_settings:
         layout_settings:
           label: Moderation
           layout_builder_styles_style: {  }
-          context_mapping: {  }
         components:
           -
             uuid: 61c49641-a81f-417f-b400-4112c693eafa
@@ -101,7 +67,6 @@ third_party_settings:
           layout_builder_styles_style:
             - ''
             - ''
-          context_mapping: {  }
         components:
           -
             uuid: ea6c6fe6-713c-407b-9389-bc6638854cf5
@@ -159,7 +124,6 @@ third_party_settings:
           column_widths: 67-33
           layout_builder_styles_style:
             section_alignment_start: section_alignment_start
-          context_mapping: {  }
         components:
           -
             uuid: e0cbb1a7-b222-44d0-9dae-c6d78d5e74c2
@@ -175,20 +139,7 @@ third_party_settings:
                 third_party_settings: {  }
                 type: text_default
             additional: {  }
-            weight: -5
-          -
-            uuid: 234062aa-1d55-4cb2-a398-7cdf98e7de79
-            region: second
-            configuration:
-              id: 'views_block:person_card-block_1'
-              label: null
-              provider: views
-              label_display: null
-              views_label: ''
-              items_per_page: none
-              context_mapping: {  }
-            additional: {  }
-            weight: 0
+            weight: -9
           -
             uuid: 532de6e6-fc41-4b7d-a135-5d1cf2c63cf3
             region: first
@@ -204,126 +155,20 @@ third_party_settings:
                   link: false
                 third_party_settings: {  }
             additional: {  }
-            weight: 2
-          -
-            uuid: 5372c224-abaa-4a47-8cbc-17ffeb948d8d
-            region: first
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:person:field_pt_student_cur_pos_title'
-              formatter:
-                label: hidden
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-                type: string
-            additional: {  }
-            weight: 4
-          -
-            uuid: fc2e71fb-6ac9-4bee-8fd1-a44760200e6a
-            region: first
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:person:field_pt_student_cur_pos_dept'
-              formatter:
-                label: hidden
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-                type: string
-            additional: {  }
-            weight: 5
-          -
-            uuid: 31d47173-0115-4fe7-933f-848510287ad4
-            region: first
-            configuration:
-              id: 'field_block:node:person:field_person_department'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: inline
-                type: entity_reference_label
-                settings:
-                  link: false
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: -9
-          -
-            uuid: ba1d0839-732c-4818-ac32-64c45203c2bd
-            region: first
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:person:field_person_publications_link'
-              formatter:
-                label: hidden
-                settings:
-                  trim_length: 80
-                  url_only: false
-                  url_plain: false
-                  rel: ''
-                  target: ''
-                third_party_settings: {  }
-                type: link
-            additional: {  }
             weight: 3
           -
-            uuid: 44227f44-bf86-413c-b6b2-2df45a67f259
-            region: first
+            uuid: 234062aa-1d55-4cb2-a398-7cdf98e7de79
+            region: second
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:person:pt_student_dissertation_title'
-              formatter:
-                label: hidden
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-                type: string
+              id: 'views_block:person_card-block_1'
+              label: null
+              provider: views
+              label_display: null
+              views_label: ''
+              items_per_page: none
+              context_mapping: {  }
             additional: {  }
-            weight: -6
-          -
-            uuid: 36909c1d-bb61-4468-8a50-19afb0e16931
-            region: first
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:person:field_pt_student_cur_pos_inst'
-              formatter:
-                label: hidden
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-                type: string
-            additional: {  }
-            weight: 6
-          -
-            uuid: 582c261d-6278-4909-835d-de8efe388ef4
-            region: first
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:person:field_pt_student_advisor'
-              formatter:
-                label: inline
-                settings:
-                  link: true
-                third_party_settings: {  }
-                type: entity_reference_label
-            additional: {  }
-            weight: -7
+            weight: 0
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -377,14 +222,6 @@ content:
       link: ''
     third_party_settings: {  }
     region: content
-  field_person_department:
-    type: entity_reference_label
-    weight: 2
-    region: content
-    label: above
-    settings:
-      link: false
-    third_party_settings: {  }
   field_person_education:
     weight: 6
     label: above
@@ -394,13 +231,13 @@ content:
     region: content
   field_person_email:
     type: email_mailto
-    weight: 3
+    weight: 2
     region: content
     label: inline
     settings: {  }
     third_party_settings: {  }
   field_person_phone:
-    weight: 4
+    weight: 3
     label: inline
     settings:
       title: ''
@@ -415,98 +252,47 @@ content:
     third_party_settings: {  }
     type: string
     region: content
-  field_person_publications_link:
-    weight: 16
-    label: hidden
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-    type: link
-    region: content
   field_person_research_areas:
     type: entity_reference_label
-    weight: 17
+    weight: 7
     region: content
     label: above
     settings:
       link: false
     third_party_settings: {  }
+  field_person_types:
+    type: entity_reference_label
+    weight: 11
+    region: content
+    label: inline
+    settings:
+      link: false
+    third_party_settings: {  }
   field_person_website:
-    weight: 15
+    type: link
+    weight: 4
+    region: content
     label: inline
     settings:
       trim_length: 80
       url_only: false
       url_plain: false
-      rel: ''
-      target: ''
+      rel: '0'
+      target: '0'
     third_party_settings: {  }
-    type: link_separate
-    region: content
-  field_pt_student_advisor:
-    weight: 14
-    label: inline
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_pt_student_cur_pos_dept:
-    weight: 25
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_pt_student_cur_pos_inst:
-    weight: 26
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
-  field_pt_student_cur_pos_title:
-    weight: 24
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
   links:
-    weight: 12
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }
-  pt_student_dissertation_title:
-    weight: 18
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
 hidden:
-  field_grad_program_all_degree: true
-  field_meta_tags: true
   field_person_credential: true
-  field_person_education: true
   field_person_first_name: true
   field_person_hide: true
   field_person_hometown: true
   field_person_last_name: true
   field_person_type_status: true
-  field_person_types: true
-  field_person_university_id: true
-  field_pt_faculty_type: true
-  field_pt_student_defense_date: true
-  field_pt_student_program_start: true
   field_tags: true
   field_teaser: true
+  private: true
   search_api_excerpt: true

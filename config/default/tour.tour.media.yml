@@ -17,112 +17,99 @@ tips:
     label: 'Give it a name'
     body: '<p>This provides an administrative name for the file. This is helpful when searching and selecting media items later on. This can be the same as the filename, but is independent.</p>'
     weight: 0
-    attributes:
-      data-id: edit-name-wrapper
-    location: bottom
+    selector: '#edit-name-wrapper'
+    position: bottom-start
   video:
     id: video
     plugin: text
     label: 'Video URL'
     body: '<p>Add the URL of the YouTube, Vimeo or University of Iowa (Kaltura/MediaSpace) video you wish to display. Make sure the account is public.</p>'
     weight: 1
-    attributes:
-      data-id: edit-field-media-oembed-video-0-value
+    selector: '#edit-field-media-oembed-video-0-value'
   audio:
     id: audio
     plugin: text
     label: 'Audio File'
     body: '<p>Add the audio file you wish to embed into your site.</p>'
     weight: 1
-    attributes:
-      data-id: edit-field-media-audio-file-0-upload
+    selector: '#edit-field-media-audio-file-0-upload'
   instagram:
     id: instagram
     plugin: text
     label: 'Instagram URL'
     body: '<p>Add the URL of the Instagram post you wish to display. Make sure the Instagram account is public. Don''t forget to checkout our <a href="https://sitenow.uiowa.edu/node/146">Instagram documentation</a> for guidance</p>'
     weight: 1
-    attributes:
-      data-id: edit-field-media-instagram-0-value
+    selector: '#edit-field-media-instagram-0-value'
   twitter:
     id: twitter
     plugin: text
     label: 'Tweet URL'
     body: '<p>Add the URL of the tweet you wish to display. Make sure the Twitter account is public! Don''t forget to checkout our <a href="https://sitenow.uiowa.edu/node/146">Twitter documentation</a> for guidance.</p>'
     weight: 1
-    attributes:
-      data-id: edit-field-media-twitter-0-value
+    selector: '#edit-field-media-twitter-0-value'
   facebook:
     id: facebook
     plugin: text
     label: 'Facebook URL'
     body: '<p>Add the URL of the Facebook post you wish to display. Make sure the post is public. Don''t forget to to checkout our <a href="https://sitenow.uiowa.edu/node/146">Facebook documentation</a> for guidance.</p>'
     weight: 1
-    attributes:
-      data-class: field--name-field-media-facebook
+    selector: .field--name-field-media-facebook
   upload:
     id: upload
     plugin: text
     label: 'Upload the file'
     body: '<p>Go ahead and select a file from you computer. The help text points out any restrictions regarding file size, type.</p>'
     weight: 1
-    attributes:
-      data-class: form-type-managed-file
-    location: bottom
+    selector: .form-type-managed-file
+    position: bottom-start
   img-alt:
     id: img-alt
     plugin: text
     label: 'Alternative Text'
     body: '<p>It is important to provide alternative text for images to aid visually-impaired users.</p>'
     weight: 4
-    attributes:
-      data-class: form-item-field-media-image-0-alt
-    location: right
+    selector: .form-item-field-media-image-0-alt
+    position: right-start
   img-thumbnail:
     id: img-thumbnail
     plugin: text
     label: 'Select a focal point'
     body: '<p>This is a rendered thumbnail of your uploaded image. There are areas of the site that will use this image and crop it to fit the space. Click on the focus area of the image. This helps to make sure that someone''s head isn''t chopped off during cropping.</p>'
     weight: 5
-    attributes:
-      data-class: image-style-thumbnail
-    location: bottom
+    selector: .image-style-thumbnail
+    position: bottom-start
   img-preview:
     id: img-preview
     plugin: text
     label: 'Preview image'
     body: '<p>You can preview the image with different image styles used on the site to make sure the focus you selected will work for the image.</p>'
     weight: 6
-    attributes:
-      data-class: focal-point-preview-link
-    location: right
+    selector: .focal-point-preview-link
+    position: right-start
   img-global-caption:
     id: img-global-caption
     plugin: text
     label: 'Global Caption'
     body: '<p>Provide a global caption for the image. Used on Photo Gallery images and Carousel Images if not overridden locally.</p><p>Be sure to checkout our <a href="https://sitenow.uiowa.edu/node/156/">image specificiations documentation</a></p>'
     weight: 7
-    attributes:
-      data-id: cke_edit-field-media-caption-0-value
-    location: bottom
+    selector: '#cke_edit-field-media-caption-0-value'
+    position: bottom-start
   url-alias:
     id: url-alias
     plugin: text
     label: 'URL Alias'
     body: '<p>Uncheck the "Generate automatic URL alias" if you want to create a custom URL for the file. Then specify an alternative path by which this data can be accessed in the "URL alias" textbox.</p>'
     weight: 8
-    attributes:
-      data-id: edit-path-0
-    location: top
+    selector: '#edit-path-0'
+    position: top-start
   moderation-status:
     id: moderation-status
     plugin: text
     label: 'Moderation Status'
     body: '<p>Check to publish the file. If unchecked, the file will be saved as a draft.</p>'
     weight: 9
-    attributes:
-      data-class: field--name-status
-    location: bottom
+    selector: .field--name-status
+    position: bottom-start
   next_step:
     id: next_step
     plugin: text
