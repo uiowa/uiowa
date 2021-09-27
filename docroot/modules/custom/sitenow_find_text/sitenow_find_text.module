@@ -103,7 +103,8 @@ function search_fields(string $needle, bool $regexed = FALSE) {
         ->fields($table, array_merge($parent, $value_columns));
       if ($regexed) {
         $query->condition($table . '.' . $value_column, $needle, 'REGEXP');
-      } else {
+      }
+      else {
         // Note: We are not using $db->escapeLike($needle) here,
         // at least currently to allow for the option of
         // including wildcards in the provided string.
