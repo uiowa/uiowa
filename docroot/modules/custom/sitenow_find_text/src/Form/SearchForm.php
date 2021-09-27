@@ -53,12 +53,12 @@ class SearchForm extends ConfigFormBase {
                 <tr>
                     <td>%</td>
                     <td>Wildcard that matches any zero, one, or many characters.<br/>
-                    `f%r` will match `fr`, `for`, `four`, and `forever`.</td>
+                    `f%r` will match `fr`, `for`, `four`, and `flounder`.</td>
                 </tr>
                 <tr>
                     <td>_</td>
                     <td>Wildcard that matches exactly one character.<br/>
-                    `f_r` will match `for`, but not `fr`, `four`, or `forever`.</td>
+                    `f_r` will match `for`, but not `fr`, `four`, or `flounder`.</td>
                 </tr>
             </tbody>
         </table>
