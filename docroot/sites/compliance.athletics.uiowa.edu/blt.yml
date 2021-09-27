@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: athleticscompliance.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: athleticscompliance
+  human_name: compliance.athletics.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: athleticscompliance.prod
+drupal:
+  db:
+    database: compliance_athletics_uiowa_edu
+uiowa:
+  requester: wdecora
