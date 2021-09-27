@@ -214,8 +214,10 @@ function fetch_parent(string $id, string $type) {
         ->condition('target_type', $type, '=')
         ->condition('target_id', $id, '=')
         // Currently we're not handling revisions, so we're likely to have
-        // duplicate entries for the same node; one for each revision.
+        // duplicate entries for the same node; one for each revision. We
+        // will also want to make sure we grab the most recent revision.
         ->distinct()
+        ->orderBy('source_vid', 'DESC')
         ->execute()
         ->fetchAll();
       // If we didn't have a result, we hit a dead end.
@@ -224,7 +226,8 @@ function fetch_parent(string $id, string $type) {
       }
       // We found the paragraph parent, but it may
       // or may not be a node, so we might need to
-      // keep digging.
+      // keep digging. Grab only the first result,
+      // because we're not currently handling revisions.
       $id = $result[0]->source_vid;
       $type = $result[0]->source_type;
       return fetch_parent($id, $type);
