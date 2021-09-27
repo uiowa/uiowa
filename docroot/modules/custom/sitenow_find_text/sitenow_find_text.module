@@ -100,7 +100,7 @@ function search_fields(string $needle, bool $regexed = FALSE) {
     $parent = $details['parent'];
     foreach ($value_columns as $value_column) {
       $query = $db->select($table)
-        ->fields($table, array_merge($parent, $value_columns));
+        ->fields($table, array_merge($parent, [$value_column]));
       if ($regexed) {
         $query->condition($table . '.' . $value_column, $needle, 'REGEXP');
       }
@@ -118,12 +118,15 @@ function search_fields(string $needle, bool $regexed = FALSE) {
       if (empty($temp_results)) {
         continue;
       }
-      foreach ($temp_results as &$row) {
+      foreach ($temp_results as $id => $row) {
         $row->value = implode(': ', [$value_column, $row->$value_column]);
+        $new_id = fetch_parent($id, $details['type']);
+        unset($temp_results[$id]);
+        $temp_results[$new_id] = $row;
       }
       // If the table is of a node type, we're done. Otherwise, we need
       // to find the parent.
-      $temp_results = fetch_parents($temp_results, $details);
+//      $temp_results = fetch_parents($temp_results, $details);
 
       // Add our new results to our collected results, keyed
       // by node id.
@@ -261,4 +264,51 @@ function fetch_parents(array $temp_results, array $details) {
       break;
   }
   return $temp_results;
+}
+
+/**
+ * Helper function to fetch parent entities.
+ *
+ * @param string $id
+ *   The entity_id for which to search.
+ * @param string $type
+ *   The entity type for which to search.
+ */
+function fetch_parent(string $id, string $type) {
+  $db = Database::getConnection();
+  switch ($type) {
+    case 'node':
+      return $id;
+
+    case 'paragraph':
+      $result = $db->select('entity_usage')
+        ->fields('entity_usage', ['source_id', 'source_type'])
+        ->condition('target_type', $type, '=')
+        ->condition('target_id', $id, '=')
+        // Currently we're not handling revisions, so we're likely to have
+        // duplicate entries for the same node; one for each revision.
+        ->distinct()
+        ->execute()
+        ->fetchAll();
+      // If we didn't have a result, we hit a dead end.
+      if (!isset($result[0])) {
+        return FALSE;
+      }
+      $id = $result[0]->source_id;
+      $type = $result[0]->source_type;
+      return fetch_parent($id, $type);
+
+    case 'block_content':
+      // Find the target_id, which will be the id of the parent entity.
+      $result = $db->select('node__layout_builder__layout')
+        ->fields('node__layout_builder__layout', ['entity_id'])
+        ->condition('layout_builder__layout_section', '%"block_revision_id";s:_:"' . $id . '";%', 'LIKE')
+        ->execute()
+        ->fetchAll();
+      // If we didn't have a result, we hit a dead end.
+      if (!isset($result[0])) {
+        return FALSE;
+      }
+      return $result[0]->entity_id;
+  }
 }
