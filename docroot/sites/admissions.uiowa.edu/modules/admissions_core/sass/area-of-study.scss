@@ -250,4 +250,11 @@ select#edit-action {
   width: 100%;
   min-height: 100px;
   box-shadow: 0 0 4px rgba(0, 0, 0, .4);
+
+  transform:  translateZ(0) translateY(100%);
+  transition: transform 0.3s ease-in-out;
+
+  &.container-show {
+    transform: translateY(0%);
+  }
 }
