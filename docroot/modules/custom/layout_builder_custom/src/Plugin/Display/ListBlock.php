@@ -268,41 +268,14 @@ class ListBlock extends CoreBlock {
       }
     }
 
-    // Provide "Hide fields" block settings form.
-    if (!empty($allow_settings['hide_fields'])) {
-      // Set up the configuration table for hiding / sorting fields.
-      $fields = $this->getHandlers('field');
-      $header = [];
-      if (!empty($allow_settings['hide_fields'])) {
-        $header['hide'] = $this->t('Hide');
-      }
-      $header['label'] = $this->t('Label');
-      $form['override']['hide_fields'] = [
-        '#type' => 'details',
-        '#title' => $this->t('Hide fields'),
-        '#description' => $this->t('Choose to hide some of the fields.'),
-      ];
-      $form['override']['hide_fields']['field_list'] = [
-        '#type' => 'table',
-        '#header' => $header,
-        '#rows' => [],
-      ];
-
-      // Add each field to the configuration table.
-      foreach ($fields as $field_name => $plugin) {
-        $field_label = $plugin->adminLabel();
-        if (!empty($plugin->options['label'])) {
-          $field_label .= ' (' . $plugin->options['label'] . ')';
-        }
-        $form['override']['hide_fields']['field_list'][$field_name]['hide'] = [
-          '#type' => 'checkbox',
-          '#default_value' => !empty($block_configuration['fields'][$field_name]['hide']) ? $block_configuration['fields'][$field_name]['hide'] : 0,
-        ];
-        $form['override']['hide_fields']['field_list'][$field_name]['label'] = [
-          '#markup' => $field_label,
-        ];
-      }
-    }
+    // Provide "Hide fields" block settings form by repurposing order_fields.
+    $form['override']['hide_fields'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Hide fields'),
+      '#description' => $this->t('Choose to hide some of the fields.'),
+    ];
+    $form['override']['hide_fields']['order_fields'] = $form['override']['order_fields'];
+    unset($form['override']['order_fields']);
 
     // Provides settings related to displaying a "More" link.
     if (!empty($allow_settings['use_more'])) {
@@ -419,7 +392,7 @@ class ListBlock extends CoreBlock {
       if ($fields = array_filter($form_state->getValue([
         'override',
         'hide_fields',
-        'field_list',
+        'order_fields',
       ]))) {
         $block->setConfigurationValue('fields', $fields);
       }
