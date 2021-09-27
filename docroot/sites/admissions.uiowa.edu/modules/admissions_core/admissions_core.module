@@ -666,6 +666,7 @@ function admissions_core_preprocess_views_view_field(&$variables) {
           }
         }
         break;
+
       case 'areas_of_study_kiosk':
 
         if (isset($variables['view']->field) && $variables['field']->realField == 'nothing' && $variables['field']->options['id'] == 'nothing_1') {
@@ -673,7 +674,7 @@ function admissions_core_preprocess_views_view_field(&$variables) {
           $variables['output'] = [
             '#type' => 'checkbox',
             '#attributes' => [
-              'value' => $nid
+              'value' => $nid,
             ],
           ];
         }
