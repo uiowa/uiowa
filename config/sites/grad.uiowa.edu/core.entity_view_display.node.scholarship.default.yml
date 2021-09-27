@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.scholarship.body
+    - field.field.node.scholarship.field_meta_tags
     - field.field.node.scholarship.field_scholarship_application
     - field.field.node.scholarship.field_scholarship_contact
     - field.field.node.scholarship.field_scholarship_deadline
@@ -33,6 +34,7 @@ third_party_settings:
           label: 'Moderation control'
           layout_builder_styles_style:
             section_margin_remove_default_margins: section_margin_remove_default_margins
+          context_mapping: {  }
         components:
           -
             uuid: 051b1326-800c-40ca-b518-98ce13ca4e6f
@@ -61,6 +63,7 @@ third_party_settings:
           layout_builder_styles_style:
             - ''
             - section_margin_fixed_width_container
+          context_mapping: {  }
         components:
           -
             uuid: 40b768ff-6e34-4257-9398-d83430b061e8
@@ -106,6 +109,7 @@ third_party_settings:
         layout_id: layout_page
         layout_settings:
           label: Content
+          context_mapping: {  }
         components:
           -
             uuid: 7cae8197-63fb-4ea0-b58f-a6c0e458e50b
@@ -333,4 +337,5 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_meta_tags: true
   search_api_excerpt: true

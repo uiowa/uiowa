@@ -25,45 +25,40 @@ tips:
     label: 'Media View'
     body: "<p>You can select how you would like to display your current media entities - Grid or Table view.</p><p><a\_href=\"/media/add?tour=1\">If you want to learn how to add media, click here for our guided Media tour</a></p>"
     weight: 1
-    attributes:
-      data-class: 'tabs.primary li:nth-child(2)'
-    location: right
+    selector: '.tabs.primary li:nth-child(2)'
+    position: right-start
   add:
     id: add
     plugin: text
     label: 'Add Media'
     body: "<p>When it is time to add media to your site, <a\_href=\"/media/add?tour=1\">click here for the tour</a>. You can add files, images, audio files, videos and social media posts.</p>"
     weight: 2
-    attributes:
-      data-class: action-links
-    location: bottom
+    selector: .action-links
+    position: bottom-start
   filters:
     id: filters
     plugin: text
     label: Filters
     body: '<p>Filters can be used to search the content based on author, type, title and other parameters.</p>'
     weight: 3
-    attributes:
-      data-id: edit-submit-media-library
-    location: bottom
+    selector: '#edit-submit-media-library'
+    position: bottom-start
   actions:
     id: actions
     plugin: text
     label: Actions
     body: '<p>They let you execute actions on multiple content items at once. Check which actions are offered in the drop-down.</p>'
     weight: 4
-    attributes:
-      data-id: edit-submit--2
-    location: bottom
+    selector: '#edit-submit--2'
+    position: bottom-start
   actions-checkbox:
     id: actions-checkbox
     plugin: text
     label: Actions
     body: '<p>In order to define which items to execute an action on use the checkboxes. The one in the header row will select all items on a page and the ones in the rows below will select corresponding individual items.</p>'
     weight: 5
-    attributes:
-      data-class: 'views-form-media-library-page .select-all'
-    location: right
+    selector: '.views-form-media-library-page .select-all'
+    position: right-start
   next_step:
     id: next_step
     plugin: text
