@@ -17,7 +17,12 @@
               }
             })
             print_node_ids = print_node_ids.slice(0, -1);
-            printJS({printable:'/print/view/pdf/areas_of_study_kiosk/filtered_print_page?view_args[0]=' + print_node_ids, type:'pdf', showModal:true});
+            printJS(
+              {
+                printable:'/print/view/pdf/areas_of_study_kiosk/filtered_print_page?view_args[0]=' + print_node_ids,
+                type:'pdf',
+                showModal:true,
+                onPrintDialogClose: dialogClose});
           }
           else if(event.target.matches('.view-areas-of-study-kiosk .views-table .form-checkbox')) {
             let view = document.querySelector('.view-areas-of-study-kiosk .views-table');
@@ -40,6 +45,11 @@
           }
 
         }, false);
+
+        function dialogClose() {
+          setTimeout(() => {location.reload()} , 5000);
+        }
+
       });
     }
   };
