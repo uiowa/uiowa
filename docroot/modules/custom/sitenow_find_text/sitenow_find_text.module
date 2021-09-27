@@ -121,8 +121,13 @@ function search_fields(string $needle, bool $regexed = FALSE) {
       foreach ($temp_results as $id => $row) {
         $row->value = implode(': ', [$value_column, $row->$value_column]);
         $new_id = fetch_parent($id, $details['type']);
+        // Go ahead and unset it first. If we didn't find a result
+        // in our fetch_parent, we don't know what node has it anyway,
+        // and so our results will be broken.
         unset($temp_results[$id]);
-        $temp_results[$new_id] = $row;
+        if ($new_id) {
+          $temp_results[$new_id] = $row;
+        }
       }
       // If the table is of a node type, we're done. Otherwise, we need
       // to find the parent.
@@ -282,7 +287,7 @@ function fetch_parent(string $id, string $type) {
 
     case 'paragraph':
       $result = $db->select('entity_usage')
-        ->fields('entity_usage', ['source_id', 'source_type'])
+        ->fields('entity_usage', ['source_vid', 'source_type'])
         ->condition('target_type', $type, '=')
         ->condition('target_id', $id, '=')
         // Currently we're not handling revisions, so we're likely to have
@@ -294,7 +299,7 @@ function fetch_parent(string $id, string $type) {
       if (!isset($result[0])) {
         return FALSE;
       }
-      $id = $result[0]->source_id;
+      $id = $result[0]->source_vid;
       $type = $result[0]->source_type;
       return fetch_parent($id, $type);
 
