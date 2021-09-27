@@ -449,11 +449,6 @@ class ListBlock extends CoreBlock {
       $this->view->display_handler->setOption('heading_size', $child_heading_size);
     }
 
-    // Change pager offset settings based on block configuration.
-    if (!empty($allow_settings['offset'])) {
-      $this->view->setOffset($config['pager_offset']);
-    }
-
     // Change fields output based on block configuration.
     if ($this->view->getStyle()->usesFields() &&
       !empty($allow_settings['hide_fields']) &&
