@@ -7,15 +7,18 @@
     @include flexbox;
     @include flex(0, 1, 100%);
     @include flex-wrap(wrap);
+
     .field__item {
       @include breakpoint(sm) {
         flex: 1;
       }
     }
+
     .field__item:not(:last-child) {
       margin-right: $md;
     }
   }
+
   .field--name-field-area-of-study-link {
     .field__items div {
       font-size: 1.2rem;
@@ -23,24 +26,28 @@
       margin-top: 0;
     }
   }
+
   .block-field-blocknodearea-of-studyfield-area-of-study-first-year,
-  .block-field-blocknodearea-of-studyfield-area-of-study-transfer,
   .block-field-blocknodearea-of-studyfield-area-of-study-intl,
+  .block-field-blocknodearea-of-studyfield-area-of-study-transfer,
   .field--name-field-area-of-study-first-year,
-  .field--name-field-area-of-study-transfer,
-  .field--name-field-area-of-study-intl {
+  .field--name-field-area-of-study-intl,
+  .field--name-field-area-of-study-transfer {
     @include breakpoint(sm) {
       display: flex;
     }
+
     .media--circle img {
       border-radius: unset;
     }
   }
+
   .field--name-field-area-of-study-first-year,
-  .field--name-field-area-of-study-transfer,
-  .field--name-field-area-of-study-intl {
+  .field--name-field-area-of-study-intl,
+  .field--name-field-area-of-study-transfer {
     .card__body ul.fa-ul {
       margin-left: 1.875rem;
+
       li {
         margin-bottom: $sm;
         line-height: 1.4;
@@ -48,12 +55,13 @@
     }
   }
 
-  .views-field-field-area-of-study-teaching,
-  .views-field-field-area-of-study-honors,
   .views-field-field-area-of-study-competitive,
   .views-field-field-area-of-study-four-year,
-  .views-field-field-area-of-study-selective {
+  .views-field-field-area-of-study-honors,
+  .views-field-field-area-of-study-selective,
+  .views-field-field-area-of-study-teaching {
     margin-top: $sm;
+
     .field__label {
       margin-bottom: 0;
     }
@@ -64,14 +72,17 @@
   .field__label {
     text-transform: uppercase;
   }
+
   .paragraph--type--degree {
     .field__item {
       display: inline;
     }
-    .field--name-field-degree-abbreviation.field--label-hidden.field__item{
+
+    .field--name-field-degree-abbreviation.field--label-hidden.field__item {
       &:before {
         content: "(";
       }
+
       &:after {
         content: ")";
       }
@@ -79,8 +90,8 @@
   }
 }
 
-.view-id-areas_of_study_kiosk,
-.view-display-id-areas_of_study{
+.view-display-id-areas_of_study,
+.view-id-areas_of_study_kiosk {
   display: flex;
   flex-wrap: wrap;
 
@@ -91,59 +102,73 @@
       font-size: $small-font-size;
     }
   }
+
   .view-header {
     width: 100%;
   }
+
   .view-content,
-  .view-empty  {
+  .view-empty {
     flex: 1 0 0;
   }
+
   .view-filters {
     flex: 0 0 100%;
     max-width: 100%;
-
     @include breakpoint(sm) {
       flex: 0 0 25%;
       max-width: 25%;
       margin-right: $desktop-width-gutter;
     }
+
     .form-item {
       width: 100%;
     }
+
     .views-exposed-form {
       .form--inline {
         @include breakpoint(sm) {
           flex-wrap: wrap;
         }
       }
+
       &.uids-content:not(.uids-search) {
         padding: 19px;
+
         .form-item {
           margin: 0;
         }
-        input, select, fieldset {
+
+        fieldset,
+        input,
+        select {
           &.form-item {
             margin-bottom: 19px;
           }
         }
+
         fieldset {
           border: 0;
           padding: 0;
+
           .fieldset-legend {
             display: block;
             margin: 0;
-            font-size: .8rem;
+            font-size: 0.8rem;
             font-weight: 700;
             line-height: 1.8;
           }
+
           .fieldset-wrapper {
             padding: 0.75rem;
           }
+
           .form-type-checkbox {
             display: flex;
             align-items: baseline;
           }
         }
+
         .form-actions {
           width: 100%;
           margin: 0;
@@ -154,6 +179,7 @@
             flex: 46% 1 1;
             margin-bottom: 0;
           }
+
           input[id^='edit-submit-areas-of-study'] {
             @include bttn--primary;
           }
@@ -161,14 +187,13 @@
       }
     }
   }
+
   .pager {
     flex: 0 0 100%;
     max-width: 100%;
     order: 1;
   }
-
 }
-
 // Card p styles extended.
 .transfer-tip {
   margin-bottom: 0;
@@ -179,9 +204,6 @@
   display: block;
 }
 
-select#edit-action {
-  display: none;
-}
 
 // Kiosk print button
 .view-id-areas_of_study_kiosk {
@@ -190,57 +212,36 @@ select#edit-action {
       .fieldset-legend {
         font-size: $content-font-size !important;
       }
-    }}
+    }
+  }
 
-  #edit-actions--2{
-    &:before {
-      @include fas();
-      margin-right: 15px;
-      color: $primary;
-      content: "\f02f";
-      left: 40px;
-      position: absolute;
-      top: 40px;
-    }
-    transition: padding .5s;
-    padding: 1.05rem;
-    font-size: 1rem;
-    margin: 0;
-    right: 0;
-    position: fixed;
-    text-align: center;
-    bottom: 0;
-    z-index: 101;
-  }
-  .uids-content {
-    input#edit-submit {
-      @include bttn--outline;
-      @include bttn--secondary;
-      background: none;
-      text-align: center;
-      padding-left:60px;
-    }
-  }
-  p, a, table th, table td, .fieldset-legend, .uids-content label {
+  .fieldset-legend,
+  .uids-content label,
+  a,
+  p,
+  table td,
+  table th {
     font-size: $content-font-size !important;
-  }
-
-  .checkbox-kiosk {
-    a, p {
-      font-size: $content-font-size;
-    }
   }
 
   .view-filters .views-exposed-form.uids-content:not(.uids-search) fieldset .form-type-checkbox {
     align-items: flex-start;
+    margin-bottom: $md;
   }
 
-  .form-checkboxes, .form-checkbox {
+  .form-checkbox {
     height: 1cm;
     width: 1cm;
     flex-shrink: 0;
-    input[type="checkbox"] {
-      
+  }
+
+  .form-checkboxes {
+    label {
+      line-height: 1.5;
+      padding-left: $sm;
+    }
+
+    .form-checkbox {
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none;
@@ -253,11 +254,11 @@ select#edit-action {
       outline: none;
       border: none;
       cursor: pointer;
-      background-color: #707070;
+      background-color: $grey-light;
       transition: background-color ease 0.3s;
     }
-    
-    input[type="checkbox"]:before {
+
+    .form-checkbox:before {
       content: "on off";
       display: block;
       position: absolute;
@@ -273,24 +274,23 @@ select#edit-action {
       font-weight: bold;
       text-indent: -22px;
       word-spacing: 37px;
-      color: #fff;
-      text-shadow: -1px -1px rgba(0,0,0,0.15);
+      color: $secondary;
       white-space: nowrap;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
       transition: all cubic-bezier(0.3, 1.5, 0.7, 1) 0.3s;
     }
-    
-    input[type="checkbox"]:checked {
+
+    .form-checkbox:checked {
       background-color: $primary;
     }
-    
-    input[type="checkbox"]:checked:before {
+
+    .form-checkbox:checked:before {
       left: 32px;
     }
   }
 }
 
-.cta-row__container {
+.aos-cta {
   background: $secondary;
   position: fixed;
   bottom: 0;
@@ -302,10 +302,10 @@ select#edit-action {
   align-items: center;
   justify-content: center;
   display: flex;
-  transform:  translateZ(0) translateY(100%);
+  transform: translateZ(0) translateY(100%);
   transition: transform 0.3s ease-in-out;
 
-  &.container-show {
+  &.aos-cta--show {
     transform: translateY(0%);
   }
 }

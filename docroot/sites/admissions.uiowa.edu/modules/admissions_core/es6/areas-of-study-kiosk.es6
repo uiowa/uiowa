@@ -5,7 +5,7 @@
       $('.view-id-areas_of_study_kiosk', context).once('aos_kiosk').each(function (index) {
         document.addEventListener('click', function (event) {
 
-          if (event.target.matches('#kiosk-print-button')) {
+          if (event.target.matches('#aos-cta__button')) {
 
             let view = document.querySelector('.view-areas-of-study-kiosk .views-table');
             let checkboxes = view.querySelectorAll('.form-checkbox');
@@ -35,12 +35,12 @@
               }
             });
 
-            let print_button_container = document.querySelector('.view-header .cta-row__container');
+            let print_button_container = document.querySelector('.view-header .aos-cta');
             if (any_checked) {
-              print_button_container.classList.add('container-show');
+              print_button_container.classList.add('aos-cta--show');
             }
             else {
-              print_button_container.classList.remove('container-show');
+              print_button_container.classList.remove('aos-cta--show');
             }
           }
 
