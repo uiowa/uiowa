@@ -145,11 +145,6 @@ function admissions_core_form_alter(&$form, FormStateInterface $form_state, $for
       ];
       break;
 
-    case 'views_form_areas_of_study_kiosk_print':
-      $form['actions']['submit']['#value'] = t('Print');
-      $form['header']['node_bulk_form']['action']['#attributes']['class'][] = 'element-invisible';
-      $form['header']['node_bulk_form']['actions']['submit']['#access'] = FALSE;
-      break;
   }
 }
 
