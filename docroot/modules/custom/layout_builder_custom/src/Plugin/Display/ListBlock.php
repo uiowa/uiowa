@@ -454,13 +454,6 @@ class ListBlock extends CoreBlock {
       $this->view->setOffset($config['pager_offset']);
     }
 
-    // Change pager style settings based on block configuration.
-    if (!empty($config['pager'])) {
-      $pager = $this->view->display_handler->getOption('pager');
-      $pager['type'] = $config['pager'];
-      $this->view->display_handler->setOption('pager', $pager);
-    }
-
     // Change fields output based on block configuration.
     if ($this->view->getStyle()->usesFields() &&
       !empty($allow_settings['hide_fields']) &&
