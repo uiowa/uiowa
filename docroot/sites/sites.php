@@ -3359,3 +3359,9 @@ $sites['basicneeds.local.drupal.uiowa.edu'] = 'basicneeds.uiowa.edu';
 $sites['basicneeds.dev.drupal.uiowa.edu'] = 'basicneeds.uiowa.edu';
 $sites['basicneeds.stage.drupal.uiowa.edu'] = 'basicneeds.uiowa.edu';
 $sites['basicneeds.prod.drupal.uiowa.edu'] = 'basicneeds.uiowa.edu';
+
+// Directory aliases for limoli.lab.uiowa.edu.
+$sites['lablimoli.local.drupal.uiowa.edu'] = 'limoli.lab.uiowa.edu';
+$sites['lablimoli.dev.drupal.uiowa.edu'] = 'limoli.lab.uiowa.edu';
+$sites['lablimoli.stage.drupal.uiowa.edu'] = 'limoli.lab.uiowa.edu';
+$sites['lablimoli.prod.drupal.uiowa.edu'] = 'limoli.lab.uiowa.edu';
