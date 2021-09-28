@@ -1,0 +1,109 @@
+// Grid for image gallery block.
+#drupal-off-canvas  {
+  .media-library-selection {
+    @include grid-base;
+    @include breakpoint(sm) {
+      @include threecol-grid;
+    }
+  }
+}
+// Responsive images within drupal-off-canvas and cursor move for media library grid.
+#drupal-off-canvas {
+  img {
+    width: 100%;
+  }
+  .media-library-item--grid[draggable="true"] {
+    img {
+      cursor: move;
+    }
+  }
+}
+
+/*
+ * Off-canvas overrides
+ */
+#drupal-off-canvas .search-choice span,
+#drupal-off-canvas .search-field .chosen-search-input {
+  color: #000 !important;
+  background: #fff !important;
+  font-family: "Lucida Grande", "Lucida Sans Unicode", "liberation sans", sans-serif;
+  border: none !important;
+  outline: none !important;
+  width: 100% !important;
+}
+
+// Override classy negative bottom margin.
+#drupal-off-canvas table {
+  margin: 0 -20px 0 -20px;
+}
+
+#drupal-off-canvas .layout-builder-style-heading {
+  border-bottom: 1px solid #999;
+  font-size: 15px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+#drupal-off-canvas .ui-autocomplete {
+  li {
+    background: #fff !important;
+
+    a {
+      color: #000 !important;
+      background: inherit !important;
+      font-size: $small-font-size;
+    }
+  }
+}
+
+#drupal-off-canvas .search-choice span {
+  background: transparent !important;
+}
+
+#drupal-off-canvas .field--type-entity-reference-revisions>div>fieldset {
+  border: 1px solid #999;
+  padding: 15px;
+
+  .fieldset-wrapper {
+
+    table {
+      min-width: 100%;
+      margin: 0;
+    }
+
+    .container-inline.form-wrapper {
+      margin-top: 10px
+    }
+  }
+}
+
+#drupal-off-canvas th.ief-tabledrag-header,
+#drupal-off-canvas td.ief-tabledrag-handle {
+  width: 20px
+}
+
+#drupal-off-canvas select[multiple] option {
+  color: #000;
+  background: #fff;
+  font-family: "Lucida Grande", "Lucida Sans Unicode", "liberation sans", sans-serif;
+}
+
+#drupal-off-canvas form {
+  padding-top: 10px;
+}
+
+// Statistic admin UX.
+#drupal-off-canvas {
+  [id*="edit-settings-block-form-group-uiowa-statistic-title--"] {
+
+    .fieldset-legend {
+      display: none !important;
+    }
+
+    .fieldset-wrapper {
+      display: grid;
+      grid-template-columns: 19% 56% 19%;
+      grid-gap: 3%;
+    }
+  }
+}
