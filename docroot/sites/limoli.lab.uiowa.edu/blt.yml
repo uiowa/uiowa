@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: lablimoli.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: lablimoli
+  human_name: limoli.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lablimoli.prod
+drupal:
+  db:
+    database: limoli_lab_uiowa_edu
+uiowa:
+  requester: dlimoli
