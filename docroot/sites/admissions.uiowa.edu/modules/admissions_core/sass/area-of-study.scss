@@ -90,8 +90,7 @@
   }
 }
 
-.view-display-id-areas_of_study,
-.view-id-areas_of_study_kiosk {
+.view-display-id-areas_of_study {
   display: flex;
   flex-wrap: wrap;
 
@@ -202,114 +201,4 @@
   line-height: 1.7;
   font-weight: 400;
   display: block;
-}
-
-
-// Kiosk print button
-.view-id-areas_of_study_kiosk {
-  &.uids-content:not(.uids-search) {
-    fieldset {
-      .fieldset-legend {
-        font-size: $content-font-size !important;
-      }
-    }
-  }
-
-  .fieldset-legend,
-  .uids-content label,
-  a,
-  p,
-  table td,
-  table th {
-    font-size: $content-font-size !important;
-  }
-
-  .view-filters .views-exposed-form.uids-content:not(.uids-search) fieldset .form-type-checkbox {
-    align-items: flex-start;
-    margin-bottom: $md;
-  }
-
-  .form-checkbox {
-    height: 1cm;
-    width: 1cm;
-    flex-shrink: 0;
-  }
-
-  .form-checkboxes {
-    label {
-      line-height: 1.5;
-      padding-left: $sm;
-    }
-
-    .form-checkbox {
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-      width: 62px;
-      height: 32px;
-      display: inline-block;
-      position: relative;
-      border-radius: 50px;
-      overflow: hidden;
-      outline: none;
-      border: none;
-      cursor: pointer;
-      background-color: $grey-light;
-      transition: background-color ease 0.3s;
-    }
-
-    .form-checkbox:before {
-      content: "on off";
-      display: block;
-      position: absolute;
-      z-index: 2;
-      width: 28px;
-      height: 28px;
-      background: #fff;
-      left: 2px;
-      top: 2px;
-      border-radius: 50%;
-      font: 10px/28px Helvetica;
-      text-transform: uppercase;
-      font-weight: bold;
-      text-indent: -22px;
-      word-spacing: 37px;
-      color: $secondary;
-      white-space: nowrap;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-      transition: all cubic-bezier(0.3, 1.5, 0.7, 1) 0.3s;
-    }
-
-    .form-checkbox:checked {
-      background-color: $primary;
-    }
-
-    .form-checkbox:checked:before {
-      left: 32px;
-    }
-  }
-}
-
-.aos-cta {
-  background: $secondary;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  z-index: 100;
-  width: 100%;
-  min-height: 100px;
-  box-shadow: 0 0 4px rgba(0, 0, 0, .4);
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  transform: translateZ(0) translateY(100%);
-  transition: transform 0.3s ease-in-out;
-
-  &.aos-cta--show {
-    transform: translateY(0%);
-  }
-}
-
-.path-kiosk {
-  padding: $desktop-width-gutter 0;
 }
