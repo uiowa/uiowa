@@ -26,9 +26,19 @@ class ListBlock extends CoreBlock {
   public function optionsSummary(&$categories, &$options) {
     parent::optionsSummary($categories, $options);
     $filtered_allow = array_filter($this->getOption('allow'));
-    // @todo Add single option for filtering.
     $filter_options = [
-      // Adding use_more option.
+      // We have to add the original ones, otherwise we have no
+      // way to display them.
+      'items_per_page' => $this->t('Items per page'),
+      'offset' => $this->t('Pager offset'),
+      'pager' => $this->t('Pager type'),
+      'hide_fields' => $this->t('Hide fields'),
+      'sort_fields' => $this->t('Reorder fields'),
+      'disable_filters' => $this->t('Disable filters'),
+      'configure_sorts' => $this->t('Configure sorts'),
+      // Add configure_filters option summary.
+      'configure_filters' => $this->t('Customize filters in block'),
+      // Add use_more option summary.
       'use_more' => $this->t('Display more link'),
     ];
     $filter_intersect = array_intersect_key($filter_options, $filtered_allow);
@@ -49,8 +59,9 @@ class ListBlock extends CoreBlock {
       return;
     }
 
-    // @todo Add configure filter option.
-    // Adding use_more option.
+    // Add configure filters in block option.
+    $form['allow']['#options']['configure_filters'] = $this->t('Customize filters in block');
+    // Add use_more option to allow displaying a link.
     $form['allow']['#options']['use_more'] = $this->t('Display more link');
 
     $defaults = [];
@@ -85,7 +96,6 @@ class ListBlock extends CoreBlock {
   public function submitOptionsForm(&$form, FormStateInterface $form_state) {
     parent::submitOptionsForm($form, $form_state);
     if ($form_state->get('section') === 'allow') {
-      // @todo Save configure filter option.
       $this->setOption('more_link_help_text', $form_state->getValue('more_link_help_text'));
     }
   }
@@ -134,49 +144,67 @@ class ListBlock extends CoreBlock {
       ];
     }
 
-    // Display exposed filters to allow them to be set for the block.
-    $customizable_filters = $this->getOption('filter_in_block');
-    if (!empty($customizable_filters)) {
-      $form['override']['exposed_filters'] = [
+    // Place "Hide fields" block settings inside a details element.
+    if (!empty($allow_settings['hide_fields'])) {
+      $form['override']['hide_fields'] = [
         '#type' => 'details',
-        '#title' => $this->t('Exposed filters'),
-        '#description' => $this->t('Set default filters.'),
-        '#tree' => TRUE,
+        '#title' => $this->t('Hide fields'),
+        '#description' => $this->t('Choose to hide some of the fields.'),
       ];
+      $form['override']['hide_fields']['order_fields'] = $form['override']['order_fields'];
+      unset($form['override']['order_fields']);
+    }
+
+    // Add exposed filters to be customized in the block.
+    if (!empty($allow_settings['configure_filters'])) {
+
+      $exposed_filters = [];
 
       // Provide "Exposed filters" block settings form.
       $exposed_filter_values = !empty($block_configuration['exposed_filter_values']) ? $block_configuration['exposed_filter_values'] : [];
 
-      $subform_state = SubformState::createForSubform($form['override']['exposed_filters'], $form, $form_state);
+      $subform_state = SubformState::createForSubform($exposed_filters, $form, $form_state);
       $subform_state->set('exposed', TRUE);
 
-      $filter_plugins = $this->getHandlers('filter');
-
-      foreach ($customizable_filters as $filter_id) {
-        /** @var \Drupal\views\Plugin\views\filter\FilterPluginBase $filter */
-        $filter = $filter_plugins[$filter_id];
-        // If an identifier is set for the filter, use that as the $filter_id.
-        if (!empty($filter->options['expose']['identifier'])) {
-          $filter_id = $filter->options['expose']['identifier'];
+      /** @var \Drupal\views\Plugin\views\filter\FilterPluginBase $handler */
+      foreach ($this->getHandlers('filter') as $handler_id => $handler) {
+        // We are only interested in exposed filters.
+        if (!$handler->canExpose() && !$handler->isExposed()) {
+          continue;
         }
-        $filter->buildExposedForm($form['override']['exposed_filters'], $subform_state);
+        // If an identifier is set for the filter, use that as the $filter_id.
+        if (!empty($handler->options['expose']['identifier'])) {
+          $handler_id = $handler->options['expose']['identifier'];
+        }
+        $handler->buildExposedForm($exposed_filters, $subform_state);
 
         // Set the label and default values of the form element, based on the
         // block configuration.
-        $exposed_info = $filter->exposedInfo();
-        $form['override']['exposed_filters'][$filter_id]['#title'] = $exposed_info['label'];
+        $exposed_info = $handler->exposedInfo();
+        $exposed_filters[$handler_id]['#title'] = $exposed_info['label'];
         // The following is essentially using this patch:
         // https://www.drupal.org/project/views_block_placement_exposed_form_defaults/issues/3158789
-        if ($form['override']['exposed_filters'][$filter_id]['#type'] == 'entity_autocomplete') {
-          $form['override']['exposed_filters'][$filter_id]['#default_value'] = EntityAutocomplete::valueCallback(
-            $form['override']['exposed_filters'][$filter_id],
-            $exposed_filter_values[$filter_id],
+        if ($exposed_filters[$handler_id]['#type'] == 'entity_autocomplete') {
+          $exposed_filters[$handler_id]['#default_value'] = EntityAutocomplete::valueCallback(
+            $exposed_filters[$handler_id],
+            $exposed_filter_values[$handler_id],
             $form_state
           );
         }
         else {
-          $form['override']['exposed_filters'][$filter_id]['#default_value'] = !empty($exposed_filter_values[$filter_id]) ? $exposed_filter_values[$filter_id] : [];
+          $exposed_filters[$handler_id]['#default_value'] = !empty($exposed_filter_values[$handler_id]) ? $exposed_filter_values[$handler_id] : [];
         }
+      }
+
+      if (!empty($exposed_filters)) {
+        $form['override']['exposed_filters'] = [
+          '#type' => 'details',
+          '#title' => $this->t('Filters'),
+          '#description' => $this->t('Set default filters.'),
+          '#tree' => TRUE,
+        ] + $exposed_filters;
+
+        unset($exposed_filters);
       }
     }
 
@@ -267,15 +295,6 @@ class ListBlock extends CoreBlock {
         ];
       }
     }
-
-    // Provide "Hide fields" block settings form by repurposing order_fields.
-    $form['override']['hide_fields'] = [
-      '#type' => 'details',
-      '#title' => $this->t('Hide fields'),
-      '#description' => $this->t('Choose to hide some of the fields.'),
-    ];
-    $form['override']['hide_fields']['order_fields'] = $form['override']['order_fields'];
-    unset($form['override']['order_fields']);
 
     // Provides settings related to displaying a "More" link.
     if (!empty($allow_settings['use_more'])) {
@@ -546,7 +565,7 @@ class ListBlock extends CoreBlock {
     // If we are not utilizing the filter in block option,
     // then use the default behavior. Otherwise, do not display
     // exposed filters.
-    if (empty($this->options['filter_in_block'])) {
+    if (empty($this->options['allow']['configure_filters'])) {
       return parent::displaysExposed();
     }
     return FALSE;
