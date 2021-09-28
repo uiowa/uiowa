@@ -11,7 +11,7 @@
                 let offCanvasWidth;
                 const offCanvasCookie = $.cookie('ui_off_canvas_width');
                 if (offCanvasCookie === undefined) {
-                  offCanvasWidth = auto;
+                  offCanvasWidth = 500;
                 } else {
                   offCanvasWidth = offCanvasCookie;
                 }
