@@ -144,6 +144,7 @@ function admissions_core_form_alter(&$form, FormStateInterface $form_state, $for
         ],
       ];
       break;
+
   }
 }
 
@@ -514,6 +515,10 @@ function admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'node--area-of-study--teaser',
       'base hook' => 'node',
     ],
+    'page__kiosk' => [
+      'template' => 'page--kiosk',
+      'base hook' => 'page',
+    ],
     'taxonomy_term__teaser' => [
       'template' => 'taxonomy-term--teaser',
       'base hook' => 'node',
@@ -592,6 +597,11 @@ function admissions_core_preprocess_views_view(&$variables) {
       $variables['#attached']['library'][] = 'admissions_core/area-of-study';
       break;
 
+    case 'areas_of_study_kiosk':
+      $variables['#attached']['library'][] = 'admissions_core/print_js';
+      $variables['#attached']['library'][] = 'admissions_core/area_of_study_kiosk';
+      break;
+
     case 'events':
       $variables['#attached']['library'][] = 'admissions_core/events';
       break;
@@ -603,6 +613,72 @@ function admissions_core_preprocess_views_view(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function admissions_core_preprocess_views_view_field(&$variables) {
+  if (isset($variables['view'])) {
+    $id = $variables['view']->id();
+    switch ($id) {
+      case 'areas_of_study':
+        if ($variables['view']->current_display == 'areas_of_study') {
+          if (isset($variables['view']->field) && $variables['field']->realField == 'nothing') {
+            $nid = $variables["row"]->_entity->get('nid')->value;
+            $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+            $markup = '';
+            // For each program type, load the value(s) and string them
+            // together for the view result.
+            $degrees = [];
+            $degree_options = '';
+            foreach ($node->get('field_area_of_study_majors') as $paragraph) {
+              if ($paragraph->entity->getType() == 'degree') {
+                $paragraph_item = $paragraph->entity;
+                if (!empty($paragraph_item->field_degree_abbreviation)) {
+                  $degrees[] = $paragraph_item->field_degree_abbreviation->value;
+                }
+              }
+            }
+            $degrees = array_unique($degrees);
+            foreach ($degrees as $item) {
+              $degree_options .= $item . ', ';
+            }
+            if (!empty($degree_options)) {
+              $markup .= $degree_options;
+            }
+            // AoS Program Type text fields.
+            $fields = [
+              'Minor' => 'field_area_of_study_minors',
+              'Certificate' => 'field_area_of_study_certificates',
+              'Online Option' => 'field_area_of_study_online',
+            ];
+            foreach ($fields as $label => $field) {
+              $value = $node->get($field)->value;
+              if ($value) {
+                $markup .= $label . ', ';
+              }
+            }
+            $markup = trim($markup, ', ');
+            $markup = '<div class="degree-options">' . $markup . '</div>';
+            if (!empty($markup)) {
+              $variables['output'] = [
+                '#markup' => $markup,
+              ];
+            }
+          }
+        }
+        break;
+
+      case 'areas_of_study_kiosk':
+
+        if (isset($variables['view']->field) && $variables['field']->realField == 'nothing' && $variables['field']->options['id'] == 'nothing_1') {
+          $nid = $variables['row']->_entity->get('nid')->value;
+          $variables['output'] = [
+            '#type' => 'checkbox',
+            '#attributes' => [
+              'value' => $nid,
+            ],
+          ];
+        }
+        break;
+    }
+  }
+
   if (isset($variables['view']) && ($variables['view']->id() == 'areas_of_study') && ($variables['view']->current_display == 'areas_of_study')) {
     if (isset($variables['view']->field) && $variables['field']->realField == 'nothing') {
       $nid = $variables["row"]->_entity->get('nid')->value;
