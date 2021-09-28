@@ -1,0 +1,199 @@
+@import "../../../../../themes/custom/uids_base/uids/assets/scss/_variables.scss";
+@import "../../../../../themes/custom/uids_base/uids/assets/scss/_utilities.scss";
+@import "../../../../../themes/custom/uids_base/uids/assets/scss/_grid.scss";
+
+.view-id-areas_of_study_kiosk {
+  display: flex;
+  flex-wrap: wrap;
+
+  .view-header {
+    width: 100%;
+  }
+
+  .view-content,
+  .view-empty {
+    flex: 1 0 0;
+  }
+
+  .view-filters {
+    flex: 0 0 100%;
+    max-width: 100%;
+    @include breakpoint(sm) {
+      flex: 0 0 25%;
+      max-width: 25%;
+      margin-right: $desktop-width-gutter;
+    }
+
+    .form-item {
+      width: 100%;
+    }
+
+    .views-exposed-form {
+
+      .form--inline {
+        @include breakpoint(sm) {
+          flex-wrap: wrap;
+        }
+      }
+
+      &.uids-content:not(.uids-search) {
+        padding: 19px;
+
+        .form-actions { 
+          width: 100%;
+          .button {
+            flex: 46% 1 1;
+            margin-bottom: 0;
+            width: 100%;
+          }
+        }
+
+        .form-item {
+          margin: 0;
+        }
+
+        fieldset,
+        input,
+        select {
+          &.form-item {
+            margin-bottom: 19px;
+          }
+        }
+
+        fieldset {
+          border: 0;
+          padding: 0;
+
+
+          .fieldset-wrapper {
+            padding: 0.75rem 0;
+          }
+
+          .form-type-checkbox {
+            display: flex;
+            align-items: baseline;
+          }
+        }
+      }
+    }
+  }
+
+  .view-filters .views-exposed-form.uids-content:not(.uids-search) fieldset .form-type-checkbox {
+    align-items: flex-start;
+    margin-bottom: $md;
+  }
+
+  table.views-table td,
+  table.views-table th {
+    font-size: $content-font-size;
+  }
+
+  form.uids-content {
+    .fieldset-legend,
+    label,
+    a,
+    p,
+    table td,
+    table th {
+      font-size: $content-font-size;
+    }
+    .fieldset-legend {
+      line-height: 1.8;
+      font-weight: 700;
+    }
+  }
+
+  .form-checkbox {
+    height: 1cm;
+    width: 1cm;
+    flex-shrink: 0;
+  }
+
+  .form-checkboxes {
+    label {
+      line-height: 1.5;
+      padding-left: $sm;
+    }
+
+    .form-checkbox {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      width: 62px;
+      height: 32px;
+      display: inline-block;
+      position: relative;
+      border-radius: 50px;
+      overflow: hidden;
+      outline: none;
+      border: none;
+      cursor: pointer;
+      background-color: $grey-light;
+      transition: background-color ease 0.3s;
+      &:focus  {
+        background: $grey;
+      }
+    }
+
+    .form-checkbox:before {
+      content: "on off";
+      display: block;
+      position: absolute;
+      z-index: 2;
+      width: 28px;
+      height: 28px;
+      background: #fff;
+      left: 2px;
+      top: 2px;
+      border-radius: 50%;
+      font: 10px/28px Helvetica;
+      text-transform: uppercase;
+      font-weight: bold;
+      text-indent: -22px;
+      word-spacing: 37px;
+      color: $secondary;
+      white-space: nowrap;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      transition: all cubic-bezier(0.3, 1.5, 0.7, 1) 0.3s;
+    }
+
+    .form-checkbox:checked {
+      background-color: $primary;
+    }
+
+    .form-checkbox:checked:before {
+      left: 32px;
+    }
+  }
+
+  .pager {
+    flex: 0 0 100%;
+    max-width: 100%;
+    order: 1;
+  }
+}
+
+
+.aos-cta {
+  background: $secondary;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  width: 100%;
+  min-height: 100px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, .4);
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  transform: translateZ(0) translateY(100%);
+  transition: transform 0.3s ease-in-out;
+
+  &.aos-cta--show {
+    transform: translateY(0%);
+  }
+}
+
+.path-kiosk {
+  padding: $desktop-width-gutter 0;
+}
