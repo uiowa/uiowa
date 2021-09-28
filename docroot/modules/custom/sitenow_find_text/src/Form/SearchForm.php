@@ -5,11 +5,36 @@ namespace Drupal\sitenow_find_text\Form;
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure Sitenow Search settings for this site.
  */
 class SearchForm extends ConfigFormBase {
+
+  /**
+   * The renderer service.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
+
+  /**
+   * The EntityTypeManager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManager
+   */
+  protected $entityTypeManager;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    $instance = parent::create($container);
+    $instance->renderer = $container->get('renderer');
+    $instance->entityTypeManager = $container->get('entity_type.manager');
+    return $instance;
+  }
 
   /**
    * {@inheritdoc}
@@ -107,7 +132,7 @@ class SearchForm extends ConfigFormBase {
     $regexed = $form_state->getValue('regexed');
     $results = search_fields($needle, $regexed);
     $table = $this->buildResultsTable($results);
-    $markup = \Drupal::service('renderer')->render($table);
+    $markup = $this->renderer->render($table);
     $form['results'] = [
       '#type' => 'markup',
       '#markup' => $markup,
@@ -138,7 +163,7 @@ class SearchForm extends ConfigFormBase {
       }
     }
     $rows = [];
-    $node_manager = \Drupal::service('entity_type.manager')
+    $node_manager = $this->entityTypeManager
       ->getStorage('node');
     foreach ($results as $nid => $matches) {
       // @todo Clean this up. Right now, we're checking for field existence
