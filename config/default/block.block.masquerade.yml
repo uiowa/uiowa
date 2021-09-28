@@ -1,0 +1,25 @@
+uuid: aa4ec031-7fe6-46d2-b54a-01a330724e72
+langcode: en
+status: true
+dependencies:
+  module:
+    - masquerade
+    - system
+  theme:
+    - gin
+id: masquerade
+theme: gin
+region: pre_content
+weight: 0
+provider: null
+plugin: masquerade
+settings:
+  id: masquerade
+  label: Masquerade
+  provider: masquerade
+  label_display: visible
+visibility:
+  request_path:
+    id: request_path
+    pages: /admin/people
+    negate: false
