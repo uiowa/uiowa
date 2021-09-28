@@ -29,6 +29,7 @@
     }
 
     .views-exposed-form {
+
       .form--inline {
         @include breakpoint(sm) {
           flex-wrap: wrap;
@@ -37,6 +38,11 @@
 
       &.uids-content:not(.uids-search) {
         padding: 19px;
+
+        .form-actions .button {
+        flex: 46% 1 1;
+      margin-bottom: 0;
+      }
 
         .form-item {
           margin: 0;
@@ -56,7 +62,7 @@
 
 
           .fieldset-wrapper {
-            padding: 0.75rem;
+            padding: 0.75rem 0;
           }
 
           .form-type-checkbox {
@@ -68,21 +74,15 @@
     }
   }
 
-  .pager {
-    flex: 0 0 100%;
-    max-width: 100%;
-    order: 1;
+  .view-filters .views-exposed-form.uids-content:not(.uids-search) fieldset .form-type-checkbox {
+    align-items: flex-start;
+    margin-bottom: $md;
   }
-}
 
-
-// Kiosk print button
-.view-id-areas_of_study_kiosk {
-
-    table.views-table td,
-    table.views-table th {
-      font-size: $content-font-size;
-    }
+  table.views-table td,
+  table.views-table th {
+    font-size: $content-font-size;
+  }
 
   form.uids-content {
     .fieldset-legend,
@@ -97,11 +97,6 @@
       line-height: 1.8;
       font-weight: 700;
     }
-  }
-
-  .view-filters .views-exposed-form.uids-content:not(.uids-search) fieldset .form-type-checkbox {
-    align-items: flex-start;
-    margin-bottom: $md;
   }
 
   .form-checkbox {
@@ -163,7 +158,14 @@
       left: 32px;
     }
   }
+
+  .pager {
+    flex: 0 0 100%;
+    max-width: 100%;
+    order: 1;
+  }
 }
+
 
 .aos-cta {
   background: $secondary;
