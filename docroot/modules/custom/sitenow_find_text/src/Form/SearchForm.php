@@ -65,7 +65,7 @@ class SearchForm extends ConfigFormBase {
       '#markup' => <<< 'EOD'
         <p>Search text fields for a provided string. The search is not case-sensitive.</p>
         <p>Pre-rendered text area markup is searched, so some characters may be different; for instance, `&amp ;` may match ampersands where `&` will not.
-        Node fields and content blocks are included, but Some areas such as menu links will not be searched.</p>
+        Node fields and content blocks are included, but some areas such as menu links will not be searched.</p>
         <p>Basic SQL LIKE wildcards may be used.</p>
         <table class="responsive-enabled" data-striping="1">
             <thead>
