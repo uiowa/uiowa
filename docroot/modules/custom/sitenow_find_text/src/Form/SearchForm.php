@@ -169,7 +169,14 @@ class SearchForm extends ConfigFormBase {
       // @todo Clean this up. Right now, we're checking for field existence
       //   to determine if we allow layout builder editing. It's better than
       //   hardcoding it to entity types we've allowed, but...only just.
-      $has_lb = $node_manager->load($nid)->hasField('layout_builder__layout');
+      $node = $node_manager->load($nid);
+      // If we weren't able to load a node,
+      // then go ahead and skip ahead, because
+      // we won't have a result to display anyway.
+      if (!$node) {
+        continue;
+      }
+      $has_lb = $node->hasField('layout_builder__layout');
       if ($has_lb) {
         $node_value = new FormattableMarkup('@nid (<a href="/node/@nid/edit">edit</a>) (<a href="/node/@nid/layout">layout</a>)', [
           '@nid' => $nid,
