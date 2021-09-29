@@ -180,7 +180,7 @@ class ListBlock extends BlockDisplay {
       unset($form['override']['order_fields']);
     }
 
-    // Provide "Configure filters" form elements.
+    // Alter "Configure filters" to add checkboxes to allow exposing.
     if (!empty($allow_settings['configure_filters'])) {
       // Loop through the existing exposed filters.
       foreach (Element::children($form['exposed']) as $id) {
