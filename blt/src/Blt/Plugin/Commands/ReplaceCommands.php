@@ -166,10 +166,16 @@ class ReplaceCommands extends BltTasks {
    */
   public function testsFrontend() {
     if (EnvironmentDetector::isCiEnv()) {
-      $this->taskExecStack()
-        ->dir($this->getConfigValue('repo.root'))
-        ->exec('npx percy snapshot --base-url http://localhost:8888 snapshots.yml')
-        ->run();
+      // We don't want to snapshot develop because it could be unstable.
+      if (getenv('TRAVIS_BRANCH') != 'develop') {
+        $this->taskExecStack()
+          ->dir($this->getConfigValue('repo.root'))
+          ->exec('npx percy snapshot --base-url http://localhost:8888 snapshots.yml')
+          ->run();
+      }
+      else {
+        $this->logger->notice('Skipping percy snapshot in develop branch.');
+      }
     }
     else {
       $this->logger->notice('Skipping percy snapshot in non-CI environment.');
