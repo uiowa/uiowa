@@ -1,0 +1,514 @@
+/*
+ * Layout builder overrides
+ */
+.layout-builder-enabled .vertical-tabs {
+  border: none;
+  display: none;
+}
+
+// Add some space at the top of the LB controls form.
+form#node-page-layout-builder-form {
+  margin-top: 1.25rem;
+}
+
+// admin styles layout builder container reset
+
+.layout-builder {
+  border: none;
+  margin: $gutter 0;
+  padding: 0;
+
+  &__section {
+    margin-bottom: 0;
+    padding: 2px;
+
+    // When hovering over a section, show the structure of it.
+    &:hover,
+    &:focus {
+      .layout-builder__layout {
+        //.layout__spacing_container {
+        outline: 2px dashed #0036b1;
+        //}
+      }
+
+      .layout-builder__link {
+        opacity: 1;
+      }
+
+      .layout-builder-block {
+        outline: 1px dashed #d6d6d6;
+        outline-offset: -1px;
+      }
+    }
+
+    .ui-state-drop {
+      margin: 10px;
+      padding: 0;
+      outline: 2px dashed #fedb60 !important;
+      outline-offset: 10px !important;
+    }
+
+    .layout-builder {
+      &__link {
+        padding: .7rem 1.3rem .7rem 3rem;
+        z-index: 2;
+        background: #f7f7f7;
+        font-size: .8rem;
+        position: absolute;
+        opacity: 0;
+        height: 38px;
+        border: 1px solid #ccc;
+
+        &--remove {
+          z-index: 3;
+          padding: 0;
+          border-radius: 0;
+          box-shadow: none;
+          height: 38px;
+          width: 40px;
+          margin-left: 0;
+          border: 1px solid #ccc;
+          background: url(/core/misc/icons/bebebe/ex.svg) #fff center center / 16px 16px no-repeat !important;
+        }
+      }
+    }
+  }
+
+  .layout-builder__link:focus {
+    opacity: 1;
+  }
+
+  &__add-block {
+    background-color: transparent;
+    margin-top: 0;
+    outline: 1px dashed #dedede;
+    outline-offset: -1px;
+    padding: .5rem;
+    text-align: center;
+
+    &:hover,
+    &:focus {
+      outline: 1px dashed #222222;
+    }
+  }
+
+  &__add-section {
+    background-color: transparent;
+    margin: 0;
+    width: 100%;
+    padding: $gutter/2;
+    outline: none;
+  }
+
+  &__link {
+    color: #545454!important;
+    font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-weight: bold;
+    border-bottom: 0;
+    padding: .3rem 0 0 0;
+    font-size: 1rem;
+
+    &--add {
+      background-color: #f7f7f7;
+      background-position: .625rem center;
+      border: 1px solid #f7f7f7;
+      display: block;
+      outline: 2px dashed #dedede;
+      outline-offset: 8px;
+      padding: 1rem 1rem 1rem 2.5rem;
+      text-align: left;
+
+      &:hover {
+        border: 1px solid #ccc;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, .25);
+        outline: 2px dashed #0036b1;
+      }
+    }
+
+    &--configure {}
+
+    &--remove {
+
+      &:hover {
+        background-color: #111111;
+        background-image: url(/core/misc/icons/ffffff/ex.svg);
+      }
+    }
+  }
+
+  .layout-builder-block {
+
+    &:hover {
+      outline: 1px dashed #d6d6d6;
+      outline-offset: -1px;
+    }
+  }
+
+  .contextual-region {
+    &:hover {
+      outline: 1px dashed #222222;
+      outline-offset: -1px;
+    }
+
+    &.focus {
+      outline: 1px dashed #0036b1;
+      outline-offset: -1px;
+    }
+  }
+}
+
+.layout-builder__region {
+  outline: none;
+}
+
+.layout-builder__section {}
+
+.layout-builder-block {
+  padding: 0;
+  cursor: move;
+  background: transparent;
+
+  // Add padding to all placeholder blocks.
+  &--placeholder {
+    padding: $gutter 0;
+  }
+
+  &.block-padding__all--extra {
+    padding: 6rem;
+  }
+
+  &.block-padding__all {
+    padding: 3rem;
+  }
+
+  &[class*="bg--gray"] {
+    background: $light;
+  }
+
+  &[class*="bg--white"] {
+    background: #fff;
+  }
+
+  &[class*="bg--black"] {
+    background: $secondary;
+  }
+
+  &[class*="bg--gold"] {
+    background: $primary;
+  }
+
+  &.bg--white--pattern--brain {
+    background: #fff url("#{$imgpath}/brain-pattern.svg");
+    background-size: auto auto;
+  }
+
+  &.bg--gold--pattern--brain {
+    background: $primary url("#{$imgpath}/brain-pattern-reversed.svg");
+    background-size: auto auto;
+  }
+
+  &.bg--black--pattern--brain {
+    background: $secondary url("#{$imgpath}/brain-pattern-black.svg");
+    background-size: auto auto;
+  }
+}
+
+// Layout Builder Editor Styles
+
+.layout-builder__region,
+.layout-builder__region .layout__spacing_container {
+  width: 100%;
+}
+
+.layout--fourcol .layout__spacing_container>.layout__region.js-layout-builder-region {
+  display: block !important;
+}
+
+.layout--threecol .layout__spacing_container>.layout__region.js-layout-builder-region {
+  display: block !important;
+}
+
+.layout__container .layout__spacing_container {
+
+  .layout-builder-block,
+  .layout-builder__add-block {
+    flex-basis: 100%;
+  }
+
+  &.section-column__row {
+
+    .layout-builder-block,
+    .layout-builder__add-block {
+      flex: 1 1 0%;
+      flex-basis: unset;
+    }
+  }
+}
+
+.layout__spacing_container {
+  // Loop through all the background options and create a
+  // rule to remove top padding from the second one.
+  $backgrounds:
+    ':not([class*="bg-"])',
+    '[class*="bg--gold"]',
+    '[class*="bg--black"]',
+    '[class*="bg--gray"]',
+    '[class*="bg--white"]',
+    '.bg-pattern--brain',
+    '.bg-pattern--brain-reversed',
+    '.bg-pattern--brain-black';
+
+  @each $background in $backgrounds {
+
+    // This targets the second item in a pair that match the rule.
+    &#{$background}+.layout-builder__add-section+&#{$background} {
+
+      >.layout__container {
+        padding-top: 0;
+
+        // Necessary to restore padding
+        &.section-padding {
+          &__top-restored {
+            padding-top: $desktop-width-gutter;
+          }
+
+          &__top-extra {
+            padding-top: 6rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+.feature__container .layout__region .layout-builder__region {
+  display: flex;
+  align-content: stretch;
+  align-items: stretch;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+}
+
+
+.content__container {
+
+  .block-local-tasks-block,
+  .block-help-block,
+  :not([class*="views-exposed-form"]) .form-actions,
+  .layout-builder__message,
+  .form-type-vertical-tabs,
+  #edit-moderation-state-0,
+  .layout-builder-revert-overrides,
+  .layout-builder-discard-changes {
+    @extend %container;
+  }
+
+  // Remove margin-top from .layout--has-sidebar
+  .layout-builder__layout.layout__container.layout--has-sidebar {
+    margin-top: 0 !important;
+  }
+}
+
+.layout-builder-revert-overrides,
+.layout-builder-discard-changes {
+  padding-top: 50px;
+
+  input {
+    margin-top: 20px;
+  }
+
+  a {
+    color: $secondary;
+  }
+}
+
+// unstyle message for layout builder edit screen
+
+.layout-builder__message--overrides .alert-success {
+  border: none;
+  background-color: #fff;
+  box-shadow: none;
+  background-image: none;
+  text-align: center;
+  padding: 0;
+  color: $secondary;
+  font-weight: $font-weight-light;
+
+  a {
+    color: #0036b1;
+  }
+
+  .close {
+    padding: 0;
+  }
+}
+
+// admin styles adjust vertical tabs at bottom of edit screen
+
+.layout-builder-enabled {
+  .vertical-tabs__menu-item {
+    border: none;
+  }
+
+  .vertical-tabs {
+    margin: $gutter 0;
+
+    .form-type-checkbox {
+      margin: 0;
+    }
+  }
+
+  .vertical-tabs__menu-item a {
+    padding: 0;
+  }
+
+  .vertical-tabs__menu {
+    margin: 0;
+    list-style: none;
+    border: none;
+
+    li {
+      list-style-type: none;
+    }
+  }
+}
+
+// admin styles for full-width and mixed setting for local drupal admin blocks
+
+.content__full {
+
+  .block-local-tasks-block,
+  .block-help-block,
+  .form-actions,
+  .layout-builder__message,
+  .form-type-vertical-tabs {
+    margin-right: $gutter;
+    margin-left: $gutter;
+  }
+}
+
+
+// Reveal hidden blocks in layout.
+
+.js-layout-builder-block.element-invisible {
+  @include element-invisible-off;
+  position: relative !important;
+  width: 100%;
+
+  &:before {
+    content: "This block is set to be visually hidden";
+    display: block;
+    width: 100%;
+    height: auto;
+    font-style: italic;
+    z-index: 1;
+  }
+
+  &:after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: #fff4f4; // Same as .node--unpublished.
+    opacity: 0.6;
+  }
+}
+
+
+
+[class*="bg--black"],
+.bg-pattern--brain-black,
+.bg-dark {
+  & .layout-builder-block--placeholder {
+    color: $white;
+  }
+}
+
+
+// layout page buttons
+
+.layout-builder-form .button {
+  background: #f1f1f1;
+  font-family: $font-family-sans-serif;
+  font-weight: $font-weight-bold;
+  font-size: 1rem !important;
+  border-radius: 4px;
+}
+
+.layout-builder-form .button--primary {
+  color: #fff !important;
+  background: #0035b0 !important;
+}
+
+div[aria-label="Layout Builder tools"] {
+  @include breakpoint(menu) {
+    display: flex;
+    justify-content: center;
+  }
+
+  >* {
+    margin-right: 15px;
+  }
+
+  #edit-preview-toggle {
+    margin-left: 20px;
+  }
+}
+
+div[data-drupal-selector="edit-moderation-state-0"] {
+  label {
+    font-weight: $font-weight-light;
+    padding-bottom: 8px;
+  }
+
+  @include breakpoint(menu) {
+    display: flex;
+    justify-content: center;
+  }
+
+  #edit-moderation-state-0-current {
+    @include breakpoint(menu) {
+      flex: 0 0 10%;
+    }
+
+    label {
+      margin-bottom: 18px;
+    }
+  }
+
+  .form-item-moderation-state-0-state {
+    @include breakpoint(menu) {
+      flex: 0 0 40%;
+    }
+  }
+}
+
+.uids-content.js-layout-builder-block .contextual [type=button] {
+  border: 1px solid #ccc;
+  padding: 0;
+}
+
+// Contrast issues within the layout edit screen
+[class*="bg--black"] [class*="bg--black"] .bttn--primary,
+[class*="bg--black"] [class*="bg--black"] .cta__wrapper[class*="bg--gold"] .bttn--primary {
+  color: #151515;
+}
+
+[class*="bg--black"] [class*="bg--black"] [class*="bg--gold"] .bttn--primary,
+[class*="bg--black"] [class*="bg--black"] .bg-pattern--brain-reversed .bttn--primary {
+  color: #fff;
+}
+
+[class*="bg--gold"] [class*="bg--gold"] .block-inline-blockuiowa-text-area .bttn--primary,
+[class*="bg--gold"] [class*="bg--gold"] .block-field-blocknodepagebody .bttn--primary,
+[class*="bg--gold"] [class*="bg--gold"] .cta__wrapper:not([class*="bg-"]) .bttn--primary{
+  color: $primary;
+}
+
+[class*="bg--black"] [class*="bg--black"]  :before {
+  color: $secondary;
+}
