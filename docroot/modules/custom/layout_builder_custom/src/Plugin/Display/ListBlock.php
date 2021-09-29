@@ -29,13 +29,26 @@ class ListBlock extends BlockDisplay {
     parent::optionsSummary($categories, $options);
     $filtered_allow = array_filter($this->getOption('allow'));
     $filter_options = [
-      // Changing a label and adding our own option.
-      'pager' => $this->t('Show pager'),
+      // We have to add the original ones, otherwise we have no
+      // way to display them.
+      'items_per_page' => $this->t('Items per page'),
+      'offset' => $this->t('Pager offset'),
+      'pager' => $this->t('Pager type'),
+      'hide_fields' => $this->t('Hide fields'),
+      'sort_fields' => $this->t('Reorder fields'),
+      'disable_filters' => $this->t('Disable filters'),
+      'configure_sorts' => $this->t('Configure sorts'),
+      'configure_filters' => $this->t('Customize filters in block'),
+      // Add use_more option summary.
       'use_more' => $this->t('Display more link'),
     ];
     $filter_intersect = array_intersect_key($filter_options, $filtered_allow);
 
-    $options['allow']['value'] = empty($filtered_allow) ? $this->t('None') : implode(', ', $filter_intersect);
+    $options['allow'] = [
+      'category' => 'block',
+      'title' => $this->t('Allow settings'),
+      'value' => empty($filtered_allow) ? $this->t('None') : implode(', ', $filter_intersect),
+    ];
   }
 
   /**
@@ -47,9 +60,16 @@ class ListBlock extends BlockDisplay {
       return;
     }
 
-    // Making the label more user-friendly.
-    $form['allow']['#options']['pager'] = $this->t('Show pager');
+    // Add use_more option to allow displaying a link.
     $form['allow']['#options']['use_more'] = $this->t('Display more link');
+
+    // @todo Is this section still necessary?
+    $defaults = [];
+    if (!empty($form['allow']['#default_value'])) {
+      $defaults = array_filter($form['allow']['#default_value']);
+    }
+
+    $form['allow']['#default_value'] = $defaults;
 
     // Show a text area to add custom help text to the display more link.
     $more_link_help_text = $this->getOption('more_link_help_text');
@@ -68,16 +88,6 @@ class ListBlock extends BlockDisplay {
         ],
       ],
     ];
-
-    // Show exposed filters that can be set in the block form.
-    $configurable_filters = $this->getOption('configurable_filters');
-    $form['configurable_filters'] = [
-      '#type' => 'checkboxes',
-      '#options' => $this->getListOfExposedFilters(),
-      '#title' => $this->t('Filter in block'),
-      '#description' => $this->t('Select the filters that users should be able to configure default values for when placing the views block.'),
-      '#default_value' => !empty($configurable_filters) ? $configurable_filters : [],
-    ];
   }
 
   /**
@@ -86,29 +96,14 @@ class ListBlock extends BlockDisplay {
   public function submitOptionsForm(&$form, FormStateInterface $form_state) {
     parent::submitOptionsForm($form, $form_state);
     if ($form_state->get('section') === 'allow') {
-      $this->setOption('configurable_filters', Checkboxes::getCheckedCheckboxes($form_state->getValue('configurable_filters')));
       $this->setOption('more_link_help_text', $form_state->getValue('more_link_help_text'));
     }
   }
 
   /**
-   * Get a list of exposed filters.
-   *
-   * @return array
-   *   An array of filters keyed by machine name with label values.
-   */
-  protected function getListOfExposedFilters() {
-    $filter_options = [];
-    foreach ($this->getHandlers('filter') as $filter_name => $filter_plugin) {
-      if ($filter_plugin->isExposed() && $exposed_info = $filter_plugin->exposedInfo()) {
-        $filter_options[$filter_name] = $exposed_info['label'];
-      }
-    }
-    return $filter_options;
-  }
-
-  /**
    * Get custom ID for a filter.
+   *
+   * @todo Is this still needed?
    */
   protected function getFilterCustomId(FilterPluginBase $filter) {
     // If an identifier is set for the filter, use that as the $filter_id.
@@ -121,6 +116,8 @@ class ListBlock extends BlockDisplay {
 
   /**
    * Get a map of exposed filters keyed by custom ID.
+   *
+   * @todo Is this still needed?
    */
   protected function getFilterCustomIdMap() {
     foreach ($this->getHandlers('filter') as $filter_name => $filter_plugin) {
@@ -172,16 +169,43 @@ class ListBlock extends BlockDisplay {
       ];
     }
 
+    // Place "Hide fields" block settings inside a details element.
     if (!empty($allow_settings['hide_fields'])) {
-      $override_fields = $form['override']['order_fields'];
-
-      $form['override']['order_fields'] = [
-        '#title' => $this->t('Hide fields'),
-        '#description' => $this->t('Choose fields to hide from display.'),
+      $form['override']['hide_fields'] = [
         '#type' => 'details',
+        '#title' => $this->t('Hide fields'),
+        '#description' => $this->t('Choose to hide some of the fields.'),
       ];
+      $form['override']['hide_fields']['order_fields'] = $form['override']['order_fields'];
+      unset($form['override']['order_fields']);
+    }
 
-      $form['override']['order_fields']['field_list'] = $override_fields;
+    // Provide "Configure filters" form elements.
+    if (!empty($allow_settings['configure_filters'])) {
+      // Loop through the existing exposed filters.
+      foreach (Element::children($form['exposed']) as $id) {
+        $form['exposed'][$id]['expose_' . $id] = [
+          '#type' => 'checkbox',
+          '#title' => $this->t('Expose filter to site visitors.'),
+          '#default_value' => $block_configuration['exposed'][$id]['expose_' . $id] ?: 0,
+          '#weight' => -1,
+        ];
+
+        foreach (Element::children($form['exposed'][$id]) as $child_id) {
+          if (str_starts_with($child_id, 'expose_')) {
+            continue;
+          }
+          $form['exposed'][$id][$child_id]['#states'] = [
+            'disabled' => [
+              [
+                "input[name='settings[exposed][" . $id . "][expose_" . $id . "]']" => [
+                  'checked' => TRUE,
+                ],
+              ],
+            ],
+          ];
+        }
+      }
     }
 
     // Provide "Configure sorts" block settings form.
@@ -223,7 +247,7 @@ class ListBlock extends BlockDisplay {
       $sorted_sorts = [];
       if (isset($block_configuration['sort'])) {
 
-        uasort($block_configuration['sort'], '\Drupal\layout_builder_custom\Plugin\Display\Block::sortByWeight');
+        uasort($block_configuration['sort'], '\Drupal\ctools_views\Plugin\Display\Block::sortFieldsByWeight');
 
         foreach (array_keys($block_configuration['sort']) as $sort_name) {
           if (!empty($sorts[$sort_name])) {
@@ -416,7 +440,7 @@ class ListBlock extends BlockDisplay {
       if ($fields = array_filter($form_state->getValue([
         'override',
         'hide_fields',
-        'field_list',
+        'order_fields',
       ]))) {
         $block->setConfigurationValue('fields', $fields);
       }
@@ -470,13 +494,18 @@ class ListBlock extends BlockDisplay {
       $this->view->display_handler->setOption('heading_size', $child_heading_size);
     }
 
-    // Change pager style settings based on block configuration.
-    if (!empty($config['pager'])) {
-      $pager = $this->view->display_handler->getOption('pager');
-      $pager['type'] = $config['pager'];
-      $pager['options']['expose']['items_per_page'] = FALSE;
-      $pager['options']['expose']['offset'] = FALSE;
-      $this->view->display_handler->setOption('pager', $pager);
+    // Change fields output based on block configuration.
+    if ($this->view->getStyle()->usesFields() &&
+      !empty($allow_settings['hide_fields']) &&
+      !empty($config['fields'])) {
+      $fields = $this->view->getHandlers('field');
+      foreach (array_keys($fields) as $field_name) {
+        // Remove each field in sequence and re-add them if not hidden.
+        $this->view->removeHandler($display_id, 'field', $field_name);
+        if (empty($config['fields'][$field_name]['hide'])) {
+          $this->view->addHandler($display_id, 'field', $fields[$field_name]['table'], $fields[$field_name]['field'], $fields[$field_name], $field_name);
+        }
+      }
     }
 
     // Change sorts based on block configuration.
@@ -487,7 +516,7 @@ class ListBlock extends BlockDisplay {
         $this->view->removeHandler($display_id, 'sort', $sort_name);
       }
       if (!empty($config['sort'])) {
-        uasort($config['sort'], '\Drupal\layout_builder_custom\Plugin\Display\ListBlock::sortByWeight');
+        uasort($config['sort'], '\Drupal\ctools_views\Plugin\Display\Block::sortFieldsByWeight');
         foreach ($config['sort'] as $sort_name => $sort) {
           if (!empty($config['sort'][$sort_name]) && !empty($sorts[$sort_name])) {
             $sort = $sorts[$sort_name];
@@ -539,6 +568,59 @@ class ListBlock extends BlockDisplay {
   }
 
   /**
+   * {@inheritdoc}
+   *
+   * @todo Is this still needed?
+   */
+  public function usesExposed(): bool {
+    $filters = $this->getHandlers('filter');
+    foreach ($filters as $filter) {
+      if ($filter->isExposed() && !empty($filter->exposedInfo())) {
+        return TRUE;
+      }
+    }
+    // Hotfix shim to keep these pagers working for now.
+    // @todo Remove this exception when these view displays are removed.
+    $display = $this->view->getDisplay();
+    $exceptions = [
+      'block_people_slf',
+      'block_people_sfl',
+      'block_articles',
+    ];
+    if (in_array($display->display['id'], $exceptions)) {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * Is this still needed?
+   */
+  public function displaysExposed(): bool {
+    // Hotfix shim to not display exposed blocks, necessary because of
+    // the hotfix above.
+    // @todo Remove this exception when these view displays are removed.
+    $display = $this->view->getDisplay();
+    $exceptions = [
+      'block_people_slf',
+      'block_people_sfl',
+      'block_articles',
+    ];
+    if (in_array($display->display['id'], $exceptions)) {
+      return FALSE;
+    }
+    // If we are not utilizing the filter in block option,
+    // then use the default behavior. Otherwise, do not display
+    // exposed filters.
+    if (empty($this->options['allow']['configure_filters'])) {
+      return parent::displaysExposed();
+    }
+    return FALSE;
+  }
+
+  /**
    * Get Layout Builder Styles from the form state.
    *
    * @see _layout_builder_styles_prepare_styles_for_saving()
@@ -562,26 +644,6 @@ class ListBlock extends BlockDisplay {
       }
     }
     return $styles;
-  }
-
-  /**
-   * Sort array by weight.
-   *
-   * @param int $a
-   *   The field a.
-   * @param int $b
-   *   The field b.
-   *
-   * @return int
-   *   Return the more weight
-   */
-  public static function sortByWeight($a, $b): int {
-    $a_weight = isset($a['weight']) ? $a['weight'] : 0;
-    $b_weight = isset($b['weight']) ? $b['weight'] : 0;
-    if ($a_weight == $b_weight) {
-      return 0;
-    }
-    return ($a_weight < $b_weight) ? -1 : 1;
   }
 
   /**

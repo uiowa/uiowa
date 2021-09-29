@@ -1,0 +1,205 @@
+// Set above admin toolbar and superfish.
+.joyride-tip-guide {
+  z-index: 550;
+
+  a {
+    background: transparent;
+
+    .btn.btn-primary.btn-block {
+      color: $secondary;
+      margin-bottom: $md;
+
+      &:hover,
+      &:focus {
+        color: $secondary;
+      }
+    }
+  }
+}
+
+// Admin only styles
+.toolbar-menu {
+  font-size: unset;
+}
+
+// Hide header if off canvas tray is open
+.js-off-canvas-dialog-open header {
+  display: none;
+}
+
+@media (min-width: 84.375em) {
+  .toolbar-vertical.toolbar-tray-open.search-is-open .search-overlay .hds-search {
+    width: 60%;
+  }
+}
+
+@media (min-width: 855px) {
+  .toolbar-vertical.toolbar-tray-open.search-is-open .search-overlay .hds-search {
+    width: 60%;
+  }
+}
+
+// admin styles for search toggle
+body.toolbar-vertical.toolbar-tray-open {
+  .search-button {
+    @include breakpoint(container) {
+      right: 294px;
+    }
+  }
+
+  .search-is-open .search-overlay .hds-search {
+    @include breakpoint(container) {
+      margin-right: 209px;
+    }
+  }
+}
+
+.js-off-canvas-dialog-open {
+  .search-button {
+    right: 310px;
+  }
+}
+
+.js-off-canvas-dialog-open.search-is-open .search-overlay .hds-search {
+  width: 63%;
+}
+
+// admin styles for off-canvas menu
+.o-canvas__drawer {
+  .o-canvas__wrapper & {
+    top: 179px;
+
+    @include breakpoint(menu) {
+      top: 119px;
+
+      .toolbar-vertical & {
+        top: 119px;
+        height: calc(100% - 119px);
+      }
+
+      .iowa-bar--narrow & {
+        top: 179px;
+
+        .toolbar-horizontal & {
+          top: 179px !important;
+        }
+
+        .toolbar-vertical & {
+          top: 179px;
+        }
+      }
+    }
+  }
+
+  .o-canvas--open & {
+    top: 179px;
+    height: calc(100% - 179px);
+
+    @include breakpoint(menu) {
+      top: 119px;
+      height: calc(100% - 119px);
+
+      .toolbar-tray-open & {
+        top: 159px;
+        height: calc(100% - 159px);
+      }
+
+      .toolbar-vertical.toolbar-tray-open & {
+        top: 119px;
+        height: calc(100% - 119px);
+      }
+
+      .iowa-bar--narrow & {
+        top: 179px;
+        height: calc(100% - 179px);
+
+        .toolbar-horizontal.toolbar-tray-open & {
+          top: 219px !important;
+          height: calc(100% - 219px);
+        }
+
+        .toolbar-vertical.toolbar-tray-open & {
+          top: 179px;
+          height: calc(100% - 179px);
+        }
+      }
+    }
+  }
+}
+
+.iowa-bar--narrow .o-canvas--open .o-canvas__drawer {
+  top: 239px;
+}
+
+
+// admin toolbar style for sticky header
+.header-sticky.toolbar-horizontal,
+.header-sticky.toolbar-vertical {
+  @include breakpoint(menu) {
+    padding-top: 120px !important;
+  }
+
+  &.below {
+    @include breakpoint(menu) {
+      padding-top: 160px !important;
+    }
+  }
+}
+
+.header-sticky.scroll-down.toolbar-horizontal,
+.header-sticky.scroll-down.toolbar-vertical {
+  @include breakpoint(menu) {
+    padding-top: 80px !important;
+  }
+}
+
+.header-sticky.toolbar-horizontal.toolbar-tray-open {
+  @include breakpoint(menu) {
+    padding-top: 160px !important;
+  }
+
+  &.below {
+    @include breakpoint(menu) {
+      padding-top: 210px !important;
+    }
+  }
+}
+
+.header-sticky.toolbar-vertical.toolbar-tray-open {
+  @include breakpoint(menu) {
+    header {
+      padding-left: 15rem;
+    }
+  }
+}
+
+.header-sticky.toolbar-vertical {
+  header {
+    top: 40px;
+  }
+}
+
+.header-sticky.toolbar-horizontal {
+  header {
+    top: 40px;
+  }
+}
+
+.header-sticky.toolbar-horizontal.toolbar-tray-open {
+  header {
+    top: 80px;
+  }
+}
+
+.toolbar-horizontal,
+.toolbar-vertical {
+  .ui-dialog-off-canvas.ui-dialog-position-side {
+    top: 39px !important;
+  }
+}
+
+.toolbar-horizontal.toolbar-tray-open {
+  .ui-dialog-off-canvas.ui-dialog-position-side {
+    top: 69px !important;
+  }
+}

@@ -5,8 +5,10 @@ dependencies:
   config:
     - field.storage.node.field_person_credential
     - field.storage.node.field_person_department
+    - field.storage.node.field_person_education
     - field.storage.node.field_person_email
     - field.storage.node.field_person_first_name
+    - field.storage.node.field_person_hometown
     - field.storage.node.field_person_last_name
     - field.storage.node.field_person_phone
     - field.storage.node.field_pt_faculty_type
@@ -17,7 +19,6 @@ dependencies:
     - field.storage.node.field_pt_student_defense_date
     - field.storage.node.field_pt_student_program_start
     - field.storage.node.pt_student_dissertation_title
-    - field.storage.paragraph.field_uiowa_contact_phone
     - node.type.person
     - system.menu.main
   module:
@@ -67,12 +68,17 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       pager:
-        type: mini
+        type: full
         options:
           items_per_page: 50
           offset: 0
           id: 0
           total_pages: null
+          tags:
+            previous: ‹‹
+            next: ››
+            first: '« First'
+            last: 'Last »'
           expose:
             items_per_page: false
             items_per_page_label: 'Items per page'
@@ -81,9 +87,7 @@ display:
             items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
-          tags:
-            previous: ‹‹
-            next: ››
+          quantity: 9
       style:
         type: table
         options:
@@ -97,22 +101,14 @@ display:
           description: ''
           columns:
             view_node: view_node
-            field_person_credential: field_person_credential
             field_person_first_name: field_person_first_name
             field_person_last_name: field_person_last_name
-            field_person_email: field_person_email
-            field_person_department: field_person_department
-            field_person_phone: field_person_phone
-            field_pt_faculty_type: field_pt_faculty_type
+            field_pt_student_program_start: field_pt_student_program_start
+            field_pt_student_advisor: field_pt_student_advisor
+            field_person_education: field_person_education
+            field_person_hometown: field_person_hometown
           info:
             view_node:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_person_credential:
               sortable: false
               default_sort_order: asc
               align: ''
@@ -133,29 +129,25 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            field_person_email:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_person_department:
+            field_pt_student_program_start:
               sortable: true
-              default_sort_order: asc
+              default_sort_order: desc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-            field_person_phone:
+            field_pt_student_advisor:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_person_education:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_person_hometown:
               sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_pt_faculty_type:
-              sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
@@ -2051,14 +2043,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_uiowa_contact_phone:
-          id: field_uiowa_contact_phone
-          table: paragraph__field_uiowa_contact_phone
-          field: field_uiowa_contact_phone
-          relationship: field_person_contact_information
+        field_pt_student_program_start:
+          id: field_pt_student_program_start
+          table: node__field_pt_student_program_start
+          field: field_pt_student_program_start
+          relationship: none
           group_type: group
           admin_label: ''
-          label: 'Lab Phone'
+          label: 'Program start'
           exclude: false
           alter:
             alter_text: false
@@ -2100,9 +2092,10 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: telephone_link
+          type: datetime_default
           settings:
-            title: ''
+            timezone_override: ''
+            format_type: month_year
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -2114,55 +2107,6 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_uiowa_contact_address_address_line1:
-          id: field_uiowa_contact_address_address_line1
-          table: paragraph__field_uiowa_contact_address
-          field: field_uiowa_contact_address_address_line1
-          relationship: field_person_contact_information
-          group_type: group
-          admin_label: ''
-          label: 'Lab Address'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          plugin_id: standard
         field_pt_student_advisor:
           id: field_pt_student_advisor
           table: node__field_pt_student_advisor
@@ -2226,14 +2170,14 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_pt_student_program_start:
-          id: field_pt_student_program_start
-          table: node__field_pt_student_program_start
-          field: field_pt_student_program_start
+        field_person_education:
+          id: field_person_education
+          table: node__field_person_education
+          field: field_person_education
           relationship: none
           group_type: group
           admin_label: ''
-          label: 'Program start'
+          label: Education
           exclude: false
           alter:
             alter_text: false
@@ -2275,10 +2219,71 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: datetime_default
+          type: basic_string
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_person_hometown:
+          id: field_person_hometown
+          table: node__field_person_hometown
+          field: field_person_hometown
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: Hometown
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
           settings:
-            timezone_override: ''
-            format_type: month_year
+            link_to_entity: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -2516,8 +2521,9 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:field.storage.node.field_person_education'
         - 'config:field.storage.node.field_person_first_name'
+        - 'config:field.storage.node.field_person_hometown'
         - 'config:field.storage.node.field_person_last_name'
         - 'config:field.storage.node.field_pt_student_advisor'
         - 'config:field.storage.node.field_pt_student_program_start'
-        - 'config:field.storage.paragraph.field_uiowa_contact_phone'
