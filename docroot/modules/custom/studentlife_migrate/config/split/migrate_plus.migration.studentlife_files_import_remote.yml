@@ -1,5 +1,3 @@
-# @todo: Do not use - will be refactored when https://www.drupal.org/node/2695297 is committed.
-# @see https://www.drupal.org/node/2742269
 id: studentlife_files_import_remote
 label: 'Student Life File Import Remote'
 migration_group: studentlife
@@ -9,52 +7,50 @@ source:
   plugin: url
   data_fetcher_plugin: http
   data_parser_plugin: xml
-  item_selector: '/rss/channel/file'
+  item_selector: /rss/channel/file
   constants:
     file_dest_uri: 'public://imports'
   fields:
     -
       name: title
-      label: Attachment title
+      label: 'Attachment title'
       selector: title
     -
       name: post_id
-      label: Unique content ID
-      selector: wp:post_id
+      label: 'Unique content ID'
+      selector: 'wp:post_id'
     -
       name: content
-      label: Description of the file
-      selector: content:encoded
+      label: 'Description of the file'
+      selector: 'content:encoded'
     -
       name: excerpt
-      label: Caption for the file
-      selector: excerpt:encoded
+      label: 'Caption for the file'
+      selector: 'excerpt:encoded'
     -
       name: pubDate
-      label: Publish date of the file
+      label: 'Publish date of the file'
       selector: pubDate
     -
       name: post_date
-      label: Post date of the file
-      selector: wp:post_date
+      label: 'Post date of the file'
+      selector: 'wp:post_date'
     -
       name: creator
-      label: Username of the content creator
-      selector: dc:creator
+      label: 'Username of the content creator'
+      selector: 'dc:creator'
     -
       name: attachment_url
-      label: Full URL of the file on the source system
-      selector: wp:attachment_url
+      label: 'Full URL of the file on the source system'
+      selector: 'wp:attachment_url'
     -
       name: relative_url
-      label: relative url of the filename
+      label: 'relative url of the filename'
       selector: relative_url
-
   ids:
     post_id:
       type: integer
 process:
-  # uid mapping is dynamically generated.
   destination_file:
     plugin: get
     source: relative_url
@@ -82,5 +78,5 @@ process:
     plugin: default_value
     default_value: 1
 destination:
-  plugin: entity:file
-migration_dependencies: {}
+  plugin: 'entity:file'
+migration_dependencies: {  }

@@ -1,44 +1,22 @@
-id: studentlife_content_staffpage
+id: studentlife_content_page
 langcode: en
 status: true
 dependencies: {  }
 class: null
 field_plugin_method: null
 cck_plugin_method: null
-migration_tags:
-  - WordPress
 migration_group: studentlife
-label: 'Import Staff Pages from SilverStripe XML export'
+label: 'Import standard pages from SilverStripe XML export'
 source:
   plugin: url
   data_fetcher_plugin: http
   data_parser_plugin: xml
-  item_selector: '/rss/channel/item[wp:post_type="staffpage"]'
+  item_selector: '/rss/channel/item[wp:post_type="page"]'
   fields:
     -
       name: title
       label: 'Content title'
       selector: title
-    -
-      name: firstname
-      label: 'First Name'
-      selector: firstname
-    -
-      name: lastname
-      label: 'Last Name'
-      selector: lastname
-    -
-      name: position
-      label: 'Position'
-      selector: position
-    -
-      name: email
-      label: 'Email Address'
-      selector: email
-    -
-      name: phone
-      label: 'Phone Number'
-      selector: phone
     -
       name: post_id
       label: 'Unique content ID'
@@ -79,6 +57,10 @@ source:
       name: thumbnail_id
       label: 'Thumbnail assigned to the content item (Featured image)'
       selector: 'wp:postmeta[wp:meta_key=''_thumbnail_id'']/wp:meta_value'
+    -
+      name: path
+      label: 'URL Path'
+      selector: path
   ids:
     post_id:
       type: integer
@@ -87,34 +69,10 @@ process:
     -
       plugin: get
       source: title
-  field_person_first_name:
-    -
-      plugin: get
-      source: firstname
-  field_person_last_name:
-    -
-      plugin: get
-      source: lastname
-  field_person_bio/value:
+  body/value:
     -
       plugin: get
       source: content
-  field_person_bio/format:
-    -
-      plugin: default_value
-      default_value: 'filtered_html'
-  field_person_email:
-    -
-      plugin: get
-      source: email
-  field_person_phone:
-    -
-      plugin: get
-      source: phone
-  field_person_position:
-    -
-      plugin: get
-      source: position
   body/summary:
     -
       plugin: get
@@ -135,6 +93,13 @@ process:
       default_value: 0
       map:
         publish: 1
+  path/pathauto:
+    plugin: default_value
+    default_value: 0
+  path/alias:
+    -
+      plugin: get
+      source: path
   uid:
     plugin: default_value
     default_value: '6'
@@ -143,9 +108,13 @@ process:
     default_value: filtered_html
   type:
     plugin: default_value
-    default_value: person
+    default_value: page
   moderation_state:
     plugin: default_value
     default_value: published
+  field_tags:
+    plugin: migration_lookup
+    migration: studentlife_categories
+    source: category
 destination:
   plugin: 'entity:node'

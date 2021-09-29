@@ -1,49 +1,49 @@
 id: studentlife_files_to_media_remote
 label: 'Import Media Files from remote files'
-migration_tags:
+migration_tags: null
 migration_group: studentlife
 source:
   plugin: url
   data_fetcher_plugin: http
   data_parser_plugin: xml
-  item_selector: '/rss/channel/file'
+  item_selector: /rss/channel/file
   fields:
     -
       name: title
-      label: Attachment title
+      label: 'Attachment title'
       selector: title
     -
       name: post_id
-      label: Unique content ID
-      selector: wp:post_id
+      label: 'Unique content ID'
+      selector: 'wp:post_id'
     -
       name: content
-      label: Description of the file
-      selector: content:encoded
+      label: 'Description of the file'
+      selector: 'content:encoded'
     -
       name: excerpt
-      label: Caption for the file
-      selector: excerpt:encoded
+      label: 'Caption for the file'
+      selector: 'excerpt:encoded'
     -
       name: pubDate
-      label: Publish date of the file
+      label: 'Publish date of the file'
       selector: pubDate
     -
       name: post_date
-      label: Post date of the file
-      selector: wp:post_date
+      label: 'Post date of the file'
+      selector: 'wp:post_date'
     -
       name: creator
-      label: Username of the content creator
-      selector: dc:creator
+      label: 'Username of the content creator'
+      selector: 'dc:creator'
     -
       name: attachment_url
-      label: Full URL of the file on the source system
-      selector: wp:attachment_url
+      label: 'Full URL of the file on the source system'
+      selector: 'wp:attachment_url'
     -
       name: alt
-      label: Alt text for an image
-      selector: wp:postmeta[wp:meta_key='_wp_attachment_image_alt']/wp:meta_value
+      label: 'Alt text for an image'
+      selector: 'wp:postmeta[wp:meta_key=''_wp_attachment_image_alt'']/wp:meta_value'
   ids:
     post_id:
       type: integer
@@ -74,8 +74,3 @@ process:
 destination:
   plugin: 'entity:media'
   default_bundle: file
-# commenting out because this breaks if any single file import fails,
-# and we seem to have a few weird edge cases where the file MIME type doesn't match file extension on some sites
-# migration_dependencies:
-#   required:
-#     - studentlife_images_import
