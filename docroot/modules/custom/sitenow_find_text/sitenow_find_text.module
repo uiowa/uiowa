@@ -31,6 +31,7 @@ function get_text_field_tables() {
     'text_with_summary',
     'link',
     'heading',
+    'uiowa_headline',
   ] as $type) {
     $new_fields = $entity_field_manager->getFieldMapByFieldType($type);
     foreach ($new_fields as $bundle => $bundle_fields) {
@@ -186,6 +187,11 @@ function value_columns(string $name, string $type) {
     case 'heading':
       return [
         $name . '_text',
+      ];
+
+    case 'uiowa_headline':
+      return [
+        $name . '_headline',
       ];
   }
   return [$name . '_value'];
