@@ -30,7 +30,7 @@ function get_text_field_tables() {
              'text_long',
              'text_with_summary',
              'link',
-             'heading'
+             'heading',
     ] as $type) {
     $new_fields = $entity_field_manager->getFieldMapByFieldType($type);
     foreach ($new_fields as $bundle => $bundle_fields) {
@@ -132,7 +132,11 @@ function search_fields(string $needle, bool $regexed = FALSE) {
         // Fetch_parent will grab the parent node nid if able,
         // or else return false if the parent couldn't be found.
         if ($value_column != 'title') {
-          $new_id = fetch_parent($row->revision_id, $details['type']);
+          $ids = [
+            'id' => $id,
+            'revision_id' => $row->revision_id,
+          ];
+          $new_id = fetch_parent($ids, $details['type']);
           // Unset the old entity_id and replace with the new id.
           // If we didn't find a result in our fetch_parent,
           // we don't know what node has it anyway,
@@ -140,7 +144,7 @@ function search_fields(string $needle, bool $regexed = FALSE) {
           // and unset it outside of the new_id check.
           unset($temp_results[$id]);
           if ($new_id) {
-            $temp_results[$new_id] = $row;
+            $temp_results[$new_id['id']] = $row;
           }
         }
       }
@@ -212,12 +216,12 @@ function cleanup_tables(array &$tables) {
 /**
  * Helper function to fetch parent entities.
  *
- * @param string $id
- *   The entity_id for which to search.
+ * @param array $ids
+ *   The entity_id and revision_id for which to search.
  * @param string $type
  *   The entity type for which to search.
  */
-function fetch_parent(string $id, string $type) {
+function fetch_parent(array $ids, string $type) {
   $db = Database::getConnection();
   switch ($type) {
     case 'node':
@@ -225,13 +229,17 @@ function fetch_parent(string $id, string $type) {
       // parent. May not always be the case in the future,
       // but mostly, even if it's an entity reference to a node,
       // we want the referenced node for editing anyway.
-      return $id;
+      return $ids;
 
     case 'paragraph':
       $result = $db->select('entity_usage')
-        ->fields('entity_usage', ['source_vid', 'source_type'])
+        ->fields('entity_usage', [
+          'source_id',
+          'source_vid',
+          'source_type',
+        ])
         ->condition('target_type', $type, '=')
-        ->condition('target_id', $id, '=')
+        ->condition('target_id', $ids['id'], '=')
         // Currently we're not handling revisions, so we're likely to have
         // duplicate entries for the same node; one for each revision. We
         // will also want to make sure we grab the most recent revision.
@@ -247,15 +255,16 @@ function fetch_parent(string $id, string $type) {
       // or may not be a node, so we might need to
       // keep digging. Grab only the first result,
       // because we're not currently handling revisions.
-      $id = $result[0]->source_vid;
+      $ids['id'] = $result[0]->source_id;
+      $ids['revision_id'] = $result[0]->source_vid;
       $type = $result[0]->source_type;
-      return fetch_parent($id, $type);
+      return fetch_parent($ids, $type);
 
     case 'block_content':
       // Find the target_id, which will be the id of the parent entity.
       $result = $db->select('node__layout_builder__layout')
-        ->fields('node__layout_builder__layout', ['entity_id'])
-        ->condition('layout_builder__layout_section', '%"block_revision_id";s:_:"' . $id . '";%', 'LIKE')
+        ->fields('node__layout_builder__layout', ['entity_id', 'revision_id'])
+        ->condition('layout_builder__layout_section', '%"block_revision_id";s:_:"' . $ids['revision_id'] . '";%', 'LIKE')
         ->execute()
         ->fetchAll();
       // If we didn't have a result, we hit a dead end.
@@ -265,6 +274,8 @@ function fetch_parent(string $id, string $type) {
       // Currently if we found a block_content parent,
       // it will always be a node. May need to adjust this
       // in the future, if we have nested blocks.
-      return $result[0]->entity_id;
+      $ids['id'] = $result[0]->entity_id;
+      $ids['revision_id'] = $result[0]->revision_id;
+      return $ids;
   }
 }
