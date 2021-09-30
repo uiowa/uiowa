@@ -26,12 +26,12 @@ function get_text_field_tables() {
   // Go through all our text-based field types,
   // get their field information, and bundle 'em.
   foreach (['string',
-             'string_long',
-             'text_long',
-             'text_with_summary',
-             'link',
-             'heading',
-    ] as $type) {
+    'string_long',
+    'text_long',
+    'text_with_summary',
+    'link',
+    'heading',
+  ] as $type) {
     $new_fields = $entity_field_manager->getFieldMapByFieldType($type);
     foreach ($new_fields as $bundle => $bundle_fields) {
       $fields[$bundle] = isset($fields[$bundle]) ? array_merge($fields[$bundle], $bundle_fields) : $bundle_fields;
