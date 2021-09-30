@@ -8,12 +8,13 @@
 %}
 
 <li class="timeline--wrapper">
+  {{ content.field_timeline_date|render }}
+
   {% set card_attributes = create_attribute() %}
   {% set paragraph_card = {
     'attributes': card_attributes.addClass(classes),
     'card_tag': content.field_timeline_icon|render,
     'card_image': content.field_timeline_media|render,
-    'card_subtitle': content.field_timeline_date|render,
     'card_text': content.field_timeline_body|render,
     'card_title': content.field_timeline_heading|render,
     'card_link_url': content.field_timeline_link[0]['#url'],

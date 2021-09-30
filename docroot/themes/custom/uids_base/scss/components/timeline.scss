@@ -5,7 +5,6 @@
 .timeline {
   transition: all 0.4s ease;
   position: relative;
-  display: grid;
   list-style: none;
   margin: 0;
 }
@@ -50,14 +49,14 @@
 }
 
 .timeline--wrapper {
-  @include breakpoint(menu) {
-    width: 50%;
-  }
+display: grid;
+  @include twocol-grid;
+
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
   &:first-child {
     @include breakpoint(menu) {
-      margin-top: $desktop-width-gutter;
+      //margin-top: $desktop-width-gutter;
     }
   }
   &:last-child {
@@ -94,11 +93,14 @@
     opacity: 1;
   }
   .field--name-field-timeline-date {
-    @include breakpoint(menu) {
-      position: absolute;
-      bottom: 48%;
-      width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 30px;
+    @include breakpoint(container) {
+      padding-bottom: 0;
     }
+
     @include breakpoint(container) {
       width: 100%;
     }
@@ -110,40 +112,22 @@
     }
   }
   &:nth-child(odd) {
+    .field--name-field-timeline-date {
+      @include breakpoint(sm) {
+        justify-content: right;
+      }
+    }
+
+    //grid-area: 1 / 1 / 2 / 2;
     @include breakpoint(menu) {
       margin-left: auto;
     }
     .card__icon {
       @include breakpoint(menu) {
-        right: 25px;
+        right: 50px;
       }
     }
-    .field--name-field-timeline-date {
-      @include breakpoint(menu) {
-        margin-left: -130%;
-        text-align: right;
-      }
-      @include breakpoint(container) {
-        margin-left: -125%;
-      }
-      .page__container--narrow & {
-        @include breakpoint(container) {
-          margin-left: -130%;
-        }
-      }
-      .page__container--extended & {
-        @include breakpoint(container) {
-          margin-left: -122%;
-        }
-      }
-      .page__container--full &,
-      .page__container--edge &{
-        @include breakpoint(container) {
-          margin-left: -120%;
-        }
-      }
 
-    }
     .card__icon-wrapper {
       @include breakpoint(menu) {
         left: 0;
@@ -162,25 +146,19 @@
     }
   }
   &:nth-child(even) {
+    direction: rtl;
+    .field--name-field-timeline-date {
+      @include breakpoint(sm) {
+        justify-content: left;
+      }
+    }
+
     @include breakpoint(menu) {
       margin-right: auto;
     }
     .card__icon {
       @include breakpoint(menu) {
-        right: -90px;
-      }
-    }
-    .field--name-field-timeline-date {
-      @include breakpoint(menu) {
-        margin-left: 125%;
-      }
-      @include breakpoint(container) {
-        margin-left: 113%;
-      }
-      .page__container--narrow & {
-        @include breakpoint(container) {
-          margin-left: 118%;
-        }
+        right: -110px;
       }
     }
     .card__icon-wrapper {
