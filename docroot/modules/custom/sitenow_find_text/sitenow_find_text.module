@@ -125,15 +125,17 @@ function search_fields(string $needle, bool $regexed = FALSE) {
         $row->value = implode(': ', [$value_column, $row->$value_column]);
         // Fetch_parent will grab the parent node nid if able,
         // or else return false if the parent couldn't be found.
-        $new_id = fetch_parent($id, $details['type']);
-        // Unset the old entity_id and replace with the new id.
-        // If we didn't find a result in our fetch_parent,
-        // we don't know what node has it anyway,
-        // and so our results will be broken--so go ahead
-        // and unset it outside of the new_id check.
-        unset($temp_results[$id]);
-        if ($new_id) {
-          $temp_results[$new_id] = $row;
+        if ($value_column != 'title') {
+          $new_id = fetch_parent($row->revision_id, $details['type']);
+          // Unset the old entity_id and replace with the new id.
+          // If we didn't find a result in our fetch_parent,
+          // we don't know what node has it anyway,
+          // and so our results will be broken--so go ahead
+          // and unset it outside of the new_id check.
+          unset($temp_results[$id]);
+          if ($new_id) {
+            $temp_results[$new_id] = $row;
+          }
         }
       }
       // Add our new results to our collected results, keyed
