@@ -67,8 +67,8 @@ class MultisiteCommands extends BltTasks {
       throw new \Exception('Aborted.');
     }
     else {
-      $app = EnvironmentDetector::getAhGroup() ? EnvironmentDetector::getAhGroup() : 'local';
-      $env = EnvironmentDetector::getAhEnv() ? EnvironmentDetector::getAhEnv() : 'local';
+      $app = EnvironmentDetector::getAhGroup() ?: 'local';
+      $env = EnvironmentDetector::getAhEnv() ?: 'local';
 
       $this->sendNotification("Command `drush {$cmd}` *started* on {$app} {$env}.");
 
@@ -133,8 +133,8 @@ class MultisiteCommands extends BltTasks {
     ],
     'dry-run' => FALSE,
   ]) {
-    $app = EnvironmentDetector::getAhGroup() ? EnvironmentDetector::getAhGroup() : 'local';
-    $env = EnvironmentDetector::getAhEnv() ? EnvironmentDetector::getAhEnv() : 'local';
+    $app = EnvironmentDetector::getAhGroup() ?: 'local';
+    $env = EnvironmentDetector::getAhEnv() ?: 'local';
 
     if (!in_array($env, $options['envs'])) {
       $allowed = implode(', ', $options['envs']);

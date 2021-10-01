@@ -510,12 +510,6 @@ $sites['pinyin.dev.drupal.uiowa.edu'] = 'pinyin.uiowa.edu';
 $sites['pinyin.stage.drupal.uiowa.edu'] = 'pinyin.uiowa.edu';
 $sites['pinyin.prod.drupal.uiowa.edu'] = 'pinyin.uiowa.edu';
 
-// Directory aliases for uigearup.uiowa.edu.
-$sites['uigearup.local.drupal.uiowa.edu'] = 'uigearup.uiowa.edu';
-$sites['uigearup.dev.drupal.uiowa.edu'] = 'uigearup.uiowa.edu';
-$sites['uigearup.stage.drupal.uiowa.edu'] = 'uigearup.uiowa.edu';
-$sites['uigearup.prod.drupal.uiowa.edu'] = 'uigearup.uiowa.edu';
-
 // Directory aliases for climatecollective.uiowa.edu.
 $sites['climatecollective.local.drupal.uiowa.edu'] = 'climatecollective.uiowa.edu';
 $sites['climatecollective.dev.drupal.uiowa.edu'] = 'climatecollective.uiowa.edu';
@@ -3359,3 +3353,9 @@ $sites['basicneeds.local.drupal.uiowa.edu'] = 'basicneeds.uiowa.edu';
 $sites['basicneeds.dev.drupal.uiowa.edu'] = 'basicneeds.uiowa.edu';
 $sites['basicneeds.stage.drupal.uiowa.edu'] = 'basicneeds.uiowa.edu';
 $sites['basicneeds.prod.drupal.uiowa.edu'] = 'basicneeds.uiowa.edu';
+
+// Directory aliases for limoli.lab.uiowa.edu.
+$sites['lablimoli.local.drupal.uiowa.edu'] = 'limoli.lab.uiowa.edu';
+$sites['lablimoli.dev.drupal.uiowa.edu'] = 'limoli.lab.uiowa.edu';
+$sites['lablimoli.stage.drupal.uiowa.edu'] = 'limoli.lab.uiowa.edu';
+$sites['lablimoli.prod.drupal.uiowa.edu'] = 'limoli.lab.uiowa.edu';
