@@ -2,9 +2,11 @@
 
 namespace Drupal\layout_builder_custom\EventSubscriber;
 
+use Drupal\block_content\BlockContentInterface;
 use Drupal\Component\Uuid\UuidInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\layout_builder\Plugin\Block\InlineBlock;
 use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
 use Drupal\replicate\Events\AfterSaveEvent;
 use Drupal\replicate\Events\ReplicatorEvents;
@@ -104,8 +106,17 @@ class ReplicateSubscriber implements EventSubscriberInterface {
         if (empty($plugin->getConfiguration()['block_revision_id'])) {
           continue;
         }
-        // @todo Check if it's a block that has paragraphs,
-        //   and if so, create a new copy of the paragraph(s).
+        // Check if we are either a collection or slider,
+        // which are our blocks which contain paragraphs.
+        if ($plugin instanceof InlineBlock && in_array($plugin->getPluginId(), ['inline_block:uiowa_collection', 'inline_block:uiowa_slider'])) {
+          $component_array = $component->toArray();
+          $configuration = $component_array['configuration'];
+          $referenced_entity = $this->entityTypeManager
+            ->getStorage('block_content')
+            ->loadRevision($configuration['block_revision_id']);
+          // @todo Get the paragraphs from our fields,
+          //   create a copy, and update the block.
+        }
       }
     }
   }
