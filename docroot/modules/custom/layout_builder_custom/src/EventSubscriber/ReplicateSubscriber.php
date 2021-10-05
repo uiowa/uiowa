@@ -4,6 +4,8 @@ namespace Drupal\layout_builder_custom\EventSubscriber;
 
 use Drupal\Component\Uuid\UuidInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
 use Drupal\replicate\Events\AfterSaveEvent;
 use Drupal\replicate\Events\ReplicatorEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -56,8 +58,46 @@ class ReplicateSubscriber implements EventSubscriberInterface {
    *   After save event.
    */
   public function onReplicateAfterSave(AfterSaveEvent $event): void {
-    $clone = $event->getEntity();
-    // @todo Finish the rest of the things.
+    $entity = $event->getEntity();
+    if (!$entity instanceof FieldableEntityInterface) {
+      return;
+    }
+    if (!$entity->hasField(OverridesSectionStorage::FIELD_NAME)) {
+      return;
+    }
+    if ($entity instanceof TranslatableInterface) {
+      foreach ($entity->getTranslationLanguages() as $translation_language) {
+        /** @var \Drupal\Core\Entity\FieldableEntityInterface $translation */
+        $translation = $entity->getTranslation($translation_language->getId());
+        $this->checkForUnhandled($translation);
+        $translation->save();
+      }
+    }
+    else {
+      $this->checkForUnhandled($entity);
+      $entity->save();
+    }
   }
 
+  /**
+   * Check for unhandled instances, like paragraphs.
+   *
+   * @param FieldableEntityInterface $entity
+   */
+  protected function checkForUnhandled(FieldableEntityInterface $entity) {
+    /** @var \Drupal\layout_builder\Field\LayoutSectionItemList $field_item_list */
+    $field_item_list = $entity->get(OverridesSectionStorage::FIELD_NAME);
+    foreach ($field_item_list as $field_item) {
+      foreach ($field_item->section->getComponents() as $component) {
+        $plugin = $component->getPlugin();
+        // @todo Check if it's a view block, and if so,
+        //   create a new copy.
+        if (empty($plugin->getConfiguration()['block_revision_id'])) {
+          continue;
+        }
+        // @todo Check if it's a block that has paragraphs,
+        //   and if so, create a new copy of the paragraph(s).
+      }
+    }
+  }
 }
