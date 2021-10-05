@@ -41,7 +41,7 @@ $imgpath: '../../uids/assets/images';
   }
 }
 
-  // Unset equal height columns
+// Unset equal height columns
 .section-alignment__start {
   .layout__spacing_container {
     align-items: flex-start;
@@ -213,40 +213,42 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     @extend %container;
   }
 
-.page__container--extended,
-.page__container--extended.layout--has-sidebar,
-.page__container--extended.sidebar-invisible {
-  .layout__spacing_container {
-    @include breakpoint(container) {
-      max-width: 100em;
-      padding-right: $lg;
-      padding-left: $lg;
+  .page__container--extended,
+  .page__container--extended.layout--has-sidebar,
+  .page__container--extended.sidebar-invisible {
+    .layout__spacing_container {
+      @include breakpoint(container) {
+        max-width: 100em;
+        padding-right: $lg;
+        padding-left: $lg;
+      }
     }
   }
-}
 
-.page__container--narrow,
-.page__container--narrow.layout--has-sidebar,
-.page__container--narrow.sidebar-invisible {
-  .layout__spacing_container {
-    @include breakpoint(md) {
-      max-width: 63.75em;
-      margin: 0 auto;
-      padding-right: 1.25rem;
-      padding-left: 1.25rem;
-    }
-    @include breakpoint(container) {
-      padding-right: 0;
-      padding-left: 0;
+  .page__container--narrow,
+  .page__container--narrow.layout--has-sidebar,
+  .page__container--narrow.sidebar-invisible {
+    .layout__spacing_container {
+      @include breakpoint(md) {
+        max-width: 63.75em;
+        margin: 0 auto;
+        padding-right: 1.25rem;
+        padding-left: 1.25rem;
+      }
+      @include breakpoint(container) {
+        padding-right: 0;
+        padding-left: 0;
+      }
     }
   }
 }
 
 // default left/right gutter spacing for full width settings without layout builder
 // settings if page container full or edge is selected on section
+
+.page__container--full.layout__container,
 .page__container--full.layout--has-sidebar,
-.page__container--full.sidebar-invisible,
-.page__container--full.layout__container {
+.page__container--full.sidebar-invisible {
   .layout__spacing_container {
     margin-right: $mobile-width-gutter;
     margin-left: $mobile-width-gutter;
@@ -259,16 +261,15 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   }
 }
 
-
-  .page__container--edge,
-  .page__container--edge.layout--has-sidebar,
-  .page__container--edge.sidebar-invisible {
-    .layout__spacing_container {
-      max-width: 100%;
-      margin-right: 0;
-      margin-left: 0;
-    }
+.page__container--edge,
+.page__container--edge.layout--has-sidebar,
+.page__container--edge.sidebar-invisible {
+  .layout__spacing_container {
+    max-width: 100%;
+    margin-right: 0;
+    margin-left: 0;
   }
+}
 
   // Container fix for responsive tables
 
