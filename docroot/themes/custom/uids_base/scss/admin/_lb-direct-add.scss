@@ -1,0 +1,62 @@
+// lb_direct_add overrides
+
+.layout-builder__direct-add__toggle {
+  border: 1px solid #ccc;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
+  padding: 1rem;
+  text-decoration: underline;
+  color: #545454;
+  font-family: BlinkMacSystemFont,-apple-system,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+
+  &:hover,
+  &:focus {
+    border-bottom-style: solid;
+    border-color: #aaa;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.20);
+  }
+}
+
+.layout-builder__direct-add__list li a {
+  font-size: 16px;
+  color: #000;
+  font-weight: 500;
+  font-family: BlinkMacSystemFont,-apple-system,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;
+
+  &:hover,
+  &:focus {
+    border-color: #aaa;
+    text-decoration: underline;
+  }
+}
+
+.layout-builder__direct-add__list:after {
+  border-bottom-color: #fff!important;
+}
+
+.layout-builder__direct-add__list:before {
+  border-color: rgba(153, 153, 153, 0)!important;
+  border-bottom-color: #e2e4e7!important;
+}
+
+[class*="bg--"] .layout-builder__direct-add__list:before,
+[class*="bg--"] .layout-builder__direct-add__list:after,
+[class*="bg--"] [class*="bg--"] .layout-builder__direct-add__list:before,
+[class*="bg--"] [class*="bg--"] .layout-builder__direct-add__list:after {
+  border-color: transparent;
+}
+
+// Layouts not covered by lb_direct_add module
+.layout--page--left-sidebar .layout__region--main .layout-builder__add-block.open .layout-builder__direct-add__list > .links {
+  @include breakpoint(sm) {
+    display: grid;
+    gap: 10px 10px;
+    grid-template-columns: repeat(auto-fit, minmax(29.74%, 1fr));
+  }
+}
+
+// @todo Remove this when a corresponding change is made to lb_direct_add module.
+.layout-builder__direct-add__list {
+  top: auto;
+}
