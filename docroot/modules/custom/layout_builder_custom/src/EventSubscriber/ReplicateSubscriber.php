@@ -8,6 +8,7 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
 use Drupal\replicate\Events\AfterSaveEvent;
 use Drupal\replicate\Events\ReplicatorEvents;
+use Drupal\views\Plugin\Block\ViewsBlock;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -90,8 +91,16 @@ class ReplicateSubscriber implements EventSubscriberInterface {
     foreach ($field_item_list as $field_item) {
       foreach ($field_item->section->getComponents() as $component) {
         $plugin = $component->getPlugin();
-        // @todo Check if it's a view block, and if so,
-        //   create a new copy.
+        if ($plugin instanceof ViewsBlock) {
+          // Create a copy of the original component, and generate
+          // a new uuid.
+          $new_component = clone $component;
+          $new_component->set('uuid', $this->uuid->generate());
+          // Remove the original component.
+          $field_item->section->removeComponent($component->getUuid());
+          // Add the new component to the section.
+          $field_item->section->appendComponent($new_component);
+        }
         if (empty($plugin->getConfiguration()['block_revision_id'])) {
           continue;
         }
