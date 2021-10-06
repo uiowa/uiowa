@@ -84,7 +84,8 @@ class ReplicateSubscriber implements EventSubscriberInterface {
   /**
    * Check for unhandled instances, like paragraphs and views blocks.
    *
-   * @param FieldableEntityInterface $entity
+   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+   *   The replicated entity.
    */
   protected function additionalHandling(FieldableEntityInterface $entity) {
     /** @var \Drupal\layout_builder\Field\LayoutSectionItemList $field_item_list */
@@ -107,7 +108,10 @@ class ReplicateSubscriber implements EventSubscriberInterface {
         }
         // Check if we are either a collection or slider,
         // which are our blocks which contain paragraphs.
-        if ($plugin instanceof InlineBlock && in_array($plugin->getPluginId(), ['inline_block:uiowa_collection', 'inline_block:uiowa_slider'])) {
+        if ($plugin instanceof InlineBlock && in_array($plugin->getPluginId(), [
+          'inline_block:uiowa_collection',
+          'inline_block:uiowa_slider',
+        ])) {
           // @todo Update this to be more dynamic, and look for fields with paragraph
           //   references rather than hardcoding.
           $field_name = ($plugin->getPluginId() == 'inline_block:uiowa_collection') ? 'field_uiowa_collection_items' : 'field_uiowa_slider_slides';
@@ -128,4 +132,5 @@ class ReplicateSubscriber implements EventSubscriberInterface {
       }
     }
   }
+
 }
