@@ -1,5 +1,10 @@
 // Gin
-.gin--vertical-toolbar[data-toolbar-menu=""] {
+.gin--vertical-toolbar {
+  &.search-is-open {
+    .search-overlay .uids-search {
+      width: 63%;
+    }
+  }
   .search-button {
     @include breakpoint(container) {
       right: 237px;
@@ -11,11 +16,6 @@
   .search-button {
     @include breakpoint(container) {
       right: 307px;
-    }
-  }
-  &.search-is-open {
-    .search-overlay .uids-search {
-      width: 63%;
     }
   }
 }
