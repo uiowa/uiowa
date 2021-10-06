@@ -60,7 +60,9 @@ class ReplicateSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents() {
     return [
-      ReplicatorEvents::AFTER_SAVE => 'onReplicateAfterSave',
+      // @todo Replace this with ReplicatorEvents::AFTER_SAVE
+      //   after debugging.
+      'replicate__after_save' => 'onReplicateAfterSave',
     ];
   }
 
