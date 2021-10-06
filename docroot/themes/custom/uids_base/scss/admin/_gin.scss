@@ -1,0 +1,25 @@
+// Gin
+.gin--vertical-toolbar[data-toolbar-menu=""] {
+  .search-button {
+    @include breakpoint(container) {
+      right: 237px;
+    }
+  }
+}
+
+.gin--vertical-toolbar[data-toolbar-menu="open"] {
+  .search-button {
+    @include breakpoint(container) {
+      right: 307px;
+    }
+  }
+  &.search-is-open {
+    .search-overlay .uids-search {
+      width: 63%;
+    }
+  }
+}
+
+.toolbar .toolbar-bar #toolbar-item-administration-tray .toolbar-logo img {
+  max-width: 100%!important;
+}

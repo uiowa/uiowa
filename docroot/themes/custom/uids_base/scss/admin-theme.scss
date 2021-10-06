@@ -3,8 +3,15 @@
 @import "assets/scss/_local-fonts.scss";
 @import url('../../../../../core/themes/claro/css/components/dropbutton.css');
 $imgpath: '../../uids/assets/images';
-// lb claro styles
 
-.toolbar #toolbar-bar {
+
+:not(.gin--dark-mode) .toolbar #toolbar-bar {
   background-color: #FBFBFF!important;
+}
+.gin--dark-mode .toolbar #toolbar-bar {
+  background-color: #1B1B1D!important;
+}
+
+.toolbar .toolbar-bar #toolbar-item-administration-tray .toolbar-logo img {
+  max-width: 100%!important;
 }
