@@ -4,6 +4,7 @@ namespace Drupal\layout_builder_custom\EventSubscriber;
 
 use Drupal\Component\Uuid\UuidInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\layout_builder\Plugin\Block\InlineBlock;
 use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
@@ -25,6 +26,13 @@ class ReplicateSubscriber implements EventSubscriberInterface {
   protected $entityTypeManager;
 
   /**
+   * The entity field manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
+   */
+  protected $entityFieldManager;
+
+  /**
    * UUID.
    *
    * @var \Drupal\Component\Uuid\UuidInterface
@@ -36,11 +44,14 @@ class ReplicateSubscriber implements EventSubscriberInterface {
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
+   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager
+   *   The entity field manager.
    * @param \Drupal\Component\Uuid\UuidInterface $uuid
    *   UUID.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, UuidInterface $uuid) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, EntityFieldManagerInterface $entityFieldManager, UuidInterface $uuid) {
     $this->entityTypeManager = $entityTypeManager;
+    $this->entityFieldManager = $entityFieldManager;
     $this->uuid = $uuid;
   }
 
@@ -88,6 +99,7 @@ class ReplicateSubscriber implements EventSubscriberInterface {
    *   The replicated entity.
    */
   protected function additionalHandling(FieldableEntityInterface $entity) {
+    $fields_to_check = $this->getReferenceFields();
     /** @var \Drupal\layout_builder\Field\LayoutSectionItemList $field_item_list */
     $field_item_list = $entity->get(OverridesSectionStorage::FIELD_NAME);
     foreach ($field_item_list as $field_item) {
@@ -108,13 +120,8 @@ class ReplicateSubscriber implements EventSubscriberInterface {
         }
         // Check if we are either a collection or slider,
         // which are our blocks which contain paragraphs.
-        if ($plugin instanceof InlineBlock && in_array($plugin->getPluginId(), [
-          'inline_block:uiowa_collection',
-          'inline_block:uiowa_slider',
-        ])) {
-          // @todo Update this to be more dynamic, and look for fields with paragraph
-          //   references rather than hardcoding.
-          $field_name = ($plugin->getPluginId() == 'inline_block:uiowa_collection') ? 'field_uiowa_collection_items' : 'field_uiowa_slider_slides';
+        if ($plugin instanceof InlineBlock && in_array($plugin->getDerivativeId(), array_keys($fields_to_check))) {
+          $field_names = $fields_to_check[$plugin->getDerivativeId()];
           // Parse the component and load the
           // referenced block by its specific revision.
           $component_array = $component->toArray();
@@ -123,14 +130,33 @@ class ReplicateSubscriber implements EventSubscriberInterface {
             ->getStorage('block_content')
             ->loadRevision($configuration['block_revision_id']);
           // Create a duplicate of each of its referenced paragraphs.
-          foreach ($referenced_entity->$field_name as $field) {
-            $field->entity = $field->entity->createDuplicate();
+          foreach ($field_names as $field_name) {
+            foreach ($referenced_entity->$field_name as $field) {
+              $field->entity = $field->entity->createDuplicate();
+            }
           }
           // Save the block with its updated references.
           $referenced_entity->save();
         }
       }
     }
+  }
+
+  /**
+   * Fetch the blocks and fields we'll need to check.
+   *
+   * @return array
+   *   Associative array of bundle => fields we should check.
+   */
+  protected function getReferenceFields() {
+    $map = $this->entityFieldManager->getFieldMapByFieldType('entity_reference_revisions');
+    $fields = [];
+    foreach ($map['block_content'] as $field => $details) {
+      foreach ($details['bundles'] as $bundle) {
+        $fields[$bundle][] = $field;
+      }
+    }
+    return $fields;
   }
 
 }

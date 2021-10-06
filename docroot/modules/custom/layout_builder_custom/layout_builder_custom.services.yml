@@ -5,6 +5,6 @@ services:
     - { name: event_subscriber }
   layout_builder_custom.replicate_subscriber:
     class: Drupal\layout_builder_custom\EventSubscriber\ReplicateSubscriber
-    arguments: [ '@entity_type.manager', '@uuid' ]
+    arguments: [ '@entity_type.manager', '@entity_field.manager', '@uuid' ]
     tags:
       - { name: event_subscriber }
