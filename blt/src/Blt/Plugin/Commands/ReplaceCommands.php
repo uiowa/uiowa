@@ -20,8 +20,8 @@ class ReplaceCommands extends BltTasks {
     // Disable alias since we are targeting a specific URI.
     $this->config->set('drush.alias', '');
 
-    $app = EnvironmentDetector::getAhGroup() ? EnvironmentDetector::getAhGroup() : 'local';
-    $env = EnvironmentDetector::getAhEnv() ? EnvironmentDetector::getAhEnv() : 'local';
+    $app = EnvironmentDetector::getAhGroup() ?: 'local';
+    $env = EnvironmentDetector::getAhEnv() ?: 'local';
     $multisite_exception = FALSE;
 
     // Unshift uiowa.edu to the beginning so it runs first.
@@ -154,6 +154,31 @@ class ReplaceCommands extends BltTasks {
         $this->logger->notice('Review deprecation warnings and re-run.');
         throw new BltException("Drupal Check in {$path} failed.");
       }
+    }
+  }
+
+  /**
+   * Replace frontend tests command so we can do more than just a oneline exec.
+   *
+   * Note that the frontend-test command hook does not need to be in blt.yml.
+   *
+   * @hook replace-command tests:frontend:run
+   */
+  public function testsFrontend() {
+    if (EnvironmentDetector::isCiEnv()) {
+      // We don't want to snapshot develop because it could be unstable.
+      if (getenv('TRAVIS_BRANCH') != 'develop') {
+        $this->taskExecStack()
+          ->dir($this->getConfigValue('repo.root'))
+          ->exec('npx percy snapshot --base-url http://localhost:8888 snapshots.yml')
+          ->run();
+      }
+      else {
+        $this->logger->notice('Skipping percy snapshot in develop branch.');
+      }
+    }
+    else {
+      $this->logger->notice('Skipping percy snapshot in non-CI environment.');
     }
   }
 
