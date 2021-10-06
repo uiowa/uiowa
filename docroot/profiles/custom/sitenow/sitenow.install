@@ -3501,3 +3501,17 @@ function sitenow_update_9017() {
     $config_storage->write('config_split.config_split.site', $source->read('config_split.config_split.site'));
   }
 }
+
+/**
+ * Change footer content block to minimal format.
+ */
+function sitenow_update_9018() {
+  $format = 'minimal';
+  $block = \Drupal::service('entity.repository')
+    ->loadEntityByUuid('block_content', '0c0c1f36-3804-48b0-b384-6284eed8c67e');
+
+  if ($block) {
+    $block->field_uiowa_text_area->format = $format;
+    $block->save();
+  }
+}
