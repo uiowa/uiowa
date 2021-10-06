@@ -484,6 +484,27 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         }
       }
       break;
+
+    case 'block_content_uiowa_text_area_edit_form':
+      $block = $form_state->getFormObject()->getEntity();
+      $uuid = $block->uuid();
+      // For Footer Contact Information, limit non-admins to minimal.
+      if ($uuid == '0c0c1f36-3804-48b0-b384-6284eed8c67e') {
+        /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+        $check = \Drupal::service('uiowa_core.access_checker');
+
+        /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+        $access = $check->access(\Drupal::currentUser()->getAccount());
+
+        if ($access->isForbidden()) {
+          $form["field_uiowa_text_area"]["widget"][0]['#allowed_formats'] = [
+            'minimal',
+            'plain_text',
+          ];
+        }
+      }
+      break;
+
   }
 }
 
