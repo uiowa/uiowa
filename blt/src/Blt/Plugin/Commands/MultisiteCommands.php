@@ -753,14 +753,27 @@ EOD;
     $site = $this->askChoice('Select which site to transfer.', $sites);
     $id = Multisite::getIdentifier("https://$site");
 
-    // @todo: Get the $current application from the output of remote drush st.
-    $current = 'uiowa';
+    $result = $this->taskDrush()
+      ->alias("$id.prod")
+      ->drush('status')
+      ->options([
+        'field' => 'application',
+      ])
+      ->run();
+
+    if (!$result->wasSuccessful()) {
+      return new CommandError("Unable to determine current application for $site.");
+    }
+
+    $current = trim($result->getMessage());
+    $this->logger->info("$site is currently as $current.");
 
     // Get the applications and unset the current as an option.
     $applications = $this->config->get('uiowa.applications');
     unset($applications[$current]);
     $app = $this->askChoice('Which cloud application should this site be transferred to?', array_keys($applications));
 
+    // @todo: Implement remaining steps.
   }
 
   /**
