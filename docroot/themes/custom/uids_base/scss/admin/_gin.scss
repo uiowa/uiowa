@@ -74,7 +74,8 @@
 }
 
 .layout-builder-update-block,
-.layout-builder-add-block {
+.layout-builder-add-block,
+.layout-builder-configure-section {
   &::after {
     float: left;
     padding-bottom: 100px;
@@ -88,6 +89,9 @@
   }
   [class*="layout-builder-style"] {
     padding: 0 20px!important;
+  }
+  fieldset.layout-builder-lock-section-settings {
+    margin: 20px!important;
   }
   table tbody tr:not(.is-selected):nth-child(2n), table tbody tr:not(.is-selected):nth-child(2n) th {
     background-color: inherit;
