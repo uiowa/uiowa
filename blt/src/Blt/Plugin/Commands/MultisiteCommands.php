@@ -731,6 +731,39 @@ EOD;
   }
 
   /**
+   * Transfer a multisite from one application to another.
+   *
+   * @option no-commit
+   *   Do not create a git commit.
+   * @option no-db
+   *   Do not create a cloud database.
+   *
+   * @command uiowa:multisite:transfer
+   *
+   * @aliases umt
+   *
+   * @requireFeatureBranch
+   * @requireCredentials
+   *
+   * @throws \Exception
+   */
+  public function transfer() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+    $site = $this->askChoice('Select which site to transfer.', $sites);
+    $id = Multisite::getIdentifier("https://$site");
+
+    // @todo: Get the $current application from the output of remote drush st.
+    $current = 'uiowa';
+
+    // Get the applications and unset the current as an option.
+    $applications = $this->config->get('uiowa.applications');
+    unset($applications[$current]);
+    $app = $this->askChoice('Which cloud application should this site be transferred to?', array_keys($applications));
+
+  }
+
+  /**
    * Return new Client for interacting with Acquia Cloud API.
    *
    * @return \AcquiaCloudApi\Connector\Client
