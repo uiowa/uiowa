@@ -29,11 +29,48 @@
   width: 40% !important;
 }
 
-.glb-canvas-form__settings {
-  overflow: revert;
-}
-
 .toolbar .toolbar-bar #toolbar-item-administration-tray .toolbar-logo img {
   max-width: unset!important;
   max-height: unset!important;
+}
+
+
+
+.glb-form-item {
+  margin-top: .5rem !important;
+  margin-bottom: .5rem !important;
+}
+
+.glb-canvas-form__settings {
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  overflow: unset;
+}
+
+.glb-canvas-form {
+  overflow: scroll;
+}
+
+.glb-form-item[class*="glb-form-item-layout-builder-style-"],
+.glb-layout-builder-lock-section-settings {
+  padding: 0 20px!important;
+}
+
+.glb-layout-builder-style-heading {
+  padding-left: 20px;
+  font-weight: bold;
+  font-size: 1.4rem;
+  margin: 10px 0;
+}
+
+.js .layout-builder__add-block li, .js .layout-builder__add-block a {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+
+.layout-builder__add-block {
+  position: relative;
+  width: 100%;
 }
