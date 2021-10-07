@@ -3359,3 +3359,9 @@ $sites['lablimoli.local.drupal.uiowa.edu'] = 'limoli.lab.uiowa.edu';
 $sites['lablimoli.dev.drupal.uiowa.edu'] = 'limoli.lab.uiowa.edu';
 $sites['lablimoli.stage.drupal.uiowa.edu'] = 'limoli.lab.uiowa.edu';
 $sites['lablimoli.prod.drupal.uiowa.edu'] = 'limoli.lab.uiowa.edu';
+
+// Directory aliases for iisicca.uiowa.edu.
+$sites['iisicca.local.drupal.uiowa.edu'] = 'iisicca.uiowa.edu';
+$sites['iisicca.dev.drupal.uiowa.edu'] = 'iisicca.uiowa.edu';
+$sites['iisicca.stage.drupal.uiowa.edu'] = 'iisicca.uiowa.edu';
+$sites['iisicca.prod.drupal.uiowa.edu'] = 'iisicca.uiowa.edu';
