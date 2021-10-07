@@ -1,11 +1,11 @@
 // Gin
 .gin--vertical-toolbar {
   &.search-is-open {
-    .search-overlay .uids-search {
+    .iowa-bar.toggle .search-overlay .uids-search {
       width: 63%;
     }
   }
-  .search-button {
+  .iowa-bar.toggle .search-button {
     @include breakpoint(container) {
       right: 237px;
     }
@@ -13,7 +13,7 @@
 }
 
 .gin--vertical-toolbar[data-toolbar-menu="open"] {
-  .search-button {
+  .iowa-bar.toggle .search-button {
     @include breakpoint(container) {
       right: 307px;
     }
@@ -21,5 +21,19 @@
 }
 
 .toolbar .toolbar-bar #toolbar-item-administration-tray .toolbar-logo img {
-  max-width: 100%!important;
+  margin-top: 20px;
+}
+
+.gin--vertical-toolbar[data-toolbar-menu="open"] .toolbar .toolbar-bar #toolbar-item-administration-tray .toolbar-logo img {
+  max-width: auto!important;
+  width: 40% !important;
+}
+
+.glb-canvas-form__settings {
+  overflow: revert;
+}
+
+.toolbar .toolbar-bar #toolbar-item-administration-tray .toolbar-logo img {
+  max-width: unset!important;
+  max-height: unset!important;
 }
