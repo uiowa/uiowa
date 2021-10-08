@@ -10,6 +10,7 @@ use Drupal\layout_builder\Plugin\Block\InlineBlock;
 use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
 use Drupal\replicate\Events\AfterSaveEvent;
 use Drupal\views\Plugin\Block\ViewsBlock;
+use Drupal\Core\Path\CurrentPathStack;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -39,6 +40,13 @@ class ReplicateSubscriber implements EventSubscriberInterface {
   protected $uuid;
 
   /**
+   * Current path.
+   *
+   * @var \Drupal\Core\Path\CurrentPathStack
+   */
+  protected $currentPath;
+
+  /**
    * ReplicateSubscriber constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
@@ -47,11 +55,14 @@ class ReplicateSubscriber implements EventSubscriberInterface {
    *   The entity field manager.
    * @param \Drupal\Component\Uuid\UuidInterface $uuid
    *   UUID.
+   * @param \Drupal\Core\Path\CurrentPathStack $currentPath
+   *   The current path.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, EntityFieldManagerInterface $entityFieldManager, UuidInterface $uuid) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, EntityFieldManagerInterface $entityFieldManager, UuidInterface $uuid, CurrentPathStack $currentPath) {
     $this->entityTypeManager = $entityTypeManager;
     $this->entityFieldManager = $entityFieldManager;
     $this->uuid = $uuid;
+    $this->currentPath = $currentPath;
   }
 
   /**
@@ -92,7 +103,7 @@ class ReplicateSubscriber implements EventSubscriberInterface {
       $entity->setNewRevision(TRUE);
       // @todo Reference the node that was replicated. Info
       //   isn't available here...need an ALTER_ subscriber as well?
-      $entity->setRevisionLogMessage('Replicated node.');
+      $entity->setRevisionLogMessage('Replicated node ' . $this->getClonedNid());
       // @todo Grab the current userID to use here.
       $entity->setRevisionUserId(1);
       $entity->setRevisionCreationTime($_SERVER['REQUEST_TIME']);
@@ -179,6 +190,18 @@ class ReplicateSubscriber implements EventSubscriberInterface {
       }
     }
     return $fields;
+  }
+
+  /**
+   * Fetch the cloned entity's id from the route.
+   *
+   * @return string
+   *   The cloned entity's id.
+   */
+  protected function getClonedNid() {
+    $path = $this->currentPath->getPath();
+    $parts = explode('/', $path);
+    return (isset($parts[2])) ? $parts[2] : '';
   }
 
 }
