@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: fsl.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: fsl
+  human_name: fsl.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: fsl.prod
+drupal:
+  db:
+    database: fsl_uiowa_edu
+uiowa:
+  requester: dquam
