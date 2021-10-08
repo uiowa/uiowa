@@ -89,7 +89,26 @@ class ReplicateSubscriber implements EventSubscriberInterface {
     }
     else {
       $this->additionalHandling($entity);
+      $entity->setNewRevision(TRUE);
+      // @todo Reference the node that was replicated. Info
+      //   isn't available here...need an ALTER_ subscriber as well?
+      $entity->setRevisionLogMessage('Replicated node.');
+      // @todo Grab the current userID to use here.
+      $entity->setRevisionUserId(1);
+      $entity->setRevisionCreationTime($_SERVER['REQUEST_TIME']);
       $entity->save();
+      // Remove old revisions.
+      if ($entity->getEntityTypeId() == 'node') {
+        $vids = $this->entityTypeManager->getStorage('node')->revisionIds($entity);
+        $current = $entity->getRevisionId();
+        foreach ($vids as $vid) {
+          // Skip deleting if it is the current revision.
+          if ($vid == $current) {
+            continue;
+          }
+          $this->entityTypeManager->getStorage('node')->deleteRevision($vid);
+        }
+      }
     }
   }
 
