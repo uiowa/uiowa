@@ -184,7 +184,7 @@ function uiowa_core_preprocess_html(&$variables) {
 function uiowa_core_menu_local_tasks_alter(&$variables) {
   $logged_in = \Drupal::currentUser()->isAuthenticated();
   if ($logged_in) {
-    $variables['tabs'][0]['entity.node.delete_form']['#weight'] = 100;
-    $variables['tabs'][0]['entity.taxonomy_term.delete_form']['#weight'] = 100;
+    $variables['tabs'][0]['entity.node.delete_form']['#weight'] = 110;
+    $variables['tabs'][0]['entity.taxonomy_term.delete_form']['#weight'] = 110;
   }
 }
