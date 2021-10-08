@@ -9,7 +9,6 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\layout_builder\Plugin\Block\InlineBlock;
 use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
 use Drupal\replicate\Events\AfterSaveEvent;
-use Drupal\replicate\Events\ReplicatorEvents;
 use Drupal\views\Plugin\Block\ViewsBlock;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -112,10 +111,12 @@ class ReplicateSubscriber implements EventSubscriberInterface {
           // a new uuid.
           $new_component = clone $component;
           $new_component->set('uuid', $this->uuid->generate());
+          $old_uuid = $component->getUuid();
+          // Add the new component to the section, directly after
+          // the existing component so that it will be in the right order.
+          $field_item->section->insertAfterComponent($old_uuid, $new_component);
           // Remove the original component.
-          $field_item->section->removeComponent($component->getUuid());
-          // Add the new component to the section.
-          $field_item->section->appendComponent($new_component);
+          $field_item->section->removeComponent($old_uuid);
         }
         if (empty($plugin->getConfiguration()['block_revision_id'])) {
           continue;
