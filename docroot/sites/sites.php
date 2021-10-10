@@ -510,12 +510,6 @@ $sites['pinyin.dev.drupal.uiowa.edu'] = 'pinyin.uiowa.edu';
 $sites['pinyin.stage.drupal.uiowa.edu'] = 'pinyin.uiowa.edu';
 $sites['pinyin.prod.drupal.uiowa.edu'] = 'pinyin.uiowa.edu';
 
-// Directory aliases for uigearup.uiowa.edu.
-$sites['uigearup.local.drupal.uiowa.edu'] = 'uigearup.uiowa.edu';
-$sites['uigearup.dev.drupal.uiowa.edu'] = 'uigearup.uiowa.edu';
-$sites['uigearup.stage.drupal.uiowa.edu'] = 'uigearup.uiowa.edu';
-$sites['uigearup.prod.drupal.uiowa.edu'] = 'uigearup.uiowa.edu';
-
 // Directory aliases for climatecollective.uiowa.edu.
 $sites['climatecollective.local.drupal.uiowa.edu'] = 'climatecollective.uiowa.edu';
 $sites['climatecollective.dev.drupal.uiowa.edu'] = 'climatecollective.uiowa.edu';
@@ -3359,3 +3353,27 @@ $sites['basicneeds.local.drupal.uiowa.edu'] = 'basicneeds.uiowa.edu';
 $sites['basicneeds.dev.drupal.uiowa.edu'] = 'basicneeds.uiowa.edu';
 $sites['basicneeds.stage.drupal.uiowa.edu'] = 'basicneeds.uiowa.edu';
 $sites['basicneeds.prod.drupal.uiowa.edu'] = 'basicneeds.uiowa.edu';
+
+// Directory aliases for limoli.lab.uiowa.edu.
+$sites['lablimoli.local.drupal.uiowa.edu'] = 'limoli.lab.uiowa.edu';
+$sites['lablimoli.dev.drupal.uiowa.edu'] = 'limoli.lab.uiowa.edu';
+$sites['lablimoli.stage.drupal.uiowa.edu'] = 'limoli.lab.uiowa.edu';
+$sites['lablimoli.prod.drupal.uiowa.edu'] = 'limoli.lab.uiowa.edu';
+
+// Directory aliases for iisicca.uiowa.edu.
+$sites['iisicca.local.drupal.uiowa.edu'] = 'iisicca.uiowa.edu';
+$sites['iisicca.dev.drupal.uiowa.edu'] = 'iisicca.uiowa.edu';
+$sites['iisicca.stage.drupal.uiowa.edu'] = 'iisicca.uiowa.edu';
+$sites['iisicca.prod.drupal.uiowa.edu'] = 'iisicca.uiowa.edu';
+
+// Directory aliases for fsl.uiowa.edu.
+$sites['fsl.local.drupal.uiowa.edu'] = 'fsl.uiowa.edu';
+$sites['fsl.dev.drupal.uiowa.edu'] = 'fsl.uiowa.edu';
+$sites['fsl.stage.drupal.uiowa.edu'] = 'fsl.uiowa.edu';
+$sites['fsl.prod.drupal.uiowa.edu'] = 'fsl.uiowa.edu';
+
+// Directory aliases for mentor.uiowa.edu.
+$sites['mentor.local.drupal.uiowa.edu'] = 'mentor.uiowa.edu';
+$sites['mentor.dev.drupal.uiowa.edu'] = 'mentor.uiowa.edu';
+$sites['mentor.stage.drupal.uiowa.edu'] = 'mentor.uiowa.edu';
+$sites['mentor.prod.drupal.uiowa.edu'] = 'mentor.uiowa.edu';
