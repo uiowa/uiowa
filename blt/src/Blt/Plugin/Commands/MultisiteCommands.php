@@ -745,8 +745,11 @@ EOD;
         'field' => 'application',
       ])
       ->printOutput(FALSE)
-      ->stopOnFail()
       ->run();
+
+    if (!$result->wasSuccessful()) {
+      return new CommandError('Unable to get current application with Drush.');
+    }
 
     $current = trim($result->getMessage());
     $this->logger->notice("$site is currently on $current.");
