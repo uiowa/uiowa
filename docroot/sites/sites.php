@@ -3365,3 +3365,15 @@ $sites['iisicca.local.drupal.uiowa.edu'] = 'iisicca.uiowa.edu';
 $sites['iisicca.dev.drupal.uiowa.edu'] = 'iisicca.uiowa.edu';
 $sites['iisicca.stage.drupal.uiowa.edu'] = 'iisicca.uiowa.edu';
 $sites['iisicca.prod.drupal.uiowa.edu'] = 'iisicca.uiowa.edu';
+
+// Directory aliases for fsl.uiowa.edu.
+$sites['fsl.local.drupal.uiowa.edu'] = 'fsl.uiowa.edu';
+$sites['fsl.dev.drupal.uiowa.edu'] = 'fsl.uiowa.edu';
+$sites['fsl.stage.drupal.uiowa.edu'] = 'fsl.uiowa.edu';
+$sites['fsl.prod.drupal.uiowa.edu'] = 'fsl.uiowa.edu';
+
+// Directory aliases for mentor.uiowa.edu.
+$sites['mentor.local.drupal.uiowa.edu'] = 'mentor.uiowa.edu';
+$sites['mentor.dev.drupal.uiowa.edu'] = 'mentor.uiowa.edu';
+$sites['mentor.stage.drupal.uiowa.edu'] = 'mentor.uiowa.edu';
+$sites['mentor.prod.drupal.uiowa.edu'] = 'mentor.uiowa.edu';
