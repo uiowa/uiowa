@@ -797,7 +797,7 @@ EOD;
         throw new \Exception('Aborted.');
       }
       else {
-        // @todo: Wait for successful database creation status or fail on error.
+        // @todo Wait for successful database creation status or fail on error.
         if (!$options['no-db']) {
           $databases = new Databases($client);
           $db = Multisite::getDatabaseName($site);
