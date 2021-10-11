@@ -101,11 +101,9 @@ class ReplicateSubscriber implements EventSubscriberInterface {
     else {
       $this->additionalHandling($entity);
       $entity->setNewRevision(TRUE);
-      // @todo Reference the node that was replicated. Info
-      //   isn't available here...need an ALTER_ subscriber as well?
       $entity->setRevisionLogMessage('Replicated node ' . $this->getClonedNid());
-      // @todo Grab the current userID to use here.
-      $entity->setRevisionUserId(1);
+      $user = \Drupal::currentUser();
+      $entity->setRevisionUserId($user->id());
       $entity->setRevisionCreationTime($_SERVER['REQUEST_TIME']);
       $entity->save();
       // Remove old revisions.
