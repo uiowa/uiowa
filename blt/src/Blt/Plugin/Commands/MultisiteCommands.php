@@ -838,6 +838,40 @@ EOD;
           ->from($current)
           ->to($new)
           ->run();
+
+        if (!$options['no-commit']) {
+          $this->taskGit()
+            ->dir($root)
+            ->add("drush/sites/{$id}.site.yml")
+            ->commit("Update $site Drush alias to new application $new")
+            ->interactive(FALSE)
+            ->printOutput(FALSE)
+            ->printMetadata(FALSE)
+            ->run();
+        }
+
+        $this->taskDrush()
+          ->drush('sql:sync')
+          ->args([
+            "@$id.local",
+            "@$id.prod",
+          ])
+          ->stopOnFail()
+          ->run();
+
+        $this->taskDrush()
+          ->drush('rsync')
+          ->args([
+            "@$id.local:%files",
+            "@$id.prod:%files",
+          ])
+          ->stopOnFail()
+          ->run();
+
+        $this->taskDrush()
+          ->alias("$id.prod")
+          ->drush('cache:rebuild')
+          ->run();
       }
     }
   }
