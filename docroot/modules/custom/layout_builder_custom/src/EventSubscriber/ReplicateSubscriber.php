@@ -6,6 +6,7 @@ use Drupal\Component\Uuid\UuidInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\layout_builder\Plugin\Block\InlineBlock;
 use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
 use Drupal\replicate\Events\AfterSaveEvent;
@@ -47,6 +48,13 @@ class ReplicateSubscriber implements EventSubscriberInterface {
   protected $currentPath;
 
   /**
+   * The current user service.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface
+   */
+  protected $currentUser;
+
+  /**
    * ReplicateSubscriber constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
@@ -57,12 +65,15 @@ class ReplicateSubscriber implements EventSubscriberInterface {
    *   UUID.
    * @param \Drupal\Core\Path\CurrentPathStack $currentPath
    *   The current path.
+   * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
+   *   The current user.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, EntityFieldManagerInterface $entityFieldManager, UuidInterface $uuid, CurrentPathStack $currentPath) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, EntityFieldManagerInterface $entityFieldManager, UuidInterface $uuid, CurrentPathStack $currentPath, AccountProxyInterface $currentUser) {
     $this->entityTypeManager = $entityTypeManager;
     $this->entityFieldManager = $entityFieldManager;
     $this->uuid = $uuid;
     $this->currentPath = $currentPath;
+    $this->currentUser = $currentUser;
   }
 
   /**
@@ -102,8 +113,7 @@ class ReplicateSubscriber implements EventSubscriberInterface {
       $this->additionalHandling($entity);
       $entity->setNewRevision(TRUE);
       $entity->setRevisionLogMessage('Replicated node ' . $this->getClonedNid());
-      $user = \Drupal::currentUser();
-      $entity->setRevisionUserId($user->id());
+      $entity->setRevisionUserId($this->currentUser->id());
       $entity->setRevisionCreationTime($_SERVER['REQUEST_TIME']);
       $entity->save();
       // Remove old revisions.
