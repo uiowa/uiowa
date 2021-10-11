@@ -765,14 +765,15 @@ EOD;
     // Check that new application has SSL coverage.
     $client->addQuery('filter', "name=prod");
     $response = $client->request('GET', "/applications/$applications[$new]/environments");
+    $client->clearQuery();
 
+    // If for some odd reason, there is more than one env named prod, bail.
     if (!$response || count($response) > 1) {
       return new CommandError('Error getting environment information for new application prod environment.');
     }
     else {
       /** @var object $environment */
       $environment = array_shift($response);
-      $client->clearQuery();
       $has_ssl_coverage = FALSE;
       $certs = $certificates->getAll($environment->id);
       $sans_search = Multisite::getSslParts($site)['sans'];
