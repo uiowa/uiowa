@@ -3395,3 +3395,9 @@ $sites['labratner.local.drupal.uiowa.edu'] = 'ratner.lab.uiowa.edu';
 $sites['labratner.dev.drupal.uiowa.edu'] = 'ratner.lab.uiowa.edu';
 $sites['labratner.stage.drupal.uiowa.edu'] = 'ratner.lab.uiowa.edu';
 $sites['labratner.prod.drupal.uiowa.edu'] = 'ratner.lab.uiowa.edu';
+
+// Directory aliases for humanitiesiowa.org.
+$sites['org-humanitiesiowa.local.drupal.uiowa.edu'] = 'humanitiesiowa.org';
+$sites['org-humanitiesiowa.dev.drupal.uiowa.edu'] = 'humanitiesiowa.org';
+$sites['org-humanitiesiowa.stage.drupal.uiowa.edu'] = 'humanitiesiowa.org';
+$sites['org-humanitiesiowa.prod.drupal.uiowa.edu'] = 'humanitiesiowa.org';
