@@ -213,6 +213,9 @@ class ReplicateSubscriber implements EventSubscriberInterface {
     $entity->setRevisionLogMessage('Replicated node ' . $this->getClonedNid());
     $entity->setRevisionUserId($this->currentUser->id());
     $entity->setRevisionCreationTime($_SERVER['REQUEST_TIME']);
+    // @todo Possibly remove in the future?
+    // https://www.drupal.org/project/drupal/issues/2769741
+    $entity->setRevisionTranslationAffected(TRUE);
   }
 
   /**
