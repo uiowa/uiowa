@@ -3389,3 +3389,9 @@ $sites['labwitry.local.drupal.uiowa.edu'] = 'witry.lab.uiowa.edu';
 $sites['labwitry.dev.drupal.uiowa.edu'] = 'witry.lab.uiowa.edu';
 $sites['labwitry.stage.drupal.uiowa.edu'] = 'witry.lab.uiowa.edu';
 $sites['labwitry.prod.drupal.uiowa.edu'] = 'witry.lab.uiowa.edu';
+
+// Directory aliases for ratner.lab.uiowa.edu.
+$sites['labratner.local.drupal.uiowa.edu'] = 'ratner.lab.uiowa.edu';
+$sites['labratner.dev.drupal.uiowa.edu'] = 'ratner.lab.uiowa.edu';
+$sites['labratner.stage.drupal.uiowa.edu'] = 'ratner.lab.uiowa.edu';
+$sites['labratner.prod.drupal.uiowa.edu'] = 'ratner.lab.uiowa.edu';
