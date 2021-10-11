@@ -756,8 +756,9 @@ EOD;
 
     // Get the applications and unset the current as an option.
     $applications = $this->config->get('uiowa.applications');
-    unset($applications[$current]);
-    $new = $this->askChoice('Which cloud application should this site be transferred to?', array_keys($applications));
+    $choices = $applications;
+    unset($choices[$current]);
+    $new = $this->askChoice('Which cloud application should this site be transferred to?', array_keys($choices));
 
     $client = $this->getAcquiaCloudApiClient();
     $certificates = new SslCertificates($client);
@@ -872,6 +873,11 @@ EOD;
           ->alias("$id.prod")
           ->drush('cache:rebuild')
           ->run();
+
+        // Remove the domain from the old application and create on the new one.
+        $domains = new Domains($client);
+        $domains->delete($applications[$current], $site);
+        $domains->create($applications[$new], $site);
       }
     }
   }
