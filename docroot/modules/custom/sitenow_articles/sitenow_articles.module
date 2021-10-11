@@ -5,16 +5,18 @@
  * Article configuration for the University of Iowa.
  */
 
-use Drupal\Core\Cache\Cache;
-use Drupal\Core\Link;
-use Drupal\Core\Url;
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\Core\Url;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\views\Entity\View;
+use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
-use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_entity_extra_field_info().
@@ -50,6 +52,12 @@ function sitenow_articles_form_alter(&$form, FormStateInterface $form_state, $fo
       ];
       break;
   }
+}
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function sitenow_articles_form_views_ui_edit_display_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['options']['link_url']['#description'][2]['#items'][] = '{{ sitenow_articles.path }} == SiteNow Articles path setting';
 }
 
 /**
@@ -411,6 +419,14 @@ function sitenow_articles_preprocess_paragraph(&$variables) {
 }
 
 /**
+ * Implements hook_views_pre_render().
+ */
+function sitenow_articles_views_pre_render(ViewExecutable $view) {
+  // Add replacement token for people page path.
+  $view->build_info['substitutions']['{{ sitenow_articles.path }}'] = _sitenow_articles_path_token_value();
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function sitenow_articles_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
@@ -556,4 +572,48 @@ function sitenow_articles_preprocess_block(&$variables) {
       }
       break;
   }
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function sitenow_articles_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
+  $replacements = [];
+  if ($type == 'sitenow_articles') {
+
+    foreach ($tokens as $name => $original) {
+      // Find the desired token by name.
+      switch ($name) {
+        case 'sitenow_articles_path':
+          $replacements[$original] = _sitenow_articles_path_token_value();
+          break;
+      }
+    }
+  }
+  return $replacements;
+}
+
+/**
+ * Callback to get the SiteNow People view path.
+ */
+function _sitenow_articles_path_token_value() {
+
+  // Load people listing view.
+  $view = Drupal::entityTypeManager()->getStorage('view')->load('articles');
+
+  // Loop through displays except Master.
+  $displays = $view->get('display');
+  unset($displays['default']);
+  foreach ($displays as $display) {
+    // If display is not enabled, skip this display.
+    if (!$display['display_options']['enabled']) {
+      continue;
+    }
+
+    // @todo Do we need to do anything besides this?
+    return '/' . $display['display_options']['path'];
+  }
+
+  // @todo Is this appropriate when there is no value?
+  return '';
 }
