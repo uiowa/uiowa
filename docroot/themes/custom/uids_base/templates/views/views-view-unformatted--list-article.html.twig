@@ -46,7 +46,7 @@
   <div{{ row.attributes.addClass(row_classes) }}>
 
     {% if view.style_plugin.getField(key, 'field_article_source_link_direct')|render|striptags|trim == '1' %}
-      {% set node_link = view.style_plugin.getField(key, 'field_article_source_link_1') %}
+      {% set node_link = view.style_plugin.getField(key, 'field_article_source_link') %}
     {% else %}
       {% set node_link = view.style_plugin.getField(key, 'nid') %}
     {% endif %}
