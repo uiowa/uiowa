@@ -720,6 +720,8 @@ EOD;
    *   Do not create a git commit.
    * @option no-db
    *   Do not create a cloud database.
+   * @option test-mode
+   *  Test mode will actually sync a site but will use the test environment.
    *
    * @command uiowa:multisite:transfer
    *
@@ -730,14 +732,20 @@ EOD;
    *
    * @throws \Exception
    */
-  public function transfer($options = ['no-commit' => FALSE, 'no-db' => FALSE]) {
+  public function transfer($options = [
+    'no-commit' => FALSE,
+    'no-db' => FALSE,
+    'test-mode' => FALSE,
+  ]) {
     $root = $this->getConfigValue('repo.root');
     $sites = Multisite::getAllSites($root);
     $site = $this->askChoice('Select which site to transfer.', $sites);
     $id = Multisite::getIdentifier("https://$site");
 
+    $mode = $options['test-mode'] ? 'test' : 'prod';
+
     $result = $this->taskDrush()
-      ->alias("$id.prod")
+      ->alias("$id.$mode")
       ->drush('status')
       ->options([
         'field' => 'application',
@@ -762,17 +770,19 @@ EOD;
     $certificates = new SslCertificates($client);
 
     // Check that new application has SSL coverage.
-    $client->addQuery('filter', "name=prod");
+    $client->addQuery('filter', "name=$mode");
     $response = $client->request('GET', "/applications/$applications[$new]/environments");
     $client->clearQuery();
 
-    // If for some odd reason there is more than one env named prod, bail.
+    // If for some odd reason there is more than one environment, bail.
     if (!$response || count($response) > 1) {
-      return new CommandError('Error getting environment information for new application prod environment.');
+      return new CommandError("Error getting information for new application $mode environment.");
     }
-    else {
-      /** @var object $target_env */
-      $target_env = array_shift($response);
+
+    /** @var object $target_env */
+    $target_env = array_shift($response);
+
+    if ($mode == 'prod') {
       $has_ssl_coverage = FALSE;
       $certs = $certificates->getAll($target_env->id);
       $sans_search = Multisite::getSslParts($site)['sans'];
@@ -791,103 +801,108 @@ EOD;
       if (!$has_ssl_coverage) {
         return new CommandError("No SSL coverage for $site on $new.");
       }
+    }
+    else {
+      $this->logger->info('Skipping SSL check in test mode.');
+    }
 
-      if (!$this->confirm("You will transfer $site from $old -> local -> $new. Are you sure?", TRUE)) {
-        throw new \Exception('Aborted.');
+    // Make the user confirm before proceeding.
+    if (!$this->confirm("You will transfer $site from $old -> local -> $new. Are you sure?", TRUE)) {
+      throw new \Exception('Aborted.');
+    }
+
+    // @todo Wait for successful database creation status or fail on error.
+    if (!$options['no-db']) {
+      $databases = new Databases($client);
+      $db = Multisite::getDatabaseName($site);
+      $databases->create($applications[$new], $db);
+      $this->say("Created <comment>{$db}</comment> cloud database on $new.");
+    }
+    else {
+      $this->logger->warning('Skipping database creation.');
+    }
+
+    // Make sure the database exists locally by just recreating it.
+    $this->taskDrush()
+      ->alias("$id.local")
+      ->drush('sql:create')
+      ->stopOnFail()
+      ->run();
+
+    $this->taskDrush()
+      ->drush('sql:sync')
+      ->args([
+        "@$id.$mode",
+        "@$id.local",
+      ])
+      ->stopOnFail()
+      ->run();
+
+    $this->taskDrush()
+      ->drush('rsync')
+      ->args([
+        "@$id.$mode:%files",
+        "@$id.local:%files",
+      ])
+      ->stopOnFail()
+      ->run();
+
+    // Now that the site is synced locally, change the Drush alias.
+    $this->taskReplaceInFile("$root/drush/sites/$id.site.yml")
+      ->from($old)
+      ->to($new)
+      ->run();
+
+    if (!$options['no-commit']) {
+      $this->taskGit()
+        ->dir($root)
+        ->add("drush/sites/{$id}.site.yml")
+        ->commit("Update $site Drush alias to new application $new")
+        ->interactive(FALSE)
+        ->printOutput(FALSE)
+        ->printMetadata(FALSE)
+        ->run();
+    }
+
+    $this->taskDrush()
+      ->drush('sql:sync')
+      ->args([
+        "@$id.local",
+        "@$id.$mode",
+      ])
+      ->stopOnFail()
+      ->run();
+
+    $this->taskDrush()
+      ->drush('rsync')
+      ->args([
+        "@$id.local:%files",
+        "@$id.$mode:%files",
+      ])
+      ->stopOnFail()
+      ->run();
+
+    $this->taskDrush()
+      ->alias("$id.$mode")
+      ->drush('cache:rebuild')
+      ->run();
+
+    // Remove the domain from the old application and create on the new one.
+    if ($mode == 'prod') {
+      $domains = new Domains($client);
+
+      // Get the old environment UUID.
+      $client->addQuery('filter', "name=$mode");
+      $response = $client->request('GET', "/applications/$applications[$new]/environments");
+      $client->clearQuery();
+
+      if (!$response || count($response) > 1) {
+        return new CommandError('Unable to get old application environment information. Domain not transferred.');
       }
       else {
-        // @todo Wait for successful database creation status or fail on error.
-        if (!$options['no-db']) {
-          $databases = new Databases($client);
-          $db = Multisite::getDatabaseName($site);
-          $databases->create($applications[$new], $db);
-          $this->say("Created <comment>{$db}</comment> cloud database on $new.");
-        }
-        else {
-          $this->logger->warning('Skipping database creation.');
-        }
-
-        // Make sure the database exists locally by just recreating it.
-        $this->taskDrush()
-          ->alias("$id.local")
-          ->drush('sql:create')
-          ->stopOnFail()
-          ->run();
-
-        $this->taskDrush()
-          ->drush('sql:sync')
-          ->args([
-            "@$id.prod",
-            "@$id.local",
-          ])
-          ->stopOnFail()
-          ->run();
-
-        $this->taskDrush()
-          ->drush('rsync')
-          ->args([
-            "@$id.prod:%files",
-            "@$id.local:%files",
-          ])
-          ->stopOnFail()
-          ->run();
-
-        // Now that the site is synced locally, change the Drush alias.
-        $this->taskReplaceInFile("$root/drush/sites/$id.site.yml")
-          ->from($old)
-          ->to($new)
-          ->run();
-
-        if (!$options['no-commit']) {
-          $this->taskGit()
-            ->dir($root)
-            ->add("drush/sites/{$id}.site.yml")
-            ->commit("Update $site Drush alias to new application $new")
-            ->interactive(FALSE)
-            ->printOutput(FALSE)
-            ->printMetadata(FALSE)
-            ->run();
-        }
-
-        $this->taskDrush()
-          ->drush('sql:sync')
-          ->args([
-            "@$id.local",
-            "@$id.prod",
-          ])
-          ->stopOnFail()
-          ->run();
-
-        $this->taskDrush()
-          ->drush('rsync')
-          ->args([
-            "@$id.local:%files",
-            "@$id.prod:%files",
-          ])
-          ->stopOnFail()
-          ->run();
-
-        $this->taskDrush()
-          ->alias("$id.prod")
-          ->drush('cache:rebuild')
-          ->run();
-
-        // Remove the domain from the old application and create on the new one.
-        $domains = new Domains($client);
-
-        // Get the old environment UUID.
-        $client->addQuery('filter', "name=prod");
-        $response = $client->request('GET', "/applications/$applications[$new]/environments");
-        $client->clearQuery();
-
-        if (!$response || count($response) > 1) {
-          return new CommandError('Unable to get old application environment. Domain not transferred.');
-        }
-        else {
-          $source_env = array_shift($response);
-          $domains->delete($source_env->id, $site);
-          $domains->create($target_env->id, $site);
-        }
+        $source_env = array_shift($response);
+        $domains->delete($source_env->id, $site);
+        $domains->create($target_env->id, $site);
       }
     }
   }
