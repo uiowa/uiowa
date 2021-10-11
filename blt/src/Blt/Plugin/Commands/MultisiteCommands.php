@@ -848,9 +848,17 @@ EOD;
       ->run();
 
     // Now that the site is synced locally, change the Drush alias.
-    $this->taskReplaceInFile("$root/drush/sites/$id.site.yml")
-      ->from($old)
-      ->to($new)
+    $new_app_alias = YamlMunge::parseFile("{$root}/drush/sites/{$new}.site.yml");
+    $site_alias = YamlMunge::parseFile("{$root}/drush/sites/{$id}.site.yml");
+
+    foreach (['dev', 'test', 'prod'] as $env) {
+      $site_alias[$env]['host'] = $new_app_alias[$env]['host'];
+      $site_alias[$env]['user'] = $new_app_alias[$env]['user'];
+      $site_alias[$env]['root'] = $new_app_alias[$env]['root'];
+    }
+
+    $this->taskWriteToFile("{$root}/drush/sites/{$id}.site.yml")
+      ->text(Yaml::dump($site_alias, 10, 2))
       ->run();
 
     if (!$options['no-commit']) {
