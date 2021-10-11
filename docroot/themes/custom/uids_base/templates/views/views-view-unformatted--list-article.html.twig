@@ -45,7 +45,7 @@
   {% endfor %}
   <div{{ row.attributes.addClass(row_classes) }}>
 
-    {% if (view.style_plugin.getField(key, 'field_article_source_link_direct')|striptags|trim == '1') and (view.style_plugin.getField(key, 'field_article_source_link')|striptags|trim is not empty)  %}
+    {% if view.style_plugin.getField(key, 'field_article_source_link_direct')|striptags|trim == '1' and view.style_plugin.getField(key, 'field_article_source_link')|striptags|trim is not empty %}
       {% set node_link = view.style_plugin.getField(key, 'field_article_source_link') %}
     {% else %}
       {% set node_link = view.style_plugin.getField(key, 'nid') %}
