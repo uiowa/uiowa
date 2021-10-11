@@ -223,14 +223,15 @@ class ReplicateSubscriber implements EventSubscriberInterface {
    */
   protected function removeOldRevisions(FieldableEntityInterface $entity) {
     if ($entity->getEntityTypeId() == 'node') {
-      $vids = $this->entityTypeManager->getStorage('node')->revisionIds($entity);
+      $node_storage_manager = $this->entityTypeManager->getStorage('node');
+      $vids = $node_storage_manager->revisionIds($entity);
       $current = $entity->getRevisionId();
       foreach ($vids as $vid) {
         // Skip deleting if it is the current revision.
         if ($vid == $current) {
           continue;
         }
-        $this->entityTypeManager->getStorage('node')->deleteRevision($vid);
+        $node_storage_manager->deleteRevision($vid);
       }
     }
   }
