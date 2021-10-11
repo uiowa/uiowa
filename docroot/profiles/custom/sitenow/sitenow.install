@@ -3501,3 +3501,15 @@ function sitenow_update_9017() {
     $config_storage->write('config_split.config_split.site', $source->read('config_split.config_split.site'));
   }
 }
+
+/**
+ * Add allowed replicate content entities.
+ */
+function sitenow_update_9020() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_core.settings');
+  $config
+    ->set('uiowa_core.replicate_allowed', ['page', 'article'])
+    ->save();
+}
+
