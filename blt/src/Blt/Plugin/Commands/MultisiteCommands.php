@@ -751,13 +751,13 @@ EOD;
       return new CommandError('Unable to get current application with Drush.');
     }
 
-    $current = trim($result->getMessage());
-    $this->logger->notice("$site is currently on $current.");
+    $old = trim($result->getMessage());
+    $this->logger->notice("$site is currently on $old.");
 
     // Get the applications and unset the current as an option.
     $applications = $this->config->get('uiowa.applications');
     $choices = $applications;
-    unset($choices[$current]);
+    unset($choices[$old]);
     $new = $this->askChoice('Which cloud application should this site be transferred to?', array_keys($choices));
 
     $client = $this->getAcquiaCloudApiClient();
@@ -768,15 +768,15 @@ EOD;
     $response = $client->request('GET', "/applications/$applications[$new]/environments");
     $client->clearQuery();
 
-    // If for some odd reason, there is more than one env named prod, bail.
+    // If for some odd reason there is more than one env named prod, bail.
     if (!$response || count($response) > 1) {
       return new CommandError('Error getting environment information for new application prod environment.');
     }
     else {
-      /** @var object $environment */
-      $environment = array_shift($response);
+      /** @var object $target_env */
+      $target_env = array_shift($response);
       $has_ssl_coverage = FALSE;
-      $certs = $certificates->getAll($environment->id);
+      $certs = $certificates->getAll($target_env->id);
       $sans_search = Multisite::getSslParts($site)['sans'];
 
       foreach ($certs as $cert) {
@@ -794,7 +794,7 @@ EOD;
         return new CommandError("No SSL coverage for $site on $new.");
       }
 
-      if (!$this->confirm("You will transfer $site from $current -> local -> $new. Are you sure?", TRUE)) {
+      if (!$this->confirm("You will transfer $site from $old -> local -> $new. Are you sure?", TRUE)) {
         throw new \Exception('Aborted.');
       }
       else {
@@ -836,7 +836,7 @@ EOD;
 
         // Now that the site is synced locally, change the Drush alias.
         $this->taskReplaceInFile("$root/drush/sites/$id.site.yml")
-          ->from($current)
+          ->from($old)
           ->to($new)
           ->run();
 
@@ -876,8 +876,20 @@ EOD;
 
         // Remove the domain from the old application and create on the new one.
         $domains = new Domains($client);
-        $domains->delete($applications[$current], $site);
-        $domains->create($applications[$new], $site);
+
+        // Get the old environment UUID.
+        $client->addQuery('filter', "name=prod");
+        $response = $client->request('GET', "/applications/$applications[$new]/environments");
+        $client->clearQuery();
+
+        if (!$response || count($response) > 1) {
+          return new CommandError('Unable to get old application environment. Domain not transferred.');
+        }
+        else {
+          $source_env = array_shift($response);
+          $domains->delete($source_env->id, $site);
+          $domains->create($target_env->id, $site);
+        }
       }
     }
   }
