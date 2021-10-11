@@ -401,7 +401,7 @@ EOD
    *   An option that takes multiple values.
    *
    * @option simulate
-   *   Simulate database creation and filesystem operations.
+   *   Simulate BLT operations.
    * @option no-commit
    *   Do not create a git commit.
    * @option no-db
@@ -519,7 +519,7 @@ EOD
     // Get the UUID for the selected application.
     $app_id = $applications[$app];
 
-    if (!$options['simulate'] && !$options['no-db']) {
+    if (!$options['no-db']) {
       $databases->create($app_id, $db);
       $this->say("Created <comment>{$db}</comment> cloud database on {$app}.");
     }
@@ -716,6 +716,8 @@ EOD;
   /**
    * Transfer a multisite from one application to another.
    *
+   * @option simulate
+   *  Simulate BLT operations.
    * @option no-commit
    *   Do not create a git commit.
    * @option no-db
@@ -730,7 +732,7 @@ EOD;
    *
    * @throws \Exception
    */
-  public function transfer() {
+  public function transfer($options = ['simulate' => FALSE, 'no-commit' => FALSE, 'no-db' => FALSE]) {
     $root = $this->getConfigValue('repo.root');
     $sites = Multisite::getAllSites($root);
     $site = $this->askChoice('Select which site to transfer.', $sites);
@@ -742,11 +744,8 @@ EOD;
       ->options([
         'field' => 'application',
       ])
+      ->stopOnFail()
       ->run();
-
-    if (!$result->wasSuccessful()) {
-      return new CommandError("Unable to determine current application for $site.");
-    }
 
     $current = trim($result->getMessage());
     $this->logger->info("$site is currently on $current.");
@@ -789,11 +788,52 @@ EOD;
         return new CommandError("No SSL coverage for $site on $new.");
       }
 
-      if (!$this->confirm("You will transfer $site from $current to $new. Are you sure?", TRUE)) {
+      if (!$this->confirm("You will transfer $site from $current -> local -> $new. Are you sure?", TRUE)) {
         throw new \Exception('Aborted.');
       }
       else {
-        // @todo: Implement remaining steps.
+        // @todo: Wait for successful database creation status or fail on error.
+        if (!$options['no-db']) {
+          $databases = new Databases($client);
+          $db = Multisite::getDatabaseName($site);
+          $databases->create($applications[$new], $db);
+          $this->say("Created <comment>{$db}</comment> cloud database on $new.");
+        }
+        else {
+          $this->logger->warning('Skipping database creation.');
+        }
+
+        // Make sure the database exists locally by just recreating it.
+        $this->taskDrush()
+          ->alias("$id.local")
+          ->drush('sql:create')
+          ->stopOnFail()
+          ->run();
+
+        $this->taskDrush()
+          ->drush('sql:sync')
+          ->args([
+            "@$id.prod",
+            "@$id.local",
+          ])
+          ->stopOnFail()
+          ->run();
+
+        $this->taskDrush()
+          ->drush('rsync')
+          ->args([
+            "@$id.prod:%files",
+            "@$id.local:%files",
+          ])
+          ->option('verbose', TRUE)
+          ->stopOnFail()
+          ->run();
+
+        // Now that the site is synced locally, change the Drush alias.
+        $this->taskReplaceInFile("$root/drush/sites/$id.site.yml")
+          ->from($current)
+          ->to($new)
+          ->run();
       }
     }
   }
