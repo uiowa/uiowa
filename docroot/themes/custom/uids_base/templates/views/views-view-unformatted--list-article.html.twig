@@ -26,6 +26,7 @@
 {% if view %}
   {% set headline_size = view.display_handler.getOption('heading_size') %}
 {% endif %}
+
 {% for key,row in rows %}
   {% set row_classes = [
     default_row_class ? 'views-row',
@@ -33,16 +34,14 @@
   {% set style_classes = [] %}
   {% set size_classes = [] %}
   {% for style in row_item_classes %}
-
     {% if style starts with 'media--' %}
       {% set style_classes = style_classes|merge([style]) %}
     {% endif %}
-
     {% if style starts with 'card__media' %}
       {% set size_classes = size_classes|merge([style]) %}
     {% endif %}
-
   {% endfor %}
+
   <div{{ row.attributes.addClass(row_classes) }}>
 
     {% if view.style_plugin.getField(key, 'field_article_source_link_direct')|striptags|trim == '1' and view.style_plugin.getField(key, 'field_article_source_link')|striptags|trim is not empty %}
@@ -73,15 +72,9 @@
         {% endif %}
       {% endblock %}
 
-      {% block card_subtitle %}
-        {% if card_subtitle|striptags|trim is not empty %}
-          <div class="card__subtitle">{{ card_subtitle }}</div>
-        {% endif %}
-      {% endblock %}
-
       {% block card_tag %}
         {% if card_tag|striptags|trim is not empty %}
-          <div class="card__date"><span role="presentation" class="fas fa-envelope"></span> {{ card_tag }}</div>
+          {{ card_tag }}
         {% endif %}
       {% endblock %}
 
