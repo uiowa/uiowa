@@ -3377,3 +3377,9 @@ $sites['mentor.local.drupal.uiowa.edu'] = 'mentor.uiowa.edu';
 $sites['mentor.dev.drupal.uiowa.edu'] = 'mentor.uiowa.edu';
 $sites['mentor.stage.drupal.uiowa.edu'] = 'mentor.uiowa.edu';
 $sites['mentor.prod.drupal.uiowa.edu'] = 'mentor.uiowa.edu';
+
+// Directory aliases for sdg.grad.uiowa.edu.
+$sites['gradsdg.local.drupal.uiowa.edu'] = 'sdg.grad.uiowa.edu';
+$sites['gradsdg.dev.drupal.uiowa.edu'] = 'sdg.grad.uiowa.edu';
+$sites['gradsdg.stage.drupal.uiowa.edu'] = 'sdg.grad.uiowa.edu';
+$sites['gradsdg.prod.drupal.uiowa.edu'] = 'sdg.grad.uiowa.edu';
