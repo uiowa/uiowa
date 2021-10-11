@@ -829,7 +829,7 @@ EOD;
             "@$id.prod:%files",
             "@$id.local:%files",
           ])
-          ->option('verbose', TRUE)
+          ->option('verbose')
           ->stopOnFail()
           ->run();
 
