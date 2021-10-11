@@ -744,11 +744,12 @@ EOD;
       ->options([
         'field' => 'application',
       ])
+      ->printOutput(FALSE)
       ->stopOnFail()
       ->run();
 
     $current = trim($result->getMessage());
-    $this->logger->info("$site is currently on $current.");
+    $this->logger->notice("$site is currently on $current.");
 
     // Get the applications and unset the current as an option.
     $applications = $this->config->get('uiowa.applications');
