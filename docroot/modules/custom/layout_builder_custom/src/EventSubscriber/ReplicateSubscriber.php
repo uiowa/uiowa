@@ -106,28 +106,19 @@ class ReplicateSubscriber implements EventSubscriberInterface {
         /** @var \Drupal\Core\Entity\FieldableEntityInterface $translation */
         $translation = $entity->getTranslation($translation_language->getId());
         $this->additionalHandling($translation);
+        $this->setRevisionInformation($translation);
         $translation->save();
+        // Remove old revisions.
+        $this->removeOldRevisions($translation);
       }
     }
     else {
       $this->additionalHandling($entity);
       $entity->setNewRevision(TRUE);
-      $entity->setRevisionLogMessage('Replicated node ' . $this->getClonedNid());
-      $entity->setRevisionUserId($this->currentUser->id());
-      $entity->setRevisionCreationTime($_SERVER['REQUEST_TIME']);
+      $this->setRevisionInformation($entity);
       $entity->save();
       // Remove old revisions.
-      if ($entity->getEntityTypeId() == 'node') {
-        $vids = $this->entityTypeManager->getStorage('node')->revisionIds($entity);
-        $current = $entity->getRevisionId();
-        foreach ($vids as $vid) {
-          // Skip deleting if it is the current revision.
-          if ($vid == $current) {
-            continue;
-          }
-          $this->entityTypeManager->getStorage('node')->deleteRevision($vid);
-        }
-      }
+      $this->removeOldRevisions($entity);
     }
   }
 
@@ -210,6 +201,38 @@ class ReplicateSubscriber implements EventSubscriberInterface {
     $path = $this->currentPath->getPath();
     $parts = explode('/', $path);
     return (isset($parts[2])) ? $parts[2] : '';
+  }
+
+  /**
+   * Set the revisioning information.
+   *
+   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+   *   The entity for which to set revision information.
+   */
+  protected function setRevisionInformation(FieldableEntityInterface $entity) {
+    $entity->setRevisionLogMessage('Replicated node ' . $this->getClonedNid());
+    $entity->setRevisionUserId($this->currentUser->id());
+    $entity->setRevisionCreationTime($_SERVER['REQUEST_TIME']);
+  }
+
+  /**
+   * Remove old revisions.
+   *
+   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+   *   The entity with revisions to remove.
+   */
+  protected function removeOldRevisions(FieldableEntityInterface $entity) {
+    if ($entity->getEntityTypeId() == 'node') {
+      $vids = $this->entityTypeManager->getStorage('node')->revisionIds($entity);
+      $current = $entity->getRevisionId();
+      foreach ($vids as $vid) {
+        // Skip deleting if it is the current revision.
+        if ($vid == $current) {
+          continue;
+        }
+        $this->entityTypeManager->getStorage('node')->deleteRevision($vid);
+      }
+    }
   }
 
 }
