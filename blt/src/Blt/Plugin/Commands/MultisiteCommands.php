@@ -457,25 +457,8 @@ EOD
 
     // A boolean to track whether any application covers this domain.
     $has_ssl_coverage = FALSE;
-
-    // Explode by domain and limit to two parts. Search for wildcard coverage.
-    // Ex. foo.bar.uiowa.edu -> search for *.bar.uiowa.edu.
-    // Ex. foo.bar.baz.uiowa.edu -> search for *.bar.baz.uiowa.edu.
-    $host_parts = explode('.', $host, 2);
-    $sans_search = '*.' . $host_parts[1];
-
-    // Consider the parent domain related and search for it since it could
-    // be covered with one SSL SAN while double subdomains cannot. However,
-    // uiowa.edu is the exception because we cannot cover *.uiowa.edu.
-    $related_search = ($host_parts[1] == 'uiowa.edu') ? NULL : $host_parts[1];
-
-    // If the host is one subdomain off uiowa.edu or a vanity domain,
-    // search for the host instead.
-    // Ex. foo.uiowa.edu -> search for foo.uiowa.edu.
-    // Ex. foo.com -> search for foo.com.
-    if ($host_parts[1] == 'uiowa.edu' || !stristr($host_parts[1], '.')) {
-      $sans_search = $host;
-    }
+    $sans_search = Multisite::getSslParts($host)['sans'];
+    $related_search = Multisite::getSslParts($host)['related'];
 
     foreach ($applications as $name => $uuid) {
       $row = [
@@ -771,9 +754,48 @@ EOD;
     // Get the applications and unset the current as an option.
     $applications = $this->config->get('uiowa.applications');
     unset($applications[$current]);
-    $app = $this->askChoice('Which cloud application should this site be transferred to?', array_keys($applications));
+    $new = $this->askChoice('Which cloud application should this site be transferred to?', array_keys($applications));
 
-    // @todo: Implement remaining steps.
+    $client = $this->getAcquiaCloudApiClient();
+    $certificates = new SslCertificates($client);
+
+    // Check that new application has SSL coverage.
+    $client->addQuery('filter', "name=prod");
+    $response = $client->request('GET', "/applications/$applications[$new]/environments");
+
+    if (!$response || count($response) > 1) {
+      return new CommandError('Error getting environment information for new application prod environment.');
+    }
+    else {
+      /** @var object $environment */
+      $environment = array_shift($response);
+      $client->clearQuery();
+      $has_ssl_coverage = FALSE;
+      $certs = $certificates->getAll($environment->id);
+      $sans_search = Multisite::getSslParts($site)['sans'];
+
+      foreach ($certs as $cert) {
+        if ($cert->flags->active == TRUE) {
+          foreach ($cert->domains as $domain) {
+            if ($domain == $site || $domain == $sans_search) {
+              $has_ssl_coverage = TRUE;
+              break 2;
+            }
+          }
+        }
+      }
+
+      if (!$has_ssl_coverage) {
+        return new CommandError("No SSL coverage for $site on $new.");
+      }
+
+      if (!$this->confirm("You will transfer $site from $current to $new. Are you sure?", TRUE)) {
+        throw new \Exception('Aborted.');
+      }
+      else {
+        // @todo: Implement remaining steps.
+      }
+    }
   }
 
   /**
@@ -801,7 +823,7 @@ EOD;
    *   The message to send.
    */
   protected function sendNotification($message) {
-    $env = EnvironmentDetector::getAhEnv() ? EnvironmentDetector::getAhEnv() : 'local';
+    $env = EnvironmentDetector::getAhEnv() ?: 'local';
     $webhook_url = getenv('SLACK_WEBHOOK_URL');
 
     if ($webhook_url && $env == 'prod' || $env == 'local') {
