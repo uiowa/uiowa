@@ -271,6 +271,52 @@ function sitenow_articles_preprocess_views_view_summary(&$variables) {
   }
 }
 
+function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
+  /** @var ViewExecutable $view */
+  $view = $variables['view'];
+  if ($view->id() === 'article_list_block') {
+    $rows = $variables['rows'];
+    $style = $view->style_plugin;
+    $options = $style->options;
+    $style_classes = [];
+    $size_classes = [];
+
+    if (isset($variables['row_item_classes'])) {
+      foreach ($variables['row_item_classes'] as &$class) {
+        if (str_starts_with($class, 'media--')) {
+          $style_classes[] = $class;
+          unset($class);
+        }
+        elseif (str_starts_with($class, 'card__media')) {
+          $size_classes[] = $class;
+          unset($class);
+        }
+      }
+    }
+
+    foreach ($rows as $id => $row) {
+      if ($style->getFieldValue($id, 'field_article_source_link_direct') == 1
+        && $style->getFieldValue($id, 'field_article_source_link') !== '') {
+        $card_link_url = $style->getFieldValue($id, 'field_article_source_link');
+      }
+      else {
+        $card_link_url = $style->getFieldValue($id, 'nid');
+      }
+      $variables['rows'][$id]['card_options'] = [
+        'attributes' => $rows[$id]['attributes'],
+        'media_styles' => $style_classes,
+        'media_sizes' => $size_classes,
+        'card_title' => $style->getField($id, 'title'),
+        'card_link_url' => $card_link_url,
+        'card_image' => $style->getField($id, 'field_image'),
+        'card_text' => $style->getField($id, 'field_teaser'),
+        'card_subtitle' => $style->getField($id, 'created'),
+        'headline_size' => ($view) ? $view->display_handler->getOption('heading_size') : 'h2',
+      ];
+    }
+  }
+}
+
 /**
  * Implements hook_uip_classes_alter().
  */
@@ -605,9 +651,9 @@ function _sitenow_articles_path_token_value() {
   // Loop through displays except Master.
   $displays = $view->get('display');
   unset($displays['default']);
-  foreach ($displays as $display) {
+  foreach ($displays as $display_id => $display) {
     // If display is not enabled, skip this display.
-    if (!$display['display_options']['enabled']) {
+    if (!$display_id !== 'page_articles') {
       continue;
     }
 
