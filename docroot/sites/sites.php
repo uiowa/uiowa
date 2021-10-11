@@ -3383,3 +3383,9 @@ $sites['gradsdg.local.drupal.uiowa.edu'] = 'sdg.grad.uiowa.edu';
 $sites['gradsdg.dev.drupal.uiowa.edu'] = 'sdg.grad.uiowa.edu';
 $sites['gradsdg.stage.drupal.uiowa.edu'] = 'sdg.grad.uiowa.edu';
 $sites['gradsdg.prod.drupal.uiowa.edu'] = 'sdg.grad.uiowa.edu';
+
+// Directory aliases for witry.lab.uiowa.edu.
+$sites['labwitry.local.drupal.uiowa.edu'] = 'witry.lab.uiowa.edu';
+$sites['labwitry.dev.drupal.uiowa.edu'] = 'witry.lab.uiowa.edu';
+$sites['labwitry.stage.drupal.uiowa.edu'] = 'witry.lab.uiowa.edu';
+$sites['labwitry.prod.drupal.uiowa.edu'] = 'witry.lab.uiowa.edu';
