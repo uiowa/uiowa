@@ -716,8 +716,6 @@ EOD;
   /**
    * Transfer a multisite from one application to another.
    *
-   * @option simulate
-   *  Simulate BLT operations.
    * @option no-commit
    *   Do not create a git commit.
    * @option no-db
@@ -732,7 +730,7 @@ EOD;
    *
    * @throws \Exception
    */
-  public function transfer($options = ['simulate' => FALSE, 'no-commit' => FALSE, 'no-db' => FALSE]) {
+  public function transfer($options = ['no-commit' => FALSE, 'no-db' => FALSE]) {
     $root = $this->getConfigValue('repo.root');
     $sites = Multisite::getAllSites($root);
     $site = $this->askChoice('Select which site to transfer.', $sites);
