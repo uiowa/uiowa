@@ -146,7 +146,7 @@ class Multisite {
   /**
    * Get SSL search strings based on a URI host.
    *
-   * @param $host
+   * @param string $host
    *   The host, i.e. the multisite directory.
    */
   public static function getSslParts($host) {
