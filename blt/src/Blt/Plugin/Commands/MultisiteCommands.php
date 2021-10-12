@@ -1057,7 +1057,7 @@ EOD;
     do {
       /** @var \AcquiaCloudApi\Response\NotificationResponse $notification */
       $notification = $client->request('GET', $path);
-      sleep(2);
+      sleep(1);
     } while ($notification->status == 'in-progress');
 
     return $notification;
