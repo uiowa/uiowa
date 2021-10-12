@@ -813,8 +813,8 @@ EOD;
 
     $databases = new Databases($client);
     $db = Multisite::getDatabaseName($site);
+    $this->logger->notice("Starting cloud database creation for <comment>{$db}</comment> database on $new...");
     $database_op = $databases->create($applications[$new], $db);
-    $this->logger->notice("Creating <comment>{$db}</comment> cloud database on $new.");
 
     // Make sure the database exists locally by just recreating it.
     $this->taskDrush()
