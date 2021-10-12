@@ -907,11 +907,6 @@ EOD;
       ->stopOnFail()
       ->run();
 
-    $this->taskDrush()
-      ->alias("$id.$mode")
-      ->drush('cache:rebuild')
-      ->run();
-
     // Remove the domain from the old application and create on the new one.
     if ($mode == 'prod') {
       $domains = new Domains($client);
