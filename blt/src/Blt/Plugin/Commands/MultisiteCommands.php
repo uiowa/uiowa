@@ -869,16 +869,7 @@ EOD;
 
     // Get the database op notification URL path and strip the leading 'api/'
     // from it because that is added below when making the request.
-    $path = substr(parse_url($database_op->links->notification->href, PHP_URL_PATH), 4);
-
-    // The next steps require that the database create operation is complete so
-    // check the status every 3 seconds and bail on failure.
-    $this->logger->notice('Waiting for cloud database create operation to complete...');
-    do {
-      /** @var NotificationResponse $notification */
-      $notification = $client->request('GET', $path);
-      sleep(3);
-    } while ($notification->status == 'in-progress');
+    $notification = $this->waitForOperation($database_op, $client);
 
     if ($notification->status != 'completed') {
       return new CommandError('Database create operation did not complete.');
@@ -919,19 +910,26 @@ EOD;
       // Try to delete the prod domain first, then the internal domain. If
       // neither is found, log a warning to indicate something is off here.
       try {
-        $domains->delete($source_env->id, $site);
+        $domain_op = $domains->delete($source_env->id, $site);
+        $this->logger->notice("Removed $site domain from $old $mode.");
       } catch (ApiErrorException $e) {
         $internal = Multisite::getInternalDomains($id)[$mode];
 
         try {
-          $domains->delete($source_env->id, $internal);
+          $domain_op = $domains->delete($source_env->id, $internal);
+          $this->logger->notice("Removed $internal domain from $old $mode.");
         } catch (ApiErrorException $e) {
           $this->logger->warning("Could not delete $site or $internal domain from $old $mode.");
         }
       }
 
+      if (isset($domain_op)) {
+        $this->waitForOperation($domain_op, $client);
+      }
+
       try {
         $domains->create($target_env->id, $site);
+        $this->logger->notice("Created $site domain on $new $mode.");;
       } catch (ApiErrorException $e) {
         $this->logger->warning("Count not create $site domain on $new $mode.");
       }
@@ -1036,6 +1034,24 @@ EOD;
           ->run();
       }
     }
+  }
+
+  /**
+   * Wait for a Cloud API operation to complete.
+   *
+   * @param \AcquiaCloudApi\Response\OperationResponse $operation
+   * @param Client $client
+   */
+  protected function waitForOperation(\AcquiaCloudApi\Response\OperationResponse $operation, Client $client) {
+    $path = substr(parse_url($operation->links->notification->href, PHP_URL_PATH), 4);
+    $this->logger->notice('Waiting for $operation->message...');
+    do {
+      /** @var NotificationResponse $notification */
+      $notification = $client->request('GET', $path);
+      sleep(2);
+    } while ($notification->status == 'in-progress');
+
+    return $notification;
   }
 
 }
