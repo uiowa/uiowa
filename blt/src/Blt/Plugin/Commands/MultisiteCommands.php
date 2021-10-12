@@ -867,13 +867,22 @@ EOD;
         ->run();
     }
 
-    // The next steps require that the database create operation is complete.
+    // Get the database op notification URL path and strip the leading 'api/'
+    // from it because that is added below when making the request.
+    $path = substr(parse_url($database_op->links->notification->href, PHP_URL_PATH), 4);
+
+    // The next steps require that the database create operation is complete so
+    // check the status every 3 seconds and bail on failure.
+    $this->logger->notice('Waiting for database create operation to complete...');
     do {
-      $path = parse_url($database_op->links->notification->href, PHP_URL_PATH);
       /** @var NotificationResponse $notification */
       $notification = $client->request('GET', $path);
-      sleep(2);
-    } while ($notification->status != 'completed');
+      sleep(3);
+    } while ($notification->status == 'in-progress');
+
+    if ($notification->status != 'completed') {
+      return new CommandError('Database create operation did not complete.');
+    }
 
     $this->taskDrush()
       ->drush('sql:sync')
