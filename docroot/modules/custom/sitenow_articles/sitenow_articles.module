@@ -625,6 +625,22 @@ function sitenow_articles_preprocess_block(&$variables) {
 }
 
 /**
+ * Implements hook_token_info().
+ */
+function sitenow_articles_token_info(): array {
+  $info = [];
+  $info['types']['sitenow_articles'] = [
+    'name' => t('SiteNow Articles'),
+    'description' => t('Tokens for SiteNow Articles.'),
+  ];
+  $info['tokens']['sitenow_articles']['path'] = [
+    'name' => 'SiteNow Articles path',
+    'description' => 'A token to display the SiteNow Articles page path.',
+  ];
+  return $info;
+}
+
+/**
  * Implements hook_tokens().
  */
 function sitenow_articles_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
@@ -655,8 +671,8 @@ function _sitenow_articles_path_token_value() {
   $displays = $view->get('display');
   unset($displays['default']);
   foreach ($displays as $display_id => $display) {
-    // If display is not enabled, skip this display.
-    if (!$display_id !== 'page_articles') {
+    // If page display is not enabled, skip.
+    if ($display_id !== 'page_articles') {
       continue;
     }
 
