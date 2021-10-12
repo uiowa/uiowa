@@ -867,8 +867,6 @@ EOD;
         ->run();
     }
 
-    // Get the database op notification URL path and strip the leading 'api/'
-    // from it because that is added below when making the request.
     $notification = $this->waitForOperation($database_op, $client);
 
     if ($notification->status != 'completed') {
@@ -1043,8 +1041,10 @@ EOD;
    * @param Client $client
    */
   protected function waitForOperation(\AcquiaCloudApi\Response\OperationResponse $operation, Client $client) {
+    // Get the operation notification URL path and strip the leading 'api/'
+    // from it because that is added below when making the request.
     $path = substr(parse_url($operation->links->notification->href, PHP_URL_PATH), 4);
-    $this->logger->notice('Waiting for $operation->message...');
+    $this->logger->notice("Waiting for $operation->message to complete...");
     do {
       /** @var NotificationResponse $notification */
       $notification = $client->request('GET', $path);
