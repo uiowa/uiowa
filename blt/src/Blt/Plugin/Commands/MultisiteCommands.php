@@ -873,7 +873,7 @@ EOD;
 
     // The next steps require that the database create operation is complete so
     // check the status every 3 seconds and bail on failure.
-    $this->logger->notice('Waiting for database create operation to complete...');
+    $this->logger->notice('Waiting for cloud database create operation to complete...');
     do {
       /** @var NotificationResponse $notification */
       $notification = $client->request('GET', $path);
