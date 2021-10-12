@@ -1053,7 +1053,7 @@ EOD;
     // Get the operation notification URL path and strip the leading 'api/'
     // from it because that is added below when making the request.
     $path = substr(parse_url($operation->links->notification->href, PHP_URL_PATH), 4);
-    $this->logger->notice("Waiting for $operation->message to complete...");
+    $this->logger->notice("Waiting for cloud API operation ($operation->message) to complete...");
     do {
       /** @var \AcquiaCloudApi\Response\NotificationResponse $notification */
       $notification = $client->request('GET', $path);
