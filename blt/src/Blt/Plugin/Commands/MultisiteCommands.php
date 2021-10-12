@@ -781,6 +781,7 @@ EOD;
     $target_env = array_shift($response);
 
     if ($mode == 'prod') {
+      $this->logger->notice('Checking SSL coverage...');
       $has_ssl_coverage = FALSE;
       $certs = $certificates->getAll($target_env->id);
       $sans_search = Multisite::getSslParts($site)['sans'];
