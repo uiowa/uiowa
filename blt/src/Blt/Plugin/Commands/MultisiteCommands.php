@@ -926,14 +926,14 @@ EOD;
         try {
           $domains->delete($source_env->id, $internal);
         } catch (ApiErrorException $e) {
-          $this->logger->warning("Could not delete $site or $internal domain from $source_env->name.");
+          $this->logger->warning("Could not delete $site or $internal domain from $old $mode.");
         }
       }
 
       try {
         $domains->create($target_env->id, $site);
       } catch (ApiErrorException $e) {
-        $this->logger->warning("Count not create $site domain on $target_env->name.");
+        $this->logger->warning("Count not create $site domain on $new $mode.");
       }
     }
 
