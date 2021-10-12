@@ -845,6 +845,7 @@ EOD;
     $new_app_alias = YamlMunge::parseFile("{$root}/drush/sites/{$new}.site.yml");
     $site_alias = YamlMunge::parseFile("{$root}/drush/sites/{$id}.site.yml");
 
+    // The local alias does not need any changes.
     foreach (['dev', 'test', 'prod'] as $env) {
       $site_alias[$env]['host'] = $new_app_alias[$env]['host'];
       $site_alias[$env]['user'] = $new_app_alias[$env]['user'];
@@ -858,7 +859,7 @@ EOD;
     if (!$options['no-commit']) {
       $this->taskGit()
         ->dir($root)
-        ->add("drush/sites/{$id}.site.yml")
+        ->add("drush/sites/$id.site.yml")
         ->commit("Update $site Drush alias to new application $new")
         ->interactive(FALSE)
         ->printOutput(FALSE)
