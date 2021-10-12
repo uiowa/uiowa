@@ -925,15 +925,19 @@ EOD;
         $this->waitForOperation($domain_op, $client);
       }
 
+      // Add the prod domain for prod mode, internal test for test mode.
       try {
-        $domains->create($target_env->id, $site);
-        $this->logger->notice("Created $site domain on $new $mode.");;
+        $domain = ($mode == 'prod') ? $site : Multisite::getInternalDomains($id)['test'];
+        $domains->create($target_env->id, $domain);
+        $this->logger->notice("Created $domain domain on $new $mode.");
       } catch (ApiErrorException $e) {
-        $this->logger->warning("Count not create $site domain on $new $mode.");
+        $this->logger->warning("Count not create $domain domain on $new $mode.");
       }
     }
 
-    // @todo Remove files and database.
+    if ($this->confirm("Remove database and files from $old $mode?", FALSE)) {
+      $databases->delete($applications[$old], $db);
+    }
   }
 
   /**
