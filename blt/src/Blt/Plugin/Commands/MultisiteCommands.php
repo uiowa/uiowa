@@ -2,6 +2,7 @@
 
 namespace Uiowa\Blt\Plugin\Commands;
 
+use AcquiaCloudApi\Response\OperationResponse;
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\EnvironmentDetector;
 use Acquia\Blt\Robo\Common\YamlMunge;
@@ -13,7 +14,6 @@ use AcquiaCloudApi\Endpoints\Domains;
 use AcquiaCloudApi\Endpoints\Environments;
 use AcquiaCloudApi\Endpoints\SslCertificates;
 use AcquiaCloudApi\Exception\ApiErrorException;
-use AcquiaCloudApi\Response\NotificationResponse;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
 use Symfony\Component\Console\Helper\Table;
@@ -910,13 +910,15 @@ EOD;
       try {
         $domain_op = $domains->delete($source_env->id, $site);
         $this->logger->notice("Removed $site domain from $old $mode.");
-      } catch (ApiErrorException $e) {
+      }
+      catch (ApiErrorException $e) {
         $internal = Multisite::getInternalDomains($id)[$mode];
 
         try {
           $domain_op = $domains->delete($source_env->id, $internal);
           $this->logger->notice("Removed $internal domain from $old $mode.");
-        } catch (ApiErrorException $e) {
+        }
+        catch (ApiErrorException $e) {
           $this->logger->warning("Could not delete $site or $internal domain from $old $mode.");
         }
       }
@@ -930,7 +932,8 @@ EOD;
         $domain = ($mode == 'prod') ? $site : Multisite::getInternalDomains($id)['test'];
         $domains->create($target_env->id, $domain);
         $this->logger->notice("Created $domain domain on $new $mode.");
-      } catch (ApiErrorException $e) {
+      }
+      catch (ApiErrorException $e) {
         $this->logger->warning("Count not create $domain domain on $new $mode.");
       }
     }
@@ -1042,15 +1045,17 @@ EOD;
    * Wait for a Cloud API operation to complete.
    *
    * @param \AcquiaCloudApi\Response\OperationResponse $operation
-   * @param Client $client
+   *   The operation to check.
+   * @param \AcquiaCloudApi\Connector\Client $client
+   *   The API client.
    */
-  protected function waitForOperation(\AcquiaCloudApi\Response\OperationResponse $operation, Client $client) {
+  protected function waitForOperation(OperationResponse $operation, Client $client) {
     // Get the operation notification URL path and strip the leading 'api/'
     // from it because that is added below when making the request.
     $path = substr(parse_url($operation->links->notification->href, PHP_URL_PATH), 4);
     $this->logger->notice("Waiting for $operation->message to complete...");
     do {
-      /** @var NotificationResponse $notification */
+      /** @var \AcquiaCloudApi\Response\NotificationResponse $notification */
       $notification = $client->request('GET', $path);
       sleep(2);
     } while ($notification->status == 'in-progress');
