@@ -909,14 +909,14 @@ EOD;
       // neither is found, log a warning to indicate something is off here.
       try {
         $domain_op = $domains->delete($source_env->id, $site);
-        $this->logger->notice("Removed $site domain from $old $mode.");
+        $this->logger->info("Started removal of domain $site from $old $mode.");
       }
       catch (ApiErrorException $e) {
         $internal = Multisite::getInternalDomains($id)[$mode];
 
         try {
           $domain_op = $domains->delete($source_env->id, $internal);
-          $this->logger->notice("Removed $internal domain from $old $mode.");
+          $this->logger->info("Started removal of domain $internal from $old $mode.");
         }
         catch (ApiErrorException $e) {
           $this->logger->warning("Could not delete $site or $internal domain from $old $mode.");
@@ -931,10 +931,10 @@ EOD;
       try {
         $domain = ($mode == 'prod') ? $site : Multisite::getInternalDomains($id)['test'];
         $domains->create($target_env->id, $domain);
-        $this->logger->notice("Created $domain domain on $new $mode.");
+        $this->logger->notice("Started creating domain $domain on $new $mode.");
       }
       catch (ApiErrorException $e) {
-        $this->logger->warning("Count not create $domain domain on $new $mode.");
+        $this->logger->warning("Could not create domain $domain on $new $mode.");
       }
     }
 
