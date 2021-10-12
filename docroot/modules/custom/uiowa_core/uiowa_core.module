@@ -5,6 +5,7 @@
  * Primary module hooks for Uiowa Core module.
  */
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\google_tag\Entity\Container;
 use Drupal\uiowa_core\HeadlineHelper;
@@ -213,6 +214,23 @@ function uiowa_core_menu_local_tasks_alter(&$data, $route_name) {
       if (!in_array($node_type, $allowed_types)) {
         $data['tabs'][0]['replicate_ui.local_tasks:entity.node.replicate']['#access'] = FALSE;
       }
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_operation_alter().
+ */
+function uiowa_core_entity_operation_alter(array &$operations, EntityInterface $entity) {
+  // If we're using the replicate module, check if it's available.
+  if (isset($operations['replicate'])) {
+    // Pull our allowed types, and check against the given entity.
+    $allowed_types = \Drupal::config('uiowa_core.settings')->get('uiowa_core.replicate_allowed');
+    $type = $entity->getType();
+    // If it's not an allowed type, then remove
+    // the replicate operation.
+    if (!in_array($type, $allowed_types)) {
+      unset($operations['replicate']);
     }
   }
 }
