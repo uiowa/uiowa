@@ -210,7 +210,14 @@ class ReplicateSubscriber implements EventSubscriberInterface {
    *   The entity for which to set revision information.
    */
   protected function setRevisionInformation(FieldableEntityInterface $entity) {
-    $entity->setRevisionLogMessage('Replicated node ' . $this->getClonedNid());
+    $replicant = $this->getClonedNid();
+    if (!empty($replicant)) {
+      $message = 'Replicated <a href="/node/' . $replicant . '">node ' . $replicant . '</a>.';
+    }
+    else {
+      $message = 'Replicated a node.';
+    }
+    $entity->setRevisionLogMessage($message);
     $entity->setRevisionUserId($this->currentUser->id());
     $entity->setRevisionCreationTime($_SERVER['REQUEST_TIME']);
     // @todo Possibly remove in the future?
