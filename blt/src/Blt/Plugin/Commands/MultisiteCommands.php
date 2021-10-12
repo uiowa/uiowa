@@ -12,6 +12,7 @@ use AcquiaCloudApi\Endpoints\Databases;
 use AcquiaCloudApi\Endpoints\Domains;
 use AcquiaCloudApi\Endpoints\Environments;
 use AcquiaCloudApi\Endpoints\SslCertificates;
+use AcquiaCloudApi\Exception\ApiErrorException;
 use AcquiaCloudApi\Response\NotificationResponse;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
@@ -805,12 +806,13 @@ EOD;
       $this->logger->info('Skipping SSL check in test mode.');
     }
 
+    $this->yell("MODE: $mode");
+
     // Make the user confirm before proceeding.
     if (!$this->confirm("You will transfer $site from $old -> local -> $new. Are you sure?", TRUE)) {
       throw new \Exception('Aborted.');
     }
 
-    // @todo Wait for successful database creation status or fail on error.
     $databases = new Databases($client);
     $db = Multisite::getDatabaseName($site);
     $database_op = $databases->create($applications[$new], $db);
@@ -884,10 +886,6 @@ EOD;
       return new CommandError('Database create operation did not complete.');
     }
 
-    // Hide the output of sql:sync because it will print an error. This is
-    // because of the postSqlSync in drush/Commands/UiowaCommands that invokes
-    // blt drupal:update. BLT will use the Drush alias on the server which
-    // does not match what it has been changed to locally.
     $this->taskDrush()
       ->drush('sql:sync')
       ->args([
@@ -895,7 +893,6 @@ EOD;
         "@$id.$mode",
       ])
       ->stopOnFail()
-      ->printOutput(FALSE)
       ->run();
 
     $this->taskDrush()
@@ -908,23 +905,41 @@ EOD;
       ->run();
 
     // Remove the domain from the old application and create on the new one.
-    if ($mode == 'prod') {
-      $domains = new Domains($client);
+    $domains = new Domains($client);
 
-      // Get the old environment UUID.
-      $client->addQuery('filter', "name=$mode");
-      $response = $client->request('GET', "/applications/$applications[$new]/environments");
-      $client->clearQuery();
+    // Get the old environment UUID.
+    $client->addQuery('filter', "name=$mode");
+    $response = $client->request('GET', "/applications/$applications[$new]/environments");
+    $client->clearQuery();
 
-      if (!$response || count($response) > 1) {
-        return new CommandError('Unable to get old application environment information. Domain not transferred.');
-      }
-      else {
-        $source_env = array_shift($response);
+    if (!$response || count($response) > 1) {
+      return new CommandError('Unable to get old application environment information. Domain not transferred.');
+    }
+    else {
+      $source_env = array_shift($response);
+
+      // Try to delete the prod domain first, then the internal domain. If
+      // neither is found, log a warning to indicate something is off here.
+      try {
         $domains->delete($source_env->id, $site);
+      } catch (ApiErrorException $e) {
+        $internal = Multisite::getInternalDomains($id)[$mode];
+
+        try {
+          $domains->delete($source_env->id, $internal);
+        } catch (ApiErrorException $e) {
+          $this->logger->warning("Could not delete $site or $internal domain from $source_env->name.");
+        }
+      }
+
+      try {
         $domains->create($target_env->id, $site);
+      } catch (ApiErrorException $e) {
+        $this->logger->warning("Count not create $site domain on $target_env->name.");
       }
     }
+
+    // @todo Remove files and database.
   }
 
   /**
