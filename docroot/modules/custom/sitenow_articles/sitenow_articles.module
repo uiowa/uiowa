@@ -314,7 +314,7 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
         'card_image' => $style->getField($id, 'field_image'),
         'card_text' => $style->getField($id, 'field_teaser'),
         'card_subtitle' => $style->getField($id, 'created'),
-        'headline_size' => ($view) ? $view->display_handler->getOption('heading_size') : 'h2',
+        'headline_level' => $view->display_handler->getOption('heading_size'),
       ];
     }
   }
