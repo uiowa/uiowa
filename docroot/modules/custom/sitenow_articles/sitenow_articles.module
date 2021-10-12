@@ -271,8 +271,11 @@ function sitenow_articles_preprocess_views_view_summary(&$variables) {
   }
 }
 
+/**
+ * Implements hook_preprocess_views_view_unformatted().
+ */
 function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
-  /** @var ViewExecutable $view */
+  /** @var \Drupal\views\ViewExecutable $view */
   $view = $variables['view'];
   if ($view->id() === 'article_list_block') {
     $rows = $variables['rows'];
