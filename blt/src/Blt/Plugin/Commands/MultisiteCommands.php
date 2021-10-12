@@ -806,10 +806,8 @@ EOD;
       $this->logger->info('Skipping SSL check in test mode.');
     }
 
-    $this->yell("MODE: $mode");
-
     // Make the user confirm before proceeding.
-    if (!$this->confirm("You will transfer $site from $old -> local -> $new. Are you sure?", TRUE)) {
+    if (!$this->confirm("You will transfer $site from $old $mode -> local -> $new $mode. Are you sure?", TRUE)) {
       throw new \Exception('Aborted.');
     }
 
