@@ -884,6 +884,10 @@ EOD;
       return new CommandError('Database create operation did not complete.');
     }
 
+    // Hide the output of sql:sync because it will print an error. This is
+    // because of the postSqlSync in drush/Commands/UiowaCommands that invokes
+    // blt drupal:update. BLT will use the Drush alias on the server which
+    // does not match what it has been changed to locally.
     $this->taskDrush()
       ->drush('sql:sync')
       ->args([
@@ -891,6 +895,7 @@ EOD;
         "@$id.$mode",
       ])
       ->stopOnFail()
+      ->printOutput(FALSE)
       ->run();
 
     $this->taskDrush()
