@@ -285,7 +285,9 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
     $size_classes = [];
 
     if (isset($variables['row_item_classes'])) {
+
       foreach ($variables['row_item_classes'] as &$class) {
+
         if (str_starts_with($class, 'media--')) {
           $style_classes[] = $class;
           unset($class);
@@ -301,6 +303,18 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
       if (isset($variables['row_item_classes'])) {
         $variables['rows'][$id]['attributes']->addClass($variables['row_item_classes']);
       }
+//      if (!empty($variables['rows'][$id]['attributes']['class'])) {
+//        foreach ($variables['rows'][$id]['attributes']['class'] as &$class) {
+//          foreach ([
+//                     'inner',
+//                     'grid',
+//                   ] as $check) {
+//            if (substr($class, 0, strlen($check)) === $check) {
+//              unset($class);
+//            }
+//          }
+//        }
+//      }
       if ($style->getFieldValue($id, 'field_article_source_link_direct') == 1
         && $style->getFieldValue($id, 'field_article_source_link') !== '') {
         $card_link_url = $style->getFieldValue($id, 'field_article_source_link');
@@ -521,6 +535,24 @@ function sitenow_articles_field_widget_paragraphs_form_alter(&$element, &$form_s
  */
 function sitenow_articles_preprocess_block(&$variables) {
   switch ($variables['elements']['#plugin_id']) {
+    case 'views_block:article_list_block-list_article':
+      if (isset($variables['attributes']['class'])) {
+        // Unset classes meant for children.
+        foreach ($variables['attributes']['class'] as $key => $style) {
+          foreach ([
+                     'bg',
+                     'card',
+                     'media',
+                     'hide',
+                   ] as $check) {
+            if (substr($style, 0, strlen($check)) === $check) {
+              unset($variables['attributes']['class'][$key]);
+            }
+          }
+        }
+      }
+
+      break;
     case 'inline_block:uiowa_articles':
       $variables['#attached']['library'][] = 'uids_base/articles';
       $view = Views::getView('articles_block');

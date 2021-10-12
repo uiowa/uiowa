@@ -26,15 +26,14 @@
     default_row_class ? 'views-row',
   ]
   %}
-  <div{{ row.attributes.addClass(row_classes) }}>
-    {% set person_card_view = row.card_options %}
-    {% embed '@uids_base/uids/card.html.twig' with person_card_view only  %}
+  {% set person_card_view = row.card_options %}
+  {% embed '@uids_base/uids/card.html.twig' with person_card_view only  %}
 
-      {% block card_img %}
-        {% if card_image|striptags('<img><picture>')|trim is not empty %}
-          {{ parent() }}
-        {% endif %}
-      {% endblock %}
+    {% block card_img %}
+      {% if card_image|striptags('<img><picture>')|trim is not empty %}
+        {{ parent() }}
+      {% endif %}
+    {% endblock %}
 
 {#      {% block card_subtitle %}#}
 {#        {% if card_subtitle|striptags|trim is not empty %}#}
@@ -57,6 +56,5 @@
 {#        {% endif %}#}
 {#      {% endblock %}#}
 
-    {% endembed %}
-  </div>
+  {% endembed %}
 {% endfor %}
