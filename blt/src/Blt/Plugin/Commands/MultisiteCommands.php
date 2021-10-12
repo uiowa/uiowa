@@ -12,6 +12,7 @@ use AcquiaCloudApi\Endpoints\Databases;
 use AcquiaCloudApi\Endpoints\Domains;
 use AcquiaCloudApi\Endpoints\Environments;
 use AcquiaCloudApi\Endpoints\SslCertificates;
+use AcquiaCloudApi\Response\NotificationResponse;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
 use Symfony\Component\Console\Helper\Table;
@@ -863,6 +864,14 @@ EOD;
         ->printMetadata(FALSE)
         ->run();
     }
+
+    // The next steps require that the database create operation is complete.
+    do {
+      $path = parse_url($database_op->links->notification->href, PHP_URL_PATH);
+      /** @var NotificationResponse $notification */
+      $notification = $client->request('GET', $path);
+      sleep(2);
+    } while ($notification->status != 'completed');
 
     $this->taskDrush()
       ->drush('sql:sync')
