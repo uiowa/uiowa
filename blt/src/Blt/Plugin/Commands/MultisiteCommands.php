@@ -717,11 +717,9 @@ EOD;
    * Transfer a multisite from one application to another.
    *
    * @option no-commit
-   *   Do not create a git commit.
-   * @option no-db
-   *   Do not create a cloud database.
+   *   Do not commit the code changes.
    * @option test-mode
-   *  Test mode will actually sync a site but will use the test environment.
+   *  Test mode will still sync a site but will use the test environment.
    *
    * @command uiowa:multisite:transfer
    *
@@ -734,7 +732,6 @@ EOD;
    */
   public function transfer($options = [
     'no-commit' => FALSE,
-    'no-db' => FALSE,
     'test-mode' => FALSE,
   ]) {
     $root = $this->getConfigValue('repo.root');
@@ -812,15 +809,10 @@ EOD;
     }
 
     // @todo Wait for successful database creation status or fail on error.
-    if (!$options['no-db']) {
-      $databases = new Databases($client);
-      $db = Multisite::getDatabaseName($site);
-      $databases->create($applications[$new], $db);
-      $this->say("Created <comment>{$db}</comment> cloud database on $new.");
-    }
-    else {
-      $this->logger->warning('Skipping database creation.');
-    }
+    $databases = new Databases($client);
+    $db = Multisite::getDatabaseName($site);
+    $database_op = $databases->create($applications[$new], $db);
+    $this->logger->notice("Creating <comment>{$db}</comment> cloud database on $new.");
 
     // Make sure the database exists locally by just recreating it.
     $this->taskDrush()
