@@ -907,7 +907,7 @@ EOD;
 
     // Get the old environment UUID.
     $client->addQuery('filter', "name=$mode");
-    $response = $client->request('GET', "/applications/$applications[$new]/environments");
+    $response = $client->request('GET', "/applications/$applications[$old]/environments");
     $client->clearQuery();
 
     if (!$response || count($response) > 1) {
