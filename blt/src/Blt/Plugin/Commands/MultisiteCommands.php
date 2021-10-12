@@ -748,6 +748,7 @@ EOD;
       ->options([
         'field' => 'application',
       ])
+      ->printMetadata(FALSE)
       ->printOutput(FALSE)
       ->run();
 
@@ -756,13 +757,12 @@ EOD;
     }
 
     $old = trim($result->getMessage());
-    $this->logger->notice("$site is currently on $old.");
 
     // Get the applications and unset the current as an option.
     $applications = $this->config->get('uiowa.applications');
     $choices = $applications;
     unset($choices[$old]);
-    $new = $this->askChoice('Which cloud application should this site be transferred to?', array_keys($choices));
+    $new = $this->askChoice("Site $site is currently on $old. Which cloud application should it be transferred to?", array_keys($choices));
 
     $client = $this->getAcquiaCloudApiClient();
     $certificates = new SslCertificates($client);
