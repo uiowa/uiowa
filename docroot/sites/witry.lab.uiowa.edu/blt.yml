@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labwitry.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labwitry
+  human_name: witry.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labwitry.prod
+drupal:
+  db:
+    database: witry_lab_uiowa_edu
+uiowa:
+  requester: witry
