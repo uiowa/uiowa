@@ -807,7 +807,7 @@ EOD;
     }
 
     // Make the user confirm before proceeding.
-    if (!$this->confirm("You will transfer $site from $old <comment>$mode</comment> -> local -> $new <comment>$mode</comment>. Are you sure?", TRUE)) {
+    if (!$this->confirm("You will transfer $site from $old $mode -> local -> $new $mode. Are you sure?", TRUE)) {
       throw new \Exception('Aborted.');
     }
 
