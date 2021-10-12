@@ -788,8 +788,8 @@ EOD;
 
       foreach ($certs as $cert) {
         if ($cert->flags->active == TRUE) {
-          foreach ($cert->domains as $domain) {
-            if ($domain == $site || $domain == $sans_search) {
+          foreach ($cert->domains as $san) {
+            if ($san == $site || $san == $sans_search) {
               $has_ssl_coverage = TRUE;
               break 2;
             }
