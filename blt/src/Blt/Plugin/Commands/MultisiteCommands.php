@@ -959,54 +959,6 @@ EOD;
   }
 
   /**
-   * Return new Client for interacting with Acquia Cloud API.
-   *
-   * @return \AcquiaCloudApi\Connector\Client
-   *   ConnectorInterface client.
-   */
-  protected function getAcquiaCloudApiClient() {
-    $connector = new Connector([
-      'key' => $this->getConfigValue('uiowa.credentials.acquia.key'),
-      'secret' => $this->getConfigValue('uiowa.credentials.acquia.secret'),
-    ]);
-
-    /** @var \AcquiaCloudApi\Connector\Client $client */
-    $client = Client::factory($connector);
-
-    return $client;
-  }
-
-  /**
-   * Send a Slack notification if the webhook environment variable exists.
-   *
-   * @param string $message
-   *   The message to send.
-   */
-  protected function sendNotification($message) {
-    $env = EnvironmentDetector::getAhEnv() ?: 'local';
-    $webhook_url = getenv('SLACK_WEBHOOK_URL');
-
-    if ($webhook_url && $env == 'prod' || $env == 'local') {
-      $payload = [
-        'username' => 'Acquia Cloud',
-        'text' => $message,
-        'icon_emoji' => ':acquia:',
-      ];
-
-      $data = "payload=" . json_encode($payload);
-      $ch = curl_init($webhook_url);
-      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-      curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-      curl_exec($ch);
-      curl_close($ch);
-    }
-    else {
-      $this->logger->warning("Slack webhook URL not configured. Cannot send message: {$message}");
-    }
-  }
-
-  /**
    * Run post-install tasks.
    *
    * @throws \Robo\Exception\TaskException
@@ -1053,6 +1005,54 @@ EOD;
           ->drush('config:import')
           ->run();
       }
+    }
+  }
+
+  /**
+   * Return new Client for interacting with Acquia Cloud API.
+   *
+   * @return \AcquiaCloudApi\Connector\Client
+   *   ConnectorInterface client.
+   */
+  protected function getAcquiaCloudApiClient() {
+    $connector = new Connector([
+      'key' => $this->getConfigValue('uiowa.credentials.acquia.key'),
+      'secret' => $this->getConfigValue('uiowa.credentials.acquia.secret'),
+    ]);
+
+    /** @var \AcquiaCloudApi\Connector\Client $client */
+    $client = Client::factory($connector);
+
+    return $client;
+  }
+
+  /**
+   * Send a Slack notification if the webhook environment variable exists.
+   *
+   * @param string $message
+   *   The message to send.
+   */
+  protected function sendNotification($message) {
+    $env = EnvironmentDetector::getAhEnv() ?: 'local';
+    $webhook_url = getenv('SLACK_WEBHOOK_URL');
+
+    if ($webhook_url && $env == 'prod' || $env == 'local') {
+      $payload = [
+        'username' => 'Acquia Cloud',
+        'text' => $message,
+        'icon_emoji' => ':acquia:',
+      ];
+
+      $data = "payload=" . json_encode($payload);
+      $ch = curl_init($webhook_url);
+      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+      curl_exec($ch);
+      curl_close($ch);
+    }
+    else {
+      $this->logger->warning("Slack webhook URL not configured. Cannot send message: {$message}");
     }
   }
 
