@@ -835,7 +835,15 @@ EOD;
       ->stopOnFail()
       ->run();
 
-    // Now that the site is synced locally, change the Drush alias.
+    // Check back on the database operation.
+    $notification = $this->waitForOperation($database_op, $client);
+
+    if ($notification->status != 'completed') {
+      return new CommandError('Database create operation did not complete. Cannot proceed with transfer.');
+    }
+
+    // Now that the site is synced locally, change the Drush alias. This is
+    // necessary for the steps below.
     $new_app_alias = YamlMunge::parseFile("{$root}/drush/sites/{$new}.site.yml");
     $site_alias = YamlMunge::parseFile("{$root}/drush/sites/{$id}.site.yml");
 
