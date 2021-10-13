@@ -3377,3 +3377,39 @@ $sites['mentor.local.drupal.uiowa.edu'] = 'mentor.uiowa.edu';
 $sites['mentor.dev.drupal.uiowa.edu'] = 'mentor.uiowa.edu';
 $sites['mentor.stage.drupal.uiowa.edu'] = 'mentor.uiowa.edu';
 $sites['mentor.prod.drupal.uiowa.edu'] = 'mentor.uiowa.edu';
+
+// Directory aliases for sdg.grad.uiowa.edu.
+$sites['gradsdg.local.drupal.uiowa.edu'] = 'sdg.grad.uiowa.edu';
+$sites['gradsdg.dev.drupal.uiowa.edu'] = 'sdg.grad.uiowa.edu';
+$sites['gradsdg.stage.drupal.uiowa.edu'] = 'sdg.grad.uiowa.edu';
+$sites['gradsdg.prod.drupal.uiowa.edu'] = 'sdg.grad.uiowa.edu';
+
+// Directory aliases for witry.lab.uiowa.edu.
+$sites['labwitry.local.drupal.uiowa.edu'] = 'witry.lab.uiowa.edu';
+$sites['labwitry.dev.drupal.uiowa.edu'] = 'witry.lab.uiowa.edu';
+$sites['labwitry.stage.drupal.uiowa.edu'] = 'witry.lab.uiowa.edu';
+$sites['labwitry.prod.drupal.uiowa.edu'] = 'witry.lab.uiowa.edu';
+
+// Directory aliases for ratner.lab.uiowa.edu.
+$sites['labratner.local.drupal.uiowa.edu'] = 'ratner.lab.uiowa.edu';
+$sites['labratner.dev.drupal.uiowa.edu'] = 'ratner.lab.uiowa.edu';
+$sites['labratner.stage.drupal.uiowa.edu'] = 'ratner.lab.uiowa.edu';
+$sites['labratner.prod.drupal.uiowa.edu'] = 'ratner.lab.uiowa.edu';
+
+// Directory aliases for humanitiesiowa.org.
+$sites['org-humanitiesiowa.local.drupal.uiowa.edu'] = 'humanitiesiowa.org';
+$sites['org-humanitiesiowa.dev.drupal.uiowa.edu'] = 'humanitiesiowa.org';
+$sites['org-humanitiesiowa.stage.drupal.uiowa.edu'] = 'humanitiesiowa.org';
+$sites['org-humanitiesiowa.prod.drupal.uiowa.edu'] = 'humanitiesiowa.org';
+
+// Directory aliases for dale-stille.lab.uiowa.edu.
+$sites['labdale-stille.local.drupal.uiowa.edu'] = 'dale-stille.lab.uiowa.edu';
+$sites['labdale-stille.dev.drupal.uiowa.edu'] = 'dale-stille.lab.uiowa.edu';
+$sites['labdale-stille.stage.drupal.uiowa.edu'] = 'dale-stille.lab.uiowa.edu';
+$sites['labdale-stille.prod.drupal.uiowa.edu'] = 'dale-stille.lab.uiowa.edu';
+
+// Directory aliases for li.lab.uiowa.edu.
+$sites['labli.local.drupal.uiowa.edu'] = 'li.lab.uiowa.edu';
+$sites['labli.dev.drupal.uiowa.edu'] = 'li.lab.uiowa.edu';
+$sites['labli.stage.drupal.uiowa.edu'] = 'li.lab.uiowa.edu';
+$sites['labli.prod.drupal.uiowa.edu'] = 'li.lab.uiowa.edu';
