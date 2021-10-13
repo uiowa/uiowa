@@ -3407,3 +3407,9 @@ $sites['labdale-stille.local.drupal.uiowa.edu'] = 'dale-stille.lab.uiowa.edu';
 $sites['labdale-stille.dev.drupal.uiowa.edu'] = 'dale-stille.lab.uiowa.edu';
 $sites['labdale-stille.stage.drupal.uiowa.edu'] = 'dale-stille.lab.uiowa.edu';
 $sites['labdale-stille.prod.drupal.uiowa.edu'] = 'dale-stille.lab.uiowa.edu';
+
+// Directory aliases for li.lab.uiowa.edu.
+$sites['labli.local.drupal.uiowa.edu'] = 'li.lab.uiowa.edu';
+$sites['labli.dev.drupal.uiowa.edu'] = 'li.lab.uiowa.edu';
+$sites['labli.stage.drupal.uiowa.edu'] = 'li.lab.uiowa.edu';
+$sites['labli.prod.drupal.uiowa.edu'] = 'li.lab.uiowa.edu';
