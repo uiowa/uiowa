@@ -954,7 +954,8 @@ EOD;
       $this->taskDrush()
         ->alias("$old.$mode")
         ->drush('ssh')
-        ->arg("cd /mnt/gfs/$old.$mode/sites/ && rm -rf $site")
+        ->arg("rm -rf $site")
+        ->option('cd', "/mnt/gfs/$old.$mode/sites/")
         ->run();
     }
 
