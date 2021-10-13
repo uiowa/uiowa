@@ -3528,3 +3528,145 @@ function sitenow_update_9020() {
       ->save();
   }
 }
+
+// @todo get updated with views article block in mind.
+//function _convert_article_block_component(SectionComponent &$component, BlockContentInterface $block) {
+//
+//  $styles = $component->get('layout_builder_styles_style');
+//
+//  // Default LB styles for new block.
+//  $new_styles = [
+//    'card_media_position_right',
+//    'media_format_circle',
+//    'content_alignment_left',
+//    'card_image_small',
+//    'list_format_list',
+//    'block_grid_threecol_33_34_33',
+//  ];
+//
+//  if (is_array($styles)) {
+//
+//    $style_update_map = [
+//      'block_hide_descriptions' => 'delete',
+//      'block_hide_details' => 'delete',
+//      'block_hide_image' => 'delete',
+//      'block_grid_twocol_50_50' => 'block_grid_threecol_33_34_33',
+//      'list_format_grid' => 'list_format_list',
+//    ];
+//
+//    foreach ($styles as $style) {
+//      if (isset($style_update_map[$style])) {
+//        if ($style_update_map[$style] === 'delete') {
+//          continue;
+//        }
+//        if ($key = array_search($style_update_map[$style], $new_styles)) {
+//          $new_styles[$key] = $style;
+//        }
+//      }
+//    }
+//
+//    $new_styles = array_unique($new_styles);
+//  }
+//
+//  // Build out the new view block configuration.
+//  $config = [
+//    'id' => 'views_block:article_list_block-list_article',
+//    'label' => NULL,
+//    'provider' => 'views',
+//    'label_display' => NULL,
+//    'views_label' => '',
+//    'items_per_page' => $block->field_collection_results->value ?: 'none',
+//    'headline' => $block->get('field_uiowa_headline')
+//      ->getValue()[0],
+//    'pager' => $block->field_collection_pager->value ? 'full' : 'some',
+//    'pager_offset' => 0,
+//    'use_more' => $block->field_collection_more->value,
+//    'use_more_link_url' => $block->field_collection_more_path->value,
+//    'sort' => [
+//      'sticky' => [
+//        'order' => 'DESC',
+//        'weight' => 0,
+//      ],
+//      'field_person_last_name_value' => [
+//        'order' => 'ASC',
+//        'weight' => 0,
+//      ],
+//      'field_person_first_name_value' => [
+//        'order' => 'ASC',
+//        'weight' => 0,
+//      ],
+//    ],
+//    'exposed_filter_values' => [
+//      'field_tags_target_id' => [],
+//    ],
+//    'layout_builder_styles' => $new_styles,
+//    'context_mapping' => [],
+//  ];
+//
+//  // Process tags.
+//  if (isset($block->get('field_collection_reference')
+//      ->getValue()[0])) {
+//    foreach ($block->get('field_collection_reference')
+//               ->getValue()[0] as $target) {
+//      $config['exposed_filter_values']['field_tags_target_id'][] = ['target_id' => $target];
+//    }
+//  }
+//
+//  $fields = [
+//    'field_person_credential',
+//    'title',
+//    'field_teaser',
+//    'field_person_email',
+//    'field_image',
+//    'field_person_phone',
+//    'field_person_position',
+//  ];
+//
+//  // Process field visibility settings.
+//  foreach ($fields as $field) {
+//    $hide = 0;
+//    if (isset($styles)) {
+//      switch ($field) {
+//        case 'field_image':
+//          if (in_array('block_hide_image', $styles)) {
+//            $hide = 1;
+//          }
+//          break;
+//
+//        case 'field_teaser':
+//          if (in_array('block_hide_descriptions', $styles)) {
+//            $hide = 1;
+//          }
+//          break;
+//
+//        case 'field_person_email':
+//        case 'field_person_phone':
+//          if (in_array('block_hide_details', $styles)) {
+//            $hide = 1;
+//          }
+//          break;
+//      }
+//    }
+//
+//    $config['fields'][$field]['hide'] = $hide;
+//  }
+//
+//  // Process sorting defaults.
+//  $current_sort = $block->field_collection_sort->value;
+//  if ($current_sort == 'block_people_sfl') {
+//    $last_name_sort = $config['sort']['field_person_last_name_value'];
+//    unset($config['sort']['field_person_last_name_value']);
+//    $config['sort']['field_person_last_name_value'] = $last_name_sort;
+//  }
+//
+//  // Repurpose the existing component and set new styles.
+//  $component->setConfiguration($config);
+//  $component->set('layout_builder_styles_style', $new_styles);
+//}
+
+/**
+ * Convert uiowa_articles to article_list_block.
+ */
+//function sitenow_update_9021() {
+//  _update_all_blocks_by_plugin_id('uiowa_articles', '_convert_article_block_component');
+//}
