@@ -809,7 +809,27 @@ EOD;
     $databases = new Databases($client);
     $db = Multisite::getDatabaseName($site);
     $this->logger->notice("Starting cloud database creation for <comment>{$db}</comment> on $new...");
-    $database_op = $databases->create($applications[$new], $db);
+
+    // With test mode, the source database is never deleted. We can allow this
+    // to fail in test mode to make transferring sites back and forth easier.
+    try {
+      $database_op = $databases->create($applications[$new], $db);
+      $notification = $this->waitForOperation($database_op, $client);
+
+      // Its possible the task fails for another reason, bail if so. Everything
+      // below hinges on it succeeding so the new site code can bootstrap.
+      if ($notification->status != 'completed') {
+        return new CommandError('Database create operation did not complete. Cannot proceed with transfer.');
+      }
+    }
+    catch (ApiErrorException $e) {
+      if ($mode == 'prod') {
+        return new CommandError("Unable to create database on $new application.");
+      }
+      else {
+        $this->logger->warning("Database $db already exists on $new application. Allowing command to proceed in test mode.");
+      }
+    }
 
     // Sync from old application environment to local.
     $this->taskDrush()
@@ -836,15 +856,8 @@ EOD;
       ->stopOnFail()
       ->run();
 
-    // Check back on the database operation.
-    $notification = $this->waitForOperation($database_op, $client);
-
-    if ($notification->status != 'completed') {
-      return new CommandError('Database create operation did not complete. Cannot proceed with transfer.');
-    }
-
-    // Now that the site is synced locally, change the Drush alias. This is
-    // necessary for the steps below.
+    // Now that the site is synced locally, change the Drush alias to point at
+    // the new application. This is necessary for the Drush tasks below.
     $new_app_alias = YamlMunge::parseFile("{$root}/drush/sites/{$new}.site.yml");
     $site_alias = YamlMunge::parseFile("{$root}/drush/sites/{$id}.site.yml");
 
