@@ -1075,6 +1075,8 @@ EOD;
    *
    * @param \AcquiaCloudApi\Response\OperationResponse $operation
    *   The operation to check.
+   * @param \AcquiaCloudApi\Connector\Client $client
+   *   The API client.
    *
    * @throws \Exception
    */
