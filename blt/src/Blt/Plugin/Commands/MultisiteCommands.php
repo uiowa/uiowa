@@ -908,8 +908,7 @@ EOD;
       // Try to delete the prod domain first, then the internal domain. If
       // neither is found, log a warning to indicate something is off here.
       try {
-        $domain_op = $domains->delete($source_env->id, $site);
-        $this->logger->info("Started removal of domain $site from $old $mode.");
+        $this->waitForOperation($domains->delete($source_env->id, $site));
       }
       catch (ApiErrorException $e) {
         $internal = Multisite::getInternalDomains($id)[$mode];
@@ -958,7 +957,7 @@ EOD;
 
     // Clear the Varnish cache for the domain that was created above.
     if ($this->confirm("Clear varnish cache for $domain_to_create?", TRUE)) {
-      $domains->purge($target_env->id, $domain_to_create);
+      $domains->purge($target_env->id, [$domain_to_create]);
     }
 
     $this->say('Transfer process complete. Transfer additional sites if needed and deploy this branch as per the usual release process.');
