@@ -305,15 +305,24 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
     }
 
     foreach ($rows as $id => $row) {
-      if (isset($variables['row_item_classes'])) {
-        $variables['rows'][$id]['attributes']->addClass($variables['row_item_classes']);
-      }
-      if ($style->getFieldValue($id, 'field_article_source_link_direct') == 1
+      $link_direct = $style->getFieldValue($id, 'field_article_source_link_direct');
+      // If source link is set and link direct is checked, set $card_link_url to
+      // source link. Otherwise, $card_link_url should be set to node link.
+      if ($link_direct == 1
         && $style->getFieldValue($id, 'field_article_source_link') !== '') {
         $card_link_url = $style->getFieldValue($id, 'field_article_source_link');
       }
       else {
+        // @todo Find core service to generate this URL from the nid.
         $card_link_url = $style->getFieldValue($id, 'nid');
+      }
+      // If org is set and link direct is unchecked...
+      $field_org = $style->getField($id, 'field_article_source_org');
+      if ($link_direct == 0 && $style->getFieldValue($id, 'field_article_source_org') !== '') {
+        // @todo Wrap $field_org with an HTML link to $card_link_url.
+      }
+      if (isset($variables['row_item_classes'])) {
+        $variables['rows'][$id]['attributes']->addClass($variables['row_item_classes']);
       }
       $variables['rows'][$id]['card_options'] = [
         'attributes' => $variables['rows'][$id]['attributes'],
