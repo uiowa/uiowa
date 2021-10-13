@@ -942,6 +942,16 @@ EOD;
     if ($mode == 'prod') {
       $databases->delete($applications[$old], $db);
     }
+
+    // Delete files on old application environment. Note that we CD into the
+    // file system first and THEN delete the site files directory. If we just
+    // rm -rf the directory and $site is ever empty, the entire sites
+    // directory would be deleted.
+    $this->taskDrush()
+      ->alias("$old.$mode")
+      ->drush('ssh')
+      ->arg("cd /mnt/gfs/$old.$mode/sites/ && rm -rf $site")
+      ->run();
   }
 
   /**
