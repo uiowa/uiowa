@@ -3425,7 +3425,7 @@ function sitenow_update_9015() {
 }
 
 /**
- * Uninstall node_view_permissions, import role configs, and rebuild permissions.
+ * Uninstall node_view_permissions, import role configs, rebuild permissions.
  */
 function sitenow_update_9016() {
   // Uninstall node_view_permissions module.
@@ -3499,5 +3499,32 @@ function sitenow_update_9017() {
     $source = new FileStorage('../config/sites/' . $splits[$path]);
     $config_storage = \Drupal::service('config.storage');
     $config_storage->write('config_split.config_split.site', $source->read('config_split.config_split.site'));
+  }
+}
+
+/**
+ * Add allowed replicate content entities.
+ */
+function sitenow_update_9020() {
+  /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
+  $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+  $sitenow_v2_split = 'config_split:sitenow_v2';
+
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_core.settings');
+
+  // This site has the 'sitenow_v2' split in config,
+  // and it is enabled.
+  if (isset($filters[$sitenow_v2_split]) && $filters[$sitenow_v2_split]['status']) {
+    // Don't allow for any content types to be replicated.
+    $config
+      ->set('uiowa_core.replicate_allowed', [])
+      ->save();
+  }
+  else {
+    // If it's not v2, then allow page and article.
+    $config
+      ->set('uiowa_core.replicate_allowed', ['page', 'article'])
+      ->save();
   }
 }
