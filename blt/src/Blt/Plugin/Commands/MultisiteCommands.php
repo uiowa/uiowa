@@ -965,7 +965,7 @@ EOD;
         $databases->delete($applications[$old], $db);
       }
       else {
-        $this->logger->notice("Test mode. Skipping database deletion.");
+        $this->logger->warning("Test mode. Skipping database deletion.");
       }
 
       // Delete files on old application environment. Note that we CD into the
