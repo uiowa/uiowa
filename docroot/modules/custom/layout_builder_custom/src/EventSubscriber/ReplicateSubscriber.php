@@ -13,6 +13,7 @@ use Drupal\replicate\Events\AfterSaveEvent;
 use Drupal\views\Plugin\Block\ViewsBlock;
 use Drupal\Core\Path\CurrentPathStack;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Drupal\replicate\Events\ReplicatorEvents;
 
 /**
  * Alters replication events.
@@ -81,9 +82,7 @@ class ReplicateSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents() {
     return [
-      // @todo Replace this with ReplicatorEvents::AFTER_SAVE
-      //   after debugging.
-      'replicate__after_save' => 'onReplicateAfterSave',
+      ReplicatorEvents::AFTER_SAVE => 'onReplicateAfterSave',
     ];
   }
 
