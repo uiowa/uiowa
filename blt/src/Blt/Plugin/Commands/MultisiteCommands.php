@@ -938,20 +938,27 @@ EOD;
       }
     }
 
-    // Only delete database in prod mode since it gets deleted in all envs.
-    if ($mode == 'prod') {
-      $databases->delete($applications[$old], $db);
+    if ($this->confirm("Remove database and files from $old $mode?", FALSE)) {
+      // Only delete database in prod mode since it gets deleted in all envs.
+      if ($mode == 'prod') {
+        $databases->delete($applications[$old], $db);
+      }
+      else {
+        $this->logger->notice("Test mode. Skipping database deletion.");
+      }
+
+      // Delete files on old application environment. Note that we CD into the
+      // file system first and THEN delete the site files directory. If we just
+      // rm -rf the directory and $site is ever empty, the entire sites
+      // directory would be deleted.
+      $this->taskDrush()
+        ->alias("$old.$mode")
+        ->drush('ssh')
+        ->arg("cd /mnt/gfs/$old.$mode/sites/ && rm -rf $site")
+        ->run();
     }
 
-    // Delete files on old application environment. Note that we CD into the
-    // file system first and THEN delete the site files directory. If we just
-    // rm -rf the directory and $site is ever empty, the entire sites
-    // directory would be deleted.
-    $this->taskDrush()
-      ->alias("$old.$mode")
-      ->drush('ssh')
-      ->arg("cd /mnt/gfs/$old.$mode/sites/ && rm -rf $site")
-      ->run();
+    $this->say("Site <comment>$site</comment> has been transferred successfully. Transfer additional sites if needed and deploy this branch as per the usual release process.");
   }
 
   /**
