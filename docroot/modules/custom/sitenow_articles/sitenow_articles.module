@@ -306,6 +306,10 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
 
     foreach ($rows as $id => $row) {
       $link_direct = $style->getFieldValue($id, 'field_article_source_link_direct');
+      $source_link = $style->getFieldValue($id, 'field_article_source_link');
+      $nid = $style->getFieldValue($id, 'nid');
+      $field_org = $style->getField($id, 'field_article_source_org');
+
       // If source link is set and link direct is checked, set $card_link_url to
       // source link. Otherwise, $card_link_url should be set to node link.
       if ($link_direct == 1
@@ -313,13 +317,17 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
         $card_link_url = $style->getFieldValue($id, 'field_article_source_link');
       }
       else {
-        // @todo Find core service to generate this URL from the nid.
-        $card_link_url = $style->getFieldValue($id, 'nid');
+        $card_link_url = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
       }
-      // If org is set and link direct is unchecked...
-      $field_org = $style->getField($id, 'field_article_source_org');
-      if ($link_direct == 0 && $style->getFieldValue($id, 'field_article_source_org') !== '') {
-        // @todo Wrap $field_org with an HTML link to $card_link_url.
+      // Source link provided and link direct is unchecked...
+      if ($link_direct == 0 && !empty($source_link)) {
+        // If org is filled out, combine org and source_link.
+        if ($style->getFieldValue($id, 'field_article_source_org')) {
+          $field_org = Link::fromTextAndUrl($field_org, Url::fromUri($source_link))->toString();
+        }
+        else {
+          $field_org = Link::fromTextAndUrl($source_link, Url::fromUri($source_link))->toString();
+        }
       }
       if (isset($variables['row_item_classes'])) {
         $variables['rows'][$id]['attributes']->addClass($variables['row_item_classes']);
@@ -333,6 +341,7 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
         'card_image' => $style->getField($id, 'field_image'),
         'card_text' => $style->getField($id, 'field_teaser'),
         'card_subtitle' => $style->getField($id, 'created'),
+        'card_tag' => $field_org,
         'headline_level' => $view->display_handler->getOption('heading_size'),
       ];
     }
