@@ -15,7 +15,7 @@
  * @see template_preprocess_views_view_unformatted()
  */
 #}
-{{ attach_library('uids_base/articles') }}
+{{ attach_library('uids_base/node-type-article') }}
 
 {% if title %}
   <h3>{{ title }}</h3>
@@ -37,7 +37,7 @@
 
     {% block card_date %}
       {% if card_date|striptags|trim is not empty %}
-        Written by: {{ card_date }}
+        {{ card_date }}
       {% endif %}
     {% endblock %}
 
