@@ -923,16 +923,19 @@ EOD;
       }
 
       // Add the prod domain for prod mode, internal test for test mode.
+      $domain_to_create = ($mode == 'prod') ? $site : Multisite::getInternalDomains($id)['test'];
+
       try {
-        $domain = ($mode == 'prod') ? $site : Multisite::getInternalDomains($id)['test'];
-        $this->waitForOperation($domains->create($target_env->id, $domain));
+        $this->waitForOperation($domains->create($target_env->id, $domain_to_create));
       }
       catch (ApiErrorException $e) {
-        $this->logger->warning("Could not create domain $domain on $new $mode.");
+        $this->logger->warning("Could not create domain $domain_to_create on $new $mode.");
       }
     }
 
-    if ($this->confirm("Permanently delete database and files from $old $mode?", FALSE)) {
+    $this->say("Site <comment>$site</comment> has been transferred. Inspect the site and then run the cleanup tasks below if everything looks ok.");
+
+    if ($this->confirm("Permanently delete old database and files from $old $mode?", FALSE)) {
       // Only delete database in prod mode since it gets deleted in all envs.
       if ($mode == 'prod') {
         $databases->delete($applications[$old], $db);
@@ -953,7 +956,12 @@ EOD;
         ->run();
     }
 
-    $this->say("Site <comment>$site</comment> has been transferred successfully. Transfer additional sites if needed and deploy this branch as per the usual release process.");
+    // Clear the Varnish cache for the domain that was created above.
+    if ($this->confirm("Clear varnish cache for $domain_to_create?", TRUE)) {
+      $domains->purge($target_env->id, $domain_to_create);
+    }
+
+    $this->say('Transfer process complete. Transfer additional sites if needed and deploy this branch as per the usual release process.');
   }
 
   /**
