@@ -3528,3 +3528,14 @@ function sitenow_update_9020() {
       ->save();
   }
 }
+
+/**
+ * Shut down replicate for now.
+ */
+function sitenow_update_9021() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_core.settings');
+  $config
+    ->set('uiowa_core.replicate_allowed', [])
+    ->save();
+}
