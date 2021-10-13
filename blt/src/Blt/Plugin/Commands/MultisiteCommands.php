@@ -861,7 +861,7 @@ EOD;
     $new_app_alias = YamlMunge::parseFile("{$root}/drush/sites/{$new}.site.yml");
     $site_alias = YamlMunge::parseFile("{$root}/drush/sites/{$id}.site.yml");
 
-    // The local alias does not need any changes.
+    // Change dev/test/prod - local stays the same.
     foreach (['dev', 'test', 'prod'] as $env) {
       $site_alias[$env]['host'] = $new_app_alias[$env]['host'];
       $site_alias[$env]['user'] = $new_app_alias[$env]['user'];
