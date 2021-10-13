@@ -3550,6 +3550,17 @@ function sitenow_update_9020() {
 }
 
 /**
+ * Shut down replicate for now.
+ */
+function sitenow_update_9021() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_core.settings');
+  $config
+    ->set('uiowa_core.replicate_allowed', [])
+    ->save();
+}
+
+/**
  * Convert uiowa_articles to article_list_block.
  */
 function sitenow_update_9022() {
