@@ -835,6 +835,7 @@ EOD;
     $this->taskDrush()
       ->alias("$id.$mode")
       ->drush('users:toggle')
+      ->printOutput(FALSE)
       ->stopOnFail()
       ->run();
 
@@ -911,6 +912,7 @@ EOD;
     $this->taskDrush()
       ->alias("$id.$mode")
       ->drush('users:toggle')
+      ->printOutput(FALSE)
       ->stopOnFail()
       ->run();
 
