@@ -3636,9 +3636,9 @@ function sitenow_update_9022() {
 
     // Process tags.
     if (isset($block->get('field_collection_reference')
-        ->getValue()[0])) {
+      ->getValue()[0])) {
       foreach ($block->get('field_collection_reference')
-                 ->getValue()[0] as $target) {
+        ->getValue()[0] as $target) {
         $config['exposed_filter_values']['field_tags_target_id'][] = ['target_id' => $target];
       }
     }
