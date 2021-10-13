@@ -70,7 +70,7 @@ function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): v
           continue;
         }
 
-        call_user_func($process, $component);
+//        call_user_func_array($process, [&$component]);
       }
       // Serialize section component and update section component db record.
       // Replace the old section with our newly created one.
@@ -124,7 +124,7 @@ function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): v
             continue;
           }
 
-          call_user_func($process, $component);
+          call_user_func_array($process, [&$component]);
         }
       }
       $stored_data->data['section_storage'] = $section_storage;
@@ -3532,129 +3532,143 @@ function sitenow_update_9020() {
 /**
  * Convert uiowa_articles to article_list_block.
  */
-//function sitenow_update_9021() {
-//  _update_all_blocks_by_plugin_id('uiowa_articles', function (&$component) {
-//    $styles = $component->get('layout_builder_styles_style');
-//
-//    // Default LB styles for new block.
-//    $new_styles = [
-//      'block_background_style_light',
-//      'card_media_position_right',
-//      'media_format_widescreen',
-//      'content_alignment_left',
-//      'card_image_small',
-//      'list_format_list',
-//      'block_grid_threecol_33_34_33',
-//    ];
-//
-//    if (is_array($styles)) {
-//
-//      $style_update_map = [
-//        'block_hide_descriptions' => 'delete',
-//        'block_hide_details' => 'delete',
-//        'block_hide_image' => 'delete',
-//        'block_grid_twocol_50_50' => 'block_grid_threecol_33_34_33',
-//        'list_format_grid' => 'list_format_list',
-//      ];
-//
-//      foreach ($styles as $style) {
-//        if (isset($style_update_map[$style])) {
-//          if ($style_update_map[$style] === 'delete') {
-//            continue;
-//          }
-//          if ($key = array_search($style_update_map[$style], $new_styles)) {
-//            $new_styles[$key] = $style;
-//          }
-//        }
-//      }
-//
-//      $new_styles = array_unique($new_styles);
-//    }
-//
-//    // Build out the new view block configuration.
-//    // @todo confirm sort weights are set correctly.
-//    $config = [
-//      'id' => 'views_block:article_list_block-list_article',
-//      'label' => NULL,
-//      'provider' => 'views',
-//      'label_display' => NULL,
-//      'views_label' => '',
-//      'items_per_page' => $block->field_collection_results->value ?: 'none',
-//      'headline' => $block->get('field_uiowa_headline')
-//        ->getValue()[0],
-//      'pager' => $block->field_collection_pager->value ? 'full' : 'some',
-//      'pager_offset' => 0,
-//      'use_more' => $block->field_collection_more->value,
-//      'use_more_link_url' => $block->field_collection_more_path->value,
-//      'sort' => [
-//        'sticky' => [
-//          'order' => 'DESC',
-//          'weight' => 0,
-//        ],
-//        'created' => [
-//          'order' => 'DESC',
-//          'weight' => 0,
-//        ],
-//      ],
-//      'exposed_filter_values' => [
-//        'field_tags_target_id' => [],
-//      ],
-//      'layout_builder_styles' => $new_styles,
-//      'context_mapping' => [],
-//    ];
-//
-//    // Process tags.
-//    if (isset($block->get('field_collection_reference')
-//        ->getValue()[0])) {
-//      foreach ($block->get('field_collection_reference')
-//                 ->getValue()[0] as $target) {
-//        $config['exposed_filter_values']['field_tags_target_id'][] = ['target_id' => $target];
-//      }
-//    }
-//
-//    $fields = [
-//      'field_image',
-//      'title',
-//      'created',
-//      'field_article_author',
-//      'field_article_source_org',
-//      'field_article_source_link',
-//      'field_teaser',
-//    ];
-//
-//    // Process field visibility settings.
-//    foreach ($fields as $field) {
-//      $hide = 0;
-//      if (isset($styles)) {
-//        switch ($field) {
-//          case 'field_image':
-//            if (in_array('block_hide_image', $styles)) {
-//              $hide = 1;
-//            }
-//            break;
-//
-//          case 'field_teaser':
-//            if (in_array('block_hide_descriptions', $styles)) {
-//              $hide = 1;
-//            }
-//            break;
-//
-//          case 'field_article_author':
-//          case 'field_article_source_org':
-//          case 'created':
-//          case 'field_article_source_link':
-//            if (in_array('block_hide_details', $styles)) {
-//              $hide = 1;
-//            }
-//            break;
-//        }
-//      }
-//
-//      $config['fields'][$field]['hide'] = $hide;
-//    }
-//
-//    // Repurpose the existing component and set new styles.
-//    $component->setConfiguration($config);
-//    $component->set('layout_builder_styles_style', $new_styles);
-//  });
-//}
+function sitenow_update_9021() {
+  _update_all_blocks_by_plugin_id('inline_block:uiowa_articles', function (&$component) {
+    $styles = $component->get('layout_builder_styles_style');
+
+    $component_arr = $component->toArray();
+
+    if (isset($component_arr['configuration']['block_revision_id'])) {
+      $block_storage = \Drupal::entityTypeManager()
+        ->getStorage('block_content');
+      $block = $block_storage->loadRevision($component_arr['configuration']['block_revision_id']);
+    }
+    elseif (isset($component_arr['configuration']['block_serialized'])) {
+      $block = serialize($component_arr['configuration']['block_serialized']);
+    }
+    else {
+      return;
+    }
+
+    // Default LB styles for new block.
+    $new_styles = [
+      'block_background_style_light',
+      'card_media_position_right',
+      'media_format_widescreen',
+      'content_alignment_left',
+      'card_image_small',
+      'list_format_list',
+      'block_grid_threecol_33_34_33',
+    ];
+
+    if (is_array($styles)) {
+
+      $style_update_map = [
+        'block_hide_descriptions' => 'delete',
+        'block_hide_details' => 'delete',
+        'block_hide_image' => 'delete',
+        'block_grid_twocol_50_50' => 'block_grid_threecol_33_34_33',
+        'list_format_grid' => 'list_format_list',
+      ];
+
+      foreach ($styles as $style) {
+        if (isset($style_update_map[$style])) {
+          if ($style_update_map[$style] === 'delete') {
+            continue;
+          }
+          if ($key = array_search($style_update_map[$style], $new_styles)) {
+            $new_styles[$key] = $style;
+          }
+        }
+      }
+
+      $new_styles = array_unique($new_styles);
+    }
+
+    // Build out the new view block configuration.
+    // @todo confirm sort weights are set correctly.
+    $config = [
+      'id' => 'views_block:article_list_block-list_article',
+      'label' => NULL,
+      'provider' => 'views',
+      'label_display' => NULL,
+      'views_label' => '',
+      'items_per_page' => $block->field_collection_results->value ?: 'none',
+      'headline' => $block->get('field_uiowa_headline')
+        ->getValue()[0],
+      'pager' => $block->field_collection_pager->value ? 'full' : 'some',
+      'pager_offset' => 0,
+      'use_more' => $block->field_collection_more->value,
+      'use_more_link_url' => $block->field_collection_more_path->value,
+      'sort' => [
+        'sticky' => [
+          'order' => 'DESC',
+          'weight' => 0,
+        ],
+        'created' => [
+          'order' => 'DESC',
+          'weight' => 0,
+        ],
+      ],
+      'exposed_filter_values' => [
+        'field_tags_target_id' => [],
+      ],
+      'layout_builder_styles' => $new_styles,
+      'context_mapping' => [],
+    ];
+
+    // Process tags.
+    if (isset($block->get('field_collection_reference')
+        ->getValue()[0])) {
+      foreach ($block->get('field_collection_reference')
+                 ->getValue()[0] as $target) {
+        $config['exposed_filter_values']['field_tags_target_id'][] = ['target_id' => $target];
+      }
+    }
+
+    $fields = [
+      'field_image',
+      'title',
+      'created',
+      'field_article_author',
+      'field_article_source_org',
+      'field_article_source_link',
+      'field_teaser',
+    ];
+
+    // Process field visibility settings.
+    foreach ($fields as $field) {
+      $hide = 0;
+      if (isset($styles)) {
+        switch ($field) {
+          case 'field_image':
+            if (in_array('block_hide_image', $styles)) {
+              $hide = 1;
+            }
+            break;
+
+          case 'field_teaser':
+            if (in_array('block_hide_descriptions', $styles)) {
+              $hide = 1;
+            }
+            break;
+
+          case 'field_article_author':
+          case 'field_article_source_org':
+          case 'created':
+          case 'field_article_source_link':
+            if (in_array('block_hide_details', $styles)) {
+              $hide = 1;
+            }
+            break;
+        }
+      }
+
+      $config['fields'][$field]['hide'] = $hide;
+    }
+
+    // Repurpose the existing component and set new styles.
+    $component->setConfiguration($config);
+    $component->set('layout_builder_styles_style', $new_styles);
+  });
+}
