@@ -831,6 +831,13 @@ EOD;
       }
     }
 
+    // Toggle users to block everyone on the site while the transfer happens.
+    $this->taskDrush()
+      ->alias("$id.$mode")
+      ->drush('users:toggle')
+      ->stopOnFail()
+      ->run();
+
     // Sync from old application environment to local.
     $this->taskDrush()
       ->alias("$id.local")
@@ -897,6 +904,13 @@ EOD;
         "@$id.local:%files",
         "@$id.$mode:%files",
       ])
+      ->stopOnFail()
+      ->run();
+
+    // Toggle users again to unblock. This is using the new alias which is key.
+    $this->taskDrush()
+      ->alias("$id.$mode")
+      ->drush('users:toggle')
       ->stopOnFail()
       ->run();
 
