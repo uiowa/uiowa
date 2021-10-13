@@ -938,7 +938,7 @@ EOD;
       }
     }
 
-    if ($this->confirm("Remove database and files from $old $mode?", FALSE)) {
+    if ($this->confirm("Permanently delete database and files from $old $mode?", FALSE)) {
       // Only delete database in prod mode since it gets deleted in all envs.
       if ($mode == 'prod') {
         $databases->delete($applications[$old], $db);
