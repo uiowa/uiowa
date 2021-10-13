@@ -33,6 +33,8 @@ use Drupal\user\Entity\User;
  */
 function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): void {
   $db = \Drupal::database();
+  $block_storage = \Drupal::entityTypeManager()
+    ->getStorage('block_content');
 
   $section_column = 'layout_builder__layout_section';
   $tables = [
@@ -70,7 +72,17 @@ function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): v
           continue;
         }
 
-//        call_user_func_array($process, [&$component]);
+        $component_arr = $component->toArray();
+
+        if (!isset($component_arr['configuration']['block_revision_id'])) {
+          continue;
+        }
+
+        $block_storage = \Drupal::entityTypeManager()
+          ->getStorage('block_content');
+        $block = $block_storage->loadRevision($component_arr['configuration']['block_revision_id']);
+
+        call_user_func_array($process, [&$component, $block]);
       }
       // Serialize section component and update section component db record.
       // Replace the old section with our newly created one.
@@ -124,7 +136,15 @@ function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): v
             continue;
           }
 
-          call_user_func_array($process, [&$component]);
+          $component_arr = $component->toArray();
+
+          if (!isset($component_arr['configuration']['block_serialized'])) {
+            continue;
+          }
+
+          $block = serialize($component_arr['configuration']['block_serialized']);
+
+          call_user_func_array($process, [&$component, $block]);
         }
       }
       $stored_data->data['section_storage'] = $section_storage;
@@ -3533,22 +3553,8 @@ function sitenow_update_9020() {
  * Convert uiowa_articles to article_list_block.
  */
 function sitenow_update_9021() {
-  _update_all_blocks_by_plugin_id('inline_block:uiowa_articles', function (&$component) {
+  _update_all_blocks_by_plugin_id('inline_block:uiowa_articles', function (&$component, $block) {
     $styles = $component->get('layout_builder_styles_style');
-
-    $component_arr = $component->toArray();
-
-    if (isset($component_arr['configuration']['block_revision_id'])) {
-      $block_storage = \Drupal::entityTypeManager()
-        ->getStorage('block_content');
-      $block = $block_storage->loadRevision($component_arr['configuration']['block_revision_id']);
-    }
-    elseif (isset($component_arr['configuration']['block_serialized'])) {
-      $block = serialize($component_arr['configuration']['block_serialized']);
-    }
-    else {
-      return;
-    }
 
     // Default LB styles for new block.
     $new_styles = [
