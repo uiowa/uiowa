@@ -917,13 +917,13 @@ EOD;
       // Try to delete the prod domain first, then the internal domain. If
       // neither is found, log a warning to indicate something is off here.
       try {
-        $this->waitForOperation($domains->delete($source_env->id, $site));
+        $this->waitForOperation($domains->delete($source_env->id, $site), $client);
       }
       catch (ApiErrorException $e) {
         $internal = Multisite::getInternalDomains($id)[$mode];
 
         try {
-          $this->waitForOperation($domains->delete($source_env->id, $internal));
+          $this->waitForOperation($domains->delete($source_env->id, $internal), $client);
         }
         catch (ApiErrorException $e) {
           $this->logger->warning("Could not delete $site or $internal domain from $old $mode.");
@@ -934,7 +934,7 @@ EOD;
       $domain_to_create = ($mode == 'prod') ? $site : Multisite::getInternalDomains($id)['test'];
 
       try {
-        $this->waitForOperation($domains->create($target_env->id, $domain_to_create));
+        $this->waitForOperation($domains->create($target_env->id, $domain_to_create), $client);
       }
       catch (ApiErrorException $e) {
         $this->logger->warning("Could not create domain $domain_to_create on $new $mode.");
@@ -1075,10 +1075,13 @@ EOD;
    *
    * @param \AcquiaCloudApi\Response\OperationResponse $operation
    *   The operation to check.
+   *
+   * @throws \Exception
    */
-  protected function waitForOperation(OperationResponse $operation) {
-    // Get a new client each time to prevent token expiration.
-    $client = $this->getAcquiaCloudApiClient();
+  protected function waitForOperation(OperationResponse $operation, Client $client) {
+    if (!isset($operation->links)) {
+      throw new \Exception('Cannot check operation status, no links set.');
+    }
 
     // Get the operation notification URL path and strip the leading 'api/'
     // from it because that is added below when making the request.
