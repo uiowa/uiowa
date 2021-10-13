@@ -867,10 +867,10 @@ EOD;
         ->run();
     }
 
-    $notification = $this->waitForOperation($database_op, $client);
+    $notification = $this->waitForOperation($database_op);
 
     if ($notification->status != 'completed') {
-      return new CommandError('Database create operation did not complete.');
+      return new CommandError('Database create operation did not complete. Cannot proceed with transfer.');
     }
 
     $this->taskDrush()
@@ -915,23 +915,17 @@ EOD;
         $internal = Multisite::getInternalDomains($id)[$mode];
 
         try {
-          $domain_op = $domains->delete($source_env->id, $internal);
-          $this->logger->info("Started removal of domain $internal from $old $mode.");
+          $this->waitForOperation($domains->delete($source_env->id, $internal));
         }
         catch (ApiErrorException $e) {
           $this->logger->warning("Could not delete $site or $internal domain from $old $mode.");
         }
       }
 
-      if (isset($domain_op)) {
-        $this->waitForOperation($domain_op, $client);
-      }
-
       // Add the prod domain for prod mode, internal test for test mode.
       try {
         $domain = ($mode == 'prod') ? $site : Multisite::getInternalDomains($id)['test'];
-        $domains->create($target_env->id, $domain);
-        $this->logger->notice("Started creating domain $domain on $new $mode.");
+        $this->waitForOperation($domains->create($target_env->id, $domain));
       }
       catch (ApiErrorException $e) {
         $this->logger->warning("Could not create domain $domain on $new $mode.");
@@ -1065,10 +1059,11 @@ EOD;
    *
    * @param \AcquiaCloudApi\Response\OperationResponse $operation
    *   The operation to check.
-   * @param \AcquiaCloudApi\Connector\Client $client
-   *   The API client.
    */
-  protected function waitForOperation(OperationResponse $operation, Client $client) {
+  protected function waitForOperation(OperationResponse $operation) {
+    // Get a new client each time to prevent token expiration.
+    $client = $this->getAcquiaCloudApiClient();
+
     // Get the operation notification URL path and strip the leading 'api/'
     // from it because that is added below when making the request.
     $path = substr(parse_url($operation->links->notification->href, PHP_URL_PATH), 4);
