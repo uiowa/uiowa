@@ -759,8 +759,8 @@ EOD;
     unset($choices[$old]);
     $new = $this->askChoice("Site $site is currently on $old. Which cloud application should it be transferred to?", array_keys($choices));
 
+    // Instantiate a new API client to use with requests.
     $client = $this->getAcquiaCloudApiClient();
-    $certificates = new SslCertificates($client);
 
     // Check that new application has SSL coverage.
     $client->addQuery('filter', "name=$mode");
@@ -777,6 +777,7 @@ EOD;
 
     if ($mode == 'prod') {
       $this->logger->notice('Checking SSL coverage...');
+      $certificates = new SslCertificates($client);
       $has_ssl_coverage = FALSE;
       $certs = $certificates->getAll($target_env->id);
       $sans_search = Multisite::getSslParts($site)['sans'];
