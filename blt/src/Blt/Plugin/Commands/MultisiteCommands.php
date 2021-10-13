@@ -718,8 +718,6 @@ EOD;
   /**
    * Transfer a multisite from one application to another.
    *
-   * @option no-commit
-   *   Do not commit the code changes.
    * @option test-mode
    *  Test mode will still sync a site but will use the test environment.
    *
@@ -732,15 +730,11 @@ EOD;
    *
    * @throws \Exception
    */
-  public function transfer($options = [
-    'no-commit' => FALSE,
-    'test-mode' => FALSE,
-  ]) {
+  public function transfer($options = ['test-mode' => FALSE]) {
     $root = $this->getConfigValue('repo.root');
     $sites = Multisite::getAllSites($root);
     $site = $this->askChoice('Select which site to transfer.', $sites);
     $id = Multisite::getIdentifier("https://$site");
-
     $mode = $options['test-mode'] ? 'test' : 'prod';
 
     $result = $this->taskDrush()
@@ -816,7 +810,7 @@ EOD;
     $this->logger->notice("Starting cloud database creation for <comment>{$db}</comment> on $new...");
     $database_op = $databases->create($applications[$new], $db);
 
-    // Make sure the database exists locally by just recreating it.
+    // Sync from old application environment to local.
     $this->taskDrush()
       ->alias("$id.local")
       ->drush('sql:create')
@@ -856,23 +850,16 @@ EOD;
       ->text(Yaml::dump($site_alias, 10, 2))
       ->run();
 
-    if (!$options['no-commit']) {
-      $this->taskGit()
-        ->dir($root)
-        ->add("drush/sites/$id.site.yml")
-        ->commit("Update $site Drush alias to new application $new")
-        ->interactive(FALSE)
-        ->printOutput(FALSE)
-        ->printMetadata(FALSE)
-        ->run();
-    }
+    $this->taskGit()
+      ->dir($root)
+      ->add("drush/sites/$id.site.yml")
+      ->commit("Update $site Drush alias to new application $new")
+      ->interactive(FALSE)
+      ->printOutput(FALSE)
+      ->printMetadata(FALSE)
+      ->run();
 
-    $notification = $this->waitForOperation($database_op);
-
-    if ($notification->status != 'completed') {
-      return new CommandError('Database create operation did not complete. Cannot proceed with transfer.');
-    }
-
+    // Sync from local to new application environment.
     $this->taskDrush()
       ->drush('sql:sync')
       ->args([
