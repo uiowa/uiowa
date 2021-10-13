@@ -3513,8 +3513,9 @@ function sitenow_update_9020() {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('uiowa_core.settings');
 
-  // This site has the 'sitenow_v2' split in config.
-  if (isset($filters[$sitenow_v2_split])) {
+  // This site has the 'sitenow_v2' split in config,
+  // and it is enabled.
+  if (isset($filters[$sitenow_v2_split]) && $filters[$sitenow_v2_split]['status']) {
     // Don't allow for any content types to be replicated.
     $config
       ->set('uiowa_core.replicate_allowed', [])
