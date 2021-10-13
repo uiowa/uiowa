@@ -3539,3 +3539,30 @@ function sitenow_update_9021() {
     ->set('uiowa_core.replicate_allowed', [])
     ->save();
 }
+
+/**
+ * Re-activate replicate functionality for v3 sites.
+ */
+function sitenow_update_9022() {
+  /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
+  $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+  $sitenow_v2_split = 'config_split:sitenow_v2';
+
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_core.settings');
+
+  // This site has the 'sitenow_v2' split in config,
+  // and it is enabled.
+  if (isset($filters[$sitenow_v2_split]) && $filters[$sitenow_v2_split]['status']) {
+    // Don't allow for any content types to be replicated.
+    $config
+      ->set('uiowa_core.replicate_allowed', [])
+      ->save();
+  }
+  else {
+    // If it's not v2, then allow page and article.
+    $config
+      ->set('uiowa_core.replicate_allowed', ['page', 'article'])
+      ->save();
+  }
+}
