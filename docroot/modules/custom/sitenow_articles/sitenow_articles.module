@@ -280,21 +280,26 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
   if ($view->id() === 'article_list_block') {
     $rows = $variables['rows'];
     $style = $view->style_plugin;
-    $options = $style->options;
     $style_classes = [];
     $size_classes = [];
 
     if (isset($variables['row_item_classes'])) {
 
-      foreach ($variables['row_item_classes'] as &$class) {
+      foreach ($variables['row_item_classes'] as $key => &$class) {
 
         if (str_starts_with($class, 'media--')) {
           $style_classes[] = $class;
-          unset($class);
+          unset($variables['row_item_classes'][$key]);
         }
         elseif (str_starts_with($class, 'card__media')) {
           $size_classes[] = $class;
-          unset($class);
+          unset($variables['row_item_classes'][$key]);
+        }
+        elseif (str_starts_with($class, 'inner')) {
+          unset($variables['row_item_classes'][$key]);
+        }
+        elseif (str_starts_with($class, 'grid')) {
+          unset($variables['row_item_classes'][$key]);
         }
       }
     }
@@ -303,18 +308,6 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
       if (isset($variables['row_item_classes'])) {
         $variables['rows'][$id]['attributes']->addClass($variables['row_item_classes']);
       }
-//      if (!empty($variables['rows'][$id]['attributes']['class'])) {
-//        foreach ($variables['rows'][$id]['attributes']['class'] as &$class) {
-//          foreach ([
-//                     'inner',
-//                     'grid',
-//                   ] as $check) {
-//            if (substr($class, 0, strlen($check)) === $check) {
-//              unset($class);
-//            }
-//          }
-//        }
-//      }
       if ($style->getFieldValue($id, 'field_article_source_link_direct') == 1
         && $style->getFieldValue($id, 'field_article_source_link') !== '') {
         $card_link_url = $style->getFieldValue($id, 'field_article_source_link');
@@ -540,11 +533,11 @@ function sitenow_articles_preprocess_block(&$variables) {
         // Unset classes meant for children.
         foreach ($variables['attributes']['class'] as $key => $style) {
           foreach ([
-                     'bg',
-                     'card',
-                     'media',
-                     'hide',
-                   ] as $check) {
+            'bg',
+            'card',
+            'media',
+            'hide',
+          ] as $check) {
             if (substr($style, 0, strlen($check)) === $check) {
               unset($variables['attributes']['class'][$key]);
             }
@@ -553,6 +546,7 @@ function sitenow_articles_preprocess_block(&$variables) {
       }
 
       break;
+
     case 'inline_block:uiowa_articles':
       $variables['#attached']['library'][] = 'uids_base/articles';
       $view = Views::getView('articles_block');
