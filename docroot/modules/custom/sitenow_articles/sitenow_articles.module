@@ -309,6 +309,13 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
       $source_link = $style->getFieldValue($id, 'field_article_source_link');
       $nid = $style->getFieldValue($id, 'nid');
       $field_org = $style->getField($id, 'field_article_source_org');
+      $field_org_options = [
+        'attributes' => [
+          'class' => [
+            'field--name-field-article-source-link',
+          ],
+        ],
+      ];
 
       // If source link is set and link direct is checked, set $card_link_url to
       // source link. Otherwise, $card_link_url should be set to node link.
@@ -326,7 +333,7 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
           $field_org = Link::fromTextAndUrl($field_org, Url::fromUri($source_link))->toString();
         }
         else {
-          $field_org = Link::fromTextAndUrl($source_link, Url::fromUri($source_link))->toString();
+          $field_org = Link::fromTextAndUrl($source_link, Url::fromUri($source_link, $field_org_options))->toString();
         }
       }
       if (isset($variables['row_item_classes'])) {
