@@ -10,18 +10,16 @@ storage: folder
 folder: ../config/features/scholarship
 module: {  }
 theme: {  }
-complete_list: {  }
-partial_list:
+complete_list:
   - core.base_field_override.node.scholarship.promote
-  - field.field.node.scholarship.body
   - metatag.metatag_defaults.node__scholarship
-  - metatag.settings
   - node.type.scholarship
   - pathauto.pattern.scholarship
   - simple_sitemap.bundle_settings.default.node.scholarship
-  - workflows.workflow.editorial
   - 'core.entity_form_display.node.scholarship.*'
   - 'core.entity_view_display.node.scholarship.*'
-  - 'field.field.node.scholarship.*'
   - 'field.storage.node.field_scholarship_*'
+partial_list:
+  - metatag.settings
+  - workflows.workflow.editorial
   - 'user.role.*'
