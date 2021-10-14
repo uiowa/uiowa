@@ -132,7 +132,9 @@ class ReplicateSubscriber implements EventSubscriberInterface {
     $fields_to_check = $this->getReferenceFields();
     /** @var \Drupal\layout_builder\Field\LayoutSectionItemList $field_item_list */
     $field_item_list = $entity->get(OverridesSectionStorage::FIELD_NAME);
+    $section_index = 0;
     foreach ($field_item_list as $field_item) {
+      $component_index = 0;
       foreach ($field_item->section->getComponents() as $component) {
         $plugin = $component->getPlugin();
         if ($plugin instanceof ViewsBlock) {
@@ -164,20 +166,42 @@ class ReplicateSubscriber implements EventSubscriberInterface {
           // Create a duplicate of each of its referenced paragraphs.
           foreach ($field_names as $field_name) {
             foreach ($referenced_entity->$field_name as $field) {
-              /** @var \Drupal\paragraphs\Entity\Paragraph $new_paragraph */
-              $new_paragraph = $field->entity->createDuplicate();
-              $field->entity = $new_paragraph;
-              // Set the parent entity, otherwise it will still be pointing
-              // to the original copied entity.
-              $new_paragraph->setParentEntity($referenced_entity, $field_name);
-              $new_paragraph->isNew();
-              $new_paragraph->save();
+              /** @var \Drupal\paragraphs\Entity\Paragraph $old_paragraph */
+              $old_paragraph = $field->entity;
+              $field->entity = $old_paragraph->createDuplicate();
+              // Set the parent entity, on the old paragraph,
+              // otherwise it will still be pointing to the copied entity.
+              // Start by grabbing the old node.
+              $node = $this->entityTypeManager
+                ->getStorage('node')
+                ->load($this->getClonedNid());
+              if ($node) {
+                // Grab the specific section, which matches the section_index
+                // of the replicated page, because we're dealing with duplicates.
+                $components = $node->layout_builder__layout
+                  ->get($section_index)
+                  ->getValue()['section']
+                  ->getComponents();
+                // Again, grab our specific indexed component.
+                $component = $components[array_keys($components)[$component_index]];
+                $rev_id = $component->get('configuration')['block_revision_id'];
+                // Grab the old block.
+                $old_block = $this->entityTypeManager
+                  ->getStorage('block_content')
+                  ->loadRevision($rev_id);
+                // Re-set the old paragraph's parent
+                // to the old block.
+                $old_paragraph->setParentEntity($old_block, $field_name);
+                $old_paragraph->save();
+              }
             }
           }
           // Save the block with its updated references.
           $referenced_entity->save();
         }
+        $component_index++;
       }
+      $section_index++;
     }
   }
 
