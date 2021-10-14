@@ -933,13 +933,13 @@ EOD;
       // Try to delete the prod domain first, then the internal domain. If
       // neither is found, log a warning to indicate something is off here.
       try {
-        $this->waitForOperation($domains->delete($source_env->id, $site), $client);
+        $domains->delete($source_env->id, $site);
       }
       catch (ApiErrorException $e) {
         $internal = Multisite::getInternalDomains($id)[$mode];
 
         try {
-          $this->waitForOperation($domains->delete($source_env->id, $internal), $client);
+          $domains->delete($source_env->id, $internal);
         }
         catch (ApiErrorException $e) {
           $this->logger->warning("Could not delete $site or $internal domain from $old $mode.");
@@ -950,7 +950,7 @@ EOD;
       $domain_to_create = ($mode == 'prod') ? $site : Multisite::getInternalDomains($id)['test'];
 
       try {
-        $this->waitForOperation($domains->create($target_env->id, $domain_to_create), $client);
+        $domains->create($target_env->id, $domain_to_create);
       }
       catch (ApiErrorException $e) {
         $this->logger->warning("Could not create domain $domain_to_create on $new $mode.");
