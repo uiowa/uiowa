@@ -14,13 +14,6 @@ module:
   smart_date_recur: 0
 theme: {  }
 complete_list:
-  - field.storage.node.field_event_category
-  - field.storage.node.field_event_hide
-  - field.storage.node.field_event_location
-  - field.storage.node.field_event_series_link
-  - field.storage.node.field_event_series_link_direct
-  - field.storage.node.field_event_virtual
-  - field.storage.node.field_event_when
   - metatag.metatag_defaults.node__event
   - node.type.event
   - pathauto.pattern.event
@@ -29,7 +22,9 @@ complete_list:
   - views.view.events
   - 'core.entity_form_display.node.event.*'
   - 'core.entity_view_display.node.event.*'
+  - 'field.storage.node.field_event_*'
 partial_list:
   - metatag.settings
+  - workflows.workflow.editorial
   - 'smart_date.*'
   - 'user.role.*'
