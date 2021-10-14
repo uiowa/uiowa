@@ -13,7 +13,6 @@ use Drupal\replicate\Events\AfterSaveEvent;
 use Drupal\views\Plugin\Block\ViewsBlock;
 use Drupal\Core\Path\CurrentPathStack;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Drupal\replicate\Events\ReplicatorEvents;
 
 /**
  * Alters replication events.
@@ -82,7 +81,9 @@ class ReplicateSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents() {
     return [
-      ReplicatorEvents::AFTER_SAVE => 'onReplicateAfterSave',
+      // @todo Replace this with ReplicatorEvents::AFTER_SAVE
+      //   after debugging.
+      'replicate__after_save' => 'onReplicateAfterSave',
     ];
   }
 
@@ -163,7 +164,14 @@ class ReplicateSubscriber implements EventSubscriberInterface {
           // Create a duplicate of each of its referenced paragraphs.
           foreach ($field_names as $field_name) {
             foreach ($referenced_entity->$field_name as $field) {
-              $field->entity = $field->entity->createDuplicate();
+              /** @var \Drupal\paragraphs\Entity\Paragraph $new_paragraph */
+              $new_paragraph = $field->entity->createDuplicate();
+              $field->entity = $new_paragraph;
+              // Set the parent entity, otherwise it will still be pointing
+              // to the original copied entity.
+              $new_paragraph->setParentEntity($referenced_entity, $field_name);
+              $new_paragraph->isNew();
+              $new_paragraph->save();
             }
           }
           // Save the block with its updated references.
