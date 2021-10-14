@@ -330,7 +330,7 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
       if ($link_direct == 0 && !empty($source_link)) {
         // If org is filled out, combine org and source_link.
         if ($style->getFieldValue($id, 'field_article_source_org')) {
-          $field_org = Link::fromTextAndUrl($field_org, Url::fromUri($source_link))->toString();
+          $field_org = Link::fromTextAndUrl($field_org, Url::fromUri($source_link, $field_org_options))->toString();
         }
         else {
           $field_org = Link::fromTextAndUrl($source_link, Url::fromUri($source_link, $field_org_options))->toString();
