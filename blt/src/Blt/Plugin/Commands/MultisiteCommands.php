@@ -980,11 +980,6 @@ EOD;
         ->run();
     }
 
-    // Clear the Varnish cache for the domain that was created above.
-    if ($this->confirm("Clear varnish cache for $domain_to_create?", TRUE)) {
-      $domains->purge($target_env->id, [$domain_to_create]);
-    }
-
     $this->say('Transfer process complete. Transfer additional sites if needed and deploy this branch as per the usual release process.');
   }
 
