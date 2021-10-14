@@ -1,0 +1,116 @@
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
+@import "components/card/_card-mixins.scss";
+
+
+.view-article-list-block {
+  .field--name-field-article-author {
+    .field__label {
+      display: inline;
+      margin-right: $xsm;
+    }
+
+    .field__items {
+      padding-right: 0;
+      display: inline-block;
+    }
+
+    display: inline-block;
+    font-family: $font-family-serif;
+    font-size: 1.2rem;
+
+    a {
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        text-decoration: underline;
+      }
+    }
+
+    &:after {
+      display: inline-block;
+    }
+
+    .field__items {
+      .field__item {
+        display: inline;
+
+        &:not(:first-child) {
+          padding-left: $xsm;
+
+          &:before {
+            content: '| ';
+            color: $grey;
+            padding-right: $xsm;
+          }
+        }
+      }
+    }
+  }
+
+  // Remove
+  .field--name-field-article-source-org {
+    font-family: $font-family-serif;
+    font-size: 1.2rem;
+
+    a {
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        text-decoration: underline;
+      }
+    }
+
+    &:after {
+      display: inline-block;
+    }
+  }
+
+
+
+  a.field--name-field-article-source-link {
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+    }
+  }
+
+  .field--name-field-article-source-link,
+  .views-field-article-source-link {
+    font-family: $font-family-serif;
+    font-size: 1.2rem;
+    line-height: 1.4;
+
+    .link-item {
+      display: inline-block;
+    }
+
+    a {
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        text-decoration: underline;
+      }
+    }
+
+    &:after {
+      display: inline-block;
+    }
+  }
+}
+
+
+.field--name-field-article-author+.field--name-field-article-source-link,
+.field--name-field-article-author+.views-field-article-source-link {
+  &:before {
+    content: '- ';
+    color: $grey;
+    margin: 0 $xsm;
+  }
+}
+
