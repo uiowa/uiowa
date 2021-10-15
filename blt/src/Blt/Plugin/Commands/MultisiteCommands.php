@@ -2,6 +2,7 @@
 
 namespace Uiowa\Blt\Plugin\Commands;
 
+use AcquiaCloudApi\Response\OperationResponse;
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\EnvironmentDetector;
 use Acquia\Blt\Robo\Common\YamlMunge;
@@ -12,6 +13,7 @@ use AcquiaCloudApi\Endpoints\Databases;
 use AcquiaCloudApi\Endpoints\Domains;
 use AcquiaCloudApi\Endpoints\Environments;
 use AcquiaCloudApi\Endpoints\SslCertificates;
+use AcquiaCloudApi\Exception\ApiErrorException;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
 use Symfony\Component\Console\Helper\Table;
@@ -401,7 +403,7 @@ EOD
    *   An option that takes multiple values.
    *
    * @option simulate
-   *   Simulate database creation and filesystem operations.
+   *   Simulate BLT operations.
    * @option no-commit
    *   Do not create a git commit.
    * @option no-db
@@ -457,25 +459,8 @@ EOD
 
     // A boolean to track whether any application covers this domain.
     $has_ssl_coverage = FALSE;
-
-    // Explode by domain and limit to two parts. Search for wildcard coverage.
-    // Ex. foo.bar.uiowa.edu -> search for *.bar.uiowa.edu.
-    // Ex. foo.bar.baz.uiowa.edu -> search for *.bar.baz.uiowa.edu.
-    $host_parts = explode('.', $host, 2);
-    $sans_search = '*.' . $host_parts[1];
-
-    // Consider the parent domain related and search for it since it could
-    // be covered with one SSL SAN while double subdomains cannot. However,
-    // uiowa.edu is the exception because we cannot cover *.uiowa.edu.
-    $related_search = ($host_parts[1] == 'uiowa.edu') ? NULL : $host_parts[1];
-
-    // If the host is one subdomain off uiowa.edu or a vanity domain,
-    // search for the host instead.
-    // Ex. foo.uiowa.edu -> search for foo.uiowa.edu.
-    // Ex. foo.com -> search for foo.com.
-    if ($host_parts[1] == 'uiowa.edu' || !stristr($host_parts[1], '.')) {
-      $sans_search = $host;
-    }
+    $sans_search = Multisite::getSslParts($host)['sans'];
+    $related_search = Multisite::getSslParts($host)['related'];
 
     foreach ($applications as $name => $uuid) {
       $row = [
@@ -536,7 +521,7 @@ EOD
     // Get the UUID for the selected application.
     $app_id = $applications[$app];
 
-    if (!$options['simulate'] && !$options['no-db']) {
+    if (!$options['no-db']) {
       $databases->create($app_id, $db);
       $this->say("Created <comment>{$db}</comment> cloud database on {$app}.");
     }
@@ -731,51 +716,270 @@ EOD;
   }
 
   /**
-   * Return new Client for interacting with Acquia Cloud API.
+   * Transfer a multisite from one application to another.
    *
-   * @return \AcquiaCloudApi\Connector\Client
-   *   ConnectorInterface client.
-   */
-  protected function getAcquiaCloudApiClient() {
-    $connector = new Connector([
-      'key' => $this->getConfigValue('uiowa.credentials.acquia.key'),
-      'secret' => $this->getConfigValue('uiowa.credentials.acquia.secret'),
-    ]);
-
-    /** @var \AcquiaCloudApi\Connector\Client $client */
-    $client = Client::factory($connector);
-
-    return $client;
-  }
-
-  /**
-   * Send a Slack notification if the webhook environment variable exists.
+   * @option test-mode
+   *  Test mode will still sync a site but will use the test environment.
    *
-   * @param string $message
-   *   The message to send.
+   * @command uiowa:multisite:transfer
+   *
+   * @aliases umt
+   *
+   * @requireFeatureBranch
+   * @requireCredentials
+   *
+   * @throws \Exception
    */
-  protected function sendNotification($message) {
-    $env = EnvironmentDetector::getAhEnv() ? EnvironmentDetector::getAhEnv() : 'local';
-    $webhook_url = getenv('SLACK_WEBHOOK_URL');
+  public function transfer($options = ['test-mode' => FALSE]) {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+    $site = $this->askChoice('Select which site to transfer.', $sites);
+    $id = Multisite::getIdentifier("https://$site");
+    $mode = $options['test-mode'] ? 'test' : 'prod';
 
-    if ($webhook_url && $env == 'prod' || $env == 'local') {
-      $payload = [
-        'username' => 'Acquia Cloud',
-        'text' => $message,
-        'icon_emoji' => ':acquia:',
-      ];
+    $result = $this->taskDrush()
+      ->alias("$id.$mode")
+      ->drush('status')
+      ->options([
+        'field' => 'application',
+      ])
+      ->printMetadata(FALSE)
+      ->printOutput(FALSE)
+      ->run();
 
-      $data = "payload=" . json_encode($payload);
-      $ch = curl_init($webhook_url);
-      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-      curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-      curl_exec($ch);
-      curl_close($ch);
+    if (!$result->wasSuccessful()) {
+      return new CommandError('Unable to get current application with Drush.');
+    }
+
+    $old = trim($result->getMessage());
+
+    // Get the applications and unset the current as an option.
+    $applications = $this->config->get('uiowa.applications');
+    $choices = $applications;
+    unset($choices[$old]);
+    $new = $this->askChoice("Site $site is currently on $old. Which cloud application should it be transferred to?", array_keys($choices));
+
+    // Instantiate a new API client to use with requests.
+    $client = $this->getAcquiaCloudApiClient();
+
+    // Check that new application has SSL coverage.
+    $client->addQuery('filter', "name=$mode");
+    $response = $client->request('GET', "/applications/$applications[$new]/environments");
+    $client->clearQuery();
+
+    // If for some odd reason there is more than one environment, bail.
+    if (!$response || count($response) > 1) {
+      return new CommandError("Error getting information for new application $mode environment.");
+    }
+
+    /** @var object $target_env */
+    $target_env = array_shift($response);
+
+    if ($mode == 'prod') {
+      $this->logger->notice('Checking SSL coverage...');
+      $certificates = new SslCertificates($client);
+      $has_ssl_coverage = FALSE;
+      $certs = $certificates->getAll($target_env->id);
+      $sans_search = Multisite::getSslParts($site)['sans'];
+
+      foreach ($certs as $cert) {
+        if ($cert->flags->active == TRUE) {
+          foreach ($cert->domains as $san) {
+            if ($san == $site || $san == $sans_search) {
+              $has_ssl_coverage = TRUE;
+              break 2;
+            }
+          }
+        }
+      }
+
+      if (!$has_ssl_coverage) {
+        return new CommandError("No SSL coverage for $site on $new.");
+      }
     }
     else {
-      $this->logger->warning("Slack webhook URL not configured. Cannot send message: {$message}");
+      $this->logger->info('Skipping SSL check in test mode.');
     }
+
+    // Make the user confirm before proceeding.
+    if (!$this->confirm("You will transfer $site from $old $mode -> local -> $new $mode. Are you sure?", TRUE)) {
+      throw new \Exception('Aborted.');
+    }
+
+    $databases = new Databases($client);
+    $db = Multisite::getDatabaseName($site);
+    $this->logger->notice("Starting cloud database creation for <comment>{$db}</comment> on $new...");
+
+    // With test mode, the source database is never deleted. We can allow this
+    // to fail in test mode to make transferring sites back and forth easier.
+    try {
+      $database_op = $databases->create($applications[$new], $db);
+      $notification = $this->waitForOperation($database_op, $client);
+
+      // Its possible the task fails for another reason, bail if so. Everything
+      // below hinges on it succeeding so the new site code can bootstrap.
+      if ($notification->status != 'completed') {
+        return new CommandError('Database create operation did not complete. Cannot proceed with transfer.');
+      }
+    }
+    catch (ApiErrorException $e) {
+      if ($mode == 'prod') {
+        return new CommandError("Unable to create database on $new application.");
+      }
+      else {
+        $this->logger->warning("Database $db already exists on $new application. Allowing command to proceed in test mode.");
+      }
+    }
+
+    // Toggle users to block everyone on the site while the transfer happens.
+    $this->taskDrush()
+      ->alias("$id.$mode")
+      ->drush('users:toggle')
+      ->printOutput(FALSE)
+      ->stopOnFail()
+      ->run();
+
+    // Sync from old application environment to local.
+    $this->taskDrush()
+      ->alias("$id.local")
+      ->drush('sql:create')
+      ->stopOnFail()
+      ->run();
+
+    $this->taskDrush()
+      ->drush('sql:sync')
+      ->args([
+        "@$id.$mode",
+        "@$id.local",
+      ])
+      ->stopOnFail()
+      ->run();
+
+    $this->taskDrush()
+      ->drush('rsync')
+      ->args([
+        "@$id.$mode:%files",
+        "@$id.local:%files",
+      ])
+      ->stopOnFail()
+      ->run();
+
+    // Now that the site is synced locally, change the Drush alias to point at
+    // the new application. This is necessary for the Drush tasks below.
+    $new_app_alias = YamlMunge::parseFile("{$root}/drush/sites/{$new}.site.yml");
+    $site_alias = YamlMunge::parseFile("{$root}/drush/sites/{$id}.site.yml");
+
+    // Change dev/test/prod - local stays the same.
+    foreach (['dev', 'test', 'prod'] as $env) {
+      $site_alias[$env]['host'] = $new_app_alias[$env]['host'];
+      $site_alias[$env]['user'] = $new_app_alias[$env]['user'];
+      $site_alias[$env]['root'] = $new_app_alias[$env]['root'];
+    }
+
+    $this->taskWriteToFile("{$root}/drush/sites/{$id}.site.yml")
+      ->text(Yaml::dump($site_alias, 10, 2))
+      ->run();
+
+    $this->taskGit()
+      ->dir($root)
+      ->add("drush/sites/$id.site.yml")
+      ->commit("Update $site Drush alias to new application $new")
+      ->interactive(FALSE)
+      ->printOutput(FALSE)
+      ->printMetadata(FALSE)
+      ->run();
+
+    // Sync from local to new application environment.
+    $this->taskDrush()
+      ->drush('sql:sync')
+      ->args([
+        "@$id.local",
+        "@$id.$mode",
+      ])
+      ->stopOnFail()
+      ->run();
+
+    $this->taskDrush()
+      ->drush('rsync')
+      ->args([
+        "@$id.local:%files",
+        "@$id.$mode:%files",
+      ])
+      ->stopOnFail()
+      ->run();
+
+    // Toggle users again to unblock. This is using the new alias which is key.
+    $this->taskDrush()
+      ->alias("$id.$mode")
+      ->drush('users:toggle')
+      ->printOutput(FALSE)
+      ->stopOnFail()
+      ->run();
+
+    // Remove the domain from the old application and create on the new one.
+    $domains = new Domains($client);
+
+    // Get the old environment UUID.
+    $client->addQuery('filter', "name=$mode");
+    $response = $client->request('GET', "/applications/$applications[$old]/environments");
+    $client->clearQuery();
+
+    if (!$response || count($response) > 1) {
+      return new CommandError('Unable to get old application environment information. Domain not transferred.');
+    }
+
+    // Shift the environment off the response array.
+    $source_env = array_shift($response);
+
+    // Transfer both the prod and internal domains, if they exist.
+    $domains_to_transfer = [
+      $site,
+      Multisite::getInternalDomains($id)[$mode],
+    ];
+
+    // Try to get the domain first and catch the exception if it doesn't exist.
+    foreach ($domains_to_transfer as $domain) {
+      try {
+        $domains->get($source_env->id, $domain);
+        $domains->delete($source_env->id, $domain);
+        $this->logger->notice("Deleted domain $domain from $old $mode.");
+        try {
+          $domains->create($target_env->id, $domain);
+          $this->logger->notice("Created domain $domain on $new $mode.");
+        }
+        catch (ApiErrorException $e) {
+          $this->logger->warning("Could not create domain $domain on $new $mode.");
+        }
+      }
+      catch (ApiErrorException $e) {
+        $this->logger->warning("Domain $domain does not exist on $old $mode.");
+      }
+    }
+
+    $this->say("Site <comment>$site</comment> has been transferred. Inspect the site and then run the cleanup tasks below if everything looks ok.");
+
+    if ($this->confirm("Permanently delete old database and files from $old $mode?", FALSE)) {
+      // Only delete database in prod mode since it gets deleted in all envs.
+      if ($mode == 'prod') {
+        $databases->delete($applications[$old], $db);
+      }
+      else {
+        $this->logger->warning("Test mode. Skipping database deletion.");
+      }
+
+      // Delete files on old application environment. Note that we CD into the
+      // file system first and THEN delete the site files directory. If we just
+      // rm -rf the directory and $site is ever empty, the entire sites
+      // directory would be deleted.
+      $this->taskDrush()
+        ->alias("$old.$mode")
+        ->drush('ssh')
+        ->arg("rm -rf $site")
+        ->option('cd', "/mnt/gfs/$old.$mode/sites/")
+        ->run();
+    }
+
+    $this->say('Transfer process complete. Transfer additional sites if needed and deploy this branch as per the usual release process.');
   }
 
   /**
@@ -826,6 +1030,82 @@ EOD;
           ->run();
       }
     }
+  }
+
+  /**
+   * Return new Client for interacting with Acquia Cloud API.
+   *
+   * @return \AcquiaCloudApi\Connector\Client
+   *   ConnectorInterface client.
+   */
+  protected function getAcquiaCloudApiClient() {
+    $connector = new Connector([
+      'key' => $this->getConfigValue('uiowa.credentials.acquia.key'),
+      'secret' => $this->getConfigValue('uiowa.credentials.acquia.secret'),
+    ]);
+
+    /** @var \AcquiaCloudApi\Connector\Client $client */
+    $client = Client::factory($connector);
+
+    return $client;
+  }
+
+  /**
+   * Send a Slack notification if the webhook environment variable exists.
+   *
+   * @param string $message
+   *   The message to send.
+   */
+  protected function sendNotification($message) {
+    $env = EnvironmentDetector::getAhEnv() ?: 'local';
+    $webhook_url = getenv('SLACK_WEBHOOK_URL');
+
+    if ($webhook_url && $env == 'prod' || $env == 'local') {
+      $payload = [
+        'username' => 'Acquia Cloud',
+        'text' => $message,
+        'icon_emoji' => ':acquia:',
+      ];
+
+      $data = "payload=" . json_encode($payload);
+      $ch = curl_init($webhook_url);
+      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+      curl_exec($ch);
+      curl_close($ch);
+    }
+    else {
+      $this->logger->warning("Slack webhook URL not configured. Cannot send message: {$message}");
+    }
+  }
+
+  /**
+   * Wait for a Cloud API operation to complete.
+   *
+   * @param \AcquiaCloudApi\Response\OperationResponse $operation
+   *   The operation to check.
+   * @param \AcquiaCloudApi\Connector\Client $client
+   *   The API client.
+   *
+   * @throws \Exception
+   */
+  protected function waitForOperation(OperationResponse $operation, Client $client) {
+    if (!isset($operation->links)) {
+      throw new \Exception('Cannot check operation status, no links set.');
+    }
+
+    // Get the operation notification URL path and strip the leading 'api/'
+    // from it because that is added below when making the request.
+    $path = substr(parse_url($operation->links->notification->href, PHP_URL_PATH), 4);
+    $this->logger->notice("Waiting for cloud API operation ($operation->message) to complete...");
+    do {
+      /** @var \AcquiaCloudApi\Response\NotificationResponse $notification */
+      $notification = $client->request('GET', $path);
+      sleep(3);
+    } while ($notification->status == 'in-progress');
+
+    return $notification;
   }
 
 }
