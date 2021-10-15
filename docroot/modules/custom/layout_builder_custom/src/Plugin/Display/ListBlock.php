@@ -71,6 +71,18 @@ class ListBlock extends CoreBlock {
 
     $form['allow']['#default_value'] = $defaults;
 
+    // Add restrict_fields option to prevent editors from toggling certain fields.
+    $field_keys = array_keys($this->view->getDisplay()->getOption('fields'));
+    $fields = array_combine($field_keys, $field_keys);
+    $restrict_fields = $this->getOption('restrict_fields');
+    $form['restrict_fields'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Restrict fields'),
+      '#description' => $this->t('Prevent editor from show/hide fields.'),
+      '#options' => $fields,
+      '#default_value' => $restrict_fields ?: '',
+    ];
+
     // Show a text area to add custom help text to the display more link.
     $more_link_help_text = $this->getOption('more_link_help_text');
     $form['more_link_help_text'] = [
@@ -97,6 +109,7 @@ class ListBlock extends CoreBlock {
     parent::submitOptionsForm($form, $form_state);
     if ($form_state->get('section') === 'allow') {
       $this->setOption('more_link_help_text', $form_state->getValue('more_link_help_text'));
+      $this->setOption('restrict_fields', $form_state->getValue('restrict_fields'));
     }
   }
 
@@ -153,6 +166,18 @@ class ListBlock extends CoreBlock {
       ];
       $form['override']['hide_fields']['order_fields'] = $form['override']['order_fields'];
       unset($form['override']['order_fields']);
+
+      // Remove restricted fields from the hide options.
+      $restrict_fields = $this->getOption('restrict_fields');
+      if (!empty($restrict_fields)) {
+        $fields_to_remove = [];
+        foreach ($restrict_fields as $field) {
+          if ($field !== 0) {
+            $fields_to_remove[$field] = $field;
+          }
+        }
+        $form["override"]["hide_fields"]["order_fields"] = array_diff_key($form["override"]["hide_fields"]["order_fields"], $fields_to_remove);
+      }
     }
 
     // Add exposed filters to be customized in the block.
