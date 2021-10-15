@@ -945,19 +945,21 @@ EOD;
           $this->logger->warning("Could not delete $site or $internal domain from $old $mode.");
         }
       }
+    }
 
-      // Add the prod domain for prod mode, internal test for test mode.
-      $domain_to_create = ($mode == 'prod') ? $site : Multisite::getInternalDomains($id)['test'];
-
-      try {
-        $domains->create($target_env->id, $domain_to_create);
-      }
-      catch (ApiErrorException $e) {
-        $this->logger->warning("Could not create domain $domain_to_create on $new $mode.");
-      }
+    try {
+      $domains->create($target_env->id, $domain_to_create);
+    }
+    catch (ApiErrorException $e) {
+      $this->logger->warning("Could not create domain $domain_to_create on $new $mode.");
     }
 
     $this->say("Site <comment>$site</comment> has been transferred. Inspect the site and then run the cleanup tasks below if everything looks ok.");
+
+    // Clear the Varnish cache for the domain that was created above.
+    if ($this->confirm("Clear varnish cache for $domain_to_create?", TRUE)) {
+      $domains->purge($target_env->id, [$domain_to_create]);
+    }
 
     if ($this->confirm("Permanently delete old database and files from $old $mode?", FALSE)) {
       // Only delete database in prod mode since it gets deleted in all envs.
@@ -966,11 +968,6 @@ EOD;
       }
       else {
         $this->logger->warning("Test mode. Skipping database deletion.");
-      }
-
-      // Clear the Varnish cache for the domain that was created above.
-      if ($this->confirm("Clear varnish cache for $domain_to_create?", TRUE)) {
-        $domains->purge($target_env->id, [$domain_to_create]);
       }
 
       // Delete files on old application environment. Note that we CD into the
