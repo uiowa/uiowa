@@ -931,6 +931,7 @@ EOD;
     // Shift the environment off the response array.
     $source_env = array_shift($response);
 
+    // Transfer both the prod and internal domains, if they exist.
     $domains_to_transfer = [
       $site,
       Multisite::getInternalDomains($id)[$mode],
