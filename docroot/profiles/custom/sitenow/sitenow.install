@@ -67,7 +67,7 @@ function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): v
       // Loop through the components in the section.
       foreach ($section->getComponents() as &$component) {
 
-        // Limit this to only the uiowa_people block component.
+        // Limit this to only the block component.
         if ($component->getPluginId() !== $block_plugin_id) {
           continue;
         }
@@ -3569,7 +3569,6 @@ function sitenow_update_9022() {
 
     // Default LB styles for new block.
     $new_styles = [
-      'block_background_style_light',
       'card_media_position_right',
       'media_format_widescreen',
       'content_alignment_left',
@@ -3645,7 +3644,6 @@ function sitenow_update_9022() {
 
     $fields = [
       'field_image',
-      'title',
       'created',
       'field_article_author',
       'field_article_source_org',
