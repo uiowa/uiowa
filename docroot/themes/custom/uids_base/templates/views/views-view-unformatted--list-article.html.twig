@@ -40,10 +40,12 @@
         {{ card_date }}
       {% endif %}
     {% endblock %}
-
     {% block card_tag %}
-      {% if card_tag|striptags|trim is not empty %}
-        {{ card_tag }}
+      {% if card_tag.org|striptags|trim is not empty %}
+        {{ card_tag.org }}
+      {% endif %}
+      {% if card_tag.source_link|striptags|trim is not empty %}
+        {{ card_tag.source_link }}
       {% endif %}
     {% endblock %}
 

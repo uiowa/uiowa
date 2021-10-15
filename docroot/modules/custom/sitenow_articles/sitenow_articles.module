@@ -305,37 +305,24 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
     }
 
     foreach ($rows as $id => $row) {
-      $link_direct = $style->getFieldValue($id, 'field_article_source_link_direct');
-      $source_link = $style->getFieldValue($id, 'field_article_source_link');
-      $nid = $style->getFieldValue($id, 'nid');
-      $field_org = $style->getField($id, 'field_article_source_org');
-      $field_org_options = [
-        'attributes' => [
-          'class' => [
-            'field--name-field-article-source-link',
-          ],
-        ],
-      ];
+      // Need to get these values regardless of whether they are hidden or not.
+      $link_direct = $row["content"]["#node"]->get('field_article_source_link_direct')->value;
+      $source_link = $row['content']['#node']->get('field_article_source_link')->uri;
+      $nid = $row['content']['#node']->get('nid')->value;
 
       // If source link is set and link direct is checked, set $card_link_url to
       // source link. Otherwise, $card_link_url should be set to node link.
       if ($link_direct == 1
-        && $style->getFieldValue($id, 'field_article_source_link') !== '') {
-        $card_link_url = $style->getFieldValue($id, 'field_article_source_link');
+        && isset($source_link) && !empty($source_link)) {
+        $card_link_url = $source_link;
       }
       else {
         $card_link_url = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
       }
-      // Source link provided and link direct is unchecked...
-      if ($link_direct == 0 && !empty($source_link)) {
-        // If org is filled out, combine org and source_link.
-        if ($style->getFieldValue($id, 'field_article_source_org')) {
-          $field_org = Link::fromTextAndUrl($field_org, Url::fromUri($source_link, $field_org_options))->toString();
-        }
-        else {
-          $field_org = Link::fromTextAndUrl($source_link, Url::fromUri($source_link, $field_org_options))->toString();
-        }
-      }
+      $card_tag = [
+        'org' => $style->getField($id, 'field_article_source_org'),
+        'source_link' => $style->getField($id, 'field_article_source_link'),
+      ];
       if (isset($variables['row_item_classes'])) {
         $variables['rows'][$id]['attributes']->addClass($variables['row_item_classes']);
       }
@@ -348,7 +335,7 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
         'card_image' => $style->getField($id, 'field_image'),
         'card_text' => $style->getField($id, 'field_teaser'),
         'card_subtitle' => $style->getField($id, 'created'),
-        'card_tag' => $field_org,
+        'card_tag' => $card_tag,
         'card_date' => $style->getField($id, 'field_article_author'),
         'headline_level' => $view->display_handler->getOption('heading_size'),
       ];
