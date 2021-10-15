@@ -927,39 +927,35 @@ EOD;
     if (!$response || count($response) > 1) {
       return new CommandError('Unable to get old application environment information. Domain not transferred.');
     }
-    else {
-      $source_env = array_shift($response);
 
-      // Try to delete the prod domain first, then the internal domain. If
-      // neither is found, log a warning to indicate something is off here.
+    // Shift the environment off the response array.
+    $source_env = array_shift($response);
+
+    $domains_to_transfer = [
+      $site,
+      Multisite::getInternalDomains($id)[$mode],
+    ];
+
+    // Try to get the domain first and catch the exception if it doesn't exist.
+    foreach ($domains_to_transfer as $domain) {
       try {
-        $domains->delete($source_env->id, $site);
-      }
-      catch (ApiErrorException $e) {
-        $internal = Multisite::getInternalDomains($id)[$mode];
-
+        $domains->get($source_env->id, $domain);
+        $domains->delete($source_env->id, $domain);
+        $this->logger->notice("Deleted domain $domain from $old $mode.");
         try {
-          $domains->delete($source_env->id, $internal);
+          $domains->create($target_env->id, $domain);
+          $this->logger->notice("Created domain $domain on $new $mode.");
         }
         catch (ApiErrorException $e) {
-          $this->logger->warning("Could not delete $site or $internal domain from $old $mode.");
+          $this->logger->warning("Could not create domain $domain on $new $mode.");
         }
       }
-    }
-
-    try {
-      $domains->create($target_env->id, $domain_to_create);
-    }
-    catch (ApiErrorException $e) {
-      $this->logger->warning("Could not create domain $domain_to_create on $new $mode.");
+      catch (ApiErrorException $e) {
+        $this->logger->warning("Domain $domain does not exist on $old $mode.");
+      }
     }
 
     $this->say("Site <comment>$site</comment> has been transferred. Inspect the site and then run the cleanup tasks below if everything looks ok.");
-
-    // Clear the Varnish cache for the domain that was created above.
-    if ($this->confirm("Clear varnish cache for $domain_to_create?", TRUE)) {
-      $domains->purge($target_env->id, [$domain_to_create]);
-    }
 
     if ($this->confirm("Permanently delete old database and files from $old $mode?", FALSE)) {
       // Only delete database in prod mode since it gets deleted in all envs.
