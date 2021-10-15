@@ -968,6 +968,11 @@ EOD;
         $this->logger->warning("Test mode. Skipping database deletion.");
       }
 
+      // Clear the Varnish cache for the domain that was created above.
+      if ($this->confirm("Clear varnish cache for $domain_to_create?", TRUE)) {
+        $domains->purge($target_env->id, [$domain_to_create]);
+      }
+
       // Delete files on old application environment. Note that we CD into the
       // file system first and THEN delete the site files directory. If we just
       // rm -rf the directory and $site is ever empty, the entire sites
@@ -978,11 +983,6 @@ EOD;
         ->arg("rm -rf $site")
         ->option('cd', "/mnt/gfs/$old.$mode/sites/")
         ->run();
-    }
-
-    // Clear the Varnish cache for the domain that was created above.
-    if ($this->confirm("Clear varnish cache for $domain_to_create?", TRUE)) {
-      $domains->purge($target_env->id, [$domain_to_create]);
     }
 
     $this->say('Transfer process complete. Transfer additional sites if needed and deploy this branch as per the usual release process.');
