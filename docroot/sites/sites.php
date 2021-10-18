@@ -3431,3 +3431,9 @@ $sites['labhefti.local.drupal.uiowa.edu'] = 'hefti.lab.uiowa.edu';
 $sites['labhefti.dev.drupal.uiowa.edu'] = 'hefti.lab.uiowa.edu';
 $sites['labhefti.stage.drupal.uiowa.edu'] = 'hefti.lab.uiowa.edu';
 $sites['labhefti.prod.drupal.uiowa.edu'] = 'hefti.lab.uiowa.edu';
+
+// Directory aliases for karandikar.lab.uiowa.edu.
+$sites['labkarandikar.local.drupal.uiowa.edu'] = 'karandikar.lab.uiowa.edu';
+$sites['labkarandikar.dev.drupal.uiowa.edu'] = 'karandikar.lab.uiowa.edu';
+$sites['labkarandikar.stage.drupal.uiowa.edu'] = 'karandikar.lab.uiowa.edu';
+$sites['labkarandikar.prod.drupal.uiowa.edu'] = 'karandikar.lab.uiowa.edu';
