@@ -3473,3 +3473,9 @@ $sites['labjian-zhang.local.drupal.uiowa.edu'] = 'jian-zhang.lab.uiowa.edu';
 $sites['labjian-zhang.dev.drupal.uiowa.edu'] = 'jian-zhang.lab.uiowa.edu';
 $sites['labjian-zhang.stage.drupal.uiowa.edu'] = 'jian-zhang.lab.uiowa.edu';
 $sites['labjian-zhang.prod.drupal.uiowa.edu'] = 'jian-zhang.lab.uiowa.edu';
+
+// Directory aliases for shared-governance.sites.uiowa.edu.
+$sites['sitesshared-governance.local.drupal.uiowa.edu'] = 'shared-governance.sites.uiowa.edu';
+$sites['sitesshared-governance.dev.drupal.uiowa.edu'] = 'shared-governance.sites.uiowa.edu';
+$sites['sitesshared-governance.stage.drupal.uiowa.edu'] = 'shared-governance.sites.uiowa.edu';
+$sites['sitesshared-governance.prod.drupal.uiowa.edu'] = 'shared-governance.sites.uiowa.edu';
