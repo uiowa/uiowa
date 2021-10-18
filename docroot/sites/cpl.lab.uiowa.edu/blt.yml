@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labcpl.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labcpl
+  human_name: cpl.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labcpl.prod
+drupal:
+  db:
+    database: cpl_lab_uiowa_edu
+uiowa:
+  requester: swartzendrubert
