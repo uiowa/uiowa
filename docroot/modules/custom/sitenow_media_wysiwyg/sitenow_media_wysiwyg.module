@@ -153,21 +153,18 @@ function sitenow_media_wysiwyg_file_presave(FileInterface $file) {
  * Implements hook_ENTITY_TYPE_update().
  */
 function sitenow_media_wysiwyg_media_update(EntityInterface $entity) {
-  $type = $entity->bundle();
-  if ($type === 'file') {
+  // If not local, try to clear the varnish cache for the file.
+  if ($entity->bundle() === 'file' && \Drupal::moduleHandler()->moduleExists('acquia_purge')) {
+    $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
+    $purgeQueuers = \Drupal::service('purge.queuers');
+    $purgeQueue = \Drupal::service('purge.queue');
+    $queuer = $purgeQueuers->get('coretags');
 
-    // If not Local, try to clear the varnish cache for the files.
-    if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
-      $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
-      $purgeQueuers = \Drupal::service('purge.queuers');
-      $purgeQueue = \Drupal::service('purge.queue');
-      $queuer = $purgeQueuers->get('coretags');
-
-      $fid = $entity->field_media_file->target_id;
-      $file = File::load($fid);
+    if ($file = File::load($entity->field_media_file->target_id)) {
       $invalidations = [
-        $purgeInvalidationFactory->get('url', file_create_url($file->getFileUri())),
+        $purgeInvalidationFactory->get('url', $file->createFileUrl(FALSE)),
       ];
+
       $purgeQueue->add($queuer, $invalidations);
     }
   }
