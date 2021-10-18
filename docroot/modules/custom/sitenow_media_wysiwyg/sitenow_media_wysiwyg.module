@@ -8,6 +8,7 @@
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\FileInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\file\Entity\File;
 
 /**
  * Implements hook_field_widget_WIDGET_TYPE_form_alter().
@@ -154,12 +155,6 @@ function sitenow_media_wysiwyg_file_presave(FileInterface $file) {
 function sitenow_media_wysiwyg_media_update(EntityInterface $entity) {
   $type = $entity->bundle();
   if ($type === 'file') {
-    // Generate Lockup Files if approved/published.
-    // $nid = $entity->id();
-    // $lockup_controller = new LockupController(\Drupal::entityTypeManager(), \Drupal::service('file_system'));
-    // $lockup_controller->generate($nid);
-    // Try to get away with clearing the render cache to fetch updated svgs.
-    \Drupal::service('cache.render')->invalidateAll();
 
     // If not Local, try to clear the varnish cache for the files.
     if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
@@ -167,9 +162,10 @@ function sitenow_media_wysiwyg_media_update(EntityInterface $entity) {
       $purgeQueuers = \Drupal::service('purge.queuers');
       $purgeQueue = \Drupal::service('purge.queue');
       $queuer = $purgeQueuers->get('coretags');
-      $host = \Drupal::request()->getSchemeAndHttpHost();
+
+      $fid = $entity->field_media_file->target_id;
+      $file = File::load($fid);
       $invalidations = [
-        // $purgeInvalidationFactory->get('wildcardurl', $host . '/sites/brand.uiowa.edu/files/lockups/' . $nid . '/*'),
         $purgeInvalidationFactory->get('url', file_create_url($file->getFileUri())),
       ];
       $purgeQueue->add($queuer, $invalidations);

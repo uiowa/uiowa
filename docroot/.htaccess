@@ -234,8 +234,3 @@ AddEncoding gzip svgz
   # Disable Proxy header, since it's an attack vector.
   RequestHeader unset Proxy
 </IfModule>
-
-  # Cache all files on this folder at most for 5 minutes.
-  <FilesMatch "\.(txt|rtf|doc|docx|ppt|pptx|csv|xls|xlsx|pdf|odf|odg|odp|ods|odt|fodt|fods|fodp|fodg|key|numbers|pages|vtt|zip|json)$">
-  Header set Cache-Control "max-age=300, public"
-  </FilesMatch>
