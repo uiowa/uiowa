@@ -3485,3 +3485,9 @@ $sites['courseaccessibility101.local.drupal.uiowa.edu'] = 'accessibility101.cour
 $sites['courseaccessibility101.dev.drupal.uiowa.edu'] = 'accessibility101.course.uiowa.edu';
 $sites['courseaccessibility101.stage.drupal.uiowa.edu'] = 'accessibility101.course.uiowa.edu';
 $sites['courseaccessibility101.prod.drupal.uiowa.edu'] = 'accessibility101.course.uiowa.edu';
+
+// Directory aliases for habelhah.lab.uiowa.edu.
+$sites['labhabelhah.local.drupal.uiowa.edu'] = 'habelhah.lab.uiowa.edu';
+$sites['labhabelhah.dev.drupal.uiowa.edu'] = 'habelhah.lab.uiowa.edu';
+$sites['labhabelhah.stage.drupal.uiowa.edu'] = 'habelhah.lab.uiowa.edu';
+$sites['labhabelhah.prod.drupal.uiowa.edu'] = 'habelhah.lab.uiowa.edu';
