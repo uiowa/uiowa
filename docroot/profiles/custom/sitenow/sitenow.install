@@ -3688,4 +3688,14 @@ function sitenow_update_9022() {
     $component->setConfiguration($config);
     $component->set('layout_builder_styles_style', $new_styles);
   });
+
+  // Delete uiowa_articles orphans.
+  $result = \Drupal::entityQuery('block_content')
+    ->condition('type', 'uiowa_articles')
+    ->execute();
+  if ($result) {
+    $storage_handler = \Drupal::entityTypeManager()->getStorage('block_content');
+    $entities = $storage_handler->loadMultiple($result);
+    $storage_handler->delete($entities);
+  }
 }
