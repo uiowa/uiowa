@@ -138,11 +138,13 @@ function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): v
 
           $component_arr = $component->toArray();
 
-          if (!isset($component_arr['configuration']['block_serialized'])) {
-            continue;
+          $revision_id = $component_arr['configuration']['block_revision_id'];
+          if ($revision_id) {
+            $block = $block_storage->loadRevision($revision_id);
           }
-
-          $block = serialize($component_arr['configuration']['block_serialized']);
+          else {
+            $block = serialize($component_arr['configuration']['block_serialized']);
+          }
 
           call_user_func_array($process, [&$component, $block]);
         }
