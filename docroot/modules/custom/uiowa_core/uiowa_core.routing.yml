@@ -5,6 +5,13 @@ uiowa_core.settings_form:
     _form: 'Drupal\uiowa_core\Form\SettingsForm'
   requirements:
     _permission: 'administer uiowa core'
+uiowa_core.region_settings:
+  path: '/admin/config/sitenow/region-settings'
+  defaults:
+    _title: 'Region Settings'
+    _form: 'Drupal\uiowa_core\Form\RegionSettings'
+  requirements:
+    _permission: 'administer uiowa core'
 system.admin_config_sitenow:
   path: '/admin/config/sitenow'
   defaults:
