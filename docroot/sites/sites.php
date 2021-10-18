@@ -3461,3 +3461,9 @@ $sites['labsimonsburnett.local.drupal.uiowa.edu'] = 'simonsburnett.lab.uiowa.edu
 $sites['labsimonsburnett.dev.drupal.uiowa.edu'] = 'simonsburnett.lab.uiowa.edu';
 $sites['labsimonsburnett.stage.drupal.uiowa.edu'] = 'simonsburnett.lab.uiowa.edu';
 $sites['labsimonsburnett.prod.drupal.uiowa.edu'] = 'simonsburnett.lab.uiowa.edu';
+
+// Directory aliases for tanas.lab.uiowa.edu.
+$sites['labtanas.local.drupal.uiowa.edu'] = 'tanas.lab.uiowa.edu';
+$sites['labtanas.dev.drupal.uiowa.edu'] = 'tanas.lab.uiowa.edu';
+$sites['labtanas.stage.drupal.uiowa.edu'] = 'tanas.lab.uiowa.edu';
+$sites['labtanas.prod.drupal.uiowa.edu'] = 'tanas.lab.uiowa.edu';
