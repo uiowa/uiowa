@@ -308,6 +308,7 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
       // Need to get these values regardless of whether they are hidden or not.
       $link_direct = $row["content"]["#node"]->get('field_article_source_link_direct')->value;
       $source_link = $row['content']['#node']->get('field_article_source_link')->uri;
+      $org = $row["content"]["#node"]->get('field_article_source_org')->value;
       $nid = $row['content']['#node']->get('nid')->value;
 
       // If source link is set and link direct is checked, set $card_link_url to
@@ -319,10 +320,31 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
       else {
         $card_link_url = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
       }
+
       $card_tag = [
-        'org' => $style->getField($id, 'field_article_source_org'),
-        'source_link' => $style->getField($id, 'field_article_source_link'),
+        '#type' => 'html_tag',
+        '#tag' => 'span',
+        '#attributes' => [
+          'class' => [
+            'field--name-field-article-source-link',
+          ],
+        ]
       ];
+      if ($org) {
+        $card_tag['org'] = [
+          '#prefix' => '<span class="views-field-article-source-link">',
+          '#markup' => $style->getField($id, 'field_article_source_org'),
+          '#suffix' => '</span>',
+        ];
+      }
+      if ($source_link) {
+        $card_tag['source_link'] = [
+          '#prefix' => '<span class="views-field-article-source-link">',
+          '#markup' => $style->getField($id, 'field_article_source_link'),
+          '#suffix' => '</span>',
+        ];
+      }
+
       if (isset($variables['row_item_classes'])) {
         $variables['rows'][$id]['attributes']->addClass($variables['row_item_classes']);
       }
@@ -335,7 +357,7 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
         'card_image' => $style->getField($id, 'field_image'),
         'card_text' => $style->getField($id, 'field_teaser'),
         'card_subtitle' => $style->getField($id, 'created'),
-        'card_tag' => $card_tag,
+        'card_tag' => render($card_tag),
         'card_date' => $style->getField($id, 'field_article_author'),
         'headline_level' => $view->display_handler->getOption('heading_size'),
       ];
