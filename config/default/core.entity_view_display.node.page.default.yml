@@ -187,8 +187,8 @@ third_party_settings:
         Forms: {  }
         'Lists (Views)': {  }
         Menus:
-          - 'system_menu_block:main'
           - 'menu_block:main'
+          - 'system_menu_block:main'
         Superfish: {  }
         System: {  }
         'University of Iowa Alerts': {  }
@@ -198,10 +198,12 @@ third_party_settings:
         core: {  }
       blacklisted_blocks:
         'Custom block types':
+          - uiowa_articles
           - uiowa_hero
           - uiowa_page_title_hero
           - uiowa_spacer_separator
         'Inline blocks':
+          - 'inline_block:uiowa_articles'
           - 'inline_block:uiowa_hero'
           - 'inline_block:uiowa_page_title_hero'
           - 'inline_block:uiowa_spacer_separator'
