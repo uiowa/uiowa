@@ -3449,3 +3449,9 @@ $sites['labmangalam.local.drupal.uiowa.edu'] = 'mangalam.lab.uiowa.edu';
 $sites['labmangalam.dev.drupal.uiowa.edu'] = 'mangalam.lab.uiowa.edu';
 $sites['labmangalam.stage.drupal.uiowa.edu'] = 'mangalam.lab.uiowa.edu';
 $sites['labmangalam.prod.drupal.uiowa.edu'] = 'mangalam.lab.uiowa.edu';
+
+// Directory aliases for moore.lab.uiowa.edu.
+$sites['labmoore.local.drupal.uiowa.edu'] = 'moore.lab.uiowa.edu';
+$sites['labmoore.dev.drupal.uiowa.edu'] = 'moore.lab.uiowa.edu';
+$sites['labmoore.stage.drupal.uiowa.edu'] = 'moore.lab.uiowa.edu';
+$sites['labmoore.prod.drupal.uiowa.edu'] = 'moore.lab.uiowa.edu';
