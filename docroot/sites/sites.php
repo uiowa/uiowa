@@ -3413,3 +3413,9 @@ $sites['labli.local.drupal.uiowa.edu'] = 'li.lab.uiowa.edu';
 $sites['labli.dev.drupal.uiowa.edu'] = 'li.lab.uiowa.edu';
 $sites['labli.stage.drupal.uiowa.edu'] = 'li.lab.uiowa.edu';
 $sites['labli.prod.drupal.uiowa.edu'] = 'li.lab.uiowa.edu';
+
+// Directory aliases for cpl.lab.uiowa.edu.
+$sites['labcpl.local.drupal.uiowa.edu'] = 'cpl.lab.uiowa.edu';
+$sites['labcpl.dev.drupal.uiowa.edu'] = 'cpl.lab.uiowa.edu';
+$sites['labcpl.stage.drupal.uiowa.edu'] = 'cpl.lab.uiowa.edu';
+$sites['labcpl.prod.drupal.uiowa.edu'] = 'cpl.lab.uiowa.edu';
