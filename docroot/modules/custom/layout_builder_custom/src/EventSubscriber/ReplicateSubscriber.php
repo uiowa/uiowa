@@ -4,10 +4,8 @@ namespace Drupal\layout_builder_custom\EventSubscriber;
 
 use Drupal\Component\Uuid\UuidInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Session\AccountProxyInterface;
-use Drupal\layout_builder\Plugin\Block\InlineBlock;
 use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
 use Drupal\replicate\Events\AfterSaveEvent;
 use Drupal\views\Plugin\Block\ViewsBlock;
@@ -25,13 +23,6 @@ class ReplicateSubscriber implements EventSubscriberInterface {
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
-
-  /**
-   * The entity field manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityFieldManagerInterface
-   */
-  protected $entityFieldManager;
 
   /**
    * UUID.
@@ -59,8 +50,6 @@ class ReplicateSubscriber implements EventSubscriberInterface {
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
-   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager
-   *   The entity field manager.
    * @param \Drupal\Component\Uuid\UuidInterface $uuid
    *   UUID.
    * @param \Drupal\Core\Path\CurrentPathStack $currentPath
@@ -68,9 +57,8 @@ class ReplicateSubscriber implements EventSubscriberInterface {
    * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
    *   The current user.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, EntityFieldManagerInterface $entityFieldManager, UuidInterface $uuid, CurrentPathStack $currentPath, AccountProxyInterface $currentUser) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, UuidInterface $uuid, CurrentPathStack $currentPath, AccountProxyInterface $currentUser) {
     $this->entityTypeManager = $entityTypeManager;
-    $this->entityFieldManager = $entityFieldManager;
     $this->uuid = $uuid;
     $this->currentPath = $currentPath;
     $this->currentUser = $currentUser;
