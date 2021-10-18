@@ -331,9 +331,17 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
         ]
       ];
       if ($org && $style->getField($id, 'field_article_source_org')) {
+        $org = $style->getField($id, 'field_article_source_org');
+        if ($style->getField($id, 'field_article_source_link') === NULL) {
+          if ($source_link) {
+            $org = Link::fromTextAndUrl($style->getField($id, 'field_article_source_org'), Url::fromUri($source_link))
+              ->toString();
+          }
+        }
+
         $card_tag['org'] = [
           '#prefix' => '<span class="views-field-article-source-link">',
-          '#markup' => $style->getField($id, 'field_article_source_org'),
+          '#markup' => $org,
           '#suffix' => '</span>',
         ];
       }
