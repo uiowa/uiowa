@@ -330,14 +330,14 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
           ],
         ]
       ];
-      if ($org) {
+      if ($org && $style->getField($id, 'field_article_source_org')) {
         $card_tag['org'] = [
           '#prefix' => '<span class="views-field-article-source-link">',
           '#markup' => $style->getField($id, 'field_article_source_org'),
           '#suffix' => '</span>',
         ];
       }
-      if ($source_link) {
+      if ($source_link && $style->getField($id, 'field_article_source_link')) {
         $card_tag['source_link'] = [
           '#prefix' => '<span class="views-field-article-source-link">',
           '#markup' => $style->getField($id, 'field_article_source_link'),
