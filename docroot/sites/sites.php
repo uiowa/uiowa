@@ -3521,3 +3521,9 @@ $sites['labchapleau.local.drupal.uiowa.edu'] = 'chapleau.lab.uiowa.edu';
 $sites['labchapleau.dev.drupal.uiowa.edu'] = 'chapleau.lab.uiowa.edu';
 $sites['labchapleau.stage.drupal.uiowa.edu'] = 'chapleau.lab.uiowa.edu';
 $sites['labchapleau.prod.drupal.uiowa.edu'] = 'chapleau.lab.uiowa.edu';
+
+// Directory aliases for zingman.lab.uiowa.edu.
+$sites['labzingman.local.drupal.uiowa.edu'] = 'zingman.lab.uiowa.edu';
+$sites['labzingman.dev.drupal.uiowa.edu'] = 'zingman.lab.uiowa.edu';
+$sites['labzingman.stage.drupal.uiowa.edu'] = 'zingman.lab.uiowa.edu';
+$sites['labzingman.prod.drupal.uiowa.edu'] = 'zingman.lab.uiowa.edu';
