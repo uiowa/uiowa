@@ -75,9 +75,18 @@
 
   {% if page.breadcrumb %}
     {{ page.breadcrumb }}
-  {% endif %}
-
+    {% endif %}
+    
   {{ page.content }}
+
+                       	<div class="scrollUp">
+              <div class="scrollList">
+                <a class="v-dot-link" href="#" aria-labelledby="v-dot-nav-section" data-section="hero-banner">
+                  {{ '<i class="fas fa-arrow-up"></i>'|t }}
+                  <span id="v-dot-nav-section">"Back to Top"</span>
+                </a>
+              </div>
+            </div>
 
   {# /.layout-content #}
 </main>

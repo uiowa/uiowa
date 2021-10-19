@@ -1,6 +1,7 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
 @import "assets/scss/layout-main.scss";
+@import "uids/components/menus/vertical-dots/vertical-dots.scss";
 
 .block-inline-blockuiowa-spacer-separator {
   @include margin($top: $sm, $bottom: $sm);
@@ -35,6 +36,154 @@
 // todo - add styles for College main content margins when sticky
 main {
   flex: 1 0 auto;
+}
+.scrollUp {
+   position: fixed;
+   z-index: 2;
+   right: -20px;
+   height: 100vh;
+   top: 0;
+   padding-right: 20px;
+   align-items: center;
+   pointer-events: none;
+
+  @include breakpoint(menu) {
+    display: flex;
+  }
+  span:after {
+    left: 100%;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba(136, 183, 213, 0);
+    border-left-color: $primary;
+    border-width: 8px;
+    margin-top: -8px;
+  }
+  .scrollList {
+    pointer-events: all;
+
+    span {
+      padding: 0.25rem 1.2rem 0.15rem;
+      background-color: $primary;
+      box-decoration-break: clone;
+      line-height: 1.4;
+      text-transform: uppercase;
+      font-family: $font-family-caps;
+      -webkit-font-smoothing: auto;
+      -moz-osx-font-smoothing: auto;
+      right: calc(100% - 10px);
+      position: absolute;
+      white-space: nowrap;
+      top: calc(50% - 16px);
+      transform: translateX(calc(100% + 60px));
+      transition: all 0.3s ease-in-out;
+    }
+    a {
+      position: relative;
+      color: #151515;
+      width: 30px;
+      height: 30px;
+      border-radius: 21px;
+      background-color: $primary;
+      display: block;
+      transition: all 0.3s ease-in-out;
+      transition-property: background-color;
+      text-decoration: none;
+      margin-left: -40px;
+
+      &:hover {
+        span {
+          transform: translateX(-21px);
+        }
+      }
+
+      &:focus {
+        span {
+          text-decoration: underline;
+          transform: translateX(calc(100% + 60px));
+        }
+      }
+
+      &.current {
+        &:before {
+          transform: scale(2.2);
+        }
+      }
+    }
+
+    svg.svg-inline--fa {
+      height: 30px;
+      width: 30px;
+      background-color: $secondary;
+      z-index: 3;
+      text-align: center;
+      display: flex;
+      color: $primary;
+      align-items: center;
+      justify-content: center;
+      border-radius: 21px;
+      padding: 5px;
+      position: fixed;
+
+      span {
+        top: 0;
+        z-index: 4;
+        right: calc(100% - 40px);
+      }
+
+      a {
+        background-color: transparent;
+        box-shadow: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        height: unset;
+        width: unset;
+        border: none;
+        padding-right: 3px;
+
+        &:before {
+          content: unset;
+        }
+
+      }
+      &:hover span {
+        transform: translateX(-48px);
+      }
+    }
+  }
+}
+.v-dots-scroll-spacer,
+.vertical-dots--section {
+  position: relative;
+
+  .v-dots-scroll-target,
+  .vertical-dots--target {
+    position: relative;
+    top: 0px;
+
+    @include breakpoint(menu) {
+      top: -49px;
+    }
+  }
+}
+.no-top-scroll {
+  .scrollUp {
+      display: none;
+    }
+}
+
+// sticky footer
+.dialog-off-canvas-main-canvas {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
 
 .header-sticky {

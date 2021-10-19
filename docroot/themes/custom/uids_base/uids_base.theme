@@ -86,6 +86,13 @@ function uids_base_preprocess_html(&$variables) {
   }
 
   $variables['attributes']['class'][] = $sticky_class;
+  
+  $toppage = 'scroll-up';
+  // Used for page by page basis display of scroll to top button
+  if (theme_get_setting('header.toppage')) {
+    $toppage = 'no-top-scroll';
+  }
+  $variables['attributes']['class'][] = $toppage;
 
   // Get header type for setting sticky padding for tertiary header.
   $variables['header_type'] = theme_get_setting('header.type');
@@ -130,6 +137,7 @@ function uids_base_preprocess_page(&$variables) {
   $variables['header_type'] = theme_get_setting('header.type');
   $variables['header_nav'] = theme_get_setting('header.nav_style');
   $variables['header_sticky'] = theme_get_setting('header.sticky');
+  $variables['header_toppage'] = theme_get_setting('header.toppage');
   $variables['header_classes'] = [];
   $name_length = strlen($variables['site_name']);
 
@@ -430,6 +438,9 @@ function uids_base_preprocess_layout(&$variables) {
       if (array_search('no_sidebars', array_column($publish_options, 'value')) !== FALSE) {
         // Remove sidebar regions.
         $variables['attributes']['class'][] = 'sidebar-invisible';
+      }
+      if (array_search('no_top_scroll', array_column($publish_options, 'value')) !== FALSE) {
+        $variables["attributes"]['class'][] = 'no-top-scroll';
       }
     }
 
