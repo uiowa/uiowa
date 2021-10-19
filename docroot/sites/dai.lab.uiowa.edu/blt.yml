@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labdai.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labdai
+  human_name: dai.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labdai.prod
+drupal:
+  db:
+    database: dai_lab_uiowa_edu
+uiowa:
+  requester: swartzendrubert
