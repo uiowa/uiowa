@@ -3545,3 +3545,9 @@ $sites['labsingh.local.drupal.uiowa.edu'] = 'singh.lab.uiowa.edu';
 $sites['labsingh.dev.drupal.uiowa.edu'] = 'singh.lab.uiowa.edu';
 $sites['labsingh.stage.drupal.uiowa.edu'] = 'singh.lab.uiowa.edu';
 $sites['labsingh.prod.drupal.uiowa.edu'] = 'singh.lab.uiowa.edu';
+
+// Directory aliases for grumbach.lab.uiowa.edu.
+$sites['labgrumbach.local.drupal.uiowa.edu'] = 'grumbach.lab.uiowa.edu';
+$sites['labgrumbach.dev.drupal.uiowa.edu'] = 'grumbach.lab.uiowa.edu';
+$sites['labgrumbach.stage.drupal.uiowa.edu'] = 'grumbach.lab.uiowa.edu';
+$sites['labgrumbach.prod.drupal.uiowa.edu'] = 'grumbach.lab.uiowa.edu';
