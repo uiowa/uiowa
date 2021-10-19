@@ -164,27 +164,30 @@ function sitenow_media_wysiwyg_media_update(EntityInterface $entity) {
 
     switch ($entity->bundle()) {
       case 'file':
-        $file = File::load($entity->field_media_file->target_id);
+        $field = 'field_media_file';
         break;
 
       case 'audio':
-        $file = File::load($entity->field_media_audio_file->target_id);
+        $field = 'field_media_audio_file';
         break;
 
       case 'image':
-        $file = File::load($entity->field_media_image->target_id);
-        image_path_flush($file->getFileUri());
+        $field = 'field_media_image';
         $styles = ImageStyle::loadMultiple();
-
-        foreach ($styles as $style) {
-          $invalidations[] = $purgeInvalidationFactory->get('url', $style->buildUrl($file->getFileUri()));
-        }
-
         break;
     }
 
-    if (isset($file)) {
+    if ($entity->hasField($field)) {
+      $file = File::load($entity->$field->target_id);
       $invalidations[] = $purgeInvalidationFactory->get('url', $file->createFileUrl(FALSE));
+
+      // Note that media_entity_file_replace flushes derivative images.
+      if (isset($styles)) {
+        foreach ($styles as $style) {
+          $invalidations[] = $purgeInvalidationFactory->get('url', $style->buildUrl($file->getFileUri()));
+        }
+      }
+
       $purgeQueue->add($queuer, $invalidations);
     }
   }
