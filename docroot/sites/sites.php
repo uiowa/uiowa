@@ -3551,3 +3551,9 @@ $sites['labgrumbach.local.drupal.uiowa.edu'] = 'grumbach.lab.uiowa.edu';
 $sites['labgrumbach.dev.drupal.uiowa.edu'] = 'grumbach.lab.uiowa.edu';
 $sites['labgrumbach.stage.drupal.uiowa.edu'] = 'grumbach.lab.uiowa.edu';
 $sites['labgrumbach.prod.drupal.uiowa.edu'] = 'grumbach.lab.uiowa.edu';
+
+// Directory aliases for mgnait.lab.uiowa.edu.
+$sites['labmgnait.local.drupal.uiowa.edu'] = 'mgnait.lab.uiowa.edu';
+$sites['labmgnait.dev.drupal.uiowa.edu'] = 'mgnait.lab.uiowa.edu';
+$sites['labmgnait.stage.drupal.uiowa.edu'] = 'mgnait.lab.uiowa.edu';
+$sites['labmgnait.prod.drupal.uiowa.edu'] = 'mgnait.lab.uiowa.edu';
