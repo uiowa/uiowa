@@ -3497,3 +3497,9 @@ $sites['labthiel.local.drupal.uiowa.edu'] = 'thiel.lab.uiowa.edu';
 $sites['labthiel.dev.drupal.uiowa.edu'] = 'thiel.lab.uiowa.edu';
 $sites['labthiel.stage.drupal.uiowa.edu'] = 'thiel.lab.uiowa.edu';
 $sites['labthiel.prod.drupal.uiowa.edu'] = 'thiel.lab.uiowa.edu';
+
+// Directory aliases for sivitz.lab.uiowa.edu.
+$sites['labsivitz.local.drupal.uiowa.edu'] = 'sivitz.lab.uiowa.edu';
+$sites['labsivitz.dev.drupal.uiowa.edu'] = 'sivitz.lab.uiowa.edu';
+$sites['labsivitz.stage.drupal.uiowa.edu'] = 'sivitz.lab.uiowa.edu';
+$sites['labsivitz.prod.drupal.uiowa.edu'] = 'sivitz.lab.uiowa.edu';
