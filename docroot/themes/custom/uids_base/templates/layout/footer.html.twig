@@ -1,5 +1,6 @@
 {# Pre-footer (Calls to action) #}
-{% if page.pre_footer %}
+{% set pre_footer_rendered = page.pre_footer | render %}
+{% if pre_footer_rendered|striptags('<embed><hr><iframe><img><input>')|trim %}
   <div role="region" class="footer-cta__wrapper">
     <div class="footer-cta__container">
       {{ page.pre_footer }}

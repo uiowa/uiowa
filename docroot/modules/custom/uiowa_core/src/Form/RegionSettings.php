@@ -23,9 +23,9 @@ class RegionSettings extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function __construct(ConfigFactoryInterface $config_factory, EntityTypeManagerInterface $entityTypeManager) {
+  public function __construct(ConfigFactoryInterface $config_factory, EntityTypeManagerInterface $entity_type_manager) {
     parent::__construct($config_factory);
-    $this->entityTypeManager = $entityTypeManager;
+    $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
@@ -67,9 +67,9 @@ class RegionSettings extends ConfigFormBase {
     $fid = $config->get('uiowa_core.pre_footer');
     $form['pre_footer'] = [
       '#type' => 'entity_autocomplete',
-      '#title' => 'Pre Footer Fragment',
+      '#title' => 'Pre footer',
       '#target_type' => 'fragment',
-      '#default_value' => $fid != null ? $this->entityTypeManager->getStorage('fragment')->load($fid) : null,
+      '#default_value' => $fid != NULL ? $this->entityTypeManager->getStorage('fragment')->load($fid) : NULL,
       '#selection_settings' => [
         'target_bundles' => ['region_item'],
       ],
