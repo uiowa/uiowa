@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labgrumbach.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labgrumbach
+  human_name: grumbach.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labgrumbach.prod
+drupal:
+  db:
+    database: grumbach_lab_uiowa_edu
+uiowa:
+  requester: strommerl
