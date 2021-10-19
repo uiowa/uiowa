@@ -177,7 +177,7 @@ function sitenow_media_wysiwyg_media_update(EntityInterface $entity) {
         break;
     }
 
-    if ($entity->hasField($field)) {
+    if (isset($field) && $entity->hasField($field)) {
       $file = File::load($entity->$field->target_id);
       $invalidations[] = $purgeInvalidationFactory->get('url', $file->createFileUrl(FALSE));
 
