@@ -3515,3 +3515,9 @@ $sites['labsnyder.local.drupal.uiowa.edu'] = 'snyder.lab.uiowa.edu';
 $sites['labsnyder.dev.drupal.uiowa.edu'] = 'snyder.lab.uiowa.edu';
 $sites['labsnyder.stage.drupal.uiowa.edu'] = 'snyder.lab.uiowa.edu';
 $sites['labsnyder.prod.drupal.uiowa.edu'] = 'snyder.lab.uiowa.edu';
+
+// Directory aliases for chapleau.lab.uiowa.edu.
+$sites['labchapleau.local.drupal.uiowa.edu'] = 'chapleau.lab.uiowa.edu';
+$sites['labchapleau.dev.drupal.uiowa.edu'] = 'chapleau.lab.uiowa.edu';
+$sites['labchapleau.stage.drupal.uiowa.edu'] = 'chapleau.lab.uiowa.edu';
+$sites['labchapleau.prod.drupal.uiowa.edu'] = 'chapleau.lab.uiowa.edu';
