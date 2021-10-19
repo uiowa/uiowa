@@ -1,10 +1,9 @@
 {# Pre-footer (Calls to action) #}
 {% set pre_footer_rendered = page.pre_footer | render %}
-{% if pre_footer_rendered|striptags('<embed><hr><iframe><img><input>')|trim %}
-  <div role="region" class="footer-cta__wrapper">
-    <div class="footer-cta__container">
-      {{ page.pre_footer }}
-    </div>
+{{ devel_breakpoint(pre_footer_rendered) }}
+{% if pre_footer_rendered|striptags('<embed><hr><iframe><img><input><drupal-render-placeholder>')|trim %}
+  <div role="region" class="content__container">
+    {{ page.pre_footer }}
   </div>
 {% endif %}
 
