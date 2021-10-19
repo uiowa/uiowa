@@ -9,6 +9,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\FileInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\file\Entity\File;
+use Drupal\image\Entity\ImageStyle;
 
 /**
  * Implements hook_field_widget_WIDGET_TYPE_form_alter().
@@ -159,24 +160,31 @@ function sitenow_media_wysiwyg_media_update(EntityInterface $entity) {
     $purgeQueuers = \Drupal::service('purge.queuers');
     $purgeQueue = \Drupal::service('purge.queue');
     $queuer = $purgeQueuers->get('coretags');
+    $invalidations = [];
 
     switch ($entity->bundle()) {
       case 'file':
         $file = File::load($entity->field_media_file->target_id);
         break;
+
       case 'audio':
         $file = File::load($entity->field_media_audio_file->target_id);
         break;
+
       case 'image':
         $file = File::load($entity->field_media_image->target_id);
+        image_path_flush($file->getFileUri());
+        $styles = ImageStyle::loadMultiple();
+
+        foreach ($styles as $style) {
+          $invalidations[] = $purgeInvalidationFactory->get('url', $style->buildUrl($file->getFileUri()));
+        }
+
         break;
     }
 
     if (isset($file)) {
-      $invalidations = [
-        $purgeInvalidationFactory->get('url', $file->createFileUrl(FALSE)),
-      ];
-
+      $invalidations[] = $purgeInvalidationFactory->get('url', $file->createFileUrl(FALSE));
       $purgeQueue->add($queuer, $invalidations);
     }
   }
