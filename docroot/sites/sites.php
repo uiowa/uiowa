@@ -3557,3 +3557,9 @@ $sites['labmgnait.local.drupal.uiowa.edu'] = 'mgnait.lab.uiowa.edu';
 $sites['labmgnait.dev.drupal.uiowa.edu'] = 'mgnait.lab.uiowa.edu';
 $sites['labmgnait.stage.drupal.uiowa.edu'] = 'mgnait.lab.uiowa.edu';
 $sites['labmgnait.prod.drupal.uiowa.edu'] = 'mgnait.lab.uiowa.edu';
+
+// Directory aliases for beckergroup.lab.uiowa.edu.
+$sites['labbeckergroup.local.drupal.uiowa.edu'] = 'beckergroup.lab.uiowa.edu';
+$sites['labbeckergroup.dev.drupal.uiowa.edu'] = 'beckergroup.lab.uiowa.edu';
+$sites['labbeckergroup.stage.drupal.uiowa.edu'] = 'beckergroup.lab.uiowa.edu';
+$sites['labbeckergroup.prod.drupal.uiowa.edu'] = 'beckergroup.lab.uiowa.edu';
