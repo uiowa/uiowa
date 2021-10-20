@@ -109,6 +109,13 @@ class LayoutBuilderActive extends ConditionPluginBase implements ContainerFactor
       $show = !$this->isLayoutCompatibleEntity($node);
     }
 
+    // This covers layout builder for fragments.
+    $fragment = $this->routeMatch->getParameter('fragment');
+
+    if ($fragment instanceof \Drupal\fragments\Entity\FragmentInterface) {
+      $show = !$this->isLayoutCompatibleEntity($fragment);
+    }
+
     // Handle negation.
     if ($this->isNegated()) {
       $show = !$show;
