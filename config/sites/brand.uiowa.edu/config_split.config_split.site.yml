@@ -12,31 +12,20 @@ module:
   swiftmailer: 0
   workbench_email: 0
 theme: {  }
-blacklist: {  }
-graylist:
-  - administerusersbyrole.settings
+blacklist:
   - config_split.config_split.site
-  - core.entity_form_display.node.lockup.default
-  - core.entity_view_display.node.lockup.default
-  - field.storage.node.field_lockup_org
-  - field.storage.node.field_lockup_primary_unit
-  - field.storage.node.field_lockup_p_unit_stacked
-  - field.storage.node.field_lockup_sub_unit
-  - field.storage.node.field_lockup_s_unit_stacked
   - node.type.lockup
   - pathauto.pattern.lockup
-  - system.mail
   - taxonomy.vocabulary.orgs
-  - uiowa_auth.settings
   - user.role.collaborator
-  - user.role.editor
-  - user.role.publisher
-  - user.role.webmaster
   - views.view.lockups
   - views.view.lockup_moderation
   - workflows.workflow.lockup
-  - 'core.base_field_override.node.lockup.*'
-  - 'field.field.node.lockup.*'
+  - 'field.storage.node.field_lockup_*'
+graylist:
+  - administerusersbyrole.settings
+  - system.mail
+  - uiowa_auth.settings
   - 'workbench_email.*'
   - 'user.role.*'
 graylist_dependents: true
