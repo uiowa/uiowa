@@ -3539,3 +3539,10 @@ function sitenow_update_9021() {
     ->set('uiowa_core.replicate_allowed', [])
     ->save();
 }
+
+/**
+ * Re-activate replicate functionality for v3 sites.
+ */
+function sitenow_update_9022() {
+  sitenow_update_9020();
+}
