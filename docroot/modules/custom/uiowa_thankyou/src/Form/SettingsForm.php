@@ -6,6 +6,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\StorageInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Component\Serialization\Json;
 
 /**
  * Configure Uiowa Thank You settings for this site.
@@ -171,11 +172,11 @@ class SettingsForm extends ConfigFormBase {
       $campaign_url = $uiowa_thankyou_settings->get('oneit_thankyou_dispatch_campaign');
       // @todo Update these.
       $campaigns = $this->_dispatch_get_data($endpoint . 'campaigns', $apikey);
-      $campaigns = drupal_json_decode($campaigns->data);
+      $campaigns = Json::decode($campaigns->data);
       $options = array('0' => 'None');
       foreach ($campaigns as $campaign) {
         $r = $this->_dispatch_get_data($campaign, $apikey);
-        $d = drupal_json_decode($r->data);
+        $d = Json::decode($r->data);
         $options[$campaign] = $d['name'];
       }
 
@@ -189,11 +190,11 @@ class SettingsForm extends ConfigFormBase {
       if (!empty($campaign_url)) {
         // @todo Update these.
         $communications = $this->_dispatch_get_data($campaign_url . '/communications', $apikey);
-        $communications = drupal_json_decode($communications->data);
+        $communications = Json::decode($communications->data);
         $options = array('0' => 'None');
         foreach ($communications as $communication) {
           $r = $this->_dispatch_get_data($communication, $apikey);
-          $d = drupal_json_decode($r->data);
+          $d = Json::decode($r->data);
           $options[$communication] = $d['name'];
         }
 
