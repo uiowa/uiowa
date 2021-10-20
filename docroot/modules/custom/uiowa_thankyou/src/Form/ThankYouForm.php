@@ -7,6 +7,7 @@ use Drupal\Core\Config\StorageInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Serialization\Json;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a Dispatch-enabled Thank You form.
@@ -20,16 +21,12 @@ class ThankYouForm extends FormBase {
   protected $configStorage;
 
   /**
-   * Form constructor.
-   *
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   The config.factory service.
-   * @param \Drupal\Core\Config\StorageInterface $configStorage
-   *   The config.storage service.
+   * {@inheritdoc}
    */
-  public function __construct(ConfigFactoryInterface $config_factory, StorageInterface $configStorage) {
-    parent::__construct($config_factory);
-    $this->configStorage = $configStorage;
+  public static function create(ContainerInterface $container) {
+    $instance = parent::create($container);
+    $instance->configStorage = $container->get('config.storage');
+    return $instance;
   }
 
   /**
