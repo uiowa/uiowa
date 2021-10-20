@@ -6,6 +6,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\StorageInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Component\Serialization\Json;
 
 /**
  * Provides a Dispatch-enabled Thank You form.
@@ -124,18 +125,16 @@ class ThankYouForm extends FormBase {
     $user = $uiowa_thankyou_settings->get('uiowa_thankyou_hrapi_user');
     $pass = $uiowa_thankyou_settings->get('uiowa_thankyou_hrapi_pass');
     $endpoint = 'https://' . $user . ':' . $pass . '@hris.uiowa.edu/apigateway/oneit/thankyounotes/addressee?email=' . $recipient_email;
-    // @todo Update this.
-    $request = drupal_http_request($endpoint, array(
-      'headers' => array(
+    $request = Drupal::httpClient()->get($endpoint, [
+      'headers' => [
         'accept' => 'application/json',
-      ),
-    ));
+      ],
+    ]);
     // If the request is successful.
     if ($request->code == '200') {
       $form_state['thankyou_vars'] = array(
         'recipient_email' => $recipient_email,
-        // @todo Update this.
-        'hr_data' => drupal_json_decode($request->data),
+        'hr_data' => Json::decode($request->data),
         'component_id' => $component_id,
         'placeholders' => $placeholders,
       );
@@ -147,8 +146,7 @@ class ThankYouForm extends FormBase {
       else {
         $message = $request->error;
       }
-      // @todo Update this.
-      form_set_error($form['#node']->webform['components'][$component_id]['name'], $message);
+      $form_state->setErrorByName($component_id, $message);
     }
     parent::validateForm($form, $form_state);
   }
