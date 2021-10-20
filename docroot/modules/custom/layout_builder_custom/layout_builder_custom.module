@@ -466,14 +466,12 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       }
 
       break;
-  }
-}
 
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function layout_builder_custom_form_node_page_layout_builder_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['#attached']['library'][] = 'layout_builder_custom/layout_builder_custom.overrides';
+    case 'fragment_region_item_layout_builder_form':
+    case 'node_page_layout_builder_form':
+      $form['#attached']['library'][] = 'layout_builder_custom/layout_builder_custom.overrides';
+      break;
+  }
 }
 
 /**
