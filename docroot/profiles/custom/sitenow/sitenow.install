@@ -3546,3 +3546,17 @@ function sitenow_update_9021() {
 function sitenow_update_9022() {
   sitenow_update_9020();
 }
+
+/**
+ * Remove headline content from footer block before setting perms
+ */
+function sitenow_update_9023() {
+  /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
+  $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+
+  $block = \Drupal::service('entity.repository')->loadEntityByUuid('block_content', '0c0c1f36-3804-48b0-b384-6284eed8c67e');
+  if (!empty($block->get('field_uiowa_headline')->getValue())) {
+    $block->set('field_uiowa_headline', '')
+    ->save();
+  }
+}
