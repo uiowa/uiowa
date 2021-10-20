@@ -3617,7 +3617,7 @@ function sitenow_update_9022() {
       'pager' => $block->field_collection_pager->value ? 'full' : 'some',
       'pager_offset' => 0,
       'use_more' => $block->field_collection_more->value,
-      'use_more_link_url' => $block->field_collection_more_path->value,
+      'use_more_link_url' => $block->field_collection_more_path->uri,
       'sort' => [
         'sticky' => [
           'order' => 'DESC',
