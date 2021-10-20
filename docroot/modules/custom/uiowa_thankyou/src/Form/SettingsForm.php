@@ -170,11 +170,11 @@ class SettingsForm extends ConfigFormBase {
     if (!empty($apikey)) {
       $campaign_url = $uiowa_thankyou_settings->get('oneit_thankyou_dispatch_campaign');
       // @todo Update these.
-      $campaigns = _dispatch_get_data($endpoint . 'campaigns', $apikey);
+      $campaigns = $this->_dispatch_get_data($endpoint . 'campaigns', $apikey);
       $campaigns = drupal_json_decode($campaigns->data);
       $options = array('0' => 'None');
       foreach ($campaigns as $campaign) {
-        $r = _dispatch_get_data($campaign, $apikey);
+        $r = $this->_dispatch_get_data($campaign, $apikey);
         $d = drupal_json_decode($r->data);
         $options[$campaign] = $d['name'];
       }
@@ -188,11 +188,11 @@ class SettingsForm extends ConfigFormBase {
       ];
       if (!empty($campaign_url)) {
         // @todo Update these.
-        $communications = _dispatch_get_data($campaign_url . '/communications', $apikey);
+        $communications = $this->_dispatch_get_data($campaign_url . '/communications', $apikey);
         $communications = drupal_json_decode($communications->data);
         $options = array('0' => 'None');
         foreach ($communications as $communication) {
-          $r = _dispatch_get_data($communication, $apikey);
+          $r = $this->_dispatch_get_data($communication, $apikey);
           $d = drupal_json_decode($r->data);
           $options[$communication] = $d['name'];
         }
@@ -269,6 +269,27 @@ class SettingsForm extends ConfigFormBase {
       ->set('oneit_thankyou_dispatch_supervisor_communication', $form_state->getValue('oneit_thankyou_dispatch_supervisor_communication'))
       ->save();
     parent::submitForm($form, $form_state);
+  }
+
+  /**
+   * Helper function to get dispatch data.
+   *
+   * @param $endpoint
+   *   Fully qualified url.
+   *
+   * @param $apikey
+   *   Api key from Dispatch.
+   *
+   * @return object
+   */
+  function _dispatch_get_data($endpoint, $apikey) {
+    $response = \Drupal::httpClient()->get($endpoint, [
+      'headers' => [
+        'x-dispatch-api-key' => $apikey,
+        'accept' => 'application/json',
+      ],
+    ]);
+    return $response;
   }
 
 }
