@@ -159,7 +159,7 @@ class ReplicateSubscriber implements EventSubscriberInterface {
   protected function setRevisionInformation(FieldableEntityInterface $entity) {
     $replicant = $this->getClonedNid();
     if (!empty($replicant)) {
-      $message = 'Replicated <a href="/node/' . $replicant . '">node ' . $replicant . '</a>.';
+      $message = 'Replicated <a href="/node/' . $replicant . '">node/' . $replicant . '</a>.';
     }
     else {
       $message = 'Replicated a node.';
