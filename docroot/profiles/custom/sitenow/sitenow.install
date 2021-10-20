@@ -3563,9 +3563,16 @@ function sitenow_update_9021() {
 }
 
 /**
- * Convert uiowa_articles to article_list_block.
+ * Re-activate replicate functionality for v3 sites.
  */
 function sitenow_update_9022() {
+  sitenow_update_9020();
+}
+
+/**
+ * Convert uiowa_articles to article_list_block.
+ */
+function sitenow_update_9023() {
   _update_all_blocks_by_plugin_id('inline_block:uiowa_articles', function (&$component, $block) {
     $styles = $component->get('layout_builder_styles_style');
 
