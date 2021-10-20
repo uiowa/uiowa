@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   module:
+    - layout_builder_custom
     - uiowa_core
   theme:
     - uids_base
@@ -17,4 +18,8 @@ settings:
   label: 'Pre Footer Region Block'
   provider: uiowa_core
   label_display: '0'
-visibility: {  }
+visibility:
+  layout_builder_active:
+    id: layout_builder_active
+    enabled: 1
+    negate: false
