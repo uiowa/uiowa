@@ -215,6 +215,14 @@ function uids_base_preprocess_page(&$variables) {
     }
   }
   $current_route = \Drupal::routeMatch();
+  $fragment = $current_route->getParameter('fragment');
+  if ($fragment instanceof \Drupal\fragments\Entity\FragmentInterface) {
+    // @todo Is there a better way to have a soft dependency on a class?
+    if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
+      $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($fragment);
+    }
+  }
+
   $route_name = $current_route->getRouteName();
 
   switch ($route_name) {
