@@ -2865,7 +2865,7 @@ function _convert_people_block_component(SectionComponent &$component, BlockCont
     $style_update_map = [
       'block_hide_descriptions' => 'delete',
       'block_hide_details' => 'delete',
-      'block_hide_image' => 'delete',
+      'block_hide_images' => 'delete',
       'block_grid_twocol_50_50' => 'block_grid_threecol_33_34_33',
       'list_format_grid' => 'list_format_list',
     ];
@@ -2944,7 +2944,7 @@ function _convert_people_block_component(SectionComponent &$component, BlockCont
     if (isset($styles)) {
       switch ($field) {
         case 'field_image':
-          if (in_array('block_hide_image', $styles)) {
+          if (in_array('block_hide_images', $styles)) {
             $hide = 1;
           }
           break;
@@ -3584,7 +3584,7 @@ function sitenow_update_9022() {
       $style_update_map = [
         'block_hide_descriptions' => 'delete',
         'block_hide_details' => 'delete',
-        'block_hide_image' => 'delete',
+        'block_hide_images' => 'delete',
         'block_grid_twocol_50_50' => 'block_grid_threecol_33_34_33',
         'list_format_grid' => 'list_format_list',
       ];

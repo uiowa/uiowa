@@ -528,7 +528,7 @@ function sitenow_articles_preprocess_paragraph(&$variables) {
  * Implements hook_views_pre_render().
  */
 function sitenow_articles_views_pre_render(ViewExecutable $view) {
-  // Add replacement token for people page path.
+  // Add replacement token for articles page path.
   $view->build_info['substitutions']['{{ sitenow_articles.path }}'] = _sitenow_articles_path_token_value();
 }
 
@@ -632,11 +632,11 @@ function sitenow_articles_tokens($type, $tokens, array $data, array $options, Bu
 }
 
 /**
- * Callback to get the SiteNow People view path.
+ * Callback to get the SiteNow Articles view path.
  */
 function _sitenow_articles_path_token_value() {
 
-  // Load people listing view.
+  // Load articles listing view.
   $view = Drupal::entityTypeManager()->getStorage('view')->load('articles');
 
   // Loop through displays except Master.
