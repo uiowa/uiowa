@@ -5,6 +5,7 @@
  * Functions to support theming in the uids_base theme.
  */
 
+use Drupal\fragments\Entity\FragmentInterface;
 use Drupal\block\Entity\Block;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -110,7 +111,7 @@ function uids_base_preprocess_html(&$variables) {
 
   $fragment = \Drupal::routeMatch()->getParameter('fragment');
 
-  if ($fragment instanceof \Drupal\fragments\Entity\FragmentInterface) {
+  if ($fragment instanceof FragmentInterface) {
     // @todo Is there a better way to have a soft dependency on a class?
     if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
       $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($fragment);
@@ -216,7 +217,7 @@ function uids_base_preprocess_page(&$variables) {
   }
   $current_route = \Drupal::routeMatch();
   $fragment = $current_route->getParameter('fragment');
-  if ($fragment instanceof \Drupal\fragments\Entity\FragmentInterface) {
+  if ($fragment instanceof FragmentInterface) {
     // @todo Is there a better way to have a soft dependency on a class?
     if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
       $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($fragment);
