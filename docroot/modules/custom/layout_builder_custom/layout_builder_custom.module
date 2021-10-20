@@ -367,6 +367,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               $form['layout_builder_style_media_format']['#default_value'] = 'media_format_widescreen';
               $form['layout_builder_style_card_image_size']['#default_value'] = 'card_image_small';
               $form['layout_builder_style_content_alignment']['#default_value'] = 'content_alignment_left';
+              $form['settings']['override']['hide_fields']['order_fields']['field_article_source_link']['hide']['#default_value'] = 1;
             }
             if ($block->getPluginId() == 'views_block:people_list_block-list_card') {
               $form['layout_builder_style_card_media_position']['#default_value'] = 'card_media_position_right';
