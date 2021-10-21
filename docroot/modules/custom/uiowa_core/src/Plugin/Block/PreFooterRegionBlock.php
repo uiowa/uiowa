@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @Block(
  *   id = "pre_footer_region_block",
  *   admin_label = @Translation("Pre Footer Region Block"),
- *   category = @Translation("Pre Footer Region Block"),
+ *   category = @Translation("Restricted"),
  * )
  */
 class PreFooterRegionBlock extends BlockBase implements ContainerFactoryPluginInterface {
