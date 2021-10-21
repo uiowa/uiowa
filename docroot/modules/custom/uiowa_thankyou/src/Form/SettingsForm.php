@@ -5,12 +5,15 @@ namespace Drupal\uiowa_thankyou\Form;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Serialization\Json;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure Uiowa Thank You settings for this site.
  */
 class SettingsForm extends ConfigFormBase {
+  use StringTranslationTrait;
+
   /**
    * The config.storage service.
    *
@@ -71,14 +74,14 @@ class SettingsForm extends ConfigFormBase {
     // Webform Setup.
     $form['webform_fs'] = [
       '#type' => 'fieldset',
-      '#title' => t('Webform Configuration'),
+      '#title' => $this->t('Webform Configuration'),
       '#collapsible' => TRUE,
     ];
     $form['webform_fs']['uiowa_thankyou_webform_id'] = [
       '#type' => 'textfield',
-      '#title' => t('Webform Node ID'),
+      '#title' => $this->t('Webform Node ID'),
       '#default_value' => $webform_nid,
-      '#description' => t('Provide the node id of the thank you webform.'),
+      '#description' => $this->t('Provide the node id of the thank you webform.'),
       '#required' => TRUE,
     ];
     // Only add form field if we have a node id.
@@ -92,57 +95,57 @@ class SettingsForm extends ConfigFormBase {
       $form['webform_fs']['uiowa_thankyou_recipient_email_form_component'] = [
         '#type' => 'select',
         '#options' => $options,
-        '#title' => 'Recipient Email Component',
+        '#title' => $this->t('Recipient Email Component'),
         '#default_value' => $uiowa_thankyou_settings->get('uiowa_thankyou_recipient_email_form_component'),
-        '#description' => t('Select the component that will be used for the recipient email.'),
+        '#description' => $this->t('Select the component that will be used for the recipient email.'),
         '#required' => TRUE,
       ];
       $form['webform_fs']['uiowa_thankyou_recipient_first_name_form_component'] = [
         '#type' => 'select',
         '#options' => $options,
-        '#title' => 'Recipient First Name Component',
+        '#title' => $this->t('Recipient First Name Component'),
         '#default_value' => $uiowa_thankyou_settings->get('uiowa_thankyou_recipient_first_name_form_component'),
-        '#description' => t('Select the component that will be used for the recipient first name.'),
+        '#description' => $this->t('Select the component that will be used for the recipient first name.'),
         '#required' => TRUE,
       ];
       $form['webform_fs']['uiowa_thankyou_recipient_last_name_form_component'] = [
         '#type' => 'select',
         '#options' => $options,
-        '#title' => 'Recipient Last Name Component',
+        '#title' => $this->t('Recipient Last Name Component'),
         '#default_value' => $uiowa_thankyou_settings->get('uiowa_thankyou_recipient_last_name_form_component'),
-        '#description' => t('Select the component that will be used for the recipient last name.'),
+        '#description' => $this->t('Select the component that will be used for the recipient last name.'),
         '#required' => TRUE,
       ];
       $form['webform_fs']['uiowa_thankyou_recipient_hawkid_form_component'] = [
         '#type' => 'select',
         '#options' => $options,
-        '#title' => 'Recipient HawkID Component',
+        '#title' => $this->t('Recipient HawkID Component'),
         '#default_value' => $uiowa_thankyou_settings->get('uiowa_thankyou_recipient_hawkid_form_component'),
-        '#description' => t('Select the component that will be used for the recipient hawkid.'),
+        '#description' => $this->t('Select the component that will be used for the recipient hawkid.'),
         '#required' => TRUE,
       ];
       $form['webform_fs']['uiowa_thankyou_supervisor_first_name_form_component'] = [
         '#type' => 'select',
         '#options' => $options,
-        '#title' => 'Supervisor First Name Component',
+        '#title' => $this->t('Supervisor First Name Component'),
         '#default_value' => $uiowa_thankyou_settings->get('uiowa_thankyou_supervisor_first_name_form_component'),
-        '#description' => t('Select the component that will be used for the supervisor first name.'),
+        '#description' => $this->t('Select the component that will be used for the supervisor first name.'),
         '#required' => TRUE,
       ];
       $form['webform_fs']['uiowa_thankyou_supervisor_last_name_form_component'] = [
         '#type' => 'select',
         '#options' => $options,
-        '#title' => 'Supervisor Last Name Component',
+        '#title' => $this->t('Supervisor Last Name Component'),
         '#default_value' => $uiowa_thankyou_settings->get('uiowa_thankyou_supervisor_last_name_form_component'),
-        '#description' => t('Select the component that will be used for the supervisor last name.'),
+        '#description' => $this->t('Select the component that will be used for the supervisor last name.'),
         '#required' => TRUE,
       ];
       $form['webform_fs']['uiowa_thankyou_supervisor_email_form_component'] = [
         '#type' => 'select',
         '#options' => $options,
-        '#title' => 'Supervisor Email Component',
+        '#title' => $this->t('Supervisor Email Component'),
         '#default_value' => $uiowa_thankyou_settings->get('uiowa_thankyou_supervisor_email_form_component'),
-        '#description' => t('Select the component that will be used for the supervisor email.'),
+        '#description' => $this->t('Select the component that will be used for the supervisor email.'),
         '#required' => TRUE,
       ];
     }
@@ -150,36 +153,36 @@ class SettingsForm extends ConfigFormBase {
     // HR API.
     $form['hr_fs'] = [
       '#type' => 'fieldset',
-      '#title' => t('HR API Configuration'),
+      '#title' => $this->t('HR API Configuration'),
       '#collapsible' => TRUE,
     ];
     $form['hr_fs']['uiowa_thankyou_hrapi_user'] = [
       '#type' => 'textfield',
-      '#title' => t('Username'),
+      '#title' => $this->t('Username'),
       '#default_value' => $uiowa_thankyou_settings->get('uiowa_thankyou_hrapi_user'),
-      '#description' => t('Username to connect to the HR API.'),
+      '#description' => $this->t('Username to connect to the HR API.'),
       '#required' => TRUE,
     ];
     $form['hr_fs']['uiowa_thankyou_hrapi_pass'] = [
       '#type' => 'password',
-      '#title' => t('Password'),
+      '#title' => $this->t('Password'),
       '#attributes' => [
         'value' => $uiowa_thankyou_settings->get('uiowa_thankyou_hrapi_pass')
       ],
-      '#description' => t('Password to connect to the HR API.'),
+      '#description' => $this->t('Password to connect to the HR API.'),
       '#required' => TRUE,
     ];
 
     $form['dispatch_fs'] = [
       '#type' => 'fieldset',
-      '#title' => t('Dispatch Configuration'),
+      '#title' => $this->t('Dispatch Configuration'),
       '#collapsible' => TRUE,
     ];
     $form['dispatch_fs']['uiowa_thankyou_dispatch_apikey'] = [
       '#type' => 'textfield',
-      '#title' => t('Dispatch API key'),
+      '#title' => $this->t('Dispatch API key'),
       '#default_value' => $api_key,
-      '#description' => t('Provide an API key from Dispatch client settings.'),
+      '#description' => $this->t('Provide an API key from Dispatch client settings.'),
     ];
     if (!empty($apikey)) {
       $campaign_url = $uiowa_thankyou_settings->get('oneit_thankyou_dispatch_campaign');
@@ -195,9 +198,9 @@ class SettingsForm extends ConfigFormBase {
 
       $form['dispatch_fs']['uiowa_thankyou_dispatch_campaign'] = [
         '#type' => 'select',
-        '#title' => t('Campaign'),
+        '#title' => $this->t('Campaign'),
         '#default_value' => $campaign_url,
-        '#description' => t('Select a Dispatch campaign.'),
+        '#description' => $this->t('Select a Dispatch campaign.'),
         '#options' => $options,
       ];
       if (!empty($campaign_url)) {
@@ -213,16 +216,16 @@ class SettingsForm extends ConfigFormBase {
 
         $form['dispatch_fs']['uiowa_thankyou_dispatch_recipient_communication'] = [
           '#type' => 'select',
-          '#title' => t('Recipient Communication'),
+          '#title' => $this->t('Recipient Communication'),
           '#default_value' => $uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_recipient_communication'),
-          '#description' => t('Select the recipient communication. Communications are managed in the <a href="https://apps.its.uiowa.edu/dispatch">dispatch interface</a>'),
+          '#description' => $this->t('Select the recipient communication. Communications are managed in the <a href="https://apps.its.uiowa.edu/dispatch">dispatch interface</a>'),
           '#options' => $options,
         ];
         $form['dispatch_fs']['uiowa_thankyou_dispatch_supervisor_communication'] = [
           '#type' => 'select',
-          '#title' => t('Supervisor Communication'),
+          '#title' => $this->t('Supervisor Communication'),
           '#default_value' => $uiowa_thankyou_settings->get('oneit_thankyou_dispatch_supervisor_communication'),
-          '#description' => t('Select the supervisor communication. Communications are managed in the <a href="https://apps.its.uiowa.edu/dispatch">dispatch interface</a>'),
+          '#description' => $this->t('Select the supervisor communication. Communications are managed in the <a href="https://apps.its.uiowa.edu/dispatch">dispatch interface</a>'),
           '#options' => $options,
         ];
         $form['dispatch_fs']['help'] = [
@@ -237,7 +240,7 @@ class SettingsForm extends ConfigFormBase {
         $form['dispatch_fs']['help']['member_attributes_help'] = [
           '#type' => 'html_tag',
           '#tag' => 'div',
-          '#value' => t('Member attributes can be used in Dispatch templates to dynamically display data. All webform component values will be passed to the template via member attributes. The attribute name will be the key of the webform component. For example webform_component_key can be used in a Dispatch template as ${webform_component_key}. Additional member attributes will be available from the HR API and will be hard-coded. @attr', array('@attr' => render($wf_mem_attr))),
+          '#value' => $this->t('Member attributes can be used in Dispatch templates to dynamically display data. All webform component values will be passed to the template via member attributes. The attribute name will be the key of the webform component. For example webform_component_key can be used in a Dispatch template as ${webform_component_key}. Additional member attributes will be available from the HR API and will be hard-coded. @attr', array('@attr' => render($wf_mem_attr))),
         ];
         if (!empty($webform_nid)) {
           $items = [];
@@ -247,7 +250,7 @@ class SettingsForm extends ConfigFormBase {
           $form['dispatch_fs']['help']['member_attributes'] = [
             '#theme' => 'item_list',
             '#items' => $items,
-            '#title' => t('Webform Component Keys'),
+            '#title' => $this->t('Webform Component Keys'),
           ];
         }
       }
