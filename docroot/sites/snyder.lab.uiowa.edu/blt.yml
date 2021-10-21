@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labsnyder.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labsnyder
+  human_name: snyder.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labsnyder.prod
+drupal:
+  db:
+    database: snyder_lab_uiowa_edu
+uiowa:
+  requester: strommerl
