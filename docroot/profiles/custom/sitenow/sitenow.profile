@@ -491,7 +491,6 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
       $uuid = $block->uuid();
       // For Footer Contact Information, limit non-admins to minimal.
       if ($uuid == '0c0c1f36-3804-48b0-b384-6284eed8c67e') {
-        /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
         $form['field_uiowa_headline']['#access'] = FALSE;
       }
       break;
