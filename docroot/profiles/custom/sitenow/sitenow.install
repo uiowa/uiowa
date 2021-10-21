@@ -3548,9 +3548,16 @@ function sitenow_update_9022() {
 }
 
 /**
- * Remove headline content from footer block before setting perms.
+ * Run again for any sites that were installed without this config.
  */
 function sitenow_update_9023() {
+  sitenow_update_9020();
+}
+
+/**
+ * Remove headline content from footer block before setting perms.
+ */
+function sitenow_update_9024() {
   /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
   $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
 
@@ -3559,4 +3566,3 @@ function sitenow_update_9023() {
     $block->set('field_uiowa_headline', '')
       ->save();
   }
-}
