@@ -4,7 +4,6 @@ namespace Drupal\uiowa_thankyou\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Component\Serialization\Json;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -167,7 +166,7 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'password',
       '#title' => $this->t('Password'),
       '#attributes' => [
-        'value' => $uiowa_thankyou_settings->get('uiowa_thankyou_hrapi_pass')
+        'value' => $uiowa_thankyou_settings->get('uiowa_thankyou_hrapi_pass'),
       ],
       '#description' => $this->t('Password to connect to the HR API.'),
       '#required' => TRUE,
@@ -187,11 +186,13 @@ class SettingsForm extends ConfigFormBase {
     if (!empty($apikey)) {
       $campaign_url = $uiowa_thankyou_settings->get('oneit_thankyou_dispatch_campaign');
       // @todo Update these.
-      $campaigns = $this->_dispatch_get_data($endpoint . 'campaigns', $apikey);
+      $campaigns = $this->_dispatchGetData($endpoint . 'campaigns', $apikey);
       $campaigns = $this->jsonController->decode($campaigns->data);
-      $options = array('0' => 'None');
+      $options = [
+        '0' => 'None'
+      ];
       foreach ($campaigns as $campaign) {
-        $r = $this->_dispatch_get_data($campaign, $apikey);
+        $r = $this->_dispatchGetData($campaign, $apikey);
         $d = $this->jsonController->decode($r->data);
         $options[$campaign] = $d['name'];
       }
@@ -205,11 +206,13 @@ class SettingsForm extends ConfigFormBase {
       ];
       if (!empty($campaign_url)) {
         // @todo Update these.
-        $communications = $this->_dispatch_get_data($campaign_url . '/communications', $apikey);
+        $communications = $this->_dispatchGetData($campaign_url . '/communications', $apikey);
         $communications = $this->jsonController->decode($communications->data);
-        $options = array('0' => 'None');
+        $options = [
+          '0' => 'None'
+        ];
         foreach ($communications as $communication) {
-          $r = $this->_dispatch_get_data($communication, $apikey);
+          $r = $this->_dispatchGetData($communication, $apikey);
           $d = $this->jsonController->decode($r->data);
           $options[$communication] = $d['name'];
         }
@@ -240,7 +243,9 @@ class SettingsForm extends ConfigFormBase {
         $form['dispatch_fs']['help']['member_attributes_help'] = [
           '#type' => 'html_tag',
           '#tag' => 'div',
-          '#value' => $this->t('Member attributes can be used in Dispatch templates to dynamically display data. All webform component values will be passed to the template via member attributes. The attribute name will be the key of the webform component. For example webform_component_key can be used in a Dispatch template as ${webform_component_key}. Additional member attributes will be available from the HR API and will be hard-coded. @attr', array('@attr' => render($wf_mem_attr))),
+          '#value' => $this->t('Member attributes can be used in Dispatch templates to dynamically display data. All webform component values will be passed to the template via member attributes. The attribute name will be the key of the webform component. For example webform_component_key can be used in a Dispatch template as ${webform_component_key}. Additional member attributes will be available from the HR API and will be hard-coded. @attr', [
+            '@attr' => render($wf_mem_attr)
+          ]),
         ];
         if (!empty($webform_nid)) {
           $items = [];
@@ -291,15 +296,15 @@ class SettingsForm extends ConfigFormBase {
   /**
    * Helper function to get dispatch data.
    *
-   * @param $endpoint
+   * @param string $endpoint
    *   Fully qualified url.
-   *
-   * @param $apikey
+   * @param string $apikey
    *   Api key from Dispatch.
    *
    * @return object
+   *   The HTTP response from dispatch.
    */
-  function _dispatch_get_data($endpoint, $apikey) {
+  protected function _dispatchGetData(string $endpoint, string $apikey) {
     // @todo Try and catch errors here.
     $response = $this->httpClient->get($endpoint, [
       'headers' => [
