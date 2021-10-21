@@ -489,7 +489,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
     case 'block_content_uiowa_text_area_edit_form':
       $block = $form_state->getFormObject()->getEntity();
       $uuid = $block->uuid();
-      // For Footer Contact Information, limit non-admins to minimal.
+      // For Footer Contact Information, remove field
       if ($uuid == '0c0c1f36-3804-48b0-b384-6284eed8c67e') {
         $form['field_uiowa_headline']['#access'] = FALSE;
       }
