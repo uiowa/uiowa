@@ -2,8 +2,6 @@
 
 namespace Drupal\uiowa_thankyou\Form;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Config\StorageInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Serialization\Json;
@@ -21,11 +19,27 @@ class SettingsForm extends ConfigFormBase {
   protected $configStorage;
 
   /**
+   * The serialization.json service.
+   *
+   * @var \Drupal\Component\Serialization\Json
+   */
+  protected $jsonController;
+
+  /**
+   * The HTTP Client service.
+   *
+   * @var \GuzzleHttp\ClientInterface
+   */
+  protected $httpClient;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
     $instance = parent::create($container);
     $instance->configStorage = $container->get('config.storage');
+    $instance->jsonController = $container->get('serialization.json');
+    $instance->httpClient = $container->get('http_client');
     return $instance;
   }
 
@@ -169,11 +183,11 @@ class SettingsForm extends ConfigFormBase {
       $campaign_url = $uiowa_thankyou_settings->get('oneit_thankyou_dispatch_campaign');
       // @todo Update these.
       $campaigns = $this->_dispatch_get_data($endpoint . 'campaigns', $apikey);
-      $campaigns = Json::decode($campaigns->data);
+      $campaigns = $this->jsonController->decode($campaigns->data);
       $options = array('0' => 'None');
       foreach ($campaigns as $campaign) {
         $r = $this->_dispatch_get_data($campaign, $apikey);
-        $d = Json::decode($r->data);
+        $d = $this->jsonController->decode($r->data);
         $options[$campaign] = $d['name'];
       }
 
@@ -187,11 +201,11 @@ class SettingsForm extends ConfigFormBase {
       if (!empty($campaign_url)) {
         // @todo Update these.
         $communications = $this->_dispatch_get_data($campaign_url . '/communications', $apikey);
-        $communications = Json::decode($communications->data);
+        $communications = $this->jsonController->decode($communications->data);
         $options = array('0' => 'None');
         foreach ($communications as $communication) {
           $r = $this->_dispatch_get_data($communication, $apikey);
-          $d = Json::decode($r->data);
+          $d = $this->jsonController->decode($r->data);
           $options[$communication] = $d['name'];
         }
 
@@ -281,7 +295,8 @@ class SettingsForm extends ConfigFormBase {
    * @return object
    */
   function _dispatch_get_data($endpoint, $apikey) {
-    $response = \Drupal::httpClient()->get($endpoint, [
+    // @todo Try and catch errors here.
+    $response = $this->httpClient->get($endpoint, [
       'headers' => [
         'x-dispatch-api-key' => $apikey,
         'accept' => 'application/json',

@@ -2,11 +2,8 @@
 
 namespace Drupal\uiowa_thankyou\Form;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Config\StorageInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Component\Serialization\Json;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -21,11 +18,27 @@ class ThankYouForm extends FormBase {
   protected $configStorage;
 
   /**
+   * The serialization.json service.
+   *
+   * @var \Drupal\Component\Serialization\Json
+   */
+  protected $jsonController;
+
+  /**
+   * The HTTP Client service.
+   *
+   * @var \GuzzleHttp\ClientInterface
+   */
+  protected $httpClient;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
     $instance = parent::create($container);
     $instance->configStorage = $container->get('config.storage');
+    $instance->jsonController = $container->get('serialization.json');
+    $instance->httpClient = $container->get('http_client');
     return $instance;
   }
 
@@ -122,7 +135,8 @@ class ThankYouForm extends FormBase {
     $user = $uiowa_thankyou_settings->get('uiowa_thankyou_hrapi_user');
     $pass = $uiowa_thankyou_settings->get('uiowa_thankyou_hrapi_pass');
     $endpoint = 'https://' . $user . ':' . $pass . '@hris.uiowa.edu/apigateway/oneit/thankyounotes/addressee?email=' . $recipient_email;
-    $request = Drupal::httpClient()->get($endpoint, [
+    // @todo Try and catch errors here.
+    $request =  $this->httpClient->get($endpoint, [
       'headers' => [
         'accept' => 'application/json',
       ],
@@ -131,7 +145,7 @@ class ThankYouForm extends FormBase {
     if ($request->code == '200') {
       $form_state['thankyou_vars'] = array(
         'recipient_email' => $recipient_email,
-        'hr_data' => Json::decode($request->data),
+        'hr_data' => $this->jsonController->decode($request->data),
         'component_id' => $component_id,
         'placeholders' => $placeholders,
       );
