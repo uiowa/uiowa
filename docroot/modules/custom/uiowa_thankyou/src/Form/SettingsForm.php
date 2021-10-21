@@ -66,6 +66,8 @@ class SettingsForm extends ConfigFormBase {
     $api_key = $uiowa_thankyou_settings->get('api_key');
     $endpoint = 'https://apps.its.uiowa.edu/dispatch/api/v1/';
 
+    $form = parent::buildForm($form, $form_state);
+
     // Webform Setup.
     $form['webform_fs'] = [
       '#type' => 'fieldset',
@@ -250,7 +252,7 @@ class SettingsForm extends ConfigFormBase {
         }
       }
     }
-    return parent::buildForm($form, $form_state);
+    return $form;
   }
 
   /**
