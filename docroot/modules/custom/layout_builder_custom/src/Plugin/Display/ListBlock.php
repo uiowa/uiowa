@@ -476,13 +476,15 @@ class ListBlock extends CoreBlock {
     // Attach the headline, if configured.
     if (!empty($config['headline'])) {
       $headline = $config['headline'];
-      $this->view->element['headline'] = [
-        '#theme' => 'uiowa_core_headline',
-        '#headline' => $headline['headline'],
-        '#hide_headline' => $headline['hide_headline'],
-        '#heading_size' => $headline['heading_size'],
-        '#headline_style' => $headline['headline_style'],
-      ];
+      if (!empty($headline['headline'])) {
+        $this->view->element['headline'] = [
+          '#theme' => 'uiowa_core_headline',
+          '#headline' => $headline['headline'],
+          '#hide_headline' => $headline['hide_headline'],
+          '#heading_size' => $headline['heading_size'],
+          '#headline_style' => $headline['headline_style'],
+        ];
+      }
       if (empty($headline['headline'])) {
         $child_heading_size = $headline['child_heading_size'] ?? 'h3';
       }
