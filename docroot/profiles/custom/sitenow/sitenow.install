@@ -3570,9 +3570,16 @@ function sitenow_update_9022() {
 }
 
 /**
- * Convert uiowa_articles to article_list_block.
+ * Run again for any sites that were installed without this config.
  */
 function sitenow_update_9023() {
+  sitenow_update_9020();
+}
+
+/**
+ * Convert uiowa_articles to article_list_block.
+ */
+function sitenow_update_9024() {
   _update_all_blocks_by_plugin_id('inline_block:uiowa_articles', function (&$component, $block) {
     $styles = $component->get('layout_builder_styles_style');
 
