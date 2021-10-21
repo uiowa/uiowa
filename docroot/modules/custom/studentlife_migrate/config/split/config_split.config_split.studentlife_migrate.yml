@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies: {  }
+id: studentlife_migrate
+label: 'Studentlife Migrate'
+description: 'Migrations for Student Life'
+folder: ./modules/custom/studentlife_migrate/config/split
+module:
+  migrate: 0
+  migrate_drupal: 0
+  migrate_plus: 0
+  migrate_tools: 0
+  studentlife_migrate: 0
+  sitenow_migrate: 0
+theme: {  }
+blacklist:
+  - config_split.config_split.studentlife_migrate
+  - 'migrate_plus.migration.studentlife_*'
+graylist: {  }
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 80
