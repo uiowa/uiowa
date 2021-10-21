@@ -8,6 +8,7 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
 use Drupal\replicate\Events\AfterSaveEvent;
+use Drupal\replicate\Events\ReplicatorEvents;
 use Drupal\views\Plugin\Block\ViewsBlock;
 use Drupal\Core\Path\CurrentPathStack;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -69,9 +70,7 @@ class ReplicateSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents() {
     return [
-      // @todo Replace this with ReplicatorEvents::AFTER_SAVE
-      //   after debugging.
-      'replicate__after_save' => 'onReplicateAfterSave',
+      ReplicatorEvents::AFTER_SAVE => 'onReplicateAfterSave',
     ];
   }
 
