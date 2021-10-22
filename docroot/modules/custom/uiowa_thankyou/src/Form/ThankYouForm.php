@@ -116,13 +116,6 @@ class ThankYouForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    // no-op.
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // Set vars.
     $placeholders = [];
@@ -158,6 +151,77 @@ class ThankYouForm extends FormBase {
       $form_state->setError($form, $message);
     }
     parent::validateForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    $placeholders = $form_state['thankyou_vars']['placeholders'];
+    $recipient_email = $form_state['thankyou_vars']['recipient_email'];
+    $hr_data = $form_state['thankyou_vars']['hr_data'];
+
+    $uiowa_thankyou_settings = $this->config('uiowa_thankyou.settings');
+    $apikey = $uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_apikey');
+    $endpoint = $uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_recipient_communication') . '/adhocs';
+
+    // Create the members object and populate member attributes.
+    $members = (object) [
+      'members' => [
+        (object) [
+          'toName' => $hr_data['FIRST_NAME'],
+          'toAddress' => $recipient_email,
+        ],
+      ],
+      'includeBatchResponse' => FALSE,
+    ];
+    // Generate additional member attributes for each webform component.
+    // We assume submission data is single valued.
+    // @todo Update this.
+    foreach ($placeholders as $cid => $key) {
+      $members->members[0]->$key = filter_xss($submission->data[$cid][0]);
+    }
+
+    // Post to Dispatch api to send the email.
+    $response = $this->httpClient->get($endpoint, [
+      'headers' => [
+        'x-dispatch-api-key' => $apikey,
+        'accept' => 'application/json',
+      ],
+      'method' => 'POST',
+      'data' => $this->jsonController->encode($members),
+    ]);
+    // Log the transaction for the system.
+    $message = 'Dispatch request sent to: <em>@endpoint</em> and returned code: <em>@code</em>';
+    $mvars = [
+      '@endpoint' => $endpoint,
+      '@code' => $response->code,
+    ];
+    // @todo Update this.
+    watchdog('oneit_thankyou', $message, $mvars, WATCHDOG_NOTICE);
+
+    // Send supervisor email.
+    $endpoint = $uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_supervisor_communication') . '/adhocs';
+    // Update member object to send to the supervisor.
+    $members->members[0]->toName = $hr_data['SUPERVISORS'][0]['FIRST_NAME'];
+    $members->members[0]->toAddress = $hr_data['SUPERVISORS'][0]['EMAIL'];
+    // Post to Dispatch api to send the email.
+    $response = $this->httpClient->get($endpoint, [
+      'headers' => [
+        'x-dispatch-api-key' => $apikey,
+        'accept' => 'application/json',
+      ],
+      'method' => 'POST',
+      'data' => $this->jsonController->encode($members),
+    ]);
+    // Log the transaction for the system.
+    $message = 'Dispatch request sent to: <em>@endpoint</em> and returned code: <em>@code</em>';
+    $mvars = [
+      '@endpoint' => $endpoint,
+      '@code' => $response->code,
+    ];
+    // @todo Update this.
+    watchdog('oneit_thankyou', $message, $mvars, WATCHDOG_NOTICE);
   }
 
 }
