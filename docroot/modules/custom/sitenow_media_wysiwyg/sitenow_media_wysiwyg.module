@@ -7,6 +7,9 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\FileInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\file\Entity\File;
+use Drupal\image\Entity\ImageStyle;
 
 /**
  * Implements hook_field_widget_WIDGET_TYPE_form_alter().
@@ -143,6 +146,49 @@ function sitenow_media_wysiwyg_file_presave(FileInterface $file) {
           }
         }
       }
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function sitenow_media_wysiwyg_media_update(EntityInterface $entity) {
+  // If not local, try to clear the varnish cache for the file.
+  if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
+    $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
+    $purgeQueuers = \Drupal::service('purge.queuers');
+    $purgeQueue = \Drupal::service('purge.queue');
+    $queuer = $purgeQueuers->get('coretags');
+    $invalidations = [];
+
+    switch ($entity->bundle()) {
+      case 'file':
+        $field = 'field_media_file';
+        break;
+
+      case 'audio':
+        $field = 'field_media_audio_file';
+        break;
+
+      case 'image':
+        $field = 'field_media_image';
+        $styles = ImageStyle::loadMultiple();
+        break;
+    }
+
+    if (isset($field) && $entity->hasField($field)) {
+      $file = File::load($entity->$field->target_id);
+      $invalidations[] = $purgeInvalidationFactory->get('url', $file->createFileUrl(FALSE));
+
+      // Note that media_entity_file_replace flushes derivative images.
+      if (isset($styles)) {
+        foreach ($styles as $style) {
+          $invalidations[] = $purgeInvalidationFactory->get('url', $style->buildUrl($file->getFileUri()));
+        }
+      }
+
+      $purgeQueue->add($queuer, $invalidations);
     }
   }
 }
