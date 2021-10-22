@@ -143,7 +143,7 @@ function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): v
             $block = $block_storage->loadRevision($revision_id);
           }
           else {
-            $block = serialize($component_arr['configuration']['block_serialized']);
+            $block = unserialize($component_arr['configuration']['block_serialized']);
           }
 
           call_user_func_array($process, [&$component, $block]);
