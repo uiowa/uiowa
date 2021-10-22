@@ -167,7 +167,7 @@ class ListBlock extends CoreBlock {
         '#description' => $this->t('Choose to hide some of the fields.'),
       ];
       $form['override']['hide_fields']['order_fields'] = $form['override']['order_fields'];
-      unset($form['override']['order_fields']);
+      $form['override']['order_fields']['#access'] = FALSE;
 
       // Remove restricted fields from the hide options.
       $restrict_fields = $this->getOption('restrict_fields');
