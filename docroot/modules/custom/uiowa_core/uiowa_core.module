@@ -126,6 +126,21 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       }
       break;
 
+    // Customize the replicate confirm dialog to our
+    // use case (pages with titles)
+    case 'node_page_replicate_form':
+      if (isset($form['new_label_en'])) {
+        $form['new_label_en']['#title'] = 'Replicated page\'s title';
+        $form['new_label_en']['#description'] = t('This text will be used as the title of the newly replicated page.');
+        // Removes the "This action cannot be undone" text.
+        $form['description'] = ['#markup' => ''];
+        // Changes title to match the "Edit" action title
+        // (e.g. "<em>Edit</em> Home").
+        $node_title = $form_state->getFormObject()->getEntity()->$entity->getTitle();
+        $form['#title'] = t('<em>Replicate Page</em> @title', ['@title' => $node_title]);
+      }
+      break;
+
     case 'menu_link_content_menu_link_content_form':
       // All checked or unchecked this seems to do the same. Hide until we
       // have a use-case.
