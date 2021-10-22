@@ -138,9 +138,11 @@ class ListBlock extends CoreBlock {
     // Modify "Items per page" block settings form.
     if (!empty($allow_settings['items_per_page'])) {
       // @todo Remove once exposed filters patch is added.
-      $form['override']['items_per_page']['#min'] = 0;
+      // Seems to break at high numbers :grimmacing: ..
+      $form['override']['items_per_page']['#min'] = 1;
+      $form['override']['items_per_page']['#max'] = 50;
       $form['override']['items_per_page']['#title'] = $this->t('Items to display');
-      $form['override']['items_per_page']['#description'] = $this->t('Select the number of entries to display');
+      $form['override']['items_per_page']['#description'] = $this->t('Select the number of entries to display. Minimum of 1 and maximum of 50. Show pager to display more than 50.');
     }
 
     // Provide "Pager offset" block settings form.

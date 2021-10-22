@@ -3636,7 +3636,7 @@ function sitenow_update_9025() {
       'provider' => 'views',
       'label_display' => NULL,
       'views_label' => '',
-      'items_per_page' => $block->field_collection_results->value ?: 'none',
+      'items_per_page' => $block->field_collection_results->value ?: 50,
       'headline' => $block->get('field_uiowa_headline')
         ->getValue()[0],
       'pager' => $block->field_collection_pager->value ? 'full' : 'some',
