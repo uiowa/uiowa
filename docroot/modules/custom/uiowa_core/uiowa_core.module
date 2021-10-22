@@ -89,6 +89,21 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       \Drupal::messenger()->addWarning(t('Replicating content of this type is not allowed. Please contact the ITS Help Desk about enabling this functionality for this content.'));
       $form['actions']['submit']['#disabled'] = TRUE;
     }
+    // Customize the replicate confirm dialog to our
+    // use case (pages with titles)
+    $form['new_label_en']['#title'] = "Replicated {$node_type}'s title";
+    $form['new_label_en']['#description'] = t('This text will be used as the title of the newly replicated @type.', ['@type' => $node_type]);
+    // Removes the "This action cannot be undone" text.
+    $form['description'] = ['#markup' => ''];
+    // Changes title to match the "Edit" action title
+    // (e.g. "<em>Edit</em> Home").
+    $entity = $form_state->getFormObject()->getEntity();
+    $node_title = $entity->getTitle();
+    $node_type = $entity->getType();
+
+    $form['#title'] = t('<em>Replicate @type</em> @title',
+      ['@type' => ucfirst($node_type), '@title' => $node_title]);
+
   }
 
   switch ($form_id) {
@@ -123,21 +138,6 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
           \Drupal::messenger()->addWarning(t('This block is protected from deletion. Remove content from the block instead.'));
           $form['actions']['submit']['#disabled'] = TRUE;
         }
-      }
-      break;
-
-    // Customize the replicate confirm dialog to our
-    // use case (pages with titles)
-    case 'node_page_replicate_form':
-      if (isset($form['new_label_en'])) {
-        $form['new_label_en']['#title'] = 'Replicated page\'s title';
-        $form['new_label_en']['#description'] = t('This text will be used as the title of the newly replicated page.');
-        // Removes the "This action cannot be undone" text.
-        $form['description'] = ['#markup' => ''];
-        // Changes title to match the "Edit" action title
-        // (e.g. "<em>Edit</em> Home").
-        $node_title = $form_state->getFormObject()->getEntity()->getTitle();
-        $form['#title'] = t('<em>Replicate Page</em> @title', ['@title' => $node_title]);
       }
       break;
 
