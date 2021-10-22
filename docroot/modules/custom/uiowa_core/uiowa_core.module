@@ -83,7 +83,9 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
   if ($route_name == 'entity.node.replicate') {
     // Get allowed replicate entity types.
     $allowed_types = \Drupal::config('uiowa_core.settings')->get('uiowa_core.replicate_allowed');
-    $node_type = $form_state->getFormObject()->getEntity()->bundle();
+    $entity = $form_state->getFormObject()->getEntity();
+    $node_type = $entity->bundle();
+    $node_title = $entity->getTitle();
     // Set message and prevent replicate.
     if (!in_array($node_type, $allowed_types)) {
       \Drupal::messenger()->addWarning(t('Replicating content of this type is not allowed. Please contact the ITS Help Desk about enabling this functionality for this content.'));
@@ -97,12 +99,14 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
     $form['description'] = ['#markup' => ''];
     // Changes title to match the "Edit" action title
     // (e.g. "<em>Edit</em> Home").
-    $entity = $form_state->getFormObject()->getEntity();
-    $node_title = $entity->getTitle();
-    $node_type = $entity->getType();
+
+    $bundle_label = \Drupal::entityTypeManager()
+      ->getStorage('node_type')
+      ->load($entity->bundle())
+      ->label();
 
     $form['#title'] = t('<em>Replicate @type</em> @title',
-      ['@type' => ucfirst($node_type), '@title' => $node_title]);
+      ['@type' => $bundle_label, '@title' => $node_title]);
 
   }
 
