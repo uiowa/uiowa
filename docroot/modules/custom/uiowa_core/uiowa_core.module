@@ -93,18 +93,17 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
     }
     // Customize the replicate confirm dialog to our
     // use case (pages with titles)
-    $form['new_label_en']['#title'] = "Replicated {$node_type}'s title";
-    $form['new_label_en']['#description'] = t('This text will be used as the title of the newly replicated @type.', ['@type' => $node_type]);
-    // Removes the "This action cannot be undone" text.
-    $form['description'] = ['#markup' => ''];
-    // Changes title to match the "Edit" action title
-    // (e.g. "<em>Edit</em> Home").
-
     $bundle_label = \Drupal::entityTypeManager()
       ->getStorage('node_type')
       ->load($entity->bundle())
       ->label();
 
+    $form['new_label_en']['#title'] = "Replicated {$bundle_label}'s title";
+    $form['new_label_en']['#description'] = t('This text will be used as the title of the newly-replicated @type.', ['@type' => $bundle_label]);
+    // Removes the "This action cannot be undone" text.
+    $form['description'] = ['#markup' => ''];
+    // Changes title to match the "Edit" action title
+    // (e.g. "<em>Edit</em> Home").
     $form['#title'] = t('<em>Replicate @type</em> @title',
       ['@type' => $bundle_label, '@title' => $node_title]);
 
