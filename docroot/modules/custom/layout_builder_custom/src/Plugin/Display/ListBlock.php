@@ -208,18 +208,20 @@ class ListBlock extends CoreBlock {
         // Set the label and default values of the form element, based on the
         // block configuration.
         $exposed_info = $handler->exposedInfo();
-        $exposed_filters[$handler_id]['#title'] = $exposed_info['label'];
-        // The following is essentially using this patch:
-        // https://www.drupal.org/project/views_block_placement_exposed_form_defaults/issues/3158789
-        if ($exposed_filters[$handler_id]['#type'] == 'entity_autocomplete') {
-          $exposed_filters[$handler_id]['#default_value'] = EntityAutocomplete::valueCallback(
-            $exposed_filters[$handler_id],
-            $exposed_filter_values[$handler_id],
-            $form_state
-          );
-        }
-        else {
-          $exposed_filters[$handler_id]['#default_value'] = !empty($exposed_filter_values[$handler_id]) ? $exposed_filter_values[$handler_id] : [];
+        if ($exposed_info) {
+          $exposed_filters[$handler_id]['#title'] = $exposed_info['label'];
+          // The following is essentially using this patch:
+          // https://www.drupal.org/project/views_block_placement_exposed_form_defaults/issues/3158789
+          if ($exposed_filters[$handler_id]['#type'] == 'entity_autocomplete') {
+            $exposed_filters[$handler_id]['#default_value'] = EntityAutocomplete::valueCallback(
+              $exposed_filters[$handler_id],
+              $exposed_filter_values[$handler_id],
+              $form_state
+            );
+          }
+          else {
+            $exposed_filters[$handler_id]['#default_value'] = !empty($exposed_filter_values[$handler_id]) ? $exposed_filter_values[$handler_id] : [];
+          }
         }
       }
 
