@@ -106,7 +106,10 @@ class ThankYouForm extends FormBase {
       '#title' => $this->t('Supervisor Email'),
       '#access' => FALSE,
     ];
-
+    $form['submit'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Submit'),
+    ];
     return $form;
   }
 
@@ -122,18 +125,10 @@ class ThankYouForm extends FormBase {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // Set vars.
-    $component_id = '';
     $placeholders = [];
     $uiowa_thankyou_settings = $this->config('uiowa_thankyou.settings');
 
-    // Find the component id based upon form_key admin config.
-    foreach ($form['#node']->webform['components'] as $cid => $component) {
-      if ($component['form_key'] == $uiowa_thankyou_settings->get('uiowa_thankyou_recipient_email_form_component')) {
-        $component_id = $cid;
-      }
-      $placeholders[$cid] = $component['form_key'];
-    }
-    $recipient_email = $form_state['values']['submitted'][$form['#node']->webform['components'][$component_id]['form_key']];
+    $recipient_email = $form_state->getValue('email_address_of_the_person_to_thank');
 
     // Get HR data.
     $user = $uiowa_thankyou_settings->get('uiowa_thankyou_hrapi_user');
@@ -150,7 +145,6 @@ class ThankYouForm extends FormBase {
       $form_state['thankyou_vars'] = [
         'recipient_email' => $recipient_email,
         'hr_data' => $this->jsonController->decode($request->data),
-        'component_id' => $component_id,
         'placeholders' => $placeholders,
       ];
     }
@@ -161,7 +155,7 @@ class ThankYouForm extends FormBase {
       else {
         $message = $request->error;
       }
-      $form_state->setErrorByName($component_id, $message);
+      $form_state->setError($form, $message);
     }
     parent::validateForm($form, $form_state);
   }

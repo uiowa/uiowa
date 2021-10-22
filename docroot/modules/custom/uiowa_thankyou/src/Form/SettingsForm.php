@@ -64,7 +64,6 @@ class SettingsForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $uiowa_thankyou_settings = $this->config('uiowa_thankyou.settings');
-    $webform_nid = $uiowa_thankyou_settings->get('webform_nid');
     $api_key = $uiowa_thankyou_settings->get('api_key');
     $endpoint = 'https://apps.its.uiowa.edu/dispatch/api/v1/';
 
@@ -74,81 +73,9 @@ class SettingsForm extends ConfigFormBase {
     $form['webform_fs'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Webform Configuration'),
+      '#description' => $this->t('To come later...'),
       '#collapsible' => TRUE,
     ];
-    $form['webform_fs']['uiowa_thankyou_webform_id'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Webform Node ID'),
-      '#default_value' => $webform_nid,
-      '#description' => $this->t('Provide the node id of the thank you webform.'),
-      '#required' => TRUE,
-    ];
-    // Only add form field if we have a node id.
-    if (!empty($webform_nid)) {
-      // @todo Update this...
-      $webform = node_load($webform_nid);
-      $options = [];
-      foreach ($webform->webform['components'] as $component) {
-        $options[$component['form_key']] = $component['name'];
-      }
-      $form['webform_fs']['uiowa_thankyou_recipient_email_form_component'] = [
-        '#type' => 'select',
-        '#options' => $options,
-        '#title' => $this->t('Recipient Email Component'),
-        '#default_value' => $uiowa_thankyou_settings->get('uiowa_thankyou_recipient_email_form_component'),
-        '#description' => $this->t('Select the component that will be used for the recipient email.'),
-        '#required' => TRUE,
-      ];
-      $form['webform_fs']['uiowa_thankyou_recipient_first_name_form_component'] = [
-        '#type' => 'select',
-        '#options' => $options,
-        '#title' => $this->t('Recipient First Name Component'),
-        '#default_value' => $uiowa_thankyou_settings->get('uiowa_thankyou_recipient_first_name_form_component'),
-        '#description' => $this->t('Select the component that will be used for the recipient first name.'),
-        '#required' => TRUE,
-      ];
-      $form['webform_fs']['uiowa_thankyou_recipient_last_name_form_component'] = [
-        '#type' => 'select',
-        '#options' => $options,
-        '#title' => $this->t('Recipient Last Name Component'),
-        '#default_value' => $uiowa_thankyou_settings->get('uiowa_thankyou_recipient_last_name_form_component'),
-        '#description' => $this->t('Select the component that will be used for the recipient last name.'),
-        '#required' => TRUE,
-      ];
-      $form['webform_fs']['uiowa_thankyou_recipient_hawkid_form_component'] = [
-        '#type' => 'select',
-        '#options' => $options,
-        '#title' => $this->t('Recipient HawkID Component'),
-        '#default_value' => $uiowa_thankyou_settings->get('uiowa_thankyou_recipient_hawkid_form_component'),
-        '#description' => $this->t('Select the component that will be used for the recipient hawkid.'),
-        '#required' => TRUE,
-      ];
-      $form['webform_fs']['uiowa_thankyou_supervisor_first_name_form_component'] = [
-        '#type' => 'select',
-        '#options' => $options,
-        '#title' => $this->t('Supervisor First Name Component'),
-        '#default_value' => $uiowa_thankyou_settings->get('uiowa_thankyou_supervisor_first_name_form_component'),
-        '#description' => $this->t('Select the component that will be used for the supervisor first name.'),
-        '#required' => TRUE,
-      ];
-      $form['webform_fs']['uiowa_thankyou_supervisor_last_name_form_component'] = [
-        '#type' => 'select',
-        '#options' => $options,
-        '#title' => $this->t('Supervisor Last Name Component'),
-        '#default_value' => $uiowa_thankyou_settings->get('uiowa_thankyou_supervisor_last_name_form_component'),
-        '#description' => $this->t('Select the component that will be used for the supervisor last name.'),
-        '#required' => TRUE,
-      ];
-      $form['webform_fs']['uiowa_thankyou_supervisor_email_form_component'] = [
-        '#type' => 'select',
-        '#options' => $options,
-        '#title' => $this->t('Supervisor Email Component'),
-        '#default_value' => $uiowa_thankyou_settings->get('uiowa_thankyou_supervisor_email_form_component'),
-        '#description' => $this->t('Select the component that will be used for the supervisor email.'),
-        '#required' => TRUE,
-      ];
-    }
-
     // HR API.
     $form['hr_fs'] = [
       '#type' => 'fieldset',
@@ -185,7 +112,6 @@ class SettingsForm extends ConfigFormBase {
     ];
     if (!empty($apikey)) {
       $campaign_url = $uiowa_thankyou_settings->get('oneit_thankyou_dispatch_campaign');
-      // @todo Update these.
       $campaigns = $this->dispatchGetData($endpoint . 'campaigns', $apikey);
       $campaigns = $this->jsonController->decode($campaigns->data);
       $options = [
@@ -205,7 +131,6 @@ class SettingsForm extends ConfigFormBase {
         '#options' => $options,
       ];
       if (!empty($campaign_url)) {
-        // @todo Update these.
         $communications = $this->dispatchGetData($campaign_url . '/communications', $apikey);
         $communications = $this->jsonController->decode($communications->data);
         $options = [
@@ -247,17 +172,6 @@ class SettingsForm extends ConfigFormBase {
             '@attr' => render($wf_mem_attr),
           ]),
         ];
-        if (!empty($webform_nid)) {
-          $items = [];
-          foreach ($webform->webform['components'] as $c) {
-            $items[] = $c['form_key'];
-          }
-          $form['dispatch_fs']['help']['member_attributes'] = [
-            '#theme' => 'item_list',
-            '#items' => $items,
-            '#title' => $this->t('Webform Component Keys'),
-          ];
-        }
       }
     }
     return $form;
@@ -275,15 +189,7 @@ class SettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->config('uiowa_thankyou.settings')
-      ->set('webform_nid', $form_state->getValue('webform_nid'))
       ->set('api_key', $form_state->getValue('api_key'))
-      ->set('uiowa_thankyou_recipient_email_form_component', $form_state->getValue('uiowa_thankyou_recipient_email_form_component'))
-      ->set('uiowa_thankyou_recipient_first_name_form_component', $form_state->getValue('uiowa_thankyou_recipient_first_name_form_component'))
-      ->set('uiowa_thankyou_recipient_last_name_form_component', $form_state->getValue('uiowa_thankyou_recipient_last_name_form_component'))
-      ->set('uiowa_thankyou_recipient_hawkid_form_component', $form_state->getValue('uiowa_thankyou_recipient_hawkid_form_component'))
-      ->set('uiowa_thankyou_supervisor_first_name_form_component', $form_state->getValue('uiowa_thankyou_supervisor_first_name_form_component'))
-      ->set('uiowa_thankyou_supervisor_last_name_form_component', $form_state->getValue('uiowa_thankyou_supervisor_last_name_form_component'))
-      ->set('uiowa_thankyou_supervisor_email_form_component', $form_state->getValue('uiowa_thankyou_supervisor_email_form_component'))
       ->set('uiowa_thankyou_hrapi_user', $form_state->getValue('uiowa_thankyou_hrapi_user'))
       ->set('uiowa_thankyou_hrapi_pass', $form_state->getValue('uiowa_thankyou_hrapi_pass'))
       ->set('oneit_thankyou_dispatch_campaign', $form_state->getValue('oneit_thankyou_dispatch_campaign'))
