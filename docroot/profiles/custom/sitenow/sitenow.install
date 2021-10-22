@@ -3546,3 +3546,33 @@ function sitenow_update_9021() {
 function sitenow_update_9022() {
   sitenow_update_9020();
 }
+
+function sitenow_update_9023() {
+  /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
+  $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+  $sitenow_v2_split = 'config_split:sitenow_v2';
+
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_core.settings');
+
+  // This site has the 'sitenow_v2' split in config,
+  // and it is enabled.
+  if (isset($filters[$sitenow_v2_split]) && $filters[$sitenow_v2_split]['status']) {
+    // Don't allow for any content types to be replicated.
+    $config
+      ->set('uiowa_core.layout_regions', [])
+      ->save();
+  }
+  else {
+    // If it's not v2, then allow page and article.
+    $regions = array(
+      'pre_footer'=>null,
+      'post_header'=>null,
+      'left_sidebar'=>null,
+      'right_sidebar'=>null
+    );
+    $config
+      ->set('uiowa_core.layout_regions', $regions)
+      ->save();
+  }
+}
