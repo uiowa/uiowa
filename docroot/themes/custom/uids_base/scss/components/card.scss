@@ -129,7 +129,27 @@
   }
 }
 
+.card__subtitle + .card__date,
+.card__date + .card__date {
+  margin-top: .3rem;
+}
+
 .card {
+  .card__date,
+  .card__subtitle {
+    .svg-inline--fa {
+      margin-right: .3rem;
+    }
+    a {
+      text-decoration: none;
+    }
+  }
+
+  .card__date {
+    .svg-inline--fa {
+      vertical-align: -0.155em;
+    }
+  }
 
   &__label {
     position: relative;
