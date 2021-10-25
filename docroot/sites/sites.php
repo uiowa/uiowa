@@ -3563,3 +3563,9 @@ $sites['labbeckergroup.local.drupal.uiowa.edu'] = 'beckergroup.lab.uiowa.edu';
 $sites['labbeckergroup.dev.drupal.uiowa.edu'] = 'beckergroup.lab.uiowa.edu';
 $sites['labbeckergroup.stage.drupal.uiowa.edu'] = 'beckergroup.lab.uiowa.edu';
 $sites['labbeckergroup.prod.drupal.uiowa.edu'] = 'beckergroup.lab.uiowa.edu';
+
+// Directory aliases for icomm.lab.uiowa.edu.
+$sites['labicomm.local.drupal.uiowa.edu'] = 'icomm.lab.uiowa.edu';
+$sites['labicomm.dev.drupal.uiowa.edu'] = 'icomm.lab.uiowa.edu';
+$sites['labicomm.stage.drupal.uiowa.edu'] = 'icomm.lab.uiowa.edu';
+$sites['labicomm.prod.drupal.uiowa.edu'] = 'icomm.lab.uiowa.edu';
