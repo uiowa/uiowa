@@ -1,0 +1,32 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.person.field_person_territory
+    module:
+      - options
+  content:
+    field_image:
+      weight: 7
+      settings:
+        view_mode: large__square
+    field_person_territory:
+      type: list_default
+      weight: 5
+      region: content
+      label: inline
+      settings: {  }
+      third_party_settings: {  }
+    links:
+      weight: 6
+  hidden:
+    entity_print_view_epub: true
+    entity_print_view_pdf: true
+    entity_print_view_word_docx: true
+removing:
+  content:
+    field_image:
+      weight: 6
+      settings:
+        view_mode: medium__square
+    links:
+      weight: 5

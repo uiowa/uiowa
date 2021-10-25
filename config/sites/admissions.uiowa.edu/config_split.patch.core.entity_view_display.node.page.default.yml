@@ -1,0 +1,142 @@
+adding:
+  third_party_settings:
+    layout_builder:
+      sections:
+        -
+          layout_id: layout_onecol
+          layout_settings:
+            label: 'Main content'
+            context_mapping: {  }
+          components:
+            -
+              uuid: a1d1b5c4-e9c0-4117-aa69-95747061ebbc
+              region: content
+              configuration:
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+                id: 'field_block:node:page:body'
+                formatter:
+                  label: hidden
+                  type: text_default
+                  settings: {  }
+                  third_party_settings: {  }
+              additional: {  }
+              weight: 0
+          third_party_settings: {  }
+    layout_builder_restrictions:
+      entity_view_mode_restriction:
+        whitelisted_blocks:
+          'Admissions Core': {  }
+          'Area of Study': {  }
+          'Content fields':
+            - 'extra_field_block:node:page:entity_print_view_pdf'
+            - 'extra_field_block:user:user:entity_print_view_pdf'
+          'Entity Print': {  }
+          Lists:
+            - 'views_block:people_list_block-list_card'
+          'Lists (Views)':
+            - 'views_block:academic_groups_block-block_1'
+            - 'views_block:areas_of_study_block-block_information'
+            - 'views_block:area_of_study_college_block-block_1'
+            - 'views_block:counselors-block_counselors'
+            - 'views_block:student_card-block_student_grid'
+            - 'views_block:transfer_tips_list-block_transfer_tips'
+          System:
+            - system_breadcrumb_block
+            - system_main_block
+        blacklisted_blocks:
+          'Custom block types':
+            - area_of_study_search
+          'Inline blocks':
+            - 'inline_block:area_of_study_search'
+      allowed_block_categories:
+        - 'Admissions Core'
+        - 'Area of Study'
+        - 'Entity Print'
+      entity_view_mode_restriction_by_region:
+        whitelisted_blocks:
+          layout_fourcol:
+            all_regions:
+              Lists:
+                - 'views_block:people_list_block-list_card'
+          layout_threecol:
+            all_regions:
+              Lists:
+                - 'views_block:people_list_block-list_card'
+          layout_twocol:
+            all_regions:
+              Lists:
+                - 'views_block:people_list_block-list_card'
+  hidden:
+    entity_print_view_epub: true
+    entity_print_view_pdf: true
+    entity_print_view_word_docx: true
+removing:
+  dependencies:
+    config:
+      - system.menu.main
+    module:
+      - menu_block
+  third_party_settings:
+    layout_builder:
+      sections:
+        -
+          layout_id: layout_page
+          layout_settings:
+            label: Content
+            context_mapping: {  }
+          components:
+            -
+              uuid: c8d974cb-667f-4e0d-8716-d2a77004e0e1
+              region: sidebar
+              configuration:
+                id: 'menu_block:main'
+                label: 'Main navigation'
+                provider: menu_block
+                label_display: '0'
+                follow: true
+                follow_parent: '0'
+                level: 2
+                depth: 0
+                expand: false
+                parent: 'main:'
+                suggestion: main
+                context_mapping: {  }
+              additional:
+                layout_builder_styles_style:
+                  block_menu_vertical: block_menu_vertical
+              weight: 0
+            -
+              uuid: e6fa78b4-cacc-4d27-baa3-f29dde0b845b
+              region: content
+              configuration:
+                id: 'field_block:node:page:body'
+                label: Body
+                provider: layout_builder
+                label_display: '0'
+                formatter:
+                  label: hidden
+                  type: text_default
+                  settings: {  }
+                  third_party_settings: {  }
+                context_mapping:
+                  entity: layout_builder.entity
+                  view_mode: view_mode
+              additional: {  }
+              weight: -9
+          third_party_settings: {  }
+    layout_builder_restrictions:
+      entity_view_mode_restriction:
+        allowed_layouts:
+          - layout_page
+      entity_view_mode_restriction_by_region:
+        allowed_layouts:
+          - layout_page
+        blacklisted_blocks:
+          layout_page:
+            all_regions:
+              'Custom block types':
+                - uiowa_timeline
+              'Inline blocks':
+                - 'inline_block:uiowa_timeline'
