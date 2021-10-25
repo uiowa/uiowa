@@ -3569,3 +3569,9 @@ $sites['labicomm.local.drupal.uiowa.edu'] = 'icomm.lab.uiowa.edu';
 $sites['labicomm.dev.drupal.uiowa.edu'] = 'icomm.lab.uiowa.edu';
 $sites['labicomm.stage.drupal.uiowa.edu'] = 'icomm.lab.uiowa.edu';
 $sites['labicomm.prod.drupal.uiowa.edu'] = 'icomm.lab.uiowa.edu';
+
+// Directory aliases for iowajpec.org.
+$sites['org-iowajpec.local.drupal.uiowa.edu'] = 'iowajpec.org';
+$sites['org-iowajpec.dev.drupal.uiowa.edu'] = 'iowajpec.org';
+$sites['org-iowajpec.stage.drupal.uiowa.edu'] = 'iowajpec.org';
+$sites['org-iowajpec.prod.drupal.uiowa.edu'] = 'iowajpec.org';
