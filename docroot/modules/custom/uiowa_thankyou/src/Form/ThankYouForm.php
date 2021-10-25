@@ -5,7 +5,9 @@ namespace Drupal\uiowa_thankyou\Form;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
+use Drupal\Core\Queue\RequeueException;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Component\Utility\Xss;
 
@@ -130,28 +132,35 @@ class ThankYouForm extends FormBase {
     $user = $uiowa_thankyou_settings->get('uiowa_thankyou_hrapi_user');
     $pass = $uiowa_thankyou_settings->get('uiowa_thankyou_hrapi_pass');
     $endpoint = 'https://' . $user . ':' . $pass . '@hris.uiowa.edu/apigateway/oneit/thankyounotes/addressee?email=' . $recipient_email;
-    // @todo Try and catch errors here.
-    $request = $this->httpClient->get($endpoint, [
-      'headers' => [
-        'accept' => 'application/json',
-      ],
-    ]);
-    // If the request is successful.
-    if ($request->code == '200') {
-      $form_state['thankyou_vars'] = [
-        'recipient_email' => $recipient_email,
-        'hr_data' => $this->jsonController->decode($request->getBody()->getContents()),
-        'placeholders' => $placeholders,
-      ];
+    // @todo Clean up the error handling here.
+    try {
+      $request = $this->httpClient->get($endpoint, [
+        'headers' => [
+          'accept' => 'application/json',
+        ],
+      ]);
     }
-    else {
-      if (isset($request->data)) {
-        $message = $request->getBody()->getContents();
+    catch (RequestException $e) {
+      $form_state->setError($form, $e->getMessage());
+    }
+    // If the request is successful.
+    if (isset($request)) {
+      if ($request->code == '200') {
+        $form_state['thankyou_vars'] = [
+          'recipient_email' => $recipient_email,
+          'hr_data' => $this->jsonController->decode($request->getBody()->getContents()),
+          'placeholders' => $placeholders,
+        ];
       }
       else {
-        $message = $request->error;
+        if (!empty($request->getBody())) {
+          $message = $request->getBody()->getContents();
+        }
+        else {
+          $message = $request->error;
+        }
+        $form_state->setError($form, $message);
       }
-      $form_state->setError($form, $message);
     }
     parent::validateForm($form, $form_state);
   }
