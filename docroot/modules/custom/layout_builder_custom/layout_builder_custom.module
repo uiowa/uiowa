@@ -336,7 +336,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           }
           if ($block->getPluginId() == 'views_block:article_list_block-list_article') {
             $form['layout_builder_style_card_media_position']['#options']['card_media_position_right'] = 'Right (default)';
-            $form['layout_builder_style_card_image_size']['#options']['card_image_small'] = 'Small (default)';
+            $form['layout_builder_style_card_image_size']['#options']['card_image_medium'] = 'Medium (default)';
             $form['layout_builder_style_media_format']['#options']['media_format_widescreen'] = 'Widescreen (16:9) (default)';
           }
           if ($block->getPluginId() == 'views_block:people_list_block-list_card') {
@@ -365,7 +365,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             if ($block->getPluginId() == 'views_block:article_list_block-list_article') {
               $form['layout_builder_style_card_media_position']['#default_value'] = 'card_media_position_right';
               $form['layout_builder_style_media_format']['#default_value'] = 'media_format_widescreen';
-              $form['layout_builder_style_card_image_size']['#default_value'] = 'card_image_small';
+              $form['layout_builder_style_card_image_size']['#default_value'] = 'card_image_medium';
               $form['layout_builder_style_content_alignment']['#default_value'] = 'content_alignment_left';
               $form['settings']['override']['items_per_page']['#default_value'] = 10;
               $form['settings']['override']['hide_fields']['order_fields']['field_article_source_link']['hide']['#default_value'] = 1;
