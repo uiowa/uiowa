@@ -83,12 +83,34 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
   if ($route_name == 'entity.node.replicate') {
     // Get allowed replicate entity types.
     $allowed_types = \Drupal::config('uiowa_core.settings')->get('uiowa_core.replicate_allowed');
-    $node_type = $form_state->getFormObject()->getEntity()->bundle();
+    $entity = $form_state->getFormObject()->getEntity();
+    $node_type = $entity->bundle();
+    $node_title = $entity->getTitle();
     // Set message and prevent replicate.
     if (!in_array($node_type, $allowed_types)) {
       \Drupal::messenger()->addWarning(t('Replicating content of this type is not allowed. Please contact the ITS Help Desk about enabling this functionality for this content.'));
       $form['actions']['submit']['#disabled'] = TRUE;
     }
+    // Customize the replicate confirm dialog to our
+    // use case (pages with titles)
+    $bundle_label = \Drupal::entityTypeManager()
+      ->getStorage('node_type')
+      ->load($entity->bundle())
+      ->label();
+
+    // Changes title to match the "Edit" action title
+    // (e.g. "<em>Edit</em> Home").
+    $form['#title'] = t('<em>Replicate @type</em> @title',
+      ['@type' => $bundle_label, '@title' => $node_title]);
+
+    // Lowercase for the rest of the form.
+    $bundle_label = strtolower($bundle_label);
+
+    $form['new_label_en']['#title'] = t("Replicated @type content's title", ['@type' => $bundle_label]);
+    $form['new_label_en']['#description'] = t('This text will be used as the title of the newly-replicated @type.', ['@type' => $bundle_label]);
+    // Removes the "This action cannot be undone" text.
+    $form['description'] = ['#markup' => ''];
+
   }
 
   switch ($form_id) {
