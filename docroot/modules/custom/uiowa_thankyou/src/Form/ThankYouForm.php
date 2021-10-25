@@ -5,7 +5,6 @@ namespace Drupal\uiowa_thankyou\Form;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
-use Drupal\Core\Queue\RequeueException;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -243,7 +242,7 @@ class ThankYouForm extends FormBase {
       $this->logger('uiowa_thankyou')
         ->warning($this->t('Dispatch request sent to: <em>@endpoint</em> and failed.', [
           '@endpoint' => $endpoint,
-      ]));
+        ]));
     }
     if (!isset($response)) {
       return;

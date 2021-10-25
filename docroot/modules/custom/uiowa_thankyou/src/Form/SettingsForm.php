@@ -4,7 +4,9 @@ namespace Drupal\uiowa_thankyou\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -12,6 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class SettingsForm extends ConfigFormBase {
   use StringTranslationTrait;
+  use LoggerChannelTrait;
 
   /**
    * The config.storage service.
@@ -113,12 +116,26 @@ class SettingsForm extends ConfigFormBase {
     if (!empty($api_key)) {
       $campaign_url = $uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_campaign');
       $campaigns = $this->dispatchGetData($endpoint . 'campaigns', $api_key);
+      if ($campaigns instanceof RequestException) {
+        $this->logger('uiowa_thankyou')
+          ->warning($this->t('Dispatch call failed with error: @message', [
+            '@message' => $campaigns->getMessage(),
+          ]));
+        return $form;
+      }
       $campaigns = $this->jsonController->decode($campaigns->getBody()->getContents());
       $options = [
         '0' => 'None',
       ];
       foreach ($campaigns as $campaign) {
         $r = $this->dispatchGetData($campaign, $api_key);
+        if ($r instanceof RequestException) {
+          $this->logger('uiowa_thankyou')
+            ->warning($this->t('Dispatch call failed with error: @message', [
+              '@message' => $r->getMessage(),
+            ]));
+          return $form;
+        }
         $d = $this->jsonController->decode($r->getBody()->getContents());
         $options[$campaign] = $d['name'];
       }
@@ -132,12 +149,26 @@ class SettingsForm extends ConfigFormBase {
       ];
       if (!empty($campaign_url)) {
         $communications = $this->dispatchGetData($campaign_url . '/communications', $api_key);
+        if ($communications instanceof RequestException) {
+          $this->logger('uiowa_thankyou')
+            ->warning($this->t('Dispatch call failed with error: @message', [
+              '@message' => $r->getMessage(),
+            ]));
+          return $form;
+        }
         $communications = $this->jsonController->decode($communications->getBody()->getContents());
         $options = [
           '0' => 'None',
         ];
         foreach ($communications as $communication) {
           $r = $this->dispatchGetData($communication, $api_key);
+          if ($r instanceof RequestException) {
+            $this->logger('uiowa_thankyou')
+              ->warning($this->t('Dispatch call failed with error: @message', [
+                '@message' => $r->getMessage(),
+              ]));
+            return $form;
+          }
           $d = $this->jsonController->decode($r->getBody()->getContents());
           $options[$communication] = $d['name'];
         }
@@ -211,13 +242,17 @@ class SettingsForm extends ConfigFormBase {
    *   The HTTP response from dispatch.
    */
   protected function dispatchGetData(string $endpoint, string $api_key) {
-    // @todo Try and catch errors here.
-    $response = $this->httpClient->get($endpoint, [
-      'headers' => [
-        'x-dispatch-api-key' => $api_key,
-        'accept' => 'application/json',
-      ],
-    ]);
+    try {
+      $response = $this->httpClient->get($endpoint, [
+        'headers' => [
+          'x-dispatch-api-key' => $api_key,
+          'accept' => 'application/json',
+        ],
+      ]);
+    }
+    catch (RequestException $e) {
+      return $e;
+    }
     return $response;
   }
 
