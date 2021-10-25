@@ -140,13 +140,13 @@ class ThankYouForm extends FormBase {
     if ($request->code == '200') {
       $form_state['thankyou_vars'] = [
         'recipient_email' => $recipient_email,
-        'hr_data' => $this->jsonController->decode($request->data),
+        'hr_data' => $this->jsonController->decode($request->getBody()->getContents()),
         'placeholders' => $placeholders,
       ];
     }
     else {
       if (isset($request->data)) {
-        $message = $request->data;
+        $message = $request->getBody()->getContents();
       }
       else {
         $message = $request->error;
