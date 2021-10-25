@@ -4,14 +4,17 @@ namespace Drupal\uiowa_thankyou\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Component\Utility\Xss;
 
 /**
  * Provides a Dispatch-enabled Thank You form.
  */
 class ThankYouForm extends FormBase {
   use StringTranslationTrait;
+  use LoggerChannelTrait;
 
   /**
    * The config.storage service.
@@ -177,9 +180,9 @@ class ThankYouForm extends FormBase {
     ];
     // Generate additional member attributes for each webform component.
     // We assume submission data is single valued.
-    // @todo Update this.
+    // @todo Update this. Is it actually needed?
     foreach ($placeholders as $cid => $key) {
-      $members->members[0]->$key = filter_xss($submission->data[$cid][0]);
+      $members->members[0]->$key = Xss::filter($form_state[$cid][0]);
     }
 
     // Post to Dispatch api to send the email.
@@ -192,13 +195,11 @@ class ThankYouForm extends FormBase {
       'data' => $this->jsonController->encode($members),
     ]);
     // Log the transaction for the system.
-    $message = 'Dispatch request sent to: <em>@endpoint</em> and returned code: <em>@code</em>';
-    $mvars = [
-      '@endpoint' => $endpoint,
-      '@code' => $response->code,
-    ];
-    // @todo Update this.
-    watchdog('oneit_thankyou', $message, $mvars, WATCHDOG_NOTICE);
+    $this->logger('uiowa_thankyou')
+      ->notice($this->t('Dispatch request sent to: <em>@endpoint</em> and returned code: <em>@code</em>', [
+        '@endpoint' => $endpoint,
+        '@code' => $response->code,
+      ]));
 
     // Send supervisor email.
     $endpoint = $uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_supervisor_communication') . '/adhocs';
@@ -215,13 +216,11 @@ class ThankYouForm extends FormBase {
       'data' => $this->jsonController->encode($members),
     ]);
     // Log the transaction for the system.
-    $message = 'Dispatch request sent to: <em>@endpoint</em> and returned code: <em>@code</em>';
-    $mvars = [
-      '@endpoint' => $endpoint,
-      '@code' => $response->code,
-    ];
-    // @todo Update this.
-    watchdog('oneit_thankyou', $message, $mvars, WATCHDOG_NOTICE);
+    $this->logger('uiowa_thankyou')
+      ->notice($this->t('Dispatch request sent to: <em>@endpoint</em> and returned code: <em>@code</em>', [
+        '@endpoint' => $endpoint,
+        '@code' => $response->code,
+      ]));
   }
 
 }
