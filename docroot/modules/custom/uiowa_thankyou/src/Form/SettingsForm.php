@@ -64,7 +64,7 @@ class SettingsForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $uiowa_thankyou_settings = $this->config('uiowa_thankyou.settings');
-    $api_key = $uiowa_thankyou_settings->get('api_key');
+    $api_key = $uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_apikey');
     $endpoint = 'https://apps.its.uiowa.edu/dispatch/api/v1/';
 
     $form = parent::buildForm($form, $form_state);
@@ -110,16 +110,16 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => $api_key,
       '#description' => $this->t('Provide an API key from Dispatch client settings.'),
     ];
-    if (!empty($apikey)) {
-      $campaign_url = $uiowa_thankyou_settings->get('oneit_thankyou_dispatch_campaign');
-      $campaigns = $this->dispatchGetData($endpoint . 'campaigns', $apikey);
-      $campaigns = $this->jsonController->decode($campaigns->data);
+    if (!empty($api_key)) {
+      $campaign_url = $uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_campaign');
+      $campaigns = $this->dispatchGetData($endpoint . 'campaigns', $api_key);
+      $campaigns = $this->jsonController->decode($campaigns->getBody()->getContents());
       $options = [
         '0' => 'None',
       ];
       foreach ($campaigns as $campaign) {
-        $r = $this->dispatchGetData($campaign, $apikey);
-        $d = $this->jsonController->decode($r->data);
+        $r = $this->dispatchGetData($campaign, $api_key);
+        $d = $this->jsonController->decode($r->getBody()->getContents());
         $options[$campaign] = $d['name'];
       }
 
@@ -131,14 +131,14 @@ class SettingsForm extends ConfigFormBase {
         '#options' => $options,
       ];
       if (!empty($campaign_url)) {
-        $communications = $this->dispatchGetData($campaign_url . '/communications', $apikey);
-        $communications = $this->jsonController->decode($communications->data);
+        $communications = $this->dispatchGetData($campaign_url . '/communications', $api_key);
+        $communications = $this->jsonController->decode($communications->getBody()->getContents());
         $options = [
           '0' => 'None',
         ];
         foreach ($communications as $communication) {
-          $r = $this->dispatchGetData($communication, $apikey);
-          $d = $this->jsonController->decode($r->data);
+          $r = $this->dispatchGetData($communication, $api_key);
+          $d = $this->jsonController->decode($r->getBody()->getContents());
           $options[$communication] = $d['name'];
         }
 
@@ -152,7 +152,7 @@ class SettingsForm extends ConfigFormBase {
         $form['dispatch_fs']['uiowa_thankyou_dispatch_supervisor_communication'] = [
           '#type' => 'select',
           '#title' => $this->t('Supervisor Communication'),
-          '#default_value' => $uiowa_thankyou_settings->get('oneit_thankyou_dispatch_supervisor_communication'),
+          '#default_value' => $uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_supervisor_communication'),
           '#description' => $this->t('Select the supervisor communication. Communications are managed in the <a href="https://apps.its.uiowa.edu/dispatch">dispatch interface</a>'),
           '#options' => $options,
         ];
@@ -189,12 +189,12 @@ class SettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->config('uiowa_thankyou.settings')
-      ->set('api_key', $form_state->getValue('api_key'))
+      ->set('uiowa_thankyou_dispatch_apikey', $form_state->getValue('uiowa_thankyou_dispatch_apikey'))
       ->set('uiowa_thankyou_hrapi_user', $form_state->getValue('uiowa_thankyou_hrapi_user'))
       ->set('uiowa_thankyou_hrapi_pass', $form_state->getValue('uiowa_thankyou_hrapi_pass'))
-      ->set('oneit_thankyou_dispatch_campaign', $form_state->getValue('oneit_thankyou_dispatch_campaign'))
+      ->set('uiowa_thankyou_dispatch_campaign', $form_state->getValue('uiowa_thankyou_dispatch_campaign'))
       ->set('uiowa_thankyou_dispatch_recipient_communication', $form_state->getValue('uiowa_thankyou_dispatch_recipient_communication'))
-      ->set('oneit_thankyou_dispatch_supervisor_communication', $form_state->getValue('oneit_thankyou_dispatch_supervisor_communication'))
+      ->set('uiowa_thankyou_dispatch_supervisor_communication', $form_state->getValue('uiowa_thankyou_dispatch_supervisor_communication'))
       ->save();
     parent::submitForm($form, $form_state);
   }
@@ -204,17 +204,17 @@ class SettingsForm extends ConfigFormBase {
    *
    * @param string $endpoint
    *   Fully qualified url.
-   * @param string $apikey
+   * @param string $api_key
    *   Api key from Dispatch.
    *
    * @return object
    *   The HTTP response from dispatch.
    */
-  protected function dispatchGetData(string $endpoint, string $apikey) {
+  protected function dispatchGetData(string $endpoint, string $api_key) {
     // @todo Try and catch errors here.
     $response = $this->httpClient->get($endpoint, [
       'headers' => [
-        'x-dispatch-api-key' => $apikey,
+        'x-dispatch-api-key' => $api_key,
         'accept' => 'application/json',
       ],
     ]);

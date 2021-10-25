@@ -180,7 +180,8 @@ class ThankYouForm extends FormBase {
     ];
     // Generate additional member attributes for each webform component.
     // We assume submission data is single valued.
-    // @todo Update this. Is it actually needed?
+    // @todo Update this. Is it actually needed? Currently placeholders
+    //   is just an empty array when we get here.
     foreach ($placeholders as $cid => $key) {
       $members->members[0]->$key = Xss::filter($form_state[$cid][0]);
     }
