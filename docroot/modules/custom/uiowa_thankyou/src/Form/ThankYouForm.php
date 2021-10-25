@@ -143,24 +143,25 @@ class ThankYouForm extends FormBase {
     catch (RequestException $e) {
       $form_state->setError($form, $e->getMessage());
     }
+    if (!isset($request)) {
+      return;
+    }
     // If the request is successful.
-    if (isset($request)) {
-      if ($request->code == '200') {
-        $form_state['thankyou_vars'] = [
-          'recipient_email' => $recipient_email,
-          'hr_data' => $this->jsonController->decode($request->getBody()->getContents()),
-          'placeholders' => $placeholders,
-        ];
+    if ($request->code == '200') {
+      $form_state['thankyou_vars'] = [
+        'recipient_email' => $recipient_email,
+        'hr_data' => $this->jsonController->decode($request->getBody()->getContents()),
+        'placeholders' => $placeholders,
+      ];
+    }
+    else {
+      if (!empty($request->getBody())) {
+        $message = $request->getBody()->getContents();
       }
       else {
-        if (!empty($request->getBody())) {
-          $message = $request->getBody()->getContents();
-        }
-        else {
-          $message = $request->error;
-        }
-        $form_state->setError($form, $message);
+        $message = $request->error;
       }
+      $form_state->setError($form, $message);
     }
     parent::validateForm($form, $form_state);
   }
@@ -196,14 +197,25 @@ class ThankYouForm extends FormBase {
     }
 
     // Post to Dispatch api to send the email.
-    $response = $this->httpClient->get($endpoint, [
-      'headers' => [
-        'x-dispatch-api-key' => $apikey,
-        'accept' => 'application/json',
-      ],
-      'method' => 'POST',
-      'data' => $this->jsonController->encode($members),
-    ]);
+    try {
+      $response = $this->httpClient->get($endpoint, [
+        'headers' => [
+          'x-dispatch-api-key' => $apikey,
+          'accept' => 'application/json',
+        ],
+        'method' => 'POST',
+        'data' => $this->jsonController->encode($members),
+      ]);
+    }
+    catch (RequestException $e) {
+      $this->logger('uiowa_thankyou')
+        ->warning($this->t('Dispatch request sent to: <em>@endpoint</em> and failed.', [
+          '@endpoint' => $endpoint,
+        ]));
+    }
+    if (!isset($response)) {
+      return;
+    }
     // Log the transaction for the system.
     $this->logger('uiowa_thankyou')
       ->notice($this->t('Dispatch request sent to: <em>@endpoint</em> and returned code: <em>@code</em>', [
@@ -217,14 +229,25 @@ class ThankYouForm extends FormBase {
     $members->members[0]->toName = $hr_data['SUPERVISORS'][0]['FIRST_NAME'];
     $members->members[0]->toAddress = $hr_data['SUPERVISORS'][0]['EMAIL'];
     // Post to Dispatch api to send the email.
-    $response = $this->httpClient->get($endpoint, [
-      'headers' => [
-        'x-dispatch-api-key' => $apikey,
-        'accept' => 'application/json',
-      ],
-      'method' => 'POST',
-      'data' => $this->jsonController->encode($members),
-    ]);
+    try {
+      $response = $this->httpClient->get($endpoint, [
+        'headers' => [
+          'x-dispatch-api-key' => $apikey,
+          'accept' => 'application/json',
+        ],
+        'method' => 'POST',
+        'data' => $this->jsonController->encode($members),
+      ]);
+    }
+    catch (RequestException $e) {
+      $this->logger('uiowa_thankyou')
+        ->warning($this->t('Dispatch request sent to: <em>@endpoint</em> and failed.', [
+          '@endpoint' => $endpoint,
+      ]));
+    }
+    if (!isset($response)) {
+      return;
+    }
     // Log the transaction for the system.
     $this->logger('uiowa_thankyou')
       ->notice($this->t('Dispatch request sent to: <em>@endpoint</em> and returned code: <em>@code</em>', [
