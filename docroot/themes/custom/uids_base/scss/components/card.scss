@@ -129,11 +129,6 @@
   }
 }
 
-.card__subtitle + .card__date,
-.card__date + .card__date {
-  margin-top: .3rem;
-}
-
 .card {
   .card__date,
   .card__subtitle {
@@ -233,4 +228,13 @@
       padding: 0;
     }
   }
+}
+
+// Card list styles
+.card--list .card__date {
+  margin-top: .3rem;
+}
+
+.card--media-left.card--list .card__title, .card--media-right.card--list .card__title {
+  margin: 0 0 .125rem
 }
