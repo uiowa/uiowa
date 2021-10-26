@@ -87,10 +87,10 @@ function uids_base_preprocess_html(&$variables) {
 
   $variables['attributes']['class'][] = $sticky_class;
 
-  $toppage = 'scroll-up';
+  $toppage = 'no-top-scroll';
   // Used for page by page basis display of scroll to top button.
   if (theme_get_setting('header.toppage')) {
-    $toppage = 'no-top-scroll';
+    $toppage = 'scroll-up';
   }
   $variables['attributes']['class'][] = $toppage;
 

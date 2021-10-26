@@ -213,10 +213,10 @@ function uiowa_core_preprocess_html(&$variables) {
         $variables['attributes']['class'][] = 'text--serif';
         $variables['#attached']['library'][] = 'uids_base/global-serif';
       }
-      $toppage = 'scroll-up';
-      // Don't display button is user opts to hide it.
+      $toppage = 'no-top-scroll';
+      // Only display scroll to top button if user opts in.
       if (theme_get_setting('header.toppage')) {
-        $toppage = 'no-top-scroll';
+        $toppage = 'scroll-up';
       }
       $variables['attributes']['class'][] = $toppage;
     }

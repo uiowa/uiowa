@@ -94,8 +94,8 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
   // Used for page by page basis display of scroll to top button.
   $form['header']['toppage'] = [
     '#type' => 'checkbox',
-    '#title' => t('Hide Scroll to top button'),
-    '#description' => t('Remove scroll to top button functionality on site'),
+    '#title' => t('Add Scroll to top button'),
+    '#description' => t('Add scroll to top button functionality on site'),
     '#default_value' => theme_get_setting('header.toppage'),
     '#states' => [
       'visible' => [
@@ -105,15 +105,13 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
       ],
     ],
   ];
-  // Only display scroll to top button functionality if site name is Graduate College.
-  // if ($site_name === 'Graduate College') {.
+  // Display scroll to top button functionality.
   $form['header']['toppage'] = [
     '#type' => 'checkbox',
-    '#title' => t('Hide Scroll to top button'),
-    '#description' => t('Remove scroll to top button functionality on site'),
+    '#title' => t('Add Scroll to top button'),
+    '#description' => t('Add scroll to top button functionality on site'),
     '#default_value' => theme_get_setting('header.toppage'),
   ];
-  // }.
 
   $top_links_limit = theme_get_setting('header.top_links_limit');
   // Get limit, otherwise limit to 2.
