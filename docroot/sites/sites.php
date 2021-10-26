@@ -3575,3 +3575,9 @@ $sites['org-iowajpec.local.drupal.uiowa.edu'] = 'iowajpec.org';
 $sites['org-iowajpec.dev.drupal.uiowa.edu'] = 'iowajpec.org';
 $sites['org-iowajpec.stage.drupal.uiowa.edu'] = 'iowajpec.org';
 $sites['org-iowajpec.prod.drupal.uiowa.edu'] = 'iowajpec.org';
+
+// Directory aliases for krysan.lab.uiowa.edu.
+$sites['labkrysan.local.drupal.uiowa.edu'] = 'krysan.lab.uiowa.edu';
+$sites['labkrysan.dev.drupal.uiowa.edu'] = 'krysan.lab.uiowa.edu';
+$sites['labkrysan.stage.drupal.uiowa.edu'] = 'krysan.lab.uiowa.edu';
+$sites['labkrysan.prod.drupal.uiowa.edu'] = 'krysan.lab.uiowa.edu';
