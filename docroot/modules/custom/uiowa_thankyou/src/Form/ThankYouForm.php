@@ -121,8 +121,10 @@ class ThankYouForm extends FormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    // Set vars.
-    $placeholders = [];
+    // Set vars. Placeholders can be used for extended dispatch templates.
+    $placeholders = [
+      'message' => $form_state->getValue('message'),
+    ];
     $uiowa_thankyou_settings = $this->config('uiowa_thankyou.settings');
 
     $recipient_email = $form_state->getValue('email_address_of_the_person_to_thank');
@@ -189,8 +191,6 @@ class ThankYouForm extends FormBase {
     ];
     // Generate additional member attributes for each webform component.
     // We assume submission data is single valued.
-    // @todo Update this. Is it actually needed? Currently placeholders
-    //   is just an empty array when we get here.
     foreach ($placeholders as $cid => $key) {
       $members->members[0]->$key = Xss::filter($form_state[$cid][0]);
     }
