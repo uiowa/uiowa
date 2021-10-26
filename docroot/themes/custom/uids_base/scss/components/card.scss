@@ -130,6 +130,21 @@
 }
 
 .card {
+  .card__date,
+  .card__subtitle {
+    .svg-inline--fa {
+      margin-right: .3rem;
+    }
+    a {
+      text-decoration: none;
+    }
+  }
+
+  .card__date {
+    .svg-inline--fa {
+      vertical-align: -0.155em;
+    }
+  }
 
   &__label {
     position: relative;
@@ -213,4 +228,13 @@
       padding: 0;
     }
   }
+}
+
+// Card list styles
+.card--list .card__date {
+  margin-top: .3rem;
+}
+
+.card--media-left.card--list .card__title, .card--media-right.card--list .card__title {
+  margin: 0 0 .125rem
 }

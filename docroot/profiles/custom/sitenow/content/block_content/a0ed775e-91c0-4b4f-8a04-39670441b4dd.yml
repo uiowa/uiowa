@@ -4,8 +4,6 @@ _meta:
   uuid: a0ed775e-91c0-4b4f-8a04-39670441b4dd
   bundle: uiowa_cta
   default_langcode: en
-  depends:
-    922b3b26-306a-457c-ba18-2c00966f81cf: node
 default:
   status:
     -
@@ -18,12 +16,13 @@ default:
       value: true
   field_uiowa_cta_link:
     -
-      target_uuid: 922b3b26-306a-457c-ba18-2c00966f81cf
-      title: 'Apply Now, Learn More, etc.'
+      uri: 'internal:/node/2'
+      title: 'About Us'
       options: {  }
   field_uiowa_cta_summary:
     -
       value: 'If Cards aren''t prominent enough, the Call to Action block can be used to more directly drive your users to interact with a link. Background and button color, as well as button text, are changeable from the blocks'' Configure menu. '
+      format: minimal
   field_uiowa_cta_title:
     -
       size: h2
