@@ -71,6 +71,18 @@ class ListBlock extends CoreBlock {
 
     $form['allow']['#default_value'] = $defaults;
 
+    // Add restrict_fields option to prevent editors from toggling certain fields.
+    $field_keys = array_keys($this->view->getDisplay()->getOption('fields'));
+    $fields = array_combine($field_keys, $field_keys);
+    $restrict_fields = $this->getOption('restrict_fields');
+    $form['restrict_fields'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Restrict fields'),
+      '#description' => $this->t('Prevent editor from show/hide fields.'),
+      '#options' => $fields,
+      '#default_value' => $restrict_fields ?: '',
+    ];
+
     // Show a text area to add custom help text to the display more link.
     $more_link_help_text = $this->getOption('more_link_help_text');
     $form['more_link_help_text'] = [
@@ -97,6 +109,7 @@ class ListBlock extends CoreBlock {
     parent::submitOptionsForm($form, $form_state);
     if ($form_state->get('section') === 'allow') {
       $this->setOption('more_link_help_text', $form_state->getValue('more_link_help_text'));
+      $this->setOption('restrict_fields', $form_state->getValue('restrict_fields'));
     }
   }
 
@@ -125,9 +138,11 @@ class ListBlock extends CoreBlock {
     // Modify "Items per page" block settings form.
     if (!empty($allow_settings['items_per_page'])) {
       // @todo Remove once exposed filters patch is added.
-      $form['override']['items_per_page']['#min'] = 0;
+      // Seems to break at high numbers :grimmacing: ..
+      $form['override']['items_per_page']['#min'] = 1;
+      $form['override']['items_per_page']['#max'] = 50;
       $form['override']['items_per_page']['#title'] = $this->t('Items to display');
-      $form['override']['items_per_page']['#description'] = $this->t('Select the number of entries to display');
+      $form['override']['items_per_page']['#description'] = $this->t('Select the number of entries to display. Minimum of 1 and maximum of 50. Show pager to display more than 50.');
     }
 
     // Provide "Pager offset" block settings form.
@@ -152,7 +167,19 @@ class ListBlock extends CoreBlock {
         '#description' => $this->t('Choose to hide some of the fields.'),
       ];
       $form['override']['hide_fields']['order_fields'] = $form['override']['order_fields'];
-      unset($form['override']['order_fields']);
+      $form['override']['order_fields']['#access'] = FALSE;
+
+      // Remove restricted fields from the hide options.
+      $restrict_fields = $this->getOption('restrict_fields');
+      if (!empty($restrict_fields)) {
+        $fields_to_remove = [];
+        foreach ($restrict_fields as $field) {
+          if ($field !== 0) {
+            $fields_to_remove[$field] = $field;
+          }
+        }
+        $form["override"]["hide_fields"]["order_fields"] = array_diff_key($form["override"]["hide_fields"]["order_fields"], $fields_to_remove);
+      }
     }
 
     // Add exposed filters to be customized in the block.
@@ -181,18 +208,20 @@ class ListBlock extends CoreBlock {
         // Set the label and default values of the form element, based on the
         // block configuration.
         $exposed_info = $handler->exposedInfo();
-        $exposed_filters[$handler_id]['#title'] = $exposed_info['label'];
-        // The following is essentially using this patch:
-        // https://www.drupal.org/project/views_block_placement_exposed_form_defaults/issues/3158789
-        if ($exposed_filters[$handler_id]['#type'] == 'entity_autocomplete') {
-          $exposed_filters[$handler_id]['#default_value'] = EntityAutocomplete::valueCallback(
-            $exposed_filters[$handler_id],
-            $exposed_filter_values[$handler_id],
-            $form_state
-          );
-        }
-        else {
-          $exposed_filters[$handler_id]['#default_value'] = !empty($exposed_filter_values[$handler_id]) ? $exposed_filter_values[$handler_id] : [];
+        if ($exposed_info) {
+          $exposed_filters[$handler_id]['#title'] = $exposed_info['label'];
+          // The following is essentially using this patch:
+          // https://www.drupal.org/project/views_block_placement_exposed_form_defaults/issues/3158789
+          if ($exposed_filters[$handler_id]['#type'] == 'entity_autocomplete') {
+            $exposed_filters[$handler_id]['#default_value'] = EntityAutocomplete::valueCallback(
+              $exposed_filters[$handler_id],
+              $exposed_filter_values[$handler_id],
+              $form_state
+            );
+          }
+          else {
+            $exposed_filters[$handler_id]['#default_value'] = !empty($exposed_filter_values[$handler_id]) ? $exposed_filter_values[$handler_id] : [];
+          }
         }
       }
 
@@ -451,13 +480,15 @@ class ListBlock extends CoreBlock {
     // Attach the headline, if configured.
     if (!empty($config['headline'])) {
       $headline = $config['headline'];
-      $this->view->element['headline'] = [
-        '#theme' => 'uiowa_core_headline',
-        '#headline' => $headline['headline'],
-        '#hide_headline' => $headline['hide_headline'],
-        '#heading_size' => $headline['heading_size'],
-        '#headline_style' => $headline['headline_style'],
-      ];
+      if (!empty($headline['headline'])) {
+        $this->view->element['headline'] = [
+          '#theme' => 'uiowa_core_headline',
+          '#headline' => $headline['headline'],
+          '#hide_headline' => $headline['hide_headline'],
+          '#heading_size' => $headline['heading_size'],
+          '#headline_style' => $headline['headline_style'],
+        ];
+      }
       if (empty($headline['headline'])) {
         $child_heading_size = $headline['child_heading_size'] ?? 'h3';
       }
