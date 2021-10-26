@@ -315,8 +315,10 @@ ul.sf-menu.sf-mega-menu li {
 .block-superfish .menu.sf-mega-menu ul li a,
 .block-superfish .menu.sf-mega-menu ul li span,
 .block-superfish .menu.sf-mega-menu ul li .nolink {
-  // padding: .325rem 0;
-  font-size: 1.2rem;
+  @include breakpoint(menu) {
+    padding: .325rem 0;
+    font-size: 1.2rem;
+  }  
 }
 
 
