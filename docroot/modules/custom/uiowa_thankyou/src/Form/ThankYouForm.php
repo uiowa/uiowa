@@ -80,36 +80,6 @@ class ThankYouForm extends FormBase {
       '#title' => $this->t("Nominator's Email Address"),
       '#required' => TRUE,
     ];
-    $form['recipient_first_name'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t("Recipient's First Name"),
-      '#access' => FALSE,
-    ];
-    $form['recipient_last_name'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t("Recipient's Last Name"),
-      '#access' => FALSE,
-    ];
-    $form['recipient_hawkid'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t("Recipient's HawkID"),
-      '#access' => FALSE,
-    ];
-    $form['supervisor_first_name'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Supervisor First Name'),
-      '#access' => FALSE,
-    ];
-    $form['supervisor_last_name'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Supervisor Last Name'),
-      '#access' => FALSE,
-    ];
-    $form['supervisor_email'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Supervisor Email'),
-      '#access' => FALSE,
-    ];
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Submit'),
