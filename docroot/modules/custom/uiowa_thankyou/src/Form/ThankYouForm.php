@@ -217,6 +217,8 @@ class ThankYouForm extends FormBase {
 
       $this->messenger()->addError($this->t('An error was encountered processing the form. If the problem persists, please contact the ITS Help Desk.'));
     }
+
+    $this->messenger()->addMessage($this->t('The form has been submitted successfully.'));
   }
 
 }
