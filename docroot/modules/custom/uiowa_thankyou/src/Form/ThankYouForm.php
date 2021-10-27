@@ -150,89 +150,68 @@ class ThankYouForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $placeholders = $form_state->getValue(['thankyou_vars', 'placeholders']);
-    $recipient_email = $form_state->getValue(['thankyou_vars', 'recipient_email']);
-    $hr_data = $form_state->getValue(['thankyou_vars', 'hr_data']);
-
+    // @todo Merge additional module config into placeholders, ex. subject.
+    $placeholders = $form_state->getValue('placeholder');
+    $hr_data = $form_state->getValue('hr_data');
     $uiowa_thankyou_settings = $this->config('uiowa_thankyou.settings');
-    $apikey = $uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_apikey');
+    $apikey = trim($uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_apikey'));
     $endpoint = $uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_recipient_communication') . '/adhocs';
 
-    // Create the members object and populate member attributes.
-    $members = (object) [
+    // Dispatch API data.
+    $data = [
       'members' => [
-        (object) [
-          'toName' => $hr_data['FIRST_NAME'],
-          'toAddress' => $recipient_email,
+        [
+          'toName' => $hr_data['FIRST_NAME'] . ' ' . $hr_data['LAST_NAME'],
+          'toAddress' => $form_state->getValue('to_email'),
+          'subject' => 'Thank You',
         ],
       ],
       'includeBatchResponse' => FALSE,
     ];
 
-    // Generate additional member attributes for each webform component.
-    // We assume submission data is single valued.
+    // Add the placeholders to the recipient (first) member.
     foreach ($placeholders as $key => $value) {
-      $members->members[0]->$key = Xss::filter($value);
+      $data['members'][0][$key] = Xss::filter($value);
     }
 
-    // Post to Dispatch api to send the email.
+    // Duplicate first member to get placeholders but change to CC supervisor.
+    foreach ($hr_data['SUPERVISORS'] as $supervisor) {
+      $data['members'][] = array_merge($data['members'][0], [
+        'toName' => $supervisor['FIRST_NAME'] . ' ' . $supervisor['LAST_NAME'],
+        'toAddress' => $supervisor['EMAIL'],
+        'subject' => 'Thank You (Supervisor Copy)',
+      ]);
+    }
+
+    // Prepare the data for the request body JSON.
+    $data = (object) $data;
+
+    foreach ($data->members as $key => $member) {
+      $data->members[$key] = (object) $member;
+    }
+
+    // Post to Dispatch API to send the email.
     try {
-      $response = $this->httpClient->get($endpoint, [
+      $response = $this->httpClient->post($endpoint, [
         'headers' => [
           'x-dispatch-api-key' => $apikey,
           'accept' => 'application/json',
         ],
-        'method' => 'POST',
-        'data' => $this->jsonController->encode($members),
+        'body' => $this->jsonController->encode($data),
       ]);
+
+      $this->logger('uiowa_thankyou')->notice($this->t('Dispatch request sent to: <em>@endpoint</em> and returned code: <em>@code</em>', [
+        '@endpoint' => $endpoint,
+        '@code' => $response->getStatusCode(),
+      ]));
     }
     catch (RequestException $e) {
-      $this->logger('uiowa_thankyou')
-        ->warning($this->t('Dispatch request sent to: <em>@endpoint</em> and failed.', [
-          '@endpoint' => $endpoint,
-        ]));
-    }
-    if (!isset($response)) {
-      return;
-    }
-    // Log the transaction for the system.
-    $this->logger('uiowa_thankyou')
-      ->notice($this->t('Dispatch request sent to: <em>@endpoint</em> and returned code: <em>@code</em>', [
+      $this->logger('uiowa_thankyou')->warning($this->t('Dispatch request sent to: <em>@endpoint</em> and failed.', [
         '@endpoint' => $endpoint,
-        '@code' => $response->code,
       ]));
 
-    // Send supervisor email.
-    $endpoint = $uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_supervisor_communication') . '/adhocs';
-    // Update member object to send to the supervisor.
-    $members->members[0]->toName = $hr_data['SUPERVISORS'][0]['FIRST_NAME'];
-    $members->members[0]->toAddress = $hr_data['SUPERVISORS'][0]['EMAIL'];
-    // Post to Dispatch api to send the email.
-    try {
-      $response = $this->httpClient->get($endpoint, [
-        'headers' => [
-          'x-dispatch-api-key' => $apikey,
-          'accept' => 'application/json',
-        ],
-        'method' => 'POST',
-        'data' => $this->jsonController->encode($members),
-      ]);
+      $this->messenger()->addError($this->t('An error was encountered processing the form. If the problem persists, please contact the ITS Help Desk.'));
     }
-    catch (RequestException $e) {
-      $this->logger('uiowa_thankyou')
-        ->warning($this->t('Dispatch request sent to: <em>@endpoint</em> and failed.', [
-          '@endpoint' => $endpoint,
-        ]));
-    }
-    if (!isset($response)) {
-      return;
-    }
-    // Log the transaction for the system.
-    $this->logger('uiowa_thankyou')
-      ->notice($this->t('Dispatch request sent to: <em>@endpoint</em> and returned code: <em>@code</em>', [
-        '@endpoint' => $endpoint,
-        '@code' => $response->code,
-      ]));
   }
 
 }
