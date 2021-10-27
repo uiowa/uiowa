@@ -6,6 +6,8 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Component\Utility\Xss;
@@ -141,7 +143,7 @@ class ThankYouForm extends FormBase {
         ],
       ]);
     }
-    catch (RequestException $e) {
+    catch (RequestException | GuzzleException | ClientException $e) {
       $this->logger('uiowa_thankyou')->error($this->t('HR API error: @error.', [
         '@error' => $e->getMessage()
       ]));
@@ -151,6 +153,7 @@ class ThankYouForm extends FormBase {
     if (!isset($request)) {
       return;
     }
+
     // If the request is successful.
     if ($request->code == '200') {
       $form_state['thankyou_vars'] = [
@@ -159,15 +162,7 @@ class ThankYouForm extends FormBase {
         'placeholders' => $placeholders,
       ];
     }
-    else {
-      if (!empty($request->getBody())) {
-        $message = $request->getBody()->getContents();
-      }
-      else {
-        $message = $request->error;
-      }
-      $form_state->setError($form, $message);
-    }
+
     parent::validateForm($form, $form_state);
   }
 
