@@ -72,19 +72,13 @@ class SettingsForm extends ConfigFormBase {
 
     $form = parent::buildForm($form, $form_state);
 
-    // Webform Setup.
-    $form['webform_fs'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Webform Configuration'),
-      '#description' => $this->t('To come later...'),
-      '#collapsible' => TRUE,
-    ];
     // HR API.
     $form['hr_fs'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('HR API Configuration'),
       '#collapsible' => TRUE,
     ];
+
     $form['hr_fs']['uiowa_thankyou_hrapi_user'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Username'),
@@ -92,6 +86,7 @@ class SettingsForm extends ConfigFormBase {
       '#description' => $this->t('Username to connect to the HR API.'),
       '#required' => TRUE,
     ];
+
     $form['hr_fs']['uiowa_thankyou_hrapi_pass'] = [
       '#type' => 'password',
       '#title' => $this->t('Password'),
@@ -123,10 +118,12 @@ class SettingsForm extends ConfigFormBase {
           ]));
         return $form;
       }
+
       $campaigns = $this->jsonController->decode($campaigns->getBody()->getContents());
       $options = [
         '0' => 'None',
       ];
+
       foreach ($campaigns as $campaign) {
         $r = $this->dispatchGetData($campaign, $api_key);
         if ($r instanceof RequestException) {
@@ -147,6 +144,7 @@ class SettingsForm extends ConfigFormBase {
         '#description' => $this->t('Select a Dispatch campaign.'),
         '#options' => $options,
       ];
+
       if (!empty($campaign_url)) {
         $communications = $this->dispatchGetData($campaign_url . '/communications', $api_key);
         if ($communications instanceof RequestException) {
@@ -156,10 +154,12 @@ class SettingsForm extends ConfigFormBase {
             ]));
           return $form;
         }
+
         $communications = $this->jsonController->decode($communications->getBody()->getContents());
         $options = [
           '0' => 'None',
         ];
+
         foreach ($communications as $communication) {
           $r = $this->dispatchGetData($communication, $api_key);
           if ($r instanceof RequestException) {
@@ -169,6 +169,7 @@ class SettingsForm extends ConfigFormBase {
               ]));
             return $form;
           }
+
           $d = $this->jsonController->decode($r->getBody()->getContents());
           $options[$communication] = $d['name'];
         }
@@ -186,22 +187,6 @@ class SettingsForm extends ConfigFormBase {
           '#default_value' => $uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_supervisor_communication'),
           '#description' => $this->t('Select the supervisor communication. Communications are managed in the <a href="https://apps.its.uiowa.edu/dispatch">dispatch interface</a>'),
           '#options' => $options,
-        ];
-        $form['dispatch_fs']['help'] = [
-          '#type' => 'container',
-          '#attributes' => [
-            'class' => [
-              'messages',
-              'warning',
-            ],
-          ],
-        ];
-        $form['dispatch_fs']['help']['member_attributes_help'] = [
-          '#type' => 'html_tag',
-          '#tag' => 'div',
-          '#value' => $this->t('Member attributes can be used in Dispatch templates to dynamically display data. All webform component values will be passed to the template via member attributes. The attribute name will be the key of the webform component. For example webform_component_key can be used in a Dispatch template as ${webform_component_key}. Additional member attributes will be available from the HR API and will be hard-coded. @attr', [
-            '@attr' => render($wf_mem_attr),
-          ]),
         ];
       }
     }
