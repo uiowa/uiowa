@@ -100,19 +100,13 @@ class ThankYouForm extends FormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    // Set vars. Placeholders can be used for extended dispatch templates.
-    $placeholders = [
-      'message' => $form_state->getValue('message'),
-    ];
-
     $env = getenv('AH_SITE_ENVIRONMENT') ?: 'local';
     $uiowa_thankyou_settings = $this->config('uiowa_thankyou.settings');
-    $recipient_email = $form_state->getValue('email_address_of_the_person_to_thank');
 
     // Get HR data.
     $user = $uiowa_thankyou_settings->get('uiowa_thankyou_hrapi_user');
     $pass = $uiowa_thankyou_settings->get('uiowa_thankyou_hrapi_pass');
-    $endpoint = 'https://' . $user . ':' . $pass . '@hris.uiowa.edu/apigateway/oneit/thankyounotes/addressee?email=' . $recipient_email;
+    $endpoint = 'https://' . $user . ':' . $pass . '@hris.uiowa.edu/apigateway/oneit/thankyounotes/addressee?email=' . $form_state->getValue('to_email');
 
     try {
       $request = $this->httpClient->get($endpoint, [
@@ -139,12 +133,7 @@ class ThankYouForm extends FormBase {
 
     // Allow for local env to work around IP restrictions.
     $hr_data = $hr_data ?? $this->jsonController->decode($request->getBody()->getContents());
-
-    $form_state->setValue('thankyou_vars',  [
-      'recipient_email' => $recipient_email,
-      'hr_data' => $hr_data,
-      'placeholders' => $placeholders,
-    ]);
+    $form_state->setValue('hr_data', $hr_data);
 
     parent::validateForm($form, $form_state);
   }
