@@ -102,12 +102,30 @@ class SettingsForm extends ConfigFormBase {
       '#title' => $this->t('Dispatch Configuration'),
       '#collapsible' => TRUE,
     ];
+
     $form['dispatch_fs']['uiowa_thankyou_dispatch_apikey'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Dispatch API key'),
       '#default_value' => $api_key,
       '#description' => $this->t('Provide an API key from Dispatch client settings.'),
     ];
+
+    $form['dispatch_fs']['uiowa_thankyou_title'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Title'),
+      '#default_value' => $uiowa_thankyou_settings->get('uiowa_thankyou_title') ?? $this->t('Thank You'),
+      '#required' => TRUE,
+      '#description' => $this->t('Used as the email subject and title.'),
+    ];
+
+    $form['dispatch_fs']['uiowa_thankyou_unit'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('College/Unit'),
+      '#default_value' => $uiowa_thankyou_settings->get('uiowa_thankyou_unit'),
+      '#required' => TRUE,
+      '#description' => $this->t('Used in the email header.'),
+    ];
+
     if (!empty($api_key)) {
       $campaign_url = $uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_campaign');
       $campaigns = $this->dispatchGetData($endpoint . 'campaigns', $api_key);
@@ -206,6 +224,8 @@ class SettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->config('uiowa_thankyou.settings')
       ->set('uiowa_thankyou_dispatch_apikey', $form_state->getValue('uiowa_thankyou_dispatch_apikey'))
+      ->set('uiowa_thankyou_title', $form_state->getValue('uiowa_thankyou_title'))
+      ->set('uiowa_thankyou_unit', $form_state->getValue('uiowa_thankyou_unit'))
       ->set('uiowa_thankyou_hrapi_user', $form_state->getValue('uiowa_thankyou_hrapi_user'))
       ->set('uiowa_thankyou_hrapi_pass', $form_state->getValue('uiowa_thankyou_hrapi_pass'))
       ->set('uiowa_thankyou_dispatch_campaign', $form_state->getValue('uiowa_thankyou_dispatch_campaign'))
