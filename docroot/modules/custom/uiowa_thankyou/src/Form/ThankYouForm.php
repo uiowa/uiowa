@@ -197,18 +197,13 @@ class ThankYouForm extends FormBase {
 
     // Post to Dispatch API to send the emails.
     try {
-      $response = $this->httpClient->post($endpoint, [
+      $this->httpClient->post($endpoint, [
         'headers' => [
           'x-dispatch-api-key' => $apikey,
           'accept' => 'application/json',
         ],
         'body' => $this->jsonController->encode($data),
       ]);
-
-      $this->logger('uiowa_thankyou')->notice($this->t('Dispatch request sent to: <em>@endpoint</em> and returned code: <em>@code</em>', [
-        '@endpoint' => $endpoint,
-        '@code' => $response->getStatusCode(),
-      ]));
     }
     catch (RequestException $e) {
       $this->logger('uiowa_thankyou')->warning($this->t('Dispatch request sent to: <em>@endpoint</em> and failed.', [
