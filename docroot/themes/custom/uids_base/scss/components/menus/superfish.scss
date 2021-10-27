@@ -519,6 +519,7 @@ ul.sf-menu.sf-horizontal>li>.sf-depth-1.menuparent {
   content: "\f0d8";
 }
 
+
 .sf-accordion-toggle {
   width: 100%;
   height: 60px;
@@ -743,6 +744,14 @@ ul.sf-menu.sf-accordion .active-trail.sf-no-children.sf-depth-1>.is-active {
 
 
 /* Mega Menu */
+
+// Hides third level menu when hovering over the mobile menu
+ul.sf-menu.sf-accordion li li.sf-depth-2:hover > ul, ul.sf-menu li li.sf-depth-2.sfHover > ul{
+  float: none;
+  display: none;
+  left: 100%;
+}
+
 .nav--mega {
   @include breakpoint(menu) {
     position: relative;
