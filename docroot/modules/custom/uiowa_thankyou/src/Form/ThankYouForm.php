@@ -62,30 +62,37 @@ class ThankYouForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form['email_address_of_the_person_to_thank'] = [
+    $form['#tree'] = TRUE;
+
+    $form['to_email'] = [
       '#type' => 'email',
       '#title' => $this->t('Email address of employee you want to thank'),
       '#description' => $this->t('Look up an email address in our <a target="_blank" href="https://iam.uiowa.edu/whitepages/search">directory</a>.'),
       '#required' => TRUE,
     ];
-    $form['message'] = [
+
+    $form['placeholder']['message'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Message'),
     ];
-    $form['nominators_name'] = [
+
+    $form['placeholder']['from_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t("Nominator's Name"),
       '#required' => TRUE,
     ];
-    $form['nominators_email_address'] = [
+
+    $form['placeholder']['from_email'] = [
       '#type' => 'email',
       '#title' => $this->t("Nominator's Email Address"),
       '#required' => TRUE,
     ];
+
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Submit'),
     ];
+
     return $form;
   }
 
