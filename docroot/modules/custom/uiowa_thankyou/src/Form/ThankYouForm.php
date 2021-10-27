@@ -142,7 +142,11 @@ class ThankYouForm extends FormBase {
       ]);
     }
     catch (RequestException $e) {
-      $form_state->setError($form, $e->getMessage());
+      $this->logger('uiowa_thankyou')->error($this->t('HR API error: @error.', [
+        '@error' => $e->getMessage()
+      ]));
+
+      $form_state->setError($form, $this->t('An error was encountered processing the form. If the problem persists, please contact the ITS Help Desk.'));
     }
     if (!isset($request)) {
       return;
