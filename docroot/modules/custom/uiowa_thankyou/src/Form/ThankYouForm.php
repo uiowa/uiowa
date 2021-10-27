@@ -106,7 +106,7 @@ class ThankYouForm extends FormBase {
     $user = $uiowa_thankyou_settings->get('uiowa_thankyou_hrapi_user');
     $pass = $uiowa_thankyou_settings->get('uiowa_thankyou_hrapi_pass');
     $endpoint = 'https://' . $user . ':' . $pass . '@hris.uiowa.edu/apigateway/oneit/thankyounotes/addressee?email=' . $recipient_email;
-    // @todo Clean up the error handling here.
+
     try {
       $request = $this->httpClient->get($endpoint, [
         'headers' => [
