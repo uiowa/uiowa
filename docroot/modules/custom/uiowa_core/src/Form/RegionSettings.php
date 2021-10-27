@@ -97,7 +97,7 @@ class RegionSettings extends ConfigFormBase {
     $config = $this->config('uiowa_core.settings');
     $regions = $config->get('uiowa_core.layout_regions');
     foreach ($regions as $key => $value) {
-      $config->set('uiowa_core.layout_regions.'.$key, $values[$key]);
+      $config->set('uiowa_core.layout_regions.' . $key, $values[$key]);
     }
     $config->save();
     parent::submitForm($form, $form_state);

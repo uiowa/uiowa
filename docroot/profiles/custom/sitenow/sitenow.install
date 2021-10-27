@@ -3729,7 +3729,7 @@ function sitenow_update_9025() {
 }
 
 /**
- * Region settings
+ * Region settings.
  */
 function sitenow_update_9026() {
   /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
@@ -3747,12 +3747,12 @@ function sitenow_update_9026() {
       ->save();
   }
   else {
-    $regions = array(
-      'pre_footer'=>null,
-      'post_header'=>null,
-      'left_sidebar'=>null,
-      'right_sidebar'=>null
-    );
+    $regions = [
+      'pre_footer' => NULL,
+      'post_header' => NULL,
+      'left_sidebar' => NULL,
+      'right_sidebar' => NULL,
+    ];
     $config
       ->set('uiowa_core.layout_regions', $regions)
       ->save();
