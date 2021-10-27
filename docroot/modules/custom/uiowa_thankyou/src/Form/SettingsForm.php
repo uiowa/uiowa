@@ -192,7 +192,6 @@ class SettingsForm extends ConfigFormBase {
           $options[$communication] = $d['name'];
         }
 
-
         $form['dispatch_fs']['uiowa_thankyou_dispatch_communication'] = [
           '#type' => 'select',
           '#title' => $this->t('Communication'),

@@ -117,7 +117,7 @@ class ThankYouForm extends FormBase {
     }
     catch (RequestException | GuzzleException | ClientException $e) {
       $this->logger('uiowa_thankyou')->error($this->t('HR API error: @error.', [
-        '@error' => $e->getMessage()
+        '@error' => $e->getMessage(),
       ]));
 
       if ($env == 'local') {
@@ -131,7 +131,7 @@ class ThankYouForm extends FormBase {
               'LAST_NAME' => 'Visor',
               'EMAIL' => base64_decode('aXRzLXdlYkB1aW93YS5lZHU='),
             ],
-          ]
+          ],
         ];
       }
       else {
