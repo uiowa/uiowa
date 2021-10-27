@@ -146,9 +146,9 @@ class ThankYouForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $placeholders = $form_state['thankyou_vars']['placeholders'];
-    $recipient_email = $form_state['thankyou_vars']['recipient_email'];
-    $hr_data = $form_state['thankyou_vars']['hr_data'];
+    $placeholders = $form_state->getValue(['thankyou_vars', 'placeholders']);
+    $recipient_email = $form_state->getValue(['thankyou_vars', 'recipient_email']);
+    $hr_data = $form_state->getValue(['thankyou_vars', 'hr_data']);
 
     $uiowa_thankyou_settings = $this->config('uiowa_thankyou.settings');
     $apikey = $uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_apikey');
@@ -164,10 +164,11 @@ class ThankYouForm extends FormBase {
       ],
       'includeBatchResponse' => FALSE,
     ];
+
     // Generate additional member attributes for each webform component.
     // We assume submission data is single valued.
-    foreach ($placeholders as $cid => $key) {
-      $members->members[0]->$key = Xss::filter($form_state[$cid][0]);
+    foreach ($placeholders as $key => $value) {
+      $members->members[0]->$key = Xss::filter($value);
     }
 
     // Post to Dispatch api to send the email.
