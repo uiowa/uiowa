@@ -150,12 +150,16 @@ class ThankYouForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    // @todo Merge additional module config into placeholders, ex. subject.
     $placeholders = $form_state->getValue('placeholder');
     $hr_data = $form_state->getValue('hr_data');
     $uiowa_thankyou_settings = $this->config('uiowa_thankyou.settings');
     $apikey = trim($uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_apikey'));
-    $endpoint = $uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_recipient_communication') . '/adhocs';
+    $endpoint = $uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_communication') . '/adhocs';
+
+    // Combine placeholders on thank you form with settings form.
+    $title = $uiowa_thankyou_settings->get('uiowa_thankyou_title');
+    $placeholders['title'] = $title;
+    $placeholders['unit'] = $uiowa_thankyou_settings->get('uiowa_thankyou_unit');
 
     // Dispatch API data.
     $data = [
@@ -163,7 +167,7 @@ class ThankYouForm extends FormBase {
         [
           'toName' => $hr_data['FIRST_NAME'] . ' ' . $hr_data['LAST_NAME'],
           'toAddress' => $form_state->getValue('to_email'),
-          'subject' => 'Thank You',
+          'subject' => $title,
         ],
       ],
       'includeBatchResponse' => FALSE,
@@ -175,11 +179,12 @@ class ThankYouForm extends FormBase {
     }
 
     // Duplicate first member to get placeholders but change to CC supervisor.
+    // @todo Make supervisor CC optional.
     foreach ($hr_data['SUPERVISORS'] as $supervisor) {
       $data['members'][] = array_merge($data['members'][0], [
         'toName' => $supervisor['FIRST_NAME'] . ' ' . $supervisor['LAST_NAME'],
         'toAddress' => $supervisor['EMAIL'],
-        'subject' => 'Thank You (Supervisor Copy)',
+        'subject' => $title . ' (Supervisor Copy)',
       ]);
     }
 
@@ -190,7 +195,7 @@ class ThankYouForm extends FormBase {
       $data->members[$key] = (object) $member;
     }
 
-    // Post to Dispatch API to send the email.
+    // Post to Dispatch API to send the emails.
     try {
       $response = $this->httpClient->post($endpoint, [
         'headers' => [
