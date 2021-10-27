@@ -192,18 +192,12 @@ class SettingsForm extends ConfigFormBase {
           $options[$communication] = $d['name'];
         }
 
-        $form['dispatch_fs']['uiowa_thankyou_dispatch_recipient_communication'] = [
+
+        $form['dispatch_fs']['uiowa_thankyou_dispatch_communication'] = [
           '#type' => 'select',
-          '#title' => $this->t('Recipient Communication'),
-          '#default_value' => $uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_recipient_communication'),
-          '#description' => $this->t('Select the recipient communication. Communications are managed in the <a href="https://apps.its.uiowa.edu/dispatch">dispatch interface</a>'),
-          '#options' => $options,
-        ];
-        $form['dispatch_fs']['uiowa_thankyou_dispatch_supervisor_communication'] = [
-          '#type' => 'select',
-          '#title' => $this->t('Supervisor Communication'),
-          '#default_value' => $uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_supervisor_communication'),
-          '#description' => $this->t('Select the supervisor communication. Communications are managed in the <a href="https://apps.its.uiowa.edu/dispatch">dispatch interface</a>'),
+          '#title' => $this->t('Communication'),
+          '#default_value' => $uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_communication'),
+          '#description' => $this->t('Select the communication to use. Communications are managed in the <a href="https://apps.its.uiowa.edu/dispatch">dispatch interface</a>. Supervisors will receive a copy automatically.'),
           '#options' => $options,
         ];
       }
@@ -229,9 +223,9 @@ class SettingsForm extends ConfigFormBase {
       ->set('uiowa_thankyou_hrapi_user', $form_state->getValue('uiowa_thankyou_hrapi_user'))
       ->set('uiowa_thankyou_hrapi_pass', $form_state->getValue('uiowa_thankyou_hrapi_pass'))
       ->set('uiowa_thankyou_dispatch_campaign', $form_state->getValue('uiowa_thankyou_dispatch_campaign'))
-      ->set('uiowa_thankyou_dispatch_recipient_communication', $form_state->getValue('uiowa_thankyou_dispatch_recipient_communication'))
-      ->set('uiowa_thankyou_dispatch_supervisor_communication', $form_state->getValue('uiowa_thankyou_dispatch_supervisor_communication'))
+      ->set('uiowa_thankyou_dispatch_communication', $form_state->getValue('uiowa_thankyou_dispatch_communication'))
       ->save();
+
     parent::submitForm($form, $form_state);
   }
 
