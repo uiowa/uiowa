@@ -79,6 +79,12 @@ class RegionSettings extends ConfigFormBase {
         ],
       ];
     }
+    $view = views_embed_view('region_items', 'region_items_block');
+    $render = render($view);
+    $form['region_items_view'] = [
+      '#type' => 'markup',
+      '#markup' => $render,
+    ];
 
     return $form;
   }
