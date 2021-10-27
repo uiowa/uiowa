@@ -97,8 +97,9 @@ class ThankYouForm extends FormBase {
     $placeholders = [
       'message' => $form_state->getValue('message'),
     ];
-    $uiowa_thankyou_settings = $this->config('uiowa_thankyou.settings');
 
+    $env = getenv('AH_SITE_ENVIRONMENT') ?: 'local';
+    $uiowa_thankyou_settings = $this->config('uiowa_thankyou.settings');
     $recipient_email = $form_state->getValue('email_address_of_the_person_to_thank');
 
     // Get HR data.
@@ -118,22 +119,25 @@ class ThankYouForm extends FormBase {
         '@error' => $e->getMessage()
       ]));
 
-      $form_state->setError($form, $this->t('An error was encountered processing the form. If the problem persists, please contact the ITS Help Desk.'));
+      if ($env == 'local') {
+        $hr_data = [
+          'FIRST_NAME' => 'Supervisor',
+          'EMAIL' => base64_decode('aXRzLXdlYkB1aW93YS5lZHU='),
+        ];
+      }
+      else {
+        $form_state->setError($form, $this->t('An error was encountered processing the form. If the problem persists, please contact the ITS Help Desk.'));
+      }
     }
 
-    // @todo: If local env, continue with dummy HR data?
-    if (!isset($request)) {
-      return;
-    }
+    // Allow for local env to work around IP restrictions.
+    $hr_data = $hr_data ?? $this->jsonController->decode($request->getBody()->getContents());
 
-    // If the request is successful.
-    if ($request->code == '200') {
-      $form_state['thankyou_vars'] = [
-        'recipient_email' => $recipient_email,
-        'hr_data' => $this->jsonController->decode($request->getBody()->getContents()),
-        'placeholders' => $placeholders,
-      ];
-    }
+    $form_state->setValue('thankyou_vars',  [
+      'recipient_email' => $recipient_email,
+      'hr_data' => $hr_data,
+      'placeholders' => $placeholders,
+    ]);
 
     parent::validateForm($form, $form_state);
   }
