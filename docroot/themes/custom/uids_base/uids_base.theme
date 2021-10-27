@@ -629,10 +629,6 @@ function uids_base_preprocess_block(&$variables) {
     $variables['breadcrumb'] = $plugin_block->build();
   }
 
-  if ($variables['derivative_plugin_id'] == 'uiowa_aggregator') {
-    $variables['#attached']['library'][] = 'uids_base/aggregator';
-  }
-
   if ($variables['derivative_plugin_id'] == 'uiowa_banner') {
     /** @var \Drupal\Block\Entity\Block $block */
     $block = $variables['elements']['content']['#block_content'];
