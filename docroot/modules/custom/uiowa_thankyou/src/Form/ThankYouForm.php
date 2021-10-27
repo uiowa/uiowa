@@ -122,8 +122,16 @@ class ThankYouForm extends FormBase {
 
       if ($env == 'local') {
         $hr_data = [
-          'FIRST_NAME' => 'Supervisor',
+          'FIRST_NAME' => 'Foo',
+          'LAST_NAME' => 'Bar',
           'EMAIL' => base64_decode('aXRzLXdlYkB1aW93YS5lZHU='),
+          'SUPERVISORS' => [
+            [
+              'FIRST_NAME' => 'Super',
+              'LAST_NAME' => 'Visor',
+              'EMAIL' => base64_decode('aXRzLXdlYkB1aW93YS5lZHU='),
+            ],
+          ]
         ];
       }
       else {
