@@ -184,6 +184,12 @@
   }
 }
 
+// Fix for adding padding if images are hidden within stack format.
+.card.hide-images.card--stacked.card--enclosed .card__body,
+.card.hide-images.card--stacked.card--enclosed .card__media + .card__body {
+  padding: 2rem!important;
+}
+
 // Card__head styles
 
 .card {
