@@ -117,6 +117,30 @@ class SettingsForm extends ConfigFormBase {
         '#description' => $this->t('The unit or college name to display in the email header.'),
       ];
 
+      // @todo Change this to dependency injection.
+      if ($config->get('thanks.placeholder.banner_image')) {
+        $media = \Drupal::service('entity_type.manager')
+          ->getStorage('media')
+          ->load($config->get('thanks.placeholder.banner_image'));
+      }
+      // @todo Update the form type.
+      $form['thanks']['placeholder']['banner_image'] = [
+        '#type' => 'entity_autocomplete',
+        '#target_type' => 'media',
+        '#title' => $this->t('Banner Image'),
+        '#default_value' => (isset($media)) ? $media : NULL,
+        '#selection_settings' => [
+          'target_bundles' => [
+            'image',
+          ],
+        ],
+        // @todo Update to required if we have a default image.
+        //   But maybe we don't need to replace the default image
+        //   in Dispatch if we don't have a better one.
+        '#required' => FALSE,
+        '#description' => $this->t('The banner image to display at the top of the email body.'),
+      ];
+
       $form['thanks']['placeholder']['row1_heading'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Row 1 Heading'),
@@ -152,6 +176,15 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    // @todo Clean this up and change to DI.
+    $media = \Drupal::service('entity_type.manager')
+      ->getStorage('media')
+      ->load($form_state->getValue(['thanks', 'placeholder', 'banner_image']));
+    $uri = $media->get('field_media_image')->entity->uri->value;
+    $image_url = file_create_url($uri);
+
+    // @todo Separate Dispatch config and other settings config.
+    //   Currently we have both the media id and the URL.
     $this->config('sitenow_dispatch.settings')
       ->set('api_key', $form_state->getValue('api_key'))
       ->set('client', $form_state->getValue('client'))
@@ -159,7 +192,9 @@ class SettingsForm extends ConfigFormBase {
         'campaign' => $form_state->getValue(['thanks', 'campaign']),
         'communication' => $form_state->getValue(['thanks', 'communication']),
         'placeholder' => $form_state->getValue(['thanks', 'placeholder']),
-      ])
+      ]);
+    $this->config('sitenow_dispatch.settings')
+      ->set('thanks.placeholder.banner_image_url', $image_url)
       ->save();
 
     parent::submitForm($form, $form_state);
