@@ -270,21 +270,3 @@ function uiowa_core_entity_operation_alter(array &$operations, EntityInterface $
 
   }
 }
-
-/**
- * Implements hook_menu_local_actions_alter().
- */
-function uiowa_core_menu_local_actions_alter(&$local_actions) {
-//  if (isset($local_actions['uiowa_core.add_region_item'])) {
-//    $current_route = \Drupal::routeMatch();
-//    $route_name = $current_route->getRouteName();
-//    if ($route_name == 'uiowa_core.region_settings') {
-//      $url = Url::fromRoute($route_name)->toString();
-//      $local_actions['uiowa_core.add_region_item']['options'] = [
-//        'query' => [
-//          'destination' => $url,
-//        ],
-//      ];
-////    }
-//  }
-}
