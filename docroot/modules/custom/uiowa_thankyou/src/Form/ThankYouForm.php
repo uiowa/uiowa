@@ -157,9 +157,8 @@ class ThankYouForm extends FormBase {
     $endpoint = $uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_communication') . '/adhocs';
 
     // Combine placeholders on thank you form with settings form.
-    $title = $uiowa_thankyou_settings->get('uiowa_thankyou_title');
-    $placeholders['title'] = $title;
-    $placeholders['unit'] = $uiowa_thankyou_settings->get('uiowa_thankyou_unit');
+    $title = $uiowa_thankyou_settings->get('title');
+    $placeholders = array_merge($form_state->getValue('placeholder'), $uiowa_thankyou_settings->get('placeholders'));
 
     // Dispatch API data.
     $data = [

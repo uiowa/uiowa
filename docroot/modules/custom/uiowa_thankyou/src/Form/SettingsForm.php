@@ -108,27 +108,13 @@ class SettingsForm extends ConfigFormBase {
       '#title' => $this->t('Dispatch API key'),
       '#default_value' => $api_key,
       '#description' => $this->t('Provide an API key from Dispatch client settings.'),
-    ];
-
-    $form['dispatch_fs']['uiowa_thankyou_title'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Title'),
-      '#default_value' => $uiowa_thankyou_settings->get('uiowa_thankyou_title') ?? $this->t('Thank You'),
       '#required' => TRUE,
-      '#description' => $this->t('Used as the email subject and title.'),
-    ];
-
-    $form['dispatch_fs']['uiowa_thankyou_unit'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('College/Unit'),
-      '#default_value' => $uiowa_thankyou_settings->get('uiowa_thankyou_unit'),
-      '#required' => TRUE,
-      '#description' => $this->t('Used in the email header.'),
     ];
 
     if (!empty($api_key)) {
       $campaign_url = $uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_campaign');
       $campaigns = $this->dispatchGetData($endpoint . 'campaigns', $api_key);
+
       if ($campaigns instanceof RequestException) {
         $this->logger('uiowa_thankyou')
           ->warning($this->t('Dispatch call failed with error: @message', [
@@ -201,6 +187,40 @@ class SettingsForm extends ConfigFormBase {
         ];
       }
     }
+
+    $form['placeholder'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Dispatch Email Placeholders'),
+      '#description' => $this->t('By default, the <a href="@link">1row x 1col curated Dispatch template</a> is used.', [
+        '@link' => 'https://apps.its.uiowa.edu/dispatch/help/curatedtemplate/UI%201%20row%20x%201%20col%20-%20Version%202',
+      ]),
+      '#collapsible' => TRUE,
+    ];
+
+    $form['placeholder']['title'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Title'),
+      '#default_value' => $uiowa_thankyou_settings->get('title') ?? $this->t('Thank You'),
+      '#required' => TRUE,
+      '#description' => $this->t('Used as the email subject and title.'),
+    ];
+
+    $form['placeholder']['unit'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('College/Unit'),
+      '#default_value' => $uiowa_thankyou_settings->get('unit'),
+      '#required' => TRUE,
+      '#description' => $this->t('Used in the email header.'),
+    ];
+
+    $form['placeholder']['row1_heading'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Heading'),
+      '#default_value' => $uiowa_thankyou_settings->get('heading'),
+      '#required' => TRUE,
+      '#description' => $this->t('Used in the email header.'),
+    ];
+
     return $form;
   }
 
