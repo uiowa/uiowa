@@ -181,6 +181,8 @@ class SettingsForm extends ConfigFormBase {
       ->getStorage('media')
       ->load($form_state->getValue(['thanks', 'placeholder', 'banner_image']));
     $uri = $media->get('field_media_image')->entity->uri->value;
+    // @todo Change this to get a specific responsive image style of
+    //   the image, rather than a direct file URL. Maybe?
     $image_url = file_create_url($uri);
 
     // @todo Separate Dispatch config and other settings config.
