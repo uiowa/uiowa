@@ -55,17 +55,97 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $config = $this->configFactory()->get('sitenow_dispatch.settings');
+    $form['#tree'] = TRUE;
+
     $form['description_text'] = [
       '#markup' => '<p><a href="https://its.uiowa.edu/dispatch">Dispatch</a> is a web service that allows users to create and manage campaigns to generate PDF content, email messages, SMS messages, or voice calls. You must have a Dispatch <a href="https://apps.its.uiowa.edu/dispatch/help/faq#q1">client and account</a> to use Dispatch functionality within your site.</p>',
     ];
 
     $form['api_key'] = [
-      '#type' => 'textfield',
+      '#type' => 'password',
+      '#required' => TRUE,
       '#title' => $this->t('API key'),
-      '#default_value' => $this->config('sitenow_dispatch.settings')->get('api_key'),
+      '#attributes' => [
+        'value' => $config->get('api_key') ?? NULL,
+      ],
       '#description' => $this->t('A valid Dispatch client API key. See the Dispatch <a href="https://apps.its.uiowa.edu/dispatch/help/api">API key documentation</a> for more information.'),
     ];
+
+    if ($client = $config->get('client')) {
+      $form['api_key']['#description'] .= $this->t(' <em>Currently set to @client client</em>.', [
+        '@client' => $client,
+      ]);
+    }
+
+    $form['thanks'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Thank You Email'),
+      '#description' => $this->t('Thank You email configuration. The <a href="@link">1row x 1col curated Dispatch template</a> is used.', [
+        '@link' => 'https://apps.its.uiowa.edu/dispatch/help/curatedtemplate/UI%201%20row%20x%201%20col%20-%20Version%202',
+      ]),
+      '#collapsible' => TRUE,
+    ];
+
+    // The thank you form requires a separate key set for csi.drupal to not
+    // expose our communications with clients. It also requires an HR token.
+    // Both of these should be set in configuration overrides.
+    if ($config->get('thanks.api_key') && $config->get('thanks.hr_key')) {
+      $form['thanks']['campaign'] = [
+        '#type' => 'hidden',
+        '#value' => 985361362,
+      ];
+
+      $form['thanks']['communication'] = [
+        '#type' => 'hidden',
+        '#value' => 985337764,
+      ];
+
+      $form['thanks']['placeholder']['title'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Title'),
+        '#default_value' => $config->get('thanks.placeholder.title') ?? $this->t('Thank You'),
+        '#required' => TRUE,
+        '#description' => $this->t('Used as the email subject and title.'),
+      ];
+
+      $form['thanks']['placeholder']['unit'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('College/Unit'),
+        '#default_value' => $config->get('thanks.placeholder.unit'),
+        '#required' => TRUE,
+        '#description' => $this->t('The unit or college name to display in the email header.'),
+      ];
+
+      $form['thanks']['placeholder']['row1_heading'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Row 1 Heading'),
+        '#default_value' => $config->get('thanks.placeholder.row1_heading'),
+        '#required' => TRUE,
+        '#description' => $this->t('The heading to display in the email body.'),
+      ];
+    }
+    else {
+      $form['thanks']['#description'] = $this->t('The Thank You email is not configured properly. Please contact support.');
+    }
+
     return parent::buildForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    $api_key = trim($form_state->getValue('api_key'));
+    $response = $this->dispatch->getFromDispatch('https://apps.its.uiowa.edu/dispatch/api/v1/client', $api_key);
+
+    // If the response is empty, we have an invalid API key.
+    if ($response == []) {
+      $form_state->setErrorByName('api_key', 'Invalid API key, please verify that your API key is correct and try again.');
+    }
+    else {
+      $form_state->setValue('client', $response->name);
+    }
   }
 
   /**
@@ -74,23 +154,15 @@ class SettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->config('sitenow_dispatch.settings')
       ->set('api_key', $form_state->getValue('api_key'))
+      ->set('client', $form_state->getValue('client'))
+      ->set('thanks', [
+        'campaign' => $form_state->getValue(['thanks', 'campaign']),
+        'communication' => $form_state->getValue(['thanks', 'communication']),
+        'placeholder' => $form_state->getValue(['thanks', 'placeholder']),
+      ])
       ->save();
+
     parent::submitForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-
-    $response = $this->dispatch->getFromDispatch('https://apps.its.uiowa.edu/dispatch/api/v1/populations', $form_state->getValue('api_key'));
-
-    // If the response is empty, we have an invalid API key.
-    if ($response == []) {
-      $form_state->setErrorByName('api_key', 'Invalid API key, please verify that your API key is correct and try again.');
-    }
-
-    parent::validateForm($form, $form_state);
   }
 
 }

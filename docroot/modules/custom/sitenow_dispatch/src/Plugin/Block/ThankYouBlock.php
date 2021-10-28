@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\uiowa_thankyou\Plugin\Block;
+namespace Drupal\sitenow_dispatch\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormBuilderInterface;
@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @Block(
  *   id = "thankyou_form",
  *   admin_label = @Translation("Thank You"),
- *   category = @Translation("Site custom")
+ *   category = @Translation("SiteNow Dispatch")
  * )
  */
 class ThankYouBlock extends BlockBase implements ContainerFactoryPluginInterface {
@@ -48,7 +48,7 @@ class ThankYouBlock extends BlockBase implements ContainerFactoryPluginInterface
    * {@inheritdoc}
    */
   public function build() {
-    $build['form'] = $this->formBuilder->getForm('\Drupal\uiowa_thankyou\Form\ThankYouForm');
+    $build['form'] = $this->formBuilder->getForm('\Drupal\sitenow_dispatch\Form\ThankYouForm');
 
     return $build;
   }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\uiowa_thankyou\Form;
+namespace Drupal\sitenow_dispatch\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -55,7 +55,7 @@ class ThankYouForm extends FormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'uiowa_thankyou_thankyou_form';
+    return 'sitenow_dispatch_thankyou_form';
   }
 
   /**
@@ -101,11 +101,11 @@ class ThankYouForm extends FormBase {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $env = getenv('AH_SITE_ENVIRONMENT') ?: 'local';
-    $uiowa_thankyou_settings = $this->config('uiowa_thankyou.settings');
+    $config = $this->config('sitenow_dispatch.settings');
 
     // Get HR data.
-    $user = $uiowa_thankyou_settings->get('uiowa_thankyou_hrapi_user');
-    $pass = $uiowa_thankyou_settings->get('uiowa_thankyou_hrapi_pass');
+    $user = $config->get('sitenow_dispatch_hrapi_user');
+    $pass = $config->get('sitenow_dispatch_hrapi_pass');
     $endpoint = 'https://' . $user . ':' . $pass . '@hris.uiowa.edu/apigateway/oneit/thankyounotes/addressee?email=' . $form_state->getValue('to_email');
 
     try {
@@ -116,7 +116,7 @@ class ThankYouForm extends FormBase {
       ]);
     }
     catch (RequestException | GuzzleException | ClientException $e) {
-      $this->logger('uiowa_thankyou')->error($this->t('HR API error: @error.', [
+      $this->logger('sitenow_dispatch')->error($this->t('HR API error: @error.', [
         '@error' => $e->getMessage(),
       ]));
 
@@ -151,13 +151,13 @@ class ThankYouForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $hr_data = $form_state->getValue('hr_data');
-    $uiowa_thankyou_settings = $this->config('uiowa_thankyou.settings');
-    $apikey = trim($uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_apikey'));
-    $endpoint = $uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_communication') . '/adhocs';
+    $config = $this->config('sitenow_dispatch.settings');
+    $apikey = trim($config->get('thanks.api_key'));
+    $endpoint = 'https://apps.its.uiowa.edu/dispatch/api/v1/communications/' . $config->get('thanks.communication') . '/adhocs';
 
     // Combine placeholders on thank you form with settings form.
-    $title = $uiowa_thankyou_settings->get('placeholder.title');
-    $placeholders = array_merge($form_state->getValue('placeholder'), $uiowa_thankyou_settings->get('placeholder'));
+    $title = $config->get('thanks.placeholder.title');
+    $placeholders = array_merge($form_state->getValue('placeholder'), $config->get('thanks.placeholder'));
 
     // Dispatch API data.
     $data = [
@@ -202,16 +202,16 @@ class ThankYouForm extends FormBase {
         ],
         'body' => $this->jsonController->encode($data),
       ]);
+
+      $this->messenger()->addMessage($this->t('The form has been submitted successfully.'));
     }
     catch (RequestException $e) {
-      $this->logger('uiowa_thankyou')->warning($this->t('Dispatch request sent to: <em>@endpoint</em> and failed.', [
+      $this->logger('sitenow_dispatch')->warning($this->t('Dispatch request sent to: <em>@endpoint</em> and failed.', [
         '@endpoint' => $endpoint,
       ]));
 
       $this->messenger()->addError($this->t('An error was encountered processing the form. If the problem persists, please contact the ITS Help Desk.'));
     }
-
-    $this->messenger()->addMessage($this->t('The form has been submitted successfully.'));
   }
 
 }
