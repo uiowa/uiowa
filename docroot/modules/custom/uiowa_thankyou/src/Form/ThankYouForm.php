@@ -150,15 +150,14 @@ class ThankYouForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $placeholders = $form_state->getValue('placeholder');
     $hr_data = $form_state->getValue('hr_data');
     $uiowa_thankyou_settings = $this->config('uiowa_thankyou.settings');
     $apikey = trim($uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_apikey'));
     $endpoint = $uiowa_thankyou_settings->get('uiowa_thankyou_dispatch_communication') . '/adhocs';
 
     // Combine placeholders on thank you form with settings form.
-    $title = $uiowa_thankyou_settings->get('title');
-    $placeholders = array_merge($form_state->getValue('placeholder'), $uiowa_thankyou_settings->get('placeholders'));
+    $title = $uiowa_thankyou_settings->get('placeholder.title');
+    $placeholders = array_merge($form_state->getValue('placeholder'), $uiowa_thankyou_settings->get('placeholder'));
 
     // Dispatch API data.
     $data = [

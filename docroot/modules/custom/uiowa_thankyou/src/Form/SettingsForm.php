@@ -200,7 +200,7 @@ class SettingsForm extends ConfigFormBase {
     $form['placeholder']['title'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Title'),
-      '#default_value' => $uiowa_thankyou_settings->get('title') ?? $this->t('Thank You'),
+      '#default_value' => $uiowa_thankyou_settings->get('placeholder.title') ?? $this->t('Thank You'),
       '#required' => TRUE,
       '#description' => $this->t('Used as the email subject and title.'),
     ];
@@ -208,15 +208,15 @@ class SettingsForm extends ConfigFormBase {
     $form['placeholder']['unit'] = [
       '#type' => 'textfield',
       '#title' => $this->t('College/Unit'),
-      '#default_value' => $uiowa_thankyou_settings->get('unit'),
+      '#default_value' => $uiowa_thankyou_settings->get('placeholder.unit'),
       '#required' => TRUE,
       '#description' => $this->t('Used in the email header.'),
     ];
 
     $form['placeholder']['row1_heading'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Heading'),
-      '#default_value' => $uiowa_thankyou_settings->get('heading'),
+      '#title' => $this->t('Row 1 Heading'),
+      '#default_value' => $uiowa_thankyou_settings->get('placeholder.row1_heading'),
       '#required' => TRUE,
       '#description' => $this->t('Used in the email header.'),
     ];
@@ -241,7 +241,7 @@ class SettingsForm extends ConfigFormBase {
       ->set('uiowa_thankyou_hrapi_pass', $form_state->getValue('uiowa_thankyou_hrapi_pass'))
       ->set('uiowa_thankyou_dispatch_campaign', $form_state->getValue('uiowa_thankyou_dispatch_campaign'))
       ->set('uiowa_thankyou_dispatch_communication', $form_state->getValue('uiowa_thankyou_dispatch_communication'))
-      ->set('placeholders', [
+      ->set('placeholder', [
         'title' => $form_state->getValue('title'),
         'unit' => $form_state->getValue('unit'),
         'row1_heading' => $form_state->getValue('row1_heading'),
