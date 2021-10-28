@@ -264,7 +264,7 @@ function uiowa_core_entity_operation_alter(array &$operations, EntityInterface $
       if ($route_name == 'uiowa_core.region_settings') {
         $operations['layout']['weight'] = 9;
         $url = Url::fromRoute($route_name)->toString();
-        $operations["layout"]["url"]->setOption('query' , ['destination' => $url]);
+        $operations["layout"]["url"]->setOption('query', ['destination' => $url]);
       }
       break;
 
