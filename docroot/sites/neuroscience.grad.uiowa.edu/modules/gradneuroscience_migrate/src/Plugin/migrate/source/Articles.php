@@ -41,7 +41,7 @@ class Articles extends BaseNodeSource {
         $link = $links->item($i);
         $href = $link->getAttribute('href');
 
-        if (strpos($href, '/node/') === 0 || stristr($href, 'gradneuroscience.uiowa.edu/node/')) {
+        if (strpos($href, '/node/') === 0 || stristr($href, 'neuroscience.grad.uiowa.edu/node/')) {
           $nid = explode('node/', $href)[1];
 
           if ($lookup = $this->manualLookup($nid)) {
