@@ -237,12 +237,15 @@ class SettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->config('uiowa_thankyou.settings')
       ->set('uiowa_thankyou_dispatch_apikey', $form_state->getValue('uiowa_thankyou_dispatch_apikey'))
-      ->set('uiowa_thankyou_title', $form_state->getValue('uiowa_thankyou_title'))
-      ->set('uiowa_thankyou_unit', $form_state->getValue('uiowa_thankyou_unit'))
       ->set('uiowa_thankyou_hrapi_user', $form_state->getValue('uiowa_thankyou_hrapi_user'))
       ->set('uiowa_thankyou_hrapi_pass', $form_state->getValue('uiowa_thankyou_hrapi_pass'))
       ->set('uiowa_thankyou_dispatch_campaign', $form_state->getValue('uiowa_thankyou_dispatch_campaign'))
       ->set('uiowa_thankyou_dispatch_communication', $form_state->getValue('uiowa_thankyou_dispatch_communication'))
+      ->set('placeholders', [
+        'title' => $form_state->getValue('title'),
+        'unit' => $form_state->getValue('unit'),
+        'row1_heading' => $form_state->getValue('row1_heading'),
+      ])
       ->save();
 
     parent::submitForm($form, $form_state);
