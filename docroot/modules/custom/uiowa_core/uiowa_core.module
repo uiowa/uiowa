@@ -7,6 +7,7 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\google_tag\Entity\Container;
 use Drupal\uiowa_core\HeadlineHelper;
 
@@ -248,11 +249,24 @@ function uiowa_core_entity_operation_alter(array &$operations, EntityInterface $
   if (isset($operations['replicate'])) {
     // Pull our allowed types, and check against the given entity.
     $allowed_types = \Drupal::config('uiowa_core.settings')->get('uiowa_core.replicate_allowed');
+    // @todo using entity_operation_alter, getType() isn't always guaranteed.
     $type = $entity->getType();
     // If it's not an allowed type, then remove
     // the replicate operation.
     if (!in_array($type, $allowed_types)) {
       unset($operations['replicate']);
     }
+  }
+  switch ($entity->getEntityTypeId()) {
+    case 'fragment':
+      $current_route = \Drupal::routeMatch();
+      $route_name = $current_route->getRouteName();
+      if ($route_name == 'uiowa_core.region_settings') {
+        $operations['layout']['weight'] = 9;
+        $url = Url::fromRoute('uiowa_core.region_settings')->toString();
+        $operations["layout"]["url"]->setOption('query' , ['destination' => $url]);
+      }
+      break;
+
   }
 }
