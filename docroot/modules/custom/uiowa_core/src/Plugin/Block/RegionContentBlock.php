@@ -10,15 +10,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Provides a 'Hello' Block.
+ * Provides a 'Region content block' Block.
  *
  * @Block(
- *   id = "pre_footer_region_block",
- *   admin_label = @Translation("Pre Footer Region Block"),
+ *   id = "region_content_block",
+ *   admin_label = @Translation("Region content block"),
  *   category = @Translation("Restricted"),
  * )
  */
-class PreFooterRegionBlock extends BlockBase implements ContainerFactoryPluginInterface {
+class RegionContentBlock extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
    * The config factory service.
@@ -46,7 +46,7 @@ class PreFooterRegionBlock extends BlockBase implements ContainerFactoryPluginIn
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): PreFooterRegionBlock {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition): RegionContentBlock {
     return new static(
       $configuration,
       $plugin_id,

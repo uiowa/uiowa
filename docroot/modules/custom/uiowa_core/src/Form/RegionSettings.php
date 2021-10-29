@@ -64,16 +64,18 @@ class RegionSettings extends ConfigFormBase {
       '#markup' => $this->t('<p>These settings allow you to configure static regions of your website.</p>'),
     ];
 
-    $regions = $config->get('uiowa_core.layout_regions');
-    foreach ($regions as $key => $value) {
+    $region_content_blocks = \Drupal::entityQuery('block')->condition('plugin', 'region_content_block')->execute();
+    $region_config = $config->get('uiowa_core.region_content');
+    foreach ($region_content_blocks as $key => $value) {
       $title_array = explode('_', $key);
       $title_array[0] = ucwords($title_array[0]);
       $title = implode(" ", $title_array);
+      $fid = $region_config[$value] ?? NULL;
       $form[$key] = [
         '#type' => 'entity_autocomplete',
         '#title' => $title,
         '#target_type' => 'fragment',
-        '#default_value' => $value != NULL ? $this->entityTypeManager->getStorage('fragment')->load($value) : NULL,
+        '#default_value' => $fid != NULL ? $this->entityTypeManager->getStorage('fragment')->load($fid) : NULL,
         '#selection_settings' => [
           'target_bundles' => ['region_item'],
         ],
@@ -95,9 +97,9 @@ class RegionSettings extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $values = $form_state->getValues();
     $config = $this->config('uiowa_core.settings');
-    $regions = $config->get('uiowa_core.layout_regions');
-    foreach ($regions as $key => $value) {
-      $config->set('uiowa_core.layout_regions.' . $key, $values[$key]);
+    $region_content_blocks = \Drupal::entityQuery('block')->condition('plugin', 'region_content_block')->execute();
+    foreach ($region_content_blocks as $key => $value) {
+      $config->set('uiowa_core.region_content.' . $key, $values[$key]);
     }
     $config->save();
     parent::submitForm($form, $form_state);
