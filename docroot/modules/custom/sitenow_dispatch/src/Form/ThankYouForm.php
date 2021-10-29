@@ -108,50 +108,30 @@ class ThankYouForm extends FormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    $env = getenv('AH_SITE_ENVIRONMENT') ?: 'local';
     $config = $this->config('sitenow_dispatch.settings');
 
     // Get HR data.
-    $user = $config->get('sitenow_dispatch_hrapi_user');
-    $pass = $config->get('sitenow_dispatch_hrapi_pass');
-    $endpoint = 'https://' . $user . ':' . $pass . '@hris.uiowa.edu/apigateway/oneit/thankyounotes/addressee?email=' . $form_state->getValue('to_email');
+    $token = $config->get('thanks.hr_token');
+    $endpoint = $config->get('thanks.hr_endpoint') . $form_state->getValue('to_email') . "?api_token=$token";
 
     try {
       $request = $this->httpClient->get($endpoint, [
         'headers' => [
-          'accept' => 'application/json',
+          'Accept' => 'application/json',
         ],
       ]);
+
+      $hr_data = $this->jsonController->decode($request->getBody()->getContents());
+      $form_state->setValue('hr_data', $hr_data);
+      parent::validateForm($form, $form_state);
     }
     catch (RequestException | GuzzleException | ClientException $e) {
       $this->logger('sitenow_dispatch')->error($this->t('HR API error: @error.', [
         '@error' => $e->getMessage(),
       ]));
 
-      if ($env == 'local') {
-        $hr_data = [
-          'FIRST_NAME' => 'Foo',
-          'LAST_NAME' => 'Bar',
-          'EMAIL' => base64_decode('aXRzLXdlYkB1aW93YS5lZHU='),
-          'SUPERVISORS' => [
-            [
-              'FIRST_NAME' => 'Super',
-              'LAST_NAME' => 'Visor',
-              'EMAIL' => base64_decode('aXRzLXdlYkB1aW93YS5lZHU='),
-            ],
-          ],
-        ];
-      }
-      else {
-        $form_state->setError($form, $this->t('An error was encountered processing the form. If the problem persists, please contact the ITS Help Desk.'));
-      }
+      $form_state->setError($form, $this->t('An error was encountered processing the form. If the problem persists, please contact the ITS Help Desk.'));
     }
-
-    // Allow for local env to work around IP restrictions.
-    $hr_data = $hr_data ?? $this->jsonController->decode($request->getBody()->getContents());
-    $form_state->setValue('hr_data', $hr_data);
-
-    parent::validateForm($form, $form_state);
   }
 
   /**
@@ -171,7 +151,7 @@ class ThankYouForm extends FormBase {
     $data = [
       'members' => [
         [
-          'toName' => $hr_data['FIRST_NAME'] . ' ' . $hr_data['LAST_NAME'],
+          'toName' => $hr_data['first_name'] . ' ' . $hr_data['last_name'],
           'toAddress' => $form_state->getValue('to_email'),
           'subject' => $title,
         ],
@@ -186,10 +166,10 @@ class ThankYouForm extends FormBase {
 
     // Duplicate first member to get placeholders but change to CC supervisor.
     // @todo Make supervisor CC optional.
-    foreach ($hr_data['SUPERVISORS'] as $supervisor) {
+    foreach ($hr_data['supervisors'] as $supervisor) {
       $data['members'][] = array_merge($data['members'][0], [
-        'toName' => $supervisor['FIRST_NAME'] . ' ' . $supervisor['LAST_NAME'],
-        'toAddress' => $supervisor['EMAIL'],
+        'toName' => $supervisor['first_name'] . ' ' . $supervisor['last_name'],
+        'toAddress' => $supervisor['email'],
         'subject' => $title . ' (Supervisor Copy)',
       ]);
     }
