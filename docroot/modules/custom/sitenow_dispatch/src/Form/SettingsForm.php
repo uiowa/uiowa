@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class SettingsForm extends ConfigFormBase {
 
   /**
-   * The config factory service.
+   * The dispatch service.
    *
    * @var Dispatch
    */

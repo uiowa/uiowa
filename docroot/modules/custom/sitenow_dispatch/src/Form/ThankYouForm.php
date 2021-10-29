@@ -41,6 +41,13 @@ class ThankYouForm extends FormBase {
   protected $httpClient;
 
   /**
+   * The config factory service.
+   *
+   * @var Dispatch
+   */
+  protected $dispatch;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
@@ -48,6 +55,7 @@ class ThankYouForm extends FormBase {
     $instance->configStorage = $container->get('config.storage');
     $instance->jsonController = $container->get('serialization.json');
     $instance->httpClient = $container->get('http_client');
+    $instance->dispatch = $container->get('sitenow_dispatch.dispatch');
     return $instance;
   }
 
@@ -193,23 +201,15 @@ class ThankYouForm extends FormBase {
       $data->members[$key] = (object) $member;
     }
 
-    // Post to Dispatch API to send the emails.
-    try {
-      $this->httpClient->post($endpoint, [
-        'headers' => [
-          'x-dispatch-api-key' => $apikey,
-          'accept' => 'application/json',
-        ],
-        'body' => $this->jsonController->encode($data),
-      ]);
-
+    // Attempt to post to Dispatch API to send the emails,
+    // and let the user know if it was successful
+    // or if an error occurred (the actual error will be logged by the
+    // dispatch service.
+    $posted = $this->dispatch->postToDispatch($this->jsonController->encode($data), $endpoint, $apikey);
+    if ($posted) {
       $this->messenger()->addMessage($this->t('The form has been submitted successfully.'));
     }
-    catch (RequestException $e) {
-      $this->logger('sitenow_dispatch')->warning($this->t('Dispatch request sent to: <em>@endpoint</em> and failed.', [
-        '@endpoint' => $endpoint,
-      ]));
-
+    else {
       $this->messenger()->addError($this->t('An error was encountered processing the form. If the problem persists, please contact the ITS Help Desk.'));
     }
   }

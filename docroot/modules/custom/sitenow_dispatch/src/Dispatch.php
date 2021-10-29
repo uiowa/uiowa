@@ -3,6 +3,7 @@
 namespace Drupal\sitenow_dispatch;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\GuzzleException;
@@ -15,6 +16,7 @@ use Psr\Log\LoggerInterface;
  * @see: https://apps.its.uiowa.edu/dispatch/api-ref#/
  */
 class Dispatch {
+  use StringTranslationTrait;
 
   /**
    * The HTTP client.
@@ -80,6 +82,33 @@ class Dispatch {
     }
 
     return json_decode($response->getBody()->getContents());
+  }
+
+  /**
+   * Helper function for doing post commands to dispatch.
+   */
+  public function postToDispatch($data, string $endpoint, string $api_key = NULL) {
+    if (!isset($api_key)) {
+      $api_key = $this->configFactory->get('sitenow_dispatch.settings')->get('api_key');
+    }
+
+    try {
+      $this->client->post($endpoint, [
+        'headers' => [
+          'x-dispatch-api-key' => $api_key,
+          'accept' => 'application/json',
+        ],
+        'body' => $data,
+      ]);
+    }
+    catch (RequestException $e) {
+      $this->logger->warning($this->t('Dispatch request sent to: <em>@endpoint</em> and failed.', [
+        '@endpoint' => $endpoint,
+      ]));
+
+      return FALSE;
+    }
+    return TRUE;
   }
 
 }
