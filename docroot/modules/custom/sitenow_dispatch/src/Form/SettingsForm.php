@@ -20,6 +20,13 @@ class SettingsForm extends ConfigFormBase {
   protected $dispatch;
 
   /**
+   * The dispatch service.
+   *
+   * @var UiowaCoreAccess
+   */
+  protected $check;
+
+  /**
    * {@inheritdoc}
    */
   public function getFormId() {
@@ -36,9 +43,10 @@ class SettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function __construct(ConfigFactoryInterface $config_factory, $dispatch) {
+  public function __construct(ConfigFactoryInterface $config_factory, $dispatch, $check) {
     parent::__construct($config_factory);
     $this->dispatch = $dispatch;
+    $this->check = $check;
   }
 
   /**
@@ -47,7 +55,8 @@ class SettingsForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
-      $container->get('sitenow_dispatch.dispatch')
+      $container->get('sitenow_dispatch.dispatch'),
+      $container->get('uiowa_core.access_checker'),
     );
   }
 
@@ -83,14 +92,16 @@ class SettingsForm extends ConfigFormBase {
 
     // Grab the current user to set access to the Thanks
     // form settings only for administrators.
-    $current_user = $this->currentUser();
+    /** @var Drupal\Core\Access\AccessResultInterface $access */
+    $access = $this->check->access($this->currentUser()->getAccount());
+
     $form['thanks'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Thank You Email'),
       '#description' => $this->t('Thank You email configuration. The <a href="@link">1row x 1col curated Dispatch template</a> is used.', [
         '@link' => 'https://apps.its.uiowa.edu/dispatch/help/curatedtemplate/UI%201%20row%20x%201%20col%20-%20Version%202',
       ]),
-      '#access' => in_array('administrator', $current_user->getRoles()),
+      '#access' => $access->isAllowed(),
       '#collapsible' => TRUE,
     ];
 
