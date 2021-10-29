@@ -78,12 +78,16 @@ class SettingsForm extends ConfigFormBase {
       ]);
     }
 
+    // Grab the current user to set access to the Thanks
+    // form settings only for administrators.
+    $current_user = $this->currentUser();
     $form['thanks'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Thank You Email'),
       '#description' => $this->t('Thank You email configuration. The <a href="@link">1row x 1col curated Dispatch template</a> is used.', [
         '@link' => 'https://apps.its.uiowa.edu/dispatch/help/curatedtemplate/UI%201%20row%20x%201%20col%20-%20Version%202',
       ]),
+      '#access' => in_array('administrator', $current_user->getRoles()),
       '#collapsible' => TRUE,
     ];
 
