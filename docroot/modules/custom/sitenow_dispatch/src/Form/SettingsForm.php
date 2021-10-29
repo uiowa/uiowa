@@ -28,6 +28,13 @@ class SettingsForm extends ConfigFormBase {
   protected $check;
 
   /**
+   * The entity type manager service.
+   *
+   * @var EntityTypeManager
+   */
+  protected $entityTypeManager;
+
+  /**
    * {@inheritdoc}
    */
   public function getFormId() {
@@ -44,10 +51,11 @@ class SettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function __construct(ConfigFactoryInterface $config_factory, $dispatch, $check) {
+  public function __construct(ConfigFactoryInterface $config_factory, $dispatch, $check, $entityTypeManager) {
     parent::__construct($config_factory);
     $this->dispatch = $dispatch;
     $this->check = $check;
+    $this->entityTypeManager = $entityTypeManager;
   }
 
   /**
@@ -58,6 +66,7 @@ class SettingsForm extends ConfigFormBase {
       $container->get('config.factory'),
       $container->get('sitenow_dispatch.dispatch'),
       $container->get('uiowa_core.access_checker'),
+      $container->get('entity_type.manager'),
     );
   }
 
@@ -139,7 +148,7 @@ class SettingsForm extends ConfigFormBase {
       // @todo Change this to dependency injection.
       if ($config->get('thanks.placeholder.banner_image')) {
         /** @var MediaInterface $media */
-        $media = \Drupal::service('entity_type.manager')
+        $media = $this->entityTypeManager
           ->getStorage('media')
           ->load($config->get('thanks.placeholder.banner_image'));
 
@@ -201,13 +210,20 @@ class SettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // @todo Clean this up and change to DI.
-    $media = \Drupal::service('entity_type.manager')
-      ->getStorage('media')
-      ->load($form_state->getValue(['thanks', 'placeholder', 'banner_image']));
-    $uri = $media->get('field_media_image')->entity->uri->value;
-    // @todo Change this to get a specific responsive image style of
-    //   the image, rather than a direct file URL. Maybe?
-    $image_url = file_create_url($uri);
+    if ($form_state->getValue(['thanks', 'placeholder', 'banner_image'])) {
+      $media = $this->entityTypeManager
+        ->getStorage('media')
+        ->load($form_state->getValue(['thanks', 'placeholder', 'banner_image']));
+      $uri = $media->get('field_media_image')->entity->uri->value;
+      // @todo Change this to get a specific responsive image style of
+      //   the image, rather than a direct file URL. Maybe?
+      $image_url = file_create_url($uri);
+    }
+    // If the user emptied out the banner_image field,
+    // then we want to make sure to remove the banner image url.
+    else {
+      $image_url = '';
+    }
 
     // @todo Separate Dispatch config and other settings config.
     //   Currently we have both the media id and the URL.
