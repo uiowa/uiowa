@@ -1,7 +1,7 @@
 {{ attach_library('uids_base/card') }}
 {{ attach_library('uids_base/media') }}
 {% set attributes = attributes ?: create_attribute() %}
-{% set card_classes = ['card', 'click-container'] %}
+{% set card_classes = ['card', 'click-container', 'block--word-break'] %}
 {% set media_attributes = media_attributes ?: create_attribute() %}
 
 {# The following code is to determine where a link should be attached, if it exists. #}
