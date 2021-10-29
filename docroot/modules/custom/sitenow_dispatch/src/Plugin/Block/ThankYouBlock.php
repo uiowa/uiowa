@@ -72,7 +72,7 @@ class ThankYouBlock extends BlockBase implements ContainerFactoryPluginInterface
     // the block to be placed.
     $campaign = $this->configFactory
       ->get('sitenow_dispatch.settings')
-      ->get('thanks.campaigns');
+      ->get('thanks.campaign');
     if (empty($campaign)) {
       $form['no_campaign'] = [
         '#prefix' => '<div>',
