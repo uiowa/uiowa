@@ -108,14 +108,15 @@ class ThankYouForm extends FormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
+    $env = getenv('AH_SITE_ENVIRONMENT') ?: 'local';
+    $endpoint = ($env == 'prod' || $env == 'test') ? 'https://data.its.uiowa.edu/hris/supervisors/' : 'https://data-test.its.uiowa.edu/hris/supervisors/';
     $config = $this->config('sitenow_dispatch.settings');
 
     // Get HR data.
     $token = $config->get('thanks.hr_token');
-    $endpoint = $config->get('thanks.hr_endpoint') . $form_state->getValue('to_email') . "?api_token=$token";
 
     try {
-      $request = $this->httpClient->get($endpoint, [
+      $request = $this->httpClient->get($endpoint . $form_state->getValue('to_email') . "?api_token=$token", [
         'headers' => [
           'Accept' => 'application/json',
         ],
