@@ -94,7 +94,7 @@ class SettingsForm extends ConfigFormBase {
     // The thank you form requires a separate key set for csi.drupal to not
     // expose our communications with clients. It also requires an HR token.
     // Both of these should be set in configuration overrides.
-    if ($config->get('thanks.api_key') && $config->get('thanks.hr_key')) {
+    if ($config->get('thanks.api_key') && $config->get('thanks.hr_token')) {
       $form['thanks']['campaign'] = [
         '#type' => 'hidden',
         '#value' => 985361362,
