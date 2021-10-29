@@ -58,9 +58,20 @@ class PreFooterRegionBlock extends BlockBase implements ContainerFactoryPluginIn
   /**
    * {@inheritdoc}
    */
+  public function blockSubmit($form, \Drupal\Core\Form\FormStateInterface $form_state) {
+    // Inspired by https://drupal.stackexchange.com/a/239317.
+    $block_id = $form['id']['#default_value'];
+    $this->configuration['block_id'] = $block_id;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function build() {
-    $config = $this->config->get('uiowa_core.settings');
-    $fid = $config->get('uiowa_core.pre_footer');
+    $config = $this->getConfiguration();
+    $block_id = $config['block_id'];
+    $uiowa_core_settings = $this->config->get('uiowa_core.settings');
+    $fid = $uiowa_core_settings->get('uiowa_core.region_content.' . $block_id);
     $fragment = NULL;
     if ($fid != NULL) {
       $fragment = $this->entityTypeManager->getStorage('fragment')->load($fid);
