@@ -1,4 +1,4 @@
-uuid: 883417af-81a1-409c-a104-4f5ef9a73af2
+uuid: 74c4b0de-ab38-4626-b14b-afdd4bc41670
 langcode: en
 status: true
 dependencies:
@@ -6,15 +6,16 @@ dependencies:
     - uiowa_core
   theme:
     - uids_base
-id: prefooterregionblock
+id: pre_footer
 theme: uids_base
 region: pre_footer
 weight: 0
 provider: null
-plugin: pre_footer_region_block
+plugin: region_content_block
 settings:
-  id: pre_footer_region_block
-  label: 'Pre Footer Region Block'
+  id: region_content_block
+  label: 'Pre footer'
   provider: uiowa_core
-  label_display: '0'
+  label_display: visible
+  block_id: regioncontentblock
 visibility: {  }
