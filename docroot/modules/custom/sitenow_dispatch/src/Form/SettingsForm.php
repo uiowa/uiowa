@@ -5,7 +5,6 @@ namespace Drupal\sitenow_dispatch\Form;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\media\MediaInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -138,7 +137,7 @@ class SettingsForm extends ConfigFormBase {
 
       // @todo Change this to dependency injection.
       if ($config->get('thanks.placeholder.banner_image')) {
-        /** @var MediaInterface $media */
+        /** @var \Drupal\media\MediaInterface $media */
         $media = \Drupal::service('entity_type.manager')
           ->getStorage('media')
           ->load($config->get('thanks.placeholder.banner_image'));
