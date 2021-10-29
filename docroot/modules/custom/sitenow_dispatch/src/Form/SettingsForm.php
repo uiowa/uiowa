@@ -56,6 +56,9 @@ class SettingsForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->configFactory()->get('sitenow_dispatch.settings');
+    $api_key = $config->get('api_key');
+
+    // Set the form tree to make accessing all nested values easier elsewhere.
     $form['#tree'] = TRUE;
 
     $form['description_text'] = [
@@ -67,12 +70,12 @@ class SettingsForm extends ConfigFormBase {
       '#required' => TRUE,
       '#title' => $this->t('API key'),
       '#attributes' => [
-        'value' => $config->get('api_key') ?? NULL,
+        'value' => $api_key,
       ],
       '#description' => $this->t('A valid Dispatch client API key. See the Dispatch <a href="https://apps.its.uiowa.edu/dispatch/help/api">API key documentation</a> for more information.'),
     ];
 
-    if ($client = $config->get('client')) {
+    if ($api_key && $client = $config->get('client')) {
       $form['api_key']['#description'] .= $this->t(' <em>Currently set to @client client</em>.', [
         '@client' => $client,
       ]);
@@ -94,7 +97,7 @@ class SettingsForm extends ConfigFormBase {
     // The thank you form requires a separate key set for csi.drupal to not
     // expose our communications with clients. It also requires an HR token.
     // Both of these should be set in configuration overrides.
-    if ($config->get('thanks.api_key') && $config->get('thanks.hr_token')) {
+    if ($api_key && $config->get('thanks.hr_token')) {
       $form['thanks']['campaign'] = [
         '#type' => 'hidden',
         '#value' => 985361362,
