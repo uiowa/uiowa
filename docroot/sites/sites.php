@@ -3581,3 +3581,9 @@ $sites['labkrysan.local.drupal.uiowa.edu'] = 'krysan.lab.uiowa.edu';
 $sites['labkrysan.dev.drupal.uiowa.edu'] = 'krysan.lab.uiowa.edu';
 $sites['labkrysan.stage.drupal.uiowa.edu'] = 'krysan.lab.uiowa.edu';
 $sites['labkrysan.prod.drupal.uiowa.edu'] = 'krysan.lab.uiowa.edu';
+
+// Directory aliases for robotics.org.uiowa.edu.
+$sites['orgrobotics.local.drupal.uiowa.edu'] = 'robotics.org.uiowa.edu';
+$sites['orgrobotics.dev.drupal.uiowa.edu'] = 'robotics.org.uiowa.edu';
+$sites['orgrobotics.stage.drupal.uiowa.edu'] = 'robotics.org.uiowa.edu';
+$sites['orgrobotics.prod.drupal.uiowa.edu'] = 'robotics.org.uiowa.edu';
