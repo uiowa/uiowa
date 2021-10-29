@@ -66,12 +66,16 @@ class RegionSettings extends ConfigFormBase {
 
     $region_content_blocks = \Drupal::entityQuery('block')->condition('plugin', 'region_content_block')->execute();
     $region_config = $config->get('uiowa_core.region_content');
+    $form['active_region_content_blocks'] = [
+      '#type' => 'fieldset',
+      '#title' => t('Active region content blocks'),
+    ];
     foreach ($region_content_blocks as $key => $value) {
       $title_array = explode('_', $key);
       $title_array[0] = ucwords($title_array[0]);
       $title = implode(" ", $title_array);
       $fid = $region_config[$value] ?? NULL;
-      $form[$key] = [
+      $form['active_region_content_blocks'][$key] = [
         '#type' => 'entity_autocomplete',
         '#title' => $title,
         '#target_type' => 'fragment',
@@ -81,9 +85,14 @@ class RegionSettings extends ConfigFormBase {
         ],
       ];
     }
+
+    $form['region_items'] = [
+      '#type' => 'fieldset',
+      '#title' => t('Region items'),
+    ];
     $view = views_embed_view('region_items', 'region_items_block');
     $render = render($view);
-    $form['region_items_view'] = [
+    $form['region_items']['region_items_view'] = [
       '#type' => 'markup',
       '#markup' => $render,
     ];
