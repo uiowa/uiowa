@@ -70,6 +70,7 @@ class ThankYouForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    // Set the form tree so we can access all the placeholders easily later.
     $form['#tree'] = TRUE;
 
     $form['to_email'] = [
