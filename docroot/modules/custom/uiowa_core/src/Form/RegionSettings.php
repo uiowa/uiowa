@@ -63,8 +63,9 @@ class RegionSettings extends ConfigFormBase {
       '#type' => 'markup',
       '#markup' => $this->t('<p>These settings allow you to configure static regions of your website.</p>'),
     ];
-
-    $region_content_blocks = \Drupal::entityQuery('block')->condition('plugin', 'region_content_block')->execute();
+    $query = $this->entityTypeManager->getStorage('block')->getQuery();
+    $query->condition('plugin', 'region_content_block');
+    $region_content_blocks = $query->execute();
     $region_config = $config->get('uiowa_core.region_content');
     foreach ($region_content_blocks as $key => $value) {
       $title_array = explode('_', $key);
@@ -97,7 +98,9 @@ class RegionSettings extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $values = $form_state->getValues();
     $config = $this->config('uiowa_core.settings');
-    $region_content_blocks = \Drupal::entityQuery('block')->condition('plugin', 'region_content_block')->execute();
+    $query = $this->entityTypeManager->getStorage('block')->getQuery();
+    $query->condition('plugin', 'region_content_block');
+    $region_content_blocks = $query->execute();
     foreach ($region_content_blocks as $key => $value) {
       $config->set('uiowa_core.region_content.' . $key, $values[$key]);
     }
