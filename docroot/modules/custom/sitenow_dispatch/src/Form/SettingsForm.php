@@ -5,6 +5,7 @@ namespace Drupal\sitenow_dispatch\Form;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\media\MediaInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -137,9 +138,12 @@ class SettingsForm extends ConfigFormBase {
 
       // @todo Change this to dependency injection.
       if ($config->get('thanks.placeholder.banner_image')) {
+        /** @var MediaInterface $media */
         $media = \Drupal::service('entity_type.manager')
           ->getStorage('media')
           ->load($config->get('thanks.placeholder.banner_image'));
+
+        $alt = $media->get('field_media_image')->alt;
       }
       // @todo Update the form type.
       $form['thanks']['placeholder']['banner_image'] = [
@@ -152,11 +156,13 @@ class SettingsForm extends ConfigFormBase {
             'image',
           ],
         ],
-        // @todo Update to required if we have a default image.
-        //   But maybe we don't need to replace the default image
-        //   in Dispatch if we don't have a better one.
         '#required' => FALSE,
-        '#description' => $this->t('The banner image to display at the top of the email body.'),
+        '#description' => $this->t('Optional banner image to display at the top of the email body.'),
+      ];
+
+      $form['thanks']['placeholder']['banner_image_alt'] = [
+        '#type' => 'hidden',
+        '#value' => $alt ?? NULL,
       ];
 
       $form['thanks']['placeholder']['row1_heading'] = [
