@@ -61,7 +61,7 @@ class RegionContentBlock extends BlockBase implements ContainerFactoryPluginInte
    */
   public function blockSubmit($form, FormStateInterface $form_state) {
     // Inspired by https://drupal.stackexchange.com/a/239317.
-    $block_id = $form['id']['#default_value'];
+    $block_id = $form["id"]["#value"] ?? $form['id']['#default_value'];
     $this->configuration['block_id'] = $block_id;
   }
 
