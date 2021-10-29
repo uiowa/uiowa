@@ -7,6 +7,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Provides a 'Hello' Block.
@@ -58,7 +59,7 @@ class PreFooterRegionBlock extends BlockBase implements ContainerFactoryPluginIn
   /**
    * {@inheritdoc}
    */
-  public function blockSubmit($form, \Drupal\Core\Form\FormStateInterface $form_state) {
+  public function blockSubmit($form, FormStateInterface $form_state) {
     // Inspired by https://drupal.stackexchange.com/a/239317.
     $block_id = $form['id']['#default_value'];
     $this->configuration['block_id'] = $block_id;
