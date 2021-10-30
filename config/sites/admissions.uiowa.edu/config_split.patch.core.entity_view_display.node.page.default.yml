@@ -34,6 +34,7 @@ adding:
             - 'extra_field_block:user:user:entity_print_view_pdf'
           'Entity Print': {  }
           Lists:
+            - 'views_block:article_list_block-list_article'
             - 'views_block:people_list_block-list_card'
           'Lists (Views)':
             - 'views_block:academic_groups_block-block_1'
@@ -45,11 +46,6 @@ adding:
           System:
             - system_breadcrumb_block
             - system_main_block
-        blacklisted_blocks:
-          'Custom block types':
-            - area_of_study_search
-          'Inline blocks':
-            - 'inline_block:area_of_study_search'
       allowed_block_categories:
         - 'Admissions Core'
         - 'Area of Study'
@@ -59,14 +55,17 @@ adding:
           layout_fourcol:
             all_regions:
               Lists:
+                - 'views_block:article_list_block-list_article'
                 - 'views_block:people_list_block-list_card'
           layout_threecol:
             all_regions:
               Lists:
+                - 'views_block:article_list_block-list_article'
                 - 'views_block:people_list_block-list_card'
           layout_twocol:
             all_regions:
               Lists:
+                - 'views_block:article_list_block-list_article'
                 - 'views_block:people_list_block-list_card'
   hidden:
     entity_print_view_epub: true
