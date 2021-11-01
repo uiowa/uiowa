@@ -5,10 +5,12 @@ dependencies: {  }
 id: site
 label: Site
 description: 'The grad.uiowa.edu site split.'
-weight: 90
+weight: 70
+stackable: true
 storage: folder
 folder: ../config/sites/grad.uiowa.edu
 module:
+  fragments: 0
   grad_core: 0
   grad_custom: 0
   grad_student_profile: 0
@@ -32,7 +34,7 @@ complete_list:
   - views.view.srop_mentors
   - views.view.srop_scholars
   - sitenow_people.person_type.mentor
-  - fragments.fragment_type.program
+  - fragment.fragment_type.program
   - 'field.storage.fragment.field_program_*'
   - 'field.storage.node.field_scholar_*'
   - 'field.storage.node.field_student_profile_*'
