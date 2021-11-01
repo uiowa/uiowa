@@ -180,6 +180,15 @@ class SettingsForm extends ConfigFormBase {
         '#required' => TRUE,
         '#description' => $this->t('The heading to display in the email body.'),
       ];
+
+      $form['thanks']['supervisor'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Supervisor Email'),
+        // Default to include if it hasn't been set yet.
+        '#default_value' => !empty($config->get('thanks.supervisor')) ? $config->get('thanks.supervisor') : 1,
+        '#required' => FALSE,
+        '#description' => $this->t("If included, copies will be sent to the employee's supervisor(s). Supervisor information will be retrieved automatically."),
+      ];
     }
     else {
       $form['thanks']['#description'] = $this->t('The Thank You email is not configured properly. Please contact support.');
@@ -233,6 +242,7 @@ class SettingsForm extends ConfigFormBase {
         'campaign' => $form_state->getValue(['thanks', 'campaign']),
         'communication' => $form_state->getValue(['thanks', 'communication']),
         'placeholder' => $form_state->getValue(['thanks', 'placeholder']),
+        'supervisor' => $form_state->getValue(['thanks', 'supervisor']),
       ]);
     $this->config('sitenow_dispatch.settings')
       ->set('thanks.placeholder.banner_image_url', $image_url)
