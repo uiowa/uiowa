@@ -76,8 +76,9 @@ class ThankYouForm extends FormBase {
     $form['to_email'] = [
       '#type' => 'email',
       '#title' => $this->t('Email address of employee you want to thank'),
-      '#description' => $this->t('Look up an email address in our <a target="_blank" href="https://iam.uiowa.edu/whitepages/search">directory</a>.'),
+      '#description' => $this->t('An <em>@uiowa.edu</em> email address. Look up an email address in our <a target="_blank" href="https://iam.uiowa.edu/whitepages/search">directory</a>.'),
       '#required' => TRUE,
+      '#pattern' => '.+@uiowa\.edu',
     ];
 
     $form['placeholder']['message'] = [
