@@ -195,12 +195,11 @@ class ThankYouForm extends FormBase {
         'x-dispatch-api-key' => $api_key,
       ],
     ]);
-
-    if ($posted) {
-      $this->messenger()->addMessage($this->t('The form has been submitted successfully.'));
+    if ($posted === FALSE) {
+      $this->messenger()->addError($this->t('An error was encountered processing the form. If the problem persists, please contact the ITS Help Desk.'));
     }
     else {
-      $this->messenger()->addError($this->t('An error was encountered processing the form. If the problem persists, please contact the ITS Help Desk.'));
+      $this->messenger()->addMessage($this->t('The form has been submitted successfully.'));
     }
   }
 

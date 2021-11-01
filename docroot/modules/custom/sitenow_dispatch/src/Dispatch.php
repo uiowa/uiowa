@@ -104,8 +104,7 @@ class Dispatch {
         '@error' => $e->getMessage(),
       ]);
 
-      // We've encountered an error, return a blank array.
-      return [];
+      return FALSE;
     }
 
     return json_decode($response->getBody()->getContents());
