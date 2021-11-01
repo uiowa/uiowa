@@ -112,7 +112,7 @@ class ThankYouForm extends FormBase {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $env = getenv('AH_SITE_ENVIRONMENT') ?: 'local';
     $email = $form_state->getValue('to_email');
-    $endpoint = ($env == 'prod' || $env == 'test') ? 'https://data.its.uiowa.edu/hris/supervisors/' : 'https://data-test.its.uiowa.edu/hris/supervisors/';
+    $endpoint = ($env == 'prod' || $env == 'test') ? 'https://data.its.uiowa.edu/hris/supervisors' : 'https://data-test.its.uiowa.edu/hris/supervisors';
     $config = $this->config('sitenow_dispatch.settings');
 
     // Get HR data.
