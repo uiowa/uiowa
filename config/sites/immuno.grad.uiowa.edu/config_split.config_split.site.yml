@@ -5,10 +5,13 @@ dependencies: {  }
 id: site
 label: Site
 description: 'The immuno.grad.uiowa.edu site split.'
+weight: 70
+stackable: true
+storage: folder
 folder: ../config/sites/immuno.grad.uiowa.edu
 module: {  }
 theme: {  }
-blacklist:
+complete_list:
   - config_split.config_split.site
   - field.storage.node.field_person_publications_link
   - field.storage.node.field_pt_faculty_type
@@ -16,9 +19,6 @@ blacklist:
   - taxonomy.vocabulary.faculty_type
   - views.view.person_custom
   - views.view.research_areas
-graylist:
+partial_list:
   - sitenow_people.person_type.faculty
   - sitenow_people.person_type.student
-graylist_dependents: true
-graylist_skip_equal: true
-weight: 90
