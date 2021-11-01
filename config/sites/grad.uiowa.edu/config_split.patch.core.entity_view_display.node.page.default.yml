@@ -1,0 +1,55 @@
+adding:
+  third_party_settings:
+    layout_builder:
+      sections:
+        2:
+          components:
+            -
+              configuration:
+                expand: 0
+    layout_builder_restrictions:
+      entity_view_mode_restriction:
+        whitelisted_blocks:
+          Lists:
+            - 'views_block:article_list_block-list_article'
+            - 'views_block:people_list_block-list_card'
+          MAUI:
+            - uiowa_maui_academic_dates
+      allowed_block_categories:
+        - MAUI
+      entity_view_mode_restriction_by_region:
+        whitelisted_blocks:
+          layout_fourcol:
+            all_regions:
+              Lists:
+                - 'views_block:article_list_block-list_article'
+                - 'views_block:people_list_block-list_card'
+          layout_onecol:
+            content:
+              Lists:
+                - 'views_block:article_list_block-list_article'
+                - 'views_block:people_list_block-list_card'
+          layout_page:
+            all_regions:
+              Lists:
+                - 'views_block:article_list_block-list_article'
+                - 'views_block:people_list_block-list_card'
+          layout_threecol:
+            all_regions:
+              Lists:
+                - 'views_block:article_list_block-list_article'
+                - 'views_block:people_list_block-list_card'
+          layout_twocol:
+            all_regions:
+              Lists:
+                - 'views_block:article_list_block-list_article'
+                - 'views_block:people_list_block-list_card'
+removing:
+  third_party_settings:
+    layout_builder:
+      sections:
+        2:
+          components:
+            -
+              configuration:
+                expand: false
