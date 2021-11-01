@@ -110,6 +110,7 @@ class ThankYouForm extends FormBase {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $env = getenv('AH_SITE_ENVIRONMENT') ?: 'local';
+    $email = $form_state->getValue('to_email');
     $endpoint = ($env == 'prod' || $env == 'test') ? 'https://data.its.uiowa.edu/hris/supervisors/' : 'https://data-test.its.uiowa.edu/hris/supervisors/';
     $config = $this->config('sitenow_dispatch.settings');
 
@@ -117,7 +118,7 @@ class ThankYouForm extends FormBase {
     $token = $config->get('thanks.hr_token');
 
     try {
-      $request = $this->httpClient->get($endpoint . $form_state->getValue('to_email') . "?api_token=$token", [
+      $request = $this->httpClient->get("$endpoint/$email?api_token=$token", [
         'headers' => [
           'Accept' => 'application/json',
         ],
@@ -132,7 +133,15 @@ class ThankYouForm extends FormBase {
         '@error' => $e->getMessage(),
       ]));
 
-      $form_state->setError($form, $this->t('An error was encountered processing the form. If the problem persists, please contact the ITS Help Desk.'));
+      // Output a specific 404 error message, otherwise a generic one.
+      if ($e->getCode() == 404) {
+        $form_state->setError($form, $this->t('Could not find any university record for email @email. Double check the email address and try again.', [
+          '@email' => $email,
+        ]));
+      }
+      else {
+        $form_state->setError($form, $this->t('An error was encountered processing the form. If the problem persists, please contact the ITS Help Desk.'));
+      }
     }
   }
 
