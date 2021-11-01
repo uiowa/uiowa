@@ -2,6 +2,7 @@
 
 namespace Drupal\sitenow_dispatch;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use GuzzleHttp\ClientInterface;
@@ -13,9 +14,11 @@ use Psr\Log\LoggerInterface;
 /**
  * A Dispatch API service.
  *
- * @see: https://apps.its.uiowa.edu/dispatch/api-ref#/
+ * @see: https://apps.its.uiowa.edu/dispatch/api-ref
  */
 class Dispatch {
+  const BASE = 'https://apps.its.uiowa.edu/dispatch/api/v1/';
+
   use StringTranslationTrait;
 
   /**
@@ -56,23 +59,41 @@ class Dispatch {
   }
 
   /**
-   * Helper function for doing get commands from dispatch.
+   * Make a Dispatch API request and return JSON-decoded data.
+   *
+   * @param string $method
+   *   The HTTP method to use.
+   * @param string $path
+   *   The API path to use. Do not include the base URL.
+   * @param array $params
+   *   Optional URI query parameters.
+   * @param array $options
+   *   Additional request options. Accept and API key set automatically.
+   *
+   * @return mixed
+   *   The API response data.
    */
-  public function getFromDispatch(string $request, string $api_key = NULL) {
+  public function request(string $method, string $path, array $params = [], array $options = [], string $api_key = NULL) {
+    // Encode any special characters and trim duplicate slash.
+    $path = UrlHelper::encodePath($path);
+    $uri = self::BASE . ltrim($path, '/');
 
-    if (!isset($api_key)) {
-      $api_key = $this->configFactory->get('sitenow_dispatch.settings')->get('api_key');
+    // Append any query string parameters.
+    if (!empty($params)) {
+      $query = UrlHelper::buildQuery($params);
+      $uri .= "?{$query}";
     }
 
-    $response = NULL;
+    // Merge additional options with default.
+    $options = array_merge($options, [
+      'headers' => [
+        'Accept' => 'application/json',
+        'x-dispatch-api-key' => $api_key ?? $this->configFactory->get('sitenow_dispatch.settings')->get('api_key'),
+      ],
+    ]);
 
     try {
-      $response = $this->client->request('GET', $request, [
-        'headers' => [
-          'Accept' => 'application/json',
-          'x-dispatch-api-key' => $api_key,
-        ],
-      ]);
+      $response = $this->client->request($method, $uri, $options);
     }
     catch (RequestException | GuzzleException | ClientException $e) {
       $this->logger->error($e->getMessage());
@@ -82,33 +103,6 @@ class Dispatch {
     }
 
     return json_decode($response->getBody()->getContents());
-  }
-
-  /**
-   * Helper function for doing post commands to dispatch.
-   */
-  public function postToDispatch($data, string $endpoint, string $api_key = NULL) {
-    if (!isset($api_key)) {
-      $api_key = $this->configFactory->get('sitenow_dispatch.settings')->get('api_key');
-    }
-
-    try {
-      $this->client->post($endpoint, [
-        'headers' => [
-          'x-dispatch-api-key' => $api_key,
-          'accept' => 'application/json',
-        ],
-        'body' => $data,
-      ]);
-    }
-    catch (RequestException $e) {
-      $this->logger->warning($this->t('Dispatch request sent to: <em>@endpoint</em> and failed.', [
-        '@endpoint' => $endpoint,
-      ]));
-
-      return FALSE;
-    }
-    return TRUE;
   }
 
 }
