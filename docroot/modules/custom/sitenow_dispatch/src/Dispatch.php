@@ -73,7 +73,7 @@ class Dispatch {
    * @return mixed
    *   The API response data.
    */
-  public function request(string $method, string $path, array $params = [], array $options = [], string $api_key = NULL) {
+  public function request(string $method, string $path, array $params = [], array $options = []) {
     // Encode any special characters and trim duplicate slash.
     $path = UrlHelper::encodePath($path);
     $uri = self::BASE . ltrim($path, '/');
@@ -84,13 +84,13 @@ class Dispatch {
       $uri .= "?{$query}";
     }
 
-    // Merge additional options with default.
-    $options = array_merge($options, [
+    // Merge additional options with default but allow overriding.
+    $options = array_merge([
       'headers' => [
         'Accept' => 'application/json',
         'x-dispatch-api-key' => $api_key ?? $this->configFactory->get('sitenow_dispatch.settings')->get('api_key'),
       ],
-    ]);
+    ], $options);
 
     try {
       $response = $this->client->request($method, $uri, $options);

@@ -142,7 +142,7 @@ class ThankYouForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $hr_data = $form_state->getValue('hr_data');
     $config = $this->config('sitenow_dispatch.settings');
-    $apikey = trim($config->get('thanks.api_key'));
+    $api_key = trim($config->get('thanks.api_key'));
     $endpoint = 'https://apps.its.uiowa.edu/dispatch/api/v1/communications/' . $config->get('thanks.communication') . '/adhocs';
 
     // Combine placeholders on thank you form with settings form.
@@ -191,7 +191,8 @@ class ThankYouForm extends FormBase {
     // be logged by the dispatch service.
     $posted = $this->dispatch->request('POST', $endpoint, [], [
       'body' => json_encode($data),
-    ], $apikey);
+      'x-dispatch-api-key' => $api_key,
+    ]);
 
     if ($posted) {
       $this->messenger()->addMessage($this->t('The form has been submitted successfully.'));
