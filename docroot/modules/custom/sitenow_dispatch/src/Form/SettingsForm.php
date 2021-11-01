@@ -203,7 +203,9 @@ class SettingsForm extends ConfigFormBase {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // Use the api_key being submitted in the form rather than set in config.
     $response = $this->dispatch->request('GET', 'client', [], [
-      'x-dispatch-api-key' => trim($form_state->getValue('api_key')),
+      'headers' => [
+        'x-dispatch-api-key' => trim($form_state->getValue('api_key')),
+      ],
     ]);
 
     // If the response is empty, we have an invalid API key.

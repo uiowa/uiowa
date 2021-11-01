@@ -87,10 +87,12 @@ class Dispatch {
     // Merge additional options with default but allow overriding.
     $options = array_merge([
       'headers' => [
-        'Accept' => 'application/json',
         'x-dispatch-api-key' => $api_key ?? $this->configFactory->get('sitenow_dispatch.settings')->get('api_key'),
       ],
     ], $options);
+
+    // Re-set Accept header in case it was accidentally left out of $options.
+    $options['headers']['Accept'] = 'application/json';
 
     try {
       $response = $this->client->request($method, $uri, $options);

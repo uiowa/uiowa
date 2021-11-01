@@ -191,7 +191,9 @@ class ThankYouForm extends FormBase {
     // be logged by the dispatch service.
     $posted = $this->dispatch->request('POST', "communications/$communication/adhocs", [], [
       'body' => json_encode($data),
-      'x-dispatch-api-key' => $api_key,
+      'headers' => [
+        'x-dispatch-api-key' => $api_key,
+      ],
     ]);
 
     if ($posted) {
