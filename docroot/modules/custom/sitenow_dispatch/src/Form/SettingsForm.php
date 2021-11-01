@@ -94,7 +94,7 @@ class SettingsForm extends ConfigFormBase {
     ];
 
     if ($api_key && $client = $config->get('client')) {
-      $form['api_key']['#description'] .= $this->t(' <em>Currently set to @client client</em>.', [
+      $form['api_key']['#description'] .= $this->t('&nbsp;<em>Currently set to @client client</em>.', [
         '@client' => $client,
       ]);
     }
