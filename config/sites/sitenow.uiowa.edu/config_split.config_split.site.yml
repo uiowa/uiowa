@@ -5,16 +5,16 @@ dependencies: {  }
 id: site
 label: Site
 description: 'The sitenow.uiowa.edu site split.'
+weight: 70
+stackable: false
+storage: folder
 folder: ../config/sites/sitenow.uiowa.edu
 module:
   sitenow_core: 0
 theme: {  }
-blacklist: {  }
-graylist:
+complete_list:
   - config_split.config_split.site
-  - uiowa_auth.settings
   - user.role.requester
+partial_list:
+  - uiowa_auth.settings
   - 'block.block.*'
-graylist_dependents: true
-graylist_skip_equal: true
-weight: 0
