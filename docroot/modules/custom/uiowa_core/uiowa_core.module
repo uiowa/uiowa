@@ -216,7 +216,7 @@ function uiowa_core_preprocess_html(&$variables) {
       $toppage = 'no-top-scroll';
       // Only display scroll to top button if user opts in.
       if (theme_get_setting('header.toppage')) {
-        $toppage = 'scroll-up';
+        $toppage = 'top-scroll';
       }
       $variables['attributes']['class'][] = $toppage;
     }

@@ -82,7 +82,7 @@
   ]
 %}
 {{ attach_library('classy/node') }}
-{{ attach_library('uids_base/scroll-up') }}
+{{ attach_library('uids_base/top-scroll') }}
 
 <div{{ attributes.addClass(classes) }}>
 
@@ -108,13 +108,15 @@
     {{ content }}
     {# Used for page by page basis display of scroll to top button #}
     <div class="scroll-up">
-      <nav id="vertical-dots" role="navigation" aria-label="Navigation"><ul><li><a class="v-dot-link current" href="#" aria-labelledby="v-dot-nav-section" data-section="hero-banner">
-        <a class="v-dot-link" href="#" aria-labelledby="v-dot-nav-section" data-section="hero-banner">
-          <div class="scroll-icon">
-            <span class="fas fa-arrow-up"></span>
-          </div>
-        </a>
-      </nav>
+      <div class="top-scroll">
+        <nav id="vertical-dots" role="navigation" aria-label="Navigation"><ul><li><a class="v-dot-link current" href="#" aria-labelledby="v-dot-nav-section" data-section="hero-banner">
+          <a class="v-dot-link" href="#" aria-labelledby="v-dot-nav-section" data-section="hero-banner">
+            <div class="scroll-icon">
+              <span class="fas fa-arrow-up"></span>
+            </div>
+          </a>
+        </nav>
+      </div>
     </div>
   </div>
 
