@@ -166,14 +166,17 @@ class ThankYouForm extends FormBase {
       $data['members'][0][$key] = Xss::filter($value);
     }
 
-    // Duplicate first member to get placeholders but change to CC supervisor.
-    // @todo Make supervisor CC optional.
-    foreach ($hr_data['supervisors'] as $supervisor) {
-      $data['members'][] = array_merge($data['members'][0], [
-        'toName' => $supervisor['first_name'] . ' ' . $supervisor['last_name'],
-        'toAddress' => $supervisor['email'],
-        'subject' => $title . ' (Supervisor Copy)',
-      ]);
+    // If we're configured to include supervisor emails,
+    // add them to our members data.
+    if ($config->get('thanks.supervisor')) {
+      // Duplicate first member to get placeholders but change to CC supervisor.
+      foreach ($hr_data['supervisors'] as $supervisor) {
+        $data['members'][] = array_merge($data['members'][0], [
+          'toName' => $supervisor['first_name'] . ' ' . $supervisor['last_name'],
+          'toAddress' => $supervisor['email'],
+          'subject' => $title . ' (Supervisor Copy)',
+        ]);
+      }
     }
 
     // Prepare the data for the request body JSON.
