@@ -7,6 +7,7 @@ use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\uiowa_core\HeadlineHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -59,6 +60,14 @@ class ThankYouBlock extends BlockBase implements ContainerFactoryPluginInterface
    * {@inheritdoc}
    */
   public function build() {
+    $build['heading'] = [
+      '#theme' => 'uiowa_core_headline',
+      '#headline' => $this->configuration['headline'],
+      '#hide_headline' => $this->configuration['hide_headline'],
+      '#heading_size' => $this->configuration['heading_size'],
+      '#headline_style' => $this->configuration['headline_style'],
+    ];
+
     $build['form'] = $this->formBuilder->getForm('\Drupal\sitenow_dispatch\Form\ThankYouForm');
 
     return $build;
@@ -73,6 +82,7 @@ class ThankYouBlock extends BlockBase implements ContainerFactoryPluginInterface
     $campaign = $this->configFactory
       ->get('sitenow_dispatch.settings')
       ->get('thanks.campaign');
+
     if (empty($campaign)) {
       $form['no_campaign'] = [
         '#prefix' => '<div>',
@@ -82,8 +92,25 @@ class ThankYouBlock extends BlockBase implements ContainerFactoryPluginInterface
         ]),
       ];
     }
+    else {
+      $form['headline'] = HeadlineHelper::getElement([
+        'headline' => $this->configuration['headline'] ?? NULL,
+        'hide_headline' => $this->configuration['hide_headline'] ?? 0,
+        'heading_size' => $this->configuration['heading_size'] ?? 'h2',
+        'headline_style' => $this->configuration['headline_style'] ?? 'default',
+      ], FALSE);
+    }
 
     return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function blockSubmit($form, FormStateInterface $form_state) {
+    foreach ($form_state->getValues()['headline']['container'] as $name => $value) {
+      $this->configuration[$name] = $value;
+    }
   }
 
 }
