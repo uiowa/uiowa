@@ -98,7 +98,11 @@ class Dispatch {
       $response = $this->client->request($method, $uri, $options);
     }
     catch (RequestException | GuzzleException | ClientException $e) {
-      $this->logger->error($e->getMessage());
+      $this->logger->error('Error encountered getting data from @endpoint: @code @error', [
+        '@endpoint' => $uri,
+        '@code' => $e->getCode(),
+        '@error' => $e->getMessage(),
+      ]);
 
       // We've encountered an error, return a blank array.
       return [];
