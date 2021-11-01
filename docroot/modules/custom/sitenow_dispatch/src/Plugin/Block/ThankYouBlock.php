@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @Block(
  *   id = "thankyou_form",
- *   admin_label = @Translation("Thank You"),
+ *   admin_label = @Translation("Thank you form"),
  *   category = @Translation("SiteNow Dispatch")
  * )
  */
