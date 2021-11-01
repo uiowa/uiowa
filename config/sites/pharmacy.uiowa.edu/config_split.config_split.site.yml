@@ -5,11 +5,14 @@ dependencies: {  }
 id: site
 label: Site
 description: 'The pharmacy.uiowa.edu site split.'
+weight: 70
+stackable: true
+storage: folder
 folder: ../config/sites/pharmacy.uiowa.edu
 module:
   pharmacy_core: 0
 theme: {  }
-blacklist:
+complete_list:
   - config_split.config_split.site
   - field.field.node.person.field_person_research_areas
   - field.field.node.person.field_person_territory
@@ -17,11 +20,8 @@ blacklist:
   - sitenow_people.person_type.palliative_grad
   - taxonomy.vocabulary.research_areas
   - views.view.palliative_grad
-graylist:
+partial_list:
   - core.entity_form_display.node.page.default
   - core.entity_form_display.node.person.default
   - core.entity_view_display.node.page.default
   - field.field.node.person.field_person_types
-graylist_dependents: true
-graylist_skip_equal: true
-weight: 90
