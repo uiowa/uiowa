@@ -1,0 +1,23 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.person.field_person_research_areas
+      - field.field.node.person.field_person_territory
+  content:
+    field_person_research_areas:
+      type: entity_reference_autocomplete
+      weight: 11
+      region: content
+      settings:
+        match_operator: CONTAINS
+        match_limit: 10
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+    field_person_territory:
+      weight: 26
+      settings: {  }
+      third_party_settings: {  }
+      type: options_select
+      region: content
+removing: {  }
