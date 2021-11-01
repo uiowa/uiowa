@@ -16,7 +16,6 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
 
   $config = \Drupal::config('system.site');
   $has_parent = $config->get('has_parent') ?: 0;
-  // $site_name = $config->get('name');
   $variables['site_name'] = $config->get('name');
   $name_length = strlen($variables['site_name']);
 
