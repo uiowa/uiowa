@@ -1,0 +1,20 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.page.field_reference
+      - field.field.node.page.field_related_content
+  hidden:
+    field_image: true
+    field_reference: true
+    field_related_content: true
+removing:
+  content:
+    field_image:
+      type: entity_reference_entity_view
+      weight: 2
+      region: content
+      label: hidden
+      settings:
+        view_mode: large__widescreen
+        link: false
+      third_party_settings: {  }
