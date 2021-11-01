@@ -101,9 +101,6 @@ class ThankYouForm extends FormBase {
     $form['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Submit'),
-      '#attributes' => [
-        'id' => 'edit-actions-submit',
-      ],
     ];
 
     return $form;
