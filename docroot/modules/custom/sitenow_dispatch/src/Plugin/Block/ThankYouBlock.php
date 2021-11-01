@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Provides a block which renders the thank you form.
  *
  * @Block(
- *   id = "thankyou_form",
+ *   id = "sitenow_dispatch_thankyou_form",
  *   admin_label = @Translation("Thank you form"),
  *   category = @Translation("SiteNow Dispatch")
  * )
