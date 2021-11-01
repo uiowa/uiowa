@@ -5,41 +5,15 @@ dependencies: {  }
 id: site
 label: Site
 description: 'The ighn.international.uiowa.edu site split.'
+weight: 70
+stackable: true
+storage: folder
 folder: ../config/sites/ighn.international.uiowa.edu
 module:
   ighn_core: 0
 theme: {  }
-blacklist: {  }
-graylist:
+complete_list:
   - config_split.config_split.site
-  - core.base_field_override.node.ighn_person.promote
-  - core.entity_form_display.node.ighn_person.default
-  - core.entity_view_display.node.ighn_person.default
-  - core.entity_view_display.node.ighn_person.full
-  - core.entity_view_display.node.ighn_person.teaser
-  - field.field.node.ighn_person.field_ighn_person_biography
-  - field.field.node.ighn_person.field_ighn_person_credentials
-  - field.field.node.ighn_person.field_ighn_person_cv_link
-  - field.field.node.ighn_person.field_ighn_person_department
-  - field.field.node.ighn_person.field_ighn_person_first_name
-  - field.field.node.ighn_person.field_ighn_person_focus_areas
-  - field.field.node.ighn_person.field_ighn_person_global_regions
-  - field.field.node.ighn_person.field_ighn_person_image
-  - field.field.node.ighn_person.field_ighn_person_language
-  - field.field.node.ighn_person.field_ighn_person_last_name
-  - field.field.node.ighn_person.field_ighn_person_position_title
-  - field.field.node.ighn_person.field_ighn_primary_college
-  - field.storage.node.field_ighn_person_biography
-  - field.storage.node.field_ighn_person_credentials
-  - field.storage.node.field_ighn_person_cv_link
-  - field.storage.node.field_ighn_person_department
-  - field.storage.node.field_ighn_person_first_name
-  - field.storage.node.field_ighn_person_focus_areas
-  - field.storage.node.field_ighn_person_global_regions
-  - field.storage.node.field_ighn_person_image
-  - field.storage.node.field_ighn_person_language
-  - field.storage.node.field_ighn_person_last_name
-  - field.storage.node.field_ighn_person_position_title
   - field.storage.node.field_ighn_primary_college
   - node.type.ighn_person
   - simple_sitemap.bundle_settings.default.node.ighn_person
@@ -48,24 +22,9 @@ graylist:
   - taxonomy.vocabulary.ighn_language_expertise
   - taxonomy.vocabulary.ighn_primary_college
   - taxonomy.vocabulary.ighn_primary_focus_areas
-  - user.role.editor
-  - user.role.publisher
-  - user.role.webmaster
   - views.view.ighn_person_view
-  - block.block.ighn_breadcrumbs
-  - block.block.ighn_content
-  - block.block.ighn_local_actions
-  - block.block.ighn_mainnavigation
-  - block.block.ighn_messages
-  - block.block.ighn_page_title
-  - block.block.ighn_primary_local_tasks
-  - block.block.ighn_secondary_local_tasks
-  - block.block.ighn_sidebar_mainnavigation
+  - 'block.block.ighn_*'
+  - 'field.storage.node.field_ighn_person_*'
   - ighn.settings
-  - 'core.entity_form_display.node.ighn_person.*'
-  - 'core.entity_view_display.node.ighn_person.*'
-  - 'field.field.node.ighn_person.*'
+partial_list:
   - 'user.role.*'
-graylist_dependents: true
-graylist_skip_equal: true
-weight: 90
