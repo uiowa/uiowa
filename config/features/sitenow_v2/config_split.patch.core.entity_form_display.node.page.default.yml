@@ -1,0 +1,55 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.page.field_page_content_block
+    module:
+      - paragraphs
+  content:
+    field_page_content_block:
+      type: paragraphs
+      weight: 2
+      settings:
+        title: Section
+        title_plural: Sections
+        edit_mode: closed
+        closed_mode: preview
+        autocollapse: all
+        closed_mode_threshold: 2
+        add_mode: dropdown
+        form_display_mode: default
+        default_paragraph_type: _none
+        features:
+          add_above: '0'
+          collapse_edit_all: '0'
+          duplicate: duplicate
+      third_party_settings: {  }
+      region: content
+    field_publish_options:
+      weight: 14
+    field_teaser:
+      weight: 1
+    moderation_state:
+      weight: 15
+  hidden:
+    body: true
+removing:
+  dependencies:
+    module:
+      - text
+  content:
+    body:
+      type: text_textarea_with_summary
+      weight: 1
+      region: content
+      settings:
+        rows: 9
+        summary_rows: 3
+        placeholder: ''
+        show_summary: false
+      third_party_settings: {  }
+    field_publish_options:
+      weight: 13
+    field_teaser:
+      weight: 2
+    moderation_state:
+      weight: 14
