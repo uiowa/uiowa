@@ -143,7 +143,7 @@ class ThankYouForm extends FormBase {
     $hr_data = $form_state->getValue('hr_data');
     $config = $this->config('sitenow_dispatch.settings');
     $api_key = trim($config->get('thanks.api_key'));
-    $endpoint = 'https://apps.its.uiowa.edu/dispatch/api/v1/communications/' . $config->get('thanks.communication') . '/adhocs';
+    $communication = $config->get('thanks.communication');
 
     // Combine placeholders on thank you form with settings form.
     $title = $config->get('thanks.placeholder.title');
@@ -189,7 +189,7 @@ class ThankYouForm extends FormBase {
     // Attempt to post to Dispatch API to send the emails, and let the user
     // know if it was successful or if an error occurred. The actual error will
     // be logged by the dispatch service.
-    $posted = $this->dispatch->request('POST', $endpoint, [], [
+    $posted = $this->dispatch->request('POST', "communications/$communication/adhocs", [], [
       'body' => json_encode($data),
       'x-dispatch-api-key' => $api_key,
     ]);
