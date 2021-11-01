@@ -202,7 +202,7 @@ class SettingsForm extends ConfigFormBase {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $api_key = trim($form_state->getValue('api_key'));
-    $response = $this->dispatch->getFromDispatch('https://apps.its.uiowa.edu/dispatch/api/v1/client', $api_key);
+    $response = $this->dispatch->request('GET', 'client', [], [], $api_key);
 
     // If the response is empty, we have an invalid API key.
     if ($response == []) {

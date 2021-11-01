@@ -186,11 +186,13 @@ class ThankYouForm extends FormBase {
       $data->members[$key] = (object) $member;
     }
 
-    // Attempt to post to Dispatch API to send the emails,
-    // and let the user know if it was successful
-    // or if an error occurred (the actual error will be logged by the
-    // dispatch service.
-    $posted = $this->dispatch->postToDispatch($this->jsonController->encode($data), $endpoint, $apikey);
+    // Attempt to post to Dispatch API to send the emails, and let the user
+    // know if it was successful or if an error occurred. The actual error will
+    // be logged by the dispatch service.
+    $posted = $this->dispatch->request('POST', $endpoint, [], [
+      'body' => json_encode($data),
+    ], $apikey);
+
     if ($posted) {
       $this->messenger()->addMessage($this->t('The form has been submitted successfully.'));
     }
