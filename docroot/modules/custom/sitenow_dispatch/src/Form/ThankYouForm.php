@@ -43,7 +43,7 @@ class ThankYouForm extends FormBase {
   /**
    * The config factory service.
    *
-   * @var Dispatch
+   * @var \Drupal\sitenow_dispatch\Dispatch
    */
   protected $dispatch;
 

@@ -39,7 +39,7 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
   /**
    * The config factory service.
    *
-   * @var Dispatch
+   * @var \Drupal\sitenow_dispatch\Dispatch
    */
   protected $dispatch;
 

@@ -15,21 +15,21 @@ class SettingsForm extends ConfigFormBase {
   /**
    * The dispatch service.
    *
-   * @var Dispatch
+   * @var \Drupal\sitenow_dispatch\Dispatch
    */
   protected $dispatch;
 
   /**
    * The dispatch service.
    *
-   * @var UiowaCoreAccess
+   * @var \Drupal\uiowa_core\Access\UiowaCoreAccess
    */
   protected $check;
 
   /**
    * The entity type manager service.
    *
-   * @var EntityTypeManager
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 

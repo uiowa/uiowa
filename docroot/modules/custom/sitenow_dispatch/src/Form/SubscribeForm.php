@@ -2,7 +2,6 @@
 
 namespace Drupal\sitenow_dispatch\Form;
 
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -12,7 +11,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Configure sitenow_dispatch settings for this site.
  */
 class SubscribeForm extends ConfigFormBase {
-
   /**
    * The HTTP client.
    *
@@ -23,7 +21,7 @@ class SubscribeForm extends ConfigFormBase {
   /**
    * The config factory service.
    *
-   * @var Dispatch
+   * @var \Drupal\sitenow_dispatch\Dispatch
    */
   protected $dispatch;
 
@@ -119,8 +117,8 @@ class SubscribeForm extends ConfigFormBase {
     $population = $form_state->getValue('population');
 
     $response = $this->dispatch->request('GET', "populations/$population/subscribers", [
-     'search' => $email,
-     ]);
+      'search' => $email,
+    ]);
 
     if ($response->recordsReturned > 0) {
       $form_state->setErrorByName('email', 'This email is already subscribed to the related subscription list.');
