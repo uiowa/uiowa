@@ -79,13 +79,13 @@ class ThankYouBlock extends BlockBase implements ContainerFactoryPluginInterface
   public function blockForm($form, FormStateInterface $form_state) {
     // Check that we have a campaign set before allowing
     // the block to be placed.
-    $enabled = $this->configFactory->get('sitenow_dispatch.settings')->get('thanks_enabled');
+    $enabled = $this->configFactory->get('sitenow_dispatch.settings')->get('thanks.enabled');
 
     if (!($enabled)) {
       $form['no_campaign'] = [
         '#prefix' => '<div>',
         '#suffix' => '</div>',
-        '#markup' => $this->t('No campaign settings have been set. Please contact ITS Web at <a href=":email">its-web@uiowa.edu</a> to configure a form.', [
+        '#markup' => $this->t('This block must be enabled by an administrator. Please contact ITS Web at <a href=":email">its-web@uiowa.edu</a> to configure a form.', [
           ':email' => 'mailto:its-web@uiowa.edu',
         ]),
       ];
