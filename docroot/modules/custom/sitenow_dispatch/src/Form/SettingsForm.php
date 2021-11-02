@@ -140,16 +140,16 @@ class SettingsForm extends ConfigFormBase {
       $form['thanks']['placeholder']['title'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Title'),
+        '#required' => $enabled,
         '#default_value' => $config->get('thanks.placeholder.title') ?? $this->t('Thank You'),
-        '#required' => TRUE,
         '#description' => $this->t('Used as the email subject and title.'),
       ];
 
       $form['thanks']['placeholder']['unit'] = [
         '#type' => 'textfield',
         '#title' => $this->t('College/Unit'),
-        '#default_value' => $config->get('thanks.placeholder.unit'),
-        '#required' => TRUE,
+        '#required' => $enabled,
+        '#default_value' => $config->get('thanks.placeholder.unit') ?? $this->config('system.site')->get('name'),
         '#description' => $this->t('The unit or college name to display in the email header.'),
       ];
 
@@ -185,8 +185,8 @@ class SettingsForm extends ConfigFormBase {
       $form['thanks']['placeholder']['row1_heading'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Row 1 Heading'),
-        '#default_value' => $config->get('thanks.placeholder.row1_heading'),
-        '#required' => TRUE,
+        '#required' => $enabled,
+        '#default_value' => $config->get('thanks.placeholder.row1_heading') ?? $this->t('${to_name} sent you a Thank You'),
         '#description' => $this->t('The heading to display in the email body.'),
       ];
 
@@ -194,7 +194,7 @@ class SettingsForm extends ConfigFormBase {
         '#type' => 'checkbox',
         '#title' => $this->t('Supervisor Email'),
         // Default to include if it hasn't been set yet.
-        '#default_value' => !empty($config->get('thanks.supervisor')) ? $config->get('thanks.supervisor') : 1,
+        '#default_value' => $config->get('thanks.supervisor') ?? TRUE,
         '#required' => FALSE,
         '#description' => $this->t("If included, copies will be sent to the employee's supervisor(s). Supervisor information will be retrieved automatically."),
       ];
