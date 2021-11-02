@@ -103,6 +103,7 @@ class SettingsForm extends ConfigFormBase {
     // form settings only for administrators.
     /** @var Drupal\Core\Access\AccessResultInterface $access */
     $access = $this->check->access($this->currentUser()->getAccount());
+    $enabled = $config->get('thanks.enabled') ?? FALSE;
 
     $form['thanks'] = [
       '#type' => 'fieldset',
@@ -110,8 +111,16 @@ class SettingsForm extends ConfigFormBase {
       '#description' => $this->t('The Thank You form creates a block you can place on a page to allow people to send an email to a University employee and their supervisor. The email uses the <a href="@link">1row x 1col curated Dispatch template</a> by default. The fields above correlate to the placeholders available in that template.', [
         '@link' => 'https://apps.its.uiowa.edu/dispatch/help/curatedtemplate/UI%201%20row%20x%201%20col%20-%20Version%202',
       ]),
-      '#access' => $access->isAllowed(),
       '#collapsible' => TRUE,
+      '#access' => $access->isAllowed() ? TRUE : $enabled,
+    ];
+
+    $form['thanks']['enabled'] = [
+      '#type' => 'checkbox',
+      '#title' => 'Enabled',
+      '#description' => $this->t('Only administrators can access this checkbox. Checking this will allow webmasters access to the below configuration and block.'),
+      '#access' => $access->isAllowed(),
+      '#default_value' => $enabled,
     ];
 
     // The thank you form requires a separate key set for csi.drupal to not
@@ -216,6 +225,15 @@ class SettingsForm extends ConfigFormBase {
     else {
       $form_state->setValue('api_key', $api_key);
       $form_state->setValue('client', $client->name);
+
+      $bools = [
+        ['thanks', 'enabled'],
+        ['thanks', 'supervisor'],
+      ];
+
+      foreach ($bools as $bool) {
+        $form_state->setValue($bool, (bool) $form_state->getValue($bool));
+      }
     }
   }
 
@@ -245,6 +263,7 @@ class SettingsForm extends ConfigFormBase {
       ->set('api_key', $form_state->getValue('api_key'))
       ->set('client', $form_state->getValue('client'))
       ->set('thanks', [
+        'enabled' => $form_state->getValue(['thanks', 'enabled']),
         'campaign' => $form_state->getValue(['thanks', 'campaign']),
         'communication' => $form_state->getValue(['thanks', 'communication']),
         'placeholder' => $form_state->getValue(['thanks', 'placeholder']),

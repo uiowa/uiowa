@@ -79,11 +79,9 @@ class ThankYouBlock extends BlockBase implements ContainerFactoryPluginInterface
   public function blockForm($form, FormStateInterface $form_state) {
     // Check that we have a campaign set before allowing
     // the block to be placed.
-    $campaign = $this->configFactory
-      ->get('sitenow_dispatch.settings')
-      ->get('thanks.campaign');
+    $enabled = $this->configFactory->get('sitenow_dispatch.settings')->get('thanks_enabled');
 
-    if (empty($campaign)) {
+    if (!($enabled)) {
       $form['no_campaign'] = [
         '#prefix' => '<div>',
         '#suffix' => '</div>',
@@ -91,6 +89,7 @@ class ThankYouBlock extends BlockBase implements ContainerFactoryPluginInterface
           ':email' => 'mailto:its-web@uiowa.edu',
         ]),
       ];
+
     }
     else {
       $form['headline'] = HeadlineHelper::getElement([
@@ -99,6 +98,7 @@ class ThankYouBlock extends BlockBase implements ContainerFactoryPluginInterface
         'heading_size' => $this->configuration['heading_size'] ?? 'h2',
         'headline_style' => $this->configuration['headline_style'] ?? 'default',
       ], FALSE);
+
     }
 
     return $form;
