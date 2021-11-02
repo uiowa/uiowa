@@ -14,7 +14,7 @@
         const $image_format_field = $form_wrapper.find('.form-item-layout-builder-style-media-format').find('select');
         const $image_size_field = $form_wrapper.find('.form-item-layout-builder-style-card-image-size').find('select, label');
 
-        if ($image_format_field.length || $image_size_field.length  ) {
+        if ($image_format_field.length || $image_size_field.length) {
           // Check if the referenced media is a video.
           const mediaTypeVideo = this.querySelector('.media--video');
 
