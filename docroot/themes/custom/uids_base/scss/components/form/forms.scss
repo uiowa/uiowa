@@ -751,7 +751,16 @@
       }
     }
     .description {
-      color: $white !important;
+      color: $white;
+    }
+  }
+}
+
+[class*="bg--black"]  {
+  & .block-webform[class*="bg--gray"],
+  & .block-webform[class*="bg--white"] {
+    .description {
+      color: inherit;
     }
   }
 }
