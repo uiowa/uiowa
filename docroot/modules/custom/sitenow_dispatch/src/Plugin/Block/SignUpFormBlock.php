@@ -81,7 +81,7 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
     $populations = $this->dispatch->request('GET', 'populations');
 
     // If the population is empty, we have an invalid API key.
-    if ($populations == []) {
+    if ($populations === FALSE) {
       $form['invalid_api_key'] = [
         '#prefix' => '<div>',
         '#suffix' => '</div>',
