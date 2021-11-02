@@ -209,7 +209,7 @@ class ThankYouForm extends FormBase {
     ]);
     if ($posted === FALSE) {
       $this->messenger()->addError($this->t('An error was encountered processing the form. If the problem persists, please contact the <a href=":email">ITS Help Desk</a>.', [
-        ':email' =>  'mailto:its-helpdesk@uiowa.edu',
+        ':email' => 'mailto:its-helpdesk@uiowa.edu',
       ]));
     }
     else {
