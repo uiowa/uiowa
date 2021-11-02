@@ -17,26 +17,35 @@
     }
   }
 
-  li {
-    list-style: none !important;
-  }
+  #top-scroll {
+    z-index: 2;
+    position: fixed;
+    right: -20px;
+    height: 100vh;
+    top: 90%;
+    padding-right: 20px;
+    align-items: center;
   
-  .scroll-icon {
+    li {
+      list-style: none !important;
+    }
+    .scroll-icon {
 
-    svg {
-      height: 32px;
-      width: 32px;
-      background-color: #151515;
-      z-index: 3;
-      text-align: center;
-      display: flex;
-      color: #ffcd00;
-      align-items: center;
-      justify-content: center;
-      border-radius: 21px;
-      margin-right: 20px;
-      padding: 6px;
-      float: right;
+      svg {
+        height: 32px;
+        width: 32px;
+        background-color: #151515;
+        z-index: 3;
+        text-align: center;
+        display: flex;
+        color: #ffcd00;
+        align-items: center;
+        justify-content: center;
+        border-radius: 21px;
+        margin-right: 20px;
+        padding: 6px;
+        float: right;
+      }
     }
   }
 }
