@@ -3587,3 +3587,9 @@ $sites['orgrobotics.local.drupal.uiowa.edu'] = 'robotics.org.uiowa.edu';
 $sites['orgrobotics.dev.drupal.uiowa.edu'] = 'robotics.org.uiowa.edu';
 $sites['orgrobotics.stage.drupal.uiowa.edu'] = 'robotics.org.uiowa.edu';
 $sites['orgrobotics.prod.drupal.uiowa.edu'] = 'robotics.org.uiowa.edu';
+
+// Directory aliases for psp.org.uiowa.edu.
+$sites['orgpsp.local.drupal.uiowa.edu'] = 'psp.org.uiowa.edu';
+$sites['orgpsp.dev.drupal.uiowa.edu'] = 'psp.org.uiowa.edu';
+$sites['orgpsp.stage.drupal.uiowa.edu'] = 'psp.org.uiowa.edu';
+$sites['orgpsp.prod.drupal.uiowa.edu'] = 'psp.org.uiowa.edu';
