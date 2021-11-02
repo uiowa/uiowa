@@ -106,8 +106,8 @@ class SettingsForm extends ConfigFormBase {
 
     $form['thanks'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('Thank You Email'),
-      '#description' => $this->t('Thank You email configuration. The <a href="@link">1row x 1col curated Dispatch template</a> is used.', [
+      '#title' => $this->t('Thank You Form'),
+      '#description' => $this->t('The Thank You form creates a block you can place on a page to allow people to send an email to a University employee and their supervisor. The email uses the <a href="@link">1row x 1col curated Dispatch template</a> by default. The fields above correlate to the placeholders available in that template.', [
         '@link' => 'https://apps.its.uiowa.edu/dispatch/help/curatedtemplate/UI%201%20row%20x%201%20col%20-%20Version%202',
       ]),
       '#access' => $access->isAllowed(),
