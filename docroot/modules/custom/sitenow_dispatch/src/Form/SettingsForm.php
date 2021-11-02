@@ -200,7 +200,9 @@ class SettingsForm extends ConfigFormBase {
       ];
     }
     else {
-      $form['thanks']['#description'] = $this->t('The Thank You email is not configured properly. Please contact support.');
+      $form['thanks']['#description'] = $this->t('The Thank You email is not configured properly. Please contact the <a href=":email">ITS Help Desk</a>.', [
+        ':email' => 'mailto:its-helpdesk@uiowa.edu',
+      ]);
     }
 
     return parent::buildForm($form, $form_state);
