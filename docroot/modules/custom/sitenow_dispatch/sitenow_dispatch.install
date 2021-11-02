@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * Ensure sitenow_dispatch.settings config entity exists.
+ */
+function sitenow_dispatch_update_901(&$sandbox) {
+  $config = \Drupal::configFactory()->getEditable('sitenow_dispatch.settings');
+
+  if ($config->isNew()) {
+    $config->set('api_key', NULL);
+    $config->save();
+  }
+}
