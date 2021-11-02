@@ -152,7 +152,7 @@ class ThankYouForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $hr_data = $form_state->getValue('hr_data');
     $config = $this->config('sitenow_dispatch.settings');
-    $api_key = trim($config->get('thanks.api_key'));
+    $api_key = $config->get('thanks.api_key');
     $communication = $config->get('thanks.communication');
 
     // Combine placeholders on thank you form with settings form.

@@ -201,10 +201,12 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
+    $api_key = trim($form_state->getValue('api_key'));
+
     // Use the api_key being submitted in the form rather than set in config.
     $client = $this->dispatch->request('GET', 'client', [], [
       'headers' => [
-        'x-dispatch-api-key' => trim($form_state->getValue('api_key')),
+        'x-dispatch-api-key' => $api_key,
       ],
     ]);
 
@@ -212,6 +214,7 @@ class SettingsForm extends ConfigFormBase {
       $form_state->setErrorByName('api_key', 'Invalid API key, please verify that your API key is correct and try again.');
     }
     else {
+      $form_state->setValue('api_key', $api_key);
       $form_state->setValue('client', $client->name);
     }
   }
