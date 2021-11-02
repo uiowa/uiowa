@@ -155,48 +155,6 @@ function sitenow_form_menu_edit_form_alter(&$form, FormStateInterface $form_stat
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
- */
-function sitenow_form_block_form_alter(&$form, FormStateInterface $form_state) {
-  $theme = \Drupal::config('system.theme')->get('default');
-
-  if (in_array($theme, ['uiowa_bootstrap', 'hr'])) {
-    // Get block config settings.
-    $settings = \Drupal::config('block.block.' . $form["id"]["#default_value"])->get('settings', FALSE);
-    // Set classes options.
-    $classes_options = ['' => 'None'];
-    // Allow other modules to modify block classes options.
-    \Drupal::moduleHandler()->alter('block_classes', $classes_options, $form, $form_state);
-    $form['settings']['block_styles'] = [
-      'style_details' => [
-        '#type' => 'details',
-        '#title' => t('Block Style Options'),
-        '#open' => TRUE,
-        'template' => [
-          '#type' => 'select',
-          '#title' => t('Select a block template'),
-          '#default_value' => $settings['block_template'] ?? '',
-          '#options' => [
-            '_none' => t('None'),
-            'card' => t('Card'),
-          ],
-        ],
-        'classes' => [
-          '#type' => 'select',
-          '#title' => t('Set classes'),
-          '#default_value' => $settings['block_classes'] ?? '',
-          '#options' => $classes_options,
-          '#multiple' => TRUE,
-        ],
-      ],
-    ];
-
-    // Add custom submit handler.
-    $form["actions"]["submit"]["#submit"][] = 'sitenow_block_form_submit';
-  }
-}
-
-/**
  * Custom submit handler for sitenow_form_block_form_alter().
  */
 function sitenow_block_form_submit($form, FormStateInterface $form_state) {
@@ -243,9 +201,6 @@ function sitenow_preprocess_block(&$variables) {
           if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
             $publish_options = $node->get('field_publish_options')->getValue();
             if (array_search('title_hidden', array_column($publish_options, 'value')) !== FALSE) {
-              // For uiowa_bootstrap/classy default.
-              $variables["title_attributes"]['class'][] = 'element-invisible';
-              // For uids_base.
               $variables["attributes"]['class'][] = 'element-invisible';
             }
           }
@@ -527,6 +482,16 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         if (isset($form['properties']['file'])) {
           $form['properties']['file']['file_extensions']['#access'] = FALSE;
         }
+      }
+      break;
+
+    // Remove access to headline field in footer contact block.
+    case 'block_content_uiowa_text_area_edit_form':
+      $block = $form_state->getFormObject()->getEntity();
+      $uuid = $block->uuid();
+      // For Footer Contact Information, remove field.
+      if ($uuid == '0c0c1f36-3804-48b0-b384-6284eed8c67e') {
+        $form['field_uiowa_headline']['#access'] = FALSE;
       }
       break;
   }

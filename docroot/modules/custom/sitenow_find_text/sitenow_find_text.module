@@ -1,0 +1,287 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Sitenow Find Text module.
+ *
+ * @DCG
+ * This file is no longer required in Drupal 8.
+ * @see https://www.drupal.org/node/2217931
+ */
+
+use Drupal\Core\Entity\Sql\SqlContentEntityStorageException;
+use Drupal\Core\Database\Database;
+
+/**
+ * Grab field tables and value mappings for all text-based fields.
+ *
+ * @return array
+ *   The field names => info mapping for all text-based fields.
+ */
+function get_text_field_tables() {
+  $entity_field_manager = \Drupal::service('entity_field.manager');
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $fields = [];
+  $tables = [];
+  // Go through all our text-based field types,
+  // get their field information, and bundle 'em.
+  foreach (['string',
+    'string_long',
+    'text_long',
+    'text_with_summary',
+    'link',
+    'heading',
+    'uiowa_headline',
+  ] as $type) {
+    $new_fields = $entity_field_manager->getFieldMapByFieldType($type);
+    foreach ($new_fields as $bundle => $bundle_fields) {
+      $fields[$bundle] = isset($fields[$bundle]) ? array_merge($fields[$bundle], $bundle_fields) : $bundle_fields;
+    }
+  }
+  foreach ($fields as $entity_type_id => $field_map) {
+    // Currently we're only searching the major content areas.
+    // This will leave out things like menu areas, taxonomies, etc.
+    // which we may want to add later.
+    if (!in_array($entity_type_id, ['block_content', 'node', 'paragraph'])) {
+      continue;
+    }
+    // Grab the storage, field, and table definitions/mappings.
+    $entity_storage = $entity_type_manager->getStorage($entity_type_id);
+    $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
+    $table_mapping = $entity_storage->getTableMapping($field_storage_definitions);
+    foreach (array_intersect_key($field_storage_definitions, $field_map) as $field_storage_definition) {
+      $field_name = $field_storage_definition->getName();
+      try {
+        $table_name = $table_mapping->getFieldTableName($field_name);
+        // We use a custom value function here. The built-in value fetcher
+        // will leave out extra columns for link and text_with_summary fields.
+        $value_columns = value_columns($field_name, $field_storage_definition->getType());
+        $parent_type = ['entity_id', 'revision_id'];
+        // Titles are handled a little differently, and at this time
+        // are the only fields handled this way.
+        if ($field_name == 'title') {
+          $parent_type = ['nid'];
+          $value_columns = ['title'];
+        }
+        // Set our table info that will get used in various places later.
+        $tables[$table_name] = [
+          'values' => $value_columns,
+          'parent' => $parent_type,
+          'type' => $entity_type_id,
+          'field_name' => $field_name,
+        ];
+      }
+      catch (SqlContentEntityStorageException $e) {
+        continue;
+      }
+    }
+  }
+  // This function can be used to clean up some extra tables
+  // that don't need to be traversed. This is an easy way
+  // to avoid issues down the line later.
+  cleanup_tables($tables);
+  return $tables;
+}
+
+/**
+ * Search all fields for a needle.
+ *
+ * @param string $needle
+ *   The string for which to search.
+ * @param bool $regexed
+ *   Whether a regex condition should be used over base LIKE.
+ *
+ * @return array
+ *   The search results.
+ */
+function search_fields(string $needle, bool $regexed = FALSE) {
+  $results = [];
+  $tables = get_text_field_tables();
+  $db = Database::getConnection();
+  foreach ($tables as $table => $details) {
+    $value_columns = $details['values'];
+    $parent = $details['parent'];
+    // Separate value column queries to help narrow
+    // results down later. This way a matched link title,
+    // for instance, can be displayed separately from a matched
+    // link uri, and vice versa.
+    foreach ($value_columns as $value_column) {
+      $query = $db->select($table)
+        ->fields($table, array_merge($parent, [$value_column]));
+      if ($regexed) {
+        $query->condition($table . '.' . $value_column, $needle, 'REGEXP');
+      }
+      else {
+        // Note: We are not using $db->escapeLike($needle) here,
+        // at least currently to allow for the option of
+        // including wildcards in the provided string.
+        // Otherwise we may need to include extra options,
+        // such as a non-escaped option, or specifying word boundaries.
+        $query->condition($table . '.' . $value_column, '%' . $needle . '%', 'LIKE');
+      }
+      $temp_results = $query->execute()
+        ->fetchAllAssoc($parent[0]);
+      // If we don't have results, hop out of this loop early
+      // and move on to the next.
+      if (empty($temp_results)) {
+        continue;
+      }
+      foreach ($temp_results as $id => $row) {
+        // Prepend the result with the field name to help
+        // in results displaying later.
+        $row->value = implode(': ', [$value_column, $row->$value_column]);
+        // Fetch_parent will grab the parent node nid if able,
+        // or else return false if the parent couldn't be found.
+        if ($value_column != 'title') {
+          $ids = [
+            'id' => $id,
+            'revision_id' => $row->revision_id,
+          ];
+          $new_id = fetch_parent($ids, $details['type']);
+          // Unset the old entity_id and replace with the new id.
+          // If we didn't find a result in our fetch_parent,
+          // we don't know what node has it anyway,
+          // and so our results will be broken--so go ahead
+          // and unset it outside of the new_id check.
+          unset($temp_results[$id]);
+          if ($new_id) {
+            $temp_results[$new_id['id']] = $row;
+          }
+        }
+      }
+      // Add our new results to our collected results, keyed
+      // by node id.
+      foreach ($temp_results as $nid => $value) {
+        $results[$nid][] = $value;
+      }
+    }
+  }
+  return $results;
+}
+
+/**
+ * Helper function to construct field value column names.
+ *
+ * @param string $name
+ *   The field name.
+ * @param string $type
+ *   The type of field.
+ *
+ * @return string[]
+ *   An array of value columns to retreive from the database table.
+ */
+function value_columns(string $name, string $type) {
+  switch ($type) {
+    case 'link':
+      return [
+        $name . '_uri',
+        $name . '_title',
+      ];
+
+    case 'text_with_summary':
+      return [
+        $name . '_value',
+        $name . '_summary',
+      ];
+
+    case 'heading':
+      return [
+        $name . '_text',
+      ];
+
+    case 'uiowa_headline':
+      return [
+        $name . '_headline',
+      ];
+  }
+  return [$name . '_value'];
+}
+
+/**
+ * Helper function to remove some errant tables.
+ *
+ * @param array $tables
+ *   List of tables to clean up.
+ */
+function cleanup_tables(array &$tables) {
+  // At this time, these tables are not needed,
+  // and will lead to errors in how we grab the value columns
+  // later on in the process.
+  foreach ([
+    'block_content_revision',
+    'block_content_field_data',
+    'node_revision',
+    'paragraphs_item_field_data',
+  ] as $to_remove) {
+    if (isset($tables[$to_remove])) {
+      unset($tables[$to_remove]);
+    }
+  }
+}
+
+/**
+ * Helper function to fetch parent entities.
+ *
+ * @param array $ids
+ *   The entity_id and revision_id for which to search.
+ * @param string $type
+ *   The entity type for which to search.
+ */
+function fetch_parent(array $ids, string $type) {
+  $db = Database::getConnection();
+  switch ($type) {
+    case 'node':
+      // We're assuming the node is the uppermost
+      // parent. May not always be the case in the future,
+      // but mostly, even if it's an entity reference to a node,
+      // we want the referenced node for editing anyway.
+      return $ids;
+
+    case 'paragraph':
+      $result = $db->select('entity_usage')
+        ->fields('entity_usage', [
+          'source_id',
+          'source_vid',
+          'source_type',
+        ])
+        ->condition('target_type', $type, '=')
+        ->condition('target_id', $ids['id'], '=')
+        // Currently we're not handling revisions, so we're likely to have
+        // duplicate entries for the same node; one for each revision. We
+        // will also want to make sure we grab the most recent revision.
+        ->distinct()
+        ->orderBy('source_vid', 'DESC')
+        ->execute()
+        ->fetchAll();
+      // If we didn't have a result, we hit a dead end.
+      if (!isset($result[0])) {
+        return FALSE;
+      }
+      // We found the paragraph parent, but it may
+      // or may not be a node, so we might need to
+      // keep digging. Grab only the first result,
+      // because we're not currently handling revisions.
+      $ids['id'] = $result[0]->source_id;
+      $ids['revision_id'] = $result[0]->source_vid;
+      $type = $result[0]->source_type;
+      return fetch_parent($ids, $type);
+
+    case 'block_content':
+      // Find the target_id, which will be the id of the parent entity.
+      $result = $db->select('node__layout_builder__layout')
+        ->fields('node__layout_builder__layout', ['entity_id', 'revision_id'])
+        ->condition('layout_builder__layout_section', '%"block_revision_id";s:_:"' . $ids['revision_id'] . '";%', 'LIKE')
+        ->execute()
+        ->fetchAll();
+      // If we didn't have a result, we hit a dead end.
+      if (!isset($result[0])) {
+        return FALSE;
+      }
+      // Currently if we found a block_content parent,
+      // it will always be a node. May need to adjust this
+      // in the future, if we have nested blocks.
+      $ids['id'] = $result[0]->entity_id;
+      $ids['revision_id'] = $result[0]->revision_id;
+      return $ids;
+  }
+}

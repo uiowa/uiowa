@@ -39,7 +39,7 @@ class MailcodeFilenameGenerator extends FilenameGenerator {
 
     /** @var \Drupal\Core\Entity\EntityInterface $entity */
     foreach ($entities as $entity) {
-      if ($entity->getType() == 'area_of_study') {
+      if ($entity->getEntityTypeId() == 'node' && $entity->getType() == 'area_of_study') {
         $label = $entity->get('field_area_of_study_mail_code')->getString();
       }
       else {

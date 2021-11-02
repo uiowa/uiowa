@@ -58,14 +58,6 @@
         "uiowa_auth": {
             "type": "git",
             "url": "git@github.com:uiowa/uiowa_auth"
-        },
-        "uiowa_bar": {
-            "type": "git",
-            "url": "git@github.com:uiowa/uiowa_bar"
-        },
-        "uiowa_footer": {
-            "type": "git",
-            "url": "git@github.com:uiowa/uiowa_footer"
         }
     },
     "autoload": {
@@ -110,9 +102,9 @@
         "drupal/config_ignore": "^2.2.0",
         "drupal/config_inspector": "^1.0",
         "drupal/config_split": "^1.4",
-        "drupal/core-composer-scaffold": "^9.0.0",
-        "drupal/core-recommended": "^9.0.0",
-        "drupal/cshs": "^2.0",
+        "drupal/core-composer-scaffold": "^9.2",
+        "drupal/core-recommended": "^9.2",
+        "drupal/cshs": "^3.5",
         "drupal/default_content": "^2.0",
         "drupal/devel": "^4.0",
         "drupal/diff": "^1.0@RC",
@@ -120,12 +112,12 @@
         "drupal/editor_advanced_link": "^1.4",
         "drupal/entity_browser": "^2.4.0",
         "drupal/entity_embed": "^1.0@RC",
-        "drupal/entity_print": "^2.2",
+        "drupal/entity_print": "^2.3",
         "drupal/entity_reference_revisions": "^1.5",
         "drupal/entity_reference_unpublished": "^1.1",
         "drupal/entity_usage": "^2.0@beta",
         "drupal/field_delimiter": "^1.1",
-        "drupal/field_group": "^3.0",
+        "drupal/field_group": "^3.2",
         "drupal/file_mdm": "^2.1",
         "drupal/focal_point": "^1.5",
         "drupal/fontawesome": "^2.9",
@@ -139,7 +131,7 @@
         "drupal/imagecache_external": "^3.0",
         "drupal/imagemagick": "^3.0",
         "drupal/inline_entity_form": "^1.0.0-rc2",
-        "drupal/layout_builder_lock": "^1.0@RC",
+        "drupal/layout_builder_lock": "^1.1",
         "drupal/layout_builder_operation_link": "^1.0",
         "drupal/layout_builder_restrictions": "^2.6",
         "drupal/layout_builder_shortcuts": "^1.0.0",
@@ -161,7 +153,7 @@
         "drupal/menu_breadcrumb": "^1.7",
         "drupal/menu_link_weight": "^1.0@beta",
         "drupal/menu_per_role": "^1.2",
-        "drupal/metatag": "^1.15",
+        "drupal/metatag": "^1.16",
         "drupal/migrate_plus": "^5.1",
         "drupal/migrate_tools": "^5.0",
         "drupal/mimemail": "^1.0@alpha",
@@ -169,6 +161,7 @@
         "drupal/mysql56": "^1.1",
         "drupal/node_revision_delete": "^1.0@beta",
         "drupal/node_view_permissions": "^1.5",
+        "drupal/oembed_providers": "^2.0",
         "drupal/override_node_options": "^2.4",
         "drupal/paragraphs": "^1.10",
         "drupal/pathauto": "^1.6",
@@ -176,11 +169,13 @@
         "drupal/purge": "^3.0@beta",
         "drupal/rabbit_hole": "^1.0@beta",
         "drupal/redirect": "1.x-dev#e5201ca519bd947ee5478d9dee88af0c5d6fec89",
+        "drupal/replicate": "^1.0",
+        "drupal/replicate_ui": "^1.0",
         "drupal/reroute_email": "^2.0",
         "drupal/responsive_table_filter": "^1.2",
         "drupal/robotstxt": "^1.2",
         "drupal/schema_metatag": "^2.1",
-        "drupal/search_api_autocomplete": "^1.2",
+        "drupal/search_api_autocomplete": "^1.5",
         "drupal/simple_sitemap": "^3.5",
         "drupal/simplei": "^1.1",
         "drupal/siteimprove": "^1.5",
@@ -205,15 +200,13 @@
         "oomphinc/composer-installers-extender": "^2.0",
         "richardbporter/drush-users-commands": "^2.0",
         "uiowa/block_content_template": "dev-master#ab06f7d5254b1d9a805c0717747e25f0ef508e59",
-        "uiowa/uiowa_auth": "^1.1",
-        "uiowa/uiowa_bar": "^1.0.0",
-        "uiowa/uiowa_footer": "^1.0"
+        "uiowa/uiowa_auth": "^1.1"
     },
     "require-dev": {
         "acquia/blt-behat": "^1.1",
         "acquia/blt-drupal-vm": "dev-master",
         "acquia/blt-phpcs": "^1.0",
-        "drupal/core-dev": "^9.0.0",
+        "drupal/core-dev": "^9.2",
         "geerlingguy/drupal-vm": "~6.0",
         "mglaman/drupal-check": "^1.1.7",
         "phpcompatibility/php-compatibility": "^9.3",
@@ -234,19 +227,16 @@
             "drupal/core": {
                 "The Media library doesn't modify the 'media' view if installed in a profile": "https://www.drupal.org/files/issues/2019-05-12/2992056.patch",
                 "Site extensions don't get rediscovered after drush cr": "https://www.drupal.org/files/issues/2018-07-11/specify_sitepath_cache_rebuild_extension_discovery-2985199-3.patch",
-                "Allow alter oembed providers": "https://www.drupal.org/files/issues/2019-05-15/drupal-allow_alter_oembed_providers-3008119-4.patch",
                 "save edits to media embeds": "https://www.drupal.org/files/issues/2019-12-19/3102249-fix-media-ckeditor-snapshop.patch",
                 "add img dimensions": "https://www.drupal.org/files/issues/2019-11-19/responsive_image-provide_dimensions_for_image_tag-3095126-4.patch",
-                "fix duplicate drag handles in claro": "https://www.drupal.org/files/issues/2020-12-08/3092181-142-9X_0.patch",
                 "[PP-1] Reverting entity revisions that contain custom blocks erroneously triggers EntityChangedConstraint": "https://www.drupal.org/files/issues/2021-01-27/3053881-42.patch",
                 "Hidden buttons in off-canvas dialog are not being hidden": "https://www.drupal.org/files/issues/2020-02-28/3070375-4.patch",
-                "Media viewmode control": "https://www.drupal.org/files/issues/2020-01-31/3097416-ckeditor-view-modes-8.9-combined.patch",
                 "Expose Layout Builder data to REST and JSON:API": "https://www.drupal.org/files/issues/2020-07-07/2942975-116.patch",
-                "Temporary Hotfix for YouTube oEmbeds": "https://www.drupal.org/files/issues/2020-12-04/3186415-8.9.x-youtube-headers-html.patch",
-                "Themes have no context of the entity being rendered in preprocessing a layout when using Layout builder": "https://www.drupal.org/files/issues/2020-02-11/3111192-entity-14.patch",
+                "Themes have no context of the entity being rendered in preprocessing a layout when using Layout builder": "https://www.drupal.org/files/issues/2021-09-24/3111192-lb-entity-context-29.patch",
                 "Add Views EntityReference filter to be available for all entity reference fields": "https://www.drupal.org/files/issues/2021-06-15/2429699-414.patch",
-                "Views Block Display skips preBlockBuild() call on ajax rebuild": "https://www.drupal.org/files/issues/2021-03-05/2605218-61.patch",
-                "Periods in query strings are replaced by underscores": "https://www.drupal.org/files/issues/2020-06-25/fix-mangled-query-parameter-names-2984272-36.patch"
+                "Views Block Display skips preBlockBuild() call on ajax rebuild": "https://www.drupal.org/files/issues/2021-10-13/2605218-70.patch",
+                "Periods in query strings are replaced by underscores": "https://www.drupal.org/files/issues/2020-06-25/fix-mangled-query-parameter-names-2984272-36.patch",
+                "Get redirected to currently-selected menu instead of menu list": "https://www.drupal.org/files/issues/2021-09-20/2957953-9.3.x-139.patch"
             },
             "drupal/default_content": {
                 "Add a Normalizer and Denormalizer to support Layout Builder": "https://www.drupal.org/files/issues/2020-08-24/default_content-add-normalizer-denormalizer-for-layout-builder-3160146-25.patch",
@@ -271,6 +261,9 @@
                 "Section dependency on layout plugin configuration form": "https://www.drupal.org/files/issues/2019-08-23/layout_builder_styles-3062261-%2310.patch",
                 "Grouping of layout builder styles": "https://www.drupal.org/files/issues/2021-03-16/3075502-18_0.patch"
             },
+            "drupal/linkit": {
+                "Add Webform Matcher": "https://www.drupal.org/files/issues/2021-09-15/2657060-18.patch"
+            },
             "drupal/menu_block": {
                 "Hide block title if menu tree contains no links": "https://www.drupal.org/files/issues/2020-02-12/menu_block-hide_block_if_no_links-2757215-13.patch",
                 "Suppress display of regular system menu blocks in Layout Builder": "https://www.drupal.org/files/issues/2019-12-11/menu_block-remove_duplicates-3062278-11.patch"
@@ -285,7 +278,11 @@
                 "Port purge commands to Drush 9": "https://www.drupal.org/files/issues/2921309-17-port-purge-drush-9.patch"
             },
             "drupal/redirect": {
-                "Match redirect": "https://www.drupal.org/files/issues/2020-04-13/redirect-n2831605-31.patch"
+                "Match redirect": "https://www.drupal.org/files/issues/2020-04-13/redirect-n2831605-31.patch",
+                "Redirects fail with trailing slash in source path": "https://www.drupal.org/files/issues/2021-10-15/trailingslash-2932615-38_2.patch"
+            },
+            "drupal/replicate": {
+                "Replicating node with non-reusable block added via layout builder does not replicate the block": "https://www.drupal.org/files/issues/2021-10-14/replicate_lb_block_references-3100765-18.patch"
             },
             "jackmoore/colorbox": {
                 "Accessibility improvements": "https://patch-diff.githubusercontent.com/raw/jackmoore/colorbox/pull/832.diff"
@@ -360,7 +357,7 @@
         ],
         "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
         "nuke": [
-            "rm -rf vendor composer.lock docroot/core docroot/modules/contrib docroot/profiles/contrib docroot/themes/contrib",
+            "rm -rf vendor docroot/core docroot/modules/contrib docroot/profiles/contrib docroot/themes/contrib",
             "@composer clearcache --ansi",
             "@composer install --ansi"
         ]

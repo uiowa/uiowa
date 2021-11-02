@@ -38,10 +38,6 @@
   .field--label-above {
     margin-bottom: 1.5rem;
   }
-
-  .views-element-container {
-    margin-top: 0;
-  }
 }
 
 // Position field
@@ -58,23 +54,12 @@
   }
 }
 
-// Shared styles by card person view and card person teaser views
-.card--person,
-.card--person-teaser {
+// Person card view block
+.card--person {
   .card__subtitle a,
   .card__date a {
     text-decoration: none;
   }
-
-  .card__date {
-    font-size: 1.1rem;
-    margin-bottom: .6rem;
-    line-height: 1.3;
-  }
-}
-
-// Person card view block
-.card--person {
   .card__subtitle {
     .svg-inline--fa {
       font-size: 1rem;
@@ -91,6 +76,9 @@
 
   .card__date {
     padding-left: 45px;
+    font-size: 1.1rem;
+    margin-bottom: .6rem;
+    line-height: 1.3;
     .svg-inline--fa {
       width: 35px;
       margin-left: -40px;
@@ -100,30 +88,14 @@
   }
 }
 
-// Card person teaser view
-.card--person-teaser {
-  .card__date,
-  .card__subtitle {
-    a {
-      word-break: break-word;
-    }
-    .svg-inline--fa {
-      margin-right: .3rem;
-    }
-  }
-  .card__subtitle {
-    padding-bottom: .5rem;
-    margin-top: -.3rem;
-    .svg-inline--fa {
-      font-size: 1.1rem;
-    }
-
-    .field--label-visually_hidden .field__items {
-      display: grid;
-    }
+// For professional titles on multiple lines
+.view-people-list-block {
+  .field--label-visually_hidden .field__items {
+    display: grid;
   }
 }
 
+// Empty profile img
 .img--empty {
   width: 100%;
   aspect-ratio: 1 / 1;

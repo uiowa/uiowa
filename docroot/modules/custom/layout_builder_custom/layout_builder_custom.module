@@ -13,7 +13,7 @@ use Drupal\layout_builder_custom\Plugin\Display\ListBlock;
 use Drupal\layout_builder_styles\LayoutBuilderStyleGroups;
 use Drupal\layout_builder_styles\LayoutBuilderStyleInterface;
 use Drupal\uiowa_core\HeadlineHelper;
-use Drupal\views\Plugin\views\display\Block;
+use Drupal\ctools_views\Plugin\Display\Block;
 use Drupal\views\ViewExecutable;
 
 /**
@@ -300,6 +300,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         case 'inline_block:uiowa_aggregator':
         case 'inline_block:uiowa_card':
         case 'inline_block:uiowa_events':
+        case 'views_block:article_list_block-list_article':
         case 'views_block:people_list_block-list_card':
           // Set '#states' for card image size.
           $form['layout_builder_style_card_image_size']['#states'] = [
@@ -333,6 +334,11 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             $form['layout_builder_style_card_image_size']['#options']['card_image_small'] = 'Small (default)';
             $form['layout_builder_style_media_format']['#options']['media_format_widescreen'] = 'Widescreen (16:9) (default)';
           }
+          if ($block->getPluginId() == 'views_block:article_list_block-list_article') {
+            $form['layout_builder_style_card_media_position']['#options']['card_media_position_right'] = 'Right (default)';
+            $form['layout_builder_style_card_image_size']['#options']['card_image_medium'] = 'Medium (default)';
+            $form['layout_builder_style_media_format']['#options']['media_format_widescreen'] = 'Widescreen (16:9) (default)';
+          }
           if ($block->getPluginId() == 'views_block:people_list_block-list_card') {
             $form['layout_builder_style_card_media_position']['#options']['card_media_position_right'] = 'Right (default)';
             $form['layout_builder_style_card_image_size']['#options']['card_image_small'] = 'Small (default)';
@@ -356,11 +362,20 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               $form['layout_builder_style_card_image_size']['#default_value'] = 'card_image_small';
               $form['layout_builder_style_content_alignment']['#default_value'] = 'content_alignment_left';
             }
+            if ($block->getPluginId() == 'views_block:article_list_block-list_article') {
+              $form['layout_builder_style_card_media_position']['#default_value'] = 'card_media_position_right';
+              $form['layout_builder_style_media_format']['#default_value'] = 'media_format_widescreen';
+              $form['layout_builder_style_card_image_size']['#default_value'] = 'card_image_medium';
+              $form['layout_builder_style_content_alignment']['#default_value'] = 'content_alignment_left';
+              $form['settings']['override']['items_per_page']['#default_value'] = 10;
+              $form['settings']['override']['hide_fields']['order_fields']['field_article_source_link']['hide']['#default_value'] = 1;
+            }
             if ($block->getPluginId() == 'views_block:people_list_block-list_card') {
               $form['layout_builder_style_card_media_position']['#default_value'] = 'card_media_position_right';
               $form['layout_builder_style_media_format']['#default_value'] = 'media_format_circle';
               $form['layout_builder_style_card_image_size']['#default_value'] = 'card_image_small';
               $form['layout_builder_style_content_alignment']['#default_value'] = 'content_alignment_left';
+              $form['settings']['override']['items_per_page']['#default_value'] = 10;
             }
             if (isset($form['layout_builder_style_list_format'])) {
               $form['layout_builder_style_list_format']['#default_value'] = 'list_format_list';
@@ -552,6 +567,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
     case 'inline_block:uiowa_aggregator':
     case 'inline_block:uiowa_card':
     case 'inline_block:uiowa_events':
+    case 'views_block:article_list_block-list_article':
     case 'views_block:people_list_block-list_card':
       $media_position = $form_state->getValue('layout_builder_style_card_media_position');
       $media_format = $form_state->getValue('layout_builder_style_media_format');
@@ -704,7 +720,6 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
 
       break;
 
-    case 'inline_block:uiowa_articles':
     case 'inline_block:uiowa_events':
       if (isset($element['field_collection_more_path'])) {
         $element['field_collection_more_path']['#states'] = [
@@ -1009,7 +1024,7 @@ function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
     if (!is_array($row_styles)) {
       $row_styles = [$row_styles];
     }
-
+    // @todo remove card--person-teaser when v2 is no longer in use.
     $default_classes = [
       'card--list',
       'card--person-teaser',

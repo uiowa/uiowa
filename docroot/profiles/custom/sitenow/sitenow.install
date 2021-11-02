@@ -29,6 +29,141 @@ use Drupal\taxonomy\Entity\Term;
 use Drupal\user\Entity\User;
 
 /**
+ * Helper function to update all blocks of a type.
+ */
+function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): void {
+  $db = \Drupal::database();
+  $block_storage = \Drupal::entityTypeManager()
+    ->getStorage('block_content');
+
+  $section_column = 'layout_builder__layout_section';
+  $tables = [
+    'node__layout_builder__layout',
+    'node_revision__layout_builder__layout',
+  ];
+
+  foreach ($tables as $table_name) {
+    // Select instances where the section contains this type of block.
+    $query = $db->select($table_name, 'n')
+      ->condition($section_column, "%$block_plugin_id%", 'LIKE')
+      ->fields('n', ['entity_id', 'revision_id', 'delta', $section_column]);
+
+    $count = $query->countQuery()->execute()->fetchField();
+
+    \Drupal::messenger()
+      ->addMessage(t('Blocks of @type records found: @count', [
+        '@type' => $block_plugin_id,
+        '@count' => $count,
+      ]));
+
+    $results = $query->execute();
+
+    // Loop through the results.
+    foreach ($results as $record) {
+      // Unserialize the section field into it's class object.
+      /** @var \Drupal\layout_builder\Section $section */
+      $section = unserialize($record->layout_builder__layout_section);
+
+      // Loop through the components in the section.
+      foreach ($section->getComponents() as &$component) {
+
+        // Limit this to only the block component.
+        if ($component->getPluginId() !== $block_plugin_id) {
+          continue;
+        }
+
+        $component_arr = $component->toArray();
+
+        if (!isset($component_arr['configuration']['block_revision_id'])) {
+          continue;
+        }
+
+        $block_storage = \Drupal::entityTypeManager()
+          ->getStorage('block_content');
+        $block = $block_storage->loadRevision($component_arr['configuration']['block_revision_id']);
+
+        call_user_func_array($process, [&$component, $block]);
+      }
+      // Serialize section component and update section component db record.
+      // Replace the old section with our newly created one.
+      $db->update($table_name)
+        ->condition('revision_id', $record->revision_id)
+        ->condition('delta', $record->delta)
+        ->fields([
+          $section_column => serialize($section),
+        ])
+        ->execute();
+    }
+  }
+
+  // Only continue with this section if we have a key_value_expire
+  // table to work with.
+  if ($db->schema()->tableExists('key_value_expire')) {
+    // Check if we have a tempstore of this node.
+    // Temp store is saved in the db in the key_value_expire,
+    // And holds a serialized blob with the unsaved changes.
+    // Might be a better method of accessing this through the Layout
+    // Builder API and layoutTempstoreRepository, but have not found it yet.
+    $query = $db->select('key_value_expire', 'kve')
+      ->fields('kve', ['name', 'value', 'expire'])
+      ->condition('collection', 'tempstore.shared.layout_builder.section_storage.overrides', '=')
+      ->condition('value', "%$block_plugin_id%", 'LIKE');
+
+    $count = $query->countQuery()->execute()->fetchField();
+
+    \Drupal::messenger()
+      ->addMessage(t('Tempstore records for blocks of @type records found: @count', [
+        '@type' => $block_plugin_id,
+        '@count' => $count,
+      ]));
+
+    $results = $query
+      ->execute();
+
+    foreach ($results as $record) {
+      // Unserialize and replace the section in question with our updated one.
+      $stored_data = unserialize($record->value);
+      /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
+      $section_storage = $stored_data->data['section_storage'];
+
+      // Loop through sections in the storage.
+      foreach ($section_storage->getSections() as &$section) {
+        // Loop through the components in the section.
+        foreach ($section->getComponents() as &$component) {
+
+          // Limit this to only the uiowa_banner block component.
+          if ($component->getPluginId() !== $block_plugin_id) {
+            continue;
+          }
+
+          $component_arr = $component->toArray();
+
+          $revision_id = $component_arr['configuration']['block_revision_id'];
+          if ($revision_id) {
+            $block = $block_storage->loadRevision($revision_id);
+          }
+          else {
+            $block = unserialize($component_arr['configuration']['block_serialized']);
+          }
+
+          call_user_func_array($process, [&$component, $block]);
+        }
+      }
+      $stored_data->data['section_storage'] = $section_storage;
+
+      // Insert the updated tempstore.
+      $db->update('key_value_expire')
+        ->condition('name', $record->name, '=')
+        ->condition('expire', $record->expire, '=')
+        ->fields([
+          'value' => serialize($stored_data),
+        ])
+        ->execute();
+    }
+  }
+}
+
+/**
  * Update some uiowa_footer settings which are ignored.
  */
 function sitenow_update_8001() {
@@ -2730,7 +2865,7 @@ function _convert_people_block_component(SectionComponent &$component, BlockCont
     $style_update_map = [
       'block_hide_descriptions' => 'delete',
       'block_hide_details' => 'delete',
-      'block_hide_image' => 'delete',
+      'block_hide_images' => 'delete',
       'block_grid_twocol_50_50' => 'block_grid_threecol_33_34_33',
       'list_format_grid' => 'list_format_list',
     ];
@@ -2809,7 +2944,7 @@ function _convert_people_block_component(SectionComponent &$component, BlockCont
     if (isset($styles)) {
       switch ($field) {
         case 'field_image':
-          if (in_array('block_hide_image', $styles)) {
+          if (in_array('block_hide_images', $styles)) {
             $hide = 1;
           }
           break;
@@ -3312,7 +3447,7 @@ function sitenow_update_9015() {
 }
 
 /**
- * Uninstall node_view_permissions, import role configs, and rebuild permissions.
+ * Uninstall node_view_permissions, import role configs, rebuild permissions.
  */
 function sitenow_update_9016() {
   // Uninstall node_view_permissions module.
@@ -3353,4 +3488,242 @@ function sitenow_update_9016() {
 
   // Rebuild node permissions.
   node_access_rebuild(TRUE);
+}
+
+/**
+ * Activate new site splits prior to import so config remains constant.
+ */
+function sitenow_update_9017() {
+  $splits = [
+    'sites/admissions.uiowa.edu' => 'admissions.uiowa.edu',
+    'sites/brand.uiowa.edu' => 'brand.uiowa.edu',
+    'sites/coronavirus.uiowa.edu' => 'coronavirus.uiowa.edu',
+    'sites/genetics.grad.uiowa.edu' => 'genetics.grad.uiowa.edu',
+    'sites/grad.uiowa.edu' => 'grad.uiowa.edu',
+    'sites/hr.uiowa.edu' => 'hr.uiowa.edu',
+    'sites/icsa.uiowa.edu' => 'icsa.uiowa.edu',
+    'sites/ighn.international.uiowa.edu' => 'ighn.international.uiowa.edu',
+    'sites/immuno.grad.uiowa.edu' => 'immuno.grad.uiowa.edu',
+    'sites/iowasuperfund.uiowa.edu' => 'iowasuperfund.uiowa.edu',
+    'sites/pharmacy.uiowa.edu' => 'pharmacy.uiowa.edu',
+    'sites/policy.clas.uiowa.edu' => 'policy.clas.uiowa.edu',
+    'sites/presidentialsearch.uiowa.edu' => 'presidentialsearch.uiowa.edu',
+    'sites/sitenow.uiowa.edu' => 'sitenow.uiowa.edu',
+    'sites/sppa.uiowa.edu' => 'sppa.uiowa.edu',
+    'sites/tippie.uiowa.edu' => 'tippie.uiowa.edu',
+    'sites/transportation.uiowa.edu' => 'transportation.uiowa.edu',
+    'sites/uiowa.edu' => 'uiowa.edu',
+  ];
+
+  $path = Drupal::service('site.path');
+
+  if (isset($splits[$path])) {
+    $source = new FileStorage('../config/sites/' . $splits[$path]);
+    $config_storage = \Drupal::service('config.storage');
+    $config_storage->write('config_split.config_split.site', $source->read('config_split.config_split.site'));
+  }
+}
+
+/**
+ * Add allowed replicate content entities.
+ */
+function sitenow_update_9020() {
+  /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
+  $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
+  $sitenow_v2_split = 'config_split:sitenow_v2';
+
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_core.settings');
+
+  // This site has the 'sitenow_v2' split in config,
+  // and it is enabled.
+  if (isset($filters[$sitenow_v2_split]) && $filters[$sitenow_v2_split]['status']) {
+    // Don't allow for any content types to be replicated.
+    $config
+      ->set('uiowa_core.replicate_allowed', [])
+      ->save();
+  }
+  else {
+    // If it's not v2, then allow page and article.
+    $config
+      ->set('uiowa_core.replicate_allowed', ['page', 'article'])
+      ->save();
+  }
+}
+
+/**
+ * Shut down replicate for now.
+ */
+function sitenow_update_9021() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_core.settings');
+  $config
+    ->set('uiowa_core.replicate_allowed', [])
+    ->save();
+}
+
+/**
+ * Re-activate replicate functionality for v3 sites.
+ */
+function sitenow_update_9022() {
+  sitenow_update_9020();
+}
+
+/**
+ * Run again for any sites that were installed without this config.
+ */
+function sitenow_update_9023() {
+  sitenow_update_9020();
+}
+
+/**
+ * Remove headline content from footer block before setting perms.
+ */
+function sitenow_update_9024() {
+  $block = \Drupal::service('entity.repository')->loadEntityByUuid('block_content', '0c0c1f36-3804-48b0-b384-6284eed8c67e');
+  if (!empty($block->get('field_uiowa_headline')->getValue())) {
+    $block->set('field_uiowa_headline', '')
+      ->save();
+  }
+}
+
+/**
+ * Convert uiowa_articles to article_list_block.
+ */
+function sitenow_update_9025() {
+  _update_all_blocks_by_plugin_id('inline_block:uiowa_articles', function (&$component, $block) {
+    $styles = $component->get('layout_builder_styles_style');
+
+    // Default LB styles for new block.
+    $new_styles = [
+      'card_media_position_right',
+      'media_format_widescreen',
+      'content_alignment_left',
+      'card_image_medium',
+      'list_format_list',
+      'block_grid_threecol_33_34_33',
+    ];
+
+    if (is_array($styles)) {
+
+      $style_update_map = [
+        'block_hide_descriptions' => 'delete',
+        'block_hide_details' => 'delete',
+        'block_hide_images' => 'delete',
+        'block_grid_twocol_50_50' => 'block_grid_threecol_33_34_33',
+        'list_format_grid' => 'list_format_list',
+      ];
+
+      foreach ($styles as $style) {
+        if (isset($style_update_map[$style])) {
+          if ($style_update_map[$style] === 'delete') {
+            continue;
+          }
+          if ($key = array_search($style_update_map[$style], $new_styles)) {
+            $new_styles[$key] = $style;
+          }
+        }
+      }
+
+      $new_styles = array_unique($new_styles);
+    }
+
+    // Build out the new view block configuration.
+    // @todo confirm sort weights are set correctly.
+    $config = [
+      'id' => 'views_block:article_list_block-list_article',
+      'label' => NULL,
+      'provider' => 'views',
+      'label_display' => NULL,
+      'views_label' => '',
+      'items_per_page' => $block->field_collection_results->value ?: 50,
+      'headline' => $block->get('field_uiowa_headline')
+        ->getValue()[0],
+      'pager' => $block->field_collection_pager->value ? 'full' : 'some',
+      'pager_offset' => 0,
+      'use_more' => $block->field_collection_more->value,
+      'use_more_link_url' => $block->field_collection_more_path->uri,
+      'sort' => [
+        'sticky' => [
+          'order' => 'DESC',
+          'weight' => 0,
+        ],
+        'created' => [
+          'order' => 'DESC',
+          'weight' => 0,
+        ],
+      ],
+      'exposed_filter_values' => [
+        'field_tags_target_id' => [],
+      ],
+      'layout_builder_styles' => $new_styles,
+      'context_mapping' => [],
+    ];
+
+    // Process tags.
+    if (isset($block->get('field_collection_reference')
+      ->getValue()[0])) {
+      foreach ($block->get('field_collection_reference')
+        ->getValue()[0] as $target) {
+        $config['exposed_filter_values']['field_tags_target_id'][] = ['target_id' => $target];
+      }
+    }
+
+    $fields = [
+      'field_image',
+      'created',
+      'field_article_author',
+      'field_article_source_org',
+      'field_article_source_link',
+      'field_teaser',
+    ];
+
+    // Process field visibility settings.
+    foreach ($fields as $field) {
+      $hide = 0;
+      if (isset($styles)) {
+        switch ($field) {
+          case 'field_image':
+            if (in_array('block_hide_images', $styles)) {
+              $hide = 1;
+            }
+            break;
+
+          case 'field_teaser':
+            if (in_array('block_hide_descriptions', $styles)) {
+              $hide = 1;
+            }
+            break;
+
+          case 'field_article_author':
+          case 'field_article_source_org':
+            if (in_array('block_hide_details', $styles)) {
+              $hide = 1;
+            }
+            break;
+
+          // Hide by default due to functionality changes.
+          case 'field_article_source_link':
+            $hide = 1;
+            break;
+        }
+      }
+
+      $config['fields'][$field]['hide'] = $hide;
+    }
+
+    // Repurpose the existing component and set new styles.
+    $component->setConfiguration($config);
+    $component->set('layout_builder_styles_style', $new_styles);
+  });
+
+  // Delete uiowa_articles orphans.
+  $result = \Drupal::entityQuery('block_content')
+    ->condition('type', 'uiowa_articles')
+    ->execute();
+  if ($result) {
+    $storage_handler = \Drupal::entityTypeManager()->getStorage('block_content');
+    $entities = $storage_handler->loadMultiple($result);
+    $storage_handler->delete($entities);
+  }
 }

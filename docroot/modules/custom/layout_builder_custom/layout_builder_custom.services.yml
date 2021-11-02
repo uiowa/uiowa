@@ -3,3 +3,8 @@ services:
     class: Drupal\layout_builder_custom\EventSubscriber\SectionComponentSubscriber
     tags:
     - { name: event_subscriber }
+  layout_builder_custom.replicate_subscriber:
+    class: Drupal\layout_builder_custom\EventSubscriber\ReplicateSubscriber
+    arguments: [ '@entity_type.manager', '@uuid', '@path.current', '@current_user' ]
+    tags:
+      - { name: event_subscriber }

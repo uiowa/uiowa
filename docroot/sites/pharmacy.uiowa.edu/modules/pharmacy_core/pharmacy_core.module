@@ -56,18 +56,6 @@ function pharmacy_core_theme_suggestions_field_alter(array &$suggestions, array 
 }
 
 /**
- * Implements hook_theme_registry_alter().
- */
-function pharmacy_core_theme_registry_alter(&$theme_registry) {
-  $theme = \Drupal::theme()->getActiveTheme()->getName();
-  if ($theme == 'uids_base') {
-    // Favor module template over uids_base template.
-    $theme_registry['node__person__teaser']['path'] =
-      drupal_get_path('module', 'pharmacy_core') . '/templates';
-  }
-}
-
-/**
  * Implements hook_views_pre_render().
  */
 function pharmacy_core_views_pre_render(ViewExecutable $view) {

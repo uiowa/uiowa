@@ -5,9 +5,11 @@ dependencies:
   config:
     - field.field.node.area_of_study.body
     - field.field.node.area_of_study.field_area_of_study_degree_types
+    - field.field.node.area_of_study.field_area_of_study_delivery
     - field.field.node.area_of_study.field_area_of_study_link_direct
     - field.field.node.area_of_study.field_area_of_study_locations
     - field.field.node.area_of_study.field_area_of_study_source_link
+    - field.field.node.area_of_study.field_area_of_study_synonyms
     - field.field.node.area_of_study.field_image
     - field.field.node.area_of_study.field_meta_tags
     - node.type.area_of_study
@@ -16,6 +18,7 @@ dependencies:
     - layout_builder_restrictions
     - link
     - metatag
+    - options
     - system
     - text
     - user
@@ -242,6 +245,13 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_area_of_study_delivery:
+    weight: 20
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
   field_area_of_study_link_direct:
     weight: 14
     label: above
@@ -271,6 +281,13 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
+  field_area_of_study_synonyms:
+    weight: 19
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
     region: content
   field_image:
     weight: 1

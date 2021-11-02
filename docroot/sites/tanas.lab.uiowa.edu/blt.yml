@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labtanas.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labtanas
+  human_name: tanas.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labtanas.prod
+drupal:
+  db:
+    database: tanas_lab_uiowa_edu
+uiowa:
+  requester: swartzendrubert

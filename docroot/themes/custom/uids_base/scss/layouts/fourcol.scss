@@ -1,139 +1,92 @@
 @import "uids/assets/scss/_variables.scss";
 @import "uids/assets/scss/_utilities.scss";
 
-  .layout--fourcol,
-  .layout--fourcol .layout__spacing_container {
+.layout--fourcol {
+  .layout__spacing_container {
+    @include grid-base;
     @include breakpoint(sm) {
-      display: flex;
-      flex-basis: 100%;
+      // @todo Move to UIDS as a four column mixin.
+      gap: $desktop-width-gutter;
+      grid-template-columns: repeat(auto-fill, minmax(21%, 1fr));
     }
   }
-
-  .layout--fourcol {
-    .layout__region {
-      @include breakpoint(sm) {
-        flex: 0 1 100%;
-        display: flex;
-        flex-wrap: wrap;
-        align-content: unset;
-        min-width: 0;
-        flex: 0 1 calc(26% - 3rem);
-      }
-      @include breakpoint(container) {
-        flex: 0 1 calc(25.8% - 3rem);
-      }
-      @include breakpoint(xlg) {
-        flex: 0 1 calc(25.6% - 3rem);
-      }
+  &.column-spacing__removed {
+    .layout__spacing_container {
+      gap: 0;
+      column-gap: 0;
     }
-  }
-
-.layout--fourcol.page__container--normal .layout__region {
-  @include breakpoint(sm) {
-    flex: 0 1 calc(26% - 3rem);
   }
 }
 
-  .layout--fourcol.column-spacing__removed .layout__region {
-    @include breakpoint(sm) {
-      flex: 0 1 25%;
-    }
+@media (min-width: 0em) and (max-width: 84.375em) {
+  // Special settings used for the vertical videos section on uiowa.edu home page.
+  .layout--fourcol.grid--1-3 .layout__spacing_container {
+    grid-template-columns: repeat(3, 1fr);
   }
-
-  .layout--fourcol .layout__spacing_container > .layout__region + .layout__region {
-    @include breakpoint(sm) {
-      margin: 0 0 0 3rem;
-    }
-  }
-
-  .layout--fourcol.column-spacing__removed .layout__spacing_container > .layout__region + .layout__region {
-    @include breakpoint(sm) {
-      margin: 0;
-    }
-  }
-
-
-  // Turn four columns to a two-column grid for tablet/portrait breakpoint.
-@media (min-width: 40em) and (max-width: 69.125em) {
-  .layout--fourcol,
-  .layout--fourcol .layout__spacing_container {
-    flex-wrap: wrap;
-  }
-
-  .layout--fourcol .layout__region,
-  .layout--fourcol.page__container--normal .layout__region{
-    flex: 0 1 calc(52.3% - 3rem);
-  }
-
-  .layout--fourcol.column-spacing__removed .layout__region {
-    flex: 0 1 50%;
-  }
-
-  .layout--fourcol .layout__spacing_container .layout__region.layout__region--first,
-  .layout--fourcol .layout__spacing_container .layout__region.layout__region--second {
-    margin-bottom: 3rem;
-  }
-
-  .layout--fourcol.column-spacing__removed  .layout__spacing_container .layout__region.layout__region--first,
-  .layout--fourcol.column-spacing__removed  .layout__spacing_container .layout__region.layout__region--second {
-    margin-bottom: 0;
-  }
-
-  .layout--fourcol .layout__spacing_container .layout__region.layout__region--third {
-    margin-left: 0;
-  }
-}
-
-// Special settings for the section layout grid used for stats on home page.
-// @todo remove when a yarn workspace is built for uiowa.edu.
-@media (min-width: 0em) and (max-width: 40em) {
-  .layout--fourcol.grid--1-3 .layout__region--first,
-  .layout--fourcol.grid--1-3.column-spacing__removed  .layout__region--first {
-    flex-basis: 100%;
+  .layout--fourcol.grid--1-3  .layout__region--first {
+    grid-area: 1 / 1 / 2 / 5;
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
   }
-}
-
-@media (min-width: 0px) and (max-width: 768px) {
-  .layout--fourcol.grid--1-3.page__container--edge .layout__spacing_container .layout__region:not(.layout__region--first) {
+  .layout--fourcol.grid--1-3  .layout__region--second {
+    grid-area: 2 / 1 / 6 / 2;
+  }
+  .layout--fourcol.grid--1-3  .layout__region--third {
+    grid-area: 2 / 2 / 6 / 3;
+  }
+  .layout--fourcol.grid--1-3  .layout__region--fourth {
+    grid-area: 2 / 3 / 6 / 4;
+  }
+  // Events padding for uiowa.edu home page.
+  .layout--fourcol.grid--1-3.page__container--edge .layout__region:not(.layout__region--first) {
     padding: 2rem;
   }
 }
 
-@media (min-width: 40em) and (max-width: 84.375em) {
-  .layout--fourcol.grid--1-3,
-  .layout--fourcol.grid--1-3 .layout__spacing_container {
-    flex-wrap: wrap;
-  }
+// @todo remove when IE11 support is dropped.
+// IE 11
+@media all and (-ms-high-contrast: none),
+(-ms-high-contrast: active) {
 
-  .layout--fourcol.grid--1-3 .layout__spacing_container  .layout__region:not(.layout__region--first),
-  .layout--fourcol.grid--1-3.column-spacing__removed .layout__region:not(.layout__region--first) {
-    flex: 0 1 31.3%;
-  }
-
-  .layout--fourcol.grid--1-3.column-spacing__removed .layout__spacing_container .layout__region {
-    margin-bottom: 3rem;
-  }
-
-
-  .layout--fourcol.grid--1-3 .layout__region--first,
-  .layout--fourcol.grid--1-3.column-spacing__removed .layout__region--first {
+  .layout--fourcol,
+  .layout--fourcol .layout__spacing_container {
+    display: flex;
     flex-basis: 100%;
-    text-align: center;
-    margin-bottom: 3rem;
   }
 
-  .layout--fourcol.grid--1-3  .layout__spacing_container .layout__region.layout__region--second {
+  .layout--fourcol .layout__region {
+    flex: 0 1 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: unset;
+    min-width: 0;
+  }
+
+  .layout--fourcol .layout__region {
+    flex: 0 1 24.25%;
+  }
+
+  .layout--fourcol.column-spacing__removed .layout__region {
+    flex: 0 1 25%;
+  }
+
+  .layout--fourcol .layout__region--second {
+    margin-left: 3rem;
+    margin-right: 1.5rem;
+  }
+
+  .layout--fourcol .layout__region--third {
+    margin-left: 1.5rem;
+    margin-right: 3rem;
+  }
+
+  .layout--fourcol.column-spacing__removed .layout__region--second {
     margin-left: 0;
+    margin-right: 0;
   }
 
-  .layout--fourcol.grid--1-3 .layout__spacing_container > .layout__region + .layout__region.layout__region--fourth {
-    margin: 0;
-  }
-
-  .layout--fourcol.grid--1-3 .layout__spacing_container  .layout__region--third {
-    margin-left: 3%;
-    margin-right: 3%;
+  .layout--fourcol.column-spacing__removed .layout__region--third {
+    margin-left: 0;
+    margin-right: 0;
   }
 }
