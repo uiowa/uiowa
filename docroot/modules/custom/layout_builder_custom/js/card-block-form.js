@@ -12,7 +12,7 @@
         // @todo Add a class to this field widget wrapper so that we can target it more precisely.
         const $form_wrapper = $(this).parent().parent().parent();
         const $image_format_field = $form_wrapper.find('.form-item-layout-builder-style-media-format').find('select');
-        const $image_size_field = $form_wrapper.find('.form-item-layout-builder-style-card-image-size').find('select, label');
+        // const $image_size_field = $form_wrapper.find('.form-item-layout-builder-style-card-image-size').find('select, label');
         const $image_small_field = $form_wrapper.find('.form-item-layout-builder-style-card-image-size').find('select option[value="card_image_small"]');
 
         if ($image_format_field.length || $image_size_field.length) {
@@ -30,7 +30,7 @@
           } else {
               // Show image format.
             $image_format_field.parent().show();
-            $image_size_field.show();
+            // $image_size_field.show();
             $image_small_field.show();
           }
         }
