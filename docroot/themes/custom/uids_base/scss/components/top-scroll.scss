@@ -9,13 +9,8 @@
   position: absolute;
   top: 100vh;
   right: 0.25rem;
-  // Optional, extends the final link into the
-  // footer at the bottom of the page
-  // Set to `0` to stop at the end of `main`
   bottom: -5em;
-  // Required for best support in browsers not supporting `sticky`
   width: 3em;
-  // Disable interaction with this element
   pointer-events: none;
 
   ul {
@@ -23,10 +18,7 @@
     margin: 0;
     position: fixed;
     position: sticky;
-    // reinstate clicks
     pointer-events: all;
-    // achieves desired positioning within the viewport
-    // relative to the top of the viewport once `sticky` takes over, or always if `fixed` fallback is used
     top: calc(100vh - 5rem);
     z-index: 1;
   }
@@ -50,6 +42,3 @@
     }
   }
 }
-
-
-
