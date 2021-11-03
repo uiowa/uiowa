@@ -61,7 +61,7 @@ class RegionSettings extends ConfigFormBase {
 
     $form['markup'] = [
       '#type' => 'markup',
-      '#markup' => $this->t('<p>These settings allow you to configure static regions of your website.</p>'),
+      '#markup' => $this->t('<div class="form-item__description">Add a new region item to be managed below.</div>'),
     ];
     $query = $this->entityTypeManager->getStorage('block')->getQuery();
     $query->condition('plugin', 'region_content_block');
@@ -71,6 +71,10 @@ class RegionSettings extends ConfigFormBase {
       '#type' => 'fieldset',
       '#title' => t('Active region content blocks'),
     ];
+    $form['active_region_content_blocks']['description'] = [
+      '#type' => 'markup',
+      '#markup' => $this->t('<div class="form-item__description">Configure the active regions to display curated layout builder content.</div>'),
+    ];
     foreach ($region_content_blocks as $key => $value) {
       $title_array = explode('_', $key);
       $title_array[0] = ucwords($title_array[0]);
@@ -79,6 +83,7 @@ class RegionSettings extends ConfigFormBase {
       $form['active_region_content_blocks'][$key] = [
         '#type' => 'entity_autocomplete',
         '#title' => $title,
+        '#description' => 'Enter the name of the region item you would like to place in the "' . $title . '" region of the site.',
         '#target_type' => 'fragment',
         '#default_value' => $fid != NULL ? $this->entityTypeManager->getStorage('fragment')->load($fid) : NULL,
         '#selection_settings' => [
@@ -90,6 +95,10 @@ class RegionSettings extends ConfigFormBase {
     $form['region_items'] = [
       '#type' => 'fieldset',
       '#title' => t('Region items'),
+    ];
+    $form['region_items']['description'] = [
+      '#type' => 'markup',
+      '#markup' => $this->t('<div class="form-item__description">Manage the region items that have been created. You may configure the layout for your regions here.</div>'),
     ];
     $view = views_embed_view('region_items', 'region_items_block');
     $render = render($view);
