@@ -79,7 +79,9 @@
     
   {{ page.content }}
 
-  {% include '@uids_base/navigation/top-scroll.html.twig' %}
+  {% if header_toppage != 'no-top-scroll' %}
+    {% include '@uids_base/navigation/top-scroll.html.twig' %}
+  {% endif %}
 
 </main>
 
