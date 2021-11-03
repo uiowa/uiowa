@@ -732,10 +732,6 @@ function sitenow_preprocess_page(&$variables) {
         if (array_search('title_hidden', array_column($publish_options, 'value')) !== FALSE) {
           $variables['header_attributes']->addClass('title-hidden');
         }
-        // Used for page by page basis display of scroll to top button.
-        if (array_search('no_top_scroll', array_column($publish_options, 'value')) !== FALSE) {
-          $variables['header_attributes']->addClass('no-top-scroll');
-        }
       }
     }
   }
