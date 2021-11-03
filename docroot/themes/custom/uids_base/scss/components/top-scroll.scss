@@ -16,20 +16,53 @@
       scroll-behavior: auto;
     }
   }
+    /* How far of a scroll travel within <main> prior to the
+    link appearing */
+    $scrollLength: 100vh;
 
   #top-scroll {
-    z-index: 2;
-    position: fixed;
-    right: -20px;
-    height: 100vh;
-    top: 90%;
-    padding-right: 20px;
-    align-items: center;
+    // z-index: 2;
+    // position: fixed;
+    // right: -20px;
+    // height: 100vh;
+    // top: 90%;
+    // padding-right: 20px;
+    // align-items: center;
   
     li {
       list-style: none !important;
     }
-    .scroll-icon {
+
+    .top-scroll-wrapper {
+      // uncomment to visualize "track"
+      // outline: 1px solid red;
+      position: absolute;
+      top: $scrollLength;
+      right: 0.25rem;
+      // Optional, extends the final link into the
+      // footer at the bottom of the page
+      // Set to `0` to stop at the end of `main`
+      bottom: -5em;
+      // Required for best support in browsers not supporting `sticky`
+      width: 3em;
+      // Disable interaction with this element
+      pointer-events: none;
+      
+      .v-dot-link {
+        // `fixed` is fallback
+        position: fixed;
+        // preferred positioning, requires prefixing for most support, and not supported on Safari
+        // @link https://caniuse.com/#search=position%3A%20sticky
+        position: sticky;
+        // reinstate clicks
+        pointer-events: all;
+        // achieves desired positioning within the viewport
+        // relative to the top of the viewport once `sticky` takes over, or always if `fixed` fallback is used
+        top: calc(100vh - 5rem);
+        transition: transform 80ms ease-in;
+      }
+    }
+        // .scroll-icon {
 
       svg {
         height: 32px;
@@ -47,6 +80,6 @@
         padding: 6px;
         float: right;
       }
+        // }
+      }
     }
-  }
-}
