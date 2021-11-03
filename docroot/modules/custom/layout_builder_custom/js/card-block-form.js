@@ -13,6 +13,7 @@
         const $form_wrapper = $(this).parent().parent().parent();
         const $image_format_field = $form_wrapper.find('.form-item-layout-builder-style-media-format').find('select');
         const $image_size_field = $form_wrapper.find('.form-item-layout-builder-style-card-image-size').find('select, label');
+        const $image_small_field = $form_wrapper.find('.form-item-layout-builder-style-card-image-size').find('select option[value="card_image_small"]');
 
         if ($image_format_field.length || $image_size_field.length) {
           // Check if the referenced media is a video.
@@ -23,13 +24,14 @@
             $image_format_field.val('media_format_widescreen').change();
             // Hide image format.
             $image_format_field.parent().hide();
-            $image_size_field.hide();
+            $image_small_field.hide();
 
             // @ todo investigate alternative ways of hiding image format that does not affect image size state.
           } else {
               // Show image format.
             $image_format_field.parent().show();
             $image_size_field.show();
+            $image_small_field.show();
           }
         }
       });
