@@ -439,9 +439,6 @@ function uids_base_preprocess_layout(&$variables) {
         // Remove sidebar regions.
         $variables['attributes']['class'][] = 'sidebar-invisible';
       }
-      if (array_search('no_top_scroll', array_column($publish_options, 'value')) !== FALSE) {
-        $variables["attributes"]['class'][] = 'no-top-scroll';
-      }
     }
 
     // Process the header layout.
