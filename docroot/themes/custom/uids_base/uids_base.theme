@@ -725,7 +725,6 @@ function uids_base_preprocess_menu_local_task(&$variables) {
   if ($url instanceof Url) {
     $route_name = $url->getRouteName();
 
-    // node, taxonomy_term, fragment
     $supported_entity_types = [
       'node',
       'fragment',
@@ -744,7 +743,6 @@ function uids_base_preprocess_menu_local_task(&$variables) {
       $route_icon_map['entity.' . $entity_type . '.replicate'] = 'replicate';
       $route_icon_map['layout_builder.overrides.' . $entity_type . '.view'] = 'layout';
     }
-
 
     // Set the icon if the route matches an entry in the map.
     if (isset($route_icon_map[$route_name])) {
