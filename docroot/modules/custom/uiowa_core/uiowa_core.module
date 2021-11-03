@@ -225,6 +225,7 @@ function uiowa_core_menu_local_tasks_alter(&$data, $route_name) {
   $logged_in = \Drupal::currentUser()->isAuthenticated();
   if ($logged_in) {
     $data['tabs'][0]['entity.node.delete_form']['#weight'] = 110;
+    $data['tabs'][0]['entity.fragment.delete_form']['#weight'] = 110;
     $data['tabs'][0]['entity.taxonomy_term.delete_form']['#weight'] = 110;
   }
   if (isset($data["tabs"][0]["replicate_ui.local_tasks:entity.node.replicate"])) {

@@ -725,21 +725,26 @@ function uids_base_preprocess_menu_local_task(&$variables) {
   if ($url instanceof Url) {
     $route_name = $url->getRouteName();
 
-    $route_icon_map = [
-      'entity.node.canonical' => 'view',
-      'entity.node.edit_form' => 'edit',
-      'entity.node.delete_form' => 'delete',
-      'layout_builder.overrides.node.view' => 'layout',
-      'entity.node.version_history' => 'history',
-      'entity.node.entity_usage' => 'usage',
-      'entity.node.devel_load' => 'devel',
-      'entity.node.replicate' => 'replicate',
-      'entity.taxonomy_term.canonical' => 'view',
-      'entity.taxonomy_term.edit_form' => 'edit',
-      'entity.taxonomy_term.delete_form' => 'delete',
-      'entity.taxonomy_term.entity_usage' => 'usage',
-      'entity.taxonomy_term.devel_load' => 'devel',
+    // node, taxonomy_term, fragment
+    $supported_entity_types = [
+      'node',
+      'fragment',
+      'taxonomy_term'
     ];
+
+    $route_icon_map = [];
+
+    foreach ($supported_entity_types as $entity_type) {
+      $route_icon_map['entity.' . $entity_type . '.canonical'] = 'view';
+      $route_icon_map['entity.' . $entity_type . '.edit_form'] = 'edit';
+      $route_icon_map['entity.' . $entity_type . '.delete_form'] = 'delete';
+      $route_icon_map['entity.' . $entity_type . '.version_history'] = 'history';
+      $route_icon_map['entity.' . $entity_type . '.entity_usage'] = 'usage';
+      $route_icon_map['entity.' . $entity_type . '.devel_load'] = 'devel';
+      $route_icon_map['entity.' . $entity_type . '.replicate'] = 'replicate';
+      $route_icon_map['layout_builder.overrides.' . $entity_type . '.view'] = 'layout';
+    }
+
 
     // Set the icon if the route matches an entry in the map.
     if (isset($route_icon_map[$route_name])) {
