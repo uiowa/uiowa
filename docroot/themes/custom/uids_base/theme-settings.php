@@ -90,25 +90,11 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
       ],
     ],
   ];
-  // Used for page by page basis display of scroll to top button.
-  $form['header']['toppage'] = [
-    '#type' => 'checkbox',
-    '#title' => t('Add Scroll to top button'),
-    '#description' => t('Add scroll to top button functionality on site'),
-    '#default_value' => theme_get_setting('header.toppage'),
-    '#states' => [
-      'visible' => [
-        ':input[name="header[nav_style]"]' => [
-          'value' => 'toggle',
-        ],
-      ],
-    ],
-  ];
   // Display scroll to top button functionality.
   $form['header']['toppage'] = [
     '#type' => 'checkbox',
-    '#title' => t('Add Scroll to top button'),
-    '#description' => t('Add scroll to top button functionality on site'),
+    '#title' => t('Back to top button'),
+    '#description' => t('A back to top button will be visible when the user scrolls down the page.'),
     '#default_value' => theme_get_setting('header.toppage'),
   ];
 
