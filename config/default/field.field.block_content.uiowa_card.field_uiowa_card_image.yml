@@ -6,13 +6,14 @@ dependencies:
     - block_content.type.uiowa_card
     - field.storage.block_content.field_uiowa_card_image
     - media.type.image
+    - media.type.remote_video
 _core:
   default_config_hash: _Xnlb3PLaTWrSnisWGcthUJB7YqhvBF_1-fq9Qip6QA
 id: block_content.uiowa_card.field_uiowa_card_image
 field_name: field_uiowa_card_image
 entity_type: block_content
 bundle: uiowa_card
-label: Image
+label: Media
 description: 'Choose an image for the content block (16:9 aspect ratio, 2592x1458px max, 1MB file size or less)'
 required: false
 translatable: false
@@ -23,8 +24,10 @@ settings:
   handler_settings:
     target_bundles:
       image: image
+      remote_video: remote_video
     sort:
       field: _none
+      direction: ASC
     auto_create: false
-    auto_create_bundle: ''
+    auto_create_bundle: image
 field_type: entity_reference

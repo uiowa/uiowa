@@ -1,0 +1,48 @@
+@import "assets/scss/_variables.scss";
+@import 'assets/scss/_utilities';
+
+.top-scroll main {
+  position: relative;
+  min-height: 90vh;
+}
+
+.top-scroll-container {
+  position: absolute;
+  top: 90vh;
+  right: 0.25rem;
+  bottom: -5em;
+  width: 3em;
+  pointer-events: none;
+
+  ul {
+    list-style: none;
+    margin: 0;
+    position: fixed;
+    position: sticky;
+    pointer-events: all;
+    top: calc(100vh - 5rem);
+    z-index: 1;
+  }
+
+  .v-dot-link {
+    svg {
+      height: 32px;
+      width: 32px;
+      background-color: #151515;
+      z-index: 3;
+      text-align: center;
+      display: flex;
+      color: #ffcd00;
+      border: 2px solid #ffffff;
+      align-items: center;
+      justify-content: center;
+      border-radius: 21px;
+      margin-right: 20px;
+      padding: 6px;
+    }
+    svg:focus,
+    svg:hover {
+      border: 2px solid #ffcd00;
+    }
+  }
+}
