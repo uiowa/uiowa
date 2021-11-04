@@ -12,6 +12,7 @@
         // @todo Add a class to this field widget wrapper so that we can target it more precisely.
         const $form_wrapper = $(this).parent().parent().parent();
         const $image_format_field = $form_wrapper.find('.form-item-layout-builder-style-media-format').find('select');
+        const $image_size_field_default = $form_wrapper.find('.form-item-layout-builder-style-card-image-size').find('select');
         const $image_small_field = $form_wrapper.find('.form-item-layout-builder-style-card-image-size').find('select option[value="card_image_small"]');
 
         if ($image_format_field.length || $image_small_field.length) {
@@ -21,6 +22,8 @@
           if (mediaTypeVideo) {
             // Set image format to widescreen.
             $image_format_field.val('media_format_widescreen').change();
+            // Set image size to default to medium
+            $image_size_field_default.val('card_image_large').change();
             // Hide image format.
             $image_format_field.parent().hide();
             $image_small_field.hide();
