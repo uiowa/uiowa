@@ -2,13 +2,24 @@
 @import 'assets/scss/_utilities';
 
 .top-scroll main {
-  position: relative;
-  min-height: 100vh;
+  &.js-scroll.scrolled {
+    position: relative;
+  }
+
+  *:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .top-scroll-container {
   position: absolute;
-  top: 100vh;
+  display: none;
+
+  &.js-scroll.scrolled {
+    top: 90vh;
+    display: block;
+  }
+
   right: 0.25rem;
   bottom: -5em;
   width: 3em;
@@ -23,7 +34,6 @@
     top: calc(100vh - 5rem);
     z-index: 1;
   }
-
 
   .v-dot-link {
     svg {

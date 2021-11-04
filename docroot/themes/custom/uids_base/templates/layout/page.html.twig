@@ -68,7 +68,7 @@
 {% endif %}
 
 
-<main role="main" {{ node_attributes.addClass(content_classes) }}>
+<main role="main" {{ node_attributes.addClass(content_classes, 'js-scroll') }}>
 
   <a id="main-content" tabindex="-1"></a>
   {# link is in html.html.twig #}
@@ -76,7 +76,7 @@
   {% if page.breadcrumb %}
     {{ page.breadcrumb }}
     {% endif %}
-    
+
   {{ page.content }}
 
   {% if header_toppage %}
