@@ -2,24 +2,13 @@
 @import 'assets/scss/_utilities';
 
 .top-scroll main {
-  &.js-scroll.scrolled {
-    position: relative;
-  }
-
-  *:last-child {
-    margin-bottom: 0;
-  }
+  position: relative;
+  min-height: 90vh;
 }
 
 .top-scroll-container {
   position: absolute;
-  display: none;
-
-  &.js-scroll.scrolled {
-    top: 90vh;
-    display: block;
-  }
-
+  top: 90vh;
   right: 0.25rem;
   bottom: -5em;
   width: 3em;
