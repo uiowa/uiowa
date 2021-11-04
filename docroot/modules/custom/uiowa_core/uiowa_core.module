@@ -213,12 +213,6 @@ function uiowa_core_preprocess_html(&$variables) {
         $variables['attributes']['class'][] = 'text--serif';
         $variables['#attached']['library'][] = 'uids_base/global-serif';
       }
-      $toppage = 'no-top-scroll';
-      // Only display scroll to top button if user opts in.
-      if (theme_get_setting('header.toppage')) {
-        $toppage = 'top-scroll';
-      }
-      $variables['attributes']['class'][] = $toppage;
     }
   }
 }
