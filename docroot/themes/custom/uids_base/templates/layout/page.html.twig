@@ -79,7 +79,7 @@
     
   {{ page.content }}
 
-  {% if header_toppage != 'no-top-scroll' %}
+  {% if header_toppage %}
     {% include '@uids_base/navigation/top-scroll.html.twig' %}
   {% endif %}
 
