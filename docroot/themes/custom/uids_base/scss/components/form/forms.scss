@@ -766,8 +766,19 @@
 }
 
 .webform--first-col {
-  :first-child {
+  .form-item:first-of-type {
     grid-column: 1 / -1;
+  } 
+}
+
+.webform-two-col {
+  @include grid-base;
+  @include breakpoint(sm) {
+    @include twocol-grid;
+    row-gap: unset;
+    #edit-actions {
+      margin: auto 0;
+    }
   }
 }
 
@@ -775,6 +786,10 @@
   @include grid-base;
   @include breakpoint(sm) {
     @include threecol-grid;
+    row-gap: unset;
+    #edit-actions {
+      margin: auto 0;
+    }
   }
 }
 
@@ -783,5 +798,8 @@
   @include breakpoint(sm) {
     gap: $desktop-width-gutter;
     grid-template-columns: repeat(auto-fill, minmax(21%, 1fr));
+    #edit-actions {
+      margin: auto 0;
+    }
   }
 }
