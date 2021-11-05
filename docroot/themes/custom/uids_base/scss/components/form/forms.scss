@@ -764,3 +764,24 @@
     }
   }
 }
+
+.webform--first-col {
+  :first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+.webform-three-col {
+  @include grid-base;
+  @include breakpoint(sm) {
+    @include threecol-grid;
+  }
+}
+
+.webform-four-col {
+  @include grid-base;
+  @include breakpoint(sm) {
+    gap: $desktop-width-gutter;
+    grid-template-columns: repeat(auto-fill, minmax(21%, 1fr));
+  }
+}
