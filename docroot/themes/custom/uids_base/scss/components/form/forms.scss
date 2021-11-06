@@ -771,36 +771,45 @@
   } 
 }
 
-.webform-two-col {
+.webform-two-col,
+.webform-three-col,
+.webform-four-col {
   @include grid-base;
+  
+  .element-invisible, 
+  .visually-hidden {
+    position: unset !important;
+    height: 1.4rem;
+    width: 0px;
+  }
+
+  #edit-actions {
+    margin: auto 0;
+    input#edit-actions-submit {
+      height: 3.5rem;
+      margin-top: 0.5rem;
+    }
+  }
+}
+
+.webform-two-col {
   @include breakpoint(sm) {
     @include twocol-grid;
     row-gap: unset;
-    #edit-actions {
-      margin: auto 0;
-    }
   }
 }
 
 .webform-three-col {
-  @include grid-base;
   @include breakpoint(sm) {
     @include threecol-grid;
     row-gap: unset;
-    #edit-actions {
-      margin: auto 0;
-    }
   }
 }
 
 .webform-four-col {
-  @include grid-base;
   @include breakpoint(sm) {
     gap: $desktop-width-gutter;
     grid-template-columns: repeat(auto-fill, minmax(21%, 1fr));
     row-gap: unset;
-    #edit-actions {
-      margin: auto 0;
-    }
   }
 }
