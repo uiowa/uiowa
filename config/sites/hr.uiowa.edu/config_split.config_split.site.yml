@@ -17,10 +17,7 @@ module:
 theme: {  }
 complete_list:
   - config_split.config_split.site
-  - core.entity_form_display.node.page.default
   - core.entity_view_display.node.page.default
-  - field.field.paragraph.articles.field_reference
-  - field.field.paragraph.people.field_reference
   - field.field.paragraph.section.field_section_content_block
   - field.storage.node.field_related_content
   - node.type.faq
@@ -42,10 +39,10 @@ complete_list:
   - 'core.entity_form_display.paragraph.faqs.*'
   - 'core.entity_view_display.paragraph.faqs.*'
   - 'field.storage.node.field_faq_*'
-  - field.field.node.page.field_reference
-  - field.field.node.article.field_reference
 partial_list:
   - editor.editor.filtered_html
+  - field.field.node.article.field_reference
+  - field.field.node.page.field_reference
   - field.storage.node.field_reference
   - field.storage.paragraph.field_reference
   - workflows.workflow.editorial
