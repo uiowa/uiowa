@@ -1,0 +1,16 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.article.field_reference
+  content:
+    field_reference:
+      type: entity_reference_autocomplete_tags
+      weight: 5
+      region: content
+      settings:
+        match_operator: CONTAINS
+        size: 60
+        placeholder: ''
+        match_limit: 10
+      third_party_settings: {  }
+removing: {  }
