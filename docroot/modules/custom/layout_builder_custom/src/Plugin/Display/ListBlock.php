@@ -106,7 +106,7 @@ class ListBlock extends CoreBlock {
     $form['more_link_text'] = [
       '#type' => 'textarea',
       '#title' => $this->t('More link text'),
-      '#description' => $this->t('Set text to display on view more link.'),
+      '#description' => $this->t('Set default text to display on view more link.'),
       '#default_value' => $more_link_text ?: '',
       '#states' => [
         'visible' => [
@@ -366,7 +366,7 @@ class ListBlock extends CoreBlock {
       $form['override']['use_more_link_url'] = [
         '#type' => 'entity_autocomplete',
         '#title' => $this->t('Path'),
-        '#title' => $this
+        '#description' => $this
           ->t('Start typing the title of a piece of content to select it. You can also enter an internal path such as %add-node or an external URL such as %url. Enter %front to link to the front page.', [
             '%front' => '<front>',
             '%add-node' => '/node/add',
@@ -401,7 +401,7 @@ class ListBlock extends CoreBlock {
       $form['override']['use_more_text'] = [
         '#type' => 'textfield',
         '#title' => 'Custom text',
-        '#default_value' => 'View more',
+        '#default_value' => isset($block_configuration['use_more_text']) ? $block_configuration['use_more_text'] : '',
         '#process_default_value' => FALSE,
         '#states' => [
           'visible' => [
@@ -460,6 +460,12 @@ class ListBlock extends CoreBlock {
       $block->setConfigurationValue('use_more_link_url', $form_state->getValue([
         'override',
         'use_more_link_url',
+      ]));
+
+      // Save display more link text.
+      $block->setConfigurationValue('use_more_text', $form_state->getValue([
+        'override',
+        'use_more_text',
       ]));
     }
 
@@ -581,12 +587,11 @@ class ListBlock extends CoreBlock {
         $this->view->display_handler->setOption('use_more', TRUE);
         $this->view->display_handler->setOption('use_more_always', TRUE);
         $this->view->display_handler->setOption('link_display', 'custom_url');
-        $this->view->display_handler->setOption('use_more_text', TRUE);
         if (!empty($config['use_more_link_url'])) {
-          $this->view->display_handler->setOption('link_url', Url::fromUri($config['use_more_link_url'])->toString());
+          $this->view->display_handler->setOption('link_url', Url::fromUri($config['use_more_link_url']));
         }
-        if (empty($config['use_more_text'])) {
-          $this->view->display_handler->t('View more');
+        if (!empty($config['use_more_text'])) {
+          $this->view->display_handler->setOption('use_more_text', $config['use_more_text']);
         }
       }
       else {
