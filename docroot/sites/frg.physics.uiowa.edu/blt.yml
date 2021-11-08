@@ -1,0 +1,13 @@
+project:
+  local:
+    hostname: physicsfrg.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: physicsfrg
+  human_name: frg.physics.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: physicsfrg.prod
+drupal:
+  db:
+    database: frg_physics_uiowa_edu
