@@ -37,6 +37,12 @@ process:
   field_teaser: body_summary
   field_image: field_image_attach_fid
   field_tags: tags
+  field_article_source_link:
+    plugin: sub_process
+    source: field_external_link
+    process:
+      uri: url
+      title: title
 destination:
   plugin: 'entity:node'
   default_bundle: article
