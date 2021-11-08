@@ -1001,9 +1001,7 @@ function layout_builder_custom_preprocess_media(&$variables) {
 
     case 'remote_video':
     case 'video':
-      $variables['attributes'] = [
-        'class' => ['media--video'],
-      ] + $variables['attributes'];
+      $variables['attributes']['class'][] = 'media--video';
       break;
   }
 }
