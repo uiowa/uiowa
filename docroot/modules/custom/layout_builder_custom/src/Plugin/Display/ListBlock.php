@@ -100,24 +100,6 @@ class ListBlock extends CoreBlock {
         ],
       ],
     ];
-
-    // Custom more link field.
-    $more_link_text = $this->getOption('more_link_text');
-    $form['more_link_text'] = [
-      '#type' => 'textarea',
-      '#title' => $this->t('More link text'),
-      '#description' => $this->t('Set default text to display on view more link.'),
-      '#default_value' => $more_link_text ?: '',
-      '#states' => [
-        'visible' => [
-          [
-            "input[name='allow[use_more]']" => [
-              'checked' => TRUE,
-            ],
-          ],
-        ],
-      ],
-    ];
   }
 
   /**
@@ -349,11 +331,6 @@ class ListBlock extends CoreBlock {
       $more_link_help_text = $this->getOption('more_link_help_text');
       if (empty($more_link_help_text)) {
         $more_link_help_text = $this->t('Start typing to see a list of results. Click to select.');
-      }
-
-      $more_link_text = $this->getOption('more_link_text');
-      if (empty($more_link_text)) {
-        $more_link_text = $this->t('Enter your custom text for the button');
       }
 
       $form['override']['use_more'] = [
