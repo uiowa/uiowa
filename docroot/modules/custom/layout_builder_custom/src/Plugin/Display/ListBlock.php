@@ -101,7 +101,7 @@ class ListBlock extends CoreBlock {
       ],
     ];
 
-    // Custom more link field
+    // Custom more link field.
     $more_link_text = $this->getOption('more_link_text');
     $form['more_link_text'] = [
       '#type' => 'textarea',
@@ -119,11 +119,6 @@ class ListBlock extends CoreBlock {
       ],
     ];
   }
-
-
-
-
-
 
   /**
    * {@inheritdoc}
