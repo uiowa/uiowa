@@ -100,7 +100,30 @@ class ListBlock extends CoreBlock {
         ],
       ],
     ];
+
+    // Custom more link field
+    $more_link_text = $this->getOption('more_link_text');
+    $form['more_link_text'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('More link text'),
+      '#description' => $this->t('Set text to display on view more link.'),
+      '#default_value' => $more_link_text ?: '',
+      '#states' => [
+        'visible' => [
+          [
+            "input[name='allow[use_more]']" => [
+              'checked' => TRUE,
+            ],
+          ],
+        ],
+      ],
+    ];
   }
+
+
+
+
+
 
   /**
    * {@inheritdoc}
@@ -333,6 +356,11 @@ class ListBlock extends CoreBlock {
         $more_link_help_text = $this->t('Start typing to see a list of results. Click to select.');
       }
 
+      $more_link_text = $this->getOption('more_link_text');
+      if (empty($more_link_text)) {
+        $more_link_text = $this->t('Enter your custom text for the button');
+      }
+
       $form['override']['use_more'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Display More link'),
@@ -343,7 +371,7 @@ class ListBlock extends CoreBlock {
       $form['override']['use_more_link_url'] = [
         '#type' => 'entity_autocomplete',
         '#title' => $this->t('Path'),
-        '#description' => $this
+        '#title' => $this
           ->t('Start typing the title of a piece of content to select it. You can also enter an internal path such as %add-node or an external URL such as %url. Enter %front to link to the front page.', [
             '%front' => '<front>',
             '%add-node' => '/node/add',
@@ -363,6 +391,22 @@ class ListBlock extends CoreBlock {
         '#attributes' => [
           'data-autocomplete-first-character-blacklist' => '/#?',
         ],
+        '#process_default_value' => FALSE,
+        '#states' => [
+          'visible' => [
+            [
+              "input[name='settings[override][use_more]']" => [
+                'checked' => TRUE,
+              ],
+            ],
+          ],
+        ],
+      ];
+
+      $form['override']['use_more_text'] = [
+        '#type' => 'textfield',
+        '#title' => 'Custom text',
+        '#default_value' => 'View more',
         '#process_default_value' => FALSE,
         '#states' => [
           'visible' => [
@@ -542,8 +586,12 @@ class ListBlock extends CoreBlock {
         $this->view->display_handler->setOption('use_more', TRUE);
         $this->view->display_handler->setOption('use_more_always', TRUE);
         $this->view->display_handler->setOption('link_display', 'custom_url');
+        $this->view->display_handler->setOption('use_more_text', TRUE);
         if (!empty($config['use_more_link_url'])) {
           $this->view->display_handler->setOption('link_url', Url::fromUri($config['use_more_link_url'])->toString());
+        }
+        if (empty($config['use_more_text'])) {
+          $this->view->display_handler->t('View more');
         }
       }
       else {
