@@ -767,34 +767,38 @@
 
 
 .webform-grid {
+  // Center align button works with label and label visually hidden.
   .form-actions {
     align-items: center;
     display: grid;
     margin-bottom: .5rem;
+    margin-top: 0;
+  }
+  // Modifier class if label is visually hidden with description.
+  &--align-top {
+    .form-actions {
+      align-items: top;
+    }
   }
   &.uids-content {
   input {
       margin-bottom: 0;
     }
   }
+  // Unset default margins because grid layout adds gap.
   .form-item {
     margin-top: 0;
     margin-bottom: 0;
   }
+  // Modifer class per form item for full width display.
   &--full-column {
     grid-column: 1 / -1;
   }
-
+  // Grid layout classes.
   &--two-column,
   &--three-column,
   &--four-column {
     @include grid-base;
-    .element-invisible,
-    .visually-hidden {
-      position: unset !important;
-      height: 1.4rem;
-      width: 0px;
-    }
 
     [type="submit"] {
       width: 100%;
