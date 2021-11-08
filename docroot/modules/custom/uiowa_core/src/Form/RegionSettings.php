@@ -69,7 +69,7 @@ class RegionSettings extends ConfigFormBase {
     $region_config = $config->get('uiowa_core.region_content');
     $form['active_region_content_blocks'] = [
       '#type' => 'fieldset',
-      '#title' => t('Active region content blocks'),
+      '#title' => $this->t('Active region content blocks'),
     ];
     $form['active_region_content_blocks']['description'] = [
       '#type' => 'markup',
@@ -83,7 +83,9 @@ class RegionSettings extends ConfigFormBase {
       $form['active_region_content_blocks'][$key] = [
         '#type' => 'entity_autocomplete',
         '#title' => $title,
-        '#description' => 'Enter the name of the region item you would like to place in the "' . $title . '" region of the site.',
+        '#description' => $this->t('Enter the name of the region item you would like to place in the @title region of the site.', [
+          '@title' => $title,
+        ]),
         '#target_type' => 'fragment',
         '#default_value' => $fid != NULL ? $this->entityTypeManager->getStorage('fragment')->load($fid) : NULL,
         '#selection_settings' => [
@@ -94,7 +96,7 @@ class RegionSettings extends ConfigFormBase {
 
     $form['region_items'] = [
       '#type' => 'fieldset',
-      '#title' => t('Region items'),
+      '#title' => $this->t('Region items'),
     ];
     $form['region_items']['description'] = [
       '#type' => 'markup',
