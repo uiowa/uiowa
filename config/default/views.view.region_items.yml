@@ -235,7 +235,20 @@ display:
       sorts: {  }
       header: {  }
       footer: {  }
-      empty: {  }
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content:
+            value: 'There are currently no region items, create some by clicking the  "Add region item" button above.'
+            format: filtered_html
+          plugin_id: text
       relationships: {  }
       arguments: {  }
       display_extenders:
