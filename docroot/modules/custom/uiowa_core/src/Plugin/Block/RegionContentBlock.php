@@ -69,20 +69,26 @@ class RegionContentBlock extends BlockBase implements ContainerFactoryPluginInte
    * {@inheritdoc}
    */
   public function build() {
+    $build = [];
     $config = $this->getConfiguration();
     $block_id = $config['block_id'];
     $uiowa_core_settings = $this->config->get('uiowa_core.settings');
     $fid = $uiowa_core_settings->get('uiowa_core.region_content.' . $block_id);
-    $fragment = NULL;
+
     if ($fid != NULL) {
       $fragment = $this->entityTypeManager->getStorage('fragment')->load($fid);
-//      $fragment['#contextual_links'] => [
-//        'region_setttings' => [
-//          'route_parameters' => ['regions_settings' => 'region_settings'],
-//        ],
-//      ];
+      $fragment = $this->entityTypeManager->getViewBuilder('fragment')->view($fragment, 'default');
+
+      $build['fragment'] = $fragment;
+      $build['#contextual_links'] = [
+        'region_settings' => [
+          'route_parameters' => ['regions_settings' => 'region_settings'],
+        ],
+      ];
+
     }
-    return $fragment != NULL ? $this->entityTypeManager->getViewBuilder('fragment')->view($fragment, 'default') : [];
+
+    return $build;
   }
 
 }
