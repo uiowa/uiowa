@@ -787,8 +787,10 @@
   }
   // Unset default margins because grid layout adds gap.
   .form-item {
-    margin-top: 0;
-    margin-bottom: 0;
+    @include breakpoint(sm) {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
   }
   // Modifer class per form item for full width display.
   &--full-column {
