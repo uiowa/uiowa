@@ -3605,3 +3605,9 @@ $sites['coursegwss-sj.local.drupal.uiowa.edu'] = 'gwss-sj.course.uiowa.edu';
 $sites['coursegwss-sj.dev.drupal.uiowa.edu'] = 'gwss-sj.course.uiowa.edu';
 $sites['coursegwss-sj.stage.drupal.uiowa.edu'] = 'gwss-sj.course.uiowa.edu';
 $sites['coursegwss-sj.prod.drupal.uiowa.edu'] = 'gwss-sj.course.uiowa.edu';
+
+// Directory aliases for frg.physics.uiowa.edu.
+$sites['physicsfrg.local.drupal.uiowa.edu'] = 'frg.physics.uiowa.edu';
+$sites['physicsfrg.dev.drupal.uiowa.edu'] = 'frg.physics.uiowa.edu';
+$sites['physicsfrg.stage.drupal.uiowa.edu'] = 'frg.physics.uiowa.edu';
+$sites['physicsfrg.prod.drupal.uiowa.edu'] = 'frg.physics.uiowa.edu';
