@@ -3587,3 +3587,21 @@ $sites['orgrobotics.local.drupal.uiowa.edu'] = 'robotics.org.uiowa.edu';
 $sites['orgrobotics.dev.drupal.uiowa.edu'] = 'robotics.org.uiowa.edu';
 $sites['orgrobotics.stage.drupal.uiowa.edu'] = 'robotics.org.uiowa.edu';
 $sites['orgrobotics.prod.drupal.uiowa.edu'] = 'robotics.org.uiowa.edu';
+
+// Directory aliases for psp.org.uiowa.edu.
+$sites['orgpsp.local.drupal.uiowa.edu'] = 'psp.org.uiowa.edu';
+$sites['orgpsp.dev.drupal.uiowa.edu'] = 'psp.org.uiowa.edu';
+$sites['orgpsp.stage.drupal.uiowa.edu'] = 'psp.org.uiowa.edu';
+$sites['orgpsp.prod.drupal.uiowa.edu'] = 'psp.org.uiowa.edu';
+
+// Directory aliases for byrne.lab.uiowa.edu.
+$sites['labbyrne.local.drupal.uiowa.edu'] = 'byrne.lab.uiowa.edu';
+$sites['labbyrne.dev.drupal.uiowa.edu'] = 'byrne.lab.uiowa.edu';
+$sites['labbyrne.stage.drupal.uiowa.edu'] = 'byrne.lab.uiowa.edu';
+$sites['labbyrne.prod.drupal.uiowa.edu'] = 'byrne.lab.uiowa.edu';
+
+// Directory aliases for gwss-sj.course.uiowa.edu.
+$sites['coursegwss-sj.local.drupal.uiowa.edu'] = 'gwss-sj.course.uiowa.edu';
+$sites['coursegwss-sj.dev.drupal.uiowa.edu'] = 'gwss-sj.course.uiowa.edu';
+$sites['coursegwss-sj.stage.drupal.uiowa.edu'] = 'gwss-sj.course.uiowa.edu';
+$sites['coursegwss-sj.prod.drupal.uiowa.edu'] = 'gwss-sj.course.uiowa.edu';
