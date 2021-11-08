@@ -765,51 +765,48 @@
   }
 }
 
-.webform--first-col {
-  .form-item:first-of-type {
-    grid-column: 1 / -1;
-  }
-}
 
-.webform-two-col,
-.webform-three-col,
-.webform-four-col {
-  @include grid-base;
-
-  .element-invisible,
-  .visually-hidden {
-    position: unset !important;
-    height: 1.4rem;
-    width: 0px;
-  }
-
-  #edit-actions {
-    margin: auto 0;
-    input#edit-actions-submit {
-      height: 3.5rem;
-      margin-top: 0.5rem;
+.webform-grid {
+  &--full-column {
+    .form-item:first-of-type {
+      grid-column: 1 / -1;
     }
   }
-}
-
-.webform-two-col {
-  @include breakpoint(sm) {
-    @include twocol-grid;
-    row-gap: unset;
+  &--two-column,
+  &--three-column,
+  &--four-column {
+    @include grid-base;
+    .element-invisible,
+    .visually-hidden {
+      position: unset !important;
+      height: 1.4rem;
+      width: 0px;
+    }
+  
+    #edit-actions {
+      margin: auto 0;
+      width: 100%;
+    }
   }
-}
-
-.webform-three-col {
-  @include breakpoint(sm) {
-    @include threecol-grid;
-    row-gap: unset;
+  &--two-column {
+    @include breakpoint(sm) {
+      @include twocol-grid;
+      row-gap: unset;
+    }
   }
-}
-
-.webform-four-col {
-  @include breakpoint(sm) {
-    gap: $desktop-width-gutter;
-    grid-template-columns: repeat(auto-fill, minmax(21%, 1fr));
-    row-gap: unset;
+  
+  &--three-column {
+    @include breakpoint(sm) {
+      @include threecol-grid;
+      row-gap: unset;
+    }
+  }
+  
+  &--four-column {
+    @include breakpoint(sm) {
+      gap: $desktop-width-gutter;
+      grid-template-columns: repeat(auto-fill, minmax(21%, 1fr));
+      row-gap: unset;
+    }
   }
 }
