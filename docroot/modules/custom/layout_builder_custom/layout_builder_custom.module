@@ -1104,8 +1104,19 @@ function layout_builder_custom_views_pre_render(ViewExecutable $view) {
 function layout_builder_custom_quote_styles_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
 
   return [
-    'Left (Default)' => 'blockquote--left',
-    'Right' => 'blockquote--right',
-    'Center' => 'blockquote--center',
+    'blockquote--left' => 'Left (Default)',
+    'blockquote--right' => 'Right',
+    'blockquote--center' => 'Center',
+  ];
+}
+
+/**
+ * Implements hook_allowed_values_function().
+ */
+function layout_builder_custom_quote_position_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+
+  return [
+    'blockquote--img-below' => 'Below Footer',
+    'blockquote--img-above' => 'Above',
   ];
 }
