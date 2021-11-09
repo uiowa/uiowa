@@ -15,6 +15,8 @@ use Drupal\layout_builder_styles\LayoutBuilderStyleInterface;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\ctools_views\Plugin\Display\Block;
 use Drupal\views\ViewExecutable;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\Core\Entity\ContentEntityInterface;
 
 /**
  * Implements hook_config_schema_info_alter().
@@ -1094,4 +1096,16 @@ function layout_builder_custom_views_pre_render(ViewExecutable $view) {
   if (!in_array($display->display['id'], $exceptions) && $view->display_handler instanceof ListBlock) {
     $view->exposed_raw_input = [];
   }
+}
+
+/**
+ * Implements hook_allowed_values_function().
+ */
+function layout_builder_custom_quote_styles_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+
+  return [
+    'Left (Default)' => 'blockquote--left',
+    'Right' => 'blockquote--right',
+    'Center' => 'blockquote--center',
+  ];
 }

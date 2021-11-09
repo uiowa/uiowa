@@ -7,8 +7,11 @@ dependencies:
     - field.field.block_content.uiowa_quote.field_uiowa_quote_citation
     - field.field.block_content.uiowa_quote.field_uiowa_quote_content
     - field.field.block_content.uiowa_quote.field_uiowa_quote_footer
+    - field.field.block_content.uiowa_quote.field_uiowa_quote_image
+    - field.field.block_content.uiowa_quote.field_uiowa_quote_style_settings
   module:
     - link
+    - options
 id: block_content.uiowa_quote.default
 targetEntityType: block_content
 bundle: uiowa_quote
@@ -40,6 +43,22 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
+  field_uiowa_quote_image:
+    type: entity_reference_entity_view
+    weight: 3
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
+  field_uiowa_quote_style_settings:
+    weight: 4
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
     region: content
 hidden:
   search_api_excerpt: true
