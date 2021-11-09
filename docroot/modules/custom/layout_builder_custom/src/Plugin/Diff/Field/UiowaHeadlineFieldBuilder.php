@@ -22,7 +22,7 @@ class UiowaHeadlineFieldBuilder extends FieldDiffBuilderBase {
    * {@inheritdoc}
    */
   public function build(FieldItemListInterface $field_items) {
-    $result = array();
+    $result = [];
     // @todo Do the comparisons and such here.
     // Every item from $field_items is of type FieldItemInterface.
     foreach ($field_items as $field_key => $field_item) {
