@@ -24,6 +24,16 @@ class UiowaHeadlineFieldBuilder extends FieldDiffBuilderBase {
   public function build(FieldItemListInterface $field_items) {
     $result = array();
     // @todo Do the comparisons and such here.
+    // Every item from $field_items is of type FieldItemInterface.
+    foreach ($field_items as $field_key => $field_item) {
+      if (!$field_item->isEmpty()) {
+        $values = $field_item->getValue();
+        if (isset($values['value'])) {
+          $value = $field_item->view(['label' => 'hidden']);
+          $result[$field_key][] = $value;
+        }
+      }
+    }
     return $result;
   }
 
