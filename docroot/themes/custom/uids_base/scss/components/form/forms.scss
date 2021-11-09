@@ -765,72 +765,34 @@
   }
 }
 
+// Webform wrapper class that adjusts submit button alignment if using webform flex layout.
+.webform-flexbox {
 
-.webform-grid {
   // Center align button works with label and label visually hidden.
-  .form-actions {
+  .webform-flex:last-child {
     align-items: center;
     display: grid;
-    margin-bottom: .5rem;
+    margin-bottom:0;
     margin-top: 0;
   }
+
   // Modifier class if label is visually hidden with description.
   &--align-top {
-    .form-actions {
+    .webform-flex:last-child {
       align-items: start;
     }
   }
   &--align-end {
-    .form-actions {
+    .webform-flex:last-child {
       align-items: end;
-      margin-bottom: 0;
     }
   }
-  &.uids-content {
-  input {
-      margin-bottom: 0;
-    }
-  }
-  // Unset default margins because grid layout adds gap.
-  .form-item {
-    @include breakpoint(sm) {
-      margin-top: 0;
-      margin-bottom: 0;
-    }
-  }
-  // Modifer class per form item for full width display.
-  &--full-column {
-    grid-column: 1 / -1;
-  }
-  // Grid layout classes.
-  &--two-column,
-  &--three-column,
-  &--four-column {
-    @include grid-base;
 
-    [type="submit"] {
+  // Set button full-width.
+  .webform-flex--container {
+    .form-actions [type="submit"] {
       width: 100%;
       height: 57px;
-    }
-  }
-  &--two-column {
-    @include breakpoint(sm) {
-      @include twocol-grid;
-      gap: 1.5rem;
-    }
-  }
-
-  &--three-column {
-    @include breakpoint(sm) {
-      @include threecol-grid;
-      gap: 1.5rem;
-    }
-  }
-
-  &--four-column {
-    @include breakpoint(sm) {
-      gap: 1.5rem;
-      grid-template-columns: repeat(auto-fill, minmax(21%, 1fr));
     }
   }
 }
