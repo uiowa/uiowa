@@ -765,29 +765,8 @@
   }
 }
 
-// Webform wrapper class that adjusts submit button alignment if using webform flex layout.
+// Adjusts submit button size if using webform flex layout.
 .webform-flexbox {
-
-  // Center align button works with label and label visually hidden.
-  .webform-flex:last-child {
-    align-items: center;
-    display: grid;
-    margin-bottom:0;
-    margin-top: 0;
-  }
-
-  // Modifier class if label is visually hidden with description.
-  &--align-top {
-    .webform-flex:last-child {
-      align-items: start;
-    }
-  }
-  &--align-end {
-    .webform-flex:last-child {
-      align-items: end;
-    }
-  }
-
   // Set button full-width.
   .webform-flex--container {
     .form-actions [type="submit"] {
