@@ -3727,3 +3727,20 @@ function sitenow_update_9025() {
     $storage_handler->delete($entities);
   }
 }
+
+/**
+ * Convert uiowa_articles to article_list_block.
+ */
+function sitenow_update_9026() {
+  foreach([
+    'views_block:people_list_block-list_card',
+    'views_block:article_list_block-list_article',
+  ] as $block_plugin_id ) {
+    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
+      $config = $component->get('configuration');
+      $config['use_more_text'] = '';
+      $component->set('configuration', $config);
+    });
+  }
+}
+
