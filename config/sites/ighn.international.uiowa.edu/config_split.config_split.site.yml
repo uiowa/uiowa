@@ -14,7 +14,6 @@ module:
 theme: {  }
 complete_list:
   - config_split.config_split.site
-  - field.storage.node.field_ighn_primary_college
   - node.type.ighn_person
   - simple_sitemap.bundle_settings.default.node.ighn_person
   - taxonomy.vocabulary.ighn_department
@@ -23,8 +22,9 @@ complete_list:
   - taxonomy.vocabulary.ighn_primary_college
   - taxonomy.vocabulary.ighn_primary_focus_areas
   - views.view.ighn_person_view
-  - 'block.block.ighn_*'
-  - 'field.storage.node.field_ighn_person_*'
-  - ighn.settings
+  - 'core.base_field_override.ighn_person.*'
+  - 'core.entity_form_display.ighn_person.*'
+  - 'core.entity_view_display.ighn_person.*'
+  - 'field.storage.node.field_ighn_*'
 partial_list:
   - 'user.role.*'
