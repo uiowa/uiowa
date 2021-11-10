@@ -1,0 +1,93 @@
+uuid: c78c78b4-5ff3-4e63-8a5c-023723722a4a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.fragment.region_item.layout_builder__layout
+    - fragments.fragment_type.region_item
+  module:
+    - layout_builder
+    - layout_builder_restrictions
+    - user
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    allow_custom: true
+    enabled: true
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          layout_builder_styles_style:
+            - ''
+            - section_margin_edge_to_edge
+          context_mapping: {  }
+        components: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock:
+              6: 6
+              7: 7
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      whitelisted_blocks:
+        'Chaos Tools': {  }
+        'Content fields': {  }
+        'Custom block types': {  }
+        'Custom blocks': {  }
+        Devel: {  }
+        Forms: {  }
+        'Inline blocks':
+          - 'inline_block:uiowa_cta'
+          - 'inline_block:uiowa_text_area'
+        Lists: {  }
+        'Lists (Views)': {  }
+        Menus: {  }
+        Restricted: {  }
+        'Site custom': {  }
+        'SiteNow Dispatch': {  }
+        Superfish: {  }
+        System: {  }
+        'University of Iowa Alerts': {  }
+        User: {  }
+        Webform: {  }
+        core: {  }
+      blacklisted_blocks: {  }
+      allowed_layouts:
+        - layout_twocol_section
+        - layout_threecol_section
+        - layout_onecol
+    entity_view_mode_restriction_by_region:
+      allowed_layouts:
+        - layout_twocol_section
+        - layout_threecol_section
+        - layout_onecol
+id: fragment.region_item.default
+targetEntityType: fragment
+bundle: region_item
+mode: default
+content:
+  title:
+    label: above
+    type: string
+    weight: -4
+    region: content
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  user_id:
+    label: hidden
+    type: author
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  layout_builder__layout: true
+  search_api_excerpt: true

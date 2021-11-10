@@ -6,14 +6,12 @@
  */
 
 use Drupal\Component\Utility\Html;
-use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Url;
-use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\views\Entity\View;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
@@ -328,7 +326,7 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
           'class' => [
             'field--name-field-article-source-link',
           ],
-        ]
+        ],
       ];
       if ($org && $style->getField($id, 'field_article_source_org')) {
         $org = $style->getField($id, 'field_article_source_org');
