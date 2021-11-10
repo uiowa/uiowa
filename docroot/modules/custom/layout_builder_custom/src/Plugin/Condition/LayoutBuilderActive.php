@@ -2,6 +2,7 @@
 
 namespace Drupal\layout_builder_custom\Plugin\Condition;
 
+use Drupal\fragments\Entity\FragmentInterface;
 use Drupal\Core\Condition\ConditionPluginBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -107,6 +108,13 @@ class LayoutBuilderActive extends ConditionPluginBase implements ContainerFactor
 
     if ($node instanceof NodeInterface) {
       $show = !$this->isLayoutCompatibleEntity($node);
+    }
+
+    // This covers layout builder for fragments.
+    $fragment = $this->routeMatch->getParameter('fragment');
+
+    if ($fragment instanceof FragmentInterface) {
+      $show = !$this->isLayoutCompatibleEntity($fragment);
     }
 
     // Handle negation.

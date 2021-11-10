@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @Block(
  *   id = "aosrequirements_block",
  *   admin_label = @Translation("Area of Study Requirements Heading Block"),
- *   category = @Translation("Area of Study")
+ *   category = @Translation("Site custom")
  * )
  */
 class AOSRequirements extends BlockBase implements ContainerFactoryPluginInterface {
