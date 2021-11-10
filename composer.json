@@ -169,6 +169,8 @@
         "drupal/purge": "^3.0@beta",
         "drupal/rabbit_hole": "^1.0@beta",
         "drupal/redirect": "1.x-dev#e5201ca519bd947ee5478d9dee88af0c5d6fec89",
+        "drupal/replicate": "^1.0",
+        "drupal/replicate_ui": "^1.0",
         "drupal/reroute_email": "^2.0",
         "drupal/responsive_table_filter": "^1.2",
         "drupal/robotstxt": "^1.2",
@@ -232,8 +234,10 @@
                 "Expose Layout Builder data to REST and JSON:API": "https://www.drupal.org/files/issues/2020-07-07/2942975-116.patch",
                 "Themes have no context of the entity being rendered in preprocessing a layout when using Layout builder": "https://www.drupal.org/files/issues/2021-09-24/3111192-lb-entity-context-29.patch",
                 "Add Views EntityReference filter to be available for all entity reference fields": "https://www.drupal.org/files/issues/2021-06-15/2429699-414.patch",
-                "Views Block Display skips preBlockBuild() call on ajax rebuild": "https://www.drupal.org/files/issues/2021-03-05/2605218-61.patch",
-                "Periods in query strings are replaced by underscores": "https://www.drupal.org/files/issues/2020-06-25/fix-mangled-query-parameter-names-2984272-36.patch"
+                "Views Block Display skips preBlockBuild() call on ajax rebuild": "https://www.drupal.org/files/issues/2021-10-13/2605218-70.patch",
+                "Periods in query strings are replaced by underscores": "https://www.drupal.org/files/issues/2020-06-25/fix-mangled-query-parameter-names-2984272-36.patch",
+                "Get redirected to currently-selected menu instead of menu list": "https://www.drupal.org/files/issues/2021-09-20/2957953-9.3.x-139.patch",
+                "Fix Webform ui button contrast deprecation": "https://www.drupal.org/files/issues/2021-11-07/webform-button-contrast-3195764-12.patch"
             },
             "drupal/default_content": {
                 "Add a Normalizer and Denormalizer to support Layout Builder": "https://www.drupal.org/files/issues/2020-08-24/default_content-add-normalizer-denormalizer-for-layout-builder-3160146-25.patch",
@@ -275,7 +279,11 @@
                 "Port purge commands to Drush 9": "https://www.drupal.org/files/issues/2921309-17-port-purge-drush-9.patch"
             },
             "drupal/redirect": {
-                "Match redirect": "https://www.drupal.org/files/issues/2020-04-13/redirect-n2831605-31.patch"
+                "Match redirect": "https://www.drupal.org/files/issues/2020-04-13/redirect-n2831605-31.patch",
+                "Redirects fail with trailing slash in source path": "https://www.drupal.org/files/issues/2021-10-15/trailingslash-2932615-38_2.patch"
+            },
+            "drupal/replicate": {
+                "Replicating node with non-reusable block added via layout builder does not replicate the block": "https://www.drupal.org/files/issues/2021-10-14/replicate_lb_block_references-3100765-18.patch"
             },
             "jackmoore/colorbox": {
                 "Accessibility improvements": "https://patch-diff.githubusercontent.com/raw/jackmoore/colorbox/pull/832.diff"
@@ -350,7 +358,7 @@
         ],
         "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
         "nuke": [
-            "rm -rf vendor composer.lock docroot/core docroot/modules/contrib docroot/profiles/contrib docroot/themes/contrib",
+            "rm -rf vendor docroot/core docroot/modules/contrib docroot/profiles/contrib docroot/themes/contrib",
             "@composer clearcache --ansi",
             "@composer install --ansi"
         ]

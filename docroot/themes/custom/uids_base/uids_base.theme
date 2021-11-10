@@ -5,6 +5,7 @@
  * Functions to support theming in the uids_base theme.
  */
 
+use Drupal\fragments\Entity\FragmentInterface;
 use Drupal\block\Entity\Block;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -87,6 +88,13 @@ function uids_base_preprocess_html(&$variables) {
 
   $variables['attributes']['class'][] = $sticky_class;
 
+  $toppage = 'no-top-scroll';
+  // Used for page by page basis display of scroll to top button.
+  if (theme_get_setting('header.toppage')) {
+    $toppage = 'top-scroll';
+  }
+  $variables['attributes']['class'][] = $toppage;
+
   // Get header type for setting sticky padding for tertiary header.
   $variables['header_type'] = theme_get_setting('header.type');
 
@@ -105,6 +113,15 @@ function uids_base_preprocess_html(&$variables) {
     // @todo Is there a better way to have a soft dependency on a class?
     if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
       $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($node);
+    }
+  }
+
+  $fragment = \Drupal::routeMatch()->getParameter('fragment');
+
+  if ($fragment instanceof FragmentInterface) {
+    // @todo Is there a better way to have a soft dependency on a class?
+    if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
+      $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($fragment);
     }
   }
 }
@@ -130,6 +147,7 @@ function uids_base_preprocess_page(&$variables) {
   $variables['header_type'] = theme_get_setting('header.type');
   $variables['header_nav'] = theme_get_setting('header.nav_style');
   $variables['header_sticky'] = theme_get_setting('header.sticky');
+  $variables['header_toppage'] = theme_get_setting('header.toppage');
   $variables['header_classes'] = [];
   $name_length = strlen($variables['site_name']);
 
@@ -206,6 +224,14 @@ function uids_base_preprocess_page(&$variables) {
     }
   }
   $current_route = \Drupal::routeMatch();
+  $fragment = $current_route->getParameter('fragment');
+  if ($fragment instanceof FragmentInterface) {
+    // @todo Is there a better way to have a soft dependency on a class?
+    if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
+      $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($fragment);
+    }
+  }
+
   $route_name = $current_route->getRouteName();
 
   switch ($route_name) {
@@ -618,10 +644,6 @@ function uids_base_preprocess_block(&$variables) {
     $variables['breadcrumb'] = $plugin_block->build();
   }
 
-  if ($variables['derivative_plugin_id'] == 'uiowa_aggregator') {
-    $variables['#attached']['library'][] = 'uids_base/aggregator';
-  }
-
   if ($variables['derivative_plugin_id'] == 'uiowa_banner') {
     /** @var \Drupal\Block\Entity\Block $block */
     $block = $variables['elements']['content']['#block_content'];
@@ -711,20 +733,24 @@ function uids_base_preprocess_menu_local_task(&$variables) {
   if ($url instanceof Url) {
     $route_name = $url->getRouteName();
 
-    $route_icon_map = [
-      'entity.node.canonical' => 'view',
-      'entity.node.edit_form' => 'edit',
-      'entity.node.delete_form' => 'delete',
-      'layout_builder.overrides.node.view' => 'layout',
-      'entity.node.version_history' => 'history',
-      'entity.node.entity_usage' => 'usage',
-      'entity.node.devel_load' => 'devel',
-      'entity.taxonomy_term.canonical' => 'view',
-      'entity.taxonomy_term.edit_form' => 'edit',
-      'entity.taxonomy_term.delete_form' => 'delete',
-      'entity.taxonomy_term.entity_usage' => 'usage',
-      'entity.taxonomy_term.devel_load' => 'devel',
+    $supported_entity_types = [
+      'node',
+      'fragment',
+      'taxonomy_term',
     ];
+
+    $route_icon_map = [];
+
+    foreach ($supported_entity_types as $entity_type) {
+      $route_icon_map['entity.' . $entity_type . '.canonical'] = 'view';
+      $route_icon_map['entity.' . $entity_type . '.edit_form'] = 'edit';
+      $route_icon_map['entity.' . $entity_type . '.delete_form'] = 'delete';
+      $route_icon_map['entity.' . $entity_type . '.version_history'] = 'history';
+      $route_icon_map['entity.' . $entity_type . '.entity_usage'] = 'usage';
+      $route_icon_map['entity.' . $entity_type . '.devel_load'] = 'devel';
+      $route_icon_map['entity.' . $entity_type . '.replicate'] = 'replicate';
+      $route_icon_map['layout_builder.overrides.' . $entity_type . '.view'] = 'layout';
+    }
 
     // Set the icon if the route matches an entry in the map.
     if (isset($route_icon_map[$route_name])) {

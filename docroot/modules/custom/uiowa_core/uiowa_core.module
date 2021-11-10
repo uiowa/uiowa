@@ -5,7 +5,9 @@
  * Primary module hooks for Uiowa Core module.
  */
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\google_tag\Entity\Container;
 use Drupal\uiowa_core\HeadlineHelper;
 
@@ -74,7 +76,52 @@ function uiowa_core_page_attachments(&$page) {
  * Implements hook_form_alter().
  */
 function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $current_route = \Drupal::routeMatch();
+  $route_name = $current_route->getRouteName();
+
+  // Only allow certain types to be replicated.
+  // Ignored config that can be custom to a site.
+  if ($route_name == 'entity.node.replicate') {
+    // Get allowed replicate entity types.
+    $allowed_types = \Drupal::config('uiowa_core.settings')->get('uiowa_core.replicate_allowed');
+    $entity = $form_state->getFormObject()->getEntity();
+    $node_type = $entity->bundle();
+    $node_title = $entity->getTitle();
+    // Set message and prevent replicate.
+    if (!in_array($node_type, $allowed_types)) {
+      \Drupal::messenger()->addWarning(t('Replicating content of this type is not allowed. Please contact the ITS Help Desk about enabling this functionality for this content.'));
+      $form['actions']['submit']['#disabled'] = TRUE;
+    }
+    // Customize the replicate confirm dialog to our
+    // use case (pages with titles)
+    $bundle_label = \Drupal::entityTypeManager()
+      ->getStorage('node_type')
+      ->load($entity->bundle())
+      ->label();
+
+    // Changes title to match the "Edit" action title
+    // (e.g. "<em>Edit</em> Home").
+    $form['#title'] = t('<em>Replicate @type</em> @title',
+      ['@type' => $bundle_label, '@title' => $node_title]);
+
+    // Lowercase for the rest of the form.
+    $bundle_label = strtolower($bundle_label);
+
+    $form['new_label_en']['#title'] = t("Replicated @type content's title", ['@type' => $bundle_label]);
+    $form['new_label_en']['#description'] = t('This text will be used as the title of the newly-replicated @type.', ['@type' => $bundle_label]);
+    // Removes the "This action cannot be undone" text.
+    $form['description'] = ['#markup' => ''];
+
+  }
+
   switch ($form_id) {
+    case 'fragment_region_item_add_form':
+    case 'fragment_region_item_edit_form':
+      // Ensure item is published to prevent rendering issue for anonymous visitor.
+      $form['status']['widget']['value']['#default_value'] = TRUE;
+      $form['status']['#disabled'] = TRUE;
+      break;
+
     case 'google_tag_container':
       $uiowa_core_gtag = \Drupal::config('uiowa_core.settings')->get('uiowa_core.gtag');
       // Inform on configuration form that the functionality is
@@ -181,10 +228,53 @@ function uiowa_core_preprocess_html(&$variables) {
 /**
  * Implements hook_local_tasks_alter().
  */
-function uiowa_core_menu_local_tasks_alter(&$variables) {
+function uiowa_core_menu_local_tasks_alter(&$data, $route_name) {
   $logged_in = \Drupal::currentUser()->isAuthenticated();
   if ($logged_in) {
-    $variables['tabs'][0]['entity.node.delete_form']['#weight'] = 100;
-    $variables['tabs'][0]['entity.taxonomy_term.delete_form']['#weight'] = 100;
+    $data['tabs'][0]['entity.node.delete_form']['#weight'] = 110;
+    $data['tabs'][0]['entity.fragment.delete_form']['#weight'] = 110;
+    $data['tabs'][0]['entity.taxonomy_term.delete_form']['#weight'] = 110;
+  }
+  if (isset($data["tabs"][0]["replicate_ui.local_tasks:entity.node.replicate"])) {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    // Get allowed replicate entity types.
+    if ($node) {
+      $allowed_types = \Drupal::config('uiowa_core.settings')->get('uiowa_core.replicate_allowed');
+      $node_type = $node->bundle();
+      // Remove replicate menu item.
+      if (!in_array($node_type, $allowed_types)) {
+        $data['tabs'][0]['replicate_ui.local_tasks:entity.node.replicate']['#access'] = FALSE;
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_operation_alter().
+ */
+function uiowa_core_entity_operation_alter(array &$operations, EntityInterface $entity) {
+  // If we're using the replicate module, check if it's available.
+  if (isset($operations['replicate'])) {
+    // Pull our allowed types, and check against the given entity.
+    $allowed_types = \Drupal::config('uiowa_core.settings')->get('uiowa_core.replicate_allowed');
+    // @todo using entity_operation_alter, getType() isn't always guaranteed.
+    $type = $entity->getType();
+    // If it's not an allowed type, then remove
+    // the replicate operation.
+    if (!in_array($type, $allowed_types)) {
+      unset($operations['replicate']);
+    }
+  }
+  switch ($entity->getEntityTypeId()) {
+    case 'fragment':
+      $current_route = \Drupal::routeMatch();
+      $route_name = $current_route->getRouteName();
+      if ($route_name == 'uiowa_core.region_settings') {
+        $operations['layout']['weight'] = 9;
+        $url = Url::fromRoute($route_name)->toString();
+        $operations["layout"]["url"]->setOption('query', ['destination' => $url]);
+      }
+      break;
+
   }
 }

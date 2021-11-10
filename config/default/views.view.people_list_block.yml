@@ -705,7 +705,7 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          reduce_duplicates: false
+          reduce_duplicates: true
           type: textfield
           limit: true
           vid: tags
@@ -868,7 +868,7 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          reduce_duplicates: false
+          reduce_duplicates: true
           plugin_id: list_field
       sorts:
         sticky:
@@ -987,6 +987,15 @@ display:
       more_link_help_text: 'Check to include a ''display more'' link. To use the default <a href="/admin/config/sitenow/sitenow-people">people path set within SiteNow People</a>, make sure the ‘Enable people listing’ box is checked. Alternatively, a custom URL path can be provided in the ‘Path’ text box below. '
       display_description: ''
       block_description: People
+      restrict_fields:
+        nid: nid
+        title: title
+        field_person_credential: 0
+        field_teaser: 0
+        field_person_email: 0
+        field_image: 0
+        field_person_phone: 0
+        field_person_position: 0
     cache_metadata:
       max-age: -1
       contexts:
