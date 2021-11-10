@@ -34,6 +34,8 @@
  * @see template_preprocess_block()
  */
 #}
+{{ attach_library('uids_base/blockquote') }}
+
 {% set style_classes = [] %}
 {% set size_classes = [] %}
 
@@ -50,41 +52,41 @@
 
 {% set block_quote = {
   'attributes': attributes.removeClass(style_classes, position_classes),
-  'quote_styles' : style_classes,
-  'quote_position' : position_classes,
+  'blockquote_styles' : style_classes,
+  'blockquote_image_position' : position_classes,
   'blockquote_image': content.field_uiowa_quote_image,
   'blockquote_content': content.field_uiowa_quote_content,
   'blockquote_cite_url': content.field_uiowa_quote_link[0]['#url'],
   'blockquote_cite_text': content.field_uiowa_quote_link[0]['#title']|render,
   'blockquote_footer': content.field_uiowa_quote_footer,
-} %}	
+} %}
 
 {% embed '@uids_base/uids/blockquote.html.twig' with block_quote only %}
-
-  <blockquote class="{{ blockquote_class }}">
-    {% if quote_position == 'blockquote--img-above' %}
-      <div class="blockquote__media"> <img src="{{ blockquote_image }}" class="media--circle" /> </div>
-    {% endif %}
-    <div class="blockquote__content">
-      <div class="blockquote__paragraph">
-      {{ blockquote_content }}
-      </div>
-      <footer>
-        {% if quote_position == 'blockquote--img-below' %}
-          <div class="blockquote__media"> <img src="{{ blockquote_image }}" class="media--circle" /> </div>
-        {% endif %}
-        <div>
-          {{ blockquote_footer }}
-          <cite>
-            {% if blockquote_cite_url is not empty %}
-              <a href="{{ blockquote_cite_url }}">{{ blockquote_cite_text }}</a>
-            {% else %}
-              {{ blockquote_cite_text }}
-            {% endif %}
-          </cite>
+  {% block quote_block %}
+    <blockquote class="{{ blockquote_styles }}">
+      {% if blockquote_image_position == 'blockquote--img-above' %}
+        <div class="blockquote__media"> <img src="{{ blockquote_image }}" class="media--circle" /> </div>
+      {% endif %}
+      <div class="blockquote__content">
+        <div class="blockquote__paragraph">
+        {{ blockquote_content }}
         </div>
-      </footer>
-    </div>
-  </blockquote>
-
+        <footer>
+          {% if blockquote_image_position == 'blockquote--img-below' %}
+            <div class="blockquote__media"> <img src="{{ blockquote_image }}" class="media--circle" /> </div>
+          {% endif %}
+          <div>
+            {{ blockquote_footer }}
+            <cite>
+              {% if blockquote_cite_url is not empty %}
+                <a href="{{ blockquote_cite_url }}">{{ blockquote_cite_text }}</a>
+              {% else %}
+                {{ blockquote_cite_text }}
+              {% endif %}
+            </cite>
+          </div>
+        </footer>
+      </div>
+    </blockquote>
+  {% endblock %}
 {% endembed %}
