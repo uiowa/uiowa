@@ -10,7 +10,7 @@ use Drupal\Core\Block\BlockBase;
  * @Block(
  *   id = "requestinfobutton_block",
  *   admin_label = @Translation("Request Info Block"),
- *   category = @Translation("Admissions Core")
+ *   category = @Translation("Site custom")
  * )
  */
 class RequestInfoButton extends BlockBase {

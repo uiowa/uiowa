@@ -223,19 +223,19 @@
   }
 
   ::-webkit-input-placeholder {
-    color: $grey-light;
+    color: $brand-cool-gray;
   }
 
   :-ms-input-placeholder {
-    color: $grey-light;
+    color: $brand-cool-gray;
   }
 
   ::-ms-input-placeholder {
-    color: $grey-light;
+    color: $brand-cool-gray;
   }
 
   ::placeholder {
-    color: $grey-light;
+    color: $brand-cool-gray;
   }
 
   [type='file'],
@@ -761,6 +761,17 @@
   & .block-webform[class*="bg--white"] {
     .description {
       color: inherit;
+    }
+  }
+}
+
+// Adjusts submit button size if using webform flex layout.
+.webform-flexbox {
+  // Set button full-width.
+  .webform-flex--container {
+    .form-actions [type="submit"] {
+      width: 100%;
+      height: 57px;
     }
   }
 }
