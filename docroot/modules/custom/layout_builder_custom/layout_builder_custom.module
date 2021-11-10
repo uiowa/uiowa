@@ -296,6 +296,12 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
           $form['#attached']['library'][] = 'layout_builder_custom/banner-block-form';
           break;
+        
+        case 'inline_block:uiowa_quote':
+          // Set blockquote image alignment default.
+          if ($block->getPluginId() == 'inline_block:uiowa_quote') {
+            $form['layout_builder_style_alignment']['#default_value'] = 'quote_left';
+          }
 
         case 'inline_block:uiowa_card':
           $form['#attached']['library'][] = 'layout_builder_custom/card-block-form';
