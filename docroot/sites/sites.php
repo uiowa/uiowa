@@ -3611,3 +3611,9 @@ $sites['physicsfrg.local.drupal.uiowa.edu'] = 'frg.physics.uiowa.edu';
 $sites['physicsfrg.dev.drupal.uiowa.edu'] = 'frg.physics.uiowa.edu';
 $sites['physicsfrg.stage.drupal.uiowa.edu'] = 'frg.physics.uiowa.edu';
 $sites['physicsfrg.prod.drupal.uiowa.edu'] = 'frg.physics.uiowa.edu';
+
+// Directory aliases for academicmusiciowa.sites.uiowa.edu.
+$sites['sitesacademicmusiciowa.local.drupal.uiowa.edu'] = 'academicmusiciowa.sites.uiowa.edu';
+$sites['sitesacademicmusiciowa.dev.drupal.uiowa.edu'] = 'academicmusiciowa.sites.uiowa.edu';
+$sites['sitesacademicmusiciowa.stage.drupal.uiowa.edu'] = 'academicmusiciowa.sites.uiowa.edu';
+$sites['sitesacademicmusiciowa.prod.drupal.uiowa.edu'] = 'academicmusiciowa.sites.uiowa.edu';
