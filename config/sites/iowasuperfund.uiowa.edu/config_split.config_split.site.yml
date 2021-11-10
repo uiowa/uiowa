@@ -10,6 +10,8 @@ module:
   fragments: 0
 theme: {  }
 blacklist:
+  - config_split.config_split.site
+  - field.storage.fragment.field_authors
   - fragments.fragment_type.publication
   - node.type.project_core
   - node.type.publication
@@ -20,7 +22,8 @@ blacklist:
   - simple_sitemap.bundle_settings.default.node.support_core
   - 'field.storage.node.field_publication_*'
 graylist:
-  - config_split.config_split.site
+  - metatag.settings
+  - 'user.role.*'
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 90

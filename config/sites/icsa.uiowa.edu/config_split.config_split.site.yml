@@ -9,14 +9,8 @@ folder: ../config/sites/icsa.uiowa.edu
 module:
   datetime_range: 0
 theme: {  }
-blacklist: {  }
-graylist:
+blacklist:
   - config_split.config_split.site
-  - core.date_format.medium_date
-  - field.storage.node.field_project_category
-  - field.storage.node.field_project_date
-  - field.storage.node.field_project_finished
-  - field.storage.node.field_project_reports
   - node.type.project
   - system.menu.about
   - system.menu.projects
@@ -25,6 +19,9 @@ graylist:
   - system.menu.services
   - views.view.projects
   - views.view.reports
+  - 'field.storage.node.field_project_*'
+graylist:
+  - core.date_format.medium_date
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 90
