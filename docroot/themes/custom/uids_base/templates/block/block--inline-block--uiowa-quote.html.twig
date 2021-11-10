@@ -1,0 +1,90 @@
+{#
+/**
+ * @file
+ * Theme override to display a block.
+ *
+ * Available variables:
+ * - plugin_id: The ID of the block implementation.
+ * - label: The configured label of the block if visible.
+ * - configuration: A list of the block's configuration values.
+ *   - label: The configured label for the block.
+ *   - label_display: The display settings for the label.
+ *   - provider: The module or other provider that provided this block plugin.
+ *   - Block plugin specific settings will also be stored here.
+ * - content: The content of this block.
+ * - attributes: array of HTML attributes populated by modules, intended to
+ *   be added to the main container tag of this template.
+ *   - id: A valid HTML ID and guaranteed unique.
+ * - title_attributes: Same as attributes, except applied to the main title
+ *   tag that appears in the template.
+ * - title_prefix: Additional output populated by modules, intended to be
+ *   displayed in front of the main title tag that appears in the template.
+ * - title_suffix: Additional output populated by modules, intended to be
+ *   displayed after the main title tag that appears in the template.
+ *
+ styles
+ left = default
+ right blockquote_footer
+ center
+
+ position
+ within footer
+ above content
+
+ * @see template_preprocess_block()
+ */
+#}
+{% set style_classes = [] %}
+{% set size_classes = [] %}
+
+{% for style in attributes.class %}
+	{# Remove media classes if media--circle  #}
+	{% if style starts with 'media--circle' %}
+		{% set style_classes = style_classes|merge([style]) %}
+	{% endif %}
+  {% if position starts with 'blockquote--img' %}
+		{% set position_classes = position_classes|merge([style]) %}
+	{% endif %}
+{% endfor %}
+
+
+{% set block_quote = {
+  'attributes': attributes.removeClass(style_classes, position_classes),
+  'quote_styles' : style_classes,
+  'quote_position' : position_classes,
+  'blockquote_image': content.field_uiowa_quote_image,
+  'blockquote_content': content.field_uiowa_quote_content,
+  'blockquote_cite_url': content.field_uiowa_quote_link[0]['#url'],
+  'blockquote_cite_text': content.field_uiowa_quote_link[0]['#title']|render,
+  'blockquote_footer': content.field_uiowa_quote_footer,
+} %}	
+
+{% embed '@uids_base/uids/blockquote.html.twig' with block_quote only %}
+
+  <blockquote class="{{ blockquote_class }}">
+    {% if quote_position == 'blockquote--img-above' %}
+      <div class="blockquote__media"> <img src="{{ blockquote_image }}" class="media--circle" /> </div>
+    {% endif %}
+    <div class="blockquote__content">
+      <div class="blockquote__paragraph">
+      {{ blockquote_content }}
+      </div>
+      <footer>
+        {% if quote_position == 'blockquote--img-below' %}
+          <div class="blockquote__media"> <img src="{{ blockquote_image }}" class="media--circle" /> </div>
+        {% endif %}
+        <div>
+          {{ blockquote_footer }}
+          <cite>
+            {% if blockquote_cite_url is not empty %}
+              <a href="{{ blockquote_cite_url }}">{{ blockquote_cite_text }}</a>
+            {% else %}
+              {{ blockquote_cite_text }}
+            {% endif %}
+          </cite>
+        </div>
+      </footer>
+    </div>
+  </blockquote>
+
+{% endembed %}
