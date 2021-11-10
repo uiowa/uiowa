@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @Block(
  *   id = "transportation_cost_calculator",
  *   admin_label = @Translation("Cost Calculator"),
- *   category = @Translation("Transportation")
+ *   category = @Translation("Site custom")
  * )
  */
 class CostCalculatorBlock extends BlockBase implements ContainerFactoryPluginInterface {

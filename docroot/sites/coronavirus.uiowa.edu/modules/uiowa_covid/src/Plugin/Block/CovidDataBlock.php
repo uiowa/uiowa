@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @Block(
  *   id = "uiowa_covid_data",
  *   admin_label = @Translation("COVID Data"),
- *   category = @Translation("UIowa COVID")
+ *   category = @Translation("Site custom")
  * )
  */
 class CovidDataBlock extends BlockBase implements ContainerFactoryPluginInterface {
