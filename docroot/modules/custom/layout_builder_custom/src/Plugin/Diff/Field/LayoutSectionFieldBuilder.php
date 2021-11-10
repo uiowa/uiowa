@@ -74,7 +74,7 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
     // @todo Do the comparisons and such here.
     // Every item from $field_items is of type FieldItemInterface.
     foreach ($field_items->getSections() as $id => $section) {
-      $result[$id][] = implode(',', $section->toArray()['layout_settings']['layout_builder_styles_style']);
+      $result[$id] = implode(',', $section->toArray()['layout_settings']['layout_builder_styles_style']);
       foreach ($section->getComponents() as $comp_id => $component) {
         $config = $component->get('configuration');
         if (!isset($config['block_revision_id'])) {
@@ -91,14 +91,14 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
                   if (is_array($value_value)) {
                     $value_value = implode('.', $value_value);
                   }
-                  $result[$id][] = implode('|', [$comp_id, $indexer, $value_value]);
+                  $result[$id] .= implode("\t | \t", [$comp_id, $indexer, $value_value]);
                 }
               }
             }
           }
         }
       }
-      $result[$id] = implode('\n', $result[$id]);
+//      $result[$id] = implode(",", $result[$id]);
     }
     return $result;
   }
