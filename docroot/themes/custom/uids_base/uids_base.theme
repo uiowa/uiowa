@@ -661,6 +661,12 @@ function uids_base_preprocess_block(&$variables) {
     $variables['has_hover_effect'] = !in_array('stat--static', $variables['elements']['#attributes']['class']);
   }
 
+  // Check for blockquote image placement.
+  if ($variables['derivative_plugin_id'] == 'uiowa_quote' && isset($variables['elements']['#attributes']['class'])) {
+    $variables['has_image_below'] = !in_array('blockquote--img-above', $variables['elements']['#attributes']['class']);
+    $variables['has_image_above'] = !in_array('blockquote--img-below', $variables['elements']['#attributes']['class']);
+  }
+
 }
 
 /**
