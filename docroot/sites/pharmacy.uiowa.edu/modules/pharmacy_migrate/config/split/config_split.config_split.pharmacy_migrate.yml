@@ -5,6 +5,8 @@ dependencies: {  }
 id: pharmacy_migrate
 label: 'Pharmacy Migrate'
 description: 'Migrations for Pharmacy'
+weight: 80
+stackable: true
 storage: folder
 folder: ./sites/pharmacy.uiowa.edu/modules/pharmacy_migrate/config/split
 module:
@@ -15,7 +17,6 @@ module:
   pharmacy_migrate: 0
   sitenow_migrate: 0
 theme: {  }
-weight: 80
 complete_list:
   - config_split.config_split.pharmacy_migrate
   - 'migrate_plus.migration.pharmacy_*'
