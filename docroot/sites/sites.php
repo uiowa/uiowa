@@ -3617,3 +3617,9 @@ $sites['sitesacademicmusiciowa.local.drupal.uiowa.edu'] = 'academicmusiciowa.sit
 $sites['sitesacademicmusiciowa.dev.drupal.uiowa.edu'] = 'academicmusiciowa.sites.uiowa.edu';
 $sites['sitesacademicmusiciowa.stage.drupal.uiowa.edu'] = 'academicmusiciowa.sites.uiowa.edu';
 $sites['sitesacademicmusiciowa.prod.drupal.uiowa.edu'] = 'academicmusiciowa.sites.uiowa.edu';
+
+// Directory aliases for weigel.lab.uiowa.edu.
+$sites['labweigel.local.drupal.uiowa.edu'] = 'weigel.lab.uiowa.edu';
+$sites['labweigel.dev.drupal.uiowa.edu'] = 'weigel.lab.uiowa.edu';
+$sites['labweigel.stage.drupal.uiowa.edu'] = 'weigel.lab.uiowa.edu';
+$sites['labweigel.prod.drupal.uiowa.edu'] = 'weigel.lab.uiowa.edu';
