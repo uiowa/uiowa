@@ -49,7 +49,10 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
                     $value_value = implode('.', $value_value);
                   }
                   $old = isset($result[$counter]) ? $result[$counter] : '';
-                  $result[$counter] = $old . "\r" . implode(': ', [$indexer, $value_value]);
+                  $result[$counter] = $old . "\r" . implode(': ', [
+                    $indexer,
+                    $value_value,
+                  ]);
                 }
               }
             }
