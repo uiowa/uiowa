@@ -23,18 +23,23 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
    */
   public function build(FieldItemListInterface $field_items) {
     $result = [];
-    // @todo Do the comparisons and such here.
-    // Every item from $field_items is of type FieldItemInterface.
+    $counter = 0;
     foreach ($field_items->getSections() as $id => $section) {
-      $result[$id] = implode(',', $section->toArray()['layout_settings']['layout_builder_styles_style']);
+      $prefix = "Section " . $id . " Configuration: ";
+      $lb_styles = implode(', ', $section->toArray()['layout_settings']['layout_builder_styles_style']);
+      $result[$counter++] = $prefix . $lb_styles;
       foreach ($section->getComponents() as $comp_id => $component) {
         $config = $component->get('configuration');
         if (!isset($config['block_revision_id'])) {
           continue;
         }
+        $region = $component->get('region');
         $rev_id = $config['block_revision_id'];
-        $block = $this->entityTypeManager->getStorage('block_content')->loadRevision($rev_id);
+        $block = $this->entityTypeManager
+          ->getStorage('block_content')
+          ->loadRevision($rev_id);
         if ($block) {
+          $prefix = 'Section ' . $id . ', Region ' . $region . ', ' . $block->bundle() . ": \r";
           foreach ($block->toArray() as $arr_key => $arr_value) {
             if (str_starts_with($arr_key, 'field_')) {
               foreach ($arr_value as $field_num => $field) {
@@ -43,15 +48,14 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
                   if (is_array($value_value)) {
                     $value_value = implode('.', $value_value);
                   }
-                  $result[$id] .= "\t | " . implode("\t | \t", [
-                    $comp_id,
-                    $indexer,
-                    $value_value,
-                  ]);
+                  $old = isset($result[$counter]) ? $result[$counter] : '';
+                  $result[$counter] = $old . "\r" . implode(': ', [$indexer, $value_value]);
                 }
               }
             }
           }
+          $result[$counter] = $prefix . $result[$counter];
+          $counter++;
         }
       }
     }
