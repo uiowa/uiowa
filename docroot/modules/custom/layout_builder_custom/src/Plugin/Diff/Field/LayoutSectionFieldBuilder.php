@@ -43,7 +43,7 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
                   if (is_array($value_value)) {
                     $value_value = implode('.', $value_value);
                   }
-                  $result[$id] .= implode("\t | \t", [
+                  $result[$id] .= "\t | " . implode("\t | \t", [
                     $comp_id,
                     $indexer,
                     $value_value,
