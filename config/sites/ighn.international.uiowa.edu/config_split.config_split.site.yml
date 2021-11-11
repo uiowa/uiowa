@@ -14,17 +14,12 @@ module:
 theme: {  }
 complete_list:
   - config_split.config_split.site
+  - ighn.settings
   - node.type.ighn_person
   - simple_sitemap.bundle_settings.default.node.ighn_person
-  - taxonomy.vocabulary.ighn_department
-  - taxonomy.vocabulary.ighn_global_regions
-  - taxonomy.vocabulary.ighn_language_expertise
-  - taxonomy.vocabulary.ighn_primary_college
-  - taxonomy.vocabulary.ighn_primary_focus_areas
   - views.view.ighn_person_view
-  - 'core.base_field_override.ighn_person.*'
-  - 'core.entity_form_display.ighn_person.*'
-  - 'core.entity_view_display.ighn_person.*'
+  - 'block.block.ighn_*'
   - 'field.storage.node.field_ighn_*'
+  - 'taxonomy.vocabulary.ighn_*'
 partial_list:
   - 'user.role.*'
