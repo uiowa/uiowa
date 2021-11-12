@@ -37,13 +37,25 @@
 {{ attach_library('uids_base/blockquote') }}
 {{ attach_library('uids_base/media') }}
 
+
+{% set position_classes = [] %}
+
+{% for style in attributes.class %}
+  {# Remove media classes if blockquote--img #}
+  {% if style starts with 'blockquote--img' %}
+    {% set position_classes = position_classes|merge([style]) %}
+  {% endif %}
+{% endfor %}
+
+
 {% set block_quote = {
-  'blockquote_attributes': attributes,
+  'blockquote_attributes': attributes.removeClass(position_classes),
   'blockquote_image': content.field_uiowa_quote_image|render,
   'blockquote_content': content.field_uiowa_quote_content|render,
   'blockquote_cite': content.field_uiowa_quote_citation|render,
   'blockquote_cite_url': content.field_uiowa_quote_citation[0]['#url']|render,
   'blockquote_footer': content.field_uiowa_quote_footer|render,
+  'position_classes': position_classes,
   'title_prefix': title_prefix,
   'title_suffix': title_suffix,
   'has_image_above': has_image_above,

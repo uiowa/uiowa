@@ -13,6 +13,10 @@
   {% set blockquote_attributes = blockquote_attributes.setAttribute('cite', blockquote_cite_url) %}
 {% endif %}
 
+{% if blockquote_image is not empty %}
+  {% set blockquote_attributes = blockquote_attributes.addClass(position_classes) %}
+{% endif %}
+
 <blockquote {{ blockquote_attributes }}>
   {% if has_image_above %}
     {% block blockquote_image_above %}
