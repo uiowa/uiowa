@@ -3,10 +3,10 @@
 namespace Drupal\sitenow_migrate\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Config\StorageInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\CachedDiscoveryClearerInterface;
 use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -29,17 +29,29 @@ class MigrateSettingsForm extends ConfigFormBase {
   protected $migrationPluginManager;
 
   /**
+   * The plugin.cache_clearer service.
+   *
+   * @var \Drupal\Core\Plugin\CachedDiscoveryClearerInterface
+   */
+  protected $pluginCacheClearer;
+
+  /**
    * Form constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config.factory service.
    * @param \Drupal\Core\Config\StorageInterface $configStorage
    *   The config.storage service.
+   * @param \Drupal\migrate\Plugin\MigrationPluginManagerInterface $migrationPluginManager
+   *   The plugin.manager.migration service.
+   * @param \Drupal\Core\Plugin\CachedDiscoveryClearerInterface $pluginCacheClearer
+   *   The plugin.cache_clearer service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, StorageInterface $configStorage, MigrationPluginManagerInterface $migrationPluginManager) {
+  public function __construct(ConfigFactoryInterface $config_factory, StorageInterface $configStorage, MigrationPluginManagerInterface $migrationPluginManager, CachedDiscoveryClearerInterface $pluginCacheClearer) {
     parent::__construct($config_factory);
     $this->configStorage = $configStorage;
     $this->migrationPluginManager = $migrationPluginManager;
+    $this->pluginCacheClearer = $pluginCacheClearer;
   }
 
   /**
@@ -49,7 +61,8 @@ class MigrateSettingsForm extends ConfigFormBase {
     return new static(
     $container->get('config.factory'),
     $container->get('config.storage'),
-    $container->get('plugin.manager.migration')
+    $container->get('plugin.manager.migration'),
+    $container->get('plugin.cache_clearer')
     );
   }
 
@@ -81,7 +94,7 @@ class MigrateSettingsForm extends ConfigFormBase {
     // configuration exists. This is necessary because that configuration is
     // ignored and this form needs to save data to the sitenow_migrate config.
     if ($config->isNew()) {
-      drupal_flush_all_caches();
+      $this->pluginCacheClearer->clearCachedDefinitions();
       $this->migrationPluginManager->createInstances([]);
     }
 
@@ -177,6 +190,10 @@ class MigrateSettingsForm extends ConfigFormBase {
     $this->config('migrate_plus.migration_group.sitenow_migrate')
       ->set('shared_configuration', $shared_config)
       ->save();
+
+    // If the DB connection changes, this is required to reflect that in
+    // the Drush migrate:status command. Save developers from running a CR.
+    $this->pluginCacheClearer->clearCachedDefinitions();
 
     parent::submitForm($form, $form_state);
   }
