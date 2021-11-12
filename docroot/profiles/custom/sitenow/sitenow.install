@@ -3727,3 +3727,39 @@ function sitenow_update_9025() {
     $storage_handler->delete($entities);
   }
 }
+
+/**
+ * Temporary update hook to facilitate CS2 work.
+ *
+ * @todo REMOVE THIS!
+ */
+function sitenow_update_9028() {
+  $configFactory = \Drupal::configFactory();
+  $config_storage = \Drupal::service('config.storage');
+
+  foreach ($configFactory->listAll('config_split.config_split') as $name) {
+    $folder = Settings::get('config_sync_directory');
+    $split = $configFactory->getEditable($name);
+    $data = $split->getRawData();
+
+    $status = $split->get('status');
+
+    if (!str_ends_with($name, 'sitenow_migrate') && ($name === 'config_split.config_split.site' || str_ends_with($name, '_migrate'))) {
+      if (!isset($data['folder'])) {
+        continue;
+      }
+      $folder = $data['folder'];
+    }
+
+    $source = new FileStorage($folder);
+    $update = $source->read($name);
+
+    $split->setData($update);
+
+    if ($status) {
+      $split->set('status', TRUE);
+    }
+
+    $split->save();
+  }
+}
