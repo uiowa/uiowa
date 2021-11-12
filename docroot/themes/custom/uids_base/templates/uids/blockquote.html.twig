@@ -16,7 +16,7 @@
 <blockquote {{ blockquote_attributes }}>
   {% if has_image_above %}
     {% block blockquote_image_above %}
-      <div class="blockquote__media media--circle{% if blockquote_image and blockquote_image is not empty %} media--image{% endif %}">{{ blockquote_image }}</div>
+      <div class="blockquote__media media--circle">{{ blockquote_image }}</div>
     {% endblock %}
   {% endif %}
   <div class="blockquote__content">
@@ -29,7 +29,7 @@
       <footer>
         {% if has_image_below %}
           {% block blockquote_image_below %}
-            <div class="blockquote__media media--circle{% if blockquote_image and blockquote_image is not empty %} media--image{% endif %}">{{ blockquote_image }}</div>
+            <div class="blockquote__media media--circle">{{ blockquote_image }}</div>
           {% endblock %}
         {% endif %}
         <div>
