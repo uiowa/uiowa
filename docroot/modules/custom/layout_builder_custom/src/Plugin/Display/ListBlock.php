@@ -565,7 +565,7 @@ class ListBlock extends CoreBlock {
         $this->view->display_handler->setOption('use_more_always', TRUE);
         $this->view->display_handler->setOption('link_display', 'custom_url');
         if (!empty($config['use_more_link_url'])) {
-          $this->view->display_handler->setOption('link_url', Url::fromUri($config['use_more_link_url']));
+          $this->view->display_handler->setOption('link_url', Url::fromUri($config['use_more_link_url'])->toString());
         }
         if (!empty($config['use_more_text'])) {
           $this->view->display_handler->setOption('use_more_text', $config['use_more_text']);
