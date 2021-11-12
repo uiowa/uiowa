@@ -5,16 +5,16 @@
  * Article configuration for the University of Iowa.
  */
 
-use Drupal\Core\Cache\Cache;
-use Drupal\Core\Link;
-use Drupal\Core\Url;
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Component\Utility\Html;
-use Drupal\uiowa_core\HeadlineHelper;
-use Drupal\views\Entity\View;
-use Drupal\views\Views;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\Core\Url;
+use Drupal\views\Entity\View;
+use Drupal\views\ViewExecutable;
+use Drupal\views\Views;
 
 /**
  * Implements hook_entity_extra_field_info().
@@ -50,6 +50,13 @@ function sitenow_articles_form_alter(&$form, FormStateInterface $form_state, $fo
       ];
       break;
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function sitenow_articles_form_views_ui_edit_display_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['options']['link_url']['#description'][2]['#items'][] = '{{ sitenow_articles.path }} == SiteNow Articles path setting';
 }
 
 /**
@@ -263,6 +270,111 @@ function sitenow_articles_preprocess_views_view_summary(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_views_view_unformatted().
+ */
+function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
+  /** @var \Drupal\views\ViewExecutable $view */
+  $view = $variables['view'];
+  if ($view->id() === 'article_list_block') {
+    $rows = $variables['rows'];
+    $style = $view->style_plugin;
+    $style_classes = [];
+    $size_classes = [];
+
+    if (isset($variables['row_item_classes'])) {
+
+      foreach ($variables['row_item_classes'] as $key => &$class) {
+
+        if (str_starts_with($class, 'media--')) {
+          $style_classes[] = $class;
+          unset($variables['row_item_classes'][$key]);
+        }
+        elseif (str_starts_with($class, 'card__media')) {
+          $size_classes[] = $class;
+          unset($variables['row_item_classes'][$key]);
+        }
+        elseif (str_starts_with($class, 'inner')) {
+          unset($variables['row_item_classes'][$key]);
+        }
+        elseif (str_starts_with($class, 'grid')) {
+          unset($variables['row_item_classes'][$key]);
+        }
+      }
+    }
+
+    foreach ($rows as $id => $row) {
+      // Need to get these values regardless of whether they are hidden or not.
+      $link_direct = $row["content"]["#node"]->get('field_article_source_link_direct')->value;
+      $source_link = $row['content']['#node']->get('field_article_source_link')->uri;
+      $org = $row["content"]["#node"]->get('field_article_source_org')->value;
+      $nid = $row['content']['#node']->get('nid')->value;
+
+      // If source link is set and link direct is checked, set $card_link_url to
+      // source link. Otherwise, $card_link_url should be set to node link.
+      if ($link_direct == 1
+        && isset($source_link) && !empty($source_link)) {
+        $card_link_url = $source_link;
+      }
+      else {
+        $card_link_url = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
+      }
+
+      $card_tag = [
+        '#type' => 'html_tag',
+        '#tag' => 'span',
+        '#attributes' => [
+          'class' => [
+            'field--name-field-article-source-link',
+          ],
+        ],
+      ];
+      if ($org && $style->getField($id, 'field_article_source_org')) {
+        $org = $style->getField($id, 'field_article_source_org');
+        // If source link is hidden...
+        if ($style->getField($id, 'field_article_source_link') === NULL) {
+          // But source_link has value...
+          if ($source_link) {
+            // Wrap org in the source link.
+            $org = Link::fromTextAndUrl($style->getField($id, 'field_article_source_org'), Url::fromUri($source_link))
+              ->toString();
+          }
+        }
+
+        $card_tag['org'] = [
+          '#prefix' => '<span class="views-field-article-source-link">',
+          '#markup' => $org,
+          '#suffix' => '</span>',
+        ];
+      }
+      if ($source_link && $style->getField($id, 'field_article_source_link')) {
+        $card_tag['source_link'] = [
+          '#prefix' => '<span class="views-field-article-source-link">',
+          '#markup' => $style->getField($id, 'field_article_source_link'),
+          '#suffix' => '</span>',
+        ];
+      }
+
+      if (isset($variables['row_item_classes'])) {
+        $variables['rows'][$id]['attributes']->addClass($variables['row_item_classes']);
+      }
+      $variables['rows'][$id]['card_options'] = [
+        'attributes' => $variables['rows'][$id]['attributes'],
+        'media_styles' => $style_classes,
+        'media_sizes' => $size_classes,
+        'card_title' => $style->getField($id, 'title'),
+        'card_link_url' => $card_link_url,
+        'card_image' => $style->getField($id, 'field_image'),
+        'card_text' => $style->getField($id, 'field_teaser'),
+        'card_subtitle' => $style->getField($id, 'created'),
+        'card_tag' => render($card_tag),
+        'card_date' => $style->getField($id, 'field_article_author'),
+        'headline_level' => $view->display_handler->getOption('heading_size'),
+      ];
+    }
+  }
+}
+
+/**
  * Implements hook_uip_classes_alter().
  */
 function sitenow_articles_uip_classes_alter(&$options, $entity, $bundle) {
@@ -411,6 +523,14 @@ function sitenow_articles_preprocess_paragraph(&$variables) {
 }
 
 /**
+ * Implements hook_views_pre_render().
+ */
+function sitenow_articles_views_pre_render(ViewExecutable $view) {
+  // Add replacement token for articles page path.
+  $view->build_info['substitutions']['{{ sitenow_articles.path }}'] = _sitenow_articles_path_token_value();
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function sitenow_articles_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
@@ -452,108 +572,84 @@ function sitenow_articles_field_widget_paragraphs_form_alter(&$element, &$form_s
  */
 function sitenow_articles_preprocess_block(&$variables) {
   switch ($variables['elements']['#plugin_id']) {
-    case 'inline_block:uiowa_articles':
-      $variables['#attached']['library'][] = 'uids_base/articles';
-      $view = Views::getView('articles_block');
-      $view->setDisplay('block_articles');
-      $block = $variables['elements']['content']['#block_content'];
-      if ($block->hasField('field_collection_reference') && !$block->get('field_collection_reference')->isEmpty()) {
-        $tids = $block->get('field_collection_reference')->getValue();
-        // Clean array of tids selected.
-        $tids = array_column($tids, 'target_id');
-      }
-      else {
-        $tids = ['all'];
-      }
-      // Contextual relationship filter.
-      $args = implode('+', $tids);
-      $view->setArguments([$args]);
-
-      // Set custom view variable to send to article teaser template.
-      if ($block->hasField('field_uiowa_headline')) {
-        $headline_fields = $block->get('field_uiowa_headline')->getValue();
-        foreach ($headline_fields as $headline_field) {
-          // There isn't a headline, so set the children to this heading size.
-          if (empty($headline_field['headline'])) {
-            $view->display_handler->setOption('heading_size', $headline_field['child_heading_size']);
-          }
-          else {
-            $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
-            $view->display_handler->setOption('heading_size', $heading_size);
+    case 'views_block:article_list_block-list_article':
+      if (isset($variables['attributes']['class'])) {
+        // Unset classes meant for children.
+        foreach ($variables['attributes']['class'] as $key => $style) {
+          foreach ([
+            'bg',
+            'card',
+            'media',
+            'hide',
+          ] as $check) {
+            if (substr($style, 0, strlen($check)) === $check) {
+              unset($variables['attributes']['class'][$key]);
+            }
           }
         }
       }
 
-      if ($block->hasField('field_collection_results') && !$block->get('field_collection_results')->isEmpty()) {
-        $items = $block->field_collection_results->value;
-        $view->setItemsPerPage($items);
-        $view->setExposedInput([
-          'items_per_page' => $items,
-        ]);
-      }
-      $pager_type = 'some';
-      // Show pager if it exists and is set.
-      if ($block->hasField('field_collection_pager')) {
-        if ($block->field_collection_pager->value == 1) {
-          $pager_type = 'full';
-        }
-      }
-
-      $pager = $view->display_handler->getOption('pager');
-      // IF show pager, change pager_type to 'full'.
-      $pager['type'] = $pager_type;
-      $view->display_handler->setOption('pager', $pager);
-      $view->preExecute();
-      $view->execute();
-
-      // Associate the block's cache tags with each entity in the view result so
-      // that the appropriate render cache ID is cleared when the block changes.
-      foreach ($view->result as $result_row) {
-        $entity = $result_row->_entity;
-        // Associate the block's cache tags with each entity so that the
-        // appropriate render cache ID is cleared when the block changes.
-        $cache_tags = $block->getCacheTags();
-        $entity->addCacheTags($cache_tags);
-        // Grab a fresh copy of the node.
-        $id = $entity->id();
-        Cache::invalidateTags(['node:' . $id]);
-
-      }
-
-      $variables['content']['view'] = $view->render();
-
-      // If we have more link checked and link provided, pass it.
-      if ($block->hasField('field_collection_more')) {
-        $more = ($block->field_collection_more->value == 1) ? TRUE : FALSE;
-        if ($more == TRUE) {
-          $variables['content']['more'] = [
-            '#type' => 'container',
-            '#attributes' => [
-              'class' => 'more-link',
-            ],
-          ];
-
-          $view = View::load('articles');
-          $default =& $view->getDisplay('default');
-
-          if (!empty($more_path = $block->get('field_collection_more_path')->getValue())) {
-            $url = Url::fromUri($more_path[0]['uri']);
-          }
-          elseif ($view->getDisplay('page_articles')['display_options']['enabled'] == TRUE) {
-            $url = Url::fromRoute('view.articles.page_articles');
-          }
-          if (isset($url)) {
-            $variables['content']['more']['bttn'] = [
-              '#type' => 'link',
-              '#title' => 'View more ' . strtolower($default['display_options']['title']),
-              '#url' => $url,
-              '#attributes' => [
-                'class' => ['bttn', 'bttn--primary', 'bttn--caps'],
-              ],
-            ];
-          }
-        }
-      }
       break;
+
   }
+}
+
+/**
+ * Implements hook_token_info().
+ */
+function sitenow_articles_token_info(): array {
+  $info = [];
+  $info['types']['sitenow_articles'] = [
+    'name' => t('SiteNow Articles'),
+    'description' => t('Tokens for SiteNow Articles.'),
+  ];
+  $info['tokens']['sitenow_articles']['path'] = [
+    'name' => 'SiteNow Articles path',
+    'description' => 'A token to display the SiteNow Articles page path.',
+  ];
+  return $info;
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function sitenow_articles_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
+  $replacements = [];
+  if ($type == 'sitenow_articles') {
+
+    foreach ($tokens as $name => $original) {
+      // Find the desired token by name.
+      switch ($name) {
+        case 'sitenow_articles_path':
+          $replacements[$original] = _sitenow_articles_path_token_value();
+          break;
+      }
+    }
+  }
+  return $replacements;
+}
+
+/**
+ * Callback to get the SiteNow Articles view path.
+ */
+function _sitenow_articles_path_token_value() {
+
+  // Load articles listing view.
+  $view = Drupal::entityTypeManager()->getStorage('view')->load('articles');
+
+  // Loop through displays except Master.
+  $displays = $view->get('display');
+  unset($displays['default']);
+  foreach ($displays as $display_id => $display) {
+    // If page display is not enabled, skip.
+    if ($display_id !== 'page_articles') {
+      continue;
+    }
+
+    // @todo Do we need to do anything besides this?
+    return '/' . $display['display_options']['path'];
+  }
+
+  // @todo Is this appropriate when there is no value?
+  return '';
 }

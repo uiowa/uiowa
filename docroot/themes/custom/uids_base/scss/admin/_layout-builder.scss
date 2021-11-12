@@ -7,8 +7,11 @@
 }
 
 // Add some space at the top of the LB controls form.
-form#node-page-layout-builder-form {
-  margin-top: 1.25rem;
+form {
+  &#fragment-region-item-layout-builder-form,
+  &#node-page-layout-builder-form {
+    margin-top: 1.25rem;
+  }
 }
 
 // admin styles layout builder container reset
@@ -220,14 +223,6 @@ form#node-page-layout-builder-form {
   width: 100%;
 }
 
-.layout--fourcol .layout__spacing_container>.layout__region.js-layout-builder-region {
-  display: block !important;
-}
-
-.layout--threecol .layout__spacing_container>.layout__region.js-layout-builder-region {
-  display: block !important;
-}
-
 .layout__container .layout__spacing_container {
 
   .layout-builder-block,
@@ -292,10 +287,10 @@ form#node-page-layout-builder-form {
 
 
 .content__container {
-
+  // Add a container to edit forms.
   .block-local-tasks-block,
   .block-help-block,
-  :not([class*="views-exposed-form"]) .form-actions,
+  form.layout-builder-form .form-actions,
   .layout-builder__message,
   .form-type-vertical-tabs,
   #edit-moderation-state-0,

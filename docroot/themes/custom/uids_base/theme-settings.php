@@ -90,6 +90,13 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
       ],
     ],
   ];
+  // Display scroll to top button functionality.
+  $form['header']['toppage'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Back to top button'),
+    '#description' => t('A back to top button will be visible when the user scrolls down the page.'),
+    '#default_value' => theme_get_setting('header.toppage'),
+  ];
 
   $top_links_limit = theme_get_setting('header.top_links_limit');
   // Get limit, otherwise limit to 2.

@@ -1,0 +1,32 @@
+uuid: 6e4be973-c88e-48b0-bcc2-339b452c5564
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.fragment.region_item.layout_builder__layout
+    - fragments.fragment_type.region_item
+id: fragment.region_item.default
+targetEntityType: fragment
+bundle: region_item
+mode: default
+content:
+  title:
+    type: string_textfield
+    weight: -4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  user_id:
+    type: entity_reference_autocomplete
+    weight: 5
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+      match_limit: 10
+    region: content
+    third_party_settings: {  }
+hidden:
+  layout_builder__layout: true
