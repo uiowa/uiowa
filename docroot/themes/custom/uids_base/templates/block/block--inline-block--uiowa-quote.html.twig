@@ -39,11 +39,11 @@
 
 {% set block_quote = {
   'blockquote_attributes': attributes,
-  'blockquote_image': content.field_uiowa_quote_image,
-  'blockquote_content': content.field_uiowa_quote_content,
-  'blockquote_cite': content.field_uiowa_quote_citation,
+  'blockquote_image': content.field_uiowa_quote_image|render,
+  'blockquote_content': content.field_uiowa_quote_content|render,
+  'blockquote_cite': content.field_uiowa_quote_citation|render,
   'blockquote_cite_url': content.field_uiowa_quote_citation[0]['#url']|render,
-  'blockquote_footer': content.field_uiowa_quote_footer,
+  'blockquote_footer': content.field_uiowa_quote_footer|render,
   'title_prefix': title_prefix,
   'title_suffix': title_suffix,
   'has_image_above': has_image_above,
