@@ -7,6 +7,7 @@ use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Config\StorageInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -21,6 +22,13 @@ class MigrateSettingsForm extends ConfigFormBase {
   protected $configStorage;
 
   /**
+   * Migration plugin manager service.
+   *
+   * @var \Drupal\migrate\Plugin\MigrationPluginManager
+   */
+  protected $migrationPluginManager;
+
+  /**
    * Form constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -28,9 +36,10 @@ class MigrateSettingsForm extends ConfigFormBase {
    * @param \Drupal\Core\Config\StorageInterface $configStorage
    *   The config.storage service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, StorageInterface $configStorage) {
+  public function __construct(ConfigFactoryInterface $config_factory, StorageInterface $configStorage, MigrationPluginManagerInterface $migrationPluginManager) {
     parent::__construct($config_factory);
     $this->configStorage = $configStorage;
+    $this->migrationPluginManager = $migrationPluginManager;
   }
 
   /**
@@ -39,7 +48,8 @@ class MigrateSettingsForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
     $container->get('config.factory'),
-    $container->get('config.storage')
+    $container->get('config.storage'),
+    $container->get('plugin.manager.migration')
     );
   }
 
@@ -66,6 +76,14 @@ class MigrateSettingsForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
     $config = $this->config('migrate_plus.migration_group.sitenow_migrate');
+
+    // This ensures that the sitenow_migrate and default migration group
+    // configuration exists. This is necessary because that configuration is
+    // ignored and this form needs to save data to the sitenow_migrate config.
+    if ($config->isNew()) {
+      drupal_flush_all_caches();
+      $this->migrationPluginManager->createInstances([]);
+    }
 
     $form['markup'] = [
       '#type' => 'markup',
@@ -137,16 +155,6 @@ class MigrateSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $migrate_group_sitenow_migrate_config = $this->config('migrate_plus.migration_group.sitenow_migrate');
-
-    // Its entirely possible to use sitenow_migrate without importing the split
-    // config. If that is the case, import the initial migration group config.
-    if ($migrate_group_sitenow_migrate_config->isNew()) {
-      $config_path = DRUPAL_ROOT . '/../config/features/sitenow_migrate';
-      $source = new FileStorage($config_path);
-      $this->configStorage->write('migrate_plus.migration_group.sitenow_migrate', $source->read('migrate_plus.migration_group.sitenow_migrate'));
-    }
-
     $shared_config = [
       'source' => [
         'key' => 'drupal_7',
