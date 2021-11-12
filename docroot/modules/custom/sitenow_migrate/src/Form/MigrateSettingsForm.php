@@ -65,7 +65,7 @@ class MigrateSettingsForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
-    $migrate_group_sitenow_migrate_config = $this->config('migrate_plus.migration_group.sitenow_migrate');
+    $config = $this->config('migrate_plus.migration_group.sitenow_migrate');
 
     $form['markup'] = [
       '#type' => 'markup',
@@ -82,7 +82,7 @@ class MigrateSettingsForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Database Name'),
       '#description' => $this->t('The database name to pull from. e.g. standard_itaccessibility.'),
-      '#default_value' => $migrate_group_sitenow_migrate_config->get('shared_configuration.source.database.database'),
+      '#default_value' => $config->get('shared_configuration.source.database.database'),
       '#required' => TRUE,
     ];
 
@@ -90,7 +90,7 @@ class MigrateSettingsForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Database User'),
       '#description' => $this->t('The database user with access to the database. Use root for DevDesktop.'),
-      '#default_value' => $migrate_group_sitenow_migrate_config->get('shared_configuration.source.database.username'),
+      '#default_value' => $config->get('shared_configuration.source.database.username'),
       '#required' => TRUE,
     ];
 
@@ -98,14 +98,14 @@ class MigrateSettingsForm extends ConfigFormBase {
       '#type' => 'password',
       '#title' => $this->t('Database User Password'),
       '#description' => $this->t('The database user password, if applicable. Leave empty for DevDesktop.'),
-      '#default_value' => $migrate_group_sitenow_migrate_config->get('shared_configuration.source.database.password'),
+      '#default_value' => $config->get('shared_configuration.source.database.password'),
     ];
 
     $form['database']['host'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Database Host'),
       '#description' => $this->t('The database host. Use 10.0.2.2 for DevDesktop from DrupalVM.'),
-      '#default_value' => $migrate_group_sitenow_migrate_config->get('shared_configuration.source.database.host'),
+      '#default_value' => $config->get('shared_configuration.source.database.host'),
       '#required' => TRUE,
     ];
 
@@ -113,7 +113,7 @@ class MigrateSettingsForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Database Host Port'),
       '#description' => $this->t('The database host port. The MySQL default port is 3306 but use 33067 for DevDesktop.'),
-      '#default_value' => $migrate_group_sitenow_migrate_config->get('shared_configuration.source.database.port'),
+      '#default_value' => $config->get('shared_configuration.source.database.port'),
       '#required' => TRUE,
     ];
 
@@ -127,7 +127,7 @@ class MigrateSettingsForm extends ConfigFormBase {
       '#type' => 'url',
       '#title' => $this->t('Base URL'),
       '#description' => $this->t('The full URL to the site.'),
-      '#default_value' => $migrate_group_sitenow_migrate_config->get('shared_configuration.source.constants.source_base_path'),
+      '#default_value' => $config->get('shared_configuration.source.constants.source_base_path'),
     ];
 
     return $form;
