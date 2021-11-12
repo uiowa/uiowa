@@ -60,5 +60,5 @@ You will need to decide whether to add your config items to the Complete Split o
 
 ### How to split a custom content type
 A custom content type consists of several types of interrelated configuration: `node.type.*.yml`, `field.storage.*.*.yml`, `field.field.*.*.*.yml`, `core.entity_form_display.*.*.yml`, and `core.entity_view_display.*.*.yml` at a minimum. The rules of configuration dependencies mean that if you add some of these items, the others will be inferred from that. After you set up your content type, it is a good idea to run `drush @site.local cst` to see a list of the config items that are new or have changed.
-* Add the `node.type.*.yml` to the config split first. After that, run `drush @site.local csex split_name`. You will notice that many config files get exported that were not added to the split.
+* Add the `node.type.*.yml` to the config split first. After that, run `drush @site.local config-split:export site`. You will notice that many config files get exported that were not added to the split.
 * Run `drush @site.local cst` again to see what additional config elements need to be added.
