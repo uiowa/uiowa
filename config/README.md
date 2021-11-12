@@ -2,7 +2,6 @@
 There are a few prerequisites that you should read and understand before
 working with config splits.
 
-- https://docs.acquia.com/blt/developer/configuration-management/
 - https://docs.acquia.com/blt/developer/config-split/
 - https://www.drupal.org/project/config_split/issues/2885643#comment-12125863
 
