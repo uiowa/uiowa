@@ -26,14 +26,16 @@ process:
     source: nid
     migration: d7_grad_thesis_defense
   temp_name_slug:
-    - plugin: concat
+    -
+      plugin: concat
       source:
         - field_thesis_firstname_value
         - constants/dash
         - field_thesis_lastname_value
-    - plugin: callback
+    -
+      plugin: callback
       callable:
-        - 'Drupal\Component\Utility\Html'
+        - Drupal\Component\Utility\Html
         - getClass
   redirect_source:
     plugin: concat
