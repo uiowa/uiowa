@@ -18,13 +18,13 @@ environment splits. Use Drupal's [configuration override system](https://www.dru
 ### Weight: 90
 Developers can create site split directories if a multisite needs to break away
 from the default configuration. The machine name of the split should be `site`
-and the directory should be `../config/sites/mysite.uiowa.edu` replacing for
-the multisite URL host.
+and the directory should be `../config/sites/mysite.uiowa.edu` replacing
+`mysite.uiowa.edu` with the multisite URL host.
 
 To register a configuration split for a multisite, create the split locally in
 the UI and export to the site split directory.
 ```
-drush config-split:export mysitesplit
+drush config-split:export site
 ```
 
 Deploy the code changes to each environment per the normal process and import
