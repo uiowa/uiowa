@@ -14,12 +14,23 @@ high weight means config entities in this split will take precedence on import.
 Configuration that is ignored cannot be selectively enabled/disabled in
 environment splits. Use Drupal's [configuration override system](https://www.drupal.org/docs/8/api/configuration-api/configuration-override-system) if you need to override configuration per environment.
 
+## Feature Splits
+### Weight: 80
+A feature split is a group of configuration that comprises some feature of
+functionality. They can be activated on multiple sites. This is not related to
+the features module.
+
+Feature split weights can vary based on if it needs to take precedence over
+other splits.
+
+See config/features/README.md for more information.
+
 ## Site Split
-### Weight: 90
-Developers can create site split directories if a multisite needs to break away
-from the default configuration. The machine name of the split should be `site`
-and the directory should be `../config/sites/mysite.uiowa.edu` replacing
-`mysite.uiowa.edu` with the multisite URL host.
+### Weight: 70
+Developers can create site split directories if a multisite needs to create
+new or adjust default/feature configuration. The machine name of the split
+should be `site`and the directory should be `../config/sites/mysite.uiowa.edu`
+replacing`mysite.uiowa.edu` with the multisite URL host.
 
 To register a configuration split for a multisite, create the split locally in
 the UI and export to the site split directory.
@@ -30,17 +41,6 @@ drush config-split:export site
 Deploy the code changes to each environment per the normal process and import
 the configuration from the split manually.
 ```drush @mysite.dev config:import --source ../config/sites/mysite.uiowa.edu --partial```
-
-## Feature Splits
-### Weight: 80 (varies)
-A feature split is a group of configuration that comprises some feature of
-functionality. They can be activated on multiple sites. This is not related to
-the features module.
-
-Feature split weights can vary based on if it needs to take precedence over
-other splits.
-
-See config/features/README.md for more information.
 
 ## Caveats
 **DO NOT** split core.extension for your site. This will only lead to problems.
