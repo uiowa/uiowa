@@ -3525,20 +3525,6 @@ function sitenow_update_9017() {
 }
 
 /**
- * Change footer content block to minimal format.
- */
-function sitenow_update_9018() {
-  $format = 'minimal';
-  $block = \Drupal::service('entity.repository')
-    ->loadEntityByUuid('block_content', '0c0c1f36-3804-48b0-b384-6284eed8c67e');
-
-  if ($block) {
-    $block->field_uiowa_text_area->format = $format;
-    $block->save();
-  }
-}
-
-/**
  * Add allowed replicate content entities.
  */
 function sitenow_update_9020() {
@@ -3739,5 +3725,19 @@ function sitenow_update_9025() {
     $storage_handler = \Drupal::entityTypeManager()->getStorage('block_content');
     $entities = $storage_handler->loadMultiple($result);
     $storage_handler->delete($entities);
+  }
+}
+
+/**
+ * Change footer content block to minimal format.
+ */
+function sitenow_update_9026() {
+  $format = 'minimal';
+  $block = \Drupal::service('entity.repository')
+    ->loadEntityByUuid('block_content', '0c0c1f36-3804-48b0-b384-6284eed8c67e');
+
+  if ($block) {
+    $block->field_uiowa_text_area->format = $format;
+    $block->save();
   }
 }
