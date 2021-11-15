@@ -16,6 +16,59 @@ blockquote {
   }
 }
 
+// @todo move to CSS container queries when available.
+.layout--threecol--50-25-25 .layout__region--second,
+.layout--threecol--50-25-25 .layout__region--third,
+.layout--threecol--25-25-50 .layout__region--first,
+.layout--threecol--25-25-50 .layout__region--second,
+.layout--threecol--25-50-25 .layout__region--first,
+.layout--threecol--25-50-25 .layout__region--third,
+.layout--threecol--33-34-33,
+.layout--fourcol {
+  blockquote.blockquote--img-below {
+    .blockquote__media {
+      margin: 1rem 0;
+    }
+    footer {
+      flex-flow: column nowrap;
+      flex-direction: column;
+    }
+    &.blockquote--center {
+      footer {
+        text-align: center;
+        max-width: 100%;
+        cite {
+          text-align: unset;
+        }
+      }
+    }
+    &.blockquote--right {
+      footer {
+        align-items: flex-end;
+      }
+    }
+    &.blockquote--left {
+      footer {
+        align-items: start;
+      }
+    }
+  }
+}
+
+.layout--threecol--50-25-25 .layout__region--first,
+.layout--threecol--25-50-25 .layout__region--second,
+.layout--threecol--25-25-50 .layout__region--third {
+  blockquote.blockquote--img-below {
+    &.blockquote--center {
+      footer {
+        @include breakpoint(sm) {
+          max-width: 70%;
+        }
+      }
+    }
+  }
+}
+
 // @todo remove with v2.
 .bg-yellow blockquote {
   border-color: #fff;
