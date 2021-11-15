@@ -185,17 +185,13 @@ third_party_settings:
         'Custom blocks': {  }
         Devel: {  }
         Forms: {  }
-        Lists:
-          - 'views_block:article_list_block-list_article'
-          - 'views_block:people_list_block-list_card'
         'Lists (Views)': {  }
         Menus:
           - 'menu_block:main'
           - 'system_menu_block:main'
+        Restricted: {  }
         Superfish: {  }
         System: {  }
-        Transportation:
-          - transportation_cost_calculator
         'University of Iowa Alerts': {  }
         User: {  }
         Webform:
@@ -221,6 +217,7 @@ third_party_settings:
       - Lists
       - 'Lists (Views)'
       - Menus
+      - Restricted
       - 'Site custom'
       - 'SiteNow Dispatch'
       - Superfish
@@ -270,27 +267,7 @@ third_party_settings:
             'Inline blocks':
               - 'inline_block:uiowa_slider'
               - 'inline_block:uiowa_timeline'
-      whitelisted_blocks:
-        layout_fourcol:
-          all_regions:
-            Lists:
-              - 'views_block:article_list_block-list_article'
-              - 'views_block:people_list_block-list_card'
-        layout_page:
-          all_regions:
-            Lists:
-              - 'views_block:article_list_block-list_article'
-              - 'views_block:people_list_block-list_card'
-        layout_threecol:
-          all_regions:
-            Lists:
-              - 'views_block:article_list_block-list_article'
-              - 'views_block:people_list_block-list_card'
-        layout_twocol:
-          all_regions:
-            Lists:
-              - 'views_block:article_list_block-list_article'
-              - 'views_block:people_list_block-list_card'
+      whitelisted_blocks: {  }
 _core:
   default_config_hash: 0AcX0F0voV5TKB6_GPZxJpAfbKCnDU7er_5TWcqIgSw
 id: node.page.default
