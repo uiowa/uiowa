@@ -41,6 +41,7 @@ function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): v
     'node__layout_builder__layout',
     'node_revision__layout_builder__layout',
   ];
+  $blocks = [];
 
   foreach ($tables as $table_name) {
     // Select instances where the section contains this type of block.
@@ -74,13 +75,20 @@ function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): v
 
         $component_arr = $component->toArray();
 
-        if (!isset($component_arr['configuration']['block_revision_id'])) {
-          continue;
-        }
+        $revision_id = $component_arr['configuration']['block_revision_id'];
 
-        $block_storage = \Drupal::entityTypeManager()
-          ->getStorage('block_content');
-        $block = $block_storage->loadRevision($component_arr['configuration']['block_revision_id']);
+        $block = NULL;
+
+        if ($revision_id) {
+          if (empty($blocks[$revision_id])) {
+            $blocks[$revision_id] = $block_storage->loadRevision($revision_id);
+          }
+          $block = $blocks[$revision_id];
+
+          if (!$block instanceof BlockContentInterface) {
+            continue;
+          }
+        }
 
         call_user_func_array($process, [&$component, $block]);
       }
@@ -3729,9 +3737,25 @@ function sitenow_update_9025() {
 }
 
 /**
- * Change footer content block to minimal format.
+ * Update views list blocks with use_more_text option.
  */
 function sitenow_update_9026() {
+  foreach ([
+    'views_block:people_list_block-list_card',
+    'views_block:article_list_block-list_article',
+  ] as $block_plugin_id) {
+    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
+      $config = $component->get('configuration');
+      $config['use_more_text'] = '';
+      $component->setConfiguration($config);
+    });
+  }
+}
+
+/**
+ * Change footer content block to minimal format.
+ */
+function sitenow_update_9027() {
   $format = 'minimal';
   $block = \Drupal::service('entity.repository')
     ->loadEntityByUuid('block_content', '0c0c1f36-3804-48b0-b384-6284eed8c67e');

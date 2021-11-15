@@ -374,6 +374,22 @@ class ListBlock extends CoreBlock {
           ],
         ],
       ];
+
+      $form['override']['use_more_text'] = [
+        '#type' => 'textfield',
+        '#title' => 'Custom text',
+        '#default_value' => isset($block_configuration['use_more_text']) ? $block_configuration['use_more_text'] : '',
+        '#process_default_value' => FALSE,
+        '#states' => [
+          'visible' => [
+            [
+              "input[name='settings[override][use_more]']" => [
+                'checked' => TRUE,
+              ],
+            ],
+          ],
+        ],
+      ];
     }
 
     // Set overrides to show up in the middle of the form.
@@ -421,6 +437,12 @@ class ListBlock extends CoreBlock {
       $block->setConfigurationValue('use_more_link_url', $form_state->getValue([
         'override',
         'use_more_link_url',
+      ]));
+
+      // Save display more link text.
+      $block->setConfigurationValue('use_more_text', $form_state->getValue([
+        'override',
+        'use_more_text',
       ]));
     }
 
@@ -544,6 +566,9 @@ class ListBlock extends CoreBlock {
         $this->view->display_handler->setOption('link_display', 'custom_url');
         if (!empty($config['use_more_link_url'])) {
           $this->view->display_handler->setOption('link_url', Url::fromUri($config['use_more_link_url'])->toString());
+        }
+        if (!empty($config['use_more_text'])) {
+          $this->view->display_handler->setOption('use_more_text', $config['use_more_text']);
         }
       }
       else {
