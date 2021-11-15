@@ -49,7 +49,7 @@
 
 
 {% set block_quote = {
-  'blockquote_attributes': attributes.removeClass(position_classes),
+  'blockquote_attributes': attributes.removeClass(position_classes).addClass('block--word-break'),
   'blockquote_image': content.field_uiowa_quote_image|render,
   'blockquote_content': content.field_uiowa_quote_content|render,
   'blockquote_cite': content.field_uiowa_quote_citation|render,
