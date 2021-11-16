@@ -53,10 +53,10 @@ deleted on export which will break BLT's configuration integrity checks. An
 example of this would be a block.
 
 ## Best Practices
-### Complete Split vs. Conditional Split ?
-You will need to decide whether to add your config items to the Complete Split or Conditional Split sections. Following these practices makes it easier for another developer to see at a glance which configuration is new and which is overriding existing configuration.
-* Completely split any configuration that is completely unique and not duplicated in the default configuration or another split. This would include custom content types, custom vocabularies, and custom fields added to existing content types.
-* Conditionally split configuration that is overriding existing settings, content types, etc. This would include `user.role.*.yml`, re-ordering of fields in the entity display, or the entity form.
+### Complete vs. Partial Split ?
+You will need to decide whether to add your config items to the Complete list or Partial list sections. Following these practices makes it easier for another developer to see at a glance which configuration is new and which is overriding existing configuration.
+* __Complete list__ - Any configuration that is completely unique and not duplicated in the default configuration or another split. This would include custom content types, custom vocabularies, and custom fields added to existing content types.
+* __Partial list__ - Configuration that is overriding existing settings, content types, etc. This would include `user.role.*.yml`, re-ordering of fields in the entity display, or the entity form.
 
 ### How to split a custom content type
 A custom content type consists of several types of interrelated configuration: `node.type.*.yml`, `field.storage.*.*.yml`, `field.field.*.*.*.yml`, `core.entity_form_display.*.*.yml`, and `core.entity_view_display.*.*.yml` at a minimum. The rules of configuration dependencies mean that if you add some of these items, the others will be inferred from that. After you set up your content type, it is a good idea to run `drush @site.local cst` to see a list of the config items that are new or have changed.
