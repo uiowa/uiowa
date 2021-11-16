@@ -16,7 +16,12 @@ blockquote {
   }
 }
 
+
 // @todo move to CSS container queries when available.
+.layout--twocol--33-67 .layout__region--first,
+.layout--twocol--67-33 .layout__region--second,
+.layout--twocol--25-75 .layout__region--first,
+.layout--twocol--75-25 .layout__region--second,
 .layout--threecol--50-25-25 .layout__region--second,
 .layout--threecol--50-25-25 .layout__region--third,
 .layout--threecol--25-25-50 .layout__region--first,
@@ -25,6 +30,10 @@ blockquote {
 .layout--threecol--25-50-25 .layout__region--third,
 .layout--threecol--33-34-33,
 .layout--fourcol {
+  // Remove default margins.
+  blockquote {
+    margin: 0;
+  }
   blockquote.blockquote--img-below {
     .blockquote__media {
       margin: 1rem 0;
