@@ -5,10 +5,13 @@ dependencies: {  }
 id: scholarship
 label: Scholarship
 description: 'Scholarship content type.'
+weight: 80
+stackable: true
+storage: folder
 folder: ../config/features/scholarship
 module: {  }
 theme: {  }
-blacklist:
+complete_list:
   - core.base_field_override.node.scholarship.promote
   - metatag.metatag_defaults.node__scholarship
   - node.type.scholarship
@@ -17,10 +20,7 @@ blacklist:
   - 'core.entity_form_display.node.scholarship.*'
   - 'core.entity_view_display.node.scholarship.*'
   - 'field.storage.node.field_scholarship_*'
-graylist:
+partial_list:
   - metatag.settings
   - workflows.workflow.editorial
   - 'user.role.*'
-graylist_dependents: true
-graylist_skip_equal: true
-weight: 80

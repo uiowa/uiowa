@@ -1,0 +1,19 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.page.field_page_content_block
+  hidden:
+    body: true
+    field_page_content_block: true
+removing:
+  dependencies:
+    module:
+      - text
+  content:
+    body:
+      label: hidden
+      type: text_default
+      weight: 2
+      region: content
+      settings: {  }
+      third_party_settings: {  }

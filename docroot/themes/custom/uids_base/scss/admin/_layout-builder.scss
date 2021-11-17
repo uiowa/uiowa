@@ -507,3 +507,11 @@ div[data-drupal-selector="edit-moderation-state-0"] {
 [class*="bg--black"] [class*="bg--black"]  :before {
   color: $secondary;
 }
+
+// Adding padding overrides for blockquote
+blockquote.layout-builder-block {
+  &.blockquote--left,
+  &.blockquote--right  {
+    @include padding($top: $xsm, $bottom: $xsm, $left: $lg);
+  }
+}
