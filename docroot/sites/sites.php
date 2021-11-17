@@ -3629,3 +3629,9 @@ $sites['labchauhan.local.drupal.uiowa.edu'] = 'chauhan.lab.uiowa.edu';
 $sites['labchauhan.dev.drupal.uiowa.edu'] = 'chauhan.lab.uiowa.edu';
 $sites['labchauhan.stage.drupal.uiowa.edu'] = 'chauhan.lab.uiowa.edu';
 $sites['labchauhan.prod.drupal.uiowa.edu'] = 'chauhan.lab.uiowa.edu';
+
+// Directory aliases for wild.education.uiowa.edu.
+$sites['educationwild.local.drupal.uiowa.edu'] = 'wild.education.uiowa.edu';
+$sites['educationwild.dev.drupal.uiowa.edu'] = 'wild.education.uiowa.edu';
+$sites['educationwild.stage.drupal.uiowa.edu'] = 'wild.education.uiowa.edu';
+$sites['educationwild.prod.drupal.uiowa.edu'] = 'wild.education.uiowa.edu';
