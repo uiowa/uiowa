@@ -27,12 +27,6 @@ process:
       und: en
   moderation_state: moderation_state
   created: created
-#    plugin: format_date
-#    source: field_event_date/value
-#    from_format: 'Y-m-d H:i:s'
-#    to_format: 'Y-m-d\TH:i:s'
-#    from_timezone: 'America/Chicago'
-#    to_timezone: 'UTC'
   changed: changed
   status: status
   promote: promote
@@ -41,7 +35,6 @@ process:
   body: body
   field_teaser: body_summary
   field_image: field_article_image_mid
-#  field_article_source_link: 'field_news_external_link/uri'
   field_article_source_link:
     plugin: field_link
     source: field_news_external_link
