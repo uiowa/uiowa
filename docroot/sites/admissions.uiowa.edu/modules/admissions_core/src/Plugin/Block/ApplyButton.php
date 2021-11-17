@@ -10,7 +10,7 @@ use Drupal\Core\Block\BlockBase;
  * @Block(
  *   id = "applybutton_block",
  *   admin_label = @Translation("Apply Block"),
- *   category = @Translation("Admissions Core")
+ *   category = @Translation("Site custom")
  * )
  */
 class ApplyButton extends BlockBase {

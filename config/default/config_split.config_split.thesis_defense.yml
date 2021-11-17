@@ -5,6 +5,9 @@ dependencies: {  }
 id: thesis_defense
 label: 'Grad - Thesis defense'
 description: 'Thesis defense content type.'
+weight: 80
+stackable: true
+storage: folder
 folder: ../config/features/thesis_defense
 module:
   fullcalendar: 0
@@ -12,9 +15,8 @@ module:
   grad_custom: 0
   grad_thesis_defense: 0
   smart_date: 0
-  uiowa_maui: 0
 theme: {  }
-blacklist:
+complete_list:
   - field.storage.node.field_grad_program_phd
   - fullcalendar.settings
   - node.type.thesis_defense
@@ -23,9 +25,6 @@ blacklist:
   - views.view.thesis_defenses
   - 'field.storage.node.field_thesis_defense_*'
   - 'views.view.thesis_defenses.*'
-graylist:
+partial_list:
   - sitenow_people.field_settings
   - 'user.role.*'
-graylist_dependents: true
-graylist_skip_equal: true
-weight: 80

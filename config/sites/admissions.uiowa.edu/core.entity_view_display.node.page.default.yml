@@ -152,9 +152,8 @@ third_party_settings:
         - layout_twocol
         - layout_threecol
         - layout_fourcol
+        - layout_page
       whitelisted_blocks:
-        'Admissions Core': {  }
-        'Area of Study': {  }
         'Chaos Tools': {  }
         'Content fields':
           - 'field_block:node:page:body'
@@ -175,8 +174,9 @@ third_party_settings:
           - 'views_block:student_card-block_student_grid'
           - 'views_block:transfer_tips_list-block_transfer_tips'
         Menus:
-          - 'system_menu_block:main'
           - 'menu_block:main'
+          - 'system_menu_block:main'
+        Restricted: {  }
         Superfish: {  }
         System:
           - system_breadcrumb_block
@@ -196,8 +196,6 @@ third_party_settings:
           - 'inline_block:uiowa_page_title_hero'
           - 'inline_block:uiowa_spacer_separator'
     allowed_block_categories:
-      - 'Admissions Core'
-      - 'Area of Study'
       - 'Chaos Tools'
       - 'Content fields'
       - 'Custom block types'
@@ -209,6 +207,7 @@ third_party_settings:
       - Lists
       - 'Lists (Views)'
       - Menus
+      - Restricted
       - 'Site custom'
       - 'SiteNow Dispatch'
       - Superfish
@@ -223,6 +222,7 @@ third_party_settings:
         - layout_twocol
         - layout_threecol
         - layout_fourcol
+        - layout_page
       blacklisted_blocks:
         layout_fourcol:
           all_regions:
@@ -237,8 +237,10 @@ third_party_settings:
           all_regions:
             'Custom block types':
               - uiowa_slider
+              - uiowa_timeline
             'Inline blocks':
               - 'inline_block:uiowa_slider'
+              - 'inline_block:uiowa_timeline'
         layout_threecol:
           all_regions:
             'Custom block types':
@@ -255,22 +257,7 @@ third_party_settings:
             'Inline blocks':
               - 'inline_block:uiowa_slider'
               - 'inline_block:uiowa_timeline'
-      whitelisted_blocks:
-        layout_fourcol:
-          all_regions:
-            Lists:
-              - 'views_block:article_list_block-list_article'
-              - 'views_block:people_list_block-list_card'
-        layout_threecol:
-          all_regions:
-            Lists:
-              - 'views_block:article_list_block-list_article'
-              - 'views_block:people_list_block-list_card'
-        layout_twocol:
-          all_regions:
-            Lists:
-              - 'views_block:article_list_block-list_article'
-              - 'views_block:people_list_block-list_card'
+      whitelisted_blocks: {  }
 _core:
   default_config_hash: 0AcX0F0voV5TKB6_GPZxJpAfbKCnDU7er_5TWcqIgSw
 id: node.page.default
