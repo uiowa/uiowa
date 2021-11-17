@@ -5,22 +5,20 @@ dependencies: {  }
 id: site
 label: Site
 description: 'The ighn.international.uiowa.edu site split.'
+weight: 70
+stackable: true
+storage: folder
 folder: ../config/sites/ighn.international.uiowa.edu
 module:
   ighn_core: 0
 theme: {  }
-blacklist:
+complete_list:
   - config_split.config_split.site
-  - field.storage.node.field_ighn_primary_college
   - node.type.ighn_person
   - simple_sitemap.bundle_settings.default.node.ighn_person
   - views.view.ighn_person_view
   - 'block.block.ighn_*'
-  - 'field.storage.node.field_ighn_person_*'
+  - 'field.storage.node.field_ighn_*'
   - 'taxonomy.vocabulary.ighn_*'
-  - ighn.settings
-graylist:
+partial_list:
   - 'user.role.*'
-graylist_dependents: true
-graylist_skip_equal: true
-weight: 90
