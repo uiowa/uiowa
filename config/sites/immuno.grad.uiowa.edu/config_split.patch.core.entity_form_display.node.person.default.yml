@@ -1,0 +1,30 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.person.field_person_publications_link
+      - field.field.node.person.field_pt_faculty_type
+      - field.field.node.person.field_pt_student_cur_pos_dept
+  content:
+    field_person_publications_link:
+      weight: 29
+      settings:
+        placeholder_url: ''
+        placeholder_title: ''
+      third_party_settings: {  }
+      type: link_default
+      region: content
+    field_pt_faculty_type:
+      weight: 4
+      settings: {  }
+      third_party_settings: {  }
+      type: options_select
+      region: content
+    field_pt_student_cur_pos_dept:
+      weight: 35
+      settings:
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+      type: string_textfield
+      region: content
+removing: {  }

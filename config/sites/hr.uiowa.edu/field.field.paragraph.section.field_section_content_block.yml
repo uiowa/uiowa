@@ -13,6 +13,7 @@ dependencies:
     - paragraphs.paragraphs_type.faqs
     - paragraphs.paragraphs_type.featured_content
     - paragraphs.paragraphs_type.image_gallery
+    - paragraphs.paragraphs_type.people
     - paragraphs.paragraphs_type.section
     - paragraphs.paragraphs_type.text
     - paragraphs.paragraphs_type.webform
@@ -41,50 +42,66 @@ settings:
       articles: articles
       faqs: faqs
       featured_content: featured_content
-      carousel: carousel
       webform: webform
+      carousel: carousel
       image_gallery: image_gallery
+      people: people
     target_bundles_drag_drop:
-      section:
-        weight: 3
-        enabled: false
-      text:
-        enabled: true
-        weight: 4
       accordion:
         enabled: true
         weight: 6
       accordion_item:
         weight: 7
         enabled: false
-      card:
-        enabled: true
-        weight: 8
-      blockquote:
-        enabled: true
-        weight: 9
-      events:
-        enabled: true
-        weight: 10
       articles:
         enabled: true
         weight: 11
+      blockquote:
+        enabled: true
+        weight: 9
+      card:
+        enabled: true
+        weight: 8
+      carousel:
+        enabled: true
+        weight: 18
+      carousel_image:
+        weight: 19
+        enabled: false
+      events:
+        enabled: true
+        weight: 10
       faqs:
         enabled: true
         weight: 14
       featured_content:
         enabled: true
         weight: 16
-      carousel:
-        enabled: true
-        weight: 18
-      webform:
-        enabled: true
-        weight: 18
-      carousel_image:
-        weight: 19
-        enabled: false
       image_gallery:
         enabled: true
         weight: 23
+      people:
+        enabled: true
+        weight: 31
+      section:
+        weight: 3
+        enabled: false
+      text:
+        enabled: true
+        weight: 4
+      uiowa_collection_item:
+        weight: 34
+        enabled: false
+      uiowa_contact:
+        weight: 35
+        enabled: false
+      uiowa_slide:
+        weight: 36
+        enabled: false
+      uiowa_timeline_item:
+        weight: 37
+        enabled: false
+      webform:
+        enabled: true
+        weight: 18
 field_type: entity_reference_revisions

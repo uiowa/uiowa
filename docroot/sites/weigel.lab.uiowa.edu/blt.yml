@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labweigel.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labweigel
+  human_name: weigel.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labweigel.prod
+drupal:
+  db:
+    database: weigel_lab_uiowa_edu
+uiowa:
+  requester: fmathews

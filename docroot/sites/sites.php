@@ -3617,3 +3617,21 @@ $sites['sitesacademicmusiciowa.local.drupal.uiowa.edu'] = 'academicmusiciowa.sit
 $sites['sitesacademicmusiciowa.dev.drupal.uiowa.edu'] = 'academicmusiciowa.sites.uiowa.edu';
 $sites['sitesacademicmusiciowa.stage.drupal.uiowa.edu'] = 'academicmusiciowa.sites.uiowa.edu';
 $sites['sitesacademicmusiciowa.prod.drupal.uiowa.edu'] = 'academicmusiciowa.sites.uiowa.edu';
+
+// Directory aliases for weigel.lab.uiowa.edu.
+$sites['labweigel.local.drupal.uiowa.edu'] = 'weigel.lab.uiowa.edu';
+$sites['labweigel.dev.drupal.uiowa.edu'] = 'weigel.lab.uiowa.edu';
+$sites['labweigel.stage.drupal.uiowa.edu'] = 'weigel.lab.uiowa.edu';
+$sites['labweigel.prod.drupal.uiowa.edu'] = 'weigel.lab.uiowa.edu';
+
+// Directory aliases for chauhan.lab.uiowa.edu.
+$sites['labchauhan.local.drupal.uiowa.edu'] = 'chauhan.lab.uiowa.edu';
+$sites['labchauhan.dev.drupal.uiowa.edu'] = 'chauhan.lab.uiowa.edu';
+$sites['labchauhan.stage.drupal.uiowa.edu'] = 'chauhan.lab.uiowa.edu';
+$sites['labchauhan.prod.drupal.uiowa.edu'] = 'chauhan.lab.uiowa.edu';
+
+// Directory aliases for wild.education.uiowa.edu.
+$sites['educationwild.local.drupal.uiowa.edu'] = 'wild.education.uiowa.edu';
+$sites['educationwild.dev.drupal.uiowa.edu'] = 'wild.education.uiowa.edu';
+$sites['educationwild.stage.drupal.uiowa.edu'] = 'wild.education.uiowa.edu';
+$sites['educationwild.prod.drupal.uiowa.edu'] = 'wild.education.uiowa.edu';
