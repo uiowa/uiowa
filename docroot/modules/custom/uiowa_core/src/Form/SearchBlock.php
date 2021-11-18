@@ -21,18 +21,19 @@ class SearchBlock extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
-    $build_info = $form_state->getBuildInfo();
+  public function buildForm(array $form, FormStateInterface $form_state, array $search_config = []) {
     $form['#attributes']['class'][] = 'form-inline clearfix uiowa-search-form';
+
     $form['search'] = [
       '#type' => 'search',
-      '#title' => $build_info['search_config']['search_label'],
+      '#title' => $search_config['search_label'] ?? $this->t('Search'),
       '#size' => 30,
       '#maxlength' => 255,
     ];
+
     $form['actions']['submit'] = [
       '#type' => 'submit',
-      '#value' => $build_info['search_config']['button_text'],
+      '#value' => $search_config['button_text'] ?? $this->t('Search'),
     ];
 
     return $form;
