@@ -7,6 +7,16 @@
 
 use Drupal\Component\Assertion\Handle;
 
+$host = '${drupal.db.host}';
+$port = '${drupal.db.port}';
+
+// If DDEV_PHP_VERSION is not set but IS_DDEV_PROJECT *is*, it means we're running (drush) on the host,
+// so use the host-side bind port on docker IP
+if (empty(getenv('DDEV_PHP_VERSION') && getenv('IS_DDEV_PROJECT') == 'true')) {
+  $host = "127.0.0.1";
+  $port = 53317;
+}
+
 $db_name = '${drupal.db.database}';
 if (isset($_acsf_site_name)) {
   $db_name .= '_' . $_acsf_site_name;
@@ -23,8 +33,8 @@ $databases = array(
       'database' => $db_name,
       'username' => '${drupal.db.username}',
       'password' => '${drupal.db.password}',
-      'host' => '${drupal.db.host}',
-      'port' => '${drupal.db.port}',
+      'host' => $host,
+      'port' => $port,
       'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
       'driver' => 'mysql',
       'prefix' => '',
@@ -108,10 +118,10 @@ $settings['extension_discovery_scan_tests'] = FALSE;
 /**
  * Configure static caches.
  *
- * Note: you should test with the config, bootstrap, and discovery caches enabled to 
+ * Note: you should test with the config, bootstrap, and discovery caches enabled to
  * test that metadata is cached as expected. However, in the early stages of development,
- * you may want to disable them. Overrides to these bins must be explicitly set for each 
- * bin to change the default configuration provided by Drupal core in core.services.yml. 
+ * you may want to disable them. Overrides to these bins must be explicitly set for each
+ * bin to change the default configuration provided by Drupal core in core.services.yml.
  * See https://www.drupal.org/node/2754947
  */
 

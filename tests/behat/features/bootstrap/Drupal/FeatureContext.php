@@ -40,7 +40,7 @@ class FeatureContext extends RawDrupalContext {
       /** @var \Drupal\user\Entity\UserInterface $user */
       $user = User::create([
         'name' => $name,
-        'mail' => 'noreply@default.local.drupal.uiowa.edu',
+        'mail' => 'noreply@default.uiowa.ddev.site',
         'status' => 1,
       ]);
 

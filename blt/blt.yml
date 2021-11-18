@@ -2,7 +2,7 @@ project:
   prefix: uiowa
   human_name: 'The base application on Acquia Cloud for the University of Iowa.'
   local:
-    hostname: default.local.drupal.uiowa.edu
+    hostname: default.uiowa.ddev.site
     protocol: https
   profile:
     name: sitenow
@@ -44,6 +44,11 @@ validate:
       - drupal_entity
     filters:
       - image_style
+drupal:
+  db:
+    host: ddev-uiowa-db
+    username: root
+    password: root
 command-hooks:
   frontend-reqs:
     dir: ${docroot}
