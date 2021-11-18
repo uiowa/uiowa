@@ -3635,3 +3635,9 @@ $sites['educationwild.local.drupal.uiowa.edu'] = 'wild.education.uiowa.edu';
 $sites['educationwild.dev.drupal.uiowa.edu'] = 'wild.education.uiowa.edu';
 $sites['educationwild.stage.drupal.uiowa.edu'] = 'wild.education.uiowa.edu';
 $sites['educationwild.prod.drupal.uiowa.edu'] = 'wild.education.uiowa.edu';
+
+// Directory aliases for tedabel.lab.uiowa.edu.
+$sites['labtedabel.local.drupal.uiowa.edu'] = 'tedabel.lab.uiowa.edu';
+$sites['labtedabel.dev.drupal.uiowa.edu'] = 'tedabel.lab.uiowa.edu';
+$sites['labtedabel.stage.drupal.uiowa.edu'] = 'tedabel.lab.uiowa.edu';
+$sites['labtedabel.prod.drupal.uiowa.edu'] = 'tedabel.lab.uiowa.edu';

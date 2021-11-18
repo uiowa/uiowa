@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labtedabel.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labtedabel
+  human_name: tedabel.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labtedabel.prod
+drupal:
+  db:
+    database: tedabel_lab_uiowa_edu
+uiowa:
+  requester: kasuyaj
