@@ -994,7 +994,7 @@ function uids_base_preprocess_aggregator_item(&$variables) {
 function uids_base_preprocess_form(&$variables) {
   // Add 'uids-content' and 'uids-search' classes to search-block-form.
   if (isset($variables['attributes']['id']) && $variables['attributes']['id'] == 'search-block-form') {
-    $variables['attributes']['class'][] = 'uids-content uids-search ';
+    $variables['attributes']['class'][] = 'uids-content uids-search';
   }
 }
 
