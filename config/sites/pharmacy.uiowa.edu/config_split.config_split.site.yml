@@ -1,0 +1,26 @@
+uuid: e6dc4580-54b9-45de-a85a-c408ce3eafb1
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: Site
+description: 'The pharmacy.uiowa.edu site split.'
+weight: 70
+stackable: true
+storage: folder
+folder: ../config/sites/pharmacy.uiowa.edu
+module:
+  pharmacy_core: 0
+theme: {  }
+complete_list:
+  - config_split.config_split.site
+  - core.entity_view_display.node.person.default
+  - field.field.node.person.field_person_territory
+  - field.storage.node.field_person_territory
+  - sitenow_people.person_type.palliative_grad
+  - views.view.palliative_grad
+partial_list:
+  - core.entity_form_display.node.person.default
+  - field.field.node.person.field_person_research_areas
+  - field.field.node.person.field_person_types
+  - taxonomy.vocabulary.research_areas

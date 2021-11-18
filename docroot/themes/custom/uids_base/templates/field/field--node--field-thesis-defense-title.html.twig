@@ -1,4 +1,11 @@
-{% include '@uids_base/field/field.html.twig' with {
-  item_tag: 'h2',
-  attributes: attributes.addClass('element--light-intro'),
-} %}
+{% if view_mode == 'teaser' %}
+  {% include '@uids_base/field/field.html.twig' with {
+    item_tag: 'div',
+    attributes: attributes.addClass('card__subtitle'),
+  } %}
+{% else %}
+  {% include '@uids_base/field/field.html.twig' with {
+    item_tag: 'h2',
+    attributes: attributes.addClass('element--light-intro'),
+  } %}
+{% endif %}

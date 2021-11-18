@@ -5,4 +5,54 @@
 // @todo move back to UIDS
 .pager {
   margin-bottom: $desktop-width-gutter;
+  margin-top: 1.5rem;
+}
+
+.pager a {
+  color: $secondary;
+  [class*=bg--black] & {
+    background-color: $secondary;
+  }
+  [class*=bg--white] & {
+    background-color: $white;
+  }
+  [class*=bg--gold] & {
+    background-color: $primary;
+  }
+  [class*=bg--gray] & {
+    background-color: $light;
+  }
+}
+.pager a:hover,
+.pager a:focus {
+  background-color: $light;
+  color: $secondary;
+  [class*=bg--black] &,
+  [class*=bg--gold] & {
+    background-color: $white;
+  }
+  [class*=bg--gray] & {
+    background-color: $lighter-gray;
+  }
+}
+
+/* Active State */
+.pager .is-active a {
+  background-color: $secondary;
+  color: $white;
+
+  [class*=bg--black] & {
+    background-color: $primary;
+    color: $secondary;
+  }
+
+  /* Active Hover/Focus States */
+  &:hover, &:focus {
+    background-color: $primary;
+    color: $secondary;
+    [class*=bg--black] &,
+    [class*=bg--gold] & {
+      background-color: $white;
+    }
+  }
 }

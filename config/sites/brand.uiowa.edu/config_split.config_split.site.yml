@@ -1,0 +1,32 @@
+uuid: 2631db12-1fae-41dd-81c2-99a69a5ec8d5
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: Site
+description: 'The brand.uiowa.edu site split.'
+storage: folder
+folder: ../config/sites/brand.uiowa.edu
+module:
+  brand_core: 0
+  mailsystem: 0
+  swiftmailer: 0
+  workbench_email: 0
+theme: {  }
+weight: 110
+complete_list:
+  - config_split.config_split.site
+  - node.type.lockup
+  - pathauto.pattern.lockup
+  - taxonomy.vocabulary.orgs
+  - user.role.collaborator
+  - views.view.lockups
+  - views.view.lockup_moderation
+  - workflows.workflow.lockup
+  - 'field.storage.node.field_lockup_*'
+partial_list:
+  - administerusersbyrole.settings
+  - system.mail
+  - uiowa_auth.settings
+  - 'workbench_email.*'
+  - 'user.role.*'

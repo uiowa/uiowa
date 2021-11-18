@@ -44,7 +44,7 @@ tests:
 
 You can add more items to `phpunit` or just change it depending on what you
 want to test. The latter is probably faster as core/contrib tests can take a
-long time to run. Here is another example.
+long time to run.
 
 Note that we are disabling Drupal core tests in `blt/ci.blt.yml`. There is no
 reason to run them for every commit in CI. We only want to test our code there.

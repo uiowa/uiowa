@@ -5,28 +5,27 @@ dependencies: {  }
 id: event
 label: Event
 description: 'Event content type.'
+weight: 80
+stackable: true
+storage: folder
 folder: ../config/features/event
 module:
   schema_event: 0
   smart_date: 0
   smart_date_recur: 0
 theme: {  }
-blacklist: {  }
-graylist:
-  - field.storage.node.field_event_category
-  - field.storage.node.field_event_hide
-  - field.storage.node.field_event_location
-  - field.storage.node.field_event_virtual
-  - field.storage.node.field_event_when
+complete_list:
   - metatag.metatag_defaults.node__event
-  - metatag.settings
   - node.type.event
   - pathauto.pattern.event
   - simple_sitemap.bundle_settings.default.node.event
   - taxonomy.vocabulary.event_categories
   - views.view.events
+  - 'core.entity_form_display.node.event.*'
+  - 'core.entity_view_display.node.event.*'
+  - 'field.storage.node.field_event_*'
+partial_list:
+  - metatag.settings
+  - workflows.workflow.editorial
   - 'smart_date.*'
   - 'user.role.*'
-graylist_dependents: true
-graylist_skip_equal: true
-weight: 80

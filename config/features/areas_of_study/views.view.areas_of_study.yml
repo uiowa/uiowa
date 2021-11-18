@@ -1318,7 +1318,7 @@ display:
             operator: combine_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: combine
+            identifier: title
             required: false
             remember: false
             multiple: false
@@ -1576,7 +1576,7 @@ display:
           click_sort_column: uri
           type: link
           settings:
-            trim_length: 80
+            trim_length: null
             url_only: true
             url_plain: true
             rel: '0'
@@ -1927,8 +1927,9 @@ display:
       css_class: table-responsive
       arguments: {  }
       pager:
-        type: none
+        type: some
         options:
+          items_per_page: 0
           offset: 0
       header: {  }
       use_ajax: true

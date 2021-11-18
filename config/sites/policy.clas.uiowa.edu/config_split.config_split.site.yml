@@ -1,0 +1,26 @@
+uuid: 3f204530-e7f9-42ef-bfaa-bcb005080d66
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: Site
+description: 'The policy.clas.uiowa.edu site split.'
+weight: 70
+stackable: true
+storage: folder
+folder: ../config/sites/policy.clas.uiowa.edu
+module:
+  book: 0
+  search_api_autocomplete: 0
+  search_api_db: 0
+  uiowa_book: 0
+  views_tree: 0
+theme: {  }
+complete_list:
+  - config_split.config_split.site
+  - views.view.book_a_z_list
+  - views.view.book_search
+  - views.view.book_toc
+  - views.view.book_whats_new
+partial_list:
+  - 'user.role.*'

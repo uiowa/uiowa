@@ -20,8 +20,8 @@ class ReplaceCommands extends BltTasks {
     // Disable alias since we are targeting a specific URI.
     $this->config->set('drush.alias', '');
 
-    $app = EnvironmentDetector::getAhGroup() ? EnvironmentDetector::getAhGroup() : 'local';
-    $env = EnvironmentDetector::getAhEnv() ? EnvironmentDetector::getAhEnv() : 'local';
+    $app = EnvironmentDetector::getAhGroup() ?: 'local';
+    $env = EnvironmentDetector::getAhEnv() ?: 'local';
     $multisite_exception = FALSE;
 
     // Unshift uiowa.edu to the beginning so it runs first.
@@ -38,12 +38,12 @@ class ReplaceCommands extends BltTasks {
 
       // Check for database include on this application.
       if (EnvironmentDetector::isAhEnv() && !file_exists("/var/www/site-php/{$app}/{$db}-settings.inc")) {
-        $this->say("Skipping {$multisite} on AH environment. Database {$db} does not exist.");
+        $this->logger->debug("Skipping {$multisite} on AH environment. Database {$db} does not exist.");
         continue;
       }
       else {
         if ($this->getInspector()->isDrupalInstalled()) {
-          $this->say("Deploying updates to <comment>{$multisite}</comment>...");
+          $this->logger->info("Deploying updates to <comment>{$multisite}</comment>...");
 
           // Invalidate the Twig cache if on AH env. This happens automatically
           // for the default site but not multisites. We don't need to pass
@@ -59,13 +59,23 @@ class ReplaceCommands extends BltTasks {
           }
 
           try {
-            // Define a site-specific cache directory. For some reason, putenv
-            // did not work here. This would not be necessary if Drush
-            // supported per-site config file loading.
+            // Define a site-specific cache directory.
             // @see: https://github.com/drush-ops/drush/pull/4345
-            $_ENV['DRUSH_PATHS_CACHE_DIRECTORY'] = "/tmp/.drush-cache-{$app}/{$env}/{$multisite}";
+            $tmp = "/tmp/.drush-cache-{$app}/{$env}/{$multisite}";
+
+            // Clear the plugin cache for discovery and potential layout issue.
+            // @see: https://github.com/uiowa/uiowa/issues/3585.
+            $this->taskDrush()
+              ->drush('cc plugin')
+              ->option('define', "drush.paths.cache-directory={$tmp}")
+              ->run();
+
+            // Ensure BLT uses the site-specific cache directory. For some
+            // reason, putenv did not work here. This would not be necessary if
+            // Drush supported per-site config file loading.
+            $_ENV['DRUSH_PATHS_CACHE_DIRECTORY'] = $tmp;
             $this->invokeCommand('drupal:update');
-            $this->say("Finished deploying updates to {$multisite}.");
+            $this->logger->info("Finished deploying updates to <comment>{$multisite}</comment>.");
           }
           catch (BltException $e) {
             $this->logger->error("Failed deploying updates to {$multisite}.");
@@ -95,11 +105,11 @@ class ReplaceCommands extends BltTasks {
 
       // Trigger drupal:update for this site.
       if ($db_name == $db) {
-        $this->say("Deploying updates to <comment>{$multisite}</comment>...");
+        $this->logger->info("Deploying updates to <comment>{$multisite}</comment>...");
         $this->switchSiteContext($multisite);
         $this->taskDrush()->drush('cache:rebuild')->run();
         $this->invokeCommand('drupal:update');
-        $this->say("Finished deploying updates to {$multisite}.");
+        $this->logger->info("Finished deploying updates to <comment>{$multisite}</comment>.");
 
         break;
       }
@@ -144,6 +154,31 @@ class ReplaceCommands extends BltTasks {
         $this->logger->notice('Review deprecation warnings and re-run.');
         throw new BltException("Drupal Check in {$path} failed.");
       }
+    }
+  }
+
+  /**
+   * Replace frontend tests command so we can do more than just a oneline exec.
+   *
+   * Note that the frontend-test command hook does not need to be in blt.yml.
+   *
+   * @hook replace-command tests:frontend:run
+   */
+  public function testsFrontend() {
+    if (EnvironmentDetector::isCiEnv()) {
+      // We don't want to snapshot develop because it could be unstable.
+      if (getenv('TRAVIS_BRANCH') != 'develop') {
+        $this->taskExecStack()
+          ->dir($this->getConfigValue('repo.root'))
+          ->exec('npx percy snapshot --base-url http://localhost:8888 snapshots.yml')
+          ->run();
+      }
+      else {
+        $this->logger->notice('Skipping percy snapshot in develop branch.');
+      }
+    }
+    else {
+      $this->logger->notice('Skipping percy snapshot in non-CI environment.');
     }
   }
 

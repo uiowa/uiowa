@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labci.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labci
+  human_name: ci.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labci.prod
+drupal:
+  db:
+    database: ci_lab_uiowa_edu
+uiowa:
+  requester: mhuffmn

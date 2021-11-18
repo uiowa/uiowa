@@ -1,0 +1,27 @@
+uuid: 64aa6f58-eeed-41a8-955d-21b3ff750a08
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: Site
+description: 'The icsa.uiowa.edu site split.'
+weight: 70
+stackable: true
+storage: folder
+folder: ../config/sites/icsa.uiowa.edu
+module:
+  datetime_range: 0
+theme: {  }
+complete_list:
+  - config_split.config_split.site
+  - core.date_format.medium_date
+  - node.type.project
+  - system.menu.about
+  - system.menu.projects
+  - system.menu.reports
+  - system.menu.resources
+  - system.menu.services
+  - views.view.projects
+  - views.view.reports
+  - 'field.storage.node.field_project_*'
+partial_list: {  }

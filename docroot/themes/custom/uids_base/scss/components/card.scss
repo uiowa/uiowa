@@ -130,6 +130,21 @@
 }
 
 .card {
+  .card__date,
+  .card__subtitle {
+    .svg-inline--fa {
+      margin-right: .3rem;
+    }
+    a {
+      text-decoration: none;
+    }
+  }
+
+  .card__date {
+    .svg-inline--fa {
+      vertical-align: -0.155em;
+    }
+  }
 
   &__label {
     position: relative;
@@ -159,7 +174,7 @@
       display: none;
     }
     .card__body {
-      @include breakpoint(menu) {
+      @include breakpoint(sm) {
         padding: 0 !important;
       }
     }
@@ -167,6 +182,12 @@
   &.hide-details .card__details {
     display: none;
   }
+}
+
+// Fix for adding padding if images are hidden within stack format.
+.card.hide-images.card--stacked.card--enclosed .card__body,
+.card.hide-images.card--stacked.card--enclosed .card__media + .card__body {
+  padding: 2rem!important;
 }
 
 // Card__head styles
@@ -213,4 +234,13 @@
       padding: 0;
     }
   }
+}
+
+// Card list styles
+.card--list .card__date {
+  margin-top: .3rem;
+}
+
+.card--media-left.card--list .card__title, .card--media-right.card--list .card__title {
+  margin: 0 0 .125rem
 }

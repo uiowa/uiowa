@@ -5,6 +5,9 @@ dependencies: {  }
 id: sitenow_v2
 label: 'SiteNow V2'
 description: 'Features related to Paragraph-based layout functionality.'
+weight: 80
+stackable: true
+storage: folder
 folder: ../config/features/sitenow_v2
 module:
   sitenow_accordion: 0
@@ -15,12 +18,32 @@ module:
   sitenow_p2lb: 0
   sitenow_paragraphs: 0
 theme: {  }
-blacklist:
+complete_list:
+  - core.entity_view_display.node.page.default
+  - core.entity_view_mode.paragraph.preview
+  - core.entity_view_mode.paragraph.token
+  - field.field.node.page.field_page_content_block
   - field.field.node.page.field_v3_conversion_revision_id
+  - field.storage.node.field_page_content_block
   - field.storage.node.field_v3_conversion_revision_id
+  - paragraphs.paragraphs_type.accordion
+  - paragraphs.paragraphs_type.accordion_item
+  - paragraphs.paragraphs_type.articles
+  - paragraphs.paragraphs_type.blockquote
+  - paragraphs.paragraphs_type.card
+  - paragraphs.paragraphs_type.carousel
+  - paragraphs.paragraphs_type.carousel_image
+  - paragraphs.paragraphs_type.events
+  - paragraphs.paragraphs_type.featured_content
+  - paragraphs.paragraphs_type.image_gallery
+  - paragraphs.paragraphs_type.people
+  - paragraphs.paragraphs_type.section
+  - paragraphs.paragraphs_type.text
+  - paragraphs.paragraphs_type.webform
   - system.action.sitenow_p2lb_convert
   - views.view.content_v3_converter
-graylist:
+partial_list:
+  - core.entity_form_display.node.page.default
   - core.entity_view_display.media.image.edgy
   - core.entity_view_display.media.image.image_large
   - core.entity_view_display.media.image.image_medium
@@ -34,8 +57,6 @@ graylist:
   - core.entity_view_mode.media.image_small
   - core.entity_view_mode.media.sitenow_16_9
   - embed.button.media_entity_embed
-  - field.field.node.page.field_page_content_block
-  - field.storage.node.field_page_content_block
   - image.style.large
   - image.style.medium
   - image.style.sitenow_16_9_large
@@ -46,15 +67,7 @@ graylist:
   - paragraphs.settings
   - responsive_image.styles.sitenow_16_9
   - responsive_image.styles.ui_edgy_no_crop
-  - user.role.editor
-  - user.role.webmaster
   - views.view.media_library
-  - 'core.entity_form_display.paragraph.*'
-  - 'core.entity_view_display.paragraph.*'
-  - 'core.entity_view_mode.paragraph.*'
   - 'field.storage.paragraph.*'
   - 'image.style.ui_edgy_no_crop_*'
-  - 'paragraphs.paragraphs_type.*'
-graylist_dependents: true
-graylist_skip_equal: true
-weight: 80
+  - 'user.role.*'

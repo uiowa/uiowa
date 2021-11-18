@@ -1,0 +1,29 @@
+uuid: 00838b0b-df93-4232-8a70-34b64c667cde
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_tags
+    - media.type.twitter
+    - taxonomy.vocabulary.tags
+id: media.twitter.field_tags
+field_name: field_tags
+entity_type: media
+bundle: twitter
+label: Tags
+description: 'Enter a comma-separated list.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      tags: tags
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

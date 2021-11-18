@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: sitesedgeofspace.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: sitesedgeofspace
+  human_name: edgeofspace.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesedgeofspace.prod
+drupal:
+  db:
+    database: edgeofspace_sites_uiowa_edu
+uiowa:
+  requester: gmccrory

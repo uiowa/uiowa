@@ -1,0 +1,28 @@
+uuid: e2297c69-9058-4f80-8593-f53e966dca17
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: Site
+description: 'The iowasuperfund.uiowa.edu site split.'
+weight: 70
+stackable: true
+storage: folder
+folder: ../config/sites/iowasuperfund.uiowa.edu
+module: {  }
+theme: {  }
+complete_list:
+  - config_split.config_split.site
+  - field.storage.fragment.field_authors
+  - fragments.fragment_type.publication
+  - node.type.project_core
+  - node.type.publication
+  - node.type.research_project
+  - node.type.support_core
+  - simple_sitemap.bundle_settings.default.node.project_core
+  - simple_sitemap.bundle_settings.default.node.research_project
+  - simple_sitemap.bundle_settings.default.node.support_core
+  - 'field.storage.node.field_publication_*'
+partial_list:
+  - metatag.settings
+  - 'user.role.*'
