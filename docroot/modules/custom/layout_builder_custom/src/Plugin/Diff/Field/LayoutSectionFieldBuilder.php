@@ -5,6 +5,7 @@ namespace Drupal\layout_builder_custom\Plugin\Diff\Field;
 use Drupal\block_content\Entity\BlockContent;
 use Drupal\diff\FieldDiffBuilderBase;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\layout_builder\Section;
 
 /**
  * Plugin to diff layout section fields.
@@ -29,11 +30,9 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
     // a uuid in the future for better comparisons.
     foreach ($field_items->getSections() as $id => $section) {
       // Starting off, let's just take care of the lb styles.
-      // Create a simple prefix.
-      $prefix = "Section " . $id . " Configuration: ";
-      // Grab our lb styles, combine with our prefix, and add it to our results.
-      $lb_styles = implode(', ', $section->toArray()['layout_settings']['layout_builder_styles_style']);
-      $result[$counter++] = $prefix . $lb_styles;
+      if ($lb_styles = $this->processSectionStyles($id, $section)) {
+        $result[$counter++] = $lb_styles;
+      };
       // Now let's process the actual content within the section.
       foreach ($section->getComponents() as $comp_id => $component) {
         $config = $component->get('configuration');
@@ -77,6 +76,35 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
       }
     }
     return $result;
+  }
+
+  /**
+   * Helper function for pulling out the layout builder styles.
+   *
+   * @param int $id
+   *   The section delta.
+   * @param \Drupal\layout_builder\Section $section
+   *   The section to process.
+   *
+   * @return false|string
+   *   The resultant styles, or false if they aren't present.
+   */
+  protected function processSectionStyles(int $id, Section $section) {
+    // Create a simple prefix.
+    $prefix = "Section " . $id . " Configuration: ";
+    // Grab our lb styles, combine with our prefix, and add it to our results.
+    $section_array = $section->toArray();
+    // If we have layout_builder_styles, grab them and append them to the results.
+    // Increment the counter, so that they'll be displayed separately
+    // from the section components.
+    if (isset($section_array['layout_settings']) &&
+      isset($section_array['layout_settings']['layout_builder_styles_style'])) {
+      // Remove empty styles.
+      $lb_styles = array_filter($section_array['layout_settings']['layout_builder_styles_style']);
+      $lb_styles = implode(', ', $lb_styles);
+      return $prefix . $lb_styles;
+    }
+    return FALSE;
   }
 
   /**
