@@ -28,15 +28,15 @@ before_install:
   - chmod 600 $HOME/.ssh/id_rsa
   - phpenv config-rm xdebug.ini
   - yes | pecl install memcache-4.0.5.2
+  - source ${BLT_TRAVIS_DIR}/scripts/travis/exit_early
 
 install:
   - nvm install
   - nvm use
   - yarn --version
   - composer install
-  - source ${BLT_DIR}/scripts/travis/exit_early
-  - source ${BLT_DIR}/scripts/travis/setup_environment
-  - source ${BLT_DIR}/scripts/travis/setup_project
+  - source ${BLT_TRAVIS_DIR}/scripts/travis/setup_environment
+  - source ${BLT_TRAVIS_DIR}/scripts/travis/setup_project
 
 script:
   - blt blt:telemetry:disable --no-interaction
