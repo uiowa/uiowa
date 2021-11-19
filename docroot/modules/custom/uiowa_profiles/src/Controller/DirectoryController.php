@@ -122,7 +122,6 @@ class DirectoryController extends ControllerBase {
           'role' => 'region',
           'aria-live' => 'polite',
           'aria-labelled-by' => 'profiles-table-label',
-          'tabindex' => 0,
           'class' => [
             'uids-content',
           ],
