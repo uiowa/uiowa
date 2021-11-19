@@ -2,7 +2,7 @@ project:
   prefix: uiowa
   human_name: 'The base application on Acquia Cloud for the University of Iowa.'
   local:
-    hostname: default.local.drupal.uiowa.edu
+    hostname: default.uiowa.lndo.site
     protocol: https
   profile:
     name: sitenow
@@ -44,13 +44,19 @@ validate:
       - drupal_entity
     filters:
       - image_style
+drupal:
+  db:
+    host: database
+    database: null
+    username: drupal9
+    password: drupal9
 command-hooks:
   frontend-reqs:
     dir: ${docroot}
-    command: 'yarn install --production --ignore-optional --frozen-lockfile --non-interactive'
+    command: '. $NVM_DIR/nvm.sh && nvm install && yarn install --production --ignore-optional --frozen-lockfile --non-interactive'
   frontend-assets:
     dir: ${docroot}
-    command: 'yarn workspaces run build'
+    command: '. $NVM_DIR/nvm.sh && nvm use && yarn workspaces run build'
   post-deploy-build:
     dir: ${repo.root}
     command: './vendor/bin/blt uiowa:post:build'

@@ -14,10 +14,9 @@ config:
   drush: false
   xdebug: true
   ssl: false
+  database: mysql
 
 services:
-  database:
-    type: mysql:5.7
   cache:
     type: memcached:1
   appserver:
@@ -30,7 +29,7 @@ services:
   node:
     type: node:14
     globals:
-      gulp-cli: 2.0.1
+      gulp-cli: 2.2.0
 
 events:
   post-start:
