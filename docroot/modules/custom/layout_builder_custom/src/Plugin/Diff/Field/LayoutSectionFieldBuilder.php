@@ -73,12 +73,22 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
         }
         $result[$counter] = $prefix . $result[$counter];
         $counter++;
-        }
       }
+    }
     return $result;
   }
 
-  protected function processBlock($block, $counter, &$result) {
+  /**
+   * Helper function for processing inline blocks.
+   *
+   * @param $block
+   *   The block to be processed.
+   * @param int $counter
+   *   The result counter.
+   * @param array $result
+   *   The final results array.
+   */
+  protected function processBlock($block, int $counter, array &$result) {
     foreach ($block->toArray() as $arr_key => $arr_value) {
       if (str_starts_with($arr_key, 'field_')) {
         foreach ($arr_value as $field_num => $field) {
@@ -89,16 +99,26 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
             }
             $old = isset($result[$counter]) ? $result[$counter] : '';
             $result[$counter] = $old . "\r" . implode(': ', [
-                $indexer,
-                $value_value,
-              ]);
+              $indexer,
+              $value_value,
+            ]);
           }
         }
       }
     }
   }
 
-  protected function processListBlock($config, $counter, &$result) {
+  /**
+   * Helper function for processing List Blocks.
+   *
+   * @param array $config
+   *   The component config array.
+   * @param int $counter
+   *   The result counter.
+   * @param array $result
+   *   The final results array.
+   */
+  protected function processListBlock(array $config, int &$counter, array &$result) {
     $to_skip = [
       'id',
       'label',
@@ -112,21 +132,45 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
       }
       if (is_array($arr_value)) {
         foreach ($arr_value as $field_name => $field_values) {
-          // @todo Handle these.
-          continue;
+          if (!is_array($field_values)) {
+            $field_values = ['value' => $field_values];
+          }
+          foreach ($field_values as $value_key => $value_value) {
+            $indexer = ucwords($this->generateIndexer($field_name, 0, $value_key));
+            $old = isset($result[$counter]) ? $result[$counter] : '';
+            $result[$counter] = $old . "\r" . implode(': ', [
+              $indexer,
+              $value_value,
+            ]);
+          }
         }
       }
       else {
         $indexer = ucwords($this->prettifyMachineName($arr_key));
-        $result[$counter] = implode(': ', [
-            $indexer,
-            $arr_value,
-          ]);
+        $old = isset($result[$counter]) ? $result[$counter] : '';
+        $result[$counter] = $old . "\r" . implode(': ', [
+          $indexer,
+          $arr_value,
+        ]);
       }
     }
+    $counter++;
   }
 
-  protected function generateIndexer($arr_key, $field_num = 0, $value_key = '') {
+  /**
+   * Helper function to create and indexer string for the final results.
+   *
+   * @param string $arr_key
+   *   The array key for the indexed value.
+   * @param int $field_num
+   *   The delta for the keyed value.
+   * @param string $value_key
+   *   The specific field value key.
+   *
+   * @return string
+   *   The indexer to be used in the final results.
+   */
+  protected function generateIndexer(string $arr_key, int $field_num = 0, string $value_key = '') {
     $field_col_name = ucwords($this->prettifyMachineName($arr_key));
     // Only include the number if we're on more than one field value,
     // and increment it for readability, rather than being zero-based.
@@ -138,7 +182,16 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
     return $field_col_name . ', ' . $field_name;
   }
 
-  protected function prettifyMachineName($machine_name) {
+  /**
+   * Simple helper to make machine names more user friendly.
+   *
+   * @param string $machine_name
+   *   The string to pretty print.
+   *
+   * @return string
+   *   The more readable string.
+   */
+  protected function prettifyMachineName(string $machine_name) {
     $exploded = explode('_', $machine_name);
     // Remove the starting 'field' if it's there.
     if (str_starts_with($machine_name, 'field')) {
