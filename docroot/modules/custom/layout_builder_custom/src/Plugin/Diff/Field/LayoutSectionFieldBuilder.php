@@ -118,7 +118,7 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
    * @param array $result
    *   The final results array.
    */
-  protected function processListBlock(array $config, int &$counter, array &$result) {
+  protected function processListBlock(array $config, int $counter, array &$result) {
     $to_skip = [
       'id',
       'label',
@@ -154,7 +154,6 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
         ]);
       }
     }
-    $counter++;
   }
 
   /**
