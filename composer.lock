@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "303c9b5c5efaad18146f1728b77110ed",
+    "content-hash": "da8c195e1763b61ac14168cbeab7fee7",
     "packages": [
         {
             "name": "acquia/blt",
-            "version": "12.8.2",
+            "version": "13.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/acquia/blt.git",
-                "reference": "6a57068e0a2368ed4f6dcd3602c3469f668f85a3"
+                "reference": "994cd7803b61faba3389b5be176c3e82f27b4739"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/acquia/blt/zipball/6a57068e0a2368ed4f6dcd3602c3469f668f85a3",
-                "reference": "6a57068e0a2368ed4f6dcd3602c3469f668f85a3",
+                "url": "https://api.github.com/repos/acquia/blt/zipball/994cd7803b61faba3389b5be176c3e82f27b4739",
+                "reference": "994cd7803b61faba3389b5be176c3e82f27b4739",
                 "shasum": ""
             },
             "require": {
@@ -26,16 +26,16 @@
                 "composer-runtime-api": "^2.0",
                 "consolidation/comments": "^1.0",
                 "consolidation/config": "^1.0.0",
-                "consolidation/robo": "^1.4.12 || ^2",
+                "consolidation/robo": "^1.4.12 || ^2 || ^3",
                 "dflydev/dot-access-data": "^1.1.0",
                 "doctrine/annotations": "^1.10.0",
                 "drupal/core": "^9.0.0-alpha1",
-                "drupol/phposinfo": "^1.6",
                 "drush/drush": "^10.2.2",
                 "enlightn/security-checker": "^1.3",
                 "ext-json": "*",
                 "grasmash/yaml-cli": "^2.0.0",
                 "grasmash/yaml-expander": "^1.2.0",
+                "loophp/phposinfo": "^1.7.1",
                 "php": ">=7.3",
                 "symfony/config": "^4.4",
                 "symfony/console": "^4.4.6",
@@ -48,8 +48,7 @@
                 "drupal/drupal": "*"
             },
             "require-dev": {
-                "knplabs/github-api": "^2.6",
-                "symfony/http-client": "^5.1"
+                "squizlabs/php_codesniffer": "^3.6"
             },
             "suggest": {
                 "davereid/drush-acquia-hook-invoke": "dev-master",
@@ -64,7 +63,7 @@
             "extra": {
                 "branch-alias": {
                     "10.x-dev": "10.0.x-dev",
-                    "dev-main": "12.x-dev"
+                    "dev-main": "13.x-dev"
                 },
                 "class": "Acquia\\Blt\\Composer\\Plugin",
                 "installer-paths": {
@@ -72,7 +71,42 @@
                         "type:drupal-core"
                     ]
                 },
-                "phpcodesniffer-search-depth": 4
+                "phpcodesniffer-search-depth": 4,
+                "violinist": {
+                    "allow_updates_beyond_constraint": 0,
+                    "blocklist": [
+                        "symfony/cache",
+                        "symfony/config",
+                        "symfony/dependency-injection",
+                        "symfony/dotenv",
+                        "symfony/event-dispatcher",
+                        "symfony/expression-language",
+                        "symfony/filesystem",
+                        "symfony/finder",
+                        "symfony/http-kernel",
+                        "symfony/process",
+                        "symfony/validator",
+                        "symfony/yaml"
+                    ],
+                    "bundled_packages": {
+                        "symfony/console": [
+                            "symfony/cache",
+                            "symfony/config",
+                            "symfony/dependency-injection",
+                            "symfony/dotenv",
+                            "symfony/event-dispatcher",
+                            "symfony/expression-language",
+                            "symfony/filesystem",
+                            "symfony/finder",
+                            "symfony/http-kernel",
+                            "symfony/process",
+                            "symfony/validator",
+                            "symfony/yaml"
+                        ]
+                    },
+                    "number_of_concurrent_updates": 2,
+                    "one_pull_request_per_package": 1
+                }
             },
             "autoload": {
                 "psr-4": {
@@ -101,9 +135,9 @@
             "support": {
                 "docs": "https://docs.acquia.com/blt/",
                 "issues": "https://github.com/acquia/blt/issues",
-                "source": "https://github.com/acquia/blt/tree/12.8.2"
+                "source": "https://github.com/acquia/blt/tree/13.2.0"
             },
-            "time": "2021-03-10T18:30:08+00:00"
+            "time": "2021-11-18T22:10:49+00:00"
         },
         {
             "name": "acquia/blt-drupal-test",
@@ -1389,16 +1423,16 @@
         },
         {
             "name": "consolidation/annotated-command",
-            "version": "4.2.4",
+            "version": "4.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/consolidation/annotated-command.git",
-                "reference": "ec297e05cb86557671c2d6cbb1bebba6c7ae2c60"
+                "reference": "308f6ac178566a1ce9aa90ed908dac90a2c1e707"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation/annotated-command/zipball/ec297e05cb86557671c2d6cbb1bebba6c7ae2c60",
-                "reference": "ec297e05cb86557671c2d6cbb1bebba6c7ae2c60",
+                "url": "https://api.github.com/repos/consolidation/annotated-command/zipball/308f6ac178566a1ce9aa90ed908dac90a2c1e707",
+                "reference": "308f6ac178566a1ce9aa90ed908dac90a2c1e707",
                 "shasum": ""
             },
             "require": {
@@ -1410,7 +1444,7 @@
                 "symfony/finder": "^4.4.8|^5"
             },
             "require-dev": {
-                "phpunit/phpunit": ">=7.5.20",
+                "phpunit/phpunit": "^7.5.20 || ^8 || ^9",
                 "squizlabs/php_codesniffer": "^3",
                 "yoast/phpunit-polyfills": "^0.2.0"
             },
@@ -1438,9 +1472,9 @@
             "description": "Initialize Symfony Console commands from annotated command class methods.",
             "support": {
                 "issues": "https://github.com/consolidation/annotated-command/issues",
-                "source": "https://github.com/consolidation/annotated-command/tree/4.2.4"
+                "source": "https://github.com/consolidation/annotated-command/tree/4.4.0"
             },
-            "time": "2020-12-10T16:56:39+00:00"
+            "time": "2021-09-30T01:08:15+00:00"
         },
         {
             "name": "consolidation/comments",
@@ -1917,16 +1951,16 @@
         },
         {
             "name": "consolidation/site-alias",
-            "version": "3.1.0",
+            "version": "3.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/consolidation/site-alias.git",
-                "reference": "9ed3c590be9fcf9fea69c73456c2fd4b27f5204c"
+                "reference": "e824b57253d9174f4a500f87e6d0e1e497c2a50a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation/site-alias/zipball/9ed3c590be9fcf9fea69c73456c2fd4b27f5204c",
-                "reference": "9ed3c590be9fcf9fea69c73456c2fd4b27f5204c",
+                "url": "https://api.github.com/repos/consolidation/site-alias/zipball/e824b57253d9174f4a500f87e6d0e1e497c2a50a",
+                "reference": "e824b57253d9174f4a500f87e6d0e1e497c2a50a",
                 "shasum": ""
             },
             "require": {
@@ -1969,9 +2003,9 @@
             "description": "Manage alias records for local and remote sites.",
             "support": {
                 "issues": "https://github.com/consolidation/site-alias/issues",
-                "source": "https://github.com/consolidation/site-alias/tree/3.1.0"
+                "source": "https://github.com/consolidation/site-alias/tree/3.1.1"
             },
-            "time": "2021-02-20T20:03:10+00:00"
+            "time": "2021-09-21T00:30:48+00:00"
         },
         {
             "name": "consolidation/site-process",
@@ -2177,43 +2211,6 @@
                 "source": "https://github.com/dflydev/dflydev-dot-access-data/tree/master"
             },
             "time": "2017-01-20T21:14:22+00:00"
-        },
-        {
-            "name": "dnoegel/php-xdg-base-dir",
-            "version": "v0.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dnoegel/php-xdg-base-dir.git",
-                "reference": "8f8a6e48c5ecb0f991c2fdcf5f154a47d85f9ffd"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dnoegel/php-xdg-base-dir/zipball/8f8a6e48c5ecb0f991c2fdcf5f154a47d85f9ffd",
-                "reference": "8f8a6e48c5ecb0f991c2fdcf5f154a47d85f9ffd",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~7.0|~6.0|~5.0|~4.8.35"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "XdgBaseDir\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "implementation of xdg base directory specification for php",
-            "support": {
-                "issues": "https://github.com/dnoegel/php-xdg-base-dir/issues",
-                "source": "https://github.com/dnoegel/php-xdg-base-dir/tree/v0.1.1"
-            },
-            "time": "2019-12-04T15:06:13+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -10765,62 +10762,6 @@
             }
         },
         {
-            "name": "drupol/phposinfo",
-            "version": "1.6.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/drupol/phposinfo.git",
-                "reference": "36b0250d38279c8a131a1898a31e359606024507"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/drupol/phposinfo/zipball/36b0250d38279c8a131a1898a31e359606024507",
-                "reference": "36b0250d38279c8a131a1898a31e359606024507",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">= 7.1.3"
-            },
-            "require-dev": {
-                "drupol/php-conventions": "^1.7.1",
-                "friends-of-phpspec/phpspec-code-coverage": "^4.3.2",
-                "infection/infection": "^0.13.6 || ^0.15.0",
-                "phpspec/phpspec": "^5.1.2 || ^6.1.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "drupol\\phposinfo\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Pol Dellaiera",
-                    "email": "pol.dellaiera@protonmail.com"
-                }
-            ],
-            "description": "Try to guess the host operating system.",
-            "keywords": [
-                "operating system detection"
-            ],
-            "support": {
-                "issues": "https://github.com/drupol/phposinfo/issues",
-                "source": "https://github.com/drupol/phposinfo/tree/master"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/drupol",
-                    "type": "github"
-                }
-            ],
-            "abandoned": "loophp/phposinfo",
-            "time": "2020-05-19T14:14:28+00:00"
-        },
-        {
             "name": "drush/drush",
             "version": "10.3.6",
             "source": {
@@ -11160,28 +11101,29 @@
         },
         {
             "name": "enlightn/security-checker",
-            "version": "v1.7.0",
+            "version": "v1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/enlightn/security-checker.git",
-                "reference": "1ac108ba278ba0c2e71d2ce2ac4fac07ed6e8a29"
+                "reference": "dc5bce653fa4d9c792e9dcffa728c0642847c1e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/enlightn/security-checker/zipball/1ac108ba278ba0c2e71d2ce2ac4fac07ed6e8a29",
-                "reference": "1ac108ba278ba0c2e71d2ce2ac4fac07ed6e8a29",
+                "url": "https://api.github.com/repos/enlightn/security-checker/zipball/dc5bce653fa4d9c792e9dcffa728c0642847c1e1",
+                "reference": "dc5bce653fa4d9c792e9dcffa728c0642847c1e1",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "ext-zip": "*",
                 "guzzlehttp/guzzle": "^6.3|^7.0",
                 "php": ">=5.6",
                 "symfony/console": "^3.4|^4|^5",
                 "symfony/finder": "^3|^4|^5",
+                "symfony/process": "^3.4|^4|^5",
                 "symfony/yaml": "^3.4|^4|^5"
             },
             "require-dev": {
+                "ext-zip": "*",
                 "friendsofphp/php-cs-fixer": "^2.18",
                 "phpunit/phpunit": "^5.5|^6|^7|^8|^9"
             },
@@ -11219,9 +11161,9 @@
             ],
             "support": {
                 "issues": "https://github.com/enlightn/security-checker/issues",
-                "source": "https://github.com/enlightn/security-checker/tree/v1.7.0"
+                "source": "https://github.com/enlightn/security-checker/tree/v1.9.0"
             },
-            "time": "2021-03-03T11:56:26+00:00"
+            "time": "2021-05-06T09:03:35+00:00"
         },
         {
             "name": "evenement/evenement",
@@ -12634,6 +12576,68 @@
                 }
             ],
             "time": "2021-02-22T09:20:06+00:00"
+        },
+        {
+            "name": "loophp/phposinfo",
+            "version": "1.7.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/loophp/phposinfo.git",
+                "reference": "106e7b3f00849dce1787ebf38da493ba586b48f2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/loophp/phposinfo/zipball/106e7b3f00849dce1787ebf38da493ba586b48f2",
+                "reference": "106e7b3f00849dce1787ebf38da493ba586b48f2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">= 7.3"
+            },
+            "require-dev": {
+                "drupol/php-conventions": "^3.0.2",
+                "friends-of-phpspec/phpspec-code-coverage": "^5",
+                "infection/infection": "^0.18",
+                "infection/phpspec-adapter": "^0.1.1",
+                "phpspec/phpspec": "^6",
+                "vimeo/psalm": "^4.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "loophp\\phposinfo\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Pol Dellaiera",
+                    "email": "pol.dellaiera@protonmail.com"
+                }
+            ],
+            "description": "Try to guess the host operating system.",
+            "keywords": [
+                "operating system detection"
+            ],
+            "support": {
+                "docs": "https://loophp-collection.rtfd.io",
+                "issues": "https://github.com/loophp/collection/issues",
+                "source": "https://github.com/loophp/collection"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/drupol",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.paypal.me/drupol",
+                    "type": "paypal"
+                }
+            ],
+            "time": "2021-06-29T07:18:36+00:00"
         },
         {
             "name": "lsolesen/pel",
@@ -14631,20 +14635,19 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.10.6",
+            "version": "v0.10.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "6f990c19f91729de8b31e639d6e204ea59f19cf3"
+                "reference": "01281336c4ae557fe4a994544f30d3a1bc204375"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/6f990c19f91729de8b31e639d6e204ea59f19cf3",
-                "reference": "6f990c19f91729de8b31e639d6e204ea59f19cf3",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/01281336c4ae557fe4a994544f30d3a1bc204375",
+                "reference": "01281336c4ae557fe4a994544f30d3a1bc204375",
                 "shasum": ""
             },
             "require": {
-                "dnoegel/php-xdg-base-dir": "0.1.*",
                 "ext-json": "*",
                 "ext-tokenizer": "*",
                 "nikic/php-parser": "~4.0|~3.0|~2.0|~1.3",
@@ -14701,9 +14704,9 @@
             ],
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
-                "source": "https://github.com/bobthecow/psysh/tree/v0.10.6"
+                "source": "https://github.com/bobthecow/psysh/tree/v0.10.9"
             },
-            "time": "2021-01-18T15:53:43+00:00"
+            "time": "2021-10-10T13:37:39+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -16492,22 +16495,24 @@
         },
         {
             "name": "symfony/config",
-            "version": "v4.4.19",
+            "version": "v4.4.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "2c4c7827a7e143f5cf375666641b0f448eab8802"
+                "reference": "25c11934bf20c1633f3f125fed0bd7e29f5d8f24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/2c4c7827a7e143f5cf375666641b0f448eab8802",
-                "reference": "2c4c7827a7e143f5cf375666641b0f448eab8802",
+                "url": "https://api.github.com/repos/symfony/config/zipball/25c11934bf20c1633f3f125fed0bd7e29f5d8f24",
+                "reference": "25c11934bf20c1633f3f125fed0bd7e29f5d8f24",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1.3",
                 "symfony/filesystem": "^3.4|^4.0|^5.0",
-                "symfony/polyfill-ctype": "~1.8"
+                "symfony/polyfill-ctype": "~1.8",
+                "symfony/polyfill-php80": "^1.16",
+                "symfony/polyfill-php81": "^1.22"
             },
             "conflict": {
                 "symfony/finder": "<3.4"
@@ -16548,7 +16553,7 @@
             "description": "Helps you find, load, combine, autofill and validate configuration values of any kind",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/config/tree/v4.4.19"
+                "source": "https://github.com/symfony/config/tree/v4.4.33"
             },
             "funding": [
                 {
@@ -16564,7 +16569,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-01-27T09:09:26+00:00"
+            "time": "2021-10-19T15:09:42+00:00"
         },
         {
             "name": "symfony/console",
@@ -18513,6 +18518,85 @@
                 }
             ],
             "time": "2021-02-19T12:13:01+00:00"
+        },
+        {
+            "name": "symfony/polyfill-php81",
+            "version": "v1.23.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-php81.git",
+                "reference": "e66119f3de95efc359483f810c4c3e6436279436"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-php81/zipball/e66119f3de95efc359483f810c4c3e6436279436",
+                "reference": "e66119f3de95efc359483f810c4c3e6436279436",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "1.23-dev"
+                },
+                "thanks": {
+                    "name": "symfony/polyfill",
+                    "url": "https://github.com/symfony/polyfill"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Polyfill\\Php81\\": ""
+                },
+                "files": [
+                    "bootstrap.php"
+                ],
+                "classmap": [
+                    "Resources/stubs"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony polyfill backporting some PHP 8.1+ features to lower PHP versions",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "compatibility",
+                "polyfill",
+                "portable",
+                "shim"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/polyfill-php81/tree/v1.23.0"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-05-21T13:25:03+00:00"
         },
         {
             "name": "symfony/process",
