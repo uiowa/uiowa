@@ -2,6 +2,7 @@
 
 namespace Drupal\layout_builder_custom\Plugin\Diff\Field;
 
+use Drupal\block_content\Entity\BlockContent;
 use Drupal\diff\FieldDiffBuilderBase;
 use Drupal\Core\Field\FieldItemListInterface;
 
@@ -81,14 +82,14 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
   /**
    * Helper function for processing inline blocks.
    *
-   * @param $block
+   * @param \Drupal\block_content\Entity\BlockContent $block
    *   The block to be processed.
    * @param int $counter
    *   The result counter.
    * @param array $result
    *   The final results array.
    */
-  protected function processBlock($block, int $counter, array &$result) {
+  protected function processBlock(BlockContent $block, int $counter, array &$result) {
     foreach ($block->toArray() as $arr_key => $arr_value) {
       if (str_starts_with($arr_key, 'field_')) {
         foreach ($arr_value as $field_num => $field) {
