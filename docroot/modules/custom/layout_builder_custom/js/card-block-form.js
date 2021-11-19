@@ -22,8 +22,11 @@
           if (mediaTypeVideo) {
             // Set image format to widescreen.
             $image_format_field.val('media_format_widescreen').change();
-            // Set image size to default to medium
-            $image_size_field_default.val('card_image_large').change();
+            // Set image size to default to large if it was set at small,
+            // as we are not allowing small for card videos.
+            if ($image_size_field_default.val() === 'card_image_small') {
+              $image_size_field_default.val('card_image_large').change();
+            }
             // Hide image format.
             $image_format_field.parent().hide();
             $image_small_field.hide();

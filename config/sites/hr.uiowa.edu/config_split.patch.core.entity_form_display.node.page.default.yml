@@ -1,0 +1,42 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.page.field_reference
+      - field.field.node.page.field_related_content
+  _core:
+    default_config_hash: NhmTCEIwoFEiLieuvd46cPOjOsyH2UmhShZypCi9rX4
+  content:
+    field_featured_image_display:
+      weight: 15
+    field_publish_options:
+      weight: 13
+    field_reference:
+      weight: 17
+      settings:
+        match_operator: CONTAINS
+        size: 60
+        placeholder: ''
+        match_limit: 10
+      third_party_settings: {  }
+      type: entity_reference_autocomplete_tags
+      region: content
+    field_related_content:
+      weight: 16
+      settings:
+        match_operator: CONTAINS
+        size: 60
+        placeholder: ''
+        match_limit: 10
+      third_party_settings: {  }
+      type: entity_reference_autocomplete
+      region: content
+    moderation_state:
+      weight: 14
+removing:
+  content:
+    field_featured_image_display:
+      weight: 26
+    field_publish_options:
+      weight: 14
+    moderation_state:
+      weight: 15

@@ -99,9 +99,10 @@
         "drupal/block_content_permissions": "^1.9",
         "drupal/colorbox": "^1.4",
         "drupal/components": "^2",
-        "drupal/config_ignore": "^2.2.0",
+        "drupal/config_filter": "^2.2",
+        "drupal/config_ignore": "^3.0",
         "drupal/config_inspector": "^1.0",
-        "drupal/config_split": "^1.4",
+        "drupal/config_split": "2.0.x-dev#6984466f",
         "drupal/core-composer-scaffold": "^9.2",
         "drupal/core-recommended": "^9.2",
         "drupal/cshs": "^3.5",
@@ -222,7 +223,7 @@
         },
         "patches": {
             "drupal/config_ignore": {
-                "Support for export filtering via Drush": "https://www.drupal.org/files/issues/2021-01-04/config_ignore_2857247-61.patch"
+                "Clear Config Filter plugin cache to update from 2.x to 3.x": "https://www.drupal.org/files/issues/2021-10-25/3226493-3.patch"
             },
             "drupal/core": {
                 "The Media library doesn't modify the 'media' view if installed in a profile": "https://www.drupal.org/files/issues/2019-05-12/2992056.patch",
@@ -233,11 +234,13 @@
                 "Hidden buttons in off-canvas dialog are not being hidden": "https://www.drupal.org/files/issues/2020-02-28/3070375-4.patch",
                 "Expose Layout Builder data to REST and JSON:API": "https://www.drupal.org/files/issues/2020-07-07/2942975-116.patch",
                 "Themes have no context of the entity being rendered in preprocessing a layout when using Layout builder": "https://www.drupal.org/files/issues/2021-09-24/3111192-lb-entity-context-29.patch",
-                "Add Views EntityReference filter to be available for all entity reference fields": "https://www.drupal.org/files/issues/2021-06-15/2429699-414.patch",
+                "Add Views EntityReference filter to be available for all entity reference fields": "https://www.drupal.org/files/issues/2021-11-09/2429699-446.patch",
                 "Views Block Display skips preBlockBuild() call on ajax rebuild": "https://www.drupal.org/files/issues/2021-10-13/2605218-70.patch",
                 "Periods in query strings are replaced by underscores": "https://www.drupal.org/files/issues/2020-06-25/fix-mangled-query-parameter-names-2984272-36.patch",
-                "Get redirected to currently-selected menu instead of menu list": "https://www.drupal.org/files/issues/2021-09-20/2957953-9.3.x-139.patch",
                 "Fix Webform ui button contrast deprecation": "https://www.drupal.org/files/issues/2021-11-07/webform-button-contrast-3195764-12.patch"
+            },
+            "drupal/config_split": {
+                "Allow comparing the partial config with the sync storage and all other active splits": "https://www.drupal.org/files/issues/2021-11-16/compare-partial-splits-3246696-12.patch"
             },
             "drupal/default_content": {
                 "Add a Normalizer and Denormalizer to support Layout Builder": "https://www.drupal.org/files/issues/2020-08-24/default_content-add-normalizer-denormalizer-for-layout-builder-3160146-25.patch",
