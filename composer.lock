@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "da8c195e1763b61ac14168cbeab7fee7",
+    "content-hash": "eaa0cede6a4b7eef11dfb4aec28553b0",
     "packages": [
         {
             "name": "acquia/blt",
@@ -179,6 +179,47 @@
                 "source": "https://github.com/acquia/blt-drupal-test/tree/v1.0.0"
             },
             "time": "2020-11-03T23:25:11+00:00"
+        },
+        {
+            "name": "acquia/blt-travis",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/acquia/blt-travis.git",
+                "reference": "56294a08442f5eeea93116133253c652690d0ddb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/acquia/blt-travis/zipball/56294a08442f5eeea93116133253c652690d0ddb",
+                "reference": "56294a08442f5eeea93116133253c652690d0ddb",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Acquia\\BltTravis\\": "./src/"
+                },
+                "classmap": [
+                    "src/Blt/Plugin/EnvironmentDetector/TravisDetector.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Acquia Engineering",
+                    "homepage": "https://www.acquia.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Travis CI integration for Acquia BLT",
+            "support": {
+                "issues": "https://github.com/acquia/blt-travis/issues",
+                "source": "https://github.com/acquia/blt-travis/tree/v1.0.3"
+            },
+            "time": "2021-05-13T16:20:09+00:00"
         },
         {
             "name": "acquia/drupal-environment-detector",
