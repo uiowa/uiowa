@@ -3641,3 +3641,9 @@ $sites['labtedabel.local.drupal.uiowa.edu'] = 'tedabel.lab.uiowa.edu';
 $sites['labtedabel.dev.drupal.uiowa.edu'] = 'tedabel.lab.uiowa.edu';
 $sites['labtedabel.stage.drupal.uiowa.edu'] = 'tedabel.lab.uiowa.edu';
 $sites['labtedabel.prod.drupal.uiowa.edu'] = 'tedabel.lab.uiowa.edu';
+
+// Directory aliases for jabbari.lab.uiowa.edu.
+$sites['labjabbari.local.drupal.uiowa.edu'] = 'jabbari.lab.uiowa.edu';
+$sites['labjabbari.dev.drupal.uiowa.edu'] = 'jabbari.lab.uiowa.edu';
+$sites['labjabbari.stage.drupal.uiowa.edu'] = 'jabbari.lab.uiowa.edu';
+$sites['labjabbari.prod.drupal.uiowa.edu'] = 'jabbari.lab.uiowa.edu';
