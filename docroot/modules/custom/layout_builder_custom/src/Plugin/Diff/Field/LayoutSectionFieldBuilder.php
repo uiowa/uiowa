@@ -94,7 +94,8 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
     $prefix = "Section " . $id . " Configuration: ";
     // Grab our lb styles, combine with our prefix, and add it to our results.
     $section_array = $section->toArray();
-    // If we have layout_builder_styles, grab them and append them to the results.
+    // If we have layout_builder_styles,
+    // grab them and append them to the results.
     // Increment the counter, so that they'll be displayed separately
     // from the section components.
     if (isset($section_array['layout_settings']) &&
