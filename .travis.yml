@@ -28,15 +28,15 @@ before_install:
   - chmod 600 $HOME/.ssh/id_rsa
   - phpenv config-rm xdebug.ini
   - yes | pecl install memcache-4.0.5.2
-  - source ${BLT_TRAVIS_DIR}/scripts/travis/exit_early
+  - source ${BLT_TRAVIS_DIR}/scripts/exit_early
 
 install:
   - nvm install
   - nvm use
   - yarn --version
   - composer install
-  - source ${BLT_TRAVIS_DIR}/scripts/travis/setup_environment
-  - source ${BLT_TRAVIS_DIR}/scripts/travis/setup_project
+  - source ${BLT_TRAVIS_DIR}/scripts/setup_environment
+  - source ${BLT_TRAVIS_DIR}/scripts/setup_project
 
 script:
   - blt blt:telemetry:disable --no-interaction
@@ -44,19 +44,19 @@ script:
 
 deploy:
   - provider: script
-    script: "${BLT_TRAVIS_DIR}/scripts/travis/deploy_branch"
+    script: "${BLT_TRAVIS_DIR}/scripts/deploy_branch"
     skip_cleanup: true
     on:
       branch: develop
       php: 7.4
   - provider: script
-    script: "${BLT_TRAVIS_DIR}/scripts/travis/deploy_branch"
+    script: "${BLT_TRAVIS_DIR}/scripts/deploy_branch"
     skip_cleanup: true
     on:
       branch: main
       php: 7.4
   - provider: script
-    script: "${BLT_TRAVIS_DIR}/scripts/travis/deploy_tag"
+    script: "${BLT_TRAVIS_DIR}/scripts/deploy_tag"
     skip_cleanup: true
     on:
       tags: true
