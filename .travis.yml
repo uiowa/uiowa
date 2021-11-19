@@ -40,23 +40,23 @@ install:
 
 script:
   - blt blt:telemetry:disable --no-interaction
-  - source ${BLT_DIR}/scripts/travis/run_tests
+  - source ${BLT_TRAVIS_DIR}/scripts/travis/run_tests
 
 deploy:
   - provider: script
-    script: "${BLT_DIR}/scripts/travis/deploy_branch"
+    script: "${BLT_TRAVIS_DIR}/scripts/travis/deploy_branch"
     skip_cleanup: true
     on:
       branch: develop
       php: 7.4
   - provider: script
-    script: "${BLT_DIR}/scripts/travis/deploy_branch"
+    script: "${BLT_TRAVIS_DIR}/scripts/travis/deploy_branch"
     skip_cleanup: true
     on:
       branch: main
       php: 7.4
   - provider: script
-    script: "${BLT_DIR}/scripts/travis/deploy_tag"
+    script: "${BLT_TRAVIS_DIR}/scripts/travis/deploy_tag"
     skip_cleanup: true
     on:
       tags: true
