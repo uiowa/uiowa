@@ -128,7 +128,6 @@ The packages below are locked at specific SHAs and will not update using the met
 | drupal/lb_direct_add                  | No stable release.       |
 | drupal/redirect                       | Need e5201ca5 from 8.x-1.x branch plus a patch. https://git.drupalcode.org/project/redirect/-/commits/8.x-1.x       |
 | kartsims/easysvg                      | Need https://github.com/kartsims/easysvg/pull/27 which is not included in a release. |
-| uiowa/block_content_template          | Forked from a deprecated project. |
 | dompdf/dompdf                         | https://www.drupal.org/project/entity_print/issues/3169624 |
 
 # Redirects
