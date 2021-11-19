@@ -3647,3 +3647,9 @@ $sites['labjabbari.local.drupal.uiowa.edu'] = 'jabbari.lab.uiowa.edu';
 $sites['labjabbari.dev.drupal.uiowa.edu'] = 'jabbari.lab.uiowa.edu';
 $sites['labjabbari.stage.drupal.uiowa.edu'] = 'jabbari.lab.uiowa.edu';
 $sites['labjabbari.prod.drupal.uiowa.edu'] = 'jabbari.lab.uiowa.edu';
+
+// Directory aliases for epx.org.uiowa.edu.
+$sites['orgepx.local.drupal.uiowa.edu'] = 'epx.org.uiowa.edu';
+$sites['orgepx.dev.drupal.uiowa.edu'] = 'epx.org.uiowa.edu';
+$sites['orgepx.stage.drupal.uiowa.edu'] = 'epx.org.uiowa.edu';
+$sites['orgepx.prod.drupal.uiowa.edu'] = 'epx.org.uiowa.edu';
