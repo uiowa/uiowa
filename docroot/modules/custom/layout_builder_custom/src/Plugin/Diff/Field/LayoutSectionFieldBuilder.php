@@ -31,38 +31,70 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
       foreach ($section->getComponents() as $comp_id => $component) {
         $config = $component->get('configuration');
         if (!isset($config['block_revision_id'])) {
+          // @todo Process views block.
           continue;
         }
-        $region = $component->get('region');
+        $region = ucfirst($component->get('region'));
         $rev_id = $config['block_revision_id'];
-        $block = $this->entityTypeManager
-          ->getStorage('block_content')
-          ->loadRevision($rev_id);
+        if ($rev_id) {
+          $block = $this->entityTypeManager
+            ->getStorage('block_content')
+            ->loadRevision($rev_id);
+        }
+        else {
+          continue;
+        }
         if ($block) {
-          $prefix = 'Section ' . $id . ', Region ' . $region . ', ' . $block->bundle() . ": \r";
-          foreach ($block->toArray() as $arr_key => $arr_value) {
-            if (str_starts_with($arr_key, 'field_')) {
-              foreach ($arr_value as $field_num => $field) {
-                foreach ($field as $value_key => $value_value) {
-                  $indexer = implode('.', [$arr_key, $field_num, $value_key]);
-                  if (is_array($value_value)) {
-                    $value_value = implode('.', $value_value);
-                  }
-                  $old = isset($result[$counter]) ? $result[$counter] : '';
-                  $result[$counter] = $old . "\r" . implode(': ', [
-                    $indexer,
-                    $value_value,
-                  ]);
-                }
-              }
+          $bundle = ucwords($this->prettifyMachineName($block->bundle()));
+          $prefix = 'Section ' . $id . ', ' . $region . ' Region, ' . $bundle . ": \r";
+          $this->processBlock($block, $counter, $result);
+        }
+        $result[$counter] = $prefix . $result[$counter];
+        $counter++;
+        }
+      }
+    return $result;
+  }
+
+  protected function processBlock($block, $counter, &$result) {
+    foreach ($block->toArray() as $arr_key => $arr_value) {
+      if (str_starts_with($arr_key, 'field_')) {
+        foreach ($arr_value as $field_num => $field) {
+          foreach ($field as $value_key => $value_value) {
+            $indexer = $this->generateIndexer($arr_key, $field_num, $value_key);
+            if (is_array($value_value)) {
+              $value_value = implode('.', $value_value);
             }
+            $old = isset($result[$counter]) ? $result[$counter] : '';
+            $result[$counter] = $old . "\r" . implode(': ', [
+                $indexer,
+                $value_value,
+              ]);
           }
-          $result[$counter] = $prefix . $result[$counter];
-          $counter++;
         }
       }
     }
-    return $result;
+  }
+
+  protected function generateIndexer($arr_key, $field_num = 0, $value_key = '') {
+    $field_col_name = ucwords($this->prettifyMachineName($arr_key));
+    // Only include the number if we're on more than one field value,
+    // and increment it for readability, rather than being zero-based.
+    if ($field_num > 0) {
+      $field_col_name = $field_col_name . ' ' . ++$field_num;
+    }
+    // Now to handle the individual fields.
+    $field_name = ucwords($this->prettifyMachineName($value_key));
+    return $field_col_name . ', ' . $field_name;
+  }
+
+  protected function prettifyMachineName($machine_name) {
+    $exploded = explode('_', $machine_name);
+    // Remove the starting 'field' if it's there.
+    if (str_starts_with($machine_name, 'field')) {
+      array_shift($exploded);
+    }
+    return implode(' ', $exploded);
   }
 
 }
