@@ -3635,3 +3635,27 @@ $sites['educationwild.local.drupal.uiowa.edu'] = 'wild.education.uiowa.edu';
 $sites['educationwild.dev.drupal.uiowa.edu'] = 'wild.education.uiowa.edu';
 $sites['educationwild.stage.drupal.uiowa.edu'] = 'wild.education.uiowa.edu';
 $sites['educationwild.prod.drupal.uiowa.edu'] = 'wild.education.uiowa.edu';
+
+// Directory aliases for tedabel.lab.uiowa.edu.
+$sites['labtedabel.local.drupal.uiowa.edu'] = 'tedabel.lab.uiowa.edu';
+$sites['labtedabel.dev.drupal.uiowa.edu'] = 'tedabel.lab.uiowa.edu';
+$sites['labtedabel.stage.drupal.uiowa.edu'] = 'tedabel.lab.uiowa.edu';
+$sites['labtedabel.prod.drupal.uiowa.edu'] = 'tedabel.lab.uiowa.edu';
+
+// Directory aliases for jabbari.lab.uiowa.edu.
+$sites['labjabbari.local.drupal.uiowa.edu'] = 'jabbari.lab.uiowa.edu';
+$sites['labjabbari.dev.drupal.uiowa.edu'] = 'jabbari.lab.uiowa.edu';
+$sites['labjabbari.stage.drupal.uiowa.edu'] = 'jabbari.lab.uiowa.edu';
+$sites['labjabbari.prod.drupal.uiowa.edu'] = 'jabbari.lab.uiowa.edu';
+
+// Directory aliases for epx.org.uiowa.edu.
+$sites['orgepx.local.drupal.uiowa.edu'] = 'epx.org.uiowa.edu';
+$sites['orgepx.dev.drupal.uiowa.edu'] = 'epx.org.uiowa.edu';
+$sites['orgepx.stage.drupal.uiowa.edu'] = 'epx.org.uiowa.edu';
+$sites['orgepx.prod.drupal.uiowa.edu'] = 'epx.org.uiowa.edu';
+
+// Directory aliases for haar.lab.uiowa.edu.
+$sites['labhaar.local.drupal.uiowa.edu'] = 'haar.lab.uiowa.edu';
+$sites['labhaar.dev.drupal.uiowa.edu'] = 'haar.lab.uiowa.edu';
+$sites['labhaar.stage.drupal.uiowa.edu'] = 'haar.lab.uiowa.edu';
+$sites['labhaar.prod.drupal.uiowa.edu'] = 'haar.lab.uiowa.edu';
