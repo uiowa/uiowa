@@ -24,20 +24,36 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
   public function build(FieldItemListInterface $field_items) {
     $result = [];
     $counter = 0;
+    // Right now our "id" is just a delta, but hopefully this will be
+    // a uuid in the future for better comparisons.
     foreach ($field_items->getSections() as $id => $section) {
+      // Starting off, let's just take care of the lb styles.
+      // Create a simple prefix.
       $prefix = "Section " . $id . " Configuration: ";
+      // Grab our lb styles, combine with our prefix, and add it to our results.
       $lb_styles = implode(', ', $section->toArray()['layout_settings']['layout_builder_styles_style']);
       $result[$counter++] = $prefix . $lb_styles;
+      // Now let's process the actual content within the section.
       foreach ($section->getComponents() as $comp_id => $component) {
         $config = $component->get('configuration');
+        // See if we're dealing with a custom block or not.
         if (!isset($config['block_revision_id'])) {
+          // If we don't have a block_revision_id, see if
+          // we're dealing with a listBlock, which is provided
+          // by views rather than layout_builder.
           if (isset($config['provider']) && $config['provider'] === 'views') {
             $this->processListBlock($config, $counter, $result);
+            $region = ucfirst($component->get('region'));
+            // @todo Update this.
+            $bundle = "List Block";
+            $prefix = 'Section ' . $id . ', ' . $region . ' Region, ' . $bundle . ": \r";
             $result[$counter] = $prefix . $result[$counter];
             $counter++;
             continue;
           }
-          // @todo Process views block.
+          // If we don't have a block_revision_id,
+          // and we aren't a views block, then we're something else
+          // and for now, we don't care. Pop out of this loop iteration.
           continue;
         }
         $region = ucfirst($component->get('region'));
