@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eaa0cede6a4b7eef11dfb4aec28553b0",
+    "content-hash": "e913a46b635bde77c1b2d5012a752303",
     "packages": [
         {
             "name": "acquia/blt",
@@ -179,6 +179,45 @@
                 "source": "https://github.com/acquia/blt-drupal-test/tree/v1.0.0"
             },
             "time": "2020-11-03T23:25:11+00:00"
+        },
+        {
+            "name": "acquia/blt-multisite",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/acquia/blt-multisite.git",
+                "reference": "133e0d341ada305e20fd10eac33fe50f6621f352"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/acquia/blt-multisite/zipball/133e0d341ada305e20fd10eac33fe50f6621f352",
+                "reference": "133e0d341ada305e20fd10eac33fe50f6621f352",
+                "shasum": ""
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Acquia\\BltMultisite\\": "./src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Acquia Engineering",
+                    "homepage": "https://www.acquia.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "A recipe for generating multisites with Acquia BLT",
+            "support": {
+                "issues": "https://github.com/acquia/blt-multisite/issues",
+                "source": "https://github.com/acquia/blt-multisite/tree/master"
+            },
+            "time": "2021-03-16T18:09:25+00:00"
         },
         {
             "name": "acquia/blt-travis",
@@ -22340,6 +22379,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "acquia/blt-multisite": 20,
         "drupal/acquia_connector": 5,
         "drupal/better_exposed_filters": 10,
         "drupal/better_normalizers": 10,
