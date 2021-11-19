@@ -45,7 +45,7 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
             $this->processListBlock($config, $counter, $result);
             $region = ucfirst($component->get('region'));
             // @todo Update this.
-            $bundle = "List Block";
+            $bundle = $component->getPlugin()->label();
             $prefix = 'Section ' . $id . ', ' . $region . ' Region, ' . $bundle . ": \r";
             $result[$counter] = $prefix . $result[$counter];
             $counter++;
@@ -136,6 +136,9 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
             $field_values = ['value' => $field_values];
           }
           foreach ($field_values as $value_key => $value_value) {
+            // The value key isn't very helpful if it's just "value,"
+            // so if it is, go ahead and drop it.
+            $value_key = ($value_key == 'value') ? '' : $value_key;
             $indexer = ucwords($this->generateIndexer($field_name, 0, $value_key));
             $old = isset($result[$counter]) ? $result[$counter] : '';
             $result[$counter] = $old . "\r" . implode(': ', [
@@ -175,6 +178,11 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
     // and increment it for readability, rather than being zero-based.
     if ($field_num > 0) {
       $field_col_name = $field_col_name . ' ' . ++$field_num;
+    }
+    // If we don't have individual fields within the fieldset,
+    // then we're done.
+    if (empty($value_key)) {
+      return $field_col_name;
     }
     // Now to handle the individual fields.
     $field_name = ucwords($this->prettifyMachineName($value_key));
