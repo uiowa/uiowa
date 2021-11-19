@@ -1,0 +1,50 @@
+name: uiowa
+recipe: drupal9
+
+proxy:
+  appserver:
+    - uiowa.lndo.site
+    - "*.uiowa.lndo.site"
+
+config:
+  webroot: docroot
+  php: '7.4'
+  via: apache
+  drupal: false
+  drush: false
+  xdebug: true
+  ssl: false
+
+services:
+  database:
+    type: mysql:5.7
+  cache:
+    type: memcached:1
+  appserver:
+    overrides:
+      environment:
+        PHP_IDE_CONFIG: serverName=uiowa.lndo.site
+        SIMPLETEST_BASE_URL: https://uiowa.lndo.site
+        SIMPLETEST_DB: mysql://drupal9:drupal9@database/drupal9
+        SYMFONY_DEPRECATIONS_HELPER: disabled
+  node:
+    type: node:14
+    globals:
+      gulp-cli: 2.0.1
+
+events:
+  post-start:
+    - appserver: cd $LANDO_MOUNT && composer install --no-suggest
+
+tooling:
+  drush:
+    cmd: /app/drush/drush.sh
+  blt:
+    service: appserver
+    cmd: /app/vendor/bin/blt
+  npm:
+    service: node
+  node:
+    service: node
+  gulp:
+    service: node
