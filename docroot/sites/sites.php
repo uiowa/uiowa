@@ -3653,3 +3653,9 @@ $sites['orgepx.local.drupal.uiowa.edu'] = 'epx.org.uiowa.edu';
 $sites['orgepx.dev.drupal.uiowa.edu'] = 'epx.org.uiowa.edu';
 $sites['orgepx.stage.drupal.uiowa.edu'] = 'epx.org.uiowa.edu';
 $sites['orgepx.prod.drupal.uiowa.edu'] = 'epx.org.uiowa.edu';
+
+// Directory aliases for haar.lab.uiowa.edu.
+$sites['labhaar.local.drupal.uiowa.edu'] = 'haar.lab.uiowa.edu';
+$sites['labhaar.dev.drupal.uiowa.edu'] = 'haar.lab.uiowa.edu';
+$sites['labhaar.stage.drupal.uiowa.edu'] = 'haar.lab.uiowa.edu';
+$sites['labhaar.prod.drupal.uiowa.edu'] = 'haar.lab.uiowa.edu';
