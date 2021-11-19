@@ -31,6 +31,12 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
       foreach ($section->getComponents() as $comp_id => $component) {
         $config = $component->get('configuration');
         if (!isset($config['block_revision_id'])) {
+          if (isset($config['provider']) && $config['provider'] === 'views') {
+            $this->processListBlock($config, $counter, $result);
+            $result[$counter] = $prefix . $result[$counter];
+            $counter++;
+            continue;
+          }
           // @todo Process views block.
           continue;
         }
@@ -72,6 +78,34 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
               ]);
           }
         }
+      }
+    }
+  }
+
+  protected function processListBlock($config, $counter, &$result) {
+    $to_skip = [
+      'id',
+      'label',
+      'provider',
+      'label_display',
+      'views_label',
+    ];
+    foreach ($config as $arr_key => $arr_value) {
+      if (in_array($arr_key, $to_skip)) {
+        continue;
+      }
+      if (is_array($arr_value)) {
+        foreach ($arr_value as $field_name => $field_values) {
+          // @todo Handle these.
+          continue;
+        }
+      }
+      else {
+        $indexer = ucwords($this->prettifyMachineName($arr_key));
+        $result[$counter] = implode(': ', [
+            $indexer,
+            $arr_value,
+          ]);
       }
     }
   }
