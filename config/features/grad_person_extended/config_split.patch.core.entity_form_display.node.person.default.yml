@@ -1,0 +1,173 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.person.field_grad_program_all_degree
+      - field.field.node.person.field_person_department
+      - field.field.node.person.field_person_university_id
+      - field.field.node.person.field_pt_student_advisor
+      - field.field.node.person.field_pt_student_cur_pos_inst
+      - field.field.node.person.field_pt_student_cur_pos_title
+      - field.field.node.person.field_pt_student_defense_date
+      - field.field.node.person.field_pt_student_program_start
+      - field.field.node.person.pt_student_dissertation_title
+    module:
+      - datetime
+  content:
+    created:
+      weight: 20
+    field_grad_program_all_degree:
+      type: options_select
+      weight: 15
+      region: content
+      settings: {  }
+      third_party_settings: {  }
+    field_meta_tags:
+      weight: 31
+    field_person_bio:
+      weight: 12
+    field_person_contact_information:
+      weight: 30
+    field_person_department:
+      type: entity_reference_autocomplete
+      weight: 14
+      region: content
+      settings:
+        match_operator: CONTAINS
+        match_limit: 10
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+    field_person_education:
+      weight: 13
+    field_person_email:
+      weight: 8
+    field_person_hide:
+      weight: 29
+    field_person_hometown:
+      type: string_textfield
+      weight: 11
+      region: content
+      settings:
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+    field_person_phone:
+      weight: 9
+    field_person_research_areas:
+      weight: 17
+    field_person_university_id:
+      type: string_textfield
+      weight: 7
+      region: content
+      settings:
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+    field_person_website:
+      weight: 18
+    field_pt_student_advisor:
+      type: entity_reference_autocomplete
+      weight: 16
+      region: content
+      settings:
+        match_operator: CONTAINS
+        match_limit: 10
+        size: 60
+        placeholder: 'Search for an advisor'
+      third_party_settings: {  }
+    field_pt_student_cur_pos_inst:
+      type: string_textfield
+      weight: 33
+      region: content
+      settings:
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+    field_pt_student_cur_pos_title:
+      type: string_textfield
+      weight: 34
+      region: content
+      settings:
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+    field_pt_student_defense_date:
+      type: datetime_default
+      weight: 32
+      region: content
+      settings: {  }
+      third_party_settings: {  }
+    field_pt_student_program_start:
+      weight: 32
+      settings: {  }
+      third_party_settings: {  }
+      type: datetime_default
+      region: content
+    field_tags:
+      weight: 21
+    field_teaser:
+      weight: 28
+    moderation_state:
+      weight: 27
+    path:
+      weight: 24
+    promote:
+      weight: 22
+    pt_student_dissertation_title:
+      type: string_textfield
+      weight: 10
+      region: content
+      settings:
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+    status:
+      weight: 26
+    sticky:
+      weight: 23
+    uid:
+      weight: 19
+    url_redirects:
+      weight: 25
+removing:
+  content:
+    created:
+      weight: 14
+    field_meta_tags:
+      weight: 25
+    field_person_bio:
+      weight: 9
+    field_person_contact_information:
+      weight: 24
+    field_person_education:
+      weight: 10
+    field_person_email:
+      weight: 7
+    field_person_hide:
+      weight: 23
+    field_person_phone:
+      weight: 8
+    field_person_research_areas:
+      weight: 11
+    field_person_website:
+      weight: 12
+    field_tags:
+      weight: 15
+    field_teaser:
+      weight: 22
+    moderation_state:
+      weight: 21
+    path:
+      weight: 18
+    promote:
+      weight: 16
+    status:
+      weight: 20
+    sticky:
+      weight: 17
+    uid:
+      weight: 13
+    url_redirects:
+      weight: 19
+  hidden:
+    field_person_hometown: true

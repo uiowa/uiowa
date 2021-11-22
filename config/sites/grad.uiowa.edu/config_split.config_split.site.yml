@@ -5,15 +5,17 @@ dependencies: {  }
 id: site
 label: Site
 description: 'The grad.uiowa.edu site split.'
+weight: 70
+stackable: true
+storage: folder
 folder: ../config/sites/grad.uiowa.edu
 module:
   grad_core: 0
   grad_custom: 0
   grad_student_profile: 0
-  grad_thesis_defense: 0
   uiowa_maui: 0
 theme: {  }
-blacklist:
+complete_list:
   - block_content.type.content_list
   - config_split.config_split.site
   - fragments.fragment_type.program
@@ -31,15 +33,15 @@ blacklist:
   - views.view.srop_mentors
   - views.view.srop_scholars
   - sitenow_people.person_type.mentor
-  - fragment.fragment_type.program
   - 'field.storage.fragment.field_program_*'
   - 'field.storage.node.field_scholar_*'
   - 'field.storage.node.field_student_profile_*'
   - 'field.storage.block_content.field_content_list_*'
-graylist:
+partial_list:
   - core.entity_view_display.fragment.region_item.default
   - core.entity_view_display.node.page.default
   - core.entity_view_mode.node.card
+  - field.storage.node.field_grad_program_phd
   - field.storage.node.field_uiowa_college
   - node.type.person
   - node.type.scholarship
@@ -50,6 +52,3 @@ graylist:
   - 'field.storage.node.field_grad_*'
   - 'field.storage.fragment.field_grad_*'
   - 'user.role.*'
-graylist_dependents: true
-graylist_skip_equal: true
-weight: 90

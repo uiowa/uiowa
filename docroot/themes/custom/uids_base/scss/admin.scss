@@ -43,7 +43,13 @@ $imgpath: '../../uids/assets/images';
   }
 }
 
-// Edit layout for textblock not displaying correctly
+// Edit layout for textblock not displaying correctly.
 .block-inline-blockuiowa-text-area {
   min-height: 40px;
 }
+
+// Override first child margin rule.
+.headline.h2:not(:first-child), h2.headline:not(:first-child) {
+  margin-top: 0;
+}
+

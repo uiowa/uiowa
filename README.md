@@ -66,7 +66,7 @@ multisites:
 ```
 
 ### Common Tasks
-The `drupal:sync:all-sites` command will generate settings files _only_ if they do not exist. If you want to re-generate all multisite local settings files, you can run `rm -f docroot/sites/*/settings/local.settings.php` beforehand.
+The `drupal:sync:all-sites` command will generate local settings files by invoking `blt:init:settings` (or `bis` for short) _only_ if they do not exist. If you want to re-generate all multisite local settings files, you can run `rm -f docroot/sites/*/settings/local.settings.php` and then `blt bis`.
 
 The `blt frontend` command will install and compile frontend assets.
 

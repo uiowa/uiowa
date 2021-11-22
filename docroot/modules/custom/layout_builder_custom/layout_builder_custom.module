@@ -297,6 +297,10 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           $form['#attached']['library'][] = 'layout_builder_custom/banner-block-form';
           break;
 
+        case 'inline_block:uiowa_quote':
+          $form['#attached']['library'][] = 'layout_builder_custom/quote-block-form';
+          break;
+
         case 'inline_block:uiowa_card':
           $form['#attached']['library'][] = 'layout_builder_custom/card-block-form';
         case 'inline_block:uiowa_aggregator':
