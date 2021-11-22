@@ -43,7 +43,7 @@ This should not result in any changes to yarn.lock. If you try to compile back o
 Use [SequelPro](https://www.sequelpro.com/) to [connect to DrupalVM](http://docs.drupalvm.com/en/latest/configurations/databases-mysql/#connect-using-sequel-pro-or-a-similar-client).
 
 ## Logging
-As long as a site has a local settings file, it should be configured to show all warnings and errors to the screen. Other log messages, like watchdog, can be viewed by tailing the syslog: `sudo tail -f /var/log/syslog | grep drupal`. [PimpMyLog](http://docs.drupalvm.com/en/latest/extras/pimpmylog/) is also available at https://pimpmylog.local.drupal.uiowa.edu but requires more configuration to work with syslog.
+As long as a site has a local settings file, it should be configured to show all warnings and errors to the screen. Other log messages can be viewed by running `ddev logs`.
 
 ### BLT Configuration
 Make sure you have an [Acquia Cloud key and secret](https://docs.acquia.com/acquia-cloud/develop/api/auth/) saved in the `blt/local.blt.yml` file. This file is ignored by Git. Be sure you do not accidentally commit your credentials to the `blt/blt.yml` file which is tracked in Git. Do not share your key or secret with anyone.
