@@ -40,6 +40,11 @@ validate:
       - drupal_entity
     filters:
       - image_style
+drupal:
+  db:
+    host: ddev-uiowa-db
+    username: root
+    password: root
 command-hooks:
   frontend-reqs:
     dir: ${docroot}
