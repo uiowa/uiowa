@@ -7,16 +7,6 @@
 
 use Drupal\Component\Assertion\Handle;
 
-$host = '${drupal.db.host}';
-$port = '${drupal.db.port}';
-
-// If DDEV_PHP_VERSION is not set but IS_DDEV_PROJECT *is*, it means we're running (drush) on the host,
-// so use the host-side bind port on docker IP
-if (empty(getenv('DDEV_PHP_VERSION') && getenv('IS_DDEV_PROJECT') == 'true')) {
-  $host = "127.0.0.1";
-  $port = 53317;
-}
-
 $db_name = '${drupal.db.database}';
 if (isset($_acsf_site_name)) {
   $db_name .= '_' . $_acsf_site_name;
@@ -33,8 +23,8 @@ $databases = array(
       'database' => $db_name,
       'username' => '${drupal.db.username}',
       'password' => '${drupal.db.password}',
-      'host' => $host,
-      'port' => $port,
+      'host' => '${drupal.db.host}',
+      'port' => '${drupal.db.port}',
       'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
       'driver' => 'mysql',
       'prefix' => '',
