@@ -4,4 +4,4 @@
 #
 
 # Ensure write access on xdebug log.
-sudo chmod 766 /tmp/xdebug.log
+sudo chmod 766 /tmp/xdebug.log || true
