@@ -15,6 +15,7 @@
 {% set size_classes = [] %}
 {%
   set classes = [
+  'card--list',
   'event-item',
 ]
 %}
@@ -41,7 +42,7 @@
   'title_prefix': title_prefix,
   'title_suffix': title_suffix,
   'card_link_url': event.url,
-  'card_date': event.date_string,
+  'card_subtitle': event.date_string,
   'headline_level': event.heading_size,
   'card_text': event.description_text|render,
   'event_icon': event_icon|trans,

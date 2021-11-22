@@ -78,8 +78,10 @@
     },
     "require": {
         "ext-json": "*",
-        "acquia/blt": "^12.7",
+        "acquia/blt": "^13.2",
         "acquia/blt-drupal-test": "^1.0",
+        "acquia/blt-multisite": "dev-master",
+        "acquia/blt-travis": "^1.0",
         "acquia/memcache-settings": "^1.1",
         "bower-asset/chosen": "^1.8",
         "bower-asset/fontawesome": "^5.14",
@@ -102,7 +104,7 @@
         "drupal/config_filter": "^2.2",
         "drupal/config_ignore": "^3.0",
         "drupal/config_inspector": "^1.0",
-        "drupal/config_split": "2.0.x-dev#6984466f",
+        "drupal/config_split": "^2.0@beta",
         "drupal/core-composer-scaffold": "^9.2",
         "drupal/core-recommended": "^9.2",
         "drupal/cshs": "^3.5",
@@ -177,7 +179,7 @@
         "drupal/robotstxt": "^1.2",
         "drupal/schema_metatag": "^2.1",
         "drupal/search_api_autocomplete": "^1.5",
-        "drupal/simple_sitemap": "^3.5",
+        "drupal/simple_sitemap": "^4.0",
         "drupal/simplei": "^1.1",
         "drupal/siteimprove": "^1.5",
         "drupal/smart_date": "^3.1",
@@ -205,10 +207,8 @@
     },
     "require-dev": {
         "acquia/blt-behat": "^1.1",
-        "acquia/blt-drupal-vm": "dev-master",
         "acquia/blt-phpcs": "^1.0",
         "drupal/core-dev": "^9.2",
-        "geerlingguy/drupal-vm": "~6.0",
         "mglaman/drupal-check": "^1.1.7",
         "phpcompatibility/php-compatibility": "^9.3",
         "phpspec/prophecy-phpunit": "^2",
@@ -234,14 +234,10 @@
                 "Hidden buttons in off-canvas dialog are not being hidden": "https://www.drupal.org/files/issues/2020-02-28/3070375-4.patch",
                 "Expose Layout Builder data to REST and JSON:API": "https://www.drupal.org/files/issues/2020-07-07/2942975-116.patch",
                 "Themes have no context of the entity being rendered in preprocessing a layout when using Layout builder": "https://www.drupal.org/files/issues/2021-09-24/3111192-lb-entity-context-29.patch",
-                "Add Views EntityReference filter to be available for all entity reference fields": "https://www.drupal.org/files/issues/2021-06-15/2429699-414.patch",
+                "Add Views EntityReference filter to be available for all entity reference fields": "https://www.drupal.org/files/issues/2021-11-09/2429699-446.patch",
                 "Views Block Display skips preBlockBuild() call on ajax rebuild": "https://www.drupal.org/files/issues/2021-10-13/2605218-70.patch",
                 "Periods in query strings are replaced by underscores": "https://www.drupal.org/files/issues/2020-06-25/fix-mangled-query-parameter-names-2984272-36.patch",
-                "Get redirected to currently-selected menu instead of menu list": "https://www.drupal.org/files/issues/2021-09-20/2957953-9.3.x-139.patch",
                 "Fix Webform ui button contrast deprecation": "https://www.drupal.org/files/issues/2021-11-07/webform-button-contrast-3195764-12.patch"
-            },
-            "drupal/config_split": {
-                "Allow comparing the partial config with the sync storage and all other active splits": "https://www.drupal.org/files/issues/2021-11-16/compare-partial-splits-3246696-12.patch"
             },
             "drupal/default_content": {
                 "Add a Normalizer and Denormalizer to support Layout Builder": "https://www.drupal.org/files/issues/2020-08-24/default_content-add-normalizer-denormalizer-for-layout-builder-3160146-25.patch",
