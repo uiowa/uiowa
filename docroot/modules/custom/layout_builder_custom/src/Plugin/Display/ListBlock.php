@@ -182,61 +182,8 @@ class ListBlock extends CoreBlock {
       }
     }
 
-    // Add exposed filters to be customized in the block.
-    if (!empty($allow_settings['configure_filters'])) {
-
-      $exposed_filters = [];
-
-      // Provide "Exposed filters" block settings form.
-      $exposed_filter_values = !empty($block_configuration['exposed_filter_values']) ? $block_configuration['exposed_filter_values'] : [];
-
-      $subform_state = SubformState::createForSubform($exposed_filters, $form, $form_state);
-      $subform_state->set('exposed', TRUE);
-
-      /** @var \Drupal\views\Plugin\views\filter\FilterPluginBase $handler */
-      foreach ($this->getHandlers('filter') as $handler_id => $handler) {
-        // We are only interested in exposed filters.
-        if (!$handler->canExpose() && !$handler->isExposed()) {
-          continue;
-        }
-        // If an identifier is set for the filter, use that as the $filter_id.
-        if (!empty($handler->options['expose']['identifier'])) {
-          $handler_id = $handler->options['expose']['identifier'];
-        }
-        $handler->buildExposedForm($exposed_filters, $subform_state);
-
-        // Set the label and default values of the form element, based on the
-        // block configuration.
-        $exposed_info = $handler->exposedInfo();
-        if ($exposed_info) {
-          $exposed_filters[$handler_id]['#title'] = $exposed_info['label'];
-          // The following is essentially using this patch:
-          // https://www.drupal.org/project/views_block_placement_exposed_form_defaults/issues/3158789
-          if ($exposed_filters[$handler_id]['#type'] == 'entity_autocomplete') {
-            $exposed_filters[$handler_id]['#default_value'] = EntityAutocomplete::valueCallback(
-              $exposed_filters[$handler_id],
-              $exposed_filter_values[$handler_id],
-              $form_state
-            );
-          }
-          else {
-            $exposed_filters[$handler_id]['#default_value'] = !empty($exposed_filter_values[$handler_id]) ? $exposed_filter_values[$handler_id] : [];
-          }
-        }
-      }
-
-      if (!empty($exposed_filters)) {
-        $form['override']['exposed_filters'] = [
-          '#type' => 'details',
-          '#title' => $this->t('Filters'),
-          '#description' => $this->t('Set default filters.'),
-          '#tree' => TRUE,
-        ] + $exposed_filters;
-
-        unset($exposed_filters);
-      }
-    }
-
+    // @todo Provide logic to add a checkbox to each filter to expose it on the
+    //   block.
     // Provide "Configure sorts" block settings form.
     if (!empty($allow_settings['configure_sorts'])) {
       $form['override']['sort'] = [
@@ -468,12 +415,6 @@ class ListBlock extends CoreBlock {
       }
     }
 
-    // Save "Filter in block" settings to block configuration.
-    $block->setConfigurationValue('exposed_filter_values', $form_state->getValue([
-      'override',
-      'exposed_filters',
-    ]));
-
     if ($form_state instanceof SubformStateInterface) {
       $styles = $this->getLayoutBuilderStyles($form, $form_state->getCompleteFormState());
     }
@@ -555,10 +496,6 @@ class ListBlock extends CoreBlock {
       }
     }
 
-    // Set view filter based on "Filter" setting.
-    $exposed_filter_values = !empty($config['exposed_filter_values']) ? $config['exposed_filter_values'] : [];
-    $this->view->setExposedInput($exposed_filter_values);
-
     if (!empty($allow_settings['use_more'])) {
       if (isset($config['use_more']) && $config['use_more']) {
         $this->view->display_handler->setOption('use_more', TRUE);
@@ -582,12 +519,6 @@ class ListBlock extends CoreBlock {
    * {@inheritdoc}
    */
   public function usesExposed(): bool {
-    $filters = $this->getHandlers('filter');
-    foreach ($filters as $filter) {
-      if ($filter->isExposed() && !empty($filter->exposedInfo())) {
-        return TRUE;
-      }
-    }
     // Hotfix shim to keep these pagers working for now.
     // @todo Remove this exception when these view displays are removed.
     $display = $this->view->getDisplay();
@@ -599,7 +530,8 @@ class ListBlock extends CoreBlock {
     if (in_array($display->display['id'], $exceptions)) {
       return TRUE;
     }
-    return FALSE;
+    // Otherwise, stick with default behavior.
+    return parent::usesExposed();
   }
 
   /**
@@ -618,13 +550,8 @@ class ListBlock extends CoreBlock {
     if (in_array($display->display['id'], $exceptions)) {
       return FALSE;
     }
-    // If we are not utilizing the filter in block option,
-    // then use the default behavior. Otherwise, do not display
-    // exposed filters.
-    if (empty($this->options['allow']['configure_filters'])) {
-      return parent::displaysExposed();
-    }
-    return FALSE;
+    // Otherwise, stick with default behavior.
+    return parent::displaysExposed();
   }
 
   /**
