@@ -5,11 +5,14 @@ dependencies: {  }
 id: areas_of_study
 label: 'Areas of Study'
 description: 'Areas of Study content type, views and related configuration.'
+weight: 80
+stackable: true
+storage: folder
 folder: ../config/features/areas_of_study
 module:
   uiowa_area_of_study: 0
 theme: {  }
-blacklist:
+complete_list:
   - block_content.type.area_of_study_search
   - metatag.metatag_defaults.node__area_of_study
   - node.type.area_of_study
@@ -24,10 +27,7 @@ blacklist:
   - 'field.field.node.area_of_study.*'
   - 'field.field.node.area_of_study.*'
   - 'field.storage.node.field_area_of_study_*'
-graylist:
+partial_list:
   - core.entity_view_display.node.page.default
   - metatag.settings
   - 'user.role.*'
-graylist_dependents: true
-graylist_skip_equal: true
-weight: 80
