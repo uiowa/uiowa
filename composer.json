@@ -78,8 +78,10 @@
     },
     "require": {
         "ext-json": "*",
-        "acquia/blt": "^12.7",
+        "acquia/blt": "^13.2",
         "acquia/blt-drupal-test": "^1.0",
+        "acquia/blt-multisite": "dev-master",
+        "acquia/blt-travis": "^1.0",
         "acquia/memcache-settings": "^1.1",
         "bower-asset/chosen": "^1.8",
         "bower-asset/fontawesome": "^5.14",
@@ -102,7 +104,7 @@
         "drupal/config_filter": "^2.2",
         "drupal/config_ignore": "^3.0",
         "drupal/config_inspector": "^1.0",
-        "drupal/config_split": "2.0.x-dev#6984466f",
+        "drupal/config_split": "^2.0@beta",
         "drupal/core-composer-scaffold": "^9.2",
         "drupal/core-recommended": "^9.2",
         "drupal/cshs": "^3.5",
@@ -177,7 +179,7 @@
         "drupal/robotstxt": "^1.2",
         "drupal/schema_metatag": "^2.1",
         "drupal/search_api_autocomplete": "^1.5",
-        "drupal/simple_sitemap": "^3.5",
+        "drupal/simple_sitemap": "^4.0",
         "drupal/simplei": "^1.1",
         "drupal/siteimprove": "^1.5",
         "drupal/smart_date": "^3.1",
@@ -238,9 +240,6 @@
                 "Views Block Display skips preBlockBuild() call on ajax rebuild": "https://www.drupal.org/files/issues/2021-10-13/2605218-70.patch",
                 "Periods in query strings are replaced by underscores": "https://www.drupal.org/files/issues/2020-06-25/fix-mangled-query-parameter-names-2984272-36.patch",
                 "Fix Webform ui button contrast deprecation": "https://www.drupal.org/files/issues/2021-11-07/webform-button-contrast-3195764-12.patch"
-            },
-            "drupal/config_split": {
-                "Allow comparing the partial config with the sync storage and all other active splits": "https://www.drupal.org/files/issues/2021-11-16/compare-partial-splits-3246696-12.patch"
             },
             "drupal/ctools": {
                 "Add Configure Filter functionality to block views configuration.": "https://www.drupal.org/files/issues/2021-11-11/2657060-149.patch"
