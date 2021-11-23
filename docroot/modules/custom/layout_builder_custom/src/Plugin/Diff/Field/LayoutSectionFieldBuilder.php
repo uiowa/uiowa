@@ -130,6 +130,9 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
             if (is_array($value_value)) {
               $value_value = implode('.', $value_value);
             }
+            // We need to remove newlines that are added to formatted text areas.
+            // They will break the results formatting if not removed.
+            $value_value = preg_replace("|\n|", "", $value_value);
             $old = isset($result[$counter]) ? $result[$counter] : '';
             $result[$counter] = $old . "\r" . implode(': ', [
               $indexer,
