@@ -235,12 +235,12 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
    *   The more readable string.
    */
   protected function prettifyMachineName(string $machine_name) {
-    $exploded = explode('_', $machine_name);
-    // Remove the starting 'field' if it's there.
-    if (str_starts_with($machine_name, 'field')) {
-      array_shift($exploded);
-    }
-    return implode(' ', $exploded);
+    // Drop 'field' and 'uiowa' designators,
+    // which don't really add anything for the editor.
+    $machine_name = preg_replace('@(field\_)|(uiowa\_)@', '', $machine_name);
+    // Replace underscores with spaces.
+    $machine_name = preg_replace('|\_|', ' ', $machine_name);
+    return $machine_name;
   }
 
 }
