@@ -4,7 +4,9 @@ namespace Uiowa\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\EnvironmentDetector;
+use Acquia\Blt\Robo\Common\YamlMunge;
 use Acquia\Blt\Robo\Exceptions\BltException;
+use Uiowa\Multisite;
 
 /**
  * BLT override commands.
@@ -178,6 +180,28 @@ class ReplaceCommands extends BltTasks {
     else {
       $this->logger->notice('Skipping percy snapshot in non-CI environment.');
     }
+  }
+
+  /**
+   * Remove all local settings file beforehand, so they are recreated.
+   *
+   * The source:build:settings command will only recreate local settings files
+   * if they do not already exist. This can be confusing if you change BLT
+   * configuration and expect to see the differences in the file.
+   *
+   * @hook pre-command source:build:settings
+   */
+  public function preSourceBuildSettings() {
+    $yaml = YamlMunge::parseFile($this->getConfigValue('repo.root') . '/blt/local.blt.yml');
+
+    if (isset($yaml['multisites'])) {
+      $this->logger->warning('Multisites overridden in local.blt.yml file. Only those sites will have local.settings.php files regenerated.');
+    }
+
+    $this->taskExecStack()
+      ->dir($this->getConfigValue('docroot'))
+      ->exec('rm sites/*/settings/local.settings.php')
+      ->run();
   }
 
 }
