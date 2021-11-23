@@ -66,7 +66,7 @@ multisites:
 ```
 
 ### Common Tasks
-Multisites will not be able to bootstrap without a `local.settings.php` file. The `blt:init:settings` (or `bis` for short) command will generate local settings files _only_ for the multisite defined in BLT configuration. By default, this is all multisites but be aware that the `local.blt.yml` change documented above will override that.
+Multisites will not be able to bootstrap without a `local.settings.php` file. The `blt:init:settings` (or `bis` for short) command will generate local settings files _only_ for the multisite defined in BLT configuration. By default, this is all multisites but be aware that the `local.blt.yml` change documented above will override that. You can temporarily remove that override if you need to generate settings files for all multisites.
 
 The `blt frontend` command will install and compile frontend assets.
 
