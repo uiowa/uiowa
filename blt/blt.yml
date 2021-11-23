@@ -26,6 +26,12 @@ drush:
 tests:
   phpunit:
     - config: '${repo.root}'
+  drupal:
+    web-driver: disable
+    sudo-run-tests: false
+    mink-driver-args-webdriver: ''
+    simpletest-db: ''
+    simpletest-base-url: ''
 validate:
   lint:
     filesets:
