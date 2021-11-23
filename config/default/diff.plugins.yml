@@ -400,7 +400,9 @@ fields:
         markdown: drupal_html_to_text
     layout_builder__layout:
       type: layout_section_field_diff_builder
-      settings: {  }
+      settings:
+        show_header: 1
+        markdown: filter_xss_all
   taxonomy_term:
     langcode:
       type: core_field_diff_builder
@@ -758,10 +760,8 @@ fields:
       type: hidden
       settings: {  }
     field_automatically_open:
-      type: core_field_diff_builder
-      settings:
-        show_header: 1
-        markdown: drupal_html_to_text
+      type: hidden
+      settings: {  }
     field_collection_body:
       type: text_field_diff_builder
       settings:
@@ -888,35 +888,20 @@ fields:
       type: hidden
       settings: {  }
     body:
-      type: text_summary_field_diff_builder
-      settings:
-        compare_format: 0
-        compare_summary: 0
-        show_header: 1
-        markdown: drupal_html_to_text
+      type: hidden
+      settings: {  }
     field_accordion_type:
-      type: list_field_diff_builder
-      settings:
-        compare: key
-        show_header: 1
-        markdown: drupal_html_to_text
+      type: hidden
+      settings: {  }
     field_collection_more:
-      type: core_field_diff_builder
-      settings:
-        show_header: 1
-        markdown: drupal_html_to_text
+      type: hidden
+      settings: {  }
     field_collection_more_path:
-      type: link_field_diff_builder
-      settings:
-        compare_title: 0
-        compare_uri: 1
-        show_header: 1
-        markdown: drupal_html_to_text
+      type: hidden
+      settings: {  }
     field_collection_results:
-      type: core_field_diff_builder
-      settings:
-        show_header: 1
-        markdown: drupal_html_to_text
+      type: hidden
+      settings: {  }
     field_featured_content_item:
       type: entity_reference_field_diff_builder
       settings:
@@ -924,22 +909,14 @@ fields:
         show_header: 1
         markdown: drupal_html_to_text
     field_uiowa_aggregator_count:
-      type: core_field_diff_builder
-      settings:
-        show_header: 1
-        markdown: drupal_html_to_text
+      type: hidden
+      settings: {  }
     field_uiowa_aggregator_feeds:
-      type: list_field_diff_builder
-      settings:
-        compare: key
-        show_header: 1
-        markdown: drupal_html_to_text
+      type: hidden
+      settings: {  }
     field_uiowa_aggregator_text:
-      type: text_field_diff_builder
-      settings:
-        compare_format: 0
-        show_header: 1
-        markdown: drupal_html_to_text
+      type: hidden
+      settings: {  }
     field_uiowa_banner_autoplay:
       type: core_field_diff_builder
       settings:
@@ -1016,46 +993,26 @@ fields:
       type: hidden
       settings: {  }
     field_uiowa_events_audiences:
-      type: list_field_diff_builder
-      settings:
-        compare: key
-        show_header: 1
-        markdown: drupal_html_to_text
+      type: hidden
+      settings: {  }
     field_uiowa_events_department:
-      type: list_field_diff_builder
-      settings:
-        compare: key
-        show_header: 1
-        markdown: drupal_html_to_text
+      type: hidden
+      settings: {  }
     field_uiowa_events_interests:
-      type: list_field_diff_builder
-      settings:
-        compare: key
-        show_header: 1
-        markdown: drupal_html_to_text
+      type: hidden
+      settings: {  }
     field_uiowa_events_keywords:
-      type: list_field_diff_builder
-      settings:
-        compare: key
-        show_header: 1
-        markdown: drupal_html_to_text
+      type: hidden
+      settings: {  }
     field_uiowa_events_past:
-      type: core_field_diff_builder
-      settings:
-        show_header: 1
-        markdown: drupal_html_to_text
+      type: hidden
+      settings: {  }
     field_uiowa_events_place:
-      type: list_field_diff_builder
-      settings:
-        compare: key
-        show_header: 1
-        markdown: drupal_html_to_text
+      type: hidden
+      settings: {  }
     field_uiowa_events_types:
-      type: list_field_diff_builder
-      settings:
-        compare: key
-        show_header: 1
-        markdown: drupal_html_to_text
+      type: hidden
+      settings: {  }
     field_uiowa_event_date:
       type: core_field_diff_builder
       settings:
@@ -1092,10 +1049,8 @@ fields:
         show_header: 1
         markdown: drupal_html_to_text
     field_uiowa_headline:
-      type: uiowa_headline_field_diff_builder
-      settings:
-        show_header: 1
-        markdown: drupal_html_to_text
+      type: hidden
+      settings: {  }
     field_uiowa_hero_excerpt:
       type: text_field_diff_builder
       settings:
@@ -1118,6 +1073,29 @@ fields:
         show_header: 1
         markdown: drupal_html_to_text
     field_uiowa_page_title_hero_img:
+      type: entity_reference_field_diff_builder
+      settings:
+        compare_entity_reference: 1
+        show_header: 1
+        markdown: drupal_html_to_text
+    field_uiowa_quote_citation:
+      type: link_field_diff_builder
+      settings:
+        compare_title: 0
+        compare_uri: 1
+        show_header: 1
+        markdown: drupal_html_to_text
+    field_uiowa_quote_content:
+      type: core_field_diff_builder
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+    field_uiowa_quote_footer:
+      type: core_field_diff_builder
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+    field_uiowa_quote_image:
       type: entity_reference_field_diff_builder
       settings:
         compare_entity_reference: 1
@@ -1168,3 +1146,44 @@ fields:
       settings:
         show_header: 1
         markdown: drupal_html_to_text
+  fragment:
+    langcode:
+      type: core_field_diff_builder
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+    revision_created:
+      type: hidden
+      settings: {  }
+    revision_user:
+      type: hidden
+      settings: {  }
+    revision_log_message:
+      type: hidden
+      settings: {  }
+    user_id:
+      type: entity_reference_field_diff_builder
+      settings:
+        compare_entity_reference: 1
+        show_header: 1
+        markdown: drupal_html_to_text
+    title:
+      type: core_field_diff_builder
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+    status:
+      type: hidden
+      settings: {  }
+    revision_translation_affected:
+      type: hidden
+      settings: {  }
+    default_langcode:
+      type: hidden
+      settings: {  }
+    revision_default:
+      type: hidden
+      settings: {  }
+    layout_builder__layout:
+      type: hidden
+      settings: {  }
