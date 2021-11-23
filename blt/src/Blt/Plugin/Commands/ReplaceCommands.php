@@ -100,13 +100,11 @@ class ReplaceCommands extends BltTasks {
   public function replacePostDbCopy($site, $target_env, $db_name, $source_env) {
     foreach ($this->getConfigValue('multisites') as $multisite) {
       $this->switchSiteContext($multisite);
-
       $db = $this->getConfigValue('drupal.db.database');
 
       // Trigger drupal:update for this site.
       if ($db_name == $db) {
         $this->logger->info("Deploying updates to <comment>{$multisite}</comment>...");
-        $this->switchSiteContext($multisite);
         $this->taskDrush()->drush('cache:rebuild')->run();
         $this->invokeCommand('drupal:update');
         $this->logger->info("Finished deploying updates to <comment>{$multisite}</comment>.");
