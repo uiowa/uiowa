@@ -2,7 +2,7 @@
 
 namespace Drupal\layout_builder_custom\Plugin\Diff\Field;
 
-use Drupal\block_content\Entity\BlockContent;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\diff\FieldDiffBuilderBase;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\layout_builder\Section;
@@ -31,10 +31,13 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
     foreach ($field_items->getSections() as $id => $section) {
       // Starting off, let's just take care of the lb styles.
       if ($lb_styles = $this->processSectionStyles($id, $section)) {
+        // Add the section styles and increment the counter
+        // so that the styles will be diffed and displayed
+        // on their own results line.
         $result[$counter++] = $lb_styles;
       };
       // Now let's process the actual content within the section.
-      foreach ($section->getComponents() as $comp_id => $component) {
+      foreach ($section->getComponents() as $component) {
         $config = $component->get('configuration');
         // See if we're dealing with a custom block or not.
         if (!isset($config['block_revision_id'])) {
@@ -43,12 +46,16 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
           // by views rather than layout_builder.
           if (isset($config['provider']) && $config['provider'] === 'views') {
             $this->processListBlock($config, $counter, $result);
+            // Grab which section region we're in,
+            // as well as the specific list block bundle
+            // and create our prefix label.
             $region = ucfirst($component->get('region'));
-            // @todo Update this.
             $bundle = $component->getPlugin()->label();
             $prefix = 'Section ' . $id . ', ' . $region . ' Region, ' . $bundle . ": \r";
             $result[$counter] = $prefix . $result[$counter];
             $counter++;
+            // After appending the result, we're done.
+            // Move to the next loop iteration.
             continue;
           }
           // If we don't have a block_revision_id,
@@ -56,7 +63,6 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
           // and for now, we don't care. Pop out of this loop iteration.
           continue;
         }
-        $region = ucfirst($component->get('region'));
         $rev_id = $config['block_revision_id'];
         if ($rev_id) {
           $block = $this->entityTypeManager
@@ -67,12 +73,13 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
           continue;
         }
         if ($block) {
+          $region = ucfirst($component->get('region'));
           $bundle = ucwords($this->prettifyMachineName($block->bundle()));
           $prefix = 'Section ' . $id . ', ' . $region . ' Region, ' . $bundle . ": \r";
           $this->processBlock($block, $counter, $result);
+          $result[$counter] = $prefix . $result[$counter];
+          $counter++;
         }
-        $result[$counter] = $prefix . $result[$counter];
-        $counter++;
       }
     }
     return $result;
@@ -90,8 +97,6 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
    *   The resultant styles, or false if they aren't present.
    */
   protected function processSectionStyles(int $id, Section $section) {
-    // Create a simple prefix.
-    $prefix = "Section " . $id . " Configuration: ";
     // Grab our lb styles, combine with our prefix, and add it to our results.
     $section_array = $section->toArray();
     // If we have layout_builder_styles,
@@ -103,6 +108,8 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
       // Remove empty styles.
       $lb_styles = array_filter($section_array['layout_settings']['layout_builder_styles_style']);
       $lb_styles = implode(', ', $lb_styles);
+      // Create a simple prefix.
+      $prefix = "Section " . $id . " Configuration: ";
       return $prefix . $lb_styles;
     }
     return FALSE;
@@ -111,28 +118,37 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
   /**
    * Helper function for processing inline blocks.
    *
-   * @param \Drupal\block_content\Entity\BlockContent $block
+   * @param \Drupal\Core\Entity\EntityInterface $block
    *   The block to be processed.
    * @param int $counter
    *   The result counter.
    * @param array $result
    *   The final results array.
    */
-  protected function processBlock(BlockContent $block, int $counter, array &$result) {
+  protected function processBlock(EntityInterface $block, int $counter, array &$result) {
     foreach ($block->toArray() as $arr_key => $arr_value) {
+      // There's a lot of extra stuff in the block array.
+      // Only look at the field_ labelled fields.
       if (str_starts_with($arr_key, 'field_')) {
+        // Field values are arrays indexed by delta, which
+        // allows for both single- and multi-valued fields.
+        // Iterate through them.
         foreach ($arr_value as $field_num => $field) {
           foreach ($field as $value_key => $value_value) {
             // The value key isn't very helpful if it's just "value,"
             // so if it is, go ahead and drop it.
             $value_key = ($value_key == 'value') ? '' : $value_key;
             $indexer = $this->generateIndexer($arr_key, $field_num, $value_key);
+            // If we're still dealing with an array,
+            // combine all values into a single string.
             if (is_array($value_value)) {
               $value_value = implode('.', $value_value);
             }
-            // We need to remove newlines that are added to formatted text areas.
+            // We need to remove newlines added to formatted text areas.
             // They will break the results formatting if not removed.
             $value_value = preg_replace("|\n|", "", $value_value);
+            // Check if we're building onto an existing result row,
+            // or if we're starting a new one off of an empty string.
             $old = isset($result[$counter]) ? $result[$counter] : '';
             $result[$counter] = $old . "\r" . implode(': ', [
               $indexer,
@@ -155,6 +171,9 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
    *   The final results array.
    */
   protected function processListBlock(array $config, int $counter, array &$result) {
+    // List blocks aren't built with field_ keys,
+    // so we create a list of keys we know
+    // we can skip for diffing purposes.
     $to_skip = [
       'id',
       'label',
@@ -166,8 +185,12 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
       if (in_array($arr_key, $to_skip)) {
         continue;
       }
+      // Treat the field differently if it's an array
+      // or single value.
       if (is_array($arr_value)) {
         foreach ($arr_value as $field_name => $field_values) {
+          // If it's a single value here, wrap it in an array,
+          // and process alongside values that were already arrays.
           if (!is_array($field_values)) {
             $field_values = ['value' => $field_values];
           }
@@ -185,6 +208,8 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
         }
       }
       else {
+        // If the original array key wasn't an array,
+        // then we can simply create an indexer and append.
         $indexer = ucwords($this->prettifyMachineName($arr_key));
         $old = isset($result[$counter]) ? $result[$counter] : '';
         $result[$counter] = $old . "\r" . implode(': ', [
