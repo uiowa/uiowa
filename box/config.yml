@@ -2507,6 +2507,18 @@ apache_vhosts:
     servername: labtedabel.local.drupal.uiowa.edu
     documentroot: '{{ drupal_core_path }}'
     extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labjabbari.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: orgepx.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
+  -
+    servername: labhaar.local.drupal.uiowa.edu
+    documentroot: '{{ drupal_core_path }}'
+    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
 
 # Multisite installations should configure additional databases here.
 # It's recommended to prefix database names with 'drupal'. Otherwise,
@@ -2565,9 +2577,9 @@ php_memory_limit: 512M
 solr_version: 4.5.1
 
 post_provision_scripts:
-  - ../../../acquia/blt-drupal-vm/scripts/drupal-vm/configure-solr.sh
-  - ../../../acquia/blt-drupal-vm/scripts/drupal-vm/post-provision.php
   - ../../../../box/post-provision.sh
+  - ../../../acquia/blt-drupal-vm/scripts/drupal-vm/configure-solr.sh
+  - ../../../acquia/blt-drupal-vm/scripts/drupal-vm/post-provision.sh
 
 nodejs_version: 14.x
 
