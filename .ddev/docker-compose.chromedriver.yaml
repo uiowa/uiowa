@@ -13,6 +13,7 @@ services:
       com.ddev.approot: $DDEV_APPROOT
     external_links:
       - ddev-router:${DDEV_SITENAME}.${DDEV_TLD}
+    shm_size: 512M
 
   web:
     links:
