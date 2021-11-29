@@ -56,7 +56,7 @@ function get_text_field_tables() {
           try {
             $table_name = $table_mapping->getFieldTableName($field_name);
             // We use a custom value function here. The built-in value fetcher
-            // will leave out extra columns for link and text_with_summary fields.
+            // leaves out extra columns for link and text_with_summary fields.
             $value_columns = value_columns($field_name, $field_storage_definition->getType());
             $parent_type = ['entity_id', 'revision_id'];
             // Titles are handled a little differently, and at this time
@@ -90,9 +90,6 @@ function get_text_field_tables() {
           'field_name' => 'menu',
         ];
         break;
-
-      default:
-        continue;
     }
   }
   // This function can be used to clean up some extra tables

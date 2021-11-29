@@ -206,7 +206,10 @@ class SearchForm extends ConfigFormBase {
           break;
 
         default:
-          continue;
+          $entity_value = FALSE;
+      }
+      if (!$entity_value) {
+        continue;
       }
       $rows[] = [
         'id' => [
