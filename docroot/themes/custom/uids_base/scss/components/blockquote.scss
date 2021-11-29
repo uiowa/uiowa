@@ -34,6 +34,18 @@ blockquote {
   blockquote {
     margin: 0;
   }
+  blockquote.blockquote--img-above {
+   .blockquote__media {
+     margin-bottom: .9rem;
+   }
+    &.blockquote--right,
+    &.blockquote--left {
+      padding:  0;
+      .blockquote__media {
+        margin-top: 0;
+      }
+    }
+  }
   blockquote.blockquote--img-below {
     .blockquote__media {
       margin: 1rem 0;
