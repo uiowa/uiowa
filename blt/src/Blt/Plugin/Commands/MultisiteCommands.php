@@ -697,6 +697,7 @@ EOD;
    *
    * @aliases umt
    *
+   * @requireHost
    * @requireFeatureBranch
    * @requireCredentials
    *
