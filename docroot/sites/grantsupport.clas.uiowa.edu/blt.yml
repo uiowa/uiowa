@@ -1,0 +1,13 @@
+project:
+  local:
+    hostname: clasgrantsupport.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: clasgrantsupport
+  human_name: grantsupport.clas.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: clasgrantsupport.prod
+drupal:
+  db:
+    database: grantsupport_clas_uiowa_edu
