@@ -39,41 +39,60 @@ function get_text_field_tables() {
     }
   }
   foreach ($fields as $entity_type_id => $field_map) {
-    // Currently we're only searching the major content areas.
-    // This will leave out things like menu areas, taxonomies, etc.
-    // which we may want to add later.
-    if (!in_array($entity_type_id, ['block_content', 'node', 'paragraph'])) {
-      continue;
-    }
-    // Grab the storage, field, and table definitions/mappings.
-    $entity_storage = $entity_type_manager->getStorage($entity_type_id);
-    $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
-    $table_mapping = $entity_storage->getTableMapping($field_storage_definitions);
-    foreach (array_intersect_key($field_storage_definitions, $field_map) as $field_storage_definition) {
-      $field_name = $field_storage_definition->getName();
-      try {
-        $table_name = $table_mapping->getFieldTableName($field_name);
-        // We use a custom value function here. The built-in value fetcher
-        // will leave out extra columns for link and text_with_summary fields.
-        $value_columns = value_columns($field_name, $field_storage_definition->getType());
-        $parent_type = ['entity_id', 'revision_id'];
-        // Titles are handled a little differently, and at this time
-        // are the only fields handled this way.
-        if ($field_name == 'title') {
-          $parent_type = ['nid'];
-          $value_columns = ['title'];
+    // Check what type of entity we're working with.
+    // Some can be handled in the same manner, but some
+    // like menus need to be handled separately.
+    // And some, we just don't support at the moment.
+    switch ($entity_type_id) {
+      case 'block_content':
+      case 'node':
+      case 'paragraph':
+        // Grab the storage, field, and table definitions/mappings.
+        $entity_storage = $entity_type_manager->getStorage($entity_type_id);
+        $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
+        $table_mapping = $entity_storage->getTableMapping($field_storage_definitions);
+        foreach (array_intersect_key($field_storage_definitions, $field_map) as $field_storage_definition) {
+          $field_name = $field_storage_definition->getName();
+          try {
+            $table_name = $table_mapping->getFieldTableName($field_name);
+            // We use a custom value function here. The built-in value fetcher
+            // will leave out extra columns for link and text_with_summary fields.
+            $value_columns = value_columns($field_name, $field_storage_definition->getType());
+            $parent_type = ['entity_id', 'revision_id'];
+            // Titles are handled a little differently, and at this time
+            // are the only fields handled this way.
+            if ($field_name == 'title') {
+              $parent_type = ['nid'];
+              $value_columns = ['title'];
+            }
+            // Set our table info that will get used in various places later.
+            $tables[$table_name] = [
+              'values' => $value_columns,
+              'parent' => $parent_type,
+              'type' => $entity_type_id,
+              'field_name' => $field_name,
+            ];
+          }
+          catch (SqlContentEntityStorageException $e) {
+            continue;
+          }
         }
-        // Set our table info that will get used in various places later.
-        $tables[$table_name] = [
-          'values' => $value_columns,
-          'parent' => $parent_type,
+        break;
+
+      case 'menu_link_content':
+        $tables['menu_link_content'] = [
+          'values' => [
+            'title',
+            'link_uri',
+          ],
+          'parent' => ['id'],
           'type' => $entity_type_id,
-          'field_name' => $field_name,
+          'field_name' => 'menu',
         ];
-      }
-      catch (SqlContentEntityStorageException $e) {
+        break;
+
+      default:
         continue;
-      }
     }
   }
   // This function can be used to clean up some extra tables
