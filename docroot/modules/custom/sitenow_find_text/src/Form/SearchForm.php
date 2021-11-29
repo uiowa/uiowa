@@ -156,32 +156,37 @@ class SearchForm extends ConfigFormBase {
         '#markup' => '<p class="text-align-center">No results found.</p>',
       ];
     }
-    // @todo Update to work with the refactored results set.
-    // Clear out the excess to make printing easier.
-    foreach (array_keys($results) as $key) {
-      foreach (array_keys($results[$key]) as $secondary_key) {
-        if ($secondary_key !== 'type') {
-          $results[$key]['fields'][] = $results[$key][$secondary_key]->value;
+    // Rearrange and clear out the excess to make printing easier.
+    // Starting out, our results are separated by entity type.
+    foreach ($results as $type => $typed_results) {
+      // This first key will be the entity id.
+      foreach (array_keys($typed_results) as $key) {
+        // The secondary key will be a simple delta.
+        foreach (array_keys($typed_results[$key]) as $secondary_key) {
+          // Created a modified key to help us avoid collisions
+          // while rearranging our results.
+          $mod_key = implode('-', [$type, $key]);
+          $results[$mod_key][] = $results[$type][$key][$secondary_key]->value;
         }
       }
+      unset($results[$type]);
     }
     $rows = [];
     $node_manager = $this->entityTypeManager
       ->getStorage('node');
-    foreach ($results as $id => $info) {
-      $matches = $info['fields'];
-      switch ($info['type']) {
+    foreach ($results as $mod_key => $matches) {
+      $exploded = explode('-', $mod_key);
+      list($type, $id) = $exploded;
+      switch ($type) {
         case 'block_content':
         case 'paragraph':
         case 'node':
           $node = $node_manager->load($id);
-          // If we weren't able to load a node,
-          // then go ahead and skip ahead, because
-          // we won't have a result to display anyway.
-          if (!$node) {
-            continue;
-          }
-          $has_lb = $node->hasField('layout_builder__layout');
+          // Check if we have an overridden layout or not.
+          // If we didn't successfully load a node, go ahead
+          // and treat it as a non-overridden node so that
+          // the user will still see it in the results as a failsafe.
+          $has_lb = $node && $node->hasField('layout_builder__layout');
           if ($has_lb) {
             $entity_value = new FormattableMarkup('Node: @nid (<a href="/node/@nid/edit">edit</a>) (<a href="/node/@nid/layout">layout</a>)', [
               '@nid' => $id,

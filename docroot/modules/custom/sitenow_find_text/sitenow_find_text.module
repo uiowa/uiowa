@@ -160,19 +160,25 @@ function search_fields(string $needle, bool $regexed = FALSE) {
           // If we found a new id from fetch_parent, we want to
           // update the results table to the new id and unset the
           // old value to avoid possible collisions in subsequent
-          // loops.
-          // @todo Check on the type, and update indexing to allow
-          // for same ids for different entity types.
+          // loops. We unset it first, so that even if the id
+          // is the same, we don't lose anything.
+          unset($temp_results[$id]);
           if ($new_id) {
             $temp_results[$new_id['id']] = $row;
-            unset($temp_results[$id]);
           }
         }
       }
       // Add our new results to our collected results, keyed
       // by entity id.
       foreach ($temp_results as $id => $value) {
-        $results[$details['type']][$id][] = $value;
+        // All node, block_content, and paragraph entity types
+        // will be displayed at the end as being a "node" result.
+        $type = (in_array($details['type'], [
+          'node',
+          'block_content',
+          'paragraph',
+        ])) ? 'node' : $details['type'];
+        $results[$type][$id][] = $value;
       }
     }
   }
@@ -250,13 +256,6 @@ function cleanup_tables(array &$tables) {
 function fetch_parent(array $ids, string $type) {
   $db = Database::getConnection();
   switch ($type) {
-    case 'node':
-      // We're assuming the node is the uppermost
-      // parent. May not always be the case in the future,
-      // but mostly, even if it's an entity reference to a node,
-      // we want the referenced node for editing anyway.
-      return $ids;
-
     case 'paragraph':
       $result = $db->select('entity_usage')
         ->fields('entity_usage', [
@@ -302,6 +301,15 @@ function fetch_parent(array $ids, string $type) {
       // in the future, if we have nested blocks.
       $ids['id'] = $result[0]->entity_id;
       $ids['revision_id'] = $result[0]->revision_id;
+      return $ids;
+
+    // We're assuming the node is the uppermost
+    // parent. May not always be the case in the future,
+    // but mostly, even if it's an entity reference to a node,
+    // we want the referenced node for editing anyway. Same
+    // for some other entity types, such as menu links.
+    case 'node':
+    default:
       return $ids;
   }
 }
