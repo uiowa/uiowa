@@ -281,9 +281,9 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
 
     foreach ($rows as $id => $row) {
       // Need to get these values regardless of whether they are hidden or not.
-      $link_direct = $row["content"]["#node"]->get('field_article_source_link_direct')->value;
+      $link_direct = $row['content']['#node']->get('field_article_source_link_direct')->value;
       $source_link = $row['content']['#node']->get('field_article_source_link')->uri;
-      $org = $row["content"]["#node"]->get('field_article_source_org')->value;
+      $org = $row['content']['#node']->get('field_article_source_org')->value;
       $nid = $row['content']['#node']->get('nid')->value;
 
       // If source link is set and link direct is checked, set $card_link_url to

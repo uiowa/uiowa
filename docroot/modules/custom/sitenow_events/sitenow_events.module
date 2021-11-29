@@ -190,6 +190,25 @@ function sitenow_events_preprocess_block(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_views_view_unformatted().
+ */
+function sitenow_events_preprocess_views_view_unformatted(&$variables) {
+  /** @var \Drupal\views\ViewExecutable $view */
+  $view = $variables['view'];
+  if ($view->id() === 'events_list_block') {
+    $rows = $variables['rows'];
+    $style = $view->style_plugin;
+
+    foreach ($rows as $id => $row) {
+      // @todo Check if this is a virtual event.
+      // @todo If virtual, render online icon and link.
+      // @todo Otherwise, render location, if set.
+      $variables['rows'][$id]['card_options']['card_date'] = $style->getField($id, 'field_event_when');
+    }
+  }
+}
+
+/**
  * Load and return data from the content hub API.
  *
  * @param array $params
