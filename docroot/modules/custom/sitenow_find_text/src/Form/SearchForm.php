@@ -156,40 +156,56 @@ class SearchForm extends ConfigFormBase {
         '#markup' => '<p class="text-align-center">No results found.</p>',
       ];
     }
+    // @todo Update to work with the refactored results set.
     // Clear out the excess to make printing easier.
     foreach (array_keys($results) as $key) {
       foreach (array_keys($results[$key]) as $secondary_key) {
-        $results[$key][$secondary_key] = $results[$key][$secondary_key]->value;
+        if ($secondary_key !== 'type') {
+          $results[$key]['fields'][] = $results[$key][$secondary_key]->value;
+        }
       }
     }
     $rows = [];
     $node_manager = $this->entityTypeManager
       ->getStorage('node');
-    foreach ($results as $nid => $matches) {
-      // @todo Clean this up. Right now, we're checking for field existence
-      //   to determine if we allow layout builder editing. It's better than
-      //   hardcoding it to entity types we've allowed, but...only just.
-      $node = $node_manager->load($nid);
-      // If we weren't able to load a node,
-      // then go ahead and skip ahead, because
-      // we won't have a result to display anyway.
-      if (!$node) {
-        continue;
-      }
-      $has_lb = $node->hasField('layout_builder__layout');
-      if ($has_lb) {
-        $node_value = new FormattableMarkup('@nid (<a href="/node/@nid/edit">edit</a>) (<a href="/node/@nid/layout">layout</a>)', [
-          '@nid' => $nid,
-        ]);
-      }
-      else {
-        $node_value = new FormattableMarkup('@nid (<a href="/node/@nid/edit">edit</a>)', [
-          '@nid' => $nid,
-        ]);
+    foreach ($results as $id => $info) {
+      $matches = $info['fields'];
+      switch ($info['type']) {
+        case 'block_content':
+        case 'paragraph':
+        case 'node':
+          $node = $node_manager->load($id);
+          // If we weren't able to load a node,
+          // then go ahead and skip ahead, because
+          // we won't have a result to display anyway.
+          if (!$node) {
+            continue;
+          }
+          $has_lb = $node->hasField('layout_builder__layout');
+          if ($has_lb) {
+            $entity_value = new FormattableMarkup('Node: @nid (<a href="/node/@nid/edit">edit</a>) (<a href="/node/@nid/layout">layout</a>)', [
+              '@nid' => $id,
+            ]);
+          }
+          else {
+            $entity_value = new FormattableMarkup('Node: @nid (<a href="/node/@nid/edit">edit</a>)', [
+              '@nid' => $id,
+            ]);
+          }
+          break;
+
+        case 'menu_link_content':
+          $entity_value = new FormattableMarkup('Menu: @mid (<a href="/admin/structure/menu/item/@mid/edit">edit</a>)', [
+            '@mid' => $id,
+          ]);
+          break;
+
+        default:
+          continue;
       }
       $rows[] = [
-        'nid' => [
-          'data' => $node_value,
+        'id' => [
+          'data' => $entity_value,
           // Stretch the node row to cover all its matches.
           'rowspan' => count($matches),
         ],
@@ -206,7 +222,7 @@ class SearchForm extends ConfigFormBase {
     return [
       '#type' => 'table',
       '#header' => [
-        'nid' => 'Node',
+        'nid' => 'Entity',
         'field' => 'Field: Contents',
       ],
       '#rows' => $rows,

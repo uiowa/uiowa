@@ -80,10 +80,10 @@ function get_text_field_tables() {
         break;
 
       case 'menu_link_content':
-        $tables['menu_link_content'] = [
+        $tables['menu_link_content_data'] = [
           'values' => [
             'title',
-            'link_uri',
+            'link__uri',
           ],
           'parent' => ['id'],
           'type' => $entity_type_id,
@@ -157,21 +157,22 @@ function search_fields(string $needle, bool $regexed = FALSE) {
             'revision_id' => $row->revision_id,
           ];
           $new_id = fetch_parent($ids, $details['type']);
-          // Unset the old entity_id and replace with the new id.
-          // If we didn't find a result in our fetch_parent,
-          // we don't know what node has it anyway,
-          // and so our results will be broken--so go ahead
-          // and unset it outside of the new_id check.
-          unset($temp_results[$id]);
+          // If we found a new id from fetch_parent, we want to
+          // update the results table to the new id and unset the
+          // old value to avoid possible collisions in subsequent
+          // loops.
+          // @todo Check on the type, and update indexing to allow
+          // for same ids for different entity types.
           if ($new_id) {
             $temp_results[$new_id['id']] = $row;
+            unset($temp_results[$id]);
           }
         }
       }
       // Add our new results to our collected results, keyed
-      // by node id.
-      foreach ($temp_results as $nid => $value) {
-        $results[$nid][] = $value;
+      // by entity id.
+      foreach ($temp_results as $id => $value) {
+        $results[$details['type']][$id][] = $value;
       }
     }
   }
