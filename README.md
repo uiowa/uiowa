@@ -26,19 +26,6 @@ Yarn [workspaces](https://classic.yarnpkg.com/en/docs/workspaces) can be defined
 
 Workspaces that need to leverage uiowa/uids assets should depend on uids_base and not uiowa/uids directly. This is to ensure the version of uiowa/uids is strictly managed and because uids_base runs a build script that copies necessary assets into the build artifact. For example, fonts are available in uids_base which would not be available in the excluded node_modules directory.
 
-Note that certain filesystem watch commands are either slow or broken over Vagrant synced folders. To get around this, you can run workspace build scripts manually or run watch commands on your host although you'll need Node, [NVM](https://github.com/nvm-sh/nvm#installing-and-updating) and [Yarn](https://classic.yarnpkg.com/en/docs/install#mac-stable). Once installed, you can run the following from the application root:
-
-```
-nvm install
-nvm use
-```
-
-If you're watching SASS and compiling it, you'll need to rebuild node-sass bindings for your host OS.
-
-`npm rebuild node-sass`
-
-This should not result in any changes to yarn.lock. If you try to compile back on the VM, you may need to rebuild it there or run `blt frontend` again to match production. Note that you do not need to use NVM on the VM - it is not installed.
-
 ## Databases
 Use [SequelPro](https://www.sequelpro.com/) to [connect to DrupalVM](http://docs.drupalvm.com/en/latest/configurations/databases-mysql/#connect-using-sequel-pro-or-a-similar-client).
 
