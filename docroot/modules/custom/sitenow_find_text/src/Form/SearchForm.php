@@ -200,7 +200,7 @@ class SearchForm extends ConfigFormBase {
           break;
 
         case 'menu_link_content':
-          $entity_value = new FormattableMarkup('Menu: @mid (<a href="/admin/structure/menu/item/@mid/edit">edit</a>)', [
+          $entity_value = new FormattableMarkup('Menu: @mid (<a href="/admin/structure/menu/item/@mid/edit?destination=/admin/find-text">edit</a>)', [
             '@mid' => $id,
           ]);
           break;
