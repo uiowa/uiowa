@@ -233,6 +233,7 @@ class MultisiteCommands extends BltTasks {
    *
    * @throws \Exception
    *
+   * @requireHost
    * @requireFeatureBranch
    * @requireCredentials
    */
@@ -417,6 +418,7 @@ EOD
    *
    * @aliases umc
    *
+   * @requireHost
    * @requireFeatureBranch
    * @requireCredentials
    *
