@@ -81,8 +81,8 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
     'all_day' => $variables['event']['instance_all_day'],
   ]);
 
-  if (isset($variables['event']['description_text'])) {
-    $variables['event']['description_text'] = Xss::filter($variables['event']['description_text']);
-    $variables['event']['description_text'] = Unicode::truncate($variables['event']['description_text'], 500, TRUE, TRUE);
+  if (isset($variables['event']['description'])) {
+    $variables['event']['description'] = Xss::filter($variables['event']['description']);
+    $variables['event']['description'] = Unicode::truncate($variables['event']['description'], 500, TRUE, TRUE);
   }
 }
