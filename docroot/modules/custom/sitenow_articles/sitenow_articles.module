@@ -542,11 +542,11 @@ function sitenow_articles_preprocess_block(&$variables) {
         // Unset classes meant for children.
         foreach ($variables['attributes']['class'] as $key => $style) {
           foreach ([
-                     'bg',
-                     'card',
-                     'media',
-                     'hide',
-                   ] as $check) {
+            'bg',
+            'card',
+            'media',
+            'hide',
+          ] as $check) {
             if (substr($style, 0, strlen($check)) === $check) {
               unset($variables['attributes']['class'][$key]);
             }
