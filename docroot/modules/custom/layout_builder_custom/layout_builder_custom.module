@@ -341,14 +341,16 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             case 'inline_block:uiowa_aggregator':
               $defaults['layout_builder_style_media_format'] = 'media_format_widescreen';
               break;
+
             case 'inline_block:uiowa_events':
             case 'views_block:events_list_block-card_list':
               $defaults['layout_builder_style_card_media_position'] = 'card_media_position_left';
               break;
+
             case 'views_block:article_list_block-list_article':
               $defaults['layout_builder_style_card_image_size'] = 'card_image_medium';
               $defaults['layout_builder_style_media_format'] = 'media_format_widescreen';
-              break;
+              break
           }
 
           foreach ($defaults as $key => $default) {
@@ -372,6 +374,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
                 $form['settings']['override']['items_per_page']['#default_value'] = 10;
                 $form['settings']['override']['hide_fields']['order_fields']['field_article_source_link']['hide']['#default_value'] = 1;
                 break;
+
               case 'views_block:people_list_block-list_card':
                 $form['settings']['override']['items_per_page']['#default_value'] = 10;
                 break;
@@ -1071,7 +1074,7 @@ function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
   if (in_array($machine_name, [
     'card_list',
     'list_article',
-//    'list_card',
+    // 'list_card',
   ])) {
     $rows = $variables['rows'];
     $style = $view->style_plugin;
