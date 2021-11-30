@@ -332,3 +332,10 @@ function prettify_machine_name(string $machine_name) {
   $machine_name = preg_replace('|\_|', ' ', $machine_name);
   return ucwords($machine_name);
 }
+
+/*
+ * Implements hook_toolbar_alter()
+ */
+function sitenow_find_text_toolbar_alter(&$items) {
+  $items['administration']['#attached']['library'][] = 'sitenow_find_text/icon';
+}
