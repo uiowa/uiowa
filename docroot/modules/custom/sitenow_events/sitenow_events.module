@@ -200,10 +200,48 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
     $style = $view->style_plugin;
 
     foreach ($rows as $id => $row) {
-      // @todo Check if this is a virtual event.
-      // @todo If virtual, render online icon and link.
-      // @todo Otherwise, render location, if set.
+      // Need to get these values regardless of whether they are hidden or not.
+      /** @var \Drupal\node\NodeInterface $node */
+      $node = $row['content']['#node'];
+      $nid = $node->get('nid')->value;
+      $link_direct = $node->get('field_event_series_link_direct')->value;
+      $source_link = $node->get('field_event_series_link')->uri;
+      $virtual = $node->get('field_event_virtual');
+      $location = $node->get('field_event_location');
+
+      // If source link is set and link direct is checked, set $card_link_url to
+      // source link. Otherwise, $card_link_url should be set to node link.
+      if ($link_direct == 1
+        && isset($source_link) && !empty($source_link)) {
+        $card_link_url = $source_link;
+      }
+      else {
+        $card_link_url = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
+      }
+
+      $card_tag = [
+        '#type' => 'html_tag',
+        '#tag' => 'span',
+        '#attributes' => [
+          'class' => [
+            'field--name-field-article-source-link',
+          ],
+        ],
+      ];
+
+      if ($virtual->first() && !empty($virtual->first()->uri)) {
+        $card_tag[] = '<span role="presentation" class="fas fa-laptop"></span>';
+        $card_tag[] = 'Virtual';
+      }
+
+      if ($location->first() && !empty($location->first()->value)) {
+        $card_tag[] = '<span role="presentation" class="fas fa-map-marker-alt"></span>';
+        $card_tag[] = $location;
+      }
+
+      // @todo Finish this logic to render the virtual details and location.
       $variables['rows'][$id]['card_options']['card_date'] = $style->getField($id, 'field_event_when');
+      $variables['rows'][$id]['card_options']['card_link_url'] = $card_link_url;
     }
   }
 }

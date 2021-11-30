@@ -1,6 +1,6 @@
 This directory should contain automated tests, organized into subdirectories according to testing tool.
 
-Please see [BLT documentation](http://blt.readthedocs.io/en/latest/readme/testing) for more information.
+Please see [BLT documentation](https://docs.acquia.com/blt/developer/testing/) for more information.
 
 You can use this project to run core and contrib tests. This can be useful when
 working on a merge request for a core or contrib project. Here is some
