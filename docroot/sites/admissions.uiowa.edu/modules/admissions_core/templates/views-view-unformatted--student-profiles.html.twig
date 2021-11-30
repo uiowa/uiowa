@@ -142,9 +142,9 @@
         {% endif %}
     {% endblock %}
 
-    {% block card_tag %}
+    {% block card_meta %}
         {% if person_hometown|striptags|trim is not empty %}
-            <div class="card__date"><span role="presentation" class="fas fa-map-marker-alt"></span>{{ person_hometown }}</div>
+            <div class="card__meta"><span role="presentation" class="fas fa-map-marker-alt"></span>{{ person_hometown }}</div>
         {% endif %}
     {% endblock %}
 
