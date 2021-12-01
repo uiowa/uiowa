@@ -58,8 +58,8 @@ $settings['maintenance_theme'] = 'uids_base';
 // @see: https://docs.acquia.com/acquia-cloud/monitor/apm/#recommended-configuration-settings
 ini_set('newrelic.loglevel', 'error');
 
-if (extension_loaded('newrelic')) {
+if (extension_loaded('newrelic') && isset($site_name)) {
   $ah_group = EnvironmentDetector::getAhGroup();
   $ah_env = EnvironmentDetector::getAhEnv();
-  newrelic_set_appname("{$site_dir};{$ah_group}.{$ah_env}", '', 'true');
+  newrelic_set_appname("{$site_name};{$ah_group}.{$ah_env}", '', 'true');
 }
