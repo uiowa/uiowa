@@ -20,16 +20,16 @@ services:
   cache:
     type: memcached:1
   appserver:
+    build_as_root:
+      - curl -sL https://deb.nodesource.com/setup_14.x | bash -
+      - apt-get install -y nodejs
+      - npm i -g corepack
     overrides:
       environment:
         PHP_IDE_CONFIG: serverName=uiowa.lndo.site
         SIMPLETEST_BASE_URL: https://uiowa.lndo.site
         SIMPLETEST_DB: mysql://drupal9:drupal9@database/drupal9
         SYMFONY_DEPRECATIONS_HELPER: disabled
-  node:
-    type: node:14
-    globals:
-      gulp-cli: 2.2.0
 
 events:
   post-start:
@@ -41,9 +41,3 @@ tooling:
   blt:
     service: appserver
     cmd: /app/vendor/bin/blt
-  npm:
-    service: node
-  node:
-    service: node
-  gulp:
-    service: node
