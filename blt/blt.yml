@@ -49,10 +49,12 @@ drupal:
 command-hooks:
   frontend-reqs:
     dir: ${docroot}
-    command: '. $NVM_DIR/nvm.sh && nvm install && yarn install --production --ignore-optional --frozen-lockfile --non-interactive'
+#    command: '. $NVM_DIR/nvm.sh && nvm install && yarn install --production --ignore-optional --frozen-lockfile --non-interactive'
+    command: 'yarn install --production --ignore-optional --frozen-lockfile --non-interactive'
   frontend-assets:
     dir: ${docroot}
-    command: '. $NVM_DIR/nvm.sh && nvm use && yarn workspaces run build'
+#    command: '. $NVM_DIR/nvm.sh && nvm use && yarn workspaces run build'
+    command: 'yarn workspaces run build'
   post-deploy-build:
     dir: ${repo.root}
     command: './vendor/bin/blt uiowa:post:build'
