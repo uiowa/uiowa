@@ -146,10 +146,10 @@ function search_fields(string $needle, bool $regexed = FALSE) {
       foreach ($temp_results as $id => $row) {
         // Prepend the result with the field name to help
         // in results displaying later.
-        $row->value = new FormattableMarkup("<strong>@name</strong><br/> @value", [
+        $row->value = new FormattableMarkup("<strong>@name</strong><br/>@value", [
           '@name' => prettify_machine_name($value_column),
           '@value' => $row->$value_column,
-          ]);
+        ]);
         // Fetch_parent will grab the parent node nid if able,
         // or else return false if the parent couldn't be found.
         if ($value_column != 'title') {
