@@ -149,6 +149,8 @@ function search_fields(string $needle, bool $regexed = FALSE, bool $render = FAL
         // Prepend the result with the field name to help
         // in results displaying later.
         if ($render) {
+          // Surround matches with a class we can target.
+          $row->$value_column = preg_replace('%' . $needle . '%i', '<span class="find-text-match">$0</span>', $row->$value_column);
           $row->value = new FormattableMarkup("<strong>@name</strong><br/>" . $row->$value_column, [
             '@name' => prettify_machine_name($value_column),
           ]);

@@ -106,6 +106,7 @@ class SearchForm extends ConfigFormBase {
     // Unset the original, currently unused submit button.
     // It might be used at another time if settings are needed.
     unset($form['actions']['submit']);
+    $form['#attached']['library'][] = 'sitenow_find_text/results';
     return $form;
   }
 
