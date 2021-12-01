@@ -78,7 +78,7 @@ class SearchForm extends ConfigFormBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Render markup'),
       '#description' => $this->t('Display the results as rendered HTML. This may hide parts of the results, such as text matched within HTML tags.'),
-      '#default_value' => 0,
+      '#default_value' => 1,
     ];
     $form['regexed'] = [
       '#type' => 'checkbox',
