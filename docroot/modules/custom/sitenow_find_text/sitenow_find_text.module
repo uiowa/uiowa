@@ -9,6 +9,7 @@
  * @see https://www.drupal.org/node/2217931
  */
 
+use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Entity\Sql\SqlContentEntityStorageException;
 use Drupal\Core\Database\Database;
 
@@ -145,10 +146,10 @@ function search_fields(string $needle, bool $regexed = FALSE) {
       foreach ($temp_results as $id => $row) {
         // Prepend the result with the field name to help
         // in results displaying later.
-        $row->value = implode(': ', [
-          prettify_machine_name($value_column),
-          $row->$value_column,
-        ]);
+        $row->value = new FormattableMarkup('<strong>@name:</strong> @value', [
+          '@name' => prettify_machine_name($value_column),
+          '@value' => $row->$value_column,
+          ]);
         // Fetch_parent will grab the parent node nid if able,
         // or else return false if the parent couldn't be found.
         if ($value_column != 'title') {

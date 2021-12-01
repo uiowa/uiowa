@@ -167,19 +167,19 @@ class SearchForm extends ConfigFormBase {
           // the user will still see it in the results as a failsafe.
           $has_lb = $node && $node->hasField('layout_builder__layout');
           if ($has_lb) {
-            $entity_value = new FormattableMarkup('Node: @nid (<a href="/node/@nid/edit">edit</a>) (<a href="/node/@nid/layout">layout</a>)', [
+            $entity_value = new FormattableMarkup('<strong>Node:</strong> @nid (<a href="/node/@nid/edit">edit</a>) (<a href="/node/@nid/layout">layout</a>)', [
               '@nid' => $id,
             ]);
           }
           else {
-            $entity_value = new FormattableMarkup('Node: @nid (<a href="/node/@nid/edit">edit</a>)', [
+            $entity_value = new FormattableMarkup('<strong>Node:</strong> @nid (<a href="/node/@nid/edit">edit</a>)', [
               '@nid' => $id,
             ]);
           }
           break;
 
         case 'menu_link_content':
-          $entity_value = new FormattableMarkup('Menu: @mid (<a href="/admin/structure/menu/item/@mid/edit?destination=/admin/find-text">edit</a>)', [
+          $entity_value = new FormattableMarkup('<strong>Menu:</strong> @mid (<a href="/admin/structure/menu/item/@mid/edit?destination=/admin/find-text">edit</a>)', [
             '@mid' => $id,
           ]);
           break;
