@@ -207,7 +207,7 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
       $link_direct = $node->get('field_event_series_link_direct')->value;
       $source_link = $node->get('field_event_series_link')->uri;
       $virtual = $node->get('field_event_virtual');
-      $location = $node->get('field_event_location');
+      $location = $node->field_event_location->view('teaser');
 
       // If source link is set and link direct is checked, set $card_link_url to
       // source link. Otherwise, $card_link_url should be set to node link.
@@ -219,7 +219,7 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
         $card_link_url = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
       }
 
-      $card_tag = [
+      $card_meta = [
         '#type' => 'html_tag',
         '#tag' => 'span',
         '#attributes' => [
@@ -229,19 +229,24 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
         ],
       ];
 
-      if ($virtual->first() && !empty($virtual->first()->uri)) {
-        $card_tag[] = '<span role="presentation" class="fas fa-laptop"></span>';
-        $card_tag[] = 'Virtual';
+      if ($virtual->uri) {
+        $card_meta['virtual'] = [
+          '#prefix' => '<span role="presentation" class="fas fa-laptop"></span> ',
+          '#markup' => 'Virtual',
+        ];
       }
 
-      if ($location->first() && !empty($location->first()->value)) {
-        $card_tag[] = '<span role="presentation" class="fas fa-map-marker-alt"></span>';
-        $card_tag[] = $location;
+      if (!empty($location)) {
+        $card_meta['location'] = [
+          '#prefix' => '<span role="presentation" class="fas fa-map-marker-alt"></span>',
+          '#markup' => render($location),
+        ];
       }
 
       // @todo Finish this logic to render the virtual details and location.
       $variables['rows'][$id]['card_options']['card_date'] = $style->getField($id, 'field_event_when');
       $variables['rows'][$id]['card_options']['card_link_url'] = $card_link_url;
+      $variables['rows'][$id]['card_options']['card_tag'] = render($card_meta);
     }
   }
 }
