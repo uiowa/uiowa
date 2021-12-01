@@ -82,10 +82,13 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
   ]);
 
   if (isset($variables['event']['description'])) {
+    // Limit what html is allowed.
     $allowed_tags = ['a', 'strong', 'em'];
-    $trim_suffix = '...';
-    $truncate = new TruncateHTML();
     $variables['event']['description'] = Xss::filter($variables['event']['description'], $allowed_tags);
+
+    // Use smart_trim's helper to safely truncate without breaking HTML.
+    $truncate = new TruncateHTML();
+    $trim_suffix = '...';
     $variables['event']['description'] = $truncate->truncateChars($variables['event']['description'], 400, $trim_suffix);
   }
 }
