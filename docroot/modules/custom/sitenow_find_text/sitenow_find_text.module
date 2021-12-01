@@ -156,10 +156,38 @@ function search_fields(string $needle, bool $regexed = FALSE, bool $render = FAL
           ]);
         }
         else {
-          $row->value = new FormattableMarkup("<strong>@name</strong><br/>@value", [
+          // Find and mark all instances of our match.
+          $tokenized = preg_replace('%' . $needle . '%i', '[TOKEN]$0[TOKEN]', $row->$value_column);
+          // Break it apart into an array of matches and nonmatches.
+          $exploded = explode('[TOKEN]', $tokenized);
+          $counter = 0;
+          $replacements = [];
+          foreach ($exploded as &$part) {
+            // If we have a match, then we want to surround it
+            // with our targeted span class, but otherwise leave
+            // it alone. It will be part of the rendered markup.
+            if (preg_match('%' . $needle . '%i', $part)) {
+              $part = '<span class="find-text-match">' . $part . '</span>';
+            }
+            // If we didn't match, then we want it as part of the
+            // replacements, so that HTML will not be rendered.
+            else {
+              // Add it to our list of replacements, and
+              // replace it in the render string with its
+              // respective marker.
+              $replacements['@match' . $counter] = $part;
+              $part = '@match' . $counter++;
+            }
+          }
+          // Combine all our updated strings and markers.
+          $highlighted_string = implode('', $exploded);
+          // Create a formatted markup string with our edited
+          // highlighted string. Matches will be targeted with our
+          // classed spans, and nonmatch sections will be displayed
+          // without rendering their HTML tags.
+          $row->value = new FormattableMarkup("<strong>@name</strong><br/>" . $highlighted_string, array_merge([
             '@name' => prettify_machine_name($value_column),
-            '@value' => $row->$value_column,
-          ]);
+          ], $replacements));
         }
         // Fetch_parent will grab the parent node nid if able,
         // or else return false if the parent couldn't be found.
