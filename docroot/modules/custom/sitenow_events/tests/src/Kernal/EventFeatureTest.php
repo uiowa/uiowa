@@ -118,6 +118,11 @@ class EventFeatureTest extends BrowserTestBase {
     $this->configImporter()->import();
   }
 
+  /**
+   * Generate a variable number of events.
+   *
+   * @param int $max
+   */
   public function generateEvents($max = 20) {
     for ($i = 0; $i < $max; $i++) {
 
