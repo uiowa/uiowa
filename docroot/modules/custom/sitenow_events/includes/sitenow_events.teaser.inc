@@ -82,7 +82,8 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
   ]);
 
   if (isset($variables['event']['description'])) {
-    $variables['event']['description'] = Xss::filter($variables['event']['description']);
+    $allowed_tags = ['a', 'strong', 'em'];
+    $variables['event']['description'] = Xss::filter($variables['event']['description'], $allowed_tags);
     $variables['event']['description'] = Unicode::truncate($variables['event']['description'], 500, TRUE, TRUE);
   }
 }
