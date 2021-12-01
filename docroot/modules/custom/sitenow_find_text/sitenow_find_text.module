@@ -107,11 +107,13 @@ function get_text_field_tables() {
  *   The string for which to search.
  * @param bool $regexed
  *   Whether a regex condition should be used over base LIKE.
+ * @param bool $render
+ *   Whether the results should be returned as a rendered HTML.
  *
  * @return array
  *   The search results.
  */
-function search_fields(string $needle, bool $regexed = FALSE) {
+function search_fields(string $needle, bool $regexed = FALSE, bool $render = FALSE) {
   $results = [];
   $tables = get_text_field_tables();
   $db = Database::getConnection();
@@ -146,10 +148,17 @@ function search_fields(string $needle, bool $regexed = FALSE) {
       foreach ($temp_results as $id => $row) {
         // Prepend the result with the field name to help
         // in results displaying later.
-        $row->value = new FormattableMarkup("<strong>@name</strong><br/>@value", [
-          '@name' => prettify_machine_name($value_column),
-          '@value' => $row->$value_column,
-        ]);
+        if ($render) {
+          $row->value = new FormattableMarkup("<strong>@name</strong><br/>" . $row->$value_column, [
+            '@name' => prettify_machine_name($value_column),
+          ]);
+        }
+        else {
+          $row->value = new FormattableMarkup("<strong>@name</strong><br/>@value", [
+            '@name' => prettify_machine_name($value_column),
+            '@value' => $row->$value_column,
+          ]);
+        }
         // Fetch_parent will grab the parent node nid if able,
         // or else return false if the parent couldn't be found.
         if ($value_column != 'title') {

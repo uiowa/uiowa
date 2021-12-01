@@ -74,6 +74,12 @@ class SearchForm extends ConfigFormBase {
       '#default_value' => '',
       '#description' => $this->t('The string to search against. Wildcards % will match any number of characters and _ will match any single character. % wildcards are prepended and appended automatically when not using regex. See the <a href="https://sitenow.uiowa.edu/documentation/site-text-search">Find Text documentation</a> for more information.'),
     ];
+    $form['render'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Render markup'),
+      '#description' => $this->t('Should the results be returned as rendered HTML? This may hide parts of the results, such as text matched within HTML tags.'),
+      '#default_value' => 0,
+    ];
     $form['regexed'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('REGEXP?'),
@@ -109,7 +115,8 @@ class SearchForm extends ConfigFormBase {
   public function searchButton(array &$form, FormStateInterface $form_state) {
     $needle = $form_state->getValue('needle');
     $regexed = $form_state->getValue('regexed');
-    $results = search_fields($needle, $regexed);
+    $render = $form_state->getValue('render');
+    $results = search_fields($needle, $regexed, $render);
     $table = $this->buildResultsTable($results);
     $markup = $this->renderer->render($table);
     $form['results'] = [
