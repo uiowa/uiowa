@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.teaser
     - field.storage.node.field_event_location
     - field.storage.node.field_event_virtual
     - field.storage.node.field_event_when
@@ -77,8 +78,15 @@ display:
             offset_label: Offset
       style:
         type: default
+        options:
+          row_class: ''
+          default_row_class: true
+          uses_fields: true
       row:
-        type: fields
+        type: 'entity:node'
+        options:
+          relationship: none
+          view_mode: teaser
       fields:
         field_image:
           id: field_image
