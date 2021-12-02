@@ -44,7 +44,7 @@
   'card_link_url': event.url,
   'card_subtitle': event.date_string,
   'headline_level': event.heading_size,
-  'card_text': event.description_text|render,
+  'card_text': event.description|render|trim|t,
   'event_icon': event_icon|trans,
   'card_meta': event_location|render,
 } %}
