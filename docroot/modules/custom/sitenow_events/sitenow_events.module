@@ -244,7 +244,7 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
       }
 
       // @todo Finish this logic to render the virtual details and location.
-      $variables['rows'][$id]['card_options']['card_date'] = $style->getField($id, 'field_event_when');
+      $variables['rows'][$id]['card_options']['card_subtitle'] = $style->getField($id, 'field_event_when');
       $variables['rows'][$id]['card_options']['card_link_url'] = $card_link_url;
       $variables['rows'][$id]['card_options']['card_tag'] = render($card_meta);
     }
