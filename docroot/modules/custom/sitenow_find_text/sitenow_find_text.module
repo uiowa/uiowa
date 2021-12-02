@@ -207,13 +207,26 @@ function search_fields(string $needle, bool $regexed = FALSE, bool $render = FAL
           // is the same, we don't lose anything.
           unset($temp_results[$id]);
           if ($new_id) {
-            $temp_results[$new_id['id']] = $row;
+            // Make a marker so that we don't have id collisions
+            // between entity types.
+            $marker = 'id_' . $new_id['id'];
+            // Initialize an array if there's not one already,
+            // otherwise we'll end up with an object when
+            // assigning the results row.
+            if (!isset($temp_results[$marker])) {
+              $temp_results[$marker] = [];
+            }
+            $temp_results[$marker][] = $row;
           }
         }
       }
       // Add our new results to our collected results, keyed
       // by entity id.
-      foreach ($temp_results as $id => $value) {
+      foreach ($temp_results as $marker => $values) {
+        // Reform our id, as this will be either the menu id
+        // or node id, and will be separated by 'type' at this point.
+        $exploded = explode('_', $marker);
+        $id = $exploded[1];
         // All node, block_content, and paragraph entity types
         // will be displayed at the end as being a "node" result.
         $type = (in_array($details['type'], [
@@ -221,7 +234,7 @@ function search_fields(string $needle, bool $regexed = FALSE, bool $render = FAL
           'block_content',
           'paragraph',
         ])) ? 'node' : $details['type'];
-        $results[$type][$id][] = $value;
+        $results[$type][$id] = (isset($results[$type]) && isset($results[$type][$id])) ? array_merge($results[$type][$id], $values) : $values;
       }
     }
   }
