@@ -9,6 +9,7 @@
  * @see https://www.drupal.org/node/2217931
  */
 
+use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Entity\Sql\SqlContentEntityStorageException;
 use Drupal\Core\Database\Database;
 
@@ -39,41 +40,57 @@ function get_text_field_tables() {
     }
   }
   foreach ($fields as $entity_type_id => $field_map) {
-    // Currently we're only searching the major content areas.
-    // This will leave out things like menu areas, taxonomies, etc.
-    // which we may want to add later.
-    if (!in_array($entity_type_id, ['block_content', 'node', 'paragraph'])) {
-      continue;
-    }
-    // Grab the storage, field, and table definitions/mappings.
-    $entity_storage = $entity_type_manager->getStorage($entity_type_id);
-    $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
-    $table_mapping = $entity_storage->getTableMapping($field_storage_definitions);
-    foreach (array_intersect_key($field_storage_definitions, $field_map) as $field_storage_definition) {
-      $field_name = $field_storage_definition->getName();
-      try {
-        $table_name = $table_mapping->getFieldTableName($field_name);
-        // We use a custom value function here. The built-in value fetcher
-        // will leave out extra columns for link and text_with_summary fields.
-        $value_columns = value_columns($field_name, $field_storage_definition->getType());
-        $parent_type = ['entity_id', 'revision_id'];
-        // Titles are handled a little differently, and at this time
-        // are the only fields handled this way.
-        if ($field_name == 'title') {
-          $parent_type = ['nid'];
-          $value_columns = ['title'];
+    // Check what type of entity we're working with.
+    // Some can be handled in the same manner, but some
+    // like menus need to be handled separately.
+    // And some, we just don't support at the moment.
+    switch ($entity_type_id) {
+      case 'block_content':
+      case 'node':
+      case 'paragraph':
+        // Grab the storage, field, and table definitions/mappings.
+        $entity_storage = $entity_type_manager->getStorage($entity_type_id);
+        $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
+        $table_mapping = $entity_storage->getTableMapping($field_storage_definitions);
+        foreach (array_intersect_key($field_storage_definitions, $field_map) as $field_storage_definition) {
+          $field_name = $field_storage_definition->getName();
+          try {
+            $table_name = $table_mapping->getFieldTableName($field_name);
+            // We use a custom value function here. The built-in value fetcher
+            // leaves out extra columns for link and text_with_summary fields.
+            $value_columns = value_columns($field_name, $field_storage_definition->getType());
+            $parent_type = ['entity_id', 'revision_id'];
+            // Titles are handled a little differently, and at this time
+            // are the only fields handled this way.
+            if ($field_name == 'title') {
+              $parent_type = ['nid'];
+              $value_columns = ['title'];
+            }
+            // Set our table info that will get used in various places later.
+            $tables[$table_name] = [
+              'values' => $value_columns,
+              'parent' => $parent_type,
+              'type' => $entity_type_id,
+              'field_name' => $field_name,
+            ];
+          }
+          catch (SqlContentEntityStorageException $e) {
+            continue;
+          }
         }
-        // Set our table info that will get used in various places later.
-        $tables[$table_name] = [
-          'values' => $value_columns,
-          'parent' => $parent_type,
+        break;
+
+      case 'menu_link_content':
+        $tables['menu_link_content_data'] = [
+          'values' => [
+            'title',
+            'link__uri',
+          ],
+          'parent' => ['id'],
           'type' => $entity_type_id,
-          'field_name' => $field_name,
+          'field_name' => 'menu',
         ];
-      }
-      catch (SqlContentEntityStorageException $e) {
-        continue;
-      }
+        break;
     }
   }
   // This function can be used to clean up some extra tables
@@ -90,11 +107,13 @@ function get_text_field_tables() {
  *   The string for which to search.
  * @param bool $regexed
  *   Whether a regex condition should be used over base LIKE.
+ * @param bool $render
+ *   Whether the results should be returned as a rendered HTML.
  *
  * @return array
  *   The search results.
  */
-function search_fields(string $needle, bool $regexed = FALSE) {
+function search_fields(string $needle, bool $regexed = FALSE, bool $render = FALSE) {
   $results = [];
   $tables = get_text_field_tables();
   $db = Database::getConnection();
@@ -129,30 +148,91 @@ function search_fields(string $needle, bool $regexed = FALSE) {
       foreach ($temp_results as $id => $row) {
         // Prepend the result with the field name to help
         // in results displaying later.
-        $row->value = implode(': ', [$value_column, $row->$value_column]);
+        if ($render) {
+          // Surround matches with a class we can target.
+          // Targets strings that do not appear after an
+          // opening tag marker if there is a corresponding
+          // closing tag marker.
+          $row->$value_column = preg_replace('%(?![^<]*>)' . $needle . '%i', '<span class="find-text-match">$0</span>', $row->$value_column);
+          $row->value = new FormattableMarkup("<strong>@name</strong><br/>" . $row->$value_column, [
+            '@name' => prettify_machine_name($value_column),
+          ]);
+        }
+        else {
+          // Find and mark all instances of our match.
+          $tokenized = preg_replace('%' . $needle . '%i', '[TOKEN]$0[TOKEN]', $row->$value_column);
+          // Break it apart into an array of matches and nonmatches.
+          $exploded = explode('[TOKEN]', $tokenized);
+          $counter = 0;
+          $replacements = [];
+          foreach ($exploded as &$part) {
+            // If we have a match, then we want to surround it
+            // with our targeted span class, but otherwise leave
+            // it alone. It will be part of the rendered markup.
+            if (preg_match('%' . $needle . '%i', $part)) {
+              $part = '<span class="find-text-match">' . $part . '</span>';
+            }
+            // If we didn't match, then we want it as part of the
+            // replacements, so that HTML will not be rendered.
+            else {
+              // Add it to our list of replacements, and
+              // replace it in the render string with its
+              // respective marker.
+              $replacements['@match' . $counter] = $part;
+              $part = '@match' . $counter++;
+            }
+          }
+          // Combine all our updated strings and markers.
+          $highlighted_string = implode('', $exploded);
+          // Create a formatted markup string with our edited
+          // highlighted string. Matches will be targeted with our
+          // classed spans, and nonmatch sections will be displayed
+          // without rendering their HTML tags.
+          $row->value = new FormattableMarkup("<strong>@name</strong><br/>" . $highlighted_string, array_merge([
+            '@name' => prettify_machine_name($value_column),
+          ], $replacements));
+        }
         // Fetch_parent will grab the parent node nid if able,
         // or else return false if the parent couldn't be found.
-        if ($value_column != 'title') {
-          $ids = [
-            'id' => $id,
-            'revision_id' => $row->revision_id,
-          ];
-          $new_id = fetch_parent($ids, $details['type']);
-          // Unset the old entity_id and replace with the new id.
-          // If we didn't find a result in our fetch_parent,
-          // we don't know what node has it anyway,
-          // and so our results will be broken--so go ahead
-          // and unset it outside of the new_id check.
-          unset($temp_results[$id]);
-          if ($new_id) {
-            $temp_results[$new_id['id']] = $row;
+        $ids = [
+          'id' => $id,
+          'revision_id' => $row->revision_id,
+        ];
+        $new_id = fetch_parent($ids, $details['type']);
+        // If we found a new id from fetch_parent, we want to
+        // update the results table to the new id and unset the
+        // old value to avoid possible collisions in subsequent
+        // loops. We unset it first, so that even if the id
+        // is the same, we don't lose anything.
+        unset($temp_results[$id]);
+        if ($new_id) {
+          // Make a marker so that we don't have id collisions
+          // between entity types.
+          $marker = 'id_' . $new_id['id'];
+          // Initialize an array if there's not one already,
+          // otherwise we'll end up with an object when
+          // assigning the results row.
+          if (!isset($temp_results[$marker])) {
+            $temp_results[$marker] = [];
           }
+          $temp_results[$marker][] = $row;
         }
       }
       // Add our new results to our collected results, keyed
-      // by node id.
-      foreach ($temp_results as $nid => $value) {
-        $results[$nid][] = $value;
+      // by entity id.
+      foreach ($temp_results as $marker => $values) {
+        // Reform our id, as this will be either the menu id
+        // or node id, and will be separated by 'type' at this point.
+        $exploded = explode('_', $marker);
+        $id = $exploded[1];
+        // All node, block_content, and paragraph entity types
+        // will be displayed at the end as being a "node" result.
+        $type = (in_array($details['type'], [
+          'node',
+          'block_content',
+          'paragraph',
+        ])) ? 'node' : $details['type'];
+        $results[$type][$id] = (isset($results[$type]) && isset($results[$type][$id])) ? array_merge($results[$type][$id], $values) : $values;
       }
     }
   }
@@ -230,40 +310,50 @@ function cleanup_tables(array &$tables) {
 function fetch_parent(array $ids, string $type) {
   $db = Database::getConnection();
   switch ($type) {
-    case 'node':
-      // We're assuming the node is the uppermost
-      // parent. May not always be the case in the future,
-      // but mostly, even if it's an entity reference to a node,
-      // we want the referenced node for editing anyway.
-      return $ids;
-
     case 'paragraph':
-      $result = $db->select('entity_usage')
-        ->fields('entity_usage', [
-          'source_id',
-          'source_vid',
-          'source_type',
-        ])
-        ->condition('target_type', $type, '=')
-        ->condition('target_id', $ids['id'], '=')
-        // Currently we're not handling revisions, so we're likely to have
-        // duplicate entries for the same node; one for each revision. We
-        // will also want to make sure we grab the most recent revision.
-        ->distinct()
-        ->orderBy('source_vid', 'DESC')
-        ->execute()
-        ->fetchAll();
-      // If we didn't have a result, we hit a dead end.
-      if (!isset($result[0])) {
+      $paragraph = \Drupal::service('entity_type.manager')
+        ->getStorage('paragraph')
+        ->loadRevision($ids['revision_id']);
+      // If we weren't able to load the paragraph, then
+      // resort to attempted database searching.
+      if (!$paragraph) {
+        $result = $db->select('entity_usage')
+          ->fields('entity_usage', [
+            'source_id',
+            'source_vid',
+            'source_type',
+          ])
+          ->condition('target_type', $type, '=')
+          ->condition('target_id', $ids['id'], '=')
+          // Currently we're not handling revisions, so we're likely to have
+          // duplicate entries for the same node; one for each revision. We
+          // will also want to make sure we grab the most recent revision.
+          ->distinct()
+          ->orderBy('source_vid', 'DESC')
+          ->execute()
+          ->fetchAll();
+        // If we didn't have a result, we hit a dead end.
+        if (!isset($result[0])) {
+          return FALSE;
+        }
+        // We found the paragraph parent, but it may
+        // or may not be a node, so we might need to
+        // keep digging. Grab only the first result,
+        // because we're not currently handling revisions.
+        $ids['id'] = $result[0]->source_id;
+        $ids['revision_id'] = $result[0]->source_vid;
+        $type = $result[0]->source_type;
+        return fetch_parent($ids, $type);
+      }
+      $parent = $paragraph->getParentEntity();
+      // If we failed to fetch a parent here, we have
+      // an orphan paragraph, and no results.
+      if (!$parent) {
         return FALSE;
       }
-      // We found the paragraph parent, but it may
-      // or may not be a node, so we might need to
-      // keep digging. Grab only the first result,
-      // because we're not currently handling revisions.
-      $ids['id'] = $result[0]->source_id;
-      $ids['revision_id'] = $result[0]->source_vid;
-      $type = $result[0]->source_type;
+      $ids['id'] = $parent->id();
+      $ids['revision_id'] = $parent->getRevisionId();
+      $type = $parent->getEntityType()->id();
       return fetch_parent($ids, $type);
 
     case 'block_content':
@@ -283,5 +373,40 @@ function fetch_parent(array $ids, string $type) {
       $ids['id'] = $result[0]->entity_id;
       $ids['revision_id'] = $result[0]->revision_id;
       return $ids;
+
+    // We're assuming the node is the uppermost
+    // parent. May not always be the case in the future,
+    // but mostly, even if it's an entity reference to a node,
+    // we want the referenced node for editing anyway. Same
+    // for some other entity types, such as menu links.
+    case 'node':
+    default:
+      return $ids;
   }
+}
+
+/**
+ * Simple helper to make machine names more user friendly.
+ *
+ * @param string $machine_name
+ *   The string to pretty print.
+ *
+ * @return string
+ *   The more readable string.
+ */
+function prettify_machine_name(string $machine_name) {
+  // Drop 'field' and 'uiowa' designators,
+  // which don't really add anything for the editor.
+  // Ditto with all the extra "values" that get added.
+  $machine_name = preg_replace('@(field\_)|(uiowa\_)|(\_value)@', '', $machine_name);
+  // Replace underscores with spaces.
+  $machine_name = preg_replace('|\_|', ' ', $machine_name);
+  return ucwords($machine_name);
+}
+
+/**
+ * Implements hook_toolbar_alter().
+ */
+function sitenow_find_text_toolbar_alter(&$items) {
+  $items['administration']['#attached']['library'][] = 'sitenow_find_text/icon';
 }
