@@ -194,30 +194,28 @@ function search_fields(string $needle, bool $regexed = FALSE, bool $render = FAL
         }
         // Fetch_parent will grab the parent node nid if able,
         // or else return false if the parent couldn't be found.
-        if ($value_column != 'title') {
-          $ids = [
-            'id' => $id,
-            'revision_id' => $row->revision_id,
-          ];
-          $new_id = fetch_parent($ids, $details['type']);
-          // If we found a new id from fetch_parent, we want to
-          // update the results table to the new id and unset the
-          // old value to avoid possible collisions in subsequent
-          // loops. We unset it first, so that even if the id
-          // is the same, we don't lose anything.
-          unset($temp_results[$id]);
-          if ($new_id) {
-            // Make a marker so that we don't have id collisions
-            // between entity types.
-            $marker = 'id_' . $new_id['id'];
-            // Initialize an array if there's not one already,
-            // otherwise we'll end up with an object when
-            // assigning the results row.
-            if (!isset($temp_results[$marker])) {
-              $temp_results[$marker] = [];
-            }
-            $temp_results[$marker][] = $row;
+        $ids = [
+          'id' => $id,
+          'revision_id' => $row->revision_id,
+        ];
+        $new_id = fetch_parent($ids, $details['type']);
+        // If we found a new id from fetch_parent, we want to
+        // update the results table to the new id and unset the
+        // old value to avoid possible collisions in subsequent
+        // loops. We unset it first, so that even if the id
+        // is the same, we don't lose anything.
+        unset($temp_results[$id]);
+        if ($new_id) {
+          // Make a marker so that we don't have id collisions
+          // between entity types.
+          $marker = 'id_' . $new_id['id'];
+          // Initialize an array if there's not one already,
+          // otherwise we'll end up with an object when
+          // assigning the results row.
+          if (!isset($temp_results[$marker])) {
+            $temp_results[$marker] = [];
           }
+          $temp_results[$marker][] = $row;
         }
       }
       // Add our new results to our collected results, keyed
