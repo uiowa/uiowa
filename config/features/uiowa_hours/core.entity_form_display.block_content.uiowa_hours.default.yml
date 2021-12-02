@@ -1,0 +1,29 @@
+uuid: 20a049b5-9857-4c58-8978-53a45d8aa0d1
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_hours
+    - field.field.block_content.uiowa_hours.field_uiowa_hours_resource
+id: block_content.uiowa_hours.default
+targetEntityType: block_content
+bundle: uiowa_hours
+mode: default
+content:
+  field_uiowa_hours_resource:
+    weight: 27
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  info:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }
