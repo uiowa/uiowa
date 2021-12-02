@@ -5,6 +5,9 @@ dependencies: {  }
 id: grad_migrate
 label: 'Grad Migrate'
 description: 'Migrations for the Grad College'
+weight: 80
+stackable: true
+storage: folder
 folder: ./modules/custom/grad_custom/grad_migrate/config/split
 module:
   grad_migrate: 0
@@ -13,14 +16,11 @@ module:
   migrate_tools: 0
   sitenow_migrate: 0
 theme: {  }
-blacklist:
+complete_list:
   - config_split.config_split.grad_migrate
   - migrate_plus.migration.d7_grad_article
   - migrate_plus.migration.d7_grad_srop_mentor
   - migrate_plus.migration.d7_grad_srop_scholar
   - migrate_plus.migration.d7_grad_thesis_defense
   - migrate_plus.migration.d7_grad_thesis_defense_redirect
-graylist: {  }
-graylist_dependents: true
-graylist_skip_equal: true
-weight: 80
+partial_list: {  }

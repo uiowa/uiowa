@@ -1,0 +1,37 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.scholarship.field_scholarship_resident
+      - field.field.node.scholarship.field_scholarship_type
+      - field.field.node.scholarship.field_weight
+    module:
+      - weight
+  content:
+    field_scholarship_contact:
+      settings:
+        placeholder_url: 'mailto:admissions-avcmail@uiowa.edu'
+        placeholder_title: 'Office of Admissions'
+    field_scholarship_resident:
+      weight: 18
+      settings: {  }
+      third_party_settings: {  }
+      type: options_buttons
+      region: content
+    field_scholarship_type:
+      weight: 17
+      settings: {  }
+      third_party_settings: {  }
+      type: options_buttons
+      region: content
+    field_weight:
+      weight: 26
+      settings: {  }
+      third_party_settings: {  }
+      type: weight_selector
+      region: content
+removing:
+  content:
+    field_scholarship_contact:
+      settings:
+        placeholder_url: ''
+        placeholder_title: ''

@@ -21,18 +21,24 @@ class SearchBlock extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
-    $build_info = $form_state->getBuildInfo();
+  public function buildForm(array $form, FormStateInterface $form_state, array $search_config = []) {
     $form['#attributes']['class'][] = 'form-inline clearfix uiowa-search-form';
+
+    $form['search_config'] = [
+      '#type' => 'hidden',
+      '#value' => $search_config,
+    ];
+
     $form['search'] = [
       '#type' => 'search',
-      '#title' => $build_info['search_config']['search_label'],
+      '#title' => $search_config['search_label'] ?? $this->t('Search'),
       '#size' => 30,
       '#maxlength' => 255,
     ];
+
     $form['actions']['submit'] = [
       '#type' => 'submit',
-      '#value' => $build_info['search_config']['button_text'],
+      '#value' => $search_config['button_text'] ?? $this->t('Search'),
     ];
 
     return $form;
@@ -42,15 +48,16 @@ class SearchBlock extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $build_info = $form_state->getBuildInfo();
     $values = $form_state->getValues();
-    $uri = $build_info['search_config']['endpoint'];
+    $uri = $values['search_config']['endpoint'];
     $query = $values['search'];
+
     // Support root-relative URLs.
     if (str_starts_with($uri, '/')) {
       $uri = 'base:' . substr($uri, 1);
     }
-    $url = Url::fromUri($uri, ['query' => [$build_info['search_config']['query_parameter'] => $query]]);
+
+    $url = Url::fromUri($uri, ['query' => [$values['search_config']['query_parameter'] => $query]]);
     $form_state->setRedirectUrl($url);
   }
 

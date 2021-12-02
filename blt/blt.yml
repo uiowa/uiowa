@@ -23,10 +23,6 @@ drush:
   aliases:
     ci: self
   default_alias: self
-disable-targets:
-  drupal:
-    toggle:
-      modules: true
 tests:
   phpunit:
     - config: '${repo.root}'
@@ -59,9 +55,9 @@ cm:
     install_from_config: true
 sync:
   commands:
-    - 'blt:init:settings'
     - 'drupal:sync:db'
     - 'drupal:update'
+    - 'uiowa:multisite:noop'
     - 'uiowa:multisite:noop'
     - 'uiowa:multisite:noop'
 
