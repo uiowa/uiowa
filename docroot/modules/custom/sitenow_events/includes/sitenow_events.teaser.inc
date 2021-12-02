@@ -89,6 +89,6 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
     // Use smart_trim's helper to safely truncate without breaking HTML.
     $truncate = new TruncateHTML();
     $trim_suffix = '...';
-    $variables['event']['description'] = $truncate->truncateChars($variables['event']['description'], 400, $trim_suffix);
+    $variables['event']['description'] = $truncate->truncateChars($variables['event']['description'], 500, $trim_suffix);
   }
 }
