@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @file
+ * Installation functions for grad_core module.
+ */
+
+use Drupal\Core\Config\FileStorage;
+
+/**
+ * Enable aos config split.
+ */
+function grad_admissions_core_update_9001() {
+  // This site does not have the 'aos' split enabled.
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+
+  // Create the split in active config and import config_ignore settings
+  // otherwise the status will be imported as false (and everything will be
+  // deleted on cim) since that is what exists in the default split config.
+
+  $config_names = [
+    'config_ignore.settings',
+    'config_split.config_split.areas_of_study',
+  ];
+  $config_storage = \Drupal::service('config.storage');
+  foreach ($config_names as $config_name) {
+    $config_storage->write($config_name, $source->read($config_name));
+  }
+  // Enable the 'aos' split.
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('config_split.config_split.areas_of_study');
+  $config->set('status', TRUE);
+  $config->save(TRUE);
+}
