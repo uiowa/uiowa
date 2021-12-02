@@ -194,26 +194,37 @@ function search_fields(string $needle, bool $regexed = FALSE, bool $render = FAL
         }
         // Fetch_parent will grab the parent node nid if able,
         // or else return false if the parent couldn't be found.
-        if ($value_column != 'title') {
-          $ids = [
-            'id' => $id,
-            'revision_id' => $row->revision_id,
-          ];
-          $new_id = fetch_parent($ids, $details['type']);
-          // If we found a new id from fetch_parent, we want to
-          // update the results table to the new id and unset the
-          // old value to avoid possible collisions in subsequent
-          // loops. We unset it first, so that even if the id
-          // is the same, we don't lose anything.
-          unset($temp_results[$id]);
-          if ($new_id) {
-            $temp_results[$new_id['id']] = $row;
+        $ids = [
+          'id' => $id,
+          'revision_id' => $row->revision_id,
+        ];
+        $new_id = fetch_parent($ids, $details['type']);
+        // If we found a new id from fetch_parent, we want to
+        // update the results table to the new id and unset the
+        // old value to avoid possible collisions in subsequent
+        // loops. We unset it first, so that even if the id
+        // is the same, we don't lose anything.
+        unset($temp_results[$id]);
+        if ($new_id) {
+          // Make a marker so that we don't have id collisions
+          // between entity types.
+          $marker = 'id_' . $new_id['id'];
+          // Initialize an array if there's not one already,
+          // otherwise we'll end up with an object when
+          // assigning the results row.
+          if (!isset($temp_results[$marker])) {
+            $temp_results[$marker] = [];
           }
+          $temp_results[$marker][] = $row;
         }
       }
       // Add our new results to our collected results, keyed
       // by entity id.
-      foreach ($temp_results as $id => $value) {
+      foreach ($temp_results as $marker => $values) {
+        // Reform our id, as this will be either the menu id
+        // or node id, and will be separated by 'type' at this point.
+        $exploded = explode('_', $marker);
+        $id = $exploded[1];
         // All node, block_content, and paragraph entity types
         // will be displayed at the end as being a "node" result.
         $type = (in_array($details['type'], [
@@ -221,7 +232,7 @@ function search_fields(string $needle, bool $regexed = FALSE, bool $render = FAL
           'block_content',
           'paragraph',
         ])) ? 'node' : $details['type'];
-        $results[$type][$id][] = $value;
+        $results[$type][$id] = (isset($results[$type]) && isset($results[$type][$id])) ? array_merge($results[$type][$id], $values) : $values;
       }
     }
   }
@@ -300,32 +311,49 @@ function fetch_parent(array $ids, string $type) {
   $db = Database::getConnection();
   switch ($type) {
     case 'paragraph':
-      $result = $db->select('entity_usage')
-        ->fields('entity_usage', [
-          'source_id',
-          'source_vid',
-          'source_type',
-        ])
-        ->condition('target_type', $type, '=')
-        ->condition('target_id', $ids['id'], '=')
-        // Currently we're not handling revisions, so we're likely to have
-        // duplicate entries for the same node; one for each revision. We
-        // will also want to make sure we grab the most recent revision.
-        ->distinct()
-        ->orderBy('source_vid', 'DESC')
-        ->execute()
-        ->fetchAll();
-      // If we didn't have a result, we hit a dead end.
-      if (!isset($result[0])) {
+      $paragraph = \Drupal::service('entity_type.manager')
+        ->getStorage('paragraph')
+        ->loadRevision($ids['revision_id']);
+      // If we weren't able to load the paragraph, then
+      // resort to attempted database searching.
+      if (!$paragraph) {
+        $result = $db->select('entity_usage')
+          ->fields('entity_usage', [
+            'source_id',
+            'source_vid',
+            'source_type',
+          ])
+          ->condition('target_type', $type, '=')
+          ->condition('target_id', $ids['id'], '=')
+          // Currently we're not handling revisions, so we're likely to have
+          // duplicate entries for the same node; one for each revision. We
+          // will also want to make sure we grab the most recent revision.
+          ->distinct()
+          ->orderBy('source_vid', 'DESC')
+          ->execute()
+          ->fetchAll();
+        // If we didn't have a result, we hit a dead end.
+        if (!isset($result[0])) {
+          return FALSE;
+        }
+        // We found the paragraph parent, but it may
+        // or may not be a node, so we might need to
+        // keep digging. Grab only the first result,
+        // because we're not currently handling revisions.
+        $ids['id'] = $result[0]->source_id;
+        $ids['revision_id'] = $result[0]->source_vid;
+        $type = $result[0]->source_type;
+        return fetch_parent($ids, $type);
+      }
+      $parent = $paragraph->getParentEntity();
+      // If we failed to fetch a parent here, we have
+      // an orphan paragraph, and no results.
+      if (!$parent) {
         return FALSE;
       }
-      // We found the paragraph parent, but it may
-      // or may not be a node, so we might need to
-      // keep digging. Grab only the first result,
-      // because we're not currently handling revisions.
-      $ids['id'] = $result[0]->source_id;
-      $ids['revision_id'] = $result[0]->source_vid;
-      $type = $result[0]->source_type;
+      $ids['id'] = $parent->id();
+      $ids['revision_id'] = $parent->getRevisionId();
+      $type = $parent->getEntityType()->id();
       return fetch_parent($ids, $type);
 
     case 'block_content':
