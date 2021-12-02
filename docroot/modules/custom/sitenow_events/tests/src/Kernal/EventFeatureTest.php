@@ -2,9 +2,8 @@
 
 namespace Drupal\Tests\sitenow_events\Kernal;
 
-use Drupal\Core\Config\FileStorage;
 use Drupal\Tests\BrowserTestBase;
-use Drupal\Tests\ConfigTestTrait;
+use Drupal\Tests\layout_builder_custom\Traits\ConfigSplitTestTrait;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
 
 /**
@@ -14,7 +13,7 @@ use Drupal\Tests\node\Traits\NodeCreationTrait;
  */
 class EventFeatureTest extends BrowserTestBase {
   use NodeCreationTrait;
-  use ConfigTestTrait;
+  use ConfigSplitTestTrait;
 
   /**
    * Additional modules to enable.
@@ -67,7 +66,7 @@ class EventFeatureTest extends BrowserTestBase {
   /**
    * Test event creation and display.
    */
-  public function doNotTestEventDisplay(): void {
+  public function testEventDisplay(): void {
     $title = 'Test event';
 
     $this->generateEvents(1);
@@ -89,33 +88,6 @@ class EventFeatureTest extends BrowserTestBase {
     // @todo Check that event virtual details are displaying.
     // @todo Check that event location is showing.
     $this->assertEquals($title, $title);
-  }
-
-  /**
-   * Enable a config split.
-   *
-   * @param $split_name
-   *
-   * @todo Move this to a trait.
-   */
-  public function enableConfigSplit($split_name) {
-    // @todo Add check that split exists.
-    // Import the split configuration.
-    $config_path = DRUPAL_ROOT . '/../config/default';
-    $source = new FileStorage($config_path);
-    $config_storage = \Drupal::service('config.storage');
-    $split = $source->read("config_split.config_split.$split_name");
-    $config_storage->write("config_split.config_split.$split_name", $split);
-
-    $this->copyConfig($config_storage, $this->configImporter()->getStorageComparer()->getSourceStorage());
-
-    // Enable the split.
-    $config_factory = \Drupal::configFactory();
-    $config = $config_factory->getEditable("config_split.config_split.$split_name");
-    $config->set('status', TRUE);
-    $config->save(TRUE);
-
-    $this->configImporter()->import();
   }
 
   /**
