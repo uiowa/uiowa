@@ -3659,3 +3659,9 @@ $sites['labhaar.local.drupal.uiowa.edu'] = 'haar.lab.uiowa.edu';
 $sites['labhaar.dev.drupal.uiowa.edu'] = 'haar.lab.uiowa.edu';
 $sites['labhaar.stage.drupal.uiowa.edu'] = 'haar.lab.uiowa.edu';
 $sites['labhaar.prod.drupal.uiowa.edu'] = 'haar.lab.uiowa.edu';
+
+// Directory aliases for grantsupport.clas.uiowa.edu.
+$sites['clasgrantsupport.local.drupal.uiowa.edu'] = 'grantsupport.clas.uiowa.edu';
+$sites['clasgrantsupport.dev.drupal.uiowa.edu'] = 'grantsupport.clas.uiowa.edu';
+$sites['clasgrantsupport.stage.drupal.uiowa.edu'] = 'grantsupport.clas.uiowa.edu';
+$sites['clasgrantsupport.prod.drupal.uiowa.edu'] = 'grantsupport.clas.uiowa.edu';

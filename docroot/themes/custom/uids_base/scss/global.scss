@@ -51,7 +51,6 @@ $imgpath: '../../uids/assets/images';
 }
 
 // Layout container padding
-
 .layout__container {
   margin-top: 0;
   padding-bottom: $mobile-width-gutter;
@@ -65,6 +64,12 @@ $imgpath: '../../uids/assets/images';
 
   &:first-child {
     padding-top: 0;
+    .region-pre-footer & {
+      padding-top: $mobile-width-gutter;
+      @include breakpoint(sm) {
+        padding-top: $desktop-width-gutter;
+      }
+    }
   }
 
   // @todo Should this be moved to the header layout scss file?
@@ -128,6 +133,9 @@ $imgpath: '../../uids/assets/images';
   &.section-padding {
     &__removed-top {
       padding-top: 0;
+      .region-pre-footer & {
+        padding-top: 0;
+      }
     }
 
     &__removed-bottom {
@@ -140,6 +148,9 @@ $imgpath: '../../uids/assets/images';
 
     &__top-extra {
       padding-top: 6rem;
+      .region-pre-footer & {
+        padding-top: 6rem;
+      }
     }
 
     &__bottom-extra {

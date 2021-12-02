@@ -66,34 +66,19 @@ class SearchForm extends ConfigFormBase {
         <p>Search text fields for a provided string. The search is not case-sensitive.</p>
         <p>Pre-rendered text area markup is searched, so some characters may be different; for instance, `&amp ;` may match ampersands where `&` will not.
         Node fields and content blocks are included, but some areas such as menu links will not be searched.</p>
-        <p>Basic SQL LIKE wildcards may be used.</p>
-        <table class="responsive-enabled" data-striping="1">
-            <thead>
-                <tr>
-                    <th>Operator</th>
-                    <th>Use</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>%</td>
-                    <td>Wildcard that matches any zero, one, or many characters.<br/>
-                    `f%r` will match `fr`, `for`, `four`, and `flounder`.</td>
-                </tr>
-                <tr>
-                    <td>_</td>
-                    <td>Wildcard that matches exactly one character.<br/>
-                    `f_r` will match `for`, but not `fr`, `four`, or `flounder`.</td>
-                </tr>
-            </tbody>
-        </table>
       EOD,
     ];
     $form['needle'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Search Text'),
       '#default_value' => '',
-      '#description' => $this->t('The string to search against. % wildcards are prepended and appended automatically when not using regex. % and _ are always treated as wildcards, and cannot be searched for directly at this time. A search for `100%` will return matches for `100`, `100%`, and `100.0`, for instance.'),
+      '#description' => $this->t('The string to search against. Wildcards % will match any number of characters and _ will match any single character. % wildcards are prepended and appended automatically when not using regex. See the <a href="https://sitenow.uiowa.edu/documentation/site-text-search">Find Text documentation</a> for more information.'),
+    ];
+    $form['render'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Render markup'),
+      '#description' => $this->t('Display the results as rendered HTML. This may hide parts of the results, such as text matched within HTML tags.'),
+      '#default_value' => 1,
     ];
     $form['regexed'] = [
       '#type' => 'checkbox',
@@ -121,6 +106,8 @@ class SearchForm extends ConfigFormBase {
     // Unset the original, currently unused submit button.
     // It might be used at another time if settings are needed.
     unset($form['actions']['submit']);
+    // Attach our custom css for highlighting purposes.
+    $form['#attached']['library'][] = 'sitenow_find_text/results';
     return $form;
   }
 
@@ -130,7 +117,8 @@ class SearchForm extends ConfigFormBase {
   public function searchButton(array &$form, FormStateInterface $form_state) {
     $needle = $form_state->getValue('needle');
     $regexed = $form_state->getValue('regexed');
-    $results = search_fields($needle, $regexed);
+    $render = $form_state->getValue('render');
+    $results = search_fields($needle, $regexed, $render);
     $table = $this->buildResultsTable($results);
     $markup = $this->renderer->render($table);
     $form['results'] = [
@@ -156,40 +144,64 @@ class SearchForm extends ConfigFormBase {
         '#markup' => '<p class="text-align-center">No results found.</p>',
       ];
     }
-    // Clear out the excess to make printing easier.
-    foreach (array_keys($results) as $key) {
-      foreach (array_keys($results[$key]) as $secondary_key) {
-        $results[$key][$secondary_key] = $results[$key][$secondary_key]->value;
+    // Rearrange and clear out the excess to make printing easier.
+    // Starting out, our results are separated by entity type.
+    foreach ($results as $type => $typed_results) {
+      // This first key will be the entity id.
+      foreach (array_keys($typed_results) as $key) {
+        // The secondary key will be a simple delta.
+        foreach (array_keys($typed_results[$key]) as $secondary_key) {
+          // Created a modified key to help us avoid collisions
+          // while rearranging our results.
+          $mod_key = implode('-', [$type, $key]);
+          $results[$mod_key][] = $results[$type][$key][$secondary_key]->value;
+        }
       }
+      unset($results[$type]);
     }
     $rows = [];
     $node_manager = $this->entityTypeManager
       ->getStorage('node');
-    foreach ($results as $nid => $matches) {
-      // @todo Clean this up. Right now, we're checking for field existence
-      //   to determine if we allow layout builder editing. It's better than
-      //   hardcoding it to entity types we've allowed, but...only just.
-      $node = $node_manager->load($nid);
-      // If we weren't able to load a node,
-      // then go ahead and skip ahead, because
-      // we won't have a result to display anyway.
-      if (!$node) {
+    foreach ($results as $mod_key => $matches) {
+      $exploded = explode('-', $mod_key);
+      list($type, $id) = $exploded;
+      switch ($type) {
+        case 'block_content':
+        case 'paragraph':
+        case 'node':
+          $node = $node_manager->load($id);
+          // Check if we have an overridden layout or not.
+          // If we didn't successfully load a node, go ahead
+          // and treat it as a non-overridden node so that
+          // the user will still see it in the results as a failsafe.
+          $has_lb = $node && $node->hasField('layout_builder__layout');
+          if ($has_lb) {
+            $entity_value = new FormattableMarkup('<strong>Node:</strong> @nid (<a href="/node/@nid/edit">edit</a>) (<a href="/node/@nid/layout">layout</a>)', [
+              '@nid' => $id,
+            ]);
+          }
+          else {
+            $entity_value = new FormattableMarkup('<strong>Node:</strong> @nid (<a href="/node/@nid/edit">edit</a>)', [
+              '@nid' => $id,
+            ]);
+          }
+          break;
+
+        case 'menu_link_content':
+          $entity_value = new FormattableMarkup('<strong>Menu:</strong> @mid (<a href="/admin/structure/menu/item/@mid/edit?destination=/admin/find-text">edit</a>)', [
+            '@mid' => $id,
+          ]);
+          break;
+
+        default:
+          $entity_value = FALSE;
+      }
+      if (!$entity_value) {
         continue;
       }
-      $has_lb = $node->hasField('layout_builder__layout');
-      if ($has_lb) {
-        $node_value = new FormattableMarkup('@nid (<a href="/node/@nid/edit">edit</a>) (<a href="/node/@nid/layout">layout</a>)', [
-          '@nid' => $nid,
-        ]);
-      }
-      else {
-        $node_value = new FormattableMarkup('@nid (<a href="/node/@nid/edit">edit</a>)', [
-          '@nid' => $nid,
-        ]);
-      }
       $rows[] = [
-        'nid' => [
-          'data' => $node_value,
+        'id' => [
+          'data' => $entity_value,
           // Stretch the node row to cover all its matches.
           'rowspan' => count($matches),
         ],
@@ -206,7 +218,7 @@ class SearchForm extends ConfigFormBase {
     return [
       '#type' => 'table',
       '#header' => [
-        'nid' => 'Node',
+        'nid' => 'Entity',
         'field' => 'Field: Contents',
       ],
       '#rows' => $rows,
