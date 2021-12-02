@@ -3666,7 +3666,7 @@ $sites['clasgrantsupport.stage.drupal.uiowa.edu'] = 'grantsupport.clas.uiowa.edu
 $sites['clasgrantsupport.prod.drupal.uiowa.edu'] = 'grantsupport.clas.uiowa.edu';
 
 // Directory aliases for uisdaa.org.uiowa.edu.
-$sites['orguisdaa.local.drupal.uiowa.edu'] = 'uisdaa.org.uiowa.edu';
+$sites['orguisdaa.uiowa.ddev.site'] = 'uisdaa.org.uiowa.edu';
 $sites['orguisdaa.dev.drupal.uiowa.edu'] = 'uisdaa.org.uiowa.edu';
 $sites['orguisdaa.stage.drupal.uiowa.edu'] = 'uisdaa.org.uiowa.edu';
 $sites['orguisdaa.prod.drupal.uiowa.edu'] = 'uisdaa.org.uiowa.edu';
