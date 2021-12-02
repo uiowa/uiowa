@@ -19,15 +19,17 @@ This project is based on BLT, an open-source project template and tool that enab
     ```
 ----
 # Local Environment
-TBD. Update docs below.
+[Ddev](https://ddev.readthedocs.io/en/stable/) is used for the local environment. Follow their [docs](https://ddev.readthedocs.io/en/stable/#installation) to get it installed. Once installed, read up on [basic CLI](https://ddev.readthedocs.io/en/stable/users/cli-usage/) usage to understand how to manage the containers.
+
+Once installed and started, you can either `ddev ssh` and run non-ddev CLI commands there, or run them on your host with `ddev CMD`. For example, `ddev blt dsa` or `ddev composer install`.
 
 ## Workspaces
-Yarn [workspaces](https://classic.yarnpkg.com/en/docs/workspaces) can be defined in the top-level package.json file. Each workspace can depend on other workspaces as well as define their own build script. You can run workspace build scripts on the VM with `yarn workspace WORKSPACE_NAME run SCRIPT_NAME`. Every workspace build script gets run during continuous integration to build assets. The build assets are committed to the build artifact and deployed.
+Yarn [workspaces](https://classic.yarnpkg.com/en/docs/workspaces) can be defined in the top-level package.json file. Each workspace can depend on other workspaces as well as define their own build script. You can run workspace build scripts on the web container with `ddev yarn workspace WORKSPACE_NAME run SCRIPT_NAME`. Every workspace build script gets run during continuous integration to build assets. The build assets are committed to the build artifact and deployed.
 
 Workspaces that need to leverage uiowa/uids assets should depend on uids_base and not uiowa/uids directly. This is to ensure the version of uiowa/uids is strictly managed and because uids_base runs a build script that copies necessary assets into the build artifact. For example, fonts are available in uids_base which would not be available in the excluded node_modules directory.
 
 ## Databases
-Use [SequelPro](https://www.sequelpro.com/) to [connect to DrupalVM](http://docs.drupalvm.com/en/latest/configurations/databases-mysql/#connect-using-sequel-pro-or-a-similar-client).
+Ddev creates a database container that is accessible from the web container. You can access the database container [from your host](https://ddev.readthedocs.io/en/stable/users/topics/database_management/) as well using tools like [SequelPro](https://www.sequelpro.com/) or [TablePlus](https://tableplus.com/).
 
 ## Logging
 As long as a site has a local settings file, it should be configured to show all warnings and errors to the screen. Other log messages can be viewed by running `ddev logs`.
@@ -74,6 +76,8 @@ The following options can also be passed in:
 * `--no-db` - Do not create remote databases.
 * `--no-commit` - Do not create a new commit in git.
 * `--simulate` - Only runs the commands associated with `blt recipes:multisite:init`.
+
+Because the `.git` directory is not synced to the web container, this command and others like it need to be run on your host machine.
 
 ### Overriding Configuration
 Please note this approach is not yet tested nor recommended.
