@@ -64,18 +64,7 @@ $config['stage_file_proxy.settings']['hotlink'] = TRUE;
 ```
 
 ## Multisite Management
-### Creating Sites
-To add a new site to the project, run the following command:
-```
-blt umc example.uiowa.edu
-```
-Replace `example.uiowa.edu` with the URI of the site you are creating.
-
-The following options can also be passed in:
-* `--requester=hawkid` - Use the hawkid of the person who requested the site. Will be given webmaster access when installed.
-* `--no-db` - Do not create remote databases.
-* `--no-commit` - Do not create a new commit in git.
-* `--simulate` - Only runs the commands associated with `blt recipes:multisite:init`.
+There are a few custom BLT commands to manage multisites. Run `blt list uiowa` to see all the commands in the `uiowa` namespace. Then run `blt CMD --help` for more information on specific commands.
 
 Because the `.git` directory is not synced to the web container, this command and others like it need to be run on your host machine.
 
