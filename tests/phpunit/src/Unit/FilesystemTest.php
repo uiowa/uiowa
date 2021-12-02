@@ -33,13 +33,6 @@ class FilesystemTest extends UnitTestCase {
   }
 
   /**
-   * Test that the hash salt exists.
-   */
-  public function testHashSaltExists() {
-    $this->assertFileExists($this->root . '/../salt.txt');
-  }
-
-  /**
    * Test sites.php entries exist.
    */
   public function testDirectoryAliasesExist() {
