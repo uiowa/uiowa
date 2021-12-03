@@ -238,7 +238,6 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
 
       if (!empty($location)) {
         $card_meta['location'] = [
-          '#prefix' => '<span role="presentation" class="fas fa-map-marker-alt"></span>',
           '#markup' => render($location),
         ];
       }
