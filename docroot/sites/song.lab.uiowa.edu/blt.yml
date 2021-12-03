@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labsong.local.drupal.uiowa.edu
+    protocol: https
+  machine_name: labsong
+  human_name: song.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labsong.prod
+drupal:
+  db:
+    database: song_lab_uiowa_edu
+uiowa:
+  requester: laverman

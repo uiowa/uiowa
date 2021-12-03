@@ -3671,3 +3671,9 @@ $sites['orguisdaa.local.drupal.uiowa.edu'] = 'uisdaa.org.uiowa.edu';
 $sites['orguisdaa.dev.drupal.uiowa.edu'] = 'uisdaa.org.uiowa.edu';
 $sites['orguisdaa.stage.drupal.uiowa.edu'] = 'uisdaa.org.uiowa.edu';
 $sites['orguisdaa.prod.drupal.uiowa.edu'] = 'uisdaa.org.uiowa.edu';
+
+// Directory aliases for song.lab.uiowa.edu.
+$sites['labsong.local.drupal.uiowa.edu'] = 'song.lab.uiowa.edu';
+$sites['labsong.dev.drupal.uiowa.edu'] = 'song.lab.uiowa.edu';
+$sites['labsong.stage.drupal.uiowa.edu'] = 'song.lab.uiowa.edu';
+$sites['labsong.prod.drupal.uiowa.edu'] = 'song.lab.uiowa.edu';
