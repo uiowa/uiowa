@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_hours
+    - field.field.block_content.uiowa_hours.field_uiowa_hours_calendar_view
     - field.field.block_content.uiowa_hours.field_uiowa_hours_datepicker
     - field.field.block_content.uiowa_hours.field_uiowa_hours_resource
     - field.field.block_content.uiowa_hours.field_uiowa_hours_status
@@ -80,6 +81,22 @@ third_party_settings:
               context_mapping: {  }
             additional: {  }
             weight: 5
+          -
+            uuid: ecb55521-1365-437c-9200-772f7a1fbd19
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:block_content:uiowa_hours:field_uiowa_hours_calendar_view'
+              formatter:
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+                type: entity_reference_label
+            additional: {  }
+            weight: 6
         third_party_settings: {  }
   layout_builder_restrictions:
     allowed_block_categories: {  }
@@ -102,6 +119,14 @@ content:
       link: false
     third_party_settings: {  }
     type: entity_reference_entity_view
+    region: content
+  field_uiowa_hours_calendar_view:
+    weight: 7
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
     region: content
   field_uiowa_hours_datepicker:
     weight: 2

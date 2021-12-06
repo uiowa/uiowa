@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_hours
+    - field.field.block_content.uiowa_hours.field_uiowa_hours_calendar_view
     - field.field.block_content.uiowa_hours.field_uiowa_hours_datepicker
     - field.field.block_content.uiowa_hours.field_uiowa_hours_resource
     - field.field.block_content.uiowa_hours.field_uiowa_hours_status
@@ -12,6 +13,16 @@ targetEntityType: block_content
 bundle: uiowa_hours
 mode: default
 content:
+  field_uiowa_hours_calendar_view:
+    weight: 26
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
   field_uiowa_hours_datepicker:
     weight: 2
     settings:

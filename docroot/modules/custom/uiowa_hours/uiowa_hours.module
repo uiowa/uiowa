@@ -4,7 +4,6 @@
  * @file
  * Code for the uiowa Serv Hours module.
  */
-use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_theme().
@@ -52,5 +51,5 @@ function uiowa_hours_preprocess_block(&$variables) {
 
     }
     $variables["attributes"]['class'][] = $calendar;
-    }
   }
+}
