@@ -135,7 +135,7 @@ class MigrateSettingsForm extends ConfigFormBase {
     $form['database']['host'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Database Host'),
-      '#description' => $this->t('The database host. Use 10.0.2.2 for DevDesktop from DrupalVM.'),
+      '#description' => $this->t('The database host. Use host.docker.internal for DevDesktop from ddev.'),
       '#default_value' => $config->get('shared_configuration.source.database.host'),
       '#required' => TRUE,
     ];
