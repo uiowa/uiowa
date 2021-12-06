@@ -19,20 +19,14 @@ Follow the Git instructions on the drupal.org issue you're working on for
 setting up another remote within that project directory.
 
 ### Run tests
-Tests are run with the `blt tests:drupal` command. Verbose logging with the `-v`
-option can be useful. By default, no tests will run because there are none
-specified in BLT configuration. You can pick and choose what tests to run by
-modifying your `blt/local.blt.yml` file as documented in the BLT docs. Here is
-an example you can copy and past into `blt/local.blt.yml` to get started.
+Drupal tests are run with the `blt tests:drupal` command. Verbose logging with
+the `-v`option can be useful. By default, no tests will run because there are
+none specified in BLT configuration. You can pick and choose what tests to run
+by modifying your `blt/local.blt.yml` file as documented in the BLT docs. Here
+is an example you can copy and past into `blt/local.blt.yml` to get started.
 ```
 # Configure Drupal tests to run.
-tests:
-  drupal:
-    # This is required for running functional-javascript tests.
-    web-driver: chromedriver
-    # Use MySQL. The default sqlite DB URL that BLT configures was not working.
-    simpletest-db: 'mysql://${drupal.db.username}:${drupal.db.password}@${drupal.db.host}/${drupal.db.database}'
-    phpunit:
+tests.drupal.phpunit:
       -
         # The directory to scan for tests. Change to what you want to test.
         directory: '${docroot}/modules/contrib/entity_usage'
