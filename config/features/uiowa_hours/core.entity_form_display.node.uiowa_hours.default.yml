@@ -1,0 +1,51 @@
+uuid: 79716052-c12f-4376-afd5-bbff33a995c7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.uiowa_hours.field_hours_fullcalendar
+    - field.field.node.uiowa_hours.layout_builder__layout
+    - node.type.uiowa_hours
+  module:
+    - datetime_range
+    - path
+id: node.uiowa_hours.default
+targetEntityType: node
+bundle: uiowa_hours
+mode: default
+content:
+  field_hours_fullcalendar:
+    weight: 3
+    settings: {  }
+    third_party_settings: {  }
+    type: daterange_default
+    region: content
+  path:
+    type: path
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 2
+    region: content
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  layout_builder__layout: true
+  moderation_state: true
+  promote: true
+  sticky: true
+  uid: true
+  url_redirects: true

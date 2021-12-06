@@ -1,0 +1,25 @@
+uuid: 65a6fe40-2e1d-4bd6-ae08-3cb6906c8a8e
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.uiowa_hours.field_hours_fullcalendar
+    - field.field.node.uiowa_hours.layout_builder__layout
+    - node.type.uiowa_hours
+  module:
+    - user
+id: node.uiowa_hours.teaser
+targetEntityType: node
+bundle: uiowa_hours
+mode: teaser
+content:
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_hours_fullcalendar: true
+  layout_builder__layout: true
+  search_api_excerpt: true

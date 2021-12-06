@@ -1,0 +1,59 @@
+{#
+/**
+ * @file
+ * Default theme implementation for MAUI session date.
+ *
+ * Available variables:
+ * - heading_size: The heading size to use for the date.
+ * - dates: An array of session dates grouped by start/end times.
+ *   - start: The formatted start date.
+ *    - end: The formatted end date.
+ *    - items: Array of items occuring on this date.
+ *      - description: The description of the item.
+ *      - session: The session it applies to.
+ *
+ * @see template_preprocess_uiowa_maui_session_date()
+ *
+ * @ingroup themeable
+ */
+#}
+{{ attach_library('uids_base/card') }}
+{{ attach_library('uids_base/badge') }}
+
+{%
+  set classes = [
+  'bg--gray',
+  'block-padding__all',
+  'block',
+  'block-' ~ configuration.provider|clean_class,
+  'block-' ~ plugin_id|clean_class,
+]
+%}
+{% set content_rendered = content|render %}
+{% if content_rendered is not empty %}
+  <div{{ attributes.addClass(classes) }}>
+  <div class="group-facility-contextual-info">
+    {{ title_prefix }}
+    {% if label %}
+      <h2{{ title_attributes }}>{{ label }}</h2>
+    {% endif %}
+    {{ title_suffix }}
+    {% block content %}
+      <div class="hours-context-wrapper">
+          {% if has_hours is not empty %}
+            <div class="hours-test-wrapper">
+              <span class='hours-open'><span class="status-label open label label-success">Open Today</span> {{ content }}</span>
+            </div>
+          {% endif %}
+          {% if has_hours is empty %}
+            <div class="hours-empty-wrapper">
+            {# <span class='hours-closed'><span class="status-label closed label label-danger">Closed Today</span>{{ content|without('field_uiowa_hours_resource') }}</span> #}
+              <span class='hours-closed'><span class="status-label closed label label-danger">Closed Today</span>{{ content }}</span>
+            </div>
+          {% endif %}
+      </div>
+    {% endblock %}
+  </div>
+  </div>
+
+{% endif %}

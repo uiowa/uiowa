@@ -10,10 +10,19 @@ stackable: true
 storage: folder
 folder: ../config/features/uiowa_hours
 module:
+  datetime_range: 0
+  fullcalendar: 0
+  fullcalendar_view: 0
+  smart_date: 0
   uiowa_hours: 0
 theme: {  }
 complete_list:
   - block_content.type.uiowa_hours
+  - fullcalendar.settings
+  - node.type.uiowa_hours
+  - views.view.hours_block
+  - views.view.hour_calendar
   - 'field.storage.block_content.field_uiowa_hours_*'
   - 'field.field.block_content.uiowa_hours.field_uiowa_hours_*'
-partial_list: {  }
+partial_list:
+  - core.entity_view_display.node.page.default

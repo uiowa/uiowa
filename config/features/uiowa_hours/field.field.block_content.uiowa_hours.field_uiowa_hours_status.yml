@@ -1,0 +1,23 @@
+uuid: 831c3b1d-b7ea-4389-bd6a-ba1b42533359
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_hours
+    - field.storage.block_content.field_uiowa_hours_status
+id: block_content.uiowa_hours.field_uiowa_hours_status
+field_name: field_uiowa_hours_status
+entity_type: block_content
+bundle: uiowa_hours
+label: 'Display Availability Status'
+description: 'Display open/closed status'
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

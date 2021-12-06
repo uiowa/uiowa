@@ -1,0 +1,682 @@
+uuid: 089e2d82-fe39-4f57-a6a9-b135b7b77ae5
+langcode: en
+status: false
+dependencies:
+  config:
+    - block_content.type.uiowa_hours
+    - field.storage.block_content.field_uiowa_hours_datepicker
+    - field.storage.block_content.field_uiowa_hours_resource
+    - field.storage.block_content.field_uiowa_hours_status
+  module:
+    - block_content
+    - fullcalendar_view
+    - user
+id: hours_block
+label: 'Hours Block'
+module: views
+description: ''
+tag: ''
+base_table: block_content_field_data
+base_field: id
+display:
+  default:
+    display_plugin: default
+    id: default
+    display_title: Default
+    position: 0
+    display_options:
+      access:
+        type: perm
+        options:
+          perm: 'access content'
+      cache:
+        type: tag
+        options: {  }
+      query:
+        type: views_query
+        options:
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_comment: ''
+          query_tags: {  }
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: false
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      pager:
+        type: none
+        options:
+          items_per_page: null
+          offset: 0
+      style:
+        type: fullcalendar_view_display
+        options:
+          default_date_source: now
+          defaultDate: ''
+          start: field_uiowa_hours_fullcalendar
+          end: field_uiowa_hours_fullcalendar
+          title: field_uiowa_hours_resource
+          left_buttons: 'prev,next today'
+          right_buttons: 'dayGridMonth,timeGridWeek,timeGridDay,listYear'
+          default_view: dayGridMonth
+          firstDay: '0'
+          nav_links: 1
+          timeFormat: 'hh:mm a'
+          allowEventOverlap: 1
+          updateAllowed: 0
+          updateConfirm: 0
+          defaultLanguage: en
+          languageSelector: 0
+          dialogWindow: 0
+          openEntityInNewTab: 0
+          createEventLink: 0
+          eventLimit: '5'
+          tax_field: ''
+          vocabularies: ''
+          color_bundle:
+            featured_content: '#3a87ad'
+            uiowa_aggregator: '#3a87ad'
+            uiowa_banner: '#3a87ad'
+            uiowa_card: '#3a87ad'
+            uiowa_collection: '#3a87ad'
+            uiowa_cta: '#3a87ad'
+            uiowa_event: '#3a87ad'
+            uiowa_events: '#3a87ad'
+            uiowa_hero: '#3a87ad'
+            uiowa_hours: '#3a87ad'
+            uiowa_image_gallery: '#3a87ad'
+            uiowa_page_title_hero: '#3a87ad'
+            uiowa_quote: '#3a87ad'
+            uiowa_slider: '#3a87ad'
+            uiowa_spacer_separator: '#3a87ad'
+            uiowa_statistic: '#3a87ad'
+            uiowa_text_area: '#3a87ad'
+            uiowa_timeline: '#3a87ad'
+          rrule: ''
+          duration: ''
+          bundle_type: ''
+          classes: ''
+      row:
+        type: fields
+      fields:
+        field_uiowa_hours_status:
+          id: field_uiowa_hours_status
+          table: block_content__field_uiowa_hours_status
+          field: field_uiowa_hours_status
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: boolean
+          settings:
+            format: default
+            format_custom_true: ''
+            format_custom_false: ''
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_uiowa_hours_resource:
+          id: field_uiowa_hours_resource
+          table: block_content__field_uiowa_hours_resource
+          field: field_uiowa_hours_resource
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+      filters:
+        status:
+          value: '1'
+          table: block_content_field_data
+          field: status
+          plugin_id: boolean
+          entity_type: block_content
+          entity_field: status
+          id: status
+          expose:
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+          group: 1
+        reusable:
+          id: reusable
+          plugin_id: boolean
+          table: block_content_field_data
+          field: reusable
+          value: '1'
+          entity_type: block_content
+          entity_field: reusable
+          expose:
+            operator_limit_selection: false
+            operator_list: {  }
+        type:
+          id: type
+          table: block_content_field_data
+          field: type
+          value:
+            uiowa_hours: uiowa_hours
+          entity_type: block_content
+          entity_field: type
+          plugin_id: bundle
+          expose:
+            operator_limit_selection: false
+            operator_list: {  }
+      sorts: {  }
+      title: 'Hours Block'
+      header: {  }
+      footer: {  }
+      empty: {  }
+      relationships: {  }
+      arguments: {  }
+      display_extenders: {  }
+      use_ajax: false
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - user.permissions
+      tags:
+        - 'config:field.storage.block_content.field_uiowa_hours_resource'
+        - 'config:field.storage.block_content.field_uiowa_hours_status'
+  block_calendar:
+    display_plugin: block
+    id: block_calendar
+    display_title: Calendar
+    position: 2
+    display_options:
+      display_extenders:
+        metatag_display_extender: {  }
+      block_description: Calendar
+      style:
+        type: fullcalendar_view_display
+        options:
+          default_date_source: fixed
+          defaultDate: '2021-12-05'
+          start: field_uiowa_hours_fullcalendar
+          end: field_uiowa_hours_fullcalendar
+          title: field_uiowa_hours_resource
+          left_buttons: 'prev,next today'
+          right_buttons: 'dayGridMonth,timeGridWeek,timeGridDay,listYear'
+          default_view: dayGridMonth
+          firstDay: '0'
+          nav_links: 1
+          timeFormat: 'hh:mm a'
+          allowEventOverlap: 1
+          updateAllowed: 0
+          updateConfirm: 0
+          defaultLanguage: en
+          languageSelector: 0
+          dialogWindow: 0
+          openEntityInNewTab: 0
+          createEventLink: 0
+          eventLimit: '2'
+          tax_field: ''
+          vocabularies: ''
+          color_bundle:
+            featured_content: '#3a87ad'
+            uiowa_aggregator: '#3a87ad'
+            uiowa_banner: '#3a87ad'
+            uiowa_card: '#3a87ad'
+            uiowa_collection: '#3a87ad'
+            uiowa_cta: '#3a87ad'
+            uiowa_event: '#3a87ad'
+            uiowa_events: '#3a87ad'
+            uiowa_hero: '#3a87ad'
+            uiowa_hours: '#3a87ad'
+            uiowa_image_gallery: '#3a87ad'
+            uiowa_page_title_hero: '#3a87ad'
+            uiowa_quote: '#3a87ad'
+            uiowa_slider: '#3a87ad'
+            uiowa_spacer_separator: '#3a87ad'
+            uiowa_statistic: '#3a87ad'
+            uiowa_text_area: '#3a87ad'
+            uiowa_timeline: '#3a87ad'
+          rrule: ''
+          duration: ''
+          bundle_type: uiowa_hours
+          classes: ''
+      defaults:
+        style: false
+        row: false
+        title: false
+        fields: false
+      row:
+        type: fields
+        options: {  }
+      block_category: 'Site custom'
+      allow:
+        hide_fields: hide_fields
+        items_per_page: false
+        offset: '0'
+        pager: '0'
+        sort_fields: '0'
+        disable_filters: '0'
+        configure_sorts: '0'
+        configure_filters: 0
+        use_more: 0
+      more_link_help_text: ''
+      restrict_fields:
+        field_uiowa_hours_status: 0
+        field_uiowa_hours_resource: 0
+        field_uiowa_hours_fullcalendar: 0
+      display_description: ''
+      title: Calendar
+      fields:
+        field_uiowa_hours_resource:
+          id: field_uiowa_hours_resource
+          table: block_content__field_uiowa_hours_resource
+          field: field_uiowa_hours_resource
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - user.permissions
+      tags:
+        - 'config:field.storage.block_content.field_uiowa_hours_resource'
+  hour_block:
+    display_plugin: block
+    id: hour_block
+    display_title: 'Hours Block'
+    position: 1
+    display_options:
+      display_extenders:
+        metatag_display_extender: {  }
+      defaults:
+        style: false
+        row: false
+        fields: false
+      block_description: 'Hour Block'
+      display_description: ''
+      style:
+        type: default
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
+      row:
+        type: fields
+        options:
+          default_field_elements: true
+          inline:
+            field_uiowa_hours_status: field_uiowa_hours_status
+            field_uiowa_hours_resource: field_uiowa_hours_resource
+            field_uiowa_hours_fullcalendar: field_uiowa_hours_fullcalendar
+          separator: ''
+          hide_empty: false
+      block_category: 'Site custom'
+      enabled: true
+      fields:
+        field_uiowa_hours_status:
+          id: field_uiowa_hours_status
+          table: block_content__field_uiowa_hours_status
+          field: field_uiowa_hours_status
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: boolean
+          settings:
+            format: default
+            format_custom_true: ''
+            format_custom_false: ''
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_uiowa_hours_resource:
+          id: field_uiowa_hours_resource
+          table: block_content__field_uiowa_hours_resource
+          field: field_uiowa_hours_resource
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_uiowa_hours_datepicker:
+          id: field_uiowa_hours_datepicker
+          table: block_content__field_uiowa_hours_datepicker
+          field: field_uiowa_hours_datepicker
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: boolean
+          settings:
+            format: enabled-disabled
+            format_custom_true: ''
+            format_custom_false: ''
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - user.permissions
+      tags:
+        - 'config:field.storage.block_content.field_uiowa_hours_datepicker'
+        - 'config:field.storage.block_content.field_uiowa_hours_resource'
+        - 'config:field.storage.block_content.field_uiowa_hours_status'

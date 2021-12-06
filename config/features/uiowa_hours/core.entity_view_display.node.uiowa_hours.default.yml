@@ -1,0 +1,37 @@
+uuid: b84daefa-c411-4875-b153-61f03e8b67a1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.uiowa_hours.field_hours_fullcalendar
+    - field.field.node.uiowa_hours.layout_builder__layout
+    - node.type.uiowa_hours
+  module:
+    - smart_date
+    - user
+id: node.uiowa_hours.default
+targetEntityType: node
+bundle: uiowa_hours
+mode: default
+content:
+  field_hours_fullcalendar:
+    weight: 102
+    label: above
+    settings:
+      timezone_override: ''
+      format: default
+      force_chronological: false
+      add_classes: false
+      time_wrapper: false
+      format_type: medium
+    third_party_settings: {  }
+    type: smartdate_default
+    region: content
+  links:
+    weight: 100
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  layout_builder__layout: true
+  search_api_excerpt: true

@@ -4,12 +4,115 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_hours
+    - field.field.block_content.uiowa_hours.field_uiowa_hours_datepicker
     - field.field.block_content.uiowa_hours.field_uiowa_hours_resource
+    - field.field.block_content.uiowa_hours.field_uiowa_hours_status
+    - views.view.hour_calendar
+  module:
+    - layout_builder
+    - layout_builder_restrictions
+    - views
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: true
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+        components:
+          -
+            uuid: 5210f1e1-bfa0-4ada-87ea-23fab6128559
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:block_content:uiowa_hours:field_uiowa_hours_resource'
+              formatter:
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: 0
+          -
+            uuid: ac08217b-b0d9-48c1-96ca-28896b54fe76
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:block_content:uiowa_hours:field_uiowa_hours_status'
+              formatter:
+                type: boolean
+                label: visually_hidden
+                settings:
+                  format: enabled-disabled
+                  format_custom_true: ''
+                  format_custom_false: ''
+                third_party_settings: {  }
+            additional: {  }
+            weight: 1
+          -
+            uuid: 1fbe666f-18bd-4694-b4ac-5cb153d31966
+            region: content
+            configuration:
+              id: 'views_block:hour_calendar-calendar_block'
+              label: null
+              provider: views
+              label_display: null
+              views_label: ''
+              items_per_page: none
+              headline:
+                headline: ''
+                hide_headline: 0
+                heading_size: h2
+                headline_style: default
+                child_heading_size: h3
+              pager: some
+              exposed_filter_values: null
+              layout_builder_styles: {  }
+              context_mapping: {  }
+            additional: {  }
+            weight: 5
+        third_party_settings: {  }
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      whitelisted_blocks: {  }
+      blacklisted_blocks: {  }
+      allowed_layouts: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts: {  }
 id: block_content.uiowa_hours.default
 targetEntityType: block_content
 bundle: uiowa_hours
 mode: default
 content:
+  field_uiowa_hours_block:
+    weight: 6
+    label: above
+    settings:
+      view_mode: full
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+    region: content
+  field_uiowa_hours_datepicker:
+    weight: 2
+    label: visually_hidden
+    settings:
+      format: enabled-disabled
+      format_custom_true: ''
+      format_custom_false: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
   field_uiowa_hours_resource:
     weight: 1
     label: above
@@ -18,5 +121,16 @@ content:
     third_party_settings: {  }
     type: string
     region: content
+  field_uiowa_hours_status:
+    type: boolean
+    weight: 1
+    region: content
+    label: visually_hidden
+    settings:
+      format: enabled-disabled
+      format_custom_true: ''
+      format_custom_false: ''
+    third_party_settings: {  }
 hidden:
+  layout_builder__layout: true
   search_api_excerpt: true
