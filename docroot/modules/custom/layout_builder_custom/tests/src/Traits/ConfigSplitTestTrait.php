@@ -31,7 +31,7 @@ trait ConfigSplitTestTrait {
     $config->set('status', TRUE);
     $config->save(TRUE);
 
-    $this->cliService()->ioImport($split_name, $this->cliIo(), 't');
+    $this->cliService()->ioImport($split_name, $this->cliIo(), 't', TRUE);
   }
 
   /**
