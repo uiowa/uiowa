@@ -2,7 +2,7 @@ project:
   prefix: uiowa
   human_name: 'The base application on Acquia Cloud for the University of Iowa.'
   local:
-    hostname: default.local.drupal.uiowa.edu
+    hostname: default.uiowa.ddev.site
     protocol: https
   profile:
     name: sitenow
@@ -26,6 +26,12 @@ drush:
 tests:
   phpunit:
     - config: '${repo.root}'
+  drupal:
+    web-driver: false
+    sudo-run-tests: false
+    mink-driver-args-webdriver: ''
+    simpletest-db: ''
+    simpletest-base-url: ''
 validate:
   lint:
     filesets:
@@ -40,6 +46,11 @@ validate:
       - drupal_entity
     filters:
       - image_style
+drupal:
+  db:
+    host: ddev-uiowa-db
+    username: root
+    password: root
 command-hooks:
   frontend-reqs:
     dir: ${docroot}
