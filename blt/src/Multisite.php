@@ -109,7 +109,7 @@ class Multisite {
    */
   public static function getInternalDomains($id) {
     return [
-      'local' => "{$id}.local.drupal.uiowa.edu",
+      'local' => "{$id}.uiowa.ddev.site",
       'dev' => "{$id}.dev.drupal.uiowa.edu",
       'test' => "{$id}.stage.drupal.uiowa.edu",
       'prod' => "{$id}.prod.drupal.uiowa.edu",
