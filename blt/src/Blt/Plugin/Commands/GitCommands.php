@@ -22,6 +22,7 @@ class GitCommands extends BltTasks {
    *
    * @aliases ugc
    *
+   * @requireHost
    * @requireRemoteAccess
    */
   public function clean() {
