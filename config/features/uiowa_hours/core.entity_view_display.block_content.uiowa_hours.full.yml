@@ -1,0 +1,33 @@
+uuid: e1ceecb3-cea6-458a-972a-3cb3ed1adefa
+langcode: en
+status: false
+dependencies:
+  config:
+    - block_content.type.uiowa_hours
+    - core.entity_view_mode.block_content.full
+    - field.field.block_content.uiowa_hours.field_uiowa_hours_display_cal
+    - field.field.block_content.uiowa_hours.field_uiowa_hours_display_status
+    - field.field.block_content.uiowa_hours.field_uiowa_hours_resource
+  module:
+    - layout_builder
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+id: block_content.uiowa_hours.full
+targetEntityType: block_content
+bundle: uiowa_hours
+mode: full
+content:
+  field_uiowa_hours_resource:
+    weight: 1
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  field_uiowa_hours_display_cal: true
+  field_uiowa_hours_display_status: true
+  search_api_excerpt: true

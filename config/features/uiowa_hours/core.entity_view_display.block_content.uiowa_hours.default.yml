@@ -1,0 +1,130 @@
+uuid: 568a473a-38d3-4564-8f48-233bb446ba7b
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_hours
+    - field.field.block_content.uiowa_hours.field_uiowa_hours_display_cal
+    - field.field.block_content.uiowa_hours.field_uiowa_hours_display_status
+    - field.field.block_content.uiowa_hours.field_uiowa_hours_resource
+  module:
+    - layout_builder
+    - layout_builder_restrictions
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: true
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+        components:
+          -
+            uuid: 5210f1e1-bfa0-4ada-87ea-23fab6128559
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:block_content:uiowa_hours:field_uiowa_hours_resource'
+              formatter:
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: 0
+          -
+            uuid: 2419ace8-2486-4313-942c-6405779f551a
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:block_content:uiowa_hours:field_uiowa_hours_display_cal'
+              formatter:
+                label: above
+                settings:
+                  format: default
+                  format_custom_false: ''
+                  format_custom_true: ''
+                third_party_settings: {  }
+                type: boolean
+            additional: {  }
+            weight: 8
+          -
+            uuid: 24dd417e-1c5f-4ab7-a2f2-713559021b84
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:block_content:uiowa_hours:field_uiowa_hours_display_status'
+              formatter:
+                label: above
+                settings:
+                  format: default
+                  format_custom_false: ''
+                  format_custom_true: ''
+                third_party_settings: {  }
+                type: boolean
+            additional: {  }
+            weight: 9
+        third_party_settings: {  }
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      whitelisted_blocks: {  }
+      blacklisted_blocks: {  }
+      allowed_layouts: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts: {  }
+id: block_content.uiowa_hours.default
+targetEntityType: block_content
+bundle: uiowa_hours
+mode: default
+content:
+  field_uiowa_hours_block:
+    weight: 6
+    label: above
+    settings:
+      view_mode: full
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+    region: content
+  field_uiowa_hours_display_cal:
+    weight: 9
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_uiowa_hours_display_status:
+    weight: 10
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_uiowa_hours_resource:
+    weight: 1
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  layout_builder__layout: true
+  search_api_excerpt: true
