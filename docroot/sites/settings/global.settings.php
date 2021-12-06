@@ -18,12 +18,20 @@ if (isset($config_directories['vcs'])) {
   unset($config_directories['vcs']);
 }
 
-/**
- * Set the environment indicator colors.
- */
-$env = getenv('AH_SITE_ENVIRONMENT');
+// Get some variables from the Acquia EnvironmentDetector or fall back to local.
+// Note that $site_path is always set and exposed by the Drupal Kernel.
+$ah_group = EnvironmentDetector::getAhGroup() ?: 'local';
+$ah_env = EnvironmentDetector::getAhEnv() ?: 'local';
 
-switch ($env) {
+/** @var $site_path string The path to the bootstrapped site. */
+$site_name = EnvironmentDetector::getSiteName($site_path);
+
+// Set the environment indicator settings for the toolbar color and name.
+switch ($ah_env) {
+  case 'local':
+    $settings['simple_environment_indicator'] = '#00664F local';
+    break;
+
   case 'dev':
     $settings['simple_environment_indicator'] = '#00558C dev';
     break;
@@ -34,10 +42,6 @@ switch ($env) {
 
   case 'prod':
     $settings['simple_environment_indicator'] = '#63666A prod';
-    break;
-
-  default:
-    $settings['simple_environment_indicator'] = '#00664F local';
     break;
 }
 
@@ -54,12 +58,14 @@ switch ($env) {
  */
 $settings['maintenance_theme'] = 'uids_base';
 
+
+// Override BLTs hash salt to be unique per site.
+$settings['hash_salt'] = hash('sha256', $ah_group . $ah_env . $site_name);
+
 // Set recommended New Relic configuration.
 // @see: https://docs.acquia.com/acquia-cloud/monitor/apm/#recommended-configuration-settings
 ini_set('newrelic.loglevel', 'error');
 
-if (extension_loaded('newrelic') && isset($site_name)) {
-  $ah_group = EnvironmentDetector::getAhGroup();
-  $ah_env = EnvironmentDetector::getAhEnv();
+if (extension_loaded('newrelic')) {
   newrelic_set_appname("{$site_name};{$ah_group}.{$ah_env}", '', 'true');
 }
