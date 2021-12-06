@@ -248,3 +248,16 @@
 .card--media-left.card--list .card__title, .card--media-right.card--list .card__title {
   margin: 0 0 .125rem
 }
+
+
+// Flexbox for centered icons
+.card__meta.card__meta--icon {
+  display: flex;
+  flex-wrap: wrap;
+  .card__icon {
+    flex: 0 1 $lg;
+    display: flex;
+    justify-content: center;
+    padding-top: .135rem;
+  }
+}

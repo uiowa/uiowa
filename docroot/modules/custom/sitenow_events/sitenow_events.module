@@ -221,18 +221,18 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
 
       $card_meta = [
         '#type' => 'html_tag',
-        '#tag' => 'span',
+        '#tag' => 'div',
         '#attributes' => [
           'class' => [
-            'field--name-field-article-source-link',
+            'card__meta card__meta--icon',
           ],
         ],
       ];
 
       if ($virtual->uri) {
         $card_meta['virtual'] = [
-          '#prefix' => '<span role="presentation" class="fas fa-laptop"></span> ',
-          '#markup' => 'Virtual',
+          '#prefix' => '<span class="card__icon"><span role="presentation" class="fas fa-laptop"></span></span>',
+          '#markup' => '<span>Virtual</span>',
         ];
       }
 
@@ -245,7 +245,7 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
       // @todo Finish this logic to render the virtual details and location.
       $variables['rows'][$id]['card_options']['card_subtitle'] = $style->getField($id, 'field_event_when');
       $variables['rows'][$id]['card_options']['card_link_url'] = $card_link_url;
-      $variables['rows'][$id]['card_options']['card_tag'] = render($card_meta);
+      $variables['rows'][$id]['card_options']['card_meta'] = render($card_meta);
     }
   }
 }
