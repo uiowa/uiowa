@@ -490,6 +490,14 @@ display:
         metatag_display_extender: {  }
       allow:
         items_per_page: true
+        configure_filters: configure_filters
+        offset: '0'
+        pager: '0'
+        hide_fields: '0'
+        sort_fields: '0'
+        disable_filters: '0'
+        configure_sorts: '0'
+        use_more: 0
       filter_in_block:
         - field_student_profile_gender_value
         - field_student_profile_country_value
@@ -497,6 +505,10 @@ display:
         - field_student_profile_attributes_value
       block_description: 'Student Profiles Grid'
       block_hide_empty: true
+      more_link_help_text: ''
+      restrict_fields:
+        title: title
+        field_student_profile_image: field_student_profile_image
     cache_metadata:
       max-age: 0
       contexts:
