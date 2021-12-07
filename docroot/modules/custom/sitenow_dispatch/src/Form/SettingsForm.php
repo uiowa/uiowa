@@ -270,7 +270,8 @@ class SettingsForm extends ConfigFormBase {
         'communication' => $form_state->getValue(['thanks', 'communication']),
         'placeholder' => $form_state->getValue(['thanks', 'placeholder']),
         'supervisor' => $form_state->getValue(['thanks', 'supervisor']),
-      ]);
+      ])
+      ->save();
     $this->config('sitenow_dispatch.settings')
       ->set('thanks.placeholder.banner_image_url', $image_url)
       ->save();
