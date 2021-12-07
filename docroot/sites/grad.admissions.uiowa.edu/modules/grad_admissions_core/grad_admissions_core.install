@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Installation functions for grad_core module.
+ * Installation functions for grad_admissions_core module.
  */
 
 use Drupal\Core\Config\FileStorage;
@@ -10,7 +10,7 @@ use Drupal\Core\Config\FileStorage;
 /**
  * Enable aos config split.
  */
-function grad_admissions_core_update_9001() {
+function grad_admissions_core_install() {
   // This site does not have the 'aos' split enabled.
   $config_path = DRUPAL_ROOT . '/../config/default';
   $source = new FileStorage($config_path);
