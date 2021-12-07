@@ -33,7 +33,7 @@ tests:
     mink-driver-args-webdriver: ''
     simpletest-db: ''
     simpletest-base-url: ''
-  phpunit:
+    phpunit:
       -
         # The directory to scan for tests. Change to what you want to test.
         directory: '${docroot}/modules/contrib/entity_usage'
