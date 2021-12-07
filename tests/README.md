@@ -25,8 +25,15 @@ none specified in BLT configuration. You can pick and choose what tests to run
 by modifying your `blt/local.blt.yml` file as documented in the BLT docs. Here
 is an example you can copy and past into `blt/local.blt.yml` to get started.
 ```
-# Configure Drupal tests to run.
-tests.drupal.phpunit:
+# Configure Drupal tests to run on ddev.
+tests:
+  drupal:
+    web-driver: false
+    sudo-run-tests: false
+    mink-driver-args-webdriver: ''
+    simpletest-db: ''
+    simpletest-base-url: ''
+  phpunit:
       -
         # The directory to scan for tests. Change to what you want to test.
         directory: '${docroot}/modules/contrib/entity_usage'
@@ -42,3 +49,7 @@ long time to run.
 
 Note that we are disabling Drupal core tests in `blt/ci.blt.yml`. There is no
 reason to run them for every commit in CI. We only want to test our code there.
+
+The webdriver arguments are overridden because those are set automatically by
+the chromedriver service. See https://github.com/drud/ddev-contrib/tree/master/docker-compose-services/drupalci-chromedriver
+for details.
