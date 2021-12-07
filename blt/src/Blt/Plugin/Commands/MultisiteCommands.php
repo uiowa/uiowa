@@ -233,6 +233,7 @@ class MultisiteCommands extends BltTasks {
    *
    * @throws \Exception
    *
+   * @requireHost
    * @requireFeatureBranch
    * @requireCredentials
    */
@@ -330,21 +331,8 @@ EOD
         ->to('')
         ->run();
 
-      // Remove vhost.
-      $this->taskReplaceInFile("{$root}/box/config.yml")
-        ->from(<<<EOD
--
-    servername: {$local}
-    documentroot: '{{ drupal_core_path }}'
-    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-EOD
-        )
-        ->to('')
-        ->run();
-
       $this->taskGit()
         ->dir($root)
-        ->add('box/config.yml')
         ->add('docroot/sites/sites.php')
         ->add("docroot/sites/{$dir}/")
         ->add("drush/sites/{$id}.site.yml")
@@ -417,6 +405,7 @@ EOD
    *
    * @aliases umc
    *
+   * @requireHost
    * @requireFeatureBranch
    * @requireCredentials
    *
@@ -544,22 +533,6 @@ EOD
       '--remote-alias' => "{$id}.prod",
     ]);
 
-    // BLT RMI uses the site-dir option for the vhost. Replace with local.
-    $result = $this->taskReplaceInFile("{$root}/box/config.yml")
-      ->from("servername: {$host}")
-      ->to("servername: {$local}")
-      ->run();
-
-    if (!$result->wasSuccessful()) {
-      throw new \Exception("Unable to replace DrupalVM vhost for {$host}.");
-    }
-
-    // BLT RMI quotes this string after rewriting the YAML.
-    $this->taskReplaceInFile("{$root}/box/config.yml")
-      ->from("php_xdebug_cli_disable: 'no'")
-      ->to("php_xdebug_cli_disable: no")
-      ->run();
-
     $result = $this->taskReplaceInFile("{$root}/docroot/sites/{$host}/settings.php")
       ->from('require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";' . "\n")
       ->to(<<<EOD
@@ -677,7 +650,6 @@ EOD;
     if (!$options['no-commit']) {
       $this->taskGit()
         ->dir($root)
-        ->add('box/config.yml')
         ->add('docroot/sites/sites.php')
         ->add("docroot/sites/{$host}")
         ->add("drush/sites/{$id}.site.yml")
@@ -725,6 +697,7 @@ EOD;
    *
    * @aliases umt
    *
+   * @requireHost
    * @requireFeatureBranch
    * @requireCredentials
    *

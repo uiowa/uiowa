@@ -1,13 +1,17 @@
 uiowa_search.settings:
   type: config_object
   label: 'UIowa Search settings'
-  mappings:
-    display_search:
-      type: integer
-      label: 'Display search'
-    cse_engine_id:
-      type: text
-      label: 'CSE engine id'
-    cse_engine_scope:
-      type: integer
-      label: 'CSE engine scope'
+  mapping:
+    uiowa_search:
+      label: 'Search'
+      type: mapping
+      mapping:
+        display_search:
+          type: integer
+          label: 'Display search'
+        cse_engine_id:
+          type: text
+          label: 'CSE engine id'
+        cse_scope:
+          type: integer
+          label: 'CSE engine scope'
