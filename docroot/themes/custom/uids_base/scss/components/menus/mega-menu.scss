@@ -140,19 +140,6 @@ ul.sf-mega-menu.sf-accordion li li.sf-depth-2.sfHover > ul {
   }
 
   .is-active {
-    &:before {
-      @include breakpoint(menu) {
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        top: auto;
-        width: 60%;
-        height: 4px;
-        background-color: #e1e1e1;
-        transform-origin: center;
-        transform: translate(0, 0) scaleX(1);
-      }
-    }
+    text-decoration: underline;
   }
 }
