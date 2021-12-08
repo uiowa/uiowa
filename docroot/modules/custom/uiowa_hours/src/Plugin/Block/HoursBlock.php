@@ -70,6 +70,13 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
    */
   public function build() {
     $config = $this->getConfiguration();
+    $build['heading'] = [
+      '#theme' => 'uiowa_core_headline',
+      '#headline' => $this->configuration['headline'],
+      '#hide_headline' => $this->configuration['hide_headline'],
+      '#heading_size' => $this->configuration['heading_size'],
+      '#headline_style' => $this->configuration['headline_style'],
+    ];
     $data = $this->hours->getToday($config['resource_name']);
     $date = 'Today';
     $key = date('Ymd', strtotime($date));
