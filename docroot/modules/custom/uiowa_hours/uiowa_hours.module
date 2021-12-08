@@ -2,19 +2,5 @@
 
 /**
  * @file
- * Code for the uiowa Serv Hours module.
+ * Code for the UIowa Hours module.
  */
-
-/**
- * Implements hook_theme().
- */
-function uiowa_hours_theme($existing, $type, $theme, $path) {
-  return [
-    'block__inline_block__uiowa_hours' => [
-      'render element' => 'content',
-      'base hook' => 'block',
-      'template' => 'block--inline-block--uiowa-hours',
-      'path' => $path . '/templates',
-    ],
-  ];
-}
