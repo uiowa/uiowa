@@ -194,4 +194,28 @@ class ReplaceCommands extends BltTasks {
       ->run();
   }
 
+  /**
+   * Start chromedriver in CI environment before running Drupal tests.
+   *
+   * @see https://github.com/acquia/blt-drupal-test/issues/8
+   *
+   * @hook pre-command tests:drupal:phpunit:run
+   */
+  public function preTestsDrupalPhpunitRun() {
+    if (EnvironmentDetector::isCiEnv()) {
+      $chromeDriverHost = 'http://localhost';
+      $chromeDriverPort = $this->getConfigValue('tests.chromedriver.port');
+      $this->logger->info("Launching chromedriver...");
+      $this->getContainer()
+        ->get('executor')
+        ->execute("chromedriver")
+        ->background(TRUE)
+        ->printOutput(TRUE)
+        ->printMetadata(TRUE)
+        ->run();
+
+      $this->getContainer()->get('executor')->waitForUrlAvailable("$chromeDriverHost:{$chromeDriverPort}");
+    }
+  }
+
 }
