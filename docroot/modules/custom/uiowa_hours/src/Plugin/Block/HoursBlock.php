@@ -69,11 +69,24 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
    * {@inheritdoc}
    */
   public function build() {
-    $data = $this->hours->getToday('res-rec-crwc');
-
+    $config = $this->getConfiguration();
+    $data = $this->hours->getToday($config['resource_name']);
+    $date = 'Today';
+    $key = date('Ymd', strtotime($date));
+    $markup = t('No hours information available.');
+    if ($data->$key) {
+      $markup = '';
+      $resource_hours = $data->$key;
+      foreach ($resource_hours as $time) {
+        $start = date('g:i a', strtotime($time->startHour));
+        $end = '00:00:00' ? strtotime($time->endHour . ', +1 day') : strtotime($time->endHour);
+        $end = date('g:i a', $end);
+        $markup .= t($time->summary . ' ' . $start . ' - ' . $end);
+      }
+    }
     $build['content'] = [
       '#type' => 'markup',
-      '#markup' => print_r($data),
+      '#markup' => $markup,
     ];
     return $build;
   }
