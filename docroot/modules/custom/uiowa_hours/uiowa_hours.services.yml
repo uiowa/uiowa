@@ -1,0 +1,8 @@
+services:
+  cache.hourevents:
+    class: Drupal\Core\Cache\CacheBackendInterface
+    tags:
+      - { name: cache.bin }
+    factory: cache_factory:get
+    arguments:
+      - hourevents
