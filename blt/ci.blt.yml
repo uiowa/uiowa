@@ -8,16 +8,24 @@
 
 # Configure tests.
 tests.run-server: true
-tests.drupal.sudo-run-tests: false
+tests.drupal:
+  sudo-run-tests: false
+  phpunit:
+    -
+      config: '${repo.root}/phpunit.xml.dist'
 
-# The local.hostname must be set to 127.0.0.1:8888 because we are using drush runserver to test the site.
+
+# The local.hostname must be set to 127.0.0.1:8888 because we are using drush
+# runserver to test the site.
 project.local.hostname: 127.0.0.1:8888
 project.local.protocol: http
 drush.debug: false
 drupal.db.host: localhost
 drupal.db.password: null
 
-# Disable some commands that do not need to run in CI.
+# Disable some commands that do not need to run in CI. Note that we are running
+# our PHPUnit tests through tests:drupal:run so that chrome starts/stops for
+# functional Javascript testing.
 disable-targets:
   blt:
     shell-alias:
@@ -25,7 +33,7 @@ disable-targets:
     init:
       git-hooks: true
   tests:
-    drupal:
+    phpunit:
       run: true
   source:
     build:
