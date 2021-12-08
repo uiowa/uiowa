@@ -10,6 +10,7 @@
 tests.run-server: true
 tests.drupal:
   sudo-run-tests: false
+  simpletest-db: 'mysql://root@localhost/drupal'
   phpunit:
     -
       config: '${repo.root}/phpunit.xml.dist'
