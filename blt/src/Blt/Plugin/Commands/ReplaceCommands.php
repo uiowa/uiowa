@@ -203,9 +203,10 @@ class ReplaceCommands extends BltTasks {
    */
   public function preTestsDrupalPhpunitRun() {
     if (EnvironmentDetector::isCiEnv()) {
+      $this->logger->info("Launching chromedriver...");
       $chromeDriverHost = 'http://localhost';
       $chromeDriverPort = $this->getConfigValue('tests.chromedriver.port');
-      $this->logger->info("Launching chromedriver...");
+
       $this->getContainer()
         ->get('executor')
         ->execute("chromedriver")
@@ -215,6 +216,19 @@ class ReplaceCommands extends BltTasks {
         ->run();
 
       $this->getContainer()->get('executor')->waitForUrlAvailable("$chromeDriverHost:{$chromeDriverPort}");
+    }
+  }
+
+  /**
+   * Kill chromedriver in CI after running tests.
+   *
+   * @hook post-command tests:drupal:phpunit:run
+   */
+  public function postTestsDrupalPhpunitRun() {
+    if (EnvironmentDetector::isCiEnv()) {
+      $this->logger->info("Killing running chromedriver processes...");
+      $chromeDriverPort = $this->getConfigValue('tests.chromedriver.port');
+      $this->getContainer()->get('executor')->killProcessByPort($chromeDriverPort);
     }
   }
 
