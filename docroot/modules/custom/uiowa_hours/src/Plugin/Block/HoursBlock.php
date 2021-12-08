@@ -121,6 +121,20 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
       '#default_value' => $config['resource_name'] ?? '',
     ];
 
+    $form['display_datepicker'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Display Datepicker'),
+      '#description' => $this->t('Allow user to filter by date.'),
+      '#default_value' => $this->configuration['display_datepicker'] ?? FALSE,
+    ];
+
+    $form['display_status'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Display open/closed status information'),
+      '#description' => $this->t('Display a open/closed status indicator.'),
+      '#default_value' => $this->configuration['display_status'] ?? FALSE,
+    ];
+
     return $form;
   }
 
@@ -133,6 +147,8 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
       $this->configuration[$name] = $value;
     }
     $this->configuration['resource_name'] = $form_state->getValue('resource_name');
+    $this->configuration['display_datepicker'] = $form_state->getValue('display_datepicker');
+    $this->configuration['display_status'] = $form_state->getValue('display_status');
     parent::blockSubmit($form, $form_state);
   }
 }
