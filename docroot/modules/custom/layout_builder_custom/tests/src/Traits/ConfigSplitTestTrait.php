@@ -4,6 +4,9 @@ namespace Drupal\Tests\layout_builder_custom\Traits;
 
 use Drupal\Core\Config\FileStorage;
 
+/**
+ * Trait ConfigSplitTestTrait.
+ */
 trait ConfigSplitTestTrait {
 
   /**
@@ -16,7 +19,7 @@ trait ConfigSplitTestTrait {
    *
    * @param $split_name
    */
-  public function enableConfigSplit($split_name) {
+  public function enableConfigSplit($split_name, $user = NULL) {
     // @todo Add check that split exists.
     // Import the split configuration.
     $config_path = DRUPAL_ROOT . '/../config/default';
@@ -31,7 +34,17 @@ trait ConfigSplitTestTrait {
     $config->set('status', TRUE);
     $config->save(TRUE);
 
-    $this->cliService()->ioImport($split_name, $this->cliIo(), 't', TRUE);
+    if (is_null($user)) {
+      $user = $this->drupalCreateUser(['synchronize configuration']);
+    }
+    $this->drupalLogin($user);
+
+    // Import the configuration thereby re-installing all the modules.
+    $this->drupalGet('admin/config/development/configuration');
+    // @todo Figure out how to fix message about staged configuration.
+    $this->submitForm([], 'Import all');
+    // Modules have been installed that have services.
+    $this->rebuildContainer();
   }
 
   /**

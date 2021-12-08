@@ -52,7 +52,6 @@ class EventFeatureTest extends BrowserTestBase {
    */
   public function setUp(): void {
     parent::setUp();
-    $this->enableConfigSplit('event');
 
     // Create a user.
     $editor = $this->createUser();
@@ -61,6 +60,9 @@ class EventFeatureTest extends BrowserTestBase {
 
     // Store the user for future use.
     $this->user = $editor;
+
+    $this->enableConfigSplit('event');
+    $test = 'this';
   }
 
   /**
