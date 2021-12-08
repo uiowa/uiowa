@@ -3,6 +3,7 @@
 namespace Drupal\uiowa_hours\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\uiowa_core\HeadlineHelper;
@@ -28,6 +29,13 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
   protected HoursApi $hours;
 
   /**
+   * The form builder service.
+   *
+   * @var \Drupal\Core\Form\FormBuilderInterface
+   */
+  protected $formBuilder;
+
+  /**
    * Override the construction method.
    *
    * @param array $configuration
@@ -37,9 +45,10 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
    * @param mixed $plugin_definition
    *   The plugin definition.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, HoursApi $hours) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, HoursApi $hours, FormBuilderInterface $formBuilder) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->hours = $hours;
+    $this->formBuilder = $formBuilder;
   }
 
   /**
@@ -61,7 +70,8 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('uiowa_hours.api')
+      $container->get('uiowa_hours.api'),
+      $container->get('form_builder')
     );
   }
 
@@ -78,12 +88,15 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
       '#headline_style' => $this->configuration['headline_style'],
     ];
     $data = $this->hours->getToday($config['resource_name']);
+    $build['form'] = $this->formBuilder->getForm('Drupal\uiowa_hours\Form\HoursFilterForm');
+    // @todo Use datepicker input if checked. default to today if hidden.
     $date = 'Today';
     $key = date('Ymd', strtotime($date));
     $markup = t('No hours information available.');
     if ($data->$key) {
       $markup = '';
       $resource_hours = $data->$key;
+      // @todo If there are multiple instances then this needs better formatting.
       foreach ($resource_hours as $time) {
         $start = date('g:i a', strtotime($time->startHour));
         $end = '00:00:00' ? strtotime($time->endHour . ', +1 day') : strtotime($time->endHour);
@@ -91,6 +104,7 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
         $markup .= t($time->summary . ' ' . $start . ' - ' . $end);
       }
     }
+    // @todo Make render array better.
     $build['content'] = [
       '#type' => 'markup',
       '#markup' => $markup,
