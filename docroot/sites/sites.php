@@ -3676,3 +3676,9 @@ $sites['labsong.uiowa.ddev.site'] = 'song.lab.uiowa.edu';
 $sites['labsong.dev.drupal.uiowa.edu'] = 'song.lab.uiowa.edu';
 $sites['labsong.stage.drupal.uiowa.edu'] = 'song.lab.uiowa.edu';
 $sites['labsong.prod.drupal.uiowa.edu'] = 'song.lab.uiowa.edu';
+
+// Directory aliases for awards.studentlife.uiowa.edu.
+$sites['studentlifeawards.uiowa.ddev.site'] = 'awards.studentlife.uiowa.edu';
+$sites['studentlifeawards.dev.drupal.uiowa.edu'] = 'awards.studentlife.uiowa.edu';
+$sites['studentlifeawards.stage.drupal.uiowa.edu'] = 'awards.studentlife.uiowa.edu';
+$sites['studentlifeawards.prod.drupal.uiowa.edu'] = 'awards.studentlife.uiowa.edu';
