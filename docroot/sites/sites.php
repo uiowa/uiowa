@@ -3682,3 +3682,9 @@ $sites['studentlifeawards.uiowa.ddev.site'] = 'awards.studentlife.uiowa.edu';
 $sites['studentlifeawards.dev.drupal.uiowa.edu'] = 'awards.studentlife.uiowa.edu';
 $sites['studentlifeawards.stage.drupal.uiowa.edu'] = 'awards.studentlife.uiowa.edu';
 $sites['studentlifeawards.prod.drupal.uiowa.edu'] = 'awards.studentlife.uiowa.edu';
+
+// Directory aliases for sinapselab.ece.engineering.uiowa.edu.
+$sites['engineeringecesinapselab.uiowa.ddev.site'] = 'sinapselab.ece.engineering.uiowa.edu';
+$sites['engineeringecesinapselab.dev.drupal.uiowa.edu'] = 'sinapselab.ece.engineering.uiowa.edu';
+$sites['engineeringecesinapselab.stage.drupal.uiowa.edu'] = 'sinapselab.ece.engineering.uiowa.edu';
+$sites['engineeringecesinapselab.prod.drupal.uiowa.edu'] = 'sinapselab.ece.engineering.uiowa.edu';
