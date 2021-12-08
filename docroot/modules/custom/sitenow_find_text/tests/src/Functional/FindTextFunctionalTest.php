@@ -38,7 +38,7 @@ class FindTextFunctionalTest extends BrowserTestBase {
   public function setUp() : void {
     parent::setUp();
     // Create a user with the find text permission.
-    $this->user = $this->drupalCreateUser(['administer sitenow_find_text configuration']);
+    $this->user = $this->drupalCreateUser(['access find text']);
   }
 
   /**
