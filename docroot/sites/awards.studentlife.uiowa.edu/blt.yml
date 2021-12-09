@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: studentlifeawards.uiowa.ddev.site
+    protocol: https
+  machine_name: studentlifeawards
+  human_name: awards.studentlife.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: studentlifeawards.prod
+drupal:
+  db:
+    database: awards_studentlife_uiowa_edu
+uiowa:
+  requester: dquam
