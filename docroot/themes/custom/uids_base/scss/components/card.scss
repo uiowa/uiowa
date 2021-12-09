@@ -26,6 +26,37 @@
     word-wrap: anywhere;
     overflow-wrap: anywhere;
   }
+
+  .bttn--outline.bttn--circle {
+    padding: 0.4rem 0.5rem;
+    border-radius: 50%;
+    transform: none;
+    line-height: 1;
+
+    &:after {
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      border-radius: 50%;
+      background-color: transparent;
+      transition: border-color .3s ease-in-out;
+      border: 3px solid transparent;
+      transform: none;
+      position: absolute;
+    }
+
+    &:hover:after {
+      transform: none;
+      // TODO: change this for other BGs.
+      border-color: #ffcd00;
+      background-color: transparent;
+    }
+
+    svg {
+      margin: 0;
+    }
+  }
 }
 
 // ie11
