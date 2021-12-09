@@ -26,7 +26,7 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
    *
    * @var \Drupal\uiowa_hours\HoursApi
    */
-  protected HoursApi $hours;
+  protected $hours;
 
   /**
    * The form builder service.
@@ -44,6 +44,10 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
    *   The plugin ID.
    * @param mixed $plugin_definition
    *   The plugin definition.
+   * @param \Drupal\uiowa_hours\HoursApi $hours
+   *   The Hours API service.
+   * @param \Drupal\Core\Form\FormBuilderInterface $formBuilder
+   *   The form_builder service.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, HoursApi $hours, FormBuilderInterface $formBuilder) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
@@ -82,33 +86,25 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
     $config = $this->getConfiguration();
     $build['heading'] = [
       '#theme' => 'uiowa_core_headline',
-      '#headline' => $this->configuration['headline'],
-      '#hide_headline' => $this->configuration['hide_headline'],
-      '#heading_size' => $this->configuration['heading_size'],
-      '#headline_style' => $this->configuration['headline_style'],
+      '#headline' => $config['headline'],
+      '#hide_headline' => $config['hide_headline'],
+      '#heading_size' => $config['heading_size'],
+      '#headline_style' => $config['headline_style'],
     ];
-    $data = $this->hours->getToday($config['resource_name']);
-    $build['form'] = $this->formBuilder->getForm('Drupal\uiowa_hours\Form\HoursFilterForm');
-    // @todo Use datepicker input if checked. default to today if hidden.
-    $date = 'Today';
-    $key = date('Ymd', strtotime($date));
-    $markup = t('No hours information available.');
-    if ($data->$key) {
-      $markup = '';
-      $resource_hours = $data->$key;
-      // @todo If there are multiple instances then this needs better formatting.
-      foreach ($resource_hours as $time) {
-        $start = date('g:i a', strtotime($time->startHour));
-        $end = '00:00:00' ? strtotime($time->endHour . ', +1 day') : strtotime($time->endHour);
-        $end = date('g:i a', $end);
-        $markup .= t($time->summary . ' ' . $start . ' - ' . $end);
-      }
+
+    if ($config['display_datepicker'] == TRUE) {
+      $build['form'] = $this->formBuilder->getForm('Drupal\uiowa_hours\Form\HoursFilterForm', $config['resource_name']);
     }
-    // @todo Make render array better.
-    $build['content'] = [
-      '#type' => 'markup',
-      '#markup' => $markup,
-    ];
+    else {
+      $date = 'Today';
+      $start = date('m/d/Y', strtotime($date));
+      $params = [
+        'start' => $start,
+      ];
+      $result = $this->hours->getHours($config['resource_name'], $params);
+      // @todo Make render array better.
+      $build['content'] = $result;
+    }
     return $build;
   }
 
@@ -150,6 +146,7 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
     ];
 
     return $form;
+
   }
 
   /**
@@ -165,4 +162,5 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
     $this->configuration['display_status'] = $form_state->getValue('display_status');
     parent::blockSubmit($form, $form_state);
   }
+
 }

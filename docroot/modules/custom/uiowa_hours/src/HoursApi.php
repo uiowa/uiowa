@@ -121,13 +121,33 @@ class HoursApi {
   }
 
   /**
-   * Get today's hours.
+   * Get hours based on resource and start date.
    *
    * @return array
    *   The hours object.
    */
-  public function getToday($resource_name) {
-    return $this->request('GET', $resource_name);
+  public function getHours($resource_name, $params) {
+    $data = $this->request('GET', $resource_name, $params);
+    ;
+    $date = $params['start'];
+    $key = date('Ymd', strtotime($date));
+    $markup = $this->t('No hours information available.');
+    if ($data->$key) {
+      $markup = '';
+      $resource_hours = $data->$key;
+      // @todo If there are multiple instances then this needs better formatting.
+      foreach ($resource_hours as $time) {
+        $start = date('g:i a', strtotime($time->startHour));
+        $end = '00:00:00' ? strtotime($time->endHour . ', +1 day') : strtotime($time->endHour);
+        $end = date('g:i a', $end);
+        $markup .= $time->summary . ' ' . $start . ' - ' . $end;
+      }
+    }
+    $result = [
+      '#type' => 'markup',
+      '#markup' => $markup,
+    ];
+    return $result;
   }
 
 }

@@ -2,45 +2,102 @@
 
 namespace Drupal\uiowa_hours\Form;
 
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\uiowa_hours\HoursApi;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides a basic filtering form.
+ * Provides a uiowa_hours filter form.
  */
 class HoursFilterForm extends FormBase {
+  /**
+   * The Hours API service.
+   *
+   * @var \Drupal\uiowa_hours\HoursApi
+   */
+  protected $hours;
 
   /**
-   * {@inheritdoc}
+   * HoursFilterForm constructor.
+   *
+   * @param \Drupal\uiowa_hours\HoursApi $hours
+   *   The Hours API service.
    */
-  public function getFormId() {
-    return 'uiowa_hours_filter_form';
+  public function __construct(HoursApi $hours) {
+    $this->hours = $hours;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, array $filter_config = []) {
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('uiowa_hours.api')
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFormId() {
+    static $count;
+    $count++;
+    return 'uiowa_hours_filter_form_' . $count;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildForm(array $form, FormStateInterface $form_state, $resource_name = NULL) {
     $form['#attributes']['class'][] = 'form-inline clearfix uiowa-hours-filter-form';
+
+    $form['resource_name'] = [
+      '#type' => 'hidden',
+      '#value' => $resource_name,
+    ];
 
     $form['date'] = [
       '#type' => 'date',
       '#title' => $this->t('Filter by date'),
+      '#ajax' => [
+        'callback' => [$this, 'dateFilterCallback'],
+        'event' => 'change',
+      ],
     ];
 
-    $form['actions']['submit'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Filter'),
+    $form['result'] = [
+      '#type' => 'item',
+      '#markup' => 'No resource hour information available.',
     ];
 
     return $form;
   }
 
   /**
+   * Date Filter Callback.
+   */
+  public function dateFilterCallback(array &$form, FormStateInterface $form_state) {
+    $response = new AjaxResponse();
+    $date = $form_state->getValue('date');
+    $resource_name = $form_state->getValue('resource_name');
+    $start = date('m/d/Y', strtotime($date));
+    $params = [
+      'start' => $start,
+    ];
+    $result = $this->hours->getHours($resource_name, $params);
+    $response->addCommand(new HtmlCommand('#edit-result', $result));
+
+    return $response;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $values = $form_state->getValues();
+    // Do nothing.
   }
 
 }
