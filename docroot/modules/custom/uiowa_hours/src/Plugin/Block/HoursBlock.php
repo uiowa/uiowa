@@ -3,6 +3,7 @@
 namespace Drupal\uiowa_hours\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -36,6 +37,13 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
   protected $formBuilder;
 
   /**
+   * The config.factory service.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
    * Override the construction method.
    *
    * @param array $configuration
@@ -48,11 +56,14 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
    *   The Hours API service.
    * @param \Drupal\Core\Form\FormBuilderInterface $formBuilder
    *   The form_builder service.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   *   The config factory service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, HoursApi $hours, FormBuilderInterface $formBuilder) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, HoursApi $hours, FormBuilderInterface $formBuilder, ConfigFactoryInterface $configFactory) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->hours = $hours;
     $this->formBuilder = $formBuilder;
+    $this->configFactory = $configFactory;
   }
 
   /**
@@ -75,7 +86,8 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
       $plugin_id,
       $plugin_definition,
       $container->get('uiowa_hours.api'),
-      $container->get('form_builder')
+      $container->get('form_builder'),
+      $container->get('config.factory')
     );
   }
 
@@ -84,6 +96,7 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
    */
   public function build() {
     $config = $this->getConfiguration();
+
     $build['heading'] = [
       '#theme' => 'uiowa_core_headline',
       '#headline' => $config['headline'],
@@ -93,7 +106,7 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
     ];
 
     if ($config['display_datepicker'] == TRUE) {
-      $build['form'] = $this->formBuilder->getForm('Drupal\uiowa_hours\Form\HoursFilterForm', $config['resource_name']);
+      $build['form'] = $this->formBuilder->getForm('Drupal\uiowa_hours\Form\HoursFilterForm', $config['resource']);
     }
     else {
       $date = 'Today';
@@ -101,10 +114,11 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
       $params = [
         'start' => $start,
       ];
-      $result = $this->hours->getHours($config['resource_name'], $params);
+      $result = $this->hours->getHours($config['resource'], $params);
       // @todo Make render array better.
       $build['content'] = $result;
     }
+
     return $build;
   }
 
@@ -113,8 +127,9 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
    */
   public function blockForm($form, FormStateInterface $form_state) {
     $form = parent::blockForm($form, $form_state);
-
     $config = $this->getConfiguration();
+    $resources = $this->hours->getResources($this->configFactory->get('uiowa_hours.settings')->get('group'));
+
     $form['headline'] = HeadlineHelper::getElement([
       'headline' => $config['headline'] ?? NULL,
       'hide_headline' => $config['hide_headline'] ?? 0,
@@ -123,12 +138,13 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
       'child_heading_size' => $config['child_heading_size'] ?? 'h3',
     ]);
 
-    $form['resource_name'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Resource Name'),
+    $form['resource'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Resource'),
+      '#description' => $this->t('The resource to display hours for.'),
       '#required' => TRUE,
-      '#description' => $this->t('Exchange resource name (e.g. RES-REC-CRWC)'),
-      '#default_value' => $config['resource_name'] ?? '',
+      '#default_value' => $config['resource'] ?? NULL,
+      '#options' => array_combine($resources, $resources),
     ];
 
     $form['display_datepicker'] = [
@@ -157,7 +173,7 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
     foreach ($form_state->getValues()['headline']['container'] as $name => $value) {
       $this->configuration[$name] = $value;
     }
-    $this->configuration['resource_name'] = $form_state->getValue('resource_name');
+    $this->configuration['resource'] = $form_state->getValue('resource');
     $this->configuration['display_datepicker'] = $form_state->getValue('display_datepicker');
     $this->configuration['display_status'] = $form_state->getValue('display_status');
     parent::blockSubmit($form, $form_state);
