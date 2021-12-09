@@ -4,6 +4,7 @@ namespace Drupal\uiowa_hours;
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -14,7 +15,7 @@ use Psr\Log\LoggerInterface;
  */
 class HoursApi {
 
-  const BASE = 'https://hours.iowa.uiowa.edu/api/Hours/fusionrecserv/';
+  const BASE = 'https://hours.iowa.uiowa.edu/api/Hours/';
 
   /**
    * The uiowa_hours logger channel.
@@ -38,6 +39,13 @@ class HoursApi {
   protected ClientInterface $client;
 
   /**
+   * The resource group to use in the URL of API requests.
+   *
+   * @var string
+   */
+  protected $group;
+
+  /**
    * Constructs a Hours object.
    *
    * @param \Psr\Log\LoggerInterface $logger
@@ -46,11 +54,14 @@ class HoursApi {
    *   The uiowa_hours cache.
    * @param \GuzzleHttp\ClientInterface $http_client
    *   The HTTP client.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   *   The config factory service.
    */
-  public function __construct(LoggerInterface $logger, CacheBackendInterface $cache, ClientInterface $http_client) {
+  public function __construct(LoggerInterface $logger, CacheBackendInterface $cache, ClientInterface $http_client, ConfigFactoryInterface $configFactory) {
     $this->logger = $logger;
     $this->cache = $cache;
     $this->client = $http_client;
+    $this->group = $configFactory->get('uiowa_hours.settings')->get('group');
   }
 
   /**
@@ -121,17 +132,47 @@ class HoursApi {
   }
 
   /**
+   * Get resource groups.
+   *
+   * @return array
+   *   The array of groups.
+   */
+  public function getGroups() {
+    $groups = $this->request('GET', '');
+    sort($groups);
+    return $groups;
+  }
+
+  /**
+   * Get resources for a group.
+   *
+   * @param string $group
+   *   The group name.
+   *
+   * @return array
+   *   The array of resources.
+   */
+  public function getResources($group) {
+    $resources = $this->request('GET', $group);
+
+    // Capitalize all resources before sorting because some are already caps.
+    $resources = array_map('strtoupper', $resources);
+    sort($resources);
+    return $resources;
+  }
+
+  /**
    * Get hours based on resource and start date.
    *
    * @return array
-   *   The hours object.
+   *   An array of hours.
    */
-  public function getHours($resource_name, $params) {
-    $data = $this->request('GET', $resource_name, $params);
-    ;
+  public function getHours($resource, $params) {
+    $data = $this->request('GET', "$this->group/$resource", $params);
     $date = $params['start'];
     $key = date('Ymd', strtotime($date));
     $markup = 'No hours information available.';
+
     if ($data->$key) {
       $markup = '';
       $resource_hours = $data->$key;
