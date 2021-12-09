@@ -178,9 +178,9 @@ class HoursApi {
       $resource_hours = $data->$key;
       // @todo If there are multiple instances then this needs better formatting.
       foreach ($resource_hours as $time) {
-        $start = date('g:i a', strtotime($time->startHour));
+        $start = date('g:ia', strtotime($time->startHour));
         $end = '00:00:00' ? strtotime($time->endHour . ', +1 day') : strtotime($time->endHour);
-        $end = date('g:i a', $end);
+        $end = date('g:ia', $end);
         $markup .= $time->summary . ' ' . $start . ' - ' . $end;
       }
     }
