@@ -131,7 +131,7 @@ class HoursApi {
     ;
     $date = $params['start'];
     $key = date('Ymd', strtotime($date));
-    $markup = $this->t('No hours information available.');
+    $markup = 'No hours information available.';
     if ($data->$key) {
       $markup = '';
       $resource_hours = $data->$key;
