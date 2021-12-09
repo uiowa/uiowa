@@ -57,7 +57,7 @@ class HoursFilterForm extends FormBase {
     $form['#attached']['library'][] = 'uiowa_hours/uiowa-hours-finishedinput';
     $form['#attributes']['class'][] = 'form-inline clearfix uiowa-hours-filter-form';
 
-    $form['resource_name'] = [
+    $form['resource'] = [
       '#type' => 'hidden',
       '#value' => $resource,
     ];
