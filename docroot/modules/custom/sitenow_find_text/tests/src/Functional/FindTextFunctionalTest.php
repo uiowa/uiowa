@@ -80,32 +80,4 @@ class FindTextFunctionalTest extends BrowserTestBase {
     $this->assertSession()->statusCodeEquals(403);
   }
 
-  /**
-   * Test that the functions run and return no results text.
-   */
-  public function testNoResults() {
-    // Login.
-    $this->drupalLogin($this->user);
-    // Grab the relative path to our find text page.
-    $find_text_page = Url::fromRoute('sitenow_find_text.search_form', [], ['absolute' => FALSE])
-      ->toString();
-
-    // Fetch the Find Text page, and check if we have access
-    // as a user with the 'webmaster' role.
-    $this->drupalGet($find_text_page);
-    $this->assertSession()->statusCodeEquals(200);
-    // Fill out and submit a search. We don't have any content,
-    // so we should end up with a "no results" response table.
-    $this->submitForm([
-      'needle' => 'Test search string',
-      'render' => TRUE,
-      'regexed' => FALSE,
-    ],
-    'search');
-    // Check that we have the no results display. If it shows the text,
-    // then the process completed successfully with no found results.
-    // If it doesn't display, there was an error somewhere.
-    $this->assertSession()->pageTextContains('No results found.');
-  }
-
 }
