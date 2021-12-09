@@ -82,6 +82,10 @@ class HoursFilterForm extends FormBase {
 
     $form['result'] = [
       '#type' => 'item',
+      '#wrapper_attributes' => [
+        'role' => 'region',
+        'aria-live' => 'assertive'
+      ],
       '#markup' => $result['#markup'],
     ];
 
