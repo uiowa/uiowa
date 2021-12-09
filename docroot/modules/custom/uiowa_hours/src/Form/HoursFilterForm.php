@@ -3,6 +3,7 @@
 namespace Drupal\uiowa_hours\Form;
 
 use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\AnnounceCommand;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -52,6 +53,8 @@ class HoursFilterForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, $resource_name = NULL) {
+    $today = strtotime('Today');
+    $form['#attached']['library'][] = 'uiowa_hours/uiowa-hours-finishedinput';
     $form['#attributes']['class'][] = 'form-inline clearfix uiowa-hours-filter-form';
 
     $form['resource_name'] = [
@@ -59,18 +62,27 @@ class HoursFilterForm extends FormBase {
       '#value' => $resource_name,
     ];
 
+    // Date field with custom delayed ajax callback.
     $form['date'] = [
       '#type' => 'date',
       '#title' => $this->t('Filter by date'),
+      '#default_value' => date('Y-m-d', $today),
       '#ajax' => [
         'callback' => [$this, 'dateFilterCallback'],
-        'event' => 'change',
+        'event' => 'finishedinput',
       ],
     ];
 
+    // Get today for initial result.
+    $start = date('m/d/Y', $today);
+    $params = [
+      'start' => $start,
+    ];
+    $result = $this->hours->getHours($resource_name, $params);
+
     $form['result'] = [
       '#type' => 'item',
-      '#markup' => 'No resource hour information available.',
+      '#markup' => $result['#markup'],
     ];
 
     return $form;
@@ -89,6 +101,8 @@ class HoursFilterForm extends FormBase {
     ];
     $result = $this->hours->getHours($resource_name, $params);
     $response->addCommand(new HtmlCommand('#edit-result', $result));
+    $message = $this->t('Returning resource hours information for @date.', ['@date' => $start]);
+    $response->addCommand(new AnnounceCommand($message, 'polite'));
 
     return $response;
   }
