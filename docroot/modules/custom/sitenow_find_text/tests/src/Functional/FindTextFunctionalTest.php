@@ -3,7 +3,6 @@
 namespace Drupal\Tests\sitenow_find_text\Functional;
 
 use Drupal\Core\Url;
-use Drupal\Core\Config\FileStorage;
 use Drupal\Tests\BrowserTestBase;
 
 /**
@@ -108,4 +107,5 @@ class FindTextFunctionalTest extends BrowserTestBase {
     // If it doesn't display, there was an error somewhere.
     $this->assertSession()->pageTextContains('No results found.');
   }
+
 }
