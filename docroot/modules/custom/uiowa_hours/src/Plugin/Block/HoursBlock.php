@@ -115,8 +115,14 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
         'start' => $start,
       ];
       $result = $this->hours->getHours($config['resource'], $params);
-      // @todo Make render array better.
-      $build['content'] = $result;
+      $build['content'] = [
+        '#theme' => 'card',
+        '#card_title' => 'Hours',
+        '#card_text' => $result['#markup'],
+        '#attributes' => [
+          'class' => ['card--enclosed'],
+        ],
+      ];
     }
 
     return $build;

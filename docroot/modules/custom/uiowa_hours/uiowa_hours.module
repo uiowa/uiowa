@@ -4,3 +4,18 @@
  * @file
  * Code for the UIowa Hours module.
  */
+
+/**
+ * Implements hook_theme().
+ */
+function uiowa_hours_theme($existing, $type, $theme, $path) {
+  return [
+    'card' => [
+      'variables' => [
+        'card_title' => NULL,
+        'card_text' => NULL,
+        'attributes' => NULL,
+      ],
+    ],
+  ];
+}
