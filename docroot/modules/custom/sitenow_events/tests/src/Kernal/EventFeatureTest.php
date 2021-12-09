@@ -96,6 +96,7 @@ class EventFeatureTest extends BrowserTestBase {
    * Generate a variable number of events.
    *
    * @param int $max
+   *   The maximum number of events to create.
    */
   public function generateEvents($max = 20) {
     for ($i = 0; $i < $max; $i++) {

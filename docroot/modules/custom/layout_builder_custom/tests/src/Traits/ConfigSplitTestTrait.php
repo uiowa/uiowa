@@ -6,6 +6,8 @@ use Drupal\Core\Config\FileStorage;
 
 /**
  * Trait ConfigSplitTestTrait.
+ *
+ * A trait for enabling a config split in a test.
  */
 trait ConfigSplitTestTrait {
 
@@ -61,7 +63,14 @@ trait ConfigSplitTestTrait {
    * A mock io object for testing.
    */
   protected function cliIo() {
+    /**
+     * Anonymous function to mock $io calls.
+     */
     $io = new class() {
+
+      /**
+       * {@inheritdoc}
+       */
       public function __call($string, $arguments) {
         return '';
       }
@@ -69,4 +78,5 @@ trait ConfigSplitTestTrait {
 
     return $io;
   }
+
 }
