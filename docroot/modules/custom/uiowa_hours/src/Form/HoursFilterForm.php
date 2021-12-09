@@ -52,14 +52,14 @@ class HoursFilterForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, $resource_name = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, $resource = NULL) {
     $today = strtotime('Today');
     $form['#attached']['library'][] = 'uiowa_hours/uiowa-hours-finishedinput';
     $form['#attributes']['class'][] = 'form-inline clearfix uiowa-hours-filter-form';
 
     $form['resource_name'] = [
       '#type' => 'hidden',
-      '#value' => $resource_name,
+      '#value' => $resource,
     ];
 
     // Date field with custom delayed ajax callback.
@@ -78,7 +78,7 @@ class HoursFilterForm extends FormBase {
     $params = [
       'start' => $start,
     ];
-    $result = $this->hours->getHours($resource_name, $params);
+    $result = $this->hours->getHours($resource, $params);
 
     $form['result'] = [
       '#type' => 'item',
@@ -98,12 +98,12 @@ class HoursFilterForm extends FormBase {
   public function dateFilterCallback(array &$form, FormStateInterface $form_state) {
     $response = new AjaxResponse();
     $date = $form_state->getValue('date');
-    $resource_name = $form_state->getValue('resource_name');
+    $resource = $form_state->getValue('resource');
     $start = date('m/d/Y', strtotime($date));
     $params = [
       'start' => $start,
     ];
-    $result = $this->hours->getHours($resource_name, $params);
+    $result = $this->hours->getHours($resource, $params);
     $response->addCommand(new HtmlCommand('#edit-result', $result));
     $message = $this->t('Returning resource hours information for @date.', ['@date' => $start]);
     $response->addCommand(new AnnounceCommand($message, 'polite'));
