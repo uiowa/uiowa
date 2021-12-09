@@ -68,7 +68,7 @@ class FindTextAjaxTest extends WebDriverTestBase {
     // Check that we have the no results display. If it shows the text,
     // then the process completed successfully with no found results.
     // If it doesn't display, there was an error somewhere.
-    $this->assertSession()->waitForText('No results found.', 1000);
+    $this->assertTrue($this->assertSession()->waitForText('No results found.', 1000));
   }
 
 }
