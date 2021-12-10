@@ -1,0 +1,29 @@
+uuid: 16d222da-3ab9-41fe-b58f-7644b39ffc56
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.grad_costs_estimate.field_grad_costs_dom
+    - field.field.node.grad_costs_estimate.field_grad_costs_intl
+    - field.field.node.grad_costs_estimate.field_grad_costs_intl_year
+    - field.field.node.grad_costs_estimate.field_grad_costs_year
+    - node.type.grad_costs_estimate
+  module:
+    - user
+id: node.grad_costs_estimate.teaser
+targetEntityType: node
+bundle: grad_costs_estimate
+mode: teaser
+content:
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_grad_costs_dom: true
+  field_grad_costs_intl: true
+  field_grad_costs_intl_year: true
+  field_grad_costs_year: true
+  search_api_excerpt: true

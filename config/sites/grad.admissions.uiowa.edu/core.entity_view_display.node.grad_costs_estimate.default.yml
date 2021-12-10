@@ -1,0 +1,99 @@
+uuid: 47250603-4e06-40cd-94bd-9703708804c7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.grad_costs_estimate.field_grad_costs_dom
+    - field.field.node.grad_costs_estimate.field_grad_costs_intl
+    - field.field.node.grad_costs_estimate.field_grad_costs_intl_year
+    - field.field.node.grad_costs_estimate.field_grad_costs_year
+    - node.type.grad_costs_estimate
+  module:
+    - field_group
+    - text
+    - user
+third_party_settings:
+  field_group:
+    group_grad_costs_estimate:
+      children:
+        - field_grad_costs_year
+        - field_grad_costs_dom
+      parent_name: group_estimated_costs
+      weight: 2
+      format_type: tab
+      region: content
+      format_settings:
+        show_empty_fields: true
+        id: ''
+        classes: ''
+        description: ''
+        formatter: open
+      label: 'US Citizens & Permanent Residents'
+    group_estimated_costs:
+      children:
+        - group_grad_costs_estimate
+        - group_grad_costs_intl
+      parent_name: ''
+      weight: 0
+      format_type: tabs
+      region: content
+      format_settings:
+        show_empty_fields: true
+        id: ''
+        classes: ''
+        direction: horizontal
+        width_breakpoint: 640
+      label: 'Estimated Costs'
+    group_grad_costs_intl:
+      children:
+        - field_grad_costs_intl_year
+        - field_grad_costs_intl
+      parent_name: group_estimated_costs
+      weight: 3
+      format_type: tab
+      region: content
+      format_settings:
+        show_empty_fields: true
+        id: ''
+        classes: ''
+        description: ''
+        formatter: open
+      label: International
+id: node.grad_costs_estimate.default
+targetEntityType: node
+bundle: grad_costs_estimate
+mode: default
+content:
+  field_grad_costs_dom:
+    weight: 22
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_grad_costs_intl:
+    weight: 4
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_grad_costs_intl_year:
+    weight: 3
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_grad_costs_year:
+    weight: 21
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  links: true
+  search_api_excerpt: true

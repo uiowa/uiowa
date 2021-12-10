@@ -1,0 +1,30 @@
+uuid: 46dc234e-9d09-47e0-b45a-56c2b5f5f69d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_grad_costs_dom
+    - node.type.grad_costs_estimate
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    filtered_html: '0'
+    minimal: '0'
+    full_html: '0'
+    plain_text: '0'
+id: node.grad_costs_estimate.field_grad_costs_dom
+field_name: field_grad_costs_dom
+entity_type: node
+bundle: grad_costs_estimate
+label: Domestic
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+  required_summary: false
+field_type: text_with_summary

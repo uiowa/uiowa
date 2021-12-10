@@ -1,0 +1,153 @@
+uuid: 730045d7-09dc-4098-ac33-06fab80582ed
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.grad_costs_estimate.field_grad_costs_dom
+    - field.field.node.grad_costs_estimate.field_grad_costs_intl
+    - field.field.node.grad_costs_estimate.field_grad_costs_intl_year
+    - field.field.node.grad_costs_estimate.field_grad_costs_year
+    - node.type.grad_costs_estimate
+  module:
+    - content_moderation
+    - field_group
+    - path
+    - text
+third_party_settings:
+  field_group:
+    group_grad_costs_intl:
+      children:
+        - field_grad_costs_intl_year
+        - field_grad_costs_intl
+      parent_name: ''
+      weight: 12
+      format_type: tab
+      region: content
+      format_settings:
+        show_empty_fields: true
+        id: ''
+        classes: ''
+        description: ''
+        formatter: open
+        required_fields: true
+      label: International
+    group_grad_costs_estimate:
+      children:
+        - field_grad_costs_year
+        - field_grad_costs_dom
+      parent_name: ''
+      weight: 11
+      format_type: tab
+      region: content
+      format_settings:
+        description: ''
+        formatter: open
+        show_empty_fields: true
+        required_fields: true
+        id: ''
+        classes: ''
+      label: 'US Citizens & Permanent Residents'
+id: node.grad_costs_estimate.default
+targetEntityType: node
+bundle: grad_costs_estimate
+mode: default
+content:
+  created:
+    type: datetime_timestamp
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_grad_costs_dom:
+    weight: 10
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+      show_summary: false
+    third_party_settings: {  }
+    type: text_textarea_with_summary
+    region: content
+  field_grad_costs_intl:
+    weight: 13
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+      show_summary: false
+    third_party_settings: {  }
+    type: text_textarea_with_summary
+    region: content
+  field_grad_costs_intl_year:
+    weight: 12
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_grad_costs_year:
+    weight: 9
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  moderation_state:
+    type: moderation_state_default
+    weight: 7
+    settings: {  }
+    region: content
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  promote:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 3
+    region: content
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 8
+    region: content
+    third_party_settings: {  }
+  sticky:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 4
+    region: content
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 1
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+      match_limit: 10
+    region: content
+    third_party_settings: {  }
+  url_redirects:
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }
