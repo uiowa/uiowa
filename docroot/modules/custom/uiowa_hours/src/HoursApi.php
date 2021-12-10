@@ -226,7 +226,6 @@ class HoursApi {
     }
     else {
       // The v2 API indexes events by a string in Ymd format, e.g. 20211209.
-      // @todo: Get the categories and add them here as badges.
       foreach ($data as $key => $date) {
         // Skip dates that start before $start but end on or after.
         if ($key < date('Ymd', $start)) {
@@ -254,6 +253,7 @@ class HoursApi {
           ],
         ];
 
+        // @todo: Add block config to get categories and add them here.
         foreach ($date as $time) {
           $render['hours'][$key]['#data']['times']['#items'][] = [
             '#markup' => $this->t('<span class="badge badge--green">Open</span> @start - @end', [
