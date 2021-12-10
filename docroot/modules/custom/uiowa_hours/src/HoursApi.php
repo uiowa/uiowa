@@ -174,7 +174,7 @@ class HoursApi {
   }
 
   /**
-   * Get hours based on resource and start date.
+   * Get hours based on resource and start/end date.
    *
    * @return array
    *   An array of hours.
