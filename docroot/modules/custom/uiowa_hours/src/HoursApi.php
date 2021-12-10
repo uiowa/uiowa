@@ -118,7 +118,7 @@ class HoursApi {
           '@error' => $e->getMessage(),
         ]);
 
-        $data['error'] = TRUE;
+        $data = FALSE;
       }
 
       if (isset($response)) {
@@ -209,7 +209,7 @@ class HoursApi {
       ],
     ];
 
-    if (isset($data['error'])) {
+    if ($data === FALSE) {
       $render['closed'] = [
         '#markup' => $this->t('<p><i class="fas fa-exclamation-circle"></i> There was an error retrieving hours information. Please try again later or contact the <a href=":link">ITS Help Desk</a> if the problem persists.</p>', [
         ':link' => 'https://its.uiowa.edu/contact',
