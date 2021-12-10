@@ -82,7 +82,6 @@ class HoursFilterForm extends FormBase {
       ],
     ];
 
-    // @todo Figure out how to use cards here.
     $form['result']['card'] = $result;
 
     return $form;
@@ -95,10 +94,9 @@ class HoursFilterForm extends FormBase {
     $response = new AjaxResponse();
     $date = $form_state->getValue('date');
     $resource = $form_state->getValue('resource');
-    $start = date('m/d/Y', strtotime($date));
-    $result = $this->hours->getHours($resource, $start, $start);
+    $result = $this->hours->getHours($resource, $date, $date);
     $response->addCommand(new HtmlCommand('#edit-result', $result));
-    $message = $this->t('Returning resource hours information for @date.', ['@date' => $start]);
+    $message = $this->t('Returning resource hours information for @date.', ['@date' => $date]);
     $response->addCommand(new AnnounceCommand($message, 'polite'));
 
     return $response;
