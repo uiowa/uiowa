@@ -212,25 +212,29 @@ class HoursApi {
       // The v2 API indexes events by a string in Ymd format, e.g. 20211209.
       foreach ($data as $key => $date) {
         $render['hours'][$key] = [
-          '#type' => 'container',
+          '#theme' => 'hours_card',
           '#attributes' => [
             'class' => [
               'uiowa-hours',
+              'card--enclosed',
             ],
           ],
-          'date' => [
-            '#markup' => $this->t('<h6>@date</h6>', [
-              '@date' => date('F d, Y', strtotime($key)),
-            ]),
-          ],
-          'times' => [
-            '#theme' => 'item_list',
-            '#items' => [],
+          '#data' => [
+            'date' => [
+              '#markup' => date('F d, Y', strtotime($key)),
+            ],
+            'times' => [
+              '#theme' => 'item_list',
+              '#items' => [],
+              '#attributes' => [
+                'class' => 'element--list-none',
+              ],
+            ],
           ],
         ];
 
         foreach ($date as $time) {
-          $render['hours'][$key]['times']['#items'][] = [
+          $render['hours'][$key]['#data']['times']['#items'][] = [
             '#markup' => $this->t('<span class="badge badge--green">Open</span> @start - @end', [
               '@start' => date('g:ia', strtotime($time['startHour'])),
               '@end' => date('g:ia', '00:00:00' ? strtotime($time['endHour'] . ', +1 day') : strtotime($time['endHour'])),
