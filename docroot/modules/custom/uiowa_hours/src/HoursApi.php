@@ -5,6 +5,7 @@ namespace Drupal\uiowa_hours;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -14,6 +15,7 @@ use Psr\Log\LoggerInterface;
  * Hours API service.
  */
 class HoursApi {
+  use StringTranslationTrait;
 
   const BASE = 'https://hours.iowa.uiowa.edu/api/Hours/';
 
@@ -167,28 +169,69 @@ class HoursApi {
    * @return array
    *   An array of hours.
    */
-  public function getHours($resource, $params) {
-    $data = $this->request('GET', "$this->group/$resource", $params);
-    $date = $params['start'];
-    $key = date('Ymd', strtotime($date));
-    $markup = 'No hours information available.';
+  public function getHours($resource, $start = 'today', $end = 'today') {
+    $data = $this->request('GET', "$this->group/$resource", [
+      'start' => date('m/d/Y', strtotime($start)),
+      'end' => ($end == $start) ? '' : date('m/d/Y', strtotime($end)),
+    ]);
 
-    if ($data->$key) {
-      $markup = '';
-      $resource_hours = $data->$key;
-      // @todo If there are multiple instances then this needs better formatting.
-      foreach ($resource_hours as $time) {
-        $start = date('g:ia', strtotime($time->startHour));
-        $end = '00:00:00' ? strtotime($time->endHour . ', +1 day') : strtotime($time->endHour);
-        $end = date('g:ia', $end);
-        $markup .= $time->summary . ' ' . $start . ' - ' . $end;
+    $render = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => [
+          'uiowa-hours-container',
+        ],
+      ],
+    ];
+
+    if (empty($data)) {
+      $render['closed'] = [
+        '#type' => 'tag',
+        '#tag' => 'span',
+        '#attributes' => [
+          'class' => [
+            'uiowa-hours-status',
+            'badge',
+            'badge--orange',
+          ],
+        ],
+        '#markup' => $this->t('Closed Today'),
+      ];
+    }
+    else {
+      // The v2 API indexes events by a string in Ymd format, e.g. 20211209.
+      foreach ($data as $key => $date) {
+        $render['hours'][$key] = [
+          '#type' => 'container',
+          '#attributes' => [
+            'class' => [
+              'uiowa-hours',
+            ],
+          ],
+          'date' => [
+            '#markup' => $this->t('<h6>@date</h6>', [
+              '@date' => date('F d, Y', strtotime($key)),
+            ]),
+          ],
+          'times' => [
+            '#theme' => 'item_list',
+            '#items' => [],
+          ],
+        ];
+
+        foreach ($date as $time) {
+          $render['hours'][$key]['times']['#items'][] = [
+            '#markup' => $this->t('<span class="badge badge--green">Open</span> @start - @end', [
+              '@start' => date('g:ia', strtotime($time['startHour'])),
+              '@end' => date('g:ia', '00:00:00' ? strtotime($time['endHour'] . ', +1 day') : strtotime($time['endHour'])),
+            ]),
+          ];
+        }
       }
     }
-    $result = [
-      '#type' => 'markup',
-      '#markup' => $markup,
-    ];
-    return $result;
+
+    // @todo We might need to render this to use within cards.
+    return $render;
   }
 
 }
