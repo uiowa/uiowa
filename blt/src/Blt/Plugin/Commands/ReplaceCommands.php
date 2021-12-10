@@ -194,4 +194,42 @@ class ReplaceCommands extends BltTasks {
       ->run();
   }
 
+  /**
+   * Start chromedriver in CI environment before running Drupal tests.
+   *
+   * @see https://github.com/acquia/blt-drupal-test/issues/8
+   *
+   * @hook pre-command tests:drupal:phpunit:run
+   */
+  public function preTestsDrupalPhpunitRun() {
+    if (EnvironmentDetector::isCiEnv()) {
+      $this->logger->info("Launching chromedriver...");
+      $chromeDriverHost = 'http://localhost';
+      $chromeDriverPort = $this->getConfigValue('tests.chromedriver.port');
+
+      $this->getContainer()
+        ->get('executor')
+        ->execute("chromedriver")
+        ->background(TRUE)
+        ->printOutput(TRUE)
+        ->printMetadata(TRUE)
+        ->run();
+
+      $this->getContainer()->get('executor')->waitForUrlAvailable("$chromeDriverHost:{$chromeDriverPort}");
+    }
+  }
+
+  /**
+   * Kill chromedriver in CI after running tests.
+   *
+   * @hook post-command tests:drupal:phpunit:run
+   */
+  public function postTestsDrupalPhpunitRun() {
+    if (EnvironmentDetector::isCiEnv()) {
+      $this->logger->info("Killing running chromedriver processes...");
+      $chromeDriverPort = $this->getConfigValue('tests.chromedriver.port');
+      $this->getContainer()->get('executor')->killProcessByPort($chromeDriverPort);
+    }
+  }
+
 }
