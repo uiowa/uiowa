@@ -47,6 +47,7 @@
   'card_text': event.description|render|trim|t,
   'event_icon': event_icon|trans,
   'card_tag': event_location|render,
+  'hide_button': true,
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with block_card only %}
