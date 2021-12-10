@@ -228,6 +228,11 @@ class HoursApi {
       // The v2 API indexes events by a string in Ymd format, e.g. 20211209.
       // @todo: Get the categories and add them here as badges.
       foreach ($data as $key => $date) {
+        // Skip dates that start before $start but end on or after.
+        if ($key < date('Ymd', $start)) {
+          continue;
+        }
+
         uasort($date, function ($a, $b) {
           return strtotime($a['start']) <=> strtotime($b['start']);
         });
