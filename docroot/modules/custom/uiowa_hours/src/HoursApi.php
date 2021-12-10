@@ -117,6 +117,8 @@ class HoursApi {
           '@code' => $e->getCode(),
           '@error' => $e->getMessage(),
         ]);
+
+        $data['error'] = TRUE;
       }
 
       if (isset($response)) {
