@@ -166,7 +166,6 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
     ];
 
     // @todo Create config to render quick links like tomorrow, next week, etc.
-
     return $form;
 
   }
