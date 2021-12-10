@@ -7,9 +7,11 @@ dependencies:
     - field.field.node.grad_costs_estimate.field_grad_costs_intl
     - field.field.node.grad_costs_estimate.field_grad_costs_intl_year
     - field.field.node.grad_costs_estimate.field_grad_costs_year
+    - field.field.node.grad_costs_estimate.field_meta_tags
     - node.type.grad_costs_estimate
   module:
     - field_group
+    - metatag
     - text
     - user
 third_party_settings:
@@ -93,6 +95,13 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
+  field_meta_tags:
+    weight: 23
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_empty_formatter
     region: content
 hidden:
   links: true

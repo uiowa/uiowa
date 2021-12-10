@@ -7,9 +7,11 @@ dependencies:
     - field.field.node.grad_costs_estimate.field_grad_costs_intl
     - field.field.node.grad_costs_estimate.field_grad_costs_intl_year
     - field.field.node.grad_costs_estimate.field_grad_costs_year
+    - field.field.node.grad_costs_estimate.field_meta_tags
     - node.type.grad_costs_estimate
   module:
     - content_moderation
+    - metatag
     - path
     - text
 id: node.grad_costs_estimate.default
@@ -58,6 +60,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_meta_tags:
+    weight: 26
+    settings:
+      sidebar: true
+    third_party_settings: {  }
+    type: metatag_firehose
     region: content
   moderation_state:
     type: moderation_state_default
