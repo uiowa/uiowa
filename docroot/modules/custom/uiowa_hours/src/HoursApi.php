@@ -182,9 +182,13 @@ class HoursApi {
    *   An array of hours.
    */
   public function getHours($resource, $start = 'today', $end = 'today') {
+    $start = strtotime($start);
+    $end = strtotime($end);
+
+    // The API returns no results if an end date is less than start.
     $data = $this->request('GET', "$this->group/$resource", [
-      'start' => date('m/d/Y', strtotime($start)),
-      'end' => ($end == $start) ? '' : date('m/d/Y', strtotime($end)),
+      'start' => date('m/d/Y', $start),
+      'end' => ($end <= $start) ? $start : date('m/d/Y', $end),
     ]);
 
     $render = [
