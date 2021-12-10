@@ -53,7 +53,6 @@ class HoursFilterForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, $resource = NULL) {
-    $today = strtotime('Today');
     $form['#attached']['library'][] = 'uiowa_hours/uiowa-hours-finishedinput';
     $form['#attributes']['class'][] = 'form-inline clearfix uiowa-hours-filter-form';
 
@@ -66,20 +65,14 @@ class HoursFilterForm extends FormBase {
     $form['date'] = [
       '#type' => 'date',
       '#title' => $this->t('Filter by date'),
-      '#default_value' => date('Y-m-d', $today),
+      '#default_value' => date('Y-m-d'),
       '#ajax' => [
         'callback' => [$this, 'dateFilterCallback'],
         'event' => 'finishedinput',
       ],
     ];
 
-    // Get today for initial result.
-    $start = date('m/d/Y', $today);
-    $params = [
-      'start' => $start,
-    ];
-
-    $result = $this->hours->getHours($resource, $params);
+    $result = $this->hours->getHours($resource);
 
     $form['result'] = [
       '#type' => 'container',
@@ -103,10 +96,8 @@ class HoursFilterForm extends FormBase {
     $date = $form_state->getValue('date');
     $resource = $form_state->getValue('resource');
     $start = date('m/d/Y', strtotime($date));
-    $params = [
-      'start' => $start,
-    ];
-    $result = $this->hours->getHours($resource, $params);
+    $result = $this->hours->getHours($resource);
+
     $card = [
       '#theme' => 'card',
       '#card_title' => 'Hours',
