@@ -126,6 +126,7 @@ class HoursApi {
         $data = json_decode($contents, TRUE);
         unset($data['$id']);
 
+        // Dates are already sorted but the times within them are not.
         foreach ($data as $key => $date) {
           uasort($date, function ($a, $b) {
             return strtotime($a['start']) <=> strtotime($b['start']);
