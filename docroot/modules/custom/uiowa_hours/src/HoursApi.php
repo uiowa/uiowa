@@ -232,6 +232,7 @@ class HoursApi {
           continue;
         }
 
+        // Times within dates are unsorted for some reason.
         uasort($date, function ($a, $b) {
           return strtotime($a['start']) <=> strtotime($b['start']);
         });
@@ -253,7 +254,7 @@ class HoursApi {
           ],
         ];
 
-        // @todo: Add block config to get categories and add them here.
+        // @todo: Add block config to get categories and render them here.
         foreach ($date as $time) {
           $render['hours'][$key]['#data']['times']['#items'][] = [
             '#markup' => $this->t('<span class="badge badge--green">Open</span> @start - @end', [
