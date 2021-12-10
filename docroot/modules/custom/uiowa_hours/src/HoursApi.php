@@ -221,9 +221,7 @@ class HoursApi {
             ],
           ],
           '#data' => [
-            'date' => [
-              '#markup' => date('F d, Y', strtotime($key)),
-            ],
+            'date' => date('F d, Y', strtotime($key)),
             'times' => [
               '#theme' => 'item_list',
               '#items' => [],
@@ -245,7 +243,6 @@ class HoursApi {
       }
     }
 
-    // @todo We might need to render this to use within cards.
     return $render;
   }
 
