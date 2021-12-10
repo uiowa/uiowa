@@ -126,16 +126,6 @@ class HoursApi {
 
         // Return an array, so we can more easily unset the unused $id property.
         $data = json_decode($contents, TRUE);
-        unset($data['$id']);
-
-        // Dates are already sorted but the times within them are not.
-        foreach ($data as $key => $date) {
-          uasort($date, function ($a, $b) {
-            return strtotime($a['start']) <=> strtotime($b['start']);
-          });
-
-          $data[$key] = $date;
-        }
 
         // Cache for 5 minutes.
         $this->cache->set($cid, $data, time() + 300);
@@ -190,6 +180,18 @@ class HoursApi {
       'start' => date('m/d/Y', $start),
       'end' => ($end <= $start) ? $start : date('m/d/Y', $end),
     ]);
+
+    // This isn't used and borks the foreach loop. Unset it.
+    unset($data['$id']);
+
+    // Dates are already sorted but the times within them are not.
+    foreach ($data as $key => $date) {
+      uasort($date, function ($a, $b) {
+        return strtotime($a['start']) <=> strtotime($b['start']);
+      });
+
+      $data[$key] = $date;
+    }
 
     $card_classes = [
       'uiowa-hours',
