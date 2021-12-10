@@ -78,23 +78,19 @@ class HoursFilterForm extends FormBase {
     $params = [
       'start' => $start,
     ];
+
     $result = $this->hours->getHours($resource, $params);
 
     $form['result'] = [
       '#type' => 'container',
       '#wrapper_attributes' => [
         'role' => 'region',
-        'aria-live' => 'assertive'
+        'aria-live' => 'assertive',
       ],
     ];
-    $form['result']['card'] = [
-      '#theme' => 'card',
-      '#card_title' => 'Hours',
-      '#card_text' => $result['#markup'],
-      '#attributes' => [
-        'class' => ['card--enclosed'],
-      ],
-    ];
+
+    // @todo Figure out how to use cards here.
+    $form['result']['card'] = $result;
 
     return $form;
   }

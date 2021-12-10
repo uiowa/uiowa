@@ -110,20 +110,10 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
       $build['form'] = $this->formBuilder->getForm('Drupal\uiowa_hours\Form\HoursFilterForm', $config['resource']);
     }
     else {
-      $date = 'Today';
-      $start = date('m/d/Y', strtotime($date));
-      $params = [
-        'start' => $start,
-      ];
-      $result = $this->hours->getHours($config['resource'], $params);
-      $build['content'] = [
-        '#theme' => 'card',
-        '#card_title' => 'Hours',
-        '#card_text' => $result['#markup'],
-        '#attributes' => [
-          'class' => ['card--enclosed'],
-        ],
-      ];
+      $result = $this->hours->getHours($config['resource']);
+
+      // @todo Figure out how to use cards here.
+      $build['content'] = $result;
     }
 
     return $build;
