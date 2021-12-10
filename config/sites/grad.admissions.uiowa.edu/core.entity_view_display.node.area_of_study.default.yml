@@ -6,6 +6,8 @@ dependencies:
     - field.field.node.area_of_study.body
     - field.field.node.area_of_study.field_area_of_study_degree_types
     - field.field.node.area_of_study.field_area_of_study_delivery
+    - field.field.node.area_of_study.field_area_of_study_grad_costs
+    - field.field.node.area_of_study.field_area_of_study_grad_intro
     - field.field.node.area_of_study.field_area_of_study_link_direct
     - field.field.node.area_of_study.field_area_of_study_locations
     - field.field.node.area_of_study.field_area_of_study_source_link
@@ -41,30 +43,30 @@ third_party_settings:
             uuid: 7854f557-9ad7-4592-aabe-78b46d93e510
             region: content
             configuration:
+              label_display: null
+              context_mapping: {  }
               id: system_breadcrumb_block
               label: null
               provider: system
-              label_display: null
-              context_mapping: {  }
             additional: {  }
             weight: 0
           -
             uuid: df5471dc-43b4-4a02-820c-1128fee17f11
             region: content
             configuration:
-              id: 'field_block:node:area_of_study:title'
-              label: null
-              provider: layout_builder
               label_display: null
-              formatter:
-                label: hidden
-                type: string
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
+              id: 'field_block:node:area_of_study:title'
+              formatter:
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+              label: null
+              provider: layout_builder
             additional: {  }
             weight: 7
         third_party_settings: {  }
@@ -78,61 +80,6 @@ third_party_settings:
             1: section_margin_fixed_width_container
             section_alignment_start: section_alignment_start
         components:
-          -
-            uuid: bd18ff33-3031-499c-97e8-bfa321c9dd68
-            region: first
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:body'
-              formatter:
-                label: hidden
-                type: text_default
-                settings: {  }
-                third_party_settings: {  }
-            additional: {  }
-            weight: 0
-          -
-            uuid: d5628205-7805-460b-b65e-9d15b3d94e71
-            region: second
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_image'
-              formatter:
-                label: hidden
-                settings:
-                  view_mode: medium__square
-                  link: false
-                third_party_settings: {  }
-                type: entity_reference_entity_view
-            additional: {  }
-            weight: 0
-          -
-            uuid: ea4ae76a-a7d5-4dae-a3ed-ac60ba415b10
-            region: second
-            configuration:
-              id: 'field_block:node:area_of_study:field_area_of_study_source_link'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: visually_hidden
-                type: link
-                settings:
-                  trim_length: 80
-                  url_only: false
-                  url_plain: false
-                  rel: '0'
-                  target: '0'
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: 4
           -
             uuid: 6f234918-3d0f-4023-8908-6e151ead2bf9
             region: first
@@ -148,54 +95,67 @@ third_party_settings:
                 third_party_settings: {  }
                 type: entity_reference_label
             additional: {  }
-            weight: 1
+            weight: 2
           -
-            uuid: 7d3d7aba-b341-4099-89ef-0b93624dce5e
+            uuid: bd18ff33-3031-499c-97e8-bfa321c9dd68
             region: first
             configuration:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_area_of_study_locations'
+              id: 'field_block:node:area_of_study:body'
+              formatter:
+                label: hidden
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+            additional: {  }
+            weight: 1
+          -
+            uuid: c4dc85cf-fc36-4ff9-9e51-70cd1ae074cf
+            region: first
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_grad_intro'
+              label: null
+              provider: layout_builder
+              label_display: null
               formatter:
                 label: above
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 4
+          -
+            uuid: 95ac5833-99e1-4571-8bdc-a4588de051b2
+            region: first
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_grad_costs'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: visually_hidden
+                type: entity_reference_label
                 settings:
                   link: true
                 third_party_settings: {  }
-                type: entity_reference_label
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
             additional: {  }
-            weight: 2
+            weight: 5
         third_party_settings:
           layout_builder_lock:
             lock: {  }
   layout_builder_restrictions:
-    allowed_block_categories:
-      - 'Chaos Tools'
-      - 'Content fields'
-      - 'Custom block types'
-      - 'Custom blocks'
-      - Devel
-      - Forms
-      - 'Inline blocks'
-      - Lists
-      - 'Lists (Views)'
-      - Menus
-      - 'Site custom'
-      - 'SiteNow Dispatch'
-      - Superfish
-      - System
-      - 'University of Iowa Alerts'
-      - User
-      - Webform
-      - core
+    allowed_block_categories: {  }
     entity_view_mode_restriction:
       whitelisted_blocks:
         'Chaos Tools': {  }
-        'Content fields':
-          - 'field_block:node:area_of_study:body'
-          - 'field_block:node:area_of_study:field_image'
-          - 'field_block:node:area_of_study:title'
-        'Custom block types': {  }
         'Custom blocks': {  }
         Devel: {  }
         Forms: {  }
@@ -203,6 +163,7 @@ third_party_settings:
         Lists: {  }
         'Lists (Views)': {  }
         Menus: {  }
+        Restricted: {  }
         'Site custom': {  }
         'SiteNow Dispatch': {  }
         Superfish: {  }
@@ -251,6 +212,21 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: list_default
+    region: content
+  field_area_of_study_grad_costs:
+    weight: 21
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_area_of_study_grad_intro:
+    weight: 22
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
     region: content
   field_area_of_study_link_direct:
     weight: 14

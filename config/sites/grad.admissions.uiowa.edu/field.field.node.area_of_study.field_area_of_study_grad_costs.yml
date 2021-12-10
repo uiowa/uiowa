@@ -1,0 +1,29 @@
+uuid: 67cd88cd-749d-4462-ace6-0a2c6476bb76
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_area_of_study_grad_costs
+    - node.type.area_of_study
+    - node.type.grad_costs_estimate
+id: node.area_of_study.field_area_of_study_grad_costs
+field_name: field_area_of_study_grad_costs
+entity_type: node
+bundle: area_of_study
+label: 'Estimated Cost of Attendance'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      grad_costs_estimate: grad_costs_estimate
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
