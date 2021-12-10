@@ -76,7 +76,7 @@ class HoursFilterForm extends FormBase {
 
     $form['result'] = [
       '#type' => 'container',
-      '#wrapper_attributes' => [
+      '#attributes' => [
         'role' => 'region',
         'aria-live' => 'assertive',
       ],
@@ -96,17 +96,8 @@ class HoursFilterForm extends FormBase {
     $date = $form_state->getValue('date');
     $resource = $form_state->getValue('resource');
     $start = date('m/d/Y', strtotime($date));
-    $result = $this->hours->getHours($resource);
-
-    $card = [
-      '#theme' => 'card',
-      '#card_title' => 'Hours',
-      '#card_text' => $result['#markup'],
-      '#attributes' => [
-        'class' => ['card--enclosed'],
-      ],
-    ];
-    $response->addCommand(new HtmlCommand('#edit-result', $card));
+    $result = $this->hours->getHours($resource, $start, $start);
+    $response->addCommand(new HtmlCommand('#edit-result', $result));
     $message = $this->t('Returning resource hours information for @date.', ['@date' => $start]);
     $response->addCommand(new AnnounceCommand($message, 'polite'));
 

@@ -188,6 +188,7 @@ class HoursApi {
     $render = [
       '#type' => 'container',
       '#attributes' => [
+        'id' => 'edit-card',
         'class' => [
           'uiowa-hours-container',
         ],

@@ -112,7 +112,6 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
     else {
       $result = $this->hours->getHours($config['resource']);
 
-      // @todo Figure out how to use cards here.
       $build['content'] = $result;
     }
 
