@@ -109,7 +109,7 @@
           {% if card_link_title is empty %}
             {% set circle_button = 'bttn--circle' %}
           {% endif %}
-          {% if hide_button == false %}
+          {% if visible_button == true %}
             {% if link_element == 'button' %}
               <a class="bttn bttn--outline bttn--sans-serif bttn--full click-target {{ circle_button }}" href="{{ card_link_url }}">
                 {{ card_link_title }}

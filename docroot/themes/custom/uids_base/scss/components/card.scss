@@ -16,9 +16,12 @@
   }
 
   .card__description + .btn,
-  .card__description + .bttn,
-  &__title + .bttn {
+  .card__description + .bttn {
     margin-top: 1.05rem;
+  }
+
+  .card__title+.bttn {
+    margin-top: .55rem;
   }
 
   &__description {
@@ -28,7 +31,7 @@
   }
 
   .bttn--outline.bttn--circle {
-    padding: 0.4rem 0.5rem;
+    padding: .55rem .7em;
     border-radius: 50%;
     transform: none;
     line-height: 1;
@@ -49,7 +52,7 @@
     &:hover:after {
       transform: none;
       // TODO: change this for other BGs.
-      border-color: #ffcd00;
+      border-color: $primary;
       background-color: transparent;
     }
 
