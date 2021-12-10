@@ -191,6 +191,12 @@ class HoursApi {
       'end' => ($end <= $start) ? $start : date('m/d/Y', $end),
     ]);
 
+    $card_classes = [
+      'uiowa-hours',
+      'card--enclosed',
+      'card--media-left',
+    ];
+
     $render = [
       '#type' => 'container',
       '#attributes' => [
@@ -201,18 +207,28 @@ class HoursApi {
       ],
     ];
 
-    if (empty($data)) {
+    if (isset($data['error'])) {
       $render['closed'] = [
-        '#type' => 'tag',
-        '#tag' => 'span',
+        '#markup' => $this->t('<p><i class="fas fa-exclamation-circle"></i> There was an error retrieving hours information. Please try again later or contact the <a href=":link">ITS Help Desk</a> if the problem persists.</p>', [
+        ':link' => 'https://its.uiowa.edu/contact',
+        ]),
+      ];
+    }
+    elseif (empty($data)) {
+      $render['closed'] = [
+        '#theme' => 'hours_card',
         '#attributes' => [
-          'class' => [
-            'uiowa-hours-status',
-            'badge',
-            'badge--orange',
+          'class' => $card_classes,
+        ],
+        '#data' => [
+          'date' => $this->t('@start@end', [
+            '@start' => date('F d, Y', $start),
+            '@end' => $end == $start ? NULL : ' - ' . date('F d, Y', $end),
+          ]),
+          'times' => [
+            '#markup' => $this->t('<span class="badge badge--orange">Closed</span>'),
           ],
         ],
-        '#markup' => $this->t('Closed'),
       ];
     }
     else {
@@ -222,11 +238,7 @@ class HoursApi {
         $render['hours'][$key] = [
           '#theme' => 'hours_card',
           '#attributes' => [
-            'class' => [
-              'uiowa-hours',
-              'card--enclosed',
-              'card--media-left',
-            ],
+            'class' => $card_classes,
           ],
           '#data' => [
             'date' => date('F d, Y', strtotime($key)),
