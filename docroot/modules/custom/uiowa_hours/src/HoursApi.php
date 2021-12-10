@@ -205,7 +205,7 @@ class HoursApi {
             'badge--orange',
           ],
         ],
-        '#markup' => $this->t('Closed Today'),
+        '#markup' => $this->t('Closed'),
       ];
     }
     else {
