@@ -7,6 +7,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Url;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\uiowa_hours\HoursApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -134,7 +135,22 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
   public function blockForm($form, FormStateInterface $form_state) {
     $form = parent::blockForm($form, $form_state);
     $config = $this->getConfiguration();
-    $resources = $this->hours->getResources($this->configFactory->get('uiowa_hours.settings')->get('group'));
+    $group = $this->configFactory->get('uiowa_hours.settings')->get('group');
+
+    // If no group is selected, return form with message.
+    if (empty($group)) {
+      $form['no-group'] = [
+        '#prefix' => '<div>',
+        '#suffix' => '</div>',
+        '#markup' => $this->t('A resource group must be selected. <a href=":url">Hours configuration</a>.', [
+          ':url' => Url::fromRoute('uiowa_hours.settings')->toString(),
+        ]),
+      ];
+
+      return $form;
+    }
+
+    $resources = $this->hours->getResources($group);
 
     $form['headline'] = HeadlineHelper::getElement([
       'headline' => $config['headline'] ?? NULL,
