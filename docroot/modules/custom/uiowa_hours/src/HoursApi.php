@@ -218,6 +218,7 @@ class HoursApi {
             'class' => [
               'uiowa-hours',
               'card--enclosed',
+              'card--media-left',
             ],
           ],
           '#data' => [
