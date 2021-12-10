@@ -122,11 +122,20 @@ class HoursApi {
       if (isset($response)) {
         $contents = $response->getBody()->getContents();
 
-        /** @var object $data */
-        $data = json_decode($contents);
+        // Return an array, so we can more easily unset the unused $id property.
+        $data = json_decode($contents, TRUE);
+        unset($data['$id']);
 
-        // Cache for 15 minutes.
-        $this->cache->set($cid, $data, time() + 900);
+        foreach ($data as $key => $date) {
+          uasort($date, function ($a, $b) {
+            return strtotime($a['start']) <=> strtotime($b['start']);
+          });
+
+          $data[$key] = $date;
+        }
+
+        // Cache for 5 minutes.
+        $this->cache->set($cid, $data, time() + 300);
       }
     }
 
