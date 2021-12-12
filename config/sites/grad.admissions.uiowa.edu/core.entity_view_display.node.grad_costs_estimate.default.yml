@@ -25,11 +25,11 @@ third_party_settings:
       format_type: tab
       region: content
       format_settings:
-        show_empty_fields: true
-        id: ''
-        classes: ''
         description: ''
-        formatter: open
+        formatter: closed
+        show_empty_fields: true
+        id: group-grad-costs-dom
+        classes: ''
       label: 'US Citizens & Permanent Residents'
     group_estimated_costs:
       children:
@@ -41,10 +41,10 @@ third_party_settings:
       region: content
       format_settings:
         show_empty_fields: true
-        id: ''
-        classes: ''
         direction: horizontal
         width_breakpoint: 640
+        id: grad-costs-estimate
+        classes: ''
       label: 'Estimated Costs'
     group_grad_costs_intl:
       children:
@@ -55,11 +55,11 @@ third_party_settings:
       format_type: tab
       region: content
       format_settings:
+        description: ''
+        formatter: closed
         show_empty_fields: true
         id: ''
-        classes: ''
-        description: ''
-        formatter: open
+        classes: group-grad-costs-intl
       label: International
 id: node.grad_costs_estimate.default
 targetEntityType: node
