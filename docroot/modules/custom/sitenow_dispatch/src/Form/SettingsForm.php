@@ -176,7 +176,7 @@ class SettingsForm extends ConfigFormBase {
       ];
 
       $form['thanks']['placeholder']['row1_bottom_content'] = [
-        '#type' => 'textfield',
+        '#type' => 'textarea',
         '#title' => $this->t('Row 1 Bottom Content'),
         '#description' => $this->t('Content that appears below the call to action button.'),
         '#default_value' => $config->get('thanks.placeholder.row1_bottom_content'),
@@ -190,7 +190,7 @@ class SettingsForm extends ConfigFormBase {
       ];
 
       $form['thanks']['placeholder']['footer_statement'] = [
-        '#type' => 'textfield',
+        '#type' => 'textarea',
         '#title' => $this->t('Footer Statement'),
         '#description' => $this->t('Optional statement in the below. Useful to convey statements about policies related to message.'),
         '#default_value' => $config->get('thanks.placeholder.footer_statement'),
