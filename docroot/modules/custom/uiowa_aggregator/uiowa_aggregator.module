@@ -12,8 +12,8 @@ use Drupal\Core\Render\Element;
  * Implements hook_form_FORM_ID_alter().
  */
 function uiowa_aggregator_form_aggregator_admin_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // Replace never from aggregator cleanup options with 6 months. Keeping
-  // items forever has potential to create very large database tables.
+  // Remove never from aggregator cleanup options. Keeping items forever has
+  // potential to create very large database tables. Add additional options.
   unset($form['processors']['aggregator']['aggregator_clear']['#options'][0]);
   $form['processors']['aggregator']['aggregator_clear']['#options'][15552000] = t('6 months');
   $form['processors']['aggregator']['aggregator_clear']['#options'][31557600] = t('1 year');
