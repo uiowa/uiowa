@@ -4,7 +4,9 @@
  * @file
  * Contains grad_admissions_core.module.
  */
+
 use Drupal\Core\Render\Element;
+
 /**
  * Implements hook_theme().
  */
@@ -78,6 +80,7 @@ function grad_admissions_core_theme_suggestions_field_alter(array &$suggestions,
 function grad_admissions_core_preprocess_html(&$variables) {
   $variables['#attached']['library'][] = 'grad_admissions_core/global';
 }
+
 /**
  * Implements hook_preprocess_HOOK().
  */

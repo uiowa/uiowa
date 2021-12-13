@@ -5,23 +5,33 @@
 
 .node--type-grad-costs-estimate {
   .horizontal-tabs {
-    width: fit-content;
+    // width: fit-content;
     ul.horizontal-tabs-list {
-    background: white;
-    li a {
-      background: $light;
-      color: $secondary;
-      margin-bottom: -2px;
-    }
-    li.selected a {
       background: white;
-      border-top: 2px solid $primary;
+      border: unset;
+      // .horizontal-tabs-panes {
+        // margin-top: 10px;
+        li a {
+          background: $light;
+          color: $secondary;
+          margin-bottom: -2px;
+        }
+        li.selected a {
+          background: white;
+          border-top: 2px solid $primary;
+        }
+        .horizontal-tab-button-0.first {
+          border-right: 1px solid #ccc;
+          min-width: 20em;
+        }
+        .horizontal-tab-button-1.last {
+          border-right: unset; 
+          min-width: 20em;
+        }
+        horizontal-tab-button {
+          min-width: 20em;
+        }
+      // }
     }
-    .horizontal-tab-button-0.first {
-      border-right: 1px solid #ccc;
-    }
-    .horizontal-tab-button-1.last {
-      border-right: unset; 
-    }
-  }}
+  }
 }
