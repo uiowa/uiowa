@@ -39,6 +39,7 @@ function grad_admissions_core_preprocess_field(&$variables) {
     case 'field_area_of_study_grad_intro':
       $variables["label"] = t('Estimated Cost of Attendance');
       break;
+
     case 'field_area_of_study_college':
       $variables["label"] = t('Related Links');
       $node = $variables["element"]["#object"];
@@ -60,6 +61,7 @@ function grad_admissions_core_preprocess_field(&$variables) {
         }
       }
       break;
+
   }
 }
 
@@ -71,6 +73,7 @@ function grad_admissions_core_theme_suggestions_field_alter(array &$suggestions,
     case 'field_area_of_study_grad_intro':
       $suggestions[] = 'field__bold_headline_label';
       break;
+
   }
 }
 
@@ -91,5 +94,6 @@ function grad_admissions_core_preprocess_node(&$variables) {
     case 'area_of_study':
       $variables['#attached']['library'][] = 'uids_base/twocol';
       break;
+
   }
 }
