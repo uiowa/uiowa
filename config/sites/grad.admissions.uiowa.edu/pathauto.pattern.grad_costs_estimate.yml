@@ -1,0 +1,22 @@
+uuid: 79607ee8-1919-45d4-8df1-5f3544b80ef4
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: grad_costs_estimate
+label: 'Graduate Costs Estimate'
+type: 'canonical_entities:node'
+pattern: 'costs/[node:title]'
+selection_criteria:
+  b4bcf2f0-8cf2-4316-bd6d-98986c0d8b4b:
+    id: node_type
+    bundles:
+      grad_costs_estimate: grad_costs_estimate
+    negate: false
+    context_mapping:
+      node: node
+    uuid: b4bcf2f0-8cf2-4316-bd6d-98986c0d8b4b
+selection_logic: and
+weight: -5
+relationships: {  }

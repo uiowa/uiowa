@@ -11,7 +11,6 @@ dependencies:
     - node.type.grad_costs_estimate
   module:
     - field_group
-    - metatag
     - text
     - user
 third_party_settings:
@@ -42,7 +41,7 @@ third_party_settings:
       format_settings:
         show_empty_fields: true
         direction: horizontal
-        width_breakpoint: 640
+        width_breakpoint: 480
         id: grad-costs-estimate
         classes: ''
       label: 'Estimated Costs'
@@ -96,13 +95,7 @@ content:
     third_party_settings: {  }
     type: string
     region: content
-  field_meta_tags:
-    weight: 23
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: metatag_empty_formatter
-    region: content
 hidden:
+  field_meta_tags: true
   links: true
   search_api_excerpt: true
