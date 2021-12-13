@@ -52,27 +52,29 @@ class HoursFilterForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, $resource = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, $config = NULL) {
     $form['#attached']['library'][] = 'uiowa_hours/uiowa-hours-finishedinput';
     $form['#attributes']['class'][] = 'form-inline clearfix uiowa-hours-filter-form';
 
     $form['resource'] = [
       '#type' => 'hidden',
-      '#value' => $resource,
+      '#value' => $config['resource'],
     ];
 
     // Date field with custom delayed ajax callback.
-    $form['date'] = [
-      '#type' => 'date',
-      '#title' => $this->t('Filter by date'),
-      '#default_value' => date('Y-m-d'),
-      '#ajax' => [
-        'callback' => [$this, 'dateFilterCallback'],
-        'event' => 'finishedinput',
-      ],
-    ];
+    if ($config['display_datepicker'] == 1) {
+      $form['date'] = [
+        '#type' => 'date',
+        '#title' => $this->t('Filter by date'),
+        '#default_value' => date('Y-m-d'),
+        '#ajax' => [
+          'callback' => [$this, 'dateFilterCallback'],
+          'event' => 'finishedinput',
+        ],
+      ];
+    }
 
-    $result = $this->hours->getHours($resource);
+    $result = $this->hours->getHours($config['resource']);
 
     $form['result'] = [
       '#type' => 'container',
