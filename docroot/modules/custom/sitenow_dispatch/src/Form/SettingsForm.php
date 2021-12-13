@@ -186,7 +186,7 @@ class SettingsForm extends ConfigFormBase {
         '#type' => 'textfield',
         '#title' => $this->t('Row 1 Heading'),
         '#required' => $enabled,
-        '#default_value' => $config->get('thanks.placeholder.row1_heading') ?? $this->t('${to_name} sent you a Thank You'),
+        '#default_value' => $config->get('thanks.placeholder.row1_heading') ?? $this->t('${from_name} sent you a Thank You'),
         '#description' => $this->t('The heading to display in the email body.'),
       ];
 
