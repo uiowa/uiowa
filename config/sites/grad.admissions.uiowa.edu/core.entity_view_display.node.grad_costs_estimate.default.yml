@@ -10,77 +10,29 @@ dependencies:
     - field.field.node.grad_costs_estimate.field_meta_tags
     - node.type.grad_costs_estimate
   module:
-    - field_group
     - text
     - user
-third_party_settings:
-  field_group:
-    group_grad_costs_estimate:
-      children:
-        - field_grad_costs_year
-        - field_grad_costs_dom
-      parent_name: group_estimated_costs
-      weight: 2
-      format_type: tab
-      region: content
-      format_settings:
-        description: ''
-        formatter: closed
-        show_empty_fields: true
-        id: group-grad-costs-dom
-        classes: ''
-      label: 'US Citizens & Permanent Residents'
-    group_estimated_costs:
-      children:
-        - group_grad_costs_estimate
-        - group_grad_costs_intl
-      parent_name: ''
-      weight: 0
-      format_type: tabs
-      region: content
-      format_settings:
-        show_empty_fields: true
-        direction: horizontal
-        width_breakpoint: 480
-        id: grad-costs-estimate
-        classes: ''
-      label: 'Estimated Costs'
-    group_grad_costs_intl:
-      children:
-        - field_grad_costs_intl_year
-        - field_grad_costs_intl
-      parent_name: group_estimated_costs
-      weight: 3
-      format_type: tab
-      region: content
-      format_settings:
-        description: ''
-        formatter: closed
-        show_empty_fields: true
-        id: ''
-        classes: group-grad-costs-intl
-      label: International
 id: node.grad_costs_estimate.default
 targetEntityType: node
 bundle: grad_costs_estimate
 mode: default
 content:
   field_grad_costs_dom:
-    weight: 22
+    weight: 1
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_grad_costs_intl:
-    weight: 4
+    weight: 3
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
   field_grad_costs_intl_year:
-    weight: 3
+    weight: 2
     label: visually_hidden
     settings:
       link_to_entity: false
@@ -88,7 +40,7 @@ content:
     type: string
     region: content
   field_grad_costs_year:
-    weight: 21
+    weight: 0
     label: visually_hidden
     settings:
       link_to_entity: false
