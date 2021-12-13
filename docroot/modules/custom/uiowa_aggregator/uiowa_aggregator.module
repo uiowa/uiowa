@@ -34,7 +34,7 @@ function uiowa_aggregator_form_aggregator_feed_form_alter(&$form, FormStateInter
   $access = $check->access(\Drupal::currentUser()->getAccount());
 
   // Set the minimum feed refresh to match our hourly cron job so that
-  // webmasters aren't confused as to why its not refreshing sooner. Admins can
+  // webmasters aren't confused as to why it's not refreshing sooner. Admins can
   // set this to whatever assuming they set up a custom job to run more often.
   if ($access->isForbidden()) {
     foreach ($form['refresh']['widget']['#options'] as $key => $value) {
