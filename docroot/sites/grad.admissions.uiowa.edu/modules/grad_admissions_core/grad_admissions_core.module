@@ -12,10 +12,6 @@ use Drupal\Core\Render\Element;
  */
 function grad_admissions_core_theme($existing, $type, $theme, $path) {
   return [
-    'node__grad_costs_estimate' => [
-      'template' => 'node--grad-costs-estimate',
-      'base hook' => 'node',
-    ],
     'node__area_of_study__full' => [
       'template' => 'node--area-of-study--full',
       'base hook' => 'node',
@@ -26,6 +22,14 @@ function grad_admissions_core_theme($existing, $type, $theme, $path) {
     ],
     'field__node__field_area_of_study_college__area_of_study__default' => [
       'template' => 'field--node--field-area-of-study-college--area-of-study--default',
+      'base hook' => 'field',
+    ],
+    'field__node__title__grad_costs_estimate___custom' => [
+      'template' => 'field--node--title--grad-costs-estimate---custom',
+      'base hook' => 'field',
+    ],
+    'field__node__field_grad_costs_year__grad_costs_estimate' => [
+      'template' => 'field--node--field-grad-costs-year--grad-costs-estimate',
       'base hook' => 'field',
     ],
   ];

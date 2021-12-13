@@ -9,9 +9,116 @@ dependencies:
     - field.field.node.grad_costs_estimate.field_grad_costs_year
     - field.field.node.grad_costs_estimate.field_meta_tags
     - node.type.grad_costs_estimate
+    - views.view.grad_cost
   module:
+    - layout_builder
+    - layout_builder_restrictions
     - text
     - user
+    - views
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: true
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+          context_mapping: {  }
+        components:
+          -
+            uuid: be46383f-54f8-4cf2-a0f1-5be8be05cc36
+            region: content
+            configuration:
+              id: 'field_block:node:grad_costs_estimate:title'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: string
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+          -
+            uuid: e977a92c-a2e5-479d-9e9a-c2f02ec98a48
+            region: content
+            configuration:
+              id: 'field_block:node:grad_costs_estimate:field_grad_costs_year'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: string
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 1
+          -
+            uuid: 33abb859-4680-4b35-af34-806b520eac50
+            region: content
+            configuration:
+              id: 'views_block:grad_cost-block_1'
+              label: null
+              provider: views
+              label_display: null
+              views_label: ''
+              items_per_page: none
+              headline:
+                headline: ''
+                hide_headline: 0
+                heading_size: h2
+                headline_style: default
+              pager: some
+              exposed_filter_values: null
+              layout_builder_styles: {  }
+              context_mapping: {  }
+            additional: {  }
+            weight: 2
+        third_party_settings: {  }
+      -
+        layout_id: layout_twocol_section
+        layout_settings:
+          label: ''
+          column_widths: 50-50
+          layout_builder_styles_style:
+            0: ''
+            1: section_margin_edge_to_edge
+            restore_default_spacing: restore_default_spacing
+            section_alignment_start: section_alignment_start
+          context_mapping: {  }
+        components: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+        components: {  }
+        third_party_settings: {  }
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      whitelisted_blocks: {  }
+      blacklisted_blocks: {  }
+      allowed_layouts: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts: {  }
 id: node.grad_costs_estimate.default
 targetEntityType: node
 bundle: grad_costs_estimate

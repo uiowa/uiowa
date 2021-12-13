@@ -84,22 +84,6 @@ third_party_settings:
           context_mapping: {  }
         components:
           -
-            uuid: 6f234918-3d0f-4023-8908-6e151ead2bf9
-            region: first
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_area_of_study_degree_types'
-              formatter:
-                label: above
-                settings:
-                  link: true
-                third_party_settings: {  }
-                type: entity_reference_label
-            additional: {  }
-            weight: 2
-          -
             uuid: bd18ff33-3031-499c-97e8-bfa321c9dd68
             region: first
             configuration:
@@ -116,7 +100,7 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 1
+            weight: 2
           -
             uuid: c4dc85cf-fc36-4ff9-9e51-70cd1ae074cf
             region: first
@@ -134,7 +118,7 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 4
+            weight: 3
           -
             uuid: 95ac5833-99e1-4571-8bdc-a4588de051b2
             region: first
@@ -153,7 +137,7 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 5
+            weight: 4
           -
             uuid: fff17b36-d76a-4200-9174-e7f93cfecc68
             region: second
@@ -164,6 +148,27 @@ third_party_settings:
               label_display: null
               formatter:
                 label: above
+                type: entity_reference_label
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 1
+          -
+            uuid: 6f234918-3d0f-4023-8908-6e151ead2bf9
+            region: first
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_degree_types'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
                 type: entity_reference_label
                 settings:
                   link: true
