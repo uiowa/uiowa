@@ -6,7 +6,6 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Pager\PagerManager;
 use Drupal\Core\Render\Element;
 use Drupal\uiowa_core\HeadlineHelper;
 
@@ -99,7 +98,7 @@ function uiowa_aggregator_preprocess_block(&$variables) {
         $count = count($items);
         static $element = 0;
         $element++;
-        /** @var PagerManager $pager */
+        /** @var \Drupal\Core\Pager\PagerManager $pager */
         $pager = \Drupal::service('pager.manager');
         $per_page = $block->get('field_uiowa_aggregator_count')->getString();
         $chunks = array_chunk($items, $per_page);
