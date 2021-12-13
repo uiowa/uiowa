@@ -103,9 +103,9 @@ function uiowa_aggregator_preprocess_block(&$variables) {
         $per_page = $block->get('field_uiowa_aggregator_count')->getString();
         $chunks = array_chunk($items, $per_page);
         $current = $pager->createPager($count, $per_page, $element)->getCurrentPage();
-        $page = $chunks[$current];
+        $current_page_items = $chunks[$current];
 
-        $variables['content']['aggregator']['items'] = \Drupal::entityTypeManager()->getViewBuilder('aggregator_item')->viewMultiple($page, 'default');
+        $variables['content']['aggregator']['items'] = \Drupal::entityTypeManager()->getViewBuilder('aggregator_item')->viewMultiple($current_page_items, 'default');
 
         // Get block layout builder styles if they exist.
         if (isset($variables['elements']['#attributes']['class']) && !empty($variables['elements']['#attributes']['class'])) {
