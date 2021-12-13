@@ -161,6 +161,41 @@ class SettingsForm extends ConfigFormBase {
         '#description' => $this->t('The heading to display in the email body.'),
       ];
 
+      $form['thanks']['placeholder']['row1_button_url'] = [
+        '#type' => 'url',
+        '#title' => $this->t('Row 1 Button URL'),
+        '#description' => $this->t('URL for call to action button below main content area.'),
+        '#default_value' => $config->get('thanks.placeholder.row1_button_url'),
+      ];
+
+      $form['thanks']['placeholder']['row1_button_text'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Row 1 Button Text'),
+        '#description' => $this->t('Text for call to action button blow the main content area.'),
+        '#default_value' => $config->get('thanks.placeholder.row1_button_text'),
+      ];
+
+      $form['thanks']['placeholder']['row1_bottom_content'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Row 1 Bottom Content'),
+        '#description' => $this->t('Content that appears below the call to action button.'),
+        '#default_value' => $config->get('thanks.placeholder.row1_bottom_content'),
+      ];
+
+      $form['thanks']['placeholder']['unitAddress'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Unit Address'),
+        '#description' => $this->t('Street address of college, unit, or department.'),
+        '#default_value' => $config->get('thanks.placeholder.unitAddress'),
+      ];
+
+      $form['thanks']['placeholder']['footer_statement'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Footer Statement'),
+        '#description' => $this->t('Optional statement in the below. Useful to convey statements about policies related to message.'),
+        '#default_value' => $config->get('thanks.placeholder.footer_statement'),
+      ];
+
       $form['thanks']['supervisor'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Supervisor Email'),
