@@ -56,7 +56,7 @@ class SettingsForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form['docs'] = [
-      '#markup' => $this->t('<p>This module provides integration with the <em>hours.iowa.uiowa.edu</em> service built by the ITS AppDev team. That team needs to configure the system for new groups before it can be used.<p><p>Note that this module assumes that resources are closed by default and that <strong>any event</strong> represents an open time.</p>')
+      '#markup' => $this->t('<p>This module provides integration with the <em>hours.iowa.uiowa.edu</em> service built by the ITS AppDev team. That team needs to configure the system for new groups before it can be used.<p><p>Note that this module assumes that resources are closed by default and that <strong>any event</strong> represents an open time.</p>'),
     ];
 
     $groups = $this->hours->getGroups();
