@@ -4,10 +4,12 @@ status: true
 dependencies:
   config:
     - field.field.node.area_of_study.body
+    - field.field.node.area_of_study.field_area_of_study_college
     - field.field.node.area_of_study.field_area_of_study_degree_types
     - field.field.node.area_of_study.field_area_of_study_delivery
     - field.field.node.area_of_study.field_area_of_study_grad_costs
     - field.field.node.area_of_study.field_area_of_study_grad_intro
+    - field.field.node.area_of_study.field_area_of_study_link
     - field.field.node.area_of_study.field_area_of_study_link_direct
     - field.field.node.area_of_study.field_area_of_study_locations
     - field.field.node.area_of_study.field_area_of_study_source_link
@@ -77,8 +79,9 @@ third_party_settings:
           column_widths: 67-33
           layout_builder_styles_style:
             0: ''
-            1: section_margin_fixed_width_container
+            1: section_margin_extended_width_container
             section_alignment_start: section_alignment_start
+          context_mapping: {  }
         components:
           -
             uuid: 6f234918-3d0f-4023-8908-6e151ead2bf9
@@ -100,15 +103,18 @@ third_party_settings:
             uuid: bd18ff33-3031-499c-97e8-bfa321c9dd68
             region: first
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
               id: 'field_block:node:area_of_study:body'
+              label: null
+              provider: layout_builder
+              label_display: null
               formatter:
                 label: hidden
                 type: text_default
                 settings: {  }
                 third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
             additional: {  }
             weight: 1
           -
@@ -148,6 +154,27 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: 5
+          -
+            uuid: fff17b36-d76a-4200-9174-e7f93cfecc68
+            region: second
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_college'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: above
+                type: entity_reference_label
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 1
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -197,6 +224,14 @@ content:
     weight: 2
     settings: {  }
     third_party_settings: {  }
+    region: content
+  field_area_of_study_college:
+    weight: 23
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
     region: content
   field_area_of_study_degree_types:
     weight: 17
@@ -287,4 +322,5 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_area_of_study_link: true
   search_api_excerpt: true

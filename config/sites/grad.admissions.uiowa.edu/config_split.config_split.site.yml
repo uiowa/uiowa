@@ -11,12 +11,24 @@ storage: folder
 folder: ../config/sites/grad.admissions.uiowa.edu
 module:
   grad_admissions_core: 0
+  tvi: 15
 theme: {  }
 complete_list:
   - config_split.config_split.site
   - core.entity_form_display.node.grad_costs_estimate.default
+  - core.entity_form_display.taxonomy_term.colleges.default
+  - core.entity_view_display.taxonomy_term.colleges.default
+  - field.field.node.area_of_study.field_area_of_study_college
+  - field.field.node.area_of_study.field_area_of_study_link
+  - field.storage.node.field_area_of_study_college
+  - field.storage.node.field_area_of_study_link
+  - field.storage.taxonomy_term.field_image
   - node.type.grad_costs_estimate
   - simple_sitemap.bundle_settings.default.node.grad_costs_estimate
+  - simple_sitemap.bundle_settings.default.taxonomy_term.colleges
+  - taxonomy.vocabulary.colleges
+  - views.view.areas_of_study
+  - views.view.colleges_taxonomy_term
   - 'core.entity_view_display.node.grad_costs_estimate.*'
   - 'field.field.node.grad_costs_estimate.*'
   - 'field.storage.node.field_grad_costs_*'
@@ -24,5 +36,7 @@ complete_list:
   - 'field.field.node.area_of_study.field_area_of_study_grad_*'
   - 'core.entity_view_display.node.area_of_study.*'
   - 'core.entity_form_display.node.area_of_study.*'
+  - 'field.field.taxonomy_term.colleges.*'
+  - 'field.storage.taxonomy_term.field_college_*'
 partial_list:
   - 'user.role.*'
