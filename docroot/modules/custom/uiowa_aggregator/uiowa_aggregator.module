@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Pager\PagerManager;
 use Drupal\Core\Render\Element;
 use Drupal\uiowa_core\HeadlineHelper;
 
@@ -73,11 +74,8 @@ function uiowa_aggregator_preprocess_block(&$variables) {
       $feeds[] = $list_string_item->getString();
     }
 
-    $count = $block->get('field_uiowa_aggregator_count')->getString();
-
     $result = \Drupal::entityTypeManager()->getStorage('aggregator_item')->getQuery()
       ->condition('fid', $feeds, 'IN')
-      ->range(0, $count)
       ->sort('timestamp', 'DESC')
       ->sort('iid', 'DESC')
       ->execute();
@@ -98,7 +96,17 @@ function uiowa_aggregator_preprocess_block(&$variables) {
       $items = \Drupal::entityTypeManager()->getStorage('aggregator_item')->loadMultiple($result);
 
       if ($items) {
-        $variables['content']['aggregator']['items'] = \Drupal::entityTypeManager()->getViewBuilder('aggregator_item')->viewMultiple($items, 'default');
+        $count = count($items);
+        static $element = 0;
+        $element++;
+        /** @var PagerManager $pager */
+        $pager = \Drupal::service('pager.manager');
+        $per_page = $block->get('field_uiowa_aggregator_count')->getString();
+        $chunks = array_chunk($items, $per_page);
+        $current = $pager->createPager($count, $per_page, $element)->getCurrentPage();
+        $page = $chunks[$current];
+
+        $variables['content']['aggregator']['items'] = \Drupal::entityTypeManager()->getViewBuilder('aggregator_item')->viewMultiple($page, 'default');
 
         // Get block layout builder styles if they exist.
         if (isset($variables['elements']['#attributes']['class']) && !empty($variables['elements']['#attributes']['class'])) {
@@ -129,6 +137,11 @@ function uiowa_aggregator_preprocess_block(&$variables) {
             $variables['content']['aggregator']['items'][$child]['#parent_lb_styles'] = $parent_lb_styles;
           }
         }
+
+        $variables['content']['aggregator']['pager'] = [
+          '#type' => 'pager',
+          '#element' => $element,
+        ];
       }
     }
     else {
