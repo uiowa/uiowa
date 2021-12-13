@@ -153,35 +153,6 @@ class SettingsForm extends ConfigFormBase {
         '#description' => $this->t('The unit or college name to display in the email header.'),
       ];
 
-      // @todo Change this to dependency injection.
-      if ($config->get('thanks.placeholder.banner_image')) {
-        /** @var MediaInterface $media */
-        $media = $this->entityTypeManager
-          ->getStorage('media')
-          ->load($config->get('thanks.placeholder.banner_image'));
-
-        $alt = $media->get('field_media_image')->alt;
-      }
-      // @todo Update the form type.
-      $form['thanks']['placeholder']['banner_image'] = [
-        '#type' => 'entity_autocomplete',
-        '#target_type' => 'media',
-        '#title' => $this->t('Banner Image'),
-        '#default_value' => (isset($media)) ? $media : NULL,
-        '#selection_settings' => [
-          'target_bundles' => [
-            'image',
-          ],
-        ],
-        '#required' => FALSE,
-        '#description' => $this->t('Optional banner image to display at the top of the email body.'),
-      ];
-
-      $form['thanks']['placeholder']['banner_image_alt'] = [
-        '#type' => 'hidden',
-        '#value' => $alt ?? NULL,
-      ];
-
       $form['thanks']['placeholder']['row1_heading'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Row 1 Heading'),
@@ -243,24 +214,6 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    // @todo Clean this up and change to DI.
-    if ($form_state->getValue(['thanks', 'placeholder', 'banner_image'])) {
-      $media = $this->entityTypeManager
-        ->getStorage('media')
-        ->load($form_state->getValue(['thanks', 'placeholder', 'banner_image']));
-      $uri = $media->get('field_media_image')->entity->uri->value;
-      // @todo Change this to get a specific responsive image style of
-      //   the image, rather than a direct file URL. Maybe?
-      $image_url = file_create_url($uri);
-    }
-    // If the user emptied out the banner_image field,
-    // then we want to make sure to remove the banner image url.
-    else {
-      $image_url = '';
-    }
-
-    // @todo Separate Dispatch config and other settings config.
-    //   Currently we have both the media id and the URL.
     $this->config('sitenow_dispatch.settings')
       ->set('api_key', $form_state->getValue('api_key'))
       ->set('client', $form_state->getValue('client'))
@@ -271,9 +224,6 @@ class SettingsForm extends ConfigFormBase {
         'placeholder' => $form_state->getValue(['thanks', 'placeholder']),
         'supervisor' => $form_state->getValue(['thanks', 'supervisor']),
       ])
-      ->save();
-    $this->config('sitenow_dispatch.settings')
-      ->set('thanks.placeholder.banner_image_url', $image_url)
       ->save();
 
     parent::submitForm($form, $form_state);
