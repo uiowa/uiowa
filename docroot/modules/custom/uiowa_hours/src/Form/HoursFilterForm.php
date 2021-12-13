@@ -75,16 +75,17 @@ class HoursFilterForm extends FormBase {
     }
 
     $result = $this->hours->getHours($config['resource']);
-
-    $form['result'] = [
+    $form_id = $form_state->getBuildInfo()['form_id'];
+    $result_id = $form_id . '_result';
+    $form['results'] = [
       '#type' => 'container',
       '#attributes' => [
         'role' => 'region',
         'aria-live' => 'assertive',
       ],
     ];
-
-    $form['result']['card'] = $result;
+    $formatted_results = $this->renderResults($result, $result_id);
+    $form['results']['result'] = $formatted_results;
 
     return $form;
   }
@@ -97,11 +98,104 @@ class HoursFilterForm extends FormBase {
     $date = $form_state->getValue('date');
     $resource = $form_state->getValue('resource');
     $result = $this->hours->getHours($resource, $date, $date);
-    $response->addCommand(new HtmlCommand('#edit-result', $result));
+    $result_id = $form['results']['result']['#attributes']['id'];
+    $formatted_results = $this->renderResults($result, $result_id);
+    $response->addCommand(new HtmlCommand('#' . $result_id, $formatted_results));
     $message = $this->t('Returning resource hours information for @date.', ['@date' => $date]);
     $response->addCommand(new AnnounceCommand($message, 'polite'));
 
     return $response;
+  }
+
+  /**
+   * Custom render of data.
+   */
+  public function renderResults($result, $result_id) {
+    $data = $result['data'];
+    $start = $result['query']['start'];
+    $end = $result['query']['end'];
+    $card_classes = [
+      'uiowa-hours',
+      'card--enclosed',
+      'card--media-left',
+    ];
+
+    $render = [
+      '#type' => 'container',
+      '#attributes' => [
+        'id' => $result_id,
+        'class' => [
+          'uiowa-hours-container',
+        ],
+      ],
+    ];
+
+    if ($data === FALSE) {
+      $data['closed'] = [
+        '#markup' => $this->t('<p><i class="fas fa-exclamation-circle"></i> There was an error retrieving hours information. Please try again later or contact the <a href=":link">ITS Help Desk</a> if the problem persists.</p>', [
+          ':link' => 'https://its.uiowa.edu/contact',
+        ]),
+      ];
+    }
+    elseif (empty($data)) {
+      $render['closed'] = [
+        '#theme' => 'hours_card',
+        '#attributes' => [
+          'class' => $card_classes,
+        ],
+        '#data' => [
+          'date' => $this->t('@start@end', [
+            '@start' => date('F d, Y', $start),
+            '@end' => $end == $start ? NULL : ' - ' . date('F d, Y', $end),
+          ]),
+          'times' => [
+            '#markup' => $this->t('<span class="badge badge--orange">Closed</span>'),
+          ],
+        ],
+      ];
+    }
+    else {
+      // The v2 API indexes events by a string in Ymd format, e.g. 20211209.
+      foreach ($data as $key => $date) {
+        // Skip dates that start before $start but end on or after.
+        if ($key < date('Ymd', $start)) {
+          continue;
+        }
+
+        // Times within dates are unsorted for some reason.
+        uasort($date, function ($a, $b) {
+          return strtotime($a['start']) <=> strtotime($b['start']);
+        });
+
+        $render['hours'][$key] = [
+          '#theme' => 'hours_card',
+          '#attributes' => [
+            'class' => $card_classes,
+          ],
+          '#data' => [
+            'date' => date('F d, Y', strtotime($key)),
+            'times' => [
+              '#theme' => 'item_list',
+              '#items' => [],
+              '#attributes' => [
+                'class' => 'element--list-none',
+              ],
+            ],
+          ],
+        ];
+
+        // @todo Add block config to get categories and render them here.
+        foreach ($date as $time) {
+          $render['hours'][$key]['#data']['times']['#items'][] = [
+            '#markup' => $this->t('<span class="badge badge--green">Open</span> @start - @end', [
+              '@start' => date('g:ia', strtotime($time['startHour'])),
+              '@end' => date('g:ia', '00:00:00' ? strtotime($time['endHour'] . ', +1 day') : strtotime($time['endHour'])),
+            ]),
+          ];
+        }
+      }
+    }
+    return $render;
   }
 
   /**

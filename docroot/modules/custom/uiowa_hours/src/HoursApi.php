@@ -184,89 +184,14 @@ class HoursApi {
     // This isn't used and borks the foreach loop. Unset it.
     unset($data['$id']);
 
-    $card_classes = [
-      'uiowa-hours',
-      'card--enclosed',
-      'card--media-left',
-    ];
-
-    $render = [
-      '#type' => 'container',
-      '#attributes' => [
-        'id' => 'edit-card',
-        'class' => [
-          'uiowa-hours-container',
-        ],
+    return [
+      'data' => $data,
+      'query' => [
+        'resource' => $resource,
+        'start' => $start,
+        'end' => $end,
       ],
     ];
-
-    if ($data === FALSE) {
-      $render['closed'] = [
-        '#markup' => $this->t('<p><i class="fas fa-exclamation-circle"></i> There was an error retrieving hours information. Please try again later or contact the <a href=":link">ITS Help Desk</a> if the problem persists.</p>', [
-          ':link' => 'https://its.uiowa.edu/contact',
-        ]),
-      ];
-    }
-    elseif (empty($data)) {
-      $render['closed'] = [
-        '#theme' => 'hours_card',
-        '#attributes' => [
-          'class' => $card_classes,
-        ],
-        '#data' => [
-          'date' => $this->t('@start@end', [
-            '@start' => date('F d, Y', $start),
-            '@end' => $end == $start ? NULL : ' - ' . date('F d, Y', $end),
-          ]),
-          'times' => [
-            '#markup' => $this->t('<span class="badge badge--orange">Closed</span>'),
-          ],
-        ],
-      ];
-    }
-    else {
-      // The v2 API indexes events by a string in Ymd format, e.g. 20211209.
-      foreach ($data as $key => $date) {
-        // Skip dates that start before $start but end on or after.
-        if ($key < date('Ymd', $start)) {
-          continue;
-        }
-
-        // Times within dates are unsorted for some reason.
-        uasort($date, function ($a, $b) {
-          return strtotime($a['start']) <=> strtotime($b['start']);
-        });
-
-        $render['hours'][$key] = [
-          '#theme' => 'hours_card',
-          '#attributes' => [
-            'class' => $card_classes,
-          ],
-          '#data' => [
-            'date' => date('F d, Y', strtotime($key)),
-            'times' => [
-              '#theme' => 'item_list',
-              '#items' => [],
-              '#attributes' => [
-                'class' => 'element--list-none',
-              ],
-            ],
-          ],
-        ];
-
-        // @todo: Add block config to get categories and render them here.
-        foreach ($date as $time) {
-          $render['hours'][$key]['#data']['times']['#items'][] = [
-            '#markup' => $this->t('<span class="badge badge--green">Open</span> @start - @end', [
-              '@start' => date('g:ia', strtotime($time['startHour'])),
-              '@end' => date('g:ia', '00:00:00' ? strtotime($time['endHour'] . ', +1 day') : strtotime($time['endHour'])),
-            ]),
-          ];
-        }
-      }
-    }
-
-    return $render;
   }
 
 }
