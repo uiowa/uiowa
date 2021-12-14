@@ -30,6 +30,41 @@
     overflow-wrap: anywhere;
   }
 
+  // Circle button.
+
+  &[class*="bg--black"] {
+    .bttn--outline.bttn--circle {
+      &:hover:after,
+      &:focus:after {
+        [class*="bg--gray"] &,
+        [class*="bg--gold"] &{
+          border-color: $primary;
+        }
+      }
+    }
+  }
+
+  &[class*="bg--gold"] {
+    .bttn--outline.bttn--circle {
+        &:hover:after,
+        &:focus:after {
+          border-color: $light;
+        }
+      }
+    }
+
+  &:not([class*="bg-"]) {
+    .bttn--outline.bttn--circle {
+      &:hover:after,
+      &:focus:after {
+        border-color: $primary;
+        [class*="bg--gold"] & {
+          border-color: $light;
+        }
+      }
+    }
+  }
+
   .bttn--outline.bttn--circle {
     padding: .55rem .7em;
     border-radius: 50%;
@@ -49,9 +84,9 @@
       position: absolute;
     }
 
-    &:hover:after {
+    &:hover:after,
+    &:focus:after {
       transform: none;
-      // TODO: change this for other BGs.
       border-color: $primary;
       background-color: transparent;
     }
@@ -123,7 +158,6 @@
 // Border color adjustment for cards not using a bg color
 .card:not([class*="bg-"]) {
   border-color: rgba(0,0,0,.125);
-  .bg--black--pattern--brain &,
   .bg-pattern--brain-black &,
   [class*="bg--black"] & {
     border-color: rgba(255,255,255,.325);
