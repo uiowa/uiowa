@@ -140,6 +140,7 @@ function uiowa_aggregator_preprocess_block(&$variables) {
         $variables['content']['aggregator']['pager'] = [
           '#type' => 'pager',
           '#element' => $element,
+          '#quantity' => 3,
         ];
       }
     }
