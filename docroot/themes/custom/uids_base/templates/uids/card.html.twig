@@ -2,12 +2,22 @@
 {{ attach_library('uids_base/media') }}
 {% set attributes = attributes ?: create_attribute() %}
 {% set card_classes = ['card', 'click-container', 'block--word-break'] %}
+{% set bttn_attributes = bttn_attributes ?: create_attribute() %}
+{% set card_bttn_classes = ['bttn', 'bttn--outline', 'bttn--sans-serif'] %}
 {% set media_attributes = media_attributes ?: create_attribute() %}
+{% set circle_button = [] %}
+
+{% if visible_button is empty %}
+  {% set visible_button = false %}
+{% endif %}
 
 {# The following code is to determine where a link should be attached, if it exists. #}
-{% set link_element, show_button = false, false %}
+{% set link_element = false %}
 {% if card_link_url is not empty %}
-  {% set show_button = true %}
+  {# Set circle_bttn class if link title is empty. #}
+  {% if card_link_title is empty %}
+    {% set circle_button = 'bttn--circle' %}
+  {% endif %}
   {% if card_title is not empty %}
     {# Title is set, use it as the linking element.  #}
     {% set link_element = 'title' %}
@@ -31,7 +41,7 @@
 {% endif %}
 
 {# Do not show the aria-describedby attribute if title AND link text are not both present. #}
-{% if link_element != 'title' or not show_button %}
+{% if link_element != 'title' %}
 {% set card_aria_describedby = '' %}
 {% endif %}
 
@@ -104,24 +114,20 @@
       {% endblock %}
 
       {% block card_bttn %}
-        {% if card_link_url is not empty and show_button %}
-          {% set circle_button = [] %}
-          {% if card_link_title is empty %}
-            {% set circle_button = 'bttn--circle' %}
-          {% endif %}
-          {% if visible_button == true %}
+        {% if card_link_url is not empty and visible_button  %}
             {% if link_element == 'button' %}
-              <a class="bttn bttn--outline bttn--sans-serif bttn--full click-target {{ circle_button }}" href="{{ card_link_url }}">
+              {# This version is not in use #}
+              <a {{ bttn_attributes.addclass(card_bttn_classes, 'click-target') }} href="{{ card_link_url }}">
                 {{ card_link_title }}
                 <i role="presentation" class="fas fa-arrow-right"></i>
               </a>
             {% else %}
-              <div aria-hidden="true" class="bttn bttn--outline bttn--sans-serif {{ circle_button }}"{% if card_aria_describedby %} id="{{ card_aria_describedby }}"{% endif %}>
+              {# This is used by all cards. #}
+              <div aria-hidden="true" {{ bttn_attributes.addclass(card_bttn_classes, circle_button) }}  {% if card_aria_describedby %} id="{{ card_aria_describedby }}"{% endif %}>
                 {{ card_link_title }}
                 <i role="presentation" class="fas fa-arrow-right"></i>
               </div>
             {% endif %}
-          {% endif %}
         {% endif %}
       {% endblock %}
     </div>
