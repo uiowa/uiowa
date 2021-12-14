@@ -150,6 +150,13 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
       '#options' => array_combine($resources, $resources),
     ];
 
+    $form['display_summary'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Display title'),
+      '#description' => $this->t('Display title summary next to hours information.'),
+      '#default_value' => $this->configuration['display_summary'] ?? FALSE,
+    ];
+
     $form['display_datepicker'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Display Datepicker'),
@@ -171,6 +178,7 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
       $this->configuration[$name] = $value;
     }
     $this->configuration['resource'] = $form_state->getValue('resource');
+    $this->configuration['display_summary'] = $form_state->getValue('display_summary');
     $this->configuration['display_datepicker'] = $form_state->getValue('display_datepicker');
     parent::blockSubmit($form, $form_state);
   }

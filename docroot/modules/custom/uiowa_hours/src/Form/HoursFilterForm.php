@@ -84,7 +84,7 @@ class HoursFilterForm extends FormBase {
         'aria-live' => 'assertive',
       ],
     ];
-    $formatted_results = $this->renderResults($result, $result_id);
+    $formatted_results = $this->renderResults($result, $result_id, $config['display_summary']);
     $form['results']['result'] = $formatted_results;
 
     return $form;
@@ -97,9 +97,10 @@ class HoursFilterForm extends FormBase {
     $response = new AjaxResponse();
     $date = $form_state->getValue('date');
     $resource = $form_state->getValue('resource');
+    $display_summary = $form_state->getValue('display_summary');
     $result = $this->hours->getHours($resource, $date, $date);
     $result_id = $form['results']['result']['#attributes']['id'];
-    $formatted_results = $this->renderResults($result, $result_id);
+    $formatted_results = $this->renderResults($result, $result_id, $display_summary);
     $response->addCommand(new HtmlCommand('#' . $result_id, $formatted_results));
     $message = $this->t('Returning resource hours information for @date.', ['@date' => $date]);
     $response->addCommand(new AnnounceCommand($message, 'polite'));
@@ -110,7 +111,7 @@ class HoursFilterForm extends FormBase {
   /**
    * Custom render of data.
    */
-  public function renderResults($result, $result_id) {
+  public function renderResults($result, $result_id, $display_summary) {
     $data = $result['data'];
     $start = $result['query']['start'];
     $end = $result['query']['end'];
@@ -186,11 +187,15 @@ class HoursFilterForm extends FormBase {
 
         // @todo Add block config to get categories and render them here.
         foreach ($date as $time) {
+          $markup = $this->t('<span class="badge badge--green">Open</span> @start - @end', [
+            '@start' => date('g:ia', strtotime($time['startHour'])),
+            '@end' => date('g:ia', '00:00:00' ? strtotime($time['endHour'] . ', +1 day') : strtotime($time['endHour'])),
+          ]);
+          if ($display_summary == TRUE) {
+            $markup .= ' - ' . $time['summary'];
+          }
           $render['hours'][$key]['#data']['times']['#items'][] = [
-            '#markup' => $this->t('<span class="badge badge--green">Open</span> @start - @end', [
-              '@start' => date('g:ia', strtotime($time['startHour'])),
-              '@end' => date('g:ia', '00:00:00' ? strtotime($time['endHour'] . ', +1 day') : strtotime($time['endHour'])),
-            ]),
+            '#markup' => $markup,
           ];
         }
       }
