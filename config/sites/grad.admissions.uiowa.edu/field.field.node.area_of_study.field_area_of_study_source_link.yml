@@ -1,0 +1,23 @@
+uuid: 4d1b08a3-a6ac-4407-9cd5-e266ffe7dcda
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_area_of_study_source_link
+    - node.type.area_of_study
+  module:
+    - link
+id: node.area_of_study.field_area_of_study_source_link
+field_name: field_area_of_study_source_link
+entity_type: node
+bundle: area_of_study
+label: 'Primary Source Link'
+description: 'Include a link to the primary source for this content. For additional Search-Engine-Optimization (SEO) visibility, consider filling out related meta tag fields.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 1
+field_type: link

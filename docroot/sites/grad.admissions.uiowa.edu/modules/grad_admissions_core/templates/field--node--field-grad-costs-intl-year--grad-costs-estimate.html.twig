@@ -37,15 +37,19 @@
  * @see template_preprocess_field()
  */
 #}
+
+<h2><div class="headline bold-headline--serif bold-headline--underline">International</div></h2>
+
 {%
   set classes = [
-    'headline',
-    'bold-headline--serif',
-    'bold-headline',
-]
+    'badge',
+    'badge--primary',
+  ]
 %}
-<h1 {{ attributes.addClass(classes) }}>
-  {%- for item in items -%}
-    <span>{{ item.content }}</span>
-  {%- endfor -%}
-</h1>
+
+<div {{ attributes.addClass(classes) }}>
+	{%- for item in items -%}
+    {{ item.content }}
+	{%- endfor -%}
+</div>
+<hr class="element--spacer-separator" />

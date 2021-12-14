@@ -19,17 +19,18 @@ third_party_settings:
     enabled: true
     sections:
       -
-        layout_id: layout_twocol_section
+        layout_id: layout_twocol
         layout_settings:
           label: ''
-          column_widths: 50-50
+          column_widths: 67-33
           layout_builder_styles_style:
-            - ''
-            - section_margin_edge_to_edge
+            0: ''
+            1: section_margin_edge_to_edge
+            section_alignment_start: section_alignment_start
           context_mapping: {  }
         components:
           -
-            uuid: 1919e4dd-c48a-4a7f-a846-0ca0c2d1df80
+            uuid: 31ff3aae-c88a-4c6c-90df-6f8fef28d538
             region: first
             configuration:
               label_display: '0'
@@ -44,26 +45,7 @@ third_party_settings:
             additional: {  }
             weight: 1
           -
-            uuid: 614ffcf4-886f-491d-8995-3b62100eb053
-            region: second
-            configuration:
-              id: 'field_block:taxonomy_term:colleges:field_image'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: hidden
-                type: entity_reference_entity_view
-                settings:
-                  view_mode: medium__widescreen
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: 0
-          -
-            uuid: b7afc9c1-66f5-4fb1-a69a-b3f2808cf4df
+            uuid: 5a0ef301-f640-4b59-b308-5b291a828cb1
             region: first
             configuration:
               id: 'field_block:taxonomy_term:colleges:field_college_website'
@@ -87,36 +69,25 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: 0
-        third_party_settings: {  }
-      -
-        layout_id: layout_twocol_section
-        layout_settings:
-          label: ''
-          column_widths: 67-33
-          layout_builder_styles_style:
-            0: ''
-            1: section_margin_edge_to_edge
-            section_alignment_start: section_alignment_start
-          context_mapping: {  }
-        components: {  }
-        third_party_settings: {  }
-      -
-        layout_id: layout_onecol
-        layout_settings:
-          label: ''
-        components: {  }
-        third_party_settings: {  }
-      -
-        layout_id: layout_twocol_section
-        layout_settings:
-          label: ''
-          column_widths: 67-33
-          layout_builder_styles_style:
-            0: ''
-            1: section_margin_edge_to_edge
-            section_alignment_start: section_alignment_start
-          context_mapping: {  }
-        components: {  }
+          -
+            uuid: 4c2a67cd-3602-43e6-986d-759283a640d3
+            region: second
+            configuration:
+              id: 'field_block:taxonomy_term:colleges:field_image'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: entity_reference_entity_view
+                settings:
+                  view_mode: medium__widescreen
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
         third_party_settings: {  }
   layout_builder_restrictions:
     allowed_block_categories: {  }

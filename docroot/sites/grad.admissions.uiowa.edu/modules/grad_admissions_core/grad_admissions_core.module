@@ -12,10 +12,6 @@ use Drupal\Core\Render\Element;
  */
 function grad_admissions_core_theme($existing, $type, $theme, $path) {
   return [
-    'node__area_of_study__full' => [
-      'template' => 'node--area-of-study--full',
-      'base hook' => 'node',
-    ],
     'field__taxonomy_term__field_college_website__colleges__default' => [
       'template' => 'field--taxonomy-term--field-college-website--colleges--default',
       'base hook' => 'field',
@@ -31,6 +27,14 @@ function grad_admissions_core_theme($existing, $type, $theme, $path) {
     'field__node__field_grad_costs_year__grad_costs_estimate' => [
       'template' => 'field--node--field-grad-costs-year--grad-costs-estimate',
       'base hook' => 'field',
+    ],
+    'field__node__field_grad_costs_intl_year__grad_costs_estimate' => [
+      'template' => 'field--node--field-grad-costs-intl-year--grad-costs-estimate',
+      'base hook' => 'field',
+    ],
+    'taxonomy_term__teaser' => [
+      'template' => 'taxonomy-term--teaser',
+      'base hook' => 'node',
     ],
   ];
 }
@@ -78,6 +82,15 @@ function grad_admissions_core_theme_suggestions_field_alter(array &$suggestions,
       $suggestions[] = 'field__bold_headline_label';
       break;
 
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for taxonomies.
+ */
+function grad_admissions_core_theme_suggestions_taxonomy_term_alter(&$suggestions, $variables) {
+  if ($variables['elements']['#view_mode'] == 'teaser') {
+    $suggestions[] = 'taxonomy_term__teaser';
   }
 }
 
