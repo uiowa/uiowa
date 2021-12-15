@@ -18,9 +18,9 @@
     {# Title is set, use it as the linking element.  #}
     {% set link_element = 'title' %}
     {# If we also have link text, then we'll show a psuedo-button. #}
-    {% if card_link_title is not empty %}
-      {% set link_element = 'button' %}
-    {% endif %}
+{#    {% if card_link_title is not empty %}#}
+{#      {% set link_element = 'button' %}#}
+{#    {% endif %}#}
   {% elseif card_link_title is not empty %}
     {# Title is not set, but there is link text, so use that instead. #}
     {% set link_element = 'button' %}
