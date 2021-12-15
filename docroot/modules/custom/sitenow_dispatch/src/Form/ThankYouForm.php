@@ -76,6 +76,7 @@ class ThankYouForm extends FormBase {
     $form['placeholder']['message'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Message'),
+      '#required' => TRUE,
     ];
 
     $form['placeholder']['from_name'] = [
