@@ -6,6 +6,7 @@ dependencies:
     - block_content.type.uiowa_aggregator
     - field.field.block_content.uiowa_aggregator.field_uiowa_aggregator_count
     - field.field.block_content.uiowa_aggregator.field_uiowa_aggregator_feeds
+    - field.field.block_content.uiowa_aggregator.field_uiowa_aggregator_pager
     - field.field.block_content.uiowa_aggregator.field_uiowa_aggregator_text
     - field.field.block_content.uiowa_aggregator.field_uiowa_headline
   module:
@@ -15,6 +16,16 @@ targetEntityType: block_content
 bundle: uiowa_aggregator
 mode: default
 content:
+  field_uiowa_aggregator_pager:
+    weight: 1
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
   field_uiowa_headline:
     weight: 0
     label: visually_hidden
