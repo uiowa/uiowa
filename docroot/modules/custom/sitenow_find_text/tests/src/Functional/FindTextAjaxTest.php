@@ -92,19 +92,29 @@ class FindTextAjaxTest extends WebDriverTestBase {
   }
 
   /**
-   * Test searching menu links.
+   * Test searching menu items.
    */
-  public function testMenuLinkFind() {
+  public function testMenuFind() {
     /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link */
-    $menu_link = $this->createMenuContentLink();
-    $menu_title = $menu_link->getTitle();
-    $menu_id = $menu_link->id();
-    $menu_uri = $menu_link->link->getValue()[0]['uri'];
+    $menu = $this->createMenuContentLink();
+    $menu_title = $menu->getTitle();
+    $menu_id = $menu->id();
+    $menu_uri = $menu->link->getValue()[0]['uri'];
     // Some random-generated menu uris won't fully render,
     // such as "route:<front>", as the bracketed content will be converted to
     // "<front></front>". While this isn't ideal, it's expected,
     // and we can still test the rest of the functionality.
     $menu_uri = preg_replace('|<.*?>|', '', $menu_uri);
+    // Create a second menu item to test that not ALL menu items
+    // come up for all search terms, and to test regexp searches.
+    $second_menu = $this->createMenuContentLink([
+      'link' => [
+        'uri' => 'https://prod.drupal.tester.edu',
+      ],
+    ]);
+    $second_menu_title = $second_menu->getTitle();
+    $second_menu_id = $second_menu->id();
+    $second_menu_uri = $second_menu->link->getValue()[0]['uri'];
 
     // Login.
     $this->drupalLogin($this->user);
@@ -122,12 +132,13 @@ class FindTextAjaxTest extends WebDriverTestBase {
     ],
       'search');
     // We shouldn't get the "no results" response,
-    // because we checked for the menu title.
-    $this->assertFalse($session->waitForText('No results found.', 1000));
+    // because we checked for the menu title. Wait for
+    // the "Menu: #" result.
+    $this->assertTrue($session->waitForText('Menu: ' . $menu_id, 1000));
     // Check that we got the right menu element.
-    $session->pageTextContains('Menu: ' . $menu_id);
+    $session->pageTextMatchesCount(1, '%Menu: ' . $menu_id . '%');
     // Check that we matched and labelled it as a title.
-    $session->pageTextContains('Title ' . $menu_title);
+    $session->pageTextMatchesCount(1, '%Title ' . $menu_title . '%');
 
     // And now let's do a search for the uri.
     $this->submitForm([
@@ -137,12 +148,45 @@ class FindTextAjaxTest extends WebDriverTestBase {
     ],
       'search');
     // We shouldn't get the "no results" response,
-    // because we checked for the menu uri.
-    $this->assertFalse($session->waitForText('No results found.', 1000));
+    // because we checked for the menu title. Wait for
+    // the "Menu: #" result.
+    $this->assertTrue($session->waitForText('Menu: ' . $menu_id, 1000));
     // Check that we got the right menu element.
-    $session->pageTextContains('Menu: ' . $menu_id);
+    $session->pageTextMatchesCount(1, '%Menu: ' . $menu_id . '%');
     // Check that we matched and labelled it as a uri.
-    $session->pageTextContains('Link Uri ' . $menu_uri);
+    $session->pageTextMatchesCount(1, '%Link Uri ' . $menu_uri . '%');
+
+    // And now let's do a regex search for the titles.
+    $this->submitForm([
+      'needle' => '(' . $menu_title . ')|(' . $second_menu_title . ')',
+      'render' => TRUE,
+      'regexed' => TRUE,
+    ],
+      'search');
+    // We shouldn't get the "no results" response,
+    // because we checked for the menu title. Wait for
+    // the "Menu: #" result.
+    $this->assertTrue($session->waitForText('Menu: ' . $menu_id, 1000));
+    // Check that we got the right menu elements, and only one result
+    // for each of the two items.
+    $session->pageTextMatchesCount(1, '%Menu: ' . $menu_id . '%');
+    $session->pageTextMatchesCount(1, '%Menu: ' . $second_menu_id . '%');
+    $session->pageTextMatchesCount(1, '%Title ' . $menu_title . '%');
+    $session->pageTextMatchesCount(1, '%Title ' . $second_menu_title . '%');
+
+    // And now let's do a search for the uri using regexp.
+    // We should only get results matching the second menu item.
+    $this->submitForm([
+      'needle' => $second_menu_uri,
+      'render' => TRUE,
+      'regexed' => TRUE,
+    ],
+      'search');
+    $this->assertTrue($session->waitForText('Menu: ' . $second_menu_id, 1000));
+    $session->pageTextMatchesCount(0, '%Menu: ' . $menu_id . '%');
+    $session->pageTextMatchesCount(1, '%Menu: ' . $second_menu_id . '%');
+    $session->pageTextMatchesCount(0, '%Link Uri ' . $menu_uri . '%');
+    $session->pageTextMatchesCount(1, '%Link Uri ' . $second_menu_uri . '%');
   }
 
   /**
@@ -174,10 +218,9 @@ class FindTextAjaxTest extends WebDriverTestBase {
     ],
       'search');
     // We shouldn't get the "no results" response,
-    // because we checked for the node title.
-    $this->assertFalse($session->waitForText('No results found.', 1000));
-    // Check that we got the right menu element.
-    $session->pageTextContains('Node: ' . $node_id);
+    // because we checked for the menu title. Wait for
+    // the "Node: #" result.
+    $this->assertTrue($session->waitForText('Node: ' . $node_id, 1000));
     // Check that we matched and labelled it as a title.
     $session->pageTextContains('Title ' . $node_title);
   }
@@ -208,10 +251,9 @@ class FindTextAjaxTest extends WebDriverTestBase {
     ],
       'search');
     // We shouldn't get the "no results" response,
-    // because we checked for the taxonomy name.
-    $this->assertFalse($session->waitForText('No results found.', 1000));
-    // Check that we got the right menu element.
-    $session->pageTextContains('Term: ' . $term_id);
+    // because we checked for the menu title. Wait for
+    // the "Term: #" result.
+    $this->assertTrue($session->waitForText('Term: ' . $term_id, 1000));
     // Check that we matched and labelled it as a title.
     $session->pageTextContains('Name ' . $term_name);
 
@@ -224,10 +266,9 @@ class FindTextAjaxTest extends WebDriverTestBase {
     ],
       'search');
     // We shouldn't get the "no results" response,
-    // because we checked for the taxonomy description.
-    $this->assertFalse($session->waitForText('No results found.', 1000));
-    // Check that we got the right menu element.
-    $session->pageTextContains('Term: ' . $term_id);
+    // because we checked for the menu title. Wait for
+    // the "Term: #" result.
+    $this->assertTrue($session->waitForText('Term: ' . $term_id, 1000));
     // Check that we matched and labelled it as a title.
     $session->pageTextContains('Description ' . $term_description);
   }
