@@ -91,9 +91,7 @@ class ThankYouForm extends FormBase {
     ];
 
     if ($this->config('sitenow_dispatch.settings')->get('thanks.supervisor')) {
-      $form['disclaimer'] = [
-        '#markup' => $this->t("<p><em>A copy of this email will be sent to the employee's supervisor(s).</em></p>"),
-      ];
+      $form['placeholder']['message']['#description'] = $this->t("<div><em>A copy of this message will be sent to the employee's supervisor(s).</em></div>");
     }
 
     $form['submit'] = [
