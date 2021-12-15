@@ -20,13 +20,6 @@ class ThankYouForm extends FormBase {
   use LoggerChannelTrait;
 
   /**
-   * The config.storage service.
-   *
-   * @var \Drupal\Core\Config\StorageInterface
-   */
-  protected $configStorage;
-
-  /**
    * The serialization.json service.
    *
    * @var \Drupal\Component\Serialization\Json
@@ -52,7 +45,6 @@ class ThankYouForm extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     $instance = parent::create($container);
-    $instance->configStorage = $container->get('config.storage');
     $instance->jsonController = $container->get('serialization.json');
     $instance->httpClient = $container->get('http_client');
     $instance->dispatch = $container->get('sitenow_dispatch.dispatch');
