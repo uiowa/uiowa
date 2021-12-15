@@ -89,7 +89,7 @@ class FindTextAjaxTest extends WebDriverTestBase {
   }
 
   /**
-   * Method for creating a menu link.
+   * Test searching menu links.
    */
   public function testMenuLinkFind() {
     /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link */
@@ -105,10 +105,8 @@ class FindTextAjaxTest extends WebDriverTestBase {
 
     // Login.
     $this->drupalLogin($this->user);
-
     // Create a session.
     $session = $this->assertSession();
-
     // Fetch the Find Text page.
     $this->drupalGet($this->findTextPage);
 
@@ -142,6 +140,43 @@ class FindTextAjaxTest extends WebDriverTestBase {
     $session->pageTextContains('Menu: ' . $menu_id);
     // Check that we matched and labelled it as a uri.
     $session->pageTextContains('Link Uri ' . $menu_uri);
+  }
+
+  /**
+   * Test searching node fields.
+   */
+  public function testNodeFind() {
+    $node = $this->createNode();
+    $node_title = $node->getTitle();
+    $node_id = $node->id();
+    // @todo Get text-based fields. Default-generated node
+    //   doesn't have any, so we also need to either load config
+    //   or add some fields to test.
+    $field_definitions = $node->getFieldDefinitions();
+
+    // Login.
+    $this->drupalLogin($this->user);
+    // Create a session.
+    $session = $this->assertSession();
+    // Fetch the Find Text page.
+    $this->drupalGet($this->findTextPage);
+
+    // Fill out and submit a search. We don't have any content,
+    // so we should end up with a "no results" response table.
+    $this->submitForm([
+      'needle' => $node_title,
+      'render' => TRUE,
+      'regexed' => FALSE,
+    ],
+      'search');
+    // We shouldn't get the "no results" response,
+    // because we checked for the menu title.
+    $this->assertFalse($session->waitForText('No results found.', 1000));
+    // Check that we got the right menu element.
+    $session->pageTextContains('Node: ' . $node_id);
+    // Check that we matched and labelled it as a title.
+    $session->pageTextContains('Title ' . $node_title);
+
   }
 
 }
