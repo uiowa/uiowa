@@ -11,7 +11,7 @@ use Drupal\uiowa_hours\HoursApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides a uiowa_hours filter form.
+ * Provides an uiowa_hours filter form.
  */
 class HoursFilterForm extends FormBase {
   /**
@@ -84,7 +84,7 @@ class HoursFilterForm extends FormBase {
         'aria-live' => 'assertive',
       ],
     ];
-    $formatted_results = $this->renderResults($result, $result_id, $config['display_summary']);
+    $formatted_results = $this->hoursRender($result, $result_id, $config['display_summary']);
     $form['results']['result'] = $formatted_results;
 
     return $form;
@@ -93,14 +93,14 @@ class HoursFilterForm extends FormBase {
   /**
    * Date Filter Callback.
    */
-  public function dateFilterCallback(array &$form, FormStateInterface $form_state) {
+  public function dateFilterCallback(array &$form, FormStateInterface $form_state): AjaxResponse {
     $response = new AjaxResponse();
     $date = $form_state->getValue('date');
     $resource = $form_state->getValue('resource');
-    $display_summary = $form_state->getValue('display_summary');
+    $display_summary = $form_state->getValue('display_summary') ?? FALSE;
     $result = $this->hours->getHours($resource, $date, $date);
     $result_id = $form['results']['result']['#attributes']['id'];
-    $formatted_results = $this->renderResults($result, $result_id, $display_summary);
+    $formatted_results = $this->hoursRender($result, $result_id, $display_summary);
     $response->addCommand(new HtmlCommand('#' . $result_id, $formatted_results));
     $message = $this->t('Returning resource hours information for @date.', ['@date' => $date]);
     $response->addCommand(new AnnounceCommand($message, 'polite'));
@@ -109,9 +109,21 @@ class HoursFilterForm extends FormBase {
   }
 
   /**
-   * Custom render of data.
+   * Builds hours output portion of the form.
+   *
+   * @param array $result
+   *   The result from the HoursApi data request.
+   * @param string $result_id
+   *   Unique identifier for the output.
+   * @param bool $display_summary
+   *   Configuration option to include time summary as part of output.
+   *
+   * @return array
+   *   The render array output.
+   *
+   * @see self::buildForm()
    */
-  public function renderResults($result, $result_id, $display_summary) {
+  protected function hoursRender(array $result, string $result_id, bool $display_summary) {
     $data = $result['data'];
     $start = $result['query']['start'];
     $end = $result['query']['end'];
@@ -191,9 +203,12 @@ class HoursFilterForm extends FormBase {
             '@start' => date('g:ia', strtotime($time['startHour'])),
             '@end' => date('g:ia', '00:00:00' ? strtotime($time['endHour'] . ', +1 day') : strtotime($time['endHour'])),
           ]);
+
+          // Display time summary alongside hours info if block is set to do so.
           if ($display_summary == TRUE) {
             $markup .= ' - ' . $time['summary'];
           }
+
           $render['hours'][$key]['#data']['times']['#items'][] = [
             '#markup' => $markup,
           ];
