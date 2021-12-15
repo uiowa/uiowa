@@ -42,8 +42,10 @@ class FindTextAjaxTest extends WebDriverTestBase {
 
   /**
    * The Find Text tool page.
+   *
+   * @var \Drupal\Core\GeneratedUrl
    */
-  private $find_text_page;
+  private $findTextPage;
 
   /**
    * Perform initial setup tasks that run before every test method.
@@ -53,7 +55,7 @@ class FindTextAjaxTest extends WebDriverTestBase {
     // Create a user with the find text permission.
     $this->user = $this->drupalCreateUser(['access find text']);
     // Grab the relative path to our find text page.
-    $this->find_text_page = Url::fromRoute('sitenow_find_text.search_form', [], ['absolute' => FALSE])
+    $this->findTextPage = Url::fromRoute('sitenow_find_text.search_form', [], ['absolute' => FALSE])
       ->toString();
   }
 
@@ -68,7 +70,7 @@ class FindTextAjaxTest extends WebDriverTestBase {
     $session = $this->assertSession();
 
     // Fetch the Find Text page.
-    $this->drupalGet($this->find_text_page);
+    $this->drupalGet($this->findTextPage);
     // Check that it loaded and we had access by looking for
     // its title.
     $session->pageTextContains('Find Text');
@@ -86,7 +88,6 @@ class FindTextAjaxTest extends WebDriverTestBase {
     $this->assertTrue($session->waitForText('No results found.', 1000));
   }
 
-
   /**
    * Method for creating a menu link.
    */
@@ -94,8 +95,13 @@ class FindTextAjaxTest extends WebDriverTestBase {
     /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link */
     $menu_link = $this->createMenuContentLink();
     $menu_title = $menu_link->getTitle();
-    $menu_uri = $menu_link->link->getValue()[0]['uri'];
     $menu_id = $menu_link->id();
+    $menu_uri = $menu_link->link->getValue()[0]['uri'];
+    // Some random-generated menu uris won't fully render,
+    // such as "route:<front>", as the bracketed content will be converted to
+    // "<front></front>". While this isn't ideal, it's expected,
+    // and we can still test the rest of the functionality.
+    $menu_uri = preg_replace('|<.*?>|', '', $menu_uri);
 
     // Login.
     $this->drupalLogin($this->user);
@@ -104,7 +110,7 @@ class FindTextAjaxTest extends WebDriverTestBase {
     $session = $this->assertSession();
 
     // Fetch the Find Text page.
-    $this->drupalGet($this->find_text_page);
+    $this->drupalGet($this->findTextPage);
 
     // Fill out and submit a search. We don't have any content,
     // so we should end up with a "no results" response table.
@@ -114,7 +120,8 @@ class FindTextAjaxTest extends WebDriverTestBase {
       'regexed' => FALSE,
     ],
       'search');
-    // We shouldn't get the "no results" response, because we checked for the menu title.
+    // We shouldn't get the "no results" response,
+    // because we checked for the menu title.
     $this->assertFalse($session->waitForText('No results found.', 1000));
     // Check that we got the right menu element.
     $session->pageTextContains('Menu: ' . $menu_id);
@@ -128,7 +135,8 @@ class FindTextAjaxTest extends WebDriverTestBase {
       'regexed' => FALSE,
     ],
       'search');
-    // We shouldn't get the "no results" response, because we checked for the menu uri.
+    // We shouldn't get the "no results" response,
+    // because we checked for the menu uri.
     $this->assertFalse($session->waitForText('No results found.', 1000));
     // Check that we got the right menu element.
     $session->pageTextContains('Menu: ' . $menu_id);

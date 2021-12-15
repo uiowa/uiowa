@@ -42,8 +42,10 @@ class FindTextFunctionalTest extends BrowserTestBase {
 
   /**
    * The Find Text tool page.
+   *
+   * @var \Drupal\Core\GeneratedUrl
    */
-  private $find_text_page;
+  private $findTextPage;
 
   /**
    * Perform initial setup tasks that run before every test method.
@@ -56,7 +58,7 @@ class FindTextFunctionalTest extends BrowserTestBase {
     $this->authUser = $this->drupalCreateUser($default_auth_perms);
 
     // Grab the relative path to our find text page.
-    $this->find_text_page = Url::fromRoute('sitenow_find_text.search_form', [], ['absolute' => FALSE])
+    $this->findTextPage = Url::fromRoute('sitenow_find_text.search_form', [], ['absolute' => FALSE])
       ->toString();
   }
 
@@ -72,19 +74,19 @@ class FindTextFunctionalTest extends BrowserTestBase {
 
     // Fetch the Find Text page, and check if we have access
     // as a user with the 'webmaster' role.
-    $this->drupalGet($this->find_text_page);
+    $this->drupalGet($this->findTextPage);
     $session->statusCodeEquals(200);
 
     // Logout and repeat the as anonymous user. We shouldn't
     // have access anymore.
     $this->drupalLogout();
-    $this->drupalGet($this->find_text_page);
+    $this->drupalGet($this->findTextPage);
     $session->statusCodeEquals(403);
 
     // Now check that a basic authenticated user does not have access.
     // The page should exist, but we shouldn't have access.
     $this->drupalLogin($this->authUser);
-    $this->drupalGet($this->find_text_page);
+    $this->drupalGet($this->findTextPage);
     $session->statusCodeEquals(403);
   }
 
