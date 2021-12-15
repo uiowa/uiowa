@@ -2,8 +2,8 @@
 {{ attach_library('uids_base/media') }}
 {% set attributes = attributes ?: create_attribute() %}
 {% set card_classes = ['card', 'click-container', 'block--word-break'] %}
-{% set bttn_attributes = bttn_attributes ?: create_attribute() %}
-{% set card_bttn_classes = ['bttn', 'bttn--outline', 'bttn--sans-serif'] %}
+{% set button_attributes = button_attributes ?: create_attribute() %}
+{% set card_button_classes = ['bttn', 'bttn--outline', 'bttn--sans-serif'] %}
 {% set media_attributes = media_attributes ?: create_attribute() %}
 {% set circle_button = [] %}
 
@@ -14,7 +14,7 @@
 {# The following code is to determine where a link should be attached, if it exists. #}
 {% set link_element = false %}
 {% if card_link_url is not empty %}
-  {# Set circle_bttn class if link title is empty. #}
+  {# Set circle_button class if link title is empty. #}
   {% if card_link_title is empty %}
     {% set circle_button = 'bttn--circle' %}
   {% endif %}
@@ -113,17 +113,17 @@
         {% endif %}
       {% endblock %}
 
-      {% block card_bttn %}
+      {% block card_button %}
         {% if card_link_url is not empty and visible_button  %}
             {% if link_element == 'button' %}
               {# This version is not in use #}
-              <a {{ bttn_attributes.addclass(card_bttn_classes, 'click-target') }} href="{{ card_link_url }}">
+              <a {{ button_attributes.addclass(card_button_classes, 'click-target') }} href="{{ card_link_url }}">
                 {{ card_link_title }}
                 <i role="presentation" class="fas fa-arrow-right"></i>
               </a>
             {% else %}
               {# This is used by all cards. #}
-              <div aria-hidden="true" {{ bttn_attributes.addclass(card_bttn_classes, circle_button) }}  {% if card_aria_describedby %} id="{{ card_aria_describedby }}"{% endif %}>
+              <div aria-hidden="true" {{ button_attributes.addclass(card_button_classes, circle_button) }}  {% if card_aria_describedby %} id="{{ card_aria_describedby }}"{% endif %}>
                 {{ card_link_title }}
                 <i role="presentation" class="fas fa-arrow-right"></i>
               </div>
