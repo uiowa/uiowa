@@ -189,6 +189,15 @@ class ThankYouForm extends FormBase {
       }
     }
 
+    // Add additional email if it is configured. We aren't collecting toName.
+    if ($email = $config->get('thanks.email')) {
+      $data['members'][] = array_merge($data['members'][0], [
+        'toName' => NULL,
+        'toAddress' => $email,
+        'subject' => $title . ' (Copy)',
+      ]);
+    }
+
     // Prepare the data for the request body JSON.
     $data = (object) $data;
 
