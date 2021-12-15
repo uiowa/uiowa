@@ -41,10 +41,11 @@
   set classes = [
     'headline',
     'bold-headline--serif',
-    'bold-headline',
+    'bold-headline--underline',
 ]
 %}
-<h1 {{ attributes.addClass(classes) }}>
-{% set selectedCost = content.field_grad_cost_select['#items'].getString() %}
-{{ content.field_grad_cost_select[0] }}
-</h1>
+<h2 {{ attributes.addClass(classes) }}>
+  {%- for item in items -%}
+    <span>{{ item.content }}</span>
+  {%- endfor -%}
+</h2>
