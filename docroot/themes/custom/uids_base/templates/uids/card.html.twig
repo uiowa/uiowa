@@ -5,7 +5,7 @@
 {% set button_attributes = button_attributes ?: create_attribute() %}
 {% set card_button_classes = ['bttn', 'bttn--outline', 'bttn--sans-serif'] %}
 {% set media_attributes = media_attributes ?: create_attribute() %}
-{% set visible_button = visible_button ?: %}
+{% set visible_button = visible_button ?: false %}
 
 {# The following code is to determine where a link should be attached, if it exists. #}
 {% set link_element = false %}
@@ -19,10 +19,7 @@
     {% set link_element = 'title' %}
     {# If we also have link text, then we'll show a psuedo-button. #}
     {% if card_link_title is not empty %}
-      {# If card_no_link is set, use button as link element. #}
-      {% if card_no_link %}
-        {% set link_element = 'button' %}
-      {% endif %}
+      {% set link_element = 'button' %}
     {% endif %}
   {% elseif card_link_title is not empty %}
     {# Title is not set, but there is link text, so use that instead. #}
@@ -41,7 +38,7 @@
   {% set card_aria_describedby = '' %}
 {% endif %}
 
-<div{{ attributes.addclass(card_classes) }}{% if card_no_link %} data-uids-no-link{% endif %}>
+<div{{ attributes.addclass(card_classes) }}{% if card_link_url is empty %} data-uids-no-link{% endif %}>
   {{ title_prefix }}
   {{ title_suffix }}
   {% block card_img %}
