@@ -225,9 +225,9 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    // It is possible to use the thank you form with an API key.
+    // It is possible to use the thank you form without an API key.
     if ($api_key = trim($form_state->getValue('api_key'))) {
-      // Use the api_key being submitted in the form rather than set in config.
+      // Validate the api_key being submitted in the form rather than config.
       $client = $this->dispatch->request('GET', 'client', [], [
         'headers' => [
           'x-dispatch-api-key' => $api_key,
@@ -243,6 +243,7 @@ class SettingsForm extends ConfigFormBase {
       }
     }
 
+    // Convert boolean fields for easier use in the form submission/template.
     $bools = [
       ['thanks', 'enabled'],
       ['thanks', 'supervisor'],
