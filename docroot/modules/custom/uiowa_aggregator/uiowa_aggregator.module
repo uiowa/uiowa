@@ -73,11 +73,19 @@ function uiowa_aggregator_preprocess_block(&$variables) {
       $feeds[] = $list_string_item->getString();
     }
 
-    $result = \Drupal::entityTypeManager()->getStorage('aggregator_item')->getQuery()
+    $per_page = (int) $block->get('field_uiowa_aggregator_count')->getString();
+    $show_pager = (bool) $block->get('field_uiowa_aggregator_pager')->getString();
+
+    $query = \Drupal::entityTypeManager()->getStorage('aggregator_item')->getQuery()
       ->condition('fid', $feeds, 'IN')
       ->sort('timestamp', 'DESC')
-      ->sort('iid', 'DESC')
-      ->execute();
+      ->sort('iid', 'DESC');
+
+    if (!$show_pager) {
+      $query->range(0, $per_page);
+    }
+
+    $result = $query->execute();
 
     $variables['content']['aggregator'] = [
       '#type' => 'container',
@@ -95,17 +103,19 @@ function uiowa_aggregator_preprocess_block(&$variables) {
       $items = \Drupal::entityTypeManager()->getStorage('aggregator_item')->loadMultiple($result);
 
       if ($items) {
-        $count = count($items);
-        static $element = 0;
-        $element++;
-        /** @var \Drupal\Core\Pager\PagerManager $pager */
-        $pager = \Drupal::service('pager.manager');
-        $per_page = $block->get('field_uiowa_aggregator_count')->getString();
-        $chunks = array_chunk($items, $per_page);
-        $current = $pager->createPager($count, $per_page, $element)->getCurrentPage();
-        $current_page_items = $chunks[$current];
+        // If output is paged, overwrite $items with the current chunk.
+        if ($show_pager) {
+          $count = count($items);
+          static $element = 0;
+          $element++;
+          /** @var \Drupal\Core\Pager\PagerManager $pager */
+          $pager = \Drupal::service('pager.manager');
+          $chunks = array_chunk($items, $per_page);
+          $current = $pager->createPager($count, $per_page, $element)->getCurrentPage();
+          $items = $chunks[$current];
+        }
 
-        $variables['content']['aggregator']['items'] = \Drupal::entityTypeManager()->getViewBuilder('aggregator_item')->viewMultiple($current_page_items, 'default');
+        $variables['content']['aggregator']['items'] = \Drupal::entityTypeManager()->getViewBuilder('aggregator_item')->viewMultiple($items, 'default');
 
         // Get block layout builder styles if they exist.
         if (isset($variables['elements']['#attributes']['class']) && !empty($variables['elements']['#attributes']['class'])) {
@@ -137,11 +147,13 @@ function uiowa_aggregator_preprocess_block(&$variables) {
           }
         }
 
-        $variables['content']['aggregator']['pager'] = [
-          '#type' => 'pager',
-          '#element' => $element,
-          '#quantity' => 3,
-        ];
+        if ($show_pager) {
+          $variables['content']['aggregator']['pager'] = [
+            '#type' => 'pager',
+            '#element' => $element,
+            '#quantity' => 3,
+          ];
+        }
       }
     }
     else {
