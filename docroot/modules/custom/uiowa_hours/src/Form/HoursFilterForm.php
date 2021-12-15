@@ -179,7 +179,7 @@ class HoursFilterForm extends FormBase {
               '#theme' => 'item_list',
               '#items' => [],
               '#attributes' => [
-                'class' => 'element--list-none',
+                'class' => 'element--list-none element--margin-none',
               ],
             ],
           ],
