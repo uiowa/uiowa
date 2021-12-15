@@ -109,13 +109,13 @@
       {% block card_button %}
         {% if card_link_url is not empty and visible_button  %}
           {% if link_element == 'button' %}
-            {# This version is not in use #}
+            {# Display as a link. #}
             <a {{ button_attributes.addclass(card_button_classes, 'click-target') }} href="{{ card_link_url }}">
               {{ card_link_title }}
               <i role="presentation" class="fas fa-arrow-right"></i>
             </a>
           {% else %}
-            {# This is used by all cards. #}
+            {# Display as a pseudo-link. #}
             <div aria-hidden="true" {{ button_attributes.addclass(card_button_classes) }}  {% if card_aria_describedby %} id="{{ card_aria_describedby }}"{% endif %}>
               {{ card_link_title }}
               <i role="presentation" class="fas fa-arrow-right"></i>
