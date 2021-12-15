@@ -6,6 +6,7 @@ use Drupal\Core\Url;
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 use Drupal\Tests\menu_admin_per_menu\Traits\MenuLinkContentTrait;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
+use Drupal\Tests\taxonomy\Traits\TaxonomyTestTrait;
 
 /**
  * AJAX-based tests for the SiteNow Find Text module.
@@ -15,6 +16,7 @@ use Drupal\Tests\node\Traits\NodeCreationTrait;
 class FindTextAjaxTest extends WebDriverTestBase {
   use NodeCreationTrait;
   use MenuLinkContentTrait;
+  use TaxonomyTestTrait;
 
   /**
    * Modules to install.
@@ -25,6 +27,7 @@ class FindTextAjaxTest extends WebDriverTestBase {
     'sitenow_find_text',
     'menu_link_content',
     'node',
+    'taxonomy',
   ];
 
 
@@ -149,10 +152,7 @@ class FindTextAjaxTest extends WebDriverTestBase {
     $node = $this->createNode();
     $node_title = $node->getTitle();
     $node_id = $node->id();
-    // @todo Get text-based fields. Default-generated node
-    //   doesn't have any, so we also need to either load config
-    //   or add some fields to test.
-    $field_definitions = $node->getFieldDefinitions();
+    $node_body = $node->body[0]['value'];
 
     // Login.
     $this->drupalLogin($this->user);
@@ -170,13 +170,78 @@ class FindTextAjaxTest extends WebDriverTestBase {
     ],
       'search');
     // We shouldn't get the "no results" response,
-    // because we checked for the menu title.
+    // because we checked for the node title.
     $this->assertFalse($session->waitForText('No results found.', 1000));
     // Check that we got the right menu element.
     $session->pageTextContains('Node: ' . $node_id);
     // Check that we matched and labelled it as a title.
     $session->pageTextContains('Title ' . $node_title);
 
+    // Fill out and submit a search. We don't have any content,
+    // so we should end up with a "no results" response table.
+    $this->submitForm([
+      'needle' => $node_body,
+      'render' => TRUE,
+      'regexed' => FALSE,
+    ],
+      'search');
+    // We shouldn't get the "no results" response,
+    // because we checked for the node body.
+    $this->assertFalse($session->waitForText('No results found.', 1000));
+    // Check that we got the right menu element.
+    $session->pageTextContains('Node: ' . $node_id);
+    // Check that we matched and labelled it as a title.
+    $session->pageTextContains('Body ' . $node_body);
+  }
+
+  /**
+   * Test searching taxonomy fields.
+   */
+  public function testTaxonomyFind() {
+    $vocab = $this->createVocabulary();
+    $term = $this->createTerm($vocab);
+    $term_id = $term->id();
+    $term_name = $term->getName();
+    $term_description = $term->getDescription();
+
+    // Login.
+    $this->drupalLogin($this->user);
+    // Create a session.
+    $session = $this->assertSession();
+    // Fetch the Find Text page.
+    $this->drupalGet($this->findTextPage);
+
+    // Fill out and submit a search. We don't have any content,
+    // so we should end up with a "no results" response table.
+    $this->submitForm([
+      'needle' => $term_name,
+      'render' => TRUE,
+      'regexed' => FALSE,
+    ],
+      'search');
+    // We shouldn't get the "no results" response,
+    // because we checked for the taxonomy name.
+    $this->assertFalse($session->waitForText('No results found.', 1000));
+    // Check that we got the right menu element.
+    $session->pageTextContains('Node: ' . $term_id);
+    // Check that we matched and labelled it as a title.
+    $session->pageTextContains('Name ' . $term_name);
+
+    // Fill out and submit a search. We don't have any content,
+    // so we should end up with a "no results" response table.
+    $this->submitForm([
+      'needle' => $term_description,
+      'render' => TRUE,
+      'regexed' => FALSE,
+    ],
+      'search');
+    // We shouldn't get the "no results" response,
+    // because we checked for the taxonomy description.
+    $this->assertFalse($session->waitForText('No results found.', 1000));
+    // Check that we got the right menu element.
+    $session->pageTextContains('Node: ' . $term_id);
+    // Check that we matched and labelled it as a title.
+    $session->pageTextContains('Name ' . $term_description);
   }
 
 }
