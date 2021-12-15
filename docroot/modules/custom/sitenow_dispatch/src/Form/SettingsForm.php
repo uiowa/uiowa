@@ -201,7 +201,15 @@ class SettingsForm extends ConfigFormBase {
         // Default to include if it hasn't been set yet.
         '#default_value' => $config->get('thanks.supervisor') ?? TRUE,
         '#required' => FALSE,
-        '#description' => $this->t("If included, copies will be sent to the employee's supervisor(s). Supervisor information will be retrieved automatically."),
+        '#description' => $this->t("If checked, copies will be sent to the employee's supervisor(s). Supervisor information will be retrieved automatically."),
+      ];
+
+      // Support multiple: https://www.drupal.org/project/drupal/issues/3214029.
+      $form['thanks']['email'] = [
+        '#type' => 'email',
+        '#title' => $this->t('Additional email'),
+        '#description' => $this->t('An additional email address to send a copy to.'),
+        '#default_value' => $config->get('thanks.email'),
       ];
     }
     else {
@@ -258,6 +266,7 @@ class SettingsForm extends ConfigFormBase {
         'communication' => $form_state->getValue(['thanks', 'communication']),
         'placeholder' => $form_state->getValue(['thanks', 'placeholder']),
         'supervisor' => $form_state->getValue(['thanks', 'supervisor']),
+        'email' => $form_state->getValue(['thanks', 'email']),
       ])
       ->save();
 
