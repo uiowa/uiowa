@@ -188,13 +188,6 @@ class SettingsForm extends ConfigFormBase {
         '#default_value' => $config->get('thanks.placeholder.unitAddress'),
       ];
 
-      $form['thanks']['placeholder']['footer_statement'] = [
-        '#type' => 'textarea',
-        '#title' => $this->t('Footer Statement'),
-        '#description' => $this->t('Optional statement in the below. Useful to convey statements about policies related to message.'),
-        '#default_value' => $config->get('thanks.placeholder.footer_statement'),
-      ];
-
       $form['thanks']['supervisor'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Supervisor Email'),

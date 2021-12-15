@@ -175,12 +175,18 @@ class ThankYouForm extends FormBase {
       $data['members'][0][$key] = Xss::filter($value);
     }
 
-    // If we're configured to include supervisor emails,
-    // add them to our members' data.
+    // Create a copy of the first member as we'll use this data for others.
+    $recipient = $data['members'][0];
+
+    // If we're configured to include supervisor emails, modify the recipient
+    // (first) member to denote this in the footer statement and then add the
+    // supervisor(s) to our member data.
     if ($config->get('thanks.supervisor')) {
-      // Duplicate first member to get placeholders but change to CC supervisor.
+      $data['members'][0]['footer_statement'] = $this->t('A copy of this email has been sent to your supervisor(s).');
+
+      // Duplicate recipient member data but change toName/Address and subject.
       foreach ($hr_data['supervisors'] as $supervisor) {
-        $data['members'][] = array_merge($data['members'][0], [
+        $data['members'][] = array_merge($recipient, [
           'toName' => $supervisor['first_name'] . ' ' . $supervisor['last_name'],
           'toAddress' => $supervisor['email'],
           'subject' => $title . ' (Supervisor Copy)',
@@ -188,9 +194,9 @@ class ThankYouForm extends FormBase {
       }
     }
 
-    // Add additional email if it is configured. We aren't collecting toName.
+    // Add additional email as member if it is configured with modified data.
     if ($email = $config->get('thanks.email')) {
-      $data['members'][] = array_merge($data['members'][0], [
+      $data['members'][] = array_merge($recipient, [
         'toName' => NULL,
         'toAddress' => $email,
         'subject' => $title . ' (Copy)',
