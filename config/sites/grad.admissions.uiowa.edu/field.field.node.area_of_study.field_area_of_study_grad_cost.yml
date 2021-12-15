@@ -1,0 +1,25 @@
+uuid: 460ee65a-8553-4728-9aa4-1f40b63c4e7d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_area_of_study_grad_cost
+    - node.type.area_of_study
+id: node.area_of_study.field_area_of_study_grad_cost
+field_name: field_area_of_study_grad_cost
+entity_type: node
+bundle: area_of_study
+label: 'Estimated Cost of Attendance-Page Ref'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: grad_estimated_cost
+      display_name: entity_reference_cost
+      arguments: {  }
+field_type: entity_reference

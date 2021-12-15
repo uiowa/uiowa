@@ -16,6 +16,14 @@ function grad_admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--taxonomy-term--field-college-website--colleges--default',
       'base hook' => 'field',
     ],
+    'field__block_content__field_grad_cost_date' => [
+      'template' => 'field--block-content--field-grad-cost-date',
+      'base hook' => 'field',
+    ],
+    'field__block_content__field_grad_cost_select' => [
+      'template' => 'field--block-content--field-grad-cost-select',
+      'base hook' => 'field',
+    ],
     'field__node__field_area_of_study_college__area_of_study__default' => [
       'template' => 'field--node--field-area-of-study-college--area-of-study--default',
       'base hook' => 'field',
@@ -36,6 +44,10 @@ function grad_admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'taxonomy-term--teaser',
       'base hook' => 'node',
     ],
+    // 'node__grad_costs_estimate__full' => [
+    //   'template' => 'node--grad-costs-estimate--full',
+    //   'base hook' => 'node',
+    // ],
   ];
 }
 

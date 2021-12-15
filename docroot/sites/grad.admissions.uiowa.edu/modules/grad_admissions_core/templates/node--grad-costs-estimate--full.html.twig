@@ -1,0 +1,35 @@
+{#
+/**
+ * @file
+ * Theme override to display a view of unformatted rows.
+ *
+ * Available variables:
+ * - title: The title of this group of rows. May be empty.
+ * - rows: A list of the view's row items.
+ *   - attributes: The row's HTML attributes.
+ *   - content: The row's content.
+ * - view: The view object.
+ * - default_row_class: A flag indicating whether default classes should be
+ *   used on rows.
+ *
+ * @see template_preprocess_views_view_unformatted()
+ */
+#}
+{% if title %}
+  <h3>{{ title }}</h3>
+{% endif %}
+{# {{ attach_library('uids_base/accordion') }} #}
+<nav class="nav  main--secondary--horizontal">
+    <h2 class="visually-hidden">Main navigation</h2>
+    <ul class="menu">
+      <li class="menu-item">
+        <a href="#">Example 1</a>
+      </li>
+      <li class="menu-item">
+        <a href="/international">Example 2</a>
+      </li>
+    </ul>
+  </li>
+    </ul>
+  </nav>
+

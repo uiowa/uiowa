@@ -14,16 +14,18 @@ module:
   tvi: 15
 theme: {  }
 complete_list:
+  - block_content.type.grad_cost_block
   - config_split.config_split.site
+  - core.entity_form_display.node.area_of_study.default
   - core.entity_form_display.node.grad_costs_estimate.default
   - core.entity_form_display.taxonomy_term.colleges.default
+  - core.entity_view_display.node.area_of_study.default
   - core.entity_view_display.taxonomy_term.colleges.default
   - field.field.node.area_of_study.field_area_of_study_college
   - field.field.node.area_of_study.field_area_of_study_link
   - field.storage.node.field_area_of_study_college
   - field.storage.node.field_area_of_study_link
   - field.storage.taxonomy_term.field_image
-  - metatag.metatag_defaults.node__area_of_study
   - node.type.grad_costs_estimate
   - pathauto.pattern.grad_costs_estimate
   - simple_sitemap.bundle_settings.default.node.area_of_study
@@ -32,15 +34,17 @@ complete_list:
   - taxonomy.vocabulary.colleges
   - views.view.areas_of_study
   - views.view.colleges_taxonomy_term
+  - views.view.grad_estimated_cost
   - 'core.entity_view_display.node.grad_costs_estimate.*'
   - 'field.field.node.grad_costs_estimate.*'
+  - 'field.field.block_content.grad_cost_block.*'
   - 'field.storage.node.field_grad_costs_*'
-  - 'field.storage.node.field_area_of_study_*'
-  - 'field.storage.paragraph.field_degree*'
+  - 'field.storage.block_content.field_grad_cost_*'
+  - 'field.storage.node.field_area_of_study_grad_*'
+  - 'field.field.node.area_of_study_grad_*'
   - 'core.entity_view_display.node.area_of_study.*'
   - 'core.entity_form_display.node.area_of_study.*'
   - 'field.field.taxonomy_term.colleges.*'
   - 'field.storage.taxonomy_term.field_college_*'
 partial_list:
-  - metatag.settings
   - 'user.role.*'

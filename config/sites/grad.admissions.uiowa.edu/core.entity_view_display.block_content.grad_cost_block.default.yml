@@ -1,0 +1,41 @@
+uuid: e103f970-c443-40b8-9a76-f360df66fa3c
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.grad_cost_block
+    - field.field.block_content.grad_cost_block.body
+    - field.field.block_content.grad_cost_block.field_grad_cost_date
+    - field.field.block_content.grad_cost_block.field_grad_cost_select
+  module:
+    - options
+    - text
+id: block_content.grad_cost_block.default
+targetEntityType: block_content
+bundle: grad_cost_block
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_grad_cost_date:
+    weight: 1
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_grad_cost_select:
+    weight: 0
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+hidden:
+  search_api_excerpt: true

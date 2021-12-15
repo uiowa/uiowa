@@ -1,14 +1,15 @@
-uuid: d039ea8b-ff85-4624-b6ca-43c66e49b12b
+uuid: 47a74ab7-40e0-4eee-bb4a-e89279d2520e
 langcode: en
 status: true
 dependencies:
   module:
     - node
-id: node.field_area_of_study_link_direct
-field_name: field_area_of_study_link_direct
+id: node.field_area_of_study_grad_cost
+field_name: field_area_of_study_grad_cost
 entity_type: node
-type: boolean
-settings: {  }
+type: entity_reference
+settings:
+  target_type: node
 module: core
 locked: false
 cardinality: 1

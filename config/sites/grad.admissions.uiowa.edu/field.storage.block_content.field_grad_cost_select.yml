@@ -1,0 +1,27 @@
+uuid: f9b0af4c-f9be-4c80-8faf-82416035ae72
+langcode: en
+status: true
+dependencies:
+  module:
+    - block_content
+    - options
+id: block_content.field_grad_cost_select
+field_name: field_grad_cost_select
+entity_type: block_content
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: domestic
+      label: 'US Citizens & Permanent Residents'
+    -
+      value: International
+      label: International
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
