@@ -141,8 +141,8 @@ class ThankYouForm extends FormBase {
         ]));
       }
       else {
-        $form_state->setError($form, $this->t('An error was encountered processing the form. If the problem persists, please contact the <a href=":email">ITS Help Desk</a>.', [
-          ':email' => 'mailto:its-helpdesk@uiowa.edu',
+        $form_state->setError($form, $this->t('An error was encountered processing the form. If the problem persists, please contact the <a href=":link">ITS Help Desk</a>.', [
+          ':link' => 'https://its.uiowa.edu/contact',
         ]));
       }
     }
@@ -208,8 +208,8 @@ class ThankYouForm extends FormBase {
       ],
     ]);
     if ($posted === FALSE) {
-      $this->messenger()->addError($this->t('An error was encountered processing the form. If the problem persists, please contact the <a href=":email">ITS Help Desk</a>.', [
-        ':email' => 'mailto:its-helpdesk@uiowa.edu',
+      $this->messenger()->addError($this->t('An error was encountered processing the form. If the problem persists, please contact the <a href=":link">ITS Help Desk</a>.', [
+        ':link' => 'https://its.uiowa.edu/contact',
       ]));
     }
     else {
