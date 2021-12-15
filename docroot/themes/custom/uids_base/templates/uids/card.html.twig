@@ -5,16 +5,12 @@
 {% set button_attributes = button_attributes ?: create_attribute() %}
 {% set card_button_classes = ['bttn', 'bttn--outline', 'bttn--sans-serif'] %}
 {% set media_attributes = media_attributes ?: create_attribute() %}
-{% set circle_button = [] %}
-
-{% if visible_button is empty %}
-  {% set visible_button = false %}
-{% endif %}
+{% set visible_button = visible_button ?: %}
 
 {# The following code is to determine where a link should be attached, if it exists. #}
 {% set link_element = false %}
 {% if card_link_url is not empty %}
-  {# Set circle_button class if link title is empty. #}
+  {# Add bttn--circle class if link title is empty. #}
   {% if card_link_title is empty %}
     {% set card_button_classes = card_button_classes|merge(['bttn--circle']) %}
   {% endif %}
