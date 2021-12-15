@@ -223,7 +223,7 @@ class FindTextAjaxTest extends WebDriverTestBase {
     // because we checked for the taxonomy name.
     $this->assertFalse($session->waitForText('No results found.', 1000));
     // Check that we got the right menu element.
-    $session->pageTextContains('Node: ' . $term_id);
+    $session->pageTextContains('Term: ' . $term_id);
     // Check that we matched and labelled it as a title.
     $session->pageTextContains('Name ' . $term_name);
 
@@ -241,7 +241,7 @@ class FindTextAjaxTest extends WebDriverTestBase {
     // Check that we got the right menu element.
     $session->pageTextContains('Term: ' . $term_id);
     // Check that we matched and labelled it as a title.
-    $session->pageTextContains('Name ' . $term_description);
+    $session->pageTextContains('Description ' . $term_description);
   }
 
 }

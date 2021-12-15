@@ -194,7 +194,7 @@ class SearchForm extends ConfigFormBase {
           break;
 
         case 'taxonomy_term':
-          $entity_value = new FormattableMarkup('<strong>Term:</strong> @tid (<a href="/admin/structure/menu/item/@mid/edit?destination=/admin/find-text">edit</a>)', [
+          $entity_value = new FormattableMarkup('<strong>Term:</strong> @tid (<a href="/taxonomy/term/@tid/edit?destination=/admin/find-text">edit</a>)', [
             '@tid' => $id,
           ]);
           break;
