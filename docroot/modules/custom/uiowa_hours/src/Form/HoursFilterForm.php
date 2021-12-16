@@ -61,6 +61,11 @@ class HoursFilterForm extends FormBase {
       '#value' => $config['resource'],
     ];
 
+    $form['display_summary'] = [
+      '#type' => 'hidden',
+      '#value' => $config['display_summary'],
+    ];
+
     // Date field with custom delayed ajax callback.
     if ($config['display_datepicker'] == 1) {
       $form['date'] = [
