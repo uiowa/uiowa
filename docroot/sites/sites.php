@@ -3694,3 +3694,9 @@ $sites['genome.uiowa.ddev.site'] = 'genome.uiowa.edu';
 $sites['genome.dev.drupal.uiowa.edu'] = 'genome.uiowa.edu';
 $sites['genome.stage.drupal.uiowa.edu'] = 'genome.uiowa.edu';
 $sites['genome.prod.drupal.uiowa.edu'] = 'genome.uiowa.edu';
+
+// Directory aliases for grok.lab.uiowa.edu.
+$sites['labgrok.uiowa.ddev.site'] = 'grok.lab.uiowa.edu';
+$sites['labgrok.dev.drupal.uiowa.edu'] = 'grok.lab.uiowa.edu';
+$sites['labgrok.stage.drupal.uiowa.edu'] = 'grok.lab.uiowa.edu';
+$sites['labgrok.prod.drupal.uiowa.edu'] = 'grok.lab.uiowa.edu';
