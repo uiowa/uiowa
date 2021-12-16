@@ -160,27 +160,6 @@ class SettingsForm extends ConfigFormBase {
         '#description' => $this->t('The heading to display in the email body.'),
       ];
 
-      $form['thanks']['placeholder']['row1_button_url'] = [
-        '#type' => 'url',
-        '#title' => $this->t('Row 1 Button URL'),
-        '#description' => $this->t('URL for call to action button below main content area.'),
-        '#default_value' => $config->get('thanks.placeholder.row1_button_url'),
-      ];
-
-      $form['thanks']['placeholder']['row1_button_text'] = [
-        '#type' => 'textfield',
-        '#title' => $this->t('Row 1 Button Text'),
-        '#description' => $this->t('Text for call to action button blow the main content area.'),
-        '#default_value' => $config->get('thanks.placeholder.row1_button_text'),
-      ];
-
-      $form['thanks']['placeholder']['row1_bottom_content'] = [
-        '#type' => 'textarea',
-        '#title' => $this->t('Row 1 Bottom Content'),
-        '#description' => $this->t('Content that appears below the call to action button.'),
-        '#default_value' => $config->get('thanks.placeholder.row1_bottom_content'),
-      ];
-
       $form['thanks']['placeholder']['unitAddress'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Unit Address'),
