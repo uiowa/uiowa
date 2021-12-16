@@ -33,6 +33,15 @@
   // Circle button.
 
   &[class*="bg--black"] {
+    .bttn--outline:not(.bttn--circle) {
+      &:hover:after,
+      &:focus:after {
+        [class*="bg--gray"] &,
+        [class*="bg--gold"] & {
+          background: $primary;
+        }
+      }
+    }
     .bttn--outline.bttn--circle {
       &:hover:after,
       &:focus:after {
