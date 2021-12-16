@@ -131,6 +131,10 @@ function grad_admissions_core_theme_suggestions_field_alter(array &$suggestions,
       $suggestions[] = 'field__bold_headline_label';
       break;
 
+    case 'field_area_of_study_degree_types':
+      $suggestions[] = 'field__comma_separated';
+      break;
+
   }
 }
 
@@ -158,7 +162,6 @@ function grad_admissions_core_preprocess_node(&$variables) {
   $node = $variables["node"];
   switch ($node->getType()) {
     case 'area_of_study':
-    case 'area_of_study':
       $variables['#attached']['library'][] = 'uids_base/twocol';
       $variables['#attached']['library'][] = 'grad_admissions_core/area-of-study';
       break;
@@ -171,8 +174,6 @@ function grad_admissions_core_preprocess_node(&$variables) {
  */
 function grad_admissions_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
-    case 'node_area_of_study_form':
-    case 'node_area_of_study_edit_form':
     case 'node_area_of_study_form':
     case 'node_area_of_study_edit_form':
       // Set form defaults if they exist.
