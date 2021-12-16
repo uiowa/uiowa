@@ -233,12 +233,6 @@ class SettingsForm extends ConfigFormBase {
     foreach ($bools as $bool) {
       $form_state->setValue($bool, (bool) $form_state->getValue($bool));
     }
-
-    // Filter out empty values, so they're not passed into Dispatch template.
-    $form_state->setValue(['thanks', 'placeholder'], array_filter($form_state->getValue([
-      'thanks',
-      'placeholder',
-    ])));
   }
 
   /**
