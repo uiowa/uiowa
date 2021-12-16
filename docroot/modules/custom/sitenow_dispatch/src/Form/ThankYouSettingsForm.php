@@ -91,7 +91,7 @@ class ThankYouSettingsForm extends ConfigFormBase {
     if (!$enabled) {
       $form['not_enabled'] = [
         '#markup' => $this->t('<p>The Thank You form is not enabled. Please contact the <a href=":link">ITS Help Desk</a> if you are interested in using this feature.', [
-        ':link' => 'https://its.uiowa.edu/contact',
+          ':link' => 'https://its.uiowa.edu/contact',
         ]),
       ];
     }
