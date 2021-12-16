@@ -75,23 +75,31 @@ class ThankYouSettingsForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->configFactory()->get('sitenow_dispatch.settings');
 
-    // Set the form tree to make accessing all nested values easier elsewhere.
-    $form['#tree'] = TRUE;
-
-    $form['description_text'] = [
-      '#markup' => '<p><a href="https://its.uiowa.edu/dispatch">Dispatch</a> is a web service that allows users to create and manage campaigns to generate PDF content, email messages, SMS messages, or voice calls. You must have a Dispatch <a href="https://apps.its.uiowa.edu/dispatch/help/faq#q1">client and account</a> to use certain Dispatch functionality within your site.</p>',
-    ];
-
     // Grab the current user to set access to the Thanks
     // form settings only for administrators.
     /** @var Drupal\Core\Access\AccessResultInterface $access */
     $access = $this->check->access($this->currentUser()->getAccount());
     $enabled = $config->get('thanks.enabled') ?? FALSE;
 
+    // Set the form tree to make accessing all nested values easier elsewhere.
+    $form['#tree'] = TRUE;
+
+    $form['description_text'] = [
+      '#markup' => '<p>The Thank You form creates a block you can place on a page to allow people to send an email to a University employee and their supervisor.</p>',
+    ];
+
+    if (!$enabled) {
+      $form['not_enabled'] = [
+        '#markup' => $this->t('<p>The Thank You form is not enabled. Please contact the <a href=":link">ITS Help Desk</a> if you are interested in using this feature.', [
+        ':link' => 'https://its.uiowa.edu/contact',
+        ]),
+      ];
+    }
+
     $form['thanks'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Thank You Form'),
-      '#description' => $this->t('The Thank You form creates a block you can place on a page to allow people to send an email to a University employee and their supervisor. The email uses the <a href="@link">1row x 1col curated Dispatch template</a> by default. The fields above correlate to the placeholders available in that template. The row1_content placeholder will be set to the message filled out by the person submitting the form.', [
+      '#description' => $this->t('The email uses the <a href="@link">1row x 1col curated Dispatch template</a> by default. The fields above correlate to the placeholders available in that template. The row1_content placeholder will be set to the message filled out by the person submitting the form.', [
         '@link' => 'https://apps.its.uiowa.edu/dispatch/help/curatedtemplate/UI%201%20row%20x%201%20col%20-%20Version%202',
       ]),
       '#collapsible' => TRUE,
