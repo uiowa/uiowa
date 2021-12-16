@@ -60,15 +60,19 @@ class ThankYouBlock extends BlockBase implements ContainerFactoryPluginInterface
    * {@inheritdoc}
    */
   public function build() {
-    $build['heading'] = [
-      '#theme' => 'uiowa_core_headline',
-      '#headline' => $this->configuration['headline'],
-      '#hide_headline' => $this->configuration['hide_headline'],
-      '#heading_size' => $this->configuration['heading_size'],
-      '#headline_style' => $this->configuration['headline_style'],
-    ];
+    $build = [];
 
-    $build['form'] = $this->formBuilder->getForm('\Drupal\sitenow_dispatch\Form\ThankYouForm');
+    if ($this->configFactory->get('sitenow_dispatch.settings')->get('thanks.enabled')) {
+      $build['heading'] = [
+        '#theme' => 'uiowa_core_headline',
+        '#headline' => $this->configuration['headline'],
+        '#hide_headline' => $this->configuration['hide_headline'],
+        '#heading_size' => $this->configuration['heading_size'],
+        '#headline_style' => $this->configuration['headline_style'],
+      ];
+
+      $build['form'] = $this->formBuilder->getForm('\Drupal\sitenow_dispatch\Form\ThankYouForm');
+    }
 
     return $build;
   }
