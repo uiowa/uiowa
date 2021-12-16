@@ -11,6 +11,7 @@ storage: folder
 folder: ../config/sites/grad.admissions.uiowa.edu
 module:
   grad_admissions_core: 0
+  menu_force: 1
   tvi: 15
 theme: {  }
 complete_list:
@@ -30,6 +31,7 @@ complete_list:
   - field.storage.taxonomy_term.field_image
   - node.type.area_of_study
   - node.type.grad_costs_estimate
+  - pathauto.pattern.area_of_study
   - pathauto.pattern.graduate_costs_estimate
   - simple_sitemap.bundle_settings.default.node.area_of_study
   - simple_sitemap.bundle_settings.default.node.grad_costs_estimate
@@ -37,6 +39,7 @@ complete_list:
   - taxonomy.vocabulary.colleges
   - taxonomy.vocabulary.degree_types
   - views.view.colleges_taxonomy_term
+  - views.view.grad_costs
   - views.view.grad_estimated_cost
   - pathauto.pattern.grad_costs_estimate
   - views.view.grad_areas_of_study

@@ -4,8 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.grad_costs_estimate.field_grad_costs_dom
-    - field.field.node.grad_costs_estimate.field_grad_costs_intl
-    - field.field.node.grad_costs_estimate.field_grad_costs_intl_year
+    - field.field.node.grad_costs_estimate.field_grad_costs_select
     - field.field.node.grad_costs_estimate.field_grad_costs_year
     - field.field.node.grad_costs_estimate.field_meta_tags
     - node.type.grad_costs_estimate
@@ -21,40 +20,28 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 6
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
   field_grad_costs_dom:
-    weight: 2
-    settings:
-      rows: 9
-      summary_rows: 3
-      placeholder: ''
-      show_summary: false
-    third_party_settings: {  }
-    type: text_textarea_with_summary
-    region: content
-  field_grad_costs_intl:
-    weight: 4
-    settings:
-      rows: 9
-      summary_rows: 3
-      placeholder: ''
-      show_summary: false
-    third_party_settings: {  }
-    type: text_textarea_with_summary
-    region: content
-  field_grad_costs_intl_year:
     weight: 3
     settings:
-      size: 60
+      rows: 9
+      summary_rows: 3
       placeholder: ''
+      show_summary: false
     third_party_settings: {  }
-    type: string_textfield
+    type: text_textarea_with_summary
+    region: content
+  field_grad_costs_select:
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
     region: content
   field_grad_costs_year:
-    weight: 1
+    weight: 2
     settings:
       size: 60
       placeholder: ''
@@ -62,7 +49,7 @@ content:
     type: string_textfield
     region: content
   field_meta_tags:
-    weight: 13
+    weight: 12
     settings:
       sidebar: true
     third_party_settings: {  }
@@ -70,19 +57,19 @@ content:
     region: content
   moderation_state:
     type: moderation_state_default
-    weight: 11
+    weight: 10
     settings: {  }
     region: content
     third_party_settings: {  }
   path:
     type: path
-    weight: 9
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    weight: 7
+    weight: 6
     region: content
     settings:
       display_label: true
@@ -91,12 +78,12 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 12
+    weight: 11
     region: content
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    weight: 8
+    weight: 7
     region: content
     settings:
       display_label: true
@@ -111,7 +98,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 5
+    weight: 4
     settings:
       match_operator: CONTAINS
       size: 60
@@ -120,7 +107,7 @@ content:
     region: content
     third_party_settings: {  }
   url_redirects:
-    weight: 10
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }

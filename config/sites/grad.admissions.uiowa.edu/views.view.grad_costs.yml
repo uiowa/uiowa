@@ -1,18 +1,16 @@
-uuid: 7066d756-850c-4fea-b41c-45c0bc3087fe
+uuid: 8a18ae06-f436-4bc0-9ad6-9857950e152b
 langcode: en
 status: true
 dependencies:
   config:
-    - node.type.page
-    - taxonomy.vocabulary.tags
-  content:
-    - 'taxonomy_term:tags:eae6376b-9225-46bd-818e-855d674f27d0'
+    - field.storage.node.field_grad_costs_select
+    - node.type.grad_costs_estimate
   module:
     - node
-    - taxonomy
+    - options
     - user
-id: grad_estimated_cost
-label: 'Grad Estimated Cost'
+id: grad_costs
+label: 'Grad Estimated Costs'
 module: views
 description: ''
 tag: ''
@@ -78,48 +76,62 @@ display:
       row:
         type: fields
         options:
-          default_field_elements: true
           inline: {  }
           separator: ''
           hide_empty: false
+          default_field_elements: true
       fields:
-        title:
-          id: title
-          table: node_field_data
-          field: title
-          entity_type: node
-          entity_field: title
-          label: ''
-          alter:
-            alter_text: false
-            make_link: false
-            absolute: false
-            trim: false
-            word_boundary: false
-            ellipsis: false
-            strip_tags: false
-            html: false
-          hide_empty: false
-          empty_zero: false
-          settings:
-            link_to_entity: true
-          plugin_id: field
+        field_grad_costs_select:
+          id: field_grad_costs_select
+          table: node__field_grad_costs_select
+          field: field_grad_costs_select
           relationship: none
           group_type: group
           admin_label: ''
-          exclude: false
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
           element_type: ''
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
           empty: ''
+          hide_empty: false
+          empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: string
+          type: list_default
+          settings: {  }
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -130,6 +142,72 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: true
+            text: '{{ title }} - {{ field_grad_costs_select }}'
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: false
+            ellipsis: false
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: node
+          entity_field: title
+          plugin_id: field
       filters:
         status:
           value: '1'
@@ -149,22 +227,23 @@ display:
           table: node_field_data
           field: type
           value:
-            page: page
+            grad_costs_estimate: grad_costs_estimate
           entity_type: node
           entity_field: type
           plugin_id: bundle
           expose:
             operator_limit_selection: false
             operator_list: {  }
-        tid:
-          id: tid
-          table: taxonomy_index
-          field: tid
+        field_grad_costs_select_value:
+          id: field_grad_costs_select_value
+          table: node__field_grad_costs_select
+          field: field_grad_costs_select_value
           relationship: none
           group_type: group
           admin_label: ''
           operator: or
-          value: '41'
+          value:
+            domestic: domestic
           group: 1
           exposed: false
           expose:
@@ -195,35 +274,22 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
-          type: cshs
-          limit: true
-          vid: tags
-          hierarchy: false
-          error_message: true
-          parent: null
-          level_labels: ''
-          force_deepest: false
-          save_lineage: false
-          hierarchy_depth: 0
-          required_depth: 0
-          none_label: '- Please select -'
-          plugin_id: taxonomy_index_tid
+          plugin_id: list_field
       sorts:
-        created:
-          id: created
+        title:
+          id: title
           table: node_field_data
-          field: created
-          order: DESC
-          entity_type: node
-          entity_field: created
-          plugin_id: date
+          field: title
           relationship: none
           group_type: group
           admin_label: ''
+          order: ASC
           exposed: false
           expose:
             label: ''
-          granularity: second
+          entity_type: node
+          entity_field: title
+          plugin_id: standard
       header: {  }
       footer: {  }
       empty: {  }
@@ -236,14 +302,14 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
-      tags: {  }
-  entity_reference_page:
+      tags:
+        - 'config:field.storage.node.field_grad_costs_select'
+  grad_cost_reference:
     display_plugin: entity_reference
-    id: entity_reference_page
-    display_title: 'Page Entity Reference'
+    id: grad_cost_reference
+    display_title: 'Grad Cost Entity Reference'
     position: 1
     display_options:
       display_extenders:
@@ -256,14 +322,24 @@ display:
         type: entity_reference
         options:
           search_fields:
+            field_grad_costs_select: field_grad_costs_select
             title: title
+      row:
+        type: entity_reference
+        options:
+          default_field_elements: true
+          inline:
+            field_grad_costs_select: field_grad_costs_select
+            title: title
+          separator: '-'
+          hide_empty: false
       display_description: ''
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-        - user
         - 'user.node_grants:view'
         - user.permissions
-      tags: {  }
+      tags:
+        - 'config:field.storage.node.field_grad_costs_select'

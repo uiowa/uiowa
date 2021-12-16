@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.storage.node.field_area_of_study_grad_costs
     - node.type.area_of_study
-    - node.type.grad_costs_estimate
 id: node.area_of_study.field_area_of_study_grad_costs
 field_name: field_area_of_study_grad_costs
 entity_type: node
@@ -17,13 +16,10 @@ translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:node'
+  handler: views
   handler_settings:
-    target_bundles:
-      grad_costs_estimate: grad_costs_estimate
-    sort:
-      field: _none
-      direction: ASC
-    auto_create: false
-    auto_create_bundle: ''
+    view:
+      view_name: grad_costs
+      display_name: grad_cost_reference
+      arguments: {  }
 field_type: entity_reference

@@ -1,0 +1,23 @@
+uuid: 16e6fe8d-0dcc-4c0b-8ca1-7dcf8726c3fb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_grad_costs_select
+    - node.type.grad_costs_estimate
+  module:
+    - options
+id: node.grad_costs_estimate.field_grad_costs_select
+field_name: field_grad_costs_select
+entity_type: node
+bundle: grad_costs_estimate
+label: 'Domestic or International'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: domestic
+default_value_callback: ''
+settings: {  }
+field_type: list_string
