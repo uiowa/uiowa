@@ -206,8 +206,6 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
       $nid = $node->get('nid')->value;
       $link_direct = $node->get('field_event_series_link_direct')->value;
       $source_link = $node->get('field_event_series_link')->uri;
-      $virtual = $node->get('field_event_virtual');
-      $location = $node->field_event_location->view('teaser');
 
       // If source link is set and link direct is checked, set $card_link_url to
       // source link. Otherwise, $card_link_url should be set to node link.
@@ -229,16 +227,18 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
         ],
       ];
 
-      if ($virtual->uri) {
+      // Add virtual event information, if it exists.
+      if ($style->getField($id, 'field_event_virtual')) {
         $card_meta['virtual'] = [
           '#prefix' => '<span class="card__icon"><span role="presentation" class="fas fa-laptop"></span></span>',
           '#markup' => '<span>Virtual</span>',
         ];
       }
 
-      if (!empty($location)) {
+      // Add location information, if it exists.
+      if ($style->getField($id, 'field_event_location')) {
         $card_meta['location'] = [
-          '#markup' => render($location),
+          '#markup' => $style->getField($id, 'field_event_location'),
         ];
       }
 
