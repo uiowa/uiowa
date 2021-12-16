@@ -7,6 +7,7 @@ use Drupal\Core\Ajax\AnnounceCommand;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\uiowa_hours\HoursApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -56,14 +57,20 @@ class HoursFilterForm extends FormBase {
     $form['#attached']['library'][] = 'uiowa_hours/uiowa-hours-finishedinput';
     $form['#attributes']['class'][] = 'form-inline clearfix uiowa-hours-filter-form';
 
-    $form['resource'] = [
-      '#type' => 'hidden',
-      '#value' => $config['resource'],
+    if (empty($config['headline'])) {
+      $child_heading_size = $config['child_heading_size'];
+    }
+    else {
+      $child_heading_size = HeadlineHelper::getHeadingSizeUp($config['heading_size']);
+    }
+    $block_config = [
+      'resource' => $config['resource'],
+      'display_summary' => $config['display_summary'],
+      'child_heading_size' => $child_heading_size,
     ];
-
-    $form['display_summary'] = [
+    $form['block_config'] = [
       '#type' => 'hidden',
-      '#value' => $config['display_summary'],
+      '#value' => $block_config,
     ];
 
     // Date field with custom delayed ajax callback.
@@ -89,7 +96,7 @@ class HoursFilterForm extends FormBase {
         'aria-live' => 'assertive',
       ],
     ];
-    $formatted_results = $this->hoursRender($result, $result_id, $config['display_summary']);
+    $formatted_results = $this->hoursRender($result, $result_id, $block_config);
     $form['results']['result'] = $formatted_results;
 
     return $form;
@@ -101,11 +108,10 @@ class HoursFilterForm extends FormBase {
   public function dateFilterCallback(array &$form, FormStateInterface $form_state): AjaxResponse {
     $response = new AjaxResponse();
     $date = $form_state->getValue('date');
-    $resource = $form_state->getValue('resource');
-    $display_summary = $form_state->getValue('display_summary') ?? FALSE;
-    $result = $this->hours->getHours($resource, $date, $date);
+    $block_config = $form_state->getValue('block_config');
+    $result = $this->hours->getHours($block_config['resource'], $date, $date);
     $result_id = $form['results']['result']['#attributes']['id'];
-    $formatted_results = $this->hoursRender($result, $result_id, $display_summary);
+    $formatted_results = $this->hoursRender($result, $result_id, $block_config);
     $response->addCommand(new HtmlCommand('#' . $result_id, $formatted_results));
     $message = $this->t('Returning resource hours information for @date.', ['@date' => $date]);
     $response->addCommand(new AnnounceCommand($message, 'polite'));
@@ -120,15 +126,15 @@ class HoursFilterForm extends FormBase {
    *   The result from the HoursApi data request.
    * @param string $result_id
    *   Unique identifier for the output.
-   * @param bool $display_summary
-   *   Configuration option to include time summary as part of output.
+   * @param array $block_config
+   *   Additional configuration needed for render.
    *
    * @return array
    *   The render array output.
    *
    * @see self::buildForm()
    */
-  protected function hoursRender(array $result, string $result_id, bool $display_summary) {
+  protected function hoursRender(array $result, string $result_id, array $block_config) {
     $data = $result['data'];
     $start = $result['query']['start'];
     $end = $result['query']['end'];
@@ -191,6 +197,7 @@ class HoursFilterForm extends FormBase {
             'class' => $card_classes,
           ],
           '#data' => [
+            'child_heading_size' => $block_config['child_heading_size'],
             'date' => date('F d, Y', strtotime($key)),
             'times' => [
               '#theme' => 'item_list',
@@ -210,7 +217,7 @@ class HoursFilterForm extends FormBase {
           ]);
 
           // Display time summary alongside hours info if block is set to do so.
-          if ($display_summary == TRUE) {
+          if ($block_config['display_summary'] == TRUE) {
             $markup .= ' - ' . $time['summary'];
           }
 
