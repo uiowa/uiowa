@@ -164,7 +164,7 @@ class ThankYouSettingsForm extends ConfigFormBase {
       $form['thanks']['placeholder']['footer_statement'] = [
         '#type' => 'hidden',
         '#value' => $this->t('This is a copy of a Thank You form submission from the @website website.', [
-          '@website' => $this->config('system.site')->get('name'),
+          '@website' => $config->get('thanks.placeholder.unit'),
         ]),
       ];
 
