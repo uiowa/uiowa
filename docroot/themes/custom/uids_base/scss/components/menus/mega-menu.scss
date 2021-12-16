@@ -25,7 +25,7 @@ ul.sf-menu.sf-mega-menu li {
 .block-superfish .menu.sf-mega-menu ul li .nolink {
   @include breakpoint(menu) {
     padding: .325rem 0;
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 }
 
@@ -91,8 +91,11 @@ ul.sf-mega-menu.sf-accordion li li.sf-depth-2.sfHover > ul {
     width: 100%;
     display: grid;
     gap: $md;
-    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr) );
-    padding: $md 0;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr) );
+    padding: $md;
+    @include breakpoint(container) {
+      padding: $md 0;
+    }
   }
 
   @include breakpoint(container) {
