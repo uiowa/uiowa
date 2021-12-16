@@ -90,11 +90,6 @@ class SettingsForm extends ConfigFormBase {
         'value' => $api_key,
       ],
       '#description' => $this->t('A valid Dispatch client API key. See the Dispatch <a href="https://apps.its.uiowa.edu/dispatch/help/api">API key documentation</a> for more information.'),
-      '#states' => [
-        'required' => [
-          ':input[name="thanks[enabled]"]' => ['unchecked' => TRUE],
-        ],
-      ],
     ];
 
     if ($api_key && $client = $config->get('client')) {
