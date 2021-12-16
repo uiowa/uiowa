@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\layout_builder_custom\Traits;
+namespace Drupal\Tests\uiowa_core\Traits;
 
 use Drupal\Core\Config\FileStorage;
 
