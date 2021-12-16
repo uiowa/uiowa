@@ -3,7 +3,6 @@
 namespace Drupal\Tests\sitenow_events\Kernel;
 
 use Drupal\Tests\BrowserTestBase;
-use Drupal\Tests\layout_builder_custom\Traits\ConfigSplitTestTrait;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
 
 /**

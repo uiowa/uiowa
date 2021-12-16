@@ -5,13 +5,13 @@ namespace Drupal\Tests\layout_builder_custom\Traits;
 use Drupal\Core\Config\FileStorage;
 
 /**
- * Trait ConfigSplitTestTrait.
- *
  * A trait for enabling a config split in a test.
  */
 trait ConfigSplitTestTrait {
 
   /**
+   * The CLI service.
+   *
    * @var null|\Drupal\config_split\ConfigSplitCliService
    */
   protected $cliService = NULL;
@@ -19,7 +19,10 @@ trait ConfigSplitTestTrait {
   /**
    * Enable a config split.
    *
-   * @param $split_name
+   * @param string $split_name
+   *   The split being enabled.
+   * @param null|\Drupal\user\UserInterface $user
+   *   The user to give permissions to.
    */
   public function enableConfigSplit($split_name, $user = NULL) {
     // @todo Add check that split exists.
@@ -63,9 +66,7 @@ trait ConfigSplitTestTrait {
    * A mock io object for testing.
    */
   protected function cliIo() {
-    /**
-     * Anonymous function to mock $io calls.
-     */
+    // Anonymous function to mock $io calls.
     $io = new class() {
 
       /**
@@ -74,6 +75,7 @@ trait ConfigSplitTestTrait {
       public function __call($string, $arguments) {
         return '';
       }
+
     };
 
     return $io;
