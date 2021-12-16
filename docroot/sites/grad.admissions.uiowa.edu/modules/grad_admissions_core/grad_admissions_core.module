@@ -57,37 +57,37 @@ function grad_admissions_core_preprocess_layout(&$variables) {
   $layout = $variables['layout'];
 
   // Process the header layout.
-
-    $node = \Drupal::routeMatch()->getParameter('node');
-    $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
-    if ($node instanceof NodeInterface) {
-      if (in_array($node->getType(), [
-        'area_of_study',
-      ])) {
-        if (!isset($variables['banner_attributes'])) {
-          $variables['banner_settings'] = [];
-        }
+  $node = \Drupal::routeMatch()->getParameter('node');
+  $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
+  if ($node instanceof NodeInterface) {
+    if (in_array($node->getType(), [
+      'area_of_study',
+    ])) {
+      if (!isset($variables['banner_attributes'])) {
+        $variables['banner_settings'] = [];
       }
-      switch ($node->getType()) {
-        case 'area_of_study':
-          // @todo Move this to admissions_core_preprocess_node().
-          $variables['#attached']['library'][] = 'grad_admissions_core/area-of-study';
+    }
+    switch ($node->getType()) {
+      case 'area_of_study':
+        // @todo Move this to admissions_core_preprocess_node().
+        $variables['#attached']['library'][] = 'grad_admissions_core/area-of-study';
 
-          if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+        if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
 
-            // Set the featured image display.
-            $variables['featured_image_display'] = 'small';
+          // Set the featured image display.
+          $variables['featured_image_display'] = 'small';
 
-            // Set banner defaults.
-            $variables['banner_settings']['transparent'] = TRUE;
-            $variables['banner_settings']['horizontal_align'] = 'center';
-            $variables['banner_settings']['vertical_align'] = 'center';
-          }
-          break;
+          // Set banner defaults.
+          $variables['banner_settings']['transparent'] = TRUE;
+          $variables['banner_settings']['horizontal_align'] = 'center';
+          $variables['banner_settings']['vertical_align'] = 'center';
+        }
+        break;
 
     }
   }
 }
+
 /**
  * Implements hook_preprocess_HOOK().
  */
