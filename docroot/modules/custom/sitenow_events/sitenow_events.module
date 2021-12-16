@@ -231,7 +231,7 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
       if ($style->getField($id, 'field_event_virtual')) {
         $card_meta['virtual'] = [
           '#prefix' => '<span class="card__icon"><span role="presentation" class="fas fa-laptop"></span></span>',
-          '#markup' => '<span>Virtual</span>',
+          '#markup' => $style->getField($id, 'field_event_virtual'),
         ];
       }
 
