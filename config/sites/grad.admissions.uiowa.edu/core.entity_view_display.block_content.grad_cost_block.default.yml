@@ -7,9 +7,130 @@ dependencies:
     - field.field.block_content.grad_cost_block.body
     - field.field.block_content.grad_cost_block.field_grad_cost_date
     - field.field.block_content.grad_cost_block.field_grad_cost_select
+    - system.menu.main
   module:
+    - layout_builder
+    - menu_block
     - options
     - text
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: true
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          layout_builder_styles_style:
+            0: ''
+            1: section_margin_edge_to_edge
+            section_padding_remove_default_padding: section_padding_remove_default_padding
+          context_mapping: {  }
+        components:
+          -
+            uuid: 8507540b-6b53-40d4-bb0f-d0efde054a9a
+            region: content
+            configuration:
+              id: 'menu_block:main'
+              label: null
+              provider: menu_block
+              label_display: null
+              follow: true
+              follow_parent: active
+              level: 2
+              depth: 0
+              expand_all_items: false
+              parent: 'main:'
+              suggestion: main
+              label_type: block
+              label_link: false
+              context_mapping: {  }
+            additional:
+              layout_builder_styles_style:
+                block_menu_horizontal: block_menu_horizontal
+                0: null
+            weight: 0
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+        components:
+          -
+            uuid: b355577a-ac61-47ac-ad3f-15244966b8bc
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:block_content:grad_cost_block:field_grad_cost_select'
+              formatter:
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+                type: list_default
+            additional: {  }
+            weight: 5
+          -
+            uuid: 5a9486a9-b1ac-4d45-bd85-caaa70beb759
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:block_content:grad_cost_block:field_grad_cost_date'
+              formatter:
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: 6
+          -
+            uuid: 4fce8173-79fa-4850-b00c-774c1e3a9dc7
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:block_content:grad_cost_block:body'
+              formatter:
+                label: hidden
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+            additional: {  }
+            weight: 7
+          -
+            uuid: ee908090-d55f-4b61-939f-d65efdd1b766
+            region: content
+            configuration:
+              id: 'menu_block:main'
+              label: null
+              provider: menu_block
+              label_display: null
+              follow: true
+              follow_parent: child
+              level: 2
+              depth: 0
+              expand_all_items: false
+              parent: 'main:'
+              suggestion: main
+              label_type: block
+              label_link: false
+              context_mapping: {  }
+            additional:
+              layout_builder_styles_style:
+                block_menu_horizontal: block_menu_horizontal
+                0: null
+            weight: 8
+        third_party_settings: {  }
 id: block_content.grad_cost_block.default
 targetEntityType: block_content
 bundle: grad_cost_block

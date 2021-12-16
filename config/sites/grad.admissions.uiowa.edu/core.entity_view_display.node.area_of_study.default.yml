@@ -1,4 +1,4 @@
-uuid: aabd03f8-a36f-441d-9119-16c494934e7e
+uuid: b2ed992a-7b1a-463e-9b6c-e5b1fb5370ef
 langcode: en
 status: true
 dependencies:
@@ -6,15 +6,10 @@ dependencies:
     - field.field.node.area_of_study.body
     - field.field.node.area_of_study.field_area_of_study_college
     - field.field.node.area_of_study.field_area_of_study_degree_types
-    - field.field.node.area_of_study.field_area_of_study_delivery
     - field.field.node.area_of_study.field_area_of_study_grad_cost
     - field.field.node.area_of_study.field_area_of_study_grad_costs
     - field.field.node.area_of_study.field_area_of_study_grad_intro
     - field.field.node.area_of_study.field_area_of_study_link
-    - field.field.node.area_of_study.field_area_of_study_link_direct
-    - field.field.node.area_of_study.field_area_of_study_locations
-    - field.field.node.area_of_study.field_area_of_study_source_link
-    - field.field.node.area_of_study.field_area_of_study_synonyms
     - field.field.node.area_of_study.field_image
     - field.field.node.area_of_study.field_meta_tags
     - node.type.area_of_study
@@ -23,7 +18,6 @@ dependencies:
     - layout_builder_restrictions
     - link
     - metatag
-    - options
     - text
     - user
   theme:
@@ -43,7 +37,7 @@ third_party_settings:
           context_mapping: {  }
         components:
           -
-            uuid: 35224c4a-3f33-4671-b13f-76b08b653b7d
+            uuid: ea2d2477-d8a1-44d4-923b-e353ffebb9e7
             region: content
             configuration:
               id: 'field_block:node:area_of_study:title'
@@ -51,7 +45,7 @@ third_party_settings:
               provider: layout_builder
               label_display: null
               formatter:
-                label: visually_hidden
+                label: above
                 type: string
                 settings:
                   link_to_entity: false
@@ -62,7 +56,7 @@ third_party_settings:
             additional: {  }
             weight: 1
           -
-            uuid: 3c2d3fa9-e9f3-4d6f-96df-4bbe0ffc3afd
+            uuid: 4a25a635-29f8-44f3-9724-f4400f05b46f
             region: content
             configuration:
               id: 'field_block:node:area_of_study:field_image'
@@ -73,18 +67,61 @@ third_party_settings:
                 label: hidden
                 type: entity_reference_entity_view
                 settings:
-                  view_mode: full__ultrawide
+                  view_mode: large__ultrawide
                 third_party_settings: {  }
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
             weight: 2
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          layout_builder_styles_style:
+            0: ''
+            1: section_margin_edge_to_edge
+            section_padding_remove_default_padding: section_padding_remove_default_padding
+            section_alignment_start: section_alignment_start
+          context_mapping: {  }
+        components: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          layout_builder_styles_style:
+            0: ''
+            1: section_margin_fixed_width_container
+            section_alignment_start: section_alignment_start
+          context_mapping: {  }
+        components:
           -
-            uuid: 27c65192-6b41-441c-b58d-aa8f26567783
+            uuid: 4fb8c2f6-f01e-4c1b-87af-5a533652eb11
             region: content
             configuration:
-              id: 'field_block:node:area_of_study:field_area_of_study_grad_cost'
+              id: 'field_block:node:area_of_study:body'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 1
+          -
+            uuid: d22c7371-08c3-4351-9e3c-fd25fc74f1b8
+            region: content
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_degree_types'
               label: null
               provider: layout_builder
               label_display: null
@@ -93,13 +130,17 @@ third_party_settings:
                 type: entity_reference_label
                 settings:
                   link: true
-                third_party_settings: {  }
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ','
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 3
-        third_party_settings: {  }
+            weight: 0
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
       -
         layout_id: layout_twocol
         layout_settings:
@@ -113,25 +154,7 @@ third_party_settings:
           context_mapping: {  }
         components:
           -
-            uuid: 13c7b390-b016-4f90-9324-c2867fed341c
-            region: first
-            configuration:
-              id: 'field_block:node:area_of_study:field_area_of_study_grad_intro'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: above
-                type: text_default
-                settings: {  }
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: 0
-          -
-            uuid: 8bf8b3ad-754d-451d-b092-d4d44a88c8c5
+            uuid: 3a16357a-499c-481b-bbe0-9fb894722bb6
             region: second
             configuration:
               id: 'field_block:node:area_of_study:field_area_of_study_college'
@@ -152,10 +175,28 @@ third_party_settings:
             additional: {  }
             weight: 0
           -
-            uuid: f76fa819-b15e-4b8c-a912-9567c56a1373
+            uuid: 69d74fb7-6b3a-4083-8e18-b91aa2a2bcee
             region: first
             configuration:
-              id: 'field_block:node:area_of_study:field_area_of_study_grad_costs'
+              id: 'field_block:node:area_of_study:field_area_of_study_grad_intro'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: above
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 2
+          -
+            uuid: 5e6497ee-4e6c-4172-96d7-639a2f11cffe
+            region: first
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_grad_cost'
               label: null
               provider: layout_builder
               label_display: null
@@ -169,29 +210,14 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 1
-        third_party_settings: {  }
+            weight: 3
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
   layout_builder_restrictions:
     allowed_block_categories: {  }
     entity_view_mode_restriction:
-      whitelisted_blocks:
-        'Chaos Tools': {  }
-        'Custom blocks': {  }
-        Devel: {  }
-        Forms: {  }
-        'Inline blocks': {  }
-        Lists: {  }
-        'Lists (Views)': {  }
-        Menus: {  }
-        Restricted: {  }
-        'Site custom': {  }
-        'SiteNow Dispatch': {  }
-        Superfish: {  }
-        System:
-          - system_breadcrumb_block
-        User: {  }
-        Webform: {  }
-        core: {  }
+      whitelisted_blocks: {  }
       blacklisted_blocks: {  }
       allowed_layouts:
         - layout_onecol
@@ -214,12 +240,12 @@ content:
   body:
     label: hidden
     type: text_default
-    weight: 2
+    weight: 0
     settings: {  }
     third_party_settings: {  }
     region: content
   field_area_of_study_college:
-    weight: 23
+    weight: 2
     label: above
     settings:
       link: true
@@ -227,22 +253,15 @@ content:
     type: entity_reference_label
     region: content
   field_area_of_study_degree_types:
-    weight: 17
+    weight: 8
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
     region: content
-  field_area_of_study_delivery:
-    weight: 20
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
-    region: content
   field_area_of_study_grad_cost:
-    weight: 24
+    weight: 7
     label: above
     settings:
       link: true
@@ -250,7 +269,7 @@ content:
     type: entity_reference_label
     region: content
   field_area_of_study_grad_costs:
-    weight: 21
+    weight: 6
     label: above
     settings:
       link: true
@@ -258,32 +277,14 @@ content:
     type: entity_reference_label
     region: content
   field_area_of_study_grad_intro:
-    weight: 22
+    weight: 5
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
-  field_area_of_study_link_direct:
-    weight: 14
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-    region: content
-  field_area_of_study_locations:
-    weight: 16
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_area_of_study_source_link:
-    weight: 15
+  field_area_of_study_link:
+    weight: 1
     label: above
     settings:
       trim_length: 80
@@ -294,34 +295,21 @@ content:
     third_party_settings: {  }
     type: link
     region: content
-  field_area_of_study_synonyms:
-    weight: 19
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: basic_string
-    region: content
   field_image:
-    weight: 1
-    label: hidden
+    weight: 3
+    label: above
     settings:
-      view_mode: medium__square
-      link: false
+      link: true
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    type: entity_reference_label
     region: content
   field_meta_tags:
-    weight: 18
+    weight: 4
     label: above
     settings: {  }
     third_party_settings: {  }
     type: metatag_empty_formatter
     region: content
-  links:
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
 hidden:
-  field_area_of_study_link: true
+  links: true
   search_api_excerpt: true

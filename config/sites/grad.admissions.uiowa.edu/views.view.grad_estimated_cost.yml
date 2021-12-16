@@ -6,7 +6,7 @@ dependencies:
     - node.type.page
     - taxonomy.vocabulary.tags
   content:
-    - 'taxonomy_term:tags:b24bc9a0-89c8-443e-94ef-91efec9c92be'
+    - 'taxonomy_term:tags:eae6376b-9225-46bd-818e-855d674f27d0'
   module:
     - node
     - taxonomy
@@ -160,13 +160,54 @@ display:
           id: tid
           table: taxonomy_index
           field: tid
-          value:
-            - 43
-          vid: tags
-          plugin_id: taxonomy_index_tid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: '41'
+          group: 1
+          exposed: false
           expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
             operator_limit_selection: false
             operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: cshs
+          limit: true
+          vid: tags
+          hierarchy: false
+          error_message: true
+          parent: null
+          level_labels: ''
+          force_deepest: false
+          save_lineage: false
+          hierarchy_depth: 0
+          required_depth: 0
+          none_label: '- Please select -'
+          plugin_id: taxonomy_index_tid
       sorts:
         created:
           id: created

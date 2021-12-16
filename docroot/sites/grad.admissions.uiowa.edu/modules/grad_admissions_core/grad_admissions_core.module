@@ -6,6 +6,8 @@
  */
 
 use Drupal\Core\Render\Element;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\node\NodeInterface;
 
 /**
  * Implements hook_theme().
@@ -24,8 +26,8 @@ function grad_admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--block-content--field-grad-cost-select',
       'base hook' => 'field',
     ],
-    'field__node__field_area_of_study_college__area_of_study__default' => [
-      'template' => 'field--node--field-area-of-study-college--area-of-study--default',
+    'field__node__field_area_of_study_college__area_of_study' => [
+      'template' => 'field--node--field-area-of-study-college--grad-area-of-study',
       'base hook' => 'field',
     ],
     'field__node__title__grad_costs_estimate___custom' => [
@@ -47,6 +49,45 @@ function grad_admissions_core_theme($existing, $type, $theme, $path) {
   ];
 }
 
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function grad_admissions_core_preprocess_layout(&$variables) {
+  /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
+  $layout = $variables['layout'];
+
+  // Process the header layout.
+
+    $node = \Drupal::routeMatch()->getParameter('node');
+    $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
+    if ($node instanceof NodeInterface) {
+      if (in_array($node->getType(), [
+        'area_of_study',
+      ])) {
+        if (!isset($variables['banner_attributes'])) {
+          $variables['banner_settings'] = [];
+        }
+      }
+      switch ($node->getType()) {
+        case 'area_of_study':
+          // @todo Move this to admissions_core_preprocess_node().
+          $variables['#attached']['library'][] = 'grad_admissions_core/area-of-study';
+
+          if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+
+            // Set the featured image display.
+            $variables['featured_image_display'] = 'small';
+
+            // Set banner defaults.
+            $variables['banner_settings']['transparent'] = TRUE;
+            $variables['banner_settings']['horizontal_align'] = 'center';
+            $variables['banner_settings']['vertical_align'] = 'center';
+          }
+          break;
+
+    }
+  }
+}
 /**
  * Implements hook_preprocess_HOOK().
  */
@@ -117,8 +158,25 @@ function grad_admissions_core_preprocess_node(&$variables) {
   $node = $variables["node"];
   switch ($node->getType()) {
     case 'area_of_study':
+    case 'area_of_study':
       $variables['#attached']['library'][] = 'uids_base/twocol';
       $variables['#attached']['library'][] = 'grad_admissions_core/area-of-study';
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function grad_admissions_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'node_area_of_study_form':
+    case 'node_area_of_study_edit_form':
+    case 'node_area_of_study_form':
+    case 'node_area_of_study_edit_form':
+      // Set form defaults if they exist.
+      _sitenow_node_form_defaults($form, $form_state);
       break;
 
   }

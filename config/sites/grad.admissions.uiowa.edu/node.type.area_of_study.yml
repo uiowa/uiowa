@@ -1,0 +1,23 @@
+uuid: 5c164816-c45a-402d-ba1a-17b7c048cec6
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+    - node_revision_delete
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+  node_revision_delete:
+    minimum_revisions_to_keep: 10
+    minimum_age_to_delete: 0
+    when_to_delete: 0
+name: 'Area of Study'
+type: area_of_study
+description: 'Use <em>area of study</em> for majors, minors, etc. that will be searchable and filterable on the areas of study block.'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: false

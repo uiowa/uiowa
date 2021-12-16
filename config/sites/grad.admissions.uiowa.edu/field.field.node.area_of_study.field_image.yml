@@ -1,29 +1,29 @@
-uuid: 3d3c71f0-f175-46fe-9c37-b96f8b33d44d
+uuid: 7f95778e-f175-4f7c-93a8-d0361d854ad4
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_area_of_study_grad_costs
+    - field.storage.node.field_image
+    - media.type.image
     - node.type.area_of_study
-    - node.type.grad_costs_estimate
-id: node.area_of_study.field_area_of_study_grad_costs
-field_name: field_area_of_study_grad_costs
+id: node.area_of_study.field_image
+field_name: field_image
 entity_type: node
 bundle: area_of_study
-label: 'Estimated Cost of Attendance'
+label: 'Featured image'
 description: ''
 required: false
 translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:node'
+  handler: 'default:media'
   handler_settings:
     target_bundles:
-      grad_costs_estimate: grad_costs_estimate
+      image: image
     sort:
       field: _none
       direction: ASC
-    auto_create: false
+    auto_create: true
     auto_create_bundle: ''
 field_type: entity_reference

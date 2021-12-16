@@ -1,4 +1,4 @@
-uuid: 0f529cf5-6d89-47ac-aa10-a2f69db2b6dd
+uuid: 27f33599-aa74-4829-8ba2-e7fe79d53cba
 langcode: en
 status: true
 dependencies:
@@ -6,7 +6,14 @@ dependencies:
     - field.storage.node.field_area_of_study_grad_intro
     - node.type.area_of_study
   module:
+    - allowed_formats
     - text
+third_party_settings:
+  allowed_formats:
+    filtered_html: filtered_html
+    minimal: '0'
+    full_html: '0'
+    plain_text: '0'
 id: node.area_of_study.field_area_of_study_grad_intro
 field_name: field_area_of_study_grad_intro
 entity_type: node
@@ -14,7 +21,7 @@ bundle: area_of_study
 label: 'Estimated Cost of Attendance Intro'
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings: {  }

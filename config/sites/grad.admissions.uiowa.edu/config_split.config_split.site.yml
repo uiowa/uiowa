@@ -16,34 +16,40 @@ theme: {  }
 complete_list:
   - block_content.type.grad_cost_block
   - config_split.config_split.site
-  - core.entity_form_display.node.area_of_study.default
   - core.entity_form_display.node.grad_costs_estimate.default
   - core.entity_form_display.taxonomy_term.colleges.default
   - core.entity_view_display.node.area_of_study.default
   - core.entity_view_display.taxonomy_term.colleges.default
   - field.field.node.area_of_study.field_area_of_study_college
+  - field.field.node.area_of_study.field_area_of_study_degree_types
   - field.field.node.area_of_study.field_area_of_study_link
+  - field.field.node.area_of_study.field_image
   - field.storage.node.field_area_of_study_college
+  - field.storage.node.field_area_of_study_degree_types
   - field.storage.node.field_area_of_study_link
   - field.storage.taxonomy_term.field_image
+  - node.type.area_of_study
   - node.type.grad_costs_estimate
-  - pathauto.pattern.grad_costs_estimate
+  - pathauto.pattern.graduate_costs_estimate
   - simple_sitemap.bundle_settings.default.node.area_of_study
   - simple_sitemap.bundle_settings.default.node.grad_costs_estimate
   - simple_sitemap.bundle_settings.default.taxonomy_term.colleges
   - taxonomy.vocabulary.colleges
-  - views.view.areas_of_study
+  - taxonomy.vocabulary.degree_types
   - views.view.colleges_taxonomy_term
   - views.view.grad_estimated_cost
+  - pathauto.pattern.grad_costs_estimate
+  - views.view.grad_areas_of_study
+  - block.block.estimatedcosts
   - 'core.entity_view_display.node.grad_costs_estimate.*'
+  - 'core.entity_view_display.node.area_of_study.*'
+  - 'core.entity_form_display.node.area_of_study.*'
   - 'field.field.node.grad_costs_estimate.*'
+  - 'field.field.node.area_of_study.*'
   - 'field.field.block_content.grad_cost_block.*'
   - 'field.storage.node.field_grad_costs_*'
   - 'field.storage.block_content.field_grad_cost_*'
-  - 'field.storage.node.field_area_of_study_grad_*'
-  - 'field.field.node.area_of_study_grad_*'
-  - 'core.entity_view_display.node.area_of_study.*'
-  - 'core.entity_form_display.node.area_of_study.*'
+  - 'field.storage.node.field_area_of_study*'
   - 'field.field.taxonomy_term.colleges.*'
   - 'field.storage.taxonomy_term.field_college_*'
 partial_list:
