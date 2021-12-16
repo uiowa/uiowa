@@ -180,7 +180,7 @@ class ThankYouForm extends FormBase {
 
     // If we're configured to include supervisor emails, modify the recipient
     // (first) member to denote this in the footer statement and then add the
-    // supervisor(s) to our member data.
+    // supervisor(s) to our member data. Otherwise, set it to an empty string.
     if ($config->get('thanks.supervisor')) {
       $data['members'][0]['footer_statement'] = $this->t('A copy of this email has been sent to your supervisor(s).');
 
@@ -192,6 +192,9 @@ class ThankYouForm extends FormBase {
           'subject' => $title . ' (Supervisor Copy)',
         ]);
       }
+    }
+    else {
+      $data['members'][0]['footer_statement'] = '';
     }
 
     // Add additional email as member if it is configured with modified data.
