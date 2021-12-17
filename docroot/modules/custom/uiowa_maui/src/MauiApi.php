@@ -81,12 +81,12 @@ class MauiApi {
       $uri .= "?{$query}";
     }
 
-    // Merge additional options with default.
-    $options = array_merge($options, [
+    // Merge additional options with default but allow overriding.
+    $options = array_merge([
       'headers' => [
-        'Content-type' => 'application/json',
+        'Accept' => 'application/json',
       ],
-    ]);
+    ], $options);
 
     // Create a hash for the CID. Can always be decoded for debugging purposes.
     $hash = base64_encode($uri . serialize($options));
