@@ -39,6 +39,23 @@ class FilesystemTest extends UnitTestCase {
   }
 
   /**
+   * Test that app aliases do not have a files path set.
+   */
+  public function testAppAliasesDoNotHaveFilesPath() {
+    $config = YamlMunge::parseFile($this->root . '/../blt/blt.yml');
+
+    foreach ($config['uiowa']['applications'] as $app => $attrs) {
+      $config = YamlMunge::parseFile($this->root . "/../drush/sites/$app.site.yml");
+
+      foreach (['local', 'dev',' test', 'prod'] as $env) {
+        if (isset($config[$env]['paths'])) {
+          $this->assertArrayNotHasKey('files', $config[$env]['paths']);
+        }
+      }
+    }
+  }
+
+  /**
    * Test that the robots.txt file does not exist.
    */
   public function testRobotsTxtDoesNotExist() {
