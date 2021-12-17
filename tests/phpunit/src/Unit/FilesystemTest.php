@@ -47,7 +47,7 @@ class FilesystemTest extends UnitTestCase {
     foreach ($config['uiowa']['applications'] as $app => $attrs) {
       $config = YamlMunge::parseFile($this->root . "/../drush/sites/$app.site.yml");
 
-      foreach (['local', 'dev',' test', 'prod'] as $env) {
+      foreach (['local', 'dev', ' test', 'prod'] as $env) {
         if (isset($config[$env]['paths'])) {
           $this->assertArrayNotHasKey('files', $config[$env]['paths']);
         }
