@@ -41,7 +41,7 @@ class FilesystemTest extends UnitTestCase {
 
     foreach ($files->getIterator() as $file) {
       $config = YamlMunge::parseFile($file->getRealPath());
-      $this->assertEquals('/var/www/html/docroot', $config['local']['root']);
+      $this->assertEquals('/var/www/html/docroot', $config['local']['root'], "$file");
     }
   }
 
