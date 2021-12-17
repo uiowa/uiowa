@@ -46,6 +46,10 @@ function grad_admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--body--area-of-study',
       'base hook' => 'field',
     ],
+    'field__node__title__area_of_study___custom' => [
+      'template' => 'field--node--title--area-of-study---custom',
+      'base hook' => 'field',
+    ],
     'taxonomy_term__teaser' => [
       'template' => 'taxonomy-term--teaser',
       'base hook' => 'node',
@@ -58,38 +62,55 @@ function grad_admissions_core_theme($existing, $type, $theme, $path) {
  */
 function grad_admissions_core_preprocess_layout(&$variables) {
   /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
-  $layout = $variables['layout'];
+    $layout = $variables['layout'];
 
-  // Process the header layout.
-  $node = \Drupal::routeMatch()->getParameter('node');
-  $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
-  if ($node instanceof NodeInterface) {
-    if (in_array($node->getType(), [
-      'area_of_study',
-    ])) {
-      if (!isset($variables['banner_attributes'])) {
-        $variables['banner_settings'] = [];
+    // Process the header layout.
+    if ($layout->id() === 'layout_header') {
+      $node = \Drupal::routeMatch()->getParameter('node');
+      $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
+      if ($node instanceof NodeInterface) {
+        if (in_array($node->getType(), [
+          'area_of_study',
+          'grad_costs_estimate',
+        ])) {
+          if (!isset($variables['banner_attributes'])) {
+            $variables['banner_settings'] = [];
+          }
+        }
+        switch ($node->getType()) {
+          case 'area_of_study':
+          case 'grad_costs_estimate':
+            // @todo Move this to admissions_core_preprocess_node().
+            $variables['#attached']['library'][] = 'grad_admissions_core/area-of-study';
+  
+            if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+  
+              // Set the featured image display.
+              $variables['featured_image_display'] = 'small';
+  
+              // Set banner defaults.
+              $variables['banner_settings']['transparent'] = TRUE;
+              $variables['banner_settings']['horizontal_align'] = 'center';
+              $variables['banner_settings']['vertical_align'] = 'center';
+            }
+            break;
+  
+          // case 'student_profile':
+          //   if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+  
+          //     // Set the featured image display.
+          //     $variables['featured_image_display'] = 'large';
+  
+          //     // Set banner defaults.
+          //     $variables['banner_settings']['transparent'] = TRUE;
+          //     $variables['banner_settings']['horizontal_align'] = 'center';
+          //     $variables['banner_settings']['vertical_align'] = 'bottom';
+          //   }
+          //   break;
+  
+        }
       }
     }
-    switch ($node->getType()) {
-      case 'area_of_study':
-        // @todo Move this to admissions_core_preprocess_node().
-        $variables['#attached']['library'][] = 'grad_admissions_core/area-of-study';
-
-        if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
-
-          // Set the featured image display.
-          $variables['featured_image_display'] = 'small';
-
-          // Set banner defaults.
-          $variables['banner_settings']['transparent'] = TRUE;
-          $variables['banner_settings']['horizontal_align'] = 'center';
-          $variables['banner_settings']['vertical_align'] = 'center';
-        }
-        break;
-
-    }
-  }
 }
 
 /**

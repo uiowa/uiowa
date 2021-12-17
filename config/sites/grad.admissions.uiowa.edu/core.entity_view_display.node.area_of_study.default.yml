@@ -30,22 +30,39 @@ third_party_settings:
       -
         layout_id: layout_header
         layout_settings:
-          label: ''
-          layout_builder_styles_style:
-            - ''
-            - section_margin_edge_to_edge
+          label: Header
+          layout_builder_styles_style: {  }
           context_mapping: {  }
         components:
+          -
+            uuid: cc0f4251-92f6-4ee8-ad6e-2d6f15d05d60
+            region: background
+            configuration:
+              id: 'field_block:node:area_of_study:field_image'
+              label: 'Featured Image'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: visually_hidden
+                type: entity_reference_entity_view
+                settings:
+                  view_mode: full__ultrawide
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 2
           -
             uuid: ea2d2477-d8a1-44d4-923b-e353ffebb9e7
             region: content
             configuration:
               id: 'field_block:node:area_of_study:title'
-              label: null
+              label: Title
               provider: layout_builder
-              label_display: null
+              label_display: '0'
               formatter:
-                label: above
+                label: visually_hidden
                 type: string
                 settings:
                   link_to_entity: false
@@ -54,26 +71,25 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 1
+            weight: -9
           -
-            uuid: 4a25a635-29f8-44f3-9724-f4400f05b46f
+            uuid: 34475db3-f594-43a3-9ac9-21d7f57d97dd
             region: content
             configuration:
-              id: 'field_block:node:area_of_study:field_image'
+              id: 'field_block:node:area_of_study:moderation_state'
               label: null
               provider: layout_builder
               label_display: null
               formatter:
-                label: hidden
-                type: entity_reference_entity_view
-                settings:
-                  view_mode: large__ultrawide
+                label: visually_hidden
+                type: content_moderation_state
+                settings: {  }
                 third_party_settings: {  }
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 2
+            weight: -8
         third_party_settings: {  }
       -
         layout_id: layout_onecol
@@ -116,7 +132,20 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 1
+            weight: 0
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          layout_builder_styles_style:
+            0: ''
+            1: section_margin_fixed_width_container
+            section_alignment_start: section_alignment_start
+          context_mapping: {  }
+        components:
           -
             uuid: d22c7371-08c3-4351-9e3c-fd25fc74f1b8
             region: content
@@ -260,6 +289,11 @@ content:
     label: hidden
     type: text_default
     weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  content_moderation_control:
+    weight: -20
     settings: {  }
     third_party_settings: {  }
     region: content
