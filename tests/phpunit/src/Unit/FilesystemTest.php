@@ -26,6 +26,17 @@ class FilesystemTest extends UnitTestCase {
   }
 
   /**
+   * Each local Drush alias should have a correct Drupal root.
+   */
+  public function testLocalAliasesDrupalRoot() {
+    foreach (Multisite::getAllSites($this->root . '/..') as $site) {
+      $id = Multisite::getIdentifier("https://$site");
+      $config = YamlMunge::parseFile($this->root . "/../drush/sites/$id.site.yml");
+      $this->assertEquals('/var/www/html/docroot', $config['local']['root']);
+    }
+  }
+
+  /**
    * Test that the robots.txt file does not exist.
    */
   public function testRobotsTxtDoesNotExist() {
