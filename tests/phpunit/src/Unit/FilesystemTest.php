@@ -168,7 +168,7 @@ EOD;
       $expected_files_path = "sites/{$site}/files";
 
       foreach (['local', 'dev', 'test', 'prod'] as $env) {
-        if (isset($yaml[$env]['paths'])) {
+        if (isset($yaml[$env]['paths'], $yaml[$env]['paths']['files'])) {
           $this->assertEquals($expected_files_path, $yaml[$env]['paths']['files']);
         }
       }
