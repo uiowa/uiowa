@@ -1088,29 +1088,6 @@ function layout_builder_custom_views_plugins_display_alter(&$displays) {
 }
 
 /**
- * Implements hook_views_pre_build().
- */
-function layout_builder_custom_views_pre_build(ViewExecutable $view) {
-  // Dynamically set pager id using SharedTempStore.
-  // Temp workaround until https://www.drupal.org/project/drupal/issues/3225987.
-  // @todo Allow view config to override this (non-zero pager id?).
-  $pager = $view->display_handler->getOption('pager');
-  if (isset($pager) && $pager['type'] == 'full') {
-    $tempstore = \Drupal::service('tempstore.shared')->get('layout_builder_custom_views_pager_elements');
-    $pager_element = $tempstore->get($view->dom_id);
-    if ($pager_element) {
-      $pager['options']['id'] = $pager_element;
-    }
-    else {
-      $pager_manager = \Drupal::service('pager.manager');
-      $tempstore->set($view->dom_id, $pager_manager->getMaxPagerElementId() + 1);
-      $pager['options']['id'] = $tempstore->get($view->dom_id);
-    }
-    $view->display_handler->setOption('pager', $pager);
-  }
-}
-
-/**
  * Implements hook_views_pre_render().
  */
 function layout_builder_custom_views_pre_render(ViewExecutable $view) {
