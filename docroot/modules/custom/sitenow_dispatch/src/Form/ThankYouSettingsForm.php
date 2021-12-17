@@ -73,6 +73,7 @@ class ThankYouSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $form = parent::buildForm($form, $form_state);
     $config = $this->configFactory()->get('sitenow_dispatch.settings');
 
     // Grab the current user to set access to the Thanks
@@ -88,12 +89,14 @@ class ThankYouSettingsForm extends ConfigFormBase {
       '#markup' => '<p>The Thank You form creates a block you can place on a page to allow people to send an email to a University employee and their supervisor.</p>',
     ];
 
-    if (!$enabled && !$access) {
+    if (!$enabled && $access->isForbidden()) {
       $form['not_enabled'] = [
         '#markup' => $this->t('<p>The Thank You form is not enabled. Please contact the <a href=":link">ITS Help Desk</a> if you are interested in using this feature.', [
           ':link' => 'https://its.uiowa.edu/contact',
         ]),
       ];
+
+      $form['actions']['submit']['#access'] = FALSE;
     }
 
     $form['thanks'] = [
@@ -191,7 +194,7 @@ class ThankYouSettingsForm extends ConfigFormBase {
       ]);
     }
 
-    return parent::buildForm($form, $form_state);
+    return $form;
   }
 
   /**
