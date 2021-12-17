@@ -238,7 +238,7 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
       // Add location information, if it exists.
       if ($style->getField($id, 'field_event_location')) {
         $card_meta['location'] = [
-          '#markup' => '<div class="field--name-field-event-location"><span class="card__icon"><i role="presentation" class="fas fa-map-marker-alt" aria-hidden="true"></i></span>' . $style->getField($id, 'field_event_location') . '</span>',
+          '#markup' => '<div class="field--name-field-event-location"><span class="card__icon"><i role="presentation" class="fas fa-map-marker-alt" aria-hidden="true"></i></span>' . $style->getField($id, 'field_event_location') . '</div>',
         ];
       }
 
