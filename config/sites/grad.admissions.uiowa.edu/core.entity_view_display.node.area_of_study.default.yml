@@ -3,9 +3,11 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.base_field_override.node.area_of_study.title
     - field.field.node.area_of_study.body
     - field.field.node.area_of_study.field_area_of_study_area
     - field.field.node.area_of_study.field_area_of_study_college
+    - field.field.node.area_of_study.field_area_of_study_contact
     - field.field.node.area_of_study.field_area_of_study_degree_types
     - field.field.node.area_of_study.field_area_of_study_grad_cost
     - field.field.node.area_of_study.field_area_of_study_grad_costs
@@ -55,7 +57,7 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 2
+            weight: 3
           -
             uuid: ea2d2477-d8a1-44d4-923b-e353ffebb9e7
             region: content
@@ -121,7 +123,7 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 1
+            weight: 2
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -137,6 +139,69 @@ third_party_settings:
             section_alignment_start: section_alignment_start
           context_mapping: {  }
         components:
+          -
+            uuid: 69d74fb7-6b3a-4083-8e18-b91aa2a2bcee
+            region: first
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_grad_intro'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: above
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 5
+          -
+            uuid: c5f27ef1-1b66-4904-8e3f-d17409773b3a
+            region: first
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_grad_costs'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: entity_reference_label
+                settings:
+                  link: true
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 6
+          -
+            uuid: fea77d7c-b726-45ed-a297-284e5df0c732
+            region: second
+            configuration:
+              id: applybutton_block
+              label: null
+              provider: grad_admissions_core
+              label_display: null
+              context_mapping: {  }
+            additional: {  }
+            weight: 0
+          -
+            uuid: 8c9e3a91-20be-44d5-a9b2-c872748c6d3b
+            region: second
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:area_of_study:field_area_of_study_contact'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: text_default
+            additional: {  }
+            weight: 3
           -
             uuid: 3a16357a-499c-481b-bbe0-9fb894722bb6
             region: second
@@ -158,65 +223,6 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: 2
-          -
-            uuid: 69d74fb7-6b3a-4083-8e18-b91aa2a2bcee
-            region: first
-            configuration:
-              id: 'field_block:node:area_of_study:field_area_of_study_grad_intro'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: above
-                type: text_default
-                settings: {  }
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: 3
-          -
-            uuid: c5f27ef1-1b66-4904-8e3f-d17409773b3a
-            region: first
-            configuration:
-              id: 'field_block:node:area_of_study:field_area_of_study_grad_costs'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: hidden
-                type: entity_reference_label
-                settings:
-                  link: true
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: 5
-          -
-            uuid: fea77d7c-b726-45ed-a297-284e5df0c732
-            region: second
-            configuration:
-              id: applybutton_block
-              label: null
-              provider: grad_admissions_core
-              label_display: null
-              context_mapping: {  }
-            additional: {  }
-            weight: 0
-          -
-            uuid: 8e140f4b-fcf2-4c40-bd87-660b458374d9
-            region: second
-            configuration:
-              id: requestinfobutton_block
-              label: null
-              provider: grad_admissions_core
-              label_display: null
-              context_mapping: {  }
-            additional: {  }
-            weight: 1
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -270,6 +276,13 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_area_of_study_contact:
+    weight: 11
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
     region: content
   field_area_of_study_degree_types:
     weight: 8
