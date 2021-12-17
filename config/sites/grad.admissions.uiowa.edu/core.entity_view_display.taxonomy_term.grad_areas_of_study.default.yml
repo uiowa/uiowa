@@ -1,0 +1,22 @@
+uuid: fedf9943-c75e-4c91-b1c5-5e1899121d9d
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.grad_areas_of_study
+  module:
+    - text
+id: taxonomy_term.grad_areas_of_study.default
+targetEntityType: taxonomy_term
+bundle: grad_areas_of_study
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  search_api_excerpt: true

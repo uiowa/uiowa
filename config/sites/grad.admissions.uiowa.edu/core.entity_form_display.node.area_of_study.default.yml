@@ -4,17 +4,18 @@ status: true
 dependencies:
   config:
     - field.field.node.area_of_study.body
+    - field.field.node.area_of_study.field_area_of_study_area
     - field.field.node.area_of_study.field_area_of_study_college
     - field.field.node.area_of_study.field_area_of_study_degree_types
     - field.field.node.area_of_study.field_area_of_study_grad_cost
     - field.field.node.area_of_study.field_area_of_study_grad_costs
     - field.field.node.area_of_study.field_area_of_study_grad_intro
     - field.field.node.area_of_study.field_area_of_study_link
+    - field.field.node.area_of_study.field_area_of_study_see_also
     - field.field.node.area_of_study.field_image
     - field.field.node.area_of_study.field_meta_tags
     - node.type.area_of_study
   module:
-    - allowed_formats
     - content_moderation
     - link
     - media_library
@@ -28,7 +29,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 1
+    weight: 2
     settings:
       rows: 9
       summary_rows: 3
@@ -38,12 +39,12 @@ content:
     region: content
   created:
     type: datetime_timestamp
-    weight: 8
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_area_of_study_college:
-    weight: 2
+  field_area_of_study_area:
+    weight: 0
     settings:
       match_operator: CONTAINS
       match_limit: 10
@@ -52,7 +53,7 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
-  field_area_of_study_degree_types:
+  field_area_of_study_college:
     weight: 3
     settings:
       match_operator: CONTAINS
@@ -62,14 +63,24 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
+  field_area_of_study_degree_types:
+    weight: 4
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
   field_area_of_study_grad_costs:
-    weight: 6
+    weight: 7
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_area_of_study_grad_intro:
-    weight: 5
+    weight: 6
     settings:
       rows: 3
       placeholder: ''
@@ -80,22 +91,30 @@ content:
     type: text_textarea
     region: content
   field_area_of_study_link:
-    weight: 4
+    weight: 5
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
     region: content
+  field_area_of_study_see_also:
+    weight: 18
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
   field_image:
-    weight: 15
+    weight: 16
     settings:
       media_types: {  }
     third_party_settings: {  }
     type: media_library_widget
     region: content
   field_meta_tags:
-    weight: 16
+    weight: 17
     settings:
       sidebar: true
     third_party_settings: {  }
@@ -103,13 +122,13 @@ content:
     region: content
   moderation_state:
     type: moderation_state_default
-    weight: 13
+    weight: 14
     settings: {  }
     region: content
     third_party_settings: {  }
   path:
     type: path
-    weight: 11
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -117,26 +136,26 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 9
+    weight: 10
     region: content
     third_party_settings: {  }
   status:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 14
+    weight: 15
     region: content
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 10
+    weight: 11
     region: content
     third_party_settings: {  }
   title:
     type: string_textfield
-    weight: 0
+    weight: 1
     region: content
     settings:
       size: 60
@@ -144,7 +163,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 7
+    weight: 8
     settings:
       match_operator: CONTAINS
       size: 60
@@ -153,7 +172,7 @@ content:
     region: content
     third_party_settings: {  }
   url_redirects:
-    weight: 12
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
