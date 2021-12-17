@@ -340,6 +340,13 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             $form['actions']['submit']['#access'] = FALSE;
           }
           break;
+
+        case 'sitenow_dispatch_thankyou_form':
+          // This block has to be explicitly enabled by an administrator.
+          if (!\Drupal::config('sitenow_dispatch.settings')->get('thanks.enabled')) {
+            $form['actions']['submit']['#access'] = FALSE;
+          }
+          break;
       }
 
       $form['settings'] += [
@@ -1034,29 +1041,6 @@ function layout_builder_custom_views_plugins_display_alter(&$displays) {
   // Only swap views block for v3 sites because it breaks things.
   if ($is_v2 === FALSE && !empty($displays['block']['class']) && $displays['block']['class'] == Block::class) {
     $displays['block']['class'] = ListBlock::class;
-  }
-}
-
-/**
- * Implements hook_views_pre_build().
- */
-function layout_builder_custom_views_pre_build(ViewExecutable $view) {
-  // Dynamically set pager id using SharedTempStore.
-  // Temp workaround until https://www.drupal.org/project/drupal/issues/3225987.
-  // @todo Allow view config to override this (non-zero pager id?).
-  $pager = $view->display_handler->getOption('pager');
-  if (isset($pager) && $pager['type'] == 'full') {
-    $tempstore = \Drupal::service('tempstore.shared')->get('layout_builder_custom_views_pager_elements');
-    $pager_element = $tempstore->get($view->dom_id);
-    if ($pager_element) {
-      $pager['options']['id'] = $pager_element;
-    }
-    else {
-      $pager_manager = \Drupal::service('pager.manager');
-      $tempstore->set($view->dom_id, $pager_manager->getMaxPagerElementId() + 1);
-      $pager['options']['id'] = $tempstore->get($view->dom_id);
-    }
-    $view->display_handler->setOption('pager', $pager);
   }
 }
 
