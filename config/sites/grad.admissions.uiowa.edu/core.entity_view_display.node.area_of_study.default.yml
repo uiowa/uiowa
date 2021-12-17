@@ -169,7 +169,7 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 1
+            weight: 2
           -
             uuid: 69d74fb7-6b3a-4083-8e18-b91aa2a2bcee
             region: first
@@ -188,25 +188,6 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: 3
-          -
-            uuid: 5e6497ee-4e6c-4172-96d7-639a2f11cffe
-            region: first
-            configuration:
-              id: 'field_block:node:area_of_study:field_area_of_study_grad_cost'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: hidden
-                type: entity_reference_label
-                settings:
-                  link: true
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: 4
           -
             uuid: c5f27ef1-1b66-4904-8e3f-d17409773b3a
             region: first
@@ -237,6 +218,17 @@ third_party_settings:
               context_mapping: {  }
             additional: {  }
             weight: 0
+          -
+            uuid: 8e140f4b-fcf2-4c40-bd87-660b458374d9
+            region: second
+            configuration:
+              id: requestinfobutton_block
+              label: null
+              provider: grad_admissions_core
+              label_display: null
+              context_mapping: {  }
+            additional: {  }
+            weight: 1
         third_party_settings:
           layout_builder_lock:
             lock: {  }
