@@ -4,6 +4,7 @@ namespace Uiowa\Tests\PHPUnit\Unit;
 
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Drupal\Tests\UnitTestCase;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 use Uiowa\Multisite;
 
@@ -29,11 +30,17 @@ class FilesystemTest extends UnitTestCase {
    * Each local Drush alias should have a correct Drupal root.
    */
   public function testLocalAliasesDrupalRoot() {
-    $sites = ['default'] + Multisite::getAllSites($this->root . '/..');
+    $finder = new Finder();
 
-    foreach ($sites as $site) {
-      $id = Multisite::getIdentifier("https://$site");
-      $config = YamlMunge::parseFile($this->root . "/../drush/sites/$id.site.yml");
+    $files = $finder
+      ->in($this->root . '/../drush/sites/')
+      ->files()
+      ->depth('< 1')
+      ->notName('README.md')
+      ->sortByName();
+
+    foreach ($files->getIterator() as $file) {
+      $config = YamlMunge::parseFile($file->getRealPath());
       $this->assertEquals('/var/www/html/docroot', $config['local']['root']);
     }
   }
