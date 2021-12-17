@@ -721,12 +721,14 @@
   & .block-webform {
 
     input[id^='edit-actions-submit'],
+    input[id^='edit-actions'],
     input[id^='edit-submit'],
     input#edit-actions-submit {
       @include bttn--secondary;
       border: 1px solid $secondary;
       @include bttn--focus;
       color: $white !important;
+      background-color: $secondary !important;
 
       &:after {
         background-color: $primary;
@@ -741,6 +743,8 @@
   & .block-webform {
 
     input[id^='edit-actions-submit'],
+    input[id^='edit-actions'],
+    input[id^='edit-submit'],
     input#edit-actions-submit {
       @include bttn--primary;
       border: 1px solid $primary;
