@@ -3,9 +3,11 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.grad_costs_estimate.field_grad_costs_aos
     - field.field.node.grad_costs_estimate.field_grad_costs_dom
     - field.field.node.grad_costs_estimate.field_grad_costs_select
     - field.field.node.grad_costs_estimate.field_grad_costs_year
+    - field.field.node.grad_costs_estimate.field_image
     - field.field.node.grad_costs_estimate.field_meta_tags
     - node.type.grad_costs_estimate
     - system.menu.main
@@ -24,24 +26,41 @@ third_party_settings:
     enabled: true
     sections:
       -
-        layout_id: layout_onecol
+        layout_id: layout_header
         layout_settings:
-          label: ''
-          layout_builder_styles_style:
-            - ''
-            - section_margin_fixed_width_container
+          label: Header
+          layout_builder_styles_style: {  }
           context_mapping: {  }
         components:
+          -
+            uuid: 87bd982e-7ded-4e7d-b628-7ebe621a4a00
+            region: background
+            configuration:
+              id: 'field_block:node:grad_costs_estimate:field_image'
+              label: 'Featured Image'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: visually_hidden
+                type: entity_reference_entity_view
+                settings:
+                  view_mode: full__ultrawide
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 2
           -
             uuid: ea65801e-5f65-4f17-a445-699c9baf35f8
             region: content
             configuration:
               id: 'field_block:node:grad_costs_estimate:title'
-              label: null
+              label: Title
               provider: layout_builder
-              label_display: null
+              label_display: '0'
               formatter:
-                label: hidden
+                label: visually_hidden
                 type: string
                 settings:
                   link_to_entity: false
@@ -50,7 +69,25 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 0
+            weight: -8
+          -
+            uuid: e0e746e6-23c4-4a36-b565-fd986ba15507
+            region: content
+            configuration:
+              id: 'field_block:node:grad_costs_estimate:moderation_state'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: content_moderation_state
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: -6
         third_party_settings: {  }
       -
         layout_id: layout_header
@@ -86,16 +123,6 @@ third_party_settings:
                 block_menu_horizontal: block_menu_horizontal
                 0: null
             weight: 0
-        third_party_settings: {  }
-      -
-        layout_id: layout_onecol
-        layout_settings:
-          label: ''
-          layout_builder_styles_style:
-            - ''
-            - section_margin_edge_to_edge
-          context_mapping: {  }
-        components: {  }
         third_party_settings: {  }
       -
         layout_id: layout_onecol
@@ -163,22 +190,13 @@ third_party_settings:
             weight: 5
         third_party_settings: {  }
       -
-        layout_id: layout_twocol_section
-        layout_settings:
-          label: ''
-          column_widths: 50-50
-          layout_builder_styles_style:
-            0: ''
-            1: section_margin_edge_to_edge
-            restore_default_spacing: restore_default_spacing
-            section_alignment_start: section_alignment_start
-          context_mapping: {  }
-        components: {  }
-        third_party_settings: {  }
-      -
         layout_id: layout_onecol
         layout_settings:
           label: ''
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+          context_mapping: {  }
         components: {  }
         third_party_settings: {  }
   layout_builder_restrictions:
@@ -226,7 +244,16 @@ content:
     third_party_settings: {  }
     type: string
     region: content
+  field_image:
+    weight: 5
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
 hidden:
+  field_grad_costs_aos: true
   field_meta_tags: true
   links: true
   search_api_excerpt: true

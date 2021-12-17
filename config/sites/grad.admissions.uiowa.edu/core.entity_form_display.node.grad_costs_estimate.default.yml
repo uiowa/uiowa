@@ -3,13 +3,16 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.grad_costs_estimate.field_grad_costs_aos
     - field.field.node.grad_costs_estimate.field_grad_costs_dom
     - field.field.node.grad_costs_estimate.field_grad_costs_select
     - field.field.node.grad_costs_estimate.field_grad_costs_year
+    - field.field.node.grad_costs_estimate.field_image
     - field.field.node.grad_costs_estimate.field_meta_tags
     - node.type.grad_costs_estimate
   module:
     - content_moderation
+    - media_library
     - metatag
     - path
     - text
@@ -48,8 +51,15 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
-  field_meta_tags:
+  field_image:
     weight: 12
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+    type: media_library_widget
+    region: content
+  field_meta_tags:
+    weight: 13
     settings:
       sidebar: true
     third_party_settings: {  }
@@ -111,4 +121,5 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_grad_costs_aos: true

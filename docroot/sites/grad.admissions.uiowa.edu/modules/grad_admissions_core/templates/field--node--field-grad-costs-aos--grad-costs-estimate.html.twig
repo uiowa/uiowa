@@ -37,17 +37,21 @@
  * @see template_preprocess_field()
  */
 #}
+
 {%
   set classes = [
-  'text-align-center',
-  'headline',
-  'bold-headline',
-  'bold-headline--highlight',
-  'headline--highlight',
+  'card--list',
+  'bg--white',
+  'card--alignment-left',
+  'card--media-left',
+  'card',
 ]
 %}
+
+{{ attach_library('uids_base/card') }}
+
 <h1 {{ attributes.addClass(classes) }}>
   {%- for item in items -%}
-    <span>{{ item.content }}</span>
+    <a href="{{ item.content['#url'] }}" class="bttn bttn--outline bttn--sans-serif">{{ item.content['#title']|render }}<i role="presentation" class="fas fa-arrow-right"></i></a>
   {%- endfor -%}
 </h1>

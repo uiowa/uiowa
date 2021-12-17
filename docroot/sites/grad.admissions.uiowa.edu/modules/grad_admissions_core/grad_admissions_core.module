@@ -18,14 +18,6 @@ function grad_admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--taxonomy-term--field-college-website--colleges--default',
       'base hook' => 'field',
     ],
-    'field__block_content__field_grad_cost_date' => [
-      'template' => 'field--block-content--field-grad-cost-date',
-      'base hook' => 'field',
-    ],
-    'field__block_content__field_grad_cost_select' => [
-      'template' => 'field--block-content--field-grad-cost-select',
-      'base hook' => 'field',
-    ],
     'field__node__field_area_of_study_college__area_of_study' => [
       'template' => 'field--node--field-area-of-study-college--grad-area-of-study',
       'base hook' => 'field',
@@ -82,32 +74,19 @@ function grad_admissions_core_preprocess_layout(&$variables) {
           case 'grad_costs_estimate':
             // @todo Move this to admissions_core_preprocess_node().
             $variables['#attached']['library'][] = 'grad_admissions_core/area-of-study';
-  
+
             if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
-  
+
               // Set the featured image display.
               $variables['featured_image_display'] = 'small';
-  
+
               // Set banner defaults.
               $variables['banner_settings']['transparent'] = TRUE;
               $variables['banner_settings']['horizontal_align'] = 'center';
               $variables['banner_settings']['vertical_align'] = 'center';
             }
             break;
-  
-          // case 'student_profile':
-          //   if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
-  
-          //     // Set the featured image display.
-          //     $variables['featured_image_display'] = 'large';
-  
-          //     // Set banner defaults.
-          //     $variables['banner_settings']['transparent'] = TRUE;
-          //     $variables['banner_settings']['horizontal_align'] = 'center';
-          //     $variables['banner_settings']['vertical_align'] = 'bottom';
-          //   }
-          //   break;
-  
+
         }
       }
     }
@@ -201,6 +180,8 @@ function grad_admissions_core_form_alter(&$form, FormStateInterface $form_state,
   switch ($form_id) {
     case 'node_area_of_study_form':
     case 'node_area_of_study_edit_form':
+    case 'node_grad_costs_estimate_form':
+    case 'node_grad_costs_estimate_edit_form':
       // Set form defaults if they exist.
       _sitenow_node_form_defaults($form, $form_state);
       break;
