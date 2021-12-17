@@ -443,6 +443,13 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             $form['actions']['submit']['#access'] = FALSE;
           }
           break;
+
+        case 'sitenow_dispatch_thankyou_form':
+          // This block has to be explicitly enabled by an administrator.
+          if (!\Drupal::config('sitenow_dispatch.settings')->get('thanks.enabled')) {
+            $form['actions']['submit']['#access'] = FALSE;
+          }
+          break;
       }
 
       $form['settings'] += [
