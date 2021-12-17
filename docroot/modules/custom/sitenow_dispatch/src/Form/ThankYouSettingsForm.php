@@ -88,7 +88,7 @@ class ThankYouSettingsForm extends ConfigFormBase {
       '#markup' => '<p>The Thank You form creates a block you can place on a page to allow people to send an email to a University employee and their supervisor.</p>',
     ];
 
-    if (!$enabled) {
+    if (!$enabled && !$access) {
       $form['not_enabled'] = [
         '#markup' => $this->t('<p>The Thank You form is not enabled. Please contact the <a href=":link">ITS Help Desk</a> if you are interested in using this feature.', [
           ':link' => 'https://its.uiowa.edu/contact',
