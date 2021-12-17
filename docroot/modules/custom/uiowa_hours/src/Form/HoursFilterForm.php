@@ -168,6 +168,7 @@ class HoursFilterForm extends FormBase {
           'class' => $card_classes,
         ],
         '#data' => [
+          'child_heading_size' => $block_config['child_heading_size'],
           'date' => $this->t('@start@end', [
             '@start' => date('F d, Y', $start),
             '@end' => $end == $start ? NULL : ' - ' . date('F d, Y', $end),
