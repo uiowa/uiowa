@@ -200,7 +200,6 @@ function grad_admissions_core_preprocess_node(&$variables) {
   $node = $variables["node"];
   switch ($node->getType()) {
     case 'area_of_study':
-      $variables['#attached']['library'][] = 'uids_base/twocol';
       $variables['#attached']['library'][] = 'grad_admissions_core/area-of-study';
       break;
 
