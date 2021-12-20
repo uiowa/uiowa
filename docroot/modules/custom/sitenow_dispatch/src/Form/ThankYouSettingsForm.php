@@ -162,15 +162,6 @@ class ThankYouSettingsForm extends ConfigFormBase {
         '#default_value' => $config->get('thanks.placeholder.unitAddress'),
       ];
 
-      // This is as a disclaimer in the various emails. It is dynamically
-      // overridden for the recipient depending on the supervisor config.
-      $form['thanks']['placeholder']['footer_statement'] = [
-        '#type' => 'hidden',
-        '#value' => $this->t('This is a copy of a Thank You form submission from the @website website.', [
-          '@website' => $config->get('thanks.placeholder.unit'),
-        ]),
-      ];
-
       $form['thanks']['supervisor'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Supervisor Email'),

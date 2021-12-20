@@ -577,4 +577,27 @@ EOD;
     $this->setSchemaVersion(1015);
   }
 
+  /**
+   * Update 1016.
+   *
+   * @Update(
+   *   version = "1016",
+   *   description = "Update local Drush alias root path."
+   * )
+   */
+  protected function update1016() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+
+    foreach ($sites as $host) {
+      $id = Multisite::getIdentifier("https://$host");
+      $path = "$root/drush/sites/$id.site.yml";
+      $yaml = YamlMunge::parseFile($path);
+      $yaml['local']['root'] = '/var/www/html/docroot';
+      YamlMunge::writeFile($path, $yaml);
+    }
+
+    $this->setSchemaVersion(1016);
+  }
+
 }
