@@ -1,0 +1,13 @@
+services:
+  uiowa_hours.api:
+    class: Drupal\uiowa_hours\HoursApi
+    arguments: ['@logger.channel.uiowa_hours', '@cache.uiowa_hours', '@http_client', '@config.factory']
+  logger.channel.uiowa_hours:
+    parent: logger.channel_base
+    arguments: ['uiowa_hours']
+  cache.uiowa_hours:
+    class: Drupal\Core\Cache\CacheBackendInterface
+    tags:
+      - { name: cache.bin }
+    factory: cache_factory:get
+    arguments: ['uiowa_hours']
