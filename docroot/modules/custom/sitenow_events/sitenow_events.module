@@ -38,6 +38,7 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
     case 'layout_builder_update_block':
       // Fix #states for filter with multiple operation choices.
       // @todo Figure out how to not hard-code these values.
+      $form['settings']['override']['exposed_filters']['field_event_when_value_wrapper']['field_event_when_value']['min']['#type'] = 'date';
       $form['settings']['override']['exposed_filters']['field_event_when_value_wrapper']['field_event_when_value']['min']['#states'] = [
         'visible' => [
           ':input[name="settings[override][exposed_filters][field_event_when_value_wrapper][field_event_when_value_op]"]' => [
@@ -46,6 +47,7 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
         ],
       ];
 
+      $form['settings']['override']['exposed_filters']['field_event_when_value_wrapper']['field_event_when_value']['max']['#type'] = 'date';
       $form['settings']['override']['exposed_filters']['field_event_when_value_wrapper']['field_event_when_value']['max']['#states'] = [
         'visible' => [
           ':input[name="settings[override][exposed_filters][field_event_when_value_wrapper][field_event_when_value_op]"]' => [
@@ -54,6 +56,7 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
         ],
       ];
 
+      $form['settings']['override']['exposed_filters']['field_event_when_value_wrapper']['field_event_when_value']['value']['#type'] = 'date';
       $form['settings']['override']['exposed_filters']['field_event_when_value_wrapper']['field_event_when_value']['value']['#states'] = [
         'visible' => [
           ':input[name="settings[override][exposed_filters][field_event_when_value_wrapper][field_event_when_value_op]"]' => [
