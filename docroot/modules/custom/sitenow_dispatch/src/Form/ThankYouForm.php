@@ -165,6 +165,9 @@ class ThankYouForm extends FormBase {
           'toName' => $hr_data['first_name'] . ' ' . $hr_data['last_name'],
           'toAddress' => $form_state->getValue('to_email'),
           'subject' => $title,
+          'footer_statement' => $this->t('This email was generated from @request.', [
+            '@request' => $this->getRequest()->getUri(),
+          ]),
         ],
       ],
       'includeBatchResponse' => FALSE,
@@ -182,8 +185,6 @@ class ThankYouForm extends FormBase {
     // (first) member to denote this in the footer statement and then add the
     // supervisor(s) to our member data. Otherwise, set it to an empty string.
     if ($config->get('thanks.supervisor')) {
-      $data['members'][0]['footer_statement'] = $this->t('A copy of this email has been sent to your supervisor(s).');
-
       // Duplicate recipient member data but change toName/Address and subject.
       foreach ($hr_data['supervisors'] as $supervisor) {
         $data['members'][] = array_merge($recipient, [
@@ -192,9 +193,9 @@ class ThankYouForm extends FormBase {
           'subject' => $title . ' (Supervisor Copy)',
         ]);
       }
-    }
-    else {
-      $data['members'][0]['footer_statement'] = '';
+
+      // Modify the footer statement for the recipient.
+      $data['members'][0]['footer_statement'] .= ' A copy of it has been sent to your supervisor(s).';
     }
 
     // Add additional email as member if it is configured with modified data.
