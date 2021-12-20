@@ -23,8 +23,8 @@ function grad_admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--field-area-of-study-college--grad-area-of-study',
       'base hook' => 'field',
     ],
-    'field__node__field_grad_costs_title__grad_costs_estimate' => [
-      'template' => 'field--node--field-grad-costs-title--grad-costs-estimate',
+    'field__node__field_grad_costs_title__grad_costs_estimate__default' => [
+      'template' => 'field--node--field-grad-costs-title--grad-costs-estimate--default',
       'base hook' => 'field',
     ],
     'field__node__field_grad_costs_year__grad_costs_estimate' => [
@@ -47,8 +47,16 @@ function grad_admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--field-area-of-study-contact--area-of-study',
       'base hook' => 'field',
     ],
+    'field__node__field_area_of_study_grad_costs' => [
+      'template' => 'field--node--field-area-of-study-grad-costs',
+      'base hook' => 'field',
+    ],
     'taxonomy_term__teaser' => [
       'template' => 'taxonomy-term--teaser',
+      'base hook' => 'node',
+    ],
+    'node__grad_costs_estimate__teaser' => [
+      'template' => 'node--grad-costs-estimate--teaser',
       'base hook' => 'node',
     ],
   ];

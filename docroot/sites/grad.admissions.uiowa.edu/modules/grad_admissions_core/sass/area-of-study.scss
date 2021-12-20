@@ -30,12 +30,20 @@
 .field--name-field-area-of-study-requirements,
 .field--name-field-area-of-study-procedures {
 
-    // ul.class =fa-ul {element--list-none fa-ul
-    // margin-left: 1.875rem;
-
     li {
       margin-bottom: $sm;
       line-height: 1.4;
+    }
+  }
+
+  .grad-cost-estimate {
+    a {
+      @include bttn;
+      @include bttn--full;
+      @include bttn--outline;
+    }
+    .field--name-field-grad-costs-title {
+      min-width: 320px;
     }
   }
 }

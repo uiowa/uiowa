@@ -12,16 +12,53 @@ dependencies:
     - field.field.node.grad_costs_estimate.field_meta_tags
     - node.type.grad_costs_estimate
   module:
+    - layout_builder
     - user
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: true
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+        components:
+          -
+            uuid: b31f2ef4-aa74-4d15-a35e-61d654087b1b
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:grad_costs_estimate:field_grad_costs_title'
+              formatter:
+                type: string
+                label: hidden
+                settings:
+                  link_to_entity: true
+                third_party_settings: {  }
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
 id: node.grad_costs_estimate.teaser
 targetEntityType: node
 bundle: grad_costs_estimate
 mode: teaser
-content: {  }
+content:
+  field_grad_costs_title:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: true
+    third_party_settings: {  }
 hidden:
   field_grad_costs_dom: true
   field_grad_costs_select: true
-  field_grad_costs_title: true
   field_grad_costs_year: true
   field_image: true
   field_meta_tags: true
