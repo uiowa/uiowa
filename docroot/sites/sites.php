@@ -3700,3 +3700,9 @@ $sites['labgrok.uiowa.ddev.site'] = 'grok.lab.uiowa.edu';
 $sites['labgrok.dev.drupal.uiowa.edu'] = 'grok.lab.uiowa.edu';
 $sites['labgrok.stage.drupal.uiowa.edu'] = 'grok.lab.uiowa.edu';
 $sites['labgrok.prod.drupal.uiowa.edu'] = 'grok.lab.uiowa.edu';
+
+// Directory aliases for leadandengage.uiowa.edu.
+$sites['leadandengage.uiowa.ddev.site'] = 'leadandengage.uiowa.edu';
+$sites['leadandengage.dev.drupal.uiowa.edu'] = 'leadandengage.uiowa.edu';
+$sites['leadandengage.stage.drupal.uiowa.edu'] = 'leadandengage.uiowa.edu';
+$sites['leadandengage.prod.drupal.uiowa.edu'] = 'leadandengage.uiowa.edu';
