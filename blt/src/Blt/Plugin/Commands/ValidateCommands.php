@@ -20,7 +20,7 @@ class ValidateCommands extends BltTasks {
     $is_ddev = getenv('IS_DDEV_PROJECT') ?? FALSE;
 
     if ($is_ddev) {
-      return new CommandError('This command must be run on the host, i.e. not on a ddev container.');
+      return new CommandError('This command must be run on your host machine, i.e. not on the ddev web container.');
     }
   }
 
