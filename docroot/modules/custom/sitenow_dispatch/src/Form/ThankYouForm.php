@@ -165,10 +165,11 @@ class ThankYouForm extends FormBase {
           'toName' => $hr_data['first_name'] . ' ' . $hr_data['last_name'],
           'toAddress' => $form_state->getValue('to_email'),
           'subject' => $title,
-          'footer_statement' => $this->t('This email was sent from @from to @to using the form at @request.', [
-            '@from' => $form_state->getValue('from_email'),
+          'footer_statement' => $this->t('This email was sent from @from to @to using the form at <a href="@request">@host</a>.', [
+            '@from' => $form_state->getValue(['placeholder', 'from_email']),
             '@to' => $form_state->getValue('to_email'),
             '@request' => $this->getRequest()->getUri(),
+            '@host' => $this->getRequest()->getHost(),
           ]),
         ],
       ],
