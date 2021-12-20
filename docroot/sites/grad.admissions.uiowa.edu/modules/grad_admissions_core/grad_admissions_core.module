@@ -8,6 +8,7 @@
 use Drupal\Core\Render\Element;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\NodeInterface;
+use Drupal\Core\Entity\EntityInterface;
 
 /**
  * Implements hook_theme().
@@ -22,8 +23,8 @@ function grad_admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--field-area-of-study-college--grad-area-of-study',
       'base hook' => 'field',
     ],
-    'field__node__title__grad_costs_estimate___custom' => [
-      'template' => 'field--node--title--grad-costs-estimate---custom',
+    'field__node__field_grad_costs_title__grad_costs_estimate' => [
+      'template' => 'field--node--field-grad-costs-title--grad-costs-estimate',
       'base hook' => 'field',
     ],
     'field__node__field_grad_costs_year__grad_costs_estimate' => [
@@ -94,6 +95,20 @@ function grad_admissions_core_preprocess_layout(&$variables) {
       }
     }
   }
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function grad_admissions_core_entity_presave(EntityInterface $entity) {
+  switch ($entity->bundle()) {
+    case 'grad_costs_estimate':
+      // Setting the grad costs title with the title value + distinguishing if domestic or international.
+      $output = $entity->get('field_grad_costs_title')->value . " - " . $entity->get('field_grad_costs_select')->value;
+      $entity->setTitle($output);
+      break;
+    }
+
 }
 
 /**

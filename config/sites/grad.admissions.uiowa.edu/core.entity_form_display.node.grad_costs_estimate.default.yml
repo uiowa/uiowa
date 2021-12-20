@@ -3,9 +3,9 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.grad_costs_estimate.field_grad_costs_aos
     - field.field.node.grad_costs_estimate.field_grad_costs_dom
     - field.field.node.grad_costs_estimate.field_grad_costs_select
+    - field.field.node.grad_costs_estimate.field_grad_costs_title
     - field.field.node.grad_costs_estimate.field_grad_costs_year
     - field.field.node.grad_costs_estimate.field_image
     - field.field.node.grad_costs_estimate.field_meta_tags
@@ -42,6 +42,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
+    region: content
+  field_grad_costs_title:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
     region: content
   field_grad_costs_year:
     weight: 2
@@ -98,14 +106,6 @@ content:
     settings:
       display_label: true
     third_party_settings: {  }
-  title:
-    type: string_textfield
-    weight: 0
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
     weight: 4
@@ -122,4 +122,4 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_grad_costs_aos: true
+  title: true

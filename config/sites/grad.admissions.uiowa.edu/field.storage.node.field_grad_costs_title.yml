@@ -1,18 +1,20 @@
-uuid: ecfc371a-94a1-4bc4-b244-5c8d3602e90f
+uuid: e17e5d02-1fdf-490c-a888-8dbb9b236c28
 langcode: en
 status: true
 dependencies:
   module:
     - node
-id: node.field_grad_costs_aos
-field_name: field_grad_costs_aos
+id: node.field_grad_costs_title
+field_name: field_grad_costs_title
 entity_type: node
-type: entity_reference
+type: string
 settings:
-  target_type: node
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
 module: core
 locked: false
-cardinality: -1
+cardinality: 1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false

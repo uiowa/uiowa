@@ -4,34 +4,24 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.field.node.grad_costs_estimate.field_grad_costs_aos
     - field.field.node.grad_costs_estimate.field_grad_costs_dom
     - field.field.node.grad_costs_estimate.field_grad_costs_select
+    - field.field.node.grad_costs_estimate.field_grad_costs_title
     - field.field.node.grad_costs_estimate.field_grad_costs_year
     - field.field.node.grad_costs_estimate.field_image
     - field.field.node.grad_costs_estimate.field_meta_tags
     - node.type.grad_costs_estimate
   module:
-    - field_delimiter
     - user
 id: node.grad_costs_estimate.teaser
 targetEntityType: node
 bundle: grad_costs_estimate
 mode: teaser
-content:
-  field_grad_costs_aos:
-    type: entity_reference_label
-    weight: 0
-    region: content
-    label: hidden
-    settings:
-      link: true
-    third_party_settings:
-      field_delimiter:
-        delimiter: ''
+content: {  }
 hidden:
   field_grad_costs_dom: true
   field_grad_costs_select: true
+  field_grad_costs_title: true
   field_grad_costs_year: true
   field_image: true
   field_meta_tags: true
