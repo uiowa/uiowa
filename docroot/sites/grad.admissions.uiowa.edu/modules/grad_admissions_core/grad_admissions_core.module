@@ -107,7 +107,7 @@ function grad_admissions_core_entity_presave(EntityInterface $entity) {
       $output = $entity->get('field_grad_costs_title')->value . " - " . $entity->get('field_grad_costs_select')->value;
       $entity->setTitle($output);
       break;
-    }
+  }
 
 }
 
