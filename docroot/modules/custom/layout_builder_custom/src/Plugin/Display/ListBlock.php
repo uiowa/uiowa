@@ -240,7 +240,6 @@ class ListBlock extends CoreBlock {
     // Provide "Configure sorts" block settings form.
     if (!empty($allow_settings['configure_sorts'])) {
 
-
       $sorts = $this->getHandlers('sort');
       // Sort available sort plugins by their currently configured weight.
       $sorted_sorts = [];
