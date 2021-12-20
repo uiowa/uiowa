@@ -89,6 +89,7 @@ class GitCommands extends BltTasks {
    *
    * @aliases ugd
    *
+   * @requireHost
    * @requireCredentials
    */
   public function deploy() {
