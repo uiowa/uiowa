@@ -184,14 +184,6 @@
   }
 }
 
-// Contrast fixes
-.bg-pattern--brain-reversed .banner.bg-pattern--brain-black .bttn--primary,
-.bg-pattern--brain-reversed  .banner[class*="bg--black"] .bttn--primary,
-[class*="bg--gold"] .banner.bg-pattern--brain-black .bttn--primary,
-[class*="bg--gold"] .banner[class*="bg--black"] .bttn--primary {
-  color: $primary;
-}
-
 // Default padding fixes
 .layout:not([class*="bg-"]) {
   .banner.bg--white {
@@ -252,4 +244,12 @@
 //Button hover fix for gold backgrounds
 .banner[class*="bg--gold"] .bttn--primary::after {
   background-color: #fff;
+}
+
+// Contrast fixes
+.bg-pattern--brain-reversed .banner.bg-pattern--brain-black .bttn--primary,
+.bg-pattern--brain-reversed  .banner[class*="bg--black"] .bttn--primary,
+[class*="bg--gold"] .banner.bg-pattern--brain-black .bttn--primary,
+[class*="bg--gold"] .banner[class*="bg--black"] .bttn--primary {
+  color: $primary;
 }
