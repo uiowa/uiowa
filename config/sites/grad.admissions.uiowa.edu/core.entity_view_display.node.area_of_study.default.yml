@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.base_field_override.node.area_of_study.title
     - field.field.node.area_of_study.body
+    - field.field.node.area_of_study.field_area_of_study_apply
     - field.field.node.area_of_study.field_area_of_study_area
     - field.field.node.area_of_study.field_area_of_study_college
     - field.field.node.area_of_study.field_area_of_study_contact
@@ -21,7 +22,6 @@ dependencies:
     - field.field.node.area_of_study.field_meta_tags
     - node.type.area_of_study
   module:
-    - grad_admissions_core
     - layout_builder
     - layout_builder_restrictions
     - link
@@ -158,17 +158,6 @@ third_party_settings:
             additional: {  }
             weight: 8
           -
-            uuid: fea77d7c-b726-45ed-a297-284e5df0c732
-            region: second
-            configuration:
-              id: applybutton_block
-              label: null
-              provider: grad_admissions_core
-              label_display: null
-              context_mapping: {  }
-            additional: {  }
-            weight: 0
-          -
             uuid: 6f19676b-2223-41b1-89ab-877eb12a9588
             region: second
             configuration:
@@ -185,7 +174,7 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 2
+            weight: 3
           -
             uuid: cf000078-d0e7-4852-ab67-ec3d8743b6b6
             region: second
@@ -206,7 +195,7 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 1
+            weight: 2
           -
             uuid: 1da92598-0be6-434d-a8d5-4ba90884ecad
             region: first
@@ -298,6 +287,29 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: 9
+          -
+            uuid: 784afb38-55df-4cf8-bfb3-c47546dfa5cb
+            region: second
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_apply'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: above
+                type: link
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: '0'
+                  target: '0'
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 1
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -458,6 +470,7 @@ content:
     type: metatag_empty_formatter
     region: content
 hidden:
+  field_area_of_study_apply: true
   field_area_of_study_grad_cost: true
   links: true
   search_api_excerpt: true

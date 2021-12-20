@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.area_of_study.body
+    - field.field.node.area_of_study.field_area_of_study_apply
     - field.field.node.area_of_study.field_area_of_study_area
     - field.field.node.area_of_study.field_area_of_study_college
     - field.field.node.area_of_study.field_area_of_study_contact
@@ -47,6 +48,14 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_area_of_study_apply:
+    weight: 26
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
   field_area_of_study_area:
     weight: 0
     settings:
