@@ -1101,8 +1101,7 @@ function layout_builder_custom_views_pre_build(ViewExecutable $view) {
     }
     else {
       $pager_manager = \Drupal::service('pager.manager');
-      $request_time = \Drupal::time()->getRequestTime();
-      \Drupal::cache('layout_builder_custom_views_pager_elements')->set($view->dom_id, $pager_manager->getMaxPagerElementId() + 1, $request_time + 300, $view->getCacheTags());
+      \Drupal::cache('layout_builder_custom_views_pager_elements')->set($view->dom_id, $pager_manager->getMaxPagerElementId() + 1, Cache::PERMANENT);
       $cached = \Drupal::cache('layout_builder_custom_views_pager_elements')->get($view->dom_id);
       $pager['options']['id'] = $cached->data;
     }
