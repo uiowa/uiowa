@@ -3706,3 +3706,9 @@ $sites['leadandengage.uiowa.ddev.site'] = 'leadandengage.uiowa.edu';
 $sites['leadandengage.dev.drupal.uiowa.edu'] = 'leadandengage.uiowa.edu';
 $sites['leadandengage.stage.drupal.uiowa.edu'] = 'leadandengage.uiowa.edu';
 $sites['leadandengage.prod.drupal.uiowa.edu'] = 'leadandengage.uiowa.edu';
+
+// Directory aliases for ace.lab.uiowa.edu.
+$sites['labace.uiowa.ddev.site'] = 'ace.lab.uiowa.edu';
+$sites['labace.dev.drupal.uiowa.edu'] = 'ace.lab.uiowa.edu';
+$sites['labace.stage.drupal.uiowa.edu'] = 'ace.lab.uiowa.edu';
+$sites['labace.prod.drupal.uiowa.edu'] = 'ace.lab.uiowa.edu';
