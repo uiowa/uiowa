@@ -3137,12 +3137,6 @@ $sites['recserv.dev.drupal.uiowa.edu'] = 'recserv.uiowa.edu';
 $sites['recserv.stage.drupal.uiowa.edu'] = 'recserv.uiowa.edu';
 $sites['recserv.prod.drupal.uiowa.edu'] = 'recserv.uiowa.edu';
 
-// Directory aliases for advancedcognitiveengineering.lab.uiowa.edu.
-$sites['labadvancedcognitiveengineering.uiowa.ddev.site'] = 'advancedcognitiveengineering.lab.uiowa.edu';
-$sites['labadvancedcognitiveengineering.dev.drupal.uiowa.edu'] = 'advancedcognitiveengineering.lab.uiowa.edu';
-$sites['labadvancedcognitiveengineering.stage.drupal.uiowa.edu'] = 'advancedcognitiveengineering.lab.uiowa.edu';
-$sites['labadvancedcognitiveengineering.prod.drupal.uiowa.edu'] = 'advancedcognitiveengineering.lab.uiowa.edu';
-
 // Directory aliases for studentspace.uiowa.edu.
 $sites['studentspace.uiowa.ddev.site'] = 'studentspace.uiowa.edu';
 $sites['studentspace.dev.drupal.uiowa.edu'] = 'studentspace.uiowa.edu';
@@ -3712,3 +3706,9 @@ $sites['labace.uiowa.ddev.site'] = 'ace.lab.uiowa.edu';
 $sites['labace.dev.drupal.uiowa.edu'] = 'ace.lab.uiowa.edu';
 $sites['labace.stage.drupal.uiowa.edu'] = 'ace.lab.uiowa.edu';
 $sites['labace.prod.drupal.uiowa.edu'] = 'ace.lab.uiowa.edu';
+
+// Directory aliases for lamp-mission.sites.uiowa.edu.
+$sites['siteslamp-mission.uiowa.ddev.site'] = 'lamp-mission.sites.uiowa.edu';
+$sites['siteslamp-mission.dev.drupal.uiowa.edu'] = 'lamp-mission.sites.uiowa.edu';
+$sites['siteslamp-mission.stage.drupal.uiowa.edu'] = 'lamp-mission.sites.uiowa.edu';
+$sites['siteslamp-mission.prod.drupal.uiowa.edu'] = 'lamp-mission.sites.uiowa.edu';
