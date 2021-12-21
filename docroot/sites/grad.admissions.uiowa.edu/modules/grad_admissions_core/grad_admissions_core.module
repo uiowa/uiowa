@@ -96,11 +96,11 @@ function grad_admissions_core_preprocess_layout(&$variables) {
 
             // Set the featured image display.
             $variables['featured_image_display'] = 'small';
-
+            $variables['attributes']['class'][] = 'layout--title--with-background';
             // Set banner defaults.
             $variables['banner_settings']['transparent'] = TRUE;
-            $variables['banner_settings']['horizontal_align'] = 'center';
-            $variables['banner_settings']['vertical_align'] = 'center';
+            $variables['banner_settings']['horizontal_align'] = 'left';
+            $variables['banner_settings']['vertical_align'] = 'bottom';
           }
           break;
 
