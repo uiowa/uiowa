@@ -47,7 +47,7 @@ class RegionContentBlockTest extends UnitTestCase {
 
     $sut = new RegionContentBlock($configuration, 'filter_iframe', ['provider' => 'uiowa_core'], $config_factory, $etm);
     $sut->setStringTranslation($this->getStringTranslationStub());
-    $this->assertNotEmpty($sut->build());
+    $this->assertNotNull($sut->build());
 
   }
 
