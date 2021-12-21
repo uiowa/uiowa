@@ -606,6 +606,10 @@ function admissions_core_preprocess_views_view(&$variables) {
       $variables['#attached']['library'][] = 'admissions_core/events';
       break;
 
+    case 'colleges_taxonomy_term':
+      $variables['#attached']['library'][] = 'uids_base/view-taxonomy-term-colleges';
+      break;
+
   }
 }
 
