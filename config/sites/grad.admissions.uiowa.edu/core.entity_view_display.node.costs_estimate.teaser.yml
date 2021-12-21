@@ -4,13 +4,13 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.field.node.grad_costs_estimate.field_grad_costs_dom
-    - field.field.node.grad_costs_estimate.field_grad_costs_select
-    - field.field.node.grad_costs_estimate.field_grad_costs_title
-    - field.field.node.grad_costs_estimate.field_grad_costs_year
-    - field.field.node.grad_costs_estimate.field_image
-    - field.field.node.grad_costs_estimate.field_meta_tags
-    - node.type.grad_costs_estimate
+    - field.field.node.costs_estimate.field_grad_costs_dom
+    - field.field.node.costs_estimate.field_grad_costs_select
+    - field.field.node.costs_estimate.field_grad_costs_title
+    - field.field.node.costs_estimate.field_grad_costs_year
+    - field.field.node.costs_estimate.field_image
+    - field.field.node.costs_estimate.field_meta_tags
+    - node.type.costs_estimate
   module:
     - layout_builder
     - user
@@ -33,7 +33,7 @@ third_party_settings:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-              id: 'field_block:node:grad_costs_estimate:field_grad_costs_title'
+              id: 'field_block:node:costs_estimate:field_grad_costs_title'
               formatter:
                 type: string
                 label: hidden
@@ -43,9 +43,9 @@ third_party_settings:
             additional: {  }
             weight: 0
         third_party_settings: {  }
-id: node.grad_costs_estimate.teaser
+id: node.costs_estimate.teaser
 targetEntityType: node
-bundle: grad_costs_estimate
+bundle: costs_estimate
 mode: teaser
 content:
   field_grad_costs_title:

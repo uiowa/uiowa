@@ -23,16 +23,16 @@ function grad_admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--field-area-of-study-college--area-of-study',
       'base hook' => 'field',
     ],
-    'field__node__field_grad_costs_title__grad_costs_estimate__default' => [
-      'template' => 'field--node--field-grad-costs-title--grad-costs-estimate--default',
+    'field__node__field_grad_costs_title__costs_estimate__default' => [
+      'template' => 'field--node--field-grad-costs-title--costs-estimate--default',
       'base hook' => 'field',
     ],
-    'field__node__field_grad_costs_title__grad_costs_estimate__teaser' => [
-      'template' => 'field--node--field-grad-costs-title--grad-costs-estimate--teaser',
+    'field__node__field_grad_costs_title__costs_estimate__teaser' => [
+      'template' => 'field--node--field-grad-costs-title--costs-estimate--teaser',
       'base hook' => 'field',
     ],
-    'field__node__field_grad_costs_year__grad_costs_estimate' => [
-      'template' => 'field--node--field-grad-costs-year--grad-costs-estimate',
+    'field__node__field_grad_costs_year__costs_estimate' => [
+      'template' => 'field--node--field-grad-costs-year--costs-estimate',
       'base hook' => 'field',
     ],
     'field__node__field_grad_costs_select' => [
@@ -47,20 +47,12 @@ function grad_admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--title--area-of-study---custom',
       'base hook' => 'field',
     ],
-    'field__node__field_area_of_study_contact__area_of_study' => [
-      'template' => 'field--node--field-area-of-study-contact--area-of-study',
-      'base hook' => 'field',
-    ],
-    'field__node__field_area_of_study_apply__area_of_study' => [
-      'template' => 'field--node--field-area-of-study-apply--area-of-study',
-      'base hook' => 'field',
-    ],
     'taxonomy_term__teaser' => [
       'template' => 'taxonomy-term--teaser',
       'base hook' => 'node',
     ],
-    'node__grad_costs_estimate__teaser' => [
-      'template' => 'node--grad-costs-estimate--teaser',
+    'node__costs_estimate__teaser' => [
+      'template' => 'node--costs-estimate--teaser',
       'base hook' => 'node',
     ],
   ];
@@ -80,7 +72,7 @@ function grad_admissions_core_preprocess_layout(&$variables) {
     if ($node instanceof NodeInterface) {
       if (in_array($node->getType(), [
         'area_of_study',
-        'grad_costs_estimate',
+        'costs_estimate',
       ])) {
         if (!isset($variables['banner_attributes'])) {
           $variables['banner_settings'] = [];
@@ -88,7 +80,7 @@ function grad_admissions_core_preprocess_layout(&$variables) {
       }
       switch ($node->getType()) {
         case 'area_of_study':
-        case 'grad_costs_estimate':
+        case 'costs_estimate':
           // @todo Move this to admissions_core_preprocess_node().
           $variables['#attached']['library'][] = 'grad_admissions_core/area-of-study';
 
@@ -114,7 +106,7 @@ function grad_admissions_core_preprocess_layout(&$variables) {
  */
 function grad_admissions_core_entity_presave(EntityInterface $entity) {
   switch ($entity->bundle()) {
-    case 'grad_costs_estimate':
+    case 'costs_estimate':
       // Setting the grad costs title with the title value + distinguishing if domestic or international.
       $output = $entity->get('field_grad_costs_title')->value . " - " . $entity->get('field_grad_costs_select')->value;
       $entity->setTitle($output);
@@ -163,9 +155,6 @@ function grad_admissions_core_preprocess_field(&$variables) {
 function grad_admissions_core_theme_suggestions_field_alter(array &$suggestions, array $variables) {
   switch ($variables["element"]["#field_name"]) {
     case 'field_area_of_study_grad_intro':
-    case 'field_area_of_study_requirement':
-    case 'field_area_of_study_deadlines':
-    case 'field_area_of_study_procedures':
       $suggestions[] = 'field__bold_headline_label';
       break;
 
@@ -213,8 +202,8 @@ function grad_admissions_core_form_alter(&$form, FormStateInterface $form_state,
   switch ($form_id) {
     case 'node_area_of_study_form':
     case 'node_area_of_study_edit_form':
-    case 'node_grad_costs_estimate_form':
-    case 'node_grad_costs_estimate_edit_form':
+    case 'node_costs_estimate_form':
+    case 'node_costs_estimate_edit_form':
       // Set form defaults if they exist.
       _sitenow_node_form_defaults($form, $form_state);
       break;
