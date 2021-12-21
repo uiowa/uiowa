@@ -77,15 +77,17 @@ class RegionContentBlock extends BlockBase implements ContainerFactoryPluginInte
 
     if ($fid != NULL) {
       $fragment = $this->entityTypeManager->getStorage('fragment')->load($fid);
-      $fragment = $this->entityTypeManager->getViewBuilder('fragment')->view($fragment, 'default');
+      // Check to see if entity stored in config still exists.
+      if ($fragment) {
+        $fragment = $this->entityTypeManager->getViewBuilder('fragment')->view($fragment, 'default');
 
-      $build['fragment'] = $fragment;
-      $build['#contextual_links'] = [
-        'region_settings' => [
-          'route_parameters' => ['regions_settings' => 'region_settings'],
-        ],
-      ];
-
+        $build['fragment'] = $fragment;
+        $build['#contextual_links'] = [
+          'region_settings' => [
+            'route_parameters' => ['regions_settings' => 'region_settings'],
+          ],
+        ];
+      }
     }
 
     return $build;
