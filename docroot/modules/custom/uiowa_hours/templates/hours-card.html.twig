@@ -1,0 +1,13 @@
+{% set card = {
+  'attributes': attributes,
+  'card_title': data.date,
+  'card_text': data.times,
+  'headline_level': data.child_heading_size,
+} %}
+{% embed '@uids_base/uids/card.html.twig' with card only %}
+  {% block card_content %}
+    {% if card_text is not empty %}
+      {{ card_text }}
+    {% endif %}
+  {% endblock %}
+{% endembed %}

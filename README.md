@@ -66,7 +66,7 @@ $config['stage_file_proxy.settings']['hotlink'] = TRUE;
 ## Multisite Management
 There are a few custom BLT commands to manage multisites. Run `blt list uiowa` to see all the commands in the `uiowa` namespace. Then run `blt CMD --help` for more information on specific commands.
 
-Because the `.git` directory is not synced to the web container, this command and others like it need to be run on your host machine.
+Because the `.git` directory is not synced to the web container, some commands need to be run on your host machine instead. You can run `./vendor/bin/blt` from the project root or install the [BLT Launcher](https://github.com/acquia/blt-launcher) to just run `blt`.
 
 ### Overriding Configuration
 Please note this approach is not yet tested nor recommended.
