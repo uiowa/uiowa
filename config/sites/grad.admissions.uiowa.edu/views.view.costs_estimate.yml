@@ -4,12 +4,12 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_grad_costs_title
-    - node.type.grad_costs_estimate
+    - node.type.costs_estimate
   module:
     - node
     - options
     - user
-id: grad_costs_estimate
+id: costs_estimate
 label: 'Graduate Costs Estimate'
 module: views
 description: ''
@@ -163,7 +163,7 @@ display:
           table: node_field_data
           field: type
           value:
-            grad_costs_estimate: grad_costs_estimate
+            costs_estimate: costs_estimate
           entity_type: node
           entity_field: type
           plugin_id: bundle
