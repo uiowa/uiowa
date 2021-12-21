@@ -16,9 +16,9 @@ use Drupal\uiowa_core\Plugin\Block\RegionContentBlock;
 class RegionContentBlockTest extends UnitTestCase {
 
   /**
-   * Tests something.
+   * Test that an exception is not thrown if fragment does not exist.
    */
-  public function testSomething() {
+  public function testBlockBuildReturnsArrayAndDoesNotThrowException() {
     $configuration = [
       'block_id' => 'foo',
     ];
