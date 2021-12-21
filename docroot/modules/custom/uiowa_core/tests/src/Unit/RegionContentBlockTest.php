@@ -9,7 +9,7 @@ use Drupal\Tests\UnitTestCase;
 use Drupal\uiowa_core\Plugin\Block\RegionContentBlock;
 
 /**
- * Test description.
+ * RegionContentBlock tests.
  *
  * @group uiowa_core
  */
@@ -45,7 +45,7 @@ class RegionContentBlockTest extends UnitTestCase {
       ->method('getViewBuilder')
       ->will($this->returnValue($evb));
 
-    $sut = new RegionContentBlock($configuration, 'filter_iframe', ['provider' => 'uiowa_core'], $config_factory, $etm);
+    $sut = new RegionContentBlock($configuration, 'region_content_block', ['provider' => 'uiowa_core'], $config_factory, $etm);
     $sut->setStringTranslation($this->getStringTranslationStub());
     $this->assertNotNull($sut->build());
 
