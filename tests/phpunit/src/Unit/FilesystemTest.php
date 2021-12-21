@@ -4,6 +4,7 @@ namespace Uiowa\Tests\PHPUnit\Unit;
 
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Drupal\Tests\UnitTestCase;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 use Uiowa\Multisite;
 
@@ -22,6 +23,42 @@ class FilesystemTest extends UnitTestCase {
 
     foreach ($config['uiowa']['applications'] as $application => $attrs) {
       $this->assertFileExists($this->root . "/../drush/sites/{$application}.site.yml");
+    }
+  }
+
+  /**
+   * Each local Drush alias should have a correct Drupal root.
+   */
+  public function testLocalAliasesDrupalRoot() {
+    $finder = new Finder();
+
+    $files = $finder
+      ->in($this->root . '/../drush/sites/')
+      ->files()
+      ->depth('< 1')
+      ->notName('README.md')
+      ->sortByName();
+
+    foreach ($files->getIterator() as $file) {
+      $config = YamlMunge::parseFile($file->getRealPath());
+      $this->assertEquals('/var/www/html/docroot', $config['local']['root'], "$file");
+    }
+  }
+
+  /**
+   * Test that app aliases do not have a files path set.
+   */
+  public function testAppAliasesDoNotHaveFilesPath() {
+    $config = YamlMunge::parseFile($this->root . '/../blt/blt.yml');
+
+    foreach ($config['uiowa']['applications'] as $app => $attrs) {
+      $config = YamlMunge::parseFile($this->root . "/../drush/sites/$app.site.yml");
+
+      foreach (['local', 'dev', ' test', 'prod'] as $env) {
+        if (isset($config[$env]['paths'])) {
+          $this->assertArrayNotHasKey('files', $config[$env]['paths']);
+        }
+      }
     }
   }
 
@@ -131,7 +168,9 @@ EOD;
       $expected_files_path = "sites/{$site}/files";
 
       foreach (['local', 'dev', 'test', 'prod'] as $env) {
-        $this->assertEquals($expected_files_path, $yaml[$env]['paths']['files']);
+        if (isset($yaml[$env]['paths'], $yaml[$env]['paths']['files'])) {
+          $this->assertEquals($expected_files_path, $yaml[$env]['paths']['files']);
+        }
       }
     }
   }
