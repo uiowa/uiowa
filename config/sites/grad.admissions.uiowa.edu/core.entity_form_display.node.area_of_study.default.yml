@@ -4,10 +4,8 @@ status: true
 dependencies:
   config:
     - field.field.node.area_of_study.body
-    - field.field.node.area_of_study.field_area_of_study_apply
     - field.field.node.area_of_study.field_area_of_study_area
     - field.field.node.area_of_study.field_area_of_study_college
-    - field.field.node.area_of_study.field_area_of_study_contact
     - field.field.node.area_of_study.field_area_of_study_degree_types
     - field.field.node.area_of_study.field_area_of_study_grad_costs
     - field.field.node.area_of_study.field_area_of_study_grad_intro
@@ -44,14 +42,6 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_area_of_study_apply:
-    weight: 26
-    settings:
-      placeholder_url: ''
-      placeholder_title: ''
-    third_party_settings: {  }
-    type: link_default
-    region: content
   field_area_of_study_area:
     weight: 0
     settings:
@@ -71,14 +61,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
-    region: content
-  field_area_of_study_contact:
-    weight: 12
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
     region: content
   field_area_of_study_degree_types:
     weight: 3
