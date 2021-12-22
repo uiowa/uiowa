@@ -34,6 +34,7 @@
   'uiowa-card-event',
   'card--centered-left',
   'card--alignment-left',
+  'card--list'
 ]
 %}
 
@@ -43,9 +44,9 @@
   'card_image': content.field_uiowa_event_image|render,
   'media_styles': 'media--circle',
   'media_sizes': 'card__media--small',
-  'card_tag': content.field_uiowa_event_location[0]['#context']['value'],
+  'card_meta': content.field_uiowa_event_location[0]['#context']['value'],
   'card_icon': content.field_uiowa_event_icon|render,
-  'card_date': content.field_uiowa_event_date|render,
+  'card_subtitle': content.field_uiowa_event_date|render,
   'heading_level': content.field_uiowa_event_title[0]['#size'],
   'card_link_url': content.field_uiowa_event_link[0]['#url'],
   'title_prefix': title_prefix,
@@ -60,11 +61,11 @@
     {{ title_suffix }}
   {% endblock %}
 
-  {% block card_tag %}
-    {% if card_tag is not empty %}
-      <div class="card__label">
+  {% block card_meta %}
+    {% if card_meta is not empty %}
+      <div class="card__meta">
         {{ card_icon }}
-        {{ card_tag }}
+        {{ card_meta }}
       </div>
     {% endif %}
   {% endblock %}

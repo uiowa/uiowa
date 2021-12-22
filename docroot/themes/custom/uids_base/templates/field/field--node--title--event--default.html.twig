@@ -1,2 +1,12 @@
-{% include '@uids_base/field/field--node--title.html.twig' %}
-<hr class="element--spacer-gold">
+{%
+  set classes = [
+  'page-title',
+  'headline',
+  'headline--underline',
+]
+%}
+<h1 {{ attributes.addClass(classes) }}>
+  {%- for item in items -%}
+    <span>{{ item.content }}</span>
+  {%- endfor -%}
+</h1>
