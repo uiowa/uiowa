@@ -114,14 +114,14 @@ function grad_admissions_core_preprocess_layout(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function grad_admissions_core_preprocess_field(&$variables) {
-  switch ($variables["element"]["#field_name"]) {
+  switch ($variables['element']['#field_name']) {
     case 'field_area_of_study_grad_intro':
-      $variables["label"] = t('Estimated Cost of Attendance');
+      $variables['label'] = t('Estimated Cost of Attendance');
       break;
 
     case 'field_area_of_study_college':
-      $variables["label"] = t('Related Links');
-      $node = $variables["element"]["#object"];
+      $variables['label'] = t('Related Links');
+      $node = $variables['element']['#object'];
       // Add field_area_of_study_link to the end of field_area_of_study_college.
       if ($node->hasField('field_area_of_study_link') && !$node->get('field_area_of_study_link')->isEmpty()) {
         $existing_links = [];
@@ -177,7 +177,7 @@ function grad_admissions_core_preprocess_views_view_field(&$variables) {
  * Implements hook_theme_suggestions_HOOK_alter().
  */
 function grad_admissions_core_theme_suggestions_field_alter(array &$suggestions, array $variables) {
-  switch ($variables["element"]["#field_name"]) {
+  switch ($variables['element']['#field_name']) {
     case 'field_area_of_study_grad_intro':
     case 'field_area_of_study_requirements':
     case 'field_area_of_study_procedures':
@@ -212,8 +212,7 @@ function grad_admissions_core_preprocess_html(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function grad_admissions_core_preprocess_node(&$variables) {
-
-  $node = $variables["node"];
+  $node = $variables['node'];
   switch ($node->getType()) {
     case 'area_of_study':
       $variables['#attached']['library'][] = 'grad_admissions_core/area-of-study';
