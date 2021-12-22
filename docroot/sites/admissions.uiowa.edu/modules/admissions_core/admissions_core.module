@@ -623,7 +623,7 @@ function admissions_core_preprocess_views_view_field(&$variables) {
       case 'areas_of_study':
         if ($variables['view']->current_display == 'areas_of_study') {
           if (isset($variables['view']->field) && $variables['field']->realField == 'nothing') {
-            $nid = $variables["row"]->_entity->get('nid')->value;
+            $nid = $variables['row']->_entity->get('nid')->value;
             $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
             $markup = '';
             // For each program type, load the value(s) and string them
