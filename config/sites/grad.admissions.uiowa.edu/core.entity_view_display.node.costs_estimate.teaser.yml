@@ -6,7 +6,6 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.field.node.costs_estimate.field_grad_costs_dom
     - field.field.node.costs_estimate.field_grad_costs_select
-    - field.field.node.costs_estimate.field_grad_costs_title
     - field.field.node.costs_estimate.field_grad_costs_year
     - field.field.node.costs_estimate.field_image
     - field.field.node.costs_estimate.field_meta_tags
@@ -27,21 +26,24 @@ third_party_settings:
           label: ''
         components:
           -
-            uuid: b31f2ef4-aa74-4d15-a35e-61d654087b1b
+            uuid: 8ef30ab4-62a1-46cc-9c44-d0c9fc47ec60
             region: content
             configuration:
-              label_display: '0'
+              id: 'field_block:node:costs_estimate:title'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: string
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
               context_mapping:
                 entity: layout_builder.entity
-              id: 'field_block:node:costs_estimate:field_grad_costs_title'
-              formatter:
-                type: string
-                label: hidden
-                settings:
-                  link_to_entity: true
-                third_party_settings: {  }
+                view_mode: view_mode
             additional: {  }
-            weight: 0
+            weight: 1
         third_party_settings: {  }
 id: node.costs_estimate.teaser
 targetEntityType: node
