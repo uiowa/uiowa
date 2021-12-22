@@ -9,6 +9,7 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 
 /**
  * Implements hook_theme().
@@ -111,8 +112,22 @@ function grad_admissions_core_entity_presave(EntityInterface $entity) {
       $output = $entity->get('field_grad_costs_title')->value . " - " . $entity->get('field_grad_costs_select')->value;
       $entity->setTitle($output);
       break;
+
+    }
+
   }
 
+/**
+ * Implements hook_ENTITY_TYPE_view() for node entities.
+ */
+function grad_admissions_core_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  
+  if ($entity->bundle() == 'costs_estimate') {
+    $title = $build['title'][0]['#context']['value'];
+    // TODO Grab value of field_grad_costs_select and append it to title field.
+    
+    $build['title'][0]['#context']['value'] = $new_title;
+  }
 }
 
 /**
