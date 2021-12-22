@@ -96,8 +96,8 @@
   'card_image': content.field_image | render,
   'card_text':  content | without('field_image', 'links', 'field_person_credential', 'field_person_position', 'field_person_email', 'field_person_phone') | render,
   'card_subtitle': content.field_person_position | render,
-  'card_date': content.field_person_email | render,
-  'card_tag': content.field_person_phone | render,
+  'person_email': content.field_person_email | render,
+  'person_phone': content.field_person_phone | render,
   'media_styles': ['media--circle', 'card__media--small', 'media--border'],
   'card_title': label,
   'card_link_url': url,
@@ -114,20 +114,16 @@
       </div>
     {% endif %}
   {% endblock %}
-  {% block card_tag %}
-    {% if card_tag is not empty %}
-      <div class="card__date">
-        {{ card_tag }}
-      </div>
+
+  {% block card_meta %}
+    {% if person_email|striptags|trim is not empty %}
+      <div class="card__meta">{{ person_email }}</div>
+    {% endif %}
+    {% if person_phone|striptags|trim is not empty %}
+      <div class="card__meta">{{ person_phone }}</div>
     {% endif %}
   {% endblock %}
-  {% block card_date %}
-    {% if card_date is not empty %}
-      <div class="card__date">
-        {{ card_date }}
-      </div>
-    {% endif %}
-  {% endblock %}
+
   {% block card_content %}
     {% if card_text is not empty %}
       <div class="card__description">{{ card_text }}</div>
