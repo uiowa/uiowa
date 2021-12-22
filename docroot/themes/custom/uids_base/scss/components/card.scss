@@ -207,7 +207,7 @@
 }
 
 .card {
-  .card__date,
+  .card__meta,
   .card__subtitle {
     .svg-inline--fa {
       margin-right: .3rem;
@@ -217,9 +217,13 @@
     }
   }
 
-  .card__date {
+  .card__meta {
+    .fontawesome-icons {
+      display: inline-block;
+    }
     .svg-inline--fa {
-      vertical-align: -0.155em;
+      font-size: 1rem;
+      line-height: 1.2;
     }
   }
 
@@ -314,10 +318,23 @@
 }
 
 // Card list styles
-.card--list .card__date {
+.card--list .card__meta {
   margin-top: .3rem;
 }
 
 .card--media-left.card--list .card__title, .card--media-right.card--list .card__title {
   margin: 0 0 .125rem
+}
+
+
+// Flexbox for centered icons
+.card__meta.card__meta--icon {
+  display: flex;
+  flex-wrap: wrap;
+  .card__icon {
+    flex: 0 1 $lg;
+    display: flex;
+    justify-content: center;
+    padding-top: .135rem;
+  }
 }
