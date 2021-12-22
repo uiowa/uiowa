@@ -33,6 +33,7 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
         ],
       ];
       break;
+
   }
 }
 
@@ -78,93 +79,100 @@ function _sitenow_events_form_submit(array &$form, FormStateInterface $form_stat
  * Implements hook_preprocess_HOOK().
  */
 function sitenow_events_preprocess_block(&$variables) {
-  if ($variables['elements']['#plugin_id'] == 'inline_block:uiowa_events') {
 
-    /** @var \Drupal\Block\Entity\Block $block */
-    $block = $variables['elements']['content']['#block_content'];
+  switch ($variables['elements']['#plugin_id']) {
+    case 'inline_block:uiowa_events':
+      // This case intentionally falls through to the next case.
+      /** @var \Drupal\Block\Entity\Block $block */
+      $block = $variables['elements']['content']['#block_content'];
 
-    // Defaults to upcoming.
-    $display_id = 'events';
-    $start = 'now';
-    $end = '+365 days';
+      // Defaults to upcoming.
+      $display_id = 'events';
+      $start = 'now';
+      $end = '+365 days';
 
-    if ($block->get('field_uiowa_events_past')->value == TRUE) {
-      $display_id = 'past';
-      $start = '-365 days';
-      $end = 'yesterday';
-    }
-
-    $data = sitenow_events_load([
-      'display_id' => $display_id,
-      'filters[department]' => $block->get('field_uiowa_events_department')->getString(),
-      'filters[audiences]' => $block->get('field_uiowa_events_audiences')->getString(),
-      'filters[interests]' => $block->get('field_uiowa_events_interests')->getString(),
-      'filters[types]' => $block->get('field_uiowa_events_types')->getString(),
-      'filters[keywords]' => $block->get('field_uiowa_events_keywords')->getString(),
-      'filters[place]' => $block->get('field_uiowa_events_place')->getString(),
-      'filters[startdate][value][date]' => date('m-d-Y', strtotime(date('d-m-Y') . $start)),
-      'filters[enddate][value][date]' => date('m-d-Y', strtotime(date('d-m-Y') . $end)),
-      'page' => 0,
-      'items_per_page' => $block->get('field_collection_results')->value ?? 50,
-    ]);
-
-    if (isset($data['events'])) {
-      // Get block layout builder styles if they exist.
-      if (isset($variables['elements']['#attributes']['class']) && !empty($variables['elements']['#attributes']['class'])) {
-        $parent_lb_styles = $variables['elements']['#attributes']['class'];
-        $parent_lb_styles[] = 'list-item';
+      if ($block->get('field_uiowa_events_past')->value == TRUE) {
+        $display_id = 'past';
+        $start = '-365 days';
+        $end = 'yesterday';
       }
 
-      // Unset classes meant for children.
-      if (isset($variables["attributes"]["class"])) {
-        foreach ($variables["attributes"]["class"] as $key => $style) {
-          foreach ([
-            'bg',
-            'card',
-            'media',
-            'hide',
-          ] as $check) {
-            if (substr($style, 0, strlen($check)) === $check) {
-              unset($variables['attributes']['class'][$key]);
+      $data = sitenow_events_load([
+        'display_id' => $display_id,
+        'filters[department]' => $block->get('field_uiowa_events_department')->getString(),
+        'filters[audiences]' => $block->get('field_uiowa_events_audiences')->getString(),
+        'filters[interests]' => $block->get('field_uiowa_events_interests')->getString(),
+        'filters[types]' => $block->get('field_uiowa_events_types')->getString(),
+        'filters[keywords]' => $block->get('field_uiowa_events_keywords')->getString(),
+        'filters[place]' => $block->get('field_uiowa_events_place')->getString(),
+        'filters[startdate][value][date]' => date('m-d-Y', strtotime(date('d-m-Y') . $start)),
+        'filters[enddate][value][date]' => date('m-d-Y', strtotime(date('d-m-Y') . $end)),
+        'page' => 0,
+        'items_per_page' => $block->get('field_collection_results')->value ?? 50,
+      ]);
+
+      if (isset($data['events'])) {
+        // Get block layout builder styles if they exist.
+        if (isset($variables['elements']['#attributes']['class']) && !empty($variables['elements']['#attributes']['class'])) {
+          $parent_lb_styles = $variables['elements']['#attributes']['class'];
+          $parent_lb_styles[] = 'list-item';
+        }
+
+        if ($block->hasField('field_uiowa_headline')) {
+          $headline_fields = $block->get('field_uiowa_headline')->getValue();
+          foreach ($headline_fields as $headline_field) {
+            // There isn't a headline, so set the children to this heading size.
+            if (empty($headline_field['headline'])) {
+              $heading_size = $headline_field['child_heading_size'];
+            }
+            else {
+              $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
             }
           }
         }
-      }
 
-      if ($block->hasField('field_uiowa_headline')) {
-        $headline_fields = $block->get('field_uiowa_headline')->getValue();
-        foreach ($headline_fields as $headline_field) {
-          // There isn't a headline, so set the children to this heading size.
-          if (empty($headline_field['headline'])) {
-            $heading_size = $headline_field['child_heading_size'];
+        foreach ($data['events'] as $value) {
+          // The API nests each event as an array.
+          $event = $value['event'];
+          $event['heading_size'] = isset($heading_size) ? $heading_size : 'h3';
+          // Pass the parent block's layout_builder_styles to each item.
+          if (!empty($parent_lb_styles)) {
+            $event['parent_lb_styles'] = $parent_lb_styles;
           }
-          else {
-            $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
-          }
+          $variables['content'][] = [
+            '#theme' => 'sitenow_events_teaser',
+            '#event' => $event,
+          ];
         }
       }
-
-      foreach ($data['events'] as $value) {
-        // The API nests each event as an array.
-        $event = $value['event'];
-        $event['heading_size'] = isset($heading_size) ? $heading_size : 'h3';
-        // Pass the parent block's layout_builder_styles to each item.
-        if (!empty($parent_lb_styles)) {
-          $event['parent_lb_styles'] = $parent_lb_styles;
-        }
-        $variables['content'][] = [
-          '#theme' => 'sitenow_events_teaser',
-          '#event' => $event,
+      else {
+        $variables['content']['no_results'] = [
+          '#markup' => '<div class="events-empty"><p>There are currently no events to display.</p></div>',
         ];
       }
-    }
-    else {
-      $variables['content']['no_results'] = [
-        '#markup' => '<div class="events-empty"><p>There are currently no events to display.</p></div>',
-      ];
 
-      // Unset classes meant for children.
+      // If we have more link checked and link provided, pass it.
+      if ($block->get('field_collection_more')->value == TRUE) {
+        if ($uri = $block->get('field_collection_more_path')->uri) {
+          $url = Url::fromUri($uri);
+        }
+        else {
+          $url = Url::fromUri('//events.uiowa.edu');
+        }
+
+        $variables['content']['more'] = [
+          '#type' => 'link',
+          '#title' => 'View more events',
+          '#url' => $url,
+          '#attributes' => [
+            'class' => ['more-link', 'bttn', 'bttn--primary', 'bttn--caps'],
+          ],
+        ];
+      }
+
+    case 'views_block:events_list_block-card_list':
       if (isset($variables['attributes']['class'])) {
+        // Unset classes meant for children.
         foreach ($variables['attributes']['class'] as $key => $style) {
           foreach ([
             'bg',
@@ -178,25 +186,67 @@ function sitenow_events_preprocess_block(&$variables) {
           }
         }
       }
-    }
+      break;
+  }
+}
 
-    // If we have more link checked and link provided, pass it.
-    if ($block->get('field_collection_more')->value == TRUE) {
-      if ($uri = $block->get('field_collection_more_path')->uri) {
-        $url = Url::fromUri($uri);
+/**
+ * Implements hook_preprocess_views_view_unformatted().
+ */
+function sitenow_events_preprocess_views_view_unformatted(&$variables) {
+  /** @var \Drupal\views\ViewExecutable $view */
+  $view = $variables['view'];
+  if ($view->id() === 'events_list_block') {
+    $rows = $variables['rows'];
+    $style = $view->style_plugin;
+
+    foreach ($rows as $id => $row) {
+      // Need to get these values regardless of whether they are hidden or not.
+      /** @var \Drupal\node\NodeInterface $node */
+      $node = $row['content']['#node'];
+      $nid = $node->get('nid')->value;
+      $link_direct = $node->get('field_event_series_link_direct')->value;
+      $source_link = $node->get('field_event_series_link')->uri;
+
+      // If source link is set and link direct is checked, set $card_link_url to
+      // source link. Otherwise, $card_link_url should be set to node link.
+      if ($link_direct == 1
+        && isset($source_link) && !empty($source_link)) {
+        $card_link_url = $source_link;
       }
       else {
-        $url = Url::fromUri('//events.uiowa.edu');
+        $card_link_url = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
       }
 
-      $variables['content']['more'] = [
-        '#type' => 'link',
-        '#title' => 'View more events',
-        '#url' => $url,
+      $card_meta = [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
         '#attributes' => [
-          'class' => ['more-link', 'bttn', 'bttn--primary', 'bttn--caps'],
+          'class' => [
+            'card__meta card__meta--icon',
+          ],
         ],
       ];
+
+      // Add virtual event information, if it exists.
+      if ($style->getField($id, 'field_event_virtual')) {
+        $card_meta['virtual'] = [
+          '#prefix' => '<span class="card__icon"><span role="presentation" class="fas fa-laptop"></span></span>',
+          '#markup' => $style->getField($id, 'field_event_virtual'),
+        ];
+      }
+
+      // Add location information, if it exists.
+      if ($style->getField($id, 'field_event_location')) {
+        $card_meta['location'] = [
+          '#markup' => '<div class="field--name-field-event-location"><span class="card__icon"><i role="presentation" class="fas fa-map-marker-alt" aria-hidden="true"></i></span>' . $style->getField($id, 'field_event_location') . '</div>',
+        ];
+      }
+
+      // @todo Finish this logic to render the virtual details and location.
+      $variables['rows'][$id]['card_options']['card_subtitle'] = $style->getField($id, 'field_event_when');
+      $variables['rows'][$id]['card_options']['card_link_url'] = $card_link_url;
+      $variables['rows'][$id]['card_options']['card_meta'] = render($card_meta);
     }
   }
 }

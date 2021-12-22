@@ -41,7 +41,7 @@
       {% include '@uids_base/uids/headline.html.twig' with date_heading only %}
       <div class="card__details">
         {% for item in date.items %}
-          <div class="card__date">
+          <div class="card__subtitle">
             {{ item.description|raw }}
             <span{{ item.attributes }}>{{ item.session }}</span>
           </div>
