@@ -1,7 +1,5 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
-//@import "components/03 - global/menus/mega-menu/_mega-menu.scss";
-
 
 .block-superfish .sf-menu.sf-horiz-menu ul {
   @include breakpoint(menu) {
@@ -15,8 +13,6 @@
     font-weight: 400;
   }
 }
-
-
 
 .nav--horizontal {
   .page__container,
@@ -67,21 +63,11 @@
   margin-top: -0.4rem;
   color: inherit;
   font-size: 1rem;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  display: inline-block;
-  font-style: normal;
-  font-variant: normal;
-  text-rendering: auto;
-  line-height: 1;
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
+  @include fas();
   color: $secondary;
 }
 
-
 // horizontal only targeting sf-horiz-menu class.
-
 ul.sf-menu.sf-horiz-menu li li a,
 ul.sf-menu.sf-horiz-menu li li span,
 ul.sf-menu.sf-horiz-menu li li .nolink {

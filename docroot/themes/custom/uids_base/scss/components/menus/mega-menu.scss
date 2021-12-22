@@ -9,7 +9,6 @@
   }
 }
 
-
 .block-superfish .menu ul.sf-multicolumn {
   transition: background-color 2s ease-in;
 }
@@ -24,24 +23,8 @@ ul.sf-menu.sf-mega-menu li {
 .block-superfish .menu.sf-mega-menu ul li span,
 .block-superfish .menu.sf-mega-menu ul li .nolink {
   @include breakpoint(menu) {
-    padding: .325rem 0;
-    font-size: 1rem;
-  }
-}
-
-
-ul.sf-multicolumn ol {
-  display: flex;
-  flex-wrap: wrap;
-  width: 70%;
-  padding: $lg 0;
-
-  li {
-    width: 50%;
-
-    .sf-multicolumn-column ol {
-      // @include element-invisible;
-    }
+    padding: $xsm 0;
+    font-size: $base-font-size;
   }
 }
 
@@ -100,7 +83,7 @@ ul.sf-mega-menu.sf-accordion li li.sf-depth-2.sfHover > ul {
 
   @include breakpoint(container) {
     // sets max-width to container width
-    max-width: 81.875rem;
+    max-width: $container-width;
     margin: 0 auto;
   }
 }
@@ -112,7 +95,7 @@ ul.sf-mega-menu.sf-accordion li li.sf-depth-2.sfHover > ul {
 }
 
 .block-superfish .sf-mega-menu .sf-multicolumn a.sf-depth-2 {
-  font-weight: bold;
+  font-weight: $font-weight-bold;
 }
 
 .block-superfish .sf-mega-menu .sf-multicolumn li {
