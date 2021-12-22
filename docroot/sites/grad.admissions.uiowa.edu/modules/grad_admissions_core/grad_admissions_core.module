@@ -179,6 +179,9 @@ function grad_admissions_core_preprocess_views_view_field(&$variables) {
 function grad_admissions_core_theme_suggestions_field_alter(array &$suggestions, array $variables) {
   switch ($variables["element"]["#field_name"]) {
     case 'field_area_of_study_grad_intro':
+    case 'field_area_of_study_requirements':
+    case 'field_area_of_study_procedures':
+    case 'field_area_of_study_deadlines':
       $suggestions[] = 'field__bold_headline_label';
       break;
 

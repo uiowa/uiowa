@@ -9,10 +9,13 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_area
     - field.field.node.area_of_study.field_area_of_study_college
     - field.field.node.area_of_study.field_area_of_study_contact
+    - field.field.node.area_of_study.field_area_of_study_deadlines
     - field.field.node.area_of_study.field_area_of_study_degree_types
     - field.field.node.area_of_study.field_area_of_study_grad_costs
     - field.field.node.area_of_study.field_area_of_study_grad_intro
     - field.field.node.area_of_study.field_area_of_study_link
+    - field.field.node.area_of_study.field_area_of_study_procedures
+    - field.field.node.area_of_study.field_area_of_study_requirements
     - field.field.node.area_of_study.field_area_of_study_subtitle
     - field.field.node.area_of_study.field_image
     - field.field.node.area_of_study.field_meta_tags
@@ -194,7 +197,7 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 10
+            weight: 11
           -
             uuid: 69d74fb7-6b3a-4083-8e18-b91aa2a2bcee
             region: first
@@ -212,7 +215,7 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 9
+            weight: 10
           -
             uuid: cafd8c4a-b349-4e11-ba57-1a84eb7c7957
             region: first
@@ -231,7 +234,7 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 11
+            weight: 12
           -
             uuid: 4d0d0d25-4b05-42d1-b6d2-9fe59059c9c6
             region: first
@@ -250,7 +253,7 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 12
+            weight: 13
           -
             uuid: 3de645a9-d98a-4ba0-b253-ed3757dc6916
             region: first
@@ -269,7 +272,7 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 13
+            weight: 14
           -
             uuid: cf81f207-6491-46e8-a054-5456f7f05df4
             region: second
@@ -306,6 +309,60 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: 3
+          -
+            uuid: 7c91cbf2-6d70-472e-b50f-7920f5d93e4b
+            region: first
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_requirements'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: above
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 9
+          -
+            uuid: ca4d4cad-2241-4f63-a5ad-50f024ec602b
+            region: first
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_deadlines'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: above
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 15
+          -
+            uuid: 83f2828d-35e6-4386-afbc-b100fdc1fe7a
+            region: first
+            configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_procedures'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: above
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 16
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -387,6 +444,13 @@ content:
     third_party_settings: {  }
     type: text_default
     region: content
+  field_area_of_study_deadlines:
+    weight: 17
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
   field_area_of_study_degree_types:
     weight: 8
     label: above
@@ -421,6 +485,20 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+    region: content
+  field_area_of_study_procedures:
+    weight: 18
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_area_of_study_requirements:
+    weight: 16
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
     region: content
   field_area_of_study_subtitle:
     weight: 13
