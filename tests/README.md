@@ -32,7 +32,7 @@ tests:
     sudo-run-tests: false
     mink-driver-args-webdriver: ''
     simpletest-db: ''
-    simpletest-base-url: ''
+    simpletest-base-url: 'https://web'
     phpunit:
       -
         # The directory to scan for tests. Change to what you want to test.
