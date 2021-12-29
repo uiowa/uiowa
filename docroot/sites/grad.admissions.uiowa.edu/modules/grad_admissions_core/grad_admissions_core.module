@@ -187,7 +187,7 @@ function grad_admissions_core_preprocess_views_view_field(&$variables) {
             foreach ($nodes as $node) {
               if ($node->hasField('field_area_of_study_degree_types') && !$node->get('field_area_of_study_degree_types')->isEmpty()) {
                 $tids = $node->get('field_area_of_study_degree_types')->getValue();
-                foreach($tids as $tid) {
+                foreach ($tids as $tid) {
                   $term = Term::load($tid['target_id']);
                   $options = ['absolute' => TRUE];
                   $url = Url::fromRoute('entity.node.canonical', ['node' => $node->id()], $options);
