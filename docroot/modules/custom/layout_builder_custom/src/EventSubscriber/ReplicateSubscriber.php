@@ -69,9 +69,11 @@ class ReplicateSubscriber implements EventSubscriberInterface {
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
-    return [
-      ReplicatorEvents::AFTER_SAVE => 'onReplicateAfterSave',
-    ];
+    $events = [];
+    if (class_exists('\Drupal\replicate\Events\ReplicatorEvents')) {
+      $events[ReplicatorEvents::AFTER_SAVE] = 'onReplicateAfterSave';
+    }
+    return $events;
   }
 
   /**
