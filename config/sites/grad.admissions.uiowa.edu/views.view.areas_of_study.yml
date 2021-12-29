@@ -1,26 +1,23 @@
-uuid: df2b892f-a083-445f-aaf2-153db4c37e51
+uuid: 5617bc7f-891e-4b4d-a21e-b7deff0db341
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_area_of_study_area
-    - field.storage.node.field_area_of_study_degree_types
-    - node.type.area_of_study
-    - system.menu.main
     - taxonomy.vocabulary.colleges
     - taxonomy.vocabulary.degree_types
     - taxonomy.vocabulary.grad_areas_of_study
   module:
     - node
     - taxonomy
+    - text
     - user
 id: areas_of_study
 label: 'Areas of Study'
 module: views
 description: ''
 tag: ''
-base_table: node_field_data
-base_field: nid
+base_table: taxonomy_term_field_data
+base_field: tid
 display:
   default:
     display_plugin: default
@@ -56,7 +53,6 @@ display:
       pager:
         type: none
         options:
-          items_per_page: 0
           offset: 0
       style:
         type: table
@@ -70,31 +66,116 @@ display:
           summary: ''
           description: ''
           columns:
-            title: title
+            name: name
+            nothing: nothing
+            description__format: description__format
           info:
-            title:
+            name:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            nothing:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            description__format:
               sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-          default: '-1'
+          default: name
           empty_table: false
       row:
         type: fields
+        options:
+          inline: {  }
+          separator: ''
+          hide_empty: false
+          default_field_elements: true
       fields:
-        nid:
-          id: nid
-          table: node_field_data
-          field: nid
+        name:
+          id: name
+          table: taxonomy_term_field_data
+          field: name
           relationship: none
           group_type: group
           admin_label: ''
-          label: ID
-          exclude: true
+          label: 'Areas of Study'
+          exclude: false
           alter:
             alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: false
+            ellipsis: false
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          convert_spaces: false
+          entity_type: taxonomy_term
+          entity_field: name
+          plugin_id: term_name
+        nothing:
+          id: nothing
+          table: views
+          field: nothing
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: Degrees
+          exclude: false
+          alter:
+            alter_text: true
             text: ''
             make_link: false
             path: ''
@@ -131,12 +212,59 @@ display:
           empty: ''
           hide_empty: false
           empty_zero: false
+          hide_alter_empty: false
+          plugin_id: custom
+        description__format:
+          id: description__format
+          table: taxonomy_term_field_data
+          field: description__format
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Additional information'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: number_integer
-          settings:
-            thousand_separator: ''
-            prefix_suffix: true
+          type: text_default
+          settings: {  }
           group_column: entity_id
           group_columns: {  }
           group_rows: true
@@ -147,195 +275,16 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: node
-          entity_field: nid
-          plugin_id: field
-        view_node:
-          id: view_node
-          table: node
-          field: view_node
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          text: view
-          output_url_as_text: true
-          absolute: false
-          entity_type: node
-          plugin_id: entity_link
-        field_area_of_study_area:
-          id: field_area_of_study_area
-          table: node__field_area_of_study_area
-          field: field_area_of_study_area
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: 'Area of Study'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: target_id
-          type: entity_reference_label
-          settings:
-            link: false
-          group_column: entity_id
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
-        field_area_of_study_degree_types:
-          id: field_area_of_study_degree_types
-          table: node__field_area_of_study_degree_types
-          field: field_area_of_study_degree_types
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: 'Degree Types'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: true
-            path: '{{ view_node }}'
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: target_id
-          type: entity_reference_label
-          settings:
-            link: false
-          group_column: entity_id
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
+          entity_type: taxonomy_term
+          entity_field: description
           plugin_id: field
       filters:
         status:
           value: '1'
-          table: node_field_data
+          table: taxonomy_term_field_data
           field: status
           plugin_id: boolean
-          entity_type: node
+          entity_type: taxonomy_term
           entity_field: status
           id: status
           expose:
@@ -343,23 +292,24 @@ display:
             operator_limit_selection: false
             operator_list: {  }
           group: 1
-        type:
-          id: type
-          table: node_field_data
-          field: type
+        vid:
+          id: vid
+          table: taxonomy_term_field_data
+          field: vid
           value:
-            area_of_study: area_of_study
-          entity_type: node
-          entity_field: type
+            grad_areas_of_study: grad_areas_of_study
+          entity_type: taxonomy_term
+          entity_field: vid
           plugin_id: bundle
           expose:
             operator_limit_selection: false
             operator_list: {  }
+          group: 1
         field_area_of_study_degree_types_target_id:
           id: field_area_of_study_degree_types_target_id
           table: node__field_area_of_study_degree_types
           field: field_area_of_study_degree_types_target_id
-          relationship: none
+          relationship: reverse__node__field_area_of_study_area
           group_type: group
           admin_label: ''
           operator: or
@@ -368,13 +318,13 @@ display:
           exposed: true
           expose:
             operator_id: field_area_of_study_degree_types_target_id_op
-            label: 'Degree Types'
+            label: 'Degree Type'
             description: ''
             use_operator: false
             operator: field_area_of_study_degree_types_target_id_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: type
+            identifier: field_area_of_study_degree_types_target_id
             required: false
             remember: false
             multiple: false
@@ -417,7 +367,7 @@ display:
           id: field_area_of_study_college_target_id
           table: node__field_area_of_study_college
           field: field_area_of_study_college_target_id
-          relationship: none
+          relationship: reverse__node__field_area_of_study_area
           group_type: group
           admin_label: ''
           operator: or
@@ -426,7 +376,7 @@ display:
           exposed: true
           expose:
             operator_id: field_area_of_study_college_target_id_op
-            label: College(s)
+            label: College
             description: ''
             use_operator: false
             operator: field_area_of_study_college_target_id_op
@@ -457,7 +407,7 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          reduce_duplicates: true
+          reduce_duplicates: false
           type: select
           limit: true
           vid: colleges
@@ -471,81 +421,55 @@ display:
           required_depth: 0
           none_label: '- Please select -'
           plugin_id: taxonomy_index_tid
-      sorts:
-        name:
-          id: name
-          table: taxonomy_term_field_data
-          field: name
-          relationship: term_node_tid
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: false
-          expose:
-            label: ''
-          entity_type: taxonomy_term
-          entity_field: name
-          plugin_id: standard
-      title: 'Areas of Study'
+      sorts: {  }
       header: {  }
       footer: {  }
       empty: {  }
       relationships:
-        term_node_tid:
-          id: term_node_tid
-          table: node_field_data
-          field: term_node_tid
+        reverse__node__field_area_of_study_area:
+          id: reverse__node__field_area_of_study_area
+          table: taxonomy_term_field_data
+          field: reverse__node__field_area_of_study_area
           relationship: none
           group_type: group
-          admin_label: term
+          admin_label: field_area_of_study_area
           required: false
-          vids:
-            - grad_areas_of_study
-          entity_type: node
-          plugin_id: node_term_data
+          entity_type: taxonomy_term
+          plugin_id: entity_reverse
       arguments: {  }
-      display_extenders: {  }
-      use_ajax: false
+      display_extenders:
+        metatag_display_extender: {  }
       group_by: true
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
+        - url.query_args
         - user
-        - 'user.node_grants:view'
         - user.permissions
-      tags:
-        - 'config:field.storage.node.field_area_of_study_area'
-        - 'config:field.storage.node.field_area_of_study_degree_types'
-  areas_of_study:
+      tags: {  }
+  page_1:
     display_plugin: page
-    id: areas_of_study
+    id: page_1
     display_title: Page
     position: 1
     display_options:
       display_extenders:
         metatag_display_extender: {  }
       path: areas-of-study
-      menu:
-        type: normal
-        title: 'Areas of Study'
-        description: ''
-        expanded: false
-        parent: 'menu_link_content:0e63a570-5bcf-4f9e-b8da-91dac103893a'
-        weight: -43
-        context: '0'
-        menu_name: main
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
+        - url.query_args
         - user
-        - 'user.node_grants:view'
         - user.permissions
-      tags:
-        - 'config:field.storage.node.field_area_of_study_area'
-        - 'config:field.storage.node.field_area_of_study_degree_types'
+      tags: {  }
