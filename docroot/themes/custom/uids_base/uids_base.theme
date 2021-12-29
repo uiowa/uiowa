@@ -537,11 +537,10 @@ function uids_base_preprocess_layout(&$variables) {
       $variables['banner_settings'] = $variables['banner_settings'] + $defaults;
 
       // Set default for banner gradient.
-      if ($variables['banner_settings']['transparent']) {
+      if ($variables['banner_settings']['transparent'] || $title_hidden) {
         $variables['attributes']['class'][] = 'banner--transparent';
       }
-      // Don't set the gradient classes unless the title is hidden.
-      elseif ($title_hidden === FALSE) {
+      else {
         $variables['attributes']['class'][] = 'banner--gradient-bottom';
         $variables['attributes']['class'][] = 'banner--gradient-dark';
       }
@@ -561,7 +560,6 @@ function uids_base_preprocess_layout(&$variables) {
 
         if ($title_hidden) {
           $variables['attributes']['class'][] = 'layout--title--hidden';
-          $variables['attributes']['class'][] = 'banner--transparent';
         }
       }
     }
