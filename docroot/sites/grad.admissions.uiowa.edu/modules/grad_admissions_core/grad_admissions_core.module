@@ -5,11 +5,12 @@
  * Contains grad_admissions_core.module.
  */
 
+use Drupal\Core\Link;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Implements hook_theme().
@@ -169,6 +170,39 @@ function grad_admissions_core_preprocess_views_view_field(&$variables) {
             '#markup' => $output,
           ];
         }
+        break;
+
+      case 'areas_of_study':
+        if (isset($variables['view']->field) && $variables['field']->realField == 'nothing' && $variables['field']->options['id'] == 'nothing') {
+          $tid = $variables['row']->_entity->get('tid')->value;
+          $nids = \Drupal::entityQuery('node')
+            ->condition('status', 1)
+            ->condition('type', 'area_of_study')
+            ->condition('field_area_of_study_area', $tid)
+            ->execute();
+          if (!empty($nids)) {
+            $degree_types = '';
+            $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+            $nodes = $node_storage->loadMultiple($nids);
+            foreach ($nodes as $node) {
+              if ($node->hasField('field_area_of_study_degree_types') && !$node->get('field_area_of_study_degree_types')->isEmpty()) {
+                $tids = $node->get('field_area_of_study_degree_types')->getValue();
+                foreach($tids as $tid) {
+                  $term = Term::load($tid['target_id']);
+                  $options = ['absolute' => TRUE];
+                  $url = Url::fromRoute('entity.node.canonical', ['node' => $node->id()], $options);
+                  $degree_types .= Link::fromTextAndUrl(t($term->label()), $url)->toString() . ', ';
+                }
+              }
+            }
+            $degree_types = trim($degree_types, ', ');
+            $variables['output'] = [
+              '#markup' => $degree_types,
+            ];
+          }
+
+        }
+        break;
     }
   }
 }
