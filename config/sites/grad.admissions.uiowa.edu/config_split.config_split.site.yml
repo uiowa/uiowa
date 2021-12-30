@@ -28,7 +28,7 @@ complete_list:
   - node.type.area_of_study
   - node.type.costs_estimate
   - pathauto.pattern.area_of_study
-  - pathauto.pattern.graduate_costs_estimate
+  - pathauto.pattern.costs_estimate
   - simple_sitemap.bundle_settings.default.node.area_of_study
   - simple_sitemap.bundle_settings.default.node.costs_estimate
   - simple_sitemap.bundle_settings.default.taxonomy_term.colleges
@@ -38,9 +38,9 @@ complete_list:
   - views.view.areas_of_study
   - views.view.colleges_taxonomy_term
   - views.view.costs_estimate
+  - pathauto.pattern.graduate_costs_estimate
   - views.view.grad_costs
   - 'field.field.node.area_of_study.*'
-  - pathauto.pattern.costs_estimate
   - views.view.grad_areas_of_study
   - 'core.entity_view_display.node.costs_estimate.*'
   - 'core.entity_view_display.node.area_of_study.*'
@@ -51,4 +51,5 @@ complete_list:
   - 'field.field.taxonomy_term.colleges.*'
   - 'field.storage.taxonomy_term.field_college_*'
 partial_list:
+  - metatag.settings
   - 'user.role.*'
