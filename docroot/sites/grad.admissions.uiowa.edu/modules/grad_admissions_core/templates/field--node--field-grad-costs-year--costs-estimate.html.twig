@@ -1,13 +1,13 @@
 {%
   set classes = [
-    'badge',
-    'badge--primary',
-  ]
+  'badge',
+  'badge--primary',
+]
 %}
 
 <div {{ attributes.addClass(classes) }}>
-	{%- for item in items -%}
+  {%- for item in items -%}
     {{ item.content }}
-	{%- endfor -%}
+  {%- endfor -%}
 </div>
 <hr class="element--spacer-separator" />
