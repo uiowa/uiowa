@@ -12,6 +12,19 @@ use Consolidation\AnnotatedCommand\CommandError;
 class ValidateCommands extends BltTasks {
 
   /**
+   * Validate that the command is not being run on the container.
+   *
+   * @hook validate @requireHost
+   */
+  public function validateHost() {
+    $is_ddev = getenv('IS_DDEV_PROJECT') ?? FALSE;
+
+    if ($is_ddev) {
+      return new CommandError('This command must be run on your host machine, i.e. not on the ddev web container.');
+    }
+  }
+
+  /**
    * Validate that the command is being run on a feature branch.
    *
    * @hook validate @requireFeatureBranch

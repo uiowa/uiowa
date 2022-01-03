@@ -186,37 +186,8 @@ class ListBlock extends CoreBlock {
     //   block.
     // Provide "Configure sorts" block settings form.
     if (!empty($allow_settings['configure_sorts'])) {
-      $form['override']['sort'] = [
-        '#type' => 'details',
-        '#title' => $this->t('Sort options'),
-        '#description' => $this->t('Choose the order of the available sorts by dragging the drag handle ([icon]) and moving it up or down. For each sort, select "Ascending" to display results from first to last (e.g. A-Z), or "Descending" to display results from last to first (e.g. Z-A).'),
-      ];
-      $options = [
-        'ASC' => $this->t('Ascending'),
-        'DESC' => $this->t('Descending'),
-      ];
 
       $sorts = $this->getHandlers('sort');
-      $header = [
-        'label' => $this->t('Label'),
-        'order' => $this->t('Order'),
-        'weight' => $this->t('Weight'),
-      ];
-      $form['override']['sort']['sort_list'] = [
-        '#type' => 'table',
-        '#header' => $header,
-        '#rows' => [],
-      ];
-
-      $form['override']['sort']['sort_list']['#tabledrag'] = [
-        [
-          'action' => 'order',
-          'relationship' => 'sibling',
-          'group' => 'sort-weight',
-        ],
-      ];
-      $form['override']['sort']['sort_list']['#attributes'] = ['id' => 'order-sorts'];
-
       // Sort available sort plugins by their currently configured weight.
       $sorted_sorts = [];
       if (isset($block_configuration['sort'])) {
@@ -239,12 +210,54 @@ class ListBlock extends CoreBlock {
         $sorted_sorts = $sorts;
       }
 
+      if (count($sorted_sorts) > 1) {
+        $description = $this->t('Choose the order of the available sorts by dragging the drag handle ([icon]) and moving it up or down. For each sort, select "Ascending" to display results from first to last (e.g. A-Z), or "Descending" to display results from last to first (e.g. Z-A).');
+      }
+      else {
+        $description = $this->t('For each sort, select "Ascending" to display results from first to last (e.g. A-Z), or "Descending" to display results from last to first (e.g. Z-A).');
+      }
+
+      $form['override']['sort'] = [
+        '#type' => 'details',
+        '#title' => $this->t('Sort options'),
+        '#description' => $description,
+      ];
+      $options = [
+        'ASC' => $this->t('Ascending'),
+        'DESC' => $this->t('Descending'),
+      ];
+
+      $header = [
+        'label' => $this->t('Label'),
+        'order' => $this->t('Order'),
+        'weight' => $this->t('Weight'),
+      ];
+      $form['override']['sort']['sort_list'] = [
+        '#type' => 'table',
+        '#header' => $header,
+        '#rows' => [],
+      ];
+      $form['override']['sort']['sort_list']['#attributes'] = ['id' => 'order-sorts'];
+
+      if (count($sorted_sorts) > 1) {
+        $form['override']['sort']['sort_list']['#tabledrag'] = [
+          [
+            'action' => 'order',
+            'relationship' => 'sibling',
+            'group' => 'sort-weight',
+          ],
+        ];
+      }
+
       foreach ($sorted_sorts as $sort_name => $plugin) {
         $sort_label = $plugin->adminLabel();
         if (!empty($plugin->options['label'])) {
           $sort_label .= ' (' . $plugin->options['label'] . ')';
         }
-        $form['override']['sort']['sort_list'][$sort_name]['#attributes']['class'][] = 'draggable';
+        // Display drag handle if there is more than 1.
+        if (count($sorted_sorts) > 1) {
+          $form['override']['sort']['sort_list'][$sort_name]['#attributes']['class'][] = 'draggable';
+        }
 
         $form['override']['sort']['sort_list'][$sort_name]['label'] = [
           '#markup' => $sort_label,

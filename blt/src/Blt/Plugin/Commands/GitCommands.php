@@ -22,6 +22,7 @@ class GitCommands extends BltTasks {
    *
    * @aliases ugc
    *
+   * @requireHost
    * @requireRemoteAccess
    */
   public function clean() {
@@ -88,6 +89,7 @@ class GitCommands extends BltTasks {
    *
    * @aliases ugd
    *
+   * @requireHost
    * @requireCredentials
    */
   public function deploy() {

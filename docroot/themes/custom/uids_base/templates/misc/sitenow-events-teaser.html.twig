@@ -44,18 +44,18 @@
   'card_link_url': event.url,
   'card_subtitle': event.date_string,
   'headline_level': event.heading_size,
-  'card_text': event.description_text|render,
+  'card_text': event.description|render|trim|t,
   'event_icon': event_icon|trans,
-  'card_tag': event_location|render,
+  'card_meta': event_location|render,
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with block_card only %}
 
-  {% block card_tag %}
-    {% if card_tag is not empty %}
-      <div class="card__label">
+  {% block card_meta %}
+    {% if card_meta is not empty %}
+      <div class="card__meta">
         {{ event_icon }}
-        {{ card_tag }}
+        {{ card_meta }}
       </div>
     {% endif %}
   {% endblock %}

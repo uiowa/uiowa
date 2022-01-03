@@ -4,6 +4,7 @@ namespace Uiowa\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\EnvironmentDetector;
+use Acquia\Blt\Robo\Common\YamlMunge;
 use Acquia\Blt\Robo\Exceptions\BltException;
 
 /**
@@ -59,21 +60,11 @@ class ReplaceCommands extends BltTasks {
           }
 
           try {
-            // Define a site-specific cache directory.
+            // Define a site-specific cache directory. For some reason, putenv
+            // did not work here. This would not be necessary if Drush
+            // supported per-site config file loading.
             // @see: https://github.com/drush-ops/drush/pull/4345
-            $tmp = "/tmp/.drush-cache-{$app}/{$env}/{$multisite}";
-
-            // Clear the plugin cache for discovery and potential layout issue.
-            // @see: https://github.com/uiowa/uiowa/issues/3585.
-            $this->taskDrush()
-              ->drush('cc plugin')
-              ->option('define', "drush.paths.cache-directory={$tmp}")
-              ->run();
-
-            // Ensure BLT uses the site-specific cache directory. For some
-            // reason, putenv did not work here. This would not be necessary if
-            // Drush supported per-site config file loading.
-            $_ENV['DRUSH_PATHS_CACHE_DIRECTORY'] = $tmp;
+            $_ENV['DRUSH_PATHS_CACHE_DIRECTORY'] = "/tmp/.drush-cache-{$app}/{$env}/{$multisite}";
             $this->invokeCommand('drupal:update');
             $this->logger->info("Finished deploying updates to <comment>{$multisite}</comment>.");
           }
@@ -100,13 +91,11 @@ class ReplaceCommands extends BltTasks {
   public function replacePostDbCopy($site, $target_env, $db_name, $source_env) {
     foreach ($this->getConfigValue('multisites') as $multisite) {
       $this->switchSiteContext($multisite);
-
       $db = $this->getConfigValue('drupal.db.database');
 
       // Trigger drupal:update for this site.
       if ($db_name == $db) {
         $this->logger->info("Deploying updates to <comment>{$multisite}</comment>...");
-        $this->switchSiteContext($multisite);
         $this->taskDrush()->drush('cache:rebuild')->run();
         $this->invokeCommand('drupal:update');
         $this->logger->info("Finished deploying updates to <comment>{$multisite}</comment>.");
@@ -179,6 +168,67 @@ class ReplaceCommands extends BltTasks {
     }
     else {
       $this->logger->notice('Skipping percy snapshot in non-CI environment.');
+    }
+  }
+
+  /**
+   * Remove all local settings file beforehand, so they are recreated.
+   *
+   * The source:build:settings command will only recreate local settings files
+   * if they do not already exist. This can be confusing if you change BLT
+   * configuration and expect to see the differences in the file.
+   *
+   * @hook pre-command source:build:settings
+   */
+  public function preSourceBuildSettings() {
+    $yaml = YamlMunge::parseFile($this->getConfigValue('repo.root') . '/blt/local.blt.yml');
+
+    if (isset($yaml['multisites'])) {
+      $this->logger->warning('Multisites overridden in local.blt.yml file. Only those sites will have local.settings.php files regenerated.');
+    }
+
+    $this->taskExecStack()
+      ->dir($this->getConfigValue('docroot'))
+      ->exec('rm sites/*/settings/local.settings.php')
+      ->exec('rm sites/*/local.drush.yml')
+      ->run();
+  }
+
+  /**
+   * Start chromedriver in CI environment before running Drupal tests.
+   *
+   * @see https://github.com/acquia/blt-drupal-test/issues/8
+   *
+   * @hook pre-command tests:drupal:phpunit:run
+   */
+  public function preTestsDrupalPhpunitRun() {
+    if (EnvironmentDetector::isCiEnv()) {
+      $this->logger->info("Launching chromedriver...");
+      $chromeDriverHost = 'http://localhost';
+      $chromeDriverPort = $this->getConfigValue('tests.chromedriver.port');
+
+      $this->getContainer()
+        ->get('executor')
+        ->execute("chromedriver")
+        ->background(TRUE)
+        ->printOutput(TRUE)
+        ->printMetadata(TRUE)
+        ->run();
+
+      $this->getContainer()->get('executor')->waitForUrlAvailable("$chromeDriverHost:{$chromeDriverPort}");
+    }
+  }
+
+  /**
+   * Kill chromedriver in CI after running tests.
+   *
+   * @hook post-command tests:drupal:phpunit:run
+   */
+  public function postTestsDrupalPhpunitRun() {
+    if (EnvironmentDetector::isCiEnv()) {
+      $this->logger->info("Killing running chromedriver processes...");
+      $chromeDriverPort = $this->getConfigValue('tests.chromedriver.port');
+      $this->getContainer()->get('executor')->killProcessByPort($chromeDriverPort);
     }
   }
 

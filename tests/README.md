@@ -1,6 +1,6 @@
 This directory should contain automated tests, organized into subdirectories according to testing tool.
 
-Please see [BLT documentation](http://blt.readthedocs.io/en/latest/readme/testing) for more information.
+Please see [BLT documentation](https://docs.acquia.com/blt/developer/testing/) for more information.
 
 You can use this project to run core and contrib tests. This can be useful when
 working on a merge request for a core or contrib project. Here is some
@@ -19,19 +19,20 @@ Follow the Git instructions on the drupal.org issue you're working on for
 setting up another remote within that project directory.
 
 ### Run tests
-Tests are run with the `blt tests:drupal` command. Verbose logging with the `-v`
-option can be useful. By default, no tests will run because there are none
-specified in BLT configuration. You can pick and choose what tests to run by
-modifying your `blt/local.blt.yml` file as documented in the BLT docs. Here is
-an example you can copy and past into `blt/local.blt.yml` to get started.
+Drupal tests are run with the `blt tests:drupal` command. Verbose logging with
+the `-v`option can be useful. By default, no tests will run because there are
+none specified in BLT configuration. You can pick and choose what tests to run
+by modifying your `blt/local.blt.yml` file as documented in the BLT docs. Here
+is an example you can copy and past into `blt/local.blt.yml` to get started.
 ```
-# Configure Drupal tests to run.
+# Configure Drupal tests to run on ddev.
 tests:
   drupal:
-    # This is required for running functional-javascript tests.
-    web-driver: chromedriver
-    # Use MySQL. The default sqlite DB URL that BLT configures was not working.
-    simpletest-db: 'mysql://${drupal.db.username}:${drupal.db.password}@${drupal.db.host}/${drupal.db.database}'
+    web-driver: false
+    sudo-run-tests: false
+    mink-driver-args-webdriver: ''
+    simpletest-db: ''
+    simpletest-base-url: 'https://web'
     phpunit:
       -
         # The directory to scan for tests. Change to what you want to test.
@@ -48,3 +49,7 @@ long time to run.
 
 Note that we are disabling Drupal core tests in `blt/ci.blt.yml`. There is no
 reason to run them for every commit in CI. We only want to test our code there.
+
+The webdriver arguments are overridden because those are set automatically by
+the chromedriver service. See https://github.com/drud/ddev-contrib/tree/master/docker-compose-services/drupalci-chromedriver
+for details.

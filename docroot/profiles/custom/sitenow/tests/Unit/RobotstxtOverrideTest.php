@@ -61,7 +61,7 @@ class RobotstxtOverrideTest extends UnitTestCase {
   public function providerConfigByInternalDomain() {
     return [
       [
-        'foo.local.drupal.uiowa.edu',
+        'foo.uiowa.ddev.site',
       ],
       [
         'foo.dev.drupal.uiowa.edu',
