@@ -12,6 +12,14 @@ use Drupal\google_tag\Entity\Container;
 use Drupal\uiowa_core\HeadlineHelper;
 
 /**
+ * Implements hook_mail_alter().
+ */
+function uiowa_core_mail_alter(&$message) {
+  // Unset all outgoing email from addresses so default config is used.
+  unset($message['params']['from_mail']);
+}
+
+/**
  * Implements hook_config_schema_info_alter().
  */
 function uiowa_core_config_schema_info_alter(&$definitions) {
