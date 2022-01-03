@@ -4,15 +4,13 @@ status: true
 dependencies:
   config:
     - field.field.node.costs_estimate.field_costs_estimate_info
-    - field.field.node.costs_estimate.field_costs_estimate_type
     - field.field.node.costs_estimate.field_costs_estimate_title
+    - field.field.node.costs_estimate.field_costs_estimate_type
     - field.field.node.costs_estimate.field_costs_estimate_year
-    - field.field.node.costs_estimate.field_image
     - field.field.node.costs_estimate.field_meta_tags
     - node.type.costs_estimate
   module:
     - content_moderation
-    - media_library
     - metatag
     - path
     - text
@@ -58,13 +56,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
-    region: content
-  field_image:
-    weight: 12
-    settings:
-      media_types: {  }
-    third_party_settings: {  }
-    type: media_library_widget
     region: content
   field_meta_tags:
     weight: 13

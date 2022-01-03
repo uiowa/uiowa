@@ -4,10 +4,9 @@ status: true
 dependencies:
   config:
     - field.field.node.costs_estimate.field_costs_estimate_info
-    - field.field.node.costs_estimate.field_costs_estimate_type
     - field.field.node.costs_estimate.field_costs_estimate_title
+    - field.field.node.costs_estimate.field_costs_estimate_type
     - field.field.node.costs_estimate.field_costs_estimate_year
-    - field.field.node.costs_estimate.field_image
     - field.field.node.costs_estimate.field_meta_tags
     - node.type.costs_estimate
     - system.menu.main
@@ -32,25 +31,6 @@ third_party_settings:
           layout_builder_styles_style: {  }
           context_mapping: {  }
         components:
-          -
-            uuid: 87bd982e-7ded-4e7d-b628-7ebe621a4a00
-            region: background
-            configuration:
-              id: 'field_block:node:costs_estimate:field_image'
-              label: 'Featured Image'
-              provider: layout_builder
-              label_display: '0'
-              formatter:
-                label: visually_hidden
-                type: entity_reference_entity_view
-                settings:
-                  view_mode: full__ultrawide
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: 2
           -
             uuid: e0e746e6-23c4-4a36-b565-fd986ba15507
             region: content
@@ -230,13 +210,6 @@ content:
     third_party_settings: {  }
     type: text_default
     region: content
-  field_costs_estimate_type:
-    weight: 4
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
-    region: content
   field_costs_estimate_title:
     weight: 6
     label: above
@@ -245,6 +218,13 @@ content:
     third_party_settings: {  }
     type: string
     region: content
+  field_costs_estimate_type:
+    weight: 4
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
   field_costs_estimate_year:
     weight: 0
     label: visually_hidden
@@ -252,14 +232,6 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
-    region: content
-  field_image:
-    weight: 5
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
     region: content
 hidden:
   field_meta_tags: true
