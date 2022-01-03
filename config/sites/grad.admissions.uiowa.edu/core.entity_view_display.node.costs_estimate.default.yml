@@ -3,10 +3,10 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.costs_estimate.field_grad_costs_dom
-    - field.field.node.costs_estimate.field_grad_costs_select
-    - field.field.node.costs_estimate.field_grad_costs_title
-    - field.field.node.costs_estimate.field_grad_costs_year
+    - field.field.node.costs_estimate.field_costs_estimate_info
+    - field.field.node.costs_estimate.field_costs_estimate_type
+    - field.field.node.costs_estimate.field_costs_estimate_title
+    - field.field.node.costs_estimate.field_costs_estimate_year
     - field.field.node.costs_estimate.field_image
     - field.field.node.costs_estimate.field_meta_tags
     - node.type.costs_estimate
@@ -73,7 +73,7 @@ third_party_settings:
             uuid: 8f57e8f4-1cf0-49a5-b008-f30a80e0b709
             region: content
             configuration:
-              id: 'field_block:node:costs_estimate:field_grad_costs_title'
+              id: 'field_block:node:costs_estimate:field_costs_estimate_title'
               label: null
               provider: layout_builder
               label_display: null
@@ -138,7 +138,7 @@ third_party_settings:
             uuid: 60c3b524-d3c5-4ecd-8449-a6899ecca12d
             region: content
             configuration:
-              id: 'field_block:node:costs_estimate:field_grad_costs_year'
+              id: 'field_block:node:costs_estimate:field_costs_estimate_year'
               label: null
               provider: layout_builder
               label_display: null
@@ -157,7 +157,7 @@ third_party_settings:
             uuid: 845d0e4f-a3f3-4f81-a4ce-def1a344f5fb
             region: content
             configuration:
-              id: 'field_block:node:costs_estimate:field_grad_costs_dom'
+              id: 'field_block:node:costs_estimate:field_costs_estimate_info'
               label: null
               provider: layout_builder
               label_display: null
@@ -175,7 +175,7 @@ third_party_settings:
             uuid: 27faaed8-13d2-487b-9ad7-3da5f873b1a4
             region: content
             configuration:
-              id: 'field_block:node:costs_estimate:field_grad_costs_select'
+              id: 'field_block:node:costs_estimate:field_costs_estimate_type'
               label: null
               provider: layout_builder
               label_display: null
@@ -223,21 +223,21 @@ targetEntityType: node
 bundle: costs_estimate
 mode: default
 content:
-  field_grad_costs_dom:
+  field_costs_estimate_info:
     weight: 1
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
     region: content
-  field_grad_costs_select:
+  field_costs_estimate_type:
     weight: 4
     label: above
     settings: {  }
     third_party_settings: {  }
     type: list_default
     region: content
-  field_grad_costs_title:
+  field_costs_estimate_title:
     weight: 6
     label: above
     settings:
@@ -245,7 +245,7 @@ content:
     third_party_settings: {  }
     type: string
     region: content
-  field_grad_costs_year:
+  field_costs_estimate_year:
     weight: 0
     label: visually_hidden
     settings:

@@ -20,7 +20,7 @@ function grad_admissions_core_entity_presave(EntityInterface $entity) {
   switch ($entity->bundle()) {
     case 'costs_estimate':
       // Setting the grad costs title with the title value + distinguishing if domestic or international.
-      $output = $entity->get('field_grad_costs_title')->value . ' - ' . $entity->get('field_grad_costs_select')->value;
+      $output = $entity->get('field_costs_estimate_title')->value . ' - ' . $entity->get('field_costs_estimate_select')->value;
       $entity->setTitle($output);
       break;
   }
@@ -223,12 +223,12 @@ function grad_admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--title--costs-estimate--teaser',
       'base hook' => 'field',
     ],
-    'field__node__field_grad_costs_year__costs_estimate' => [
-      'template' => 'field--node--field-grad-costs-year--costs-estimate',
+    'field__node__field_costs_estimate_year__costs_estimate' => [
+      'template' => 'field--node--field-costs-estimate-year--costs-estimate',
       'base hook' => 'field',
     ],
-    'field__node__field_grad_costs_select' => [
-      'template' => 'field--node--field-grad-costs-select',
+    'field__node__field_costs_estimate_select' => [
+      'template' => 'field--node--field-costs-estimate-select',
       'base hook' => 'field',
     ],
     'field__node__field_area_of_study_subtitle__area_of_study__default' => [

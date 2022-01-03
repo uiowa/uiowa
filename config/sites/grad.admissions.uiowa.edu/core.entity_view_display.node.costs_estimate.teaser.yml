@@ -4,9 +4,9 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.field.node.costs_estimate.field_grad_costs_dom
-    - field.field.node.costs_estimate.field_grad_costs_select
-    - field.field.node.costs_estimate.field_grad_costs_year
+    - field.field.node.costs_estimate.field_costs_estimate_info
+    - field.field.node.costs_estimate.field_costs_estimate_type
+    - field.field.node.costs_estimate.field_costs_estimate_year
     - field.field.node.costs_estimate.field_image
     - field.field.node.costs_estimate.field_meta_tags
     - node.type.costs_estimate
@@ -50,7 +50,7 @@ targetEntityType: node
 bundle: costs_estimate
 mode: teaser
 content:
-  field_grad_costs_title:
+  field_costs_estimate_title:
     type: string
     weight: 0
     region: content
@@ -59,9 +59,9 @@ content:
       link_to_entity: true
     third_party_settings: {  }
 hidden:
-  field_grad_costs_dom: true
-  field_grad_costs_select: true
-  field_grad_costs_year: true
+  field_costs_estimate_info: true
+  field_costs_estimate_type: true
+  field_costs_estimate_year: true
   field_image: true
   field_meta_tags: true
   links: true
