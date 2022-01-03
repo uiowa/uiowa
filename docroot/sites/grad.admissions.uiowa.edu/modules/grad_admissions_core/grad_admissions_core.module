@@ -20,7 +20,7 @@ function grad_admissions_core_entity_presave(EntityInterface $entity) {
   switch ($entity->bundle()) {
     case 'costs_estimate':
       // Setting the grad costs title with the title value + distinguishing if domestic or international.
-      $output = $entity->get('field_costs_estimate_title')->value . ' - ' . $entity->get('field_costs_estimate_select')->value;
+      $output = $entity->get('field_costs_estimate_title')->value . ' - ' . $entity->get('field_costs_estimate_type')->value;
       $entity->setTitle($output);
       break;
   }
@@ -47,10 +47,6 @@ function grad_admissions_core_form_alter(&$form, FormStateInterface $form_state,
  */
 function grad_admissions_core_preprocess_field(&$variables) {
   switch ($variables['element']['#field_name']) {
-    case 'field_area_of_study_grad_intro':
-      $variables['label'] = t('Estimated Cost of Attendance');
-      break;
-
     case 'field_area_of_study_college':
       $variables['label'] = t('Related Links');
       $node = $variables['element']['#object'];
