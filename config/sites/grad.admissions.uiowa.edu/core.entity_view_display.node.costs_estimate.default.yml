@@ -73,16 +73,19 @@ third_party_settings:
             uuid: 8f57e8f4-1cf0-49a5-b008-f30a80e0b709
             region: content
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
               id: 'field_block:node:costs_estimate:field_grad_costs_title'
+              label: null
+              provider: layout_builder
+              label_display: null
               formatter:
-                label: above
+                label: hidden
+                type: string
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-                type: string
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
             additional: {  }
             weight: -6
         third_party_settings: {  }
@@ -91,9 +94,8 @@ third_party_settings:
         layout_settings:
           label: ''
           layout_builder_styles_style:
-            0: section_background_style_gray
+            0: ''
             1: section_margin_edge_to_edge
-            remove_default_bottom_padding: remove_default_bottom_padding
             remove_default_top_padding: remove_default_top_padding
           context_mapping: {  }
         components:
@@ -120,7 +122,9 @@ third_party_settings:
                 block_menu_horizontal: block_menu_horizontal
                 0: null
             weight: 0
-        third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
       -
         layout_id: layout_onecol
         layout_settings:
