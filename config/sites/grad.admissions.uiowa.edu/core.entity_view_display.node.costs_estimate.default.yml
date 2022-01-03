@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.costs_estimate.field_grad_costs_dom
+    - field.field.node.costs_estimate.field_costs_estimate_info
     - field.field.node.costs_estimate.field_grad_costs_select
     - field.field.node.costs_estimate.field_grad_costs_title
     - field.field.node.costs_estimate.field_grad_costs_year
@@ -157,7 +157,7 @@ third_party_settings:
             uuid: 845d0e4f-a3f3-4f81-a4ce-def1a344f5fb
             region: content
             configuration:
-              id: 'field_block:node:costs_estimate:field_grad_costs_dom'
+              id: 'field_block:node:costs_estimate:field_costs_estimate_info'
               label: null
               provider: layout_builder
               label_display: null
@@ -223,7 +223,7 @@ targetEntityType: node
 bundle: costs_estimate
 mode: default
 content:
-  field_grad_costs_dom:
+  field_costs_estimate_info:
     weight: 1
     label: visually_hidden
     settings: {  }
