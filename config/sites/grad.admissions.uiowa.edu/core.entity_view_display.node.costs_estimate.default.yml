@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.costs_estimate.field_grad_costs_dom
     - field.field.node.costs_estimate.field_grad_costs_select
+    - field.field.node.costs_estimate.field_grad_costs_title
     - field.field.node.costs_estimate.field_grad_costs_year
     - field.field.node.costs_estimate.field_image
     - field.field.node.costs_estimate.field_meta_tags
@@ -69,22 +70,19 @@ third_party_settings:
             additional: {  }
             weight: -4
           -
-            uuid: 8fdeb6c4-1daa-4f42-9c1d-4b41072e288c
+            uuid: 8f57e8f4-1cf0-49a5-b008-f30a80e0b709
             region: content
             configuration:
-              id: 'field_block:node:costs_estimate:title'
-              label: null
-              provider: layout_builder
-              label_display: null
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:costs_estimate:field_grad_costs_title'
               formatter:
-                label: hidden
-                type: string
+                label: above
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
+                type: string
             additional: {  }
             weight: -6
         third_party_settings: {  }

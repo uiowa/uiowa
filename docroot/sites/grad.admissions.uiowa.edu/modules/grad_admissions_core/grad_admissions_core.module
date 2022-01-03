@@ -11,6 +11,20 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Drupal\taxonomy\Entity\Term;
+use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Implements hook_entity_presave().
+ */
+function grad_admissions_core_entity_presave(EntityInterface $entity) {
+  switch ($entity->bundle()) {
+    case 'costs_estimate':
+      // Setting the grad costs title with the title value + distinguishing if domestic or international.
+      $output = $entity->get('field_grad_costs_title')->value . ' - ' . $entity->get('field_grad_costs_select')->value;
+      $entity->setTitle($output);
+      break;
+  }
+}
 
 /**
  * Implements hook_form_alter().
@@ -145,26 +159,6 @@ function grad_admissions_core_preprocess_views_view_field(&$variables) {
   if (isset($variables['view'])) {
     $id = $variables['view']->id();
     switch ($id) {
-      case 'content':
-        if ($variables['row']->_entity->bundle() === 'costs_estimate' && isset($variables['view']->field) && $variables['field']->realField == 'title') {
-          $nid = $variables['row']->_entity->get('nid')->value;
-          $node = \Drupal::entityTypeManager()
-            ->getStorage('node')
-            ->load($nid);
-          // @todo Get original title from node.
-          $title = $node->getTitle();
-          // @todo Get cost estimate type from node and append to title.
-          $title .= ' - ' . $node->field_grad_costs_select->value;
-          // @todo Re-render title field using new value.
-          /** @var \Drupal\Core\Render\Markup $output */
-          $output = $variables['output'];
-          $output = str_replace($node->getTitle(), $title, $output);
-          $variables['output'] = [
-            '#markup' => $output,
-          ];
-        }
-        break;
-
       case 'areas_of_study':
         if (isset($variables['view']->field) && $variables['field']->realField == 'nothing' && $variables['field']->options['id'] == 'nothing') {
           $tid = $variables['row']->_entity->get('tid')->value;
