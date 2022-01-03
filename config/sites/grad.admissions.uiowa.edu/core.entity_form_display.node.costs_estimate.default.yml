@@ -4,9 +4,9 @@ status: true
 dependencies:
   config:
     - field.field.node.costs_estimate.field_costs_estimate_info
-    - field.field.node.costs_estimate.field_grad_costs_select
-    - field.field.node.costs_estimate.field_grad_costs_title
-    - field.field.node.costs_estimate.field_grad_costs_year
+    - field.field.node.costs_estimate.field_costs_estimate_type
+    - field.field.node.costs_estimate.field_costs_estimate_title
+    - field.field.node.costs_estimate.field_costs_estimate_year
     - field.field.node.costs_estimate.field_image
     - field.field.node.costs_estimate.field_meta_tags
     - node.type.costs_estimate
@@ -37,13 +37,13 @@ content:
     third_party_settings: {  }
     type: text_textarea_with_summary
     region: content
-  field_grad_costs_select:
+  field_costs_estimate_type:
     weight: 1
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
     region: content
-  field_grad_costs_title:
+  field_costs_estimate_title:
     weight: 0
     settings:
       size: 60
@@ -51,7 +51,7 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
-  field_grad_costs_year:
+  field_costs_estimate_year:
     weight: 2
     settings:
       size: 60
