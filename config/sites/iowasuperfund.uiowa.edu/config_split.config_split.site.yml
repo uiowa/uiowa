@@ -5,11 +5,15 @@ dependencies: {  }
 id: site
 label: Site
 description: 'The iowasuperfund.uiowa.edu site split.'
+weight: 70
+stackable: true
+storage: folder
 folder: ../config/sites/iowasuperfund.uiowa.edu
-module:
-  fragments: 0
+module: {  }
 theme: {  }
-blacklist:
+complete_list:
+  - config_split.config_split.site
+  - field.storage.fragment.field_authors
   - fragments.fragment_type.publication
   - node.type.project_core
   - node.type.publication
@@ -19,8 +23,6 @@ blacklist:
   - simple_sitemap.bundle_settings.default.node.research_project
   - simple_sitemap.bundle_settings.default.node.support_core
   - 'field.storage.node.field_publication_*'
-graylist:
-  - config_split.config_split.site
-graylist_dependents: true
-graylist_skip_equal: true
-weight: 90
+partial_list:
+  - metatag.settings
+  - 'user.role.*'

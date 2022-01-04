@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: mentor.uiowa.ddev.site
+    protocol: https
+  machine_name: mentor
+  human_name: mentor.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: mentor.prod
+drupal:
+  db:
+    database: mentor_uiowa_edu
+uiowa:
+  requester: dquam

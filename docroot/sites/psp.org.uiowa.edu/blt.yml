@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: orgpsp.uiowa.ddev.site
+    protocol: https
+  machine_name: orgpsp
+  human_name: psp.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgpsp.prod
+drupal:
+  db:
+    database: psp_org_uiowa_edu
+uiowa:
+  requester: csocarra

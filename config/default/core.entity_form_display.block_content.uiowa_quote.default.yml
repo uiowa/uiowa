@@ -1,0 +1,59 @@
+uuid: 3e3395cf-a16c-4455-9b75-22c9b1d7bec8
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_quote
+    - field.field.block_content.uiowa_quote.field_uiowa_quote_citation
+    - field.field.block_content.uiowa_quote.field_uiowa_quote_content
+    - field.field.block_content.uiowa_quote.field_uiowa_quote_footer
+    - field.field.block_content.uiowa_quote.field_uiowa_quote_image
+  module:
+    - link
+    - media_library
+    - layout_builder_custom
+id: block_content.uiowa_quote.default
+targetEntityType: block_content
+bundle: uiowa_quote
+mode: default
+content:
+  field_uiowa_quote_citation:
+    weight: 28
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  field_uiowa_quote_content:
+    weight: 26
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_uiowa_quote_footer:
+    weight: 27
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_uiowa_quote_image:
+    type: media_library_widget
+    weight: 29
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+    region: content
+  info:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

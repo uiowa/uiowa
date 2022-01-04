@@ -12,7 +12,7 @@
     <!-- Example SIMPLETEST_BASE_URL value: http://localhost -->
     <env name="SIMPLETEST_BASE_URL" value="http://127.0.0.1:8888"/>
     <!-- Example SIMPLETEST_DB value: mysql://username:password@localhost/databasename#table_prefix -->
-    <env name="SIMPLETEST_DB" value="mysql://drupal:drupal@localhost/drupal"/>
+    <env name="SIMPLETEST_DB" value="mysql://root@localhost/drupal"/>
     <!-- Example BROWSERTEST_OUTPUT_DIRECTORY value: /path/to/webroot/sites/simpletest/browser_output -->
     <env name="BROWSERTEST_OUTPUT_DIRECTORY" value=""/>
     <!-- To disable deprecation testing completely uncomment the next line. -->
@@ -29,11 +29,17 @@
     <testsuite name="sitenow">
       <directory>./docroot/profiles/custom/sitenow/tests/</directory>
     </testsuite>
+    <testsuite name="sitenow_find_text">
+      <directory>./docroot/modules/custom/sitenow_find_text/tests/</directory>
+    </testsuite>
     <testsuite name="uiowa_maui">
       <directory>./docroot/modules/custom/uiowa_maui/tests/</directory>
     </testsuite>
     <testsuite name="uiowa_core">
       <directory>./docroot/modules/custom/uiowa_core/tests/</directory>
+    </testsuite>
+    <testsuite name="uiowa_search">
+      <directory>./docroot/modules/custom/uiowa_search/tests/</directory>
     </testsuite>
   </testsuites>
   <listeners>

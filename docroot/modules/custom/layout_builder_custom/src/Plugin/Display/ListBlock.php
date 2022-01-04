@@ -71,6 +71,18 @@ class ListBlock extends BlockDisplay {
 
     $form['allow']['#default_value'] = $defaults;
 
+    // Add restrict_fields option to prevent editors from toggling certain fields.
+    $field_keys = array_keys($this->view->getDisplay()->getOption('fields'));
+    $fields = array_combine($field_keys, $field_keys);
+    $restrict_fields = $this->getOption('restrict_fields');
+    $form['restrict_fields'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Restrict fields'),
+      '#description' => $this->t('Prevent editor from show/hide fields.'),
+      '#options' => $fields,
+      '#default_value' => $restrict_fields ?: '',
+    ];
+
     // Show a text area to add custom help text to the display more link.
     $more_link_help_text = $this->getOption('more_link_help_text');
     $form['more_link_help_text'] = [
@@ -97,6 +109,7 @@ class ListBlock extends BlockDisplay {
     parent::submitOptionsForm($form, $form_state);
     if ($form_state->get('section') === 'allow') {
       $this->setOption('more_link_help_text', $form_state->getValue('more_link_help_text'));
+      $this->setOption('restrict_fields', $form_state->getValue('restrict_fields'));
     }
   }
 
@@ -151,8 +164,12 @@ class ListBlock extends BlockDisplay {
 
     // Modify "Items per page" block settings form.
     if (!empty($allow_settings['items_per_page'])) {
+      // @todo Remove once exposed filters patch is added.
+      // Seems to break at high numbers :grimmacing: ..
+      $form['override']['items_per_page']['#min'] = 1;
+      $form['override']['items_per_page']['#max'] = 50;
       $form['override']['items_per_page']['#title'] = $this->t('Items to display');
-      $form['override']['items_per_page']['#description'] = $this->t('Select the number of entries to display');
+      $form['override']['items_per_page']['#description'] = $this->t('Select the number of entries to display. Minimum of 1 and maximum of 50. Show pager to display more than 50.');
     }
 
     // Provide "Pager offset" block settings form.
@@ -177,7 +194,19 @@ class ListBlock extends BlockDisplay {
         '#description' => $this->t('Choose to hide some of the fields.'),
       ];
       $form['override']['hide_fields']['order_fields'] = $form['override']['order_fields'];
-      unset($form['override']['order_fields']);
+      $form['override']['order_fields']['#access'] = FALSE;
+
+      // Remove restricted fields from the hide options.
+      $restrict_fields = $this->getOption('restrict_fields');
+      if (!empty($restrict_fields)) {
+        $fields_to_remove = [];
+        foreach ($restrict_fields as $field) {
+          if ($field !== 0) {
+            $fields_to_remove[$field] = $field;
+          }
+        }
+        $form["override"]["hide_fields"]["order_fields"] = array_diff_key($form["override"]["hide_fields"]["order_fields"], $fields_to_remove);
+      }
     }
 
     // Alter "Configure filters" to add checkboxes to allow exposing.
@@ -212,37 +241,8 @@ class ListBlock extends BlockDisplay {
     if (!empty($allow_settings['configure_sorts'])) {
       // We are providing a different UI for managing sorts that allows setting
       // the order. This overrides the implementation we are extending.
-      $form['override']['sort'] = [
-        '#type' => 'details',
-        '#title' => $this->t('Sort options'),
-        '#description' => $this->t('Choose the order of the available sorts by dragging the drag handle ([icon]) and moving it up or down. For each sort, select "Ascending" to display results from first to last (e.g. A-Z), or "Descending" to display results from last to first (e.g. Z-A).'),
-      ];
-      $options = [
-        'ASC' => $this->t('Ascending'),
-        'DESC' => $this->t('Descending'),
-      ];
 
       $sorts = $this->getHandlers('sort');
-      $header = [
-        'label' => $this->t('Label'),
-        'order' => $this->t('Order'),
-        'weight' => $this->t('Weight'),
-      ];
-      $form['override']['sort']['sort_list'] = [
-        '#type' => 'table',
-        '#header' => $header,
-        '#rows' => [],
-      ];
-
-      $form['override']['sort']['sort_list']['#tabledrag'] = [
-        [
-          'action' => 'order',
-          'relationship' => 'sibling',
-          'group' => 'sort-weight',
-        ],
-      ];
-      $form['override']['sort']['sort_list']['#attributes'] = ['id' => 'order-sorts'];
-
       // Sort available sort plugins by their currently configured weight.
       $sorted_sorts = [];
       if (isset($block_configuration['sort'])) {
@@ -265,12 +265,54 @@ class ListBlock extends BlockDisplay {
         $sorted_sorts = $sorts;
       }
 
+      if (count($sorted_sorts) > 1) {
+        $description = $this->t('Choose the order of the available sorts by dragging the drag handle ([icon]) and moving it up or down. For each sort, select "Ascending" to display results from first to last (e.g. A-Z), or "Descending" to display results from last to first (e.g. Z-A).');
+      }
+      else {
+        $description = $this->t('For each sort, select "Ascending" to display results from first to last (e.g. A-Z), or "Descending" to display results from last to first (e.g. Z-A).');
+      }
+
+      $form['override']['sort'] = [
+        '#type' => 'details',
+        '#title' => $this->t('Sort options'),
+        '#description' => $description,
+      ];
+      $options = [
+        'ASC' => $this->t('Ascending'),
+        'DESC' => $this->t('Descending'),
+      ];
+
+      $header = [
+        'label' => $this->t('Label'),
+        'order' => $this->t('Order'),
+        'weight' => $this->t('Weight'),
+      ];
+      $form['override']['sort']['sort_list'] = [
+        '#type' => 'table',
+        '#header' => $header,
+        '#rows' => [],
+      ];
+      $form['override']['sort']['sort_list']['#attributes'] = ['id' => 'order-sorts'];
+
+      if (count($sorted_sorts) > 1) {
+        $form['override']['sort']['sort_list']['#tabledrag'] = [
+          [
+            'action' => 'order',
+            'relationship' => 'sibling',
+            'group' => 'sort-weight',
+          ],
+        ];
+      }
+
       foreach ($sorted_sorts as $sort_name => $plugin) {
         $sort_label = $plugin->adminLabel();
         if (!empty($plugin->options['label'])) {
           $sort_label .= ' (' . $plugin->options['label'] . ')';
         }
-        $form['override']['sort']['sort_list'][$sort_name]['#attributes']['class'][] = 'draggable';
+        // Display drag handle if there is more than 1.
+        if (count($sorted_sorts) > 1) {
+          $form['override']['sort']['sort_list'][$sort_name]['#attributes']['class'][] = 'draggable';
+        }
 
         $form['override']['sort']['sort_list'][$sort_name]['label'] = [
           '#markup' => $sort_label,
@@ -375,6 +417,22 @@ class ListBlock extends BlockDisplay {
           ],
         ],
       ];
+
+      $form['override']['use_more_text'] = [
+        '#type' => 'textfield',
+        '#title' => 'Custom text',
+        '#default_value' => isset($block_configuration['use_more_text']) ? $block_configuration['use_more_text'] : '',
+        '#process_default_value' => FALSE,
+        '#states' => [
+          'visible' => [
+            [
+              "input[name='settings[override][use_more]']" => [
+                'checked' => TRUE,
+              ],
+            ],
+          ],
+        ],
+      ];
     }
 
     // Set overrides to show up in the middle of the form.
@@ -421,6 +479,12 @@ class ListBlock extends BlockDisplay {
       $block->setConfigurationValue('use_more_link_url', $form_state->getValue([
         'override',
         'use_more_link_url',
+      ]));
+
+      // Save display more link text.
+      $block->setConfigurationValue('use_more_text', $form_state->getValue([
+        'override',
+        'use_more_text',
       ]));
     }
 
@@ -477,13 +541,15 @@ class ListBlock extends BlockDisplay {
     // Attach the headline, if configured.
     if (!empty($config['headline'])) {
       $headline = $config['headline'];
-      $this->view->element['headline'] = [
-        '#theme' => 'uiowa_core_headline',
-        '#headline' => $headline['headline'],
-        '#hide_headline' => $headline['hide_headline'],
-        '#heading_size' => $headline['heading_size'],
-        '#headline_style' => $headline['headline_style'],
-      ];
+      if (!empty($headline['headline'])) {
+        $this->view->element['headline'] = [
+          '#theme' => 'uiowa_core_headline',
+          '#headline' => $headline['headline'],
+          '#hide_headline' => $headline['hide_headline'],
+          '#heading_size' => $headline['heading_size'],
+          '#headline_style' => $headline['headline_style'],
+        ];
+      }
       if (empty($headline['headline'])) {
         $child_heading_size = $headline['child_heading_size'] ?? 'h3';
       }
@@ -558,6 +624,9 @@ class ListBlock extends BlockDisplay {
         $this->view->display_handler->setOption('link_display', 'custom_url');
         if (!empty($config['use_more_link_url'])) {
           $this->view->display_handler->setOption('link_url', Url::fromUri($config['use_more_link_url'])->toString());
+        }
+        if (!empty($config['use_more_text'])) {
+          $this->view->display_handler->setOption('use_more_text', $config['use_more_text']);
         }
       }
       else {

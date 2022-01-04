@@ -1,0 +1,32 @@
+local:
+  root: /var/www/html/docroot
+  uri: educationwild.uiowa.ddev.site
+  paths:
+    files: sites/wild.education.uiowa.edu/files
+dev:
+  uri: educationwild.dev.drupal.uiowa.edu
+  host: uiowa02dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/wild.education.uiowa.edu/files
+  root: /var/www/html/uiowa02.dev/docroot
+  user: uiowa02.dev
+prod:
+  uri: wild.education.uiowa.edu
+  host: uiowa02.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/wild.education.uiowa.edu/files
+  root: /var/www/html/uiowa02.prod/docroot
+  user: uiowa02.prod
+test:
+  uri: educationwild.stage.drupal.uiowa.edu
+  host: uiowa02stg.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/wild.education.uiowa.edu/files
+  root: /var/www/html/uiowa02.test/docroot
+  user: uiowa02.test

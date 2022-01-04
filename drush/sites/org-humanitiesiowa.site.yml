@@ -1,0 +1,32 @@
+local:
+  root: /var/www/html/docroot
+  uri: org-humanitiesiowa.uiowa.ddev.site
+  paths:
+    files: sites/humanitiesiowa.org/files
+dev:
+  uri: org-humanitiesiowa.dev.drupal.uiowa.edu
+  host: uiowa02dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/humanitiesiowa.org/files
+  root: /var/www/html/uiowa02.dev/docroot
+  user: uiowa02.dev
+prod:
+  uri: humanitiesiowa.org
+  host: uiowa02.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/humanitiesiowa.org/files
+  root: /var/www/html/uiowa02.prod/docroot
+  user: uiowa02.prod
+test:
+  uri: org-humanitiesiowa.stage.drupal.uiowa.edu
+  host: uiowa02stg.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/humanitiesiowa.org/files
+  root: /var/www/html/uiowa02.test/docroot
+  user: uiowa02.test

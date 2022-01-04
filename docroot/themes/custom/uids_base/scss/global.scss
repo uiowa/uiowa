@@ -4,9 +4,23 @@ $imgpath: '../../uids/assets/images';
 @import "../uids/assets/scss/_local-fonts.scss";
 @import "../uids/assets/scss/_base.scss";
 
+// Word break classes.
+.block--word-break,
+.block-inline-blockuiowa-text-area,
+.block-field-blocknodepagebody {
+  a {
+    word-break: break-word;
+  }
+  .headline {
+    a {
+      word-break: unset;
+    }
+  }
+}
 
-.block--word-break a {
-  word-break: break-word;
+// Bust out of container.
+.block--edge-to-edge {
+  margin: 0 calc(50% - 50vw);
 }
 
 // Flex basis for all blocks and views
@@ -41,7 +55,7 @@ $imgpath: '../../uids/assets/images';
   }
 }
 
-  // Unset equal height columns
+// Unset equal height columns
 .section-alignment__start {
   .layout__spacing_container {
     align-items: flex-start;
@@ -49,7 +63,6 @@ $imgpath: '../../uids/assets/images';
 }
 
 // Layout container padding
-
 .layout__container {
   margin-top: 0;
   padding-bottom: $mobile-width-gutter;
@@ -63,6 +76,12 @@ $imgpath: '../../uids/assets/images';
 
   &:first-child {
     padding-top: 0;
+    .region-pre-footer & {
+      padding-top: $mobile-width-gutter;
+      @include breakpoint(sm) {
+        padding-top: $desktop-width-gutter;
+      }
+    }
   }
 
   // @todo Should this be moved to the header layout scss file?
@@ -126,6 +145,9 @@ $imgpath: '../../uids/assets/images';
   &.section-padding {
     &__removed-top {
       padding-top: 0;
+      .region-pre-footer & {
+        padding-top: 0;
+      }
     }
 
     &__removed-bottom {
@@ -138,6 +160,9 @@ $imgpath: '../../uids/assets/images';
 
     &__top-extra {
       padding-top: 6rem;
+      .region-pre-footer & {
+        padding-top: 6rem;
+      }
     }
 
     &__bottom-extra {
@@ -213,7 +238,9 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     @extend %container;
   }
 
-  .page__container--extended {
+  .page__container--extended,
+  .page__container--extended.layout--has-sidebar,
+  .page__container--extended.sidebar-invisible {
     .layout__spacing_container {
       @include breakpoint(container) {
         max-width: 100em;
@@ -223,7 +250,9 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     }
   }
 
-  .page__container--narrow {
+  .page__container--narrow,
+  .page__container--narrow.layout--has-sidebar,
+  .page__container--narrow.sidebar-invisible {
     .layout__spacing_container {
       @include breakpoint(md) {
         max-width: 63.75em;
@@ -242,18 +271,24 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 // default left/right gutter spacing for full width settings without layout builder
 // settings if page container full or edge is selected on section
 
-.page__container--full.layout__container .layout__spacing_container {
-  margin-right: $mobile-width-gutter;
-  margin-left: $mobile-width-gutter;
-  max-width: 100%;
+.page__container--full.layout__container,
+.page__container--full.layout--has-sidebar,
+.page__container--full.sidebar-invisible {
+  .layout__spacing_container {
+    margin-right: $mobile-width-gutter;
+    margin-left: $mobile-width-gutter;
+    max-width: 100%;
 
-  @include breakpoint(menu) {
-    margin-right: $desktop-width-gutter;
-    margin-left: $desktop-width-gutter;
+    @include breakpoint(menu) {
+      margin-right: $desktop-width-gutter;
+      margin-left: $desktop-width-gutter;
+    }
   }
 }
 
-.page__container--edge {
+.page__container--edge,
+.page__container--edge.layout--has-sidebar,
+.page__container--edge.sidebar-invisible {
   .layout__spacing_container {
     max-width: 100%;
     margin-right: 0;
@@ -266,7 +301,6 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .layout__spacing_container {
   min-width: 0;
 }
-
 
 // Block Margins / Padding
 
@@ -331,14 +365,13 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     font-size: 1rem;
   }
 }
-// mobile search
 
+// mobile search
 .search-button[aria-expanded="true"] {
   margin-left: auto;
 }
 
 // skip link
-
 .skip-link-region {
   text-align: center;
   background: #f1f1f1;
@@ -352,7 +385,6 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 }
 
 // todo move back to uids as toc style also create tag style for term edit
-
 .view-a-z-list,
 .view-book-a-z-list,
 .view-book-search,

@@ -1,9 +1,8 @@
 {# Pre-footer (Calls to action) #}
-{% if page.pre_footer %}
-  <div role="region" class="footer-cta__wrapper">
-    <div class="footer-cta__container">
-      {{ page.pre_footer }}
-    </div>
+{% set pre_footer_rendered = page.pre_footer | render %}
+{% if pre_footer_rendered|striptags('<embed><hr><iframe><img><input><drupal-render-placeholder>')|trim %}
+  <div role="region" class="content__container">
+    {{ page.pre_footer }}
   </div>
 {% endif %}
 
@@ -12,7 +11,7 @@
     <div class="footer__links footer__links--contact">
 
       {{ attach_library('uids_base/logo') }}
-      {% include '@uids_base/uids/logo.twig' with {
+      {% include '@uids_base/uids/logo-footer.twig' with {
         path: uiowa_url,
         logo_path_2: uiowa_logo_path,
         logo_path_png: uiowa_logo_path_png,

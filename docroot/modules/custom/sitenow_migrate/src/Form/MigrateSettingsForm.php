@@ -3,10 +3,11 @@
 namespace Drupal\sitenow_migrate\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Config\StorageInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\CachedDiscoveryClearerInterface;
+use Drupal\migrate\Plugin\MigrationPluginManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -21,16 +22,36 @@ class MigrateSettingsForm extends ConfigFormBase {
   protected $configStorage;
 
   /**
+   * Migration plugin manager service.
+   *
+   * @var \Drupal\migrate\Plugin\MigrationPluginManager
+   */
+  protected $migrationPluginManager;
+
+  /**
+   * The plugin.cache_clearer service.
+   *
+   * @var \Drupal\Core\Plugin\CachedDiscoveryClearerInterface
+   */
+  protected $pluginCacheClearer;
+
+  /**
    * Form constructor.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config.factory service.
    * @param \Drupal\Core\Config\StorageInterface $configStorage
    *   The config.storage service.
+   * @param \Drupal\migrate\Plugin\MigrationPluginManagerInterface $migrationPluginManager
+   *   The plugin.manager.migration service.
+   * @param \Drupal\Core\Plugin\CachedDiscoveryClearerInterface $pluginCacheClearer
+   *   The plugin.cache_clearer service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, StorageInterface $configStorage) {
+  public function __construct(ConfigFactoryInterface $config_factory, StorageInterface $configStorage, MigrationPluginManagerInterface $migrationPluginManager, CachedDiscoveryClearerInterface $pluginCacheClearer) {
     parent::__construct($config_factory);
     $this->configStorage = $configStorage;
+    $this->migrationPluginManager = $migrationPluginManager;
+    $this->pluginCacheClearer = $pluginCacheClearer;
   }
 
   /**
@@ -39,7 +60,9 @@ class MigrateSettingsForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
     $container->get('config.factory'),
-    $container->get('config.storage')
+    $container->get('config.storage'),
+    $container->get('plugin.manager.migration'),
+    $container->get('plugin.cache_clearer')
     );
   }
 
@@ -65,7 +88,15 @@ class MigrateSettingsForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
-    $migrate_group_sitenow_migrate_config = $this->config('migrate_plus.migration_group.sitenow_migrate');
+    $config = $this->config('migrate_plus.migration_group.sitenow_migrate');
+
+    // This ensures that the sitenow_migrate and default migration group
+    // configuration exists. This is necessary because that configuration is
+    // ignored and this form needs to save data to the sitenow_migrate config.
+    if ($config->isNew()) {
+      $this->pluginCacheClearer->clearCachedDefinitions();
+      $this->migrationPluginManager->createInstances([]);
+    }
 
     $form['markup'] = [
       '#type' => 'markup',
@@ -82,7 +113,7 @@ class MigrateSettingsForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Database Name'),
       '#description' => $this->t('The database name to pull from. e.g. standard_itaccessibility.'),
-      '#default_value' => $migrate_group_sitenow_migrate_config->get('shared_configuration.source.database.database'),
+      '#default_value' => $config->get('shared_configuration.source.database.database'),
       '#required' => TRUE,
     ];
 
@@ -90,7 +121,7 @@ class MigrateSettingsForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Database User'),
       '#description' => $this->t('The database user with access to the database. Use root for DevDesktop.'),
-      '#default_value' => $migrate_group_sitenow_migrate_config->get('shared_configuration.source.database.username'),
+      '#default_value' => $config->get('shared_configuration.source.database.username'),
       '#required' => TRUE,
     ];
 
@@ -98,14 +129,14 @@ class MigrateSettingsForm extends ConfigFormBase {
       '#type' => 'password',
       '#title' => $this->t('Database User Password'),
       '#description' => $this->t('The database user password, if applicable. Leave empty for DevDesktop.'),
-      '#default_value' => $migrate_group_sitenow_migrate_config->get('shared_configuration.source.database.password'),
+      '#default_value' => $config->get('shared_configuration.source.database.password'),
     ];
 
     $form['database']['host'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Database Host'),
-      '#description' => $this->t('The database host. Use 10.0.2.2 for DevDesktop from DrupalVM.'),
-      '#default_value' => $migrate_group_sitenow_migrate_config->get('shared_configuration.source.database.host'),
+      '#description' => $this->t('The database host. Use host.docker.internal for DevDesktop from ddev.'),
+      '#default_value' => $config->get('shared_configuration.source.database.host'),
       '#required' => TRUE,
     ];
 
@@ -113,7 +144,7 @@ class MigrateSettingsForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Database Host Port'),
       '#description' => $this->t('The database host port. The MySQL default port is 3306 but use 33067 for DevDesktop.'),
-      '#default_value' => $migrate_group_sitenow_migrate_config->get('shared_configuration.source.database.port'),
+      '#default_value' => $config->get('shared_configuration.source.database.port'),
       '#required' => TRUE,
     ];
 
@@ -127,7 +158,7 @@ class MigrateSettingsForm extends ConfigFormBase {
       '#type' => 'url',
       '#title' => $this->t('Base URL'),
       '#description' => $this->t('The full URL to the site.'),
-      '#default_value' => $migrate_group_sitenow_migrate_config->get('shared_configuration.source.constants.source_base_path'),
+      '#default_value' => $config->get('shared_configuration.source.constants.source_base_path'),
     ];
 
     return $form;
@@ -137,16 +168,6 @@ class MigrateSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $migrate_group_sitenow_migrate_config = $this->config('migrate_plus.migration_group.sitenow_migrate');
-
-    // Its entirely possible to use sitenow_migrate without importing the split
-    // config. If that is the case, import the initial migration group config.
-    if ($migrate_group_sitenow_migrate_config->isNew()) {
-      $config_path = DRUPAL_ROOT . '/../config/features/sitenow_migrate';
-      $source = new FileStorage($config_path);
-      $this->configStorage->write('migrate_plus.migration_group.sitenow_migrate', $source->read('migrate_plus.migration_group.sitenow_migrate'));
-    }
-
     $shared_config = [
       'source' => [
         'key' => 'drupal_7',
@@ -169,6 +190,10 @@ class MigrateSettingsForm extends ConfigFormBase {
     $this->config('migrate_plus.migration_group.sitenow_migrate')
       ->set('shared_configuration', $shared_config)
       ->save();
+
+    // If the DB connection changes, this is required to reflect that in
+    // the Drush migrate:status command. Save developers from running a CR.
+    $this->pluginCacheClearer->clearCachedDefinitions();
 
     parent::submitForm($form, $form_state);
   }

@@ -5,7 +5,8 @@ php: '7.4'
 env:
   global:
     - COMPOSER_BIN=$TRAVIS_BUILD_DIR/vendor/bin
-    - BLT_DIR=$TRAVIS_BUILD_DIR/vendor/acquia/blt
+    - BLT_TRAVIS_DIR=$TRAVIS_BUILD_DIR/vendor/acquia/blt-travis
+    - PERCY_POSTINSTALL_BROWSER=true
 
 cache:
   directories:
@@ -22,8 +23,7 @@ addons:
     - svn-37631.prod.hosting.acquia.com
 
 before_install:
-  - openssl aes-256-cbc -K $encrypted_8bb691529416_key -iv $encrypted_8bb691529416_iv
-    -in deploy_key.enc -out deploy_key -d
+  - openssl aes-256-cbc -K $encrypted_189e52c2c347_key -iv $encrypted_189e52c2c347_iv -in deploy_key.enc -out deploy_key -d
   - mv deploy_key $HOME/.ssh/id_rsa
   - chmod 600 $HOME/.ssh/id_rsa
   - phpenv config-rm xdebug.ini
@@ -34,29 +34,29 @@ install:
   - nvm use
   - yarn --version
   - composer install
-  - source ${BLT_DIR}/scripts/travis/exit_early
-  - source ${BLT_DIR}/scripts/travis/setup_environment
-  - source ${BLT_DIR}/scripts/travis/setup_project
+  - source ${BLT_TRAVIS_DIR}/scripts/exit_early
+  - source ${BLT_TRAVIS_DIR}/scripts/setup_environment
+  - source ${BLT_TRAVIS_DIR}/scripts/setup_project
 
 script:
   - blt blt:telemetry:disable --no-interaction
-  - source ${BLT_DIR}/scripts/travis/run_tests
+  - source ${BLT_TRAVIS_DIR}/scripts/run_tests
 
 deploy:
   - provider: script
-    script: "${BLT_DIR}/scripts/travis/deploy_branch"
+    script: "${BLT_TRAVIS_DIR}/scripts/deploy_branch"
     skip_cleanup: true
     on:
       branch: develop
       php: 7.4
   - provider: script
-    script: "${BLT_DIR}/scripts/travis/deploy_branch"
+    script: "${BLT_TRAVIS_DIR}/scripts/deploy_branch"
     skip_cleanup: true
     on:
       branch: main
       php: 7.4
   - provider: script
-    script: "${BLT_DIR}/scripts/travis/deploy_tag"
+    script: "${BLT_TRAVIS_DIR}/scripts/deploy_tag"
     skip_cleanup: true
     on:
       tags: true

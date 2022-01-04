@@ -31,6 +31,9 @@
     height: 60px;
     top: -90px;
     right: -31px;
+    [class*=bg--gray] & {
+      background: $grey-light;
+    }
     @include breakpoint(menu) {
       top: -30px;
       right: inherit;
@@ -87,6 +90,9 @@
       }
     }
   }
+  .card__subtitle {
+    opacity: 1;
+  }
   .field--name-field-timeline-date {
     @include breakpoint(menu) {
       position: absolute;
@@ -95,6 +101,12 @@
     }
     @include breakpoint(container) {
       width: 100%;
+    }
+    [class*=bg--black] & {
+      color: $primary;
+    }
+    [class*=bg--gold] & {
+      color: $secondary;
     }
   }
   &:nth-child(odd) {
@@ -113,6 +125,22 @@
       }
       @include breakpoint(container) {
         margin-left: -125%;
+      }
+      .page__container--narrow & {
+        @include breakpoint(container) {
+          margin-left: -130%;
+        }
+      }
+      .page__container--extended & {
+        @include breakpoint(container) {
+          margin-left: -122%;
+        }
+      }
+      .page__container--full &,
+      .page__container--edge &{
+        @include breakpoint(container) {
+          margin-left: -120%;
+        }
       }
 
     }
@@ -149,6 +177,11 @@
       @include breakpoint(container) {
         margin-left: 113%;
       }
+      .page__container--narrow & {
+        @include breakpoint(container) {
+          margin-left: 118%;
+        }
+      }
     }
     .card__icon-wrapper {
       @include breakpoint(menu) {
@@ -174,7 +207,8 @@
   transition: opacity 500ms;
 }
 
-.timeline--card.js-scroll.scrolled {
+.timeline--card.js-scroll.scrolled,
+li:first-child .timeline--card.js-scroll {
   opacity: 1;
 }
 
@@ -200,9 +234,12 @@
 }
 
 .timeline-line__fill {
-  background-color: #FFCD00;
+  background-color: $primary;
   height: 53%;
   width: 5px;
   position: fixed;
   top: 0;
+  [class*=bg--gold] & {
+    background-color: $secondary;
+  }
 }

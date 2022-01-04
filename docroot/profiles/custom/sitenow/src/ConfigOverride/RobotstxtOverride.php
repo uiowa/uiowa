@@ -39,7 +39,7 @@ class RobotstxtOverride implements ConfigFactoryOverrideInterface {
       $host = $request->getHost();
 
       // Override internal domains to deny all robots.
-      if (stristr($host, 'drupal.uiowa.edu')) {
+      if (str_ends_with($host, 'drupal.uiowa.edu') || str_ends_with($host, 'uiowa.ddev.site')) {
         $overrides['robotstxt.settings']['content'] = "User-agent: *\r\nDisallow: /";
       }
     }

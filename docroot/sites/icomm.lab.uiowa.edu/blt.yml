@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labicomm.uiowa.ddev.site
+    protocol: https
+  machine_name: labicomm
+  human_name: icomm.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labicomm.prod
+drupal:
+  db:
+    database: icomm_lab_uiowa_edu
+uiowa:
+  requester: amontelius

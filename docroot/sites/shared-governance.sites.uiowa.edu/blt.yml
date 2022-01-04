@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: sitesshared-governance.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesshared-governance
+  human_name: shared-governance.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesshared-governance.prod
+drupal:
+  db:
+    database: shared_governance_sites_uiowa_edu
+uiowa:
+  requester: hoersche
