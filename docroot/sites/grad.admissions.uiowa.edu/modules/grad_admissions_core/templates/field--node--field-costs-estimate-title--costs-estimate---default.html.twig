@@ -1,1 +1,13 @@
-{% include '@uids_base/field/field--node--title.html.twig' %}
+{%
+  set classes = [
+  'page-title',
+  'page-title--no-breadcrumbs',
+  'headline',
+  'block__headline',
+]
+%}
+<h1 {{ attributes.addClass(classes) }}>
+  {%- for item in items -%}
+    <span>{{ item.content }}</span>
+  {%- endfor -%}
+</h1>
