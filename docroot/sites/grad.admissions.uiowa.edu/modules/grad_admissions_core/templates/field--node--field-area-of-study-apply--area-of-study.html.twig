@@ -1,0 +1,9 @@
+<div class="block-margin__top bg--gray block-padding__all">
+  {% set title_attributes = title_attributes.addClass('h4 headline headline--serif headline--underline') %}
+  {% set remove_classes = ['field__label'] %}
+  {% embed '@uids_base/field/field.html.twig' %}
+    {% block field_label_icon %}
+      <span class="fa-edit fas"></span> &nbsp;
+    {% endblock %}
+  {% endembed %}
+</div>

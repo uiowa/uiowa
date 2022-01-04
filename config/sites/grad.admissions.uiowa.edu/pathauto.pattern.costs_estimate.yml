@@ -1,0 +1,22 @@
+uuid: 1f27fa35-489b-48d3-a1e9-8c2a7465f1f4
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: costs_estimate
+label: 'Costs Estimate'
+type: 'canonical_entities:node'
+pattern: 'cost/[node:title]'
+selection_criteria:
+  8ac33ef5-a7a3-411f-b795-7f93a10bbd69:
+    id: node_type
+    bundles:
+      costs_estimate: costs_estimate
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 8ac33ef5-a7a3-411f-b795-7f93a10bbd69
+selection_logic: and
+weight: -5
+relationships: {  }
