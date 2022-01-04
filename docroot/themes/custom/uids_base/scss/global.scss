@@ -4,7 +4,7 @@ $imgpath: '../../uids/assets/images';
 @import "../uids/assets/scss/_local-fonts.scss";
 @import "../uids/assets/scss/_base.scss";
 
-
+// Word break classes.
 .block--word-break,
 .block-inline-blockuiowa-text-area,
 .block-field-blocknodepagebody {
@@ -16,6 +16,11 @@ $imgpath: '../../uids/assets/images';
       word-break: unset;
     }
   }
+}
+
+// Bust out of container.
+.block--edge-to-edge {
+  margin: 0 calc(50% - 50vw);
 }
 
 // Flex basis for all blocks and views
