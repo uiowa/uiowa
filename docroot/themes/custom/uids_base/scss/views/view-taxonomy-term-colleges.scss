@@ -1,6 +1,7 @@
-@import "../../../../../themes/custom/uids_base/uids/assets/scss/_variables.scss";
-@import "../../../../../themes/custom/uids_base/uids/assets/scss/_utilities.scss";
-@import "../../../../../themes/custom/uids_base/uids/components/headline/_headline-mixins.scss";
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
+@import "components/headline/_headline-mixins.scss";
+
 
 .view-colleges-taxonomy-term {
   h3, ul {
@@ -10,6 +11,9 @@
   h3 {
     @include headline-serif;
     margin-bottom: $md;
+  }
+  .field--name-field-college-website {
+    display: inline-block;
   }
   .badge {
     margin-right: .5rem;
@@ -27,11 +31,6 @@
       text-decoration: none;
     }
   }
-}
-
-// Bust out of container
-.block--edge-to-edge {
-  margin: 0 calc(50% - 50vw);
 }
 
 // Remove default margin until we can get layout-builder-enabled class to appear for taxonomy pages
