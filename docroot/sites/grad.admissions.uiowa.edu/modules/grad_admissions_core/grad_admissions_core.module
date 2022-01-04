@@ -1,0 +1,279 @@
+<?php
+
+/**
+ * @file
+ * Contains grad_admissions_core.module.
+ */
+
+use Drupal\Core\Link;
+use Drupal\Core\Render\Element;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\node\NodeInterface;
+use Drupal\taxonomy\Entity\Term;
+use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Implements hook_entity_presave().
+ */
+function grad_admissions_core_entity_presave(EntityInterface $entity) {
+  switch ($entity->bundle()) {
+    case 'costs_estimate':
+      // Setting the grad costs title with the title value + distinguishing if domestic or international.
+      $output = $entity->get('field_costs_estimate_title')->value . ' - ' . $entity->get('field_costs_estimate_type')->value;
+      $entity->setTitle($output);
+      break;
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function grad_admissions_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'node_area_of_study_form':
+    case 'node_area_of_study_edit_form':
+    case 'node_costs_estimate_form':
+    case 'node_costs_estimate_edit_form':
+      // Set form defaults if they exist.
+      _sitenow_node_form_defaults($form, $form_state);
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function grad_admissions_core_preprocess_field(&$variables) {
+  switch ($variables['element']['#field_name']) {
+    case 'field_area_of_study_college':
+      $variables['label'] = t('Related Links');
+      $node = $variables['element']['#object'];
+      // Add field_area_of_study_link to the end of field_area_of_study_college.
+      if ($node->hasField('field_area_of_study_link') && !$node->get('field_area_of_study_link')->isEmpty()) {
+        $existing_links = [];
+        foreach (Element::children($variables['items']) as $delta) {
+          $existing_links[$delta] = $variables['items'][$delta];
+          unset($variables['items'][$delta]);
+        }
+        $colleges = $node->field_area_of_study_link->view();
+        $college_count = count(Element::children($colleges));
+        foreach (Element::children($colleges) as $college_delta) {
+          $variables['items'][$college_delta]['content'] = $colleges[$college_delta];
+          $variables['items'][$college_delta]['attributes'] = !empty($colleges['#items'][$college_delta]->_attributes) ? new Attribute($colleges['#items'][$college_delta]->_attributes) : new Attribute();
+        }
+        foreach ($existing_links as $delta => $link) {
+          $variables['items'][$delta + $college_count] = $link;
+        }
+      }
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for html.html.twig.
+ */
+function grad_admissions_core_preprocess_html(&$variables) {
+  $variables['#attached']['library'][] = 'grad_admissions_core/global';
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function grad_admissions_core_preprocess_layout(&$variables) {
+  /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
+  $layout = $variables['layout'];
+
+  // Process the header layout.
+  if ($layout->id() === 'layout_header') {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
+    if ($node instanceof NodeInterface) {
+      if (in_array($node->getType(), [
+        'area_of_study',
+        'costs_estimate',
+      ])) {
+        if (!isset($variables['banner_attributes'])) {
+          $variables['banner_settings'] = [];
+        }
+      }
+      switch ($node->getType()) {
+        case 'area_of_study':
+        case 'costs_estimate':
+          // @todo Move this to admissions_core_preprocess_node().
+          $variables['#attached']['library'][] = 'grad_admissions_core/area-of-study';
+
+          if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+
+            // Set the featured image display.
+            $variables['featured_image_display'] = 'small';
+            $variables['attributes']['class'][] = 'layout--title--with-background';
+            // Set banner defaults.
+            $variables['banner_settings']['transparent'] = TRUE;
+            $variables['banner_settings']['horizontal_align'] = 'left';
+            $variables['banner_settings']['vertical_align'] = 'bottom';
+          }
+          break;
+
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function grad_admissions_core_preprocess_node(&$variables) {
+  $node = $variables['node'];
+  switch ($node->getType()) {
+    case 'area_of_study':
+      $variables['#attached']['library'][] = 'grad_admissions_core/area-of-study';
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_preprocess_views_view().
+ */
+function grad_admissions_core_preprocess_views_view(&$variables) {
+  $view = $variables['view'];
+  $id = $view->storage->id();
+  switch ($id) {
+    case 'colleges_taxonomy_term':
+      $variables['#attached']['library'][] = 'uids_base/view-taxonomy-term-colleges';
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function grad_admissions_core_preprocess_views_view_field(&$variables) {
+  if (isset($variables['view'])) {
+    $id = $variables['view']->id();
+    switch ($id) {
+      case 'areas_of_study':
+        if (isset($variables['view']->field) && $variables['field']->realField == 'nothing' && $variables['field']->options['id'] == 'nothing') {
+          $tid = $variables['row']->_entity->get('tid')->value;
+          $nids = \Drupal::entityQuery('node')
+            ->condition('status', 1)
+            ->condition('type', 'area_of_study')
+            ->condition('field_area_of_study_area', $tid)
+            ->execute();
+          if (!empty($nids)) {
+            $degree_types = '';
+            $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+            $nodes = $node_storage->loadMultiple($nids);
+            foreach ($nodes as $node) {
+              if ($node->hasField('field_area_of_study_degree_types') && !$node->get('field_area_of_study_degree_types')->isEmpty()) {
+                $tids = $node->get('field_area_of_study_degree_types')->getValue();
+                foreach ($tids as $tid) {
+                  $term = Term::load($tid['target_id']);
+                  $options = ['absolute' => TRUE];
+                  $url = Url::fromRoute('entity.node.canonical', ['node' => $node->id()], $options);
+                  $degree_types .= Link::fromTextAndUrl(t($term->label()), $url)->toString() . ', ';
+                }
+              }
+            }
+            $degree_types = trim($degree_types, ', ');
+            $variables['output'] = [
+              '#markup' => $degree_types,
+            ];
+          }
+
+        }
+        break;
+    }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function grad_admissions_core_theme($existing, $type, $theme, $path) {
+  return [
+    'field__taxonomy_term__field_college_website__colleges__default' => [
+      'template' => 'field--taxonomy-term--field-college-website--colleges--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_area_of_study_college__area_of_study' => [
+      'template' => 'field--node--field-area-of-study-college--area-of-study',
+      'base hook' => 'field',
+    ],
+    'field__node__field_area_of_study_apply__area_of_study' => [
+      'template' => 'field--node--field-area-of-study-apply--area-of-study',
+      'base hook' => 'field',
+    ],
+    'field__node__field_area_of_study_contact__area_of_study' => [
+      'template' => 'field--node--field-area-of-study-contact--area-of-study',
+      'base hook' => 'field',
+    ],
+    'field__node__field_costs_estimate_title__costs_estimate__default' => [
+      'template' => 'field--node--field-costs-estimate-title--costs-estimate---default',
+      'base hook' => 'field',
+    ],
+    'field__node__title__costs_estimate__teaser' => [
+      'template' => 'field--node--title--costs-estimate--teaser',
+      'base hook' => 'field',
+    ],
+    'field__node__field_costs_estimate_year__costs_estimate' => [
+      'template' => 'field--node--field-costs-estimate-year--costs-estimate',
+      'base hook' => 'field',
+    ],
+    'field__node__field_costs_estimate_type' => [
+      'template' => 'field--node--field-costs-estimate-type',
+      'base hook' => 'field',
+    ],
+    'field__node__field_area_of_study_subtitle__area_of_study__default' => [
+      'template' => 'field--node--field-area-of-study-subtitle--area-of-study--default',
+      'base hook' => 'field',
+    ],
+    'field__node__title__area_of_study___custom' => [
+      'template' => 'field--node--title--area-of-study---custom',
+      'base hook' => 'field',
+    ],
+    'taxonomy_term__teaser' => [
+      'template' => 'taxonomy-term--teaser',
+      'base hook' => 'node',
+    ],
+    'node__area_of_study__teaser' => [
+      'template' => 'node--area-of-study--teaser',
+      'base hook' => 'node',
+    ],
+    'node__costs_estimate__teaser' => [
+      'template' => 'node--costs-estimate--teaser',
+      'base hook' => 'node',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function grad_admissions_core_theme_suggestions_field_alter(array &$suggestions, array $variables) {
+  switch ($variables['element']['#field_name']) {
+    case 'field_area_of_study_grad_intro':
+    case 'field_area_of_study_requirements':
+    case 'field_area_of_study_procedures':
+    case 'field_area_of_study_deadlines':
+      $suggestions[] = 'field__bold_headline_label';
+      break;
+
+    case 'field_area_of_study_degree_types':
+      $suggestions[] = 'field__comma_separated';
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for taxonomies.
+ */
+function grad_admissions_core_theme_suggestions_taxonomy_term_alter(&$suggestions, $variables) {
+  if ($variables['elements']['#view_mode'] == 'teaser') {
+    $suggestions[] = 'taxonomy_term__teaser';
+  }
+}

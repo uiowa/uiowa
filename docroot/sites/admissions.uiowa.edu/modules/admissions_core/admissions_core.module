@@ -17,13 +17,6 @@ use Drupal\node\NodeInterface;
 use Drupal\views\ViewExecutable;
 
 /**
- * Implements hook_preprocess_HOOK() for html.html.twig.
- */
-function admissions_core_preprocess_html(&$variables) {
-  $variables['#attached']['library'][] = 'admissions_core/global';
-}
-
-/**
  * Implements hook_entity_presave().
  */
 function admissions_core_entity_presave(EntityInterface $entity) {
@@ -606,6 +599,10 @@ function admissions_core_preprocess_views_view(&$variables) {
       $variables['#attached']['library'][] = 'admissions_core/events';
       break;
 
+    case 'colleges_taxonomy_term':
+      $variables['#attached']['library'][] = 'uids_base/view-taxonomy-term-colleges';
+      break;
+
   }
 }
 
@@ -619,7 +616,7 @@ function admissions_core_preprocess_views_view_field(&$variables) {
       case 'areas_of_study':
         if ($variables['view']->current_display == 'areas_of_study') {
           if (isset($variables['view']->field) && $variables['field']->realField == 'nothing') {
-            $nid = $variables["row"]->_entity->get('nid')->value;
+            $nid = $variables['row']->_entity->get('nid')->value;
             $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
             $markup = '';
             // For each program type, load the value(s) and string them
