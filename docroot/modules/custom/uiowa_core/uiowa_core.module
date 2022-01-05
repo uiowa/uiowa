@@ -23,6 +23,13 @@ function uiowa_core_config_schema_info_alter(&$definitions) {
 }
 
 /**
+ * Implements hook_mail_alter().
+ */
+function uiowa_core_mail_alter(&$message) {
+  $message['headers']['X-UI-Hosted'] = 'ITS-Acquia';
+}
+
+/**
  * Implements hook_theme().
  */
 function uiowa_core_theme($existing, $type, $theme, $path) {
