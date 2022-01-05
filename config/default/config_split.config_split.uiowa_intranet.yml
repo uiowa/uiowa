@@ -1,0 +1,17 @@
+uuid: 08176a46-2b3d-40cf-8a58-6e0132b85842
+langcode: en
+status: false
+dependencies: {  }
+id: uiowa_intranet
+label: 'Intranet'
+description: 'Restrict access to entire bootstraped site via restrict_ip'
+weight: 80
+stackable: true
+storage: folder
+folder: ../config/features/uiowa_intranet
+module:
+  restrict_ip: 0
+theme: {  }
+complete_list: {  }
+partial_list:
+  - 'user.role.*'
