@@ -3712,3 +3712,21 @@ $sites['siteslamp-mission.uiowa.ddev.site'] = 'lamp-mission.sites.uiowa.edu';
 $sites['siteslamp-mission.dev.drupal.uiowa.edu'] = 'lamp-mission.sites.uiowa.edu';
 $sites['siteslamp-mission.stage.drupal.uiowa.edu'] = 'lamp-mission.sites.uiowa.edu';
 $sites['siteslamp-mission.prod.drupal.uiowa.edu'] = 'lamp-mission.sites.uiowa.edu';
+
+// Directory aliases for pier.uiowa.edu.
+$sites['pier.uiowa.ddev.site'] = 'pier.uiowa.edu';
+$sites['pier.dev.drupal.uiowa.edu'] = 'pier.uiowa.edu';
+$sites['pier.stage.drupal.uiowa.edu'] = 'pier.uiowa.edu';
+$sites['pier.prod.drupal.uiowa.edu'] = 'pier.uiowa.edu';
+
+// Directory aliases for ryan.lab.uiowa.edu.
+$sites['labryan.uiowa.ddev.site'] = 'ryan.lab.uiowa.edu';
+$sites['labryan.dev.drupal.uiowa.edu'] = 'ryan.lab.uiowa.edu';
+$sites['labryan.stage.drupal.uiowa.edu'] = 'ryan.lab.uiowa.edu';
+$sites['labryan.prod.drupal.uiowa.edu'] = 'ryan.lab.uiowa.edu';
+
+// Directory aliases for blumberg.lab.uiowa.edu.
+$sites['labblumberg.uiowa.ddev.site'] = 'blumberg.lab.uiowa.edu';
+$sites['labblumberg.dev.drupal.uiowa.edu'] = 'blumberg.lab.uiowa.edu';
+$sites['labblumberg.stage.drupal.uiowa.edu'] = 'blumberg.lab.uiowa.edu';
+$sites['labblumberg.prod.drupal.uiowa.edu'] = 'blumberg.lab.uiowa.edu';
