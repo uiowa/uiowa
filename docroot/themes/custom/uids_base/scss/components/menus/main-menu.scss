@@ -8,3 +8,112 @@
     margin: 0;
   }
 }
+
+
+@import url(https://fonts.googleapis.com/css?family=Lato);
+
+
+
+/*| Navigation |*/
+
+.main--secondary--horizontal .menu li {
+  display: block;
+}
+
+nav.main--secondary--horizontal {
+  ul {
+    list-style: none;
+    position: relative;
+  }
+  ul li:hover > ul {
+    display: block!important;
+  }
+  ul li {
+    float: left;
+    -webkit-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+  }
+  ul ul {
+    display: none!important;
+
+  }
+  ul ul li {
+    float: none;
+    position: relative;
+  }
+}
+
+.main--secondary--horizontal .menu ul {
+  display: none;
+  position: absolute;
+  top: 70px;
+  width: 230px;
+  left: 0;
+  padding: 0;
+  padding-bottom: 0px;
+  padding-left: 0px;
+  background: gray;
+  background: #fff;
+  z-index: 100;
+  box-shadow: -3px 3px 10px -2px rgba(0,0,0,.1);
+}
+
+.main--secondary--horizontal .menu li a, .main--secondary--horizontal .menu li span {
+  text-transform: none;
+  font-weight: normal;
+}
+
+.main--secondary--horizontal .menu li.menu-item--expanded ul li a, .main--secondary--horizontal .menu li.menu-item--expanded ul li span, .main--secondary--vertical .menu li.menu-item--expanded ul li a, .main--secondary--vertical .menu li.menu-item--expanded ul li span {
+  padding: .625rem 1.05rem .625rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  text-transform: none;
+  font-weight: normal;
+  text-align: left;
+}
+
+.main--secondary--horizontal .menu li li a::after, .main--secondary--horizontal .menu li li span::after {
+  height: 1px;
+}
+
+.main--secondary--horizontal .menu li a, .main--secondary--horizontal .menu li span {
+  align-items: start;
+}
+
+.main--secondary--horizontal .menu li.menu-item--expanded ul {
+  padding-left: 1.4rem;
+}
+
+.main--secondary--horizontal .menu li.menu-item--expanded ul li a::before, .main--secondary--horizontal .menu li.menu-item--expanded ul li span::before {
+  content: "";
+}
+
+.main--secondary--horizontal .menu li.menu-item--expanded {
+  background-color: transparent;
+}
+
+.main--secondary--horizontal .menu li {
+  display: block;
+}
+
+.main--secondary--horizontal .menu li {
+  font-size: calc(100% + ..05vw);
+  display: flex;
+  border-bottom: none;
+}
+
+.main--secondary--horizontal .menu li  {
+  position: relative;
+}
+
+.main--secondary--horizontal .menu li li a::before {
+  position: absolute;
+  bottom: 35%;
+  width: 1px;
+  height: 25%;
+  content: "";
+  background: none;
+  right: -1px;
+}
