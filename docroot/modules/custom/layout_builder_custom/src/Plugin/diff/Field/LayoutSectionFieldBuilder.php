@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\layout_builder_custom\Plugin\Diff\Field;
+namespace Drupal\layout_builder_custom\Plugin\diff\Field;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\diff\FieldDiffBuilderBase;
