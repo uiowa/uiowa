@@ -3718,3 +3718,9 @@ $sites['pier.uiowa.ddev.site'] = 'pier.uiowa.edu';
 $sites['pier.dev.drupal.uiowa.edu'] = 'pier.uiowa.edu';
 $sites['pier.stage.drupal.uiowa.edu'] = 'pier.uiowa.edu';
 $sites['pier.prod.drupal.uiowa.edu'] = 'pier.uiowa.edu';
+
+// Directory aliases for ryan.lab.uiowa.edu.
+$sites['labryan.uiowa.ddev.site'] = 'ryan.lab.uiowa.edu';
+$sites['labryan.dev.drupal.uiowa.edu'] = 'ryan.lab.uiowa.edu';
+$sites['labryan.stage.drupal.uiowa.edu'] = 'ryan.lab.uiowa.edu';
+$sites['labryan.prod.drupal.uiowa.edu'] = 'ryan.lab.uiowa.edu';
