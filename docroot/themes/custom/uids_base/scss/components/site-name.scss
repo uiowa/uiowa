@@ -2,6 +2,21 @@
 @import "assets/scss/_utilities.scss";
 @import "components/branding/site-name/site-name.scss";
 
+// Todo move back to UIDS
+.nav--horizontal {
+  border-bottom: 1px solid #e6e5e5;
+}
+
+.nav--horizontal.iowa-bar--full {
+  @include breakpoint(menu) {
+    margin-top: 5px;
+  }
+}
+
+.iowa-bar--narrow .site_name--wrapper {
+  border-bottom: 1px solid #e6e5e5;
+}
+
 // 43 Characters
 // Iowa Bar Full adjustments
 .iowa-bar--full.mega,
