@@ -3712,3 +3712,9 @@ $sites['siteslamp-mission.uiowa.ddev.site'] = 'lamp-mission.sites.uiowa.edu';
 $sites['siteslamp-mission.dev.drupal.uiowa.edu'] = 'lamp-mission.sites.uiowa.edu';
 $sites['siteslamp-mission.stage.drupal.uiowa.edu'] = 'lamp-mission.sites.uiowa.edu';
 $sites['siteslamp-mission.prod.drupal.uiowa.edu'] = 'lamp-mission.sites.uiowa.edu';
+
+// Directory aliases for pier.uiowa.edu.
+$sites['pier.uiowa.ddev.site'] = 'pier.uiowa.edu';
+$sites['pier.dev.drupal.uiowa.edu'] = 'pier.uiowa.edu';
+$sites['pier.stage.drupal.uiowa.edu'] = 'pier.uiowa.edu';
+$sites['pier.prod.drupal.uiowa.edu'] = 'pier.uiowa.edu';
