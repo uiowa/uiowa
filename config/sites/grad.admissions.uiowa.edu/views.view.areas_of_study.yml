@@ -424,7 +424,18 @@ display:
       sorts: {  }
       header: {  }
       footer: {  }
-      empty: {  }
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content: 'There are currently no results.'
+          plugin_id: text_custom
       relationships:
         reverse__node__field_area_of_study_area:
           id: reverse__node__field_area_of_study_area
@@ -445,6 +456,7 @@ display:
         groups:
           1: AND
       title: 'Areas of Study'
+      use_ajax: true
     cache_metadata:
       max-age: -1
       contexts:
