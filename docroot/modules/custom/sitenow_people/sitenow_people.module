@@ -515,8 +515,8 @@ function sitenow_people_preprocess_views_view(&$variables) {
   switch ($variables["id"]) {
     case 'people':
       // Unset header content if empty.
-      if (empty($variables["header"]["area"]["#text"])) {
-        unset($variables["header"]["area"]);
+      if (empty($variables['header']['area']['#text'])) {
+        unset($variables['header']['area']);
       }
       break;
 
@@ -529,7 +529,7 @@ function sitenow_people_preprocess_views_view(&$variables) {
 function sitenow_people_preprocess_node(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
-    $node = $variables["node"];
+    $node = $variables['node'];
     switch ($node->getType()) {
       case 'person':
         switch ($variables['view_mode']) {
@@ -731,7 +731,8 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
     }
   }
 
-  if ($view->id() == 'people') {
+  if ($view->id() == 'people' || $view->id() == 'people_list_block') {
+    // @todo Does this need to be updated?
     $person_type_filter = 'type';
     if (isset($form[$person_type_filter])) {
       _sitenow_people_person_type_filter_select($form[$person_type_filter]);

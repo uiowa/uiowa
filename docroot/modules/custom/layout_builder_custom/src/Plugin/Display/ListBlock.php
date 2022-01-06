@@ -126,6 +126,7 @@ class ListBlock extends CoreBlock {
     $has_children = !($this->view->getStyle()->getPluginId() == 'table');
 
     // @todo Possibly wire this up to the views title?
+    // @todo Move this to a form override.
     $form['headline'] = HeadlineHelper::getElement([
       'headline' => $block_configuration['headline']['headline'] ?? NULL,
       'hide_headline' => $block_configuration['headline']['hide_headline'] ?? 0,
