@@ -26,7 +26,21 @@ function uiowa_core_config_schema_info_alter(&$definitions) {
  * Implements hook_mail_alter().
  */
 function uiowa_core_mail_alter(&$message) {
+  // Add header in use by email team to avoid spam/external tagging.
   $message['headers']['X-UI-Hosted'] = 'ITS-Acquia';
+
+  // Override the from address if it doesn't match our Platform Email domain
+  // of uiowa.edu. Otherwise, the email will not be sent. We aren't handling
+  // multiple from addresses here because that doesn't seem to work currently -
+  // hook_mail_alter isn't even invoked for some reason.
+  $domain = explode('@', $message['params']['from_mail']);
+  $domain = array_pop($domain);
+
+  if ($domain != 'uiowa.edu') {
+    $from_name = $message['params']['from_name'];
+    $from_mail = base64_decode('aXRzLXdlYkB1aW93YS5lZHU=');
+    $message['from'] = "$from_name <$from_mail>";
+  }
 }
 
 /**
