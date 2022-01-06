@@ -34,11 +34,12 @@ function uiowa_core_mail_alter(&$message) {
   // of uiowa.edu. Otherwise, the email will not be sent. We aren't handling
   // multiple from addresses here because that doesn't seem to work currently -
   // hook_mail_alter isn't even invoked for some reason.
-  $domain = explode('@', $message['params']['from_mail']);
+  $from = Address::create($message['from']);
+  $domain = explode('@', $from->getAddress());
   $domain = array_pop($domain);
 
   if ($domain != 'uiowa.edu') {
-    $name = $message['params']['from_name'] ?: \Drupal::config('system.site')->get('name');
+    $name = $from->getName() ?: \Drupal::config('system.site')->get('name');
     $from = new Address(base64_decode('aXRzLXdlYkB1aW93YS5lZHU='), $name);
     $message['headers']['From'] = $from->toString();
   }
