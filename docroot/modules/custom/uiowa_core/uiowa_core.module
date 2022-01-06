@@ -38,7 +38,8 @@ function uiowa_core_mail_alter(&$message) {
   $domain = array_pop($domain);
 
   if ($domain != 'uiowa.edu') {
-    $from = new Address(base64_decode('aXRzLXdlYkB1aW93YS5lZHU='), $message['params']['from_name']);
+    $name = $message['params']['from_name'] ?: \Drupal::config('system.site')->get('name');
+    $from = new Address(base64_decode('aXRzLXdlYkB1aW93YS5lZHU='), $name);
     $message['headers']['From'] = $from->toString();
   }
 }

@@ -14,7 +14,7 @@ class MailTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['uiowa_core'];
+  public static $modules = ['uiowa_core', 'filter', 'system'];
 
   /**
    * The email message.
@@ -70,6 +70,17 @@ class MailTest extends KernelTestBase {
   public function testFromAddressNotOverriddenIfUiowa() {
     $result = $this->container->get('plugin.manager.mail')->doMail('uiowa_core', 'key', 'admin@example.com', 'en', $this->message);
     $this->assertNotEquals("\"Foo\" <$this->serviceAccount>", $result['headers']['From']);
+  }
+
+  /**
+   * Test the from name is set to site name if empty for non-uiowa.edu emails.
+   */
+  public function testFromNameSetToSiteNameIfEmptyAndNotUiowa() {
+    $this->config('system.site')->set('name', 'Test Site')->save();
+    $this->message['from_mail'] = 'foo@bar.com';
+    $this->message['from_name'] = '';
+    $result = $this->container->get('plugin.manager.mail')->doMail('uiowa_core', 'key', 'admin@example.com', 'en', $this->message);
+    $this->assertEquals("\"Test Site\" <$this->serviceAccount>", $result['headers']['From']);
   }
 
 }
