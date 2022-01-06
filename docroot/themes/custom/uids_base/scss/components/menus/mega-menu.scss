@@ -71,7 +71,7 @@ ul.sf-mega-menu.sf-accordion li li.sf-depth-2.sfHover > ul {
   & > ol {
     width: 100%;
     display: grid;
-    gap: $md;
+    gap: 2rem;
     grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr) );
     padding: $md;
     @include breakpoint(container) {
@@ -127,4 +127,70 @@ ul.sf-mega-menu.sf-accordion li li.sf-depth-2.sfHover > ul {
   .is-active {
     text-decoration: underline;
   }
+}
+
+
+ul.sf-menu.sf-mega-menu ul ul {
+  margin: 0;
+  margin-left: -200px!important;
+  padding: 0!important;
+  position: relative!important;
+  top: 0;
+  background: red!important;
+}
+
+.block-superfish .sf-mega-menu .sf-multicolumn a.sf-depth-2 {
+  font-weight: 700;
+}
+
+.block-superfish .sf-mega-menu .sf-multicolumn a.sf-depth-2.menuparent:before {
+  margin-top: -0.4rem;
+  color: #999;
+  font-size: .7rem;
+  line-height: 1.4;
+}
+.block-superfish .sf-mega-menu .sf-multicolumn ol ol a {
+  position: relative;
+}
+.block-superfish .sf-mega-menu .sf-multicolumn ol ol a.sf-depth-3.menuparent:before {
+  top: 50%;
+  right: 0;
+  margin-top: -0.4rem;
+  content: "\f078";
+  color: inherit;
+  font-size: .7rem;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1;
+  font-family: Font Awesome\ 5 Free;
+  font-weight: 900;
+  position: absolute;
+}
+
+ul.sf-menu.sf-mega-menu li.active-trail a  {
+  //background: $primary;
+}
+
+.block-superfish .sf-mega-menu .sf-multicolumn ol ol a.sf-depth-4:before {
+  top: 50%;
+  left: -15px;
+  opacity: .3;
+  margin-top: -0.4rem;
+  content: "\f105";
+  color: inherit;
+  font-size: .7rem;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1;
+  font-family: Font Awesome\ 5 Free;
+  font-weight: 900;
+  position: absolute;
 }
