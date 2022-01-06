@@ -10,6 +10,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\google_tag\Entity\Container;
 use Drupal\uiowa_core\HeadlineHelper;
+use Symfony\Component\Mime\Address;
 
 /**
  * Implements hook_config_schema_info_alter().
@@ -37,9 +38,8 @@ function uiowa_core_mail_alter(&$message) {
   $domain = array_pop($domain);
 
   if ($domain != 'uiowa.edu') {
-    $from_name = $message['params']['from_name'];
-    $from_mail = base64_decode('aXRzLXdlYkB1aW93YS5lZHU=');
-    $message['from'] = "$from_name <$from_mail>";
+    $from = new Address(base64_decode('aXRzLXdlYkB1aW93YS5lZHU='), $message['params']['from_name']);
+    $message['headers']['From'] = $from->toString();
   }
 }
 
