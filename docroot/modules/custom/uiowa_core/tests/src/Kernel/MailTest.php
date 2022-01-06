@@ -37,8 +37,10 @@ class MailTest extends KernelTestBase {
     parent::setUp();
 
     $this->message = [
-      'subject' => 'Foo',
-      'body' => 'Bar',
+      'subject' => 'Test Email',
+      'body' => 'This is a test.',
+      'from_name' => 'Foo',
+      'from_mail' => 'foo@uiowa.edu',
     ];
 
     $this->serviceAccount = base64_decode('aXRzLXdlYkB1aW93YS5lZHU=');
@@ -48,8 +50,6 @@ class MailTest extends KernelTestBase {
    * Test O365 header is always set.
    */
   public function testO365HeaderSet() {
-    $this->message['from_mail'] = 'foo@uiowa.edu';
-    $this->message['from_name'] = 'Foo';
     $result = $this->container->get('plugin.manager.mail')->doMail('uiowa_core', 'key', 'admin@example.com', 'en', $this->message);
     $this->assertEquals('ITS-Acquia', $result['headers']['X-UI-Hosted']);
   }
@@ -68,8 +68,6 @@ class MailTest extends KernelTestBase {
    * Test the from email is not overridden if originating from uiowa.edu.
    */
   public function testFromAddressNotOverriddenIfUiowa() {
-    $this->message['from_mail'] = 'foo@uiowa.edu';
-    $this->message['from_name'] = 'Foo';
     $result = $this->container->get('plugin.manager.mail')->doMail('uiowa_core', 'key', 'admin@example.com', 'en', $this->message);
     $this->assertNotEquals("\"Foo\" <$this->serviceAccount>", $result['headers']['From']);
   }
