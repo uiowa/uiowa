@@ -3,24 +3,58 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.book.body
     - field.field.node.book.field_book_afterword_author
+    - field.field.node.book.field_book_art
     - field.field.node.book.field_book_author
+    - field.field.node.book.field_book_awards
+    - field.field.node.book.field_book_contributors
     - field.field.node.book.field_book_cover
+    - field.field.node.book.field_book_description_summary
+    - field.field.node.book.field_book_ebook_isbn
+    - field.field.node.book.field_book_ebook_retail_price
+    - field.field.node.book.field_book_ebook_sale_code
+    - field.field.node.book.field_book_ebook_sale_expiry
+    - field.field.node.book.field_book_ebook_sale_price
+    - field.field.node.book.field_book_ebook_sale_start_date
+    - field.field.node.book.field_book_edition
     - field.field.node.book.field_book_editor
     - field.field.node.book.field_book_essay_by
+    - field.field.node.book.field_book_excerpt
+    - field.field.node.book.field_book_file_uploads
     - field.field.node.book.field_book_foreword_author
+    - field.field.node.book.field_book_hardcover_isbn
+    - field.field.node.book.field_book_hardcover_retail
+    - field.field.node.book.field_book_hardcover_sale
+    - field.field.node.book.field_book_hardcover_sale_code
+    - field.field.node.book.field_book_hardcover_sale_expiry
+    - field.field.node.book.field_book_hardcover_sale_start
     - field.field.node.book.field_book_illustrator
     - field.field.node.book.field_book_introduction_author
+    - field.field.node.book.field_book_pages
+    - field.field.node.book.field_book_paperback_isbn
+    - field.field.node.book.field_book_paperback_retail
+    - field.field.node.book.field_book_paperback_sale
+    - field.field.node.book.field_book_paperback_sale_code
+    - field.field.node.book.field_book_paperback_sale_expiry
+    - field.field.node.book.field_book_paperback_sale_start
     - field.field.node.book.field_book_photographer
     - field.field.node.book.field_book_preface_authors
+    - field.field.node.book.field_book_publication_date
+    - field.field.node.book.field_book_related_reads
+    - field.field.node.book.field_book_reviews_blurbs
+    - field.field.node.book.field_book_season
+    - field.field.node.book.field_book_series
+    - field.field.node.book.field_book_subject
     - field.field.node.book.field_book_subtitle
+    - field.field.node.book.field_book_table_of_contents
     - field.field.node.book.field_book_translator
+    - field.field.node.book.field_book_trim_size
     - field.field.node.book.field_meta_tags
     - image.style.thumbnail
     - node.type.book
   module:
     - content_moderation
+    - datetime
     - image
     - metatag
     - path
@@ -30,16 +64,6 @@ targetEntityType: node
 bundle: book
 mode: default
 content:
-  body:
-    weight: 135
-    settings:
-      rows: 9
-      summary_rows: 3
-      placeholder: ''
-      show_summary: false
-    third_party_settings: {  }
-    type: text_textarea_with_summary
-    region: content
   created:
     type: datetime_timestamp
     weight: 10
@@ -56,6 +80,14 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
+  field_book_art:
+    weight: 138
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_book_author:
     weight: 125
     settings:
@@ -66,6 +98,22 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
+  field_book_awards:
+    weight: 169
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_book_contributors:
+    weight: 162
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
   field_book_cover:
     weight: 124
     settings:
@@ -73,6 +121,62 @@ content:
       preview_image_style: thumbnail
     third_party_settings: {  }
     type: image_image
+    region: content
+  field_book_description_summary:
+    weight: 161
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_book_ebook_isbn:
+    weight: 159
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_book_ebook_retail_price:
+    weight: 154
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_book_ebook_sale_code:
+    weight: 156
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_book_ebook_sale_expiry:
+    weight: 158
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_book_ebook_sale_price:
+    weight: 155
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_book_ebook_sale_start_date:
+    weight: 157
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_book_edition:
+    weight: 141
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
     region: content
   field_book_editor:
     weight: 126
@@ -94,6 +198,22 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
+  field_book_excerpt:
+    weight: 164
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_book_file_uploads:
+    weight: 168
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: image_image
+    region: content
   field_book_foreword_author:
     weight: 131
     settings:
@@ -103,6 +223,48 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
+  field_book_hardcover_isbn:
+    weight: 147
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_book_hardcover_retail:
+    weight: 142
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_book_hardcover_sale:
+    weight: 143
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_book_hardcover_sale_code:
+    weight: 144
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_book_hardcover_sale_expiry:
+    weight: 146
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_book_hardcover_sale_start:
+    weight: 145
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
     region: content
   field_book_illustrator:
     weight: 127
@@ -124,6 +286,56 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
+  field_book_pages:
+    weight: 137
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_book_paperback_isbn:
+    weight: 153
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_book_paperback_retail:
+    weight: 148
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_book_paperback_sale:
+    weight: 149
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  field_book_paperback_sale_code:
+    weight: 150
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_book_paperback_sale_expiry:
+    weight: 152
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_book_paperback_sale_start:
+    weight: 151
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
   field_book_photographer:
     weight: 128
     settings:
@@ -144,6 +356,60 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
+  field_book_publication_date:
+    weight: 136
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_book_related_reads:
+    weight: 167
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_book_reviews_blurbs:
+    weight: 160
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_book_season:
+    weight: 140
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_book_series:
+    weight: 165
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_book_subject:
+    weight: 166
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
   field_book_subtitle:
     weight: 122
     settings:
@@ -151,6 +417,14 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_book_table_of_contents:
+    weight: 163
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
     region: content
   field_book_translator:
     weight: 129
@@ -161,6 +435,14 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
+  field_book_trim_size:
+    weight: 139
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
     region: content
   field_meta_tags:
     weight: 123

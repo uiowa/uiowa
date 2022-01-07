@@ -3,25 +3,60 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.book.body
     - field.field.node.book.field_book_afterword_author
+    - field.field.node.book.field_book_art
     - field.field.node.book.field_book_author
+    - field.field.node.book.field_book_awards
+    - field.field.node.book.field_book_contributors
     - field.field.node.book.field_book_cover
+    - field.field.node.book.field_book_description_summary
+    - field.field.node.book.field_book_ebook_isbn
+    - field.field.node.book.field_book_ebook_retail_price
+    - field.field.node.book.field_book_ebook_sale_code
+    - field.field.node.book.field_book_ebook_sale_expiry
+    - field.field.node.book.field_book_ebook_sale_price
+    - field.field.node.book.field_book_ebook_sale_start_date
+    - field.field.node.book.field_book_edition
     - field.field.node.book.field_book_editor
     - field.field.node.book.field_book_essay_by
+    - field.field.node.book.field_book_excerpt
+    - field.field.node.book.field_book_file_uploads
     - field.field.node.book.field_book_foreword_author
+    - field.field.node.book.field_book_hardcover_isbn
+    - field.field.node.book.field_book_hardcover_retail
+    - field.field.node.book.field_book_hardcover_sale
+    - field.field.node.book.field_book_hardcover_sale_code
+    - field.field.node.book.field_book_hardcover_sale_expiry
+    - field.field.node.book.field_book_hardcover_sale_start
     - field.field.node.book.field_book_illustrator
     - field.field.node.book.field_book_introduction_author
+    - field.field.node.book.field_book_pages
+    - field.field.node.book.field_book_paperback_isbn
+    - field.field.node.book.field_book_paperback_retail
+    - field.field.node.book.field_book_paperback_sale
+    - field.field.node.book.field_book_paperback_sale_code
+    - field.field.node.book.field_book_paperback_sale_expiry
+    - field.field.node.book.field_book_paperback_sale_start
     - field.field.node.book.field_book_photographer
     - field.field.node.book.field_book_preface_authors
+    - field.field.node.book.field_book_publication_date
+    - field.field.node.book.field_book_related_reads
+    - field.field.node.book.field_book_reviews_blurbs
+    - field.field.node.book.field_book_season
+    - field.field.node.book.field_book_series
+    - field.field.node.book.field_book_subject
     - field.field.node.book.field_book_subtitle
+    - field.field.node.book.field_book_table_of_contents
     - field.field.node.book.field_book_translator
+    - field.field.node.book.field_book_trim_size
     - field.field.node.book.field_meta_tags
     - node.type.book
   module:
+    - datetime
     - image
     - layout_builder
     - metatag
+    - options
     - text
     - user
   theme:
@@ -255,33 +290,574 @@ third_party_settings:
             additional: {  }
             weight: 13
           -
-            uuid: 4235d8c8-da36-4370-9542-855fe964773f
+            uuid: 1d1fe4f8-4f5a-48cb-a04a-7f533c4759dd
             region: content
             configuration:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-              id: 'field_block:node:book:body'
+              id: 'field_block:node:book:field_book_publication_date'
+              formatter:
+                label: above
+                settings:
+                  format_type: medium
+                  timezone_override: ''
+                third_party_settings: {  }
+                type: datetime_default
+            additional: {  }
+            weight: 15
+          -
+            uuid: 9599ff8b-80de-4113-bc59-c81afce7622d
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_pages'
+              formatter:
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: 16
+          -
+            uuid: bbb4b755-46dc-47f8-bb32-7cb0c746aef8
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_art'
+              formatter:
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: 17
+          -
+            uuid: 051b4652-d474-468b-aefd-69057e8d73df
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_trim_size'
+              formatter:
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: 18
+          -
+            uuid: 494ca671-7764-4866-af1f-79e8d2d1a335
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_season'
+              formatter:
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+                type: entity_reference_label
+            additional: {  }
+            weight: 19
+          -
+            uuid: 0ab25cc4-01bc-4ebf-94da-324b6ec2b46c
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_edition'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: list_default
+            additional: {  }
+            weight: 20
+          -
+            uuid: 484f3d66-993d-4db8-8cb6-a615ca2906f3
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_hardcover_retail'
+              formatter:
+                label: above
+                settings:
+                  thousand_separator: ''
+                  decimal_separator: .
+                  scale: 2
+                  prefix_suffix: true
+                third_party_settings: {  }
+                type: number_decimal
+            additional: {  }
+            weight: 21
+          -
+            uuid: 83250e59-2413-42eb-b8ba-e85b55b02c5f
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_hardcover_sale'
+              formatter:
+                label: above
+                settings:
+                  thousand_separator: ''
+                  decimal_separator: .
+                  scale: 2
+                  prefix_suffix: true
+                third_party_settings: {  }
+                type: number_decimal
+            additional: {  }
+            weight: 22
+          -
+            uuid: b4148047-0197-4c74-9b21-fd7084c599cb
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_hardcover_sale_code'
+              formatter:
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: 23
+          -
+            uuid: c760d26a-09f1-4f95-a2fd-f6adf4880ab0
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_hardcover_sale_start'
+              formatter:
+                label: above
+                settings:
+                  format_type: medium
+                  timezone_override: ''
+                third_party_settings: {  }
+                type: datetime_default
+            additional: {  }
+            weight: 24
+          -
+            uuid: 0703a1ed-6cba-485c-b500-c9d9ee87e35d
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_hardcover_sale_expiry'
+              formatter:
+                label: above
+                settings:
+                  format_type: medium
+                  timezone_override: ''
+                third_party_settings: {  }
+                type: datetime_default
+            additional: {  }
+            weight: 25
+          -
+            uuid: 952f0bdf-5e3b-4783-91eb-71122340da4d
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_hardcover_isbn'
+              formatter:
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: 26
+          -
+            uuid: f0271d0a-c987-46f7-928b-082652c4aa9f
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_paperback_retail'
+              formatter:
+                label: above
+                settings:
+                  thousand_separator: ''
+                  decimal_separator: .
+                  scale: 2
+                  prefix_suffix: true
+                third_party_settings: {  }
+                type: number_decimal
+            additional: {  }
+            weight: 27
+          -
+            uuid: 1967002b-5b44-4855-9813-be0dcf9a064e
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_paperback_sale'
+              formatter:
+                label: above
+                settings:
+                  thousand_separator: ''
+                  decimal_separator: .
+                  scale: 2
+                  prefix_suffix: true
+                third_party_settings: {  }
+                type: number_decimal
+            additional: {  }
+            weight: 28
+          -
+            uuid: 8d129dfa-af2f-40f5-bc77-3c9dfecf410a
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_paperback_sale_code'
+              formatter:
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: 29
+          -
+            uuid: 4c213fbf-b7c2-4e55-bb1e-f9a7936afcc3
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_paperback_sale_start'
+              formatter:
+                label: above
+                settings:
+                  format_type: medium
+                  timezone_override: ''
+                third_party_settings: {  }
+                type: datetime_default
+            additional: {  }
+            weight: 30
+          -
+            uuid: f7c02800-d4f6-45bd-bdc2-56d74a3dd17c
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_paperback_sale_expiry'
+              formatter:
+                label: above
+                settings:
+                  format_type: medium
+                  timezone_override: ''
+                third_party_settings: {  }
+                type: datetime_default
+            additional: {  }
+            weight: 31
+          -
+            uuid: 012c1c3e-de9a-438e-b6ba-1471390efe93
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_paperback_isbn'
+              formatter:
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: 32
+          -
+            uuid: 0eb2891f-bc18-40d1-91ed-23ac79781ae2
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_ebook_retail_price'
+              formatter:
+                label: above
+                settings:
+                  thousand_separator: ''
+                  decimal_separator: .
+                  scale: 2
+                  prefix_suffix: true
+                third_party_settings: {  }
+                type: number_decimal
+            additional: {  }
+            weight: 33
+          -
+            uuid: 01325856-ab04-4732-86f6-e66babacdaaf
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_ebook_sale_price'
+              formatter:
+                label: above
+                settings:
+                  thousand_separator: ''
+                  decimal_separator: .
+                  scale: 2
+                  prefix_suffix: true
+                third_party_settings: {  }
+                type: number_decimal
+            additional: {  }
+            weight: 34
+          -
+            uuid: 4e55ddde-7990-498b-9d3f-b6688b0c8c20
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_ebook_sale_code'
+              formatter:
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: 35
+          -
+            uuid: 2abcf580-fc7d-4db6-a298-6fc597ea55f3
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_ebook_sale_start_date'
+              formatter:
+                label: above
+                settings:
+                  format_type: medium
+                  timezone_override: ''
+                third_party_settings: {  }
+                type: datetime_default
+            additional: {  }
+            weight: 36
+          -
+            uuid: 5b25cbae-12ef-4a47-adfd-85987b73643e
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_ebook_sale_expiry'
+              formatter:
+                label: above
+                settings:
+                  format_type: medium
+                  timezone_override: ''
+                third_party_settings: {  }
+                type: datetime_default
+            additional: {  }
+            weight: 37
+          -
+            uuid: 5c9a42d5-3e5c-461f-9651-dc11274e69ae
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_ebook_isbn'
+              formatter:
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: 38
+          -
+            uuid: 23edab40-9819-49b9-8056-dfad7c6d6700
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_reviews_blurbs'
               formatter:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
                 type: text_default
             additional: {  }
-            weight: 14
+            weight: 39
+          -
+            uuid: 4381a73e-8c23-42cc-8746-cf556d51046d
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_description_summary'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: text_default
+            additional: {  }
+            weight: 40
+          -
+            uuid: a44513dc-0562-4b4b-8fc0-9d46a83e3146
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_contributors'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: text_default
+            additional: {  }
+            weight: 41
+          -
+            uuid: 6a4d7aad-8041-47e3-94ef-ed194829717f
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_table_of_contents'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: text_default
+            additional: {  }
+            weight: 42
+          -
+            uuid: cb5b33a2-7119-4e0d-83f1-be0651d93369
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_excerpt'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: text_default
+            additional: {  }
+            weight: 43
+          -
+            uuid: c9e3b514-d9e4-4ce7-8bba-eb1e75342915
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_series'
+              formatter:
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+                type: entity_reference_label
+            additional: {  }
+            weight: 44
+          -
+            uuid: ccd13503-9389-47a2-9928-f70cbf8876b7
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_subject'
+              formatter:
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+                type: entity_reference_label
+            additional: {  }
+            weight: 45
+          -
+            uuid: bc2a9396-dc4f-4f14-94a3-d324da4dd234
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_related_reads'
+              formatter:
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+                type: entity_reference_label
+            additional: {  }
+            weight: 46
+          -
+            uuid: 3dacc3bb-8b45-42b4-85d6-565f1706aabd
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_file_uploads'
+              formatter:
+                label: above
+                settings:
+                  image_style: ''
+                  image_link: ''
+                third_party_settings: {  }
+                type: image
+            additional: {  }
+            weight: 47
+          -
+            uuid: d68b5fab-5ffc-4cea-be00-00e6a97ec43a
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_awards'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: text_default
+            additional: {  }
+            weight: 48
         third_party_settings: {  }
 id: node.book.default
 targetEntityType: node
 bundle: book
 mode: default
 content:
-  body:
-    weight: 14
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-    region: content
   field_book_afterword_author:
     weight: 12
     label: above
@@ -289,6 +865,14 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_book_art:
+    weight: 17
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
     region: content
   field_book_author:
     weight: 4
@@ -298,6 +882,20 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_book_awards:
+    weight: 48
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_book_contributors:
+    weight: 41
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
   field_book_cover:
     weight: 3
     label: above
@@ -306,6 +904,76 @@ content:
       image_link: ''
     third_party_settings: {  }
     type: image
+    region: content
+  field_book_description_summary:
+    weight: 40
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_book_ebook_isbn:
+    weight: 38
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_book_ebook_retail_price:
+    weight: 33
+    label: above
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_decimal
+    region: content
+  field_book_ebook_sale_code:
+    weight: 35
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_book_ebook_sale_expiry:
+    weight: 37
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_book_ebook_sale_price:
+    weight: 34
+    label: above
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_decimal
+    region: content
+  field_book_ebook_sale_start_date:
+    weight: 36
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_book_edition:
+    weight: 20
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
     region: content
   field_book_editor:
     weight: 5
@@ -323,6 +991,22 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_book_excerpt:
+    weight: 43
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_book_file_uploads:
+    weight: 47
+    label: above
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
   field_book_foreword_author:
     weight: 10
     label: above
@@ -330,6 +1014,62 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_book_hardcover_isbn:
+    weight: 26
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_book_hardcover_retail:
+    weight: 21
+    label: above
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_decimal
+    region: content
+  field_book_hardcover_sale:
+    weight: 22
+    label: above
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_decimal
+    region: content
+  field_book_hardcover_sale_code:
+    weight: 23
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_book_hardcover_sale_expiry:
+    weight: 25
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_book_hardcover_sale_start:
+    weight: 24
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
     region: content
   field_book_illustrator:
     weight: 6
@@ -347,6 +1087,70 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_book_pages:
+    weight: 16
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_book_paperback_isbn:
+    weight: 32
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_book_paperback_retail:
+    weight: 27
+    label: above
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_decimal
+    region: content
+  field_book_paperback_sale:
+    weight: 28
+    label: above
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_decimal
+    region: content
+  field_book_paperback_sale_code:
+    weight: 29
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_book_paperback_sale_expiry:
+    weight: 31
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_book_paperback_sale_start:
+    weight: 30
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
   field_book_photographer:
     weight: 7
     label: above
@@ -363,6 +1167,54 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_book_publication_date:
+    weight: 15
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_book_related_reads:
+    weight: 46
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_book_reviews_blurbs:
+    weight: 39
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_book_season:
+    weight: 19
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_book_series:
+    weight: 44
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_book_subject:
+    weight: 45
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
   field_book_subtitle:
     weight: 2
     label: above
@@ -371,6 +1223,13 @@ content:
     third_party_settings: {  }
     type: string
     region: content
+  field_book_table_of_contents:
+    weight: 42
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
   field_book_translator:
     weight: 8
     label: above
@@ -378,6 +1237,14 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_book_trim_size:
+    weight: 18
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
     region: content
   field_meta_tags:
     weight: 1
