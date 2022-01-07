@@ -1,0 +1,30 @@
+uuid: 9feb8c4b-33ec-47e6-baa6-78d687c79931
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.book
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    filtered_html: filtered_html
+    minimal: '0'
+    full_html: '0'
+    plain_text: '0'
+id: node.book.body
+field_name: body
+entity_type: node
+bundle: book
+label: Awards
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+  required_summary: false
+field_type: text_with_summary

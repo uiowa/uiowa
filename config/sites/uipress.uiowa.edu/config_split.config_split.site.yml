@@ -1,0 +1,25 @@
+uuid: 7dedf6ad-efd3-4c2f-ad83-c38d4c1a4ae1
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: 'UI Press Book'
+description: 'Custom book content type for UI Press.'
+weight: 70
+stackable: false
+storage: folder
+folder: ../config/sites/uipress.uiowa.edu
+module: {  }
+theme: {  }
+complete_list:
+  - config_split.config_split.site
+  - core.entity_form_display.node.book.default
+  - field.field.node.book.body
+  - metatag.metatag_defaults.node__book
+  - node.type.book
+  - simple_sitemap.bundle_settings.default.node.book
+  - 'field.field.node.book.field_book_*'
+  - 'field.storage.node.field_book_*'
+  - 'core.entity_view_display.node.book.*'
+partial_list:
+  - 'user.role.*'
