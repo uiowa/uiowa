@@ -531,9 +531,18 @@ figure.caption .embedded-entity+figcaption {
   }
 }
 
-.bg-yellow .bg-yellow {
+.bg-yellow .bg-yellow,
+.bg-dark .bg-yellow,
+.bg-black .bg-yellow {
   .bttn--primary, .bttn--secondary {
     color: $white;
+    background: $secondary;
+    svg {
+      color: $primary;
+    }
+    &:after {
+      background: $primary;
+    }
   }
 }
 
