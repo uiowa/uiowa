@@ -66,7 +66,7 @@ $config['stage_file_proxy.settings']['hotlink'] = TRUE;
 ## Multisite Management
 There are a few custom BLT commands to manage multisites. Run `blt list uiowa` to see all the commands in the `uiowa` namespace. Then run `blt CMD --help` for more information on specific commands.
 
-Because the `.git` directory is not synced to the web container, this command and others like it need to be run on your host machine.
+Because the `.git` directory is not synced to the web container, some commands need to be run on your host machine instead. You can run `./vendor/bin/blt` from the project root or install the [BLT Launcher](https://github.com/acquia/blt-launcher) to just run `blt`.
 
 ### Overriding Configuration
 Please note this approach is not yet tested nor recommended.
@@ -102,8 +102,8 @@ The packages below are locked at specific SHAs and will not update using the met
 
 | Package                               | Reason                   |
 | ------------------------------------- | ------------------------ |
-| drupal/layout_builder_shortcuts       | No stable release.       |
-| drupal/lb_direct_add                  | No stable release.       |
+| drupal/lb_direct_add                  | No 2.x stable release.   |
+| drupal/menu_link_weight               | No stable release since [f4a4b71b](https://git.drupalcode.org/project/menu_link_weight/-/commit/f4a4b71be5850ebc9d15a5cc742eafb76ef9cd0f). |
 | drupal/redirect                       | Need e5201ca5 from 8.x-1.x branch plus a patch. https://git.drupalcode.org/project/redirect/-/commits/8.x-1.x       |
 | kartsims/easysvg                      | Need https://github.com/kartsims/easysvg/pull/27 which is not included in a release. |
 | uiowa/block_content_template          | Forked from a deprecated project. |

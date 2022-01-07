@@ -11,7 +11,7 @@
   {% set card_attributes = create_attribute() %}
   {% set paragraph_card = {
     'attributes': card_attributes.addClass(classes),
-    'card_tag': content.field_timeline_icon|render,
+    'card_meta': content.field_timeline_icon|render,
     'card_image': content.field_timeline_media|render,
     'card_subtitle': content.field_timeline_date|render,
     'card_text': content.field_timeline_body|render,
@@ -22,11 +22,11 @@
   } %}
 
   {% embed '@uids_base/uids/card.html.twig' with paragraph_card only %}
-    {% block card_tag %}
-      {% if card_tag is not empty %}
+    {% block card_meta %}
+      {% if card_meta is not empty %}
         <div class="card__icon-wrapper">
           <div class="card__icon">
-            {{ card_tag }}
+            {{ card_meta }}
           </div>
         </div>
       {% endif %}

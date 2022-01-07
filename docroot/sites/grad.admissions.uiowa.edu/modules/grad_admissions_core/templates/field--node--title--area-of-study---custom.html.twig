@@ -1,0 +1,16 @@
+{%
+  set classes = [
+  'text-align-center',
+  'headline',
+  'bold-headline',
+  'bold-headline--highlight',
+  'headline--uppercase',
+  'headline--highlight',
+]
+%}
+<h1 {{ attributes.addClass(classes) }}>
+  {%- for item in items -%}
+    <span>{{ item.content }}</span>
+  {%- endfor -%}
+</h1>
+
