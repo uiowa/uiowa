@@ -493,6 +493,7 @@ figure.caption .embedded-entity+figcaption {
 .bg-black .bttn--secondary {
   background-color: $primary;
   color: $secondary;
+  border: 1px solid $primary;
   svg {
     color: $white;
   }
@@ -519,11 +520,21 @@ figure.caption .embedded-entity+figcaption {
   }
 }
 
-.bg-dark .bg-dark {
+.bg-dark .bg-dark,
+.bg-black .bg-dark,
+.bg-light .bg-dark {
   .bttn--primary {
     color: $secondary;
   }
 }
+
+.bg-black .bg-dark, {
+  .bttn--secondary {
+    color: $secondary;
+  }
+}
+
+
 
 .bg-black .bg-black {
   .bttn--primary, .bttn--secondary {
