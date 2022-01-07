@@ -295,14 +295,31 @@ function uiowa_core_restrict_ip_access_denied_page_alter(&$page) {
       'class' => 'page__container',
     ],
   ];
-  $page['main']['access_denied'] = [
+  $page['main']['access_denied_title_container'] = [
+    '#type' => 'html_tag',
+    '#tag' => 'div',
+    '#attributes' => [
+      'class' => [
+        'section-padding__top-extra',
+        'layout--title',
+        'layout__container',
+        'layout',
+      ],
+    ],
+  ];
+  $page['main']['access_denied_title_container']['access_denied_title'] = [
     '#markup' => t('Access denied'),
-    '#prefix' => '<h1>',
+    '#prefix' => '<h1 class="page-title bold-headline--serif bold-headline text-align-center">',
     '#suffix' => '</h1>',
   ];
   $page['main']['access_denied_message'] = [
     '#markup' => t('You are not authorized to access this page.'),
-    '#prefix' => '<p>',
+    '#prefix' => '<p class="text-align-center">',
+    '#suffix' => '</p>',
+  ];
+  $page['main']['continuation_message'] = [
+    '#markup' => t('Continue by logging in with your HawkID.'),
+    '#prefix' => '<p class="text-align-center">',
     '#suffix' => '</p>',
   ];
   if (isset($page['logout_link'])) {
@@ -314,6 +331,15 @@ function uiowa_core_restrict_ip_access_denied_page_alter(&$page) {
       '#type' => 'link',
       '#title' => t('HawkID Login'),
       '#url' => Url::fromRoute('samlauth.saml_controller_login'),
+      '#prefix' => '<p class="text-align-center">',
+      '#suffix' => '</p>',
+      '#attributes' => [
+        'class' => [
+          'bttn',
+          'bttn--primary',
+          'bttn--caps',
+        ],
+      ],
     ];
     unset($page['login_link']);
   }
