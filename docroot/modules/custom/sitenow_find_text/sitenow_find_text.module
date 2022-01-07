@@ -91,6 +91,18 @@ function get_text_field_tables() {
           'field_name' => 'menu',
         ];
         break;
+
+      case 'taxonomy_term':
+        $tables['taxonomy_term_field_data'] = [
+          'values' => [
+            'name',
+            'description__value',
+          ],
+          'parent' => ['tid'],
+          'type' => $entity_type_id,
+          'field_name' => 'term',
+        ];
+        break;
     }
   }
   // This function can be used to clean up some extra tables

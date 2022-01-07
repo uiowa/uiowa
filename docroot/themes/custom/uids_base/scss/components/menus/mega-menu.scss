@@ -1,3 +1,130 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
-//@import "components/03 - global/menus/mega-menu/_mega-menu.scss";
+
+.block-superfish .sf-menu.sf-mega-menu ul {
+  @include breakpoint(menu) {
+    background: #f1f1f1 !important;
+  }
+}
+
+.block-superfish .menu ul.sf-multicolumn {
+  transition: background-color 2s ease-in;
+}
+
+ul.sf-menu.sf-mega-menu li {
+  @include breakpoint(menu) {
+    position: unset;
+  }
+}
+
+.block-superfish .menu.sf-mega-menu ul li a,
+.block-superfish .menu.sf-mega-menu ul li span,
+.block-superfish .menu.sf-mega-menu ul li .nolink {
+  @include breakpoint(menu) {
+    padding: $xsm 0;
+    font-size: $base-font-size;
+  }
+}
+
+.block-superfish .menu ul.sf-multicolumn {
+  a:hover {
+    text-decoration: underline;
+  }
+}
+
+.block-superfish .menu.sf-mega-menu li li span {
+  font-weight: bold;
+}
+
+// Mega Menu Accordion
+// Hides third level menu when hovering over the mobile menu
+ul.sf-mega-menu.sf-accordion li li.sf-depth-2:hover > ul,
+ul.sf-mega-menu.sf-accordion li li.sf-depth-2.sfHover > ul {
+  float: none;
+  display: none;
+  left: 100%;
+}
+
+// Mega Menu Block
+// removes position:relative on containers so that the dropdown can be full width
+.nav--mega {
+  @include breakpoint(menu) {
+    position: relative;
+    & .page__container,
+    & .contextual-region {
+      position: unset !important;
+    }
+  }
+}
+
+.block-superfish .sf-mega-menu .sf-multicolumn {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  border-top: 1px solid #e1e1e1;
+  border-block-start: 1px solid #e1e1e1;
+  box-shadow: 0 0.3px 0.4px rgba(0, 0, 0, 0.025),0 0.9px 1.5px rgba(0, 0, 0, 0.05),0 3.5px 6px rgba(0, 0, 0, 0.1);
+}
+
+.block-superfish .sf-mega-menu .sf-multicolumn-wrapper {
+  // adds grid to dropdown menu
+  & > ol {
+    width: 100%;
+    display: grid;
+    gap: $md;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr) );
+    padding: $md;
+    @include breakpoint(container) {
+      padding: $md 0;
+    }
+  }
+
+  @include breakpoint(container) {
+    // sets max-width to container width
+    max-width: 81.875rem;
+    margin: 0 auto;
+  }
+}
+
+.block-superfish .sf-mega-menu .sf-multicolumn .sf-multicolumn-wrapper li.sf-depth-2,
+.block-superfish .sf-mega-menu .sf-multicolumn .sf-multicolumn-wrapper li.sf-depth-3 {
+  // overrides
+  width: 100%;
+}
+
+.block-superfish .sf-mega-menu .sf-multicolumn a.sf-depth-2 {
+  font-weight: $font-weight-bold;
+}
+
+.block-superfish .sf-mega-menu .sf-multicolumn li {
+  float: none;
+  line-height: 1.5;
+}
+
+// 3rd level menus
+.block-superfish .sf-mega-menu .sf-multicolumn ol ol {
+  padding-top: 0;
+  padding-block-start: 0;
+  padding-bottom: 0;
+  padding-block-end: 0;
+  width: 100%;
+  & a {
+    font-size: 1rem;
+    &.is-active {
+      font-weight: $font-weight-medium;
+      &::before {
+        content: none;
+      }
+    }
+  }
+}
+
+.block-superfish .menu.sf-mega-menu li.active-trail.menuparent ul {
+  &:hover {
+    background: #ccc;
+  }
+
+  .is-active {
+    text-decoration: underline;
+  }
+}

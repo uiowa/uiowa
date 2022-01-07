@@ -278,35 +278,12 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
   if ($view->id() === 'article_list_block') {
     $rows = $variables['rows'];
     $style = $view->style_plugin;
-    $style_classes = [];
-    $size_classes = [];
-
-    if (isset($variables['row_item_classes'])) {
-
-      foreach ($variables['row_item_classes'] as $key => &$class) {
-
-        if (str_starts_with($class, 'media--')) {
-          $style_classes[] = $class;
-          unset($variables['row_item_classes'][$key]);
-        }
-        elseif (str_starts_with($class, 'card__media')) {
-          $size_classes[] = $class;
-          unset($variables['row_item_classes'][$key]);
-        }
-        elseif (str_starts_with($class, 'inner')) {
-          unset($variables['row_item_classes'][$key]);
-        }
-        elseif (str_starts_with($class, 'grid')) {
-          unset($variables['row_item_classes'][$key]);
-        }
-      }
-    }
 
     foreach ($rows as $id => $row) {
       // Need to get these values regardless of whether they are hidden or not.
-      $link_direct = $row["content"]["#node"]->get('field_article_source_link_direct')->value;
+      $link_direct = $row['content']['#node']->get('field_article_source_link_direct')->value;
       $source_link = $row['content']['#node']->get('field_article_source_link')->uri;
-      $org = $row["content"]["#node"]->get('field_article_source_org')->value;
+      $org = $row['content']['#node']->get('field_article_source_org')->value;
       $nid = $row['content']['#node']->get('nid')->value;
 
       // If source link is set and link direct is checked, set $card_link_url to
@@ -354,22 +331,10 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
         ];
       }
 
-      if (isset($variables['row_item_classes'])) {
-        $variables['rows'][$id]['attributes']->addClass($variables['row_item_classes']);
-      }
-      $variables['rows'][$id]['card_options'] = [
-        'attributes' => $variables['rows'][$id]['attributes'],
-        'media_styles' => $style_classes,
-        'media_sizes' => $size_classes,
-        'card_title' => $style->getField($id, 'title'),
-        'card_link_url' => $card_link_url,
-        'card_image' => $style->getField($id, 'field_image'),
-        'card_text' => $style->getField($id, 'field_teaser'),
-        'card_subtitle' => $style->getField($id, 'created'),
-        'card_tag' => render($card_tag),
-        'card_date' => $style->getField($id, 'field_article_author'),
-        'headline_level' => $view->display_handler->getOption('heading_size'),
-      ];
+      $variables['rows'][$id]['card_options']['card_link_url'] = $card_link_url;
+      $variables['rows'][$id]['card_options']['card_subtitle'] = $style->getField($id, 'created');
+      $variables['rows'][$id]['card_options']['card_tag'] = render($card_tag);
+      $variables['rows'][$id]['card_options']['card_meta'] = $style->getField($id, 'field_article_author');
     }
   }
 }

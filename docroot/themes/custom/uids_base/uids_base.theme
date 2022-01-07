@@ -537,7 +537,7 @@ function uids_base_preprocess_layout(&$variables) {
       $variables['banner_settings'] = $variables['banner_settings'] + $defaults;
 
       // Set default for banner gradient.
-      if ($variables['banner_settings']['transparent']) {
+      if ($variables['banner_settings']['transparent'] || $title_hidden) {
         $variables['attributes']['class'][] = 'banner--transparent';
       }
       else {
