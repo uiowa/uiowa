@@ -464,15 +464,118 @@ figure.caption .embedded-entity+figcaption {
   }
 }
 
-// Page left sidebar 
+// Page left sidebar
 .layout--has-sidebar .layout__region--main {
   overflow: auto;
 }
 
-.bttn--primary {
-  color: $secondary !important;
+// Primary button
+.bg-dark .bttn--primary,
+.bg-black .bttn--primary {
+  color: $secondary;
 }
 
-.bttn--secondary {
-  color: $white !important;
+.bg-yellow .bttn--primary {
+  color: $white;
+  background: $secondary;
+  border: 1px solid $secondary;
+  &:after {
+    background-color: $primary;
+  }
+}
+
+// Secondary button
+.bg-yellow .bttn--secondary,
+.bg-light .bttn--secondary {
+  color: $white;
+}
+
+.bg-black .bttn--secondary {
+  background-color: $primary;
+  color: $secondary;
+  border: 1px solid $primary;
+  svg {
+    color: $white;
+  }
+  &:after {
+    background-color: $secondary;
+  }
+}
+
+// Nested background colors
+.bg-dark .bg-light {
+  .bttn--secondary {
+    color: $white;
+  }
+  .bttn--primary, .bttn--secondary {
+    svg {
+      color: $white!important;
+    }
+  }
+}
+
+.bg-light .bg-light {
+  .bttn--secondary {
+    color: $white;
+  }
+}
+
+.bg-dark .bg-dark,
+.bg-black .bg-dark,
+.bg-light .bg-dark {
+  .bttn--primary {
+    color: $secondary;
+  }
+}
+
+.bg-black .bg-dark, {
+  .bttn--secondary {
+    color: $secondary;
+  }
+}
+
+.bg-black .bg-black {
+  .bttn--primary, .bttn--secondary {
+    color: $secondary;
+  }
+}
+
+.bg-yellow .bg-yellow,
+.bg-dark .bg-yellow,
+.bg-black .bg-yellow {
+  .bttn--primary, .bttn--secondary {
+    color: $white;
+    background: $secondary;
+    svg {
+      color: $primary;
+    }
+    &:after {
+      background: $primary;
+    }
+  }
+}
+
+.bg-yellow .bg-light,
+.bg-light .bg-yellow {
+  .bttn--primary, .bttn--secondary {
+    color: $white;
+  }
+}
+
+.bg-light .bg-black,
+.bg-yellow .bg-black,
+.bg-dark .bg-black{
+  .bttn--primary, .bttn--secondary {
+    color: $secondary;
+    background: $primary;
+    border: 1px solid $primary;
+
+    &:after {
+      background-color: $secondary;
+    }
+
+    svg {
+      color: white;
+    }
+  }
 }
