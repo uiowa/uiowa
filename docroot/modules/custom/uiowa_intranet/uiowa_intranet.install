@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Uiowa Intranet module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function uiowa_intranet_install() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uiowa_search.settings');
+  if ($config) {
+    // Turn off the search bar display.
+    $config->set('uiowa_search.display_search', 0)
+      ->save();
+  }
+  \Drupal::messenger()->addStatus(__FUNCTION__);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function uiowa_intranet_uninstall() {
+  \Drupal::messenger()->addStatus(__FUNCTION__);
+}
