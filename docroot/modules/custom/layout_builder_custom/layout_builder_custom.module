@@ -834,25 +834,28 @@ function layout_builder_custom_preprocess_block(&$variables) {
       }
 
       foreach ($block->get('field_featured_content_item') as $item) {
-        $entity = $item->getProperties(TRUE)['entity']->getTarget()->getEntity();
+        $target = $item->getProperties(TRUE)['entity']->getTarget();
+        if ($target) {
+          $entity = $target->getEntity();
 
-        // Associate the block's cache tags with each entity so that the
-        // appropriate render cache ID is cleared when the block changes.
-        $cache_tags = $block->getCacheTags();
-        $entity->addCacheTags($cache_tags);
-        // Grab a fresh copy of the node.
-        $id = $entity->id();
-        Cache::invalidateTags(['node:' . $id]);
+          // Associate the block's cache tags with each entity so that the
+          // appropriate render cache ID is cleared when the block changes.
+          $cache_tags = $block->getCacheTags();
+          $entity->addCacheTags($cache_tags);
+          // Grab a fresh copy of the node.
+          $id = $entity->id();
+          Cache::invalidateTags(['node:' . $id]);
 
-        // Construct the entity teaser markup manually to pass in the heading
-        // size variable for the template and append it to the block content.
-        $build = \Drupal::entityTypeManager()->getViewBuilder($entity->getEntityTypeId())->view($entity, 'teaser');
-        $build['#heading_size'] = $heading_size;
-        $render = \Drupal::service('renderer')->render($build);
+          // Construct the entity teaser markup manually to pass in the heading
+          // size variable for the template and append it to the block content.
+          $build = \Drupal::entityTypeManager()->getViewBuilder($entity->getEntityTypeId())->view($entity, 'teaser');
+          $build['#heading_size'] = $heading_size;
+          $render = \Drupal::service('renderer')->render($build);
 
-        $variables['content']['referenced_items'][] = [
-          '#markup' => $render,
-        ];
+          $variables['content']['referenced_items'][] = [
+            '#markup' => $render,
+          ];
+        }
       }
 
       break;
