@@ -5,10 +5,35 @@
  * Install, update and uninstall functions for the Uiowa Intranet module.
  */
 
+use Drupal\Core\Config\FileStorage;
+
 /**
  * Implements hook_install().
  */
 function uiowa_intranet_install() {
+
+  // Enable the 'uiowa_intranet' split.
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('config_split.config_split.uiowa_intranet');
+  $config->set('status', TRUE);
+  $config->save(TRUE);
+
+  $config_path = DRUPAL_ROOT . '/../config/features/uiowa_intranet';
+  $source = new FileStorage($config_path);
+
+  // Loop through the config and import them all.
+  $config_storage = \Drupal::service('config.storage');
+  foreach ($source->listAll() as $config) {
+    $config_storage->write($config, $source->read($config));
+  }
+
+  // Insert active config since it isn't tracked in stored config.
+  $database = \Drupal::database()->insert('restrict_ip_paths')->fields([
+    'type' => 'white',
+    'path' => '/saml/*'
+  ]);
+  $database->execute();
+
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('uiowa_search.settings');
   if ($config) {
