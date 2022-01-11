@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.paragraph.book_type.field_book_isbn
     - field.field.paragraph.book_type.field_book_retail_price
+    - field.field.paragraph.book_type.field_book_sale
     - field.field.paragraph.book_type.field_book_sale_code
     - field.field.paragraph.book_type.field_book_sale_expiry_date
     - field.field.paragraph.book_type.field_book_sale_price
@@ -32,6 +33,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: number
+    region: content
+  field_book_sale:
+    weight: 7
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
     region: content
   field_book_sale_code:
     weight: 3
