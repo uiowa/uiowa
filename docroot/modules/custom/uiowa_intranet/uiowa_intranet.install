@@ -21,11 +21,9 @@ function uiowa_intranet_install() {
   $config_path = DRUPAL_ROOT . '/../config/features/uiowa_intranet';
   $source = new FileStorage($config_path);
 
-  // Loop through the config and import them all.
+  // Import the one complete split item we need to write to the db below.
   $config_storage = \Drupal::service('config.storage');
-  foreach ($source->listAll() as $config) {
-    $config_storage->write($config, $source->read($config));
-  }
+  $config_storage->write('restrict_ip.settings', $source->read('restrict_ip.settings'));
 
   // Insert active config since it isn't tracked in stored config.
   $database = \Drupal::database()->insert('restrict_ip_paths')->fields([
