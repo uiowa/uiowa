@@ -13,7 +13,7 @@ function uipress_core_preprocess_paragraph__book_type(&$variables) {
   if (!$admin_context->isAdminRoute()) {
     $paragraph = $variables['paragraph'];
     if ($paragraph->bundle() == 'book_type') {
-      if ($paragraph->field_book_sale->value == 0) {
+      if ($paragraph->hasField('field_book_sale_price') && $paragraph->get('field_book_sale_price')->isEmpty()) {
         unset($variables['content']['field_book_sale_expiry_date'], $variables['content']['field_book_sale_price'], $variables['content']['field_book_sale_start_date'], $variables['content']['field_book_sale_code']);
       }
     }
