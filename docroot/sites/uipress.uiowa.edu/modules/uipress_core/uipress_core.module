@@ -14,11 +14,8 @@ function uipress_core_preprocess_paragraph__book_type(&$variables)
   if (!$admin_context->isAdminRoute()) {
     $paragraph = $variables['paragraph'];
     if ($paragraph->bundle() == 'book_type') {
-      if ($paragraph->field_book_sale->value == 1) {
-        $variables["content"]["field_book_sale_code"] = display_title = true;
-        unset($variables["content"]["field_book_sale_expiry_date"]);
-        unset($variables["content"]["field_book_sale_price"]);
-        unset($variables["content"]["field_book_sale_start_date"]);
+      if ($paragraph->field_book_sale->value == 0) {
+        unset($variables["content"]["field_book_sale_expiry_date"], $variables["content"]["field_book_sale_price"], $variables["content"]["field_book_sale_start_date"], $variables["content"]["field_book_sale_code"]);
       }
     }
   }
