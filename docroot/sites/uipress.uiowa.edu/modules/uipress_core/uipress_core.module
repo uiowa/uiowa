@@ -5,6 +5,8 @@
  * Contains uipress_core.module.
  */
 
+use Drupal\Core\Datetime\DrupalDateTime;
+
 /**
  * Implements hook_preprocess_HOOK().
  */
@@ -13,8 +15,14 @@ function uipress_core_preprocess_paragraph__book_type(&$variables) {
   if (!$admin_context->isAdminRoute()) {
     $paragraph = $variables['paragraph'];
     if ($paragraph->bundle() == 'book_type') {
-      if ($paragraph->hasField('field_book_sale_price') && $paragraph->get('field_book_sale_price')->isEmpty()) {
-        unset($variables['content']['field_book_sale_expiry_date'], $variables['content']['field_book_sale_price'], $variables['content']['field_book_sale_start_date'], $variables['content']['field_book_sale_code']);
+      $now = DrupalDateTime::createFromArray(['year', 'month', 'day']);
+      // $now = $today('Y-m-d', 0);
+      $start = $paragraph->get('field_book_sale_start_date')->getValue();
+      $end = $paragraph->get('field_book_sale_expiry_date')->getValue();
+      // Unset dates that start before $start or $end after set date fields.
+      // Also skip if price isn't set.
+      if ($paragraph->hasField('field_book_sale_price') && $paragraph->get('field_book_sale_price')->isEmpty() || $now < $start || $now > $end) {
+        unset($variables['content']['field_book_isbn'], $variables['content']['field_book_sale_expiry_date'], $variables['content']['field_book_sale_price'], $variables['content']['field_book_sale_start_date'], $variables['content']['field_book_sale_code']);
       }
     }
   }
