@@ -14,8 +14,7 @@ use Drupal\Core\Url;
 /**
  * Implements hook_restrict_ip_access_denied_page_alter().
  */
-function uiowa_intranet_restrict_ip_access_denied_page_alter(&$page)
-{
+function uiowa_intranet_restrict_ip_access_denied_page_alter(&$page) {
   if (isset($page['access_denied'])) {
     unset($page['access_denied']);
   }
