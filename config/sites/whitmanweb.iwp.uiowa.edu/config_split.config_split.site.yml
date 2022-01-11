@@ -9,8 +9,12 @@ weight: 70
 stackable: false
 storage: folder
 folder: ../config/sites/whitmanweb.iwp.uiowa.edu
-module: {  }
+module:
+  language: 0
+  content_translation: 10
 theme: {  }
 complete_list:
   - config_split.config_split.site
-partial_list: {  }
+partial_list:
+  - 'core.entity_form_display.*'
+  - 'core.entity_view_display.*'
