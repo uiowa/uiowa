@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.field.paragraph.book_type.field_book_isbn
     - field.field.paragraph.book_type.field_book_retail_price
-    - field.field.paragraph.book_type.field_book_sale
     - field.field.paragraph.book_type.field_book_sale_code
     - field.field.paragraph.book_type.field_book_sale_expiry_date
     - field.field.paragraph.book_type.field_book_sale_price
@@ -20,7 +19,7 @@ bundle: book_type
 mode: default
 content:
   field_book_isbn:
-    weight: 6
+    weight: 2
     settings:
       size: 60
       placeholder: ''
@@ -34,14 +33,8 @@ content:
     third_party_settings: {  }
     type: number
     region: content
-  field_book_sale:
-    weight: 7
-    settings: {  }
-    third_party_settings: {  }
-    type: options_buttons
-    region: content
   field_book_sale_code:
-    weight: 3
+    weight: 5
     settings:
       size: 60
       placeholder: ''
@@ -49,20 +42,20 @@ content:
     type: string_textfield
     region: content
   field_book_sale_expiry_date:
-    weight: 5
+    weight: 7
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
     region: content
   field_book_sale_price:
-    weight: 2
+    weight: 4
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: number
     region: content
   field_book_sale_start_date:
-    weight: 4
+    weight: 6
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
