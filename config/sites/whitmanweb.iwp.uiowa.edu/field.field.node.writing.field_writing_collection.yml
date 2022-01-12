@@ -1,0 +1,29 @@
+uuid: 354e5613-e60f-42cf-8f7e-1adeabe546a3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_writing_collection
+    - node.type.writing
+    - taxonomy.vocabulary.writing_collection
+id: node.writing.field_writing_collection
+field_name: field_writing_collection
+entity_type: node
+bundle: writing
+label: Collection
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      writing: writing_collection
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

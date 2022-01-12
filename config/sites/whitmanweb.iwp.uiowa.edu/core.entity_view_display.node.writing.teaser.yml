@@ -4,21 +4,37 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.writing.field_image
+    - field.field.node.writing.field_writing_collection
     - field.field.node.writing.field_writing_content
     - node.type.writing
   module:
+    - text
     - user
 id: node.writing.teaser
 targetEntityType: node
 bundle: writing
 mode: teaser
 content:
-  links:
-    weight: 100
+  field_image:
+    type: entity_reference_entity_view
+    weight: 0
+    region: content
+    label: above
+    settings:
+      view_mode: large__square
+      link: false
+    third_party_settings: {  }
+  field_writing_content:
+    type: text_default
+    weight: 1
+    region: content
+    label: above
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
-  field_writing_content: true
+  content_moderation_control: true
+  field_writing_collection: true
   langcode: true
+  links: true
   search_api_excerpt: true

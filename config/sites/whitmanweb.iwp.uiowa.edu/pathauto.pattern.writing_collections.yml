@@ -1,0 +1,25 @@
+uuid: 6e21a429-73c7-40c0-94be-0315c1dcd578
+langcode: en
+status: true
+dependencies:
+  module:
+    - ctools
+    - taxonomy
+id: writing_collections
+label: 'Writing collection'
+type: 'canonical_entities:taxonomy_term'
+pattern: 'writings/[term:name]'
+selection_criteria:
+  7b8012ba-728f-4df5-b67b-a7b061a1567d:
+    id: 'entity_bundle:taxonomy_term'
+    bundles:
+      writing_collection: writing_collection
+    negate: false
+    context_mapping:
+      taxonomy_term: taxonomy_term
+    uuid: 7b8012ba-728f-4df5-b67b-a7b061a1567d
+selection_logic: and
+weight: -4
+relationships:
+  'taxonomy_term:langcode:language':
+    label: Language

@@ -3,16 +3,172 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.writing.field_image
+    - field.field.node.writing.field_writing_collection
     - field.field.node.writing.field_writing_content
     - node.type.writing
   module:
+    - layout_builder
+    - system
     - text
     - user
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: true
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: 'Moderation control'
+          layout_builder_styles_style:
+            section_margin_remove_default_margins: section_margin_remove_default_margins
+            0: ''
+          context_mapping: {  }
+        components:
+          -
+            uuid: 124e58f8-2e74-46de-a8b3-9e9cdea31130
+            region: content
+            configuration:
+              id: 'extra_field_block:node:writing:content_moderation_control'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+      -
+        layout_id: layout_header
+        layout_settings:
+          label: Header
+          layout_builder_styles_style:
+            - ''
+            - section_margin_edge_to_edge
+          context_mapping: {  }
+        components:
+          -
+            uuid: 8698a961-103b-42bd-8019-3e66af501176
+            region: content
+            configuration:
+              id: system_breadcrumb_block
+              label: Breadcrumbs
+              provider: system
+              label_display: '0'
+              context_mapping: {  }
+            additional: {  }
+            weight: 0
+          -
+            uuid: 268d1d22-893f-49d4-9f62-1529d5742f6b
+            region: content
+            configuration:
+              id: 'field_block:node:writing:title'
+              label: Title
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: string
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 2
+          -
+            uuid: 17ee4571-c1a3-4f4b-bb3b-a247a3dd08df
+            region: background
+            configuration:
+              id: 'field_block:node:writing:field_image'
+              label: 'Featured Image'
+              provider: layout_builder
+              label_display: '0'
+              formatter:
+                label: visually_hidden
+                type: entity_reference_entity_view
+                settings:
+                  view_mode: full__ultrawide
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+          -
+            uuid: 3811a788-d472-441b-8b65-a8b7f9aa38e0
+            region: content
+            configuration:
+              id: 'field_block:node:writing:field_writing_collection'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: entity_reference_label
+                settings:
+                  link: true
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 1
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+        components:
+          -
+            uuid: fb3a10b4-d05d-45ff-a13f-184aa08a1dd3
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:writing:field_writing_content'
+              formatter:
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+                type: text_default
+            additional: {  }
+            weight: 2
+        third_party_settings: {  }
 id: node.writing.default
 targetEntityType: node
 bundle: writing
 mode: default
 content:
+  content_moderation_control:
+    weight: -20
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_image:
+    weight: 2
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_writing_collection:
+    weight: 1
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
   field_writing_content:
     weight: 0
     label: hidden

@@ -1,0 +1,24 @@
+uuid: b892181d-39c4-420b-a19d-e1e43a8b9ab9
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: writing
+label: Writing
+type: 'canonical_entities:node'
+pattern: 'writings/[node:field_writing_collection:entity]/[node:title]'
+selection_criteria:
+  67b524eb-fa33-4441-a16d-92614ee104be:
+    id: node_type
+    bundles:
+      writing: writing
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 67b524eb-fa33-4441-a16d-92614ee104be
+selection_logic: and
+weight: -6
+relationships:
+  'node:langcode:language':
+    label: Language
