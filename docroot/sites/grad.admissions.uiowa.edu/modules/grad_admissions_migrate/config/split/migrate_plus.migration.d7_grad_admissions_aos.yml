@@ -1,0 +1,122 @@
+langcode: en
+status: true
+dependencies: {  }
+id: d7_grad_admissions_aos
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - grad_admissions
+migration_group: sitenow_migrate
+label: 'Area of Study node migration from Drupal 7'
+source:
+  plugin: d7_grad_admissions_aos
+  node_type: graduate_and_professional_areas_
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  title: title
+  type:
+    plugin: default_value
+    default_value: area_of_study
+  uid:
+    plugin: default_value
+    default_value: 1
+  status: status
+  created: created
+  changed: changed
+  promote: promote
+  sticky: sticky
+  field_teaser: field_grad_intro_summary
+  moderation_state: moderation_state
+  field_area_of_study_requirements:
+    plugin: sub_process
+    source: body
+    process:
+      value: value
+      format: format
+  field_area_of_study_deadlines:
+    plugin: sub_process
+    source: field_graddeadline
+    process:
+      value: value
+      format: format
+  field_area_of_study_procedures:
+    plugin: sub_process
+    source: field_gradprocedures
+    process:
+      value: value
+      format: format
+  field_area_of_study_apply:
+    plugin: sub_process
+    source: field_gradapply
+    process:
+      value: value
+      format: format
+  field_area_of_study_area:
+    plugin: sub_process
+    source: field_area
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: d7_grad_admissions_aos_taxonomy
+        source: tid
+  field_area_of_study_college:
+    plugin: sub_process
+    source: field_grad_college
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: d7_grad_admissions_colleges
+        source: tid
+  field_area_of_study_contact:
+    plugin: sub_process
+    source: field_gradcontact
+    process:
+      value: value
+      format: format
+  field_area_of_study_degree_types:
+    plugin: sub_process
+    source: field_degree_list
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: d7_grad_admissions_degree_types
+        source: tid
+  field_area_of_study_grad_intro:
+    plugin: sub_process
+    source: field_estimated_cost_intro
+    process:
+      value: value
+      format: format
+  field_image: field_banner_fid
+  body:
+    plugin: sub_process
+    source: field_grad_intro
+    process:
+      value: value
+      format: format
+  field_area_of_study_link:
+    plugin: sub_process
+    source: custom_related_links
+    process:
+      uri: url
+      title: title
+  field_area_of_study_subtitle:
+    plugin: sub_process
+    source: field_sub_title
+    process:
+      value: value
+      format: format
+destination:
+  plugin: 'entity:node'
+  default_bundle: area_of_study
+migration_dependencies:
+  required:
+    - d7_grad_admissions_degree_types
+    - d7_grad_admissions_colleges
+    - d7_grad_admissions_aos_taxonomy
