@@ -1,0 +1,24 @@
+uuid: 734315a5-8c9d-4bb1-b63f-3e21b8f0269c
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.writing.field_writing_content
+    - node.type.writing
+  module:
+    - user
+id: node.writing.teaser
+targetEntityType: node
+bundle: writing
+mode: teaser
+content:
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_writing_content: true
+  langcode: true
+  search_api_excerpt: true

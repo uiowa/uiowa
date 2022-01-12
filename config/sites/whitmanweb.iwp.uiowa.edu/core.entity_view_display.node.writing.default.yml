@@ -1,0 +1,26 @@
+uuid: c98800bd-60c2-46ba-9e6a-f9857eb03cd7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.writing.field_writing_content
+    - node.type.writing
+  module:
+    - text
+    - user
+id: node.writing.default
+targetEntityType: node
+bundle: writing
+mode: default
+content:
+  field_writing_content:
+    weight: 0
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+hidden:
+  langcode: true
+  links: true
+  search_api_excerpt: true
