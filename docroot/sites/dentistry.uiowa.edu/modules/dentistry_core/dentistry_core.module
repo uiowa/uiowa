@@ -1,0 +1,54 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Dentistry Core module.
+ *
+ * @DCG
+ * This file is no longer required in Drupal 8.
+ * @see https://www.drupal.org/node/2217931
+ */
+
+use Drupal\Core\Path\PathMatcherInterface;
+
+/**
+ * Implements hook_page_attachments().
+ */
+function dentistry_core_page_attachments(array &$attachments) {
+  /** @var PathMatcherInterface $path_matcher */
+  $path_matcher = \Drupal::service('path.matcher');
+
+  if ($path_matcher->isFrontPage()) {
+    $dentist = [
+      'foo' => 'bar',
+    ];
+
+    $attachments['#attached']['html_head'][] = [
+      [
+        '#type' => 'html_tag',
+        '#tag' => 'script',
+        '#value' => json_encode($dentist),
+        '#attributes' => [
+          'type' => 'application/ld+json'
+        ],
+      ],
+      'dentistry_core_dentist'
+    ];
+
+    $edu = [
+      'baz' => 'qux',
+    ];
+
+    $attachments['#attached']['html_head'][] = [
+      [
+        '#type' => 'html_tag',
+        '#tag' => 'script',
+        '#value' => json_encode($edu),
+        '#attributes' => [
+          'type' => 'application/ld+json'
+        ],
+      ],
+      'dentistry_core_edu'
+    ];
+  }
+}
