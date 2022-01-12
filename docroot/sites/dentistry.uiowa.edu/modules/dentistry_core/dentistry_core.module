@@ -9,13 +9,11 @@
  * @see https://www.drupal.org/node/2217931
  */
 
-use Drupal\Core\Path\PathMatcherInterface;
-
 /**
  * Implements hook_page_attachments().
  */
 function dentistry_core_page_attachments(array &$attachments) {
-  /** @var PathMatcherInterface $path_matcher */
+  /** @var \Drupal\Core\Path\PathMatcherInterface $path_matcher */
   $path_matcher = \Drupal::service('path.matcher');
 
   if ($path_matcher->isFrontPage()) {
@@ -29,10 +27,10 @@ function dentistry_core_page_attachments(array &$attachments) {
         '#tag' => 'script',
         '#value' => json_encode($dentist),
         '#attributes' => [
-          'type' => 'application/ld+json'
+          'type' => 'application/ld+json',
         ],
       ],
-      'dentistry_core_dentist'
+      'dentistry_core_dentist',
     ];
 
     $edu = [
@@ -45,10 +43,10 @@ function dentistry_core_page_attachments(array &$attachments) {
         '#tag' => 'script',
         '#value' => json_encode($edu),
         '#attributes' => [
-          'type' => 'application/ld+json'
+          'type' => 'application/ld+json',
         ],
       ],
-      'dentistry_core_edu'
+      'dentistry_core_edu',
     ];
   }
 }
