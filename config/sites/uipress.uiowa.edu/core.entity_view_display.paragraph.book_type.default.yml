@@ -12,7 +12,6 @@ dependencies:
     - field.field.paragraph.book_type.field_book_type
     - paragraphs.paragraphs_type.book_type
   module:
-    - datetime
     - options
 id: paragraph.book_type.default
 targetEntityType: paragraph
@@ -40,24 +39,15 @@ content:
     region: content
   field_book_sale_code:
     type: string
-    weight: 4
+    weight: 3
     region: content
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  field_book_sale_expiry_date:
-    type: datetime_default
-    weight: 7
-    region: content
-    label: above
-    settings:
-      timezone_override: ''
-      format_type: html_date
-    third_party_settings: {  }
   field_book_sale_price:
     type: number_decimal
-    weight: 5
+    weight: 4
     region: content
     label: above
     settings:
@@ -65,15 +55,6 @@ content:
       decimal_separator: .
       scale: 2
       prefix_suffix: true
-    third_party_settings: {  }
-  field_book_sale_start_date:
-    type: datetime_default
-    weight: 6
-    region: content
-    label: above
-    settings:
-      timezone_override: ''
-      format_type: html_date
     third_party_settings: {  }
   field_book_type:
     weight: 1
@@ -83,4 +64,6 @@ content:
     type: list_default
     region: content
 hidden:
+  field_book_sale_expiry_date: true
+  field_book_sale_start_date: true
   search_api_excerpt: true
