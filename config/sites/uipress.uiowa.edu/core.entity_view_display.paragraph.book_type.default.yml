@@ -12,7 +12,14 @@ dependencies:
     - field.field.paragraph.book_type.field_book_type
     - paragraphs.paragraphs_type.book_type
   module:
+    - layout_builder
     - options
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
 id: paragraph.book_type.default
 targetEntityType: paragraph
 bundle: book_type
@@ -27,7 +34,7 @@ content:
     type: string
     region: content
   field_book_retail_price:
-    weight: 0
+    weight: 1
     label: above
     settings:
       thousand_separator: ''
@@ -57,8 +64,8 @@ content:
       prefix_suffix: true
     third_party_settings: {  }
   field_book_type:
-    weight: 1
-    label: visually_hidden
+    weight: 0
+    label: above
     settings: {  }
     third_party_settings: {  }
     type: list_default
