@@ -1,0 +1,23 @@
+uuid: d526a03d-553f-4163-a37e-7f8c3030ab9b
+langcode: en
+status: true
+dependencies: {  }
+id: grad_admissions_migrate
+label: 'Graduate Admissions Migrate'
+description: ''
+weight: 80
+stackable: true
+storage: folder
+folder: ./sites/grad.admissions.uiowa.edu/modules/grad_admissions_migrate/config/split
+module:
+  grad_admissions_migrate: 0
+  migrate: 0
+  migrate_drupal: 0
+  migrate_plus: 0
+  migrate_tools: 0
+  sitenow_migrate: 0
+theme: {  }
+complete_list:
+  - config_split.config_split.grad_admissions_migrate
+  - 'migrate_plus.migration.d7_grad_admissions_*'
+partial_list: {  }
