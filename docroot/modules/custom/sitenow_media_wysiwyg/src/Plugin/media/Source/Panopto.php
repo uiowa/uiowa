@@ -152,7 +152,8 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
 
           $redirects = $response->getHeader(RedirectMiddleware::HISTORY_HEADER);
           $source = end($redirects);
-          $destination = 'public://panopto_thumbnails/';
+          $scheme = $this->configFactory->get('system.file')->get('default_scheme');
+          $destination = $scheme . 'panopto_thumbnails/';
           $realpath = $this->fs->realpath($destination);
 
           if ($this->fs->prepareDirectory($realpath, FileSystemInterface::CREATE_DIRECTORY)) {
