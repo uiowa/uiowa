@@ -31,12 +31,16 @@ process:
       plugin: str_replace
       search: '&rsquo;'
       replace: ''''
-  description:
+  description/value:
     plugin: concat
     source:
       - '@temp_description'
       - 'field_programs/0/value'
     delimiter: '<br /><br />'
+  description/format:
+    -
+      plugin: get
+      source: format
   format: format
   field_college_website:
     plugin: field_link
