@@ -17,6 +17,9 @@ function dentistry_core_page_attachments(array &$attachments) {
   $path_matcher = \Drupal::service('path.matcher');
 
   if ($path_matcher->isFrontPage()) {
+    /** @var \Drupal\schema_metatag\SchemaMetatagManagerInterface $mtm */
+    $mtm = \Drupal::service('schema_metatag.schema_metatag_manager');
+
     $dentist = [
       'foo' => 'bar',
     ];
@@ -25,7 +28,7 @@ function dentistry_core_page_attachments(array &$attachments) {
       [
         '#type' => 'html_tag',
         '#tag' => 'script',
-        '#value' => json_encode($dentist),
+        '#value' => $mtm->encodeJsonLd($dentist),
         '#attributes' => [
           'type' => 'application/ld+json',
         ],
@@ -41,7 +44,7 @@ function dentistry_core_page_attachments(array &$attachments) {
       [
         '#type' => 'html_tag',
         '#tag' => 'script',
-        '#value' => json_encode($edu),
+        '#value' => $mtm->encodeJsonLd($edu),
         '#attributes' => [
           'type' => 'application/ld+json',
         ],
