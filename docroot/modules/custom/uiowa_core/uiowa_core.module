@@ -10,6 +10,8 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\google_tag\Entity\Container;
 use Drupal\uiowa_core\HeadlineHelper;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Exception\RfcComplianceException;
 
 /**
  * Implements hook_config_schema_info_alter().
@@ -20,6 +22,35 @@ function uiowa_core_config_schema_info_alter(&$definitions) {
   // @see https://www.drupal.org/project/drupal/issues/2852557#comment-12703225
   // @todo Remove this after https://www.drupal.org/project/drupal/issues/2855675.
   $definitions['filter.format.*']['mapping']['filters']['orderby'] = 'key';
+}
+
+/**
+ * Implements hook_mail_alter().
+ */
+function uiowa_core_mail_alter(&$message) {
+  // Add header in use by email team to avoid spam/external tagging.
+  $message['headers']['X-UI-Hosted'] = 'ITS-Acquia';
+
+  // Override the from address if it doesn't match our Platform Email domain
+  // of uiowa.edu. Otherwise, the email will not be sent. We aren't handling
+  // multiple from addresses here because that doesn't seem to work currently -
+  // hook_mail_alter isn't even invoked for some reason.
+  try {
+    $from = Address::create($message['from']);
+    $domain = explode('@', $from->getAddress());
+    $domain = array_pop($domain);
+
+    if ($domain != 'uiowa.edu') {
+      $name = $from->getName() ?: \Drupal::config('system.site')->get('name');
+      $from = new Address(base64_decode('aXRzLXdlYkB1aW93YS5lZHU='), $name);
+      $message['headers']['From'] = $from->toString();
+    }
+  }
+  catch (RfcComplianceException $e) {
+    \Drupal::logger('uiowa_core')->error(t('Unable to alter outgoing email using from address @from', [
+      '@from' => $message['from'],
+    ]));
+  }
 }
 
 /**
