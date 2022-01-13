@@ -1,29 +1,29 @@
-uuid: 160c1ac2-0a70-4697-ac6e-1f17b52f50ce
+uuid: a61a5091-3bbd-4d40-adac-15e4b47c0951
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_book_series
+    - field.storage.node.field_image
+    - media.type.image
     - node.type.book
-    - taxonomy.vocabulary.series
-id: node.book.field_book_series
-field_name: field_book_series
+id: node.book.field_image
+field_name: field_image
 entity_type: node
 bundle: book
-label: Series
+label: 'Book cover'
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:taxonomy_term'
+  handler: 'default:media'
   handler_settings:
     target_bundles:
-      series: series
+      image: image
     sort:
-      field: name
-      direction: asc
+      field: _none
+      direction: ASC
     auto_create: true
     auto_create_bundle: ''
 field_type: entity_reference
