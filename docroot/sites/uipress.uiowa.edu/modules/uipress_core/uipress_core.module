@@ -17,14 +17,16 @@ function uipress_core_preprocess_paragraph__book_type(&$variables) {
 
       $now = date('m-d-Y');
 
-      $start = $paragraph->get('field_book_sale_start_date')->getValue()[0]['value'];
-      $start = date('m-d-Y', strtotime($start));
+      if ($paragraph->hasField('field_book_sale_start_date') && !$paragraph->get('field_book_sale_start_date')->isEmpty() && $paragraph->hasField('field_book_sale_expiry_date') && !$paragraph->get('field_book_sale_expiry_date')->isEmpty()) {
+        $start = $paragraph->get('field_book_sale_start_date')->getValue()[0]['value'];
+        $start = date('m-d-Y', strtotime($start));
 
-      $end = $paragraph->get('field_book_sale_expiry_date')->getValue()[0]['value'];
-      $end = date('m-d-Y', strtotime($end));
+        $end = $paragraph->get('field_book_sale_expiry_date')->getValue()[0]['value'];
+        $end = date('m-d-Y', strtotime($end));
 
-      if ($paragraph->get('field_book_sale_price')->isEmpty() || $now < $start || $now > $end) {
-        unset($variables['content']['field_book_sale_expiry_date'], $variables['content']['field_book_sale_price'], $variables['content']['field_book_sale_start_date'], $variables['content']['field_book_sale_code']);
+        if ($paragraph->get('field_book_sale_price')->isEmpty() || $now < $start || $now > $end) {
+          unset($variables['content']['field_book_sale_expiry_date'], $variables['content']['field_book_sale_price'], $variables['content']['field_book_sale_start_date'], $variables['content']['field_book_sale_code']);
+        }
       }
     }
   }
