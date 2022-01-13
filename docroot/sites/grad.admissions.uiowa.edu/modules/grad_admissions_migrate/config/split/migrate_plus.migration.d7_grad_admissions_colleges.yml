@@ -15,7 +15,7 @@ source:
 process:
   tid: tid
   name: name
-  description:
+  temp_description:
     -
       plugin: callback
       callable: strip_tags
@@ -31,6 +31,12 @@ process:
       plugin: str_replace
       search: '&rsquo;'
       replace: ''''
+  description:
+    plugin: concat
+    source:
+      - '@temp_description'
+      - 'field_programs'
+    delimiter: '<br /><br />'
   format: format
   field_college_website:
     plugin: field_link
