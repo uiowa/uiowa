@@ -1,0 +1,28 @@
+uuid: d8667498-9279-485d-8ef8-1490bae9a1e6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_book_related_reads
+    - node.type.book
+id: node.book.field_book_related_reads
+field_name: field_book_related_reads
+entity_type: node
+bundle: book
+label: 'Related Reads'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      book: book
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

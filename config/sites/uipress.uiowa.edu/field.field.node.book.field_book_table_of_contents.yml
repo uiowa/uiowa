@@ -1,0 +1,28 @@
+uuid: 84c14c91-26d0-4fde-977d-0d70e11e05bf
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_book_table_of_contents
+    - node.type.book
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    minimal: minimal
+    filtered_html: '0'
+    full_html: '0'
+    plain_text: '0'
+id: node.book.field_book_table_of_contents
+field_name: field_book_table_of_contents
+entity_type: node
+bundle: book
+label: 'Table of contents'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

@@ -1,0 +1,28 @@
+uuid: 107dcad7-0b6b-4ddc-82da-a0f20a370990
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_book_contributors
+    - node.type.book
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    minimal: minimal
+    filtered_html: '0'
+    full_html: '0'
+    plain_text: '0'
+id: node.book.field_book_contributors
+field_name: field_book_contributors
+entity_type: node
+bundle: book
+label: Contributors
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long
