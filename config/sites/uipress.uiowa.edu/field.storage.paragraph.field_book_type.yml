@@ -1,0 +1,30 @@
+uuid: a17cc4c9-7602-4df7-bb86-5d23083b9862
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_book_type
+field_name: field_book_type
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: eBook
+      label: eBook
+    -
+      value: Hardcover
+      label: Hardcover
+    -
+      value: Paperback
+      label: Paperback
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
