@@ -130,7 +130,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
 
   // Only allow access to these sites.
   $form['fonts']['#access'] = FALSE;
-  $site_path = \Drupal::service('site.path');
+  $site_path = \Drupal::getContainer()->getParameter('site.path');
   if (
     $site_path == 'sites/writinguniversity.org' ||
     $site_path == 'sites/sandbox.uiowa.edu'

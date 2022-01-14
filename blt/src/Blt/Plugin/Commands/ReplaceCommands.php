@@ -119,9 +119,9 @@ class ReplaceCommands extends BltTasks {
     $paths = [
       "{$root}/tests/" => '',
       "{$docroot}/profiles/custom/" => '',
-      "{$docroot}/modules/custom/" => '',
+      "{$docroot}/modules/custom/" => "$docroot/modules/custom/uiowa_core/src/Form/UiowaCoreSiteInformationForm.php",
       "{$docroot}/themes/custom/" => '',
-      "{$docroot}/sites/" => "{$docroot}/sites/simpletest",
+      "{$docroot}/sites/" => "$docroot/sites/simpletest,$docroot/sites/default/files",
     ];
 
     foreach ($paths as $path => $exclude) {
