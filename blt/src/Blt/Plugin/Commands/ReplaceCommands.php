@@ -183,7 +183,7 @@ class ReplaceCommands extends BltTasks {
   public function preSourceBuildSettings() {
     $yaml = YamlMunge::parseFile($this->getConfigValue('repo.root') . '/blt/local.blt.yml');
 
-    if (isset($yaml['multisites'])) {
+    if (isset($yaml['multisites']) && !empty($yaml['multisites'])) {
       throw new \Exception('Multisites overridden in local.blt.yml file. Remove multisites override before running this command.');
     }
 
