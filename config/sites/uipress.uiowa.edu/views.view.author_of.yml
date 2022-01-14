@@ -8,7 +8,7 @@ dependencies:
     - node
     - user
 id: author_of
-label: 'Author of'
+label: 'People Roles'
 module: views
 description: ''
 tag: ''
@@ -65,12 +65,14 @@ display:
             previous: ‹‹
             next: ››
       style:
-        type: default
+        type: html_list
         options:
           grouping: {  }
           row_class: ''
           default_row_class: true
-          uses_fields: false
+          type: ul
+          wrapper_class: item-list
+          class: container
       row:
         type: fields
         options:
@@ -441,7 +443,7 @@ display:
           empty: false
           tokenize: false
           content:
-            value: '<h2>Author</h2>'
+            value: '<h3>Author</h3>'
             format: filtered_html
           plugin_id: text
     cache_metadata:
@@ -603,7 +605,7 @@ display:
           empty: false
           tokenize: false
           content:
-            value: '<h2>Editor</h2>'
+            value: '<h3>Editor</h3>'
             format: filtered_html
           plugin_id: text
     cache_metadata:
@@ -778,7 +780,7 @@ display:
           empty: false
           tokenize: false
           content:
-            value: '<h2>Illustrator</h2>'
+            value: '<h3>Illustrator</h3>'
             format: filtered_html
           plugin_id: text
     cache_metadata:
@@ -940,7 +942,7 @@ display:
           empty: false
           tokenize: false
           content:
-            value: '<h2>Photographer</h2>'
+            value: '<h3>Photographer</h3>'
             format: filtered_html
           plugin_id: text
     cache_metadata:
@@ -1102,7 +1104,7 @@ display:
           empty: false
           tokenize: false
           content:
-            value: '<h2>Translator</h2>'
+            value: '<h3>Translator</h3>'
             format: filtered_html
           plugin_id: text
     cache_metadata:
