@@ -6,6 +6,27 @@
  */
 
 /**
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ */
+function uipress_core_field_widget_entity_reference_paragraphs_form_alter(&$element, &$form_state, $context) {
+  if ($element['#paragraph_type'] == 'book_type') {
+    if (isset($element['subform']['field_book_ebook_ownership'])) {
+      // Set the field_book_ebook_ownership field to only be visible when ebook
+      // the type of book selected.
+      $delta = $element['#delta'];
+
+      $element['subform']['field_book_ebook_ownership']['#states'] = [
+        'visible' => [
+          ':input[name="field_book_type[' . $delta . '][subform][field_book_type]"]' => [
+            'value' => 'eBook'
+          ],
+        ],
+      ];
+    }
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK().
  */
 function uipress_core_preprocess_paragraph__book_type(&$variables) {

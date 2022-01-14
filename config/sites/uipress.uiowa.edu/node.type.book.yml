@@ -4,14 +4,19 @@ status: true
 dependencies:
   module:
     - menu_ui
+    - node_revision_delete
 third_party_settings:
   menu_ui:
     available_menus:
       - main
     parent: 'main:'
+  node_revision_delete:
+    minimum_revisions_to_keep: 10
+    minimum_age_to_delete: 0
+    when_to_delete: 0
 name: Book
 type: book
-description: 'Create a book listing.'
+description: 'Use the <em>book</em> content type to create a listing for books that are offered.'
 help: ''
 new_revision: true
 preview_mode: 1

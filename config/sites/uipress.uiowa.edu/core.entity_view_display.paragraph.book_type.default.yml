@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.book_type.field_book_ebook_ownership
     - field.field.paragraph.book_type.field_book_isbn
     - field.field.paragraph.book_type.field_book_retail_price
     - field.field.paragraph.book_type.field_book_sale_code
@@ -14,8 +15,6 @@ dependencies:
   module:
     - layout_builder
     - options
-  theme:
-    - uids_base
 third_party_settings:
   layout_builder:
     allow_custom: false
@@ -25,8 +24,15 @@ targetEntityType: paragraph
 bundle: book_type
 mode: default
 content:
+  field_book_ebook_ownership:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
   field_book_isbn:
-    weight: 2
+    weight: 3
     label: above
     settings:
       link_to_entity: false
@@ -34,7 +40,7 @@ content:
     type: string
     region: content
   field_book_retail_price:
-    weight: 1
+    weight: 2
     label: above
     settings:
       thousand_separator: ''
@@ -46,7 +52,7 @@ content:
     region: content
   field_book_sale_code:
     type: string
-    weight: 3
+    weight: 4
     region: content
     label: above
     settings:
@@ -54,7 +60,7 @@ content:
     third_party_settings: {  }
   field_book_sale_price:
     type: number_decimal
-    weight: 4
+    weight: 5
     region: content
     label: above
     settings:
