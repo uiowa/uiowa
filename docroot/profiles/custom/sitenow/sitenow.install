@@ -1526,7 +1526,7 @@ function sitenow_update_8036() {
  * Deactivate the grad site split from every site except grad.uiowa.edu.
  */
 function sitenow_update_8037() {
-  if (\Drupal::service('site.path') != 'sites/grad.uiowa.edu') {
+  if (\Drupal::getContainer()->getParameter('site.path') != 'sites/grad.uiowa.edu') {
     \Drupal::configFactory()
       ->getEditable('config_split.config_split.site_grad_uiowa_edu')
       ->set('status', FALSE)
@@ -3523,7 +3523,7 @@ function sitenow_update_9017() {
     'sites/uiowa.edu' => 'uiowa.edu',
   ];
 
-  $path = Drupal::service('site.path');
+  $path = \Drupal::getContainer()->getParameter('site.path');
 
   if (isset($splits[$path])) {
     $source = new FileStorage('../config/sites/' . $splits[$path]);
