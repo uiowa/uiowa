@@ -1,0 +1,296 @@
+uuid: a8b95e96-42d2-430e-b27e-6bd6a7a45a8d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.book.field_book_afterword_author
+    - field.field.node.book.field_book_art
+    - field.field.node.book.field_book_author
+    - field.field.node.book.field_book_awards
+    - field.field.node.book.field_book_contributors
+    - field.field.node.book.field_book_description_summary
+    - field.field.node.book.field_book_edition
+    - field.field.node.book.field_book_editor
+    - field.field.node.book.field_book_essay_by
+    - field.field.node.book.field_book_excerpt
+    - field.field.node.book.field_book_file_uploads
+    - field.field.node.book.field_book_foreword_author
+    - field.field.node.book.field_book_illustrator
+    - field.field.node.book.field_book_introduction_author
+    - field.field.node.book.field_book_pages
+    - field.field.node.book.field_book_photographer
+    - field.field.node.book.field_book_preface_authors
+    - field.field.node.book.field_book_publication_date
+    - field.field.node.book.field_book_related_reads
+    - field.field.node.book.field_book_reviews_blurbs
+    - field.field.node.book.field_book_season
+    - field.field.node.book.field_book_series
+    - field.field.node.book.field_book_subject
+    - field.field.node.book.field_book_subtitle
+    - field.field.node.book.field_book_table_of_contents
+    - field.field.node.book.field_book_translator
+    - field.field.node.book.field_book_trim_size
+    - field.field.node.book.field_book_type
+    - field.field.node.book.field_image
+    - field.field.node.book.field_meta_tags
+    - node.type.book
+  module:
+    - datetime
+    - entity_reference_revisions
+    - image
+    - layout_builder
+    - options
+    - smart_trim
+    - text
+    - user
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+id: node.book.default
+targetEntityType: node
+bundle: book
+mode: default
+content:
+  field_book_afterword_author:
+    type: entity_reference_label
+    weight: 4
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_book_art:
+    type: string
+    weight: 17
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_book_author:
+    weight: 2
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_book_awards:
+    type: text_default
+    weight: 28
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_book_contributors:
+    type: text_default
+    weight: 27
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_book_description_summary:
+    type: text_default
+    weight: 26
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_book_edition:
+    type: list_default
+    weight: 25
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_book_editor:
+    weight: 3
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_book_essay_by:
+    type: entity_reference_label
+    weight: 24
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_book_excerpt:
+    type: text_default
+    weight: 23
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_book_file_uploads:
+    type: image
+    weight: 22
+    region: content
+    label: above
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+  field_book_foreword_author:
+    type: entity_reference_label
+    weight: 21
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_book_illustrator:
+    type: entity_reference_label
+    weight: 20
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_book_introduction_author:
+    type: entity_reference_label
+    weight: 19
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_book_pages:
+    type: string
+    weight: 18
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_book_photographer:
+    type: entity_reference_label
+    weight: 15
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_book_preface_authors:
+    type: entity_reference_label
+    weight: 5
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_book_publication_date:
+    type: datetime_default
+    weight: 16
+    region: content
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+  field_book_related_reads:
+    type: entity_reference_label
+    weight: 14
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_book_reviews_blurbs:
+    type: text_default
+    weight: 13
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_book_season:
+    type: entity_reference_label
+    weight: 12
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_book_series:
+    type: entity_reference_label
+    weight: 11
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_book_subject:
+    type: entity_reference_label
+    weight: 10
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_book_subtitle:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_book_table_of_contents:
+    type: text_default
+    weight: 9
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_book_translator:
+    type: entity_reference_label
+    weight: 8
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_book_trim_size:
+    type: smart_trim
+    weight: 6
+    region: content
+    label: above
+    settings:
+      trim_length: 600
+      trim_type: chars
+      trim_suffix: ''
+      wrap_output: false
+      wrap_class: trimmed
+      more_link: false
+      more_class: more-link
+      more_text: More
+      summary_handler: full
+      trim_options: {  }
+    third_party_settings: {  }
+  field_book_type:
+    type: entity_reference_revisions_entity_view
+    weight: 7
+    region: content
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+  field_image:
+    weight: 1
+    label: hidden
+    settings:
+      view_mode: full__no_crop
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+    region: content
+hidden:
+  field_meta_tags: true
+  links: true
+  search_api_excerpt: true
