@@ -193,6 +193,7 @@ class ReplaceCommands extends BltTasks {
 
     $this->taskExecStack()
       ->dir($this->getConfigValue('docroot'))
+      ->exec('rm sites/*/settings/default.local.settings.php')
       ->exec('rm sites/*/settings/local.settings.php')
       ->exec('rm sites/*/local.drush.yml')
       ->run();
