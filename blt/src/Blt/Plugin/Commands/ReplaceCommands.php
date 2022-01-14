@@ -181,6 +181,10 @@ class ReplaceCommands extends BltTasks {
    * @hook pre-command source:build:settings
    */
   public function preSourceBuildSettings() {
+    if (!$this->confirm('This will delete all local.settings.php files for defined multisites. Are you sure?')) {
+      throw new BltException('Aborted.');
+    }
+
     $yaml = YamlMunge::parseFile($this->getConfigValue('repo.root') . '/blt/local.blt.yml');
 
     if (isset($yaml['multisites'])) {
