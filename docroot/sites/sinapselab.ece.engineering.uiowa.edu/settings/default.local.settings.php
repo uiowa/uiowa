@@ -5,38 +5,27 @@
  * Local development override configuration feature.
  */
 
+use Acquia\Blt\Robo\Common\EnvironmentDetector;
 use Drupal\Component\Assertion\Handle;
 
 $db_name = '${drupal.db.database}';
-if (isset($_acsf_site_name)) {
-  $db_name .= '_' . $_acsf_site_name;
-}
 
 /**
  * Database configuration.
  */
-$databases = array(
-  'default' =>
-  array(
-    'default' =>
-    array(
-      'database' => $db_name,
-      'username' => '${drupal.db.username}',
-      'password' => '${drupal.db.password}',
-      'host' => '${drupal.db.host}',
-      'port' => '${drupal.db.port}',
-      'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
-      'driver' => 'mysql',
-      'prefix' => '',
-    ),
-  ),
-);
-
-$dir = dirname(DRUPAL_ROOT);
+$databases['default']['default'] = [
+  'database' => $db_name,
+  'username' => '${drupal.db.username}',
+  'password' => '${drupal.db.password}',
+  'host' => '${drupal.db.host}',
+  'port' => '${drupal.db.port}',
+  'driver' => 'mysql',
+  'prefix' => '',
+];
 
 // Use development service parameters.
-$settings['container_yamls'][] = $dir . '/docroot/sites/development.services.yml';
-$settings['container_yamls'][] = $dir . '/docroot/sites/blt.development.services.yml';
+$settings['container_yamls'][] = EnvironmentDetector::getRepoRoot() . '/docroot/sites/development.services.yml';
+$settings['container_yamls'][] = EnvironmentDetector::getRepoRoot() . '/docroot/sites/blt.development.services.yml';
 
 // Allow access to update.php.
 $settings['update_free_access'] = TRUE;
@@ -108,18 +97,17 @@ $settings['extension_discovery_scan_tests'] = FALSE;
 /**
  * Configure static caches.
  *
- * Note: you should test with the config, bootstrap, and discovery caches enabled to
- * test that metadata is cached as expected. However, in the early stages of development,
- * you may want to disable them. Overrides to these bins must be explicitly set for each
- * bin to change the default configuration provided by Drupal core in core.services.yml.
+ * Note: you should test with the config, bootstrap, and discovery caches
+ * enabled to test that metadata is cached as expected. However, in the early
+ * stages of development, you may want to disable them. Overrides to these bins
+ * must be explicitly set for each bin to change the default configuration
+ * provided by Drupal core in core.services.yml.
  * See https://www.drupal.org/node/2754947
  */
 
- // $settings['cache']['bins']['bootstrap'] = 'cache.backend.null';
- // $settings['cache']['bins']['discovery'] = 'cache.backend.null';
- // $settings['cache']['bins']['config'] = 'cache.backend.null';
-
-
+// $settings['cache']['bins']['bootstrap'] = 'cache.backend.null';
+// $settings['cache']['bins']['discovery'] = 'cache.backend.null';
+// $settings['cache']['bins']['config'] = 'cache.backend.null';
 /**
  * Enable access to rebuild.php.
  *
@@ -143,32 +131,23 @@ $settings['rebuild_access'] = FALSE;
 $settings['skip_permissions_hardening'] = TRUE;
 
 /**
- * Temporary file path:
- *
- * A local file system path where temporary files will be stored. This
- * directory should not be accessible over the web.
- *
- * Note: Caches need to be cleared when this value is changed.
- *
- * See https://www.drupal.org/node/1928898 for more information
- * about global configuration override.
+ * Files paths.
  */
-$config['system.file']['path']['temporary'] = '/tmp';
-
+$settings['file_private_path'] = EnvironmentDetector::getRepoRoot() . '/files-private/default';
 /**
- * Private file path.
+ * Site path.
+ *
+ * @var string $site_path
+ * This is always set and exposed by the Drupal Kernel.
  */
-$settings['file_private_path'] = $dir . '/files-private';
-if (isset($_acsf_site_name)) {
-  $settings['file_public_path'] = "sites/default/files/$_acsf_site_name";
-  $settings['file_private_path'] = "$repo_root/files-private/$_acsf_site_name";
-}
+// phpcs:ignore
+$settings['file_public_path'] = 'sites/' . EnvironmentDetector::getSiteName($site_path) . '/files';
 
 /**
  * Trusted host configuration.
  *
  * See full description in default.settings.php.
  */
-$settings['trusted_host_patterns'] = array(
+$settings['trusted_host_patterns'] = [
   '^.+$',
-);
+];
