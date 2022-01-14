@@ -111,8 +111,16 @@ class SettingsForm extends ConfigFormBase {
     $form = parent::buildForm($form, $form_state);
 
     $featured_image_display_default = $config->get('featured_image_display_default');
+    $level = $config->get('level');
+    $depth = $config->get('depth');
 
-    $form['global']['featured_image_display_default'] = [
+    $form['global']['featured_image'] = [
+      '#type' => 'fieldset',
+      '#title' => 'Featured image',
+      '#collapsible' => FALSE,
+    ];
+
+    $form['global']['featured_image']['featured_image_display_default'] = [
       '#type' => 'select',
       '#title' => $this->t('Display featured image'),
       '#description' => $this->t('Set the default behavior for how to display a featured image.'),
@@ -129,6 +137,32 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => $featured_image_display_default ?: 'large',
     ];
 
+    $form['global']['menu_levels'] = [
+      '#type' => 'fieldset',
+      '#title' => 'Menu settings',
+      '#collapsible' => FALSE,
+    ];
+
+    $options = range(1, 4);
+
+    $form['global']['menu_levels']['level'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Initial visibility level'),
+      '#default_value' =>  $level ?: 1,
+      '#options' => $options,
+      '#description' => $this->t('The menu is only visible if the menu link for the current page is at this level or below it. Use level 1 to always display this menu.'),
+      '#required' => TRUE,
+    ];
+
+    $form['global']['menu_levels']['depth'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Number of levels to display'),
+      '#default_value' => $depth ?: 3,
+      '#options' => $options,
+      '#description' => $this->t('This maximum number includes the initial level.'),
+      '#required' => TRUE,
+    ];
+
     return $form;
   }
 
@@ -137,10 +171,14 @@ class SettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $featured_image_display_default = $form_state->getValue('featured_image_display_default');
+    $level = $form_state->getValue('level');
+    $depth = $form_state->getValue('depth');
 
     $this->configFactory->getEditable(static::SETTINGS)
       // Save the featured image display default.
       ->set('featured_image_display_default', $featured_image_display_default)
+      ->set('level', $level)
+      ->set('depth', $depth)
       ->save();
 
     parent::submitForm($form, $form_state);
