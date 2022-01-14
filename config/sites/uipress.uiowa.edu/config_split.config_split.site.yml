@@ -6,7 +6,7 @@ id: site
 label: 'UI Press Book'
 description: 'Custom book content type for UI Press.'
 weight: 70
-stackable: false
+stackable: true
 storage: folder
 folder: ../config/sites/uipress.uiowa.edu
 module:
@@ -15,6 +15,7 @@ theme: {  }
 complete_list:
   - config_split.config_split.site
   - core.entity_form_display.node.book.default
+  - core.entity_form_display.node.person.default
   - core.entity_form_display.paragraph.book_type.default
   - metatag.metatag_defaults.node__book
   - node.type.book
@@ -34,13 +35,14 @@ complete_list:
   - taxonomy.vocabulary.season
   - taxonomy.vocabulary.series
   - taxonomy.vocabulary.subjects
+  - views.view.author_of
   - 'field.field.node.book.field_book_*'
   - 'field.storage.node.field_book_*'
   - 'core.entity_view_display.node.book.*'
   - 'core.entity_view_display.paragraph.book_type.*'
   - 'field.field.paragraph.book_type.field_book_*'
   - 'field.storage.paragraph.field_book_*'
+  - 'core.entity_view_display.node.person.*'
 partial_list:
-  - core.entity_form_display.node.person.default
   - 'user.role.*'
   - 'sitenow_people.person_type.*'
