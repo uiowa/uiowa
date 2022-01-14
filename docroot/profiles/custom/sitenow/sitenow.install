@@ -3772,3 +3772,17 @@ function sitenow_update_9028() {
     $block->save();
   }
 }
+
+/**
+ * Set previously unset menu item styles to vertical.
+ */
+function sitenow_update_9029() {
+  _update_all_blocks_by_plugin_id('menu_block:main', function (&$component, $block) {
+    $styles = $component->get('layout_builder_styles_style');
+    if (!isset($styles['block_menu_vertical']) && !isset($styles['block_menu_horizontal'])) {
+      $styles['block_menu_vertical'] = 'block_menu_vertical';
+    }
+
+    $component->set('layout_builder_styles_style', $styles);
+  });
+}
