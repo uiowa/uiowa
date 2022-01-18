@@ -3748,3 +3748,9 @@ $sites['pharmacymikiw2022.uiowa.ddev.site'] = 'mikiw2022.pharmacy.uiowa.edu';
 $sites['pharmacymikiw2022.dev.drupal.uiowa.edu'] = 'mikiw2022.pharmacy.uiowa.edu';
 $sites['pharmacymikiw2022.stage.drupal.uiowa.edu'] = 'mikiw2022.pharmacy.uiowa.edu';
 $sites['pharmacymikiw2022.prod.drupal.uiowa.edu'] = 'mikiw2022.pharmacy.uiowa.edu';
+
+// Directory aliases for annefranksapling.studio.uiowa.edu.
+$sites['studioannefranksapling.uiowa.ddev.site'] = 'annefranksapling.studio.uiowa.edu';
+$sites['studioannefranksapling.dev.drupal.uiowa.edu'] = 'annefranksapling.studio.uiowa.edu';
+$sites['studioannefranksapling.stage.drupal.uiowa.edu'] = 'annefranksapling.studio.uiowa.edu';
+$sites['studioannefranksapling.prod.drupal.uiowa.edu'] = 'annefranksapling.studio.uiowa.edu';
