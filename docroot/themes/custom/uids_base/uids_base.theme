@@ -160,7 +160,7 @@ function uids_base_preprocess_page(&$variables) {
   $variables['uiowa_url'] = 'https://uiowa.edu';
 
   // This is the homepage.
-  if (\Drupal::service('site.path') === 'sites/uiowa.edu') {
+  if (\Drupal::getContainer()->getParameter('site.path') === 'sites/uiowa.edu') {
     $variables['header_classes'][] = 'iowa-bar--full';
     $variables['header_type'] = 'homepage';
     $variables['uiowa_url'] = \Drupal::request()->getSchemeAndHttpHost();

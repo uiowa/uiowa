@@ -3730,3 +3730,21 @@ $sites['labblumberg.uiowa.ddev.site'] = 'blumberg.lab.uiowa.edu';
 $sites['labblumberg.dev.drupal.uiowa.edu'] = 'blumberg.lab.uiowa.edu';
 $sites['labblumberg.stage.drupal.uiowa.edu'] = 'blumberg.lab.uiowa.edu';
 $sites['labblumberg.prod.drupal.uiowa.edu'] = 'blumberg.lab.uiowa.edu';
+
+// Directory aliases for cam.fo.uiowa.edu.
+$sites['focam.uiowa.ddev.site'] = 'cam.fo.uiowa.edu';
+$sites['focam.dev.drupal.uiowa.edu'] = 'cam.fo.uiowa.edu';
+$sites['focam.stage.drupal.uiowa.edu'] = 'cam.fo.uiowa.edu';
+$sites['focam.prod.drupal.uiowa.edu'] = 'cam.fo.uiowa.edu';
+
+// Directory aliases for kochanska.lab.uiowa.edu.
+$sites['labkochanska.uiowa.ddev.site'] = 'kochanska.lab.uiowa.edu';
+$sites['labkochanska.dev.drupal.uiowa.edu'] = 'kochanska.lab.uiowa.edu';
+$sites['labkochanska.stage.drupal.uiowa.edu'] = 'kochanska.lab.uiowa.edu';
+$sites['labkochanska.prod.drupal.uiowa.edu'] = 'kochanska.lab.uiowa.edu';
+
+// Directory aliases for mikiw2022.pharmacy.uiowa.edu.
+$sites['pharmacymikiw2022.uiowa.ddev.site'] = 'mikiw2022.pharmacy.uiowa.edu';
+$sites['pharmacymikiw2022.dev.drupal.uiowa.edu'] = 'mikiw2022.pharmacy.uiowa.edu';
+$sites['pharmacymikiw2022.stage.drupal.uiowa.edu'] = 'mikiw2022.pharmacy.uiowa.edu';
+$sites['pharmacymikiw2022.prod.drupal.uiowa.edu'] = 'mikiw2022.pharmacy.uiowa.edu';
