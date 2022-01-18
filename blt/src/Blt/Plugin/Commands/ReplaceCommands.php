@@ -6,6 +6,7 @@ use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\EnvironmentDetector;
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Acquia\Blt\Robo\Exceptions\BltException;
+use Uiowa\Multisite;
 
 /**
  * BLT override commands.
@@ -264,6 +265,29 @@ class ReplaceCommands extends BltTasks {
       $chromeDriverPort = $this->getConfigValue('tests.chromedriver.port');
       $this->getContainer()->get('executor')->killProcessByPort($chromeDriverPort);
     }
+  }
+
+  /**
+   * Set custom configuration after syncing a site.
+   *
+   * @hook post-command drupal:sync:default:site
+   */
+  public function postDrupalSyncDefaultSite() {
+    $origin = $this->getConfigValue('uiowa.stage_file_proxy.origin');
+
+    if (!$origin) {
+      $origin = $this->getConfigValue('site');
+    }
+
+    $this->taskDrush()
+      ->drush('config:set')
+      ->args([
+        'stage_file_proxy.settings',
+        'origin',
+        $origin,
+      ])
+      ->run();
+
   }
 
 }
