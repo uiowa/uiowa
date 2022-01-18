@@ -6,7 +6,6 @@ use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\EnvironmentDetector;
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Acquia\Blt\Robo\Exceptions\BltException;
-use Uiowa\Multisite;
 
 /**
  * BLT override commands.
@@ -277,6 +276,8 @@ class ReplaceCommands extends BltTasks {
   }
 
   /**
+   * Set custom configuration after syncing all sites.
+   *
    * @hook post-command drupal:sync:all-sites
    */
   public function postDrupalSyncAllSites() {
@@ -286,6 +287,9 @@ class ReplaceCommands extends BltTasks {
     }
   }
 
+  /**
+   * Helper method to set stage_file_proxy.settings origin.
+   */
   protected function setStageFileProxyOrigin() {
     $origin = $this->getConfigValue('uiowa.stage_file_proxy.origin');
 
