@@ -3754,3 +3754,9 @@ $sites['studioannefranksapling.uiowa.ddev.site'] = 'annefranksapling.studio.uiow
 $sites['studioannefranksapling.dev.drupal.uiowa.edu'] = 'annefranksapling.studio.uiowa.edu';
 $sites['studioannefranksapling.stage.drupal.uiowa.edu'] = 'annefranksapling.studio.uiowa.edu';
 $sites['studioannefranksapling.prod.drupal.uiowa.edu'] = 'annefranksapling.studio.uiowa.edu';
+
+// Directory aliases for dos.uiowa.edu.
+$sites['dos.uiowa.ddev.site'] = 'dos.uiowa.edu';
+$sites['dos.dev.drupal.uiowa.edu'] = 'dos.uiowa.edu';
+$sites['dos.stage.drupal.uiowa.edu'] = 'dos.uiowa.edu';
+$sites['dos.prod.drupal.uiowa.edu'] = 'dos.uiowa.edu';
