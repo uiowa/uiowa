@@ -273,6 +273,20 @@ class ReplaceCommands extends BltTasks {
    * @hook post-command drupal:sync:default:site
    */
   public function postDrupalSyncDefaultSite() {
+    $this->setStageFileProxyOrigin();
+  }
+
+  /**
+   * @hook post-command drupal:sync:all-sites
+   */
+  public function postDrupalSyncAllSites() {
+    foreach ($this->getConfigValue('multisites') as $site) {
+      $this->switchSiteContext($site);
+      $this->setStageFileProxyOrigin();
+    }
+  }
+
+  protected function setStageFileProxyOrigin() {
     $origin = $this->getConfigValue('uiowa.stage_file_proxy.origin');
 
     if (!$origin) {
@@ -287,7 +301,6 @@ class ReplaceCommands extends BltTasks {
         $origin,
       ])
       ->run();
-
   }
 
 }
