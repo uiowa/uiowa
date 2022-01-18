@@ -276,7 +276,7 @@ class ReplaceCommands extends BltTasks {
     $origin = $this->getConfigValue('uiowa.stage_file_proxy.origin');
 
     if (!$origin) {
-      $origin = $this->getConfigValue('site');
+      $origin = 'https://' . $this->getConfigValue('site');
     }
 
     $this->taskDrush()
