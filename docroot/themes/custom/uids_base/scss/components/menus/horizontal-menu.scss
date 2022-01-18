@@ -2,13 +2,13 @@
 @import "assets/scss/_utilities.scss";
 
 .block-superfish .sf-menu.sf-horiz-menu ul {
-  @include breakpoint(menu) {
+  @include breakpoint(md) {
     background: #f1f1f1 !important;
   }
 }
 
 .nav--horizontal .block-superfish .menu ul li a {
-  @include breakpoint(menu) {
+  @include breakpoint(md) {
     color: #000;
     font-weight: 400;
   }
@@ -19,7 +19,7 @@
   .page__container--mixed {
     margin: 0;
 
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       position: relative;
       margin: 0 $gutter;
     }
@@ -73,7 +73,7 @@ ul.sf-menu.sf-horiz-menu li li span,
 ul.sf-menu.sf-horiz-menu li li .nolink {
   font-weight: 400;
 
-  @include breakpoint(menu) {
+  @include breakpoint(md) {
     font-size: 1rem;
     padding: .45rem 2rem .45rem 1rem;
 
@@ -84,7 +84,7 @@ ul.sf-menu.sf-horiz-menu li li .nolink {
 }
 
 ul.sf-menu.sf-horiz-menu ul {
-  @include breakpoint(menu) {
+  @include breakpoint(md) {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
   }
@@ -100,7 +100,7 @@ ul.sf-menu.sf-horiz li ul li a:hover {
   }
 
   .is-active {
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       background: #e1e1e1;
     }
   }

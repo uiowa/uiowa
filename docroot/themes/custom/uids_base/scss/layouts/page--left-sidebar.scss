@@ -49,7 +49,7 @@
 .content__container .layout__container.layout--has-sidebar.sidebar-invisible {
   margin-bottom: 0;
   .layout__region--content {
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       @include inner-grid(75);
     }
   }
@@ -58,7 +58,7 @@
 .layout--has-sidebar {
   .layout__region--sidebar {
     min-width: 0;
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       flex: 0 1 24.25%;
       margin-right: 3%;
     }
@@ -70,7 +70,7 @@
     }
 
     .layout__region--content {
-      @include breakpoint(menu) {
+      @include breakpoint(md) {
         flex: 0 1 100%;
       }
     }
@@ -79,7 +79,7 @@
 
 .layout--has-sidebar .layout__region--content {
   min-width: 0;
-  @include breakpoint(menu) {
+  @include breakpoint(md) {
     flex: 0 1 72.75%;
     @include inner-grid(75);
   }
