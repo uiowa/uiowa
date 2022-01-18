@@ -83,6 +83,7 @@ function dentistry_core_page_attachments(array &$attachments) {
       'dentistry_core_edu',
     ];
   }
+  // If "Patient Care" page.
   elseif (\Drupal::service('path.current')->getPath() == '/node/471') {
     $dentist = '{
   "@context": "http://schema.org",
