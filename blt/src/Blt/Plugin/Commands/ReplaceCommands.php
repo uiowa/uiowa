@@ -119,9 +119,9 @@ class ReplaceCommands extends BltTasks {
     $paths = [
       "{$root}/tests/" => '',
       "{$docroot}/profiles/custom/" => '',
-      "{$docroot}/modules/custom/" => '',
+      "{$docroot}/modules/custom/" => "$docroot/modules/custom/uiowa_core/src/Form/UiowaCoreSiteInformationForm.php",
       "{$docroot}/themes/custom/" => '',
-      "{$docroot}/sites/" => "{$docroot}/sites/simpletest",
+      "{$docroot}/sites/" => "$docroot/sites/simpletest,$docroot/sites/default/files",
     ];
 
     foreach ($paths as $path => $exclude) {
@@ -183,12 +183,17 @@ class ReplaceCommands extends BltTasks {
   public function preSourceBuildSettings() {
     $yaml = YamlMunge::parseFile($this->getConfigValue('repo.root') . '/blt/local.blt.yml');
 
-    if (isset($yaml['multisites'])) {
-      $this->logger->warning('Multisites overridden in local.blt.yml file. Only those sites will have local.settings.php files regenerated.');
+    if (isset($yaml['multisites']) && !empty($yaml['multisites'])) {
+      throw new \Exception('Multisites overridden in local.blt.yml file. Remove multisites override before running this command.');
+    }
+
+    if (!$this->confirm('This will delete all local.settings.php files for all multisites. Are you sure?')) {
+      throw new \Exception('Aborted.');
     }
 
     $this->taskExecStack()
       ->dir($this->getConfigValue('docroot'))
+      ->exec('rm sites/*/settings/default.local.settings.php')
       ->exec('rm sites/*/settings/local.settings.php')
       ->exec('rm sites/*/local.drush.yml')
       ->run();

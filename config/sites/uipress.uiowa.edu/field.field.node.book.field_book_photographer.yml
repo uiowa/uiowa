@@ -1,0 +1,29 @@
+uuid: c55e559e-b129-4676-94db-8db099d51ed9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_book_photographer
+    - node.type.book
+    - node.type.person
+id: node.book.field_book_photographer
+field_name: field_book_photographer
+entity_type: node
+bundle: book
+label: Photographer(s)
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      person: person
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
