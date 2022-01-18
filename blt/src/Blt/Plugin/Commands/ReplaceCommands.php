@@ -181,14 +181,23 @@ class ReplaceCommands extends BltTasks {
    * @hook pre-command source:build:settings
    */
   public function preSourceBuildSettings() {
-    $yaml = YamlMunge::parseFile($this->getConfigValue('repo.root') . '/blt/local.blt.yml');
-
-    if (isset($yaml['multisites']) && !empty($yaml['multisites'])) {
-      throw new \Exception('Multisites overridden in local.blt.yml file. Remove multisites override before running this command.');
+    if (!$this->confirm('This will delete all local.settings.php files for all multisites. Are you sure?', TRUE)) {
+      throw new \Exception('Aborted.');
     }
 
-    if (!$this->confirm('This will delete all local.settings.php files for all multisites. Are you sure?')) {
-      throw new \Exception('Aborted.');
+    $file = $this->getConfigValue('repo.root') . '/blt/local.blt.yml';
+    $yaml = YamlMunge::parseFile($file);
+
+    if (isset($yaml['multisites']) && !empty($yaml['multisites'])) {
+      $this->logger->info('Multisites overridden in local.blt.yml file. Copying to temporary config.');
+
+      $this->taskFilesystemStack()
+        ->copy($file, $this->getConfigValue('repo.root') . '/tmp/local.blt.yml')
+        ->stopOnFail(TRUE)
+        ->run();
+
+      unset($yaml['multisites']);
+      YamlMunge::writeFile($file, $yaml);
     }
 
     $this->taskExecStack()
@@ -197,6 +206,26 @@ class ReplaceCommands extends BltTasks {
       ->exec('rm sites/*/settings/local.settings.php')
       ->exec('rm sites/*/local.drush.yml')
       ->run();
+  }
+
+  /**
+   * Copy any temporary multisites config back from pre-command hook.
+   *
+   * @hook post-command source:build:settings
+   */
+  public function postSourceBuildSettings() {
+    $from = $this->getConfigValue('repo.root') . '/tmp/local.blt.yml';
+
+    if (file_exists($from)) {
+      $to = $this->getConfigValue('repo.root') . '/blt/local.blt.yml';
+
+      $this->taskFilesystemStack()
+        ->stopOnFail(TRUE)
+        ->remove($to)
+        ->copy($from, $to)
+        ->remove($from)
+        ->run();
+    }
   }
 
   /**
