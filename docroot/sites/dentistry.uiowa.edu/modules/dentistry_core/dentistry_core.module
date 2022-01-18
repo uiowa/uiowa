@@ -17,39 +17,478 @@ function dentistry_core_page_attachments(array &$attachments) {
   $path_matcher = \Drupal::service('path.matcher');
 
   if ($path_matcher->isFrontPage()) {
-    /** @var \Drupal\schema_metatag\SchemaMetatagManagerInterface $mtm */
-    $mtm = \Drupal::service('schema_metatag.schema_metatag_manager');
 
-    $dentist = [
-      'foo' => 'bar',
-    ];
+    $edu = '{
+  "@context": "http://schema.org",
+  "@type": "CollegeOrUniversity",
+  "@id": "https://dentistry.uiowa.edu/#CollegeorUniversity",
+  "name": "College of Dentistry and Dental Clinics",
+  "alternateName": "University of Iowa College of Dentistry and Dental Clinics",
+  "url": "https://dentistry.uiowa.edu",
+  "image": "https://dentistry.uiowa.edu/sites/dentistry.uiowa.edu/files/2021-09/DroneClips4Viki_090121_1280_compressed.mp4.png",
+  "video": "https://dentistry.uiowa.edu/sites/dentistry.uiowa.edu/files/2021-09/DroneClips4Viki_090121_1280_compressed.mp4",
+  "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://uiowa.edu/themes/custom/uids_base/uids/assets/images/uiowa-primary.png"
+                },
+  "sameas":[
+  "https://en.wikipedia.org/wiki/University_of_Iowa_College_of_Dentistry",
+  "https://www.wikidata.org/wiki/Q7895556",
+  "https://www.facebook.com/uidentistry",
+  "https://twitter.com/uicod",
+  "https://www.youtube.com/user/UIowaDentistry"
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "801 Newton Road",
+    "addressLocality": "Iowa City, Iowa",
+    "postalCode": "52242",
+    "addressCountry": "US"
+  },
+  "location": {
+    "@type": "Place",
+    "geo":{
+      "@type": "GeoCoordinates",
+      "latitude": "41.662885",
+      "longitude": "-91.551060"
+  }
+},
+  "areaServed":
+    {
+      "@type": "GeoCircle",
+    "geoMidpoint": {
+            "@type": "GeoCoordinates",
+            "latitude": "41.662885",
+            "longitude": "-91.551060"
+          },
+          "geoRadius": "804672"
+        },
+  "telephone": "+13193357499",
+  "foundingDate": "1882",
+  "memberOf": {
+  	"@type": "CollegeorUniversity",
+    "@id": "https://uiowa.edu/#CollegeorUniversity"
+  }
+}';
 
     $attachments['#attached']['html_head'][] = [
       [
         '#type' => 'html_tag',
         '#tag' => 'script',
-        '#value' => $mtm->encodeJsonLd($dentist),
-        '#attributes' => [
-          'type' => 'application/ld+json',
-        ],
-      ],
-      'dentistry_core_dentist',
-    ];
-
-    $edu = [
-      'baz' => 'qux',
-    ];
-
-    $attachments['#attached']['html_head'][] = [
-      [
-        '#type' => 'html_tag',
-        '#tag' => 'script',
-        '#value' => $mtm->encodeJsonLd($edu),
+        '#value' => $edu,
         '#attributes' => [
           'type' => 'application/ld+json',
         ],
       ],
       'dentistry_core_edu',
+    ];
+  }
+  elseif (\Drupal::service('path.current')->getPath() == '/node/471') {
+    $dentist = '{
+  "@context": "http://schema.org",
+  "@type": "Dentist",
+  "@id": "https://dentistry.uiowa.edu/patient-care/#Dentist",
+  "name": "Dental Clinics at the College of Dentistry",
+  "description": "Iowa\'s premier dental clinics offer routine, specialist, and emergency dental care at a comprehensive range of student and faculty clinics.",
+  "alternateName": [
+    "University of Iowa Dental Clinics",
+    "University of Iowa Dentistry",
+    "Iowa Dental Clinics",
+    "Iowa Dentistry",
+    "University of Iowa Dentists",
+    "University of Iowa College of Dentistry and Dental Clinics"
+  ],
+  "image": "https://dentistry.uiowa.edu/sites/dentistry.uiowa.edu/files/styles/ultrawide__2592_x_1111/public/2021-07/2018_11_01-Dentistry%20for%20Veterans-tschoon-032.JPG",
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ],
+      "opens": "08:00",
+      "closes": "17:00"
+    }],
+  "paymentAccepted": [
+      "Cash",
+      "Credit Card",
+      "Financing",
+      "Insurance",
+      "Iowa Medicaid"
+    ],
+  "url": "https://dentistry.uiowa.edu",
+  "medicalSpecialty": "Dentistry",
+  "isAcceptingNewPatients": "True",
+  "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+    "name": "Cleaning services",
+    "itemListElement": [
+      {
+        "@type": "OfferCatalog",
+        "name": "Cleanings and Prevention",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Dental Exam"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Dental Cleaning"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Flouride Treatment"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Dental Sealant"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Oral Cancer Screening"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Gum Disease Screening"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Gum Disease Treatment"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Digital X-Rays"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "OfferCatalog",
+        "name": "Restorations for Damaged Teeth",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Dental Fillings"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Tooth Restorations"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Crowns"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Dentures"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Partial Dentures"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "OfferCatalog",
+        "name": "Advanced Treatments",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Cosmetic Surgery"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Crowns"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Dental Implants"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Dentures"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Implant Dentures"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Invisible Aligners"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Jaw Surgery"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Oral Cleft"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Root Canal"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Sedation"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Tooth Extraction"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Wisdom Teeth Extratction"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Veneers"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Geriatric Dentistry"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Pediatric Dentistry"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+            "@type": "Service",
+              "name": "Emergency Dental Care"
+            }
+          }
+        ]
+      }
+    ]
+  },
+
+"Department": [
+  {
+    "@type": "Dentist",
+    "name": "Endodontics Clinic",
+    "telephone": "+13193357469"
+  },
+  {
+    "@type": "Dentist",
+    "name": "Faculty Dental Clinic",
+    "telephone": "+13193358232"
+  },
+  {
+    "@type": "Dentist",
+    "name": "Family Dentistry Clinic",
+    "telephone": "+13193357316"
+  },
+  {
+    "@type": "Dentist",
+    "name": "Geriatric and Special Needs Clinic",
+    "telephone": "+13193357373"
+  },
+  {
+    "@type": "Dentist",
+    "name": "Implant Screening Clinic",
+    "telephone": "+13193357169"
+  },
+  {
+    "@type": "Dentist",
+    "name": "Operative Dentistry Clinic",
+    "telephone": "+13193357217"
+  },
+  {
+    "@type": "Dentist",
+    "name": "Oral and Maxillofacial Surgery Clinic",
+    "telephone": "+13193357457"
+  },
+  {
+    "@type": "Dentist",
+    "name": "Oral Pathology",
+    "telephone": "+13193357346"
+  },
+  {
+    "@type": "Dentist",
+    "name": "Orthodontics Clinic",
+    "telephone": "+13193357287"
+  },
+  {
+    "@type": "Dentist",
+    "name": "Pediatric Dental Clinic",
+    "telephone": "+13193357485"
+  },
+  {
+    "@type": "Dentist",
+    "name": "Periodontics Clinic",
+    "telephone": "+13193357233"
+  },
+  {
+    "@type": "Dentist",
+    "name": "Prosthodontics Clinic",
+    "telephone": "+13193357274"
+  },
+  {
+    "@type": "Dentist",
+    "name": "Preventative Dentistry Clinic",
+    "telephone": "+13193357255"
+  },
+  {
+    "@type": "Dentist",
+    "name": "Radiology Clinic",
+    "telephone": "+13193357346"
+  }
+],
+  "logo": {
+      "@type": "ImageObject",
+                    "url": "https://uiowa.edu/themes/custom/uids_base/uids/assets/images/uiowa-primary.png"
+                },
+  "sameas":[
+      "https://en.wikipedia.org/wiki/University_of_Iowa_College_of_Dentistry",
+      "https://www.wikidata.org/wiki/Q7895556",
+      "https://www.facebook.com/uidentistry",
+      "https://twitter.com/uicod",
+      "https://www.youtube.com/user/UIowaDentistry"
+    ],
+  "address": {
+      "@type": "PostalAddress",
+    "streetAddress": "801 Newton Road",
+    "addressLocality": "Iowa City, Iowa",
+    "postalCode": "52242",
+    "addressCountry": "US"
+  },
+  "location": {
+      "@type": "Place",
+    "geo":{
+        "@type": "GeoCoordinates",
+      "latitude": "41.662885",
+      "longitude": "-91.551060"
+  }
+},
+  "areaServed": [
+    {
+      "@type": "GeoCircle",
+    "geoMidpoint": {
+      "@type": "GeoCoordinates",
+            "latitude": "41.662885",
+            "longitude": "-91.551060"
+          },
+          "geoRadius": "80467"
+        },
+  {
+    "@type": "City",
+    "name": ["Iowa City",
+    "Coralville",
+    "North Liberty",
+    "Tiffin",
+    "Cedar Rapids",
+    "Swisher",
+    "Hills"]
+},
+{
+  "@type": "State",
+  "name": "Iowa"
+}],
+  "telephone": "+13193357499",
+  "parentOrganization": {
+      "@type": "CollegeorUniversity",
+    "@id": "https://dentistry.uiowa.edu/#CollegeorUniversity"
+  }
+}';
+
+    $attachments['#attached']['html_head'][] = [
+      [
+        '#type' => 'html_tag',
+        '#tag' => 'script',
+        '#value' => $dentist,
+        '#attributes' => [
+          'type' => 'application/ld+json',
+        ],
+      ],
+      'dentistry_core_dentist',
     ];
   }
 }
