@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: studentlifeslc.uiowa.ddev.site
+    protocol: https
+  machine_name: studentlifeslc
+  human_name: slc.studentlife.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: studentlifeslc.prod
+drupal:
+  db:
+    database: slc_studentlife_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: dquam
