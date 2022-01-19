@@ -333,8 +333,57 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             $form['settings']['style']['#access'] = FALSE;
           }
 
+          // Set up #states for hiding subsequent fields when boolean unchecked.
+          foreach (Element::children($form['settings']['menu_levels']) as $key) {
+            $form['settings']['menu_levels'][$key]['#states'] = [
+              'visible' => [
+                ':input[name="settings[customize_settings]"]' => [
+                  'checked' => TRUE,
+                ],
+              ],
+            ];
+          }
+
+          // Get the menu config for future use.
+          $menu_config = $component->get('configuration');
+
+          // Create checkbox.
+          $form['settings']['menu_levels']['customize_settings'] = [
+            '#type' => 'checkbox',
+            '#title' => t('Customize menu settings in block'),
+            '#weight' => -1,
+            '#default_value' => $menu_config['customize_settings'] ?: 0,
+          ];
+
+          // Check if we want to use global defaults for depth and level, and if so, use them.
+          // Get the level defaults.
+
+          $level = \Drupal::config('sitenow_pages.settings')->get('level');
+          if ($menu_config['level'] && $menu_config['level'] != $level +1) {
+            $level_default = $menu_config['level'];
+          }
+          else if (!empty($level)) {
+            $level_default = $level + 1;
+          }
+          else {
+            $level_default = 2;
+          }
+
+          // Get the depth defaults.
+          $depth = \Drupal::config('sitenow_pages.settings')->get('depth');
+          if ($menu_config['depth'] && $menu_config['depth'] != $depth + 1) {
+            $depth_default = $menu_config['depth'];
+          }
+          else if (!empty($depth)) {
+            $depth_default = $depth + 1;
+          }
+          else {
+            $depth_default = 4;
+          }
+
           // Set defaults.
-          $form['settings']['menu_levels']['level']['#default_value'] = 2;
+          $form['settings']['menu_levels']['level']['#default_value'] = $level_default;
+          $form['settings']['menu_levels']['depth']['#default_value'] = $depth_default;
           $form['settings']['advanced']['follow']['#default_value'] = 1;
           break;
 
@@ -513,6 +562,20 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
         ],
         $view_mode
       );
+      break;
+    case 'menu_block:main':
+      // @todo check if the checkbox for defaults is checked on the menu block.
+      if (!$form_state->getValue('customize_settings')) {
+        $pages_settings = \Drupal::config('sitenow_pages.settings');
+        $level = $pages_settings->get('level');
+        $form_state->setValue('level', $level);
+        $depth = $pages_settings->get('depth');
+        $form_state->setValue('depth', $depth);
+      }
+      $customize_settings = $form_state->getValues()['settings']['customize_settings'];
+      $form_state->setValue('customize_settings', $customize_settings);
+      //    if it is, let the values be submitted.
+      //    if it is not, use the global default values.
       break;
   }
 
