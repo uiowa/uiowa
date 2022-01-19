@@ -175,4 +175,31 @@ EOD;
     }
   }
 
+  /**
+   * Test that a private file scheme config patch exists
+   * for every default public files scheme declaration.
+   */
+  public function testFilesScheme() {
+    $finder = new Finder();
+
+    $default_config = $finder
+      ->in($this->root . '/../config/default')
+      ->files()
+      ->depth('< 1')
+      ->notName(['README.md', 'README.txt', '.htaccess'])
+      ->sortByName();
+
+    foreach ($default_config->getIterator() as $default_config_file) {
+      $default = Yaml::parseFile($default_config_file->getRealPath());
+
+      if (isset($default['settings']['uri_scheme']) && $default['settings']['uri_scheme'] == 'public') {
+        $default_config_file_name = $default_config_file->getRelativePathname();
+        $patch = Yaml::parseFile($this->root . "/../config/features/uiowa_intranet/config_split.patch.{$default_config_file_name}");
+        if ($patch) {
+          $this->assertEquals('private', $patch['adding']['settings']['uri_scheme']);
+        }
+      }
+    }
+  }
+
 }
