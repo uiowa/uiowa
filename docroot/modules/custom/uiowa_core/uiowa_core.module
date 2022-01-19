@@ -42,7 +42,7 @@ function uiowa_core_mail_alter(&$message) {
 
     if ($domain != 'uiowa.edu') {
       $name = $from->getName() ?: \Drupal::config('system.site')->get('name');
-      $from = new Address(base64_decode('aXRzLXdlYkB1aW93YS5lZHU='), $name);
+      $from = new Address('sitenow-noreply@uiowa.edu', $name);
       $message['headers']['From'] = $from->toString();
     }
   }
