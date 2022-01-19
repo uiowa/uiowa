@@ -16,7 +16,6 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_link
     - field.field.node.area_of_study.field_area_of_study_procedures
     - field.field.node.area_of_study.field_area_of_study_requirements
-    - field.field.node.area_of_study.field_area_of_study_subtitle
     - field.field.node.area_of_study.field_image
     - field.field.node.area_of_study.field_meta_tags
     - node.type.area_of_study
@@ -107,25 +106,7 @@ third_party_settings:
             1: section_margin_fixed_width_container
             section_alignment_start: section_alignment_start
           context_mapping: {  }
-        components:
-          -
-            uuid: 88f5ab20-1878-4239-8389-58554720986d
-            region: content
-            configuration:
-              id: 'field_block:node:area_of_study:field_area_of_study_subtitle'
-              label: null
-              provider: layout_builder
-              label_display: null
-              formatter:
-                label: hidden
-                type: text_default
-                settings: {  }
-                third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
-            weight: 4
+        components: {  }
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -495,13 +476,6 @@ content:
     region: content
   field_area_of_study_requirements:
     weight: 16
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
-    region: content
-  field_area_of_study_subtitle:
-    weight: 13
     label: above
     settings: {  }
     third_party_settings: {  }
