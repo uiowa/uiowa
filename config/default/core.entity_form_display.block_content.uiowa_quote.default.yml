@@ -11,7 +11,6 @@ dependencies:
   module:
     - link
     - media_library
-    - layout_builder_custom
 id: block_content.uiowa_quote.default
 targetEntityType: block_content
 bundle: uiowa_quote
@@ -55,5 +54,12 @@ content:
     settings:
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
     third_party_settings: {  }
 hidden: {  }

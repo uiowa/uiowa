@@ -10,16 +10,18 @@ stackable: false
 storage: folder
 folder: ../config/sites/whitmanweb.iwp.uiowa.edu
 module:
-  language: 0
   content_translation: 10
 theme: {  }
 complete_list:
+  - block.block.languageswitcher
   - config_split.config_split.site
   - node.type.writing
+  - pathauto.pattern.writing
+  - pathauto.pattern.writing_collections
   - taxonomy.vocabulary.writing_collection
   - 'field.storage.node.field_writing_*'
 partial_list:
   - workflows.workflow.editorial
   - 'core.entity_form_display.*'
   - 'core.entity_view_display.*'
-  - 'pathauto.pattern.*'
+  - 'language.entity.*'
