@@ -6,6 +6,7 @@ dependencies:
     - core.base_field_override.node.area_of_study.title
     - field.field.node.area_of_study.body
     - field.field.node.area_of_study.field_area_of_study_apply
+    - field.field.node.area_of_study.field_area_of_study_apply_link
     - field.field.node.area_of_study.field_area_of_study_area
     - field.field.node.area_of_study.field_area_of_study_college
     - field.field.node.area_of_study.field_area_of_study_contact
@@ -141,7 +142,7 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 3
+            weight: 4
           -
             uuid: 4fb8c2f6-f01e-4c1b-87af-5a533652eb11
             region: first
@@ -271,7 +272,7 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
             additional: {  }
-            weight: 4
+            weight: 5
           -
             uuid: 7c91cbf2-6d70-472e-b50f-7920f5d93e4b
             region: first
@@ -326,6 +327,26 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: 16
+          -
+            uuid: 882f7e76-f47c-4161-8d7c-dc2221a9d8a0
+            region: second
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:area_of_study:field_area_of_study_apply_link'
+              formatter:
+                label: above
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: ''
+                  target: ''
+                third_party_settings: {  }
+                type: link
+            additional: {  }
+            weight: 3
           -
             uuid: 630a0de5-994c-47c7-a17a-aca48f7dd868
             region: second
@@ -401,6 +422,18 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: text_default
+    region: content
+  field_area_of_study_apply_link:
+    weight: 19
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
     region: content
   field_area_of_study_area:
     weight: 10
