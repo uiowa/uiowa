@@ -28,7 +28,7 @@ function uiowa_intranet_install() {
   // Insert active config since it isn't tracked in stored config.
   $database = \Drupal::database()->insert('restrict_ip_paths')->fields([
     'type' => 'white',
-    'path' => '/saml/*'
+    'path' => '/saml/*',
   ]);
   $database->execute();
 
