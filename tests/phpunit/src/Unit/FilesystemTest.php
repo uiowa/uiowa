@@ -208,6 +208,11 @@ EOD;
         $patch_config = Yaml::parseFile($patch_config_file);
         $this->assertEquals('private://oembed_thumbnails', $patch_config['adding']['source_configuration']['thumbnails_directory']);
       }
+      elseif (isset($default['icon_base_uri']) && $default['icon_base_uri'] == 'public://media-icons/generic') {
+        $this->assertFileExists($patch_config_file);
+        $patch_config = Yaml::parseFile($patch_config_file);
+        $this->assertEquals('private://media-icons/generic', $patch_config['adding']['icon_base_uri']);
+      }
     }
   }
 
