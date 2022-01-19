@@ -250,7 +250,7 @@ function sitenow_update_8006() {
 function sitenow_update_8007() {
   $user = User::load(1);
   $user->setUsername(uniqid('admin_'));
-  $user->setEmail(base64_decode('c2l0ZW5vdy1ub3JlcGx5QHVpb3dhLmVkdQ=='));
+  $user->setEmail(base64_decode('aXRzLXdlYkB1aW93YS5lZHU='));
   $user->addRole('administrator');
   $user->save();
 }
