@@ -34,7 +34,7 @@
 {% endif %}
 
 {# Do not show the aria-describedby attribute if title AND link text are not both present. #}
-{% if link_element != 'title' %}
+{% if link_element != 'title' or card_link_title == ''%}
   {% set card_aria_describedby = '' %}
 {% endif %}
 
@@ -108,7 +108,7 @@
             </a>
           {% else %}
             {# Display as a pseudo-link. #}
-            <div aria-hidden="true" {{ button_attributes.addclass(card_button_classes) }}  {% if card_aria_describedby %} id="{{ card_aria_describedby }}"{% endif %}>
+            <div aria-hidden="true" {{ button_attributes.addclass(card_button_classes) }}  {% if (card_aria_describedby != '') %} id="{{ card_aria_describedby }}"{% endif %}>
               {{ card_link_title }}
               <i role="presentation" class="fas fa-arrow-right"></i>
             </div>
