@@ -1,0 +1,107 @@
+@import "assets/scss/_variables.scss";
+@import "assets/scss/_utilities.scss";
+
+.block-superfish .sf-menu.sf-horiz-menu ul {
+  @include breakpoint(menu) {
+    background: #f1f1f1 !important;
+  }
+}
+
+.nav--horizontal .block-superfish .menu ul li a {
+  @include breakpoint(menu) {
+    color: #000;
+    font-weight: 400;
+  }
+}
+
+.nav--horizontal {
+  .page__container,
+  .page__container--mixed {
+    margin: 0;
+
+    @include breakpoint(menu) {
+      position: relative;
+      margin: 0 $gutter;
+    }
+
+    @include breakpoint(container) {
+      margin: 0 auto;
+    }
+  }
+}
+
+.nav--horizontal {
+  .sf-accordion.sf-menu {
+    padding: 0 $gutter;
+
+    &.sf-menu.sf-horiz-menu li li a {
+      padding: .45rem 1.5rem .45rem 0rem;
+    }
+
+    .sf-has-clone-parent {
+      background: #fff !important;
+
+    }
+  }
+}
+
+.sf-horizontal li.sfHover li.sf-depth-2.menuparent .sf-depth-2.menuparent:before {
+  content: "\f105";
+  padding-right: $md;
+}
+
+.sf-horizontal.sf-mega-menu li.sfHover li.sf-depth-2.menuparent .sf-depth-2.menuparent:before {
+  content: "";
+  padding-right: 0;
+}
+
+// Accordion.
+.sf-horizontal li.sfHover li.sf-depth-2.menuparent .sf-depth-2.menuparent:before {
+  position: absolute;
+  top: 50%;
+  right: .3125rem;
+  margin-top: -0.4rem;
+  color: inherit;
+  font-size: 1rem;
+  @include fas();
+  color: $secondary;
+}
+
+// horizontal only targeting sf-horiz-menu class.
+ul.sf-menu.sf-horiz-menu li li a,
+ul.sf-menu.sf-horiz-menu li li span,
+ul.sf-menu.sf-horiz-menu li li .nolink {
+  font-weight: 400;
+
+  @include breakpoint(menu) {
+    font-size: 1rem;
+    padding: .45rem 2rem .45rem 1rem;
+
+    &:hover {
+      background: #e1e1e1;
+    }
+  }
+}
+
+ul.sf-menu.sf-horiz-menu ul {
+  @include breakpoint(menu) {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+}
+
+ul.sf-menu.sf-horiz li ul li a:hover {
+  color: $primary;
+}
+
+.block-superfish .menu.sf-horiz-menu li.active-trail.menuparent ul {
+  &:hover {
+    background: #e1e1e1;
+  }
+
+  .is-active {
+    @include breakpoint(menu) {
+      background: #e1e1e1;
+    }
+  }
+}

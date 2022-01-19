@@ -11,6 +11,8 @@ storage: folder
 folder: ../config/sites/grad.admissions.uiowa.edu
 module:
   grad_admissions_core: 0
+  rabbit_hole: 0
+  rh_taxonomy: 0
   tvi: 15
 theme: {  }
 complete_list:
@@ -52,6 +54,7 @@ complete_list:
   - 'field.storage.node.field_area_of_study*'
   - 'field.field.taxonomy_term.colleges.*'
   - 'field.storage.taxonomy_term.field_college_*'
+  - 'rabbit_hole.behavior_settings.*'
 partial_list:
   - metatag.settings
   - 'user.role.*'

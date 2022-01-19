@@ -104,11 +104,49 @@
       margin: 0;
     }
   }
+
+  &.card--button-position {
+    .card__body {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      div:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .card__description {
+      margin-bottom: 1.05rem;
+    }
+
+    .bttn {
+      margin-top: auto;
+    }
+  }
 }
 
 // ie11
 @media all and (-ms-high-contrast: none),
 (-ms-high-contrast: active) {
+  .card.card--button-position {
+    .card__body {
+      display: block;
+
+      div:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .card__description {
+      margin-bottom: 0;
+    }
+
+    .bttn {
+      margin-top: 1.05rem;
+    }
+  }
+
   .card__body .media {
     flex-shrink: 0;
     width: 100%;

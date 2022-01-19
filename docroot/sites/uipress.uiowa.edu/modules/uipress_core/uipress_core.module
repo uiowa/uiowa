@@ -1,0 +1,64 @@
+<?php
+
+/**
+ * @file
+ * Contains uipress_core.module.
+ */
+
+/**
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ */
+function uipress_core_field_widget_entity_reference_paragraphs_form_alter(&$element, &$form_state, $context) {
+  if ($element['#paragraph_type'] == 'book_type') {
+    if (isset($element['subform']['field_book_ebook_ownership'])) {
+      // Set the field_book_ebook_ownership field to only be visible when ebook
+      // the type of book selected.
+      $delta = $element['#delta'];
+
+      $element['subform']['field_book_ebook_ownership']['#states'] = [
+        'visible' => [
+          ':input[name="field_book_type[' . $delta . '][subform][field_book_type]"]' => [
+            'value' => 'eBook'
+          ],
+        ],
+      ];
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uipress_core_preprocess_paragraph__book_type(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $paragraph = $variables['paragraph'];
+
+    if ($paragraph->bundle() == 'book_type') {
+
+      if ($paragraph->hasField('field_book_sale_price') && $paragraph->hasField('field_book_sale_start_date') && $paragraph->hasField('field_book_sale_expiry_date')) {
+        if (!$paragraph->get('field_book_sale_price')->isEmpty()) {
+          // If start date exists make sure current date is after start date.
+          $in_range = TRUE;
+          $now = date('m-d-Y');
+          $start = $paragraph->get('field_book_sale_start_date')->value;
+          if (isset($start)) {
+            $start = date('m-d-Y', strtotime($start));
+            $in_range = $now >= $start;
+          }
+
+          // If end date exists make sure current date is before end date.
+          $end = $paragraph->get('field_book_sale_expiry_date')->value;
+          if ($in_range && isset($end)) {
+            $end = date('m-d-Y', strtotime($end));
+            $in_range = $now < $end;
+          }
+          // If neither condition is true unset display of sale price.
+          if (!$in_range) {
+            unset($variables['content']['field_book_sale_price'], $variables['content']['field_book_sale_code']);
+          }
+        }
+      }
+    }
+  }
+}

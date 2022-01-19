@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: labblumberg.uiowa.ddev.site
+    protocol: https
+  machine_name: labblumberg
+  human_name: blumberg.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labblumberg.prod
+drupal:
+  db:
+    database: blumberg_lab_uiowa_edu
+uiowa:
+  requester: blumberg
