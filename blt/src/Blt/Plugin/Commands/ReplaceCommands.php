@@ -228,7 +228,6 @@ class ReplaceCommands extends BltTasks {
 \$config['stage_file_proxy.settings']['origin'] = '$origin';
 EOD;
 
-
       $this->taskWriteToFile($this->getConfigValue('repo.root') . "/docroot/sites/$site/settings/local.settings.php")
         ->append()
         ->text($text)
