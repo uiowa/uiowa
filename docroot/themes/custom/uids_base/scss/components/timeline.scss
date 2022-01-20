@@ -15,7 +15,7 @@
   position: relative;
   list-style: none;
   .card__details {
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       margin: 0;
     }
   }
@@ -34,7 +34,7 @@
     [class*=bg--gray] & {
       background: $grey-light;
     }
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       top: -30px;
       right: inherit;
     }
@@ -43,20 +43,20 @@
     position: absolute;
     top: 0;
     left: 50%;
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       top: 50%;
     }
   }
 }
 
 .timeline--wrapper {
-  @include breakpoint(menu) {
+  @include breakpoint(md) {
     width: 50%;
   }
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
   &:first-child {
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       margin-top: $desktop-width-gutter;
     }
   }
@@ -65,7 +65,7 @@
   }
   .timeline--card {
     margin-top: $desktop-width-gutter;
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       margin-top: inherit;
     }
     &:after {
@@ -81,7 +81,7 @@
       border-color: transparent;
       border-width: 15px;
       //border-bottom-color: #63666a;
-      @include breakpoint(menu) {
+      @include breakpoint(md) {
         top: 50%;
         border-bottom-color: transparent;
         margin-top: -15px;
@@ -94,7 +94,7 @@
     opacity: 1;
   }
   .field--name-field-timeline-date {
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       position: absolute;
       bottom: 48%;
       width: 90%;
@@ -110,16 +110,16 @@
     }
   }
   &:nth-child(odd) {
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       margin-left: auto;
     }
     .card__icon {
-      @include breakpoint(menu) {
+      @include breakpoint(md) {
         right: 25px;
       }
     }
     .field--name-field-timeline-date {
-      @include breakpoint(menu) {
+      @include breakpoint(md) {
         margin-left: -130%;
         text-align: right;
       }
@@ -145,16 +145,16 @@
 
     }
     .card__icon-wrapper {
-      @include breakpoint(menu) {
+      @include breakpoint(md) {
         left: 0;
       }
     }
     .timeline--card {
-      @include breakpoint(menu) {
+      @include breakpoint(md) {
         margin-left: 3.5rem;
       }
       &:after {
-        @include breakpoint(menu) {
+        @include breakpoint(md) {
           right: 100%;
           border-right-color: $brand-cool-gray;
         }
@@ -162,16 +162,16 @@
     }
   }
   &:nth-child(even) {
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       margin-right: auto;
     }
     .card__icon {
-      @include breakpoint(menu) {
+      @include breakpoint(md) {
         right: -90px;
       }
     }
     .field--name-field-timeline-date {
-      @include breakpoint(menu) {
+      @include breakpoint(md) {
         margin-left: 125%;
       }
       @include breakpoint(container) {
@@ -184,16 +184,16 @@
       }
     }
     .card__icon-wrapper {
-      @include breakpoint(menu) {
+      @include breakpoint(md) {
         right: 0;
       }
     }
     .timeline--card {
-      @include breakpoint(menu) {
+      @include breakpoint(md) {
         margin-right: 3.5rem;
       }
       &:after {
-        @include breakpoint(menu) {
+        @include breakpoint(md) {
           left: 100%;
           border-left-color: $brand-cool-gray;
         }
