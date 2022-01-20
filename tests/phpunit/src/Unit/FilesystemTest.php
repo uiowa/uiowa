@@ -175,4 +175,45 @@ EOD;
     }
   }
 
+  /**
+   * Test that a private file scheme split exists for every default public one.
+   */
+  public function testFilesScheme() {
+    $finder = new Finder();
+
+    $default_config = $finder
+      ->in($this->root . '/../config/default')
+      ->files()
+      ->depth('< 1')
+      ->notName(['README.md', 'README.txt', '.htaccess'])
+      ->sortByName();
+
+    foreach ($default_config->getIterator() as $default_config_file) {
+      $default = Yaml::parseFile($default_config_file->getRealPath());
+      $default_config_file_name = $default_config_file->getRelativePathname();
+      $patch_config_file = $this->root . "/../config/features/sitenow_intranet/config_split.patch.{$default_config_file_name}";
+
+      if (isset($default['settings']['uri_scheme']) &&  $default['settings']['uri_scheme'] == 'public') {
+        $this->assertFileExists($patch_config_file);
+        $patch_config = Yaml::parseFile($patch_config_file);
+        $this->assertEquals('private', $patch_config['adding']['settings']['uri_scheme']);
+      }
+      elseif (isset($default['default_scheme']) && $default['default_scheme'] == 'public') {
+        $this->assertFileExists($patch_config_file);
+        $patch_config = Yaml::parseFile($patch_config_file);
+        $this->assertEquals('private', $patch_config['adding']['default_scheme']);
+      }
+      elseif (isset($default['source_configuration']['thumbnails_directory']) && $default['source_configuration']['thumbnails_directory'] == 'public://oembed_thumbnails') {
+        $this->assertFileExists($patch_config_file);
+        $patch_config = Yaml::parseFile($patch_config_file);
+        $this->assertEquals('private://oembed_thumbnails', $patch_config['adding']['source_configuration']['thumbnails_directory']);
+      }
+      elseif (isset($default['icon_base_uri']) && $default['icon_base_uri'] == 'public://media-icons/generic') {
+        $this->assertFileExists($patch_config_file);
+        $patch_config = Yaml::parseFile($patch_config_file);
+        $this->assertEquals('private://media-icons/generic', $patch_config['adding']['icon_base_uri']);
+      }
+    }
+  }
+
 }
