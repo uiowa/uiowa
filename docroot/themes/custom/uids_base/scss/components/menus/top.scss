@@ -7,7 +7,7 @@
 .iowa-bar--full.horizontal,
 .iowa-bar--full.toggle  {
   .menu--top {
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       right: -10px;
       margin-top: 8px;
       position: relative;
@@ -21,7 +21,7 @@
   }
 
   .menu--top {
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       flex: 0 1 25%;
       display: flex;
       justify-content: flex-end;
@@ -31,14 +31,14 @@
     .menu li {
       + li {
         a {
-          @include breakpoint(menu) {
+          @include breakpoint(md) {
             padding-left: .8rem;
           }
         }
       }
 
       a {
-        @include breakpoint(menu) {
+        @include breakpoint(md) {
           display: block;
           text-decoration: none;
           color: $secondary;
@@ -84,7 +84,7 @@
 
 .iowa-bar--full.toggle {
   .menu--top {
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       flex: auto;
     }
     @include breakpoint(container) {
@@ -93,7 +93,7 @@
     }
   }
   .site-name + .menu--top {
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       flex: 1;
     }
     @include breakpoint(container) {
@@ -185,7 +185,7 @@
 
 .iowa-bar.iowa-bar--narrow {
   .nav.menu--top {
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       height: 90px;
     }
   }
