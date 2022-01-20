@@ -5,8 +5,12 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.writing.field_image
+    - field.field.node.writing.field_writing_afterword
+    - field.field.node.writing.field_writing_audio
     - field.field.node.writing.field_writing_collection
     - field.field.node.writing.field_writing_content
+    - field.field.node.writing.field_writing_foreword
+    - field.field.node.writing.field_writing_question
     - node.type.writing
   module:
     - text
@@ -34,7 +38,11 @@ content:
     third_party_settings: {  }
 hidden:
   content_moderation_control: true
+  field_writing_afterword: true
+  field_writing_audio: true
   field_writing_collection: true
+  field_writing_foreword: true
+  field_writing_question: true
   langcode: true
   links: true
   search_api_excerpt: true

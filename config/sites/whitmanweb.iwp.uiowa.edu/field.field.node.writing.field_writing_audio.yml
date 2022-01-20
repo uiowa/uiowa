@@ -1,0 +1,29 @@
+uuid: 371100ea-51da-49d9-b8d2-640a29e7f789
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_writing_audio
+    - media.type.audio
+    - node.type.writing
+id: node.writing.field_writing_audio
+field_name: field_writing_audio
+entity_type: node
+bundle: writing
+label: Audio
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      audio: audio
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

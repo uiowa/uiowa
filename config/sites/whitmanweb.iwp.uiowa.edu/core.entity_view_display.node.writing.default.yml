@@ -4,8 +4,12 @@ status: true
 dependencies:
   config:
     - field.field.node.writing.field_image
+    - field.field.node.writing.field_writing_afterword
+    - field.field.node.writing.field_writing_audio
     - field.field.node.writing.field_writing_collection
     - field.field.node.writing.field_writing_content
+    - field.field.node.writing.field_writing_foreword
+    - field.field.node.writing.field_writing_question
     - node.type.writing
   module:
     - layout_builder
@@ -126,7 +130,71 @@ third_party_settings:
                 third_party_settings: {  }
                 type: text_default
             additional: {  }
-            weight: 2
+            weight: -8
+          -
+            uuid: ebb44843-22d8-4208-a1e0-df72cc6aceb1
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:writing:field_writing_foreword'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: text_default
+            additional: {  }
+            weight: -10
+          -
+            uuid: 0bda9aa4-39cc-4823-ac90-b667947c5172
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:writing:field_writing_afterword'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: text_default
+            additional: {  }
+            weight: -7
+          -
+            uuid: 9ca5183b-044e-43a0-9b17-a064a22caee9
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:writing:field_writing_question'
+              formatter:
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+                type: text_default
+            additional: {  }
+            weight: -6
+          -
+            uuid: 0d74feec-1ed4-466f-a3ef-e71653b1aa80
+            region: content
+            configuration:
+              id: 'field_block:node:writing:field_writing_audio'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: entity_reference_entity_view
+                settings:
+                  view_mode: default
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: -9
         third_party_settings: {  }
 id: node.writing.default
 targetEntityType: node
@@ -146,6 +214,22 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_writing_afterword:
+    weight: 5
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_writing_audio:
+    type: entity_reference_entity_view
+    weight: 3
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    region: content
   field_writing_collection:
     weight: 1
     label: above
@@ -157,6 +241,20 @@ content:
   field_writing_content:
     weight: 0
     label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_writing_foreword:
+    weight: 4
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_writing_question:
+    weight: 6
+    label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
