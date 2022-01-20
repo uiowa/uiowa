@@ -1,0 +1,20 @@
+uuid: 4f278ed4-c772-4eda-bb14-7c287ebbb10f
+langcode: en
+status: true
+dependencies:
+  config:
+    - fragments.fragment_type.region_item
+id: fragment.region_item.user_id
+field_name: user_id
+entity_type: fragment
+bundle: region_item
+label: 'Authored by'
+description: 'The user name of the fragment author.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: default
+  handler_settings: {  }
+field_type: entity_reference
