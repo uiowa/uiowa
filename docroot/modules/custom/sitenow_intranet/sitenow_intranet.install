@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Install, update and uninstall functions for the Uiowa Intranet module.
+ * Install, update and uninstall functions for the Sitenow Intranet module.
  */
 
 use Drupal\Core\Config\FileStorage;
@@ -10,15 +10,15 @@ use Drupal\Core\Config\FileStorage;
 /**
  * Implements hook_install().
  */
-function uiowa_intranet_install() {
+function sitenow_intranet_install() {
 
-  // Enable the 'uiowa_intranet' split.
+  // Enable the 'sitenow_intranet' split.
   $config_factory = \Drupal::configFactory();
-  $config = $config_factory->getEditable('config_split.config_split.uiowa_intranet');
+  $config = $config_factory->getEditable('config_split.config_split.sitenow_intranet');
   $config->set('status', TRUE);
   $config->save(TRUE);
 
-  $config_path = DRUPAL_ROOT . '/../config/features/uiowa_intranet';
+  $config_path = DRUPAL_ROOT . '/../config/features/sitenow_intranet';
   $source = new FileStorage($config_path);
 
   // Import the one complete split item we need to write to the db below.
@@ -45,6 +45,6 @@ function uiowa_intranet_install() {
 /**
  * Implements hook_uninstall().
  */
-function uiowa_intranet_uninstall() {
+function sitenow_intranet_uninstall() {
   \Drupal::messenger()->addStatus(__FUNCTION__);
 }

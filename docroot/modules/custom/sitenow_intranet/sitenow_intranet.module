@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Primary module hooks for Uiowa Intranet module.
+ * Primary module hooks for Sitenow Intranet module.
  *
  * @DCG
  * This file is no longer required in Drupal 8.
@@ -14,7 +14,7 @@ use Drupal\Core\Url;
 /**
  * Implements hook_restrict_ip_access_denied_page_alter().
  */
-function uiowa_intranet_restrict_ip_access_denied_page_alter(&$page) {
+function sitenow_intranet_restrict_ip_access_denied_page_alter(&$page) {
   if (isset($page['access_denied'])) {
     unset($page['access_denied']);
   }

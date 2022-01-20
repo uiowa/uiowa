@@ -191,7 +191,7 @@ EOD;
     foreach ($default_config->getIterator() as $default_config_file) {
       $default = Yaml::parseFile($default_config_file->getRealPath());
       $default_config_file_name = $default_config_file->getRelativePathname();
-      $patch_config_file = $this->root . "/../config/features/uiowa_intranet/config_split.patch.{$default_config_file_name}";
+      $patch_config_file = $this->root . "/../config/features/sitenow_intranet/config_split.patch.{$default_config_file_name}";
 
       if (isset($default['settings']['uri_scheme']) &&  $default['settings']['uri_scheme'] == 'public') {
         $this->assertFileExists($patch_config_file);
