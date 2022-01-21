@@ -3766,3 +3766,9 @@ $sites['studentlifeslc.uiowa.ddev.site'] = 'slc.studentlife.uiowa.edu';
 $sites['studentlifeslc.dev.drupal.uiowa.edu'] = 'slc.studentlife.uiowa.edu';
 $sites['studentlifeslc.stage.drupal.uiowa.edu'] = 'slc.studentlife.uiowa.edu';
 $sites['studentlifeslc.prod.drupal.uiowa.edu'] = 'slc.studentlife.uiowa.edu';
+
+// Directory aliases for tax.fo.uiowa.edu.
+$sites['fotax.uiowa.ddev.site'] = 'tax.fo.uiowa.edu';
+$sites['fotax.dev.drupal.uiowa.edu'] = 'tax.fo.uiowa.edu';
+$sites['fotax.stage.drupal.uiowa.edu'] = 'tax.fo.uiowa.edu';
+$sites['fotax.prod.drupal.uiowa.edu'] = 'tax.fo.uiowa.edu';
