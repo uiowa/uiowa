@@ -69,7 +69,7 @@ body.toolbar-vertical.toolbar-tray-open {
   .o-canvas__wrapper & {
     top: 179px;
 
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       top: 119px;
 
       .toolbar-vertical & {
@@ -95,7 +95,7 @@ body.toolbar-vertical.toolbar-tray-open {
     top: 179px;
     height: calc(100% - 179px);
 
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       top: 119px;
       height: calc(100% - 119px);
 
@@ -135,12 +135,12 @@ body.toolbar-vertical.toolbar-tray-open {
 // admin toolbar style for sticky header
 .header-sticky.toolbar-horizontal,
 .header-sticky.toolbar-vertical {
-  @include breakpoint(menu) {
+  @include breakpoint(md) {
     padding-top: 120px !important;
   }
 
   &.below {
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       padding-top: 160px !important;
     }
   }
@@ -148,25 +148,25 @@ body.toolbar-vertical.toolbar-tray-open {
 
 .header-sticky.scroll-down.toolbar-horizontal,
 .header-sticky.scroll-down.toolbar-vertical {
-  @include breakpoint(menu) {
+  @include breakpoint(md) {
     padding-top: 80px !important;
   }
 }
 
 .header-sticky.toolbar-horizontal.toolbar-tray-open {
-  @include breakpoint(menu) {
+  @include breakpoint(md) {
     padding-top: 160px !important;
   }
 
   &.below {
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       padding-top: 210px !important;
     }
   }
 }
 
 .header-sticky.toolbar-vertical.toolbar-tray-open {
-  @include breakpoint(menu) {
+  @include breakpoint(md) {
     header {
       padding-left: 15rem;
     }

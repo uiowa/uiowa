@@ -18,7 +18,7 @@ function uipress_core_field_widget_entity_reference_paragraphs_form_alter(&$elem
       $element['subform']['field_book_ebook_ownership']['#states'] = [
         'visible' => [
           ':input[name="field_book_type[' . $delta . '][subform][field_book_type]"]' => [
-            'value' => 'eBook'
+            'value' => 'eBook',
           ],
         ],
       ];
