@@ -148,7 +148,7 @@ class SettingsForm extends ConfigFormBase {
     $form['global']['menu_levels']['level'] = [
       '#type' => 'select',
       '#title' => $this->t('Initial visibility level'),
-      '#default_value' =>  $level ?: 1,
+      '#default_value' => $level ?: 1,
       '#options' => $options,
       '#description' => $this->t('The menu is only visible if the menu link for the current page is at this level or below it. Use level 1 to always display this menu.'),
       '#required' => TRUE,
