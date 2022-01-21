@@ -138,7 +138,7 @@ class CovidDataBlock extends BlockBase implements ContainerFactoryPluginInterfac
           ],
           'report' => [
             'reported_heading' => [
-              '#markup' => $this->t('Self-reported COVID-19 positive test results'),
+              '#markup' => $this->t('Self-reported COVID-19 positive test results updated every Monday, Wednesday, and Friday'),
               '#prefix' => '<h3 class="h5">',
               '#suffix' => '</h3>',
             ],
