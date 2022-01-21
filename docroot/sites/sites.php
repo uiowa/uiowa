@@ -3772,3 +3772,9 @@ $sites['fotax.uiowa.ddev.site'] = 'tax.fo.uiowa.edu';
 $sites['fotax.dev.drupal.uiowa.edu'] = 'tax.fo.uiowa.edu';
 $sites['fotax.stage.drupal.uiowa.edu'] = 'tax.fo.uiowa.edu';
 $sites['fotax.prod.drupal.uiowa.edu'] = 'tax.fo.uiowa.edu';
+
+// Directory aliases for controller.fo.uiowa.edu.
+$sites['focontroller.uiowa.ddev.site'] = 'controller.fo.uiowa.edu';
+$sites['focontroller.dev.drupal.uiowa.edu'] = 'controller.fo.uiowa.edu';
+$sites['focontroller.stage.drupal.uiowa.edu'] = 'controller.fo.uiowa.edu';
+$sites['focontroller.prod.drupal.uiowa.edu'] = 'controller.fo.uiowa.edu';
