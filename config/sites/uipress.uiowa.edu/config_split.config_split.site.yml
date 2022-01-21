@@ -3,10 +3,10 @@ langcode: en
 status: true
 dependencies: {  }
 id: site
-label: 'UI Press Book'
-description: 'Custom book content type for UI Press.'
+label: uipress.uiowa.edu
+description: 'Custom settings for uipress.uiowa.edu.'
 weight: 70
-stackable: false
+stackable: true
 storage: folder
 folder: ../config/sites/uipress.uiowa.edu
 module:
@@ -14,8 +14,7 @@ module:
 theme: {  }
 complete_list:
   - config_split.config_split.site
-  - core.entity_form_display.node.book.default
-  - core.entity_form_display.paragraph.book_type.default
+  - core.entity_view_display.node.person.default
   - metatag.metatag_defaults.node__book
   - node.type.book
   - paragraphs.paragraphs_type.book_type
@@ -34,11 +33,9 @@ complete_list:
   - taxonomy.vocabulary.season
   - taxonomy.vocabulary.series
   - taxonomy.vocabulary.subjects
-  - 'field.field.node.book.field_book_*'
+  - views.view.author_of
+  - views.view.author_page
   - 'field.storage.node.field_book_*'
-  - 'core.entity_view_display.node.book.*'
-  - 'core.entity_view_display.paragraph.book_type.*'
-  - 'field.field.paragraph.book_type.field_book_*'
   - 'field.storage.paragraph.field_book_*'
 partial_list:
   - core.entity_form_display.node.person.default
