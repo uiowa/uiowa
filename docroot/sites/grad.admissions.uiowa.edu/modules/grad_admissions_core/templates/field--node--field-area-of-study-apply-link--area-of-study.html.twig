@@ -37,8 +37,6 @@
  * @see template_preprocess_field()
  */
 #}
-<div class="block-margin__bottom">
-  {%- for item in items -%}
-    <a href="{{ item.content['#url'] }}" class="bttn bttn--full bttn--primary bttn--caps">{{ "Apply Now" }}<i role="presentation" class="fas fa-arrow-right"></i></a>
-  {%- endfor -%}
-</div>
+{%- for item in items -%}
+  <a href="{{ item.content['#url'] }}" class="bttn bttn--full bttn--primary bttn--caps">{{ "Apply Now" }}<i role="presentation" class="fas fa-arrow-right"></i></a>
+{%- endfor -%}
