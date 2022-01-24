@@ -3784,3 +3784,9 @@ $sites['tippiestudents.uiowa.ddev.site'] = 'students.tippie.uiowa.edu';
 $sites['tippiestudents.dev.drupal.uiowa.edu'] = 'students.tippie.uiowa.edu';
 $sites['tippiestudents.stage.drupal.uiowa.edu'] = 'students.tippie.uiowa.edu';
 $sites['tippiestudents.prod.drupal.uiowa.edu'] = 'students.tippie.uiowa.edu';
+
+// Directory aliases for aiaa.org.uiowa.edu.
+$sites['orgaiaa.uiowa.ddev.site'] = 'aiaa.org.uiowa.edu';
+$sites['orgaiaa.dev.drupal.uiowa.edu'] = 'aiaa.org.uiowa.edu';
+$sites['orgaiaa.stage.drupal.uiowa.edu'] = 'aiaa.org.uiowa.edu';
+$sites['orgaiaa.prod.drupal.uiowa.edu'] = 'aiaa.org.uiowa.edu';
