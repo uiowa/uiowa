@@ -3778,3 +3778,9 @@ $sites['focontroller.uiowa.ddev.site'] = 'controller.fo.uiowa.edu';
 $sites['focontroller.dev.drupal.uiowa.edu'] = 'controller.fo.uiowa.edu';
 $sites['focontroller.stage.drupal.uiowa.edu'] = 'controller.fo.uiowa.edu';
 $sites['focontroller.prod.drupal.uiowa.edu'] = 'controller.fo.uiowa.edu';
+
+// Directory aliases for students.tippie.uiowa.edu.
+$sites['tippiestudents.uiowa.ddev.site'] = 'students.tippie.uiowa.edu';
+$sites['tippiestudents.dev.drupal.uiowa.edu'] = 'students.tippie.uiowa.edu';
+$sites['tippiestudents.stage.drupal.uiowa.edu'] = 'students.tippie.uiowa.edu';
+$sites['tippiestudents.prod.drupal.uiowa.edu'] = 'students.tippie.uiowa.edu';
