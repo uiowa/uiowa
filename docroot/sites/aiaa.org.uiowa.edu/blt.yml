@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: orgaiaa.uiowa.ddev.site
+    protocol: https
+  machine_name: orgaiaa
+  human_name: aiaa.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgaiaa.prod
+drupal:
+  db:
+    database: aiaa_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: klastine
