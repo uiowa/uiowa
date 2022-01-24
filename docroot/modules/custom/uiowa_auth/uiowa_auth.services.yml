@@ -21,5 +21,6 @@ services:
       - { name: event_subscriber }
   uiowa_auth.samlauth_override:
     class: Drupal\uiowa_auth\ConfigOverride\SamlauthOverride
+    arguments: [ '@entity_type.manager' ]
     tags:
       - { name: config.factory.override }

@@ -5,12 +5,25 @@ namespace Drupal\uiowa_auth\ConfigOverride;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Config\ConfigFactoryOverrideInterface;
 use Drupal\Core\Config\StorageInterface;
-use Drupal\user\Entity\Role;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
  * Samlauth configuration overrides.
  */
 class SamlauthOverride implements ConfigFactoryOverrideInterface {
+  /**
+   * The entity_type.manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(EntityTypeManagerInterface $entityTypeManager) {
+    $this->entityTypeManager = $entityTypeManager;
+  }
 
   /**
    * {@inheritdoc}
@@ -21,7 +34,7 @@ class SamlauthOverride implements ConfigFactoryOverrideInterface {
     // Allow all roles to be linkable.
     if (in_array('samlauth.authentication', $names)) {
 
-      $roles = Role::loadMultiple();
+      $roles = $this->entityTypeManager->getStorage('user_role')->loadMultiple();
       $allowed = [];
 
       /** @var \Drupal\user\Entity\Role $role */
