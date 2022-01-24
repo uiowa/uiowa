@@ -33,8 +33,5 @@ default site.
 
 To run test locally:
 ```
-export SIMPLETEST_BASE_URL=http://localhost:8888
-export SIMPLETEST_DB=mysql://root@localhost/drupal
-export SYMFONY_DEPRECATIONS_HELPER=disabled
 ./vendor/bin/phpunit -c docroot/core/ path/to/uiowa_auth/tests
 ```
