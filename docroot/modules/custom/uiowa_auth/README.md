@@ -10,7 +10,7 @@ It also requires metadata describing the Service Provider (SP) endpoints to be c
 Install with Composer, see http://drupal.org/node/1897420 for further information.
 
 ## Configuration
-Configure the samlauth module as per the metadata. If using the aggregate metadata provided by ITS, a good starting point is configuration in the [uiowa application](https://github.com/uiowa/uiowa/blob/master/docroot/profiles/custom/sitenow/config/sync/samlauth.authentication.yml). Note the empty strings set for sp_x509_certificate and sp_private_key. This is to prevent the samlauth module from reverting to the keys residing in a directory.
+Configure the samlauth module as per the metadata. If using the aggregate metadata provided by ITS, a good starting point is the samlauth.settings configuration in the uiowa application. Note the empty strings set for sp_x509_certificate and sp_private_key. This is to prevent the samlauth module from reverting to the keys residing in a directory.
 
 Certain configuration items are blank to avoid exposing sensitive information. The following configuration items **have** to be set using [configuration overrides](https://www.drupal.org/docs/8/api/configuration-api/configuration-override-system):
 ```
