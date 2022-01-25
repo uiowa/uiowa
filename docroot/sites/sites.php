@@ -3796,3 +3796,9 @@ $sites['labkurahashi.uiowa.ddev.site'] = 'kurahashi.lab.uiowa.edu';
 $sites['labkurahashi.dev.drupal.uiowa.edu'] = 'kurahashi.lab.uiowa.edu';
 $sites['labkurahashi.stage.drupal.uiowa.edu'] = 'kurahashi.lab.uiowa.edu';
 $sites['labkurahashi.prod.drupal.uiowa.edu'] = 'kurahashi.lab.uiowa.edu';
+
+// Directory aliases for cmc.sites.uiowa.edu.
+$sites['sitescmc.uiowa.ddev.site'] = 'cmc.sites.uiowa.edu';
+$sites['sitescmc.dev.drupal.uiowa.edu'] = 'cmc.sites.uiowa.edu';
+$sites['sitescmc.stage.drupal.uiowa.edu'] = 'cmc.sites.uiowa.edu';
+$sites['sitescmc.prod.drupal.uiowa.edu'] = 'cmc.sites.uiowa.edu';
