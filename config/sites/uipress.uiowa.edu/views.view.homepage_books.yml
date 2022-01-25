@@ -56,23 +56,18 @@ display:
           items_per_page: 9
           offset: 0
       style:
-        type: grid
+        type: default
         options:
           grouping: {  }
-          columns: 3
-          automatic_width: true
-          alignment: horizontal
-          col_class_default: true
-          col_class_custom: ''
-          row_class_default: true
-          row_class_custom: ''
+          row_class: ''
+          default_row_class: true
       row:
         type: fields
       fields:
-        field_image:
-          id: field_image
-          table: node__field_image
-          field: field_image
+        title:
+          id: title
+          table: node_field_data
+          field: title
           relationship: none
           group_type: group
           admin_label: ''
@@ -117,11 +112,11 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: target_id
-          type: entity_reference_entity_view
+          click_sort_column: value
+          type: string
           settings:
-            view_mode: thumbnail
-          group_column: target_id
+            link_to_entity: false
+          group_column: value
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -132,13 +127,10 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        title:
-          id: title
-          table: node_field_data
-          field: title
-          settings:
-            link_to_entity: true
-          plugin_id: field
+        field_image:
+          id: field_image
+          table: node__field_image
+          field: field_image
           relationship: none
           group_type: group
           admin_label: ''
@@ -147,14 +139,14 @@ display:
           alter:
             alter_text: false
             text: ''
-            make_link: false
-            path: ''
+            make_link: true
+            path: '/{{ title }}'
             absolute: false
             external: false
-            replace_spaces: false
-            path_case: none
+            replace_spaces: true
+            path_case: lower
             trim_whitespace: false
-            alt: ''
+            alt: '{{ title }}'
             rel: ''
             link_class: ''
             prefix: ''
@@ -175,7 +167,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -183,9 +175,11 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          group_column: value
+          click_sort_column: target_id
+          type: entity_reference_entity_view
+          settings:
+            view_mode: medium__square
+          group_column: target_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -195,6 +189,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
         field_book_author:
           id: field_book_author
           table: node__field_book_author
@@ -367,6 +362,7 @@ display:
       relationships: {  }
       arguments: {  }
       display_extenders: {  }
+      css_class: grid--threecol--33-34-33
     cache_metadata:
       max-age: 0
       contexts:
@@ -378,9 +374,9 @@ display:
         - 'config:field.storage.node.field_book_author'
         - 'config:field.storage.node.field_book_type'
         - 'config:field.storage.node.field_image'
-  block_1:
+  block_feat_books:
     display_plugin: block
-    id: block_1
+    id: block_feat_books
     display_title: Block
     position: 1
     display_options:

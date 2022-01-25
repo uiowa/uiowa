@@ -62,3 +62,15 @@ function uipress_core_preprocess_paragraph__book_type(&$variables) {
     }
   }
 }
+
+/**
+ * Implements hook_theme().
+ */
+function uipress_core_theme($existing, $type, $theme, $path) {
+  return [
+    'views_view_unformatted__homepage_books' => [
+      'template' => 'views-view-unformatted--homepage-books',
+      'base hook' => 'view',
+    ],
+  ];
+}
