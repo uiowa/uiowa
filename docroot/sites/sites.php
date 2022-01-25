@@ -3790,3 +3790,9 @@ $sites['orgaiaa.uiowa.ddev.site'] = 'aiaa.org.uiowa.edu';
 $sites['orgaiaa.dev.drupal.uiowa.edu'] = 'aiaa.org.uiowa.edu';
 $sites['orgaiaa.stage.drupal.uiowa.edu'] = 'aiaa.org.uiowa.edu';
 $sites['orgaiaa.prod.drupal.uiowa.edu'] = 'aiaa.org.uiowa.edu';
+
+// Directory aliases for kurahashi.lab.uiowa.edu.
+$sites['labkurahashi.uiowa.ddev.site'] = 'kurahashi.lab.uiowa.edu';
+$sites['labkurahashi.dev.drupal.uiowa.edu'] = 'kurahashi.lab.uiowa.edu';
+$sites['labkurahashi.stage.drupal.uiowa.edu'] = 'kurahashi.lab.uiowa.edu';
+$sites['labkurahashi.prod.drupal.uiowa.edu'] = 'kurahashi.lab.uiowa.edu';
