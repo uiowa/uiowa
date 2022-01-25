@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: sitescmc.uiowa.ddev.site
+    protocol: https
+  machine_name: sitescmc
+  human_name: cmc.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitescmc.prod
+drupal:
+  db:
+    database: cmc_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: rachyoung
