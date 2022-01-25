@@ -43,10 +43,623 @@ dependencies:
     - smart_trim
     - text
     - user
+  theme:
+    - uids_base
 third_party_settings:
   layout_builder:
     allow_custom: false
-    enabled: false
+    enabled: true
+    sections:
+      -
+        layout_id: layout_header
+        layout_settings:
+          label: ''
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+          context_mapping: {  }
+        components:
+          -
+            uuid: 7b7fd81d-c813-4b37-9567-6578bea218db
+            region: content
+            configuration:
+              id: 'field_block:node:book:title'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: string
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 0
+        third_party_settings: {  }
+      -
+        layout_id: layout_twocol
+        layout_settings:
+          label: ''
+          column_widths: 75-25
+          layout_builder_styles_style:
+            0: ''
+            1: section_margin_fixed_width_container
+            section_alignment_start: section_alignment_start
+          context_mapping: {  }
+        components:
+          -
+            uuid: 90f9cf75-7b34-46d1-bf4a-3c5445379483
+            region: first
+            configuration:
+              id: 'field_block:node:book:field_book_author'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: inline
+                type: entity_reference_label
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 3
+          -
+            uuid: 05431d6c-0527-40e8-a977-5899c90ddb93
+            region: first
+            configuration:
+              id: 'field_block:node:book:field_book_series'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: inline
+                type: entity_reference_label
+                settings:
+                  link: true
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 13
+          -
+            uuid: b9e8066a-20c4-48c2-9f78-cae6dfc5133a
+            region: first
+            configuration:
+              id: 'field_block:node:book:field_book_editor'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: inline
+                type: entity_reference_label
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 4
+          -
+            uuid: 54f415ef-0c7b-4af1-9f75-e628151c79b4
+            region: first
+            configuration:
+              id: 'field_block:node:book:field_book_preface_authors'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: inline
+                type: entity_reference_label
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 8
+          -
+            uuid: 894fa79e-d090-4b1f-be0f-8e61485f7efc
+            region: first
+            configuration:
+              id: 'field_block:node:book:field_book_afterword_author'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: inline
+                type: entity_reference_label
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 11
+          -
+            uuid: 068d5b7b-e2c2-4dd5-93b4-fc026f25618e
+            region: first
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_description_summary'
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            additional: {  }
+            weight: 14
+          -
+            uuid: 21f2f637-bf22-4a1e-8f9c-1507246c4171
+            region: first
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_awards'
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            additional: {  }
+            weight: 17
+          -
+            uuid: 9e273933-3ad0-4fa8-aed3-43e0df81ad48
+            region: first
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_reviews_blurbs'
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            additional: {  }
+            weight: 16
+          -
+            uuid: f2701e59-27ca-4376-8f36-0a38d3025e79
+            region: first
+            configuration:
+              id: 'field_block:node:book:field_book_essay_by'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: inline
+                type: entity_reference_label
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 12
+          -
+            uuid: e1f25405-1067-4518-bd0e-5e71ba1787c0
+            region: first
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_table_of_contents'
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            additional: {  }
+            weight: 18
+          -
+            uuid: 44c4a146-ecfe-4c2d-bfbe-745fd0f692b4
+            region: second
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_subject'
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            additional: {  }
+            weight: 10
+          -
+            uuid: 1c71f0cb-354b-4292-a664-4551d9d26d69
+            region: second
+            configuration:
+              id: 'field_block:node:book:field_book_season'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: inline
+                type: entity_reference_label
+                settings:
+                  link: true
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 9
+          -
+            uuid: 7538c5e2-c8ff-404c-8153-e3e5276326ab
+            region: first
+            configuration:
+              id: 'field_block:node:book:field_book_introduction_author'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: inline
+                type: entity_reference_label
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 10
+          -
+            uuid: 2ea78718-142f-4256-8974-e0f2eb47e0f4
+            region: first
+            configuration:
+              id: 'field_block:node:book:field_book_translator'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: inline
+                type: entity_reference_label
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 7
+          -
+            uuid: 06051979-d2fb-411b-8a72-e72562d73378
+            region: first
+            configuration:
+              id: 'field_block:node:book:field_book_photographer'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: inline
+                type: entity_reference_label
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 6
+          -
+            uuid: 0e5ca74e-799c-467f-bb6f-2f5f0ff58d7e
+            region: first
+            configuration:
+              id: 'field_block:node:book:field_book_foreword_author'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: inline
+                type: entity_reference_label
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 9
+          -
+            uuid: 3d81bbb1-9d74-4226-8e9b-56b6f6088795
+            region: second
+            configuration:
+              id: 'field_block:node:book:field_book_edition'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: inline
+                type: list_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 7
+          -
+            uuid: 7920105e-cea1-41d4-9b00-141948e676eb
+            region: first
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_excerpt'
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            additional: {  }
+            weight: 15
+          -
+            uuid: b62eec0e-c50c-4cb4-9590-a555e4a3fe5c
+            region: first
+            configuration:
+              id: 'field_block:node:book:field_book_illustrator'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: inline
+                type: entity_reference_label
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 5
+          -
+            uuid: 1cac8dce-5772-4a32-89e9-eb6d8ac675e8
+            region: first
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_contributors'
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            additional: {  }
+            weight: 19
+          -
+            uuid: 333e4a7d-287f-4934-9966-1f5aeeb01899
+            region: second
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_image'
+              formatter:
+                label: hidden
+                settings:
+                  view_mode: full__no_crop
+                  link: false
+                third_party_settings: {  }
+                type: entity_reference_entity_view
+            additional: {  }
+            weight: 1
+          -
+            uuid: 7be62f36-f068-4a0d-b244-8765b2863e99
+            region: second
+            configuration:
+              id: 'field_block:node:book:field_book_publication_date'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: inline
+                type: datetime_default
+                settings:
+                  timezone_override: ''
+                  format_type: medium
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 3
+          -
+            uuid: ac1d469a-756d-4446-b519-1401a3aa765d
+            region: second
+            configuration:
+              id: 'field_block:node:book:field_book_pages'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: inline
+                type: string
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 4
+          -
+            uuid: 25b9f6cb-9bef-420e-ae57-eeddba6560ad
+            region: second
+            configuration:
+              id: 'field_block:node:book:field_book_trim_size'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: inline
+                type: smart_trim
+                settings:
+                  trim_length: 600
+                  trim_type: chars
+                  trim_suffix: ''
+                  wrap_output: false
+                  wrap_class: trimmed
+                  more_link: false
+                  more_text: More
+                  more_class: more-link
+                  trim_options:
+                    text: false
+                    trim_zero: false
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 5
+          -
+            uuid: a61ab632-245d-4e7d-8ed8-b77c93cfade8
+            region: second
+            configuration:
+              id: 'field_block:node:book:field_book_art'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: inline
+                type: string
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 6
+          -
+            uuid: 62ade0e0-0027-44f1-965a-603d4f448223
+            region: second
+            configuration:
+              id: 'field_block:node:book:field_book_type'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: entity_reference_revisions_entity_view
+                settings:
+                  view_mode: default
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 8
+          -
+            uuid: 7dee5ee6-896f-4532-b562-64d97a953d7e
+            region: first
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_subtitle'
+              formatter:
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+                type: string
+            additional: {  }
+            weight: 2
+          -
+            uuid: f7f7734d-11af-4099-9959-8ea2186d2300
+            region: second
+            configuration:
+              id: 'field_block:node:book:field_book_file_uploads'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: image
+                settings:
+                  image_style: ''
+                  image_link: ''
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+                  lazy:
+                    lazy_image: '0'
+                    placeholder_style: ''
+                    data_uri: false
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 2
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          layout_builder_styles_style:
+            - section_background_style_gray
+            - section_margin_fixed_width_container
+          context_mapping: {  }
+        components:
+          -
+            uuid: 6fca20f3-a981-47e1-8c5d-301f772660fd
+            region: content
+            configuration:
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              id: 'field_block:node:book:field_book_related_reads'
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            additional: {  }
+            weight: 0
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
 id: node.book.default
 targetEntityType: node
 bundle: book

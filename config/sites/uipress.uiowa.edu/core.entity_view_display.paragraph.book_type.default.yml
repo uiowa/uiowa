@@ -26,22 +26,22 @@ mode: default
 content:
   field_book_ebook_ownership:
     weight: 1
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: list_default
     region: content
   field_book_isbn:
-    weight: 3
-    label: above
+    weight: 2
+    label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
     region: content
   field_book_retail_price:
-    weight: 2
-    label: above
+    weight: 3
+    label: inline
     settings:
       thousand_separator: ''
       decimal_separator: .
@@ -52,17 +52,17 @@ content:
     region: content
   field_book_sale_code:
     type: string
-    weight: 4
+    weight: 5
     region: content
-    label: above
+    label: visually_hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
   field_book_sale_price:
     type: number_decimal
-    weight: 5
+    weight: 4
     region: content
-    label: above
+    label: inline
     settings:
       thousand_separator: ''
       decimal_separator: .
@@ -71,7 +71,7 @@ content:
     third_party_settings: {  }
   field_book_type:
     weight: 0
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: list_default

@@ -62,3 +62,15 @@ function uipress_core_preprocess_paragraph__book_type(&$variables) {
     }
   }
 }
+
+/**
+ * Implements hook_theme().
+ */
+function uipress_core_theme($existing, $type, $theme, $path) {
+  return [
+    'field__paragraph__field_book_sale_code__book_type__default' => [
+      'template' => 'field--paragraph--field-book-sale-code--book-type--default',
+      'base hook' => 'field',
+    ],
+  ];
+}
