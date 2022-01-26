@@ -185,8 +185,8 @@ $imgpath: '../../uids/assets/images';
   }
 }
 
-// For sidebars: remove padding from adjacent blocks if they are the same
-.block[class*="bg--gray"].block-padding__all + .block[class*="bg--gray"].block-padding__all {
+// For sidebars: remove padding from adjacent blocks if they are the same and don't have a margin top set
+.block[class*="bg--gray"].block-padding__all + .block[class*="bg--gray"].block-padding__all:not(.block-margin__top) {
   margin-top: -1.5rem;
   padding-top: 0;
 }
@@ -279,7 +279,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     margin-left: $mobile-width-gutter;
     max-width: 100%;
 
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       margin-right: $desktop-width-gutter;
       margin-left: $desktop-width-gutter;
     }
