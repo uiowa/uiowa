@@ -98,8 +98,6 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
       }
     }
 
-
-
     return TRUE;
   }
 
