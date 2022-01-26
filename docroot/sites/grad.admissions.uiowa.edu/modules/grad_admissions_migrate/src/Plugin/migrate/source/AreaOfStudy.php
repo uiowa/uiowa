@@ -2,11 +2,13 @@
 
 namespace Drupal\grad_admissions_migrate\Plugin\migrate\source;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\State\StateInterface;
+use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\pathauto\AliasCleanerInterface;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
@@ -93,7 +95,127 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
   }
 
   /**
-   * Return the destination given a NID on the old site.
+   * {@inheritdoc}
+   */
+  public function postImport(MigrateImportEvent $event) {
+    // @todo Figure out why this event fires multiple times.
+    $has_run = $this->state->get('grad_admissions_migrate_post_import', FALSE);
+
+    if ($has_run == FALSE) {
+      $migration = $event->getMigration();
+      $map = $migration->getIdMap();
+
+      $entity_types = [
+        'taxonomy_term' => [
+          'colleges' => [
+            'description',
+          ],
+          'degree_types' => [
+            'description',
+          ],
+          'grad_areas_of_study' => [
+            'description',
+          ],
+        ],
+        'node' => [
+          'area_of_study' => [
+            'body',
+            'field_area_of_study_requirements',
+            'field_area_of_study_deadlines',
+            'field_area_of_study_procedures',
+            'field_area_of_study_apply',
+            'field_area_of_study_contact',
+            'field_area_of_study_grad_intro',
+          ],
+        ],
+      ];
+
+      foreach ($entity_types as $entity_type => $bundles) {
+        foreach ($bundles as $bundle => $fields) {
+          $condition = ($entity_type == 'taxonomy_term') ? 'vid' : 'type';
+          $query = $this->entityTypeManager->getStorage($entity_type)->getQuery();
+
+          $ids = $query
+            ->condition($condition, $bundle)
+            ->execute();
+
+          if ($ids) {
+            $controller = $this->entityTypeManager->getStorage($entity_type);
+            $entities = $controller->loadMultiple($ids);
+
+            foreach ($entities as $entity) {
+              foreach ($fields as $field_name) {
+                $document = Html::load($entity->$field_name->value);
+                $links = $document->getElementsByTagName('a');
+
+                foreach ($links as $link) {
+                  $href = $link->getAttribute('href');
+
+                  if (strpos($href, '/node/') === 0 || stristr($href, 'admissions.uiowa.edu/node/')) {
+                    $nid = explode('node/', $href)[1];
+                    $lookup = $map->lookupDestinationIds(['nid' => $nid]);
+
+                    // Fallback to a manual map of NIDs provided by customer.
+                    if (empty($lookup)) {
+                      $lookup = $this->brokenLinkLookup($nid);
+                    }
+
+                    // Fix it or log if we don't have a lookup.
+                    if (!empty($lookup)) {
+                      $destination = $lookup[0][0];
+                      $link->setAttribute('href', "/node/{$destination}");
+                      $link->parentNode->replaceChild($link, $link);
+
+                      $document->saveHTML();
+                      $html = Html::serialize($document);
+                      $entity->$field_name->value = $html;
+                      $entity->save();
+                    }
+                    else {
+                      $this->logger->notice('Cannot replace internal link @link in field @field on @bundle @aos.', [
+                        '@link' => $href,
+                        '@field' => $field_name,
+                        '@bundle' => $bundle,
+                        '@aos' => $entity->label(),
+                      ]);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      $this->state->set('grad_admissions_migrate_post_import', TRUE);
+    }
+  }
+
+  /**
+   * Look up a node URL from a manually created source -> destination map.
+   *
+   * @param int $nid
+   *   The NID to look up.
+   *
+   * @return array
+   *   A simulated array of arrays similar to the migrate idMap.
+   */
+  protected function brokenLinkLookup($nid) {
+    $lookup = [];
+
+    $map = [];
+
+    if (isset($map[$nid])) {
+      $lookup = [
+        [$map[$nid]],
+      ];
+    }
+
+    return $lookup;
+  }
+
+  /**
+   * Return the destination given an estimated cost NID on the old site.
    *
    * @param int $nid
    *   The node ID.
