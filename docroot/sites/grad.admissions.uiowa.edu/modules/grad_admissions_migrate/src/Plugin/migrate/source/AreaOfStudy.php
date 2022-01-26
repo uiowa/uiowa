@@ -246,19 +246,24 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
       131 => 316,
       // MPH. master-public-health-program-estimated-costs.
       118 => 326,
-      // Public health (not MPH). graduate-programs-public-health-estimated-costs.
+      // Public health (not MPH).
+      // graduate-programs-public-health-estimated-costs.
       103 => 336,
-      // Sustainable Water Development. sustainable-water-development-certificate-estimated-costs.
+      // Sustainable Water Development.
+      // sustainable-water-development-certificate-estimated-costs.
       931 => 346,
       // Oral Science Program. oral-science-program-estimated-costs.
       115 => 356,
-      // Applied Math & Computational Sciences. applied-math-computational-sciences-estimated-costs.
+      // Applied Math & Computational Sciences.
+      // applied-math-computational-sciences-estimated-costs.
       105 => 366,
       // LIS. library-information-science-estimated-costs.
       109 => 376,
-      // Second Language Acquisition. second-language-acquisition-estimated-costs.
+      // Second Language Acquisition.
+      // second-language-acquisition-estimated-costs.
       119 => 386,
-      // Grad Programs in Pharmacy. graduate-programs-pharmacy-estimated-costs.
+      // Grad Programs in Pharmacy.
+      // graduate-programs-pharmacy-estimated-costs.
       117 => 396,
       // Informatics. informatics-estimated-costs.
       412 => 406,
@@ -270,7 +275,8 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
       132 => 436,
       // DDS. doctor-dental-surgery-dds-program-estimated-costs.
       107 => 446,
-      // Speech Pathology & Audiology. speech-pathology-and-audiology-ma-or-aud-estimated-costs.
+      // Speech Pathology & Audiology.
+      // speech-pathology-and-audiology-ma-or-aud-estimated-costs.
       417 => 456,
       // Health Administration. health-administration-program-estimated-costs.
       108 => 466,
@@ -286,7 +292,8 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
       133 => 516,
       // Nursing (MSN). msn-cnl-program-estimated-costs.
       114 => 526,
-      // Medicine (non-MD). ms-phd-mme-mca-and-mpa-programs-medicine-estimated-costs.
+      // Medicine (non-MD).
+      // ms-phd-mme-mca-and-mpa-programs-medicine-estimated-costs.
       100 => 536,
       // Business (MBA). full-time-mba-program-estimated-costs.
       110 => 546,
