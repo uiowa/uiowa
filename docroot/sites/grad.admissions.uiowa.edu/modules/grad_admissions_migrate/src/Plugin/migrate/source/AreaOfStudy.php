@@ -80,10 +80,10 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
     $row->setSourceProperty('custom_related_links', $related_links);
 
     if ($ref = $row->getSourceProperty('field_grad_costs')) {
-      if ($lookup = $this->manualLookup($ref['nid'])) {
+      if ($lookup = $this->manualLookup($ref[0]['target_id'])) {
         $row->setSourceProperty('custom_domestic_cost', $lookup);
         $this->logger->info('Swap node @nid for @estimated_cost', [
-          '@nid' => $ref['nid'],
+          '@nid' => $ref[0]['target_id'],
           '@estimated_cost' => $row->getSourceProperty('title'),
         ]);
       }
@@ -170,7 +170,7 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
       110 => 546,
     ];
 
-    return $map[$nid] ?? FALSE;
+    return isset($map[$nid]) ? $map[$nid] : FALSE;
   }
 
 }
