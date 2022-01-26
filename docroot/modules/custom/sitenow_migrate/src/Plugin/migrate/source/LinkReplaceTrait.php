@@ -44,7 +44,7 @@ trait LinkReplaceTrait {
           $doc->saveHTML();
         }
         else {
-          $site_path = \str_replace('sites/', '', \Drupal::service('site.path'));
+          $site_path = \str_replace('sites/', '', \Drupal::getContainer()->getParameter('site.path'));
           if (strpos($href, '/node/') === 0 || stristr($href, $site_path . '/node/')) {
             $nid = explode('node/', $href)[1];
 
@@ -144,7 +144,7 @@ trait LinkReplaceTrait {
           while ($i >= 0) {
             $link = $links->item($i);
             $href = $link->getAttribute('href');
-            $site_path = \str_replace('sites/', '', \Drupal::service('site.path'));
+            $site_path = \str_replace('sites/', '', \Drupal::getContainer()->getParameter('site.path'));
             if (strpos($href, '/node/') === 0 || stristr($href, $site_path . '/node/')) {
               $nid = explode('node/', $href)[1];
 
