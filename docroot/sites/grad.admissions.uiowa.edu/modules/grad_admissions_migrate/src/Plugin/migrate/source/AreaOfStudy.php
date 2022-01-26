@@ -2,13 +2,11 @@
 
 namespace Drupal\grad_admissions_migrate\Plugin\migrate\source;
 
-use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\State\StateInterface;
-use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\pathauto\AliasCleanerInterface;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
@@ -76,13 +74,6 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
       $related_links[] = [
         'url' => $catalog_url[0]['url'],
         'title' => $catalog_url[0]['title'],
-      ];
-    }
-
-    if ($college_url = $row->getSourceProperty('field_grad_college')) {
-      $related_links[] = [
-        'url' => $college_url[0]['url'],
-        'title' => $college_url[0]['title'],
       ];
     }
 
@@ -179,7 +170,7 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
       110 => 546,
     ];
 
-    return isset($map[$nid]) ? $map[$nid] : FALSE;
+    return $map[$nid] ?? FALSE;
   }
 
 }
