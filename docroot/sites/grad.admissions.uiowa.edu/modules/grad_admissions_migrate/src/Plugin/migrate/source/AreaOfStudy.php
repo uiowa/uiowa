@@ -72,7 +72,7 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
       ];
     }
 
-    if ($catalog_url = $row->getSourceProperty('field_grad_dept')) {
+    if ($catalog_url = $row->getSourceProperty('field_grad_catalog_url')) {
       $related_links[] = [
         'url' => $catalog_url[0]['url'],
         'title' => $catalog_url[0]['title'],
