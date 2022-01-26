@@ -90,37 +90,5 @@
  * @ingroup themeable
  */
 #}
-{{ dump(card_options) }}
-{{ attach_library('uids_base/person') }}
-{% if title %}
-  <h3>{{ title }}</h3>
-{% endif %}
-  {% set row_classes = [
-    default_row_class ? 'views-row',
-  ] %}
-  <div{{ row.attributes.addClass(row_classes) }}>
-
-    {% set media_attributes = media_attributes ?: create_attribute() %}
-
-    {% embed '@uids_base/uids/card.html.twig' with card_options only %}
-
-{#      {% block card_img %}#}
-{#        {% if card_image|striptags('<img><picture>')|trim is not empty %}#}
-{#          {{ parent() }}#}
-{#        {% endif %}#}
-{#      {% endblock %}#}
-
-{#      {% block card_subtitle %}#}
-{#        {% if card_subtitle|striptags|trim is not empty %}#}
-{#          <div class="card__subtitle">{{ card_subtitle }}</div>#}
-{#        {% endif %}#}
-{#      {% endblock %}#}
-
-{#      {% block card_meta %}#}
-{#        {% if card_meta|striptags|trim is not empty %}#}
-{#          <div class="card__meta">{{ card_meta }}</div>#}
-{#        {% endif %}#}
-{#      {% endblock %}#}
-
-    {% endembed %}
-  </div>
+{% embed '@uids_base/uids/card.html.twig' with card_options only %}
+{% endembed %}
