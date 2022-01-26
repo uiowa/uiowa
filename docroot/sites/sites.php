@@ -3808,3 +3808,9 @@ $sites['labweiner.uiowa.ddev.site'] = 'weiner.lab.uiowa.edu';
 $sites['labweiner.dev.drupal.uiowa.edu'] = 'weiner.lab.uiowa.edu';
 $sites['labweiner.stage.drupal.uiowa.edu'] = 'weiner.lab.uiowa.edu';
 $sites['labweiner.prod.drupal.uiowa.edu'] = 'weiner.lab.uiowa.edu';
+
+// Directory aliases for worthington.lab.uiowa.edu.
+$sites['labworthington.uiowa.ddev.site'] = 'worthington.lab.uiowa.edu';
+$sites['labworthington.dev.drupal.uiowa.edu'] = 'worthington.lab.uiowa.edu';
+$sites['labworthington.stage.drupal.uiowa.edu'] = 'worthington.lab.uiowa.edu';
+$sites['labworthington.prod.drupal.uiowa.edu'] = 'worthington.lab.uiowa.edu';
