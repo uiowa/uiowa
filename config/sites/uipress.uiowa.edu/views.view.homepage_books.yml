@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.teaser
     - field.storage.node.field_book_author
     - field.storage.node.field_book_type
     - field.storage.node.field_image
@@ -62,7 +63,10 @@ display:
           row_class: ''
           default_row_class: true
       row:
-        type: fields
+        type: 'entity:node'
+        options:
+          relationship: none
+          view_mode: teaser
       fields:
         title:
           id: title
