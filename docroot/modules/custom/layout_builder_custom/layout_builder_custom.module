@@ -321,66 +321,26 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
         case 'menu_block:main':
 
+          // If the menu_orientation style group is present...
           if (isset($form['layout_builder_style_menu_orientation'])) {
+            // Move the admin label up.
             $form['settings']['admin_label']['#weight'] = -20;
+            // Copy the layout_builder_style_menu_orientation field into a new
+            // field and adjust the settings.
             $form['settings']['menu_orientation'] = [
               '#weight' => -10
             ] + $form['layout_builder_style_menu_orientation'];
 
-            // @todo Add states to level field to hide if horizontal is selected.
+            // Add #states to level field to hide it if horizontal is selected.
+            $form['settings']['menu_levels']['depth']['#states'] = [
+              'invisible' => [
+                ':input[name="settings[menu_orientation]"]' => [
+                  'value' => 'block_menu_horizontal',
+                ],
+              ],
+            ];
           }
-          // Set up #states for hiding subsequent fields when boolean unchecked.
-//          foreach (Element::children($form['settings']['menu_levels']) as $key) {
-//            $form['settings']['menu_levels'][$key]['#states'] = [
-//              'visible' => [
-//                ':input[name="settings[customize_settings]"]' => [
-//                  'checked' => TRUE,
-//                ],
-//              ],
-//            ];
-//          }
 
-          // Get the menu config for future use.
-//          $menu_config = $component->get('configuration');
-//
-//          // Create checkbox.
-//          $form['settings']['menu_levels']['customize_settings'] = [
-//            '#type' => 'checkbox',
-//            '#title' => t('Customize menu settings in block'),
-//            '#weight' => -1,
-//            '#default_value' => $menu_config['customize_settings'] ?: 0,
-//          ];
-
-          // Check if we want to use global defaults for depth and level, and if so, use them.
-          // Get the level defaults.
-//          $level = \Drupal::config('sitenow_pages.settings')->get('level');
-//          if ($menu_config['level'] && $menu_config['level'] != $level + 1) {
-//            $level_default = $menu_config['level'];
-//          }
-//          elseif (!empty($level)) {
-//            $level_default = $level + 1;
-//          }
-//          else {
-//            $level_default = 2;
-//          }
-//
-//          // Get the depth defaults.
-//          $depth = \Drupal::config('sitenow_pages.settings')->get('depth');
-//          if ($menu_config['depth'] && $menu_config['depth'] != $depth + 1) {
-//            $depth_default = $menu_config['depth'];
-//          }
-//          elseif (!empty($depth)) {
-//            $depth_default = $depth + 1;
-//          }
-//          else {
-//            $depth_default = 4;
-//          }
-
-          // @todo Create a map array to set settings based on menu type selection.
-
-          // Set defaults.
-//          $form['settings']['menu_levels']['level']['#default_value'] = $level_default;
-//          $form['settings']['menu_levels']['depth']['#default_value'] = $depth_default;
           $form['settings']['advanced']['follow']['#default_value'] = 1;
           break;
 
