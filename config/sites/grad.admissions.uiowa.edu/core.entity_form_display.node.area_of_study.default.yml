@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.area_of_study.body
     - field.field.node.area_of_study.field_area_of_study_apply
+    - field.field.node.area_of_study.field_area_of_study_apply_link
     - field.field.node.area_of_study.field_area_of_study_area
     - field.field.node.area_of_study.field_area_of_study_college
     - field.field.node.area_of_study.field_area_of_study_contact
@@ -15,7 +16,6 @@ dependencies:
     - field.field.node.area_of_study.field_area_of_study_link
     - field.field.node.area_of_study.field_area_of_study_procedures
     - field.field.node.area_of_study.field_area_of_study_requirements
-    - field.field.node.area_of_study.field_area_of_study_subtitle
     - field.field.node.area_of_study.field_image
     - field.field.node.area_of_study.field_meta_tags
     - node.type.area_of_study
@@ -54,6 +54,14 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
+    region: content
+  field_area_of_study_apply_link:
+    weight: 26
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
     region: content
   field_area_of_study_area:
     weight: 0
@@ -136,14 +144,6 @@ content:
     region: content
   field_area_of_study_requirements:
     weight: 7
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-    region: content
-  field_area_of_study_subtitle:
-    weight: 2
     settings:
       rows: 5
       placeholder: ''
