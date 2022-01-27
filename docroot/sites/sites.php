@@ -3826,3 +3826,9 @@ $sites['labhuang.uiowa.ddev.site'] = 'huang.lab.uiowa.edu';
 $sites['labhuang.dev.drupal.uiowa.edu'] = 'huang.lab.uiowa.edu';
 $sites['labhuang.stage.drupal.uiowa.edu'] = 'huang.lab.uiowa.edu';
 $sites['labhuang.prod.drupal.uiowa.edu'] = 'huang.lab.uiowa.edu';
+
+// Directory aliases for hawchi.lab.uiowa.edu.
+$sites['labhawchi.uiowa.ddev.site'] = 'hawchi.lab.uiowa.edu';
+$sites['labhawchi.dev.drupal.uiowa.edu'] = 'hawchi.lab.uiowa.edu';
+$sites['labhawchi.stage.drupal.uiowa.edu'] = 'hawchi.lab.uiowa.edu';
+$sites['labhawchi.prod.drupal.uiowa.edu'] = 'hawchi.lab.uiowa.edu';
