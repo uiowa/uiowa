@@ -645,16 +645,21 @@ third_party_settings:
             uuid: 6fca20f3-a981-47e1-8c5d-301f772660fd
             region: content
             configuration:
-              label_display: '0'
+              id: 'field_block:node:book:field_book_related_reads'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: above
+                type: entity_reference_entity_view
+                settings:
+                  view_mode: teaser
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
               context_mapping:
                 entity: layout_builder.entity
-              id: 'field_block:node:book:field_book_related_reads'
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: true
-                third_party_settings: {  }
+                view_mode: view_mode
             additional: {  }
             weight: 0
         third_party_settings:
