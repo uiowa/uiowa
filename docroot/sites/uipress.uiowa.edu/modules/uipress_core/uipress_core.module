@@ -26,6 +26,23 @@ function uipress_core_field_widget_entity_reference_paragraphs_form_alter(&$elem
   }
 }
 
+function uipress_core_preprocess_field(&$variables, $hook) {
+  switch ($variables['element']['#field_name']) {
+    case 'field_book_related_reads':
+      if (!isset($variables['title_attributes']['class'])) {
+        $variables['title_attributes']['class'] = '';
+      }
+      $variables['title_attributes']['class'] .= 'h2 headline headline--serif headline--underline';
+
+      if (!isset($variables['attributes']['class'])) {
+        $variables['attributes']['class'] = '';
+      }
+      $variables['attributes']['class'] .= 'grid--threecol--33-34-33';
+
+      $variables['field_container_classes'] = 'list-container';
+      break;
+  }
+}
 /**
  * Implements hook_preprocess_HOOK().
  */
@@ -71,14 +88,6 @@ function uipress_core_theme($existing, $type, $theme, $path) {
     'field__paragraph__field_book_sale_code__book_type__default' => [
       'template' => 'field--paragraph--field-book-sale-code--book-type--default',
       'base hook' => 'field',
-    ],
-    'field__node__field_book_related_reads__book__default' => [
-      'template' => 'field--node--field-book-related-reads--book--default',
-      'base hook' => 'field',
-    ],
-    'node__book__teaser' => [
-      'template' => 'node--book--teaser',
-      'base hook' => 'node',
     ],
   ];
 }
