@@ -3774,9 +3774,16 @@ function sitenow_update_9028() {
 }
 
 /**
- * Set previously unset menu item styles to vertical.
+ * Flush all caches so drupal finds uiowa_auth module.
  */
 function sitenow_update_9029() {
+  drupal_flush_all_caches();
+}
+
+/**
+ * Set previously unset menu item styles to vertical.
+ */
+function sitenow_update_9030() {
   _update_all_blocks_by_plugin_id('menu_block:main', function (&$component, $block) {
     $styles = $component->get('layout_builder_styles_style');
     if (!isset($styles['block_menu_vertical']) && !isset($styles['block_menu_horizontal'])) {
