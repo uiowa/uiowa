@@ -339,6 +339,11 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
                 ],
               ],
             ];
+
+            // Hide the original layout builder style field.
+            $form['layout_builder_style_menu_orientation']['#access'] = FALSE;
+            // Unset the layout builder style heading.
+            unset($form['lbs_heading']);
           }
 
           $form['settings']['advanced']['follow']['#default_value'] = 1;
@@ -522,10 +527,8 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
       break;
 
     case 'menu_block:main':
-      // @todo check if the checkbox for defaults is checked on the menu block.
-      // If it is, let the values be submitted.
-      // If it is not, use the global default values.
-      break;
+      // @todo Check if horizontal is selected for menu orientation and set
+      //   menu depth to 1 if it is.
   }
 
 }
