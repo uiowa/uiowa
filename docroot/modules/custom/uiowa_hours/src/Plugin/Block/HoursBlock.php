@@ -98,7 +98,6 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface, T
    */
   public function build() {
 
-
     $build = [
       '#lazy_builder' => [
         static::class . '::lazyBuilder',
@@ -185,8 +184,10 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface, T
     parent::blockSubmit($form, $form_state);
   }
 
+  /**
+   * Lazy builder callback for hours block build.
+   */
   public static function lazyBuilder($config) {
-//    $form = \Drupal::service('form_builder')->buildForm('Drupal\uiowa_hours\Form\HoursFilterForm', $config);
     $build = [
       'foo' => [
         '#markup' => '<p>This is a test.</p>',
@@ -199,8 +200,8 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface, T
   /**
    * {@inheritdoc}
    */
-  public static function trustedCallbacks()
-  {
+  public static function trustedCallbacks() {
     return ['lazyBuilder'];
   }
+
 }
