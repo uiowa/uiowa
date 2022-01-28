@@ -145,13 +145,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         }
       }
 
-      // Always set title field to not be required.
-      $form['settings']['label']['#required'] = FALSE;
-
-      // Hide all block labels.
-//      unset($form['settings']['label']);
-//      unset($form['settings']['label_display']);
-//      unset($form['settings']['admin_label']['#title']);
       // Hide ones implemented by Views because ListBlock has headline.
       // @todo Investigate whether this can be added to ListBlock.
       unset($form['settings']['views_label_fieldset']);
