@@ -70,18 +70,17 @@ function grad_admissions_core_preprocess_field(&$variables) {
       $variables['title_attributes']['class'] .= 'h4 headline headline--serif headline--underline';
       $variables['field_label_icon'] = 'fa-edit fas';
       break;
-
-    case 'field_area_of_study_college':
+    case 'field_area_of_study_link':
       $variables['label'] = t('Related Links');
-      $node = $variables['element']['#object'];
+      $node = $variables["element"]["#object"];
       // Add field_area_of_study_link to the end of field_area_of_study_college.
-      if ($node->hasField('field_area_of_study_link') && !$node->get('field_area_of_study_link')->isEmpty()) {
+      if ($node->hasField('field_area_of_study_college') && !$node->get('field_area_of_study_college')->isEmpty()) {
         $existing_links = [];
         foreach (Element::children($variables['items']) as $delta) {
           $existing_links[$delta] = $variables['items'][$delta];
           unset($variables['items'][$delta]);
         }
-        $colleges = $node->field_area_of_study_link->view();
+        $colleges = $node->field_area_of_study_college->view();
         $college_count = count(Element::children($colleges));
         foreach (Element::children($colleges) as $college_delta) {
           $variables['items'][$college_delta]['content'] = $colleges[$college_delta];
