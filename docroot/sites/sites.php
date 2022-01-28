@@ -3814,3 +3814,21 @@ $sites['labworthington.uiowa.ddev.site'] = 'worthington.lab.uiowa.edu';
 $sites['labworthington.dev.drupal.uiowa.edu'] = 'worthington.lab.uiowa.edu';
 $sites['labworthington.stage.drupal.uiowa.edu'] = 'worthington.lab.uiowa.edu';
 $sites['labworthington.prod.drupal.uiowa.edu'] = 'worthington.lab.uiowa.edu';
+
+// Directory aliases for nizar.lab.uiowa.edu.
+$sites['labnizar.uiowa.ddev.site'] = 'nizar.lab.uiowa.edu';
+$sites['labnizar.dev.drupal.uiowa.edu'] = 'nizar.lab.uiowa.edu';
+$sites['labnizar.stage.drupal.uiowa.edu'] = 'nizar.lab.uiowa.edu';
+$sites['labnizar.prod.drupal.uiowa.edu'] = 'nizar.lab.uiowa.edu';
+
+// Directory aliases for huang.lab.uiowa.edu.
+$sites['labhuang.uiowa.ddev.site'] = 'huang.lab.uiowa.edu';
+$sites['labhuang.dev.drupal.uiowa.edu'] = 'huang.lab.uiowa.edu';
+$sites['labhuang.stage.drupal.uiowa.edu'] = 'huang.lab.uiowa.edu';
+$sites['labhuang.prod.drupal.uiowa.edu'] = 'huang.lab.uiowa.edu';
+
+// Directory aliases for hawchi.lab.uiowa.edu.
+$sites['labhawchi.uiowa.ddev.site'] = 'hawchi.lab.uiowa.edu';
+$sites['labhawchi.dev.drupal.uiowa.edu'] = 'hawchi.lab.uiowa.edu';
+$sites['labhawchi.stage.drupal.uiowa.edu'] = 'hawchi.lab.uiowa.edu';
+$sites['labhawchi.prod.drupal.uiowa.edu'] = 'hawchi.lab.uiowa.edu';
