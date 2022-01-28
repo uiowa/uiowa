@@ -54,13 +54,13 @@
 
       <h2 {{ attributes.addClass(['accordion__heading']) }} id="{{ label }}">
         <button class="accordion__button" role="tab" aria-selected="false" aria-expanded="false" aria-controls="{{ id }}">
-          {{ content.field_book_type }}
+          {{ content.field_book_type }} {{ content.field_book_ebook_ownership}}
           <i aria-hidden="true" focusable="false" role="presentation" class="fas fa-chevron-up"></i>
         </button>
       </h2>
 
       <div id="{{ id }}" class="accordion__content" aria-labelledby="{{ label }}" data-parent="#accordion-book-type">
-        {{ content|without('field_book_type') }}
+        {{ content|without('field_book_type', 'field_book_ebook_ownership') }}
       </div>
     {% endblock %}
   </div>
