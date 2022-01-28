@@ -63,11 +63,13 @@ class HoursFilterForm extends FormBase {
     else {
       $child_heading_size = HeadlineHelper::getHeadingSizeUp($config['heading_size']);
     }
+
     $block_config = [
       'resource' => $config['resource'],
       'display_summary' => $config['display_summary'],
       'child_heading_size' => $child_heading_size,
     ];
+
     $form['block_config'] = [
       '#type' => 'hidden',
       '#value' => $block_config,
@@ -86,18 +88,23 @@ class HoursFilterForm extends FormBase {
       ];
     }
 
-    $result = $this->hours->getHours($config['resource']);
-    $form_id = $form_state->getBuildInfo()['form_id'];
-    $result_id = $form_id . '_result';
     $form['results'] = [
       '#type' => 'container',
       '#attributes' => [
         'role' => 'region',
         'aria-live' => 'assertive',
+        'id' => 'results-container',
       ],
     ];
-    $formatted_results = $this->hoursRender($result, $result_id, $block_config);
-    $form['results']['result'] = $formatted_results;
+
+    $form['submit'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Submit'),
+      '#ajax' => [
+        'callback' => '::dateFilterCallback',
+        'wrapper' => 'results-container',
+      ],
+    ];
 
     return $form;
   }
@@ -107,12 +114,11 @@ class HoursFilterForm extends FormBase {
    */
   public function dateFilterCallback(array &$form, FormStateInterface $form_state): AjaxResponse {
     $response = new AjaxResponse();
-    $date = $form_state->getValue('date');
+    $date = $form_state->getValue('date') ?? date('Y-m-d');
     $block_config = $form_state->getValue('block_config');
     $result = $this->hours->getHours($block_config['resource'], $date, $date);
-    $result_id = $form['results']['result']['#attributes']['id'];
-    $formatted_results = $this->hoursRender($result, $result_id, $block_config);
-    $response->addCommand(new HtmlCommand('#' . $result_id, $formatted_results));
+    $formatted_results = $this->hoursRender($result, 'results-container', $block_config);
+    $response->addCommand(new HtmlCommand('#' . 'results-container', $formatted_results));
     $message = $this->t('Returning resource hours information for @date.', ['@date' => $date]);
     $response->addCommand(new AnnounceCommand($message, 'polite'));
 
@@ -235,7 +241,6 @@ class HoursFilterForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    // Do nothing.
   }
 
 }
