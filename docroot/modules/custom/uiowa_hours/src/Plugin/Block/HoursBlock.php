@@ -7,6 +7,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\Core\Url;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\uiowa_hours\HoursApi;
@@ -21,7 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   category = @Translation("Site custom")
  * )
  */
-class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
+class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface, TrustedCallbackInterface {
 
   /**
    * The Hours API service.
@@ -96,16 +97,17 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
    * {@inheritdoc}
    */
   public function build() {
-    $config = $this->getConfiguration();
 
-    $build['heading'] = [
-      '#theme' => 'uiowa_core_headline',
-      '#headline' => $config['headline'],
-      '#hide_headline' => $config['hide_headline'],
-      '#heading_size' => $config['heading_size'],
-      '#headline_style' => $config['headline_style'],
+
+    $build = [
+      '#lazy_builder' => [
+        static::class . '::lazyBuilder',
+        ['foo'],
+      ],
+      '#cache' => [
+        'max-age' => 0,
+      ],
     ];
-    $build['form'] = $this->formBuilder->getForm('Drupal\uiowa_hours\Form\HoursFilterForm', $config);
 
     return $build;
   }
@@ -183,4 +185,22 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
     parent::blockSubmit($form, $form_state);
   }
 
+  public static function lazyBuilder($config) {
+//    $form = \Drupal::service('form_builder')->buildForm('Drupal\uiowa_hours\Form\HoursFilterForm', $config);
+    $build = [
+      'foo' => [
+        '#markup' => '<p>This is a test.</p>',
+      ],
+    ];
+
+    return $build;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function trustedCallbacks()
+  {
+    return ['lazyBuilder'];
+  }
 }
