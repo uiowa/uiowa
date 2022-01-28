@@ -47,6 +47,30 @@ function grad_admissions_core_form_alter(&$form, FormStateInterface $form_state,
  */
 function grad_admissions_core_preprocess_field(&$variables) {
   switch ($variables['element']['#field_name']) {
+    case 'field_area_of_study_contact':
+      if (!isset($variables['title_attributes']['class'])) {
+        $variables['title_attributes']['class'] = '';
+      }
+      $variables['title_attributes']['class'] .= 'h4 headline headline--serif headline--underline';
+      $variables['field_label_icon'] = 'fa-info-circle fas';
+      break;
+
+    case 'field_area_of_study_college':
+      if (!isset($variables['title_attributes']['class'])) {
+        $variables['title_attributes']['class'] = '';
+      }
+      $variables['title_attributes']['class'] .= 'h4 headline headline--serif headline--underline';
+      $variables['field_label_icon'] = 'fa-link fas';
+      break;
+
+    case 'field_area_of_study_apply':
+      if (!isset($variables['title_attributes']['class'])) {
+        $variables['title_attributes']['class'] = '';
+      }
+      $variables['title_attributes']['class'] .= 'h4 headline headline--serif headline--underline';
+      $variables['field_label_icon'] = 'fa-edit fas';
+      break;
+
     case 'field_area_of_study_college':
       $variables['label'] = t('Related Links');
       $node = $variables['element']['#object'];
@@ -199,24 +223,8 @@ function grad_admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--taxonomy-term--field-college-website--colleges--default',
       'base hook' => 'field',
     ],
-    'field__node__field_area_of_study_college__area_of_study' => [
-      'template' => 'field--node--field-area-of-study-college--area-of-study',
-      'base hook' => 'field',
-    ],
-    'field__node__field_area_of_study_apply__area_of_study' => [
-      'template' => 'field--node--field-area-of-study-apply--area-of-study',
-      'base hook' => 'field',
-    ],
-    'field__node__field_area_of_study_contact__area_of_study' => [
-      'template' => 'field--node--field-area-of-study-contact--area-of-study',
-      'base hook' => 'field',
-    ],
     'field__node__field_costs_estimate_title__costs_estimate__default' => [
       'template' => 'field--node--field-costs-estimate-title--costs-estimate---default',
-      'base hook' => 'field',
-    ],
-    'field__node__field_area_of_study_grad_costs__area_of_study__default' => [
-      'template' => 'field--node--field-area-of-study-grad-costs--area-of-study--default',
       'base hook' => 'field',
     ],
     'field__node__field_costs_estimate_year__costs_estimate' => [
