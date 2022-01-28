@@ -13,5 +13,5 @@
 #}
 {% set classes = [ 'bttn', 'bttn--tertiary', 'bttn--caps' ] %}
 <a href="{{ url }}"{{ attributes.addClass(classes) }}><span class="fas fa-rss"></span>
-  {{ 'RSS feed'|t({'@title': title|raw}) }}
+  {{ 'RSS feed'|t({'@title': title}) }}
 </a>
