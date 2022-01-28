@@ -3790,3 +3790,9 @@ $sites['orgaiaa.uiowa.ddev.site'] = 'aiaa.org.uiowa.edu';
 $sites['orgaiaa.dev.drupal.uiowa.edu'] = 'aiaa.org.uiowa.edu';
 $sites['orgaiaa.stage.drupal.uiowa.edu'] = 'aiaa.org.uiowa.edu';
 $sites['orgaiaa.prod.drupal.uiowa.edu'] = 'aiaa.org.uiowa.edu';
+
+// Directory aliases for gao.fo.uiowa.edu.
+$sites['fogao.uiowa.ddev.site'] = 'gao.fo.uiowa.edu';
+$sites['fogao.dev.drupal.uiowa.edu'] = 'gao.fo.uiowa.edu';
+$sites['fogao.stage.drupal.uiowa.edu'] = 'gao.fo.uiowa.edu';
+$sites['fogao.prod.drupal.uiowa.edu'] = 'gao.fo.uiowa.edu';
