@@ -214,9 +214,10 @@ class ReplaceCommands extends BltTasks {
    * @hook post-command source:build:settings
    */
   public function postSourceBuildSettings() {
+    $root = $this->getConfigValue('repo.root');
+
     foreach ($this->getConfigValue('multisites') as $site) {
       $this->switchSiteContext($site);
-
       $origin = $this->getConfigValue('uiowa.stage_file_proxy.origin');
 
       if (!$origin) {
@@ -228,16 +229,16 @@ class ReplaceCommands extends BltTasks {
 \$config['stage_file_proxy.settings']['origin'] = '$origin';
 EOD;
 
-      $this->taskWriteToFile($this->getConfigValue('repo.root') . "/docroot/sites/$site/settings/local.settings.php")
+      $this->taskWriteToFile("$root/docroot/sites/$site/settings/local.settings.php")
         ->append()
         ->text($text)
         ->run();
     }
 
-    $from = $this->getConfigValue('repo.root') . '/tmp/local.blt.yml';
+    $from = "$root/tmp/local.blt.yml";
 
     if (file_exists($from)) {
-      $to = $this->getConfigValue('repo.root') . '/blt/local.blt.yml';
+      $to = "$root/blt/local.blt.yml";
 
       $this->taskFilesystemStack()
         ->stopOnFail(TRUE)
