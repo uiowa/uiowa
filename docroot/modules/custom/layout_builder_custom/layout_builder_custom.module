@@ -325,16 +325,20 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           if (isset($form['layout_builder_style_menu_orientation'])) {
             // Move the admin label up.
             $form['settings']['admin_label']['#weight'] = -20;
-            // Copy the layout_builder_style_menu_orientation field into a new
-            // field and adjust the settings.
-            $form['settings']['menu_orientation'] = [
-              '#weight' => -10
+
+            // Move the layout_builder_style_menu_orientation into settings so
+            // it can be placed below the admin label.
+            $form['settings']['layout_builder_style_menu_orientation'] = [
+              '#weight' => -10,
+              '#tree' => FALSE,
             ] + $form['layout_builder_style_menu_orientation'];
+
+            unset($form['layout_builder_style_menu_orientation']);
 
             // Add #states to level field to hide it if horizontal is selected.
             $form['settings']['menu_levels']['depth']['#states'] = [
               'invisible' => [
-                ':input[name="settings[menu_orientation]"]' => [
+                ':input[name="layout_builder_style_menu_orientation"]' => [
                   'value' => 'block_menu_horizontal',
                 ],
               ],
@@ -345,6 +349,10 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             // Unset the layout builder style heading.
             unset($form['lbs_heading']);
           }
+
+          // Hide some options we don't want people to use currently.
+          $form['settings']['style']['#access'] = FALSE;
+          $form['settings']['menu_levels']['expand_all_items'] = FALSE;
 
           $form['settings']['advanced']['follow']['#default_value'] = 1;
           break;
@@ -527,8 +535,11 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
       break;
 
     case 'menu_block:main':
-      // @todo Check if horizontal is selected for menu orientation and set
-      //   menu depth to 1 if it is.
+      // Check if horizontal is selected for menu orientation and set
+      // menu depth to 1 if it is.
+      if ($form_state->getValue('layout_builder_style_menu_orientation') == 'block_menu_horizontal') {
+        $form_state->setValue(['settings', 'depth'], 1);
+      }
   }
 
 }
