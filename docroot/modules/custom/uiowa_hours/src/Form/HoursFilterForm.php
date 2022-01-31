@@ -88,12 +88,15 @@ class HoursFilterForm extends FormBase {
       ];
     }
 
+    $form_id = $form_state->getBuildInfo()['form_id'];
+    $result_id = $form_id . '_result';
+
     $form['results'] = [
       '#type' => 'container',
       '#attributes' => [
         'role' => 'region',
         'aria-live' => 'assertive',
-        'id' => 'results-container',
+        'id' => $result_id,
       ],
     ];
 
@@ -116,9 +119,11 @@ class HoursFilterForm extends FormBase {
     $response = new AjaxResponse();
     $date = $form_state->getValue('date') ?? date('Y-m-d');
     $block_config = $form_state->getValue('block_config');
+    $form_id = $form_state->getBuildInfo()['form_id'];
+    $result_id = $form_id . '_result';
     $result = $this->hours->getHours($block_config['resource'], $date, $date);
-    $formatted_results = $this->hoursRender($result, 'results-container', $block_config);
-    $response->addCommand(new HtmlCommand('#' . 'results-container', $formatted_results));
+    $formatted_results = $this->hoursRender($result, $result_id, $block_config);
+    $response->addCommand(new HtmlCommand('#' . $result_id, $formatted_results));
     $message = $this->t('Returning resource hours information for @date.', ['@date' => $date]);
     $response->addCommand(new AnnounceCommand($message, 'polite'));
 
