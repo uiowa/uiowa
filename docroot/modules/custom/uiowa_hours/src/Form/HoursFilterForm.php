@@ -111,6 +111,7 @@ class HoursFilterForm extends FormBase {
       '#ajax' => [
         'callback' => '::dateFilterCallback',
         'wrapper' => 'results-container',
+        'disable-refocus' => TRUE,
       ],
       '#attributes' => [
         'class' => [
