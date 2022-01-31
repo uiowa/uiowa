@@ -5,6 +5,7 @@
  * Profile code.
  */
 
+use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Database\Query\AlterableInterface;
@@ -443,6 +444,20 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
  * Implements hook_form_alter().
  */
 function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Hide revision information on media entity add/edit forms
+  // to prevent new revisions from being created. This aids our
+  // file replace functionality.
+  $form_object = $form_state->getFormObject();
+  if (is_a($form_object, ContentEntityForm::class)) {
+    /** @var \Drupal\Core\Entity\ContentEntityForm $form_object */
+    /** @var \Drupal\Core\Entity\ContentEntityTypeInterface $entity_type */
+    if ('media' == $form_object->getEntity()->getEntityType()->id()) {
+      if (isset($form['revision_information'])) {
+        $form['revision_information']['#access'] = FALSE;
+      }
+    }
+  }
+
   switch ($form_id) {
     // Restrict theme settings form for non-admins.
     case 'system_theme_settings':
