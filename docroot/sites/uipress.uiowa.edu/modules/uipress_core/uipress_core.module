@@ -125,6 +125,30 @@ function uipress_core_preprocess_node(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK().
+ */
+function uipress_core_preprocess_views_view_unformatted(&$variables) {
+  /** @var \Drupal\views\ViewExecutable $view */
+  $view = $variables['view'];
+  if ($view->id() === 'book_publication_details') {
+    $rows = $variables['rows'];
+    $style = $view->style_plugin;
+
+    foreach ($rows as $id => &$row) {
+      // Initialize card_options variable.
+      $row['template_options'] = [
+        'attributes' => $row['attributes'],
+        'accordion_item_content' => $row['content'],
+        'accordion_item_expanded' => TRUE,
+        'accordion_item_id' => "book-details-$id",
+        'accordion_item_label' => $view->getTitle(),
+        'accordion_multiselectable' => TRUE,
+      ];
+    }
+  }
+}
+
+/**
  * Implements hook_theme().
  */
 function uipress_core_theme($existing, $type, $theme, $path) {
@@ -144,6 +168,10 @@ function uipress_core_theme($existing, $type, $theme, $path) {
     'paragraph__book_type__default' => [
       'template' => 'paragraph--book-type--default',
       'base hook' => 'paragraph',
+    ],
+    'views_view_unformatted__book_publication_details' => [
+      'template' => 'views-view-unformatted--book-publication-details',
+      'base hook' => 'view',
     ],
   ];
 }
