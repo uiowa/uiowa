@@ -52,10 +52,13 @@ display:
       pager:
         type: mini
         options:
-          items_per_page: 10
+          items_per_page: 12
           offset: 0
           id: 0
           total_pages: 0
+          tags:
+            previous: ‹‹
+            next: ››
           expose:
             items_per_page: false
             items_per_page_label: 'Items per page'
@@ -64,9 +67,6 @@ display:
             items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
-          tags:
-            previous: ‹‹
-            next: ››
       sorts:
         sticky:
           id: sticky
@@ -305,7 +305,8 @@ display:
         type: views_query
         options: {  }
       path: taxonomy/term/%
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender: {  }
     cache_metadata:
       contexts:
         - 'languages:language_interface'
