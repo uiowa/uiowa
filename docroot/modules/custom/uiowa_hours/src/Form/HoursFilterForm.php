@@ -54,7 +54,7 @@ class HoursFilterForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, $config = NULL) {
-    $form['#attached']['library'][] = 'uiowa_hours/uiowa-hours-finishedinput';
+    $form['#attached']['library'][] = 'uiowa_hours/filter_form';
     $form['#attributes']['class'][] = 'form-inline clearfix uiowa-hours-filter-form';
 
     if (empty($config['headline'])) {
@@ -77,6 +77,8 @@ class HoursFilterForm extends FormBase {
 
     // Date field with custom delayed ajax callback.
     if ($config['display_datepicker'] == 1) {
+      $form['#attached']['library'][] = 'uiowa_hours/finishedinput';
+
       $form['date'] = [
         '#type' => 'date',
         '#title' => $this->t('Filter by date'),
