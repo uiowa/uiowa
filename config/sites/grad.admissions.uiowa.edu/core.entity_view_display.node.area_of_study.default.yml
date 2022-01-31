@@ -123,18 +123,22 @@ third_party_settings:
           context_mapping: {  }
         components:
           -
-            uuid: cf000078-d0e7-4852-ab67-ec3d8743b6b6
+            uuid: 46483fec-f25c-4579-b70c-65bf1b9b0e32
             region: second
             configuration:
-              id: 'field_block:node:area_of_study:field_area_of_study_college'
+              id: 'field_block:node:area_of_study:field_area_of_study_link'
               label: null
               provider: layout_builder
               label_display: null
               formatter:
                 label: above
-                type: entity_reference_label
+                type: link
                 settings:
-                  link: true
+                  trim_length: 0
+                  url_only: false
+                  url_plain: false
+                  rel: '0'
+                  target: '0'
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
@@ -182,7 +186,7 @@ third_party_settings:
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
-            additional: { }
+            additional: {  }
             weight: 10
           -
             uuid: 3de645a9-d98a-4ba0-b253-ed3757dc6916
