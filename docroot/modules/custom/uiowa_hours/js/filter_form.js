@@ -6,7 +6,8 @@
         let isDisabled = $('input[type="submit"]', this).prop('disabled');
 
         if (isDisabled) {
-          $('.uiowa-hours-container', this).html('<p>Placeholder for "Hours" data</p>');
+          let hoursConfig = $('input[name="block_config"]', this).val().split(' ');
+          $('.uiowa-hours-container', this).html('<p>Placeholder for ' + hoursConfig[0] + ' data</p>');
         }
         else {
           $('input[type="submit"]', this).mousedown();
