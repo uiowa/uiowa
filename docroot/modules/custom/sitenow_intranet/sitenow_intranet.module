@@ -52,7 +52,8 @@ function sitenow_intranet_restrict_ip_access_denied_page_alter(&$page) {
       '#prefix' => '<p class="text-align-center">',
       '#suffix' => '</p>',
     ];
-  } else {
+  }
+  else {
     $page['main']['access_denied_message'] = [
       '#markup' => t('You are not authorized to access this page.'),
       '#prefix' => '<p class="text-align-center">',
