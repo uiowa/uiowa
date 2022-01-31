@@ -99,6 +99,9 @@ class HoursFilterForm extends FormBase {
         'role' => 'region',
         'aria-live' => 'assertive',
         'id' => $result_id,
+        'class' => [
+          'uiowa-hours-container',
+        ],
       ],
     ];
 
@@ -108,6 +111,11 @@ class HoursFilterForm extends FormBase {
       '#ajax' => [
         'callback' => '::dateFilterCallback',
         'wrapper' => 'results-container',
+      ],
+      '#attributes' => [
+        'class' => [
+          'element-invisible',
+        ],
       ],
     ];
 
@@ -151,6 +159,7 @@ class HoursFilterForm extends FormBase {
     $data = $result['data'];
     $start = $result['query']['start'];
     $end = $result['query']['end'];
+
     $card_classes = [
       'uiowa-hours',
       'card--enclosed',
