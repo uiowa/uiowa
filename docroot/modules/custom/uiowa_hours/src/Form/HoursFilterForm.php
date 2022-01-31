@@ -126,13 +126,14 @@ class HoursFilterForm extends FormBase {
    * Date Filter Callback.
    */
   public function dateFilterCallback(array &$form, FormStateInterface $form_state): AjaxResponse {
-    $response = new AjaxResponse();
     $date = $form_state->getValue('date') ?? date('Y-m-d');
     $block_config = $form_state->getValue('block_config');
     $form_id = $form_state->getBuildInfo()['form_id'];
     $result_id = $form_id . '_result';
     $result = $this->hours->getHours($block_config['resource'], $date, $date);
     $formatted_results = $this->hoursRender($result, $result_id, $block_config);
+
+    $response = new AjaxResponse();
     $response->addCommand(new HtmlCommand('#' . $result_id, $formatted_results));
     $message = $this->t('Returning resource hours information for @date.', ['@date' => $date]);
     $response->addCommand(new AnnounceCommand($message, 'polite'));
