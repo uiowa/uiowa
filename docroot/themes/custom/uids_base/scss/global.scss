@@ -213,7 +213,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .layout-builder-disabled main.page__container {
   margin: 0 $mobile-width-gutter $mobile-width-gutter;
 
-  @include breakpoint(container) {
+  @include breakpoint(page-container) {
     margin: 0 auto;
     width: 100%;
   }
@@ -222,7 +222,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .layout-builder-disabled .uiowa-bar .page__container {
   margin-top: 0;
 
-  @include breakpoint(container) {
+  @include breakpoint(page-container) {
     margin: 0 auto;
   }
 }
@@ -235,14 +235,14 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
 .content__container {
   .layout__spacing_container {
-    @extend %container;
+    @include container-width;
   }
 
   .page__container--extended,
   .page__container--extended.layout--has-sidebar,
   .page__container--extended.sidebar-invisible {
     .layout__spacing_container {
-      @include breakpoint(container) {
+      @include breakpoint(page-container) {
         max-width: 100em;
         padding-right: $lg;
         padding-left: $lg;
@@ -260,7 +260,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
         padding-right: 1.25rem;
         padding-left: 1.25rem;
       }
-      @include breakpoint(container) {
+      @include breakpoint(page-container) {
         padding-right: 0;
         padding-left: 0;
       }
@@ -455,7 +455,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       text-align: center;
       margin: 0 $sm $sm 0;
 
-      @include breakpoint(container) {
+      @include breakpoint(page-container) {
         border-right: none;
         margin: 0;
         flex: 1;
@@ -477,7 +477,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
       &:last-child {
         a {
-          @include breakpoint(container) {
+          @include breakpoint(page-container) {
             border-right: 1px solid $grey-light;
           }
         }
