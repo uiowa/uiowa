@@ -54,7 +54,8 @@
 
       <h2 {{ attributes.addClass(['accordion__heading']) }} id="{{ label }}">
         <button class="accordion__button" role="tab" aria-selected="false" aria-expanded="false" aria-controls="{{ id }}">
-          {{ content.field_book_type }} {{ content.field_book_ebook_ownership}}
+          {% set ownership = content.field_book_ebook_ownership.0 %}
+          {{ content.field_book_type.0 }}{{ ownership ? ', ' }}{{ ownership }} {{ ownership ? 'ownership' }}
           <i aria-hidden="true" focusable="false" role="presentation" class="fas fa-chevron-up"></i>
         </button>
       </h2>
