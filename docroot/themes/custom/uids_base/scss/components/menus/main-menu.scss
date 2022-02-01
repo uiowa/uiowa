@@ -10,7 +10,8 @@
 }
 
 
-// set horizontal only if used in layout--onecol section
+// set horizontal only if used in layout--onecol section.
+// @todo remove once https://github.com/GoogleChromeLabs/container-query-polyfill/issues/23 is resolved.
 @include breakpoint(sm) {
   .layout--onecol {
     .main--secondary--horizontal {
