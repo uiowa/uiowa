@@ -17,12 +17,11 @@
  * @ingroup themeable
  */
 #}
-{% for key,row in rows %}
-  {% set row_classes = [
-    default_row_class ? 'views-row',
-  ] %}
-  <div{{ row.attributes.addClass(row_classes) }}>
-    {% embed '@uids_base/uids/accordion-item.html.twig' with row.template_options only %}
-    {% endembed %}
-  </div>
-{% endfor %}
+<div class="accordion" role="tablist" aria-multiselectable="true" id="book-publication-details-accordion">
+  {% for row in rows %}
+    <div{{ row.attributes }}>
+      {% embed '@uids_base/uids/accordion-item.html.twig' with row.template_options only %}
+      {% endembed %}
+    </div>
+  {% endfor %}
+</div>

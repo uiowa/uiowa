@@ -135,7 +135,7 @@ function uipress_core_preprocess_views_view_unformatted(&$variables) {
   /** @var \Drupal\views\ViewExecutable $view */
   $view = $variables['view'];
   if ($view->id() === 'book_publication_details') {
-    $rows = $variables['rows'];
+    $rows = &$variables['rows'];
     $style = $view->style_plugin;
 
     foreach ($rows as $id => &$row) {
@@ -147,6 +147,7 @@ function uipress_core_preprocess_views_view_unformatted(&$variables) {
         'accordion_item_id' => "book-details-$id",
         'accordion_item_label' => $view->getTitle(),
         'accordion_multiselectable' => TRUE,
+        'accordion_parent_id' => '',
       ];
     }
   }
