@@ -103,7 +103,6 @@ function uipress_core_preprocess_node(&$variables) {
       'headline_level' => 'h3',
       'headline_class' => 'headline headline--uppercase',
     ];
-    $thing = 'that';
   }
 }
 
@@ -117,4 +116,16 @@ function uipress_core_theme($existing, $type, $theme, $path) {
       'base hook' => 'node',
     ],
   ];
+}
+
+/**
+ * Implements hook_preprocess_views_view().
+ */
+function uipress_core_preprocess_views_view(&$variables) {
+  $view = $variables['view'];
+  $id = $view->storage->id();
+
+  if ($id == 'taxonomy_term') {
+    $variables['attributes']['class'][] = 'grid--threecol--33-34-33';
+  }
 }
