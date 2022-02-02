@@ -203,7 +203,13 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
   protected function brokenLinkLookup($nid) {
     $lookup = [];
 
-    $map = [];
+    $map = [
+      170 => 586,
+      179 => 131,
+      578 => 201,
+      74 => 136,
+      76 => 596,
+    ];
 
     if (isset($map[$nid])) {
       $lookup = [
