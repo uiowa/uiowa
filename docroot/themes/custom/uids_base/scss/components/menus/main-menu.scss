@@ -14,7 +14,7 @@
 // @todo remove once https://github.com/GoogleChromeLabs/container-query-polyfill/issues/23 is resolved.
 @include breakpoint(sm) {
   .layout--onecol {
-    .main--secondary--horizontal {
+    .menu-wrapper--horizontal {
       padding: 0;
       @include container-width;
       border-top: none;
@@ -27,7 +27,6 @@
         }
 
         li {
-          font-size: calc(100% + 0.1vw);
           display: flex;
           border-bottom: none;
 
