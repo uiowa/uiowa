@@ -79,10 +79,11 @@ class HoursFilterForm extends FormBase {
     if ($config['display_datepicker'] == 1) {
       $form['#attached']['library'][] = 'uiowa_hours/finishedinput';
 
+      // The default value will be set via JS.
       $form['date'] = [
         '#type' => 'date',
         '#title' => $this->t('Filter by date'),
-        '#default_value' => date('Y-m-d'),
+        '#default_value' => NULL,
         '#ajax' => [
           'callback' => [$this, 'dateFilterCallback'],
           'event' => 'finishedinput',
@@ -194,8 +195,8 @@ class HoursFilterForm extends FormBase {
         '#data' => [
           'child_heading_size' => $block_config['child_heading_size'],
           'date' => $this->t('@start@end', [
-            '@start' => date('F d, Y', $start),
-            '@end' => $end == $start ? NULL : ' - ' . date('F d, Y', $end),
+            '@start' => date('F j, Y', $start),
+            '@end' => $end == $start ? NULL : ' - ' . date('F j, Y', $end),
           ]),
           'times' => [
             '#markup' => $this->t('<span class="badge badge--orange">Closed</span>'),
@@ -223,7 +224,7 @@ class HoursFilterForm extends FormBase {
           ],
           '#data' => [
             'child_heading_size' => $block_config['child_heading_size'],
-            'date' => date('F d, Y', strtotime($key)),
+            'date' => date('F j, Y', strtotime($key)),
             'times' => [
               '#theme' => 'item_list',
               '#items' => [],
