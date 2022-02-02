@@ -118,6 +118,7 @@ class HoursFilterForm extends FormBase {
         'class' => [
           'element-invisible',
         ],
+        'tabindex' => -1,
       ],
     ];
 
