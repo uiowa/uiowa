@@ -21,33 +21,33 @@ bundle: uiowa_banner
 mode: default
 content:
   field_uiowa_banner_autoplay:
-    weight: 4
+    type: boolean
     label: above
     settings:
       format: default
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    type: boolean
+    weight: 4
     region: content
   field_uiowa_banner_excerpt:
-    weight: 1
+    type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 1
     region: content
   field_uiowa_banner_image:
     type: entity_reference_entity_view
-    weight: 3
     label: hidden
     settings:
       view_mode: full__ultrawide
       link: false
     third_party_settings: {  }
+    weight: 3
     region: content
   field_uiowa_banner_link:
-    weight: 2
+    type: link_separate
     label: hidden
     settings:
       trim_length: 80
@@ -56,14 +56,14 @@ content:
       rel: '0'
       target: '0'
     third_party_settings: {  }
-    type: link_separate
+    weight: 2
     region: content
   field_uiowa_banner_title:
-    weight: 0
+    type: heading
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: heading
+    weight: 0
     region: content
 hidden:
   search_api_excerpt: true

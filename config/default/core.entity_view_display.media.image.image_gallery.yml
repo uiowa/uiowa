@@ -21,8 +21,6 @@ mode: image_gallery
 content:
   field_media_image:
     type: colorbox
-    weight: 0
-    region: content
     label: hidden
     settings:
       colorbox_node_style: image_gallery
@@ -37,6 +35,8 @@ content:
         lazy_image: '1'
         placeholder_style: ''
         data_uri: false
+    weight: 0
+    region: content
 hidden:
   created: true
   field_media_caption: true
