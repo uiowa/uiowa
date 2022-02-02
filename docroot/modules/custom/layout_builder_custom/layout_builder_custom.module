@@ -295,10 +295,14 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             // it can be placed below the admin label.
             $form['settings']['layout_builder_style_menu_orientation'] = [
               '#weight' => -10,
+              // We set #tree to FALSE because this value will override the
+              // value from this will override the original in the form state.
               '#tree' => FALSE,
             ] + $form['layout_builder_style_menu_orientation'];
 
-            unset($form['layout_builder_style_menu_orientation']);
+            // To get the style to process correctly, we need to leave it here
+            // but make it inaccessible.
+            $form['layout_builder_style_menu_orientation']['#access'] = FALSE;
 
             // Add #states to level field to hide it if horizontal is selected.
             $form['settings']['menu_levels']['depth']['#states'] = [
