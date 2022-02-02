@@ -3850,3 +3850,9 @@ $sites['lawibl.uiowa.ddev.site'] = 'ibl.law.uiowa.edu';
 $sites['lawibl.dev.drupal.uiowa.edu'] = 'ibl.law.uiowa.edu';
 $sites['lawibl.stage.drupal.uiowa.edu'] = 'ibl.law.uiowa.edu';
 $sites['lawibl.prod.drupal.uiowa.edu'] = 'ibl.law.uiowa.edu';
+
+// Directory aliases for itsecurity.uiowa.edu.
+$sites['itsecurity.uiowa.ddev.site'] = 'itsecurity.uiowa.edu';
+$sites['itsecurity.dev.drupal.uiowa.edu'] = 'itsecurity.uiowa.edu';
+$sites['itsecurity.stage.drupal.uiowa.edu'] = 'itsecurity.uiowa.edu';
+$sites['itsecurity.prod.drupal.uiowa.edu'] = 'itsecurity.uiowa.edu';
