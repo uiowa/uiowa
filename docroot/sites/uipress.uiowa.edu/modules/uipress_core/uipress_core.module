@@ -106,6 +106,7 @@ function uipress_core_preprocess_node(&$variables) {
     $media_styles = [
       'card__media--medium',
       'card__media',
+      'example'
     ];
     $attributes = new Attribute($variables['attributes']);
     $attributes->addClass($default_classes);
@@ -124,6 +125,11 @@ function uipress_core_preprocess_node(&$variables) {
       'headline_level' => 'h3',
       'headline_class' => 'card__title headline',
     ];
+  }
+
+  switch ($node->getType()) {
+    case 'book':
+      $variables['#attached']['library'][] = 'uipress_core/book';
   }
 }
 
