@@ -79,10 +79,11 @@ class HoursFilterForm extends FormBase {
     if ($config['display_datepicker'] == 1) {
       $form['#attached']['library'][] = 'uiowa_hours/finishedinput';
 
+      // The default value will be set via JS.
       $form['date'] = [
         '#type' => 'date',
         '#title' => $this->t('Filter by date'),
-        '#default_value' => date('Y-m-d'),
+        '#default_value' => NULL,
         '#ajax' => [
           'callback' => [$this, 'dateFilterCallback'],
           'event' => 'finishedinput',
