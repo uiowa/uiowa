@@ -93,7 +93,9 @@ process:
     process:
       value: value
       format: format
-  field_image: field_banner_fid
+  field_image:
+    plugin: default_value
+    default_value: '16'
   body:
     plugin: sub_process
     source: field_grad_intro
