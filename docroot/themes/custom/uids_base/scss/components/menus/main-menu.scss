@@ -14,6 +14,64 @@
 // @todo remove once https://github.com/GoogleChromeLabs/container-query-polyfill/issues/23 is resolved.
 @include breakpoint(sm) {
   .layout--onecol {
+
+    &[class*="bg--black"],
+    &[class*="bg--gold"],
+    &[class*="bg--gray"] {
+      .menu-wrapper--horizontal {
+        .menu {
+          li {
+            a.is-active {
+              background: #fff;
+            }
+          }
+        }
+      }
+    }
+
+    &[class*="bg--black"] {
+      .menu-wrapper--horizontal {
+        .menu {
+          li a {
+            &:after {
+              bottom: 0;
+            }
+          }
+
+          li {
+            a.is-active {
+              color: $secondary;
+            }
+          }
+        }
+      }
+    }
+
+    &[class*="bg--gold"] {
+      .menu-wrapper--horizontal {
+        .menu {
+          li a {
+            &:before {
+              background-color: $brand-cool-gray;
+            }
+          }
+
+          li {
+            a.is-active {
+              &:before {
+                border-top-color: $brand-cool-gray;
+                background-color: transparent;
+              }
+
+              &:after {
+                background-color: $brand-cool-gray;
+              }
+            }
+          }
+        }
+      }
+    }
+
     .menu-wrapper--horizontal {
       padding: 0;
       @include container-width;
@@ -129,54 +187,6 @@
           }
         }
 
-        [class*="bg--black"] &,
-        [class*="bg--gold"] &,
-        [class*="bg--gray"] &,
-        .bg-pattern--brain-black &,
-        .bg-pattern--brain-reversed & {
-          li {
-            a.is-active {
-              background: #fff;
-            }
-          }
-        }
-
-        [class*="bg--black"] &,
-        .bg-pattern--brain-black & {
-          li a {
-            &:after {
-              bottom: 0;
-            }
-          }
-
-          li {
-            a.is-active {
-              color: $secondary;
-            }
-          }
-        }
-
-        [class*="bg--gold"] &,
-        .bg-pattern--brain-reversed & {
-          li a {
-            &:before {
-              background-color: $brand-cool-gray;
-            }
-          }
-
-          li {
-            a.is-active {
-              &:before {
-                border-top-color: $brand-cool-gray;
-                background-color: transparent;
-              }
-
-              &:after {
-                background-color: $brand-cool-gray;
-              }
-            }
-          }
-        }
       }
 
       [class*="bg--gold"] &,
