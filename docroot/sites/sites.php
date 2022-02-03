@@ -3844,3 +3844,15 @@ $sites['sitesuiqsim.uiowa.ddev.site'] = 'uiqsim.sites.uiowa.edu';
 $sites['sitesuiqsim.dev.drupal.uiowa.edu'] = 'uiqsim.sites.uiowa.edu';
 $sites['sitesuiqsim.stage.drupal.uiowa.edu'] = 'uiqsim.sites.uiowa.edu';
 $sites['sitesuiqsim.prod.drupal.uiowa.edu'] = 'uiqsim.sites.uiowa.edu';
+
+// Directory aliases for ibl.law.uiowa.edu.
+$sites['lawibl.uiowa.ddev.site'] = 'ibl.law.uiowa.edu';
+$sites['lawibl.dev.drupal.uiowa.edu'] = 'ibl.law.uiowa.edu';
+$sites['lawibl.stage.drupal.uiowa.edu'] = 'ibl.law.uiowa.edu';
+$sites['lawibl.prod.drupal.uiowa.edu'] = 'ibl.law.uiowa.edu';
+
+// Directory aliases for itsecurity.uiowa.edu.
+$sites['itsecurity.uiowa.ddev.site'] = 'itsecurity.uiowa.edu';
+$sites['itsecurity.dev.drupal.uiowa.edu'] = 'itsecurity.uiowa.edu';
+$sites['itsecurity.stage.drupal.uiowa.edu'] = 'itsecurity.uiowa.edu';
+$sites['itsecurity.prod.drupal.uiowa.edu'] = 'itsecurity.uiowa.edu';
