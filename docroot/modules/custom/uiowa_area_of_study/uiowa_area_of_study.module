@@ -9,6 +9,7 @@
  * @see https://www.drupal.org/node/2217931
  */
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -31,6 +32,16 @@ function uiowa_area_of_study_form_alter(&$form, FormStateInterface $form_state, 
           'visible' => [
             ':input[name="field_area_of_study_source_link[0][uri]"]' => ['filled' => TRUE],
           ],
+        ];
+        $form["rabbit_hole"]["rh_action"]["#states"] = [
+          ':input[name="rh_action[page_redirect]"' => ['checked' => TRUE],
+        ];
+      }
+
+      // If not set, make sure to set the rabbit hole settings to display page.
+      else {
+        $form["rabbit_hole"]["rh_action"]["#states"] = [
+          ':input[name="rh_action[display_page]"' => ['checked' => TRUE],
         ];
       }
       break;
@@ -61,6 +72,35 @@ function uiowa_area_of_study_preprocess_field(&$variables) {
           // Assumes single link.
           $variables['items'][0]['content']['#options']['attributes']['class'][] = 'bttn bttn--full bttn--primary bttn--caps';
           break;
+      }
+      break;
+  }
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function uiowa_area_of_study_entity_presave(EntityInterface $entity) {
+  switch ($entity->bundle()) {
+    case 'area_of_study':
+      // Establish module specific to the split to handle this.
+      if (\Drupal::moduleHandler()->moduleExists('rabbit_hole')) {
+        $rabbit_hole = \Drupal::service('rabbit_hole.behavior_invoker')
+          ->getRabbitHoleValuesForEntity($entity);
+        $link_direct = $entity->get('field_area_of_study_link_direct')->value;
+        $source_link = $entity->get('field_area_of_study_source_link')->uri;
+        // If source link and direct to source are set,
+        // change the rabbit hole setting to redirect
+        // and set the url to the source link token.
+        if ($link_direct == 1 && isset($source_link) && !empty($source_link)) {
+          $entity->rh_action->value = 'page_redirect';
+          $entity->rh_redirect->value = '[node:field_area_of_study_source_link:uri]';
+          $entity->rh_redirect_response->value = '307';
+          $entity->rh_redirect_fallback_action->value = 'display_page';
+        }
+        else {
+          $entity->rh_action->value = 'display_page';
+        }
       }
       break;
   }
