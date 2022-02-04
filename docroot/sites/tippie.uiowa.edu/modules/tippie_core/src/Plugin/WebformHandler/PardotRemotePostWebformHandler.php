@@ -4,7 +4,6 @@ namespace Drupal\tippie_core\Plugin\WebformHandler;
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\webform\Plugin\WebformHandlerBase;
-use Drupal\webform\WebformSubmissionInterface;
 
 /**
  * Webform submission remote post handler.
@@ -21,6 +20,7 @@ use Drupal\webform\WebformSubmissionInterface;
  * )
  */
 class PardotRemotePostWebformHandler extends WebformHandlerBase {
+
   /**
    * {@inheritdoc}
    */
@@ -43,14 +43,13 @@ class PardotRemotePostWebformHandler extends WebformHandlerBase {
       '#type' => 'html_tag',
       '#tag' => 'iframe',
       '#attributes' => [
-      'src' => "https://go.tippie.uiowa.edu/l/683163/2019-08-29/3nqkk?$params",
-      'width' => 1,
-      'height' => 1,
-      'frameborder' => 0,
-      'style' => 'position: absolute;',
+        'src' => "https://go.tippie.uiowa.edu/l/683163/2019-08-29/3nqkk?$params",
+        'width' => 1,
+        'height' => 1,
+        'frameborder' => 0,
+        'style' => 'position: absolute;',
       ],
     ];
- }
+  }
+
 }
-
-
