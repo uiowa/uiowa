@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7e1154348c5ccc63e29af3f5d2355578",
+    "content-hash": "016d0032cac9169e3e41ea6f1561cfbd",
     "packages": [
         {
             "name": "acquia/blt",
@@ -3981,7 +3981,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-1.7",
-                    "datestamp": "1615218004",
+                    "datestamp": "1643232040",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4007,18 +4007,6 @@
                     "name": "Fredrik Jonsson",
                     "homepage": "https://www.drupal.org/u/frjo",
                     "role": "Maintainer"
-                },
-                {
-                    "name": "Sam152",
-                    "homepage": "https://www.drupal.org/user/1485048"
-                },
-                {
-                    "name": "frjo",
-                    "homepage": "https://www.drupal.org/user/5546"
-                },
-                {
-                    "name": "jdwfly",
-                    "homepage": "https://www.drupal.org/user/298179"
                 }
             ],
             "description": "A light-weight, customizable lightbox plugin for jQuery.",
@@ -4855,17 +4843,11 @@
         },
         {
             "name": "drupal/cshs",
-            "version": "3.5.0",
+            "version": "dev-3.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cshs.git",
-                "reference": "8.x-3.5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/cshs-8.x-3.5.zip",
-                "reference": "8.x-3.5",
-                "shasum": "d85d9aa905dd5e836fc93168694d28748d6efe53"
+                "reference": "fe1b07101d724e6aa5fbcd78c50ce2780534ed0f"
             },
             "require": {
                 "drupal/core": "^8 || ^9",
@@ -4873,12 +4855,15 @@
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-3.x": "3.x-dev"
+                },
                 "drupal": {
-                    "version": "8.x-3.5",
-                    "datestamp": "1632333917",
+                    "version": "8.x-3.5+3-dev",
+                    "datestamp": "1634110229",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -13144,12 +13129,12 @@
             },
             "type": "library",
             "autoload": {
-                "psr-4": {
-                    "DeepCopy\\": "src/DeepCopy/"
-                },
                 "files": [
                     "src/DeepCopy/deep_copy.php"
-                ]
+                ],
+                "psr-4": {
+                    "DeepCopy\\": "src/DeepCopy/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -15001,12 +14986,12 @@
             },
             "type": "library",
             "autoload": {
-                "psr-4": {
-                    "React\\Promise\\": "src/"
-                },
                 "files": [
                     "src/functions_include.php"
-                ]
+                ],
+                "psr-4": {
+                    "React\\Promise\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -21629,6 +21614,7 @@
         "drupal/better_exposed_filters": 10,
         "drupal/better_normalizers": 10,
         "drupal/config_split": 10,
+        "drupal/cshs": 20,
         "drupal/diff": 5,
         "drupal/entity_embed": 5,
         "drupal/entity_usage": 10,
