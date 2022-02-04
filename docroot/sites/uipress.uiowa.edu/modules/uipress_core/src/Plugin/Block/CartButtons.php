@@ -32,21 +32,12 @@ class CartButtons extends BlockBase {
       $paragraph = \Drupal\paragraphs\Entity\Paragraph::load( $pid );
       $isbn = $paragraph->get('field_book_isbn')->getValue()[0]['value'];
       $href = 'https://cdcshoppingcart.uchicago.edu/Cart/ChicagoBook.aspx?ISBN=' . $isbn . '&PRESS=iowa';
-      $add_to_cart_button =
-        '<a class="bttn bttn--primary bttn--caps" target="none" href=' . $href . '>
-        Add to Cart <span class="fa-arrow-right fas"></span>
-      </a>';
-      $view_cart_button =
-        '<a class="bttn bttn--secondary bttn--caps" target="none" href="https://cdcshoppingcart.uchicago.edu/Cart/Cart?PRESS=iowa">
-          View Cart <span class="fa-arrow-right fas"></span>
-      </a>';
-      $markup = '<div class="layout-builder-block">' . $add_to_cart_button . $view_cart_button . '</div>';
     }
     else {
-      $markup = 'Cart Buttons';
+      $href = '';
     }
 
-    return ['#markup' => $markup];
+    return ['#href' => $href];
   }
 
 }
