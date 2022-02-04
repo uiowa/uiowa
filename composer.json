@@ -46,7 +46,7 @@
         "leaflet": {
             "type": "package",
             "package": {
-                "name": "Leaflet/Leaflet",
+                "name": "leaflet/leaflet",
                 "version": "1.7.1",
                 "type": "drupal-library",
                 "dist": {
@@ -54,10 +54,6 @@
                     "type": "zip"
                 }
             }
-        },
-        "uiowa_auth": {
-            "type": "git",
-            "url": "git@github.com:uiowa/uiowa_auth"
         }
     },
     "autoload": {
@@ -74,6 +70,15 @@
         "sort-packages": true,
         "platform": {
             "php": "7.4"
+        },
+        "allow-plugins": {
+            "composer/installers": true,
+            "cweagans/composer-patches": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "acquia/blt": true,
+            "acquia/blt-phpcs": true,
+            "drupal/core-composer-scaffold": true,
+            "oomphinc/composer-installers-extender": true
         }
     },
     "require": {
@@ -107,7 +112,7 @@
         "drupal/config_split": "^2.0@beta",
         "drupal/core-composer-scaffold": "^9.2",
         "drupal/core-recommended": "^9.2",
-        "drupal/cshs": "^3.5",
+        "drupal/cshs": "3.x-dev#fe1b07101d724e6aa5fbcd78c50ce2780534ed0f",
         "drupal/default_content": "^2.0",
         "drupal/devel": "^4.0",
         "drupal/diff": "^1.0@RC",
@@ -119,6 +124,7 @@
         "drupal/entity_reference_revisions": "^1.5",
         "drupal/entity_reference_unpublished": "^1.1",
         "drupal/entity_usage": "^2.0@beta",
+        "drupal/externalauth": "^1.1",
         "drupal/field_delimiter": "^1.1",
         "drupal/field_group": "^3.2",
         "drupal/file_mdm": "^2.1",
@@ -178,6 +184,7 @@
         "drupal/responsive_table_filter": "^1.2",
         "drupal/restrict_ip": "^3.0@beta",
         "drupal/robotstxt": "^1.2",
+        "drupal/samlauth": "^3.3",
         "drupal/schema_metatag": "^2.1",
         "drupal/search_api_autocomplete": "^1.5",
         "drupal/simple_sitemap": "^4.0",
@@ -203,8 +210,7 @@
         "npm-asset/slick-carousel": "^1.8",
         "oomphinc/composer-installers-extender": "^2.0",
         "richardbporter/drush-users-commands": "^2.0",
-        "uiowa/block_content_template": "dev-master#ab06f7d5254b1d9a805c0717747e25f0ef508e59",
-        "uiowa/uiowa_auth": "^1.1"
+        "uiowa/block_content_template": "dev-master#ab06f7d5254b1d9a805c0717747e25f0ef508e59"
     },
     "require-dev": {
         "acquia/blt-phpcs": "^1.0",
@@ -309,7 +315,7 @@
             "docroot/modules/contrib/{$name}": [
                 "type:drupal-module"
             ],
-            "docroot/modules/uiowa/{$name}": [
+            "docroot/modules/custom/{$name}": [
                 "type:drupal-custom-module"
             ],
             "docroot/profiles/contrib/{$name}": [
