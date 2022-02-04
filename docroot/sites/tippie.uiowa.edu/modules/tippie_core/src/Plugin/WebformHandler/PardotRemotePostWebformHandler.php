@@ -50,10 +50,6 @@ class PardotRemotePostWebformHandler extends WebformHandlerBase {
       'style' => 'position: absolute;',
       ],
     ];
-      // Remove submission ID from privateTempStore, so we only submit once.
-      // This privateTempStore system prevents re-submission to Pardot on the
-      // off-chance the confirmation message is loaded more than once.
-
  }
 }
 
