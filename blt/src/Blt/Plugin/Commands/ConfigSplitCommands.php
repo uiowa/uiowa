@@ -30,7 +30,6 @@ class ConfigSplitCommands extends BltTasks {
       ->name('config_split.config_split.*.yml')
       ->sortByName();
 
-    /** @var  $split_file */
     foreach ($split_files->getIterator() as $split_file) {
       if (file_exists($split_file)) {
         $split = YamlMunge::parseFile($split_file);
@@ -47,7 +46,6 @@ class ConfigSplitCommands extends BltTasks {
           ->run();
 
         // @todo Run database updates.
-
         // Enable feature split, rebuild cache, and import config.
         $this->taskDrush()
           ->stopOnFail(FALSE)
@@ -83,16 +81,16 @@ class ConfigSplitCommands extends BltTasks {
       ->depth('< 2')
       ->sortByName();
 
-    //    foreach ($split_directories->getIterator() as $split_directory) {
+    foreach ($split_directories->getIterator() as $split_directory) {
     // @todo Get the site URL from the directory name.
-    //      $host = '';
+    $host = '';
     // @todo Sync each site.
-    //      $this->invokeCommand('drupal:sync', [
-    //        '--site' => $host,
-    //      ]);
+    $this->invokeCommand('drupal:sync', [
+      '--site' => $host,
+    ]);
     // @todo Export site split.
-    //      $this->taskDrush();
-    //    }
+    $this->taskDrush();
+    }
   }
 
 }

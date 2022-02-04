@@ -50,7 +50,7 @@ function uiowa_auth_update_8003() {
   $mappings = [];
 
   foreach ($config->get('role_mappings') as $mapping) {
-    list($rid, $value) = explode('|', $mapping);
+    [$rid, $value] = explode('|', $mapping);
     $mappings[] = "{$rid}|{$attr}|{$value}";
   }
 
@@ -71,7 +71,11 @@ function uiowa_auth_update_8004() {
 
     if ($data) {
       $authname = $data['authname'];
-      $data = unserialize($data['data']);
+      // The allowed_classes option was added here on 2022/02/04 by SAH to
+      // eliminate a PHPCS error. Since this update hook should never run on
+      // any site on our platform again, I set it to FALSE just in case there
+      // might be a security implication with setting it to TRUE.
+      $data = unserialize($data['data'], ['allowed_classes' => FALSE]);
 
       $deduped = [
         'uiowa_auth_mappings' => [],
