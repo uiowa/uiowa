@@ -46,7 +46,7 @@
         "leaflet": {
             "type": "package",
             "package": {
-                "name": "Leaflet/Leaflet",
+                "name": "leaflet/leaflet",
                 "version": "1.7.1",
                 "type": "drupal-library",
                 "dist": {
@@ -54,10 +54,6 @@
                     "type": "zip"
                 }
             }
-        },
-        "uiowa_auth": {
-            "type": "git",
-            "url": "git@github.com:uiowa/uiowa_auth"
         }
     },
     "autoload": {
@@ -74,6 +70,15 @@
         "sort-packages": true,
         "platform": {
             "php": "7.4"
+        },
+        "allow-plugins": {
+            "composer/installers": true,
+            "cweagans/composer-patches": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "acquia/blt": true,
+            "acquia/blt-phpcs": true,
+            "drupal/core-composer-scaffold": true,
+            "oomphinc/composer-installers-extender": true
         }
     },
     "require": {
@@ -108,7 +113,7 @@
         "drupal/config_split": "^2.0@beta",
         "drupal/core-composer-scaffold": "^9.2",
         "drupal/core-recommended": "^9.2",
-        "drupal/cshs": "^3.5",
+        "drupal/cshs": "3.x-dev#fe1b07101d724e6aa5fbcd78c50ce2780534ed0f",
         "drupal/default_content": "^2.0",
         "drupal/devel": "^4.0",
         "drupal/diff": "^1.0@RC",
