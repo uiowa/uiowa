@@ -281,7 +281,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
           // Limit the depth options to 1-4.
           foreach ($form['settings']['menu_levels']['depth']['#options'] as $key => $depth) {
-            if ($key < 1 || $key > 4) {
+            if ($key < 2 || $key > 4) {
               unset($form['settings']['menu_levels']['depth']['#options'][$key]);
             }
           }
