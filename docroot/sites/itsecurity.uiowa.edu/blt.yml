@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: itsecurity.uiowa.ddev.site
+    protocol: https
+  machine_name: itsecurity
+  human_name: itsecurity.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: itsecurity.prod
+drupal:
+  db:
+    database: itsecurity_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: wstaal
