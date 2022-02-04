@@ -1,5 +1,11 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
+
+.pswp {
+  a {
+    color: $light;
+  }
+}
 .block-inline-blockuiowa-image-gallery .uiowa-image-gallery {
   display: flex;
   flex-wrap: wrap;
@@ -9,9 +15,8 @@
   .media--view-mode-image-gallery {
     display: table-cell;
     flex: 220px 1 1;
-    margin: 10px; /* Fallback IE<8 */
-    margin: $gutter / 2;
-    a.colorbox {
+    margin: 0 .6rem 0.5rem;
+    a.photoswipe {
       &:hover, &:focus {
         img {
           opacity:0.6;
@@ -28,7 +33,7 @@
 .block-inline-blockuiowa-image-gallery.image-gallery--masonry .uiowa-image-gallery {
   display: block;
   column-count: 2;
-  column-gap: 0;
+  gap: 1.5rem;
   @include breakpoint(sm) {
     column-count: 3;
   }
@@ -37,8 +42,8 @@
   }
   .media--view-mode-image-gallery {
     flex: none;
-    display: inline-block;
-    margin: $gutter / 2;
+    display: flex;
+    margin: 0 0 1.5rem;
     img {
       object-fit: unset;
       height: auto;
@@ -47,10 +52,10 @@
 }
 
 /**
- * Colorbox Core Style:
+ * photoswipe Core Style:
  * The following CSS is consistent between example themes and should not be altered.
  */
-#colorbox, #cboxOverlay, #cboxWrapper {
+#photoswipe, #cboxOverlay, #cboxWrapper {
   position: absolute;
   top: 0;
   left: 0;
@@ -116,14 +121,14 @@
   border: 0;
 }
 /* Reset box sizing to content-box if theme is using border-box. */
-#colorbox, #cboxContent, #cboxLoadedContent {
+#photoswipe, #cboxContent, #cboxLoadedContent {
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
   box-sizing: content-box;
 }
 
 /**
- * Colorbox module Stockholm syndrome style:
+ * photoswipe module Stockholm syndrome style:
  * The styles are ordered & tabbed in a way that represents
  * the nesting of the generated HTML.
  */
@@ -131,7 +136,7 @@
   background: #000;
 }
 
-#colorbox {
+#photoswipe {
   background: #fff url(../../images/bg_tab.png) center bottom repeat-x;
   -moz-box-shadow: 3px 3px 16px #333;
   -webkit-box-shadow: 3px 3px 16px #333;
@@ -144,7 +149,7 @@
   border-bottom-right-radius: 0px;
   outline: 0;
 }
-#colorbox, #colorbox div {
+#photoswipe, #photoswipe div {
   overflow: visible; /* Required by the close button. */
 }
 #cboxWrapper {
@@ -256,7 +261,7 @@
   background-position: 0 -63px;
 }
 
-#colorbox #cboxTitle, #cboxTitle {
+#photoswipe #cboxTitle, #cboxTitle {
   left: 0;
   bottom: 0;
   position: absolute;
