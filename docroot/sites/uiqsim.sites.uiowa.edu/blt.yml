@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: sitesuiqsim.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesuiqsim
+  human_name: uiqsim.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesuiqsim.prod
+drupal:
+  db:
+    database: uiqsim_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: ruppu

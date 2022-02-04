@@ -31,6 +31,11 @@ function sitenow_intranet_install() {
     'path' => '/saml/*',
   ]);
   $database->execute();
+  $database = \Drupal::database()->insert('restrict_ip_paths')->fields([
+    'type' => 'white',
+    'path' => '/admin/*',
+  ]);
+  $database->execute();
 
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('uiowa_search.settings');
