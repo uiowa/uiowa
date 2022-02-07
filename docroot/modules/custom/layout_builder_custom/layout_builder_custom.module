@@ -324,6 +324,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           // Hide some options we don't want people to use currently.
           $form['settings']['style']['#access'] = FALSE;
           $form['settings']['menu_levels']['expand_all_items']['#access'] = FALSE;
+          $form['settings']['advanced']['label_type']['#access'] = FALSE;
+          $form['settings']['advanced']['label_link']['#access'] = FALSE;
           break;
 
         case 'sitenow_dispatch_sign_up_form':
