@@ -3793,3 +3793,10 @@ function sitenow_update_9030() {
     $component->set('layout_builder_styles_style', $styles);
   });
 }
+
+/**
+ * Flush all caches to get rid of old Layout Builder Styles module code.
+ */
+function sitenow_update_9031() {
+  drupal_flush_all_caches();
+}
