@@ -282,7 +282,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           // Limit the depth options to 2-4. We're removing the 1 option because
           // it causes issues with a discrepancy between the preview and what is
           // shown on the page after saving. Also, we consider it bad practice
-          // to shown the top-level menu again on a page.
+          // to show the top-level menu again on a page.
           foreach ($form['settings']['menu_levels']['depth']['#options'] as $key => $depth) {
             if ($key < 2 || $key > 4) {
               unset($form['settings']['menu_levels']['depth']['#options'][$key]);
