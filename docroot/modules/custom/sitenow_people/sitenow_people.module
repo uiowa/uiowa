@@ -706,7 +706,7 @@ function sitenow_people_preprocess_paragraph(&$variables) {
       if (!$admin_context->isAdminRoute()) {
         if ($paragraph->hasField('field_uiowa_contact_address')) {
           if ($paragraph->field_uiowa_contact_address->country_code == 'US') {
-            $variables['content']['field_uiowa_contact_address'][0]['country']['#value'] = ' ';
+            $variables["attributes"]["class"][] = 'hide-united-states-country';
           }
         }
       }
