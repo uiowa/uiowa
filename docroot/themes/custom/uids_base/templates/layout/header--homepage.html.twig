@@ -6,11 +6,12 @@
         {{ page.action_menu }}
     {% endif %}
 
-    {% if uiowa_search_form %}
-        {% include '@uids_base/uids/global/search-toggle.html.twig' with {
-            search_form: uiowa_search_form
-        } %}
-    {% endif %}
+  {% if page.search %}
+    {% include '@uids_base/uids/global/search-toggle.html.twig' with {
+      'search_form': page.search,
+      'under_search': page.under_search,
+    } %}
+  {% endif %}
 
     {% if header_nav == 'toggle' %}
         {% include '@uids_base/navigation/off-canvas.html.twig' %}
