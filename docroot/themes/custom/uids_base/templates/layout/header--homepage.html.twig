@@ -2,9 +2,9 @@
 
 {% block uiowa_bar %}
 
-    {% if page.action_menu %}
-        {{ page.action_menu }}
-    {% endif %}
+  {% if page.action_menu %}
+    {{ page.action_menu }}
+  {% endif %}
 
   {% if page.search %}
     {% include '@uids_base/uids/global/search-toggle.html.twig' with {
@@ -13,7 +13,7 @@
     } %}
   {% endif %}
 
-    {% if header_nav == 'toggle' %}
-        {% include '@uids_base/navigation/off-canvas.html.twig' %}
-    {% endif %}
+  {% if header_nav == 'toggle' %}
+    {% include '@uids_base/navigation/off-canvas.html.twig' %}
+  {% endif %}
 {% endblock %}

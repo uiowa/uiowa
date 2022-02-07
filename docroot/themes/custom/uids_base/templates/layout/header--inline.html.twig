@@ -12,9 +12,9 @@
   {% endif %}
 
   {% if page.search %}
-  {% include '@uids_base/uids/global/search-toggle.html.twig' with {
-    'search_form': page.search,
-  } %}
+    {% include '@uids_base/uids/global/search-toggle.html.twig' with {
+      'search_form': page.search,
+    } %}
   {% endif %}
 
   {% if header_nav == 'toggle' %}
