@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @Block(
  *   id = "uiowa_search_form",
  *   admin_label = @Translation("UIowa Search"),
- *   category = @Translation("Site custom")
+ *   category = @Translation("Restricted")
  * )
  */
 class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
