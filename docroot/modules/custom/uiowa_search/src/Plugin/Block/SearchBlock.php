@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Provides global search block for Google.
  *
  * @Block(
- *   id = "uiowa_search",
+ *   id = "uiowa_search_form",
  *   admin_label = @Translation("UIowa Search"),
  *   category = @Translation("Site custom")
  * )
