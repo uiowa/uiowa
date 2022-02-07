@@ -1,0 +1,34 @@
+uuid: 60fc2b11-79ea-49a5-88dd-6b1883a95381
+langcode: en
+status: true
+dependencies:
+  config:
+    - search_api.server.sitenow_intranet_search_server
+  module:
+    - search_api
+    - node
+id: sitenow_intranet_search_index
+name: 'Sitenow Intranet Search Index'
+description: ''
+read_only: false
+field_settings: {  }
+datasource_settings:
+  'entity:node':
+    bundles:
+      default: true
+      selected: {  }
+    languages:
+      default: true
+      selected: {  }
+processor_settings:
+  add_url: {  }
+  aggregated_field: {  }
+  language_with_fallback: {  }
+  rendered_item: {  }
+tracker_settings:
+  default:
+    indexing_order: fifo
+options:
+  index_directly: true
+  cron_limit: 50
+server: sitenow_intranet_search_server
