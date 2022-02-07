@@ -2,6 +2,7 @@
 
 namespace Drupal\uipress_core\Plugin\Block;
 
+use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Core\Block\BlockBase;
 
 /**
@@ -29,7 +30,7 @@ class CartButtons extends BlockBase {
     $node = \Drupal::routeMatch()->getParameter('node');
     if ($node) {
       $pid = $node->get('field_book_type')->getValue()[0]['target_id'];
-      $paragraph = \Drupal\paragraphs\Entity\Paragraph::load( $pid );
+      $paragraph = Paragraph::load($pid);
       $isbn = $paragraph->get('field_book_isbn')->getValue()[0]['value'];
       $href = 'https://cdcshoppingcart.uchicago.edu/Cart/ChicagoBook.aspx?ISBN=' . $isbn . '&PRESS=iowa';
     }
