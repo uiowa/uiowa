@@ -1,5 +1,5 @@
 <div{{ attributes.addClass('alert alert-info') }}>
-  Please use promo code <strong>{% for item in items %}
-  {{ item.content }}
-  {% endfor %}</strong> when prompted by shopping cart
+  Please use promo code <strong>
+  {{ items.0.content }}
+  </strong> when prompted by shopping cart
 </div>

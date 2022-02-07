@@ -28,14 +28,12 @@ class CartButtons extends BlockBase {
    */
   public function build() {
     $node = \Drupal::routeMatch()->getParameter('node');
+    $href = '';
     if ($node) {
       $pid = $node->get('field_book_type')->getValue()[0]['target_id'];
       $paragraph = Paragraph::load($pid);
       $isbn = $paragraph->get('field_book_isbn')->getValue()[0]['value'];
       $href = 'https://cdcshoppingcart.uchicago.edu/Cart/ChicagoBook.aspx?ISBN=' . $isbn . '&PRESS=iowa';
-    }
-    else {
-      $href = '';
     }
 
     return ['#href' => $href];

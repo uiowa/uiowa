@@ -39,9 +39,8 @@
 #}
 {{ attach_library('uids_base/accordion') }}
 
-{% set id = "accordion-book-type" %}
 <div class="collection--accordion">
-  <div class="accordion" role="tablist" aria-multiselectable="true" id="{{ id }}">
+  <div class="accordion" role="tablist" aria-multiselectable="true" id="{{ "accordion-book-type" }}">
     {% for item in items %}
       {{ item.content }}
     {% endfor %}
