@@ -15,10 +15,18 @@
     {{ page.header_search }}
   {% endif %}
 
-  {% if uiowa_search_form %}
-    {% include '@uids_base/uids/global/search-toggle.html.twig' with {
-      search_form: uiowa_search_form
-    } %}
+  {% if page.search %}
+    {{ attach_library('uids_base/search-toggle') }}
+    {{ attach_library('uids_base/search') }}
+    <div class="search-wrapper">
+      <div class="search-overlay" aria-expanded="false" aria-label="search tools for this site">
+        {{ page.search }}
+        {% if page.under_search %}
+          {{ page.under_search }}
+        {% endif %}
+      </div>
+      {% include '@uids_base/uids/search-toggle--bttn.twig' %}
+    </div>
   {% endif %}
 
   {% if header_nav == 'toggle' %}
