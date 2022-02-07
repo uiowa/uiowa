@@ -34,6 +34,8 @@ class ConfigSplitCommands extends BltTasks {
       if (file_exists($split_file)) {
         $split = YamlMunge::parseFile($split_file);
         $id = $split['id'];
+        // @todo We should handle the case where split storage is not a folder.
+        $split_path = $split['folder'];
 
         // Sync default site database.
         $this->taskDrush()
@@ -45,15 +47,23 @@ class ConfigSplitCommands extends BltTasks {
           ->stopOnFail()
           ->run();
 
-        // @todo Run database updates.
-        // Enable feature split, rebuild cache, and import config.
+        // Enable feature split, rebuild cache, and import the split config.
         $this->taskDrush()
           ->stopOnFail(FALSE)
           ->drush('config:set')
           ->args("config_split.config_split.{$id}", 'status', TRUE)
           ->drush('cache:rebuild')
           ->drush('config:import')
+          ->options([
+            'source' => $split_path,
+            'partial' => '',
+          ])
           ->run();
+
+        // Run database updates after config
+        $this->taskDrush()
+          ->stopOnFail()
+          ->drush('updb');
 
         // Re-export the split.
         $this->taskDrush()
