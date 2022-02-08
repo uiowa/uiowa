@@ -34,4 +34,6 @@ process:
   status_code: constants/status_code
 destination:
   plugin: 'entity:redirect'
-migration_dependencies: { }
+migration_dependencies:
+  required:
+    - international_articles
