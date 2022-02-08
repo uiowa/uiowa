@@ -509,7 +509,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
       // Check if horizontal is selected for menu orientation and set
       // menu depth to 1 if it is.
       if ($form_state->getValue('layout_builder_style_menu_orientation') == 'block_menu_horizontal') {
-        $form_state->setValue(['settings', 'depth'], 1);
+        $form_state->setValue(['settings', 'depth'], 2);
       }
   }
 
