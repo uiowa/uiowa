@@ -84,7 +84,7 @@ and <em>email</em> form element keys exist.'),
       }
     }
     $params = UrlHelper::buildQuery([$data]);
-    if ($endpoint_url && !empty($data)) {
+    if ($endpoint_url && count($elements) == count($data)) {
       $variables['message']['iframe'] = [
         '#type' => 'html_tag',
         '#tag' => 'iframe',
@@ -96,6 +96,14 @@ and <em>email</em> form element keys exist.'),
           'style' => 'position: absolute;',
         ],
       ];
+    }
+    else {
+      // Log error message.
+      $context = [
+        '@form' => $this->getWebform()->label(),
+      ];
+      $this->getLogger('webform_submission')
+        ->error('@form webform Pardot handler requirements not met.', $context);
     }
   }
 
