@@ -3,6 +3,7 @@
 namespace Drupal\tippie_core\Plugin\WebformHandler;
 
 use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\webform\Plugin\WebformHandlerBase;
 
 /**
@@ -10,7 +11,7 @@ use Drupal\webform\Plugin\WebformHandlerBase;
  *
  * @WebformHandler(
  *   id = "pardot_remote_post",
- *   label = @Translation("Pardot Remote post"),
+ *   label = @Translation("Pardot Remote Post"),
  *   category = @Translation("External"),
  *   description = @Translation("Posts webform submissions to a URL."),
  *   cardinality = \Drupal\webform\Plugin\WebformHandlerInterface::CARDINALITY_UNLIMITED,
@@ -20,6 +21,38 @@ use Drupal\webform\Plugin\WebformHandlerBase;
  * )
  */
 class PardotRemotePostWebformHandler extends WebformHandlerBase {
+
+  /**
+   * {@inheritdoc}
+   */
+
+  public function defaultConfiguration() {
+    return [
+      'endpoint_url' => '',
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
+    $form['endpoint_url'] = [
+      '#type' => 'url',
+      '#title' => $this->t('Submission URL to Pardot'),
+      '#description' => $this->t('Campaign Token or Information'),
+      '#default_value' => $this->configuration['endpoint_url'],
+      '#required' => TRUE,
+    ];
+    return $this->setSettingsParents($form);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
+    parent::submitConfigurationForm($form, $form_state);
+    $this->applyFormStateToConfiguration($form_state);
+  }
 
   /**
    * {@inheritdoc}
@@ -34,6 +67,7 @@ class PardotRemotePostWebformHandler extends WebformHandlerBase {
   public function preprocessConfirmation(array &$variables) {
     /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
     $webform_submission = $variables['webform_submission'];
+    $endpoint_url = $this->getSetting('endpoint_url');
     $params = UrlHelper::buildQuery([
       'firstname' => $webform_submission->getElementData('firstname'),
       'lastname' => $webform_submission->getElementData('lastname'),
@@ -43,7 +77,7 @@ class PardotRemotePostWebformHandler extends WebformHandlerBase {
       '#type' => 'html_tag',
       '#tag' => 'iframe',
       '#attributes' => [
-        'src' => "https://go.tippie.uiowa.edu/l/683163/2019-08-29/3nqkk?$params",
+        'src' => "$endpoint_url?$params",
         'width' => 1,
         'height' => 1,
         'frameborder' => 0,
