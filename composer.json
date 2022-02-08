@@ -14,18 +14,6 @@
             "type": "git",
             "url": "git@github.com:uiowa/block_content_template.git"
         },
-        "colorbox": {
-            "type": "package",
-            "package": {
-                "name": "jackmoore/colorbox",
-                "version": "1.6.4",
-                "type": "drupal-library",
-                "dist": {
-                    "url": "https://github.com/jackmoore/colorbox/archive/1.6.4.zip",
-                    "type": "zip"
-                }
-            }
-        },
         "drupal": {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
@@ -91,6 +79,7 @@
         "bower-asset/chosen": "^1.8",
         "bower-asset/fontawesome": "^5.14",
         "bower-asset/lazysizes": "^5.2",
+        "bower-asset/photoswipe": "^4.1",
         "cweagans/composer-patches": "^1.7",
         "dompdf/dompdf": "0.8.5",
         "drupal-pyrello/views_tree": "^1.0",
@@ -104,7 +93,7 @@
         "drupal/better_normalizers": "^1.0@beta",
         "drupal/big_pipe_sessionless": "^2.0",
         "drupal/block_content_permissions": "^1.9",
-        "drupal/colorbox": "^1.4",
+        "drupal/colorbox": "^1.8",
         "drupal/components": "^2",
         "drupal/config_filter": "^2.2",
         "drupal/config_ignore": "^3.0",
@@ -174,6 +163,7 @@
         "drupal/override_node_options": "^2.4",
         "drupal/paragraphs": "^1.10",
         "drupal/pathauto": "^1.6",
+        "drupal/photoswipe": "3.x-dev#71e54fbcca748c7ec2cfc3d2fdd92c9a180b5852",
         "drupal/private_content": "^2.0@RC",
         "drupal/purge": "^3.0@beta",
         "drupal/rabbit_hole": "^1.0@beta",
@@ -202,7 +192,6 @@
         "drupal/weight": "^3.2",
         "drupal/workbench_email": "^2.2",
         "drush/drush": "^10",
-        "jackmoore/colorbox": "^1.6",
         "kartsims/easysvg": "dev-master#8f4b75cfb950efd242dc889fb965e3765fea1a29",
         "npm-asset/fontawesome-iconpicker": "^3.2",
         "npm-asset/jquery-collapse": "^1.1",
@@ -281,6 +270,9 @@
             "drupal/paragraphs": {
                 "Langcode error when switching away from IEF for paragraphs in LB": "https://www.drupal.org/files/issues/2020-06-25/paragraphs-2901390-51.patch"
             },
+            "drupal/photoswipe": {
+                "grouping": "https://www.drupal.org/files/issues/2022-02-07/photoswipe-gallery-group-2625985-28.patch"
+            },
             "drupal/purge": {
                 "Port purge commands to Drush 9": "https://www.drupal.org/files/issues/2921309-17-port-purge-drush-9.patch"
             },
@@ -293,9 +285,6 @@
             },
             "drupal/restrict_ip": {
                 "Parameter must be an array or an object that implements Countable": "https://www.drupal.org/files/issues/2022-01-11/2957482-11.patch"
-            },
-            "jackmoore/colorbox": {
-                "Accessibility improvements": "https://patch-diff.githubusercontent.com/raw/jackmoore/colorbox/pull/832.diff"
             },
             "drupal/jquery_ui_touch_punch": {
                 "JQuery UI TouchPunch for D9": "https://www.drupal.org/files/issues/2021-02-26/jquery_ui_touch_punch.patch"

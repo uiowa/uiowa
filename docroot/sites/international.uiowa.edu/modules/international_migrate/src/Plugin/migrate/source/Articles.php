@@ -32,6 +32,8 @@ class Articles extends BaseNodeSource {
    */
   public function query() {
     $query = parent::query();
+    // Only import news newer than January 2015.
+    $query->condition('created', strtotime('2015-01-01'), '>=');
     $query->leftJoin('url_alias', 'alias', "alias.source = CONCAT('node/', n.nid)");
     $query->fields('alias', ['alias']);
     // Make sure our nodes are retrieved in order,
@@ -58,13 +60,6 @@ class Articles extends BaseNodeSource {
       return FALSE;
     }
     parent::prepareRow($row);
-
-    // Only import news newer than January 2015.
-    $created_year = date('Y', $row->getSourceProperty('created'));
-    if ($created_year < 2015) {
-      $this->logger->notice('Older than 2015. Skipping.');
-      return FALSE;
-    }
 
     // Get the author tags to build into our mapped
     // field_news_authors value.
