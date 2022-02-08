@@ -69,10 +69,10 @@ and <em>email</em> form element keys exist.'),
     $settings = $this->getSettings();
 
     return [
-        '#markup' => $this->t('<strong>Endpoint URL:</strong> @endpoint', [
-          '@endpoint' => $settings['endpoint_url'],
-        ]),
-      ];
+      '#markup' => $this->t('<strong>Endpoint URL:</strong> @endpoint', [
+        '@endpoint' => $settings['endpoint_url'],
+      ]),
+    ];
   }
 
   /**
