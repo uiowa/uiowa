@@ -35,7 +35,16 @@ class PardotRemotePostWebformHandler extends WebformHandlerBase {
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    $form['endpoint_url'] = [
+    $form['pardot'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Pardot settings'),
+    ];
+    $form['pardot']['handler_guidelines'] = [
+      '#markup' => $this->t('This handler assumes the form confirmation
+setting is set to "<em>Page</em>" and that <em>firstname</em>, <em>lastname</em>
+and <em>email</em> form element keys exist.'),
+    ];
+    $form['pardot']['endpoint_url'] = [
       '#type' => 'url',
       '#title' => $this->t('Submission URL to Pardot'),
       '#description' => $this->t('Campaign Token or Information'),
