@@ -66,7 +66,13 @@ and <em>email</em> form element keys exist.'),
    * {@inheritdoc}
    */
   public function getSummary() {
+    $settings = $this->getSettings();
 
+    return [
+        '#markup' => $this->t('<strong>Endpoint URL:</strong> @endpoint', [
+          '@endpoint' => $settings['endpoint_url'],
+        ]),
+      ];
   }
 
   /**
