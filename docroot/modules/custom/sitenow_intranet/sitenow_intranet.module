@@ -90,3 +90,16 @@ function sitenow_intranet_restrict_ip_access_denied_page_alter(&$page) {
     unset($page['login_link']);
   }
 }
+
+/**
+ * Implements hook_form_alter().
+ */
+function sitenow_intranet_form_alter(&$form, $form_state, $form_id) {
+  if (strpos($form_id, 'uiowa_core_search_block') !== FALSE) {
+    $form['#attributes']['class'][] = 'uids-search';
+    $form['actions']['submit'] = [
+      '#name' => 'btnG',
+      '#type' => 'submit',
+    ];
+  }
+}

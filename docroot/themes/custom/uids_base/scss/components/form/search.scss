@@ -69,28 +69,25 @@
   margin-left: 21px;
   @include breakpoint(md) {
     margin-top: 18px;
-    border: 1px solid #00000029;
-
   }
   &:not(.uids-search) {
     @include breakpoint(md) {
       padding: 0 0 0 10px;
     }
-    input[id^='edit-submit'] {
-      //border: none;
-      padding-bottom: 7px;
+  }
+
+  .js-form-item {
+    flex-basis: 70%;
+    @include breakpoint(sm) {
+      flex-basis: 80%;
     }
   }
 
-  input {
-    background: none;
-    border: none;
-    color: $light;
-    @include breakpoint(md) {
-      color: $secondary;
-      border-left: 1px solid #00000029;
-    }
+  [type=submit] {
+    margin-top: 15px;
   }
+
+
   [type=text]:focus,
   [type=search]:focus {
     background: none;
@@ -104,6 +101,7 @@
     background: none;
     box-shadow: none!important;
     font-size: 1.5rem;
+
     @include breakpoint(md) {
       color: $secondary;
     }
