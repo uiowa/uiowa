@@ -25,7 +25,6 @@ class PardotRemotePostWebformHandler extends WebformHandlerBase {
   /**
    * {@inheritdoc}
    */
-
   public function defaultConfiguration() {
     return [
       'endpoint_url' => '',
