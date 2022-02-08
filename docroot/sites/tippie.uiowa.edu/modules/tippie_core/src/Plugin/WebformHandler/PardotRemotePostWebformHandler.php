@@ -76,22 +76,27 @@ and <em>email</em> form element keys exist.'),
     /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
     $webform_submission = $variables['webform_submission'];
     $endpoint_url = $this->getSetting('endpoint_url');
-    $params = UrlHelper::buildQuery([
-      'firstname' => $webform_submission->getElementData('firstname'),
-      'lastname' => $webform_submission->getElementData('lastname'),
-      'email' => $webform_submission->getElementData('email'),
-    ]);
-    $variables['message']['iframe'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'iframe',
-      '#attributes' => [
-        'src' => "$endpoint_url?$params",
-        'width' => 1,
-        'height' => 1,
-        'frameborder' => 0,
-        'style' => 'position: absolute;',
-      ],
-    ];
+    $elements = ['firstname', 'lastname', 'email'];
+    $data = [];
+    foreach ($elements as $element) {
+      if ($value = $webform_submission->getElementData($element)) {
+        $data[$element] = $value;
+      }
+    }
+    $params = UrlHelper::buildQuery([$data]);
+    if ($endpoint_url && !empty($data)) {
+      $variables['message']['iframe'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'iframe',
+        '#attributes' => [
+          'src' => "$endpoint_url?$params",
+          'width' => 1,
+          'height' => 1,
+          'frameborder' => 0,
+          'style' => 'position: absolute;',
+        ],
+      ];
+    }
   }
 
 }
