@@ -3779,3 +3779,14 @@ function sitenow_update_9028() {
 function sitenow_update_9029() {
   drupal_flush_all_caches();
 }
+
+/**
+ * Update search block placeholder text field.
+ */
+function sitenow_update_9030() {
+  _update_all_blocks_by_plugin_id('uiowa_core_search_block', function (&$component, $block) {
+    $config = $component->get('configuration');
+    $config['placeholder_text'] = 'Search';
+    $component->setConfiguration($config);
+  });
+}

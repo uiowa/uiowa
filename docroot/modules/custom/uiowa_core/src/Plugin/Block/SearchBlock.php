@@ -106,8 +106,8 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
     $form['placeholder_text'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Placeholder text'),
-      '#default_value' => isset($config['placeholder_text']) ? $config['placeholder_text'] : 'Search this site',
-      '#required' => TRUE,
+      '#default_value' => $config['placeholder_text'] ?: 'Search this site',
+      '#required' => FALSE,
     ];
     $form['button_text'] = [
       '#type' => 'textfield',
