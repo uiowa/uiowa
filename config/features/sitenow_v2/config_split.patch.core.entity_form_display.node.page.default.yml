@@ -2,12 +2,14 @@ adding:
   dependencies:
     config:
       - field.field.node.page.field_page_content_block
+      - field.field.node.page.layout_builder__layout
     module:
       - paragraphs
   content:
     field_page_content_block:
       type: paragraphs
       weight: 2
+      region: content
       settings:
         title: Section
         title_plural: Sections
@@ -23,7 +25,6 @@ adding:
           collapse_edit_all: '0'
           duplicate: duplicate
       third_party_settings: {  }
-      region: content
     field_publish_options:
       weight: 14
     field_teaser:
