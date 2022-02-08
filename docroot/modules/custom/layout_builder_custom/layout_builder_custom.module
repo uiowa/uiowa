@@ -15,6 +15,8 @@ use Drupal\layout_builder_styles\LayoutBuilderStyleInterface;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\ctools_views\Plugin\Display\Block;
 use Drupal\views\ViewExecutable;
+use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\media\Entity\Media;
 
 /**
  * Implements hook_element_info_alter().
@@ -734,6 +736,7 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
         break;
 
       case 'uiowa_timeline_item':
+        // $context["form"]["#block"]->values["field_uiowa_timeline_items"]["x-default"]
         /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
         $check = \Drupal::service('uiowa_core.access_checker');
 
@@ -753,8 +756,66 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
           $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["power_transforms"]['#disabled'] = TRUE;
           $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["pull"]['#disabled'] = TRUE;
         }
-        break;
 
+        $content = $element['top']['summary']['fields_info']['#summary']['content'];
+        // If $content has 3 elements, the second one is the image file and we dont have to check for the media entity anywhere else.
+        if (sizeof($content) == 3) {
+          $img_file = $content[1];
+
+          // Load file by filename
+          // array.
+          $file = Drupal::entityTypeManager()
+            ->getStorage('file')
+            ->loadByProperties(['filename' => $img_file]);
+
+          // Get First file (make a loop if you get many files)
+          $fileId = array_shift($file)->fid->value;
+
+          if ($img_file == 'uima flood aerial') {
+            $foo = 'bar';
+          }
+
+          // Array of Medias witch contains your file.
+          try {
+            $medias = Drupal::entityTypeManager()
+              ->getStorage('media')
+              ->loadByProperties(['field_media_image' => $fileId]);
+            // Uncomment out the below lines to show the media ids for each paragraph item.
+            // $medias_string = join(', ', array_keys($medias));
+            // $element['top']['type']['label']['media_error'] = FALSE;
+            // $element['top']['type']['label']['media_ids'] = $medias_string;.
+          }
+          catch (exception $e) {
+            $element['top']['type']['label']['media_error'] = TRUE;
+          }
+        }
+        else {
+          $index = $element['#delta'];
+          $paragraph_id = $context['items'][$index]->get('target_id')->getValue();
+          $paragraph = Paragraph::load($paragraph_id);
+          $media_field = $paragraph->get('field_timeline_media');
+          if (sizeof($media_field) > 0) {
+            $media_entity_id = $media_field->getValue()[0]['target_id'];
+            $media_entity = Media::load($media_entity_id);
+            if ($media_entity == NULL) {
+              $element['top']['type']['label']['media_error'] = TRUE;
+            }
+          }
+        }
+
+        if (isset($element['top']['type']['label']['media_error'])) {
+          if ($element['top']['type']['label']['media_error']) {
+            $element['top']['type']['label']['#markup'] .=
+              '<div class="media-entity missing-media-entity">Media error</div>';
+          }
+          elseif (!$element['top']['type']['label']['media_error']) {
+            $medias_string = $element['top']['type']['label']['media_ids'];
+            $element['top']['type']['label']['#markup'] .=
+              '<div class="media-entity present-media-entity">' . $medias_string . '</div>';
+          }
+        }
+
+        break;
     }
   }
 }
