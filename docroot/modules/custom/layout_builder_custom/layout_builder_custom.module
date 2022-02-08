@@ -757,7 +757,7 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
         }
 
         $content = $element['top']['summary']['fields_info']['#summary']['content'];
-        // If $content has 3 elements, the second one is the image file and we dont have to check for the media entity anywhere else.
+        // If $content has 3 elements, the second one is the image file.
         if (sizeof($content) == 3) {
           $img_file = $content[1];
 
