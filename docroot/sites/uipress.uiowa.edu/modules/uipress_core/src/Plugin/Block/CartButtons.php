@@ -36,7 +36,11 @@ class CartButtons extends BlockBase {
       $href = 'https://cdcshoppingcart.uchicago.edu/Cart/ChicagoBook.aspx?ISBN=' . $isbn . '&PRESS=iowa';
     }
 
-    return ['#href' => $href];
+    return [
+      'href' => [
+        '#markup' => $href,
+      ]
+    ];
   }
 
 }

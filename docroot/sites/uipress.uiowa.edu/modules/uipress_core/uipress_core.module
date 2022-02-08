@@ -55,32 +55,44 @@ function uipress_core_preprocess_field(&$variables, $hook) {
 function uipress_core_preprocess_paragraph__book_type(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
+    /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
     $paragraph = $variables['paragraph'];
 
-    if ($paragraph->bundle() == 'book_type') {
+    // Set unique identifiers for aria labels.
+    $variables['heading_id'] = 'heading' . $paragraph->id();
+    $variables['content_id'] = 'content' . $paragraph->id();
 
-      if ($paragraph->hasField('field_book_sale_price') && $paragraph->hasField('field_book_sale_start_date') && $paragraph->hasField('field_book_sale_expiry_date')) {
-        if (!$paragraph->get('field_book_sale_price')->isEmpty()) {
-          // If start date exists make sure current date is after start date.
-          $in_range = TRUE;
-          $now = date('m-d-Y');
-          $start = $paragraph->get('field_book_sale_start_date')->value;
-          if (isset($start)) {
-            $start = date('m-d-Y', strtotime($start));
-            $in_range = $now >= $start;
-          }
-
-          // If end date exists make sure current date is before end date.
-          $end = $paragraph->get('field_book_sale_expiry_date')->value;
-          if ($in_range && isset($end)) {
-            $end = date('m-d-Y', strtotime($end));
-            $in_range = $now < $end;
-          }
-          // If neither condition is true unset display of sale price.
-          if (!$in_range) {
-            unset($variables['content']['field_book_sale_price'], $variables['content']['field_book_sale_code']);
-          }
+    // Determine whether to show book sale price or not.
+    if ($paragraph->hasField('field_book_sale_price') && $paragraph->hasField('field_book_sale_start_date') && $paragraph->hasField('field_book_sale_expiry_date')) {
+      if (!$paragraph->get('field_book_sale_price')->isEmpty()) {
+        // If start date exists make sure current date is after start date.
+        $in_range = TRUE;
+        $now = date('m-d-Y');
+        $start = $paragraph->get('field_book_sale_start_date')->value;
+        if (isset($start)) {
+          $start = date('m-d-Y', strtotime($start));
+          $in_range = $now >= $start;
         }
+
+        // If end date exists make sure current date is before end date.
+        $end = $paragraph->get('field_book_sale_expiry_date')->value;
+        if ($in_range && isset($end)) {
+          $end = date('m-d-Y', strtotime($end));
+          $in_range = $now < $end;
+        }
+        // If neither condition is true unset display of sale price.
+        if (!$in_range) {
+          unset($variables['content']['field_book_sale_price'], $variables['content']['field_book_sale_code']);
+        }
+      }
+    }
+
+    // Add an accordion label with the book type and e-book ownership terms, if
+    // applicable.
+    if ($paragraph->hasField('field_book_type')) {
+      $variables['accordion_label'] = $paragraph->field_book_type->value;
+      if ($paragraph->hasField('field_book_ebook_ownership') && $paragraph->field_book_ebook_ownership->value) {
+        $variables['accordion_label'] .= ', ' . $paragraph->field_book_ebook_ownership->value;
       }
     }
   }
