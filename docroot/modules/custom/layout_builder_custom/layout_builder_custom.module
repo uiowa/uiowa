@@ -736,7 +736,6 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
         break;
 
       case 'uiowa_timeline_item':
-        // $context["form"]["#block"]->values["field_uiowa_timeline_items"]["x-default"]
         /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
         $check = \Drupal::service('uiowa_core.access_checker');
 
@@ -770,10 +769,6 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
 
           // Get First file (make a loop if you get many files)
           $fileId = array_shift($file)->fid->value;
-
-          if ($img_file == 'uima flood aerial') {
-            $foo = 'bar';
-          }
 
           // Array of Medias witch contains your file.
           try {
