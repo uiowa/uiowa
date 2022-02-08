@@ -761,13 +761,12 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
         if (sizeof($content) == 3) {
           $img_file = $content[1];
 
-          // Load file by filename
-          // array.
+          // Load file by filename.
           $file = Drupal::entityTypeManager()
             ->getStorage('file')
             ->loadByProperties(['filename' => $img_file]);
 
-          // Get First file (make a loop if you get many files)
+          // Get First file.
           $fileId = array_shift($file)->fid->value;
 
           // Array of Medias witch contains your file.
