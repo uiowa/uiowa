@@ -758,7 +758,7 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
 
         $content = $element['top']['summary']['fields_info']['#summary']['content'];
         // If $content has 3 elements, the second one is the image file.
-        if (sizeof($content) == 3) {
+        if (count($content) == 3) {
           $img_file = $content[1];
 
           // Load file by filename.
@@ -775,9 +775,10 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
               ->getStorage('media')
               ->loadByProperties(['field_media_image' => $fileId]);
             // Uncomment out the below lines to show the media ids for each paragraph item.
-            // $medias_string = join(', ', array_keys($medias));
-            // $element['top']['type']['label']['media_error'] = FALSE;
-            // $element['top']['type']['label']['media_ids'] = $medias_string;
+            /* $medias_string = join(', ', array_keys($medias));
+            * $element['top']['type']['label']['media_error'] = FALSE;
+            * $element['top']['type']['label']['media_ids'] = $medias_string;
+            */
           }
           catch (exception $e) {
             $element['top']['type']['label']['media_error'] = TRUE;
@@ -788,7 +789,7 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
           $paragraph_id = $context['items'][$index]->get('target_id')->getValue();
           $paragraph = Paragraph::load($paragraph_id);
           $media_field = $paragraph->get('field_timeline_media');
-          if (sizeof($media_field) > 0) {
+          if (count($media_field) > 0) {
             $media_entity_id = $media_field->getValue()[0]['target_id'];
             $media_entity = Media::load($media_entity_id);
             if ($media_entity == NULL) {
