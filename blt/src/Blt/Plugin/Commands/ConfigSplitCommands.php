@@ -34,8 +34,6 @@ class ConfigSplitCommands extends BltTasks {
       if (file_exists($split_file)) {
         $split = YamlMunge::parseFile($split_file);
         $id = $split['id'];
-        // @todo We should handle the case where split storage is not a folder.
-        $split_path = $split['folder'];
 
         // Sync default site database.
         $this->taskDrush()
@@ -54,10 +52,6 @@ class ConfigSplitCommands extends BltTasks {
           ->args("config_split.config_split.{$id}", 'status', TRUE)
           ->drush('cache:rebuild')
           ->drush('config:import')
-          ->options([
-            'source' => $split_path,
-            'partial' => '',
-          ])
           ->run();
 
         // Run database updates after config
@@ -71,6 +65,11 @@ class ConfigSplitCommands extends BltTasks {
           ->drush('config-split:export')
           ->arg($id)
           ->run();
+
+        $task = $this->taskDrush()
+          ->stopOnFail()
+          ->drush("config-status");
+        $result = $task->run();
       }
     }
   }
@@ -92,14 +91,24 @@ class ConfigSplitCommands extends BltTasks {
       ->sortByName();
 
     foreach ($split_directories->getIterator() as $split_directory) {
-    // @todo Get the site URL from the directory name.
-    $host = '';
-    // @todo Sync each site.
-    $this->invokeCommand('drupal:sync', [
-      '--site' => $host,
-    ]);
-    // @todo Export site split.
-    $this->taskDrush();
+      // @todo Get the site URL from the directory name.
+      $host = '';
+      // @todo Sync each site.
+      // Sync default site database.
+      $this->taskDrush()
+        ->drush('sql:sync')
+        ->args([
+          "@default.prod",
+          "@default.local",
+        ])
+        ->stopOnFail()
+        ->run();
+      // Export site split.
+      $this->taskDrush()
+        ->stopOnFail(FALSE)
+        ->drush('config-split:export')
+        ->arg('site')
+        ->run();
     }
   }
 
