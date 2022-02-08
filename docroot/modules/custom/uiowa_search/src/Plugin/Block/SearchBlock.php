@@ -4,7 +4,6 @@ namespace Drupal\uiowa_search\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormBuilderInterface;
-use Drupal\Core\Form\FormState;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -12,7 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Provides global search block for Google.
  *
  * @Block(
- *   id = "uiowa_search",
+ *   id = "uiowa_search_form",
  *   admin_label = @Translation("UIowa Search"),
  *   category = @Translation("Restricted")
  * )
@@ -49,8 +48,8 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
    * {@inheritdoc}
    */
   public function build() {
-    $form_state = new FormState();
-    return $this->formBuilder->buildForm('Drupal\uiowa_search\Form\SearchForm', $form_state);
+    $build['form'] = $this->formBuilder->getForm('Drupal\uiowa_search\Form\SearchForm');
+    return $build;
   }
 
 }
