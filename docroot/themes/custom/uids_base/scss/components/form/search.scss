@@ -36,7 +36,7 @@
       margin-top: 0;
     }
     [type="submit"],
-    input#edit-submit {
+    input[id^='edit-submit'] {
       .layout__container:not([class*="bg-"]) & {
         @include bttn--primary;
         border: 1px solid $primary;
@@ -64,21 +64,48 @@
   }
 }
 
-.search-overlay form input[type=search] {
-  padding-left: 0;
-  text-align: left;
-  border: none;
-  background: none;
-  box-shadow: none!important;
-  font-size: 1.5rem;
-}
+// Search block within the search region.
+.search-overlay  .uids-content.uiowa-search-form {
+  margin-left: 21px;
+  @include breakpoint(md) {
+    margin-top: 18px;
+    border: 1px solid #00000029;
 
-.search-overlay  .uids-content [type=text]:focus,
-.search-overlay  .uids-content [type=search]:focus {
-  background: none;
-  border: none;
-}
+  }
+  &:not(.uids-search) {
+    @include breakpoint(md) {
+      padding: 0 0 0 10px;
+    }
+    input[id^='edit-submit'] {
+      //border: none;
+      padding-bottom: 7px;
+    }
+  }
 
-.search-overlay  .uids-content input#edit-submit {
-  background: none;
+  input {
+    background: none;
+    border: none;
+    color: $light;
+    @include breakpoint(md) {
+      color: $secondary;
+      border-left: 1px solid #00000029;
+    }
+  }
+  [type=text]:focus,
+  [type=search]:focus {
+    background: none;
+    border: none;
+  }
+  [type=search] {
+    color: $light;
+    padding-left: 0;
+    text-align: left;
+    border: none;
+    background: none;
+    box-shadow: none!important;
+    font-size: 1.5rem;
+    @include breakpoint(md) {
+      color: $secondary;
+    }
+  }
 }
