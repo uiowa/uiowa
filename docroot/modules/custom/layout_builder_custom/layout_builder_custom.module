@@ -777,11 +777,6 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
             $element['top']['type']['label']['#markup'] .=
               '<div class="media-entity missing-media-entity">Media error</div>';
           }
-          elseif (!$element['top']['type']['label']['media_error']) {
-            $medias_string = $element['top']['type']['label']['media_ids'];
-            $element['top']['type']['label']['#markup'] .=
-              '<div class="media-entity present-media-entity">' . $medias_string . '</div>';
-          }
         }
 
         break;
