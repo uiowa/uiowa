@@ -757,34 +757,8 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
         }
 
         $content = $element['top']['summary']['fields_info']['#summary']['content'];
-        // If $content has 3 elements, the second one is the image file.
-        if (count($content) == 3) {
-          $img_file = $content[1];
-
-          // Load file by filename.
-          $file = Drupal::entityTypeManager()
-            ->getStorage('file')
-            ->loadByProperties(['filename' => $img_file]);
-
-          // Get First file.
-          $fileId = array_shift($file)->fid->value;
-
-          // Array of Medias witch contains your file.
-          try {
-            $medias = Drupal::entityTypeManager()
-              ->getStorage('media')
-              ->loadByProperties(['field_media_image' => $fileId]);
-            // Uncomment out the below lines to show the media ids for each paragraph item.
-            /* $medias_string = join(', ', array_keys($medias));
-             * $element['top']['type']['label']['media_error'] = FALSE;
-             * $element['top']['type']['label']['media_ids'] = $medias_string;
-             */
-          }
-          catch (exception $e) {
-            $element['top']['type']['label']['media_error'] = TRUE;
-          }
-        }
-        else {
+        // If $content has 3 elements, the second one is the image file and the media entity resolved.
+        if (count($content) != 3) {
           $index = $element['#delta'];
           $paragraph_id = $context['items'][$index]->get('target_id')->getValue();
           $paragraph = Paragraph::load($paragraph_id);
