@@ -3,6 +3,7 @@
 namespace Drupal\uiowa_search\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -27,9 +28,10 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
   /**
    * Search block constructor.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, FormBuilderInterface $formBuilder) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, FormBuilderInterface $formBuilder, ConfigFactory $configFactory) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->formBuilder = $formBuilder;
+    $this->configFactory = $configFactory;
   }
 
   /**
@@ -48,7 +50,10 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
    * {@inheritdoc}
    */
   public function build() {
-    $build['form'] = $this->formBuilder->getForm('Drupal\uiowa_search\Form\SearchForm');
+    $build = [];
+    if ($this->configFactory->get('uiowa_search.settings')->get('uiowa_search.display_search')) {
+      $build['form'] = $this->formBuilder->getForm('Drupal\uiowa_search\Form\SearchForm');
+    }
     return $build;
   }
 
