@@ -1074,3 +1074,11 @@ function uids_base_theme_suggestions_page_title_alter(array &$suggestions, array
     $suggestions[] = 'page_title__node';
   }
 }
+
+/**
+ * Implements hook_photoswipe_js_options_alter().
+ */
+function uids_base_photoswipe_js_options_alter(array &$settings) {
+  // Disable's photoswipe's share links (twitter, fb, pintrest).
+  $settings['shareEl'] = FALSE;
+}
