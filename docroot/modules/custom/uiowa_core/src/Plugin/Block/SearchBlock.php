@@ -59,7 +59,6 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
       [
         'endpoint' => $config['endpoint'],
         'query_parameter' => $config['query_parameter'],
-        'placeholder_text' => $config['placeholder_text'],
         'button_text' => $config['button_text'],
         'search_label' => $config['search_label'],
       ],
@@ -103,12 +102,6 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
       '#default_value' => isset($config['search_label']) ? $config['search_label'] : 'Search',
       '#required' => TRUE,
     ];
-    $form['placeholder_text'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Placeholder text'),
-      '#default_value' => $config['placeholder_text'] ?: 'Search this site',
-      '#required' => FALSE,
-    ];
     $form['button_text'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Button Text'),
@@ -139,7 +132,6 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
     $values = $form_state->getValues();
     $this->configuration['endpoint'] = $values['endpoint'];
     $this->configuration['query_parameter'] = $values['query_parameter'];
-    $this->configuration['placeholder_text'] = $values['placeholder_text'];
     $this->configuration['button_text'] = $values['button_text'];
     $this->configuration['search_label'] = $values['search_label'];
   }
