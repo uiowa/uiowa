@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5dcc4f9892a3f4c1300311c3d7e068a1",
+    "content-hash": "9e27973d3de571d17b1b2aed22479917",
     "packages": [
         {
             "name": "acquia/blt",
@@ -705,6 +705,24 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/aFarkas/lazysizes/zipball/81cf774c6a7f4d8f7f3909e225a65d8acb10cb20",
                 "reference": "81cf774c6a7f4d8f7f3909e225a65d8acb10cb20"
+            },
+            "type": "bower-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "bower-asset/photoswipe",
+            "version": "v4.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dimsemenov/PhotoSwipe.git",
+                "reference": "80607e12542a1a54ecefa837649e862b35dffd25"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dimsemenov/PhotoSwipe/zipball/80607e12542a1a54ecefa837649e862b35dffd25",
+                "reference": "80607e12542a1a54ecefa837649e862b35dffd25"
             },
             "type": "bower-asset",
             "license": [
@@ -3958,65 +3976,6 @@
             "time": "2021-02-06T10:44:32+00:00"
         },
         {
-            "name": "drupal/colorbox",
-            "version": "1.7.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/colorbox.git",
-                "reference": "8.x-1.7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/colorbox-8.x-1.7.zip",
-                "reference": "8.x-1.7",
-                "shasum": "64c7290be86fe1d3bf80dcf4003a37b3698bba50"
-            },
-            "require": {
-                "drupal/core": "^8.8 || ^9"
-            },
-            "suggest": {
-                "jackmoore/colorbox": "The Colorbox library is required to use the drupal/colorbox module."
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "8.x-1.7",
-                    "datestamp": "1643232040",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                },
-                "drush": {
-                    "services": {
-                        "drush.services.yml": "^9"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Neslee Canil Pinto",
-                    "homepage": "https://www.drupal.org/u/neslee-canil-pinto",
-                    "role": "Maintainer"
-                },
-                {
-                    "name": "Fredrik Jonsson",
-                    "homepage": "https://www.drupal.org/u/frjo",
-                    "role": "Maintainer"
-                }
-            ],
-            "description": "A light-weight, customizable lightbox plugin for jQuery.",
-            "homepage": "https://www.drupal.org/project/colorbox",
-            "support": {
-                "source": "https://git.drupalcode.org/project/colorbox",
-                "issues": "https://www.drupal.org/project/issues/colorbox"
-            }
-        },
-        {
             "name": "drupal/components",
             "version": "2.4.0",
             "source": {
@@ -6717,6 +6676,10 @@
             ],
             "authors": [
                 {
+                    "name": "Centarro",
+                    "homepage": "https://www.drupal.org/user/3661446"
+                },
+                {
                     "name": "bojanz",
                     "homepage": "https://www.drupal.org/user/86106"
                 },
@@ -9131,6 +9094,74 @@
                 "source": "https://cgit.drupalcode.org/pathauto",
                 "issues": "https://www.drupal.org/project/issues/pathauto",
                 "documentation": "https://www.drupal.org/docs/8/modules/pathauto"
+            }
+        },
+        {
+            "name": "drupal/photoswipe",
+            "version": "dev-3.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/photoswipe.git",
+                "reference": "fd1df2c86fabe75e4f221805baf452d5818c62d9"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9"
+            },
+            "suggest": {
+                "bower-asset/photoswipe": "Required to user drupal/photoswipe."
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-3.x": "3.x-dev"
+                },
+                "drupal": {
+                    "version": "3.x-dev",
+                    "datestamp": "1630936688",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Anybody",
+                    "homepage": "https://www.drupal.org/user/291091"
+                },
+                {
+                    "name": "ParisLiakos",
+                    "homepage": "https://www.drupal.org/user/1011436"
+                },
+                {
+                    "name": "julou",
+                    "homepage": "https://www.drupal.org/user/273952"
+                },
+                {
+                    "name": "sun",
+                    "homepage": "https://www.drupal.org/user/54136"
+                },
+                {
+                    "name": "thomas.frobieter",
+                    "homepage": "https://www.drupal.org/user/409335"
+                }
+            ],
+            "description": "Javascript-based photo gallery display for your Drupal website (very sleek with mobile browsers).",
+            "homepage": "https://www.drupal.org/project/photoswipe",
+            "keywords": [
+                "Drupal",
+                "Gallery",
+                "Lightbox",
+                "Mobile",
+                "Photoswipe"
+            ],
+            "support": {
+                "source": "http://cgit.drupalcode.org/photoswipe",
+                "issues": "https://www.drupal.org/project/issues/photoswipe"
             }
         },
         {
@@ -12180,15 +12211,6 @@
             "time": "2017-05-08T12:10:56+00:00"
         },
         {
-            "name": "jackmoore/colorbox",
-            "version": "1.6.4",
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/jackmoore/colorbox/archive/1.6.4.zip"
-            },
-            "type": "drupal-library"
-        },
-        {
             "name": "justinrainbow/json-schema",
             "version": "5.2.11",
             "source": {
@@ -14986,12 +15008,12 @@
             },
             "type": "library",
             "autoload": {
-                "psr-4": {
-                    "React\\Promise\\": "src/"
-                },
                 "files": [
                     "src/functions_include.php"
-                ]
+                ],
+                "psr-4": {
+                    "React\\Promise\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -18194,12 +18216,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Iconv\\": ""
-                },
                 "files": [
                     "bootstrap.php"
-                ]
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Iconv\\": ""
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -18276,12 +18298,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Intl\\Idn\\": ""
-                },
                 "files": [
                     "bootstrap.php"
-                ]
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Intl\\Idn\\": ""
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -18361,12 +18383,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Intl\\Normalizer\\": ""
-                },
                 "files": [
                     "bootstrap.php"
                 ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Intl\\Normalizer\\": ""
+                },
                 "classmap": [
                     "Resources/stubs"
                 ]
@@ -18522,12 +18544,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Php72\\": ""
-                },
                 "files": [
                     "bootstrap.php"
-                ]
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Php72\\": ""
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -18598,12 +18620,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Php73\\": ""
-                },
                 "files": [
                     "bootstrap.php"
                 ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Php73\\": ""
+                },
                 "classmap": [
                     "Resources/stubs"
                 ]
@@ -18677,12 +18699,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Php80\\": ""
-                },
                 "files": [
                     "bootstrap.php"
                 ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Php80\\": ""
+                },
                 "classmap": [
                     "Resources/stubs"
                 ]
@@ -18760,12 +18782,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Php81\\": ""
-                },
                 "files": [
                     "bootstrap.php"
                 ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Php81\\": ""
+                },
                 "classmap": [
                     "Resources/stubs"
                 ]
@@ -21629,6 +21651,7 @@
         "drupal/menu_link_weight": 20,
         "drupal/mimemail": 15,
         "drupal/node_revision_delete": 10,
+        "drupal/photoswipe": 20,
         "drupal/private_content": 5,
         "drupal/purge": 10,
         "drupal/rabbit_hole": 10,
