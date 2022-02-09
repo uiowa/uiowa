@@ -3856,3 +3856,9 @@ $sites['itsecurity.uiowa.ddev.site'] = 'itsecurity.uiowa.edu';
 $sites['itsecurity.dev.drupal.uiowa.edu'] = 'itsecurity.uiowa.edu';
 $sites['itsecurity.stage.drupal.uiowa.edu'] = 'itsecurity.uiowa.edu';
 $sites['itsecurity.prod.drupal.uiowa.edu'] = 'itsecurity.uiowa.edu';
+
+// Directory aliases for grantwood.uiowa.edu.
+$sites['grantwood.uiowa.ddev.site'] = 'grantwood.uiowa.edu';
+$sites['grantwood.dev.drupal.uiowa.edu'] = 'grantwood.uiowa.edu';
+$sites['grantwood.stage.drupal.uiowa.edu'] = 'grantwood.uiowa.edu';
+$sites['grantwood.prod.drupal.uiowa.edu'] = 'grantwood.uiowa.edu';
