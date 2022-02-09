@@ -3862,3 +3862,9 @@ $sites['grantwood.uiowa.ddev.site'] = 'grantwood.uiowa.edu';
 $sites['grantwood.dev.drupal.uiowa.edu'] = 'grantwood.uiowa.edu';
 $sites['grantwood.stage.drupal.uiowa.edu'] = 'grantwood.uiowa.edu';
 $sites['grantwood.prod.drupal.uiowa.edu'] = 'grantwood.uiowa.edu';
+
+// Directory aliases for eberl.lab.uiowa.edu.
+$sites['labeberl.uiowa.ddev.site'] = 'eberl.lab.uiowa.edu';
+$sites['labeberl.dev.drupal.uiowa.edu'] = 'eberl.lab.uiowa.edu';
+$sites['labeberl.stage.drupal.uiowa.edu'] = 'eberl.lab.uiowa.edu';
+$sites['labeberl.prod.drupal.uiowa.edu'] = 'eberl.lab.uiowa.edu';
