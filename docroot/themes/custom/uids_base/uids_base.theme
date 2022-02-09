@@ -183,6 +183,15 @@ function uids_base_preprocess_page(&$variables) {
     }
   }
 
+  // Hide the search form by default.
+  $variables['uiowa_search_form'] = FALSE;
+
+  if (\Drupal::service('module_handler')->moduleExists('uiowa_search')) {
+    if (\Drupal::config('uiowa_search.settings')->get('uiowa_search.display_search')) {
+      $variables['uiowa_search_form'] = TRUE;
+    }
+  }
+
   // The uiowa_auth module replaces local authentication with SAML SSO.
   if (\Drupal::service('module_handler')->moduleExists('uiowa_auth')) {
     if (!(\Drupal::currentUser()->isAuthenticated())) {

@@ -6,5 +6,9 @@
         {{ search_form }}
         {{ under_search }}
     </div>
+
+  {% if uiowa_search_form %}
     {% include '@uids_base/uids/search-toggle--bttn.twig' %}
+  {% endif %}
+
 </div>
