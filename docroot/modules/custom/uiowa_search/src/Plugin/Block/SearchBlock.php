@@ -26,6 +26,11 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
   protected $formBuilder;
 
   /**
+   * @var ConfigFactory
+   */
+  private $configFactory;
+
+  /**
    * Search block constructor.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, FormBuilderInterface $formBuilder, ConfigFactory $configFactory) {
