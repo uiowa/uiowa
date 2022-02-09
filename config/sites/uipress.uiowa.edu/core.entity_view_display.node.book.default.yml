@@ -212,47 +212,38 @@ third_party_settings:
             uuid: 068d5b7b-e2c2-4dd5-93b4-fc026f25618e
             region: first
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
               id: 'field_block:node:book:field_book_description_summary'
+              label: null
+              provider: layout_builder
+              label_display: null
               formatter:
+                label: hidden
                 type: text_default
-                label: above
                 settings: {  }
                 third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
             additional: {  }
             weight: 20
           -
             uuid: 21f2f637-bf22-4a1e-8f9c-1507246c4171
             region: first
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
               id: 'field_block:node:book:field_book_awards'
+              label: null
+              provider: layout_builder
+              label_display: null
               formatter:
+                label: hidden
                 type: text_default
-                label: above
                 settings: {  }
                 third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
             additional: {  }
             weight: 23
-          -
-            uuid: 9e273933-3ad0-4fa8-aed3-43e0df81ad48
-            region: first
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:book:field_book_reviews_blurbs'
-              formatter:
-                type: text_default
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            additional: {  }
-            weight: 22
           -
             uuid: f2701e59-27ca-4376-8f36-0a38d3025e79
             region: first
@@ -278,15 +269,18 @@ third_party_settings:
             uuid: e1f25405-1067-4518-bd0e-5e71ba1787c0
             region: first
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
               id: 'field_block:node:book:field_book_table_of_contents'
+              label: null
+              provider: layout_builder
+              label_display: null
               formatter:
+                label: hidden
                 type: text_default
-                label: above
                 settings: {  }
                 third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
             additional: {  }
             weight: 24
           -
@@ -377,17 +371,20 @@ third_party_settings:
             uuid: 7920105e-cea1-41d4-9b00-141948e676eb
             region: first
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
               id: 'field_block:node:book:field_book_excerpt'
+              label: null
+              provider: layout_builder
+              label_display: null
               formatter:
+                label: hidden
                 type: text_default
-                label: above
                 settings: {  }
                 third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
             additional: {  }
-            weight: 21
+            weight: 22
           -
             uuid: b62eec0e-c50c-4cb4-9590-a555e4a3fe5c
             region: first
@@ -462,22 +459,6 @@ third_party_settings:
                 view_mode: view_mode
             additional: {  }
             weight: 9
-          -
-            uuid: 7dee5ee6-896f-4532-b562-64d97a953d7e
-            region: first
-            configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              id: 'field_block:node:book:field_book_subtitle'
-              formatter:
-                label: hidden
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-                type: string
-            additional: {  }
-            weight: 5
           -
             uuid: f7f7734d-11af-4099-9959-8ea2186d2300
             region: second
@@ -577,6 +558,24 @@ third_party_settings:
               context_mapping: {  }
             additional: {  }
             weight: 19
+          -
+            uuid: 9e273933-3ad0-4fa8-aed3-43e0df81ad48
+            region: first
+            configuration:
+              id: 'field_block:node:book:field_book_reviews_blurbs'
+              label: null
+              provider: layout_builder
+              label_display: null
+              formatter:
+                label: hidden
+                type: text_default
+                settings: {  }
+                third_party_settings: {  }
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+            additional: {  }
+            weight: 21
         third_party_settings:
           layout_builder_lock:
             lock: {  }
