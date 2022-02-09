@@ -5,6 +5,7 @@ namespace Uiowa\Blt\Plugin\Commands;
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Symfony\Component\Finder\Finder;
+use Uiowa\Multisite;
 
 /**
  * This class should contain hooks that are used in other commands.
@@ -33,43 +34,8 @@ class ConfigSplitCommands extends BltTasks {
     foreach ($split_files->getIterator() as $split_file) {
       if (file_exists($split_file)) {
         $split = YamlMunge::parseFile($split_file);
-        $id = $split['id'];
 
-        // Sync default site database.
-        $this->taskDrush()
-          ->drush('sql:sync')
-          ->args([
-            "@default.prod",
-            "@default.local",
-          ])
-          ->stopOnFail()
-          ->run();
-
-        // Enable feature split, rebuild cache, and import the split config.
-        $this->taskDrush()
-          ->stopOnFail(FALSE)
-          ->drush('config:set')
-          ->args("config_split.config_split.{$id}", 'status', TRUE)
-          ->drush('cache:rebuild')
-          ->drush('config:import')
-          ->run();
-
-        // Run database updates after config
-        $this->taskDrush()
-          ->stopOnFail()
-          ->drush('updb');
-
-        // Re-export the split.
-        $this->taskDrush()
-          ->stopOnFail(FALSE)
-          ->drush('config-split:export')
-          ->arg($id)
-          ->run();
-
-        $task = $this->taskDrush()
-          ->stopOnFail()
-          ->drush("config-status");
-        $result = $task->run();
+        $this->updateSplit($split);
       }
     }
   }
@@ -92,24 +58,79 @@ class ConfigSplitCommands extends BltTasks {
 
     foreach ($split_directories->getIterator() as $split_directory) {
       // @todo Get the site URL from the directory name.
-      $host = '';
-      // @todo Sync each site.
-      // Sync default site database.
-      $this->taskDrush()
-        ->drush('sql:sync')
-        ->args([
-          "@default.prod",
-          "@default.local",
-        ])
-        ->stopOnFail()
-        ->run();
-      // Export site split.
+      $host = $split_directory->getFilename();
+
+      // If, for some reason, the split file doesn't exist, skip it!
+      $split_path = $split_directory->getPathname() . '/config_split.config_split.site.yml';
+      if (!file_exists($split_path)) {
+        continue;
+      }
+      $split = YamlMunge::parseFile($split_path);
+      $alias = Multisite::getIdentifier("https://{$host}");
+
+      $this->updateSplit($split, $alias);
+    }
+  }
+
+  protected function updateSplit($split, $alias = 'default') {
+    $id = $split['id'];
+
+    // Sync default site database.
+    $this->taskDrush()
+      ->drush('sql:sync')
+      ->args([
+        "@$alias.prod",
+        "@$alias.local",
+      ])
+      ->stopOnFail()
+      ->run();
+
+    $result = $this->taskDrush()
+      ->stopOnFail(FALSE)
+      ->drush('config:get')
+      ->alias("$alias.local")
+      ->args("config_split.config_split.{$id}", 'status')
+      ->run();
+
+    $status = FALSE;
+    if ($result->getExitCode() !== 1 && $result->getMessage() !== '') {
+      $status = trim($result->getMessage());
+      $status = str_replace("'config_split.config_split.$id:status': ", '', $status);
+      $status = $status === 'true';
+    }
+
+    // If the split is not enabled, enable it, rebuild cache, and re-import
+    // config.
+    if (!$status) {
       $this->taskDrush()
         ->stopOnFail(FALSE)
-        ->drush('config-split:export')
-        ->arg('site')
+        ->drush('config:set')
+        ->args("config_split.config_split.{$id}", 'status', TRUE)
+        ->drush('cache:rebuild')
+        ->drush('config:import')
         ->run();
     }
+
+    // Run database updates after config
+    $this->taskDrush()
+      ->stopOnFail()
+      ->drush('updb')
+      ->alias("$alias.local")
+      ->run();
+
+    // Re-export the split.
+    $this->taskDrush()
+      ->stopOnFail(FALSE)
+      ->drush('config-split:export')
+      ->alias("$alias.local")
+      ->arg($id)
+      ->run();
+
+    $task = $this->taskDrush()
+      ->stopOnFail()
+      ->drush('config-status')
+      ->alias("$alias.local");
+    $result = $task->run();
   }
 
 }
