@@ -26,7 +26,9 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
   protected $formBuilder;
 
   /**
-   * @var ConfigFactory
+   * The config_factory service.
+   *
+   * @var \Drupal\Core\Config\ConfigFactory
    */
   private $configFactory;
 
