@@ -15,8 +15,6 @@ use Drupal\layout_builder_styles\LayoutBuilderStyleInterface;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\ctools_views\Plugin\Display\Block;
 use Drupal\views\ViewExecutable;
-use Drupal\paragraphs\Entity\Paragraph;
-use Drupal\media\Entity\Media;
 
 /**
  * Implements hook_element_info_alter().
@@ -754,29 +752,6 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
           $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["masking"]['#disabled'] = TRUE;
           $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["power_transforms"]['#disabled'] = TRUE;
           $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["pull"]['#disabled'] = TRUE;
-        }
-
-        $content = $element['top']['summary']['fields_info']['#summary']['content'];
-        // If $content has 3 elements, the second one is the image file and the media entity resolved.
-        if (count($content) != 3) {
-          $index = $element['#delta'];
-          $paragraph_id = $context['items'][$index]->get('target_id')->getValue();
-          $paragraph = Paragraph::load($paragraph_id);
-          $media_field = $paragraph->get('field_timeline_media');
-          if (count($media_field) > 0) {
-            $media_entity_id = $media_field->getValue()[0]['target_id'];
-            $media_entity = Media::load($media_entity_id);
-            if ($media_entity == NULL) {
-              $element['top']['type']['label']['media_error'] = TRUE;
-            }
-          }
-        }
-
-        if (isset($element['top']['type']['label']['media_error'])) {
-          if ($element['top']['type']['label']['media_error']) {
-            $element['top']['type']['label']['#markup'] .=
-              '<div class="media-entity missing-media-entity">Media error</div>';
-          }
         }
 
         break;
