@@ -46,6 +46,14 @@ function uipress_core_preprocess_field(&$variables, $hook) {
 
       $variables['field_container_classes'] = 'list-container';
       break;
+    case 'field_book_file_uploads':
+      if (!isset($variables['attributes']['class'])) {
+        $variables['attributes']['class'] = '';
+      }
+      $variables['attributes']['class'] .= 'grid--twocol--50-50';
+
+      $variables['field_container_classes'] = 'list-container';
+      break;
   }
 }
 
