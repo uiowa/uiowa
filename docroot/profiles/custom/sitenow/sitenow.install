@@ -3786,3 +3786,12 @@ function sitenow_update_9029() {
 function sitenow_update_9030() {
   drupal_flush_all_caches();
 }
+
+/**
+ * Clear plugin cache for photoswipe config import.
+ */
+function sitenow_update_9031() {
+  /** @var \Drupal\Core\Plugin\CachedDiscoveryClearerInterface $plugin_cache_clearer */
+  $plugin_cache_clearer = \Drupal::service('plugin.cache_clearer');
+  $plugin_cache_clearer->clearCachedDefinitions();
+}
