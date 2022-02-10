@@ -87,6 +87,7 @@ class HoursFilterForm extends FormBase {
         '#ajax' => [
           'callback' => [$this, 'dateFilterCallback'],
           'event' => 'finishedinput',
+          'disable-refocus' => TRUE,
         ],
       ];
     }
