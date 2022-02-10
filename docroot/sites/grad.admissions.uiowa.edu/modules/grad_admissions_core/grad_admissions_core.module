@@ -19,7 +19,8 @@ use Drupal\Core\Entity\EntityInterface;
 function grad_admissions_core_entity_presave(EntityInterface $entity) {
   switch ($entity->bundle()) {
     case 'costs_estimate':
-      // Setting the grad costs title with the title value + distinguishing if domestic or international.
+      // Setting the grad costs title with the title value + distinguishing
+      // if domestic or international.
       $output = $entity->get('field_costs_estimate_title')->value . ' - ' . $entity->get('field_costs_estimate_type')->value;
       $entity->setTitle($output);
       break;
