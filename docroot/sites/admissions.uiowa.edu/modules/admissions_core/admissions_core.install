@@ -378,8 +378,6 @@ function admissions_core_update_9005() {
  */
 function admissions_core_update_9006() {
   $db = \Drupal::database();
-  $block_storage = \Drupal::entityTypeManager()
-    ->getStorage('block_content');
 
   $section_column = 'layout_builder__layout_section';
   $tables = [

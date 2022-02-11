@@ -6,7 +6,7 @@ use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
 
 /**
- * Class EventFeatureTest.
+ * People block kernel test.
  *
  * @group kernel
  */
@@ -57,8 +57,6 @@ class PeopleBlockViewTest extends BrowserTestBase {
     // Store the user for future use.
     $this->user = $editor;
     $this->drupalLogin($this->user);
-
-    $test = 'this';
   }
 
   /**
@@ -82,7 +80,7 @@ class PeopleBlockViewTest extends BrowserTestBase {
     $this->drupalGet('<front>');
 
     // @todo Check that event date is displaying.
-    $result = $this->xpath('//div[contains(@class, "region-content")]/div[contains(@class, "block-views")]/h2');
+    $this->xpath('//div[contains(@class, "region-content")]/div[contains(@class, "block-views")]/h2');
     // @todo Check that event virtual details are displaying.
     // @todo Check that event location is showing.
     $this->assertEquals($title, $title);
