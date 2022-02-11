@@ -71,10 +71,7 @@ function uiowa_auth_update_8004() {
 
     if ($data) {
       $authname = $data['authname'];
-      // The allowed_classes option was added here on 2022/02/04 by SAH to
-      // eliminate a PHPCS error. Since this update hook should never run on
-      // any site on our platform again, I set it to FALSE just in case there
-      // might be a security implication with setting it to TRUE.
+      // Allowed classes disabled post-update as per PHPCS.
       $data = unserialize($data['data'], ['allowed_classes' => FALSE]);
 
       $deduped = [
