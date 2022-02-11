@@ -391,7 +391,8 @@ function admissions_core_update_9006() {
   $blocks = [];
 
   foreach ($tables as $table_name) {
-    // Select instances where the section contains a uiowa_area_of_study_search block.
+    // Select instances where the section contains an
+    // uiowa_area_of_study_search block.
     $query = $db->select($table_name, 'n')
       ->condition($section_column, '%uiowa_area_of_study_search%', 'LIKE')
       ->fields('n', ['entity_id', 'revision_id', 'delta', $section_column]);
