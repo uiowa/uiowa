@@ -61,7 +61,10 @@ class GraphBlock extends BlockBase {
 
     $build['graph_container']['graph_details']['graph_table']['#caption'] = [
       '#type' => 'markup',
-      '#markup' => '<span id="' . $unique_id . '-summary">' . $this->t($graph_summary) . '</span>',
+      '#markup' => $this->t('<span id="@unique_id-summary">@summary</span>', [
+        '@unique_id' => $unique_id,
+        '@summary' => $graph_summary,
+      ]),
       '#allowed_tags' => array_merge(Xss::getHtmlTagList(), ['caption', 'span']),
     ];
 
