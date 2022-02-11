@@ -72,6 +72,9 @@ class ConfigSplitCommands extends BltTasks {
     }
   }
 
+  /**
+   * Export a split.
+   */
   protected function updateSplit($split, $alias = 'default') {
     $id = $split['id'];
 
@@ -111,7 +114,7 @@ class ConfigSplitCommands extends BltTasks {
         ->run();
     }
 
-    // Run database updates after config
+    // Run database updates after config.
     $this->taskDrush()
       ->stopOnFail()
       ->drush('updb')
