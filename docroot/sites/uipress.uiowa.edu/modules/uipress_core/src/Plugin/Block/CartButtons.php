@@ -39,7 +39,7 @@ class CartButtons extends BlockBase {
     return [
       'href' => [
         '#markup' => $href,
-      ]
+      ],
     ];
   }
 
