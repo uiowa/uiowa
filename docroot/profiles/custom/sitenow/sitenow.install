@@ -3788,9 +3788,18 @@ function sitenow_update_9030() {
 }
 
 /**
- * Set previously unset menu item styles to vertical.
+ * Clear plugin cache for photoswipe config import.
  */
 function sitenow_update_9031() {
+  /** @var \Drupal\Core\Plugin\CachedDiscoveryClearerInterface $plugin_cache_clearer */
+  $plugin_cache_clearer = \Drupal::service('plugin.cache_clearer');
+  $plugin_cache_clearer->clearCachedDefinitions();
+}
+
+/**
+ * Set previously unset menu item styles to vertical.
+ */
+function sitenow_update_9032() {
   _update_all_blocks_by_plugin_id('menu_block:main', function (&$component, $block) {
     $styles = $component->get('layout_builder_styles_style');
     if (!isset($styles['block_menu_vertical']) && !isset($styles['block_menu_horizontal'])) {
@@ -3804,6 +3813,6 @@ function sitenow_update_9031() {
 /**
  * Flush all caches to get rid of old Layout Builder Styles module code.
  */
-function sitenow_update_9032() {
+function sitenow_update_9033() {
   drupal_flush_all_caches();
 }
