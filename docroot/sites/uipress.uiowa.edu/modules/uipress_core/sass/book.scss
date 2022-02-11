@@ -1,0 +1,16 @@
+@import "../../../../../themes/custom/uids_base/uids/assets/scss/_variables.scss";
+@import "../../../../../themes/custom/uids_base/uids/assets/scss/_utilities.scss";
+
+.grid--twocol--50-50 {
+  &.block-field-blocknodebookfield-book-file-uploads {
+    .list-container {
+      column-gap: 1rem;
+      .field__item {
+        margin-bottom: $mobile-width-gutter;
+        @include breakpoint(sm) {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}

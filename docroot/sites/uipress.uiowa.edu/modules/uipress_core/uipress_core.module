@@ -33,13 +33,13 @@ function uipress_core_field_widget_entity_reference_paragraphs_form_alter(&$elem
  */
 function uipress_core_preprocess_block(&$variables) {
   switch ($variables['elements']['#plugin_id']) {
-    // Display book interior images in a two column grid
+    // Display book interior images in a two column grid.
     case 'field_block:node:book:field_book_file_uploads':
       if (!isset($variables['attributes']['class'])) {
         $variables['attributes']['class'] = [''];
       }
       $variables['attributes']['class'][] .= 'grid--twocol--50-50';
-      $variables['attributes']['class'][] .= 'block-margin__top--extra';
+      $variables['attributes']['class'][] .= 'block-margin__top';
       break;
   }
 }
@@ -65,10 +65,6 @@ function uipress_core_preprocess_field(&$variables, $hook) {
 
     case 'field_book_file_uploads':
       $variables['field_container_classes'] = 'list-container';
-      if (!isset($variables['attributes']['style'])) {
-        $variables['attributes']['style'] = [''];
-      }
-      $variables['attributes']['style'][] .= 'column-gap: 1rem';
       break;
   }
 }
