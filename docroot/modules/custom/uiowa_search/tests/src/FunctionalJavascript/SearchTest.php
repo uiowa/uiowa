@@ -30,6 +30,8 @@ class SearchTest extends WebDriverTestBase {
     parent::setUp();
     $this->drupalPlaceBlock('uiowasearch', [
       'region' => 'search',
+      'id' => 'uiowasearch',
+      'plugin' => 'uiowa_search_form',
     ]);
   }
 
@@ -44,10 +46,7 @@ class SearchTest extends WebDriverTestBase {
     $this->assertNotEmpty($button);
     $button->click();
     $field = $page->findField('edit-search-terms');
-    // @todo Update this test to remove this field check.
-    if ($field) {
-      $this->assertTrue($field->isVisible());
-    }
+    $this->assertTrue($field->isVisible());
   }
 
 }
