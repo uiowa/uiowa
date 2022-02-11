@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\sitenow_events\Kernal;
+namespace Drupal\Tests\sitenow_events\Kernel;
 
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\uiowa_core\Traits\ConfigSplitTestTrait;
