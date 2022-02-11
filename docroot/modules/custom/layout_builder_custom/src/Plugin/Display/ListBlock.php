@@ -391,7 +391,7 @@ class ListBlock extends CoreBlock {
       $form['override']['use_more_text'] = [
         '#type' => 'textfield',
         '#title' => 'Custom text',
-        '#default_value' => isset($block_configuration['use_more_text']) ? $block_configuration['use_more_text'] : '',
+        '#default_value' => $block_configuration['use_more_text'] ?? '',
         '#process_default_value' => FALSE,
         '#states' => [
           'visible' => [

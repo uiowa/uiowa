@@ -134,7 +134,7 @@ function sitenow_events_preprocess_block(&$variables) {
         foreach ($data['events'] as $value) {
           // The API nests each event as an array.
           $event = $value['event'];
-          $event['heading_size'] = isset($heading_size) ? $heading_size : 'h3';
+          $event['heading_size'] = $heading_size ?? 'h3';
           // Pass the parent block's layout_builder_styles to each item.
           if (!empty($parent_lb_styles)) {
             $event['parent_lb_styles'] = $parent_lb_styles;

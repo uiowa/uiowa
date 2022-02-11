@@ -305,7 +305,7 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
       110 => 546,
     ];
 
-    return isset($map[$nid]) ? $map[$nid] : FALSE;
+    return $map[$nid] ?? FALSE;
   }
 
 }
