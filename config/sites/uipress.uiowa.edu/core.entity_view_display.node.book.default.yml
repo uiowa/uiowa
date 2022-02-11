@@ -425,17 +425,26 @@ third_party_settings:
             uuid: 333e4a7d-287f-4934-9966-1f5aeeb01899
             region: second
             configuration:
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
               id: 'field_block:node:book:field_image'
+              label: null
+              provider: layout_builder
+              label_display: null
               formatter:
                 label: hidden
+                type: photoswipe_field_formatter
                 settings:
-                  view_mode: full__no_crop
-                  link: false
+                  photoswipe_node_style_first: ''
+                  photoswipe_node_style: ''
+                  photoswipe_image_style: ''
+                  photoswipe_reference_image_field: field_media_image
+                  photoswipe_caption: title
+                  photoswipe_caption_custom: ''
+                  photoswipe_view_mode: _custom
+                  gallery_selector: ''
                 third_party_settings: {  }
-                type: entity_reference_entity_view
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
             additional: {  }
             weight: 2
           -
@@ -469,17 +478,18 @@ third_party_settings:
               label_display: null
               formatter:
                 label: hidden
-                type: image
+                type: photoswipe_field_formatter
                 settings:
-                  image_style: ''
-                  image_link: ''
+                  photoswipe_node_style_first: ''
+                  photoswipe_node_style: ''
+                  photoswipe_image_style: ''
+                  photoswipe_caption: title
+                  photoswipe_caption_custom: ''
+                  photoswipe_view_mode: _custom
+                  gallery_selector: ''
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-                  lazy:
-                    lazy_image: '0'
-                    placeholder_style: ''
-                    data_uri: false
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
