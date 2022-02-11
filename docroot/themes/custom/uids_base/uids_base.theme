@@ -5,6 +5,7 @@
  * Functions to support theming in the uids_base theme.
  */
 
+use Drupal\Core\Extension\ExtensionPathResolver;
 use Drupal\fragments\Entity\FragmentInterface;
 use Drupal\block\Entity\Block;
 use Drupal\Component\Utility\Html;
@@ -141,8 +142,10 @@ function uids_base_preprocess_page(&$variables) {
   $variables['site_parent_url'] = $config->get('parent.url');
 
   // Add variables for the image and path of the UIOWA block logo.
-  $variables['uiowa_logo_path'] = '/' . drupal_get_path('theme', 'uids_base') . '/uids/assets/images/uiowa-secondary.svg#logo';
-  $variables['uiowa_logo_path_png'] = '/' . drupal_get_path('theme', 'uids_base') . '/uids/assets/images/uiowa-primary.png';
+  /** @var ExtensionPathResolver $path_resolver */
+  $path_resolver = \Drupal::service('extension.path.resolver');
+  $variables['uiowa_logo_path'] = '/' . $path_resolver->getPath('theme', 'uids_base') . '/uids/assets/images/uiowa-secondary.svg#logo';
+  $variables['uiowa_logo_path_png'] = '/' . $path_resolver->getPath('theme', 'uids_base') . '/uids/assets/images/uiowa-primary.png';
 
   $variables['header_type'] = theme_get_setting('header.type');
   $variables['header_nav'] = theme_get_setting('header.nav_style');
