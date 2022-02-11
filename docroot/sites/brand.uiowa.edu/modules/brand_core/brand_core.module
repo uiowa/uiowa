@@ -279,8 +279,9 @@ function brand_core_preprocess_node(&$variables) {
                 '#markup' => '<div class="my-2"><a class="btn btn-primary" href="' . $alias . '/download">Download <span role="presentation" class="fas fa-cloud-download-alt"></span></a></div>',
                 '#weight' => 999,
               ];
-              $variables['content']['stacked'] = ['#markup' => file_create_url($lockup_dir . $nid . '/' . $name . '-LockupStacked-BLACK.svg')];
-              $variables['content']['horizontal'] = ['#markup' => file_create_url($lockup_dir . $nid . '/' . $name . '-LockupHorizontal-BLACK.svg')];
+
+              $variables['content']['stacked'] = ['#markup' => \Drupal::service('file_url_generator')->generateString($lockup_dir . $nid . '/' . $name . '-LockupStacked-BLACK.svg')];
+              $variables['content']['horizontal'] = ['#markup' => \Drupal::service('file_url_generator')->generateString($lockup_dir . $nid . '/' . $name . '-LockupHorizontal-BLACK.svg')];
             }
             break;
         }
