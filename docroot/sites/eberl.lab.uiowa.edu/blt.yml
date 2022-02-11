@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: labeberl.uiowa.ddev.site
+    protocol: https
+  machine_name: labeberl
+  human_name: eberl.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labeberl.prod
+drupal:
+  db:
+    database: eberl_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: mjcranston
