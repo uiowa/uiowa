@@ -6,13 +6,12 @@
  */
 
 use Drupal\Core\Config\FileStorage;
-use Drupal\Core\Extension\ExtensionPathResolver;
 
 /**
  * Implements hook_install().
  */
 function engineering_migrate_install() {
-  /** @var ExtensionPathResolver $path_resolver */
+  /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
   $path_resolver = \Drupal::service('extension.path.resolver');
   $config_path = $path_resolver->getPath('module', 'engineering_migrate') . '/config/split';
   $source = new FileStorage($config_path);

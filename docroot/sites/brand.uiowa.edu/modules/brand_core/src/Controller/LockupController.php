@@ -31,7 +31,7 @@ class LockupController extends ControllerBase {
   protected $fs;
 
   /**
-   * The path resolver service.
+   * The extension.path.resolver service.
    *
    * @var \Drupal\Core\Extension\ExtensionPathResolver
    */
@@ -44,6 +44,8 @@ class LockupController extends ControllerBase {
    *   The entity_type.manager service.
    * @param \Drupal\Core\File\FileSystemInterface $fileSystem
    *   The file_system service.
+   * @param \Drupal\Core\Extension\ExtensionPathResolver $extensionPathResolver
+   *   The extension.path.resolver service.
    */
   public function __construct(EntityTypeManagerInterface $entityTypeManager, FileSystemInterface $fileSystem, ExtensionPathResolver $extensionPathResolver) {
     $this->entityTypeManager = $entityTypeManager;

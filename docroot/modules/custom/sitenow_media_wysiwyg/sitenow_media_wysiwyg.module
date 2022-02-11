@@ -5,7 +5,6 @@
  * Contains hook implementations for UIowa Media WYSIWYG.
  */
 
-use Drupal\Core\Extension\ExtensionPathResolver;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\FileInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -30,7 +29,7 @@ function sitenow_media_wysiwyg_field_widget_panopto_url_widget_form_alter(&$elem
  * Implements hook_editor_js_settings_alter().
  */
 function sitenow_media_wysiwyg_editor_js_settings_alter(array &$settings) {
-  /** @var ExtensionPathResolver $path_resolver */
+  /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
   $path_resolver = \Drupal::service('extension.path.resolver');
 
   foreach (array_keys($settings['editor']['formats']) as $text_format_id) {

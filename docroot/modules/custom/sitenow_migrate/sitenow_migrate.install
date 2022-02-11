@@ -6,7 +6,6 @@
  */
 
 use Drupal\Core\Config\FileStorage;
-use Drupal\Core\Extension\ExtensionPathResolver;
 use Drupal\Core\File\Exception\FileException;
 use Drupal\Core\File\FileSystemInterface;
 
@@ -18,7 +17,7 @@ function sitenow_migrate_install() {
   // in the local environment prior to migration.
   // Helps with memory issues and errors during migration, if the file
   // doesn't already exist.
-  /** @var ExtensionPathResolver $path_resolver */
+  /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
   $path_resolver = \Drupal::service('extension.path.resolver');
   $source = $path_resolver->getPath('module', 'sitenow_migrate') . '/images/icons';
   $destination = \Drupal::config('media.settings')->get('icon_base_uri');
@@ -50,7 +49,7 @@ function sitenow_migrate_install() {
  * Helper function for installing config related to a migration.
  */
 function sitenow_migrate_migration_install($sitename) {
-  /** @var ExtensionPathResolver $path_resolver */
+  /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
   $path_resolver = \Drupal::service('extension.path.resolver');
 
   if (!$sitename) {

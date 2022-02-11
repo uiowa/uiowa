@@ -24,7 +24,7 @@ class RegionSettings extends ConfigFormBase {
   /**
    * The renderer service.
    *
-   * @var RendererInterface
+   * @var \Drupal\Core\Render\RendererInterface
    */
   protected RendererInterface $renderer;
 
