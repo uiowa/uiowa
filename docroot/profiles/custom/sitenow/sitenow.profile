@@ -20,6 +20,7 @@ use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\layout_builder\InlineBlockUsage;
+use Drupal\system\Entity\Menu;
 
 /**
  * Implements hook_preprocess_HOOK().
@@ -550,7 +551,7 @@ function sitenow_form_revision_overview_form_alter(&$form, FormStateInterface $f
  * Implements hook_form_FORM_ID_alter().
  */
 function sitenow_form_system_site_information_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $menus = menu_ui_get_menus();
+  $menus = Menu::loadMultiple();
   $social_media_menu = 'social';
   $custom_menu = 'footer-primary';
   $custom_menu_2 = 'footer-secondary';
