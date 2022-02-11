@@ -35,21 +35,21 @@ function uipress_core_field_widget_entity_reference_paragraphs_form_alter(&$elem
 // Both add the class but throw errors and do not take effect.
 function uipress_core_preprocess_block(&$variables) {
   // way admissions_core uses preprocess_block function
-//  switch ($variables['elements']['#plugin_id']) {
-//    case 'field_block:node:book:field_book_file_uploads':
-//      if (!isset($variables['attributes'])) {
-//        $variables['attributes']['class'] = '';
-//      }
-//      $variables['attributes']['class'] .= 'grid--twocol--50-50';
-//      break;
-//  }
-  // way drupal.org uses preprocess_block function
-  if ($variables['elements']['#plugin_id'] == 'field_block:node:book:field_book_file_uploads') {
-    if (!isset($variables['attributes']['class'])) {
-      $variables['attributes']['class'] = '';
-    }
-    $variables['attributes']['class'] .= 'grid--twocol--50-50';
+  switch ($variables['elements']['#plugin_id']) {
+    case 'field_block:node:book:field_book_file_uploads':
+      if (!isset($variables['attributes']['class'])) {
+        $variables['attributes']['class'] = [''];
+      }
+      $variables['attributes']['class'][] .= 'grid--twocol--50-50';
+      break;
   }
+  // way drupal.org uses preprocess_block function
+//  if ($variables['elements']['#plugin_id'] == 'field_block:node:book:field_book_file_uploads') {
+//    if (!isset($variables['attributes']['class'])) {
+//      $variables['attributes']['class'] = '';
+//    }
+//    $variables['attributes']['class'] .= 'grid--twocol--50-50';
+//  }
 }
 
 /**
