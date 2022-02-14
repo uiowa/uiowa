@@ -74,6 +74,12 @@ class ConfigSplitCommands extends BltTasks {
   protected function updateSplit($split, $alias = 'default') {
     $id = $split['id'];
 
+    // Recreate the database in case this site has never been blt-synced before.
+    $this->taskDrush()
+      ->drush('sql:create')
+      ->stopOnFail()
+      ->run();
+
     // Sync default site database.
     $this->taskDrush()
       ->drush('sql:sync')
