@@ -92,16 +92,17 @@ class ConfigSplitCommands extends BltTasks {
     $split_name = 'config_split.config_split.site.yml';
     $finder = new Finder();
 
-    $splits = $finder
+    $split_files = $finder
       ->files()
       ->in("$root/config/sites/")
       ->depth('< 2')
       ->name($split_name)
       ->sortByName();
 
-    foreach ($splits->getIterator() as $split) {
-      $host = $split->getRelativePath();
-      $split = YamlMunge::parseFile($split->getPathname());
+    foreach ($split_files->getIterator() as $split_file) {
+      // This assumes the finder in() context above does not change.
+      $host = $split_file->getRelativePath();
+      $split = YamlMunge::parseFile($split_file->getPathname());
       $alias = Multisite::getIdentifier("https://$host");
       $this->switchSiteContext($host);
       $this->updateSplit($split, $alias);
