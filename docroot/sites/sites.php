@@ -810,10 +810,10 @@ $sites['studiohorn.stage.drupal.uiowa.edu'] = 'horn.studio.uiowa.edu';
 $sites['studiohorn.prod.drupal.uiowa.edu'] = 'horn.studio.uiowa.edu';
 
 // Directory aliases for uiowa.edu.
-$sites['uiowa.uiowa.ddev.site'] = 'uiowa.edu';
-$sites['uiowa.dev.drupal.uiowa.edu'] = 'uiowa.edu';
-$sites['uiowa.stage.drupal.uiowa.edu'] = 'uiowa.edu';
-$sites['uiowa.prod.drupal.uiowa.edu'] = 'uiowa.edu';
+$sites['home.uiowa.ddev.site'] = 'uiowa.edu';
+$sites['home.dev.drupal.uiowa.edu'] = 'uiowa.edu';
+$sites['home.stage.drupal.uiowa.edu'] = 'uiowa.edu';
+$sites['home.prod.drupal.uiowa.edu'] = 'uiowa.edu';
 
 // Directory aliases for irbr.org.uiowa.edu.
 $sites['orgirbr.uiowa.ddev.site'] = 'irbr.org.uiowa.edu';
