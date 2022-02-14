@@ -58,18 +58,11 @@ class ConfigSplitCommands extends BltTasks {
       ->name($split_name)
       ->sortByName();
 
-    foreach ($split_directories->getIterator() as $split_directory) {
-      // @todo Get the site URL from the directory name.
-      $host = $split_directory->getFilename();
-
-      // If, for some reason, the split file doesn't exist, skip it!
-      $split_path = $split_directory->getPathname() . '/config_split.config_split.site.yml';
-      if (!file_exists($split_path)) {
-        continue;
-      }
-      $split = YamlMunge::parseFile($split_path);
-      $alias = Multisite::getIdentifier("https://{$host}");
-
+    foreach ($splits->getIterator() as $split) {
+      $host = $split->getRelativePath();
+      $split = YamlMunge::parseFile($split->getPathname());
+      $alias = Multisite::getIdentifier("https://$host");
+      $this->switchSiteContext($host);
       $this->updateSplit($split, $alias);
     }
   }
