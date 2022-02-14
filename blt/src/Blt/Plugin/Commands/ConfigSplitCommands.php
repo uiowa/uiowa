@@ -65,17 +65,10 @@ class ConfigSplitCommands extends BltTasks {
         // the finder context in() does not change.
         $host = dirname($split_file->getRelativePath(), 4);
         $module = basename(dirname($split_file->getRelativePath(), 2));
-
         $split = YamlMunge::parseFile($split_file->getPathname());
         $alias = Multisite::getIdentifier("https://$host");
         $this->switchSiteContext($host);
-
-        $this->taskDrush()
-          ->drush('pm:enable')
-          ->arg($module)
-          ->run();
-
-        $this->updateSplit($split, $alias);
+        $this->updateSplit($split, $alias, $module);
       }
     }
   }
@@ -112,7 +105,7 @@ class ConfigSplitCommands extends BltTasks {
   /**
    * Export a split.
    */
-  protected function updateSplit($split, $alias = 'default') {
+  protected function updateSplit($split, $alias = 'default', $module = NULL) {
     $id = $split['id'];
 
     // Recreate the database in case this site has never been blt-synced before.
@@ -128,6 +121,13 @@ class ConfigSplitCommands extends BltTasks {
       ->drush('config:import')
       ->drush('config:import')
       ->run();
+
+    if ($module) {
+      $this->taskDrush()
+        ->drush('pm:enable')
+        ->arg($module)
+        ->run();
+    }
 
     $result = $this->taskDrush()
       ->stopOnFail(FALSE)
