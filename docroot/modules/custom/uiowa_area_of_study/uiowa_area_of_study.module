@@ -94,9 +94,11 @@ function uiowa_area_of_study_preprocess_page(&$variables) {
           // Using preprocess_page to avoid caching issue.
           if ($node->hasField('field_area_of_study_link_direct')
             && $node->get('field_area_of_study_link_direct')->value == '1') {
-            \Drupal::messenger()
-              ->addWarning(t('Visitors are being redirected to
-               the Primary Source Link'));
+            if (\Drupal::currentUser()->hasPermission('rabbit hole bypass node') == TRUE) {
+              \Drupal::messenger()
+                ->addWarning(t('Visitors are being redirected to
+                the Primary Source Link'));
+            }
           }
           break;
 
