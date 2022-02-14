@@ -10,6 +10,16 @@ use Consolidation\AnnotatedCommand\CommandError;
  * This class should contain hooks that are used in other commands.
  */
 class ValidateCommands extends BltTasks {
+  /**
+   * Validate that the command is being run on the container.
+   *
+   * @hook validate @requireContainer
+   */
+  public function validateContainer() {
+    if (!$this->isDdev()) {
+      return new CommandError('This command must be run on the web container, i.e. either with ddev ... or after running ddev ssh.');
+    }
+  }
 
   /**
    * Validate that the command is not being run on the container.
@@ -17,9 +27,7 @@ class ValidateCommands extends BltTasks {
    * @hook validate @requireHost
    */
   public function validateHost() {
-    $is_ddev = getenv('IS_DDEV_PROJECT') ?? FALSE;
-
-    if ($is_ddev) {
+    if ($this->isDdev()) {
       return new CommandError('This command must be run on your host machine, i.e. not on the ddev web container.');
     }
   }
@@ -82,6 +90,15 @@ class ValidateCommands extends BltTasks {
         return new CommandError("Error connecting to Acquia remote {$remote}. Double check permissions and SSH key.");
       }
     }
+  }
+
+  /**
+   * Whether or the IS_DDEV_PROJECT environment variable is set.
+   *
+   * @return bool
+   */
+  protected function isDdev() {
+    return getenv('IS_DDEV_PROJECT') ?? FALSE;
   }
 
 }

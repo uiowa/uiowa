@@ -16,10 +16,11 @@ class ConfigSplitCommands extends BltTasks {
    * Validate that the command is not being run on the container.
    *
    * @command uiowa:usplits:feature
+   *
+   * @requireContainer
    */
   public function updateFeatureSplits() {
     // Reference: https://github.com/uiowa/uiowa/blob/15497457c6c34c3b49c5f4d5cda259a4e67982dc/blt/src/Blt/Plugin/Commands/GitCommands.php#L212-L222
-    // @todo Limit to only DDEV.
     $root = $this->getConfigValue('repo.root');
     $finder = new Finder();
 
@@ -34,7 +35,6 @@ class ConfigSplitCommands extends BltTasks {
     foreach ($split_files->getIterator() as $split_file) {
       if (file_exists($split_file)) {
         $split = YamlMunge::parseFile($split_file);
-
         $this->updateSplit($split);
       }
     }
@@ -44,9 +44,10 @@ class ConfigSplitCommands extends BltTasks {
    * Validate that the command is not being run on the container.
    *
    * @command uiowa:usplits:site
+   *
+   * @requireContainer
    */
   public function updateSiteSplits() {
-    // @todo Limit to only DDEV.
     $root = $this->getConfigValue('repo.root');
     $split_name = 'config_split.config_split.site.yml';
     $finder = new Finder();
