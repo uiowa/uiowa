@@ -54,6 +54,7 @@ removing:
     field_person_contact_information:
       type: paragraphs
       weight: 24
+      region: content
       settings:
         title: 'Contact Information'
         title_plural: 'Contact Information'
@@ -69,30 +70,29 @@ removing:
           collapse_edit_all: collapse_edit_all
           duplicate: duplicate
       third_party_settings: {  }
-      region: content
     field_person_credential:
+      type: string_textfield
       weight: 4
+      region: content
       settings:
         size: 60
         placeholder: ''
       third_party_settings: {  }
-      type: string_textfield
-      region: content
     field_person_education:
+      type: string_textarea
       weight: 10
+      region: content
       settings:
         rows: 2
         placeholder: ''
       third_party_settings: {  }
-      type: string_textarea
-      region: content
     field_person_email:
       type: email_default
       weight: 7
       region: content
       settings:
-        size: 60
         placeholder: ''
+        size: 60
       third_party_settings: {  }
     field_person_hide:
       weight: 23
@@ -104,13 +104,13 @@ removing:
         placeholder: ''
       third_party_settings: {  }
     field_person_position:
+      type: string_textfield
       weight: 6
+      region: content
       settings:
         size: 60
         placeholder: ''
       third_party_settings: {  }
-      type: string_textfield
-      region: content
     field_person_research_areas:
       type: entity_reference_autocomplete
       weight: 11
@@ -126,13 +126,13 @@ removing:
     field_tags:
       weight: 15
     field_teaser:
+      type: string_textarea
       weight: 22
+      region: content
       settings:
         rows: 5
         placeholder: ''
       third_party_settings: {  }
-      type: string_textarea
-      region: content
     moderation_state:
       weight: 21
     path:

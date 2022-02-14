@@ -1,4 +1,14 @@
 adding:
+  dependencies:
+    config:
+      - node.type.area_of_study
+      - node.type.costs_estimate
+      - taxonomy.vocabulary.colleges
+      - taxonomy.vocabulary.degree_types
+      - taxonomy.vocabulary.grad_areas_of_study
+    module:
+      - rabbit_hole
+      - siteimprove
   permissions:
     - 'create area_of_study content'
     - 'create costs_estimate content'
@@ -22,6 +32,7 @@ adding:
     - 'rabbit hole bypass taxonomy_term'
     - 'revert area_of_study revisions'
     - 'revert costs_estimate revisions'
+    - 'use siteimprove'
     - 'view area_of_study revisions'
     - 'view costs_estimate revisions'
 removing: {  }

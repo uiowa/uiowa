@@ -19,45 +19,12 @@ base_table: node_field_data
 base_field: nid
 display:
   default:
-    display_plugin: default
     id: default
     display_title: Master
+    display_plugin: default
     position: 0
     display_options:
-      access:
-        type: perm
-        options:
-          perm: 'access content'
-      cache:
-        type: tag
-        options: {  }
-      query:
-        type: views_query
-        options:
-          disable_sql_rewrite: false
-          distinct: false
-          replica: false
-          query_comment: ''
-          query_tags: {  }
-      exposed_form:
-        type: basic
-        options:
-          submit_button: Apply
-          reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-      pager:
-        type: none
-        options:
-          items_per_page: 0
-          offset: 0
-      style:
-        type: default
-      row:
-        type: fields
+      title: 'Palliative Care Graduate'
       fields:
         field_person_territory:
           id: field_person_territory
@@ -66,6 +33,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: Territory
           exclude: true
           alter:
@@ -120,7 +88,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         rendered_entity:
           id: rendered_entity
           table: node
@@ -128,6 +95,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: rendered_entity
           label: ''
           exclude: false
           alter:
@@ -170,35 +139,112 @@ display:
           empty_zero: false
           hide_alter_empty: true
           view_mode: teaser
+      pager:
+        type: none
+        options:
+          offset: 0
+          items_per_page: 0
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: false
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      access:
+        type: perm
+        options:
+          perm: 'access content'
+      cache:
+        type: tag
+        options: {  }
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: true
+          content:
+            value: 'There are currently no results to display.'
+            format: filtered_html
+          tokenize: false
+      sorts:
+        sticky:
+          id: sticky
+          table: node_field_data
+          field: sticky
+          relationship: none
+          group_type: group
+          admin_label: ''
           entity_type: node
-          plugin_id: rendered_entity
+          entity_field: sticky
+          plugin_id: standard
+          order: DESC
+          expose:
+            label: ''
+            field_identifier: sticky
+          exposed: false
+        field_person_last_name_value:
+          id: field_person_last_name_value
+          table: node__field_person_last_name
+          field: field_person_last_name_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: field_person_last_name_value
+          exposed: false
+        field_person_first_name_value:
+          id: field_person_first_name_value
+          table: node__field_person_first_name
+          field: field_person_first_name_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: field_person_first_name_value
+          exposed: false
+      arguments: {  }
       filters:
         status:
-          value: '1'
+          id: status
           table: node_field_data
           field: status
-          plugin_id: boolean
           entity_type: node
           entity_field: status
-          id: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
           expose:
             operator: ''
             operator_limit_selection: false
             operator_list: {  }
-          group: 1
         type:
           id: type
           table: node_field_data
           field: type
-          value:
-            person: person
           entity_type: node
           entity_field: type
           plugin_id: bundle
+          value:
+            person: person
+          group: 1
           expose:
             operator_limit_selection: false
             operator_list: {  }
-          group: 1
         field_person_types_target_id:
           id: field_person_types_target_id
           table: node__field_person_types
@@ -206,6 +252,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: string
           operator: '='
           value: palliative_grad
           group: 1
@@ -237,7 +284,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: string
         field_person_territory_value:
           id: field_person_territory_value
           table: node__field_person_territory
@@ -245,6 +291,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: list_field
           operator: or
           value: {  }
           group: 1
@@ -283,71 +330,27 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
-          plugin_id: list_field
-      sorts:
-        sticky:
-          id: sticky
-          table: node_field_data
-          field: sticky
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: DESC
-          exposed: false
-          expose:
-            label: ''
-          entity_type: node
-          entity_field: sticky
-          plugin_id: standard
-        field_person_last_name_value:
-          id: field_person_last_name_value
-          table: node__field_person_last_name
-          field: field_person_last_name_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: false
-          expose:
-            label: ''
-          plugin_id: standard
-        field_person_first_name_value:
-          id: field_person_first_name_value
-          table: node__field_person_first_name
-          field: field_person_first_name_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: false
-          expose:
-            label: ''
-          plugin_id: standard
-      title: 'Palliative Care Graduate'
-      header: {  }
-      footer: {  }
-      empty:
-        area:
-          id: area
-          table: views
-          field: area
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: true
-          tokenize: false
-          content:
-            value: 'There are currently no results to display.'
-            format: filtered_html
-          plugin_id: text
-      relationships: {  }
-      arguments: {  }
-      display_extenders: {  }
-      use_ajax: true
       filter_groups:
         operator: AND
         groups:
           1: AND
+      style:
+        type: default
+      row:
+        type: fields
+      query:
+        type: views_query
+        options:
+          query_comment: ''
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_tags: {  }
+      relationships: {  }
+      use_ajax: true
+      header: {  }
+      footer: {  }
+      display_extenders: {  }
     cache_metadata:
       max-age: -1
       contexts:
@@ -368,13 +371,14 @@ display:
         - 'config:core.entity_view_display.node.person.token'
         - 'config:field.storage.node.field_person_territory'
   block_palliative_grad:
-    display_plugin: block
     id: block_palliative_grad
     display_title: Block
+    display_plugin: block
     position: 1
     display_options:
       display_extenders:
         metatag_display_extender: {  }
+      block_category: Lists
       allow:
         items_per_page: false
         offset: '0'
@@ -384,7 +388,6 @@ display:
         use_more: 0
       filter_in_block: {  }
       more_link_help_text: ''
-      block_category: Lists
     cache_metadata:
       max-age: -1
       contexts:

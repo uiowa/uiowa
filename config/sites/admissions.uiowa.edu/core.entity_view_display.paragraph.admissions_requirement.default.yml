@@ -16,14 +16,14 @@ bundle: admissions_requirement
 mode: default
 content:
   field_ar_intro:
-    weight: 0
+    type: text_default
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 0
     region: content
   field_ar_process:
-    weight: 2
+    type: link
     label: hidden
     settings:
       trim_length: 80
@@ -32,10 +32,10 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    type: link
+    weight: 2
     region: content
   field_ar_requirement:
-    weight: 1
+    type: link
     label: hidden
     settings:
       trim_length: 80
@@ -44,7 +44,7 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    type: link
+    weight: 1
     region: content
 hidden:
   entity_print_view_epub: true

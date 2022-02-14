@@ -1,4 +1,11 @@
 adding:
+  dependencies:
+    config:
+      - node.type.book
+      - taxonomy.vocabulary.book_tags
+    module:
+      - book
+      - siteimprove
   permissions:
     - 'add content to books'
     - 'create book content'
@@ -10,5 +17,6 @@ adding:
     - 'edit terms in book_tags'
     - 'override book published option'
     - 'revert book revisions'
+    - 'use siteimprove'
     - 'view book revisions'
 removing: {  }

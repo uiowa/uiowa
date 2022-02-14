@@ -1,4 +1,12 @@
 adding:
+  dependencies:
+    config:
+      - node.type.faq
+      - taxonomy.vocabulary.faq_categories
+      - taxonomy.vocabulary.units
+    module:
+      - rabbit_hole
+      - siteimprove
   permissions:
     - 'create faq content'
     - 'create terms in faq_categories'
@@ -17,5 +25,15 @@ adding:
     - 'override faq published option'
     - 'rabbit hole bypass taxonomy_term'
     - 'revert faq revisions'
+    - 'use siteimprove'
     - 'view faq revisions'
-removing: {  }
+removing:
+  dependencies:
+    config:
+      - core.entity_view_display.fragment.region_item.default
+      - core.entity_view_display.node.page.default
+      - media.type.video
+    module:
+      - fragments
+      - layout_builder
+      - replicate_ui

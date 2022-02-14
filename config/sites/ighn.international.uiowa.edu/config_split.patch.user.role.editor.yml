@@ -1,4 +1,9 @@
 adding:
+  dependencies:
+    config:
+      - node.type.ighn_person
+    module:
+      - siteimprove
   weight: -8
   permissions:
     - 'create ighn_person content'
@@ -9,12 +14,18 @@ adding:
     - 'enter ighn_person revision log entry'
     - 'override ighn_person published option'
     - 'revert ighn_person revisions'
+    - 'use siteimprove'
     - 'view ighn_person revisions'
 removing:
+  dependencies:
+    config:
+      - core.entity_view_display.fragment.region_item.default
+      - core.entity_view_display.node.page.default
+    module:
+      - fragments
+      - layout_builder
   weight: -6
   permissions:
-    - 'configure editable page node layout overrides'
-    - 'create and edit custom blocks'
     - 'create featured_content block content'
     - 'delete any featured_content block content'
     - 'update any featured_content block content'
