@@ -123,12 +123,6 @@ class ConfigSplitCommands extends BltTasks {
       ->alias("$alias.local")
       ->arg($id)
       ->run();
-
-    $task = $this->taskDrush()
-      ->stopOnFail()
-      ->drush('config-status')
-      ->alias("$alias.local");
-    $result = $task->run();
   }
 
 }
