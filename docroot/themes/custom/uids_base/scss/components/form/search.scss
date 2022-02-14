@@ -25,6 +25,9 @@
   align-items: flex-start;
   justify-content: flex-start;
   flex-wrap: wrap;
+  [type="search"]::placeholder {
+    color: $secondary;
+  }
   &.uids-content:not(.uids-search) {
     padding: 5px 0;
     .form-item {
@@ -36,7 +39,7 @@
       margin-top: 0;
     }
     [type="submit"],
-    input#edit-submit {
+    input[id^='edit-submit'] {
       .layout__container:not([class*="bg-"]) & {
         @include bttn--primary;
         border: 1px solid $primary;

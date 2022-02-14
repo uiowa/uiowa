@@ -18,7 +18,22 @@ class SearchTest extends WebDriverTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['uiowa_search'];
+  public static $modules = [
+    'block',
+    'uiowa_search',
+  ];
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp(): void {
+    parent::setUp();
+    $this->drupalPlaceBlock('uiowasearch', [
+      'region' => 'search',
+      'id' => 'uiowasearch',
+      'plugin' => 'uiowa_search_form',
+    ]);
+  }
 
   /**
    * Test that the search input is visible after clicking toggle button.

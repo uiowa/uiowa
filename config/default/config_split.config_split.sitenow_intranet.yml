@@ -11,9 +11,12 @@ storage: folder
 folder: ../config/features/sitenow_intranet
 module:
   restrict_ip: 0
+  search_api_db: 0
   sitenow_intranet: 0
 theme: {  }
-complete_list: {  }
+complete_list:
+  - search_api.index.sitenow_intranet_search_index
+  - views.view.intranet_search
 partial_list:
   - media.settings
   - media_entity_instagram.settings

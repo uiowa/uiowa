@@ -82,10 +82,6 @@
 ]
 %}
 
-{% if 'On' in content.field_area_of_study_link_direct.0 and node.field_area_of_study_source_link.0.uri %}
-  {% set url = node.field_area_of_study_source_link.0.url %}
-{% endif %}
-
 {% set headline_level = heading_size ?: 'h3' %}
 
 {{ attach_library('classy/node') }}
