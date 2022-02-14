@@ -291,6 +291,9 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           // saving. Also, we consider it bad practice showing the top-level
           // menu again on a page.
           unset($form['settings']['menu_levels']['level']['#options'][1]);
+          // Unset the advanced description since it refers to
+          // functionality that we are not offering.
+          unset($form['settings']['advanced']['follow']['#description']);
 
           // If the menu_orientation style group is present...
           if (isset($form['layout_builder_style_menu_orientation'])) {
@@ -311,7 +314,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             // but make it inaccessible.
             $form['layout_builder_style_menu_orientation']['#access'] = FALSE;
 
-            // Add #states to level field to hide menu levels section if horizontal is selected.
+            // Add #states to level field to hide menu levels
+            // section if horizontal is selected.
             $form['settings']['menu_levels']['#states'] = [
               'invisible' => [
                 ':input[name="layout_builder_style_menu_orientation"]' => [
@@ -325,7 +329,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           }
 
           // Adjust name for advanced options section.
-          $form['settings']['advanced']['#title'] = 'Visibility options';
+          $form['settings']['advanced']['#title'] = t('Visibility options');
+
           // Hide some options we don't want people to use currently.
           $form['settings']['style']['#access'] = FALSE;
           $form['settings']['advanced']['parent']['#access'] = FALSE;
