@@ -32,6 +32,7 @@ class SearchBlock extends FormBase {
     $form['search'] = [
       '#type' => 'search',
       '#title' => $search_config['search_label'] ?? $this->t('Search'),
+      '#placeholder' => $search_config['search_label'] ?? $this->t('Search'),
       '#size' => 30,
       '#maxlength' => 255,
     ];
