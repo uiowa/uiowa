@@ -76,18 +76,16 @@ class ConfigSplitCommands extends BltTasks {
 
     // Recreate the database in case this site has never been blt-synced before.
     $this->taskDrush()
-      ->drush('sql:create')
       ->stopOnFail()
-      ->run();
-
-    // Sync default site database.
-    $this->taskDrush()
+      ->drush('sql:create')
       ->drush('sql:sync')
       ->args([
         "@$alias.prod",
         "@$alias.local",
       ])
-      ->stopOnFail()
+      ->drush('cache:rebuild')
+      ->drush('config:import')
+      ->drush('config:import')
       ->run();
 
     $result = $this->taskDrush()
