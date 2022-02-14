@@ -48,12 +48,14 @@ class ConfigSplitCommands extends BltTasks {
   public function updateSiteSplits() {
     // @todo Limit to only DDEV.
     $root = $this->getConfigValue('repo.root');
+    $split_name = 'config_split.config_split.site.yml';
     $finder = new Finder();
-    // @todo Get all the site config splits.
-    $split_directories = $finder
-      ->directories()
+
+    $splits = $finder
+      ->files()
       ->in("$root/config/sites/")
       ->depth('< 2')
+      ->name($split_name)
       ->sortByName();
 
     foreach ($split_directories->getIterator() as $split_directory) {
