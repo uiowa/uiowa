@@ -57,7 +57,7 @@ class Multisite {
         $id = 'default';
       }
       elseif ($parsed['host'] === 'uiowa.edu') {
-        $id = 'uiowa';
+        $id = 'home';
       }
       elseif (substr($parsed['host'], -9) === 'uiowa.edu') {
         // Don't use the suffix if the host equals uiowa.edu.
