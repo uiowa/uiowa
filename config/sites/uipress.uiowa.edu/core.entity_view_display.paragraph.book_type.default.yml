@@ -17,30 +17,30 @@ dependencies:
     - options
 third_party_settings:
   layout_builder:
-    allow_custom: false
     enabled: false
+    allow_custom: false
 id: paragraph.book_type.default
 targetEntityType: paragraph
 bundle: book_type
 mode: default
 content:
   field_book_ebook_ownership:
-    weight: 1
+    type: list_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: list_default
+    weight: 1
     region: content
   field_book_isbn:
-    weight: 3
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 3
     region: content
   field_book_retail_price:
-    weight: 2
+    type: number_decimal
     label: above
     settings:
       thousand_separator: ''
@@ -48,20 +48,18 @@ content:
       scale: 2
       prefix_suffix: true
     third_party_settings: {  }
-    type: number_decimal
+    weight: 2
     region: content
   field_book_sale_code:
     type: string
-    weight: 4
-    region: content
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 4
+    region: content
   field_book_sale_price:
     type: number_decimal
-    weight: 5
-    region: content
     label: above
     settings:
       thousand_separator: ''
@@ -69,12 +67,14 @@ content:
       scale: 2
       prefix_suffix: true
     third_party_settings: {  }
+    weight: 5
+    region: content
   field_book_type:
-    weight: 0
+    type: list_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: list_default
+    weight: 0
     region: content
 hidden:
   field_book_sale_expiry_date: true

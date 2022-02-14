@@ -15,29 +15,29 @@ bundle: faq
 mode: default
 content:
   content_moderation_control:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
   field_faq_categories:
     type: entity_reference_label
-    weight: 2
-    region: content
     label: above
     settings:
       link: true
     third_party_settings: {  }
+    weight: 2
+    region: content
   field_faq_content:
-    weight: 1
+    type: text_default
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 1
     region: content
   links:
-    weight: 3
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 3
+    region: content
 hidden:
   search_api_excerpt: true
