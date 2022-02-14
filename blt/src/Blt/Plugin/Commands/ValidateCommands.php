@@ -10,6 +10,7 @@ use Consolidation\AnnotatedCommand\CommandError;
  * This class should contain hooks that are used in other commands.
  */
 class ValidateCommands extends BltTasks {
+
   /**
    * Validate that the command is being run on the container.
    *
@@ -93,9 +94,10 @@ class ValidateCommands extends BltTasks {
   }
 
   /**
-   * Whether or the IS_DDEV_PROJECT environment variable is set.
+   * Determine if command is running on ddev container.
    *
    * @return bool
+   *   Is ddev or not.
    */
   protected function isDdev() {
     return getenv('IS_DDEV_PROJECT') ?? FALSE;
