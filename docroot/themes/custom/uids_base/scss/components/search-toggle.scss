@@ -21,6 +21,12 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
   }
 }
 
+.search-overlay[aria-hidden=false] {
+  .region-search {
+    width: 100%;
+  }
+}
+
 /*
 .search-overlay .uids-search {
   margin-top: 19px;
@@ -38,6 +44,11 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
   }
 }
 */
+
+.iowa-bar--full .search-overlay .uids-search,
+.iowa-bar--narrow .search-overlay .uids-search {
+    overflow: hidden;
+}
 
 // Iowa Bar Full adjustments
 .iowa-bar--full.horizontal,

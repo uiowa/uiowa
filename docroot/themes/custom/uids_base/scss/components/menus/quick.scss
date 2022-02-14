@@ -51,13 +51,15 @@
 
 .search-is-open .region-under-search:after,
 .search-is-open .region-under-search:before {
-  content: " ";
-  background: $secondary;
-  padding: 20px;
-  position: absolute;
-  top: 80px;
-  width: 100%;
-  left: 0;
+  @include breakpoint(md) {
+    content: " ";
+    background: $secondary;
+    padding: 20px;
+    position: absolute;
+    top: 80px;
+    width: 100%;
+    left: 0;
+  }
 }
 
 .search-is-open .region-under-search:after {
