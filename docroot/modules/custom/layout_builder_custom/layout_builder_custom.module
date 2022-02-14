@@ -311,8 +311,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             // but make it inaccessible.
             $form['layout_builder_style_menu_orientation']['#access'] = FALSE;
 
-            // Add #states to level field to hide it if horizontal is selected.
-            $form['settings']['menu_levels']['depth']['#states'] = [
+            // Add #states to level field to hide menu levels section if horizontal is selected.
+            $form['settings']['menu_levels']['#states'] = [
               'invisible' => [
                 ':input[name="layout_builder_style_menu_orientation"]' => [
                   'value' => 'block_menu_horizontal',
@@ -324,8 +324,12 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             unset($form['lbs_heading']);
           }
 
+          // Adjust name for advanced options section.
+          $form['settings']['advanced']['#title'] = 'Visibility options';
           // Hide some options we don't want people to use currently.
           $form['settings']['style']['#access'] = FALSE;
+          $form['settings']['advanced']['parent']['#access'] = FALSE;
+          $form['settings']['menu_levels']['level']['#access'] = FALSE;
           $form['settings']['menu_levels']['expand_all_items']['#access'] = FALSE;
           $form['settings']['advanced']['label_type']['#access'] = FALSE;
           $form['settings']['advanced']['label_link']['#access'] = FALSE;
