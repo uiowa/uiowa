@@ -43,6 +43,46 @@ class ConfigSplitCommands extends BltTasks {
   /**
    * Validate that the command is not being run on the container.
    *
+   * @command uiowa:usplits:migrate
+   *
+   * @requireContainer
+   */
+  public function updateMigrateSplits() {
+    // Reference: https://github.com/uiowa/uiowa/blob/15497457c6c34c3b49c5f4d5cda259a4e67982dc/blt/src/Blt/Plugin/Commands/GitCommands.php#L212-L222
+    $root = $this->getConfigValue('repo.root');
+    $finder = new Finder();
+
+    // Get all the config split features.
+    $split_files = $finder
+      ->files()
+      ->in("$root/docroot/sites/")
+      ->name('config_split.config_split.*.yml')
+      ->sortByName();
+
+    foreach ($split_files->getIterator() as $split_file) {
+      if (file_exists($split_file)) {
+        // This assumes the split is stored in module/name/config/split dir and
+        // the finder context in() does not change.
+        $host = dirname($split_file->getRelativePath(), 4);
+        $module = basename(dirname($split_file->getRelativePath(), 2));
+
+        $split = YamlMunge::parseFile($split_file->getPathname());
+        $alias = Multisite::getIdentifier("https://$host");
+        $this->switchSiteContext($host);
+
+        $this->taskDrush()
+          ->drush('pm:enable')
+          ->arg($module)
+          ->run();
+
+        $this->updateSplit($split, $alias);
+      }
+    }
+  }
+
+  /**
+   * Validate that the command is not being run on the container.
+   *
    * @command uiowa:usplits:site
    *
    * @requireContainer
