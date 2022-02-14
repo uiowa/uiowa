@@ -20,12 +20,130 @@ base_table: node_field_revision
 base_field: vid
 display:
   default:
+    display_plugin: default
     id: default
     display_title: Master
-    display_plugin: default
     position: 0
     display_options:
-      title: 'Lockup Moderation'
+      access:
+        type: perm
+        options:
+          perm: 'access content'
+      cache:
+        type: tag
+        options: {  }
+      query:
+        type: views_query
+        options:
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_comment: ''
+          query_tags: {  }
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: true
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      pager:
+        type: full
+        options:
+          items_per_page: 50
+          offset: 0
+          id: 0
+          total_pages: null
+          tags:
+            previous: â€¹â€¹
+            next: â€ºâ€º
+            first: 'Â« First'
+            last: 'Last Â»'
+          expose:
+            items_per_page: false
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: false
+            items_per_page_options_all_label: '- All -'
+            offset: false
+            offset_label: Offset
+          quantity: 9
+      style:
+        type: table
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
+          override: true
+          sticky: false
+          caption: Lockups
+          summary: ''
+          description: ''
+          columns:
+            title: title
+            edit_node: edit_node
+            type: type
+            moderation_state: moderation_state
+            changed: changed
+            revision_uid: revision_uid
+            nothing: nothing
+          info:
+            title:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            edit_node:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: priority-low
+            type:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: priority-low
+            moderation_state:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            changed:
+              sortable: true
+              default_sort_order: desc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: priority-low
+            revision_uid:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: priority-low
+            nothing:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          default: changed
+          empty_table: false
+      row:
+        type: fields
       fields:
         title:
           id: title
@@ -34,9 +152,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: node
-          entity_field: title
-          plugin_id: field
           label: Title
           exclude: false
           alter:
@@ -92,6 +207,9 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          entity_type: node
+          entity_field: title
+          plugin_id: field
         type:
           id: type
           table: node_field_data
@@ -99,9 +217,6 @@ display:
           relationship: nid
           group_type: group
           admin_label: ''
-          entity_type: node
-          entity_field: type
-          plugin_id: field
           label: 'Content type'
           exclude: true
           alter:
@@ -157,6 +272,9 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          entity_type: node
+          entity_field: type
+          plugin_id: field
         moderation_state:
           id: moderation_state
           table: node_field_revision
@@ -164,8 +282,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: node
-          plugin_id: moderation_state_field
           label: 'Moderation state'
           exclude: false
           alter:
@@ -220,27 +336,36 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          entity_type: node
+          plugin_id: moderation_state_field
         changed:
           id: changed
           table: node_field_revision
           field: changed
-          relationship: none
-          group_type: group
-          admin_label: ''
           entity_type: node
           entity_field: changed
-          plugin_id: field
-          label: Changed
-          exclude: false
           alter:
             alter_text: false
             make_link: false
             absolute: false
+            trim: false
             word_boundary: false
             ellipsis: false
             strip_tags: false
-            trim: false
             html: false
+          hide_empty: false
+          empty_zero: false
+          plugin_id: field
+          type: timestamp
+          settings:
+            date_format: medium
+            custom_date_format: ''
+            timezone: ''
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: Changed
+          exclude: false
           element_type: ''
           element_class: ''
           element_label_type: ''
@@ -250,15 +375,8 @@ display:
           element_wrapper_class: ''
           element_default_classes: true
           empty: ''
-          hide_empty: false
-          empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: timestamp
-          settings:
-            date_format: medium
-            custom_date_format: ''
-            timezone: ''
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -276,9 +394,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: node
-          entity_field: revision_uid
-          plugin_id: field
           label: Editor
           exclude: false
           alter:
@@ -334,6 +449,9 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          entity_type: node
+          entity_field: revision_uid
+          plugin_id: field
         revision_log:
           id: revision_log
           table: node_revision
@@ -341,9 +459,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: node
-          entity_field: revision_log
-          plugin_id: field
           label: 'Revision log message'
           exclude: false
           alter:
@@ -398,6 +513,9 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          entity_type: node
+          entity_field: revision_log
+          plugin_id: field
         status:
           id: status
           table: node_field_data
@@ -405,9 +523,6 @@ display:
           relationship: nid
           group_type: group
           admin_label: ''
-          entity_type: node
-          entity_field: status
-          plugin_id: field
           label: 'Publish Status'
           exclude: false
           alter:
@@ -453,8 +568,8 @@ display:
           type: boolean
           settings:
             format: custom
-            format_custom_false: Unpublished
             format_custom_true: Published
+            format_custom_false: Unpublished
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -465,6 +580,9 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          entity_type: node
+          entity_field: status
+          plugin_id: field
         edit_node:
           id: edit_node
           table: node
@@ -472,8 +590,6 @@ display:
           relationship: nid
           group_type: group
           admin_label: ''
-          entity_type: node
-          plugin_id: entity_link_edit
           label: ''
           exclude: false
           alter:
@@ -518,47 +634,8 @@ display:
           text: edit
           output_url_as_text: false
           absolute: false
-      pager:
-        type: full
-        options:
-          offset: 0
-          items_per_page: 50
-          total_pages: null
-          id: 0
-          tags:
-            next: â€ºâ€º
-            previous: â€¹â€¹
-            first: 'Â« First'
-            last: 'Last Â»'
-          expose:
-            items_per_page: false
-            items_per_page_label: 'Items per page'
-            items_per_page_options: '5, 10, 25, 50'
-            items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
-            offset: false
-            offset_label: Offset
-          quantity: 9
-      exposed_form:
-        type: basic
-        options:
-          submit_button: Apply
-          reset_button: true
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-      access:
-        type: perm
-        options:
-          perm: 'access content'
-      cache:
-        type: tag
-        options: {  }
-      empty: {  }
-      sorts: {  }
-      arguments: {  }
+          entity_type: node
+          plugin_id: entity_link_edit
       filters:
         latest_revision:
           id: latest_revision
@@ -567,8 +644,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: node
-          plugin_id: latest_revision
           operator: '='
           value: ''
           group: 1
@@ -579,14 +654,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -599,6 +674,8 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          entity_type: node
+          plugin_id: latest_revision
         title:
           id: title
           table: node_field_revision
@@ -606,9 +683,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: node
-          entity_field: title
-          plugin_id: string
           operator: contains
           value: ''
           group: 1
@@ -619,8 +693,6 @@ display:
             description: ''
             use_operator: false
             operator: title_op
-            operator_limit_selection: false
-            operator_list: {  }
             identifier: title
             required: false
             remember: false
@@ -635,6 +707,8 @@ display:
               webmaster: '0'
               administrator: '0'
             placeholder: ''
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -647,6 +721,9 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          entity_type: node
+          entity_field: title
+          plugin_id: string
         type:
           id: type
           table: node_field_data
@@ -654,9 +731,6 @@ display:
           relationship: nid
           group_type: group
           admin_label: ''
-          entity_type: node
-          entity_field: type
-          plugin_id: bundle
           operator: in
           value:
             lockup: lockup
@@ -668,8 +742,6 @@ display:
             description: ''
             use_operator: false
             operator: type_op
-            operator_limit_selection: false
-            operator_list: {  }
             identifier: type
             required: false
             remember: false
@@ -683,6 +755,8 @@ display:
               webmaster: '0'
               administrator: '0'
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -695,6 +769,9 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
         field_lockup_org_target_id:
           id: field_lockup_org_target_id
           table: node__field_lockup_org
@@ -702,7 +779,6 @@ display:
           relationship: nid
           group_type: group
           admin_label: ''
-          plugin_id: taxonomy_index_tid
           operator: or
           value: {  }
           group: 1
@@ -742,14 +818,15 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
-          vid: orgs
           type: select
-          hierarchy: false
           limit: true
+          vid: orgs
+          hierarchy: false
           error_message: true
-          force_deepest: false
           parent: 0
           level_labels: ''
+          force_deepest: false
+          plugin_id: taxonomy_index_tid
         moderation_state:
           id: moderation_state
           table: node_field_revision
@@ -757,8 +834,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: node
-          plugin_id: moderation_state_filter
           operator: in
           value:
             lockup-published: lockup-published
@@ -798,105 +873,10 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-      filter_groups:
-        operator: AND
-        groups:
-          1: AND
-      style:
-        type: table
-        options:
-          grouping: {  }
-          row_class: ''
-          default_row_class: true
-          columns:
-            title: title
-            edit_node: edit_node
-            type: type
-            moderation_state: moderation_state
-            changed: changed
-            revision_uid: revision_uid
-            nothing: nothing
-          default: changed
-          info:
-            title:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            edit_node:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: priority-low
-            type:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: priority-low
-            moderation_state:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            changed:
-              sortable: true
-              default_sort_order: desc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: priority-low
-            revision_uid:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: priority-low
-            nothing:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-          override: true
-          sticky: false
-          summary: ''
-          empty_table: false
-          caption: Lockups
-          description: ''
-      row:
-        type: fields
-      query:
-        type: views_query
-        options:
-          query_comment: ''
-          disable_sql_rewrite: false
-          distinct: false
-          replica: false
-          query_tags: {  }
-      relationships:
-        nid:
-          id: nid
-          table: node_field_revision
-          field: nid
-          relationship: none
-          group_type: group
-          admin_label: 'Get the actual content from a content revision.'
           entity_type: node
-          entity_field: nid
-          plugin_id: standard
-          required: false
-      css_class: block-margin__top--extra
-      use_ajax: true
+          plugin_id: moderation_state_filter
+      sorts: {  }
+      title: 'Lockup Moderation'
       header:
         area_text_custom:
           id: area_text_custom
@@ -905,12 +885,32 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: text_custom
           empty: true
-          content: '<a class="btn btn-primary" href="/node/add/lockup">Create a Lockup</a><br><br>'
           tokenize: false
+          content: '<a class="btn btn-primary" href="/node/add/lockup">Create a Lockup</a><br><br>'
+          plugin_id: text_custom
       footer: {  }
+      empty: {  }
+      relationships:
+        nid:
+          id: nid
+          table: node_field_revision
+          field: nid
+          relationship: none
+          group_type: group
+          admin_label: 'Get the actual content from a content revision.'
+          required: false
+          entity_type: node
+          entity_field: nid
+          plugin_id: standard
+      arguments: {  }
       display_extenders: {  }
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+      use_ajax: true
+      css_class: block-margin__top--extra
     cache_metadata:
       max-age: -1
       contexts:
@@ -924,12 +924,19 @@ display:
       tags:
         - 'config:workflow_list'
   page_lockups:
+    display_plugin: page
     id: page_lockups
     display_title: Lockups
-    display_plugin: page
     position: 3
     display_options:
+      display_extenders:
+        metatag_display_extender: {  }
+      path: lockup-system
+      display_description: ''
       title: Lockups
+      defaults:
+        title: false
+        fields: false
       fields:
         title:
           id: title
@@ -938,9 +945,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: node
-          entity_field: title
-          plugin_id: field
           label: Title
           exclude: false
           alter:
@@ -996,6 +1000,9 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          entity_type: node
+          entity_field: title
+          plugin_id: field
         edit_node:
           id: edit_node
           table: node
@@ -1003,8 +1010,6 @@ display:
           relationship: nid
           group_type: group
           admin_label: ''
-          entity_type: node
-          plugin_id: entity_link_edit
           label: Edit
           exclude: true
           alter:
@@ -1049,6 +1054,8 @@ display:
           text: edit
           output_url_as_text: false
           absolute: false
+          entity_type: node
+          plugin_id: entity_link_edit
         type:
           id: type
           table: node_field_data
@@ -1056,9 +1063,6 @@ display:
           relationship: nid
           group_type: group
           admin_label: ''
-          entity_type: node
-          entity_field: type
-          plugin_id: field
           label: 'Content type'
           exclude: true
           alter:
@@ -1114,6 +1118,9 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          entity_type: node
+          entity_field: type
+          plugin_id: field
         changed:
           id: changed
           table: node_field_revision
@@ -1121,9 +1128,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: node
-          entity_field: changed
-          plugin_id: field
           label: Updated
           exclude: false
           alter:
@@ -1181,6 +1185,9 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          entity_type: node
+          entity_field: changed
+          plugin_id: field
         nothing:
           id: nothing
           table: views
@@ -1188,7 +1195,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: custom
           label: Download
           exclude: false
           alter:
@@ -1230,13 +1236,7 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: false
-      defaults:
-        title: false
-        fields: false
-      display_description: ''
-      display_extenders:
-        metatag_display_extender: {  }
-      path: lockup-system
+          plugin_id: custom
     cache_metadata:
       max-age: -1
       contexts:

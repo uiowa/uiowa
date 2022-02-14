@@ -18,49 +18,49 @@ bundle: stat
 mode: default
 content:
   field_stat_content:
-    type: basic_string
+    weight: 1
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 1
+    type: basic_string
     region: content
   field_stat_excerpt:
-    type: basic_string
+    weight: 2
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 2
+    type: basic_string
     region: content
   field_stat_figure:
-    type: heading
+    weight: 5
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 5
+    type: heading
     region: content
   field_stat_figure_pre:
-    type: string
+    weight: 3
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 3
+    type: string
     region: content
   field_stat_figure_suf:
-    type: string
+    weight: 4
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 4
+    type: string
     region: content
   user_id:
-    type: author
     label: hidden
-    settings: {  }
-    third_party_settings: {  }
+    type: author
     weight: 0
     region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true

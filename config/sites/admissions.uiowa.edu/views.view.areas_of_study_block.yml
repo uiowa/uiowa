@@ -33,12 +33,54 @@ base_table: node_field_data
 base_field: nid
 display:
   default:
+    display_plugin: default
     id: default
     display_title: Master
-    display_plugin: default
     position: 0
     display_options:
-      title: 'Areas of Study Block'
+      access:
+        type: perm
+        options:
+          perm: 'access content'
+      cache:
+        type: tag
+        options: {  }
+      query:
+        type: views_query
+        options:
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_comment: ''
+          query_tags: {  }
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: false
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      pager:
+        type: some
+        options:
+          items_per_page: 1
+          offset: 0
+      style:
+        type: default
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
+      row:
+        type: fields
+        options:
+          default_field_elements: true
+          inline: {  }
+          separator: ''
+          hide_empty: true
       fields:
         field_area_of_study_majors:
           id: field_area_of_study_majors
@@ -47,7 +89,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -103,6 +144,7 @@ display:
           multi_type: separator
           separator: ''
           field_api_classes: true
+          plugin_id: field
         field_area_of_study_minors:
           id: field_area_of_study_minors
           table: node__field_area_of_study_minors
@@ -110,7 +152,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -166,6 +207,7 @@ display:
           multi_type: separator
           separator: ''
           field_api_classes: true
+          plugin_id: field
         field_area_of_study_certificates:
           id: field_area_of_study_certificates
           table: node__field_area_of_study_certificates
@@ -173,7 +215,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -229,6 +270,7 @@ display:
           multi_type: separator
           separator: ''
           field_api_classes: true
+          plugin_id: field
         field_area_of_study_subprogram:
           id: field_area_of_study_subprogram
           table: node__field_area_of_study_subprogram
@@ -236,7 +278,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -292,6 +333,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: true
+          plugin_id: field
         field_area_of_study_online:
           id: field_area_of_study_online
           table: node__field_area_of_study_online
@@ -299,7 +341,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -355,6 +396,7 @@ display:
           multi_type: separator
           separator: ''
           field_api_classes: true
+          plugin_id: field
         field_area_of_study_preprof:
           id: field_area_of_study_preprof
           table: node__field_area_of_study_preprof
@@ -362,7 +404,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -418,6 +459,7 @@ display:
           multi_type: separator
           separator: ''
           field_api_classes: true
+          plugin_id: field
         field_area_of_study_teaching:
           id: field_area_of_study_teaching
           table: node__field_area_of_study_teaching
@@ -425,7 +467,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -480,6 +521,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
         field_area_of_study_teaching_txt:
           id: field_area_of_study_teaching_txt
           table: node__field_area_of_study_teaching_txt
@@ -487,7 +529,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -543,6 +584,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
         field_area_of_study_teaching_1:
           id: field_area_of_study_teaching_1
           table: node__field_area_of_study_teaching
@@ -550,7 +592,6 @@ display:
           relationship: none
           group_type: group
           admin_label: 'Teaching Licensure Description Display'
-          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -605,6 +646,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
         field_area_of_study_honors:
           id: field_area_of_study_honors
           table: node__field_area_of_study_honors
@@ -612,7 +654,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -667,6 +708,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
         field_area_of_study_four_year:
           id: field_area_of_study_four_year
           table: node__field_area_of_study_four_year
@@ -674,7 +716,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -729,6 +770,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
         field_area_of_study_four_txt:
           id: field_area_of_study_four_txt
           table: node__field_area_of_study_four_txt
@@ -736,7 +778,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -792,6 +833,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
         field_area_of_study_four_year_1:
           id: field_area_of_study_four_year_1
           table: node__field_area_of_study_four_year
@@ -799,7 +841,6 @@ display:
           relationship: none
           group_type: group
           admin_label: 'Four-Year Graduate Plan Description Display'
-          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -854,6 +895,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
         field_area_of_study_selective:
           id: field_area_of_study_selective
           table: node__field_area_of_study_selective
@@ -861,7 +903,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -916,6 +957,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
         field_area_of_study_select_txt:
           id: field_area_of_study_select_txt
           table: node__field_area_of_study_select_txt
@@ -923,7 +965,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -979,6 +1020,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
         field_area_of_study_selective_1:
           id: field_area_of_study_selective_1
           table: node__field_area_of_study_selective
@@ -986,7 +1028,6 @@ display:
           relationship: none
           group_type: group
           admin_label: 'Selective Admission Description Display'
-          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -1041,6 +1082,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
         field_area_of_study_competitive:
           id: field_area_of_study_competitive
           table: node__field_area_of_study_competitive
@@ -1048,7 +1090,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -1103,6 +1144,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
         field_area_of_study_comp_txt:
           id: field_area_of_study_comp_txt
           table: node__field_area_of_study_comp_txt
@@ -1110,7 +1152,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -1166,6 +1207,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
         field_area_of_study_competitive_1:
           id: field_area_of_study_competitive_1
           table: node__field_area_of_study_competitive
@@ -1173,7 +1215,6 @@ display:
           relationship: none
           group_type: group
           admin_label: 'Competitive Admission Description Display'
-          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -1228,94 +1269,34 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-      pager:
-        type: some
-        options:
-          offset: 0
-          items_per_page: 1
-      exposed_form:
-        type: basic
-        options:
-          submit_button: Apply
-          reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-      access:
-        type: perm
-        options:
-          perm: 'access content'
-      cache:
-        type: tag
-        options: {  }
-      empty: {  }
-      sorts: {  }
-      arguments:
-        nid:
-          id: nid
-          table: node_field_data
-          field: nid
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: node
-          entity_field: nid
-          plugin_id: node_nid
-          default_action: default
-          exception:
-            value: all
-            title_enable: false
-            title: All
-          title_enable: false
-          title: ''
-          default_argument_type: node
-          default_argument_options: {  }
-          default_argument_skip_url: false
-          summary_options:
-            base_path: ''
-            count: true
-            override: false
-            items_per_page: 25
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: true
-          validate:
-            type: none
-            fail: 'not found'
-          validate_options: {  }
-          break_phrase: false
-          not: false
+          plugin_id: field
       filters:
         status:
-          id: status
+          value: '1'
           table: node_field_data
           field: status
+          plugin_id: boolean
           entity_type: node
           entity_field: status
-          plugin_id: boolean
-          value: '1'
-          group: 1
+          id: status
           expose:
             operator: ''
             operator_limit_selection: false
             operator_list: {  }
+          group: 1
         type:
           id: type
           table: node_field_data
           field: type
+          value:
+            area_of_study: area_of_study
           entity_type: node
           entity_field: type
           plugin_id: bundle
-          value:
-            area_of_study: area_of_study
-          group: 1
           expose:
             operator_limit_selection: false
             operator_list: {  }
+          group: 1
         field_area_of_study_majors_target_id:
           id: field_area_of_study_majors_target_id
           table: node__field_area_of_study_majors
@@ -1323,7 +1304,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: numeric
           operator: 'not empty'
           value:
             min: ''
@@ -1345,9 +1325,9 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
+            placeholder: ''
             min_placeholder: ''
             max_placeholder: ''
-            placeholder: ''
           is_grouped: false
           group_info:
             label: ''
@@ -1360,6 +1340,7 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          plugin_id: numeric
         field_area_of_study_minors_value:
           id: field_area_of_study_minors_value
           table: node__field_area_of_study_minors
@@ -1367,7 +1348,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: string
           operator: 'not empty'
           value: ''
           group: 2
@@ -1399,6 +1379,7 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          plugin_id: string
         field_area_of_study_competitive_value:
           id: field_area_of_study_competitive_value
           table: node__field_area_of_study_competitive
@@ -1406,7 +1387,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: list_field
           operator: 'not empty'
           value: {  }
           group: 2
@@ -1439,6 +1419,7 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
+          plugin_id: list_field
         field_area_of_study_subprogram_value:
           id: field_area_of_study_subprogram_value
           table: node__field_area_of_study_subprogram
@@ -1446,7 +1427,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: string
           operator: 'not empty'
           value: ''
           group: 2
@@ -1478,6 +1458,7 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          plugin_id: string
         field_area_of_study_comp_txt_value:
           id: field_area_of_study_comp_txt_value
           table: node__field_area_of_study_comp_txt
@@ -1485,7 +1466,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: string
           operator: 'not empty'
           value: ''
           group: 2
@@ -1517,6 +1497,7 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          plugin_id: string
         field_area_of_study_four_year_value:
           id: field_area_of_study_four_year_value
           table: node__field_area_of_study_four_year
@@ -1524,7 +1505,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: list_field
           operator: 'not empty'
           value: {  }
           group: 2
@@ -1557,6 +1537,7 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
+          plugin_id: list_field
         field_area_of_study_certificates_value:
           id: field_area_of_study_certificates_value
           table: node__field_area_of_study_certificates
@@ -1564,7 +1545,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: string
           operator: 'not empty'
           value: ''
           group: 2
@@ -1596,6 +1576,7 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          plugin_id: string
         field_area_of_study_four_txt_value:
           id: field_area_of_study_four_txt_value
           table: node__field_area_of_study_four_txt
@@ -1603,7 +1584,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: string
           operator: 'not empty'
           value: ''
           group: 2
@@ -1635,6 +1615,7 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          plugin_id: string
         field_area_of_study_honors_value:
           id: field_area_of_study_honors_value
           table: node__field_area_of_study_honors
@@ -1642,7 +1623,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: list_field
           operator: 'not empty'
           value: {  }
           group: 2
@@ -1675,6 +1655,7 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
+          plugin_id: list_field
         field_area_of_study_online_value:
           id: field_area_of_study_online_value
           table: node__field_area_of_study_online
@@ -1682,7 +1663,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: string
           operator: 'not empty'
           value: ''
           group: 2
@@ -1714,6 +1694,7 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          plugin_id: string
         field_area_of_study_selective_value:
           id: field_area_of_study_selective_value
           table: node__field_area_of_study_selective
@@ -1721,7 +1702,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: list_field
           operator: 'not empty'
           value: {  }
           group: 2
@@ -1754,6 +1734,7 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
+          plugin_id: list_field
         field_area_of_study_select_txt_value:
           id: field_area_of_study_select_txt_value
           table: node__field_area_of_study_select_txt
@@ -1761,7 +1742,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: string
           operator: 'not empty'
           value: ''
           group: 2
@@ -1793,6 +1773,7 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          plugin_id: string
         field_area_of_study_teaching_value:
           id: field_area_of_study_teaching_value
           table: node__field_area_of_study_teaching
@@ -1800,7 +1781,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: list_field
           operator: 'not empty'
           value: {  }
           group: 2
@@ -1833,6 +1813,7 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
+          plugin_id: list_field
         field_area_of_study_teaching_txt_value:
           id: field_area_of_study_teaching_txt_value
           table: node__field_area_of_study_teaching_txt
@@ -1840,7 +1821,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: string
           operator: 'not empty'
           value: ''
           group: 2
@@ -1872,34 +1852,9 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-      filter_groups:
-        operator: AND
-        groups:
-          1: AND
-          2: OR
-      style:
-        type: default
-        options:
-          grouping: {  }
-          row_class: ''
-          default_row_class: true
-      row:
-        type: fields
-        options:
-          default_field_elements: true
-          inline: {  }
-          separator: ''
-          hide_empty: true
-      query:
-        type: views_query
-        options:
-          query_comment: ''
-          disable_sql_rewrite: false
-          distinct: false
-          replica: false
-          query_tags: {  }
-      relationships: {  }
-      css_class: 'block-margin__bottom block-margin__top bg--gray block-padding__all'
+          plugin_id: string
+      sorts: {  }
+      title: 'Areas of Study Block'
       header:
         area:
           id: area
@@ -1908,14 +1863,59 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: text
           empty: false
+          tokenize: false
           content:
             value: '<h4 class="headline headline--serif headline--underline"><span class="fa-info-circle fas"></span> &nbsp;Information</h4>'
             format: filtered_html
-          tokenize: false
+          plugin_id: text
       footer: {  }
+      empty: {  }
+      relationships: {  }
+      arguments:
+        nid:
+          id: nid
+          table: node_field_data
+          field: nid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          default_action: default
+          exception:
+            value: all
+            title_enable: false
+            title: All
+          title_enable: false
+          title: ''
+          default_argument_type: node
+          default_argument_options: {  }
+          default_argument_skip_url: false
+          summary_options:
+            base_path: ''
+            count: true
+            items_per_page: 25
+            override: false
+          summary:
+            sort_order: asc
+            number_of_records: 0
+            format: default_summary
+          specify_validation: true
+          validate:
+            type: none
+            fail: 'not found'
+          validate_options: {  }
+          break_phrase: false
+          not: false
+          entity_type: node
+          entity_field: nid
+          plugin_id: node_nid
       display_extenders: {  }
+      css_class: 'block-margin__bottom block-margin__top bg--gray block-padding__all'
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+          2: OR
     cache_metadata:
       max-age: -1
       contexts:
@@ -1941,9 +1941,9 @@ display:
         - 'config:field.storage.node.field_area_of_study_teaching'
         - 'config:field.storage.node.field_area_of_study_teaching_txt'
   block_information:
+    display_plugin: block
     id: block_information
     display_title: Block
-    display_plugin: block
     position: 1
     display_options:
       display_extenders:

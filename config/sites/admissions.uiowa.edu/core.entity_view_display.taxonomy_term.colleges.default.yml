@@ -15,68 +15,65 @@ dependencies:
     - uids_base
 third_party_settings:
   layout_builder:
-    enabled: true
     allow_custom: false
+    enabled: true
     sections:
       -
         layout_id: layout_twocol
         layout_settings:
           label: ''
-          context_mapping: {  }
           column_widths: 67-33
           layout_builder_styles_style:
             0: ''
             1: ''
             section_alignment_start: section_alignment_start
+          context_mapping: {  }
         components:
           -
             uuid: b73229a7-eeac-4600-8347-c36f0425f635
             region: first
             configuration:
-              id: 'field_block:taxonomy_term:colleges:description'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
+              id: 'field_block:taxonomy_term:colleges:description'
               formatter:
-                type: text_default
                 label: hidden
+                type: text_default
                 settings: {  }
                 third_party_settings: {  }
-            weight: 1
             additional: {  }
+            weight: 1
           -
             uuid: b053c2f6-e58d-4cba-8d72-edf2555fd20a
             region: second
             configuration:
               id: 'field_block:taxonomy_term:colleges:field_image'
               label: null
-              label_display: null
               provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
+              label_display: null
               formatter:
-                type: entity_reference_entity_view
                 label: hidden
+                type: entity_reference_entity_view
                 settings:
                   view_mode: medium__widescreen
                 third_party_settings: {  }
-            weight: 0
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
             additional: {  }
+            weight: 0
           -
             uuid: f9210829-cad9-4b74-88b8-e9404e802d10
             region: first
             configuration:
               id: 'field_block:taxonomy_term:colleges:field_college_website'
               label: null
-              label_display: null
               provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
+              label_display: null
               formatter:
-                type: link
                 label: hidden
+                type: link
                 settings:
                   trim_length: 80
                   url_only: false
@@ -84,11 +81,14 @@ third_party_settings:
                   rel: '0'
                   target: '0'
                 third_party_settings: {  }
-            weight: 0
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
             additional:
               layout_builder_styles_style:
                 block_margin_bottom: block_margin_bottom
                 block_margin_top: block_margin_top
+            weight: 0
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -96,19 +96,19 @@ third_party_settings:
         layout_id: layout_onecol
         layout_settings:
           label: ''
-          context_mapping: {  }
           layout_builder_styles_style:
             0: ''
             1: ''
             remove_default_bottom_padding: remove_default_bottom_padding
+          context_mapping: {  }
         components: {  }
         third_party_settings: {  }
   layout_builder_restrictions:
     allowed_block_categories: {  }
     entity_view_mode_restriction:
-      allowed_layouts: {  }
-      blacklisted_blocks: {  }
       whitelisted_blocks: {  }
+      blacklisted_blocks: {  }
+      allowed_layouts: {  }
     entity_view_mode_restriction_by_region:
       allowed_layouts: {  }
 id: taxonomy_term.colleges.default
@@ -117,14 +117,14 @@ bundle: colleges
 mode: default
 content:
   description:
-    type: text_default
     label: hidden
-    settings: {  }
-    third_party_settings: {  }
+    type: text_default
     weight: 0
     region: content
+    settings: {  }
+    third_party_settings: {  }
   field_college_website:
-    type: link
+    weight: 1
     label: above
     settings:
       trim_length: 80
@@ -133,16 +133,16 @@ content:
       rel: '0'
       target: '0'
     third_party_settings: {  }
-    weight: 1
+    type: link
     region: content
   field_image:
-    type: entity_reference_entity_view
+    weight: 2
     label: hidden
     settings:
-      view_mode: default
       link: true
+      view_mode: default
     third_party_settings: {  }
-    weight: 2
+    type: entity_reference_entity_view
     region: content
 hidden:
   entity_print_view_epub: true

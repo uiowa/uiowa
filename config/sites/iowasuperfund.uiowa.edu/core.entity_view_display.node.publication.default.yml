@@ -18,32 +18,32 @@ bundle: publication
 mode: default
 content:
   field_publication_date:
-    type: datetime_default
+    weight: 103
     label: above
     settings:
-      timezone_override: ''
       format_type: medium
+      timezone_override: ''
     third_party_settings: {  }
-    weight: 103
+    type: datetime_default
     region: content
   field_publication_name:
-    type: string
+    weight: 104
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 104
+    type: string
     region: content
   field_publication_project_core:
-    type: entity_reference_label
+    weight: 101
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    weight: 101
+    type: entity_reference_label
     region: content
   field_publication_source_link:
-    type: link
+    weight: 102
     label: above
     settings:
       trim_length: 80
@@ -52,11 +52,11 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 102
+    type: link
     region: content
   links:
+    weight: 100
     settings: {  }
     third_party_settings: {  }
-    weight: 100
     region: content
 hidden: {  }

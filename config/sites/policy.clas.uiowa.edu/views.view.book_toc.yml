@@ -3,17 +3,19 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.storage.node.book_amended_date
     - field.storage.node.book_owner
     - node.type.book
     - system.menu.main
-  module:
-    - book
-    - node
-    - user
-    - views_tree
   enforced:
     module:
       - uiowa_book
+  module:
+    - book
+    - datetime
+    - node
+    - user
+    - views_tree
 _core:
   default_config_hash: THqdpwCqBKMNRgkDEvztfWznBkoFugD2mLlQLiSi-tA
 id: book_toc
@@ -25,12 +27,52 @@ base_table: node_field_data
 base_field: nid
 display:
   default:
+    display_plugin: default
     id: default
     display_title: Master
-    display_plugin: default
     position: 0
     display_options:
-      title: 'Table of Contents'
+      access:
+        type: perm
+        options:
+          perm: 'access content'
+      cache:
+        type: tag
+        options: {  }
+      query:
+        type: views_query
+        options:
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_comment: ''
+          query_tags: {  }
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Search
+          reset_button: true
+          reset_button_label: Clear
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: false
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      pager:
+        type: none
+        options:
+          items_per_page: null
+          offset: 0
+      style:
+        type: tree
+        options:
+          row_class: ''
+          default_row_class: true
+          type: ul
+          main_field: nid
+          parent_field: nid_1
+          collapsible_tree: '0'
+      row:
+        type: fields
       fields:
         nid:
           id: nid
@@ -39,9 +81,6 @@ display:
           relationship: none
           group_type: group
           admin_label: Book
-          entity_type: node
-          entity_field: nid
-          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -98,6 +137,9 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          entity_type: node
+          entity_field: nid
+          plugin_id: field
         nid_1:
           id: nid_1
           table: node_field_data
@@ -105,9 +147,6 @@ display:
           relationship: pid
           group_type: group
           admin_label: 'Book Parent'
-          entity_type: node
-          entity_field: nid
-          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -164,6 +203,9 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          entity_type: node
+          entity_field: nid
+          plugin_id: field
         title:
           id: title
           table: node_field_data
@@ -171,9 +213,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: node
-          entity_field: title
-          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -229,6 +268,9 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          entity_type: node
+          entity_field: title
+          plugin_id: field
         book_owner:
           id: book_owner
           table: node__book_owner
@@ -236,7 +278,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -292,67 +333,30 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-      pager:
-        type: none
-        options:
-          offset: 0
-          items_per_page: null
-      exposed_form:
-        type: basic
-        options:
-          submit_button: Search
-          reset_button: true
-          reset_button_label: Clear
-          exposed_sorts_label: 'Sort by'
-          expose_sort_order: false
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-      access:
-        type: perm
-        options:
-          perm: 'access content'
-      cache:
-        type: tag
-        options: {  }
-      empty: {  }
-      sorts:
-        weight:
-          id: weight
-          table: book
-          field: weight
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: standard
-          order: ASC
-          expose:
-            label: ''
-            field_identifier: weight
-          exposed: false
-      arguments: {  }
+          plugin_id: field
       filters:
         status:
-          id: status
+          value: '1'
           table: node_field_data
           field: status
+          plugin_id: boolean
           entity_type: node
           entity_field: status
-          plugin_id: boolean
-          value: '1'
-          group: 1
+          id: status
           expose:
             operator: ''
             operator_limit_selection: false
             operator_list: {  }
+          group: 1
         type:
           id: type
           table: node_field_data
           field: type
+          value:
+            book: book
           entity_type: node
           entity_field: type
           plugin_id: bundle
-          value:
-            book: book
           expose:
             operator_limit_selection: false
             operator_list: {  }
@@ -363,7 +367,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: numeric
           operator: '!='
           value:
             min: ''
@@ -377,17 +380,17 @@ display:
             description: ''
             use_operator: false
             operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
+            placeholder: ''
             min_placeholder: ''
             max_placeholder: ''
-            placeholder: ''
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -400,25 +403,24 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-      style:
-        type: tree
-        options:
-          row_class: ''
-          default_row_class: true
-          type: ul
-          main_field: nid
-          parent_field: nid_1
-          collapsible_tree: '0'
-      row:
-        type: fields
-      query:
-        type: views_query
-        options:
-          query_comment: ''
-          disable_sql_rewrite: false
-          distinct: false
-          replica: false
-          query_tags: {  }
+          plugin_id: numeric
+      sorts:
+        weight:
+          id: weight
+          table: book
+          field: weight
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: false
+          expose:
+            label: ''
+          plugin_id: standard
+      title: 'Table of Contents'
+      header: {  }
+      footer: {  }
+      empty: {  }
       relationships:
         bid:
           id: bid
@@ -427,8 +429,8 @@ display:
           relationship: none
           group_type: group
           admin_label: Book
-          plugin_id: standard
           required: false
+          plugin_id: standard
         pid:
           id: pid
           table: book
@@ -436,10 +438,9 @@ display:
           relationship: none
           group_type: group
           admin_label: 'Book Parent'
-          plugin_id: standard
           required: false
-      header: {  }
-      footer: {  }
+          plugin_id: standard
+      arguments: {  }
       display_extenders: {  }
     cache_metadata:
       max-age: -1
@@ -451,11 +452,92 @@ display:
       tags:
         - 'config:field.storage.node.book_owner'
   block_book_toc:
+    display_plugin: block
     id: block_book_toc
     display_title: Block
-    display_plugin: block
     position: 1
     display_options:
+      display_extenders: {  }
+      filters:
+        status:
+          value: '1'
+          table: node_field_data
+          field: status
+          plugin_id: boolean
+          entity_type: node
+          entity_field: status
+          id: status
+          expose:
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+          group: 1
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          value:
+            book: book
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
+          expose:
+            operator_limit_selection: false
+            operator_list: {  }
+        depth:
+          id: depth
+          table: book
+          field: depth
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value:
+            min: ''
+            max: ''
+            value: '2'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            placeholder: ''
+            min_placeholder: ''
+            max_placeholder: ''
+            operator_limit_selection: false
+            operator_list: {  }
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: numeric
+      defaults:
+        filters: false
+        filter_groups: false
+        fields: false
+        footer: false
+        empty: true
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
       fields:
         nid:
           id: nid
@@ -464,9 +546,6 @@ display:
           relationship: none
           group_type: group
           admin_label: Book
-          entity_type: node
-          entity_field: nid
-          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -523,6 +602,9 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          entity_type: node
+          entity_field: nid
+          plugin_id: field
         nid_1:
           id: nid_1
           table: node_field_data
@@ -530,9 +612,6 @@ display:
           relationship: pid
           group_type: group
           admin_label: 'Book Parent'
-          entity_type: node
-          entity_field: nid
-          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -589,6 +668,9 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          entity_type: node
+          entity_field: nid
+          plugin_id: field
         title:
           id: title
           table: node_field_data
@@ -596,9 +678,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: node
-          entity_field: title
-          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -654,86 +733,9 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-      filters:
-        status:
-          id: status
-          table: node_field_data
-          field: status
           entity_type: node
-          entity_field: status
-          plugin_id: boolean
-          value: '1'
-          group: 1
-          expose:
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-        type:
-          id: type
-          table: node_field_data
-          field: type
-          entity_type: node
-          entity_field: type
-          plugin_id: bundle
-          value:
-            book: book
-          expose:
-            operator_limit_selection: false
-            operator_list: {  }
-        depth:
-          id: depth
-          table: book
-          field: depth
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: numeric
-          operator: '='
-          value:
-            min: ''
-            max: ''
-            value: '2'
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            min_placeholder: ''
-            max_placeholder: ''
-            placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-      filter_groups:
-        operator: AND
-        groups:
-          1: AND
-      defaults:
-        empty: true
-        fields: false
-        filters: false
-        filter_groups: false
-        footer: false
+          entity_field: title
+          plugin_id: field
       footer:
         area_text_custom:
           id: area_text_custom
@@ -742,11 +744,10 @@ display:
           relationship: none
           group_type: group
           admin_label: 'View full contents link'
-          plugin_id: text_custom
           empty: true
-          content: '<span><a href="/table-of-contents">View full contents</a></span>'
           tokenize: false
-      display_extenders: {  }
+          content: '<span><a href="/table-of-contents">View full contents</a></span>'
+          plugin_id: text_custom
       block_description: 'Table of Contents Block'
     cache_metadata:
       max-age: -1
@@ -757,9 +758,9 @@ display:
         - user.permissions
       tags: {  }
   page_book_toc:
+    display_plugin: page
     id: page_book_toc
     display_title: Page
-    display_plugin: page
     position: 2
     display_options:
       display_extenders: {  }
@@ -768,11 +769,11 @@ display:
         type: normal
         title: 'Table of Contents'
         description: ''
-        weight: -49
         expanded: false
-        menu_name: main
         parent: ''
+        weight: -49
         context: '0'
+        menu_name: main
     cache_metadata:
       max-age: -1
       contexts:

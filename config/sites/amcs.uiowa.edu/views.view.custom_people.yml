@@ -31,12 +31,103 @@ base_table: node_field_data
 base_field: nid
 display:
   default:
+    display_plugin: default
     id: default
     display_title: Master
-    display_plugin: default
     position: 0
     display_options:
-      title: Faculty
+      access:
+        type: perm
+        options:
+          perm: 'access content'
+      cache:
+        type: tag
+        options: {  }
+      query:
+        type: views_query
+        options:
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_comment: ''
+          query_tags: {  }
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: true
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      pager:
+        type: none
+        options:
+          offset: 0
+      style:
+        type: table
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
+          override: true
+          sticky: false
+          caption: ''
+          summary: ''
+          description: ''
+          columns:
+            view_node: view_node
+            field_person_credential: field_person_credential
+            field_person_first_name: field_person_first_name
+            field_person_last_name: field_person_last_name
+            field_person_email: field_person_email
+            field_person_research_areas: field_person_research_areas
+          info:
+            view_node:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_person_credential:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_person_first_name:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_person_last_name:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_person_email:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_person_research_areas:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          default: field_person_last_name
+          empty_table: false
+      row:
+        type: fields
       fields:
         view_node:
           id: view_node
@@ -45,8 +136,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: node
-          plugin_id: entity_link
           label: 'Link to Content'
           exclude: true
           alter:
@@ -91,6 +180,8 @@ display:
           text: view
           output_url_as_text: true
           absolute: false
+          entity_type: node
+          plugin_id: entity_link
         field_person_credential:
           id: field_person_credential
           table: node__field_person_credential
@@ -98,7 +189,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: Credentials
           exclude: true
           alter:
@@ -154,6 +244,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
         field_person_first_name:
           id: field_person_first_name
           table: node__field_person_first_name
@@ -161,7 +252,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: 'First Name'
           exclude: true
           alter:
@@ -217,6 +307,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
         field_person_last_name:
           id: field_person_last_name
           table: node__field_person_last_name
@@ -224,7 +315,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: Name
           exclude: false
           alter:
@@ -280,6 +370,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
         field_person_email:
           id: field_person_email
           table: node__field_person_email
@@ -287,7 +378,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: Email
           exclude: false
           alter:
@@ -342,6 +432,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
         field_person_research_areas:
           id: field_person_research_areas
           table: node__field_person_research_areas
@@ -349,7 +440,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: 'Research areas'
           exclude: false
           alter:
@@ -405,60 +495,21 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-      pager:
-        type: none
-        options:
-          offset: 0
-      exposed_form:
-        type: basic
-        options:
-          submit_button: Apply
-          reset_button: true
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-      access:
-        type: perm
-        options:
-          perm: 'access content'
-      cache:
-        type: tag
-        options: {  }
-      empty: {  }
-      sorts:
-        created:
-          id: created
-          table: node_field_data
-          field: created
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: node
-          entity_field: created
-          plugin_id: date
-          order: DESC
-          expose:
-            label: ''
-            field_identifier: created
-          exposed: false
-          granularity: second
-      arguments: {  }
+          plugin_id: field
       filters:
         status:
-          id: status
+          value: '1'
           table: node_field_data
           field: status
+          plugin_id: boolean
           entity_type: node
           entity_field: status
-          plugin_id: boolean
-          value: '1'
-          group: 1
+          id: status
           expose:
             operator: ''
             operator_limit_selection: false
             operator_list: {  }
+          group: 1
         type:
           id: type
           table: node_field_data
@@ -466,9 +517,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: node
-          entity_field: type
-          plugin_id: bundle
           operator: in
           value:
             person: person
@@ -501,6 +549,9 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
         field_grad_program_all_degree_value:
           id: field_grad_program_all_degree_value
           table: node__field_grad_program_all_degree
@@ -508,7 +559,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: list_field
           operator: or
           value: {  }
           group: 1
@@ -547,80 +597,29 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
-      style:
-        type: table
-        options:
-          grouping: {  }
-          row_class: ''
-          default_row_class: true
-          columns:
-            view_node: view_node
-            field_person_credential: field_person_credential
-            field_person_first_name: field_person_first_name
-            field_person_last_name: field_person_last_name
-            field_person_email: field_person_email
-            field_person_research_areas: field_person_research_areas
-          default: field_person_last_name
-          info:
-            view_node:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_person_credential:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_person_first_name:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_person_last_name:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_person_email:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_person_research_areas:
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-          override: true
-          sticky: false
-          summary: ''
-          empty_table: false
-          caption: ''
-          description: ''
-      row:
-        type: fields
-      query:
-        type: views_query
-        options:
-          query_comment: ''
-          disable_sql_rewrite: false
-          distinct: false
-          replica: false
-          query_tags: {  }
-      relationships: {  }
+          plugin_id: list_field
+      sorts:
+        created:
+          id: created
+          table: node_field_data
+          field: created
+          order: DESC
+          entity_type: node
+          entity_field: created
+          plugin_id: date
+          relationship: none
+          group_type: group
+          admin_label: ''
+          exposed: false
+          expose:
+            label: ''
+          granularity: second
+      title: Faculty
       header: {  }
       footer: {  }
+      empty: {  }
+      relationships: {  }
+      arguments: {  }
       display_extenders: {  }
     cache_metadata:
       max-age: -1
@@ -638,25 +637,38 @@ display:
         - 'config:field.storage.node.field_person_last_name'
         - 'config:field.storage.node.field_person_research_areas'
   page_1:
+    display_plugin: page
     id: page_1
     display_title: Faculty
-    display_plugin: page
     position: 1
     display_options:
+      display_extenders:
+        metatag_display_extender: {  }
+      path: faculty-research
+      menu:
+        type: normal
+        title: Faculty/Research
+        description: ''
+        expanded: false
+        parent: 'menu_link_content:aa514bff-9dfa-4589-855e-80715a5b8316'
+        weight: 0
+        context: '0'
+        menu_name: main
+      display_description: ''
       filters:
         status:
-          id: status
+          value: '1'
           table: node_field_data
           field: status
+          plugin_id: boolean
           entity_type: node
           entity_field: status
-          plugin_id: boolean
-          value: '1'
-          group: 1
+          id: status
           expose:
             operator: ''
             operator_limit_selection: false
             operator_list: {  }
+          group: 1
         type:
           id: type
           table: node_field_data
@@ -664,9 +676,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: node
-          entity_field: type
-          plugin_id: bundle
           operator: in
           value:
             person: person
@@ -699,6 +708,9 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
         field_person_hide_value:
           id: field_person_hide_value
           table: node__field_person_hide
@@ -706,7 +718,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: boolean
           operator: '='
           value: '0'
           group: 1
@@ -737,6 +748,7 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          plugin_id: boolean
         field_person_types_target_id:
           id: field_person_types_target_id
           table: node__field_person_types
@@ -744,7 +756,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: string
           operator: '='
           value: faculty
           group: 1
@@ -776,6 +787,7 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          plugin_id: string
         field_person_type_status_value:
           id: field_person_type_status_value
           table: node__field_person_type_status
@@ -783,7 +795,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: list_field
           operator: not
           value:
             faculty: faculty
@@ -817,6 +828,7 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
+          plugin_id: list_field
         combine:
           id: combine
           table: views
@@ -824,7 +836,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: combine
           operator: contains
           value: ''
           group: 1
@@ -865,6 +876,7 @@ display:
           fields:
             field_person_first_name: field_person_first_name
             field_person_last_name: field_person_last_name
+          plugin_id: combine
         field_person_research_areas_target_id:
           id: field_person_research_areas_target_id
           table: node__field_person_research_areas
@@ -872,7 +884,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: taxonomy_index_tid
           operator: or
           value: {  }
           group: 1
@@ -911,39 +922,26 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
-          vid: research_areas
           type: select
-          hierarchy: false
           limit: true
+          vid: research_areas
+          hierarchy: false
           error_message: true
-          save_lineage: false
-          force_deepest: false
           parent: 0
           level_labels: ''
+          force_deepest: false
+          save_lineage: false
           hierarchy_depth: 0
           required_depth: 0
           none_label: '- Please select -'
+          plugin_id: taxonomy_index_tid
+      defaults:
+        filters: false
+        filter_groups: false
       filter_groups:
         operator: AND
         groups:
           1: AND
-      defaults:
-        filters: false
-        filter_groups: false
-      display_description: ''
-      display_extenders:
-        metatag_display_extender: {  }
-      path: faculty-research
-      menu:
-        type: normal
-        title: Faculty/Department
-        description: ''
-        weight: -49
-        enabled: true
-        expanded: false
-        menu_name: main
-        parent: 'menu_link_content:aa514bff-9dfa-4589-855e-80715a5b8316'
-        context: '0'
     cache_metadata:
       max-age: -1
       contexts:
@@ -961,12 +959,258 @@ display:
         - 'config:field.storage.node.field_person_last_name'
         - 'config:field.storage.node.field_person_research_areas'
   page_2:
+    display_plugin: page
     id: page_2
     display_title: Graduates
-    display_plugin: page
     position: 2
     display_options:
-      title: Graduates
+      display_extenders:
+        metatag_display_extender: {  }
+      display_description: ''
+      path: graduates
+      menu:
+        type: normal
+        title: Graduates
+        description: ''
+        expanded: false
+        parent: 'menu_link_content:596997c3-082e-4ee1-9c9c-5df92965b802'
+        weight: 0
+        context: '0'
+        menu_name: main
+      filters:
+        status:
+          value: '1'
+          table: node_field_data
+          field: status
+          plugin_id: boolean
+          entity_type: node
+          entity_field: status
+          id: status
+          expose:
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+          group: 1
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
+          value:
+            person: person
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
+        field_person_hide_value:
+          id: field_person_hide_value
+          table: node__field_person_hide
+          field: field_person_hide_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: '0'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: boolean
+        field_person_types_target_id:
+          id: field_person_types_target_id
+          table: node__field_person_types
+          field: field_person_types_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: student
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: string
+        field_person_type_status_value:
+          id: field_person_type_status_value
+          table: node__field_person_type_status
+          field: field_person_type_status_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value:
+            student: student
+          group: 1
+          exposed: false
+          expose:
+            operator_id: field_person_type_status_value_op
+            label: 'Person type status (field_person_type_status)'
+            description: null
+            use_operator: false
+            operator: field_person_type_status_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_person_type_status_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          plugin_id: list_field
+        combine:
+          id: combine
+          table: views
+          field: combine
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: contains
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: combine_op
+            label: Search
+            description: ''
+            use_operator: false
+            operator: combine_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: keys
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          fields:
+            field_person_first_name: field_person_first_name
+            field_person_last_name: field_person_last_name
+          plugin_id: combine
+      defaults:
+        filters: false
+        filter_groups: false
+        fields: false
+        title: false
+        pager: false
+        style: false
+        row: false
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
       fields:
         view_node:
           id: view_node
@@ -975,8 +1219,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: node
-          plugin_id: entity_link
           label: 'Link to Content'
           exclude: true
           alter:
@@ -1021,6 +1263,8 @@ display:
           text: view
           output_url_as_text: true
           absolute: false
+          entity_type: node
+          plugin_id: entity_link
         field_person_credential:
           id: field_person_credential
           table: node__field_person_credential
@@ -1028,7 +1272,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: Credentials
           exclude: true
           alter:
@@ -1084,6 +1327,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
         field_person_first_name:
           id: field_person_first_name
           table: node__field_person_first_name
@@ -1091,7 +1335,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: 'First Name'
           exclude: true
           alter:
@@ -1147,6 +1390,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
         field_person_last_name:
           id: field_person_last_name
           table: node__field_person_last_name
@@ -1154,7 +1398,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: Name
           exclude: false
           alter:
@@ -1210,6 +1453,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
         field_pt_student_advisor:
           id: field_pt_student_advisor
           table: node__field_pt_student_advisor
@@ -1217,7 +1461,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: Supervisor
           exclude: false
           alter:
@@ -1273,6 +1516,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
         field_pt_student_defense_date:
           id: field_pt_student_defense_date
           table: node__field_pt_student_defense_date
@@ -1280,7 +1524,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: Graduated
           exclude: false
           alter:
@@ -1337,6 +1580,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
         pt_student_dissertation_title:
           id: pt_student_dissertation_title
           table: node__pt_student_dissertation_title
@@ -1344,7 +1588,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: 'Thesis title'
           exclude: false
           alter:
@@ -1400,6 +1643,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
         field_pt_student_cur_pos_inst:
           id: field_pt_student_cur_pos_inst
           table: node__field_pt_student_cur_pos_inst
@@ -1407,7 +1651,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: 'Current position institution'
           exclude: true
           alter:
@@ -1463,6 +1706,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
         field_pt_student_cur_pos_title:
           id: field_pt_student_cur_pos_title
           table: node__field_pt_student_cur_pos_title
@@ -1470,7 +1714,6 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
           label: Position
           exclude: false
           alter:
@@ -1526,16 +1769,18 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          plugin_id: field
+      title: Graduates
       pager:
         type: full
         options:
-          offset: 0
           items_per_page: 50
-          total_pages: null
+          offset: 0
           id: 0
+          total_pages: null
           tags:
-            next: 'Next ›'
             previous: '‹ Previous'
+            next: 'Next ›'
             first: '« First'
             last: 'Last »'
           expose:
@@ -1547,238 +1792,17 @@ display:
             offset: false
             offset_label: Offset
           quantity: 9
-      filters:
-        status:
-          id: status
-          table: node_field_data
-          field: status
-          entity_type: node
-          entity_field: status
-          plugin_id: boolean
-          value: '1'
-          group: 1
-          expose:
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-        type:
-          id: type
-          table: node_field_data
-          field: type
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: node
-          entity_field: type
-          plugin_id: bundle
-          operator: in
-          value:
-            person: person
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-        field_person_hide_value:
-          id: field_person_hide_value
-          table: node__field_person_hide
-          field: field_person_hide_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: boolean
-          operator: '='
-          value: '0'
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-        field_person_types_target_id:
-          id: field_person_types_target_id
-          table: node__field_person_types
-          field: field_person_types_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: string
-          operator: '='
-          value: student
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-        field_person_type_status_value:
-          id: field_person_type_status_value
-          table: node__field_person_type_status
-          field: field_person_type_status_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: list_field
-          operator: or
-          value:
-            student: student
-          group: 1
-          exposed: false
-          expose:
-            operator_id: field_person_type_status_value_op
-            label: 'Person type status (field_person_type_status)'
-            description: null
-            use_operator: false
-            operator: field_person_type_status_value_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: field_person_type_status_value
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-        combine:
-          id: combine
-          table: views
-          field: combine
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: combine
-          operator: contains
-          value: ''
-          group: 1
-          exposed: true
-          expose:
-            operator_id: combine_op
-            label: Search
-            description: ''
-            use_operator: false
-            operator: combine_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: keys
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              viewer: '0'
-              editor: '0'
-              publisher: '0'
-              webmaster: '0'
-              administrator: '0'
-            placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          fields:
-            field_person_first_name: field_person_first_name
-            field_person_last_name: field_person_last_name
-      filter_groups:
-        operator: AND
-        groups:
-          1: AND
       style:
         type: table
         options:
           grouping: {  }
           row_class: ''
           default_row_class: true
+          override: true
+          sticky: false
+          caption: ''
+          summary: ''
+          description: ''
           columns:
             view_node: view_node
             field_person_credential: field_person_credential
@@ -1789,7 +1813,6 @@ display:
             pt_student_dissertation_title: pt_student_dissertation_title
             field_pt_student_cur_pos_inst: field_pt_student_cur_pos_inst
             field_pt_student_cur_pos_title: field_pt_student_cur_pos_title
-          default: field_pt_student_defense_date
           info:
             view_node:
               sortable: false
@@ -1852,36 +1875,11 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-          override: true
-          sticky: false
-          summary: ''
+          default: field_pt_student_defense_date
           empty_table: false
-          caption: ''
-          description: ''
       row:
         type: fields
         options: {  }
-      defaults:
-        title: false
-        pager: false
-        style: false
-        row: false
-        fields: false
-        filters: false
-        filter_groups: false
-      display_description: ''
-      display_extenders:
-        metatag_display_extender: {  }
-      path: graduates
-      menu:
-        type: normal
-        title: Graduates
-        description: ''
-        weight: 0
-        expanded: false
-        menu_name: main
-        parent: 'menu_link_content:596997c3-082e-4ee1-9c9c-5df92965b802'
-        context: '0'
     cache_metadata:
       max-age: -1
       contexts:

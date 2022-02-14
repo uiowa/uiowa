@@ -1,9 +1,4 @@
 adding:
-  dependencies:
-    config:
-      - node.type.ighn_person
-    module:
-      - siteimprove
   weight: -6
   permissions:
     - 'create ighn_person content'
@@ -15,12 +10,8 @@ adding:
     - 'enter ighn_person revision log entry'
     - 'override ighn_person published option'
     - 'revert ighn_person revisions'
-    - 'use siteimprove'
     - 'view ighn_person revisions'
 removing:
-  dependencies:
-    module:
-      - contextual
   weight: -5
   permissions:
     - 'access contextual links'

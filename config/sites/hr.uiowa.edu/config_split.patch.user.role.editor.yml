@@ -1,10 +1,4 @@
 adding:
-  dependencies:
-    config:
-      - node.type.faq
-    module:
-      - rabbit_hole
-      - siteimprove
   permissions:
     - 'create faq content'
     - 'delete faq revisions'
@@ -15,13 +9,5 @@ adding:
     - 'override faq published option'
     - 'rabbit hole bypass taxonomy_term'
     - 'revert faq revisions'
-    - 'use siteimprove'
     - 'view faq revisions'
-removing:
-  dependencies:
-    config:
-      - core.entity_view_display.fragment.region_item.default
-      - core.entity_view_display.node.page.default
-    module:
-      - fragments
-      - layout_builder
+removing: {  }
