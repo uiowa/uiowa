@@ -216,7 +216,7 @@ function _brand_core_lockup_submit(array $form, FormStateInterface $form_state) 
     case 'published':
       // Generate Lockup Files if approved/published.
       $nid = $entity->id();
-      $lockup_controller = new LockupController(\Drupal::entityTypeManager(), \Drupal::service('file_system'));
+      $lockup_controller = new LockupController(\Drupal::entityTypeManager(), \Drupal::service('file_system'), \Drupal::service('extension.path.resolver'));
       $lockup_controller->generate($nid);
       break;
   }
@@ -400,7 +400,7 @@ function brand_core_node_update(EntityInterface $entity) {
       case 'published':
         // Generate Lockup Files if approved/published.
         $nid = $entity->id();
-        $lockup_controller = new LockupController(\Drupal::entityTypeManager(), \Drupal::service('file_system'));
+        $lockup_controller = new LockupController(\Drupal::entityTypeManager(), \Drupal::service('file_system'), \Drupal::service('extension.path.resolver'));
         $lockup_controller->generate($nid);
 
         // Try to get away with clearing the render cache to fetch updated svgs.
