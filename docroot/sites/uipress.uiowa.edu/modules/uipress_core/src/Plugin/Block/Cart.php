@@ -2,7 +2,6 @@
 
 namespace Drupal\uipress_core\Plugin\Block;
 
-use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Core\Block\BlockBase;
 
 /**
@@ -27,9 +26,9 @@ class Cart extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-      $markup = '<div class="bg--white">
+    $markup = '<div class="bg--white">
       <a class="bttn bttn--outline bttn--sans-serif" href="https://cdcshoppingcart.uchicago.edu/Cart/Cart?PRESS=iowa">View Cart <span class="fas fa-shopping-cart"></span></a></div>';
-      return ['#markup' => $markup];
+    return ['#markup' => $markup];
   }
 
 }
