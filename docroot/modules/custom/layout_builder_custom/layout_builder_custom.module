@@ -327,10 +327,10 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             // Unset the layout builder style heading.
             unset($form['lbs_heading']);
           }
-
+          // Hide some options we don't want people to use currently.
           // Adjust name for advanced options section.
           $form['settings']['advanced']['#title'] = t('Visibility options');
-          // Hide some options we don't want people to use currently.
+          // Hide the HTML and style options.
           $form['settings']['style']['#access'] = FALSE;
           // Hide the initial visibility level since we aren't using fixed parent.
           $form['settings']['menu_levels']['level']['#access'] = FALSE;
