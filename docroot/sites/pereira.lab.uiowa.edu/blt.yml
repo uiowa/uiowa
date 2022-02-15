@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: labpereira.uiowa.ddev.site
+    protocol: https
+  machine_name: labpereira
+  human_name: pereira.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labpereira.prod
+drupal:
+  db:
+    database: pereira_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: strommerl

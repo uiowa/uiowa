@@ -3892,3 +3892,9 @@ $sites['sitesiromanual.uiowa.ddev.site'] = 'iromanual.sites.uiowa.edu';
 $sites['sitesiromanual.dev.drupal.uiowa.edu'] = 'iromanual.sites.uiowa.edu';
 $sites['sitesiromanual.stage.drupal.uiowa.edu'] = 'iromanual.sites.uiowa.edu';
 $sites['sitesiromanual.prod.drupal.uiowa.edu'] = 'iromanual.sites.uiowa.edu';
+
+// Directory aliases for pereira.lab.uiowa.edu.
+$sites['labpereira.uiowa.ddev.site'] = 'pereira.lab.uiowa.edu';
+$sites['labpereira.dev.drupal.uiowa.edu'] = 'pereira.lab.uiowa.edu';
+$sites['labpereira.stage.drupal.uiowa.edu'] = 'pereira.lab.uiowa.edu';
+$sites['labpereira.prod.drupal.uiowa.edu'] = 'pereira.lab.uiowa.edu';
