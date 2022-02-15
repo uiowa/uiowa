@@ -107,6 +107,7 @@ The packages below are locked at specific SHAs and will not update using the met
 | drupal/menu_link_weight               | No stable release since [f4a4b71b](https://git.drupalcode.org/project/menu_link_weight/-/commit/f4a4b71be5850ebc9d15a5cc742eafb76ef9cd0f). |
 | drupal/photoswipe                     | Need 71e54fbcca748c7ec2cfc3d2fdd92c9a180b5852. No stable release with patch       |
 | drupal/redirect                       | Need e5201ca5 from 8.x-1.x branch plus a patch. https://git.drupalcode.org/project/redirect/-/commits/8.x-1.x       |
+| drupal/reroute_email                  | No stable release since 438a67caeb0b0cc47d1deb0cee50afda9a907dc8 |
 | kartsims/easysvg                      | Need https://github.com/kartsims/easysvg/pull/27 which is not included in a release. |
 | uiowa/block_content_template          | Forked from a deprecated project. |
 | dompdf/dompdf                         | https://www.drupal.org/project/entity_print/issues/3169624 |
