@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: sitesiromanual.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesiromanual
+  human_name: iromanual.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesiromanual.prod
+drupal:
+  db:
+    database: iromanual_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: croberts2
