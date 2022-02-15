@@ -3886,3 +3886,9 @@ $sites['sitesfutureofficework.uiowa.ddev.site'] = 'futureofficework.sites.uiowa.
 $sites['sitesfutureofficework.dev.drupal.uiowa.edu'] = 'futureofficework.sites.uiowa.edu';
 $sites['sitesfutureofficework.stage.drupal.uiowa.edu'] = 'futureofficework.sites.uiowa.edu';
 $sites['sitesfutureofficework.prod.drupal.uiowa.edu'] = 'futureofficework.sites.uiowa.edu';
+
+// Directory aliases for iromanual.sites.uiowa.edu.
+$sites['sitesiromanual.uiowa.ddev.site'] = 'iromanual.sites.uiowa.edu';
+$sites['sitesiromanual.dev.drupal.uiowa.edu'] = 'iromanual.sites.uiowa.edu';
+$sites['sitesiromanual.stage.drupal.uiowa.edu'] = 'iromanual.sites.uiowa.edu';
+$sites['sitesiromanual.prod.drupal.uiowa.edu'] = 'iromanual.sites.uiowa.edu';
