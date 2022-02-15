@@ -1,0 +1,17 @@
+{%
+  set classes = [
+  'block',
+  'block-' ~ configuration.provider|clean_class,
+  'block-' ~ plugin_id|clean_class,
+  'block-margin__top'
+]
+%}
+<div{{ attributes.addClass(classes) }}>
+  <a class="bttn bttn--primary bttn--caps" href="{{ content.href }}">
+    Add to Cart <span class="fa-arrow-right fas"></span>
+  </a>
+  <a class="bttn bttn--secondary bttn--caps" href="https://cdcshoppingcart.uchicago.edu/Cart/Cart?PRESS=iowa">
+    View Cart <span class="fa-arrow-right fas"></span>
+  </a>
+  <hr class="block-margin__top--extra block-margin__bottom--extra element--spacer-thin" />
+</div>

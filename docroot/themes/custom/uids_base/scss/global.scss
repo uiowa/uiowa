@@ -348,6 +348,13 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
   &__bottom {
     margin-bottom: $md;
+
+    &--extra {
+      margin-bottom: $md;
+      @include breakpoint(sm) {
+        margin-bottom: $mobile-height-gutter;
+      }
+    }
   }
 
   &__left {
