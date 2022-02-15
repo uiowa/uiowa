@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: facilities.uiowa.ddev.site
+    protocol: https
+  machine_name: facilities
+  human_name: facilities.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: facilities.prod
+drupal:
+  db:
+    database: facilities_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: wmoorehe
