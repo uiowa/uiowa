@@ -3904,3 +3904,9 @@ $sites['facilities.uiowa.ddev.site'] = 'facilities.uiowa.edu';
 $sites['facilities.dev.drupal.uiowa.edu'] = 'facilities.uiowa.edu';
 $sites['facilities.stage.drupal.uiowa.edu'] = 'facilities.uiowa.edu';
 $sites['facilities.prod.drupal.uiowa.edu'] = 'facilities.uiowa.edu';
+
+// Directory aliases for cryptco.studio.uiowa.edu.
+$sites['studiocryptco.uiowa.ddev.site'] = 'cryptco.studio.uiowa.edu';
+$sites['studiocryptco.dev.drupal.uiowa.edu'] = 'cryptco.studio.uiowa.edu';
+$sites['studiocryptco.stage.drupal.uiowa.edu'] = 'cryptco.studio.uiowa.edu';
+$sites['studiocryptco.prod.drupal.uiowa.edu'] = 'cryptco.studio.uiowa.edu';
