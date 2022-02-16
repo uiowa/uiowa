@@ -86,6 +86,9 @@ function sitenow_events_preprocess_block(&$variables) {
       /** @var \Drupal\Block\Entity\Block $block */
       $block = $variables['elements']['content']['#block_content'];
 
+      // Set custom time-based cache tag to clear on a regular basis.
+      $variables['#cache']['tags'][] = 'time:hours_3';
+
       // Defaults to upcoming.
       $display_id = 'events';
       $start = 'now';
