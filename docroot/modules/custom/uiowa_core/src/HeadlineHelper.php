@@ -46,6 +46,16 @@ class HeadlineHelper {
   }
 
   /**
+   * Get a list of valid heading alignments
+   */
+  public static function getHeadingAlignment() {
+    return [
+      'default' => 'headline block__headline',
+      'headline_alignment_center' => 'headline headline--center block__headline',
+    ];
+  }
+
+  /**
    * Provide the render array structure for a headline element.
    *
    * @param array $defaults
@@ -120,6 +130,23 @@ class HeadlineHelper {
         'headline_bold_serif_underline' => t('Bold serif, underlined'),
       ],
       '#default_value' => $defaults['headline_style'],
+      '#states' => [
+        'visible' => [
+          ':input[id="uiowa-headline-field"]' => [
+            'filled' => TRUE,
+          ],
+        ],
+      ],
+    ];
+
+    $element['container']['headline_alignment'] = [
+      '#type' => 'select',
+      '#title' => t('Headline alignment'),
+      '#options' => [
+        'default' => t('Left (default)'),
+        'headline_alignment_center' => t('Center'),
+      ],
+      '#default_value' => $defaults['headline_alignment'],
       '#states' => [
         'visible' => [
           ':input[id="uiowa-headline-field"]' => [
