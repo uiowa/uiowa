@@ -51,8 +51,8 @@ dependencies:
     - user
 third_party_settings:
   layout_builder:
-    allow_custom: false
     enabled: false
+    allow_custom: false
   layout_builder_restrictions:
     allowed_block_categories:
       - 'Chaos Tools'
@@ -73,6 +73,13 @@ third_party_settings:
       - Webform
       - core
     entity_view_mode_restriction:
+      allowed_layouts:
+        - layout_onecol
+        - layout_twocol
+        - layout_threecol
+        - layout_fourcol
+        - layout_header
+      blacklisted_blocks: {  }
       whitelisted_blocks:
         'Chaos Tools': {  }
         'Content fields':
@@ -95,13 +102,6 @@ third_party_settings:
         User: {  }
         Webform: {  }
         core: {  }
-      blacklisted_blocks: {  }
-      allowed_layouts:
-        - layout_onecol
-        - layout_twocol
-        - layout_threecol
-        - layout_fourcol
-        - layout_header
     entity_view_mode_restriction_by_region:
       allowed_layouts:
         - layout_onecol
@@ -116,201 +116,201 @@ mode: pdf
 content:
   body:
     type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
     weight: 0
     region: content
-    label: above
-    settings: {  }
-    third_party_settings: {  }
   field_area_of_study_career:
-    weight: 10
+    type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 10
     region: content
   field_area_of_study_certificates:
-    weight: 3
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 3
     region: content
   field_area_of_study_comp_txt:
     type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
     weight: 15
     region: content
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
   field_area_of_study_competitive:
     type: list_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
     weight: 14
     region: content
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
   field_area_of_study_course_work:
     type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
     weight: 7
     region: content
-    label: above
-    settings: {  }
-    third_party_settings: {  }
   field_area_of_study_first_year:
     type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
     weight: 18
     region: content
-    label: hidden
-    settings:
-      view_mode: default
-      link: ''
-    third_party_settings: {  }
   field_area_of_study_four_txt:
     type: string
-    weight: 21
-    region: content
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 21
+    region: content
   field_area_of_study_four_year:
     type: list_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
     weight: 20
     region: content
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
   field_area_of_study_honors:
     type: list_default
-    weight: 19
-    region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 19
+    region: content
   field_area_of_study_majors:
     type: entity_reference_revisions_entity_view
-    weight: 1
     label: above
     settings:
       view_mode: default
       link: ''
     third_party_settings: {  }
+    weight: 1
     region: content
   field_area_of_study_minors:
-    weight: 2
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 2
     region: content
   field_area_of_study_online:
-    weight: 5
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 5
     region: content
   field_area_of_study_opportunity:
-    weight: 11
+    type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 11
     region: content
   field_area_of_study_preprof:
-    weight: 4
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 4
     region: content
   field_area_of_study_requirement:
-    weight: 9
+    type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 9
     region: content
   field_area_of_study_scholarship:
     type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
     weight: 8
     region: content
-    label: above
-    settings: {  }
-    third_party_settings: {  }
   field_area_of_study_select_txt:
     type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
     weight: 16
     region: content
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
   field_area_of_study_selective:
     type: list_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
     weight: 17
     region: content
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
   field_area_of_study_sub_type:
     type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
     weight: 25
     region: content
-    label: above
-    settings: {  }
-    third_party_settings: {  }
   field_area_of_study_subprogram:
     type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
     weight: 24
     region: content
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
   field_area_of_study_subtitle:
     type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
     weight: 22
     region: content
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
   field_area_of_study_teaching:
     type: list_default
-    weight: 12
-    region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 12
+    region: content
   field_area_of_study_teaching_txt:
     type: string
-    weight: 13
-    region: content
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 13
+    region: content
   field_area_of_study_why:
-    weight: 6
+    type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 6
     region: content
   field_image:
     type: entity_reference_entity_view
-    weight: 23
-    region: content
     label: hidden
     settings:
       view_mode: small__widescreen
       link: false
     third_party_settings: {  }
+    weight: 23
+    region: content
 hidden:
   content_moderation_control: true
   entity_print_view_epub: true

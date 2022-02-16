@@ -1,7 +1,22 @@
 uuid: c7b0b7a1-853e-47df-8a91-8c8745f36b25
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - node.type.article
+    - node.type.page
+    - node.type.person
+  module:
+    - content_moderation
+    - entity_usage
+    - file
+    - fragments
+    - google_analytics
+    - media
+    - node
+    - override_node_options
+    - system
+    - toolbar
 id: viewer
 label: Viewer
 weight: -7

@@ -1,0 +1,22 @@
+uuid: 5067f078-181b-47e6-a0cd-ea8c87d23e7b
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: book_alias
+label: 'Book alias'
+type: 'canonical_entities:node'
+pattern: '/books/[node:title]'
+selection_criteria:
+  64344db4-d596-48d1-baa2-dbc64e5198d6:
+    id: node_type
+    negate: false
+    uuid: 64344db4-d596-48d1-baa2-dbc64e5198d6
+    context_mapping:
+      node: node
+    bundles:
+      book: book
+selection_logic: and
+weight: -5
+relationships: {  }

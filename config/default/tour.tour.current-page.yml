@@ -15,70 +15,70 @@ tips:
     id: manage
     plugin: text
     label: Manage
-    body: '<p>The first toolbar item will contain links to various administrative areas of the site. Clicking a toolbar item, like Manage, will toggle the display of any links underneath it.</p>'
     weight: 0
-    selector: '#toolbar-item-administration'
     position: right-start
+    selector: '#toolbar-item-administration'
+    body: '<p>The first toolbar item will contain links to various administrative areas of the site. Clicking a toolbar item, like Manage, will toggle the display of any links underneath it.</p>'
   user:
     id: user
     plugin: text
     label: User
-    body: '<p>This toolbar item provides links to user-related functions like logging out. Always remember to log out when finished working with your site!</p>'
     weight: 1
-    selector: '#toolbar-item-user'
     position: bottom-start
+    selector: '#toolbar-item-user'
+    body: '<p>This toolbar item provides links to user-related functions like logging out. Always remember to log out when finished working with your site!</p>'
   env:
     id: env
     plugin: text
     label: 'Environment Indicator'
-    body: '<p>This toolbar item indicates what environment you are currently on: dev, test or prod (production). Not every site has additional environments.</p>'
     weight: 2
-    selector: '#uiowa-env-indicator'
     position: left-start
+    selector: '#uiowa-env-indicator'
+    body: '<p>This toolbar item indicates what environment you are currently on: dev, test or prod (production). Not every site has additional environments.</p>'
   tour:
     id: tour
     plugin: text
     label: Tours
-    body: '<p>You might see this toolbar item on certain pages while logged in. It means there is a tour related to the page available. Click it to start the tour.</p>'
     weight: 3
-    selector: '#toolbar-tab-tour'
     position: left-start
+    selector: '#toolbar-tab-tour'
+    body: '<p>You might see this toolbar item on certain pages while logged in. It means there is a tour related to the page available. Click it to start the tour.</p>'
   main-logo:
     id: main-logo
     plugin: text
     label: 'Site Information'
-    body: '<p>You can change your site name and menu links <a href="/admin/config/system/site-information?tour=1">here</a></p>'
     weight: 4
-    selector: .site-name
     position: top-start
+    selector: .site-name
+    body: '<p>You can change your site name and menu links <a href="/admin/config/system/site-information?tour=1">here</a></p>'
   main-menu-field:
     id: main-menu-field
     plugin: text
     label: 'Main Menu'
-    body: '<p>The main menu displays above every page. Learn how to configure the main menu <a href="/admin/structure/menu/manage/main?tour=1">here</a></p>'
     weight: 5
-    selector: '#block-main-navigation-superfish-horizontal'
     position: right-start
+    selector: '#block-main-navigation-superfish-horizontal'
+    body: '<p>The main menu displays above every page. Learn how to configure the main menu <a href="/admin/structure/menu/manage/main?tour=1">here</a></p>'
   moderation-field:
     id: moderation-field
     plugin: text
     label: 'Moderation State'
-    body: '<p>You can save the page unpublished as a draft, select that it''s ready for review or publish the page here.</p><p>Content automatically saves as a draft which will not be visible to site visitors. Site visitors will only see content marked as published.</p>'
     weight: 6
-    selector: '#content-moderation-entity-moderation-form'
     position: bottom-start
+    selector: '#content-moderation-entity-moderation-form'
+    body: '<p>You can save the page unpublished as a draft, select that it''s ready for review or publish the page here.</p><p>Content automatically saves as a draft which will not be visible to site visitors. Site visitors will only see content marked as published.</p>'
   social-footer:
     id: social-footer
     plugin: text
     label: Footer
-    body: '<p>Depending on your assigned role, you can configure the <a href="/admin/structure/menu/manage/footer-primary?tour">primary footer menu links</a> in the left column, the <a href="/admin/structure/menu/manage/footer-secondary">secondary footer links</a> in the middle column, and the <a href="/admin/structure/menu/manage/footer-tertiary?tour">tertiary menu links</a> in the right column of the footer.</p>'
     weight: 7
-    selector: .footer__links--contact
     position: top-start
+    selector: .footer__links--contact
+    body: '<p>Depending on your assigned role, you can configure the <a href="/admin/structure/menu/manage/footer-primary?tour">primary footer menu links</a> in the left column, the <a href="/admin/structure/menu/manage/footer-secondary">secondary footer links</a> in the middle column, and the <a href="/admin/structure/menu/manage/footer-tertiary?tour">tertiary menu links</a> in the right column of the footer.</p>'
   current-docs:
     id: current-docs
     plugin: text
     label: Documentation
-    body: '<p>Be sure to checkout our <a href="https://sitenow.uiowa.edu/node/266">SiteNow Documentation!</a></p>'
     weight: 8
     position: top-start
+    body: '<p>Be sure to checkout our <a href="https://sitenow.uiowa.edu/node/266">SiteNow Documentation!</a></p>'

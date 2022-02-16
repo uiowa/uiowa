@@ -1,7 +1,47 @@
 uuid: 0825cfdd-af2f-4022-8897-60283b52bb51
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - core.entity_view_display.fragment.region_item.default
+    - core.entity_view_display.node.page.default
+    - filter.format.filtered_html
+    - filter.format.minimal
+    - media.type.audio
+    - media.type.facebook
+    - media.type.file
+    - media.type.image
+    - media.type.instagram
+    - media.type.panopto
+    - media.type.remote_video
+    - media.type.twitter
+    - node.type.article
+    - node.type.page
+    - node.type.person
+    - taxonomy.vocabulary.research_areas
+    - taxonomy.vocabulary.tags
+    - workflows.workflow.editorial
+  module:
+    - administerusersbyrole
+    - block_content_permissions
+    - content_moderation
+    - contextual
+    - entity_browser
+    - entity_usage
+    - file
+    - filter
+    - fragments
+    - google_analytics
+    - layout_builder
+    - media
+    - menu_admin_per_menu
+    - metatag_extended_perms
+    - node
+    - override_node_options
+    - system
+    - taxonomy
+    - toolbar
+    - tour
 _core:
   default_config_hash: LO6rl3XZgu-dL4gZtQftKWfrayfBJ6Vti8-I08HVU7w
 id: editor
@@ -15,11 +55,9 @@ permissions:
   - 'access contextual links'
   - 'access entity usage statistics'
   - 'access featured_content_browser entity browser pages'
-  - 'access file_link_browser entity browser pages'
   - 'access files overview'
   - 'access fragments overview'
   - 'access media overview'
-  - 'access media_entity_browser entity browser pages'
   - 'access media_wysiwyg_browser entity browser pages'
   - 'access metatag advanced__canonical_url'
   - 'access metatag advanced__geo_placename'
@@ -68,7 +106,6 @@ permissions:
   - 'create instagram media'
   - 'create page content'
   - 'create panopto media'
-  - 'create people block content'
   - 'create person content'
   - 'create region_item fragments'
   - 'create remote_video media'
@@ -76,7 +113,6 @@ permissions:
   - 'create terms in tags'
   - 'create twitter media'
   - 'create uiowa_aggregator block content'
-  - 'create uiowa_articles block content'
   - 'create uiowa_banner block content'
   - 'create uiowa_card block content'
   - 'create uiowa_collection block content'
@@ -84,7 +120,6 @@ permissions:
   - 'create uiowa_event block content'
   - 'create uiowa_events block content'
   - 'create uiowa_image_gallery block content'
-  - 'create uiowa_people block content'
   - 'create uiowa_quote block content'
   - 'create uiowa_slider block content'
   - 'create uiowa_statistic block content'
@@ -97,11 +132,9 @@ permissions:
   - 'delete any image media'
   - 'delete any instagram media'
   - 'delete any panopto media'
-  - 'delete any people block content'
   - 'delete any remote_video media'
   - 'delete any twitter media'
   - 'delete any uiowa_aggregator block content'
-  - 'delete any uiowa_articles block content'
   - 'delete any uiowa_banner block content'
   - 'delete any uiowa_card block content'
   - 'delete any uiowa_collection block content'
@@ -111,7 +144,6 @@ permissions:
   - 'delete any uiowa_hero block content'
   - 'delete any uiowa_image_gallery block content'
   - 'delete any uiowa_page_title_hero block content'
-  - 'delete any uiowa_people block content'
   - 'delete any uiowa_quote block content'
   - 'delete any uiowa_slider block content'
   - 'delete any uiowa_spacer_separator block content'
@@ -119,7 +151,6 @@ permissions:
   - 'delete any uiowa_text_area block content'
   - 'delete any uiowa_timeline block content'
   - 'delete article revisions'
-  - 'delete event feed'
   - 'delete own article content'
   - 'delete own audio media'
   - 'delete own facebook media'
@@ -167,9 +198,7 @@ permissions:
   - 'revert article revisions'
   - 'revert page revisions'
   - 'update any featured_content block content'
-  - 'update any people block content'
   - 'update any uiowa_aggregator block content'
-  - 'update any uiowa_articles block content'
   - 'update any uiowa_banner block content'
   - 'update any uiowa_card block content'
   - 'update any uiowa_collection block content'
@@ -179,7 +208,6 @@ permissions:
   - 'update any uiowa_hero block content'
   - 'update any uiowa_image_gallery block content'
   - 'update any uiowa_page_title_hero block content'
-  - 'update any uiowa_people block content'
   - 'update any uiowa_quote block content'
   - 'update any uiowa_slider block content'
   - 'update any uiowa_spacer_separator block content'
@@ -190,7 +218,6 @@ permissions:
   - 'update region_item fragments'
   - 'use editorial transition create_new_draft'
   - 'use editorial transition needs_review'
-  - 'use siteimprove'
   - 'use text format filtered_html'
   - 'use text format minimal'
   - 'view any unpublished content'

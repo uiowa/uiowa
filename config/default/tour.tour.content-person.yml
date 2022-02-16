@@ -18,81 +18,81 @@ tips:
     plugin: text
     label: Person
     weight: 0
+    position: top-start
     attributes: {  }
     body: '<p>On this tour, we''ll explain you the different parts of a Person Content Type.</p><p>Lets get going!</p>'
-    position: top-start
   title:
     id: title
     plugin: text
     label: 'Person Name'
     weight: 1
-    body: '<p>Enter a first and last name. Other required fields are marked with a red asterisk.</p>'
-    selector: '#edit-field-person-first-name-0-value'
     position: bottom-start
+    selector: '#edit-field-person-first-name-0-value'
+    body: '<p>Enter a first and last name. Other required fields are marked with a red asterisk.</p>'
   credentials:
     id: credentials
     plugin: text
     label: Credentials
     weight: 2
-    body: '<p>A user can list multiple credentials separated by commas.</p>'
-    selector: '#edit-field-person-credential-0-value'
     position: right-start
+    selector: '#edit-field-person-credential-0-value'
+    body: '<p>A user can list multiple credentials separated by commas.</p>'
   biography:
     id: biography
     plugin: text
     label: Biography
     weight: 3
-    body: '<p>The Biography is the text that will display when you go to the full view of the person node.</p>'
-    selector: '#edit-field-person-bio-wrapper'
     position: top-start
+    selector: '#edit-field-person-bio-wrapper'
+    body: '<p>The Biography is the text that will display when you go to the full view of the person node.</p>'
   page-advanced:
     id: person-advanced
     plugin: text
     label: Advanced
     weight: 4
-    body: '<p>There are a lot of optional advanced settings for the person content type tucked away here. You will use this part when dealing with menu placement, URL path, relationships and custom SEO settings.</p><p>Click on the section titles to expand them and see what they offer.</p>'
-    selector: '#edit-advanced'
     position: left-start
+    selector: '#edit-advanced'
+    body: '<p>There are a lot of optional advanced settings for the person content type tucked away here. You will use this part when dealing with menu placement, URL path, relationships and custom SEO settings.</p><p>Click on the section titles to expand them and see what they offer.</p>'
   page-teaser-text:
     id: page-teaser-text
     plugin: text
     label: 'Short Biography'
     weight: 5
-    body: '<p>The text that will display when you render a Person node in a Featured Content block or on the SiteNow People page.</p>'
-    selector: '#edit-node-teaser'
     position: left-start
+    selector: '#edit-node-teaser'
+    body: '<p>The text that will display when you render a Person node in a Featured Content block or on the SiteNow People page.</p>'
   person-image-entity:
     id: person-image-entity
     plugin: text
     label: 'Person Photo'
     weight: 6
-    body: '<p>A picture of the select person.</p>'
-    selector: '#edit-node-image'
     position: left-start
+    selector: '#edit-node-image'
+    body: '<p>A picture of the select person.</p>'
   person-relationships:
     id: person-relationships
     plugin: text
     label: Relationships
     weight: 7
-    body: '<p>You can reference existing (autocomplete) or create new tags by typing comma-separate taxonomy terms. Commonly used to organize and classify content behind the scenes.</p>'
-    selector: '#edit-node-relations'
     position: left-start
+    selector: '#edit-node-relations'
+    body: '<p>You can reference existing (autocomplete) or create new tags by typing comma-separate taxonomy terms. Commonly used to organize and classify content behind the scenes.</p>'
   edit-actions:
     id: edit-actions
     plugin: text
     label: 'Edit Actions'
     weight: 8
-    body: '<p>You have the option to promote certain people to the front of the /people page and you can prevent published people nodes from being displayed on the /people page by hiding them.</p>'
-    selector: '#edit-options'
     position: top-start
+    selector: '#edit-options'
+    body: '<p>You have the option to promote certain people to the front of the /people page and you can prevent published people nodes from being displayed on the /people page by hiding them.</p>'
   page-actions:
     id: page-actions
     plugin: text
     label: Publish/Save/Preview
     weight: 9
-    body: '<p>You can save, preview and publish the node here.</p><p>Content automatically saves as a draft which will not be visible to site visitors. Site visitors will only see content marked as published.</p>'
-    selector: '#edit-moderation-state-0-state'
     position: top-start
+    selector: '#edit-moderation-state-0-state'
+    body: '<p>You can save, preview and publish the node here.</p><p>Content automatically saves as a draft which will not be visible to site visitors. Site visitors will only see content marked as published.</p>'
   next-step:
     id: next-step
     plugin: text

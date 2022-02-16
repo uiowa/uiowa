@@ -18,105 +18,105 @@ tips:
     plugin: text
     label: Article
     weight: 0
+    position: top-start
     attributes: {  }
     body: '<p>On this tour, we''ll explain you the different parts of a  SiteNow Article. </p><p>Lets get going!</p>'
-    position: top-start
   title:
     id: title
     plugin: text
     label: Title
     weight: 1
-    body: '<p>First off, give your article a title. This is a required field. Other required fields are marked with a red asterisk.</p>'
-    selector: '#edit-title-wrapper'
     position: bottom-start
+    selector: '#edit-title-wrapper'
+    body: '<p>First off, give your article a title. This is a required field. Other required fields are marked with a red asterisk.</p>'
   wysiwyg:
     id: wysiwyg
     plugin: text
     label: 'Text Editor (WYSIWYG) Overview'
     weight: 2
-    body: '<p>The What-You-See-Is-What-You-Get (WYSIWYG) text editor gives you the ability to format your content and add links/media to your article.</p><p>For more details, <a href="https://sitenow.uiowa.edu/node/136">view our documentation section about the WYSIWYG</a>.</p>'
-    selector: .js-form-type-textarea
     position: top-start
+    selector: .js-form-type-textarea
+    body: '<p>The What-You-See-Is-What-You-Get (WYSIWYG) text editor gives you the ability to format your content and add links/media to your article.</p><p>For more details, <a href="https://sitenow.uiowa.edu/node/136">view our documentation section about the WYSIWYG</a>.</p>'
   entity-embed:
     id: entity-embed
     plugin: text
     label: 'Media Entity Embed'
     weight: 3
-    body: '<p>This allows you to add new or existing images, videos from a URL, audio files, Tweets, Instagram and Facebook posts to your content. A separate configuration window will load. <a href=https://sitenow.uiowa.edu/node/141>Click here for media documentation</a>.</p>'
-    selector: .cke_button__media_entity_embed
     position: bottom-start
+    selector: .cke_button__media_entity_embed
+    body: '<p>This allows you to add new or existing images, videos from a URL, audio files, Tweets, Instagram and Facebook posts to your content. A separate configuration window will load. <a href=https://sitenow.uiowa.edu/node/141>Click here for media documentation</a>.</p>'
   action-links:
     id: action-links
     plugin: text
     label: 'Article Authors'
     weight: 4
-    body: '<p>You can choose whether you wish to add a new or existing author. If you don''t see an author you created, make sure the author is published.</p>'
-    selector: '#edit-field-article-author'
     position: bottom-start
+    selector: '#edit-field-article-author'
+    body: '<p>You can choose whether you wish to add a new or existing author. If you don''t see an author you created, make sure the author is published.</p>'
   organization:
     id: organization
     plugin: text
     label: Organization
     weight: 5
-    body: '<p>The Organization associated with this content.</p><p>When populated with data, the content will appear as plain text in the byline for any teaser displays and on the full view of the selected Article</p>'
-    selector: '#edit-field-article-source-org-0-value'
     position: bottom-start
+    selector: '#edit-field-article-source-org-0-value'
+    body: '<p>The Organization associated with this content.</p><p>When populated with data, the content will appear as plain text in the byline for any teaser displays and on the full view of the selected Article</p>'
   source-link:
     id: source-link
     plugin: text
     label: 'Source Link'
     weight: 6
-    body: "<p>This should include a link to the original source for this content.</p><p>If the Organization field is not populated, the linked\_URL address will be added to the byline of any teaser displays as well as the full display of the Article.</p><p>This must be an external URL such as http://example.com.</p>"
-    selector: .field--name-field-article-source-link
     position: top-start
+    selector: .field--name-field-article-source-link
+    body: "<p>This should include a link to the original source for this content.</p><p>If the Organization field is not populated, the linked\_URL address will be added to the byline of any teaser displays as well as the full display of the Article.</p><p>This must be an external URL such as http://example.com.</p>"
   link-to-source:
     id: link-to-source
     plugin: text
     label: 'Link directly to source'
     weight: 7
-    body: '<p>If the Source Link is populated, there will be an option to link directly to source. If checked, teaser displays of this content will link directly to the Source Link instead of the full display of the article. The article title path will be replaced with the source link URL.</p><p>This can be used to reference an article from an outside source that then displays alongside other articles.</p>'
-    selector: '#edit-field-article-source-link-0-uri'
     position: bottom-start
+    selector: '#edit-field-article-source-link-0-uri'
+    body: '<p>If the Source Link is populated, there will be an option to link directly to source. If checked, teaser displays of this content will link directly to the Source Link instead of the full display of the article. The article title path will be replaced with the source link URL.</p><p>This can be used to reference an article from an outside source that then displays alongside other articles.</p>'
   article-advanced:
     id: article-advanced
     plugin: text
     label: Advanced
     weight: 8
-    body: '<p>There are a lot of optional advanced settings for the article tucked away here. You will use this part when dealing with menu placement, URL paths and custom SEO settings.</p><p>Click on the section titles to expand them and see what they offer.</p>'
-    selector: '.accordion__item:first-child'
     position: top-start
+    selector: '.accordion__item:first-child'
+    body: '<p>There are a lot of optional advanced settings for the article tucked away here. You will use this part when dealing with menu placement, URL paths and custom SEO settings.</p><p>Click on the section titles to expand them and see what they offer.</p>'
   article-teaser-text:
     id: article-teaser-text
     plugin: text
     label: 'Article Summary'
     weight: 9
-    body: '<p>One advanced setting to take note of is the Article Summary. Type a short summary of you content here. It will be used if there are any displays around the site that reference this content. By default, this is also used by search engines when they crawl and index your site.</p><p>To learn more about Search Engine Optimization (SEO) for your site, <a href="https://sitenow.uiowa.edu/node/81">view our SEO documentation</a>.</p>'
-    selector: '#edit-node-teaser'
     position: left-start
+    selector: '#edit-node-teaser'
+    body: '<p>One advanced setting to take note of is the Article Summary. Type a short summary of you content here. It will be used if there are any displays around the site that reference this content. By default, this is also used by search engines when they crawl and index your site.</p><p>To learn more about Search Engine Optimization (SEO) for your site, <a href="https://sitenow.uiowa.edu/node/81">view our SEO documentation</a>.</p>'
   article-image-entity:
     id: article-image-entity
     plugin: text
     label: 'Featured Image'
     weight: 10
-    body: '<p>A featured image for the Article can be added. Select Browse media or Add media to add a picture from your computer or from your existing media from the Media library.</p><p>Additionally, add a caption to give the user more information on the picture.</p>'
-    selector: '#edit-node-image'
     position: left-start
+    selector: '#edit-node-image'
+    body: '<p>A featured image for the Article can be added. Select Browse media or Add media to add a picture from your computer or from your existing media from the Media library.</p><p>Additionally, add a caption to give the user more information on the picture.</p>'
   article-relationships:
     id: article-relationships
     plugin: text
     label: 'Article Relationships'
     weight: 11
-    body: '<p>You can reference existing (autocomplete) or create new tags by typing comma-separate taxonomy terms. Commonly used to organize and classify content behind the scenes.</p>'
-    selector: '#edit-node-relations'
     position: left-start
+    selector: '#edit-node-relations'
+    body: '<p>You can reference existing (autocomplete) or create new tags by typing comma-separate taxonomy terms. Commonly used to organize and classify content behind the scenes.</p>'
   article-actions:
     id: article-actions
     plugin: text
     label: 'Moderation State'
     weight: 12
-    body: '<p>You can select that the article is ready for review, save the article as a draft or publish the article here.</p><p>Content automatically saves as a draft which will not be visible to site visitors. Site visitors will only see content marked as published.</p>'
-    selector: '#edit-moderation-state-0-state'
     position: top-start
+    selector: '#edit-moderation-state-0-state'
+    body: '<p>You can select that the article is ready for review, save the article as a draft or publish the article here.</p><p>Content automatically saves as a draft which will not be visible to site visitors. Site visitors will only see content marked as published.</p>'
   next-step:
     id: next-step
     plugin: text

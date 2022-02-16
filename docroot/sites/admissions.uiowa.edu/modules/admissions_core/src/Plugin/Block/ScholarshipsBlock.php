@@ -75,7 +75,7 @@ class ScholarshipsBlock extends BlockBase {
         'transfer' => $this->t('Transfer'),
         'international' => $this->t('International'),
       ],
-      '#default_value' => isset($config['scholarship_type']) ? $config['scholarship_type'] : '',
+      '#default_value' => $config['scholarship_type'] ?? '',
     ];
     $form['resident'] = [
       '#type' => 'checkboxes',
@@ -85,7 +85,7 @@ class ScholarshipsBlock extends BlockBase {
         'resident' => $this->t('Resident'),
         'nonresident' => $this->t('Non-Resident'),
       ],
-      '#default_value' => isset($config['resident']) ? $config['resident'] : '',
+      '#default_value' => $config['resident'] ?? '',
     ];
 
     return $form;

@@ -18,52 +18,12 @@ base_table: taxonomy_term_field_data
 base_field: tid
 display:
   default:
-    display_plugin: default
     id: default
     display_title: Master
+    display_plugin: default
     position: 0
     display_options:
-      access:
-        type: perm
-        options:
-          perm: 'access content'
-      cache:
-        type: tag
-        options: {  }
-      query:
-        type: views_query
-        options:
-          disable_sql_rewrite: false
-          distinct: false
-          replica: false
-          query_comment: ''
-          query_tags: {  }
-      exposed_form:
-        type: basic
-        options:
-          submit_button: Apply
-          reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-      pager:
-        type: none
-        options:
-          items_per_page: null
-          offset: 0
-      style:
-        type: default
-      row:
-        type: fields
-        options:
-          default_field_elements: true
-          inline:
-            field_a_z_list_link: field_a_z_list_link
-            edit_taxonomy_term: edit_taxonomy_term
-          separator: ''
-          hide_empty: false
+      title: 'A-Z List'
       fields:
         field_a_z_list_link:
           id: field_a_z_list_link
@@ -72,6 +32,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -131,7 +92,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         edit_taxonomy_term:
           id: edit_taxonomy_term
           table: taxonomy_term_data
@@ -139,6 +99,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: taxonomy_term
+          plugin_id: entity_link_edit
           label: ''
           exclude: false
           alter:
@@ -183,34 +145,29 @@ display:
           text: edit
           output_url_as_text: false
           absolute: false
-          entity_type: taxonomy_term
-          plugin_id: entity_link_edit
-      filters:
-        status:
-          value: '1'
-          table: taxonomy_term_field_data
-          field: status
-          plugin_id: boolean
-          entity_type: taxonomy_term
-          entity_field: status
-          id: status
-          expose:
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-          group: 1
-        vid:
-          id: vid
-          table: taxonomy_term_field_data
-          field: vid
-          value:
-            a_z_list: a_z_list
-          entity_type: taxonomy_term
-          entity_field: vid
-          plugin_id: bundle
-          expose:
-            operator_limit_selection: false
-            operator_list: {  }
+      pager:
+        type: none
+        options:
+          offset: 0
+          items_per_page: null
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: false
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      access:
+        type: perm
+        options:
+          perm: 'access content'
+      cache:
+        type: tag
+        options: {  }
+      empty: {  }
       sorts:
         field_a_z_list_link_title:
           id: field_a_z_list_link_title
@@ -219,16 +176,12 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: standard
           order: ASC
-          exposed: false
           expose:
             label: ''
-          plugin_id: standard
-      title: 'A-Z List'
-      header: {  }
-      footer: {  }
-      empty: {  }
-      relationships: {  }
+            field_identifier: field_a_z_list_link_title
+          exposed: false
       arguments:
         name:
           id: name
@@ -237,6 +190,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: taxonomy_term
+          entity_field: name
+          plugin_id: string
           default_action: default
           exception:
             value: ''
@@ -251,8 +207,8 @@ display:
           summary_options:
             base_path: ''
             count: true
-            items_per_page: 25
             override: false
+            items_per_page: 25
           summary:
             sort_order: asc
             number_of_records: 0
@@ -270,9 +226,54 @@ display:
           break_phrase: false
           add_table: false
           require_value: false
+      filters:
+        status:
+          id: status
+          table: taxonomy_term_field_data
+          field: status
           entity_type: taxonomy_term
-          entity_field: name
-          plugin_id: string
+          entity_field: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
+          expose:
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+        vid:
+          id: vid
+          table: taxonomy_term_field_data
+          field: vid
+          entity_type: taxonomy_term
+          entity_field: vid
+          plugin_id: bundle
+          value:
+            a_z_list: a_z_list
+          expose:
+            operator_limit_selection: false
+            operator_list: {  }
+      style:
+        type: default
+      row:
+        type: fields
+        options:
+          default_field_elements: true
+          inline:
+            field_a_z_list_link: field_a_z_list_link
+            edit_taxonomy_term: edit_taxonomy_term
+          separator: ''
+          hide_empty: false
+      query:
+        type: views_query
+        options:
+          query_comment: ''
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_tags: {  }
+      relationships: {  }
+      header: {  }
+      footer: {  }
       display_extenders: {  }
     cache_metadata:
       max-age: -1
@@ -284,20 +285,12 @@ display:
       tags:
         - 'config:field.storage.taxonomy_term.field_a_z_list_link'
   attachment_a_z_list:
-    display_plugin: attachment
     id: attachment_a_z_list
     display_title: Attachment
+    display_plugin: attachment
     position: 2
     display_options:
-      display_extenders:
-        metatag_display_extender: {  }
       title: ''
-      defaults:
-        title: false
-        arguments: false
-      displays:
-        page_a_z_list: page_a_z_list
-      inherit_arguments: false
       pager:
         type: none
         options:
@@ -310,6 +303,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: taxonomy_term
+          entity_field: name
+          plugin_id: string
           default_action: summary
           exception:
             value: ''
@@ -323,11 +319,11 @@ display:
           default_argument_skip_url: false
           summary_options:
             base_path: a-z
+            count: false
+            override: false
             items_per_page: 25
             inline: true
             separator: ''
-            count: false
-            override: false
           summary:
             sort_order: asc
             number_of_records: 0
@@ -345,9 +341,14 @@ display:
           break_phrase: false
           add_table: false
           require_value: false
-          entity_type: taxonomy_term
-          entity_field: name
-          plugin_id: string
+      defaults:
+        title: false
+        arguments: false
+      display_extenders:
+        metatag_display_extender: {  }
+      displays:
+        page_a_z_list: page_a_z_list
+      inherit_arguments: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -358,14 +359,11 @@ display:
       tags:
         - 'config:field.storage.taxonomy_term.field_a_z_list_link'
   page_a_z_list:
-    display_plugin: page
     id: page_a_z_list
     display_title: Page
+    display_plugin: page
     position: 1
     display_options:
-      display_extenders:
-        metatag_display_extender: {  }
-      path: a-z
       arguments:
         name:
           id: name
@@ -374,6 +372,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: taxonomy_term
+          entity_field: name
+          plugin_id: string
           default_action: default
           exception:
             value: ''
@@ -388,8 +389,8 @@ display:
           summary_options:
             base_path: ''
             count: true
-            items_per_page: 25
             override: false
+            items_per_page: 25
           summary:
             sort_order: asc
             number_of_records: 0
@@ -407,13 +408,13 @@ display:
           break_phrase: false
           add_table: false
           require_value: false
-          entity_type: taxonomy_term
-          entity_field: name
-          plugin_id: string
       defaults:
-        arguments: false
         css_class: false
+        arguments: false
       css_class: block-margin__top--extra
+      display_extenders:
+        metatag_display_extender: {  }
+      path: a-z
     cache_metadata:
       max-age: -1
       contexts:
