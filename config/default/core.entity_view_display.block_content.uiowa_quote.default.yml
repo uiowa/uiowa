@@ -16,7 +16,7 @@ bundle: uiowa_quote
 mode: default
 content:
   field_uiowa_quote_citation:
-    weight: 2
+    type: link
     label: above
     settings:
       trim_length: 80
@@ -25,31 +25,31 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    type: link
+    weight: 2
     region: content
   field_uiowa_quote_content:
-    weight: 0
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    weight: 0
     region: content
   field_uiowa_quote_footer:
-    weight: 1
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 1
     region: content
   field_uiowa_quote_image:
     type: entity_reference_entity_view
-    weight: 3
     label: above
     settings:
       view_mode: small__square
       link: false
     third_party_settings: {  }
+    weight: 3
     region: content
 hidden:
   search_api_excerpt: true

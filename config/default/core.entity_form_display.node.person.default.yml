@@ -45,30 +45,31 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_image:
+    type: media_library_widget
     weight: 5
+    region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
-    type: media_library_widget
-    region: content
   field_meta_tags:
+    type: metatag_firehose
     weight: 25
+    region: content
     settings:
       sidebar: true
     third_party_settings: {  }
-    type: metatag_firehose
-    region: content
   field_person_bio:
+    type: text_textarea
     weight: 9
+    region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: text_textarea
-    region: content
   field_person_contact_information:
     type: paragraphs
     weight: 24
+    region: content
     settings:
       title: 'Contact Information'
       title_plural: 'Contact Information'
@@ -84,30 +85,29 @@ content:
         collapse_edit_all: collapse_edit_all
         duplicate: duplicate
     third_party_settings: {  }
-    region: content
   field_person_credential:
+    type: string_textfield
     weight: 4
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_person_education:
+    type: string_textarea
     weight: 10
+    region: content
     settings:
       rows: 2
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
-    region: content
   field_person_email:
     type: email_default
     weight: 7
     region: content
     settings:
-      size: 60
       placeholder: ''
+      size: 60
     third_party_settings: {  }
   field_person_first_name:
     type: string_textfield
@@ -118,12 +118,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_person_hide:
+    type: boolean_checkbox
     weight: 23
+    region: content
     settings:
       display_label: true
     third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
   field_person_last_name:
     type: string_textfield
     weight: 1
@@ -140,13 +140,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_person_position:
+    type: string_textfield
     weight: 6
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_person_research_areas:
     type: entity_reference_autocomplete
     weight: 11
@@ -178,23 +178,23 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
   field_tags:
+    type: entity_reference_autocomplete_tags
     weight: 15
+    region: content
     settings:
       match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
-      match_limit: 10
     third_party_settings: {  }
-    type: entity_reference_autocomplete_tags
-    region: content
   field_teaser:
+    type: string_textarea
     weight: 22
+    region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
-    region: content
   moderation_state:
     type: moderation_state_default
     weight: 21
@@ -209,34 +209,34 @@ content:
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    settings:
-      display_label: true
     weight: 16
     region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    settings:
-      display_label: true
     weight: 20
     region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    settings:
-      display_label: true
     weight: 17
     region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
     weight: 13
+    region: content
     settings:
       match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
-      match_limit: 10
-    region: content
     third_party_settings: {  }
   url_redirects:
     weight: 19

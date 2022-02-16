@@ -141,8 +141,10 @@ function uids_base_preprocess_page(&$variables) {
   $variables['site_parent_url'] = $config->get('parent.url');
 
   // Add variables for the image and path of the UIOWA block logo.
-  $variables['uiowa_logo_path'] = '/' . drupal_get_path('theme', 'uids_base') . '/uids/assets/images/uiowa-secondary.svg#logo';
-  $variables['uiowa_logo_path_png'] = '/' . drupal_get_path('theme', 'uids_base') . '/uids/assets/images/uiowa-primary.png';
+  /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
+  $path_resolver = \Drupal::service('extension.path.resolver');
+  $variables['uiowa_logo_path'] = '/' . $path_resolver->getPath('theme', 'uids_base') . '/uids/assets/images/uiowa-secondary.svg#logo';
+  $variables['uiowa_logo_path_png'] = '/' . $path_resolver->getPath('theme', 'uids_base') . '/uids/assets/images/uiowa-primary.png';
 
   $variables['header_type'] = theme_get_setting('header.type');
   $variables['header_nav'] = theme_get_setting('header.nav_style');
@@ -313,7 +315,7 @@ function uids_base_preprocess_node(&$variables) {
       }
     }
     $node = \Drupal::routeMatch()->getParameter('node');
-    $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
+    $node = ($node ?? \Drupal::routeMatch()->getParameter('node_preview'));
 
     if ($node instanceof NodeInterface) {
       $node = $variables["node"];
@@ -438,7 +440,7 @@ function uids_base_preprocess_layout(&$variables) {
   if (!$node) {
     $route_matcher = \Drupal::routeMatch();
     $node = $route_matcher->getParameter('node');
-    $node = (isset($node) ? $node : $route_matcher->getParameter('node_preview'));
+    $node = ($node ?? $route_matcher->getParameter('node_preview'));
   }
   // If we have found a node instance, continue.
   if ($node instanceof NodeInterface) {

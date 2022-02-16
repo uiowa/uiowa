@@ -2,8 +2,11 @@
 
 namespace Drupal\uipress_core\Plugin\Block;
 
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Core\Block\BlockBase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Cart buttons block.
@@ -14,7 +17,33 @@ use Drupal\Core\Block\BlockBase;
  *   category = @Translation("Site custom")
  * )
  */
-class CartButtons extends BlockBase {
+class CartButtons extends BlockBase implements ContainerFactoryPluginInterface {
+  /**
+   * The current route match.
+   *
+   * @var \Drupal\Core\Routing\RouteMatchInterface
+   */
+  protected $routeMatch;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $routeMatch) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->routeMatch = $routeMatch;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('current_route_match'),
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -27,7 +56,7 @@ class CartButtons extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-    $node = \Drupal::routeMatch()->getParameter('node');
+    $node = $this->routeMatch->getParameter('node');
     $href = '';
     if ($node) {
       $pid = $node->get('field_book_type')->getValue()[0]['target_id'];

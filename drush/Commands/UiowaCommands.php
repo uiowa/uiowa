@@ -171,7 +171,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
     $output = explode(PHP_EOL, $output);
     foreach ($output as $line) {
       if (!empty($line)) {
-        list($table, $table_size) = explode("\t", $line);
+        [$table, $table_size] = explode("\t", $line);
 
         $rows[] = [
           'table' => $table,

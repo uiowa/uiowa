@@ -17,7 +17,9 @@ function sitenow_migrate_install() {
   // in the local environment prior to migration.
   // Helps with memory issues and errors during migration, if the file
   // doesn't already exist.
-  $source = drupal_get_path('module', 'sitenow_migrate') . '/images/icons';
+  /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
+  $path_resolver = \Drupal::service('extension.path.resolver');
+  $source = $path_resolver->getPath('module', 'sitenow_migrate') . '/images/icons';
   $destination = \Drupal::config('media.settings')->get('icon_base_uri');
   /** @var \Drupal\Core\File\FileSystemInterface $file_system */
   $file_system = \Drupal::service('file_system');
@@ -47,12 +49,16 @@ function sitenow_migrate_install() {
  * Helper function for installing config related to a migration.
  */
 function sitenow_migrate_migration_install($sitename) {
+  /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
+  $path_resolver = \Drupal::service('extension.path.resolver');
+
   if (!$sitename) {
     return;
   }
-  if ('' === $module_path = drupal_get_path('module', "${sitename}_migrate")) {
+  if ('' === $module_path = $path_resolver->getPath('module', "${sitename}_migrate")) {
     return;
   }
+
   $config_path = $module_path . '/config/split';
   // @todo Do we need to catch if this directory doesn't exist?
   $source = new FileStorage($config_path);

@@ -24,130 +24,130 @@ dependencies:
     - uids_base
 third_party_settings:
   layout_builder:
-    allow_custom: false
     enabled: true
+    allow_custom: false
     sections:
       -
         layout_id: layout_twocol
         layout_settings:
           label: Content
+          context_mapping: {  }
           column_widths: 67-33
           layout_builder_styles_style:
             section_alignment_start: section_alignment_start
-          context_mapping: {  }
         components:
           -
             uuid: 316adb53-8968-45d1-833e-f5b98529ce5e
             region: first
             configuration:
+              id: 'field_block:node:scholar:field_scholar_mentor'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-              id: 'field_block:node:scholar:field_scholar_mentor'
               formatter:
+                type: string
                 label: inline
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-                type: string
-            additional: {  }
             weight: 5
+            additional: {  }
           -
             uuid: fde084cd-1a0a-4df9-9d3e-4d8c327bff05
             region: first
             configuration:
+              id: 'field_block:node:scholar:field_scholar_participation_year'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-              id: 'field_block:node:scholar:field_scholar_participation_year'
               formatter:
+                type: list_default
                 label: inline
                 settings: {  }
                 third_party_settings: {  }
-                type: list_default
-            additional: {  }
             weight: 6
+            additional: {  }
           -
             uuid: 5a5f1da4-b802-49ef-b43f-b5ff379e545a
             region: first
             configuration:
               id: 'field_block:node:scholar:field_scholar_bio_headline'
               label: null
-              provider: layout_builder
               label_display: null
-              formatter:
-                label: visually_hidden
-                type: heading_text
-                settings:
-                  size: h3
-                third_party_settings: {  }
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
-            additional: {  }
+              formatter:
+                type: heading_text
+                label: visually_hidden
+                settings:
+                  size: h3
+                third_party_settings: {  }
             weight: 7
+            additional: {  }
           -
             uuid: 85183206-4cb2-4888-819c-9f3edca83ee4
             region: first
             configuration:
+              id: 'field_block:node:scholar:field_scholar_bio'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-              id: 'field_block:node:scholar:field_scholar_bio'
               formatter:
+                type: text_default
                 label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
-                type: text_default
-            additional: {  }
             weight: 8
+            additional: {  }
           -
             uuid: 1b03d136-8fa2-44db-b0ca-49120d45fbbe
             region: second
             configuration:
               id: 'views_block:scholar_card-block_1'
               label: null
-              provider: views
               label_display: null
+              provider: views
+              context_mapping: {  }
               views_label: ''
               items_per_page: '1'
-              context_mapping: {  }
+            weight: 0
             additional:
               layout_builder_styles_style:
                 block_margin_top: block_margin_top
-            weight: 0
           -
             uuid: 5beec84f-1bd1-49e6-8d62-c6a8ca93f656
             region: first
             configuration:
               id: 'field_block:node:scholar:title'
               label: Title
-              provider: layout_builder
               label_display: null
-              formatter:
-                label: hidden
-                type: string
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
+              formatter:
+                type: string
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 3
             additional:
               layout_builder_styles_style:
                 block_margin_bottom: block_margin_bottom
-            weight: 3
           -
             uuid: 4218de61-d11e-4efc-a436-111b24e1b891
             region: first
             configuration:
               id: system_breadcrumb_block
               label: Breadcrumbs
-              provider: system
               label_display: '0'
+              provider: system
               context_mapping: {  }
-            additional: {  }
             weight: 2
+            additional: {  }
         third_party_settings: {  }
 id: node.scholar.default
 targetEntityType: node
@@ -155,50 +155,50 @@ bundle: scholar
 mode: default
 content:
   field_image:
-    weight: 0
+    type: entity_reference_entity_view
     label: visually_hidden
     settings:
       view_mode: large__square
       link: false
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    weight: 0
     region: content
   field_person_education:
-    weight: 2
+    type: basic_string
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    weight: 2
     region: content
   field_scholar_bio:
-    weight: 6
+    type: text_default
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 6
     region: content
   field_scholar_bio_headline:
-    weight: 5
+    type: string
     label: visually_hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 5
     region: content
   field_scholar_mentor:
-    weight: 3
+    type: string
     label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 3
     region: content
   field_scholar_participation_year:
-    weight: 4
+    type: list_default
     label: inline
     settings: {  }
     third_party_settings: {  }
-    type: list_default
+    weight: 4
     region: content
 hidden:
   field_person_first_name: true

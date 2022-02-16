@@ -1,13 +1,13 @@
 <?php
 
-namespace Drupal\Tests\sitenow_events\Kernal;
+namespace Drupal\Tests\sitenow_events\Kernel;
 
 use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\uiowa_core\Traits\ConfigSplitTestTrait;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
 
 /**
- * Class EventFeatureTest.
+ * Events kernel test.
  *
  * @group kernel
  */
@@ -62,7 +62,6 @@ class EventFeatureTest extends BrowserTestBase {
     $this->user = $editor;
 
     $this->enableConfigSplit('event');
-    $test = 'this';
   }
 
   /**
@@ -86,7 +85,7 @@ class EventFeatureTest extends BrowserTestBase {
     $this->drupalGet('<front>');
 
     // @todo Check that event date is displaying.
-    $result = $this->xpath('//div[contains(@class, "region-content")]/div[contains(@class, "block-views")]/h2');
+    $this->xpath('//div[contains(@class, "region-content")]/div[contains(@class, "block-views")]/h2');
     // @todo Check that event virtual details are displaying.
     // @todo Check that event location is showing.
     $this->assertEquals($title, $title);

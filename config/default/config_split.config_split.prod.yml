@@ -10,8 +10,9 @@ stackable: false
 storage: folder
 folder: ../config/envs/prod
 module:
-  siteimprove: 0
   acquia_purge: 0
+  siteimprove: 0
 theme: {  }
 complete_list: {  }
-partial_list: {  }
+partial_list:
+  - 'user.role.*'
