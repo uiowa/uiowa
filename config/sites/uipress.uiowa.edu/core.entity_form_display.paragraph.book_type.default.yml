@@ -20,59 +20,59 @@ bundle: book_type
 mode: default
 content:
   field_book_ebook_ownership:
+    type: options_select
     weight: 1
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-    region: content
   field_book_isbn:
+    type: string_textfield
     weight: 3
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_book_retail_price:
+    type: number
     weight: 2
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_book_sale_code:
+    type: string_textfield
     weight: 5
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_book_sale_expiry_date:
+    type: datetime_default
     weight: 7
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: datetime_default
-    region: content
   field_book_sale_price:
+    type: number
     weight: 4
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   field_book_sale_start_date:
-    weight: 6
-    settings: {  }
-    third_party_settings: {  }
     type: datetime_default
+    weight: 6
     region: content
-  field_book_type:
-    weight: 0
     settings: {  }
     third_party_settings: {  }
+  field_book_type:
     type: options_select
+    weight: 0
     region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   created: true
   status: true

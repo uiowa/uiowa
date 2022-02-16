@@ -24,8 +24,8 @@ class GraphBlock extends BlockBase {
   public function build() {
     $config = $this->getConfiguration();
 
-    $csv_text = isset($config['graph_CSV_data']) ? $config['graph_CSV_data'] : '';
-    $graph_summary = isset($config['graph_summary']) ? $config['graph_summary'] : '';
+    $csv_text = isset($config['graph_CSV_data']) ?: '';
+    $graph_summary = isset($config['graph_summary']) ?: '';
 
     $rows = preg_split("/\r\n|\n|\r/", $csv_text);
 
@@ -61,7 +61,10 @@ class GraphBlock extends BlockBase {
 
     $build['graph_container']['graph_details']['graph_table']['#caption'] = [
       '#type' => 'markup',
-      '#markup' => '<span id="' . $unique_id . '-summary">' . t($graph_summary) . '</span>',
+      '#markup' => $this->t('<span id="@unique_id-summary">@summary</span>', [
+        '@unique_id' => $unique_id,
+        '@summary' => $graph_summary,
+      ]),
       '#allowed_tags' => array_merge(Xss::getHtmlTagList(), ['caption', 'span']),
     ];
 
@@ -70,13 +73,13 @@ class GraphBlock extends BlockBase {
 
     foreach ($rows as $row_key => $row) {
       if ($row_key == 0) {
-        foreach (explode(',', $row) as $column_key => $column) {
+        foreach (explode(',', $row) as $column) {
           array_push($build['graph_container']['graph_details']['graph_table']['#header'], ['data' => $column]);
         }
       }
       else {
         $build['graph_container']['graph_details']['graph_table']['#rows']['row-' . $row_key] = [];
-        foreach (explode(',', $row) as $column_key => $column) {
+        foreach (explode(',', $row) as $column) {
           array_push($build['graph_container']['graph_details']['graph_table']['#rows']['row-' . $row_key], ['data' => $column]);
         }
       }
@@ -97,14 +100,14 @@ class GraphBlock extends BlockBase {
       '#type' => 'textfield',
       '#title' => $this->t('Graph summary'),
       '#description' => $this->t('Provide a short description for the graph data.'),
-      '#default_value' => isset($config['graph_summary']) ? $config['graph_summary'] : '',
+      '#default_value' => isset($config['graph_summary']) ?: '',
     ];
 
     $form['graph_CSV_data'] = [
       '#type' => 'textarea',
       '#title' => $this->t('CSV data'),
       '#description' => $this->t('Copy and paste your properly formatted CSV file here. An example of a properly formatted csv file can be found <a href="https://sitenow.uiowa.edu/sites/sitenow.uiowa.edu/files/2021-09/airtravel.csv">here</a>.'),
-      '#default_value' => isset($config['graph_CSV_data']) ? $config['graph_CSV_data'] : '',
+      '#default_value' => isset($config['graph_CSV_data']) ?: '',
     ];
 
     return $form;

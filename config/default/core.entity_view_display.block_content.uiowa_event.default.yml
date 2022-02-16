@@ -21,33 +21,33 @@ bundle: uiowa_event
 mode: default
 content:
   field_uiowa_event_date:
-    weight: 4
+    type: datetime_default
     label: hidden
     settings:
       timezone_override: ''
       format_type: long
     third_party_settings: {  }
-    type: datetime_default
+    weight: 4
     region: content
   field_uiowa_event_icon:
-    weight: 6
+    type: fontawesome_icon_formatter
     label: hidden
     settings:
       layers: false
     third_party_settings: {  }
-    type: fontawesome_icon_formatter
+    weight: 6
     region: content
   field_uiowa_event_image:
     type: entity_reference_entity_view
-    weight: 3
     label: hidden
     settings:
       view_mode: small__square
       link: false
     third_party_settings: {  }
+    weight: 3
     region: content
   field_uiowa_event_link:
-    weight: 5
+    type: link
     label: hidden
     settings:
       trim_length: 80
@@ -56,22 +56,22 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    type: link
+    weight: 5
     region: content
   field_uiowa_event_location:
-    weight: 2
+    type: string
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 2
     region: content
   field_uiowa_event_title:
-    weight: 1
+    type: heading
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: heading
+    weight: 1
     region: content
 hidden:
   search_api_excerpt: true

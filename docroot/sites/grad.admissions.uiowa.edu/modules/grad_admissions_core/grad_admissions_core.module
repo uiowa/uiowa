@@ -111,7 +111,7 @@ function grad_admissions_core_preprocess_layout(&$variables) {
   // Process the header layout.
   if ($layout->id() === 'layout_header') {
     $node = \Drupal::routeMatch()->getParameter('node');
-    $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
+    $node = ($node ?? \Drupal::routeMatch()->getParameter('node_preview'));
     if ($node instanceof NodeInterface) {
       if (in_array($node->getType(), [
         'area_of_study',
@@ -196,7 +196,7 @@ function grad_admissions_core_preprocess_views_view_field(&$variables) {
                   $term = Term::load($tid['target_id']);
                   $options = ['absolute' => TRUE];
                   $url = Url::fromRoute('entity.node.canonical', ['node' => $node->id()], $options);
-                  $degree_types .= Link::fromTextAndUrl(t($term->label()), $url)->toString() . ', ';
+                  $degree_types .= Link::fromTextAndUrl($term->label(), $url)->toString() . ', ';
                 }
               }
             }

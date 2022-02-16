@@ -21,31 +21,31 @@ bundle: uiowa_card
 mode: default
 content:
   field_uiowa_card_author:
-    weight: 4
+    type: string
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 4
     region: content
   field_uiowa_card_excerpt:
-    weight: 1
+    type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 1
     region: content
   field_uiowa_card_image:
     type: entity_reference_entity_view
-    weight: 3
     label: hidden
     settings:
       view_mode: large__widescreen
       link: false
     third_party_settings: {  }
+    weight: 3
     region: content
   field_uiowa_card_link:
-    weight: 2
+    type: link_separate
     label: hidden
     settings:
       trim_length: 80
@@ -54,14 +54,14 @@ content:
       rel: '0'
       target: '0'
     third_party_settings: {  }
-    type: link_separate
+    weight: 2
     region: content
   field_uiowa_card_title:
-    weight: 0
+    type: heading
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: heading
+    weight: 0
     region: content
 hidden:
   search_api_excerpt: true

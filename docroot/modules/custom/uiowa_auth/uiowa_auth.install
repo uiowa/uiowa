@@ -50,7 +50,7 @@ function uiowa_auth_update_8003() {
   $mappings = [];
 
   foreach ($config->get('role_mappings') as $mapping) {
-    list($rid, $value) = explode('|', $mapping);
+    [$rid, $value] = explode('|', $mapping);
     $mappings[] = "{$rid}|{$attr}|{$value}";
   }
 
@@ -71,7 +71,8 @@ function uiowa_auth_update_8004() {
 
     if ($data) {
       $authname = $data['authname'];
-      $data = unserialize($data['data']);
+      // Allowed classes disabled post-update as per PHPCS.
+      $data = unserialize($data['data'], ['allowed_classes' => FALSE]);
 
       $deduped = [
         'uiowa_auth_mappings' => [],

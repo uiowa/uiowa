@@ -28,16 +28,16 @@ third_party_settings:
         - field_uip_colwidth
         - field_uip_classes
         - field_uip_id
+      label: 'Event Feed Settings'
+      region: content
       parent_name: ''
       weight: 11
       format_type: details
       format_settings:
-        required_fields: true
-        id: ''
         classes: ''
+        id: ''
         open: false
-      label: 'Event Feed Settings'
-      region: content
+        required_fields: true
 _core:
   default_config_hash: Zd3QLKEf4mIaGZFANihnqEuNb4-1UbveGFOpVN3fy6k
 id: paragraph.events.default
@@ -91,12 +91,12 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
   field_events_past:
+    type: boolean_checkbox
     weight: 8
+    region: content
     settings:
       display_label: true
     third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
   field_events_results:
     type: number
     weight: 7
@@ -105,40 +105,40 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_uip_classes:
+    type: options_select
     weight: 3
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-    region: content
   field_uip_colwidth:
+    type: options_select
     weight: 2
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-    region: content
   field_uip_display_title:
+    type: boolean_checkbox
     weight: 1
+    region: content
     settings:
       display_label: true
     third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
   field_uip_id:
+    type: string_textfield
     weight: 4
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_uip_title:
+    type: string_textfield
     weight: 0
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
 hidden:
   created: true
   status: true

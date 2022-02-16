@@ -85,12 +85,12 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     $form = parent::blockForm($form, $form_state);
     $config = $this->getConfiguration();
 
-    list(
+    [
       $current,
       $plus_one,
       $plus_two,
-      $plus_three
-    ) = $this->maui->getSessionsRange($this->maui->getCurrentSession()->id, 3);
+      $plus_three,
+    ] = $this->maui->getSessionsRange($this->maui->getCurrentSession()->id, 3);
 
     $form['headline'] = HeadlineHelper::getElement([
       'headline' => $config['headline'] ?? NULL,

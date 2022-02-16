@@ -134,7 +134,7 @@ function sitenow_events_preprocess_block(&$variables) {
         foreach ($data['events'] as $value) {
           // The API nests each event as an array.
           $event = $value['event'];
-          $event['heading_size'] = isset($heading_size) ? $heading_size : 'h3';
+          $event['heading_size'] = $heading_size ?? 'h3';
           // Pass the parent block's layout_builder_styles to each item.
           if (!empty($parent_lb_styles)) {
             $event['parent_lb_styles'] = $parent_lb_styles;
@@ -246,7 +246,7 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
       // @todo Finish this logic to render the virtual details and location.
       $variables['rows'][$id]['card_options']['card_subtitle'] = $style->getField($id, 'field_event_when');
       $variables['rows'][$id]['card_options']['card_link_url'] = $card_link_url;
-      $variables['rows'][$id]['card_options']['card_meta'] = render($card_meta);
+      $variables['rows'][$id]['card_options']['card_meta'] = \Drupal::service('renderer')->render($card_meta);
     }
   }
 }

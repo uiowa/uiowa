@@ -21,8 +21,6 @@ mode: image_gallery
 content:
   field_media_image:
     type: photoswipe_responsive_field_formatter
-    weight: 0
-    region: content
     label: hidden
     settings:
       photoswipe_node_style_first: ''
@@ -38,6 +36,8 @@ content:
         lazy_image: '1'
         placeholder_style: ''
         data_uri: false
+    weight: 0
+    region: content
 hidden:
   created: true
   field_media_caption: true

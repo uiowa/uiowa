@@ -18,7 +18,7 @@ bundle: blockquote
 mode: default
 content:
   field_blockquote_cite:
-    weight: 2
+    type: link
     label: hidden
     settings:
       trim_length: 80
@@ -27,22 +27,22 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    type: link
+    weight: 2
     region: content
   field_blockquote_content:
-    weight: 0
+    type: basic_string
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    weight: 0
     region: content
   field_blockquote_footer:
-    weight: 1
+    type: string
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 1
     region: content
 hidden:
   field_uip_classes: true

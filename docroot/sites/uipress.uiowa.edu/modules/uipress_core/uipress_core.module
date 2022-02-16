@@ -172,7 +172,6 @@ function uipress_core_preprocess_views_view_unformatted(&$variables) {
   $view = $variables['view'];
   if ($view->id() === 'book_publication_details') {
     $rows = &$variables['rows'];
-    $style = $view->style_plugin;
 
     foreach ($rows as $id => &$row) {
       // Initialize card_options variable.
