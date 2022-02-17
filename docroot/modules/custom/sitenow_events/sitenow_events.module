@@ -88,7 +88,7 @@ function sitenow_events_preprocess_block(&$variables) {
 
       // Set custom time-based cache tag to clear on a regular basis.
       $variables['#cache']['tags'][] = 'time:hours_3';
-      $variables['#cache']['max-age'] = 60;
+      $variables['#cache']['max-age'] = 0;
 
       // Defaults to upcoming.
       $display_id = 'events';
@@ -302,10 +302,10 @@ function sitenow_events_load(array $params = [
     if (isset($request)) {
       $data = json_decode($request->getBody()->getContents(), TRUE);
 
-      // Create a cache item set to 60 seconds.
+      // Create a cache item set to 5 minutes.
       if ($cache !== FALSE) {
         $request_time = \Drupal::time()->getRequestTime();
-        \Drupal::cache('uievents')->set($endpoint, $data, $request_time + 60);
+        \Drupal::cache('uievents')->set($endpoint, $data, $request_time + 300);
       }
     }
     else {
