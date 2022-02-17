@@ -302,10 +302,10 @@ function sitenow_events_load(array $params = [
     if (isset($request)) {
       $data = json_decode($request->getBody()->getContents(), TRUE);
 
-      // Create a cache item set to 300 seconds (5 minutes).
+      // Create a cache item set to 60 seconds.
       if ($cache !== FALSE) {
         $request_time = \Drupal::time()->getRequestTime();
-        \Drupal::cache('uievents')->set($endpoint, $data, $request_time + 300);
+        \Drupal::cache('uievents')->set($endpoint, $data, $request_time + 60);
       }
     }
     else {
