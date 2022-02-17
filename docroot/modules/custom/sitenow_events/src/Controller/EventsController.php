@@ -36,6 +36,10 @@ class EventsController extends ControllerBase {
         return [
           '#theme' => 'sitenow_events_single_event',
           '#event' => $event,
+          '#cache' => [
+            'tags' => ['time:hours_3'],
+            'max-age' => 0,
+          ],
         ];
       }
     }
