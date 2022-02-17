@@ -314,6 +314,15 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             // but make it inaccessible.
             $form['layout_builder_style_menu_orientation']['#access'] = FALSE;
 
+            // Add #states to make the initial visibility level
+            // to hide fixed parent item if checked.
+            $form['settings']['advanced']['parent']['#states'] = [
+              'visible' => [
+                ':input[name="settings[follow]"]' => [
+                  'checked' => FALSE,
+                ],
+              ],
+            ];
             // Add #states to level field to hide menu levels
             // section if horizontal is selected.
             $form['settings']['menu_levels']['#states'] = [
@@ -328,27 +337,15 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             unset($form['lbs_heading']);
           }
 
-          /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
-          $check = \Drupal::service('uiowa_core.access_checker');
-
-          /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
-          $access = $check->access(\Drupal::currentUser()->getAccount());
-
-          if ($access->isForbidden()) {
-            // Hide the fixed parent item select menu for anyone except admins.
-            $form['settings']['advanced']['parent']['#access'] = FALSE;
-          }
           // Hide some options we don't want people to use currently.
           // Adjust name for advanced options section.
           $form['settings']['advanced']['#title'] = t('Visibility options');
           // Hide the HTML and style options.
           $form['settings']['style']['#access'] = FALSE;
-          // Hide the initial visibility level since we aren't using fixed parent.
+          // Hide the initial visibility level for now.
           $form['settings']['menu_levels']['level']['#access'] = FALSE;
           // Hide the make the ability to force expand all items.
           $form['settings']['menu_levels']['expand_all_items']['#access'] = FALSE;
-          // Hide the make the initial visibility checkbox.
-          $form['settings']['advanced']['follow']['#access'] = FALSE;
           // Hide the options to set the block title and link.
           $form['settings']['advanced']['label_type']['#access'] = FALSE;
           $form['settings']['advanced']['label_link']['#access'] = FALSE;
