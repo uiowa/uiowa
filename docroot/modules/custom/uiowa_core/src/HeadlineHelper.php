@@ -46,7 +46,7 @@ class HeadlineHelper {
   }
 
   /**
-   * Get a list of valid heading alignments
+   * Get a list of valid heading alignments.
    */
   public static function getHeadingAlignment() {
     return [
