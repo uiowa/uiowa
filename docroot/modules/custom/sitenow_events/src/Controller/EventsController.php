@@ -38,7 +38,7 @@ class EventsController extends ControllerBase {
           '#event' => $event,
           '#cache' => [
             'tags' => ['time:hours_3'],
-            'max-age' => 0,
+            'max-age' => 60,
           ],
         ];
       }
