@@ -324,7 +324,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               ],
             ];
             // Add #states to level field to hide menu levels
-            // section if horizontal is selected.
+            // if follow settings are selected.
             $form['settings']['menu_levels']['level']['#states'] = [
               'visible' => [
                 ':input[name="settings[follow]"]' => [
@@ -333,8 +333,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               ],
             ];
 
-            // Add #states to level field to hide it if horizontal is selected.
-            $form['settings']['menu_levels']['#states'] = [
+            // Add #states to depth field to hide it if horizontal is selected.
+            $form['settings']['menu_levels']['depth']['#states'] = [
               'invisible' => [
                 ':input[name="layout_builder_style_menu_orientation"]' => [
                   'value' => 'block_menu_horizontal',
@@ -351,8 +351,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           $form['settings']['advanced']['#title'] = t('Visibility options');
           // Hide the HTML and style options.
           $form['settings']['style']['#access'] = FALSE;
-          // Hide the initial visibility level for now.
-         // $form['settings']['menu_levels']['level']['#access'] = FALSE;
           // Hide the make the ability to force expand all items.
           $form['settings']['menu_levels']['expand_all_items']['#access'] = FALSE;
           // Hide the options to set the block title and link.
