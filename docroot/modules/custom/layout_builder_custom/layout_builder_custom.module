@@ -290,7 +290,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           // discrepancy between the preview and what is shown on the page after
           // saving. Also, we consider it bad practice showing the top-level
           // menu again on a page.
-          unset($form['settings']['menu_levels']['level']['#options'][1]);
+          // unset($form['settings']['menu_levels']['level']['#options'][1]);
           // Unset the advanced description since it refers to
           // functionality that we are not offering.
           unset($form['settings']['advanced']['follow']['#description']);
@@ -325,6 +325,15 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             ];
             // Add #states to level field to hide menu levels
             // section if horizontal is selected.
+            $form['settings']['menu_levels']['level']['#states'] = [
+              'visible' => [
+                ':input[name="settings[follow]"]' => [
+                  'checked' => FALSE,
+                ],
+              ],
+            ];
+
+            // Add #states to level field to hide it if horizontal is selected.
             $form['settings']['menu_levels']['#states'] = [
               'invisible' => [
                 ':input[name="layout_builder_style_menu_orientation"]' => [
@@ -343,7 +352,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           // Hide the HTML and style options.
           $form['settings']['style']['#access'] = FALSE;
           // Hide the initial visibility level for now.
-          $form['settings']['menu_levels']['level']['#access'] = FALSE;
+         // $form['settings']['menu_levels']['level']['#access'] = FALSE;
           // Hide the make the ability to force expand all items.
           $form['settings']['menu_levels']['expand_all_items']['#access'] = FALSE;
           // Hide the options to set the block title and link.
@@ -534,6 +543,8 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
       if ($form_state->getValue('layout_builder_style_menu_orientation') == 'block_menu_horizontal') {
         $form_state->setValue(['settings', 'depth'], 1);
       }
+
+
   }
 
 }
