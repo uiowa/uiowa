@@ -50,8 +50,8 @@ class HeadlineHelper {
    */
   public static function getHeadingAlignment() {
     return [
-      'default' => 'headline block__headline',
-      'headline_alignment_center' => 'headline headline--center block__headline',
+      'default' => '',
+      'headline_alignment_center' => 'headline--center',
     ];
   }
 
