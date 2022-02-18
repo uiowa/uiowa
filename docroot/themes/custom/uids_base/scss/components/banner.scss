@@ -2,7 +2,8 @@
 @import "assets/scss/_utilities.scss";
 @import "components/banner/banner.scss";
 
-.banner.banner--gradient-left-reversed .bold-headline.bold-headline--negative {
+.banner.banner--gradient-left-reversed .bold-headline.bold-headline--negative,
+.banner.banner--gradient-left-reversed .headline.headline--highlight{
   text-shadow: none;
   color: $secondary;
 }
@@ -153,7 +154,8 @@
   }
 
 // Set large heading size for page titles in banner
-.layout--title.banner .bold-headline {
+.layout--title.banner .bold-headline,
+.layout--title.banner .headline.page-title {
   font-size: 4.7rem;
   font-size: containerClamp(2.5rem, 4.7rem);
 }

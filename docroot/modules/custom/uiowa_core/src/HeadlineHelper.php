@@ -40,13 +40,13 @@ class HeadlineHelper {
   public static function getStyles() {
     return [
       'default' => 'headline block__headline',
-      'headline_bold_serif' => 'headline bold-headline bold-headline--serif block__headline',
-      'headline_bold_serif_underline' => 'headline bold-headline bold-headline--serif bold-headline--underline block__headline',
+      'headline_bold_serif' => 'headline headline--serif block__headline',
+      'headline_bold_serif_underline' => 'headline headline--serif headline--underline block__headline',
     ];
   }
 
   /**
-   * Get a list of valid heading alignments
+   * Get a list of valid heading alignments.
    */
   public static function getHeadingAlignment() {
     return [
