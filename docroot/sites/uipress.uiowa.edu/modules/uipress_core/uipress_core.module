@@ -157,11 +157,13 @@ function uipress_core_preprocess_node(&$variables) {
       'headline_class' => 'card__title headline',
     ];
   }
+}
 
-  switch ($node->getType()) {
-    case 'book':
-      $variables['#attached']['library'][] = 'uipress_core/book';
-  }
+/**
+ * Implements hook_preprocess_HOOK() for html.html.twig.
+ */
+function uipress_core_preprocess_html(&$variables) {
+  $variables['#attached']['library'][] = 'uipress_core/global';
 }
 
 /**
