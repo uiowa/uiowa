@@ -54,6 +54,12 @@ function get_text_field_tables() {
         $table_mapping = $entity_storage->getTableMapping($field_storage_definitions);
         foreach (array_intersect_key($field_storage_definitions, $field_map) as $field_storage_definition) {
           $field_name = $field_storage_definition->getName();
+          // @todo Find a better way to handle this. Currently skipping rabbit hole
+          //   fields, because they are appended to node_field_data, and would need
+          //   to be handled separately, similar to title fields.
+          if (str_starts_with($field_name, 'rh_')) {
+            continue;
+          }
           try {
             $table_name = $table_mapping->getFieldTableName($field_name);
             // We use a custom value function here. The built-in value fetcher
@@ -302,7 +308,6 @@ function cleanup_tables(array &$tables) {
   foreach ([
     'block_content_revision',
     'block_content_field_data',
-    'node_field_data',
     'node_revision',
     'paragraphs_item_field_data',
   ] as $to_remove) {
