@@ -3916,3 +3916,9 @@ $sites['labmaia.uiowa.ddev.site'] = 'maia.lab.uiowa.edu';
 $sites['labmaia.dev.drupal.uiowa.edu'] = 'maia.lab.uiowa.edu';
 $sites['labmaia.stage.drupal.uiowa.edu'] = 'maia.lab.uiowa.edu';
 $sites['labmaia.prod.drupal.uiowa.edu'] = 'maia.lab.uiowa.edu';
+
+// Directory aliases for ebgreenscholarships.sites.uiowa.edu.
+$sites['sitesebgreenscholarships.uiowa.ddev.site'] = 'ebgreenscholarships.sites.uiowa.edu';
+$sites['sitesebgreenscholarships.dev.drupal.uiowa.edu'] = 'ebgreenscholarships.sites.uiowa.edu';
+$sites['sitesebgreenscholarships.stage.drupal.uiowa.edu'] = 'ebgreenscholarships.sites.uiowa.edu';
+$sites['sitesebgreenscholarships.prod.drupal.uiowa.edu'] = 'ebgreenscholarships.sites.uiowa.edu';
