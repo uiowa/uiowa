@@ -314,8 +314,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             // but make it inaccessible.
             $form['layout_builder_style_menu_orientation']['#access'] = FALSE;
 
-            // Add #states to make the initial visibility level
-            // to hide fixed parent item if checked.
+            // Add #states to only show fixed parent
+            // if follow active menu item is unchecked.
             $form['settings']['advanced']['parent']['#states'] = [
               'visible' => [
                 ':input[name="settings[follow]"]' => [
@@ -324,7 +324,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               ],
             ];
             // Add #states to level field to hide menu levels
-            // if follow settings are selected.
+            // if follow active menu item is unchecked.
             $form['settings']['menu_levels']['level']['#states'] = [
               'visible' => [
                 ':input[name="settings[follow]"]' => [
@@ -338,6 +338,20 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               'invisible' => [
                 ':input[name="layout_builder_style_menu_orientation"]' => [
                   'value' => 'block_menu_horizontal',
+                ],
+              ],
+            ];
+
+            // Add #states to hide menu levels if horizontal
+            // and if follow active menu item is checked.
+            $form['settings']['menu_levels']['#states'] = [
+              'invisible' => [
+                ':input[name="layout_builder_style_menu_orientation"]' => [
+                  'value' => 'block_menu_horizontal',
+                ],
+                'and',
+                ':input[name="settings[follow]"]' => [
+                  'checked' => TRUE,
                 ],
               ],
             ];
@@ -541,7 +555,6 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
       if ($form_state->getValue('layout_builder_style_menu_orientation') == 'block_menu_horizontal') {
         $form_state->setValue(['settings', 'depth'], 1);
       }
-
   }
 
 }
