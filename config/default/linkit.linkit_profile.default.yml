@@ -7,25 +7,24 @@ dependencies:
     - webform
 _core:
   default_config_hash: sIFcf8s0DbI2ilmXJaz2HcrpKtz_TGjWhMLBnhOWVc4
-id: default
 label: Default
+id: default
 description: 'A default Linkit profile'
 matchers:
   556010a3-e317-48b3-b4ed-854c10f4b950:
-    uuid: 556010a3-e317-48b3-b4ed-854c10f4b950
     id: 'entity:node'
-    weight: -10
+    uuid: 556010a3-e317-48b3-b4ed-854c10f4b950
     settings:
       metadata: '[node:content-type] - /node/[node:nid] created by [node:author] | updated [node:changed:html_date]'
       bundles: {  }
       group_by_bundle: false
-      include_unpublished: false
       substitution_type: canonical
       limit: 100
+      include_unpublished: false
+    weight: -10
   71deb6e8-67cb-4ef3-ae69-36a3849daa32:
-    uuid: 71deb6e8-67cb-4ef3-ae69-36a3849daa32
     id: 'entity:media'
-    weight: -8
+    uuid: 71deb6e8-67cb-4ef3-ae69-36a3849daa32
     settings:
       metadata: 'type [media:field_media_file:entity:extension] | updated [media:field_media_file:entity:changed]'
       bundles:
@@ -33,18 +32,19 @@ matchers:
       group_by_bundle: false
       substitution_type: media
       limit: 100
+    weight: -8
   36a7abf7-f57a-4d95-8d57-cc8d6775ea87:
-    uuid: 36a7abf7-f57a-4d95-8d57-cc8d6775ea87
     id: email
-    weight: -7
+    uuid: 36a7abf7-f57a-4d95-8d57-cc8d6775ea87
     settings: {  }
+    weight: -7
   257e7402-9995-423c-88f6-2d019f8341b5:
-    uuid: 257e7402-9995-423c-88f6-2d019f8341b5
     id: 'entity:webform'
-    weight: -9
+    uuid: 257e7402-9995-423c-88f6-2d019f8341b5
     settings:
       metadata: 'created by [webform:author]'
       bundles: null
       group_by_bundle: null
       substitution_type: canonical
       limit: 100
+    weight: -9

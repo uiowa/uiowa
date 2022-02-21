@@ -16,37 +16,37 @@ tips:
     plugin: text
     label: 'Managing a menu'
     weight: 1
-    body: '<p>On this page you can perform actions on individual menu link items within a menu. Click "Next" to step through the available actions.</p>'
     position: top-start
+    body: '<p>On this page you can perform actions on individual menu link items within a menu. Click "Next" to step through the available actions.</p>'
   add:
     id: add
     plugin: text
     label: 'Add a link'
     weight: 2
-    body: '<p>This this the preferred way to create external links that need to be part of the menu.</p><p>It is recommended to manage menu links for content within your site by configuring the menu settings within that content''s edit form.</p>'
-    selector: .action-links
     position: bottom-start
+    selector: .action-links
+    body: '<p>This this the preferred way to create external links that need to be part of the menu.</p><p>It is recommended to manage menu links for content within your site by configuring the menu settings within that content''s edit form.</p>'
   overview:
     id: overview
     plugin: text
     label: Reorder
     weight: 3
-    body: '<p>Each menu link item can be reordered using the handle left of the menu link name</p>'
     selector: .tabledrag-handle
+    body: '<p>Each menu link item can be reordered using the handle left of the menu link name</p>'
   checkbox:
     id: checkbox
     plugin: text
     label: Enable/Disable
     weight: 4
-    body: '<p>Toggling the "Enabled" checkbox for each menu link, will show/hide the menu link within the menu when displayed to site visitors.</p>'
     selector: .form-checkbox
+    body: '<p>Toggling the "Enabled" checkbox for each menu link, will show/hide the menu link within the menu when displayed to site visitors.</p>'
   dropdown:
     id: dropdown
     plugin: text
     label: Edit
     weight: 5
-    body: '<p>If you have the ability to edit a link, the "Edit" button should be visible.</p><p><h2>Delete</h2> If you have the ability to delete a link, a drop-down arrow should be visible next to the "Edit" button which will display the option to delete the link.</p>'
     selector: .dropbutton
+    body: '<p>If you have the ability to edit a link, the "Edit" button should be visible.</p><p><h2>Delete</h2> If you have the ability to delete a link, a drop-down arrow should be visible next to the "Edit" button which will display the option to delete the link.</p>'
   menus:
     id: menus
     plugin: text

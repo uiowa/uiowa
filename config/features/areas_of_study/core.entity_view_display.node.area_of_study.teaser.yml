@@ -24,18 +24,16 @@ mode: teaser
 content:
   field_area_of_study_link_direct:
     type: boolean
-    weight: 1
-    region: content
     label: above
     settings:
       format: default
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
+    weight: 1
+    region: content
   field_area_of_study_source_link:
     type: link
-    weight: 2
-    region: content
     label: above
     settings:
       trim_length: 80
@@ -44,11 +42,13 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-  links:
-    weight: 0
+    weight: 2
     region: content
+  links:
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   body: true
   field_area_of_study_degree_types: true

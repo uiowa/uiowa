@@ -1,7 +1,66 @@
 uuid: 600c96e4-416f-4e01-b3da-a2c79c43b890
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - core.entity_view_display.fragment.region_item.default
+    - core.entity_view_display.node.page.default
+    - filter.format.filtered_html
+    - filter.format.minimal
+    - media.type.audio
+    - media.type.facebook
+    - media.type.file
+    - media.type.image
+    - media.type.instagram
+    - media.type.panopto
+    - media.type.remote_video
+    - media.type.twitter
+    - media.type.video
+    - node.type.article
+    - node.type.page
+    - node.type.person
+    - taxonomy.vocabulary.research_areas
+    - taxonomy.vocabulary.tags
+    - workflows.workflow.editorial
+  module:
+    - administerusersbyrole
+    - aggregator
+    - block_content_permissions
+    - content_moderation
+    - contextual
+    - draggableviews
+    - entity_browser
+    - entity_usage
+    - file
+    - filter
+    - fragments
+    - google_analytics
+    - google_tag
+    - layout_builder
+    - media
+    - menu_admin_per_menu
+    - metatag_extended_perms
+    - moderated_content_bulk_publish
+    - node
+    - override_node_options
+    - path
+    - redirect
+    - replicate_ui
+    - sitenow
+    - sitenow_articles
+    - sitenow_dispatch
+    - sitenow_events
+    - sitenow_find_text
+    - sitenow_pages
+    - sitenow_people
+    - system
+    - taxonomy
+    - theme_permission
+    - toolbar
+    - tour
+    - uiowa_alerts
+    - uiowa_search
+    - webform
 _core:
   default_config_hash: WhzjEAuCYwDo5ylDwRiZOaGR2VMEvc8J26TNS7wmZ8E
 id: webmaster
@@ -17,12 +76,10 @@ permissions:
   - 'access draggableviews'
   - 'access entity usage statistics'
   - 'access featured_content_browser entity browser pages'
-  - 'access file_link_browser entity browser pages'
   - 'access files overview'
   - 'access find text'
   - 'access fragments overview'
   - 'access media overview'
-  - 'access media_entity_browser entity browser pages'
   - 'access media_wysiwyg_browser entity browser pages'
   - 'access metatag advanced__canonical_url'
   - 'access metatag advanced__geo_placename'
@@ -74,7 +131,6 @@ permissions:
   - 'access tour'
   - 'access users overview'
   - 'access webform overview'
-  - 'access webform submission log'
   - 'administer basic site settings'
   - 'administer footer-primary menu items'
   - 'administer footer-secondary menu items'
@@ -89,20 +145,14 @@ permissions:
   - 'administer sitenow pages'
   - 'administer sitenow people'
   - 'administer sitenow_dispatch configuration'
-  - 'administer sitenow_find_text configuration'
   - 'administer social menu items'
   - 'administer themes'
   - 'administer themes uids_base'
   - 'administer top-links menu items'
-  - 'administer uiowa articles'
-  - 'administer uiowa events'
   - 'administer uiowa_alerts configuration'
   - 'administer uiowa_search configuration'
   - 'administer webform submission'
   - 'allow empty user mail'
-  - 'assign editor role'
-  - 'assign roles'
-  - 'assign webmaster role'
   - 'bypass node access'
   - 'cancel users by role'
   - 'configure all page node layout overrides'
@@ -120,7 +170,6 @@ permissions:
   - 'create instagram media'
   - 'create page content'
   - 'create panopto media'
-  - 'create people block content'
   - 'create person content'
   - 'create region_item fragments'
   - 'create remote_video media'
@@ -128,7 +177,6 @@ permissions:
   - 'create terms in tags'
   - 'create twitter media'
   - 'create uiowa_aggregator block content'
-  - 'create uiowa_articles block content'
   - 'create uiowa_banner block content'
   - 'create uiowa_card block content'
   - 'create uiowa_collection block content'
@@ -136,7 +184,6 @@ permissions:
   - 'create uiowa_event block content'
   - 'create uiowa_events block content'
   - 'create uiowa_image_gallery block content'
-  - 'create uiowa_people block content'
   - 'create uiowa_quote block content'
   - 'create uiowa_slider block content'
   - 'create uiowa_statistic block content'
@@ -155,12 +202,10 @@ permissions:
   - 'delete any instagram media'
   - 'delete any page content'
   - 'delete any panopto media'
-  - 'delete any people block content'
   - 'delete any person content'
   - 'delete any remote_video media'
   - 'delete any twitter media'
   - 'delete any uiowa_aggregator block content'
-  - 'delete any uiowa_articles block content'
   - 'delete any uiowa_banner block content'
   - 'delete any uiowa_card block content'
   - 'delete any uiowa_collection block content'
@@ -170,7 +215,6 @@ permissions:
   - 'delete any uiowa_hero block content'
   - 'delete any uiowa_image_gallery block content'
   - 'delete any uiowa_page_title_hero block content'
-  - 'delete any uiowa_people block content'
   - 'delete any uiowa_quote block content'
   - 'delete any uiowa_slider block content'
   - 'delete any uiowa_spacer_separator block content'
@@ -181,7 +225,6 @@ permissions:
   - 'delete any webform'
   - 'delete any webform submission'
   - 'delete article revisions'
-  - 'delete event feed'
   - 'delete own article content'
   - 'delete own audio media'
   - 'delete own facebook media'
@@ -261,9 +304,7 @@ permissions:
   - 'role-assign users by role'
   - 'select account cancellation method'
   - 'update any featured_content block content'
-  - 'update any people block content'
   - 'update any uiowa_aggregator block content'
-  - 'update any uiowa_articles block content'
   - 'update any uiowa_banner block content'
   - 'update any uiowa_card block content'
   - 'update any uiowa_collection block content'
@@ -273,7 +314,6 @@ permissions:
   - 'update any uiowa_hero block content'
   - 'update any uiowa_image_gallery block content'
   - 'update any uiowa_page_title_hero block content'
-  - 'update any uiowa_people block content'
   - 'update any uiowa_quote block content'
   - 'update any uiowa_slider block content'
   - 'update any uiowa_spacer_separator block content'
@@ -287,7 +327,6 @@ permissions:
   - 'use editorial transition create_new_draft'
   - 'use editorial transition needs_review'
   - 'use editorial transition publish'
-  - 'use siteimprove'
   - 'use text format filtered_html'
   - 'use text format minimal'
   - 'view any unpublished content'

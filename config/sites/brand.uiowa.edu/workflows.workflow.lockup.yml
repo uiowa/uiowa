@@ -4,13 +4,13 @@ status: true
 dependencies:
   config:
     - node.type.lockup
+  module:
+    - content_moderation
+    - workbench_email
   enforced:
     config:
       0: workbench_email.workbench_email_template.approved_author
       2: workbench_email.workbench_email_template.denied_author
-  module:
-    - content_moderation
-    - workbench_email
 third_party_settings:
   workbench_email:
     workbench_email_templates:
@@ -22,30 +22,30 @@ type: content_moderation
 type_settings:
   states:
     archived:
-      published: false
-      default_revision: true
       label: Archived
       weight: 1
-    denied:
       published: false
       default_revision: true
+    denied:
       label: Denied
       weight: -1
+      published: false
+      default_revision: true
     draft:
       label: Draft
+      weight: -3
       published: false
       default_revision: false
-      weight: -3
     published:
-      published: true
-      default_revision: true
       label: Approved
       weight: 0
+      published: true
+      default_revision: true
     review:
-      published: false
-      default_revision: false
       label: Review
       weight: -2
+      published: false
+      default_revision: false
   transitions:
     archive:
       label: Archive
@@ -62,14 +62,14 @@ type_settings:
       weight: 2
     create_new_draft:
       label: 'Create New Draft'
-      to: draft
-      weight: -3
       from:
         - archived
         - denied
         - draft
         - published
         - review
+      to: draft
+      weight: -3
     deny:
       label: Deny
       from:
@@ -88,12 +88,12 @@ type_settings:
       weight: -2
     publish:
       label: Approve
-      to: published
-      weight: 0
       from:
         - draft
         - published
         - review
+      to: published
+      weight: 0
   entity_types:
     node:
       - lockup

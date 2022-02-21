@@ -200,8 +200,6 @@ class FindTextAjaxTest extends WebDriverTestBase {
     //   to be stored in the testing database? Unsure of
     //   where it goes, and how to connect it to the
     //   node__body table that gets searched.
-    $node_body = $node->body[0]['value'];
-
     // Login.
     $this->drupalLogin($this->user);
     // Create a session.

@@ -12,8 +12,8 @@ dependencies:
     - media
 third_party_settings:
   layout_builder:
-    allow_custom: false
     enabled: false
+    allow_custom: false
 id: media.remote_video.small
 targetEntityType: media
 bundle: remote_video
@@ -21,12 +21,12 @@ mode: small
 content:
   field_media_oembed_video:
     type: oembed
-    weight: 0
     label: hidden
     settings:
       max_width: 426
       max_height: 240
     third_party_settings: {  }
+    weight: 0
     region: content
 hidden:
   created: true

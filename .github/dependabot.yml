@@ -1,13 +1,13 @@
 version: 2
 updates:
 - package-ecosystem: composer
+  rebase-strategy: "disabled"
   directory: "/"
   schedule:
     interval: monthly
     time: "14:00"
     timezone: America/Chicago
   open-pull-requests-limit: 10
-  rebase-strategy: "disabled"
   ignore:
   - dependency-name: drupal/core-composer-scaffold
     versions:
@@ -22,6 +22,7 @@ updates:
     versions:
     - 2.6.0
 - package-ecosystem: npm
+  rebase-strategy: "disabled"
   directory: "/"
   schedule:
     interval: monthly

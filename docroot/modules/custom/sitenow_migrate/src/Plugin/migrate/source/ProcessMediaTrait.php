@@ -100,7 +100,7 @@ trait ProcessMediaTrait {
     // so the matched, non-bracketed JSON is in the [0][0] index
     // of the json_decode result.
     $file_properties = json_decode($match[0], TRUE)[0][0];
-    $align = isset($file_properties['fields']['alignment']) ? $file_properties['fields']['alignment'] : '';
+    $align = $file_properties['fields']['alignment'] ?? '';
     $file_data = $this->fidQuery($fid);
 
     if (!$file_data) {
@@ -119,8 +119,8 @@ trait ProcessMediaTrait {
         ->fetchField();
 
       $meta = [
-        'title' => isset($file_properties['attributes']['title']) ? $file_properties['attributes']['title'] : $filename,
-        'alt' => isset($file_properties['attributes']['alt']) ? $file_properties['attributes']['alt'] : explode('.', $filename)[0],
+        'title' => $file_properties['attributes']['title'] ?? $filename,
+        'alt' => $file_properties['attributes']['alt'] ?? explode('.', $filename)[0],
       ];
 
       // If there's no fid in the D8 database,
@@ -225,7 +225,7 @@ trait ProcessMediaTrait {
    *   Returns markup as a plaintext string.
    */
   public function constructInlineEntity(string $uuid, string $align, $view_mode = '') {
-    $align = isset($align) ? $align : 'center';
+    $align = $align ?? 'center';
 
     $media = [
       '#type' => 'html_tag',
@@ -374,7 +374,10 @@ trait ProcessMediaTrait {
     }
 
     // Try to write the file, replacing any existing file with the same name.
-    $file = file_save_data($raw_file, implode('/', [$dir, $filename]), FileSystemInterface::EXISTS_REPLACE);
+    $file = \Drupal::service('file.repository')->writeData($raw_file, implode('/', [
+      $dir,
+      $filename,
+    ]), FileSystemInterface::EXISTS_REPLACE);
 
     // Drop the raw file out of memory for a little cleanup.
     unset($raw_file);
@@ -587,7 +590,7 @@ trait ProcessMediaTrait {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function replaceInlineImages(string $content, string $stub, $view_mode = '') {
-    $view_mode = isset($view_mode) ? $view_mode : $this->view_mode;
+    $view_mode = $view_mode ?? $this->view_mode;
     $drupal_file_directory = $this->getDrupalFileDirectory();
 
     // Create a HTML content fragment.

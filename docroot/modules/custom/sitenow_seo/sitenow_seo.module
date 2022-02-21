@@ -59,34 +59,3 @@ function sitenow_seo_form_alter(&$form, FormStateInterface $form_state, $form_id
 
   }
 }
-
-/**
- * Implements hook_page_attachments_alter().
- */
-function sitenow_seo_page_attachments_alter(array &$attachments) {
-  // Unset related resources that we don't want bots to crawl.
-  $unset_html_head_link = [
-    'latest-version',
-    'delete-form',
-    'edit-form',
-    'version-history',
-    'revision',
-  ];
-
-  foreach ($attachments['#attached']['html_head_link'] as $key => $value) {
-    if (isset($value[0]['rel']) && in_array($value[0]['rel'], $unset_html_head_link)) {
-      unset($attachments['#attached']['html_head_link'][$key]);
-    }
-  }
-}
-
-/**
- * Implements hook_module_implements_alter().
- */
-function sitenow_seo_module_implements_alter(&$implementations, $hook) {
-  if ($hook === 'page_attachments_alter') {
-    $group = $implementations['sitenow_seo'];
-    unset($implementations['sitenow_seo']);
-    $implementations['sitenow_seo'] = $group;
-  }
-}

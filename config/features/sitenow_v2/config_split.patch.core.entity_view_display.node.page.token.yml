@@ -7,13 +7,15 @@ adding:
     field_page_content_block: true
 removing:
   dependencies:
+    config:
+      - field.field.node.page.layout_builder__layout
     module:
       - text
   content:
     body:
-      label: hidden
       type: text_default
-      weight: 2
-      region: content
+      label: hidden
       settings: {  }
       third_party_settings: {  }
+      weight: 2
+      region: content

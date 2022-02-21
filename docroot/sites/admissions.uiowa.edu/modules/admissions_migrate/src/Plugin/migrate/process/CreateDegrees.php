@@ -83,7 +83,7 @@ class CreateDegrees extends ProcessPluginBase implements ContainerFactoryPluginI
    */
   private function createParagraphItem(array $item, Row $row) {
     if (str_contains($item['value'], '(')) {
-      list($label, $abbr) = explode('(', $item['value']);
+      [$label, $abbr] = explode('(', $item['value']);
       $label = trim($label);
       $abbr = rtrim($abbr, ')');
     }

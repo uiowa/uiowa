@@ -19,6 +19,7 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\file\Entity\File;
 use Drupal\filter\Plugin\Filter\FilterHtmlCorrector;
 use Drupal\layout_builder\InlineBlockUsage;
+use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
 use Drupal\layout_builder\Section;
 use Drupal\layout_builder\SectionComponent;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
@@ -62,8 +63,15 @@ function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): v
     // Loop through the results.
     foreach ($results as $record) {
       // Unserialize the section field into it's class object.
+      // @todo Verify that all expected classes are allowed here.
       /** @var \Drupal\layout_builder\Section $section */
-      $section = unserialize($record->layout_builder__layout_section);
+      $section = unserialize($record->layout_builder__layout_section, [
+        'allowed_classes' => [
+          Section::class,
+          SectionComponent::class,
+          BlockContentInterface::class,
+        ],
+      ]);
 
       // Loop through the components in the section.
       foreach ($section->getComponents() as &$component) {
@@ -130,7 +138,14 @@ function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): v
 
     foreach ($results as $record) {
       // Unserialize and replace the section in question with our updated one.
-      $stored_data = unserialize($record->value);
+      $stored_data = unserialize($record->value, [
+        'allowed_classes' => [
+          Section::class,
+          SectionComponent::class,
+          OverridesSectionStorage::class,
+        ],
+      ]);
+
       /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
       $section_storage = $stored_data->data['section_storage'];
 
@@ -151,7 +166,11 @@ function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): v
             $block = $block_storage->loadRevision($revision_id);
           }
           else {
-            $block = unserialize($component_arr['configuration']['block_serialized']);
+            $block = unserialize($component_arr['configuration']['block_serialized'], [
+              'allowed_classes' => [
+                BlockContentInterface::class,
+              ],
+            ]);
           }
 
           call_user_func_array($process, [&$component, $block]);
@@ -3023,7 +3042,13 @@ function sitenow_update_9009() {
 
       // Unserialize the section field into it's class object.
       /** @var \Drupal\layout_builder\Section $section */
-      $section = unserialize($record->layout_builder__layout_section);
+      $section = unserialize($record->layout_builder__layout_section, [
+        'allowed_classes' => [
+          Section::class,
+          SectionComponent::class,
+          BlockContentInterface::class,
+        ],
+      ]);
 
       // Loop through the components in the section.
       foreach ($section->getComponents() as &$component) {
@@ -3084,7 +3109,14 @@ function sitenow_update_9009() {
 
     foreach ($results as $record) {
       // Unserialize and replace the section in question with our updated one.
-      $stored_data = unserialize($record->value);
+      $stored_data = unserialize($record->value, [
+        'allowed_classes' => [
+          Section::class,
+          SectionComponent::class,
+          OverridesSectionStorage::class,
+        ],
+      ]);
+
       /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
       $section_storage = $stored_data->data['section_storage'];
 
@@ -3108,7 +3140,11 @@ function sitenow_update_9009() {
             $block = $blocks[$revision_id];
           }
           else {
-            $block = unserialize($component_arr['configuration']['block_serialized']);
+            $block = unserialize($component_arr['configuration']['block_serialized'], [
+              'allowed_classes' => [
+                BlockContentInterface::class,
+              ],
+            ]);
           }
 
           if (!$block instanceof BlockContentInterface) {
@@ -3171,7 +3207,13 @@ function sitenow_update_9010() {
       $nids[$record->entity_id] = $record->entity_id;
 
       // Unserialize the record and extract the layout settings.
-      $stored_data = unserialize($record->layout_builder__layout_section);
+      $stored_data = unserialize($record->layout_builder__layout_section, [
+        'allowed_classes' => [
+          Section::class,
+          SectionComponent::class,
+        ],
+      ]);
+
       $layout_settings = $stored_data->getLayoutSettings();
       // Add in the 'Normal' container style.
       // We only pulled records that didn't have a container style,
@@ -3220,7 +3262,14 @@ function sitenow_update_9010() {
       continue;
     }
     // Unserialize and replace the section in question with our updated one.
-    $stored_data = unserialize($record->value);
+    $stored_data = unserialize($record->value, [
+      'allowed_classes' => [
+        Section::class,
+        SectionComponent::class,
+        OverridesSectionStorage::class,
+      ],
+    ]);
+
     /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
     $section_storage = $stored_data->data['section_storage'];
     // Loop through sections in the storage.
@@ -3301,7 +3350,12 @@ function sitenow_update_9012() {
     foreach ($results as $record) {
       // Unserialize the section field into it's class object.
       /** @var \Drupal\layout_builder\Section $section */
-      $section = unserialize($record->layout_builder__layout_section);
+      $section = unserialize($record->layout_builder__layout_section, [
+        'allowed_classes' => [
+          Section::class,
+          SectionComponent::class,
+        ],
+      ]);
 
       // Loop through the components in the section.
       foreach ($section->getComponents() as &$component) {
@@ -3353,7 +3407,14 @@ function sitenow_update_9012() {
 
       foreach ($results as $record) {
         // Unserialize and replace the section in question with our updated one.
-        $stored_data = unserialize($record->value);
+        $stored_data = unserialize($record->value, [
+          'allowed_classes' => [
+            Section::class,
+            SectionComponent::class,
+            OverridesSectionStorage::class,
+          ],
+        ]);
+
         /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
         $section_storage = $stored_data->data['section_storage'];
 

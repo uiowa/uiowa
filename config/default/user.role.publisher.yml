@@ -1,7 +1,46 @@
 uuid: 1422930d-3372-4cd5-928e-49b4905e924f
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.filtered_html
+    - filter.format.minimal
+    - media.type.audio
+    - media.type.facebook
+    - media.type.file
+    - media.type.image
+    - media.type.instagram
+    - media.type.panopto
+    - media.type.remote_video
+    - media.type.twitter
+    - node.type.article
+    - node.type.page
+    - node.type.person
+    - taxonomy.vocabulary.research_areas
+    - taxonomy.vocabulary.tags
+    - workflows.workflow.editorial
+  module:
+    - administerusersbyrole
+    - content_moderation
+    - contextual
+    - entity_browser
+    - entity_usage
+    - file
+    - filter
+    - fragments
+    - google_analytics
+    - media
+    - menu_admin_per_menu
+    - metatag_extended_perms
+    - moderated_content_bulk_publish
+    - node
+    - override_node_options
+    - path
+    - replicate_ui
+    - system
+    - taxonomy
+    - toolbar
+    - tour
 id: publisher
 label: Publisher
 weight: -5
@@ -13,7 +52,6 @@ permissions:
   - 'access contextual links'
   - 'access entity usage statistics'
   - 'access featured_content_browser entity browser pages'
-  - 'access file_link_browser entity browser pages'
   - 'access files overview'
   - 'access fragments overview'
   - 'access media overview'
@@ -144,7 +182,6 @@ permissions:
   - 'use editorial transition create_new_draft'
   - 'use editorial transition needs_review'
   - 'use editorial transition publish'
-  - 'use siteimprove'
   - 'use text format filtered_html'
   - 'use text format minimal'
   - 'view any unpublished content'

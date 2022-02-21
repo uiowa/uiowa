@@ -21,18 +21,18 @@ dependencies:
     - uids_base
 third_party_settings:
   layout_builder:
-    allow_custom: false
     enabled: true
+    allow_custom: false
     sections:
       -
         layout_id: layout_header
         layout_settings:
           label: Header
+          context_mapping: {  }
           layout_builder_styles_style:
             0: ''
             1: section_margin_edge_to_edge
             remove_default_bottom_padding: remove_default_bottom_padding
-          context_mapping: {  }
         components:
           -
             uuid: e0e746e6-23c4-4a36-b565-fd986ba15507
@@ -40,37 +40,37 @@ third_party_settings:
             configuration:
               id: 'field_block:node:costs_estimate:moderation_state'
               label: null
-              provider: layout_builder
               label_display: null
-              formatter:
-                label: hidden
-                type: content_moderation_state
-                settings: {  }
-                third_party_settings: {  }
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
-            additional: {  }
+              formatter:
+                type: content_moderation_state
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
             weight: -4
+            additional: {  }
           -
             uuid: 8f57e8f4-1cf0-49a5-b008-f30a80e0b709
             region: content
             configuration:
               id: 'field_block:node:costs_estimate:field_costs_estimate_title'
               label: null
-              provider: layout_builder
               label_display: null
-              formatter:
-                label: hidden
-                type: string
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
-            additional: {  }
+              formatter:
+                type: string
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
             weight: -6
+            additional: {  }
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -78,11 +78,11 @@ third_party_settings:
         layout_id: layout_header
         layout_settings:
           label: ''
+          context_mapping: {  }
           layout_builder_styles_style:
             0: ''
             1: section_margin_edge_to_edge
             remove_default_top_padding: remove_default_top_padding
-          context_mapping: {  }
         components:
           -
             uuid: da1f3ff0-07d8-4e3c-bfa7-07774c7a2685
@@ -90,23 +90,23 @@ third_party_settings:
             configuration:
               id: 'menu_block:main'
               label: null
-              provider: menu_block
               label_display: null
+              provider: menu_block
+              context_mapping: {  }
               follow: true
               follow_parent: active
+              label_link: false
+              label_type: block
               level: 2
               depth: 0
               expand_all_items: false
               parent: 'main:'
               suggestion: main
-              label_type: block
-              label_link: false
-              context_mapping: {  }
+            weight: 0
             additional:
               layout_builder_styles_style:
                 block_menu_horizontal: block_menu_horizontal
                 0: null
-            weight: 0
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -114,10 +114,10 @@ third_party_settings:
         layout_id: layout_onecol
         layout_settings:
           label: ''
+          context_mapping: {  }
           layout_builder_styles_style:
             - ''
             - section_margin_fixed_width_container
-          context_mapping: {  }
         components:
           -
             uuid: 60c3b524-d3c5-4ecd-8449-a6899ecca12d
@@ -125,77 +125,77 @@ third_party_settings:
             configuration:
               id: 'field_block:node:costs_estimate:field_costs_estimate_year'
               label: null
-              provider: layout_builder
               label_display: null
-              formatter:
-                label: hidden
-                type: string
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
-            additional: {  }
+              formatter:
+                type: string
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
             weight: 6
+            additional: {  }
           -
             uuid: 845d0e4f-a3f3-4f81-a4ce-def1a344f5fb
             region: content
             configuration:
               id: 'field_block:node:costs_estimate:field_costs_estimate_info'
               label: null
-              provider: layout_builder
               label_display: null
-              formatter:
-                label: hidden
-                type: text_default
-                settings: {  }
-                third_party_settings: {  }
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
-            additional: {  }
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
             weight: 7
+            additional: {  }
           -
             uuid: 27faaed8-13d2-487b-9ad7-3da5f873b1a4
             region: content
             configuration:
               id: 'field_block:node:costs_estimate:field_costs_estimate_type'
               label: null
-              provider: layout_builder
               label_display: null
-              formatter:
-                label: hidden
-                type: list_default
-                settings: {  }
-                third_party_settings: {  }
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
-            additional: {  }
+              formatter:
+                type: list_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
             weight: 5
+            additional: {  }
         third_party_settings: {  }
       -
         layout_id: layout_onecol
         layout_settings:
           label: ''
+          context_mapping: {  }
           layout_builder_styles_style:
             - ''
             - section_margin_fixed_width_container
-          context_mapping: {  }
         components: {  }
         third_party_settings: {  }
   layout_builder_restrictions:
     allowed_block_categories: {  }
     entity_view_mode_restriction:
-      whitelisted_blocks: {  }
-      blacklisted_blocks: {  }
       allowed_layouts:
         - layout_onecol
         - layout_twocol
         - layout_threecol
         - layout_fourcol
         - layout_header
+      blacklisted_blocks: {  }
+      whitelisted_blocks: {  }
     entity_view_mode_restriction_by_region:
       allowed_layouts:
         - layout_onecol
@@ -209,34 +209,34 @@ bundle: costs_estimate
 mode: default
 content:
   field_costs_estimate_info:
-    weight: 1
+    type: text_default
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 1
     region: content
   field_costs_estimate_title:
-    weight: 6
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 6
     region: content
   field_costs_estimate_type:
-    weight: 4
+    type: list_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: list_default
+    weight: 4
     region: content
   field_costs_estimate_year:
-    weight: 0
+    type: string
     label: visually_hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 0
     region: content
 hidden:
   field_meta_tags: true

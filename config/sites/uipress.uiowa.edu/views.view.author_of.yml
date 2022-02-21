@@ -16,26 +16,78 @@ base_table: node_field_data
 base_field: nid
 display:
   default:
-    display_plugin: default
     id: default
     display_title: Default
+    display_plugin: default
     position: 0
     display_options:
-      access:
-        type: perm
+      title: 'As author:'
+      fields:
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: field
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            make_link: false
+            absolute: false
+            word_boundary: false
+            ellipsis: false
+            strip_tags: false
+            trim: false
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+      pager:
+        type: mini
         options:
-          perm: 'access content'
-      cache:
-        type: tag
-        options: {  }
-      query:
-        type: views_query
-        options:
-          disable_sql_rewrite: false
-          distinct: false
-          replica: false
-          query_comment: ''
-          query_tags: {  }
+          offset: 0
+          items_per_page: 10
+          total_pages: null
+          id: 0
+          tags:
+            next: ››
+            previous: ‹‹
+          expose:
+            items_per_page: false
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: false
+            items_per_page_options_all_label: '- All -'
+            offset: false
+            offset_label: Offset
       exposed_form:
         type: basic
         options:
@@ -46,24 +98,126 @@ display:
           expose_sort_order: true
           sort_asc_label: Asc
           sort_desc_label: Desc
-      pager:
-        type: mini
+      access:
+        type: perm
         options:
-          items_per_page: 10
-          offset: 0
-          id: 0
-          total_pages: null
+          perm: 'access content'
+      cache:
+        type: tag
+        options: {  }
+      empty: {  }
+      sorts:
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          entity_type: node
+          entity_field: title
+          plugin_id: standard
           expose:
-            items_per_page: false
-            items_per_page_label: 'Items per page'
-            items_per_page_options: '5, 10, 25, 50'
-            items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
-            offset: false
-            offset_label: Offset
-          tags:
-            previous: ‹‹
-            next: ››
+            field_identifier: title
+      arguments:
+        nid:
+          id: nid
+          table: node_field_data
+          field: nid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          entity_field: nid
+          plugin_id: node_nid
+          default_action: default
+          exception:
+            value: all
+            title_enable: false
+            title: All
+          title_enable: false
+          title: ''
+          default_argument_type: node
+          default_argument_options: {  }
+          default_argument_skip_url: false
+          summary_options:
+            base_path: ''
+            count: true
+            override: false
+            items_per_page: 25
+          summary:
+            sort_order: asc
+            number_of_records: 0
+            format: default_summary
+          specify_validation: true
+          validate:
+            type: none
+            fail: 'not found'
+          validate_options: {  }
+          break_phrase: false
+          not: false
+      filters:
+        status:
+          id: status
+          table: node_field_data
+          field: status
+          entity_type: node
+          entity_field: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
+          expose:
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
+          value:
+            book: book
+          expose:
+            operator_limit_selection: false
+            operator_list: {  }
+        field_person_types_target_id:
+          id: field_person_types_target_id
+          table: node__field_person_types
+          field: field_person_types_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: string
+          operator: '='
+          value: author
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
       style:
         type: html_list
         options:
@@ -81,77 +235,136 @@ display:
             title: title
           separator: ','
           hide_empty: false
-      fields:
+      query:
+        type: views_query
+        options:
+          query_comment: ''
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_tags: {  }
+      relationships:
+        field_book_author:
+          id: field_book_author
+          table: node__field_book_author
+          field: field_book_author
+          relationship: none
+          group_type: group
+          admin_label: 'field_book_author: Content'
+          plugin_id: standard
+          required: true
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: false
+          content:
+            value: '<h2>Author</h2>'
+            format: filtered_html
+          tokenize: false
+      footer: {  }
+      display_extenders: {  }
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - url.query_args
+        - 'user.node_grants:view'
+        - user.permissions
+      tags: {  }
+  author_of:
+    id: author_of
+    display_title: Author
+    display_plugin: block
+    position: 1
+    display_options:
+      pager:
+        type: none
+        options:
+          offset: 0
+      sorts:
         title:
           id: title
           table: node_field_data
           field: title
-          entity_type: node
-          entity_field: title
-          label: ''
-          alter:
-            alter_text: false
-            make_link: false
-            absolute: false
-            trim: false
-            word_boundary: false
-            ellipsis: false
-            strip_tags: false
-            html: false
-          hide_empty: false
-          empty_zero: false
-          settings:
-            link_to_entity: true
-          plugin_id: field
           relationship: none
           group_type: group
           admin_label: ''
-          exclude: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
+          entity_type: node
+          entity_field: title
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: title
+          exposed: false
+      arguments:
+        nid:
+          id: nid
+          table: node_field_data
+          field: nid
+          relationship: field_book_author
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          entity_field: nid
+          plugin_id: node_nid
+          default_action: default
+          exception:
+            value: all
+            title_enable: false
+            title: All
+          title_enable: false
+          title: ''
+          default_argument_type: node
+          default_argument_options: {  }
+          default_argument_skip_url: false
+          summary_options:
+            base_path: ''
+            count: true
+            override: false
+            items_per_page: 25
+          summary:
+            sort_order: asc
+            number_of_records: 0
+            format: default_summary
+          specify_validation: true
+          validate:
+            type: none
+            fail: 'not found'
+          validate_options: {  }
+          break_phrase: false
+          not: false
       filters:
         status:
-          value: '1'
+          id: status
           table: node_field_data
           field: status
-          plugin_id: boolean
           entity_type: node
           entity_field: status
-          id: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
           expose:
             operator: ''
             operator_limit_selection: false
             operator_list: {  }
-          group: 1
         type:
           id: type
           table: node_field_data
           field: type
-          value:
-            book: book
           entity_type: node
           entity_field: type
           plugin_id: bundle
+          value:
+            book: book
           expose:
             operator_limit_selection: false
             operator_list: {  }
@@ -159,9 +372,10 @@ display:
           id: field_person_types_target_id
           table: node__field_person_types
           field: field_person_types_target_id
-          relationship: none
+          relationship: field_book_author
           group_type: group
           admin_label: ''
+          plugin_id: string
           operator: '='
           value: author
           group: 1
@@ -193,15 +407,18 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: string
-      sorts:
-        title:
-          id: title
-          table: node_field_data
-          field: title
-          entity_type: node
-          entity_field: title
-          plugin_id: standard
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+      defaults:
+        pager: false
+        sorts: false
+        arguments: false
+        filters: false
+        filter_groups: false
+        header: false
+      display_description: Author
       header:
         area:
           id: area
@@ -210,82 +427,14 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          empty: false
-          tokenize: false
-          content:
-            value: '<h2>Author</h2>'
-            format: filtered_html
           plugin_id: text
-      footer: {  }
-      empty: {  }
-      relationships:
-        field_book_author:
-          id: field_book_author
-          table: node__field_book_author
-          field: field_book_author
-          relationship: none
-          group_type: group
-          admin_label: 'field_book_author: Content'
-          required: true
-          plugin_id: standard
-      arguments:
-        nid:
-          id: nid
-          table: node_field_data
-          field: nid
-          relationship: none
-          group_type: group
-          admin_label: ''
-          default_action: default
-          exception:
-            value: all
-            title_enable: false
-            title: All
-          title_enable: false
-          title: ''
-          default_argument_type: node
-          default_argument_options: {  }
-          default_argument_skip_url: false
-          summary_options:
-            base_path: ''
-            count: true
-            items_per_page: 25
-            override: false
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: true
-          validate:
-            type: none
-            fail: 'not found'
-          validate_options: {  }
-          break_phrase: false
-          not: false
-          entity_type: node
-          entity_field: nid
-          plugin_id: node_nid
-      display_extenders: {  }
-      title: 'As author:'
-    cache_metadata:
-      max-age: -1
-      contexts:
-        - 'languages:language_content'
-        - 'languages:language_interface'
-        - url
-        - url.query_args
-        - 'user.node_grants:view'
-        - user.permissions
-      tags: {  }
-  author_of:
-    display_plugin: block
-    id: author_of
-    display_title: Author
-    position: 1
-    display_options:
+          empty: false
+          content:
+            value: '<h3>Author</h3>'
+            format: filtered_html
+          tokenize: false
       display_extenders:
         metatag_display_extender: {  }
-      display_description: Author
       block_description: 'Author Block'
       allow:
         items_per_page: false
@@ -300,152 +449,6 @@ display:
       more_link_help_text: ''
       restrict_fields:
         title: 0
-      arguments:
-        nid:
-          id: nid
-          table: node_field_data
-          field: nid
-          relationship: field_book_author
-          group_type: group
-          admin_label: ''
-          default_action: default
-          exception:
-            value: all
-            title_enable: false
-            title: All
-          title_enable: false
-          title: ''
-          default_argument_type: node
-          default_argument_options: {  }
-          default_argument_skip_url: false
-          summary_options:
-            base_path: ''
-            count: true
-            items_per_page: 25
-            override: false
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: true
-          validate:
-            type: none
-            fail: 'not found'
-          validate_options: {  }
-          break_phrase: false
-          not: false
-          entity_type: node
-          entity_field: nid
-          plugin_id: node_nid
-      defaults:
-        arguments: false
-        filters: false
-        filter_groups: false
-        sorts: false
-        pager: false
-        header: false
-      filters:
-        status:
-          value: '1'
-          table: node_field_data
-          field: status
-          plugin_id: boolean
-          entity_type: node
-          entity_field: status
-          id: status
-          expose:
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-          group: 1
-        type:
-          id: type
-          table: node_field_data
-          field: type
-          value:
-            book: book
-          entity_type: node
-          entity_field: type
-          plugin_id: bundle
-          expose:
-            operator_limit_selection: false
-            operator_list: {  }
-        field_person_types_target_id:
-          id: field_person_types_target_id
-          table: node__field_person_types
-          field: field_person_types_target_id
-          relationship: field_book_author
-          group_type: group
-          admin_label: ''
-          operator: '='
-          value: author
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          plugin_id: string
-      filter_groups:
-        operator: AND
-        groups:
-          1: AND
-      sorts:
-        title:
-          id: title
-          table: node_field_data
-          field: title
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: false
-          expose:
-            label: ''
-          entity_type: node
-          entity_field: title
-          plugin_id: standard
-      pager:
-        type: none
-        options:
-          offset: 0
-      header:
-        area:
-          id: area
-          table: views
-          field: area
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: false
-          tokenize: false
-          content:
-            value: '<h3>Author</h3>'
-            format: filtered_html
-          plugin_id: text
     cache_metadata:
       max-age: -1
       contexts:
@@ -456,33 +459,16 @@ display:
         - user.permissions
       tags: {  }
   block_1:
-    display_plugin: block
     id: block_1
     display_title: Editor
+    display_plugin: block
     position: 4
     display_options:
-      display_extenders:
-        metatag_display_extender: {  }
-      display_description: Editor
       title: 'As editor:'
-      defaults:
-        title: false
-        relationships: false
-        arguments: false
-        filters: false
-        filter_groups: false
-        pager: false
-        header: false
-      relationships:
-        field_book_editor:
-          id: field_book_editor
-          table: node__field_book_editor
-          field: field_book_editor
-          relationship: none
-          group_type: group
-          admin_label: 'field_book_editor: Content'
-          required: true
-          plugin_id: standard
+      pager:
+        type: none
+        options:
+          offset: 0
       arguments:
         nid:
           id: nid
@@ -491,6 +477,9 @@ display:
           relationship: field_book_editor
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: nid
+          plugin_id: node_nid
           default_action: default
           exception:
             value: all
@@ -504,8 +493,8 @@ display:
           summary_options:
             base_path: ''
             count: true
-            items_per_page: 25
             override: false
+            items_per_page: 25
           summary:
             sort_order: asc
             number_of_records: 0
@@ -517,33 +506,29 @@ display:
           validate_options: {  }
           break_phrase: false
           not: false
-          entity_type: node
-          entity_field: nid
-          plugin_id: node_nid
-      block_description: 'Editor Block'
       filters:
         status:
-          value: '1'
+          id: status
           table: node_field_data
           field: status
-          plugin_id: boolean
           entity_type: node
           entity_field: status
-          id: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
           expose:
             operator: ''
             operator_limit_selection: false
             operator_list: {  }
-          group: 1
         type:
           id: type
           table: node_field_data
           field: type
-          value:
-            book: book
           entity_type: node
           entity_field: type
           plugin_id: bundle
+          value:
+            book: book
           expose:
             operator_limit_selection: false
             operator_list: {  }
@@ -554,6 +539,7 @@ display:
           relationship: field_book_editor
           group_type: group
           admin_label: ''
+          plugin_id: string
           operator: '='
           value: editor
           group: 1
@@ -585,15 +571,29 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: string
       filter_groups:
         operator: AND
         groups:
           1: AND
-      pager:
-        type: none
-        options:
-          offset: 0
+      defaults:
+        title: false
+        pager: false
+        relationships: false
+        arguments: false
+        filters: false
+        filter_groups: false
+        header: false
+      relationships:
+        field_book_editor:
+          id: field_book_editor
+          table: node__field_book_editor
+          field: field_book_editor
+          relationship: none
+          group_type: group
+          admin_label: 'field_book_editor: Content'
+          plugin_id: standard
+          required: true
+      display_description: Editor
       header:
         area:
           id: area
@@ -602,12 +602,15 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: text
           empty: false
-          tokenize: false
           content:
             value: '<h3>Editor</h3>'
             format: filtered_html
-          plugin_id: text
+          tokenize: false
+      display_extenders:
+        metatag_display_extender: {  }
+      block_description: 'Editor Block'
     cache_metadata:
       max-age: -1
       contexts:
@@ -618,36 +621,76 @@ display:
         - user.permissions
       tags: {  }
   illustrator_block:
-    display_plugin: block
     id: illustrator_block
     display_title: Illustrator
+    display_plugin: block
     position: 2
     display_options:
-      display_extenders:
-        metatag_display_extender: {  }
+      title: 'As illustrator:'
+      pager:
+        type: none
+        options:
+          offset: 0
+      arguments:
+        nid:
+          id: nid
+          table: node_field_data
+          field: nid
+          relationship: field_book_illustrator
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          entity_field: nid
+          plugin_id: node_nid
+          default_action: default
+          exception:
+            value: all
+            title_enable: false
+            title: All
+          title_enable: false
+          title: ''
+          default_argument_type: node
+          default_argument_options: {  }
+          default_argument_skip_url: false
+          summary_options:
+            base_path: ''
+            count: true
+            override: false
+            items_per_page: 25
+          summary:
+            sort_order: asc
+            number_of_records: 0
+            format: default_summary
+          specify_validation: true
+          validate:
+            type: none
+            fail: 'not found'
+          validate_options: {  }
+          break_phrase: false
+          not: false
       filters:
         status:
-          value: '1'
+          id: status
           table: node_field_data
           field: status
-          plugin_id: boolean
           entity_type: node
           entity_field: status
-          id: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
           expose:
             operator: ''
             operator_limit_selection: false
             operator_list: {  }
-          group: 1
         type:
           id: type
           table: node_field_data
           field: type
-          value:
-            book: book
           entity_type: node
           entity_field: type
           plugin_id: bundle
+          value:
+            book: book
           expose:
             operator_limit_selection: false
             operator_list: {  }
@@ -658,6 +701,7 @@ display:
           relationship: field_book_illustrator
           group_type: group
           admin_label: ''
+          plugin_id: string
           operator: '='
           value: illustrator
           group: 1
@@ -689,20 +733,18 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: string
-      defaults:
-        filters: false
-        filter_groups: false
-        relationships: false
-        arguments: false
-        title: false
-        pager: false
-        header: false
       filter_groups:
         operator: AND
         groups:
           1: AND
-      display_description: Illustrator
+      defaults:
+        title: false
+        pager: false
+        relationships: false
+        arguments: false
+        filters: false
+        filter_groups: false
+        header: false
       relationships:
         field_book_illustrator:
           id: field_book_illustrator
@@ -711,51 +753,26 @@ display:
           relationship: none
           group_type: group
           admin_label: 'field_book_illustrator: Content'
-          required: true
           plugin_id: standard
-      arguments:
-        nid:
-          id: nid
-          table: node_field_data
-          field: nid
-          relationship: field_book_illustrator
+          required: true
+      display_description: Illustrator
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
           group_type: group
           admin_label: ''
-          default_action: default
-          exception:
-            value: all
-            title_enable: false
-            title: All
-          title_enable: false
-          title: ''
-          default_argument_type: node
-          default_argument_options: {  }
-          default_argument_skip_url: false
-          summary_options:
-            base_path: ''
-            count: true
-            items_per_page: 25
-            override: false
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: true
-          validate:
-            type: none
-            fail: 'not found'
-          validate_options: {  }
-          break_phrase: false
-          not: false
-          entity_type: node
-          entity_field: nid
-          plugin_id: node_nid
-      title: 'As illustrator:'
+          plugin_id: text
+          empty: false
+          content:
+            value: '<h3>Illustrator</h3>'
+            format: filtered_html
+          tokenize: false
+      display_extenders:
+        metatag_display_extender: {  }
       block_description: Illustrator
-      pager:
-        type: none
-        options:
-          offset: 0
       allow:
         items_per_page: false
         offset: '0'
@@ -769,20 +786,6 @@ display:
       more_link_help_text: ''
       restrict_fields:
         title: 0
-      header:
-        area:
-          id: area
-          table: views
-          field: area
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: false
-          tokenize: false
-          content:
-            value: '<h3>Illustrator</h3>'
-            format: filtered_html
-          plugin_id: text
     cache_metadata:
       max-age: -1
       contexts:
@@ -793,32 +796,16 @@ display:
         - user.permissions
       tags: {  }
   photographer_block:
-    display_plugin: block
     id: photographer_block
     display_title: Photographer
+    display_plugin: block
     position: 5
     display_options:
-      display_extenders:
-        metatag_display_extender: {  }
-      display_description: Photographer
-      relationships:
-        field_book_photographer:
-          id: field_book_photographer
-          table: node__field_book_photographer
-          field: field_book_photographer
-          relationship: none
-          group_type: group
-          admin_label: 'field_book_photographer: Content'
-          required: true
-          plugin_id: standard
-      defaults:
-        relationships: false
-        arguments: false
-        filters: false
-        filter_groups: false
-        pager: false
-        title: false
-        header: false
+      title: Photographer
+      pager:
+        type: none
+        options:
+          offset: 0
       arguments:
         nid:
           id: nid
@@ -827,6 +814,9 @@ display:
           relationship: field_book_photographer
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: nid
+          plugin_id: node_nid
           default_action: default
           exception:
             value: all
@@ -840,8 +830,8 @@ display:
           summary_options:
             base_path: ''
             count: true
-            items_per_page: 25
             override: false
+            items_per_page: 25
           summary:
             sort_order: asc
             number_of_records: 0
@@ -853,32 +843,29 @@ display:
           validate_options: {  }
           break_phrase: false
           not: false
-          entity_type: node
-          entity_field: nid
-          plugin_id: node_nid
       filters:
         status:
-          value: '1'
+          id: status
           table: node_field_data
           field: status
-          plugin_id: boolean
           entity_type: node
           entity_field: status
-          id: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
           expose:
             operator: ''
             operator_limit_selection: false
             operator_list: {  }
-          group: 1
         type:
           id: type
           table: node_field_data
           field: type
-          value:
-            book: book
           entity_type: node
           entity_field: type
           plugin_id: bundle
+          value:
+            book: book
           expose:
             operator_limit_selection: false
             operator_list: {  }
@@ -889,6 +876,7 @@ display:
           relationship: field_book_photographer
           group_type: group
           admin_label: ''
+          plugin_id: string
           operator: '='
           value: photographer
           group: 1
@@ -920,17 +908,29 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: string
       filter_groups:
         operator: AND
         groups:
           1: AND
-      pager:
-        type: none
-        options:
-          offset: 0
-      title: Photographer
-      block_description: 'Photographer Block'
+      defaults:
+        title: false
+        pager: false
+        relationships: false
+        arguments: false
+        filters: false
+        filter_groups: false
+        header: false
+      relationships:
+        field_book_photographer:
+          id: field_book_photographer
+          table: node__field_book_photographer
+          field: field_book_photographer
+          relationship: none
+          group_type: group
+          admin_label: 'field_book_photographer: Content'
+          plugin_id: standard
+          required: true
+      display_description: Photographer
       header:
         area:
           id: area
@@ -939,12 +939,15 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: text
           empty: false
-          tokenize: false
           content:
             value: '<h3>Photographer</h3>'
             format: filtered_html
-          plugin_id: text
+          tokenize: false
+      display_extenders:
+        metatag_display_extender: {  }
+      block_description: 'Photographer Block'
     cache_metadata:
       max-age: -1
       contexts:
@@ -955,33 +958,16 @@ display:
         - user.permissions
       tags: {  }
   translator_block:
-    display_plugin: block
     id: translator_block
     display_title: Translator
+    display_plugin: block
     position: 3
     display_options:
-      display_extenders:
-        metatag_display_extender: {  }
-      display_description: Translator
       title: Translator
-      defaults:
-        title: false
-        relationships: false
-        arguments: false
-        filters: false
-        filter_groups: false
-        pager: false
-        header: false
-      relationships:
-        field_book_translator:
-          id: field_book_translator
-          table: node__field_book_translator
-          field: field_book_translator
-          relationship: none
-          group_type: group
-          admin_label: 'field_book_translator: Content'
-          required: true
-          plugin_id: standard
+      pager:
+        type: none
+        options:
+          offset: 0
       arguments:
         nid:
           id: nid
@@ -990,6 +976,9 @@ display:
           relationship: field_book_translator
           group_type: group
           admin_label: ''
+          entity_type: node
+          entity_field: nid
+          plugin_id: node_nid
           default_action: default
           exception:
             value: all
@@ -1003,8 +992,8 @@ display:
           summary_options:
             base_path: ''
             count: true
-            items_per_page: 25
             override: false
+            items_per_page: 25
           summary:
             sort_order: asc
             number_of_records: 0
@@ -1016,33 +1005,29 @@ display:
           validate_options: {  }
           break_phrase: false
           not: false
-          entity_type: node
-          entity_field: nid
-          plugin_id: node_nid
-      block_description: 'Translator Block'
       filters:
         status:
-          value: '1'
+          id: status
           table: node_field_data
           field: status
-          plugin_id: boolean
           entity_type: node
           entity_field: status
-          id: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
           expose:
             operator: ''
             operator_limit_selection: false
             operator_list: {  }
-          group: 1
         type:
           id: type
           table: node_field_data
           field: type
-          value:
-            book: book
           entity_type: node
           entity_field: type
           plugin_id: bundle
+          value:
+            book: book
           expose:
             operator_limit_selection: false
             operator_list: {  }
@@ -1053,6 +1038,7 @@ display:
           relationship: field_book_translator
           group_type: group
           admin_label: ''
+          plugin_id: string
           operator: '='
           value: translator
           group: 1
@@ -1084,15 +1070,29 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: string
       filter_groups:
         operator: AND
         groups:
           1: AND
-      pager:
-        type: none
-        options:
-          offset: 0
+      defaults:
+        title: false
+        pager: false
+        relationships: false
+        arguments: false
+        filters: false
+        filter_groups: false
+        header: false
+      relationships:
+        field_book_translator:
+          id: field_book_translator
+          table: node__field_book_translator
+          field: field_book_translator
+          relationship: none
+          group_type: group
+          admin_label: 'field_book_translator: Content'
+          plugin_id: standard
+          required: true
+      display_description: Translator
       header:
         area:
           id: area
@@ -1101,12 +1101,15 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: text
           empty: false
-          tokenize: false
           content:
             value: '<h3>Translator</h3>'
             format: filtered_html
-          plugin_id: text
+          tokenize: false
+      display_extenders:
+        metatag_display_extender: {  }
+      block_description: 'Translator Block'
     cache_metadata:
       max-age: -1
       contexts:
