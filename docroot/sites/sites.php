@@ -3922,3 +3922,9 @@ $sites['sitesebgreenscholarships.uiowa.ddev.site'] = 'ebgreenscholarships.sites.
 $sites['sitesebgreenscholarships.dev.drupal.uiowa.edu'] = 'ebgreenscholarships.sites.uiowa.edu';
 $sites['sitesebgreenscholarships.stage.drupal.uiowa.edu'] = 'ebgreenscholarships.sites.uiowa.edu';
 $sites['sitesebgreenscholarships.prod.drupal.uiowa.edu'] = 'ebgreenscholarships.sites.uiowa.edu';
+
+// Directory aliases for prc.public-health.uiowa.edu.
+$sites['public-healthprc.uiowa.ddev.site'] = 'prc.public-health.uiowa.edu';
+$sites['public-healthprc.dev.drupal.uiowa.edu'] = 'prc.public-health.uiowa.edu';
+$sites['public-healthprc.stage.drupal.uiowa.edu'] = 'prc.public-health.uiowa.edu';
+$sites['public-healthprc.prod.drupal.uiowa.edu'] = 'prc.public-health.uiowa.edu';
