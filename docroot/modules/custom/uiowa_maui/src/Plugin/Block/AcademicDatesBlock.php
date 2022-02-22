@@ -97,6 +97,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       'hide_headline' => $config['hide_headline'] ?? 0,
       'heading_size' => $config['heading_size'] ?? 'h2',
       'headline_style' => $config['headline_style'] ?? 'default',
+      'headline_alignment' => $config['headline_alignment'] ?? 'default',
       'child_heading_size' => $config['child_heading_size'] ?? 'h3',
     ]);
 
@@ -208,6 +209,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       '#hide_headline' => $config['hide_headline'],
       '#heading_size' => $config['heading_size'],
       '#headline_style' => $config['headline_style'],
+      '#headline_alignment' => $config['headline_alignment'],
     ];
 
     if (empty($config['headline'])) {
