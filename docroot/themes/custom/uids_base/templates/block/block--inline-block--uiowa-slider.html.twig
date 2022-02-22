@@ -31,8 +31,8 @@
   ]
 %}
 {{ attach_library('uids_base/slider') }}
-{{ content.field_uiowa_headline }}
 <div{{ attributes.addClass(classes) }}>
+  {{ content.field_uiowa_headline }}
   {{ title_prefix }}
   {{ title_suffix }}
   {{ content|without('field_uiowa_headline') }}
