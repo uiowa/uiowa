@@ -20,37 +20,37 @@ bundle: book
 mode: default
 content:
   body:
-    label: hidden
     type: text_default
-    weight: 2
-    region: content
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 2
+    region: content
   book_amended_date:
-    label: visually_hidden
     type: datetime_default
+    label: visually_hidden
     settings:
       timezone_override: ''
       format_type: month_year
+    third_party_settings: {  }
     weight: 1
     region: content
-    third_party_settings: {  }
   book_owner:
-    label: visually_hidden
     type: string
+    label: visually_hidden
     settings:
       link_to_entity: false
+    third_party_settings: {  }
     weight: 0
     region: content
-    third_party_settings: {  }
   book_tags:
-    label: above
     type: entity_reference_label
+    label: above
     settings:
       link: true
+    third_party_settings: {  }
     weight: 3
     region: content
-    third_party_settings: {  }
 hidden:
   links: true
   search_api_excerpt: true

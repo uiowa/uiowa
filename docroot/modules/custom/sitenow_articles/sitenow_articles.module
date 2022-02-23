@@ -333,7 +333,7 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
 
       $variables['rows'][$id]['card_options']['card_link_url'] = $card_link_url;
       $variables['rows'][$id]['card_options']['card_subtitle'] = $style->getField($id, 'created');
-      $variables['rows'][$id]['card_options']['card_tag'] = render($card_tag);
+      $variables['rows'][$id]['card_options']['card_tag'] = \Drupal::service('renderer')->render($card_tag);
       $variables['rows'][$id]['card_options']['card_meta'] = $style->getField($id, 'field_article_author');
     }
   }

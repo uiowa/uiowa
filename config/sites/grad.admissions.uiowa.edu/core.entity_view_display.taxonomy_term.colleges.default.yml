@@ -15,46 +15,49 @@ dependencies:
     - uids_base
 third_party_settings:
   layout_builder:
-    allow_custom: false
     enabled: true
+    allow_custom: false
     sections:
       -
         layout_id: layout_twocol
         layout_settings:
           label: ''
+          context_mapping: {  }
           column_widths: 67-33
           layout_builder_styles_style:
             0: ''
             1: section_margin_edge_to_edge
             section_alignment_start: section_alignment_start
-          context_mapping: {  }
         components:
           -
             uuid: 31ff3aae-c88a-4c6c-90df-6f8fef28d538
             region: first
             configuration:
+              id: 'field_block:taxonomy_term:colleges:description'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-              id: 'field_block:taxonomy_term:colleges:description'
               formatter:
-                label: hidden
                 type: text_default
+                label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            additional: {  }
             weight: 1
+            additional: {  }
           -
             uuid: 5a0ef301-f640-4b59-b308-5b291a828cb1
             region: first
             configuration:
               id: 'field_block:taxonomy_term:colleges:field_college_website'
               label: null
-              provider: layout_builder
               label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
-                label: hidden
                 type: link
+                label: hidden
                 settings:
                   trim_length: 80
                   url_only: false
@@ -64,37 +67,34 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
             weight: 0
+            additional: {  }
           -
             uuid: 4c2a67cd-3602-43e6-986d-759283a640d3
             region: second
             configuration:
               id: 'field_block:taxonomy_term:colleges:field_image'
               label: null
-              provider: layout_builder
               label_display: null
-              formatter:
-                label: hidden
-                type: entity_reference_entity_view
-                settings:
-                  view_mode: medium__widescreen
-                third_party_settings: {  }
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
-            additional: {  }
+              formatter:
+                type: entity_reference_entity_view
+                label: hidden
+                settings:
+                  view_mode: medium__widescreen
+                third_party_settings: {  }
             weight: 0
+            additional: {  }
         third_party_settings: {  }
   layout_builder_restrictions:
     allowed_block_categories: {  }
     entity_view_mode_restriction:
-      whitelisted_blocks: {  }
-      blacklisted_blocks: {  }
       allowed_layouts: {  }
+      blacklisted_blocks: {  }
+      whitelisted_blocks: {  }
     entity_view_mode_restriction_by_region:
       allowed_layouts: {  }
 id: taxonomy_term.colleges.default
@@ -103,14 +103,14 @@ bundle: colleges
 mode: default
 content:
   description:
-    label: hidden
     type: text_default
-    weight: 0
-    region: content
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
   field_college_website:
-    weight: 2
+    type: link
     label: above
     settings:
       trim_length: 80
@@ -119,16 +119,16 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    type: link
+    weight: 2
     region: content
   field_image:
     type: entity_reference_entity_view
-    weight: 1
     label: above
     settings:
       view_mode: default
       link: false
     third_party_settings: {  }
+    weight: 1
     region: content
 hidden:
   search_api_excerpt: true

@@ -26,17 +26,17 @@ third_party_settings:
         - field_section_justifycontent
         - field_uip_classes
         - field_uip_id
+      label: 'Section Settings'
+      region: content
       parent_name: ''
       weight: 2
       format_type: details
       format_settings:
         label: 'Section Settings'
-        required_fields: true
-        id: ''
         classes: ''
+        id: ''
         open: false
-      label: 'Section Settings'
-      region: content
+        required_fields: true
 _core:
   default_config_hash: 0OxPcbf3eE3vq2mVxfjnteaQeyx9Iwmnl4LmIkZLR1A
 id: paragraph.section.default
@@ -45,20 +45,21 @@ bundle: section
 mode: default
 content:
   field_section_alignitems:
+    type: options_select
     weight: 2
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-    region: content
   field_section_container:
+    type: options_select
     weight: 1
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-    region: content
   field_section_content_block:
     type: paragraphs
     weight: 1
+    region: content
     settings:
       title: 'Content Block'
       title_plural: 'Content Blocks'
@@ -74,41 +75,40 @@ content:
         collapse_edit_all: '0'
         duplicate: duplicate
     third_party_settings: {  }
-    region: content
   field_section_image:
     type: media_library_widget
     weight: 0
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   field_section_justifycontent:
+    type: options_select
     weight: 3
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-    region: content
   field_section_title:
+    type: string_textfield
     weight: 0
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_uip_classes:
+    type: options_select
     weight: 4
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-    region: content
   field_uip_id:
+    type: string_textfield
     weight: 5
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
 hidden:
   created: true
   status: true

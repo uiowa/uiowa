@@ -87,7 +87,7 @@ class SamlauthSubscriber implements EventSubscriberInterface {
     // Revoke all previously-mapped roles for existing users.
     if ($account->isNew() === FALSE) {
       $row = $this->authmap->getAuthData($account->id(), 'samlauth');
-      $data = unserialize($row['data']);
+      $data = unserialize($row['data'], ['allowed_classes' => FALSE]);
 
       if (!empty($data['uiowa_auth_mappings'])) {
         foreach ($data['uiowa_auth_mappings'] as $rid) {

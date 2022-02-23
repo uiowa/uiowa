@@ -144,7 +144,7 @@ class ExternalauthSubscriberTest extends EntityKernelTestBase {
 
     $sut = new ExternalAuthSubscriber($this->config, $this->logger, $this->authmap, $this->samlauth);
     $sut->onUserLogin($this->event);
-    $data = unserialize($this->authmap->getAuthData($account->id(), 'samlauth')['data']);
+    $data = unserialize($this->authmap->getAuthData($account->id(), 'samlauth')['data'], ['allowed_classes' => FALSE]);
     $count = array_count_values($data['uiowa_auth_mappings']);
     $this->assertEquals(1, $count['webmaster']);
     $this->assertArrayNotHasKey('editor', $count);

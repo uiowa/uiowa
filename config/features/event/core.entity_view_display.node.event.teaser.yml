@@ -31,15 +31,13 @@ mode: teaser
 content:
   field_event_location:
     type: address_default
-    weight: 3
-    region: content
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 3
+    region: content
   field_event_series_link:
     type: link
-    weight: 7
-    region: content
     label: above
     settings:
       trim_length: 80
@@ -48,20 +46,20 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
+    weight: 7
+    region: content
   field_event_series_link_direct:
     type: boolean
-    weight: 6
-    region: content
     label: above
     settings:
       format: boolean
-      format_custom_true: ''
       format_custom_false: ''
+      format_custom_true: ''
     third_party_settings: {  }
+    weight: 6
+    region: content
   field_event_virtual:
     type: link
-    weight: 4
-    region: content
     label: inline
     settings:
       trim_length: 80
@@ -70,40 +68,42 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
+    weight: 4
+    region: content
   field_event_when:
     type: smartdate_default
-    weight: 1
-    region: content
     label: inline
     settings:
-      format: default
-      format_type: medium
       timezone_override: ''
+      format_type: medium
+      format: default
       force_chronological: false
       add_classes: false
       time_wrapper: true
     third_party_settings: {  }
+    weight: 1
+    region: content
   field_image:
     type: entity_reference_entity_view
-    weight: 0
-    region: content
     label: hidden
     settings:
       view_mode: large__widescreen
       link: false
     third_party_settings: {  }
+    weight: 0
+    region: content
   field_teaser:
     type: basic_string
-    weight: 2
-    region: content
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-  links:
-    weight: 5
+    weight: 2
     region: content
+  links:
     settings: {  }
     third_party_settings: {  }
+    weight: 5
+    region: content
 hidden:
   body: true
   content_moderation_control: true

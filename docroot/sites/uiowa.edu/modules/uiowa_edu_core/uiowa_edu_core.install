@@ -20,7 +20,9 @@ function uiowa_edu_core_install() {
  * Import a-z links from the current website.
  */
 function uiowa_edu_core_update_8001(&$sandbox) {
-  $path = drupal_get_path('module', 'uiowa_edu_core');
+  /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
+  $path_resolver = \Drupal::service('extension.path.resolver');
+  $path = $path_resolver->getPath('module', 'uiowa_edu_core');
   $csv = array_map('str_getcsv', file($path . '/a-z/batch01.csv'));
   $header = FALSE;
 
@@ -46,8 +48,9 @@ function uiowa_edu_core_update_8001(&$sandbox) {
  * First batch of redirects.
  */
 function uiowa_edu_core_update_8002() {
-
-  $path = drupal_get_path('module', 'uiowa_edu_core');
+  /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
+  $path_resolver = \Drupal::service('extension.path.resolver');
+  $path = $path_resolver->getPath('module', 'uiowa_edu_core');
   $csv = array_map('str_getcsv', file($path . '/redirects/redirects01.csv'));
   $header = FALSE;
 

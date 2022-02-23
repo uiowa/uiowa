@@ -46,18 +46,16 @@ mode: teaser
 content:
   field_book_author:
     type: entity_reference_label
-    weight: 1
-    region: content
     label: visually_hidden
     settings:
       link: true
     third_party_settings:
       field_delimiter:
         delimiter: ''
+    weight: 1
+    region: content
   field_book_type:
     type: entity_reference_revisions_entity_view
-    weight: 2
-    region: content
     label: hidden
     settings:
       view_mode: teaser
@@ -65,15 +63,17 @@ content:
     third_party_settings:
       field_delimiter:
         delimiter: ''
+    weight: 2
+    region: content
   field_image:
     type: entity_reference_entity_view
-    weight: 0
-    region: content
     label: hidden
     settings:
       view_mode: medium__no_crop
       link: false
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   field_book_afterword_author: true
   field_book_art: true

@@ -21,70 +21,70 @@ third_party_settings:
         - field_uip_colwidth
         - field_uip_classes
         - field_uip_id
+      label: 'Featured Content Settings'
+      region: content
       parent_name: ''
       weight: 3
       format_type: details
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         open: false
         required_fields: true
-      label: 'Featured Content Settings'
-      region: content
 id: paragraph.featured_content.default
 targetEntityType: paragraph
 bundle: featured_content
 mode: default
 content:
   field_featured_content:
+    type: entity_browser_entity_reference
     weight: 2
+    region: content
     settings:
       entity_browser: featured_content_browser
       field_widget_display: label
-      field_widget_remove: true
-      open: true
-      selection_mode: selection_append
       field_widget_edit: false
+      field_widget_remove: true
       field_widget_replace: false
+      open: true
       field_widget_display_settings: {  }
+      selection_mode: selection_append
     third_party_settings: {  }
-    type: entity_browser_entity_reference
-    region: content
   field_uip_classes:
+    type: options_select
     weight: 5
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-    region: content
   field_uip_colwidth:
+    type: options_select
     weight: 4
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-    region: content
   field_uip_display_title:
+    type: boolean_checkbox
     weight: 1
+    region: content
     settings:
       display_label: true
     third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
   field_uip_id:
+    type: string_textfield
     weight: 6
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_uip_title:
+    type: string_textfield
     weight: 0
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
 hidden:
   created: true
   status: true

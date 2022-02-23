@@ -2,11 +2,11 @@ uuid: 7be063e6-1e51-49ca-ac50-2cf9f67c1533
 langcode: en
 status: true
 dependencies:
+  module:
+    - node
   enforced:
     module:
       - sitenow_student_profile
-  module:
-    - node
 id: student_profiles
 label: 'Student profiles'
 type: 'canonical_entities:node'
@@ -14,12 +14,12 @@ pattern: 'students/profiles/[node:title]'
 selection_criteria:
   0b80a732-4905-4357-9996-c7ebda4e4939:
     id: node_type
-    bundles:
-      student_profile: student_profile
     negate: false
+    uuid: 0b80a732-4905-4357-9996-c7ebda4e4939
     context_mapping:
       node: node
-    uuid: 0b80a732-4905-4357-9996-c7ebda4e4939
+    bundles:
+      student_profile: student_profile
 selection_logic: and
 weight: -5
 relationships: {  }
