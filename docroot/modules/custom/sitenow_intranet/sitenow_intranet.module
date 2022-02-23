@@ -18,6 +18,7 @@ function sitenow_intranet_restrict_ip_access_denied_page_alter(&$page) {
   if (isset($page['access_denied'])) {
     unset($page['access_denied']);
   }
+
   // Create our own access denied page and login.
   $page['main'] = [
     '#type' => 'html_tag',
@@ -27,6 +28,7 @@ function sitenow_intranet_restrict_ip_access_denied_page_alter(&$page) {
       'class' => 'page__container',
     ],
   ];
+
   $page['main']['access_denied_title_container'] = [
     '#type' => 'html_tag',
     '#tag' => 'div',
@@ -39,11 +41,13 @@ function sitenow_intranet_restrict_ip_access_denied_page_alter(&$page) {
       ],
     ],
   ];
+
   $page['main']['access_denied_title_container']['access_denied_title'] = [
     '#markup' => t('Access denied'),
     '#prefix' => '<h1 class="page-title bold-headline--serif bold-headline text-align-center">',
     '#suffix' => '</h1>',
   ];
+
   // Display a different message to authenticated users with no other roles.
   $roles = \Drupal::currentUser()->getRoles();
   if (count($roles) === 1 && in_array('authenticated', $roles)) {
@@ -52,6 +56,8 @@ function sitenow_intranet_restrict_ip_access_denied_page_alter(&$page) {
       '#prefix' => '<p class="text-align-center">',
       '#suffix' => '</p>',
     ];
+
+    $page['#attached']['http_header'][] = ['Status', '403 Forbidden'];
   }
   else {
     $page['main']['access_denied_message'] = [
@@ -64,6 +70,8 @@ function sitenow_intranet_restrict_ip_access_denied_page_alter(&$page) {
       '#prefix' => '<p class="text-align-center">',
       '#suffix' => '</p>',
     ];
+
+    $page['#attached']['http_header'][] = ['Status', '401 Unauthorized'];
   }
 
   if (isset($page['logout_link'])) {
