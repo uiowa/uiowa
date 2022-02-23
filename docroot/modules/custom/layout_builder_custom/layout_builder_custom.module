@@ -285,12 +285,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               unset($form['settings']['menu_levels']['depth']['#options'][$key]);
             }
           }
-
-          // We're removing the 1 option because it causes issues with a
-          // discrepancy between the preview and what is shown on the page after
-          // saving. Also, we consider it bad practice showing the top-level
-          // menu again on a page.
-          // unset($form['settings']['menu_levels']['level']['#options'][1]);
+          
           // Unset the advanced description since it refers to
           // functionality that we are not offering.
           unset($form['settings']['advanced']['follow']['#description']);
