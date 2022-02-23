@@ -394,10 +394,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       break;
 
     case 'layout_builder_configure_section':
-      // Sort section background style alphabetically.
-      // @todo Remove after https://www.drupal.org/project/layout_builder_styles/issues/3159865 lands.
-      sort($form['layout_builder_style_background']['#options']);
-
       // Remove container settings - None - empty option.
       unset($form['layout_builder_style_container']['#empty_option']);
       // Add (Default) after Normal option.
