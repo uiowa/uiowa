@@ -27,7 +27,7 @@
           width: 80%;
         }
 
-        @include breakpoint(container) {
+        @include breakpoint(page-container) {
           width: 60%;
         }
       }
@@ -105,7 +105,7 @@
         width: 80%;
       }
 
-      @include breakpoint(container) {
+      @include breakpoint(page-container) {
         width: 50%;
       }
     }
@@ -118,7 +118,7 @@
     .slider__slide {
       .banner.banner--vertical-bottom.banner--horizontal-left {
         .banner__content {
-          @include breakpoint(container) {
+          @include breakpoint(page-container) {
             padding: 3rem 1.5rem 4rem;
           }
         }
@@ -126,7 +126,7 @@
     }
     .banner.banner--vertical-bottom.banner--horizontal-left {
       .banner__content {
-        @include breakpoint(container) {
+        @include breakpoint(page-container) {
           padding: 3rem 1.5rem 4rem 0rem;
         }
       }
@@ -146,7 +146,7 @@
   // Remove left/right padding if edge-to-edge is selected
   .layout--onecol[class*=page__container--edge] {
     .banner__content {
-      @include breakpoint(container) {
+      @include breakpoint(page-container) {
         padding: 3rem 0;
       }
     }
