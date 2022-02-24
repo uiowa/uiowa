@@ -28,6 +28,13 @@ class Articles extends BaseNodeSource {
   protected $termMapping;
 
   /**
+   * Tag-to-name mapping for keywords.
+   *
+   * @var array
+   */
+  protected $tagMapping;
+
+  /**
    * {@inheritdoc}
    */
   public function query() {
@@ -65,6 +72,7 @@ class Articles extends BaseNodeSource {
     // field_news_authors value.
     $tables = [
       'field_data_field_news_author' => ['field_news_author_tid'],
+      'field_data_field_news_tags' => ['field_news_tags_tid'],
     ];
     $this->fetchAdditionalFields($row, $tables);
     $author_tids = $row->getSourceProperty('field_news_author_tid');
@@ -98,6 +106,26 @@ class Articles extends BaseNodeSource {
       // Extract the summary.
       $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));
     }
+
+    $tags = [];
+    $tag_tids = $row->getSourceProperty('field_news_tags_tid');
+    // Lookup and store new term given a TID on the old site.
+    foreach ($tag_tids as $tid) {
+
+      if ($refs = $row->getSourceProperty($field_name)) {
+        foreach ($refs as $ref) {
+          if ($lookup = $this->manualLookup($ref['tid'])) {
+            $tags[] = $lookup;
+            $this->logger->info('Replaced term @tid in article @article.', [
+              '@tid' => $ref['tid'],
+              '@article' => $row->getSourceProperty('title'),
+            ]);
+          }
+        }
+      }
+    }
+
+    $row->setSourceProperty('tags', $tags);
 
     return TRUE;
   }
