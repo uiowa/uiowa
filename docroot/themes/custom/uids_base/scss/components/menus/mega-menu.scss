@@ -74,12 +74,12 @@ ul.sf-mega-menu.sf-accordion li li.sf-depth-2.sfHover > ul {
     gap: $md;
     grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr) );
     padding: $md;
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       padding: $md 0;
     }
   }
 
-  @include breakpoint(container) {
+  @include breakpoint(page-container) {
     // sets max-width to container width
     max-width: 81.875rem;
     margin: 0 auto;
