@@ -763,7 +763,7 @@ function admissions_core_preprocess_views_view_unformatted(&$variables) {
         }
 
         if ($style_class === 'block_hide_details') {
-          if (($key = array_search("card--enclosed", $variables['row_item_classes'])) !== false) {
+          if (($key = array_search("card--enclosed", $variables['row_item_classes'])) !== FALSE) {
             unset($variables['row_item_classes'][$key]);
           }
         }
