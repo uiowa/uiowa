@@ -1,12 +1,24 @@
 .block-views-blockstudent-card-block-student-grid {
+  &[class*="grid"].hide-details {
+    .view-content.list-container {
+      gap: 0 !important;
+    }
+
+    .card__body {
+      display: none;
+    }
+  }
+
   .views-col {
     display: flex;
     align-items: stretch;
+
     a:not(:empty) {
       display: flex;
       justify-content: center;
       align-items: center;
       width: 100%;
+
       .empty-img {
         width: 100%;
         padding-top: (1 / 1) * 100%;
@@ -17,6 +29,7 @@
       }
     }
   }
+
   .views-row {
     display: flex;
   }
