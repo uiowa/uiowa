@@ -768,12 +768,17 @@ function admissions_core_preprocess_views_view_unformatted(&$variables) {
       if (isset($variables['row_item_classes'])) {
         $variables['rows'][$id]['attributes']->addClass($variables['row_item_classes']);
       }
+      // Get node path to link card with.
+      $nid = $view->result[$id]->_entity->id();
+      $link = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
+
       // Initialize card_options variable.
       $variables['rows'][$id]['card_options'] = [
         'attributes' => $variables['rows'][$id]['attributes'],
         'media_styles' => $style_classes,
         'media_sizes' => $size_classes,
         'card_title' => $style->getField($id, 'title'),
+        'card_link_url' => $link,
         'card_image' => $style->getField($id, 'field_student_profile_image'),
         'card_subtitle' => $style->getField($id, 'field_student_profile_major'),
       ];
