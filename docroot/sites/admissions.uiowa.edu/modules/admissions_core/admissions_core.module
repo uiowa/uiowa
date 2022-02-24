@@ -742,6 +742,7 @@ function admissions_core_preprocess_views_view_unformatted(&$variables) {
       'card--person-teaser',
       'card--list',
       'bg--white',
+      'card--enclosed',
       'card--centered-left',
       'card--alignment-left'
     ];
@@ -757,9 +758,14 @@ function admissions_core_preprocess_views_view_unformatted(&$variables) {
         }
         elseif ($style_class === 'list_format_list') {
           $variables['row_item_classes'][] = 'card--media-left';
-          $variables['row_item_classes'][] = 'card--enclosed';
           $style_classes = ['media--circle', 'media--border'];
           $size_classes = ['card--media-left', 'card__media--small'];
+        }
+
+        if ($style_class === 'block_hide_details') {
+          if (($key = array_search("card--enclosed", $variables['row_item_classes'])) !== false) {
+            unset($variables['row_item_classes'][$key]);
+          }
         }
       }
     }
