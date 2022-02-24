@@ -57,7 +57,8 @@ function sitenow_intranet_restrict_ip_access_denied_page_alter(&$page) {
       '#suffix' => '</p>',
     ];
 
-    $page['#attached']['http_header'][] = ['Status', '403 Forbidden'];
+    // If the user is authenticated but has no other roles, return a 403.
+    $page['#attached']['http_header'][] = ['Status', '403'];
   }
   else {
     $page['main']['access_denied_message'] = [
@@ -71,7 +72,8 @@ function sitenow_intranet_restrict_ip_access_denied_page_alter(&$page) {
       '#suffix' => '</p>',
     ];
 
-    $page['#attached']['http_header'][] = ['Status', '401 Unauthorized'];
+    // If the user is not authenticated, return a 401.
+    $page['#attached']['http_header'][] = ['Status', '401'];
   }
 
   if (isset($page['logout_link'])) {
