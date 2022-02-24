@@ -17,6 +17,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class SettingsForm extends ConfigFormBase {
 
   /**
+   * Config settings.
+   *
+   * @var string
+   */
+  const SETTINGS = 'sitenow_people.settings';
+  /**
    * The alias cleaner.
    *
    * @var \Drupal\pathauto\AliasCleanerInterface
@@ -100,6 +106,7 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $config = $this->config(static::SETTINGS);
     $form = parent::buildForm($form, $form_state);
     $view = $this->entityTypeManager->getStorage('view')->load('people');
 
@@ -211,6 +218,24 @@ class SettingsForm extends ConfigFormBase {
       '#description' => $this->t('Choose the sorting preference for the people listing.'),
     ];
 
+    $tag_display_type = $config->get('tag_display_type');
+
+    $form['global']['tag_display_type'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Display tags'),
+      '#description' => $this->t('Set the default way to display a person\'s tags in their page.'),
+      '#options' => [
+        'do_not_display' => $this
+          ->t('Do not display tags'),
+        'tags' => $this
+          ->t('Display tag buttons'),
+        'related' => $this
+          ->t('Display related content'),
+        'tags_and_related' => $this
+          ->t('Display tag buttons and related content')
+      ],
+      '#default_value' => $tag_display_type ?: 'do_not_display',
+    ];
     return $form;
   }
 
@@ -246,7 +271,7 @@ class SettingsForm extends ConfigFormBase {
     $filters['field_person_types_target_id'] = $form_state->getValue('filter_type');
     $filters['field_person_research_areas_target_id'] = $form_state->getValue('filter_research');
     $sort = $form_state->getValue('sitenow_people_sort');
-
+    $tag_display_type = $form_state->getValue('tag_display_type');
     // Clean path.
     $path = $this->aliasCleaner->cleanString($path);
 
@@ -480,6 +505,11 @@ class SettingsForm extends ConfigFormBase {
         $this->pathAutoGenerator->updateEntityAlias($entity, 'update');
       }
     }
+
+    $this->configFactory->getEditable(static::SETTINGS)
+      // Save the tag display default.
+      ->set('tag_display_type', $tag_display_type)
+      ->save();
 
     parent::submitForm($form, $form_state);
 

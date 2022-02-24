@@ -164,6 +164,26 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => $featured_image_display_default ?: 'large',
     ];
 
+    $tag_display_type = $config->get('tag_display_type');
+
+    $form['article_node']['tag_display_type'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Display tags in articles'),
+      '#description' => $this->t('Set the default way to display an article\'s tags in the article.'),
+      '#options' => [
+        'do_not_display' => $this
+          ->t('Do not display tags'),
+        'tags' => $this
+          ->t('Display tag buttons'),
+        'related' => $this
+          ->t('Display related content'),
+        'tags_and_related' => $this
+          ->t('Display tag buttons and related content')
+      ],
+      '#default_value' => $tag_display_type ?: 'do_not_display',
+    ];
+
+
     $form['view_page'] = [
       '#type' => 'fieldset',
       '#title' => 'View Page Settings',
@@ -256,12 +276,17 @@ class SettingsForm extends ConfigFormBase {
     $header_content = $form_state->getValue('sitenow_articles_header_content');
     $show_archive = $form_state->getValue('sitenow_articles_archive');
     $featured_image_display_default = $form_state->getValue('featured_image_display_default');
+    $tag_display_type = $form_state->getValue('tag_display_type');
 
     $this->configFactory->getEditable(static::SETTINGS)
       // Save the featured image display default.
       ->set('featured_image_display_default', $featured_image_display_default)
       ->save();
 
+    $this->configFactory->getEditable(static::SETTINGS)
+      // Save the tag display default.
+      ->set('tag_display_type', $tag_display_type)
+      ->save();
     // Clean path.
     $path = $this->aliasCleaner->cleanString($path);
 
