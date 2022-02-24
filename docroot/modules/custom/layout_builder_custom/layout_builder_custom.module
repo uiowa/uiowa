@@ -285,7 +285,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               unset($form['settings']['menu_levels']['depth']['#options'][$key]);
             }
           }
-          
+
           // Unset the advanced description since it refers to
           // functionality that we are not offering.
           unset($form['settings']['advanced']['follow']['#description']);
