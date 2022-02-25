@@ -101,6 +101,8 @@ function uiowa_core_preprocess_page(&$variables) {
 
    if(isset($node)){
       $node_type = $node->bundle();
+      //@todo this needs to be cleaned up. Too much repetition. Variable variables?
+      // e.g., switch(${$display_type}){ ...
       switch($node_type){
 
         case 'article':
@@ -117,10 +119,9 @@ function uiowa_core_preprocess_page(&$variables) {
               unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
             break;
 
-            case 'do_not_display':
+            default:
               unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
               unset($variables['page']['pre_footer']['views_block__tags_list_block_tags_related']);
-            break;
           }
           break;
         case 'page':
@@ -137,12 +138,10 @@ function uiowa_core_preprocess_page(&$variables) {
               unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
             break;
 
-            case 'do_not_display':
+            default:
               unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
               unset($variables['page']['pre_footer']['views_block__tags_list_block_tags_related']);
-            break;
           }
-          break;
         case 'person':
           switch($person_tag_display_type){
             case 'tags_and_related':
@@ -156,18 +155,19 @@ function uiowa_core_preprocess_page(&$variables) {
             case 'related':
               unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
             break;
-
-            case 'do_not_display':
+            //Hide related and tags list on topic collection, since this content type is based around navigating by tag.
+            case 'topic_collection':
               unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
               unset($variables['page']['pre_footer']['views_block__tags_list_block_tags_related']);
             break;
+
+            //Hide on anything else that we're not sure this makes sense for (Areas of Study, etc)
+            default:
+              unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
+              unset($variables['page']['pre_footer']['views_block__tags_list_block_tags_related']);
           }
           break;
-        //Hide related and tags list on topic collection, since this content type is based around navigating by tag.
-        case 'topic_collection':
-          unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
-          unset($variables['page']['pre_footer']['views_block__tags_list_block_tags_related']);
-        break;
+
 
       }
     }

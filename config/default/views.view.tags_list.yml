@@ -219,11 +219,11 @@ display:
         type: html_list
         options:
           grouping: {  }
-          row_class: ''
+          row_class: tags-list__tag
           default_row_class: true
           type: ul
-          wrapper_class: ''
-          class: ''
+          wrapper_class: 'item-list block-padding__bottom'
+          class: tags-list
       row:
         type: fields
       query:
@@ -396,6 +396,43 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+      pager:
+        type: some
+        options:
+          offset: 0
+          items_per_page: 30
+      sorts:
+        name:
+          id: name
+          table: taxonomy_term_field_data
+          field: name
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: taxonomy_term
+          entity_field: name
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: ''
+          exposed: false
+        changed:
+          id: changed
+          table: node_field_data
+          field: changed
+          relationship: nid
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          entity_field: changed
+          plugin_id: date
+          order: DESC
+          expose:
+            label: ''
+            field_identifier: ''
+          exposed: false
+          granularity: second
       arguments:
         tid:
           id: tid
@@ -485,7 +522,7 @@ display:
           row_class: ''
           default_row_class: true
           type: ul
-          wrapper_class: ''
+          wrapper_class: 'bg--gray item-list block-padding__top block-padding__bottom'
           class: ''
       row:
         type: fields
@@ -502,11 +539,18 @@ display:
         query: false
         title: false
         css_class: false
+        pager: false
+        use_more: false
+        use_more_always: false
+        use_more_text: false
+        link_display: false
+        link_url: false
         group_by: false
         style: false
         row: false
         relationships: false
         fields: false
+        sorts: false
         arguments: false
       relationships:
         nid:
@@ -531,10 +575,16 @@ display:
       css_class: 'topic-page--all col--threecol--33'
       group_by: false
       display_description: ''
+      use_more: false
+      use_more_always: false
+      use_more_text: More
+      link_display: custom_url
+      link_url: '/tags/{{ raw_arguments.tid }}'
       display_extenders:
         metatag_display_extender:
           metatags: {  }
           tokenize: false
+      block_hide_empty: true
     cache_metadata:
       max-age: -1
       contexts:
@@ -554,6 +604,7 @@ display:
         metatag_display_extender:
           metatags: {  }
           tokenize: false
+      block_hide_empty: true
     cache_metadata:
       max-age: -1
       contexts:

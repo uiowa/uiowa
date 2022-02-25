@@ -1,3 +1,80 @@
+
+@import "../uids/assets/scss/_variables.scss";
+// $imgpath: '../../uids/assets/images';
+@import "../uids/assets/scss/_utilities.scss";
+// @import "../uids/assets/scss/_local-fonts.scss";
+// @import "../uids/assets/scss/_base.scss";
+@import "badge.scss";
+@import "components/headline/_headline-mixins.scss";
 .block-views-blocktopic-page-browse-by-tag-block-3 .headline__heading, .block-views-blocktopic-page-browse-by-tag-block-2 .headline__heading{
+
+}
+
+
+.block-views-blocktags-list-tags-list{
+  @extend %container;
+  h2{
+    @include headline;
+    @include headline-serif;
+    font-size: 1.4rem;
+    display: inline-block;
+    margin-right: 5px;
+    margin-bottom: 0;
+  }
+
+  &>div{
+    display: inline-block;
+  }
+}
+
+.tags-list{
+  margin: 0;
+
+}
+
+.tags-list__tag{
+    @extend .badge;
+    font-size: 1em;
+    margin-bottom: 1rem;
+    font-weight: lighter;
+    padding: 0 1rem;
+    background: #fff;
+    border-color:rgba(0, 0, 0, 0.125);
+
+    &:hover,
+    &:focus {
+      background: $primary;
+    }
+
+    a{
+      text-decoration: none;
+      color: #151515;
+    }
+}
+
+.block-views-blocktags-list-block-tags-related{
+  background: $light;
+
+
+  h2{
+    font-size: 1.4rem;
+    @extend %container;
+    //hack to prevent a change in container width (which is in em) when font size isn't 1em
+    max-width: 1310px;
+    @include headline;
+    @include headline-serif;
+    padding-top: $desktop-width-gutter;
+  }
+
+  :is(h1, h2, h3, h4, h5, h6) a {
+    color: $link-color;
+    text-decoration: none;
+    font-family: $font-family-serif;
+    font-weight: $font-weight-medium-bold;
+  }
+
+  &>div{
+    @extend %container;
+  }
 
 }
