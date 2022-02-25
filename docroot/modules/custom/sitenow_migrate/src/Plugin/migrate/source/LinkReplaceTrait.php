@@ -204,8 +204,12 @@ trait LinkReplaceTrait {
           // Checks for any links using the node/ format
           // and reports the node id on which it was found
           // and the linked text.
-          if (preg_match_all('|<a.*?node.*?>(.*?)<\/a>|i', $value, $matches)) {
-            $oopsie_daisies[$entity_id] = implode(',', $matches[1]);
+          if (preg_match_all('|<a.*?(node.*?)">(.*?)<\/a>|i', $value, $matches)) {
+            $links = [];
+            for ($i = 0; $i < count($matches[0]); $i++) {
+              $links[] = $matches[2][$i] . ': ' . $matches[1][$i];
+            }
+            $oopsie_daisies[$entity_id] = implode(',', $links);
           }
         }
 
