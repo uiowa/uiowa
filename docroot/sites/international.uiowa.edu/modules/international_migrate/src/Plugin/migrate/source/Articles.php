@@ -7,6 +7,7 @@ use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\LinkReplaceTrait;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Migrate Source plugin.
@@ -107,24 +108,39 @@ class Articles extends BaseNodeSource {
       $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));
     }
 
-    $tags = [];
-    $tag_tids = $row->getSourceProperty('field_news_tags_tid');
-    // Lookup and store new term given a TID on the old site.
-    foreach ($tag_tids as $tid) {
-
-      if ($refs = $row->getSourceProperty($field_name)) {
-        foreach ($refs as $ref) {
-          if ($lookup = $this->manualLookup($ref['tid'])) {
-            $tags[] = $lookup;
-            $this->logger->info('Replaced term @tid in article @article.', [
-              '@tid' => $ref['tid'],
-              '@article' => $row->getSourceProperty('title'),
-            ]);
-          }
-        }
-      }
+    // Set our tagMapping if it's not already.
+    if (empty($this->tagMapping)) {
+      $this->tagMapping = \Drupal::database()
+        ->select('taxonomy_term_field_data', 't')
+        ->fields('t', ['name', 'tid'])
+        ->condition('t.vid', 'tags', '=')
+        ->execute()
+        ->fetchAllKeyed();
     }
 
+    $tag_tids = $row->getSourceProperty('field_news_tags_tid');
+    // Fetch tag names based on TIDs from our old site.
+    $tag_results = $this->select('taxonomy_term_data', 't')
+      ->fields('t', ['name'])
+      ->condition('t.tid', $tag_tids, 'IN')
+      ->execute();
+    $tags = [];
+    foreach ($tag_results as $result) {
+      $tag_name = $result['name'];
+      // Check if we have a mapping. If we don't yet,
+      // then create a new tag and add it to our map.
+      if (!isset($this->tagMapping[$tag_name])) {
+        $term = Term::create([
+          'name' => $tag_name,
+          'vid' => 'tags',
+        ]);
+        if ($term->save()) {
+          $this->tagMapping[$tag_name] = $term->id();
+        }
+        // Add the mapped TID to match our tag name.
+        $tags[] = $this->tagMapping[$tag_name];
+      }
+    }
     $row->setSourceProperty('tags', $tags);
 
     return TRUE;
