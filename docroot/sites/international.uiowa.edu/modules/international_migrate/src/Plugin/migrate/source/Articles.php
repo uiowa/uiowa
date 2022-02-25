@@ -96,7 +96,8 @@ class Articles extends BaseNodeSource {
 
     if (!empty($body)) {
       // Search for D7 inline embeds and replace with D8 inline entities.
-      $this->viewMode = 'large__no_crop';
+      $this->viewMode = 'medium__no_crop';
+      $this->align = 'left';
       $body[0]['value'] = $this->replaceInlineFiles($body[0]['value']);
 
       // Set the format to filtered_html while we have it.
