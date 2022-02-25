@@ -1,31 +1,7 @@
-
 @import "../uids/assets/scss/_variables.scss";
-// $imgpath: '../../uids/assets/images';
 @import "../uids/assets/scss/_utilities.scss";
-// @import "../uids/assets/scss/_local-fonts.scss";
-// @import "../uids/assets/scss/_base.scss";
 @import "badge.scss";
 @import "components/headline/_headline-mixins.scss";
-.block-views-blocktopic-page-browse-by-tag-block-3 .headline__heading, .block-views-blocktopic-page-browse-by-tag-block-2 .headline__heading{
-
-}
-
-
-.block-views-blocktags-list-tags-list{
-  @extend %container;
-  h2{
-    @include headline;
-    @include headline-serif;
-    font-size: 1.4rem;
-    display: inline-block;
-    margin-right: 5px;
-    margin-bottom: 0;
-  }
-
-  &>div{
-    display: inline-block;
-  }
-}
 
 .tags-list{
   margin: 0;
@@ -52,10 +28,25 @@
     }
 }
 
+//Views, can probably be moved to another scss file in views/ ?
+.block-views-blocktags-list-tags-list{
+  @extend %container;
+  h2{
+    @include headline;
+    @include headline-serif;
+    font-size: 1.4rem;
+    display: inline-block;
+    margin-right: 5px;
+    margin-bottom: 0;
+  }
+
+  &>div{
+    display: inline-block;
+  }
+}
+
 .block-views-blocktags-list-block-tags-related{
   background: $light;
-
-
   h2{
     font-size: 1.4rem;
     @extend %container;
