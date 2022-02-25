@@ -27,6 +27,13 @@ trait ProcessMediaTrait {
   protected $viewMode = 'medium__no_crop';
 
   /**
+   * The default image alignment.
+   *
+   * @var string
+   */
+  protected $align = 'center';
+
+  /**
    * Get the URL of the source public files path with a trailing slash.
    *
    * @return string
@@ -225,7 +232,7 @@ trait ProcessMediaTrait {
    *   Returns markup as a plaintext string.
    */
   public function constructInlineEntity(string $uuid, string $align, $view_mode = '') {
-    $align = $align ?? 'center';
+    $align = !empty($align) ? $align : $this->align;
 
     $media = [
       '#type' => 'html_tag',
