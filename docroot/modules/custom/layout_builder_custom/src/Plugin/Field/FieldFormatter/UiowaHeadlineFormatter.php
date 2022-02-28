@@ -33,7 +33,8 @@ class UiowaHeadlineFormatter extends FormatterBase {
       $item_style = isset($styles[$item->get('headline_style')->getValue()]) ?
         $styles[$item->get('headline_style')->getValue()] . $hidden : $hidden;
 
-      $item_alignment = $alignment[$item->get('headline_alignment')->getValue()] ?? 'default';
+      $item_alignment = isset($alignment[$item->get('headline_alignment')->getValue()]) ?
+        $alignment[$item->get('headline_alignment')->getValue()] . $hidden : $hidden;
 
       $element[$delta] = [
         '#theme' => 'uiowa_headline_field_type',
