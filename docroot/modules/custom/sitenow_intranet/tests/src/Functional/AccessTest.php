@@ -25,6 +25,7 @@ class AccessTest extends BrowserTestBase {
     'restrict_ip',
     'samlauth',
     'sitenow_intranet',
+    'uiowa_auth'
   ];
 
   /**
@@ -44,6 +45,15 @@ class AccessTest extends BrowserTestBase {
     $node = $this->drupalCreateNode();
     $this->drupalGet('node/' . $node->id());
     $this->assertSession()->statusCodeEquals(401);
+  }
+
+  /**
+   * Test the footer login link is not present.
+   */
+  public function testNoFooterLoginLink() {
+    $node = $this->drupalCreateNode();
+    $this->drupalGet('node/' . $node->id());
+    $this->assertSession()->elementNotExists('css', '.uiowa-footer--login-link');
   }
 
 }
