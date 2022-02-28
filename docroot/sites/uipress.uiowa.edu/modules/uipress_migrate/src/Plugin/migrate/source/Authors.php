@@ -2,11 +2,8 @@
 
 namespace Drupal\uipress_migrate\Plugin\migrate\source;
 
-use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
-use Drupal\sitenow_migrate\Plugin\migrate\source\LinkReplaceTrait;
-use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
 
 /**
  * Migrate Source plugin.
@@ -17,8 +14,6 @@ use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
  * )
  */
 class Authors extends BaseNodeSource {
-  use ProcessMediaTrait;
-  use LinkReplaceTrait;
 
   /**
    * {@inheritdoc}
