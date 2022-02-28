@@ -6,7 +6,7 @@ use Drupal\filter\Entity\FilterFormat;
 use Drupal\Tests\BrowserTestBase;
 
 /**
- * Test description.
+ * Tests for intranet module.
  *
  * @group sitenow_intranet
  */
@@ -25,7 +25,6 @@ class AccessTest extends BrowserTestBase {
     'filter',
     'node',
     'robotstxt',
-    'samlauth',
     'sitenow_intranet',
     'simple_sitemap'
   ];
@@ -43,10 +42,21 @@ class AccessTest extends BrowserTestBase {
   /**
    * Test hook_restrict_ip_access_denied_page_alter in sitenow_intranet.
    */
-  public function testNodeReturnsAccessDenied() {
+  public function testAccessDeniedResponseCode() {
     $node = $this->drupalCreateNode();
     $this->drupalGet('node/' . $node->id());
     $this->assertSession()->statusCodeEquals(401);
+  }
+
+  /**
+   * Test an authenticated user gets a 403.
+   */
+  public function testUnauthorizedResponseCode() {
+    $user = $this->createUser();
+    $this->drupalLogin($user);
+    $node = $this->drupalCreateNode();
+    $this->drupalGet('node/' . $node->id());
+    $this->assertSession()->statusCodeEquals(403);
   }
 
   /**
@@ -75,15 +85,46 @@ class AccessTest extends BrowserTestBase {
   }
 
   /**
-   * Test the title and message functionality for access denied response.
+   * Test the title and message functionality for a 401 response.
    */
   public function testAccessDeniedTitleMessage() {
     $this->config('sitenow_intranet.settings')
-      ->set('access_denied.title', 'FOO BAR BAZ')
+      ->set('access_denied.title', 'Access Denied')
       ->set('access_denied.message', '<p>This is some markup.</p>')
       ->save();
 
-    // Set up the filter format used by our code.
+    $this->setUpFilter();
+    $node = $this->drupalCreateNode();
+    $this->drupalGet('node/' . $node->id());
+    $this->assertSession()->pageTextContains('Access Denied');
+    $this->assertSession()->responseContains('<p>This is some markup.</p>');
+  }
+
+  /**
+   * Test the title and message functionality for a 403 response.
+   */
+  public function testUnauthorizedTitleMessage() {
+    $this->config('sitenow_intranet.settings')
+      ->set('unauthorized.title', 'Unauthorized')
+      ->set('unauthorized.message', '<p>This is <strong>some</strong> markup.</p>')
+      ->save();
+
+    $this->setUpFilter();
+    $user = $this->createUser();
+    $this->drupalLogin($user);
+    $node = $this->drupalCreateNode();
+    $this->drupalGet('node/' . $node->id());
+    $this->assertSession()->pageTextContains('Unauthorized');
+    $this->assertSession()->responseContains('<p>This is <strong>some</strong> markup.</p>');
+  }
+
+  /**
+   * Set up the filter format used by our code.
+   *
+   * @return void
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  protected function setUpFilter(): void {
     $minimal = FilterFormat::create([
       'format' => 'minimal',
       'name' => 'Minimal',
@@ -98,11 +139,6 @@ class AccessTest extends BrowserTestBase {
     ]);
 
     $minimal->save();
-
-    $node = $this->drupalCreateNode();
-    $this->drupalGet('node/' . $node->id());
-    $this->assertSession()->pageTextContains('FOO BAR BAZ');
-    $this->assertSession()->responseContains('<p>This is some markup.</p>');
   }
 
 }
