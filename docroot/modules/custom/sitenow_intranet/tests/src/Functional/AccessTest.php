@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\sitenow_intranet\Functional;
 
+use Drupal\filter\Entity\FilterFormat;
 use Drupal\Tests\BrowserTestBase;
 
 /**
@@ -21,13 +22,12 @@ class AccessTest extends BrowserTestBase {
   public static $modules = [
     'block',
     'config_split',
+    'filter',
     'node',
-    'restrict_ip',
     'robotstxt',
     'samlauth',
     'sitenow_intranet',
-    'simple_sitemap',
-    'uiowa_auth',
+    'simple_sitemap'
   ];
 
   /**
@@ -72,6 +72,37 @@ class AccessTest extends BrowserTestBase {
     $node = $this->drupalCreateNode();
     $this->drupalGet('node/' . $node->id());
     $this->assertSession()->elementNotExists('css', '.uiowa-footer--login-link');
+  }
+
+  /**
+   * Test the title and message functionality for access denied response.
+   */
+  public function testAccessDeniedTitleMessage() {
+    $this->config('sitenow_intranet.settings')
+      ->set('access_denied.title', 'FOO BAR BAZ')
+      ->set('access_denied.message', '<p>This is some markup.</p>')
+      ->save();
+
+    // Set up the filter format used by our code.
+    $minimal = FilterFormat::create([
+      'format' => 'minimal',
+      'name' => 'Minimal',
+      'filters' => [
+        'filter_html' => [
+          'status' => 1,
+          'settings' => [
+            'allowed_html' => '<p> <br> <strong> <a> <em>',
+          ],
+        ],
+      ],
+    ]);
+
+    $minimal->save();
+
+    $node = $this->drupalCreateNode();
+    $this->drupalGet('node/' . $node->id());
+    $this->assertSession()->pageTextContains('FOO BAR BAZ');
+    $this->assertSession()->responseContains('<p>This is some markup.</p>');
   }
 
 }
