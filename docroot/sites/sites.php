@@ -3928,3 +3928,9 @@ $sites['physicsgradmap.uiowa.ddev.site'] = 'gradmap.physics.uiowa.edu';
 $sites['physicsgradmap.dev.drupal.uiowa.edu'] = 'gradmap.physics.uiowa.edu';
 $sites['physicsgradmap.stage.drupal.uiowa.edu'] = 'gradmap.physics.uiowa.edu';
 $sites['physicsgradmap.prod.drupal.uiowa.edu'] = 'gradmap.physics.uiowa.edu';
+
+// Directory aliases for uicb.uiowa.edu.
+$sites['uicb.uiowa.ddev.site'] = 'uicb.uiowa.edu';
+$sites['uicb.dev.drupal.uiowa.edu'] = 'uicb.uiowa.edu';
+$sites['uicb.stage.drupal.uiowa.edu'] = 'uicb.uiowa.edu';
+$sites['uicb.prod.drupal.uiowa.edu'] = 'uicb.uiowa.edu';
