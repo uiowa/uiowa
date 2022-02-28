@@ -149,7 +149,7 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
             $value_value = preg_replace("|\n|", "", $value_value);
             // Check if we're building onto an existing result row,
             // or if we're starting a new one off of an empty string.
-            $old = isset($result[$counter]) ? $result[$counter] : '';
+            $old = $result[$counter] ?? '';
             $result[$counter] = $old . "\r" . implode(': ', [
               $indexer,
               $value_value,
@@ -199,7 +199,7 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
             // so if it is, go ahead and drop it.
             $value_key = ($value_key == 'value') ? '' : $value_key;
             $indexer = ucwords($this->generateIndexer($field_name, 0, $value_key));
-            $old = isset($result[$counter]) ? $result[$counter] : '';
+            $old = $result[$counter] ?? '';
             $result[$counter] = $old . "\r" . implode(': ', [
               $indexer,
               $value_value,
@@ -211,7 +211,7 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
         // If the original array key wasn't an array,
         // then we can simply create an indexer and append.
         $indexer = ucwords($this->prettifyMachineName($arr_key));
-        $old = isset($result[$counter]) ? $result[$counter] : '';
+        $old = $result[$counter] ?? '';
         $result[$counter] = $old . "\r" . implode(': ', [
           $indexer,
           $arr_value,

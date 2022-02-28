@@ -101,7 +101,6 @@ class EventSeriesEventsBlock extends BlockBase implements ContainerFactoryPlugin
           if ($node->hasField('field_event_when') &&
             !$node->get('field_event_when')->isEmpty()) {
             $nid = $node->id();
-            $alias = $this->aliasManager->getAliasByPath('/node/' . $nid);
             $node_when = $node->get('field_event_when')->getValue();
             $date = $this->dateFormat->format($node_when[0]['value'], 'custom', 'D, M j');
             $markup = [

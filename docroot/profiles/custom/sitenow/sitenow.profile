@@ -20,6 +20,7 @@ use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\layout_builder\InlineBlockUsage;
+use Drupal\system\Entity\Menu;
 
 /**
  * Implements hook_preprocess_HOOK().
@@ -197,7 +198,7 @@ function sitenow_preprocess_block(&$variables) {
       $admin_context = \Drupal::service('router.admin_context');
       if (!$admin_context->isAdminRoute()) {
         $node = \Drupal::routeMatch()->getParameter('node');
-        $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
+        $node = ($node ?? \Drupal::routeMatch()->getParameter('node_preview'));
         if ($node instanceof NodeInterface) {
           if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
             $publish_options = $node->get('field_publish_options')->getValue();
@@ -504,7 +505,8 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
     case 'block_content_uiowa_text_area_edit_form':
       $block = $form_state->getFormObject()->getEntity();
       $uuid = $block->uuid();
-      // For Footer Contact Information, limit non-admins to minimal and remove headline field.
+      // For Footer Contact Information, limit non-admins to minimal and remove
+      // headline field.
       if ($uuid == '0c0c1f36-3804-48b0-b384-6284eed8c67e') {
         $form['field_uiowa_headline']['#access'] = FALSE;
         /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
@@ -549,7 +551,7 @@ function sitenow_form_revision_overview_form_alter(&$form, FormStateInterface $f
  * Implements hook_form_FORM_ID_alter().
  */
 function sitenow_form_system_site_information_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $menus = menu_ui_get_menus();
+  $menus = Menu::loadMultiple();
   $social_media_menu = 'social';
   $custom_menu = 'footer-primary';
   $custom_menu_2 = 'footer-secondary';
@@ -747,7 +749,7 @@ function sitenow_preprocess_page(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     $node = \Drupal::routeMatch()->getParameter('node');
-    $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
+    $node = ($node ?? \Drupal::routeMatch()->getParameter('node_preview'));
     if ($node instanceof NodeInterface) {
       $variables['header_attributes'] = new Attribute();
       if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {

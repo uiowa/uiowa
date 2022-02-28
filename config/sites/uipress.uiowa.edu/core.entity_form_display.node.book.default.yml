@@ -38,12 +38,75 @@ dependencies:
   module:
     - content_moderation
     - datetime
+    - field_group
     - image
     - media_library
     - metatag
     - paragraphs
     - path
     - text
+third_party_settings:
+  field_group:
+    group_book_images:
+      children:
+        - field_image
+        - field_book_file_uploads
+      label: 'Book Images'
+      region: content
+      parent_name: ''
+      weight: 5
+      format_type: tab
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+        effect: none
+    group_collaborators:
+      children:
+        - field_book_author
+        - field_book_editor
+        - field_book_illustrator
+        - field_book_photographer
+        - field_book_translator
+        - field_book_preface_authors
+        - field_book_foreword_author
+        - field_book_introduction_author
+        - field_book_afterword_author
+        - field_book_essay_by
+      label: Collaborators
+      region: content
+      parent_name: ''
+      weight: 1
+      format_type: tab
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+    group_publication_details:
+      children:
+        - field_book_publication_date
+        - field_book_pages
+        - field_book_art
+        - field_book_trim_size
+        - field_book_edition
+      label: 'Publication Details'
+      region: content
+      parent_name: ''
+      weight: 15
+      format_type: tab
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
 id: node.book.default
 targetEntityType: node
 bundle: book
@@ -51,253 +114,246 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 4
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
   field_book_afterword_author:
-    weight: 20
+    type: entity_reference_autocomplete
+    weight: 21
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_book_art:
-    weight: 24
+    type: string_textfield
+    weight: 16
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_book_author:
-    weight: 12
+    type: entity_reference_autocomplete
+    weight: 13
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_book_awards:
-    weight: 37
+    type: text_textarea
+    weight: 22
+    region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: text_textarea
-    region: content
   field_book_contributors:
-    weight: 30
+    type: text_textarea
+    weight: 19
+    region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: text_textarea
-    region: content
   field_book_description_summary:
-    weight: 29
+    type: text_textarea
+    weight: 17
+    region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: text_textarea
-    region: content
   field_book_edition:
-    weight: 27
+    type: options_select
+    weight: 18
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-    region: content
   field_book_editor:
-    weight: 13
+    type: entity_reference_autocomplete
+    weight: 14
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_book_essay_by:
-    weight: 21
+    type: entity_reference_autocomplete
+    weight: 22
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_book_excerpt:
-    weight: 32
+    type: text_textarea
+    weight: 21
+    region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: text_textarea
-    region: content
   field_book_file_uploads:
-    weight: 36
+    type: image_image
+    weight: 4
+    region: content
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
     third_party_settings: {  }
-    type: image_image
-    region: content
   field_book_foreword_author:
-    weight: 18
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
     type: entity_reference_autocomplete
-    region: content
-  field_book_illustrator:
-    weight: 14
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
-  field_book_introduction_author:
     weight: 19
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_book_illustrator:
     type: entity_reference_autocomplete
-    region: content
-  field_book_pages:
-    weight: 23
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
-  field_book_photographer:
     weight: 15
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_book_introduction_author:
     type: entity_reference_autocomplete
+    weight: 20
     region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_book_pages:
+    type: string_textfield
+    weight: 15
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_book_photographer:
+    type: entity_reference_autocomplete
+    weight: 16
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_book_preface_authors:
-    weight: 17
+    type: entity_reference_autocomplete
+    weight: 18
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_book_publication_date:
-    weight: 22
+    type: datetime_default
+    weight: 14
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: datetime_default
-    region: content
   field_book_related_reads:
-    weight: 35
+    type: entity_reference_autocomplete
+    weight: 23
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_book_reviews_blurbs:
-    weight: 28
+    type: text_textarea
+    weight: 18
+    region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: text_textarea
-    region: content
   field_book_season:
-    weight: 26
+    type: entity_reference_autocomplete_tags
+    weight: 3
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete_tags
-    region: content
   field_book_series:
-    weight: 33
+    type: entity_reference_autocomplete_tags
+    weight: 2
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete_tags
-    region: content
   field_book_subject:
-    weight: 34
+    type: entity_reference_autocomplete_tags
+    weight: 4
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete_tags
-    region: content
-  field_book_subtitle:
-    weight: 1
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_book_table_of_contents:
-    weight: 31
+    type: text_textarea
+    weight: 20
+    region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: text_textarea
-    region: content
   field_book_translator:
-    weight: 16
+    type: entity_reference_autocomplete
+    weight: 17
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_book_trim_size:
-    weight: 25
+    type: string_textfield
+    weight: 17
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_book_type:
     type: entity_reference_paragraphs
-    weight: 38
+    weight: 16
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -306,53 +362,52 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
-    region: content
   field_image:
-    weight: 2
+    type: media_library_widget
+    weight: 3
+    region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
-    type: media_library_widget
-    region: content
   field_meta_tags:
-    weight: 11
+    type: metatag_firehose
+    weight: 14
+    region: content
     settings:
       sidebar: true
     third_party_settings: {  }
-    type: metatag_firehose
-    region: content
   moderation_state:
     type: moderation_state_default
-    weight: 9
-    settings: {  }
+    weight: 12
     region: content
+    settings: {  }
     third_party_settings: {  }
   path:
     type: path
-    weight: 7
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
+    weight: 8
+    region: content
     settings:
       display_label: true
-    weight: 5
-    region: content
     third_party_settings: {  }
   status:
     type: boolean_checkbox
+    weight: 13
+    region: content
     settings:
       display_label: true
-    weight: 10
-    region: content
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
+    weight: 9
+    region: content
     settings:
       display_label: true
-    weight: 6
-    region: content
     third_party_settings: {  }
   title:
     type: string_textfield
@@ -364,17 +419,18 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete_tags
-    weight: 3
+    weight: 6
+    region: content
     settings:
       match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
-      match_limit: 10
-    region: content
     third_party_settings: {  }
   url_redirects:
-    weight: 8
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_book_subtitle: true

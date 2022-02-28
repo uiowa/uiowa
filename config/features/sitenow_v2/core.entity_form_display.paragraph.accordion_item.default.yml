@@ -15,17 +15,17 @@ third_party_settings:
     group_uip_settings:
       children:
         - field_uip_id
+      label: 'Accordion Item Settings'
+      region: content
       parent_name: ''
       weight: 20
       format_type: details
       format_settings:
         label: 'Accordion Item Settings'
-        required_fields: true
-        id: ''
         classes: ''
+        id: ''
         open: false
-      label: 'Accordion Item Settings'
-      region: content
+        required_fields: true
 _core:
   default_config_hash: xwk72k91b5QoI7v1OLhtyF1CVPVzn6gl-tPqMJOB6LE
 id: paragraph.accordion_item.default
@@ -34,29 +34,29 @@ bundle: accordion_item
 mode: default
 content:
   field_accordion_item_body:
+    type: text_textarea
     weight: 1
+    region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: text_textarea
-    region: content
   field_accordion_item_title:
+    type: string_textfield
     weight: 0
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_uip_id:
+    type: string_textfield
     weight: 3
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
 hidden:
   created: true
   status: true

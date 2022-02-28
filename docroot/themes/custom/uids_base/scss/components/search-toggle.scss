@@ -21,6 +21,12 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
   }
 }
 
+.search-overlay[aria-hidden=false] {
+  .region-search {
+    width: 100%;
+  }
+}
+
 /*
 .search-overlay .uids-search {
   margin-top: 19px;
@@ -39,11 +45,16 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
 }
 */
 
+.iowa-bar--full .search-overlay .uids-search,
+.iowa-bar--narrow .search-overlay .uids-search {
+    overflow: hidden;
+}
+
 // Iowa Bar Full adjustments
 .iowa-bar--full.horizontal,
 .iowa-bar--full.mega {
   .search-button {
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       height: 85px;
       width: 159px;
     }
@@ -52,7 +63,7 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
 
 .iowa-bar--full.toggle {
   .search-button {
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       height: 85px;
       width: 159px;
     }
@@ -61,7 +72,7 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
 
 .iowa-bar--full.toggle {
   .search-wrapper {
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       flex: 1;
     }
   }
