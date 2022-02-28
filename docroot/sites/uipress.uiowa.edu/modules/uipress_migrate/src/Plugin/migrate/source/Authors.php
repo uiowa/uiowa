@@ -48,8 +48,6 @@ class Authors extends BaseNodeSource {
     if ($suffix = $row->getSourceProperty('field_author_suffix')) {
       $lastname = $row->getSourceProperty('field_author_lastname');
       $lastname[0]['value'] .= ', ' . $suffix[0]['value'];
-      // @todo Make sure last name's with apostrophes don't get saved with
-      //   the encoding in place of the apostrophe.
       $row->setSourceProperty('field_author_lastname', $lastname);
     }
     return TRUE;
