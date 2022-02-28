@@ -82,11 +82,15 @@ function sitenow_intranet_restrict_ip_access_denied_page_alter(&$page) {
     $page['main']['logout_link']['#suffix'] = '</p>';
     unset($page['logout_link']);
   }
-  if (isset($page['login_link'])) {
+
+  $route = 'samlauth.saml_controller_login';
+  $exists = count(\Drupal::service('router.route_provider')->getRoutesByNames([$route])) === 1;
+
+  if (isset($page['login_link']) && $exists) {
     $page['main']['login_link'] = [
       '#type' => 'link',
       '#title' => t('HawkID Login'),
-      '#url' => Url::fromRoute('samlauth.saml_controller_login'),
+      '#url' => Url::fromRoute($route),
       '#prefix' => '<p class="text-align-center">',
       '#suffix' => '</p>',
       '#attributes' => [

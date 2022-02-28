@@ -29,7 +29,9 @@ function sitenow_intranet_install() {
     'type' => 'white',
     'path' => '/saml/*',
   ]);
+
   $database->execute();
+
   $database = \Drupal::database()->insert('restrict_ip_paths')->fields([
     'type' => 'white',
     'path' => '/admin/*',
