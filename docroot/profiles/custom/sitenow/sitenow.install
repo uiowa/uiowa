@@ -3856,3 +3856,10 @@ function sitenow_update_9031() {
   $plugin_cache_clearer = \Drupal::service('plugin.cache_clearer');
   $plugin_cache_clearer->clearCachedDefinitions();
 }
+
+/**
+ * Clear caches to regenerate image styles.
+ */
+function sitenow_update_9032() {
+  drupal_flush_all_caches();
+}
