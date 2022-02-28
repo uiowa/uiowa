@@ -296,6 +296,34 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   }
 }
 
+// Reverse column order lb style
+
+.section-order__reversed {
+  // two column
+  &.layout--twocol {
+    .layout__spacing_container {
+      display: grid;
+      @include breakpoint(sm) {
+        display: inherit;
+      }
+
+      .layout__region--first {
+        order: 2;
+        @include breakpoint(sm) {
+          order: inherit;
+        }
+      }
+
+      .layout__region--second {
+        order: 1;
+        @include breakpoint(sm) {
+          order: inherit;
+        }
+      }
+    }
+  }
+}
+
 // Container fix for responsive tables
 
 .layout__spacing_container {
