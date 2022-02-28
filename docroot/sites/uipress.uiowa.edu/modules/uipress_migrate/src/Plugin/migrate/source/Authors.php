@@ -16,7 +16,7 @@ use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
  *   source_module = "node"
  * )
  */
-class Articles extends BaseNodeSource {
+class Authors extends BaseNodeSource {
   use ProcessMediaTrait;
   use LinkReplaceTrait;
 
