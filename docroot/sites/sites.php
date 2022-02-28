@@ -3928,3 +3928,9 @@ $sites['public-healthprc.uiowa.ddev.site'] = 'prc.public-health.uiowa.edu';
 $sites['public-healthprc.dev.drupal.uiowa.edu'] = 'prc.public-health.uiowa.edu';
 $sites['public-healthprc.stage.drupal.uiowa.edu'] = 'prc.public-health.uiowa.edu';
 $sites['public-healthprc.prod.drupal.uiowa.edu'] = 'prc.public-health.uiowa.edu';
+
+// Directory aliases for gradmap.physics.uiowa.edu.
+$sites['physicsgradmap.uiowa.ddev.site'] = 'gradmap.physics.uiowa.edu';
+$sites['physicsgradmap.dev.drupal.uiowa.edu'] = 'gradmap.physics.uiowa.edu';
+$sites['physicsgradmap.stage.drupal.uiowa.edu'] = 'gradmap.physics.uiowa.edu';
+$sites['physicsgradmap.prod.drupal.uiowa.edu'] = 'gradmap.physics.uiowa.edu';
