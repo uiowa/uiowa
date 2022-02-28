@@ -23,9 +23,11 @@ class AccessTest extends BrowserTestBase {
     'config_split',
     'node',
     'restrict_ip',
+    'robotstxt',
     'samlauth',
     'sitenow_intranet',
-    'uiowa_auth'
+    'simple_sitemap',
+    'uiowa_auth',
   ];
 
   /**
@@ -44,6 +46,22 @@ class AccessTest extends BrowserTestBase {
   public function testNodeReturnsAccessDenied() {
     $node = $this->drupalCreateNode();
     $this->drupalGet('node/' . $node->id());
+    $this->assertSession()->statusCodeEquals(401);
+  }
+
+  /**
+   * Test sitemap.xml returns access denied.
+   */
+  public function testSitemapReturnsAccessDenied() {
+    $this->drupalGet('sitemap.xml');
+    $this->assertSession()->statusCodeEquals(401);
+  }
+
+  /**
+   * Test robots.txt returns access denied.
+   */
+  public function testRobotsReturnsAccessDenied() {
+    $this->drupalGet('robots.txt');
     $this->assertSession()->statusCodeEquals(401);
   }
 
