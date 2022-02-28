@@ -39,8 +39,12 @@ process:
   field_person_first_name: field_author_firstname
 #  field_person_hide: field_person_hide
 #  field_person_hometown: field_person_hometown
-  field_person_last_name: field_author_lastname
-  #  person suffix: field_author_suffix
+  field_person_last_name:
+    plugin: concat
+    source:
+      - 'field_author_lastname/0/value'
+      - 'field_author_suffix/0/value'
+    delimiter: ', '
   #  person roles: field_author_roles
 #  field_image: field_image
   field_person_types:
