@@ -26,7 +26,7 @@ class AccessTest extends BrowserTestBase {
     'node',
     'robotstxt',
     'sitenow_intranet',
-    'simple_sitemap'
+    'simple_sitemap',
   ];
 
   /**
@@ -121,7 +121,6 @@ class AccessTest extends BrowserTestBase {
   /**
    * Set up the filter format used by our code.
    *
-   * @return void
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function setUpFilter(): void {
