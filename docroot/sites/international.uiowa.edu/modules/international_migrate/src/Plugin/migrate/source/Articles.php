@@ -2,6 +2,7 @@
 
 namespace Drupal\international_migrate\Plugin\migrate\source;
 
+use Drupal\Component\Utility\Html;
 use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
@@ -95,11 +96,46 @@ class Articles extends BaseNodeSource {
     $body = $row->getSourceProperty('body');
 
     if (!empty($body)) {
-      // Search for D7 inline embeds and replace with D8 inline entities.
       $this->viewMode = 'medium__no_crop';
       $this->align = 'left';
+      // Search for D7 inline embeds and replace with D8 inline entities.
       $body[0]['value'] = $this->replaceInlineFiles($body[0]['value']);
 
+      // Clean up extra wrapper divs.
+      $doc = Html::load($body[0]['value']);
+      $divs = $doc->getElementsByTagName('div');
+      $i = $divs->length - 1;
+      while ($i >= 0) {
+        $div = $divs->item($i);
+        $classes = $div->getAttribute('class');
+        // Div classes we're interested in are in the form of
+        // image-alignment-size.
+        if (str_contains($classes, 'image-')) {
+          preg_match('|image-(.*?)-(.*?)|i', $classes, $match);
+          // Pull out the alignment attribute.
+          $align = $match[1];
+          $children = [];
+          foreach ($div->childNodes as $child) {
+            if ($child->nodeName === 'drupal-media') {
+              // Set the old alignment on the newly created
+              // D8 media entity embeds.
+              $child->setAttribute('data-align', $align);
+            }
+            $children[] = $child;
+          }
+          // Set any of the div's children on the parent node,
+          // in the place where the wrapper div sits currently.
+          foreach ($children as $child) {
+            $div->parentNode->insertBefore($child, $div);
+          }
+          // Now that all the children have been set,
+          // remove the no longer needed wrapper div.
+          $div->parentNode->removeChild($div);
+        }
+        $i--;
+      }
+      // Re-serialize the DOM and set into the body text.
+      $body[0]['value'] = Html::serialize($doc);
       // Set the format to filtered_html while we have it.
       $body[0]['format'] = 'filtered_html';
 
