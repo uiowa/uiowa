@@ -11,7 +11,6 @@ use Drupal\Core\Config\FileStorage;
  * Implements hook_install().
  */
 function sitenow_intranet_install() {
-
   // Enable the 'sitenow_intranet' split.
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('config_split.config_split.sitenow_intranet');
@@ -35,7 +34,16 @@ function sitenow_intranet_install() {
     'type' => 'white',
     'path' => '/admin/*',
   ]);
+
   $database->execute();
+
+  // Set some sane default configuration.
+  $config_factory->getEditable('sitenow_intranet.settings')
+    ->set('unauthorized.title', 'Unauthorized')
+    ->set('unauthorized.message', 'You do not have sufficient privileges to access this page. Please contact an administrator.')
+    ->set('access_denied.title', 'Access denied')
+    ->set('access_denied.message', 'You must log in to access this page.')
+    ->save();
 
   \Drupal::messenger()->addStatus(__FUNCTION__);
 }
