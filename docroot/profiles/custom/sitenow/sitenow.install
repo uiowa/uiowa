@@ -3856,3 +3856,15 @@ function sitenow_update_9031() {
   $plugin_cache_clearer = \Drupal::service('plugin.cache_clearer');
   $plugin_cache_clearer->clearCachedDefinitions();
 }
+
+/**
+ * Set the newly created footer.login_link theme setting to TRUE.
+ */
+function sitenow_update_9032() {
+  $config = \Drupal::configFactory()->getEditable('uids_base.settings');
+
+  if (!$config->get('footer.login_link')) {
+    $config->set('footer.login_link', TRUE)
+      ->save();
+  }
+}
