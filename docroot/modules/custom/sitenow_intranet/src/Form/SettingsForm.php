@@ -28,6 +28,7 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $config = $this->config('sitenow_intranet.settings');
     $form['#tree'] = TRUE;
 
     $form['unauthorized'] = [
@@ -39,14 +40,14 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Unauthorized page title'),
       '#description' => $this->t('The title of the page.'),
-      '#default_value' => $this->config('sitenow_intranet.settings')->get('unauthorized.title'),
+      '#default_value' => $config->get('unauthorized.title'),
     ];
 
     $form['unauthorized']['message'] = [
       '#type' => 'text_format',
       '#title' => $this->t('Unauthorized message'),
       '#description' => $this->t('The message shown on the page.'),
-      '#default_value' => $this->config('sitenow_intranet.settings')->get('unauthorized.message'),
+      '#default_value' => $config->get('unauthorized.message'),
       '#allowed_formats' => [
         'minimal',
       ],
@@ -61,14 +62,14 @@ class SettingsForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Access denied page title'),
       '#description' => $this->t('The title of the page.'),
-      '#default_value' => $this->config('sitenow_intranet.settings')->get('access_denied.title'),
+      '#default_value' => $config->get('access_denied.title'),
     ];
 
     $form['access_denied']['message'] = [
       '#type' => 'text_format',
       '#title' => $this->t('Access denied message'),
       '#description' => $this->t('The message shown on the page.'),
-      '#default_value' => $this->config('sitenow_intranet.settings')->get('access_denied.message'),
+      '#default_value' => $config->get('access_denied.message'),
       '#allowed_formats' => [
         'minimal',
       ],
