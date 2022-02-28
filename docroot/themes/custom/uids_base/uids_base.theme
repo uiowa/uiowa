@@ -195,11 +195,14 @@ function uids_base_preprocess_page(&$variables) {
   }
 
   // The uiowa_auth module replaces local authentication with SAML SSO.
-  if (\Drupal::service('module_handler')->moduleExists('uiowa_auth')) {
-    if (!(\Drupal::currentUser()->isAuthenticated())) {
+  if (theme_get_setting('footer.login_link')) {
+    $route = 'samlauth.saml_controller_login';
+    $exists = count(\Drupal::service('router.route_provider')->getRoutesByNames([$route])) === 1;
+
+    if ($exists && !(\Drupal::currentUser()->isAuthenticated())) {
       $destination = \Drupal::request()->getRequestUri();
 
-      $login_url = Url::fromRoute('samlauth.saml_controller_login', [], [
+      $login_url = Url::fromRoute($route, [], [
         'query' => [
           'destination' => $destination,
         ],
