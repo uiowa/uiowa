@@ -523,7 +523,7 @@ class ListBlock extends CoreBlock {
           '#hide_headline' => $headline['hide_headline'],
           '#heading_size' => $headline['heading_size'],
           '#headline_style' => $headline['headline_style'],
-          '#headline_alignment' => $headline['headline_alignment'],
+          '#headline_alignment' => $headline['headline_alignment'] ?? 'default',
         ];
       }
       if (empty($headline['headline'])) {

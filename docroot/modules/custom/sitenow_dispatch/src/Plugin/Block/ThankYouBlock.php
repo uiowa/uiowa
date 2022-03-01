@@ -69,7 +69,7 @@ class ThankYouBlock extends BlockBase implements ContainerFactoryPluginInterface
         '#hide_headline' => $this->configuration['hide_headline'],
         '#heading_size' => $this->configuration['heading_size'],
         '#headline_style' => $this->configuration['headline_style'],
-        '#headline_alignment' => $this->configuration['headline_alignment'],
+        '#headline_alignment' => $this->configuration['headline_alignment'] ?? 'default',
       ];
 
       $build['form'] = $this->formBuilder->getForm('\Drupal\sitenow_dispatch\Form\ThankYouForm');
