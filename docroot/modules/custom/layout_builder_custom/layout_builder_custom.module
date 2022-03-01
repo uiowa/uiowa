@@ -312,21 +312,13 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
                 ],
               ],
             ];
+
             // Add #states to level field to hide menu levels
             // if follow active menu item is unchecked.
             $form['settings']['menu_levels']['level']['#states'] = [
               'visible' => [
                 ':input[name="settings[follow]"]' => [
                   'checked' => FALSE,
-                ],
-              ],
-            ];
-
-            // Add #states to depth field to hide it if horizontal is selected.
-            $form['settings']['menu_levels']['depth']['#states'] = [
-              'invisible' => [
-                ':input[name="layout_builder_style_menu_orientation"]' => [
-                  'value' => 'block_menu_horizontal',
                 ],
               ],
             ];
