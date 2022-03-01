@@ -2345,12 +2345,6 @@ $sites['orguiems.dev.drupal.uiowa.edu'] = 'uiems.org.uiowa.edu';
 $sites['orguiems.stage.drupal.uiowa.edu'] = 'uiems.org.uiowa.edu';
 $sites['orguiems.prod.drupal.uiowa.edu'] = 'uiems.org.uiowa.edu';
 
-// Directory aliases for book.grad.uiowa.edu.
-$sites['gradbook.uiowa.ddev.site'] = 'book.grad.uiowa.edu';
-$sites['gradbook.dev.drupal.uiowa.edu'] = 'book.grad.uiowa.edu';
-$sites['gradbook.stage.drupal.uiowa.edu'] = 'book.grad.uiowa.edu';
-$sites['gradbook.prod.drupal.uiowa.edu'] = 'book.grad.uiowa.edu';
-
 // Directory aliases for nlp.uiowa.edu.
 $sites['nlp.uiowa.ddev.site'] = 'nlp.uiowa.edu';
 $sites['nlp.dev.drupal.uiowa.edu'] = 'nlp.uiowa.edu';
@@ -3922,3 +3916,21 @@ $sites['sitesebgreenscholarships.uiowa.ddev.site'] = 'ebgreenscholarships.sites.
 $sites['sitesebgreenscholarships.dev.drupal.uiowa.edu'] = 'ebgreenscholarships.sites.uiowa.edu';
 $sites['sitesebgreenscholarships.stage.drupal.uiowa.edu'] = 'ebgreenscholarships.sites.uiowa.edu';
 $sites['sitesebgreenscholarships.prod.drupal.uiowa.edu'] = 'ebgreenscholarships.sites.uiowa.edu';
+
+// Directory aliases for prc.public-health.uiowa.edu.
+$sites['public-healthprc.uiowa.ddev.site'] = 'prc.public-health.uiowa.edu';
+$sites['public-healthprc.dev.drupal.uiowa.edu'] = 'prc.public-health.uiowa.edu';
+$sites['public-healthprc.stage.drupal.uiowa.edu'] = 'prc.public-health.uiowa.edu';
+$sites['public-healthprc.prod.drupal.uiowa.edu'] = 'prc.public-health.uiowa.edu';
+
+// Directory aliases for gradmap.physics.uiowa.edu.
+$sites['physicsgradmap.uiowa.ddev.site'] = 'gradmap.physics.uiowa.edu';
+$sites['physicsgradmap.dev.drupal.uiowa.edu'] = 'gradmap.physics.uiowa.edu';
+$sites['physicsgradmap.stage.drupal.uiowa.edu'] = 'gradmap.physics.uiowa.edu';
+$sites['physicsgradmap.prod.drupal.uiowa.edu'] = 'gradmap.physics.uiowa.edu';
+
+// Directory aliases for uicb.uiowa.edu.
+$sites['uicb.uiowa.ddev.site'] = 'uicb.uiowa.edu';
+$sites['uicb.dev.drupal.uiowa.edu'] = 'uicb.uiowa.edu';
+$sites['uicb.stage.drupal.uiowa.edu'] = 'uicb.uiowa.edu';
+$sites['uicb.prod.drupal.uiowa.edu'] = 'uicb.uiowa.edu';
