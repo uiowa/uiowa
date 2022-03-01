@@ -3,58 +3,51 @@
 @import "badge.scss";
 @import "components/headline/_headline-mixins.scss";
 
-.tags-list{
+.tags-list {
   margin: 0;
-
 }
 
-.tags-list__tag{
-    @extend .badge;
-    font-size: 1em;
-    margin-bottom: 1rem;
-    font-weight: lighter;
-    padding: 0 1rem;
-    background: #fff;
-    border-color:rgba(0, 0, 0, 0.125);
+.tags-list__tag {
+  font-size: 1em;
+  margin-bottom: 1rem;
+  font-weight: lighter;
+  padding: 0 1rem;
+  background: $light;
+  display: inline-block;
+  border-radius: 3px;
+  margin-right: 0.5rem;
 
-    &:hover,
-    &:focus {
-      background: $primary;
-    }
+  a {
+    text-decoration: none;
+    color: #151515;
 
-    a{
-      text-decoration: none;
-      color: #151515;
+    &:focus,
+    &:hover {
+      text-decoration: underline;
     }
+  }
 }
 
 //Views, can probably be moved to another scss file in views/ ?
-.block-views-blocktags-list-tags-list{
+.block-views-blocktags-list-tags-list {
   @extend %container;
-  h2{
-    @include headline;
-    @include headline-serif;
-    font-size: 1.4rem;
+
+  h2 {
     display: inline-block;
-    margin-bottom: 0;
+    margin-right: 1rem;
   }
 
-  &>div{
+  & > div {
     display: inline-block;
   }
 }
 
-.block-views-blocktags-list-block-tags-related{
-  background: $light;
-  h2{
+.block-views-blocktags-list-block-tags-related {
+  h2 {
     font-size: 1.4rem;
     @extend %container;
     //hack to prevent a change in container width (which is in em) when font size isn't 1em
     max-width: 1310px;
-    @include headline;
-    @include headline-serif;
-    padding-top: $desktop-width-gutter;
-    padding-bottom: $desktop-width-gutter;
   }
 
   :is(h1, h2, h3, h4, h5, h6) a {
@@ -64,8 +57,7 @@
     font-weight: $font-weight-medium-bold;
   }
 
-  &>div{
+  & > div {
     @extend %container;
   }
-
 }
