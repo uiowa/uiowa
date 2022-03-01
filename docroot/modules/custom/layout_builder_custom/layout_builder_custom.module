@@ -278,14 +278,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           break;
 
         case 'menu_block:main':
-
-          // Limit the depth options to 1-4.
-          foreach ($form['settings']['menu_levels']['depth']['#options'] as $key => $depth) {
-            if ($key < 1 || $key > 4) {
-              unset($form['settings']['menu_levels']['depth']['#options'][$key]);
-            }
-          }
-
           // If the menu_orientation style group is present...
           if (isset($form['layout_builder_style_menu_orientation'])) {
 
@@ -357,10 +349,17 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           // Move the advanced follow setting to the front of its section.
           $form['settings']['advanced']['follow']['#weight'] = -20;
 
-          // Hide the HTML and style options.
-          $form['settings']['style']['#access'] = FALSE;
+          // Limit the depth options to 1-3.
+          foreach ($form['settings']['menu_levels']['depth']['#options'] as $key => $depth) {
+            if ($key < 1 || $key > 3) {
+              unset($form['settings']['menu_levels']['depth']['#options'][$key]);
+            }
+          }
           // Hide the make the ability to force expand all items.
           $form['settings']['menu_levels']['expand_all_items']['#access'] = FALSE;
+
+          // Hide the HTML and style options.
+          $form['settings']['style']['#access'] = FALSE;
 
           // If the block is being added, default the advanced follow value to
           // TRUE.
