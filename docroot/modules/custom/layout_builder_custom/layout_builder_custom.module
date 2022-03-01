@@ -286,14 +286,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             }
           }
 
-          // Unset the advanced description since it refers to
-          // functionality that we are not offering.
-          unset($form['settings']['advanced']['follow']['#description']);
-
           // If the menu_orientation style group is present...
           if (isset($form['layout_builder_style_menu_orientation'])) {
-            // Move the admin label up.
-            $form['settings']['admin_label']['#weight'] = -20;
 
             // Move the layout_builder_style_menu_orientation into settings so
             // it can be placed below the admin label.
@@ -354,16 +348,34 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             unset($form['lbs_heading']);
           }
 
-          // Hide some options we don't want people to use currently.
-          // Adjust name for advanced options section.
+          // Move the admin label up.
+          $form['settings']['admin_label']['#weight'] = -20;
+
+          // Adjustments to advanced settings.
+          // Adjust name advanced options section.
           $form['settings']['advanced']['#title'] = t('Visibility options');
+          // Move the advanced settings to be the first section.
+          $form['settings']['advanced']['#weight'] = -5;
+          // Hide the options to set the block title and link.
+          $form['settings']['advanced']['label_type']['#access'] = FALSE;
+          $form['settings']['advanced']['label_link']['#access'] = FALSE;
+          // Unset the advanced description since it refers to
+          // functionality that we are not offering.
+          unset($form['settings']['advanced']['follow']['#description']);
+          // Move the advanced follow setting to the front of its section.
+          $form['settings']['advanced']['follow']['#weight'] = -20;
+
           // Hide the HTML and style options.
           $form['settings']['style']['#access'] = FALSE;
           // Hide the make the ability to force expand all items.
           $form['settings']['menu_levels']['expand_all_items']['#access'] = FALSE;
-          // Hide the options to set the block title and link.
-          $form['settings']['advanced']['label_type']['#access'] = FALSE;
-          $form['settings']['advanced']['label_link']['#access'] = FALSE;
+
+          // If the block is being added, default the advanced follow value to
+          // TRUE.
+          if ($form_id === 'layout_builder_add_block') {
+            $form['settings']['advanced']['follow']['#default_value'] = TRUE;
+          }
+
           break;
 
         case 'sitenow_dispatch_sign_up_form':
