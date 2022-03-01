@@ -4,6 +4,7 @@ namespace Drupal\uipress_migrate\Plugin\migrate\source;
 
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
+use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
 
 /**
  * Migrate Source plugin.
@@ -14,6 +15,7 @@ use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
  * )
  */
 class Authors extends BaseNodeSource {
+  use ProcessMediaTrait;
 
   /**
    * {@inheritdoc}
@@ -44,6 +46,18 @@ class Authors extends BaseNodeSource {
       $lastname = $row->getSourceProperty('field_author_lastname');
       $lastname[0]['value'] .= ', ' . $suffix[0]['value'];
       $row->setSourceProperty('field_author_lastname', $lastname);
+    }
+    // Download image and attach it for the person photo.
+    if ($image = $row->getSourceProperty('field_image_attach')) {
+      // @todo Check the image dimensions and add a cutoff for too small.
+      $row->setSourceProperty('field_image', $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']));
+    }
+    // Check if we have a facebook, and either append (or replace) with
+    // the author website.
+    if ($facebook = $row->getSourceProperty('field_author_facebook')) {
+      $website = $row->getSourceProperty('field_author_url');
+      $website = array_merge($website, $facebook);
+      $row->setSourceProperty('field_author_url', $website);
     }
     return TRUE;
   }

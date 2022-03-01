@@ -51,7 +51,7 @@ process:
     replace: ''''
     source: field_author_lastname
   #  person roles: field_author_roles
-#  field_image: field_image
+  field_image: field_image
   field_person_types:
     plugin: default_value
     default_value: author
@@ -65,7 +65,6 @@ process:
   field_person_website:
     plugin: field_link
     source: field_author_url
-#  author facebook: field_author_facebook
 destination:
   plugin: 'entity:node'
   default_bundle: person
