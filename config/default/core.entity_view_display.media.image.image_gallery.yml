@@ -7,8 +7,8 @@ dependencies:
     - field.field.media.image.field_media_caption
     - field.field.media.image.field_media_image
     - field.field.media.image.field_tags
-    - image.style.image_gallery
     - media.type.image
+    - responsive_image.styles.medium__no_crop
   module:
     - lazy
     - photoswipe
@@ -24,8 +24,8 @@ content:
     label: hidden
     settings:
       photoswipe_node_style_first: ''
-      photoswipe_node_style: ''
-      photoswipe_image_style: image_gallery
+      photoswipe_node_style: medium__no_crop
+      photoswipe_image_style: ''
       photoswipe_caption: custom
       photoswipe_caption_custom: '[media:field_media_caption]'
       photoswipe_view_mode: image_gallery

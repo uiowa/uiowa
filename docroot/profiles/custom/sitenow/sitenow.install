@@ -3858,17 +3858,8 @@ function sitenow_update_9031() {
 }
 
 /**
- * Create new headline field for headline alignment.
+ * Clear caches to regenerate image styles.
  */
 function sitenow_update_9032() {
-  $headline_alignment = [
-    'type' => 'varchar',
-    'description' => 'Alignment for the heading.',
-    'length' => 255,
-    'not null' => TRUE,
-    'default' => '',
-  ];
-  $schema = Database::getConnection()->schema();
-  $schema->addField('block_content__field_uiowa_headline', 'field_uiowa_headline_headline_alignment', $headline_alignment);
-  $schema->addField('block_content_revision__field_uiowa_headline', 'field_uiowa_headline_headline_alignment', $headline_alignment);
+  drupal_flush_all_caches();
 }
