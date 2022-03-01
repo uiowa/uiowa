@@ -5,9 +5,8 @@
  * Install tasks.
  */
 
-
 /**
- * Add tag display type to pages
+ * Add tag display type to pages.
  */
 function sitenow_pages_update_9302() {
   $changes = [

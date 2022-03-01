@@ -178,11 +178,10 @@ class SettingsForm extends ConfigFormBase {
         'related' => $this
           ->t('Display related content'),
         'tags_and_related' => $this
-          ->t('Display tag buttons and related content')
+          ->t('Display tag buttons and related content'),
       ],
       '#default_value' => $tag_display_type ?: 'do_not_display',
     ];
-
 
     $form['view_page'] = [
       '#type' => 'fieldset',

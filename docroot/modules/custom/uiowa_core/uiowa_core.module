@@ -83,6 +83,7 @@ function template_preprocess_uiowa_core_headline(&$variables) {
   $variables['headline_style'] = $style;
 
 }
+
 /**
  * Implements hook_preprocess_HOOK().
  */
@@ -91,7 +92,6 @@ function uiowa_core_preprocess_page(&$variables) {
   $current_route = \Drupal::routeMatch();
   $node = $current_route->getParameter('node');
 
-
   $view_id = Drupal::request()->attributes->get('view_id');
   $article_tag_display_type = \Drupal::configFactory()->getEditable('sitenow_articles.settings')->get('tag_display_type');
   $page_tag_display_type = \Drupal::configFactory()->getEditable('sitenow_pages.settings')->get('tag_display_type');
@@ -99,77 +99,81 @@ function uiowa_core_preprocess_page(&$variables) {
 
   if (empty($view_id) || $view_id == 'tags_list') {
 
-   if(isset($node)){
+    if (isset($node)) {
       $node_type = $node->bundle();
-      //@todo this needs to be cleaned up. Too much repetition. Variable variables?
+      // @todo this needs to be cleaned up. Too much repetition. Variable variables?
       // e.g., switch(${$display_type}){ ...
       // Or a private helper function to do this maybe?
-      switch($node_type){
+      switch ($node_type) {
 
         case 'article':
-          switch($article_tag_display_type){
+          switch ($article_tag_display_type) {
             case 'tags_and_related':
-              //this happens by default, but keeping this case.. just in case?
-            break;
+              // This happens by default, but keeping this case.. just in case?
+              break;
 
             case 'tags':
               unset($variables['page']['pre_footer']['views_block__tags_list_block_tags_related']);
-            break;
+              break;
 
             case 'related':
               unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
-            break;
+              break;
 
             default:
               unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
               unset($variables['page']['pre_footer']['views_block__tags_list_block_tags_related']);
           }
           break;
+
         case 'page':
-          switch($page_tag_display_type){
+          switch ($page_tag_display_type) {
             case 'tags_and_related':
-              //this happens by default, but keeping this case.. just in case?
-            break;
+              // This happens by default, but keeping this case.. just in case?
+              break;
 
             case 'tags':
               unset($variables['page']['pre_footer']['views_block__tags_list_block_tags_related']);
-            break;
+              break;
 
             case 'related':
               unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
-            break;
-            //Hide related and tags list on topic collection, since this content type is based around navigating by tag.
+              break;
+
+            // Hide related and tags list on topic collection, since this content type is based around navigating by tag.
             case 'topic_collection':
               unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
               unset($variables['page']['pre_footer']['views_block__tags_list_block_tags_related']);
-            break;
+              break;
 
-            //Hide on anything else that we're not sure this makes sense for (Areas of Study, etc)
+            // Hide on anything else that we're not sure this makes sense for (Areas of Study, etc)
             default:
               unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
               unset($variables['page']['pre_footer']['views_block__tags_list_block_tags_related']);
           }
           break;
+
         case 'person':
-          switch($person_tag_display_type){
+          switch ($person_tag_display_type) {
             case 'tags_and_related':
-              //this happens by default, but keeping this case.. just in case?
-            break;
+              // This happens by default, but keeping this case.. just in case?
+              break;
 
             case 'tags':
               unset($variables['page']['pre_footer']['views_block__tags_list_block_tags_related']);
-            break;
+              break;
 
             case 'related':
               unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
-            break;
-            //Hide related and tags list on topic collection, since this content type is based around navigating by tag.
+              break;
+
+            // Hide related and tags list on topic collection, since this content type is based around navigating by tag.
             case 'topic_collection':
               unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
               unset($variables['page']['pre_footer']['views_block__tags_list_block_tags_related']);
-            break;
+              break;
 
-            //Hide on anything else that we're not sure this makes sense for (Areas of Study, etc)
+            // Hide on anything else that we're not sure this makes sense for (Areas of Study, etc)
             default:
               unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
               unset($variables['page']['pre_footer']['views_block__tags_list_block_tags_related']);
@@ -180,6 +184,7 @@ function uiowa_core_preprocess_page(&$variables) {
 
   }
 }
+
 /**
  * Implements hook_page_attachments().
  */
