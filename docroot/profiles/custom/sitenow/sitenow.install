@@ -3830,13 +3830,6 @@ function sitenow_update_9032() {
 }
 
 /**
- * Flush all caches to get rid of old Layout Builder Styles module code.
- */
-function sitenow_update_9033() {
-  drupal_flush_all_caches();
-}
-
-/**
  * Set previously unset menu item styles to vertical.
  */
 function sitenow_update_9033() {
@@ -3848,4 +3841,11 @@ function sitenow_update_9033() {
 
     $component->set('layout_builder_styles_style', $styles);
   });
+}
+
+/**
+ * Flush all caches to get rid of old Layout Builder Styles module code.
+ */
+function sitenow_update_9034() {
+  drupal_flush_all_caches();
 }
