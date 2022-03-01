@@ -19,6 +19,7 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\file\Entity\File;
 use Drupal\filter\Plugin\Filter\FilterHtmlCorrector;
 use Drupal\layout_builder\InlineBlockUsage;
+use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
 use Drupal\layout_builder\Section;
 use Drupal\layout_builder\SectionComponent;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
@@ -3822,9 +3823,23 @@ function sitenow_update_9031() {
 }
 
 /**
- * Set previously unset menu item styles to vertical.
+ * Clear caches to regenerate image styles.
  */
 function sitenow_update_9032() {
+  drupal_flush_all_caches();
+}
+
+/**
+ * Flush all caches to get rid of old Layout Builder Styles module code.
+ */
+function sitenow_update_9033() {
+  drupal_flush_all_caches();
+}
+
+/**
+ * Set previously unset menu item styles to vertical.
+ */
+function sitenow_update_9033() {
   _update_all_blocks_by_plugin_id('menu_block:main', function (&$component, $block) {
     $styles = $component->get('layout_builder_styles_style');
     if (!isset($styles['block_menu_vertical']) && !isset($styles['block_menu_horizontal'])) {
@@ -3833,11 +3848,4 @@ function sitenow_update_9032() {
 
     $component->set('layout_builder_styles_style', $styles);
   });
-}
-
-/**
- * Flush all caches to get rid of old Layout Builder Styles module code.
- */
-function sitenow_update_9033() {
-  drupal_flush_all_caches();
 }
