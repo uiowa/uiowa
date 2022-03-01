@@ -411,19 +411,19 @@ function uiowa_core_entity_operation_alter(array &$operations, EntityInterface $
   }
 }
 
-
 /**
  * Implements hook_preprocess_HOOK().
  */
 function uiowa_core_preprocess_block(&$variables) {
   switch ($variables['plugin_id']) {
     case 'views_block:tags_list-tags_list':
-      $variables['title_attributes']['class'] = 'h3 block__headline headline headline--serif';
+      $variables['title_attributes']['class'] = 'h5 block__headline headline headline--serif';
       if (!isset($variables['attributes']['class'])) {
         $variables['attributes']['class'] = [''];
       }
       $variables['attributes']['class'][] .= 'block-padding__bottom block-padding__top';
       break;
+
     case 'views_block:tags_list-block_tags_related':
       $variables['title_attributes']['class'] = 'h3 block__headline headline headline--underline headline--serif';
       if (!isset($variables['attributes']['class'])) {
