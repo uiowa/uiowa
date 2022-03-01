@@ -17,7 +17,7 @@ function pharmacy_core_form_views_exposed_form_alter(&$form, FormStateInterface 
   $view = $form_state->get('view');
   if ($view->id() == 'palliative_grad') {
     if ($view->current_display == 'block_palliative_grad') {
-      $form["territory"]["#options"]["All"] = t("- All -");
+      $form["state"]["#options"]["All"] = t("- All -");
     }
   }
 }
