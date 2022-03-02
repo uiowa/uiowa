@@ -42,6 +42,11 @@ class Authors extends BaseNodeSource {
    */
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
+    // Fetch the multi-value roles.
+    $tables = [
+      'field_data_field_author_roles' => ['field_author_roles_value'],
+    ];
+    $this->fetchAdditionalFields($row, $tables);
     // If there's a suffix, append it to the last name field.
     if ($suffix = $row->getSourceProperty('field_author_suffix')) {
       $lastname = $row->getSourceProperty('field_author_lastname');
