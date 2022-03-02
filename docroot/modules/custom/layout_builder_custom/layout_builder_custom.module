@@ -340,6 +340,11 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           // Hide the options to set the block title and link.
           $form['settings']['advanced']['label_type']['#access'] = FALSE;
           $form['settings']['advanced']['label_link']['#access'] = FALSE;
+          // Append to the fixed parent description to indicate that initial
+          // visibility level should be set to 1 if used.
+          /** @var \Drupal\Core\StringTranslation\TranslatableMarkup $parent_description */
+          $parent_description = $form['settings']['advanced']['parent']['#description'];
+          $form['settings']['advanced']['parent']['#description'] = t($parent_description->getUntranslatedString() . ' Make sure that "Initial visibility level" is set to "1" below.', $parent_description->getArguments());
           // Unset the advanced description since it refers to
           // functionality that we are not offering.
           unset($form['settings']['advanced']['follow']['#description']);
@@ -459,12 +464,13 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
       break;
 
     case 'menu_block:main':
-      // @todo If 'Make the initial visibility level follow the active menu
-      //   item' is checked, unset 'Fixed parent item'.
-      // @todo If 'Make the initial visibility level follow the active menu
-      //   item' is checked, set 'Initial visibility level' = 2.
-      // @todo If 'Make the initial visibility level follow the active menu
-      //   item' is checked, set 'Number of levels to display' = 1
+      // If follow is checked...
+      if ($form_state->getValue(['settings', 'advanced', 'follow']) == 1) {
+        // Set parent to default.
+        $form_state->setValue(['settings', 'parent'], 'main:');
+        // Set level = 2.
+        $form_state->setValue(['settings', 'level'], 2);
+      }
       break;
   }
 }
