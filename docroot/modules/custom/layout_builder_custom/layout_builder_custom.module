@@ -317,11 +317,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
             // Add #states to hide menu levels if horizontal
             // and if follow active menu item is checked.
-            $form['settings']['menu_levels']['#states'] = [
+            $form['settings']['menu_levels']['level']['#states'] = [
               'invisible' => [
-                ':input[name="layout_builder_style_menu_orientation"]' => [
-                  'value' => 'block_menu_horizontal',
-                ],
                 ':input[name="settings[follow]"]' => [
                   'checked' => TRUE,
                 ],
@@ -462,8 +459,12 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
       break;
 
     case 'menu_block:main':
-      // @todo If advanced.follow is TRUE, set menu_levels.level = 1.
-      // @todo If advanced.follow is TRUE, unset advanced.parent.
+      // @todo If 'Make the initial visibility level follow the active menu
+      //   item' is checked, unset 'Fixed parent item'.
+      // @todo If 'Make the initial visibility level follow the active menu
+      //   item' is checked, set 'Initial visibility level' = 2.
+      // @todo If 'Make the initial visibility level follow the active menu
+      //   item' is checked, set 'Number of levels to display' = 1
       break;
   }
 }
