@@ -5,59 +5,36 @@
 
 .tags-list {
   margin: 0;
-}
 
-.tags-list__tag {
-  font-size: 1em;
-  margin-bottom: 1rem;
-  font-weight: lighter;
-  padding: 0 1rem;
-  background: $light;
-  display: inline-block;
-  border-radius: 3px;
-  margin-right: 0.5rem;
+  &__container {
+    .headline {
+      display: inline-block;
+      margin-right: 1rem;
+    }
 
-  a {
-    text-decoration: none;
-    color: #151515;
-
-    &:focus,
-    &:hover {
-      text-decoration: underline;
+    & > div {
+      display: inline-block;
     }
   }
-}
 
-//Views, can probably be moved to another scss file in views/ ?
-.block-views-blocktags-list-tags-list {
-  @extend %container;
-
-  h2 {
+  &__tag {
+    font-size: 1em;
+    margin-bottom: 1rem;
+    font-weight: lighter;
+    padding: 0 1rem;
+    background: $light;
     display: inline-block;
-    margin-right: 1rem;
-  }
+    border-radius: 3px;
+    margin-right: 0.5rem;
 
-  & > div {
-    display: inline-block;
-  }
-}
+    a {
+      text-decoration: none;
+      color: #151515;
 
-.block-views-blocktags-list-block-tags-related {
-  h2 {
-    font-size: 1.4rem;
-    @extend %container;
-    //hack to prevent a change in container width (which is in em) when font size isn't 1em
-    max-width: 1310px;
-  }
-
-  :is(h1, h2, h3, h4, h5, h6) a {
-    color: $link-color;
-    text-decoration: none;
-    font-family: $font-family-serif;
-    font-weight: $font-weight-medium-bold;
-  }
-
-  & > div {
-    @extend %container;
+      &:focus,
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 }
