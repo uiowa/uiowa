@@ -74,7 +74,26 @@ class Authors extends BaseNodeSource {
    */
   public function postImport(MigrateImportEvent $event) {
     parent::postImport($event);
+    // If nothing to report, then we're done.
+    if (empty($this->reporter)) {
+      return;
+    }
+    // Grab our migration map.
+    $db = \Drupal::database();
+    if (!$db->schema()->tableExists('migrate_map_' . $this->migration->id())) {
+      return;
+    }
+    $mapper = $db->select('migrate_map_' . $this->migration->id(), 'm')
+      ->fields('m', ['sourceid1', 'destid1'])
+      ->execute()
+      ->fetchAllKeyed();
+    // Update a reporter for new node ids based on old entity ids.
+    $reporter = [];
     foreach ($this->reporter as $entity_id => $filename) {
+      $reporter[$mapper[$entity_id]] = $filename;
+    }
+    // Spit out a report in the logs/cli.
+    foreach ($reporter as $entity_id => $filename) {
       $this->logger->notice('Node: @nid, Image: @filename', [
         '@nid' => $entity_id,
         '@filename' => $filename,
