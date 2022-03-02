@@ -322,13 +322,30 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 }
 
 // Add margins for all stacked layout regions for mobile.
-.layout--twocol,
+
+.layout--fourcol,
 .layout--threecol,
-.layout--fourcol {
-  .layout__region {
+.layout--twocol {
+  .layout__region:not(:last-child) {
     margin-bottom: $mobile-height-gutter;
     @include breakpoint(md) {
       margin-bottom: 0;
+    }
+  }
+
+  // If section order is reversed, add margin back into last-child.
+  &.section-order__reversed {
+    .layout__region:last-child {
+      margin-bottom: $mobile-height-gutter;
+      @include breakpoint(md) {
+        margin-bottom: 0;
+      }
+    }
+
+    .layout__region:first-child {
+      @include breakpoint(md) {
+        margin-bottom: 0;
+      }
     }
   }
 }
