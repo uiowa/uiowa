@@ -47,6 +47,12 @@ class Authors extends BaseNodeSource {
       'field_data_field_author_roles' => ['field_author_roles_value'],
     ];
     $this->fetchAdditionalFields($row, $tables);
+    $roles = $row->getSourceProperty('field_author_roles_value');
+    $types = [];
+    foreach ($roles as $role) {
+      $types[] = $this->roleMapping($role);
+    }
+    $row->setSourceProperty('field_author_roles_value', $types);
     // If there's a suffix, append it to the last name field.
     if ($suffix = $row->getSourceProperty('field_author_suffix')) {
       $lastname = $row->getSourceProperty('field_author_lastname');
@@ -75,6 +81,23 @@ class Authors extends BaseNodeSource {
   }
 
   /**
+   * Helper function to map author roles to person types.
+   */
+  private function roleMapping($role) {
+    $mapping = [
+      'Afterword author' => 'afterword_author',
+      'Author' => 'author',
+      'Contributor' => 'contributor',
+      'Editor' => 'editor',
+      'Foreword author' => 'foreword_author',
+      'Illustrator' => 'illustrator',
+      'Photographer' => 'photographer',
+      'Translator' => 'translator',
+    ];
+    return $mapping[$role];
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function postImport(MigrateImportEvent $event) {
@@ -97,6 +120,9 @@ class Authors extends BaseNodeSource {
     foreach ($this->reporter as $entity_id => $filename) {
       $reporter[$mapper[$entity_id]] = $filename;
     }
+    // Empty it out so it doesn't keep repeating if the postImport
+    // runs multiple times, as it sometimes does.
+    $this->reporter = [];
     // Spit out a report in the logs/cli.
     foreach ($reporter as $entity_id => $filename) {
       $this->logger->notice('Node: @nid, Image: @filename', [
