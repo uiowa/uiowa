@@ -76,6 +76,7 @@ function uiowa_core_theme($existing, $type, $theme, $path) {
 function template_preprocess_uiowa_core_headline(&$variables) {
   if ($variables['hide_headline'] == TRUE) {
     $style = 'sr-only';
+    $alignment = '';
   }
   else {
     $style = HeadlineHelper::getStyles()[$variables['headline_style']];
