@@ -372,7 +372,7 @@ function uiowa_core_preprocess_block(&$variables) {
       if (!isset($variables['attributes']['class'])) {
         $variables['attributes']['class'] = [''];
       }
-      $variables['attributes']['class'][] .= 'block-padding__bottom block-padding__top';
+      $variables['attributes']['class'][] .= 'layout-container block-padding__bottom block-padding__top';
       break;
 
     case 'views_block:tags_list-block_tags_related':
@@ -380,7 +380,7 @@ function uiowa_core_preprocess_block(&$variables) {
       if (!isset($variables['attributes']['class'])) {
         $variables['attributes']['class'] = [''];
       }
-      $variables['attributes']['class'][] .= 'bg--gray block-padding__bottom block-padding__top';
+      $variables['attributes']['class'][] .= 'block--bg-container topic-page--all col--threecol--33 bg--gray block-padding__bottom block-padding__top';
       break;
   }
 }
