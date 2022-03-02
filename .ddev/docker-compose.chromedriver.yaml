@@ -27,6 +27,6 @@ services:
       #
       # Note: Do not modify the base URL value.
       - SIMPLETEST_BASE_URL=https://web
-      - BROWSERTEST_OUTPUT_DIRECTORY=/tmp
+      - BROWSERTEST_OUTPUT_DIRECTORY=/var/www/html/reports/phpunit
       - BROWSERTEST_OUTPUT_BASE_URL=${DDEV_PRIMARY_URL}
       - MINK_DRIVER_ARGS_WEBDRIVER=["chrome", {"browserName":"chrome","chromeOptions":{"args":["--disable-gpu","--headless", "--no-sandbox"]}}, "http://chromedriver:9515"]
