@@ -750,8 +750,6 @@ function admissions_core_preprocess_views_view_unformatted(&$variables) {
     $default_classes = [
       'card--person-teaser',
       'card--list',
-      'bg--white',
-      'card--enclosed',
       'card--centered-left',
       'card--alignment-left',
     ];
@@ -763,18 +761,16 @@ function admissions_core_preprocess_views_view_unformatted(&$variables) {
       foreach ($row_styles as $style_class) {
         // Change our image alignment and style.
         if ($style_class === 'list_format_grid') {
+          if (!in_array('block_hide_details', $row_styles)) {
+            $variables['row_item_classes'][] = 'bg--white';
+            $variables['row_item_classes'][] = 'card--enclosed';
+          }
           $variables['row_item_classes'][] = 'card--stacked';
         }
         elseif ($style_class === 'list_format_list') {
           $variables['row_item_classes'][] = 'card--media-left';
           $style_classes = ['media--circle', 'media--border'];
           $size_classes = ['card--media-left', 'card__media--small'];
-        }
-
-        if ($style_class === 'block_hide_details') {
-          if (($key = array_search("card--enclosed", $variables['row_item_classes'])) !== FALSE) {
-            unset($variables['row_item_classes'][$key]);
-          }
         }
       }
     }
