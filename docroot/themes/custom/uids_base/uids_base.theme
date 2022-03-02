@@ -194,7 +194,7 @@ function uids_base_preprocess_page(&$variables) {
     }
   }
 
-  // The uiowa_auth module replaces local authentication with SAML SSO.
+  // Link to the SSO route if configured to display the footer login link.
   if (theme_get_setting('footer.login_link')) {
     $route = 'samlauth.saml_controller_login';
     $exists = count(\Drupal::service('router.route_provider')->getRoutesByNames([$route])) === 1;
