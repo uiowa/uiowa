@@ -76,6 +76,15 @@ class AccessTest extends BrowserTestBase {
   }
 
   /**
+   * Test robots.txt denies all.
+   */
+  public function testRobotsDeniesAll() {
+    $this->drupalGet('robots.txt');
+    $content = $this->getSession()->getPage()->getContent();
+    $this->assertEquals("User-agent: *\r\nDisallow: /", $content);
+  }
+
+  /**
    * Test the footer login link is not present.
    */
   public function testNoFooterLoginLink() {
