@@ -1,7 +1,8 @@
 <?php
 
-namespace Drupal\Tests\menu_block\Functional;
+namespace Drupal\Tests\layout_builder_custom\Functional;
 
+use Drupal\layout_builder\Entity\LayoutBuilderEntityViewDisplay;
 use Drupal\menu_block\Plugin\Block\MenuBlock;
 use Drupal\Tests\BrowserTestBase;
 
@@ -10,16 +11,7 @@ use Drupal\Tests\BrowserTestBase;
  *
  * @group menu_block
  */
-class MenuBlockTest extends BrowserTestBase {
-
-  /**
-   * {@inheritdoc}
-   */
-  public static $modules = [
-    'block',
-    'menu_block',
-    'menu_block_test',
-  ];
+class MenuBlockCustomTest extends BrowserTestBase {
 
   /**
    * {@inheritdoc}
@@ -27,143 +19,57 @@ class MenuBlockTest extends BrowserTestBase {
   protected $defaultTheme = 'stark';
 
   /**
-   * An administrative user to configure the test environment.
-   *
-   * @var \Drupal\user\Entity\User|false
+   * {@inheritdoc}
    */
-  protected $adminUser;
-
-  /**
-   * The menu link plugin manager.
-   *
-   * @var \Drupal\Core\Menu\MenuLinkManagerInterface
-   */
-  protected $menuLinkManager;
-
-  /**
-   * The block storage.
-   *
-   * @var \Drupal\Core\Entity\EntityStorageInterface
-   */
-  protected $blockStorage;
-
-  /**
-   * The block view builder.
-   *
-   * @var \Drupal\Core\Entity\EntityViewBuilderInterface
-   */
-  protected $blockViewBuilder;
-
-  /**
-   * The menu link content storage.
-   *
-   * @var \Drupal\Core\Entity\EntityStorageInterface
-   */
-  protected $menuLinkContentStorage;
-
-  /**
-   * The module handler service.
-   *
-   * @var \Drupal\Core\Extension\ModuleHandlerInterface
-   */
-  protected $moduleHandler;
-
-  /**
-   * An array containing the menu link plugin ids.
-   *
-   * @var array
-   */
-  protected $links;
+  public static $modules = [
+    'layout_builder',
+    'block',
+    'block_content',
+    'node',
+    'layout_builder_custom'
+  ];
 
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
-    $this->menuLinkManager = \Drupal::service('plugin.manager.menu.link');
-    $this->blockStorage = \Drupal::service('entity_type.manager')
-      ->getStorage('block');
-    $this->blockViewBuilder = \Drupal::service('entity_type.manager')
-      ->getViewBuilder('block');
-    $this->menuLinkContentStorage = \Drupal::service('entity_type.manager')
-      ->getStorage('menu_link_content');
-    $this->moduleHandler = \Drupal::moduleHandler();
+    $this->drupalPlaceBlock('local_tasks_block');
 
-    $this->links = $this->createLinkHierarchy();
-
-    // Create and log in an administrative user.
-    $this->adminUser = $this->drupalCreateUser([
-      'administer blocks',
-      'access administration pages',
+    // Create two nodes.
+    $this->createContentType([
+      'type' => 'bundle_with_section_field',
+      'name' => 'Bundle with section field',
     ]);
-    $this->drupalLogin($this->adminUser);
+
+    LayoutBuilderEntityViewDisplay::load('node.bundle_with_section_field.default')
+      ->enableLayoutBuilder()
+      ->setOverridable()
+      ->save();
+
+    $this->drupalLogin($this->drupalCreateUser([
+      'configure any layout',
+    ]));
   }
 
   /**
-   * Creates a simple hierarchy of links.
+   * Checks that our menu block overrides are in place.
    */
-  protected function createLinkHierarchy() {
-    // First remove all the menu links in the menu.
-    $this->menuLinkManager->deleteLinksInMenu('main');
-
-    // Then create a simple link hierarchy:
-    // - parent menu item
-    //   - child-1 menu item
-    //     - child-1-1 menu item
-    //     - child-1-2 menu item
-    //   - child-2 menu item.
-    $base_options = [
-      'provider' => 'menu_block',
-      'menu_name' => 'main',
-    ];
-
-    $parent = $base_options + [
-      'title' => 'parent menu item',
-      'link' => ['uri' => 'internal:/menu-block-test/hierarchy/parent'],
-    ];
-    /** @var \Drupal\menu_link_content\MenuLinkContentInterface $link */
-    $link = $this->menuLinkContentStorage->create($parent);
-    $link->save();
-    $links['parent'] = $link->getPluginId();
-
-    $child_1 = $base_options + [
-      'title' => 'child-1 menu item',
-      'link' => ['uri' => 'internal:/menu-block-test/hierarchy/parent/child-1'],
-      'parent' => $links['parent'],
-    ];
-    $link = $this->menuLinkContentStorage->create($child_1);
-    $link->save();
-    $links['child-1'] = $link->getPluginId();
-
-    $child_1_1 = $base_options + [
-      'title' => 'child-1-1 menu item',
-      'link' => ['uri' => 'internal:/menu-block-test/hierarchy/parent/child-1/child-1-1'],
-      'parent' => $links['child-1'],
-    ];
-    $link = $this->menuLinkContentStorage->create($child_1_1);
-    $link->save();
-    $links['child-1-1'] = $link->getPluginId();
-
-    $child_1_2 = $base_options + [
-      'title' => 'child-1-2 menu item',
-      'link' => ['uri' => 'internal:/menu-block-test/hierarchy/parent/child-1/child-1-2'],
-      'parent' => $links['child-1'],
-    ];
-    $link = $this->menuLinkContentStorage->create($child_1_2);
-    $link->save();
-    $links['child-1-2'] = $link->getPluginId();
-
-    $child_2 = $base_options + [
-      'title' => 'child-2 menu item',
-      'link' => ['uri' => 'internal:/menu-block-test/hierarchy/parent/child-2'],
-      'parent' => $links['parent'],
-    ];
-    $link = $this->menuLinkContentStorage->create($child_2);
-    $link->save();
-    $links['child-2'] = $link->getPluginId();
-
-    return $links;
+  public function testMenuBlockOverrides() {
+    // @todo Test menu orientation field is showing only once.
+    // @todo Test parent field is hidden when follow is checked.
+    // @todo Test initial visibility field is hidden when follow is checked.
+    // @todo Test text 'Make sure that "Initial visibility level" is set to "1"
+    //   below.' is showing.
+    // @todo Test 'Visibility options' is showing and not 'Advanced'
+    // @todo Test label_type field is not rendered.
+    // @todo Test label_link field is not rendered.
+    // @todo Test follow description is not shown.
+    // @todo Test that depth options are 1-3.
+    // @todo Test that expand_all_items field is not rendered.
+    // @todo Test that style field is not rendered.
+    // @todo Test that follow is set to 1 if the add block form is being used.
   }
 
   /**
