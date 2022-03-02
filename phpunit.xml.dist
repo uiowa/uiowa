@@ -3,7 +3,8 @@
 <phpunit bootstrap="docroot/core/tests/bootstrap.php" colors="true"
          beStrictAboutTestsThatDoNotTestAnything="true"
          beStrictAboutOutputDuringTests="true"
-         beStrictAboutChangesToGlobalState="true">
+         beStrictAboutChangesToGlobalState="true"
+         printerClass="\Drupal\Tests\Listeners\HtmlOutputPrinter">
   <php>
     <!-- Set error reporting to E_ALL. -->
     <ini name="error_reporting" value="32767"/>
