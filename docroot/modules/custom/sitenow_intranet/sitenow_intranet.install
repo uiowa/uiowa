@@ -39,6 +39,13 @@ function sitenow_intranet_install() {
 
   $database->execute();
 
+  $database = \Drupal::database()->insert('restrict_ip_paths')->fields([
+    'type' => 'white',
+    'path' => '/robots.txt',
+  ]);
+
+  $database->execute();
+
   // Set some sane default configuration.
   $config_factory->getEditable('sitenow_intranet.settings')
     ->set('unauthorized.title', 'Unauthorized')
