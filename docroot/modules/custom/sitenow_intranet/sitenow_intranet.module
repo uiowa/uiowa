@@ -44,9 +44,8 @@ function sitenow_intranet_restrict_ip_access_denied_page_alter(&$page) {
       ],
     ],
   ];
-
-  $page['main']['title_container']['title'] = [
-    '#prefix' => '<h1 class="page-title bold-headline--serif bold-headline text-align-center">',
+  $page['main']['title_container']['access_denied_title'] = [
+    '#prefix' => '<h1 class="page-title headline--serif headline text-align-center">',
     '#suffix' => '</h1>',
   ];
 
