@@ -68,11 +68,11 @@ class AccessTest extends BrowserTestBase {
   }
 
   /**
-   * Test robots.txt returns access denied.
+   * Test robots.txt returns 200.
    */
-  public function testRobotsReturnsAccessDenied() {
+  public function testRobotsReturnsOk() {
     $this->drupalGet('robots.txt');
-    $this->assertSession()->statusCodeEquals(401);
+    $this->assertSession()->statusCodeEquals(200);
   }
 
   /**
