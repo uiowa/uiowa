@@ -25,13 +25,14 @@ third_party_settings:
   field_group:
     group_ighn_person_main_header:
       children: {  }
+      label: 'IGHN Person Main Header'
       parent_name: ''
+      region: hidden
       weight: 13
       format_type: html_element
-      region: hidden
       format_settings:
-        id: ''
         classes: ighn-main-info
+        id: ''
         element: div
         show_label: false
         label_element: h3
@@ -39,29 +40,28 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-      label: 'IGHN Person Main Header'
 id: node.ighn_person.default
 targetEntityType: node
 bundle: ighn_person
 mode: default
 content:
   field_ighn_person_biography:
-    weight: 7
+    type: text_default
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 7
     region: content
   field_ighn_person_credentials:
     type: string
-    weight: 9
-    region: content
     label: visually_hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 9
+    region: content
   field_ighn_person_cv_link:
-    weight: 8
+    type: link
     label: visually_hidden
     settings:
       trim_length: 80
@@ -70,64 +70,64 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    type: link
+    weight: 8
     region: content
   field_ighn_person_department:
-    weight: 3
+    type: entity_reference_label
     label: visually_hidden
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 3
     region: content
   field_ighn_person_focus_areas:
-    weight: 4
+    type: entity_reference_label
     label: inline
     settings:
       link: false
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 4
     region: content
   field_ighn_person_global_regions:
-    weight: 5
+    type: entity_reference_label
     label: inline
     settings:
       link: false
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 5
     region: content
   field_ighn_person_image:
     type: entity_reference_entity_view
-    weight: 0
     label: hidden
     settings:
       view_mode: large__square
       link: false
     third_party_settings: {  }
+    weight: 0
     region: content
   field_ighn_person_language:
-    weight: 6
+    type: entity_reference_label
     label: inline
     settings:
       link: false
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 6
     region: content
   field_ighn_person_position_title:
-    weight: 1
+    type: string
     label: visually_hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 1
     region: content
   field_ighn_primary_college:
-    weight: 2
+    type: entity_reference_label
     label: visually_hidden
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 2
     region: content
 hidden:
   field_ighn_person_first_name: true

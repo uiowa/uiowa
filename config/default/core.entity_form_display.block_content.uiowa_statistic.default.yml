@@ -19,16 +19,16 @@ third_party_settings:
         - field_uiowa_statistic_title_pre
         - field_uiowa_statistic_title
         - field_uiowa_statistic_title_suf
+      label: 'Uiowa Statistic Title'
+      region: content
       parent_name: ''
       weight: 1
       format_type: fieldset
-      region: content
       format_settings:
+        classes: ''
+        id: ''
         description: ''
         required_fields: true
-        id: ''
-        classes: ''
-      label: 'Uiowa Statistic Title'
 _core:
   default_config_hash: vlvCFBTHPtwBRLi0UQUnYGKJOy9RQSnNPOjFoTZBMic
 id: block_content.uiowa_statistic.default
@@ -37,43 +37,43 @@ bundle: uiowa_statistic
 mode: default
 content:
   field_uiowa_statistic_content:
+    type: string_textarea
     weight: 6
+    region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
-    region: content
   field_uiowa_statistic_excerpt:
+    type: string_textarea
     weight: 5
+    region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
-    region: content
   field_uiowa_statistic_title:
+    type: heading
     weight: 3
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: heading
-    region: content
   field_uiowa_statistic_title_pre:
+    type: string_textfield
     weight: 2
+    region: content
     settings:
       size: 60
       placeholder: '#'
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_uiowa_statistic_title_suf:
+    type: string_textfield
     weight: 4
+    region: content
     settings:
       size: 60
       placeholder: '%'
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   info:
     type: string_textfield
     weight: 0

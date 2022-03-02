@@ -15,14 +15,15 @@ bundle: uiowa_timeline
 mode: default
 content:
   field_uiowa_headline:
+    type: uiowa_headline_widget
     weight: 1
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: uiowa_headline_widget
-    region: content
   field_uiowa_timeline_items:
     type: paragraphs
     weight: 2
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -38,7 +39,6 @@ content:
         collapse_edit_all: collapse_edit_all
         duplicate: duplicate
     third_party_settings: {  }
-    region: content
   info:
     type: string_textfield
     weight: 0

@@ -11,25 +11,25 @@ adding:
     field_publish_options:
       weight: 13
     field_reference:
-      weight: 17
-      settings:
-        match_operator: CONTAINS
-        size: 60
-        placeholder: ''
-        match_limit: 10
-      third_party_settings: {  }
       type: entity_reference_autocomplete_tags
+      weight: 17
       region: content
-    field_related_content:
-      weight: 16
       settings:
         match_operator: CONTAINS
+        match_limit: 10
         size: 60
         placeholder: ''
-        match_limit: 10
       third_party_settings: {  }
+    field_related_content:
       type: entity_reference_autocomplete
+      weight: 16
       region: content
+      settings:
+        match_operator: CONTAINS
+        match_limit: 10
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
     moderation_state:
       weight: 14
 removing:

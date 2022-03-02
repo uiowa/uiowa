@@ -34,56 +34,56 @@ mode: teaser
 content:
   field_image:
     type: entity_reference_entity_view
-    weight: 6
-    region: content
     label: hidden
     settings:
       view_mode: medium__square
       link: false
     third_party_settings: {  }
+    weight: 6
+    region: content
   field_person_credential:
     type: string
-    weight: 0
-    region: content
     label: visually_hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 0
+    region: content
   field_person_email:
     type: email_mailto
-    weight: 2
-    region: content
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 2
+    region: content
   field_person_phone:
-    weight: 3
+    type: telephone_link
     label: visually_hidden
     settings:
       title: ''
     third_party_settings: {  }
-    type: telephone_link
+    weight: 3
     region: content
   field_person_position:
     type: string
-    weight: 1
-    region: content
     label: visually_hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 1
+    region: content
   field_teaser:
     type: basic_string
-    weight: 4
-    region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
-  links:
-    weight: 5
+    weight: 4
     region: content
+  links:
     settings: {  }
     third_party_settings: {  }
+    weight: 5
+    region: content
 hidden:
   content_moderation_control: true
   field_meta_tags: true

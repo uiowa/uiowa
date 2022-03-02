@@ -23,23 +23,23 @@ bundle: card
 mode: default
 content:
   field_card_body:
-    weight: 3
+    type: text_default
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 3
     region: content
   field_card_image:
     type: entity_reference_entity_view
-    weight: 0
     label: hidden
     settings:
       view_mode: large__widescreen
       link: false
     third_party_settings: {  }
+    weight: 0
     region: content
   field_card_link:
-    weight: 4
+    type: link
     label: hidden
     settings:
       trim_length: null
@@ -48,23 +48,23 @@ content:
       rel: '0'
       target: '0'
     third_party_settings: {  }
-    type: link
+    weight: 4
     region: content
   field_card_subtitle:
-    weight: 2
+    type: string
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 2
     region: content
   field_card_title:
-    weight: 1
+    type: string
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 1
     region: content
 hidden:
   field_uip_classes: true

@@ -20,66 +20,66 @@ third_party_settings:
         - field_uip_colwidth
         - field_uip_classes
         - field_uip_id
+      label: 'Blockquote Settings'
+      region: content
       parent_name: ''
       weight: 3
       format_type: details
       format_settings:
         label: 'Blockquote Settings'
-        required_fields: true
-        id: ''
         classes: ''
+        id: ''
         open: false
-      label: 'Blockquote Settings'
-      region: content
+        required_fields: true
 id: paragraph.blockquote.default
 targetEntityType: paragraph
 bundle: blockquote
 mode: default
 content:
   field_blockquote_cite:
+    type: link_default
     weight: 2
+    region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
-    type: link_default
-    region: content
   field_blockquote_content:
+    type: string_textarea
     weight: 0
+    region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
-    region: content
   field_blockquote_footer:
+    type: string_textfield
     weight: 1
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_uip_classes:
+    type: options_select
     weight: 6
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-    region: content
   field_uip_colwidth:
+    type: options_select
     weight: 5
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-    region: content
   field_uip_id:
+    type: string_textfield
     weight: 7
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
 hidden:
   created: true
   status: true

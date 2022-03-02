@@ -41,21 +41,35 @@ function sitenow_intranet_restrict_ip_access_denied_page_alter(&$page) {
   ];
   $page['main']['access_denied_title_container']['access_denied_title'] = [
     '#markup' => t('Access denied'),
-    '#prefix' => '<h1 class="page-title bold-headline--serif bold-headline text-align-center">',
+    '#prefix' => '<h1 class="page-title headline--serif headline text-align-center">',
     '#suffix' => '</h1>',
   ];
-  $page['main']['access_denied_message'] = [
-    '#markup' => t('You are not authorized to access this page.'),
-    '#prefix' => '<p class="text-align-center">',
-    '#suffix' => '</p>',
-  ];
-  $page['main']['continuation_message'] = [
-    '#markup' => t('Continue by logging in with your HawkID.'),
-    '#prefix' => '<p class="text-align-center">',
-    '#suffix' => '</p>',
-  ];
+  // Display a different message to authenticated users with no other roles.
+  $roles = \Drupal::currentUser()->getRoles();
+  if (count($roles) === 1 && in_array('authenticated', $roles)) {
+    $page['main']['access_denied_message'] = [
+      '#markup' => t('You do not have sufficient privileges to access this page. Please contact an administrator.'),
+      '#prefix' => '<p class="text-align-center">',
+      '#suffix' => '</p>',
+    ];
+  }
+  else {
+    $page['main']['access_denied_message'] = [
+      '#markup' => t('You are not authorized to access this page.'),
+      '#prefix' => '<p class="text-align-center">',
+      '#suffix' => '</p>',
+    ];
+    $page['main']['continuation_message'] = [
+      '#markup' => t('Continue by logging in with your HawkID.'),
+      '#prefix' => '<p class="text-align-center">',
+      '#suffix' => '</p>',
+    ];
+  }
+
   if (isset($page['logout_link'])) {
     $page['main']['logout_link'] = $page['logout_link'];
+    $page['main']['logout_link']['#prefix'] = '<p class="text-align-center">';
+    $page['main']['logout_link']['#suffix'] = '</p>';
     unset($page['logout_link']);
   }
   if (isset($page['login_link'])) {

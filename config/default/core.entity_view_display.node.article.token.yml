@@ -23,14 +23,14 @@ dependencies:
     - user
 third_party_settings:
   layout_builder:
-    allow_custom: false
     enabled: false
+    allow_custom: false
   layout_builder_restrictions:
     allowed_block_categories: {  }
     entity_view_mode_restriction:
-      whitelisted_blocks: {  }
-      blacklisted_blocks: {  }
       allowed_layouts: {  }
+      blacklisted_blocks: {  }
+      whitelisted_blocks: {  }
     entity_view_mode_restriction_by_region:
       allowed_layouts: {  }
 id: node.article.token
@@ -39,28 +39,28 @@ bundle: article
 mode: token
 content:
   body:
-    weight: 2
+    type: text_default
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 2
     region: content
   field_image:
     type: entity_reference_entity_view
-    weight: 0
-    region: content
     label: visually_hidden
     settings:
       view_mode: large__widescreen
       link: false
     third_party_settings: {  }
+    weight: 0
+    region: content
   field_teaser:
     type: basic_string
-    weight: 1
-    region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 1
+    region: content
 hidden:
   article_created_date: true
   content_moderation_control: true

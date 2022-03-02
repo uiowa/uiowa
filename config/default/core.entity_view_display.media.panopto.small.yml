@@ -12,15 +12,15 @@ dependencies:
     - sitenow_media_wysiwyg
 third_party_settings:
   layout_builder:
-    allow_custom: false
     enabled: false
+    allow_custom: false
 id: media.panopto.small
 targetEntityType: media
 bundle: panopto
 mode: small
 content:
   field_media_panopto_url:
-    weight: 1
+    type: panopto_url_formatter
     label: hidden
     settings:
       trim_length: '80'
@@ -29,7 +29,7 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    type: panopto_url_formatter
+    weight: 1
     region: content
 hidden:
   created: true

@@ -71,7 +71,7 @@ class ListBlock extends CoreBlock {
 
     $form['allow']['#default_value'] = $defaults;
 
-    // Add restrict_fields option to prevent editors from toggling certain fields.
+    // Add restrict_fields option to prevent editors toggling certain fields.
     $field_keys = array_keys($this->view->getDisplay()->getOption('fields'));
     $fields = array_combine($field_keys, $field_keys);
     $restrict_fields = $this->getOption('restrict_fields');
@@ -131,6 +131,7 @@ class ListBlock extends CoreBlock {
       'hide_headline' => $block_configuration['headline']['hide_headline'] ?? 0,
       'heading_size' => $block_configuration['headline']['heading_size'] ?? 'h2',
       'headline_style' => $block_configuration['headline']['headline_style'] ?? 'default',
+      'headline_alignment' => $block_configuration['headline']['headline_alignment'] ?? 'default',
       'child_heading_size' => $block_configuration['headline']['child_heading_size'] ?? 'h3',
     ], $has_children);
     $form['headline']['#weight'] = 1;
@@ -391,7 +392,7 @@ class ListBlock extends CoreBlock {
       $form['override']['use_more_text'] = [
         '#type' => 'textfield',
         '#title' => 'Custom text',
-        '#default_value' => isset($block_configuration['use_more_text']) ? $block_configuration['use_more_text'] : '',
+        '#default_value' => $block_configuration['use_more_text'] ?? '',
         '#process_default_value' => FALSE,
         '#states' => [
           'visible' => [
@@ -522,6 +523,7 @@ class ListBlock extends CoreBlock {
           '#hide_headline' => $headline['hide_headline'],
           '#heading_size' => $headline['heading_size'],
           '#headline_style' => $headline['headline_style'],
+          '#headline_alignment' => $headline['headline_alignment'] ?? 'default',
         ];
       }
       if (empty($headline['headline'])) {

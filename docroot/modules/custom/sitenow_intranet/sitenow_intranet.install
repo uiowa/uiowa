@@ -31,14 +31,12 @@ function sitenow_intranet_install() {
     'path' => '/saml/*',
   ]);
   $database->execute();
+  $database = \Drupal::database()->insert('restrict_ip_paths')->fields([
+    'type' => 'white',
+    'path' => '/admin/*',
+  ]);
+  $database->execute();
 
-  $config_factory = \Drupal::configFactory();
-  $config = $config_factory->getEditable('uiowa_search.settings');
-  if ($config) {
-    // Turn off the search bar display.
-    $config->set('uiowa_search.display_search', 0)
-      ->save();
-  }
   \Drupal::messenger()->addStatus(__FUNCTION__);
 }
 

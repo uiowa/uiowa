@@ -14,7 +14,7 @@ bundle: panopto
 mode: default
 content:
   field_media_panopto_url:
-    weight: 0
+    type: panopto_url_formatter
     label: hidden
     settings:
       trim_length: '80'
@@ -23,7 +23,7 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    type: panopto_url_formatter
+    weight: 0
     region: content
 hidden:
   created: true

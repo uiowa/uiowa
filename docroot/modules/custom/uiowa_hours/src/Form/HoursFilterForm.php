@@ -54,7 +54,7 @@ class HoursFilterForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, $config = NULL) {
-    $form['#attached']['library'][] = 'uiowa_hours/uiowa-hours-finishedinput';
+    $form['#attached']['library'][] = 'uiowa_hours/filter_form';
     $form['#attributes']['class'][] = 'form-inline clearfix uiowa-hours-filter-form';
 
     if (empty($config['headline'])) {
@@ -63,11 +63,13 @@ class HoursFilterForm extends FormBase {
     else {
       $child_heading_size = HeadlineHelper::getHeadingSizeUp($config['heading_size']);
     }
+
     $block_config = [
       'resource' => $config['resource'],
       'display_summary' => $config['display_summary'],
       'child_heading_size' => $child_heading_size,
     ];
+
     $form['block_config'] = [
       '#type' => 'hidden',
       '#value' => $block_config,
@@ -75,29 +77,51 @@ class HoursFilterForm extends FormBase {
 
     // Date field with custom delayed ajax callback.
     if ($config['display_datepicker'] == 1) {
+      $form['#attached']['library'][] = 'uiowa_hours/finishedinput';
+
+      // The default value will be set via JS.
       $form['date'] = [
         '#type' => 'date',
         '#title' => $this->t('Filter by date'),
-        '#default_value' => date('Y-m-d'),
+        '#default_value' => NULL,
         '#ajax' => [
           'callback' => [$this, 'dateFilterCallback'],
           'event' => 'finishedinput',
+          'disable-refocus' => TRUE,
         ],
       ];
     }
 
-    $result = $this->hours->getHours($config['resource']);
     $form_id = $form_state->getBuildInfo()['form_id'];
     $result_id = $form_id . '_result';
+
     $form['results'] = [
       '#type' => 'container',
       '#attributes' => [
         'role' => 'region',
         'aria-live' => 'assertive',
+        'id' => $result_id,
+        'class' => [
+          'uiowa-hours-container',
+        ],
       ],
     ];
-    $formatted_results = $this->hoursRender($result, $result_id, $block_config);
-    $form['results']['result'] = $formatted_results;
+
+    $form['submit'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Submit'),
+      '#ajax' => [
+        'callback' => '::dateFilterCallback',
+        'wrapper' => 'results-container',
+        'disable-refocus' => TRUE,
+      ],
+      '#attributes' => [
+        'class' => [
+          'element-invisible',
+        ],
+        'tabindex' => -1,
+      ],
+    ];
 
     return $form;
   }
@@ -106,12 +130,14 @@ class HoursFilterForm extends FormBase {
    * Date Filter Callback.
    */
   public function dateFilterCallback(array &$form, FormStateInterface $form_state): AjaxResponse {
-    $response = new AjaxResponse();
-    $date = $form_state->getValue('date');
+    $date = $form_state->getValue('date') ?? date('Y-m-d');
     $block_config = $form_state->getValue('block_config');
+    $form_id = $form_state->getBuildInfo()['form_id'];
+    $result_id = $form_id . '_result';
     $result = $this->hours->getHours($block_config['resource'], $date, $date);
-    $result_id = $form['results']['result']['#attributes']['id'];
     $formatted_results = $this->hoursRender($result, $result_id, $block_config);
+
+    $response = new AjaxResponse();
     $response->addCommand(new HtmlCommand('#' . $result_id, $formatted_results));
     $message = $this->t('Returning resource hours information for @date.', ['@date' => $date]);
     $response->addCommand(new AnnounceCommand($message, 'polite'));
@@ -138,6 +164,7 @@ class HoursFilterForm extends FormBase {
     $data = $result['data'];
     $start = $result['query']['start'];
     $end = $result['query']['end'];
+
     $card_classes = [
       'uiowa-hours',
       'card--enclosed',
@@ -170,8 +197,8 @@ class HoursFilterForm extends FormBase {
         '#data' => [
           'child_heading_size' => $block_config['child_heading_size'],
           'date' => $this->t('@start@end', [
-            '@start' => date('F d, Y', $start),
-            '@end' => $end == $start ? NULL : ' - ' . date('F d, Y', $end),
+            '@start' => date('F j, Y', $start),
+            '@end' => $end == $start ? NULL : ' - ' . date('F j, Y', $end),
           ]),
           'times' => [
             '#markup' => $this->t('<span class="badge badge--orange">Closed</span>'),
@@ -199,7 +226,7 @@ class HoursFilterForm extends FormBase {
           ],
           '#data' => [
             'child_heading_size' => $block_config['child_heading_size'],
-            'date' => date('F d, Y', strtotime($key)),
+            'date' => date('F j, Y', strtotime($key)),
             'times' => [
               '#theme' => 'item_list',
               '#items' => [],

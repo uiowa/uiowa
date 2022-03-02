@@ -1,0 +1,39 @@
+uuid: 0d722246-5f24-4739-a759-81300ae7edfa
+langcode: en
+status: true
+dependencies: {  }
+id: d7_grad_admissions_aos_taxonomy
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - grad_admissions
+migration_group: sitenow_migrate
+label: 'Graduate Areas of Study taxonomy term migration.'
+source:
+  plugin: d7_taxonomy_term
+  bundle: graduate_areas_of_study
+process:
+  tid: tid
+  name: name
+  description:
+    -
+      plugin: callback
+      callable: strip_tags
+      source: description
+    -
+      plugin: callback
+      callable: htmlspecialchars_decode
+    -
+      plugin: str_replace
+      search: '&#39;'
+      replace: ''''
+    -
+      plugin: str_replace
+      search: '&rsquo;'
+      replace: ''''
+  format: format
+destination:
+  plugin: 'entity:taxonomy_term'
+  default_bundle: grad_areas_of_study
+migration_dependencies: null

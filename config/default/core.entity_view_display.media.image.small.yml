@@ -15,8 +15,8 @@ dependencies:
     - lazy
 third_party_settings:
   layout_builder:
-    allow_custom: false
     enabled: false
+    allow_custom: false
 _core:
   default_config_hash: qxh_4kI5XZJ_t8OOI3OEqnRP5iL5WaD7cCfGRLbmPjw
 id: media.image.small
@@ -26,17 +26,17 @@ mode: small
 content:
   field_media_image:
     type: image
-    weight: 0
-    region: content
     label: hidden
     settings:
-      image_style: thumbnail
       image_link: ''
+      image_style: thumbnail
     third_party_settings:
       lazy:
         lazy_image: '1'
         placeholder_style: ''
         data_uri: false
+    weight: 0
+    region: content
 hidden:
   created: true
   field_media_caption: true

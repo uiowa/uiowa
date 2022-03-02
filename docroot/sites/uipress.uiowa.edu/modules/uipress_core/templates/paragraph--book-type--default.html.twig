@@ -1,0 +1,13 @@
+<div{{ attributes }}>
+  <h2 {{ attributes.addClass(['accordion__heading']) }} id="{{ heading_id }}">
+    <button class="accordion__button" role="tab" aria-selected="false" aria-expanded="false" aria-controls="{{ content_id }}">
+      {{ accordion_label }}
+      <i aria-hidden="true" focusable="false" role="presentation" class="fas fa-chevron-up"></i>
+    </button>
+  </h2>
+
+  <div id="{{ content_id }}" class="accordion__content" aria-labelledby="{{ heading_id }}" data-parent="#accordion-book-type">
+    {{ content|without('field_book_type', 'field_book_ebook_ownership') }}
+  </div>
+</div>
+

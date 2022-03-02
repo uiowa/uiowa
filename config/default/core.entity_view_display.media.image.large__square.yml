@@ -15,8 +15,8 @@ dependencies:
     - responsive_image
 third_party_settings:
   layout_builder:
-    allow_custom: false
     enabled: false
+    allow_custom: false
 _core:
   default_config_hash: qxh_4kI5XZJ_t8OOI3OEqnRP5iL5WaD7cCfGRLbmPjw
 id: media.image.large__square
@@ -26,8 +26,6 @@ mode: large__square
 content:
   field_media_image:
     type: responsive_image
-    weight: 0
-    region: content
     label: hidden
     settings:
       responsive_image_style: large__square
@@ -35,6 +33,8 @@ content:
     third_party_settings:
       lazy:
         lazy_image: '1'
+    weight: 0
+    region: content
 hidden:
   created: true
   field_media_caption: true

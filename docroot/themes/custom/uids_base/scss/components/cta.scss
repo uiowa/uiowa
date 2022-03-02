@@ -42,7 +42,7 @@
 @media all and (-ms-high-contrast: none),
 (-ms-high-contrast: active) {
   .cta__container>div {
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       margin: 1.05rem 0;
     }
   }
@@ -68,4 +68,9 @@
 
 .cta__wrapper[class*="bg--gold"] .bttn {
   color: $secondary;
+}
+
+// @todo remove and add back to UIDS.
+.cta__wrapper .headline--uppercase {
+  font-size: 2.8rem;
 }

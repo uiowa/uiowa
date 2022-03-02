@@ -23,62 +23,62 @@ tips:
     plugin: text
     label: Enable/Disable
     weight: 1
-    body: '<p>Toggling the "Enabled" checkbox for SiteNow Articles, will display/not display published articles at the configurable path below.</p>'
     selector: .form-checkbox
+    body: '<p>Toggling the "Enabled" checkbox for SiteNow Articles, will display/not display published articles at the configurable path below.</p>'
   title:
     id: title
     plugin: text
     label: 'Articles Title'
     weight: 2
-    body: '<p>First off, you can give your Article page a title. This is a required field. Other required fields are marked with a red asterisk. This will display above the published articles.</p>'
-    selector: '#edit-sitenow-articles-title'
     position: bottom-start
+    selector: '#edit-sitenow-articles-title'
+    body: '<p>First off, you can give your Article page a title. This is a required field. Other required fields are marked with a red asterisk. This will display above the published articles.</p>'
   path:
     id: path
     plugin: text
     label: 'Articles Path'
     weight: 3
-    body: '<p>The path where the published articles will be displayed. The default path is YourSiteURL/news)</p>'
-    selector: '#edit-sitenow-articles-path'
     position: bottom-start
+    selector: '#edit-sitenow-articles-path'
+    body: '<p>The path where the published articles will be displayed. The default path is YourSiteURL/news)</p>'
   header:
     id: header
     plugin: text
     label: 'Header Content'
     weight: 4
-    body: '<p>The Header Content text will display above the rendered articles on the news page.</p>'
-    selector: .js-form-type-textarea
     position: top-start
+    selector: .js-form-type-textarea
+    body: '<p>The Header Content text will display above the rendered articles on the news page.</p>'
   wysiwyg:
     id: wysiwyg
     plugin: text
     label: 'Text Editor (WYSIWYG) Overview'
     weight: 5
-    body: '<p>The What-You-See-Is-What-You-Get (WYSIWYG) text editor gives you the ability to add additional content to the header on the Articles page.</p><p>For more details, <a href="https://sitenow.uiowa.edu/node/136">view our documentation section about the WYSIWYG</a>.</p>'
-    selector: '#cke_edit-sitenow-articles-header-content-value'
     position: top-start
+    selector: '#cke_edit-sitenow-articles-header-content-value'
+    body: '<p>The What-You-See-Is-What-You-Get (WYSIWYG) text editor gives you the ability to add additional content to the header on the Articles page.</p><p>For more details, <a href="https://sitenow.uiowa.edu/node/136">view our documentation section about the WYSIWYG</a>.</p>'
   archive:
     id: archive
     plugin: text
     label: Archive
     weight: 6
-    body: '<p>Toggling the "Enabled" checkbox for Display monthly archive, will display/hide the menu that allows site visitors to see a monthly archive listing.</p>'
     selector: '#edit-sitenow-articles-archive'
+    body: '<p>Toggling the "Enabled" checkbox for Display monthly archive, will display/hide the menu that allows site visitors to see a monthly archive listing.</p>'
   rss:
     id: rss
     plugin: text
     label: 'RSS Feed'
     weight: 7
-    body: '<p>Toggling the "Enabled" checkbox for the RSS Feed icon, will display/hide the icon below the articles for site visitors.</p>'
     selector: '#edit-sitenow-articles-feed'
+    body: '<p>Toggling the "Enabled" checkbox for the RSS Feed icon, will display/hide the icon below the articles for site visitors.</p>'
   page-actions:
     id: page-actions
     plugin: text
     label: 'Save Article Settings'
     weight: 8
-    body: '<p>You can Save the changes you made to the Article configuration here.</p>'
-    selector: '#edit-actions'
     position: top-start
+    selector: '#edit-actions'
+    body: '<p>You can Save the changes you made to the Article configuration here.</p>'
   next-step:
     id: next-step
     plugin: text
