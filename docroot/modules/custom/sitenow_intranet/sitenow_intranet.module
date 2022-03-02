@@ -16,6 +16,7 @@ use Drupal\Core\Url;
  */
 function sitenow_intranet_restrict_ip_access_denied_page_alter(&$page) {
   $config = \Drupal::config('sitenow_intranet.settings');
+  \Drupal::service('renderer')->addCacheableDependency($page, $config);
 
   if (isset($page['access_denied'])) {
     unset($page['access_denied']);
