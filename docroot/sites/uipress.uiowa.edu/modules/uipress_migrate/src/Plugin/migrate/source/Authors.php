@@ -49,7 +49,11 @@ class Authors extends BaseNodeSource {
     }
     // Download image and attach it for the person photo.
     if ($image = $row->getSourceProperty('field_image_attach')) {
-      // @todo Check the image dimensions and add a cutoff for too small.
+      // @todo Determine what minimum dimensions to use.
+      $this->imageSizeRestrict = [
+        'width' => 180,
+        'height' => 180,
+      ];
       $row->setSourceProperty('field_image', $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']));
     }
     // Check if we have a facebook, and either append (or replace) with
