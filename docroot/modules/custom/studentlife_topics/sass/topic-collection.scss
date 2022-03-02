@@ -40,7 +40,6 @@
   }
 }
 
-
 .page-node-type-topic-collection .banner {
   .block-views-blocktopic-page-browse-by-tag-block-4  {
     .headline {
@@ -60,8 +59,6 @@
   }
 }
 
-
-
 .page-node-type-topic-collection {
   .field--name-field-topic-collection-tags {
     span.field__item {
@@ -80,31 +77,33 @@
   font-size: 16px;
 }
 
-.page-node-type-topic-collection .bg--gray :is(h1, h2, h3, h4, h5, h6) a {
-  color: $link-color;
-  text-decoration: none;
-  font-family: $font-family-serif;
-  font-weight: $font-weight-medium-bold;
-}
-
 .grid--fourcol--25.topic-page--count .list-container {
   gap: 1.5rem;
 }
 
-.col--threecol--33.topic-page--all .list-container {
-  gap: $desktop-width-gutter;
-  @include breakpoint(sm) {
-    column-count: 2;
-  }
-  @include breakpoint(md) {
-    column-count: 3;
-  }
-  .item-list {
-    break-inside: avoid;
-    display: inline-block;
-    width: 100%;
-    ul {
-      break-inside: avoid;
+.topic-page--all {
+  &.col--threecol--33 {
+    .list-container {
+      gap: $desktop-width-gutter;
+      @include breakpoint(sm) {
+        column-count: 2;
+      }
+      @include breakpoint(md) {
+        column-count: 3;
+      }
+      .item-list {
+        break-inside: avoid;
+        display: inline-block;
+        width: 100%;
+        ul {
+          break-inside: avoid;
+        }
+      }
     }
+  }
+  :is(h1, h2, h3, h4, h5, h6) a {
+    text-decoration: none;
+    font-family: $font-family-serif;
+    font-weight: $font-weight-medium-bold;
   }
 }
