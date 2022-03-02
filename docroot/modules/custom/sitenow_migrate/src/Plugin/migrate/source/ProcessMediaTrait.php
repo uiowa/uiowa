@@ -371,8 +371,8 @@ trait ProcessMediaTrait {
       return FALSE;
     }
     if (!empty($this->imageSizeRestrict)) {
-      if ($this->checkImageDimensions($raw_file, $this->imageSizeRestrict) === FALSE) {
-        $this->logger->notice('Image @filename did not meet the minimum dimension requirements.', [
+      if ($this->checkImageDimensions($filename, $raw_file, $this->imageSizeRestrict) === FALSE) {
+        $this->logger->notice('Image @filename did not meet the minimum dimension requirements and was not downloaded.', [
           '@filename' => $filename,
         ]);
         return FALSE;
@@ -756,14 +756,12 @@ trait ProcessMediaTrait {
   /**
    * Check if image size is under a specified minimum.
    */
-  protected function checkImageDimensions($file, $minimum_dimensions) {
-    if ($dimensions = getimagesizefromstring($file)) {
-      $this->logger->notice('Dimensions found: @width, @height', [
-        '@width' => $dimensions[0],
-        '@height' => $dimensions[1],
-      ]);
+  protected function checkImageDimensions(string $filename, string $raw_file, array $minimum_dimensions) {
+    if ($dimensions = getimagesizefromstring($raw_file)) {
       if ($dimensions[0] < $minimum_dimensions['width'] || $dimensions[1] < $minimum_dimensions['height']) {
-        return FALSE;
+        $this->reporter[$this->entityId] = $filename;
+        // Return FALSE if the image should not be downloaded.
+        return isset($minimum_dimensions['skip']) ? !$minimum_dimensions['skip'] : FALSE;
       }
     }
     // Either dimensions passed the minimum requirement,

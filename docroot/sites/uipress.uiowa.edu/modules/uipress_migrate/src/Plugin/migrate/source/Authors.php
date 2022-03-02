@@ -2,6 +2,7 @@
 
 namespace Drupal\uipress_migrate\Plugin\migrate\source;
 
+use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
@@ -51,9 +52,11 @@ class Authors extends BaseNodeSource {
     if ($image = $row->getSourceProperty('field_image_attach')) {
       // @todo Determine what minimum dimensions to use.
       $this->imageSizeRestrict = [
-        'width' => 180,
-        'height' => 180,
+        'width' => 300,
+        'height' => -1,
+        'skip' => FALSE,
       ];
+      $this->entityId = $row->getSourceProperty('nid');
       $row->setSourceProperty('field_image', $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']));
     }
     // Check if we have a facebook, and either append (or replace) with
@@ -64,6 +67,19 @@ class Authors extends BaseNodeSource {
       $row->setSourceProperty('field_author_url', $website);
     }
     return TRUE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function postImport(MigrateImportEvent $event) {
+    parent::postImport($event);
+    foreach ($this->reporter as $entity_id => $filename) {
+      $this->logger->notice('Node: @nid, Image: @filename', [
+        '@nid' => $entity_id,
+        '@filename' => $filename,
+      ]);
+    }
   }
 
 }
