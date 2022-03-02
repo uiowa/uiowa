@@ -303,13 +303,10 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   &.layout--twocol {
     .layout__spacing_container {
       display: grid;
-      @include breakpoint(sm) {
-        display: inherit;
-      }
 
       .layout__region--first {
         order: 2;
-        @include breakpoint(sm) {
+        @include breakpoint(md) {
           order: inherit;
         }
       }
@@ -317,10 +314,22 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       .layout__region--second {
         order: 1;
         margin-bottom: 2rem;
-        @include breakpoint(sm) {
+        @include breakpoint(md) {
           order: inherit;
         }
       }
+    }
+  }
+}
+
+// Add margins for all stacked layout regions for mobile.
+.layout--twocol,
+.layout--threecol,
+.layout--fourcol {
+  .layout__region {
+    margin-bottom: $mobile-height-gutter;
+    @include breakpoint(md) {
+      margin-bottom: 0;
     }
   }
 }
