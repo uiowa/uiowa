@@ -438,6 +438,12 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
   $component = $form_state->getFormObject()->getCurrentComponent();
   $block = $component->getPlugin();
 
+  // Unset grid options if list format is selected.
+  $display_option = $form_state->getValue('layout_builder_style_list_format');
+  if (isset($display_option) && $display_option == 'list_format_list') {
+    $form_state->setValue('layout_builder_style_grid_columns', '');
+  }
+
   switch ($block->getPluginId()) {
     case 'inline_block:uiowa_banner':
       $background_option = $form_state->getValue([
