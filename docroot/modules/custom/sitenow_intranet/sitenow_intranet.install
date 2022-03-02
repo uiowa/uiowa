@@ -49,9 +49,9 @@ function sitenow_intranet_install() {
   // Set some sane default configuration.
   $config_factory->getEditable('sitenow_intranet.settings')
     ->set('unauthorized.title', 'Unauthorized')
-    ->set('unauthorized.message', 'You do not have sufficient privileges to access this page. Please contact an administrator.')
+    ->set('unauthorized.message', '<p>You do not have sufficient privileges to access this page. Please contact an administrator.</p>')
     ->set('access_denied.title', 'Access denied')
-    ->set('access_denied.message', 'You must log in to access this page.')
+    ->set('access_denied.message', '<p>You must log in to access this page.</p>')
     ->save();
 
   \Drupal::messenger()->addStatus(__FUNCTION__);
