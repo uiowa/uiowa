@@ -3,6 +3,8 @@
 namespace Drupal\Tests\sitenow_intranet\Functional;
 
 use Drupal\filter\Entity\FilterFormat;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
+use Drupal\system\Entity\Menu;
 use Drupal\Tests\BrowserTestBase;
 
 /**
@@ -23,10 +25,13 @@ class AccessTest extends BrowserTestBase {
     'block',
     'config_split',
     'filter',
+    'menu_block',
+    'menu_link_content',
     'node',
     'robotstxt',
     'sitenow_intranet',
     'simple_sitemap',
+    'uiowa_search',
   ];
 
   /**
@@ -37,6 +42,8 @@ class AccessTest extends BrowserTestBase {
     // Set uids_base header type to avoid Twig error. There is some additional
     // setup happening in sitenow_intranet.install.
     $this->config('uids_base.settings')->set('header.type', 'inline')->save();
+
+    $this->drupalCreateContentType(['type' => 'page']);
   }
 
   /**
@@ -68,6 +75,14 @@ class AccessTest extends BrowserTestBase {
   }
 
   /**
+   * Test search returns access denied.
+   */
+  public function testSearchReturnsAccessDenied() {
+    $this->drupalGet('search');
+    $this->assertSession()->statusCodeEquals(401);
+  }
+
+  /**
    * Test robots.txt returns 200.
    */
   public function testRobotsReturnsOk() {
@@ -82,6 +97,49 @@ class AccessTest extends BrowserTestBase {
     $this->drupalGet('robots.txt');
     $content = $this->getSession()->getPage()->getContent();
     $this->assertEquals("User-agent: *\r\nDisallow: /", $content);
+  }
+
+  /**
+   * Test the top links do not render on the access denied page.
+   */
+  public function testNoTopLinks() {
+    Menu::create([
+      'id' => 'top-links',
+      'label' => 'Top links',
+    ])->save();
+
+    MenuLinkContent::create([
+      'title' => 'Super secret menu item',
+      'provider' => 'menu_link_content',
+      'menu_name' => 'top-links',
+      'link' => ['uri' => 'internal:/user/login'],
+    ])->save();
+
+    $this->drupalPlaceBlock('uids_base_toplinks', [
+      'region' => 'action_menu',
+      'id' => 'uids_base_toplinks',
+      'plugin' => 'menu_block:top-links',
+      'label_display' => 0,
+    ]);
+
+    $node = $this->drupalCreateNode();
+    $this->drupalGet('node/' . $node->id());
+    $this->assertSession()->pageTextNotContains('Super secret menu item');
+  }
+
+  /**
+   * Test the footer block does not render on the access denied page.
+   */
+  public function testNoFooterBlock() {
+    $this->drupalPlaceBlock('uids_base_footercontactinfo', [
+      'region' => 'footer_first',
+      'id' => 'uids_base_footercontactinfo',
+      'label' => 'Super secret footer block',
+    ]);
+
+    $node = $this->drupalCreateNode();
+    $this->drupalGet('node/' . $node->id());
+    $this->assertSession()->pageTextNotContains('Super secret footer block');
   }
 
   /**
