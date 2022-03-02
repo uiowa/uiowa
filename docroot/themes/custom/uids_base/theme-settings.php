@@ -145,9 +145,15 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
   $form['theme_settings']['#open'] = FALSE;
   $form['favicon']['#open'] = TRUE;
 
-  // A theme setting to control display of the footer login link. This is only
-  // changeable programmatically and/or with Drush as it should be on almost
-  // all the time.
+  // A theme setting to make it easier to control display of the footer login
+  // link. This is only changeable programmatically and/or with Drush as it
+  // should be on almost all the time.
+  $form['footer'] = [
+    '#type' => 'details',
+    '#access' => FALSE,
+    '#tree' => TRUE,
+  ];
+
   $form['footer']['login_link'] = [
     '#type' => 'checkbox',
     '#title' => t('Footer login link'),
