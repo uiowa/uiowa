@@ -77,6 +77,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     ],
     '#default_value' => theme_get_setting('header.nav_style'),
   ];
+
   $form['header']['sticky'] = [
     '#type' => 'checkbox',
     '#title' => t('Sticky header'),
@@ -90,6 +91,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
       ],
     ],
   ];
+
   // Display scroll to top button functionality.
   $form['header']['toppage'] = [
     '#type' => 'checkbox',
@@ -99,6 +101,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
   ];
 
   $top_links_limit = theme_get_setting('header.top_links_limit');
+
   // Get limit, otherwise limit to 2.
   $form['header']['top_links_limit'] = [
     '#type' => 'number',
@@ -131,6 +134,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
   // Only allow access to these sites.
   $form['fonts']['#access'] = FALSE;
   $site_path = \Drupal::getContainer()->getParameter('site.path');
+
   if (
     $site_path == 'sites/writinguniversity.org' ||
     $site_path == 'sites/sandbox.uiowa.edu'
