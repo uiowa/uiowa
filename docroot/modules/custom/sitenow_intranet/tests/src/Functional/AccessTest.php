@@ -29,6 +29,7 @@ class AccessTest extends BrowserTestBase {
     'menu_link_content',
     'node',
     'robotstxt',
+    'samlauth',
     'sitenow_intranet',
     'simple_sitemap',
     'uiowa_search',
@@ -39,6 +40,7 @@ class AccessTest extends BrowserTestBase {
    */
   protected function setUp() {
     parent::setUp();
+
     // Set uids_base header type to avoid Twig error. There is some additional
     // setup happening in sitenow_intranet.install.
     $this->config('uids_base.settings')->set('header.type', 'inline')->save();
