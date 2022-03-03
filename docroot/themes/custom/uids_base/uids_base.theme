@@ -195,7 +195,7 @@ function uids_base_preprocess_page(&$variables) {
   }
 
   // Link to the SSO route if configured to display the footer login link.
-  if (theme_get_setting('footer.login_link')) {
+  if (theme_get_setting('footer.login_link') ?? TRUE) {
     $route = 'samlauth.saml_controller_login';
     $exists = count(\Drupal::service('router.route_provider')->getRoutesByNames([$route])) === 1;
 
