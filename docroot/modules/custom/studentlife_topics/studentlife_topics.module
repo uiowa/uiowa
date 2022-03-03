@@ -26,6 +26,7 @@ function studentlife_topics_form_alter(&$form, FormStateInterface $form_state, $
  */
 function studentlife_topics_preprocess_html(&$variables) {
   $variables['#attached']['library'][] = 'studentlife_topics/topics';
+  $variables['#attached']['library'][] = 'uids_base/tags';
 }
 
 /**
