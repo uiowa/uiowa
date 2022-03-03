@@ -54,6 +54,10 @@ function sitenow_intranet_install() {
     ->set('access_denied.message', '<p>You must log in to access this page.</p>')
     ->save();
 
+  $config_factory->getEditable('uids_base.settings')
+    ->set('footer.login_link', FALSE)
+    ->save();
+
   \Drupal::messenger()->addStatus(__FUNCTION__);
 }
 
