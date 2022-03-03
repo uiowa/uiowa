@@ -41,7 +41,7 @@ function sitenow_intranet_restrict_ip_access_denied_page_alter(&$page) {
   ];
   $page['main']['access_denied_title_container']['access_denied_title'] = [
     '#markup' => t('Access denied'),
-    '#prefix' => '<h1 class="page-title bold-headline--serif bold-headline text-align-center">',
+    '#prefix' => '<h1 class="page-title headline--serif headline text-align-center">',
     '#suffix' => '</h1>',
   ];
   // Display a different message to authenticated users with no other roles.

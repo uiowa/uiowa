@@ -64,6 +64,7 @@ function uiowa_core_theme($existing, $type, $theme, $path) {
         'hide_headline' => FALSE,
         'heading_size' => 'h2',
         'headline_style' => 'default',
+        'headline_alignment' => 'default',
       ],
     ],
   ];
@@ -78,6 +79,8 @@ function template_preprocess_uiowa_core_headline(&$variables) {
   }
   else {
     $style = HeadlineHelper::getStyles()[$variables['headline_style']];
+    $alignment = HeadlineHelper::getHeadingAlignment()[$variables['headline_alignment']];
+    $variables['headline_alignment'] = $alignment;
   }
 
   $variables['headline_style'] = $style;

@@ -78,6 +78,16 @@ class Headline extends FormElement {
       '#default_value' => NULL,
     ];
 
+    // Headline alignment.
+    $element['alignment'] = [
+      '#type' => 'textfield',
+      '#attributes' => [
+        'name' => $element['#name'] . '_alignment',
+      ],
+      '#required' => $element['#required'],
+      '#default_value' => NULL,
+    ];
+
     return $element;
   }
 
