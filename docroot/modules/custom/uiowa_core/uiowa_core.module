@@ -129,6 +129,10 @@ function uiowa_core_preprocess_page(&$variables) {
               case 'related':
                 unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
                 break;
+              case 'do_not_display':
+                unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
+                unset($variables['page']['pre_footer']['views_block__tags_list_block_tags_related']);
+              break;
 
             }
             break;
