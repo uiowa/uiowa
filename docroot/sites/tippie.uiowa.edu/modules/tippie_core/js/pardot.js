@@ -13,7 +13,7 @@
   Drupal.behaviors.pardot = {
     attach: function (context, settings) {
       once('pardot', 'html', context).forEach( function (element) {
-        console.log('It works!');
+        console.log(document.cookie.split(';'));
       })
     }
   };
