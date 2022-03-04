@@ -6,43 +6,17 @@
  */
 
 use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Implements hook_preprocess_HOOK().
+ * Implements hook_webform_element_alter().
  */
-function tippie_core_preprocess_webform_confirmation(&$variables) {
-  // In addition to remote post, generate iframe to work with pardot.js.
-  if ($variables['webform']->getHandler('remote_post')) {
-    $endpoint_url = $variables['webform']->getHandler('remote_post')->getSetting('completed_url');
-    if (str_contains($endpoint_url, 'go.tippie.uiowa.edu')) {
-      $data = $variables["webform_submission"]->toArray(TRUE);
-
-      // Remove metatag as it is unsupported.
-      $unsupported = [];
-      $unsupported['metatag'] = 'metatag';
-      $data = array_diff_key($data, $unsupported);
-
-      // Flatten data and prioritize the element data over the
-      // webform submission data.
-      $element_data = $data['data'];
-      unset($data['data']);
-      $data = $element_data + $data;
-
-      // Excluded selected submission data.
-      $data = array_diff_key($data, $variables['webform']->getHandler('remote_post')->getSetting('excluded_data'));
-      $params = UrlHelper::buildQuery([$data]);
-
-      $variables['message']['iframe'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'iframe',
-        '#attributes' => [
-          'src' => "$endpoint_url?$params",
-          'width' => 1,
-          'height' => 1,
-          'frameborder' => 0,
-          'style' => 'position: absolute;',
-        ],
-      ];
+function tippie_core_webform_element_alter(array &$element, FormStateInterface $form_state, array $context) {
+  if (isset($element['#webform_id'])) {
+    if ($element['#webform_key'] === 'pardot_visitor_id') {
+      $element['#attached']['library'][] = 'tippie_core/pardot';
     }
   }
 }
+
+//$form['#attached']['library'][] = 'tippie_core/pardot';
