@@ -438,6 +438,12 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
   $component = $form_state->getFormObject()->getCurrentComponent();
   $block = $component->getPlugin();
 
+  // Unset grid options if list format is selected.
+  $display_option = $form_state->getValue('layout_builder_style_list_format');
+  if (isset($display_option) && $display_option == 'list_format_list') {
+    $form_state->setValue('layout_builder_style_grid_columns', '');
+  }
+
   switch ($block->getPluginId()) {
     case 'inline_block:uiowa_banner':
       $background_option = $form_state->getValue([
@@ -761,6 +767,9 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
 
 /**
  * Implements hook_theme().
+ *
+ * @todo Test to see if this is needed anymore.
+ * https://github.com/uiowa/uiowa/pull/4834#issuecomment-1057411820
  */
 function layout_builder_custom_theme($existing, $type, $theme, $path) {
   $theme = [
@@ -769,6 +778,7 @@ function layout_builder_custom_theme($existing, $type, $theme, $path) {
         'headline' => NULL,
         'heading_size' => NULL,
         'hide_headline' => NULL,
+        'headline_alignment' => NULL,
         'child_heading_size' => NULL,
       ],
     ],
