@@ -301,18 +301,81 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
 .section-order__reversed {
   // two column
-  &.layout--twocol {
+  // layout__container layout--has-sidebar
+  &.layout--twocol,
+  &.layout--has-sidebar {
     .layout__spacing_container {
       display: grid;
 
-      .layout__region--first {
+      .layout__region--first,
+      .layout__region--sidebar {
         order: 2;
         @include breakpoint(md) {
           order: inherit;
         }
       }
 
+      .layout__region--second,
+      .layout__region--content {
+        order: 1;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+    }
+  }
+  &.layout--threecol {
+    .layout__spacing_container {
+      display: grid;
+
+      .layout__region--first {
+        order: 3;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+
       .layout__region--second {
+        order: 2;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+
+      .layout__region--third {
+        order: 1;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+    }
+  }
+  &.layout--fourcol {
+    .layout__spacing_container {
+      display: grid;
+
+      .layout__region--first {
+        order: 4;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+
+      .layout__region--second {
+        order: 3;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+
+      .layout__region--third {
+        order: 2;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+
+      .layout__region--fourth {
         order: 1;
         @include breakpoint(md) {
           order: inherit;
@@ -326,7 +389,8 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
 .layout--fourcol,
 .layout--threecol,
-.layout--twocol {
+.layout--twocol,
+.layout--has-sidebar {
   .layout__region:not(:last-child) {
     margin-bottom: $mobile-height-gutter;
     @include breakpoint(md) {
