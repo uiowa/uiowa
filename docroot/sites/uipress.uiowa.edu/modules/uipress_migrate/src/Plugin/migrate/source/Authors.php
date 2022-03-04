@@ -60,9 +60,12 @@ class Authors extends BaseNodeSource {
     $row->setSourceProperty('field_author_roles_value', $types);
     // If there's a suffix, append it to the last name field.
     if ($suffix = $row->getSourceProperty('field_author_suffix')) {
-      $lastname = $row->getSourceProperty('field_author_lastname');
-      $lastname[0]['value'] .= ', ' . $suffix[0]['value'];
-      $row->setSourceProperty('field_author_lastname', $lastname);
+      $suffix = $suffix[0]['value'];
+      if (!empty($suffix)) {
+        $lastname = $row->getSourceProperty('field_author_lastname');
+        $lastname[0]['value'] .= ', ' . $suffix;
+        $row->setSourceProperty('field_author_lastname', $lastname);
+      }
     }
     // Download image and attach it for the person photo.
     if ($image = $row->getSourceProperty('field_image_attach')) {
