@@ -63,10 +63,15 @@ function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): v
     // Loop through the results.
     foreach ($results as $record) {
       // Unserialize the section field into it's class object.
-      // @todo Limit allowed classes or refactor.
-      // @see https://www.drupal.org/project/drupal/issues/3046696
-      // phpcs:ignore
-      $section = unserialize($record->layout_builder__layout_section, ['allowed_classes' => TRUE]);
+      // @todo Verify that all expected classes are allowed here.
+      /** @var \Drupal\layout_builder\Section $section */
+      $section = unserialize($record->layout_builder__layout_section, [
+        'allowed_classes' => [
+          Section::class,
+          SectionComponent::class,
+          BlockContentInterface::class,
+        ],
+      ]);
 
       // Loop through the components in the section.
       /** @var \Drupal\layout_builder\Section $section */
@@ -134,10 +139,13 @@ function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): v
 
     foreach ($results as $record) {
       // Unserialize and replace the section in question with our updated one.
-      // @todo Limit allowed classes or refactor.
-      // @see https://www.drupal.org/project/drupal/issues/3046696
-      // phpcs:ignore
-      $stored_data = unserialize($record->value, ['allowed_classes' => TRUE]);
+      $stored_data = unserialize($record->value, [
+        'allowed_classes' => [
+          Section::class,
+          SectionComponent::class,
+          OverridesSectionStorage::class,
+        ],
+      ]);
 
       /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
       $section_storage = $stored_data->data['section_storage'];
@@ -159,10 +167,11 @@ function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): v
             $block = $block_storage->loadRevision($revision_id);
           }
           else {
-            // @todo Limit allowed classes or refactor.
-            // @see https://www.drupal.org/project/drupal/issues/3046696
-            // phpcs:ignore
-            $block = unserialize($component_arr['configuration']['block_serialized'], ['allowed_classes' => TRUE]);
+            $block = unserialize($component_arr['configuration']['block_serialized'], [
+              'allowed_classes' => [
+                BlockContentInterface::class,
+              ],
+            ]);
           }
 
           call_user_func_array($process, [&$component, $block]);
@@ -3032,12 +3041,17 @@ function sitenow_update_9009() {
     // Loop through the results.
     foreach ($results as $record) {
 
-      // Unserialize the section field into it's class object. Allowed classes
-      // were set to FALSE for PHPCS after the update had already run.
-      $section = unserialize($record->layout_builder__layout_section, ['allowed_classes' => FALSE]);
+      // Unserialize the section field into it's class object.
+      /** @var \Drupal\layout_builder\Section $section */
+      $section = unserialize($record->layout_builder__layout_section, [
+        'allowed_classes' => [
+          Section::class,
+          SectionComponent::class,
+          BlockContentInterface::class,
+        ],
+      ]);
 
       // Loop through the components in the section.
-      /** @var \Drupal\layout_builder\Section $section */
       foreach ($section->getComponents() as &$component) {
 
         // Limit this to only the uiowa_people block component.
@@ -3096,9 +3110,13 @@ function sitenow_update_9009() {
 
     foreach ($results as $record) {
       // Unserialize and replace the section in question with our updated one.
-      // Allowed classes were set to FALSE for PHPCS after the update
-      // had already run.
-      $stored_data = unserialize($record->value, ['allowed_classes' => FALSE]);
+      $stored_data = unserialize($record->value, [
+        'allowed_classes' => [
+          Section::class,
+          SectionComponent::class,
+          OverridesSectionStorage::class,
+        ],
+      ]);
 
       /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
       $section_storage = $stored_data->data['section_storage'];
@@ -3123,9 +3141,11 @@ function sitenow_update_9009() {
             $block = $blocks[$revision_id];
           }
           else {
-            // Allowed classes were set to FALSE for PHPCS after the
-            // update had already run.
-            $block = unserialize($component_arr['configuration']['block_serialized'], ['allowed_classes' => FALSE]);
+            $block = unserialize($component_arr['configuration']['block_serialized'], [
+              'allowed_classes' => [
+                BlockContentInterface::class,
+              ],
+            ]);
           }
 
           if (!$block instanceof BlockContentInterface) {
@@ -3187,9 +3207,13 @@ function sitenow_update_9010() {
       // Add the entity ID to our update list.
       $nids[$record->entity_id] = $record->entity_id;
 
-      // Unserialize the record and extract the layout settings. Allowed classes
-      // were set to FALSE for PHPCS after the update had already run.
-      $stored_data = unserialize($record->layout_builder__layout_section, ['allowed_classes' => FALSE]);
+      // Unserialize the record and extract the layout settings.
+      $stored_data = unserialize($record->layout_builder__layout_section, [
+        'allowed_classes' => [
+          Section::class,
+          SectionComponent::class,
+        ],
+      ]);
 
       $layout_settings = $stored_data->getLayoutSettings();
       // Add in the 'Normal' container style.
@@ -3239,9 +3263,13 @@ function sitenow_update_9010() {
       continue;
     }
     // Unserialize and replace the section in question with our updated one.
-    // Allowed classes were set to FALSE for PHPCS after the update had
-    // already run.
-    $stored_data = unserialize($record->value, ['allowed_classes' => FALSE]);
+    $stored_data = unserialize($record->value, [
+      'allowed_classes' => [
+        Section::class,
+        SectionComponent::class,
+        OverridesSectionStorage::class,
+      ],
+    ]);
 
     /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
     $section_storage = $stored_data->data['section_storage'];
@@ -3321,12 +3349,16 @@ function sitenow_update_9012() {
 
     // Loop through the results.
     foreach ($results as $record) {
-      // Unserialize the section field into it's class object. Allowed classes
-      // were set to FALSE for PHPCS after the update had already run.
-      $section = unserialize($record->layout_builder__layout_section, ['allowed_classes' => FALSE]);
+      // Unserialize the section field into it's class object.
+      /** @var \Drupal\layout_builder\Section $section */
+      $section = unserialize($record->layout_builder__layout_section, [
+        'allowed_classes' => [
+          Section::class,
+          SectionComponent::class,
+        ],
+      ]);
 
       // Loop through the components in the section.
-      /** @var \Drupal\layout_builder\Section $section */
       foreach ($section->getComponents() as &$component) {
 
         // Limit this to only the uiowa_people block component.
@@ -3376,9 +3408,13 @@ function sitenow_update_9012() {
 
       foreach ($results as $record) {
         // Unserialize and replace the section in question with our updated one.
-        // Allowed classes were set to FALSE for PHPCS after the update had
-        // already run.
-        $stored_data = unserialize($record->value, ['allowed_classes' => FALSE]);
+        $stored_data = unserialize($record->value, [
+          'allowed_classes' => [
+            Section::class,
+            SectionComponent::class,
+            OverridesSectionStorage::class,
+          ],
+        ]);
 
         /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
         $section_storage = $stored_data->data['section_storage'];
@@ -3830,9 +3866,25 @@ function sitenow_update_9032() {
 }
 
 /**
- * Set previously unset menu item styles to vertical.
+ * Create new headline field for headline alignment.
  */
 function sitenow_update_9033() {
+  $headline_alignment = [
+    'type' => 'varchar',
+    'description' => 'Alignment for the heading.',
+    'length' => 255,
+    'not null' => TRUE,
+    'default' => '',
+  ];
+  $schema = Database::getConnection()->schema();
+  $schema->addField('block_content__field_uiowa_headline', 'field_uiowa_headline_headline_alignment', $headline_alignment);
+  $schema->addField('block_content_revision__field_uiowa_headline', 'field_uiowa_headline_headline_alignment', $headline_alignment);
+}
+
+/**
+ * Set previously unset menu item styles to vertical.
+ */
+function sitenow_update_9034() {
   _update_all_blocks_by_plugin_id('menu_block:main', function (&$component, $block) {
     $styles = $component->get('layout_builder_styles_style');
     if (!isset($styles['block_menu_vertical']) && !isset($styles['block_menu_horizontal'])) {
@@ -3846,6 +3898,6 @@ function sitenow_update_9033() {
 /**
  * Flush all caches to get rid of old Layout Builder Styles module code.
  */
-function sitenow_update_9034() {
+function sitenow_update_9035() {
   drupal_flush_all_caches();
 }
