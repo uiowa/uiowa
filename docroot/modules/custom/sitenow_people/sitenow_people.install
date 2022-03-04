@@ -181,11 +181,11 @@ function sitenow_people_update_9101() {
  */
 function sitenow_people_update_9302() {
   $changes = [
-    'tag_display_type',
+    'tag_display',
   ];
 
   $config = \Drupal::configFactory()->getEditable('sitenow_people.settings');
-  $config->set('tag_display_type', 'do_not_display');
+  $config->set('tag_display', 'do_not_display');
 
   $config->save();
 }

@@ -218,9 +218,9 @@ class SettingsForm extends ConfigFormBase {
       '#description' => $this->t('Choose the sorting preference for the people listing.'),
     ];
 
-    $tag_display_type = $config->get('tag_display_type');
+    $tag_display = $config->get('tag_display');
 
-    $form['global']['tag_display_type'] = [
+    $form['global']['tag_display'] = [
       '#type' => 'select',
       '#title' => $this->t('Display tags'),
       '#description' => $this->t('Set the default way to display a person\'s tags in their page.'),
@@ -234,8 +234,24 @@ class SettingsForm extends ConfigFormBase {
         'tags_and_related' => $this
           ->t('Display tag buttons and related content'),
       ],
-      '#default_value' => $tag_display_type ?: 'do_not_display',
+      '#default_value' => $tag_display ?: 'do_not_display',
     ];
+
+    $related_display = $config->get('related_display');
+
+    $form['global']['related_display'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Display related content in pages'),
+      '#description' => $this->t('Set the default way to display a page\'s related content.'),
+      '#options' => [
+        'do_not_display' => $this
+          ->t('Do not display related content'),
+        'headings_lists' => $this
+          ->t('Display related content as headings and bulleted lists'),
+      ],
+      '#default_value' => $related_display ?: 'do_not_display',
+    ];
+
     return $form;
   }
 
@@ -271,7 +287,8 @@ class SettingsForm extends ConfigFormBase {
     $filters['field_person_types_target_id'] = $form_state->getValue('filter_type');
     $filters['field_person_research_areas_target_id'] = $form_state->getValue('filter_research');
     $sort = $form_state->getValue('sitenow_people_sort');
-    $tag_display_type = $form_state->getValue('tag_display_type');
+    $tag_display = $form_state->getValue('tag_display');
+    $related_display = $form_state->getValue('related_display');
     // Clean path.
     $path = $this->aliasCleaner->cleanString($path);
 
@@ -508,9 +525,13 @@ class SettingsForm extends ConfigFormBase {
 
     $this->configFactory->getEditable(static::SETTINGS)
       // Save the tag display default.
-      ->set('tag_display_type', $tag_display_type)
+      ->set('tag_display', $tag_display)
       ->save();
 
+    $this->configFactory->getEditable(static::SETTINGS)
+      // Save the tag display default.
+      ->set('related_display', $related_display)
+      ->save();
     parent::submitForm($form, $form_state);
 
     // Clear cache.

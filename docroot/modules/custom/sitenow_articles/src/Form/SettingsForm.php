@@ -164,25 +164,35 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => $featured_image_display_default ?: 'large',
     ];
 
-    $tag_display_type = $config->get('tag_display_type');
+    $tag_display = $config->get('tag_display');
 
-    $form['article_node']['tag_display_type'] = [
+    $form['global']['tag_display'] = [
       '#type' => 'select',
-      '#title' => $this->t('Display tags in articles'),
-      '#description' => $this->t('Set the default way to display an article\'s tags in the article.'),
+      '#title' => $this->t('Display tags in pages'),
+      '#description' => $this->t('Set the default way to display a page\'s tags in the page itself.'),
       '#options' => [
         'do_not_display' => $this
           ->t('Do not display tags'),
-        'tags' => $this
+        'tag_buttons' => $this
           ->t('Display tag buttons'),
-        'related' => $this
-          ->t('Display related content'),
-        'tags_and_related' => $this
-          ->t('Display tag buttons and related content'),
       ],
-      '#default_value' => $tag_display_type ?: 'do_not_display',
+      '#default_value' => $tag_display ?: 'do_not_display',
     ];
 
+    $related_display = $config->get('related_display');
+
+    $form['global']['related_display'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Display related content in pages'),
+      '#description' => $this->t('Set the default way to display a page\'s related content.'),
+      '#options' => [
+        'do_not_display' => $this
+          ->t('Do not display related content'),
+        'headings_lists' => $this
+          ->t('Display related content as headings and bulleted lists'),
+      ],
+      '#default_value' => $related_display ?: 'do_not_display',
+    ];
     $form['view_page'] = [
       '#type' => 'fieldset',
       '#title' => 'View Page Settings',
@@ -275,7 +285,8 @@ class SettingsForm extends ConfigFormBase {
     $header_content = $form_state->getValue('sitenow_articles_header_content');
     $show_archive = $form_state->getValue('sitenow_articles_archive');
     $featured_image_display_default = $form_state->getValue('featured_image_display_default');
-    $tag_display_type = $form_state->getValue('tag_display_type');
+    $tag_display = $form_state->getValue('tag_display');
+    $related_display = $form_state->getValue('related_display');
 
     $this->configFactory->getEditable(static::SETTINGS)
       // Save the featured image display default.
@@ -284,7 +295,12 @@ class SettingsForm extends ConfigFormBase {
 
     $this->configFactory->getEditable(static::SETTINGS)
       // Save the tag display default.
-      ->set('tag_display_type', $tag_display_type)
+      ->set('tag_display', $tag_display)
+      ->save();
+
+    $this->configFactory->getEditable(static::SETTINGS)
+      // Save the tag display default.
+      ->set('related_display', $related_display)
       ->save();
     // Clean path.
     $path = $this->aliasCleaner->cleanString($path);

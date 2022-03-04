@@ -98,41 +98,59 @@ function uiowa_core_preprocess_page(&$variables) {
   $view_id = Drupal::request()->attributes->get('view_id');
 
   // Tags and related display logic on core content types:
-  $tag_display_allowed_types = [
+  $tags_related_display_allowed_types = [
     'article',
     'page',
     'person',
   ];
   if (isset($node)) {
     $node_type = $node->bundle();
-    if (in_array($node_type, $tag_display_allowed_types)) {
-      $tag_display_type_config = [];
-      $tag_display_type_config['article'] = \Drupal::configFactory()->getEditable('sitenow_articles.settings')->get('tag_display_type');
-      $tag_display_type_config['page'] = \Drupal::configFactory()->getEditable('sitenow_pages.settings')->get('tag_display_type');
-      $tag_display_type_config['person'] = \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('tag_display_type');
+    if (in_array($node_type, $tags_related_display_allowed_types)) {
+
+      $tag_display_config = [];
+      $tag_display_config['article'] = \Drupal::configFactory()->getEditable('sitenow_articles.settings')->get('tag_display');
+      $tag_display_config['page'] = \Drupal::configFactory()->getEditable('sitenow_pages.settings')->get('tag_display');
+      $tag_display_config['person'] = \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('tag_display');
+
+      $related_display_config = [];
+      $related_display_config['article'] = \Drupal::configFactory()->getEditable('sitenow_articles.settings')->get('related_display');
+      $related_display_config['page'] = \Drupal::configFactory()->getEditable('sitenow_pages.settings')->get('related_display');
+      $related_display_config['person'] = \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('related_display');
 
       if (empty($view_id) || $view_id == 'tags_list') {
         switch ($node_type) {
           case 'article':
           case 'page':
           case 'person':
-            switch ($tag_display_type_config[$node_type]) {
-              case 'tags_and_related':
-                // If tags and related are set for the content type,
-                // we show both views by default.
+            switch ($tag_display_config[$node_type]) {
+
+              case 'tag_buttons':
+                // Tag buttons are default for now.
                 break;
 
-              case 'tags':
-                unset($variables['page']['pre_footer']['views_block__tags_list_block_tags_related']);
-                break;
-
-              case 'related':
-                unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
-                break;
               case 'do_not_display':
                 unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
-                unset($variables['page']['pre_footer']['views_block__tags_list_block_tags_related']);
-              break;
+                break;
+
+            }
+            break;
+        }
+      }
+      if (empty($view_id) || $view_id == 'related_list') {
+        //print_r($variables['page']['pre_footer']);
+        switch ($node_type) {
+          case 'article':
+          case 'page':
+          case 'person':
+            switch ($related_display_config[$node_type]) {
+
+              case 'headings_lists':
+                // Headings and lists are default for now.
+                break;
+
+              case 'do_not_display':
+                unset($variables['page']['pre_footer']['views_block__related_content_block_related_headings_lists']);
+                break;
 
             }
             break;

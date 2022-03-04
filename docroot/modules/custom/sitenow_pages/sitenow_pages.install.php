@@ -10,11 +10,13 @@
  */
 function sitenow_pages_update_9302() {
   $changes = [
-    'tag_display_type',
+    'tag_display',
+    'related_display',
   ];
 
   $config = \Drupal::configFactory()->getEditable('sitenow_pages.settings');
-  $config->set('tag_display_type', 'do_not_display');
+  $config->set('tag_display', 'do_not_display');
+  $config->set('related_display', 'do_not_display');
 
   $config->save();
 }
