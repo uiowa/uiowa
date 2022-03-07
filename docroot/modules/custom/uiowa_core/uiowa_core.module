@@ -229,13 +229,12 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
  * {@inheritdoc}
  */
 function uiowa_core_google_tag_insert_alter(&$satisfied, Container $container) {
-  // @todo Uncomment before merge.
-  //   $uiowa_core_gtag = \Drupal::config('uiowa_core.settings')->get('uiowa_core.gtag');
-  //  $env = getenv('AH_PRODUCTION');
-  //  // Determine if site specific Google Tag should be inserted.
-  //  if ($uiowa_core_gtag == '0' || $env == 0) {
-  //  $satisfied = FALSE;
-  //  }
+    $uiowa_core_gtag = \Drupal::config('uiowa_core.settings')->get('uiowa_core.gtag');
+    $env = getenv('AH_PRODUCTION');
+    // Determine if site specific Google Tag should be inserted.
+    if ($uiowa_core_gtag == '0' || $env == 0) {
+    $satisfied = FALSE;
+    }
 }
 
 /**
