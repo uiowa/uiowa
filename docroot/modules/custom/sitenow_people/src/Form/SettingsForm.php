@@ -251,7 +251,7 @@ class SettingsForm extends ConfigFormBase {
     $form['global']['related_display_headings_lists_help'] = [
       '#type' => 'item',
       '#title' => 'How related content is displayed:',
-      '#description' => $this->t("Related content will display above the page\'s footer as sections of headings (tags) above bulleted lists of a maximum of 30 tagged items. Tagged items are sorted by most recently edited."),
+      '#description' => $this->t("Related content will display above the page's footer as sections of headings (tags) above bulleted lists of a maximum of 30 tagged items. Tagged items are sorted by most recently edited."),
       '#states' => [
         'visible' => [
           ':input[name="related_display"]' => ['value' => 'headings_lists'],
