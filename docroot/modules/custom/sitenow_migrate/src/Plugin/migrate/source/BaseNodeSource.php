@@ -54,6 +54,20 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
   protected $rowCount = 0;
 
   /**
+   * Holder to pass entity ID around.
+   *
+   * @var int
+   */
+  protected $entityId = 0;
+
+  /**
+   * Collector for post-migrate reporting.
+   *
+   * @var array
+   */
+  protected $reporter = [];
+
+  /**
    * {@inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, StateInterface $state, ModuleHandlerInterface $module_handler, FileSystemInterface $file_system, EntityTypeManager $entityTypeManager) {
