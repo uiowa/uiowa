@@ -220,7 +220,7 @@ class SettingsForm extends ConfigFormBase {
 
     $tag_display = $config->get('tag_display');
 
-    $form['article_node']['tag_display'] = [
+    $form['global']['tag_display'] = [
       '#type' => 'select',
       '#title' => $this->t('Display tags in pages'),
       '#description' => $this->t('Set the default way to display a page\'s tags in the page itself.'),
