@@ -137,7 +137,7 @@ function uiowa_core_preprocess_page(&$variables) {
         }
       }
       if (empty($view_id) || $view_id == 'related_list') {
-        //print_r($variables['page']['pre_footer']);
+        // print_r($variables['page']['pre_footer']);.
         switch ($node_type) {
           case 'article':
           case 'page':
@@ -400,6 +400,7 @@ function uiowa_core_preprocess_block(&$variables) {
       }
       $variables['attributes']['class'][] .= 'layout-container tags-list__container block-padding__bottom block-padding__top';
       break;
+
     case 'views_block:related_content-block_related_headings_lists':
       $variables['#attached']['library'][] = 'uids_base/related';
       $variables['title_attributes']['class'] = 'h3 block__headline headline headline--underline headline--serif';
