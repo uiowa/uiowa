@@ -20,7 +20,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
   use ProcessManagerAwareTrait;
 
   /**
-   * Configuration that should sanitized.
+   * Configuration that should be sanitized.
    *
    * @var array
    */
