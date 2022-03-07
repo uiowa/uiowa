@@ -315,6 +315,15 @@ function admissions_core_preprocess_block(&$variables) {
   switch ($variables['plugin_id']) {
     case 'views_block:student_card-block_student_grid':
       $variables['#attached']['library'][] = 'admissions_core/student-profile';
+
+      // Need to unset for "mobile grid" functionality.
+      if (isset($variables['attributes']['class']) && in_array('inner--grid', $variables['attributes']['class'])) {
+        foreach ($variables['attributes']['class'] as $key => $style) {
+          if (str_starts_with($style, 'inner--grid')) {
+            unset($variables['attributes']['class'][$key]);
+          }
+        }
+      }
       break;
 
     case 'admissions_core_event_series_events':
@@ -414,6 +423,10 @@ function admissions_core_theme($existing, $type, $theme, $path) {
     ],
     'views_view_unformatted__transfer_tips_list__block_transfer_tips' => [
       'template' => 'views-view-unformatted--transfer-tips-list--block-transfer-tips',
+      'base hook' => 'view',
+    ],
+    'views_view_unformatted__student_card' => [
+      'template' => 'views-view-unformatted--student-card',
       'base hook' => 'view',
     ],
     'views_view_unformatted__student_profiles' => [
@@ -545,7 +558,7 @@ function admissions_core_views_pre_render(ViewExecutable $view) {
   if ($view->id() == 'student_card') {
     if (isset($view->element["headline"]["#headline"]) && !empty($view->element["headline"]["#headline"])) {
       $headline_markup = [
-        '#markup' => '<span role="presentation" class="fas fa-user"></span> &nbsp;<a href="/student-profiles">' . $view->element["headline"]["#headline"] . '</a>',
+        '#markup' => '<a href="/student-profiles">' . $view->element["headline"]["#headline"] . '</a>',
       ];
       $view->element["headline"]["#headline"] = $headline_markup;
     }
@@ -719,6 +732,67 @@ function admissions_core_preprocess_views_view_field(&$variables) {
           '#markup' => $markup,
         ];
       }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function admissions_core_preprocess_views_view_unformatted(&$variables) {
+  $view = $variables['view'];
+  $variables['row_item_classes'] = [];
+  if ($view->current_display == 'block_student_grid') {
+    $style = $view->style_plugin;
+    $row_styles = $view->display_handler->getOption('row_styles');
+    $rows = $variables['rows'];
+
+    $default_classes = [
+      'card--person-teaser',
+      'card--list',
+      'card--centered-left',
+      'card--alignment-left',
+    ];
+
+    $variables['row_item_classes'] = array_merge($default_classes, array_values($variables['row_item_classes']));
+    $style_classes = [];
+    $size_classes = [];
+    if (!empty($row_styles)) {
+      foreach ($row_styles as $style_class) {
+        // Change our image alignment and style.
+        if ($style_class === 'list_format_grid') {
+          if (!in_array('block_hide_details', $row_styles)) {
+            $variables['row_item_classes'][] = 'bg--white';
+            $variables['row_item_classes'][] = 'card--enclosed';
+          }
+          $variables['row_item_classes'][] = 'card--stacked';
+        }
+        elseif ($style_class === 'list_format_list') {
+          $variables['row_item_classes'][] = 'card--media-left';
+          $style_classes = ['media--circle', 'media--border'];
+          $size_classes = ['card--media-left', 'card__media--small'];
+        }
+      }
+    }
+    foreach ($rows as $id => $row) {
+      // Set remaining row_item_classes as attributes on each row.
+      if (isset($variables['row_item_classes'])) {
+        $variables['rows'][$id]['attributes']->addClass($variables['row_item_classes']);
+      }
+      // Get node path to link card with.
+      $nid = $view->result[$id]->_entity->id();
+      $link = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
+
+      // Initialize card_options variable.
+      $variables['rows'][$id]['card_options'] = [
+        'attributes' => $variables['rows'][$id]['attributes'],
+        'media_styles' => $style_classes,
+        'media_sizes' => $size_classes,
+        'card_title' => $style->getField($id, 'title'),
+        'card_link_url' => $link,
+        'card_image' => $style->getField($id, 'field_student_profile_image'),
+        'card_subtitle' => $style->getField($id, 'field_student_profile_major'),
+      ];
     }
   }
 }
