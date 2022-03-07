@@ -177,15 +177,16 @@ function sitenow_people_update_9101() {
 }
 
 /**
- * Add tag display type to people settings.
+ * Add tag and related display type to people settings.
  */
-function sitenow_people_update_9302() {
+function sitenow_people_update_9301() {
   $changes = [
     'tag_display',
+    'related_display'
   ];
 
   $config = \Drupal::configFactory()->getEditable('sitenow_people.settings');
   $config->set('tag_display', 'do_not_display');
-
+  $config->set('related_display', 'do_not_display');
   $config->save();
 }
