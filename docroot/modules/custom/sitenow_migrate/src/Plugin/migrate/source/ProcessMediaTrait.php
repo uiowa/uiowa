@@ -27,6 +27,13 @@ trait ProcessMediaTrait {
   protected $viewMode = 'medium__no_crop';
 
   /**
+   * Minimum image dimensions to pull over.
+   *
+   * @var array
+   */
+  protected $imageSizeRestrict = [];
+
+  /**
    * Get the URL of the source public files path with a trailing slash.
    *
    * @return string
@@ -362,6 +369,14 @@ trait ProcessMediaTrait {
     $raw_file = @file_get_contents($source_base_path . $filename);
     if (!$raw_file) {
       return FALSE;
+    }
+    if (!empty($this->imageSizeRestrict)) {
+      if ($this->checkImageDimensions($filename, $raw_file, $this->imageSizeRestrict) === FALSE) {
+        $this->logger->notice('Image @filename did not meet the minimum dimension requirements and was not downloaded.', [
+          '@filename' => $filename,
+        ]);
+        return FALSE;
+      }
     }
 
     // Prepare directory in case it doesn't already exist.
@@ -736,6 +751,23 @@ trait ProcessMediaTrait {
       ->condition('f.filename', $filename)
       ->execute()
       ->fetchField();
+  }
+
+  /**
+   * Check if image size is under a specified minimum.
+   */
+  protected function checkImageDimensions(string $filename, string $raw_file, array $minimum_dimensions) {
+    if ($dimensions = getimagesizefromstring($raw_file)) {
+      if ($dimensions[0] < $minimum_dimensions['width'] || $dimensions[1] < $minimum_dimensions['height']) {
+        $this->reporter[$this->entityId] = $filename;
+        // Return FALSE if the image should not be downloaded.
+        return isset($minimum_dimensions['skip']) ? !$minimum_dimensions['skip'] : FALSE;
+      }
+    }
+    // Either dimensions passed the minimum requirement,
+    // or we weren't able to read the dimensions, and we're
+    // erring on the side of caution in pulling it in.
+    return TRUE;
   }
 
 }
