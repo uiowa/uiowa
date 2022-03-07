@@ -13,7 +13,8 @@
   Drupal.behaviors.pardot = {
     attach: function (context, settings) {
       once('pardot', 'html', context).forEach( function (element) {
-        console.log(document.cookie.split(';'));
+        let visitor_id = document.cookie.split('; ').find(row => row.startsWith('visitor_id')).split('=')[1];
+        $('input[name="pardot_vistitor_id"]').val(visitor_id);
       })
     }
   };
