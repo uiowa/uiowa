@@ -11,9 +11,12 @@ use Drupal\Core\Form\FormStateInterface;
  * Implements hook_webform_element_alter().
  */
 function tippie_core_webform_element_alter(array &$element, FormStateInterface $form_state, array $context) {
-  if (isset($element['#webform_id'])) {
+  if (isset($element['#webform_key'])) {
     if ($element['#webform_key'] === 'pardot_visitor_id') {
-      $element['#attached']['library'][] = 'tippie_core/pardot';
+      $element['#element_validate'][] = [
+        'Drupal\tippie_core\Validate\PardotVisitorIdConstraint',
+        'validate',
+      ];
     }
   }
 }
