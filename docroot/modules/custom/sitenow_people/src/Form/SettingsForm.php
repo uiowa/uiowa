@@ -223,7 +223,7 @@ class SettingsForm extends ConfigFormBase {
     $form['global']['tag_display'] = [
       '#type' => 'select',
       '#title' => $this->t('Display tags'),
-      '#description' => $this->t('Set the default way to display a person\'s tags in their page.'),
+      '#description' => $this->t("Set the default way to display a person's tags in their page."),
       '#options' => [
         'do_not_display' => $this
           ->t('Do not display tags'),
@@ -238,7 +238,7 @@ class SettingsForm extends ConfigFormBase {
     $form['global']['related_display'] = [
       '#type' => 'select',
       '#title' => $this->t('Display related content'),
-      '#description' => $this->t('Set the default way to display a person\'s related content.'),
+      '#description' => $this->t("Set the default way to display a person's related content."),
       '#options' => [
         'do_not_display' => $this
           ->t('Do not display related content'),
@@ -251,12 +251,12 @@ class SettingsForm extends ConfigFormBase {
     $form['global']['related_display_headings_lists_help'] = [
       '#type' => 'item',
       '#title' => 'How related content is displayed:',
-      '#description' => $this->t('Related content will display above the page\'s footer as sections of headings (tags) above bulleted lists of a maximum of 30 tagged items. Tagged items are sorted by most recently edited.'),
+      '#description' => $this->t("Related content will display above the page\'s footer as sections of headings (tags) above bulleted lists of a maximum of 30 tagged items. Tagged items are sorted by most recently edited."),
       '#states' => [
         'visible' => [
-           ':input[name="related_display"]' => ['value' => 'headings_lists'],
+          ':input[name="related_display"]' => ['value' => 'headings_lists'],
         ],
-      ]
+      ],
     ];
     return $form;
   }

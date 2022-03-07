@@ -9,11 +9,6 @@
  * Add tag and related display config setting to articles.
  */
 function sitenow_pages_update_9301() {
-  $changes = [
-    'tag_display',
-    'related_display',
-  ];
-
   $config = \Drupal::configFactory()->getEditable('sitenow_pages.settings');
   $config->set('tag_display', 'do_not_display');
   $config->set('related_display', 'do_not_display');

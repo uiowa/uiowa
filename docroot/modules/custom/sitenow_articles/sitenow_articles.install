@@ -39,11 +39,6 @@ function sitenow_articles_update_9101() {
  * Add tag and related display config setting to articles.
  */
 function sitenow_articles_update_9301() {
-  $changes = [
-    'tag_display',
-    'related_display',
-  ];
-
   $config = \Drupal::configFactory()->getEditable('sitenow_articles.settings');
   $config->set('tag_display', 'do_not_display');
   $config->set('related_display', 'related_display');
