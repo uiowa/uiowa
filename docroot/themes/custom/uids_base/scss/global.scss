@@ -305,22 +305,16 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   &.layout--twocol,
   &.layout--has-sidebar {
     .layout__spacing_container {
-      display: grid;
-
-      .layout__region--first,
-      .layout__region--sidebar {
-        order: 2;
-        @include breakpoint(md) {
-          order: inherit;
-        }
+      flex-direction: row-reverse;
+      @include breakpoint(md) {
+        flex-direction: unset;
       }
-
-      .layout__region--second,
-      .layout__region--content {
-        order: 1;
-        @include breakpoint(md) {
-          order: inherit;
-        }
+    }
+    .layout__region--sidebar,
+    .layout__region--content {
+      flex-basis: 100%;
+      @include breakpoint(md) {
+        flex-basis: inherit;
       }
     }
   }
