@@ -148,7 +148,7 @@ class SettingsForm extends ConfigFormBase {
 
     $form['global']['related_display'] = [
       '#type' => 'select',
-      '#title' => $this->t('Display related content in pages'),
+      '#title' => $this->t('Display related content'),
       '#description' => $this->t('Set the default way to display a page\'s related content.'),
       '#options' => [
         'do_not_display' => $this
@@ -157,6 +157,17 @@ class SettingsForm extends ConfigFormBase {
           ->t('Display related content as headings and bulleted lists'),
       ],
       '#default_value' => $related_display ?: 'do_not_display',
+    ];
+
+    $form['global']['related_display_headings_lists_help'] = [
+      '#type' => 'item',
+      '#title' => 'How related content is displayed:',
+      '#description' => $this->t('Related content will display above the page\'s footer as sections of headings (tags) above bulleted lists of a maximum of 30 tagged items. Tagged items are sorted by most recently edited.'),
+      '#states' => [
+        'visible' => [
+           ':input[name="related_display"]' => ['value' => 'headings_lists'],
+        ],
+      ]
     ];
     return $form;
   }
