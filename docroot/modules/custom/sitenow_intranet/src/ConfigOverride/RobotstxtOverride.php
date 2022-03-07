@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\sitenow\ConfigOverride;
+namespace Drupal\sitenow_intranet\ConfigOverride;
 
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Config\ConfigFactoryOverrideInterface;
@@ -11,22 +11,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
  * Robotstxt configuration overrides.
  */
 class RobotstxtOverride implements ConfigFactoryOverrideInterface {
-  /**
-   * The RequestStack service.
-   *
-   * @var \Symfony\Component\HttpFoundation\RequestStack
-   */
-  protected $requestStack;
-
-  /**
-   * Constructor to inject dependencies.
-   *
-   * @param \Symfony\Component\HttpFoundation\RequestStack $stack
-   *   The request stack.
-   */
-  public function __construct(RequestStack $stack) {
-    $this->requestStack = $stack;
-  }
 
   /**
    * {@inheritdoc}
@@ -35,13 +19,7 @@ class RobotstxtOverride implements ConfigFactoryOverrideInterface {
     $overrides = [];
 
     if (in_array('robotstxt.settings', $names)) {
-      $request = $this->requestStack->getCurrentRequest();
-      $host = $request->getHost();
-
-      // Override internal domains to deny all robots.
-      if (str_ends_with($host, 'drupal.uiowa.edu') || str_ends_with($host, 'uiowa.ddev.site')) {
-        $overrides['robotstxt.settings']['content'] = "User-agent: *\r\nDisallow: /";
-      }
+      $overrides['robotstxt.settings']['content'] = "User-agent: *\r\nDisallow: /";
     }
 
     return $overrides;

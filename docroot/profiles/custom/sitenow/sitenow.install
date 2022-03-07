@@ -3882,9 +3882,21 @@ function sitenow_update_9033() {
 }
 
 /**
- * Set previously unset menu item styles to vertical.
+ * Set the newly created footer.login_link theme setting to TRUE.
  */
 function sitenow_update_9034() {
+  $config = \Drupal::configFactory()->getEditable('uids_base.settings');
+
+  if (!$config->get('footer.login_link')) {
+    $config->set('footer.login_link', TRUE)
+      ->save();
+  }
+}
+
+/**
+ * Set previously unset menu item styles to vertical.
+ */
+function sitenow_update_9035() {
   _update_all_blocks_by_plugin_id('menu_block:main', function (&$component, $block) {
     $styles = $component->get('layout_builder_styles_style');
     if (!isset($styles['block_menu_vertical']) && !isset($styles['block_menu_horizontal'])) {
@@ -3898,6 +3910,6 @@ function sitenow_update_9034() {
 /**
  * Flush all caches to get rid of old Layout Builder Styles module code.
  */
-function sitenow_update_9035() {
+function sitenow_update_9036() {
   drupal_flush_all_caches();
 }
