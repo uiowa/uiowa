@@ -47,8 +47,6 @@ class MenuBlockCustomTest extends BrowserTestBase {
     'block_content',
     'menu_block',
     'node',
-    // @todo It would be nice to decouple the menu functionality from LBS
-    //   overrides, so we don't need this module to run the test.
     'layout_builder_styles',
     'layout_builder_custom',
   ];
