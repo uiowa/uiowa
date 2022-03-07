@@ -5,7 +5,7 @@ namespace Drupal\tippie_core\Validate;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Request a site webform URL field callable.
+ * Look for the visitor ID cookie and save to the hidden form field.
  */
 class PardotVisitorIdConstraint {
 
@@ -20,7 +20,6 @@ class PardotVisitorIdConstraint {
    *   The complete form structure.
    */
   public static function validate(array &$element, FormStateInterface $formState, array &$form) {
-    // Look for the visitor ID cookie and save to the hidden form field.
     $visitor_id = NULL;
 
     $cookies = \Drupal::request()->cookies->all();
