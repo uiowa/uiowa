@@ -189,7 +189,7 @@ class SettingsForm extends ConfigFormBase {
         'do_not_display' => $this
           ->t('Do not display related content'),
         'headings_lists' => $this
-          ->t('Display related content as headings and bulleted lists'),
+          ->t('Display related content titles grouped by tag'),
       ],
       '#default_value' => $related_display ?: 'do_not_display',
     ];
