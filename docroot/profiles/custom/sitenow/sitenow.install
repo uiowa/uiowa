@@ -3891,3 +3891,37 @@ function sitenow_update_9034() {
       ->save();
   }
 }
+
+/**
+ * Clean up media revisions.
+ */
+function sitenow_update_9035() {
+  $db = \Drupal::database();
+  $entity_manager = \Drupal::service('entity_type.manager')
+    ->getStorage('media');
+  // Get a vid->mid mapping from the media table.
+  // This table holds a one-to-one mapping of the current
+  // revision for each media id, so we know the associated
+  // vid is the most current revision for each given mid.
+  $vid_to_mid_map = $db->select('media')
+    ->fields('media', ['vid', 'mid'])
+    ->execute()
+    ->fetchAllKeyed();
+  // Now grab all the vids from the media_revision table.
+  // This includes the current revision, as well as past.
+  $vids = $db->select('media_revision', 'mr')
+    ->fields('mr', ['vid', 'mid'])
+    ->execute()
+    ->fetchAllKeyed();
+  // Loop through the vids and delete those that are not current.
+  foreach ($vids as $vid) {
+    // If it's set in the mapping, we know it's a current
+    // revision. Continue.
+    if (isset($vid_to_mid_map[$vid])) {
+      continue;
+    }
+    // If it wasn't set in the mapping, it's an old revision.
+    // Clean it up.
+    $entity_manager->deleteRevision($vid);
+  }
+}
