@@ -300,9 +300,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 // Reverse column order lb style
 
 .section-order__reversed {
-  // two column
   // sidebar layout
-  &.layout--twocol,
   &.layout--has-sidebar {
     .layout__spacing_container {
       flex-direction: column-reverse;
@@ -322,6 +320,28 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     .layout__region--content {
       @include breakpoint(md) {
         flex-basis: 72.75%;
+      }
+    }
+  }
+  // two column
+  &.layout--twocol {
+    .layout__spacing_container {
+      display: grid;
+
+      .layout__region--first,
+      .layout__region--sidebar {
+        order: 2;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+
+      .layout__region--second,
+      .layout__region--content {
+        order: 1;
+        @include breakpoint(md) {
+          order: inherit;
+        }
       }
     }
   }
@@ -411,9 +431,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     }
 
     .layout__region:first-child {
-      @include breakpoint(md) {
-        margin-bottom: 0;
-      }
+      margin-bottom: 0;
     }
   }
 }
