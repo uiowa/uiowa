@@ -3907,21 +3907,17 @@ function sitenow_update_9035() {
     ->fields('media', ['vid', 'mid'])
     ->execute()
     ->fetchAllKeyed();
-  // Now grab all the vids from the media_revision table.
-  // This includes the current revision, as well as past.
+  // Now grab all the vids from the media_revision table
+  // which were not present in the media table
+  // as a current revision.
   $vids = $db->select('media_revision', 'mr')
     ->fields('mr', ['vid'])
+    ->condition('vid', array_keys($vid_to_mid_map), 'NOT IN')
     ->execute()
     ->fetchCol();
-  // Loop through the vids and delete those that are not current.
+  // Loop through the non-current vids
+  // and delete them.
   foreach ($vids as $vid) {
-    // If it's set in the mapping, we know it's a current
-    // revision. Continue.
-    if (isset($vid_to_mid_map[$vid])) {
-      continue;
-    }
-    // If it wasn't set in the mapping, it's an old revision.
-    // Clean it up.
     $entity_manager->deleteRevision($vid);
   }
 }
