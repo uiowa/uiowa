@@ -122,17 +122,19 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       unset($form['settings']['views_label_checkbox']);
       unset($form['settings']['views_label']);
 
-      // Set '#states' for block grid columns.
-      $form['layout_builder_style_grid_columns']['#states'] = [
-        'visible' => [
-          // Always show when list format is grid.
-          [
-            ':input[name="layout_builder_style_list_format"]' => [
-              'value' => 'list_format_grid',
+      if (isset($form['layout_builder_style_grid_columns'])) {
+        // Set '#states' for block grid columns.
+        $form['layout_builder_style_grid_columns']['#states'] = [
+          'visible' => [
+            // Always show when list format is grid.
+            [
+              ':input[name="layout_builder_style_list_format"]' => [
+                'value' => 'list_format_grid',
+              ],
             ],
           ],
-        ],
-      ];
+        ];
+      }
 
       /** @var \Drupal\layout_builder\SectionComponent $component */
       $component = $form_state->getFormObject()->getCurrentComponent();

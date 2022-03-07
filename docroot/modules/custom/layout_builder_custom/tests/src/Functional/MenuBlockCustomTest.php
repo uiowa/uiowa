@@ -48,7 +48,10 @@ class MenuBlockCustomTest extends BrowserTestBase {
     'block_content',
     'menu_block',
     'node',
-    'layout_builder_custom'
+    // @todo It would be nice to decouple the menu functionality from LBS
+    //   overrides, so we don't need this module to run the test.
+    'layout_builder_styles',
+    'layout_builder_custom',
   ];
 
   /**
@@ -155,7 +158,7 @@ class MenuBlockCustomTest extends BrowserTestBase {
     // @todo Test 'Visibility options' is showing and not 'Advanced'.
     // @todo Test that depth options are 1-3.
     // @todo Test that follow is set to 1 if the add block form is being used.
-//    $assert_session = $this->assertSession();
+    $assert_session = $this->assertSession();
     $page = $this->getSession()->getPage();
 
     $block_node = $this->createNode([
@@ -177,12 +180,17 @@ class MenuBlockCustomTest extends BrowserTestBase {
     $page->clickLink('Layout');
     $page->clickLink('Add block');
     $page->clickLink('Main navigation');
+    $assert_session->elementExists('xpath', '//input[contains(@id, "edit-settings-follow")]');
     // @todo Test label_type field is not rendered.
-//    $assert_session->elementNotExists('xpath', '//select#edit-layout-builder-style');
+    $assert_session->elementNotExists('xpath', '//select[contains(@id, "edit-settings-label-type")]');
     // @todo Test label_link field is not rendered.
+    $assert_session->elementNotExists('xpath', '//input[contains(@id, "edit-settings-label-link")]');
     // @todo Test follow description is not shown.
+    $assert_session->pageTextNotContains('If the active menu item is deeper than the initial visibility level set above');
     // @todo Test that expand_all_items field is not rendered.
+    $assert_session->elementNotExists('xpath', '//input[contains(@id, "edit-settings-expand-all-items")]');
     // @todo Test that style field is not rendered.
+    $assert_session->elementNotExists('xpath', '//input[contains(@id, "edit-settings-style")]');
   }
 
 }
