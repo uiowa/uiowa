@@ -3,7 +3,6 @@
 namespace Drupal\Tests\layout_builder_custom\Functional;
 
 use Drupal\layout_builder\Entity\LayoutBuilderEntityViewDisplay;
-use Drupal\menu_block\Plugin\Block\MenuBlock;
 use Drupal\Tests\BrowserTestBase;
 
 /**
@@ -79,7 +78,6 @@ class MenuBlockCustomTest extends BrowserTestBase {
       ->save();
   }
 
-
   /**
    * Creates a simple hierarchy of links.
    */
@@ -99,46 +97,46 @@ class MenuBlockCustomTest extends BrowserTestBase {
     ];
 
     $parent = $base_options + [
-        'title' => 'parent menu item',
-        'link' => ['uri' => 'internal:/menu-block-test/hierarchy/parent'],
-      ];
+      'title' => 'parent menu item',
+      'link' => ['uri' => 'internal:/menu-block-test/hierarchy/parent'],
+    ];
     /** @var \Drupal\menu_link_content\MenuLinkContentInterface $link */
     $link = $this->menuLinkContentStorage->create($parent);
     $link->save();
     $links['parent'] = $link->getPluginId();
 
     $child_1 = $base_options + [
-        'title' => 'child-1 menu item',
-        'link' => ['uri' => 'internal:/menu-block-test/hierarchy/parent/child-1'],
-        'parent' => $links['parent'],
-      ];
+      'title' => 'child-1 menu item',
+      'link' => ['uri' => 'internal:/menu-block-test/hierarchy/parent/child-1'],
+      'parent' => $links['parent'],
+    ];
     $link = $this->menuLinkContentStorage->create($child_1);
     $link->save();
     $links['child-1'] = $link->getPluginId();
 
     $child_1_1 = $base_options + [
-        'title' => 'child-1-1 menu item',
-        'link' => ['uri' => 'internal:/menu-block-test/hierarchy/parent/child-1/child-1-1'],
-        'parent' => $links['child-1'],
-      ];
+      'title' => 'child-1-1 menu item',
+      'link' => ['uri' => 'internal:/menu-block-test/hierarchy/parent/child-1/child-1-1'],
+      'parent' => $links['child-1'],
+    ];
     $link = $this->menuLinkContentStorage->create($child_1_1);
     $link->save();
     $links['child-1-1'] = $link->getPluginId();
 
     $child_1_2 = $base_options + [
-        'title' => 'child-1-2 menu item',
-        'link' => ['uri' => 'internal:/menu-block-test/hierarchy/parent/child-1/child-1-2'],
-        'parent' => $links['child-1'],
-      ];
+      'title' => 'child-1-2 menu item',
+      'link' => ['uri' => 'internal:/menu-block-test/hierarchy/parent/child-1/child-1-2'],
+      'parent' => $links['child-1'],
+    ];
     $link = $this->menuLinkContentStorage->create($child_1_2);
     $link->save();
     $links['child-1-2'] = $link->getPluginId();
 
     $child_2 = $base_options + [
-        'title' => 'child-2 menu item',
-        'link' => ['uri' => 'internal:/menu-block-test/hierarchy/parent/child-2'],
-        'parent' => $links['parent'],
-      ];
+      'title' => 'child-2 menu item',
+      'link' => ['uri' => 'internal:/menu-block-test/hierarchy/parent/child-2'],
+      'parent' => $links['parent'],
+    ];
     $link = $this->menuLinkContentStorage->create($child_2);
     $link->save();
     $links['child-2'] = $link->getPluginId();
@@ -181,15 +179,15 @@ class MenuBlockCustomTest extends BrowserTestBase {
     $page->clickLink('Add block');
     $page->clickLink('Main navigation');
     $assert_session->elementExists('xpath', '//input[contains(@id, "edit-settings-follow")]');
-    // @todo Test label_type field is not rendered.
+    // Test label_type field is not rendered.
     $assert_session->elementNotExists('xpath', '//select[contains(@id, "edit-settings-label-type")]');
-    // @todo Test label_link field is not rendered.
+    // Test label_link field is not rendered.
     $assert_session->elementNotExists('xpath', '//input[contains(@id, "edit-settings-label-link")]');
-    // @todo Test follow description is not shown.
+    // Test follow description is not shown.
     $assert_session->pageTextNotContains('If the active menu item is deeper than the initial visibility level set above');
-    // @todo Test that expand_all_items field is not rendered.
+    // Test that expand_all_items field is not rendered.
     $assert_session->elementNotExists('xpath', '//input[contains(@id, "edit-settings-expand-all-items")]');
-    // @todo Test that style field is not rendered.
+    // Test that style field is not rendered.
     $assert_session->elementNotExists('xpath', '//input[contains(@id, "edit-settings-style")]');
   }
 
