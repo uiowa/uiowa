@@ -31,7 +31,7 @@ class PardotVisitorIdConstraint {
     }
 
     if ($visitor_id) {
-      $formState->setValue('pardot_visitor_id', $visitor_id);
+      $formState->setValue('visitorid', $visitor_id);
     }
   }
 
