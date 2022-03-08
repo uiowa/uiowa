@@ -175,3 +175,13 @@ function sitenow_people_update_9101() {
   $view->save();
 
 }
+
+/**
+ * Add tag and related display config setting to people.
+ */
+function sitenow_people_update_9301() {
+  $config = \Drupal::configFactory()->getEditable('sitenow_people.settings');
+  $config->set('tag_display', 'do_not_display');
+  $config->set('related_display', 'do_not_display');
+  $config->save();
+}
