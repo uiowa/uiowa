@@ -164,6 +164,47 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => $featured_image_display_default ?: 'large',
     ];
 
+    $tag_display = $config->get('tag_display');
+
+    $form['article_node']['tag_display'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Display tags'),
+      '#description' => $this->t("Set the default way to display an article's tags in the article itself."),
+      '#options' => [
+        'do_not_display' => $this
+          ->t('Do not display tags'),
+        'tag_buttons' => $this
+          ->t('Display tag buttons'),
+      ],
+      '#default_value' => $tag_display ?: 'do_not_display',
+    ];
+
+    $related_display = $config->get('related_display');
+
+    $form['article_node']['related_display'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Display related content'),
+      '#description' => $this->t("Set the default way to display an article's related content."),
+      '#options' => [
+        'do_not_display' => $this
+          ->t('Do not display related content'),
+        'headings_lists' => $this
+          ->t('Display related content titles grouped by tag'),
+      ],
+      '#default_value' => $related_display ?: 'do_not_display',
+    ];
+
+    $form['article_node']['related_display_headings_lists_help'] = [
+      '#type' => 'item',
+      '#title' => 'How related content is displayed:',
+      '#description' => $this->t("Related content will display above the page's footer as sections of headings (tags) above bulleted lists of a maximum of 30 tagged items. Tagged items are sorted by most recently edited."),
+      '#states' => [
+        'visible' => [
+          ':input[name="related_display"]' => ['value' => 'headings_lists'],
+        ],
+      ],
+    ];
+
     $form['view_page'] = [
       '#type' => 'fieldset',
       '#title' => 'View Page Settings',
@@ -256,12 +297,23 @@ class SettingsForm extends ConfigFormBase {
     $header_content = $form_state->getValue('sitenow_articles_header_content');
     $show_archive = $form_state->getValue('sitenow_articles_archive');
     $featured_image_display_default = $form_state->getValue('featured_image_display_default');
+    $tag_display = $form_state->getValue('tag_display');
+    $related_display = $form_state->getValue('related_display');
 
     $this->configFactory->getEditable(static::SETTINGS)
       // Save the featured image display default.
       ->set('featured_image_display_default', $featured_image_display_default)
       ->save();
 
+    $this->configFactory->getEditable(static::SETTINGS)
+      // Save the tag display default.
+      ->set('tag_display', $tag_display)
+      ->save();
+
+    $this->configFactory->getEditable(static::SETTINGS)
+      // Save the tag display default.
+      ->set('related_display', $related_display)
+      ->save();
     // Clean path.
     $path = $this->aliasCleaner->cleanString($path);
 
