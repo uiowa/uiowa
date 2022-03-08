@@ -125,6 +125,14 @@ class ListBlock extends CoreBlock {
     // Hide headline child form elements for table displays.
     $has_children = !($this->view->getStyle()->getPluginId() == 'table');
 
+    if (isset($form['admin_label'])) {
+      $form['admin_label']['#weight'] = -20;
+    }
+
+    if (isset($form['exposed'])) {
+      $form['exposed']['#weight'] = 10;
+    }
+
     // @todo Possibly wire this up to the views title?
     // @todo Move this to a form override.
     $form['headline'] = HeadlineHelper::getElement([
@@ -180,12 +188,10 @@ class ListBlock extends CoreBlock {
             $fields_to_remove[$field] = $field;
           }
         }
-        $form["override"]["hide_fields"]["order_fields"] = array_diff_key($form["override"]["hide_fields"]["order_fields"], $fields_to_remove);
+        $form['override']['hide_fields']['order_fields'] = array_diff_key($form['override']['hide_fields']['order_fields'], $fields_to_remove);
       }
     }
 
-    // @todo Provide logic to add a checkbox to each filter to expose it on the
-    //   block.
     // Provide "Configure sorts" block settings form.
     if (!empty($allow_settings['configure_sorts'])) {
 
