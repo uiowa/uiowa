@@ -174,13 +174,6 @@ webimage_extra_packages: [python, build-essential]
 # - SOMEENV=somevalue
 # - SOMEOTHERENV=someothervalue
 
-# Trick BLT EnvironmentDetector into reporting this as a local environment. BLT
-# makes an exception for an AH_SITE_ENVIRONMENT value of LANDO specifically.
-# @see AcquiaDrupalEnvironmentDetector::isLocalEnv().
-web_environment:
-  - AH_SITE_GROUP=LOCAL
-  - AH_SITE_ENVIRONMENT=LANDO
-
 # no_project_mount: false
 # (Experimental) If true, ddev will not mount the project into the web container;
 # the user is responsible for mounting it manually or via a script.
