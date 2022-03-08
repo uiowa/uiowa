@@ -23,6 +23,18 @@ $imgpath: '../../uids/assets/images';
   margin: 0 calc(50% - 50vw);
 }
 
+// Containers within a background color useful for views blocks.
+.block--bg-container {
+  .headline  {
+    @extend %container;
+    //hack to prevent a change in container width (which is in em) when font size isn't 1em
+    max-width: 1310px;
+  }
+  & > div {
+    @extend %container;
+  }
+}
+
 // Flex basis for all blocks and views
 
 .layout__region {
