@@ -18,6 +18,14 @@
   }
 }
 
+// @todo remove this when https://github.com/uiowa/uiowa/issues/4317 is complete. 
+.layout--fourcol.grid--1-3.section-order__reversed  .layout__spacing_container {
+  display: inherit;
+  @include breakpoint(sm) {
+    display: grid;
+  }
+}
+
 @media (min-width: 0em) and (max-width: 84.375em) {
   // Special settings used for the vertical videos section on uiowa.edu home page.
   .layout--fourcol.grid--1-3 .layout__spacing_container {
