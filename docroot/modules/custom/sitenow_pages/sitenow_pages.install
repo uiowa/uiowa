@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * @file
+ * Install tasks.
+ */
+
+/**
+ * Add tag and related display config setting to pages.
+ */
+function sitenow_pages_update_9301() {
+  $config = \Drupal::configFactory()->getEditable('sitenow_pages.settings');
+  $config->set('tag_display', 'do_not_display');
+  $config->set('related_display', 'do_not_display');
+
+  $config->save();
+}
