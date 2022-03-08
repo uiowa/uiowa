@@ -3934,3 +3934,9 @@ $sites['uicb.uiowa.ddev.site'] = 'uicb.uiowa.edu';
 $sites['uicb.dev.drupal.uiowa.edu'] = 'uicb.uiowa.edu';
 $sites['uicb.stage.drupal.uiowa.edu'] = 'uicb.uiowa.edu';
 $sites['uicb.prod.drupal.uiowa.edu'] = 'uicb.uiowa.edu';
+
+// Directory aliases for library.law.uiowa.edu.
+$sites['lawlibrary.uiowa.ddev.site'] = 'library.law.uiowa.edu';
+$sites['lawlibrary.dev.drupal.uiowa.edu'] = 'library.law.uiowa.edu';
+$sites['lawlibrary.stage.drupal.uiowa.edu'] = 'library.law.uiowa.edu';
+$sites['lawlibrary.prod.drupal.uiowa.edu'] = 'library.law.uiowa.edu';
