@@ -135,9 +135,7 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
 
     case 'layout_builder_add_block':
     case 'layout_builder_update_block':
-      if (isset($form['settings'])
-        && isset($form['settings']['exposed'])
-      ) {
+      if (isset($form['settings']['exposed'])) {
         // Add custom validation for certain blocks/regions to validate.
         $form['#validate'][] = '_sitenow_people_exposed_filters_validate';
         $form['#prefix'] = '<div id="form-ajax-wrapper">';
@@ -170,27 +168,6 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
 
   switch ($block->getPluginId()) {
     case 'views_block:people_list_block-list_card':
-
-      // Check if values or defaults are set for exposed filters
-      // and leave the container open if so.
-      // @todo This isn't specific to people. Move this to another code location.
-      // @todo Also check if this is still necessary.
-      foreach (Element::children($element) as $filter_key) {
-        foreach (Element::children($element[$filter_key]) as $filter_element) {
-          $default = $element[$filter_key][$filter_element]['#default_value'] ?: NULL;
-          $filter_value = $form_state->getValue([
-            'settings',
-            'exposed',
-            $filter_key,
-            $filter_element,
-          ]);
-          if ($filter_value || $default) {
-            $element['#open'] = TRUE;
-            break;
-          }
-        }
-      }
-
       // Only continue if person type filter exists.
       if (isset($element['filter-' . PersonTypeInterface::VIEWS_PERSON_TYPE_FILTER_ID][PersonTypeInterface::VIEWS_PERSON_TYPE_FILTER_EXPOSE_ID])) {
         $person_type_filter =& $element['filter-' . PersonTypeInterface::VIEWS_PERSON_TYPE_FILTER_ID][PersonTypeInterface::VIEWS_PERSON_TYPE_FILTER_EXPOSE_ID];
