@@ -24,41 +24,41 @@ bundle: student_profile
 mode: teaser
 content:
   body:
-    label: hidden
     type: smart_trim
-    weight: 2
+    label: hidden
     settings:
       trim_length: 150
       trim_type: chars
       trim_suffix: ''
-      wrap_class: trimmed
-      more_text: More
-      more_class: more-link
-      summary_handler: full
       wrap_output: false
+      wrap_class: trimmed
       more_link: false
+      more_class: more-link
+      more_text: More
+      summary_handler: full
       trim_options:
         text: false
         trim_zero: false
     third_party_settings: {  }
+    weight: 2
     region: content
   field_image:
     type: entity_reference_entity_view
-    weight: 0
-    region: content
     label: visually_hidden
     settings:
       view_mode: full__widescreen
       link: false
     third_party_settings: {  }
+    weight: 0
+    region: content
   field_person_distinction:
     type: string
-    weight: 1
-    region: content
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 1
+    region: content
 hidden:
   field_grad_program_all_degree: true
   field_person_bio_headline: true

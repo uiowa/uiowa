@@ -309,8 +309,9 @@ function hr_core_update_8004() {
  * First batch of redirects.
  */
 function hr_core_update_8005() {
-
-  $path = drupal_get_path('module', 'hr_core');
+  /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
+  $path_resolver = \Drupal::service('extension.path.resolver');
+  $path = $path_resolver->getPath('module', 'hr_core');
   $csv = array_map('str_getcsv', file($path . '/redirects/batch01.csv'));
   $header = FALSE;
 

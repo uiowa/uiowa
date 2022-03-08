@@ -1,0 +1,27 @@
+uuid: 08176a46-2b3d-40cf-8a58-6e0132b85842
+langcode: en
+status: false
+dependencies: {  }
+id: sitenow_intranet
+label: Intranet
+description: 'Restrict access to entire bootstraped site via restrict_ip'
+weight: 80
+stackable: true
+storage: folder
+folder: ../config/features/sitenow_intranet
+module:
+  restrict_ip: 0
+  search_api_db: 0
+  sitenow_intranet: 0
+theme: {  }
+complete_list:
+  - search_api.index.sitenow_intranet_search_index
+  - views.view.intranet_search
+partial_list:
+  - media.settings
+  - media_entity_instagram.settings
+  - media_entity_twitter.settings
+  - system.file
+  - 'user.role.*'
+  - 'field.storage.media.*'
+  - 'media.type.*'

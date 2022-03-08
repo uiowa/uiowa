@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: public-healthprc.uiowa.ddev.site
+    protocol: https
+  machine_name: public-healthprc
+  human_name: prc.public-health.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: public-healthprc.prod
+drupal:
+  db:
+    database: prc_public_health_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: slwatkins

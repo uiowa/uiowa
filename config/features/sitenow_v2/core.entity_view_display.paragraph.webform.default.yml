@@ -18,20 +18,20 @@ bundle: webform
 mode: default
 content:
   field_uip_title:
-    weight: 0
+    type: string
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 0
     region: content
   field_webform:
-    weight: 1
+    type: webform_entity_reference_entity_view
     label: hidden
     settings:
       source_entity: true
     third_party_settings: {  }
-    type: webform_entity_reference_entity_view
+    weight: 1
     region: content
 hidden:
   field_uip_classes: true

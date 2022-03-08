@@ -23,53 +23,53 @@ mode: teaser
 content:
   field_grad_program:
     type: list_default
-    weight: 4
-    region: content
     label: inline
     settings: {  }
     third_party_settings: {  }
+    weight: 4
+    region: content
   field_thesis_defense_chairs:
     type: string
-    weight: 5
-    region: content
     label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 5
+    region: content
   field_thesis_defense_date:
     type: smartdate_default
-    weight: 2
-    region: content
     label: visually_hidden
     settings:
       timezone_override: ''
+      format_type: medium
       format: default
-      time_wrapper: true
       force_chronological: false
       add_classes: false
-      format_type: medium
+      time_wrapper: true
     third_party_settings: {  }
+    weight: 2
+    region: content
   field_thesis_defense_location:
     type: string
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
     weight: 3
     region: content
-    label: visually_hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
   field_thesis_defense_title:
     type: string
-    weight: 1
-    region: content
     label: visually_hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  links:
-    weight: 0
+    weight: 1
     region: content
+  links:
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   field_grad_program_phd: true
   field_person_first_name: true

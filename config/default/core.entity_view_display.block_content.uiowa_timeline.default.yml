@@ -15,20 +15,20 @@ bundle: uiowa_timeline
 mode: default
 content:
   field_uiowa_headline:
-    weight: 0
+    type: uiowa_headline_formatter
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: uiowa_headline_formatter
+    weight: 0
     region: content
   field_uiowa_timeline_items:
     type: entity_reference_revisions_entity_view
-    weight: 1
     label: above
     settings:
       view_mode: default
       link: ''
     third_party_settings: {  }
+    weight: 1
     region: content
 hidden:
   search_api_excerpt: true

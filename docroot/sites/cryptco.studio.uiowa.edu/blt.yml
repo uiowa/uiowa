@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: studiocryptco.uiowa.ddev.site
+    protocol: https
+  machine_name: studiocryptco
+  human_name: cryptco.studio.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: studiocryptco.prod
+drupal:
+  db:
+    database: cryptco_studio_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: hillesheim

@@ -30,6 +30,7 @@ class UiowaHeadlineWidget extends WidgetBase {
       'hide_headline' => $items[$delta]->hide_headline ?? 0,
       'heading_size' => $items[$delta]->heading_size ?? 'h2',
       'headline_style' => $items[$delta]->headline_style ?? 'default',
+      'headline_alignment' => $items[$delta]->headline_alignment ?? 'default',
       'child_heading_size' => $items[$delta]->child_heading_size ?? 'h2',
       'description' => $items[$delta]->getFieldDefinition()->getDescription() ?? '',
     ]);
@@ -45,6 +46,7 @@ class UiowaHeadlineWidget extends WidgetBase {
       $values[$delta]['headline'] = $data['container']['headline'];
       $values[$delta]['hide_headline'] = $data['container']['hide_headline'];
       $values[$delta]['headline_style'] = $data['container']['headline_style'];
+      $values[$delta]['headline_alignment'] = $data['container']['headline_alignment'];
       $values[$delta]['heading_size'] = $data['container']['heading_size'];
       $values[$delta]['child_heading_size'] = $data['container']['child_heading_size'];
       unset($values[$delta]['container']);

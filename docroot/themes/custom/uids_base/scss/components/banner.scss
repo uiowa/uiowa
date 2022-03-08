@@ -2,7 +2,8 @@
 @import "assets/scss/_utilities.scss";
 @import "components/banner/banner.scss";
 
-.banner.banner--gradient-left-reversed .bold-headline.bold-headline--negative {
+.banner.banner--gradient-left-reversed .bold-headline.bold-headline--negative,
+.banner.banner--gradient-left-reversed .headline.headline--highlight{
   text-shadow: none;
   color: $secondary;
 }
@@ -23,11 +24,11 @@
           width: 100%;
         }
 
-        @include breakpoint(menu) {
+        @include breakpoint(md) {
           width: 80%;
         }
 
-        @include breakpoint(container) {
+        @include breakpoint(page-container) {
           width: 60%;
         }
       }
@@ -101,11 +102,11 @@
         width: 100%;
       }
 
-      @include breakpoint(menu) {
+      @include breakpoint(md) {
         width: 80%;
       }
 
-      @include breakpoint(container) {
+      @include breakpoint(page-container) {
         width: 50%;
       }
     }
@@ -118,7 +119,7 @@
     .slider__slide {
       .banner.banner--vertical-bottom.banner--horizontal-left {
         .banner__content {
-          @include breakpoint(container) {
+          @include breakpoint(page-container) {
             padding: 3rem 1.5rem 4rem;
           }
         }
@@ -126,7 +127,7 @@
     }
     .banner.banner--vertical-bottom.banner--horizontal-left {
       .banner__content {
-        @include breakpoint(container) {
+        @include breakpoint(page-container) {
           padding: 3rem 1.5rem 4rem 0rem;
         }
       }
@@ -146,14 +147,15 @@
   // Remove left/right padding if edge-to-edge is selected
   .layout--onecol[class*=page__container--edge] {
     .banner__content {
-      @include breakpoint(container) {
+      @include breakpoint(page-container) {
         padding: 3rem 0;
       }
     }
   }
 
 // Set large heading size for page titles in banner
-.layout--title.banner .bold-headline {
+.layout--title.banner .bold-headline,
+.layout--title.banner .headline.page-title {
   font-size: 4.7rem;
   font-size: containerClamp(2.5rem, 4.7rem);
 }

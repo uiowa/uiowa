@@ -1,22 +1,13 @@
-metadata_cache_http: false
-local_login_saml_error: false
-security_authn_requests_sign: true
-security_logout_requests_sign: true
-security_logout_responses_sign: true
-strict: true
-security_messages_sign: true
-security_lowercase_url_encoding: true
-request_set_name_id_policy: true
-security_want_name_id: true
-security_request_authn_context: true
-use_base_url: true
 _core:
   default_config_hash: oDGEkhP0h5rXXqlDplxeBDre0goLigOJupHKMDMwcqM
 login_menu_item_title: ''
 logout_menu_item_title: ''
-logout_different_user: false
 login_redirect_url: ''
 logout_redirect_url: ''
+error_redirect_url: ''
+error_throw: false
+local_login_saml_error: false
+logout_different_user: false
 drupal_login_roles:
   authenticated: '0'
   viewer: '0'
@@ -24,19 +15,19 @@ drupal_login_roles:
   publisher: '0'
   webmaster: '0'
   administrator: '0'
-error_redirect_url: ''
-error_throw: false
 sp_entity_id: OVERRIDDEN
 sp_name_id_format: 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient'
 sp_x509_certificate: OVERRIDDEN
+sp_new_certificate: ''
 sp_private_key: OVERRIDDEN
+metadata_cache_http: false
 idp_entity_id: OVERRIDDEN
 idp_single_sign_on_service: 'https://overridden.drupal.prod.uiowa.edu'
 idp_single_log_out_service: 'https://overridden.drupal.prod.uiowa.edu'
 idp_change_password_service: 'https://apps.its.uiowa.edu/pwtool/change'
-idp_cert_type: single
-idp_x509_certificate: ''
-idp_x509_certificate_multi: ''
+idp_certs:
+  - OVERRIDDEN
+idp_cert_encryption: ''
 unique_id_attribute: 'urn:oid:1.3.6.1.4.1.6159.1.41'
 map_users: true
 map_users_name: true
@@ -52,21 +43,30 @@ sync_name: true
 sync_mail: true
 user_name_attribute: 'urn:oid:1.3.6.1.4.1.6159.1.41'
 user_mail_attribute: 'urn:oid:0.9.2342.19200300.100.1.3'
-security_assertions_encrypt: true
-security_logout_reuse_sigs: false
-security_signature_algorithm: ''
-use_proxy_headers: false
-debug_display_error_details: false
-debug_log_saml_out: false
-debug_log_saml_in: false
-debug_log_in: false
-debug_phpsaml: false
-sp_new_certificate: ''
-idp_certs:
-  - OVERRIDDEN
-idp_cert_encryption: ''
+request_set_name_id_policy: true
+strict: true
 security_metadata_sign: false
+security_authn_requests_sign: true
+security_logout_requests_sign: true
+security_logout_responses_sign: true
 security_nameid_encrypt: true
-security_nameid_encrypted: false
-security_assertions_signed: true
+security_signature_algorithm: ''
 security_encryption_algorithm: ''
+security_messages_sign: true
+security_assertions_signed: true
+security_assertions_encrypt: true
+security_nameid_encrypted: false
+security_want_name_id: true
+security_request_authn_context: true
+security_lowercase_url_encoding: true
+security_logout_reuse_sigs: false
+debug_display_error_details: false
+debug_log_in: false
+debug_log_saml_in: false
+debug_log_saml_out: false
+debug_phpsaml: false
+use_proxy_headers: false
+use_base_url: true
+idp_cert_type: single
+idp_x509_certificate: ''
+idp_x509_certificate_multi: ''

@@ -21,9 +21,9 @@
         'site_url': path('<front>'),
       } %}
 
-      {% if uiowa_search_form %}
+      {% if page.search %}
         {% include '@uids_base/uids/global/search-toggle.html.twig' with {
-          search_form: uiowa_search_form
+          'search_form': page.search,
         } %}
       {% endif %}
       {% if page.action_menu %}

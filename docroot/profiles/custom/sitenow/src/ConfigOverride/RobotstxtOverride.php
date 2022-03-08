@@ -51,7 +51,7 @@ class RobotstxtOverride implements ConfigFactoryOverrideInterface {
    * {@inheritdoc}
    */
   public function getCacheSuffix() {
-    return 'AcquiaConnectorOverride';
+    return 'RobotstxtOverride';
   }
 
   /**

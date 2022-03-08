@@ -41,7 +41,7 @@ class MailTest extends KernelTestBase {
       'body' => 'This is a test.',
     ];
 
-    $this->serviceAccount = base64_decode('aXRzLXdlYkB1aW93YS5lZHU=');
+    $this->serviceAccount = 'sitenow-noreply@uiowa.edu';
   }
 
   /**

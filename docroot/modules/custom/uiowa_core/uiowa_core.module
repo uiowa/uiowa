@@ -42,7 +42,7 @@ function uiowa_core_mail_alter(&$message) {
 
     if ($domain != 'uiowa.edu') {
       $name = $from->getName() ?: \Drupal::config('system.site')->get('name');
-      $from = new Address(base64_decode('aXRzLXdlYkB1aW93YS5lZHU='), $name);
+      $from = new Address('sitenow-noreply@uiowa.edu', $name);
       $message['headers']['From'] = $from->toString();
     }
   }
@@ -64,6 +64,7 @@ function uiowa_core_theme($existing, $type, $theme, $path) {
         'hide_headline' => FALSE,
         'heading_size' => 'h2',
         'headline_style' => 'default',
+        'headline_alignment' => 'default',
       ],
     ],
   ];
@@ -78,9 +79,85 @@ function template_preprocess_uiowa_core_headline(&$variables) {
   }
   else {
     $style = HeadlineHelper::getStyles()[$variables['headline_style']];
+    $alignment = HeadlineHelper::getHeadingAlignment()[$variables['headline_alignment']];
+    $variables['headline_alignment'] = $alignment;
   }
 
   $variables['headline_style'] = $style;
+
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uiowa_core_preprocess_page(&$variables) {
+
+  $current_route = \Drupal::routeMatch();
+  $node = $current_route->getParameter('node');
+
+  $view_id = Drupal::request()->attributes->get('view_id');
+
+  // Tags and related display logic on core content types:
+  $tags_related_display_allowed_types = [
+    'article',
+    'page',
+    'person',
+  ];
+  if (isset($node)) {
+    $node_type = $node->bundle();
+    if (in_array($node_type, $tags_related_display_allowed_types)) {
+
+      $tag_display_config = [];
+      $tag_display_config['article'] = \Drupal::configFactory()->getEditable('sitenow_articles.settings')->get('tag_display');
+      $tag_display_config['page'] = \Drupal::configFactory()->getEditable('sitenow_pages.settings')->get('tag_display');
+      $tag_display_config['person'] = \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('tag_display');
+
+      $related_display_config = [];
+      $related_display_config['article'] = \Drupal::configFactory()->getEditable('sitenow_articles.settings')->get('related_display');
+      $related_display_config['page'] = \Drupal::configFactory()->getEditable('sitenow_pages.settings')->get('related_display');
+      $related_display_config['person'] = \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('related_display');
+
+      if (empty($view_id) || $view_id == 'tags_list') {
+        switch ($node_type) {
+          case 'article':
+          case 'page':
+          case 'person':
+            switch ($tag_display_config[$node_type]) {
+
+              case 'tag_buttons':
+                // Tag buttons are default for now.
+                break;
+
+              case 'do_not_display':
+                unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
+                break;
+
+            }
+            break;
+        }
+      }
+      if (empty($view_id) || $view_id == 'related_list') {
+        // print_r($variables['page']['pre_footer']);.
+        switch ($node_type) {
+          case 'article':
+          case 'page':
+          case 'person':
+            switch ($related_display_config[$node_type]) {
+
+              case 'headings_lists':
+                // Headings and lists are default for now.
+                break;
+
+              case 'do_not_display':
+                unset($variables['page']['pre_footer']['views_block__related_content_block_related_headings_lists']);
+                break;
+
+            }
+            break;
+        }
+      }
+    }
+  }
 
 }
 
@@ -148,7 +225,7 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
   switch ($form_id) {
     case 'fragment_region_item_add_form':
     case 'fragment_region_item_edit_form':
-      // Ensure item is published to prevent rendering issue for anonymous visitor.
+      // Ensure item is published to prevent rendering issue for anonymous user.
       $form['status']['widget']['value']['#default_value'] = TRUE;
       $form['status']['#disabled'] = TRUE;
       break;
@@ -307,5 +384,30 @@ function uiowa_core_entity_operation_alter(array &$operations, EntityInterface $
       }
       break;
 
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uiowa_core_preprocess_block(&$variables) {
+  switch ($variables['plugin_id']) {
+    case 'views_block:tags_list-tags_list':
+      $variables['#attached']['library'][] = 'uids_base/tags';
+      $variables['title_attributes']['class'] = 'h6 block__headline headline headline--serif';
+      if (!isset($variables['attributes']['class'])) {
+        $variables['attributes']['class'] = [''];
+      }
+      $variables['attributes']['class'][] .= 'layout-container tags-list__container block-padding__bottom block-padding__top';
+      break;
+
+    case 'views_block:related_content-block_related_headings_lists':
+      $variables['#attached']['library'][] = 'uids_base/related';
+      $variables['title_attributes']['class'] = 'h3 block__headline headline headline--underline headline--serif';
+      if (!isset($variables['attributes']['class'])) {
+        $variables['attributes']['class'] = [''];
+      }
+      $variables['attributes']['class'][] .= 'block--bg-container related col--threecol--33 bg--gray block-padding__bottom block-padding__top';
+      break;
   }
 }

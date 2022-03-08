@@ -2,11 +2,11 @@ uuid: 6f335341-463c-4076-8feb-90705fe96a50
 langcode: en
 status: true
 dependencies:
+  module:
+    - node
   enforced:
     module:
       - uiowa_book
-  module:
-    - node
 _core:
   default_config_hash: FyTpGfNu0nhAgo5opzpBcraOKDdiHauqjl-nk49KNqw
 id: book_page
@@ -16,12 +16,12 @@ pattern: '[node:book:parents:join-path]/[node:title]'
 selection_criteria:
   baedc0f6-0809-4640-8e07-8c4f630ca42e:
     id: node_type
-    bundles:
-      book: book
     negate: false
+    uuid: baedc0f6-0809-4640-8e07-8c4f630ca42e
     context_mapping:
       node: node
-    uuid: baedc0f6-0809-4640-8e07-8c4f630ca42e
+    bundles:
+      book: book
 selection_logic: and
 weight: -5
 relationships: {  }

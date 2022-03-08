@@ -217,8 +217,8 @@ class PostRowSaveEvent implements EventSubscriberInterface {
       );
     }
     $headline = [
-      'headline' => isset($title) ? $title : '',
-      'heading_size' => isset($h_level) ? $h_level : 'h2',
+      'headline' => $title ?? '',
+      'heading_size' => $h_level ?? 'h2',
       'hide_headline' => 0,
       'headline_style' => 'default',
     ];

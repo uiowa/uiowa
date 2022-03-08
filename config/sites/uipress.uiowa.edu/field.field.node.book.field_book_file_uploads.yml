@@ -11,13 +11,15 @@ id: node.book.field_book_file_uploads
 field_name: field_book_file_uploads
 entity_type: node
 bundle: book
-label: 'File uploads'
+label: 'Interior pages'
 description: ''
 required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
+  handler: 'default:file'
+  handler_settings: {  }
   file_directory: '[date:custom:Y]-[date:custom:m]'
   file_extensions: 'png gif jpg jpeg'
   max_filesize: ''
@@ -33,6 +35,4 @@ settings:
     title: ''
     width: null
     height: null
-  handler: 'default:file'
-  handler_settings: {  }
 field_type: image
