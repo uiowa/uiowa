@@ -122,7 +122,7 @@ function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): v
     // Might be a better method of accessing this through the Layout
     // Builder API and layoutTempstoreRepository, but have not found it yet.
     $query = $db->select('key_value_expire', 'kve')
-      ->fields('kve', ['name', 'value', 'expire'])
+      ->fields('kve')
       ->condition('collection', 'tempstore.shared.layout_builder.section_storage.overrides', '=')
       ->condition('value', "%$block_plugin_id%", 'LIKE');
 
@@ -138,13 +138,10 @@ function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): v
       ->execute();
 
     foreach ($results as $record) {
+
       // Unserialize and replace the section in question with our updated one.
       $stored_data = unserialize($record->value, [
-        'allowed_classes' => [
-          Section::class,
-          SectionComponent::class,
-          OverridesSectionStorage::class,
-        ],
+        'allowed_classes' => TRUE,
       ]);
 
       /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
