@@ -59,6 +59,9 @@ class LayoutBuilderPreRender implements TrustedCallbackInterface {
                   $lb[$section]['layout-builder__section'][$region][$uuid]['content'] = [
                     '#markup' => t('Placeholder for the "@menu navigation" block', ['@menu' => ucfirst($derivative_plugin_id)]),
                   ];
+                  // Manually add the 'layout-builder-block--placeholder' class
+                  // here because it doesn't get added where it should.
+                  $lb[$section]['layout-builder__section'][$region][$uuid]['#attributes']['class'][] = 'layout-builder-block--placeholder';
                   break;
               }
             }
