@@ -289,6 +289,12 @@ EOD;
   /**
    * Determine if Drupal is installed via a SQL query.
    *
+   * We were relying on BLT Inspector::isDrupalInstalled() but a change in
+   * that method started relying on Drush status to determine this. This
+   * is problematic because errors can prevent Drush status from completing.
+   *
+   * @see https://github.com/acquia/blt/pull/4049
+   *
    * @return bool
    *   Whether drupal is installed.
    */
