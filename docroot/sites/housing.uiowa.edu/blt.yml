@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: housing.uiowa.ddev.site
+    protocol: https
+  machine_name: housing
+  human_name: housing.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: housing.prod
+drupal:
+  db:
+    database: housing_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: mkyoder
