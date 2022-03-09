@@ -165,9 +165,7 @@ function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): v
           }
           else {
             $block = unserialize($component_arr['configuration']['block_serialized'], [
-              'allowed_classes' => [
-                BlockContentInterface::class,
-              ],
+              'allowed_classes' => TRUE,
             ]);
           }
 
@@ -3038,14 +3036,11 @@ function sitenow_update_9009() {
     // Loop through the results.
     foreach ($results as $record) {
 
-      // Unserialize the section field into it's class object.
+      // Unserialize the section field into it's class object. Allowed classes
+      // were set to FALSE for PHPCS after the update had already run.
       /** @var \Drupal\layout_builder\Section $section */
       $section = unserialize($record->layout_builder__layout_section, [
-        'allowed_classes' => [
-          Section::class,
-          SectionComponent::class,
-          BlockContentInterface::class,
-        ],
+        'allowed_classes' => FALSE,
       ]);
 
       // Loop through the components in the section.
@@ -3107,12 +3102,10 @@ function sitenow_update_9009() {
 
     foreach ($results as $record) {
       // Unserialize and replace the section in question with our updated one.
+      // Allowed classes were set to FALSE for PHPCS after the update
+      // had already run.
       $stored_data = unserialize($record->value, [
-        'allowed_classes' => [
-          Section::class,
-          SectionComponent::class,
-          OverridesSectionStorage::class,
-        ],
+        'allowed_classes' => FALSE,
       ]);
 
       /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
@@ -3138,10 +3131,10 @@ function sitenow_update_9009() {
             $block = $blocks[$revision_id];
           }
           else {
+            // Allowed classes were set to FALSE for PHPCS after the
+            // update had already run.
             $block = unserialize($component_arr['configuration']['block_serialized'], [
-              'allowed_classes' => [
-                BlockContentInterface::class,
-              ],
+              'allowed_classes' => FALSE,
             ]);
           }
 
@@ -3204,12 +3197,10 @@ function sitenow_update_9010() {
       // Add the entity ID to our update list.
       $nids[$record->entity_id] = $record->entity_id;
 
-      // Unserialize the record and extract the layout settings.
+      // Unserialize the record and extract the layout settings. Allowed classes
+      // were set to FALSE for PHPCS after the update had already run.
       $stored_data = unserialize($record->layout_builder__layout_section, [
-        'allowed_classes' => [
-          Section::class,
-          SectionComponent::class,
-        ],
+        'allowed_classes' => FALSE,
       ]);
 
       $layout_settings = $stored_data->getLayoutSettings();
@@ -3260,12 +3251,10 @@ function sitenow_update_9010() {
       continue;
     }
     // Unserialize and replace the section in question with our updated one.
+    // Allowed classes were set to FALSE for PHPCS after the update had
+    // already run.
     $stored_data = unserialize($record->value, [
-      'allowed_classes' => [
-        Section::class,
-        SectionComponent::class,
-        OverridesSectionStorage::class,
-      ],
+      'allowed_classes' => FALSE
     ]);
 
     /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
@@ -3346,13 +3335,11 @@ function sitenow_update_9012() {
 
     // Loop through the results.
     foreach ($results as $record) {
-      // Unserialize the section field into it's class object.
+      // Unserialize the section field into it's class object. Allowed classes
+      // were set to FALSE for PHPCS after the update had already run.
       /** @var \Drupal\layout_builder\Section $section */
       $section = unserialize($record->layout_builder__layout_section, [
-        'allowed_classes' => [
-          Section::class,
-          SectionComponent::class,
-        ],
+        'allowed_classes' => FALSE,
       ]);
 
       // Loop through the components in the section.
@@ -3405,12 +3392,10 @@ function sitenow_update_9012() {
 
       foreach ($results as $record) {
         // Unserialize and replace the section in question with our updated one.
+        // Allowed classes were set to FALSE for PHPCS after the update had
+        // already run.
         $stored_data = unserialize($record->value, [
-          'allowed_classes' => [
-            Section::class,
-            SectionComponent::class,
-            OverridesSectionStorage::class,
-          ],
+          'allowed_classes' => FALSE,
         ]);
 
         /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
