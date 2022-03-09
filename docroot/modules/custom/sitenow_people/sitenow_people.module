@@ -710,9 +710,8 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
 
   if ($view->id() == 'people' || $view->id() == 'people_list_block') {
     // @todo Does this need to be updated?
-    $person_type_filter = 'type';
-    if (isset($form[$person_type_filter])) {
-      _sitenow_people_person_type_filter_select($form[$person_type_filter]);
+    if (isset($form[PersonTypeInterface::VIEWS_PERSON_TYPE_FILTER_EXPOSE_ID])) {
+      _sitenow_people_person_type_filter_select($form[PersonTypeInterface::VIEWS_PERSON_TYPE_FILTER_EXPOSE_ID]);
     }
   }
 }
