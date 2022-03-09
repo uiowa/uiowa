@@ -140,7 +140,7 @@ class SettingsForm extends ConfigFormBase {
     $form['global']['tag_display'] = [
       '#type' => 'select',
       '#title' => $this->t('Display tags in pages'),
-      '#description' => $this->t("Set the default way to display a page\'s tags in the page itself."),
+      '#description' => $this->t("Set the default way to display a page's tags in the page itself."),
       '#options' => [
         'do_not_display' => $this
           ->t('Do not display tags'),
@@ -155,7 +155,7 @@ class SettingsForm extends ConfigFormBase {
     $form['global']['related_display'] = [
       '#type' => 'select',
       '#title' => $this->t('Display related content'),
-      '#description' => $this->t("Set the default way to display a page\'s related content."),
+      '#description' => $this->t("Set the default way to display a page's related content."),
       '#options' => [
         'do_not_display' => $this
           ->t('Do not display related content'),
