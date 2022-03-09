@@ -19,7 +19,6 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\file\Entity\File;
 use Drupal\filter\Plugin\Filter\FilterHtmlCorrector;
 use Drupal\layout_builder\InlineBlockUsage;
-use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
 use Drupal\layout_builder\Section;
 use Drupal\layout_builder\SectionComponent;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
@@ -3254,7 +3253,7 @@ function sitenow_update_9010() {
     // Allowed classes were set to FALSE for PHPCS after the update had
     // already run.
     $stored_data = unserialize($record->value, [
-      'allowed_classes' => FALSE
+      'allowed_classes' => FALSE,
     ]);
 
     /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
