@@ -125,19 +125,21 @@ function uiowa_core_preprocess_page(&$variables) {
             switch ($tag_display_config[$node_type]) {
 
               case 'tag_buttons':
-                // Tag buttons are default for now.
+                // Tag buttons are default for now. We may add more
+                // options in the future, keeping this case around.
                 break;
 
               case 'do_not_display':
                 unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
                 break;
 
+              default:
+                unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
             }
             break;
         }
       }
       if (empty($view_id) || $view_id == 'related_list') {
-        // print_r($variables['page']['pre_footer']);.
         switch ($node_type) {
           case 'article':
           case 'page':
@@ -145,12 +147,16 @@ function uiowa_core_preprocess_page(&$variables) {
             switch ($related_display_config[$node_type]) {
 
               case 'headings_lists':
-                // Headings and lists are default for now.
+                // Headings and lists are default for now. We may add more
+                // options in the future, keeping this case around.
                 break;
 
               case 'do_not_display':
                 unset($variables['page']['pre_footer']['views_block__related_content_block_related_headings_lists']);
                 break;
+
+              default:
+                unset($variables['page']['pre_footer']['views_block__related_content_block_related_headings_lists']);
 
             }
             break;
