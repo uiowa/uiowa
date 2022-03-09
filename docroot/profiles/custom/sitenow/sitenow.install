@@ -62,14 +62,9 @@ function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): v
     // Loop through the results.
     foreach ($results as $record) {
       // Unserialize the section field into it's class object.
-      // @todo Verify that all expected classes are allowed here.
       /** @var \Drupal\layout_builder\Section $section */
       $section = unserialize($record->layout_builder__layout_section, [
-        'allowed_classes' => [
-          Section::class,
-          SectionComponent::class,
-          BlockContentInterface::class,
-        ],
+        'allowed_classes' => TRUE,
       ]);
 
       // Loop through the components in the section.
