@@ -336,7 +336,11 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           // visibility level should be set to 1 if used.
           /** @var \Drupal\Core\StringTranslation\TranslatableMarkup $parent_description */
           $parent_description = $form['settings']['advanced']['parent']['#description'];
-          $form['settings']['advanced']['parent']['#description'] = t($parent_description->getUntranslatedString() . ' Make sure that "Initial visibility level" is set to "1" below.', $parent_description->getArguments());
+          $form['settings']['advanced']['parent']['#description'] = t('@parent_description_text Make sure that "Initial visibility level" is set to "1" below.', array_merge(
+            [
+              '@parent_description_text' => $parent_description->getUntranslatedString(),
+            ],
+            $parent_description->getArguments()));
           // Unset the advanced description since it refers to
           // functionality that we are not offering.
           unset($form['settings']['advanced']['follow']['#description']);
@@ -440,7 +444,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 function _layout_builder_custom_block_validate(array &$form, FormStateInterface $form_state) {
   /** @var \Drupal\layout_builder\SectionComponent $component */
   $component = $form_state->getFormObject()->getCurrentComponent();
-  $block = $component->getPlugin();
 
   switch ($component->getPluginId()) {
     case 'inline_block:uiowa_statistic':
