@@ -834,7 +834,9 @@ display:
     display_options:
       display_description: ''
       display_extenders:
-        metatag_display_extender: {  }
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
       block_description: Articles
       block_category: Lists
       allow:
@@ -843,9 +845,9 @@ display:
         pager: pager
         hide_fields: hide_fields
         sort_fields: '0'
+        configure_filters: configure_filters
         disable_filters: '0'
         configure_sorts: configure_sorts
-        configure_filters: configure_filters
         use_more: use_more
       more_link_help_text: 'Check to include a ''display more'' link. To use the default <a href="/admin/config/sitenow/sitenow-articles">articles path set within SiteNow Articles</a>, make sure the ‘Enable articles listing’ box is checked. Alternatively, a custom URL path can be provided in the ‘Path’ text box below.'
       restrict_fields:
