@@ -2345,12 +2345,6 @@ $sites['orguiems.dev.drupal.uiowa.edu'] = 'uiems.org.uiowa.edu';
 $sites['orguiems.stage.drupal.uiowa.edu'] = 'uiems.org.uiowa.edu';
 $sites['orguiems.prod.drupal.uiowa.edu'] = 'uiems.org.uiowa.edu';
 
-// Directory aliases for book.grad.uiowa.edu.
-$sites['gradbook.uiowa.ddev.site'] = 'book.grad.uiowa.edu';
-$sites['gradbook.dev.drupal.uiowa.edu'] = 'book.grad.uiowa.edu';
-$sites['gradbook.stage.drupal.uiowa.edu'] = 'book.grad.uiowa.edu';
-$sites['gradbook.prod.drupal.uiowa.edu'] = 'book.grad.uiowa.edu';
-
 // Directory aliases for nlp.uiowa.edu.
 $sites['nlp.uiowa.ddev.site'] = 'nlp.uiowa.edu';
 $sites['nlp.dev.drupal.uiowa.edu'] = 'nlp.uiowa.edu';
@@ -3934,3 +3928,21 @@ $sites['physicsgradmap.uiowa.ddev.site'] = 'gradmap.physics.uiowa.edu';
 $sites['physicsgradmap.dev.drupal.uiowa.edu'] = 'gradmap.physics.uiowa.edu';
 $sites['physicsgradmap.stage.drupal.uiowa.edu'] = 'gradmap.physics.uiowa.edu';
 $sites['physicsgradmap.prod.drupal.uiowa.edu'] = 'gradmap.physics.uiowa.edu';
+
+// Directory aliases for uicb.uiowa.edu.
+$sites['uicb.uiowa.ddev.site'] = 'uicb.uiowa.edu';
+$sites['uicb.dev.drupal.uiowa.edu'] = 'uicb.uiowa.edu';
+$sites['uicb.stage.drupal.uiowa.edu'] = 'uicb.uiowa.edu';
+$sites['uicb.prod.drupal.uiowa.edu'] = 'uicb.uiowa.edu';
+
+// Directory aliases for library.law.uiowa.edu.
+$sites['lawlibrary.uiowa.ddev.site'] = 'library.law.uiowa.edu';
+$sites['lawlibrary.dev.drupal.uiowa.edu'] = 'library.law.uiowa.edu';
+$sites['lawlibrary.stage.drupal.uiowa.edu'] = 'library.law.uiowa.edu';
+$sites['lawlibrary.prod.drupal.uiowa.edu'] = 'library.law.uiowa.edu';
+
+// Directory aliases for cab.uiowa.edu.
+$sites['cab.uiowa.ddev.site'] = 'cab.uiowa.edu';
+$sites['cab.dev.drupal.uiowa.edu'] = 'cab.uiowa.edu';
+$sites['cab.stage.drupal.uiowa.edu'] = 'cab.uiowa.edu';
+$sites['cab.prod.drupal.uiowa.edu'] = 'cab.uiowa.edu';

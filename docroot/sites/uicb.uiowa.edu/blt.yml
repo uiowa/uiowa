@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: uicb.uiowa.ddev.site
+    protocol: https
+  machine_name: uicb
+  human_name: uicb.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: uicb.prod
+drupal:
+  db:
+    database: uicb_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: emwakeman

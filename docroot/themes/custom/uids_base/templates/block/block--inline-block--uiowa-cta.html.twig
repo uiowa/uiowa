@@ -43,7 +43,7 @@
 					<div class="cta__title">
             {% set cta_headline = {
               "headline_level" : content.field_uiowa_cta_title[0]['#size'],
-              "headline_class" : 'bold-headline bold-headline--caps',
+              "headline_class" : 'headline headline--uppercase',
               "headline_text" : content.field_uiowa_cta_title[0]['#text'],
             } %}
 					{% include '@uids_base/uids/headline.html.twig' with cta_headline only %}
