@@ -3921,3 +3921,10 @@ function sitenow_update_9035() {
     $entity_manager->deleteRevision($vid);
   }
 }
+
+/**
+ * Clear caches for dependency signature changes.
+ */
+function sitenow_update_9036() {
+  drupal_flush_all_caches();
+}
