@@ -42,7 +42,7 @@ class ReplaceCommands extends BltTasks {
         continue;
       }
       else {
-        if ($this->getInspector()->isDrupalInstalled()) {
+        if ($this->isDrupalInstalled($multisite)) {
           $this->logger->info("Deploying updates to <comment>{$multisite}</comment>...");
 
           // Invalidate the Twig cache if on AH env. This happens automatically
@@ -284,6 +284,18 @@ EOD;
       $chromeDriverPort = $this->getConfigValue('tests.chromedriver.port');
       $this->getContainer()->get('executor')->killProcessByPort($chromeDriverPort);
     }
+  }
+
+  /**
+   * Determine if Drupal is installed via a SQL query.
+   *
+   * @return bool
+   *   Whether drupal is installed.
+   */
+  protected function isDrupalInstalled($uri): bool {
+    $result = $this->getContainer()->get('executor')->drush("sqlq --uri=$uri \"SHOW TABLES LIKE 'config'\"")->run();
+    $output = trim($result->getMessage());
+    return $result->wasSuccessful() && $output == 'config';
   }
 
 }
