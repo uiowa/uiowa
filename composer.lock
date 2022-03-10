@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "15f3d3658cf25be93ca4b11e64ccaca7",
+    "content-hash": "dd255ebec892a36b6dc05dda8199d05b",
     "packages": [
         {
             "name": "acquia/blt",
@@ -3241,40 +3241,37 @@
         },
         {
             "name": "dompdf/dompdf",
-            "version": "v0.8.5",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dompdf/dompdf.git",
-                "reference": "6782abfc090b132134cd6cea0ec6d76f0fce2c56"
+                "reference": "60b704331479a69e9bcdb3496da2315b5c4f94fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dompdf/dompdf/zipball/6782abfc090b132134cd6cea0ec6d76f0fce2c56",
-                "reference": "6782abfc090b132134cd6cea0ec6d76f0fce2c56",
+                "url": "https://api.github.com/repos/dompdf/dompdf/zipball/60b704331479a69e9bcdb3496da2315b5c4f94fd",
+                "reference": "60b704331479a69e9bcdb3496da2315b5c4f94fd",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
                 "ext-mbstring": "*",
-                "phenx/php-font-lib": "^0.5.1",
-                "phenx/php-svg-lib": "^0.3.3",
-                "php": "^7.1"
+                "phenx/php-font-lib": "^0.5.4",
+                "phenx/php-svg-lib": "^0.3.3 || ^0.4.0",
+                "php": "^7.1 || ^8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^7.5",
+                "mockery/mockery": "^1.3",
+                "phpunit/phpunit": "^7.5 || ^8 || ^9",
                 "squizlabs/php_codesniffer": "^3.5"
             },
             "suggest": {
                 "ext-gd": "Needed to process images",
                 "ext-gmagick": "Improves image processing performance",
-                "ext-imagick": "Improves image processing performance"
+                "ext-imagick": "Improves image processing performance",
+                "ext-zlib": "Needed for pdf stream compression"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-develop": "0.7-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Dompdf\\": "src/"
@@ -3305,9 +3302,9 @@
             "homepage": "https://github.com/dompdf/dompdf",
             "support": {
                 "issues": "https://github.com/dompdf/dompdf/issues",
-                "source": "https://github.com/dompdf/dompdf/tree/v0.8.5"
+                "source": "https://github.com/dompdf/dompdf/tree/v1.2.0"
             },
-            "time": "2020-02-20T03:52:51+00:00"
+            "time": "2022-02-07T13:02:10+00:00"
         },
         {
             "name": "drupal-pyrello/views_tree",
@@ -3370,16 +3367,8 @@
                     "homepage": "https://www.drupal.org/user/212019"
                 },
                 {
-                    "name": "Stanislav Mixnovich",
-                    "homepage": "https://www.drupal.org/user/2859977"
-                },
-                {
                     "name": "acquia",
                     "homepage": "https://www.drupal.org/user/1231722"
-                },
-                {
-                    "name": "ayang",
-                    "homepage": "https://www.drupal.org/user/1777884"
                 },
                 {
                     "name": "blueminds",
@@ -3396,10 +3385,6 @@
                 {
                     "name": "japerry",
                     "homepage": "https://www.drupal.org/user/45640"
-                },
-                {
-                    "name": "jmoreira",
-                    "homepage": "https://www.drupal.org/user/2374486"
                 },
                 {
                     "name": "kolafson",
@@ -7193,29 +7178,26 @@
         },
         {
             "name": "drupal/layout_builder_styles",
-            "version": "1.0.0-beta4",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/layout_builder_styles.git",
-                "reference": "8.x-1.0-beta4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/layout_builder_styles-8.x-1.0-beta4.zip",
-                "reference": "8.x-1.0-beta4",
-                "shasum": "f915f13eb98ffcb28d843ddf882bb8997414f0db"
+                "reference": "0d8021a8"
             },
             "require": {
                 "drupal/core": "^8.7.7 || ^9"
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
                 "drupal": {
-                    "version": "8.x-1.0-beta4",
-                    "datestamp": "1607616102",
+                    "version": "8.x-1.0-beta3+1-dev",
+                    "datestamp": "1607615957",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -8110,26 +8092,29 @@
         },
         {
             "name": "drupal/menu_block",
-            "version": "dev-1.x",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/menu_block.git",
-                "reference": "17bc5a2094dec85a921fdac6aff0030bfe004744"
+                "reference": "8.x-1.7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/menu_block-8.x-1.7.zip",
+                "reference": "8.x-1.7",
+                "shasum": "6d021a24a6a8691becbecf02ac236a7d8626d4d0"
             },
             "require": {
                 "drupal/core": "^8 || ^9"
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
-                    "version": "8.x-1.6+9-dev",
-                    "datestamp": "1612055345",
+                    "version": "8.x-1.7",
+                    "datestamp": "1619638238",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 }
             },
@@ -9111,7 +9096,7 @@
                 },
                 "drupal": {
                     "version": "3.x-dev",
-                    "datestamp": "1644494783",
+                    "datestamp": "1644998628",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -9812,7 +9797,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-2.2",
-                    "datestamp": "1619640197",
+                    "datestamp": "1645281065",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -9825,8 +9810,16 @@
             ],
             "authors": [
                 {
+                    "name": "DamienMcKenna",
+                    "homepage": "https://www.drupal.org/user/108450"
+                },
+                {
                     "name": "KarenS",
                     "homepage": "https://www.drupal.org/user/45874"
+                },
+                {
+                    "name": "wells",
+                    "homepage": "https://www.drupal.org/user/2452278"
                 }
             ],
             "description": "Metatag implementation of Schema.org structured data (JSON-LD)",
@@ -11482,12 +11475,12 @@
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "HTMLPurifier": "library/"
-                },
                 "files": [
                     "library/HTMLPurifier.composer.php"
                 ],
+                "psr-0": {
+                    "HTMLPurifier": "library/"
+                },
                 "exclude-from-classmap": [
                     "/library/HTMLPurifier/Language/"
                 ]
@@ -12302,7 +12295,12 @@
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "ext-simplexml": "*",
+                "ext-xmlreader": "*",
+                "php": ">=7.4.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.5"
             },
             "default-branch": true,
             "type": "library",
@@ -12322,12 +12320,12 @@
                 }
             ],
             "description": "PHP library to generate SVG XML",
-            "homepage": "http://kartsims.github.com/easysvg/",
+            "homepage": "https://github.com/kartsims/easysvg",
             "support": {
                 "issues": "https://github.com/kartsims/easysvg/issues",
                 "source": "https://github.com/kartsims/easysvg/tree/master"
             },
-            "time": "2020-03-16T08:12:32+00:00"
+            "time": "2022-02-21T09:22:32+00:00"
         },
         {
             "name": "kub-at/php-simple-html-dom-parser",
@@ -13738,20 +13736,23 @@
         },
         {
             "name": "phenx/php-font-lib",
-            "version": "0.5.2",
+            "version": "0.5.4",
             "source": {
                 "type": "git",
-                "url": "https://github.com/PhenX/php-font-lib.git",
-                "reference": "ca6ad461f032145fff5971b5985e5af9e7fa88d8"
+                "url": "https://github.com/dompdf/php-font-lib.git",
+                "reference": "dd448ad1ce34c63d09baccd05415e361300c35b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PhenX/php-font-lib/zipball/ca6ad461f032145fff5971b5985e5af9e7fa88d8",
-                "reference": "ca6ad461f032145fff5971b5985e5af9e7fa88d8",
+                "url": "https://api.github.com/repos/dompdf/php-font-lib/zipball/dd448ad1ce34c63d09baccd05415e361300c35b4",
+                "reference": "dd448ad1ce34c63d09baccd05415e361300c35b4",
                 "shasum": ""
             },
+            "require": {
+                "ext-mbstring": "*"
+            },
             "require-dev": {
-                "phpunit/phpunit": "^4.8.35 || ^5 || ^6 || ^7"
+                "symfony/phpunit-bridge": "^3 || ^4 || ^5"
             },
             "type": "library",
             "autoload": {
@@ -13772,30 +13773,32 @@
             "description": "A library to read, parse, export and make subsets of different types of font files.",
             "homepage": "https://github.com/PhenX/php-font-lib",
             "support": {
-                "issues": "https://github.com/PhenX/php-font-lib/issues",
-                "source": "https://github.com/PhenX/php-font-lib/tree/0.5.2"
+                "issues": "https://github.com/dompdf/php-font-lib/issues",
+                "source": "https://github.com/dompdf/php-font-lib/tree/0.5.4"
             },
-            "time": "2020-03-08T15:31:32+00:00"
+            "time": "2021-12-17T19:44:54+00:00"
         },
         {
             "name": "phenx/php-svg-lib",
-            "version": "v0.3.3",
+            "version": "0.4.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/PhenX/php-svg-lib.git",
-                "reference": "5fa61b65e612ce1ae15f69b3d223cb14ecc60e32"
+                "url": "https://github.com/dompdf/php-svg-lib.git",
+                "reference": "4498b5df7b08e8469f0f8279651ea5de9626ed02"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PhenX/php-svg-lib/zipball/5fa61b65e612ce1ae15f69b3d223cb14ecc60e32",
-                "reference": "5fa61b65e612ce1ae15f69b3d223cb14ecc60e32",
+                "url": "https://api.github.com/repos/dompdf/php-svg-lib/zipball/4498b5df7b08e8469f0f8279651ea5de9626ed02",
+                "reference": "4498b5df7b08e8469f0f8279651ea5de9626ed02",
                 "shasum": ""
             },
             "require": {
-                "sabberworm/php-css-parser": "^8.3"
+                "ext-mbstring": "*",
+                "php": "^7.1 || ^7.2 || ^7.3 || ^7.4 || ^8.0",
+                "sabberworm/php-css-parser": "^8.4"
             },
             "require-dev": {
-                "phpunit/phpunit": "^5.5|^6.5"
+                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.5"
             },
             "type": "library",
             "autoload": {
@@ -13816,10 +13819,10 @@
             "description": "A library to read, parse and export to PDF SVG files.",
             "homepage": "https://github.com/PhenX/php-svg-lib",
             "support": {
-                "issues": "https://github.com/PhenX/php-svg-lib/issues",
-                "source": "https://github.com/PhenX/php-svg-lib/tree/master"
+                "issues": "https://github.com/dompdf/php-svg-lib/issues",
+                "source": "https://github.com/dompdf/php-svg-lib/tree/0.4.1"
             },
-            "time": "2019-09-11T20:02:13+00:00"
+            "time": "2022-03-07T12:52:04+00:00"
         },
         {
             "name": "php-ffmpeg/php-ffmpeg",
@@ -15196,29 +15199,33 @@
         },
         {
             "name": "sabberworm/php-css-parser",
-            "version": "8.3.1",
+            "version": "8.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabberworm/PHP-CSS-Parser.git",
-                "reference": "d217848e1396ef962fb1997cf3e2421acba7f796"
+                "reference": "e41d2140031d533348b2192a83f02d8dd8a71d30"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabberworm/PHP-CSS-Parser/zipball/d217848e1396ef962fb1997cf3e2421acba7f796",
-                "reference": "d217848e1396ef962fb1997cf3e2421acba7f796",
+                "url": "https://api.github.com/repos/sabberworm/PHP-CSS-Parser/zipball/e41d2140031d533348b2192a83f02d8dd8a71d30",
+                "reference": "e41d2140031d533348b2192a83f02d8dd8a71d30",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.2"
+                "ext-iconv": "*",
+                "php": ">=5.6.20"
             },
             "require-dev": {
                 "codacy/coverage": "^1.4",
-                "phpunit/phpunit": "~4.8"
+                "phpunit/phpunit": "^4.8.36"
+            },
+            "suggest": {
+                "ext-mbstring": "for parsing UTF-8 CSS"
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "Sabberworm\\CSS": "lib/"
+                "psr-4": {
+                    "Sabberworm\\CSS\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -15231,7 +15238,7 @@
                 }
             ],
             "description": "Parser for CSS Files written in PHP",
-            "homepage": "http://www.sabberworm.com/blog/2010/6/10/php-css-parser",
+            "homepage": "https://www.sabberworm.com/blog/2010/6/10/php-css-parser",
             "keywords": [
                 "css",
                 "parser",
@@ -15239,9 +15246,9 @@
             ],
             "support": {
                 "issues": "https://github.com/sabberworm/PHP-CSS-Parser/issues",
-                "source": "https://github.com/sabberworm/PHP-CSS-Parser/tree/8.3.1"
+                "source": "https://github.com/sabberworm/PHP-CSS-Parser/tree/8.4.0"
             },
-            "time": "2020-06-01T09:10:00+00:00"
+            "time": "2021-12-11T13:40:54+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -21708,9 +21715,9 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
+                    "AcquiaCloudApi\\Response\\": "src/Response",
                     "AcquiaCloudApi\\Connector\\": "src/Connector",
                     "AcquiaCloudApi\\Endpoints\\": "src/Endpoints",
-                    "AcquiaCloudApi\\Response\\": "src/Response",
                     "AcquiaCloudApi\\Exception\\": "src/Exception"
                 }
             },
@@ -21751,13 +21758,12 @@
         "drupal/entity_embed": 5,
         "drupal/entity_usage": 10,
         "drupal/fullcalendar": 15,
-        "drupal/layout_builder_styles": 10,
+        "drupal/layout_builder_styles": 20,
         "drupal/lb_direct_add": 20,
         "drupal/masquerade": 10,
         "drupal/media_entity_facebook": 10,
         "drupal/media_entity_file_replace": 10,
         "drupal/media_thumbnails_video": 15,
-        "drupal/menu_block": 20,
         "drupal/menu_link_weight": 20,
         "drupal/mimemail": 15,
         "drupal/node_revision_delete": 10,
