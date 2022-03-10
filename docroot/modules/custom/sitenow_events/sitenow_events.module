@@ -87,7 +87,7 @@ function sitenow_events_preprocess_block(&$variables) {
       $block = $variables['elements']['content']['#block_content'];
 
       // Set custom time-based cache tag to clear on a regular basis.
-      $variables['#cache']['tags'][] = 'time:hours_3';
+      $variables['#cache']['tags'][] = 'sitenow_events:hourly';
       $variables['#cache']['max-age'] = 60;
 
       // Defaults to upcoming.
