@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e04870f0972c16aa5b9a0acd34c68752",
+    "content-hash": "7b1b6101e279ac939242e226a11e7d58",
     "packages": [
         {
             "name": "acquia/blt",
@@ -7176,29 +7176,26 @@
         },
         {
             "name": "drupal/layout_builder_styles",
-            "version": "1.0.0-beta4",
+            "version": "dev-1.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/layout_builder_styles.git",
-                "reference": "8.x-1.0-beta4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/layout_builder_styles-8.x-1.0-beta4.zip",
-                "reference": "8.x-1.0-beta4",
-                "shasum": "f915f13eb98ffcb28d843ddf882bb8997414f0db"
+                "reference": "0d8021a8"
             },
             "require": {
                 "drupal/core": "^8.7.7 || ^9"
             },
             "type": "drupal-module",
             "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
                 "drupal": {
-                    "version": "8.x-1.0-beta4",
-                    "datestamp": "1607616102",
+                    "version": "8.x-1.0-beta3+1-dev",
+                    "datestamp": "1607615957",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -8093,26 +8090,29 @@
         },
         {
             "name": "drupal/menu_block",
-            "version": "dev-1.x",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/menu_block.git",
-                "reference": "17bc5a2094dec85a921fdac6aff0030bfe004744"
+                "reference": "8.x-1.7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/menu_block-8.x-1.7.zip",
+                "reference": "8.x-1.7",
+                "shasum": "6d021a24a6a8691becbecf02ac236a7d8626d4d0"
             },
             "require": {
                 "drupal/core": "^8 || ^9"
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
-                    "version": "8.x-1.7+3-dev",
-                    "datestamp": "1645240797",
+                    "version": "8.x-1.7",
+                    "datestamp": "1619638238",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 }
             },
@@ -12323,7 +12323,7 @@
                 "issues": "https://github.com/kartsims/easysvg/issues",
                 "source": "https://github.com/kartsims/easysvg/tree/master"
             },
-            "time": "2020-03-16T08:12:32+00:00"
+            "time": "2022-02-21T09:22:32+00:00"
         },
         {
             "name": "kub-at/php-simple-html-dom-parser",
@@ -21748,13 +21748,12 @@
         "drupal/entity_embed": 5,
         "drupal/entity_usage": 10,
         "drupal/fullcalendar": 15,
-        "drupal/layout_builder_styles": 10,
+        "drupal/layout_builder_styles": 20,
         "drupal/lb_direct_add": 20,
         "drupal/masquerade": 10,
         "drupal/media_entity_facebook": 10,
         "drupal/media_entity_file_replace": 10,
         "drupal/media_thumbnails_video": 15,
-        "drupal/menu_block": 20,
         "drupal/menu_link_weight": 20,
         "drupal/mimemail": 15,
         "drupal/node_revision_delete": 10,
