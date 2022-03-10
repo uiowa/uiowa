@@ -509,11 +509,6 @@ function sitenow_articles_form_views_exposed_form_alter(&$form, FormStateInterfa
       }
     }
   }
-
-  if ($view->id() === 'article_list_block') {
-    $form['items_per_page']['#access'] = FALSE;
-    $form['offset']['#access'] = FALSE;
-  }
 }
 
 /**
