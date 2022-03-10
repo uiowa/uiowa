@@ -16,6 +16,8 @@ use AcquiaCloudApi\Endpoints\SslCertificates;
 use AcquiaCloudApi\Exception\ApiErrorException;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
+use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\ClientException;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
@@ -72,8 +74,6 @@ class MultisiteCommands extends BltTasks {
       $app = EnvironmentDetector::getAhGroup() ?: 'local';
       $env = EnvironmentDetector::getAhEnv() ?: 'local';
 
-      $this->sendNotification("Command `drush {$cmd}` *started* on {$app} {$env}.");
-
       foreach ($this->getConfigValue('multisites') as $multisite) {
         $this->switchSiteContext($multisite);
         $db = $this->getConfigValue('drupal.db.database');
@@ -87,17 +87,20 @@ class MultisiteCommands extends BltTasks {
         if (!in_array($multisite, $options['exclude'])) {
           $this->say("<info>Executing on {$multisite}...</info>");
 
-          $this->taskDrush()
+          $result = $this->taskDrush()
             ->drush($cmd)
             ->printMetadata(FALSE)
             ->run();
+
+          if (!$result->wasSuccessful()) {
+            $error = $result->getMessage();
+            $this->sendNotification("*Error* running command `drush {$cmd}` on app $app $env for site $multisite. ```$error```");
+          }
         }
         else {
           $this->logger->info("Skipping excluded site {$multisite}.");
         }
       }
-
-      $this->sendNotification("Command `drush {$cmd}` *finished* on {$app} {$env}.");
     }
   }
 
