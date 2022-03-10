@@ -1046,7 +1046,8 @@ EOD;
         $client->post($webhook_url, [
           'body' => json_encode($data),
         ]);
-      } catch (ClientException $e) {
+      }
+      catch (ClientException $e) {
         $this->logger->warning('Error attempting to send Slack notification: ' . $e->getMessage());
       }
     }

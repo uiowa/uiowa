@@ -2,7 +2,11 @@
 
 namespace Uiowa;
 
+/**
+ * Temporary trait to roll our own inspector methods.
+ */
 trait InspectorTrait {
+
   /**
    * Determine if Drupal is installed via a SQL query.
    *
@@ -20,4 +24,5 @@ trait InspectorTrait {
     $output = trim($result->getMessage());
     return $result->wasSuccessful() && $output == 'config';
   }
+
 }
