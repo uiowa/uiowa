@@ -248,6 +248,13 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
         // Set person type status options based on the type.
         if ($type) {
           _person_type_status_filter_options($person_type_status_filter, $type);
+
+          // @todo Remove this when https://github.com/uiowa/uiowa/issues/4947
+          //   is resolved.
+          $block_config = $block->getConfiguration();
+          if (isset($block_config['exposed']['filter-' . PersonTypeInterface::VIEWS_PERSON_TYPE_STATUS_FILTER_ID]['value'])) {
+            $person_type_status_filter['#default_value'] = $block_config['exposed']['filter-' . PersonTypeInterface::VIEWS_PERSON_TYPE_STATUS_FILTER_ID]['value'];
+          }
         }
       }
       break;
