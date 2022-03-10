@@ -267,10 +267,6 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
  * Custom callback for person types field.
  */
 function _person_types_callback(array &$form, FormStateInterface $form_state) {
-  // @todo Do these modifications need to be scoped to just run when
-  //   the triggering element is the person types filter? Currently
-  //   we're skipping if we're on a node form, but scoping could be
-  //   more specific.
   if (in_array($form['#form_id'], ['node_person_form', 'node_person_edit_form'])) {
     return $form;
   }
@@ -328,7 +324,6 @@ function sitenow_people_entity_presave(EntityInterface $entity) {
 function sitenow_people_entity_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
-    // @todo Remove this line and just use $entity->bundle() instead.
     if (isset($build['#node']) && $node = $build['#node']) {
       switch ($node->getType()) {
         case 'person':
@@ -671,7 +666,6 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
   }
 
   if ($view->id() == 'people' || $view->id() == 'people_list_block') {
-    // @todo Does this need to be updated?
     if (isset($form[PersonTypeInterface::VIEWS_PERSON_TYPE_FILTER_EXPOSE_ID])) {
       _sitenow_people_person_type_filter_select($form[PersonTypeInterface::VIEWS_PERSON_TYPE_FILTER_EXPOSE_ID]);
     }
@@ -857,6 +851,9 @@ function sitenow_people_tokens($type, $tokens, array $data, array $options, Bubb
 
 /**
  * Callback to get the SiteNow People view path.
+ *
+ * @todo Re-write this to use a variable when
+ *   https://github.com/uiowa/uiowa/issues/4948 is resolved.
  */
 function _sitenow_people_path_token_value() {
 
@@ -872,10 +869,8 @@ function _sitenow_people_path_token_value() {
       continue;
     }
 
-    // @todo Do we need to do anything besides this?
     return '/' . $display['display_options']['path'];
   }
 
-  // @todo Is this appropriate when there is no value?
   return '';
 }

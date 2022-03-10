@@ -133,8 +133,6 @@ class ListBlock extends CoreBlock {
       $form['exposed']['#weight'] = 10;
     }
 
-    // @todo Possibly wire this up to the views title?
-    // @todo Move this to a form override.
     $form['headline'] = HeadlineHelper::getElement([
       'headline' => $block_configuration['headline']['headline'] ?? NULL,
       'hide_headline' => $block_configuration['headline']['hide_headline'] ?? 0,
@@ -147,7 +145,6 @@ class ListBlock extends CoreBlock {
 
     // Modify "Items per page" block settings form.
     if (!empty($allow_settings['items_per_page'])) {
-      // @todo Remove once exposed filters patch is added.
       // Seems to break at high numbers :grimmacing: ..
       $form['override']['items_per_page']['#min'] = 1;
       $form['override']['items_per_page']['#max'] = 50;
@@ -539,10 +536,12 @@ class ListBlock extends CoreBlock {
 
   /**
    * {@inheritdoc}
+   *
+   * @todo Remove this when https://github.com/uiowa/uiowa/issues/4948 is
+   *   resolved.
    */
   public function usesExposed(): bool {
     // Hotfix shim to keep these pagers working for now.
-    // @todo Remove this exception when these view displays are removed.
     $display = $this->view->getDisplay();
     $exceptions = [
       'block_people_slf',
@@ -558,11 +557,13 @@ class ListBlock extends CoreBlock {
 
   /**
    * {@inheritdoc}
+   *
+   * @todo Remove this when https://github.com/uiowa/uiowa/issues/4948 is
+   *   resolved.
    */
   public function displaysExposed(): bool {
     // Hotfix shim to not display exposed blocks, necessary because of
     // the hotfix above.
-    // @todo Remove this exception when these view displays are removed.
     $display = $this->view->getDisplay();
     $exceptions = [
       'block_people_slf',
