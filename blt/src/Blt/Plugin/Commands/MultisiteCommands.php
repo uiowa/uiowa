@@ -21,12 +21,15 @@ use GuzzleHttp\Exception\ClientException;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
+use Uiowa\InspectorTrait;
 use Uiowa\Multisite;
 
 /**
  * Global multisite commands.
  */
 class MultisiteCommands extends BltTasks {
+
+  use InspectorTrait;
 
   /**
    * A no-op command.
@@ -161,7 +164,7 @@ class MultisiteCommands extends BltTasks {
         continue;
       }
 
-      if (!$this->getInspector()->isDrupalInstalled()) {
+      if (!$this->isDrupalInstalled($multisite)) {
         $uninstalled[] = $multisite;
       }
     }
