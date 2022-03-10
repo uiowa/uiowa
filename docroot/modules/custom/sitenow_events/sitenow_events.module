@@ -6,12 +6,39 @@
  */
 
 use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\uiowa_core\HeadlineHelper;
 use GuzzleHttp\Exception\RequestException;
+
+/**
+ * Implements hook_cron().
+ */
+function sitenow_events_cron() {
+  $current_time = time();
+  $request_time = \Drupal::time()->getRequestTime();
+  $last_run = \Drupal::state()->get('sitenow_events_hourly_last');
+
+  if (!$last_run || $current_time - $request_time >= 3600) {
+    Cache::invalidateTags(['sitenow_events:hourly']);
+
+    $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
+    $purgeQueuers = \Drupal::service('purge.queuers');
+    $purgeQueue = \Drupal::service('purge.queue');
+
+    $queuer = $purgeQueuers->get('myqueuer');
+
+    $invalidations = [
+      $purgeInvalidationFactory->get('tag', 'sitenow_events:hourly'),
+    ];
+
+    $purgeQueue->add($queuer, $invalidations);
+    \Drupal::state()->set('sitenow_events_hourly_last', $current_time);
+  }
+}
 
 /**
  * Implements hook_form_alter().
