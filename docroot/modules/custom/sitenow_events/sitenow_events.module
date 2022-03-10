@@ -25,17 +25,19 @@ function sitenow_events_cron() {
   if (!$last_run || $current_time - $request_time >= 3600) {
     Cache::invalidateTags(['sitenow_events:hourly']);
 
-    $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
-    $purgeQueuers = \Drupal::service('purge.queuers');
-    $purgeQueue = \Drupal::service('purge.queue');
+    if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
+      $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
+      $purgeQueuers = \Drupal::service('purge.queuers');
+      $purgeQueue = \Drupal::service('purge.queue');
+      $queuer = $purgeQueuers->get('coretags');
 
-    $queuer = $purgeQueuers->get('myqueuer');
+      $invalidations = [
+        $purgeInvalidationFactory->get('tag', 'sitenow_events:hourly'),
+      ];
 
-    $invalidations = [
-      $purgeInvalidationFactory->get('tag', 'sitenow_events:hourly'),
-    ];
+      $purgeQueue->add($queuer, $invalidations);
+    }
 
-    $purgeQueue->add($queuer, $invalidations);
     \Drupal::state()->set('sitenow_events_hourly_last', $current_time);
   }
 }
