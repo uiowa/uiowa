@@ -112,7 +112,13 @@ class SettingsForm extends ConfigFormBase {
 
     $featured_image_display_default = $config->get('featured_image_display_default');
 
-    $form['global']['featured_image_display_default'] = [
+    $form['global']['featured_image'] = [
+      '#type' => 'fieldset',
+      '#title' => 'Featured image',
+      '#collapsible' => FALSE,
+    ];
+
+    $form['global']['featured_image']['featured_image_display_default'] = [
       '#type' => 'select',
       '#title' => $this->t('Display featured image'),
       '#description' => $this->t('Set the default behavior for how to display a featured image.'),
