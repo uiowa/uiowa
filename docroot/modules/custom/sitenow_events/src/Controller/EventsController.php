@@ -37,7 +37,7 @@ class EventsController extends ControllerBase {
           '#theme' => 'sitenow_events_single_event',
           '#event' => $event,
           '#cache' => [
-            'tags' => ['sitenow_events:hourly'],
+            'tags' => ['time:hourly'],
             'max-age' => 60,
           ],
         ];
