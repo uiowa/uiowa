@@ -3952,3 +3952,9 @@ $sites['housing.uiowa.ddev.site'] = 'housing.uiowa.edu';
 $sites['housing.dev.drupal.uiowa.edu'] = 'housing.uiowa.edu';
 $sites['housing.stage.drupal.uiowa.edu'] = 'housing.uiowa.edu';
 $sites['housing.prod.drupal.uiowa.edu'] = 'housing.uiowa.edu';
+
+// Directory aliases for clcg.lab.uiowa.edu.
+$sites['labclcg.uiowa.ddev.site'] = 'clcg.lab.uiowa.edu';
+$sites['labclcg.dev.drupal.uiowa.edu'] = 'clcg.lab.uiowa.edu';
+$sites['labclcg.stage.drupal.uiowa.edu'] = 'clcg.lab.uiowa.edu';
+$sites['labclcg.prod.drupal.uiowa.edu'] = 'clcg.lab.uiowa.edu';
