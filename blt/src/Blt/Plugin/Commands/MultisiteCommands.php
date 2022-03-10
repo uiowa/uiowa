@@ -1032,19 +1032,20 @@ EOD;
     $webhook_url = getenv('SLACK_WEBHOOK_URL');
 
     if ($webhook_url && $env == 'prod' || $env == 'local') {
-      $payload = [
+      $data = [
         'username' => 'Acquia Cloud',
         'text' => $message,
-        'icon_emoji' => ':acquia:',
       ];
 
-      $data = "payload=" . json_encode($payload);
-      $ch = curl_init($webhook_url);
-      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-      curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-      curl_exec($ch);
-      curl_close($ch);
+      $client = new GuzzleClient();
+
+      try {
+        $client->post($webhook_url, [
+          'body' => json_encode($data),
+        ]);
+      } catch (ClientException $e) {
+        $this->logger->warning('Error attempting to send Slack notification: ' . $e->getMessage());
+      }
     }
     else {
       $this->logger->warning("Slack webhook URL not configured. Cannot send message: {$message}");
