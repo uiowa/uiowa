@@ -6,11 +6,13 @@ use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\EnvironmentDetector;
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Acquia\Blt\Robo\Exceptions\BltException;
+use Uiowa\InspectorTrait;
 
 /**
  * BLT override commands.
  */
 class ReplaceCommands extends BltTasks {
+  use InspectorTrait;
 
   /**
    * Replace the artifact:update:drupal:all-sites BLT command.
@@ -42,7 +44,7 @@ class ReplaceCommands extends BltTasks {
         continue;
       }
       else {
-        if ($this->getInspector()->isDrupalInstalled()) {
+        if ($this->isDrupalInstalled($multisite)) {
           $this->logger->info("Deploying updates to <comment>{$multisite}</comment>...");
 
           // Invalidate the Twig cache if on AH env. This happens automatically
