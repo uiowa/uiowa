@@ -29,11 +29,10 @@ function uiowa_core_config_schema_info_alter(&$definitions) {
  * Implements hook_cron().
  */
 function uiowa_core_cron() {
-  $current_time = time();
   $request_time = \Drupal::time()->getRequestTime();
   $last_run = \Drupal::state()->get('uiowa_core_hourly_last');
 
-  if (!$last_run || $current_time - $request_time >= 3600) {
+  if (!$last_run || $request_time - $last_run >= 3600) {
     Cache::invalidateTags(['time:hourly']);
 
     if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
@@ -49,7 +48,7 @@ function uiowa_core_cron() {
       $purgeQueue->add($queuer, $invalidations);
     }
 
-    \Drupal::state()->set('uiowa_core_hourly_last', $current_time);
+    \Drupal::state()->set('uiowa_core_hourly_last', $request_time);
   }
 }
 
