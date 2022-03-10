@@ -6,11 +6,13 @@ use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\EnvironmentDetector;
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Acquia\Blt\Robo\Exceptions\BltException;
+use Uiowa\InspectorTrait;
 
 /**
  * BLT override commands.
  */
 class ReplaceCommands extends BltTasks {
+  use InspectorTrait;
 
   /**
    * Replace the artifact:update:drupal:all-sites BLT command.
