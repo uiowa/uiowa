@@ -9,6 +9,19 @@
   }
 }
 
+[class*="bg--white"],
+[class*="bg--gray"] {
+  .menu-wrapper--horizontal {
+    .menu {
+      li {
+        a {
+          color: $secondary;
+        }
+      }
+    }
+  }
+}
+
 
 // set horizontal only if used in layout--onecol section.
 // @todo remove once https://github.com/GoogleChromeLabs/container-query-polyfill/issues/23 is resolved.
