@@ -3,13 +3,13 @@
 @import "components/menus/main-menu/main-menu.scss";
 
 // @todo remove from UIDS.
-.main--secondary--horizontal {
+.menu-wrapper--horizontal {
   @include breakpoint(sm) {
     margin: 0;
   }
 }
 
-// @todo move back to UIDS. 
+// @todo move back to UIDS.
 [class*="bg--white"],
 [class*="bg--gray"] {
   .menu-wrapper--horizontal {
@@ -95,7 +95,7 @@
         flex-direction: row;
 
         ul {
-          display: none;
+         // display: none;
         }
 
         li {
@@ -116,10 +116,10 @@
             position: relative;
             width: auto;
             text-align: center;
-            text-transform: uppercase;
+            //text-transform: uppercase;
             border: 0;
             background-color: transparent;
-            font-weight: $font-weight-medium-bold;
+            //font-weight: $font-weight-medium-bold;
             padding: 1.475rem 1.375rem;
             margin: 0;
             @include center(both);
@@ -176,7 +176,7 @@
             }
 
             ul {
-              display: none;
+              //display: none;
             }
           }
         }
@@ -209,4 +209,54 @@
       }
     }
   }
+}
+
+
+
+// @todo move into the section above.
+
+.menu-wrapper--horizontal .menu ul {
+  display: none;
+  position: absolute!important;
+  width: 230px;
+  left: 0;
+  background: #fff;
+  z-index: 100;
+  top: 100%;
+  width: 230px;
+}
+
+.menu-wrapper--horizontal .menu ul ul {
+  top: 0;
+  left: 130px;
+}
+
+.menu-wrapper--horizontal > ul > li.open > ul {
+  display:block;
+}
+
+.menu-wrapper--horizontal {
+  .menu ul {
+    list-style: none;
+    position: relative;
+  }
+  .menu ul li:hover > ul,
+  .menu ul li:focus > ul {
+    display: block!important;
+  }
+}
+
+.menu-wrapper--horizontal .menu li.menu-item--expanded ul li a,
+.menu-wrapper--horizontal .menu li.menu-item--expanded ul li span {
+  text-align: left;
+}
+
+.menu-wrapper--horizontal .menu li.menu-item--expanded ul li a::before,
+.menu-wrapper--horizontal .menu li.menu-item--expanded ul li span::before {
+  content: "";
+  background: transparent;
+}
+
+.menu-wrapper--horizontal .menu li  {
+  position: relative;
 }
