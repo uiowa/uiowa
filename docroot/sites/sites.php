@@ -3934,3 +3934,27 @@ $sites['uicb.uiowa.ddev.site'] = 'uicb.uiowa.edu';
 $sites['uicb.dev.drupal.uiowa.edu'] = 'uicb.uiowa.edu';
 $sites['uicb.stage.drupal.uiowa.edu'] = 'uicb.uiowa.edu';
 $sites['uicb.prod.drupal.uiowa.edu'] = 'uicb.uiowa.edu';
+
+// Directory aliases for library.law.uiowa.edu.
+$sites['lawlibrary.uiowa.ddev.site'] = 'library.law.uiowa.edu';
+$sites['lawlibrary.dev.drupal.uiowa.edu'] = 'library.law.uiowa.edu';
+$sites['lawlibrary.stage.drupal.uiowa.edu'] = 'library.law.uiowa.edu';
+$sites['lawlibrary.prod.drupal.uiowa.edu'] = 'library.law.uiowa.edu';
+
+// Directory aliases for cab.uiowa.edu.
+$sites['cab.uiowa.ddev.site'] = 'cab.uiowa.edu';
+$sites['cab.dev.drupal.uiowa.edu'] = 'cab.uiowa.edu';
+$sites['cab.stage.drupal.uiowa.edu'] = 'cab.uiowa.edu';
+$sites['cab.prod.drupal.uiowa.edu'] = 'cab.uiowa.edu';
+
+// Directory aliases for housing.uiowa.edu.
+$sites['housing.uiowa.ddev.site'] = 'housing.uiowa.edu';
+$sites['housing.dev.drupal.uiowa.edu'] = 'housing.uiowa.edu';
+$sites['housing.stage.drupal.uiowa.edu'] = 'housing.uiowa.edu';
+$sites['housing.prod.drupal.uiowa.edu'] = 'housing.uiowa.edu';
+
+// Directory aliases for clcg.lab.uiowa.edu.
+$sites['labclcg.uiowa.ddev.site'] = 'clcg.lab.uiowa.edu';
+$sites['labclcg.dev.drupal.uiowa.edu'] = 'clcg.lab.uiowa.edu';
+$sites['labclcg.stage.drupal.uiowa.edu'] = 'clcg.lab.uiowa.edu';
+$sites['labclcg.prod.drupal.uiowa.edu'] = 'clcg.lab.uiowa.edu';
