@@ -260,3 +260,50 @@
 .menu-wrapper--horizontal .menu li  {
   position: relative;
 }
+
+.menu-wrapper--horizontal  .menu li.menu-item--expanded {
+  > a {
+    padding-right: 45px;
+  }
+  > a:hover:after {
+    transform: none;
+  }
+  > a:after {
+    margin-top: -0.4rem;
+    color: #999;
+    font-size: .7rem;
+    line-height: 1.4;
+    top: 50%;
+    right: 0.3125rem;
+    margin-top: -0.4rem;
+    transform: none;
+    left: auto;
+    content: "\f078";
+    color: inherit;
+    right: 1.3rem;
+    bottom: 0;
+    width: 10px;
+    background: none!important;
+    font-size: .8rem;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+    font-family: Font Awesome\ 5 Free;
+    font-weight: 900;
+  }
+}
+
+.menu-wrapper--horizontal .menu li.menu-item--expanded li a {
+  &:after {
+    content: "";
+  }
+}
+.menu-wrapper--horizontal .menu li.menu-item--expanded.open {
+  > a:after {
+    content: "\f077";
+  }
+}
