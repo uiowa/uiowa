@@ -32,7 +32,7 @@ function uiowa_core_cron() {
   $request_time = \Drupal::time()->getRequestTime();
   $last_run = \Drupal::state()->get('uiowa_core_hourly_last');
 
-  if (!$last_run || $request_time - $last_run >= 3600) {
+  if (!$last_run || $request_time - $last_run >= 3599) {
     Cache::invalidateTags(['time:hourly']);
 
     if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
