@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: isa.uiowa.ddev.site
+    protocol: https
+  machine_name: isa
+  human_name: isa.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: isa.prod
+drupal:
+  db:
+    database: isa_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
