@@ -3959,6 +3959,12 @@ $sites['labclcg.dev.drupal.uiowa.edu'] = 'clcg.lab.uiowa.edu';
 $sites['labclcg.stage.drupal.uiowa.edu'] = 'clcg.lab.uiowa.edu';
 $sites['labclcg.prod.drupal.uiowa.edu'] = 'clcg.lab.uiowa.edu';
 
+// Directory aliases for isa.uiowa.edu.
+$sites['isa.uiowa.ddev.site'] = 'isa.uiowa.edu';
+$sites['isa.dev.drupal.uiowa.edu'] = 'isa.uiowa.edu';
+$sites['isa.stage.drupal.uiowa.edu'] = 'isa.uiowa.edu';
+$sites['isa.prod.drupal.uiowa.edu'] = 'isa.uiowa.edu';
+
 // Directory aliases for steffenr.sites.uiowa.edu.
 $sites['sitessteffenr.uiowa.ddev.site'] = 'steffenr.sites.uiowa.edu';
 $sites['sitessteffenr.dev.drupal.uiowa.edu'] = 'steffenr.sites.uiowa.edu';
