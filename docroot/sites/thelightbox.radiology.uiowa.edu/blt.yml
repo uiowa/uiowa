@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: radiologythelightbox.uiowa.ddev.site
+    protocol: https
+  machine_name: radiologythelightbox
+  human_name: thelightbox.radiology.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: radiologythelightbox.prod
+drupal:
+  db:
+    database: thelightbox_radiology_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: mcgrudera

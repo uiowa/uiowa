@@ -3964,3 +3964,15 @@ $sites['isa.uiowa.ddev.site'] = 'isa.uiowa.edu';
 $sites['isa.dev.drupal.uiowa.edu'] = 'isa.uiowa.edu';
 $sites['isa.stage.drupal.uiowa.edu'] = 'isa.uiowa.edu';
 $sites['isa.prod.drupal.uiowa.edu'] = 'isa.uiowa.edu';
+
+// Directory aliases for steffenr.sites.uiowa.edu.
+$sites['sitessteffenr.uiowa.ddev.site'] = 'steffenr.sites.uiowa.edu';
+$sites['sitessteffenr.dev.drupal.uiowa.edu'] = 'steffenr.sites.uiowa.edu';
+$sites['sitessteffenr.stage.drupal.uiowa.edu'] = 'steffenr.sites.uiowa.edu';
+$sites['sitessteffenr.prod.drupal.uiowa.edu'] = 'steffenr.sites.uiowa.edu';
+
+// Directory aliases for thelightbox.radiology.uiowa.edu.
+$sites['radiologythelightbox.uiowa.ddev.site'] = 'thelightbox.radiology.uiowa.edu';
+$sites['radiologythelightbox.dev.drupal.uiowa.edu'] = 'thelightbox.radiology.uiowa.edu';
+$sites['radiologythelightbox.stage.drupal.uiowa.edu'] = 'thelightbox.radiology.uiowa.edu';
+$sites['radiologythelightbox.prod.drupal.uiowa.edu'] = 'thelightbox.radiology.uiowa.edu';
