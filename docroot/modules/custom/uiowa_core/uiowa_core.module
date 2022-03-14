@@ -53,6 +53,18 @@ function uiowa_core_cron() {
 }
 
 /**
+ * Implements hook_module_implements_alter().
+ */
+function uiowa_core_module_implements_alter(&$implementations, $hook) {
+  // Our uiowa_core_cron() needs to run before purge_processor_cron().
+  if ($hook == 'cron' && isset($implementations['purge_processor'])) {
+    $group = $implementations['purge_processor'];
+    unset($implementations['purge_processor']);
+    $implementations['purge_processor'] = $group;
+  }
+}
+
+/**
  * Implements hook_mail_alter().
  */
 function uiowa_core_mail_alter(&$message) {
