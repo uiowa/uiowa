@@ -1,0 +1,77 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - uipress_migrate
+id: uipress_books
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - uipress
+migration_group: sitenow_migrate
+label: Books
+source:
+  plugin: uipress_books
+  node_type: uipress_book
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  moderation_state: moderation_state
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid:
+    plugin: default_value
+    default_value: 1
+  body:
+    plugin: sub_process
+    source: body
+    process:
+      value: value
+      format:
+        plugin: default_value
+        default_value: 'filtered_html'
+  field_book_author:
+    plugin: sub_process
+    source: field_uibook_authors
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: uipress_authors
+        source: nid
+  field_book_editor:
+    plugin: sub_process
+    source: field_uibook_editor
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: uipress_authors
+        source: nid
+  field_book_illustrator:
+    plugin: sub_process
+    source: field_uibook_illustrator
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: uipress_authors
+        source: nid
+  field_book_photographer:
+    plugin: sub_process
+    source: field_uibook_photog
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: uipress_authors
+        source: nid
+  field_image: field_image_attach
+destination:
+  plugin: 'entity:node'
+  default_bundle: book
+migration_dependencies: null
