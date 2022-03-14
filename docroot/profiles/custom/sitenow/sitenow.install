@@ -3921,8 +3921,40 @@ function sitenow_update_9037() {
 }
 
 /**
- * Flush all caches for dependency updates.
+ * Set existing blocks with a grid columns value.
  */
 function sitenow_update_9038() {
-  drupal_flush_all_caches();
+  foreach ([
+    'inline_block:uiowa_articles',
+    'inline_block:uiowa_events',
+    'inline_block:uiowa_people',
+    'inline_block:uiowa_aggregator',
+    'views_block:article_list_block-list_article',
+    'views_block:people_list_block-list_card',
+  ] as $block_plugin_id) {
+
+    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
+
+      $styles = $component->get('layout_builder_styles_style');
+      if (in_array('list_format_list', $styles)) {
+        if (!array_search('block_grid_threecol_33_34_33', $styles)) {
+          $styles[] = 'block_grid_threecol_33_34_33';
+        }
+
+        if ($fifty_fifty = array_search('block_grid_twocol_50_50', $styles)) {
+          unset($styles[$fifty_fifty]);
+        }
+      }
+      $component->set('layout_builder_styles_style', $styles);
+
+    });
+
+  }
+}
+
+/**
+* Flush all caches for dependency updates.
+*/
+function sitenow_update_9039() {
+ drupal_flush_all_caches();
 }

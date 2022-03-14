@@ -483,12 +483,6 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
   $component = $form_state->getFormObject()->getCurrentComponent();
   $block = $component->getPlugin();
 
-  // Unset grid options if list format is selected.
-  $display_option = $form_state->getValue('layout_builder_style_list_format');
-  if (isset($display_option) && $display_option == 'list_format_list') {
-    $form_state->setValue('layout_builder_style_grid_columns', '');
-  }
-
   switch ($block->getPluginId()) {
     case 'inline_block:uiowa_banner':
       $background_option = $form_state->getValue([
@@ -868,6 +862,17 @@ function _layout_builder_custom_add_lbs_heading(&$form) {
  * Implements hook_preprocess_HOOK().
  */
 function layout_builder_custom_preprocess_block(&$variables) {
+  // Unset grid_columns classes if display as list.
+  if (isset($variables['elements']['#attributes']['class'])) {
+    $is_list = array_search('inner--list', $variables['elements']['#attributes']['class']);
+    if ($is_list) {
+      foreach ($variables['elements']['#attributes']['class'] as $key => $style) {
+        if (str_starts_with($style, 'grid--')) {
+          unset($variables['elements']['#attributes']['class'][$key]);
+        }
+      }
+    }
+  }
 
   switch ($variables['elements']['#plugin_id']) {
     case 'inline_block:featured_content':
