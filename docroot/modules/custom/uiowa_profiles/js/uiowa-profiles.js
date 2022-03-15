@@ -24,9 +24,6 @@ uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
     // Grab the canonical link element.
     let link = document.head.querySelector('link[rel="canonical"]');
 
-    // Grab the meta description element.
-    let meta_description = document.head.querySelector('meta[name="description"]');
-
     // We only need to set the canonical link on individual profile pages.
     if (path !== settings.uiowaProfiles.basePath) {
 
@@ -68,6 +65,9 @@ uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
 
           // Construct the `meta_description_markup` using the response data.
           let meta_description_markup = this.personMetaElement(response.name, response.directoryTitle);
+
+          // Grab the meta description element.
+          let meta_description = document.head.querySelector('meta[name="description"]');
 
           // If the meta description exists...
           if (meta_description !== null) {
@@ -114,6 +114,9 @@ uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
 
       // And reset the canonical back to it.
       link.setAttribute('href', original);
+
+      // Grab the meta description element.
+      let meta_description = document.head.querySelector('meta[name="description"]');
 
       // If the meta description exists...
       if (meta_description !== null) {
