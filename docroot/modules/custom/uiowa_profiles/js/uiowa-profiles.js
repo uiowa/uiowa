@@ -21,9 +21,12 @@ uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
     }
 
     let link = document.head.querySelector('link[rel="canonical"]');
+    let meta_description = document.head.querySelector('meta[name="description"]');
 
     // We only need to set the canonical link on individual profile pages.
     if (path !== settings.uiowaProfiles.basePath) {
+      meta_description = document.head.querySelector('meta[name="description"]');
+
       let parts = path.split('/').filter(function (el) {
         return el !== '';
       });
@@ -51,6 +54,18 @@ uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
           let response = JSON.parse(request.response);
           // Grab the canonical URL from the response.
           let canonical = response.canonical_url;
+          // console.log(response);
+
+          // Construct the `meta_description_markup` using the response data.
+          let meta_description_markup = this.personMetaElement(response.name, response.directoryTitle);
+
+          if (meta_description !== null) {
+            meta_description.parentNode.replaceChild(meta_description_markup, meta_description);
+          }
+          else {
+            document.querySelector('head').appendChild(meta_description_markup);
+          }
+
           // And set the canonical URL in the head.
           link.setAttribute('href', canonical);
         }
@@ -62,8 +77,13 @@ uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
       }
       request.send();
     }
+
     // Else if this is not an individual profile page...
     else {
+      meta_description = document.head.querySelector('meta[name="description"]');
+      let directory_title = drupalSettings.uiowaProfiles.directoryTitle;
+      let site_name = drupalSettings.uiowaProfiles.siteName;
+      let directory_meta_description = this.directoryMetaElement(site_name, directory_title);
 
       // Get the original url for the directory.
       let original = url.toString();
@@ -75,7 +95,28 @@ uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
 
       // And reset the canonical back to it.
       link.setAttribute('href', original);
+
+      if (meta_description !== null) {
+        meta_description.parentNode.replaceChild(directory_meta_description, meta_description);
+      }
+      else {
+        document.querySelector('head').appendChild(directory_meta_description);
+      }
     }
+  }
+
+  Drupal.uiowaProfiles.personMetaElement = function (name, directoryTitle) {
+    let element = document.createElement('meta');
+    element.name = 'description';
+    element.content = name + ' - ' + directoryTitle + ' - The University of Iowa';
+    return element;
+  }
+
+  Drupal.uiowaProfiles.directoryMetaElement = function (siteName, directoryTitle) {
+    let element = document.createElement('meta');
+    element.name = 'description';
+    element.content = siteName + ' - ' + directoryTitle;
+    return element;
   }
 
   /**
