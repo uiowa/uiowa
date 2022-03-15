@@ -57,10 +57,10 @@ function uiowa_core_cron() {
  */
 function uiowa_core_module_implements_alter(&$implementations, $hook) {
   // Our uiowa_core_cron() needs to run before purge_processor_cron().
-  if ($hook == 'cron' && isset($implementations['purge_processor'])) {
-    $group = $implementations['purge_processor'];
-    unset($implementations['purge_processor']);
-    $implementations['purge_processor'] = $group;
+  if ($hook == 'cron' && isset($implementations['purge_processor_cron'])) {
+    $group = $implementations['purge_processor_cron'];
+    unset($implementations['purge_processor_cron']);
+    $implementations['purge_processor_cron'] = $group;
   }
 }
 
