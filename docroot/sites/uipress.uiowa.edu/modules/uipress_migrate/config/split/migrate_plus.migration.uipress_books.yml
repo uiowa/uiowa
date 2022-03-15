@@ -30,7 +30,7 @@ process:
   uid:
     plugin: default_value
     default_value: 1
-  body:
+  field_book_description_summary:
     plugin: sub_process
     source: body
     process:
@@ -38,6 +38,16 @@ process:
       format:
         plugin: default_value
         default_value: 'filtered_html'
+  field_image: field_image_attach
+#  field_book_art: # @todo What does this map to?
+  field_book_afterword_author:
+    plugin: sub_process
+    source: field_uibook_afterauth
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: uipress_authors
+        source: nid
   field_book_author:
     plugin: sub_process
     source: field_uibook_authors
@@ -54,9 +64,33 @@ process:
         plugin: migration_lookup
         migration: uipress_authors
         source: nid
+  field_book_essay_by:
+    plugin: sub_process
+    source: field_uibook_essayby
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: uipress_authors
+        source: nid
+  field_book_foreword_author:
+    plugin: sub_process
+    source: field_uibook_foreauth
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: uipress_authors
+        source: nid
   field_book_illustrator:
     plugin: sub_process
     source: field_uibook_illustrator
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: uipress_authors
+        source: nid
+  field_book_introduction_author:
+    plugin: sub_process
+    source: field_uibook_introauth
     process:
       target_id:
         plugin: migration_lookup
@@ -70,7 +104,37 @@ process:
         plugin: migration_lookup
         migration: uipress_authors
         source: nid
-  field_image: field_image_attach
+  field_book_preface_authors:
+    plugin: sub_process
+    source: field_uibook_prefauth
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: uipress_authors
+        source: nid
+  field_book_translator: field_uibook_translator
+    plugin: sub_process
+    source: field_uibook_prefauth
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: uipress_authors
+        source: nid
+  field_book_awards: field_uibook_awards
+  field_book_contributors: field_uibook_contrib
+  field_book_edition: field_uibook_edition
+  field_book_excerpt: field_uibook_excerpt
+#  field_book_file_uploads: # @todo What does this map to?
+#  field_book_pages: # @todo What does this map to?
+  field_book_publication_date: field_uibook_pubyear
+#  field_book_related_reads: # @todo What does this map to?
+  field_book_reviews_blurbs: field_uibook_blurbs
+  field_book_season: field_uibook_season
+#  field_book_series: # @todo What does this map to?
+  field_book_subject: taxonomy_vocabulary_1
+  field_book_subtitle: field_uibook_subtitle # @todo Should this be removed?
+  field_book_table_of_contents: field_uibook_toc
+#  field_book_trim_size: # @todo What does this map to?
 destination:
   plugin: 'entity:node'
   default_bundle: book
