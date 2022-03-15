@@ -3982,3 +3982,9 @@ $sites['foafr.uiowa.ddev.site'] = 'afr.fo.uiowa.edu';
 $sites['foafr.dev.drupal.uiowa.edu'] = 'afr.fo.uiowa.edu';
 $sites['foafr.stage.drupal.uiowa.edu'] = 'afr.fo.uiowa.edu';
 $sites['foafr.prod.drupal.uiowa.edu'] = 'afr.fo.uiowa.edu';
+
+// Directory aliases for fa.fo.uiowa.edu.
+$sites['fofa.uiowa.ddev.site'] = 'fa.fo.uiowa.edu';
+$sites['fofa.dev.drupal.uiowa.edu'] = 'fa.fo.uiowa.edu';
+$sites['fofa.stage.drupal.uiowa.edu'] = 'fa.fo.uiowa.edu';
+$sites['fofa.prod.drupal.uiowa.edu'] = 'fa.fo.uiowa.edu';
