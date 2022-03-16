@@ -176,7 +176,7 @@ class DisclosureNav {
 }
 
 // Add buttons
-const expandableTopItems = document.querySelectorAll(".menu-item--expanded > a, .menu-item--expanded > span");
+const expandableTopItems = document.querySelectorAll(".menu-wrapper--horizontal > .menu > li.menu-item--expanded > a, .menu-wrapper--horizontal > .menu > li.menu-item--expanded > span");
 
 
 expandableTopItems.forEach(function(topItem) {
