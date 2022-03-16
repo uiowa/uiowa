@@ -112,6 +112,8 @@ class DirectoryController extends ControllerBase {
             'basePath' => Html::escape($directory['path']),
             'api_key' => Html::escape($directory['api_key']),
             'environment' => $this->profiles->environment,
+            'siteName' => \Drupal::config('system.site')->get('name'),
+            'directoryTitle' => Html::escape($directory['title']),
           ],
         ],
       ],
