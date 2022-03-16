@@ -52,12 +52,12 @@ class Books extends BaseNodeSource {
       'field_data_field_uibook_series' => ['field_uibook_series_value'],
     ];
     $this->fetchAdditionalFields($row, $tables);
-    $roles = $row->getSourceProperty('field_uibook_series_value');
+    $series = $row->getSourceProperty('field_uibook_series_value');
     $types = [];
-    foreach ($roles as $role) {
-      $types[] = $this->roleMapping($role);
+    foreach ($series as $item) {
+      $types[] = $this->seriesMapping($item);
     }
-    $row->setSourceProperty('field_author_roles_value', $types);
+    $row->setSourceProperty('field_uibook_series_value', $types);
 
     // Download image and attach it for the book cover.
     if ($image = $row->getSourceProperty('field_image_attach')) {
@@ -76,41 +76,41 @@ class Books extends BaseNodeSource {
   /**
    * Helper function to map series from the old site to the new site.
    */
-  private function seriesMapping($d7_nid) {
-    // D7 node ID => D9 term ID
+  private function seriesMapping($title) {
+    // D7 field_uibook_series value => D9 term ID
     $mapping = [
-      '5746' => '1',
-      '3975' => '6',
-      '3967' => '11',
-      '3977' => '16',
-      '3980' => '21',
-      '5371' => '26',
-      '3979' => '31',
-      '3976' => '36',
-      '5766' => '41',
-      '3969' => '46',
-      '3973' => '51',
-      '5021' => '56',
-      '5751' => '61',
-      '3978' => '76',
-      '3985' => '86',
-      '3968' => '81',
-      '3963' => '91',
-      '3974' => '96',
-      '4068' => '101',
-      '3964' => '106',
-      '4069' => '116',
-      '3970' => '111',
-      '3965' => '121',
-      '3982' => '126',
-      '3971' => '131',
-      '3966' => '136',
-      '3983' => '141',
-      '3972' => '66',
-      '3984' => '71',
+      'American Land and Life Series' => 91,
+      'Bur Oak Books' => 106,
+      'Bur Oak Guides' => 121,
+      'Contemporary North American Poetry Series' => 136,
+      'Fan Studies' => 101,
+      'Fandom & Culture' => 56,
+      'Food and Agriculture' => 116,
+      'FoodStory' => 61,
+      'Humanities and Public Life' => 11,
+      'Impressions: Studies in the Art, Culture, and Future of Books' => 81,
+      'Iowa and the Midwest Experience' => 46,
+      'Iowa Poetry Prize' => 111,
+      'Iowa Prize for Literary Nonfiction' => 1,
+      'Iowa Review Series in Fiction' => 26,
+      'Iowa Series in Andean Studies' => 86,
+      'Iowa Short Fiction Award' => 131,
+      'Iowa Szathmáry Culinary Arts Series' => 66,
+      'Iowa Whitman Series' => 51,
+      'John Simmons Short Fiction Award' => 126,
+      'Kuhl House Poets' => 96,
+      'Muse Books: The Iowa Series in Creativity and Writing' => 6,
+      'Prairie Lights Books' => 71,
+      'Sightline Books: The Iowa Series in Literary Nonfiction' => 16,
+      'Singular Lives: The Iowa Series in North American Autobiography' => 76,
+      'Studies in Theatre History and Culture' => 31,
+      'The New American Canon: The Iowa Series in Contemporary Literature and Culture' => 36,
+      'The New Neuroscience' => 41,
+      'University of Iowa Faculty Connections' => 141,
+      'Writers in Their Own Time' => 21,
     ];
 
-    return $mapping[$d7_nid] ?? NULL;
+    return $mapping[$title] ?? NULL;
   }
 
   /**
