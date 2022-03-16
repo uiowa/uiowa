@@ -87,11 +87,69 @@
       @include container-width;
       border-top: none;
 
+      > .menu {
+        > li {
+          &:before {
+            position: absolute;
+            bottom: 35%;
+            width: 1px;
+            height: 25%;
+            content: "";
+            background: $primary;
+            right: -1px;
+          }
+          display: flex;
+
+          &.menu-item--expanded > a,
+          &.menu-item--expanded > span {
+            //padding: 1.475rem 0 1.475rem 1.375rem;
+            padding: 1.475rem 0.5rem 1.475rem 1.375rem;
+          }
+        }
+      }
+
       .menu {
         flex-direction: row;
 
         ul {
-          // display: none;
+          position: absolute;
+          width: 230px;
+          left: 0;
+          background: #fff;
+          box-shadow: -3px 3px 10px -2px rgba(0, 0, 0, .1);
+          z-index: 100;
+          top: 100%;
+          width: 230px;
+
+          ul {
+            position: relative;
+            display: block;
+            width: auto;
+            background: transparent;
+            box-shadow: none;
+          }
+        }
+
+        .menu li a,
+        .menu li span {
+          &:focus,
+          &:hover {
+            background: $light;
+          }
+
+          &:after {
+            height: 2px;
+            background-color: $light-gray;
+          }
+        }
+
+        li.menu-item--expanded ul li a,
+        li.menu-item--expanded ul li span {
+          text-align: left;
+
+          &::before {
+            content: "";
+          }
         }
 
         li {
@@ -103,11 +161,6 @@
 
           &:last-of-type a {
             margin-right: 0;
-          }
-
-          &.menu-item--expanded a,
-          &.menu-item--expanded span {
-            //padding: 1.475rem 0 1.475rem 1.375rem;
           }
 
           a,
@@ -184,12 +237,45 @@
 
         li a:after {
           background-color: $brand-cool-gray;
-
         }
 
         li:last-of-type a {
           &:before {
             width: 0;
+          }
+        }
+      }
+
+      .menu ul.menu ul.menu {
+        list-style: none;
+        margin-left: 0;
+        padding-left: 1.2rem;
+
+        li {
+          list-style: none;
+
+          & > a {
+            @include padding($top: $sm, $right: $xsm, $bottom: $xsm, $left: 1.2rem);
+            font-size: 0.9rem;
+
+            &:focus,
+            &:hover {
+              //background: $light;
+            }
+
+            &:after {
+              height: 1px;
+            }
+
+            &::before {
+              content: "\f105";
+              position: absolute;
+              font-size: 0.9rem;
+              left: 0;
+              right: $md;
+              @include fas();
+              color: $grey-light;
+            }
           }
         }
       }
@@ -201,164 +287,66 @@
     }
   }
 }
-
-// @todo move into the section above.
-
-.layout--onecol .menu-wrapper--horizontal .menu li .menu li a,
-.layout--onecol .menu-wrapper--horizontal .menu li .menu li span {
-  &:hover,
-  &:focus {
-    background: $light;
-  }
-  &:after {
-    height: 2px;
-    background-color: $light-gray;
-  }
-}
-
-  .layout--onecol .menu-wrapper--horizontal > .menu > li {
-    display: flex;
+// menu button styles
+.menu-wrapper--horizontal .menu {
+  li a {
+    flex-basis: 100%;
   }
 
-  .layout--onecol .menu-wrapper--horizontal > .menu > li:before {
-    position: absolute;
-    bottom: 35%;
-    width: 1px;
-    height: 25%;
-    content: "";
-    background: $primary;
-    right: -1px;
-  }
-
-
-
-  .menu-wrapper.menu-wrapper--horizontal .menu ul.menu ul.menu {
-    list-style: none;
-    margin-left: 0rem;
-    padding-left: 1.2rem;
-
-    li {
-      list-style: none;
-
-      & > a {
-        @include padding($top: $sm, $right: $xsm, $bottom: $xsm, $left: 1.2rem);
-        font-size: 0.9rem;
-
-        &:hover,
-        &:focus {
-          //background: $light;
-        }
-
-        &:after {
-          height: 1px;
-        }
-
-        &::before {
-          content: "\f105";
-          position: absolute;
-          font-size: 0.9rem;
-          left: 0;
-          right: $md;
-          @include fas();
-          color: $grey-light;
-        }
-      }
-    }
-  }
-
-  .menu-wrapper--horizontal .menu ul {
-    position: absolute;
-    width: 230px;
-    left: 0;
-    background: #fff;
-    box-shadow: -3px 3px 10px -2px rgba(0,0,0,.1);
-    z-index: 100;
-    top: 100%;
-    width: 230px;
-  }
-
-  .menu-wrapper--horizontal .menu ul ul {
-    position: relative;
-    display: block;
-    width: auto;
-    background: transparent;
-    box-shadow: none;
-  }
-
-  .menu-wrapper--horizontal > ul > li.open > ul {
-    display: block;
-  }
-
-  .menu-wrapper--horizontal .menu li.menu-item--expanded ul li a,
-  .menu-wrapper--horizontal .menu li.menu-item--expanded ul li span {
-    text-align: left;
-  }
-
-  .menu-wrapper--horizontal .menu li.menu-item--expanded ul li a::before,
-  .menu-wrapper--horizontal .menu li.menu-item--expanded ul li span::before {
-    content: "";
-  }
-
-  .menu-wrapper--horizontal .menu li {
-    position: relative;
-  }
-
-  .menu-wrapper--horizontal .menu li.menu-item--expanded li a {
-    &:after {
-      content: "";
-    }
-  }
-
-  .menu-wrapper--horizontal .menu button {
+  button {
     align-items: center;
     background-color: transparent;
     border: none;
-    border-right-color: #ccc;
-    display: flex;
-    padding: 0.5rem;
+    padding: 0.5rem 0.7rem;
     height: 100%;
-  }
 
-  .menu-wrapper--horizontal .menu button::after {
-    content: "\f078";
-    bottom: 0;
-    font-size: 0.8rem;
-    display: inline-block;
-    font-style: normal;
-    font-variant: normal;
-    text-rendering: auto;
-    line-height: 1;
-    font-family: Font Awesome\ 5 Free;
-    font-weight: 900;
-    background: $primary;
-    border-radius: 50%;
-    height: 0.8rem;
-    width: 0.8rem;
-    padding: 0.8rem;
-    @include center(both);
-  }
+    &:hover,
+    &[aria-expanded="true"] {
+      background-color: lighten($grey-light, 3%);
+      color: #fff;
 
-  .menu-wrapper--horizontal .menu-item--expanded a + button::after {
-    margin-left: 0;
-  }
+      &:after {
+        background: $secondary;
+      }
+    }
 
-  .menu-wrapper--horizontal .menu button:focus,
-  .menu-wrapper--horizontal .menu-item--expanded a:focus {
-    position: relative;
-  }
+    &[aria-expanded="true"]::after {
+      border-color: #fff;
+      background: $secondary;
+      content: "\f077";
+    }
 
-  .menu-wrapper--horizontal .menu button:hover,
-  .menu-wrapper--horizontal .menu button[aria-expanded="true"] {
-    background-color: lighten($grey-light, 6%);
-    color: #fff;
-  }
+    &:focus {
+      position: relative;
+    }
 
-  .menu-wrapper--horizontal .menu button:hover::after {
-    background: $secondary;
-  }
+    &::after {
+      content: "\f078";
+      bottom: 0;
+      font-size: 0.8rem;
+      @include fas();
+      line-height: 0;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 50%;
+      height: 0.8rem;
+      width: 0.8rem;
+      padding: 0.8rem;
+      @include center(both);
+    }
 
-  .menu-wrapper--horizontal .menu button[aria-expanded="true"]::after {
-    border-color: #fff;
-    background: $secondary;
-    content: "\f077";
+    .menu-item--expanded a + button::after {
+      margin-left: 0;
+    }
   }
+}
+
+.menu-wrapper--horizontal .menu li {
+  position: relative;
+}
+
+.menu-wrapper--horizontal .menu li.menu-item--expanded li a {
+  &:after {
+    content: "";
+  }
+}
