@@ -113,6 +113,10 @@
           &.menu-item--expanded a,
           &.menu-item--expanded span {
             padding: 1.475rem 0 1.475rem 1.375rem;
+            > a,
+            > span {
+              padding: .625rem 1.05rem .625rem 1.2rem;
+            }
           }
 
           a,
@@ -180,10 +184,6 @@
                 padding-bottom: 1.475rem;
               }
             }
-
-            ul {
-              //display: none;
-            }
           }
         }
 
@@ -238,7 +238,7 @@
 .menu-wrapper--horizontal > ul > li.open > ul {
   display:block;
 }
-
+/*
 .menu-wrapper--horizontal {
   .menu ul {
     list-style: none;
@@ -249,7 +249,7 @@
     display: block!important;
   }
 }
-
+*/
 .menu-wrapper--horizontal .menu li.menu-item--expanded ul li a,
 .menu-wrapper--horizontal .menu li.menu-item--expanded ul li span {
   text-align: left;
@@ -271,7 +271,7 @@
   }
 }
 
-.menu-wrapper--horizontal  button {
+.menu-wrapper--horizontal .menu button {
   align-items: center;
   background-color: transparent;
   border: 1px solid transparent;
@@ -282,7 +282,7 @@
   height: 100%;
 }
 
-.menu-wrapper--horizontal  button::after {
+.menu-wrapper--horizontal .menu button::after {
   content: "\f078";
   bottom: 0;
   font-size: .8rem;
@@ -301,18 +301,18 @@
   margin-left: 0;
 }
 
-.menu-wrapper--horizontal  button:focus,
+.menu-wrapper--horizontal .menu button:focus,
 .menu-wrapper--horizontal .menu-item--expanded a:focus {
   position: relative;
 }
 
-.menu-wrapper--horizontal  button:hover,
-.menu-wrapper--horizontal button[aria-expanded="true"] {
+.menu-wrapper--horizontal .menu  button:hover,
+.menu-wrapper--horizontal .menu  button[aria-expanded="true"] {
   background-color: $secondary;
   color: #fff;
 }
 
-.menu-wrapper--horizontal  button[aria-expanded="true"]::after {
+.menu-wrapper--horizontal .menu  button[aria-expanded="true"]::after {
   border-color: #fff;
   content: "\f077";
 }
