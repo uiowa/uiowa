@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: foafr.uiowa.ddev.site
+    protocol: https
+  machine_name: foafr
+  human_name: afr.fo.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: foafr.prod
+drupal:
+  db:
+    database: afr_fo_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: cortgiesen
