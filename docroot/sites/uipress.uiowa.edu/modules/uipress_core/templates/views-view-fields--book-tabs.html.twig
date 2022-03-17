@@ -32,11 +32,11 @@
  */
 #}
 <div role="tablist" aria-label="Tabs">
-  {% for delta, field in fields %}
+  {% for key, field in fields %}
     <button class="tab__button"
             role="tab"
-            aria-selected="{{ delta == 0 ? 'true' : 'false' | default('false') }}"
-            aria-controls="tabs--{{ id }}__panel--{{ delta }}"
+            aria-selected="{{ key == 0 ? 'true' : 'false' | default('false') }}"
+            aria-controls="book-tabs__panel--{{ key }}"
             id="tabs--{{ id }}__{{ delta }}"
             {{ (delta == 0) ? '': 'tabindex="-1"' }}
     >
@@ -46,6 +46,12 @@
     </button>
   {% endfor %}
 </div>
-{% for field in fields %}
-  {{ field.content }}
+{% for key, field in fields %}
+  <div tabindex="0"
+        role="tabpanel"
+        id="book-tabs__panel--{{ key }}"
+        aria-labelledby="book-tabs__panel--{{ key }}"
+  >
+    {{ field.content }}
+  </div>
 {% endfor %}
