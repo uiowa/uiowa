@@ -1,14 +1,16 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
-@import "components/menus/main-menu/main-menu.scss"; // @todo remove from UIDS.
+@import "components/menus/main-menu/main-menu.scss";
 
+// @todo remove from UIDS.
 .menu-wrapper--horizontal {
   @include breakpoint(sm) {
     margin: 0;
   }
 }
-// @todo move back to UIDS.
 
+
+// @todo move back to UIDS.
 [class*="bg--white"],
 [class*="bg--gray"] {
   .menu-wrapper--horizontal {
@@ -21,67 +23,12 @@
     }
   }
 }
+
 // set horizontal only if used in layout--onecol section.
 // @todo remove once https://github.com/GoogleChromeLabs/container-query-polyfill/issues/23 is resolved.
+
 @include breakpoint(sm) {
   .layout--onecol {
-    &[class*="bg--black"],
-    &[class*="bg--gold"],
-    &[class*="bg--gray"] {
-      .menu-wrapper--horizontal {
-        .menu {
-          li {
-            a.is-active {
-              background: #fff;
-            }
-          }
-        }
-      }
-    }
-
-    &[class*="bg--black"] {
-      .menu-wrapper--horizontal {
-        .menu {
-          li a {
-            &:after {
-              bottom: 0;
-            }
-          }
-
-          li {
-            a.is-active {
-              color: $secondary;
-            }
-          }
-        }
-      }
-    }
-
-    &[class*="bg--gold"] {
-      .menu-wrapper--horizontal {
-        .menu {
-          li a {
-            &:before {
-              background-color: $brand-cool-gray;
-            }
-          }
-
-          li {
-            a.is-active {
-              &:before {
-                border-top-color: $brand-cool-gray;
-                background-color: transparent;
-              }
-
-              &:after {
-                background-color: $brand-cool-gray;
-              }
-            }
-          }
-        }
-      }
-    }
-
     .menu-wrapper--horizontal {
       padding: 0;
       @include container-width;
@@ -98,6 +45,7 @@
             background: $primary;
             right: -1px;
           }
+
           &:last-child {
             &:before {
               background: transparent;
@@ -105,13 +53,37 @@
           }
           display: flex;
 
+          &.menu-item--active-trail {
+            &:before {
+              background: transparent;
+            }
+
+            > a {
+              background-color: #f3f3f3;
+              margin: 0;
+              padding-left: 1.875rem;
+              padding-bottom: 1.475rem;
+
+              &:after {
+                background: $primary;
+                content: "";
+                position: absolute;
+                left: 50%;
+                bottom: 0;
+                width: 100%;
+                height: 6px;
+                transform-origin: center;
+                transition: transform 0.3s ease-in-out;
+                transform: translate(-50%, 0) scaleX(1);
+              }
+            }
+          }
+
           &.menu-item--expanded {
+            padding-right: 0.5rem;
 
-            padding-right: .5rem;
-
-            > a,
-            > span {
-              //padding: 1.475rem 0 1.475rem 1.375rem;
+            > span,
+            > a {
               padding: 1.475rem 0.5rem 1.475rem 1.375rem;
             }
           }
@@ -180,10 +152,8 @@
             position: relative;
             width: auto;
             text-align: center;
-            //text-transform: uppercase;
             border: 0;
             background-color: transparent;
-            //font-weight: $font-weight-medium-bold;
             padding: 1.475rem 1.375rem;
             margin: 0;
             align-items: center;
@@ -195,49 +165,12 @@
             }
           }
 
-          a.is-active {
-            background-color: #f3f3f3;
-            margin: 0;
-            padding-right: 1.875rem;
-            padding-left: 1.875rem;
-
-            &:before {
-              width: 20px;
-              height: 20px;
-              content: "";
-              position: absolute;
-              left: calc(50% - 10px);
-              top: calc(100% - 1px);
-              background-color: transparent;
-              border-top: 10px solid $primary;
-              border-right: 10px solid transparent;
-              border-left: 10px solid transparent;
-              border-bottom: 10px solid transparent;
-              z-index: 1;
-            }
-
-            &:after {
-              background: $primary;
-              content: "";
-              position: absolute;
-              left: 50%;
-              bottom: 0;
-              width: 100%;
-              height: 6px;
-              transform-origin: center;
-              transition: transform 0.3s ease-in-out;
-              transform: translate(-50%, 0) scaleX(1);
-            }
-          }
-
           &.menu-item--expanded {
             background-color: transparent;
             align-items: center;
 
             a {
-              &.is-active {
-                padding-bottom: 1.475rem;
-              }
+              &.is-active {}
             }
           }
         }
@@ -264,11 +197,6 @@
             @include padding($top: $sm, $right: $xsm, $bottom: $xsm, $left: 2.2rem);
             font-size: 0.9rem;
 
-            &:focus,
-            &:hover {
-              //background: $light;
-            }
-
             &:after {
               height: 1px;
             }
@@ -291,14 +219,90 @@
         border-top: none;
       }
     }
+
+    // Background colors
+    &[class*="bg--black"],
+    &[class*="bg--gold"],
+    &[class*="bg--gray"] {
+      .menu-wrapper--horizontal {
+        > .menu {
+          > li.menu-item--active-trail {
+            > a {
+              background: #fff;
+            }
+          }
+        }
+      }
+    }
+
+    &[class*="bg--black"] {
+      .menu-wrapper--horizontal {
+        > .menu {
+          li a {
+            &:after {
+              bottom: 0;
+            }
+          }
+
+          > li.menu-item--active-trail {
+            > a {
+              color: $secondary;
+            }
+          }
+        }
+      }
+    }
+
+    &[class*="bg--gold"] {
+      .menu-wrapper--horizontal {
+        > .menu {
+          > li a {
+            &:before {
+              background-color: $brand-cool-gray;
+            }
+          }
+
+          > li.menu-item--active-trail {
+            > a {
+              &:before {
+                border-top-color: $brand-cool-gray;
+                background-color: transparent;
+              }
+
+              &:after {
+                background-color: $brand-cool-gray;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
-
 
 // menu button styles
 .menu-wrapper--horizontal .menu {
   li a {
     flex-basis: 100%;
+  }
+
+  li.menu-item--active-trail {
+    button {
+      background: #fff;
+
+      &:before {
+        background: #ffcd00;
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        width: 100%;
+        height: 6px;
+        transform-origin: center;
+        transition: transform 0.3s ease-in-out;
+        transform: translate(-50%) scaleX(1);
+      }
+    }
   }
 
   button {
@@ -312,10 +316,9 @@
     position: absolute;
     right: 0;
     top: 5px;
-
     @include breakpoint(sm) {
       position: relative;
-      top:  0;
+      top: 0;
     }
 
     &:hover,
@@ -336,17 +339,12 @@
       content: "\f077";
     }
 
-    &:focus {
-      //position: relative;
-    }
-
     &::after {
       content: "\f078";
       bottom: 0;
       font-size: 0.8rem;
       @include fas();
       line-height: 2;
-      //background: #fff;
       border: 1px solid #ccc;
       border-radius: 50%;
       height: 0.8rem;
