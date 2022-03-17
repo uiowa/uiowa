@@ -26,7 +26,7 @@
 */
 #}
 {{ content.field_uiowa_headline }}
-<div class="tabs collection--tabs" id="tabs--{{ id }}">
+<div class="tabs-collection collection--tabs" id="tabs--{{ id }}">
   <div role="tablist" aria-label="Tabs">
     {% for delta, tab in tabs %}
       <button class="tab__button"
@@ -34,9 +34,7 @@
               aria-selected="{{ delta == 0 ? 'true' : 'false' | default('false') }}"
               aria-controls="tabs--{{ id }}__panel--{{ delta }}"
               id="tabs--{{ id }}__{{ delta }}"
-              {% if not delta == 0 %}
-                tabindex="-1"
-              {% endif %}
+              {{ (delta == 0) ? '': 'tabindex="-1"' }}
       >
         {% block tab_label %}
           {{ tab.label }}

@@ -47,9 +47,7 @@
      id="{{ tab_item_id }}"
      aria-labelledby="{{ tab_labelled_by }}"
      class="tab__content"
-  {% if not delta == 0 %}
-    hidden="hidden"
-  {% endif %}
+     {{ (delta == 0) ? '': 'hidden="hidden"' }}
 >
   {% block tab_content %}
     {{ content.field_collection_body }}
