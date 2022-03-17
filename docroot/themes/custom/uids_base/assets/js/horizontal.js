@@ -178,11 +178,13 @@ class DisclosureNav {
 // Add buttons
 const expandableTopItems = document.querySelectorAll(".menu-wrapper--horizontal > .menu > li.menu-item--expanded > a, .menu-wrapper--horizontal > .menu > li.menu-item--expanded > span");
 
-
 expandableTopItems.forEach(function(topItem) {
   /* buttons are generated on init, to support no JS and have the submenus displayed by default */
-  var btn = '<button type="button" aria-expanded="false" aria-controls="id_' + topItem.innerText.toLowerCase() + '_menu" aria-label="More ' + topItem.innerText + ' pages"></button>';
+  const btn = '<button type="button" aria-expanded="false" aria-controls="id_' + topItem.innerText.toLowerCase() + '_menu" aria-label="More ' + topItem.innerText + ' pages"></button>';
   topItem.insertAdjacentHTML('afterend', btn);
+  // add id to ul for arial label
+  const menuId = "id_" + topItem.innerText.toLowerCase() + "_menu";
+  topItem.nextElementSibling.nextElementSibling.setAttribute('id', menuId);
 });
 
 
