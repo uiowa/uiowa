@@ -70,6 +70,32 @@ class Books extends BaseNodeSource {
       $this->entityId = $row->getSourceProperty('nid');
       $row->setSourceProperty('field_image', $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']));
     }
+
+    // Combine book types into one.
+    $book_types = [];
+
+    if ($cloth = $row->getSourceProperty('field_uibook_isbn13cloth')) {
+      $book_types[] = [
+        'type' => 'Hardcover',
+        'isbn' => $cloth[0]['isbn'],
+      ];
+    }
+
+    if ($paper = $row->getSourceProperty('field_uibook_isbn13paper')) {
+      $book_types[] = [
+        'type' => 'Paperback',
+        'isbn' => $paper[0]['isbn'],
+      ];
+    }
+
+    if ($ebook = $row->getSourceProperty('field_uibook_isbn13ebook')) {
+      $book_types[] = [
+        'type' => 'eBook',
+        'isbn' => $ebook[0]['isbn'],
+      ];
+    }
+
+    $row->setSourceProperty('custom_book_types', $book_types);
     return TRUE;
   }
 

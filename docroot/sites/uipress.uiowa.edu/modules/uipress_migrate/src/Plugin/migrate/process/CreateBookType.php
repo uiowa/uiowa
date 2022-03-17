@@ -54,12 +54,8 @@ class CreateBookType extends ProcessPluginBase implements ContainerFactoryPlugin
     /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
     $paragraph = $this->entityTypeManager->getStorage('paragraph')->create([
       'type' => 'book_type',
-      'field_book_type' => [
-        'value' => 'eBook',
-      ],
-      'field_book_isbn' => [
-        'value' => $value['value'],
-      ],
+      'field_book_type' => $value['type'],
+      'field_book_isbn' => $value['isbn'],
     ]);
 
     $paragraph->save();

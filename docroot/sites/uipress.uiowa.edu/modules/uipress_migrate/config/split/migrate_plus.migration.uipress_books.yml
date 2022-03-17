@@ -137,6 +137,9 @@ process:
         migration: uipress_authors
         source: nid
   #  field_book_trim_size: # @todo What does this map to?
+  field_book_type:
+    plugin: create_book_type
+    source: custom_book_types
 destination:
   plugin: 'entity:node'
   default_bundle: book
