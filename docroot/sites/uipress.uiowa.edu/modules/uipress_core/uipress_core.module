@@ -188,6 +188,10 @@ function uipress_core_preprocess_views_view_unformatted(&$variables) {
       ];
     }
   }
+  if ($view->id() === 'book_tabs') {
+    $rows = &$variables['rows'];
+
+  }
 }
 
 /**
@@ -213,6 +217,14 @@ function uipress_core_theme($existing, $type, $theme, $path) {
     ],
     'views_view_unformatted__book_publication_details' => [
       'template' => 'views-view-unformatted--book-publication-details',
+      'base hook' => 'view',
+    ],
+    'views_view_unformatted__book_tabs' => [
+      'template' => 'views-view-unformatted--book-tabs',
+      'base hook' => 'view',
+    ],
+    'views_view_fields__book_tabs' => [
+      'template' => 'views-view-fields--book-tabs',
       'base hook' => 'view',
     ],
     'block__cartbuttons_block' => [
