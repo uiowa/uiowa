@@ -77,7 +77,7 @@ class Books extends BaseNodeSource {
    * Helper function to map series from the old site to the new site.
    */
   private function seriesMapping($title) {
-    // D7 field_uibook_series value => D9 term ID
+    // D7 field_uibook_series value => D9 term ID.
     $mapping = [
       'American Land and Life Series' => 91,
       'Bur Oak Books' => 106,
