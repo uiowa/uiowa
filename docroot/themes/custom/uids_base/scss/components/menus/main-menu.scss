@@ -98,12 +98,22 @@
             background: $primary;
             right: -1px;
           }
+          &:last-child {
+            &:before {
+              background: transparent;
+            }
+          }
           display: flex;
 
-          &.menu-item--expanded > a,
-          &.menu-item--expanded > span {
-            //padding: 1.475rem 0 1.475rem 1.375rem;
-            padding: 1.475rem 0.5rem 1.475rem 1.375rem;
+          &.menu-item--expanded {
+
+            padding-right: .5rem;
+
+            > a,
+            > span {
+              //padding: 1.475rem 0 1.475rem 1.375rem;
+              padding: 1.475rem 0.5rem 1.475rem 1.375rem;
+            }
           }
         }
       }
@@ -120,6 +130,7 @@
           z-index: 100;
           top: 100%;
           width: 230px;
+          padding-bottom: 0;
 
           ul {
             position: relative;
@@ -231,10 +242,6 @@
           }
         }
 
-        li a li a:after {
-          //height: 2px;
-        }
-
         li a:after {
           background-color: $brand-cool-gray;
         }
@@ -249,13 +256,12 @@
       .menu ul.menu ul.menu {
         list-style: none;
         margin-left: 0;
-        padding-left: 1.2rem;
 
         li {
           list-style: none;
 
           & > a {
-            @include padding($top: $sm, $right: $xsm, $bottom: $xsm, $left: 1.2rem);
+            @include padding($top: $sm, $right: $xsm, $bottom: $xsm, $left: 2.2rem);
             font-size: 0.9rem;
 
             &:focus,
@@ -271,7 +277,7 @@
               content: "\f105";
               position: absolute;
               font-size: 0.9rem;
-              left: 0;
+              left: 1rem;
               right: $md;
               @include fas();
               color: $grey-light;
@@ -287,6 +293,8 @@
     }
   }
 }
+
+
 // menu button styles
 .menu-wrapper--horizontal .menu {
   li a {
@@ -298,11 +306,23 @@
     background-color: transparent;
     border: none;
     padding: 0.5rem 0.7rem;
-    height: 100%;
+    @include breakpoint(sm) {
+      height: 100%;
+    }
+    position: absolute;
+    right: 0;
+    top: 5px;
+
+    @include breakpoint(sm) {
+      position: relative;
+      top:  0;
+    }
 
     &:hover,
     &[aria-expanded="true"] {
-      background-color: lighten($grey-light, 3%);
+      @include breakpoint(sm) {
+        background-color: #d2d2d285;
+      }
       color: #fff;
 
       &:after {
@@ -317,7 +337,7 @@
     }
 
     &:focus {
-      position: relative;
+      //position: relative;
     }
 
     &::after {
@@ -325,8 +345,8 @@
       bottom: 0;
       font-size: 0.8rem;
       @include fas();
-      line-height: 0;
-      background: #fff;
+      line-height: 2;
+      //background: #fff;
       border: 1px solid #ccc;
       border-radius: 50%;
       height: 0.8rem;
