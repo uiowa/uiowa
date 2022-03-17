@@ -23,6 +23,7 @@ process:
     map:
       und: en
   moderation_state: moderation_state
+  title: title
   created: created
   changed: changed
   status: status
@@ -127,7 +128,7 @@ process:
   field_book_subject: taxonomy_vocabulary_1
   field_book_subtitle: field_uibook_subtitle # @todo Should this be removed?
   field_book_table_of_contents: field_uibook_toc
-  field_book_translator: field_uibook_translator
+  field_book_translator:
     plugin: sub_process
     source: field_uibook_prefauth
     process:
