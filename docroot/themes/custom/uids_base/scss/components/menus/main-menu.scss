@@ -251,8 +251,13 @@
             }
           }
 
-          > li.menu-item--active-trail {
-            > a {
+          li.menu-item--active-trail {
+            a {
+              color: $secondary;
+            }
+          }
+          li.menu-item--expanded {
+            ul li a {
               color: $secondary;
             }
           }
@@ -263,7 +268,7 @@
     &[class*="bg--gold"] {
       .menu-wrapper--horizontal {
         > .menu {
-          > li a {
+          > li > a {
             &:before {
               background-color: $brand-cool-gray;
             }
@@ -288,85 +293,121 @@
 }
 
 // menu button styles
-.menu-wrapper--horizontal .menu {
-  li a {
-    flex-basis: 100%;
-  }
+.menu-wrapper--horizontal {
+  > .menu {
+    li {
+      display: flex;
+      flex-wrap: wrap;
+      @include breakpoint(sm) {
+        flex-wrap: inherit;
+      }
+    }
+    li a {
+      flex-basis: 80%;
+      @include breakpoint(sm) {
+        flex-basis: 100%;
+      }
+    }
 
-  li.menu-item--active-trail {
-    @include breakpoint(sm) {
-      button {
-        background: #f3f3f3;
+    li.menu-item--active-trail {
+      @include breakpoint(sm) {
+        button {
+          background: #f3f3f3;
 
-        [class*="bg--black"] &,
-        [class*="bg--gold"] &,
-        [class*="bg--gray"] & {
-          background: #fff;
-        }
+          [class*="bg--black"] &,
+          [class*="bg--gold"] &,
+          [class*="bg--gray"] & {
+            background: #fff;
+          }
 
-        &:before {
-          background: #ffcd00;
-          content: "";
-          position: absolute;
-          left: 50%;
-          bottom: 0;
-          width: 100%;
-          height: 6px;
-          transform-origin: center;
-          transition: transform 0.3s ease-in-out;
-          transform: translate(-50%) scaleX(1);
+          &:hover,
+          &[aria-expanded="true"] {
+
+
+            &:after {
+              [class*="bg--black"] & {
+                color: #fff;
+              }
+            }
+          }
+
+          &::after {
+            [class*="bg--black"] & {
+              color: $secondary;
+            }
+          }
+
+          &:before {
+            background: #ffcd00;
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            width: 100%;
+            height: 6px;
+            transform-origin: center;
+            transition: transform 0.3s ease-in-out;
+            transform: translate(-50%) scaleX(1);
+            [class*="bg--gold"] & {
+              background-color: #63666a;
+            }
+          }
         }
       }
     }
-  }
 
-  button {
-    align-items: center;
-    background-color: transparent;
-    border: none;
-    padding: 0.5rem 0.7rem;
-    @include breakpoint(sm) {
-      height: 100%;
-    }
-    position: absolute;
-    left: -1px;
-    top: 5px;
-    @include breakpoint(sm) {
-      position: relative;
-      top: 0;
-    }
+    button {
+      align-items: center;
+      background-color: transparent;
+      border: none;
+      padding: 0.5rem 0.7rem;
+      @include breakpoint(sm) {
+        height: 100%;
+      }
+      position: absolute;
+      right: 0;
+      top: 5px;
+      @include breakpoint(sm) {
+        position: relative;
+        top: 0;
+        left: -1px;
+      }
 
-    &:hover,
-    &[aria-expanded="true"] {
-      color: #fff;
+      &:hover,
+      &[aria-expanded="true"] {
+        color: #fff;
 
-      &:after {
+        &:after {
+          background: $secondary;
+        }
+      }
+
+      &[aria-expanded="true"]::after {
+        border-color: #fff;
         background: $secondary;
+        content: "\f077";
       }
-    }
 
-    &[aria-expanded="true"]::after {
-      border-color: #fff;
-      background: $secondary;
-      content: "\f077";
-    }
+      &::after {
+        content: "\f078";
+        bottom: 0;
+        font-size: 0.8rem;
+        @include fas();
+        line-height: 2;
+        border: 1px solid #ccc;
+        border-radius: 50%;
+        height: 0.8rem;
+        width: 0.8rem;
+        padding: 0.8rem;
+        @include center(both);
+        [class*="bg--gold"] & {
+          border: 1px solid $secondary;
+        }
+      }
 
-    &::after {
-      content: "\f078";
-      bottom: 0;
-      font-size: 0.8rem;
-      @include fas();
-      line-height: 2;
-      border: 1px solid #ccc;
-      border-radius: 50%;
-      height: 0.8rem;
-      width: 0.8rem;
-      padding: 0.8rem;
-      @include center(both);
-    }
-
-    .menu-item--expanded a + button::after {
-      margin-left: 0;
+      .menu-item--expanded a + button::after {
+        margin-left: 0;
+      }
     }
   }
 }
