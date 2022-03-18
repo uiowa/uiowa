@@ -12,7 +12,6 @@
         const checkbox_wrapper = $('div[data-drupal-selector$="autoplay-wrapper"]');
 
         if (checkbox_wrapper.length) {
-          console.log(checkbox_wrapper);
           // Check if the referenced media is a video.
           const mediaTypeVideo = this.querySelector('.media--video');
 
