@@ -22,7 +22,12 @@
 {% endif %}
 
 {% set attributes = attributes ?: create_attribute() %}
-
+{% set headline_class = headline_class ? headline_class|merge(['headline']) : [
+  'headline',
+  'headline--serif',
+  'headline--negative',
+  'headline--large',
+] %}
 
 <div{{ attributes.addClass(banner_classes) }}>
 
