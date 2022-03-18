@@ -1,8 +1,19 @@
-// todo implement library from accessible-menu repo when this version is implemented.
-// Source: https://www.w3.org/TR/wai-aria-practices-1.2/examples/disclosure/disclosure-navigation-hybrid.html#mythical-page-content
-
-
 'use strict';
+
+// Add buttons to toggle menus
+const expandableMenuItems = document.querySelectorAll(".menu-wrapper--horizontal > .menu > li.menu-item--expanded > a, .menu-wrapper--horizontal > .menu > li.menu-item--expanded > span");
+
+expandableMenuItems.forEach(function(menuItem) {
+  /* buttons are generated on init, to support no JS and have the submenus displayed by default */
+  const btn = '<button type="button" aria-expanded="false" aria-controls="id_' + menuItem.innerText.toLowerCase() + '_menu" aria-label="More ' + menuItem.innerText + ' pages"></button>';
+  menuItem.insertAdjacentHTML('afterend', btn);
+  // add id to ul for arial label
+  const menuId = "id_" + menuItem.innerText.toLowerCase() + "_menu";
+  menuItem.nextElementSibling.nextElementSibling.setAttribute('id', menuId);
+});
+
+/* todo implement library from accessible-menu repo when this version is implemented */
+/* Source: https://www.w3.org/TR/wai-aria-practices-1.2/examples/disclosure/disclosure-navigation-hybrid.html#mythical-page-content */
 
 class DisclosureNav {
   constructor(domNode) {
@@ -175,19 +186,6 @@ class DisclosureNav {
   }
 }
 
-// Add buttons
-const expandableTopItems = document.querySelectorAll(".menu-wrapper--horizontal > .menu > li.menu-item--expanded > a, .menu-wrapper--horizontal > .menu > li.menu-item--expanded > span");
-
-expandableTopItems.forEach(function(topItem) {
-  /* buttons are generated on init, to support no JS and have the submenus displayed by default */
-  const btn = '<button type="button" aria-expanded="false" aria-controls="id_' + topItem.innerText.toLowerCase() + '_menu" aria-label="More ' + topItem.innerText + ' pages"></button>';
-  topItem.insertAdjacentHTML('afterend', btn);
-  // add id to ul for arial label
-  const menuId = "id_" + topItem.innerText.toLowerCase() + "_menu";
-  topItem.nextElementSibling.nextElementSibling.setAttribute('id', menuId);
-});
-
-
 /* Initialize Disclosure Menus */
 
 window.addEventListener(
@@ -213,3 +211,5 @@ window.addEventListener(
   },
   false
 );
+
+
