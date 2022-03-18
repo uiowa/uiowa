@@ -193,7 +193,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             'layout_builder_style_media_format' => 'media_format_widescreen',
           ];
 
-          // @todo Is this necessary?
           $form['layout_builder_style_card_media_position']['#options']['card_media_position_stacked'] = 'Stacked';
 
           switch ($block->getPluginId()) {
