@@ -22,12 +22,7 @@
 {% endif %}
 
 {% set attributes = attributes ?: create_attribute() %}
-{% set headline_class = headline_class ? headline_class|merge(['headline']) : [
-  'headline',
-  'headline--serif',
-  'headline--negative',
-  'headline--large',
-] %}
+
 
 <div{{ attributes.addClass(banner_classes) }}>
 
@@ -42,6 +37,16 @@
   <div class="banner__container">
     <div class="banner__content">
       {% block heading %}
+        {% if banner_pre_title is not empty %}
+          {% set banner_pre_title_heading = {
+            'headline_level': 'p',
+            'headline_class' : headline_class,
+            'headline_location': 'h4',
+            'headline_text' : banner_pre_title,
+          } %}
+          {% include '@uids_base/uids/headline.html.twig' with banner_pre_title_heading only %}
+
+        {% endif %}
         {% if banner_title is not empty %}
           {# @todo Determine if it is better to programatically set level and class via preprocess. #}
           {% set banner_heading = {
