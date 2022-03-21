@@ -85,18 +85,19 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     $form = parent::blockForm($form, $form_state);
     $config = $this->getConfiguration();
 
-    list(
+    [
       $current,
       $plus_one,
       $plus_two,
-      $plus_three
-    ) = $this->maui->getSessionsRange($this->maui->getCurrentSession()->id, 3);
+      $plus_three,
+    ] = $this->maui->getSessionsRange($this->maui->getCurrentSession()->id, 3);
 
     $form['headline'] = HeadlineHelper::getElement([
       'headline' => $config['headline'] ?? NULL,
       'hide_headline' => $config['hide_headline'] ?? 0,
       'heading_size' => $config['heading_size'] ?? 'h2',
       'headline_style' => $config['headline_style'] ?? 'default',
+      'headline_alignment' => $config['headline_alignment'] ?? 'default',
       'child_heading_size' => $config['child_heading_size'] ?? 'h3',
     ]);
 
@@ -208,6 +209,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       '#hide_headline' => $config['hide_headline'],
       '#heading_size' => $config['heading_size'],
       '#headline_style' => $config['headline_style'],
+      '#headline_alignment' => $config['headline_alignment'] ?? 'default',
     ];
 
     if (empty($config['headline'])) {

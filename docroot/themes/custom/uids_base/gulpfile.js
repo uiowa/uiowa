@@ -6,7 +6,9 @@
 const { src, dest, parallel, series, watch } = require('gulp');
 
 // Include plugins.
-const sass = require('gulp-sass');
+const gulpSass = require('gulp-sass');
+const nodeSass = require('node-sass');
+const sass = gulpSass(nodeSass);
 const del = require ('del');
 const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');

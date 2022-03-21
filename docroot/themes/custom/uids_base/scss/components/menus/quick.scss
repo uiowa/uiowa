@@ -39,7 +39,7 @@
 }
 
 .search-is-open .region-under-search .menu--quick-links {
-  @include breakpoint(menu) {
+  @include breakpoint(md) {
     clip: auto;
     height: auto;
     width: auto;
@@ -51,19 +51,21 @@
 
 .search-is-open .region-under-search:after,
 .search-is-open .region-under-search:before {
-  content: " ";
-  background: $secondary;
-  padding: 20px;
-  position: absolute;
-  top: 80px;
-  width: 100%;
-  left: 0;
+  @include breakpoint(md) {
+    content: " ";
+    background: $secondary;
+    padding: 20px;
+    position: absolute;
+    top: 80px;
+    width: 100%;
+    left: 0;
+  }
 }
 
 .search-is-open .region-under-search:after {
   transform: translateX(calc(49%));
 
-  @include breakpoint(container) {
+  @include breakpoint(page-container) {
     margin-right: -50%;
     transform: unset;
   }

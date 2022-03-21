@@ -13,7 +13,7 @@
 }
 
 .region-primary-menu {
-  @include breakpoint(menu) {
+  @include breakpoint(md) {
     display: flex;
     align-items: center;
   }
@@ -41,7 +41,7 @@
 }
 
 .block-superfish {
-  @include breakpoint(menu) {
+  @include breakpoint(md) {
     display: flex;
     margin-left: auto;
   }
@@ -104,7 +104,7 @@
   text-decoration: none;
   color: #151515;
   font-weight: 600;
-  @include breakpoint(menu) {
+  @include breakpoint(md) {
     padding: 1.05rem 1.5rem;
   }
 }
@@ -272,7 +272,7 @@ ul.sf-menu.sf-horizontal > li a:after {
 }
 
 ul.sf-menu.sf-horizontal > li > a.is-active:after,
-ul.sf-menu.sf-horizontal > li.active-trail > .sf-depth-1.menuparent:after {
+ul.sf-menu.sf-horizontal > li.active-trail > .sf-depth-1:after {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -281,7 +281,7 @@ ul.sf-menu.sf-horizontal > li.active-trail > .sf-depth-1.menuparent:after {
   background: #e1e1e1;
 }
 
-ul.sf-menu.sf-horizontal > li.active-trail > .sf-depth-1.menuparent:hover:after {
+ul.sf-menu.sf-horizontal > li.active-trail > .sf-depth-1:hover:after {
   background: $primary;
 }
 
@@ -460,7 +460,7 @@ ul.sf-accordion ul:focus-within {
   color: $secondary;
 }
 
-ul.sf-menu.sf-accordion .active-trail.menuparent.sf-depth-1 > .menuparent,
+ul.sf-menu.sf-accordion .active-trail.sf-depth-1 > .sf-depth-1,
 ul.sf-menu.sf-accordion .active-trail.sf-no-children.sf-depth-1 > .is-active {
   border-bottom: 4px solid $primary;
   padding-bottom: 0.3rem;

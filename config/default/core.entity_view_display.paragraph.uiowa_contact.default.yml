@@ -16,27 +16,27 @@ bundle: uiowa_contact
 mode: default
 content:
   field_uiowa_contact_address:
-    weight: 1
+    type: address_default
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    type: address_default
+    weight: 1
     region: content
   field_uiowa_contact_label:
-    weight: 0
+    type: string
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 0
     region: content
   field_uiowa_contact_phone:
-    weight: 2
+    type: telephone_link
     label: visually_hidden
     settings:
       title: ''
     third_party_settings: {  }
-    type: telephone_link
+    weight: 2
     region: content
 hidden:
   search_api_excerpt: true

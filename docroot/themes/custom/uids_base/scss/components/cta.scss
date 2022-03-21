@@ -18,20 +18,6 @@
       margin: 1.05rem 0;
     }
   }
-
-  .cta__container {
-    .cta__title {
-      //margin-left: 1.05rem;
-    }
-
-    .cta__content {
-      //margin-left: 1.05rem;
-    }
-
-    .cta__link {
-      //margin-right: 1.05rem;
-    }
-  }
 }
 
 .cta__content p {
@@ -42,7 +28,7 @@
 @media all and (-ms-high-contrast: none),
 (-ms-high-contrast: active) {
   .cta__container>div {
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       margin: 1.05rem 0;
     }
   }
@@ -58,14 +44,4 @@
 
 .grid--1-3 .cta__wrapper.element--flex-center .cta__link {
   margin: .5rem 0 0 0;
-}
-
-
-
-.cta__wrapper[class*="bg--black"] .bttn {
-  background: $primary;
-}
-
-.cta__wrapper[class*="bg--gold"] .bttn {
-  color: $secondary;
 }

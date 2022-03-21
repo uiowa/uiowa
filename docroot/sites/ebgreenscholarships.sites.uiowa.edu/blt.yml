@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: sitesebgreenscholarships.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesebgreenscholarships
+  human_name: ebgreenscholarships.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesebgreenscholarships.prod
+drupal:
+  db:
+    database: ebgreenscholarships_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: albeck

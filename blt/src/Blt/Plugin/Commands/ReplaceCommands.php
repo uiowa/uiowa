@@ -6,11 +6,13 @@ use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\EnvironmentDetector;
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Acquia\Blt\Robo\Exceptions\BltException;
+use Uiowa\InspectorTrait;
 
 /**
  * BLT override commands.
  */
 class ReplaceCommands extends BltTasks {
+  use InspectorTrait;
 
   /**
    * Replace the artifact:update:drupal:all-sites BLT command.
@@ -22,7 +24,6 @@ class ReplaceCommands extends BltTasks {
     $this->config->set('drush.alias', '');
 
     $app = EnvironmentDetector::getAhGroup() ?: 'local';
-    $env = EnvironmentDetector::getAhEnv() ?: 'local';
     $multisite_exception = FALSE;
 
     // Unshift uiowa.edu to the beginning so it runs first.
@@ -43,7 +44,7 @@ class ReplaceCommands extends BltTasks {
         continue;
       }
       else {
-        if ($this->getInspector()->isDrupalInstalled()) {
+        if ($this->isDrupalInstalled($multisite)) {
           $this->logger->info("Deploying updates to <comment>{$multisite}</comment>...");
 
           // Invalidate the Twig cache if on AH env. This happens automatically
@@ -60,11 +61,6 @@ class ReplaceCommands extends BltTasks {
           }
 
           try {
-            // Define a site-specific cache directory. For some reason, putenv
-            // did not work here. This would not be necessary if Drush
-            // supported per-site config file loading.
-            // @see: https://github.com/drush-ops/drush/pull/4345
-            $_ENV['DRUSH_PATHS_CACHE_DIRECTORY'] = "/tmp/.drush-cache-{$app}/{$env}/{$multisite}";
             $this->invokeCommand('drupal:update');
             $this->logger->info("Finished deploying updates to <comment>{$multisite}</comment>.");
           }
@@ -214,10 +210,36 @@ class ReplaceCommands extends BltTasks {
    * @hook post-command source:build:settings
    */
   public function postSourceBuildSettings() {
-    $from = $this->getConfigValue('repo.root') . '/tmp/local.blt.yml';
+    $root = $this->getConfigValue('repo.root');
+
+    foreach ($this->getConfigValue('multisites') as $site) {
+      $this->switchSiteContext($site);
+      $origin = $this->getConfigValue('uiowa.stage_file_proxy.origin');
+
+      if (!$origin) {
+        $origin = 'https://' . $this->getConfigValue('site');
+      }
+
+      $text = <<<EOD
+
+\$config['stage_file_proxy.settings']['origin'] = '$origin';
+EOD;
+
+      $this->taskWriteToFile("$root/docroot/sites/$site/settings/local.settings.php")
+        ->append()
+        ->text($text)
+        ->run();
+
+      $this->taskReplaceInFile("$root/docroot/sites/$site/settings/local.settings.php")
+        ->from("\$settings['file_private_path'] = EnvironmentDetector::getRepoRoot() . '/files-private/default';")
+        ->to("\$settings['file_private_path'] = EnvironmentDetector::getRepoRoot() . '/files-private/$site';")
+        ->run();
+    }
+
+    $from = "$root/tmp/local.blt.yml";
 
     if (file_exists($from)) {
-      $to = $this->getConfigValue('repo.root') . '/blt/local.blt.yml';
+      $to = "$root/blt/local.blt.yml";
 
       $this->taskFilesystemStack()
         ->stopOnFail(TRUE)
@@ -264,47 +286,6 @@ class ReplaceCommands extends BltTasks {
       $chromeDriverPort = $this->getConfigValue('tests.chromedriver.port');
       $this->getContainer()->get('executor')->killProcessByPort($chromeDriverPort);
     }
-  }
-
-  /**
-   * Set custom configuration after syncing a site.
-   *
-   * @hook post-command drupal:sync:default:site
-   */
-  public function postDrupalSyncDefaultSite() {
-    $this->setStageFileProxyOrigin();
-  }
-
-  /**
-   * Set custom configuration after syncing all sites.
-   *
-   * @hook post-command drupal:sync:all-sites
-   */
-  public function postDrupalSyncAllSites() {
-    foreach ($this->getConfigValue('multisites') as $site) {
-      $this->switchSiteContext($site);
-      $this->setStageFileProxyOrigin();
-    }
-  }
-
-  /**
-   * Helper method to set stage_file_proxy.settings origin.
-   */
-  protected function setStageFileProxyOrigin() {
-    $origin = $this->getConfigValue('uiowa.stage_file_proxy.origin');
-
-    if (!$origin) {
-      $origin = 'https://' . $this->getConfigValue('site');
-    }
-
-    $this->taskDrush()
-      ->drush('config:set')
-      ->args([
-        'stage_file_proxy.settings',
-        'origin',
-        $origin,
-      ])
-      ->run();
   }
 
 }

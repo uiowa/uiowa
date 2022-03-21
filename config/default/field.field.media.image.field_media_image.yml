@@ -5,11 +5,11 @@ dependencies:
   config:
     - field.storage.media.field_media_image
     - media.type.image
+  module:
+    - image
   enforced:
     module:
       - media
-  module:
-    - image
 _core:
   default_config_hash: F5ty-_FdsSQX2BRYxyhALKGAxuf2YzKf66cL3BA1PM4
 id: media.image.field_media_image
@@ -23,6 +23,8 @@ translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
+  handler: 'default:file'
+  handler_settings: {  }
   file_directory: '[date:custom:Y]-[date:custom:m]'
   file_extensions: 'png gif jpg jpeg'
   max_filesize: '10 MB'
@@ -38,6 +40,4 @@ settings:
     title: ''
     width: null
     height: null
-  handler: 'default:file'
-  handler_settings: {  }
 field_type: image

@@ -53,11 +53,13 @@ class Multisite {
   public static function getIdentifier($uri) {
     if ($parsed = parse_url($uri)) {
 
+      // Make a special exception for the default site and homepage. The
+      // homepage ID would be uiowa and conflict with the uiowa app alias.
       if ($parsed['host'] == 'default') {
         $id = 'default';
       }
       elseif ($parsed['host'] === 'uiowa.edu') {
-        $id = 'uiowa';
+        $id = 'home';
       }
       elseif (substr($parsed['host'], -9) === 'uiowa.edu') {
         // Don't use the suffix if the host equals uiowa.edu.

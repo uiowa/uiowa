@@ -15,38 +15,38 @@ mode: default
 content:
   checked:
     type: timestamp
-    weight: 2
-    region: content
     label: above
     settings:
       date_format: medium
       custom_date_format: ''
       timezone: ''
     third_party_settings: {  }
+    weight: 2
+    region: content
   description:
+    settings: {  }
+    third_party_settings: {  }
     weight: 1
     region: content
+  feed_icon:
     settings: {  }
     third_party_settings: {  }
-  feed_icon:
     weight: 3
     region: content
-    settings: {  }
-    third_party_settings: {  }
   field_aggregator_feed_image:
     type: entity_reference_entity_view
-    weight: 0
-    region: content
     label: hidden
     settings:
       view_mode: small__square
       link: false
     third_party_settings: {  }
-  items:
-    weight: 4
+    weight: 0
     region: content
+  items:
     settings: {  }
     third_party_settings: {  }
+    weight: 4
+    region: content
 hidden:
   image: true
   link: true

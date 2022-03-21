@@ -168,7 +168,7 @@
         info.update = function (props) {
           this._div.innerHTML =
             "<strong>State Information</strong><br />" +
-            (props ? props.name + "<br />" : "Hover over a state");
+            (props ? props.name + "<br />" : "Click once on any state");
         };
         info.addTo(map);
 

@@ -173,7 +173,8 @@ form {
 
   // Add padding to all placeholder blocks.
   &--placeholder {
-    padding: $gutter 0;
+    margin: 0 !important;
+    padding: $gutter 0 !important;
   }
 
   &.block-padding__all--extra {
@@ -296,7 +297,7 @@ form {
   #edit-moderation-state-0,
   .layout-builder-revert-overrides,
   .layout-builder-discard-changes {
-    @extend %container;
+    @include container-width;
   }
 
   // Remove margin-top from .layout--has-sidebar
@@ -440,7 +441,7 @@ form {
 }
 
 div[aria-label="Layout Builder tools"] {
-  @include breakpoint(menu) {
+  @include breakpoint(md) {
     display: flex;
     justify-content: center;
   }
@@ -460,13 +461,13 @@ div[data-drupal-selector="edit-moderation-state-0"] {
     padding-bottom: 8px;
   }
 
-  @include breakpoint(menu) {
+  @include breakpoint(md) {
     display: flex;
     justify-content: center;
   }
 
   #edit-moderation-state-0-current {
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       flex: 0 0 10%;
     }
 
@@ -476,7 +477,7 @@ div[data-drupal-selector="edit-moderation-state-0"] {
   }
 
   .form-item-moderation-state-0-state {
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       flex: 0 0 40%;
     }
   }

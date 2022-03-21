@@ -8,7 +8,7 @@
 }
 
 .nav--horizontal.iowa-bar--full {
-  @include breakpoint(menu) {
+  @include breakpoint(md) {
     margin-top: 5px;
   }
 }
@@ -23,7 +23,7 @@
 .iowa-bar--full.horizontal,
 .iowa-bar--full.toggle {
   .site-name {
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       margin: 0;
       text-align: left;
       font-size: 1.7rem;
@@ -31,7 +31,7 @@
       flex: 0 1 43%;
       font-weight: 400;
     }
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       margin: 5px 0 0;
       flex: 0 1 48%;
       font-weight: 300;
@@ -41,10 +41,10 @@
 
 .iowa-bar--full.toggle {
   .site-name {
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       flex: 0 1 30%;
     }
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       flex: 0 1 48%;
     }
   }
@@ -61,7 +61,7 @@
 
 // Firefox width fix
 .iowa-bar--narrow.iowa-bar .site-name {
-  @include breakpoint(menu) {
+  @include breakpoint(md) {
     flex-basis: auto;
   }
 }

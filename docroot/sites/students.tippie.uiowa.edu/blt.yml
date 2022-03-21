@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: tippiestudents.uiowa.ddev.site
+    protocol: https
+  machine_name: tippiestudents
+  human_name: students.tippie.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: tippiestudents.prod
+drupal:
+  db:
+    database: students_tippie_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: rstewart

@@ -87,25 +87,25 @@ class SearchBlock extends BlockBase implements ContainerFactoryPluginInterface {
       '#autocomplete_route_parameters' => [
         'linkit_profile_id' => 'default',
       ],
-      '#default_value' => isset($config['endpoint']) ? $config['endpoint'] : '/search',
+      '#default_value' => $config['endpoint'] ?? '/search',
       '#required' => TRUE,
     ];
     $form['query_parameter'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Query Parameter'),
       '#description' => $this->t('<em>title</em> is common for content filtering, <em>terms</em> is used for search on this site'),
-      '#default_value' => isset($config['query_parameter']) ? $config['query_parameter'] : 'terms',
+      '#default_value' => $config['query_parameter'] ?? 'terms',
     ];
     $form['search_label'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Search Label'),
-      '#default_value' => isset($config['search_label']) ? $config['search_label'] : 'Search',
+      '#default_value' => $config['search_label'] ?? 'Search',
       '#required' => TRUE,
     ];
     $form['button_text'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Button Text'),
-      '#default_value' => isset($config['button_text']) ? $config['button_text'] : 'Search',
+      '#default_value' => $config['button_text'] ?? 'Search',
       '#required' => TRUE,
     ];
 
