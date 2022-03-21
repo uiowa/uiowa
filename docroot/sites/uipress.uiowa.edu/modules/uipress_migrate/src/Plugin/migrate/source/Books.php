@@ -78,6 +78,9 @@ class Books extends BaseNodeSource {
       $book_types[] = [
         'type' => 'Hardcover',
         'isbn' => $cloth[0]['isbn'],
+        'retail_price' => $row->getSourceProperty('field_uibook_pricehard'),
+        'sale_price' => $row->getSourceProperty('field_uibook_salehard'),
+        'promo' => $row->getSourceProperty('field_uibook_promohard'),
       ];
     }
 
@@ -85,13 +88,20 @@ class Books extends BaseNodeSource {
       $book_types[] = [
         'type' => 'Paperback',
         'isbn' => $paper[0]['isbn'],
+        'retail_price' => $row->getSourceProperty('field_uibook_pricepaper'),
+        'sale_price' => $row->getSourceProperty('field_uibook_salepaper'),
+        'promo' => $row->getSourceProperty('field_uibook_promopaper'),
       ];
     }
 
+    // @todo Not sure how to handle ownership options.
     if ($ebook = $row->getSourceProperty('field_uibook_isbn13ebook')) {
       $book_types[] = [
         'type' => 'eBook',
         'isbn' => $ebook[0]['isbn'],
+        'retail_price' => $row->getSourceProperty('field_uibook_priceebookperp'),
+        'sale_price' => $row->getSourceProperty('field_uibook_ebooksale'),
+        'promo' => $row->getSourceProperty('field_uibook_ebookpromo'),
       ];
     }
 

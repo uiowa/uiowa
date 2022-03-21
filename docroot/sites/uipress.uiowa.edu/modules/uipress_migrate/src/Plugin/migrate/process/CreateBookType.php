@@ -51,11 +51,19 @@ class CreateBookType extends ProcessPluginBase implements ContainerFactoryPlugin
    * {@inheritdoc}
    */
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
+
+    $retail_price = (!empty($value['retail_price'])) ? $value['retail_price'][0]['value'] : '';
+    $sale_price = (!empty($value['sale_price'])) ? $value['sale_price'][0]['value'] : '';
+    $promo = (!empty($value['promo'])) ? $value['promo'][0]['value'] : '';
+
     /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
     $paragraph = $this->entityTypeManager->getStorage('paragraph')->create([
       'type' => 'book_type',
       'field_book_type' => $value['type'],
       'field_book_isbn' => $value['isbn'],
+      'field_book_retail_price' => $retail_price,
+      'field_book_sale_price' => $sale_price,
+      'field_book_sale_code' => $promo,
     ]);
 
     $paragraph->save();
