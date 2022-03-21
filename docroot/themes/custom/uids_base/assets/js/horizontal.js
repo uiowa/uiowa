@@ -1,16 +1,25 @@
 'use strict';
 
 // Add buttons to toggle menus
-const expandableMenuItems = document.querySelectorAll(".menu-wrapper--horizontal > .menu > li.menu-item--expanded > a, .menu-wrapper--horizontal > .menu > li.menu-item--expanded > span");
+const expandableMenuItems = document.querySelectorAll(".menu-wrapper--horizontal li.menu-item--expanded > a, .menu-wrapper--horizontal li.menu-item--expanded > span");
 
 expandableMenuItems.forEach(function(menuItem) {
   /* buttons are generated on init, to support no JS and have the submenus displayed by default */
-  const btn = '<button type="button" aria-expanded="false" aria-controls="id_' + menuItem.innerText.toLowerCase() + '_menu" aria-label="More ' + menuItem.innerText + ' pages"></button>';
-  menuItem.insertAdjacentHTML('afterend', btn);
+  let btn = document.createElement('button');
+  btn.ariaExpanded = 'false';
+  btn.type = 'button';
+  btn.setAttribute('aria-controls', 'id_' + menuItem.innerText.toLowerCase() + '_menu');
+  btn.ariaLabel = 'More ' + menuItem.innerText + ' pages';
+  menuItem.parentNode.insertBefore(btn, menuItem.nextSibling);
   // add id to ul for arial label
-  const menuId = "id_" + menuItem.innerText.toLowerCase() + "_menu";
-  menuItem.nextElementSibling.nextElementSibling.setAttribute('id', menuId);
+  const menuId = 'id_' + menuItem.innerText.toLowerCase() + '_menu';
+  // check for ul.menu
+  let potentialUl = menuItem.nextElementSibling.nextElementSibling;
+  if (potentialUl.nodeName === 'UL' && potentialUl.classList.contains('menu')) {
+    potentialUl.setAttribute('id', menuId);
+  }
 });
+
 
 /* todo implement library from accessible-menu repo when this version is implemented */
 /* Source: https://www.w3.org/TR/wai-aria-practices-1.2/examples/disclosure/disclosure-navigation-hybrid.html#mythical-page-content */
@@ -104,6 +113,8 @@ class DisclosureNav {
     var buttonIndex = this.topLevelNodes.indexOf(button);
     var buttonExpanded = button.getAttribute('aria-expanded') === 'true';
     this.toggleExpand(buttonIndex, !buttonExpanded);
+    event.stopPropagation();
+    event.preventDefault();
   }
 
   onButtonKeyDown(event) {
@@ -162,10 +173,11 @@ class DisclosureNav {
   }
 
   toggleExpand(index, expanded) {
+    console.log("Index:" + index + ", expanded:" + expanded);
     // close open menu, if applicable
-    if (this.openIndex !== index) {
-      this.toggleExpand(this.openIndex, false);
-    }
+    // if (this.openIndex !== index) {
+    //   this.toggleExpand(this.openIndex, false);
+    // }
 
     // handle menu at called index
     if (this.topLevelNodes[index]) {
@@ -191,7 +203,7 @@ class DisclosureNav {
 window.addEventListener(
   'load',
   function () {
-    var menus = document.querySelectorAll('.menu-wrapper--horizontal .menu');
+    var menus = document.querySelectorAll('.menu-wrapper--horizontal > .menu');
     var disclosureMenus = [];
 
     for (var i = 0; i < menus.length; i++) {
