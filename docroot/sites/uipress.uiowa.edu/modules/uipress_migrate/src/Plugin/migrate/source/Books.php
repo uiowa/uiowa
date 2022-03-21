@@ -74,6 +74,7 @@ class Books extends BaseNodeSource {
     // Combine book types into one.
     $book_types = [];
 
+    // Each book type assumes an isbn13 code for proper creation.
     if ($cloth = $row->getSourceProperty('field_uibook_isbn13cloth')) {
       $book_types[] = [
         'type' => 'Hardcover',
@@ -81,6 +82,7 @@ class Books extends BaseNodeSource {
         'retail_price' => $row->getSourceProperty('field_uibook_pricehard'),
         'sale_price' => $row->getSourceProperty('field_uibook_salehard'),
         'promo' => $row->getSourceProperty('field_uibook_promohard'),
+        'expire_date' => strtotime($row->getSourceProperty('field_uibook_clothsaleexpiry')),
       ];
     }
 
@@ -91,18 +93,35 @@ class Books extends BaseNodeSource {
         'retail_price' => $row->getSourceProperty('field_uibook_pricepaper'),
         'sale_price' => $row->getSourceProperty('field_uibook_salepaper'),
         'promo' => $row->getSourceProperty('field_uibook_promopaper'),
+        'expire_date' => strtotime($row->getSourceProperty('field_uibook_papersaleexpiry')),
       ];
     }
 
-    // @todo Not sure how to handle ownership options.
     if ($ebook = $row->getSourceProperty('field_uibook_isbn13ebook')) {
-      $book_types[] = [
-        'type' => 'eBook',
-        'isbn' => $ebook[0]['isbn'],
-        'retail_price' => $row->getSourceProperty('field_uibook_priceebookperp'),
-        'sale_price' => $row->getSourceProperty('field_uibook_ebooksale'),
-        'promo' => $row->getSourceProperty('field_uibook_ebookpromo'),
-      ];
+      // Handle two different eBook ownership options.
+      if ($row->getSourceProperty('field_uibook_priceebook120')) {
+        $book_types[] = [
+          'type' => 'eBook',
+          'isbn' => $ebook[0]['isbn'],
+          'retail_price' => $row->getSourceProperty('field_uibook_priceebook120'),
+          'sale_price' => $row->getSourceProperty('field_uibook_ebooksale'),
+          'promo' => $row->getSourceProperty('field_uibook_ebookpromo'),
+          'expire_date' => strtotime($row->getSourceProperty('field_uibook_ebooksaleexpiry')),
+          'ownership' => '120 day',
+        ];
+      }
+
+      if ($row->getSourceProperty('field_uibook_priceebookperp')) {
+        $book_types[] = [
+          'type' => 'eBook',
+          'isbn' => $ebook[0]['isbn'],
+          'retail_price' => $row->getSourceProperty('field_uibook_priceebookperp'),
+          'sale_price' => $row->getSourceProperty('field_uibook_ebooksale'),
+          'promo' => $row->getSourceProperty('field_uibook_ebookpromo'),
+          'expire_date' => strtotime($row->getSourceProperty('field_uibook_ebooksaleexpiry')),
+          'ownership' => 'Perpetual',
+        ];
+      }
     }
 
     $row->setSourceProperty('custom_book_types', $book_types);

@@ -64,6 +64,7 @@ class CreateBookType extends ProcessPluginBase implements ContainerFactoryPlugin
       'field_book_retail_price' => $retail_price,
       'field_book_sale_price' => $sale_price,
       'field_book_sale_code' => $promo,
+      'field_book_ebook_ownership' => $value['ownership'],
     ]);
 
     $paragraph->save();
