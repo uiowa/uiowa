@@ -60,9 +60,9 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
             $node->setTitle("{$node->getTitle()}, $credentials");
             $content = $block->build();
 
+            // @todo:https://github.com/uiowa/uiowa/issues/4993
+            //   This can be removed once the above issue is resolved.
             $build = [
-              // @todo:https://github.com/uiowa/uiowa/issues/4993
-              //   Move this to BlockBase in https://www.drupal.org/node/2931040.
               '#theme' => 'block',
               '#configuration' => $block->getConfiguration(),
               '#plugin_id' => $block->getPluginId(),
