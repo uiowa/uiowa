@@ -2,6 +2,7 @@
 
 namespace Drupal\uipress_migrate\Plugin\migrate\source;
 
+use Drupal\Component\Utility\Html;
 use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
@@ -47,6 +48,47 @@ class Books extends BaseNodeSource {
    */
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
+
+    $reviews = $row->getSourceProperty('field_uibook_blurbs');
+
+    if (!empty($reviews)) {
+
+      $doc = Html::load($reviews[0]['value']);
+
+      // Grab all the paragraph tags and convert them to blockquotes.
+      $paragraphs = $doc->getElementsByTagName('p');
+      $i = $paragraphs->length - 1;
+      while ($i >= 0) {
+        $paragraph = $paragraphs->item($i);
+        // We either need to fetch the child nodes into an array first,
+        // and then traverse them, or traverse in reverse.
+        // Otherwise, once we import the node,
+        // We'll lose the reference in $paragraph->childNodes.
+        $child_nodes = [];
+        foreach ($paragraph->childNodes as $child) {
+          $child_nodes[] = $child;
+        }
+        // Create an empty blockquote element.
+        $blockquote = $doc->createElement('blockquote');
+        // Copy and append each of our fetched children nodes.
+        foreach ($child_nodes as $child) {
+          $new_child = $paragraph->ownerDocument->importNode($child, TRUE);
+          $blockquote->appendChild($new_child);
+        }
+        // Replace the paragraph with the new blockquote.
+        $paragraph->parentNode->replaceChild($blockquote, $paragraph);
+
+        $i--;
+      }
+
+      $html = Html::serialize($doc);
+      $reviews[0]['value'] = $html;
+      $reviews[0]['format'] = 'filtered_html';
+
+      $row->setSourceProperty('field_uibook_blurbs', $reviews);
+
+    }
+
     // Fetch the multi-value roles.
     $tables = [
       'field_data_field_uibook_series' => ['field_uibook_series_value'],
