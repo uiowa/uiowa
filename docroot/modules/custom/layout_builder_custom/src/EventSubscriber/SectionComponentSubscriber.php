@@ -61,7 +61,8 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
             $content = $block->build();
 
             $build = [
-              // @todo Move this to BlockBase in https://www.drupal.org/node/2931040.
+              // @todo:https://github.com/uiowa/uiowa/issues/4993
+              //    Move this to BlockBase in https://www.drupal.org/node/2931040.
               '#theme' => 'block',
               '#configuration' => $block->getConfiguration(),
               '#plugin_id' => $block->getPluginId(),
