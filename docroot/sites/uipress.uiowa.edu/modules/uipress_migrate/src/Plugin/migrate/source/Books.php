@@ -82,7 +82,7 @@ class Books extends BaseNodeSource {
         'retail_price' => $row->getSourceProperty('field_uibook_pricehard'),
         'sale_price' => $row->getSourceProperty('field_uibook_salehard'),
         'promo' => $row->getSourceProperty('field_uibook_promohard'),
-        'expire_date' => strtotime($row->getSourceProperty('field_uibook_clothsaleexpiry')),
+        'expire_date' => $row->getSourceProperty('field_uibook_clothsaleexpiry'),
       ];
     }
 
@@ -93,7 +93,7 @@ class Books extends BaseNodeSource {
         'retail_price' => $row->getSourceProperty('field_uibook_pricepaper'),
         'sale_price' => $row->getSourceProperty('field_uibook_salepaper'),
         'promo' => $row->getSourceProperty('field_uibook_promopaper'),
-        'expire_date' => strtotime($row->getSourceProperty('field_uibook_papersaleexpiry')),
+        'expire_date' => $row->getSourceProperty('field_uibook_papersaleexpiry'),
       ];
     }
 
@@ -106,7 +106,7 @@ class Books extends BaseNodeSource {
           'retail_price' => $row->getSourceProperty('field_uibook_priceebook120'),
           'sale_price' => $row->getSourceProperty('field_uibook_ebooksale'),
           'promo' => $row->getSourceProperty('field_uibook_ebookpromo'),
-          'expire_date' => strtotime($row->getSourceProperty('field_uibook_ebooksaleexpiry')),
+          'expire_date' => $row->getSourceProperty('field_uibook_ebooksaleexpiry'),
           'ownership' => '120 day',
         ];
       }
@@ -118,7 +118,7 @@ class Books extends BaseNodeSource {
           'retail_price' => $row->getSourceProperty('field_uibook_priceebookperp'),
           'sale_price' => $row->getSourceProperty('field_uibook_ebooksale'),
           'promo' => $row->getSourceProperty('field_uibook_ebookpromo'),
-          'expire_date' => strtotime($row->getSourceProperty('field_uibook_ebooksaleexpiry')),
+          'expire_date' => $row->getSourceProperty('field_uibook_ebooksaleexpiry'),
           'ownership' => 'Perpetual',
         ];
       }
