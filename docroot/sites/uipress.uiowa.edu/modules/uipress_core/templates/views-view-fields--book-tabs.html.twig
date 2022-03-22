@@ -35,7 +35,7 @@
   {% for key, field in fields %}
     <button class="tab__button"
             role="tab"
-            aria-selected="{{ key == 'field_book_reviews_blurbs' ? 'true' : 'false' | default('false') }}"
+            aria-selected="{{ field.delta == '0' ? 'true' : 'false' | default('false') }}"
             aria-controls="book-tabs__panel--{{ key }}"
             id="tabs--{{ id }}__{{ key }}"
             {% if not key == 'field_book_reviews_blurbs' %}
