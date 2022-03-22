@@ -172,10 +172,8 @@ class DisclosureNav {
 
   toggleExpand(index, expanded) {
     let isChildOpening = false;
-    // close open menu, if applicable
 
-    // if openIndex has a child menu item that is index
-    // dont close
+    // If openIndex has a child menu item that is index, dont close.
     if (this.openIndex != null) {
       const childMenus = this.controlledNodes[this.openIndex].querySelectorAll('ul.menu');
 
@@ -191,6 +189,7 @@ class DisclosureNav {
       }
     }
 
+    // Close open menu, if applicable.
     if (this.openIndex !== index) {
       if (!isChildOpening) {
         this.toggleExpand(this.openIndex, false);
