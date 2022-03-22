@@ -3976,3 +3976,21 @@ $sites['radiologythelightbox.uiowa.ddev.site'] = 'thelightbox.radiology.uiowa.ed
 $sites['radiologythelightbox.dev.drupal.uiowa.edu'] = 'thelightbox.radiology.uiowa.edu';
 $sites['radiologythelightbox.stage.drupal.uiowa.edu'] = 'thelightbox.radiology.uiowa.edu';
 $sites['radiologythelightbox.prod.drupal.uiowa.edu'] = 'thelightbox.radiology.uiowa.edu';
+
+// Directory aliases for afr.fo.uiowa.edu.
+$sites['foafr.uiowa.ddev.site'] = 'afr.fo.uiowa.edu';
+$sites['foafr.dev.drupal.uiowa.edu'] = 'afr.fo.uiowa.edu';
+$sites['foafr.stage.drupal.uiowa.edu'] = 'afr.fo.uiowa.edu';
+$sites['foafr.prod.drupal.uiowa.edu'] = 'afr.fo.uiowa.edu';
+
+// Directory aliases for fa.fo.uiowa.edu.
+$sites['fofa.uiowa.ddev.site'] = 'fa.fo.uiowa.edu';
+$sites['fofa.dev.drupal.uiowa.edu'] = 'fa.fo.uiowa.edu';
+$sites['fofa.stage.drupal.uiowa.edu'] = 'fa.fo.uiowa.edu';
+$sites['fofa.prod.drupal.uiowa.edu'] = 'fa.fo.uiowa.edu';
+
+// Directory aliases for am.lab.uiowa.edu.
+$sites['labam.uiowa.ddev.site'] = 'am.lab.uiowa.edu';
+$sites['labam.dev.drupal.uiowa.edu'] = 'am.lab.uiowa.edu';
+$sites['labam.stage.drupal.uiowa.edu'] = 'am.lab.uiowa.edu';
+$sites['labam.prod.drupal.uiowa.edu'] = 'am.lab.uiowa.edu';

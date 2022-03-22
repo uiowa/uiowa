@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: fofa.uiowa.ddev.site
+    protocol: https
+  machine_name: fofa
+  human_name: fa.fo.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: fofa.prod
+drupal:
+  db:
+    database: fa_fo_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: cortgiesen

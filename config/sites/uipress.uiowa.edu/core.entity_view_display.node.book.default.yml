@@ -63,6 +63,17 @@ third_party_settings:
             - ''
             - section_margin_fixed_width_container
         components:
+          4b702de6-f99e-4ad8-8681-6781533bfa8f:
+            uuid: 4b702de6-f99e-4ad8-8681-6781533bfa8f
+            region: content
+            configuration:
+              id: system_breadcrumb_block
+              label: null
+              label_display: null
+              provider: system
+              context_mapping: {  }
+            weight: 1
+            additional: {  }
           7b7fd81d-c813-4b37-9567-6578bea218db:
             uuid: 7b7fd81d-c813-4b37-9567-6578bea218db
             region: content
@@ -80,17 +91,16 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 1
+            weight: 2
             additional: {  }
-          4b702de6-f99e-4ad8-8681-6781533bfa8f:
-            uuid: 4b702de6-f99e-4ad8-8681-6781533bfa8f
+          87f07158-4bc6-47a7-be7f-b9ce3bff088c:
+            uuid: 87f07158-4bc6-47a7-be7f-b9ce3bff088c
             region: content
             configuration:
-              id: system_breadcrumb_block
-              label: null
-              label_display: null
-              provider: system
-              context_mapping: {  }
+              id: 'extra_field_block:node:book:content_moderation_control'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
             weight: 0
             additional: {  }
         third_party_settings: {  }
@@ -627,6 +637,11 @@ targetEntityType: node
 bundle: book
 mode: default
 content:
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
   field_book_afterword_author:
     type: entity_reference_label
     label: above
