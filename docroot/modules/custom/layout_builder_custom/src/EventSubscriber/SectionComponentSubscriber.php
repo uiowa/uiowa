@@ -60,8 +60,9 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
             $node->setTitle("{$node->getTitle()}, $credentials");
             $content = $block->build();
 
-            // @todo:https://github.com/uiowa/uiowa/issues/4993
-            //   This can be removed once the above issue is resolved.
+            // @todo Remove the duplicate section of code below once the
+            //   following issue is resolved:
+            //   https://github.com/uiowa/uiowa/issues/4993
             $build = [
               '#theme' => 'block',
               '#configuration' => $block->getConfiguration(),
