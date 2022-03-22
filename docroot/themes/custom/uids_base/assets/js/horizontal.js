@@ -21,7 +21,7 @@ expandableMenuItems.forEach(function(menuItem) {
 });
 
 
-/* todo implement library from accessible-menu repo when this version is implemented */
+/* todo implement library from NickDJM/accessible-menu repo when this version is implemented */
 /* Source: https://www.w3.org/TR/wai-aria-practices-1.2/examples/disclosure/disclosure-navigation-hybrid.html#mythical-page-content */
 
 class DisclosureNav {
@@ -65,6 +65,7 @@ class DisclosureNav {
     });
 
     this.rootNode.addEventListener('focusout', this.onBlur.bind(this));
+    console.log(this);
   }
 
   controlFocusByKey(keyboardEvent, nodeList, currentIndex) {
@@ -113,8 +114,6 @@ class DisclosureNav {
     var buttonIndex = this.topLevelNodes.indexOf(button);
     var buttonExpanded = button.getAttribute('aria-expanded') === 'true';
     this.toggleExpand(buttonIndex, !buttonExpanded);
-    event.stopPropagation();
-    event.preventDefault();
   }
 
   onButtonKeyDown(event) {
@@ -173,12 +172,24 @@ class DisclosureNav {
   }
 
   toggleExpand(index, expanded) {
-    console.log("Index:" + index + ", expanded:" + expanded);
-    // close open menu, if applicable
-    // if (this.openIndex !== index) {
-    //   this.toggleExpand(this.openIndex, false);
-    // }
+    let closestParent = false;
 
+    if (this.topLevelNodes[this.openIndex]) {
+      console.log('--');
+      console.log('index', index);
+      console.log('openindex', this.openIndex);
+      console.log(this.topLevelNodes[index].closest('ul.menu'));
+      closestParent = this.topLevelNodes[this.openIndex].closest('ul.menu') !== this.controlledNodes[index];
+      console.log(this.controlledNodes[index]);
+    }
+    // close open menu, if applicable
+
+    if (this.openIndex !== index && closestParent) {
+      console.log('recursion');
+      // if this menu has a parent and it is in this index, don't close
+      this.toggleExpand(this.openIndex, false);
+    }
+    console.log(index);
     // handle menu at called index
     if (this.topLevelNodes[index]) {
       this.openIndex = expanded ? index : null;

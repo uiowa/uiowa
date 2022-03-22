@@ -92,6 +92,7 @@
             > a {
               padding: 1.475rem 0.5rem 1.475rem 1.375rem;
             }
+
           }
         }
       }
@@ -309,9 +310,9 @@
       }
     }
 
-    li.menu-item--active-trail {
+    > li.menu-item--active-trail {
       @include breakpoint(sm) {
-        button {
+        > button {
           background: #f3f3f3;
 
           [class*="bg--black"] &,
@@ -420,4 +421,18 @@
   &:after {
     content: "";
   }
+}
+
+.menu-wrapper--horizontal .menu li.menu-item--expanded li button {
+  position: absolute;
+  top: -2px;
+  right: 0;
+  left: inherit;
+  height: 30px;
+}
+
+.menu-wrapper--horizontal .menu .menu  button:hover:after,
+.menu-wrapper--horizontal .menu .menu  button[aria-expanded=true]:after {
+  background: $primary;
+  color: $secondary;
 }
