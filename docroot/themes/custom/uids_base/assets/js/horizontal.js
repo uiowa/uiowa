@@ -65,7 +65,6 @@ class DisclosureNav {
     });
 
     this.rootNode.addEventListener('focusout', this.onBlur.bind(this));
-    console.log(this);
   }
 
   controlFocusByKey(keyboardEvent, nodeList, currentIndex) {
@@ -172,27 +171,37 @@ class DisclosureNav {
   }
 
   toggleExpand(index, expanded) {
-    let closestParent = false;
-
-    if (this.topLevelNodes[this.openIndex]) {
-      console.log('--');
-      console.log('index', index);
-      console.log('openindex', this.openIndex);
-      console.log(this.topLevelNodes[index].closest('ul.menu'));
-      closestParent = this.topLevelNodes[this.openIndex].closest('ul.menu') !== this.controlledNodes[index];
-      console.log(this.controlledNodes[index]);
-    }
+    let isChildOpening = false;
     // close open menu, if applicable
 
-    if (this.openIndex !== index && closestParent) {
-      console.log('recursion');
-      // if this menu has a parent and it is in this index, don't close
-      this.toggleExpand(this.openIndex, false);
+    // if openIndex has a child menu item that is index
+    // dont close
+    if (this.openIndex != null) {
+      const childMenus = this.controlledNodes[this.openIndex].querySelectorAll('ul.menu');
+
+      for (let i = 0; i < childMenus.length; i++) {
+        const indexInControlledNodes = this.controlledNodes.indexOf(childMenus[i]);
+        if (!expanded && indexInControlledNodes > -1 && index == this.openIndex) {
+          this.toggleExpand(indexInControlledNodes, false);
+        }
+
+        if (childMenus[i] === this.controlledNodes[index] && this.openIndex !== index) {
+            isChildOpening = true;
+        }
+      }
     }
-    console.log(index);
+
+    if (this.openIndex !== index) {
+      if (!isChildOpening) {
+        this.toggleExpand(this.openIndex, false);
+      }
+    }
+
     // handle menu at called index
     if (this.topLevelNodes[index]) {
-      this.openIndex = expanded ? index : null;
+      if(!isChildOpening) {
+        this.openIndex = expanded ? index : null;
+      }
       this.topLevelNodes[index].setAttribute('aria-expanded', expanded);
       this.toggleMenu(this.controlledNodes[index], expanded);
     }
