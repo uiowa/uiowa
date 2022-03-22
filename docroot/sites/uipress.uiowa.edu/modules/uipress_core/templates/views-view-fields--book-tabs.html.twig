@@ -37,7 +37,7 @@
             role="tab"
             aria-selected="{{ field.delta == '0' ? 'true' : 'false' | default('false') }}"
             aria-controls="book-tabs__panel--{{ key }}"
-            id="tabs--{{ id }}__{{ key }}"
+            id="tabs--additional-book-info__{{ key }}"
             {% if not key == 'field_book_reviews_blurbs' %}
               tabindex="-1"
             {% endif %}
