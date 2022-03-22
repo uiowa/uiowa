@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\google_tag\Entity\Container;
+use Drupal\node\NodeInterface;
 use Drupal\uiowa_core\HeadlineHelper;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Exception\RfcComplianceException;
@@ -408,10 +409,10 @@ function uiowa_core_menu_local_tasks_alter(&$data, $route_name) {
  */
 function uiowa_core_entity_operation_alter(array &$operations, EntityInterface $entity) {
   // If we're using the replicate module, check if it's available.
-  if (isset($operations['replicate'])) {
+  // Also check if we are operating on a node.
+  if (isset($operations['replicate']) && $entity instanceof NodeInterface) {
     // Pull our allowed types, and check against the given entity.
     $allowed_types = \Drupal::config('uiowa_core.settings')->get('uiowa_core.replicate_allowed');
-    // @todo using entity_operation_alter, getType() isn't always guaranteed.
     $type = $entity->getType();
     // If it's not an allowed type, then remove
     // the replicate operation.
