@@ -293,6 +293,48 @@
   }
 }
 
+
+// todo move into above section
+.menu-wrapper--horizontal .menu li {
+  position: relative;
+}
+
+.menu-wrapper--horizontal .menu li.menu-item--expanded li a {
+  &:after {
+    content: "";
+  }
+}
+
+.menu-wrapper--horizontal  li.menu-item--expanded li.menu-item--expanded {
+  display: flex;
+  flex-wrap: wrap;
+  > a {
+    flex-basis: 78%;
+  }
+}
+
+.menu-wrapper--horizontal .menu .menu  button:hover:after,
+.menu-wrapper--horizontal .menu .menu  button[aria-expanded=true]:after {
+  background: $primary;
+  color: $secondary;
+}
+
+.menu-wrapper--horizontal .menu li.menu-item--active-trail   li.menu-item--active-trail  a {
+  &:after {
+    background: #999;
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 100%;
+    height: 4px;
+    transform-origin: center;
+    transition: transform 0.3s ease-in-out;
+    transform: translate(-50%, 0) scaleX(1);
+  }
+}
+
+
 // menu button styles
 .menu-wrapper--horizontal {
   > .menu {
@@ -413,26 +455,3 @@
   }
 }
 
-.menu-wrapper--horizontal .menu li {
-  position: relative;
-}
-
-.menu-wrapper--horizontal .menu li.menu-item--expanded li a {
-  &:after {
-    content: "";
-  }
-}
-
-.menu-wrapper--horizontal .menu li.menu-item--expanded li button {
-  position: absolute;
-  top: -2px;
-  right: 0;
-  left: inherit;
-  height: 30px;
-}
-
-.menu-wrapper--horizontal .menu .menu  button:hover:after,
-.menu-wrapper--horizontal .menu .menu  button[aria-expanded=true]:after {
-  background: $primary;
-  color: $secondary;
-}
