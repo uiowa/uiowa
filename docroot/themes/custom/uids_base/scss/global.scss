@@ -248,7 +248,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
 .content__container {
   .layout__spacing_container {
-    @extend %container;
+    @include container-width;
   }
 
   .page__container--extended,
@@ -318,20 +318,6 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       flex-direction: column-reverse;
       @include breakpoint(md) {
         flex-direction: unset;
-      }
-    }
-    .layout__region--sidebar,
-    .layout__region--content {
-       flex-basis: 100%;
-     }
-    .layout__region--sidebar {
-      @include breakpoint(md) {
-        flex-basis: 24.25%;
-      }
-    }
-    .layout__region--content {
-      @include breakpoint(md) {
-        flex-basis: 72.75%;
       }
     }
   }

@@ -3952,3 +3952,39 @@ $sites['housing.uiowa.ddev.site'] = 'housing.uiowa.edu';
 $sites['housing.dev.drupal.uiowa.edu'] = 'housing.uiowa.edu';
 $sites['housing.stage.drupal.uiowa.edu'] = 'housing.uiowa.edu';
 $sites['housing.prod.drupal.uiowa.edu'] = 'housing.uiowa.edu';
+
+// Directory aliases for clcg.lab.uiowa.edu.
+$sites['labclcg.uiowa.ddev.site'] = 'clcg.lab.uiowa.edu';
+$sites['labclcg.dev.drupal.uiowa.edu'] = 'clcg.lab.uiowa.edu';
+$sites['labclcg.stage.drupal.uiowa.edu'] = 'clcg.lab.uiowa.edu';
+$sites['labclcg.prod.drupal.uiowa.edu'] = 'clcg.lab.uiowa.edu';
+
+// Directory aliases for isa.uiowa.edu.
+$sites['isa.uiowa.ddev.site'] = 'isa.uiowa.edu';
+$sites['isa.dev.drupal.uiowa.edu'] = 'isa.uiowa.edu';
+$sites['isa.stage.drupal.uiowa.edu'] = 'isa.uiowa.edu';
+$sites['isa.prod.drupal.uiowa.edu'] = 'isa.uiowa.edu';
+
+// Directory aliases for steffenr.sites.uiowa.edu.
+$sites['sitessteffenr.uiowa.ddev.site'] = 'steffenr.sites.uiowa.edu';
+$sites['sitessteffenr.dev.drupal.uiowa.edu'] = 'steffenr.sites.uiowa.edu';
+$sites['sitessteffenr.stage.drupal.uiowa.edu'] = 'steffenr.sites.uiowa.edu';
+$sites['sitessteffenr.prod.drupal.uiowa.edu'] = 'steffenr.sites.uiowa.edu';
+
+// Directory aliases for thelightbox.radiology.uiowa.edu.
+$sites['radiologythelightbox.uiowa.ddev.site'] = 'thelightbox.radiology.uiowa.edu';
+$sites['radiologythelightbox.dev.drupal.uiowa.edu'] = 'thelightbox.radiology.uiowa.edu';
+$sites['radiologythelightbox.stage.drupal.uiowa.edu'] = 'thelightbox.radiology.uiowa.edu';
+$sites['radiologythelightbox.prod.drupal.uiowa.edu'] = 'thelightbox.radiology.uiowa.edu';
+
+// Directory aliases for afr.fo.uiowa.edu.
+$sites['foafr.uiowa.ddev.site'] = 'afr.fo.uiowa.edu';
+$sites['foafr.dev.drupal.uiowa.edu'] = 'afr.fo.uiowa.edu';
+$sites['foafr.stage.drupal.uiowa.edu'] = 'afr.fo.uiowa.edu';
+$sites['foafr.prod.drupal.uiowa.edu'] = 'afr.fo.uiowa.edu';
+
+// Directory aliases for fa.fo.uiowa.edu.
+$sites['fofa.uiowa.ddev.site'] = 'fa.fo.uiowa.edu';
+$sites['fofa.dev.drupal.uiowa.edu'] = 'fa.fo.uiowa.edu';
+$sites['fofa.stage.drupal.uiowa.edu'] = 'fa.fo.uiowa.edu';
+$sites['fofa.prod.drupal.uiowa.edu'] = 'fa.fo.uiowa.edu';
