@@ -1,0 +1,27 @@
+uuid: 59938547-b88b-4a4e-8d0f-c603a03e02c0
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: isa.uiowa.edu
+description: 'Adding additional person types for Directors, Mentors, Advisory Board, Executive Committee, and Alumni. Add additional fields to profiles for mentor entity reference and program year.'
+weight: 70
+stackable: false
+storage: folder
+folder: ../config/sites/isa.uiowa.edu
+module: {  }
+theme: {  }
+complete_list:
+  - config_split.config_split.site
+  - field.field.node.person.field_mentor
+  - field.field.node.person.field_program_year
+  - field.storage.node.field_mentor
+  - field.storage.node.field_program_year
+  - sitenow_people.person_type.advisory_board_member
+  - sitenow_people.person_type.alumni
+  - sitenow_people.person_type.director
+  - sitenow_people.person_type.executive_committee_member
+  - sitenow_people.person_type.mentor
+  - 'core.entity_view_display.node.person.*'
+partial_list:
+  - 'core.entity_form_display.node.person.*'
