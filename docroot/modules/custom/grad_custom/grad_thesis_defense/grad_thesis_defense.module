@@ -50,6 +50,8 @@ function grad_thesis_defense_form_alter(&$form, FormStateInterface $form_state, 
     // Node form modifications.
     case 'node_thesis_defense_edit_form':
     case 'node_thesis_defense_form':
+      // @todo Remove if smart_date hides this datetime wrapper label.
+      $form['#attached']['library'][] = 'grad_thesis_defense/admin';
       // Our submit handler must execute before the layout_builder_styles one
       // so it can take advantage of the logic there.
       array_unshift($form['actions']['submit']['#submit'], '_grad_thesis_defense_thesis_defense_submit');
