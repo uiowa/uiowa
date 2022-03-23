@@ -193,15 +193,15 @@ trait LinkReplaceTrait {
    */
   private function reportPossibleLinkBreaks(array $fields, array $to_exclude = []) {
     foreach ($fields as $field => $columns) {
-      $candidates = \Drupal::database()->select($field, 'f')
-        ->fields('f', array_merge($columns, ['entity_id']))
+      $query = \Drupal::database()->select($field, 'f')
+        ->fields('f', array_merge($columns, ['entity_id']));
       if (is_int($to_exclude)) {
-        $candidates->condition('f.entity_id', $to_exclude, '>');
+        $query->condition('f.entity_id', $to_exclude, '>');
       }
       elseif (!empty($to_exclude)) {
-        $candidates->condition('f.entity_id', $to_exclude, 'NOT IN')
+        $query->condition('f.entity_id', $to_exclude, 'NOT IN')
       }
-      $candidates->execute()
+      $candidates = $query->execute()
         ->fetchAllAssoc('entity_id');
 
       foreach ($candidates as $entity_id => $cols) {
