@@ -225,10 +225,11 @@ class Articles extends BaseNodeSource {
    * {@inheritdoc}
    */
   public function postImport(MigrateImportEvent $event) {
-    // If we haven't finished our migration,
+    // If we haven't finished our migration, or
+    // if we're doing the redirects migration,
     // don't proceed with the following.
     $migration = $event->getMigration();
-    if (!$migration->allRowsProcessed()) {
+    if (!$migration->allRowsProcessed() || $migration->id() === 'international_article_redirects') {
       return;
     }
     $to_update = [
@@ -257,10 +258,10 @@ class Articles extends BaseNodeSource {
    */
   private function replaceSpecifiedLinks($nids) {
     $db = \Drupal::database();
-    if (!$db->schema()->tableExists('migrate_map_' . $this->migration->id())) {
+    if (!$db->schema()->tableExists('migrate_map_international_articles')) {
       return FALSE;
     }
-    $map = $db->select('migrate_map_' . $this->migration->id(), 'm')
+    $map = $db->select('migrate_map_international_articles', 'm')
       ->fields('m', ['sourceid1', 'destid1'])
       ->execute()
       ->fetchAllKeyed();
