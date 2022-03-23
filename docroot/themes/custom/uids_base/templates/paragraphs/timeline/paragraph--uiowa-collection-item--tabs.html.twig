@@ -38,18 +38,16 @@
  * @ingroup themeable
  */
 #}
-{{ attach_library('uids_base/tabs') }}
 
-{% set tab_item_id = 'tabs--' ~ parent_id ~ '__panel--' ~ delta %}
-{% set tab_labelled_by = 'tabs--' ~ parent_id ~ '__' ~ delta %}
-<div tabindex="0"
-     role="tabpanel"
-     id="{{ tab_item_id }}"
-     aria-labelledby="{{ tab_labelled_by }}"
-     class="tab__content"
-  {{ (delta == 0) ? '': 'hidden="hidden"' }}
->
-  {% block tab_content %}
-    {{ content.field_collection_body }}
-  {% endblock %}
-</div>
+{% set accordion_item = {
+  'accordion_h_size': h_size ?: 'h2',
+  'accordion_item_id': 'accordion-item-' ~ parent_id ~ '-' ~ delta,
+  'accordion_parent_id': 'accordion-' ~ parent_id,
+  'accordion_type': 'single',
+  'accordion_item_label': content.field_collection_headline,
+  'accordion_item_content': content.field_collection_body,
+  'accordion_item_expanded': field_automatically_open,
+  'attributes': attributes,
+} %}
+
+{% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}{% endembed %}
