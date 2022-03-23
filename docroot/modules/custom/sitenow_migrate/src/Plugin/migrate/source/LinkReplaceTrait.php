@@ -186,11 +186,15 @@ trait LinkReplaceTrait {
    * @param array $fields
    *   A [field => column] associative array for database columns
    *   that should be checked for potential broken links.
+   * @param array $to_exclude
+   *   An array of node ids which should be excluded from reporting,
+   *   for instance if links are known to have been replaced.
    */
-  private function reportPossibleLinkBreaks(array $fields) {
+  private function reportPossibleLinkBreaks(array $fields, array $to_exclude = []) {
     foreach ($fields as $field => $columns) {
       $candidates = \Drupal::database()->select($field, 'f')
         ->fields('f', array_merge($columns, ['entity_id']))
+        ->condition('f.entity_id', $to_exclude, 'NOT IN')
         ->execute()
         ->fetchAllAssoc('entity_id');
 
