@@ -199,7 +199,7 @@ trait LinkReplaceTrait {
         $query->condition('f.entity_id', $to_exclude, '>');
       }
       elseif (!empty($to_exclude)) {
-        $query->condition('f.entity_id', $to_exclude, 'NOT IN')
+        $query->condition('f.entity_id', $to_exclude, 'NOT IN');
       }
       $candidates = $query->execute()
         ->fetchAllAssoc('entity_id');
