@@ -46,7 +46,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       _layout_builder_custom_add_lbs_heading($form);
 
       // @todo Write a patch for layout_builder_styles that adds these options. See
-      //    https://github.com/uiowa/uiowa/issues/5010
+      //   https://github.com/uiowa/uiowa/issues/5010
       // An array of options for altering Layout Builder Styles behavior.
       $lbs_extra_options = [
         'banner_gradient' => [
@@ -261,7 +261,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           array_shift($form['settings']['view_mode']['#options']);
 
           // @todo Re-enable 'tab' after theming/functionality is in place. See
-          //    https://github.com/uiowa/uiowa/issues/5011
+          //   https://github.com/uiowa/uiowa/issues/5011
           unset($form['settings']['view_mode']['#options']['tab']);
 
           $view_options = [
