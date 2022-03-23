@@ -13,6 +13,8 @@
       {# If we also have link text, then we'll show a psuedo-button. #}
     {% elseif link.link_text is not empty %}
       {% set show_button = true %}
+    {% else %}
+      {% set link_element = 'self' %}
     {% endif %}
   {% endif %}
 
@@ -27,7 +29,6 @@
   'headline--negative',
   'headline--large',
 ] %}
-
 <div{{ attributes.addClass(banner_classes) }}>
 
   {% block banner_image %}
@@ -78,6 +79,9 @@
                 {{ link.link_text }}
                 <span role="presentation" class="fas fa-arrow-right"></span>
               </div>
+            {% elseif link_element == 'self' %}
+              {# Add a hidden link to allow click targeting for the component. #}
+              <a href="{{ link.link_url }}" aria-hidden="true" class="click-target hidden"></a>
             {% endif %}
           </div>
         {% endif %}
