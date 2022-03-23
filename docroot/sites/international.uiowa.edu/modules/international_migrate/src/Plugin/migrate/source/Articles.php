@@ -193,30 +193,31 @@ class Articles extends BaseNodeSource {
     }
 
     $tag_tids = $row->getSourceProperty('field_news_tags_tid');
-    // Fetch tag names based on TIDs from our old site.
-    $tag_results = $this->select('taxonomy_term_data', 't')
-      ->fields('t', ['name'])
-      ->condition('t.tid', $tag_tids, 'IN')
-      ->execute();
-    $tags = [];
-    foreach ($tag_results as $result) {
-      $tag_name = $result['name'];
-      // Check if we have a mapping. If we don't yet,
-      // then create a new tag and add it to our map.
-      if (!isset($this->tagMapping[$tag_name])) {
-        $term = Term::create([
-          'name' => $tag_name,
-          'vid' => 'tags',
-        ]);
-        if ($term->save()) {
-          $this->tagMapping[$tag_name] = $term->id();
+    if (!empty($tag_tids)) {
+      // Fetch tag names based on TIDs from our old site.
+      $tag_results = $this->select('taxonomy_term_data', 't')
+        ->fields('t', ['name'])
+        ->condition('t.tid', $tag_tids, 'IN')
+        ->execute();
+      $tags = [];
+      foreach ($tag_results as $result) {
+        $tag_name = $result['name'];
+        // Check if we have a mapping. If we don't yet,
+        // then create a new tag and add it to our map.
+        if (!isset($this->tagMapping[$tag_name])) {
+          $term = Term::create([
+            'name' => $tag_name,
+            'vid' => 'tags',
+          ]);
+          if ($term->save()) {
+            $this->tagMapping[$tag_name] = $term->id();
+          }
+          // Add the mapped TID to match our tag name.
+          $tags[] = $this->tagMapping[$tag_name];
         }
-        // Add the mapped TID to match our tag name.
-        $tags[] = $this->tagMapping[$tag_name];
       }
+      $row->setSourceProperty('tags', $tags);
     }
-    $row->setSourceProperty('tags', $tags);
-
     return TRUE;
   }
 
