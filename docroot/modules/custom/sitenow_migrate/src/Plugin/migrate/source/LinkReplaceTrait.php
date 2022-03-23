@@ -191,7 +191,7 @@ trait LinkReplaceTrait {
    *   or an int for a high water mark to check after,
    *   for instance if links are known to have been replaced.
    */
-  private function reportPossibleLinkBreaks(array $fields, array $to_exclude = []) {
+  private function reportPossibleLinkBreaks(array $fields, $to_exclude = []) {
     foreach ($fields as $field => $columns) {
       $query = \Drupal::database()->select($field, 'f')
         ->fields('f', array_merge($columns, ['entity_id']));
