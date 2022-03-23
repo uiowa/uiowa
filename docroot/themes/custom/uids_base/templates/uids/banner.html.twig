@@ -1,4 +1,5 @@
 {{ attach_library('uids_base/banner') }}
+{% set attributes = attributes ?: create_attribute() %}
 {% set banner_classes = ['banner'] %}
 {# The following code is to determine where a link should be attached, if it exists. #}
 {% if links|length == 1 %}
@@ -10,9 +11,8 @@
       {# Title is set, use it as the linking element.  #}
       {% set link_element = 'title' %}
       {# If we also have link text, then we'll show a psuedo-button. #}
-      {% if link.link_text is not empty %}
-        {% set show_button = true %}
-      {% endif %}
+    {% elseif link.link_text is not empty %}
+      {% set show_button = true %}
     {% endif %}
   {% endif %}
 
@@ -21,7 +21,6 @@
   {% endif %}
 {% endif %}
 
-{% set attributes = attributes ?: create_attribute() %}
 {% set headline_class = headline_class ? headline_class|merge(['headline']) : [
   'headline',
   'headline--serif',
