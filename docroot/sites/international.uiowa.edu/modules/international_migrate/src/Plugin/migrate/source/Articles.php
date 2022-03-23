@@ -240,7 +240,9 @@ class Articles extends BaseNodeSource {
         '@nids' => implode(', ', $to_update),
       ]);
     }
-    $this->reportPossibleLinkBreaks(['node__body' => ['body_value']]);
+    // Report possible broken links after our known high water mark
+    // of articles in which we fixed links.
+    $this->reportPossibleLinkBreaks(['node__body' => ['body_value']], 11901);
   }
 
   /**
