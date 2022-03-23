@@ -260,7 +260,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           // so we remove the undefined 'default' option.
           array_shift($form['settings']['view_mode']['#options']);
 
-          // @todo Re-enable 'tab' after theming/functionality is in place.
+          // @todo Re-enable 'tab' after theming/functionality is in place. See
+          //    https://github.com/uiowa/uiowa/issues/5011
           unset($form['settings']['view_mode']['#options']['tab']);
 
           $view_options = [
