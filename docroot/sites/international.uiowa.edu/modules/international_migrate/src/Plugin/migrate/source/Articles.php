@@ -225,6 +225,12 @@ class Articles extends BaseNodeSource {
    * {@inheritdoc}
    */
   public function postImport(MigrateImportEvent $event) {
+    // If we haven't finished our migration,
+    // don't proceed with the following.
+    $migration = $event->getMigration();
+    if (!$migration->allRowsProcessed()) {
+      return;
+    }
     $to_update = [
       1376,
       1391,
