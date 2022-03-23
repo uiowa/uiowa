@@ -110,7 +110,6 @@ function uids_base_preprocess_html(&$variables) {
   $node = \Drupal::routeMatch()->getParameter('node');
 
   if ($node instanceof NodeInterface) {
-    // @todo Is there a better way to have a soft dependency on a class?
     if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
       $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($node);
     }
@@ -119,7 +118,6 @@ function uids_base_preprocess_html(&$variables) {
   $fragment = \Drupal::routeMatch()->getParameter('fragment');
 
   if ($fragment instanceof FragmentInterface) {
-    // @todo Is there a better way to have a soft dependency on a class?
     if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
       $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($fragment);
     }
@@ -222,7 +220,6 @@ function uids_base_preprocess_page(&$variables) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $variables['node'];
     if ($node instanceof NodeInterface) {
-      // @todo Is there a better way to have a soft dependency on a class?
       if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
         $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($node);
       }
@@ -231,7 +228,6 @@ function uids_base_preprocess_page(&$variables) {
   $current_route = \Drupal::routeMatch();
   $fragment = $current_route->getParameter('fragment');
   if ($fragment instanceof FragmentInterface) {
-    // @todo Is there a better way to have a soft dependency on a class?
     if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
       $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($fragment);
     }
@@ -332,7 +328,6 @@ function uids_base_preprocess_node(&$variables) {
           $variables['#attached']['library'][] = 'uids_base/person';
           break;
       }
-      // @todo Is there a better way to have a soft dependency on a class?
       if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
         $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($node);
       }
