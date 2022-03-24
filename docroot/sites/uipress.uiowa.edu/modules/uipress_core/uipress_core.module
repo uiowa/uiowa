@@ -191,6 +191,28 @@ function uipress_core_preprocess_views_view_unformatted(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK().
+ */
+function uipress_core_preprocess_views_view_fields(&$variables) {
+  /** @var \Drupal\views\ViewExecutable $view */
+  $view = $variables['view'];
+  if ($view->id() === 'book_tabs') {
+    foreach ($variables['fields'] as $id => $field) {
+      // Remove debug info and extra spaces to see if
+      // there's actually content that needs rendering.
+      $contents = trim(preg_replace('|<!--(.*?)-->|', '', $field->content));
+      if (empty($contents)) {
+        unset($variables['fields'][$id]);
+      }
+    }
+    foreach (array_keys($variables['fields']) as $delta => $id) {
+      // Set deltas depending on what fields we have remaining.
+      $variables['fields'][$id]->delta = $delta;
+    }
+  }
+}
+
+/**
  * Implements hook_theme().
  */
 function uipress_core_theme($existing, $type, $theme, $path) {
@@ -213,6 +235,14 @@ function uipress_core_theme($existing, $type, $theme, $path) {
     ],
     'views_view_unformatted__book_publication_details' => [
       'template' => 'views-view-unformatted--book-publication-details',
+      'base hook' => 'view',
+    ],
+    'views_view_unformatted__book_tabs' => [
+      'template' => 'views-view-unformatted--book-tabs',
+      'base hook' => 'view',
+    ],
+    'views_view_fields__book_tabs' => [
+      'template' => 'views-view-fields--book-tabs',
       'base hook' => 'view',
     ],
     'block__cartbuttons_block' => [
