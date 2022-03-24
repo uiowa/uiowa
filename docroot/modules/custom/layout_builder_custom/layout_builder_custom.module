@@ -502,14 +502,16 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
           if (!$form_state->getValue($form_media_selection)) {
             // If an image wasn't uploaded, revert to default of 'black'.
             // @todo Add feedback for user that they didn't upload an image.
-            // @todo Add validation to check whether image uploaded or not.
+            // @todo Add validation to check whether image uploaded or not. See
+            //    https://github.com/uiowa/uiowa/issues/5012
             $background_option = 'block_background_style_black';
           }
 
         }
         else {
           // If a non-image background was selected, remove the reference.
-          // @todo Trigger file deletion if the media item is unused elsewhere.
+          // @todo Trigger file deletion if the media item is unused elsewhere. See
+          //    https://github.com/uiowa/uiowa/issues/5013
           $form_state->unsetValue($form_media_selection);
         }
         // Set layout_builder_style_background to value of our duplicate select.
