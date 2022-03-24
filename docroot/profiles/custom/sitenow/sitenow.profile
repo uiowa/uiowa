@@ -1095,6 +1095,7 @@ function sitenow_tokens($type, $tokens, array $data, array $options, BubbleableM
                 $replacement_value = trim(strip_tags($replacement_value));
                 // Using text.module text_summary().
                 // @todo Make length a configuration setting.
+                //   See https://github.com/uiowa/uiowa/issues/5024
                 $replacements[$original] = text_summary($replacement_value, "plain_text", "300");
               }
             }
