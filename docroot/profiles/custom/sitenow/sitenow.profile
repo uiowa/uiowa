@@ -986,6 +986,7 @@ function sitenow_toolbar() {
  * Determine the version of SiteNow based on what config is active.
  *
  * @todo Return additional information like if any other splits are active that might impact functionality.
+ * See https://github.com/uiowa/uiowa/issues/5021
  */
 function sitenow_get_version() {
   $version = 'v3';
