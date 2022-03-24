@@ -173,13 +173,36 @@
             }
           }
 
+          a.is-active,
+          span {
+              &:before {
+                width: 20px;
+                height: 20px;
+                content: "";
+                position: absolute;
+                left: calc(50% - 10px);
+                top: calc(100% - 1px);
+                background-color: transparent;
+                border-top: 10px solid $primary;
+                border-right: 10px solid transparent;
+                border-left: 10px solid transparent;
+                border-bottom: 10px solid transparent;
+                z-index: 1;
+              }
+          }
+
           &.menu-item--expanded {
             background-color: transparent;
             align-items: center;
-
             a {
-              &.is-active {}
+              &.is-active {
+                &:before {
+                  left: calc(70% - 10px);
+
+                }
+              }
             }
+
           }
         }
 
