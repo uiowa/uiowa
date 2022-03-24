@@ -1173,9 +1173,6 @@ function sitenow_update_8030() {
  * that have the 'collegiate' split enabled.
  */
 function sitenow_update_8031() {
-
-  // @todo Possibly add checks for sites who have not updated
-  //   content since the site was provisioned.
   /** @var \Drupal\Core\Plugin\DefaultPluginManager $filters */
   $filters = \Drupal::service('plugin.manager.config_filter')->getDefinitions();
   $collegiate_split = 'config_split:collegiate';
