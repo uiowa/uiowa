@@ -143,7 +143,8 @@ class Articles extends BaseNodeSource {
         $link = $links->item($i);
         $href = $link->getAttribute('href');
         if (strpos($href, '/node/') === 0 || stristr($href, 'international.uiowa.edu/node/')) {
-          if ($lookup = $this->manualLookup($nid, $inv_delta++)) {
+          if ($lookup = $this->manualLookup($nid, $inv_delta)) {
+            $inv_delta++;
             // If we get a -1, then we should remove the link
             // and replace it just with its text.
             if ($lookup === -1) {
