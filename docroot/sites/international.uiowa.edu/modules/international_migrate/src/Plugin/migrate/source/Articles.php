@@ -137,7 +137,7 @@ class Articles extends BaseNodeSource {
       // Parse links.
       $links = $doc->getElementsByTagName('a');
       $i = $links->length - 1;
-      $inv_delta = 0;
+      $inv_delta = 1;
       $nid = $row->getSourceProperty('nid');
       while ($i >= 0) {
         $link = $links->item($i);
@@ -164,9 +164,10 @@ class Articles extends BaseNodeSource {
             }
           }
           else {
-            $this->logger->notice('Unable to replace internal link @link in article @article.', [
+            $this->logger->notice('Unable to replace internal link @link in article @article, node @nid.', [
               '@link' => $href,
               '@article' => $row->getSourceProperty('title'),
+              '@nid' => $nid,
             ]);
           }
         }
