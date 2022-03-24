@@ -111,6 +111,7 @@ function sitenow_preprocess_select(&$variables) {
 function sitenow_module_implements_alter(&$implementations, $hook) {
   // Unset administerusersbyrole query alter which over-filters the people page.
   // @todo Refactor this to move sitenow last and then alter the altered query.
+  //   See https://github.com/uiowa/uiowa/issues/5023
   if ($hook == 'query_alter' && isset($implementations['administerusersbyrole'])) {
     unset($implementations['administerusersbyrole']);
   }
