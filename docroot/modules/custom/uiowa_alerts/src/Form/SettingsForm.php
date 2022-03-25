@@ -60,8 +60,8 @@ class SettingsForm extends ConfigFormBase {
         'danger' => $this->t('Danger'),
       ],
       '#default_value' => $config->get('custom_alert.level'),
-      '#description' => $this->t('The custom alert level. Determines the color of the alert based on the <a href="@link">UIDS</a>.', [
-        '@link' => 'https://uiowa.github.io/uids/components/detail/alerts--info.html',
+      '#description' => $this->t('The custom alert level. Determines the color of the alert based on the <a href=":link">UIDS</a> alert component.', [
+        ':link' => 'https://uids.brand.uiowa.edu/components/detail/alert.html',
       ]),
       '#states' => [
         'visible' => [
