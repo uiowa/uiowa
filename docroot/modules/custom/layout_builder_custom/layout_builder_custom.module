@@ -1036,7 +1036,8 @@ function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
         $variables['#cache']['tags'][] = 'config:layout_builder_styles.style.' . $style->id();
       }
     }
-    // @todo Add media element classes to a separate variable.
+    // @todo Add media element classes to a separate variable. See
+    //   https://github.com/uiowa/uiowa/issues/5043
     $variables['row_item_classes'] = array_merge($default_classes, array_values($item_classes));
   }
 
