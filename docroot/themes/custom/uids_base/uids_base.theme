@@ -771,6 +771,7 @@ function uids_base_preprocess_paragraph__card(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     // @todo Remove this when it is no longer necessary.
+    //   See https://github.com/uiowa/uiowa/issues/5033
     // If the sitenow card link js file has been added, remove it.
     if ($key = array_search('sitenow_card/card-link-js', $variables['#attached']['library'])) {
       unset($variables['#attached']['library'][$key]);
