@@ -1029,7 +1029,8 @@ function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
       $style = \Drupal::entityTypeManager()->getStorage('layout_builder_style')->load($style_id);
       if ($style) {
         // @todo Check if the style group matches a class that is used for
-        //   the media element and put it in a separate array.
+        //   the media element and put it in a separate array. See
+        //   https://github.com/uiowa/uiowa/issues/5042
         $classes = \preg_split('(\r\n|\r|\n)', $style->getClasses());
         $item_classes[$style->getGroup()] = implode(' ', $classes);
         $variables['#cache']['tags'][] = 'config:layout_builder_styles.style.' . $style->id();
