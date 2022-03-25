@@ -1143,7 +1143,8 @@ function layout_builder_custom_views_pre_build(ViewExecutable $view) {
 function layout_builder_custom_views_pre_render(ViewExecutable $view) {
   // Hotfix shim to not display exposed blocks, necessary because
   // of the hotfix above.
-  // @todo Remove this exception when these view displays are removed.
+  // @todo Remove this exception when these view displays are removed. See
+  //   https://github.com/uiowa/uiowa/issues/5047
   $display = $view->getDisplay();
   $exceptions = [
     'block_people_slf',
