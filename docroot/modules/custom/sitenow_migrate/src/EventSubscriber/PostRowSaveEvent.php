@@ -69,34 +69,6 @@ class PostRowSaveEvent implements EventSubscriberInterface {
         $fids = $event->getDestinationIdValues();
         $this->makeEntity($row, $fids);
         break;
-
-      // @todo Remove this after ITU Physics migrate.
-      case 'itu_physics_labs':
-        $row = $event->getRow();
-        $nids = $event->getDestinationIdValues();
-        $this->addBlock($row, $nids[0]);
-        break;
-
-      // @todo Remove this after ITU Physics migrate.
-      case 'itu_physics_courses':
-        $row = $event->getRow();
-        $nids = $event->getDestinationIdValues();
-        $nid = $nids[0];
-        $node = $this->entityTypeManager
-          ->getStorage('node')
-          ->load($nid);
-        // Create our path alias.
-        $path_aliases = $this->entityTypeManager
-          ->getStorage('path_alias')
-          ->loadByProperties([
-            'path' => '/node/' . $nid,
-          ]);
-        $path_alias = array_pop($path_aliases);
-        $path_alias->setAlias('/' . $row->getSourceProperty('alias'));
-        $path_alias->save();
-        // Uncheck the "generate automatic path alias" option.
-        $node->path->pathauto = 0;
-        $node->save();
     }
   }
 
