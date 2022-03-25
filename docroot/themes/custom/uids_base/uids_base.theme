@@ -582,18 +582,18 @@ function uids_base_preprocess_layout(&$variables) {
 function uids_base_preprocess_block(&$variables) {
   $variables['uids_base_container_settings'] = theme_get_setting('layout.container');
 
-  // Add the region to the a block's available attributes.
-  if (isset($variables['elements']['#id'])) {
-    $region = Block::load($variables['elements']['#id'])->getRegion();
-
-    if (in_array($variables['base_plugin_id'], [
+  if (in_array($variables['base_plugin_id'], [
       'system_menu_block',
       'menu_block',
     ])) {
 
-      if ($region === 'footer_second') {
-        $variables['attributes']['class'][] = 'footer__links';
-        $variables['attributes']['class'][] = 'footer__links--nav';
+      // Add the region to the a block's available attributes.
+      if (isset($variables['elements']['#id'])) {
+        $region = Block::load($variables['elements']['#id'])->getRegion();
+        if ($region === 'footer_second') {
+          $variables['attributes']['class'][] = 'footer__links';
+          $variables['attributes']['class'][] = 'footer__links--nav';
+        }
       }
 
       switch ($variables['derivative_plugin_id']) {
