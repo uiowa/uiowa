@@ -355,7 +355,7 @@ function admissions_core_preprocess_layout(&$variables) {
       }
       switch ($node->getType()) {
         case 'area_of_study':
-          // @todo Move this to admissions_core_preprocess_node(). See
+          // @todo Move the next line to admissions_core_preprocess_node(). See
           //   https://github.com/uiowa/uiowa/issues/5020
           $variables['#attached']['library'][] = 'admissions_core/area-of-study';
 
