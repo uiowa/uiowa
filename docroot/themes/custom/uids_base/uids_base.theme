@@ -443,126 +443,133 @@ function uids_base_preprocess_layout(&$variables) {
   }
   // If we have found a node instance, continue.
   if ($node instanceof NodeInterface) {
-    $title_hidden = FALSE;
     /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
     $layout = $variables['layout'];
 
-    // @todo Scope this to target layout so it doesn't run
-    //   every time a layout is preprocessed.
-    if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
-      $publish_options = $node->get('field_publish_options')->getValue();
-      if (array_search('title_hidden', array_column($publish_options, 'value')) !== FALSE) {
-        $title_hidden = TRUE;
-      }
-      if (array_search('no_sidebars', array_column($publish_options, 'value')) !== FALSE) {
-        // Remove sidebar regions.
-        $variables['attributes']['class'][] = 'sidebar-invisible';
-      }
-    }
+    switch ($layout->id()) {
+      case 'layout_header':
+        $contains_title = FALSE;
+        $contains_background = FALSE;
 
-    // Process the header layout.
-    if ($layout->id() === 'layout_header') {
-      $contains_title = FALSE;
-      $contains_background = FALSE;
-
-      // Only run the following if 'featured_image_display'
-      // is not already set.
-      if (!isset($variables['featured_image_display'])) {
-        $variables['featured_image_display'] = FALSE;
-
-        // Check if the featured image exists.
-        if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
-          // Check value of 'field_featured_image_display'.
-          if ($node->hasField('field_featured_image_display') && !$node->field_featured_image_display->isEmpty()) {
-            if ($node->field_featured_image_display->value !== 'do_not_display') {
-              // Use the node setting.
-              $variables['featured_image_display'] = $node->field_featured_image_display->value;
-            }
+        $title_hidden = FALSE;
+        if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
+          $publish_options = $node->get('field_publish_options')->getValue();
+          if (array_search('title_hidden', array_column($publish_options, 'value')) !== FALSE) {
+            $title_hidden = TRUE;
           }
-          else {
-            $site_wide_setting = \Drupal::config("sitenow_{$node->getType()}s.settings")->get('featured_image_display_default');
-            if ($site_wide_setting && $site_wide_setting !== 'do_not_display') {
-              // Use the site-wide default.
-              $variables['featured_image_display'] = $site_wide_setting;
+        }
+
+        // Only run the following if 'featured_image_display'
+        // is not already set.
+        if (!isset($variables['featured_image_display'])) {
+          $variables['featured_image_display'] = FALSE;
+
+          // Check if the featured image exists.
+          if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+            // Check value of 'field_featured_image_display'.
+            if ($node->hasField('field_featured_image_display') && !$node->field_featured_image_display->isEmpty()) {
+              if ($node->field_featured_image_display->value !== 'do_not_display') {
+                // Use the node setting.
+                $variables['featured_image_display'] = $node->field_featured_image_display->value;
+              }
+            }
+            else {
+              $site_wide_setting = \Drupal::config("sitenow_{$node->getType()}s.settings")->get('featured_image_display_default');
+              if ($site_wide_setting && $site_wide_setting !== 'do_not_display') {
+                // Use the site-wide default.
+                $variables['featured_image_display'] = $site_wide_setting;
+              }
             }
           }
         }
-      }
 
-      if (!$variables['featured_image_display']) {
-        unset($variables['content']['background']);
-      }
-      else {
-        $variables['attributes']['class'][] = 'banner--' . $variables['featured_image_display'];
-      }
-
-      // Loop through regions in the layout.
-      foreach (Element::children($variables['content']) as $region) {
-        // Loop through blocks in that region.
-        foreach (Element::children($variables['content'][$region]) as $block_uuid) {
-          if ($region === 'content'
-            && isset($variables['content'][$region][$block_uuid])
-            && isset($variables['content'][$region][$block_uuid]['#plugin_id'])
-          ) {
-            // Check if this block plugin_id matches the pattern for a
-            // page title block.
-            $plugin_id = $variables['content'][$region][$block_uuid]['#plugin_id'];
-            $start_check = 'field_block:node:';
-            $end_check = ':title';
-            if (substr($plugin_id, 0, strlen($start_check)) === $start_check
-              && substr($plugin_id, -strlen($end_check)) === $end_check
-            ) {
-              $contains_title = TRUE;
-              break;
-            }
-          }
-          elseif ($region == 'background') {
-            // If there is anything in this region, then we have a background.
-            if (!empty(Element::children($variables['content'][$region][$block_uuid]))) {
-              $contains_background = TRUE;
-              break;
-            }
-          }
-        }
-      }
-
-      if (!isset($variables['banner_settings'])) {
-        $variables['banner_settings'] = [];
-      }
-      $defaults = [
-        'transparent' => FALSE,
-        'horizontal_align' => 'left',
-        'vertical_align' => 'bottom',
-      ];
-
-      $variables['banner_settings'] = $variables['banner_settings'] + $defaults;
-
-      // Set default for banner gradient.
-      if ($variables['banner_settings']['transparent'] || $title_hidden) {
-        $variables['attributes']['class'][] = 'banner--transparent';
-      }
-      else {
-        $variables['attributes']['class'][] = 'banner--gradient-bottom';
-        $variables['attributes']['class'][] = 'banner--gradient-dark';
-      }
-
-      // Set other banner default classes.
-      $variables['attributes']['class'][] = 'banner--horizontal-' . $variables['banner_settings']['horizontal_align'];
-      $variables['attributes']['class'][] = 'banner--vertical-' . $variables['banner_settings']['vertical_align'];
-
-      if ($contains_title) {
-        $variables['attributes']['class'][] = 'layout--title';
-        if ($contains_background && $variables['featured_image_display']) {
-          $variables['attributes']['class'][] = 'layout--title--with-background';
+        if (!$variables['featured_image_display']) {
+          unset($variables['content']['background']);
         }
         else {
-          $variables['attributes']['class'][] = 'layout--onecol--no--background';
+          $variables['attributes']['class'][] = 'banner--' . $variables['featured_image_display'];
         }
 
-        if ($title_hidden) {
-          $variables['attributes']['class'][] = 'layout--title--hidden';
+        // Loop through regions in the layout.
+        foreach (Element::children($variables['content']) as $region) {
+          // Loop through blocks in that region.
+          foreach (Element::children($variables['content'][$region]) as $block_uuid) {
+            if ($region === 'content'
+              && isset($variables['content'][$region][$block_uuid])
+              && isset($variables['content'][$region][$block_uuid]['#plugin_id'])
+            ) {
+              // Check if this block plugin_id matches the pattern for a
+              // page title block.
+              $plugin_id = $variables['content'][$region][$block_uuid]['#plugin_id'];
+              $start_check = 'field_block:node:';
+              $end_check = ':title';
+              if (substr($plugin_id, 0, strlen($start_check)) === $start_check
+                && substr($plugin_id, -strlen($end_check)) === $end_check
+              ) {
+                $contains_title = TRUE;
+                break;
+              }
+            }
+            elseif ($region == 'background') {
+              // If there is anything in this region, then we have a background.
+              if (!empty(Element::children($variables['content'][$region][$block_uuid]))) {
+                $contains_background = TRUE;
+                break;
+              }
+            }
+          }
         }
-      }
+
+        if (!isset($variables['banner_settings'])) {
+          $variables['banner_settings'] = [];
+        }
+        $defaults = [
+          'transparent' => FALSE,
+          'horizontal_align' => 'left',
+          'vertical_align' => 'bottom',
+        ];
+
+        $variables['banner_settings'] = $variables['banner_settings'] + $defaults;
+
+        // Set default for banner gradient.
+        if ($variables['banner_settings']['transparent'] || $title_hidden) {
+          $variables['attributes']['class'][] = 'banner--transparent';
+        }
+        else {
+          $variables['attributes']['class'][] = 'banner--gradient-bottom';
+          $variables['attributes']['class'][] = 'banner--gradient-dark';
+        }
+
+        // Set other banner default classes.
+        $variables['attributes']['class'][] = 'banner--horizontal-' . $variables['banner_settings']['horizontal_align'];
+        $variables['attributes']['class'][] = 'banner--vertical-' . $variables['banner_settings']['vertical_align'];
+
+        if ($contains_title) {
+          $variables['attributes']['class'][] = 'layout--title';
+          if ($contains_background && $variables['featured_image_display']) {
+            $variables['attributes']['class'][] = 'layout--title--with-background';
+          }
+          else {
+            $variables['attributes']['class'][] = 'layout--onecol--no--background';
+          }
+
+          if ($title_hidden) {
+            $variables['attributes']['class'][] = 'layout--title--hidden';
+          }
+        }
+        break;
+
+      // Page with sidebar.
+      case 'layout_page':
+        if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
+          $publish_options = $node->get('field_publish_options')->getValue();
+          if (array_search('no_sidebars', array_column($publish_options, 'value')) !== FALSE) {
+            // Remove sidebar regions.
+            $variables['attributes']['class'][] = 'sidebar-invisible';
+          }
+        }
+        break;
+
     }
 
     // Add sitenow library if sitenow_v2 config split is active.
