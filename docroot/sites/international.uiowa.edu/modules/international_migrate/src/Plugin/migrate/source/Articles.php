@@ -9,6 +9,7 @@ use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\LinkReplaceTrait;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
 use Drupal\taxonomy\Entity\Term;
+use Drupal\layout_builder\Section;
 
 /**
  * Migrate Source plugin.
@@ -70,6 +71,9 @@ class Articles extends BaseNodeSource {
     }
     parent::prepareRow($row);
 
+    if ($row->getSourceProperty('nid') == 4174) {
+      $foo = 'bar';
+    }
     // Get the author tags to build into our mapped
     // field_news_authors value.
     $tables = [
@@ -271,10 +275,22 @@ class Articles extends BaseNodeSource {
 
     $entity_manager = \Drupal::service('entity_type.manager')
       ->getStorage('node');
+    $block_manager = \Drupal::service('entity_type.manager')
+      ->getStorage('block_content');
     $nodes = $entity_manager->loadMultiple($nids);
     foreach ($nodes as $node) {
-      $body_text = $node->body->value;
-      $doc = Html::load($body_text);
+      // Grab our section from the node's layout. Here we know
+      // the structure of our pages, so we can grab it directly.
+      $layout = $node->get('layout_builder__layout');
+      $section = $layout->get(2)->getValue()['section'];
+      $section_array = $section->toRenderArray();
+      $uuid = array_keys($section_array['content'])[0];
+      $component = $section_array['content'][$uuid];
+      $revision_id = $component['#configuration']['block_revision_id'];
+      $block = $block_manager->loadRevision($revision_id);
+      $block_text = $block->field_uiowa_text_area->value;
+
+      $doc = Html::load($block_text);
       // Parse links.
       $links = $doc->getElementsByTagName('a');
       $i = $links->length - 1;
@@ -295,8 +311,18 @@ class Articles extends BaseNodeSource {
         $i--;
       }
       // Re-serialize the DOM and set into the body text.
-      $body_text = Html::serialize($doc);
-      $node->body->value = $body_text;
+      $block_text = Html::serialize($doc);
+      $block->field_uiowa_text_area->value = $block_text;
+      $block->save();
+      // Set the new revision in the component
+      // and place it back into the section array.
+      $component['#configuration']['block_revision_id'] = $block->getRevisionId();
+      $section_array['content'][$uuid] = $component;
+      // Remove the old section and append our new one.
+      $layout->removeSection(2);
+      $layout->appendSection(Section::fromArray($section_array));
+      // Place the new layout back into the node field and save.
+      $node->set('layout_builder__layout', $layout->getSections());
       $node->save();
     }
   }
@@ -799,10 +825,10 @@ class Articles extends BaseNodeSource {
       return FALSE;
     }
     $available_links = $map[$nid];
-    $delta = count($available_links) - $inv_delta;
-    if ($delta < 0) {
-      return FALSE;
-    }
+    // Set a floor at 0. Some, especially deletions, are
+    // repeated but not reflected in the mapping,
+    // so we should just take the last one.
+    $delta = max(0, count($available_links) - $inv_delta);
     $link = $available_links[$delta];
     if (is_int($link) && $link > $article_start) {
       return $link + $offset;
