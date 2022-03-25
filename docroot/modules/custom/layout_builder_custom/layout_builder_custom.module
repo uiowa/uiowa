@@ -601,7 +601,8 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         $element['field_uiowa_banner_title']['widget'][0]['container']['size']['#title'] =
           t('Heading');
       }
-      // @todo Should this be scoped to a condition checking if layout_builder_styles is enabled?
+      // @todo Should this be scoped to a condition checking if layout_builder_styles is enabled? See
+      //   https://github.com/uiowa/uiowa/issues/5038
       $all_styles = _layout_builder_styles_retrieve_by_type(LayoutBuilderStyleInterface::TYPE_COMPONENT);
 
       $selectedStyles = $component->get('layout_builder_styles_style');
