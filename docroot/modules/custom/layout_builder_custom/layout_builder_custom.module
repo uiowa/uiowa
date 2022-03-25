@@ -1000,6 +1000,7 @@ function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
       $row_styles = [$row_styles];
     }
     // @todo remove card--person-teaser when v2 is no longer in use.
+    //   See https://github.com/uiowa/uiowa/issues/4948
     $default_classes = [
       'card--list',
       'card--person-teaser',
@@ -1098,6 +1099,8 @@ function layout_builder_custom_views_plugins_display_alter(&$displays) {
   $is_v2 = \Drupal::config('config_split.config_split.sitenow_v2')->get('status');
 
   // Only swap views block for v3 sites because it breaks things.
+  // @todo Remove check and always set after v2 is removed.
+  //   See https://github.com/uiowa/uiowa/issues/4948
   if ($is_v2 === FALSE && !empty($displays['block']['class']) && $displays['block']['class'] == Block::class) {
     $displays['block']['class'] = ListBlock::class;
   }
