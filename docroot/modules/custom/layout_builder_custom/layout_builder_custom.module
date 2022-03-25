@@ -991,7 +991,8 @@ function layout_builder_custom_preprocess_media(&$variables) {
  * Implements hook_preprocess_views_view_unformatted().
  */
 function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
-  // @todo Figure out how to appropriately scope this.
+  // @todo Figure out how to appropriately scope this. See
+  //   https://github.com/uiowa/uiowa/issues/5041
   /** @var \Drupal\views\ViewExecutable $view */
   $view = $variables['view'];
   $variables['row_item_classes'] = [];
