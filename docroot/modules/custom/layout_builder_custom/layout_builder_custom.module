@@ -536,7 +536,8 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
         ])) {
           $form_state->setValue('layout_builder_style_card_image_size', 'card_image_large');
           // @todo Should we set a message here to let the user
-          //   know the image size was changed?
+          //   know the image size was changed? See
+          //   https://github.com/uiowa/uiowa/issues/5036
         }
       }
       break;
