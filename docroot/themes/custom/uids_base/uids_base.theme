@@ -586,12 +586,31 @@ function uids_base_preprocess_block(&$variables) {
   if (isset($variables['elements']['#id'])) {
     $region = Block::load($variables['elements']['#id'])->getRegion();
 
-    if ($region === 'footer_second' && in_array($variables['base_plugin_id'], [
+    if (in_array($variables['base_plugin_id'], [
       'system_menu_block',
       'menu_block',
     ])) {
-      $variables['attributes']['class'][] = 'footer__links';
-      $variables['attributes']['class'][] = 'footer__links--nav';
+
+      if ($region === 'footer_second') {
+        $variables['attributes']['class'][] = 'footer__links';
+        $variables['attributes']['class'][] = 'footer__links--nav';
+      }
+
+      switch ($variables['derivative_plugin_id']) {
+        case 'external-quick-links':
+          $variables['attributes']['class'][] = 'menu--group';
+          break;
+
+        case 'top-links':
+          $variables['attributes']['class'][] = 'menu--top';
+          $variables['attributes']['class'][] = 'nav';
+          break;
+
+        case 'search-links':
+          $variables['attributes']['class'][] = 'menu--quick-links';
+          break;
+
+      }
     }
   }
 
@@ -601,28 +620,6 @@ function uids_base_preprocess_block(&$variables) {
       if (substr($style, 0, strlen('inner--grid')) === 'inner--grid') {
         unset($variables["attributes"]["class"][$key]);
       }
-    }
-  }
-
-  // @todo Combine this section with the section before it.
-  if (in_array($variables['base_plugin_id'], [
-    'system_menu_block',
-    'menu_block',
-  ])) {
-    switch ($variables['derivative_plugin_id']) {
-      case 'external-quick-links':
-        $variables['attributes']['class'][] = 'menu--group';
-        break;
-
-      case 'top-links':
-        $variables['attributes']['class'][] = 'menu--top';
-        $variables['attributes']['class'][] = 'nav';
-        break;
-
-      case 'search-links':
-        $variables['attributes']['class'][] = 'menu--quick-links';
-        break;
-
     }
   }
 
