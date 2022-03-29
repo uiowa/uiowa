@@ -146,7 +146,6 @@ class Books extends BaseNodeSource {
           'type' => 'eBook',
           'isbn' => $ebook[0]['isbn'],
           'retail_price' => $row->getSourceProperty('field_uibook_priceebook120'),
-          'sale_price' => $row->getSourceProperty('field_uibook_ebooksale'),
           'promo' => $row->getSourceProperty('field_uibook_ebookpromo'),
           'expire_date' => $row->getSourceProperty('field_uibook_ebooksaleexpiry'),
           'ownership' => '120 day',
