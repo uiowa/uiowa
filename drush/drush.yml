@@ -1,5 +1,8 @@
 # This file defines drush configuration that applies to drush commands
 # for the entire application. For site-specific settings, like URI, use
 # ../docroot/sites/[site]/drush.yml
+drush:
+  paths:
+    backup-dir: '/var/www/html/tmp/drush-backups'
 ssh:
   options: '-A -o PasswordAuthentication=no -p 22'
