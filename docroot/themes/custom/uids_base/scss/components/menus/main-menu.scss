@@ -286,8 +286,10 @@
           }
 
           li.menu-item--expanded {
-            ul li a {
-              color: $secondary;
+            ul li {
+              a, span {
+                color: $secondary;
+              }
             }
           }
         }
@@ -342,6 +344,25 @@
       }
     }
 
+    li.menu-item--expanded li {
+      button {
+        &::after {
+          [class*="bg--black"] & {
+            color: $secondary;
+          }
+        }
+
+        &:hover,
+        &[aria-expanded="true"] {
+          &:after {
+            [class*="bg--black"] & {
+              color: #fff;
+            }
+          }
+        }
+      }
+    }
+    
     > li.menu-item--active-trail {
       @include breakpoint(sm) {
         button {
