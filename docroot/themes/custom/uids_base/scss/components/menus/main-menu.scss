@@ -1,7 +1,6 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
 @import "components/menus/main-menu/main-menu.scss";
-
 // set horizontal only if used in layout--onecol section.
 // @todo remove once https://github.com/GoogleChromeLabs/container-query-polyfill/issues/23 is resolved.
 @include breakpoint(sm) {
@@ -32,8 +31,8 @@
             margin-right: 0;
           }
 
-          > a,
-          > span {
+          > span,
+          > a {
             @include bttn--focus;
             position: relative;
             width: auto;
@@ -72,8 +71,8 @@
               background: transparent;
             }
 
-            > a,
-            > span {
+            > span,
+            > a {
               background-color: #f3f3f3;
               margin: 0;
               padding-left: 1.875rem;
@@ -127,8 +126,8 @@
               }
             }
 
-            > a,
-            > span {
+            > span,
+            > a {
               &:before {
                 left: calc(70% - 10px);
               }
@@ -140,8 +139,8 @@
             background-color: transparent;
             align-items: center;
 
-            > span,
-            > a {
+            > a,
+            > span {
               padding: 1.475rem 0.5rem 1.475rem 1.375rem;
             }
           }
@@ -163,6 +162,7 @@
           width: 230px;
           padding-bottom: 0;
 
+          // override the list-style disc from main-menu.scss
           ul.menu {
             list-style: none;
             margin-left: 0;
@@ -197,57 +197,57 @@
           }
         }
 
-        .menu li span {
-          padding: 0.625rem 1.05rem 0.625rem 1.2rem;
-        }
-
-        .menu li a,
-        .menu li span {
-          &:focus,
-          &:hover {
-            background: $light;
-          }
-
-          &:after {
-            height: 2px;
-            background-color: $light-gray;
-          }
-        }
-
-        li.menu-item--expanded li.menu-item--expanded {
-          display: flex;
-          flex-wrap: wrap;
-
-          > a,
-          > span {
-            flex-basis: 78%;
-          }
-        }
-
-        li.menu-item--expanded ul li a,
-        li.menu-item--expanded ul li span {
-          text-align: left;
-
-          &::before {
-            content: "";
-          }
-
-          &:after {
-            content: "";
-          }
-        }
-
         li {
           position: relative;
-        }
 
-        li a:after {
-          background-color: $brand-cool-gray;
-        }
+          a:after {
+            background-color: $brand-cool-gray;
+          }
 
-        li:last-of-type a {
-          &:before {
-            width: 0;
+          &.menu-item--expanded {
+            li {
+              a,
+              span {
+                text-align: left;
+
+                &::before {
+                  content: "";
+                }
+
+                &:after {
+                  content: "";
+                }
+              }
+
+              &.menu-item--expanded {
+                display: flex;
+                flex-wrap: wrap;
+
+                > span,
+                > a {
+                  flex-basis: 78%;
+                }
+              }
+            }
+          }
+
+          li {
+            span {
+              padding: 0.625rem 1.05rem 0.625rem 1.2rem;
+            }
+
+            a,
+            span {
+              &:focus,
+              &:hover {
+                background: $light;
+              }
+
+              &:after {
+                height: 2px;
+                background-color: $light-gray;
+              }
+            }
           }
         }
       }
@@ -260,8 +260,8 @@
       .menu-wrapper--horizontal {
         > .menu {
           > li.menu-item--active-trail {
-            > a,
-            > span {
+            > span,
+            > a {
               background: #fff;
               color: $secondary;
             }
@@ -297,16 +297,16 @@
     &[class*="bg--gold"] {
       .menu-wrapper--horizontal {
         > .menu {
-          > li > a,
-          > li > span {
+          > li > span,
+          > li > a {
             &:before {
               background-color: $brand-cool-gray;
             }
           }
 
           > li.menu-item--active-trail {
-            > a,
-            > span {
+            > span,
+            > a {
               &:before {
                 border-top-color: $brand-cool-gray;
                 background-color: transparent;
@@ -323,6 +323,7 @@
   }
 }
 
+
 // menu button styles
 .menu-wrapper--horizontal {
   > .menu {
@@ -335,6 +336,7 @@
       }
       display: flex;
       flex-wrap: wrap;
+      position: relative;
       @include breakpoint(sm) {
         flex-wrap: inherit;
       }
