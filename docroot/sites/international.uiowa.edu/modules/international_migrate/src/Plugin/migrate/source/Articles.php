@@ -71,9 +71,6 @@ class Articles extends BaseNodeSource {
     }
     parent::prepareRow($row);
 
-    if ($row->getSourceProperty('nid') == 4174) {
-      $foo = 'bar';
-    }
     // Get the author tags to build into our mapped
     // field_news_authors value.
     $tables = [
