@@ -279,7 +279,8 @@ class Articles extends BaseNodeSource {
       // Grab our section from the node's layout. Here we know
       // the structure of our pages, so we can grab it directly.
       $layout = $node->get('layout_builder__layout');
-      $section = $layout->get(2)->getValue()['section'];
+      $section_delta = $layout->count() - 1;
+      $section = $layout->getSection($section_delta);
       $section_array = $section->toArray();
       $uuid = array_keys($section_array['components'])[0];
       $component = $section_array['components'][$uuid];
@@ -316,7 +317,7 @@ class Articles extends BaseNodeSource {
       $component['configuration']['block_revision_id'] = $block->getRevisionId();
       $section_array['components'][$uuid] = $component;
       // Remove the old section and append our new one.
-      $layout->removeSection(2);
+      $layout->removeSection($section_delta);
       $layout->appendSection(Section::fromArray($section_array));
       // Place the new layout back into the node field and save.
       $node->set('layout_builder__layout', $layout->getSections());
@@ -324,6 +325,7 @@ class Articles extends BaseNodeSource {
       $node->revision_log = 'Auto-updated links during news migration.';
       $node->save();
     }
+    return TRUE;
   }
 
   /**
