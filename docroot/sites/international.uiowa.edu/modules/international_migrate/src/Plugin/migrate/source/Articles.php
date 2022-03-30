@@ -280,10 +280,10 @@ class Articles extends BaseNodeSource {
       // the structure of our pages, so we can grab it directly.
       $layout = $node->get('layout_builder__layout');
       $section = $layout->get(2)->getValue()['section'];
-      $section_array = $section->toRenderArray();
-      $uuid = array_keys($section_array['content'])[0];
-      $component = $section_array['content'][$uuid];
-      $revision_id = $component['#configuration']['block_revision_id'];
+      $section_array = $section->toArray();
+      $uuid = array_keys($section_array['components'])[0];
+      $component = $section_array['components'][$uuid];
+      $revision_id = $component['configuration']['block_revision_id'];
       $block = $block_manager->loadRevision($revision_id);
       $block_text = $block->field_uiowa_text_area->value;
 
@@ -313,13 +313,15 @@ class Articles extends BaseNodeSource {
       $block->save();
       // Set the new revision in the component
       // and place it back into the section array.
-      $component['#configuration']['block_revision_id'] = $block->getRevisionId();
-      $section_array['content'][$uuid] = $component;
+      $component['configuration']['block_revision_id'] = $block->getRevisionId();
+      $section_array['components'][$uuid] = $component;
       // Remove the old section and append our new one.
       $layout->removeSection(2);
       $layout->appendSection(Section::fromArray($section_array));
       // Place the new layout back into the node field and save.
       $node->set('layout_builder__layout', $layout->getSections());
+      $node->setNewRevision(TRUE);
+      $node->revision_log = 'Auto-updated links during news migration.';
       $node->save();
     }
   }
