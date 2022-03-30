@@ -1,32 +1,44 @@
 (function ($, AccessibleMenu) {'use strict';
   Drupal.behaviors.accessible_menu = {
     attach: function (context, settings) {
-      const menu = new AccessibleMenu.TopLinkDisclosureMenu({
-        menuElement: context.querySelector('.menu-wrapper--horizontal > .menu'),
-        // We have to add 'span' to handle <nolink>.
-        menuLinkSelector: 'a, span',
-        submenuItemSelector: 'li.menu-item--expanded',
-        submenuToggleSelector: 'button',
-      });
+      const menus = context.querySelectorAll('.menu-wrapper--horizontal > .menu');
 
-      // Add buttons to toggle menus.
-      const expandableMenuItems = context.querySelectorAll('.menu-wrapper--horizontal li.menu-item--expanded > a, .menu-wrapper--horizontal li.menu-item--expanded > span');
+      // Bail early if this isn't relevant.
+      if (menus === null) {
+        return false;
+      }
 
-      expandableMenuItems.forEach(function(menuItem) {
-        /* buttons are generated on init, to support no JS and have the submenus displayed by default */
-        let btn = document.createElement('button');
-        btn.setAttribute('aria-expanded', 'false');
-        btn.type = 'button';
-        btn.setAttribute('aria-controls', 'id_' + menuItem.innerText.toLowerCase() + '_menu');
-        btn.ariaLabel = 'More ' + menuItem.innerText + ' pages';
-        menuItem.parentNode.insertBefore(btn, menuItem.nextSibling);
-        // add id to ul for arial label
-        const menuId = 'id_' + menuItem.innerText.toLowerCase() + '_menu';
-        // check for ul.menu
-        let potentialUl = menuItem.nextElementSibling.nextElementSibling;
-        if (potentialUl.nodeName === 'UL' && potentialUl.classList.contains('menu')) {
-          potentialUl.setAttribute('id', menuId);
-        }
+      // Loop through the menus.
+      menus.forEach(function(menuElement) {
+        // Find all menu items that can be displayed.
+        const expandableMenuItems = menuElement.querySelectorAll('li.menu-item--expanded > a, li.menu-item--expanded > span');
+
+        // Add buttons to toggle menus. Buttons are generated here to support
+        // no JS and sub-menus displayed by default.
+        expandableMenuItems.forEach(function(menuItem) {
+          let btn = context.createElement('button');
+          btn.setAttribute('aria-expanded', 'false');
+          btn.type = 'button';
+          btn.setAttribute('aria-controls', 'id_' + menuItem.innerText.toLowerCase() + '_menu');
+          btn.ariaLabel = 'More ' + menuItem.innerText + ' pages';
+          menuItem.parentNode.insertBefore(btn, menuItem.nextSibling);
+          // Add ID to ul for aria-label.
+          const menuId = 'id_' + menuItem.innerText.toLowerCase() + '_menu';
+          // Check for 'ul.menu'.
+          let potentialUl = menuItem.nextElementSibling.nextElementSibling;
+          if (potentialUl.nodeName === 'UL' && potentialUl.classList.contains('menu')) {
+            potentialUl.setAttribute('id', menuId);
+          }
+        });
+
+        // Initialize menu.
+        new AccessibleMenu.TopLinkDisclosureMenu({
+          menuElement,
+          // We have to add 'span' to handle <nolink>.
+          menuLinkSelector: 'a, span',
+          submenuItemSelector: 'li.menu-item--expanded',
+          submenuToggleSelector: 'button',
+        });
       });
     }
   }
