@@ -247,12 +247,12 @@ class Articles extends BaseNodeSource {
     ];
     if ($this->replaceSpecifiedLinks($to_update)) {
       $this->logger->notice('Preexisting node links updated: @nids', [
-        '@nids' => implode(', ', $to_update),
+        '@nids' => implode(', ', array_keys($to_update)),
       ]);
     }
     else {
       $this->logger->notice('Unable to update node links: @nids', [
-        '@nids' => implode(', ', $to_update),
+        '@nids' => implode(', ', array_keys($to_update)),
       ]);
     }
     // Report possible broken links after our known high water mark
