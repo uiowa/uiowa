@@ -13,7 +13,13 @@ use Drupal\Core\Form\FormStateInterface;
 function sitenow_seo_form_google_analytics_admin_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Restrict access to some Google Analytics form items for all roles
   // except administrator.
-  if (!sitenow_is_user_admin(\Drupal::currentUser())) {
+  /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+  $check = \Drupal::service('uiowa_core.access_checker');
+
+  /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+  $access = $check->access(\Drupal::currentUser()->getAccount());
+
+  if ($access->isForbidden()) {
     $form['tracking']['#access'] = FALSE;
     $form['advanced']['#access'] = FALSE;
   }
