@@ -72,7 +72,6 @@ function css() {
 // Watch files.
 function watchFiles() {
   watch(paths.src, compile);
-  // @todo Watch other changes?
 }
 
 const copy = parallel(copyUids, fontCopy);

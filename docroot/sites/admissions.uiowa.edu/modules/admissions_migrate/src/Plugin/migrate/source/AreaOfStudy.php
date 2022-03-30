@@ -103,7 +103,7 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
    * {@inheritdoc}
    */
   public function postImportProcess(MigrateImportEvent $event) {
-    // @todo Figure out why this event fires multiple times.
+    // @todo https://github.com/uiowa/uiowa/issues/3338
     $has_run = $this->state->get('admissions_migrate_post_import', FALSE);
 
     if ($has_run == FALSE) {
