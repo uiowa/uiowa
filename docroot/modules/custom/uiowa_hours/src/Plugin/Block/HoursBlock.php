@@ -167,7 +167,6 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
       '#default_value' => $this->configuration['display_datepicker'] ?? FALSE,
     ];
 
-    // @todo Create config to render quick links like tomorrow, next week, etc.
     return $form;
 
   }
