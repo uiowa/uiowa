@@ -109,6 +109,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
             }
           }
           break;
+
         case 'menu_block:main':
           $selectedStyles = $event->getComponent()->get('layout_builder_styles_style');
           // Check that horizontal menu is select in LBS.
