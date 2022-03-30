@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: now.uiowa.ddev.site
+    protocol: https
+  machine_name: now
+  human_name: now.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: now.prod
+drupal:
+  db:
+    database: now_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: jrossi
+  site-name: 'Iowa Now'
