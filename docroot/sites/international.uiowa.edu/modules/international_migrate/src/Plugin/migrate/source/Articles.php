@@ -236,11 +236,14 @@ class Articles extends BaseNodeSource {
     if (!$migration->allRowsProcessed() || $migration->id() === 'international_article_redirects') {
       return;
     }
+    // Node ids to be updated, as well as section number.
+    // They all are currently section 2, but this may need
+    // to be updated prior to prod migration.
     $to_update = [
-      1376,
-      1391,
-      1396,
-      1411,
+      1376 => 2,
+      1391 => 2,
+      1396 => 2,
+      1411 => 2,
     ];
     if ($this->replaceSpecifiedLinks($to_update)) {
       $this->logger->notice('Preexisting node links updated: @nids', [
@@ -275,11 +278,10 @@ class Articles extends BaseNodeSource {
     $block_manager = \Drupal::service('entity_type.manager')
       ->getStorage('block_content');
     $nodes = $entity_manager->loadMultiple($nids);
-    foreach ($nodes as $node) {
+    foreach ($nodes as $node => $section_delta) {
       // Grab our section from the node's layout. Here we know
       // the structure of our pages, so we can grab it directly.
       $layout = $node->get('layout_builder__layout');
-      $section_delta = $layout->count() - 1;
       $section = $layout->getSection($section_delta);
       $section_array = $section->toArray();
       $uuid = array_keys($section_array['components'])[0];
@@ -344,7 +346,7 @@ class Articles extends BaseNodeSource {
     // we may need to offset some of the node ids to account
     // for their new order in node id.
     $offset = 0;
-    $article_start = 0;
+    $article_start = 3121;
     $map = [
       3850 => [1071],
       4117 => [-1],
