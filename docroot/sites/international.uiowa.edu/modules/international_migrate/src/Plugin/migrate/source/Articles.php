@@ -263,7 +263,7 @@ class Articles extends BaseNodeSource {
   /**
    * Replace links for several specified nodes.
    */
-  private function replaceSpecifiedLinks($nids) {
+  private function replaceSpecifiedLinks($to_update) {
     $db = \Drupal::database();
     if (!$db->schema()->tableExists('migrate_map_international_articles')) {
       return FALSE;
@@ -279,8 +279,19 @@ class Articles extends BaseNodeSource {
     $block_manager = \Drupal::service('entity_type.manager')
       ->getStorage('block_content');
 
+    $nids = array_keys($to_update);
     $nodes = $entity_manager->loadMultiple($nids);
-    foreach ($nodes as $section_delta => $node) {
+    foreach ($nodes as $node) {
+      // We should be able to index the to_update array
+      // to get the correct section delta. If we can't,
+      // then something has gone seriously wrong. Time to
+      // quit and spit out an error notice.
+      if (!isset($to_update[$node->id()])) {
+        return FALSE;
+      }
+      // Otherwise, if it's set, then grab the section delta
+      // we need to update.
+      $section_delta = $to_update[$node->id()];
       // Grab our section from the node's layout. Here we know
       // the structure of our pages, so we can grab it directly.
       $layout = $node->get('layout_builder__layout');
