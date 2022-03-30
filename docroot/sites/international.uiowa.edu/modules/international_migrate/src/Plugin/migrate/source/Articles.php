@@ -273,12 +273,14 @@ class Articles extends BaseNodeSource {
       ->execute()
       ->fetchAllKeyed();
 
+    /** @var \Drupal\Core\Entity\EntityStorageInterface $entity_manager */
     $entity_manager = \Drupal::service('entity_type.manager')
       ->getStorage('node');
     $block_manager = \Drupal::service('entity_type.manager')
       ->getStorage('block_content');
+
     $nodes = $entity_manager->loadMultiple($nids);
-    foreach ($nodes as $node => $section_delta) {
+    foreach ($nodes as $section_delta => $node) {
       // Grab our section from the node's layout. Here we know
       // the structure of our pages, so we can grab it directly.
       $layout = $node->get('layout_builder__layout');
