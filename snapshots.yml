@@ -1,12 +1,12 @@
 - name: Front page with events block hidden
   url: /
-  execute: "setTimeout(() => {document.querySelector('.block-inline-blockuiowa-events').parentNode.style.display = 'none';}, 1000)"
+  execute: "document.querySelector('.block-inline-blockuiowa-events').parentNode.style.display = 'none';"
 - name: About page with search input visible
   url: /about
   execute: "document.querySelector('.search-button').click()"
 - name: Component showcase page with events block and remote video hidden
   url: /component-showcase
-  execute: "setTimeout(() => {document.querySelector('.block-inline-blockuiowa-events').parentNode.style.display = 'none';document.querySelector('.media--type-remote-video').parentNode.style.display = 'none';}, 1000)"
+  execute: "document.querySelector('.block-inline-blockuiowa-events').parentNode.style.display = 'none';document.querySelector('.media--type-remote-video').parentNode.style.display = 'none';"
 - name: People
   url: /people
 - name: Person
