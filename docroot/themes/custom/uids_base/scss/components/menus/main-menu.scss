@@ -165,24 +165,15 @@
           top: 100%;
           width: 230px;
           padding-bottom: 0;
-          display: none;
-          &.show {
-            display: block;
-          }
 
           // override the list-style disc from main-menu.scss
           ul.menu {
             list-style: none;
             margin-left: 0;
             position: relative;
-            display: block;
             width: auto;
             background: transparent;
             box-shadow: none;
-            display: none;
-            &.show {
-              display: block;
-            }
 
             li {
               list-style: none;
@@ -341,6 +332,21 @@
 // menu button styles
 .menu-wrapper--horizontal {
   > .menu {
+    ul {
+      display: none;
+
+      &.show {
+        display: block;
+      }
+    }
+    > ul > ul.menu {
+      display: none;
+
+      &.show {
+        display: block;
+      }
+    }
+
     li {
       a {
         flex-basis: 80%;
