@@ -42,6 +42,15 @@
   <div class="banner__container">
     <div class="banner__content">
       {% block heading %}
+        {% if banner_pre_title is not empty %}
+          {% set banner_pre_title_heading = {
+            'headline_level': 'div',
+            'headline_class' : headline_class|merge(['banner__pre-title']),
+            'headline_text' : banner_pre_title,
+          } %}
+          {% include '@uids_base/uids/headline.html.twig' with banner_pre_title_heading only %}
+
+        {% endif %}
         {% if banner_title is not empty %}
           {# @todo Determine if it is better to programatically set level and class via preprocess. #}
           {% set banner_heading = {

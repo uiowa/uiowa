@@ -29,7 +29,6 @@ class SettingsForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
-
     $config = $this->config('uiowa_alerts.settings');
 
     $form['hawk_alert'] = [
@@ -60,8 +59,8 @@ class SettingsForm extends ConfigFormBase {
         'danger' => $this->t('Danger'),
       ],
       '#default_value' => $config->get('custom_alert.level'),
-      '#description' => $this->t('The custom alert level. Determines the color of the alert based on the <a href="@link">UIDS</a>.', [
-        '@link' => 'https://uiowa.github.io/uids/components/detail/alerts--info.html',
+      '#description' => $this->t('The custom alert level. Determines the color of the alert based on the <a href=":link">UIDS</a> alert component.', [
+        ':link' => 'https://uids.brand.uiowa.edu/components/detail/alert.html',
       ]),
       '#states' => [
         'visible' => [
@@ -73,7 +72,8 @@ class SettingsForm extends ConfigFormBase {
       ],
     ];
 
-    // @todo Figure out why required state results in console error on submit.
+    // Using states for requiring this element resulted in a console error, so
+    // we check to see if it is empty in the validation method.
     $form['custom_alert_message'] = [
       '#type' => 'text_format',
       '#title' => $this->t('Custom Alert Message'),
@@ -91,6 +91,18 @@ class SettingsForm extends ConfigFormBase {
     ];
 
     return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    // Require the custom alert message if display is checked.
+    if ($form_state->getValue('custom_alert_display') && empty($form_state->getValue('custom_alert_message')['value'])) {
+      $form_state->setErrorByName('custom_alert_message', 'This field is required.');
+    }
+
+    parent::validateForm($form, $form_state);
   }
 
   /**

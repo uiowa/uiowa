@@ -3994,3 +3994,9 @@ $sites['labam.uiowa.ddev.site'] = 'am.lab.uiowa.edu';
 $sites['labam.dev.drupal.uiowa.edu'] = 'am.lab.uiowa.edu';
 $sites['labam.stage.drupal.uiowa.edu'] = 'am.lab.uiowa.edu';
 $sites['labam.prod.drupal.uiowa.edu'] = 'am.lab.uiowa.edu';
+
+// Directory aliases for now.uiowa.edu.
+$sites['now.uiowa.ddev.site'] = 'now.uiowa.edu';
+$sites['now.dev.drupal.uiowa.edu'] = 'now.uiowa.edu';
+$sites['now.stage.drupal.uiowa.edu'] = 'now.uiowa.edu';
+$sites['now.prod.drupal.uiowa.edu'] = 'now.uiowa.edu';

@@ -27,6 +27,13 @@ trait ProcessMediaTrait {
   protected $viewMode = 'medium__no_crop';
 
   /**
+   * The default image alignment.
+   *
+   * @var string
+   */
+  protected $align = 'center';
+
+  /**
    * Minimum image dimensions to pull over.
    *
    * @var array
@@ -193,9 +200,7 @@ trait ProcessMediaTrait {
       // If there's no fid in the D8 database,
       // then we'll need to fetch it from the source.
       if (!$new_fid) {
-
-        // @todo Remove the hardcoding for physics.uiowa.edu/itu.
-        $new_fid = $this->downloadFile($filename, "https://physics.uiowa.edu/sites/" . $filepath . '/', $this->getDrupalFileDirectory());
+        $new_fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $filepath . '/', $this->getDrupalFileDirectory());
         if ($new_fid) {
           $id = $this->createMediaEntity($new_fid, $meta, 1);
           $uuid = $this->getMid($filename, 'file')['uuid'];
@@ -232,7 +237,7 @@ trait ProcessMediaTrait {
    *   Returns markup as a plaintext string.
    */
   public function constructInlineEntity(string $uuid, string $align, $view_mode = '') {
-    $align = $align ?? 'center';
+    $align = !empty($align) ? $align : $this->align;
 
     $media = [
       '#type' => 'html_tag',
