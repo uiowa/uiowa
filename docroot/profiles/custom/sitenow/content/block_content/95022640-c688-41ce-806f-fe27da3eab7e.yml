@@ -1,8 +1,8 @@
 _meta:
   version: '1.0'
   entity_type: block_content
-  uuid: 0c58cf62-a63c-404d-81e1-abf55eb71e26
-  bundle: uiowa_text_area
+  uuid: 95022640-c688-41ce-806f-fe27da3eab7e
+  bundle: uiowa_events
   default_langcode: en
 default:
   status:
@@ -14,6 +14,23 @@ default:
   revision_translation_affected:
     -
       value: true
+  field_collection_more:
+    -
+      value: true
+  field_collection_more_path:
+    -
+      uri: 'https://events.uiowa.edu'
+      title: ''
+      options: {  }
+  field_collection_results:
+    -
+      value: 2
+  field_uiowa_events_audiences:
+    -
+      value: '277'
+  field_uiowa_events_past:
+    -
+      value: false
   field_uiowa_headline:
     -
       headline: ''
@@ -22,7 +39,3 @@ default:
       headline_style: default
       headline_alignment: default
       child_heading_size: h2
-  field_uiowa_text_area:
-    -
-      value: "<h2>Helpful Articles</h2>\r\n"
-      format: minimal
