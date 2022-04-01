@@ -84,7 +84,7 @@ function uiowa_auth_form_user_register_form_alter(&$form, FormStateInterface $fo
   // Hide the path field. The defaults are fine.
   $form['path']['#access'] = FALSE;
 
-  // @todo This could be used if the email template was changed.
+  // @todo https://github.com/uiowa/uiowa/issues/5032
   $form['account']['notify']['#access'] = FALSE;
 }
 

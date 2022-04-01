@@ -55,8 +55,8 @@ function get_text_field_tables() {
         foreach (array_intersect_key($field_storage_definitions, $field_map) as $field_storage_definition) {
           $field_name = $field_storage_definition->getName();
           // @todo Find a better way to handle this. Currently skipping rabbit hole
-          //   fields, because they are appended to node_field_data, and would need
-          //   to be handled separately, similar to title fields.
+          //   fields, because they are appended to node_field_data, and would
+          //   need to be handled separately, similar to title fields.
           if (str_starts_with($field_name, 'rh_')) {
             continue;
           }
