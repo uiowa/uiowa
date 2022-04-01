@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.taxonomy_term.community_colleges.field_cc_contact_info
     - field.field.taxonomy_term.community_colleges.field_cc_locations
+    - field.field.taxonomy_term.community_colleges.field_cc_no_major_info
     - taxonomy.vocabulary.community_colleges
   module:
     - path
@@ -36,6 +37,14 @@ content:
     region: content
     settings:
       size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_cc_no_major_info:
+    type: text_textarea
+    weight: 7
+    region: content
+    settings:
+      rows: 5
       placeholder: ''
     third_party_settings: {  }
   name:

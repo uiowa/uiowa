@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.taxonomy_term.community_colleges.field_cc_contact_info
     - field.field.taxonomy_term.community_colleges.field_cc_locations
+    - field.field.taxonomy_term.community_colleges.field_cc_no_major_info
     - taxonomy.vocabulary.community_colleges
   module:
     - text
@@ -25,7 +26,7 @@ content:
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 1
+    weight: 2
     region: content
   field_cc_locations:
     type: string
@@ -33,7 +34,14 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 2
+    weight: 3
+    region: content
+  field_cc_no_major_info:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
     region: content
 hidden:
   entity_print_view_epub: true
