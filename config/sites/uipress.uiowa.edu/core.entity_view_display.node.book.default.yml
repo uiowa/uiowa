@@ -13,9 +13,9 @@ dependencies:
     - field.field.node.book.field_book_editor
     - field.field.node.book.field_book_essay_by
     - field.field.node.book.field_book_excerpt
-    - field.field.node.book.field_book_file_uploads
     - field.field.node.book.field_book_foreword_author
     - field.field.node.book.field_book_illustrator
+    - field.field.node.book.field_book_interior_pages
     - field.field.node.book.field_book_introduction_author
     - field.field.node.book.field_book_pages
     - field.field.node.book.field_book_photographer
@@ -33,13 +33,13 @@ dependencies:
     - field.field.node.book.field_book_type
     - field.field.node.book.field_image
     - field.field.node.book.field_meta_tags
+    - field.field.node.book.field_pages_art_trim
     - node.type.book
     - views.view.book_publication_details
     - views.view.book_tabs
   module:
     - datetime
     - entity_reference_revisions
-    - image
     - layout_builder
     - options
     - smart_trim
@@ -408,34 +408,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 9
-            additional: {  }
-          f7f7734d-11af-4099-9959-8ea2186d2300:
-            uuid: f7f7734d-11af-4099-9959-8ea2186d2300
-            region: second
-            configuration:
-              id: 'field_block:node:book:field_book_file_uploads'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: photoswipe_field_formatter
-                label: hidden
-                settings:
-                  photoswipe_node_style_first: ''
-                  photoswipe_node_style: ''
-                  photoswipe_image_style: ''
-                  photoswipe_caption: title
-                  photoswipe_caption_custom: ''
-                  photoswipe_view_mode: _custom
-                  gallery_selector: ''
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ''
-            weight: 3
+            weight: 6
             additional: {  }
           aa6c15b3-fb9e-4b7e-8ef6-529c55825210:
             uuid: aa6c15b3-fb9e-4b7e-8ef6-529c55825210
@@ -457,7 +430,7 @@ third_party_settings:
                 child_heading_size: h3
               exposed_filter_values: null
               layout_builder_styles: {  }
-            weight: 4
+            weight: 5
             additional: {  }
           1c71f0cb-354b-4292-a664-4551d9d26d69:
             uuid: 1c71f0cb-354b-4292-a664-4551d9d26d69
@@ -509,6 +482,34 @@ third_party_settings:
               provider: uipress_core
               context_mapping: {  }
             weight: 19
+            additional: {  }
+          af481a8f-1f85-43d7-817d-24a28751de16:
+            uuid: af481a8f-1f85-43d7-817d-24a28751de16
+            region: second
+            configuration:
+              id: 'field_block:node:book:field_book_interior_pages'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: photoswipe_field_formatter
+                label: hidden
+                settings:
+                  photoswipe_node_style_first: ''
+                  photoswipe_node_style: ''
+                  photoswipe_image_style: ''
+                  photoswipe_reference_image_field: field_media_image
+                  photoswipe_caption: title
+                  photoswipe_caption_custom: ''
+                  photoswipe_view_mode: _custom
+                  gallery_selector: ''
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 4
             additional: {  }
         third_party_settings:
           layout_builder_lock:
@@ -664,15 +665,6 @@ content:
     third_party_settings: {  }
     weight: 23
     region: content
-  field_book_file_uploads:
-    type: image
-    label: above
-    settings:
-      image_link: ''
-      image_style: ''
-    third_party_settings: {  }
-    weight: 22
-    region: content
   field_book_foreword_author:
     type: entity_reference_label
     label: above
@@ -688,6 +680,15 @@ content:
       link: true
     third_party_settings: {  }
     weight: 20
+    region: content
+  field_book_interior_pages:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 30
     region: content
   field_book_introduction_author:
     type: entity_reference_label
@@ -826,6 +827,14 @@ content:
       link: false
     third_party_settings: {  }
     weight: 1
+    region: content
+  field_pages_art_trim:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 29
     region: content
 hidden:
   field_meta_tags: true
