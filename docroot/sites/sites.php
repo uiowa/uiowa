@@ -4000,3 +4000,9 @@ $sites['now.uiowa.ddev.site'] = 'now.uiowa.edu';
 $sites['now.dev.drupal.uiowa.edu'] = 'now.uiowa.edu';
 $sites['now.stage.drupal.uiowa.edu'] = 'now.uiowa.edu';
 $sites['now.prod.drupal.uiowa.edu'] = 'now.uiowa.edu';
+
+// Directory aliases for iywp.org.
+$sites['org-iywp.uiowa.ddev.site'] = 'iywp.org';
+$sites['org-iywp.dev.drupal.uiowa.edu'] = 'iywp.org';
+$sites['org-iywp.stage.drupal.uiowa.edu'] = 'iywp.org';
+$sites['org-iywp.prod.drupal.uiowa.edu'] = 'iywp.org';
