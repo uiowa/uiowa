@@ -295,8 +295,8 @@ display:
           label: ''
           exclude: false
           alter:
-            alter_text: false
-            text: ''
+            alter_text: true
+            text: '<div class="field__label">Pages, art, trim size</div> {{ field_pages_art_trim }}'
             make_link: false
             path: ''
             absolute: false
@@ -322,11 +322,11 @@ display:
             preserve_tags: ''
             html: false
           element_type: div
-          element_class: field
-          element_label_type: ''
-          element_label_class: ''
+          element_class: field__item
+          element_label_type: div
+          element_label_class: field__label
           element_label_colon: false
-          element_wrapper_type: ''
+          element_wrapper_type: div
           element_wrapper_class: ''
           element_default_classes: true
           empty: ''
