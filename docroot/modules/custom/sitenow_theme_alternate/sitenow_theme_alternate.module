@@ -10,5 +10,5 @@
  */
 function sitenow_theme_alternate_preprocess_page(&$variables) {
   $variables['#attached']['library'][] = 'sitenow_theme_alternate/sitenow_theme_alternate';
-//  $foo = $variables['#attached']['library'];
+  $variables['default_logo'] = \Drupal::config('uids_base.settings')->get('logo.use_default');
 }
