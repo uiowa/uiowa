@@ -38,6 +38,8 @@
           menuLinkSelector: 'a, span',
           submenuItemSelector: 'li.menu-item--expanded',
           submenuToggleSelector: 'button',
+          optionalKeySupport: true,
+          hoverType: 'on',
         });
       });
     }
