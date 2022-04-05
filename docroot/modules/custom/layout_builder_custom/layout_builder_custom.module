@@ -453,19 +453,32 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
       $link_text = FALSE;
 
       // First check if there is a link set.
-      foreach ($form_state->getValue(['settings', 'block_form', 'field_uiowa_banner_link']) as $key => $link) {
+      foreach ($form_state->getValue([
+        'settings',
+        'block_form',
+        'field_uiowa_banner_link',
+      ]) as $key => $link) {
         if ($key === 'add_more' || empty($link['uri'])) {
           // If there is no uri, then we don't care about anything else.
           continue;
-        } else {
+        }
+        else {
           $link_set = TRUE;
         }
+
         if (!empty($link['title'])) {
           $link_text = TRUE;
         }
       }
       // If there is a link and no text, check if there is a title.
-      if ($link_set && !empty($form_state->getValue(['settings', 'block_form', 'field_uiowa_banner_title', 0, 'container', 'text']))) {
+      if ($link_set && !empty($form_state->getValue([
+        'settings',
+        'block_form',
+        'field_uiowa_banner_title',
+        0,
+        'container',
+        'text',
+      ]))) {
         $link_text = TRUE;
       }
 
