@@ -372,9 +372,13 @@
 
         &:hover,
         &[aria-expanded="true"] {
+          [class*="bg--black"] & {
+            //color: #fff;
+
+          }
           &:after {
             [class*="bg--black"] & {
-              color: #fff;
+              //color: #fff;
             }
           }
         }
@@ -404,7 +408,8 @@
           &[aria-expanded="true"] {
             &:after {
               [class*="bg--black"] & {
-                color: #fff;
+                //color: #fff;
+                background: $secondary;
               }
             }
           }
@@ -448,16 +453,15 @@
 
       &:hover,
       &[aria-expanded="true"] {
-        color: #fff;
+        //color: #fff;
 
         &:after {
-          background: $secondary;
+          //background: $secondary;
         }
       }
 
       &[aria-expanded="true"]::after {
-        border-color: #fff;
-        background: $secondary;
+        background: #f1f1f1;
         content: "\f077";
       }
 
@@ -478,10 +482,23 @@
           border: 1px solid $secondary;
         }
       }
-
-      .menu-item--expanded a + button::after {
-        margin-left: 0;
-      }
     }
-  }
+
+    .menu-item--expanded a + button::after {
+      margin-left: 0;
+    }
+    }
 }
+
+
+//.menu-wrapper--horizontal .menu button button {
+//  display: none !important;
+//
+//  &::after {
+//    font-size: 0.6rem;
+//    height: 0.6rem;
+//    width: 0.6rem;
+//    padding: 0.6rem;
+//
+//  }
+//}
