@@ -39,7 +39,7 @@
           submenuItemSelector: 'li.menu-item--expanded',
           submenuToggleSelector: 'button',
           optionalKeySupport: true,
-          hoverType: 'on',
+          hoverType: 'off',
         });
       });
     }
