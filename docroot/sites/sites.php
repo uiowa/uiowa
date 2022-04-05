@@ -4012,3 +4012,9 @@ $sites['org-iywp.uiowa.ddev.site'] = 'iywp.org';
 $sites['org-iywp.dev.drupal.uiowa.edu'] = 'iywp.org';
 $sites['org-iywp.stage.drupal.uiowa.edu'] = 'iywp.org';
 $sites['org-iywp.prod.drupal.uiowa.edu'] = 'iywp.org';
+
+// Directory aliases for intradent.dentistry.uiowa.edu.
+$sites['dentistryintradent.uiowa.ddev.site'] = 'intradent.dentistry.uiowa.edu';
+$sites['dentistryintradent.dev.drupal.uiowa.edu'] = 'intradent.dentistry.uiowa.edu';
+$sites['dentistryintradent.stage.drupal.uiowa.edu'] = 'intradent.dentistry.uiowa.edu';
+$sites['dentistryintradent.prod.drupal.uiowa.edu'] = 'intradent.dentistry.uiowa.edu';
