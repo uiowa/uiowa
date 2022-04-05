@@ -70,6 +70,7 @@ class Books extends BaseNodeSource {
         }
         // Create an empty blockquote element.
         $blockquote = $doc->createElement('blockquote');
+        $blockquote->setAttribute('class', 'blockquote blockquote--left blockquote--remove-margin');
         // Copy and append each of our fetched children nodes.
         foreach ($child_nodes as $child) {
           $new_child = $paragraph->ownerDocument->importNode($child, TRUE);
