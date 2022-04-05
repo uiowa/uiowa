@@ -40,7 +40,6 @@ process:
         plugin: default_value
         default_value: 'minimal'
   field_image: field_image_attach
-#  field_book_art: # @todo What does this map to?
   field_book_afterword_author:
     plugin: sub_process
     source: field_uibook_afterauth
@@ -77,7 +76,6 @@ process:
         migration: uipress_authors
         source: nid
   field_book_excerpt: field_uibook_excerpt
-  #  field_book_file_uploads: # @todo What does this map to?
   field_book_foreword_author:
     plugin: sub_process
     source: field_uibook_foreauth
@@ -102,7 +100,6 @@ process:
         plugin: migration_lookup
         migration: uipress_authors
         source: nid
-  #  field_book_pages: # @todo What does this map to?
   field_book_photographer:
     plugin: sub_process
     source: field_uibook_photog
@@ -136,10 +133,10 @@ process:
         plugin: migration_lookup
         migration: uipress_authors
         source: nid
-  #  field_book_trim_size: # @todo What does this map to?
   field_book_type:
     plugin: create_book_type
     source: custom_book_types
+  field_pages_art_trim: field_uibook_pp
 destination:
   plugin: 'entity:node'
   default_bundle: book
