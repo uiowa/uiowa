@@ -237,7 +237,6 @@ class HoursFilterForm extends FormBase {
           ],
         ];
 
-        // @todo Add block config to get categories and render them here.
         foreach ($date as $time) {
           $markup = $this->t('<span class="badge badge--green">Open</span> @start - @end', [
             '@start' => date('g:ia', strtotime($time['startHour'])),

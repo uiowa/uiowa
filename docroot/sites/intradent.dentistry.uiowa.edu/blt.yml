@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: dentistryintradent.uiowa.ddev.site
+    protocol: https
+  machine_name: dentistryintradent
+  human_name: intradent.dentistry.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: dentistryintradent.prod
+drupal:
+  db:
+    database: intradent_dentistry_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: vmueller
+  site-name: IntraDent
