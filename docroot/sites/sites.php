@@ -4006,3 +4006,9 @@ $sites['labrad.uiowa.ddev.site'] = 'rad.lab.uiowa.edu';
 $sites['labrad.dev.drupal.uiowa.edu'] = 'rad.lab.uiowa.edu';
 $sites['labrad.stage.drupal.uiowa.edu'] = 'rad.lab.uiowa.edu';
 $sites['labrad.prod.drupal.uiowa.edu'] = 'rad.lab.uiowa.edu';
+
+// Directory aliases for iywp.org.
+$sites['org-iywp.uiowa.ddev.site'] = 'iywp.org';
+$sites['org-iywp.dev.drupal.uiowa.edu'] = 'iywp.org';
+$sites['org-iywp.stage.drupal.uiowa.edu'] = 'iywp.org';
+$sites['org-iywp.prod.drupal.uiowa.edu'] = 'iywp.org';
