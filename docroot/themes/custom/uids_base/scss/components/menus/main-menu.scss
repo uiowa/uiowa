@@ -140,13 +140,14 @@
           }
 
           &.menu-item--expanded {
-            padding-right: 0.5rem;
+            //padding-right: 0.5rem;
             background-color: transparent;
             align-items: center;
 
             > a,
             > span {
               padding: 1.475rem 0.5rem 1.475rem 1.375rem;
+              margin-right: -1px;
             }
           }
         }
@@ -179,22 +180,22 @@
               list-style: none;
 
               & > a {
-                @include padding($top: $sm, $right: $xsm, $bottom: $xsm, $left: 2.2rem);
+                @include padding($top: $sm, $right: $xsm, $bottom: $xsm, $left: 1.2rem);
                 font-size: 0.9rem;
 
                 &:after {
                   height: 1px;
                 }
 
-                &::before {
-                  content: "\f111";
-                  position: absolute;
-                  font-size: 0.3rem;
-                  left: 1rem;
-                  top: 1rem;
-                  @include fas();
-                  color: $grey-light;
-                }
+                //&::before {
+                //  content: "\f111";
+                //  position: absolute;
+                //  font-size: 0.3rem;
+                //  left: 1rem;
+                //  top: 1rem;
+                //  @include fas();
+                //  color: $grey-light;
+                //}
               }
             }
           }
@@ -228,7 +229,7 @@
 
                 > span,
                 > a {
-                  flex-basis: 78%;
+                  flex-basis: 82%;
                 }
               }
             }
@@ -439,9 +440,10 @@
       align-items: center;
       background-color: transparent;
       border: none;
-      padding: 0.5rem 0.7rem;
+      padding: 0 1rem;
       @include breakpoint(sm) {
         height: 100%;
+        right: -1px;
       }
       position: absolute;
       right: 0;
@@ -449,13 +451,14 @@
       @include breakpoint(sm) {
         position: relative;
         top: 0;
-        left: -1px;
       }
 
       &:hover,
       &:focus,
       &[aria-expanded="true"] {
         //color: #fff;
+        background: #e7e7e7;
+
 
 
         &:after {
@@ -465,7 +468,6 @@
       }
 
       &[aria-expanded="true"]::after {
-        background: #e7e7e7;
         content: "\f077";
       }
 
@@ -475,23 +477,37 @@
         font-size: 0.8rem;
         @include fas();
         line-height: 2;
-        border: 1px solid #ccc;
-        border-radius: 50%;
-        height: 0.8rem;
-        width: 0.8rem;
-        padding: 0.8rem;
+        //border: 1px solid #ccc;
+        //border-radius: 50%;
+        ////height: 0.8rem;
+        ////width: 0.8rem;
+        ////padding: 0.8rem;
         @include center(both);
 
         [class*="bg--gold"] & {
           border: 1px solid $secondary;
         }
       }
+
+
     }
 
     .menu-item--expanded a + button::after {
       margin-left: 0;
     }
     }
+  > .menu  .menu {
+     button {
+       height: inherit;
+      &::after {
+        content: "\f0d7";
+        font-size: 0.9rem;
+      }
+       &[aria-expanded="true"]::after {
+         content: "\f0d8";
+       }
+    }
+  }
 }
 
 
