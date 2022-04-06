@@ -448,6 +448,46 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
   $component = $form_state->getFormObject()->getCurrentComponent();
 
   switch ($component->getPluginId()) {
+    case 'inline_block:uiowa_banner':
+      $link_set = FALSE;
+      $link_text = FALSE;
+
+      // First check if there is a link set.
+      foreach ($form_state->getValue([
+        'settings',
+        'block_form',
+        'field_uiowa_banner_link',
+      ]) as $key => $link) {
+        if ($key === 'add_more' || empty($link['uri'])) {
+          // If there is no uri, then we don't care about anything else.
+          continue;
+        }
+        else {
+          $link_set = TRUE;
+        }
+
+        if (!empty($link['title'])) {
+          $link_text = TRUE;
+        }
+      }
+      // If there is a link and no text, check if there is a title.
+      if ($link_set && !empty($form_state->getValue([
+        'settings',
+        'block_form',
+        'field_uiowa_banner_title',
+        0,
+        'container',
+        'text',
+      ]))) {
+        $link_text = TRUE;
+      }
+
+      // If there is a link and no text we can use, we have a problem.
+      if ($link_set && !$link_text) {
+        $form_state->setErrorByName('settings][block_form][field_uiowa_banner_link][0][title', t('Link text must be set if no title is present.'));
+      }
+      break;
+
     case 'inline_block:uiowa_statistic':
       $block_form = $form_state->getValue('settings')['block_form'];
       $prefix = $block_form['field_uiowa_statistic_title_pre'][0]['value'];
