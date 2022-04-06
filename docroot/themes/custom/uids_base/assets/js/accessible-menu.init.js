@@ -8,8 +8,20 @@
         return false;
       }
 
+
+
+
       // Loop through the menus.
       menus.forEach(function(menuElement) {
+
+        // Add mobile toggle button
+        const menuBlock = context.getElementById('-menu');
+        let toggleBtn = context.createElement('button');
+        toggleBtn.setAttribute('id', 'main-menu-toggle');
+        toggleBtn.setAttribute('aria-label', 'Toggle secondary menu');
+        toggleBtn.innerHTML = "Menu ☰";
+        menuBlock.insertAdjacentElement('beforebegin', toggleBtn);
+
         // Find all menu items that can be displayed.
         const expandableMenuItems = menuElement.querySelectorAll('li.menu-item--expanded > a, li.menu-item--expanded > span');
 
@@ -37,7 +49,9 @@
           // We have to add 'span' to handle <nolink>.
           menuLinkSelector: 'a, span',
           submenuItemSelector: 'li.menu-item--expanded',
+          controllerElement: context.querySelector('#main-menu-toggle'),
           submenuToggleSelector: 'button',
+          containerElement: context.querySelector('.menu-wrapper--horizontal'),
           optionalKeySupport: true,
           hoverType: 'off',
         });
