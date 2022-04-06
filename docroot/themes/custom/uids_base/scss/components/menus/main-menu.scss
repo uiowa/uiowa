@@ -9,7 +9,7 @@
   }
 }
 
-// @todo move back to UIDS. 
+// @todo Remove the follow section when https://github.com/uiowa/uids/issues/666 is resolved.
 [class*="bg--white"],
 [class*="bg--gray"] {
   .menu-wrapper--horizontal {
@@ -23,9 +23,8 @@
   }
 }
 
-
-// set horizontal only if used in layout--onecol section.
-// @todo remove once https://github.com/GoogleChromeLabs/container-query-polyfill/issues/23 is resolved.
+// Set horizontal only if used in layout--onecol section.
+// @todo Remove the following section when polyfill issue is resolved. See https://github.com/uiowa/uiowa/issues/5046
 @include breakpoint(sm) {
   .layout--onecol {
 

@@ -3988,3 +3988,33 @@ $sites['fofa.uiowa.ddev.site'] = 'fa.fo.uiowa.edu';
 $sites['fofa.dev.drupal.uiowa.edu'] = 'fa.fo.uiowa.edu';
 $sites['fofa.stage.drupal.uiowa.edu'] = 'fa.fo.uiowa.edu';
 $sites['fofa.prod.drupal.uiowa.edu'] = 'fa.fo.uiowa.edu';
+
+// Directory aliases for am.lab.uiowa.edu.
+$sites['labam.uiowa.ddev.site'] = 'am.lab.uiowa.edu';
+$sites['labam.dev.drupal.uiowa.edu'] = 'am.lab.uiowa.edu';
+$sites['labam.stage.drupal.uiowa.edu'] = 'am.lab.uiowa.edu';
+$sites['labam.prod.drupal.uiowa.edu'] = 'am.lab.uiowa.edu';
+
+// Directory aliases for now.uiowa.edu.
+$sites['now.uiowa.ddev.site'] = 'now.uiowa.edu';
+$sites['now.dev.drupal.uiowa.edu'] = 'now.uiowa.edu';
+$sites['now.stage.drupal.uiowa.edu'] = 'now.uiowa.edu';
+$sites['now.prod.drupal.uiowa.edu'] = 'now.uiowa.edu';
+
+// Directory aliases for rad.lab.uiowa.edu.
+$sites['labrad.uiowa.ddev.site'] = 'rad.lab.uiowa.edu';
+$sites['labrad.dev.drupal.uiowa.edu'] = 'rad.lab.uiowa.edu';
+$sites['labrad.stage.drupal.uiowa.edu'] = 'rad.lab.uiowa.edu';
+$sites['labrad.prod.drupal.uiowa.edu'] = 'rad.lab.uiowa.edu';
+
+// Directory aliases for iywp.org.
+$sites['org-iywp.uiowa.ddev.site'] = 'iywp.org';
+$sites['org-iywp.dev.drupal.uiowa.edu'] = 'iywp.org';
+$sites['org-iywp.stage.drupal.uiowa.edu'] = 'iywp.org';
+$sites['org-iywp.prod.drupal.uiowa.edu'] = 'iywp.org';
+
+// Directory aliases for intradent.dentistry.uiowa.edu.
+$sites['dentistryintradent.uiowa.ddev.site'] = 'intradent.dentistry.uiowa.edu';
+$sites['dentistryintradent.dev.drupal.uiowa.edu'] = 'intradent.dentistry.uiowa.edu';
+$sites['dentistryintradent.stage.drupal.uiowa.edu'] = 'intradent.dentistry.uiowa.edu';
+$sites['dentistryintradent.prod.drupal.uiowa.edu'] = 'intradent.dentistry.uiowa.edu';

@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: labam.uiowa.ddev.site
+    protocol: https
+  machine_name: labam
+  human_name: am.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labam.prod
+drupal:
+  db:
+    database: am_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: laverman
