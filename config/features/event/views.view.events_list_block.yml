@@ -678,51 +678,6 @@ display:
           hierarchy_depth: 0
           required_depth: 0
           none_label: '- Please select -'
-        field_event_virtual_uri:
-          id: field_event_virtual_uri
-          table: node__field_event_virtual
-          field: field_event_virtual_uri
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: string
-          operator: 'not empty'
-          value: ''
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_event_virtual_uri_op
-            label: 'Virtual Event'
-            description: ''
-            use_operator: false
-            operator: field_event_virtual_uri_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: field_event_virtual_uri
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              viewer: '0'
-              editor: '0'
-              publisher: '0'
-              webmaster: '0'
-              administrator: '0'
-            placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
       filter_groups:
         operator: AND
         groups:
