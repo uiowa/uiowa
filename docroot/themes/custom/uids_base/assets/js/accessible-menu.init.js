@@ -7,10 +7,7 @@
       if (menus === null) {
         return false;
       }
-
-
-
-
+      
       // Loop through the menus.
       menus.forEach(function(menuElement) {
 
@@ -19,7 +16,7 @@
         let toggleBtn = context.createElement('button');
         toggleBtn.setAttribute('id', 'main-menu-toggle');
         toggleBtn.setAttribute('aria-label', 'Toggle secondary menu');
-        toggleBtn.innerHTML = "Menu ☰";
+        toggleBtn.innerHTML = 'Menu ☰';
         menuBlock.insertAdjacentElement('beforebegin', toggleBtn);
 
         // Find all menu items that can be displayed.
