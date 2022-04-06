@@ -276,6 +276,8 @@ class Articles extends BaseNodeSource {
     /** @var \Drupal\Core\Entity\EntityStorageInterface $entity_manager */
     $entity_manager = \Drupal::service('entity_type.manager')
       ->getStorage('node');
+
+    /** @var \Drupal\Core\Entity\EntityStorageInterface $block_manager */
     $block_manager = \Drupal::service('entity_type.manager')
       ->getStorage('block_content');
 
