@@ -45,7 +45,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       // Add our LBS heading before style options.
       _layout_builder_custom_add_lbs_heading($form);
 
-      // @todo Write a patch for layout_builder_styles that adds these options.
+      // @todo Write a patch for layout_builder_styles that adds these options. See
+      //   https://github.com/uiowa/uiowa/issues/5010
       // An array of options for altering Layout Builder Styles behavior.
       $lbs_extra_options = [
         'banner_gradient' => [
@@ -117,7 +118,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       unset($form['settings']['label_display']);
       unset($form['settings']['admin_label']['#title']);
       // Hide ones implemented by Views because ListBlock has headline.
-      // @todo Investigate whether this can be added to ListBlock.
+      // @todo Investigate whether this can be added to ListBlock. See
+      //   https://github.com/uiowa/uiowa/issues/5035
       unset($form['settings']['views_label_fieldset']);
       unset($form['settings']['views_label_checkbox']);
       unset($form['settings']['views_label']);
@@ -193,7 +195,6 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             'layout_builder_style_media_format' => 'media_format_widescreen',
           ];
 
-          // @todo Is this necessary?
           $form['layout_builder_style_card_media_position']['#options']['card_media_position_stacked'] = 'Stacked';
 
           switch ($block->getPluginId()) {
@@ -260,7 +261,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           // so we remove the undefined 'default' option.
           array_shift($form['settings']['view_mode']['#options']);
 
-          // @todo Re-enable 'tab' after theming/functionality is in place.
+          // @todo Re-enable 'tab' after theming/functionality is in place. See
+          //   https://github.com/uiowa/uiowa/issues/5011
           unset($form['settings']['view_mode']['#options']['tab']);
 
           $view_options = [
@@ -446,6 +448,46 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
   $component = $form_state->getFormObject()->getCurrentComponent();
 
   switch ($component->getPluginId()) {
+    case 'inline_block:uiowa_banner':
+      $link_set = FALSE;
+      $link_text = FALSE;
+
+      // First check if there is a link set.
+      foreach ($form_state->getValue([
+        'settings',
+        'block_form',
+        'field_uiowa_banner_link',
+      ]) as $key => $link) {
+        if ($key === 'add_more' || empty($link['uri'])) {
+          // If there is no uri, then we don't care about anything else.
+          continue;
+        }
+        else {
+          $link_set = TRUE;
+        }
+
+        if (!empty($link['title'])) {
+          $link_text = TRUE;
+        }
+      }
+      // If there is a link and no text, check if there is a title.
+      if ($link_set && !empty($form_state->getValue([
+        'settings',
+        'block_form',
+        'field_uiowa_banner_title',
+        0,
+        'container',
+        'text',
+      ]))) {
+        $link_text = TRUE;
+      }
+
+      // If there is a link and no text we can use, we have a problem.
+      if ($link_set && !$link_text) {
+        $form_state->setErrorByName('settings][block_form][field_uiowa_banner_link][0][title', t('Link text must be set if no title is present.'));
+      }
+      break;
+
     case 'inline_block:uiowa_statistic':
       $block_form = $form_state->getValue('settings')['block_form'];
       $prefix = $block_form['field_uiowa_statistic_title_pre'][0]['value'];
@@ -501,14 +543,16 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
           if (!$form_state->getValue($form_media_selection)) {
             // If an image wasn't uploaded, revert to default of 'black'.
             // @todo Add feedback for user that they didn't upload an image.
-            // @todo Add validation to check whether image uploaded or not.
+            // @todo Add validation to check whether image uploaded or not. See
+            //   https://github.com/uiowa/uiowa/issues/5012
             $background_option = 'block_background_style_black';
           }
 
         }
         else {
           // If a non-image background was selected, remove the reference.
-          // @todo Trigger file deletion if the media item is unused elsewhere.
+          // @todo Trigger file deletion if the media item is unused elsewhere. See
+          //   https://github.com/uiowa/uiowa/issues/5013
           $form_state->unsetValue($form_media_selection);
         }
         // Set layout_builder_style_background to value of our duplicate select.
@@ -532,7 +576,8 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
         ])) {
           $form_state->setValue('layout_builder_style_card_image_size', 'card_image_large');
           // @todo Should we set a message here to let the user
-          //   know the image size was changed?
+          //   know the image size was changed? See
+          //   https://github.com/uiowa/uiowa/issues/5036
         }
       }
       break;
@@ -596,7 +641,8 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         $element['field_uiowa_banner_title']['widget'][0]['container']['size']['#title'] =
           t('Heading');
       }
-      // @todo Should this be scoped to a condition checking if layout_builder_styles is enabled?
+      // @todo Should this be scoped to a condition checking if layout_builder_styles is enabled? See
+      //   https://github.com/uiowa/uiowa/issues/5038
       $all_styles = _layout_builder_styles_retrieve_by_type(LayoutBuilderStyleInterface::TYPE_COMPONENT);
 
       $selectedStyles = $component->get('layout_builder_styles_style');
@@ -638,7 +684,8 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
             ],
           ],
             // @todo Conditionally require media field when 'background_options'
-            //   is set to 'image'.
+            //   is set to 'image'. See
+            //   https://github.com/uiowa/uiowa/issues/5039
         ],
         '#weight' => 5,
       ] + $element['field_uiowa_banner_image'];
@@ -807,8 +854,8 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
 /**
  * Implements hook_theme().
  *
- * @todo Test to see if this is needed anymore.
- * https://github.com/uiowa/uiowa/pull/4834#issuecomment-1057411820
+ * @todo Test to see if this is needed anymore. See
+ * https://github.com/uiowa/uiowa/issues/5040
  */
 function layout_builder_custom_theme($existing, $type, $theme, $path) {
   $theme = [
@@ -984,7 +1031,8 @@ function layout_builder_custom_preprocess_media(&$variables) {
  * Implements hook_preprocess_views_view_unformatted().
  */
 function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
-  // @todo Figure out how to appropriately scope this.
+  // @todo Figure out how to appropriately scope this. See
+  //   https://github.com/uiowa/uiowa/issues/5041
   /** @var \Drupal\views\ViewExecutable $view */
   $view = $variables['view'];
   $variables['row_item_classes'] = [];
@@ -997,6 +1045,7 @@ function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
       $row_styles = [$row_styles];
     }
     // @todo remove card--person-teaser when v2 is no longer in use.
+    //   See https://github.com/uiowa/uiowa/issues/4948
     $default_classes = [
       'card--list',
       'card--person-teaser',
@@ -1020,20 +1069,23 @@ function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
       $style = \Drupal::entityTypeManager()->getStorage('layout_builder_style')->load($style_id);
       if ($style) {
         // @todo Check if the style group matches a class that is used for
-        //   the media element and put it in a separate array.
+        //   the media element and put it in a separate array. See
+        //   https://github.com/uiowa/uiowa/issues/5042
         $classes = \preg_split('(\r\n|\r|\n)', $style->getClasses());
         $item_classes[$style->getGroup()] = implode(' ', $classes);
         $variables['#cache']['tags'][] = 'config:layout_builder_styles.style.' . $style->id();
       }
     }
-    // @todo Add media element classes to a separate variable.
+    // @todo Add media element classes to a separate variable. See
+    //   https://github.com/uiowa/uiowa/issues/5043
     $variables['row_item_classes'] = array_merge($default_classes, array_values($item_classes));
   }
 
   $machine_name = $view->getDisplay()->display['id'];
 
   // @todo Change this to just match 'card_list' once there is an update hook
-  //   to transition existing block instances to new machine name.
+  //   to transition existing block instances to new machine name. See
+  //   https://github.com/uiowa/uiowa/issues/5044
   if (in_array($machine_name, [
     'card_list',
     'list_article',
@@ -1095,6 +1147,8 @@ function layout_builder_custom_views_plugins_display_alter(&$displays) {
   $is_v2 = \Drupal::config('config_split.config_split.sitenow_v2')->get('status');
 
   // Only swap views block for v3 sites because it breaks things.
+  // @todo Remove check and always set after v2 is removed.
+  //   See https://github.com/uiowa/uiowa/issues/4948
   if ($is_v2 === FALSE && !empty($displays['block']['class']) && $displays['block']['class'] == Block::class) {
     $displays['block']['class'] = ListBlock::class;
   }
@@ -1107,6 +1161,7 @@ function layout_builder_custom_views_pre_build(ViewExecutable $view) {
   // Dynamically set pager id using cache.
   // Temp workaround until https://www.drupal.org/project/drupal/issues/3225987.
   // @todo Allow view config to override this (non-zero pager id?).
+  //   https://github.com/uiowa/uiowa/issues/5045
   $pager = $view->display_handler->getOption('pager');
   if (isset($pager) && $pager['type'] == 'full') {
     if ($cached = \Drupal::cache('layout_builder_custom_views_pager_elements')->get($view->dom_id)) {
@@ -1128,7 +1183,8 @@ function layout_builder_custom_views_pre_build(ViewExecutable $view) {
 function layout_builder_custom_views_pre_render(ViewExecutable $view) {
   // Hotfix shim to not display exposed blocks, necessary because
   // of the hotfix above.
-  // @todo Remove this exception when these view displays are removed.
+  // @todo Remove this exception when these view displays are removed. See
+  //   https://github.com/uiowa/uiowa/issues/5047
   $display = $view->getDisplay();
   $exceptions = [
     'block_people_slf',

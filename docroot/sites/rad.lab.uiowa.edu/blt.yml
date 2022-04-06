@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labrad.uiowa.ddev.site
+    protocol: https
+  machine_name: labrad
+  human_name: rad.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labrad.prod
+drupal:
+  db:
+    database: rad_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: dtotah
+  site-name: 'Robotics and Assistive Devices (RAD) Lab'

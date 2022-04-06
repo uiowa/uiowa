@@ -87,7 +87,7 @@ function sitenow_events_preprocess_block(&$variables) {
       $block = $variables['elements']['content']['#block_content'];
 
       // Set custom time-based cache tag to clear on a regular basis.
-      $variables['#cache']['tags'][] = 'time:hours_3';
+      $variables['#cache']['tags'][] = 'time:hourly';
       $variables['#cache']['max-age'] = 60;
 
       // Defaults to upcoming.
@@ -548,7 +548,7 @@ function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition
  * @return array
  *   Returns an associative array options tree.
  *
- * @todo Replace with an API endpoint that outputs an entire vocabulary tree.
+ * @todo https://github.com/uiowa/uiowa/issues/5028
  */
 function _sitenow_events_build_options_tree(array $data, $parent = 0) {
   $tree = [];
@@ -580,9 +580,9 @@ function _sitenow_events_build_options_tree(array $data, $parent = 0) {
  *   Options array to be passed recursively.
  *
  * @return array
- *   Returns options with children prefixed with dashes.
+ *   Return options with children prefixed with dashes.
  *
- * @todo Replace with an API endpoint that outputs an entire vocabulary tree.
+ * @todo https://github.com/uiowa/uiowa/issues/5028
  */
 function _sitenow_events_build_options_list(array $tree, $r = 0, $p = NULL, array &$options = []) {
   foreach ($tree as $t) {

@@ -110,7 +110,6 @@ function uids_base_preprocess_html(&$variables) {
   $node = \Drupal::routeMatch()->getParameter('node');
 
   if ($node instanceof NodeInterface) {
-    // @todo Is there a better way to have a soft dependency on a class?
     if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
       $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($node);
     }
@@ -119,7 +118,6 @@ function uids_base_preprocess_html(&$variables) {
   $fragment = \Drupal::routeMatch()->getParameter('fragment');
 
   if ($fragment instanceof FragmentInterface) {
-    // @todo Is there a better way to have a soft dependency on a class?
     if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
       $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($fragment);
     }
@@ -222,7 +220,6 @@ function uids_base_preprocess_page(&$variables) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $variables['node'];
     if ($node instanceof NodeInterface) {
-      // @todo Is there a better way to have a soft dependency on a class?
       if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
         $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($node);
       }
@@ -231,7 +228,6 @@ function uids_base_preprocess_page(&$variables) {
   $current_route = \Drupal::routeMatch();
   $fragment = $current_route->getParameter('fragment');
   if ($fragment instanceof FragmentInterface) {
-    // @todo Is there a better way to have a soft dependency on a class?
     if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
       $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($fragment);
     }
@@ -278,6 +274,7 @@ function uids_base_preprocess_node(&$variables) {
 
     // Add appropriate card styles for v2/3 teaser view modes.
     // @todo Remove after v2 dies.
+    //   See https://github.com/uiowa/uiowa/issues/4948
     $is_v2 = \Drupal::config('config_split.config_split.sitenow_v2')->get('status');
 
     if ($is_v2) {
@@ -332,7 +329,6 @@ function uids_base_preprocess_node(&$variables) {
           $variables['#attached']['library'][] = 'uids_base/person';
           break;
       }
-      // @todo Is there a better way to have a soft dependency on a class?
       if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
         $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($node);
       }
@@ -447,130 +443,138 @@ function uids_base_preprocess_layout(&$variables) {
   }
   // If we have found a node instance, continue.
   if ($node instanceof NodeInterface) {
-    $title_hidden = FALSE;
     /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
     $layout = $variables['layout'];
 
-    // @todo Scope this to target layout so it doesn't run
-    //   every time a layout is preprocessed.
-    if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
-      $publish_options = $node->get('field_publish_options')->getValue();
-      if (array_search('title_hidden', array_column($publish_options, 'value')) !== FALSE) {
-        $title_hidden = TRUE;
-      }
-      if (array_search('no_sidebars', array_column($publish_options, 'value')) !== FALSE) {
-        // Remove sidebar regions.
-        $variables['attributes']['class'][] = 'sidebar-invisible';
-      }
-    }
+    switch ($layout->id()) {
+      case 'layout_header':
+        $contains_title = FALSE;
+        $contains_background = FALSE;
 
-    // Process the header layout.
-    if ($layout->id() === 'layout_header') {
-      $contains_title = FALSE;
-      $contains_background = FALSE;
-
-      // Only run the following if 'featured_image_display'
-      // is not already set.
-      if (!isset($variables['featured_image_display'])) {
-        $variables['featured_image_display'] = FALSE;
-
-        // Check if the featured image exists.
-        if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
-          // Check value of 'field_featured_image_display'.
-          if ($node->hasField('field_featured_image_display') && !$node->field_featured_image_display->isEmpty()) {
-            if ($node->field_featured_image_display->value !== 'do_not_display') {
-              // Use the node setting.
-              $variables['featured_image_display'] = $node->field_featured_image_display->value;
-            }
+        $title_hidden = FALSE;
+        if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
+          $publish_options = $node->get('field_publish_options')->getValue();
+          if (array_search('title_hidden', array_column($publish_options, 'value')) !== FALSE) {
+            $title_hidden = TRUE;
           }
-          else {
-            $site_wide_setting = \Drupal::config("sitenow_{$node->getType()}s.settings")->get('featured_image_display_default');
-            if ($site_wide_setting && $site_wide_setting !== 'do_not_display') {
-              // Use the site-wide default.
-              $variables['featured_image_display'] = $site_wide_setting;
+        }
+
+        // Only run the following if 'featured_image_display'
+        // is not already set.
+        if (!isset($variables['featured_image_display'])) {
+          $variables['featured_image_display'] = FALSE;
+
+          // Check if the featured image exists.
+          if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+            // Check value of 'field_featured_image_display'.
+            if ($node->hasField('field_featured_image_display') && !$node->field_featured_image_display->isEmpty()) {
+              if ($node->field_featured_image_display->value !== 'do_not_display') {
+                // Use the node setting.
+                $variables['featured_image_display'] = $node->field_featured_image_display->value;
+              }
+            }
+            else {
+              $site_wide_setting = \Drupal::config("sitenow_{$node->getType()}s.settings")->get('featured_image_display_default');
+              if ($site_wide_setting && $site_wide_setting !== 'do_not_display') {
+                // Use the site-wide default.
+                $variables['featured_image_display'] = $site_wide_setting;
+              }
             }
           }
         }
-      }
 
-      if (!$variables['featured_image_display']) {
-        unset($variables['content']['background']);
-      }
-      else {
-        $variables['attributes']['class'][] = 'banner--' . $variables['featured_image_display'];
-      }
-
-      // Loop through regions in the layout.
-      foreach (Element::children($variables['content']) as $region) {
-        // Loop through blocks in that region.
-        foreach (Element::children($variables['content'][$region]) as $block_uuid) {
-          if ($region === 'content'
-            && isset($variables['content'][$region][$block_uuid])
-            && isset($variables['content'][$region][$block_uuid]['#plugin_id'])
-          ) {
-            // Check if this block plugin_id matches the pattern for a
-            // page title block.
-            $plugin_id = $variables['content'][$region][$block_uuid]['#plugin_id'];
-            $start_check = 'field_block:node:';
-            $end_check = ':title';
-            if (substr($plugin_id, 0, strlen($start_check)) === $start_check
-              && substr($plugin_id, -strlen($end_check)) === $end_check
-            ) {
-              $contains_title = TRUE;
-              break;
-            }
-          }
-          elseif ($region == 'background') {
-            // If there is anything in this region, then we have a background.
-            if (!empty(Element::children($variables['content'][$region][$block_uuid]))) {
-              $contains_background = TRUE;
-              break;
-            }
-          }
-        }
-      }
-
-      if (!isset($variables['banner_settings'])) {
-        $variables['banner_settings'] = [];
-      }
-      $defaults = [
-        'transparent' => FALSE,
-        'horizontal_align' => 'left',
-        'vertical_align' => 'bottom',
-      ];
-
-      $variables['banner_settings'] = $variables['banner_settings'] + $defaults;
-
-      // Set default for banner gradient.
-      if ($variables['banner_settings']['transparent'] || $title_hidden) {
-        $variables['attributes']['class'][] = 'banner--transparent';
-      }
-      else {
-        $variables['attributes']['class'][] = 'banner--gradient-bottom';
-        $variables['attributes']['class'][] = 'banner--gradient-dark';
-      }
-
-      // Set other banner default classes.
-      $variables['attributes']['class'][] = 'banner--horizontal-' . $variables['banner_settings']['horizontal_align'];
-      $variables['attributes']['class'][] = 'banner--vertical-' . $variables['banner_settings']['vertical_align'];
-
-      if ($contains_title) {
-        $variables['attributes']['class'][] = 'layout--title';
-        if ($contains_background && $variables['featured_image_display']) {
-          $variables['attributes']['class'][] = 'layout--title--with-background';
+        if (!$variables['featured_image_display']) {
+          unset($variables['content']['background']);
         }
         else {
-          $variables['attributes']['class'][] = 'layout--onecol--no--background';
+          $variables['attributes']['class'][] = 'banner--' . $variables['featured_image_display'];
         }
 
-        if ($title_hidden) {
-          $variables['attributes']['class'][] = 'layout--title--hidden';
+        // Loop through regions in the layout.
+        foreach (Element::children($variables['content']) as $region) {
+          // Loop through blocks in that region.
+          foreach (Element::children($variables['content'][$region]) as $block_uuid) {
+            if ($region === 'content'
+              && isset($variables['content'][$region][$block_uuid])
+              && isset($variables['content'][$region][$block_uuid]['#plugin_id'])
+            ) {
+              // Check if this block plugin_id matches the pattern for a
+              // page title block.
+              $plugin_id = $variables['content'][$region][$block_uuid]['#plugin_id'];
+              $start_check = 'field_block:node:';
+              $end_check = ':title';
+              if (substr($plugin_id, 0, strlen($start_check)) === $start_check
+                && substr($plugin_id, -strlen($end_check)) === $end_check
+              ) {
+                $contains_title = TRUE;
+                break;
+              }
+            }
+            elseif ($region == 'background') {
+              // If there is anything in this region, then we have a background.
+              if (!empty(Element::children($variables['content'][$region][$block_uuid]))) {
+                $contains_background = TRUE;
+                break;
+              }
+            }
+          }
         }
-      }
+
+        if (!isset($variables['banner_settings'])) {
+          $variables['banner_settings'] = [];
+        }
+        $defaults = [
+          'transparent' => FALSE,
+          'horizontal_align' => 'left',
+          'vertical_align' => 'bottom',
+        ];
+
+        $variables['banner_settings'] = $variables['banner_settings'] + $defaults;
+
+        // Set default for banner gradient.
+        if ($variables['banner_settings']['transparent'] || $title_hidden) {
+          $variables['attributes']['class'][] = 'banner--transparent';
+        }
+        else {
+          $variables['attributes']['class'][] = 'banner--gradient-bottom';
+          $variables['attributes']['class'][] = 'banner--gradient-dark';
+        }
+
+        // Set other banner default classes.
+        $variables['attributes']['class'][] = 'banner--horizontal-' . $variables['banner_settings']['horizontal_align'];
+        $variables['attributes']['class'][] = 'banner--vertical-' . $variables['banner_settings']['vertical_align'];
+
+        if ($contains_title) {
+          $variables['attributes']['class'][] = 'layout--title';
+          if ($contains_background && $variables['featured_image_display']) {
+            $variables['attributes']['class'][] = 'layout--title--with-background';
+          }
+          else {
+            $variables['attributes']['class'][] = 'layout--onecol--no--background';
+          }
+
+          if ($title_hidden) {
+            $variables['attributes']['class'][] = 'layout--title--hidden';
+          }
+        }
+        break;
+
+      // Page with sidebar.
+      case 'layout_page':
+        if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
+          $publish_options = $node->get('field_publish_options')->getValue();
+          if (array_search('no_sidebars', array_column($publish_options, 'value')) !== FALSE) {
+            // Remove sidebar regions.
+            $variables['attributes']['class'][] = 'sidebar-invisible';
+          }
+        }
+        break;
+
     }
 
     // Add sitenow library if sitenow_v2 config split is active.
     // @todo Remove after v2 dies.
+    //   See https://github.com/uiowa/uiowa/issues/4948
     $is_v2 = \Drupal::config('config_split.config_split.sitenow_v2')->get('status');
 
     if ($is_v2) {
@@ -585,33 +589,20 @@ function uids_base_preprocess_layout(&$variables) {
 function uids_base_preprocess_block(&$variables) {
   $variables['uids_base_container_settings'] = theme_get_setting('layout.container');
 
-  // Add the region to the a block's available attributes.
-  if (isset($variables['elements']['#id'])) {
-    $region = Block::load($variables['elements']['#id'])->getRegion();
-
-    if ($region === 'footer_second' && in_array($variables['base_plugin_id'], [
-      'system_menu_block',
-      'menu_block',
-    ])) {
-      $variables['attributes']['class'][] = 'footer__links';
-      $variables['attributes']['class'][] = 'footer__links--nav';
-    }
-  }
-
-  // If inner list, remove any inner grid classes.
-  if (isset($variables["attributes"]["class"]) && in_array('inner--list', $variables["attributes"]["class"])) {
-    foreach ($variables["attributes"]["class"] as $key => $style) {
-      if (substr($style, 0, strlen('inner--grid')) === 'inner--grid') {
-        unset($variables["attributes"]["class"][$key]);
-      }
-    }
-  }
-
-  // @todo Combine this section with the section before it.
   if (in_array($variables['base_plugin_id'], [
     'system_menu_block',
     'menu_block',
   ])) {
+
+    // Add the region to the a block's available attributes.
+    if (isset($variables['elements']['#id'])) {
+      $region = Block::load($variables['elements']['#id'])->getRegion();
+      if ($region === 'footer_second') {
+        $variables['attributes']['class'][] = 'footer__links';
+        $variables['attributes']['class'][] = 'footer__links--nav';
+      }
+    }
+
     switch ($variables['derivative_plugin_id']) {
       case 'external-quick-links':
         $variables['attributes']['class'][] = 'menu--group';
@@ -626,6 +617,15 @@ function uids_base_preprocess_block(&$variables) {
         $variables['attributes']['class'][] = 'menu--quick-links';
         break;
 
+    }
+  }
+
+  // If inner list, remove any inner grid classes.
+  if (isset($variables["attributes"]["class"]) && in_array('inner--list', $variables["attributes"]["class"])) {
+    foreach ($variables["attributes"]["class"] as $key => $style) {
+      if (substr($style, 0, strlen('inner--grid')) === 'inner--grid') {
+        unset($variables["attributes"]["class"][$key]);
+      }
     }
   }
 
@@ -778,6 +778,7 @@ function uids_base_preprocess_paragraph__card(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     // @todo Remove this when it is no longer necessary.
+    //   See https://github.com/uiowa/uiowa/issues/5033
     // If the sitenow card link js file has been added, remove it.
     if ($key = array_search('sitenow_card/card-link-js', $variables['#attached']['library'])) {
       unset($variables['#attached']['library'][$key]);

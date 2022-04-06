@@ -18,19 +18,6 @@
             "type": "composer",
             "url": "https://packages.drupal.org/8"
         },
-        "drupal-pyrello/views_tree": {
-            "type": "package",
-            "package": {
-                "name": "drupal-pyrello/views_tree",
-                "version": "1.0.0",
-                "type": "drupal-module",
-                "source": {
-                    "url": "https://git.drupalcode.org/sandbox/pyrello-3195611.git",
-                    "type": "git",
-                    "reference": "1.0.x"
-                }
-            }
-        },
         "leaflet": {
             "type": "package",
             "package": {
@@ -82,13 +69,12 @@
         "bower-asset/photoswipe": "^4.1",
         "cweagans/composer-patches": "^1.7",
         "dompdf/dompdf": "0.8.5",
-        "drupal-pyrello/views_tree": "^1.0",
         "drupal/acquia_connector": "^3.0@RC",
         "drupal/acquia_purge": "^1.0",
         "drupal/address": "^1.8",
         "drupal/administerusersbyrole": "^3.0",
         "drupal/allowed_formats": "^1.1",
-        "drupal/antibot": "^1.4",
+        "drupal/antibot": "^2.0",
         "drupal/better_exposed_filters": "^5.0@beta",
         "drupal/better_normalizers": "^1.0@beta",
         "drupal/big_pipe_sessionless": "^2.0",
@@ -156,14 +142,13 @@
         "drupal/migrate_tools": "^5.1.0",
         "drupal/mimemail": "^1.0@alpha",
         "drupal/moderated_content_bulk_publish": "^2.0",
-        "drupal/mysql56": "^1.1",
         "drupal/node_revision_delete": "^1.0@beta",
         "drupal/node_view_permissions": "^1.5",
         "drupal/oembed_providers": "^2.0",
         "drupal/override_node_options": "^2.4",
         "drupal/paragraphs": "^1.10",
         "drupal/pathauto": "^1.6",
-        "drupal/photoswipe": "3.x-dev#71e54fbcca748c7ec2cfc3d2fdd92c9a180b5852",
+        "drupal/photoswipe": "^3.1",
         "drupal/private_content": "^2.0@RC",
         "drupal/purge": "^3.0@beta",
         "drupal/rabbit_hole": "^1.0@beta",
@@ -180,7 +165,7 @@
         "drupal/simple_sitemap": "^4.0",
         "drupal/simplei": "^1.1",
         "drupal/siteimprove": "^1.5",
-        "drupal/smart_date": "^3.1",
+        "drupal/smart_date": "3.5.x-dev#eae5f784",
         "drupal/smart_trim": "^1.1",
         "drupal/stage_file_proxy": "^1.0",
         "drupal/superfish": "^1.4",
@@ -188,6 +173,7 @@
         "drupal/theme_permission": "^2.0",
         "drupal/tvi": "^1.0@RC",
         "drupal/views_ical": "^1.0@alpha",
+        "drupal/views_tree": "^2.0@alpha",
         "drupal/webform": "^6.0",
         "drupal/weight": "^3.2",
         "drupal/workbench_email": "^2.2",
@@ -238,7 +224,7 @@
                 "Add Configure Filter functionality to block views configuration.": "https://git.drupalcode.org/project/ctools/-/merge_requests/11.diff"
             },
             "drupal/default_content": {
-                "Add a Normalizer and Denormalizer to support Layout Builder": "https://www.drupal.org/files/issues/2020-08-24/default_content-add-normalizer-denormalizer-for-layout-builder-3160146-25.patch",
+                "Add a Normalizer and Denormalizer to support Layout Builder": "https://www.drupal.org/files/issues/2021-04-07/3160146-37.patch",
                 "Predictable order of content import": "https://www.drupal.org/files/issues/2020-10-08/3175870.patch"
             },
             "drupal/entity_embed": {
@@ -270,14 +256,17 @@
             "drupal/moderated_content_bulk_publish": {
                 "Remove or make optional the node edit form confirmation dialog": "https://www.drupal.org/files/issues/2020-12-01/no_confirmation_dialog-3185848-3.patch"
             },
+            "drupal/node_revision_delete": {
+                "Fix for UI operations": "https://www.drupal.org/files/issues/2022-02-21/3249493-9.patch"
+            },
             "drupal/paragraphs": {
                 "Langcode error when switching away from IEF for paragraphs in LB": "https://www.drupal.org/files/issues/2020-06-25/paragraphs-2901390-51.patch",
-                "Better error messages for missing referenced entities": "https://www.drupal.org/files/issues/2022-02-10/3095945-paragraphs-error-message-20.patch"
+                "Better error messages for missing referenced entities": "https://www.drupal.org/files/issues/2022-02-10/3095945-paragraphs-error-message-20.patch",
+                "find the correct revision ID of the parent": "https://www.drupal.org/files/issues/2020-07-08/access-controll-issue-3090200-22.patch"
             },
             "drupal/photoswipe": {
                 "grouping": "https://www.drupal.org/files/issues/2022-02-07/photoswipe-gallery-group-2625985-28.patch",
-                "Way to make lazyload work with photoswipe": "https://www.drupal.org/files/issues/2022-02-09/support_lazy_module-3115456-9.patch",
-                "Image alt/title tag as photoswipe caption not working in entity reference fields": "https://www.drupal.org/files/issues/2022-02-10/3258617-image-alttitle-tag.patch"
+                "Way to make lazyload work with photoswipe": "https://www.drupal.org/files/issues/2022-02-09/support_lazy_module-3115456-9.patch"
             },
             "drupal/purge": {
                 "Port purge commands to Drush 9": "https://www.drupal.org/files/issues/2921309-17-port-purge-drush-9.patch"
@@ -291,6 +280,9 @@
             },
             "drupal/restrict_ip": {
                 "Parameter must be an array or an object that implements Countable": "https://www.drupal.org/files/issues/2022-01-11/2957482-11.patch"
+            },
+            "drupal/smart_date": {
+                "Issues with time in Smart Date inline range widget": "https://www.drupal.org/files/issues/2022-04-06/3272338-3.patch"
             },
             "drupal/jquery_ui_touch_punch": {
                 "JQuery UI TouchPunch for D9": "https://www.drupal.org/files/issues/2021-02-26/jquery_ui_touch_punch.patch"

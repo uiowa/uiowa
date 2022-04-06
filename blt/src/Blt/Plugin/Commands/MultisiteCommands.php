@@ -401,6 +401,8 @@ EOD
    *   The HawkID of the original requester. Will be granted webmaster access.
    * @option split
    *   The name of a config split to activate and import after installation.
+   * @option site-name
+   *   The desired site name within quotes.
    *
    * @command uiowa:multisite:create
    *
@@ -418,6 +420,7 @@ EOD
     'no-db' => FALSE,
     'requester' => InputOption::VALUE_REQUIRED,
     'split' => InputOption::VALUE_REQUIRED,
+    'site-name' => InputOption::VALUE_REQUIRED,
   ]) {
     $db = Multisite::getDatabaseName($host);
     $applications = $this->getConfigValue('uiowa.applications');
@@ -605,6 +608,10 @@ EOD
 
     if (isset($options['split'])) {
       $blt['uiowa']['config']['split'] = $options['split'];
+    }
+
+    if (isset($options['site-name'])) {
+      $blt['uiowa']['site-name'] = $options['site-name'];
     }
 
     $this->taskWriteToFile("{$root}/docroot/sites/{$host}/blt.yml")
@@ -969,13 +976,14 @@ EOD;
 
       // The site name option used during drush site:install is
       // overwritten if installed from existing configuration.
+      $site_name = ($this->getConfigValue('uiowa.site-name') ? $this->getConfigValue('uiowa.site-name') : $multisite);
       $this->taskDrush()
         ->stopOnFail(FALSE)
         ->drush('config:set')
         ->args([
           'system.site',
           'name',
-          $multisite,
+          $site_name,
         ])
         ->run();
 

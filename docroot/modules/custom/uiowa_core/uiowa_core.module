@@ -5,10 +5,12 @@
  * Primary module hooks for Uiowa Core module.
  */
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\google_tag\Entity\Container;
+use Drupal\node\NodeInterface;
 use Drupal\uiowa_core\HeadlineHelper;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Exception\RfcComplianceException;
@@ -19,9 +21,47 @@ use Symfony\Component\Mime\Exception\RfcComplianceException;
 function uiowa_core_config_schema_info_alter(&$definitions) {
   // Make sure that the order of filters in the config export file is always
   // the same, to avoid false positive differences.
-  // @see https://www.drupal.org/project/drupal/issues/2852557#comment-12703225
-  // @todo Remove this after https://www.drupal.org/project/drupal/issues/2855675.
+  // @todo https://github.com/uiowa/uiowa/issues/5034
   $definitions['filter.format.*']['mapping']['filters']['orderby'] = 'key';
+}
+
+/**
+ * Implements hook_cron().
+ */
+function uiowa_core_cron() {
+  $request_time = \Drupal::time()->getRequestTime();
+  $last_run = \Drupal::state()->get('uiowa_core_hourly_last');
+
+  if (!$last_run || $request_time - $last_run >= 3540) {
+    Cache::invalidateTags(['time:hourly']);
+
+    if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
+      $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
+      $purgeQueuers = \Drupal::service('purge.queuers');
+      $purgeQueue = \Drupal::service('purge.queue');
+      $queuer = $purgeQueuers->get('coretags');
+
+      $invalidations = [
+        $purgeInvalidationFactory->get('tag', 'time:hourly'),
+      ];
+
+      $purgeQueue->add($queuer, $invalidations);
+    }
+
+    \Drupal::state()->set('uiowa_core_hourly_last', $request_time);
+  }
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function uiowa_core_module_implements_alter(&$implementations, $hook) {
+  // Our uiowa_core_cron() needs to run before purge_processor_cron().
+  if ($hook == 'cron' && isset($implementations['purge_processor_cron'])) {
+    $group = $implementations['purge_processor_cron'];
+    unset($implementations['purge_processor_cron']);
+    $implementations['purge_processor_cron'] = $group;
+  }
 }
 
 /**
@@ -368,10 +408,10 @@ function uiowa_core_menu_local_tasks_alter(&$data, $route_name) {
  */
 function uiowa_core_entity_operation_alter(array &$operations, EntityInterface $entity) {
   // If we're using the replicate module, check if it's available.
-  if (isset($operations['replicate'])) {
+  // Also check if we are operating on a node.
+  if (isset($operations['replicate']) && $entity instanceof NodeInterface) {
     // Pull our allowed types, and check against the given entity.
     $allowed_types = \Drupal::config('uiowa_core.settings')->get('uiowa_core.replicate_allowed');
-    // @todo using entity_operation_alter, getType() isn't always guaranteed.
     $type = $entity->getType();
     // If it's not an allowed type, then remove
     // the replicate operation.
