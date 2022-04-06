@@ -389,6 +389,7 @@
     > li.menu-item--active-trail {
       @include breakpoint(sm) {
         button {
+          right: 0;
           &::after {
             [class*="bg--black"] & {
               color: $secondary;
@@ -408,7 +409,11 @@
           &:hover,
           &:focus,
           &[aria-expanded="true"] {
+            [class*="bg--gray"] & {
+              background: #e7e7e7;
+            }
             &:after {
+
               [class*="bg--black"] & {
                 //color: #fff;
                 background: $secondary;
