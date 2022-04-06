@@ -405,6 +405,7 @@
           }
 
           &:hover,
+          &:focus,
           &[aria-expanded="true"] {
             &:after {
               [class*="bg--black"] & {
@@ -452,16 +453,19 @@
       }
 
       &:hover,
+      &:focus,
       &[aria-expanded="true"] {
         //color: #fff;
 
+
         &:after {
           //background: $secondary;
+          background: #e7e7e7;
         }
       }
 
       &[aria-expanded="true"]::after {
-        background: #f1f1f1;
+        background: #e7e7e7;
         content: "\f077";
       }
 
