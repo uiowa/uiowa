@@ -103,7 +103,7 @@
                 left: 50%;
                 bottom: 0;
                 width: 100%;
-                height: 6px;
+                height: 5px;
                 transform-origin: center;
                 transition: transform 0.3s ease-in-out;
                 transform: translate(-50%, 0) scaleX(1);
@@ -132,7 +132,7 @@
             > a,
             > span {
               &:before {
-                left: calc(70% - 10px);
+                left: calc(64% - 10px);
               }
             }
           }
@@ -140,6 +140,10 @@
           &.menu-item--expanded {
             background-color: transparent;
             align-items: center;
+
+            &:before {
+              right: -6px;
+            }
 
             > span,
             > a {
@@ -409,7 +413,7 @@
             left: 50%;
             bottom: 0;
             width: 100%;
-            height: 6px;
+            height: 5px;
             transform-origin: center;
             transition: transform 0.3s ease-in-out;
             transform: translate(-50%) scaleX(1);
@@ -426,7 +430,7 @@
       align-items: center;
       background-color: transparent;
       border: none;
-      padding: 0 1rem;
+      padding: 0 .5rem;
       top: 0;
       height: 3.5rem;
       width: 3rem;
@@ -463,7 +467,7 @@
         background: darken($light, 5%);
 
         &:after {
-          background: darken($light, 5%);
+          background: darken($light, 12%);
           [class*="bg--black"] & {
             color: $secondary;
           }
@@ -486,6 +490,10 @@
         @include fas();
         line-height: 2;
         @include center(both);
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: darken($light, 8%);
       }
     }
 
