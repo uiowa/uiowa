@@ -12,12 +12,12 @@
       menus.forEach(function(menuElement) {
 
         // Add mobile toggle button
-        const menuBlock = context.getElementById('-menu');
+        const menuBlock = context.querySelector('.menu-wrapper--horizontal');
         let toggleBtn = context.createElement('button');
         toggleBtn.setAttribute('id', 'main-menu-toggle');
         toggleBtn.setAttribute('aria-label', 'Toggle secondary menu');
         toggleBtn.innerHTML = 'Menu';
-        menuBlock.insertAdjacentElement('beforebegin', toggleBtn);
+        menuBlock.insertAdjacentElement('afterbegin', toggleBtn);
 
         // Find all menu items that can be displayed.
         const expandableMenuItems = menuElement.querySelectorAll('li.menu-item--expanded > a, li.menu-item--expanded > span');
