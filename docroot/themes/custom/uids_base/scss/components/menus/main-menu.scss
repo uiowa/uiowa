@@ -17,7 +17,7 @@
           display: flex;
           // override default styles reducing padding on first-child.
           &:first-child a {
-            padding-top: 1.475rem;
+            //padding-top: 1.475rem;
           }
 
           a,
@@ -377,7 +377,6 @@
         }
 
         > button {
-          //background: darken($light, 5%);
           background: $light;
 
           [class*="bg--black"] &,
@@ -389,28 +388,16 @@
           &:focus,
           &:hover,
           &[aria-expanded="true"] {
-              //background: darken($light, 5%);
-
-
-            &:after {
-              [class*="bg--black"] & {
-                //color: #fff;
-                //background: $secondary;
-              }
-            }
-
             &:before {
               background-color: $brand-cool-gray;
             }
-
-
           }
 
           &:before {
             background: #ffcd00;
             content: "";
             position: absolute;
-            left: 50%;
+            left: 48%;
             bottom: 0;
             width: 100%;
             height: 5px;
@@ -449,16 +436,18 @@
       }
 
       &:before {
-        content: '';
-        position: absolute;
-        left: 50%;
-        bottom: 0;
-        width: 100%;
-        height: 4px;
-        background-color: $brand-cool-gray;
-        transform-origin: center;
-        transform: translate(-50%, 0) scaleX(0);
-        transition: transform 0.3s ease-in-out;
+        @include breakpoint(sm) {
+          content: '';
+          position: absolute;
+          left: 50%;
+          bottom: 0;
+          width: 100%;
+          height: 4px;
+          background-color: $brand-cool-gray;
+          transform-origin: center;
+          transform: translate(-50%, 0) scaleX(0);
+          transition: transform 0.3s ease-in-out;
+        }
       }
 
       &:focus,
@@ -509,6 +498,9 @@
       &::after {
         content: "\f0d7";
         font-size: 0.9rem;
+      }
+      &:before {
+        height: 0;
       }
 
       &[aria-expanded="true"]::after {

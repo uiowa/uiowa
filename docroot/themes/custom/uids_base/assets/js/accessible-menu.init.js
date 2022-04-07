@@ -16,7 +16,7 @@
         let toggleBtn = context.createElement('button');
         toggleBtn.setAttribute('id', 'main-menu-toggle');
         toggleBtn.setAttribute('aria-label', 'Toggle secondary menu');
-        toggleBtn.innerHTML = 'Menu';
+        toggleBtn.innerHTML = 'In this section';
         menuBlock.insertAdjacentElement('afterbegin', toggleBtn);
 
         // Find all menu items that can be displayed.
