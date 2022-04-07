@@ -1,8 +1,8 @@
 @import "assets/scss/_variables.scss";
 @import "assets/scss/_utilities.scss";
 @import "components/menus/main-menu/main-menu.scss";
+
 // set horizontal only if used in layout--onecol section.
-// @todo remove once https://github.com/GoogleChromeLabs/container-query-polyfill/issues/23 is resolved.
 @include breakpoint(sm) {
   .layout--onecol {
     .menu-wrapper--horizontal {
@@ -10,13 +10,11 @@
       @include container-width;
       margin: 0;
       border-top: none;
-
       // top-level only
       > .menu {
         > li {
           border-bottom: none;
           display: flex;
-
           // override default styles reducing padding on first-child.
           &:first-child a {
             padding-top: 1.475rem;
@@ -36,8 +34,8 @@
             margin-right: 0;
           }
 
-          > span,
-          > a {
+          > a,
+          > span {
             @include bttn--focus;
             position: relative;
             width: auto;
@@ -76,9 +74,9 @@
               background: transparent;
             }
 
-            > span,
-            > a {
-              background-color: #f3f3f3;
+            > a,
+            > span {
+              background-color: $light;
               margin: 0;
               padding-left: 1.875rem;
               padding-bottom: 1.475rem;
@@ -131,8 +129,8 @@
               }
             }
 
-            > span,
-            > a {
+            > a,
+            > span {
               &:before {
                 left: calc(70% - 10px);
               }
@@ -140,12 +138,11 @@
           }
 
           &.menu-item--expanded {
-            //padding-right: 0.5rem;
             background-color: transparent;
             align-items: center;
 
-            > a,
-            > span {
+            > span,
+            > a {
               padding: 1.475rem 0.5rem 1.475rem 1.375rem;
               margin-right: -1px;
             }
@@ -166,7 +163,6 @@
           top: 100%;
           width: 230px;
           padding-bottom: 0;
-
           // override the list-style disc from main-menu.scss
           ul.menu {
             list-style: none;
@@ -186,16 +182,6 @@
                 &:after {
                   height: 1px;
                 }
-
-                //&::before {
-                //  content: "\f111";
-                //  position: absolute;
-                //  font-size: 0.3rem;
-                //  left: 1rem;
-                //  top: 1rem;
-                //  @include fas();
-                //  color: $grey-light;
-                //}
               }
             }
           }
@@ -227,8 +213,8 @@
                 display: flex;
                 flex-wrap: wrap;
 
-                > span,
-                > a {
+                > a,
+                > span {
                   flex-basis: 82%;
                 }
               }
@@ -256,7 +242,6 @@
         }
       }
     }
-
     // Background colors
     &[class*="bg--black"],
     &[class*="bg--gold"],
@@ -264,8 +249,8 @@
       .menu-wrapper--horizontal {
         > .menu {
           > li.menu-item--active-trail {
-            > span,
-            > a {
+            > a,
+            > span {
               background: #fff;
               color: $secondary;
             }
@@ -291,7 +276,8 @@
 
           li.menu-item--expanded {
             ul li {
-              a, span {
+              a,
+              span {
                 color: $secondary;
               }
             }
@@ -303,16 +289,16 @@
     &[class*="bg--gold"] {
       .menu-wrapper--horizontal {
         > .menu {
-          > li > span,
-          > li > a {
+          > li > a,
+          > li > span {
             &:before {
               background-color: $brand-cool-gray;
             }
           }
 
           > li.menu-item--active-trail {
-            > span,
-            > a {
+            > a,
+            > span {
               &:before {
                 border-top-color: $brand-cool-gray;
                 background-color: transparent;
@@ -329,10 +315,10 @@
   }
 }
 
-
 // menu button styles
 .menu-wrapper--horizontal {
   > .menu {
+
     ul {
       display: none;
 
@@ -340,6 +326,7 @@
         display: block;
       }
     }
+
     > ul > ul.menu {
       display: none;
 
@@ -370,19 +357,6 @@
             color: $secondary;
           }
         }
-
-        &:hover,
-        &[aria-expanded="true"] {
-          [class*="bg--black"] & {
-            //color: #fff;
-
-          }
-          &:after {
-            [class*="bg--black"] & {
-              //color: #fff;
-            }
-          }
-        }
       }
     }
 
@@ -390,6 +364,7 @@
       @include breakpoint(sm) {
         button {
           right: 0;
+
           &::after {
             [class*="bg--black"] & {
               color: $secondary;
@@ -398,7 +373,8 @@
         }
 
         > button {
-          background: #f3f3f3;
+          //background: darken($light, 5%);
+          background: $light;
 
           [class*="bg--black"] &,
           [class*="bg--gold"] &,
@@ -406,17 +382,17 @@
             background: #fff;
           }
 
-          &:hover,
-          &:focus,
-          &[aria-expanded="true"] {
-            [class*="bg--gray"] & {
-              background: #e7e7e7;
-            }
-            &:after {
 
+          &:focus,
+          &:hover,
+          &[aria-expanded="true"] {
+              background: darken($light, 5%);
+
+
+            &:after {
               [class*="bg--black"] & {
                 //color: #fff;
-                background: $secondary;
+                //background: $secondary;
               }
             }
           }
@@ -446,29 +422,32 @@
       background-color: transparent;
       border: none;
       padding: 0 1rem;
+      top: 0;
+      height: 3.5rem;
+      width: 3rem;
       @include breakpoint(sm) {
         height: 100%;
         right: -1px;
+        top: 5px;
+        width: auto;
       }
       position: absolute;
       right: 0;
-      top: 5px;
       @include breakpoint(sm) {
         position: relative;
         top: 0;
       }
 
-      &:hover,
       &:focus,
+      &:hover,
       &[aria-expanded="true"] {
-        //color: #fff;
-        background: #e7e7e7;
-
-
+        background: darken($light, 5%);
 
         &:after {
-          //background: $secondary;
-          background: #e7e7e7;
+          background: darken($light, 5%);
+          [class*="bg--black"] & {
+            color: $secondary;
+          }
         }
       }
 
@@ -483,43 +462,70 @@
         @include fas();
         line-height: 2;
         @include center(both);
-
-        [class*="bg--gold"] & {
-          border: 1px solid $secondary;
-        }
       }
-
-
     }
 
     .menu-item--expanded a + button::after {
       margin-left: 0;
     }
-    }
-  > .menu  .menu {
-     button {
-       height: inherit;
+  }
+
+  > .menu .menu {
+    button {
+      height: inherit;
+
       &::after {
         content: "\f0d7";
         font-size: 0.9rem;
       }
-       &[aria-expanded="true"]::after {
-         content: "\f0d8";
-       }
+
+      &[aria-expanded="true"]::after {
+        content: "\f0d8";
+      }
     }
   }
 }
 
 // Show/hide menu toggle
-button#main-menu-toggle {
-  @include breakpoint(sm) {
-    display: none;
-  }
-}
-
 .menu-wrapper--horizontal > .menu.hide {
   display: none;
   @include breakpoint(sm) {
     display: inherit;
+  }
+}
+
+button#main-menu-toggle {
+  @include breakpoint(sm) {
+    display: none;
+  }
+  width: 100%;
+  text-align: left;
+  height: 60px;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  letter-spacing: 0.03rem;
+  text-transform: uppercase;
+  font-size: 1rem;
+  font-weight: bold;
+
+  &:before {
+    content: "\f0c9";
+    @include fas();
+    font-weight: 900;
+    line-height: 0.8;
+    margin-right: 15px;
+    margin-left: -7px;
+    padding: 7px;
+    width: 25px;
+    height: 25px;
+  }
+
+  &[aria-expanded="true"]:before {
+    content: "\f00d";
+    color: #fff;
+    border-radius: 50%;
+    background: #999;
   }
 }
