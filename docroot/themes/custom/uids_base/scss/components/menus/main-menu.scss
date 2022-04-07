@@ -498,9 +498,18 @@
       &::after {
         content: "\f0d7";
         font-size: 0.9rem;
+        border: 1px solid #ccc;
+        background: #fff;
       }
       &:before {
         height: 0;
+      }
+      &:focus,
+      &:hover,
+      &[aria-expanded="true"] {
+        &:after {
+          background: darken($light, 8%);
+        }
       }
 
       &[aria-expanded="true"]::after {
