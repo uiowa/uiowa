@@ -1,0 +1,29 @@
+uuid: 93ea6c62-d825-45fb-9e97-6e477c10f877
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_majors_community_college
+    - taxonomy.vocabulary.community_colleges
+    - taxonomy.vocabulary.majors
+id: taxonomy_term.majors.field_majors_community_college
+field_name: field_majors_community_college
+entity_type: taxonomy_term
+bundle: majors
+label: 'Community College'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      community_colleges: community_colleges
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,28 @@
+uuid: 3e3e17b0-b897-4c67-a957-25421f11ab3e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_majors_responsibilities
+    - taxonomy.vocabulary.majors
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    allowed_formats: {  }
+id: taxonomy_term.majors.field_majors_responsibilities
+field_name: field_majors_responsibilities
+entity_type: taxonomy_term
+bundle: majors
+label: 'Student Responsibilities'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: "<p>Review the responsibilities required to become and remain eligible for the 2 Plus 2 Guaranteed Graduation Plan.</p>\r\n\r\n<p><a data-entity-substitution=\"canonical\" data-entity-type=\"node\" data-entity-uuid=\"2a5c72cc-c518-4458-a298-4b667ca58f0d\" href=\"/node/5326\">Student Responsibilities</a></p>\r\n"
+    format: filtered_html
+default_value_callback: ''
+settings: {  }
+field_type: text_long

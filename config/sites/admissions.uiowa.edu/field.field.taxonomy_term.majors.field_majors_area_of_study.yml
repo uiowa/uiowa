@@ -1,0 +1,29 @@
+uuid: 876ea926-009d-429f-ac67-19f5ce883791
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_majors_area_of_study
+    - node.type.area_of_study
+    - taxonomy.vocabulary.majors
+id: taxonomy_term.majors.field_majors_area_of_study
+field_name: field_majors_area_of_study
+entity_type: taxonomy_term
+bundle: majors
+label: 'Area of Study'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      area_of_study: area_of_study
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

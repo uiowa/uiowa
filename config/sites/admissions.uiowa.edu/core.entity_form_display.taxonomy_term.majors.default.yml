@@ -1,0 +1,98 @@
+uuid: 434fd89f-b968-4b87-9fed-54f495bf7a7f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.majors.field_majors_area_of_study
+    - field.field.taxonomy_term.majors.field_majors_cc_checkpoints
+    - field.field.taxonomy_term.majors.field_majors_community_college
+    - field.field.taxonomy_term.majors.field_majors_responsibilities
+    - field.field.taxonomy_term.majors.field_majors_uiowa_checkpoints
+    - taxonomy.vocabulary.majors
+  module:
+    - path
+    - text
+id: taxonomy_term.majors.default
+targetEntityType: taxonomy_term
+bundle: majors
+mode: default
+content:
+  description:
+    type: text_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_majors_area_of_study:
+    type: entity_reference_autocomplete
+    weight: 2
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_majors_cc_checkpoints:
+    type: text_textarea
+    weight: 5
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_majors_community_college:
+    type: entity_reference_autocomplete
+    weight: 3
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_majors_responsibilities:
+    type: text_textarea
+    weight: 4
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_majors_uiowa_checkpoints:
+    type: text_textarea
+    weight: 6
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 8
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  tvi:
+    weight: 9
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }
