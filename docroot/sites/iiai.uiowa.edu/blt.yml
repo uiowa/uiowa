@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: iiai.uiowa.ddev.site
+    protocol: https
+  machine_name: iiai
+  human_name: iiai.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: iiai.prod
+drupal:
+  db:
+    database: iiai_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: hboileau
+  site-name: iiai.uiowa.edu
