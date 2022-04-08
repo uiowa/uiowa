@@ -1,20 +1,24 @@
+
 {{ attach_library('uids_base/banner') }}
-{% set attributes = attributes ?: create_attribute() %}
 {% set banner_classes = ['banner'] %}
-{% set button_attributes = button_attributes ?: create_attribute() %}
 {# The following code is to determine where a link should be attached, if it exists. #}
 {% if links|length == 1 %}
   {% set banner_classes = banner_classes ? banner_classes|merge(['click-container']) %}
   {% set link = links|first %}
   {% set link_element, show_button = false, false %}
   {% if link.link_url is not empty %}
-    {# Title is set, use it as the linking element.  #}
     {% if banner_title is not empty %}
+      {# Title is set, use it as the linking element.  #}
       {% set link_element = 'title' %}
+      {# If we also have link text, then we'll show a psuedo-button. #}
+      {% if link.link_text is not empty %}
+        {% set show_button = true %}
     {% endif %}
-    {# If we also have link text, then we'll show a psuedo-button. #}
-    {% if link.link_text is not empty %}
-      {% set link_element = 'button' %}
+    {% endif %}
+    {% if banner_title is empty %}
+      {% if link.link_text is not empty %}
+        {% set show_link_button = true %}
+      {% endif %}
     {% endif %}
   {% endif %}
 
@@ -83,14 +87,16 @@
                   </a>
                 {% endfor %}
               </div>
-            {% elseif links|length == 1 %}
-              {% if link_element == 'button' %}
-                {# Display as a link. #}
-                <a {{ button_attributes.addclass(link.link_classes, 'click-target') }} href="{{ link.link_url }}">
-                  {{ link.link_text }}
-                  <i role="presentation" class="fas fa-arrow-right"></i>
-                </a>
-              {% endif %}
+            {% elseif links|length == 1 and show_button == true %}
+              <div aria-hidden="true" class="{{ link.link_classes }}" {% if banner_aria_describedby %} id="{{ banner_aria_describedby }}" {% endif %}>
+                {{ link.link_text }}
+                <span role="presentation" class="fas fa-arrow-right"></span>
+              </div>
+            {% elseif links|length == 1 and show_link_button == true %}
+              <a class="click-target {{ link.link_classes }}" href="{{ link.link_url }}">
+                {{ link.link_text }}
+                <span role="presentation" class="fas fa-arrow-right"></span>
+              </a>
             {% endif %}
           </div>
         {% endif %}
