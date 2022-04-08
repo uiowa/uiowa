@@ -5,11 +5,12 @@ dependencies: {  }
 id: ci
 label: CI
 description: ''
-weight: 1
-stackable: false
+weight: 90
+stackable: true
 storage: folder
 folder: ../config/envs/ci
 module: {  }
 theme: {  }
 complete_list: {  }
-partial_list: {  }
+partial_list:
+  - lazy.settings

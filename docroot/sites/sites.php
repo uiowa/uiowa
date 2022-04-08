@@ -4018,3 +4018,21 @@ $sites['dentistryintradent.uiowa.ddev.site'] = 'intradent.dentistry.uiowa.edu';
 $sites['dentistryintradent.dev.drupal.uiowa.edu'] = 'intradent.dentistry.uiowa.edu';
 $sites['dentistryintradent.stage.drupal.uiowa.edu'] = 'intradent.dentistry.uiowa.edu';
 $sites['dentistryintradent.prod.drupal.uiowa.edu'] = 'intradent.dentistry.uiowa.edu';
+
+// Directory aliases for sun.lab.uiowa.edu.
+$sites['labsun.uiowa.ddev.site'] = 'sun.lab.uiowa.edu';
+$sites['labsun.dev.drupal.uiowa.edu'] = 'sun.lab.uiowa.edu';
+$sites['labsun.stage.drupal.uiowa.edu'] = 'sun.lab.uiowa.edu';
+$sites['labsun.prod.drupal.uiowa.edu'] = 'sun.lab.uiowa.edu';
+
+// Directory aliases for iiai.uiowa.edu.
+$sites['iiai.uiowa.ddev.site'] = 'iiai.uiowa.edu';
+$sites['iiai.dev.drupal.uiowa.edu'] = 'iiai.uiowa.edu';
+$sites['iiai.stage.drupal.uiowa.edu'] = 'iiai.uiowa.edu';
+$sites['iiai.prod.drupal.uiowa.edu'] = 'iiai.uiowa.edu';
+
+// Directory aliases for iibi.uiowa.edu.
+$sites['iibi.uiowa.ddev.site'] = 'iibi.uiowa.edu';
+$sites['iibi.dev.drupal.uiowa.edu'] = 'iibi.uiowa.edu';
+$sites['iibi.stage.drupal.uiowa.edu'] = 'iibi.uiowa.edu';
+$sites['iibi.prod.drupal.uiowa.edu'] = 'iibi.uiowa.edu';
