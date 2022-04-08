@@ -42,7 +42,7 @@
   <div class="banner__container">
     <div class="banner__content">
       {% block heading %}
-        {% if banner_pre_title is not empty %}
+        {% if banner_pre_title and banner_title is not empty %}
           {% set banner_pre_title_heading = {
             'headline_level': 'div',
             'headline_class' : headline_class|merge(['banner__pre-title']),
