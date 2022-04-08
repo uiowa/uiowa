@@ -506,8 +506,9 @@
       height: inherit;
 
       &::after {
-        border: 1px solid #ccc;
-        background: #fff;
+        font-size: .7rem;
+        width: 20px;
+        height: 20px;
       }
       &:before {
         height: 0;
@@ -518,10 +519,6 @@
         &:after {
           background: darken($light, 8%);
         }
-      }
-
-      &[aria-expanded="true"]::after {
-        content: "\f0d8";
       }
     }
   }
