@@ -4030,3 +4030,9 @@ $sites['iiai.uiowa.ddev.site'] = 'iiai.uiowa.edu';
 $sites['iiai.dev.drupal.uiowa.edu'] = 'iiai.uiowa.edu';
 $sites['iiai.stage.drupal.uiowa.edu'] = 'iiai.uiowa.edu';
 $sites['iiai.prod.drupal.uiowa.edu'] = 'iiai.uiowa.edu';
+
+// Directory aliases for iibi.uiowa.edu.
+$sites['iibi.uiowa.ddev.site'] = 'iibi.uiowa.edu';
+$sites['iibi.dev.drupal.uiowa.edu'] = 'iibi.uiowa.edu';
+$sites['iibi.stage.drupal.uiowa.edu'] = 'iibi.uiowa.edu';
+$sites['iibi.prod.drupal.uiowa.edu'] = 'iibi.uiowa.edu';
