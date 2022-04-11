@@ -93,6 +93,7 @@ class Books extends BaseNodeSource {
     // Fetch the multi-value roles.
     $tables = [
       'field_data_field_uibook_series' => ['field_uibook_series_value'],
+      'field_data_upload' => ['upload_fid'],
     ];
     $this->fetchAdditionalFields($row, $tables);
     $series = $row->getSourceProperty('field_uibook_series_value');
@@ -112,6 +113,13 @@ class Books extends BaseNodeSource {
       ];
       $this->entityId = $row->getSourceProperty('nid');
       $row->setSourceProperty('field_image', $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']));
+    }
+    // If we have an upload or uploads, process into mids.
+    if ($uploads = $row->getSourceProperty('upload_fid')) {
+      foreach ($uploads as $delta => $fid) {
+        $uploads[$delta] = $this->processImageField($fid);
+      }
+      $row->setSourceProperty('uploads', $uploads);
     }
 
     // Combine book types into one.
