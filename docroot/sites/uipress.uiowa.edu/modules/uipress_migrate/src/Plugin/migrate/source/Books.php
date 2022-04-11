@@ -175,6 +175,13 @@ class Books extends BaseNodeSource {
     }
 
     $row->setSourceProperty('custom_book_types', $book_types);
+
+    // Remove [bg|{$nid}] tags from the description field and,
+    // if it was all that was in a <p></p> tag,
+    // remove that surrounding tag as well.
+    $description = $row->getSourceProperty('body');
+    $description[0]['value'] = preg_replace('/(<p>\[bg\|[\d]+\]<\/p>)|(\[bg\|[\d]+\])/is', '', $description[0]['value']);
+    $row->setSourceProperty('body', $description);
     return TRUE;
   }
 
