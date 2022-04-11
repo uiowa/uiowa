@@ -4036,3 +4036,9 @@ $sites['iibi.uiowa.ddev.site'] = 'iibi.uiowa.edu';
 $sites['iibi.dev.drupal.uiowa.edu'] = 'iibi.uiowa.edu';
 $sites['iibi.stage.drupal.uiowa.edu'] = 'iibi.uiowa.edu';
 $sites['iibi.prod.drupal.uiowa.edu'] = 'iibi.uiowa.edu';
+
+// Directory aliases for grantbulletin.research.uiowa.edu.
+$sites['researchgrantbulletin.uiowa.ddev.site'] = 'grantbulletin.research.uiowa.edu';
+$sites['researchgrantbulletin.dev.drupal.uiowa.edu'] = 'grantbulletin.research.uiowa.edu';
+$sites['researchgrantbulletin.stage.drupal.uiowa.edu'] = 'grantbulletin.research.uiowa.edu';
+$sites['researchgrantbulletin.prod.drupal.uiowa.edu'] = 'grantbulletin.research.uiowa.edu';
