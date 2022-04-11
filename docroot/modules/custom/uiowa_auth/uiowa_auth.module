@@ -14,8 +14,7 @@ use Drupal\uiowa_auth\UserLoginBlockPreRender;
  * Implements hook_form_FORM_ID_alter().
  */
 function uiowa_auth_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // Remove access to login form fields to avoid users entering HawkID
-  // credentials.
+  // Remove access to form fields to avoid users entering HawkID credentials.
   $form['name']['#access'] = FALSE;
   $form['pass']['#access'] = FALSE;
   $form['actions']['#access'] = FALSE;
