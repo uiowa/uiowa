@@ -36,6 +36,14 @@ function admissions_core_entity_presave(EntityInterface $entity) {
       $entity->setTitle($output);
       break;
 
+    case 'major':
+      // Setting the major title with the Area of Study and Community
+      // College field values. Both fields are required.
+      $major_aos = $entity->field_major_area_of_study->entity->title->value;
+      $major_cc = $entity->field_major_community_college->entity->name->value;
+      $output = $major_aos . " Major Through " . $major_cc;
+      $entity->setTitle($output);
+      break;
   }
 }
 
