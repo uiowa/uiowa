@@ -14,8 +14,7 @@ use Drupal\uiowa_auth\UserLoginBlockPreRender;
  * Implements hook_form_FORM_ID_alter().
  */
 function uiowa_auth_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // Remove access to login form fields to avoid users entering HawkID
-  // credentials.
+  // Remove access to form fields to avoid users entering HawkID credentials.
   $form['name']['#access'] = FALSE;
   $form['pass']['#access'] = FALSE;
   $form['actions']['#access'] = FALSE;
@@ -25,7 +24,9 @@ function uiowa_auth_form_user_login_form_alter(&$form, FormStateInterface $form_
  * Implements hook_form_FORM_ID_alter().
  */
 function uiowa_auth_form_user_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // Adjust access to fields on the user edit form that are synced via SAML.
+  // Adjust access to fields on the user edit form that are synced via SAML. The
+  // samlauth module does something similar to this but only for the current
+  // user editing their own account. We take some additional steps also.
   if ($form['form_id']['#id'] == 'edit-user-form') {
     /** @var \Drupal\user\UserInterface $account */
     $account = user_load_by_name($form['account']['name']['#default_value']);
@@ -34,28 +35,26 @@ function uiowa_auth_form_user_form_alter(&$form, FormStateInterface $form_state,
     $authmap = \Drupal::service('externalauth.authmap');
 
     if ($account) {
+      // Always disable these fields.
+      $form['account']['current_pass']['#access'] = FALSE;
+      $form['account']['pass']['#access'] = FALSE;
+      $form['path']['#access'] = FALSE;
+      $form['account']['mail']['#disabled'] = TRUE;
+      $form['account']['mail']['#description'] = t('Email addresses are synced automatically after every successful HawkID login.');
+
       if ($account->id() == 1) {
         $form['#disabled'] = TRUE;
-        $form['account']['current_pass']['#access'] = FALSE;
-        \Drupal::messenger()->addWarning(t('User 1 information has been locked.'));
+        $form['account']['name']['#description'] = t('User 1 information is randomized and locked for security.');
+        $form['account']['mail']['#description'] = t('User 1 information is randomized and locked for security.');
       }
       else {
         if ($authmap->getUid($account->getAccountName(), 'samlauth') === FALSE) {
           _uiowa_auth_alter_name_field($form);
         }
         else {
-          \Drupal::messenger()->addWarning(t('This account has been successfully linked to a HawkID and certain fields cannot be changed.'));
-
-          $form['account']['name']['#description'] = t('Usernames are synced after every successful HawkID login.');
+          $form['account']['name']['#description'] = t('Usernames are synced automatically after every successful HawkID login.');
           $form['account']['name']['#disabled'] = TRUE;
-          $form['account']['mail']['#disabled'] = TRUE;
-          $form['account']['mail']['#description'] = t('Email addresses are synced after every successful HawkID login.');
         }
-
-        // Always disable these fields.
-        $form['account']['current_pass']['#access'] = FALSE;
-        $form['account']['pass']['#access'] = FALSE;
-        $form['path']['#access'] = FALSE;
       }
     }
   }
