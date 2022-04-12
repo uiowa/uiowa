@@ -42,17 +42,15 @@ function uiowa_auth_form_user_form_alter(&$form, FormStateInterface $form_state,
 
       if ($account->id() == 1) {
         $form['#disabled'] = TRUE;
-        $form['account']['current_pass']['#access'] = FALSE;
-        \Drupal::messenger()->addWarning(t('User 1 information has been locked.'));
+        $form['account']['name']['#description'] = t('User 1 information is randomized and locked for security.');
+        $form['account']['mail']['#description'] = t('User 1 information is randomized and locked for security.');
       }
       else {
         if ($authmap->getUid($account->getAccountName(), 'samlauth') === FALSE) {
           _uiowa_auth_alter_name_field($form);
         }
         else {
-          \Drupal::messenger()->addWarning(t('This account has been successfully linked to a HawkID and certain fields cannot be changed.'));
-
-          $form['account']['name']['#description'] = t('Usernames are synced after every successful HawkID login.');
+          $form['account']['name']['#description'] = t('Usernames are synced automatically after every successful HawkID login.');
           $form['account']['name']['#disabled'] = TRUE;
         }
       }
