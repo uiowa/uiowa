@@ -33,6 +33,11 @@ function uiowa_auth_form_user_form_alter(&$form, FormStateInterface $form_state,
     $authmap = \Drupal::service('externalauth.authmap');
 
     if ($account) {
+      // Always disable these fields.
+      $form['account']['current_pass']['#access'] = FALSE;
+      $form['account']['pass']['#access'] = FALSE;
+      $form['path']['#access'] = FALSE;
+
       if ($account->id() == 1) {
         $form['#disabled'] = TRUE;
         $form['account']['current_pass']['#access'] = FALSE;
@@ -50,11 +55,6 @@ function uiowa_auth_form_user_form_alter(&$form, FormStateInterface $form_state,
           $form['account']['mail']['#disabled'] = TRUE;
           $form['account']['mail']['#description'] = t('Email addresses are synced after every successful HawkID login.');
         }
-
-        // Always disable these fields.
-        $form['account']['current_pass']['#access'] = FALSE;
-        $form['account']['pass']['#access'] = FALSE;
-        $form['path']['#access'] = FALSE;
       }
     }
   }
