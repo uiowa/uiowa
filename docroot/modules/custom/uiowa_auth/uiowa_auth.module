@@ -24,7 +24,9 @@ function uiowa_auth_form_user_login_form_alter(&$form, FormStateInterface $form_
  * Implements hook_form_FORM_ID_alter().
  */
 function uiowa_auth_form_user_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // Adjust access to fields on the user edit form that are synced via SAML.
+  // Adjust access to fields on the user edit form that are synced via SAML. The
+  // samlauth module does something similar to this but only for the current
+  // user editing their own account. We take some additional steps also.
   if ($form['form_id']['#id'] == 'edit-user-form') {
     /** @var \Drupal\user\UserInterface $account */
     $account = user_load_by_name($form['account']['name']['#default_value']);
