@@ -216,9 +216,11 @@ class Articles extends BaseNodeSource {
           if ($term->save()) {
             $this->tagMapping[$tag_name] = $term->id();
           }
-          // Add the mapped TID to match our tag name.
-          $tags[] = $this->tagMapping[$tag_name];
         }
+
+        // Add the mapped TID to match our tag name.
+        $tags[] = $this->tagMapping[$tag_name];
+
       }
       $row->setSourceProperty('tags', $tags);
     }
