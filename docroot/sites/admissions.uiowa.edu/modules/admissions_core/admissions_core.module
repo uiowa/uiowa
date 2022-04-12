@@ -254,6 +254,12 @@ function admissions_core_preprocess_field(&$variables) {
       $variables['label'] = t('@name Contact Information', ['@name' => $name]);
       break;
 
+    case 'field_major_cc_checkpoints':
+      $term = $variables['element']['#object'];
+      $name = $term->field_major_community_college->entity->name->value;
+      $variables['label'] = t('@name checkpoints', ['@name' => $name]);
+      break;
+
   }
 }
 
@@ -483,6 +489,10 @@ function admissions_core_theme($existing, $type, $theme, $path) {
     ],
     'field__node__field_event_series_summary__event_series' => [
       'template' => 'field--node--field-event-series-summary--event-series--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_major_area_of_study__major' => [
+      'template' => 'field--node--field-major-area-of-study--major',
       'base hook' => 'field',
     ],
     'field__node__field_transfer_tips_aos__transfer_tips' => [
