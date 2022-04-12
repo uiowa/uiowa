@@ -34,7 +34,7 @@
 {% endif %}
 
 {# Do not show the aria-describedby attribute if title AND link text are not both present. #}
-{% if link_element != 'title' or card_link_title == ''%}
+{% if link_element != 'title' or card_link_title == '' %}
   {% set card_aria_describedby = '' %}
 {% endif %}
 

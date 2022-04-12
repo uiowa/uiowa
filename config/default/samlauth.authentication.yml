@@ -33,11 +33,11 @@ map_users: true
 map_users_name: true
 map_users_mail: true
 map_users_roles:
-  viewer: '0'
-  editor: '0'
-  publisher: '0'
-  webmaster: '0'
-  administrator: '0'
+  viewer: viewer
+  editor: editor
+  publisher: publisher
+  webmaster: webmaster
+  administrator: administrator
 create_users: true
 sync_name: true
 sync_mail: true
@@ -60,6 +60,7 @@ security_want_name_id: true
 security_request_authn_context: true
 security_lowercase_url_encoding: true
 security_logout_reuse_sigs: false
+security_allow_repeat_attribute_name: false
 debug_display_error_details: false
 debug_log_in: false
 debug_log_saml_in: false
