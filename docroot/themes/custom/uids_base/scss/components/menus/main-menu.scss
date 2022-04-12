@@ -78,7 +78,7 @@
             > span {
               background-color: $light;
               margin: 0;
-              padding-left: 1.875rem;
+              //padding-left: 1.875rem;
               padding-bottom: 1.475rem;
 
               &:before {
@@ -435,7 +435,6 @@
 
       @include breakpoint(sm) {
         height: 100%;
-        right: -1px;
         top: 5px;
         width: auto;
       }
@@ -499,6 +498,9 @@
 
     .menu-item--expanded a + button::after {
       margin-left: 0;
+    }
+    .menu-item--expanded + .menu-item--active-trail {
+      margin-left: .3rem;
     }
   }
 
