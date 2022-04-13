@@ -8,7 +8,6 @@ dependencies:
     - field.field.node.major.field_major_area_of_study
     - field.field.node.major.field_major_cc_checkpoints
     - field.field.node.major.field_major_community_college
-    - field.field.node.major.field_major_intro
     - field.field.node.major.field_major_responsibilities
     - field.field.node.major.field_major_uiowa_checkpoints
     - node.type.major
@@ -28,6 +27,11 @@ content:
     third_party_settings: {  }
     weight: 101
     region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
   links:
     settings: {  }
     third_party_settings: {  }
@@ -40,7 +44,6 @@ hidden:
   field_major_area_of_study: true
   field_major_cc_checkpoints: true
   field_major_community_college: true
-  field_major_intro: true
   field_major_responsibilities: true
   field_major_uiowa_checkpoints: true
   search_api_excerpt: true

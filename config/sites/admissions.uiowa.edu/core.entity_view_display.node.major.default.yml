@@ -7,7 +7,6 @@ dependencies:
     - field.field.node.major.field_major_area_of_study
     - field.field.node.major.field_major_cc_checkpoints
     - field.field.node.major.field_major_community_college
-    - field.field.node.major.field_major_intro
     - field.field.node.major.field_major_responsibilities
     - field.field.node.major.field_major_uiowa_checkpoints
     - node.type.major
@@ -19,44 +18,48 @@ targetEntityType: node
 bundle: major
 mode: default
 content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
   field_major_area_of_study:
     type: entity_reference_label
     label: hidden
     settings:
       link: true
     third_party_settings: {  }
-    weight: 1
+    weight: 3
     region: content
   field_major_cc_checkpoints:
     type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 3
-    region: content
-  field_major_intro:
-    type: text_default
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 0
+    weight: 5
     region: content
   field_major_responsibilities:
     type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 2
+    weight: 4
     region: content
   field_major_uiowa_checkpoints:
     type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 4
+    weight: 6
     region: content
 hidden:
-  body: true
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
