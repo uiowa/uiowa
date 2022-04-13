@@ -9,8 +9,10 @@ dependencies:
     - field.field.node.major.field_major_community_college
     - field.field.node.major.field_major_responsibilities
     - field.field.node.major.field_major_uiowa_checkpoints
+    - field.field.node.major.field_meta_tags
     - node.type.major
   module:
+    - metatag
     - text
     - user
 id: node.major.default
@@ -58,6 +60,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 6
+    region: content
+  field_meta_tags:
+    type: metatag_empty_formatter
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 7
     region: content
 hidden:
   entity_print_view_epub: true
