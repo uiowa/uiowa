@@ -202,6 +202,17 @@
         border-block-start-color: rgba(255, 255, 255, 0.8);
       }
     }
+    &--glyph:after {
+      [class*="bg--gray"] & {
+        background-color: $light;
+      }
+      [class*="bg--gold"] & {
+        background-color: $primary;
+      }
+      [class*="bg--black"] & {
+        background-color: $secondary;
+      }
+    }
   }
 }
 
