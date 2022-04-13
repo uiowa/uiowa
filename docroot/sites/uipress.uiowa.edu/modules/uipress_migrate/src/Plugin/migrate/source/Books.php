@@ -22,6 +22,14 @@ class Books extends BaseNodeSource {
   /**
    * {@inheritdoc}
    */
+  protected $multiValueFields = [
+    'field_data_field_uibook_series' => ['field_uibook_series_value'],
+    'field_data_upload' => ['upload_fid'],
+  ];
+
+  /**
+   * {@inheritdoc}
+   */
   public function query() {
     $query = parent::query();
     // Only add the aliases to the query if we're
@@ -90,12 +98,6 @@ class Books extends BaseNodeSource {
 
     }
 
-    // Fetch the multi-value roles.
-    $tables = [
-      'field_data_field_uibook_series' => ['field_uibook_series_value'],
-      'field_data_upload' => ['upload_fid'],
-    ];
-    $this->fetchAdditionalFields($row, $tables);
     $series = $row->getSourceProperty('field_uibook_series_value');
     $types = [];
     foreach ($series as $item) {
@@ -119,7 +121,7 @@ class Books extends BaseNodeSource {
       foreach ($uploads as $delta => $fid) {
         $uploads[$delta] = $this->processImageField($fid);
       }
-      $row->setSourceProperty('uploads', $uploads);
+      $row->setSourceProperty('upload_fid', $uploads);
     }
 
     // Combine book types into one.
