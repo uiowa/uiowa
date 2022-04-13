@@ -47,7 +47,7 @@ process:
       target_id:
         plugin: migration_lookup
         migration: uipress_authors
-        source: nid
+        source: target_id
   field_book_author:
     plugin: sub_process
     source: field_uibook_authors
@@ -55,7 +55,7 @@ process:
       target_id:
         plugin: migration_lookup
         migration: uipress_authors
-        source: nid
+        source: target_id
   field_book_awards: field_uibook_awards
   field_book_contributors: field_uibook_contrib
   field_book_edition: field_uibook_edition
@@ -66,7 +66,7 @@ process:
       target_id:
         plugin: migration_lookup
         migration: uipress_authors
-        source: nid
+        source: target_id
   field_book_essay_by:
     plugin: sub_process
     source: field_uibook_essayby
@@ -74,7 +74,7 @@ process:
       target_id:
         plugin: migration_lookup
         migration: uipress_authors
-        source: nid
+        source: target_id
   field_book_excerpt: field_uibook_excerpt
   field_book_file_uploads: upload_fid
   field_book_foreword_author:
@@ -84,7 +84,7 @@ process:
       target_id:
         plugin: migration_lookup
         migration: uipress_authors
-        source: nid
+        source: target_id
   field_book_illustrator:
     plugin: sub_process
     source: field_uibook_illustrator
@@ -92,7 +92,7 @@ process:
       target_id:
         plugin: migration_lookup
         migration: uipress_authors
-        source: nid
+        source: target_id
   field_book_introduction_author:
     plugin: sub_process
     source: field_uibook_introauth
@@ -100,7 +100,7 @@ process:
       target_id:
         plugin: migration_lookup
         migration: uipress_authors
-        source: nid
+        source: target_id
   field_book_photographer:
     plugin: sub_process
     source: field_uibook_photog
@@ -108,7 +108,7 @@ process:
       target_id:
         plugin: migration_lookup
         migration: uipress_authors
-        source: nid
+        source: target_id
   field_book_preface_authors:
     plugin: sub_process
     source: field_uibook_prefauth
@@ -116,7 +116,7 @@ process:
       target_id:
         plugin: migration_lookup
         migration: uipress_authors
-        source: nid
+        source: target_id
   field_book_publication_date: field_uibook_pubyear
   field_book_related_reads: field_uibook_ymal
   field_book_reviews_blurbs: field_uibook_blurbs
@@ -133,7 +133,7 @@ process:
       target_id:
         plugin: migration_lookup
         migration: uipress_authors
-        source: nid
+        source: target_id
   field_book_type:
     plugin: create_book_type
     source: custom_book_types
@@ -141,4 +141,6 @@ process:
 destination:
   plugin: 'entity:node'
   default_bundle: book
-migration_dependencies: null
+migration_dependencies:
+  required:
+    - uipress_authors
