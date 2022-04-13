@@ -23,6 +23,11 @@
       margin-block: 0.125rem;
     }
   }
+  
+  // Fix for https://github.com/uiowa/uiowa/issues/3486 
+  input[size]:not([size='60']) {
+    width: inherit;
+  }
 
   // --------------------------------
   // Help/Description 
@@ -93,6 +98,10 @@
       & .form-actions [type="submit"] {
         width: 100%; // Set button full-width.
         height: 57px;
+      }
+      & .form-item > input:not([type="checkbox"]),
+      & .form-item > select {
+        width: 100%;
       }
     }
   }
