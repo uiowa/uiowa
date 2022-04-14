@@ -41,7 +41,7 @@ class Articles extends BaseNodeSource {
   public function query() {
     $query = parent::query();
     // Only import news newer than January 2015.
-    $query->condition('created', strtotime('2015-01-01'), '>=');
+    $query->condition('created', strtotime('2019-01-01'), '>=');
     $query->leftJoin('url_alias', 'alias', "alias.source = CONCAT('node/', n.nid)");
     $query->fields('alias', ['alias']);
     // Make sure our nodes are retrieved in order,
