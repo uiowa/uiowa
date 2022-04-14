@@ -129,13 +129,18 @@ process:
   field_book_related_reads: field_uibook_ymal
   field_book_reviews_blurbs: field_uibook_blurbs
   field_book_season:
-    plugin: entity_generate
+    plugin: sub_process
     source: field_uibook_season
-    value_key: name
-    bundle_key: vid
-    bundle: season
-    entity_type: taxonomy_term
-    ignore_case: true
+    process:
+      target_id:
+        plugin: entity_generate
+        source: value
+        value_key: name
+        entity_type: taxonomy_term
+        bundle_key: vid
+        bundle: season
+        ignore_case: true
+        access_check: false
   # field_book_series is handled in migration plugin.
   field_book_series: field_uibook_series_value
   field_book_subject: taxonomy_vocabulary_1
