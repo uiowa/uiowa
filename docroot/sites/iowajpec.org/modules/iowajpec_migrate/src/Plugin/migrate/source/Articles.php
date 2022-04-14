@@ -68,42 +68,23 @@ class Articles extends BaseNodeSource {
       return FALSE;
     }
     parent::prepareRow($row);
-
-    // Get the author tags to build into our mapped
-    // field_news_authors value.
-    $tables = [
-      'field_data_field_news_author' => ['field_news_author_tid'],
-      'field_data_field_news_tags' => ['field_news_tags_tid'],
-    ];
-    $this->fetchAdditionalFields($row, $tables);
-    $author_tids = $row->getSourceProperty('field_news_author_tid');
-    if (!empty($author_tids)) {
-      $authors = [];
-      foreach ($author_tids as $tid) {
-        if (!isset($this->termMapping[$tid])) {
-          $source_query = $this->select('taxonomy_term_data', 't');
-          $source_query = $source_query->fields('t', ['name'])
-            ->condition('t.tid', $tid, '=');
-          $this->termMapping[$tid] = $source_query->execute()->fetchCol()[0];
-        }
-        $authors[] = $this->termMapping[$tid];
-      }
-      $source_org_text = implode(', ', $authors);
-      $row->setSourceProperty('field_news_authors', $source_org_text);
-    }
-
-    $body = $row->getSourceProperty('body');
+    $body = $row->getSourceProperty('field_news_body');
 
     if (!empty($body)) {
       $this->viewMode = 'medium__no_crop';
       $this->align = 'left';
       // Search for D7 inline embeds and replace with D8 inline entities.
       $body[0]['value'] = $this->replaceInlineFiles($body[0]['value']);
+      $row->setSourceProperty('field_news_body', $body);
 
       // Extract the summary.
       $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));
     }
 
+    $tables = [
+      'field_data_field_tags' => ['field_tags_tid'],
+    ];
+    $this->fetchAdditionalFields($row, $tables);
     // Set our tagMapping if it's not already.
     if (empty($this->tagMapping)) {
       $this->tagMapping = \Drupal::database()
@@ -114,7 +95,7 @@ class Articles extends BaseNodeSource {
         ->fetchAllKeyed();
     }
 
-    $tag_tids = $row->getSourceProperty('field_news_tags_tid');
+    $tag_tids = $row->getSourceProperty('field_tags_tid');
     if (!empty($tag_tids)) {
       // Fetch tag names based on TIDs from our old site.
       $tag_results = $this->select('taxonomy_term_data', 't')
@@ -142,7 +123,11 @@ class Articles extends BaseNodeSource {
       }
       $row->setSourceProperty('tags', $tags);
     }
-    return TRUE;
+
+    if ($image = $row->getSourceProperty('field_news_image')) {
+      $row->setSourceProperty('field_image', $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']));
+    }
+      return TRUE;
   }
 
   /**

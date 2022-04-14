@@ -25,16 +25,17 @@ process:
     map:
       und: en
   moderation_state: moderation_state
-  created: created
+  created: field_news_date
   changed: changed
   status: status
   promote: promote
   uid: constants/uid_admin
   title: title
-  body: body
+  body: field_news_body
+  field_image: field_image
   field_teaser: body_summary
   field_tags: tags
-  field_article_source_org: field_news_authors
+  field_article_source_org: field_news_source
 destination:
   plugin: 'entity:node'
   default_bundle: article
