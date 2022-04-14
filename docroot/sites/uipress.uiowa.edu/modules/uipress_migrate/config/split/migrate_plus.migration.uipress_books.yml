@@ -164,7 +164,14 @@ process:
         access_check: false
   # field_book_series is handled in migration plugin.
   field_book_series: field_uibook_series_value
-  field_book_subject: taxonomy_vocabulary_1
+  field_book_subject:
+    plugin: sub_process
+    source: taxonomy_vocabulary_1
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: uipress_subjects
+        source: target_id
   field_book_subtitle: field_uibook_subtitle # @todo Should this be removed?
   field_book_table_of_contents:
     plugin: sub_process
@@ -191,4 +198,5 @@ destination:
   default_bundle: book
 migration_dependencies:
   required:
+    - uipress_subjects
     - uipress_authors
