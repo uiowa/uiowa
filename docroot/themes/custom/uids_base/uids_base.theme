@@ -37,6 +37,10 @@ function uids_base_form_alter(&$form, $form_state, $form_id) {
   if (strpos($form_id, 'uiowa_search_form') !== FALSE) {
     $form['#attributes']['class'][] = 'uids-search';
   }
+
+  if (strpos($form_id, 'webform_submission') !== FALSE) {
+    $form['#attached']['library'][] = 'uids_base/webforms';
+  }
 }
 
 /**
