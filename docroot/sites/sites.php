@@ -4048,3 +4048,9 @@ $sites['labjingjiang.uiowa.ddev.site'] = 'jingjiang.lab.uiowa.edu';
 $sites['labjingjiang.dev.drupal.uiowa.edu'] = 'jingjiang.lab.uiowa.edu';
 $sites['labjingjiang.stage.drupal.uiowa.edu'] = 'jingjiang.lab.uiowa.edu';
 $sites['labjingjiang.prod.drupal.uiowa.edu'] = 'jingjiang.lab.uiowa.edu';
+
+// Directory aliases for oneit.uiowa.edu.
+$sites['oneit.uiowa.ddev.site'] = 'oneit.uiowa.edu';
+$sites['oneit.dev.drupal.uiowa.edu'] = 'oneit.uiowa.edu';
+$sites['oneit.stage.drupal.uiowa.edu'] = 'oneit.uiowa.edu';
+$sites['oneit.prod.drupal.uiowa.edu'] = 'oneit.uiowa.edu';
