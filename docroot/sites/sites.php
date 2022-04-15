@@ -4054,3 +4054,9 @@ $sites['oneit.uiowa.ddev.site'] = 'oneit.uiowa.edu';
 $sites['oneit.dev.drupal.uiowa.edu'] = 'oneit.uiowa.edu';
 $sites['oneit.stage.drupal.uiowa.edu'] = 'oneit.uiowa.edu';
 $sites['oneit.prod.drupal.uiowa.edu'] = 'oneit.uiowa.edu';
+
+// Directory aliases for asr.uiowa.edu.
+$sites['asr.uiowa.ddev.site'] = 'asr.uiowa.edu';
+$sites['asr.dev.drupal.uiowa.edu'] = 'asr.uiowa.edu';
+$sites['asr.stage.drupal.uiowa.edu'] = 'asr.uiowa.edu';
+$sites['asr.prod.drupal.uiowa.edu'] = 'asr.uiowa.edu';
