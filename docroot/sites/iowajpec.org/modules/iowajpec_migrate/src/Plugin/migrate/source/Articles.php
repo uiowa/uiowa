@@ -168,7 +168,7 @@ class Articles extends BaseNodeSource {
     // if we're doing the redirects migration,
     // don't proceed with the following.
     $migration = $event->getMigration();
-    if (!$migration->allRowsProcessed() || $migration->id() === 'iowajpec_article_redirects') {
+    if (!$migration->allRowsProcessed() || $migration->id() === 'iowajpec_articles_redirects') {
       return;
     }
     // Report possible broken links after our known high water mark
