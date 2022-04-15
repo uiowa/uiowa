@@ -29,7 +29,8 @@
   font-weight: bold;
   src: local('Roboto-Bold'), url("../fonts/Roboto-Bold.ttf") format('truetype');
 }
-$reduced-line-height: 1.3;
+
+$reduced-line-height: 1.2;
 
 blockquote,
 dl,
@@ -94,6 +95,7 @@ h6 {
   font-family: Roboto,sans-serif;
   font-size: 0.8rem;
   font-weight: bold;
+  line-height: 1;
 }
 
 .element--bold-intro,
@@ -127,6 +129,11 @@ h6 {
 .print__logo {
   display: block;
   text-align: right;
+  margin-top: -15px;
+}
+
+.node__content {
+  margin-top: 31px;
 }
 
 // Sidebar used for majors/minors and list items
@@ -135,8 +142,8 @@ h6 {
   display: inline-block;
   float: right;
   background: #ccc;
-  padding: 15px 25px;
-  margin: 10px 0 10px 10px;
+  padding: 18px 25px;
+  margin: 0 0 10px 10px;
   clear: right;
 
   img {
@@ -416,8 +423,6 @@ h6 {
   .field--name-field-area-of-study-subprogram,
   .field--name-field-area-of-study-teaching,
   .field--name-field-area-of-study-course-work {
-    page-break-inside: avoid;
-    page-break-before: auto;
 
     .field__label {
       @extend .element--bold-intro;
@@ -549,7 +554,7 @@ h6 {
     tr {
       page-break-inside: avoid;
       page-break-before: auto;
-      border: solid 0.5px black;
+      border: solid 1px black;
     }
 
     thead td,
