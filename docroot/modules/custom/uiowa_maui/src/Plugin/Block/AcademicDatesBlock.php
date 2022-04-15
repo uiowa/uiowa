@@ -148,6 +148,15 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       '#options' => $this->maui->getDateCategories(),
     ];
 
+    $form['items_to_display'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Items to display'),
+      '#description' => $this->t('Select the number of entries to display. Minimum of 1 and maximum of 50. Show pager to display more than 50.'),
+      '#default_value' => $config['items_to_display'] ?? 10,
+      '#min' => 1,
+      '#max' => 50,
+    ];
+
     return $form;
   }
 
