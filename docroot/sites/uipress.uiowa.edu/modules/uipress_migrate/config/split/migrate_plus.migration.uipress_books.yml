@@ -147,7 +147,14 @@ process:
         from_format: 'Y'
         to_format: 'Y-m-d'
         source: value
-  field_book_related_reads: field_uibook_ymal
+  field_book_related_reads:
+    plugin: sub_process
+    source: field_uibook_ymal
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: uipress_books
+        source: target_id
   field_book_reviews_blurbs: field_uibook_blurbs
   field_book_season:
     plugin: sub_process
@@ -172,7 +179,7 @@ process:
         plugin: migration_lookup
         migration: uipress_subjects
         source: target_id
-  field_book_subtitle: field_uibook_subtitle # @todo Should this be removed?
+  field_book_subtitle: field_uibook_subtitle
   field_book_table_of_contents:
     plugin: sub_process
     source: field_uibook_toc
