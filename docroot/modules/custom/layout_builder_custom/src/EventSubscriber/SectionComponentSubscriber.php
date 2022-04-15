@@ -12,14 +12,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * Add an HTML class to blocks that are displaying placeholder text.
  */
-class SectionComponentSubscriber implements EventSubscriberInterface
-{
+class SectionComponentSubscriber implements EventSubscriberInterface {
 
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents()
-  {
+  public static function getSubscribedEvents() {
     $events[LayoutBuilderEvents::SECTION_COMPONENT_BUILD_RENDER_ARRAY] = [
       'onBuildRender',
       50,
@@ -33,8 +31,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface
    * @param \Drupal\layout_builder\Event\SectionComponentBuildRenderArrayEvent $event
    *   The section component render event.
    */
-  public function onBuildRender(SectionComponentBuildRenderArrayEvent $event)
-  {
+  public function onBuildRender(SectionComponentBuildRenderArrayEvent $event) {
     $block = $event->getPlugin();
     if (!$block instanceof BlockPluginInterface) {
       return;
@@ -104,7 +101,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface
               'media--ultrawide' => 'full__ultrawide',
               'media--widescreen' => 'full__widescreen',
             ];
-          break;
+            break;
         }
         if (isset($media_formats)) {
           // Loop through the map to check if any of them are being used and
@@ -129,4 +126,5 @@ class SectionComponentSubscriber implements EventSubscriberInterface
 
     $event->setBuild($build);
   }
+
 }
