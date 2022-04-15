@@ -68,6 +68,19 @@ class Articles extends BaseNodeSource {
       return FALSE;
     }
     parent::prepareRow($row);
+
+    // Process the publication date field into a usable format for
+    // the new article's created date.
+    $date = $row->getSourceProperty('field_news_date');
+    // Because all our dates are set to midnight, we
+    // can adjust the string rather than create a new
+    // timezone-sensitive object to then turn to a string.
+    // And if we don't shift, we'll be off by a day
+    // when we transform to a unix timestamp.
+    $date = str_replace('00:00:00', '13:00:00', $date[0]['value']);
+    $date = strtotime($date);
+    $row->setSourceProperty('field_news_date', $date);
+
     $body = $row->getSourceProperty('field_news_body');
 
     if (!empty($body)) {
