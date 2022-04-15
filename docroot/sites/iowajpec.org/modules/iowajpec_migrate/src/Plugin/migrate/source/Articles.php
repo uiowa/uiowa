@@ -39,9 +39,26 @@ class Articles extends BaseNodeSource {
    * {@inheritdoc}
    */
   public function query() {
+    // Skip specific nodes, as they were already manually
+    // migrated over.
+    $to_skip = [
+      13626,
+      13166,
+      13616,
+      13621,
+      13526,
+      13596,
+      13586,
+      13576,
+      13126,
+      13091,
+      13496,
+      13551,
+    ];
     $query = parent::query();
-    // Only import news newer than January 2015.
+    // Only import news newer than January 2019.
     $query->condition('created', strtotime('2019-01-01'), '>=');
+    $query->condition('n.nid', $to_skip, 'NOT IN');
     $query->leftJoin('url_alias', 'alias', "alias.source = CONCAT('node/', n.nid)");
     $query->fields('alias', ['alias']);
     // Make sure our nodes are retrieved in order,
@@ -140,7 +157,7 @@ class Articles extends BaseNodeSource {
     if ($image = $row->getSourceProperty('field_news_image')) {
       $row->setSourceProperty('field_image', $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']));
     }
-      return TRUE;
+    return TRUE;
   }
 
   /**
