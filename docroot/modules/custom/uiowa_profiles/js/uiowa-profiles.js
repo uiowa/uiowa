@@ -41,53 +41,27 @@ uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
       // Set query parameters, in this case the api key gotten from settings.
       let params = 'api-key=' + drupalSettings.uiowaProfiles.api_key;
 
-      // Create a new XMLHttpRequest() with our api call url.
-      const request = new XMLHttpRequest();
-      request.open("GET", `${endpoint}/people/${person}/metadata?${params}`);
-
-      // On loading of the request...
-      request.onload = ()=> {
-
-        // If the request is a success...
-        if (request.status === 200) {
-
-          // Parse the response in to readable JSON.
-          let response = JSON.parse(request.response);
-
-          // Grab the canonical URL from the response.
-          let canonical = response.canonical_url;
-
-          // Construct the `meta_description_markup` using the response data.
-          let meta_description_markup = this.personMetaElement(response.name, response.directoryTitle);
-
-          // Grab the meta description element.
+      // Retrieve the person metadata.
+      fetch(`${endpoint}/people/${person}/metadata?${params}`)
+        .then(response => response.json())
+        .then(data => {
+          // Construct the metadata elements and set appropriately.
+          let canonical = data.canonical_url;
+          let meta_description_markup = this.personMetaElement(data.name, data.directoryTitle);
           let meta_description = document.head.querySelector('meta[name="description"]');
 
-          // If the meta description exists...
           if (meta_description !== null) {
-
-            // Replace it with the newly constructed `meta_description_markup`.
             meta_description.parentNode.replaceChild(meta_description_markup, meta_description);
           }
-
-          // Else if the meta description does not exist...
           else {
-
             // Append the `meta_description_markup` at the end of the `head` element.
             document.querySelector('head').appendChild(meta_description_markup);
           }
 
           // And set the canonical URL in the head.
           link.setAttribute('href', canonical);
-        }
-        // If the request fails...
-        else {
-
-          // Log the error code.
-          console.log(`error ${request.status}`);
-        }
-      }
-      request.send();
+        })
+        .catch(error => console.log(`Error retrieving person metadata:`, error));
 
       // Retrieve the person schema and set the element.
       fetch(`${endpoint}/people/${person}/structured?${params}`)
