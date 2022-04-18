@@ -234,8 +234,9 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       '\Drupal\uiowa_maui\Form\AcademicDatesForm',
       $config['session'],
       $config['category'],
-      $config['items_to_display'],
-      $child_heading_size
+      $child_heading_size,
+      $config['items_to_display']
+
     );
     return $build;
   }
