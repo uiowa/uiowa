@@ -107,7 +107,11 @@ uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
     // Else if this is not an individual profile page...
     else {
       // Remove any previously set schema.
-      document.head.querySelector('script[type="application/ld+json"]').remove();
+      const schema = document.head.querySelector('script[type="application/ld+json"]');
+
+      if (schema) {
+        schema.remove();
+      }
 
       // Grab some data from `drupalSettings` and make the `directory_meta_description` from it,
       let site_name = drupalSettings.uiowaProfiles.siteName;
