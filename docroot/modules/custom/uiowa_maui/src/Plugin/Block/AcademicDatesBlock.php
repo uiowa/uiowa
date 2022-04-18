@@ -187,9 +187,11 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     // Convert select list values to what we're expecting in the form builder.
     $session = $form_state->getValue('session');
     $category = $form_state->getValue('category');
+    $items_to_display = $form_state->getValue('items_to_display');
 
     $this->configuration['session'] = ($session === '') ? NULL : $session;
     $this->configuration['category'] = ($category === '') ? NULL : $category;
+    $this->configuration['items_to_display'] = ($items_to_display === '') ? NULL : $items_to_display;
     parent::blockSubmit($form, $form_state);
   }
 
