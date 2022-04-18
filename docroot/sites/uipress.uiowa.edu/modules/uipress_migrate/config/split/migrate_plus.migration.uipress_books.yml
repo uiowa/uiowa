@@ -38,7 +38,7 @@ process:
       value: value
       format:
         plugin: default_value
-        default_value: 'minimal'
+        default_value: minimal
   field_image: field_image
   field_book_afterword_author:
     plugin: sub_process
@@ -63,7 +63,7 @@ process:
       value: value
       format:
         plugin: default_value
-        default_value: 'minimal'
+        default_value: minimal
   field_book_contributors:
     plugin: sub_process
     source: field_uibook_contrib
@@ -71,7 +71,7 @@ process:
       value: value
       format:
         plugin: default_value
-        default_value: 'minimal'
+        default_value: minimal
   field_book_edition: field_uibook_edition
   field_book_editor:
     plugin: sub_process
@@ -96,7 +96,7 @@ process:
       value: value
       format:
         plugin: default_value
-        default_value: 'minimal'
+        default_value: minimal
   field_book_interior_pages: upload_fid
   field_book_foreword_author:
     plugin: sub_process
@@ -145,7 +145,7 @@ process:
       value:
         plugin: format_date
         from_format: 'Y'
-        to_format: 'Y-m-d'
+        to_format: Y-m-d
         source: value
   field_book_related_reads:
     plugin: sub_process
@@ -169,7 +169,6 @@ process:
         bundle: season
         ignore_case: true
         access_check: false
-  # field_book_series is handled in migration plugin.
   field_book_series: field_uibook_series_value
   field_book_subject:
     plugin: sub_process
@@ -187,7 +186,7 @@ process:
       value: value
       format:
         plugin: default_value
-        default_value: 'minimal'
+        default_value: minimal
   field_book_translator:
     plugin: sub_process
     source: field_uibook_translator
