@@ -41,12 +41,9 @@ uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
       // Set query parameters, in this case the api key gotten from settings.
       let params = 'api-key=' + drupalSettings.uiowaProfiles.api_key;
 
-      // Concatenate all relevant pieces together to create an api call url.
-      let url = endpoint + '/people/' + person + '/metadata?' + params;
-
       // Create a new XMLHttpRequest() with our api call url.
       const request = new XMLHttpRequest();
-      request.open("GET", url);
+      request.open("GET", `${endpoint}/people/${person}/metadata?${params}`);
 
       // On loading of the request...
       request.onload = ()=> {
