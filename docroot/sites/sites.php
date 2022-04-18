@@ -4042,3 +4042,21 @@ $sites['researchgrantbulletin.uiowa.ddev.site'] = 'grantbulletin.research.uiowa.
 $sites['researchgrantbulletin.dev.drupal.uiowa.edu'] = 'grantbulletin.research.uiowa.edu';
 $sites['researchgrantbulletin.stage.drupal.uiowa.edu'] = 'grantbulletin.research.uiowa.edu';
 $sites['researchgrantbulletin.prod.drupal.uiowa.edu'] = 'grantbulletin.research.uiowa.edu';
+
+// Directory aliases for jingjiang.lab.uiowa.edu.
+$sites['labjingjiang.uiowa.ddev.site'] = 'jingjiang.lab.uiowa.edu';
+$sites['labjingjiang.dev.drupal.uiowa.edu'] = 'jingjiang.lab.uiowa.edu';
+$sites['labjingjiang.stage.drupal.uiowa.edu'] = 'jingjiang.lab.uiowa.edu';
+$sites['labjingjiang.prod.drupal.uiowa.edu'] = 'jingjiang.lab.uiowa.edu';
+
+// Directory aliases for oneit.uiowa.edu.
+$sites['oneit.uiowa.ddev.site'] = 'oneit.uiowa.edu';
+$sites['oneit.dev.drupal.uiowa.edu'] = 'oneit.uiowa.edu';
+$sites['oneit.stage.drupal.uiowa.edu'] = 'oneit.uiowa.edu';
+$sites['oneit.prod.drupal.uiowa.edu'] = 'oneit.uiowa.edu';
+
+// Directory aliases for asr.uiowa.edu.
+$sites['asr.uiowa.ddev.site'] = 'asr.uiowa.edu';
+$sites['asr.dev.drupal.uiowa.edu'] = 'asr.uiowa.edu';
+$sites['asr.stage.drupal.uiowa.edu'] = 'asr.uiowa.edu';
+$sites['asr.prod.drupal.uiowa.edu'] = 'asr.uiowa.edu';
