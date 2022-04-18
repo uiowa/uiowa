@@ -514,6 +514,29 @@ trait ProcessMediaTrait {
           $file_manager = NULL;
           return $id;
 
+        case 'audio':
+          $media_manager = $this->entityTypeManager->getStorage('media');
+          /** @var \Drupal\Media\MediaInterface $media */
+          $media = $media_manager->create([
+            'bundle' => 'audio',
+            'field_media_audio_file' => [
+              'target_id' => $fid,
+            ],
+            'langcode' => 'en',
+            'metadata' => [],
+          ]);
+
+          $media->setName($file->getFileName());
+          $media->setOwnerId($owner_id);
+          $media->save();
+          $id = $media->id();
+          // Minor memory cleanup.
+          $media = NULL;
+          $file = NULL;
+          $media_manager = NULL;
+          $file_manager = NULL;
+          return $id;
+
         default:
           return FALSE;
       }

@@ -98,6 +98,14 @@ class Books extends BaseNodeSource {
 
     }
 
+    $body = $row->getSourceProperty('field_book_description_summary');
+
+    if (!empty($body)) {
+      // Search for D7 inline embeds and replace with D8 inline entities.
+      $body[0]['value'] = $this->replaceRelLinkedFiles($body[0]['value']);
+      $row->setSourceProperty('field_book_description_summary', $body);
+    }
+
     // Process the series.
     if ($series = $row->getSourceProperty('field_uibook_series_value')) {
       $types = [];
