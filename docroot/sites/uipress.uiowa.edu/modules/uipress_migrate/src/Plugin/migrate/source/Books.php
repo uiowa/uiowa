@@ -98,12 +98,14 @@ class Books extends BaseNodeSource {
 
     }
 
-    $series = $row->getSourceProperty('field_uibook_series_value');
-    $types = [];
-    foreach ($series as $item) {
-      $types[] = $this->seriesMapping($item);
+    // Process the series.
+    if ($series = $row->getSourceProperty('field_uibook_series_value')) {
+      $types = [];
+      foreach ($series as $item) {
+        $types[] = $this->seriesMapping($item);
+      }
+      $row->setSourceProperty('field_uibook_series_value', $types);
     }
-    $row->setSourceProperty('field_uibook_series_value', $types);
 
     // Download image and attach it for the book cover.
     if ($image = $row->getSourceProperty('field_image_attach')) {
