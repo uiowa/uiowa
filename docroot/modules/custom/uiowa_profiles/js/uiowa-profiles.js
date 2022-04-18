@@ -88,10 +88,26 @@ uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
         }
       }
       request.send();
+
+      // Retrieve the person schema and set the element.
+      fetch(`${endpoint}/people/${person}/structured?${params}`)
+        .then(response => response.text())
+        .then(data => {
+          if (!document.head.querySelector('script[type="application/ld+json"]')) {
+            let schema = document.createElement('script');
+            schema.text = data;
+            schema.setAttribute('type', 'application/ld+json');
+            document.querySelector('head').prepend(schema);
+          }
+
+        })
+        .catch(error => console.log(`Error retrieving person schema:`, error));
     }
 
     // Else if this is not an individual profile page...
     else {
+      // Remove any previously set schema.
+      document.head.querySelector('script[type="application/ld+json"]').remove();
 
       // Grab some data from `drupalSettings` and make the `directory_meta_description` from it,
       let site_name = drupalSettings.uiowaProfiles.siteName;
