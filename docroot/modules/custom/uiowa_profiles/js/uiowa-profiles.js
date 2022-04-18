@@ -170,6 +170,7 @@ uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
       $(document, context).once('uiowaProfiles').each(function() {
         Drupal.uiowaProfiles.updateSEOData(settings, document.URL);
 
+        // Note that this seems to observe multiple changes per person.
         const root = document.getElementById('profiles-root');
         const observer = new MutationObserver(function() {
           Drupal.uiowaProfiles.updateSEOData(settings, document.URL);
