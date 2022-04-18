@@ -35,24 +35,21 @@ uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
       // Get the person's name from the URL, ex: james-doe
       let person = parts.pop();
 
-      // Get the environment from the settings.
-      let environment = drupalSettings.uiowaProfiles.environment;
-
-      // Set the endpoint to either the test or prod versions of the api based on environment.
-      let endpoint = 'https://profiles' + (environment === 'test' ? '-test' : '') + '.uiowa.edu/api/people/';
+      // Get the endpoint from the settings.
+      let endpoint = drupalSettings.uiowaProfiles.endpoint;
 
       // Set query parameters, in this case the api key gotten from settings.
       let params = 'api-key=' + drupalSettings.uiowaProfiles.api_key;
 
       // Concatenate all relevant pieces together to create an api call url.
-      let url = endpoint + person + '/metadata?' + params;
+      let url = endpoint + '/people/' + person + '/metadata?' + params;
 
       // Create a new XMLHttpRequest() with our api call url.
       const request = new XMLHttpRequest();
       request.open("GET", url);
 
       // On loading of the request...
-      request.onload = ()=>{
+      request.onload = ()=> {
 
         // If the request is a success...
         if (request.status === 200) {
