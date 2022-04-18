@@ -71,7 +71,7 @@ uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
             let schema = document.createElement('script');
             schema.text = data;
             schema.setAttribute('type', 'application/ld+json');
-            document.querySelector('head').prepend(schema);
+            document.querySelector('head').appendChild(schema);
           }
 
         })
