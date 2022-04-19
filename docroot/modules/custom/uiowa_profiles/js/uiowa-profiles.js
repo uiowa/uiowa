@@ -35,69 +35,57 @@ uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
       // Get the person's name from the URL, ex: james-doe
       let person = parts.pop();
 
-      // Get the environment from the settings.
-      let environment = drupalSettings.uiowaProfiles.environment;
-
-      // Set the endpoint to either the test or prod versions of the api based on environment.
-      let endpoint = 'https://profiles' + (environment === 'test' ? '-test' : '') + '.uiowa.edu/api/people/';
+      // Get the endpoint from the settings.
+      let endpoint = drupalSettings.uiowaProfiles.endpoint;
 
       // Set query parameters, in this case the api key gotten from settings.
       let params = 'api-key=' + drupalSettings.uiowaProfiles.api_key;
 
-      // Concatenate all relevant pieces together to create an api call url.
-      let url = endpoint + person + '/metadata?' + params;
-
-      // Create a new XMLHttpRequest() with our api call url.
-      const request = new XMLHttpRequest();
-      request.open("GET", url);
-
-      // On loading of the request...
-      request.onload = ()=>{
-
-        // If the request is a success...
-        if (request.status === 200) {
-
-          // Parse the response in to readable JSON.
-          let response = JSON.parse(request.response);
-
-          // Grab the canonical URL from the response.
-          let canonical = response.canonical_url;
-
-          // Construct the `meta_description_markup` using the response data.
-          let meta_description_markup = this.personMetaElement(response.name, response.directoryTitle);
-
-          // Grab the meta description element.
+      // Retrieve the person metadata.
+      fetch(`${endpoint}/people/${person}/metadata?${params}`)
+        .then(response => response.json())
+        .then(data => {
+          // Construct the metadata elements and set appropriately.
+          let canonical = data.canonical_url;
+          let meta_description_markup = this.personMetaElement(data.name, data.directoryTitle);
           let meta_description = document.head.querySelector('meta[name="description"]');
 
-          // If the meta description exists...
           if (meta_description !== null) {
-
-            // Replace it with the newly constructed `meta_description_markup`.
             meta_description.parentNode.replaceChild(meta_description_markup, meta_description);
           }
-
-          // Else if the meta description does not exist...
           else {
-
             // Append the `meta_description_markup` at the end of the `head` element.
             document.querySelector('head').appendChild(meta_description_markup);
           }
 
           // And set the canonical URL in the head.
           link.setAttribute('href', canonical);
-        }
-        // If the request fails...
-        else {
+        })
+        .catch(error => console.log(`Error retrieving person metadata:`, error));
 
-          // Log the error code.
-          console.log(`error ${request.status}`);
-        }
-      }
-      request.send();
+      // Retrieve the person schema and set the element.
+      fetch(`${endpoint}/people/${person}/structured?${params}`)
+        .then(response => response.text())
+        .then(data => {
+          if (!document.head.querySelector('script[type="application/ld+json"]')) {
+            let schema = document.createElement('script');
+            schema.text = data;
+            schema.setAttribute('type', 'application/ld+json');
+            document.querySelector('head').appendChild(schema);
+          }
+
+        })
+        .catch(error => console.log(`Error retrieving person schema:`, error));
     }
 
     // Else if this is not an individual profile page...
     else {
+      // Remove any previously set schema.
+      const schema = document.head.querySelector('script[type="application/ld+json"]');
+
+      if (schema) {
+        schema.remove();
+      }
 
       // Grab some data from `drupalSettings` and make the `directory_meta_description` from it,
       let site_name = drupalSettings.uiowaProfiles.siteName;
@@ -160,6 +148,7 @@ uiProfiles = { basePath: drupalSettings.uiowaProfiles.basePath };
       $(document, context).once('uiowaProfiles').each(function() {
         Drupal.uiowaProfiles.updateSEOData(settings, document.URL);
 
+        // Note that this seems to observe multiple changes per person.
         const root = document.getElementById('profiles-root');
         const observer = new MutationObserver(function() {
           Drupal.uiowaProfiles.updateSEOData(settings, document.URL);
