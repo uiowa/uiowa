@@ -87,7 +87,7 @@
             {% if links|length > 1 %}
               <div class="bttn--row">
                 {% for link in links %}
-                  <a class="{{ button_classes }}" href="{{ link.link_url }}">
+                  <a {{ button_attributes.addclass(button_classes) }} href="{{ link.link_url }}">
                     {{ link.link_text }}
                     <span role="presentation" class="fas fa-arrow-right"></span>
                   </a>
