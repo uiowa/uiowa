@@ -1048,7 +1048,7 @@ function uids_base_preprocess_superfish_menu_items(array &$variables) {
   if (isset($variables['menu_items'])) {
     foreach ($variables['menu_items'] as $i => $menu_item) {
       if (isset($menu_item['link_menuparent'])) {
-        if ($menu_item['link']['#url']->getRouteName() == '<nolink>') {
+        if ($menu_item['link']['#url']->isRouted() && $menu_item['link']['#url']->getRouteName() == '<nolink>') {
           $variables['menu_items'][$i]['link_menuparent']['#options']['attributes']['tabindex'] = '0';
         }
 
