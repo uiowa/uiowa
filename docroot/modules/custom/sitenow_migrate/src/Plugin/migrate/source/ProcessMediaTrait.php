@@ -561,8 +561,12 @@ trait ProcessMediaTrait {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function processImageField($fid, $alt = NULL, $title = NULL) {
-    $uri = $this->fidQuery($fid)['uri'];
-    $filename_w_subdir = str_replace('public://', '', $uri);
+    $fileQuery = $this->fidQuery($fid);
+    if (!str_starts_with($fileQuery['filemime'], 'image/')) {
+      return NULL;
+    }
+    $filename_w_subdir = str_replace('public://', '', $fileQuery['uri']);
+    $fileQuery = NULL;
 
     // Split apart the filename from the subdirectory path.
     $filename_w_subdir = explode('/', $filename_w_subdir);
