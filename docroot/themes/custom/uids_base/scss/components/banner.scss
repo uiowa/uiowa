@@ -164,6 +164,18 @@
   .contextual-region {
     // Remove contextual position for logged in view of banner image
     position: unset;
+    &.media--video {
+      position: absolute;
+      @include breakpoint(sm) {
+        position: unset;
+      }
+      .banner--stacked & {
+        position: relative;
+        @include breakpoint(sm) {
+          position: unset;
+        }
+      }
+    }
   }
   .field--name-field-media-image img {
     // Override height:auto set in media--type-image.scss
