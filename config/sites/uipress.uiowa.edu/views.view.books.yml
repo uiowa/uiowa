@@ -1,18 +1,18 @@
-uuid: 99590983-2d48-4cab-b283-11494e13343f
+uuid: 970c2d96-f673-4eb8-b1b1-c987a72507bc
 langcode: en
 status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - node.type.person
+    - node.type.book
     - system.menu.main
   module:
     - node
     - user
-id: author_page
-label: 'Author Page'
+id: books
+label: Books
 module: views
-description: ''
+description: 'A listing of books'
 tag: ''
 base_table: node_field_data
 base_field: nid
@@ -23,7 +23,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: Authors
+      title: Books
       fields:
         title:
           id: title
@@ -73,17 +73,15 @@ display:
           separator: ', '
           field_api_classes: false
       pager:
-        type: full
+        type: mini
         options:
           offset: 0
-          items_per_page: 18
+          items_per_page: 10
           total_pages: null
           id: 0
           tags:
-            next: 'Next ›'
-            previous: '‹ Previous'
-            first: '« First'
-            last: 'Last »'
+            next: ››
+            previous: ‹‹
           expose:
             items_per_page: false
             items_per_page_label: 'Items per page'
@@ -92,11 +90,10 @@ display:
             items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
-          quantity: 9
       exposed_form:
         type: basic
         options:
-          submit_button: Search
+          submit_button: Apply
           reset_button: true
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
@@ -112,19 +109,22 @@ display:
         options: {  }
       empty: {  }
       sorts:
-        field_person_last_name_value:
-          id: field_person_last_name_value
-          table: node__field_person_last_name
-          field: field_person_last_name_value
+        created:
+          id: created
+          table: node_field_data
+          field: created
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: standard
-          order: ASC
+          entity_type: node
+          entity_field: created
+          plugin_id: date
+          order: DESC
           expose:
             label: ''
             field_identifier: ''
           exposed: false
+          granularity: second
       arguments: {  }
       filters:
         status:
@@ -148,50 +148,10 @@ display:
           entity_field: type
           plugin_id: bundle
           value:
-            person: person
-          group: 1
+            book: book
           expose:
             operator_limit_selection: false
             operator_list: {  }
-        field_person_types_target_id:
-          id: field_person_types_target_id
-          table: node__field_person_types
-          field: field_person_types_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: string
-          operator: '='
-          value: author
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
         combine:
           id: combine
           table: views
@@ -206,13 +166,13 @@ display:
           exposed: true
           expose:
             operator_id: combine_op
-            label: 'Search by name'
+            label: 'Search by title'
             description: ''
             use_operator: false
             operator: combine_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: name
+            identifier: title
             required: false
             remember: false
             multiple: false
@@ -224,7 +184,7 @@ display:
               publisher: '0'
               webmaster: '0'
               administrator: '0'
-            placeholder: 'Type an authors first, last, or full name'
+            placeholder: ''
           is_grouped: false
           group_info:
             label: ''
@@ -239,10 +199,6 @@ display:
             group_items: {  }
           fields:
             title: title
-      filter_groups:
-        operator: AND
-        groups:
-          1: AND
       style:
         type: default
         options:
@@ -252,7 +208,6 @@ display:
       row:
         type: 'entity:node'
         options:
-          relationship: none
           view_mode: teaser
       query:
         type: views_query
@@ -263,7 +218,7 @@ display:
           replica: false
           query_tags: {  }
       relationships: {  }
-      css_class: grid--threecol--33-34-33
+      css_class: grid--twocol--50-50
       header: {  }
       footer: {  }
       display_extenders: {  }
@@ -287,10 +242,10 @@ display:
         metatag_display_extender:
           metatags: {  }
           tokenize: false
-      path: authors
+      path: books
       menu:
         type: normal
-        title: Authors
+        title: Books
         description: ''
         weight: 0
         expanded: true
