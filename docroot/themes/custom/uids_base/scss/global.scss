@@ -746,4 +746,11 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   img {
     width: 100%;
   }
+  a:focus-visible img {
+    outline: 1px solid blue;
+  }
+  a:focus-visible img,
+  a:hover img {
+    opacity: .6;
+  }
 }
