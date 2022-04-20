@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labjingjiang.uiowa.ddev.site
+    protocol: https
+  machine_name: labjingjiang
+  human_name: jingjiang.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labjingjiang.prod
+drupal:
+  db:
+    database: jingjiang_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: jjiang34
+  site-name: jingjiang.lab.uiowa.edu
