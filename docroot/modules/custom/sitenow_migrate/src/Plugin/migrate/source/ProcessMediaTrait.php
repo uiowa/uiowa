@@ -514,6 +514,29 @@ trait ProcessMediaTrait {
           $file_manager = NULL;
           return $id;
 
+        case 'audio':
+          $media_manager = $this->entityTypeManager->getStorage('media');
+          /** @var \Drupal\Media\MediaInterface $media */
+          $media = $media_manager->create([
+            'bundle' => 'audio',
+            'field_media_audio_file' => [
+              'target_id' => $fid,
+            ],
+            'langcode' => 'en',
+            'metadata' => [],
+          ]);
+
+          $media->setName($file->getFileName());
+          $media->setOwnerId($owner_id);
+          $media->save();
+          $id = $media->id();
+          // Minor memory cleanup.
+          $media = NULL;
+          $file = NULL;
+          $media_manager = NULL;
+          $file_manager = NULL;
+          return $id;
+
         default:
           return FALSE;
       }
@@ -538,8 +561,12 @@ trait ProcessMediaTrait {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function processImageField($fid, $alt = NULL, $title = NULL) {
-    $uri = $this->fidQuery($fid)['uri'];
-    $filename_w_subdir = str_replace('public://', '', $uri);
+    $fileQuery = $this->fidQuery($fid);
+    if (!str_starts_with($fileQuery['filemime'], 'image/')) {
+      return NULL;
+    }
+    $filename_w_subdir = str_replace('public://', '', $fileQuery['uri']);
+    $fileQuery = NULL;
 
     // Split apart the filename from the subdirectory path.
     $filename_w_subdir = explode('/', $filename_w_subdir);

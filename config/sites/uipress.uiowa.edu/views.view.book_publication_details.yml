@@ -8,6 +8,7 @@ dependencies:
     - field.storage.node.field_book_pages
     - field.storage.node.field_book_publication_date
     - field.storage.node.field_book_trim_size
+    - field.storage.node.field_pages_art_trim
     - node.type.book
   module:
     - datetime
@@ -80,10 +81,10 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: datetime_default
+          type: datetime_custom
           settings:
             timezone_override: ''
-            format_type: medium
+            date_format: m/d/Y
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -264,6 +265,69 @@ display:
           element_label_colon: false
           element_wrapper_type: div
           element_wrapper_class: 'field field--name-field-book-publication-details--art field--type-string field--label-inline'
+          element_default_classes: true
+          empty: ''
+          hide_empty: true
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        field_pages_art_trim:
+          id: field_pages_art_trim
+          table: node__field_pages_art_trim
+          field: field_pages_art_trim
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: ''
+          exclude: false
+          alter:
+            alter_text: true
+            text: '<div class="field__label">Pages, art, trim size</div> {{ field_pages_art_trim }}'
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: div
+          element_class: field__item
+          element_label_type: div
+          element_label_class: field__label
+          element_label_colon: false
+          element_wrapper_type: div
+          element_wrapper_class: ''
           element_default_classes: true
           empty: ''
           hide_empty: true
@@ -678,6 +742,45 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+        field_pages_art_trim_value:
+          id: field_pages_art_trim_value
+          table: node__field_pages_art_trim
+          field: field_pages_art_trim_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: string
+          operator: 'not empty'
+          value: ''
+          group: 2
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
       filter_groups:
         operator: AND
         groups:
@@ -727,6 +830,7 @@ display:
         - 'config:field.storage.node.field_book_pages'
         - 'config:field.storage.node.field_book_publication_date'
         - 'config:field.storage.node.field_book_trim_size'
+        - 'config:field.storage.node.field_pages_art_trim'
   block_1:
     id: block_1
     display_title: Block
@@ -749,3 +853,4 @@ display:
         - 'config:field.storage.node.field_book_pages'
         - 'config:field.storage.node.field_book_publication_date'
         - 'config:field.storage.node.field_book_trim_size'
+        - 'config:field.storage.node.field_pages_art_trim'
