@@ -911,9 +911,6 @@ function sitenow_form_menu_link_content_form_submit(array &$form, FormStateInter
  * Implements hook_link_alter().
  */
 function sitenow_link_alter(&$variables) {
-  if ($variables['url']->isRouted() && $variables['url']->getRouteName() === '<nolink>') {
-    $variables['options']['attributes']['tabindex'] = '0';
-  }
   if (!empty($variables['options']['fa_icon'])) {
     $variables['options']['attributes']['class'][] = 'fa-icon';
 
