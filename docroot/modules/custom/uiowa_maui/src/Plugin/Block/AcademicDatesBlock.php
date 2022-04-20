@@ -153,7 +153,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     $form['display_deadlines'] = [
       '#type' => 'radios',
       '#title' => $this->t('Display deadlines'),
-      '#default_value' => 0,
+      '#default_value' => $config['display_deadlines'] ?? 0,
       '#options' => [
         0 => $this->t('Display all deadlines'),
         1 => $this->t('Display set number of deadlines'),
@@ -163,10 +163,9 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     $form['items_to_display'] = [
       '#type' => 'number',
       '#title' => $this->t('Items to display'),
-      '#description' => $this->t('Select the number of entries to display. Minimum of 1 and maximum of 50.'),
+      '#description' => $this->t('Select the number of entries to display. Minimum of 1.'),
       '#default_value' => $config['items_to_display'] ?? 10,
       '#min' => 1,
-      '#max' => 50,
       '#states' => [
         'visible' => [
           [
