@@ -159,18 +159,18 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       '#max' => 50,
     ];
 
-    $form['use_more'] = [
+    $form['display_more'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Display More link'),
       '#description' => $this->t('Check to include a more link. This defaults to registrar.uiowa.edu but a custom URL path can be provided.'),
-      '#checked' => $config['use_more'] ?? FALSE,
+      '#checked' => $config['display_more'] ?? FALSE,
     ];
 
-    $form['use_more_link_url'] = [
+    $form['display_more_link'] = [
       '#type' => 'entity_autocomplete',
       '#title' => $this->t('Path'),
       '#description' => $this->t('The URL of where the more link should go. Start typing the title of a piece of content to select it. You can also enter an internal path such as /node/add or an external URL such as http://example.com.'),
-      '#default_value' => isset($config['use_more_link_url']) ? static::getUriAsDisplayableString($config['use_more_link_url']) : NULL,
+      '#default_value' => isset($config['display_more_link']) ? static::getUriAsDisplayableString($config['display_more_link']) : NULL,
       '#element_validate' => [
         [
           LinkWidget::class,
@@ -188,7 +188,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       '#states' => [
         'visible' => [
           [
-            "input[name='settings[use_more]']" => [
+            "input[name='settings[display_more]']" => [
               'checked' => TRUE,
             ],
           ],
@@ -196,15 +196,15 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       ],
     ];
 
-    $form['use_more_text'] = [
+    $form['display_more_text'] = [
       '#type' => 'textfield',
       '#title' => 'Custom text',
-      '#default_value' => $config['use_more_text'] ?? 'View more',
+      '#default_value' => $config['display_more_text'] ?? 'View more',
       '#process_default_value' => FALSE,
       '#states' => [
         'visible' => [
           [
-            "input[name='settings[use_more]']" => [
+            "input[name='settings[display_more]']" => [
               'checked' => TRUE,
             ],
           ],
@@ -242,16 +242,16 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     $session = $form_state->getValue('session');
     $category = $form_state->getValue('category');
     $items_to_display = $form_state->getValue('items_to_display');
-    $use_more = $form_state->getValue('use_more');
-    $use_more_link_url = $form_state->getValue('use_more_link_url');
-    $use_more_text = $form_state->getValue('use_more_text');
+    $display_more = $form_state->getValue('display_more');
+    $display_more_link = $form_state->getValue('display_more_link');
+    $display_more_text = $form_state->getValue('display_more_text');
 
     $this->configuration['session'] = ($session === '') ? NULL : $session;
     $this->configuration['category'] = ($category === '') ? NULL : $category;
     $this->configuration['items_to_display'] = ($items_to_display === '') ? NULL : $items_to_display;
-    $this->configuration['use_more'] = ($use_more === '') ? NULL : $use_more;
-    $this->configuration['use_more_link_url'] = ($use_more_link_url === '') ? NULL : $use_more_link_url;
-    $this->configuration['use_more_text'] = ($use_more_text === '') ? NULL : $use_more_text;
+    $this->configuration['display_more'] = ($display_more === '') ? NULL : $display_more;
+    $this->configuration['display_more_link'] = ($display_more_link === '') ? NULL : $display_more_link;
+    $this->configuration['display_more_text'] = ($display_more_text === '') ? NULL : $display_more_text;
     parent::blockSubmit($form, $form_state);
   }
 
@@ -296,9 +296,9 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       $config['category'],
       $child_heading_size,
       $config['items_to_display'],
-      $config['use_more'],
-      $config['use_more_link_url'],
-      $config['use_more_text'],
+      $config['display_more'],
+      $config['display_more_link'],
+      $config['display_more_text'],
 
     );
     return $build;
