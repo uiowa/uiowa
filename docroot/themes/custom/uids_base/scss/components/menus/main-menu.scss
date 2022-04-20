@@ -360,9 +360,9 @@
 
     li {
       a {
-        flex-basis: 80%;
+        width: 80%;
         @include breakpoint(sm) {
-          flex-basis: 100%;
+          width: 100%;
         }
       }
       display: flex;
@@ -532,32 +532,6 @@
   [class*="bg--black"] & {
     li.menu-item--expanded {
       color: $secondary;
-    }
-  }
-}
-
-// override mobile list styles
-.menu-wrapper--horizontal {
-  .menu ul.menu {
-    li {
-      display: flex;
-
-      a::before {
-        content: "\f111";
-        position: absolute;
-        font-size: 0.3rem;
-        left: -1rem;
-        top: 1.2rem;
-        @include fas();
-        color: $secondary;
-      }
-    }
-
-    ul.menu {
-      li a::before {
-        content: "\f111";
-        color: $brand-cool-gray;
-      }
     }
   }
 }
