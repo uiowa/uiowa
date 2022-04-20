@@ -190,10 +190,10 @@
                   content: "\f111";
                   position: absolute;
                   font-size: 0.3rem;
-                  left: 1rem;
+                  left: 1.2rem;
                   top: 1rem;
                   @include fas();
-                  color: $grey-light;
+                  color: $brand-cool-gray;
                 }
               }
             }
@@ -328,6 +328,16 @@
   }
 }
 
+// hide toggle button if menu is used outside of onecol layout.
+@include breakpoint(sm) {
+  .layout:not(.layout--onecol) {
+    .menu-wrapper--horizontal {
+      button {
+        display: none;
+      }
+    }
+  }
+}
 // menu button styles
 .menu-wrapper--horizontal {
   > .menu {
@@ -506,7 +516,7 @@
 
   > .menu .menu {
     button {
-      height: inherit;
+      height: 2.5rem;
 
       &::after {
         font-size: .7rem;
@@ -522,6 +532,32 @@
   [class*="bg--black"] & {
     li.menu-item--expanded {
       color: $secondary;
+    }
+  }
+}
+
+// override mobile list styles
+.menu-wrapper--horizontal {
+  .menu ul.menu {
+    li {
+      display: flex;
+
+      a::before {
+        content: "\f111";
+        position: absolute;
+        font-size: 0.3rem;
+        left: -1rem;
+        top: 1.2rem;
+        @include fas();
+        color: $secondary;
+      }
+    }
+
+    ul.menu {
+      li a::before {
+        content: "\f111";
+        color: $brand-cool-gray;
+      }
     }
   }
 }
