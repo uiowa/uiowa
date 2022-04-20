@@ -57,19 +57,26 @@ class CartButtons extends BlockBase implements ContainerFactoryPluginInterface {
    */
   public function build() {
     $node = $this->routeMatch->getParameter('node');
-    $href = '';
+    $href = NULL;
     if ($node) {
       $pid = $node->get('field_book_type')->getValue()[0]['target_id'];
       $paragraph = Paragraph::load($pid);
-      $isbn = $paragraph->get('field_book_isbn')->getValue()[0]['value'];
-      $href = 'https://cdcshoppingcart.uchicago.edu/Cart/ChicagoBook.aspx?ISBN=' . $isbn . '&PRESS=iowa';
+      if ($paragraph) {
+        $isbn = $paragraph->get('field_book_isbn')->getValue()[0]['value'];
+        $href = 'https://cdcshoppingcart.uchicago.edu/Cart/ChicagoBook.aspx?ISBN=' . $isbn . '&PRESS=iowa';
+      }
     }
 
-    return [
-      'href' => [
-        '#markup' => $href,
-      ],
-    ];
+    if ($href) {
+      return [
+        'href' => [
+          '#markup' => $href,
+        ],
+      ];
+    }
+    else {
+      return [];
+    }
   }
 
 }
