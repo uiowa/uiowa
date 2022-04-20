@@ -223,7 +223,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       ],
     ];
     return $form;
- }
+  }
 
   /**
    * {@inheritdoc}
