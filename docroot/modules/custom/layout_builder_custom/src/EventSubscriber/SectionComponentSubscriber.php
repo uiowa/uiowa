@@ -80,47 +80,59 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
     // For cards or other blocks, we are going to programmatically set the
     // view mode for the image field. This is necessary to allow selection
     // of different image formats.
-    if (isset($build['#derivative_plugin_id'])) {
-      if (isset($build['#attributes']['class'])) {
-        switch ($build['#derivative_plugin_id']) {
-          case 'uiowa_card':
-            // Map the layout builder styles to the view mode to be used.
-            $media_formats = [
-              'media--circle' => 'large__square',
-              'media--square' => 'large__square',
-              'media--ultrawide' => 'large__ultrawide',
-              'media--widescreen' => 'large__widescreen',
-            ];
-            break;
-
-          case 'uiowa_image':
-            // Map the layout builder styles to the view mode to be used.
-            $media_formats = [
-              'media--circle' => 'full__square',
-              'media--square' => 'full__square',
-              'media--ultrawide' => 'full__ultrawide',
-              'media--widescreen' => 'full__widescreen',
-            ];
-            break;
-        }
-        if (isset($media_formats)) {
-          // Loop through the map to check if any of them are being used and
-          // adjust the view mode accordingly.
-          foreach ($media_formats as $style => $view_mode) {
-            if (in_array($style, $build['#attributes']['class'])) {
-              // Change the view mode to match the format.
-              $build['content']['field_' . $build['#derivative_plugin_id'] . '_image'][0]['#view_mode'] = $view_mode;
-              // Important: Delete the cache keys to prevent this from being
-              // applied to all the instances of the same image.
-              if (isset($build['content']['field_' . $build['#derivative_plugin_id'] . '_image'][0]['#cache']) && isset($build['content']['field_' . $build['#derivative_plugin_id'] . '_image'][0]['#cache']['keys'])) {
-                unset($build['content']['field_' . $build['#derivative_plugin_id'] . '_image'][0]['#cache']['keys']);
-              }
-
-              // We only want this to execute once.
-              break;
+    if (isset($build['#plugin_id'])) {
+      switch ($build['#plugin_id']) {
+        case 'inline_block:uiowa_card':
+        case 'inline_block:uiowa_image':
+          if (isset($build['#attributes']['class'])) {
+            if ($build['#plugin_id'] == 'inline_block:uiowa_card') {
+              // Map the layout builder styles to the view mode to be used.
+              $media_formats = [
+                'media--circle' => 'large__square',
+                'media--square' => 'large__square',
+                'media--ultrawide' => 'large__ultrawide',
+                'media--widescreen' => 'large__widescreen',
+              ];
+            }
+            if ($build['#plugin_id'] == 'inline_block:uiowa_image') {
+              // Map the layout builder styles to the view mode to be used.
+              $media_formats = [
+                'media--circle' => 'full__square',
+                'media--square' => 'full__square',
+                'media--ultrawide' => 'full__ultrawide',
+                'media--widescreen' => 'full__widescreen',
+              ];
             }
           }
-        }
+
+          if (isset($media_formats)) {
+            // Loop through the map to check if any of them are being used and
+            // adjust the view mode accordingly.
+            foreach ($media_formats as $style => $view_mode) {
+              if (in_array($style, $build['#attributes']['class'])) {
+                // Change the view mode to match the format.
+                $build['content']['field_' . $build['#derivative_plugin_id'] . '_image'][0]['#view_mode'] = $view_mode;
+                // Important: Delete the cache keys to prevent this from being
+                // applied to all the instances of the same image.
+                if (isset($build['content']['field_' . $build['#derivative_plugin_id'] . '_image'][0]['#cache']) && isset($build['content']['field_' . $build['#derivative_plugin_id'] . '_image'][0]['#cache']['keys'])) {
+                  unset($build['content']['field_' . $build['#derivative_plugin_id'] . '_image'][0]['#cache']['keys']);
+                }
+
+                // We only want this to execute once.
+                break;
+              }
+            }
+          }
+          break;
+
+        case 'menu_block:main':
+          $selectedStyles = $event->getComponent()->get('layout_builder_styles_style');
+          // Check that horizontal menu is select in LBS.
+          if (in_array('block_menu_horizontal', $selectedStyles)) {
+            // Attach accessible-menu library.
+            $build['#attached']['library'][] = 'uids_base/accessible-menu';
+          }
+          break;
       }
     }
 
