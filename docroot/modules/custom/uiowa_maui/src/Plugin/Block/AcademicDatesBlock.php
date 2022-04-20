@@ -152,18 +152,18 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
 
     $form['display_deadlines'] = [
       '#type' => 'radios',
-      '#title' => $this->t('Display deadlines'),
+      '#title' => $this->t('Display upcoming dates'),
       '#default_value' => $config['display_deadlines'] ?? 0,
       '#options' => [
-        0 => $this->t('Display all deadlines'),
-        1 => $this->t('Display set number of deadlines'),
+        0 => $this->t('Display all'),
+        1 => $this->t('Display set number'),
       ],
     ];
 
     $form['items_to_display'] = [
       '#type' => 'number',
-      '#title' => $this->t('Items to display'),
-      '#description' => $this->t('Select the number of entries to display. Minimum of 1.'),
+      '#title' => $this->t('Dates to display'),
+      '#description' => $this->t('Select the number of dates to display.'),
       '#default_value' => $config['items_to_display'] ?? 10,
       '#min' => 1,
       '#states' => [
@@ -181,7 +181,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       '#type' => 'entity_autocomplete',
       '#title' => $this->t('Path'),
       '#description' => $this->t('The URL of where the more link should go. This defaults to registrar.uiowa.edu but a custom URL path can be provided. Start typing the title of a piece of content to select it. You can also enter an internal path such as /node/add or an external URL such as http://example.com.'),
-      '#default_value' => isset($config['display_more_link']) ? static::getUriAsDisplayableString($config['display_more_link']) : NULL,
+      '#default_value' => isset($config['display_more_link']) ? static::getUriAsDisplayableString($config['display_more_link']) : 'https://registrar.uiowa.edu/',
       '#element_validate' => [
         [
           LinkWidget::class,
