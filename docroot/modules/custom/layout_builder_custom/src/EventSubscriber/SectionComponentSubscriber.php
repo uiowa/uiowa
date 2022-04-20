@@ -80,10 +80,10 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
     // For cards or other blocks, we are going to programmatically set the
     // view mode for the image field. This is necessary to allow selection
     // of different image formats.
-    if (isset($build['#derivative_plugin_id'])) {
-      switch ($build['#derivative_plugin_id']) {
-        case 'uiowa_card':
-          if (isset($build["#attributes"]["class"])) {
+    if (isset($build['#plugin_id'])) {
+      switch ($build['#plugin_id']) {
+        case 'inline_block:uiowa_card':
+          if (isset($build['#attributes']['class'])) {
             // Map the layout builder styles to the view mode to be used.
             $media_formats = [
               'media--widescreen' => 'large__widescreen',
@@ -107,6 +107,15 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
                 break;
               }
             }
+          }
+          break;
+
+        case 'menu_block:main':
+          $selectedStyles = $event->getComponent()->get('layout_builder_styles_style');
+          // Check that horizontal menu is select in LBS.
+          if (in_array('block_menu_horizontal', $selectedStyles)) {
+            // Attach accessible-menu library.
+            $build['#attached']['library'][] = 'uids_base/accessible-menu';
           }
           break;
       }

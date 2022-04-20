@@ -24,7 +24,7 @@ global-styling:
       assets/css/components/iowa-bar.css: {}
       assets/css/components/footer.css: {}
       assets/css/components/menus/group.css: {}
-      assets/css/components/menus/superfish.css: {}
+      assets/css/components/menus/superfish/superfish.css: {}
       assets/css/components/menus/main-menu.css: {}
       assets/css/components/menus/user-menu.css: {}
       assets/css/components/menus/top.css: {}
@@ -39,6 +39,67 @@ global-styling:
   dependencies:
     - core/jquery
     - core/jquery.once
+
+# Third-party libraries
+leaflet:
+  remote: http://leafletjs.com/
+  version: 1.7.1
+  license:
+    name: Leaflet-License
+    url: https://github.com/Leaflet/Leaflet/blob/v1.7.1/LICENSE
+    gpl-compatible: true
+  js:
+    /libraries/leaflet/dist/leaflet.js: {}
+  css:
+    component:
+      /libraries/leaflet/dist/leaflet.css: {}
+      assets/css/components/leaflet.css: { preprocess: false }
+
+slick:
+  css:
+    theme:
+      /libraries/slick-carousel/slick/slick.css: {}
+  js:
+    /libraries/slick-carousel/slick/slick.min.js: {}
+  dependencies:
+    - core/jquery
+
+accessible-menu:
+  js:
+    /libraries/accessible-menu/dist/accessible-menu.js: {}
+    assets/js/accessible-menu.init.js: {}
+
+# CSS libraries for Layout plugins.
+onecol:
+  version: VERSION
+  css:
+    theme:
+      assets/css/layouts/onecol.css: {}
+onecol--background:
+  version: VERSION
+  css:
+    theme:
+      assets/css/layouts/onecol--background.css: {}
+twocol:
+  version: VERSION
+  css:
+    theme:
+      assets/css/layouts/twocol.css: {}
+threecol:
+  version: VERSION
+  css:
+    theme:
+      assets/css/layouts/threecol.css: {}
+fourcol:
+  version: VERSION
+  css:
+    theme:
+      assets/css/layouts/fourcol.css: {}
+page--left-sidebar:
+  version: VERSION
+  css:
+    theme:
+      assets/css/layouts/page--left-sidebar.css: { preprocess: false }
 
 # UIDS.
 status-messages:
@@ -177,27 +238,6 @@ related:
   css:
     component:
       assets/css/components/related.css: { preprocess: false }
-leaflet:
-  remote: http://leafletjs.com/
-  version: 1.7.1
-  license:
-    name: Leaflet-License
-    url: https://github.com/Leaflet/Leaflet/blob/v1.7.1/LICENSE
-    gpl-compatible: true
-  js:
-    /libraries/leaflet/dist/leaflet.js: {}
-  css:
-    component:
-      /libraries/leaflet/dist/leaflet.css: {}
-      assets/css/components/leaflet.css: { preprocess: false }
-slick:
-  css:
-    theme:
-      /libraries/slick-carousel/slick/slick.css: {}
-  js:
-    /libraries/slick-carousel/slick/slick.min.js: {}
-  dependencies:
-    - core/jquery
 badge:
   css:
     component:
@@ -229,11 +269,11 @@ main-menu:
 mega-menu:
   css:
     component:
-      assets/css/components/menus/mega-menu.css: { preprocess: false }
+      assets/css/components/menus/superfish/mega-menu.css: { preprocess: false }
 horizontal-menu:
   css:
     component:
-      assets/css/components/menus/horizontal-menu.css: { preprocess: false }
+      assets/css/components/menus/superfish/horizontal-menu.css: { preprocess: false }
 people:
   css:
     component:
@@ -364,38 +404,6 @@ sftouchscreen:
     assets/js/sftouchscreen.js: { }
   dependencies:
     - superfish/init
-
-# CSS libraries for Layout plugins.
-onecol:
-  version: VERSION
-  css:
-    theme:
-      assets/css/layouts/onecol.css: {}
-onecol--background:
-  version: VERSION
-  css:
-    theme:
-      assets/css/layouts/onecol--background.css: {}
-twocol:
-  version: VERSION
-  css:
-    theme:
-      assets/css/layouts/twocol.css: {}
-threecol:
-  version: VERSION
-  css:
-    theme:
-      assets/css/layouts/threecol.css: {}
-fourcol:
-  version: VERSION
-  css:
-    theme:
-      assets/css/layouts/fourcol.css: {}
-page--left-sidebar:
-  version: VERSION
-  css:
-    theme:
-      assets/css/layouts/page--left-sidebar.css: { preprocess: false }
 person:
   css:
     theme:
