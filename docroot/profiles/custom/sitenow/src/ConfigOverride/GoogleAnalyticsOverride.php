@@ -19,7 +19,7 @@ class GoogleAnalyticsOverride implements ConfigFactoryOverrideInterface {
     if (in_array('google_analytics.settings', $names)) {
       $env = getenv('AH_SITE_ENVIRONMENT');
       if ($env !== 'prod') {
-        $overrides['google_analytics.settings']['account'] = NULL;
+        $overrides['google_analytics.settings']['account'] = '';
       }
     }
 
