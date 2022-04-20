@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labpmplusbeqaa.uiowa.ddev.site
+    protocol: https
+  machine_name: labpmplusbeqaa
+  human_name: pmplusbeqaa.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labpmplusbeqaa.prod
+drupal:
+  db:
+    database: pmplusbeqaa_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: hbomar
+  site-name: 'Young adults as community mental health workers in humanitarian settings'

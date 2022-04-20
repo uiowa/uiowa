@@ -4060,3 +4060,9 @@ $sites['asr.uiowa.ddev.site'] = 'asr.uiowa.edu';
 $sites['asr.dev.drupal.uiowa.edu'] = 'asr.uiowa.edu';
 $sites['asr.stage.drupal.uiowa.edu'] = 'asr.uiowa.edu';
 $sites['asr.prod.drupal.uiowa.edu'] = 'asr.uiowa.edu';
+
+// Directory aliases for pmplusbeqaa.lab.uiowa.edu.
+$sites['labpmplusbeqaa.uiowa.ddev.site'] = 'pmplusbeqaa.lab.uiowa.edu';
+$sites['labpmplusbeqaa.dev.drupal.uiowa.edu'] = 'pmplusbeqaa.lab.uiowa.edu';
+$sites['labpmplusbeqaa.stage.drupal.uiowa.edu'] = 'pmplusbeqaa.lab.uiowa.edu';
+$sites['labpmplusbeqaa.prod.drupal.uiowa.edu'] = 'pmplusbeqaa.lab.uiowa.edu';
