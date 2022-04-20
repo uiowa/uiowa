@@ -150,26 +150,38 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       '#options' => $this->maui->getDateCategories(),
     ];
 
+    $form['display_deadlines'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Display deadlines'),
+      '#default_value' => 0,
+      '#options' => [
+        0 => $this->t('Display all deadlines'),
+        1 => $this->t('Display set number of deadlines'),
+      ],
+    ];
+
     $form['items_to_display'] = [
       '#type' => 'number',
       '#title' => $this->t('Items to display'),
-      '#description' => $this->t('Select the number of entries to display. Minimum of 1 and maximum of 50. Show pager to display more than 50.'),
+      '#description' => $this->t('Select the number of entries to display. Minimum of 1 and maximum of 50.'),
       '#default_value' => $config['items_to_display'] ?? 10,
       '#min' => 1,
       '#max' => 50,
-    ];
-
-    $form['display_more'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Display More link'),
-      '#description' => $this->t('Check to include a more link. This defaults to registrar.uiowa.edu but a custom URL path can be provided.'),
-      '#checked' => $config['display_more'] ?? FALSE,
+      '#states' => [
+        'visible' => [
+          [
+            "input[name='settings[display_deadlines]']" => [
+              'value' => 1,
+            ],
+          ],
+        ],
+      ],
     ];
 
     $form['display_more_link'] = [
       '#type' => 'entity_autocomplete',
       '#title' => $this->t('Path'),
-      '#description' => $this->t('The URL of where the more link should go. Start typing the title of a piece of content to select it. You can also enter an internal path such as /node/add or an external URL such as http://example.com.'),
+      '#description' => $this->t('The URL of where the more link should go. This defaults to registrar.uiowa.edu but a custom URL path can be provided. Start typing the title of a piece of content to select it. You can also enter an internal path such as /node/add or an external URL such as http://example.com.'),
       '#default_value' => isset($config['display_more_link']) ? static::getUriAsDisplayableString($config['display_more_link']) : NULL,
       '#element_validate' => [
         [
@@ -188,8 +200,8 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       '#states' => [
         'visible' => [
           [
-            "input[name='settings[display_more]']" => [
-              'checked' => TRUE,
+            "input[name='settings[display_deadlines]']" => [
+              'value' => 1,
             ],
           ],
         ],
@@ -204,8 +216,8 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       '#states' => [
         'visible' => [
           [
-            "input[name='settings[display_more]']" => [
-              'checked' => TRUE,
+            "input[name='settings[display_deadlines]']" => [
+              'value' => 1,
             ],
           ],
         ],
@@ -242,14 +254,14 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     $session = $form_state->getValue('session');
     $category = $form_state->getValue('category');
     $items_to_display = $form_state->getValue('items_to_display');
-    $display_more = $form_state->getValue('display_more');
+    $display_deadlines = $form_state->getValue('display_deadlines');
     $display_more_link = $form_state->getValue('display_more_link');
     $display_more_text = $form_state->getValue('display_more_text');
 
     $this->configuration['session'] = ($session === '') ? NULL : $session;
     $this->configuration['category'] = ($category === '') ? NULL : $category;
     $this->configuration['items_to_display'] = ($items_to_display === '') ? NULL : $items_to_display;
-    $this->configuration['display_more'] = ($display_more === '') ? NULL : $display_more;
+    $this->configuration['display_deadlines'] = ($display_deadlines === '') ? NULL : $display_deadlines;
     $this->configuration['display_more_link'] = ($display_more_link === '') ? NULL : $display_more_link;
     $this->configuration['display_more_text'] = ($display_more_text === '') ? NULL : $display_more_text;
     parent::blockSubmit($form, $form_state);
@@ -296,7 +308,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       $config['category'],
       $child_heading_size,
       $config['items_to_display'],
-      $config['display_more'],
+      $config['display_deadlines'],
       $config['display_more_link'],
       $config['display_more_text'],
 
