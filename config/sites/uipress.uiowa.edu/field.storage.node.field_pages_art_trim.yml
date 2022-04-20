@@ -1,19 +1,20 @@
-uuid: 475656e6-7a3c-4a1f-b0b9-0d8b5dee15f9
+uuid: f13e5648-92a9-456c-a857-6079a03eb5f0
 langcode: en
 status: true
 dependencies:
   module:
     - node
-    - taxonomy
-id: node.field_book_series
-field_name: field_book_series
+id: node.field_pages_art_trim
+field_name: field_pages_art_trim
 entity_type: node
-type: entity_reference
+type: string
 settings:
-  target_type: taxonomy_term
+  max_length: 255
+  case_sensitive: false
+  is_ascii: false
 module: core
 locked: false
-cardinality: -1
+cardinality: 1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false
