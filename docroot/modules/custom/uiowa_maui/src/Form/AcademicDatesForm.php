@@ -50,7 +50,7 @@ class AcademicDatesForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, $session_prefilter = NULL, $category_prefilter = NULL, $child_heading_size = NULL, $items_to_display = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, $session_prefilter = NULL, $category_prefilter = NULL, $child_heading_size = NULL, $items_to_display = NULL, $use_more = NULL, $use_more_link_url = NULL, $use_more_text = NULL) {
     $current = $form_state->getValue('session') ?? $session_prefilter ?? $this->maui->getCurrentSession()->id;
     $category = $form_state->getValue('category') ?? $category_prefilter;
 
@@ -117,7 +117,10 @@ class AcademicDatesForm extends FormBase {
       $form['dates-wrapper']['dates'] = [
         '#theme' => 'uiowa_maui_session_dates',
         '#data' => array_slice($data, 0, $items_to_display, true),
-        '#child_heading_size' => $child_heading_size
+        '#child_heading_size' => $child_heading_size,
+        '#use_more'=> $use_more,
+        '#use_more_link_url' => $use_more_link_url,
+        '#use_more_text' => $use_more_text,
       ];
     }
     else {
