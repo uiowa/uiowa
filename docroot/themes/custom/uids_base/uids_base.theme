@@ -1041,11 +1041,17 @@ function uids_base_preprocess_superfish(array &$variables) {
  * Implements hook_preprocess_superfish_menu_items().
  */
 function uids_base_preprocess_superfish_menu_items(array &$variables) {
-  if (isset($variables['menu_items']) && $variables['element']['#settings']['menu_type'] === 'vertical') {
+  if (isset($variables['menu_items'])) {
     foreach ($variables['menu_items'] as $i => $menu_item) {
       if (isset($menu_item['link_menuparent'])) {
-        $variables['menu_items'][$i]['link_menuparent']['#options']['attributes']['role'] = 'button';
-        $variables['menu_items'][$i]['link_menuparent']['#options']['attributes']['aria-haspopup'] = 'true';
+        if ($menu_item['link']['#url']->isRouted() && $menu_item['link']['#url']->getRouteName() == '<nolink>') {
+          $variables['menu_items'][$i]['link_menuparent']['#options']['attributes']['tabindex'] = '0';
+        }
+
+        if ($variables['element']['#settings']['menu_type'] === 'vertical') {
+          $variables['menu_items'][$i]['link_menuparent']['#options']['attributes']['role'] = 'button';
+          $variables['menu_items'][$i]['link_menuparent']['#options']['attributes']['aria-haspopup'] = 'true';
+        }
       }
     }
   }
