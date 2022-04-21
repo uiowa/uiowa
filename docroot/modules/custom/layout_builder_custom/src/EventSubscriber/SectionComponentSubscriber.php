@@ -83,18 +83,33 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
     if (isset($build['#plugin_id'])) {
       switch ($build['#plugin_id']) {
         case 'inline_block:uiowa_card':
+        case 'inline_block:uiowa_image':
           if (isset($build['#attributes']['class'])) {
-            // Map the layout builder styles to the view mode to be used.
-            $media_formats = [
-              'media--widescreen' => 'large__widescreen',
-              'media--square' => 'large__square',
-              'media--circle' => 'large__square',
-            ];
+            if ($build['#plugin_id'] == 'inline_block:uiowa_card') {
+              // Map the layout builder styles to the view mode to be used.
+              $media_formats = [
+                'media--circle' => 'large__square',
+                'media--square' => 'large__square',
+                'media--ultrawide' => 'large__ultrawide',
+                'media--widescreen' => 'large__widescreen',
+              ];
+            }
+            if ($build['#plugin_id'] == 'inline_block:uiowa_image') {
+              // Map the layout builder styles to the view mode to be used.
+              $media_formats = [
+                'media--circle' => 'full__square',
+                'media--square' => 'full__square',
+                'media--ultrawide' => 'full__ultrawide',
+                'media--widescreen' => 'full__widescreen',
+              ];
+            }
+          }
 
+          if (isset($media_formats)) {
             // Loop through the map to check if any of them are being used and
             // adjust the view mode accordingly.
             foreach ($media_formats as $style => $view_mode) {
-              if (in_array($style, $build["#attributes"]["class"])) {
+              if (in_array($style, $build['#attributes']['class'])) {
                 // Change the view mode to match the format.
                 $build['content']['field_' . $build['#derivative_plugin_id'] . '_image'][0]['#view_mode'] = $view_mode;
                 // Important: Delete the cache keys to prevent this from being
