@@ -151,13 +151,11 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     ];
 
     $form['display_deadlines'] = [
-      '#type' => 'radios',
+      '#type' => 'checkbox',
       '#title' => $this->t('Display upcoming dates'),
+      '#description' => $this->t('If this is unchecked all upcoming dates for the session and category will display.'),
       '#default_value' => $config['display_deadlines'] ?? 0,
-      '#options' => [
-        0 => $this->t('Display all'),
-        1 => $this->t('Display set number'),
-      ],
+      '#return_value' => 1,
     ];
 
     $form['items_to_display'] = [
@@ -170,7 +168,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
         'visible' => [
           [
             "input[name='settings[display_deadlines]']" => [
-              'value' => 1,
+              'checked' => TRUE,
             ],
           ],
         ],
@@ -200,7 +198,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
         'visible' => [
           [
             "input[name='settings[display_deadlines]']" => [
-              'value' => 1,
+              'checked' => TRUE,
             ],
           ],
         ],
@@ -216,7 +214,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
         'visible' => [
           [
             "input[name='settings[display_deadlines]']" => [
-              'value' => 1,
+              'checked' => TRUE,
             ],
           ],
         ],
