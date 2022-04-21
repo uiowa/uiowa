@@ -15,6 +15,49 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\views\ViewExecutable;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function admissions_core_entity_extra_field_info() {
+  $extra = [];
+
+  $extra['taxonomy_term']['community_colleges']['display']['majors_by_tid'] = [
+    'label' => t('Majors'),
+    'description' => t('Displays majors by taxonomy term'),
+    'weight' => 100,
+    'visible' => TRUE,
+  ];
+
+  return $extra;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function admissions_core_taxonomy_term_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  // Render view as a field within term's display settings.
+  if ($display->getComponent('majors_by_tid')) {
+    $build['majors_by_tid'] = [
+      '#type' => 'container',
+    ];
+    $build['majors_by_tid']['headline'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
+      '#value' => t('Iowa majors available to @name students in 2 Plus 2', ['@name' => $entity->getName()]),
+      '#attributes' => [
+        'class' => ['headline', 'block__headline', 'headline--left'],
+      ],
+    ];
+    $build['majors_by_tid']['view'] = [
+      '#type' => 'view',
+      '#name' => 'majors',
+      '#display_id' => 'block_majors_by_tid',
+      '#embed' => TRUE,
+    ];
+  }
+}
 
 /**
  * Implements hook_entity_presave().
@@ -609,6 +652,19 @@ function admissions_core_views_pre_render(ViewExecutable $view) {
   if ($view->id() == "areas_of_study") {
     $view->element['#attached']['library'][] = 'uids_base/stat';
     $view->element['#attached']['library'][] = 'uids_base/twocol';
+  }
+
+  // Ugly way to hide related node content but not taxonomy fields.
+  if ($view->id() == 'taxonomy_term') {
+    if (\Drupal::routeMatch()->getRouteName() == 'entity.taxonomy_term.canonical' &&
+      $page_term_id = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
+      $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($page_term_id);
+      if ($term->bundle() == 'community_colleges') {
+        foreach ($view->result as $key => $value) {
+          unset($view->result[$key]);
+        }
+      }
+    }
   }
 }
 
