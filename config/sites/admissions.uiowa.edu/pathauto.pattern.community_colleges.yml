@@ -1,0 +1,22 @@
+uuid: be8b47e1-c2c8-4394-8183-ccabec27dcc4
+langcode: en
+status: true
+dependencies:
+  module:
+    - taxonomy
+id: community_colleges
+label: 'Community Colleges'
+type: 'canonical_entities:taxonomy_term'
+pattern: 'majors/[term:name]'
+selection_criteria:
+  d33480a6-2429-41cb-9beb-e7f0b94b204b:
+    id: 'entity_bundle:taxonomy_term'
+    negate: false
+    uuid: d33480a6-2429-41cb-9beb-e7f0b94b204b
+    context_mapping:
+      taxonomy_term: taxonomy_term
+    bundles:
+      community_colleges: community_colleges
+selection_logic: and
+weight: -5
+relationships: {  }
