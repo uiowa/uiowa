@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -20,8 +21,14 @@ function sitenow_seo_form_google_analytics_admin_settings_alter(&$form, FormStat
   $access = $check->access(\Drupal::currentUser()->getAccount());
 
   if ($access->isForbidden()) {
-    $form['tracking']['#access'] = FALSE;
     $form['advanced']['#access'] = FALSE;
+
+    // Disable access to all tracking config except dimensions and metrics.
+    foreach (Element::children($form['tracking']) as $child) {
+      if ($child != 'parameters') {
+        $form['tracking'][$child]['#access'] = FALSE;
+      }
+    }
   }
 }
 
