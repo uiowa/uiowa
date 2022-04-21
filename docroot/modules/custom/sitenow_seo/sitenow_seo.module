@@ -57,15 +57,15 @@ function sitenow_seo_form_alter(&$form, FormStateInterface $form_state, $form_id
     case 'node_person_edit_form':
     case 'node_person_form':
       // Collapse inner SEO field groups.
-      if (isset($form["field_meta_tags"])) {
-        if ($form["field_meta_tags"]["widget"][0]["advanced"]) {
-          $form["field_meta_tags"]["widget"][0]["advanced"]["#open"] = FALSE;
+      if (isset($form['field_meta_tags'])) {
+        if ($form['field_meta_tags']['widget'][0]['advanced']) {
+          $form['field_meta_tags']['widget'][0]['advanced']['#open'] = FALSE;
         }
-        if (isset($form["field_meta_tags"]["widget"][0]["open_graph"])) {
-          $form["field_meta_tags"]["widget"][0]["open_graph"]["#open"] = FALSE;
+        if (isset($form['field_meta_tags']['widget'][0]['open_graph'])) {
+          $form['field_meta_tags']['widget'][0]['open_graph']['#open'] = FALSE;
         }
-        if (isset($form["field_meta_tags"]["widget"][0]["twitter_cards"])) {
-          $form["field_meta_tags"]["widget"][0]["twitter_cards"]["#open"] = FALSE;
+        if (isset($form['field_meta_tags']['widget'][0]['twitter_cards'])) {
+          $form['field_meta_tags']['widget'][0]['twitter_cards']['#open'] = FALSE;
         }
       }
       break;
