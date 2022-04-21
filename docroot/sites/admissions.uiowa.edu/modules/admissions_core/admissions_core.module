@@ -44,10 +44,10 @@ function admissions_core_taxonomy_term_view(array &$build, EntityInterface $enti
     ];
     $build['majors_by_tid']['headline'] = [
       '#type' => 'html_tag',
-      '#tag' => 'h2',
-      '#value' => t('Iowa majors available to @name students in 2 Plus 2', ['@name' => $entity->getName()]),
+      '#tag' => 'div',
+      '#value' => t('Iowa majors available to @name students in 2 Plus 2:', ['@name' => $entity->getName()]),
       '#attributes' => [
-        'class' => ['headline', 'block__headline', 'headline--left'],
+        'class' => ['field__label'],
       ],
     ];
     $build['majors_by_tid']['view'] = [
@@ -84,7 +84,7 @@ function admissions_core_entity_presave(EntityInterface $entity) {
       // College field values. Both fields are required.
       $major_aos = $entity->field_major_area_of_study->entity->title->value;
       $major_cc = $entity->field_major_community_college->entity->name->value;
-      $output = $major_aos . " Major Through " . $major_cc;
+      $output = $major_aos . " At " . $major_cc;
       $entity->setTitle($output);
       break;
   }
@@ -799,6 +799,7 @@ function admissions_core_preprocess_views_view_field(&$variables) {
           ];
         }
         break;
+
     }
   }
 
