@@ -68,6 +68,13 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
   protected $reporter = [];
 
   /**
+   * Fields with multiple values that need to be fetched.
+   *
+   * @var array
+   */
+  protected $multiValueFields = [];
+
+  /**
    * {@inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, StateInterface $state, ModuleHandlerInterface $module_handler, FileSystemInterface $file_system, EntityTypeManager $entityTypeManager) {
@@ -99,6 +106,9 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
     parent::prepareRow($row);
     $moderation_state = $row->getSourceProperty('status') == 1 ? 'published' : 'draft';
     $row->setSourceProperty('moderation_state', $moderation_state);
+    if (!empty($this->multiValueFields)) {
+      $this->fetchAdditionalFields($row, $this->multiValueFields);
+    }
   }
 
   /**
@@ -201,7 +211,10 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
       return $this->extractSummaryFromText($field[0]['value'], $length);
     }
     else {
-      return $field[0]['summary'];
+      // We have a summary to use, but depending on the D7 setup,
+      // it may have still allowed tags and/or we may want to
+      // further truncate it still.
+      return $this->extractSummaryFromText($field[0]['summary'], $length);
     }
   }
 
