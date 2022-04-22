@@ -164,6 +164,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       '#description' => $this->t('Select the number of dates to display.'),
       '#default_value' => $config['items_to_display'] ?? 10,
       '#min' => 1,
+      '#process_default_value' => FALSE,
       '#states' => [
         'visible' => [
           [

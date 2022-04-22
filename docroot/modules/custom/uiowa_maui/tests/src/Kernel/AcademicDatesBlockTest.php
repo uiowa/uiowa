@@ -103,6 +103,10 @@ class AcademicDatesBlockTest extends KernelTestBase {
       'headline_style' => 'default',
       'session' => 0,
       'category' => '',
+      'items_to_display' => 10,
+      'display_deadlines' => 0,
+      'display_more_link' => 'https://registrar.uiowa.edu/',
+      'display_more_text' => 'View more',
     ];
 
     $sut = new AcademicDatesBlock($config, 'uiowa_maui_academic_dates', $this->plugin, $this->maui, $this->formBuilder);
