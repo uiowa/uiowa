@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: musicmusictherapy.uiowa.ddev.site
+    protocol: https
+  machine_name: musicmusictherapy
+  human_name: musictherapy.music.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: musicmusictherapy.prod
+drupal:
+  db:
+    database: musictherapy_music_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: wjhardy
+  site-name: 'Music Therapy Resources'

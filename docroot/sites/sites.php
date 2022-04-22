@@ -4060,3 +4060,9 @@ $sites['asr.uiowa.ddev.site'] = 'asr.uiowa.edu';
 $sites['asr.dev.drupal.uiowa.edu'] = 'asr.uiowa.edu';
 $sites['asr.stage.drupal.uiowa.edu'] = 'asr.uiowa.edu';
 $sites['asr.prod.drupal.uiowa.edu'] = 'asr.uiowa.edu';
+
+// Directory aliases for musictherapy.music.uiowa.edu.
+$sites['musicmusictherapy.uiowa.ddev.site'] = 'musictherapy.music.uiowa.edu';
+$sites['musicmusictherapy.dev.drupal.uiowa.edu'] = 'musictherapy.music.uiowa.edu';
+$sites['musicmusictherapy.stage.drupal.uiowa.edu'] = 'musictherapy.music.uiowa.edu';
+$sites['musicmusictherapy.prod.drupal.uiowa.edu'] = 'musictherapy.music.uiowa.edu';
