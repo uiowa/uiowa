@@ -164,6 +164,18 @@
   .contextual-region {
     // Remove contextual position for logged in view of banner image
     position: unset;
+    &.media--video {
+      position: absolute;
+      @include breakpoint(sm) {
+        position: unset;
+      }
+      .banner--stacked & {
+        position: relative;
+        @include breakpoint(sm) {
+          position: unset;
+        }
+      }
+    }
   }
   .field--name-field-media-image img {
     // Override height:auto set in media--type-image.scss
@@ -243,15 +255,6 @@
   }
 }
 
-//Button hover fix for gold backgrounds
-.banner[class*="bg--gold"] .bttn--primary::after {
-  background-color: #fff;
-}
-
-// Contrast fixes
-.bg-pattern--brain-reversed .banner.bg-pattern--brain-black .bttn--primary,
-.bg-pattern--brain-reversed  .banner[class*="bg--black"] .bttn--primary,
-[class*="bg--gold"] .banner.bg-pattern--brain-black .bttn--primary,
-[class*="bg--gold"] .banner[class*="bg--black"] .bttn--primary {
-  color: $primary;
+.banner__pre-title {
+  font-weight: 500;
 }

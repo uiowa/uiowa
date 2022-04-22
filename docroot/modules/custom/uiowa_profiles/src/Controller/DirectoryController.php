@@ -111,7 +111,9 @@ class DirectoryController extends ControllerBase {
           'uiowaProfiles' => [
             'basePath' => Html::escape($directory['path']),
             'api_key' => Html::escape($directory['api_key']),
-            'environment' => $this->profiles->environment,
+            'endpoint' => $this->profiles->endpoint,
+            'siteName' => \Drupal::config('system.site')->get('name'),
+            'directoryTitle' => Html::escape($directory['title']),
           ],
         ],
       ],

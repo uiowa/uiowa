@@ -135,21 +135,24 @@ third_party_settings:
             region: sidebar
             configuration:
               id: 'menu_block:main'
-              label: 'Main navigation'
-              label_display: '0'
+              label: null
+              label_display: null
               provider: menu_block
               context_mapping: {  }
               follow: true
-              follow_parent: '0'
+              follow_parent: child
+              label_link: false
+              label_type: block
               level: 2
-              depth: 0
+              depth: 1
+              expand_all_items: false
               parent: 'main:'
               suggestion: main
-              expand: false
             weight: 0
             additional:
               layout_builder_styles_style:
-                block_menu_vertical: block_menu_vertical
+                - block_menu_vertical
+                - null
           e6fa78b4-cacc-4d27-baa3-f29dde0b845b:
             uuid: e6fa78b4-cacc-4d27-baa3-f29dde0b845b
             region: content

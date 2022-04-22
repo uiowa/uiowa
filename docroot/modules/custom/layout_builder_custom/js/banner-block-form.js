@@ -9,8 +9,7 @@
       $('.media-library-widget', context).once('media-form-attach').each(function () {
 
         // Check that we can access the next field.
-        // @todo Add a class to this field widget wrapper so that we can target it more precisely.
-        const checkbox_wrapper = $(this).parent().next('.form-wrapper');
+        const checkbox_wrapper = $('div[data-drupal-selector$="autoplay-wrapper"]');
 
         if (checkbox_wrapper.length) {
           // Check if the referenced media is a video.

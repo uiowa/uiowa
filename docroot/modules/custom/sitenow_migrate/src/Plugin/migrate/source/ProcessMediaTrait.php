@@ -27,6 +27,20 @@ trait ProcessMediaTrait {
   protected $viewMode = 'medium__no_crop';
 
   /**
+   * The default image alignment.
+   *
+   * @var string
+   */
+  protected $align = 'center';
+
+  /**
+   * Minimum image dimensions to pull over.
+   *
+   * @var array
+   */
+  protected $imageSizeRestrict = [];
+
+  /**
    * Get the URL of the source public files path with a trailing slash.
    *
    * @return string
@@ -186,9 +200,7 @@ trait ProcessMediaTrait {
       // If there's no fid in the D8 database,
       // then we'll need to fetch it from the source.
       if (!$new_fid) {
-
-        // @todo Remove the hardcoding for physics.uiowa.edu/itu.
-        $new_fid = $this->downloadFile($filename, "https://physics.uiowa.edu/sites/" . $filepath . '/', $this->getDrupalFileDirectory());
+        $new_fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $filepath . '/', $this->getDrupalFileDirectory());
         if ($new_fid) {
           $id = $this->createMediaEntity($new_fid, $meta, 1);
           $uuid = $this->getMid($filename, 'file')['uuid'];
@@ -225,7 +237,7 @@ trait ProcessMediaTrait {
    *   Returns markup as a plaintext string.
    */
   public function constructInlineEntity(string $uuid, string $align, $view_mode = '') {
-    $align = $align ?? 'center';
+    $align = !empty($align) ? $align : $this->align;
 
     $media = [
       '#type' => 'html_tag',
@@ -363,6 +375,14 @@ trait ProcessMediaTrait {
     if (!$raw_file) {
       return FALSE;
     }
+    if (!empty($this->imageSizeRestrict)) {
+      if ($this->checkImageDimensions($filename, $raw_file, $this->imageSizeRestrict) === FALSE) {
+        $this->logger->notice('Image @filename did not meet the minimum dimension requirements and was not downloaded.', [
+          '@filename' => $filename,
+        ]);
+        return FALSE;
+      }
+    }
 
     // Prepare directory in case it doesn't already exist.
     $dir = $this->fileSystem
@@ -494,6 +514,29 @@ trait ProcessMediaTrait {
           $file_manager = NULL;
           return $id;
 
+        case 'audio':
+          $media_manager = $this->entityTypeManager->getStorage('media');
+          /** @var \Drupal\Media\MediaInterface $media */
+          $media = $media_manager->create([
+            'bundle' => 'audio',
+            'field_media_audio_file' => [
+              'target_id' => $fid,
+            ],
+            'langcode' => 'en',
+            'metadata' => [],
+          ]);
+
+          $media->setName($file->getFileName());
+          $media->setOwnerId($owner_id);
+          $media->save();
+          $id = $media->id();
+          // Minor memory cleanup.
+          $media = NULL;
+          $file = NULL;
+          $media_manager = NULL;
+          $file_manager = NULL;
+          return $id;
+
         default:
           return FALSE;
       }
@@ -518,8 +561,12 @@ trait ProcessMediaTrait {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function processImageField($fid, $alt = NULL, $title = NULL) {
-    $uri = $this->fidQuery($fid)['uri'];
-    $filename_w_subdir = str_replace('public://', '', $uri);
+    $fileQuery = $this->fidQuery($fid);
+    if (!str_starts_with($fileQuery['filemime'], 'image/')) {
+      return NULL;
+    }
+    $filename_w_subdir = str_replace('public://', '', $fileQuery['uri']);
+    $fileQuery = NULL;
 
     // Split apart the filename from the subdirectory path.
     $filename_w_subdir = explode('/', $filename_w_subdir);
@@ -736,6 +783,23 @@ trait ProcessMediaTrait {
       ->condition('f.filename', $filename)
       ->execute()
       ->fetchField();
+  }
+
+  /**
+   * Check if image size is under a specified minimum.
+   */
+  protected function checkImageDimensions(string $filename, string $raw_file, array $minimum_dimensions) {
+    if ($dimensions = getimagesizefromstring($raw_file)) {
+      if ($dimensions[0] < $minimum_dimensions['width'] || $dimensions[1] < $minimum_dimensions['height']) {
+        $this->reporter[$this->entityId] = $filename;
+        // Return FALSE if the image should not be downloaded.
+        return isset($minimum_dimensions['skip']) ? !$minimum_dimensions['skip'] : FALSE;
+      }
+    }
+    // Either dimensions passed the minimum requirement,
+    // or we weren't able to read the dimensions, and we're
+    // erring on the side of caution in pulling it in.
+    return TRUE;
   }
 
 }

@@ -1,0 +1,23 @@
+uuid: 0c14cb30-6371-4a45-a69e-b7b7d596cd1a
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_image
+    - field.storage.block_content.field_uiowa_image_link
+  module:
+    - link
+id: block_content.uiowa_image.field_uiowa_image_link
+field_name: field_uiowa_image_link
+entity_type: block_content
+bundle: uiowa_image
+label: Link
+description: 'Provide link text to describe the URL for accessibility purposes.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  title: 2
+  link_type: 17
+field_type: link

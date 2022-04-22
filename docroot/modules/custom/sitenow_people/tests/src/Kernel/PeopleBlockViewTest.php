@@ -63,9 +63,9 @@ class PeopleBlockViewTest extends BrowserTestBase {
    * Test event creation and display.
    */
   public function testBlockDisplay(): void {
-    $title = 'Test event';
+    $title = 'Test person';
 
-    $this->generateEvents(1);
+    $this->generatePeople(1);
     $default_theme = $this->config('system.theme')->get('default');
 
     $view_name = 'people_list_block-list_card';
@@ -78,11 +78,7 @@ class PeopleBlockViewTest extends BrowserTestBase {
 
     // Assert items per page default settings.
     $this->drupalGet('<front>');
-
-    // @todo Check that event date is displaying.
     $this->xpath('//div[contains(@class, "region-content")]/div[contains(@class, "block-views")]/h2');
-    // @todo Check that event virtual details are displaying.
-    // @todo Check that event location is showing.
     $this->assertEquals($title, $title);
   }
 
@@ -92,7 +88,7 @@ class PeopleBlockViewTest extends BrowserTestBase {
    * @param int $total
    *   The number of items to create.
    */
-  public function generateEvents($total = 20) {
+  public function generatePeople($total = 20) {
     for ($i = 0; $i < $total; $i++) {
 
       $node_data = [
