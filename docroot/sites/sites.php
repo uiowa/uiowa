@@ -4066,3 +4066,9 @@ $sites['musicmusictherapy.uiowa.ddev.site'] = 'musictherapy.music.uiowa.edu';
 $sites['musicmusictherapy.dev.drupal.uiowa.edu'] = 'musictherapy.music.uiowa.edu';
 $sites['musicmusictherapy.stage.drupal.uiowa.edu'] = 'musictherapy.music.uiowa.edu';
 $sites['musicmusictherapy.prod.drupal.uiowa.edu'] = 'musictherapy.music.uiowa.edu';
+
+// Directory aliases for sipe.org.uiowa.edu.
+$sites['orgsipe.uiowa.ddev.site'] = 'sipe.org.uiowa.edu';
+$sites['orgsipe.dev.drupal.uiowa.edu'] = 'sipe.org.uiowa.edu';
+$sites['orgsipe.stage.drupal.uiowa.edu'] = 'sipe.org.uiowa.edu';
+$sites['orgsipe.prod.drupal.uiowa.edu'] = 'sipe.org.uiowa.edu';
