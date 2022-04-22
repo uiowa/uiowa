@@ -313,4 +313,5 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     );
     return $build;
   }
+
 }

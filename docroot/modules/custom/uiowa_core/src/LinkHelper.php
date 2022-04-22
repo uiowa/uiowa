@@ -3,6 +3,7 @@
 namespace Drupal\uiowa_core;
 
 use Drupal\Core\Entity\Element\EntityAutocomplete;
+
 /**
  * A class to help with links.
  */
@@ -48,8 +49,8 @@ class LinkHelper {
       // @todo Support entity types other than 'node'. Will be fixed in
       //   https://www.drupal.org/node/2423093.
       if ($entity_type == 'node' && $entity = \Drupal::entityTypeManager()
-          ->getStorage($entity_type)
-          ->load($entity_id)) {
+        ->getStorage($entity_type)
+        ->load($entity_id)) {
         $displayable_string = EntityAutocomplete::getEntityLabels([$entity]);
       }
     }

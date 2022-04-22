@@ -668,4 +668,5 @@ class ListBlock extends CoreBlock {
     }
     return $styles;
   }
+
 }
