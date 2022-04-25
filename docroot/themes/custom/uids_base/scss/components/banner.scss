@@ -258,3 +258,18 @@
 .banner__pre-title {
   font-weight: 500;
 }
+
+// @todo move back to UIDS
+.banner {
+  &.banner--gradient-light:not([class*="bg-"]) {
+    .banner__action {
+      .bttn--tertiary {
+        [class*=bg--black] & {
+          @include breakpoint(sm) {
+            color: $secondary;
+          }
+        }
+      }
+    }
+  }
+}
