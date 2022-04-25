@@ -500,6 +500,16 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
       }
       break;
 
+    // Limit slider to 4 slides. Display an error if more than 4 on save.
+    case 'inline_block:uiowa_slider':
+      $block_form = $form_state->getValue('settings')['block_form'];
+      // Removing one for "Add more".
+      $number_of_slides = count($block_form['field_uiowa_slider_slides']) - 1;
+      if ($number_of_slides > 4) {
+        $form_state->setErrorByName('settings][block_form][field_uiowa_slider_slides', t('Reached maximum number of allowed slides.'));
+      }
+        break;
+
     case 'menu_block:main':
       // If follow is checked...
       if ($form_state->getValue(['settings', 'follow']) == 1) {
