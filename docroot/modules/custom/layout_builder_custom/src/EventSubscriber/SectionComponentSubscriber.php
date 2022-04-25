@@ -49,6 +49,10 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
       }
     }
 
+    if ($unique_id = $event->getComponent()->getThirdPartySetting('layout_builder_custom', 'unique_id')) {
+      $build['#attributes']['id'] = $unique_id;
+    }
+
     if ($block instanceof FieldBlock && $block->getPluginId() === 'field_block:node:page:title') {
 
       $contexts = $event->getContexts();
