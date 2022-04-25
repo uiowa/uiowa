@@ -5,7 +5,7 @@ namespace Drupal\uiowa_core;
 use Drupal\Core\Entity\Element\EntityAutocomplete;
 
 /**
- * A class to handle outputting links when the input can be entities, internal links, or external routes.
+ * A class to handle links for entities, internal links, and external routes.
  */
 class LinkHelper {
 
