@@ -143,11 +143,11 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       $block = $component->getPlugin();
 
       // Section component PoC.
-      $form['my_text_field'] = [
+      $form['unique_id'] = [
         '#type' => 'textfield',
-        '#title' => t('My text field'),
-        '#description' => t('This is some extra data'),
-        '#default_value' => $component->getThirdPartySetting('layout_builder_custom', 'my_text_field'),
+        '#title' => t('Unique ID'),
+        '#description' => t('Provide a unique identifier for this block. Primarily used for anchor links.'),
+        '#default_value' => $component->getThirdPartySetting('layout_builder_custom', 'unique_id'),
       ];
 
       // Form modifications per block plugin and bundle.
@@ -534,11 +534,11 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
   $block = $component->getPlugin();
 
   // Section component PoC.
-  if ($form_state->getValue('my_text_field')) {
-    $component->setThirdPartySetting('layout_builder_custom', 'my_text_field', $form_state->getValue('my_text_field'));
+  if ($form_state->getValue('unique_id')) {
+    $component->setThirdPartySetting('layout_builder_custom', 'unique_id', $form_state->getValue('unique_id'));
   }
   else {
-    $component->unsetThirdPartySetting('layout_builder_custom', 'my_text_field');
+    $component->unsetThirdPartySetting('layout_builder_custom', 'unique_id');
   }
 
   switch ($block->getPluginId()) {
