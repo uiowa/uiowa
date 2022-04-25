@@ -4066,3 +4066,9 @@ $sites['orgsipe.uiowa.ddev.site'] = 'sipe.org.uiowa.edu';
 $sites['orgsipe.dev.drupal.uiowa.edu'] = 'sipe.org.uiowa.edu';
 $sites['orgsipe.stage.drupal.uiowa.edu'] = 'sipe.org.uiowa.edu';
 $sites['orgsipe.prod.drupal.uiowa.edu'] = 'sipe.org.uiowa.edu';
+
+// Directory aliases for vpma.jobs.uiowa.edu.
+$sites['jobsvpma.uiowa.ddev.site'] = 'vpma.jobs.uiowa.edu';
+$sites['jobsvpma.dev.drupal.uiowa.edu'] = 'vpma.jobs.uiowa.edu';
+$sites['jobsvpma.stage.drupal.uiowa.edu'] = 'vpma.jobs.uiowa.edu';
+$sites['jobsvpma.prod.drupal.uiowa.edu'] = 'vpma.jobs.uiowa.edu';
