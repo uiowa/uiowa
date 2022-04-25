@@ -142,7 +142,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       $component = $form_state->getFormObject()->getCurrentComponent();
       $block = $component->getPlugin();
 
-      // Section component PoC.
+      // Section component unique ID is stored in third-party settings.
       $form['unique_id'] = [
         '#type' => 'textfield',
         '#title' => t('Unique ID'),
@@ -533,7 +533,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
   $component = $form_state->getFormObject()->getCurrentComponent();
   $block = $component->getPlugin();
 
-  // Section component PoC.
+  // Save the third-party value if set, otherwise unset it.
   if ($form_state->getValue('unique_id')) {
     $component->setThirdPartySetting('layout_builder_custom', 'unique_id', $form_state->getValue('unique_id'));
   }

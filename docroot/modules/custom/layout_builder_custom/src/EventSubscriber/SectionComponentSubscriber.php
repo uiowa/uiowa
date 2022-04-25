@@ -49,6 +49,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
       }
     }
 
+    // Set an ID for this block if the third-party key is set.
     if ($unique_id = $event->getComponent()->getThirdPartySetting('layout_builder_custom', 'unique_id')) {
       $build['#attributes']['id'] = $unique_id;
     }
