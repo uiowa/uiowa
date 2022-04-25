@@ -152,8 +152,8 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
 
     $form['display_deadlines'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Display upcoming dates'),
-      '#description' => $this->t('If this is unchecked all upcoming dates for the session and category will display.'),
+      '#title' => $this->t('Limit number of dates displayed'),
+      '#description' => $this->t('If checked, we recommend including a link to all upcoming dates. Default is registrar.uiowa.edu but a custom URL path can be provided in the ‘Path’ text box below.'),
       '#default_value' => $config['display_deadlines'] ?? 0,
       '#return_value' => 1,
     ];
@@ -161,9 +161,10 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     $form['items_to_display'] = [
       '#type' => 'number',
       '#title' => $this->t('Dates to display'),
-      '#description' => $this->t('Select the number of dates to display.'),
+      '#description' => $this->t('Select the number of dates to display. Minimum of 1 and maximum of 50.'),
       '#default_value' => $config['items_to_display'] ?? 10,
       '#min' => 1,
+      '#max' => 50,
       '#process_default_value' => FALSE,
       '#states' => [
         'visible' => [
@@ -179,7 +180,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     $form['display_more_link'] = [
       '#type' => 'entity_autocomplete',
       '#title' => $this->t('Path'),
-      '#description' => $this->t('The URL of where the more link should go. This defaults to registrar.uiowa.edu but a custom URL path can be provided. Start typing the title of a piece of content to select it. You can also enter an internal path such as /node/add or an external URL such as http://example.com.'),
+      '#description' => $this->t('Start typing the title of a piece of content to select it. You can also enter an internal path such as /node/add or an external URL such as http://example.com. Enter %front to link to the front page.'),
       '#default_value' => isset($config['display_more_link']) ? LinkHelper::getUriAsDisplayableString($config['display_more_link']) : 'https://registrar.uiowa.edu/',
       '#element_validate' => [
         [
