@@ -143,12 +143,12 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       $block = $component->getPlugin();
 
       // Section component PoC.
-      $form['my_text_field'] = array(
+      $form['my_text_field'] = [
         '#type' => 'textfield',
         '#title' => t('My text field'),
         '#description' => t('This is some extra data'),
         '#default_value' => $component->getThirdPartySetting('layout_builder_custom', 'my_text_field'),
-      );
+      ];
 
       // Form modifications per block plugin and bundle.
       switch ($block->getPluginId()) {
