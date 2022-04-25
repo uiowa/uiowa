@@ -4072,3 +4072,9 @@ $sites['jobsvpma.uiowa.ddev.site'] = 'vpma.jobs.uiowa.edu';
 $sites['jobsvpma.dev.drupal.uiowa.edu'] = 'vpma.jobs.uiowa.edu';
 $sites['jobsvpma.stage.drupal.uiowa.edu'] = 'vpma.jobs.uiowa.edu';
 $sites['jobsvpma.prod.drupal.uiowa.edu'] = 'vpma.jobs.uiowa.edu';
+
+// Directory aliases for musictherapy.sites.uiowa.edu.
+$sites['sitesmusictherapy.uiowa.ddev.site'] = 'musictherapy.sites.uiowa.edu';
+$sites['sitesmusictherapy.dev.drupal.uiowa.edu'] = 'musictherapy.sites.uiowa.edu';
+$sites['sitesmusictherapy.stage.drupal.uiowa.edu'] = 'musictherapy.sites.uiowa.edu';
+$sites['sitesmusictherapy.prod.drupal.uiowa.edu'] = 'musictherapy.sites.uiowa.edu';
