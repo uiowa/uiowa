@@ -155,7 +155,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           '#description' => t('Provide a unique identifier for this block. Primarily used for anchor links.'),
           '#default_value' => $component->getThirdPartySetting('layout_builder_custom', 'unique_id'),
           '#ajax' => [
-            'callback' => 'layout_builder_custom_unique_id',
+            'callback' => '_layout_builder_custom_unique_id',
             'wrapper' => 'unique-id-wrapper',
             'disable-refocus' => TRUE,
           ],
@@ -1236,7 +1236,7 @@ function layout_builder_custom_views_pre_render(ViewExecutable $view) {
  * @return mixed
  *   The form element.
  */
-function layout_builder_custom_unique_id(array &$form, FormStateInterface $form_state) {
+function _layout_builder_custom_unique_id(array &$form, FormStateInterface $form_state) {
   $unique_id = Html::cleanCssIdentifier($form_state->getValue([
     'unique_id_wrapper',
     'unique_id',
