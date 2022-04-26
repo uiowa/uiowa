@@ -504,7 +504,9 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
     case 'inline_block:uiowa_slider':
       $block_form = $form_state->getValue('settings')['block_form'];
       // Removing one for "Add more".
-      $number_of_slides = count($block_form['field_uiowa_slider_slides']) - 1;
+      if (isset($block_form["field_uiowa_slider_slides"]["add_more"])) {
+        $number_of_slides = count($block_form['field_uiowa_slider_slides']) - 1;
+      }
       if ($number_of_slides > 4) {
         $form_state->setErrorByName('settings][block_form][field_uiowa_slider_slides', t('Reached maximum number of allowed slides.'));
       }
