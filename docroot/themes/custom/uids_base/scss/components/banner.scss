@@ -55,22 +55,22 @@
 .layout--twocol--67-33 .layout__region--second {
   .banner {
     // Set large heading size
-    .headline--large.headline--serif,
-    .headline--large {
+    .headline--large.headline--serif:not([class*="banner__pre-title"]),
+    .headline--large:not([class*="banner__pre-title"]) {
       font-size: 2.6rem;
       font-size: containerClamp(2.6rem, 2.6rem);
     }
 
     // Set medium heading size
-    .headline--medium.headline--serif,
-    .headline--medium {
+    .headline--medium.headline--serif:not([class*="banner__pre-title"]),
+    .headline--medium:not([class*="banner__pre-title"]) {
       font-size: 2.2rem;
       font-size: containerClamp(2.1rem, 2.1rem);
     }
 
     // Set small heading size
-    .headline--small.headline--serif,
-    .headline--small {
+    .headline--small.headline--serif:not([class*="banner__pre-title"]),
+    .headline--small:not([class*="banner__pre-title"]) {
       font-size: 1.8rem;
       font-size: containerClamp(1.6rem, 1.6rem);
     }
@@ -199,6 +199,8 @@
 }
 
 // Default padding fixes
+// Removes left padding if banner is a background color
+// is placed within a section that has the same background color.
 .layout:not([class*="bg-"]) {
   .banner.bg--white {
     .banner__content {
@@ -255,6 +257,7 @@
   }
 }
 
+// @todo move back to UIDS
 .banner__pre-title {
   font-weight: 500;
 }
@@ -262,5 +265,19 @@
 .slider__slide {
   .banner__container {
     position: relative;
+  }
+}
+
+.banner {
+  &.banner--gradient-light:not([class*="bg-"]) {
+    .banner__action {
+      .bttn--tertiary {
+        [class*=bg--black] & {
+          @include breakpoint(sm) {
+            color: $secondary;
+          }
+        }
+      }
+    }
   }
 }
