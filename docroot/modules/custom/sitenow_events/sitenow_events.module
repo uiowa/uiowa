@@ -92,13 +92,41 @@ function sitenow_events_preprocess_block(&$variables) {
 
       // Defaults to upcoming.
       $display_id = 'events';
-      $start = 'now';
-      $end = '+365 days';
+      $start = date('m-d-Y', strtotime(date('d-m-Y') . 'now'));
+      $end = date('m-d-Y', strtotime(date('d-m-Y') . '+365 days'));
+      if ($block->get('field_uiowa_events_past')->value == FALSE &&
+        // If we have a relative date that translates properly, and is after
+        // the start date, then replace the end date.
+        $rel_date = $block->get('field_uiowa_events_relative_date')->value) {
+        // If we do have an operator at the beginning, remove it,
+        // and add a + to properly format.
+        preg_replace('|[+-]|', '', $rel_date);
+        $rel_date = '+' . $rel_date;
+        if ($date = date('m-d-Y', strtotime(date('d-m-Y') . $rel_date))) {
+          if ($date > $start) {
+            $end = $date;
+          }
+        }
+      }
 
+      // If we're fetching past events, set the defaults appropriately.
       if ($block->get('field_uiowa_events_past')->value == TRUE) {
         $display_id = 'past';
-        $start = '-365 days';
-        $end = 'yesterday';
+        $start = date('m-d-Y', strtotime(date('d-m-Y') . '-365 days'));
+        $end = date('m-d-Y', strtotime(date('d-m-Y') . 'yesterday'));
+        // If we have a relative date that translates properly, and is before
+        // the end date, then replace the start date.
+        if ($rel_date = $block->get('field_uiowa_events_relative_date')->value) {
+          // If we do have an operator at the beginning, remove it,
+          // and add a - to properly format.
+          preg_replace('|[+-]|', '', $rel_date);
+          $rel_date = '-' . $rel_date;
+          if ($date = date('m-d-Y', strtotime(date('d-m-Y') . $rel_date))) {
+            if ($date < $end) {
+              $start = $date;
+            }
+          }
+        }
       }
 
       $data = sitenow_events_load([
@@ -109,9 +137,9 @@ function sitenow_events_preprocess_block(&$variables) {
         'filters[types]' => $block->get('field_uiowa_events_types')->getString(),
         'filters[keywords]' => $block->get('field_uiowa_events_keywords')->getString(),
         'filters[place]' => $block->get('field_uiowa_events_place')->getString(),
-        'filters[startdate][value][date]' => date('m-d-Y', strtotime(date('d-m-Y') . $start)),
-        'filters[enddate][value][date]' => date('m-d-Y', strtotime(date('d-m-Y') . $end)),
-        'page' => 0,
+        'filters[startdate][value][date]' => $start,
+        'filters[enddate][value][date]' => $end,
+//        'page' => 0,
         'items_per_page' => $block->get('field_collection_results')->value ?? 50,
       ]);
 
@@ -301,6 +329,8 @@ function sitenow_events_load(array $params = [
 
     if (isset($request)) {
       $data = json_decode($request->getBody()->getContents(), TRUE);
+      // Add the current date to track when the cache was last updated.
+      $data['last_fetched'] = date('m-d-Y');
 
       // Create a cache item set to 5 minutes.
       if ($cache !== FALSE) {
