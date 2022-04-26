@@ -661,6 +661,7 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       //   https://github.com/uiowa/uiowa/issues/5038
       $all_styles = _layout_builder_styles_retrieve_by_type(LayoutBuilderStyleInterface::TYPE_COMPONENT);
 
+      // @phpstan-ignore-next-line
       $selectedStyles = $component->get('layout_builder_styles_style');
 
       $style_options = ['image' => 'Image or Video'];

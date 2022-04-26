@@ -214,9 +214,12 @@ function sitenow_update_9001() {
          */
         foreach ($section->getComponents() as $component) {
           if ($component->getPluginId() === 'inline_block:' . $block_type) {
+            // @phpstan-ignore-next-line
             $styles = $component->get('layout_builder_styles_style');
             $styles[] = 'list_format_list';
             $styles[] = 'block_grid_threecol_33_34_33';
+
+            // @phpstan-ignore-next-line
             $component->set('layout_builder_styles_style', $styles);
             $section_arr['components'][$i] = $component->toArray();
             $section_is_updated = TRUE;
@@ -795,7 +798,7 @@ function sitenow_update_9008() {
  * Helper function to convert an existing people block to a list view block.
  */
 function _convert_people_block_component(SectionComponent &$component, BlockContentInterface $block) {
-
+  // @phpstan-ignore-next-line
   $styles = $component->get('layout_builder_styles_style');
 
   // Default LB styles for new block.
@@ -925,6 +928,8 @@ function _convert_people_block_component(SectionComponent &$component, BlockCont
 
   // Repurpose the existing component and set new styles.
   $component->setConfiguration($config);
+
+  // @phpstan-ignore-next-line
   $component->set('layout_builder_styles_style', $new_styles);
 }
 
@@ -1274,10 +1279,14 @@ function sitenow_update_9012() {
         }
 
         // Pull the layout builder styles from the component.
+        // @phpstan-ignore-next-line
         $styles = $component->get('layout_builder_styles_style');
+
         // Add key for new layout builder style.
         $styles[] = 'headline_large';
+
         // Set the layout builder styles on the component.
+        // @phpstan-ignore-next-line
         $component->set('layout_builder_styles_style', $styles);
 
       }
@@ -1335,10 +1344,14 @@ function sitenow_update_9012() {
             }
 
             // Pull the layout builder styles from the component.
+            // @phpstan-ignore-next-line
             $styles = $component->get('layout_builder_styles_style');
+
             // Add key for new layout builder style.
             $styles[] = 'headline_large';
+
             // Set the layout builder styles on the component.
+            // @phpstan-ignore-next-line
             $component->set('layout_builder_styles_style', $styles);
           }
         }

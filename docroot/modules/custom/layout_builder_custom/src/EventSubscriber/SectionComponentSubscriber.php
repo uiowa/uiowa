@@ -131,6 +131,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           break;
 
         case 'menu_block:main':
+          // @phpstan-ignore-next-line
           $selectedStyles = $event->getComponent()->get('layout_builder_styles_style');
           // Check that horizontal menu is select in LBS.
           if (in_array('block_menu_horizontal', $selectedStyles)) {
