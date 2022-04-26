@@ -139,12 +139,14 @@ class AcademicDatesFormTest extends KernelTestBase {
 
   /**
    * Test data is limited correctly if configured to limit to one item.
+   *
+   * @dataProvider datesLimitProvider
    */
-  public function testFormLimitDates() {
+  public function testFormLimitDates($number, $limit, $expected_count) {
     $sut = new AcademicDatesForm($this->maui);
     $form_state = new FormState();
-    $form = $sut->buildForm([], $form_state, NULL, NULL, NULL, 1, 1);
-    $this->assertCount(1, $form['dates-wrapper']['dates']['#data']);
+    $form = $sut->buildForm([], $form_state, NULL, NULL, NULL, $number, $limit);
+    $this->assertCount($expected_count, $form['dates-wrapper']['dates']['#data']);
   }
 
   /**
@@ -155,6 +157,17 @@ class AcademicDatesFormTest extends KernelTestBase {
       [0],
       [1],
       [2],
+    ];
+  }
+
+  /**
+   * Data provider for dates limit test.
+   */
+  public function datesLimitProvider() {
+    return [
+      [0, 0, 2],
+      [100, 0, 2],
+      [1, 1, 1],
     ];
   }
 
