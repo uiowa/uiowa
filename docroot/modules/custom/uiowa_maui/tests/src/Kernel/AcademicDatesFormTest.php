@@ -138,6 +138,16 @@ class AcademicDatesFormTest extends KernelTestBase {
   }
 
   /**
+   * Test data is limited correctly if configured to limit to one item.
+   */
+  public function testFormLimitDates() {
+    $sut = new AcademicDatesForm($this->maui);
+    $form_state = new FormState();
+    $form = $sut->buildForm([], $form_state, NULL, NULL, NULL, 1, 1);
+    $this->assertCount(1, $form['dates-wrapper']['dates']['#data']);
+  }
+
+  /**
    * Data provider for session prefilters.
    */
   public function sessionPrefilterProvider() {
