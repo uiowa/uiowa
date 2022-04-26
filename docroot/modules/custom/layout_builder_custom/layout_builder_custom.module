@@ -58,6 +58,9 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         'banner_type' => [
           'default' => 'banner_centered_left',
         ],
+        'button_style' => [
+          'default' => 'button_primary',
+        ],
         'card_image_size' => [
           'default' => 'card_image_large',
         ],
@@ -448,6 +451,46 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
   $component = $form_state->getFormObject()->getCurrentComponent();
 
   switch ($component->getPluginId()) {
+    case 'inline_block:uiowa_banner':
+      $link_set = FALSE;
+      $link_text = FALSE;
+
+      // First check if there is a link set.
+      foreach ($form_state->getValue([
+        'settings',
+        'block_form',
+        'field_uiowa_banner_link',
+      ]) as $key => $link) {
+        if ($key === 'add_more' || empty($link['uri'])) {
+          // If there is no uri, then we don't care about anything else.
+          continue;
+        }
+        else {
+          $link_set = TRUE;
+        }
+
+        if (!empty($link['title'])) {
+          $link_text = TRUE;
+        }
+      }
+      // If there is a link and no text, check if there is a title.
+      if ($link_set && !empty($form_state->getValue([
+        'settings',
+        'block_form',
+        'field_uiowa_banner_title',
+        0,
+        'container',
+        'text',
+      ]))) {
+        $link_text = TRUE;
+      }
+
+      // If there is a link and no text we can use, we have a problem.
+      if ($link_set && !$link_text) {
+        $form_state->setErrorByName('settings][block_form][field_uiowa_banner_link][0][title', t('Link text must be set if no title is present.'));
+      }
+      break;
+
     case 'inline_block:uiowa_statistic':
       $block_form = $form_state->getValue('settings')['block_form'];
       $prefix = $block_form['field_uiowa_statistic_title_pre'][0]['value'];
@@ -457,6 +500,18 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
       }
       if (strlen($suffix) > 3) {
         $form_state->setErrorByName('settings][block_form][field_uiowa_statistic_title_suf', t('Suffix cannot exceed 3 characters.'));
+      }
+      break;
+
+    // Limit slider to 4 slides. Display an error if more than 4 on save.
+    case 'inline_block:uiowa_slider':
+      $block_form = $form_state->getValue('settings')['block_form'];
+      if (isset($block_form['field_uiowa_slider_slides']['add_more'])) {
+        unset($block_form['field_uiowa_slider_slides']['add_more']);
+      }
+      $number_of_slides = count($block_form['field_uiowa_slider_slides']);
+      if ($number_of_slides > 4) {
+        $form_state->setError($form, t('Reached maximum number of allowed slides.'));
       }
       break;
 

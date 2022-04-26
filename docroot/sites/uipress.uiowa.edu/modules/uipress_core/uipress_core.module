@@ -34,7 +34,7 @@ function uipress_core_field_widget_entity_reference_paragraphs_form_alter(&$elem
 function uipress_core_preprocess_block(&$variables) {
   switch ($variables['elements']['#plugin_id']) {
     // Display book interior images in a two column grid.
-    case 'field_block:node:book:field_book_file_uploads':
+    case 'field_block:node:book:field_book_interior_pages':
       if (!isset($variables['attributes']['class'])) {
         $variables['attributes']['class'] = [''];
       }
@@ -63,7 +63,7 @@ function uipress_core_preprocess_field(&$variables, $hook) {
       $variables['field_container_classes'] = 'list-container';
       break;
 
-    case 'field_book_file_uploads':
+    case 'field_book_interior_pages':
       $variables['field_container_classes'] = 'list-container';
       break;
   }
@@ -180,7 +180,7 @@ function uipress_core_preprocess_views_view_unformatted(&$variables) {
       $row['template_options'] = [
         'attributes' => $row['attributes'],
         'accordion_item_content' => $row['content'],
-        'accordion_item_expanded' => 'true',
+        'accordion_item_expanded' => 'false',
         'accordion_item_id' => "book-details-$id",
         'accordion_item_label' => $view->getTitle(),
         'accordion_multiselectable' => TRUE,

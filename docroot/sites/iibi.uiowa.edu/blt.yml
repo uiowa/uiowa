@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: iibi.uiowa.ddev.site
+    protocol: https
+  machine_name: iibi
+  human_name: iibi.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: iibi.prod
+drupal:
+  db:
+    database: iibi_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: hboileau
+  site-name: iibi.uiowa.edu

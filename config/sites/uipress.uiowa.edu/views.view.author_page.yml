@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.teaser
     - node.type.person
     - system.menu.main
   module:
@@ -22,7 +23,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: 'Browse Authors'
+      title: Authors
       fields:
         title:
           id: title
@@ -72,15 +73,31 @@ display:
           separator: ', '
           field_api_classes: false
       pager:
-        type: none
+        type: full
         options:
           offset: 0
-          items_per_page: null
+          items_per_page: 18
+          total_pages: null
+          id: 0
+          tags:
+            next: 'Next ›'
+            previous: '‹ Previous'
+            first: '« First'
+            last: 'Last »'
+          expose:
+            items_per_page: false
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: false
+            items_per_page_options_all_label: '- All -'
+            offset: false
+            offset_label: Offset
+          quantity: 9
       exposed_form:
         type: basic
         options:
-          submit_button: Apply
-          reset_button: false
+          submit_button: Search
+          reset_button: true
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
           expose_sort_order: true
@@ -95,20 +112,18 @@ display:
         options: {  }
       empty: {  }
       sorts:
-        title:
-          id: title
-          table: node_field_data
-          field: title
+        field_person_last_name_value:
+          id: field_person_last_name_value
+          table: node__field_person_last_name
+          field: field_person_last_name_value
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: node
-          entity_field: title
           plugin_id: standard
           order: ASC
           expose:
             label: ''
-            field_identifier: title
+            field_identifier: ''
           exposed: false
       arguments: {  }
       filters:
@@ -134,6 +149,7 @@ display:
           plugin_id: bundle
           value:
             person: person
+          group: 1
           expose:
             operator_limit_selection: false
             operator_list: {  }
@@ -176,25 +192,68 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-      style:
-        type: grid
-        options:
-          grouping: {  }
-          columns: 4
-          automatic_width: true
-          alignment: horizontal
-          row_class_custom: ''
-          row_class_default: true
-          col_class_custom: ''
-          col_class_default: true
-      row:
-        type: fields
-        options:
-          default_field_elements: true
-          inline:
+        combine:
+          id: combine
+          table: views
+          field: combine
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: combine
+          operator: contains
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: combine_op
+            label: 'Search by name'
+            description: ''
+            use_operator: false
+            operator: combine_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: name
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            placeholder: 'Type an authors first, last, or full name'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          fields:
             title: title
-          separator: ''
-          hide_empty: false
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+      style:
+        type: default
+        options:
+          row_class: ''
+          default_row_class: true
+          uses_fields: true
+      row:
+        type: 'entity:node'
+        options:
+          relationship: none
+          view_mode: teaser
       query:
         type: views_query
         options:
@@ -204,6 +263,7 @@ display:
           replica: false
           query_tags: {  }
       relationships: {  }
+      css_class: grid--threecol--33-34-33
       header: {  }
       footer: {  }
       display_extenders: {  }
@@ -212,6 +272,8 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
+        - url.query_args
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
@@ -222,22 +284,26 @@ display:
     position: 1
     display_options:
       display_extenders:
-        metatag_display_extender: {  }
-      path: search/browse-by-author
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
+      path: authors
       menu:
         type: normal
-        title: Author
+        title: Authors
         description: ''
         weight: 0
-        expanded: false
+        expanded: true
         menu_name: main
-        parent: 'menu_link_content:628c0059-137a-44ee-b6f4-f82e0e85d63c'
+        parent: ''
         context: '0'
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
+        - url.query_args
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
