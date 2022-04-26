@@ -662,13 +662,10 @@ function uids_base_preprocess_block(&$variables) {
       return substr($v, 0, 8) === 'headline';
     });
 
-    // Change link style to match highlight, if set.
-    if (in_array('headline--highlight', $variables['headline_classes'])) {
-      $highlight_classes = 'bttn bttn--secondary bttn--caps';
-    }
-    else {
-      $highlight_classes = 'bttn bttn--primary bttn--caps';
-    }
+    // Remove button classes from attributes.
+    $variables['button_classes'] = array_filter($variables['elements']['#attributes']['class'], function ($v) {
+      return substr($v, 0, 4) === 'bttn';
+    });
 
     $variables['links'] = [];
 
@@ -677,7 +674,6 @@ function uids_base_preprocess_block(&$variables) {
         $variables['links'][] = [
           'link_url' => $link->getUrl()->toString(),
           'link_text' => $link->get('title')->getString(),
-          'link_classes' => $highlight_classes,
         ];
       }
     }
