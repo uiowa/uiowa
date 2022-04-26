@@ -129,7 +129,10 @@ function sitenow_events_preprocess_block(&$variables) {
         }
       }
 
-      $data = sitenow_events_load([
+      // Initialize some of our parameters.
+      $batch_size = $block->get('field_uiowa_events_items_page')->value ?? 50;
+      $page = 0;
+      $events_args = [
         'display_id' => $display_id,
         'filters[department]' => $block->get('field_uiowa_events_department')->getString(),
         'filters[audiences]' => $block->get('field_uiowa_events_audiences')->getString(),
@@ -139,9 +142,34 @@ function sitenow_events_preprocess_block(&$variables) {
         'filters[place]' => $block->get('field_uiowa_events_place')->getString(),
         'filters[startdate][value][date]' => $start,
         'filters[enddate][value][date]' => $end,
-//        'page' => 0,
-        'items_per_page' => $block->get('field_collection_results')->value ?? 50,
-      ]);
+        'page' => $page,
+        'items_per_page' => $batch_size,
+      ];
+      // Fetch the first batch of data.
+      $data = sitenow_events_load($events_args);
+      $num_fetched = $batch_size;
+      // @todo Account for a field_collection_results of 0.
+      while ($num_fetched < $block->get('field_collection_results')->value) {
+        // If the page + 1 (because it is zero-indexed) is greater than or
+        // equal to the total number of pages of results, then we should
+        // exit out of our while loop. No more data to collect.
+        if ($page + 1 >= $data['page']['total']) {
+          break;
+        }
+        // Increment our page and fetch the next batch of results.
+        $events_args['page'] = ++$page;
+
+        // @todo Check that we actually need to fetch more than one page
+        //   of results, so we're not always fetching all data. Maybe this
+        //   can be tied into the pager, so we're only fetching the page
+        //   of data we're interested at the time to get around this.
+        $new_data = sitenow_events_load($events_args);
+        // Append the new results onto our existing data frame.
+        foreach ($new_data['events'] as $event) {
+          $data['events'][] = $event;
+        }
+        $num_fetched += $block->get('field_uiowa_events_items_page')->value ?? 50;
+      }
 
       if (isset($data['events'])) {
         // Get block layout builder styles if they exist.
@@ -229,6 +257,11 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
   /** @var \Drupal\views\ViewExecutable $view */
   $view = $variables['view'];
   if ($view->id() === 'events_list_block') {
+    // Set our pager.
+    $pager = $view->display_handler->getOption('pager');
+    $pager['type'] = 'full';
+    $view->display_handler->setOption('pager', $pager);
+
     $rows = $variables['rows'];
     $style = $view->style_plugin;
 
