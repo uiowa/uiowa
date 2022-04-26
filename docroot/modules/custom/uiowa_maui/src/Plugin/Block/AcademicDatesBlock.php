@@ -153,7 +153,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     $form['display_deadlines'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Limit number of dates displayed'),
-      '#description' => $this->t('If checked, we recommend including a link to all upcoming dates. Default is registrar.uiowa.edu but a custom URL path can be provided in the ‘Path’ text box below.'),
+      '#description' => $this->t('If checked, we recommend including a link to all upcoming dates. Default is registrar.uiowa.edu/academic-calendar but a custom URL path can be provided in the ‘Path’ text box below.'),
       '#default_value' => $config['display_deadlines'] ?? 0,
       '#return_value' => 1,
     ];
@@ -181,7 +181,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       '#type' => 'entity_autocomplete',
       '#title' => $this->t('Path'),
       '#description' => $this->t('Start typing the title of a piece of content to select it. You can also enter an internal path such as /node/add or an external URL such as http://example.com. Enter %front to link to the front page.'),
-      '#default_value' => isset($config['display_more_link']) ? LinkHelper::getUriAsDisplayableString($config['display_more_link']) : 'https://registrar.uiowa.edu/',
+      '#default_value' => isset($config['display_more_link']) ? LinkHelper::getUriAsDisplayableString($config['display_more_link']) : 'https://registrar.uiowa.edu/academic-calendar',
       '#element_validate' => [
         [
           LinkWidget::class,
