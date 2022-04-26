@@ -150,11 +150,11 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       '#options' => $this->maui->getDateCategories(),
     ];
 
-    $form['display_deadlines'] = [
+    $form['limit_dates'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Limit number of dates displayed'),
       '#description' => $this->t('If checked, we recommend including a link to all upcoming dates. Default is registrar.uiowa.edu/academic-calendar but a custom URL path can be provided in the ‘Path’ text box below.'),
-      '#default_value' => $config['display_deadlines'] ?? 0,
+      '#default_value' => $config['limit_dates'] ?? 0,
       '#return_value' => 1,
     ];
 
@@ -169,7 +169,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       '#states' => [
         'visible' => [
           [
-            "input[name='settings[display_deadlines]']" => [
+            "input[name='settings[limit_dates]']" => [
               'checked' => TRUE,
             ],
           ],
@@ -199,7 +199,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       '#states' => [
         'visible' => [
           [
-            "input[name='settings[display_deadlines]']" => [
+            "input[name='settings[limit_dates]']" => [
               'checked' => TRUE,
             ],
           ],
@@ -215,7 +215,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       '#states' => [
         'visible' => [
           [
-            "input[name='settings[display_deadlines]']" => [
+            "input[name='settings[limit_dates]']" => [
               'checked' => TRUE,
             ],
           ],
@@ -253,14 +253,14 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     $session = $form_state->getValue('session');
     $category = $form_state->getValue('category');
     $items_to_display = $form_state->getValue('items_to_display');
-    $display_deadlines = $form_state->getValue('display_deadlines');
+    $limit_dates = $form_state->getValue('limit_dates');
     $display_more_link = $form_state->getValue('display_more_link');
     $display_more_text = $form_state->getValue('display_more_text');
 
     $this->configuration['session'] = ($session === '') ? NULL : $session;
     $this->configuration['category'] = ($category === '') ? NULL : $category;
     $this->configuration['items_to_display'] = ($items_to_display === '') ? NULL : $items_to_display;
-    $this->configuration['display_deadlines'] = ($display_deadlines === '') ? NULL : $display_deadlines;
+    $this->configuration['limit_dates'] = ($limit_dates === '') ? NULL : $limit_dates;
     $this->configuration['display_more_link'] = ($display_more_link === '') ? NULL : $display_more_link;
     $this->configuration['display_more_text'] = ($display_more_text === '') ? NULL : $display_more_text;
     parent::blockSubmit($form, $form_state);
@@ -306,10 +306,10 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       $config['session'],
       $config['category'],
       $child_heading_size,
-      $config['items_to_display'],
-      $config['display_deadlines'],
-      $config['display_more_link'],
-      $config['display_more_text'],
+      $config['items_to_display'] ?? 10,
+      $config['limit_dates'] ?? 0,
+      $config['display_more_link'] ?? 'https://registrar.uiowa.edu/academic-calendar',
+      $config['display_more_text'] ?? 'View more',
 
     );
     return $build;

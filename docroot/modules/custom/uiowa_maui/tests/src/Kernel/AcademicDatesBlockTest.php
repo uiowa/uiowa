@@ -104,7 +104,7 @@ class AcademicDatesBlockTest extends KernelTestBase {
       'session' => 0,
       'category' => '',
       'items_to_display' => 10,
-      'display_deadlines' => 0,
+      'limit_dates' => 0,
       'display_more_link' => 'https://registrar.uiowa.edu/academic-calendar',
       'display_more_text' => 'View more',
     ];
