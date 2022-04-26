@@ -1893,3 +1893,34 @@ function sitenow_update_9039() {
 function sitenow_update_9040() {
   drupal_flush_all_caches();
 }
+
+/**
+ * Set existing banner blocks with a default button style value.
+ */
+function sitenow_update_9041() {
+  // Loop through our newly updated banner blocks.
+  foreach ([
+    'inline_block:uiowa_banner',
+  ] as $block_plugin_id) {
+    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
+
+      $styles = $component->get('layout_builder_styles_style');
+      // We shouldn't, but check if we have a button style already set.
+      // If we do, we shouldn't make any changes.
+      $style_exists = FALSE;
+      foreach ($styles as $style) {
+        if (str_starts_with($style, 'button_')) {
+          $style_exists = TRUE;
+        }
+      }
+      // If no button style was set, then add our new
+      // default style and re-set the new complete styles.
+      if (!$style_exists) {
+        $styles[] = 'button_primary';
+        $component->set('layout_builder_styles_style', $styles);
+      }
+
+    });
+
+  }
+}
