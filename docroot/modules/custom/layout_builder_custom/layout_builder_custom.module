@@ -472,10 +472,8 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
   $component = $form_state->getFormObject()->getCurrentComponent();
 
   // Run unique_id clean for when the AJAX callback is not triggered.
-  if ($form_state->getValue(['unique_id_wrapper', 'unique_id'])) {
-    _layout_builder_custom_unique_id($form, $form_state);
-    $unique_id = $form['unique_id_wrapper']['unique_id']['#value'];
-    $form_state->setValue(['unique_id_wrapper', 'unique_id'], $unique_id);
+  if ($unique_id = $form_state->getValue(['unique_id_wrapper', 'unique_id'])) {
+    $form_state->setValue(['unique_id_wrapper', 'unique_id'], Html::cleanCssIdentifier($unique_id));
   }
 
   switch ($component->getPluginId()) {
