@@ -197,7 +197,7 @@ class AcademicDatesBlockTest extends KernelTestBase {
   /**
    * The more link should render if limiting dates and link provided.
    */
-  function testMoreLinkDoesRenderIfSet() {
+  public function testMoreLinkDoesRenderIfSet() {
     $config = $this->blockConfig;
     $config['limit_dates'] = 1;
     $config['display_more_link'] = 'https://registrar.uiowa.edu/academic-calendar';
@@ -211,7 +211,7 @@ class AcademicDatesBlockTest extends KernelTestBase {
   /**
    * The more link should not render if not limiting dates.
    */
-  function testMoreLinkDoesNotRenderIfNotSet() {
+  public function testMoreLinkDoesNotRenderIfNotSet() {
     $config = $this->blockConfig;
     $config['limit_dates'] = 0;
     $config['display_more_link'] = 'https://registrar.uiowa.edu/academic-calendar';
@@ -225,7 +225,7 @@ class AcademicDatesBlockTest extends KernelTestBase {
   /**
    * The more link should not render if limiting dates but the link is blank.
    */
-  function testMoreLinkDoesNotRenderIfLimitSetButLinkEmpty() {
+  public function testMoreLinkDoesNotRenderIfLimitSetButLinkEmpty() {
     $config = $this->blockConfig;
     $config['limit_dates'] = 1;
     $config['display_more_link'] = '';
