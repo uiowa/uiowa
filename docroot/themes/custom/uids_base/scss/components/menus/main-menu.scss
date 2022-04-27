@@ -78,7 +78,6 @@
             > span {
               background-color: $light;
               margin: 0;
-              //padding-left: 1.875rem;
               padding-bottom: 1.475rem;
 
               &:before {
@@ -301,6 +300,15 @@
 
     &[class*="bg--gold"] {
       .menu-wrapper--horizontal {
+        > .menu > {
+          li:before {
+            background: #fff;
+            width: 2px;
+          }
+          li:last-child:before {
+            background: transparent;
+          }
+        }
         > .menu {
           > li > a,
           > li > span {
@@ -447,6 +455,7 @@
         height: 100%;
         top: 5px;
         width: auto;
+        margin: 0 auto;
       }
       position: absolute;
       right: 0;
