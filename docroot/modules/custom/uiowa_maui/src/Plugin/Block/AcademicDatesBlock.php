@@ -321,7 +321,6 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       $child_heading_size,
       $config['items_to_display'] ?? 10,
       $limit_dates,
-
     );
     $display_more_link = $config['display_more_link'] ?? 0;
     if ($display_more_link === 1) {
