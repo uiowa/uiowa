@@ -13,8 +13,9 @@ function uiowa_maui_update_9001() {
     $config = $component->get('configuration');
     $config['items_to_display'] = 10;
     $config['limit_dates'] = 0;
-    $config['display_more_link'] = 'https://registrar.uiowa.edu/academic-calendar';
-    $config['display_more_text'] = 'View more';
+    $config['display_more_link'] = 0;
+    $config['more_link'] = 'https://registrar.uiowa.edu/academic-calendar';
+    $config['more_text'] = 'View more';
     $component->setConfiguration($config);
   });
 }
