@@ -108,7 +108,6 @@ class AcademicDatesForm extends FormBase {
         'id' => $wrapper,
         'aria-live' => 'polite',
       ],
-      'dates' => [],
     ];
 
     $data = $this->maui->searchSessionDates($current, $category);
