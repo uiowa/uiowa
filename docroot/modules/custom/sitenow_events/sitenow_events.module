@@ -257,11 +257,6 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
   /** @var \Drupal\views\ViewExecutable $view */
   $view = $variables['view'];
   if ($view->id() === 'events_list_block') {
-    // Set our pager.
-    $pager = $view->display_handler->getOption('pager');
-    $pager['type'] = 'full';
-    $view->display_handler->setOption('pager', $pager);
-
     $rows = $variables['rows'];
     $style = $view->style_plugin;
 
