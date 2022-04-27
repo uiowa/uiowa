@@ -156,7 +156,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         'unique_id' => [
           '#type' => 'textfield',
           '#title' => t('Unique ID'),
-          '#description' => t('Provide a unique identifier for this block. Primarily used for anchor links.'),
+          '#description' => t('Provide a unique identifier for this block. Primarily used for anchor links. Input will be cleaned to convert spaces and remove special characters.'),
           '#default_value' => $component->getThirdPartySetting('layout_builder_custom', 'unique_id'),
           '#ajax' => [
             'callback' => '_layout_builder_custom_unique_id',
