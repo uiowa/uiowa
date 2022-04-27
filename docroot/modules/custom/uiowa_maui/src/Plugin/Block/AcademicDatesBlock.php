@@ -258,7 +258,6 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       $this->configuration[$name] = $value;
     }
 
-    // Convert select list values to what we're expecting in the form builder.
     $session = $form_state->getValue('session');
     $category = $form_state->getValue('category');
     $items_to_display = $form_state->getValue('items_to_display');
@@ -267,13 +266,18 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     $more_link = $form_state->getValue('more_link');
     $more_text = $form_state->getValue('more_text');
 
+    // Convert select list values to what we're expecting in the form builder.
+    // Sessions and category need to be NULL'ed out if deselected.
     $this->configuration['session'] = ($session === '') ? NULL : $session;
     $this->configuration['category'] = ($category === '') ? NULL : $category;
-    $this->configuration['items_to_display'] = ($items_to_display === '') ? NULL : $items_to_display;
-    $this->configuration['limit_dates'] = ($limit_dates === '') ? NULL : $limit_dates;
-    $this->configuration['display_more_link'] = ($display_more_link === '') ? NULL : $display_more_link;
-    $this->configuration['more_link'] = ($more_link === '') ? NULL : $more_link;
-    $this->configuration['more_text'] = ($more_text === '') ? NULL : $more_text;
+
+    // These can be saved as-is.
+    $this->configuration['items_to_display'] = $items_to_display;
+    $this->configuration['limit_dates'] = $limit_dates;
+    $this->configuration['display_more_link'] = $display_more_link;
+    $this->configuration['more_link'] = $more_link;
+    $this->configuration['more_text'] = $more_text;
+
     parent::blockSubmit($form, $form_state);
   }
 
@@ -322,7 +326,9 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       $config['items_to_display'] ?? 10,
       $limit_dates,
     );
+
     $display_more_link = $config['display_more_link'] ?? 0;
+
     if ($display_more_link === 1) {
       $more_link = $config['more_link'] ?? 'https://registrar.uiowa.edu/academic-calendar';
       $build['more_link'] = [
