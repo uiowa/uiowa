@@ -471,6 +471,13 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
   /** @var \Drupal\layout_builder\SectionComponent $component */
   $component = $form_state->getFormObject()->getCurrentComponent();
 
+  // Run unique_id clean for when the AJAX callback is not triggered.
+  if ($form_state->getValue(['unique_id_wrapper', 'unique_id'])) {
+    _layout_builder_custom_unique_id($form, $form_state);
+    $unique_id = $form['unique_id_wrapper']['unique_id']['#value'];
+    $form_state->setValue(['unique_id_wrapper', 'unique_id'], $unique_id);
+  }
+
   switch ($component->getPluginId()) {
     case 'inline_block:uiowa_banner':
       $link_set = FALSE;
