@@ -6,6 +6,7 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Url;
 use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\uiowa_core\LinkHelper;
@@ -301,17 +302,32 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       $child_heading_size = HeadlineHelper::getHeadingSizeUp($config['heading_size']);
     }
 
+    $limit_dates = $config['limit_dates'] ?? 0;
+
     $build['form'] = $this->formBuilder->getForm(
       '\Drupal\uiowa_maui\Form\AcademicDatesForm',
       $config['session'],
       $config['category'],
       $child_heading_size,
       $config['items_to_display'] ?? 10,
-      $config['limit_dates'] ?? 0,
-      $config['display_more_link'] ?? 'https://registrar.uiowa.edu/academic-calendar',
-      $config['display_more_text'] ?? 'View more',
+      $limit_dates,
 
     );
+
+    if ($limit_dates === 1) {
+      $more_link = $config['display_more_link'] ?? 'https://registrar.uiowa.edu/academic-calendar';
+      $build['more_link'] = [
+        '#title' => $this->t('@more_text', [
+          '@more_text' => $config['display_more_text'] ?? 'View more',
+        ]),
+        '#type' => 'link',
+        '#url' => Url::fromUri($more_link),
+        '#attributes' => [
+          'class' => ['bttn', 'bttn--primary', 'bttn--caps'],
+        ],
+      ];
+    }
+
     return $build;
   }
 
