@@ -198,7 +198,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
         ],
       ],
       // @todo The user should be able to select an entity type. Will be fixed
-      //   in https://www.drupal.org/node/2423093.
+      // in https://www.drupal.org/node/2423093.
       '#target_type' => 'node',
       // Disable autocompletion when the first character is '/', '#' or '?'.
       '#attributes' => [
