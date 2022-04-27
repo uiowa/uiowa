@@ -132,6 +132,10 @@ function sitenow_events_preprocess_block(&$variables) {
       // Initialize some of our parameters.
       $batch_size = $block->get('field_uiowa_events_items_page')->value ?? 50;
       $page = 0;
+      // Set to cache, and if it's past events and not upcoming, cache for
+      // a day instead of 5 minutes.
+      $cache = TRUE;
+      $cache_time = ($block->get('field_uiowa_events_past')->value) ? 86400 : 300;
       $events_args = [
         'display_id' => $display_id,
         'filters[department]' => $block->get('field_uiowa_events_department')->getString(),
@@ -146,7 +150,7 @@ function sitenow_events_preprocess_block(&$variables) {
         'items_per_page' => $batch_size,
       ];
       // Fetch the first batch of data.
-      $data = sitenow_events_load($events_args);
+      $data = sitenow_events_load($events_args, $cache, $cache_time);
       $num_fetched = $batch_size;
       // @todo Account for a field_collection_results of 0.
       while ($num_fetched < $block->get('field_collection_results')->value) {
@@ -163,7 +167,7 @@ function sitenow_events_preprocess_block(&$variables) {
         //   of results, so we're not always fetching all data. Maybe this
         //   can be tied into the pager, so we're only fetching the page
         //   of data we're interested at the time to get around this.
-        $new_data = sitenow_events_load($events_args);
+        $new_data = sitenow_events_load($events_args, $cache, $cache_time);
         // Append the new results onto our existing data frame.
         foreach ($new_data['events'] as $event) {
           $data['events'][] = $event;
@@ -330,7 +334,7 @@ function sitenow_events_load(array $params = [
 ], array $args = [
   'views',
   'event_instances_api.json',
-], $cache = TRUE) {
+], $cache = TRUE, $cache_time = 300) {
   $config = \Drupal::config('sitenow_events.settings');
   $endpoint = $config->get('base_endpoint');
 
@@ -363,7 +367,7 @@ function sitenow_events_load(array $params = [
       // Create a cache item set to 5 minutes.
       if ($cache !== FALSE) {
         $request_time = \Drupal::time()->getRequestTime();
-        \Drupal::cache('uievents')->set($endpoint, $data, $request_time + 300);
+        \Drupal::cache('uievents')->set($endpoint, $data, $request_time + $cache_time);
       }
     }
     else {
