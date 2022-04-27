@@ -195,44 +195,17 @@ class AcademicDatesBlockTest extends KernelTestBase {
   }
 
   /**
-   * The more link should render if limiting dates and link provided.
+   * The more link should render if display more link is checked.
    */
   public function testMoreLinkDoesRenderIfSet() {
     $config = $this->blockConfig;
-    $config['limit_dates'] = 1;
-    $config['display_more_link'] = 'https://registrar.uiowa.edu/academic-calendar';
-    $config['display_more_text'] = 'View more';
+    $config['display_more_link'] = 1;
+    $config['more_link'] = 'https://registrar.uiowa.edu/academic-calendar';
+    $config['more_text'] = 'View more';
 
     $sut = new AcademicDatesBlock($config, 'uiowa_maui_academic_dates', $this->plugin, $this->maui, $this->formBuilder);
     $build = $sut->build();
     $this->assertArrayHasKey('more_link', $build);
-  }
-
-  /**
-   * The more link should not render if not limiting dates.
-   */
-  public function testMoreLinkDoesNotRenderIfNotSet() {
-    $config = $this->blockConfig;
-    $config['limit_dates'] = 0;
-    $config['display_more_link'] = 'https://registrar.uiowa.edu/academic-calendar';
-    $config['display_more_text'] = 'View more';
-
-    $sut = new AcademicDatesBlock($config, 'uiowa_maui_academic_dates', $this->plugin, $this->maui, $this->formBuilder);
-    $build = $sut->build();
-    $this->assertArrayNotHasKey('more_link', $build);
-  }
-
-  /**
-   * The more link should not render if limiting dates but the link is blank.
-   */
-  public function testMoreLinkDoesNotRenderIfLimitSetButLinkEmpty() {
-    $config = $this->blockConfig;
-    $config['limit_dates'] = 1;
-    $config['display_more_link'] = '';
-    $config['display_more_text'] = 'View more';
-    $sut = new AcademicDatesBlock($config, 'uiowa_maui_academic_dates', $this->plugin, $this->maui, $this->formBuilder);
-    $build = $sut->build();
-    $this->assertArrayNotHasKey('more_link', $build);
   }
 
   /**

@@ -154,7 +154,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     $form['limit_dates'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Limit number of dates displayed'),
-      '#description' => $this->t('If checked, we recommend including a link to all upcoming dates. Default is registrar.uiowa.edu/academic-calendar but a custom URL path can be provided in the ‘Path’ text box below.'),
+      '#description' => $this->t('If checked, we recommend including a link to all upcoming dates.'),
       '#default_value' => $config['limit_dates'] ?? 0,
       '#return_value' => 1,
     ];
@@ -179,10 +179,18 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     ];
 
     $form['display_more_link'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Display more link'),
+      '#description' => $this->t('Check to include a "display more" link. Default is https://registrar.uiowa.edu/academic-calendar. Alternatively, a custom URL path can be provided in the ‘Path’ text box below.'),
+      '#default_value' => $config['display_more_link'] ?? 0,
+      '#return_value' => 1,
+    ];
+
+    $form['more_link'] = [
       '#type' => 'entity_autocomplete',
       '#title' => $this->t('Path'),
       '#description' => $this->t('Start typing the title of a piece of content to select it. You can also enter an internal path such as /node/add or an external URL such as http://example.com. Enter %front to link to the front page.'),
-      '#default_value' => isset($config['display_more_link']) ? LinkHelper::getUriAsDisplayableString($config['display_more_link']) : 'https://registrar.uiowa.edu/academic-calendar',
+      '#default_value' => isset($config['more_link']) ? LinkHelper::getUriAsDisplayableString($config['more_link']) : 'https://registrar.uiowa.edu/academic-calendar',
       '#element_validate' => [
         [
           LinkWidget::class,
@@ -200,7 +208,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       '#states' => [
         'visible' => [
           [
-            "input[name='settings[limit_dates]']" => [
+            "input[name='settings[display_more_link]']" => [
               'checked' => TRUE,
             ],
           ],
@@ -208,15 +216,15 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       ],
     ];
 
-    $form['display_more_text'] = [
+    $form['more_text'] = [
       '#type' => 'textfield',
       '#title' => 'Custom text',
-      '#default_value' => $config['display_more_text'] ?? 'View more',
+      '#default_value' => $config['more_text'] ?? 'View more',
       '#process_default_value' => FALSE,
       '#states' => [
         'visible' => [
           [
-            "input[name='settings[limit_dates]']" => [
+            "input[name='settings[display_more_link]']" => [
               'checked' => TRUE,
             ],
           ],
@@ -256,14 +264,16 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
     $items_to_display = $form_state->getValue('items_to_display');
     $limit_dates = $form_state->getValue('limit_dates');
     $display_more_link = $form_state->getValue('display_more_link');
-    $display_more_text = $form_state->getValue('display_more_text');
+    $more_link = $form_state->getValue('more_link');
+    $more_text = $form_state->getValue('more_text');
 
     $this->configuration['session'] = ($session === '') ? NULL : $session;
     $this->configuration['category'] = ($category === '') ? NULL : $category;
     $this->configuration['items_to_display'] = ($items_to_display === '') ? NULL : $items_to_display;
     $this->configuration['limit_dates'] = ($limit_dates === '') ? NULL : $limit_dates;
     $this->configuration['display_more_link'] = ($display_more_link === '') ? NULL : $display_more_link;
-    $this->configuration['display_more_text'] = ($display_more_text === '') ? NULL : $display_more_text;
+    $this->configuration['more_link'] = ($more_link === '') ? NULL : $more_link;
+    $this->configuration['more_text'] = ($more_text === '') ? NULL : $more_text;
     parent::blockSubmit($form, $form_state);
   }
 
@@ -313,12 +323,12 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       $limit_dates,
 
     );
-
-    if ($limit_dates === 1) {
-      $more_link = $config['display_more_link'] ?? 'https://registrar.uiowa.edu/academic-calendar';
+    $display_more_link = $config['display_more_link'] ?? 0;
+    if ($display_more_link === 1) {
+      $more_link = $config['more_link'] ?? 'https://registrar.uiowa.edu/academic-calendar';
       $build['more_link'] = [
         '#title' => $this->t('@more_text', [
-          '@more_text' => $config['display_more_text'] ?? 'View more',
+          '@more_text' => $config['more_text'] ?? 'View more',
         ]),
         '#type' => 'link',
         '#url' => Url::fromUri($more_link),
