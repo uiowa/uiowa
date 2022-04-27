@@ -40,6 +40,13 @@ class AcademicDatesBlockTest extends KernelTestBase {
   protected $plugin;
 
   /**
+   * Shared initial config for the block constructor.
+   *
+   * @var array
+   */
+  protected $blockConfig;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
@@ -49,6 +56,19 @@ class AcademicDatesBlockTest extends KernelTestBase {
       'admin_label' => 'Academic dates',
       'provider' => 'uiowa_maui',
       'category' => 'MAUI',
+    ];
+
+    $this->blockConfig = [
+      'headline' => 'Test',
+      'hide_headline' => FALSE,
+      'heading_size' => 'h3',
+      'headline_style' => 'default',
+      'session' => 0,
+      'category' => '',
+      'items_to_display' => 10,
+      'limit_dates' => 0,
+      'display_more_link' => 'https://registrar.uiowa.edu/academic-calendar',
+      'display_more_text' => 'View more',
     ];
 
     $this->maui = $this->getMockBuilder('\Drupal\uiowa_maui\MauiApi')
@@ -96,19 +116,8 @@ class AcademicDatesBlockTest extends KernelTestBase {
    * @dataProvider placeholderProvider
    */
   public function testHeadlinePlaceholderIsReplaced($placeholder) {
-    $config = [
-      'headline' => $placeholder,
-      'hide_headline' => FALSE,
-      'heading_size' => 'h3',
-      'headline_style' => 'default',
-      'session' => 0,
-      'category' => '',
-      'items_to_display' => 10,
-      'limit_dates' => 0,
-      'display_more_link' => 'https://registrar.uiowa.edu/academic-calendar',
-      'display_more_text' => 'View more',
-    ];
-
+    $config = $this->blockConfig;
+    $config['headline'] = $placeholder;
     $sut = new AcademicDatesBlock($config, 'uiowa_maui_academic_dates', $this->plugin, $this->maui, $this->formBuilder);
 
     $build = $sut->build();
@@ -183,6 +192,47 @@ class AcademicDatesBlockTest extends KernelTestBase {
     $config = $sut->getConfiguration();
     $this->assertEquals(0, $config['session']);
     $this->assertEquals(1, $config['category']);
+  }
+
+  /**
+   * The more link should render if limiting dates and link provided.
+   */
+  function testMoreLinkDoesRenderIfSet() {
+    $config = $this->blockConfig;
+    $config['limit_dates'] = 1;
+    $config['display_more_link'] = 'https://registrar.uiowa.edu/academic-calendar';
+    $config['display_more_text'] = 'View more';
+
+    $sut = new AcademicDatesBlock($config, 'uiowa_maui_academic_dates', $this->plugin, $this->maui, $this->formBuilder);
+    $build = $sut->build();
+    $this->assertArrayHasKey('more_link', $build);
+  }
+
+  /**
+   * The more link should not render if not limiting dates.
+   */
+  function testMoreLinkDoesNotRenderIfNotSet() {
+    $config = $this->blockConfig;
+    $config['limit_dates'] = 0;
+    $config['display_more_link'] = 'https://registrar.uiowa.edu/academic-calendar';
+    $config['display_more_text'] = 'View more';
+
+    $sut = new AcademicDatesBlock($config, 'uiowa_maui_academic_dates', $this->plugin, $this->maui, $this->formBuilder);
+    $build = $sut->build();
+    $this->assertArrayNotHasKey('more_link', $build);
+  }
+
+  /**
+   * The more link should not render if limiting dates but the link is blank.
+   */
+  function testMoreLinkDoesNotRenderIfLimitSetButLinkEmpty() {
+    $config = $this->blockConfig;
+    $config['limit_dates'] = 1;
+    $config['display_more_link'] = '';
+    $config['display_more_text'] = 'View more';
+    $sut = new AcademicDatesBlock($config, 'uiowa_maui_academic_dates', $this->plugin, $this->maui, $this->formBuilder);
+    $build = $sut->build();
+    $this->assertArrayNotHasKey('more_link', $build);
   }
 
   /**
