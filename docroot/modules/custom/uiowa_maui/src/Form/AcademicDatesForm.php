@@ -101,7 +101,7 @@ class AcademicDatesForm extends FormBase {
       ];
     }
 
-    // This ID needs to be different than the form ID.
+    // This ID needs to be different from the form ID.
     $form['dates-wrapper'] = [
       '#type' => 'container',
       '#attributes' => [
