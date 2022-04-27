@@ -135,6 +135,9 @@ function sitenow_events_preprocess_block(&$variables) {
       // Set to cache, and if it's past events and not upcoming, cache for
       // a day instead of 5 minutes.
       $cache = TRUE;
+      // @todo Determine desirable cache times for both events and update. Thinking
+      //   is that past events likely won't get updated very often, and so are
+      //   safer to cache for extended periods of time.
       $cache_time = ($block->get('field_uiowa_events_past')->value) ? 86400 : 300;
       $events_args = [
         'display_id' => $display_id,
@@ -152,7 +155,8 @@ function sitenow_events_preprocess_block(&$variables) {
       // Fetch the first batch of data.
       $data = sitenow_events_load($events_args, $cache, $cache_time);
       $num_fetched = $batch_size;
-      // @todo Account for a field_collection_results of 0.
+      // @todo Account for a field_collection_results of 0 (unlimited)
+      //   or other "many results" situations.
       while ($num_fetched < $block->get('field_collection_results')->value) {
         // If the page + 1 (because it is zero-indexed) is greater than or
         // equal to the total number of pages of results, then we should
@@ -170,6 +174,10 @@ function sitenow_events_preprocess_block(&$variables) {
         $new_data = sitenow_events_load($events_args, $cache, $cache_time);
         // Append the new results onto our existing data frame.
         foreach ($new_data['events'] as $event) {
+          // @todo Separate these into pages of events, which could then be
+          //   pulled and updated on demand, however it gets determined that
+          //   should happen. Eg, only load first two pages but we know there
+          //   are 10 pages...When another page is needed, pull it and update.
           $data['events'][] = $event;
         }
         $num_fetched += $block->get('field_uiowa_events_items_page')->value ?? 50;
