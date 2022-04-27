@@ -149,6 +149,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       // Section component unique ID is stored in third-party settings.
       $form['unique_id_wrapper'] = [
         '#type' => 'container',
+        '#weight' => 0,
         '#attributes' => [
           'id' => 'unique-id-wrapper',
         ],
