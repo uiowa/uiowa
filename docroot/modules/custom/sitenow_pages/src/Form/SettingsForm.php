@@ -135,9 +135,15 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => $featured_image_display_default ?: 'large',
     ];
 
+    $form['global']['tags_and_related'] = [
+      '#type' => 'fieldset',
+      '#title' => 'Tags and related content',
+      '#collapsible' => FALSE,
+    ];
+
     $tag_display = $config->get('tag_display');
 
-    $form['global']['tag_display'] = [
+    $form['global']['tags_and_related']['tag_display'] = [
       '#type' => 'select',
       '#title' => $this->t('Display tags in pages'),
       '#description' => $this->t("Set the default way to display a page's tags in the page itself."),
@@ -152,7 +158,7 @@ class SettingsForm extends ConfigFormBase {
 
     $related_display = $config->get('related_display');
 
-    $form['global']['related_display'] = [
+    $form['global']['tags_and_related']['related_display'] = [
       '#type' => 'select',
       '#title' => $this->t('Display related content'),
       '#description' => $this->t("Set the default way to display a page's related content."),
@@ -165,7 +171,7 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => $related_display ?: 'do_not_display',
     ];
 
-    $form['global']['related_display_headings_lists_help'] = [
+    $form['global']['tags_and_related']['related_display_headings_lists_help'] = [
       '#type' => 'item',
       '#title' => 'How related content is displayed:',
       '#description' => $this->t("Related content will display above the page's footer as sections of headings (tags) above bulleted lists of a maximum of 30 tagged items. Tagged items are sorted by most recently edited."),
@@ -175,6 +181,30 @@ class SettingsForm extends ConfigFormBase {
         ],
       ],
     ];
+
+    $form['global']['teaser'] = [
+      '#type' => 'fieldset',
+      '#title' => 'Teaser display',
+      '#collapsible' => FALSE,
+    ];
+
+    $form['global']['teaser']['teaser_help'] = [
+      '#type' => 'item',
+      '#title' => 'What are teasers?',
+      '#description' => $this->t("<p>Teasers appear in lists like tag filters, featured content blocks in Layout Builder, and other places where the content is summarized.</p>")
+      ];
+
+    $show_visual_indicators_on_teasers = $config->get('show_visual_indicators_on_teasers');
+
+    $form['global']['teaser']['show_visual_indicators_on_teasers'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Display arrows linking to pages from lists/teasers.'),
+      '#description' => $this->t('<p><strong>Example if the above option is checked:</strong></p>
+        <p><img src="/modules/custom/sitenow_pages/images/visual-indicator-example.png" width="400" alt="Page teaser with the page title, description with an arrow and a gold circle below it." /></p>
+        '),
+      '#default_value' => $show_visual_indicators_on_teasers ?: false
+    ];
+
     return $form;
   }
 
@@ -182,9 +212,12 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+
     $featured_image_display_default = $form_state->getValue('featured_image_display_default');
     $tag_display = $form_state->getValue('tag_display');
     $related_display = $form_state->getValue('related_display');
+    $show_visual_indicators_on_teasers = $form_state->getValue('show_visual_indicators_on_teasers');
+
     $this->configFactory->getEditable(static::SETTINGS)
       // Save the featured image display default.
       ->set('featured_image_display_default', $featured_image_display_default)
@@ -199,6 +232,12 @@ class SettingsForm extends ConfigFormBase {
       // Save the tag display default.
       ->set('related_display', $related_display)
       ->save();
+
+    $this->configFactory->getEditable(static::SETTINGS)
+      // Save the tag display default.
+      ->set('show_visual_indicators_on_teasers', $show_visual_indicators_on_teasers)
+      ->save();
+
     parent::submitForm($form, $form_state);
 
     drupal_flush_all_caches();

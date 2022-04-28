@@ -80,22 +80,26 @@
     not node.isPublished() ? 'node--unpublished',
     view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
     'card--list',
+    'bg--white'
 ]
 %}
 
 {% set headline_level = heading_size ?: 'h3' %}
+{% set card_classes = ['card', 'click-container','block--word-break', 'bg--white'] %}
+
 {{ attach_library('classy/node') }}
 {{ attach_library('uids_base/node-type-page') }}
 
 {% set page_card = {
   'attributes': attributes.addClass(classes),
   'card_image' : content.field_image|render,
+  'card_classes' : card_classes,
   'card_title': label,
   'content': content,
   'card_link_url': url,
   'media_styles': media_classes,
   'headline_level': headline_level,
-  'visible_button': true
+  'visible_button': show_visual_indicators_on_teasers
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with page_card only %}
@@ -103,7 +107,7 @@
   {# @todo Add content_attributes.addClass('node__content media-body') #}
 
   {% block card_content %}
-    {{ content|without('field_image', 'links') }}
+    <div class="card__description">{{ content|without('field_image', 'links') }}</div>
   {% endblock %}
 
 {% endembed %}
