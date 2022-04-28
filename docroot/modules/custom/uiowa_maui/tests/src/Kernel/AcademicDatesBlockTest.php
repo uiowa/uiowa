@@ -66,9 +66,10 @@ class AcademicDatesBlockTest extends KernelTestBase {
       'session' => 0,
       'category' => '',
       'items_to_display' => 10,
-      'limit_dates' => 0,
-      'display_more_link' => 'https://registrar.uiowa.edu/academic-calendar',
-      'display_more_text' => 'View more',
+      'limit_dates' => FALSE,
+      'display_more_link' => FALSE,
+      'more_link' => 'https://registrar.uiowa.edu/academic-calendar',
+      'more_text' => 'View more',
     ];
 
     $this->maui = $this->getMockBuilder('\Drupal\uiowa_maui\MauiApi')
@@ -199,7 +200,7 @@ class AcademicDatesBlockTest extends KernelTestBase {
    */
   public function testMoreLinkDoesRenderIfSet() {
     $config = $this->blockConfig;
-    $config['display_more_link'] = 1;
+    $config['display_more_link'] = TRUE;
     $config['more_link'] = 'https://registrar.uiowa.edu/academic-calendar';
     $config['more_text'] = 'View more';
 

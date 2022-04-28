@@ -155,8 +155,8 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       '#type' => 'checkbox',
       '#title' => $this->t('Limit number of dates displayed'),
       '#description' => $this->t('If checked, we recommend including a link to all upcoming dates.'),
-      '#default_value' => $config['limit_dates'] ?? 0,
-      '#return_value' => 1,
+      '#default_value' => $config['limit_dates'] ?? FALSE,
+      '#return_value' => TRUE,
     ];
 
     $form['items_to_display'] = [
@@ -182,8 +182,8 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       '#type' => 'checkbox',
       '#title' => $this->t('Display more link'),
       '#description' => $this->t('Check to include a "display more" link. Default is https://registrar.uiowa.edu/academic-calendar. Alternatively, a custom URL path can be provided in the ‘Path’ text box below.'),
-      '#default_value' => $config['display_more_link'] ?? 0,
-      '#return_value' => 1,
+      '#default_value' => $config['display_more_link'] ?? FALSE,
+      '#return_value' => TRUE,
     ];
 
     $form['more_link'] = [
@@ -316,21 +316,18 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       $child_heading_size = HeadlineHelper::getHeadingSizeUp($config['heading_size']);
     }
 
-    $limit_dates = $config['limit_dates'] ?? 0;
-
     $build['form'] = $this->formBuilder->getForm(
       '\Drupal\uiowa_maui\Form\AcademicDatesForm',
       $config['session'],
       $config['category'],
       $child_heading_size,
-      $config['items_to_display'] ?? 10,
-      $limit_dates,
+      $config['items_to_display'],
+      $config['limit_dates'],
     );
 
-    $display_more_link = $config['display_more_link'] ?? 0;
-
-    if ($display_more_link === 1) {
+    if ($config['display_more_link'] == TRUE) {
       $more_link = $config['more_link'] ?? 'https://registrar.uiowa.edu/academic-calendar';
+
       $build['more_link'] = [
         '#title' => $this->t('@more_text', [
           '@more_text' => $config['more_text'] ?? 'View more',
