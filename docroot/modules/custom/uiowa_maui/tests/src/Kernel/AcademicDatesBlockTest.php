@@ -210,6 +210,20 @@ class AcademicDatesBlockTest extends KernelTestBase {
   }
 
   /**
+   * The more link should not render if display more link is not checked.
+   */
+  public function testMoreLinkDoesRenderIfNotSet() {
+    $config = $this->blockConfig;
+    $config['display_more_link'] = FALSE;
+    $config['more_link'] = 'https://registrar.uiowa.edu/academic-calendar';
+    $config['more_text'] = 'View more';
+
+    $sut = new AcademicDatesBlock($config, 'uiowa_maui_academic_dates', $this->plugin, $this->maui, $this->formBuilder);
+    $build = $sut->build();
+    $this->assertArrayNotHasKey('more_link', $build);
+  }
+
+  /**
    * Data provider.
    */
   public function placeholderProvider() {
