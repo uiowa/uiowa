@@ -49,6 +49,11 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
       }
     }
 
+    // Set an ID for this block if the third-party key is set.
+    if ($unique_id = $event->getComponent()->getThirdPartySetting('layout_builder_custom', 'unique_id')) {
+      $build['#attributes']['id'] = $unique_id;
+    }
+
     if ($block instanceof FieldBlock && $block->getPluginId() === 'field_block:node:page:title') {
 
       $contexts = $event->getContexts();
@@ -126,6 +131,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           break;
 
         case 'menu_block:main':
+          // @phpstan-ignore-next-line
           $selectedStyles = $event->getComponent()->get('layout_builder_styles_style');
           // Check that horizontal menu is select in LBS.
           if (in_array('block_menu_horizontal', $selectedStyles)) {
