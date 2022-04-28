@@ -267,17 +267,3 @@
     position: relative;
   }
 }
-
-.banner {
-  &.banner--gradient-light:not([class*="bg-"]) {
-    .banner__action {
-      .bttn--tertiary {
-        [class*=bg--black] & {
-          @include breakpoint(sm) {
-            color: $secondary;
-          }
-        }
-      }
-    }
-  }
-}
