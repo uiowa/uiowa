@@ -138,7 +138,7 @@ class AcademicDatesFormTest extends KernelTestBase {
   }
 
   /**
-   * Test data is limited correctly if configured to limit to one item.
+   * Test data is limited correctly if configured to limit.
    *
    * @dataProvider datesLimitProvider
    */
