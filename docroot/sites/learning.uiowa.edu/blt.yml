@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: learning.uiowa.ddev.site
+    protocol: https
+  machine_name: learning
+  human_name: learning.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: learning.prod
+drupal:
+  db:
+    database: learning_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: jwhitsit
+  site-name: Learning

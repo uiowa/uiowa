@@ -4084,3 +4084,21 @@ $sites['labsheffield.uiowa.ddev.site'] = 'sheffield.lab.uiowa.edu';
 $sites['labsheffield.dev.drupal.uiowa.edu'] = 'sheffield.lab.uiowa.edu';
 $sites['labsheffield.stage.drupal.uiowa.edu'] = 'sheffield.lab.uiowa.edu';
 $sites['labsheffield.prod.drupal.uiowa.edu'] = 'sheffield.lab.uiowa.edu';
+
+// Directory aliases for mu.lab.uiowa.edu.
+$sites['labmu.uiowa.ddev.site'] = 'mu.lab.uiowa.edu';
+$sites['labmu.dev.drupal.uiowa.edu'] = 'mu.lab.uiowa.edu';
+$sites['labmu.stage.drupal.uiowa.edu'] = 'mu.lab.uiowa.edu';
+$sites['labmu.prod.drupal.uiowa.edu'] = 'mu.lab.uiowa.edu';
+
+// Directory aliases for ortho-li.lab.uiowa.edu.
+$sites['labortho-li.uiowa.ddev.site'] = 'ortho-li.lab.uiowa.edu';
+$sites['labortho-li.dev.drupal.uiowa.edu'] = 'ortho-li.lab.uiowa.edu';
+$sites['labortho-li.stage.drupal.uiowa.edu'] = 'ortho-li.lab.uiowa.edu';
+$sites['labortho-li.prod.drupal.uiowa.edu'] = 'ortho-li.lab.uiowa.edu';
+
+// Directory aliases for learning.uiowa.edu.
+$sites['learning.uiowa.ddev.site'] = 'learning.uiowa.edu';
+$sites['learning.dev.drupal.uiowa.edu'] = 'learning.uiowa.edu';
+$sites['learning.stage.drupal.uiowa.edu'] = 'learning.uiowa.edu';
+$sites['learning.prod.drupal.uiowa.edu'] = 'learning.uiowa.edu';
