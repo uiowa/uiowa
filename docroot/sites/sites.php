@@ -4096,3 +4096,9 @@ $sites['labortho-li.uiowa.ddev.site'] = 'ortho-li.lab.uiowa.edu';
 $sites['labortho-li.dev.drupal.uiowa.edu'] = 'ortho-li.lab.uiowa.edu';
 $sites['labortho-li.stage.drupal.uiowa.edu'] = 'ortho-li.lab.uiowa.edu';
 $sites['labortho-li.prod.drupal.uiowa.edu'] = 'ortho-li.lab.uiowa.edu';
+
+// Directory aliases for learning.uiowa.edu.
+$sites['learning.uiowa.ddev.site'] = 'learning.uiowa.edu';
+$sites['learning.dev.drupal.uiowa.edu'] = 'learning.uiowa.edu';
+$sites['learning.stage.drupal.uiowa.edu'] = 'learning.uiowa.edu';
+$sites['learning.prod.drupal.uiowa.edu'] = 'learning.uiowa.edu';
