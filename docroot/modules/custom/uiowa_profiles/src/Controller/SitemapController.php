@@ -2,18 +2,14 @@
 
 namespace Drupal\uiowa_profiles\Controller;
 
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\uiowa_profiles\Client;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Returns responses for APR routes.
@@ -92,29 +88,19 @@ class SitemapController extends ControllerBase {
     // The returned sitemap URLs already include a slash so remove ours.
     $directory = $this->config->get('directories')[$key];
 
-    $params = UrlHelper::buildQuery([
+    $sitemap = $this->profiles->request('GET', 'people/sitemap', [
       'api-key' => $directory['api_key'],
       'path' => ltrim($directory['path'], '/'),
+    ],
+    [
+      'headers' => [
+        'Accept' => 'text/plain',
+        'Referer' => $request->getSchemeAndHttpHost(),
+      ],
     ]);
 
-    try {
-      $response = $this->httpClient->request('GET', "{$this->profiles->endpoint}/people/sitemap?{$params}", [
-        'headers' => [
-          'Accept' => 'text/plain',
-          'Referer' => $request->getSchemeAndHttpHost(),
-        ],
-      ]);
-    }
-    catch (RequestException | GuzzleException $e) {
-      // Just throw a 404 here since the Acquia error page is ugly.
-      $this->logger->error($e->getMessage());
-      throw new NotFoundHttpException();
-    }
-
-    $contents = $response->getBody()->getContents();
-
     return new Response(
-      $contents,
+      $sitemap,
       200,
       [
         'Content-Type' => 'text/plain',

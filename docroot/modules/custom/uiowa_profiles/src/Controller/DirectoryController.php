@@ -3,18 +3,14 @@
 namespace Drupal\uiowa_profiles\Controller;
 
 use Drupal\Component\Utility\Html;
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Breadcrumb\BreadcrumbManager;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\uiowa_profiles\Client;
-use GuzzleHttp\Client as HttpClient;
-use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Returns responses for Profiles routes.
@@ -58,13 +54,6 @@ class DirectoryController extends ControllerBase {
   protected $routeMatch;
 
   /**
-   * The guzzle client.
-   *
-   * @var \GuzzleHttp\Client
-   */
-  protected $httpClient;
-
-  /**
    * DirectoryController constructor.
    *
    * @param \Drupal\uiowa_profiles\Client $profiles
@@ -75,16 +64,13 @@ class DirectoryController extends ControllerBase {
    *   The Guzzle HTTP client.
    * @param \Drupal\Core\Routing\RouteMatchInterface $routeMatch
    *   The current route match.
-   * @param \GuzzleHttp\Client $httpClient
-   *   The guzzle client.
    */
-  public function __construct(Client $profiles, ConfigFactoryInterface $config, BreadcrumbManager $breadcrumb, RouteMatchInterface $routeMatch, HttpClient $httpClient) {
+  public function __construct(Client $profiles, ConfigFactoryInterface $config, BreadcrumbManager $breadcrumb, RouteMatchInterface $routeMatch) {
     $this->profiles = $profiles;
     $this->config = $config->get('uiowa_profiles.settings');
     $this->breadcrumb = $breadcrumb;
     $this->logger = $this->getLogger('uiowa_profiles');
     $this->routeMatch = $routeMatch;
-    $this->httpClient = $httpClient;
   }
 
   /**
@@ -95,8 +81,7 @@ class DirectoryController extends ControllerBase {
       $container->get('uiowa_profiles.client'),
       $container->get('config.factory'),
       $container->get('breadcrumb'),
-      $container->get('current_route_match'),
-      $container->get('http_client')
+      $container->get('current_route_match')
     );
   }
 
@@ -201,34 +186,20 @@ class DirectoryController extends ControllerBase {
     if ($slug) {
       $build['uiprof']['client']['#attributes']['slug'] = Html::escape($slug);
 
-      $requests = [
-        'metadata',
-        'structured',
+      $options = [
+        'headers' => [
+          'Accept' => 'application/json',
+        ],
       ];
 
-      foreach ($requests as $path) {
-        $params = UrlHelper::buildQuery([
-          'api-key' => $directory['api_key'],
-        ]);
+      $params = [
+        'api-key' => $directory['api_key'],
+      ];
 
-        try {
-          $response = $this->httpClient->request('GET', "{$this->profiles->endpoint}/people/{$slug}/$path?{$params}", [
-            'headers' => [
-              'Accept' => 'application/json',
-            ],
-          ]);
-        }
-        catch (RequestException | GuzzleException $e) {
-          // Just throw a 404 here since the Acquia error page is ugly.
-          $this->logger->error($e->getMessage());
-          throw new NotFoundHttpException();
-        }
+      $metadata = $this->profiles->request('GET', "people/$slug/metadata", $params, $options);
+      $structured = $this->profiles->request('GET', "people/$slug/structured", $params, $options);
 
-        // Create a variable for each request path and assign it response data.
-        $$path = $response->getBody()->getContents();
-      }
-
-      if (isset($metadata, $structured)) {
+      if (isset($metadata)) {
         $meta = json_decode($metadata);
 
         $title = [
@@ -259,7 +230,9 @@ class DirectoryController extends ControllerBase {
           $description,
           'description',
         ];
+      }
 
+      if (isset($structured)) {
         $schema = [
           '#tag' => 'script',
           '#value' => $structured,
