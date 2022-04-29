@@ -112,7 +112,7 @@ class DirectoryController extends ControllerBase {
             'basePath' => Html::escape($directory['path']),
             'api_key' => Html::escape($directory['api_key']),
             'endpoint' => $this->profiles->endpoint,
-            'siteName' => \Drupal::config('system.site')->get('name'),
+            'siteName' => $this->configFactory->get('system.site')->get('name'),
             'directoryTitle' => Html::escape($directory['title']),
           ],
         ],
@@ -206,7 +206,7 @@ class DirectoryController extends ControllerBase {
           '#tag' => 'title',
           '#value' => $this->t('@name | @site_name', [
             '@name' => $meta->name,
-            '@site_name' => \Drupal::config('system.site')->get('name'),
+            '@site_name' => $this->configFactory->get('system.site')->get('name'),
           ]),
         ];
 
