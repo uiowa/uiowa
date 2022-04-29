@@ -66,7 +66,10 @@
 
         // Map element selection. Zoom to, infobox, filter accompanying view if exists.
         function zoomToFeature(e) {
-          map.fitBounds(e.target.getBounds());
+          // Zoom in only for Alaska and Hawaii.
+          if (e.target.feature.id === 'AK' || e.target.feature.id === 'HI') {
+            map.fitBounds(e.target.getBounds());
+          }
 
           // Update Graduates' view filters based on map selection.
           let graduatesFilters = document.getElementById("views-exposed-form-palliative-grad-block-palliative-grad");
