@@ -4090,3 +4090,9 @@ $sites['labmu.uiowa.ddev.site'] = 'mu.lab.uiowa.edu';
 $sites['labmu.dev.drupal.uiowa.edu'] = 'mu.lab.uiowa.edu';
 $sites['labmu.stage.drupal.uiowa.edu'] = 'mu.lab.uiowa.edu';
 $sites['labmu.prod.drupal.uiowa.edu'] = 'mu.lab.uiowa.edu';
+
+// Directory aliases for ortho-li.lab.uiowa.edu.
+$sites['labortho-li.uiowa.ddev.site'] = 'ortho-li.lab.uiowa.edu';
+$sites['labortho-li.dev.drupal.uiowa.edu'] = 'ortho-li.lab.uiowa.edu';
+$sites['labortho-li.stage.drupal.uiowa.edu'] = 'ortho-li.lab.uiowa.edu';
+$sites['labortho-li.prod.drupal.uiowa.edu'] = 'ortho-li.lab.uiowa.edu';
