@@ -201,25 +201,35 @@ class DirectoryController extends ControllerBase {
     if ($slug) {
       $build['uiprof']['client']['#attributes']['slug'] = Html::escape($slug);
 
-      $params = UrlHelper::buildQuery([
-        'api-key' => $directory['api_key'],
-      ]);
+      $requests = [
+        'metadata',
+        'structured',
+      ];
 
-      try {
-        $response = $this->httpClient->request('GET', "{$this->profiles->endpoint}/people/{$slug}/metadata?{$params}", [
-          'headers' => [
-            'Accept' => 'application/json',
-          ],
+      foreach ($requests as $path) {
+        $params = UrlHelper::buildQuery([
+          'api-key' => $directory['api_key'],
         ]);
-      }
-      catch (RequestException | GuzzleException $e) {
-        // Just throw a 404 here since the Acquia error page is ugly.
-        $this->logger->error($e->getMessage());
-        throw new NotFoundHttpException();
+
+        try {
+          $response = $this->httpClient->request('GET', "{$this->profiles->endpoint}/people/{$slug}/$path?{$params}", [
+            'headers' => [
+              'Accept' => 'application/json',
+            ],
+          ]);
+        }
+        catch (RequestException | GuzzleException $e) {
+          // Just throw a 404 here since the Acquia error page is ugly.
+          $this->logger->error($e->getMessage());
+          throw new NotFoundHttpException();
+        }
+
+        // Create a variable for each request path and assign it response data.
+        $$path = $response->getBody()->getContents();
       }
 
-      if ($contents = $response->getBody()->getContents()) {
-        $meta = json_decode($contents);
+      if (isset($metadata, $structured)) {
+        $meta = json_decode($metadata);
 
         $title = [
           '#tag' => 'title',
@@ -248,6 +258,19 @@ class DirectoryController extends ControllerBase {
         $build['#attached']['html_head'][] = [
           $description,
           'description',
+        ];
+
+        $schema = [
+          '#tag' => 'script',
+          '#value' => $structured,
+          '#attributes' => [
+            'type' => 'application/ld+json',
+          ],
+        ];
+
+        $build['#attached']['html_head'][] = [
+          $schema,
+          'schema',
         ];
       }
     }
