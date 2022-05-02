@@ -702,11 +702,14 @@ function admissions_core_preprocess_node(&$variables) {
         // Check if we have any major (2 plus 2) content pieces
         // that reference the transfer tip's area of study.
         $area_of_study_id = $node->field_transfer_tips_aos->target_id;
-        $query = \Drupal::database()->select('node__field_major_area_of_study', 'aos')
-          ->condition('field_major_area_of_study_target_id', $area_of_study_id, '=');
-        $count = $query->countQuery()->execute()->fetchField();
+        $query = \Drupal::entityQuery('node')
+          ->condition('type', 'major')
+          ->condition('status', 1)
+          ->condition('field_major_area_of_study', $area_of_study_id, '=');
+        // We only really need to know if there area
+        $count = $query->count()->execute();
         if ($count > 0) {
-          // @todo Get the area of study name and construct a link.
+          $link = \Drupal::service('path_alias.manager')->getAliasByPath('/2plus2/' . $area_of_study_id);
         }
         break;
     }
