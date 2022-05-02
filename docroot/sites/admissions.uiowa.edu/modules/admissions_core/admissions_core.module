@@ -764,7 +764,7 @@ function admissions_core_preprocess_views_view(&$variables) {
       // Set the page title meta using the view title, otherwise
       // the plaintext view token won't get replaced.
       $title = trim($view->getTitle());
-      \Drupal::routeMatch()->getRouteObject()->setDefault('_title_callback', function() use ($title) {
+      \Drupal::routeMatch()->getRouteObject()->setDefault('_title_callback', function () use ($title) {
         return '2 Plus 2 Plan in ' . $title;
       });
       break;
