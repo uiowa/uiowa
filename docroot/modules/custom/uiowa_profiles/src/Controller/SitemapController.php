@@ -57,7 +57,7 @@ class SitemapController extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('uiowa_profiles.client'),
-      $container->get('config.factory')
+      $container->get('http_client')
     );
   }
 
