@@ -133,7 +133,8 @@ h6 {
 }
 
 .node__content {
-  margin-top: 31px;
+  margin-top: -15px;
+  position: relative;
 }
 
 // Sidebar used for majors/minors and list items
@@ -165,12 +166,9 @@ h6 {
 }
 
 .print__container--left {
-  display: inline-block;
   width: 75%;
   margin-right: -75%;
-  float: left;
-  margin-top: -15px;
-  word-wrap: break-word;
+  margin-bottom: 10px;
 
   &:after {
     display: block;
@@ -190,13 +188,10 @@ h6 {
 }
 
 .print__container--right {
-  display: inline-block;
-  float: left;
-  font-size: 13px;
-  margin-left: 75%;
-  padding-left: 12px;
-  width: 25%;
-  word-wrap: break-word;
+
+  position: absolute;
+  top: 0;
+  right: 0;
 
   &:before {
     display: block;
