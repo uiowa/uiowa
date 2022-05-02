@@ -1,7 +1,16 @@
 uuid: 216b19bc-844f-4f62-ba4e-2df20dc92a0e
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - node.type.lockup
+    - workflows.workflow.lockup
+  module:
+    - content_moderation
+    - node
+    - override_node_options
+    - system
+    - toolbar
 id: collaborator
 label: Collaborator
 weight: -7

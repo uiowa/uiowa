@@ -1,4 +1,8 @@
 adding:
+  dependencies:
+    config:
+      - node.type.lockup
+      - workflows.workflow.lockup
   permissions:
     - 'create lockup content'
     - 'delete any lockup content'
@@ -16,6 +20,4 @@ adding:
     - 'use lockup transition needs_review'
     - 'use lockup transition publish'
     - 'view lockup revisions'
-removing:
-  permissions:
-    - 'access contextual links'
+removing: {  }
