@@ -267,3 +267,30 @@
     position: relative;
   }
 }
+
+.banner.banner--horizontal-center {
+  .banner__action .bttn {
+    margin: 1rem auto;
+    display: block;
+    width: fit-content;
+    @include breakpoint(sm) {
+      margin: 0 1rem 1rem 0;
+      display: inline-block;
+      width: auto;
+    }
+
+    + .bttn {
+      @include breakpoint(sm) {
+        margin: 0 1rem 1rem 0;
+      }
+    }
+
+    &:last-child {
+      margin: 1rem auto;
+      @include breakpoint(sm) {
+        margin-top: 0;
+        margin-right: 0;
+      }
+    }
+  }
+}
