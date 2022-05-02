@@ -12,7 +12,9 @@
         let geojson;
 
         // Establish map and prevent scrollwheel zooming.
-        let map = L.map("pharmacy-palliative-grad-map").setView([37.8, -96], 4);
+        let map = L.map("pharmacy-palliative-grad-map", {
+          zoomSnap: 0.25
+        }).setView([37.8, -96], 3.75);
         map.scrollWheelZoom.disable();
 
         // Check for graduates data.
@@ -66,7 +68,10 @@
 
         // Map element selection. Zoom to, infobox, filter accompanying view if exists.
         function zoomToFeature(e) {
-          map.fitBounds(e.target.getBounds());
+          // Zoom in only for Alaska and Hawaii.
+          if (e.target.feature.id === 'AK' || e.target.feature.id === 'HI') {
+            map.fitBounds(e.target.getBounds());
+          }
 
           // Update Graduates' view filters based on map selection.
           let graduatesFilters = document.getElementById("views-exposed-form-palliative-grad-block-palliative-grad");
@@ -114,7 +119,7 @@
 
         let resetButton = document.getElementById("map-reset");
         resetButton.addEventListener("click", function() {
-          map.setView([37.8, -96], 4);
+          map.setView([37.8, -96], 3.75);
         });
 
         let panToButtons = L.control();
