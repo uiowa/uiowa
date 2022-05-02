@@ -2,7 +2,6 @@
 
 namespace Drupal\uiowa_profiles\Controller;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\uiowa_profiles\Client;
@@ -25,13 +24,6 @@ class SitemapController extends ControllerBase {
   protected $profiles;
 
   /**
-   * The APR settings immutable config.
-   *
-   * @var \Drupal\Core\Config\ImmutableConfig
-   */
-  protected $config;
-
-  /**
    * The HTTP client.
    *
    * @var \GuzzleHttp\ClientInterface
@@ -50,14 +42,11 @@ class SitemapController extends ControllerBase {
    *
    * @param \Drupal\uiowa_profiles\Client $profiles
    *   The uiowa_profiles.profiles service.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config
-   *   The config factory service.
    * @param \GuzzleHttp\ClientInterface $httpClient
    *   The HTTP client service.
    */
-  public function __construct(Client $profiles, ConfigFactoryInterface $config, ClientInterface $httpClient) {
+  public function __construct(Client $profiles, ClientInterface $httpClient) {
     $this->profiles = $profiles;
-    $this->config = $config->get('uiowa_profiles.settings');
     $this->httpClient = $httpClient;
     $this->logger = $this->getLogger('uiowa_profiles');
   }
@@ -68,8 +57,7 @@ class SitemapController extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('uiowa_profiles.client'),
-      $container->get('config.factory'),
-      $container->get('http_client')
+      $container->get('config.factory')
     );
   }
 
@@ -86,7 +74,7 @@ class SitemapController extends ControllerBase {
    */
   public function build(Request $request, $key) {
     // The returned sitemap URLs already include a slash so remove ours.
-    $directory = $this->config->get('directories')[$key];
+    $directory = $this->config('uiowa_profiles.settings')->get('directories')[$key];
 
     $sitemap = $this->profiles->request('GET', 'people/sitemap', [
       'api-key' => $directory['api_key'],
