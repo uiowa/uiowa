@@ -709,7 +709,14 @@ function admissions_core_preprocess_node(&$variables) {
         // We only really need to know if there area
         $count = $query->count()->execute();
         if ($count > 0) {
-          $link = \Drupal::service('path_alias.manager')->getAliasByPath('/2plus2/' . $area_of_study_id);
+          // Get the link to the 2 Plus 2 community college aggregator page.
+          $url = \Drupal::service('path_alias.manager')->getAliasByPath('/2plus2/' . $area_of_study_id);
+          // We have the Transfer Tips title, so let's just edit that
+          // rather than needing to do more querying and loading.
+          $title = $node->getTitle();
+          $title = str_replace('Transfer Tips', '2 Plus 2 Plan', $title);
+          $variables['2plus2']['url'] = $url;
+          $variables['2plus2']['title'] = $title;
         }
         break;
     }
