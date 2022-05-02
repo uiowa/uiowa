@@ -482,6 +482,10 @@ function admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'node--scholarship--teaser',
       'base hook' => 'node',
     ],
+    'node__transfer_tips__full' => [
+      'template' => 'node--transfer-tips--full',
+      'base hook' => 'node',
+    ],
     'node__transfer_tips__teaser' => [
       'template' => 'node--transfer-tips--teaser',
       'base hook' => 'node',
@@ -717,11 +721,9 @@ function admissions_core_preprocess_node(&$variables) {
           // rather than needing to do more querying and loading.
           $title = $node->getTitle();
           $title = str_replace('Transfer Tips', '2 Plus 2 Plan', $title);
-          $variables['elements']['field_transfer_tips_aos']['#items'];
-          $variables['elements']['2plus2'] = [
-            '#type' => 'link',
-            '#title' => $title,
-            '#url' => $url,
+          $variables['two_plus_two'] = [
+            'title' => $title,
+            'url' => $url,
           ];
         }
         break;
