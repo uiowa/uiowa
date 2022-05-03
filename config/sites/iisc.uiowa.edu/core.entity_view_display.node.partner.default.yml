@@ -71,23 +71,35 @@ third_party_settings:
           context_mapping: {  }
           column_widths: 67-33
           layout_builder_styles_style:
-            - ''
-            - section_margin_fixed_width_container
+            0: ''
+            1: section_margin_fixed_width_container
+            section_alignment_start: section_alignment_start
         components:
-          7e34bc11-7dc5-40a4-92af-0fb7a1e312c8:
-            uuid: 7e34bc11-7dc5-40a4-92af-0fb7a1e312c8
-            region: first
+          c8052c35-15ab-4d8e-bc75-8e998958ee8d:
+            uuid: c8052c35-15ab-4d8e-bc75-8e998958ee8d
+            region: second
             configuration:
-              id: 'field_block:node:partner:field_partner_description'
+              id: 'extra_field_block:node:partner:links'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 4
+            additional: {  }
+            third_party_settings: {  }
+          2e617ead-d53a-4a51-bedb-32973920dfb6:
+            uuid: 2e617ead-d53a-4a51-bedb-32973920dfb6
+            region: second
+            configuration:
+              id: 'field_block:node:partner:field_iowa_counties'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
               formatter:
-                type: text_default
+                type: list_default
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 1
+            weight: 3
             additional: {  }
             third_party_settings: {  }
           eccf63bd-b345-4a69-b92f-f490ed0d371c:
@@ -110,9 +122,28 @@ third_party_settings:
             weight: 2
             additional: {  }
             third_party_settings: {  }
+          7e34bc11-7dc5-40a4-92af-0fb7a1e312c8:
+            uuid: 7e34bc11-7dc5-40a4-92af-0fb7a1e312c8
+            region: first
+            configuration:
+              id: 'field_block:node:partner:field_partner_description'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: text_default
+                label: visually_hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
           af567d41-67b3-44a1-8fc7-49be3f725c49:
             uuid: af567d41-67b3-44a1-8fc7-49be3f725c49
-            region: second
+            region: first
             configuration:
               id: 'field_block:node:partner:field_partner_link'
               label_display: '0'
@@ -128,37 +159,12 @@ third_party_settings:
                   rel: ''
                   target: ''
                 third_party_settings: {  }
-            weight: 1
+            weight: 3
             additional: {  }
             third_party_settings: {  }
-          c8052c35-15ab-4d8e-bc75-8e998958ee8d:
-            uuid: c8052c35-15ab-4d8e-bc75-8e998958ee8d
-            region: second
-            configuration:
-              id: 'extra_field_block:node:partner:links'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-            weight: 0
-            additional: {  }
-            third_party_settings: {  }
-          2e617ead-d53a-4a51-bedb-32973920dfb6:
-            uuid: 2e617ead-d53a-4a51-bedb-32973920dfb6
-            region: first
-            configuration:
-              id: 'field_block:node:partner:field_iowa_counties'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: list_default
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: 2
-            additional: {  }
-            third_party_settings: {  }
-        third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
       -
         layout_id: layout_onecol
         layout_settings:
