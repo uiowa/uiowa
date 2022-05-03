@@ -82,13 +82,13 @@
     {% if transfer_tip or requirement_url or process_url is not empty %}
       <ul class="element--list-none fa-ul">
       {% if transfer_tip is not empty %}
-        <li><a href="{{ transfer_tip }}" class=""><span class="fa-li"><i role="presentation" class="fas fa-lightbulb"></i></span> Transfer tips</a></li>
+        <li><a href="{{ transfer_tip }}" class=""><span class="fa-li text--black"><i role="presentation" class="fas fa-lightbulb"></i></span> Transfer tips</a></li>
       {% endif %}
       {% if requirement_url is not empty %}
-        <li><a href="{{ requirement_url }}" class=""><span class="fa-li"><i role="presentation" class="fas fa-arrow-right"></i></span> {{ requirement_label }} </a></li>
+        <li><a href="{{ requirement_url }}" class=""><span class="fa-li text--black"><i role="presentation" class="fas fa-arrow-right"></i></span> {{ requirement_label }} </a></li>
       {% endif %}
       {% if process_url is not empty %}
-        <li> <a href="{{ process_url }}" class=""><span class="fa-li"><i role="presentation" class="fas fa-arrow-right"></i></span>{{ process_label }}</a></li>
+        <li> <a href="{{ process_url }}" class=""><span class="fa-li text--black"><i role="presentation" class="fas fa-arrow-right"></i></span>{{ process_label }}</a></li>
       {% endif %}
       </ul>
     {% endif %}
