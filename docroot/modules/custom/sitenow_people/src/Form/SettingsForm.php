@@ -270,12 +270,6 @@ class SettingsForm extends ConfigFormBase {
       '#collapsible' => FALSE,
     ];
 
-    $form['global']['teaser']['teaser_help'] = [
-      '#type' => 'item',
-      '#title' => 'What are teasers?',
-      '#description' => $this->t("<p>Teasers appear in lists like people lists, filters, featured content blocks in Layout Builder, and other places where the person's information is summarized.</p>"),
-    ];
-
     $show_visual_indicators_on_teasers = $config->get('show_visual_indicators_on_teasers');
 
     $form['global']['teaser']['show_visual_indicators_on_teasers'] = [
