@@ -191,18 +191,18 @@ class SettingsForm extends ConfigFormBase {
     $form['global']['teaser']['teaser_help'] = [
       '#type' => 'item',
       '#title' => 'What are teasers?',
-      '#description' => $this->t("<p>Teasers appear in lists like tag filters, featured content blocks in Layout Builder, and other places where the content is summarized.</p>")
-      ];
+      '#description' => $this->t("<p>Teasers appear in lists like tag filters, featured content blocks in Layout Builder, and other places where the content is summarized.</p>"),
+    ];
 
     $show_visual_indicators_on_teasers = $config->get('show_visual_indicators_on_teasers');
 
     $form['global']['teaser']['show_visual_indicators_on_teasers'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Display arrows linking to pages from lists/teasers.'),
+      '#title' => $this->t("Display arrows linking to pages from lists/teasers."),
       '#description' => $this->t('<p><strong>Example if the above option is checked:</strong></p>
         <p><img src="/modules/custom/sitenow_pages/images/visual-indicator-example.png" width="400" alt="Page teaser with the page title, description with an arrow and a gold circle below it." /></p>
         '),
-      '#default_value' => $show_visual_indicators_on_teasers ?: false
+      '#default_value' => $show_visual_indicators_on_teasers ?: FALSE,
     ];
 
     return $form;

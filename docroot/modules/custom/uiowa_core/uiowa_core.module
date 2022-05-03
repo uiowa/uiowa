@@ -127,20 +127,24 @@ function template_preprocess_uiowa_core_headline(&$variables) {
 
 }
 
+/**
+ * Implements hook_preprocess_HOOK().
+ */
 function uiowa_core_preprocess_node(&$variables) {
 
-  if($variables['view_mode'] == 'teaser'){
+  if ($variables['view_mode'] == 'teaser') {
 
-    $show_visual_indicators_on_teasers = false;
+    $show_visual_indicators_on_teasers = FALSE;
     $node_type = $variables['node']->bundle();
 
-    switch($node_type){
+    switch ($node_type) {
       case 'page':
         $show_visual_indicators_on_teasers = \Drupal::configFactory()->getEditable('sitenow_pages.settings')->get('show_visual_indicators_on_teasers');
-      break;
+        break;
+
       case 'person':
         $show_visual_indicators_on_teasers = \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('show_visual_indicators_on_teasers');
-      break;
+        break;
     }
 
     $variables['show_visual_indicators_on_teasers'] = $show_visual_indicators_on_teasers;
@@ -148,6 +152,7 @@ function uiowa_core_preprocess_node(&$variables) {
   }
 
 }
+
 /**
  * Implements hook_preprocess_HOOK().
  */
