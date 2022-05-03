@@ -1,0 +1,77 @@
+uuid: 2bfaf054-baa0-4757-83f2-c91cb6a4f75c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.major.body
+    - field.field.node.major.field_major_area_of_study
+    - field.field.node.major.field_major_cc_checkpoints
+    - field.field.node.major.field_major_community_college
+    - field.field.node.major.field_major_responsibilities
+    - field.field.node.major.field_major_uiowa_checkpoints
+    - field.field.node.major.field_meta_tags
+    - node.type.major
+  module:
+    - metatag
+    - text
+    - user
+id: node.major.default
+targetEntityType: node
+bundle: major
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_major_area_of_study:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_major_cc_checkpoints:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_major_responsibilities:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_major_uiowa_checkpoints:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_meta_tags:
+    type: metatag_empty_formatter
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 7
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_major_community_college: true
+  links: true
+  search_api_excerpt: true

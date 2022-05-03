@@ -15,6 +15,49 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\views\ViewExecutable;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function admissions_core_entity_extra_field_info() {
+  $extra = [];
+
+  $extra['taxonomy_term']['community_colleges']['display']['majors_by_tid'] = [
+    'label' => t('Majors'),
+    'description' => t('Displays majors by taxonomy term'),
+    'weight' => 100,
+    'visible' => TRUE,
+  ];
+
+  return $extra;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function admissions_core_taxonomy_term_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  // Render view as a field within term's display settings.
+  if ($display->getComponent('majors_by_tid')) {
+    $build['majors_by_tid'] = [
+      '#type' => 'container',
+    ];
+    $build['majors_by_tid']['headline'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'div',
+      '#value' => t('Iowa majors available to @name students in 2 Plus 2:', ['@name' => $entity->getName()]),
+      '#attributes' => [
+        'class' => ['field__label'],
+      ],
+    ];
+    $build['majors_by_tid']['view'] = [
+      '#type' => 'view',
+      '#name' => 'majors',
+      '#display_id' => 'block_majors_by_tid',
+      '#embed' => TRUE,
+    ];
+  }
+}
 
 /**
  * Implements hook_entity_presave().
@@ -36,6 +79,14 @@ function admissions_core_entity_presave(EntityInterface $entity) {
       $entity->setTitle($output);
       break;
 
+    case 'major':
+      // Setting the major title with the Area of Study and Community
+      // College field values. Both fields are required.
+      $major_aos = $entity->field_major_area_of_study->entity->title->value;
+      $major_cc = $entity->field_major_community_college->entity->name->value;
+      $output = $major_aos . " at " . $major_cc;
+      $entity->setTitle($output);
+      break;
   }
 }
 
@@ -246,6 +297,12 @@ function admissions_core_preprocess_field(&$variables) {
       $variables['label'] = t('@name Contact Information', ['@name' => $name]);
       break;
 
+    case 'field_major_cc_checkpoints':
+      $term = $variables['element']['#object'];
+      $name = $term->field_major_community_college->entity->name->value;
+      $variables['label'] = t('@name checkpoints', ['@name' => $name]);
+      break;
+
   }
 }
 
@@ -417,6 +474,10 @@ function admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'block--views-block--student-card-block-student-grid',
       'base hook' => 'block',
     ],
+    'node__major__teaser' => [
+      'template' => 'node--major--teaser',
+      'base hook' => 'node',
+    ],
     'node__scholarship__teaser' => [
       'template' => 'node--scholarship--teaser',
       'base hook' => 'node',
@@ -475,6 +536,10 @@ function admissions_core_theme($existing, $type, $theme, $path) {
     ],
     'field__node__field_event_series_summary__event_series' => [
       'template' => 'field--node--field-event-series-summary--event-series--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_major_area_of_study__major' => [
+      'template' => 'field--node--field-major-area-of-study--major',
       'base hook' => 'field',
     ],
     'field__node__field_transfer_tips_aos__transfer_tips' => [
@@ -539,7 +604,7 @@ function admissions_core_theme($existing, $type, $theme, $path) {
     ],
     'taxonomy_term__teaser' => [
       'template' => 'taxonomy-term--teaser',
-      'base hook' => 'node',
+      'base hook' => 'taxonomy_term',
     ],
   ];
 }
@@ -588,6 +653,19 @@ function admissions_core_views_pre_render(ViewExecutable $view) {
     $view->element['#attached']['library'][] = 'uids_base/stat';
     $view->element['#attached']['library'][] = 'uids_base/twocol';
   }
+
+  // Ugly way to hide related node content but not taxonomy fields.
+  if ($view->id() == 'taxonomy_term') {
+    if (\Drupal::routeMatch()->getRouteName() == 'entity.taxonomy_term.canonical' &&
+      $page_term_id = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
+      $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($page_term_id);
+      if ($term->bundle() == 'community_colleges') {
+        foreach ($view->result as $key => $value) {
+          unset($view->result[$key]);
+        }
+      }
+    }
+  }
 }
 
 /**
@@ -596,6 +674,29 @@ function admissions_core_views_pre_render(ViewExecutable $view) {
 function admissions_core_theme_suggestions_taxonomy_term_alter(&$suggestions, $variables) {
   if ($variables['elements']['#view_mode'] == 'teaser') {
     $suggestions[] = 'taxonomy_term__teaser';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function admissions_core_preprocess_node(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $node = $variables["node"];
+    switch ($node->getType()) {
+      case 'major':
+        switch ($variables['view_mode']) {
+          case 'teaser':
+            // Use AoS reference as title for 2plus2 major teasers.
+            if ($node->hasField('field_major_area_of_study') && $major = $node->field_major_area_of_study->entity->title->value) {
+              $variables['label'] = t('@major', [
+                '@major' => $major,
+              ]);
+            }
+            break;
+        }
+    }
   }
 }
 
@@ -698,6 +799,7 @@ function admissions_core_preprocess_views_view_field(&$variables) {
           ];
         }
         break;
+
     }
   }
 

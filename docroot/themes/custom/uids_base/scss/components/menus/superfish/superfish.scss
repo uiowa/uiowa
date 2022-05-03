@@ -105,7 +105,7 @@
   color: #151515;
   font-weight: 600;
   @include breakpoint(md) {
-    padding: 1.05rem 1.5rem;
+    padding: 1.35rem 1.5rem;
   }
 }
 
@@ -252,6 +252,7 @@ ul.sf-menu.sf-horizontal > li > .nolink,
 ul.sf-menu.sf-horizontal > li > a {
   position: relative;
   transition: background 0.8s ease-out;
+  line-height: 1.2;
 }
 
 ul.sf-menu.sf-horizontal > li > .nolink:after,
@@ -304,7 +305,6 @@ ul.sf-menu.sf-horizontal li ul a:focus {
 }
 
 ul.sf-menu.sf-horizontal > li > .sf-depth-1.menuparent:before {
-  margin-top: -0.4rem;
   color: #999;
   font-size: 0.7rem;
   line-height: 1.4;
@@ -363,7 +363,6 @@ ul.sf-menu.sf-horizontal > li > .sf-depth-1.menuparent {
 
 .sf-accordion li.sf-expanded .sf-depth-1.menuparent:before {
   content: "\f077";
-  top: 30px;
 }
 
 .sf-accordion li.sf-expanded li.sf-depth-2.menuparent .sf-depth-2.menuparent:before {
