@@ -11,10 +11,28 @@ dependencies:
     - node.type.partner
   module:
     - content_moderation
+    - field_group
     - link
     - media_library
     - path
     - text
+third_party_settings:
+  field_group:
+    group_partner_references:
+      children:
+        - field_iowa_counties
+        - field_partner_related_individual
+      label: References
+      region: content
+      parent_name: ''
+      weight: 12
+      format_type: fieldset
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        description: ''
+        required_fields: false
 id: node.partner.default
 targetEntityType: node
 bundle: partner
@@ -35,7 +53,7 @@ content:
     third_party_settings: {  }
   field_iowa_counties:
     type: options_select
-    weight: 12
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -57,7 +75,7 @@ content:
     third_party_settings: {  }
   field_partner_related_individual:
     type: entity_reference_autocomplete
-    weight: 13
+    weight: 14
     region: content
     settings:
       match_operator: CONTAINS
