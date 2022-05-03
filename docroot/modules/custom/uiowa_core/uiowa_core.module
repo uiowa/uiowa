@@ -465,34 +465,32 @@ function uiowa_core_preprocess_block(&$variables) {
  */
 function uiowa_core_node_presave(Node $node) {
 
-    $nodeType = $node->getType();
+  $nodeType = $node->getType();
 
-    switch($nodeType){
-      case 'article':
-        $tag_display_config = \Drupal::configFactory()->getEditable('sitenow_articles.settings')->get('tag_display');
-        $related_display_config = \Drupal::configFactory()->getEditable('sitenow_articles.settings')->get('related_display');
+  switch ($nodeType) {
+    case 'article':
+      $tag_display_config = \Drupal::configFactory()->getEditable('sitenow_articles.settings')->get('tag_display');
+      $related_display_config = \Drupal::configFactory()->getEditable('sitenow_articles.settings')->get('related_display');
       break;
 
-      case 'page':
-        $tag_display_config = \Drupal::configFactory()->getEditable('sitenow_pages.settings')->get('tag_display');
-        $related_display_config = \Drupal::configFactory()->getEditable('sitenow_pages.settings')->get('related_display');
-
+    case 'page':
+      $tag_display_config = \Drupal::configFactory()->getEditable('sitenow_pages.settings')->get('tag_display');
+      $related_display_config = \Drupal::configFactory()->getEditable('sitenow_pages.settings')->get('related_display');
       break;
 
-      case 'person':
-        $tag_display_config = \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('tag_display');
-        $related_display_config = \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('related_display');
-
+    case 'person':
+      $tag_display_config = \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('tag_display');
+      $related_display_config = \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('related_display');
       break;
-    }
+  }
 
-    if($tag_display_config != 'do_not_display'){
-      $tagsListView = Views::getView('tags_list');
-      $tagsListView->storage->invalidateCaches();
-    }
-    if($related_display_config != 'do_not_display'){
-      $relatedView = Views::getView('related_content');
-      $relatedView->storage->invalidateCaches();
-    }
+  if ($tag_display_config != 'do_not_display') {
+    $tagsListView = Views::getView('tags_list');
+    $tagsListView->storage->invalidateCaches();
+  }
+  if ($related_display_config != 'do_not_display') {
+    $relatedView = Views::getView('related_content');
+    $relatedView->storage->invalidateCaches();
+  }
 
 }
