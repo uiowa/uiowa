@@ -86,8 +86,8 @@ display:
           label: ''
           exclude: true
           alter:
-            alter_text: false
-            text: '{{ title__value }}'
+            alter_text: true
+            text: '{{ title__value}}'
             make_link: false
             path: ''
             absolute: false
@@ -277,7 +277,7 @@ display:
           plugin_id: text
           empty: false
           content:
-            value: '<p>These community colleges offer the courses necessary under the 2 Plus 2 plan for students to transfer successfully to Iowa in {{ title }}. Click on the college for more details.</p>'
+            value: '<p>These community colleges offer the courses necessary under the 2 Plus 2 plan for students to transfer successfully to Iowa in {{ title|striptags|trim }}. Click on the college for more details.</p>'
             format: filtered_html
           tokenize: true
       footer: {  }
@@ -300,7 +300,7 @@ display:
         metatag_display_extender:
           metatags: {  }
           tokenize: false
-      path: 2plus2/majors/%node
+      path: 2plus2/majors/%
     cache_metadata:
       max-age: -1
       contexts:
