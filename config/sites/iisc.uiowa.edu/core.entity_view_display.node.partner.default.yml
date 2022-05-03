@@ -63,22 +63,6 @@ third_party_settings:
             weight: 0
             additional: {  }
             third_party_settings: {  }
-          2e617ead-d53a-4a51-bedb-32973920dfb6:
-            uuid: 2e617ead-d53a-4a51-bedb-32973920dfb6
-            region: content
-            configuration:
-              id: 'field_block:node:partner:field_iowa_counties'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: list_default
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: 2
-            additional: {  }
-            third_party_settings: {  }
         third_party_settings: {  }
       -
         layout_id: layout_twocol
@@ -111,14 +95,17 @@ third_party_settings:
             region: second
             configuration:
               id: 'field_block:node:partner:field_image'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
-                type: entity_reference_label
-                label: above
+                type: entity_reference_entity_view
+                label: hidden
                 settings:
-                  link: true
+                  view_mode: default
                 third_party_settings: {  }
             weight: 2
             additional: {  }
@@ -153,6 +140,22 @@ third_party_settings:
               context_mapping:
                 entity: layout_builder.entity
             weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          2e617ead-d53a-4a51-bedb-32973920dfb6:
+            uuid: 2e617ead-d53a-4a51-bedb-32973920dfb6
+            region: first
+            configuration:
+              id: 'field_block:node:partner:field_iowa_counties'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 2
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
