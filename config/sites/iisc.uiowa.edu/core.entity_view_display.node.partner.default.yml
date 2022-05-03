@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.partner.field_iowa_counties
     - field.field.node.partner.field_partner_description
     - field.field.node.partner.field_partner_link
+    - field.field.node.partner.field_partner_related_individual
     - node.type.partner
   module:
     - layout_builder
@@ -83,7 +84,7 @@ third_party_settings:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-            weight: 4
+            weight: 5
             additional: {  }
             third_party_settings: {  }
           2e617ead-d53a-4a51-bedb-32973920dfb6:
@@ -162,6 +163,23 @@ third_party_settings:
             weight: 3
             additional: {  }
             third_party_settings: {  }
+          fc99647e-eabf-423f-bf2c-520076e7684c:
+            uuid: fc99647e-eabf-423f-bf2c-520076e7684c
+            region: second
+            configuration:
+              id: 'field_block:node:partner:field_partner_related_individual'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 4
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -209,6 +227,14 @@ content:
       target: ''
     third_party_settings: {  }
     weight: 104
+    region: content
+  field_partner_related_individual:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 106
     region: content
   links:
     settings: {  }

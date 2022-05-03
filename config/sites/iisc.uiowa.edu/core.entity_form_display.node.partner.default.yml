@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.partner.field_iowa_counties
     - field.field.node.partner.field_partner_description
     - field.field.node.partner.field_partner_link
+    - field.field.node.partner.field_partner_related_individual
     - node.type.partner
   module:
     - content_moderation
@@ -21,26 +22,26 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 10
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
   field_image:
     type: media_library_widget
-    weight: 122
+    weight: 11
     region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
   field_iowa_counties:
     type: options_select
-    weight: 125
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
   field_partner_description:
     type: text_textarea
-    weight: 123
+    weight: 9
     region: content
     settings:
       rows: 5
@@ -48,48 +49,58 @@ content:
     third_party_settings: {  }
   field_partner_link:
     type: link_default
-    weight: 124
+    weight: 10
     region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
+  field_partner_related_individual:
+    type: entity_reference_autocomplete
+    weight: 13
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 100
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
   path:
     type: path
-    weight: 30
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    weight: 15
+    weight: 3
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 120
+    weight: 8
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    weight: 16
+    weight: 4
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   title:
     type: string_textfield
-    weight: -5
+    weight: 0
     region: content
     settings:
       size: 60
@@ -97,7 +108,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 5
+    weight: 1
     region: content
     settings:
       match_operator: CONTAINS
@@ -106,7 +117,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   url_redirects:
-    weight: 50
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
