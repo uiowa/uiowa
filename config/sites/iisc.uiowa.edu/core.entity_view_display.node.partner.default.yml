@@ -54,6 +54,17 @@ third_party_settings:
             weight: 1
             additional: {  }
             third_party_settings: {  }
+          87f07158-4bc6-47a7-be7f-b9ce3bff088c:
+            uuid: 87f07158-4bc6-47a7-be7f-b9ce3bff088c
+            region: content
+            configuration:
+              id: 'extra_field_block:node:partner:content_moderation_control'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
           272f5270-5396-4c97-a457-728d052a7750:
             uuid: 272f5270-5396-4c97-a457-728d052a7750
             region: content
@@ -214,6 +225,11 @@ targetEntityType: node
 bundle: partner
 mode: default
 content:
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
   field_image:
     type: entity_reference_label
     label: above
