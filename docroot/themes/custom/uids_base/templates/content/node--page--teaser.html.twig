@@ -93,7 +93,7 @@
   'card_image' : content.field_image|render,
   'card_classes' : card_classes,
   'card_title': label,
-  'content': content,
+  'content': content.field_teaser|render,
   'card_link_url': url,
   'media_styles': media_classes,
   'headline_level': headline_level,
@@ -105,7 +105,9 @@
   {# @todo Add content_attributes.addClass('node__content media-body') #}
 
   {% block card_content %}
-    <div class="card__description">{{ content|without('field_image', 'links') }}</div>
+    {% if content is not empty %}
+      <div class="card__description">{{ content }}</div>
+    {% endif %}
   {% endblock %}
 
 {% endembed %}
