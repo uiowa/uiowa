@@ -1,9 +1,9 @@
-uuid: 19fd05cf-2cbd-43ec-a9fc-43bf00abedaf
+uuid: 810da072-a605-4f58-ba29-dbf78cba0200
 langcode: en
 status: true
 dependencies:
   config:
-    - taxonomy.vocabulary.community_colleges
+    - node.type.major
   module:
     - node
     - taxonomy
@@ -13,8 +13,8 @@ label: '2 plus 2 Majors'
 module: views
 description: ''
 tag: ''
-base_table: taxonomy_term_field_data
-base_field: tid
+base_table: node_field_data
+base_field: nid
 display:
   default:
     id: default
@@ -28,28 +28,165 @@ display:
           id: name
           table: taxonomy_term_field_data
           field: name
-          relationship: none
+          relationship: field_major_community_college
           group_type: group
           admin_label: ''
           entity_type: taxonomy_term
           entity_field: name
           plugin_id: term_name
           label: ''
-          exclude: false
+          exclude: true
           alter:
             alter_text: false
+            text: ''
             make_link: false
+            path: ''
             absolute: false
-            word_boundary: false
-            ellipsis: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
             strip_tags: false
             trim: false
+            preserve_tags: ''
             html: false
           element_type: ''
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          convert_spaces: false
+        view_node:
+          id: view_node
+          table: node
+          field: view_node
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          plugin_id: entity_link
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          text: view
+          output_url_as_text: true
+          absolute: false
+        title_1:
+          id: title_1
+          table: node_field_data
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: field
+          label: ''
+          exclude: false
+          alter:
+            alter_text: true
+            text: '<a href="{{ view_node }}">{{ name }}</a>'
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -71,7 +208,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          convert_spaces: false
         title:
           id: title
           table: node_field_data
@@ -85,15 +221,15 @@ display:
           label: ''
           exclude: true
           alter:
-            alter_text: true
-            text: '{{ title__value}}'
+            alter_text: false
+            text: ''
             make_link: false
             path: ''
             absolute: false
             external: false
             replace_spaces: false
             path_case: none
-            trim_whitespace: true
+            trim_whitespace: false
             alt: ''
             rel: ''
             link_class: ''
@@ -107,7 +243,7 @@ display:
             more_link: false
             more_link_text: ''
             more_link_path: ''
-            strip_tags: true
+            strip_tags: false
             trim: false
             preserve_tags: ''
             html: false
@@ -118,7 +254,7 @@ display:
           element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
-          element_default_classes: false
+          element_default_classes: true
           empty: ''
           hide_empty: false
           empty_zero: false
@@ -141,6 +277,7 @@ display:
         type: none
         options:
           offset: 0
+          items_per_page: 0
       exposed_form:
         type: basic
         options:
@@ -159,7 +296,22 @@ display:
         type: tag
         options: {  }
       empty: {  }
-      sorts: {  }
+      sorts:
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: ''
+          exposed: false
       arguments:
         title:
           id: title
@@ -207,9 +359,9 @@ display:
       filters:
         status:
           id: status
-          table: taxonomy_term_field_data
+          table: node_field_data
           field: status
-          entity_type: taxonomy_term
+          entity_type: node
           entity_field: status
           plugin_id: boolean
           value: '1'
@@ -218,27 +370,20 @@ display:
             operator: ''
             operator_limit_selection: false
             operator_list: {  }
-        vid:
-          id: vid
-          table: taxonomy_term_field_data
-          field: vid
-          entity_type: taxonomy_term
-          entity_field: vid
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          entity_type: node
+          entity_field: type
           plugin_id: bundle
           value:
-            community_colleges: community_colleges
+            major: major
           expose:
             operator_limit_selection: false
             operator_list: {  }
       style:
         type: html_list
-        options:
-          grouping: {  }
-          row_class: ''
-          default_row_class: true
-          type: ul
-          wrapper_class: item-list
-          class: ''
       row:
         type: fields
       query:
@@ -250,23 +395,22 @@ display:
           replica: false
           query_tags: {  }
       relationships:
-        reverse__node__field_major_community_college:
-          id: reverse__node__field_major_community_college
-          table: taxonomy_term_field_data
-          field: reverse__node__field_major_community_college
-          relationship: none
-          group_type: group
-          admin_label: field_major_community_college
-          entity_type: taxonomy_term
-          plugin_id: entity_reverse
-          required: false
         field_major_area_of_study:
           id: field_major_area_of_study
           table: node__field_major_area_of_study
           field: field_major_area_of_study
-          relationship: reverse__node__field_major_community_college
+          relationship: none
           group_type: group
           admin_label: 'field_major_area_of_study: Content'
+          plugin_id: standard
+          required: false
+        field_major_community_college:
+          id: field_major_community_college
+          table: node__field_major_community_college
+          field: field_major_community_college
+          relationship: none
+          group_type: group
+          admin_label: 'field_major_community_college: Taxonomy term'
           plugin_id: standard
           required: false
       header:
@@ -291,6 +435,7 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
+        - 'user.node_grants:view'
         - user.permissions
       tags: {  }
   page_1:
@@ -310,5 +455,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
+        - 'user.node_grants:view'
         - user.permissions
       tags: {  }
