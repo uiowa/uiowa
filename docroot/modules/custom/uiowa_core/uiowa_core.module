@@ -482,8 +482,11 @@ function uiowa_core_node_presave(Node $node) {
       $tag_display_config = \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('tag_display');
       $related_display_config = \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('related_display');
       break;
-  }
 
+    default:
+      $tag_display_config = 'do_not_display';
+      $related_display_config = 'do_not_display';
+  }
   if ($tag_display_config != 'do_not_display') {
     $tagsListView = Views::getView('tags_list');
     $tagsListView->storage->invalidateCaches();
@@ -492,5 +495,4 @@ function uiowa_core_node_presave(Node $node) {
     $relatedView = Views::getView('related_content');
     $relatedView->storage->invalidateCaches();
   }
-
 }
