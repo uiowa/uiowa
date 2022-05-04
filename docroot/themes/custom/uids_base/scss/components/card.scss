@@ -350,7 +350,11 @@
 // Border color adjustments
 .card:not([class*="bg-"]) {
   .bttn--sans-serif {
-    border-color: rgba(0, 0, 0, .425);
+    border-color: $primary;
+    [class*="bg--gold"] &,
+    [class*="bg--gray"] & {
+      border-color: rgba(0,0,0,.425);
+    }
     [class*="bg--black"] & {
       border-color: rgba(255,255,255,.425);
     }
