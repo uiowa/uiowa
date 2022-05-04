@@ -80,12 +80,10 @@
     not node.isPublished() ? 'node--unpublished',
     view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
     'card--list',
-    'bg--white'
 ]
 %}
 
 {% set headline_level = heading_size ?: 'h3' %}
-{% set card_classes = ['card', 'click-container','block--word-break', 'bg--white'] %}
 
 {{ attach_library('classy/node') }}
 {{ attach_library('uids_base/node-type-page') }}
