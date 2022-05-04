@@ -719,8 +719,11 @@ function admissions_core_preprocess_node(&$variables) {
         // based on the aos id.
         $count = $query->count()->execute();
         if ($count > 0) {
-          // Get the link to the 2 Plus 2 community college aggregator page.
-          $url = \Drupal::service('path_alias.manager')->getAliasByPath('/2plus2/majors/' . $area_of_study_id);
+          $area_of_study_url = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $area_of_study_id);
+          // Get the link to the 2 Plus 2 community college aggregator page
+          // using the last segment of the aos url, which is constructed
+          // from the node title.
+          $url = \Drupal::service('path_alias.manager')->getAliasByPath('/2plus2/majors/' . basename($area_of_study_url));
           // We have the Transfer Tips title, so let's just edit that
           // rather than needing to do more querying and loading.
           $title = $node->getTitle();
