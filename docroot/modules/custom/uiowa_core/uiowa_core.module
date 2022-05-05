@@ -464,6 +464,8 @@ function uiowa_core_preprocess_block(&$variables) {
  * Implements hook_ENTITY_TYPE_presave().
  */
 function uiowa_core_node_presave(Node $node) {
+  // Invalidate related and tag view caches on content types that
+  // support these views.
   $node_type = $node->getType();
   $type_map = [
     'article' => 'articles',
@@ -471,15 +473,17 @@ function uiowa_core_node_presave(Node $node) {
     'person' => 'people',
   ];
 
-  $tag_display_config = (isset($type_map[$node_type])) ? \Drupal::configFactory()->getEditable("sitenow_$type_map[$node_type].settings")->get('tag_display') : 'do_not_display';
-  $related_display_config = (isset($type_map[$node_type])) ? \Drupal::configFactory()->getEditable("sitenow_$type_map[$node_type].settings")->get('related_display') : 'do_not_display';
-
-  if ($tag_display_config && $tag_display_config !== 'do_not_display') {
-    $tagsListView = Views::getView('tags_list');
-    $tagsListView->storage->invalidateCaches();
-  }
-  if ($related_display_config && $related_display_config !== 'do_not_display') {
-    $relatedView = Views::getView('related_content');
-    $relatedView->storage->invalidateCaches();
+  if (isset($type_map[$node_type])) {
+    $config_name = 'sitenow_' . $type_map[$node_type] . '.settings';
+    $config = \Drupal::configFactory()->getEditable($config_name);
+    foreach ([
+      'tag_display' => 'tags_list',
+      'related_display' => 'related_content',
+    ] as $setting => $view_name) {
+      if ($config->get($setting) !== 'do_not_display') {
+        $view = Views::getView($view_name);
+        $view->storage->invalidateCaches();
+      }
+    }
   }
 }
