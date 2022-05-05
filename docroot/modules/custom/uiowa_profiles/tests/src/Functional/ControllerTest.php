@@ -62,8 +62,21 @@ class ControllerTest extends BrowserTestBase {
     $session->elementExists('css', 'head title');
     $session->elementsCount('css', 'head title', 1);
     $session->titleEquals('People | Test Site');
+//   $session->elementExists('css', 'meta[name="description"]');
+  }
 
-    // $session->elementExists('css', 'meta[name="description"]');
+  /**
+   * Test directory person page meta data.
+   */
+  public function testDirectoryPerson() {
+    $user = $this->createUser(['access content']);
+    $this->drupalLogin($user);
+    $this->drupalGet('directory/foo-bar');
+    $session = $this->assertSession();
+    $session->elementExists('css', 'head title');
+    $session->elementsCount('css', 'head title', 1);
+    $session->titleEquals('Foo Bar | Test Site');
+    $session->elementExists('css', 'meta[name="description"]');
   }
 
 }
