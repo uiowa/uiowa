@@ -52,9 +52,9 @@ class ControllerTest extends BrowserTestBase {
   }
 
   /**
-   * Test callback.
+   * Test directory meta data.
    */
-  public function testSomething() {
+  public function testDirectory() {
     $user = $this->createUser(['access content']);
     $this->drupalLogin($user);
     $this->drupalGet('directory');
@@ -63,7 +63,7 @@ class ControllerTest extends BrowserTestBase {
     $session->elementsCount('css', 'head title', 1);
     $session->titleEquals('People | Test Site');
 
-//    $session->elementExists('css', 'meta[name="description"]');
+    // $session->elementExists('css', 'meta[name="description"]');
   }
 
 }

@@ -7,9 +7,14 @@ use Drupal\uiowa_profiles\Client;
 use GuzzleHttp\Client as HttpClient;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Mock version of Profiles Client service.
+ */
 class ClientMock extends Client {
   /**
    * The original service.
+   *
+   * @var \Drupal\uiowa_profiles\Client
    */
   protected $innerService;
 
@@ -21,6 +26,9 @@ class ClientMock extends Client {
     parent::__construct($configFactory, $logger, $httpClient);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function request($method, $path, array $params, array $options) {
     $data = (object) [
       'name' => 'Foo',
@@ -28,4 +36,5 @@ class ClientMock extends Client {
 
     return json_encode($data);
   }
+
 }
