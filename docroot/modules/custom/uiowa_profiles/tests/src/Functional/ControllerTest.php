@@ -66,7 +66,8 @@ class ControllerTest extends BrowserTestBase {
     $session->elementExists('css', 'head title');
     $session->elementsCount('css', 'head title', 1);
     $session->titleEquals('People | Test Site');
-//   $session->elementExists('css', 'meta[name="description"]');
+
+    $session->elementExists('css', 'meta[name="description"]');
   }
 
   /**
