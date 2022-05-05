@@ -295,7 +295,38 @@ display:
       cache:
         type: tag
         options: {  }
-      empty: {  }
+      empty:
+        http_status_code:
+          id: http_status_code
+          table: views
+          field: http_status_code
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: http_status_code
+          empty: true
+          status_code: 404
+        title:
+          id: title
+          table: views
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: title
+          empty: true
+          title: 'Page not found'
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text_custom
+          empty: true
+          content: '<div id="block-uids-base-content" class="block block-system block-system-main-block">The requested page could not be found.</div>'
+          tokenize: false
       sorts:
         title:
           id: title
