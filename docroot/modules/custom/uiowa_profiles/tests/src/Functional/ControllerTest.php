@@ -19,18 +19,21 @@ class ControllerTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected static $modules = ['system', 'uiowa_profiles'];
+  protected static $modules = ['uiowa_profiles'];
 
   /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
     parent::setUp();
+
+    // This needs to be enabled here to avoid a non-existent service error.
     \Drupal::service('module_installer')->install(['uiowa_profiles_mock']);
 
     // Set uids_base header type to avoid Twig error.
     $this->config('uids_base.settings')->set('header.type', 'inline')->save();
 
+    // This is used in the controller.
     $this->config('system.site')->set('name', 'Test Site')->save();
 
     $directories = [
@@ -48,6 +51,7 @@ class ControllerTest extends BrowserTestBase {
 
     $this->config('uiowa_profiles.settings')->set('directories', $directories)->save();
 
+    // This is necessary to rebuild the ProfilesDynamic route.
     drupal_flush_all_caches();
   }
 
