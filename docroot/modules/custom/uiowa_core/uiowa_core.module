@@ -464,7 +464,7 @@ function uiowa_core_preprocess_block(&$variables) {
  * Implements hook_ENTITY_TYPE_presave().
  */
 function uiowa_core_node_presave(Node $node) {
-
+  // Clear related views blocks as they don't get cleared as part of the node.
   $nodeType = $node->getType();
 
   switch ($nodeType) {
