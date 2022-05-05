@@ -372,8 +372,8 @@ function admissions_core_preprocess_paragraph__admissions_requirement(&$variable
                 // based on the aos id.
                 $count = $query->count()->execute();
                 if ($count > 0) {
-                  // Get the link to the 2 Plus 2 community college aggregator page
-                  // using area of study title.
+                  // Get the link to the 2 Plus 2 community college
+                  // aggregator page using area of study title.
                   $area_of_study_title = $parent->getTitle();
                   $slug = \Drupal::service('pathauto.alias_cleaner')->cleanString($area_of_study_title);
                   $variables['two_plus_two'] = \Drupal::service('path_alias.manager')->getAliasByPath('/2plus2/majors/' . $slug);
@@ -792,6 +792,29 @@ function admissions_core_preprocess_views_view(&$variables) {
       });
       break;
 
+  }
+}
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function admissions_core_views_query_alter($view, $query) {
+  // @todo Remove after https://www.drupal.org/project/drupal/issues/672606
+  //   is resolved. Certain queries need specific overrides.
+  //   Core Views behavior fails when the parameters contain '/' or '-'. This
+  //   alters the query before it runs, fixing the known instances.
+  $overrides = [
+    'nursing rn bsn' => 'nursing rn-bsn',
+    'resilience and trauma informed perspectives certificate' => 'resilience and trauma-informed perspectives certificate',
+    'interscholastic athleticactivities administration' => 'interscholastic athletic/activities administration',
+  ];
+  // Make sure we're in our specified 2 plus 2 majors views page.
+  if ($view->id() == '2_plus_2_majors') {
+    $value = $query->where[0]['conditions'][0]['value'];
+    // Check our overrides and update the query accordingly.
+    if (in_array($value, array_keys($overrides))) {
+      $query->where[0]['conditions'][0]['value'] = $overrides[$value];
+    }
   }
 }
 
