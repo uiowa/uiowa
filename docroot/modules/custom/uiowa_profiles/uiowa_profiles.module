@@ -29,3 +29,15 @@ function uiowa_profiles_preprocess_html(&$variables) {
     unset($variables['head_title']);
   }
 }
+
+/**
+ * Implements hook_theme().
+ */
+function uiowa_profiles_theme($existing, $type, $theme, $path) {
+  return [
+    'html__directory' => [
+      'template' => 'html--directory',
+      'base hook' => 'html',
+    ],
+  ];
+}
