@@ -787,7 +787,8 @@ function admissions_core_preprocess_views_view(&$variables) {
       // the plaintext view token won't get replaced.
       $title = trim($view->getTitle());
       \Drupal::routeMatch()->getRouteObject()->setDefault('_title_callback', function () use ($title) {
-        return '2 Plus 2 Plan in ' . $title;
+        // Don't change the title if the page was not found.
+        return ($title === 'Page not found') ? $title : '2 Plus 2 Plan in ' . $title;
       });
       break;
 
