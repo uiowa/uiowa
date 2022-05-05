@@ -35,9 +35,23 @@ function uiowa_profiles_preprocess_html(&$variables) {
  */
 function uiowa_profiles_theme($existing, $type, $theme, $path) {
   return [
-    'html__directory' => [
-      'template' => 'html--directory',
+    'html__profiles' => [
+      'template' => 'html--profiles',
       'base hook' => 'html',
     ],
   ];
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function uiowa_profiles_theme_suggestions_html(array $variables) {
+  $suggestions = [];
+  $route = \Drupal::routeMatch()->getRouteName();
+
+  if (str_starts_with($route, 'uiowa_profiles.directory')) {
+    $suggestions[] = 'html__profiles';
+  }
+
+  return $suggestions;
 }
