@@ -73,10 +73,16 @@ class ControllerTest extends BrowserTestBase {
     $this->drupalLogin($user);
     $this->drupalGet('directory/foo-bar');
     $session = $this->assertSession();
+
     $session->elementExists('css', 'head title');
     $session->elementsCount('css', 'head title', 1);
     $session->titleEquals('Foo Bar | Test Site');
+
     $session->elementExists('css', 'meta[name="description"]');
+    $session->elementsCount('css', 'meta[name="description"]', 1);
+
+    $session->elementExists('css', 'script[type="application/ld+json"]');
+    $session->elementsCount('css', 'script[type="application/ld+json"]', 1);
   }
 
 }
