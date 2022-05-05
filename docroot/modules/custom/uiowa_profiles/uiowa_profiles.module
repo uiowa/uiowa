@@ -24,8 +24,8 @@ function uiowa_profiles_preprocess_page(&$variables) {
 function uiowa_profiles_preprocess_html(&$variables) {
   $route = \Drupal::routeMatch()->getRouteName();
 
-  if (strpos($route, 'uiowa_profiles.directory') === 0) {
-    // Let the app set the head title using the slug of the person.
+  if (str_starts_with($route, 'uiowa_profiles.directory')) {
+    // Let the controller set the head title and avoid duplicates.
     unset($variables['head_title']);
   }
 }
