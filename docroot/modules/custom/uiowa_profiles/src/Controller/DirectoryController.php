@@ -198,11 +198,6 @@ class DirectoryController extends ControllerBase {
           ]),
         ];
 
-        $build['#attached']['html_head']['title'] = [
-          $title,
-          'title',
-        ];
-
         $description = [
           '#tag' => 'meta',
           '#attributes' => [
@@ -234,6 +229,22 @@ class DirectoryController extends ControllerBase {
           'schema',
         ];
       }
+    }
+    else {
+      $title = [
+        '#tag' => 'title',
+        '#value' => $this->t('@title | @site_name', [
+          '@title' => $directory['title'],
+          '@site_name' => $this->config('system.site')->get('name'),
+        ]),
+      ];
+    }
+
+    if (isset($title)) {
+      $build['#attached']['html_head']['title'] = [
+        $title,
+        'title',
+      ];
     }
 
     return $build;
