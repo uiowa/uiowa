@@ -23,12 +23,6 @@ $sites['hr.dev.drupal.uiowa.edu'] = 'hr.uiowa.edu';
 $sites['hr.stage.drupal.uiowa.edu'] = 'hr.uiowa.edu';
 $sites['hr.prod.drupal.uiowa.edu'] = 'hr.uiowa.edu';
 
-// Directory aliases for callctr.dentistry.uiowa.edu.
-$sites['dentistrycallctr.uiowa.ddev.site'] = 'callctr.dentistry.uiowa.edu';
-$sites['dentistrycallctr.dev.drupal.uiowa.edu'] = 'callctr.dentistry.uiowa.edu';
-$sites['dentistrycallctr.stage.drupal.uiowa.edu'] = 'callctr.dentistry.uiowa.edu';
-$sites['dentistrycallctr.prod.drupal.uiowa.edu'] = 'callctr.dentistry.uiowa.edu';
-
 // Directory aliases for gis.sites.uiowa.edu.
 $sites['sitesgis.uiowa.ddev.site'] = 'gis.sites.uiowa.edu';
 $sites['sitesgis.dev.drupal.uiowa.edu'] = 'gis.sites.uiowa.edu';
