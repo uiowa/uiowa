@@ -274,35 +274,11 @@ class MultisiteCommands extends BltTasks {
       throw new \Exception('Aborted.');
     }
     else {
-      // Get the application from the prod remote Drush alias.
-      $result = $this->taskDrush()
-        ->alias("$id.prod")
-        ->drush('status')
-        ->options([
-          'field' => 'application',
-        ])
-        ->printMetadata(FALSE)
-        ->printOutput(FALSE)
-        ->run();
-
-      if (!$result->wasSuccessful()) {
-        return new CommandError('Unable to get current application with Drush.');
-      }
-
-      $app = trim($result->getMessage());
+      $app = $this->getApplicationFromDrushRemote($id);
 
       // Iterate over each environment and delete files.
       foreach (['dev', 'test', 'prod'] as $env) {
-        // Delete files on old application environment. Note that we CD into the
-        // file system first and THEN delete the site files directory. If we just
-        // rm -rf the directory and $site is ever empty, the entire sites
-        // directory would be deleted.
-        $this->taskDrush()
-          ->alias("$id.$env")
-          ->drush('ssh')
-          ->arg("rm -rf $dir")
-          ->option('cd', "/mnt/gfs/$app.$env/sites/")
-          ->run();
+        $this->deleteRemoteMultisiteFiles($id, $env, $dir);
       }
 
       if (!$options['simulate']) {
@@ -749,22 +725,7 @@ EOD;
     $site = $this->askChoice('Select which site to transfer.', $sites);
     $id = Multisite::getIdentifier("https://$site");
     $mode = $options['test-mode'] ? 'test' : 'prod';
-
-    $result = $this->taskDrush()
-      ->alias("$id.$mode")
-      ->drush('status')
-      ->options([
-        'field' => 'application',
-      ])
-      ->printMetadata(FALSE)
-      ->printOutput(FALSE)
-      ->run();
-
-    if (!$result->wasSuccessful()) {
-      return new CommandError('Unable to get current application with Drush.');
-    }
-
-    $old = trim($result->getMessage());
+    $old = $this->getApplicationFromDrushRemote($id, $mode);
 
     // Get the applications and unset the current as an option.
     $applications = $this->config->get('uiowa.applications');
@@ -980,16 +941,7 @@ EOD;
         $this->logger->warning("Test mode. Skipping database deletion.");
       }
 
-      // Delete files on old application environment. Note that we CD into the
-      // file system first and THEN delete the site files directory. If we just
-      // rm -rf the directory and $site is ever empty, the entire sites
-      // directory would be deleted.
-      $this->taskDrush()
-        ->alias("$old.$mode")
-        ->drush('ssh')
-        ->arg("rm -rf $site")
-        ->option('cd', "/mnt/gfs/$old.$mode/sites/")
-        ->run();
+      $this->deleteRemoteMultisiteFiles($old, $mode, $site);
     }
 
     $this->say('Transfer process complete. Transfer additional sites if needed and deploy this branch as per the usual release process.');
@@ -1122,6 +1074,59 @@ EOD;
     } while ($notification->status == 'in-progress');
 
     return $notification;
+  }
+
+  /**
+   * Get the application from the prod remote Drush alias.
+   *
+   * @param $id
+   * The multisite identifier.
+   *
+   * @param $env
+   *   The environment to use for the Drush alias. Defaults to prod.
+   *
+   * @return string | CommandError
+   * @throws \Robo\Exception\TaskException
+   */
+  protected function getApplicationFromDrushRemote($id, $env = 'prod') {
+    $result = $this->taskDrush()
+      ->alias("$id.$env")
+      ->drush('status')
+      ->options([
+        'field' => 'application',
+      ])
+      ->printMetadata(FALSE)
+      ->printOutput(FALSE)
+      ->run();
+
+    if (!$result->wasSuccessful()) {
+      return new CommandError('Unable to get current application with Drush.');
+    }
+
+    return trim($result->getMessage());
+  }
+
+  /**
+   * Delete files on application environment.
+   *
+   * Note that we CD into the
+   * file system first and THEN delete the site files directory. If we just
+   * rm -rf the directory and $site is ever empty, the entire sites
+   * directory would be deleted.
+   *
+   * @param $id
+   * @param string $env
+   * @param string $site
+   * @return void
+   * @throws \Robo\Exception\TaskException
+   */
+  protected function deleteRemoteMultisiteFiles($id, string $env, string $site): void {
+    $this->taskDrush()
+      ->alias("$id.$env")
+      ->drush('ssh')
+      ->arg("rm -rf $site")
+      ->option('cd', "/mnt/gfs/$id.$env/sites/")
+      ->run();
   }
 
 }
