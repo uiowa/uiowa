@@ -259,6 +259,7 @@ class MultisiteCommands extends BltTasks {
     $this->say("Selected site <comment>{$dir}</comment>.");
 
     $properties = [
+      'files' =>  "docroot/sites/$dir/files",
       'database' => $db,
       'domains' => [
         $dev,
@@ -273,6 +274,37 @@ class MultisiteCommands extends BltTasks {
       throw new \Exception('Aborted.');
     }
     else {
+      // Get the application from the prod remote Drush alias.
+      $result = $this->taskDrush()
+        ->alias("$id.prod")
+        ->drush('status')
+        ->options([
+          'field' => 'application',
+        ])
+        ->printMetadata(FALSE)
+        ->printOutput(FALSE)
+        ->run();
+
+      if (!$result->wasSuccessful()) {
+        return new CommandError('Unable to get current application with Drush.');
+      }
+
+      $app = trim($result->getMessage());
+
+      // Iterate over each environment and delete files.
+      foreach (['dev', 'test', 'prod'] as $env) {
+        // Delete files on old application environment. Note that we CD into the
+        // file system first and THEN delete the site files directory. If we just
+        // rm -rf the directory and $site is ever empty, the entire sites
+        // directory would be deleted.
+        $this->taskDrush()
+          ->alias("$id.$env")
+          ->drush('ssh')
+          ->arg("rm -rf $dir")
+          ->option('cd', "/mnt/gfs/$app.$env/sites/")
+          ->run();
+      }
+
       if (!$options['simulate']) {
         /** @var \AcquiaCloudApi\Connector\Client $client */
         $client = $this->getAcquiaCloudApiClient();
