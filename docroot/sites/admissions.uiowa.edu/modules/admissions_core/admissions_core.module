@@ -505,8 +505,8 @@ function admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'node--transfer-tips--teaser',
       'base hook' => 'node',
     ],
-    'views_view_list__2_plus_2_majors' => [
-      'template' => 'views-view-list--2-plus-2-majors',
+    'views_view_list__majors__two_plus_two_majors' => [
+      'template' => 'views-view-list--majors--two-plus-two-majors',
       'base hook' => 'view',
     ],
     'views_view_unformatted__community_colleges' => [
@@ -782,14 +782,16 @@ function admissions_core_preprocess_views_view(&$variables) {
       $variables['#attached']['library'][] = 'uids_base/view-taxonomy-term-colleges';
       break;
 
-    case '2_plus_2_majors':
-      // Set the page title meta using the view title, otherwise
-      // the plaintext view token won't get replaced.
-      $title = trim($view->getTitle());
-      \Drupal::routeMatch()->getRouteObject()->setDefault('_title_callback', function () use ($title) {
-        // Don't change the title if the page was not found.
-        return ($title === 'Page not found') ? $title : '2 Plus 2 Plan in ' . $title;
-      });
+    case 'majors':
+      if ($view->current_display === 'two_plus_two_majors') {
+        // Set the page title meta using the view title, otherwise
+        // the plaintext view token won't get replaced.
+        $title = trim($view->getTitle());
+        \Drupal::routeMatch()->getRouteObject()->setDefault('_title_callback', function () use ($title) {
+          // Don't change the title if the page was not found.
+          return ($title === 'Page not found') ? $title : '2 Plus 2 Plan in ' . $title;
+        });
+      }
       break;
 
   }
@@ -809,7 +811,7 @@ function admissions_core_views_query_alter($view, $query) {
     'interscholastic athleticactivities administration' => 'interscholastic athletic/activities administration',
   ];
   // Make sure we're in our specified 2 plus 2 majors views page.
-  if ($view->id() == '2_plus_2_majors') {
+  if ($view->id() === 'majors' && $view->current_display === 'two_plus_two_majors') {
     $value = $query->where[0]['conditions'][0]['value'];
     // Check our overrides and update the query accordingly.
     if (in_array($value, array_keys($overrides))) {
