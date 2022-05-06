@@ -8,7 +8,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Log\LoggerInterface;
 use GuzzleHttp\Client as HttpClient;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * The profiles client sets some dynamic properties based on the environment.
@@ -164,9 +164,8 @@ class Client {
       $response = $this->httpClient->request($method, "$this->endpoint/$path?$params", $options);
     }
     catch (RequestException | GuzzleException $e) {
-      // Just throw a 404 here instead of 500 b/c the Acquia error page is ugly.
       $this->logger->error($e->getMessage());
-      throw new NotFoundHttpException();
+      throw new HttpException(503);
     }
 
     return $response->getBody()->getContents();
