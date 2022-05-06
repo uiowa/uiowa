@@ -278,7 +278,7 @@ class MultisiteCommands extends BltTasks {
 
       // Iterate over each environment and delete files.
       foreach (['dev', 'test', 'prod'] as $env) {
-        $this->deleteRemoteMultisiteFiles($id, $env, $dir);
+        $this->deleteRemoteMultisiteFiles($id, $app, $env, $dir);
       }
 
       if (!$options['simulate']) {
@@ -941,7 +941,7 @@ EOD;
         $this->logger->warning("Test mode. Skipping database deletion.");
       }
 
-      $this->deleteRemoteMultisiteFiles($old, $mode, $site);
+      $this->deleteRemoteMultisiteFiles($id, $old, $mode, $site);
     }
 
     $this->say('Transfer process complete. Transfer additional sites if needed and deploy this branch as per the usual release process.');
@@ -1114,18 +1114,19 @@ EOD;
    * rm -rf the directory and $site is ever empty, the entire sites
    * directory would be deleted.
    *
-   * @param $id
+   * @param string $id
+   * @param string $app
    * @param string $env
    * @param string $site
    * @return void
    * @throws \Robo\Exception\TaskException
    */
-  protected function deleteRemoteMultisiteFiles($id, string $env, string $site): void {
+  protected function deleteRemoteMultisiteFiles(string $id, string $app, string $env, string $site): void {
     $this->taskDrush()
       ->alias("$id.$env")
       ->drush('ssh')
       ->arg("rm -rf $site")
-      ->option('cd', "/mnt/gfs/$id.$env/sites/")
+      ->option('cd', "/mnt/gfs/$app.$env/sites/")
       ->run();
   }
 
