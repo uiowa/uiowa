@@ -259,7 +259,7 @@ class MultisiteCommands extends BltTasks {
     $this->say("Selected site <comment>{$dir}</comment>.");
 
     $properties = [
-      'files' =>  "docroot/sites/$dir/files",
+      'files' => "docroot/sites/$dir/files",
       'database' => $db,
       'domains' => [
         $dev,
@@ -1079,16 +1079,17 @@ EOD;
   /**
    * Get the application from the prod remote Drush alias.
    *
-   * @param $id
-   * The multisite identifier.
-   *
-   * @param $env
+   * @param string $id
+   *   The multisite identifier.
+   * @param string $env
    *   The environment to use for the Drush alias. Defaults to prod.
    *
-   * @return string | CommandError
+   * @return string|CommandError
+   *   Either the application as a string or a CommandError if unsuccessful.
+   *
    * @throws \Robo\Exception\TaskException
    */
-  protected function getApplicationFromDrushRemote($id, $env = 'prod') {
+  protected function getApplicationFromDrushRemote(string $id, string $env = 'prod') {
     $result = $this->taskDrush()
       ->alias("$id.$env")
       ->drush('status')
@@ -1115,10 +1116,14 @@ EOD;
    * directory would be deleted.
    *
    * @param string $id
+   *   The multisite identifier.
    * @param string $app
+   *   THe application to use for Drush alias.
    * @param string $env
+   *   The environment to use for the Drush alias. Defaults to prod.
    * @param string $site
-   * @return void
+   *   The multisite files directory to delete.
+   *
    * @throws \Robo\Exception\TaskException
    */
   protected function deleteRemoteMultisiteFiles(string $id, string $app, string $env, string $site): void {
