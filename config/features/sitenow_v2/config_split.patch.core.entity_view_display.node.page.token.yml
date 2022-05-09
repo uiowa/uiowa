@@ -1,5 +1,21 @@
-adding: {  }
+adding:
+  dependencies:
+    config:
+      - field.field.node.page.field_page_content_block
+  hidden:
+    body: true
+    field_page_content_block: true
 removing:
   dependencies:
     config:
-      - field.field.node.page.field_v3_conversion_revision_id
+      - field.field.node.page.layout_builder__layout
+    module:
+      - text
+  content:
+    body:
+      type: text_default
+      label: hidden
+      settings: {  }
+      third_party_settings: {  }
+      weight: 2
+      region: content
