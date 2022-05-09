@@ -1,0 +1,29 @@
+uuid: a61a5091-3bbd-4d40-adac-15e4b47c0951
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_image
+    - media.type.image
+    - node.type.book
+id: node.book.field_image
+field_name: field_image
+entity_type: node
+bundle: book
+label: 'Book cover'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

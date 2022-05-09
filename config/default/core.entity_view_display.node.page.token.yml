@@ -20,17 +20,25 @@ dependencies:
     - user
 third_party_settings:
   layout_builder:
-    allow_custom: false
     enabled: false
+    allow_custom: false
   layout_builder_restrictions:
     entity_view_mode_restriction:
-      allowed_blocks: {  }
       allowed_layouts:
         - layout_onecol
         - layout_twocol
         - layout_threecol
         - layout_fourcol
         - layout_page
+      blacklisted_blocks:
+        'Custom block types':
+          - uiowa_hero
+          - uiowa_page_title_hero
+          - uiowa_spacer_separator
+        'Inline blocks':
+          - 'inline_block:uiowa_hero'
+          - 'inline_block:uiowa_page_title_hero'
+          - 'inline_block:uiowa_spacer_separator'
       whitelisted_blocks:
         'Chaos Tools': {  }
         'Content fields':
@@ -49,15 +57,7 @@ third_party_settings:
         Webform:
           - webform_block
         core: {  }
-      blacklisted_blocks:
-        'Custom block types':
-          - uiowa_hero
-          - uiowa_page_title_hero
-          - uiowa_spacer_separator
-        'Inline blocks':
-          - 'inline_block:uiowa_hero'
-          - 'inline_block:uiowa_page_title_hero'
-          - 'inline_block:uiowa_spacer_separator'
+      allowed_blocks: {  }
     allowed_block_categories:
       - 'Chaos Tools'
       - 'Content fields'
@@ -82,6 +82,7 @@ third_party_settings:
         - layout_threecol
         - layout_fourcol
         - layout_page
+      whitelisted_blocks: {  }
       blacklisted_blocks:
         layout_fourcol:
           all_regions:
@@ -108,7 +109,6 @@ third_party_settings:
               - uiowa_slider
             'Inline blocks':
               - 'inline_block:uiowa_slider'
-      whitelisted_blocks: {  }
 _core:
   default_config_hash: 0AcX0F0voV5TKB6_GPZxJpAfbKCnDU7er_5TWcqIgSw
 id: node.page.token
@@ -117,28 +117,28 @@ bundle: page
 mode: token
 content:
   body:
-    label: hidden
     type: text_default
-    weight: 2
-    region: content
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 2
+    region: content
   field_image:
     type: entity_reference_entity_view
-    weight: 1
-    region: content
     label: hidden
     settings:
       view_mode: large__widescreen
       link: false
     third_party_settings: {  }
+    weight: 1
+    region: content
   field_teaser:
     type: basic_string
-    weight: 0
-    region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   content_moderation_control: true
   field_featured_image_display: true

@@ -1,0 +1,12 @@
+{%
+  set classes = [
+    'headline',
+    'bold-headline--serif',
+    'block__headline',
+]
+%}
+<h2 {{ attributes.addClass(classes) }}>
+  {%- for item in items -%}
+    <span>{{ item.content }}</span>
+  {%- endfor -%}
+</h2>

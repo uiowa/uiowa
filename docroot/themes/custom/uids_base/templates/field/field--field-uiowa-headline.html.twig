@@ -52,6 +52,7 @@
       'headline_level' : item.content['#size'] ?: 'h2',
       'headline_class' : headline_classes,
       'headline_text' : item.content['#text'] ?: '',
+      'headline_location' : item.content['#alignment'] ?: 'default',
     } %}
     {% include '@uids_base/uids/headline.html.twig' with headline only %}
   {% endif %}

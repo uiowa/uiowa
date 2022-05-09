@@ -20,7 +20,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
   use ProcessManagerAwareTrait;
 
   /**
-   * Configuration that should sanitized.
+   * Configuration that should be sanitized.
    *
    * @var array
    */
@@ -57,7 +57,6 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
     $defaults = $annotationData->getList('default-fields');
 
     // If no specific fields were requested, add ours to the defaults.
-    // @todo Is there a more-defined context for when to do this?
     if ($fields == $defaults) {
       $annotationData->append('field-labels', "\n application: Application");
       array_unshift($defaults, 'application');
@@ -171,7 +170,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
     $output = explode(PHP_EOL, $output);
     foreach ($output as $line) {
       if (!empty($line)) {
-        list($table, $table_size) = explode("\t", $line);
+        [$table, $table_size] = explode("\t", $line);
 
         $rows[] = [
           'table' => $table,

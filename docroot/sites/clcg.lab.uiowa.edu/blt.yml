@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: labclcg.uiowa.ddev.site
+    protocol: https
+  machine_name: labclcg
+  human_name: clcg.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labclcg.prod
+drupal:
+  db:
+    database: clcg_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: hboileau

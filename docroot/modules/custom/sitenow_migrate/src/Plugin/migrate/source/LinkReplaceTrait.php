@@ -44,7 +44,7 @@ trait LinkReplaceTrait {
           $doc->saveHTML();
         }
         else {
-          $site_path = \str_replace('sites/', '', \Drupal::service('site.path'));
+          $site_path = \str_replace('sites/', '', \Drupal::getContainer()->getParameter('site.path'));
           if (strpos($href, '/node/') === 0 || stristr($href, $site_path . '/node/')) {
             $nid = explode('node/', $href)[1];
 
@@ -144,7 +144,7 @@ trait LinkReplaceTrait {
           while ($i >= 0) {
             $link = $links->item($i);
             $href = $link->getAttribute('href');
-            $site_path = \str_replace('sites/', '', \Drupal::service('site.path'));
+            $site_path = \str_replace('sites/', '', \Drupal::getContainer()->getParameter('site.path'));
             if (strpos($href, '/node/') === 0 || stristr($href, $site_path . '/node/')) {
               $nid = explode('node/', $href)[1];
 
@@ -186,12 +186,22 @@ trait LinkReplaceTrait {
    * @param array $fields
    *   A [field => column] associative array for database columns
    *   that should be checked for potential broken links.
+   * @param array|int $to_exclude
+   *   An array of node ids which should be excluded from reporting,
+   *   or an int for a high water mark to check after,
+   *   for instance if links are known to have been replaced.
    */
-  private function reportPossibleLinkBreaks(array $fields) {
+  private function reportPossibleLinkBreaks(array $fields, $to_exclude = []) {
     foreach ($fields as $field => $columns) {
-      $candidates = \Drupal::database()->select($field, 'f')
-        ->fields('f', array_merge($columns, ['entity_id']))
-        ->execute()
+      $query = \Drupal::database()->select($field, 'f')
+        ->fields('f', array_merge($columns, ['entity_id']));
+      if (is_int($to_exclude)) {
+        $query->condition('f.entity_id', $to_exclude, '>');
+      }
+      elseif (!empty($to_exclude)) {
+        $query->condition('f.entity_id', $to_exclude, 'NOT IN');
+      }
+      $candidates = $query->execute()
         ->fetchAllAssoc('entity_id');
 
       foreach ($candidates as $entity_id => $cols) {
@@ -204,8 +214,12 @@ trait LinkReplaceTrait {
           // Checks for any links using the node/ format
           // and reports the node id on which it was found
           // and the linked text.
-          if (preg_match_all('|<a.*?node.*?>(.*?)<\/a>|i', $value, $matches)) {
-            $oopsie_daisies[$entity_id] = implode(',', $matches[1]);
+          if (preg_match_all('|<a.*?(node.*?)">(.*?)<\/a>|i', $value, $matches)) {
+            $links = [];
+            for ($i = 0; $i < count($matches[0]); $i++) {
+              $links[] = $matches[2][$i] . ': ' . $matches[1][$i];
+            }
+            $oopsie_daisies[$entity_id] = implode(',', $links);
           }
         }
 

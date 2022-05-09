@@ -61,7 +61,7 @@ class MauiApi {
    * @param string $method
    *   The HTTP method to use.
    * @param string $path
-   *   The API path to use. Do no include the base URL.
+   *   The API path to use. Do not include the base URL.
    * @param array $params
    *   Optional request parameters.
    * @param array $options
@@ -81,12 +81,12 @@ class MauiApi {
       $uri .= "?{$query}";
     }
 
-    // Merge additional options with default.
-    $options = array_merge($options, [
+    // Merge additional options with default but allow overriding.
+    $options = array_merge([
       'headers' => [
-        'Content-type' => 'application/json',
+        'Accept' => 'application/json',
       ],
-    ]);
+    ], $options);
 
     // Create a hash for the CID. Can always be decoded for debugging purposes.
     $hash = base64_encode($uri . serialize($options));

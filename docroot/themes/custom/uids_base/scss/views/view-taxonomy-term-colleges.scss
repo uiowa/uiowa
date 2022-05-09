@@ -1,0 +1,39 @@
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
+@import "components/headline/_headline-mixins.scss";
+
+
+.view-colleges-taxonomy-term {
+  h3, ul {
+    margin: 0 auto;
+    max-width: 1300px;
+  }
+  h3 {
+    @include headline-serif;
+    margin-bottom: $md;
+  }
+  .field--name-field-college-website {
+    display: inline-block;
+  }
+  .badge {
+    margin-right: .5rem;
+    margin-bottom: 1rem;
+    font-weight: lighter;
+    padding: 0 1rem;
+    &.badge--primary {
+      background: white;
+      &:hover,
+      &:focus {
+        background: $primary;
+      }
+    }
+    a {
+      text-decoration: none;
+    }
+  }
+}
+
+// Remove default margin until we can get layout-builder-enabled class to appear for taxonomy pages
+body:not(.page-node-type-article):not(.page-node-type-page).path-taxonomy.layout-builder-disabled main.page__container {
+  margin-bottom: 0;
+}

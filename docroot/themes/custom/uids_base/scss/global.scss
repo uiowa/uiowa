@@ -4,11 +4,35 @@ $imgpath: '../../uids/assets/images';
 @import "../uids/assets/scss/_local-fonts.scss";
 @import "../uids/assets/scss/_base.scss";
 
+// Word break classes.
+.block--word-break,
+.block-inline-blockuiowa-text-area,
+.block-field-blocknodepagebody {
+  a {
+    word-break: break-word;
+  }
+  .headline {
+    a {
+      word-break: unset;
+    }
+  }
+}
 
-.block--word-break a,
-.block-inline-blockuiowa-text-area a,
-.block-field-blocknodepagebody a {
-  word-break: break-word;
+// Bust out of container.
+.block--edge-to-edge {
+  margin: 0 calc(50% - 50vw);
+}
+
+// Containers within a background color useful for views blocks.
+.block--bg-container {
+  .headline  {
+    @extend %container;
+    //hack to prevent a change in container width (which is in em) when font size isn't 1em
+    max-width: 1310px;
+  }
+  & > div {
+    @extend %container;
+  }
 }
 
 // Flex basis for all blocks and views
@@ -51,7 +75,6 @@ $imgpath: '../../uids/assets/images';
 }
 
 // Layout container padding
-
 .layout__container {
   margin-top: 0;
   padding-bottom: $mobile-width-gutter;
@@ -65,6 +88,12 @@ $imgpath: '../../uids/assets/images';
 
   &:first-child {
     padding-top: 0;
+    .region-pre-footer & {
+      padding-top: $mobile-width-gutter;
+      @include breakpoint(sm) {
+        padding-top: $desktop-width-gutter;
+      }
+    }
   }
 
   // @todo Should this be moved to the header layout scss file?
@@ -128,6 +157,9 @@ $imgpath: '../../uids/assets/images';
   &.section-padding {
     &__removed-top {
       padding-top: 0;
+      .region-pre-footer & {
+        padding-top: 0;
+      }
     }
 
     &__removed-bottom {
@@ -140,6 +172,9 @@ $imgpath: '../../uids/assets/images';
 
     &__top-extra {
       padding-top: 6rem;
+      .region-pre-footer & {
+        padding-top: 6rem;
+      }
     }
 
     &__bottom-extra {
@@ -148,6 +183,7 @@ $imgpath: '../../uids/assets/images';
   }
 
   // @todo Where should this live?
+  .block--wrapper,
   .block-inline-blockuiowa-text-area {
     min-width: 0;
 
@@ -162,8 +198,8 @@ $imgpath: '../../uids/assets/images';
   }
 }
 
-// For sidebars: remove padding from adjacent blocks if they are the same
-.block[class*="bg--gray"].block-padding__all + .block[class*="bg--gray"].block-padding__all {
+// For sidebars: remove padding from adjacent blocks if they are the same and don't have a margin top set
+.block[class*="bg--gray"].block-padding__all + .block[class*="bg--gray"].block-padding__all:not(.block-margin__top) {
   margin-top: -1.5rem;
   padding-top: 0;
 }
@@ -190,7 +226,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .layout-builder-disabled main.page__container {
   margin: 0 $mobile-width-gutter $mobile-width-gutter;
 
-  @include breakpoint(container) {
+  @include breakpoint(page-container) {
     margin: 0 auto;
     width: 100%;
   }
@@ -199,7 +235,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .layout-builder-disabled .uiowa-bar .page__container {
   margin-top: 0;
 
-  @include breakpoint(container) {
+  @include breakpoint(page-container) {
     margin: 0 auto;
   }
 }
@@ -212,14 +248,14 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
 .content__container {
   .layout__spacing_container {
-    @extend %container;
+    @include container-width;
   }
 
   .page__container--extended,
   .page__container--extended.layout--has-sidebar,
   .page__container--extended.sidebar-invisible {
     .layout__spacing_container {
-      @include breakpoint(container) {
+      @include breakpoint(page-container) {
         max-width: 100em;
         padding-right: $lg;
         padding-left: $lg;
@@ -237,7 +273,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
         padding-right: 1.25rem;
         padding-left: 1.25rem;
       }
-      @include breakpoint(container) {
+      @include breakpoint(page-container) {
         padding-right: 0;
         padding-left: 0;
       }
@@ -256,7 +292,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     margin-left: $mobile-width-gutter;
     max-width: 100%;
 
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       margin-right: $desktop-width-gutter;
       margin-left: $desktop-width-gutter;
     }
@@ -270,6 +306,131 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     max-width: 100%;
     margin-right: 0;
     margin-left: 0;
+  }
+}
+
+// Reverse column order lb style
+
+.section-order__reversed {
+  // sidebar layout
+  &.layout--has-sidebar {
+    .layout__spacing_container {
+      flex-direction: column-reverse;
+      @include breakpoint(md) {
+        flex-direction: unset;
+      }
+    }
+  }
+  // two column
+  &.layout--twocol {
+    .layout__spacing_container {
+      display: grid;
+
+      .layout__region--first,
+      .layout__region--sidebar {
+        order: 2;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+
+      .layout__region--second,
+      .layout__region--content {
+        order: 1;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+    }
+  }
+  // three col reverse column order lb style
+  &.layout--threecol {
+    .layout__spacing_container {
+      display: grid;
+
+      .layout__region--first {
+        order: 3;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+
+      .layout__region--second {
+        order: 2;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+
+      .layout__region--third {
+        order: 1;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+    }
+  }
+ // four col reverse column order lb style
+  &.layout--fourcol {
+    .layout__spacing_container {
+      display: grid;
+
+      .layout__region--first {
+        order: 4;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+
+      .layout__region--second {
+        order: 3;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+
+      .layout__region--third {
+        order: 2;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+
+      .layout__region--fourth {
+        order: 1;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+    }
+  }
+}
+
+// Add margins for all stacked layout regions for mobile.
+
+.layout--fourcol,
+.layout--threecol,
+.layout--twocol,
+.layout--has-sidebar {
+  .layout__region:not(:last-child) {
+    margin-bottom: $mobile-height-gutter;
+    @include breakpoint(md) {
+      margin-bottom: 0;
+    }
+  }
+
+  // If section order is reversed, add margin back into last-child.
+  &.section-order__reversed {
+    .layout__region:last-child {
+      margin-bottom: $mobile-height-gutter;
+      @include breakpoint(md) {
+        margin-bottom: 0;
+      }
+    }
+
+    .layout__region:first-child {
+      margin-bottom: 0;
+    }
   }
 }
 
@@ -325,6 +486,13 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
   &__bottom {
     margin-bottom: $md;
+
+    &--extra {
+      margin-bottom: $md;
+      @include breakpoint(sm) {
+        margin-bottom: $mobile-height-gutter;
+      }
+    }
   }
 
   &__left {
@@ -432,7 +600,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       text-align: center;
       margin: 0 $sm $sm 0;
 
-      @include breakpoint(container) {
+      @include breakpoint(page-container) {
         border-right: none;
         margin: 0;
         flex: 1;
@@ -454,7 +622,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
       &:last-child {
         a {
-          @include breakpoint(container) {
+          @include breakpoint(page-container) {
             border-right: 1px solid $grey-light;
           }
         }

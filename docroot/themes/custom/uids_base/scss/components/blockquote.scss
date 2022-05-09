@@ -34,6 +34,18 @@ blockquote {
   blockquote {
     margin: 0;
   }
+  blockquote.blockquote--img-above {
+   .blockquote__media {
+     margin-bottom: .9rem;
+   }
+    &.blockquote--right,
+    &.blockquote--left {
+      padding:  0;
+      .blockquote__media {
+        margin-top: 0;
+      }
+    }
+  }
   blockquote.blockquote--img-below {
     .blockquote__media {
       margin: 1rem 0;
@@ -78,7 +90,8 @@ blockquote {
   }
 }
 
-// @todo remove with v2.
+// @todo Remove after v2 dies.
+//   See https://github.com/uiowa/uiowa/issues/4948
 .bg-yellow blockquote {
   border-color: #fff;
 }

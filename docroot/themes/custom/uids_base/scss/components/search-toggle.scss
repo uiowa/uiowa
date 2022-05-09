@@ -13,7 +13,7 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
 .search-overlay .uids-search [type="submit"]::before {
   background-image: url($search-mobile-img-path);
   background-repeat: no-repeat;
-  @include breakpoint(menu) {
+  @include breakpoint(md) {
     background-image: url($search-img-path);
     background-repeat: no-repeat;
     background-position: 50%;
@@ -21,10 +21,16 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
   }
 }
 
+.search-overlay[aria-hidden=false] {
+  .region-search {
+    width: 100%;
+  }
+}
+
 /*
 .search-overlay .uids-search {
   margin-top: 19px;
-  @include breakpoint(menu) {
+  @include breakpoint(md) {
     margin-top: 18px;
   }
 }
@@ -33,17 +39,22 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
 .iowa-bar--narrow .search-overlay .uids-search,
 .iowa-bar--full .search-overlay .uids-search {
   margin-top: 14px;
-  @include breakpoint(menu) {
+  @include breakpoint(md) {
     margin-top: 18px;
   }
 }
 */
 
+.iowa-bar--full .search-overlay .uids-search,
+.iowa-bar--narrow .search-overlay .uids-search {
+    overflow: hidden;
+}
+
 // Iowa Bar Full adjustments
 .iowa-bar--full.horizontal,
 .iowa-bar--full.mega {
   .search-button {
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       height: 85px;
       width: 159px;
     }
@@ -52,7 +63,7 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
 
 .iowa-bar--full.toggle {
   .search-button {
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       height: 85px;
       width: 159px;
     }
@@ -61,12 +72,12 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
 
 .iowa-bar--full.toggle {
   .search-wrapper {
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       flex: 1;
     }
   }
   .site-name + .menu--top + .search-wrapper {
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       flex: 1;
     }
   }
@@ -75,7 +86,7 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
 .iowa-bar--full.toggle {
   .search-wrapper {
     .search-is-open & {
-      @include breakpoint(menu) {
+      @include breakpoint(md) {
         flex: 1;
       }
     }

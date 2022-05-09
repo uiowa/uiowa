@@ -21,7 +21,7 @@ class PermissionsTest extends EntityKernelTestBase {
    *
    * @var string[]
    */
-  public static $modules = ['node'];
+  public static $modules = ['node', 'filter'];
 
   /**
    * Setup tasks.

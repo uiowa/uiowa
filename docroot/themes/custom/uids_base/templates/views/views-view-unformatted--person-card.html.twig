@@ -34,7 +34,7 @@
     {% set person_card_view = {
       'card_image': view.style_plugin.getField(key, 'field_image'),
       'card_subtitle': view.style_plugin.getField(key, 'field_person_email'),
-      'card_tag': view.style_plugin.getField(key, 'field_person_phone'),
+      'card_meta': view.style_plugin.getField(key, 'field_person_phone'),
       'person_website': view.style_plugin.getField(key, 'field_person_website'),
       'person_education': view.style_plugin.getField(key, 'field_person_education'),
       'person_hometown': view.style_plugin.getField(key, 'field_person_hometown'),
@@ -55,7 +55,7 @@
 
     {% set has_body = false %}
 
-    {% set card_body_fields = ['card_subtitle', 'card_tag', 'person_website', 'person_education', 'person_hometown', 'person_contact'] %}
+    {% set card_body_fields = ['card_subtitle', 'card_meta', 'person_website', 'person_education', 'person_hometown', 'person_contact'] %}
 
     {% for check in card_body_fields %}
       {% if person_card_view[check]|striptags|trim is not empty %}
@@ -96,21 +96,21 @@
               {% endif %}
             {% endblock %}
 
-            {% block card_tag %}
-              {% if card_tag|striptags|trim is not empty %}
-                <div class="card__date"><span role="presentation" class="fas fa-phone"></span> {{ card_tag }}</div>
+            {% block card_meta %}
+              {% if card_meta|striptags|trim is not empty %}
+                <div class="card__meta"><span role="presentation" class="fas fa-phone"></span> {{ card_meta }}</div>
               {% endif %}
               {% if person_hometown|striptags|trim is not empty %}
-                <div class="card__date"><span role="presentation" class="fas fa-globe-americas"></span> <strong>Hometown:</strong> {{ person_hometown }}</div>
+                <div class="card__meta"><span role="presentation" class="fas fa-globe-americas"></span> <strong>Hometown:</strong> {{ person_hometown }}</div>
               {% endif %}
               {% if person_website|striptags|trim is not empty %}
-                <div class="card__date"><span role="presentation" class="fas fa-desktop"></span> {{ person_website }}</div>
+                <div class="card__meta"><span role="presentation" class="fas fa-desktop"></span> {{ person_website }}</div>
               {% endif %}
               {% if person_education|striptags|trim is not empty %}
-                <div class="card__date"><span role="presentation" class="fas fa-university"></span> {{ person_education }}</div>
+                <div class="card__meta"><span role="presentation" class="fas fa-university"></span> {{ person_education }}</div>
               {% endif %}
               {% if person_contact|striptags|trim is not empty %}
-                <div class="card__date"><span role="presentation" class="fas fa-map-marker"></span> {{ person_contact }}</div>
+                <div class="card__meta"><span role="presentation" class="fas fa-map-marker"></span> {{ person_contact }}</div>
               {% endif %}
             {% endblock %}
           </div>

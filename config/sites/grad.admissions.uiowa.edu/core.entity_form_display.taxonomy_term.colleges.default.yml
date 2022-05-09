@@ -1,0 +1,64 @@
+uuid: f1db470c-9d1f-427d-925e-0fbe2bba9bb2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.colleges.field_college_website
+    - field.field.taxonomy_term.colleges.field_image
+    - taxonomy.vocabulary.colleges
+  module:
+    - link
+    - media_library
+    - path
+    - text
+id: taxonomy_term.colleges.default
+targetEntityType: taxonomy_term
+bundle: colleges
+mode: default
+content:
+  description:
+    type: text_textarea
+    weight: 3
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_college_website:
+    type: link_default
+    weight: 2
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  field_image:
+    type: media_library_widget
+    weight: 1
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 5
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+hidden:
+  tvi: true

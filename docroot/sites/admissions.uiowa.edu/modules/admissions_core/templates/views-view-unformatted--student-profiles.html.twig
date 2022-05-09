@@ -67,7 +67,8 @@
  *
  * @todo Remove the id attribute (or make it a class), because if that gets
  *   rendered twice on a page this is invalid CSS for example: two lists
- *   in different view modes.
+ *   in different view modes. See
+ *   https://github.com/uiowa/uiowa/issues/4995
  */
 #}
 
@@ -142,9 +143,9 @@
         {% endif %}
     {% endblock %}
 
-    {% block card_tag %}
+    {% block card_meta %}
         {% if person_hometown|striptags|trim is not empty %}
-            <div class="card__date"><span role="presentation" class="fas fa-map-marker-alt"></span>{{ person_hometown }}</div>
+            <div class="card__meta"><span role="presentation" class="fas fa-map-marker-alt"></span>{{ person_hometown }}</div>
         {% endif %}
     {% endblock %}
 

@@ -1,0 +1,27 @@
+uuid: 3a133962-d3eb-4f76-be7b-2f297240c554
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_costs_estimate_type
+field_name: field_costs_estimate_type
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: Domestic
+      label: 'US Citizens & Permanent Residents'
+    -
+      value: International
+      label: International
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

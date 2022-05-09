@@ -20,16 +20,16 @@ third_party_settings:
         - field_uip_colwidth
         - field_uip_classes
         - field_uip_id
+      label: 'Carousel Settings'
+      region: content
       parent_name: ''
       weight: 3
       format_type: details
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         open: false
         required_fields: true
-      label: 'Carousel Settings'
-      region: content
 id: paragraph.carousel.default
 targetEntityType: paragraph
 bundle: carousel
@@ -38,6 +38,7 @@ content:
   field_carousel_item:
     type: paragraphs
     weight: 2
+    region: content
     settings:
       title: Carousel
       title_plural: 'Carousel Items'
@@ -53,42 +54,41 @@ content:
         collapse_edit_all: '0'
         duplicate: duplicate
     third_party_settings: {  }
-    region: content
   field_uip_classes:
+    type: options_select
     weight: 5
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-    region: content
   field_uip_colwidth:
+    type: options_select
     weight: 4
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-    region: content
   field_uip_display_title:
+    type: boolean_checkbox
     weight: 1
+    region: content
     settings:
       display_label: true
     third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
   field_uip_id:
+    type: string_textfield
     weight: 6
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_uip_title:
+    type: string_textfield
     weight: 0
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
 hidden:
   created: true
   status: true

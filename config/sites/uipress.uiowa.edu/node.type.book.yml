@@ -1,0 +1,23 @@
+uuid: b2d707e8-f2d1-4492-9f18-6e212c4db9c8
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+    - node_revision_delete
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+  node_revision_delete:
+    minimum_revisions_to_keep: 10
+    minimum_age_to_delete: 0
+    when_to_delete: 0
+name: Book
+type: book
+description: 'Use the <em>book</em> content type to create a listing for books that are offered.'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: false

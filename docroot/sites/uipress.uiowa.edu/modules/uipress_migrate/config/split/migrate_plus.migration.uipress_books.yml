@@ -1,0 +1,208 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - uipress_migrate
+id: uipress_books
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - uipress
+migration_group: sitenow_migrate
+label: Books
+source:
+  plugin: uipress_books
+  node_type: uipress_book
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  moderation_state: moderation_state
+  title: title
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid:
+    plugin: default_value
+    default_value: 1
+  field_book_description_summary:
+    plugin: sub_process
+    source: body
+    process:
+      value: value
+      format:
+        plugin: default_value
+        default_value: minimal
+  field_image: field_image
+  field_book_afterword_author:
+    plugin: sub_process
+    source: field_uibook_afterauth
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: uipress_authors
+        source: target_id
+  field_book_author:
+    plugin: sub_process
+    source: field_uibook_authors
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: uipress_authors
+        source: target_id
+  field_book_awards:
+    plugin: sub_process
+    source: field_uibook_awards
+    process:
+      value: value
+      format:
+        plugin: default_value
+        default_value: minimal
+  field_book_contributors:
+    plugin: sub_process
+    source: field_uibook_contrib
+    process:
+      value: value
+      format:
+        plugin: default_value
+        default_value: minimal
+  field_book_edition: field_uibook_edition
+  field_book_editor:
+    plugin: sub_process
+    source: field_uibook_editor
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: uipress_authors
+        source: target_id
+  field_book_essay_by:
+    plugin: sub_process
+    source: field_uibook_essayby
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: uipress_authors
+        source: target_id
+  field_book_excerpt:
+    plugin: sub_process
+    source: field_uibook_excerpt
+    process:
+      value: value
+      format:
+        plugin: default_value
+        default_value: minimal
+  field_book_interior_pages: upload_fid
+  field_book_foreword_author:
+    plugin: sub_process
+    source: field_uibook_foreauth
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: uipress_authors
+        source: target_id
+  field_book_illustrator:
+    plugin: sub_process
+    source: field_uibook_illustrator
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: uipress_authors
+        source: target_id
+  field_book_introduction_author:
+    plugin: sub_process
+    source: field_uibook_introauth
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: uipress_authors
+        source: target_id
+  field_book_photographer:
+    plugin: sub_process
+    source: field_uibook_photog
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: uipress_authors
+        source: target_id
+  field_book_preface_authors:
+    plugin: sub_process
+    source: field_uibook_prefauth
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: uipress_authors
+        source: target_id
+  field_book_publication_date:
+    plugin: sub_process
+    source: field_uibook_pubyear
+    process:
+      value:
+        plugin: format_date
+        from_format: 'Y'
+        to_format: Y-m-d
+        source: value
+  field_book_related_reads:
+    plugin: sub_process
+    source: field_uibook_ymal
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: uipress_books
+        source: target_id
+  field_book_reviews_blurbs: field_uibook_blurbs
+  field_book_season:
+    plugin: sub_process
+    source: field_uibook_season
+    process:
+      target_id:
+        plugin: entity_generate
+        source: value
+        value_key: name
+        entity_type: taxonomy_term
+        bundle_key: vid
+        bundle: season
+        ignore_case: true
+        access_check: false
+  field_book_series: field_uibook_series_value
+  field_book_subject:
+    plugin: sub_process
+    source: taxonomy_vocabulary_1
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: uipress_subjects
+        source: target_id
+  field_book_subtitle: field_uibook_subtitle
+  field_book_table_of_contents:
+    plugin: sub_process
+    source: field_uibook_toc
+    process:
+      value: value
+      format:
+        plugin: default_value
+        default_value: minimal
+  field_book_translator:
+    plugin: sub_process
+    source: field_uibook_translator
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: uipress_authors
+        source: target_id
+  field_book_type:
+    plugin: create_book_type
+    source: custom_book_types
+  field_pages_art_trim: field_uibook_pp
+destination:
+  plugin: 'entity:node'
+  default_bundle: book
+migration_dependencies:
+  required:
+    - uipress_subjects
+    - uipress_authors

@@ -19,7 +19,7 @@ bundle: uiowa_cta
 mode: default
 content:
   field_uiowa_cta_link:
-    weight: 3
+    type: link
     label: hidden
     settings:
       trim_length: 80
@@ -28,21 +28,21 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    type: link
+    weight: 3
     region: content
   field_uiowa_cta_summary:
-    weight: 2
+    type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 2
     region: content
   field_uiowa_cta_title:
-    weight: 1
+    type: heading
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: heading
+    weight: 1
     region: content
 hidden:
   search_api_excerpt: true

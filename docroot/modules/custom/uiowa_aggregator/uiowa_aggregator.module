@@ -7,15 +7,17 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
+use Drupal\uiowa_core\HeadlineHelper;
 
 /**
  * Implements hook_form_FORM_ID_alter().
  */
 function uiowa_aggregator_form_aggregator_admin_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // Replace never from aggregator cleanup options with 6 months. Keeping
-  // items forever has potential to create very large database tables.
+  // Remove never from aggregator cleanup options. Keeping items forever has
+  // potential to create very large database tables. Add additional options.
   unset($form['processors']['aggregator']['aggregator_clear']['#options'][0]);
   $form['processors']['aggregator']['aggregator_clear']['#options'][15552000] = t('6 months');
+  $form['processors']['aggregator']['aggregator_clear']['#options'][31557600] = t('1 year');
 
   // Remove access to aggregator teaser length as it does nothing!
   // @see: https://www.drupal.org/project/drupal/issues/2283877
@@ -33,7 +35,7 @@ function uiowa_aggregator_form_aggregator_feed_form_alter(&$form, FormStateInter
   $access = $check->access(\Drupal::currentUser()->getAccount());
 
   // Set the minimum feed refresh to match our hourly cron job so that
-  // webmasters aren't confused as to why its not refreshing sooner. Admins can
+  // webmasters aren't confused as to why it's not refreshing sooner. Admins can
   // set this to whatever assuming they set up a custom job to run more often.
   if ($access->isForbidden()) {
     foreach ($form['refresh']['widget']['#options'] as $key => $value) {
@@ -60,15 +62,7 @@ function uiowa_aggregator_preprocess_block(&$variables) {
           $heading_size = $headline_field['child_heading_size'];
         }
         else {
-          $options = [
-            'h2' => 'h3',
-            'h3' => 'h4',
-            'h4' => 'h5',
-            'h5' => 'h6',
-            'h6' => 'h6',
-          ];
-
-          $heading_size = $options[$headline_field['heading_size']];
+          $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
         }
       }
     }
@@ -79,14 +73,19 @@ function uiowa_aggregator_preprocess_block(&$variables) {
       $feeds[] = $list_string_item->getString();
     }
 
-    $count = $block->get('field_uiowa_aggregator_count')->getString();
+    $per_page = (int) $block->get('field_uiowa_aggregator_count')->getString();
+    $show_pager = (bool) $block->get('field_uiowa_aggregator_pager')->getString();
 
-    $result = \Drupal::entityTypeManager()->getStorage('aggregator_item')->getQuery()
+    $query = \Drupal::entityTypeManager()->getStorage('aggregator_item')->getQuery()
       ->condition('fid', $feeds, 'IN')
-      ->range(0, $count)
       ->sort('timestamp', 'DESC')
-      ->sort('iid', 'DESC')
-      ->execute();
+      ->sort('iid', 'DESC');
+
+    if (!$show_pager) {
+      $query->range(0, $per_page);
+    }
+
+    $result = $query->execute();
 
     $variables['content']['aggregator'] = [
       '#type' => 'container',
@@ -104,6 +103,18 @@ function uiowa_aggregator_preprocess_block(&$variables) {
       $items = \Drupal::entityTypeManager()->getStorage('aggregator_item')->loadMultiple($result);
 
       if ($items) {
+        // If output is paged, overwrite $items with the current chunk.
+        if ($show_pager) {
+          $count = count($items);
+          static $element = 0;
+          $element++;
+          /** @var \Drupal\Core\Pager\PagerManager $pager */
+          $pager = \Drupal::service('pager.manager');
+          $chunks = array_chunk($items, $per_page);
+          $current = $pager->createPager($count, $per_page, $element)->getCurrentPage();
+          $items = $chunks[$current];
+        }
+
         $variables['content']['aggregator']['items'] = \Drupal::entityTypeManager()->getViewBuilder('aggregator_item')->viewMultiple($items, 'default');
 
         // Get block layout builder styles if they exist.
@@ -113,8 +124,8 @@ function uiowa_aggregator_preprocess_block(&$variables) {
         }
 
         // Unset classes meant for children.
-        if (isset($variables["attributes"]["class"])) {
-          foreach ($variables["attributes"]["class"] as $key => $style) {
+        if (isset($variables['attributes']['class'])) {
+          foreach ($variables['attributes']['class'] as $key => $style) {
             foreach ([
               'bg',
               'card',
@@ -134,6 +145,14 @@ function uiowa_aggregator_preprocess_block(&$variables) {
           if (!empty($parent_lb_styles)) {
             $variables['content']['aggregator']['items'][$child]['#parent_lb_styles'] = $parent_lb_styles;
           }
+        }
+
+        if ($show_pager) {
+          $variables['content']['pager'] = [
+            '#type' => 'pager',
+            '#element' => $element,
+            '#quantity' => 3,
+          ];
         }
       }
     }

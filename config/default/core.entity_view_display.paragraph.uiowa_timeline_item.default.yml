@@ -20,38 +20,38 @@ bundle: uiowa_timeline_item
 mode: default
 content:
   field_timeline_body:
-    weight: 0
+    type: text_default
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 0
     region: content
   field_timeline_date:
-    weight: 5
+    type: string
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 5
     region: content
   field_timeline_heading:
-    weight: 1
+    type: string
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 1
     region: content
   field_timeline_icon:
-    weight: 4
+    type: fontawesome_icon_formatter
     label: hidden
     settings:
       layers: false
     third_party_settings: {  }
-    type: fontawesome_icon_formatter
+    weight: 4
     region: content
   field_timeline_link:
-    weight: 3
+    type: link
     label: hidden
     settings:
       trim_length: 80
@@ -60,16 +60,16 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    type: link
+    weight: 3
     region: content
   field_timeline_media:
     type: entity_reference_entity_view
-    weight: 2
     label: hidden
     settings:
       view_mode: large__widescreen
       link: false
     third_party_settings: {  }
+    weight: 2
     region: content
 hidden:
   search_api_excerpt: true

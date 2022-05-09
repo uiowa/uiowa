@@ -5,11 +5,17 @@
  * Primary module hooks for Uiowa Core module.
  */
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\google_tag\Entity\Container;
+use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
 use Drupal\uiowa_core\HeadlineHelper;
+use Drupal\views\Views;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Exception\RfcComplianceException;
 
 /**
  * Implements hook_config_schema_info_alter().
@@ -17,9 +23,76 @@ use Drupal\uiowa_core\HeadlineHelper;
 function uiowa_core_config_schema_info_alter(&$definitions) {
   // Make sure that the order of filters in the config export file is always
   // the same, to avoid false positive differences.
-  // @see https://www.drupal.org/project/drupal/issues/2852557#comment-12703225
-  // @todo Remove this after https://www.drupal.org/project/drupal/issues/2855675.
+  // @todo https://github.com/uiowa/uiowa/issues/5034
   $definitions['filter.format.*']['mapping']['filters']['orderby'] = 'key';
+}
+
+/**
+ * Implements hook_cron().
+ */
+function uiowa_core_cron() {
+  $request_time = \Drupal::time()->getRequestTime();
+  $last_run = \Drupal::state()->get('uiowa_core_hourly_last');
+
+  if (!$last_run || $request_time - $last_run >= 3540) {
+    Cache::invalidateTags(['time:hourly']);
+
+    if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
+      $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
+      $purgeQueuers = \Drupal::service('purge.queuers');
+      $purgeQueue = \Drupal::service('purge.queue');
+      $queuer = $purgeQueuers->get('coretags');
+
+      $invalidations = [
+        $purgeInvalidationFactory->get('tag', 'time:hourly'),
+      ];
+
+      $purgeQueue->add($queuer, $invalidations);
+    }
+
+    \Drupal::state()->set('uiowa_core_hourly_last', $request_time);
+  }
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function uiowa_core_module_implements_alter(&$implementations, $hook) {
+  // Our uiowa_core_cron() needs to run before purge_processor_cron().
+  if ($hook == 'cron' && isset($implementations['purge_processor_cron'])) {
+    $group = $implementations['purge_processor_cron'];
+    unset($implementations['purge_processor_cron']);
+    $implementations['purge_processor_cron'] = $group;
+  }
+}
+
+/**
+ * Implements hook_mail_alter().
+ */
+function uiowa_core_mail_alter(&$message) {
+  // Add header in use by email team to avoid spam/external tagging.
+  $message['headers']['X-UI-Hosted'] = 'ITS-Acquia';
+
+  // Override the from address if it doesn't match our Platform Email domain
+  // of uiowa.edu. Otherwise, the email will not be sent. We aren't handling
+  // multiple from addresses here because that doesn't seem to work currently -
+  // hook_mail_alter isn't even invoked for some reason.
+  try {
+    $from = Address::create($message['from']);
+    $domain = explode('@', $from->getAddress());
+    $domain = array_pop($domain);
+
+    if ($domain != 'uiowa.edu') {
+      $name = $from->getName() ?: \Drupal::config('system.site')->get('name');
+      $from = new Address('sitenow-noreply@uiowa.edu', $name);
+      $message['headers']['From'] = $from->toString();
+    }
+  }
+  catch (RfcComplianceException $e) {
+    \Drupal::logger('uiowa_core')->error(t('Unable to alter outgoing email using from address @from', [
+      '@from' => $message['from'],
+    ]));
+  }
 }
 
 /**
@@ -33,6 +106,7 @@ function uiowa_core_theme($existing, $type, $theme, $path) {
         'hide_headline' => FALSE,
         'heading_size' => 'h2',
         'headline_style' => 'default',
+        'headline_alignment' => 'default',
       ],
     ],
   ];
@@ -47,9 +121,91 @@ function template_preprocess_uiowa_core_headline(&$variables) {
   }
   else {
     $style = HeadlineHelper::getStyles()[$variables['headline_style']];
+    $alignment = HeadlineHelper::getHeadingAlignment()[$variables['headline_alignment']];
+    $variables['headline_alignment'] = $alignment;
   }
 
   $variables['headline_style'] = $style;
+
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uiowa_core_preprocess_page(&$variables) {
+
+  $current_route = \Drupal::routeMatch();
+  $node = $current_route->getParameter('node');
+
+  $view_id = Drupal::request()->attributes->get('view_id');
+
+  // Tags and related display logic on core content types:
+  $tags_related_display_allowed_types = [
+    'article',
+    'page',
+    'person',
+  ];
+  if (isset($node)) {
+    $node_type = $node->bundle();
+    if (in_array($node_type, $tags_related_display_allowed_types)) {
+
+      $tag_display_config = [];
+      $tag_display_config['article'] = \Drupal::configFactory()->getEditable('sitenow_articles.settings')->get('tag_display');
+      $tag_display_config['page'] = \Drupal::configFactory()->getEditable('sitenow_pages.settings')->get('tag_display');
+      $tag_display_config['person'] = \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('tag_display');
+
+      $related_display_config = [];
+      $related_display_config['article'] = \Drupal::configFactory()->getEditable('sitenow_articles.settings')->get('related_display');
+      $related_display_config['page'] = \Drupal::configFactory()->getEditable('sitenow_pages.settings')->get('related_display');
+      $related_display_config['person'] = \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('related_display');
+
+      if (empty($view_id) || $view_id == 'tags_list') {
+        switch ($node_type) {
+          case 'article':
+          case 'page':
+          case 'person':
+            switch ($tag_display_config[$node_type]) {
+
+              case 'tag_buttons':
+                // Tag buttons are default for now. We may add more
+                // options in the future, keeping this case around.
+                break;
+
+              case 'do_not_display':
+                unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
+                break;
+
+              default:
+                unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
+            }
+            break;
+        }
+      }
+      if (empty($view_id) || $view_id == 'related_list') {
+        switch ($node_type) {
+          case 'article':
+          case 'page':
+          case 'person':
+            switch ($related_display_config[$node_type]) {
+
+              case 'headings_lists':
+                // Headings and lists are default for now. We may add more
+                // options in the future, keeping this case around.
+                break;
+
+              case 'do_not_display':
+                unset($variables['page']['pre_footer']['views_block__related_content_block_related_headings_lists']);
+                break;
+
+              default:
+                unset($variables['page']['pre_footer']['views_block__related_content_block_related_headings_lists']);
+
+            }
+            break;
+        }
+      }
+    }
+  }
 
 }
 
@@ -117,7 +273,7 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
   switch ($form_id) {
     case 'fragment_region_item_add_form':
     case 'fragment_region_item_edit_form':
-      // Ensure item is published to prevent rendering issue for anonymous visitor.
+      // Ensure item is published to prevent rendering issue for anonymous user.
       $form['status']['widget']['value']['#default_value'] = TRUE;
       $form['status']['#disabled'] = TRUE;
       break;
@@ -254,10 +410,10 @@ function uiowa_core_menu_local_tasks_alter(&$data, $route_name) {
  */
 function uiowa_core_entity_operation_alter(array &$operations, EntityInterface $entity) {
   // If we're using the replicate module, check if it's available.
-  if (isset($operations['replicate'])) {
+  // Also check if we are operating on a node.
+  if (isset($operations['replicate']) && $entity instanceof NodeInterface) {
     // Pull our allowed types, and check against the given entity.
     $allowed_types = \Drupal::config('uiowa_core.settings')->get('uiowa_core.replicate_allowed');
-    // @todo using entity_operation_alter, getType() isn't always guaranteed.
     $type = $entity->getType();
     // If it's not an allowed type, then remove
     // the replicate operation.
@@ -276,5 +432,63 @@ function uiowa_core_entity_operation_alter(array &$operations, EntityInterface $
       }
       break;
 
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uiowa_core_preprocess_block(&$variables) {
+  switch ($variables['plugin_id']) {
+    case 'views_block:tags_list-tags_list':
+      $variables['#attached']['library'][] = 'uids_base/tags';
+      $variables['title_attributes']['class'] = 'h6 block__headline headline headline--serif';
+      if (!isset($variables['attributes']['class'])) {
+        $variables['attributes']['class'] = [''];
+      }
+      $variables['attributes']['class'][] .= 'layout-container tags-list__container block-padding__bottom block-padding__top';
+      break;
+
+    case 'views_block:related_content-block_related_headings_lists':
+      $variables['#attached']['library'][] = 'uids_base/related';
+      $variables['title_attributes']['class'] = 'h3 block__headline headline headline--underline headline--serif';
+      if (!isset($variables['attributes']['class'])) {
+        $variables['attributes']['class'] = [''];
+      }
+      $variables['attributes']['class'][] .= 'block--bg-container related col--threecol--33 bg--gray block-padding__bottom block-padding__top';
+      break;
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * Invalidate related and tag view caches on content types that
+ * support these views.
+ */
+function uiowa_core_node_presave(Node $node) {
+  $node_type = $node->getType();
+  $type_map = [
+    'article' => 'articles',
+    'page' => 'pages',
+    'person' => 'people',
+  ];
+
+  // Only proceed if this is a supported content type.
+  if (isset($type_map[$node_type])) {
+    $config_name = 'sitenow_' . $type_map[$node_type] . '.settings';
+    $config = \Drupal::configFactory()->getEditable($config_name);
+    // We'll do this for tag list and related content.
+    foreach ([
+      'tag_display' => 'tags_list',
+      'related_display' => 'related_content',
+    ] as $setting => $view_name) {
+      // Only proceed if the option is turned on for this content type.
+      if ($config->get($setting) !== 'do_not_display') {
+        // Get the view and invalidate the cache.
+        $view = Views::getView($view_name);
+        $view->storage->invalidateCaches();
+      }
+    }
   }
 }

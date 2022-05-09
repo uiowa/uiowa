@@ -14,23 +14,23 @@ bundle: panopto
 mode: default
 content:
   field_media_panopto_url:
+    type: panopto_url_widget
     weight: 0
+    region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
-    type: panopto_url_widget
-    region: content
   field_tags:
+    type: entity_reference_autocomplete_tags
     weight: 26
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete_tags
-    region: content
 hidden:
   created: true
   name: true

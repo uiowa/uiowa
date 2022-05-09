@@ -88,15 +88,15 @@
 
           <div class="card__body">
 
-            {% block card_tag %}
+            {% block card_meta %}
               {% if person_hometown|striptags|trim is not empty %}
-                <div class="card__date"><span role="presentation" class="fas fa-globe-americas"></span> <strong>Hometown:</strong> {{ person_hometown }}</div>
+                <div class="card__meta"><span role="presentation" class="fas fa-globe-americas"></span> <strong>Hometown:</strong> {{ person_hometown }}</div>
               {% endif %}
               {% if person_education|striptags|trim is not empty %}
-                <div class="card__date"><span role="presentation" class="fas fa-university"></span> {{ person_education }}</div>
+                <div class="card__meta"><span role="presentation" class="fas fa-university"></span> {{ person_education }}</div>
               {% endif %}
               {% if person_program|striptags|trim is not empty %}
-                <div class="card__date"><span role="presentation" class="fas fa-graduation-cap"></span> <strong>Program:</strong> {{ person_program }}</div>
+                <div class="card__meta"><span role="presentation" class="fas fa-graduation-cap"></span> <strong>Program:</strong> {{ person_program }}</div>
               {% endif %}
             {% endblock %}
           </div>

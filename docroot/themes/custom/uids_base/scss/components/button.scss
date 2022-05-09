@@ -2,20 +2,6 @@
 @import "assets/scss/_utilities.scss";
 @import "components/button/button.scss";
 
-// @todo is this still necessary?
-a.bttn {
-  span {
-    margin-left: $sm;
-    color: $primary;
-  }
-
-  &.bttn--primary {
-    span {
-      color: white;
-    }
-  }
-}
-
 .block-inline-blockuiowa-text-area,
 .block-field-blocknodepagebody {
   .bttn {
@@ -29,22 +15,4 @@ a.bttn {
       }
     }
   }
-}
-
-[class*=bg--] {
-  .bttn--secondary {
-    color: $white;
-  }
-}
-
-// @todo move back to UIDS
-.bttn--sans-serif.bttn--full {
-  display: flex;
-  height: 100%;
-}
-
-.bttn--lowercase{
-  text-transform: none;
-  letter-spacing: 0;
-  font-size: 1rem;
 }

@@ -16,15 +16,20 @@ use AcquiaCloudApi\Endpoints\SslCertificates;
 use AcquiaCloudApi\Exception\ApiErrorException;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
+use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\ClientException;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
+use Uiowa\InspectorTrait;
 use Uiowa\Multisite;
 
 /**
  * Global multisite commands.
  */
 class MultisiteCommands extends BltTasks {
+
+  use InspectorTrait;
 
   /**
    * A no-op command.
@@ -72,8 +77,6 @@ class MultisiteCommands extends BltTasks {
       $app = EnvironmentDetector::getAhGroup() ?: 'local';
       $env = EnvironmentDetector::getAhEnv() ?: 'local';
 
-      $this->sendNotification("Command `drush {$cmd}` *started* on {$app} {$env}.");
-
       foreach ($this->getConfigValue('multisites') as $multisite) {
         $this->switchSiteContext($multisite);
         $db = $this->getConfigValue('drupal.db.database');
@@ -87,22 +90,20 @@ class MultisiteCommands extends BltTasks {
         if (!in_array($multisite, $options['exclude'])) {
           $this->say("<info>Executing on {$multisite}...</info>");
 
-          // Define a site-specific cache directory.
-          // @see: https://github.com/drush-ops/drush/pull/4345
-          $tmp = "/tmp/.drush-cache-{$app}/{$env}/{$multisite}";
-
-          $this->taskDrush()
+          $result = $this->taskDrush()
             ->drush($cmd)
-            ->option('define', "drush.paths.cache-directory={$tmp}")
             ->printMetadata(FALSE)
             ->run();
+
+          if (!$result->wasSuccessful()) {
+            $error = $result->getMessage();
+            $this->sendNotification("*Error* running command `drush {$cmd}` on app $app $env for site $multisite. ```$error```");
+          }
         }
         else {
           $this->logger->info("Skipping excluded site {$multisite}.");
         }
       }
-
-      $this->sendNotification("Command `drush {$cmd}` *finished* on {$app} {$env}.");
     }
   }
 
@@ -163,7 +164,7 @@ class MultisiteCommands extends BltTasks {
         continue;
       }
 
-      if (!$this->getInspector()->isDrupalInstalled()) {
+      if (!$this->isDrupalInstalled($multisite)) {
         $uninstalled[] = $multisite;
       }
     }
@@ -233,6 +234,7 @@ class MultisiteCommands extends BltTasks {
    *
    * @throws \Exception
    *
+   * @requireHost
    * @requireFeatureBranch
    * @requireCredentials
    */
@@ -330,21 +332,8 @@ EOD
         ->to('')
         ->run();
 
-      // Remove vhost.
-      $this->taskReplaceInFile("{$root}/box/config.yml")
-        ->from(<<<EOD
--
-    servername: {$local}
-    documentroot: '{{ drupal_core_path }}'
-    extra_parameters: '{{ apache_vhost_php_fpm_parameters }}'
-EOD
-        )
-        ->to('')
-        ->run();
-
       $this->taskGit()
         ->dir($root)
-        ->add('box/config.yml')
         ->add('docroot/sites/sites.php')
         ->add("docroot/sites/{$dir}/")
         ->add("drush/sites/{$id}.site.yml")
@@ -412,11 +401,14 @@ EOD
    *   The HawkID of the original requester. Will be granted webmaster access.
    * @option split
    *   The name of a config split to activate and import after installation.
+   * @option site-name
+   *   The desired site name within quotes.
    *
    * @command uiowa:multisite:create
    *
    * @aliases umc
    *
+   * @requireHost
    * @requireFeatureBranch
    * @requireCredentials
    *
@@ -428,6 +420,7 @@ EOD
     'no-db' => FALSE,
     'requester' => InputOption::VALUE_REQUIRED,
     'split' => InputOption::VALUE_REQUIRED,
+    'site-name' => InputOption::VALUE_REQUIRED,
   ]) {
     $db = Multisite::getDatabaseName($host);
     $applications = $this->getConfigValue('uiowa.applications');
@@ -544,22 +537,6 @@ EOD
       '--remote-alias' => "{$id}.prod",
     ]);
 
-    // BLT RMI uses the site-dir option for the vhost. Replace with local.
-    $result = $this->taskReplaceInFile("{$root}/box/config.yml")
-      ->from("servername: {$host}")
-      ->to("servername: {$local}")
-      ->run();
-
-    if (!$result->wasSuccessful()) {
-      throw new \Exception("Unable to replace DrupalVM vhost for {$host}.");
-    }
-
-    // BLT RMI quotes this string after rewriting the YAML.
-    $this->taskReplaceInFile("{$root}/box/config.yml")
-      ->from("php_xdebug_cli_disable: 'no'")
-      ->to("php_xdebug_cli_disable: no")
-      ->run();
-
     $result = $this->taskReplaceInFile("{$root}/docroot/sites/{$host}/settings.php")
       ->from('require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";' . "\n")
       ->to(<<<EOD
@@ -633,6 +610,10 @@ EOD
       $blt['uiowa']['config']['split'] = $options['split'];
     }
 
+    if (isset($options['site-name'])) {
+      $blt['uiowa']['site-name'] = $options['site-name'];
+    }
+
     $this->taskWriteToFile("{$root}/docroot/sites/{$host}/blt.yml")
       ->text(Yaml::dump($blt, 10, 2))
       ->run();
@@ -677,7 +658,6 @@ EOD;
     if (!$options['no-commit']) {
       $this->taskGit()
         ->dir($root)
-        ->add('box/config.yml')
         ->add('docroot/sites/sites.php')
         ->add("docroot/sites/{$host}")
         ->add("drush/sites/{$id}.site.yml")
@@ -725,6 +705,7 @@ EOD;
    *
    * @aliases umt
    *
+   * @requireHost
    * @requireFeatureBranch
    * @requireCredentials
    *
@@ -995,13 +976,14 @@ EOD;
 
       // The site name option used during drush site:install is
       // overwritten if installed from existing configuration.
+      $site_name = ($this->getConfigValue('uiowa.site-name') ? $this->getConfigValue('uiowa.site-name') : $multisite);
       $this->taskDrush()
         ->stopOnFail(FALSE)
         ->drush('config:set')
         ->args([
           'system.site',
           'name',
-          $multisite,
+          $site_name,
         ])
         ->run();
 
@@ -1061,19 +1043,21 @@ EOD;
     $webhook_url = getenv('SLACK_WEBHOOK_URL');
 
     if ($webhook_url && $env == 'prod' || $env == 'local') {
-      $payload = [
+      $data = [
         'username' => 'Acquia Cloud',
         'text' => $message,
-        'icon_emoji' => ':acquia:',
       ];
 
-      $data = "payload=" . json_encode($payload);
-      $ch = curl_init($webhook_url);
-      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-      curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-      curl_exec($ch);
-      curl_close($ch);
+      $client = new GuzzleClient();
+
+      try {
+        $client->post($webhook_url, [
+          'body' => json_encode($data),
+        ]);
+      }
+      catch (ClientException $e) {
+        $this->logger->warning('Error attempting to send Slack notification: ' . $e->getMessage());
+      }
     }
     else {
       $this->logger->warning("Slack webhook URL not configured. Cannot send message: {$message}");

@@ -67,7 +67,8 @@
  *
  * @todo Remove the id attribute (or make it a class), because if that gets
  *   rendered twice on a page this is invalid CSS for example: two lists
- *   in different view modes.
+ *   in different view modes. See
+ *   https://github.com/uiowa/uiowa/issues/4995
  */
 #}
 {%
@@ -81,10 +82,6 @@
   'card--list',
 ]
 %}
-
-{% if 'On' in content.field_area_of_study_link_direct.0 and node.field_area_of_study_source_link.0.uri %}
-  {% set url = node.field_area_of_study_source_link.0.url %}
-{% endif %}
 
 {% set headline_level = heading_size ?: 'h3' %}
 

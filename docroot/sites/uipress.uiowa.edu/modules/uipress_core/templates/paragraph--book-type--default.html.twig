@@ -1,0 +1,13 @@
+{% set accordion_item = {
+  'accordion_item_id': content_id,
+  'accordion_parent_id': '#accordion-book-type',
+  'accordion_hash': heading_id,
+  'accordion_item_label': accordion_label,
+  'accordion_item_content': content|without('field_book_type', 'field_book_ebook_ownership'),
+  'accordion_item_expanded': 'true',
+  'attributes': attributes,
+} %}
+
+{% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}
+{% endembed %}
+

@@ -5,3 +5,11 @@ sitenow_dispatch.settings_form:
     _form: 'Drupal\sitenow_dispatch\Form\SettingsForm'
   requirements:
     _permission: 'administer sitenow_dispatch configuration'
+
+sitenow_dispatch.thanks:
+  path: '/admin/config/sitenow/sitenow-dispatch/thanks'
+  defaults:
+    _title: 'Thank You form settings'
+    _form: 'Drupal\sitenow_dispatch\Form\ThankYouSettingsForm'
+  requirements:
+    _permission: 'administer sitenow_dispatch configuration'

@@ -5,9 +5,9 @@
  * Teaser theme functions.
  */
 
-use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Url;
+use Drupal\smart_trim\Truncate\TruncateHTML;
 
 /**
  * Theme function for an event teaser.
@@ -81,8 +81,14 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
     'all_day' => $variables['event']['instance_all_day'],
   ]);
 
-  if (isset($variables['event']['description_text'])) {
-    $variables['event']['description_text'] = Xss::filter($variables['event']['description_text']);
-    $variables['event']['description_text'] = Unicode::truncate($variables['event']['description_text'], 500, TRUE, TRUE);
+  if (isset($variables['event']['description'])) {
+    // Limit what html is allowed.
+    $allowed_tags = ['a', 'strong', 'em'];
+    $variables['event']['description'] = Xss::filter($variables['event']['description'], $allowed_tags);
+
+    // Use smart_trim's helper to safely truncate without breaking HTML.
+    $truncate = new TruncateHTML();
+    $trim_suffix = '...';
+    $variables['event']['description'] = $truncate->truncateChars($variables['event']['description'], 500, $trim_suffix);
   }
 }

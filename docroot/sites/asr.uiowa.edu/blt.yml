@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: asr.uiowa.ddev.site
+    protocol: https
+  machine_name: asr
+  human_name: asr.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: asr.prod
+drupal:
+  db:
+    database: asr_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: albeck
+  site-name: asr.uiowa.edu

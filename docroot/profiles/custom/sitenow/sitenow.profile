@@ -5,13 +5,13 @@
  * Profile code.
  */
 
+use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
-use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -19,6 +19,7 @@ use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\layout_builder\InlineBlockUsage;
+use Drupal\system\Entity\Menu;
 
 /**
  * Implements hook_preprocess_HOOK().
@@ -110,6 +111,7 @@ function sitenow_preprocess_select(&$variables) {
 function sitenow_module_implements_alter(&$implementations, $hook) {
   // Unset administerusersbyrole query alter which over-filters the people page.
   // @todo Refactor this to move sitenow last and then alter the altered query.
+  //   See https://github.com/uiowa/uiowa/issues/5023
   if ($hook == 'query_alter' && isset($implementations['administerusersbyrole'])) {
     unset($implementations['administerusersbyrole']);
   }
@@ -121,7 +123,14 @@ function sitenow_module_implements_alter(&$implementations, $hook) {
  * Override the administerusersbyrole query alter to only exclude admins.
  */
 function sitenow_query_administerusersbyrole_edit_access_alter(AlterableInterface $query) {
-  if (!sitenow_is_user_admin(\Drupal::currentUser())) {
+
+  /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+  $check = \Drupal::service('uiowa_core.access_checker');
+
+  /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+  $access = $check->access(\Drupal::currentUser()->getAccount());
+
+  if ($access->isForbidden()) {
     // Exclude the root user.
     $query->condition('users_field_data.uid', 1, '<>');
 
@@ -196,7 +205,7 @@ function sitenow_preprocess_block(&$variables) {
       $admin_context = \Drupal::service('router.admin_context');
       if (!$admin_context->isAdminRoute()) {
         $node = \Drupal::routeMatch()->getParameter('node');
-        $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
+        $node = ($node ?? \Drupal::routeMatch()->getParameter('node_preview'));
         if ($node instanceof NodeInterface) {
           if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
             $publish_options = $node->get('field_publish_options')->getValue();
@@ -269,7 +278,13 @@ function sitenow_form_views_exposed_form_alter(&$form, FormStateInterface $form_
   $view = $form_state->get('view');
 
   if ($view && $view->id() == 'administerusersbyrole_people') {
-    if (!sitenow_is_user_admin(\Drupal::currentUser())) {
+    /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+    $check = \Drupal::service('uiowa_core.access_checker');
+
+    /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+    $access = $check->access(\Drupal::currentUser()->getAccount());
+
+    if ($access->isForbidden()) {
       unset($form['role']['#options']['administrator']);
     }
   }
@@ -279,7 +294,13 @@ function sitenow_form_views_exposed_form_alter(&$form, FormStateInterface $form_
  * Implements hook_form_FORM_ID_alter().
  */
 function sitenow_form_views_form_administerusersbyrole_people_page_1_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if (!sitenow_is_user_admin(\Drupal::currentUser())) {
+  /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+  $check = \Drupal::service('uiowa_core.access_checker');
+
+  /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+  $access = $check->access(\Drupal::currentUser()->getAccount());
+
+  if ($access->isForbidden()) {
     foreach ($form['header']['user_bulk_form']['action']['#options'] as $key => $option) {
       if (stristr($option, 'administrator')) {
         unset($form['header']['user_bulk_form']['action']['#options'][$key]);
@@ -443,10 +464,30 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
  * Implements hook_form_alter().
  */
 function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Hide revision information on media entity add/edit forms
+  // to prevent new revisions from being created. This aids our
+  // file replace functionality.
+  $form_object = $form_state->getFormObject();
+  if (is_a($form_object, ContentEntityForm::class)) {
+    /** @var \Drupal\Core\Entity\ContentEntityForm $form_object */
+    /** @var \Drupal\Core\Entity\ContentEntityTypeInterface $entity_type */
+    if ('media' == $form_object->getEntity()->getEntityType()->id()) {
+      if (isset($form['revision_information'])) {
+        $form['revision_information']['#access'] = FALSE;
+      }
+    }
+  }
+
   switch ($form_id) {
     // Restrict theme settings form for non-admins.
     case 'system_theme_settings':
-      if (!sitenow_is_user_admin(\Drupal::currentUser())) {
+      /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+      $check = \Drupal::service('uiowa_core.access_checker');
+
+      /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+      $access = $check->access(\Drupal::currentUser()->getAccount());
+
+      if ($access->isForbidden()) {
         $form["theme_settings"]['#access'] = FALSE;
         $form["logo"]['#access'] = FALSE;
         $form["favicon"]['#access'] = FALSE;
@@ -466,7 +507,13 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
     // Restrict certain webform component options.
     case 'webform_ui_element_form':
-      if (!sitenow_is_user_admin(\Drupal::currentUser())) {
+      /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+      $check = \Drupal::service('uiowa_core.access_checker');
+
+      /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+      $access = $check->access(\Drupal::currentUser()->getAccount());
+
+      if ($access->isForbidden()) {
         // Remove access to wrapper, element, label attributes.
         $form['properties']['wrapper_attributes']['#access'] = FALSE;
         $form['properties']['element_attributes']['#access'] = FALSE;
@@ -489,11 +536,25 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
     case 'block_content_uiowa_text_area_edit_form':
       $block = $form_state->getFormObject()->getEntity();
       $uuid = $block->uuid();
-      // For Footer Contact Information, remove field.
+      // For Footer Contact Information, limit non-admins to minimal and remove
+      // headline field.
       if ($uuid == '0c0c1f36-3804-48b0-b384-6284eed8c67e') {
         $form['field_uiowa_headline']['#access'] = FALSE;
+        /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+        $check = \Drupal::service('uiowa_core.access_checker');
+
+        /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+        $access = $check->access(\Drupal::currentUser()->getAccount());
+
+        if ($access->isForbidden()) {
+          $form["field_uiowa_text_area"]["widget"][0]['#allowed_formats'] = [
+            'minimal',
+            'plain_text',
+          ];
+        }
       }
       break;
+
   }
 }
 
@@ -521,7 +582,7 @@ function sitenow_form_revision_overview_form_alter(&$form, FormStateInterface $f
  * Implements hook_form_FORM_ID_alter().
  */
 function sitenow_form_system_site_information_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $menus = menu_ui_get_menus();
+  $menus = Menu::loadMultiple();
   $social_media_menu = 'social';
   $custom_menu = 'footer-primary';
   $custom_menu_2 = 'footer-secondary';
@@ -719,7 +780,7 @@ function sitenow_preprocess_page(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     $node = \Drupal::routeMatch()->getParameter('node');
-    $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
+    $node = ($node ?? \Drupal::routeMatch()->getParameter('node_preview'));
     if ($node instanceof NodeInterface) {
       $variables['header_attributes'] = new Attribute();
       if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
@@ -850,9 +911,6 @@ function sitenow_form_menu_link_content_form_submit(array &$form, FormStateInter
  * Implements hook_link_alter().
  */
 function sitenow_link_alter(&$variables) {
-  if ($variables['url']->isRouted() && $variables['url']->getRouteName() === '<nolink>') {
-    $variables['options']['attributes']['tabindex'] = '0';
-  }
   if (!empty($variables['options']['fa_icon'])) {
     $variables['options']['attributes']['class'][] = 'fa-icon';
 
@@ -923,29 +981,10 @@ function sitenow_toolbar() {
 }
 
 /**
- * Helper function to determine if the current user is an admin.
- *
- * @param \Drupal\Core\Session\AccountProxy $current_user
- *   The current user account.
- *
- * @return bool
- *   Boolean indicating whether or not current user is an admin.
- *
- * @todo Replace this with uiowa_core access checker service.
- */
-function sitenow_is_user_admin(AccountProxy $current_user) {
-  if ($current_user->id() == 1 || in_array('administrator', $current_user->getRoles())) {
-    return TRUE;
-  }
-  else {
-    return FALSE;
-  }
-}
-
-/**
  * Determine the version of SiteNow based on what config is active.
  *
  * @todo Return additional information like if any other splits are active that might impact functionality.
+ * See https://github.com/uiowa/uiowa/issues/5021
  */
 function sitenow_get_version() {
   $version = 'v3';
@@ -1053,6 +1092,7 @@ function sitenow_tokens($type, $tokens, array $data, array $options, BubbleableM
                 $replacement_value = trim(strip_tags($replacement_value));
                 // Using text.module text_summary().
                 // @todo Make length a configuration setting.
+                //   See https://github.com/uiowa/uiowa/issues/5024
                 $replacements[$original] = text_summary($replacement_value, "plain_text", "300");
               }
             }

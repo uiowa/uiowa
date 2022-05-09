@@ -12,6 +12,7 @@ $imgpath: '../../uids/assets/images';
 @import "admin/_grid.scss";
 @import "admin/_paragraphs.scss";
 @import "admin/_claro.scss";
+@import "admin/_local-tasks.scss";
 
 .uiowa-headline--container {
   border: 1px solid #999;
@@ -44,7 +45,7 @@ $imgpath: '../../uids/assets/images';
 }
 
 // Edit layout for textblock not displaying correctly.
-.block-inline-blockuiowa-text-area {
+.block-inline-blockuiowa-text-area.layout-builder-block {
   min-height: 40px;
 }
 
@@ -52,4 +53,3 @@ $imgpath: '../../uids/assets/images';
 .headline.h2:not(:first-child), h2.headline:not(:first-child) {
   margin-top: 0;
 }
-

@@ -1,0 +1,40 @@
+uuid: 873b54ac-0495-49f3-bd58-7806e0c58916
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_image
+    - field.field.block_content.uiowa_image.field_uiowa_image_image
+    - field.field.block_content.uiowa_image.field_uiowa_image_link
+  module:
+    - link
+    - media_library
+id: block_content.uiowa_image.default
+targetEntityType: block_content
+bundle: uiowa_image
+mode: default
+content:
+  field_uiowa_image_image:
+    type: media_library_widget
+    weight: 1
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+  field_uiowa_image_link:
+    type: link_default
+    weight: 2
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  info:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

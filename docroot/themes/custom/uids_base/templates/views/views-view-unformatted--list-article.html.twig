@@ -35,13 +35,10 @@
       {% endif %}
     {% endblock %}
 
-    {% block card_date %}
-      {% if card_date|striptags|trim is not empty %}
-        {{ card_date }}
+    {% block card_meta %}
+      {% if card_meta|striptags|trim is not empty %}
+        {{ card_meta }}
       {% endif %}
-    {% endblock %}
-
-    {% block card_tag %}
       {% if card_tag|striptags|trim is not empty %}
         {{ card_tag }}
       {% endif %}

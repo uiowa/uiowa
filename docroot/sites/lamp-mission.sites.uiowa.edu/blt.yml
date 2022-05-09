@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: siteslamp-mission.uiowa.ddev.site
+    protocol: https
+  machine_name: siteslamp-mission
+  human_name: lamp-mission.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: siteslamp-mission.prod
+drupal:
+  db:
+    database: lamp_mission_sites_uiowa_edu
+uiowa:
+  requester: anjaynes

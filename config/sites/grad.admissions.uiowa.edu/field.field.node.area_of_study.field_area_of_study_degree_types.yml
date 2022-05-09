@@ -1,0 +1,29 @@
+uuid: ad4babb6-4c67-4409-8eed-b13623e69823
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_area_of_study_degree_types
+    - node.type.area_of_study
+    - taxonomy.vocabulary.degree_types
+id: node.area_of_study.field_area_of_study_degree_types
+field_name: field_area_of_study_degree_types
+entity_type: node
+bundle: area_of_study
+label: 'Degree Types'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      degree_types: degree_types
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

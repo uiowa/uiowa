@@ -85,6 +85,8 @@ function uiowa_book_theme($existing, $type, $theme, $path) {
  * Implements hook_theme_registry_alter().
  */
 function uiowa_book_theme_registry_alter(&$theme_registry) {
-  $theme_registry['book_navigation']['path'] = drupal_get_path('module', 'uiowa_book') . '/templates';
-  $theme_registry['book_tree']['path'] = drupal_get_path('module', 'uiowa_book') . '/templates';
+  /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
+  $path_resolver = \Drupal::service('extension.path.resolver');
+  $theme_registry['book_navigation']['path'] = $path_resolver->getPath('module', 'uiowa_book') . '/templates';
+  $theme_registry['book_tree']['path'] = $path_resolver->getPath('module', 'uiowa_book') . '/templates';
 }

@@ -1,0 +1,62 @@
+{#
+/**
+ * @file
+ * Theme override to display a view of unformatted rows.
+ *
+ * Available variables:
+ * - title: The title of this group of rows. May be empty.
+ * - rows: A list of the view's row items.
+ *   - attributes: The row's HTML attributes.
+ *   - content: The row's content.
+ * - view: The view object.
+ * - default_row_class: A flag indicating whether default classes should be
+ *   used on rows.
+ *
+ * @see template_preprocess_views_view_unformatted()
+ */
+#}
+
+{% set headline_level = 'h3 '%}
+{% if view %}
+  {% set headline_level = view.display_handler.getOption('heading_size') %}
+{% endif %}
+{% if heading_size %}
+  {% set headline_level = heading_size %}
+{% endif %}
+
+{% if title %}
+  <h3>{{ title }}</h3>
+{% endif %}
+{% for key,row in rows %}
+  {% set row_classes = [
+    default_row_class ? 'views-row',
+  ] %}
+  <div{{ row.attributes.addClass(row_classes) }}>
+
+    {% set media_attributes = media_attributes ?: create_attribute() %}
+
+    {%
+      set classes = [
+      'card--list',
+      'card--media-right',
+    ]
+    %}
+
+    {% set card_view = {
+      'attributes': attributes.addClass(classes),
+      'headline_level': headline_level,
+      'card_title': view.style_plugin.getField(key, 'name'),
+      'content': view.style_plugin.getField(key, 'field_cc_locations'),
+    } %}
+
+    {% embed '@uids_base/uids/card.html.twig' with card_view only %}
+
+      {% block card_content %}
+        {% if content|striptags|trim is not empty %}
+          {{ content }}
+        {% endif %}
+      {% endblock %}
+
+    {% endembed %}
+  </div>
+{% endfor %}
