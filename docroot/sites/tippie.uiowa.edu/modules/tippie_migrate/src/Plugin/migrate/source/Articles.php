@@ -106,6 +106,49 @@ class Articles extends BaseNodeSource {
       $tags = [];
       foreach ($tag_results as $result) {
         $tag_name = $result['name'];
+
+        // @todo If Featured research, confirm "research" tag. Replaced later.
+
+        // Update some tags to something else the Tippie team provided.
+        $replacements = [
+          'DEI' => 'dei',
+          'Master of Finance' => 'mfin',
+          'faculty award' => 'faculty awards',
+          'research' => 'faculty research',
+          'Tippie Leadership Collaborative' => 'tlc',
+          'analytics' => 'business analytics',
+          'BAIS' => 'business analytics',
+          'business analytics' => 'business analytics',
+          'business analytics dept' => 'business analytics',
+          'business analytics master of science' => 'msba',
+          'emba' => 'iemba',
+          'Executive MBA Program' => 'iemba',
+          'finance' => 'finance',
+          'Full-time MBA' => 'imba',
+          'Iowa MBA' => 'imba',
+          'Master of Finance' => 'mfin',
+          'Masters in Business Analytics' => 'msba',
+          'Masters of Finance' => 'mfin',
+          'mba' => 'imba',
+          'mba business analytics' => 'msba',
+          'MFin' => 'mfin',
+          'MIS' => 'msba',
+          'MSBA' => 'msba',
+          'OMBA' => 'imba',
+          'Online MBA' => 'imba',
+          'PhD' => 'phd',
+          'pmba' => 'imba',
+          'Professional MBA Program' => 'imba',
+          'Tippie Analytics' => 'business analytics',
+          'undergraduate' => 'upo',
+          'undergraduate program' => 'upo',
+          'Undergraduate Program Office' => 'upo',
+          'undergraduates' => 'upo',
+        ];
+        if (array_key_exists($tag_name, $replacements)) {
+          $tag_name = $replacements[$tag_name];
+        }
+
         // Check if we have a mapping. If we don't yet,
         // then create a new tag and add it to our map.
         if (!isset($this->tagMapping[$tag_name])) {
@@ -125,7 +168,8 @@ class Articles extends BaseNodeSource {
       $row->setSourceProperty('tags', $tags);
     }
 
-    // Combine writer and source title if both exist.
+    // Combine news writer and source title together if they both exist.
+    // Only the link is mapped to the source link field.
     $custom_org = $row->getSourceProperty('field_news_writer')[0]['value'];
     if ($source = $row->getSourceProperty('field_news_source')) {
       if (!empty($custom_org)) {
