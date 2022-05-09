@@ -125,6 +125,18 @@ class Articles extends BaseNodeSource {
       $row->setSourceProperty('tags', $tags);
     }
 
+    // Combine writer and source title if both exist.
+    $custom_org = $row->getSourceProperty('field_news_writer')[0]['value'];
+    if ($source = $row->getSourceProperty('field_news_source')) {
+      if (!empty($custom_org)) {
+        $custom_org = $custom_org . ', ' . $source[0]['title'];
+      }
+      else {
+        $custom_org = $source[0]['title'];
+      }
+    }
+    $row->setSourceProperty('custom_org', $custom_org);
+
     if ($image = $row->getSourceProperty('field_news_image')) {
       $row->setSourceProperty('field_image', $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']));
     }
