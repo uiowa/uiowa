@@ -208,11 +208,6 @@ class DirectoryController extends ControllerBase {
             ]),
           ],
         ];
-
-        $build['#attached']['html_head'][] = [
-          $description,
-          'description',
-        ];
       }
 
       if (isset($structured)) {
@@ -238,12 +233,29 @@ class DirectoryController extends ControllerBase {
           '@site_name' => $this->config('system.site')->get('name'),
         ]),
       ];
+
+      $description = [
+        '#tag' => 'meta',
+        '#attributes' => [
+          'name' => 'description',
+          'content' => $this->t('@title - The University of Iowa', [
+            '@title' => $directory['title'],
+          ]),
+        ],
+      ];
     }
 
     if (isset($title)) {
       $build['#attached']['html_head']['title'] = [
         $title,
         'title',
+      ];
+    }
+
+    if (isset($description)) {
+      $build['#attached']['html_head'][] = [
+        $description,
+        'description',
       ];
     }
 
