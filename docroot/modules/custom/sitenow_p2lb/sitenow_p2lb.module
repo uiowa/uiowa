@@ -852,8 +852,8 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
     default:
 
   }
-  // If we have a block save it, and check that it saved successfully.
 
+  // If we have a block save it, and check that it saved successfully.
   if (!$block && !empty($block_definition)) {
     $block = \Drupal::entityTypeManager()
       ->getStorage('block_content')
@@ -867,7 +867,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       'provider' => 'layout_builder',
       'label_display' => $display_label,
       'block_revision_id' => $block->getRevisionId(),
-      'view_mode' => isset($view_mode) ? $view_mode : '',
+      'view_mode' => $view_mode ?? '',
     ];
 
     // Set the block usage to the node.
