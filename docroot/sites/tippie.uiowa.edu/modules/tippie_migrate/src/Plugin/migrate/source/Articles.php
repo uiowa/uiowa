@@ -83,7 +83,7 @@ class Articles extends BaseNodeSource {
     }
 
     // Establish an array to eventually map to field_tags.
-    $tags = [];
+    $tids = [];
 
     // Load additional database table information to get entity label data.
     $tables = [
@@ -104,6 +104,7 @@ class Articles extends BaseNodeSource {
 
     // Migrate tags from old site, by getting term name and
     // comparing to existing tags before creating new.
+    $tag_names = [];
     $tag_tids = $row->getSourceProperty('field_tags_tid');
     if (!empty($tag_tids)) {
       // Fetch tag names based on TIDs from our old site.
@@ -155,8 +156,7 @@ class Articles extends BaseNodeSource {
           $tag_name = $replacements[$tag_name];
         }
 
-        $tag = $this->createTag($tag_name);
-        $tags[] = $tag;
+        $tag_names[] = $tag_name;
 
       }
     }
@@ -199,8 +199,7 @@ class Articles extends BaseNodeSource {
       if (!empty($department_tags)) {
         $department_tags = array_unique($department_tags);
         foreach ($department_tags as $tag_name) {
-          $tag = $this->createTag($tag_name);
-          $tags[] = $tag;
+          $tag_names[] = $tag_name;
         }
       }
     }
@@ -208,35 +207,24 @@ class Articles extends BaseNodeSource {
     // Map field_news_featured_research to "faculty research" tag.
     $research = $row->getSourceProperty('field_news_featured_research')[0]['value'];
     if ($research == '1') {
-      if (isset($tag_results)) {
-        if (!in_array('faculty research', (array) $tag_results)) {
-          $faculty_research = $this->createTag('faculty research');
-          $tags[] = $faculty_research;
-        }
-      }
-      else {
-        $faculty_research = $this->createTag('faculty research');
-        $tags[] = $faculty_research;
-      }
+      $tag_names[] = 'faculty research';
     }
 
     // Convert news type to tags, default to 'news' unless media_mention.
     $news_type = $row->getSourceProperty('field_news_type')[0]['value'];
-    $news_type_tag = (!empty($news_type) && $news_type == 'media_mention') ? 'media mention' : 'news';
-    if (isset($tag_results)) {
-      if (!in_array($news_type_tag, (array) $tag_results)) {
-        $faculty_research = $this->createTag($news_type_tag);
-        $tags[] = $faculty_research;
-      }
-    }
-    else {
-      $faculty_research = $this->createTag($news_type_tag);
-      $tags[] = $faculty_research;
+    $tag_names[] = (!empty($news_type) && $news_type == 'media_mention') ? 'media mention' : 'news';
+
+    // Remove any duplicates.
+    $tag_names = array_unique($tag_names);
+
+    foreach ($tag_names as $name) {
+      $tid = $this->createTag($name);
+      $tids[] = $tid;
     }
 
-    // Send all collected tags to field_tags.
-    if (!empty($tags)) {
-      $row->setSourceProperty('tags', $tags);
+    // Send all final tids to field_tags.
+    if (!empty($tids)) {
+      $row->setSourceProperty('tags', $tids);
     }
 
     // Check for content blocks and log the nodes they are on.
@@ -282,6 +270,7 @@ class Articles extends BaseNodeSource {
       }
     }
 
+    // Return tid for mapping to field.
     return $this->tagMapping[$tag_name];
   }
 
