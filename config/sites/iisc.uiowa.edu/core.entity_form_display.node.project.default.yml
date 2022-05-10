@@ -6,6 +6,7 @@ dependencies:
     - core.entity_form_mode.node.minimal
     - field.field.node.project.body
     - field.field.node.project.field_image
+    - field.field.node.project.field_meta_tags
     - field.field.node.project.field_project_college_department
     - field.field.node.project.field_project_deliverables
     - field.field.node.project.field_project_led_by
@@ -13,12 +14,14 @@ dependencies:
     - field.field.node.project.field_project_partner
     - field.field.node.project.field_tags
     - node.type.project
+    - workflows.workflow.editorial
   module:
     - content_moderation
     - entity_browser_entity_form
     - inline_entity_form
     - link
     - media_library
+    - metatag
     - path
     - text
 id: node.project.default
@@ -48,6 +51,14 @@ content:
     region: content
     settings:
       media_types: {  }
+    third_party_settings: {  }
+  field_meta_tags:
+    type: metatag_firehose
+    weight: 129
+    region: content
+    settings:
+      sidebar: true
+      use_details: true
     third_party_settings: {  }
   field_project_college_department:
     type: entity_reference_autocomplete
