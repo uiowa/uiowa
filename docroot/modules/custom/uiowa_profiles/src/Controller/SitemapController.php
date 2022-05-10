@@ -73,7 +73,6 @@ class SitemapController extends ControllerBase {
    *   The response object.
    */
   public function build(Request $request, $key) {
-    // The returned sitemap URLs already include a slash so remove ours.
     $directory = $this->config('uiowa_profiles.settings')->get('directories')[$key];
 
     $sitemap = $this->profiles->request('GET', 'people/sitemap', [
@@ -82,7 +81,7 @@ class SitemapController extends ControllerBase {
     ],
     [
       'headers' => [
-        'Accept' => 'text/plain',
+        'Accept' => 'application/xml',
         'Referer' => $request->getSchemeAndHttpHost(),
       ],
     ]);
@@ -91,7 +90,7 @@ class SitemapController extends ControllerBase {
       $sitemap,
       200,
       [
-        'Content-Type' => 'text/plain',
+        'Content-Type' => 'application/xml',
       ]
     );
   }

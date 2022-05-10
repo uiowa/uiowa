@@ -59,7 +59,7 @@ class ProfilesDynamic implements ContainerInjectionInterface {
       );
 
       $routes["uiowa_profiles.sitemap.{$key}"] = new Route(
-        "{$directory['path']}/sitemap.txt",
+        "{$directory['path']}/sitemap",
         [
           '_controller' => 'Drupal\uiowa_profiles\Controller\SitemapController::build',
           'key' => $key,
