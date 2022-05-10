@@ -15,14 +15,17 @@ theme: {  }
 complete_list:
   - config_split.config_split.site
   - field.storage.node.field_iowa_counties
-  - field.storage.node.field_partner_description
-  - field.storage.node.field_partner_link
-  - field.storage.node.field_partner_related_individual
   - metatag.metatag_defaults.node__partner
+  - metatag.metatag_defaults.node__project
   - node.type.partner
   - node.type.project
+  - pathauto.pattern.partner
+  - pathauto.pattern.project
   - simple_sitemap.bundle_settings.default.node.partner
+  - simple_sitemap.bundle_settings.default.node.project
+  - simple_sitemap.bundle_settings.default.taxonomy_term.colleges_and_departments
   - taxonomy.vocabulary.colleges_and_departments
+  - 'field.storage.node.field_partner_*'
   - 'field.storage.node.field_project_*'
 partial_list:
   - metatag.settings
