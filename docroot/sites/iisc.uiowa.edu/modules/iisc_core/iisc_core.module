@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for IISC Core module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_alter().
+ */
+function iisc_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    // Node form modifications.
+    case 'node_partner_edit_form':
+    case 'node_partner_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      break;
+
+  }
+}
