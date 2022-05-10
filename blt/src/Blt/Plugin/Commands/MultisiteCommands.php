@@ -250,6 +250,10 @@ class MultisiteCommands extends BltTasks {
     $this->switchSiteContext($dir);
     $db = $this->getConfigValue('drupal.db.database');
 
+    if ($db != Multisite::getDatabaseName($dir)) {
+      throw new \Exception('Database does not match expected value.');
+    }
+
     $id = Multisite::getIdentifier("https://{$dir}");
     $local = Multisite::getInternalDomains($id)['local'];
     $dev = Multisite::getInternalDomains($id)['dev'];
