@@ -1132,12 +1132,16 @@ EOD;
       throw new \Exception('Deleting current directory or wildcard is not allowed.');
     }
 
-    $this->taskDrush()
+    $result = $this->taskDrush()
       ->alias("$id.$env")
       ->drush('ssh')
       ->arg("rm -rf $site")
       ->option('cd', "/mnt/gfs/$app.$env/sites/")
       ->run();
+
+    if (!$result->wasSuccessful()) {
+      throw \Exception("Unable to delete multisite files for $site on $app.$env.");
+    }
   }
 
 }
