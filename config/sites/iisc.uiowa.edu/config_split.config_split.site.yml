@@ -1,0 +1,27 @@
+uuid: fd5e8297-6977-4a17-89e9-5a070bb93a19
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: Site
+description: 'Custom settings for iisc.uiowa.edu.'
+weight: 70
+stackable: true
+storage: folder
+folder: ../config/sites/iisc.uiowa.edu
+module:
+  iisc_core: 0
+theme: {  }
+complete_list:
+  - config_split.config_split.site
+  - field.storage.node.field_iowa_counties
+  - field.storage.node.field_partner_description
+  - field.storage.node.field_partner_link
+  - field.storage.node.field_partner_related_individual
+  - metatag.metatag_defaults.node__partner
+  - node.type.partner
+  - simple_sitemap.bundle_settings.default.node.partner
+partial_list:
+  - metatag.settings
+  - workflows.workflow.editorial
+  - 'user.role.*'
