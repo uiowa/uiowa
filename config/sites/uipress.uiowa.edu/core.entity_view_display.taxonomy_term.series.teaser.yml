@@ -1,0 +1,40 @@
+uuid: 6c0dc8c5-48d3-4a94-8ce4-129cf769b5f8
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.taxonomy_term.teaser
+    - taxonomy.vocabulary.series
+  module:
+    - layout_builder
+    - smart_trim
+third_party_settings:
+  layout_builder:
+    enabled: false
+    allow_custom: false
+id: taxonomy_term.series.teaser
+targetEntityType: taxonomy_term
+bundle: series
+mode: teaser
+content:
+  description:
+    type: smart_trim
+    label: hidden
+    settings:
+      trim_length: 400
+      trim_type: chars
+      trim_suffix: ''
+      wrap_output: false
+      wrap_class: trimmed
+      more_link: false
+      more_class: more-link
+      more_text: More
+      summary_handler: full
+      trim_options:
+        text: false
+        trim_zero: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  search_api_excerpt: true
