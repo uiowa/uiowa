@@ -320,7 +320,7 @@ class MultisiteCommands extends BltTasks {
 
       // Delete the site code.
       $this->taskFilesystemStack()
-        ->remove("{$root}/config/{$dir}")
+        ->remove("{$root}/config/sites/{$dir}")
         ->remove("{$root}/docroot/sites/{$dir}")
         ->remove("{$root}/drush/sites/{$id}.site.yml")
         ->run();
@@ -568,7 +568,7 @@ EOD
 
     // Remove some files that we don't need or will be regenerated below.
     $files = [
-      "{$root}/config/{$host}",
+      "{$root}/config/sites/{$host}",
       "{$root}/docroot/sites/{$host}/default.services.yml",
       "{$root}/docroot/sites/{$host}/services.yml",
       "{$root}/drush/sites/{$host}.site.yml",
