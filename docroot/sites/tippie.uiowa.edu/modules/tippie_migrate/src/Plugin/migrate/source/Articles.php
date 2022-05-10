@@ -81,9 +81,10 @@ class Articles extends BaseNodeSource {
       // Extract the summary.
       $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));
     }
-
+    $tags = [];
     $tables = [
       'field_data_field_tags' => ['field_tags_tid'],
+      'field_data_field_news_departments' => ['field_news_departments_target_id'],
     ];
     $this->fetchAdditionalFields($row, $tables);
     // Set our tagMapping if it's not already.
@@ -103,11 +104,9 @@ class Articles extends BaseNodeSource {
         ->fields('t', ['name'])
         ->condition('t.tid', $tag_tids, 'IN')
         ->execute();
-      $tags = [];
+
       foreach ($tag_results as $result) {
         $tag_name = $result['name'];
-
-        // @todo If Featured research, confirm "research" tag. Replaced later.
 
         // Update some tags to something else the Tippie team provided.
         $replacements = [
@@ -149,22 +148,57 @@ class Articles extends BaseNodeSource {
           $tag_name = $replacements[$tag_name];
         }
 
-        // Check if we have a mapping. If we don't yet,
-        // then create a new tag and add it to our map.
-        if (!isset($this->tagMapping[$tag_name])) {
-          $term = Term::create([
-            'name' => $tag_name,
-            'vid' => 'tags',
-          ]);
-          if ($term->save()) {
-            $this->tagMapping[$tag_name] = $term->id();
-          }
-        }
-
-        // Add the mapped TID to match our tag name.
-        $tags[] = $this->tagMapping[$tag_name];
+        $tag = $this->createTag($tag_name);
+        $tags[] = $tag;
 
       }
+    }
+
+    // Convert departments to tags with some specific replacements.
+    $departments = $row->getSourceProperty('field_news_departments_target_id');
+    if (!empty($departments)) {
+      // Get department names.
+      $department_names = $this->select('node', 'n')
+        ->fields('n', ['title'])
+        ->condition('n.nid', $departments, 'IN')
+        ->execute();
+
+      $dept_replacements = [
+        'Accounting' => ['accounting', 'mac'],
+        'Business Analytics' => ['business analytics', 'msba'],
+        'Economics' => ['economics'],
+        'Finance' => ['finance', 'mfin'],
+        'Graduate Management Programs' => ['gmp'],
+        'John Pappajohn Entrepreneurial Center (Iowa JPEC)' => ['iowa jpec'],
+        'Management and Entrepreneurship' => ['m and e'],
+        'Marketing' => ['marketing'],
+        'UI News Services' => ['media mention'],
+        'Undergraduate Program' => ['upo'],
+      ];
+      $department_tags = [];
+      foreach ($department_names as $result) {
+        $department_name = $result['title'];
+        if (array_key_exists($department_name, $dept_replacements)) {
+          foreach ($dept_replacements[$department_name] as $replacement) {
+            $department_tags[] = $replacement;
+          }
+        }
+        else {
+          $department_tags[] = $department_name;
+        }
+      }
+
+      if (!empty($department_tags)) {
+        foreach ($department_tags as $tag_name) {
+          $tag = $this->createTag($tag_name);
+          $tags[] = $tag;
+        }
+      }
+    }
+
+    // @todo Faculty Research.
+    // @todo News/Media Mention tags.
+    if (!empty($tags)) {
       $row->setSourceProperty('tags', $tags);
     }
 
@@ -185,6 +219,25 @@ class Articles extends BaseNodeSource {
       $row->setSourceProperty('field_image', $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']));
     }
     return TRUE;
+  }
+
+  /**
+   * Helper function to check for existing tags and create if they don't exist.
+   */
+  private function createTag($tag_name) {
+    // Check if we have a mapping. If we don't yet,
+    // then create a new tag and add it to our map.
+    if (!isset($this->tagMapping[$tag_name])) {
+      $term = Term::create([
+        'name' => $tag_name,
+        'vid' => 'tags',
+      ]);
+      if ($term->save()) {
+        $this->tagMapping[$tag_name] = $term->id();
+      }
+    }
+
+    return $this->tagMapping[$tag_name];
   }
 
   /**
