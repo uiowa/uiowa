@@ -1127,6 +1127,10 @@ EOD;
    * @throws \Robo\Exception\TaskException
    */
   protected function deleteRemoteMultisiteFiles(string $id, string $app, string $env, string $site): void {
+    if ($site == '.' || $site == '*') {
+      throw new \Exception('Deleting current directory or wildcard is not allowed.');
+    }
+
     $this->taskDrush()
       ->alias("$id.$env")
       ->drush('ssh')
