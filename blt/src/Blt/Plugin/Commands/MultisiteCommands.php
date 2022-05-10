@@ -1090,8 +1090,8 @@ EOD;
    * @param string $env
    *   The environment to use for the Drush alias. Defaults to prod.
    *
-   * @return string|CommandError
-   *   Either the application as a string or a CommandError if unsuccessful.
+   * @return string
+   *   The application name.
    *
    * @throws \Robo\Exception\TaskException
    */
@@ -1107,7 +1107,7 @@ EOD;
       ->run();
 
     if (!$result->wasSuccessful()) {
-      return new CommandError('Unable to get current application with Drush.');
+      throw new \Exception('Unable to get current application with Drush.');
     }
 
     return trim($result->getMessage());
