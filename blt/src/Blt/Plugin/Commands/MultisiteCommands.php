@@ -340,16 +340,18 @@ EOD
         ->to('')
         ->run();
 
-      $this->taskGit()
+      $task = $this->taskGit()
         ->dir($root)
         ->add('docroot/sites/sites.php')
         ->add("docroot/sites/{$dir}/")
         ->add("drush/sites/{$id}.site.yml")
-        ->add("config/{$dir}/")
-        ->commit("Delete {$dir} multisite on {$name}")
-        ->interactive(FALSE)
-        ->printOutput(FALSE)
-        ->printMetadata(FALSE)
+        ->interactive(FALSE);
+
+      if (file_exists("$root/config/sites/$dir")) {
+        $task->add("config/sites/$dir");
+      }
+
+      $task->commit("Delete {$dir} multisite on {$name}")
         ->run();
 
       $this->say("Committed deletion of site <comment>{$dir}</comment> code.");
