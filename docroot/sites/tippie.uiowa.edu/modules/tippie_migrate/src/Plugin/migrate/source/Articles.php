@@ -81,12 +81,17 @@ class Articles extends BaseNodeSource {
       // Extract the summary.
       $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));
     }
+
+    // Establish an array to eventually map to field_tags.
     $tags = [];
+
+    // Load additional database table information to get entity label data.
     $tables = [
       'field_data_field_tags' => ['field_tags_tid'],
       'field_data_field_news_departments' => ['field_news_departments_target_id'],
     ];
     $this->fetchAdditionalFields($row, $tables);
+
     // Set our tagMapping if it's not already.
     if (empty($this->tagMapping)) {
       $this->tagMapping = \Drupal::database()
@@ -97,6 +102,8 @@ class Articles extends BaseNodeSource {
         ->fetchAllKeyed();
     }
 
+    // Migrate tags from old site, by getting term name and
+    // comparing to existing tags before creating new.
     $tag_tids = $row->getSourceProperty('field_tags_tid');
     if (!empty($tag_tids)) {
       // Fetch tag names based on TIDs from our old site.
@@ -163,6 +170,7 @@ class Articles extends BaseNodeSource {
         ->condition('n.nid', $departments, 'IN')
         ->execute();
 
+      // List of replacements provided by Tippie. Note: Some have more than one.
       $dept_replacements = [
         'Accounting' => ['accounting', 'mac'],
         'Business Analytics' => ['business analytics', 'msba'],
@@ -189,6 +197,7 @@ class Articles extends BaseNodeSource {
       }
 
       if (!empty($department_tags)) {
+        $department_tags = array_unique($department_tags);
         foreach ($department_tags as $tag_name) {
           $tag = $this->createTag($tag_name);
           $tags[] = $tag;
@@ -196,8 +205,36 @@ class Articles extends BaseNodeSource {
       }
     }
 
-    // @todo Faculty Research.
-    // @todo News/Media Mention tags.
+    // Map field_news_featured_research to "faculty research" tag.
+    $research = $row->getSourceProperty('field_news_featured_research')[0]['value'];
+    if ($research == '1') {
+      if (isset($tag_results)) {
+        if (!in_array('faculty research', (array) $tag_results)) {
+          $faculty_research = $this->createTag('faculty research');
+          $tags[] = $faculty_research;
+        }
+      }
+      else {
+        $faculty_research = $this->createTag('faculty research');
+        $tags[] = $faculty_research;
+      }
+    }
+
+    // Convert news type to tags, default to 'news' unless media_mention.
+    $news_type = $row->getSourceProperty('field_news_type')[0]['value'];
+    $news_type_tag = (!empty($news_type) && $news_type == 'media_mention') ? 'media mention' : 'news';
+    if (isset($tag_results)) {
+      if (!in_array($news_type_tag, (array) $tag_results)) {
+        $faculty_research = $this->createTag($news_type_tag);
+        $tags[] = $faculty_research;
+      }
+    }
+    else {
+      $faculty_research = $this->createTag($news_type_tag);
+      $tags[] = $faculty_research;
+    }
+
+    // Send all collected tags to field_tags.
     if (!empty($tags)) {
       $row->setSourceProperty('tags', $tags);
     }
