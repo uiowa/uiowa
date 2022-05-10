@@ -3377,12 +3377,6 @@ $sites['labratner.dev.drupal.uiowa.edu'] = 'ratner.lab.uiowa.edu';
 $sites['labratner.stage.drupal.uiowa.edu'] = 'ratner.lab.uiowa.edu';
 $sites['labratner.prod.drupal.uiowa.edu'] = 'ratner.lab.uiowa.edu';
 
-// Directory aliases for humanitiesiowa.org.
-$sites['org-humanitiesiowa.uiowa.ddev.site'] = 'humanitiesiowa.org';
-$sites['org-humanitiesiowa.dev.drupal.uiowa.edu'] = 'humanitiesiowa.org';
-$sites['org-humanitiesiowa.stage.drupal.uiowa.edu'] = 'humanitiesiowa.org';
-$sites['org-humanitiesiowa.prod.drupal.uiowa.edu'] = 'humanitiesiowa.org';
-
 // Directory aliases for dale-stille.lab.uiowa.edu.
 $sites['labdale-stille.uiowa.ddev.site'] = 'dale-stille.lab.uiowa.edu';
 $sites['labdale-stille.dev.drupal.uiowa.edu'] = 'dale-stille.lab.uiowa.edu';
