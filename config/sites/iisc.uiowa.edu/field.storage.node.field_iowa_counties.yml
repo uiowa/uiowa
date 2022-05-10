@@ -1,0 +1,21 @@
+uuid: 6d197f62-926a-4eee-a042-0691d023a6f1
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_iowa_counties
+field_name: field_iowa_counties
+entity_type: node
+type: list_string
+settings:
+  allowed_values: {  }
+  allowed_values_function: uiowa_core_county_options
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

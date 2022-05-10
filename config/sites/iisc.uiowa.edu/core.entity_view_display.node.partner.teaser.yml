@@ -1,0 +1,38 @@
+uuid: 09d24096-8d47-496c-b0e7-01a7c966deae
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.partner.field_image
+    - field.field.node.partner.field_iowa_counties
+    - field.field.node.partner.field_meta_tags
+    - field.field.node.partner.field_partner_description
+    - field.field.node.partner.field_partner_link
+    - field.field.node.partner.field_partner_related_individual
+    - node.type.partner
+  module:
+    - user
+id: node.partner.teaser
+targetEntityType: node
+bundle: partner
+mode: teaser
+content:
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_image: true
+  field_iowa_counties: true
+  field_meta_tags: true
+  field_partner_description: true
+  field_partner_link: true
+  field_partner_related_individual: true
+  search_api_excerpt: true
