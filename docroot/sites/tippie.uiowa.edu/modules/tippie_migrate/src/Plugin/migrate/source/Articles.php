@@ -239,6 +239,14 @@ class Articles extends BaseNodeSource {
       $row->setSourceProperty('tags', $tags);
     }
 
+    // Check for content blocks and log the nodes they are on.
+    if ($row->getSourceProperty('field_content_block')) {
+      $this->logger->notice('Content blocks found on old /node/@old. Consider revising @article', [
+        '@old' => $row->getSourceProperty('nid'),
+        '@article' => $row->getSourceProperty('title'),
+      ]);
+    }
+
     // Combine news writer and source title together if they both exist.
     // Only the link is mapped to the source link field.
     $custom_org = $row->getSourceProperty('field_news_writer')[0]['value'];
