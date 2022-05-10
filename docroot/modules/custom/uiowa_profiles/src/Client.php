@@ -9,6 +9,7 @@ use GuzzleHttp\Exception\RequestException;
 use Psr\Log\LoggerInterface;
 use GuzzleHttp\Client as HttpClient;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * The profiles client sets some dynamic properties based on the environment.
@@ -165,7 +166,14 @@ class Client {
     }
     catch (RequestException | GuzzleException $e) {
       $this->logger->error($e->getMessage());
-      throw new HttpException(503);
+      $code = $e->getCode();
+
+      if ($code == 404) {
+        throw new NotFoundHttpException();
+      }
+      else {
+        throw new HttpException($code, 'An error occurred while retrieving profile information.');
+      }
     }
 
     return $response->getBody()->getContents();
