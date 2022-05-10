@@ -1,0 +1,26 @@
+uuid: c6bb3b2a-aa65-4b2b-b026-15b04a8bcb3d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_partner_description
+    - node.type.partner
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    allowed_formats:
+      - filtered_html
+id: node.partner.field_partner_description
+field_name: field_partner_description
+entity_type: node
+bundle: partner
+label: 'Partner Description'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long
