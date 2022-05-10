@@ -1120,7 +1120,7 @@ EOD;
    * @param string $app
    *   THe application to use for Drush alias.
    * @param string $env
-   *   The environment to use for the Drush alias. Defaults to prod.
+   *   The environment to use for the Drush alias.
    * @param string $site
    *   The multisite files directory to delete.
    *
