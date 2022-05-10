@@ -1,0 +1,318 @@
+uuid: fd658843-270f-42c5-a302-143299edce8c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.project.body
+    - field.field.node.project.field_image
+    - field.field.node.project.field_project_college_department
+    - field.field.node.project.field_project_deliverables
+    - field.field.node.project.field_project_led_by
+    - field.field.node.project.field_project_links
+    - field.field.node.project.field_project_partner
+    - field.field.node.project.field_tags
+    - node.type.project
+  module:
+    - layout_builder
+    - link
+    - system
+    - text
+    - user
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    enabled: true
+    allow_custom: false
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: ''
+            1: section_container_narrow
+            section_margin_remove_default_margins: section_margin_remove_default_margins
+        components: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+        components:
+          6a41bea3-636f-4a19-a9df-74e9c58510df:
+            uuid: 6a41bea3-636f-4a19-a9df-74e9c58510df
+            region: content
+            configuration:
+              id: system_breadcrumb_block
+              label: null
+              label_display: null
+              provider: system
+              context_mapping: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          e2216184-88cd-406a-9cf2-24e333c2f6a9:
+            uuid: e2216184-88cd-406a-9cf2-24e333c2f6a9
+            region: content
+            configuration:
+              id: 'field_block:node:project:title'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_twocol_section
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          column_widths: 67-33
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+        components:
+          a92da8f5-5e80-4ff9-b730-5e3145833124:
+            uuid: a92da8f5-5e80-4ff9-b730-5e3145833124
+            region: second
+            configuration:
+              id: 'field_block:node:project:field_project_college_department'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          eca08014-2af0-48d1-a48b-c7a747b46f3d:
+            uuid: eca08014-2af0-48d1-a48b-c7a747b46f3d
+            region: second
+            configuration:
+              id: 'field_block:node:project:field_project_partner'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
+          bdaf902c-c001-428c-9f05-c846d37a0df1:
+            uuid: bdaf902c-c001-428c-9f05-c846d37a0df1
+            region: second
+            configuration:
+              id: 'field_block:node:project:field_tags'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 5
+            additional: {  }
+            third_party_settings: {  }
+          92090300-22aa-4cb8-a4e3-8df320ce7571:
+            uuid: 92090300-22aa-4cb8-a4e3-8df320ce7571
+            region: second
+            configuration:
+              id: 'field_block:node:project:field_project_led_by'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 4
+            additional: {  }
+            third_party_settings: {  }
+          81433f45-8dd8-4f07-bfe8-74ba372aed31:
+            uuid: 81433f45-8dd8-4f07-bfe8-74ba372aed31
+            region: first
+            configuration:
+              id: 'field_block:node:project:field_project_deliverables'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                  link: false
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          bcd7c632-6c48-4f3e-a3f9-47a02355f021:
+            uuid: bcd7c632-6c48-4f3e-a3f9-47a02355f021
+            region: first
+            configuration:
+              id: 'field_block:node:project:body'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          f24bcb93-55b1-477b-9704-1af54f6a6394:
+            uuid: f24bcb93-55b1-477b-9704-1af54f6a6394
+            region: second
+            configuration:
+              id: 'field_block:node:project:field_image'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: hidden
+                settings:
+                  view_mode: default
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          d39caeb0-975b-4ec4-b02e-0fac0b964f55:
+            uuid: d39caeb0-975b-4ec4-b02e-0fac0b964f55
+            region: second
+            configuration:
+              id: 'field_block:node:project:field_project_links'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: link
+                label: above
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: ''
+                  target: ''
+                third_party_settings: {  }
+            weight: 6
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+id: node.project.default
+targetEntityType: node
+bundle: project
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  field_image:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  field_project_college_department:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  field_project_deliverables:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 104
+    region: content
+  field_project_led_by:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 106
+    region: content
+  field_project_links:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 107
+    region: content
+  field_project_partner:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 105
+    region: content
+  field_tags:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 108
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  search_api_excerpt: true

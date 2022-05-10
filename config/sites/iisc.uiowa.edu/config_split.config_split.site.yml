@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: site
-label: Site
+label: iisc.uiowa.edu
 description: 'Custom settings for iisc.uiowa.edu.'
 weight: 70
 stackable: true
@@ -20,7 +20,10 @@ complete_list:
   - field.storage.node.field_partner_related_individual
   - metatag.metatag_defaults.node__partner
   - node.type.partner
+  - node.type.project
   - simple_sitemap.bundle_settings.default.node.partner
+  - taxonomy.vocabulary.colleges_and_departments
+  - 'field.storage.node.field_project_*'
 partial_list:
   - metatag.settings
   - workflows.workflow.editorial
