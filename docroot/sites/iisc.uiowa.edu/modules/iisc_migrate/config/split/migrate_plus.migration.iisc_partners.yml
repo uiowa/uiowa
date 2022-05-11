@@ -31,9 +31,12 @@ process:
     plugin: default_value
     default_value: 1
   field_image: field_image
-  field_person_website:
+  body: body
+  field_iowa_counties: field_ref_ia_counties # @todo Update with correct source name.
+  field_partner_related_individual: field_ref_persons
+  field_partner_link:
     plugin: field_link
-    source: field_author_url
+    source: field_partner_urls
 destination:
   plugin: 'entity:node'
   default_bundle: partner
