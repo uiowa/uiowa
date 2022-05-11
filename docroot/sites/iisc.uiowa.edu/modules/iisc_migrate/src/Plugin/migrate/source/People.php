@@ -23,6 +23,7 @@ class People extends BaseNodeSource {
   protected $multiValueFields = [
     'field_person_email' => 'email',
     'field_person_telephone' => 'value',
+    'field_ref_person_groups' => 'target_id',
   ];
 
   /**
@@ -67,7 +68,27 @@ class People extends BaseNodeSource {
     }
 
     // @todo Map group(s) and IISC role to person types.
+    $person_types = [];
+    if ($groups = $row->getSourceProperty('field_ref_person_groups_target_id')) {
+      foreach ($groups as $target_id) {
+        if ($this->groupMap($target_id)) {
+          $person_types[] = $this->groupMap($target_id);
+        }
+      }
+    }
+    $row->setSourceProperty('person_types', $person_types);
     return TRUE;
+  }
+
+  private function groupMap($target_id) {
+    $map = [
+      108 => 'iisc_staff',
+      109 => 'iisc_faculty_staff_network',
+      110 => 'affiliated_faculty_and_staff',
+      111 => 'community_partner',
+    ];
+
+    return $map[$target_id] ?? NULL;
   }
 
 }
