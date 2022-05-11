@@ -3,10 +3,10 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.partner.body
     - field.field.node.partner.field_image
     - field.field.node.partner.field_iowa_counties
     - field.field.node.partner.field_meta_tags
-    - field.field.node.partner.field_partner_description
     - field.field.node.partner.field_partner_link
     - field.field.node.partner.field_partner_related_individual
     - node.type.partner
@@ -44,6 +44,22 @@ third_party_settings:
               context_mapping:
                 entity: layout_builder.entity
             weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          117779e5-607e-401b-879b-0b0220900a46:
+            uuid: 117779e5-607e-401b-879b-0b0220900a46
+            region: content
+            configuration:
+              id: 'field_block:node:partner:body'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 1
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -151,25 +167,6 @@ third_party_settings:
             weight: 2
             additional: {  }
             third_party_settings: {  }
-          7e34bc11-7dc5-40a4-92af-0fb7a1e312c8:
-            uuid: 7e34bc11-7dc5-40a4-92af-0fb7a1e312c8
-            region: first
-            configuration:
-              id: 'field_block:node:partner:field_partner_description'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: text_default
-                label: visually_hidden
-                settings: {  }
-                third_party_settings: {  }
-            weight: 2
-            additional: {  }
-            third_party_settings: {  }
           af567d41-67b3-44a1-8fc7-49be3f725c49:
             uuid: af567d41-67b3-44a1-8fc7-49be3f725c49
             region: first
@@ -216,6 +213,13 @@ targetEntityType: node
 bundle: partner
 mode: default
 content:
+  body:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 108
+    region: content
   content_moderation_control:
     settings: {  }
     third_party_settings: {  }
@@ -242,13 +246,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 107
-    region: content
-  field_partner_description:
-    type: text_default
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    weight: 103
     region: content
   field_partner_link:
     type: link
