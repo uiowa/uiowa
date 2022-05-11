@@ -264,19 +264,20 @@ class SettingsForm extends ConfigFormBase {
       ],
     ];
 
-    // Visual indicators aren't available on SiteNow v2.
+    // show_teaser_link_indicator
     $is_v2 = $this->config('config_split.config_split.sitenow_v2')->get('status');
+    // Visual indicators aren't available on SiteNow v2.
     if (!$is_v2) {
       $form['global']['teaser'] = [
         '#type' => 'fieldset',
         '#title' => 'Teaser display',
         '#collapsible' => FALSE,
       ];
-      $show_visual_indicators_on_teasers = $config->get('show_visual_indicators_on_teasers');
-      $form['global']['teaser']['show_visual_indicators_on_teasers'] = [
+      $show_teaser_link_indicator = $config->get('show_teaser_link_indicator');
+      $form['global']['teaser']['show_teaser_link_indicator'] = [
         '#type' => 'checkbox',
         '#title' => $this->t("Display arrows linking to a person's page from lists/teasers."),
-        '#default_value' => $show_visual_indicators_on_teasers ?: FALSE,
+        '#default_value' => $show_teaser_link_indicator ?: FALSE,
       ];
     }
     return $form;
@@ -316,7 +317,7 @@ class SettingsForm extends ConfigFormBase {
     $sort = $form_state->getValue('sitenow_people_sort');
     $tag_display = $form_state->getValue('tag_display');
     $related_display = $form_state->getValue('related_display');
-    $show_visual_indicators_on_teasers = $form_state->getValue('show_visual_indicators_on_teasers');
+    $show_teaser_link_indicator = $form_state->getValue('show_teaser_link_indicator');
     // Clean path.
     $path = $this->aliasCleaner->cleanString($path);
 
@@ -564,7 +565,7 @@ class SettingsForm extends ConfigFormBase {
 
     $this->configFactory->getEditable(static::SETTINGS)
       // Save the tag display default.
-      ->set('show_visual_indicators_on_teasers', $show_visual_indicators_on_teasers)
+      ->set('show_teaser_link_indicator', $show_teaser_link_indicator)
       ->save();
 
     // Clear cache.

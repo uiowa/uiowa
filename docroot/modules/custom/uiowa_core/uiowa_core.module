@@ -136,7 +136,7 @@ function template_preprocess_uiowa_core_headline(&$variables) {
  */
 function uiowa_core_preprocess_node(&$variables) {
   if ($variables['view_mode'] == 'teaser') {
-    $show_visual_indicators_on_teasers = FALSE;
+    $show_teaser_link_indicator = FALSE;
     $node_type = $variables['node']->bundle();
     $type_map = [
       'page' => 'pages',
@@ -148,9 +148,9 @@ function uiowa_core_preprocess_node(&$variables) {
       $config_name = 'sitenow_' . $type_map[$node_type] . '.settings';
       $config = \Drupal::configFactory()->getEditable($config_name);
 
-      $show_visual_indicators_on_teasers = $config->get('show_visual_indicators_on_teasers');
+      $show_teaser_link_indicator = $config->get('show_teaser_link_indicator');
     }
-    $variables['show_visual_indicators_on_teasers'] = $show_visual_indicators_on_teasers;
+    $variables['show_teaser_link_indicator'] = $show_teaser_link_indicator;
   }
 
 }

@@ -187,11 +187,11 @@ function sitenow_people_update_9301() {
 }
 
 /**
- * Add visual indicator on teasers config setting to people.
+ * Add link indicator on teasers config setting to people.
  */
 function sitenow_people_update_9302() {
   $config = \Drupal::configFactory()->getEditable('sitenow_people.settings');
-  $config->set('show_visual_indicators_on_teasers', FALSE);
+  $config->set('show_teaser_link_indicator', FALSE);
 
   $config->save();
 }

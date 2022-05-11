@@ -190,11 +190,11 @@ class SettingsForm extends ConfigFormBase {
         '#title' => 'Teaser display',
         '#collapsible' => FALSE,
       ];
-      $show_visual_indicators_on_teasers = $config->get('show_visual_indicators_on_teasers');
-      $form['global']['teaser']['show_visual_indicators_on_teasers'] = [
+      $show_teaser_link_indicator = $config->get('show_teaser_link_indicator');
+      $form['global']['teaser']['show_teaser_link_indicator'] = [
         '#type' => 'checkbox',
         '#title' => $this->t("Display arrows linking to pages from lists/teasers."),
-        '#default_value' => $show_visual_indicators_on_teasers ?: FALSE,
+        '#default_value' => $show_teaser_link_indicator ?: FALSE,
       ];
     }
     return $form;
@@ -208,7 +208,7 @@ class SettingsForm extends ConfigFormBase {
     $featured_image_display_default = $form_state->getValue('featured_image_display_default');
     $tag_display = $form_state->getValue('tag_display');
     $related_display = $form_state->getValue('related_display');
-    $show_visual_indicators_on_teasers = $form_state->getValue('show_visual_indicators_on_teasers');
+    $show_teaser_link_indicator = $form_state->getValue('show_teaser_link_indicator');
 
     $this->configFactory->getEditable(static::SETTINGS)
       // Save the featured image display default.
@@ -227,7 +227,7 @@ class SettingsForm extends ConfigFormBase {
 
     $this->configFactory->getEditable(static::SETTINGS)
       // Save the tag display default.
-      ->set('show_visual_indicators_on_teasers', $show_visual_indicators_on_teasers)
+      ->set('show_teaser_link_indicator', $show_teaser_link_indicator)
       ->save();
 
     parent::submitForm($form, $form_state);
