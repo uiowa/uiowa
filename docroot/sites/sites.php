@@ -23,12 +23,6 @@ $sites['hr.dev.drupal.uiowa.edu'] = 'hr.uiowa.edu';
 $sites['hr.stage.drupal.uiowa.edu'] = 'hr.uiowa.edu';
 $sites['hr.prod.drupal.uiowa.edu'] = 'hr.uiowa.edu';
 
-// Directory aliases for callctr.dentistry.uiowa.edu.
-$sites['dentistrycallctr.uiowa.ddev.site'] = 'callctr.dentistry.uiowa.edu';
-$sites['dentistrycallctr.dev.drupal.uiowa.edu'] = 'callctr.dentistry.uiowa.edu';
-$sites['dentistrycallctr.stage.drupal.uiowa.edu'] = 'callctr.dentistry.uiowa.edu';
-$sites['dentistrycallctr.prod.drupal.uiowa.edu'] = 'callctr.dentistry.uiowa.edu';
-
 // Directory aliases for gis.sites.uiowa.edu.
 $sites['sitesgis.uiowa.ddev.site'] = 'gis.sites.uiowa.edu';
 $sites['sitesgis.dev.drupal.uiowa.edu'] = 'gis.sites.uiowa.edu';
@@ -1745,12 +1739,6 @@ $sites['transportation.dev.drupal.uiowa.edu'] = 'transportation.uiowa.edu';
 $sites['transportation.stage.drupal.uiowa.edu'] = 'transportation.uiowa.edu';
 $sites['transportation.prod.drupal.uiowa.edu'] = 'transportation.uiowa.edu';
 
-// Directory aliases for 3mlearning.uiowa.edu.
-$sites['3mlearning.uiowa.ddev.site'] = '3mlearning.uiowa.edu';
-$sites['3mlearning.dev.drupal.uiowa.edu'] = '3mlearning.uiowa.edu';
-$sites['3mlearning.stage.drupal.uiowa.edu'] = '3mlearning.uiowa.edu';
-$sites['3mlearning.prod.drupal.uiowa.edu'] = '3mlearning.uiowa.edu';
-
 // Directory aliases for ipol.lab.uiowa.edu.
 $sites['labipol.uiowa.ddev.site'] = 'ipol.lab.uiowa.edu';
 $sites['labipol.dev.drupal.uiowa.edu'] = 'ipol.lab.uiowa.edu';
@@ -3383,12 +3371,6 @@ $sites['labratner.dev.drupal.uiowa.edu'] = 'ratner.lab.uiowa.edu';
 $sites['labratner.stage.drupal.uiowa.edu'] = 'ratner.lab.uiowa.edu';
 $sites['labratner.prod.drupal.uiowa.edu'] = 'ratner.lab.uiowa.edu';
 
-// Directory aliases for humanitiesiowa.org.
-$sites['org-humanitiesiowa.uiowa.ddev.site'] = 'humanitiesiowa.org';
-$sites['org-humanitiesiowa.dev.drupal.uiowa.edu'] = 'humanitiesiowa.org';
-$sites['org-humanitiesiowa.stage.drupal.uiowa.edu'] = 'humanitiesiowa.org';
-$sites['org-humanitiesiowa.prod.drupal.uiowa.edu'] = 'humanitiesiowa.org';
-
 // Directory aliases for dale-stille.lab.uiowa.edu.
 $sites['labdale-stille.uiowa.ddev.site'] = 'dale-stille.lab.uiowa.edu';
 $sites['labdale-stille.dev.drupal.uiowa.edu'] = 'dale-stille.lab.uiowa.edu';
@@ -4102,3 +4084,9 @@ $sites['learning.uiowa.ddev.site'] = 'learning.uiowa.edu';
 $sites['learning.dev.drupal.uiowa.edu'] = 'learning.uiowa.edu';
 $sites['learning.stage.drupal.uiowa.edu'] = 'learning.uiowa.edu';
 $sites['learning.prod.drupal.uiowa.edu'] = 'learning.uiowa.edu';
+
+// Directory aliases for research.uiowa.edu.
+$sites['research.uiowa.ddev.site'] = 'research.uiowa.edu';
+$sites['research.dev.drupal.uiowa.edu'] = 'research.uiowa.edu';
+$sites['research.stage.drupal.uiowa.edu'] = 'research.uiowa.edu';
+$sites['research.prod.drupal.uiowa.edu'] = 'research.uiowa.edu';
