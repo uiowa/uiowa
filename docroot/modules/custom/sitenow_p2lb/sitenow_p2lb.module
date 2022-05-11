@@ -65,7 +65,7 @@ function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = F
     // Set value of field_v3_conversion_revision_id to current revision ID.
     $node->field_v3_conversion_revision_id->value = $node->getLoadedRevisionId();
 
-    // @todo Save as a new draft.
+    // Save as a new draft.
     $node->setNewRevision(TRUE);
     $node->revision_log = 'Converted page to v3.';
     $node->moderation_state->value = 'draft';
@@ -367,7 +367,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
   $database = \Drupal::database();
   $use_controller = new InlineBlockUsage($database);
   $block = NULL;
-  $styles = [];
   $config = [];
   $block_definition = [];
   $children = [];
@@ -417,11 +416,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
     case 'articles':
       $type = 'uiowa_articles';
       $display_label = 0;
-      // Default styles.
-      $styles = [
-        'list_format_list',
-        'block_grid_threecol_33_34_33',
-      ];
       $more = $paragraph->field_articles_more->value;
       $more_path = $paragraph->field_articles_more_path->value;
       $title = $paragraph->field_uip_title->value;
@@ -497,13 +491,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 
     case 'card':
       $type = 'uiowa_card';
-      $styles = [
-        'block_background_style_light',
-        'card_image_large',
-        'card_media_position_stacked',
-        'content_alignment_left',
-        'media_format_widescreen',
-      ];
 
       // Image isn't required. Check for one, or set to null.
       $image = ($paragraph->get('field_card_image')->getValue()) ?
@@ -631,16 +618,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 
     case 'events':
       $type = 'uiowa_events';
-      // Default styles.
-      $styles = [
-        'block_background_style_light',
-        'card_media_position_left',
-        'media_format_circle',
-        'content_alignment_left',
-        'card_image_small',
-        'list_format_list',
-        'block_grid_threecol_33_34_33',
-      ];
       // @todo Map v2 TIDs to v3 list items.
       $audiences = $paragraph->field_events_audiences->value;
       $department = $paragraph->field_events_department->value;
@@ -720,15 +697,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 
     case 'people':
       $type = 'views_block:people_list_block-list_card';
-      // Default LB styles for the people block.
-      $styles = [
-        'card_media_position_right',
-        'media_format_circle',
-        'content_alignment_left',
-        'card_image_small',
-        'list_format_list',
-        'block_grid_threecol_33_34_33',
-      ];
       $more = $paragraph->field_people_more->value;
       $more_path = $paragraph->field_people_more_path->value;
       $title = $paragraph->field_uip_title->value;
@@ -790,7 +758,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 
     case 'text':
       $type = 'uiowa_text_area';
-      $styles = sitenow_p2lb_section_styles($paragraph);
       $label = 'Text block';
       $display_label = 0;
       $text = $paragraph->get('field_text_body')->getValue();
@@ -885,7 +852,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
     return [
       'configuration' => $config,
       'uuid' => $uuid,
-      'styles' => $styles,
+      'styles' => _sitenow_p2lb_block_styles($type, $paragraph),
     ];
   }
 
@@ -1124,6 +1091,75 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
 
   }
   return $section_array;
+}
+
+/**
+ * Default block style settings.
+ */
+function _sitenow_p2lb_block_styles($block_type, $paragraph = NULL) {
+  switch ($block_type) {
+    // @todo Update to make sure we have all blocks correctly covered,
+    //   and update with latest default styles.
+    case 'uiowa_collection':
+      return [];
+
+    case 'uiowa_articles':
+      return [
+        'list_format_list',
+        'block_grid_threecol_33_34_33',
+      ];
+
+    case 'uiowa_quote':
+      return [];
+
+    case 'uiowa_card':
+      return [
+        'block_background_style_light',
+        'card_image_large',
+        'card_media_position_stacked',
+        'content_alignment_left',
+        'media_format_widescreen',
+      ];
+
+    case 'uiowa_slider':
+      return [];
+
+    case 'uiowa_events':
+      return [
+        'block_background_style_light',
+        'card_media_position_left',
+        'media_format_circle',
+        'content_alignment_left',
+        'card_image_small',
+        'list_format_list',
+        'block_grid_threecol_33_34_33',
+      ];
+
+    case 'featured_content':
+      return [];
+
+    case 'uiowa_image_gallery':
+      return [];
+
+    case 'views_block:people_list_block-list_card':
+      return [
+        'card_media_position_right',
+        'media_format_circle',
+        'content_alignment_left',
+        'card_image_small',
+        'list_format_list',
+        'block_grid_threecol_33_34_33',
+      ];
+
+    case 'uiowa_text_area':
+      return sitenow_p2lb_section_styles($paragraph);
+
+    case 'webform_block':
+      return [];
+  }
+  // We didn't match a block type, so return an empty
+  // styles array.
+  return [];
 }
 
 /**
