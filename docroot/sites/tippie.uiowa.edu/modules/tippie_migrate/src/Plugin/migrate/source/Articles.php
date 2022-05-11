@@ -208,6 +208,8 @@ class Articles extends BaseNodeSource {
     $research = $row->getSourceProperty('field_news_featured_research')[0]['value'];
     if ($research == '1') {
       $tag_names[] = 'faculty research';
+      // Make sure 'research' is in the mix. Duplicates will be removed later.
+      $tag_names[] = 'research';
     }
 
     // Convert news type to tags, default to 'news' unless media_mention.
