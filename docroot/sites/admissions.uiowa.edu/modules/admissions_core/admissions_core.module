@@ -884,8 +884,12 @@ function admissions_core_preprocess_views_view_field(&$variables) {
         break;
 
       case 'majors':
+        // If we're on our available majors views page,
+        // wrap the displayed value in the relevant link.
         if ($variables['view']->current_display == 'available_majors') {
           $title = $variables['row']->node_field_data_title;
+          // Construct our path by removing slashes which will be handled
+          // in our query override, and replacing spaces by dashes.
           $href = str_replace(' ', '-', strtolower($title));
           $href = str_replace('/', '', $href);
           $href = AdmissionsCoreInterface::TWO_PLUS_TWO_PATH . $href;
