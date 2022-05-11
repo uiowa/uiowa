@@ -32,7 +32,7 @@ class StaticMapWidget extends WidgetBase {
       '#type' => 'url',
       '#title' => $this->t('Link'),
       '#description' => $this->t('A map marker share URL from maps.uiowa.edu'),
-      '#default_value' => isset($items[$delta]->link) ? $items[$delta]->link : NULL,
+      '#default_value' => $items[$delta]->link ?? NULL,
       '#size' => 20,
     ];
 
@@ -41,14 +41,14 @@ class StaticMapWidget extends WidgetBase {
       '#title' => $this->t('Zoom'),
       '#description' => $this->t('The higher the number the more zoomed in the map will be.'),
       '#options' => ['' => $this->t('- Select a value -')] + StaticMapItem::allowedZoomValues(),
-      '#default_value' => isset($items[$delta]->zoom) ? $items[$delta]->zoom : NULL,
+      '#default_value' => $items[$delta]->zoom ?? NULL,
     ];
 
     $element['label'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Label'),
       '#description' => $this->t('An accessible label for the map/link.'),
-      '#default_value' => isset($items[$delta]->label) ? $items[$delta]->label : NULL,
+      '#default_value' => $items[$delta]->label ?? NULL,
       '#size' => 20,
     ];
 

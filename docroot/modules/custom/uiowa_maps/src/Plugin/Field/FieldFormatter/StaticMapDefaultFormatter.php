@@ -37,7 +37,7 @@ class StaticMapDefaultFormatter extends FormatterBase {
           '#tag' => 'div',
           '#attributes' => [
             'class' => 'static-map',
-            'style' => "background-image: url('https://staticmap.concept3d.com/map/static-map/?map=1890&loc=" . $location . "&scale=2&zoom=" . $item->zoom ."');",
+            'style' => "background-image: url('https://staticmap.concept3d.com/map/static-map/?map=1890&loc=" . $location . "&scale=2&zoom=" . $item->zoom . "');",
           ],
         ],
       ];
