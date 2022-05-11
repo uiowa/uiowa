@@ -1152,6 +1152,8 @@ function _sitenow_p2lb_block_styles($block_type, $paragraph = NULL) {
       ];
 
     case 'uiowa_text_area':
+      // Text areas are a little different, and can make use of the
+      // section styles method.
       return sitenow_p2lb_section_styles($paragraph);
 
     case 'webform_block':
