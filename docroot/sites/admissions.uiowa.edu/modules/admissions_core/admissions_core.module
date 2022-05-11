@@ -16,6 +16,7 @@ use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\views\ViewExecutable;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\admissions_core\AdmissionsCoreInterface;
 
 /**
  * Implements hook_entity_extra_field_info().
@@ -376,7 +377,7 @@ function admissions_core_preprocess_paragraph__admissions_requirement(&$variable
                   // aggregator page using area of study title.
                   $area_of_study_title = $parent->getTitle();
                   $slug = \Drupal::service('pathauto.alias_cleaner')->cleanString($area_of_study_title);
-                  $variables['two_plus_two'] = \Drupal::service('path_alias.manager')->getAliasByPath('/2plus2/majors/' . $slug);
+                  $variables['two_plus_two'] = \Drupal::service('path_alias.manager')->getAliasByPath(AdmissionsCoreInterface::TWO_PLUS_TWO_PATH . $slug);
                 }
               }
             }
@@ -738,7 +739,7 @@ function admissions_core_preprocess_node(&$variables) {
           // using area of study title.
           $area_of_study_title = Node::load($area_of_study_id)->getTitle();
           $slug = \Drupal::service('pathauto.alias_cleaner')->cleanString($area_of_study_title);
-          $url = \Drupal::service('path_alias.manager')->getAliasByPath('/2plus2/majors/' . $slug);
+          $url = \Drupal::service('path_alias.manager')->getAliasByPath(AdmissionsCoreInterface::TWO_PLUS_TWO_PATH . $slug);
           // We have the Transfer Tips title, so let's just edit that
           // rather than needing to do more querying and loading.
           $title = $node->getTitle();
@@ -805,17 +806,11 @@ function admissions_core_views_query_alter($view, $query) {
   //   is resolved. Certain queries need specific overrides.
   //   Core Views behavior fails when the parameters contain '/' or '-'. This
   //   alters the query before it runs, fixing the known instances.
-  $overrides = [
-    'nursing rn bsn' => 'nursing rn-bsn',
-    'resilience and trauma informed perspectives certificate' => 'resilience and trauma-informed perspectives certificate',
-    'interscholastic athleticactivities administration' => 'interscholastic athletic/activities administration',
-  ];
-  // Make sure we're in our specified 2 plus 2 majors views page.
   if ($view->id() === 'majors' && $view->current_display === 'two_plus_two_majors') {
     $value = $query->where[0]['conditions'][0]['value'];
     // Check our overrides and update the query accordingly.
-    if (in_array($value, array_keys($overrides))) {
-      $query->where[0]['conditions'][0]['value'] = $overrides[$value];
+    if (in_array($value, array_keys(AdmissionsCoreInterface::AOS_QUERY_OVERRIDES))) {
+      $query->where[0]['conditions'][0]['value'] = AdmissionsCoreInterface::AOS_QUERY_OVERRIDES[$value];
     }
   }
 }
@@ -885,6 +880,20 @@ function admissions_core_preprocess_views_view_field(&$variables) {
               'value' => $nid,
             ],
           ];
+        }
+        break;
+
+      case 'majors':
+        // If we're on our available majors views page,
+        // wrap the displayed value in the relevant link.
+        if ($variables['view']->current_display == 'available_majors') {
+          $title = $variables['row']->node_field_data_title;
+          // Construct our path by removing slashes which will be handled
+          // in our query override, and replacing spaces by dashes.
+          $href = str_replace(' ', '-', strtolower($title));
+          $href = str_replace('/', '', $href);
+          $href = AdmissionsCoreInterface::TWO_PLUS_TWO_PATH . $href;
+          $variables['output'] = ['#markup' => "<a href='{$href}'>{$title}</a>"];
         }
         break;
 
