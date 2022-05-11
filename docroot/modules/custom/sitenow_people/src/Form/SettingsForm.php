@@ -264,7 +264,7 @@ class SettingsForm extends ConfigFormBase {
       ],
     ];
 
-    // show_teaser_link_indicator
+    // show_teaser_link_indicator.
     $is_v2 = $this->config('config_split.config_split.sitenow_v2')->get('status');
     // Visual indicators aren't available on SiteNow v2.
     if (!$is_v2) {
