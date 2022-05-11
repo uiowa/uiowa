@@ -17,15 +17,15 @@
       vertical-align: middle;
     }
   }
-  .fieldgroup,
-  .fieldset {
-    //.form-item:first-child {
-    //  margin-top: 0.5rem;
-    //}
-  }
   .webform-options-display-two-columns div.form-item,
   .webform-options-display-three-columns div.form-item {
     margin-bottom: 1rem;
+  }
+  .webform-options-display-one-column,
+  .webform-options-display-side-by-side,
+  .webform-options-display-buttons-horizontal,
+  .webform-options-display-buttons-vertical {
+    margin-top: -.5rem;
   }
   .fieldgroup {
     border: none;
@@ -92,6 +92,12 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+  }
+  .webform-options-display-side-by-side {
+    .form-type-checkbox,
+    .form-type-radio {
+      display: inline-flex;
+    }
   }
   [type='checkbox']+label,
   [type='radio']+label {
