@@ -23,7 +23,6 @@ process:
     map:
       und: en
   moderation_state: moderation_state
-  title: title
   created: created
   changed: changed
   status: status
@@ -31,6 +30,7 @@ process:
   uid:
     plugin: default_value
     default_value: 1
+  title: title
   field_image: field_image
   body: body
   field_project_college_department: field_project_college_dept
@@ -44,4 +44,5 @@ destination:
   default_bundle: project
 migration_dependencies:
   required:
+    - iisc_people
     - iisc_partners

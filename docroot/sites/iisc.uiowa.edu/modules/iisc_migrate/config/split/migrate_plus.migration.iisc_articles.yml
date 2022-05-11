@@ -29,10 +29,16 @@ process:
   uid:
     plugin: default_value
     default_value: 1
+  title: title
   field_image: field_image
   body: body
+  field_teaser: body/summary
+  field_tags: field_tags
+  field_article_source_org: field_article_publication_source
+  field_article_source_link: field_article_external_url
 # Enable if dependencies exist.
-#migration_dependencies:
-#  required:
-#    - beer_term
-#    - beer_user
+migration_dependencies:
+  required:
+    - iisc_people
+    - iisc_partners
+    - iisc_projects

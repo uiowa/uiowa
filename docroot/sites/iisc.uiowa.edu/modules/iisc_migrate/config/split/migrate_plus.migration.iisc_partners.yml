@@ -30,6 +30,7 @@ process:
   uid:
     plugin: default_value
     default_value: 1
+  title: title
   field_image: field_image
   body: body
   field_iowa_counties: field_ref_ia_counties # @todo Update with correct source name.
@@ -40,4 +41,6 @@ process:
 destination:
   plugin: 'entity:node'
   default_bundle: partner
-migration_dependencies: null
+#migration_dependencies:
+#  required:
+#    - iisc_people

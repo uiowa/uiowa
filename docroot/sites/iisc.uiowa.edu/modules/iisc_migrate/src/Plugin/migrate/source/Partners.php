@@ -22,7 +22,7 @@ class Partners extends BaseNodeSource {
    */
   protected $multiValueFields = [
     // @todo Add multivalue fields.
-    'field_data_field_ref_ia_counties' => ['field_ref_ia_counties_tid'],
+    'field_data_field_ref_ia_counties' => ['field_ref_ia_counties_target_id'],
   ];
 
   /**
