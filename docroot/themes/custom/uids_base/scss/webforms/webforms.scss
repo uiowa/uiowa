@@ -4,33 +4,37 @@
 
 .webform-submission-form {
   label {
-    font-size: $base-font-size;
+    font-size: 1.1rem;
     font-weight: $font-weight-bold;
     line-height: 1.6;
+  }
+  span.form-required {
+    position: relative;
+    &:after {
+      margin: 0 $xsm;
+      content: "*";
+      color: $danger;
+      vertical-align: middle;
+    }
   }
   .fieldgroup {
     border: none;
     padding: 0;
     & .fieldset-legend {
       display: block;
-      font-size: $base-font-size;
+      font-size: 1.1rem;
       font-weight: $font-weight-bold;
       line-height: 1.6;
     }
-    .form-item {
-      margin-top: 0.125rem;
-      margin-bottom: 0.125rem;
-      margin-block: 0.125rem;
-    }
   }
-  
-  // Fix for https://github.com/uiowa/uiowa/issues/3486 
+
+  // Fix for https://github.com/uiowa/uiowa/issues/3486
   input[size]:not([size='60']) {
     width: inherit;
   }
 
   // --------------------------------
-  // Help/Description 
+  // Help/Description
   // --------------------------------
   .help-text,
   .description,
@@ -66,6 +70,17 @@
   // --------------------------------
   // Checkboxes
   // --------------------------------
+  [type=checkbox], [type=file], [type=radio] {
+    height: .6cm;
+    width: .6cm;
+    margin-bottom: 0;
+    margin-right: .25rem;
+  }
+  .form-type-checkbox,
+  .form-type-radio {
+    display: flex;
+    flex-wrap: wrap;
+  }
   [type='checkbox']+label,
   [type='radio']+label {
     font-weight: $font-weight-normal;
@@ -78,8 +93,8 @@
       margin-bottom: $xsm;
     }
     & .fieldset-wrapper {
-      margin-left: $sm;
-      margin-inline-start: $sm;
+      margin-left: 0;
+      margin-inline-start: 0;
     }
   }
 
@@ -89,7 +104,7 @@
   .details-description {
     line-height: 1.6;
   }
-  
+
   // --------------------------------
   // Flexbox
   // --------------------------------
@@ -144,7 +159,7 @@
   }
 
   // --------------------------------
-  // Scale 
+  // Scale
   // --------------------------------
   .webform-scale {
     & input:checked + label {
@@ -163,7 +178,7 @@
   }
 
   // --------------------------------
-  // Progress Wizard 
+  // Progress Wizard
   // --------------------------------
   .webform-button--next,
   .webform-button--previous {
