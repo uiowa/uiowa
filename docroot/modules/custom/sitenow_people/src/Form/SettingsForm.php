@@ -264,23 +264,21 @@ class SettingsForm extends ConfigFormBase {
       ],
     ];
 
-    $form['global']['teaser'] = [
-      '#type' => 'fieldset',
-      '#title' => 'Teaser display',
-      '#collapsible' => FALSE,
-    ];
-
-    $show_visual_indicators_on_teasers = $config->get('show_visual_indicators_on_teasers');
-
-    $form['global']['teaser']['show_visual_indicators_on_teasers'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t("Display arrows linking to a person's page from lists/teasers."),
-      '#description' => $this->t('<p><strong>Example if the above option is checked:</strong></p>
-        <p><img src="/modules/custom/sitenow_people/images/visual-indicator-example.png" width="400" alt="Person teaser with their name, photo, and position with an arrow and a gold circle below it." /></p>
-        '),
-      '#default_value' => $show_visual_indicators_on_teasers ?: FALSE,
-    ];
-
+    // Visual indicators aren't available on SiteNow v2.
+    $is_v2 = $this->config('config_split.config_split.sitenow_v2')->get('status');
+    if (!$is_v2) {
+      $form['global']['teaser'] = [
+        '#type' => 'fieldset',
+        '#title' => 'Teaser display',
+        '#collapsible' => FALSE,
+      ];
+      $show_visual_indicators_on_teasers = $config->get('show_visual_indicators_on_teasers');
+      $form['global']['teaser']['show_visual_indicators_on_teasers'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t("Display arrows linking to a person's page from lists/teasers."),
+        '#default_value' => $show_visual_indicators_on_teasers ?: FALSE,
+      ];
+    }
     return $form;
   }
 
