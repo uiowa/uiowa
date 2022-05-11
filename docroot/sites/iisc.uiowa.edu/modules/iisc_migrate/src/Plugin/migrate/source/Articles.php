@@ -1,7 +1,7 @@
 <?php
+
 namespace Drupal\iisc_migrate\Plugin\migrate\source;
 
-use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
@@ -59,8 +59,6 @@ class Articles extends BaseNodeSource {
       $this->entityId = $row->getSourceProperty('nid');
       $row->setSourceProperty('field_image', $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']));
     }
-
-    // @todo Process counties from taxonomy field into static value.
 
     return TRUE;
   }
