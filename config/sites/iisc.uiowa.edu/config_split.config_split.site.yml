@@ -14,7 +14,9 @@ module:
 theme: {  }
 complete_list:
   - config_split.config_split.site
+  - core.entity_view_display.node.article.default
   - field.storage.node.field_iowa_counties
+  - field.storage.node.field_related_content
   - metatag.metatag_defaults.node__partner
   - metatag.metatag_defaults.node__project
   - node.type.partner
@@ -25,6 +27,7 @@ complete_list:
   - simple_sitemap.bundle_settings.default.node.project
   - simple_sitemap.bundle_settings.default.taxonomy_term.colleges_and_departments
   - taxonomy.vocabulary.colleges_and_departments
+  - views.view.article_related_content
   - 'field.storage.node.field_partner_*'
   - 'field.storage.node.field_project_*'
 partial_list:
