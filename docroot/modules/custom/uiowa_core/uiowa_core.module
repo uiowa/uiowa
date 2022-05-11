@@ -135,22 +135,20 @@ function template_preprocess_uiowa_core_headline(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function uiowa_core_preprocess_node(&$variables) {
-
   if ($variables['view_mode'] == 'teaser') {
-
     $show_visual_indicators_on_teasers = FALSE;
     $node_type = $variables['node']->bundle();
+    $type_map = [
+      'page' => 'pages',
+      'person' => 'people',
+    ];
 
-    switch ($node_type) {
-      case 'page':
-        $show_visual_indicators_on_teasers = \Drupal::configFactory()->getEditable('sitenow_pages.settings')->get('show_visual_indicators_on_teasers');
-        break;
+    if (isset($type_map[$node_type])) {
+      $config_name = 'sitenow_' . $type_map[$node_type] . '.settings';
+      $config = \Drupal::configFactory()->getEditable($config_name);
 
-      case 'person':
-        $show_visual_indicators_on_teasers = \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('show_visual_indicators_on_teasers');
-        break;
+      $show_visual_indicators_on_teasers = $config->get('show_visual_indicators_on_teasers');
     }
-
     $variables['show_visual_indicators_on_teasers'] = $show_visual_indicators_on_teasers;
   }
 
