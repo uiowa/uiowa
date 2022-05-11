@@ -59,33 +59,50 @@ class People extends BaseNodeSource {
     if ($image = $row->getSourceProperty('field_image')) {
       $this->entityId = $row->getSourceProperty('nid');
       $row->setSourceProperty('field_image', $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']));
+      $image = NULL;
     }
-    $image = NULL;
 
     if ($body = $row->getSourceProperty('body')) {
       // Extract the summary.
       $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));
+      $body = NULL;
     }
 
-    // @todo Map group(s) and IISC role to person types.
     $person_types = [];
+    // Map group(s) person types.
     if ($groups = $row->getSourceProperty('field_ref_person_groups_target_id')) {
       foreach ($groups as $target_id) {
-        if ($this->groupMap($target_id)) {
-          $person_types[] = $this->groupMap($target_id);
+        if ($this->mapGroupsToPersonTypes($target_id)) {
+          $person_types[] = $this->mapGroupsToPersonTypes($target_id);
         }
+      }
+      $groups = NULL;
+    }
+
+    // Map IISC role to person type.
+    if ($role = $row->getSourceProperty('field_person_role')) {
+      if ($this->mapGroupsToPersonTypes($role['value'])) {
+        $person_types[] = $this->mapGroupsToPersonTypes($role['value']);
       }
     }
     $row->setSourceProperty('person_types', $person_types);
     return TRUE;
   }
 
-  private function groupMap($target_id) {
+  /**
+   * Map groups to person types.
+   */
+  private function mapGroupsToPersonTypes($target_id) {
     $map = [
       108 => 'iisc_staff',
       109 => 'iisc_faculty_staff_network',
       110 => 'affiliated_faculty_and_staff',
       111 => 'community_partner',
+      'Faculty Advisor' => 'faculty_advisor',
+      'IISC Founder, Advisory Board member' => NULL,
+      'Community Coordinator' => NULL,
+      'Advisory Board - Community Representative' => NULL,
+      'Faculty partner' => NULL,
     ];
 
     return $map[$target_id] ?? NULL;
