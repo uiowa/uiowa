@@ -10,11 +10,11 @@ use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
  * Migrate Source plugin.
  *
  * @MigrateSource(
- *   id = "iisc_partners",
+ *   id = "iisc_articles",
  *   source_module = "node"
  * )
  */
-class Partners extends BaseNodeSource {
+class Articles extends BaseNodeSource {
   use ProcessMediaTrait;
 
   /**

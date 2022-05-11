@@ -18,6 +18,8 @@ class Articles extends BaseNodeSource {
   use ProcessMediaTrait;
   use LinkReplaceTrait;
 
+  protected $primaryImageField = 'field_image';
+
   /**
    * {@inheritdoc}
    */
