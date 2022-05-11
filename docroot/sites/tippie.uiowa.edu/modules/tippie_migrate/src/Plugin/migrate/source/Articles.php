@@ -69,6 +69,13 @@ class Articles extends BaseNodeSource {
     }
     parent::prepareRow($row);
 
+    // Skip over the rest of the preprocessing, as it's not needed
+    // for redirects. Also avoids duplicating the notices.
+    // Return TRUE because the row should be created.
+    if ($this->migration->id() === 'tippie_articles_redirects') {
+      return TRUE;
+    }
+
     $body = $row->getSourceProperty('body');
 
     if (!empty($body)) {
