@@ -204,7 +204,21 @@ class SettingsForm extends ConfigFormBase {
         ],
       ],
     ];
-
+    // Visual indicators aren't available on SiteNow v2.
+    $is_v2 = $this->config('config_split.config_split.sitenow_v2')->get('status');
+    if (!$is_v2) {
+      $form['global']['teaser'] = [
+        '#type' => 'fieldset',
+        '#title' => 'Teaser display',
+        '#collapsible' => FALSE,
+      ];
+      $show_teaser_link_indicator = $config->get('show_teaser_link_indicator');
+      $form['global']['teaser']['show_teaser_link_indicator'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t("Display arrows linking to pages from lists/teasers."),
+        '#default_value' => $show_teaser_link_indicator ?: FALSE,
+      ];
+    }
     $form['view_page'] = [
       '#type' => 'fieldset',
       '#title' => 'View Page Settings',
@@ -299,6 +313,12 @@ class SettingsForm extends ConfigFormBase {
     $featured_image_display_default = $form_state->getValue('featured_image_display_default');
     $tag_display = $form_state->getValue('tag_display');
     $related_display = $form_state->getValue('related_display');
+    $show_teaser_link_indicator = $form_state->getValue('show_teaser_link_indicator');
+
+    $this->configFactory->getEditable(static::SETTINGS)
+      // Save the tag display default.
+      ->set('show_teaser_link_indicator', $show_teaser_link_indicator)
+      ->save();
 
     $this->configFactory->getEditable(static::SETTINGS)
       // Save the featured image display default.

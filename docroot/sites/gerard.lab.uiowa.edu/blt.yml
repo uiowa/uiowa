@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labgerard.uiowa.ddev.site
+    protocol: https
+  machine_name: labgerard
+  human_name: gerard.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labgerard.prod
+drupal:
+  db:
+    database: gerard_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: segerard
+  site-name: 'Gerard Medical Image Analysis Lab'
