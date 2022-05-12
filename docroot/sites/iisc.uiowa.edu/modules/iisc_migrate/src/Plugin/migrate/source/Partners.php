@@ -63,7 +63,7 @@ class Partners extends BaseNodeSource {
     // ID's for counties are off by -1, so just make that adjustment.
     if ($counties = $row->getSourceProperty('field_ref_ia_counties_target_id')) {
       foreach ($counties as $k => $target_id) {
-        $counties[$k] = $target_id -1;
+        $counties[$k] = $target_id - 1;
       }
       $row->setSourceProperty('counties', $counties);
       $counties = NULL;
