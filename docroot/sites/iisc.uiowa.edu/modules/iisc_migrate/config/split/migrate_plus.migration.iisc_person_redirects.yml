@@ -1,5 +1,5 @@
-id: iisc_project_redirects
-label: 'Project Redirects'
+id: iisc_person_redirects
+label: 'Person Redirects'
 dependencies:
   enforced:
     module:
@@ -8,8 +8,8 @@ migration_tags:
   - iisc
 migration_group: sitenow_migrate
 source:
-  plugin: iisc_projects
-  node_type: project
+  plugin: iisc_people
+  node_type: person
   constants:
     redirect_prefix: 'internal:/node/'
     status_code: 301
@@ -19,7 +19,7 @@ process:
   temp_nid:
     plugin: migration_lookup
     source: nid
-    migration: iisc_projects
+    migration: iisc_people
   redirect_source:
     plugin: get
     source: alias
@@ -31,4 +31,4 @@ process:
   status_code: constants/status_code
 migration_dependencies:
   required:
-    - iisc_projects
+    - iisc_people
