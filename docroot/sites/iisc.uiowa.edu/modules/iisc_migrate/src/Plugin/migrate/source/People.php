@@ -68,41 +68,35 @@ class People extends BaseNodeSource {
       $body = NULL;
     }
 
-    $person_types = [];
-    // Map group(s) person types.
+    // Map groups to person types and tags.
     if ($groups = $row->getSourceProperty('field_ref_person_groups_target_id')) {
+      $person_types = [];
+      $tags = [];
       foreach ($groups as $target_id) {
-        if ($this->mapGroupsToPersonTypes($target_id)) {
-          $person_types[] = $this->mapGroupsToPersonTypes($target_id);
+        if ($target_id == 111) {
+          // If Community Partner is present, map to a person type.
+          $person_types[] = 'community_partner';
+        }
+        else {
+          // Otherwise, map the group to a tag.
+          $tags[] = $this->mapGroupsToTags($target_id);
         }
       }
       $groups = NULL;
     }
-
-    // Map IISC role to person type.
-    if ($role = $row->getSourceProperty('field_person_role')) {
-      if ($this->mapGroupsToPersonTypes($role['value'])) {
-        $person_types[] = $this->mapGroupsToPersonTypes($role['value']);
-      }
-    }
     $row->setSourceProperty('person_types', $person_types);
+    $row->setSourceProperty('tags', $tags);
     return TRUE;
   }
 
   /**
    * Map groups to person types.
    */
-  private function mapGroupsToPersonTypes($target_id) {
+  private function mapGroupsToTags($target_id) {
     $map = [
-      108 => 'iisc_staff',
-      109 => 'iisc_faculty_staff_network',
-      110 => 'affiliated_faculty_and_staff',
-      111 => 'community_partner',
-      'Faculty Advisor' => 'faculty_advisor',
-      'IISC Founder, Advisory Board member' => NULL,
-      'Community Coordinator' => NULL,
-      'Advisory Board - Community Representative' => NULL,
-      'Faculty partner' => NULL,
+      108 => 1,
+      109 => 6,
+      110 => 11,
     ];
 
     return $map[$target_id] ?? NULL;
