@@ -21,8 +21,7 @@ class Partners extends BaseNodeSource {
    * {@inheritdoc}
    */
   protected $multiValueFields = [
-    // @todo Add multivalue fields.
-    'field_data_field_ref_ia_counties' => ['field_ref_ia_counties_target_id'],
+    'field_ref_ia_counties' => 'target_id',
   ];
 
   /**
@@ -33,7 +32,7 @@ class Partners extends BaseNodeSource {
     // Only add the aliases to the query if we're
     // in the redirect migration, otherwise row counts
     // will be off due to one-to-many mapping of nodes to aliases.
-    if ($this->migration->id() === 'iisc_project_redirects') {
+    if ($this->migration->id() === 'iisc_partner_redirects') {
       $query->leftJoin('url_alias', 'alias', "alias.source = CONCAT('node/', n.nid)");
       $query->fields('alias', ['alias']);
     }
@@ -58,9 +57,17 @@ class Partners extends BaseNodeSource {
     if ($image = $row->getSourceProperty('field_image')) {
       $this->entityId = $row->getSourceProperty('nid');
       $row->setSourceProperty('field_image', $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']));
+      $image = NULL;
     }
 
-    // @todo Process counties from taxonomy field into static value.
+    // ID's for counties are off by -1, so just make that adjustment.
+    if ($counties = $row->getSourceProperty('field_ref_ia_counties_target_id')) {
+      foreach ($counties as $k => $target_id) {
+        $counties[$k] = $target_id -1;
+      }
+      $row->setSourceProperty('counties', $counties);
+      $counties = NULL;
+    }
     return TRUE;
   }
 

@@ -1,20 +1,18 @@
-langcode: en
-status: true
+id: iisc_partners
+label: Partners
 dependencies:
   enforced:
     module:
       - iisc_migrate
-id: iisc_partners
-class: null
-field_plugin_method: null
-cck_plugin_method: null
 migration_tags:
   - iisc
 migration_group: sitenow_migrate
-label: Partners
 source:
   plugin: iisc_partners
   node_type: partner
+destination:
+  plugin: 'entity:node'
+  default_bundle: partner
 process:
   langcode:
     plugin: static_map
@@ -33,14 +31,18 @@ process:
   title: title
   field_image: field_image
   body: body
-  field_iowa_counties: field_ref_ia_counties # @todo Update with correct source name.
-  field_partner_related_individual: field_ref_persons
+  field_iowa_counties: counties
+  field_partner_related_individual:
+    plugin: sub_process
+    source: field_ref_persons
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: iisc_people
+        source: target_id
   field_partner_link:
     plugin: field_link
     source: field_partner_urls
-destination:
-  plugin: 'entity:node'
-  default_bundle: partner
-#migration_dependencies:
-#  required:
-#    - iisc_people
+migration_dependencies:
+  required:
+    - iisc_people
