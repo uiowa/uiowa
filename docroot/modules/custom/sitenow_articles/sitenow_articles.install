@@ -45,3 +45,13 @@ function sitenow_articles_update_9301() {
 
   $config->save();
 }
+
+/**
+ * Add link indicator on teasers config setting to pages.
+ */
+function sitenow_articles_update_9302() {
+  $config = \Drupal::configFactory()->getEditable('sitenow_pages.settings');
+  $config->set('show_teaser_link_indicator', FALSE);
+
+  $config->save();
+}
