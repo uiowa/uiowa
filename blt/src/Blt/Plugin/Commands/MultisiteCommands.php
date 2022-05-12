@@ -280,12 +280,12 @@ class MultisiteCommands extends BltTasks {
     else {
       $app = $this->getApplicationFromDrushRemote($id);
 
-      // Iterate over each environment and delete files.
-      foreach (['dev', 'test', 'prod'] as $env) {
-        $this->deleteRemoteMultisiteFiles($id, $app, $env, $dir);
-      }
-
       if (!$options['simulate']) {
+        // Iterate over each environment and delete files.
+        foreach (['dev', 'test', 'prod'] as $env) {
+          $this->deleteRemoteMultisiteFiles($id, $app, $env, $dir);
+        }
+
         /** @var \AcquiaCloudApi\Connector\Client $client */
         $client = $this->getAcquiaCloudApiClient();
 
