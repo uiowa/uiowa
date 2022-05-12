@@ -22,7 +22,6 @@ class Articles extends BaseNodeSource {
    */
   protected $multiValueFields = [
     // @todo Add multivalue fields.
-    'field_data_field_ref_ia_counties' => ['field_ref_ia_counties_tid'],
   ];
 
   /**
@@ -58,6 +57,13 @@ class Articles extends BaseNodeSource {
     if ($image = $row->getSourceProperty('field_image')) {
       $this->entityId = $row->getSourceProperty('nid');
       $row->setSourceProperty('field_image', $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']));
+      $image = NULL;
+    }
+
+    if ($body = $row->getSourceProperty('body')) {
+      // Extract the summary.
+      $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));
+      $body = NULL;
     }
 
     // If article type is set to '2_ianow', we need to do some additional
