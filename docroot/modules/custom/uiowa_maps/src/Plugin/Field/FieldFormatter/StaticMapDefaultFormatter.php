@@ -24,6 +24,9 @@ class StaticMapDefaultFormatter extends FormatterBase {
     $element['#attached']['library'][] = 'uiowa_maps/uiowa_maps_static_map';
     foreach ($items as $delta => $item) {
       $location = str_replace('!m/', '', parse_url($item->link, PHP_URL_FRAGMENT));
+      // Construct a Concept3D clickable static map image where aspect-ratio
+      // can be controlled through CSS.
+      // https://help.concept3d.com/hc/en-us/articles/360008043454-Static-Maps
       $element[$delta]['map'] = [
         '#type' => 'html_tag',
         '#tag' => 'a',
