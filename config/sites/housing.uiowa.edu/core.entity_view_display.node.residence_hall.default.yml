@@ -6,9 +6,13 @@ dependencies:
     - field.field.node.residence_hall.body
     - field.field.node.residence_hall.field_image
     - field.field.node.residence_hall.field_meta_tags
+    - field.field.node.residence_hall.field_residence_hall_address
+    - field.field.node.residence_hall.field_residence_hall_hours
+    - field.field.node.residence_hall.field_residence_hall_phone
     - field.field.node.residence_hall.field_teaser
     - node.type.residence_hall
   module:
+    - address
     - layout_builder
     - system
     - text
@@ -38,6 +42,54 @@ third_party_settings:
               context_mapping:
                 entity: layout_builder.entity
             weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          1b1cec17-cacb-458c-8495-505e2d478971:
+            uuid: 1b1cec17-cacb-458c-8495-505e2d478971
+            region: content
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_phone'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: basic_string
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          6a4408b6-908e-4096-81c7-a389686abd16:
+            uuid: 6a4408b6-908e-4096-81c7-a389686abd16
+            region: content
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_hours'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          ff2e0a65-8fba-43f4-90de-dad908742556:
+            uuid: ff2e0a65-8fba-43f4-90de-dad908742556
+            region: content
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_address'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: address_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 3
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
@@ -163,6 +215,27 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: -20
+    region: content
+  field_residence_hall_address:
+    type: address_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 104
+    region: content
+  field_residence_hall_hours:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  field_residence_hall_phone:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 102
     region: content
   links:
     settings: {  }
