@@ -4,33 +4,47 @@
 
 .webform-submission-form {
   label {
-    font-size: $base-font-size;
+    font-size: 1.1rem;
     font-weight: $font-weight-bold;
     line-height: 1.6;
+  }
+  span.form-required {
+    position: relative;
+    &:after {
+      margin: 0 $xsm;
+      content: "*";
+      color: $danger;
+      vertical-align: middle;
+    }
+  }
+  .webform-options-display-two-columns div.form-item,
+  .webform-options-display-three-columns div.form-item {
+    margin-bottom: 1rem;
+  }
+  .webform-options-display-one-column,
+  .webform-options-display-side-by-side,
+  .webform-options-display-buttons-horizontal,
+  .webform-options-display-buttons-vertical {
+    margin-top: -.5rem;
   }
   .fieldgroup {
     border: none;
     padding: 0;
     & .fieldset-legend {
       display: block;
-      font-size: $base-font-size;
+      font-size: 1.1rem;
       font-weight: $font-weight-bold;
       line-height: 1.6;
     }
-    .form-item {
-      margin-top: 0.125rem;
-      margin-bottom: 0.125rem;
-      margin-block: 0.125rem;
-    }
   }
-  
-  // Fix for https://github.com/uiowa/uiowa/issues/3486 
+
+  // Make fields respect field width settings
   input[size]:not([size='60']) {
     width: inherit;
   }
 
   // --------------------------------
-  // Help/Description 
+  // Help/Description
   // --------------------------------
   .help-text,
   .description,
@@ -41,6 +55,7 @@
   }
   .description {
     margin: $xsm 0;
+    flex-basis: 100%;
   }
   input + .description,
   input + .field-prefix,
@@ -66,6 +81,24 @@
   // --------------------------------
   // Checkboxes
   // --------------------------------
+  [type=checkbox], [type=radio] {
+    height: 1.2rem;
+    width: 1.2rem;
+    margin: 0 .35rem 0 .25rem;
+    -webkit-transform: scale(1.3, 1.3);
+  }
+  .form-type-checkbox,
+  .form-type-radio {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .webform-options-display-side-by-side {
+    .form-type-checkbox,
+    .form-type-radio {
+      display: inline-flex;
+    }
+  }
   [type='checkbox']+label,
   [type='radio']+label {
     font-weight: $font-weight-normal;
@@ -78,8 +111,8 @@
       margin-bottom: $xsm;
     }
     & .fieldset-wrapper {
-      margin-left: $sm;
-      margin-inline-start: $sm;
+      margin-left: 0;
+      margin-inline-start: 0;
     }
   }
 
@@ -89,7 +122,7 @@
   .details-description {
     line-height: 1.6;
   }
-  
+
   // --------------------------------
   // Flexbox
   // --------------------------------
@@ -144,7 +177,7 @@
   }
 
   // --------------------------------
-  // Scale 
+  // Scale
   // --------------------------------
   .webform-scale {
     & input:checked + label {
@@ -163,7 +196,7 @@
   }
 
   // --------------------------------
-  // Progress Wizard 
+  // Progress Wizard
   // --------------------------------
   .webform-button--next,
   .webform-button--previous {
@@ -177,6 +210,12 @@
   .webform-progress-tracker .progress-step.is-active .progress-text,
   .webform-progress-tracker .progress-step.is-complete .progress-text {
     color: currentColor;
+  }
+  .webform-progress-tracker .progress-step  .progress-marker:before {
+    padding: 1rem;
+  }
+  .webform-progress-tracker .progress-step  .progress-marker:after {
+    top: .8rem;
   }
   .webform-progress-tracker .progress-step.is-active .progress-marker::before {
     background-color: $primary;
