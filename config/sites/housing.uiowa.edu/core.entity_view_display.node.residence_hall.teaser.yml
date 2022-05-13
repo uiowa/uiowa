@@ -5,6 +5,8 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.residence_hall.body
+    - field.field.node.residence_hall.field_image
+    - field.field.node.residence_hall.field_teaser
     - node.type.residence_hall
   module:
     - text
@@ -22,10 +24,17 @@ content:
     third_party_settings: {  }
     weight: 101
     region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
   links:
     settings: {  }
     third_party_settings: {  }
     weight: 100
     region: content
 hidden:
+  field_image: true
+  field_teaser: true
   search_api_excerpt: true

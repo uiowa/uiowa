@@ -10,11 +10,13 @@ stackable: true
 storage: folder
 folder: ../config/sites/housing.uiowa.edu
 module:
+  housing_core: 0
   uiowa_maui: 0
 theme: {  }
 complete_list:
   - config_split.config_split.site
   - node.type.residence_hall
+  - pathauto.pattern.residence_hall
   - simple_sitemap.bundle_settings.default.node.residence_hall
 partial_list:
   - core.entity_view_display.node.page.default

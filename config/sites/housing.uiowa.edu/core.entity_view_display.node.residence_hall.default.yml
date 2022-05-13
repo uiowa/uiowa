@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - field.field.node.residence_hall.body
+    - field.field.node.residence_hall.field_image
+    - field.field.node.residence_hall.field_teaser
     - node.type.residence_hall
   module:
     - layout_builder
@@ -59,6 +61,39 @@ third_party_settings:
             weight: 2
             additional: {  }
             third_party_settings: {  }
+          b44974f6-43a2-4f7e-a729-7c62e8b0e891:
+            uuid: b44974f6-43a2-4f7e-a729-7c62e8b0e891
+            region: content
+            configuration:
+              id: 'field_block:node:residence_hall:field_teaser'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: basic_string
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
+          0f4bf793-6e66-43e9-8a86-19a1993a2577:
+            uuid: 0f4bf793-6e66-43e9-8a86-19a1993a2577
+            region: content
+            configuration:
+              id: 'field_block:node:residence_hall:field_image'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 4
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings: {  }
 id: node.residence_hall.default
 targetEntityType: node
@@ -76,6 +111,21 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: -20
+    region: content
+  field_image:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  field_teaser:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 102
     region: content
   links:
     settings: {  }
