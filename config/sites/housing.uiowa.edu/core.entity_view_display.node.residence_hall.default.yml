@@ -9,6 +9,8 @@ dependencies:
     - layout_builder
     - text
     - user
+  theme:
+    - uids_base
 third_party_settings:
   layout_builder:
     enabled: true
@@ -46,6 +48,17 @@ third_party_settings:
             weight: 1
             additional: {  }
             third_party_settings: {  }
+          9b432c6d-a226-4f9a-a66a-ad50dd4c008b:
+            uuid: 9b432c6d-a226-4f9a-a66a-ad50dd4c008b
+            region: content
+            configuration:
+              id: 'extra_field_block:node:residence_hall:content_moderation_control'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings: {  }
 id: node.residence_hall.default
 targetEntityType: node
@@ -58,6 +71,11 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 101
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
     region: content
   links:
     settings: {  }
