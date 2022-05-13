@@ -5,11 +5,14 @@ dependencies:
   config:
     - field.field.node.residence_hall.body
     - field.field.node.residence_hall.field_image
+    - field.field.node.residence_hall.field_meta_tags
     - field.field.node.residence_hall.field_teaser
     - node.type.residence_hall
     - workflows.workflow.editorial
   module:
     - content_moderation
+    - media_library
+    - metatag
     - path
     - text
 id: node.residence_hall.default
@@ -34,14 +37,19 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_image:
-    type: entity_reference_autocomplete
+    type: media_library_widget
     weight: 123
     region: content
     settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
+      media_types: {  }
+    third_party_settings: {  }
+  field_meta_tags:
+    type: metatag_firehose
+    weight: 124
+    region: content
+    settings:
+      sidebar: true
+      use_details: true
     third_party_settings: {  }
   field_teaser:
     type: string_textarea
