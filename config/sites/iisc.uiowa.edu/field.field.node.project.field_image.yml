@@ -1,16 +1,16 @@
-uuid: 4549e950-beac-4e6b-8f8c-002da93b0cba
+uuid: e9039df5-da05-4d6e-bd1b-34711f1006cc
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_image
     - media.type.image
-    - node.type.partner
-id: node.partner.field_image
+    - node.type.project
+id: node.project.field_image
 field_name: field_image
 entity_type: node
-bundle: partner
-label: Photo
+bundle: project
+label: 'Project Image'
 description: ''
 required: false
 translatable: true
@@ -24,6 +24,6 @@ settings:
     sort:
       field: _none
       direction: ASC
-    auto_create: false
+    auto_create: true
     auto_create_bundle: ''
 field_type: entity_reference
