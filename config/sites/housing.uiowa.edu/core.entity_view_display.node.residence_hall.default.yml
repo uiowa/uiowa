@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.residence_hall.field_image
     - field.field.node.residence_hall.field_meta_tags
     - field.field.node.residence_hall.field_residence_hall_address
+    - field.field.node.residence_hall.field_residence_hall_building
     - field.field.node.residence_hall.field_residence_hall_bus_stops
     - field.field.node.residence_hall.field_residence_hall_getting
     - field.field.node.residence_hall.field_residence_hall_hours
@@ -167,7 +168,7 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 5
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           ff2e0a65-8fba-43f4-90de-dad908742556:
@@ -199,7 +200,7 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 4
+            weight: 5
             additional: {  }
             third_party_settings: {  }
           1b1cec17-cacb-458c-8495-505e2d478971:
@@ -215,7 +216,7 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 3
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           95098cc9-9a56-492d-97bc-2c221d00052d:
@@ -289,7 +290,7 @@ third_party_settings:
                   rel: ''
                   target: ''
                 third_party_settings: {  }
-            weight: 2
+            weight: 3
             additional: {  }
             third_party_settings: {  }
           285e3dae-df9a-4c8c-98a0-9ec99e73746b:
@@ -322,7 +323,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 1
+            weight: 2
             additional: {  }
             third_party_settings: {  }
           fa21dfc9-89c4-4c4f-ab78-698a5353416c:
@@ -337,6 +338,23 @@ third_party_settings:
                 type: list_default
                 label: above
                 settings: {  }
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          885ac8e7-378d-47b5-a3dd-9bcfa9cdd174:
+            uuid: 885ac8e7-378d-47b5-a3dd-9bcfa9cdd174
+            region: second
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_building'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
                 third_party_settings: {  }
             weight: 0
             additional: {  }
@@ -371,6 +389,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 104
+    region: content
+  field_residence_hall_building:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 110
     region: content
   field_residence_hall_bus_stops:
     type: link
