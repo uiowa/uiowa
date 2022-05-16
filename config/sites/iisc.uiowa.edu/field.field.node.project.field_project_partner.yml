@@ -1,0 +1,29 @@
+uuid: ce23fdf6-d11c-4e4a-b669-fe517ca3703f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_project_partner
+    - node.type.partner
+    - node.type.project
+id: node.project.field_project_partner
+field_name: field_project_partner
+entity_type: node
+bundle: project
+label: Partner
+description: 'Select the partner that worked on the project with IISC.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      partner: partner
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference
