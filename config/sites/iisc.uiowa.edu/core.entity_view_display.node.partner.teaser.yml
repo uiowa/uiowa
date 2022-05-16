@@ -4,10 +4,10 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.partner.body
     - field.field.node.partner.field_image
     - field.field.node.partner.field_iowa_counties
     - field.field.node.partner.field_meta_tags
-    - field.field.node.partner.field_partner_description
     - field.field.node.partner.field_partner_link
     - field.field.node.partner.field_partner_related_individual
     - node.type.partner
@@ -29,10 +29,10 @@ content:
     weight: 100
     region: content
 hidden:
+  body: true
   field_image: true
   field_iowa_counties: true
   field_meta_tags: true
-  field_partner_description: true
   field_partner_link: true
   field_partner_related_individual: true
   search_api_excerpt: true

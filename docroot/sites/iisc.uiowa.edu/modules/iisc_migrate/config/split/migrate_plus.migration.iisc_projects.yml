@@ -1,0 +1,48 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - iisc_migrate
+id: iisc_projects
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - iisc
+migration_group: sitenow_migrate
+label: Projects
+source:
+  plugin: iisc_projects
+  node_type: project
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  moderation_state: moderation_state
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid:
+    plugin: default_value
+    default_value: 1
+  title: title
+  field_image: field_image
+  body: body
+  field_project_college_department: field_project_college_dept
+  field_project_deliverables: field_files_fid
+  field_project_led_by: field_ref_persons
+  field_project_links: field_project_urls
+  field_project_partner: field_ref_partner
+  field_tags: field_tags
+destination:
+  plugin: 'entity:node'
+  default_bundle: project
+migration_dependencies:
+  required:
+    - iisc_people
+    - iisc_partners
