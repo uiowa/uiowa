@@ -9,7 +9,7 @@
 {% set accordion_hash = accordion_item_label.0['#context'].value|clean_class %}
 
 <!-- Use the accurate heading level to maintain the document outline -->
-<{{ accordion_h_size }} id="{{ accordion_hash }}" class="accordion__heading">
+<{{ accordion_h_size }} id="{{ accordion_hash }}" class="accordion__heading" role="presentation">
 <button class="accordion__button"
         role="tab"
         aria-selected="{{ accordion_item_expanded | default('false') }}"
@@ -24,6 +24,7 @@
 </{{ accordion_h_size }}>
 <div id="{{ accordion_item_id }}"
      aria-labelledby="{{ accordion_hash }}"
+     role="tabpanel"
      class="accordion__content"
      dataparent="{{ accordion_parent_id }}"
 >
