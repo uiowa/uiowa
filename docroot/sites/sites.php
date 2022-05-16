@@ -4114,3 +4114,9 @@ $sites['labsanderlab.uiowa.ddev.site'] = 'sanderlab.lab.uiowa.edu';
 $sites['labsanderlab.dev.drupal.uiowa.edu'] = 'sanderlab.lab.uiowa.edu';
 $sites['labsanderlab.stage.drupal.uiowa.edu'] = 'sanderlab.lab.uiowa.edu';
 $sites['labsanderlab.prod.drupal.uiowa.edu'] = 'sanderlab.lab.uiowa.edu';
+
+// Directory aliases for sander.lab.uiowa.edu.
+$sites['labsander.uiowa.ddev.site'] = 'sander.lab.uiowa.edu';
+$sites['labsander.dev.drupal.uiowa.edu'] = 'sander.lab.uiowa.edu';
+$sites['labsander.stage.drupal.uiowa.edu'] = 'sander.lab.uiowa.edu';
+$sites['labsander.prod.drupal.uiowa.edu'] = 'sander.lab.uiowa.edu';

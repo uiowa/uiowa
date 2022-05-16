@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labsander.uiowa.ddev.site
+    protocol: https
+  machine_name: labsander
+  human_name: sander.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labsander.prod
+drupal:
+  db:
+    database: sander_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: esandr
+  site-name: 'https://sander.lab.uiowa.edu'
