@@ -13,6 +13,7 @@ dependencies:
     - field.field.node.residence_hall.field_residence_hall_images
     - field.field.node.residence_hall.field_residence_hall_meet_us
     - field.field.node.residence_hall.field_residence_hall_phone
+    - field.field.node.residence_hall.field_residence_hall_population
     - field.field.node.residence_hall.field_residence_hall_video
     - field.field.node.residence_hall.field_teaser
     - node.type.residence_hall
@@ -164,7 +165,7 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 3
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           ff2e0a65-8fba-43f4-90de-dad908742556:
@@ -196,7 +197,7 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 2
+            weight: 3
             additional: {  }
             third_party_settings: {  }
           1b1cec17-cacb-458c-8495-505e2d478971:
@@ -212,7 +213,7 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 1
+            weight: 2
             additional: {  }
             third_party_settings: {  }
           95098cc9-9a56-492d-97bc-2c221d00052d:
@@ -286,7 +287,7 @@ third_party_settings:
                   rel: ''
                   target: ''
                 third_party_settings: {  }
-            weight: 0
+            weight: 1
             additional: {  }
             third_party_settings: {  }
           285e3dae-df9a-4c8c-98a0-9ec99e73746b:
@@ -303,6 +304,23 @@ third_party_settings:
                 settings: {  }
                 third_party_settings: {  }
             weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          e8af8e06-b74e-42c1-a86e-d75d4cdd486d:
+            uuid: e8af8e06-b74e-42c1-a86e-d75d4cdd486d
+            region: second
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_population'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 0
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
@@ -376,6 +394,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 102
+    region: content
+  field_residence_hall_population:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 108
     region: content
   links:
     settings: {  }
