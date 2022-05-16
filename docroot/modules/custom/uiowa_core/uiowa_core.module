@@ -519,10 +519,10 @@ function uiowa_core_node_presave(Node $node) {
 }
 
 /**
- * Added allowed values function for partner counties field.
+ * Allowed values function for partner counties field.
  */
 function uiowa_core_county_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
-  $options = [
+  return [
     'Adair',
     'Adams',
     'Allamakee',
@@ -623,5 +623,4 @@ function uiowa_core_county_options(FieldStorageConfig $definition, ContentEntity
     'Worth',
     'Wright',
   ];
-  return $options;
 }
