@@ -4108,3 +4108,21 @@ $sites['labgerard.uiowa.ddev.site'] = 'gerard.lab.uiowa.edu';
 $sites['labgerard.dev.drupal.uiowa.edu'] = 'gerard.lab.uiowa.edu';
 $sites['labgerard.stage.drupal.uiowa.edu'] = 'gerard.lab.uiowa.edu';
 $sites['labgerard.prod.drupal.uiowa.edu'] = 'gerard.lab.uiowa.edu';
+
+// Directory aliases for sander.lab.uiowa.edu.
+$sites['labsander.uiowa.ddev.site'] = 'sander.lab.uiowa.edu';
+$sites['labsander.dev.drupal.uiowa.edu'] = 'sander.lab.uiowa.edu';
+$sites['labsander.stage.drupal.uiowa.edu'] = 'sander.lab.uiowa.edu';
+$sites['labsander.prod.drupal.uiowa.edu'] = 'sander.lab.uiowa.edu';
+
+// Directory aliases for powwow.uiowa.edu.
+$sites['powwow.uiowa.ddev.site'] = 'powwow.uiowa.edu';
+$sites['powwow.dev.drupal.uiowa.edu'] = 'powwow.uiowa.edu';
+$sites['powwow.stage.drupal.uiowa.edu'] = 'powwow.uiowa.edu';
+$sites['powwow.prod.drupal.uiowa.edu'] = 'powwow.uiowa.edu';
+
+// Directory aliases for lead.uiowa.edu.
+$sites['lead.uiowa.ddev.site'] = 'lead.uiowa.edu';
+$sites['lead.dev.drupal.uiowa.edu'] = 'lead.uiowa.edu';
+$sites['lead.stage.drupal.uiowa.edu'] = 'lead.uiowa.edu';
+$sites['lead.prod.drupal.uiowa.edu'] = 'lead.uiowa.edu';
