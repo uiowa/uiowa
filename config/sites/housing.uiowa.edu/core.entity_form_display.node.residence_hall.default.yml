@@ -19,8 +19,10 @@ dependencies:
     - field.field.node.residence_hall.field_residence_hall_neighborhd
     - field.field.node.residence_hall.field_residence_hall_phone
     - field.field.node.residence_hall.field_residence_hall_population
+    - field.field.node.residence_hall.field_residence_hall_rates
     - field.field.node.residence_hall.field_residence_hall_room_type
     - field.field.node.residence_hall.field_residence_hall_video
+    - field.field.node.residence_hall.field_residence_hall_who_lives
     - field.field.node.residence_hall.field_teaser
     - node.type.residence_hall
     - workflows.workflow.editorial
@@ -177,6 +179,14 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_residence_hall_rates:
+    type: text_textarea
+    weight: 141
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
   field_residence_hall_room_type:
     type: entity_reference_autocomplete
     weight: 136
@@ -193,6 +203,16 @@ content:
     region: content
     settings:
       media_types: {  }
+    third_party_settings: {  }
+  field_residence_hall_who_lives:
+    type: entity_reference_autocomplete
+    weight: 140
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   field_teaser:
     type: string_textarea

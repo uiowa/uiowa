@@ -19,8 +19,10 @@ dependencies:
     - field.field.node.residence_hall.field_residence_hall_neighborhd
     - field.field.node.residence_hall.field_residence_hall_phone
     - field.field.node.residence_hall.field_residence_hall_population
+    - field.field.node.residence_hall.field_residence_hall_rates
     - field.field.node.residence_hall.field_residence_hall_room_type
     - field.field.node.residence_hall.field_residence_hall_video
+    - field.field.node.residence_hall.field_residence_hall_who_lives
     - field.field.node.residence_hall.field_teaser
     - node.type.residence_hall
   module:
@@ -124,6 +126,39 @@ third_party_settings:
                   link: true
                 third_party_settings: {  }
             weight: 4
+            additional: {  }
+            third_party_settings: {  }
+          4ea395d1-dd2d-4a45-a870-097cba36eaf8:
+            uuid: 4ea395d1-dd2d-4a45-a870-097cba36eaf8
+            region: content
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_who_lives'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 5
+            additional: {  }
+            third_party_settings: {  }
+          20f9adf5-833c-4052-8bfb-6df782b8f554:
+            uuid: 20f9adf5-833c-4052-8bfb-6df782b8f554
+            region: content
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_rates'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 6
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
@@ -553,6 +588,13 @@ content:
     third_party_settings: {  }
     weight: 108
     region: content
+  field_residence_hall_rates:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 116
+    region: content
   field_residence_hall_room_type:
     type: entity_reference_label
     label: above
@@ -560,6 +602,14 @@ content:
       link: true
     third_party_settings: {  }
     weight: 111
+    region: content
+  field_residence_hall_who_lives:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 115
     region: content
   links:
     settings: {  }
