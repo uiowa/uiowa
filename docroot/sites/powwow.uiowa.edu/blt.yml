@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: powwow.uiowa.ddev.site
+    protocol: https
+  machine_name: powwow
+  human_name: powwow.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: powwow.prod
+drupal:
+  db:
+    database: powwow_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: dquam
+  site-name: Powwow
