@@ -6,8 +6,9 @@
  */
 
 use Drupal\Core\Cache\Cache;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -632,9 +633,12 @@ function uiowa_core_academic_years(FieldStorageConfig $definition, ContentEntity
   $start_year = 1950;
   $end_year = date('Y') + 10;
   $years = [];
-  while ($start_year < $end_year) {
-    $years[] = $start_year . ' - ' . ($start_year + 1);
-    $start_year++;
+  while ($end_year > $start_year) {
+    $years[$end_year - 1] = t('@start - @end', [
+      '@start' => $end_year - 1,
+      '@end' => $end_year,
+    ]);
+    $end_year--;
   }
   return $years;
 }
@@ -644,13 +648,12 @@ function uiowa_core_academic_years(FieldStorageConfig $definition, ContentEntity
  *
  * @see \Drupal\Core\Field\FieldConfigBase::getDefaultValue()
  */
-function uiowa_core_academic_years_default_value(ContentEntityInterface $entity) {
+function uiowa_core_academic_years_default_value(ContentEntityInterface $entity, FieldDefinitionInterface $definition) {
   $current_year = date('Y');
 
   return [
-    ['value' => t('@start - @end', [
-      '@start' => $current_year,
-      '@end' => $current_year + 1,
-    ])],
+    [
+      'value' => $current_year,
+    ],
   ];
 }
