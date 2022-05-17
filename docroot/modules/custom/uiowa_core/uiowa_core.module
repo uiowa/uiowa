@@ -630,11 +630,11 @@ function uiowa_core_county_options(FieldStorageConfig $definition, ContentEntity
  * Allowed values function for partner counties field.
  */
 function uiowa_core_academic_years(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
-  $start_year = 1950;
-  $end_year = date('Y') + 10;
+  $start_year = 2008;
+  $end_year = date('Y') + 1;
   $years = [];
   while ($end_year > $start_year) {
-    $years[$end_year - 1] = t('@start - @end', [
+    $years[$end_year - 1] = t('@start-@end', [
       '@start' => $end_year - 1,
       '@end' => $end_year,
     ]);

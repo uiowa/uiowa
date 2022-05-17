@@ -619,6 +619,67 @@ trait ProcessMediaTrait {
   }
 
   /**
+   * Process an image field.
+   *
+   * @param int $fid
+   *   The file ID.
+   * @param string $alt
+   *   The image alt text.
+   * @param string $title
+   *   The optional image title.
+   *
+   * @return int|null
+   *   The media ID or null if unable to process.
+   *
+   * @throws \Drupal\migrate\MigrateException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  protected function processFileField($fid, array $meta = []) {
+    $fileQuery = $this->fidQuery($fid);
+
+    $filename_w_subdir = str_replace('public://', '', $fileQuery['uri']);
+    $fileQuery = NULL;
+
+    // Split apart the filename from the subdirectory path.
+    $filename_w_subdir = explode('/', $filename_w_subdir);
+    $filename = array_pop($filename_w_subdir);
+    $subdir = implode('/', $filename_w_subdir) . '/';
+    $filename_w_subdir = NULL;
+
+    // Get a connection for the destination database
+    // and retrieve the associated fid.
+    $new_fid = \Drupal::database()->select('file_managed', 'f')
+      ->fields('f', ['fid'])
+      ->condition('f.filename', $filename)
+      ->execute()
+      ->fetchField();
+
+    // If there's no fid in the D8 database,
+    // then we'll need to fetch it from the source.
+    if (!$new_fid) {
+      // Use the filename, update the source base path with the subdirectory.
+      $new_fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $subdir, $this->getDrupalFileDirectory() . $subdir);
+      $subdir = NULL;
+
+      if ($new_fid) {
+        $mid = $this->createMediaEntity($new_fid, $meta, 1);
+      }
+    }
+    else {
+      $mid = $this->getMid($filename)['mid'];
+      $filename = NULL;
+
+      // And in case we had the file, but not the media entity.
+      if (!$mid) {
+        $mid = $this->createMediaEntity($new_fid, $meta, 1);
+        $meta = NULL;
+      }
+    }
+
+    return $mid ?? NULL;
+  }
+
+  /**
    * Replace inline image tags with media references.
    *
    * Used this as reference: https://stackoverflow.com/a/3195048.

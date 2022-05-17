@@ -21,8 +21,9 @@ class Projects extends BaseNodeSource {
    * {@inheritdoc}
    */
   protected $multiValueFields = [
-    // @todo Add multivalue fields.
-    'field_data_field_files' => ['field_files_fid'],
+//    'field_files' => 'fid',
+//    'field_project_urls' => ['title', 'url'],
+    'field_ref_academic_year' => 'target_id',
   ];
 
   /**
@@ -62,21 +63,54 @@ class Projects extends BaseNodeSource {
       $body[0]['value'] = $this->replaceRelLinkedFiles($body[0]['value']);
       $row->setSourceProperty('body', $body);
     }
+    $body = NULL;
 
     // Download image and attach it for the book cover.
     if ($image = $row->getSourceProperty('field_image')) {
       $this->entityId = $row->getSourceProperty('nid');
       $row->setSourceProperty('field_image', $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']));
+      $image = NULL;
     }
+
     // If we have an upload or uploads, process into mids.
     if ($uploads = $row->getSourceProperty('field_files_fid')) {
       foreach ($uploads as $delta => $fid) {
-        $uploads[$delta] = $this->processImageField($fid);
+        $uploads[$delta] = $this->processFileField($fid);
       }
       $row->setSourceProperty('field_files_fid', $uploads);
+      $uploads = NULL;
+    }
+
+    // Process academic years from term to select list.
+    if ($years = $row->getSourceProperty('field_ref_academic_year_target_id')) {
+      foreach ($years as $delta => $target_id) {
+        $years[$delta] = $this->mapAcademicYearTargetIdToValue($target_id);
+      }
+      $row->setSourceProperty('field_ref_academic_year_target_id', $years);
+      $years = NULL;
     }
 
     return TRUE;
+  }
+
+  private function mapAcademicYearTargetIdToValue($target_id) {
+    $map = [
+      100 => 2009,
+      101 => 2010,
+      102 => 2011,
+      103 => 2012,
+      104 => 2013,
+      105 => 2014,
+      106 => 2015,
+      107 => 2016,
+      176 => 2017,
+      431 => 2018,
+      436 => 2019,
+      471 => 2020,
+      476 => 2021,
+    ];
+
+    return $map[$target_id] ?? NULL;
   }
 
 }
