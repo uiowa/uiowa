@@ -4120,3 +4120,9 @@ $sites['powwow.uiowa.ddev.site'] = 'powwow.uiowa.edu';
 $sites['powwow.dev.drupal.uiowa.edu'] = 'powwow.uiowa.edu';
 $sites['powwow.stage.drupal.uiowa.edu'] = 'powwow.uiowa.edu';
 $sites['powwow.prod.drupal.uiowa.edu'] = 'powwow.uiowa.edu';
+
+// Directory aliases for lead.uiowa.edu.
+$sites['lead.uiowa.ddev.site'] = 'lead.uiowa.edu';
+$sites['lead.dev.drupal.uiowa.edu'] = 'lead.uiowa.edu';
+$sites['lead.stage.drupal.uiowa.edu'] = 'lead.uiowa.edu';
+$sites['lead.prod.drupal.uiowa.edu'] = 'lead.uiowa.edu';
