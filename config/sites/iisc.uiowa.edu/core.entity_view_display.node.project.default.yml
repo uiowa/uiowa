@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.project.body
+    - field.field.node.project.field_academic_year
     - field.field.node.project.field_image
     - field.field.node.project.field_meta_tags
     - field.field.node.project.field_project_college_department
@@ -18,6 +19,7 @@ dependencies:
     - layout_builder_restrictions
     - link
     - metatag
+    - options
     - system
     - text
     - user
@@ -52,6 +54,22 @@ third_party_settings:
                 settings: {  }
                 third_party_settings: {  }
             weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          789e0557-1249-4dc2-983d-c53607aca752:
+            uuid: 789e0557-1249-4dc2-983d-c53607aca752
+            region: content
+            configuration:
+              id: 'field_block:node:project:field_academic_year'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 2
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
@@ -281,6 +299,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: -20
+    region: content
+  field_academic_year:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 110
     region: content
   field_image:
     type: entity_reference_label

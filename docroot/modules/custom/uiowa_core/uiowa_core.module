@@ -624,3 +624,33 @@ function uiowa_core_county_options(FieldStorageConfig $definition, ContentEntity
     'Wright',
   ];
 }
+
+/**
+ * Allowed values function for partner counties field.
+ */
+function uiowa_core_academic_years(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  $start_year = 1950;
+  $end_year = date('Y') + 10;
+  $years = [];
+  while ($start_year < $end_year) {
+    $years[] = $start_year . ' - ' . ($start_year + 1);
+    $start_year++;
+  }
+  return $years;
+}
+
+/**
+ * Delivers the default value for the academic years field.
+ *
+ * @see \Drupal\Core\Field\FieldConfigBase::getDefaultValue()
+ */
+function uiowa_core_academic_years_default_value(ContentEntityInterface $entity) {
+  $current_year = date('Y');
+
+  return [
+    ['value' => t('@start - @end', [
+      '@start' => $current_year,
+      '@end' => $current_year + 1,
+    ])],
+  ];
+}
