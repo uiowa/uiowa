@@ -21,7 +21,7 @@ class Projects extends BaseNodeSource {
    * {@inheritdoc}
    */
   protected $multiValueFields = [
-//    'field_files' => 'fid',
+    'field_data_field_files' => ['field_files_fid'],
 //    'field_project_urls' => ['title', 'url'],
     'field_ref_academic_year' => 'target_id',
   ];
@@ -38,6 +38,17 @@ class Projects extends BaseNodeSource {
       $query->leftJoin('url_alias', 'alias', "alias.source = CONCAT('node/', n.nid)");
       $query->fields('alias', ['alias']);
     }
+    if (!empty($this->configuration['featured_image_field'])
+      && !empty($this->configuration['uses_media'])
+      && $this->configuration['uses_media']
+    ) {
+      $featured_image_field = $this->configuration['featured_image_field'];
+      $query->leftJoin('field_revision_' . $featured_image_field, 'fif', 'fif.revision_id = n.vid');
+      $query->leftJoin('file_managed', 'fm', 'fm.fid = fif.' . $featured_image_field . '_fid');
+      $query->addField('fm', 'fid', 'fi_fid');
+      $query->addField('fm', 'uri', 'fi_filepath');
+      $query->addField('fm', 'filename', 'fi_filename');
+    }
     return $query;
   }
 
@@ -47,6 +58,14 @@ class Projects extends BaseNodeSource {
   public function fields() {
     $fields = parent::fields();
     $fields['alias'] = $this->t('The URL alias for this node.');
+    if (!empty($this->configuration['featured_image_field'])
+      && !empty($this->configuration['uses_media'])
+      && $this->configuration['uses_media']
+    ) {
+      $fields['fi_fid'] = $this->t('FI file entity ID');
+      $fields['fi_file_path'] = $this->t('FI file path');
+      $fields['fi_file_name'] = $this->t('FI file name');
+    }
     return $fields;
   }
 

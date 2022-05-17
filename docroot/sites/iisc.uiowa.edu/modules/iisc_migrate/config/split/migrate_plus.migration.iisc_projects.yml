@@ -10,6 +10,8 @@ migration_group: sitenow_migrate
 source:
   plugin: iisc_projects
   node_type: project
+  featured_image_field: field_image
+  uses_media: true
 destination:
   plugin: 'entity:node'
   default_bundle: project
@@ -48,7 +50,12 @@ process:
         plugin: migration_lookup
         migration: iisc_colleges_departments
         source: tid
-  field_project_deliverables: field_files_fid # Needs work
+  field_project_deliverables:  # Needs work
+    - plugin: sub_process
+      source: field_files_fid
+      process:
+        target_id:
+
   field_project_led_by:
     plugin: sub_process
     source: field_ref_persons
