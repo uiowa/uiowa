@@ -22,6 +22,14 @@ class Articles extends BaseNodeSource {
   use LinkReplaceTrait;
 
   /**
+   * {@inheritdoc}
+   */
+  protected $multiValueFields = [
+    'field_tags' => 'tid',
+    'field_news_departments' => 'target_id',
+  ];
+
+  /**
    * Term-to-name mapping for authors.
    *
    * @var array
@@ -91,13 +99,6 @@ class Articles extends BaseNodeSource {
 
     // Establish an array to eventually map to field_tags.
     $tids = [];
-
-    // Load additional database table information to get entity label data.
-    $tables = [
-      'field_tags' => ['tid'],
-      'field_news_departments' => ['target_id'],
-    ];
-    $this->fetchAdditionalFields($row, $tables);
 
     // Set our tagMapping if it's not already.
     if (empty($this->tagMapping)) {
