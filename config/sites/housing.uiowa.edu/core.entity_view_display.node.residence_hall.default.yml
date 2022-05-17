@@ -7,8 +7,11 @@ dependencies:
     - field.field.node.residence_hall.field_image
     - field.field.node.residence_hall.field_meta_tags
     - field.field.node.residence_hall.field_residence_hall_address
+    - field.field.node.residence_hall.field_residence_hall_amenities
+    - field.field.node.residence_hall.field_residence_hall_bath_type
     - field.field.node.residence_hall.field_residence_hall_building
     - field.field.node.residence_hall.field_residence_hall_bus_stops
+    - field.field.node.residence_hall.field_residence_hall_furnishings
     - field.field.node.residence_hall.field_residence_hall_getting
     - field.field.node.residence_hall.field_residence_hall_hours
     - field.field.node.residence_hall.field_residence_hall_images
@@ -16,6 +19,7 @@ dependencies:
     - field.field.node.residence_hall.field_residence_hall_neighborhd
     - field.field.node.residence_hall.field_residence_hall_phone
     - field.field.node.residence_hall.field_residence_hall_population
+    - field.field.node.residence_hall.field_residence_hall_room_type
     - field.field.node.residence_hall.field_residence_hall_video
     - field.field.node.residence_hall.field_teaser
     - node.type.residence_hall
@@ -52,6 +56,74 @@ third_party_settings:
               context_mapping:
                 entity: layout_builder.entity
             weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          4ec2e9f0-b4a0-44f7-9be5-6c7ad75a6aa1:
+            uuid: 4ec2e9f0-b4a0-44f7-9be5-6c7ad75a6aa1
+            region: content
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_room_type'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          1c78ed64-aebc-4b48-b1f9-a3dfd37301e1:
+            uuid: 1c78ed64-aebc-4b48-b1f9-a3dfd37301e1
+            region: content
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_bath_type'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          55c3c46c-d020-4f3d-9939-2be8b0e72cf8:
+            uuid: 55c3c46c-d020-4f3d-9939-2be8b0e72cf8
+            region: content
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_furnishings'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
+          84aff073-cfcb-4338-ab40-61b689e8295d:
+            uuid: 84aff073-cfcb-4338-ab40-61b689e8295d
+            region: content
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_amenities'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 4
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
@@ -124,8 +196,9 @@ third_party_settings:
           context_mapping: {  }
           column_widths: 67-33
           layout_builder_styles_style:
-            - ''
-            - section_margin_fixed_width_container
+            0: ''
+            1: section_margin_fixed_width_container
+            section_alignment_start: section_alignment_start
         components:
           e611fe89-68c7-49bd-9df6-35cc777b2390:
             uuid: e611fe89-68c7-49bd-9df6-35cc777b2390
@@ -359,7 +432,9 @@ third_party_settings:
             weight: 0
             additional: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
       -
         layout_id: layout_onecol
         layout_settings:
@@ -390,6 +465,22 @@ content:
     third_party_settings: {  }
     weight: 104
     region: content
+  field_residence_hall_amenities:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 114
+    region: content
+  field_residence_hall_bath_type:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 112
+    region: content
   field_residence_hall_building:
     type: entity_reference_label
     label: above
@@ -409,6 +500,14 @@ content:
       target: ''
     third_party_settings: {  }
     weight: 106
+    region: content
+  field_residence_hall_furnishings:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 113
     region: content
   field_residence_hall_getting:
     type: text_default
@@ -453,6 +552,14 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 108
+    region: content
+  field_residence_hall_room_type:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 111
     region: content
   links:
     settings: {  }
