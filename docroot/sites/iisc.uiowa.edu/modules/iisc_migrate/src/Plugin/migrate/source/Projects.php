@@ -20,15 +20,6 @@ class Projects extends BaseNodeSource {
   /**
    * {@inheritdoc}
    */
-  protected $multiValueFields = [
-    'field_data_field_files' => ['field_files_fid'],
-//    'field_project_urls' => ['title', 'url'],
-    'field_ref_academic_year' => 'target_id',
-  ];
-
-  /**
-   * {@inheritdoc}
-   */
   public function query() {
     $query = parent::query();
     // Only add the aliases to the query if we're

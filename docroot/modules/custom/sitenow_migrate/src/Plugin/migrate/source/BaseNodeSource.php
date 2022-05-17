@@ -106,6 +106,17 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
     parent::prepareRow($row);
     $moderation_state = $row->getSourceProperty('status') == 1 ? 'published' : 'draft';
     $row->setSourceProperty('moderation_state', $moderation_state);
+    $this->processMultiValueFields($row);
+  }
+
+  protected function processMultiValueFields(Row $row) {
+    if (!empty($this->configuration['multi_value_fields'])) {
+      foreach ($this->configuration['multi_value_fields'] as $field_name => $fields) {
+        if (!isset($this->multiValueFields[$field_name])) {
+          $this->multiValueFields[$field_name] = $fields;
+        }
+      }
+    }
     if (!empty($this->multiValueFields)) {
       $this->fetchAdditionalFields($row, $this->multiValueFields);
     }

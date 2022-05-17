@@ -12,6 +12,9 @@ source:
   node_type: project
   featured_image_field: field_image
   uses_media: true
+  multi_value_fields:
+    field_files: fid
+    field_ref_academic_year: target_id
 destination:
   plugin: 'entity:node'
   default_bundle: project
@@ -50,12 +53,11 @@ process:
         plugin: migration_lookup
         migration: iisc_colleges_departments
         source: tid
-  field_project_deliverables:  # Needs work
-    - plugin: sub_process
-      source: field_files_fid
-      process:
-        target_id:
-
+  field_project_deliverables: field_files_fid # Needs work
+#    - plugin: sub_process
+#      source: field_files_fid
+#      process:
+#        target_id:
   field_project_led_by:
     plugin: sub_process
     source: field_ref_persons
