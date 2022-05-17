@@ -94,8 +94,8 @@ class Articles extends BaseNodeSource {
 
     // Load additional database table information to get entity label data.
     $tables = [
-      'field_data_field_tags' => ['field_tags_tid'],
-      'field_data_field_news_departments' => ['field_news_departments_target_id'],
+      'field_tags' => ['tid'],
+      'field_news_departments' => ['target_id'],
     ];
     $this->fetchAdditionalFields($row, $tables);
 
