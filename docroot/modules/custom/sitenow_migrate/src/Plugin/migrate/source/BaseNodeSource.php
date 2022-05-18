@@ -127,7 +127,13 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
       }
       $table_name = $field_name;
       if (substr($table_name, 0, 11) !== 'field_data_') {
+        // If the table name doesn't already have the 'field_data_' prefix,
+        // add it.
         $table_name = 'field_data_' . $table_name;
+      }
+      else {
+        // Our field name needs to have 'field_data_' removed from it.
+        $field_name = str_replace('field_data_', '', $field_name);
       }
       foreach ($fields as $column_name) {
         if (substr($column_name, 0, strlen($field_name)) !== $field_name) {
