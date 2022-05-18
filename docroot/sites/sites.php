@@ -4126,3 +4126,9 @@ $sites['lead.uiowa.ddev.site'] = 'lead.uiowa.edu';
 $sites['lead.dev.drupal.uiowa.edu'] = 'lead.uiowa.edu';
 $sites['lead.stage.drupal.uiowa.edu'] = 'lead.uiowa.edu';
 $sites['lead.prod.drupal.uiowa.edu'] = 'lead.uiowa.edu';
+
+// Directory aliases for cheec.uiowa.edu.
+$sites['cheec.uiowa.ddev.site'] = 'cheec.uiowa.edu';
+$sites['cheec.dev.drupal.uiowa.edu'] = 'cheec.uiowa.edu';
+$sites['cheec.stage.drupal.uiowa.edu'] = 'cheec.uiowa.edu';
+$sites['cheec.prod.drupal.uiowa.edu'] = 'cheec.uiowa.edu';
