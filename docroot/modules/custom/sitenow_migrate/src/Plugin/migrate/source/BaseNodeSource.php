@@ -114,8 +114,6 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
    *
    * @param \Drupal\migrate\Row $row
    *   The migration row result.
-   *
-   * @return void
    */
   protected function processMultiValueFields(Row $row) {
     if (!empty($this->configuration['multi_value_fields'])) {

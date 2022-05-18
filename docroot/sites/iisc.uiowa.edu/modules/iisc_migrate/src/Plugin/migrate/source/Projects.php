@@ -40,6 +40,15 @@ class Projects extends BaseNodeSource {
       $query->addField('fm', 'uri', 'fi_filepath');
       $query->addField('fm', 'filename', 'fi_filename');
     }
+    if (!empty($this->configuration['media_fields'])) {
+      foreach ($this->configuration['media_fields'] as $key => $field_name) {
+        $query->leftJoin('field_revision_' . $field_name, "mfr$key", "mfr$key.revision_id = n.vid");
+        $query->leftJoin('file_managed', "mfm$key", "mfm$key.fid = mfr{$key}.{$field_name}_fid");
+        $query->addField("mfm$key", 'fid', "{$field_name}_media_fid");
+        $query->addField("mfm$key", 'uri', "{$field_name}_media_filepath");
+        $query->addField("mfm$key", 'filename', "{$field_name}_media_filename");
+      }
+    }
     return $query;
   }
 
@@ -56,6 +65,19 @@ class Projects extends BaseNodeSource {
       $fields['fi_fid'] = $this->t('FI file entity ID');
       $fields['fi_file_path'] = $this->t('FI file path');
       $fields['fi_file_name'] = $this->t('FI file name');
+    }
+    if (!empty($this->configuration['media_fields'])) {
+      foreach ($this->configuration['media_fields'] as $key => $field_name) {
+        $fields["{$field_name}_media_fid"] = $this->t('[Media] @field file entity ID', [
+          '@field' => $field_name,
+        ]);
+        $fields["{$field_name}_media_filename"] = $this->t('[Media] @field file path', [
+          '@field' => $field_name,
+        ]);
+        $fields["{$field_name}_media_filepath"] = $this->t('[Media] @field file name', [
+          '@field' => $field_name,
+        ]);
+      }
     }
     return $fields;
   }
@@ -85,10 +107,17 @@ class Projects extends BaseNodeSource {
     // If we have an upload or uploads, process into mids.
     if ($uploads = $row->getSourceProperty('field_files_fid')) {
       foreach ($uploads as $delta => $fid) {
-        $uploads[$delta] = $this->processFileField($fid);
+        $meta = [];
+        if (!empty($row->getSourceProperty('field_files_media_filename'))) {
+          $meta['title'] = $row->getSourceProperty('field_files_media_filename');
+        }
+        $uploads[$delta] = $this->processFileField($fid, $meta);
       }
       $row->setSourceProperty('field_files_fid', $uploads);
       $uploads = NULL;
+      $meta = NULL;
+      $delta = NULL;
+      $fid = NULL;
     }
 
     // Process academic years from term to select list.
