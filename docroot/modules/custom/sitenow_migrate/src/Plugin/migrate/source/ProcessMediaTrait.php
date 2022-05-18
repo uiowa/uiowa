@@ -619,20 +619,18 @@ trait ProcessMediaTrait {
   }
 
   /**
-   * Process an image field.
+   * Process a file field.
    *
    * @param int $fid
    *   The file ID.
-   * @param string $alt
-   *   The image alt text.
-   * @param string $title
-   *   The optional image title.
+   * @param array $meta
+   *   Metadata for the file.
    *
    * @return int|null
    *   The media ID or null if unable to process.
    *
-   * @throws \Drupal\migrate\MigrateException
    * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\migrate\MigrateException
    */
   protected function processFileField($fid, array $meta = []) {
     $fileQuery = $this->fidQuery($fid);

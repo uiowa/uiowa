@@ -109,6 +109,14 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
     $this->processMultiValueFields($row);
   }
 
+  /**
+   * Process multi-value fields from source class or YAML.
+   *
+   * @param \Drupal\migrate\Row $row
+   *   The migration row result.
+   *
+   * @return void
+   */
   protected function processMultiValueFields(Row $row) {
     if (!empty($this->configuration['multi_value_fields'])) {
       foreach ($this->configuration['multi_value_fields'] as $field_name => $fields) {

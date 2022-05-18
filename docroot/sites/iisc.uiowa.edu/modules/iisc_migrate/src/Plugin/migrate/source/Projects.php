@@ -103,6 +103,9 @@ class Projects extends BaseNodeSource {
     return TRUE;
   }
 
+  /**
+   * Map Academic Year term IDs to select list values.
+   */
   private function mapAcademicYearTargetIdToValue($target_id) {
     $map = [
       100 => 2009,
