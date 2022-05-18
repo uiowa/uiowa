@@ -120,24 +120,6 @@ third_party_settings:
             weight: 3
             additional: {  }
             third_party_settings: {  }
-          1912346c-3925-4113-8f61-e4f099d7f91d:
-            uuid: 1912346c-3925-4113-8f61-e4f099d7f91d
-            region: content
-            configuration:
-              id: 'field_block:node:residence_hall:field_residence_hall_bath_images'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_entity_view
-                label: above
-                settings:
-                  view_mode: default
-                  link: false
-                third_party_settings: {  }
-            weight: 4
-            additional: {  }
-            third_party_settings: {  }
           4a8811c8-cae2-4a24-b2d5-2d0686d80745:
             uuid: 4a8811c8-cae2-4a24-b2d5-2d0686d80745
             region: content
@@ -178,6 +160,22 @@ third_party_settings:
                   target: ''
                 third_party_settings: {  }
             weight: 6
+            additional: {  }
+            third_party_settings: {  }
+          90151f03-0ea3-43e5-9f54-4496aec909a0:
+            uuid: 90151f03-0ea3-43e5-9f54-4496aec909a0
+            region: content
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_bath_images'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 7
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
@@ -520,13 +518,11 @@ content:
     weight: 104
     region: content
   field_residence_hall_bath_images:
-    type: entity_reference_entity_view
+    type: text_default
     label: above
-    settings:
-      view_mode: default
-      link: false
+    settings: {  }
     third_party_settings: {  }
-    weight: 114
+    weight: 117
     region: content
   field_residence_hall_building:
     type: entity_reference_label

@@ -37,6 +37,7 @@ dependencies:
   module:
     - address
     - content_moderation
+    - field_group
     - link
     - media_library
     - metatag
@@ -44,6 +45,130 @@ dependencies:
     - path
     - telephone
     - text
+third_party_settings:
+  field_group:
+    group_contact_information:
+      children:
+        - field_residence_hall_address
+        - field_residence_hall_phone
+        - field_residence_hall_hours
+      label: 'Contact Information'
+      region: content
+      parent_name: ''
+      weight: 4
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: false
+        description: ''
+        required_fields: true
+    group_media:
+      children:
+        - field_residence_hall_images
+        - field_residence_hall_video
+      label: Media
+      region: content
+      parent_name: ''
+      weight: 3
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: false
+        description: ''
+        required_fields: true
+    group_room_details:
+      children:
+        - field_residence_hall_room_type
+        - field_residence_hall_furnishings
+        - field_residence_hall_amenities
+        - field_residence_hall_floor_plans
+        - field_residence_hall_rates
+      label: 'Room Details'
+      region: content
+      parent_name: ''
+      weight: 16
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: false
+        description: ''
+        required_fields: true
+    group_getting:
+      children:
+        - field_residence_hall_getting
+        - field_residence_hall_bus_stops
+      label: 'Getting around'
+      region: content
+      parent_name: ''
+      weight: 18
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: false
+        description: ''
+        required_fields: true
+    group_building_details:
+      children:
+        - field_residence_hall_neighborhd
+        - field_residence_hall_building
+        - field_residence_hall_year_built
+        - field_residence_hall_population
+        - field_residence_hall_who_lives
+      label: 'Building details'
+      region: content
+      parent_name: ''
+      weight: 2
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: false
+        description: ''
+        required_fields: true
+    group_bathroom_details:
+      children:
+        - field_residence_hall_bath_type
+        - field_residence_hall_bath_images
+      label: 'Bathroom details'
+      region: content
+      parent_name: ''
+      weight: 17
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: false
+        description: ''
+        required_fields: true
+    group_custom_links:
+      children:
+        - field_residence_hall_cta
+        - field_residence_hall_dining_link
+        - field_residence_hall_wo_link
+        - field_residence_hall_emergency
+      label: 'Custom links'
+      region: content
+      parent_name: ''
+      weight: 19
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: false
+        description: ''
+        required_fields: true
+        weight: 0
 id: node.residence_hall.default
 targetEntityType: node
 bundle: residence_hall
@@ -51,7 +176,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 11
+    weight: 1
     region: content
     settings:
       rows: 9
@@ -61,20 +186,20 @@ content:
     third_party_settings: {  }
   created:
     type: datetime_timestamp
-    weight: 13
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
   field_image:
     type: media_library_widget
-    weight: 21
+    weight: 14
     region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
   field_meta_tags:
     type: metatag_firehose
-    weight: 22
+    weight: 15
     region: content
     settings:
       sidebar: true
@@ -82,7 +207,7 @@ content:
     third_party_settings: {  }
   field_residence_hall_address:
     type: address_default
-    weight: 8
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -97,15 +222,16 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_residence_hall_bath_images:
-    type: media_library_widget
-    weight: 35
+    type: text_textarea
+    weight: 25
     region: content
     settings:
-      media_types: {  }
+      rows: 5
+      placeholder: ''
     third_party_settings: {  }
   field_residence_hall_bath_type:
     type: entity_reference_autocomplete
-    weight: 29
+    weight: 24
     region: content
     settings:
       match_operator: CONTAINS
@@ -115,7 +241,7 @@ content:
     third_party_settings: {  }
   field_residence_hall_building:
     type: entity_reference_autocomplete
-    weight: 2
+    weight: 4
     region: content
     settings:
       match_operator: CONTAINS
@@ -125,7 +251,7 @@ content:
     third_party_settings: {  }
   field_residence_hall_bus_stops:
     type: link_default
-    weight: 26
+    weight: 23
     region: content
     settings:
       placeholder_url: ''
@@ -133,7 +259,7 @@ content:
     third_party_settings: {  }
   field_residence_hall_cta:
     type: entity_reference_paragraphs
-    weight: 33
+    weight: 24
     region: content
     settings:
       title: Paragraph
@@ -145,7 +271,7 @@ content:
     third_party_settings: {  }
   field_residence_hall_dining_link:
     type: link_default
-    weight: 36
+    weight: 25
     region: content
     settings:
       placeholder_url: ''
@@ -153,7 +279,7 @@ content:
     third_party_settings: {  }
   field_residence_hall_emergency:
     type: link_default
-    weight: 31
+    weight: 27
     region: content
     settings:
       placeholder_url: ''
@@ -161,7 +287,7 @@ content:
     third_party_settings: {  }
   field_residence_hall_floor_plans:
     type: text_textarea
-    weight: 34
+    weight: 24
     region: content
     settings:
       rows: 5
@@ -169,7 +295,7 @@ content:
     third_party_settings: {  }
   field_residence_hall_furnishings:
     type: entity_reference_autocomplete
-    weight: 24
+    weight: 22
     region: content
     settings:
       match_operator: CONTAINS
@@ -179,7 +305,7 @@ content:
     third_party_settings: {  }
   field_residence_hall_getting:
     type: text_textarea
-    weight: 27
+    weight: 22
     region: content
     settings:
       rows: 5
@@ -187,7 +313,7 @@ content:
     third_party_settings: {  }
   field_residence_hall_hours:
     type: text_textarea
-    weight: 10
+    weight: 11
     region: content
     settings:
       rows: 5
@@ -195,14 +321,14 @@ content:
     third_party_settings: {  }
   field_residence_hall_images:
     type: media_library_widget
-    weight: 7
+    weight: 9
     region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
   field_residence_hall_llc:
     type: entity_reference_autocomplete
-    weight: 30
+    weight: 20
     region: content
     settings:
       match_operator: CONTAINS
@@ -212,7 +338,7 @@ content:
     third_party_settings: {  }
   field_residence_hall_meet_us:
     type: entity_reference_autocomplete
-    weight: 32
+    weight: 21
     region: content
     settings:
       match_operator: CONTAINS
@@ -222,20 +348,20 @@ content:
     third_party_settings: {  }
   field_residence_hall_neighborhd:
     type: options_select
-    weight: 1
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
   field_residence_hall_phone:
     type: telephone_default
-    weight: 9
+    weight: 10
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_residence_hall_population:
     type: string_textfield
-    weight: 4
+    weight: 6
     region: content
     settings:
       size: 60
@@ -251,7 +377,7 @@ content:
     third_party_settings: {  }
   field_residence_hall_room_type:
     type: entity_reference_autocomplete
-    weight: 28
+    weight: 21
     region: content
     settings:
       match_operator: CONTAINS
@@ -261,14 +387,14 @@ content:
     third_party_settings: {  }
   field_residence_hall_video:
     type: media_library_widget
-    weight: 6
+    weight: 11
     region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
   field_residence_hall_who_lives:
     type: entity_reference_autocomplete
-    weight: 5
+    weight: 7
     region: content
     settings:
       match_operator: CONTAINS
@@ -278,7 +404,7 @@ content:
     third_party_settings: {  }
   field_residence_hall_wo_link:
     type: link_default
-    weight: 37
+    weight: 26
     region: content
     settings:
       placeholder_url: ''
@@ -286,7 +412,7 @@ content:
     third_party_settings: {  }
   field_residence_hall_year_built:
     type: string_textfield
-    weight: 3
+    weight: 5
     region: content
     settings:
       size: 60
@@ -294,7 +420,7 @@ content:
     third_party_settings: {  }
   field_teaser:
     type: string_textarea
-    weight: 20
+    weight: 13
     region: content
     settings:
       rows: 5
@@ -302,33 +428,33 @@ content:
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 18
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
   path:
     type: path
-    weight: 16
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    weight: 14
+    weight: 8
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 19
+    weight: 12
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    weight: 15
+    weight: 9
     region: content
     settings:
       display_label: true
@@ -343,7 +469,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 12
+    weight: 5
     region: content
     settings:
       match_operator: CONTAINS
@@ -352,7 +478,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   url_redirects:
-    weight: 17
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
