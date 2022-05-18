@@ -8,11 +8,14 @@ dependencies:
     - field.field.node.residence_hall.field_meta_tags
     - field.field.node.residence_hall.field_residence_hall_address
     - field.field.node.residence_hall.field_residence_hall_amenities
+    - field.field.node.residence_hall.field_residence_hall_bath_images
     - field.field.node.residence_hall.field_residence_hall_bath_type
     - field.field.node.residence_hall.field_residence_hall_building
     - field.field.node.residence_hall.field_residence_hall_bus_stops
     - field.field.node.residence_hall.field_residence_hall_cta
+    - field.field.node.residence_hall.field_residence_hall_dining_link
     - field.field.node.residence_hall.field_residence_hall_emergency
+    - field.field.node.residence_hall.field_residence_hall_floor_plans
     - field.field.node.residence_hall.field_residence_hall_furnishings
     - field.field.node.residence_hall.field_residence_hall_getting
     - field.field.node.residence_hall.field_residence_hall_hours
@@ -26,6 +29,7 @@ dependencies:
     - field.field.node.residence_hall.field_residence_hall_room_type
     - field.field.node.residence_hall.field_residence_hall_video
     - field.field.node.residence_hall.field_residence_hall_who_lives
+    - field.field.node.residence_hall.field_residence_hall_wo_link
     - field.field.node.residence_hall.field_residence_hall_year_built
     - field.field.node.residence_hall.field_teaser
     - node.type.residence_hall
@@ -98,6 +102,82 @@ third_party_settings:
                   link: ''
                 third_party_settings: {  }
             weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          bd5699f6-196e-43c2-997f-d2be25062987:
+            uuid: bd5699f6-196e-43c2-997f-d2be25062987
+            region: content
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_floor_plans'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
+          1912346c-3925-4113-8f61-e4f099d7f91d:
+            uuid: 1912346c-3925-4113-8f61-e4f099d7f91d
+            region: content
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_bath_images'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                  link: false
+                third_party_settings: {  }
+            weight: 4
+            additional: {  }
+            third_party_settings: {  }
+          4a8811c8-cae2-4a24-b2d5-2d0686d80745:
+            uuid: 4a8811c8-cae2-4a24-b2d5-2d0686d80745
+            region: content
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_dining_link'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: link
+                label: above
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: ''
+                  target: ''
+                third_party_settings: {  }
+            weight: 5
+            additional: {  }
+            third_party_settings: {  }
+          48bcfd84-0646-4661-983e-67ae815755ac:
+            uuid: 48bcfd84-0646-4661-983e-67ae815755ac
+            region: content
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_wo_link'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: link
+                label: above
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: ''
+                  target: ''
+                third_party_settings: {  }
+            weight: 6
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
@@ -439,6 +519,15 @@ content:
     third_party_settings: {  }
     weight: 104
     region: content
+  field_residence_hall_bath_images:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 114
+    region: content
   field_residence_hall_building:
     type: entity_reference_label
     label: above
@@ -467,6 +556,25 @@ content:
       link: ''
     third_party_settings: {  }
     weight: 112
+    region: content
+  field_residence_hall_dining_link:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 115
+    region: content
+  field_residence_hall_floor_plans:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 113
     region: content
   field_residence_hall_getting:
     type: text_default
@@ -511,6 +619,18 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 108
+    region: content
+  field_residence_hall_wo_link:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 116
     region: content
   field_residence_hall_year_built:
     type: string

@@ -8,11 +8,14 @@ dependencies:
     - field.field.node.residence_hall.field_meta_tags
     - field.field.node.residence_hall.field_residence_hall_address
     - field.field.node.residence_hall.field_residence_hall_amenities
+    - field.field.node.residence_hall.field_residence_hall_bath_images
     - field.field.node.residence_hall.field_residence_hall_bath_type
     - field.field.node.residence_hall.field_residence_hall_building
     - field.field.node.residence_hall.field_residence_hall_bus_stops
     - field.field.node.residence_hall.field_residence_hall_cta
+    - field.field.node.residence_hall.field_residence_hall_dining_link
     - field.field.node.residence_hall.field_residence_hall_emergency
+    - field.field.node.residence_hall.field_residence_hall_floor_plans
     - field.field.node.residence_hall.field_residence_hall_furnishings
     - field.field.node.residence_hall.field_residence_hall_getting
     - field.field.node.residence_hall.field_residence_hall_hours
@@ -26,6 +29,7 @@ dependencies:
     - field.field.node.residence_hall.field_residence_hall_room_type
     - field.field.node.residence_hall.field_residence_hall_video
     - field.field.node.residence_hall.field_residence_hall_who_lives
+    - field.field.node.residence_hall.field_residence_hall_wo_link
     - field.field.node.residence_hall.field_residence_hall_year_built
     - field.field.node.residence_hall.field_teaser
     - node.type.residence_hall
@@ -92,6 +96,13 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_residence_hall_bath_images:
+    type: media_library_widget
+    weight: 35
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
   field_residence_hall_bath_type:
     type: entity_reference_autocomplete
     weight: 29
@@ -132,6 +143,14 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
+  field_residence_hall_dining_link:
+    type: link_default
+    weight: 36
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
   field_residence_hall_emergency:
     type: link_default
     weight: 31
@@ -139,6 +158,14 @@ content:
     settings:
       placeholder_url: ''
       placeholder_title: ''
+    third_party_settings: {  }
+  field_residence_hall_floor_plans:
+    type: text_textarea
+    weight: 34
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
     third_party_settings: {  }
   field_residence_hall_furnishings:
     type: entity_reference_autocomplete
@@ -248,6 +275,14 @@ content:
       match_limit: 10
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  field_residence_hall_wo_link:
+    type: link_default
+    weight: 37
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
     third_party_settings: {  }
   field_residence_hall_year_built:
     type: string_textfield
