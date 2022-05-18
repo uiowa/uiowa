@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.residence_hall.field_residence_hall_bath_type
     - field.field.node.residence_hall.field_residence_hall_building
     - field.field.node.residence_hall.field_residence_hall_bus_stops
+    - field.field.node.residence_hall.field_residence_hall_cta
     - field.field.node.residence_hall.field_residence_hall_emergency
     - field.field.node.residence_hall.field_residence_hall_furnishings
     - field.field.node.residence_hall.field_residence_hall_getting
@@ -35,6 +36,7 @@ dependencies:
     - link
     - media_library
     - metatag
+    - paragraphs
     - path
     - telephone
     - text
@@ -117,6 +119,18 @@ content:
     settings:
       placeholder_url: ''
       placeholder_title: ''
+    third_party_settings: {  }
+  field_residence_hall_cta:
+    type: entity_reference_paragraphs
+    weight: 33
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
     third_party_settings: {  }
   field_residence_hall_emergency:
     type: link_default

@@ -1,0 +1,44 @@
+adding:
+  dependencies:
+    config:
+      - field.field.paragraph.housing_cta.field_housing_cta_description
+      - field.field.paragraph.housing_cta.field_housing_cta_image
+      - field.field.paragraph.housing_cta.field_housing_cta_link
+      - field.field.paragraph.housing_cta.field_housing_cta_title
+    module:
+      - link
+      - media_library
+      - text
+  content:
+    field_housing_cta_description:
+      type: text_textarea
+      weight: 2
+      region: content
+      settings:
+        rows: 5
+        placeholder: ''
+      third_party_settings: {  }
+    field_housing_cta_image:
+      type: media_library_widget
+      weight: 0
+      region: content
+      settings:
+        media_types: {  }
+      third_party_settings: {  }
+    field_housing_cta_link:
+      type: link_default
+      weight: 3
+      region: content
+      settings:
+        placeholder_url: ''
+        placeholder_title: ''
+      third_party_settings: {  }
+    field_housing_cta_title:
+      type: string_textfield
+      weight: 1
+      region: content
+      settings:
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+removing: {  }
