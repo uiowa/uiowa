@@ -358,22 +358,6 @@ third_party_settings:
             weight: 7
             additional: {  }
             third_party_settings: {  }
-          90151f03-0ea3-43e5-9f54-4496aec909a0:
-            uuid: 90151f03-0ea3-43e5-9f54-4496aec909a0
-            region: second
-            configuration:
-              id: 'field_block:node:residence_hall:field_residence_hall_bath_images'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: text_default
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: 5
-            additional: {  }
-            third_party_settings: {  }
           48bcfd84-0646-4661-983e-67ae815755ac:
             uuid: 48bcfd84-0646-4661-983e-67ae815755ac
             region: second
@@ -392,7 +376,7 @@ third_party_settings:
                   rel: ''
                   target: ''
                 third_party_settings: {  }
-            weight: 4
+            weight: 5
             additional: {  }
             third_party_settings: {  }
           4a8811c8-cae2-4a24-b2d5-2d0686d80745:
@@ -429,7 +413,7 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 3
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           037d7d5f-e3f5-45aa-bb52-5c028a695eb8:
@@ -447,7 +431,7 @@ third_party_settings:
                   view_mode: default
                   link: ''
                 third_party_settings: {  }
-            weight: 1
+            weight: 2
             additional: {  }
             third_party_settings: {  }
           10004193-87b0-4efb-9eb7-fc07565466fe:
@@ -464,7 +448,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 2
+            weight: 3
             additional: {  }
             third_party_settings: {  }
           a7bc4899-7db1-4326-861b-3e19be659713:
@@ -486,6 +470,27 @@ third_party_settings:
                   prefix_suffix: true
                 third_party_settings: {  }
             weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          55a2d684-c845-4049-a477-cc1d7e2cc21e:
+            uuid: 55a2d684-c845-4049-a477-cc1d7e2cc21e
+            region: second
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_bath_images'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: link
+                label: above
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: ''
+                  target: ''
+                third_party_settings: {  }
+            weight: 1
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -522,11 +527,16 @@ content:
     weight: 104
     region: content
   field_residence_hall_bath_images:
-    type: text_default
+    type: link
     label: above
-    settings: {  }
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
     third_party_settings: {  }
-    weight: 117
+    weight: 119
     region: content
   field_residence_hall_building:
     type: entity_reference_label

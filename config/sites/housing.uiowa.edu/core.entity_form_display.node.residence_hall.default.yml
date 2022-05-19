@@ -120,8 +120,8 @@ third_party_settings:
         - field_residence_hall_neighborhd
         - field_residence_hall_building
         - field_residence_hall_year_built
-        - field_residence_hall_population
         - field_residence_hall_who_lives
+        - field_residence_hall_population
       label: 'Building details'
       region: content
       parent_name: ''
@@ -221,12 +221,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_residence_hall_bath_images:
-    type: text_textarea
-    weight: 25
+    type: link_default
+    weight: 29
     region: content
     settings:
-      rows: 5
-      placeholder: ''
+      placeholder_url: ''
+      placeholder_title: ''
     third_party_settings: {  }
   field_residence_hall_bath_type:
     type: entity_reference_autocomplete
