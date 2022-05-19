@@ -14,7 +14,9 @@ dependencies:
     - field.field.node.residence_hall.field_residence_hall_bus_stops
     - field.field.node.residence_hall.field_residence_hall_cta
     - field.field.node.residence_hall.field_residence_hall_dining_link
-    - field.field.node.residence_hall.field_residence_hall_emergency
+    - field.field.node.residence_hall.field_residence_hall_emerg_link
+    - field.field.node.residence_hall.field_residence_hall_emerg_text
+    - field.field.node.residence_hall.field_residence_hall_emerg_title
     - field.field.node.residence_hall.field_residence_hall_floor_plans
     - field.field.node.residence_hall.field_residence_hall_furnishings
     - field.field.node.residence_hall.field_residence_hall_getting
@@ -67,24 +69,6 @@ third_party_settings:
               context_mapping:
                 entity: layout_builder.entity
             weight: 0
-            additional: {  }
-            third_party_settings: {  }
-          4fdfce9c-88e6-4470-9401-9b36e509bc1b:
-            uuid: 4fdfce9c-88e6-4470-9401-9b36e509bc1b
-            region: content
-            configuration:
-              id: 'field_block:node:residence_hall:field_residence_hall_emergency'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_revisions_entity_view
-                label: above
-                settings:
-                  view_mode: default
-                  link: ''
-                third_party_settings: {  }
-            weight: 1
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
@@ -202,7 +186,7 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 12
+            weight: 15
             additional: {  }
             third_party_settings: {  }
           ff2e0a65-8fba-43f4-90de-dad908742556:
@@ -234,7 +218,7 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 11
+            weight: 14
             additional: {  }
             third_party_settings: {  }
           1b1cec17-cacb-458c-8495-505e2d478971:
@@ -250,7 +234,7 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 10
+            weight: 13
             additional: {  }
             third_party_settings: {  }
           95098cc9-9a56-492d-97bc-2c221d00052d:
@@ -324,7 +308,7 @@ third_party_settings:
                   rel: ''
                   target: ''
                 third_party_settings: {  }
-            weight: 9
+            weight: 12
             additional: {  }
             third_party_settings: {  }
           285e3dae-df9a-4c8c-98a0-9ec99e73746b:
@@ -356,7 +340,7 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 8
+            weight: 11
             additional: {  }
             third_party_settings: {  }
           885ac8e7-378d-47b5-a3dd-9bcfa9cdd174:
@@ -373,7 +357,7 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 7
+            weight: 10
             additional: {  }
             third_party_settings: {  }
           48bcfd84-0646-4661-983e-67ae815755ac:
@@ -394,7 +378,7 @@ third_party_settings:
                   rel: ''
                   target: ''
                 third_party_settings: {  }
-            weight: 5
+            weight: 8
             additional: {  }
             third_party_settings: {  }
           4a8811c8-cae2-4a24-b2d5-2d0686d80745:
@@ -415,7 +399,7 @@ third_party_settings:
                   rel: ''
                   target: ''
                 third_party_settings: {  }
-            weight: 6
+            weight: 9
             additional: {  }
             third_party_settings: {  }
           bd5699f6-196e-43c2-997f-d2be25062987:
@@ -431,7 +415,7 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 4
+            weight: 7
             additional: {  }
             third_party_settings: {  }
           037d7d5f-e3f5-45aa-bb52-5c028a695eb8:
@@ -449,7 +433,7 @@ third_party_settings:
                   view_mode: default
                   link: ''
                 third_party_settings: {  }
-            weight: 2
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           10004193-87b0-4efb-9eb7-fc07565466fe:
@@ -466,7 +450,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 3
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           a7bc4899-7db1-4326-861b-3e19be659713:
@@ -508,7 +492,61 @@ third_party_settings:
                   rel: ''
                   target: ''
                 third_party_settings: {  }
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
+          7a854f1f-9824-434b-abe1-ee118c2ba473:
+            uuid: 7a854f1f-9824-434b-abe1-ee118c2ba473
+            region: second
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_emerg_link'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: link
+                label: above
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: ''
+                  target: ''
+                third_party_settings: {  }
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          ae9e6891-3e27-4b2e-9381-36d0c62d6328:
+            uuid: ae9e6891-3e27-4b2e-9381-36d0c62d6328
+            region: second
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_emerg_title'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
             weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          8025f646-903b-454d-a3dc-d5910d721896:
+            uuid: 8025f646-903b-454d-a3dc-d5910d721896
+            region: second
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_emerg_text'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 5
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -597,14 +635,32 @@ content:
     third_party_settings: {  }
     weight: 115
     region: content
-  field_residence_hall_emergency:
-    type: entity_reference_revisions_entity_view
+  field_residence_hall_emerg_link:
+    type: link
     label: above
     settings:
-      view_mode: default
-      link: ''
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 122
+    region: content
+  field_residence_hall_emerg_text:
+    type: text_default
+    label: above
+    settings: {  }
     third_party_settings: {  }
     weight: 120
+    region: content
+  field_residence_hall_emerg_title:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 121
     region: content
   field_residence_hall_floor_plans:
     type: text_default

@@ -14,7 +14,9 @@ dependencies:
     - field.field.node.residence_hall.field_residence_hall_bus_stops
     - field.field.node.residence_hall.field_residence_hall_cta
     - field.field.node.residence_hall.field_residence_hall_dining_link
-    - field.field.node.residence_hall.field_residence_hall_emergency
+    - field.field.node.residence_hall.field_residence_hall_emerg_link
+    - field.field.node.residence_hall.field_residence_hall_emerg_text
+    - field.field.node.residence_hall.field_residence_hall_emerg_title
     - field.field.node.residence_hall.field_residence_hall_floor_plans
     - field.field.node.residence_hall.field_residence_hall_furnishings
     - field.field.node.residence_hall.field_residence_hall_getting
@@ -167,6 +169,23 @@ third_party_settings:
         open: true
         description: ''
         required_fields: true
+    group_emergency_policies:
+      children:
+        - field_residence_hall_emerg_title
+        - field_residence_hall_emerg_text
+        - field_residence_hall_emerg_link
+      label: 'Emergency Policies'
+      region: content
+      parent_name: ''
+      weight: 22
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: true
+        id: ''
+        open: false
+        description: ''
+        required_fields: true
 id: node.residence_hall.default
 targetEntityType: node
 bundle: residence_hall
@@ -275,17 +294,29 @@ content:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
-  field_residence_hall_emergency:
-    type: entity_reference_paragraphs
-    weight: 22
+  field_residence_hall_emerg_link:
+    type: link_default
+    weight: 26
     region: content
     settings:
-      title: Paragraph
-      title_plural: Paragraphs
-      edit_mode: open
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: ''
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  field_residence_hall_emerg_text:
+    type: text_textarea
+    weight: 25
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_residence_hall_emerg_title:
+    type: string_textfield
+    weight: 24
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   field_residence_hall_floor_plans:
     type: text_textarea
