@@ -1,0 +1,44 @@
+uuid: null
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - tippie_migrate
+id: tippie_articles
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - tippie
+migration_group: sitenow_migrate
+label: Articles
+source:
+  plugin: tippie_articles
+  node_type: news
+  constants:
+    uid_admin: 1
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  moderation_state: moderation_state
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid: constants/uid_admin
+  title: title
+  body: body
+  field_image: field_image
+  field_teaser: body_summary
+  field_tags: tags
+  field_article_source_org: custom_org
+  field_article_source_link/uri: field_news_source/0/url
+destination:
+  plugin: 'entity:node'
+  default_bundle: article
+migration_dependencies: null

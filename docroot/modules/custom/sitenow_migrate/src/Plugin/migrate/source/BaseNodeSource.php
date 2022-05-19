@@ -121,16 +121,34 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
    */
   public function fetchAdditionalFields(Row &$row, array $tables) {
     $nid = $row->getSourceProperty('nid');
-    foreach ($tables as $table_name => $fields) {
-      foreach ($fields as $field) {
-        $row->setSourceProperty($field, $this->select($table_name, 't')
-          ->fields('t', [$field])
+    foreach ($tables as $field_name => $fields) {
+      if (!is_array($fields)) {
+        $fields = [$fields];
+      }
+      $table_name = $field_name;
+      if (substr($table_name, 0, 11) !== 'field_data_') {
+        // If the table name doesn't already have the 'field_data_' prefix,
+        // add it.
+        $table_name = 'field_data_' . $table_name;
+      }
+      else {
+        // Our field name needs to have 'field_data_' removed from it.
+        $field_name = str_replace('field_data_', '', $field_name);
+      }
+      foreach ($fields as $column_name) {
+        if (substr($column_name, 0, strlen($field_name)) !== $field_name) {
+          $column_name = $field_name . '_' . $column_name;
+        }
+        $row->setSourceProperty($column_name, $this->select($table_name, 't')
+          ->fields('t', [$column_name])
           ->condition('entity_id', $nid, '=')
           ->execute()
           ->fetchCol());
-        $field = NULL;
+        $column_name = NULL;
       }
     }
+    $table_name = NULL;
+    $field_name = NULL;
   }
 
   /**

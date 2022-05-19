@@ -4090,3 +4090,45 @@ $sites['research.uiowa.ddev.site'] = 'research.uiowa.edu';
 $sites['research.dev.drupal.uiowa.edu'] = 'research.uiowa.edu';
 $sites['research.stage.drupal.uiowa.edu'] = 'research.uiowa.edu';
 $sites['research.prod.drupal.uiowa.edu'] = 'research.uiowa.edu';
+
+// Directory aliases for cssa.org.uiowa.edu.
+$sites['orgcssa.uiowa.ddev.site'] = 'cssa.org.uiowa.edu';
+$sites['orgcssa.dev.drupal.uiowa.edu'] = 'cssa.org.uiowa.edu';
+$sites['orgcssa.stage.drupal.uiowa.edu'] = 'cssa.org.uiowa.edu';
+$sites['orgcssa.prod.drupal.uiowa.edu'] = 'cssa.org.uiowa.edu';
+
+// Directory aliases for herrmann.lab.uiowa.edu.
+$sites['labherrmann.uiowa.ddev.site'] = 'herrmann.lab.uiowa.edu';
+$sites['labherrmann.dev.drupal.uiowa.edu'] = 'herrmann.lab.uiowa.edu';
+$sites['labherrmann.stage.drupal.uiowa.edu'] = 'herrmann.lab.uiowa.edu';
+$sites['labherrmann.prod.drupal.uiowa.edu'] = 'herrmann.lab.uiowa.edu';
+
+// Directory aliases for gerard.lab.uiowa.edu.
+$sites['labgerard.uiowa.ddev.site'] = 'gerard.lab.uiowa.edu';
+$sites['labgerard.dev.drupal.uiowa.edu'] = 'gerard.lab.uiowa.edu';
+$sites['labgerard.stage.drupal.uiowa.edu'] = 'gerard.lab.uiowa.edu';
+$sites['labgerard.prod.drupal.uiowa.edu'] = 'gerard.lab.uiowa.edu';
+
+// Directory aliases for sander.lab.uiowa.edu.
+$sites['labsander.uiowa.ddev.site'] = 'sander.lab.uiowa.edu';
+$sites['labsander.dev.drupal.uiowa.edu'] = 'sander.lab.uiowa.edu';
+$sites['labsander.stage.drupal.uiowa.edu'] = 'sander.lab.uiowa.edu';
+$sites['labsander.prod.drupal.uiowa.edu'] = 'sander.lab.uiowa.edu';
+
+// Directory aliases for powwow.uiowa.edu.
+$sites['powwow.uiowa.ddev.site'] = 'powwow.uiowa.edu';
+$sites['powwow.dev.drupal.uiowa.edu'] = 'powwow.uiowa.edu';
+$sites['powwow.stage.drupal.uiowa.edu'] = 'powwow.uiowa.edu';
+$sites['powwow.prod.drupal.uiowa.edu'] = 'powwow.uiowa.edu';
+
+// Directory aliases for lead.uiowa.edu.
+$sites['lead.uiowa.ddev.site'] = 'lead.uiowa.edu';
+$sites['lead.dev.drupal.uiowa.edu'] = 'lead.uiowa.edu';
+$sites['lead.stage.drupal.uiowa.edu'] = 'lead.uiowa.edu';
+$sites['lead.prod.drupal.uiowa.edu'] = 'lead.uiowa.edu';
+
+// Directory aliases for cheec.uiowa.edu.
+$sites['cheec.uiowa.ddev.site'] = 'cheec.uiowa.edu';
+$sites['cheec.dev.drupal.uiowa.edu'] = 'cheec.uiowa.edu';
+$sites['cheec.stage.drupal.uiowa.edu'] = 'cheec.uiowa.edu';
+$sites['cheec.prod.drupal.uiowa.edu'] = 'cheec.uiowa.edu';
