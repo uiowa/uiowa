@@ -17,6 +17,10 @@ use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
 class Projects extends BaseNodeSource {
   use ProcessMediaTrait;
 
+  protected function processFieldBody(Row $row) {
+
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -98,18 +102,18 @@ class Projects extends BaseNodeSource {
     $body = NULL;
 
     // Download image and attach it for the book cover.
-    if ($image = $row->getSourceProperty('field_image')) {
-      $this->entityId = $row->getSourceProperty('nid');
-      $row->setSourceProperty('field_image', $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']));
-      $image = NULL;
-    }
+//    if ($image = $row->getSourceProperty('field_image')) {
+//      $this->entityId = $row->getSourceProperty('nid');
+//      $row->setSourceProperty('field_image', $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']));
+//      $image = NULL;
+//    }
 
     // If we have an upload or uploads, process into mids.
     if ($uploads = $row->getSourceProperty('field_files_fid')) {
       foreach ($uploads as $delta => $fid) {
         $meta = [];
         if (!empty($row->getSourceProperty('field_files_media_filename'))) {
-          $meta['title'] = $row->getSourceProperty('field_files_media_filename');
+          $meta['filename'] = $row->getSourceProperty('field_files_media_filename');
         }
         $uploads[$delta] = $this->processFileField($fid, $meta);
       }

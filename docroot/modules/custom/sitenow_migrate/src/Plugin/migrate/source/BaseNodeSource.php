@@ -5,6 +5,7 @@ namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Lock\NullLockBackend;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\State\StateInterface;
 use Drupal\migrate\Event\ImportAwareInterface;
@@ -75,6 +76,13 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
   protected $multiValueFields = [];
 
   /**
+   * Files with media fields on the source.
+   *
+   * @var array
+   */
+  protected $sourceMediaFields = [];
+
+  /**
    * {@inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, StateInterface $state, ModuleHandlerInterface $module_handler, FileSystemInterface $file_system, EntityTypeManager $entityTypeManager) {
@@ -107,6 +115,8 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
     $moderation_state = $row->getSourceProperty('status') == 1 ? 'published' : 'draft';
     $row->setSourceProperty('moderation_state', $moderation_state);
     $this->processMultiValueFields($row);
+    $this->processMediaFields($row);
+
   }
 
   /**
@@ -314,6 +324,69 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
       ->execute()
       ->fetch();
     return $last_migrated->sourceid1 ?? 0;
+  }
+
+  /**
+   * Add additional properties for media fields.
+   *
+   * @param \Drupal\migrate\Row $row
+   *    The migration row result.
+   *
+   * @return array|mixed
+   * @throws \Exception
+   */
+  public function processMediaFields(Row $row) {
+    // Loop through each entry in the process section of the migration config.
+    foreach ($this->migration->getProcess() as $field_name => $processes) {
+      // If processes isn't an array, then the plugin is 'get' and we can bail.
+      if (!is_array($processes)) {
+        continue;
+      }
+      foreach ($processes as $process) {
+        // Check if we are using a plugin that we need this additional
+        // processing for.
+        // @todo Handle sub-processes as well.
+        if (empty($process['plugin']) || !in_array($process['plugin'], [
+            'create_media_from_file_field'
+          ])) {
+          continue;
+        }
+
+        $field = $row->getSourceProperty($field_name);
+        $vid = $row->getSourceProperty('vid');
+        $query = $this->select("field_revision_$field_name", 'fr')
+          ->condition('fr.revision_id', $vid)
+          ->orderBy('fm.fid');
+
+        $query->leftJoin('file_managed', 'fm', "fm.fid = fr.{$field_name}_fid");
+
+        $results = $query
+          ->fields('fm', ['fid', 'filename', 'uri'])
+          ->execute()
+          ->fetchAllAssoc('fid');
+        // Check if field is multi-value.
+        if (is_array($field[0])) {
+          // Loop through each value on the field.
+          foreach ($field as &$values) {
+            $fid = $values['fid'];
+            if (isset($results[$fid])) {
+              $values += $results[$fid];
+            }
+          }
+        }
+        $row->setSourceProperty($field_name, $field);
+
+        // Memory clean-up.
+        $field = NULL;
+        $vid = NULL;
+        $query = NULL;
+        $results = NULL;
+        break;
+      }
+      $process = NULL;
+    }
+    $field_name = NULL;
+    $processes = NULL;
   }
 
 }

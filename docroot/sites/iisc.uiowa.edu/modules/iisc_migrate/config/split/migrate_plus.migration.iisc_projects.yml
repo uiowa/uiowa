@@ -10,12 +10,11 @@ migration_group: sitenow_migrate
 source:
   plugin: iisc_projects
   node_type: project
-  featured_image_field: field_image
-  uses_media: true
   media_fields:
-    - field_files
+#    - field_image
+#    - field_files
   multi_value_fields:
-    field_files: fid
+#    field_files: fid
     field_ref_academic_year: target_id
 destination:
   plugin: 'entity:node'
@@ -37,7 +36,11 @@ process:
     default_value: 1
   title: title
   body: body
-  field_image: field_image # Needs work
+  field_image:
+    plugin: create_media_from_file_field
+    source: field_image
+    source_media_field: field_image
+    #field_image # Needs work
   field_tags:
     plugin: sub_process
     source: field_tags
@@ -55,7 +58,10 @@ process:
         plugin: migration_lookup
         migration: iisc_colleges_departments
         source: tid
-  field_project_deliverables: field_files_fid # Needs work
+  field_project_deliverables:
+    plugin: create_media_from_file_field
+    source: field_files # Needs work
+    source_media_field: field_files
 #    - plugin: sub_process
 #      source: field_files_fid
 #      process:
