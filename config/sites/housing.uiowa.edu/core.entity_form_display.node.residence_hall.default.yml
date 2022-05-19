@@ -177,7 +177,22 @@ third_party_settings:
       label: 'Emergency Policies'
       region: content
       parent_name: ''
-      weight: 22
+      weight: 23
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: true
+        description: ''
+        required_fields: true
+    group_meet_us:
+      children:
+        - field_residence_hall_meet_us
+      label: 'Meet us'
+      region: content
+      parent_name: ''
+      weight: 21
       format_type: details
       format_settings:
         classes: ''
@@ -371,7 +386,7 @@ content:
     third_party_settings: {  }
   field_residence_hall_meet_us:
     type: entity_reference_autocomplete
-    weight: 21
+    weight: 22
     region: content
     settings:
       match_operator: CONTAINS
