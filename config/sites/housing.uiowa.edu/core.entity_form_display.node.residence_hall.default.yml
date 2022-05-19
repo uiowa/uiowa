@@ -155,7 +155,6 @@ third_party_settings:
         - field_residence_hall_cta
         - field_residence_hall_dining_link
         - field_residence_hall_wo_link
-        - field_residence_hall_emergency
       label: 'Custom links'
       region: content
       parent_name: ''
@@ -277,12 +276,16 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
   field_residence_hall_emergency:
-    type: link_default
-    weight: 27
+    type: entity_reference_paragraphs
+    weight: 22
     region: content
     settings:
-      placeholder_url: ''
-      placeholder_title: ''
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
     third_party_settings: {  }
   field_residence_hall_floor_plans:
     type: text_textarea

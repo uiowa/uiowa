@@ -1,0 +1,45 @@
+uuid: 6c3f19cd-37d7-4c62-8901-6d0624a28b07
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.housing_emergency_link.field_housing_emerg_link
+    - field.field.paragraph.housing_emergency_link.field_housing_emerg_link_desc
+    - field.field.paragraph.housing_emergency_link.field_housing_emerg_link_title
+    - paragraphs.paragraphs_type.housing_emergency_link
+  module:
+    - link
+id: paragraph.housing_emergency_link.default
+targetEntityType: paragraph
+bundle: housing_emergency_link
+mode: default
+content:
+  field_housing_emerg_link:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_housing_emerg_link_desc:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_housing_emerg_link_title:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  search_api_excerpt: true
