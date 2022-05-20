@@ -82,6 +82,21 @@ class CreateMediaFromFile extends FileCopy {
     $filename_w_subdir = explode('/', $filename_w_subdir);
     $filename = array_pop($filename_w_subdir);
 
+    // Check if we have a file in the system with this filename.
+    // If we do, then return its media id.
+    if ($mid = $this->getMidByFilename($filename)) {
+      return $mid;
+    }
+
+    // Check if there is a file already in the system
+    // with the given filename. If so, we just need to create
+    // a media entity and return its id.
+    if ($fid = $this->getNewFileId($filename)) {
+      return $this->createMediaEntity($fid);
+    }
+
+    // If we didn't match an already downloaded file, and
+    // the source doesn't exist, then we have a problem.
     if (!$this->sourceExists($source)) {
       // If we have a source file path, but it doesn't exist, and we're meant
       // to just skip processing, we do so, but we log the message.
@@ -89,11 +104,10 @@ class CreateMediaFromFile extends FileCopy {
       return NULL;
     }
 
-    // @todo Get things below this working!
-    // @todo Check if file already exists and get file ID.
-    // @todo Copy file if necessary and get file ID.
-    // @todo Check if media entity already exists and return media ID.
-    // @todo Create media entity if necessary and return media ID.
+    // At this point, if we haven't returned a media id,
+    // then we know we need to download the file,
+    // create a new file entity,
+    // and create its associated media entity.
     // Build the destination file uri (in case only a directory was provided).
     $destination = $this->getDestinationFilePath($filename);
     if (!$this->streamWrapperManager->getScheme($destination)) {
@@ -103,53 +117,57 @@ class CreateMediaFromFile extends FileCopy {
     }
     $final_destination = '';
 
-    // Check if there is a file already in the system
-    // with the given filename.
-    $this->newFid = $this->getNewFileId($filename);
-
-    // If false, then the file doesn't currently exist in the system.
-    if ($this->newFid === FALSE) {
-      //
-      // The parent method will take care of our download/move/copy/rename.
-      // We just need the final destination to create the file object.
-      //
-      try {
-        $final_destination = parent::transform([$source, $destination], $migrate_executable, $row, $destination_property);
-        // If this was a replace, there should be an existing file entity for it
-        // And if so, we return it. Otherwise, one will be created further down.
-        // @todo Check for an existing media entity, and return its id if it exists.
-        if ($file = $this->getExistingFileEntity($final_destination)) {
-          return $id_only ? $file->id() : ['target_id' => $file->id()];
-        }
-      }
-      catch (MigrateException $e) {
-        // Check if we're skipping on error.
-        if ($this->configuration['skip_on_error']) {
-          $migrate_executable->saveMessage("File $source could not be imported to $destination. Operation failed with message: " . $e->getMessage());
-          throw new MigrateSkipProcessException($e->getMessage());
-        }
-        else {
-          // Pass the error back on again.
-          throw new MigrateException($e->getMessage());
-        }
-      }
-      // If we're here and we have a final_destination,
-      // then we've downloaded a new file, but need to
-      // create its file and media entities.
-      if ($final_destination) {
-        // Create a file entity.
-        $file = File::create([
-          'uri' => $final_destination,
-          'uid' => $uid,
-        ]);
-        $file->setPermanent();
-        $file->save();
-        $this->newFid = $file->id();
-        $this->newMid = $this->createMediaEntity($this->newFid);
-
-        return $this->newMid;
+    // @todo Get things below this working!
+    // @todo Check if file already exists and get file ID.
+    // @todo Copy file if necessary and get file ID.
+    // @todo Check if media entity already exists and return media ID.
+    // @todo Create media entity if necessary and return media ID.
+    //
+    // The parent method will take care of our download/move/copy/rename.
+    // We just need the final destination to create the file object.
+    //
+    try {
+      $final_destination = parent::transform([$source, $destination], $migrate_executable, $row, $destination_property);
+      // If this was a replace, there should be an existing file entity for it
+      // And if so, we return it. Otherwise, one will be created further down.
+      // @todo Check if this is needed. If it is, then above needs to be refactored.
+      //   Currently, if the file already existed, we handled finding/creating
+      //   its media entity above.
+      if ($file = $this->getExistingFileEntity($final_destination)) {
+        return $id_only ? $file->id() : ['target_id' => $file->id()];
       }
     }
+    catch (MigrateException $e) {
+      // Check if we're skipping on error.
+      if ($this->configuration['skip_on_error']) {
+        $migrate_executable->saveMessage("File $source could not be imported to $destination. Operation failed with message: " . $e->getMessage());
+        throw new MigrateSkipProcessException($e->getMessage());
+      }
+      else {
+        // Pass the error back on again.
+        throw new MigrateException($e->getMessage());
+      }
+    }
+    // If we're here and we have a final_destination,
+    // then we've downloaded a new file, but need to
+    // create its file and media entities.
+    if ($final_destination) {
+      // Create a file entity.
+      $file = File::create([
+        'uri' => $final_destination,
+        'uid' => $uid,
+      ]);
+      $file->setPermanent();
+      $file->save();
+      $this->newFid = $file->id();
+      $this->newMid = $this->createMediaEntity($this->newFid);
+
+      return $this->newMid;
+    }
+    // If we reached this point, we didn't have an existing file/media,
+    // the source existed, but something happened in the downloading process.
+    $migrate_executable->saveMessage("File {$value['uri']} could not be created. Skipping.");
+    return NULL;
   }
 
   /**
