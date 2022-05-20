@@ -29,7 +29,9 @@ process:
     plugin: default_value
     default_value: 1
   title: title
-  field_image: field_image
+  field_image:
+    plugin: create_media_from_file_field
+    source: field_image
   field_tags: tags
   field_person_bio: body
   field_teaser:

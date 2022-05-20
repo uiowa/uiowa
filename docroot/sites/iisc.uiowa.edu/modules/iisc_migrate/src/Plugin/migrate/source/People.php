@@ -55,12 +55,6 @@ class People extends BaseNodeSource {
    */
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
-    // Download image and attach it for the person photo.
-    if ($image = $row->getSourceProperty('field_image')) {
-      $this->entityId = $row->getSourceProperty('nid');
-      $row->setSourceProperty('field_image', $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']));
-      $image = NULL;
-    }
 
     // Map groups to person types and tags.
     if ($groups = $row->getSourceProperty('field_ref_person_groups_target_id')) {
