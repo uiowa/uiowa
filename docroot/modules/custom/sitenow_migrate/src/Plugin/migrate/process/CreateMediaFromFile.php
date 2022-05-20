@@ -347,12 +347,18 @@ class CreateMediaFromFile extends FileCopy {
     }
 
     // Get First file (make a loop if you get many files)
-    $fileId = array_shift($files)->fid->value;
+    $fileId = array_shift($files);
 
-    // Array of Medias witch contains your file.
-    $this->entityTypeManager
+    // Array of Medias which contains your file.
+    $medias = $this->entityTypeManager
       ->getStorage('media')
       ->loadByProperties(['field_media_image' => $fileId]);
+    if (empty($medias)) {
+      return FALSE;
+    }
+    // Again, let's grab the first.
+    $media = array_shift($medias);
+    return $media->id();
   }
 
   /**
