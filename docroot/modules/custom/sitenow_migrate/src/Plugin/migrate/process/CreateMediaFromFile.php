@@ -4,6 +4,7 @@ namespace Drupal\sitenow_migrate\Plugin\migrate\process;
 
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\StreamWrapper\StreamWrapperManagerInterface;
+use Drupal\file\Entity\File;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\MigrateSkipProcessException;
@@ -73,9 +74,13 @@ class CreateMediaFromFile extends FileCopy {
       throw new MigrateException(sprintf('The uri property needs to be included with the process configuration for the %s field.', 'Field'));
     }
 
-    // @todo Replace 'public://' with $configuration['constants']['base_source_path'].
+    // Grab the filename and subdirectory, and use that to build
+    // an absolute url for the source file.
     $filename_w_subdir = str_replace('public://', '', $value['uri']);
     $source = $this->getSourcePublicFilesUrl($row) . $filename_w_subdir;
+    // Split apart the filename from the subdirectory path.
+    $filename_w_subdir = explode('/', $filename_w_subdir);
+    $filename = array_pop($filename_w_subdir);
 
     if (!$this->sourceExists($source)) {
       // If we have a source file path, but it doesn't exist, and we're meant
@@ -90,7 +95,7 @@ class CreateMediaFromFile extends FileCopy {
     // @todo Check if media entity already exists and return media ID.
     // @todo Create media entity if necessary and return media ID.
     // Build the destination file uri (in case only a directory was provided).
-    $destination = $this->getDestinationFilePath($source);
+    $destination = $this->getDestinationFilePath($filename);
     if (!$this->streamWrapperManager->getScheme($destination)) {
       if (empty($destination)) {
         $destination = \Drupal::config('system.file')->get('default_scheme') . '://' . preg_replace('/^\//', '', $destination);
@@ -98,8 +103,11 @@ class CreateMediaFromFile extends FileCopy {
     }
     $final_destination = '';
 
-    $this->newFid = $this->getNewFileId($value['uri']);
+    // Check if there is a file already in the system
+    // with the given filename.
+    $this->newFid = $this->getNewFileId($filename);
 
+    // If false, then the file doesn't currently exist in the system.
     if ($this->newFid === FALSE) {
       //
       // The parent method will take care of our download/move/copy/rename.
@@ -109,6 +117,7 @@ class CreateMediaFromFile extends FileCopy {
         $final_destination = parent::transform([$source, $destination], $migrate_executable, $row, $destination_property);
         // If this was a replace, there should be an existing file entity for it
         // And if so, we return it. Otherwise, one will be created further down.
+        // @todo Check for an existing media entity, and return its id if it exists.
         if ($file = $this->getExistingFileEntity($final_destination)) {
           return $id_only ? $file->id() : ['target_id' => $file->id()];
         }
@@ -124,26 +133,35 @@ class CreateMediaFromFile extends FileCopy {
           throw new MigrateException($e->getMessage());
         }
       }
+      // If we're here and we have a final_destination,
+      // then we've downloaded a new file, but need to
+      // create its file and media entities.
+      if ($final_destination) {
+        // Create a file entity.
+        $file = File::create([
+          'uri' => $final_destination,
+          'uid' => $uid,
+        ]);
+        $file->setPermanent();
+        $file->save();
+        $this->newFid = $file->id();
+        $this->newMid = $this->createMediaEntity($this->newFid);
+
+        return $this->newMid;
+      }
     }
   }
 
   /**
-   * Check if the file exists using the 'uri' property.
+   * Check if the file exists using the filename.
    *
-   * @param string $uri
-   *   The file uri.
+   * @param string $filename
+   *   The filename.
    *
    * @return mixed
    *   Returns the file ID or FALSE if it doesn't exist.
    */
-  public function getNewFileId($uri) {
-    $filename_w_subdir = str_replace('public://', '', $uri);
-    // Split apart the filename from the subdirectory path.
-    $filename_w_subdir = explode('/', $filename_w_subdir);
-    $filename = array_pop($filename_w_subdir);
-    $subdir = implode('/', $filename_w_subdir) . '/';
-    $filename_w_subdir = NULL;
-
+  public function getNewFileId($filename) {
     // Get a connection for the destination database
     // and retrieve the associated fid.
     return \Drupal::database()->select('file_managed', 'f')
@@ -300,14 +318,18 @@ class CreateMediaFromFile extends FileCopy {
     // Array of Medias witch contains your file.
     // Load file by filename
     // array.
-    $ids = $this->entityTypeManager
+    $files = $this->entityTypeManager
       ->getStorage('file')
       ->getQuery()
       ->condition('filename', $filename)
       ->execute();
 
+    if (empty($files)) {
+      return FALSE;
+    }
+
     // Get First file (make a loop if you get many files)
-    $fileId = array_shift($file)->fid->value;
+    $fileId = array_shift($files)->fid->value;
 
     // Array of Medias witch contains your file.
     $this->entityTypeManager
