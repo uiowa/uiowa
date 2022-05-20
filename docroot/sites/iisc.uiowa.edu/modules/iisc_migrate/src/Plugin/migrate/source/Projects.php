@@ -17,10 +17,6 @@ use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
 class Projects extends BaseNodeSource {
   use ProcessMediaTrait;
 
-  protected function processFieldBody(Row $row) {
-
-  }
-
   /**
    * {@inheritdoc}
    */
@@ -33,26 +29,6 @@ class Projects extends BaseNodeSource {
       $query->leftJoin('url_alias', 'alias', "alias.source = CONCAT('node/', n.nid)");
       $query->fields('alias', ['alias']);
     }
-    if (!empty($this->configuration['featured_image_field'])
-      && !empty($this->configuration['uses_media'])
-      && $this->configuration['uses_media']
-    ) {
-      $featured_image_field = $this->configuration['featured_image_field'];
-      $query->leftJoin('field_revision_' . $featured_image_field, 'fif', 'fif.revision_id = n.vid');
-      $query->leftJoin('file_managed', 'fm', 'fm.fid = fif.' . $featured_image_field . '_fid');
-      $query->addField('fm', 'fid', 'fi_fid');
-      $query->addField('fm', 'uri', 'fi_filepath');
-      $query->addField('fm', 'filename', 'fi_filename');
-    }
-    if (!empty($this->configuration['media_fields'])) {
-      foreach ($this->configuration['media_fields'] as $key => $field_name) {
-        $query->leftJoin('field_revision_' . $field_name, "mfr$key", "mfr$key.revision_id = n.vid");
-        $query->leftJoin('file_managed', "mfm$key", "mfm$key.fid = mfr{$key}.{$field_name}_fid");
-        $query->addField("mfm$key", 'fid', "{$field_name}_media_fid");
-        $query->addField("mfm$key", 'uri', "{$field_name}_media_filepath");
-        $query->addField("mfm$key", 'filename', "{$field_name}_media_filename");
-      }
-    }
     return $query;
   }
 
@@ -62,14 +38,6 @@ class Projects extends BaseNodeSource {
   public function fields() {
     $fields = parent::fields();
     $fields['alias'] = $this->t('The URL alias for this node.');
-    if (!empty($this->configuration['featured_image_field'])
-      && !empty($this->configuration['uses_media'])
-      && $this->configuration['uses_media']
-    ) {
-      $fields['fi_fid'] = $this->t('FI file entity ID');
-      $fields['fi_file_path'] = $this->t('FI file path');
-      $fields['fi_file_name'] = $this->t('FI file name');
-    }
     return $fields;
   }
 
@@ -87,29 +55,6 @@ class Projects extends BaseNodeSource {
       $row->setSourceProperty('body', $body);
     }
     $body = NULL;
-
-    // Download image and attach it for the book cover.
-//    if ($image = $row->getSourceProperty('field_image')) {
-//      $this->entityId = $row->getSourceProperty('nid');
-//      $row->setSourceProperty('field_image', $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']));
-//      $image = NULL;
-//    }
-
-    // If we have an upload or uploads, process into mids.
-//    if ($uploads = $row->getSourceProperty('field_files_fid')) {
-//      foreach ($uploads as $delta => $fid) {
-//        $meta = [];
-//        if (!empty($row->getSourceProperty('field_files_media_filename'))) {
-//          $meta['filename'] = $row->getSourceProperty('field_files_media_filename');
-//        }
-//        $uploads[$delta] = $this->processFileField($fid, $meta);
-//      }
-//      $row->setSourceProperty('field_files_fid', $uploads);
-//      $uploads = NULL;
-//      $meta = NULL;
-//      $delta = NULL;
-//      $fid = NULL;
-//    }
 
     // Process academic years from term to select list.
     if ($years = $row->getSourceProperty('field_ref_academic_year_target_id')) {

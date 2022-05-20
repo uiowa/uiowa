@@ -52,6 +52,7 @@ class CreateMediaFromFile extends FileCopy {
   /**
    * {@inheritdoc}
    *
+   * Example value:
    * value = [
    *   fid,
    *   alt,
@@ -60,8 +61,7 @@ class CreateMediaFromFile extends FileCopy {
    *   height,
    *   filename,
    *   uri,
-   * ]
-   *
+   * ].
    */
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
     if (!$value) {
@@ -70,7 +70,7 @@ class CreateMediaFromFile extends FileCopy {
     }
     // Validate that we have the 'uri' property we need to process the file.
     if (!isset($value['uri'])) {
-      throw New MigrateException(sprintf('The uri property needs to be included with the process configuraiton for the %s field.', 'Field'));
+      throw new MigrateException(sprintf('The uri property needs to be included with the process configuration for the %s field.', 'Field'));
     }
 
     // @todo Replace 'public://' with $configuration['constants']['base_source_path'].
@@ -84,11 +84,16 @@ class CreateMediaFromFile extends FileCopy {
       return NULL;
     }
 
+    // @todo Get things below this working!
+    // @todo Check if file already exists and get file ID.
+    // @todo Copy file if necessary and get file ID.
+    // @todo Check if media entity already exists and return media ID.
+    // @todo Create media entity if necessary and return media ID.
     // Build the destination file uri (in case only a directory was provided).
     $destination = $this->getDestinationFilePath($source);
     if (!$this->streamWrapperManager->getScheme($destination)) {
       if (empty($destination)) {
-        $destination = \Drupal::config('system.file')->get('default_scheme') . '://' . preg_replace('/^\//','', $destination);
+        $destination = \Drupal::config('system.file')->get('default_scheme') . '://' . preg_replace('/^\//', '', $destination);
       }
     }
     $final_destination = '';
@@ -109,7 +114,7 @@ class CreateMediaFromFile extends FileCopy {
         }
       }
       catch (MigrateException $e) {
-        // Check if we're skipping on error
+        // Check if we're skipping on error.
         if ($this->configuration['skip_on_error']) {
           $migrate_executable->saveMessage("File $source could not be imported to $destination. Operation failed with message: " . $e->getMessage());
           throw new MigrateSkipProcessException($e->getMessage());
@@ -119,24 +124,17 @@ class CreateMediaFromFile extends FileCopy {
           throw new MigrateException($e->getMessage());
         }
       }
-
     }
-
-    // @todo Check if file already exists and get file ID.
-    // @todo Copy file if necessary and get file ID.
-    return parent::transform($value, $migrate_executable, $row, $destination_property);
-    // @todo Check if media entity already exists and return media ID.
-    // @todo Create media entity if necessary and return media ID.
-
   }
 
   /**
    * Check if the file exists using the 'uri' property.
    *
-   * @param $uri
+   * @param string $uri
    *   The file uri.
    *
    * @return mixed
+   *   Returns the file ID or FALSE if it doesn't exist.
    */
   public function getNewFileId($uri) {
     $filename_w_subdir = str_replace('public://', '', $uri);
@@ -167,8 +165,7 @@ class CreateMediaFromFile extends FileCopy {
    *
    * @param string $destination
    *   The destination URI.
-   *
-   * @param boolean $set_permanent
+   * @param bool $set_permanent
    *   Whether or not to set the file as permanent if it is currently temporary.
    *
    * @return \Drupal\file\FileInterface
@@ -177,7 +174,7 @@ class CreateMediaFromFile extends FileCopy {
   protected function getExistingFileEntity($destination, $set_permanent = TRUE) {
     if ($files = \Drupal::entityTypeManager()->getStorage('file')->loadByProperties(['uri' => $destination])) {
       // Grab the first file entity with a matching uri.
-      // @todo: Any logic for preference when there are multiple?
+      // @todo Any logic for preference when there are multiple?
       $file = reset($files);
 
       // Set to permanent if the file in the database is set to temporary.
@@ -210,7 +207,7 @@ class CreateMediaFromFile extends FileCopy {
     if (isset($this->sourceBaseUrl)) {
       $base_url = rtrim($this->sourceBaseUrl, '/');
 
-      if ($files_dir = $this->getFilePath($row)) {
+      if ($files_dir = $this->getSourceFilePath($row)) {
         return "{$base_url}/{$files_dir}/";
       }
       else {
@@ -230,7 +227,10 @@ class CreateMediaFromFile extends FileCopy {
       ->get('default_scheme');
   }
 
-  protected function getFilePath(Row $row) {
+  /**
+   * Get the source file path.
+   */
+  protected function getSourceFilePath(Row $row) {
     return $row->getSourceProperty('constants')['source_file_path'] ?? '';
   }
 
@@ -293,6 +293,9 @@ class CreateMediaFromFile extends FileCopy {
     return $mid ?? NULL;
   }
 
+  /**
+   * Get an existing media entity ID based on a filename.
+   */
   public function getMidByFilename($filename, $type = 'image') {
     // Array of Medias witch contains your file.
     // Load file by filename

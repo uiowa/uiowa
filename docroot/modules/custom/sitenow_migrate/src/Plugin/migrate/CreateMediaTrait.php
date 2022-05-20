@@ -2,6 +2,9 @@
 
 namespace Drupal\sitenow_migrate\Plugin\migrate;
 
+/**
+ * A trait for handling on-demand media creation.
+ */
 trait CreateMediaTrait {
   /**
    * The Media storage.

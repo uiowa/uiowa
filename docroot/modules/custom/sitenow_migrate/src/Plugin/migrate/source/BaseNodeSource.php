@@ -2,10 +2,9 @@
 
 namespace Drupal\sitenow_migrate\Plugin\migrate\source;
 
+use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\File\FileSystemInterface;
-use Drupal\Core\Entity\EntityTypeManager;
-use Drupal\Core\Lock\NullLockBackend;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\State\StateInterface;
 use Drupal\migrate\Event\ImportAwareInterface;
@@ -13,8 +12,8 @@ use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
 use Drupal\node\Plugin\migrate\source\d7\Node;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\smart_trim\Truncate\TruncateHTML;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides base node source abstract class with additional functionality.
@@ -108,7 +107,7 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
         if (empty($process['plugin'])
           || empty($process['source'])
           || !in_array($process['plugin'], [
-            'create_media_from_file_field'
+            'create_media_from_file_field',
           ])) {
           continue;
         }
@@ -167,7 +166,7 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
    * Add additional properties for media fields.
    *
    * @param \Drupal\migrate\Row $row
-   *    The migration row result.
+   *   The migration row result.
    *
    * @throws \Exception
    */
