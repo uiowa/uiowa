@@ -12,6 +12,8 @@ This module provides functionality to assist with writing migrations into the Si
 ### YML migration definitions
 
 #### Process plugins
+- `create_media_from_file_field`
+  - Takes a D7 image field and converts to a D8 image field, including copying the source file (if needed) and creating an associated media entity.
 - `extract_summary`:
   - Takes a formatted field w/summary and extracts only the summary, if it exists, or constructs a summary from the body value.
   - `length` option allows for specifying the length of the truncated summary, if it is constructed from the body value. Defaults to `400`.
