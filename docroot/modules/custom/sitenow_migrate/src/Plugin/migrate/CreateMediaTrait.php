@@ -123,7 +123,6 @@ trait CreateMediaTrait {
     return FALSE;
   }
 
-
   /**
    * Check if the file exists using the filename.
    *
