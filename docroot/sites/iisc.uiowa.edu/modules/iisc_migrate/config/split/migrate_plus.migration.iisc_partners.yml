@@ -30,7 +30,9 @@ process:
     default_value: 1
   title: title
   body: body
-  field_image: field_image
+  field_image:
+    plugin: create_media_from_file_field
+    source: field_image
   field_iowa_counties: counties
   field_partner_related_individual:
     plugin: sub_process

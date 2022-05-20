@@ -26,15 +26,10 @@ class ExtractSummary extends ProcessPluginBase {
 
   /**
    * The truncation length to use if summary is constructed.
+   *
+   * @var int
    */
   protected $length = 400;
-
-  /**
-   * {@inheritdoc}
-   */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
-  }
 
   /**
    * {@inheritdoc}
@@ -50,7 +45,6 @@ class ExtractSummary extends ProcessPluginBase {
     // If we have an array, we need to do some extra checking.
     return $this->getSummaryFromTextField($value, $this->length);
   }
-
 
   /**
    * Return the summary of a text field.

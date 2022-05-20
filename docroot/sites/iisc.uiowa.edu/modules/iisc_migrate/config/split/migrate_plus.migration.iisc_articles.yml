@@ -30,7 +30,9 @@ process:
     plugin: default_value
     default_value: 1
   title: title
-  field_image: field_image
+  field_image:
+    plugin: create_media_from_file_field
+    source: field_image
   body: body
   field_teaser:
     plugin: extract_summary

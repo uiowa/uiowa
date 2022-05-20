@@ -117,25 +117,12 @@ class CreateMediaFromFile extends FileCopy {
     }
     $final_destination = '';
 
-    // @todo Get things below this working!
-    // @todo Check if file already exists and get file ID.
-    // @todo Copy file if necessary and get file ID.
-    // @todo Check if media entity already exists and return media ID.
-    // @todo Create media entity if necessary and return media ID.
     //
     // The parent method will take care of our download/move/copy/rename.
     // We just need the final destination to create the file object.
     //
     try {
       $final_destination = parent::transform([$source, $destination], $migrate_executable, $row, $destination_property);
-      // If this was a replace, there should be an existing file entity for it
-      // And if so, we return it. Otherwise, one will be created further down.
-      // @todo Check if this is needed. If it is, then above needs to be refactored.
-      //   Currently, if the file already existed, we handled finding/creating
-      //   its media entity above.
-      if ($file = $this->getExistingFileEntity($final_destination)) {
-        return $id_only ? $file->id() : ['target_id' => $file->id()];
-      }
     }
     catch (MigrateException $e) {
       // Check if we're skipping on error.
@@ -268,65 +255,6 @@ class CreateMediaFromFile extends FileCopy {
    */
   protected function getSourceFilePath(Row $row) {
     return $row->getSourceProperty('constants')['source_file_path'] ?? '';
-  }
-
-  /**
-   * Process a file field.
-   *
-   * @param int $fid
-   *   The file ID.
-   * @param array $meta
-   *   Metadata for the file.
-   *
-   * @return int|null
-   *   The media ID or null if unable to process.
-   *
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   * @throws \Drupal\migrate\MigrateException
-   */
-  protected function processFileField($fid, array $meta = []) {
-    $fileQuery = $this->fidQuery($fid);
-
-    $filename_w_subdir = str_replace('public://', '', $fileQuery['uri']);
-    $fileQuery = NULL;
-
-    // Split apart the filename from the subdirectory path.
-    $filename_w_subdir = explode('/', $filename_w_subdir);
-    $filename = array_pop($filename_w_subdir);
-    $subdir = implode('/', $filename_w_subdir) . '/';
-    $filename_w_subdir = NULL;
-
-    // Get a connection for the destination database
-    // and retrieve the associated fid.
-    $new_fid = \Drupal::database()->select('file_managed', 'f')
-      ->fields('f', ['fid'])
-      ->condition('f.filename', $filename)
-      ->execute()
-      ->fetchField();
-
-    // If there's no fid in the D8 database,
-    // then we'll need to fetch it from the source.
-    if (!$new_fid) {
-      // Use the filename, update the source base path with the subdirectory.
-      $new_fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $subdir, $this->getDrupalFileDirectory() . $subdir);
-      $subdir = NULL;
-
-      if ($new_fid) {
-        $mid = $this->createMediaEntity($new_fid, $meta, 1);
-      }
-    }
-    else {
-      $mid = $this->getMid($filename)['mid'];
-      $filename = NULL;
-
-      // And in case we had the file, but not the media entity.
-      if (!$mid) {
-        $mid = $this->createMediaEntity($new_fid, $meta, 1);
-        $meta = NULL;
-      }
-    }
-
-    return $mid ?? NULL;
   }
 
   /**
