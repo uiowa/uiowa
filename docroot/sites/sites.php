@@ -2021,12 +2021,6 @@ $sites['history.dev.drupal.uiowa.edu'] = 'history.uiowa.edu';
 $sites['history.stage.drupal.uiowa.edu'] = 'history.uiowa.edu';
 $sites['history.prod.drupal.uiowa.edu'] = 'history.uiowa.edu';
 
-// Directory aliases for humanities.uiowa.edu.
-$sites['humanities.uiowa.ddev.site'] = 'humanities.uiowa.edu';
-$sites['humanities.dev.drupal.uiowa.edu'] = 'humanities.uiowa.edu';
-$sites['humanities.stage.drupal.uiowa.edu'] = 'humanities.uiowa.edu';
-$sites['humanities.prod.drupal.uiowa.edu'] = 'humanities.uiowa.edu';
-
 // Directory aliases for nrcfcp.uiowa.edu.
 $sites['nrcfcp.uiowa.ddev.site'] = 'nrcfcp.uiowa.edu';
 $sites['nrcfcp.dev.drupal.uiowa.edu'] = 'nrcfcp.uiowa.edu';
