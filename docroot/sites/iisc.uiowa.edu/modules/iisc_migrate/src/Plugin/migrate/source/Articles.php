@@ -60,12 +60,6 @@ class Articles extends BaseNodeSource {
       $image = NULL;
     }
 
-    if ($body = $row->getSourceProperty('body')) {
-      // Extract the summary.
-      $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));
-      $body = NULL;
-    }
-
     // If article type is set to '2_ianow', we need to do some additional
     // processing.
     if ($row->getSourceProperty('field_article_type') === '2_ianow') {

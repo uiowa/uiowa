@@ -62,12 +62,6 @@ class People extends BaseNodeSource {
       $image = NULL;
     }
 
-    if ($body = $row->getSourceProperty('body')) {
-      // Extract the summary.
-      $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));
-      $body = NULL;
-    }
-
     // Map groups to person types and tags.
     if ($groups = $row->getSourceProperty('field_ref_person_groups_target_id')) {
       $person_types = [];
