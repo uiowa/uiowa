@@ -10,6 +10,10 @@ This module provides functionality to assist with writing migrations into the Si
 -
 
 ### YML migration definitions
+#### Source definitions
+-  `plugin:` defines the custom Source plugin that will be extending the BaseNodeSource plugin in Sitenow Migrate.
+-  `node_type:` defines the source node type to fetch (eg "article" or "news").
+-  `date_limiter:` (formatted "YYYY-mm-dd") defines an earliest created date to fetch. Entities created prior to this date will not be included in the migration.
 
 #### Process plugins
 - `create_media_from_file_field`

@@ -121,6 +121,10 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
    */
   public function query() {
     $query = parent::query();
+    if ($date_limiter = $this->migration->getSourceConfiguration()['date_limiter']) {
+      // Only import news newer than the date limiter provided.
+      $query->condition('created', strtotime($date_limiter), '>=');
+    }
     // Only add the aliases to the query if we're
     // in the redirect migration, otherwise row counts
     // will be off due to one-to-many mapping of nodes to aliases.
