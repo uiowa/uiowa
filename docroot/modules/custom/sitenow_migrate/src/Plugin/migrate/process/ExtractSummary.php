@@ -59,7 +59,7 @@ class ExtractSummary extends ProcessPluginBase {
    *   The summary if set or an extraction of the body value if not.
    */
   public function getSummaryFromTextField(array $field, int $length = 400): string {
-    if (empty($field[0]['summary'])) {
+    if (!isset($field['summary']) || empty($field['summary'])) {
       return $this->extractSummaryFromText($field['value'], $length);
     }
     else {
