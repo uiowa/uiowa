@@ -8,3 +8,10 @@ This module provides functionality to assist with writing migrations into the Si
 - Copy an existing site migrate module to the site `modules` folder, renaming it to the site subdomain + `_migrate`. Example:  `iisc_migrate`.
 - Rename the `.info.yml` and `.install` files to use the module name you picked. Example: `iisc_migrate.info.yml`.
 -
+
+### YML migration definitions
+
+#### Process plugins
+- `extract_summary`:
+  - Takes a formatted field w/summary and extracts only the summary, if it exists, or constructs a summary from the body value.
+  - `length` option allows for specifying the length of the truncated summary, if it is constructed from the body value. Defaults to `400`.
