@@ -43,6 +43,11 @@ class ExtractSummary extends ProcessPluginBase {
     if ($this->configuration['length']) {
       $this->length = $this->configuration['length'];
     };
+    // If we have a basic string, proceed directly to the extraction.
+    if (is_string($value)) {
+      return $this->extractSummaryFromText($value, $this->length);
+    }
+    // If we have an array, we need to do some extra checking.
     return $this->getSummaryFromTextField($value, $this->length);
   }
 
@@ -59,6 +64,9 @@ class ExtractSummary extends ProcessPluginBase {
    *   The summary if set or an extraction of the body value if not.
    */
   public function getSummaryFromTextField(array $field, int $length = 400): string {
+    // If the compound field's summary is empty,
+    // or simply doesn't have a summary, then extract
+    // a summary from the value.
     if (!isset($field['summary']) || empty($field['summary'])) {
       return $this->extractSummaryFromText($field['value'], $length);
     }
