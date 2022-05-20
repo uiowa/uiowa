@@ -4132,3 +4132,9 @@ $sites['labbutali.uiowa.ddev.site'] = 'butali.lab.uiowa.edu';
 $sites['labbutali.dev.drupal.uiowa.edu'] = 'butali.lab.uiowa.edu';
 $sites['labbutali.stage.drupal.uiowa.edu'] = 'butali.lab.uiowa.edu';
 $sites['labbutali.prod.drupal.uiowa.edu'] = 'butali.lab.uiowa.edu';
+
+// Directory aliases for neurovascular.lab.uiowa.edu.
+$sites['labneurovascular.uiowa.ddev.site'] = 'neurovascular.lab.uiowa.edu';
+$sites['labneurovascular.dev.drupal.uiowa.edu'] = 'neurovascular.lab.uiowa.edu';
+$sites['labneurovascular.stage.drupal.uiowa.edu'] = 'neurovascular.lab.uiowa.edu';
+$sites['labneurovascular.prod.drupal.uiowa.edu'] = 'neurovascular.lab.uiowa.edu';
