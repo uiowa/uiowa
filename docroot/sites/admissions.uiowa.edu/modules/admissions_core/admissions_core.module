@@ -53,6 +53,7 @@ function admissions_core_node_view(array &$build, EntityInterface $entity, Entit
         'class' => [
           'headline',
           'headline--highlight',
+          'headline--pre-title--highlight',
           'headline--uppercase',
           'headline--small',
           'banner__pre-title',
@@ -774,6 +775,10 @@ function admissions_core_preprocess_node(&$variables) {
     $node = $variables["node"];
     switch ($node->getType()) {
       case 'major':
+
+        // Add the 2plus2 css file.
+        $variables['#attached']['library'][] = 'admissions_core/2plus2';
+
         switch ($variables['view_mode']) {
           case 'teaser':
             // Use AoS reference as title for 2plus2 major teasers.
