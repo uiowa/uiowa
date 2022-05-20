@@ -86,6 +86,12 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
    * {@inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, MigrationInterface $migration, StateInterface $state, ModuleHandlerInterface $module_handler, FileSystemInterface $file_system, EntityTypeManager $entityTypeManager) {
+    // Add a 'source_file_path' entry to configuration so that we can use it in
+    // process plugins later. This is necessary because querying against the
+    // source database in a process plugin is not at all straightforward.
+    if (!isset($configuration['constants']['source_file_path'])) {
+      $configuration['constants']['source_file_path'] = $this->variableGet('file_public_path', NULL);
+    }
     parent::__construct($configuration, $plugin_id, $plugin_definition, $migration, $state, $entityTypeManager, $module_handler);
     $this->fileSystem = $file_system;
     $this->logger = $this->getLogger('sitenow_migrate');
@@ -116,7 +122,6 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
     $row->setSourceProperty('moderation_state', $moderation_state);
     $this->processMultiValueFields($row);
     $this->processMediaFields($row);
-
   }
 
   /**
@@ -136,6 +141,72 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
     if (!empty($this->multiValueFields)) {
       $this->fetchAdditionalFields($row, $this->multiValueFields);
     }
+  }
+
+  /**
+   * Add additional properties for media fields.
+   *
+   * @param \Drupal\migrate\Row $row
+   *    The migration row result.
+   *
+   * @return array|mixed
+   * @throws \Exception
+   */
+  public function processMediaFields(Row $row) {
+    // Loop through each entry in the process section of the migration config.
+    foreach ($this->migration->getProcess() as $processes) {
+      // If processes isn't an array, then the plugin is 'get' and we can bail.
+      if (!is_array($processes)) {
+        continue;
+      }
+      foreach ($processes as $process) {
+        // Check if we are using a plugin that we need this additional
+        // processing for.
+        // @todo Handle sub-processes as well.
+        if (empty($process['plugin'])
+          || empty($process['source'])
+          || !in_array($process['plugin'], [
+            'create_media_from_file_field'
+          ])) {
+          continue;
+        }
+
+        $field_name = $process['source'];
+        $field = $row->getSourceProperty($field_name);
+        $vid = $row->getSourceProperty('vid');
+        $query = $this->select("field_revision_$field_name", 'fr')
+          ->condition('fr.revision_id', $vid)
+          ->orderBy('fm.fid');
+
+        $query->leftJoin('file_managed', 'fm', "fm.fid = fr.{$field_name}_fid");
+
+        $results = $query
+          ->fields('fm', ['fid', 'filename', 'uri'])
+          ->execute()
+          ->fetchAllAssoc('fid');
+        // Check if field is multi-value.
+        if (is_array($field[0])) {
+          // Loop through each value on the field.
+          foreach ($field as &$values) {
+            $fid = $values['fid'];
+            if (isset($results[$fid])) {
+              $values += $results[$fid];
+            }
+          }
+        }
+        $row->setSourceProperty($field_name, $field);
+
+        // Memory clean-up.
+        $field = NULL;
+        $vid = NULL;
+        $query = NULL;
+        $results = NULL;
+        break;
+      }
+      $process = NULL;
+    }
+    $field_name = NULL;
+    $processes = NULL;
   }
 
   /**
@@ -324,69 +395,6 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
       ->execute()
       ->fetch();
     return $last_migrated->sourceid1 ?? 0;
-  }
-
-  /**
-   * Add additional properties for media fields.
-   *
-   * @param \Drupal\migrate\Row $row
-   *    The migration row result.
-   *
-   * @return array|mixed
-   * @throws \Exception
-   */
-  public function processMediaFields(Row $row) {
-    // Loop through each entry in the process section of the migration config.
-    foreach ($this->migration->getProcess() as $field_name => $processes) {
-      // If processes isn't an array, then the plugin is 'get' and we can bail.
-      if (!is_array($processes)) {
-        continue;
-      }
-      foreach ($processes as $process) {
-        // Check if we are using a plugin that we need this additional
-        // processing for.
-        // @todo Handle sub-processes as well.
-        if (empty($process['plugin']) || !in_array($process['plugin'], [
-            'create_media_from_file_field'
-          ])) {
-          continue;
-        }
-
-        $field = $row->getSourceProperty($field_name);
-        $vid = $row->getSourceProperty('vid');
-        $query = $this->select("field_revision_$field_name", 'fr')
-          ->condition('fr.revision_id', $vid)
-          ->orderBy('fm.fid');
-
-        $query->leftJoin('file_managed', 'fm', "fm.fid = fr.{$field_name}_fid");
-
-        $results = $query
-          ->fields('fm', ['fid', 'filename', 'uri'])
-          ->execute()
-          ->fetchAllAssoc('fid');
-        // Check if field is multi-value.
-        if (is_array($field[0])) {
-          // Loop through each value on the field.
-          foreach ($field as &$values) {
-            $fid = $values['fid'];
-            if (isset($results[$fid])) {
-              $values += $results[$fid];
-            }
-          }
-        }
-        $row->setSourceProperty($field_name, $field);
-
-        // Memory clean-up.
-        $field = NULL;
-        $vid = NULL;
-        $query = NULL;
-        $results = NULL;
-        break;
-      }
-      $process = NULL;
-    }
-    $field_name = NULL;
-    $processes = NULL;
   }
 
 }

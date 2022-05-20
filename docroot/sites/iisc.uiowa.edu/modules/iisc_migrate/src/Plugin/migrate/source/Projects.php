@@ -109,20 +109,20 @@ class Projects extends BaseNodeSource {
 //    }
 
     // If we have an upload or uploads, process into mids.
-    if ($uploads = $row->getSourceProperty('field_files_fid')) {
-      foreach ($uploads as $delta => $fid) {
-        $meta = [];
-        if (!empty($row->getSourceProperty('field_files_media_filename'))) {
-          $meta['filename'] = $row->getSourceProperty('field_files_media_filename');
-        }
-        $uploads[$delta] = $this->processFileField($fid, $meta);
-      }
-      $row->setSourceProperty('field_files_fid', $uploads);
-      $uploads = NULL;
-      $meta = NULL;
-      $delta = NULL;
-      $fid = NULL;
-    }
+//    if ($uploads = $row->getSourceProperty('field_files_fid')) {
+//      foreach ($uploads as $delta => $fid) {
+//        $meta = [];
+//        if (!empty($row->getSourceProperty('field_files_media_filename'))) {
+//          $meta['filename'] = $row->getSourceProperty('field_files_media_filename');
+//        }
+//        $uploads[$delta] = $this->processFileField($fid, $meta);
+//      }
+//      $row->setSourceProperty('field_files_fid', $uploads);
+//      $uploads = NULL;
+//      $meta = NULL;
+//      $delta = NULL;
+//      $fid = NULL;
+//    }
 
     // Process academic years from term to select list.
     if ($years = $row->getSourceProperty('field_ref_academic_year_target_id')) {
