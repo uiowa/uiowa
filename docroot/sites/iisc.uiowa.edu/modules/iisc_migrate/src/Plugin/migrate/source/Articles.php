@@ -53,12 +53,6 @@ class Articles extends BaseNodeSource {
    */
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
-    // Download image and attach it for the person photo.
-    if ($image = $row->getSourceProperty('field_image')) {
-      $this->entityId = $row->getSourceProperty('nid');
-      $row->setSourceProperty('field_image', $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']));
-      $image = NULL;
-    }
 
     // If article type is set to '2_ianow', we need to do some additional
     // processing.
