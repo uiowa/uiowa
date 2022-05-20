@@ -4126,3 +4126,9 @@ $sites['humanitiesandpubliclife.uiowa.ddev.site'] = 'humanitiesandpubliclife.uio
 $sites['humanitiesandpubliclife.dev.drupal.uiowa.edu'] = 'humanitiesandpubliclife.uiowa.edu';
 $sites['humanitiesandpubliclife.stage.drupal.uiowa.edu'] = 'humanitiesandpubliclife.uiowa.edu';
 $sites['humanitiesandpubliclife.prod.drupal.uiowa.edu'] = 'humanitiesandpubliclife.uiowa.edu';
+
+// Directory aliases for butali.lab.uiowa.edu.
+$sites['labbutali.uiowa.ddev.site'] = 'butali.lab.uiowa.edu';
+$sites['labbutali.dev.drupal.uiowa.edu'] = 'butali.lab.uiowa.edu';
+$sites['labbutali.stage.drupal.uiowa.edu'] = 'butali.lab.uiowa.edu';
+$sites['labbutali.prod.drupal.uiowa.edu'] = 'butali.lab.uiowa.edu';
