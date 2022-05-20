@@ -16,7 +16,7 @@ use Drupal\sitenow_migrate\Plugin\migrate\CreateMediaTrait;
  * Generates a media entity if one doesn't already exist.
  *
  * Borrowing heavily from
- * https://git.drupalcode.org/project/migrate_file/-/blob/2.1.x/src/Plugin/migrate/process/FileImport.php
+ * https://git.drupalcode.org/project/migrate_file/-/blob/2.1.x/src/Plugin/migrate/process/FileImport.php.
  *
  * @MigrateProcessPlugin(
  *   id = "create_media_from_file_field"
@@ -27,23 +27,25 @@ class CreateMediaFromFile extends FileCopy {
 
   /**
    * New file ID.
+   *
+   * @var string
    */
   protected $newFid;
 
   /**
    * The base source url.
+   *
    * @var string
    */
   protected $sourceBaseUrl;
 
   /**
-   * @param array $configuration
-   * @param $plugin_id
-   * @param $plugin_definition
+   * {@inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, array $plugin_definition, StreamWrapperManagerInterface $stream_wrappers, FileSystemInterface $file_system, MigrateProcessInterface $download_plugin) {
     $this->entityTypeManager = \Drupal::entityTypeManager();
-    $this->sourceBaseUrl = \Drupal::config('migrate_plus.migration_group.sitenow_migrate')->get('shared_configuration.source.constants.source_base_path');;
+    $this->sourceBaseUrl = \Drupal::config('migrate_plus.migration_group.sitenow_migrate')
+      ->get('shared_configuration.source.constants.source_base_path');
     parent::__construct($configuration, $plugin_id, $plugin_definition, $stream_wrappers, $file_system, $download_plugin);
   }
 
@@ -75,7 +77,7 @@ class CreateMediaFromFile extends FileCopy {
     $filename_w_subdir = str_replace('public://', '', $value['uri']);
     $source = $this->getSourcePublicFilesUrl($row) . $filename_w_subdir;
 
-    if (!$this->sourceExists($full_source_url)) {
+    if (!$this->sourceExists($source)) {
       // If we have a source file path, but it doesn't exist, and we're meant
       // to just skip processing, we do so, but we log the message.
       $migrate_executable->saveMessage("Source file {$value['uri']} does not exist. Skipping.");
@@ -86,7 +88,7 @@ class CreateMediaFromFile extends FileCopy {
     $destination = $this->getDestinationFilePath($source);
     if (!$this->streamWrapperManager->getScheme($destination)) {
       if (empty($destination)) {
-        $destination = \Drupal::config('system.file')->get('default_scheme') . '://' . preg_replace('/^\//' ,'', $destination);
+        $destination = \Drupal::config('system.file')->get('default_scheme') . '://' . preg_replace('/^\//','', $destination);
       }
     }
     $final_destination = '';
