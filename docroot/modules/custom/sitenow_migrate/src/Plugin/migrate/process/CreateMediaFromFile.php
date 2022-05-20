@@ -2,17 +2,21 @@
 
 namespace Drupal\sitenow_migrate\Plugin\migrate\process;
 
+use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\StreamWrapper\StreamWrapperManagerInterface;
 use Drupal\migrate\MigrateException;
 use Drupal\migrate\MigrateExecutableInterface;
+use Drupal\migrate\MigrateSkipProcessException;
 use Drupal\migrate\Plugin\migrate\process\FileCopy;
+use Drupal\migrate\Plugin\MigrateProcessInterface;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\CreateMediaTrait;
-use Drupal\Core\StreamWrapper\StreamWrapperManagerInterface;
-use Drupal\Core\File\FileSystemInterface;
-use Drupal\migrate\Plugin\MigrateProcessInterface;
 
 /**
  * Generates a media entity if one doesn't already exist.
+ *
+ * Borrowing heavily from
+ * https://git.drupalcode.org/project/migrate_file/-/blob/2.1.x/src/Plugin/migrate/process/FileImport.php
  *
  * @MigrateProcessPlugin(
  *   id = "create_media_from_file_field"
@@ -69,7 +73,7 @@ class CreateMediaFromFile extends FileCopy {
 
     // @todo Replace 'public://' with $configuration['constants']['base_source_path'].
     $filename_w_subdir = str_replace('public://', '', $value['uri']);
-    $full_source_url = $this->getSourcePublicFilesUrl($row) . $filename_w_subdir;
+    $source = $this->getSourcePublicFilesUrl($row) . $filename_w_subdir;
 
     if (!$this->sourceExists($full_source_url)) {
       // If we have a source file path, but it doesn't exist, and we're meant
@@ -78,19 +82,14 @@ class CreateMediaFromFile extends FileCopy {
       return NULL;
     }
 
-    // @todo Get filename
-    $filename = 'file';
-
     // Build the destination file uri (in case only a directory was provided).
-    $destination = $this->getDestinationFilePath($full_source_url);
-    if (!StreamWrapperManager::getScheme($destination)) {
+    $destination = $this->getDestinationFilePath($source);
+    if (!$this->streamWrapperManager->getScheme($destination)) {
       if (empty($destination)) {
         $destination = \Drupal::config('system.file')->get('default_scheme') . '://' . preg_replace('/^\//' ,'', $destination);
       }
     }
     $final_destination = '';
-
-
 
     $this->newFid = $this->getNewFileId($value['uri']);
 
