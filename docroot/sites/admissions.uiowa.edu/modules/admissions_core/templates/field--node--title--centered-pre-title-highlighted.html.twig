@@ -42,11 +42,17 @@
   'text-align-center',
   'headline',
   'headline--uppercase',
-  'headline--highlight',
+  'headline--negative',
 ]
 %}
+{% if pre_title %}
+  <p>
+    {{ pre_title }}
+  </p>
+{% endif %}
 <h1 {{ attributes.addClass(classes) }}>
   {%- for item in items -%}
     <span>{{ item.content }}</span>
   {%- endfor -%}
 </h1>
+
