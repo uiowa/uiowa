@@ -773,9 +773,6 @@ function admissions_core_preprocess_node(&$variables) {
     switch ($node->getType()) {
       case 'major':
 
-        // Add the 2plus2 css file.
-        $variables['#attached']['library'][] = 'admissions_core/2plus2';
-
         switch ($variables['view_mode']) {
           case 'teaser':
             // Use AoS reference as title for 2plus2 major teasers.
