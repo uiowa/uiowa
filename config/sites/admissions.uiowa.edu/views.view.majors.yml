@@ -354,7 +354,7 @@ display:
           default_row_class: true
           type: ul
           wrapper_class: item-list
-          class: ''
+          class: element--two-column
       row:
         type: fields
         options:
@@ -990,6 +990,7 @@ display:
       defaults:
         query: false
         title: false
+        css_class: false
         group_by: false
         relationships: false
         fields: false
@@ -1009,10 +1010,37 @@ display:
           entity_type: node
           plugin_id: entity_reverse
           required: true
+      css_class: ''
       group_by: true
       display_description: 'Block listing all areas of study with at least one 2 plus 2 major.'
-      header: {  }
-      footer: {  }
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: false
+          content:
+            value: "<h2 class=\"h4 headline block__headline headline headline--serif headline--underline block__headline headline--center\"><span class=\"headline__heading\"> Majors </span></h2>\r\n<p class=\"text-align-center\">See which Iowa community colleges offer the courses required to transfer to Iowa successfully under the 2 Plus 2 plan in that area of study.</p>"
+            format: filtered_html
+          tokenize: false
+      footer:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: false
+          content:
+            value: "\r\n<p class=\"text-align-center\"><strong>Unsure of your major? Don't see your major?</strong></p>\r\n\r\n<p class=\"text-align-center\">There are many transfer majors available at the University of Iowa. <a href=\"https://admissions.dev.drupal.uiowa.edu/2plus2/transfer-contact\">Contact us</a> to explore your options.</p>\r\n\r\n<p class=\"text-align-center\">The 2 Plus 2 plan is just one way to transfer to the University of Iowa. <a href=\"https://admissions.dev.drupal.uiowa.edu/academics/transfer-planning-resources\">See a list of other transfer options</a> at the University of Iowa.</p>"
+            format: filtered_html
+          tokenize: false
       display_extenders:
         metatag_display_extender:
           metatags: {  }
