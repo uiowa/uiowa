@@ -14,7 +14,7 @@ interface AdmissionsCoreInterface {
   /**
    * Title for 2plus2 content type.
    */
-  const TWO_PLUS_TWO_TITLE = '2 plus 2 plan';
+  const TWO_PLUS_TWO_TITLE = '2 Plus 2 Grad Plan';
 
   /**
    * Overrides for query alters for areas of study.
