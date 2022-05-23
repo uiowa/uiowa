@@ -4,9 +4,13 @@
 // The specificity here is a bit over the top, but it is needed to overwrite the other rules for the banner.
 .block.block-extra-field-blocknodemajorpre-title {
   .banner {
-    &__pre-title.headline.headline--pre-title--highlight.headline--highlight span.headline__heading {
-      background-color: $primary;
-      color: $secondary;
+    &__pre-title.headline.headline--pre-title--highlight.headline--highlight {
+      margin-bottom: 1rem;
+      span.headline__heading {
+        background-color: $primary;
+        color: $secondary;
+        margin-bottom: 1rem;
+      }
     }
   }
 }
