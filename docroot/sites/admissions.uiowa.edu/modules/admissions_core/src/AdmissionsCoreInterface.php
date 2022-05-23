@@ -12,6 +12,11 @@ interface AdmissionsCoreInterface {
   const TWO_PLUS_TWO_PATH = '/2plus2/majors/';
 
   /**
+   * Title for 2plus2 content type.
+   */
+  const TWO_PLUS_TWO_TITLE = '2 Plus 2 Grad Plan';
+
+  /**
    * Overrides for query alters for areas of study.
    */
   const AOS_QUERY_OVERRIDES = [

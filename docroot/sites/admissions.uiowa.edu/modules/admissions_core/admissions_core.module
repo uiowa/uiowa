@@ -31,7 +31,42 @@ function admissions_core_entity_extra_field_info() {
     'visible' => TRUE,
   ];
 
+  $extra['node']['major']['display']['pre_title'] = [
+    'label' => t('2plus2 pre-title'),
+    'description' => t('Major 2plus2 pre-title'),
+    'weight' => 100,
+    'visible' => TRUE,
+  ];
+
   return $extra;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function admissions_core_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if ($display->getComponent('pre_title')) {
+    $build['pre_title'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'div',
+      '#attributes' => [
+        'class' => [
+          'headline',
+          'headline--highlight',
+          'headline--uppercase',
+          'h5',
+        ],
+      ],
+    ];
+    $build['pre_title']['content'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'span',
+      '#value' => AdmissionsCoreInterface::TWO_PLUS_TWO_TITLE,
+      '#attributes' => [
+        'class' => ['headline__heading'],
+      ],
+    ];
+  }
 }
 
 /**
@@ -98,6 +133,8 @@ function admissions_core_form_alter(&$form, FormStateInterface $form_state, $for
   switch ($form_id) {
     case 'node_event_series_form':
     case 'node_event_series_edit_form':
+    case 'node_major_form':
+    case 'node_major_edit_form':
       // Set form defaults if they exist.
       _sitenow_node_form_defaults($form, $form_state);
       break;
@@ -310,6 +347,15 @@ function admissions_core_preprocess_field(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
+function admissions_core_preprocess_field__node__title(&$variables) {
+  if ($variables['element']['#bundle'] == 'major') {
+    $variables['pre_title'] = AdmissionsCoreInterface::TWO_PLUS_TWO_TITLE;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
 function admissions_core_preprocess_paragraph__admissions_card(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
@@ -459,6 +505,18 @@ function admissions_core_preprocess_layout(&$variables) {
           }
           break;
 
+        case 'major':
+          if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+
+            // Set the featured image display.
+            $variables['featured_image_display'] = 'small';
+
+            // Set banner defaults.
+            $variables['banner_settings']['horizontal_align'] = 'center';
+            $variables['banner_settings']['vertical_align'] = 'center';
+          }
+          break;
+
         case 'student_profile':
           if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
 
@@ -531,7 +589,11 @@ function admissions_core_theme($existing, $type, $theme, $path) {
       'base hook' => 'node',
     ],
     'field__node__title__area_of_study___custom' => [
-      'template' => 'field--node--title--area-of-study---custom',
+      'template' => 'field--node--title--centered-highlighted',
+      'base hook' => 'field',
+    ],
+    'field__node__title__major___custom' => [
+      'template' => 'field--node--title--centered-pre-title-highlighted',
       'base hook' => 'field',
     ],
     'field__node__field_area_of_study_stat' => [
@@ -706,6 +768,7 @@ function admissions_core_preprocess_node(&$variables) {
     $node = $variables["node"];
     switch ($node->getType()) {
       case 'major':
+
         switch ($variables['view_mode']) {
           case 'teaser':
             // Use AoS reference as title for 2plus2 major teasers.
