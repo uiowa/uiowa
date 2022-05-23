@@ -45,14 +45,11 @@
   'headline--negative',
 ]
 %}
-<p>
-{#  {{ devel_breakpoint() }}#}
-  {% if pre_title %}
-    <p>
-      {{ pre_title }}
-    </p>
-  {% endif %}
-</p>
+{% if pre_title %}
+  <p>
+    {{ pre_title }}
+  </p>
+{% endif %}
 <h1 {{ attributes.addClass(classes) }}>
   {%- for item in items -%}
     <span>{{ item.content }}</span>
