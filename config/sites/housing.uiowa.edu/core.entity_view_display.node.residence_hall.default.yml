@@ -94,7 +94,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 5
+            weight: 10
             additional: {  }
             third_party_settings: {  }
           938940bb-a7e9-4955-81d9-34a68adef901:
@@ -106,7 +106,7 @@ third_party_settings:
               label_display: null
               provider: system
               context_mapping: {  }
-            weight: 4
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           b8d8d6df-a651-44c8-83cf-abc453d2d5e4:
@@ -126,7 +126,78 @@ third_party_settings:
                 settings:
                   view_mode: full__ultrawide
                 third_party_settings: {  }
-            weight: 3
+            weight: 6
+            additional: {  }
+            third_party_settings: {  }
+          885ac8e7-378d-47b5-a3dd-9bcfa9cdd174:
+            uuid: 885ac8e7-378d-47b5-a3dd-9bcfa9cdd174
+            region: content
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_building'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 11
+            additional: {  }
+            third_party_settings: {  }
+          fa21dfc9-89c4-4c4f-ab78-698a5353416c:
+            uuid: fa21dfc9-89c4-4c4f-ab78-698a5353416c
+            region: content
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_neighborhd'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 14
+            additional: {  }
+            third_party_settings: {  }
+          a7bc4899-7db1-4326-861b-3e19be659713:
+            uuid: a7bc4899-7db1-4326-861b-3e19be659713
+            region: content
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_population'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: number_integer
+                label: above
+                settings:
+                  thousand_separator: ','
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 13
+            additional: {  }
+            third_party_settings: {  }
+          10004193-87b0-4efb-9eb7-fc07565466fe:
+            uuid: 10004193-87b0-4efb-9eb7-fc07565466fe
+            region: content
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_year_built'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 12
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
@@ -137,9 +208,8 @@ third_party_settings:
           context_mapping: {  }
           column_widths: 67-33
           layout_builder_styles_style:
-            0: ''
-            1: section_margin_fixed_width_container
-            section_alignment_start: section_alignment_start
+            - ''
+            - section_margin_fixed_width_container
         components:
           e611fe89-68c7-49bd-9df6-35cc777b2390:
             uuid: e611fe89-68c7-49bd-9df6-35cc777b2390
@@ -154,42 +224,14 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 4
+            weight: 0
             additional: {  }
             third_party_settings: {  }
-          ca1347af-9b4e-45f6-8a32-9172cd0dbbef:
-            uuid: ca1347af-9b4e-45f6-8a32-9172cd0dbbef
-            region: first
-            configuration:
-              id: 'extra_field_block:node:residence_hall:links'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-            weight: 2
-            additional: {  }
-            third_party_settings: {  }
-          a4324317-79ca-46f2-a527-a25bdf13a1ca:
-            uuid: a4324317-79ca-46f2-a527-a25bdf13a1ca
+          f66c0fee-e2ca-4ac4-b0b8-ffd46a316d32:
+            uuid: f66c0fee-e2ca-4ac4-b0b8-ffd46a316d32
             region: second
             configuration:
-              id: 'field_block:node:residence_hall:field_residence_hall_meet_us'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: true
-                third_party_settings: {  }
-            weight: 13
-            additional: {  }
-            third_party_settings: {  }
-          95098cc9-9a56-492d-97bc-2c221d00052d:
-            uuid: 95098cc9-9a56-492d-97bc-2c221d00052d
-            region: first
-            configuration:
-              id: 'field_block:node:residence_hall:field_residence_hall_video'
+              id: 'field_block:node:residence_hall:field_residence_hall_who_lives'
               label: null
               label_display: null
               provider: layout_builder
@@ -198,16 +240,28 @@ third_party_settings:
                 view_mode: view_mode
               formatter:
                 type: entity_reference_entity_view
-                label: visually_hidden
+                label: above
                 settings:
                   view_mode: default
-                third_party_settings: {  }
-            weight: 5
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 0
             additional: {  }
             third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - section_background_white_pattern_community
+            - section_margin_extended_width_container
+        components:
           0bf80777-f592-4682-9c12-3ddf73c688e7:
             uuid: 0bf80777-f592-4682-9c12-3ddf73c688e7
-            region: first
+            region: content
             configuration:
               id: 'field_block:node:residence_hall:field_residence_hall_images'
               label: null
@@ -235,12 +289,100 @@ third_party_settings:
                     lazy_image: '0'
                     placeholder_style: ''
                     data_uri: false
-            weight: 6
+            weight: 0
             additional: {  }
             third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_twocol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          column_widths: 67-33
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+        components:
+          a3243b7e-7a96-410a-a14e-cbb0b0fb8fa4:
+            uuid: a3243b7e-7a96-410a-a14e-cbb0b0fb8fa4
+            region: second
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_contact'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_revisions_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                  link: ''
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          95098cc9-9a56-492d-97bc-2c221d00052d:
+            uuid: 95098cc9-9a56-492d-97bc-2c221d00052d
+            region: first
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_video'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: visually_hidden
+                settings:
+                  view_mode: default
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - section_background_white_pattern_community
+            - section_margin_fixed_width_container
+        components:
+          bca65f35-6866-49d5-8a5c-1f86044f9efd:
+            uuid: bca65f35-6866-49d5-8a5c-1f86044f9efd
+            region: content
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_bldg_links'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_revisions_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                  link: ''
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_twocol_section
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          column_widths: 50-50
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+        components:
           ddbcd3d2-339b-4b8f-ae95-864ce42c217a:
             uuid: ddbcd3d2-339b-4b8f-ae95-864ce42c217a
-            region: second
+            region: first
             configuration:
               id: 'field_block:node:residence_hall:field_residence_hall_bus_stops'
               label_display: '0'
@@ -256,7 +398,7 @@ third_party_settings:
                   rel: ''
                   target: ''
                 third_party_settings: {  }
-            weight: 12
+            weight: 1
             additional: {  }
             third_party_settings: {  }
           285e3dae-df9a-4c8c-98a0-9ec99e73746b:
@@ -272,45 +414,23 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 1
+            weight: 0
             additional: {  }
             third_party_settings: {  }
-          fa21dfc9-89c4-4c4f-ab78-698a5353416c:
-            uuid: fa21dfc9-89c4-4c4f-ab78-698a5353416c
-            region: second
-            configuration:
-              id: 'field_block:node:residence_hall:field_residence_hall_neighborhd'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: list_default
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: 11
-            additional: {  }
-            third_party_settings: {  }
-          885ac8e7-378d-47b5-a3dd-9bcfa9cdd174:
-            uuid: 885ac8e7-378d-47b5-a3dd-9bcfa9cdd174
-            region: second
-            configuration:
-              id: 'field_block:node:residence_hall:field_residence_hall_building'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: true
-                third_party_settings: {  }
-            weight: 10
-            additional: {  }
-            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_twocol_section
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          column_widths: 50-50
+          layout_builder_styles_style:
+            - section_background_white_pattern_community
+            - section_margin_fixed_width_container
+        components:
           bd5699f6-196e-43c2-997f-d2be25062987:
             uuid: bd5699f6-196e-43c2-997f-d2be25062987
-            region: second
+            region: first
             configuration:
               id: 'field_block:node:residence_hall:field_residence_hall_floor_plans'
               label_display: '0'
@@ -320,62 +440,6 @@ third_party_settings:
                 type: text_default
                 label: above
                 settings: {  }
-                third_party_settings: {  }
-            weight: 9
-            additional: {  }
-            third_party_settings: {  }
-          037d7d5f-e3f5-45aa-bb52-5c028a695eb8:
-            uuid: 037d7d5f-e3f5-45aa-bb52-5c028a695eb8
-            region: second
-            configuration:
-              id: 'field_block:node:residence_hall:field_residence_hall_cta'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_revisions_entity_view
-                label: above
-                settings:
-                  view_mode: default
-                  link: ''
-                third_party_settings: {  }
-            weight: 6
-            additional: {  }
-            third_party_settings: {  }
-          10004193-87b0-4efb-9eb7-fc07565466fe:
-            uuid: 10004193-87b0-4efb-9eb7-fc07565466fe
-            region: second
-            configuration:
-              id: 'field_block:node:residence_hall:field_residence_hall_year_built'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: string
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 8
-            additional: {  }
-            third_party_settings: {  }
-          a7bc4899-7db1-4326-861b-3e19be659713:
-            uuid: a7bc4899-7db1-4326-861b-3e19be659713
-            region: second
-            configuration:
-              id: 'field_block:node:residence_hall:field_residence_hall_population'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: number_integer
-                label: above
-                settings:
-                  thousand_separator: ','
-                  prefix_suffix: true
                 third_party_settings: {  }
             weight: 0
             additional: {  }
@@ -398,12 +462,250 @@ third_party_settings:
                   rel: ''
                   target: ''
                 third_party_settings: {  }
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          10730b15-2ee1-48cc-af4b-2b6a12da9ef6:
+            uuid: 10730b15-2ee1-48cc-af4b-2b6a12da9ef6
+            region: first
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_room_type'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          f023739a-46a8-45d7-bee2-815d5533e070:
+            uuid: f023739a-46a8-45d7-bee2-815d5533e070
+            region: second
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_bath_type'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          ca1347af-9b4e-45f6-8a32-9172cd0dbbef:
+            uuid: ca1347af-9b4e-45f6-8a32-9172cd0dbbef
+            region: second
+            configuration:
+              id: 'extra_field_block:node:residence_hall:links'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          0bffca00-03a6-41c0-bd98-f8e11584c75b:
+            uuid: 0bffca00-03a6-41c0-bd98-f8e11584c75b
+            region: second
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_amenities'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
+          50aa6c50-88de-44f1-97d0-08e2cc854a33:
+            uuid: 50aa6c50-88de-44f1-97d0-08e2cc854a33
+            region: second
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_furnishings'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 4
+            additional: {  }
+            third_party_settings: {  }
+          4adc757b-9421-4dba-9676-60f4e30d05f6:
+            uuid: 4adc757b-9421-4dba-9676-60f4e30d05f6
+            region: second
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_rates'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
             weight: 5
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: ''
+            1: section_margin_fixed_width_container
+            section_padding_bottom_extra: section_padding_bottom_extra
+            section_padding_top_extra: section_padding_top_extra
+        components:
+          037d7d5f-e3f5-45aa-bb52-5c028a695eb8:
+            uuid: 037d7d5f-e3f5-45aa-bb52-5c028a695eb8
+            region: content
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_cta'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_revisions_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                  link: ''
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - section_background_style_gray
+            - section_margin_fixed_width_container
+        components:
+          fce9dce2-f6a4-489b-863a-2e47ab16453e:
+            uuid: fce9dce2-f6a4-489b-863a-2e47ab16453e
+            region: content
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_llc'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: ''
+            1: section_container_narrow
+            section_padding_bottom_extra: section_padding_bottom_extra
+            section_padding_top_extra: section_padding_top_extra
+        components:
+          a4324317-79ca-46f2-a527-a25bdf13a1ca:
+            uuid: a4324317-79ca-46f2-a527-a25bdf13a1ca
+            region: content
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_meet_us'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: section_background_style_gold
+            1: section_margin_fixed_width_container
+            section_margin_remove_default_margins: section_margin_remove_default_margins
+        components:
+          8025f646-903b-454d-a3dc-d5910d721896:
+            uuid: 8025f646-903b-454d-a3dc-d5910d721896
+            region: content
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_emerg_text'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 1
             additional: {  }
             third_party_settings: {  }
           7a854f1f-9824-434b-abe1-ee118c2ba473:
             uuid: 7a854f1f-9824-434b-abe1-ee118c2ba473
-            region: second
+            region: content
             configuration:
               id: 'field_block:node:residence_hall:field_residence_hall_emerg_link'
               label_display: '0'
@@ -419,12 +721,12 @@ third_party_settings:
                   rel: ''
                   target: ''
                 third_party_settings: {  }
-            weight: 4
+            weight: 2
             additional: {  }
             third_party_settings: {  }
           ae9e6891-3e27-4b2e-9381-36d0c62d6328:
             uuid: ae9e6891-3e27-4b2e-9381-36d0c62d6328
-            region: second
+            region: content
             configuration:
               id: 'field_block:node:residence_hall:field_residence_hall_emerg_title'
               label_display: '0'
@@ -436,69 +738,9 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 1
+            weight: 0
             additional: {  }
             third_party_settings: {  }
-          8025f646-903b-454d-a3dc-d5910d721896:
-            uuid: 8025f646-903b-454d-a3dc-d5910d721896
-            region: second
-            configuration:
-              id: 'field_block:node:residence_hall:field_residence_hall_emerg_text'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: text_default
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: 7
-            additional: {  }
-            third_party_settings: {  }
-          bca65f35-6866-49d5-8a5c-1f86044f9efd:
-            uuid: bca65f35-6866-49d5-8a5c-1f86044f9efd
-            region: second
-            configuration:
-              id: 'field_block:node:residence_hall:field_residence_hall_bldg_links'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_revisions_entity_view
-                label: above
-                settings:
-                  view_mode: default
-                  link: ''
-                third_party_settings: {  }
-            weight: 3
-            additional: {  }
-            third_party_settings: {  }
-          a3243b7e-7a96-410a-a14e-cbb0b0fb8fa4:
-            uuid: a3243b7e-7a96-410a-a14e-cbb0b0fb8fa4
-            region: second
-            configuration:
-              id: 'field_block:node:residence_hall:field_residence_hall_contact'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_revisions_entity_view
-                label: above
-                settings:
-                  view_mode: default
-                  link: ''
-                third_party_settings: {  }
-            weight: 2
-            additional: {  }
-            third_party_settings: {  }
-        third_party_settings:
-          layout_builder_lock:
-            lock: {  }
-      -
-        layout_id: layout_onecol
-        layout_settings:
-          label: ''
-        components: {  }
         third_party_settings: {  }
 id: node.residence_hall.default
 targetEntityType: node
