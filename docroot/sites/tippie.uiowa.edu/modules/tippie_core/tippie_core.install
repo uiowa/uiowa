@@ -27,18 +27,20 @@ function tippie_core_update_9001() {
     $existing = \Drupal::service('redirect.repository')->findBySourcePath($source_path);
     if (empty($existing)) {
 
-      // If we have a /node/SOMETHING path...
-      // I know this looks silly to evaluate `X === TRUE`, but this is required with preg_match().
-      // See: https://www.php.net/manual/en/function.preg-match.php#refsect1-function.preg-match-returnvalues.
+      /* If we have a /node/SOMETHING path...
+       * I know this looks silly to evaluate `X === TRUE`,
+       * but this is required with preg_match().
+       * See: https://www.php.net/manual/en/function.preg-match.php#refsect1-function.preg-match-returnvalues.
+       */
       if (preg_match('/\/node\/.*/', $redirect_path) === TRUE) {
 
         // Get the URL for that node...
         $redirect_path_url = trim(\Drupal::service('path_alias.manager')->getAliasByPath($redirect_path), "/");
 
-        //  And check to see if we are redirecting to the same path.
+        // And check to see if we are redirecting to the same path.
         if ($source_path == $redirect_path_url) {
 
-          // If we are, break out of the current loop and go to the next iteration of the loop.
+          // If we are, break out of the current loop and go to the next.
           continue;
         }
       }
@@ -48,7 +50,9 @@ function tippie_core_update_9001() {
         'status_code' => '301',
       ]);
 
-      // these setX() methods are used to make sure that we are setting the proper variable arrays for each DB entry.
+      /* These setX() methods are used to make sure that
+       * we are setting the proper variable arrays for each DB entry.
+       */
       $redir->setSource($source_path);
       $redir->setRedirect($redirect_path);
       $redir->save();
