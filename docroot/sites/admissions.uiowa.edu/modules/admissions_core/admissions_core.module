@@ -854,6 +854,9 @@ function admissions_core_preprocess_views_view(&$variables) {
       }
       break;
 
+    case 'taxonomy_term':
+      unset($variables['feed_icons']);
+      break;
   }
 }
 
