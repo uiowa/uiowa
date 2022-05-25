@@ -28,7 +28,9 @@ function tippie_core_update_9001() {
     if (empty($existing)) {
 
       // If we have a /node/SOMETHING path...
-      if (preg_match('/\/node\/.*/', $redirect_path)) {
+      // I know this looks silly to evaluate `X === TRUE`, but this is required with preg_match().
+      // See: https://www.php.net/manual/en/function.preg-match.php#refsect1-function.preg-match-returnvalues.
+      if (preg_match('/\/node\/.*/', $redirect_path) === TRUE) {
 
         // Get the URL for that node...
         $redirect_path_url = trim(\Drupal::service('path_alias.manager')->getAliasByPath($redirect_path), "/");
