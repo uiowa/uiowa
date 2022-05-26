@@ -9,7 +9,7 @@ interface AdmissionsCoreInterface {
   /**
    * Slug for href construction of 2 plus 2 links.
    */
-  const TWO_PLUS_TWO_PATH = '/2plus2/majors/';
+  const TWO_PLUS_TWO_PATH = '/academics/2plus2/';
 
   /**
    * Title for 2plus2 content type.
