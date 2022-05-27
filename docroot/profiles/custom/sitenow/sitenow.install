@@ -1937,3 +1937,10 @@ function sitenow_update_9041() {
 
   }
 }
+
+/**
+ * Flush all caches so drupal finds uiowa_auth module.
+ */
+function sitenow_update_9042() {
+  drupal_flush_all_caches();
+}
