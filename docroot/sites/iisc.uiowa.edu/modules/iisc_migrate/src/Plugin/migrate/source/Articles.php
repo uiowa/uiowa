@@ -32,17 +32,37 @@ class Articles extends BaseNodeSource {
 
     // If article type is set to '2_ianow', we need to do some additional
     // processing.
-    if ($row->getSourceProperty('field_article_type') === '2_ianow') {
-      // Set article source to 'Iowa Now'.
-      if (!is_null($row->getSourceProperty('field_article_publication_source'))) {
-        $row->setSourceProperty('field_article_publication_source', 'Iowa Now');
-      }
+    if (!is_null($row->getSourceProperty('field_article_type'))) {
+      if ($row->getSourceProperty('field_article_type')[0]['value'] === '2_ianow') {
 
-      // Set external URL to Iowa Now URL.
-      if (!is_null($row->getSourceProperty('field_article_external_url')) && !is_null($row->getSourceProperty('field_article_iowanow_url'))) {
-        $row->setSourceProperty('field_article_external_url', $row->getSourceProperty('field_article_iowanow_url'));
+        // Set article source to 'Iowa Now'.
+        if (!is_null($row->getSourceProperty('field_article_publication_source'))) {
+          $row->setSourceProperty('field_article_publication_source', [
+            ['value' => 'Iowa Now']
+          ]);
+        }
+
+        // Set external URL to Iowa Now URL.
+        if (!is_null($row->getSourceProperty('field_article_external_url')) && !is_null($row->getSourceProperty('field_article_iowanow_url'))) {
+          $row->setSourceProperty('field_article_external_url', $row->getSourceProperty('field_article_iowanow_url'));
+        }
       }
     }
+
+    $related_content = [];
+    foreach ([
+      'field_ref_partners',
+      'field_ref_projects',
+      'field_ref_persons',
+    ] as $related_field) {
+      if (!is_null($row->getSourceProperty($related_field))) {
+        foreach ($row->getSourceProperty($related_field) as $field) {
+          $related_content[] = $field;
+        }
+      }
+    }
+    $row->setSourceProperty('field_related_content', $related_content);
+    $related_content = NULL;
 
     return TRUE;
   }
