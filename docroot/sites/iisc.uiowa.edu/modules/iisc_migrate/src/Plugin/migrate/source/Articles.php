@@ -46,6 +46,8 @@ class Articles extends BaseNodeSource {
         if (!is_null($row->getSourceProperty('field_article_external_url')) && !is_null($row->getSourceProperty('field_article_iowanow_url'))) {
           $row->setSourceProperty('field_article_external_url', $row->getSourceProperty('field_article_iowanow_url'));
         }
+
+        // @todo Need to set link directly to source if there is an external URL.
       }
     }
 
