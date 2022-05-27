@@ -336,12 +336,16 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_residence_hall_floor_plans:
-    type: text_textarea
-    weight: 24
+    type: entity_reference_paragraphs
+    weight: 30
     region: content
     settings:
-      rows: 5
-      placeholder: ''
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
     third_party_settings: {  }
   field_residence_hall_furnishings:
     type: entity_reference_autocomplete
