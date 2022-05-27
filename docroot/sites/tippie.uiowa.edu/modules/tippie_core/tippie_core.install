@@ -22,6 +22,11 @@ function tippie_core_update_9001() {
   }
 
   foreach ($csv as $redirect) {
+    /*
+     * The preg_replace() here is to remove non-printable unicode characters.
+     * The way this was set up before allowed for BOF, EOF, etc. to be
+     * bundled in with the redirect strings, which bricked some redirects.
+     */
     $source_path = preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', $redirect[0]);
     $redirect_path = preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', $redirect[1]);
     $existing = \Drupal::service('redirect.repository')->findBySourcePath($source_path);
