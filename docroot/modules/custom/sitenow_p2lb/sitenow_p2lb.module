@@ -711,7 +711,8 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       $title = $paragraph->field_uip_title->value;
       // Reverse the logic, because we're using it to
       // denote "hide," rather than display.
-      $display_title = !$paragraph->field_uip_display_title->value;      $pager = $paragraph->field_uip_pager->value;
+      $display_title = !$paragraph->field_uip_display_title->value;
+      $pager = $paragraph->field_uip_pager->value;
       // Number of results that should be displayed.
       $results = $paragraph->field_uip_items->value;
 
