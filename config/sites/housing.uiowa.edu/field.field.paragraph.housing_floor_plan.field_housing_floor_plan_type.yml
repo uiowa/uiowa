@@ -1,0 +1,29 @@
+uuid: 5fb5d79e-e8ea-43de-b34b-efaf79db37d2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_housing_floor_plan_type
+    - paragraphs.paragraphs_type.housing_floor_plan
+    - taxonomy.vocabulary.room_type
+id: paragraph.housing_floor_plan.field_housing_floor_plan_type
+field_name: field_housing_floor_plan_type
+entity_type: paragraph
+bundle: housing_floor_plan
+label: 'Room Type'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      room_type: room_type
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

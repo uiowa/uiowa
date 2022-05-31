@@ -1,0 +1,29 @@
+uuid: 144555ca-a768-4724-9c43-620ac7f09626
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_residence_hall_amenities
+    - node.type.residence_hall
+    - taxonomy.vocabulary.amenities
+id: node.residence_hall.field_residence_hall_amenities
+field_name: field_residence_hall_amenities
+entity_type: node
+bundle: residence_hall
+label: Amenities
+description: 'Add options on the taxonomy <a href="/admin/structure/taxonomy">page</a>.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      amenities: amenities
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
