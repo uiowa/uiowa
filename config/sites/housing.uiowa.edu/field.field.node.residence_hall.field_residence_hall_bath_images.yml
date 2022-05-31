@@ -1,0 +1,23 @@
+uuid: ab82371a-d80a-4508-a4ba-ceb3333ac85a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_residence_hall_bath_images
+    - node.type.residence_hall
+  module:
+    - link
+id: node.residence_hall.field_residence_hall_bath_images
+field_name: field_residence_hall_bath_images
+entity_type: node
+bundle: residence_hall
+label: 'Bathroom gallery link'
+description: 'Link to a separate page displaying a gallery of bathroom images.  Add the "bathroom type" name in the link text field.  '
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  title: 2
+  link_type: 17
+field_type: link
