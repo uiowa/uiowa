@@ -378,6 +378,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       break;
 
     case 'accordion':
+      $type = 'uiowa_collection';
       $label = 'Accordion collection';
       $display_label = 0;
       $view_mode = 'accordion';
@@ -400,7 +401,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         }
       }
       $block_definition = [
-        'type' => 'uiowa_collection',
+        'type' => $type,
         'langcode' => 'en',
         'status' => $paragraph->get('status')->getValue(),
         'reusable' => 0,
@@ -657,6 +658,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       break;
 
     case 'featured_content':
+      $type = 'featured_content';
       $title = $paragraph->field_uip_title->value;
       $display_title = $paragraph->field_uip_display_title->value;
 
@@ -790,6 +792,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       break;
 
     case 'webform':
+      $type = 'webform_block';
       $webform_data = $paragraph->get('field_webform')->getValue()[0];
       if ($paragraph->get('field_uip_title')->getValue()) {
         $label = $paragraph->get('field_uip_title')->getValue()[0]['value'];
