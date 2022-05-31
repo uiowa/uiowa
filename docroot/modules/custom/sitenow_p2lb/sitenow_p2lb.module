@@ -420,7 +420,9 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       $more = $paragraph->field_articles_more->value;
       $more_path = $paragraph->field_articles_more_path->value;
       $title = $paragraph->field_uip_title->value;
-      $display_title = $paragraph->field_uip_display_title->value;
+      // Reverse the logic, because we're using it to
+      // denote "hide," rather than display.
+      $display_title = !$paragraph->field_uip_display_title->value;
       $pager = $paragraph->field_uip_pager->value;
 
       $block_definition = [
@@ -630,7 +632,9 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       $past = $paragraph->field_events_past->value;
       $results = $paragraph->field_events_results->value;
       $title = $paragraph->field_uip_title->value;
-      $display_title = $paragraph->field_uip_display_title->value;
+      // Reverse the logic, because we're using it to
+      // denote "hide," rather than display.
+      $display_title = !$paragraph->field_uip_display_title->value;
 
       $block_definition = [
         'type' => 'uiowa_events',
@@ -660,7 +664,9 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
     case 'featured_content':
       $type = 'featured_content';
       $title = $paragraph->field_uip_title->value;
-      $display_title = $paragraph->field_uip_display_title->value;
+      // Reverse the logic, because we're using it to
+      // denote "hide," rather than display.
+      $display_title = !$paragraph->field_uip_display_title->value;
 
       $content_items = $paragraph->field_featured_content;
 
@@ -681,8 +687,9 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       $type = 'uiowa_image_gallery';
       $images = $paragraph->field_image;
       $title = $paragraph->field_uip_title->value;
-      $display_title = $paragraph->field_uip_display_title->value;
-
+      // Reverse the logic, because we're using it to
+      // denote "hide," rather than display.
+      $display_title = !$paragraph->field_uip_display_title->value;
       $block_definition = [
         'type' => $type,
         'langcode' => 'en',
@@ -702,8 +709,9 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       $more = $paragraph->field_people_more->value;
       $more_path = $paragraph->field_people_more_path->value;
       $title = $paragraph->field_uip_title->value;
-      $display_title = $paragraph->field_uip_display_title->value;
-      $pager = $paragraph->field_uip_pager->value;
+      // Reverse the logic, because we're using it to
+      // denote "hide," rather than display.
+      $display_title = !$paragraph->field_uip_display_title->value;      $pager = $paragraph->field_uip_pager->value;
       // Number of results that should be displayed.
       $results = $paragraph->field_uip_items->value;
 
