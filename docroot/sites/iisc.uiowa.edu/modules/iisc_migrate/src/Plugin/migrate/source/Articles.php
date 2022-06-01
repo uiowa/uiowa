@@ -38,7 +38,7 @@ class Articles extends BaseNodeSource {
         // Set article source to 'Iowa Now'.
         if (!is_null($row->getSourceProperty('field_article_publication_source'))) {
           $row->setSourceProperty('field_article_publication_source', [
-            ['value' => 'Iowa Now']
+            ['value' => 'Iowa Now'],
           ]);
         }
 
