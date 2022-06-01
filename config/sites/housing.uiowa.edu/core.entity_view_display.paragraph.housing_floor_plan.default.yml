@@ -1,0 +1,59 @@
+uuid: d8afa4ea-a77a-46af-b091-5171f1c8161b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.housing_floor_plan.field_housing_floor_plan_details
+    - field.field.paragraph.housing_floor_plan.field_housing_floor_plan_image
+    - field.field.paragraph.housing_floor_plan.field_housing_floor_plan_pano
+    - field.field.paragraph.housing_floor_plan.field_housing_floor_plan_type
+    - paragraphs.paragraphs_type.housing_floor_plan
+  module:
+    - photoswipe
+    - text
+id: paragraph.housing_floor_plan.default
+targetEntityType: paragraph
+bundle: housing_floor_plan
+mode: default
+content:
+  field_housing_floor_plan_details:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_housing_floor_plan_image:
+    type: photoswipe_field_formatter
+    label: above
+    settings:
+      photoswipe_node_style_first: ''
+      photoswipe_node_style: ''
+      photoswipe_image_style: ''
+      photoswipe_reference_image_field: ''
+      photoswipe_caption: ''
+      photoswipe_caption_custom: ''
+      photoswipe_view_mode: ''
+      gallery_selector: ''
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_housing_floor_plan_pano:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_housing_floor_plan_type:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+hidden:
+  search_api_excerpt: true
