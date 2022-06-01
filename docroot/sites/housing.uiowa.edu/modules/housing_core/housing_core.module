@@ -44,6 +44,7 @@ function housing_core_preprocess_layout(&$variables) {
       switch ($node->getType()) {
 
         case 'residence_hall':
+          $variables['#attached']['library'][] = 'housing_core/pannellum';
           if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
 
             // Set the featured image display.
