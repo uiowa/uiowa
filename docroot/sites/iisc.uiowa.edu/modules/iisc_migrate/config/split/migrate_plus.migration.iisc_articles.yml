@@ -39,7 +39,13 @@ process:
     source: body
   field_article_source_org: field_article_publication_source/0/value
   field_article_source_link: field_article_external_url/0/url
-  field_related_content: field_related_content # Not working yet
+  field_related_content:
+    plugin: migration_lookup
+    migration:
+      - iisc_people
+      - iisc_projects
+      - iisc_partners
+    source: field_related_content
 # Enable if dependencies exist.
 migration_dependencies:
   required:

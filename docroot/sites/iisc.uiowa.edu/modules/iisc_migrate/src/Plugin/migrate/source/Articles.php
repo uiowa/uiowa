@@ -59,7 +59,7 @@ class Articles extends BaseNodeSource {
     ] as $related_field) {
       if (!is_null($row->getSourceProperty($related_field))) {
         foreach ($row->getSourceProperty($related_field) as $field) {
-          $related_content[] = $field;
+          $related_content[] = $field['target_id'];
         }
       }
     }
