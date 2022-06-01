@@ -43,12 +43,12 @@
     <div class="embed-responsive media--video embed-responsive-9by16">
       {% if video_field is not empty %}
       {% if video_title is not empty %}
-      <button id="video-btn--{{ video_id }}" class="vidbttn" aria-label="Play {{ video_title }} video">
+        <div id="video-btn--{{ video_id }}" class="vidbttn">
         {% else %}
-        <button id="video-btn--{{ video_id }}" class="vidbttn" aria-label="play video-{{ video_id }}">
+        <div id="video-btn--{{ video_id }}" class="vidbttn">
           {% endif %}
           <span>Play</span>
-        </button>
+        </div>
         <video id="video-container--{{ video_id }}" class="player" preload="metadata"  poster="{{ video_thumbnail }}" controls>
           <source src="{{ video_url }}" type="video/mp4">
           <track label="English" kind="subtitles" srclang="en" src="{{ video_caption_url }}" default="default"/>
