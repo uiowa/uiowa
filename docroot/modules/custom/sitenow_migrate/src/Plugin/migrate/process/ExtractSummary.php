@@ -105,6 +105,9 @@ class ExtractSummary extends ProcessPluginBase {
     $output = str_replace('&nbsp;', ' ', $output);
     $output = str_replace("\xc2\xa0", ' ', $output);
 
+    // Catch and convert remaining html entities.
+    $output = html_entity_decode($output);
+
     // Strip out extra spaces.
     $output = trim(preg_replace('/\s\s+/', ' ', $output));
 
