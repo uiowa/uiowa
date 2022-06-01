@@ -92,7 +92,10 @@ class CreateMediaFromFile extends FileCopy {
     // with the given filename. If so, we just need to create
     // a media entity and return its id.
     if ($fid = $this->getNewFileId($filename)) {
-      return $this->createMediaEntity($fid);
+      // Pass in the value as 'meta' for use in the media creation
+      // processes, so we can take advantage of properties like
+      // human readable filenames.
+      return $this->createMediaEntity($fid, $value);
     }
 
     // If we didn't match an already downloaded file, and
@@ -147,7 +150,10 @@ class CreateMediaFromFile extends FileCopy {
       $file->setPermanent();
       $file->save();
       $this->newFid = $file->id();
-      $this->newMid = $this->createMediaEntity($this->newFid);
+      // Pass in the value as 'meta' for use in the media creation
+      // processes, so we can take advantage of properties like
+      // human readable filenames.
+      $this->newMid = $this->createMediaEntity($this->newFid, $value);
 
       return $this->newMid;
     }

@@ -104,7 +104,11 @@ trait CreateMediaTrait {
         $media_manager = $this->entityTypeManager->getStorage('media');
         /** @var \Drupal\Media\MediaInterface $media */
         $media = $media_manager->create($media_entity);
-        $media->setName($meta['filename']);
+        // Check if we have a title, and if not, grab the filename
+        // in order to set the media name. In some setups, this filename
+        // will be a human readable name, suitable for use as a media name.
+        $name = (isset($meta['title'])) ? $meta['title'] : $meta['filename'];
+        $media->setName($name);
         $media->setOwnerId($owner_id);
         $media->save();
         $id = $media->id();
