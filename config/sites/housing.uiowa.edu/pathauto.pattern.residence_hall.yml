@@ -1,0 +1,22 @@
+uuid: 479d3ae9-912e-4baf-8178-ea9eb6827b49
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: residence_hall
+label: 'Residence Hall'
+type: 'canonical_entities:node'
+pattern: 'residence-halls/[node:title]'
+selection_criteria:
+  b21522d9-290f-4e34-9dcb-73965b7c9d65:
+    id: node_type
+    negate: false
+    uuid: b21522d9-290f-4e34-9dcb-73965b7c9d65
+    context_mapping:
+      node: node
+    bundles:
+      residence_hall: residence_hall
+selection_logic: and
+weight: -5
+relationships: {  }
