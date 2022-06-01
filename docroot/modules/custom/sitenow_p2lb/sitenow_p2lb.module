@@ -362,14 +362,13 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
   $display_label = 0;
   $label = NULL;
   $children = [];
+  $block = NULL;
+  $config = [];
+  $block_definition = [];
 
   // Initialize a usage controller for later.
   $database = \Drupal::database();
   $use_controller = new InlineBlockUsage($database);
-  $block = NULL;
-  $config = [];
-  $block_definition = [];
-  $children = [];
 
   // Handle each type of paragraph separately.
   switch ($paragraph->get('type')->getString()) {
@@ -380,7 +379,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
     case 'accordion':
       $type = 'uiowa_collection';
       $label = 'Accordion collection';
-      $display_label = 0;
       $view_mode = 'accordion';
       $accordion_items = $paragraph->get('field_accordion_item');
       foreach ($accordion_items as $accordion_item) {
@@ -416,7 +414,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 
     case 'articles':
       $type = 'uiowa_articles';
-      $display_label = 0;
       $more = $paragraph->field_articles_more->value;
       $more_path = $paragraph->field_articles_more_path->value;
       $title = $paragraph->field_uip_title->value;
@@ -450,10 +447,9 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       break;
 
     case 'blockquote':
+      // @todo Update to use the new blockquote block.
       $type = 'uiowa_text_area';
-      // @todo update labeling methodology and decide how to title.
       $label = 'Text block';
-      $display_label = 0;
       $text = $paragraph->get('field_blockquote_content')->getValue()[0];
       $text['value'] = '<blockquote>' . $text['value'] . '</blockquote>';
       $text['format'] = 'minimal';
@@ -494,7 +490,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 
     case 'card':
       $type = 'uiowa_card';
-
       // Image isn't required. Check for one, or set to null.
       $image = ($paragraph->get('field_card_image')->getValue()) ?
         $paragraph->get('field_card_image')->getValue()[0]['target_id'] : '';
@@ -667,10 +662,8 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       // Reverse the logic, because we're using it to
       // denote "hide," rather than display.
       $display_title = !$paragraph->field_uip_display_title->value;
-
       $content_items = $paragraph->field_featured_content;
 
-      // @todo Create a Featured Content block.
       $block_definition = [
         'type' => 'featured_content',
         'langcode' => 'en',
@@ -690,6 +683,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       // Reverse the logic, because we're using it to
       // denote "hide," rather than display.
       $display_title = !$paragraph->field_uip_display_title->value;
+
       $block_definition = [
         'type' => $type,
         'langcode' => 'en',
@@ -770,8 +764,8 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
     case 'text':
       $type = 'uiowa_text_area';
       $label = 'Text block';
-      $display_label = 0;
       $text = $paragraph->get('field_text_body')->getValue();
+      // Default to no title, and we'll update later if needed.
       $title = '';
       $h_level = 'h2';
 
