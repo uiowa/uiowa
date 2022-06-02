@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.project.body
+    - field.field.node.project.field_academic_year
     - field.field.node.project.field_image
     - field.field.node.project.field_meta_tags
     - field.field.node.project.field_project_college_department
@@ -18,6 +19,7 @@ dependencies:
     - layout_builder_restrictions
     - link
     - metatag
+    - options
     - system
     - text
     - user
@@ -156,7 +158,7 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 5
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           c0a825f9-a9c5-4f12-8e70-2ed60220684d:
@@ -173,7 +175,7 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 3
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           627b1449-ca2a-4e83-a97c-6759e69189d3:
@@ -216,7 +218,7 @@ third_party_settings:
                   rel: ''
                   target: ''
                 third_party_settings: {  }
-            weight: 4
+            weight: 5
             additional: {  }
             third_party_settings: {  }
           6ae2be37-d8c5-4db5-8146-83d6ee06cb17:
@@ -233,7 +235,7 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 1
+            weight: 2
             additional: {  }
             third_party_settings: {  }
           c92a16f5-37dd-46f2-bad2-5507ed1322e9:
@@ -250,7 +252,23 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 2
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
+          789e0557-1249-4dc2-983d-c53607aca752:
+            uuid: 789e0557-1249-4dc2-983d-c53607aca752
+            region: second
+            configuration:
+              id: 'field_block:node:project:field_academic_year'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 1
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -281,6 +299,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: -20
+    region: content
+  field_academic_year:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 110
     region: content
   field_image:
     type: entity_reference_label
