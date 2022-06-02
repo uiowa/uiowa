@@ -7,11 +7,15 @@
 
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\google_tag\Entity\Container;
+use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\uiowa_core\HeadlineHelper;
+use Drupal\views\Views;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Exception\RfcComplianceException;
 
@@ -130,8 +134,31 @@ function template_preprocess_uiowa_core_headline(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function uiowa_core_preprocess_page(&$variables) {
+function uiowa_core_preprocess_node(&$variables) {
+  if ($variables['view_mode'] == 'teaser') {
+    $show_teaser_link_indicator = FALSE;
+    $node_type = $variables['node']->bundle();
+    $type_map = [
+      'page' => 'pages',
+      'person' => 'people',
+      'article' => 'articles',
+    ];
 
+    if (isset($type_map[$node_type])) {
+      $config_name = 'sitenow_' . $type_map[$node_type] . '.settings';
+      $config = \Drupal::configFactory()->getEditable($config_name);
+
+      $show_teaser_link_indicator = $config->get('show_teaser_link_indicator');
+    }
+    $variables['show_teaser_link_indicator'] = $show_teaser_link_indicator;
+  }
+
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uiowa_core_preprocess_page(&$variables) {
   $current_route = \Drupal::routeMatch();
   $node = $current_route->getParameter('node');
 
@@ -143,7 +170,7 @@ function uiowa_core_preprocess_page(&$variables) {
     'page',
     'person',
   ];
-  if (isset($node)) {
+  if (isset($node) && $node instanceof NodeInterface) {
     $node_type = $node->bundle();
     if (in_array($node_type, $tags_related_display_allowed_types)) {
 
@@ -456,4 +483,144 @@ function uiowa_core_preprocess_block(&$variables) {
       $variables['attributes']['class'][] .= 'block--bg-container related col--threecol--33 bg--gray block-padding__bottom block-padding__top';
       break;
   }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * Invalidate related and tag view caches on content types that
+ * support these views.
+ */
+function uiowa_core_node_presave(Node $node) {
+  $node_type = $node->getType();
+  $type_map = [
+    'article' => 'articles',
+    'page' => 'pages',
+    'person' => 'people',
+  ];
+
+  // Only proceed if this is a supported content type.
+  if (isset($type_map[$node_type])) {
+    $config_name = 'sitenow_' . $type_map[$node_type] . '.settings';
+    $config = \Drupal::configFactory()->getEditable($config_name);
+    // We'll do this for tag list and related content.
+    foreach ([
+      'tag_display' => 'tags_list',
+      'related_display' => 'related_content',
+    ] as $setting => $view_name) {
+      // Only proceed if the option is turned on for this content type.
+      if ($config->get($setting) !== 'do_not_display') {
+        // Get the view and invalidate the cache.
+        $view = Views::getView($view_name);
+        $view->storage->invalidateCaches();
+      }
+    }
+  }
+}
+
+/**
+ * Allowed values function for partner counties field.
+ */
+function uiowa_core_county_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  return [
+    'Adair',
+    'Adams',
+    'Allamakee',
+    'Appanoose',
+    'Audubon',
+    'Benton',
+    'Black Hawk',
+    'Boone',
+    'Bremer',
+    'Buchanan',
+    'Buena Vista',
+    'Butler',
+    'Calhoun',
+    'Carroll',
+    'Cass',
+    'Cedar',
+    'Cerro Gordo',
+    'Cherokee',
+    'Chickasaw',
+    'Clarke',
+    'Clay',
+    'Clayton',
+    'Clinton',
+    'Crawford',
+    'Dallas',
+    'Davis',
+    'Decatur',
+    'Delaware',
+    'Des Moines',
+    'Dickinson',
+    'Dubuque',
+    'Emmet',
+    'Fayette',
+    'Floyd',
+    'Franklin',
+    'Fremont',
+    'Greene',
+    'Grundy',
+    'Guthrie',
+    'Hamilton',
+    'Hancock',
+    'Hardin',
+    'Harrison',
+    'Henry',
+    'Howard',
+    'Humboldt',
+    'Ida',
+    'Iowa',
+    'Jackson',
+    'Jasper',
+    'Jefferson',
+    'Johnson',
+    'Jones',
+    'Keokuk',
+    'Kossuth',
+    'Lee',
+    'Linn',
+    'Louisa',
+    'Lucas',
+    'Lyon',
+    'Madison',
+    'Mahaska',
+    'Marion',
+    'Marshall',
+    'Mills',
+    'Mitchell',
+    'Monona',
+    'Monroe',
+    'Montgomery',
+    'Muscatine',
+    'O\'Brien',
+    'Osceola',
+    'Page',
+    'Palo Alto',
+    'Plymouth',
+    'Pocahontas',
+    'Polk',
+    'Pottawattamie',
+    'Poweshiek',
+    'Ringgold',
+    'Sac',
+    'Scott',
+    'Shelby',
+    'Sioux',
+    'Story',
+    'Tama',
+    'Taylor',
+    'Union',
+    'Van Buren',
+    'Wapello',
+    'Warren',
+    'Washington',
+    'Wayne',
+    'Webster',
+    'Winnebago',
+    'Winneshiek',
+    'Woodbury',
+    'Worth',
+    'Wright',
+  ];
 }

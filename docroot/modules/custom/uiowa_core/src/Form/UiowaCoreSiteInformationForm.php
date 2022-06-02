@@ -7,6 +7,8 @@ use Drupal\system\Form\SiteInformationForm;
 
 /**
  * Configure site information settings for this site.
+ *
+ * @phpstan-ignore-next-line
  */
 class UiowaCoreSiteInformationForm extends SiteInformationForm {
 

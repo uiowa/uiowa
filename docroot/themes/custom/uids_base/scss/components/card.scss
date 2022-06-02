@@ -20,8 +20,26 @@
     margin-top: 1.05rem;
   }
 
+  &__details + .bttn {
+    margin-top: .425rem;
+  }
+
   &__title+.bttn {
     margin-top: .55rem;
+  }
+
+  &.card--media-right,
+  &.card--media-left {
+    .card__title+.bttn {
+      margin-top: .925rem;
+    }
+  }
+
+  &.card--media-right.card__list,
+  &.card--media-left.card__list {
+    .card__title+.bttn {
+      margin-top: .85rem;
+    }
   }
 
   &__description {
@@ -195,36 +213,6 @@
   }
 }
 
-.card[class*="bg--gold"],
-.card[class*="bg--gray"] {
-  .bttn--sans-serif {
-    border-color: rgba(0,0,0,.225);
-  }
-}
-
-// Border color adjustment for cards not using a bg color
-.card:not([class*="bg-"]) {
-  border-color: rgba(0,0,0,.125);
-  .bg-pattern--brain-black &,
-  [class*="bg--black"] & {
-    border-color: rgba(255,255,255,.325);
-    .bttn--sans-serif {
-      border-color: rgba(255,255,255,.325);
-    }
-  }
-  .bttn--sans-serif {
-    border-color: rgba(0,0,0,.225);
-  }
-}
-
-.card:not([class*="bg-"]) {
-  .layout__container:not([class*="bg-"]) & {
-    .bttn--sans-serif {
-      border-color: rgba(0,0,0,.125);
-    }
-  }
-}
-
 // Set background for all v2 cards
 .paragraph--type--section {
   &[class*=bg-] {
@@ -374,5 +362,19 @@
     display: flex;
     justify-content: center;
     padding-top: .135rem;
+  }
+}
+
+// Border color adjustments
+.card:not([class*="bg-"]) {
+  .bttn--sans-serif {
+    border-color: $primary;
+    [class*="bg--gold"] &,
+    [class*="bg--gray"] & {
+      border-color: rgba(0,0,0,.425);
+    }
+    [class*="bg--black"] & {
+      border-color: rgba(255,255,255,.425);
+    }
   }
 }

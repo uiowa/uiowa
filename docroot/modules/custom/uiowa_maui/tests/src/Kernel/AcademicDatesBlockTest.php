@@ -40,6 +40,13 @@ class AcademicDatesBlockTest extends KernelTestBase {
   protected $plugin;
 
   /**
+   * Shared initial config for the block constructor.
+   *
+   * @var array
+   */
+  protected $blockConfig;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
@@ -49,6 +56,20 @@ class AcademicDatesBlockTest extends KernelTestBase {
       'admin_label' => 'Academic dates',
       'provider' => 'uiowa_maui',
       'category' => 'MAUI',
+    ];
+
+    $this->blockConfig = [
+      'headline' => 'Test',
+      'hide_headline' => FALSE,
+      'heading_size' => 'h3',
+      'headline_style' => 'default',
+      'session' => 0,
+      'category' => '',
+      'items_to_display' => 10,
+      'limit_dates' => FALSE,
+      'display_more_link' => FALSE,
+      'more_link' => 'https://registrar.uiowa.edu/academic-calendar',
+      'more_text' => 'View more',
     ];
 
     $this->maui = $this->getMockBuilder('\Drupal\uiowa_maui\MauiApi')
@@ -96,15 +117,8 @@ class AcademicDatesBlockTest extends KernelTestBase {
    * @dataProvider placeholderProvider
    */
   public function testHeadlinePlaceholderIsReplaced($placeholder) {
-    $config = [
-      'headline' => $placeholder,
-      'hide_headline' => FALSE,
-      'heading_size' => 'h3',
-      'headline_style' => 'default',
-      'session' => 0,
-      'category' => '',
-    ];
-
+    $config = $this->blockConfig;
+    $config['headline'] = $placeholder;
     $sut = new AcademicDatesBlock($config, 'uiowa_maui_academic_dates', $this->plugin, $this->maui, $this->formBuilder);
 
     $build = $sut->build();
@@ -179,6 +193,34 @@ class AcademicDatesBlockTest extends KernelTestBase {
     $config = $sut->getConfiguration();
     $this->assertEquals(0, $config['session']);
     $this->assertEquals(1, $config['category']);
+  }
+
+  /**
+   * The more link should render if display more link is checked.
+   */
+  public function testMoreLinkDoesRenderIfSet() {
+    $config = $this->blockConfig;
+    $config['display_more_link'] = TRUE;
+    $config['more_link'] = 'https://registrar.uiowa.edu/academic-calendar';
+    $config['more_text'] = 'View more';
+
+    $sut = new AcademicDatesBlock($config, 'uiowa_maui_academic_dates', $this->plugin, $this->maui, $this->formBuilder);
+    $build = $sut->build();
+    $this->assertArrayHasKey('more_link', $build);
+  }
+
+  /**
+   * The more link should not render if display more link is not checked.
+   */
+  public function testMoreLinkDoesRenderIfNotSet() {
+    $config = $this->blockConfig;
+    $config['display_more_link'] = FALSE;
+    $config['more_link'] = 'https://registrar.uiowa.edu/academic-calendar';
+    $config['more_text'] = 'View more';
+
+    $sut = new AcademicDatesBlock($config, 'uiowa_maui_academic_dates', $this->plugin, $this->maui, $this->formBuilder);
+    $build = $sut->build();
+    $this->assertArrayNotHasKey('more_link', $build);
   }
 
   /**

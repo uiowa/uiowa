@@ -1,0 +1,29 @@
+uuid: 87cc3fda-35b7-4ad4-bfc1-95db2925f044
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_residence_hall_furnishings
+    - node.type.residence_hall
+    - taxonomy.vocabulary.furnishings
+id: node.residence_hall.field_residence_hall_furnishings
+field_name: field_residence_hall_furnishings
+entity_type: node
+bundle: residence_hall
+label: Furnishings
+description: 'Add options on the taxonomy <a href="/admin/structure/taxonomy">page</a>.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      furnishings: furnishings
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

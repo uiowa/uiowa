@@ -1,0 +1,27 @@
+uuid: 8de66c95-f191-478c-abe0-45027748e61a
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_residence_hall_neighborhd
+field_name: field_residence_hall_neighborhd
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: east
+      label: East
+    -
+      value: west
+      label: West
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

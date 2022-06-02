@@ -54,7 +54,7 @@ third_party_settings:
       label: 'Book Images'
       region: content
       parent_name: ''
-      weight: 5
+      weight: 6
       format_type: tab
       format_settings:
         classes: ''
@@ -79,7 +79,7 @@ third_party_settings:
       label: Collaborators
       region: content
       parent_name: ''
-      weight: 1
+      weight: 2
       format_type: tab
       format_settings:
         classes: ''
@@ -115,7 +115,7 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 7
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -296,7 +296,7 @@ content:
     third_party_settings: {  }
   field_book_season:
     type: entity_reference_autocomplete_tags
-    weight: 3
+    weight: 4
     region: content
     settings:
       match_operator: CONTAINS
@@ -306,7 +306,7 @@ content:
     third_party_settings: {  }
   field_book_series:
     type: entity_reference_autocomplete_tags
-    weight: 2
+    weight: 3
     region: content
     settings:
       match_operator: CONTAINS
@@ -316,11 +316,19 @@ content:
     third_party_settings: {  }
   field_book_subject:
     type: entity_reference_autocomplete_tags
-    weight: 4
+    weight: 5
     region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_book_subtitle:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
@@ -387,19 +395,19 @@ content:
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 12
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
   path:
     type: path
-    weight: 10
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    weight: 8
+    weight: 9
     region: content
     settings:
       display_label: true
@@ -413,7 +421,7 @@ content:
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    weight: 9
+    weight: 10
     region: content
     settings:
       display_label: true
@@ -428,7 +436,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete_tags
-    weight: 6
+    weight: 7
     region: content
     settings:
       match_operator: CONTAINS
@@ -437,9 +445,8 @@ content:
       placeholder: ''
     third_party_settings: {  }
   url_redirects:
-    weight: 11
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden:
-  field_book_subtitle: true
+hidden: {  }

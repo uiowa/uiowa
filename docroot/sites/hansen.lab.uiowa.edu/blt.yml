@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labhansen.uiowa.ddev.site
+    protocol: https
+  machine_name: labhansen
+  human_name: hansen.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labhansen.prod
+drupal:
+  db:
+    database: hansen_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: rohua
+  site-name: 'Hansen Lab'

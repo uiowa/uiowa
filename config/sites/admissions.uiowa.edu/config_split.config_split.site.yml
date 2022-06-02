@@ -25,7 +25,10 @@ theme: {  }
 complete_list:
   - block_content.type.area_of_study_search
   - config_split.config_split.site
+  - core.entity_form_display.node.major.default
   - core.entity_view_display.node.event.default
+  - core.entity_view_display.node.major.default
+  - core.entity_view_display.node.major.teaser
   - core.entity_view_display.node.page.default
   - core.entity_view_display.node.person.default
   - core.entity_view_mode.node.pdf
@@ -37,19 +40,24 @@ complete_list:
   - metatag.metatag_defaults.node__area_of_study
   - metatag.metatag_defaults.node__event
   - metatag.metatag_defaults.node__event_series
+  - metatag.metatag_defaults.node__major
   - metatag.metatag_defaults.node__student_profile
   - metatag.metatag_defaults.node__transfer_tips
   - node.type.area_of_study
   - node.type.event_series
+  - node.type.major
   - node.type.student_profile
   - node.type.transfer_tips
   - paragraphs.paragraphs_type.admissions_card
   - paragraphs.paragraphs_type.admissions_requirement
   - paragraphs.paragraphs_type.degree
   - pathauto.pattern.areas_of_study
+  - pathauto.pattern.community_colleges
+  - pathauto.pattern.major
   - pathauto.pattern.student_profiles
   - pathauto.pattern.transfer_tips
   - simple_sitemap.bundle_settings.default.node.area_of_study
+  - simple_sitemap.bundle_settings.default.node.major
   - simple_sitemap.bundle_settings.default.node.student_profile
   - simple_sitemap.bundle_settings.default.node.transfer_tips
   - simple_sitemap.bundle_settings.default.taxonomy_term.colleges
@@ -66,10 +74,15 @@ complete_list:
   - views.view.colleges_taxonomy_term
   - views.view.community_colleges
   - views.view.counselors
+  - views.view.majors
   - views.view.student_profiles
   - views.view.transfer_tips_list
+  - 'core.entity_view_display.node.major.*'
+  - views.view.2_plus_2_majors
+  - views.view.community_colleges_taxonomy_term
   - 'field.storage.fragment.field_stat_*'
   - 'field.storage.node.field_area_of_study_*'
+  - 'field.storage.node.field_major_*'
   - 'field.storage.node.field_student_profile_*'
   - 'field.storage.node.field_transfer_tips_*'
   - 'field.storage.paragraph.field_degree*'

@@ -1,0 +1,7 @@
+services:
+  uiowa_profiles_mock.client:
+    decorates: 'uiowa_profiles.client'
+    class: Drupal\uiowa_profiles_mock\ClientMock
+    public: false
+    arguments:
+      [ '@uiowa_profiles_mock.client.inner', '@config.factory', '@logger.channel.file', '@http_client' ]
