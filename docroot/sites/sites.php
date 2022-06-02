@@ -4144,3 +4144,9 @@ $sites['latham.uiowa.ddev.site'] = 'latham.uiowa.edu';
 $sites['latham.dev.drupal.uiowa.edu'] = 'latham.uiowa.edu';
 $sites['latham.stage.drupal.uiowa.edu'] = 'latham.uiowa.edu';
 $sites['latham.prod.drupal.uiowa.edu'] = 'latham.uiowa.edu';
+
+// Directory aliases for heli.law.uiowa.edu.
+$sites['lawheli.uiowa.ddev.site'] = 'heli.law.uiowa.edu';
+$sites['lawheli.dev.drupal.uiowa.edu'] = 'heli.law.uiowa.edu';
+$sites['lawheli.stage.drupal.uiowa.edu'] = 'heli.law.uiowa.edu';
+$sites['lawheli.prod.drupal.uiowa.edu'] = 'heli.law.uiowa.edu';
