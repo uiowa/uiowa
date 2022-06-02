@@ -4150,3 +4150,9 @@ $sites['lawheli.uiowa.ddev.site'] = 'heli.law.uiowa.edu';
 $sites['lawheli.dev.drupal.uiowa.edu'] = 'heli.law.uiowa.edu';
 $sites['lawheli.stage.drupal.uiowa.edu'] = 'heli.law.uiowa.edu';
 $sites['lawheli.prod.drupal.uiowa.edu'] = 'heli.law.uiowa.edu';
+
+// Directory aliases for ethanborchard.org.uiowa.edu.
+$sites['orgethanborchard.uiowa.ddev.site'] = 'ethanborchard.org.uiowa.edu';
+$sites['orgethanborchard.dev.drupal.uiowa.edu'] = 'ethanborchard.org.uiowa.edu';
+$sites['orgethanborchard.stage.drupal.uiowa.edu'] = 'ethanborchard.org.uiowa.edu';
+$sites['orgethanborchard.prod.drupal.uiowa.edu'] = 'ethanborchard.org.uiowa.edu';
