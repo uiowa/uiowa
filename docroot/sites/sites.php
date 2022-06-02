@@ -4156,3 +4156,9 @@ $sites['orgethanborchard.uiowa.ddev.site'] = 'ethanborchard.org.uiowa.edu';
 $sites['orgethanborchard.dev.drupal.uiowa.edu'] = 'ethanborchard.org.uiowa.edu';
 $sites['orgethanborchard.stage.drupal.uiowa.edu'] = 'ethanborchard.org.uiowa.edu';
 $sites['orgethanborchard.prod.drupal.uiowa.edu'] = 'ethanborchard.org.uiowa.edu';
+
+// Directory aliases for hansen.lab.uiowa.edu.
+$sites['labhansen.uiowa.ddev.site'] = 'hansen.lab.uiowa.edu';
+$sites['labhansen.dev.drupal.uiowa.edu'] = 'hansen.lab.uiowa.edu';
+$sites['labhansen.stage.drupal.uiowa.edu'] = 'hansen.lab.uiowa.edu';
+$sites['labhansen.prod.drupal.uiowa.edu'] = 'hansen.lab.uiowa.edu';
