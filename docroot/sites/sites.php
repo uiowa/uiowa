@@ -4162,3 +4162,9 @@ $sites['labhansen.uiowa.ddev.site'] = 'hansen.lab.uiowa.edu';
 $sites['labhansen.dev.drupal.uiowa.edu'] = 'hansen.lab.uiowa.edu';
 $sites['labhansen.stage.drupal.uiowa.edu'] = 'hansen.lab.uiowa.edu';
 $sites['labhansen.prod.drupal.uiowa.edu'] = 'hansen.lab.uiowa.edu';
+
+// Directory aliases for cuwip.physics.uiowa.edu.
+$sites['physicscuwip.uiowa.ddev.site'] = 'cuwip.physics.uiowa.edu';
+$sites['physicscuwip.dev.drupal.uiowa.edu'] = 'cuwip.physics.uiowa.edu';
+$sites['physicscuwip.stage.drupal.uiowa.edu'] = 'cuwip.physics.uiowa.edu';
+$sites['physicscuwip.prod.drupal.uiowa.edu'] = 'cuwip.physics.uiowa.edu';
