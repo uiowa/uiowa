@@ -445,29 +445,8 @@ third_party_settings:
             1: section_margin_fixed_width_container
             section_padding_bottom_extra: section_padding_bottom_extra
             section_padding_top_extra: section_padding_top_extra
+            section_alignment_start: section_alignment_start
         components:
-          10730b15-2ee1-48cc-af4b-2b6a12da9ef6:
-            uuid: 10730b15-2ee1-48cc-af4b-2b6a12da9ef6
-            region: second
-            configuration:
-              id: 'field_block:node:residence_hall:field_residence_hall_room_type'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_entity_view
-                label: above
-                settings:
-                  view_mode: default
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ''
-            weight: 2
-            additional: {  }
-            third_party_settings: {  }
           ca1347af-9b4e-45f6-8a32-9172cd0dbbef:
             uuid: ca1347af-9b4e-45f6-8a32-9172cd0dbbef
             region: first
@@ -476,29 +455,7 @@ third_party_settings:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-            weight: 2
-            additional: {  }
-            third_party_settings: {  }
-          f023739a-46a8-45d7-bee2-815d5533e070:
-            uuid: f023739a-46a8-45d7-bee2-815d5533e070
-            region: second
-            configuration:
-              id: 'field_block:node:residence_hall:field_residence_hall_bath_type'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_entity_view
-                label: above
-                settings:
-                  view_mode: default
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ''
-            weight: 1
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           55a2d684-c845-4049-a477-cc1d7e2cc21e:
@@ -519,29 +476,7 @@ third_party_settings:
                   rel: ''
                   target: ''
                 third_party_settings: {  }
-            weight: 3
-            additional: {  }
-            third_party_settings: {  }
-          0bffca00-03a6-41c0-bd98-f8e11584c75b:
-            uuid: 0bffca00-03a6-41c0-bd98-f8e11584c75b
-            region: second
-            configuration:
-              id: 'field_block:node:residence_hall:field_residence_hall_amenities'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_entity_view
-                label: above
-                settings:
-                  view_mode: default
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ''
-            weight: 0
+            weight: 7
             additional: {  }
             third_party_settings: {  }
           50aa6c50-88de-44f1-97d0-08e2cc854a33:
@@ -563,7 +498,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 1
+            weight: 5
             additional: {  }
             third_party_settings: {  }
           4adc757b-9421-4dba-9676-60f4e30d05f6:
@@ -582,12 +517,34 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 0
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
+          0bffca00-03a6-41c0-bd98-f8e11584c75b:
+            uuid: 0bffca00-03a6-41c0-bd98-f8e11584c75b
+            region: first
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_amenities'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           910d695d-d53d-41b4-854e-0414da1665f8:
             uuid: 910d695d-d53d-41b4-854e-0414da1665f8
-            region: first
+            region: second
             configuration:
               id: 'field_block:node:residence_hall:field_residence_hall_floor_plans'
               label: null
@@ -604,10 +561,34 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 4
+            weight: 0
             additional: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
+          10730b15-2ee1-48cc-af4b-2b6a12da9ef6:
+            uuid: 10730b15-2ee1-48cc-af4b-2b6a12da9ef6
+            region: first
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_room_type'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
       -
         layout_id: layout_onecol
         layout_settings:
