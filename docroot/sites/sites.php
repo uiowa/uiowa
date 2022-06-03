@@ -4144,3 +4144,27 @@ $sites['latham.uiowa.ddev.site'] = 'latham.uiowa.edu';
 $sites['latham.dev.drupal.uiowa.edu'] = 'latham.uiowa.edu';
 $sites['latham.stage.drupal.uiowa.edu'] = 'latham.uiowa.edu';
 $sites['latham.prod.drupal.uiowa.edu'] = 'latham.uiowa.edu';
+
+// Directory aliases for heli.law.uiowa.edu.
+$sites['lawheli.uiowa.ddev.site'] = 'heli.law.uiowa.edu';
+$sites['lawheli.dev.drupal.uiowa.edu'] = 'heli.law.uiowa.edu';
+$sites['lawheli.stage.drupal.uiowa.edu'] = 'heli.law.uiowa.edu';
+$sites['lawheli.prod.drupal.uiowa.edu'] = 'heli.law.uiowa.edu';
+
+// Directory aliases for ethanborchard.org.uiowa.edu.
+$sites['orgethanborchard.uiowa.ddev.site'] = 'ethanborchard.org.uiowa.edu';
+$sites['orgethanborchard.dev.drupal.uiowa.edu'] = 'ethanborchard.org.uiowa.edu';
+$sites['orgethanborchard.stage.drupal.uiowa.edu'] = 'ethanborchard.org.uiowa.edu';
+$sites['orgethanborchard.prod.drupal.uiowa.edu'] = 'ethanborchard.org.uiowa.edu';
+
+// Directory aliases for hansen.lab.uiowa.edu.
+$sites['labhansen.uiowa.ddev.site'] = 'hansen.lab.uiowa.edu';
+$sites['labhansen.dev.drupal.uiowa.edu'] = 'hansen.lab.uiowa.edu';
+$sites['labhansen.stage.drupal.uiowa.edu'] = 'hansen.lab.uiowa.edu';
+$sites['labhansen.prod.drupal.uiowa.edu'] = 'hansen.lab.uiowa.edu';
+
+// Directory aliases for cuwip.physics.uiowa.edu.
+$sites['physicscuwip.uiowa.ddev.site'] = 'cuwip.physics.uiowa.edu';
+$sites['physicscuwip.dev.drupal.uiowa.edu'] = 'cuwip.physics.uiowa.edu';
+$sites['physicscuwip.stage.drupal.uiowa.edu'] = 'cuwip.physics.uiowa.edu';
+$sites['physicscuwip.prod.drupal.uiowa.edu'] = 'cuwip.physics.uiowa.edu';
