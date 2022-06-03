@@ -37,12 +37,10 @@
  * @see template_preprocess_field()
  */
 #}
-{{ attach_library('uids_base/accordion') }}
+{{ attach_library('uids_base/tabs') }}
 
-<div class="collection--accordion">
-  <div class="accordion" role="tablist" aria-multiselectable="true" id="{{ "accordion-floor-plan" }}">
-    {% for item in items %}
-      {{ item.content }}
-    {% endfor %}
-  </div>
+<div class="tabs-collection" id="tabs--{{ tablist_id }}">
+  {% for item in items %}
+    {{ item.content }}
+  {% endfor %}
 </div>

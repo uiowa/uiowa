@@ -1,13 +1,23 @@
-{% set accordion_item = {
-  'accordion_item_id': content_id,
-  'accordion_parent_id': '#accordion-floor-plan',
-  'accordion_hash': heading_id,
-  'accordion_item_label': accordion_label,
-  'accordion_item_content': content,
-  'accordion_item_expanded': 'false',
-  'attributes': attributes,
-} %}
+<div role="tablist" aria-label="Tabs">
+  {% for key, item in content.field_housing_floor_plan_type if key | first != '#' %}
+    <button
+      class="tab__button"
+      role="tab"
+      aria-selected="{{ field.delta == '0' ? 'true' : 'false' | default('false') }}"
+      aria-controls="floorplan__panel--{{ key }}"
+      id="tabs--floorplan-info__{{ key }}"
+      >
+      {% block tab_label %}
+        {{ content.field_housing_floor_plan_type }}
+      {% endblock %}
+    </button>
+  {% endfor %}
+</div>
 
-{% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}
-{% endembed %}
-
+{% for key, item in content.field_housing_floor_plan_details if key | first != '#' %}
+  <div tabindex="0" role="tabpanel" id="floorplan__panel--{{ key }}" aria-labelledby="floorplan__panel--{{ key }}">
+    {{ content.field_housing_floor_plan_details }}
+    {{ content.field_housing_floor_plan_image }}
+    {{ content.field_housing_floor_plan_pano }}
+  </div>
+{% endfor %}
