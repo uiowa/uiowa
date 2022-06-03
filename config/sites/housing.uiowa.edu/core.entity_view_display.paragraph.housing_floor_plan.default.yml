@@ -9,7 +9,6 @@ dependencies:
     - field.field.paragraph.housing_floor_plan.field_housing_floor_plan_type
     - paragraphs.paragraphs_type.housing_floor_plan
   module:
-    - photoswipe
     - text
 id: paragraph.housing_floor_plan.default
 targetEntityType: paragraph
@@ -24,17 +23,11 @@ content:
     weight: 1
     region: content
   field_housing_floor_plan_image:
-    type: photoswipe_field_formatter
+    type: entity_reference_entity_view
     label: above
     settings:
-      photoswipe_node_style_first: ''
-      photoswipe_node_style: ''
-      photoswipe_image_style: ''
-      photoswipe_reference_image_field: ''
-      photoswipe_caption: ''
-      photoswipe_caption_custom: ''
-      photoswipe_view_mode: ''
-      gallery_selector: ''
+      view_mode: default
+      link: false
     third_party_settings: {  }
     weight: 0
     region: content
