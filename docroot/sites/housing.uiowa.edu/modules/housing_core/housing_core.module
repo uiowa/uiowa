@@ -70,5 +70,13 @@ function housing_core_theme($existing, $type, $theme, $path) {
       'template' => 'paragraph--housing-floor-plan--default',
       'base hook' => 'paragraph',
     ],
+    'field__node__field_residence-hall_furnishings__residence-hall' => [
+      'template' => 'field--node--field-residence-hall-furnishings--residence-hall',
+      'base hook' => 'field',
+    ],
+    'taxonomy_term__furnishings' => [
+      'template' => 'taxonomy-term--furnishings',
+      'base hook' => 'taxonomy_term',
+    ],
   ];
 }
