@@ -4174,3 +4174,9 @@ $sites['its.uiowa.ddev.site'] = 'its.uiowa.edu';
 $sites['its.dev.drupal.uiowa.edu'] = 'its.uiowa.edu';
 $sites['its.stage.drupal.uiowa.edu'] = 'its.uiowa.edu';
 $sites['its.prod.drupal.uiowa.edu'] = 'its.uiowa.edu';
+
+// Directory aliases for uisqrp.music.uiowa.edu.
+$sites['musicuisqrp.uiowa.ddev.site'] = 'uisqrp.music.uiowa.edu';
+$sites['musicuisqrp.dev.drupal.uiowa.edu'] = 'uisqrp.music.uiowa.edu';
+$sites['musicuisqrp.stage.drupal.uiowa.edu'] = 'uisqrp.music.uiowa.edu';
+$sites['musicuisqrp.prod.drupal.uiowa.edu'] = 'uisqrp.music.uiowa.edu';
