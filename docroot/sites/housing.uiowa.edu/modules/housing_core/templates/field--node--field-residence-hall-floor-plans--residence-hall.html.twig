@@ -40,26 +40,19 @@
 {{ attach_library('uids_base/tabs') }}
 
 <div class="tabs-collection" id="floorplan-tabs">
+  <div role="tablist" aria-label="">
+  {% for item in items %}
     {% set tab_button = {
-      'items': items,
+      'tab_item_label': item.content['#paragraph'].field_housing_floor_plan_details.value|render,
     } %}
-    {% embed '@uids_base/uids/tab-button.html.twig' with tab_button only %}
-      {% block tab_label %}
-        {% for item in items %}
+    {% embed '@uids_base/uids/tab-button.html.twig' with tab_button only %}{% endembed %}
+  {% endfor %}
+  </div>
 
-          {{ item.content['#paragraph'].field_housing_floor_plan_type.0.value|striptags }}
-        {% endfor %}
-      {% endblock %}
-    {% endembed %}
-
+  {% for item in items %}
     {% set tab_content = {
-      'items': items,
+      'tab_item_content': item.content|without('field_housing_floor_plan_type'),
     } %}
-    {% embed '@uids_base/uids/tab-item.html.twig' with tab_content only %}
-      {% block tab_content %}
-        {% for item in items %}
-          {{ item.content }}
-        {% endfor %}
-      {% endblock %}
-    {% endembed %}
+    {% embed '@uids_base/uids/tab-item.html.twig' with tab_content only %}{% endembed %}
+  {% endfor %}
 </div>
