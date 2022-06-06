@@ -43,7 +43,7 @@
   <div role="tablist" aria-label="">
   {% for item in items %}
     {% set tab_button = {
-      'tab_item_label': item.content['#paragraph'].field_housing_floor_plan_type|render,
+      'tab_item_label': item.content['#paragraph'].field_housing_floor_plan_details.value|render,
     } %}
     {% embed '@uids_base/uids/tab-button.html.twig' with tab_button only %}{% endembed %}
   {% endfor %}
