@@ -68,9 +68,9 @@ function housing_core_preprocess_paragraph(&$variables) {
     $parent = $paragraph->getParentEntity();
     if ($parent instanceof ContentEntityInterface) {
       $housing_cta = [
-        'field_residence_hall_cta' => t('bg--white card--centered card--alignment-center media--border card--stacked'),
-        'field_residence_hall_contact' => t('card--centered-left card--alignment-left media--square card--media-left'),
-        'field_residence_hall_bldg_links' => t('card--centered-left card--alignment-left media--square card--media-left'),
+        'field_residence_hall_cta' => 'bg--white card--centered card--alignment-center media--border card--stacked',
+        'field_residence_hall_contact' => 'card--centered-left card--alignment-left media--border card--media-left',
+        'field_residence_hall_bldg_links' => 'card--centered-left card--alignment-left media--border card--media-left',
       ];
       $id = $paragraph->id();
       foreach ($housing_cta as $field => $label) {
