@@ -36,6 +36,14 @@ function housing_core_preprocess_field(&$variables, $hook) {
 
       break;
 
+    case 'field_residence_hall_neighborhd':
+      if (!isset($variables['attributes']['class'])) {
+        $variables['attributes']['class'] = '';
+      }
+      $variables['attributes']['class'] .= 'badge badge--secondary';
+
+      break;
+
     case 'field_residence_hall_getting':
     case 'field_residence_hall_meet_us':
       if (!isset($variables['title_attributes']['class'])) {
@@ -154,6 +162,10 @@ function housing_core_theme($existing, $type, $theme, $path) {
     ],
     'field__node__field_residence_hall_furnishings__residence_hall__default' => [
       'template' => 'field--node--field-residence-hall-furnishings--residence-hall--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_residence_hall_neighborhd__residence_hall__default' => [
+      'template' => 'field--node--field-residence-hall-neighborhd--residence-hall--default',
       'base hook' => 'field',
     ],
     'field__node__field_residence_hall_room_type__residence_hall__default' => [
