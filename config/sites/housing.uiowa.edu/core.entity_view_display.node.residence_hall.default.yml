@@ -402,22 +402,6 @@ third_party_settings:
             section_padding_bottom_extra: section_padding_bottom_extra
             section_padding_top_extra: section_padding_top_extra
         components:
-          285e3dae-df9a-4c8c-98a0-9ec99e73746b:
-            uuid: 285e3dae-df9a-4c8c-98a0-9ec99e73746b
-            region: first
-            configuration:
-              id: 'field_block:node:residence_hall:field_residence_hall_getting'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: text_default
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: 1
-            additional: {  }
-            third_party_settings: {  }
           ddbcd3d2-339b-4b8f-ae95-864ce42c217a:
             uuid: ddbcd3d2-339b-4b8f-ae95-864ce42c217a
             region: first
@@ -435,6 +419,22 @@ third_party_settings:
                   url_plain: false
                   rel: ''
                   target: ''
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          285e3dae-df9a-4c8c-98a0-9ec99e73746b:
+            uuid: 285e3dae-df9a-4c8c-98a0-9ec99e73746b
+            region: first
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_getting'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
                 third_party_settings: {  }
             weight: 0
             additional: {  }
@@ -679,15 +679,20 @@ third_party_settings:
             region: content
             configuration:
               id: 'field_block:node:residence_hall:field_residence_hall_meet_us'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
-                type: entity_reference_label
+                type: entity_reference_entity_view
                 label: above
                 settings:
-                  link: true
-                third_party_settings: {  }
+                  view_mode: teaser
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
             weight: 0
             additional: {  }
             third_party_settings: {  }
