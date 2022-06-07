@@ -44,8 +44,8 @@
     {% for item in items %}
       {% set accordion_item = {
         'accordion_parent_id': '#accordion-floor-plan',
-        'accordion_item_label': item.content['#paragraph'].field_housing_floor_plan_details.value|render,
-        'accordion_item_content': item.content['#paragraph'].field_housing_floor_plan_details.value|render,
+        'accordion_item_label': item.tab_label,
+        'accordion_item_content': item.content,
       } %}
       {% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}{% endembed %}
     {% endfor %}
