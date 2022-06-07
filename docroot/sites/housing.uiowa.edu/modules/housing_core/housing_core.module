@@ -37,6 +37,9 @@ function housing_core_preprocess_field(&$variables, $hook) {
       break;
 
     case 'field_residence_hall_neighborhd':
+    case 'field_residence_hall_population':
+    case 'field_residence_hall_year_built':
+    case 'field_residence_hall_building':
       if (!isset($variables['attributes']['class'])) {
         $variables['attributes']['class'] = '';
       }
@@ -198,6 +201,18 @@ function housing_core_theme($existing, $type, $theme, $path) {
     ],
     'field__node__field_residence_hall_emerg_link__residence_hall__default' => [
       'template' => 'field--node--field-residence-hall-emerg-link--residence-hall--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_residence_hall_population__residence_hall__default' => [
+      'template' => 'field--node--field-residence-hall-population--residence-hall--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_residence_hall_year_built__residence_hall__default' => [
+      'template' => 'field--node--field-residence-hall-year-built--residence-hall--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_residence_hall_building__residence_hall__default' => [
+      'template' => 'field--node--field-residence-hall-building--residence-hall--default',
       'base hook' => 'field',
     ],
   ];
