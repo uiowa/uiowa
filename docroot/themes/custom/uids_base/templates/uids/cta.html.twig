@@ -6,9 +6,9 @@
       {% if cta_title is not empty %}
         <div class="cta__title">
           {% set cta_headline = {
-            "headline_level" : headline_level,
-            "headline_class" : 'headline headline--uppercase',
-            "headline_text" : cta_title,
+            'headline_level' : headline_level,
+            'headline_class' : 'headline headline--uppercase',
+            'headline_text' : cta_title,
           } %}
           {% include '@uids_base/uids/headline.html.twig' with cta_headline only %}
         </div>
@@ -32,7 +32,6 @@
         </div>
       {% endif %}
     {% endblock %}
-
     </div>
   </div>
 {% endblock %}
