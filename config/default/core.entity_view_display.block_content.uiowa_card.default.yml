@@ -5,6 +5,7 @@ dependencies:
   config:
     - block_content.type.uiowa_card
     - field.field.block_content.uiowa_card.field_uiowa_card_author
+    - field.field.block_content.uiowa_card.field_uiowa_card_button_display
     - field.field.block_content.uiowa_card.field_uiowa_card_excerpt
     - field.field.block_content.uiowa_card.field_uiowa_card_image
     - field.field.block_content.uiowa_card.field_uiowa_card_link
@@ -26,7 +27,17 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 4
+    weight: 5
+    region: content
+  field_uiowa_card_button_display:
+    type: boolean
+    label: hidden
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 3
     region: content
   field_uiowa_card_excerpt:
     type: text_default
@@ -42,7 +53,7 @@ content:
       view_mode: large__widescreen
       link: false
     third_party_settings: {  }
-    weight: 3
+    weight: 4
     region: content
   field_uiowa_card_link:
     type: link_separate
