@@ -114,6 +114,11 @@ function housing_core_preprocess_layout(&$variables) {
 
             // Set the featured image display.
             $variables['featured_image_display'] = 'medium';
+
+            // Set banner defaults.
+            $variables['banner_settings']['transparent'] = TRUE;
+            $variables['banner_settings']['horizontal_align'] = 'center';
+            $variables['banner_settings']['vertical_align'] = 'center';
           }
           break;
 
@@ -213,6 +218,10 @@ function housing_core_theme($existing, $type, $theme, $path) {
     ],
     'field__node__field_residence_hall_building__residence_hall__default' => [
       'template' => 'field--node--field-residence-hall-building--residence-hall--default',
+      'base hook' => 'field',
+    ],
+    'field__node__title__residence_hall__default' => [
+      'template' => 'field--node--title--residence-hall--default',
       'base hook' => 'field',
     ],
   ];
