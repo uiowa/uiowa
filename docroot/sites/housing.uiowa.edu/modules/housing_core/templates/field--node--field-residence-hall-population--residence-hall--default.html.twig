@@ -2,4 +2,9 @@
   {% block field_icon %}
     <span class="fa-user fas"></span> &nbsp;
   {% endblock %}
+  {% block field_items %}
+    {% for item in items %}
+      <{{ item_tag }}{{ item.attributes.addClass('field__item') }}>{{ item.content }} students live here</{{ item_tag }}>
+    {% endfor %}
+  {% endblock %}
 {% endembed %}

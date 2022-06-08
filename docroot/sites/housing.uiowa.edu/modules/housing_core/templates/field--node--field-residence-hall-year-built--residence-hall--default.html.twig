@@ -2,4 +2,9 @@
   {% block field_icon %}
     <span class="fa-calendar far"></span> &nbsp;
   {% endblock %}
+  {% block field_items %}
+    {% for item in items %}
+      <{{ item_tag }}{{ item.attributes.addClass('field__item') }}>Opened in {{ item.content }}</{{ item_tag }}>
+    {% endfor %}
+  {% endblock %}
 {% endembed %}
