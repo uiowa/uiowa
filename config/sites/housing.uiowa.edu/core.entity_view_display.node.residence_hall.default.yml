@@ -653,7 +653,7 @@ third_party_settings:
                 type: entity_reference_entity_view
                 label: above
                 settings:
-                  view_mode: default
+                  view_mode: teaser
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
@@ -705,9 +705,8 @@ third_party_settings:
           label: ''
           context_mapping: {  }
           layout_builder_styles_style:
-            0: section_background_style_gold
-            1: section_margin_fixed_width_container
-            section_margin_remove_default_margins: section_margin_remove_default_margins
+            - section_background_style_gold
+            - section_margin_fixed_width_container
         components:
           8025f646-903b-454d-a3dc-d5910d721896:
             uuid: 8025f646-903b-454d-a3dc-d5910d721896
@@ -772,7 +771,9 @@ third_party_settings:
             weight: 0
             additional: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
 id: node.residence_hall.default
 targetEntityType: node
 bundle: residence_hall

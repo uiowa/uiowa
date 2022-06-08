@@ -43,10 +43,10 @@
   'headline--uppercase',
   ]
 %}
-<div class="cta__title text-align-left">
+
   {% for item in items %}
     <h2 {{ attributes.addClass(classes) }}>
       <span class="headline__text">{{ item.content }}</span>
     </h2>
   {% endfor %}
-</div>
+

@@ -44,12 +44,11 @@
   'bttn--caps',
   ]
 %}
-<div class="cta__link text-align-right">
     {% for item in items %}
       <a href={{ item.content['#url'] }} {{ attributes.addClass(classes) }}>
         {{ item.content['#title'] }}
         <i class="fas fa-arrow-right"></i>
       </a>
     {% endfor %}
-</div>
+
 
