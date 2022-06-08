@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: clastemplate.uiowa.ddev.site
+    protocol: https
+  machine_name: clastemplate
+  human_name: template.clas.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: clastemplate.prod
+drupal:
+  db:
+    database: template_clas_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
