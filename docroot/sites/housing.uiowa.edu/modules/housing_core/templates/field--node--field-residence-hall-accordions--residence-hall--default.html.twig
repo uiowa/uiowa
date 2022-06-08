@@ -39,9 +39,9 @@
 #}
 {{ attach_library('uids_base/accordion') }}
 <div class="collection--accordion">
-  <div class="accordion" role="tablist" aria-multiselectable="true" id="accordion-bath-images">
+  <div class="accordion" role="tablist" aria-multiselectable="true" id="accordion-{{ label }}">
     {% set accordion_item = {
-      'accordion_parent_id': '#accordion-bath-images',
+      'accordion_parent_id': '#accordion-' ~ label,
       'accordion_item_label': label,
       'items': items,
     } %}
