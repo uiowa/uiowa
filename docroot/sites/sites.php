@@ -4186,3 +4186,9 @@ $sites['sitescollections.uiowa.ddev.site'] = 'collections.sites.uiowa.edu';
 $sites['sitescollections.dev.drupal.uiowa.edu'] = 'collections.sites.uiowa.edu';
 $sites['sitescollections.stage.drupal.uiowa.edu'] = 'collections.sites.uiowa.edu';
 $sites['sitescollections.prod.drupal.uiowa.edu'] = 'collections.sites.uiowa.edu';
+
+// Directory aliases for template.clas.uiowa.edu.
+$sites['clastemplate.uiowa.ddev.site'] = 'template.clas.uiowa.edu';
+$sites['clastemplate.dev.drupal.uiowa.edu'] = 'template.clas.uiowa.edu';
+$sites['clastemplate.stage.drupal.uiowa.edu'] = 'template.clas.uiowa.edu';
+$sites['clastemplate.prod.drupal.uiowa.edu'] = 'template.clas.uiowa.edu';
