@@ -773,6 +773,21 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
 
       break;
 
+    case 'inline_block:uiowa_card':
+      if (isset($element['field_uiowa_card_button_display'])) {
+        $element['field_uiowa_card_button_display']['#states'] = [
+          'visible' => [
+            ':input[name="settings[block_form][field_uiowa_card_link][0][uri]"]' => [
+              'filled' => TRUE,
+            ],
+            ':input[name="settings[block_form][field_uiowa_card_link][0][title]"]' => [
+              'filled' => FALSE,
+            ]
+          ],
+        ];
+      }
+    break;
+
     case 'inline_block:uiowa_events':
       if (isset($element['field_collection_more_path'])) {
         $element['field_collection_more_path']['#states'] = [
