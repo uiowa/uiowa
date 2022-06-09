@@ -224,7 +224,7 @@ function housing_core_theme($existing, $type, $theme, $path) {
       'base hook' => 'field',
     ],
     'field__node__field_residence_hall_rates__residence_hall__default' => [
-      'template' => 'field--node--field-residence-hall-accordions--residence-hall--default',
+      'template' => 'field--node--field-residence-hall-rates--residence-hall--default',
       'base hook' => 'field',
     ],
     'field__node__field_residence_hall_emerg_title__residence_hall__default' => [
@@ -261,6 +261,18 @@ function housing_core_theme($existing, $type, $theme, $path) {
     ],
     'taxonomy_term__who_lives_here' => [
       'template' => 'taxonomy-term--who-lives-here',
+      'base hook' => 'taxonomy',
+    ],
+    'taxonomy_term__room_type' => [
+      'template' => 'taxonomy-term--room-type',
+      'base hook' => 'taxonomy',
+    ],
+    'taxonomy_term__amenities' => [
+      'template' => 'taxonomy-term--amenities',
+      'base hook' => 'taxonomy',
+    ],
+    'taxonomy_term__furnishings' => [
+      'template' => 'taxonomy-term--furnishings',
       'base hook' => 'taxonomy',
     ],
   ];
