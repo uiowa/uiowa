@@ -38,6 +38,11 @@ function housing_core_preprocess_block(&$variables) {
       $variables['attributes']['class'][] = 'grid--threecol--33-34-33';
       break;
 
+    // Add image gallery class to the images field.
+    case 'field_block:node:residence_hall:field_residence_hall_images':
+      $variables['attributes']['class'][] = 'block--image-gallery';
+      break;
+
     // Display residence hall cta links in a three column grid.
     case 'field_block:node:residence_hall:field_residence_hall_who_lives':
     case 'field_block:node:residence_hall:field_residence_hall_floor_plans':
