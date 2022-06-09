@@ -679,6 +679,14 @@ function uids_base_preprocess_block(&$variables) {
     }
   }
 
+  if ($variables['derivative_plugin_id'] === 'uiowa_card') {
+    /** @var \Drupal\Block\Entity\Block $block */
+    $block = $variables['elements']['content']['#block_content'];
+    if ($block->hasField('field_uiowa_card_button_display')) {
+      $variables['field_uiowa_card_button_display'] = $block->get('field_uiowa_card_button_display')->value;
+    }
+  }
+
   // Check if the hover effect should be applied on the stat block.
   if ($variables['derivative_plugin_id'] == 'uiowa_statistic' && isset($variables['elements']['#attributes']['class'])) {
     $variables['has_hover_effect'] = !in_array('stat--static', $variables['elements']['#attributes']['class']);
