@@ -274,24 +274,13 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
               formatter:
-                type: photoswipe_responsive_field_formatter
+                type: entity_reference_entity_view
                 label: visually_hidden
                 settings:
-                  photoswipe_node_style_first: ''
-                  photoswipe_node_style: medium__square
-                  photoswipe_image_style: ''
-                  photoswipe_reference_image_field: field_media_image
-                  photoswipe_caption: title
-                  photoswipe_caption_custom: ''
-                  photoswipe_view_mode: _custom
-                  gallery_selector: ''
+                  view_mode: image_gallery
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-                  lazy:
-                    lazy_image: '0'
-                    placeholder_style: ''
-                    data_uri: false
             weight: 0
             additional: {  }
             third_party_settings: {  }
@@ -653,7 +642,7 @@ third_party_settings:
                 type: entity_reference_entity_view
                 label: above
                 settings:
-                  view_mode: banner
+                  view_mode: teaser
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
