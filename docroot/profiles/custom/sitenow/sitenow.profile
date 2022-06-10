@@ -524,12 +524,10 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         $form['properties']['markup']['message_close_effect']['#access'] = FALSE;
         $form['properties']['markup']['message_storage']['#access'] = FALSE;
         $form['properties']['markup']['message_id']['#access'] = FALSE;
-
-        // Remove access to change allowed file upload extensions.
-        if (isset($form['properties']['file'])) {
-          $form['properties']['file']['file_extensions']['#access'] = FALSE;
-        }
       }
+
+      // Custom validation for webform components.
+      $form['#validate'][] = '_sitenow_webform_validate';
       break;
 
     // Remove access to headline field in footer contact block.
@@ -555,6 +553,41 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
       }
       break;
 
+  }
+}
+
+/**
+ * Custom validation for webform_ui_element_form.
+ *
+ * @param array $form
+ *   The form element.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
+ */
+function _sitenow_webform_validate(array &$form, FormStateInterface $form_state) {
+  // Validate the managed_file webform component.
+  if ($form_state->getValue(['properties', 'type']) == 'managed_file') {
+    // Prevent non-default extensions from being added.
+    $default_extensions = \Drupal::configFactory()->getEditable('webform.settings')->get('file.default_managed_file_extensions');
+    $default_extensions_array = explode(' ', $default_extensions);
+    $current_extensions = explode(' ', $form_state->getValue(
+      [
+        'properties',
+        'file_extensions',
+      ]
+    ));
+    foreach ($current_extensions as $extension) {
+      if (!in_array($extension, $default_extensions_array)) {
+        $form_state->setErrorByName('properties[file_extensions]',
+          t('File extension, <em>@extension</em>, is not allowed. <em>Allowed extensions (@default_extensions)</em>',
+            [
+              '@extension' => $extension,
+              '@default_extensions' => $default_extensions,
+            ]
+          )
+        );
+      }
+    }
   }
 }
 
