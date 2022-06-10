@@ -149,7 +149,7 @@ function housing_core_preprocess_layout(&$variables) {
       switch ($node->getType()) {
 
         case 'residence_hall':
-          $variables['#attached']['library'][] = 'housing_core/pannellum';
+          $variables['#attached']['library'][] = 'uids_base/virtual_tour';
           if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
 
             // Set the featured image display.
@@ -262,6 +262,10 @@ function housing_core_theme($existing, $type, $theme, $path) {
     ],
     'field__node__field_residence_hall_who_lives__residence_hall__default' => [
       'template' => 'field--node--field-residence-hall-who-lives--residence-hall--default',
+      'base hook' => 'field',
+    ],
+    'field__paragraph__field_housing_floor_plan_pano__housing_floor_plan' => [
+      'template' => 'field--paragraph--field-housing-floor-plan-pano--housing-floor-plan',
       'base hook' => 'field',
     ],
     'taxonomy_term__who_lives_here' => [
