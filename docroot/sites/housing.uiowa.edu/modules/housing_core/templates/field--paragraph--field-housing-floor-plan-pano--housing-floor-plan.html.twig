@@ -39,8 +39,9 @@
 #}
 
 {% for item in items %}
+  {% set pano_id = item.content['#media'].id  %}
   {% set pano_url = file_url(item.content['#media'].field_media_image.entity.uri.value) %}
-  <div class="floorplan-pano" data-pano-id="pano-4" data-pano-img="{{ pano_url }}"></div>
+  <div class="floorplan-pano" data-pano-id="pano-{{ pano_id }}" data-pano-img="{{ pano_url }}"></div>
 {% endfor %}
 
 
