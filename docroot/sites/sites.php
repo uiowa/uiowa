@@ -4192,3 +4192,15 @@ $sites['clastemplate.uiowa.ddev.site'] = 'template.clas.uiowa.edu';
 $sites['clastemplate.dev.drupal.uiowa.edu'] = 'template.clas.uiowa.edu';
 $sites['clastemplate.stage.drupal.uiowa.edu'] = 'template.clas.uiowa.edu';
 $sites['clastemplate.prod.drupal.uiowa.edu'] = 'template.clas.uiowa.edu';
+
+// Directory aliases for iowapeersupport.sites.uiowa.edu.
+$sites['sitesiowapeersupport.uiowa.ddev.site'] = 'iowapeersupport.sites.uiowa.edu';
+$sites['sitesiowapeersupport.dev.drupal.uiowa.edu'] = 'iowapeersupport.sites.uiowa.edu';
+$sites['sitesiowapeersupport.stage.drupal.uiowa.edu'] = 'iowapeersupport.sites.uiowa.edu';
+$sites['sitesiowapeersupport.prod.drupal.uiowa.edu'] = 'iowapeersupport.sites.uiowa.edu';
+
+// Directory aliases for cmhw.lab.uiowa.edu.
+$sites['labcmhw.uiowa.ddev.site'] = 'cmhw.lab.uiowa.edu';
+$sites['labcmhw.dev.drupal.uiowa.edu'] = 'cmhw.lab.uiowa.edu';
+$sites['labcmhw.stage.drupal.uiowa.edu'] = 'cmhw.lab.uiowa.edu';
+$sites['labcmhw.prod.drupal.uiowa.edu'] = 'cmhw.lab.uiowa.edu';
