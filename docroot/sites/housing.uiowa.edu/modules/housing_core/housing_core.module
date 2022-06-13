@@ -66,15 +66,23 @@ function housing_core_preprocess_field(&$variables, $hook) {
 
     case 'field_housing_floor_plan_pano':
       $node = $variables["element"]["#object"];
-      $variables['pano_url'] = FALSE;
+      $variables['pano_image_title'] = FALSE;
+      $variables['pano_image_url'] = FALSE;
       if (!$node->get('field_housing_floor_plan_pano')->isEmpty()) {
+        $image_alt = $node->field_housing_floor_plan_pano
+          ->first()
+          ->get('entity')
+          ->getValue()
+          ->field_media_image
+          ->alt;
         $image_uri = $node->field_housing_floor_plan_pano
           ->entity
           ->field_media_image
           ->entity
           ->getFileUri();
         $image_url = \Drupal::service('file_url_generator')->generateAbsoluteString($image_uri);
-        $variables['pano_url'] = $image_url;
+        $variables['pano_image_url'] = $image_url;
+        $variables['pano_image_title'] = $image_alt;
       }
       break;
 
