@@ -39,10 +39,5 @@
 #}
 
 {% for item in items %}
-  {% set pano_id = item.content['#media'].id  %}
-  {% set pano_url = file_url(item.content['#media'].field_media_image.entity.uri.value) %}
-  <div class="floorplan-pano" data-pano-id="pano-{{ pano_id }}" data-pano-img="{{ pano_url }}"></div>
+  <iframe width="600" height="400" title="{{ label }}" allowfullscreen src="/libraries/pannellum/build/pannellum.htm#panorama={{ pano_url }}"></iframe>
 {% endfor %}
-
-
-
