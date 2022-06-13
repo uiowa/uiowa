@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cf44e547aa2387da12cee522c5e50f6c",
+    "content-hash": "104ee8c52b1ea09c895aedb59f0719ce",
     "packages": [
         {
             "name": "acquia/blt",
@@ -625,7 +625,7 @@
             "version": "5.15.4",
             "source": {
                 "type": "git",
-                "url": "https://github.com/FortAwesome/Font-Awesome.git",
+                "url": "git@github.com:FortAwesome/Font-Awesome.git",
                 "reference": "7d3d774145ac38663f6d1effc6def0334b68ab7e"
             },
             "dist": {
@@ -5982,6 +5982,51 @@
             }
         },
         {
+            "name": "drupal/find_text",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/find_text.git",
+                "reference": "7b1777b4b88cfccbda3c2f672453218c979b8db9"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.x-dev",
+                    "datestamp": "1655145346",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "cskeers",
+                    "homepage": "https://www.drupal.org/user/3651804"
+                },
+                {
+                    "name": "themarkahrens",
+                    "homepage": "https://www.drupal.org/user/1145210"
+                }
+            ],
+            "description": "Search all text fields for a specific string.",
+            "homepage": "https://www.drupal.org/project/find_text",
+            "support": {
+                "source": "https://git.drupalcode.org/project/find_text"
+            }
+        },
+        {
             "name": "drupal/focal_point",
             "version": "1.5.0",
             "source": {
@@ -7002,8 +7047,8 @@
                     "version": "1.0.0",
                     "datestamp": "1591893292",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 }
             },
@@ -8667,20 +8712,8 @@
             ],
             "authors": [
                 {
-                    "name": "Allie Micka",
-                    "homepage": "https://www.drupal.org/user/15091"
-                },
-                {
                     "name": "TR",
                     "homepage": "https://www.drupal.org/user/202830"
-                },
-                {
-                    "name": "jerdavis",
-                    "homepage": "https://www.drupal.org/user/228997"
-                },
-                {
-                    "name": "sgabe",
-                    "homepage": "https://www.drupal.org/user/232117"
                 }
             ],
             "description": "Sends MIME-encoded emails with embedded images and attachments.",
@@ -10239,8 +10272,8 @@
                     "dev-3.5.x": "3.5.x-dev"
                 },
                 "drupal": {
-                    "version": "3.5.1+7-dev",
-                    "datestamp": "1649501170",
+                    "version": "3.5.1+10-dev",
+                    "datestamp": "1654708713",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -21814,6 +21847,7 @@
         "drupal/diff": 5,
         "drupal/entity_embed": 5,
         "drupal/entity_usage": 10,
+        "drupal/find_text": 20,
         "drupal/fullcalendar": 15,
         "drupal/layout_builder_styles": 20,
         "drupal/lb_direct_add": 20,
@@ -21848,5 +21882,5 @@
     "platform-overrides": {
         "php": "7.4"
     },
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.3.0"
 }
