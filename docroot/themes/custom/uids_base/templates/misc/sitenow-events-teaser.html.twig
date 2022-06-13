@@ -47,6 +47,7 @@
   'card_text': event.description|render|trim|t,
   'event_icon': event_icon|trans,
   'card_meta': event_location|render,
+  'canceled': event.canceled,
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with block_card only %}
@@ -60,4 +61,12 @@
     {% endif %}
   {% endblock %}
 
+  {% block card_content %}
+    {% if card_text is not empty %}
+      <div class="card__description">{{ card_text }}</div>
+    {% endif %}
+    {% if canceled %}
+      <span class="badge badge--orange">Canceled</span>
+    {% endif %}
+  {% endblock %}
 {% endembed %}
