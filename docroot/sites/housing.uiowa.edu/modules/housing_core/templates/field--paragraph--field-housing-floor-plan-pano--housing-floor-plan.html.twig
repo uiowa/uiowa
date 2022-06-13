@@ -39,5 +39,7 @@
 #}
 
 {% for item in items %}
-  <iframe width="600" height="400" title="{{ label }}" allowfullscreen src="/libraries/pannellum/build/pannellum.htm#panorama={{ pano_url }}"></iframe>
+  <div class="embed-responsive embed-responsive-16by9">
+  <iframe title="{{ label }}" allowfullscreen src="/libraries/pannellum/build/pannellum.htm#panorama={{ pano_url }}"></iframe>
+  </div>
 {% endfor %}
