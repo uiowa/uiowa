@@ -1950,9 +1950,21 @@ function sitenow_update_9042() {
  */
 function sitenow_update_9043() {
   // Loop through all the cards.
-  foreach (['inline_block:uiowa_card',] as $block_plugin_id) {
-    _update_all_blocks_by_plugin_id('inline_block:uiowa_card', function (&$component, BlockContentInterface $block) {
-      $button = $block->set('field_uiowa_card_button_display', ['value'=> 1]);
+  foreach (['inline_block:uiowa_card'] as $block_plugin_id) {
+    $config_path = DRUPAL_ROOT . '/../config/default';
+    $source = new FileStorage($config_path);
+
+    \Drupal::entityTypeManager()
+      ->getStorage('field_storage_config')
+      ->create($source->read('field.storage.block_content.field_uiowa_card_button_display'))
+      ->save();
+
+    \Drupal::entityTypeManager()->getStorage('field_config')
+      ->create($source->read('field.field.block_content.uiowa_card.field_uiowa_card_button_display'))
+      ->save();
+
+    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, BlockContentInterface $block) {
+      $block->set('field_uiowa_card_button_display', 1);
       $block->save();
     });
   }
