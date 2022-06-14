@@ -1944,3 +1944,16 @@ function sitenow_update_9041() {
 function sitenow_update_9042() {
   drupal_flush_all_caches();
 }
+
+/**
+ * Check all cards' show button.
+ */
+function sitenow_update_9043() {
+  // Loop through all the cards.
+  foreach (['inline_block:uiowa_card',] as $block_plugin_id) {
+    _update_all_blocks_by_plugin_id('inline_block:uiowa_card', function (&$component, BlockContentInterface $block) {
+      $button = $block->set('field_uiowa_card_button_display', ['value'=> 1]);
+      $block->save();
+    });
+  }
+}
