@@ -72,9 +72,7 @@ class PermissionsTest extends EntityKernelTestBase {
     $this->assertArrayHasKey('edit any article content', $permissions);
     $this->assertArrayHasKey('edit any page content', $permissions);
     $this->assertArrayHasKey('edit any person content', $permissions);
-    $this->assertArrayNotHasKey('delete any article content', $permissions);
-    $this->assertArrayNotHasKey('delete any page content', $permissions);
-    $this->assertArrayNotHasKey('delete any person content', $permissions);
+    $this->assertArrayNotHasKey('use editorial transition publish', $permissions);
   }
 
   /**
@@ -93,9 +91,7 @@ class PermissionsTest extends EntityKernelTestBase {
     $this->assertArrayHasKey('edit any article content', $permissions);
     $this->assertArrayHasKey('edit any page content', $permissions);
     $this->assertArrayHasKey('edit any person content', $permissions);
-    $this->assertArrayHasKey('delete any article content', $permissions);
-    $this->assertArrayHasKey('delete any page content', $permissions);
-    $this->assertArrayHasKey('delete any person content', $permissions);
+    $this->assertArrayHasKey('use editorial transition publish', $permissions);
   }
 
   /**
@@ -118,9 +114,7 @@ class PermissionsTest extends EntityKernelTestBase {
     $this->assertArrayHasKey('edit any article content', $permissions);
     $this->assertArrayHasKey('edit any page content', $permissions);
     $this->assertArrayHasKey('edit any person content', $permissions);
-    $this->assertArrayHasKey('delete any article content', $permissions);
-    $this->assertArrayHasKey('delete any page content', $permissions);
-    $this->assertArrayHasKey('delete any person content', $permissions);
+    $this->assertArrayHasKey('use editorial transition publish', $permissions);
   }
 
 }
