@@ -610,26 +610,6 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
       }
       break;
 
-    case 'inline_block:uiowa_card':
-      // Make sure button display field is checked if the link title field is filled in.
-      $link_title = $form_state->getValue(
-        [
-          'settings',
-          'block_form',
-          'field_uiowa_card_link',
-        ]
-      )[0]['title'];
-      if ($link_title) {
-        $form_state->setValue(
-          [
-            'settings',
-            'block_form',
-            'field_uiowa_card_button_display',
-          ], ['value' => 1]
-        );
-      };
-      break;
-
     case 'inline_block:uiowa_aggregator':
     case 'inline_block:uiowa_card':
     case 'inline_block:uiowa_events':
@@ -650,6 +630,26 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
           //   https://github.com/uiowa/uiowa/issues/5036
         }
       }
+      break;
+
+    case 'inline_block:uiowa_card':
+      // Make sure button display field is checked if the link title field is filled in.
+      $link_title = $form_state->getValue(
+        [
+          'settings',
+          'block_form',
+          'field_uiowa_card_link',
+        ]
+      )[0]['title'];
+      if ($link_title) {
+        $form_state->setValue(
+          [
+            'settings',
+            'block_form',
+            'field_uiowa_card_button_display',
+          ], ['value' => 1]
+        );
+      };
       break;
 
     case 'inline_block:uiowa_collection':
