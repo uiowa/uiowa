@@ -356,8 +356,24 @@
             }
           }
 
-          > li {
+          //> li.menu-item--active-trail {
+          //  > a,
+          //  > span {
+          //    &:before {
+          //      border-top-color: $brand-cool-gray;
+          //      background-color: transparent;
+          //    }
+          //
+          //    &:after {
+          //      background-color: $brand-cool-gray;
+          //    }
+          //  }
+          //}
+
+          > li,
+          li.menu-item--active-trail {
             > a.is-active,
+            > a,
             > span {
               &:before {
                 border-top-color: $brand-cool-gray;
@@ -430,7 +446,48 @@
       }
     }
 
+
     > li.menu-item--active-trail {
+      @include breakpoint(sm) {
+
+        > button  {
+          background: $light;
+
+          [class*="bg--black"] &,
+          [class*="bg--gold"] &,
+          [class*="bg--gray"] & {
+            background: #fff;
+          }
+
+          &:focus,
+          &:hover,
+          &[aria-expanded="true"] {
+            &:before {
+              background-color: $brand-cool-gray;
+            }
+          }
+
+          &:before {
+            background: #ffcd00;
+            content: "";
+            position: absolute;
+            left: 48%;
+            bottom: 0;
+            width: 100%;
+            height: 5px;
+            transform-origin: center;
+            transition: transform 0.3s ease-in-out;
+            transform: translate(-50%) scaleX(1);
+
+            [class*="bg--gold"] & {
+              background-color: $brand-cool-gray;
+            }
+          }
+        }
+      }
+    }
+
+    > li {
       @include breakpoint(sm) {
         button {
           right: 0;
@@ -442,7 +499,7 @@
           }
         }
 
-        > button {
+        > .is-active + button  {
           background: $light;
 
           [class*="bg--black"] &,
