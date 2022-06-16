@@ -30,6 +30,10 @@ const uids = {
   dest: `${__dirname}/uids/`,
 }
 
+const uids4 = {
+  src: '../../../../node_modules/@uiowa/uids4/src',
+}
+
 // Clean
 function clean() {
   return del([
@@ -41,6 +45,7 @@ function clean() {
 function copyUids() {
   return src([
     `${uids.src}/**/*.scss`,
+    `${uids4.src}/**/*.scss`,
     `${uids.src}/**/*.js`,
     `${uids.src}/**/*.{jpg,png,svg}`,
     `${uids.src}/**/*.{woff,woff2}`,
