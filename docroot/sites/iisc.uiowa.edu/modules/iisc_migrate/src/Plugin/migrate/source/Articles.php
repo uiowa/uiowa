@@ -27,58 +27,44 @@ class Articles extends BaseNodeSource {
   /**
    * {@inheritdoc}
    */
-  public function query() {
-    $query = parent::query();
-    // Only add the aliases to the query if we're
-    // in the redirect migration, otherwise row counts
-    // will be off due to one-to-many mapping of nodes to aliases.
-    if ($this->migration->id() === 'iisc_article_redirects') {
-      $query->leftJoin('url_alias', 'alias', "alias.source = CONCAT('node/', n.nid)");
-      $query->fields('alias', ['alias']);
-    }
-    return $query;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function fields() {
-    $fields = parent::fields();
-    $fields['alias'] = $this->t('The URL alias for this node.');
-    return $fields;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
-    // Download image and attach it for the person photo.
-    if ($image = $row->getSourceProperty('field_image')) {
-      $this->entityId = $row->getSourceProperty('nid');
-      $row->setSourceProperty('field_image', $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']));
-      $image = NULL;
-    }
-
-    if ($body = $row->getSourceProperty('body')) {
-      // Extract the summary.
-      $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));
-      $body = NULL;
-    }
 
     // If article type is set to '2_ianow', we need to do some additional
     // processing.
-    if ($row->getSourceProperty('field_article_type') === '2_ianow') {
-      // Set article source to 'Iowa Now'.
-      if (!is_null($row->getSourceProperty('field_article_publication_source'))) {
-        $row->setSourceProperty('field_article_publication_source', 'Iowa Now');
-      }
+    if (!is_null($row->getSourceProperty('field_article_type'))) {
+      if ($row->getSourceProperty('field_article_type')[0]['value'] === '2_ianow') {
 
-      // Set external URL to Iowa Now URL.
-      if (!is_null($row->getSourceProperty('field_article_external_url')) && !is_null($row->getSourceProperty('field_article_iowanow_url'))) {
-        $row->setSourceProperty('field_article_external_url', $row->getSourceProperty('field_article_iowanow_url'));
+        // Set article source to 'Iowa Now'.
+        if (!is_null($row->getSourceProperty('field_article_publication_source'))) {
+          $row->setSourceProperty('field_article_publication_source', [
+            ['value' => 'Iowa Now'],
+          ]);
+        }
+
+        // Set external URL to Iowa Now URL.
+        if (!is_null($row->getSourceProperty('field_article_external_url')) && !is_null($row->getSourceProperty('field_article_iowanow_url'))) {
+          $row->setSourceProperty('field_article_external_url', $row->getSourceProperty('field_article_iowanow_url'));
+        }
+
+        // @todo Need to set link directly to source if there is an external URL.
       }
     }
+
+    $related_content = [];
+    foreach ([
+      'field_ref_partners',
+      'field_ref_projects',
+      'field_ref_persons',
+    ] as $related_field) {
+      if (!is_null($row->getSourceProperty($related_field))) {
+        foreach ($row->getSourceProperty($related_field) as $field) {
+          $related_content[] = $field['target_id'];
+        }
+      }
+    }
+    $row->setSourceProperty('field_related_content', $related_content);
+    $related_content = NULL;
 
     return TRUE;
   }
