@@ -662,6 +662,10 @@ function uiowa_core_academic_years_default_value(ContentEntityInterface $entity,
  * Added allowed values function for student profiles territory field.
  */
 function uiowa_core_state_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  $cacheable = FALSE;
+  if (method_exists($entity, 'bundle')) {
+    $bundle = $entity->bundle();
+  }
   $options = [
     'AL' => 'Alabama',
     'AK' => 'Alaska',
@@ -671,6 +675,7 @@ function uiowa_core_state_options(FieldStorageConfig $definition, ContentEntityI
     'CO' => 'Colorado',
     'CT' => 'Connecticut',
     'DE' => 'Delaware',
+    'DC' => 'District of Columbia',
     'FL' => 'Florida',
     'GA' => 'Georgia',
     'HI' => 'Hawaii',
@@ -713,11 +718,10 @@ function uiowa_core_state_options(FieldStorageConfig $definition, ContentEntityI
     'WV' => 'West Virginia',
     'WI' => 'Wisconsin',
     'WY' => 'Wyoming',
-    'DC' => 'District of Columbia',
   ];
 
   // Allow modules to alter options.
-  \Drupal::moduleHandler()->alter($options, $entity, $bundle);
+  \Drupal::moduleHandler()->alter('state_options', $options, $entity, $bundle);
 
   return $options;
 }
