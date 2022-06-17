@@ -1,0 +1,78 @@
+{#
+/**
+ * @file
+ * Theme override for a field.
+ *
+ * To override output, copy the "field.html.twig" from the templates directory
+ * to your theme's directory and customize it, just like customizing other
+ * Drupal templates such as page.html.twig or node.html.twig.
+ *
+ * Instead of overriding the theming for all fields, you can also just override
+ * theming for a subset of fields using
+ * @link themeable Theme hook suggestions. @endlink For example,
+ * here are some theme hook suggestions that can be used for a field_foo field
+ * on an article node type:
+ * - field--node--field-foo--article.html.twig
+ * - field--node--field-foo.html.twig
+ * - field--node--article.html.twig
+ * - field--field-foo.html.twig
+ * - field--text-with-summary.html.twig
+ * - field.html.twig
+ *
+ * Available variables:
+ * - attributes: HTML attributes for the containing element.
+ * - label_hidden: Whether to show the field label or not.
+ * - title_attributes: HTML attributes for the title.
+ * - label: The label for the field.
+ * - multiple: TRUE if a field can contain multiple items.
+ * - items: List of all the field items. Each item contains:
+ *   - attributes: List of HTML attributes for each item.
+ *   - content: The field item's content.
+ * - entity_type: The entity type to which the field belongs.
+ * - field_name: The name of the field.
+ * - field_type: The type of the field.
+ * - label_display: The display settings for the label.
+ *
+ *
+ * @see template_preprocess_field()
+ */
+#}
+{{ attach_library('uids_base/accordion') }}
+{% set accordion_type = 'single' %}
+{% set accordion_hash = accordion_item_label.0['#context'].value|clean_class %}
+{% set accordion_parent_id = '#accordion-' ~ label|clean_class %}
+{% set accordion_item_label = label %}
+{% set items = items %}
+
+<div class="collection--accordion">
+  <div class="accordion" role="tablist" aria-multiselectable="true" id="accordion-{{ label|clean_class }}">
+    <div id="{{ accordion_hash }}" class="accordion__heading">
+      <button class="accordion__button"
+              role="tab"
+              aria-selected="{{ accordion_item_expanded | default('false') }}"
+              aria-expanded="{{ accordion_item_expanded | default('false') }}"
+              aria-controls="{{ accordion_item_id }}"
+      >
+        {% block accordion_label %}
+          {{ accordion_item_label }}
+        {% endblock %}
+        <i aria-hidden="true" focusable="false" role="presentation" class="fas fa-chevron-up"></i>
+      </button>
+    </div>
+    <div id="{{ accordion_item_id }}"
+         aria-labelledby="{{ accordion_hash }}"
+         class="accordion__content"
+         dataparent="{{ accordion_parent_id }}"
+    >
+      {% block accordion_content %}
+        <ul class="fa-ul element--list-none element--two-column uiowa-image-gallery photoswipe-gallery">
+          {% for item in items %}
+            <li>
+              {{ item.content }}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endblock %}
+    </div>
+  </div>
+</div>
