@@ -4204,3 +4204,9 @@ $sites['labcmhw.uiowa.ddev.site'] = 'cmhw.lab.uiowa.edu';
 $sites['labcmhw.dev.drupal.uiowa.edu'] = 'cmhw.lab.uiowa.edu';
 $sites['labcmhw.stage.drupal.uiowa.edu'] = 'cmhw.lab.uiowa.edu';
 $sites['labcmhw.prod.drupal.uiowa.edu'] = 'cmhw.lab.uiowa.edu';
+
+// Directory aliases for bosch.lab.uiowa.edu.
+$sites['labbosch.uiowa.ddev.site'] = 'bosch.lab.uiowa.edu';
+$sites['labbosch.dev.drupal.uiowa.edu'] = 'bosch.lab.uiowa.edu';
+$sites['labbosch.stage.drupal.uiowa.edu'] = 'bosch.lab.uiowa.edu';
+$sites['labbosch.prod.drupal.uiowa.edu'] = 'bosch.lab.uiowa.edu';
