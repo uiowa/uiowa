@@ -55,3 +55,15 @@ function sitenow_articles_update_9302() {
 
   $config->save();
 }
+
+/**
+ * Update articles feed guid permalink to false.
+ */
+function sitenow_articles_update_9303() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('views.view.articles');
+
+  $config
+    ->set('display.feed_articles.display_options.row.options.guid_field_options.guid_field_is_permalink', FALSE)
+    ->save();
+}
