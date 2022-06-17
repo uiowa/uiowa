@@ -69,6 +69,40 @@
             }
           }
 
+          > a.is-active {
+            background-color: $light;
+            margin: 0;
+            padding-bottom: 1.475rem;
+
+            &:before {
+              width: 20px;
+              height: 20px;
+              content: "";
+              position: absolute;
+              left: calc(50% - 10px);
+              top: calc(100% - 1px);
+              background-color: transparent;
+              border-top: 10px solid $primary;
+              border-right: 10px solid transparent;
+              border-left: 10px solid transparent;
+              border-bottom: 10px solid transparent;
+              z-index: 1;
+            }
+
+            &:after {
+              background: $primary;
+              content: "";
+              position: absolute;
+              left: 50%;
+              bottom: 0;
+              width: 100%;
+              height: 5px;
+              transform-origin: center;
+              transition: transform 0.3s ease-in-out;
+              transform: translate(-50%, 0) scaleX(1);
+            }
+          }
+
           &.menu-item--active-trail {
             &:before {
               background: transparent;
@@ -106,6 +140,14 @@
                 transform-origin: center;
                 transition: transform 0.3s ease-in-out;
                 transform: translate(-50%, 0) scaleX(1);
+              }
+            }
+          }
+
+          &.menu-item.menu-item--expanded {
+            > a.is-active {
+              &:before {
+                left: calc(64% - 10px);
               }
             }
           }
@@ -260,6 +302,10 @@
     &[class*="bg--gray"] {
       .menu-wrapper--horizontal {
         > .menu {
+          > li > a.is-active {
+            background: #fff;
+            color: $secondary;
+          }
           > li.menu-item--active-trail {
             > a,
             > span {
@@ -317,7 +363,9 @@
             }
           }
 
+          > li,
           > li.menu-item--active-trail {
+            > a.is-active,
             > a,
             > span {
               &:before {
@@ -391,7 +439,48 @@
       }
     }
 
+
     > li.menu-item--active-trail {
+      @include breakpoint(sm) {
+
+        > button  {
+          background: $light;
+
+          [class*="bg--black"] &,
+          [class*="bg--gold"] &,
+          [class*="bg--gray"] & {
+            background: #fff;
+          }
+
+          &:focus,
+          &:hover,
+          &[aria-expanded="true"] {
+            &:before {
+              background-color: $brand-cool-gray;
+            }
+          }
+
+          &:before {
+            background: #ffcd00;
+            content: "";
+            position: absolute;
+            left: 48%;
+            bottom: 0;
+            width: 100%;
+            height: 5px;
+            transform-origin: center;
+            transition: transform 0.3s ease-in-out;
+            transform: translate(-50%) scaleX(1);
+
+            [class*="bg--gold"] & {
+              background-color: $brand-cool-gray;
+            }
+          }
+        }
+      }
+    }
+
+    > li {
       @include breakpoint(sm) {
         button {
           right: 0;
@@ -403,7 +492,7 @@
           }
         }
 
-        > button {
+        > .is-active + button  {
           background: $light;
 
           [class*="bg--black"] &,
