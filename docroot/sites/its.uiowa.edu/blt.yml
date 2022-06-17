@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: its.uiowa.ddev.site
+    protocol: https
+  machine_name: its
+  human_name: its.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: its.prod
+drupal:
+  db:
+    database: its_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: alklopfe
+  site-name: 'Information Technology Services'
