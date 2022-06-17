@@ -467,7 +467,14 @@ display:
           1: AND
       style:
         type: default
-        options: {  }
+        options:
+          grouping:
+            -
+              field: field_academic_year
+              rendered: true
+              rendered_strip: false
+          row_class: ''
+          default_row_class: true
       row:
         type: fields
         options:
