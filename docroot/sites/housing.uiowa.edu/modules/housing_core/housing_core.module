@@ -99,6 +99,7 @@ function housing_core_preprocess_field(&$variables, $hook) {
 
     case 'field_residence_hall_getting':
     case 'field_residence_hall_meet_us':
+    case 'field_residence_hall_rr_desc':
       if (!isset($variables['title_attributes']['class'])) {
         $variables['title_attributes']['class'] = '';
       }

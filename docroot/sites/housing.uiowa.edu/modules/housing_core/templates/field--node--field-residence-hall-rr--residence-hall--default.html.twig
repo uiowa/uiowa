@@ -65,14 +65,13 @@
          dataparent="{{ accordion_parent_id }}"
     >
       {% block accordion_content %}
-        <ul class="fa-ul element--list-none element--two-column uiowa-image-gallery photoswipe-gallery">
+        <div class="element--list-none element--two-column uiowa-image-gallery photoswipe-gallery">
           {% for item in items %}
-            <li>
               {{ item.content }}
-            </li>
           {% endfor %}
-        </ul>
+        </div>
       {% endblock %}
     </div>
   </div>
 </div>
+
