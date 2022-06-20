@@ -546,14 +546,16 @@ third_party_settings:
           layout_builder_lock:
             lock: {  }
       -
-        layout_id: layout_twocol_section
+        layout_id: layout_twocol
         layout_settings:
           label: ''
           context_mapping: {  }
           column_widths: 67-33
           layout_builder_styles_style:
-            - ''
-            - section_margin_fixed_width_container
+            0: ''
+            1: section_margin_fixed_width_container
+            section_padding_bottom_extra: section_padding_bottom_extra
+            section_padding_top_extra: section_padding_top_extra
         components:
           8038485c-0550-416a-81e8-8feb4b16c333:
             uuid: 8038485c-0550-416a-81e8-8feb4b16c333
@@ -571,42 +573,6 @@ third_party_settings:
             weight: 0
             additional: {  }
             third_party_settings: {  }
-          5fe9ca49-41ea-48ee-acf9-ade7e86ec62d:
-            uuid: 5fe9ca49-41ea-48ee-acf9-ade7e86ec62d
-            region: second
-            configuration:
-              id: 'field_block:node:residence_hall:field_residence_hall_rr_comm'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_entity_view
-                label: above
-                settings:
-                  view_mode: image_gallery
-                  link: false
-                third_party_settings: {  }
-            weight: 2
-            additional: {  }
-            third_party_settings: {  }
-          209da6ed-94d7-4492-aaf5-e6d2f2f50343:
-            uuid: 209da6ed-94d7-4492-aaf5-e6d2f2f50343
-            region: second
-            configuration:
-              id: 'field_block:node:residence_hall:field_residence_hall_rr_single'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_entity_view
-                label: above
-                settings:
-                  view_mode: image_gallery
-                  link: false
-                third_party_settings: {  }
-            weight: 3
-            additional: {  }
-            third_party_settings: {  }
           38523a16-ccdd-4bda-b233-0824e4030798:
             uuid: 38523a16-ccdd-4bda-b233-0824e4030798
             region: second
@@ -622,7 +588,25 @@ third_party_settings:
                   view_mode: image_gallery
                   link: false
                 third_party_settings: {  }
-            weight: 4
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
+          5fe9ca49-41ea-48ee-acf9-ade7e86ec62d:
+            uuid: 5fe9ca49-41ea-48ee-acf9-ade7e86ec62d
+            region: second
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_rr_comm'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_entity_view
+                label: above
+                settings:
+                  view_mode: image_gallery
+                  link: false
+                third_party_settings: {  }
+            weight: 0
             additional: {  }
             third_party_settings: {  }
           1af9a80f-998d-4419-9106-0f9a35bce41f:
@@ -640,7 +624,25 @@ third_party_settings:
                   view_mode: image_gallery
                   link: false
                 third_party_settings: {  }
-            weight: 5
+            weight: 4
+            additional: {  }
+            third_party_settings: {  }
+          209da6ed-94d7-4492-aaf5-e6d2f2f50343:
+            uuid: 209da6ed-94d7-4492-aaf5-e6d2f2f50343
+            region: second
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_rr_single'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_entity_view
+                label: above
+                settings:
+                  view_mode: image_gallery
+                  link: false
+                third_party_settings: {  }
+            weight: 2
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
@@ -702,7 +704,7 @@ third_party_settings:
                 type: entity_reference_entity_view
                 label: above
                 settings:
-                  view_mode: banner
+                  view_mode: teaser
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
