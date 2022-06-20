@@ -1946,9 +1946,16 @@ function sitenow_update_9042() {
 }
 
 /**
- * Set all cards to site default.
+ * Uninstall sitenow_find_text.
  */
 function sitenow_update_9043() {
+  \Drupal::service('module_installer')->uninstall(['sitenow_find_text']);
+}
+
+/**
+ * Set all cards to site default.
+ */
+function sitenow_update_9044() {
   // Loop through all the cards.
   foreach (['inline_block:uiowa_card'] as $block_plugin_id) {
     $config_path = DRUPAL_ROOT . '/../config/default';
@@ -1968,4 +1975,3 @@ function sitenow_update_9043() {
       $block->save();
     });
   }
-}
