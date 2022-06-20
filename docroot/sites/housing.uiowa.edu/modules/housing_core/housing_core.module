@@ -50,7 +50,7 @@ function housing_core_preprocess_block(&$variables) {
     // Display residence hall cta links in a three column grid.
     case 'field_block:node:residence_hall:field_residence_hall_who_lives':
     case 'field_block:node:residence_hall:field_residence_hall_floor_plans':
-      $variables['attributes']['class'][] = 'bg--white block--wrapper block--border';
+      $variables['attributes']['class'][] = 'block--wrapper bg--white border';
       break;
   }
 }
@@ -102,7 +102,6 @@ function housing_core_preprocess_field(&$variables, $hook) {
       break;
 
     case 'field_residence_hall_getting':
-    case 'field_residence_hall_meet_us':
     case 'field_residence_hall_rr_desc':
       if (!isset($variables['title_attributes']['class'])) {
         $variables['title_attributes']['class'] = '';
@@ -112,6 +111,7 @@ function housing_core_preprocess_field(&$variables, $hook) {
       break;
 
     case 'field_residence_hall_llc':
+    case 'field_residence_hall_meet_us':
       if (!isset($variables['title_attributes']['class'])) {
         $variables['title_attributes']['class'] = '';
       }
@@ -211,7 +211,7 @@ function housing_core_preprocess_paragraph(&$variables) {
     $parent = $paragraph->getParentEntity();
     if ($parent instanceof ContentEntityInterface) {
       $housing_cta = [
-        'field_residence_hall_cta' => 'bg--white card--centered card--alignment-center media--border card--stacked',
+        'field_residence_hall_cta' => 'bg--white card--enclosed card--centered card--alignment-center media--border card--stacked',
         'field_residence_hall_contact' => 'card--centered-left card--alignment-left media--border card--media-left',
         'field_residence_hall_bldg_links' => 'card--centered-left card--alignment-left media--border card--media-left',
       ];
