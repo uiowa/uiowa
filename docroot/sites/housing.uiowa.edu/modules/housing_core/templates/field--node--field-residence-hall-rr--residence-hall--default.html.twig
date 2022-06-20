@@ -37,33 +37,27 @@
  * @see template_preprocess_field()
  */
 #}
-{{ attach_library('uids_base/accordion') }}
-{% set accordion_type = 'single' %}
-{% set accordion_hash = accordion_item_label.0 ['#context'].value | clean_class %}
-{% set accordion_parent_id = '#accordion-' ~ label|clean_class %}
-{% set accordion_item_label = label %}
-{% set items = items %}
+{% set accordion_item = {
+  'accordion_item_id': content_id,
+  'accordion_type' : 'single',
+  'accordion_parent_id': '#accordion-' ~ label|clean_class,
+  'accordion_hash': accordion_item_label.0['#context'].value|clean_class,
+  'accordion_item_label': label,
+  'accordion_item_content': items,
+  'accordion_item_expanded': 'false',
+  'attributes': attributes,
+} %}
 
 <div class="collection--accordion">
   <div class="accordion" role="tablist" aria-multiselectable="true" id="accordion-{{ label|clean_class }}">
-    <div id="{{ accordion_hash }}" class="accordion__heading">
-      <button class="accordion__button" role="tab" aria-selected="{{ accordion_item_expanded | default('false') }}" aria-expanded="{{ accordion_item_expanded | default('false') }}" aria-controls="{{ accordion_item_id }}">
-        {% block accordion_label %}
-          {{ accordion_item_label }}
-        {% endblock %}
-        <i aria-hidden="true" focusable="false" role="presentation" class="fas fa-chevron-up"></i>
-      </button>
-    </div>
-    <div id="{{ accordion_item_id }}" aria-labelledby="{{ accordion_hash }}" class="accordion__content" dataparent="{{ accordion_parent_id }}">
+    {% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}
       {% block accordion_content %}
         <div class="grid--twocol--50-50">
           <div class="list-container">
-            {% for item in items %}
-              {{ item.content }}
-            {% endfor %}
+            {{ accordion_item_content }}
           </div>
         </div>
       {% endblock %}
-    </div>
+    {% endembed %}
   </div>
 </div>
