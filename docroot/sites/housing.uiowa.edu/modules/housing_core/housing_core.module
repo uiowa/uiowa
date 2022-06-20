@@ -107,6 +107,14 @@ function housing_core_preprocess_field(&$variables, $hook) {
 
       break;
 
+    case 'field_residence_hall_llc':
+      if (!isset($variables['title_attributes']['class'])) {
+        $variables['title_attributes']['class'] = '';
+      }
+      $variables['title_attributes']['class'] .= 'h2 headline headline--serif headline--underline headline--center';
+
+      break;
+
     case 'field_residence_hall_floor_plans':
 
       foreach ($variables['items'] as $delta => $item) {

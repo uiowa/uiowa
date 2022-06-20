@@ -31,8 +31,24 @@
 
 .field--name-field-residence-hall-llc .field__items  {
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: wrap;
 }
+
 .field--name-field-residence-hall-llc .field__item {
   width: 100%;
+}
+
+.field--name-field-residence-hall-llc .banner .headline--small {
+  font-size: 1.8rem;
+  font-size: clamp(1.6rem,1.6rem,1.6rem);
+}
+
+@media (min-width: 84.375em) {
+  .layout--onecol[class*=page__container--edge] .field--name-field-residence-hall-llc .banner.banner--vertical-bottom.banner--horizontal-left .banner__content {
+    padding: 2rem;
+    width: 100%;
+  }
+  .field--name-field-residence-hall-llc .field__items  {
+    flex-flow: row nowrap;
+  }
 }
