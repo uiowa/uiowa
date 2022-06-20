@@ -37,10 +37,10 @@
  * @see template_preprocess_field()
  */
 #}
-<div class="{{ attributes }}">
-  <h2 class="headline--underline headline--serif headline h4">{{ label }}</h2>
-  <div class="collection--accordion">
-    <div class="accordion" role="tablist" aria-multiselectable="true" id="accordion-floor-plan">
+
+<h2 class="headline--underline headline--serif headline h4">{{ label }}</h2>
+<div class="collection--accordion">
+  <div class="accordion" role="tablist" aria-multiselectable="true" id="accordion-floor-plan">
     {% for item in items %}
       {% set accordion_item = {
         'accordion_parent_id': '#accordion-floor-plan',
@@ -51,5 +51,5 @@
     {% endfor %}
   </div>
 </div>
-</div>
+
 
