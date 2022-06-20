@@ -1,2 +1,7 @@
 $imgpath: '/themes/custom/uids_base/uids/assets/images/';
 @import "components/background/background.scss";
+
+// @todo move back to UIDS to prevent pattern jumping.
+[class*=bg--][class*="--pattern--"], [class*=bg-pattern] {
+  background-position: inherit;
+}
