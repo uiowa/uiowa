@@ -49,3 +49,13 @@
     }
   }
 }
+
+.grid--fivecol--20 {
+  .list-container {
+    @include grid-base;
+    @include breakpoint(sm) {
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(17%, 1fr));
+    }
+  }
+}

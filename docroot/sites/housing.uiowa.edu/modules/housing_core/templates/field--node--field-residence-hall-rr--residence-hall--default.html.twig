@@ -39,7 +39,7 @@
 #}
 {{ attach_library('uids_base/accordion') }}
 {% set accordion_type = 'single' %}
-{% set accordion_hash = accordion_item_label.0['#context'].value|clean_class %}
+{% set accordion_hash = accordion_item_label.0 ['#context'].value | clean_class %}
 {% set accordion_parent_id = '#accordion-' ~ label|clean_class %}
 {% set accordion_item_label = label %}
 {% set items = items %}
@@ -47,31 +47,23 @@
 <div class="collection--accordion">
   <div class="accordion" role="tablist" aria-multiselectable="true" id="accordion-{{ label|clean_class }}">
     <div id="{{ accordion_hash }}" class="accordion__heading">
-      <button class="accordion__button"
-              role="tab"
-              aria-selected="{{ accordion_item_expanded | default('false') }}"
-              aria-expanded="{{ accordion_item_expanded | default('false') }}"
-              aria-controls="{{ accordion_item_id }}"
-      >
+      <button class="accordion__button" role="tab" aria-selected="{{ accordion_item_expanded | default('false') }}" aria-expanded="{{ accordion_item_expanded | default('false') }}" aria-controls="{{ accordion_item_id }}">
         {% block accordion_label %}
           {{ accordion_item_label }}
         {% endblock %}
         <i aria-hidden="true" focusable="false" role="presentation" class="fas fa-chevron-up"></i>
       </button>
     </div>
-    <div id="{{ accordion_item_id }}"
-         aria-labelledby="{{ accordion_hash }}"
-         class="accordion__content"
-         dataparent="{{ accordion_parent_id }}"
-    >
+    <div id="{{ accordion_item_id }}" aria-labelledby="{{ accordion_hash }}" class="accordion__content" dataparent="{{ accordion_parent_id }}">
       {% block accordion_content %}
-        <div class="uiowa-image-gallery photoswipe-gallery">
-          {% for item in items %}
+        <div class="grid--twocol--50-50">
+          <div class="list-container">
+            {% for item in items %}
               {{ item.content }}
-          {% endfor %}
+            {% endfor %}
+          </div>
         </div>
       {% endblock %}
     </div>
   </div>
 </div>
-

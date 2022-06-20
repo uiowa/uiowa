@@ -9,14 +9,15 @@
 .pswp__caption__center {
   text-align: center;
 }
-
-.block--image-gallery .uiowa-image-gallery {
+.block-inline-blockuiowa-image-gallery .uiowa-image-gallery {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
   margin-left: -$gutter / 2;
   margin-right: -$gutter / 2;
   .media--view-mode-image-gallery {
-    flex: 220px 0 0;
+    display: table-cell;
+    flex: 220px 1 1;
     margin: 0 .6rem 1rem;
     a.photoswipe {
       &:hover, &:focus {
@@ -34,7 +35,7 @@
 }
 
 // Masonry
-.block--image-gallery.image-gallery--masonry .uiowa-image-gallery {
+.block-inline-blockuiowa-image-gallery.image-gallery--masonry .uiowa-image-gallery {
   display: block;
   column-count: 2;
   gap: 1.5rem;
@@ -56,12 +57,12 @@
 }
 
 @supports (overflow:-webkit-marquee) and (justify-content:inherit) {
-    /*
-      Define here the CSS styles applied only to the Safari 9 version when
-      running in any device
-     */
+  /*
+    Define here the CSS styles applied only to the Safari 9 version when
+    running in any device
+   */
 
-  .block--image-gallery.image-gallery--masonry .uiowa-image-gallery .media--view-mode-image-gallery {
+  .block-inline-blockuiowa-image-gallery.image-gallery--masonry .uiowa-image-gallery .media--view-mode-image-gallery {
     display: inline-flex;
   }
 }
