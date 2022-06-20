@@ -4216,3 +4216,9 @@ $sites['labstuttering.uiowa.ddev.site'] = 'stuttering.lab.uiowa.edu';
 $sites['labstuttering.dev.drupal.uiowa.edu'] = 'stuttering.lab.uiowa.edu';
 $sites['labstuttering.stage.drupal.uiowa.edu'] = 'stuttering.lab.uiowa.edu';
 $sites['labstuttering.prod.drupal.uiowa.edu'] = 'stuttering.lab.uiowa.edu';
+
+// Directory aliases for brain-registry.lab.uiowa.edu.
+$sites['labbrain-registry.uiowa.ddev.site'] = 'brain-registry.lab.uiowa.edu';
+$sites['labbrain-registry.dev.drupal.uiowa.edu'] = 'brain-registry.lab.uiowa.edu';
+$sites['labbrain-registry.stage.drupal.uiowa.edu'] = 'brain-registry.lab.uiowa.edu';
+$sites['labbrain-registry.prod.drupal.uiowa.edu'] = 'brain-registry.lab.uiowa.edu';
