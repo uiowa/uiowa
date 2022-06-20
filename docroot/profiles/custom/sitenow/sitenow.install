@@ -1946,7 +1946,7 @@ function sitenow_update_9042() {
 }
 
 /**
- * Check all cards' show button.
+ * Set all cards to site default.
  */
 function sitenow_update_9043() {
   // Loop through all the cards.
@@ -1964,7 +1964,7 @@ function sitenow_update_9043() {
       ->save();
 
     _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, BlockContentInterface $block) {
-      $block->set('field_uiowa_card_button_display', 1);
+      $block->set('field_uiowa_card_button_display', 'Use site default');
       $block->save();
     });
   }
