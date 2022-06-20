@@ -13,6 +13,7 @@ dependencies:
   module:
     - heading
     - link
+    - options
     - text
 _core:
   default_config_hash: FVCsCd-0IpApFOBsBVnax1xAb3UO94cIAtksGnBVygE
@@ -27,17 +28,14 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 5
+    weight: 4
     region: content
   field_uiowa_card_button_display:
-    type: boolean
-    label: hidden
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
+    type: list_default
+    label: above
+    settings: {  }
     third_party_settings: {  }
-    weight: 3
+    weight: 5
     region: content
   field_uiowa_card_excerpt:
     type: text_default
@@ -53,7 +51,7 @@ content:
       view_mode: large__widescreen
       link: false
     third_party_settings: {  }
-    weight: 4
+    weight: 3
     region: content
   field_uiowa_card_link:
     type: link_separate
