@@ -41,6 +41,7 @@
 <div class="collection--accordion">
   <div class="accordion" role="tablist" aria-multiselectable="true" id="accordion-{{ label|clean_class }}">
       {% set accordion_item = {
+        'accordion_h_size' : accordion_h_size ?: 'h2',
         'accordion_item_id': 'content-' ~ label|clean_class ~ '-' ~ element['#items'].getEntity().id(),
         'accordion_type' : 'single',
         'accordion_parent_id': 'accordion-' ~ label|clean_class,
@@ -48,6 +49,7 @@
         'accordion_item_content': items|without(attributes),
         'accordion_item_expanded': 'false',
         'accordion_item_content': items,
+        'accordion_button_class': 'border',
       } %}
       {% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}
         {% block accordion_content %}
