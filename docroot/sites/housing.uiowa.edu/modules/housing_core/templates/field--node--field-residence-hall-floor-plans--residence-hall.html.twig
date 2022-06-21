@@ -43,6 +43,7 @@
   <div class="accordion" role="tablist" aria-multiselectable="true" id="accordion-floor-plan">
     {% for item in items %}
       {% set accordion_item = {
+        'accordion_item_id': 'content-' ~ label|clean_class ~ '-' ~ element['#items'].getEntity().id(),
         'accordion_parent_id': '#accordion-floor-plan',
         'accordion_item_label': item.tab_label,
         'accordion_item_content': item.content,
