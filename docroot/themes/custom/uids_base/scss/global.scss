@@ -202,12 +202,10 @@ $imgpath: '../../uids/assets/images';
 
 // @todo move this to UIDS.
 .border {
-  border: 1px solid rgba(0, 0, 0, 0.125);
+  border: 1px solid rgba(0, 0, 0, 0.25);
 }
 
-
-
-// For sidebars: remove padding from adjacent blocks if they are the same and don't have a margin top set
+  // For sidebars: remove padding from adjacent blocks if they are the same and don't have a margin top set
 .block[class*="bg--gray"].block-padding__all + .block[class*="bg--gray"].block-padding__all:not(.block-margin__top) {
   margin-top: -1.5rem;
   padding-top: 0;
