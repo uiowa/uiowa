@@ -4204,3 +4204,27 @@ $sites['labcmhw.uiowa.ddev.site'] = 'cmhw.lab.uiowa.edu';
 $sites['labcmhw.dev.drupal.uiowa.edu'] = 'cmhw.lab.uiowa.edu';
 $sites['labcmhw.stage.drupal.uiowa.edu'] = 'cmhw.lab.uiowa.edu';
 $sites['labcmhw.prod.drupal.uiowa.edu'] = 'cmhw.lab.uiowa.edu';
+
+// Directory aliases for bosch.lab.uiowa.edu.
+$sites['labbosch.uiowa.ddev.site'] = 'bosch.lab.uiowa.edu';
+$sites['labbosch.dev.drupal.uiowa.edu'] = 'bosch.lab.uiowa.edu';
+$sites['labbosch.stage.drupal.uiowa.edu'] = 'bosch.lab.uiowa.edu';
+$sites['labbosch.prod.drupal.uiowa.edu'] = 'bosch.lab.uiowa.edu';
+
+// Directory aliases for stuttering.lab.uiowa.edu.
+$sites['labstuttering.uiowa.ddev.site'] = 'stuttering.lab.uiowa.edu';
+$sites['labstuttering.dev.drupal.uiowa.edu'] = 'stuttering.lab.uiowa.edu';
+$sites['labstuttering.stage.drupal.uiowa.edu'] = 'stuttering.lab.uiowa.edu';
+$sites['labstuttering.prod.drupal.uiowa.edu'] = 'stuttering.lab.uiowa.edu';
+
+// Directory aliases for brain-registry.lab.uiowa.edu.
+$sites['labbrain-registry.uiowa.ddev.site'] = 'brain-registry.lab.uiowa.edu';
+$sites['labbrain-registry.dev.drupal.uiowa.edu'] = 'brain-registry.lab.uiowa.edu';
+$sites['labbrain-registry.stage.drupal.uiowa.edu'] = 'brain-registry.lab.uiowa.edu';
+$sites['labbrain-registry.prod.drupal.uiowa.edu'] = 'brain-registry.lab.uiowa.edu';
+
+// Directory aliases for iwwerp.engineering.uiowa.edu.
+$sites['engineeringiwwerp.uiowa.ddev.site'] = 'iwwerp.engineering.uiowa.edu';
+$sites['engineeringiwwerp.dev.drupal.uiowa.edu'] = 'iwwerp.engineering.uiowa.edu';
+$sites['engineeringiwwerp.stage.drupal.uiowa.edu'] = 'iwwerp.engineering.uiowa.edu';
+$sites['engineeringiwwerp.prod.drupal.uiowa.edu'] = 'iwwerp.engineering.uiowa.edu';

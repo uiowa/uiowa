@@ -1944,3 +1944,10 @@ function sitenow_update_9041() {
 function sitenow_update_9042() {
   drupal_flush_all_caches();
 }
+
+/**
+ * Uninstall sitenow_find_text.
+ */
+function sitenow_update_9043() {
+  \Drupal::service('module_installer')->uninstall(['sitenow_find_text']);
+}
