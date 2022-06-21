@@ -37,27 +37,24 @@
  * @see template_preprocess_field()
  */
 #}
-{% set accordion_item = {
-  'accordion_item_id': 'content-' ~ element['#items'].getEntity().id(),
-  'accordion_type' : 'single',
-  'accordion_parent_id': '#accordion-' ~ label|clean_class,
-  'accordion_item_label': label,
-  'accordion_item_content': items,
-  'accordion_item_expanded': 'false',
-} %}
 
 <div class="collection--accordion">
   <div class="accordion" role="tablist" aria-multiselectable="true" id="accordion-{{ label|clean_class }}">
-    {% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}
-      {% block accordion_content %}
-        <div class="grid--twocol--50-50">
-          <div class="list-container photoswipe-gallery">
-            {% for item in accordion_item_content %}
-              {{ item.content }}
-            {% endfor %}
-          </div>
-        </div>
-      {% endblock %}
-    {% endembed %}
+      {% set accordion_item = {
+        'accordion_item_id': 'content-' ~ element['#items'].getEntity().id(),
+        'accordion_type' : 'single',
+        'accordion_parent_id': 'accordion-' ~ label|clean_class,
+        'accordion_item_label': label,
+        'accordion_item_content': items|without(attributes),
+        'accordion_item_expanded': 'false',
+        'accordion_item_content': items,
+      } %}
+      {% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}
+        {% block accordion_content %}
+          {% for item in accordion_item_content %}
+            {{ item.content }}
+          {% endfor %}
+        {% endblock %}
+      {% endembed %}
   </div>
 </div>

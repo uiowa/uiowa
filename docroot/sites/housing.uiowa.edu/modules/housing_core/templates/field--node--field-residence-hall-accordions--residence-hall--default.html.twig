@@ -39,14 +39,12 @@
 #}
 
 {% set accordion_item = {
-  'accordion_item_id': content_id,
+  'accordion_item_id': 'content-' ~ element['#items'].getEntity().id(),
   'accordion_type' : 'single',
   'accordion_parent_id': '#accordion-' ~ label|clean_class,
-  'accordion_hash': accordion_item_label.0['#context'].value|clean_class,
   'accordion_item_label': label,
   'accordion_item_content': items,
   'accordion_item_expanded': 'false',
-  'attributes': attributes,
 } %}
 
 <div class="collection--accordion">
@@ -64,5 +62,3 @@
     {% endembed %}
   </div>
 </div>
-
-
