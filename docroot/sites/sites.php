@@ -4222,3 +4222,9 @@ $sites['labbrain-registry.uiowa.ddev.site'] = 'brain-registry.lab.uiowa.edu';
 $sites['labbrain-registry.dev.drupal.uiowa.edu'] = 'brain-registry.lab.uiowa.edu';
 $sites['labbrain-registry.stage.drupal.uiowa.edu'] = 'brain-registry.lab.uiowa.edu';
 $sites['labbrain-registry.prod.drupal.uiowa.edu'] = 'brain-registry.lab.uiowa.edu';
+
+// Directory aliases for iwwerp.engineering.uiowa.edu.
+$sites['engineeringiwwerp.uiowa.ddev.site'] = 'iwwerp.engineering.uiowa.edu';
+$sites['engineeringiwwerp.dev.drupal.uiowa.edu'] = 'iwwerp.engineering.uiowa.edu';
+$sites['engineeringiwwerp.stage.drupal.uiowa.edu'] = 'iwwerp.engineering.uiowa.edu';
+$sites['engineeringiwwerp.prod.drupal.uiowa.edu'] = 'iwwerp.engineering.uiowa.edu';
