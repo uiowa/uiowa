@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: engineeringiwwerp.uiowa.ddev.site
+    protocol: https
+  machine_name: engineeringiwwerp
+  human_name: iwwerp.engineering.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: engineeringiwwerp.prod
+drupal:
+  db:
+    database: iwwerp_engineering_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: hboileau
+  site-name: iwwerp.engineering.uiowa.edu
