@@ -2,12 +2,10 @@
 
 namespace Drupal\sitenow_media_wysiwyg\Plugin\Field\FieldFormatter;
 
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\Field\FormatterBase;
-use Drupal\Component\Utility\Html;
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\link\Plugin\Field\FieldFormatter\LinkFormatter;
 use Drupal\sitenow_media_wysiwyg\Plugin\media\Source\StaticMap;
+use Drupal\Core\Field\FormatterBase;
 
 /**
  * Static map URL field formatter.
@@ -21,39 +19,31 @@ use Drupal\sitenow_media_wysiwyg\Plugin\media\Source\StaticMap;
  *   }
  * )
  */
-class StaticMapUrlFormatter extends LinkFormatter {
+class StaticMapUrlFormatter extends FormatterBase {
 
   /**
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
-    $elements = parent::viewElements($items, $langcode);
-    $values = $items->getValue();
+    /** @var \Drupal\media\MediaInterface $media */
+    $media = $items->getEntity();
 
-    foreach ($elements as $delta => $entity) {
-      $parsed_url = UrlHelper::parse($values[$delta]['uri']);
-      $id = Html::escape($parsed_url['query']['id']);
-
-      $elements[$delta] = [
-        '#type' => 'html_tag',
-        '#tag' => 'a',
-        '#attributes' => [
-          'href' => $items->link,
-          'title' => $items->label,
-          'aria-label' => $items->label,
-        ],
-        'static' => [
-          '#type' => 'html_tag',
-          '#tag' => 'div',
-          '#attributes' => [
-            'class' => 'static-map',
-            'style' => "background-image: url('https://staticmap.concept3d.com/map/static-map/?map=1890&loc=" . $items->location . "&scale=2&zoom=" . $items->zoom . "');",
-          ],
-        ],
-      ];
+    if (($source = $media->getSource()) && $source instanceof StaticMap) {
+      foreach ($items as $delta => $item) {
+        $element[$delta] = [
+          '#markup' => StaticMap::create($source->getMetadata($media, 'label')),
+        ];
+      }
     }
 
-    return $elements;
+    return $element;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function isApplicable(FieldDefinitionInterface $field_definition) {
+    return $field_definition->getTargetEntityTypeId() === 'media';
   }
 
 }

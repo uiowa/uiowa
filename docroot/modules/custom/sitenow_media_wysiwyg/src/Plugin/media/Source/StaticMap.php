@@ -20,12 +20,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Field\FieldTypePluginManagerInterface;
 
 /**
- * Provides media type plugin for Static Maps..
+ * Provides media type plugin for Static Map.
  *
  * @MediaSource(
  *   id = "static_map",
  *   label = @Translation("Static Map"),
- *   description = @Translation("Use static maps for reusable media."),
+ *   description = @Translation("Use Static Map for reusable media."),
  *   allowed_field_types = {"string", "string_long", "link"},
  *   forms = {
  *     "media_library_add" = "Drupal\sitenow_media_wysiwyg\Form\StaticMapForm",
@@ -65,7 +65,7 @@ class StaticMap extends MediaSourceBase implements MediaSourceFieldConstraintsIn
    *   Entity type manager service.
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
    *   Entity field manager service.
-   * @param \Drupal\Core\Field\FieldTypePluginManagerInterface|\Drupal\media_entity_panopto\Plugin\media\Source\FieldTypePluginManagerInterface $field_type_manager
+   * @param \Drupal\Core\Field\FieldTypePluginManagerInterface|\Drupal\media_entity_static_map\Plugin\media\Source\FieldTypePluginManagerInterface $field_type_manager
    *   The field type plugin manager service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   Config factory service.
@@ -104,11 +104,8 @@ class StaticMap extends MediaSourceBase implements MediaSourceFieldConstraintsIn
    * {@inheritdoc}
    */
   public function getMetadataAttributes() {
-    return [
-      'link' => $this->t('Link'),
-      'zoom' => $this->t('Zoom'),
-      'label' => $this->t('Label'),
-    ];
+    $fields = NULL;
+    return $fields;
   }
 
   /**
@@ -138,18 +135,42 @@ class StaticMap extends MediaSourceBase implements MediaSourceFieldConstraintsIn
     $id = $parsed['query']['id'];
 
     switch ($attribute_name) {
-      case 'link':
-        return $media['link'];
+      // @todo https://github.com/uiowa/uiowa/issues/5029
+      case 'default_name':
+        return 'media:' . $media->bundle() . ':' . $uuid;
 
-      case 'zoom':
-        return $media['zoom'];
+      case 'thumbnail_uri':
+        try {
+          $response = $this->client->get(
+            self::BASE_URL . $id,
+            [
+              'allow_redirects' => [
+                'track_redirects' => TRUE,
+              ],
+            ],
+          );
 
-      case 'label':
-        return $media['label'];
+          $redirects = $response->getHeader(RedirectMiddleware::HISTORY_HEADER);
+          $source = end($redirects);
+          $scheme = $this->configFactory->get('system.file')->get('default_scheme');
+          $destination = $scheme . 'static_map_thumbnails/';
+          $realpath = $this->fs->realpath($destination);
 
-      default:
-        return parent::getMetadata($media, $attribute_name);
+          if ($this->fs->prepareDirectory($realpath, FileSystemInterface::CREATE_DIRECTORY)) {
+            /** @var \Drupal\file\FileInterface $file */
+            $file = system_retrieve_file($source, "{$destination}{$uuid}.jpg", TRUE, FileSystemInterface::EXISTS_REPLACE);
+            return $file->getFileUri();
+          }
         }
+        catch (ClientException $e) {
+          $this->getLogger('sitenow_media_wysiwyg')->warning($this->t('Unable to get thumbnail image for @media.', [
+            '@media' => $media->uuid(),
+          ]));
+
+          // Use the default thumbnail if we can't get one.
+          return NULL;
+        }
+    }
 
     return NULL;
   }
