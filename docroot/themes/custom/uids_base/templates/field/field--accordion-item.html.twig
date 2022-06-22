@@ -46,6 +46,7 @@
         'accordion_type' : 'single',
         'accordion_parent_id': 'accordion-' ~ label|clean_class,
         'accordion_item_label': label,
+        'accordion_hash': label|clean_class,
         'accordion_item_content': items|without(attributes),
         'accordion_item_expanded': 'false',
         'accordion_item_content': items,

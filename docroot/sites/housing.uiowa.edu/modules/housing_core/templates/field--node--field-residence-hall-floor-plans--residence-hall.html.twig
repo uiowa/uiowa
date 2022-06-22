@@ -48,6 +48,7 @@
         'accordion_parent_id': '#accordion-floor-plan',
         'accordion_item_label': item.tab_label,
         'accordion_item_content': item.content,
+        'accordion_hash':  item.tab_label|clean_class,
       } %}
       {% embed '@uids_base/uids/accordion-item.html.twig' with accordion_item only %}{% endembed %}
     {% endfor %}

@@ -37,11 +37,12 @@
  * @see template_preprocess_field()
  */
 #}
-
+{% set accordion_hash = [] %}
 {% set accordion_item = {
-  'accordion_h_size' : 'h3',
+  'accordion_h_size': 'h3',
   'accordion_item_id': 'content-' ~ label|clean_class ~ '-' ~ element['#items'].getEntity().id(),
-  'accordion_type' : 'single',
+  'accordion_type': 'single',
+  'accordion_hash':  label|clean_class,
   'accordion_parent_id': '#accordion-' ~ label|clean_class,
   'accordion_item_label': label,
   'accordion_item_content': items,
