@@ -120,7 +120,7 @@ function housing_core_preprocess_field(&$variables, $hook) {
       foreach ($variables['items'] as $delta => $item) {
         /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
         $paragraph = $item['content']['#paragraph'];
-        // @todo Refactor to use nullsafe operator when we switch to Php 8+.
+        // @todo https://github.com/uiowa/uiowa/issues/5392.
         $floorplan_field = $paragraph->get('field_housing_floor_plan_type')->first();
         if (!isset($floorplan_field)) {
           continue;
