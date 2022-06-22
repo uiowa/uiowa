@@ -47,7 +47,7 @@
     {% for item in items %}
       <a href={{ item.content['#url'] }} {{ attributes.addClass(classes) }}>
         {{ item.content['#title'] }}
-        <i class="fas fa-arrow-right"></i>
+        <span role="presentation" class="fas fa-arrow-right"></span>
       </a>
     {% endfor %}
 
