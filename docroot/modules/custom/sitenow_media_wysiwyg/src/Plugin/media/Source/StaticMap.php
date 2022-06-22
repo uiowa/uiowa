@@ -104,8 +104,11 @@ class StaticMap extends MediaSourceBase implements MediaSourceFieldConstraintsIn
    * {@inheritdoc}
    */
   public function getMetadataAttributes() {
-    $fields = NULL;
-    return $fields;
+    return [
+      'link' => $this->t('Link'),
+      'zoom' => $this->t('Zoom'),
+      'label' => $this->t('Label'),
+    ];
   }
 
   /**
@@ -135,42 +138,18 @@ class StaticMap extends MediaSourceBase implements MediaSourceFieldConstraintsIn
     $id = $parsed['query']['id'];
 
     switch ($attribute_name) {
-      // @todo https://github.com/uiowa/uiowa/issues/5029
-      case 'default_name':
-        return 'media:' . $media->bundle() . ':' . $uuid;
+      case 'link':
+        return $media['link'];
 
-      case 'thumbnail_uri':
-        try {
-          $response = $this->client->get(
-            self::BASE_URL . "/map/static-map/?map=1890&loc={$items->location}&scale=2&zoom={$items->zoom} ",
-            [
-              'allow_redirects' => [
-                'track_redirects' => TRUE,
-              ],
-            ],
-          );
+      case 'zoom':
+        return $media['zoom'];
 
-          $redirects = $response->getHeader(RedirectMiddleware::HISTORY_HEADER);
-          $source = end($redirects);
-          $scheme = $this->configFactory->get('system.file')->get('default_scheme');
-          $destination = $scheme . 'panopto_thumbnails/';
-          $realpath = $this->fs->realpath($destination);
+      case 'label':
+        return $media['label'];
 
-          if ($this->fs->prepareDirectory($realpath, FileSystemInterface::CREATE_DIRECTORY)) {
-            /** @var \Drupal\file\FileInterface $file */
-            $file = system_retrieve_file($source, "{$destination}{$uuid}.jpg", TRUE, FileSystemInterface::EXISTS_REPLACE);
-            return $file->getFileUri();
-          }
+      default:
+        return parent::getMetadata($media, $attribute_name);
         }
-        catch (ClientException $e) {
-          $this->getLogger('sitenow_media_wysiwyg')->warning($this->t('Unable to get thumbnail image for @media.', [
-            '@media' => $media->uuid(),
-          ]));
-
-          // Use the default thumbnail if we can't get one.
-          return NULL;
-        }
-    }
 
     return NULL;
   }
