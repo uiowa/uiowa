@@ -1955,24 +1955,23 @@ function sitenow_update_9043() {
 /**
  * Set all cards to site default.
  */
-//function sitenow_update_9044() {
-//  // Loop through all the cards.
-//  foreach (['inline_block:uiowa_card'] as $block_plugin_id) {
-//    $config_path = DRUPAL_ROOT . '/../config/default';
-//    $source = new FileStorage($config_path);
-//
-//    \Drupal::entityTypeManager()
-//      ->getStorage('field_storage_config')
-//      ->create($source->read('field.storage.block_content.field_uiowa_card_button_display'))
-//      ->save();
-//
-//    \Drupal::entityTypeManager()->getStorage('field_config')
-//      ->create($source->read('field.field.block_content.uiowa_card.field_uiowa_card_button_display'))
-//      ->save();
-//
-//    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, BlockContentInterface $block) {
-//      $block->set('field_uiowa_card_button_display', 'Use site default');
-//      $block->save();
-//    });
-//  }
-//}
+function sitenow_update_9044() {
+  // Loading configuration to import before running update hook processes cards.
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+
+  \Drupal::entityTypeManager()
+    ->getStorage('field_storage_config')
+    ->create($source->read('field.storage.block_content.field_uiowa_card_button_display'))
+    ->save();
+
+  \Drupal::entityTypeManager()->getStorage('field_config')
+    ->create($source->read('field.field.block_content.uiowa_card.field_uiowa_card_button_display'))
+    ->save();
+
+  // Process all cards.
+  _update_all_blocks_by_plugin_id('inline_block:uiowa_card', function (&$component, BlockContentInterface $block) {
+    $block->set('field_uiowa_card_button_display', 'Use site default');
+    $block->save();
+  });
+}
