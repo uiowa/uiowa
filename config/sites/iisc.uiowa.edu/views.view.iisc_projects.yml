@@ -729,11 +729,16 @@ display:
         groups:
           1: AND
       style:
-        type: default
+        type: grid
         options:
           grouping: {  }
-          row_class: ''
-          default_row_class: true
+          columns: 4
+          automatic_width: true
+          alignment: horizontal
+          row_class_custom: ''
+          row_class_default: true
+          col_class_custom: ''
+          col_class_default: true
       row:
         type: fields
         options:
@@ -742,6 +747,7 @@ display:
           separator: ''
           hide_empty: false
       defaults:
+        use_ajax: false
         group_by: false
         style: false
         row: false
@@ -752,6 +758,7 @@ display:
         filters: false
         filter_groups: false
       relationships: {  }
+      use_ajax: true
       group_by: true
       display_description: ''
       display_extenders:
