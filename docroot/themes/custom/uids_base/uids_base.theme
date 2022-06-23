@@ -686,16 +686,31 @@ function uids_base_preprocess_block(&$variables) {
     if ($block->hasField('field_uiowa_card_button_display')) {
       // Set boolean variable for future use.
       $display_button = TRUE;
+      $button_display_field_value = $block->get('field_uiowa_card_button_display')->value;
 
       // Check if it is site default.
-      $foo = 'bar';
-      // If it is, get the site default value.
-      $site_default = Drupal::config('sitenow_pages.settings')->get('card_link_indicator_display');
-      // Set boolean to site default value.
-      // If it's not, check if it's show or hide.
-      // If it's show, set to true.
-      // If it's hide, set to false.
-      $variables['field_uiowa_card_button_display'] = $block->get('field_uiowa_card_button_display')->value;
+      if ($button_display_field_value == 'Use site default') {
+
+        // If it is, get the site default value.
+        $site_default = \Drupal::config('sitenow_pages.settings')->get('card_link_indicator_display');
+        // Set boolean to site default value.
+        $display_button = $site_default;
+      }
+
+      // Else if it's Show...
+      else if ($button_display_field_value == 'Show') {
+
+        // Set to true.
+        $display_button = TRUE;
+      }
+
+      // Else if it's Hide...
+      else if ($button_display_field_value == 'Hide') {
+
+        // Set to false.
+        $display_button = FALSE;
+      }
+      $variables['field_uiowa_card_button_display'] = $display_button;
     }
   }
 
