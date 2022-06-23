@@ -39,13 +39,24 @@
   margin-top: $mobile-height-gutter;
 }
 
-// @todo Move to UIDS
+// Additional grid classes.
 .grid--fourcol--25 {
   .list-container {
     @include grid-base;
     @include breakpoint(sm) {
       gap: $desktop-width-gutter;
       grid-template-columns: repeat(auto-fill, minmax(21%, 1fr));
+    }
+  }
+}
+
+// For use only for images.
+.grid--fivecol--20 {
+  .list-container {
+    @include grid-base;
+    @include breakpoint(sm) {
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(17%, 1fr));
     }
   }
 }
