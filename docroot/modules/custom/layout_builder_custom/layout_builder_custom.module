@@ -9,6 +9,7 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Url;
 use Drupal\layout_builder_custom\LayoutBuilderPreRender;
 use Drupal\layout_builder_custom\Plugin\Display\ListBlock;
 use Drupal\layout_builder_styles\Entity\LayoutBuilderStyleGroup;
@@ -796,6 +797,9 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
     case 'inline_block:uiowa_card':
       if (isset($element['field_uiowa_card_button_display'])) {
         $element['field_uiowa_card_button_display']['widget']['#options']['_none'] = 'Use site default';
+        $element['field_uiowa_card_button_display']['widget']['#description'] .= t('&nbsp;If "Use site default" is selected, this setting can be changed on the <a href="@settings_url">SiteNow Pages settings</a>.', [
+          '@settings_url' => Url::fromRoute("sitenow_pages.settings_form")->toString(),
+        ]);
         $element['field_uiowa_card_button_display']['#states'] = [
           'visible' => [
             ':input[name="settings[block_form][field_uiowa_card_link][0][uri]"]' => [
