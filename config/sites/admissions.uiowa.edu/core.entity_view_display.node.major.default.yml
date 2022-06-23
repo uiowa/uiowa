@@ -15,6 +15,7 @@ dependencies:
   module:
     - layout_builder
     - metatag
+    - system
     - text
     - user
   theme:
@@ -82,6 +83,29 @@ third_party_settings:
               context_mapping:
                 entity: layout_builder.entity
             weight: 2
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: ''
+            1: section_margin_fixed_width_container
+            remove_default_top_padding: remove_default_top_padding
+        components:
+          6693bc90-5eb1-4930-879c-e6615e7203cb:
+            uuid: 6693bc90-5eb1-4930-879c-e6615e7203cb
+            region: content
+            configuration:
+              id: system_breadcrumb_block
+              label: null
+              label_display: null
+              provider: system
+              context_mapping: {  }
+            weight: 0
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
