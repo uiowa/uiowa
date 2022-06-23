@@ -37,34 +37,31 @@
 {% set video_caption_url = file_url(content.field_uiowa_vertical_video_cap[0]['#media'].field_media_file.entity.uri.value) %}
 
 <div class="portrait {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
-	{{ title_prefix }}
-	{{ title_suffix }}
-	<div class="portrait__item">
-		<div class="embed-responsive embed-responsive-9by16">
-			{% if video_field is not empty %}
-        {% if video_title is not empty %}
-        <button class="vidbttn" aria-label="Play {{ video_title }} video">
-          {% else %}
-				<button class="vidbttn" aria-label="play video-{{ video_id }}">
+  {{ title_prefix }}
+  {{ title_suffix }}
+  <div class="portrait__item">
+    <div class="embed-responsive media--video embed-responsive-9by16">
+      {% if video_field is not empty %}
+      {% if video_title is not empty %}
+        <div id="video-btn--{{ video_id }}" class="vidbttn">
+        {% else %}
+        <div id="video-btn--{{ video_id }}" class="vidbttn">
+          {% endif %}
+          <span>Play</span>
+        </div>
+        <video id="video-container--{{ video_id }}" class="player" preload="metadata"  poster="{{ video_thumbnail }}" controls>
+          <source src="{{ video_url }}" type="video/mp4">
+          <track label="English" kind="subtitles" srclang="en" src="{{ video_caption_url }}" default="default"/>
+          <p>Video is not Supporting</p>
+        </video>
         {% endif %}
-					<span>Play</span>
-				</button>
-			<video class="player" preload="metadata"  poster="{{ video_thumbnail }}">
-				<source src="{{ video_url }}" type="video/mp4">
-				<track label="English" kind="subtitles" srclang="en" src="{{ video_caption_url }}" default="default"/>
-				<p>Video is not Supporting</p>
-			</video>
-			{% endif %}
-		</div>
-		{% if video_title is not empty %}
-			<div class="highlight__wrapper">
-				<h3 class="highlight__title">
-					<span class="headline__heading">{{ video_title }}</span>
-				</h3>
-				<div class="highlight__sub">
-					<span>{{ content.field_uiowa_vertical_video_sub }}</span>
-				</div>
-			</div>
-		{% endif %}
-	</div>
+    </div>
+    {% if video_title is not empty %}
+      <div class="highlight__wrapper">
+        <h3 class="highlight__title">
+          <span class="headline__heading">{{ video_title }}</span>
+        </h3>
+      </div>
+    {% endif %}
+  </div>
 </div>
