@@ -8,6 +8,7 @@
 use Drupal\fragments\Entity\FragmentInterface;
 use Drupal\block\Entity\Block;
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
@@ -683,11 +684,13 @@ function uids_base_preprocess_block(&$variables) {
     /** @var \Drupal\Block\Entity\Block $block */
     $block = $variables['elements']['content']['#block_content'];
     if ($block->hasField('field_uiowa_card_button_display')) {
-
       // Set boolean variable for future use.
-      // $config->get('card_link_indicator_display')
+      $display_button = TRUE;
+
       // Check if it is site default.
+      $foo = 'bar';
       // If it is, get the site default value.
+      $site_default = Drupal::config('sitenow_pages.settings')->get('card_link_indicator_display');
       // Set boolean to site default value.
       // If it's not, check if it's show or hide.
       // If it's show, set to true.
