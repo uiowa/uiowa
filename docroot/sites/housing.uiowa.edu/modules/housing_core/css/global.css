@@ -55,6 +55,7 @@
   font-size: 1.8rem;
   font-size: clamp(1.6rem,1.6rem,1.6rem);
 }
+
 @media (min-width: 84.375em) {
   .layout--onecol[class*=page__container--edge] .field--name-field-residence-hall-llc .banner.banner--vertical-bottom.banner--horizontal-left .banner__content {
     padding: 2rem;
@@ -74,4 +75,16 @@
 
 [class*="block-field-blocknoderesidence-hallfield-residence-hall-emerg-"] {
   text-align: center;
+}
+
+.page-node-type-residence-hall .layout--twocol.layout--twocol--67-33 .layout__spacing_container .layout__region--second:first-child {
+  grid-area: 1/1/6/4;
+}
+
+@media (min-width: 855px) {
+  .page-node-type-residence-hall .layout__region--second:first-child .field--name-field-residence-hall-contact {
+    display: grid;
+    gap: 3rem;
+    grid-template-columns: repeat(auto-fill, minmax(29.74%, 1fr));
+  }
 }
