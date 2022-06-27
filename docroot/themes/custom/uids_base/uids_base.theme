@@ -683,6 +683,7 @@ function uids_base_preprocess_block(&$variables) {
     /** @var \Drupal\Block\Entity\Block $block */
     $block = $variables['elements']['content']['#block_content'];
     if ($block->hasField('field_uiowa_card_button_display')) {
+
       // Set boolean variable for future use.
       $display_button = TRUE;
       $button_display_field_value = $block->get('field_uiowa_card_button_display')->value;
@@ -709,6 +710,8 @@ function uids_base_preprocess_block(&$variables) {
         // Set to false.
         $display_button = FALSE;
       }
+
+      // Set the variable for the card to display the button equal to what we calculate earlier.
       $variables['field_uiowa_card_button_display'] = $display_button;
     }
   }
