@@ -1,16 +1,20 @@
 <?php
+
+/**
+ * @file
+ */
+
+// Namespace Drupal\sitenow_media_wysiwyg\Plugin\Validation\Constraint;
 //
-//namespace Drupal\sitenow_media_wysiwyg\Plugin\Validation\Constraint;
+// use Drupal\Component\Utility\UrlHelper;
+// use Drupal\sitenow_media_wysiwyg\Plugin\media\Source\StaticMap;
+// use Symfony\Component\Validator\Constraint;
+// use Symfony\Component\Validator\ConstraintValidator;
 //
-//use Drupal\Component\Utility\UrlHelper;
-//use Drupal\sitenow_media_wysiwyg\Plugin\media\Source\StaticMap;
-//use Symfony\Component\Validator\Constraint;
-//use Symfony\Component\Validator\ConstraintValidator;
-//
-///**
+// **
 // * Validates the StaticMapUrl constraint.
 // */
-//class StaticMapURLConstraintValidator extends ConstraintValidator {
+// class StaticMapURLConstraintValidator extends ConstraintValidator {
 //
 //  /**
 //   * {@inheritdoc}
@@ -35,4 +39,4 @@
 //    }
 //  }
 //
-//}
+// }.

@@ -17,6 +17,9 @@ use Drupal\media\MediaSourceBase;
  */
 class StaticMap extends MediaSourceBase {
 
+  /**
+   *
+   */
   public function getMetadataAttributes() {
     return [
       'id' => $this->t('ID'),
@@ -26,6 +29,9 @@ class StaticMap extends MediaSourceBase {
     ];
   }
 
+  /**
+   *
+   */
   public function getMetadata(MediaInterface $media, $attribute_name) {
     $remote_field = $media->get($this->configuration['source_field']);
     if (!$remote_field) {
@@ -35,6 +41,7 @@ class StaticMap extends MediaSourceBase {
       // This is used to set the name of the media entity if the user leaves the field blank.
       case 'default_name':
         return $remote_field->value->alt_text;
+
       default:
         return $remote_field->value->$attribute_name ?? parent::getMetadata($media, $attribute_name);
     }

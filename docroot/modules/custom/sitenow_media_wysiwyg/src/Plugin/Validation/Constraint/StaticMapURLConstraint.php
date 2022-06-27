@@ -1,10 +1,14 @@
 <?php
+
+/**
+ * @file
+ */
+
+// Namespace Drupal\sitenow_media_wysiwyg\Plugin\Validation\Constraint;
 //
-//namespace Drupal\sitenow_media_wysiwyg\Plugin\Validation\Constraint;
+// use Symfony\Component\Validator\Constraint;
 //
-//use Symfony\Component\Validator\Constraint;
-//
-///**
+// **
 // * Check if a value is a valid URL.
 // *
 // * @constraint(
@@ -13,19 +17,21 @@
 // *   type = { "link", "string", "string_long" }
 // * )
 // */
-//class StaticMapURLConstraint extends Constraint {
+// class StaticMapURLConstraint extends Constraint {
 //  /**
 //   * The message shown when the value does not start with the Static Map base URL.
-//   *
-//   * @var string
-//   */
+//   *.
+/**
+ * * @var string .*/
+// */
 //  public $noBaseUrl = 'The URL must start with %base.';
 //
 //  /**
 //   * The message shown when the value does not include an ID.
 //   *
-//   * @var string
-//   */
+/**
+ * * @var string .*/
+// */
 //  public $noId = 'The URL must include an %id parameter.';
 //
-//}
+// }
