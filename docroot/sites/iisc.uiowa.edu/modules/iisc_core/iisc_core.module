@@ -28,13 +28,9 @@ function iisc_core_form_alter(&$form, FormStateInterface $form_state, $form_id) 
  */
 function iisc_core_theme($existing, $type, $theme, $path) {
   return [
-    // @todo Limit this to the teaser, otherwise it will change
-    //   the taxonomy term pages as well. Unsure why including it
-    //   as taxonomy_term__colleges_and_departments__teaser was
-    //   not working (at least locally for me).
-    'taxonomy_term__colleges_and_departments' => [
-      'template' => 'taxonomy-term--colleges-and-departments--teaser',
-      'base hook' => 'taxonomy_term',
+    'views_view_unformatted__projects_college_department' => [
+      'template' => 'views-view-unformatted--projects-college-department',
+      'base hook' => 'view',
     ],
   ];
 }

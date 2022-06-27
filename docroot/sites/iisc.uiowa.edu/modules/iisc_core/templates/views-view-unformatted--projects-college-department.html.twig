@@ -1,0 +1,43 @@
+{#
+/**
+ * @file
+ * Theme override to display a view of unformatted rows.
+ *
+ * Available variables:
+ * - title: The title of this group of rows. May be empty.
+ * - rows: A list of the view's row items.
+ *   - attributes: The row's HTML attributes.
+ *   - content: The row's content.
+ * - view: The view object.
+ * - default_row_class: A flag indicating whether default classes should be
+ *   used on rows.
+ *
+ * @see template_preprocess_views_view_unformatted()
+ */
+#}
+<div style="display:flex; justify-content: space-between; flex-wrap: wrap">
+  {% for key,row in rows %}
+  <div class="card__wrapper" style="flex:25%">
+  {%
+      set classes = [
+      'bg--white',
+      'card--centered-left',
+      'card--alignment-left',
+      'media--widescreen',
+      'card--stacked ',
+      'card--enclosed',
+      'card__row',
+    ]
+    %}
+
+    {% set projects_card = {
+      'attributes': attributes.addClass(classes),
+      'card_image': view.style_plugin.getField(key, 'field_image'),
+      'card_title': view.style_plugin.getField(key, 'name'),
+      'card_link_url': url,
+    } %}
+
+    {% embed '@uids_base/uids/card.html.twig' with projects_card only %}{% endembed %}
+  </div>
+  {% endfor %}
+</div>
