@@ -9,12 +9,12 @@ _meta:
     a904b7a8-98ed-4f8b-843e-4be23e68b54a: block_content
     23acfcc6-dcc1-4a73-b0d2-652a80175161: block_content
     5cf59a0d-59ee-4bdf-bac4-7c28df55b314: block_content
-    e18e8f0d-7df9-4d83-8c21-1558789ee0ea: block_content
     9c936fcc-b677-4976-970d-d59c4395647b: block_content
-    8377b894-203b-432a-97ed-738928bfb736: block_content
     8c4e9639-4eed-42cb-be3b-caddd7d4f374: block_content
-    4fdf0691-7f76-462d-9b33-86aa83b86fe0: block_content
     a1fe3c74-55bb-43fc-9b1d-be5b8c52b65f: block_content
+    25c36332-13bc-474d-8f83-b05eda0c83ab: block_content
+    64f27558-2d62-4baf-8735-cfa37d542a95: block_content
+    f6417b5a-a6df-440e-b067-9cebd07b6be4: block_content
     8717a1fe-1bee-4c4a-83e3-4d449548583c: block_content
     d752c896-ce67-4cb1-96e9-acf6fbbf02e6: block_content
     9a574f4b-ff97-430e-a59c-b4af1e7fcf40: block_content
@@ -77,6 +77,7 @@ default:
                 entity: layout_builder.entity
             weight: 0
             additional: {  }
+            third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
             lock:
@@ -108,6 +109,7 @@ default:
               context_mapping: {  }
             weight: 0
             additional: {  }
+            third_party_settings: {  }
           56a58312-d93e-4d32-84a0-39b2a2fc89fb:
             uuid: 56a58312-d93e-4d32-84a0-39b2a2fc89fb
             region: content
@@ -127,6 +129,7 @@ default:
                 third_party_settings: {  }
             weight: 1
             additional: {  }
+            third_party_settings: {  }
           b444f835-62e1-4e31-b433-22fe88ef3372:
             uuid: b444f835-62e1-4e31-b433-22fe88ef3372
             region: background
@@ -146,6 +149,7 @@ default:
                 third_party_settings: {  }
             weight: 0
             additional: {  }
+            third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
             lock:
@@ -186,6 +190,7 @@ default:
               layout_builder_styles_style:
                 - block_menu_vertical
                 - null
+            third_party_settings: {  }
           e6fa78b4-cacc-4d27-baa3-f29dde0b845b:
             uuid: e6fa78b4-cacc-4d27-baa3-f29dde0b845b
             region: content
@@ -204,6 +209,7 @@ default:
                 third_party_settings: {  }
             weight: -9
             additional: {  }
+            third_party_settings: {  }
         third_party_settings: {  }
     -
       section:
@@ -225,7 +231,7 @@ default:
               label_display: null
               provider: layout_builder
               view_mode: full
-              block_revision_id: '114'
+              block_revision_id: '46'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_banner
@@ -237,9 +243,11 @@ default:
                 - banner_lower_centered
                 - banner_gradient_dark
                 - headline_bold_serif
-                - headline_large
                 - banner_large
+                - button_primary
+                - headline_large
               target_uuid: 581c5474-43e7-461a-bf05-48eabb628c53
+            third_party_settings: {  }
         third_party_settings: {  }
     -
       section:
@@ -260,7 +268,7 @@ default:
               label_display: null
               provider: layout_builder
               view_mode: full
-              block_revision_id: '99'
+              block_revision_id: '47'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_text_area
@@ -271,6 +279,7 @@ default:
                 0: ''
                 block_margin_top: block_margin_top
               target_uuid: a904b7a8-98ed-4f8b-843e-4be23e68b54a
+            third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -294,7 +303,7 @@ default:
               label_display: null
               provider: layout_builder
               view_mode: full
-              block_revision_id: '100'
+              block_revision_id: '48'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_card
@@ -309,6 +318,7 @@ default:
                 4: card_image_small
                 card_style_button_position: card_style_button_position
               target_uuid: 23acfcc6-dcc1-4a73-b0d2-652a80175161
+            third_party_settings: {  }
           8d7a3dc1-91ab-4aec-b42b-d5719862a377:
             uuid: 8d7a3dc1-91ab-4aec-b42b-d5719862a377
             region: second
@@ -318,7 +328,7 @@ default:
               label_display: null
               provider: layout_builder
               view_mode: full
-              block_revision_id: '101'
+              block_revision_id: '49'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_card
@@ -333,6 +343,7 @@ default:
                 4: card_image_small
                 card_style_button_position: card_style_button_position
               target_uuid: 5cf59a0d-59ee-4bdf-bac4-7c28df55b314
+            third_party_settings: {  }
         third_party_settings: {  }
     -
       section:
@@ -347,25 +358,6 @@ default:
             section_layout_grid_3x2_stacked: section_layout_grid_3x2_stacked
           context_mapping: {  }
         components:
-          f69430e3-8ebc-4d39-a9b0-c2d60ed58652:
-            uuid: f69430e3-8ebc-4d39-a9b0-c2d60ed58652
-            region: content
-            configuration:
-              id: 'inline_block:uiowa_text_area'
-              label: null
-              label_display: null
-              provider: layout_builder
-              view_mode: full
-              block_revision_id: '102'
-              block_serialized: null
-              context_mapping: {  }
-              type: uiowa_text_area
-              uuid: e18e8f0d-7df9-4d83-8c21-1558789ee0ea
-            weight: 6
-            additional:
-              layout_builder_styles_style:
-                - ''
-              target_uuid: e18e8f0d-7df9-4d83-8c21-1558789ee0ea
           6838f24f-859b-4743-a136-86c4e3d0e1a5:
             uuid: 6838f24f-859b-4743-a136-86c4e3d0e1a5
             region: content
@@ -375,36 +367,18 @@ default:
               label_display: null
               provider: layout_builder
               view_mode: full
-              block_revision_id: '103'
+              block_revision_id: '50'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_statistic
               uuid: 9c936fcc-b677-4976-970d-d59c4395647b
-            weight: 7
+            weight: 9
             additional:
               layout_builder_styles_style:
                 block_alignment_flex_row_center: block_alignment_flex_row_center
                 stat_remove_hover_effect: stat_remove_hover_effect
               target_uuid: 9c936fcc-b677-4976-970d-d59c4395647b
-          c77f7479-cd86-495b-80f1-fa8d2e738f25:
-            uuid: c77f7479-cd86-495b-80f1-fa8d2e738f25
-            region: content
-            configuration:
-              id: 'inline_block:uiowa_text_area'
-              label: null
-              label_display: null
-              provider: layout_builder
-              view_mode: full
-              block_revision_id: '104'
-              block_serialized: null
-              context_mapping: {  }
-              type: uiowa_text_area
-              uuid: 8377b894-203b-432a-97ed-738928bfb736
-            weight: 8
-            additional:
-              layout_builder_styles_style:
-                - ''
-              target_uuid: 8377b894-203b-432a-97ed-738928bfb736
+            third_party_settings: {  }
           d9339ad7-fbe4-4db7-b4f6-d271da19a640:
             uuid: d9339ad7-fbe4-4db7-b4f6-d271da19a640
             region: content
@@ -414,36 +388,18 @@ default:
               label_display: null
               provider: layout_builder
               view_mode: full
-              block_revision_id: '105'
+              block_revision_id: '51'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_statistic
               uuid: 8c4e9639-4eed-42cb-be3b-caddd7d4f374
-            weight: 9
+            weight: 12
             additional:
               layout_builder_styles_style:
                 block_alignment_flex_row_center: block_alignment_flex_row_center
                 stat_remove_hover_effect: stat_remove_hover_effect
               target_uuid: 8c4e9639-4eed-42cb-be3b-caddd7d4f374
-          0bebce1d-a15e-425f-a449-9e26a6c62801:
-            uuid: 0bebce1d-a15e-425f-a449-9e26a6c62801
-            region: content
-            configuration:
-              id: 'inline_block:uiowa_text_area'
-              label: null
-              label_display: null
-              provider: layout_builder
-              view_mode: full
-              block_revision_id: '106'
-              block_serialized: null
-              context_mapping: {  }
-              type: uiowa_text_area
-              uuid: 4fdf0691-7f76-462d-9b33-86aa83b86fe0
-            weight: 10
-            additional:
-              layout_builder_styles_style:
-                - ''
-              target_uuid: 4fdf0691-7f76-462d-9b33-86aa83b86fe0
+            third_party_settings: {  }
           83cca007-0e44-44d8-80cb-f5b568a8f917:
             uuid: 83cca007-0e44-44d8-80cb-f5b568a8f917
             region: content
@@ -453,17 +409,78 @@ default:
               label_display: null
               provider: layout_builder
               view_mode: full
-              block_revision_id: '107'
+              block_revision_id: '52'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_statistic
               uuid: a1fe3c74-55bb-43fc-9b1d-be5b8c52b65f
-            weight: 11
+            weight: 14
             additional:
               layout_builder_styles_style:
                 block_alignment_flex_row_center: block_alignment_flex_row_center
                 stat_remove_hover_effect: stat_remove_hover_effect
               target_uuid: a1fe3c74-55bb-43fc-9b1d-be5b8c52b65f
+            third_party_settings: {  }
+          ad6499af-8e21-445f-a86b-0fe5196b97ba:
+            uuid: ad6499af-8e21-445f-a86b-0fe5196b97ba
+            region: content
+            configuration:
+              id: 'inline_block:uiowa_image'
+              label: null
+              label_display: null
+              provider: layout_builder
+              view_mode: full
+              block_revision_id: '53'
+              block_serialized: null
+              context_mapping: {  }
+              type: uiowa_image
+              uuid: 25c36332-13bc-474d-8f83-b05eda0c83ab
+            weight: 13
+            additional:
+              layout_builder_styles_style:
+                - media_format_widescreen
+              target_uuid: 25c36332-13bc-474d-8f83-b05eda0c83ab
+            third_party_settings: {  }
+          1681db44-b7b1-4344-bd6f-02b26eebe9ed:
+            uuid: 1681db44-b7b1-4344-bd6f-02b26eebe9ed
+            region: content
+            configuration:
+              id: 'inline_block:uiowa_image'
+              label: null
+              label_display: null
+              provider: layout_builder
+              view_mode: full
+              block_revision_id: '54'
+              block_serialized: null
+              context_mapping: {  }
+              type: uiowa_image
+              uuid: 64f27558-2d62-4baf-8735-cfa37d542a95
+            weight: 8
+            additional:
+              layout_builder_styles_style:
+                - media_format_widescreen
+              target_uuid: 64f27558-2d62-4baf-8735-cfa37d542a95
+            third_party_settings: {  }
+          993e78c1-3ba8-44b1-a395-81f0b0340a49:
+            uuid: 993e78c1-3ba8-44b1-a395-81f0b0340a49
+            region: content
+            configuration:
+              id: 'inline_block:uiowa_image'
+              label: null
+              label_display: null
+              provider: layout_builder
+              view_mode: full
+              block_revision_id: '55'
+              block_serialized: null
+              context_mapping: {  }
+              type: uiowa_image
+              uuid: f6417b5a-a6df-440e-b067-9cebd07b6be4
+            weight: 11
+            additional:
+              layout_builder_styles_style:
+                - media_format_widescreen
+              target_uuid: f6417b5a-a6df-440e-b067-9cebd07b6be4
+            third_party_settings: {  }
         third_party_settings: {  }
     -
       section:
@@ -487,7 +504,7 @@ default:
               label_display: null
               provider: layout_builder
               view_mode: full
-              block_revision_id: '108'
+              block_revision_id: '56'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_text_area
@@ -497,6 +514,7 @@ default:
               layout_builder_styles_style:
                 - ''
               target_uuid: 8717a1fe-1bee-4c4a-83e3-4d449548583c
+            third_party_settings: {  }
           0bf2858d-b657-4320-b434-d9022bc1cd46:
             uuid: 0bf2858d-b657-4320-b434-d9022bc1cd46
             region: second
@@ -506,7 +524,7 @@ default:
               label_display: null
               provider: layout_builder
               view_mode: full
-              block_revision_id: '109'
+              block_revision_id: '57'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_card
@@ -522,6 +540,7 @@ default:
                 block_card_style_border: block_card_style_border
                 card_style_button_position: card_style_button_position
               target_uuid: d752c896-ce67-4cb1-96e9-acf6fbbf02e6
+            third_party_settings: {  }
           6da2d108-6bdd-4581-b819-c72861bf0cf4:
             uuid: 6da2d108-6bdd-4581-b819-c72861bf0cf4
             region: third
@@ -531,7 +550,7 @@ default:
               label_display: null
               provider: layout_builder
               view_mode: full
-              block_revision_id: '110'
+              block_revision_id: '58'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_card
@@ -547,6 +566,7 @@ default:
                 block_card_style_border: block_card_style_border
                 card_style_button_position: card_style_button_position
               target_uuid: 9a574f4b-ff97-430e-a59c-b4af1e7fcf40
+            third_party_settings: {  }
         third_party_settings: {  }
     -
       section:
@@ -568,7 +588,7 @@ default:
               label_display: null
               provider: layout_builder
               view_mode: full
-              block_revision_id: '111'
+              block_revision_id: '59'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_events
@@ -585,6 +605,7 @@ default:
                 6: card_image_small
                 block_hide_descriptions: block_hide_descriptions
               target_uuid: 1dcc6fbc-7614-45c3-bbea-beb498b38057
+            third_party_settings: {  }
           0ffdc250-f168-4840-8170-dc01bd6895c7:
             uuid: 0ffdc250-f168-4840-8170-dc01bd6895c7
             region: first
@@ -650,6 +671,7 @@ default:
                 - media_format_widescreen
                 - card_media_position_right
                 - card_image_small
+            third_party_settings: {  }
         third_party_settings: {  }
     -
       section:
@@ -671,7 +693,7 @@ default:
               label_display: null
               provider: layout_builder
               view_mode: full
-              block_revision_id: '112'
+              block_revision_id: '60'
               block_serialized: null
               context_mapping: {  }
               type: uiowa_cta
@@ -681,4 +703,5 @@ default:
               layout_builder_styles_style:
                 - block_background_style_gold
               target_uuid: 15a00b21-d89f-4c9d-80a2-5b14aa4adba5
+            third_party_settings: {  }
         third_party_settings: {  }
