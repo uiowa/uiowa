@@ -688,7 +688,7 @@ function uids_base_preprocess_block(&$variables) {
       $button_display_field_value = $block->get('field_uiowa_card_button_display')->value;
 
       // Check if it is site default.
-      if ($button_display_field_value == NULL or $button_display_field_value == '_none') {
+      if ($button_display_field_value == NULL) {
 
         // If it is, get the site default value.
         $site_default = \Drupal::config('sitenow_pages.settings')->get('card_link_indicator_display');
