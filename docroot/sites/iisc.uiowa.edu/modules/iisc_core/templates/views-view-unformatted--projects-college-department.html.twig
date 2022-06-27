@@ -15,9 +15,11 @@
  * @see template_preprocess_views_view_unformatted()
  */
 #}
-<div style="display:flex; justify-content: space-between; flex-wrap: wrap">
   {% for key,row in rows %}
-  <div class="card__wrapper" style="flex:25%">
+    {% set row_classes = [
+      default_row_class ? 'views-row',
+    ] %}
+    <div{{ row.attributes.addClass(row_classes) }}>
   {%
       set classes = [
       'bg--white',
@@ -40,4 +42,3 @@
     {% embed '@uids_base/uids/card.html.twig' with projects_card only %}{% endembed %}
   </div>
   {% endfor %}
-</div>

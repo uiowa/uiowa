@@ -31,6 +31,11 @@ function iisc_core_preprocess_block(&$variables) {
     case 'views_block:iisc_partners-partners_recent_block':
       $variables['attributes']['class'][] = 'grid--fourcol--25';
       break;
+
+    case 'views_block:iisc_projects-projects_college_department':
+      $variables['attributes']['class'][] = 'grid--fourcol--25';
+      break;
+
   }
 }
 
