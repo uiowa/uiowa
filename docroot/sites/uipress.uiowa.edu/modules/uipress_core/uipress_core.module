@@ -136,18 +136,20 @@ function uipress_core_preprocess_paragraph__book_type(&$variables) {
       if (!$paragraph->get('field_book_sale_price')->isEmpty()) {
         // If start date exists make sure current date is after start date.
         $in_range = TRUE;
-        $now = date('m-d-Y');
+        // @todo Get this working correctly accounting for timezone.
+        $timezone = date_default_timezone_get();
+        $today = date('m-d-Y 00:00:00', $timezone);
         $start = $paragraph->get('field_book_sale_start_date')->value;
         if (isset($start)) {
           $start = date('m-d-Y', strtotime($start));
-          $in_range = $now >= $start;
+          $in_range = $today >= $start;
         }
 
         // If end date exists make sure current date is before end date.
         $end = $paragraph->get('field_book_sale_expiry_date')->value;
         if ($in_range && isset($end)) {
           $end = date('m-d-Y', strtotime($end));
-          $in_range = $now < $end;
+          $in_range = $today < $end;
         }
         // If neither condition is true unset display of sale price.
         if (!$in_range) {
