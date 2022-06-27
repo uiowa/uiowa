@@ -4,8 +4,8 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.storage.node.field_project_college_department
     - field.storage.node.field_tags
+    - field.storage.taxonomy_term.field_image
     - node.type.partner
     - node.type.project
     - taxonomy.vocabulary.colleges_and_departments
@@ -575,11 +575,77 @@ display:
     position: 1
     display_options:
       fields:
-        field_project_college_department:
-          id: field_project_college_department
-          table: node__field_project_college_department
-          field: field_project_college_department
-          relationship: none
+        name:
+          id: name
+          table: taxonomy_term_field_data
+          field: name
+          relationship: field_project_college_department
+          group_type: group
+          admin_label: ''
+          entity_type: taxonomy_term
+          entity_field: name
+          plugin_id: term_name
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          convert_spaces: false
+        field_image:
+          id: field_image
+          table: taxonomy_term__field_image
+          field: field_image
+          relationship: field_project_college_department
           group_type: group
           admin_label: ''
           plugin_id: field
@@ -627,7 +693,7 @@ display:
           click_sort_column: target_id
           type: entity_reference_entity_view
           settings:
-            view_mode: teaser
+            view_mode: default
           group_column: target_id
           group_columns: {  }
           group_rows: true
@@ -638,6 +704,59 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+        view_taxonomy_term:
+          id: view_taxonomy_term
+          table: taxonomy_term_data
+          field: view_taxonomy_term
+          relationship: field_project_college_department
+          group_type: group
+          admin_label: ''
+          entity_type: taxonomy_term
+          plugin_id: entity_link
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          text: view
+          output_url_as_text: true
+          absolute: true
       sorts:
         field_project_college_department_target_id:
           id: field_project_college_department_target_id
@@ -742,16 +861,11 @@ display:
         groups:
           1: AND
       style:
-        type: grid
+        type: default
         options:
           grouping: {  }
-          columns: 4
-          automatic_width: true
-          alignment: horizontal
-          row_class_custom: ''
-          row_class_default: true
-          col_class_custom: ''
-          col_class_default: true
+          row_class: ''
+          default_row_class: true
       row:
         type: fields
         options:
@@ -770,7 +884,16 @@ display:
         arguments: false
         filters: false
         filter_groups: false
-      relationships: {  }
+      relationships:
+        field_project_college_department:
+          id: field_project_college_department
+          table: node__field_project_college_department
+          field: field_project_college_department
+          relationship: none
+          group_type: group
+          admin_label: 'field_project_college_department: Taxonomy term'
+          plugin_id: standard
+          required: false
       use_ajax: true
       group_by: true
       display_description: ''
@@ -802,7 +925,7 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:field.storage.node.field_project_college_department'
+        - 'config:field.storage.taxonomy_term.field_image'
   projects_partner:
     id: projects_partner
     display_title: 'IISC Projects by Partner NID'
