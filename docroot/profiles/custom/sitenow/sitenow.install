@@ -1951,33 +1951,3 @@ function sitenow_update_9042() {
 function sitenow_update_9043() {
   \Drupal::service('module_installer')->uninstall(['sitenow_find_text']);
 }
-
-/**
- * Set all cards to site default.
- */
-function sitenow_update_9044() {
-  // Loading configuration to import before running update hook processes cards.
-  $config_path = DRUPAL_ROOT . '/../config/default';
-  $source = new FileStorage($config_path);
-
-  // Tip from https://www.drupal.org/project/drupal/issues/2944144#comment-12481021
-  foreach ([
-    'field.storage.block_content.field_uiowa_card_button_display',
-    'field.field.block_content.uiowa_card.field_uiowa_card_button_display',
-  ] as $config_name) {
-    $config_record = $source->read($config_name);
-
-    $entity_type = \Drupal::service('config.manager')
-      ->getEntityTypeIdByName($config_name);
-    /** @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $storage */
-    $storage = \Drupal::entityTypeManager()->getStorage($entity_type);
-    $entity = $storage->createFromStorageRecord($config_record);
-    $entity->save();
-  }
-
-  // Process all cards.
-  _update_all_blocks_by_plugin_id('inline_block:uiowa_card', function (&$component, BlockContentInterface $block) {
-    $block->set('field_uiowa_card_button_display', '_none');
-    $block->save();
-  });
-}
