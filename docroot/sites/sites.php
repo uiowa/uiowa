@@ -4228,3 +4228,9 @@ $sites['engineeringiwwerp.uiowa.ddev.site'] = 'iwwerp.engineering.uiowa.edu';
 $sites['engineeringiwwerp.dev.drupal.uiowa.edu'] = 'iwwerp.engineering.uiowa.edu';
 $sites['engineeringiwwerp.stage.drupal.uiowa.edu'] = 'iwwerp.engineering.uiowa.edu';
 $sites['engineeringiwwerp.prod.drupal.uiowa.edu'] = 'iwwerp.engineering.uiowa.edu';
+
+// Directory aliases for researcherhandbook.research.uiowa.edu.
+$sites['researchresearcherhandbook.uiowa.ddev.site'] = 'researcherhandbook.research.uiowa.edu';
+$sites['researchresearcherhandbook.dev.drupal.uiowa.edu'] = 'researcherhandbook.research.uiowa.edu';
+$sites['researchresearcherhandbook.stage.drupal.uiowa.edu'] = 'researcherhandbook.research.uiowa.edu';
+$sites['researchresearcherhandbook.prod.drupal.uiowa.edu'] = 'researcherhandbook.research.uiowa.edu';
