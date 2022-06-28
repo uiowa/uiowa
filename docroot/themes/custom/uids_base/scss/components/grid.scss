@@ -35,21 +35,6 @@
   gap: $mobile-height-gutter;
 }
 
-.inner--grid .more-link {
-  margin-top: $mobile-height-gutter;
-}
-
-// Additional grid classes.
-.grid--fourcol--25 {
-  .list-container {
-    @include grid-base;
-    @include breakpoint(sm) {
-      gap: $desktop-width-gutter;
-      grid-template-columns: repeat(auto-fill, minmax(21%, 1fr));
-    }
-  }
-}
-
 // For use only for images.
 .grid--fivecol--20 {
   .list-container {
