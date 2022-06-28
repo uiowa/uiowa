@@ -18,7 +18,10 @@
   }
 
   .js-form-item {
-    flex: 1;
+    flex: auto 1 1;
+    @include breakpoint(sm) {
+      flex: 1;
+    }
   }
 
   .form-group {
