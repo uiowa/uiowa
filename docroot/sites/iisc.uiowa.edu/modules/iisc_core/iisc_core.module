@@ -29,11 +29,11 @@ function iisc_core_form_alter(&$form, FormStateInterface $form_state, $form_id) 
 function iisc_core_preprocess_block(&$variables) {
   switch ($variables['plugin_id']) {
     case 'views_block:iisc_partners-partners_recent_block':
-      $variables['attributes']['class'][] = 'grid--fourcol--25';
+      $variables['attributes']['class'][] = 'grid--fourcol--25 inner--grid';
       break;
 
     case 'views_block:iisc_projects-projects_college_department':
-      $variables['attributes']['class'][] = 'grid--fourcol--25';
+      $variables['attributes']['class'][] = 'grid--fourcol--25 inner--grid';
       break;
 
   }

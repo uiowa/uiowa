@@ -35,6 +35,16 @@
   gap: $mobile-height-gutter;
 }
 
+// Additional grid classes.
+.grid--fourcol--25 {
+  .list-container {
+    @include grid-base;
+    @include breakpoint(md) {
+      @include fourcol-grid;
+    }
+  }
+}
+
 // For use only for images.
 .grid--fivecol--20 {
   .list-container {
