@@ -679,43 +679,6 @@ function uids_base_preprocess_block(&$variables) {
     }
   }
 
-  if ($variables['derivative_plugin_id'] === 'uiowa_card') {
-    /** @var \Drupal\Block\Entity\Block $block */
-    $block = $variables['elements']['content']['#block_content'];
-    if ($block->hasField('field_uiowa_card_button_display')) {
-
-      // Set boolean variable for future use.
-      $display_button = TRUE;
-      $button_display_field_value = $block->get('field_uiowa_card_button_display')->value;
-
-      // Check if it is site default.
-      if ($button_display_field_value == NULL) {
-
-        // If it is, get the site default value.
-        $site_default = \Drupal::config('sitenow_pages.settings')->get('card_link_indicator_display');
-        // Set boolean to site default value.
-        $display_button = $site_default;
-      }
-
-      // Else if it's Show...
-      elseif ($button_display_field_value == 'Show') {
-
-        // Set to true.
-        $display_button = TRUE;
-      }
-
-      // Else if it's Hide...
-      elseif ($button_display_field_value == 'Hide') {
-
-        // Set to false.
-        $display_button = FALSE;
-      }
-
-      // Set the variable for the card to display the button equal to what we calculate earlier.
-      $variables['field_uiowa_card_button_display'] = $display_button;
-    }
-  }
-
   // Check if the hover effect should be applied on the stat block.
   if ($variables['derivative_plugin_id'] == 'uiowa_statistic' && isset($variables['elements']['#attributes']['class'])) {
     $variables['has_hover_effect'] = !in_array('stat--static', $variables['elements']['#attributes']['class']);
