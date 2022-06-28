@@ -133,7 +133,7 @@
       'headline_class' : headline_classes,
       'link_element' : 'title',
       'link': {
-        'link_url': view.style_plugin.getField(key, 'view_node'),
+        'link_url': view.style_plugin.getField(key, 'view_node')|render|striptags|trim,
       },
       'title_prefix': title_prefix,
       'title_suffix': title_suffix,
