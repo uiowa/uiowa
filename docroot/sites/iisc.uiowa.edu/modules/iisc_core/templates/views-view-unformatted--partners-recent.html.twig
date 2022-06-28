@@ -26,8 +26,6 @@
   ] %}
   <div{{ row.attributes.addClass(row_classes) }}>
 
-
-
     {%
       set headline_classes = [
       'headline',
@@ -61,8 +59,6 @@
       'link': {
         'link_url': view.style_plugin.getField(key, 'view_node')|render|striptags|trim,
       },
-      'title_prefix': title_prefix,
-      'title_suffix': title_suffix,
     } %}
 
     {% embed '@uids_base/uids/banner.html.twig' with block_banner only %}
