@@ -32,6 +32,10 @@ function iisc_core_preprocess_block(&$variables) {
       $variables['attributes']['class'][] = 'grid--fourcol--25 inner--grid';
       break;
 
+    case 'views_block:iisc_projects-projects_topic':
+      $variables['attributes']['class'][] = 'grid--fourcol--25 inner--grid';
+      break;
+
     case 'views_block:iisc_projects-projects_college_department':
       $variables['attributes']['class'][] = 'grid--fourcol--25 inner--grid';
       break;
@@ -50,6 +54,10 @@ function iisc_core_theme($existing, $type, $theme, $path) {
     ],
     'views_view_unformatted__partners_recent_block' => [
       'template' => 'views-view-unformatted--partners-recent',
+      'base hook' => 'view',
+    ],
+    'views_view_unformatted__projects_topic' => [
+      'template' => 'views-view-unformatted--projects-topic',
       'base hook' => 'view',
     ],
   ];
