@@ -5,6 +5,7 @@
  * Contains uipress_core.module.
  */
 
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Template\Attribute;
 
 /**
@@ -139,7 +140,7 @@ function uipress_core_preprocess_paragraph__book_type(&$variables) {
         // Create a variable for start of today based on the site's timezone
         // which can be used to compare the start and end dates.
         $timezone = date_default_timezone_get();
-        $datetime = new Drupal\Core\Datetime\DrupalDateTime('now', $timezone);
+        $datetime = new DrupalDateTime('now', $timezone);
         $today = $datetime->format('m-d-Y 00:00:00');
 
         // If the start date exists make sure that it is in the past or today.
