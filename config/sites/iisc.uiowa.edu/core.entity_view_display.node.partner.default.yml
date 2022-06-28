@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.partner.field_partner_link
     - field.field.node.partner.field_partner_related_individual
     - node.type.partner
+    - views.view.iisc_projects
   module:
     - layout_builder
     - link
@@ -18,6 +19,7 @@ dependencies:
     - system
     - text
     - user
+    - views
   theme:
     - uids_base
 third_party_settings:
@@ -211,6 +213,41 @@ third_party_settings:
         third_party_settings:
           layout_builder_lock:
             lock: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+        components:
+          58b8551a-17fb-4a73-998e-de448557ae95:
+            uuid: 58b8551a-17fb-4a73-998e-de448557ae95
+            region: content
+            configuration:
+              id: 'views_block:iisc_projects-projects_partner'
+              label: null
+              label_display: null
+              provider: views
+              context_mapping: {  }
+              views_label: ''
+              items_per_page: none
+              pager: some
+              pager_offset: 0
+              headline:
+                headline: Projects
+                hide_headline: 0
+                heading_size: h2
+                headline_style: default
+                headline_alignment: default
+                child_heading_size: h3
+              exposed_filter_values: null
+              layout_builder_styles: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
 id: node.partner.default
 targetEntityType: node
 bundle: partner
