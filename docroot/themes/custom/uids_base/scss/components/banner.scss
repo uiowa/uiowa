@@ -297,11 +297,14 @@
 
 
 // Modifier class to use for banner as a teaser for views and reference fields.
-.banner.banner--teaser {
+.banner.banner--teaser[class*="banner--"] {
   width: 100%;
   height: 100%;
   .banner__content {
     padding: 2rem;
+    .layout--onecol[class*="page"] & {
+      padding: 2rem;
+    }
   }
   .headline--small {
     font-size: 1.8rem;
