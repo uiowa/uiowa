@@ -136,16 +136,20 @@ function uipress_core_preprocess_paragraph__book_type(&$variables) {
       if (!$paragraph->get('field_book_sale_price')->isEmpty()) {
         // If start date exists make sure current date is after start date.
         $in_range = TRUE;
-        // @todo Get this working correctly accounting for timezone.
+        // Create a variable for start of today based on the site's timezone
+        // which can be used to compare the start and end dates.
         $timezone = date_default_timezone_get();
-        $today = date('m-d-Y 00:00:00', $timezone);
+        $datetime = new Drupal\Core\Datetime\DrupalDateTime('now', $timezone);
+        $today = $datetime->format('m-d-Y 00:00:00');
+
+        // If the start date exists make sure that it is in the past or today.
         $start = $paragraph->get('field_book_sale_start_date')->value;
         if (isset($start)) {
           $start = date('m-d-Y', strtotime($start));
           $in_range = $today >= $start;
         }
 
-        // If end date exists make sure current date is before end date.
+        // If end date exists make sure it is after today.
         $end = $paragraph->get('field_book_sale_expiry_date')->value;
         if ($in_range && isset($end)) {
           $end = date('m-d-Y', strtotime($end));
