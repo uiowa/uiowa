@@ -933,6 +933,55 @@ display:
     display_plugin: block
     position: 1
     display_options:
+      pager:
+        type: none
+        options:
+          offset: 0
+      sorts:
+        field_academic_year_value:
+          id: field_academic_year_value
+          table: node__field_academic_year
+          field: field_academic_year_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: standard
+          order: DESC
+          expose:
+            label: ''
+            field_identifier: ''
+          exposed: false
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          entity_field: title
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: ''
+          exposed: false
+        created:
+          id: created
+          table: node_field_data
+          field: created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          entity_field: created
+          plugin_id: date
+          order: DESC
+          expose:
+            label: ''
+            field_identifier: ''
+          exposed: false
+          granularity: second
       arguments:
         nid:
           id: nid
@@ -1006,6 +1055,8 @@ display:
         groups:
           1: AND
       defaults:
+        pager: false
+        sorts: false
         arguments: false
         filters: false
         filter_groups: false
@@ -1034,7 +1085,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
-        - url.query_args
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
