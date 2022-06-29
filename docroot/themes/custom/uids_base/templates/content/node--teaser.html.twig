@@ -89,7 +89,7 @@
 {{ attach_library('classy/node') }}
 {{ attach_library('uids_base/node-view-teaser') }}
 
-{% set page_card = {
+{% set node_card = {
   'attributes': attributes.addClass(classes),
   'card_image' : content.field_image|render,
   'card_title': label,
@@ -100,5 +100,5 @@
   'visible_button': true,
 } %}
 
-{% embed '@uids_base/uids/card.html.twig' with page_card only %}
+{% embed '@uids_base/uids/card.html.twig' with node_card only %}
 {% endembed %}
