@@ -125,7 +125,7 @@
         }
       }
     }
-    .banner.banner--vertical-bottom.banner--horizontal-left {
+    .banner.banner--video.banner--vertical-bottom.banner--horizontal-left {
       .banner__content {
         @include breakpoint(page-container) {
           padding: 3rem 1.5rem 4rem 0rem;
@@ -133,7 +133,7 @@
       }
     }
   }
-  .banner {
+  .banner.banner--video {
     &.banner--vertical-bottom.banner--horizontal-left {
       .banner__content {
         @include breakpoint(sm) {
@@ -295,20 +295,15 @@
   }
 }
 
-
-// Modifier class to use for banner as a teaser for views and reference fields.
-.banner.banner--teaser[class*="banner--"] {
-  width: 100%;
+// @todo revisit these styles once https://github.com/uiowa/uids/issues/722 is completed.
+.banner--list {
   height: 100%;
+  .headline--small {
+    font-size: 1.5rem;
+  }
   .banner__content {
-    padding: 2rem;
-    .layout--onecol[class*="page"] &,
-    .layout--onecol & {
+    .layout--onecol[class*="page"] & {
       padding: 2rem;
     }
-  }
-  .headline--small {
-    font-size: 1.8rem;
-    font-size: clamp(1.6rem,1.6rem,1.6rem);
   }
 }
