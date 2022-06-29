@@ -15,12 +15,12 @@
  * @see template_preprocess_views_view_unformatted()
  */
 #}
-  {% for key,row in rows %}
-    {% set row_classes = [
-      default_row_class ? 'views-row',
-    ] %}
-    <div{{ row.attributes.addClass(row_classes) }}>
-  {%
+{% set row_classes = [
+  default_row_class ? 'views-row',
+] %}
+{% for key, row in rows %}
+  <div{{ row.attributes.addClass(row_classes) }}>
+    {%
       set classes = [
       'bg--white',
       'card--centered-left',
@@ -36,9 +36,9 @@
       'attributes': attributes.addClass(classes),
       'card_image': view.style_plugin.getField(key, 'field_image'),
       'card_title': view.style_plugin.getField(key, 'name'),
-      'card_link_url': view.style_plugin.getField(key, 'view_taxonomy_term')|render|striptags|trim,
+      'card_link_url': view.style_plugin.getField(key, 'view_taxonomy_term') | render | striptags | trim
     } %}
 
     {% embed '@uids_base/uids/card.html.twig' with projects_card only %}{% endembed %}
   </div>
-  {% endfor %}
+{% endfor %}

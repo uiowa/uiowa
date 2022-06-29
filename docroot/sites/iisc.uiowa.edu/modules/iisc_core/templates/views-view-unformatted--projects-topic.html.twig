@@ -19,10 +19,10 @@
 #}
 {% set media_attributes = media_attributes?: create_attribute() %}
 {% set media_attributes = media_attributes.addClass('card__media--small card__media media--circle') %}
+{% set row_classes = [
+  default_row_class ? 'views-row',
+] %}
 {% for key, row in rows %}
-  {% set row_classes = [
-    default_row_class ? 'views-row',
-  ] %}
   <div{{ row.attributes.addClass(row_classes) }}>
     {%
       set classes = [

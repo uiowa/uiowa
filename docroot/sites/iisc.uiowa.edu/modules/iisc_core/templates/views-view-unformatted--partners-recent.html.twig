@@ -20,10 +20,10 @@
 {% if title %}
   <h3>{{ title }}</h3>
 {% endif %}
-{% for key,row in rows %}
-  {% set row_classes = [
-    default_row_class ? 'views-row',
-  ] %}
+{% set row_classes = [
+  default_row_class ? 'views-row',
+] %}
+{% for key, row in rows %}
   <div{{ row.attributes.addClass(row_classes) }}>
 
     {%
@@ -46,24 +46,21 @@
     ]
     %}
 
-    {% set headline_level = heading_size ?: 'h3' %}
+    {% set headline_level = heading_size? : 'h3' %}
 
     {% set block_banner = {
       'attributes': attributes.addClass(classes),
       'banner_image': view.style_plugin.getField(key, 'field_image'),
       'banner_title': view.style_plugin.getField(key, 'title'),
       'headline_level': headline_level,
-      'headline_class' : headline_classes,
-      'link_element' : 'title',
+      'headline_class': headline_classes,
+      'link_element': 'title',
       'link': {
-        'link_url': view.style_plugin.getField(key, 'view_node')|render|striptags|trim,
-      },
+        'link_url': view.style_plugin.getField(key, 'view_node') | render | striptags | trim
+      }
     } %}
 
-    {% embed '@uids_base/uids/banner.html.twig' with block_banner only %}
-    {% endembed %}
+    {% embed '@uids_base/uids/banner.html.twig' with block_banner only %}{% endembed %}
 
   </div>
 {% endfor %}
-
-
