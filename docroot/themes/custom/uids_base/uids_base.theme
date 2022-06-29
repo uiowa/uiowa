@@ -668,16 +668,12 @@ function uids_base_preprocess_block(&$variables) {
       return substr($v, 0, 4) === 'bttn';
     });
 
+    // Add banner--video class if bundle is a video.
     if ($block->hasField('field_uiowa_banner_image')) {
-      $variables['banner_video'] = [];
       if (!$block->get('field_uiowa_banner_image')->isEmpty()) {
-        $banner_video = $block->field_uiowa_banner_image
-          ->entity
-          ->field_media_video_file
-          ->entity
-          ->getFileUri();
-        if ($banner_video) {
-          $variables['banner_video'] = 'banner--video';
+        $bundle_type = $block->get('field_uiowa_banner_image')->first()->get('entity')->getValue()->bundle->first()->target_id;
+        if ($bundle_type == 'video') {
+          $variables['attributes']['class'][] = 'banner--video';
         }
       }
     }
