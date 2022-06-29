@@ -17,34 +17,33 @@
  * @ingroup themeable
  */
 #}
+{% set media_attributes = media_attributes?: create_attribute() %}
+{% set media_attributes = media_attributes.addClass('card__media--small card__media media--circle') %}
+{% for key, row in rows %}
+  {% set row_classes = [
+    default_row_class ? 'views-row',
+  ] %}
+  <div{{ row.attributes.addClass(row_classes) }}>
+    {%
+      set classes = [
+      'bg--white',
+      'card--centered',
+      'card--alignment-left',
+      'media--border',
+      'card--stacked ',
+      'card--enclosed',
+      'card__row',
+    ]
+    %}
 
-  {% for key,row in rows %}
-    {% set row_classes = [
-      default_row_class ? 'views-row',
-    ] %}
-    {% set media_attributes = media_attributes ?: create_attribute() %}
-    {% set media_attributes = media_attributes.addClass('card__media--small card__media media--circle') %}
-    <div{{ row.attributes.addClass(row_classes) }}>
-      {%
-        set classes = [
-        'bg--white',
-        'card--centered',
-        'card--alignment-left',
-        'media--border',
-        'card--stacked ',
-        'card--enclosed',
-        'card__row',
-      ]
-      %}
+    {% set projects_card = {
+      'attributes': attributes.addClass(classes),
+      'card_image': view.style_plugin.getField(key, 'field_image'),
+      'card_title': view.style_plugin.getField(key, 'name'),
+      'card_link_url': view.style_plugin.getField(key, 'view_taxonomy_term') | render | striptags | trim,
+      'media_attributes': media_attributes
+    } %}
 
-      {% set projects_card = {
-        'attributes': attributes.addClass(classes),
-        'card_image': view.style_plugin.getField(key, 'field_image'),
-        'card_title': view.style_plugin.getField(key, 'name'),
-        'card_link_url': view.style_plugin.getField(key, 'view_taxonomy_term')|render|striptags|trim,
-        'media_attributes': media_attributes,
-      } %}
-
-      {% embed '@uids_base/uids/card.html.twig' with projects_card only %}{% endembed %}
-    </div>
-  {% endfor %}
+    {% embed '@uids_base/uids/card.html.twig' with projects_card only %}{% endembed %}
+  </div>
+{% endfor %}
