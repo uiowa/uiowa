@@ -671,7 +671,7 @@ function uids_base_preprocess_block(&$variables) {
     // Add banner--video class if bundle is a video.
     if ($block->hasField('field_uiowa_banner_image')) {
       if (!$block->get('field_uiowa_banner_image')->isEmpty()) {
-        $bundle_type = $block->get('field_uiowa_banner_image')->first()->get('entity')->getValue()->bundle->first()->target_id;
+        $bundle_type = $block->get('field_uiowa_banner_image')->first()->get('entity')->getValue()->bundle();
         if ($bundle_type == 'video') {
           $variables['attributes']['class'][] = 'banner--video';
         }
