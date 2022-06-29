@@ -46,7 +46,7 @@
     ]
     %}
 
-    {% set headline_level = heading_size? : 'h3' %}
+    {% set headline_level = heading_size ?: 'h3' %}
 
     {% set block_banner = {
       'attributes': attributes.addClass(classes),
