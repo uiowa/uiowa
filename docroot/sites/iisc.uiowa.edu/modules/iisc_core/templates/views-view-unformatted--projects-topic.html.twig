@@ -17,11 +17,13 @@
  * @ingroup themeable
  */
 #}
+
   {% for key,row in rows %}
     {% set row_classes = [
       default_row_class ? 'views-row',
     ] %}
     {% set media_attributes = media_attributes ?: create_attribute() %}
+    {% set media_attributes = media_attributes.addClass('card__media--small card__media media--circle') %}
     <div{{ row.attributes.addClass(row_classes) }}>
       {%
         set classes = [
@@ -40,7 +42,7 @@
         'card_image': view.style_plugin.getField(key, 'field_image'),
         'card_title': view.style_plugin.getField(key, 'name'),
         'card_link_url': view.style_plugin.getField(key, 'view_taxonomy_term')|render|striptags|trim,
-        'media_attributes': media_attributes.addClass('card__media--small card__media media--circle'),
+        'media_attributes': media_attributes,
       } %}
 
       {% embed '@uids_base/uids/card.html.twig' with projects_card only %}{% endembed %}
