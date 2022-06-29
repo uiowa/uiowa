@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_form_mode.node.minimal
     - field.field.node.project.body
+    - field.field.node.project.field_academic_year
     - field.field.node.project.field_image
     - field.field.node.project.field_meta_tags
     - field.field.node.project.field_project_college_department
@@ -42,6 +43,12 @@ content:
   created:
     type: datetime_timestamp
     weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_academic_year:
+    type: options_select
+    weight: 130
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -115,13 +122,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_tags:
-    type: entity_reference_autocomplete_tags
+    type: entity_reference_autocomplete
     weight: 128
     region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
-      size: 60
+      size: 40
       placeholder: ''
     third_party_settings: {  }
   moderation_state:

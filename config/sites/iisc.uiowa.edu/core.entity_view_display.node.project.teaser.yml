@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.project.body
+    - field.field.node.project.field_academic_year
     - field.field.node.project.field_image
     - field.field.node.project.field_meta_tags
     - field.field.node.project.field_project_college_department
@@ -41,6 +42,7 @@ content:
     weight: 100
     region: content
 hidden:
+  field_academic_year: true
   field_image: true
   field_meta_tags: true
   field_project_college_department: true

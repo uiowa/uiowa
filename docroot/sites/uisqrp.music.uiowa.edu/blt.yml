@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: musicuisqrp.uiowa.ddev.site
+    protocol: https
+  machine_name: musicuisqrp
+  human_name: uisqrp.music.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: musicuisqrp.prod
+drupal:
+  db:
+    database: uisqrp_music_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: vorhon
+  site-name: UISQRP

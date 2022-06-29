@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labstuttering.uiowa.ddev.site
+    protocol: https
+  machine_name: labstuttering
+  human_name: stuttering.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labstuttering.prod
+drupal:
+  db:
+    database: stuttering_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: ostrem
+  site-name: 'Stuttering Lab'

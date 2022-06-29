@@ -57,7 +57,8 @@
             "acquia/blt": true,
             "acquia/blt-phpcs": true,
             "drupal/core-composer-scaffold": true,
-            "oomphinc/composer-installers-extender": true
+            "oomphinc/composer-installers-extender": true,
+            "drupal/core-project-message": true
         }
     },
     "require": {
@@ -73,7 +74,7 @@
         "bower-asset/photoswipe": "^4.1",
         "cweagans/composer-patches": "^1.7",
         "dompdf/dompdf": "1.2.1",
-        "drupal/acquia_connector": "^3.0@RC",
+        "drupal/acquia_connector": "^4.0",
         "drupal/acquia_purge": "^1.0",
         "drupal/address": "^1.8",
         "drupal/administerusersbyrole": "^3.0",
@@ -88,8 +89,9 @@
         "drupal/config_ignore": "^3.0",
         "drupal/config_inspector": "^2.0",
         "drupal/config_split": "^2.0@beta",
-        "drupal/core-composer-scaffold": "^9.3",
-        "drupal/core-recommended": "^9.3.5",
+        "drupal/core-composer-scaffold": "9.3.17",
+        "drupal/core-project-message": "9.3.17",
+        "drupal/core-recommended": "9.3.17",
         "drupal/cshs": "3.x-dev#fe1b07101d724e6aa5fbcd78c50ce2780534ed0f",
         "drupal/default_content": "^2.0",
         "drupal/devel": "^4.0",
@@ -105,6 +107,7 @@
         "drupal/field_delimiter": "^1.1",
         "drupal/field_group": "^3.2",
         "drupal/file_mdm": "^2.1",
+        "drupal/find_text": "^2.0@beta",
         "drupal/focal_point": "^1.5",
         "drupal/fontawesome": "^2.9",
         "drupal/fragments": "^2.0",
@@ -113,7 +116,7 @@
         "drupal/google_analytics": "^4.0",
         "drupal/google_tag": "^1.3",
         "drupal/heading": "^1.4",
-        "drupal/honeypot": "^2.0",
+        "drupal/honeypot": "^2.1",
         "drupal/iframe_title_filter": "^1.1",
         "drupal/imagecache_external": "^3.0",
         "drupal/imagemagick": "^3.0",
@@ -172,11 +175,12 @@
         "drupal/stage_file_proxy": "^1.0",
         "drupal/superfish": "^1.4",
         "drupal/swiftmailer": "^2.0@beta",
+        "drupal/taxonomy_path_breadcrumb": "^1.0@beta",
         "drupal/theme_permission": "^2.0",
         "drupal/tvi": "^1.0@RC",
         "drupal/views_ical": "^1.0@alpha",
         "drupal/views_tree": "^2.0@alpha",
-        "drupal/webform": "^6.0",
+        "drupal/webform": "^6.1",
         "drupal/weight": "^3.2",
         "drupal/workbench_email": "^2.2",
         "drush/drush": "^11.0.5",
@@ -185,6 +189,7 @@
         "npm-asset/fontawesome-iconpicker": "^3.2",
         "npm-asset/jquery-collapse": "^1.1",
         "npm-asset/leaflet": "^1.7",
+        "npm-asset/pannellum": "^2.5",
         "npm-asset/slick-carousel": "^1.8",
         "oomphinc/composer-installers-extender": "^2.0",
         "richardbporter/drush-users-commands": "^3.0.1",
@@ -223,7 +228,8 @@
                 "Periods in query strings are replaced by underscores": "https://www.drupal.org/files/issues/2020-06-25/fix-mangled-query-parameter-names-2984272-36.patch",
                 "Fix LB contextual links after dragging block to new section": "https://www.drupal.org/files/issues/2021-12-03/3160785-20.patch",
                 "ImageItem::getUploadValidators() should be the source of truth for validating uploaded images": "https://www.drupal.org/files/issues/2021-09-09/3008292-version-11.patch",
-                "Support third party settings for components within a section": "https://drupal.org/files/issues/2021-12-13/3015152-tps-9.3.x-128.patch"
+                "Support third party settings for components within a section": "https://drupal.org/files/issues/2021-12-13/3015152-tps-9.3.x-128.patch",
+                "Improve migration system performance: statically cache DrupalSqlBase::$systemData": "https://www.drupal.org/files/issues/2022-01-24/3154156-12.patch"
             },
             "drupal/default_content": {
                 "Add a Normalizer and Denormalizer to support Layout Builder": "https://www.drupal.org/files/issues/2021-04-07/3160146-37.patch",
@@ -240,6 +246,9 @@
             },
             "drupal/google_analytics": {
                 "Add dependency on drupal:path_alias": "https://www.drupal.org/files/issues/2021-11-25/google_analytics-3246597-7.patch"
+            },
+            "drupal/imagecache_external": {
+                "Batch clean up on cron": "https://www.drupal.org/files/issues/2022-01-25/3138005-6.patch"
             },
             "drupal/inline_entity_form": {
                 "Custom blocks created in inline forms should not be reusable": "https://www.drupal.org/files/issues/2020-05-04/3002175-26.patch"
