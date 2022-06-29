@@ -56,7 +56,7 @@ class CostCalculatorForm extends FormBase {
         '#title' => $this->t('AAA cost per mile'),
         '#type' => 'number',
         '#min' => 0,
-        '#description' => $this->t('Based on <a href="@aaa">AAA’s average cost per mile</a> for operating a vehicle 15,000 miles per year.', ['@aaa' => 'https://www.aaa.com/autorepair/articles/what-does-it-cost-to-own-and-operate-a-car']),
+        '#description' => $this->t('Based on <a href="@aaa">AAA’s average cost per mile</a> for operating a vehicle 15,000 miles per year.', ['@aaa' => 'https://exchange.aaa.com/automotive/aaas-your-driving-costs/']),
         '#field_prefix' => $this->t('$'),
         '#default_value' => $this->config('transportation_calculator.settings')->get('aaa-cost') ?? 0.57,
         '#disabled' => TRUE,
