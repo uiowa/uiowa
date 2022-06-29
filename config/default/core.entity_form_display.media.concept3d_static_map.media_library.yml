@@ -1,0 +1,27 @@
+uuid: 268299c2-e4cd-48d2-b3f3-03f411398b74
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.media.media_library
+    - field.field.media.concept3d_static_map.field_media_concept3d_static_map
+    - media.type.concept3d_static_map
+id: media.concept3d_static_map.media_library
+targetEntityType: media
+bundle: concept3d_static_map
+mode: media_library
+content:
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  field_media_concept3d_static_map: true
+  path: true
+  status: true
+  uid: true
