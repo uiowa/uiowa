@@ -611,7 +611,27 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
       }
       break;
 
+    case 'inline_block:uiowa_aggregator':
     case 'inline_block:uiowa_card':
+    case 'inline_block:uiowa_events':
+    case 'views_block:article_list_block-list_article':
+    case 'views_block:events_list_block-card_list':
+    case 'views_block:people_list_block-list_card':
+      $media_position = $form_state->getValue('layout_builder_style_card_media_position');
+      $media_format = $form_state->getValue('layout_builder_style_media_format');
+
+      if ($media_position === 'card_media_position_stacked') {
+        if (in_array($media_format, [
+          'media_format_widescreen',
+          'media_format_square',
+        ])) {
+          $form_state->setValue('layout_builder_style_card_image_size', 'card_image_large');
+          // @todo Should we set a message here to let the user
+          //   know the image size was changed? See
+          //   https://github.com/uiowa/uiowa/issues/5036
+        }
+      }
+
       if ($block->getPluginId() == 'inline_block:uiowa_card') {
         // Make sure button display field is checked if the link title field is filled in.
         $link_title = $form_state->getValue(
@@ -630,27 +650,6 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
             ], ['value' => 1]
           );
         };
-      }
-      break;
-
-    case 'inline_block:uiowa_aggregator':
-    case 'inline_block:uiowa_events':
-    case 'views_block:article_list_block-list_article':
-    case 'views_block:events_list_block-card_list':
-    case 'views_block:people_list_block-list_card':
-      $media_position = $form_state->getValue('layout_builder_style_card_media_position');
-      $media_format = $form_state->getValue('layout_builder_style_media_format');
-
-      if ($media_position === 'card_media_position_stacked') {
-        if (in_array($media_format, [
-          'media_format_widescreen',
-          'media_format_square',
-        ])) {
-          $form_state->setValue('layout_builder_style_card_image_size', 'card_image_large');
-          // @todo Should we set a message here to let the user
-          //   know the image size was changed? See
-          //   https://github.com/uiowa/uiowa/issues/5036
-        }
       }
       break;
 
