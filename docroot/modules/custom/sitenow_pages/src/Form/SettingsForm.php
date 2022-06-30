@@ -196,20 +196,20 @@ class SettingsForm extends ConfigFormBase {
         '#title' => $this->t("Display arrows linking to pages from lists/teasers."),
         '#default_value' => $show_teaser_link_indicator ?: FALSE,
       ];
+
+      $form['global']['block_settings'] = [
+        '#type' => 'fieldset',
+        '#title' => 'Block Settings',
+        '#collapsible' => FALSE,
+      ];
+
+      $form['global']['block_settings']['card_link_indicator_display'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Display card arrow button'),
+        '#description' => $this->t('Set the default behavior the card arrow button.'),
+        '#default_value' => $config->get('card_link_indicator_display') ?? TRUE,
+      ];
     }
-
-    $form['global']['block_settings'] = [
-      '#type' => 'fieldset',
-      '#title' => 'Block Settings',
-      '#collapsible' => FALSE,
-    ];
-
-    $form['global']['block_settings']['card_link_indicator_display'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Display card arrow button'),
-      '#description' => $this->t('Set the default behavior the card arrow button.'),
-      '#default_value' => $config->get('card_link_indicator_display') ?? TRUE,
-    ];
 
     return $form;
   }
