@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraint;
 /**
  * Check if a value is a valid URL.
  *
- * @constraint(
+ * @Constraint(
  *   id = "PanoptoURL",
  *   label = @Translation("Panopto Url", context = "Validation"),
  *   type = { "link", "string", "string_long" }

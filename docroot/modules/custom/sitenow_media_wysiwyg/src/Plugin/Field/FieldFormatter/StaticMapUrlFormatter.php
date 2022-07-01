@@ -2,48 +2,59 @@
 
 namespace Drupal\sitenow_media_wysiwyg\Plugin\Field\FieldFormatter;
 
-use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\link\Plugin\Field\FieldFormatter\LinkFormatter;
 use Drupal\sitenow_media_wysiwyg\Plugin\media\Source\StaticMap;
-use Drupal\Core\Field\FormatterBase;
 
 /**
- * Static map URL field formatter.
+ * StaticMap URL field formatter.
  *
  * @FieldFormatter(
  *   id = "static_map_url_formatter",
  *   label = @Translation("Static Map"),
- *    *   description = @Translation("Display the static map."),
+ *   description = @Translation("Display the static map instance."),
  *   field_types = {
- *    "static_map_url"
+ *     "static_map_url"
  *   }
  * )
  */
-class StaticMapUrlFormatter extends FormatterBase {
+class StaticMapUrlFormatter extends LinkFormatter {
 
   /**
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
-    /** @var \Drupal\media\MediaInterface $media */
-    $media = $items->getEntity();
+    $elements = parent::viewElements($items, $langcode);
+    $values = $items->getValue();
 
-    if (($source = $media->getSource()) && $source instanceof StaticMap) {
-      foreach ($items as $delta => $item) {
-        $element[$delta] = [
-          '#markup' => StaticMap::create($source->getMetadata($media, 'label')),
-        ];
-      }
+    foreach ($elements as $delta => $entity) {
+      $parsed_url = UrlHelper::parse($values[$delta]['uri']);
+      $location = Html::escape($parsed_url['query']['loc']);
+      $label = 'asdf';
+      $zoom = 17;
+
+      $elements[$delta] = [
+        '#type' => 'html_tag',
+        '#tag' => 'a',
+        '#attributes' => [
+          'href' => $parsed_url,
+          'title' => $label,
+          'aria-label' => $label,
+        ],
+        'static' => [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#attributes' => [
+            'class' => 'static-map',
+            'style' => "background-image: url('https://staticmap.concept3d.com/map/static-map/?map=1890&loc=" . $location . "&scale=2&zoom=" . $zoom . "');",
+          ],
+        ],
+      ];
     }
 
-    return $element;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function isApplicable(FieldDefinitionInterface $field_definition) {
-    return $field_definition->getTargetEntityTypeId() === 'media';
+    return $elements;
   }
 
 }
