@@ -31,7 +31,7 @@ class StaticMapUrlFormatter extends LinkFormatter {
     foreach ($elements as $delta => $entity) {
       // Hardcoded values for now.
       // @todo wire these up to actual content...
-      $location = '579165';
+      $location = str_replace('!m/', '', parse_url($values[0]['uri'], PHP_URL_FRAGMENT));
       $label = 'asdf';
       $zoom = 17;
 
