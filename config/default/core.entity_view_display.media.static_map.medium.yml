@@ -1,0 +1,33 @@
+uuid: e1bf80e4-e5b4-4eae-abf5-229d6f6b7c0d
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.medium
+    - field.field.media.static_map.field_media_static_map
+    - media.type.static_map
+  module:
+    - layout_builder
+third_party_settings:
+  layout_builder:
+    enabled: false
+    allow_custom: false
+id: media.static_map.medium
+targetEntityType: media
+bundle: static_map
+mode: medium
+content:
+  field_media_static_map:
+    type: string
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  created: true
+  name: true
+  search_api_excerpt: true
+  thumbnail: true
+  uid: true

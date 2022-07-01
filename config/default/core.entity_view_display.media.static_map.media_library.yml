@@ -1,0 +1,31 @@
+uuid: 47224b64-35e0-464e-bfae-71cc886056ce
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.media_library
+    - field.field.media.static_map.field_media_static_map
+    - image.style.medium
+    - media.type.static_map
+  module:
+    - image
+id: media.static_map.media_library
+targetEntityType: media
+bundle: static_map
+mode: media_library
+content:
+  thumbnail:
+    type: image
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: medium
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  created: true
+  field_media_static_map: true
+  name: true
+  search_api_excerpt: true
+  uid: true

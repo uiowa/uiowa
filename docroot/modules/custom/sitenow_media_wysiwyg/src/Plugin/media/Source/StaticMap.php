@@ -13,6 +13,9 @@ use Drupal\media\MediaSourceBase;
  *   label = @Translation("Static Map"),
  *   description = @Translation("Use Static Map for reusable media."),
  *   allowed_field_types = {"string", "string_long", "link", "static_map_url"},
+ *   forms = {
+ *     "media_library_add" = "Drupal\sitenow_media_wysiwyg\Form\StaticMapForm",
+ *   },
  * )
  */
 class StaticMap extends MediaSourceBase {
