@@ -5,16 +5,22 @@ dependencies:
   config:
     - field.field.media.static_map.field_media_static_map
     - media.type.static_map
+  module:
+    - sitenow_media_wysiwyg
 id: media.static_map.default
 targetEntityType: media
 bundle: static_map
 mode: default
 content:
   field_media_static_map:
-    type: string
+    type: static_map_url_formatter
     label: visually_hidden
     settings:
-      link_to_entity: false
+      trim_length: '80'
+      url_only: ''
+      url_plain: ''
+      rel: 0
+      target: 0
     third_party_settings: {  }
     weight: 0
     region: content
