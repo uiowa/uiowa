@@ -4,15 +4,13 @@ status: true
 dependencies:
   module:
     - media
+    - sitenow_media_wysiwyg
 id: media.field_media_static_map
 field_name: field_media_static_map
 entity_type: media
-type: string
-settings:
-  max_length: 255
-  case_sensitive: false
-  is_ascii: false
-module: core
+type: static_map_url
+settings: {  }
+module: sitenow_media_wysiwyg
 locked: false
 cardinality: 1
 translatable: true

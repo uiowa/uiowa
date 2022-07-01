@@ -11,6 +11,14 @@ targetEntityType: media
 bundle: static_map
 mode: media_library
 content:
+  field_media_static_map:
+    type: static_map_url_widget
+    weight: 0
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: { }
   name:
     type: string_textfield
     weight: 0
@@ -21,7 +29,6 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
-  field_media_static_map: true
   path: true
   status: true
   uid: true
