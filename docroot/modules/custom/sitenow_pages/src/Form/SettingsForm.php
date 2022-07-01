@@ -196,7 +196,21 @@ class SettingsForm extends ConfigFormBase {
         '#title' => $this->t("Display arrows linking to pages from lists/teasers."),
         '#default_value' => $show_teaser_link_indicator ?: FALSE,
       ];
+
+      $form['global']['block_settings'] = [
+        '#type' => 'fieldset',
+        '#title' => 'Block Settings',
+        '#collapsible' => FALSE,
+      ];
+
+      $form['global']['block_settings']['card_link_indicator_display'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Display card arrow button'),
+        '#description' => $this->t('Set the default behavior the card arrow button.'),
+        '#default_value' => $config->get('card_link_indicator_display') ?? TRUE,
+      ];
     }
+
     return $form;
   }
 
@@ -209,6 +223,7 @@ class SettingsForm extends ConfigFormBase {
     $tag_display = $form_state->getValue('tag_display');
     $related_display = $form_state->getValue('related_display');
     $show_teaser_link_indicator = $form_state->getValue('show_teaser_link_indicator');
+    $card_link_indicator_display = $form_state->getValue('card_link_indicator_display');
 
     $this->configFactory->getEditable(static::SETTINGS)
       // Save the featured image display default.
@@ -228,6 +243,11 @@ class SettingsForm extends ConfigFormBase {
     $this->configFactory->getEditable(static::SETTINGS)
       // Save the tag display default.
       ->set('show_teaser_link_indicator', $show_teaser_link_indicator)
+      ->save();
+
+    $this->configFactory->getEditable(static::SETTINGS)
+      // Save the default card button selection.
+      ->set('card_link_indicator_display', $card_link_indicator_display)
       ->save();
 
     parent::submitForm($form, $form_state);
