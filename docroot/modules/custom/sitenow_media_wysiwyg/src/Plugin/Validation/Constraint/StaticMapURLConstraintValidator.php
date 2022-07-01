@@ -17,7 +17,7 @@ class StaticMapURLConstraintValidator extends ConstraintValidator {
    */
   public function validate($value, Constraint $constraint) {
     $value = $value->getValue()[0];
-    $parsed_url = UrlHelper::parse($value['value']);
+    $parsed_url = UrlHelper::parse($value['uri']);
 
     $no_id = !array_key_exists('id', $parsed_url['query']);
 
