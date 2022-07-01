@@ -12,7 +12,6 @@ use Drupal\media\MediaSourceFieldConstraintsInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Field\FieldTypePluginManagerInterface;
 
-
 /**
  * Provides media type plugin for Static Map.
  *
