@@ -1,0 +1,23 @@
+uuid: 14f0055e-044a-416d-b7b1-fc91a07a0a8c
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_card
+    - field.storage.block_content.field_uiowa_card_button_display
+  module:
+    - options
+id: block_content.uiowa_card.field_uiowa_card_button_display
+field_name: field_uiowa_card_button_display
+entity_type: block_content
+bundle: uiowa_card
+label: 'Show button'
+description: 'This setting only has an effect when a link URL is provided.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 'Use site default'
+default_value_callback: ''
+settings: {  }
+field_type: list_string
