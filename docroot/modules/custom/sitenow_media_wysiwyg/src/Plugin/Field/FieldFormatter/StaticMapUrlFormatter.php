@@ -28,27 +28,29 @@ class StaticMapUrlFormatter extends LinkFormatter {
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = parent::viewElements($items, $langcode);
     $values = $items->getValue();
-
     foreach ($elements as $delta => $entity) {
-      $parsed_url = UrlHelper::parse($values[$delta]['uri']);
-      $location = Html::escape($parsed_url['query']['loc']);
+      // Hardcoded values for now.
+      // @todo wire these up to actual content...
+      $location = '579165';
       $label = 'asdf';
       $zoom = 17;
 
       $elements[$delta] = [
-        '#type' => 'html_tag',
-        '#tag' => 'a',
-        '#attributes' => [
-          'href' => $parsed_url,
-          'title' => $label,
-          'aria-label' => $label,
-        ],
-        'static' => [
+        'map' => [
           '#type' => 'html_tag',
-          '#tag' => 'div',
+          '#tag' => 'a',
           '#attributes' => [
-            'class' => 'static-map',
-            'style' => "background-image: url('https://staticmap.concept3d.com/map/static-map/?map=1890&loc=" . $location . "&scale=2&zoom=" . $zoom . "');",
+            'href' => $values[0]['uri'],
+            'title' => $label,
+            'aria-label' => $label,
+          ],
+          'static' => [
+            '#type' => 'html_tag',
+            '#tag' => 'div',
+            '#attributes' => [
+              'class' => 'static-map',
+              'style' => "background-image: url('https://staticmap.concept3d.com/map/static-map/?map=1890&loc=" . $location . "&scale=2&zoom=" . $zoom . "');",
+            ],
           ],
         ],
       ];
