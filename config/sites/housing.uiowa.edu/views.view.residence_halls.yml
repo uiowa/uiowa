@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.teaser
     - node.type.residence_hall
     - taxonomy.vocabulary.amenities
     - taxonomy.vocabulary.bathroom_type
@@ -496,12 +497,10 @@ display:
       style:
         type: default
       row:
-        type: fields
+        type: 'entity:node'
         options:
-          default_field_elements: true
-          inline: {  }
-          separator: ''
-          hide_empty: false
+          relationship: none
+          view_mode: teaser
       query:
         type: views_query
         options:
@@ -511,6 +510,7 @@ display:
           replica: false
           query_tags: {  }
       relationships: {  }
+      css_class: grid--threecol--33-34-33
       use_ajax: true
       header: {  }
       footer: {  }
