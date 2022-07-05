@@ -512,7 +512,20 @@ display:
       relationships: {  }
       css_class: grid--threecol--33-34-33
       use_ajax: true
-      header: {  }
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: false
+          content:
+            value: "<h2 class=\"headline headline--serif headline--underline\">Find A Location</h2>\r\n<p>Living on campus not only is convenient and affordable, it's a great way to find a home within the university community and make new friends. The university's residence halls vary in size from a few hundred to 1,000 residents, and in atmospheres from high-rises like Catlett to the more traditional Iowa architecture of Currier.</p>"
+            format: filtered_html
+          tokenize: false
       footer: {  }
       display_extenders: {  }
     cache_metadata:
