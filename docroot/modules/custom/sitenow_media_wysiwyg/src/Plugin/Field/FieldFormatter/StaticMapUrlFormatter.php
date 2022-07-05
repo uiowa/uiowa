@@ -24,6 +24,7 @@ class StaticMapUrlFormatter extends LinkFormatter {
 
   /**
    * {@inheritdoc}
+   * This builds the render for the map.
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = parent::viewElements($items, $langcode);
@@ -46,10 +47,11 @@ class StaticMapUrlFormatter extends LinkFormatter {
           ],
           'static' => [
             '#type' => 'html_tag',
-            '#tag' => 'div',
+            '#tag' => 'img',
             '#attributes' => [
               'class' => 'static-map',
-              'style' => "background-image: url('https://staticmap.concept3d.com/map/static-map/?map=1890&loc=" . $location . "&scale=2&zoom=" . $zoom . "');",
+              'src' => urldecode("https://staticmap.concept3d.com/map/static-map/?map=1890&loc=" . $location . "&scale=2&label&zoom=" . $zoom),
+//              'style' => "background-image: url(" . urldecode("https://staticmap.concept3d.com/map/static-map/?map=1890&loc=" . $location . "&scale=2&label&zoom=" . $zoom) . ");",
             ],
           ],
         ],

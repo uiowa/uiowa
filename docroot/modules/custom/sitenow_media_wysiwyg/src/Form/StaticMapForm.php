@@ -30,8 +30,15 @@ class StaticMapForm extends AddFormBase {
 
     $form['container']['url'] = [
       '#type' => 'url',
-      '#title' => $this->t('Static Map URL'),
+      '#title' => $this->t('Static map URL'),
       '#placeholder' => 'https://',
+      '#size' => 80,
+      '#maxlength' => 1024,
+    ];
+    $form['container']['label'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Static map label'),
+      '#placeholder' => 'Building name',
       '#size' => 80,
       '#maxlength' => 1024,
     ];

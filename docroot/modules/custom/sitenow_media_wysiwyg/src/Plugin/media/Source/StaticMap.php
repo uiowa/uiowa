@@ -6,6 +6,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Render\RendererInterface;
+use Drupal\media\MediaInterface;
 use Drupal\media\MediaSourceBase;
 use Drupal\media\MediaTypeInterface;
 use Drupal\media\MediaSourceFieldConstraintsInterface;
@@ -89,6 +90,14 @@ class StaticMap extends MediaSourceBase implements MediaSourceFieldConstraintsIn
    */
   public function createSourceField(MediaTypeInterface $type) {
     return parent::createSourceField($type)->set('label', 'Static map URL');
+  }
+
+  /**
+   * {@inheritdoc}
+   * This is the default name for the media entity.
+   */
+  public function getMetadata(MediaInterface $media, $attribute_name) {
+
   }
 
 }
