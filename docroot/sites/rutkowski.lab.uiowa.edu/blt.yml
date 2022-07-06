@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labrutkowski.uiowa.ddev.site
+    protocol: https
+  machine_name: labrutkowski
+  human_name: rutkowski.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labrutkowski.prod
+drupal:
+  db:
+    database: rutkowski_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: drutkows
+  site-name: 'Rutkowski Lab'

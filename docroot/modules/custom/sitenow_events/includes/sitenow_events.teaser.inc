@@ -18,14 +18,6 @@ use Drupal\smart_trim\Truncate\TruncateHTML;
 function template_preprocess_sitenow_events_teaser(array &$variables) {
   $config = \Drupal::config('sitenow_events.settings');
 
-  if ($variables['event']['canceled'] == TRUE) {
-    $variables['event']['subtitle'] = [
-      '#markup' => 'Canceled',
-      '#prefix' => '<span class="badge badge--orange">',
-      '#suffix' => '</span>',
-    ];
-  }
-
   if (isset($variables['event']['media'][0]['original_image'])) {
     // Establish default view mode if layout_builder_styles don't exist.
     $image_view_mode = 'large__square';
