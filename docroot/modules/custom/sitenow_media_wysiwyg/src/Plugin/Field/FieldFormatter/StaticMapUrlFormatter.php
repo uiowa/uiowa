@@ -30,6 +30,12 @@ class StaticMapUrlFormatter extends LinkFormatter {
       $label = $values[0]['alt'];
       $zoom = $values[0]['zoom'];
 
+      // Original/Default is medium square, else change view mode.
+      $view_mode = 'medium__square';
+      if ($this->viewMode && $this->viewMode !== 'default') {
+        $view_mode = $this->viewMode;
+      }
+
       $elements[$delta] = [
         'map' => [
           '#type' => 'html_tag',
@@ -42,7 +48,7 @@ class StaticMapUrlFormatter extends LinkFormatter {
           'static' => [
             '#theme' => 'imagecache_external_responsive',
             '#uri' => urldecode("https://staticmap.concept3d.com/map/static-map/?map=1890&loc=" . $location . "&scale=2&zoom=" . $zoom),
-            '#responsive_image_style_id' => 'large__square',
+            '#responsive_image_style_id' => $view_mode,
             '#attributes' => [
               'loading' => 'lazy',
               'alt' => $label,
