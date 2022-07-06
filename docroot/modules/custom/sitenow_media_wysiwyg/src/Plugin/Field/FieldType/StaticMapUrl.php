@@ -28,6 +28,10 @@ class StaticMapUrl extends LinkItem {
     $properties['zoom'] = DataDefinition::create('integer')
       ->setLabel(t('Zoom'));
 
+    $properties['alt'] = DataDefinition::create('string')
+      ->setLabel(t('Map alt text'));
+
+
     unset($properties['title']);
     unset($properties['options']);
 
@@ -48,6 +52,12 @@ class StaticMapUrl extends LinkItem {
       'description' => 'The zoom level for the static map.',
       'type' => 'int',
       'size' => 'normal',
+    ];
+
+    $schema['columns']['alt'] = [
+      'description' => 'The alternative text for the static map.',
+      'type' => 'varchar',
+      'length' => 255,
     ];
 
     return $schema;

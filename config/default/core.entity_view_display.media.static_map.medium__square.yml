@@ -1,0 +1,38 @@
+uuid: ff189036-f146-40fb-b068-eb1f8555311f
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.medium__square
+    - field.field.media.static_map.field_media_static_map
+    - media.type.static_map
+  module:
+    - layout_builder
+    - sitenow_media_wysiwyg
+third_party_settings:
+  layout_builder:
+    enabled: false
+    allow_custom: false
+id: media.static_map.medium__square
+targetEntityType: media
+bundle: static_map
+mode: medium__square
+content:
+  field_media_static_map:
+    type: static_map_url_formatter
+    label: visually_hidden
+    settings:
+      trim_length: '80'
+      url_only: ''
+      url_plain: ''
+      rel: 0
+      target: 0
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  created: true
+  name: true
+  search_api_excerpt: true
+  thumbnail: true
+  uid: true

@@ -6,6 +6,8 @@ dependencies:
     - core.entity_form_mode.media.media_library
     - field.field.media.static_map.field_media_static_map
     - media.type.static_map
+  module:
+    - sitenow_media_wysiwyg
 id: media.static_map.media_library
 targetEntityType: media
 bundle: static_map
@@ -19,16 +21,9 @@ content:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
-  name:
-    type: string_textfield
-    weight: 0
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
 hidden:
   created: true
+  name: true
   path: true
   status: true
   uid: true
