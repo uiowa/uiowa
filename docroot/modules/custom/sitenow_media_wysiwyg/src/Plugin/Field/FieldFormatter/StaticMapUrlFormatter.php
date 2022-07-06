@@ -21,7 +21,6 @@ class StaticMapUrlFormatter extends LinkFormatter {
 
   /**
    * {@inheritdoc}
-   * This builds the render for the map.
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = parent::viewElements($items, $langcode);

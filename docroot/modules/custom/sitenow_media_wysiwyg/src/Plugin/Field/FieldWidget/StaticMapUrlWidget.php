@@ -6,7 +6,6 @@ use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\sitenow_media_wysiwyg\Plugin\Field\FieldType\StaticMapUrl;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Static Map URL field widget.
@@ -21,23 +20,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class StaticMapUrlWidget extends LinkWidget {
-  /**
-   * @var \Drupal\Core\Routing\RouteMatchInterface
-   *   The current route match.
-   */
-  private $routeMatch;
 
   /**
-   * {@inheritDoc}
-   */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
-    $instance->routeMatch = $container->get('current_route_match');
-    return $instance;
-  }
-
-  /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
 

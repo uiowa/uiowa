@@ -94,7 +94,6 @@ class StaticMap extends MediaSourceBase implements MediaSourceFieldConstraintsIn
 
   /**
    * {@inheritdoc}
-   * This is the default name for the media entity.
    */
   public function getMetadata(MediaInterface $media, $attribute_name) {
 
