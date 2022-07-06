@@ -2,11 +2,8 @@
 
 namespace Drupal\sitenow_media_wysiwyg\Plugin\Field\FieldFormatter;
 
-use Drupal\Component\Utility\Html;
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\link\Plugin\Field\FieldFormatter\LinkFormatter;
-use Drupal\sitenow_media_wysiwyg\Plugin\media\Source\StaticMap;
 
 /**
  * StaticMap URL field formatter.
@@ -34,7 +31,7 @@ class StaticMapUrlFormatter extends LinkFormatter {
       // @todo wire these up to actual content...
       $location = str_replace('!m/', '', parse_url($values[0]['uri'], PHP_URL_FRAGMENT));
       $label = 'asdf';
-      $zoom = 17;
+      $zoom = $values[0]['zoom'];
 
       $elements[$delta] = [
         'map' => [
@@ -50,8 +47,7 @@ class StaticMapUrlFormatter extends LinkFormatter {
             '#tag' => 'img',
             '#attributes' => [
               'class' => 'static-map',
-              'src' => urldecode("https://staticmap.concept3d.com/map/static-map/?map=1890&loc=" . $location . "&scale=2&label&zoom=" . $zoom),
-//              'style' => "background-image: url(" . urldecode("https://staticmap.concept3d.com/map/static-map/?map=1890&loc=" . $location . "&scale=2&label&zoom=" . $zoom) . ");",
+              'src' => urldecode("https://staticmap.concept3d.com/map/static-map/?map=1890&loc=" . $location . "&scale=2&zoom=" . $zoom),
             ],
           ],
         ],
