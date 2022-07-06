@@ -43,7 +43,7 @@ class StaticMapUrlFormatter extends LinkFormatter {
           '#attributes' => [
             'href' => $values[0]['uri'],
             'title' => $label,
-            'aria-label' => $label,
+            'aria-label' => 'View on maps.uiowa.edu',
           ],
           'static' => [
             '#type' => 'html_tag',

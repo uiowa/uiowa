@@ -35,13 +35,6 @@ class StaticMapForm extends AddFormBase {
       '#size' => 80,
       '#maxlength' => 1024,
     ];
-    $form['container']['label'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Static map label'),
-      '#placeholder' => 'Building name',
-      '#size' => 80,
-      '#maxlength' => 1024,
-    ];
 
     $form['container']['submit'] = [
       '#type' => 'submit',
