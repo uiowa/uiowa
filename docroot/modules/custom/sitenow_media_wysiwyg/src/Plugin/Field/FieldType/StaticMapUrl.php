@@ -19,6 +19,7 @@ use Drupal\Core\TypedData\DataDefinition;
  * )
  */
 class StaticMapUrl extends LinkItem {
+
   /**
    * {@inheritdoc}
    */
@@ -30,7 +31,6 @@ class StaticMapUrl extends LinkItem {
 
     $properties['alt'] = DataDefinition::create('string')
       ->setLabel(t('Map alt text'));
-
 
     unset($properties['title']);
     unset($properties['options']);
@@ -46,7 +46,6 @@ class StaticMapUrl extends LinkItem {
 
     unset($schema['columns']['title']);
     unset($schema['columns']['options']);
-
 
     $schema['columns']['zoom'] = [
       'description' => 'The zoom level for the static map.',

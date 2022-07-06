@@ -54,11 +54,10 @@ class StaticMapUrlWidget extends LinkWidget {
     $element['alt'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Alternative text'),
-      '#default_value' => isset($items[$delta]->alt) ? $items[$delta]->alt : NULL,
+      '#default_value' => $items[$delta]->alt ?? NULL,
       '#maxlength' => 255,
       '#description' => $this->t('Short description of the static map image used by screen readers and displayed when the static map image is not loaded. This is important for accessibility.'),
     ];
-
 
     return $element;
   }
