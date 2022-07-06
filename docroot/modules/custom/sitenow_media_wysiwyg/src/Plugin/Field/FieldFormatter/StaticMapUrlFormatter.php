@@ -27,10 +27,8 @@ class StaticMapUrlFormatter extends LinkFormatter {
     $elements = parent::viewElements($items, $langcode);
     $values = $items->getValue();
     foreach ($elements as $delta => $entity) {
-      // Hardcoded values for now.
-      // @todo wire these up to actual content...
       $location = str_replace('!m/', '', parse_url($values[0]['uri'], PHP_URL_FRAGMENT));
-      $label = 'asdf';
+      $label = $values[0]['alt'];
       $zoom = $values[0]['zoom'];
 
       $elements[$delta] = [
@@ -43,11 +41,13 @@ class StaticMapUrlFormatter extends LinkFormatter {
             'aria-label' => 'View on maps.uiowa.edu',
           ],
           'static' => [
-            '#type' => 'html_tag',
-            '#tag' => 'img',
+            '#theme' => 'imagecache_external_responsive',
+            '#uri' => urldecode("https://staticmap.concept3d.com/map/static-map/?map=1890&loc=" . $location . "&scale=2&zoom=" . $zoom),
+            '#responsive_image_style_id' => 'large__square',
             '#attributes' => [
+              'loading' => 'lazy',
+              'alt' => $label,
               'class' => 'static-map',
-              'src' => urldecode("https://staticmap.concept3d.com/map/static-map/?map=1890&loc=" . $location . "&scale=2&zoom=" . $zoom),
             ],
           ],
         ],
