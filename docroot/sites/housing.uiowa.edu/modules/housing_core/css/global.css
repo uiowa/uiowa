@@ -1,3 +1,4 @@
+/* Residence Hall content type */
 .page-node-type-residence-hall .fa-ul li .field,
 .page-node-type-residence-hall .fa-ul li svg {
   display: inline-block;
@@ -74,4 +75,48 @@
 
 [class*="block-field-blocknoderesidence-hallfield-residence-hall-emerg-"] {
   text-align: center;
+}
+
+/* Residence Hall search page */
+.view-residence-halls .views-exposed-form .js-form-item {
+  position: relative;
+}
+
+.view-residence-halls  input[type="checkbox"] {
+  position: absolute;
+  left: 0;
+  top: 2px;
+  margin: 0;
+}
+
+.view-residence-halls .views-exposed-form.uids-content:not(.uids-search) .form-actions {
+  margin-top: 1rem;
+}
+
+.view-residence-halls  .uids-content [type=checkbox]+label {
+  margin-left: 2rem;
+}
+
+.view-residence-halls .views-exposed-form .form--inline {
+  flex-wrap: wrap;
+}
+
+.view-residence-halls .view-header {
+  width: 100%;
+}
+
+.view-residence-halls .view-filters {
+  flex: 0 0 25%;
+  max-width: 25%;
+  margin-right: 3rem;
+}
+
+.view-residence-halls .view-content,
+.view-residence-halls  .view-empty {
+  flex: 1 0 0;
+}
+
+.view-residence-halls {
+  display: flex;
+  flex-wrap: wrap;
 }

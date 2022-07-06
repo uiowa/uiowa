@@ -8,6 +8,40 @@
   margin-bottom: 20px;
   background-color: $light;
 
+  [type=checkbox], [type=radio] {
+    height: 1.2rem;
+    width: 1.2rem;
+    margin: 0 .35rem 0 .25rem;
+    -webkit-transform: scale(1.3, 1.3);
+  }
+  [type='checkbox']+label,
+  [type='radio']+label {
+    font-weight: $content-font-size;
+  }
+
+  details {
+    &.form-wrapper {
+      display: block;
+      border: 1px solid $brand-cool-gray;
+      flex-basis: 100%;
+    }
+
+    .details-wrapper {
+      padding: 0 1rem 1rem;
+    }
+
+    summary {
+      position: relative;
+      padding: 1rem;
+      cursor: pointer;
+    }
+
+    &[open] summary {
+      border-bottom: 1px solid $brand-cool-gray;
+      margin-bottom: 1em;
+    }
+  }
+
   .form--inline {
     display: flex;
     justify-content: flex-start;
