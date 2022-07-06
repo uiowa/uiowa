@@ -4234,3 +4234,9 @@ $sites['researchresearcherhandbook.uiowa.ddev.site'] = 'researcherhandbook.resea
 $sites['researchresearcherhandbook.dev.drupal.uiowa.edu'] = 'researcherhandbook.research.uiowa.edu';
 $sites['researchresearcherhandbook.stage.drupal.uiowa.edu'] = 'researcherhandbook.research.uiowa.edu';
 $sites['researchresearcherhandbook.prod.drupal.uiowa.edu'] = 'researcherhandbook.research.uiowa.edu';
+
+// Directory aliases for rutkowski.lab.uiowa.edu.
+$sites['labrutkowski.uiowa.ddev.site'] = 'rutkowski.lab.uiowa.edu';
+$sites['labrutkowski.dev.drupal.uiowa.edu'] = 'rutkowski.lab.uiowa.edu';
+$sites['labrutkowski.stage.drupal.uiowa.edu'] = 'rutkowski.lab.uiowa.edu';
+$sites['labrutkowski.prod.drupal.uiowa.edu'] = 'rutkowski.lab.uiowa.edu';
