@@ -33,7 +33,7 @@ class StaticMapUrlWidget extends LinkWidget {
       '#title' => $this->t('Zoom'),
       '#description' => $this->t('The higher the number the more zoomed in the map will be.'),
       '#options' => ['' => $this->t('- Select a value -')] + StaticMapUrl::allowedZoomValues(),
-      '#default_value' => $items[$delta]->zoom ?? NULL,
+      '#default_value' => $items[$delta]->zoom ?? 17,
     ];
 
     $element['alt'] = [
