@@ -92,11 +92,4 @@ class StaticMap extends MediaSourceBase implements MediaSourceFieldConstraintsIn
     return parent::createSourceField($type)->set('label', 'Static map URL');
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getMetadata(MediaInterface $media, $attribute_name) {
-
-  }
-
 }
