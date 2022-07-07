@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labyang.uiowa.ddev.site
+    protocol: https
+  machine_name: labyang
+  human_name: yang.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labyang.prod
+drupal:
+  db:
+    database: yang_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: dunnwaldd
+  site-name: 'Yang Lab'

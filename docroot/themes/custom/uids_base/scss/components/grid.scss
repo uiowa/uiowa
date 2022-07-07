@@ -39,13 +39,18 @@
   margin-top: $mobile-height-gutter;
 }
 
+.grid--twocol--50-50 .list-container {
+  @include breakpoint(sm) {
+    row-gap: $desktop-width-gutter;
+  }
+}
+
 // Additional grid classes.
 .grid--fourcol--25 {
   .list-container {
     @include grid-base;
-    @include breakpoint(sm) {
-      gap: $desktop-width-gutter;
-      grid-template-columns: repeat(auto-fill, minmax(21%, 1fr));
+    @include breakpoint(md) {
+      @include fourcol-grid;
     }
   }
 }
