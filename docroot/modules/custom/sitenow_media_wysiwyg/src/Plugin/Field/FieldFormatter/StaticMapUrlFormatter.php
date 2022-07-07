@@ -27,7 +27,7 @@ class StaticMapUrlFormatter extends LinkFormatter {
     $values = $items->getValue();
     foreach ($elements as $delta => $entity) {
       $location = str_replace('!m/', '', parse_url($values[0]['uri'], PHP_URL_FRAGMENT));
-      $label = $values[0]['alt'];
+      $alt = $values[0]['alt'];
       $zoom = $values[0]['zoom'];
 
       // Original/Default is medium square, else change view mode.
@@ -42,7 +42,7 @@ class StaticMapUrlFormatter extends LinkFormatter {
           '#tag' => 'a',
           '#attributes' => [
             'href' => $values[0]['uri'],
-            'title' => $label,
+            'title' => $alt,
             'aria-label' => 'View on maps.uiowa.edu',
           ],
           'static' => [
@@ -51,7 +51,7 @@ class StaticMapUrlFormatter extends LinkFormatter {
             '#responsive_image_style_id' => $view_mode,
             '#attributes' => [
               'loading' => 'lazy',
-              'alt' => $label,
+              'alt' => $alt,
               'class' => 'static-map',
             ],
           ],
