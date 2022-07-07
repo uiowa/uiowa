@@ -49,7 +49,7 @@ function uids_base_form_alter(&$form, $form_state, $form_id) {
 function uids_base_form_views_exposed_form_alter(&$form, $form_state, $form_id) {
   // For all views with exposed filters.
   if ($form_id == 'views_exposed_form') {
-    $form['#attributes']['class'][] = 'uids-content';
+    $form['#attributes']['class'][] = 'uids-content bg--gray';
   }
   // For these views specifically.
   $view_ids = ['book_toc', 'book_search'];
@@ -349,6 +349,7 @@ function uids_base_preprocess_media(array &$variables) {
 
   // Get the media entity's bundle (such as video, image, etc.)
   $media_type = $variables['media']->bundle();
+
   // $variables;
   if ($media_type == 'video') {
     $referring_item = $media->_referringItem;
@@ -666,6 +667,17 @@ function uids_base_preprocess_block(&$variables) {
     $variables['button_classes'] = array_filter($variables['elements']['#attributes']['class'], function ($v) {
       return substr($v, 0, 4) === 'bttn';
     });
+
+    // Add banner--video class if bundle is a video.
+    // @todo revisit this class when https://github.com/uiowa/uids/issues/721 is completed.
+    if ($block->hasField('field_uiowa_banner_image')) {
+      if (!$block->get('field_uiowa_banner_image')->isEmpty()) {
+        $bundle_type = $block->get('field_uiowa_banner_image')->first()->get('entity')->getValue()->bundle();
+        if ($bundle_type == 'video') {
+          $variables['attributes']['class'][] = 'banner--video';
+        }
+      }
+    }
 
     $variables['links'] = [];
 
