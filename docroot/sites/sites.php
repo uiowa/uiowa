@@ -4216,3 +4216,39 @@ $sites['labstuttering.uiowa.ddev.site'] = 'stuttering.lab.uiowa.edu';
 $sites['labstuttering.dev.drupal.uiowa.edu'] = 'stuttering.lab.uiowa.edu';
 $sites['labstuttering.stage.drupal.uiowa.edu'] = 'stuttering.lab.uiowa.edu';
 $sites['labstuttering.prod.drupal.uiowa.edu'] = 'stuttering.lab.uiowa.edu';
+
+// Directory aliases for brain-registry.lab.uiowa.edu.
+$sites['labbrain-registry.uiowa.ddev.site'] = 'brain-registry.lab.uiowa.edu';
+$sites['labbrain-registry.dev.drupal.uiowa.edu'] = 'brain-registry.lab.uiowa.edu';
+$sites['labbrain-registry.stage.drupal.uiowa.edu'] = 'brain-registry.lab.uiowa.edu';
+$sites['labbrain-registry.prod.drupal.uiowa.edu'] = 'brain-registry.lab.uiowa.edu';
+
+// Directory aliases for iwwerp.engineering.uiowa.edu.
+$sites['engineeringiwwerp.uiowa.ddev.site'] = 'iwwerp.engineering.uiowa.edu';
+$sites['engineeringiwwerp.dev.drupal.uiowa.edu'] = 'iwwerp.engineering.uiowa.edu';
+$sites['engineeringiwwerp.stage.drupal.uiowa.edu'] = 'iwwerp.engineering.uiowa.edu';
+$sites['engineeringiwwerp.prod.drupal.uiowa.edu'] = 'iwwerp.engineering.uiowa.edu';
+
+// Directory aliases for researcherhandbook.research.uiowa.edu.
+$sites['researchresearcherhandbook.uiowa.ddev.site'] = 'researcherhandbook.research.uiowa.edu';
+$sites['researchresearcherhandbook.dev.drupal.uiowa.edu'] = 'researcherhandbook.research.uiowa.edu';
+$sites['researchresearcherhandbook.stage.drupal.uiowa.edu'] = 'researcherhandbook.research.uiowa.edu';
+$sites['researchresearcherhandbook.prod.drupal.uiowa.edu'] = 'researcherhandbook.research.uiowa.edu';
+
+// Directory aliases for rutkowski.lab.uiowa.edu.
+$sites['labrutkowski.uiowa.ddev.site'] = 'rutkowski.lab.uiowa.edu';
+$sites['labrutkowski.dev.drupal.uiowa.edu'] = 'rutkowski.lab.uiowa.edu';
+$sites['labrutkowski.stage.drupal.uiowa.edu'] = 'rutkowski.lab.uiowa.edu';
+$sites['labrutkowski.prod.drupal.uiowa.edu'] = 'rutkowski.lab.uiowa.edu';
+
+// Directory aliases for yang.lab.uiowa.edu.
+$sites['labyang.uiowa.ddev.site'] = 'yang.lab.uiowa.edu';
+$sites['labyang.dev.drupal.uiowa.edu'] = 'yang.lab.uiowa.edu';
+$sites['labyang.stage.drupal.uiowa.edu'] = 'yang.lab.uiowa.edu';
+$sites['labyang.prod.drupal.uiowa.edu'] = 'yang.lab.uiowa.edu';
+
+// Directory aliases for race-and-comics.sites.uiowa.edu.
+$sites['sitesrace-and-comics.uiowa.ddev.site'] = 'race-and-comics.sites.uiowa.edu';
+$sites['sitesrace-and-comics.dev.drupal.uiowa.edu'] = 'race-and-comics.sites.uiowa.edu';
+$sites['sitesrace-and-comics.stage.drupal.uiowa.edu'] = 'race-and-comics.sites.uiowa.edu';
+$sites['sitesrace-and-comics.prod.drupal.uiowa.edu'] = 'race-and-comics.sites.uiowa.edu';

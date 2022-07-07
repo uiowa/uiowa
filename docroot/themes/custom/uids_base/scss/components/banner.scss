@@ -125,7 +125,7 @@
         }
       }
     }
-    .banner.banner--vertical-bottom.banner--horizontal-left {
+    .banner.banner--video.banner--vertical-bottom.banner--horizontal-left {
       .banner__content {
         @include breakpoint(page-container) {
           padding: 3rem 1.5rem 4rem 0rem;
@@ -133,7 +133,7 @@
       }
     }
   }
-  .banner {
+  .banner.banner--video {
     &.banner--vertical-bottom.banner--horizontal-left {
       .banner__content {
         @include breakpoint(sm) {
@@ -291,6 +291,19 @@
         margin-top: 0;
         margin-right: 0;
       }
+    }
+  }
+}
+
+// @todo revisit these styles once https://github.com/uiowa/uids/issues/722 is completed.
+.banner--list {
+  height: 100%;
+  .headline--small {
+    font-size: 1.5rem;
+  }
+  .banner__content {
+    .layout--onecol[class*="page"] & {
+      padding: 2rem;
     }
   }
 }

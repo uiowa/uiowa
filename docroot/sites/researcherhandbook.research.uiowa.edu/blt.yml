@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: researchresearcherhandbook.uiowa.ddev.site
+    protocol: https
+  machine_name: researchresearcherhandbook
+  human_name: researcherhandbook.research.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: researchresearcherhandbook.prod
+drupal:
+  db:
+    database: researcherhandbook_research_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: makyea
+  site-name: 'Researcher Handbook'
