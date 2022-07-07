@@ -4240,3 +4240,15 @@ $sites['labrutkowski.uiowa.ddev.site'] = 'rutkowski.lab.uiowa.edu';
 $sites['labrutkowski.dev.drupal.uiowa.edu'] = 'rutkowski.lab.uiowa.edu';
 $sites['labrutkowski.stage.drupal.uiowa.edu'] = 'rutkowski.lab.uiowa.edu';
 $sites['labrutkowski.prod.drupal.uiowa.edu'] = 'rutkowski.lab.uiowa.edu';
+
+// Directory aliases for yang.lab.uiowa.edu.
+$sites['labyang.uiowa.ddev.site'] = 'yang.lab.uiowa.edu';
+$sites['labyang.dev.drupal.uiowa.edu'] = 'yang.lab.uiowa.edu';
+$sites['labyang.stage.drupal.uiowa.edu'] = 'yang.lab.uiowa.edu';
+$sites['labyang.prod.drupal.uiowa.edu'] = 'yang.lab.uiowa.edu';
+
+// Directory aliases for race-and-comics.sites.uiowa.edu.
+$sites['sitesrace-and-comics.uiowa.ddev.site'] = 'race-and-comics.sites.uiowa.edu';
+$sites['sitesrace-and-comics.dev.drupal.uiowa.edu'] = 'race-and-comics.sites.uiowa.edu';
+$sites['sitesrace-and-comics.stage.drupal.uiowa.edu'] = 'race-and-comics.sites.uiowa.edu';
+$sites['sitesrace-and-comics.prod.drupal.uiowa.edu'] = 'race-and-comics.sites.uiowa.edu';
