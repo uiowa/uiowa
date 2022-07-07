@@ -1,18 +1,19 @@
-uuid: afc038e5-22eb-48f7-993d-8fe1f946a8c2
+uuid: f407fef8-349c-40ce-afd1-7918dbfddff1
 langcode: en
 status: true
 dependencies:
   module:
-    - node
-id: node.field_project_partner
-field_name: field_project_partner
-entity_type: node
+    - media
+    - taxonomy
+id: taxonomy_term.field_image
+field_name: field_image
+entity_type: taxonomy_term
 type: entity_reference
 settings:
-  target_type: node
+  target_type: media
 module: core
 locked: false
-cardinality: -1
+cardinality: 1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false
