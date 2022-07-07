@@ -1,6 +1,6 @@
 @import "../../../../../themes/custom/uids_base/uids/assets/scss/_variables.scss";
-@import "../../../../../themes/custom/uids_base/uids/assets/scss/_utilities.scss";
-// Residence Hall content type.
+@import "../../../../../themes/custom/uids_base/uids/assets/scss/_utilities.scss"; // Residence Hall content type.
+
 .page-node-type-residence-hall {
   .fa-ul li .field,
   .fa-ul li svg {
@@ -37,64 +37,69 @@
       display: inline-block;
       width: 100%;
     }
+  }
 
-    .accordion .grid--twocol--50-50 .list-container {
-      column-gap: 1rem;
-    }
+  .accordion .grid--twocol--50-50 .list-container {
+    column-gap: 1rem;
+  }
 
-    .card .bttn {
-      background: #fff;
+  .card .bttn {
+    background: #fff;
+  }
+  // Banner view mode style adjustments.
+  .field--name-field-residence-hall-llc .field__items {
+    display: flex;
+    flex-flow: wrap;
+    margin-top: 2rem;
+    @include breakpoint(md) {
+      flex-flow: row nowrap;
     }
-    // Banner view mode style adjustments.
-    .field--name-field-residence-hall-llc .field__items {
-      display: flex;
-      flex-flow: wrap;
-      margin-top: 2rem;
-      @include breakpoint(sm) {
-        flex-flow: row nowrap;
-      }
-    }
+  }
 
-    .field--name-field-residence-hall-llc .field__item {
+  .field--name-field-residence-hall-llc .field__item {
+    width: 100%;
+  }
+
+  .field--name-field-residence-hall-llc .banner .headline--small {
+    font-size: 1.8rem;
+    font-size: clamp(1.6rem, 1.6rem, 1.6rem);
+  }
+
+  .layout--onecol[class*=page__container--edge] .field--name-field-residence-hall-llc .banner.banner--vertical-bottom.banner--horizontal-left .banner__content {
+    @include breakpoint(sm) {
+      padding: 2rem;
       width: 100%;
     }
+  }
 
-    .field--name-field-residence-hall-llc .banner .headline--small {
-      font-size: 1.8rem;
-      font-size: clamp(1.6rem, 1.6rem, 1.6rem);
-    }
+  .field--name-field-housing-floor-plan-image {
+    width: 40%;
+    float: right;
+    margin: 1rem 0 2rem 2rem;
+  }
 
-    .layout--onecol[class*=page__container--edge] .field--name-field-residence-hall-llc .banner.banner--vertical-bottom.banner--horizontal-left .banner__content {
-      @include breakpoint(sm) {
-        padding: 2rem;
-        width: 100%;
-      }
-    }
-
-    .field--name-field-housing-floor-plan-image {
-      width: 40%;
-      float: right;
-      margin: 1rem 0 2rem 2rem;
-    }
-
-    [class*="block-field-blocknoderesidence-hallfield-residence-hall-emerg-"] {
-      text-align: center;
-    }
+  [class*="block-field-blocknoderesidence-hallfield-residence-hall-emerg-"] {
+    text-align: center;
   }
 }
 // Residence Hall search page.
+
 .view-residence-halls {
-  display: flex;
-  flex-wrap: wrap;
+  @include breakpoint(sm) {
+    display: flex;
+    flex-wrap: wrap;
+  }
 
   .view-header {
     width: 100%;
   }
 
   .view-filters {
-    flex: 0 0 25%;
-    max-width: 25%;
-    margin-right: 3rem;
+    @include breakpoint(sm) {
+      flex: 0 0 25%;
+      max-width: 25%;
+      margin-right: 3rem;
+    }
   }
 
   .view-content,
