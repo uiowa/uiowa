@@ -6,7 +6,6 @@
   min-height: 20px;
   padding: 19px;
   margin-bottom: 20px;
-  background-color: $light;
 
   [type=checkbox], [type=radio] {
     height: 1.2rem;
@@ -16,7 +15,7 @@
   }
   [type='checkbox']+label,
   [type='radio']+label {
-    font-weight: $content-font-size;
+    font-weight: $font-weight-normal;
     flex-basis: 75%;
   }
 
@@ -27,8 +26,10 @@
   details {
     &.form-wrapper {
       display: block;
-      border: 1px solid $brand-cool-gray;
+      border: 1px solid;
+      border-color: #c4c4c4;
       flex-basis: 100%;
+      background: #fff;
     }
 
     .details-wrapper {
@@ -42,7 +43,8 @@
     }
 
     &[open] summary {
-      border-bottom: 1px solid $brand-cool-gray;
+      border-bottom: 1px solid;
+      border-color: #c4c4c4;
       margin-bottom: 1em;
     }
   }
@@ -59,6 +61,9 @@
 
   .js-form-item {
     flex: auto 1 1;
+    @include breakpoint(sm) {
+      flex: 1;
+    }
   }
 
   .form-group {
