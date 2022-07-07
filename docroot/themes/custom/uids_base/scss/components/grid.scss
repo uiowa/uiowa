@@ -49,9 +49,8 @@
 .grid--fourcol--25 {
   .list-container {
     @include grid-base;
-    @include breakpoint(sm) {
-      gap: $desktop-width-gutter;
-      grid-template-columns: repeat(auto-fill, minmax(21%, 1fr));
+    @include breakpoint(md) {
+      @include fourcol-grid;
     }
   }
 }
