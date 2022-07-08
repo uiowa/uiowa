@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.taxonomy_term.teaser
     - system.menu.main
     - taxonomy.vocabulary.season
     - taxonomy.vocabulary.series
@@ -40,36 +41,18 @@ display:
           exclude: false
           alter:
             alter_text: false
-            text: ''
             make_link: false
-            path: ''
             absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
             word_boundary: false
             ellipsis: false
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
             strip_tags: false
             trim: false
-            preserve_tags: ''
             html: false
           element_type: ''
-          element_class: 'headline headline--serif'
+          element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: false
+          element_label_colon: true
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -205,21 +188,12 @@ display:
             default_group_multiple: {  }
             group_items: {  }
       style:
-        type: html_list
-        options:
-          grouping: {  }
-          row_class: ''
-          default_row_class: true
-          type: ul
-          wrapper_class: ''
-          class: 'element--three-column element--list-none element--margin-none'
+        type: default
       row:
-        type: fields
+        type: 'entity:taxonomy_term'
         options:
-          default_field_elements: true
-          inline: {  }
-          separator: ''
-          hide_empty: false
+          relationship: none
+          view_mode: teaser
       query:
         type: views_query
         options:
@@ -229,7 +203,6 @@ display:
           replica: false
           query_tags: {  }
       relationships: {  }
-      css_class: ''
       header: {  }
       footer: {  }
       display_extenders: {  }
@@ -353,26 +326,8 @@ display:
         operator: AND
         groups:
           1: AND
-      style:
-        type: html_list
-        options:
-          grouping: {  }
-          row_class: ''
-          default_row_class: true
-          type: ul
-          wrapper_class: ''
-          class: 'element--two-column element--list-none element--margin-none'
-      row:
-        type: fields
-        options:
-          default_field_elements: true
-          inline: {  }
-          separator: ''
-          hide_empty: false
       defaults:
         title: false
-        style: false
-        row: false
         sorts: false
         filters: false
         filter_groups: false
@@ -484,8 +439,6 @@ display:
           1: AND
       defaults:
         title: false
-        style: true
-        row: true
         sorts: false
         filters: false
         filter_groups: false
