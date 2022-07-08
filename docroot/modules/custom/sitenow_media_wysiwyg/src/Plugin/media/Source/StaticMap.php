@@ -15,12 +15,8 @@ use Drupal\media\MediaTypeInterface;
 use Drupal\media\MediaSourceFieldConstraintsInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\RedirectMiddleware;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Field\FieldTypePluginManagerInterface;
-use function _PHPStan_ccec86fc8\RingCentral\Psr7\str;
-
 
 /**
  * Provides media type plugin for Static Map.
