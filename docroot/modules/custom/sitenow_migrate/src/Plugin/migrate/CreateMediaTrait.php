@@ -83,14 +83,28 @@ trait CreateMediaTrait {
         case 'application':
         case 'document':
         case 'file':
-          // Set the description as either the title or filename.
-          $description = (isset($meta['title'])) ? $meta['title'] : $meta['filename'];
           $media_entity['bundle'] = 'file';
           $media_entity['field_media_file'] = [
             'target_id' => $fid,
             'display' => 1,
-            'description' => $description,
           ];
+        // If we have a title,
+        // go ahead and set it as the description
+        // so it can be used in displays.
+          if (isset($meta['title'])) {
+            $media_entity['field_media_file']['description'] = $meta['title'];
+          }
+          else {
+            // If we didn't have a title, check if we had
+            // a human readable filename to use for the description
+            // (that doesn't match the true filename, which
+            // would be used in displays with an empty description.
+            $uri_filename = explode('/', $meta['file_uri']);
+            $uri_filename = end($uri_filename);
+            if ($meta['filename'] != $uri_filename) {
+              $media_entity['field_media_file']['description'] = $meta['filename'];
+            }
+          }
           break;
 
         case 'audio':
