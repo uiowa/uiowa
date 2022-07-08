@@ -83,11 +83,13 @@ trait CreateMediaTrait {
         case 'application':
         case 'document':
         case 'file':
+          // Set the description as either the title or filename.
+          $description = (isset($meta['title'])) ? $meta['title'] : $meta['filename'];
           $media_entity['bundle'] = 'file';
           $media_entity['field_media_file'] = [
             'target_id' => $fid,
             'display' => 1,
-            'description' => '',
+            'description' => $description,
           ];
           break;
 
