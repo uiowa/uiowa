@@ -88,9 +88,9 @@ trait CreateMediaTrait {
             'target_id' => $fid,
             'display' => 1,
           ];
-        // If we have a title,
-        // go ahead and set it as the description
-        // so it can be used in displays.
+          // If we have a title,
+          // go ahead and set it as the description
+          // so it can be used in displays.
           if (isset($meta['title'])) {
             $media_entity['field_media_file']['description'] = $meta['title'];
           }
