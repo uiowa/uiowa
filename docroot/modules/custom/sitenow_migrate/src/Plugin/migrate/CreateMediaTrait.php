@@ -99,9 +99,7 @@ trait CreateMediaTrait {
             // a human readable filename to use for the description
             // (that doesn't match the true filename, which
             // would be used in displays with an empty description.
-            $uri_filename = explode('/', $meta['file_uri']);
-            $uri_filename = end($uri_filename);
-            if ($meta['filename'] != $uri_filename) {
+            if (!str_ends_with($meta['file_uri'], $meta['filename'])) {
               $media_entity['field_media_file']['description'] = $meta['filename'];
             }
           }
