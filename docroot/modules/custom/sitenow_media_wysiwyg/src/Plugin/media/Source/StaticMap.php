@@ -2,10 +2,12 @@
 
 namespace Drupal\sitenow_media_wysiwyg\Plugin\media\Source;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Render\RendererInterface;
+use Drupal\media\MediaInterface;
 use Drupal\media\MediaSourceBase;
 use Drupal\media\MediaTypeInterface;
 use Drupal\media\MediaSourceFieldConstraintsInterface;
@@ -89,6 +91,24 @@ class StaticMap extends MediaSourceBase implements MediaSourceFieldConstraintsIn
    */
   public function createSourceField(MediaTypeInterface $type) {
     return parent::createSourceField($type)->set('label', 'Static map URL');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getMetadata(MediaInterface $media, $attribute_name) {
+    $source = $media->get($this->configuration['source_field']);
+
+    // The source is a required, single value field.
+    $parsed = UrlHelper::parse($source->getValue()[0]['uri']);
+    $marker = str_replace('!m/', '', $parsed['fragment']);
+
+    switch ($attribute_name) {
+      case 'default_name':
+        return 'media:' . $media->bundle() . ':marker-' . $marker;
+    }
+
+    return NULL;
   }
 
 }
