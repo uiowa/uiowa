@@ -41,6 +41,12 @@ global-styling:
     - core/jquery.once
 
 # Third-party libraries
+# Accessible Menu
+accessible-menu:
+  js:
+    /libraries/accessible-menu/dist/accessible-menu.js: {}
+    assets/js/accessible-menu.init.js: {}
+# Leaflet
 leaflet:
   remote: http://leafletjs.com/
   version: 1.7.1
@@ -54,7 +60,7 @@ leaflet:
     component:
       /libraries/leaflet/dist/leaflet.css: {}
       assets/css/components/leaflet.css: { preprocess: false }
-
+# Slick
 slick:
   css:
     theme:
@@ -63,49 +69,14 @@ slick:
     /libraries/slick-carousel/slick/slick.min.js: {}
   dependencies:
     - core/jquery
-
-accessible-menu:
-  js:
-    /libraries/accessible-menu/dist/accessible-menu.js: {}
-    assets/js/accessible-menu.init.js: {}
-
-# CSS libraries for Layout plugins.
-onecol:
-  version: VERSION
-  css:
-    theme:
-      assets/css/layouts/onecol.css: {}
-onecol--background:
-  version: VERSION
-  css:
-    theme:
-      assets/css/layouts/onecol--background.css: {}
-twocol:
-  version: VERSION
-  css:
-    theme:
-      assets/css/layouts/twocol.css: {}
-threecol:
-  version: VERSION
-  css:
-    theme:
-      assets/css/layouts/threecol.css: {}
-fourcol:
-  version: VERSION
-  css:
-    theme:
-      assets/css/layouts/fourcol.css: {}
-page--left-sidebar:
-  version: VERSION
-  css:
-    theme:
-      assets/css/layouts/page--left-sidebar.css: { preprocess: false }
+# Pannellum
 virtual_tour:
   css:
     theme:
       /libraries/pannellum/build/pannellum.css: {}
   js:
     /libraries/pannellum/build/pannellum.js: { preprocess: true }
+
 # UIDS.
 status-messages:
   js:
@@ -408,6 +379,11 @@ admin:
     component:
       assets/css/admin.css: { weight: 200 }
       assets/css/components/badge.css: {}
+# Layout Builder UI
+layout-builder:
+  css:
+    component:
+      assets/css/layout-builder.css: { preprocess: false }
 sftouchscreen:
   js:
     assets/js/sftouchscreen.js: { }
@@ -421,3 +397,41 @@ global-serif:
   css:
     component:
       assets/css/components/typography/global-serif.css: { preprocess: false }
+
+# CSS libraries for Layout plugins.
+# One column
+onecol:
+  version: VERSION
+  css:
+    theme:
+      assets/css/layouts/onecol.css: {}
+# One column with background
+onecol--background:
+  version: VERSION
+  css:
+    theme:
+      assets/css/layouts/onecol--background.css: {}
+# Two column
+twocol:
+  version: VERSION
+  css:
+    theme:
+      assets/css/layouts/twocol.css: {}
+# Three column
+threecol:
+  version: VERSION
+  css:
+    theme:
+      assets/css/layouts/threecol.css: {}
+# Four column
+fourcol:
+  version: VERSION
+  css:
+    theme:
+      assets/css/layouts/fourcol.css: {}
+# Left sidebar default page layout
+page--left-sidebar:
+  version: VERSION
+  css:
+    theme:
+      assets/css/layouts/page--left-sidebar.css: { preprocess: false }
