@@ -119,7 +119,7 @@ function uids_base_preprocess_html(&$variables) {
     // Check if an entity of that type is loaded at the current route.
     $route_entity = \Drupal::routeMatch()->getParameter($entity_type);
     // Check if the entity is an instance of the corresponding interface class.
-    if ($entity_type instanceof $interface_class) {
+    if ($route_entity instanceof $interface_class) {
       // Defensive coding check to make sure our helper class is available.
       if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
         // Set a variable indicating that the Layout Builder UI is loaded.
@@ -129,22 +129,6 @@ function uids_base_preprocess_html(&$variables) {
       }
     }
   }
-
-//  $node = \Drupal::routeMatch()->getParameter('node');
-//
-//  if ($node instanceof NodeInterface) {
-//    if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
-//      $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($node);
-//    }
-//  }
-//
-//  $fragment = \Drupal::routeMatch()->getParameter('fragment');
-//
-//  if ($fragment instanceof FragmentInterface) {
-//    if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
-//      $variables['layout_builder_enabled'] = \Drupal::classResolver('\Drupal\layout_builder_custom\LayoutBuilderHelper')->layoutBuilderEnabled($fragment);
-//    }
-//  }
 }
 
 /**
