@@ -38,6 +38,17 @@ class StaticMapURLConstraintValidator extends ConstraintValidator {
         '%id' => '?id',
       ]);
     }
+
+    $map_location = str_replace('!m/', '', $parsed_url['fragment']);
+    $zoom_level = $value['zoom'];
+
+    $url = 'https://staticmap.concept3d.com/map/static-map/?map=1890&loc=' . $map_location . '&scale=2&zoom=' . $zoom_level;
+    $headers = get_headers($url, 1);
+    $response = $headers[0];
+
+    if ($response != 'HTTP/1.1 200 OK') {
+      $this->context->addViolation($constraint->badResponse);
+    }
   }
 
 }
