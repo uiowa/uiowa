@@ -27,7 +27,7 @@ trait CreateMediaTrait {
    * @param array $meta
    *   Associative array metadata for the file such as alt and title.
    * @param int $owner_id
-   *   User id for the media owner, or default to the administrator account.
+   *   User id for the media owner, or default to the developer account.
    *
    * @return false|int|string|null
    *   Media id, if successful, or else false.

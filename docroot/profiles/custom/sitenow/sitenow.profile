@@ -134,10 +134,10 @@ function sitenow_query_administerusersbyrole_edit_access_alter(AlterableInterfac
     // Exclude the root user.
     $query->condition('users_field_data.uid', 1, '<>');
 
-    // Get a list of uids with the administrator role.
+    // Get a list of uids with the developer role.
     $subquery = \Drupal::database()->select('user__roles', 'ur2');
     $subquery->fields('ur2', ['entity_id']);
-    $subquery->condition('ur2.roles_target_id', 'administrator');
+    $subquery->condition('ur2.roles_target_id', 'developer');
 
     // Exclude those uids from the result list.
     $query->condition('users_field_data.uid', $subquery, 'NOT IN');
@@ -285,7 +285,7 @@ function sitenow_form_views_exposed_form_alter(&$form, FormStateInterface $form_
     $access = $check->access(\Drupal::currentUser()->getAccount());
 
     if ($access->isForbidden()) {
-      unset($form['role']['#options']['administrator']);
+      unset($form['role']['#options']['developer']);
     }
   }
 }
@@ -302,7 +302,7 @@ function sitenow_form_views_form_administerusersbyrole_people_page_1_alter(&$for
 
   if ($access->isForbidden()) {
     foreach ($form['header']['user_bulk_form']['action']['#options'] as $key => $option) {
-      if (stristr($option, 'administrator')) {
+      if (stristr($option, 'developer')) {
         unset($form['header']['user_bulk_form']['action']['#options'][$key]);
       }
     }

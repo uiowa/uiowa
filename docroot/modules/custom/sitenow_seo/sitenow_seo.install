@@ -32,7 +32,7 @@ function sitenow_seo_update_8002() {
     'administer meta tags',
   ];
 
-  $roles = Role::loadMultiple(['editor', 'publisher', 'webmaster']);
+  $roles = Role::loadMultiple(['editor', 'publisher', 'administrator']);
 
   /** @var \Drupal\User\Entity\Role $role */
   foreach ($roles as $role) {

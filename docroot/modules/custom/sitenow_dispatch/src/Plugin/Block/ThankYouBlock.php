@@ -90,7 +90,7 @@ class ThankYouBlock extends BlockBase implements ContainerFactoryPluginInterface
       $form['no_campaign'] = [
         '#prefix' => '<div>',
         '#suffix' => '</div>',
-        '#markup' => $this->t('This block must be enabled by an administrator. Please contact the <a href=":link">ITS Help Desk</a> to request access.', [
+        '#markup' => $this->t('This block must be enabled by a developer. Please contact the <a href=":link">ITS Help Desk</a> to request access.', [
           ':link' => 'https://its.uiowa.edu/contact',
         ]),
       ];

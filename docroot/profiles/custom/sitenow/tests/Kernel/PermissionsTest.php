@@ -101,12 +101,12 @@ class PermissionsTest extends EntityKernelTestBase {
   }
 
   /**
-   * Test webmaster permissions.
+   * Test administrator permissions.
    */
-  public function testWebmasterPermission() {
+  public function testAdministratorPermission() {
     $path = $this->getDrupalRoot();
     $sync = new FileStorage($path . '/../config/default');
-    $data = $sync->read('user.role.webmaster');
+    $data = $sync->read('user.role.administrator');
 
     $permissions = array_flip($data['permissions']);
 

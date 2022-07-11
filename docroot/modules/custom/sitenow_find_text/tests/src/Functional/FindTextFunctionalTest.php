@@ -73,7 +73,7 @@ class FindTextFunctionalTest extends BrowserTestBase {
     $session = $this->assertSession();
 
     // Fetch the Find Text page, and check if we have access
-    // as a user with the 'webmaster' role.
+    // as a user with the 'administrator' role.
     $this->drupalGet($this->findTextPage);
     $session->statusCodeEquals(200);
 

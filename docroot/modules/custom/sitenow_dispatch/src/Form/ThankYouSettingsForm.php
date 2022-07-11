@@ -112,7 +112,7 @@ class ThankYouSettingsForm extends ConfigFormBase {
     $form['thanks']['enabled'] = [
       '#type' => 'checkbox',
       '#title' => 'Enabled',
-      '#description' => $this->t('Only administrators can access this checkbox. Checking this will allow webmasters access to the below configuration and block.'),
+      '#description' => $this->t('Only developers can access this checkbox. Checking this will allow administrators access to the below configuration and block.'),
       '#access' => $access->isAllowed(),
       '#default_value' => $enabled,
     ];
