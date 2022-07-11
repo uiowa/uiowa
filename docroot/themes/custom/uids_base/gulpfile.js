@@ -18,7 +18,6 @@ const sourcemaps = require('gulp-sourcemaps');
 const mode = require('gulp-mode')();
 const fs = require('fs');
 const path = require('path');
-const gulp = require('gulp');
 const merge = require('merge-stream');
 
 /*
@@ -63,12 +62,12 @@ function copyUids(done) {
 
     var tasks = uids4list.map(function(folder){
       const folderName = folder.substring(folder.lastIndexOf('/') + 1)
-      return gulp.src([
+      return src([
         `${folder}/*.scss`,
         `${folder}/*.js`,
         `${folder}/*.{jpg,png,svg}`,
         `${folder}/*.{woff,woff2}`,
-      ]).pipe(gulp.dest(`${uids.dest}${folderName}`));
+      ]).pipe(dest(`${uids.dest}${folderName}`));
     });
 
     return merge(tasks);
