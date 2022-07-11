@@ -41,8 +41,7 @@ const uids4 = {
 }
 
 // Globals
-let uids4list = [];
-let uids3list = [];
+let uidslist = [];
 
 // Clean
 function clean() {
@@ -60,7 +59,7 @@ function copyUids(done) {
   createUidsList.then(value => {
     done();
 
-    var tasks = uids4list.map(function(folder){
+    var tasks = uidslist.map(function(folder){
       const folderName = folder.substring(folder.lastIndexOf('/') + 1)
       return src([
         `${folder}/*.scss`,
@@ -71,46 +70,26 @@ function copyUids(done) {
     });
 
     return merge(tasks);
-
-    // let files = [];
-    // uids4list.forEach(file => {
-    //   files.push(`${file}/*.scss`);
-    //   files.push(`${file}/*.js`);
-    //   files.push(`${file}/*.{jpg,png,svg}`);
-    //   files.push(`${file}/*.{woff,woff2}`);
-    // })
-    // console.log(files);
-    // return src(files)
-    //   .pipe(dest(`${uids.dest}`));
-
-    // return src([
-    //   `${uids.src}/**/*.scss`,
-    //   `${uids.src}/**/*.js`,
-    //   `${uids.src}/**/*.{jpg,png,svg}`,
-    //   `${uids.src}/**/*.{woff,woff2}`,
-    // ])
-    //   .pipe(dest(`${uids.dest}`));
   });
 }
 
 function copyScss() {
-  return Promise.all([addToList(`${uids4.src}/components`), addToList(`${uids.src}/components`, true)]);
-
-  // loop through the node modules components directory for uids4.
-
-  // for any folder name that matches a name in the readyList...
-    // We want to add that directory to an array. We want a list of paths that we can do the src.pipe thing with
-  // loop through the components directory for uids3
-  // for any folder name that does not match a name in the readyList...
-    // We want to add that directory to an array. We want a list of paths that we can do the src.pipe thing with
-  // Loop through all the files in the temp directory
-
+  // Set both the uids4 and uids components directories to be checked against the ready list.
+  // Then, add to the final file list if need be.
+  return Promise.all([
+    addToList(`${uids4.src}/components`),
+    addToList(`${uids.src}/components`, true)
+  ]);
 }
 
 function addToList(filePath, invert = false) {
+  // Read the filepath.
   return fs.promises.readdir(filePath)
+    // Then, for each file in that path...
     .then(files => {
       files.forEach(function (file, index) {
+
+        // If we have set it to ignored, ignore it.
         if (
           (!invert && !uids4.readylist.includes(file))
           ||
@@ -118,11 +97,12 @@ function addToList(filePath, invert = false) {
         ) {
           return;
         }
+
+        // Otherwise, if it is a valid path, construct the full filepath and add it to the uidsList.
         const fullFilePath = path.join(filePath, file);
 
         if (fs.existsSync(fullFilePath) && fs.lstatSync(fullFilePath).isDirectory()) {
-          // Make one pass and make the file complete
-          uids4list.push(fullFilePath);
+          uidslist.push(fullFilePath);
         }
       });
     })
