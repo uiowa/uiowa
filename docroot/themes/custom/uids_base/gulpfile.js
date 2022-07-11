@@ -28,13 +28,17 @@ const paths = {
   dest: `${__dirname}/assets`
 };
 
+const nodeModules = {
+  src: `../../../../node_modules/`
+}
+
 const uids = {
-  src: '../../../../node_modules/@uiowa/uids/src',
+  src: `${nodeModules.src}@uiowa/uids/src`,
   dest: `${__dirname}/uids/`,
 }
 
 const uids4 = {
-  src: '../../../../node_modules/@uiowa/uids4/src',
+  src: `${nodeModules.src}@uiowa/uids4/src`,
   readylist: [
     'button',
   ],
@@ -57,16 +61,25 @@ function copyUids(done) {
   }));
 
   createUidsList.then(value => {
+    uidslist.push(`${uids.src}/assets`);
     done();
 
-    var tasks = uidslist.map(function(folder){
-      const folderName = folder.substring(folder.lastIndexOf('/') + 1)
+    let tasks = uidslist.map(function(folder){
+      let folderSansNodeModules = folder.replace(nodeModules.src, '');
+      let sansUidsVersion = folderSansNodeModules.substring(folderSansNodeModules.indexOf('/') + 1);
+      let srcFolder = sansUidsVersion.substring(sansUidsVersion.indexOf('/') + 1);
+      srcFolder = srcFolder.substring(srcFolder.indexOf('/') + 1);
+
       return src([
         `${folder}/*.scss`,
         `${folder}/*.js`,
         `${folder}/*.{jpg,png,svg}`,
         `${folder}/*.{woff,woff2}`,
-      ]).pipe(dest(`${uids.dest}${folderName}`));
+        `${folder}/**/*.scss`,
+        `${folder}/**/*.js`,
+        `${folder}/**/*.{jpg,png,svg}`,
+        `${folder}/**/*.{woff,woff2}`,
+      ]).pipe(dest(`${uids.dest}${srcFolder}`));
     });
 
     return merge(tasks);
@@ -78,7 +91,7 @@ function copyScss() {
   // Then, add to the final file list if need be.
   return Promise.all([
     addToList(`${uids4.src}/components`),
-    addToList(`${uids.src}/components`, true)
+    addToList(`${uids.src}/components`, true),
   ]);
 }
 
