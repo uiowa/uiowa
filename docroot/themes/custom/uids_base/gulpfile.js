@@ -21,20 +21,17 @@ const mode = require('gulp-mode')();
  */
 const paths = {
   src: `${__dirname}/scss/**/*.scss`,
-  dest: `${__dirname}/assets`
+  dest: `${__dirname}/assets`,
+  node: `../../../../node_modules/`,
 };
 
-const nodeModules = {
-  src: `../../../../node_modules/`
-}
-
 const uids3 = {
-  src: `${nodeModules.src}@uiowa/uids/src`,
+  src: `${paths.node}@uiowa/uids/src`,
   dest: `${__dirname}/uids3/`,
 }
 
 const uids = {
-  src: `${nodeModules.src}@uiowa/uids4/src`,
+  src: `${paths.node}@uiowa/uids4/src`,
   dest: `${__dirname}/uids/`,
   readylist: [
     'button',
