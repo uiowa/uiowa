@@ -40,6 +40,6 @@ class StaticMapURLConstraint extends Constraint {
    *
    * @var string
    */
-  public $badResponse = 'The URL cannot return a server error message.';
+  public $badResponse = 'The URL must return a valid HTTP status code.';
 
 }
