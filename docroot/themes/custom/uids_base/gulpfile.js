@@ -2,7 +2,6 @@
  * @file
  * Include gulp.
  */
-
 const { src, dest, parallel, series, watch } = require('gulp');
 
 // Include plugins.
@@ -32,20 +31,18 @@ const nodeModules = {
   src: `../../../../node_modules/`
 }
 
-const uids = {
+const uids3 = {
   src: `${nodeModules.src}@uiowa/uids/src`,
-  dest: `${__dirname}/uids/`,
+  dest: `${__dirname}/uids3/`,
 }
 
-const uids4 = {
+const uids = {
   src: `${nodeModules.src}@uiowa/uids4/src`,
+  dest: `${__dirname}/uids/`,
   readylist: [
     'button',
   ],
 }
-
-// Globals
-let uidslist = [];
 
 // Clean
 function clean() {
@@ -55,73 +52,23 @@ function clean() {
   ]);
 }
 
-function copyUids(done) {
-  const createUidsList = new Promise(((resolve, reject) => {
-    resolve(copyScss());
-  }));
-
-  createUidsList.then(value => {
-    uidslist.push(`${uids.src}/assets`);
-    done();
-
-    let tasks = uidslist.map(function(folder){
-      let folderSansNodeModules = folder.replace(nodeModules.src, '');
-      let sansUidsVersion = folderSansNodeModules.substring(folderSansNodeModules.indexOf('/') + 1);
-      let srcFolder = sansUidsVersion.substring(sansUidsVersion.indexOf('/') + 1);
-      srcFolder = srcFolder.substring(srcFolder.indexOf('/') + 1);
-
-      return src([
-        `${folder}/*.scss`,
-        `${folder}/*.js`,
-        `${folder}/*.{jpg,png,svg}`,
-        `${folder}/*.{woff,woff2}`,
-        `${folder}/**/*.scss`,
-        `${folder}/**/*.js`,
-        `${folder}/**/*.{jpg,png,svg}`,
-        `${folder}/**/*.{woff,woff2}`,
-      ]).pipe(dest(`${uids.dest}${srcFolder}`));
-    });
-
-    return merge(tasks);
-  });
+function copyUids() {
+  return src([
+    `${uids.src}/**/*.scss`,
+    `${uids.src}/**/*.js`,
+    `${uids.src}/**/*.{jpg,png,svg}`,
+    `${uids.src}/**/*.{woff,woff2}`,
+  ])
+    .pipe(dest(`${uids.dest}`));
 }
-
-function copyScss() {
-  // Set both the uids4 and uids components directories to be checked against the ready list.
-  // Then, add to the final file list if need be.
-  return Promise.all([
-    addToList(`${uids4.src}/components`),
-    addToList(`${uids.src}/components`, true),
-  ]);
-}
-
-function addToList(filePath, invert = false) {
-  // Read the filepath.
-  return fs.promises.readdir(filePath)
-    // Then, for each file in that path...
-    .then(files => {
-      files.forEach(function (file, index) {
-
-        // If we have set it to ignored, ignore it.
-        if (
-          (!invert && !uids4.readylist.includes(file))
-          ||
-          (invert && uids4.readylist.includes(file))
-        ) {
-          return;
-        }
-
-        // Otherwise, if it is a valid path, construct the full filepath and add it to the uidsList.
-        const fullFilePath = path.join(filePath, file);
-
-        if (fs.existsSync(fullFilePath) && fs.lstatSync(fullFilePath).isDirectory()) {
-          uidslist.push(fullFilePath);
-        }
-      });
-    })
-    .catch(err => {
-      console.log(err)
-    });
+function copyUids3() {
+  return src([
+    `${uids3.src}/**/*.scss`,
+    `${uids3.src}/**/*.js`,
+    `${uids3.src}/**/*.{jpg,png,svg}`,
+    `${uids3.src}/**/*.{woff,woff2}`,
+  ])
+    .pipe(dest(`${uids3.dest}`));
 }
 
 function fontCopy() {
@@ -137,7 +84,6 @@ function css() {
     .pipe(sass({
         includePaths: [
           "./node_modules",
-          "./uids/",
         ]
       }).on('error', sass.logError))
     .pipe(postcss([ autoprefixer(), cssnano()]))
@@ -150,11 +96,10 @@ function watchFiles() {
   watch(paths.src, compile);
 }
 
-const copy = parallel(copyUids, fontCopy);
+const copy = parallel(copyUids3, copyUids, fontCopy);
 const compile = series(clean, copy, css);
 
 exports.copy = copy;
-exports.copyScss = copyScss;
 exports.copyUids = copyUids;
 exports.css = css;
 exports.default = compile;
