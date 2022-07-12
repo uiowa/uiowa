@@ -15,9 +15,6 @@ const cssnano = require('cssnano')
 const glob = require('gulp-sass-glob');
 const sourcemaps = require('gulp-sourcemaps');
 const mode = require('gulp-mode')();
-const fs = require('fs');
-const path = require('path');
-const merge = require('merge-stream');
 
 /*
  * Directories here
