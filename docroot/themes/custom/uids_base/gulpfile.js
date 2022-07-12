@@ -94,7 +94,6 @@ const copy = parallel(copyUids3, copyUids, fontCopy);
 const compile = series(clean, copy, css);
 
 exports.copy = copy;
-exports.copyUids = copyUids;
 exports.css = css;
 exports.default = compile;
 exports.watch = watchFiles;
