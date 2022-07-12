@@ -187,10 +187,12 @@ $imgpath: '../../uids/assets/images';
   .block-inline-blockuiowa-text-area {
     min-width: 0;
 
+    &.border,
     &[class*="bg--"],
     &[class*="bg-pattern--"] {
       padding: $desktop-width-gutter;
     }
+    &.border.block-padding__all--extra,
     &[class*="bg--"].block-padding__all--extra,
     &[class*="bg-pattern--"].block-padding__all--extra {
       padding: 6rem;
@@ -198,7 +200,12 @@ $imgpath: '../../uids/assets/images';
   }
 }
 
-// For sidebars: remove padding from adjacent blocks if they are the same and don't have a margin top set
+// @todo remove when https://github.com/uiowa/uids/issues/714 is complete.
+.border {
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+  // For sidebars: remove padding from adjacent blocks if they are the same and don't have a margin top set
 .block[class*="bg--gray"].block-padding__all + .block[class*="bg--gray"].block-padding__all:not(.block-margin__top) {
   margin-top: -1.5rem;
   padding-top: 0;

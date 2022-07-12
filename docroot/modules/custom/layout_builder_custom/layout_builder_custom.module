@@ -9,6 +9,7 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Url;
 use Drupal\layout_builder_custom\LayoutBuilderPreRender;
 use Drupal\layout_builder_custom\Plugin\Display\ListBlock;
 use Drupal\layout_builder_styles\Entity\LayoutBuilderStyleGroup;
@@ -188,6 +189,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
         case 'inline_block:uiowa_card':
           $form['#attached']['library'][] = 'layout_builder_custom/card-block-form';
+
         case 'inline_block:uiowa_aggregator':
         case 'inline_block:uiowa_events':
         case 'views_block:article_list_block-list_article':
@@ -629,6 +631,26 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
           //   https://github.com/uiowa/uiowa/issues/5036
         }
       }
+
+      if ($block->getPluginId() == 'inline_block:uiowa_card') {
+        // Make sure button display field is checked if the link title field is filled in.
+        $link_title = $form_state->getValue(
+          [
+            'settings',
+            'block_form',
+            'field_uiowa_card_link',
+          ]
+        )[0]['title'];
+        if ($link_title) {
+          $form_state->setValue(
+            [
+              'settings',
+              'block_form',
+              'field_uiowa_card_button_display',
+            ], ['value' => 1]
+          );
+        };
+      }
       break;
 
     case 'inline_block:uiowa_collection':
@@ -648,8 +670,8 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
         $view_mode
       );
       break;
-  }
 
+  }
 }
 
 /**
@@ -770,6 +792,25 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         }
       }
 
+      break;
+
+    case 'inline_block:uiowa_card':
+      if (isset($element['field_uiowa_card_button_display'])) {
+        $element['field_uiowa_card_button_display']['widget']['#options']['_none'] = 'Use site default';
+        $element['field_uiowa_card_button_display']['widget']['#description'] .= t('&nbsp;If "Use site default" is selected, this setting can be changed on the <a href="@settings_url">SiteNow Pages settings</a>.', [
+          '@settings_url' => Url::fromRoute("sitenow_pages.settings_form")->toString(),
+        ]);
+        $element['field_uiowa_card_button_display']['#states'] = [
+          'visible' => [
+            ':input[name="settings[block_form][field_uiowa_card_link][0][uri]"]' => [
+              'filled' => TRUE,
+            ],
+            ':input[name="settings[block_form][field_uiowa_card_link][0][title]"]' => [
+              'filled' => FALSE,
+            ],
+          ],
+        ];
+      }
       break;
 
     case 'inline_block:uiowa_events':

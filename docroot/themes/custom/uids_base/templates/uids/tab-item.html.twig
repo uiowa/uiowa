@@ -1,0 +1,10 @@
+ <div tabindex="0"
+         role="tabpanel"
+         id="tabs--{{ tablist_id }}__panel--{{ panel_item_number }}"
+         aria-labelledby="{{ names[panel_item_number] }}"
+    >
+      {% block tab_content %}
+        {{ tab_item_content }}
+      {% endblock %}
+    </div>
+

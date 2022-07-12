@@ -4,6 +4,9 @@ namespace Drupal\sitenow_migrate\Plugin\migrate;
 
 use Drupal\migrate\MigrateException;
 use Drupal\migrate\Row;
+use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\ServerException;
+use GuzzleHttp\Exception\ClientException;
 
 /**
  * A trait for handling on-demand media creation.
@@ -84,8 +87,22 @@ trait CreateMediaTrait {
           $media_entity['field_media_file'] = [
             'target_id' => $fid,
             'display' => 1,
-            'description' => '',
           ];
+          // If we have a title,
+          // go ahead and set it as the description
+          // so it can be used in displays.
+          if (isset($meta['title'])) {
+            $media_entity['field_media_file']['description'] = $meta['title'];
+          }
+          else {
+            // If we didn't have a title, check if we had
+            // a human readable filename to use for the description
+            // (that doesn't match the true filename, which
+            // would be used in displays with an empty description.
+            if (!str_ends_with($meta['file_uri'], $meta['filename'])) {
+              $media_entity['field_media_file']['description'] = $meta['filename'];
+            }
+          }
           break;
 
         case 'audio':
