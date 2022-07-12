@@ -36,6 +36,13 @@ class StaticMapURLConstraint extends Constraint {
   public $noMarker = 'The URL must include an %marker.';
 
   /**
+   * The message shown when the value does not include alternative text.
+   *
+   * @var string
+   */
+  public $noAltText = 'Alternative text field is required.';
+
+  /**
    * The message shown when the response is not valid.
    *
    * @var string

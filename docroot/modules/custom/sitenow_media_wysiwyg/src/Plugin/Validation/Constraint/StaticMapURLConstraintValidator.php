@@ -20,6 +20,7 @@ class StaticMapURLConstraintValidator extends ConstraintValidator {
     $parsed_url = UrlHelper::parse($value['uri']);
 
     $no_id = !array_key_exists('id', $parsed_url['query']);
+    $alt_text = $value['alt'];
 
     if (!str_starts_with($parsed_url['path'], StaticMap::BASE_URL)) {
       $this->context->addViolation($constraint->noBaseUrl, [
@@ -37,6 +38,10 @@ class StaticMapURLConstraintValidator extends ConstraintValidator {
       $this->context->addViolation($constraint->noId, [
         '%id' => '?id',
       ]);
+    }
+
+    if (empty($alt_text)) {
+      $this->context->addViolation($constraint->noAltText);
     }
 
     $map_location = str_replace('!m/', '', $parsed_url['fragment']);
