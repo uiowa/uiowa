@@ -34,6 +34,8 @@ class StaticMapUrlWidget extends LinkWidget {
       '#description' => $this->t('The higher the number the more zoomed in the map will be.'),
       '#options' => ['' => $this->t('- Select a value -')] + StaticMapUrl::allowedZoomValues(),
       '#default_value' => $items[$delta]->zoom ?? 17,
+      '#required' => TRUE,
+      '#element_validate' => array('zoom_validate')
     ];
 
     $element['alt'] = [
@@ -42,9 +44,25 @@ class StaticMapUrlWidget extends LinkWidget {
       '#default_value' => $items[$delta]->alt ?? NULL,
       '#maxlength' => 255,
       '#description' => $this->t('Short description of the static map image used by screen readers and displayed when the static map image is not loaded. This is important for accessibility.'),
+      '#required' => TRUE,
+      '#element_validate' => array('alt_text_validate')
     ];
 
     return $element;
+  }
+
+  function alt_text_validate($element, $form_state) {
+    $alt_text = $element['alt'];
+    if (empty($alt_text)) {
+      form_error($element,t('Alternative text field is required.'));
+    }
+  }
+
+  function zoom_validate($element, $form_state) {
+    $allowed_zoom = array(StaticMapUrl::allowedZoomValues());
+    if (!in_array($form_state[$element]['zoom'], $allowed_zoom)) {
+      form_error($element, t('You must select a valid zoom level.'));
+    }
   }
 
 }
