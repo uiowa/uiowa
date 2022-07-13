@@ -35,6 +35,7 @@ class StaticMapForm extends AddFormBase {
       '#size' => 80,
       '#maxlength' => 1024,
       '#description' => $this->t('Allowed providers: maps.uiowa.edu'),
+      '#required' => TRUE,
     ];
 
     $form['container']['submit'] = [
