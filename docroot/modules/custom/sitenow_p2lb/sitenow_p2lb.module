@@ -380,11 +380,15 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       $type = 'uiowa_collection';
       $label = 'Accordion collection';
       $view_mode = 'accordion';
+      $title = $paragraph->field_uip_title->value;
+      // Reverse the logic, because we're using it to
+      // denote "hide," rather than display.
+      $display_title = !$paragraph->field_uip_display_title->value;
       $accordion_items = $paragraph->get('field_accordion_item');
       foreach ($accordion_items as $accordion_item) {
         $accordion_paragraph = $paragraph->load($accordion_item->target_id);
         $body = $accordion_paragraph->get('field_accordion_item_body')->getValue()[0];
-        $title = $accordion_paragraph->get('field_accordion_item_title')->getString();
+        $child_title = $accordion_paragraph->get('field_accordion_item_title')->getString();
         $child = $paragraph->create([
           'langcode' => 'en',
           'type' => 'uiowa_collection_item',
@@ -392,7 +396,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
           'parent_type' => 'block_content',
           'parent_field_name' => 'field_uiowa_collection_items',
           'field_collection_body' => $body,
-          'field_collection_headline' => $title,
+          'field_collection_headline' => $child_title,
         ]);
         if ($child->save()) {
           $children[] = $child;
@@ -405,6 +409,14 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         'reusable' => 0,
         'default_langcode' => 1,
         'field_uiowa_collection_items' => $children,
+        // Build a headline out of the title
+        // and display title options.
+        'field_uiowa_headline' => [
+          'headline' => $title,
+          'heading_size' => 'h2',
+          'hide_headline' => $display_title,
+          'headline_style' => 'default',
+        ],
       ];
       break;
 
@@ -542,8 +554,10 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 
     case 'carousel':
       $type = 'uiowa_slider';
-      $label = $paragraph->get('field_uip_title')->getString();
-      $display_label = $paragraph->get('field_uip_display_title')->getString();
+      $title = $paragraph->field_uip_title->value;
+      // Reverse the logic, because we're using it to
+      // denote "hide," rather than display.
+      $display_title = !$paragraph->field_uip_display_title->value;
 
       $carousel_image_ids = $paragraph->get('field_carousel_item')->getValue();
       // Grab the actual ids to pass to our loader.
@@ -606,6 +620,14 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         'metatag' => [],
         'field_collection_heading_size' => 'h2',
         'field_uiowa_slider_slides' => $children,
+        // Build a headline out of the title
+        // and display title options.
+        'field_uiowa_headline' => [
+          'headline' => $title,
+          'heading_size' => 'h2',
+          'hide_headline' => $display_title,
+          'headline_style' => 'default',
+        ],
       ];
 
       break;
@@ -624,8 +646,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       $keywords = $paragraph->field_events_keywords->value;
       $more = $paragraph->field_events_more->value;
       $more_path = $paragraph->field_events_more_path->value;
-      // @todo Map this where appropriate below. Right now
-      //   it's not being used.
       $past = $paragraph->field_events_past->value;
       $results = $paragraph->field_events_results->value;
       $title = $paragraph->field_uip_title->value;
@@ -642,9 +662,8 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         // @todo Make sure these are mapped correctly.
         'field_collection_more' => $more,
         'field_collection_more_path' => $more_path,
-        'field_collection_pager' => $pager,
-        // @todo Update this from default to a previous value.
-        'field_collection_results' => 10,
+        'field_uiowa_events_past' => $past,
+        'field_collection_results' => $results,
         'field_uiowa_events_audiences' => $audiences,
         'field_uiowa_events_department' => $department,
         'field_uiowa_events_interests' => $interests,
@@ -755,7 +774,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         'exposed_filter_values' => [
           'field_tags_target_id' => [],
         ],
-        'layout_builder_styles' => $styles,
+        'layout_builder_styles' => _sitenow_p2lb_block_styles($type, $paragraph),
         'context_mapping' => [],
       ];
 
