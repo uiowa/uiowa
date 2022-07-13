@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f031c32ae67a39514ba5088e88262493",
+    "content-hash": "488b71d2971fc9a2dc05a4b8d676b027",
     "packages": [
         {
             "name": "acquia/blt",
@@ -5571,20 +5571,35 @@
         },
         {
             "name": "drupal/entity_print",
-            "version": "dev-3295590-update-dompdfdompdf-dependency",
+            "version": "dev-2.x",
             "source": {
                 "type": "git",
-                "url": "git@git.drupal.org:issue/entity_print-3295590.git",
-                "reference": "6b4f0a69"
+                "url": "https://git.drupalcode.org/project/entity_print.git",
+                "reference": "f7095ea6"
             },
             "require": {
-                "dompdf/dompdf": "^2.0.0",
+                "dompdf/dompdf": "^1.2.1 || ^2.0.0",
+                "drupal/core": "^8 || ^9",
                 "php": "^7.1 || ^8.0"
             },
             "suggest": {
                 "mikehaertl/phpwkhtmltopdf": "PhpWkhtmlToPdf provides the PHP library to use Wkhtmltopdf"
             },
             "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.6+0-dev",
+                    "datestamp": "1657700699",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
                 "GPL-2.0+"
             ],
@@ -5592,6 +5607,22 @@
                 {
                     "name": "Ben Dougherty",
                     "homepage": "https://www.drupal.org/u/benjy"
+                },
+                {
+                    "name": "larowlan",
+                    "homepage": "https://www.drupal.org/user/395439"
+                },
+                {
+                    "name": "pameeela",
+                    "homepage": "https://www.drupal.org/user/1431110"
+                },
+                {
+                    "name": "Sam152",
+                    "homepage": "https://www.drupal.org/user/1485048"
+                },
+                {
+                    "name": "VladimirAus",
+                    "homepage": "https://www.drupal.org/user/673120"
                 }
             ],
             "description": "PDF print solution for any Drupal entity.",
@@ -5602,7 +5633,9 @@
                 "print",
                 "web"
             ],
-            "time": "2022-07-12T19:35:10+00:00"
+            "support": {
+                "source": "https://git.drupalcode.org/project/entity_print"
+            }
         },
         {
             "name": "drupal/entity_reference_revisions",
