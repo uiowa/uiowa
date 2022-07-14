@@ -4252,3 +4252,9 @@ $sites['sitesrace-and-comics.uiowa.ddev.site'] = 'race-and-comics.sites.uiowa.ed
 $sites['sitesrace-and-comics.dev.drupal.uiowa.edu'] = 'race-and-comics.sites.uiowa.edu';
 $sites['sitesrace-and-comics.stage.drupal.uiowa.edu'] = 'race-and-comics.sites.uiowa.edu';
 $sites['sitesrace-and-comics.prod.drupal.uiowa.edu'] = 'race-and-comics.sites.uiowa.edu';
+
+// Directory aliases for womensrugby.org.uiowa.edu.
+$sites['orgwomensrugby.uiowa.ddev.site'] = 'womensrugby.org.uiowa.edu';
+$sites['orgwomensrugby.dev.drupal.uiowa.edu'] = 'womensrugby.org.uiowa.edu';
+$sites['orgwomensrugby.stage.drupal.uiowa.edu'] = 'womensrugby.org.uiowa.edu';
+$sites['orgwomensrugby.prod.drupal.uiowa.edu'] = 'womensrugby.org.uiowa.edu';
