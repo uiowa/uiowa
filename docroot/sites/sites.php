@@ -4264,3 +4264,9 @@ $sites['physicsqa.uiowa.ddev.site'] = 'qa.physics.uiowa.edu';
 $sites['physicsqa.dev.drupal.uiowa.edu'] = 'qa.physics.uiowa.edu';
 $sites['physicsqa.stage.drupal.uiowa.edu'] = 'qa.physics.uiowa.edu';
 $sites['physicsqa.prod.drupal.uiowa.edu'] = 'qa.physics.uiowa.edu';
+
+// Directory aliases for lynch.lab.uiowa.edu.
+$sites['lablynch.uiowa.ddev.site'] = 'lynch.lab.uiowa.edu';
+$sites['lablynch.dev.drupal.uiowa.edu'] = 'lynch.lab.uiowa.edu';
+$sites['lablynch.stage.drupal.uiowa.edu'] = 'lynch.lab.uiowa.edu';
+$sites['lablynch.prod.drupal.uiowa.edu'] = 'lynch.lab.uiowa.edu';
