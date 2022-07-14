@@ -12,7 +12,6 @@ use Drupal\Core\Render\RendererInterface;
 use Drupal\media\MediaInterface;
 use Drupal\media\MediaSourceBase;
 use Drupal\media\MediaTypeInterface;
-use Drupal\media\MediaSourceFieldConstraintsInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -31,7 +30,7 @@ use Drupal\Core\Field\FieldTypePluginManagerInterface;
  *   },
  * )
  */
-class StaticMap extends MediaSourceBase implements MediaSourceFieldConstraintsInterface {
+class StaticMap extends MediaSourceBase {
   use LoggerChannelTrait;
 
   const BASE_URL = 'https://maps.uiowa.edu';

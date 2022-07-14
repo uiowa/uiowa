@@ -2,10 +2,12 @@
 
 namespace Drupal\sitenow_media_wysiwyg\Plugin\Field\FieldWidget;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\sitenow_media_wysiwyg\Plugin\Field\FieldType\StaticMapUrl;
+use Drupal\sitenow_media_wysiwyg\Plugin\media\Source\StaticMap;
 
 /**
  * Static Map URL field widget.
@@ -46,7 +48,45 @@ class StaticMapUrlWidget extends LinkWidget {
       '#required' => TRUE,
     ];
 
+    $element['uri']['#element_validate'][] = [
+      get_called_class(), 'uriValidation',
+    ];
+
     return $element;
   }
 
+  public static function uriValidation(&$element, $form_state) {
+    $value = $element['#value'];
+    $parsed_url = UrlHelper::parse($value);
+
+    if (!str_starts_with($parsed_url['path'], StaticMap::BASE_URL)) {
+      $form_state->setError($element, t('The URL must start with @base.', [
+        '@base' => StaticMap::BASE_URL,
+      ]));
+    }
+
+    $no_id = !array_key_exists('id', $parsed_url['query']);
+
+    if ($no_id) {
+      $form_state->setError($element, t('The URL must include an @id parameter.', [
+        '@id' => '?id',
+      ]));
+    }
+
+    if (!array_key_exists('fragment', $parsed_url) || !str_starts_with($parsed_url['fragment'], '!m/')) {
+      $form_state->setError($element, t('The URL must include an @marker.', [
+        '@marker' => '!m/',
+      ]));
+    }
+
+    $map_location = str_replace('!m/', '', $parsed_url['fragment']);
+    $zoom_level = 17;
+    $url = 'https://staticmap.concept3d.com/map/static-map/?map=1890&loc=' . $map_location . '&scale=2&zoom=' . $zoom_level;
+    $headers = get_headers($url, 1);
+    $response = $headers[0];
+
+    if ($response != 'HTTP/1.1 200 OK') {
+      $form_state->setError($element, t('The URL must return a valid HTTP status code.'));
+    }
+  }
 }
