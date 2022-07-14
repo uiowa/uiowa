@@ -69,7 +69,6 @@ class StaticMapUrlWidget extends LinkWidget {
     }
 
     $no_id = !array_key_exists('id', $parsed_url['query']);
-
     if ($no_id) {
       $form_state->setError($element, t('The URL must include an @id parameter.', [
         '@id' => '?id',
@@ -82,9 +81,9 @@ class StaticMapUrlWidget extends LinkWidget {
       ]));
     }
 
+    // Construct URL like the formatter to test the response from Concept3D.
     $map_location = str_replace('!m/', '', $parsed_url['fragment']);
-    $zoom_level = 17;
-    $url = 'https://staticmap.concept3d.com/map/static-map/?map=1890&loc=' . $map_location . '&scale=2&zoom=' . $zoom_level;
+    $url = StaticMap::STATIC_URL . '/map/static-map/?map=1890&loc=' . $map_location . '&scale=2&zoom=17';
     $headers = get_headers($url, 1);
     $response = $headers[0];
 
