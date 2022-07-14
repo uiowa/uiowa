@@ -4258,3 +4258,9 @@ $sites['orgwomensrugby.uiowa.ddev.site'] = 'womensrugby.org.uiowa.edu';
 $sites['orgwomensrugby.dev.drupal.uiowa.edu'] = 'womensrugby.org.uiowa.edu';
 $sites['orgwomensrugby.stage.drupal.uiowa.edu'] = 'womensrugby.org.uiowa.edu';
 $sites['orgwomensrugby.prod.drupal.uiowa.edu'] = 'womensrugby.org.uiowa.edu';
+
+// Directory aliases for qa.physics.uiowa.edu.
+$sites['physicsqa.uiowa.ddev.site'] = 'qa.physics.uiowa.edu';
+$sites['physicsqa.dev.drupal.uiowa.edu'] = 'qa.physics.uiowa.edu';
+$sites['physicsqa.stage.drupal.uiowa.edu'] = 'qa.physics.uiowa.edu';
+$sites['physicsqa.prod.drupal.uiowa.edu'] = 'qa.physics.uiowa.edu';
