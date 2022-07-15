@@ -48,13 +48,47 @@
     overflow-wrap: anywhere;
   }
 
-  // Circle button.
-  //.bttn--transparent.bttn--circle svg {
-  //  color: $secondary;
-  //  [class*="bg--black"] & {
-  //    color: #fff;
-  //  }
-  //}
+  &.card--button-position {
+    .card__body {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      div:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .card__description {
+      margin-bottom: 1.05rem;
+    }
+
+    .bttn {
+      margin-top: auto;
+    }
+  }
+}
+
+// Circle button.
+.card {
+  .bttn--transparent.bttn--circle svg {
+    color: $secondary;
+  }
+
+  &[class*="bg--black"] {
+    .bttn--transparent.bttn--circle svg {
+      color: #fff;
+    }
+  }
+
+  &:not([class*="bg-"]) {
+    [class*="bg--black"] & {
+      .bttn--transparent.bttn--circle svg {
+        color: #fff;
+      }
+    }
+  }
+  
 
   .bttn--transparent.bttn--circle {
     padding: .55rem .7em;
@@ -86,27 +120,8 @@
       margin: 0;
     }
   }
-
-  &.card--button-position {
-    .card__body {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-
-      div:last-child {
-        margin-bottom: 0;
-      }
-    }
-
-    .card__description {
-      margin-bottom: 1.05rem;
-    }
-
-    .bttn {
-      margin-top: auto;
-    }
-  }
 }
+
 
 // ie11
 @media all and (-ms-high-contrast: none),
