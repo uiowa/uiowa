@@ -427,37 +427,48 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       break;
 
     case 'articles':
-      $type = 'uiowa_articles';
+      $type = 'views_block:article_list_block-list_article';
       $more = $paragraph->field_articles_more->value;
       $more_path = $paragraph->field_articles_more_path->value;
       $title = $paragraph->field_uip_title->value;
       // Reverse the logic, because we're using it to
       // denote "hide," rather than display.
       $display_title = !$paragraph->field_uip_display_title->value;
+      // Build our headline array, because for list blocks,
+      // it gets stored in the config, not in a field.
+      $headline = [
+        "headline" => $title,
+        "hide_headline" => $display_title,
+        "heading_size" => "h2",
+        "headline_style" => "default",
+        "headline_alignment" => "default",
+        "child_heading_size" => "h3",
+      ];
       $pager = $paragraph->field_uip_pager->value;
+      // Number of results that should be displayed.
+      $results = $paragraph->field_uip_items->value;
 
-      $block_definition = [
-        'type' => $type,
-        'langcode' => 'en',
-        'status' => $paragraph->get('status')->getValue(),
-        'reusable' => 0,
-        'default_langcode' => 1,
-        // @todo Make sure these are mapped correctly.
-        'field_collection_more' => $more,
-        'field_collection_more_path' => $more_path,
-        'field_collection_pager' => $pager,
-        // @todo Update this from default to a previous value.
-        'field_collection_results' => 10,
-        // Build a headline out of the title
-        // and display title options.
-        'field_uiowa_headline' => [
-          'headline' => $title,
-          'heading_size' => 'h2',
-          'hide_headline' => $display_title,
-          'headline_style' => 'default',
+      $config = [
+        'id' => 'views_block:article_list_block-list_article',
+        'label' => $label,
+        'provider' => 'views',
+        'label_display' => $display_label,
+        'views_label' => '',
+        'headline' => $headline,
+        'pager' => $pager,
+        'pager_offset' => 0,
+        'items_per_page' => $results,
+        // @todo Make sure $more and $more_path map correctly.
+        'use_more' => $more,
+        'use_more_link_url' => $more_path,
+        'exposed_filter_values' => [
+          'field_tags_target_id' => [],
         ],
+        'layout_builder_styles' => _sitenow_p2lb_block_styles($type, $paragraph),
+        'context_mapping' => [],
       ];
 
+      $uuid = \Drupal::service('uuid')->generate();
       break;
 
     case 'blockquote':
