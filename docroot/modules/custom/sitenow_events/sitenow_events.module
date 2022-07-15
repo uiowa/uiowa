@@ -101,7 +101,7 @@ function sitenow_events_preprocess_block(&$variables) {
         $end = 'yesterday';
       }
 
-      $data = sitenow_events_load([
+      $parameters = [
         'display_id' => $display_id,
         'filters[department]' => $block->get('field_uiowa_events_department')->getString(),
         'filters[audiences]' => $block->get('field_uiowa_events_audiences')->getString(),
@@ -113,7 +113,25 @@ function sitenow_events_preprocess_block(&$variables) {
         'filters[enddate][value][date]' => date('m-d-Y', strtotime(date('d-m-Y') . $end)),
         'page' => 0,
         'items_per_page' => $block->get('field_collection_results')->value ?? 50,
-      ]);
+      ];
+
+      // Initial pull of data for most situations.
+      $data = sitenow_events_load([$parameters]);
+
+      // If pager, create it and re-query data based on current page.
+      $show_pager = (bool) $block->get('field_collection_pager')->getString();
+      if ($show_pager) {
+        $count = $data['page']['total'];
+        static $element = 0;
+        $element++;
+        /** @var \Drupal\Core\Pager\PagerManager $pager */
+        $pager = \Drupal::service('pager.manager');
+        $current = $pager->createPager($count, $block->get('field_collection_results')->value, $element)->getCurrentPage();
+        if ($current != $parameters['page']) {
+          $parameters['page'] = $current;
+          $data = sitenow_events_load([$parameters]);
+        }
+      }
 
       if (isset($data['events'])) {
         // Get block layout builder styles if they exist.
@@ -152,6 +170,15 @@ function sitenow_events_preprocess_block(&$variables) {
       else {
         $variables['content']['no_results'] = [
           '#markup' => '<div class="events-empty"><p>There are currently no events to display.</p></div>',
+        ];
+      }
+
+      // Add pager to render if checked.
+      if ($show_pager) {
+        $variables['content']['pager'] = [
+          '#type' => 'pager',
+          '#element' => $element,
+          '#quantity' => 3,
         ];
       }
 
