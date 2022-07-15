@@ -71,25 +71,6 @@
 
 // Circle button.
 .card {
-  .bttn--transparent.bttn--circle svg {
-    color: $secondary;
-  }
-
-  &[class*="bg--black"] {
-    .bttn--transparent.bttn--circle svg {
-      color: #fff;
-    }
-  }
-
-  &:not([class*="bg-"]) {
-    [class*="bg--black"] & {
-      .bttn--transparent.bttn--circle svg {
-        color: #fff;
-      }
-    }
-  }
-  
-
   .bttn--transparent.bttn--circle {
     padding: .55rem .7em;
     border-radius: 50%;
@@ -118,6 +99,21 @@
 
     svg {
       margin: 0;
+      color: $secondary;
+    }
+  }
+
+  &[class*="bg--black"] {
+    .bttn--transparent.bttn--circle svg {
+      color: #fff;
+    }
+  }
+
+  &:not([class*="bg-"]) {
+    [class*="bg--black"] & {
+      .bttn--transparent.bttn--circle svg {
+        color: #fff;
+      }
     }
   }
 }
