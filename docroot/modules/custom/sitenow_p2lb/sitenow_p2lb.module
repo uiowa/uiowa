@@ -839,7 +839,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       // Webforms require a title in v2, but webform blocks do not
       // have a headline field in v3, so we need to build it out
       // as an additional text area.
-      $title = $paragraph->get('field_uip_title')->getValue()[0]['value']);
+      $title = $paragraph->get('field_uip_title')->getValue()[0]['value'];
       $display_title = !$paragraph->field_uip_display_title->value;
       $block_definition = [
         'type' => 'uiowa_text_area',
