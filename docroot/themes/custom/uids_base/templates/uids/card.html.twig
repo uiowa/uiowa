@@ -12,7 +12,7 @@
 {% if card_link_url is not empty %}
   {# Add bttn--circle class if link title is empty. #}
   {% if card_link_title is empty %}
-    {% set card_button_classes = card_button_classes|merge(['bttn--circle', 'bttn--primary']) %}
+    {% set card_button_classes = card_button_classes|merge(['bttn--circle']) %}
   {% endif %}
   {% if card_title is not empty %}
     {# Title is set, use it as the linking element.  #}
