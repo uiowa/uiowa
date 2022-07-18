@@ -1,3 +1,10 @@
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
+
+html {
+  scroll-behavior: auto;
+}
+
 /*
  * Layout builder overrides
  */
@@ -286,15 +293,10 @@ form {
   justify-content: flex-start;
 }
 
-
+// Add a container to edit forms.
 .content__container {
-  // Add a container to edit forms.
-  .block-local-tasks-block,
-  .block-help-block,
   form.layout-builder-form .form-actions,
   .layout-builder__message,
-  .form-type-vertical-tabs,
-  #edit-moderation-state-0,
   .layout-builder-revert-overrides,
   .layout-builder-discard-changes {
     @include container-width;
@@ -319,8 +321,7 @@ form {
   }
 }
 
-// unstyle message for layout builder edit screen
-
+// Un-style message for layout builder edit screen
 .layout-builder__message--overrides .alert-success {
   border: none;
   background-color: #fff;
@@ -370,15 +371,9 @@ form {
   }
 }
 
-// admin styles for full-width and mixed setting for local drupal admin blocks
-
+// Admin styles for full-width and mixed setting for local drupal admin blocks
 .content__full {
-
-  .block-local-tasks-block,
-  .block-help-block,
-  .form-actions,
-  .layout-builder__message,
-  .form-type-vertical-tabs {
+  .layout-builder__message {
     margin-right: $gutter;
     margin-left: $gutter;
   }
@@ -501,4 +496,9 @@ blockquote.layout-builder-block.is-layout-builder-highlighted  {
 
 .layout-builder-block .contextual .contextual-links a {
   color: $secondary!important;
+}
+
+// Edit layout for textblock not displaying correctly.
+.block-inline-blockuiowa-text-area.layout-builder-block {
+  min-height: 40px;
 }
