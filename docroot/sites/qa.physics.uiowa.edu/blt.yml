@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: physicsqa.uiowa.ddev.site
+    protocol: https
+  machine_name: physicsqa
+  human_name: qa.physics.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: physicsqa.prod
+drupal:
+  db:
+    database: qa_physics_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: gmccrory
+  site-name: 'Quality Assurance'

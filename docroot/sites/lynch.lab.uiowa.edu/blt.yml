@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lablynch.uiowa.ddev.site
+    protocol: https
+  machine_name: lablynch
+  human_name: lynch.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lablynch.prod
+drupal:
+  db:
+    database: lynch_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: legolden
+  site-name: 'Lynch Lab'
