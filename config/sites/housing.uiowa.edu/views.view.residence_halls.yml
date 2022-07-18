@@ -244,7 +244,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: taxonomy_index_tid
-          operator: or
+          operator: and
           value: {  }
           group: 1
           exposed: true
@@ -302,7 +302,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: list_field
-          operator: or
+          operator: and
           value: {  }
           group: 1
           exposed: true
@@ -348,7 +348,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: taxonomy_index_tid
-          operator: or
+          operator: and
           value: {  }
           group: 1
           exposed: true
@@ -375,16 +375,19 @@ display:
             reduce: false
           is_grouped: false
           group_info:
-            label: ''
-            description: ''
-            identifier: ''
+            label: 'Room type (field_residence_hall_room_type)'
+            description: null
+            identifier: field_residence_hall_room_type_target_id
             optional: true
             widget: select
             multiple: false
             remember: false
             default_group: All
             default_group_multiple: {  }
-            group_items: {  }
+            group_items:
+              1: {  }
+              2: {  }
+              3: {  }
           reduce_duplicates: true
           vid: room_type
           type: select
@@ -406,7 +409,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: taxonomy_index_tid
-          operator: or
+          operator: and
           value: {  }
           group: 1
           exposed: true
@@ -464,7 +467,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: taxonomy_index_tid
-          operator: or
+          operator: and
           value: {  }
           group: 1
           exposed: true
@@ -522,7 +525,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: taxonomy_index_tid
-          operator: or
+          operator: and
           value: {  }
           group: 1
           exposed: true
