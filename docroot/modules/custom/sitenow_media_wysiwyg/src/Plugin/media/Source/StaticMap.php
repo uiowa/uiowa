@@ -138,7 +138,7 @@ class StaticMap extends MediaSourceBase {
       case 'thumbnail_uri':
         try {
           $thumbnail_url = self::STATIC_URL . "/map/static-map/?map=1890&loc=" . $marker . "&scale=1&zoom=17";
-          $response = $this->client->request('GET', $thumbnail_url);
+          $this->client->request('GET', $thumbnail_url);
 
           $scheme = $this->configFactory->get('system.file')->get('default_scheme');
           $destination = $scheme . '://static_map_thumbnails/';
