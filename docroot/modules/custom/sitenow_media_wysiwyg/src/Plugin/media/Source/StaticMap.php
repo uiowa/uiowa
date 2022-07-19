@@ -130,9 +130,11 @@ class StaticMap extends MediaSourceBase {
     // The source is a required, single value field.
     $parsed = UrlHelper::parse($source->getValue()[0]['uri']);
     $marker = str_replace('!m/', '', $parsed['fragment']);
+
     if (str_contains($marker, '?')) {
-      $marker = strstr($marker, '?', true);
+      $marker = strstr($marker, '?', TRUE);
     }
+
     switch ($attribute_name) {
       case 'default_name':
         return 'media:' . $media->bundle() . ':marker-' . $marker;
