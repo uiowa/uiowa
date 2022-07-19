@@ -85,7 +85,6 @@
       border-radius: 50%;
       background-color: transparent;
       transition: border-color .3s ease-in-out;
-      border: 3px solid transparent;
       transform: none;
       position: absolute;
     }
@@ -93,26 +92,9 @@
     &:hover:after,
     &:focus:after {
       transform: none;
-      border-color: $primary;
+      border: 3px solid;
+      border-color: inherit;
       background-color: transparent;
-    }
-
-    svg {
-      margin: 0;
-    }
-  }
-
-  &[class*="bg--black"] {
-    .bttn--transparent.bttn--circle svg {
-      color: #fff;
-    }
-  }
-
-  &:not([class*="bg-"]) {
-    [class*="bg--black"] & {
-      .bttn--transparent.bttn--circle svg {
-        color: #fff;
-      }
     }
   }
 }
