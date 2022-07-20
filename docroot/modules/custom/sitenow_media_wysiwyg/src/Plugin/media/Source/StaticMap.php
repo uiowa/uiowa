@@ -12,31 +12,29 @@ use Drupal\Core\Render\RendererInterface;
 use Drupal\media\MediaInterface;
 use Drupal\media\MediaSourceBase;
 use Drupal\media\MediaTypeInterface;
-use Drupal\media\MediaSourceFieldConstraintsInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\RedirectMiddleware;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Field\FieldTypePluginManagerInterface;
 
 /**
- * Provides media type plugin for Panopto.
+ * Provides media type plugin for Static Map.
  *
  * @MediaSource(
- *   id = "panopto",
- *   label = @Translation("Panopto"),
- *   description = @Translation("Use Panopto for reusable media."),
- *   allowed_field_types = {"string", "string_long", "link"},
+ *   id = "static_map",
+ *   label = @Translation("Static Map"),
+ *   description = @Translation("Use Static Map for reusable media."),
+ *   allowed_field_types = {"string", "string_long", "link", "static_map_url"},
  *   forms = {
- *     "media_library_add" = "Drupal\sitenow_media_wysiwyg\Form\PanoptoForm",
+ *     "media_library_add" = "Drupal\sitenow_media_wysiwyg\Form\StaticMapForm",
  *   },
- *
  * )
  */
-class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInterface {
+class StaticMap extends MediaSourceBase {
   use LoggerChannelTrait;
 
-  const BASE_URL = 'https://uicapture.hosted.panopto.com';
+  const BASE_URL = 'https://maps.uiowa.edu';
+  const STATIC_URL = 'https://staticmap.concept3d.com';
 
   /**
    * The http_client service.
@@ -112,14 +110,14 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
    * {@inheritdoc}
    */
   public function getSourceFieldConstraints() {
-    return ['PanoptoURL' => []];
+    return ['StaticMapUrl' => []];
   }
 
   /**
    * {@inheritdoc}
    */
   public function createSourceField(MediaTypeInterface $type) {
-    return parent::createSourceField($type)->set('label', 'Panopto Url');
+    return parent::createSourceField($type)->set('label', 'Static map URL');
   }
 
   /**
@@ -130,35 +128,29 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
     $source = $media->get($this->configuration['source_field']);
 
     // The source is a required, single value field.
-    // @see: PanoptoURLConstraintValidator::validate().
     $parsed = UrlHelper::parse($source->getValue()[0]['uri']);
-    $id = $parsed['query']['id'];
+    $marker = str_replace('!m/', '', $parsed['fragment']);
+
+    if (str_contains($marker, '?')) {
+      $marker = strstr($marker, '?', TRUE);
+    }
 
     switch ($attribute_name) {
-      // @todo https://github.com/uiowa/uiowa/issues/5029
       case 'default_name':
-        return 'media:' . $media->bundle() . ':' . $uuid;
+        return 'media:' . $media->bundle() . ':marker-' . $marker;
 
       case 'thumbnail_uri':
         try {
-          $response = $this->client->get(
-            self::BASE_URL . "/Panopto/Services/FrameGrabber.svc/FrameRedirect?objectId={$id}&mode=Delivery&random=0.304899272650899&usePng=False",
-            [
-              'allow_redirects' => [
-                'track_redirects' => TRUE,
-              ],
-            ],
-          );
+          $thumbnail_url = self::STATIC_URL . "/map/static-map/?map=1890&loc=" . $marker . "&scale=1&zoom=17";
+          $this->client->request('GET', $thumbnail_url);
 
-          $redirects = $response->getHeader(RedirectMiddleware::HISTORY_HEADER);
-          $source = end($redirects);
           $scheme = $this->configFactory->get('system.file')->get('default_scheme');
-          $destination = $scheme . '://panopto_thumbnails/';
+          $destination = $scheme . '://static_map_thumbnails/';
           $realpath = $this->fs->realpath($destination);
 
           if ($this->fs->prepareDirectory($realpath, FileSystemInterface::CREATE_DIRECTORY)) {
             /** @var \Drupal\file\FileInterface $file */
-            $file = system_retrieve_file($source, "{$destination}{$uuid}.jpg", TRUE, FileSystemInterface::EXISTS_REPLACE);
+            $file = system_retrieve_file($thumbnail_url, "{$destination}{$uuid}.jpg", TRUE, FileSystemInterface::EXISTS_REPLACE);
             return $file->getFileUri();
           }
         }
