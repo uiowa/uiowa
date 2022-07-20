@@ -78,7 +78,10 @@ class P2LbSettingsForm extends ConfigFormBase {
 
     $form['markup'] = [
       '#type' => 'markup',
-      '#markup' => $this->t('<p>These settings let you configure and use SiteNow paragraphs2layoutbuilder on this site.</p>'),
+      '#markup' => <<< 'EOD'
+        <p>These settings let you configure and use SiteNow paragraphs2layoutbuilder on this site.</p>
+        <p>Additionally, pages can be tracked and converted at <a href="/admin/sitenow-converter">/admin/sitenow-converter</a>.</p>
+      EOD,
     ];
 
     // Grab all nodes that currently have paragraphs associated with them.
