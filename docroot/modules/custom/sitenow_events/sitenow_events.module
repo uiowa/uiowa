@@ -92,13 +92,13 @@ function sitenow_events_preprocess_block(&$variables) {
 
       // Defaults to upcoming.
       $display_id = 'events';
-      $start = 'now';
-      $end = '+365 days';
+      $start = date('d-m-Y') . ' now';;
+      $end = '19-01-2038';
 
       if ($block->get('field_uiowa_events_past')->value == TRUE) {
         $display_id = 'past';
-        $start = '-365 days';
-        $end = 'yesterday';
+        $start = '01-01-1970';
+        $end = date('d-m-Y') . ' yesterday';
       }
 
       $parameters = [
@@ -109,8 +109,8 @@ function sitenow_events_preprocess_block(&$variables) {
         'filters[types]' => $block->get('field_uiowa_events_types')->getString(),
         'filters[keywords]' => $block->get('field_uiowa_events_keywords')->getString(),
         'filters[place]' => $block->get('field_uiowa_events_place')->getString(),
-        'filters[startdate][value][date]' => date('m-d-Y', strtotime(date('d-m-Y') . $start)),
-        'filters[enddate][value][date]' => date('m-d-Y', strtotime(date('d-m-Y') . $end)),
+        'filters[startdate][value][date]' => date('m-d-Y', strtotime($start)),
+        'filters[enddate][value][date]' => date('m-d-Y', strtotime($end)),
         'page' => 0,
         'items_per_page' => $block->get('field_collection_results')->value ?? 50,
       ];
