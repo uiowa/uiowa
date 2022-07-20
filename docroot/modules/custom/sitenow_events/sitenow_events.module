@@ -92,7 +92,7 @@ function sitenow_events_preprocess_block(&$variables) {
 
       // Defaults to upcoming.
       $display_id = 'events';
-      $start = date('d-m-Y') . ' now';;
+      $start = date('d-m-Y') . ' now';
       $end = '19-01-2038';
 
       if ($block->get('field_uiowa_events_past')->value == TRUE) {
