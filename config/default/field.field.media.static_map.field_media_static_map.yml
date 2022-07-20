@@ -1,0 +1,23 @@
+uuid: 79e25aaf-b998-4504-9f35-ac4b49635966
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_media_static_map
+    - media.type.static_map
+  module:
+    - sitenow_media_wysiwyg
+id: media.static_map.field_media_static_map
+field_name: field_media_static_map
+entity_type: media
+bundle: static_map
+label: 'Static map URL'
+description: 'A valid share URL from maps.uiowa.edu.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: '16'
+  title: '0'
+field_type: static_map_url
