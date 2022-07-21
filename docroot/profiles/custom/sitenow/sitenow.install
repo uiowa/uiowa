@@ -301,9 +301,9 @@ function sitenow_update_9004(&$sandbox) {
   // We need to adjust the records for the current node
   // version and previous revisions.
   foreach ([
-             'node_revision__layout_builder__layout',
-             'node__layout_builder__layout',
-           ] as $table_name) {
+    'node_revision__layout_builder__layout',
+    'node__layout_builder__layout',
+  ] as $table_name) {
     $query = $connection->select($table_name, 'n');
     $orGroup = $query->orConditionGroup()
       ->condition('layout_builder__layout_section', '%s:5:"depth";i:0;%', 'LIKE')
@@ -443,9 +443,9 @@ function sitenow_update_9006(&$sandbox) {
       'phone',
     ];
     foreach ([
-               'lab',
-               'office',
-             ] as $location_type) {
+      'lab',
+      'office',
+    ] as $location_type) {
       $location = [];
       foreach ($field_fragments as $fragment_name) {
         $field_name = "field_person_{$location_type}_{$fragment_name}";
@@ -872,9 +872,9 @@ function _convert_people_block_component(SectionComponent &$component, BlockCont
 
   // Process tags.
   if (isset($block->get('field_collection_reference')
-      ->getValue()[0])) {
+    ->getValue()[0])) {
     foreach ($block->get('field_collection_reference')
-               ->getValue()[0] as $target) {
+      ->getValue()[0] as $target) {
       $config['exposed_filter_values']['field_tags_target_id'][] = ['target_id' => $target];
     }
   }
@@ -1104,9 +1104,9 @@ function sitenow_update_9010() {
   // We need to adjust the records for the current node
   // version and previous revisions.
   foreach ([
-             'node_revision__layout_builder__layout',
-             'node__layout_builder__layout',
-           ] as $table_name) {
+    'node_revision__layout_builder__layout',
+    'node__layout_builder__layout',
+  ] as $table_name) {
     // If the section has a "section_margin_*" style, we can ignore it.
     // It already has a container style selected.
     $query = $connection->select($table_name, 'n')
@@ -1649,9 +1649,9 @@ function sitenow_update_9025() {
 
     // Process tags.
     if (isset($block->get('field_collection_reference')
-        ->getValue()[0])) {
+      ->getValue()[0])) {
       foreach ($block->get('field_collection_reference')
-                 ->getValue()[0] as $target) {
+        ->getValue()[0] as $target) {
         $config['exposed_filter_values']['field_tags_target_id'][] = ['target_id' => $target];
       }
     }
@@ -1720,9 +1720,9 @@ function sitenow_update_9025() {
  */
 function sitenow_update_9026() {
   foreach ([
-             'views_block:people_list_block-list_card',
-             'views_block:article_list_block-list_article',
-           ] as $block_plugin_id) {
+    'views_block:people_list_block-list_card',
+    'views_block:article_list_block-list_article',
+  ] as $block_plugin_id) {
     _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
       $config = $component->get('configuration');
       $config['use_more_text'] = '';
@@ -1866,13 +1866,13 @@ function sitenow_update_9037() {
  */
 function sitenow_update_9038() {
   foreach ([
-             'inline_block:uiowa_articles',
-             'inline_block:uiowa_events',
-             'inline_block:uiowa_people',
-             'inline_block:uiowa_aggregator',
-             'views_block:article_list_block-list_article',
-             'views_block:people_list_block-list_card',
-           ] as $block_plugin_id) {
+    'inline_block:uiowa_articles',
+    'inline_block:uiowa_events',
+    'inline_block:uiowa_people',
+    'inline_block:uiowa_aggregator',
+    'views_block:article_list_block-list_article',
+    'views_block:people_list_block-list_card',
+  ] as $block_plugin_id) {
 
     _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
 
@@ -1913,8 +1913,8 @@ function sitenow_update_9040() {
 function sitenow_update_9041() {
   // Loop through our newly updated banner blocks.
   foreach ([
-             'inline_block:uiowa_banner',
-           ] as $block_plugin_id) {
+    'inline_block:uiowa_banner',
+  ] as $block_plugin_id) {
     _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
 
       $styles = $component->get('layout_builder_styles_style');
@@ -1950,128 +1950,4 @@ function sitenow_update_9042() {
  */
 function sitenow_update_9043() {
   \Drupal::service('module_installer')->uninstall(['sitenow_find_text']);
-}
-
-/**
- * Update button classes again.
- */
-function sitenow_update_9045() {
-  $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
-
-  // Limit to just sites running uids_base.
-  if ($active_theme->getName() === 'uids_base') {
-
-    $search_replace = [
-      'bttn-caps' => '',
-      'bttn-outline' => '',
-      'bttn--sans-serif' => 'bttn--light-font',
-    ];
-
-    $entity_type_manager = \Drupal::entityTypeManager();
-    $entity_field_manager = \Drupal::service('entity_field.manager');
-    $text_long = $entity_field_manager->getFieldMapByFieldType('text_long');
-    $text_with_summary = $entity_field_manager->getFieldMapByFieldType('text_with_summary');
-    $entity_field_map = array_merge($text_long, $text_with_summary);
-
-    foreach ($entity_field_map as $entity_type_id => $field_map) {
-      $entity_storage = $entity_type_manager->getStorage($entity_type_id);
-      if (!($entity_storage instanceof SqlContentEntityStorage)) {
-        continue;
-      }
-
-      $entity_type = $entity_type_manager->getDefinition($entity_type_id);
-      $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
-      $table_mapping = $entity_storage->getTableMapping($field_storage_definitions);
-      foreach (array_intersect_key($field_storage_definitions, $field_map) as $field_storage_definition) {
-        $tables = [];
-        $field_name = $field_storage_definition->getName();
-        try {
-          $tables[] = $table_mapping->getFieldTableName($field_name);
-          $value_column = $table_mapping->getFieldColumnName($field_storage_definition, 'value');
-        }
-        catch (SqlContentEntityStorageException $e) {
-          continue;
-        }
-        // See if the field has a revision table.
-        $revision_table = NULL;
-        if ($entity_type->isRevisionable() && $field_storage_definition->isRevisionable()) {
-          if ($table_mapping->requiresDedicatedTableStorage($field_storage_definition)) {
-            $revision_table = $table_mapping->getDedicatedRevisionTableName($field_storage_definition);
-          }
-          elseif ($table_mapping->allowsSharedTableStorage($field_storage_definition)) {
-            $revision_table = $entity_type->getRevisionDataTable() ?: $entity_type->getRevisionTable();
-          }
-          $tables[] = $revision_table;
-        }
-        if (!empty($tables)) {
-          $db = \Drupal::database();
-
-          foreach ($tables as $table) {
-            $update_count = 0;
-            $query = $db->select($table, 't')
-              ->fields('t');
-
-            $or_group = $query->orConditionGroup();
-
-            foreach ($search_replace as $needle => $string) {
-              $or_group->condition($value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE');
-            }
-
-            $results = $query->condition($or_group)
-              ->execute();
-
-            foreach ($results as $record) {
-
-              $document = Html::load($record->{$value_column});
-
-              foreach (['a'] as $tag) {
-                $instances = $document->getElementsByTagName($tag);
-
-                // We don't actually need the regressive loop
-                // here, but its copied/pasted.
-                $i = $instances->length - 1;
-
-                while ($i >= 0) {
-                  // The current inline image element.
-                  $dom_element = $instances->item($i);
-
-                  $class = $dom_element->getAttribute('class');
-
-                  foreach ($search_replace as $needle => $replace) {
-                    $class = str_replace($needle, $replace, $class);
-                  }
-
-                  if (trim($class)) {
-                    $dom_element->setAttribute('class', $class);
-                  }
-                  else {
-                    $dom_element->removeAttribute('class');
-                  }
-
-                  $i--;
-                }
-              }
-
-              // Run database update to store updated $value_column as
-              // Html::serialize($document).
-              $db->update($table)
-                ->fields([
-                  $value_column => Html::serialize($document),
-                ])
-                ->condition('entity_id', $record->entity_id)
-                ->condition('revision_id', $record->revision_id)
-                ->execute();
-
-              $update_count++;
-            }
-
-            if ($update_count) {
-              \Drupal::messenger()
-                ->addMessage('Processed ' . $update_count . ' update(s) for ' . $table . ' table ' . $value_column . ' column.');
-            }
-          }
-        }
-      }
-    }
-  }
 }
