@@ -301,9 +301,9 @@ function sitenow_update_9004(&$sandbox) {
   // We need to adjust the records for the current node
   // version and previous revisions.
   foreach ([
-    'node_revision__layout_builder__layout',
-    'node__layout_builder__layout',
-  ] as $table_name) {
+             'node_revision__layout_builder__layout',
+             'node__layout_builder__layout',
+           ] as $table_name) {
     $query = $connection->select($table_name, 'n');
     $orGroup = $query->orConditionGroup()
       ->condition('layout_builder__layout_section', '%s:5:"depth";i:0;%', 'LIKE')
@@ -443,9 +443,9 @@ function sitenow_update_9006(&$sandbox) {
       'phone',
     ];
     foreach ([
-      'lab',
-      'office',
-    ] as $location_type) {
+               'lab',
+               'office',
+             ] as $location_type) {
       $location = [];
       foreach ($field_fragments as $fragment_name) {
         $field_name = "field_person_{$location_type}_{$fragment_name}";
@@ -611,7 +611,9 @@ function sitenow_update_9007() {
               $or_group->condition($value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE');
             }
 
-
+            foreach ($table_search as $needle) {
+              $or_group->condition($value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE');
+            }
 
             $results = $query->condition($or_group)
               ->execute();
@@ -680,7 +682,18 @@ function sitenow_update_9007() {
       }
     }
 
-
+    // Loop through SiteNow config ignored views.
+    $views = ['articles', 'people'];
+    foreach ($views as $view) {
+      $view = \Drupal::entityTypeManager()->getStorage('view')->load('people');
+      $default =& $view->getDisplay('default');
+      $header_content = $default["display_options"]["header"]["area"]["content"]["value"];
+      foreach ($search_replace as $needle => $string) {
+        $header_content = str_replace($needle, $string, $header_content);
+      }
+      $default["display_options"]["header"]["area"]["content"]["value"] = $header_content;
+      $view->save();
+    }
 
   }
 }
@@ -859,9 +872,9 @@ function _convert_people_block_component(SectionComponent &$component, BlockCont
 
   // Process tags.
   if (isset($block->get('field_collection_reference')
-    ->getValue()[0])) {
+      ->getValue()[0])) {
     foreach ($block->get('field_collection_reference')
-      ->getValue()[0] as $target) {
+               ->getValue()[0] as $target) {
       $config['exposed_filter_values']['field_tags_target_id'][] = ['target_id' => $target];
     }
   }
@@ -1091,9 +1104,9 @@ function sitenow_update_9010() {
   // We need to adjust the records for the current node
   // version and previous revisions.
   foreach ([
-    'node_revision__layout_builder__layout',
-    'node__layout_builder__layout',
-  ] as $table_name) {
+             'node_revision__layout_builder__layout',
+             'node__layout_builder__layout',
+           ] as $table_name) {
     // If the section has a "section_margin_*" style, we can ignore it.
     // It already has a container style selected.
     $query = $connection->select($table_name, 'n')
@@ -1636,9 +1649,9 @@ function sitenow_update_9025() {
 
     // Process tags.
     if (isset($block->get('field_collection_reference')
-      ->getValue()[0])) {
+        ->getValue()[0])) {
       foreach ($block->get('field_collection_reference')
-        ->getValue()[0] as $target) {
+                 ->getValue()[0] as $target) {
         $config['exposed_filter_values']['field_tags_target_id'][] = ['target_id' => $target];
       }
     }
@@ -1707,9 +1720,9 @@ function sitenow_update_9025() {
  */
 function sitenow_update_9026() {
   foreach ([
-    'views_block:people_list_block-list_card',
-    'views_block:article_list_block-list_article',
-  ] as $block_plugin_id) {
+             'views_block:people_list_block-list_card',
+             'views_block:article_list_block-list_article',
+           ] as $block_plugin_id) {
     _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
       $config = $component->get('configuration');
       $config['use_more_text'] = '';
@@ -1853,13 +1866,13 @@ function sitenow_update_9037() {
  */
 function sitenow_update_9038() {
   foreach ([
-    'inline_block:uiowa_articles',
-    'inline_block:uiowa_events',
-    'inline_block:uiowa_people',
-    'inline_block:uiowa_aggregator',
-    'views_block:article_list_block-list_article',
-    'views_block:people_list_block-list_card',
-  ] as $block_plugin_id) {
+             'inline_block:uiowa_articles',
+             'inline_block:uiowa_events',
+             'inline_block:uiowa_people',
+             'inline_block:uiowa_aggregator',
+             'views_block:article_list_block-list_article',
+             'views_block:people_list_block-list_card',
+           ] as $block_plugin_id) {
 
     _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
 
@@ -1900,8 +1913,8 @@ function sitenow_update_9040() {
 function sitenow_update_9041() {
   // Loop through our newly updated banner blocks.
   foreach ([
-    'inline_block:uiowa_banner',
-  ] as $block_plugin_id) {
+             'inline_block:uiowa_banner',
+           ] as $block_plugin_id) {
     _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
 
       $styles = $component->get('layout_builder_styles_style');
