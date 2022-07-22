@@ -5,6 +5,7 @@
  * Contains uipress_core.module.
  */
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Template\Attribute;
 
@@ -159,6 +160,12 @@ function uipress_core_preprocess_paragraph__book_type(&$variables) {
         // If neither condition is true unset display of sale price.
         if (!$in_range) {
           unset($variables['content']['field_book_sale_price'], $variables['content']['field_book_sale_code']);
+        }
+        // If we are in range of a sale, invalidate the paragraph cache
+        // to make sure we're updating the display.
+        if ($in_range) {
+          $tags = $paragraph->getCacheTagsToInvalidate();
+          Cache::invalidateTags($tags);
         }
       }
     }
