@@ -4276,3 +4276,9 @@ $sites['researchcoi.uiowa.ddev.site'] = 'coi.research.uiowa.edu';
 $sites['researchcoi.dev.drupal.uiowa.edu'] = 'coi.research.uiowa.edu';
 $sites['researchcoi.stage.drupal.uiowa.edu'] = 'coi.research.uiowa.edu';
 $sites['researchcoi.prod.drupal.uiowa.edu'] = 'coi.research.uiowa.edu';
+
+// Directory aliases for hso.research.uiowa.edu.
+$sites['researchhso.uiowa.ddev.site'] = 'hso.research.uiowa.edu';
+$sites['researchhso.dev.drupal.uiowa.edu'] = 'hso.research.uiowa.edu';
+$sites['researchhso.stage.drupal.uiowa.edu'] = 'hso.research.uiowa.edu';
+$sites['researchhso.prod.drupal.uiowa.edu'] = 'hso.research.uiowa.edu';
