@@ -4270,3 +4270,9 @@ $sites['lablynch.uiowa.ddev.site'] = 'lynch.lab.uiowa.edu';
 $sites['lablynch.dev.drupal.uiowa.edu'] = 'lynch.lab.uiowa.edu';
 $sites['lablynch.stage.drupal.uiowa.edu'] = 'lynch.lab.uiowa.edu';
 $sites['lablynch.prod.drupal.uiowa.edu'] = 'lynch.lab.uiowa.edu';
+
+// Directory aliases for coi.research.uiowa.edu.
+$sites['researchcoi.uiowa.ddev.site'] = 'coi.research.uiowa.edu';
+$sites['researchcoi.dev.drupal.uiowa.edu'] = 'coi.research.uiowa.edu';
+$sites['researchcoi.stage.drupal.uiowa.edu'] = 'coi.research.uiowa.edu';
+$sites['researchcoi.prod.drupal.uiowa.edu'] = 'coi.research.uiowa.edu';
