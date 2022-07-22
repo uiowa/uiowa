@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: researchcoi.uiowa.ddev.site
+    protocol: https
+  machine_name: researchcoi
+  human_name: coi.research.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: researchcoi.prod
+drupal:
+  db:
+    database: coi_research_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: makyea
+  site-name: 'Conflict of Interest in Research'
