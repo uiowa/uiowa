@@ -141,19 +141,19 @@ function uipress_core_preprocess_paragraph__book_type(&$variables) {
         // which can be used to compare the start and end dates.
         $timezone = date_default_timezone_get();
         $datetime = new DrupalDateTime('now', $timezone);
-        $today = $datetime->format('m-d-Y 00:00:00');
+        $today = $datetime->format('Y-m-d 00:00:00');
 
         // If the start date exists make sure that it is in the past or today.
         $start = $paragraph->get('field_book_sale_start_date')->value;
         if (isset($start)) {
-          $start = date('m-d-Y', strtotime($start));
+          $start = date('Y-m-d', strtotime($start));
           $in_range = $today >= $start;
         }
 
         // If end date exists make sure it is after today.
         $end = $paragraph->get('field_book_sale_expiry_date')->value;
         if ($in_range && isset($end)) {
-          $end = date('m-d-Y', strtotime($end));
+          $end = date('Y-m-d', strtotime($end));
           $in_range = $today < $end;
         }
         // If neither condition is true unset display of sale price.
