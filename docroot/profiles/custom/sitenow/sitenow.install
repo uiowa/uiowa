@@ -2049,8 +2049,16 @@ function sitenow_update_9044() {
               foreach ($search_replace as $needle => $replace) {
                 $class = str_replace($needle, $replace, $class);
               }
+              // Replace excess spaces with a single space, in the
+              // instances where we removed one or more classes
+              // between two other classes.
+              $class = preg_replace('|\s+|', ' ', $class);
 
-              if (trim($class)) {
+              // Trim, because we may have extra spaces (or a class
+              // of only spaces). Then check if we should re-set
+              // with updated classes, or remove the class attribute.
+              $class = trim($class);
+              if (!empty($class)) {
                 $dom_element->setAttribute('class', $class);
               }
               else {
