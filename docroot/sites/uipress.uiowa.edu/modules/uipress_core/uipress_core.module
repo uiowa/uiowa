@@ -322,10 +322,16 @@ function uipress_core_cron() {
  */
 function _get_current_sales() {
   $today = date('Y-m-d');
+  $yesterday = date('Y-m-d', strtotime('yesterday'));
   $pids = \Drupal::entityQuery('paragraph')
     ->condition('type', 'book_type')
+    // If the sale starts today or started before today,
+    // we want to include it.
     ->condition('field_book_sale_start_date', $today, '<=')
-    ->condition('field_book_sale_expiry_date', $today, '>')
+    // We want to include sales that end in the future, or that
+    // just ended yesterday, so that we still wipe their cache
+    // and don't display a sale that has since ended.
+    ->condition('field_book_sale_expiry_date', $yesterday, '>=')
     ->execute();
   $nids = \Drupal::entityQuery('node')
     ->condition('type', 'book')
