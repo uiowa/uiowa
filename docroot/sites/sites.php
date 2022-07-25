@@ -4270,3 +4270,21 @@ $sites['lablynch.uiowa.ddev.site'] = 'lynch.lab.uiowa.edu';
 $sites['lablynch.dev.drupal.uiowa.edu'] = 'lynch.lab.uiowa.edu';
 $sites['lablynch.stage.drupal.uiowa.edu'] = 'lynch.lab.uiowa.edu';
 $sites['lablynch.prod.drupal.uiowa.edu'] = 'lynch.lab.uiowa.edu';
+
+// Directory aliases for coi.research.uiowa.edu.
+$sites['researchcoi.uiowa.ddev.site'] = 'coi.research.uiowa.edu';
+$sites['researchcoi.dev.drupal.uiowa.edu'] = 'coi.research.uiowa.edu';
+$sites['researchcoi.stage.drupal.uiowa.edu'] = 'coi.research.uiowa.edu';
+$sites['researchcoi.prod.drupal.uiowa.edu'] = 'coi.research.uiowa.edu';
+
+// Directory aliases for hso.research.uiowa.edu.
+$sites['researchhso.uiowa.ddev.site'] = 'hso.research.uiowa.edu';
+$sites['researchhso.dev.drupal.uiowa.edu'] = 'hso.research.uiowa.edu';
+$sites['researchhso.stage.drupal.uiowa.edu'] = 'hso.research.uiowa.edu';
+$sites['researchhso.prod.drupal.uiowa.edu'] = 'hso.research.uiowa.edu';
+
+// Directory aliases for magidcenter.uiowa.edu.
+$sites['magidcenter.uiowa.ddev.site'] = 'magidcenter.uiowa.edu';
+$sites['magidcenter.dev.drupal.uiowa.edu'] = 'magidcenter.uiowa.edu';
+$sites['magidcenter.stage.drupal.uiowa.edu'] = 'magidcenter.uiowa.edu';
+$sites['magidcenter.prod.drupal.uiowa.edu'] = 'magidcenter.uiowa.edu';
