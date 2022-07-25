@@ -21,6 +21,7 @@ dependencies:
     - field.field.node.residence_hall.field_residence_hall_getting
     - field.field.node.residence_hall.field_residence_hall_images
     - field.field.node.residence_hall.field_residence_hall_llc
+    - field.field.node.residence_hall.field_residence_hall_map
     - field.field.node.residence_hall.field_residence_hall_meet_us
     - field.field.node.residence_hall.field_residence_hall_neighborhd
     - field.field.node.residence_hall.field_residence_hall_population
@@ -428,6 +429,26 @@ third_party_settings:
                 type: text_default
                 label: above
                 settings: {  }
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          cc6d0a2b-e20f-40c5-b736-c6ddda2220ca:
+            uuid: cc6d0a2b-e20f-40c5-b736-c6ddda2220ca
+            region: second
+            configuration:
+              id: 'field_block:node:residence_hall:field_residence_hall_map'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: hidden
+                settings:
+                  view_mode: large__square
                 third_party_settings: {  }
             weight: 0
             additional: {  }
@@ -1025,6 +1046,7 @@ hidden:
   field_residence_hall_furnishings: true
   field_residence_hall_images: true
   field_residence_hall_llc: true
+  field_residence_hall_map: true
   field_residence_hall_rates: true
   field_residence_hall_room_type: true
   field_residence_hall_video: true
