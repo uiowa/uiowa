@@ -272,3 +272,52 @@ function uipress_core_preprocess_views_view(&$variables) {
     $variables['attributes']['class'][] = 'grid--threecol--33-34-33';
   }
 }
+
+/**
+ * Implements hook_cron().
+ */
+function uipress_core_cron() {
+  // @todo Update this for when and how often we want to trigger.
+  $request_time = \Drupal::time()->getRequestTime();
+  $last_run = \Drupal::state()->get('uipress_core_hourly_last');
+
+  if (!$last_run || $request_time - $last_run >= 3540) {
+    // @todo Update this to invalidate specific nodes, rather than tags.
+    Cache::invalidateTags(['time:hourly']);
+
+    if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
+      $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
+      $purgeQueuers = \Drupal::service('purge.queuers');
+      $purgeQueue = \Drupal::service('purge.queue');
+      $queuer = $purgeQueuers->get('coretags');
+
+      $invalidations = [
+        $purgeInvalidationFactory->get('tag', 'time:hourly'),
+      ];
+
+      $purgeQueue->add($queuer, $invalidations);
+    }
+
+    \Drupal::state()->set('uipress_core_hourly_last', $request_time);
+  }
+}
+
+/**
+ * Return an array of node ids for books with a current sale.
+ *
+ * @return array
+ *   The NIDs of interest.
+ */
+function _get_current_sales() {
+  $today = date('Y-m-d');
+  $pids = \Drupal::entityQuery('paragraph')
+    ->condition('type', 'book_type')
+    ->condition('field_book_sale_start_date', $today, '<=')
+    ->condition('field_book_sale_expiry_date', $today, '>')
+    ->execute();
+  $nids = \Drupal::entityQuery('node')
+    ->condition('type', 'book')
+    ->condition('field_book_type', $pids, 'IN')
+    ->execute();
+  return array_values($nids);
+}
