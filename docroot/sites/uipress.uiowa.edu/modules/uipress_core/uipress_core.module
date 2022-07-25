@@ -282,19 +282,30 @@ function uipress_core_cron() {
   $last_run = \Drupal::state()->get('uipress_core_hourly_last');
 
   if (!$last_run || $request_time - $last_run >= 3540) {
-    // @todo Update this to invalidate specific nodes, rather than tags.
-    Cache::invalidateTags(['time:hourly']);
+    $nids = _get_current_sales();
 
-    if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
+    // Check if we should be concerned with
+    // purging as well, and if so, get it set up.
+    if ($include_purge = \Drupal::moduleHandler()->moduleExists('acquia_purge')) {
       $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
       $purgeQueuers = \Drupal::service('purge.queuers');
       $purgeQueue = \Drupal::service('purge.queue');
       $queuer = $purgeQueuers->get('coretags');
 
-      $invalidations = [
-        $purgeInvalidationFactory->get('tag', 'time:hourly'),
-      ];
+      $invalidations = [];
+    }
 
+    foreach ($nids as $nid) {
+      $tag = 'node:' . $nid;
+      Cache::invalidateTags([$tag]);
+      \Drupal::entityTypeManager()
+        ->getStorage('node')
+        ->resetCache([$nid]);
+      if ($include_purge) {
+        $invalidations[] = $purgeInvalidationFactory->get('tag', $tag);
+      }
+    }
+    if ($include_purge) {
       $purgeQueue->add($queuer, $invalidations);
     }
 
