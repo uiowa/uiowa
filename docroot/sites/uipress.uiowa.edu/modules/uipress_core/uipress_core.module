@@ -277,13 +277,12 @@ function uipress_core_preprocess_views_view(&$variables) {
  * Implements hook_cron().
  */
 function uipress_core_cron() {
-  // @todo Update this for when and how often we want to trigger.
-  $request_time = \Drupal::time()->getRequestTime();
-  $last_run = \Drupal::state()->get('uipress_core_hourly_last');
+  // Check if we've run this yet today. Sales change
+  // at most daily, so once in the morning is enough.
+  $request_date = date('Y-m-d', \Drupal::time()->getRequestTime());
+  $last_run = \Drupal::state()->get('uipress_core_daily_last');
 
-  if (!$last_run || $request_time - $last_run >= 3540) {
-    $nids = _get_current_sales();
-
+  if (!$last_run || $request_date > $last_run) {
     // Check if we should be concerned with
     // purging as well, and if so, get it set up.
     if ($include_purge = \Drupal::moduleHandler()->moduleExists('acquia_purge')) {
@@ -295,6 +294,8 @@ function uipress_core_cron() {
       $invalidations = [];
     }
 
+    // Get our nodes of interest and invalidate some cache tags.
+    $nids = _get_current_sales();
     foreach ($nids as $nid) {
       $tag = 'node:' . $nid;
       Cache::invalidateTags([$tag]);
@@ -309,7 +310,7 @@ function uipress_core_cron() {
       $purgeQueue->add($queuer, $invalidations);
     }
 
-    \Drupal::state()->set('uipress_core_hourly_last', $request_time);
+    \Drupal::state()->set('uipress_core_daily_last', $request_date);
   }
 }
 
