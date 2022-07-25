@@ -4294,3 +4294,9 @@ $sites['sitesiowaedge.uiowa.ddev.site'] = 'iowaedge.sites.uiowa.edu';
 $sites['sitesiowaedge.dev.drupal.uiowa.edu'] = 'iowaedge.sites.uiowa.edu';
 $sites['sitesiowaedge.stage.drupal.uiowa.edu'] = 'iowaedge.sites.uiowa.edu';
 $sites['sitesiowaedge.prod.drupal.uiowa.edu'] = 'iowaedge.sites.uiowa.edu';
+
+// Directory aliases for csd.jobs.uiowa.edu.
+$sites['jobscsd.uiowa.ddev.site'] = 'csd.jobs.uiowa.edu';
+$sites['jobscsd.dev.drupal.uiowa.edu'] = 'csd.jobs.uiowa.edu';
+$sites['jobscsd.stage.drupal.uiowa.edu'] = 'csd.jobs.uiowa.edu';
+$sites['jobscsd.prod.drupal.uiowa.edu'] = 'csd.jobs.uiowa.edu';
