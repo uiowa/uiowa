@@ -299,9 +299,6 @@ function uipress_core_cron() {
     foreach ($nids as $nid) {
       $tag = 'node:' . $nid;
       Cache::invalidateTags([$tag]);
-      \Drupal::entityTypeManager()
-        ->getStorage('node')
-        ->resetCache([$nid]);
       if ($include_purge) {
         $invalidations[] = $purgeInvalidationFactory->get('tag', $tag);
       }
