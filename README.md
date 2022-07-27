@@ -92,7 +92,7 @@ Testing a uids change in uiowa:
 6. `yarn workspace uids_base gulp --development`
 
 ## Core
-Follow the `drupal/core-recommended` [instructions](https://github.com/drupal/core-recommended#upgrading) on updating.
+Run `composer update "drupal/core-*" --with-all-dependencies`.
 
 ## Contrib
 You can run `composer update package/name` to update additional dependencies. The output from the Composer commands can be used as the long text for commit messages. Ideally, each package update would be one commit for clarity and easier reverting.

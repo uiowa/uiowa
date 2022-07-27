@@ -41,6 +41,12 @@ global-styling:
     - core/jquery.once
 
 # Third-party libraries
+# Accessible Menu
+accessible-menu:
+  js:
+    /libraries/accessible-menu/dist/accessible-menu.js: {}
+    assets/js/accessible-menu.init.js: {}
+# Leaflet
 leaflet:
   remote: http://leafletjs.com/
   version: 1.7.1
@@ -54,7 +60,7 @@ leaflet:
     component:
       /libraries/leaflet/dist/leaflet.css: {}
       assets/css/components/leaflet.css: { preprocess: false }
-
+# Slick
 slick:
   css:
     theme:
@@ -63,49 +69,14 @@ slick:
     /libraries/slick-carousel/slick/slick.min.js: {}
   dependencies:
     - core/jquery
-
-accessible-menu:
-  js:
-    /libraries/accessible-menu/dist/accessible-menu.js: {}
-    assets/js/accessible-menu.init.js: {}
-
-# CSS libraries for Layout plugins.
-onecol:
-  version: VERSION
-  css:
-    theme:
-      assets/css/layouts/onecol.css: {}
-onecol--background:
-  version: VERSION
-  css:
-    theme:
-      assets/css/layouts/onecol--background.css: {}
-twocol:
-  version: VERSION
-  css:
-    theme:
-      assets/css/layouts/twocol.css: {}
-threecol:
-  version: VERSION
-  css:
-    theme:
-      assets/css/layouts/threecol.css: {}
-fourcol:
-  version: VERSION
-  css:
-    theme:
-      assets/css/layouts/fourcol.css: {}
-page--left-sidebar:
-  version: VERSION
-  css:
-    theme:
-      assets/css/layouts/page--left-sidebar.css: { preprocess: false }
+# Pannellum
 virtual_tour:
   css:
     theme:
       /libraries/pannellum/build/pannellum.css: {}
   js:
     /libraries/pannellum/build/pannellum.js: { preprocess: true }
+
 # UIDS.
 status-messages:
   js:
@@ -127,17 +98,17 @@ search-toggle:
     component:
       assets/css/components/search-toggle.css: { weight: 200, preprocess: false }
   js:
-    uids/components/search-toggle/search-toggle.js: { preprocess: false  }
+    uids3/components/search-toggle/search-toggle.js: { preprocess: false  }
 search-results:
   css:
     component:
       assets/css/components/search-results.css: { preprocess: false }
-off-canvas:
+toggle-nav:
   css:
     component:
-      assets/css/components/menus/off-canvas.css: { preprocess: false }
+      assets/css/components/menus/toggle-nav.css: { preprocess: false }
   js:
-    uids/components/menus/off-canvas/off-canvas.js: { preprocess: false  }
+    uids3/components/menus/toggle-nav/toggle-nav.js: { preprocess: false  }
 articles:
   css:
     component:
@@ -148,22 +119,22 @@ accordion:
       assets/css/components/accordion.css: { preprocess: false }
       assets/css/paragraphs/uiowa_paragraphs_accordion.css: { preprocess: false }
   js:
-    uids/components/accordion/accordion.js: { preprocess: false  }
+    uids3/components/accordion/accordion.js: { preprocess: false  }
 tabs:
   css:
     component:
       assets/css/components/tabs.css: { preprocess: false }
   js:
-    uids/components/tabs/tabs.js: { preprocess: false }
+    uids3/components/tabs/tabs.js: { preprocess: false }
 header-sticky:
   js:
-    uids/components/branding/iowa-bar/iowa-bar.js: { preprocess: false  }
+    uids3/components/branding/iowa-bar/iowa-bar.js: { preprocess: false  }
 banner:
   css:
     component:
       assets/css/components/banner.css: { preprocess: false }
   js:
-    uids/assets/js/click-a11y.js: { preprocess: false }
+    uids3/assets/js/click-a11y.js: { preprocess: false }
 video-cookie:
   js:
     assets/js/video-cookie.js: { preprocess: false }
@@ -176,7 +147,7 @@ slider:
     component:
       assets/css/components/slider.css: { preprocess: false }
   js:
-    uids/components/slider/slider.js: { preprocess: false }
+    uids3/components/slider/slider.js: { preprocess: false }
   dependencies:
     - uids_base/banner
 remote-video:
@@ -185,7 +156,7 @@ remote-video:
       assets/css/components/video/video-utilities.css: { preprocess: false }
 video:
   js:
-    uids/components/video/video.js: { preprocess: false }
+    uids3/components/video/video.js: { preprocess: false }
 hero:
   css:
     component:
@@ -204,7 +175,7 @@ aggregator-feed:
       assets/css/content/aggregator-feed.css: { preprocess: false }
 hero-block-video:
   js:
-    uids/components/video/video.js: { preprocess: false }
+    uids3/components/video/video.js: { preprocess: false }
     assets/js/video-cookie.js: { preprocess: false }
   dependencies:
     - core/jquery
@@ -215,7 +186,7 @@ vertical-video:
     component:
       assets/css/components/video/vertical.css: { preprocess: false }
   js:
-    uids/components/video/vertical/vertical.js: { preprocess: false }
+    uids3/components/video/vertical/vertical.js: { preprocess: false }
 highlight:
   css:
     component:
@@ -226,7 +197,7 @@ card:
       assets/css/components/card.css: { preprocess: false }
       assets/css/paragraphs/uiowa-paragraphs-card.css: { preprocess: false }
   js:
-    uids/assets/js/click-a11y.js: { preprocess: false }
+    uids3/assets/js/click-a11y.js: { preprocess: false }
 media:
   css:
     component:
@@ -260,7 +231,7 @@ stat:
     component:
       assets/css/components/stat.css: { preprocess: false }
   js:
-    uids/components/stat/stat.js: { preprocess: false }
+    uids3/components/stat/stat.js: { preprocess: false }
 timeline:
   css:
     component:
@@ -408,6 +379,11 @@ admin:
     component:
       assets/css/admin.css: { weight: 200 }
       assets/css/components/badge.css: {}
+# Layout Builder UI
+layout-builder:
+  css:
+    component:
+      assets/css/layout-builder.css: { preprocess: false }
 sftouchscreen:
   js:
     assets/js/sftouchscreen.js: { }
@@ -421,3 +397,41 @@ global-serif:
   css:
     component:
       assets/css/components/typography/global-serif.css: { preprocess: false }
+
+# CSS libraries for Layout plugins.
+# One column
+onecol:
+  version: VERSION
+  css:
+    theme:
+      assets/css/layouts/onecol.css: {}
+# One column with background
+onecol--background:
+  version: VERSION
+  css:
+    theme:
+      assets/css/layouts/onecol--background.css: {}
+# Two column
+twocol:
+  version: VERSION
+  css:
+    theme:
+      assets/css/layouts/twocol.css: {}
+# Three column
+threecol:
+  version: VERSION
+  css:
+    theme:
+      assets/css/layouts/threecol.css: {}
+# Four column
+fourcol:
+  version: VERSION
+  css:
+    theme:
+      assets/css/layouts/fourcol.css: {}
+# Left sidebar default page layout
+page--left-sidebar:
+  version: VERSION
+  css:
+    theme:
+      assets/css/layouts/page--left-sidebar.css: { preprocess: false }

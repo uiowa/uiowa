@@ -65,7 +65,7 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
    *   Entity type manager service.
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
    *   Entity field manager service.
-   * @param \Drupal\Core\Field\FieldTypePluginManagerInterface|\Drupal\media_entity_panopto\Plugin\media\Source\FieldTypePluginManagerInterface $field_type_manager
+   * @param \Drupal\Core\Field\FieldTypePluginManagerInterface $field_type_manager
    *   The field type plugin manager service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   Config factory service.
@@ -153,7 +153,7 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
           $redirects = $response->getHeader(RedirectMiddleware::HISTORY_HEADER);
           $source = end($redirects);
           $scheme = $this->configFactory->get('system.file')->get('default_scheme');
-          $destination = $scheme . 'panopto_thumbnails/';
+          $destination = $scheme . '://panopto_thumbnails/';
           $realpath = $this->fs->realpath($destination);
 
           if ($this->fs->prepareDirectory($realpath, FileSystemInterface::CREATE_DIRECTORY)) {

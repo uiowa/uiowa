@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: magidcenter.uiowa.ddev.site
+    protocol: https
+  machine_name: magidcenter
+  human_name: magidcenter.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: magidcenter.prod
+drupal:
+  db:
+    database: magidcenter_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'

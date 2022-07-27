@@ -6,6 +6,7 @@ dependencies:
     - block_content.type.uiowa_events
     - field.field.block_content.uiowa_events.field_collection_more
     - field.field.block_content.uiowa_events.field_collection_more_path
+    - field.field.block_content.uiowa_events.field_collection_pager
     - field.field.block_content.uiowa_events.field_collection_results
     - field.field.block_content.uiowa_events.field_uiowa_events_audiences
     - field.field.block_content.uiowa_events.field_uiowa_events_department
@@ -25,18 +26,25 @@ mode: default
 content:
   field_collection_more:
     type: boolean_checkbox
-    weight: 10
+    weight: 11
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   field_collection_more_path:
     type: link_default
-    weight: 11
+    weight: 12
     region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
+    third_party_settings: {  }
+  field_collection_pager:
+    type: boolean_checkbox
+    weight: 9
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   field_collection_results:
     type: number
@@ -71,7 +79,7 @@ content:
     third_party_settings: {  }
   field_uiowa_events_past:
     type: boolean_checkbox
-    weight: 9
+    weight: 10
     region: content
     settings:
       display_label: true

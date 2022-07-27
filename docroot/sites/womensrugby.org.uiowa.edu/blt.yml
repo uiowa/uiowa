@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgwomensrugby.uiowa.ddev.site
+    protocol: https
+  machine_name: orgwomensrugby
+  human_name: womensrugby.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgwomensrugby.prod
+drupal:
+  db:
+    database: womensrugby_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: oziegler
+  site-name: 'Iowa Women''s Rugby'

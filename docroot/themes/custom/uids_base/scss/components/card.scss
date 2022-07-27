@@ -1,6 +1,6 @@
-@import "assets/scss/_variables.scss";
-@import "assets/scss/_utilities.scss";
-@import "components/card/card.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
+@import "uids3/components/card/card.scss";
 
 // @todo move back to UIDS
 
@@ -48,81 +48,6 @@
     overflow-wrap: anywhere;
   }
 
-  // Circle button.
-
-  &[class*="bg--black"] {
-    .bttn--outline:not(.bttn--circle) {
-      &:hover:after,
-      &:focus:after {
-        [class*="bg--gray"] &,
-        [class*="bg--gold"] & {
-          background: $primary;
-        }
-      }
-    }
-    .bttn--outline.bttn--circle {
-      &:hover:after,
-      &:focus:after {
-        [class*="bg--gray"] &,
-        [class*="bg--gold"] &{
-          border-color: $primary;
-        }
-      }
-    }
-  }
-
-  &[class*="bg--gold"] {
-    .bttn--outline.bttn--circle {
-        &:hover:after,
-        &:focus:after {
-          border-color: $light;
-        }
-      }
-    }
-
-  &:not([class*="bg-"]) {
-    .bttn--outline.bttn--circle {
-      &:hover:after,
-      &:focus:after {
-        border-color: $primary;
-        [class*="bg--gold"] & {
-          border-color: $light;
-        }
-      }
-    }
-  }
-
-  .bttn--outline.bttn--circle {
-    padding: .55rem .7em;
-    border-radius: 50%;
-    transform: none;
-    line-height: 1;
-
-    &:after {
-      left: 0;
-      top: 0;
-      height: 100%;
-      width: 100%;
-      border-radius: 50%;
-      background-color: transparent;
-      transition: border-color .3s ease-in-out;
-      border: 3px solid transparent;
-      transform: none;
-      position: absolute;
-    }
-
-    &:hover:after,
-    &:focus:after {
-      transform: none;
-      border-color: $primary;
-      background-color: transparent;
-    }
-
-    svg {
-      margin: 0;
-    }
-  }
-
   &.card--button-position {
     .card__body {
       display: flex;
@@ -143,6 +68,38 @@
     }
   }
 }
+
+// Circle button.
+.card {
+  .bttn--transparent.bttn--circle {
+    padding: .55rem .7em;
+    border-radius: 50%;
+    transform: none;
+    line-height: 1;
+
+    &:after {
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      border-radius: 50%;
+      background-color: transparent;
+      transition: border-color .3s ease-in-out;
+      transform: none;
+      position: absolute;
+    }
+
+    &:hover:after,
+    &:focus:after {
+      transform: none;
+      transition: none;
+      border: 3px solid;
+      border-color: inherit;
+      background-color: transparent;
+    }
+  }
+}
+
 
 // ie11
 @media all and (-ms-high-contrast: none),
@@ -361,19 +318,5 @@
     display: flex;
     justify-content: center;
     padding-top: .135rem;
-  }
-}
-
-// Border color adjustments
-.card:not([class*="bg-"]) {
-  .bttn--sans-serif {
-    border-color: $primary;
-    [class*="bg--gold"] &,
-    [class*="bg--gray"] & {
-      border-color: rgba(0,0,0,.425);
-    }
-    [class*="bg--black"] & {
-      border-color: rgba(255,255,255,.425);
-    }
   }
 }
