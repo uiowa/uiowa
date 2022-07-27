@@ -27,7 +27,7 @@ class RequestInfoButton extends BlockBase {
    */
   public function build() {
     $markup = '<div class="layout-builder-block">
-      <a class="bttn bttn--full bttn--secondary bttn--caps" href="https://www.maui.uiowa.edu/maui/pub/admissions/webinquiry/undergraduate.page">
+      <a class="bttn bttn--full bttn--secondary" href="https://www.maui.uiowa.edu/maui/pub/admissions/webinquiry/undergraduate.page">
           Request Info <span class="fa-arrow-right fas"></span>
       </a>
     </div>';
