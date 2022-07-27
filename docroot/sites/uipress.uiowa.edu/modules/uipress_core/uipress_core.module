@@ -281,6 +281,8 @@ function uipress_core_cron() {
   // at most daily, so once in the morning is enough.
   $request_date = date('Y-m-d', \Drupal::time()->getRequestTime());
   $last_run = \Drupal::state()->get('uipress_core_daily_last');
+  // @todo Remove this to reactivate daily limit.
+  $last_run = NULL;
 
   if (!$last_run || $request_date > $last_run) {
     // Check if we should be concerned with
