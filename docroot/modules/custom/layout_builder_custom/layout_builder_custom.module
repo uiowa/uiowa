@@ -829,6 +829,23 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
             ],
           ],
         ];
+        // According to https://api.drupal.org/api/drupal/core%21includes%21common.inc/function/drupal_process_states/8.2.x#comment-62866,
+        // this is how to require values using #states.
+        // @todo Get this working or remove and rely only on server-side validation.
+        $element['field_uiowa_events_date_range']['widget']['0']['time_wrapper']['value']['#states'] = [
+          'required' => [
+            ':input[name="settings[block_form][field_uiowa_events_type]"]' => [
+              'value' => 'date_range',
+            ],
+          ],
+        ];
+        $element['field_uiowa_events_date_range']['widget']['0']['time_wrapper']['end_value']['#states'] = [
+          'required' => [
+            ':input[name="settings[block_form][field_uiowa_events_type]"]' => [
+              'value' => 'date_range',
+            ],
+          ],
+        ];
       }
       if (isset($element['field_collection_more_path'])) {
         $element['field_collection_more_path']['#states'] = [
