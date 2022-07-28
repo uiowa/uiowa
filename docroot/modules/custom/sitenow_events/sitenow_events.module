@@ -102,8 +102,8 @@ function sitenow_events_preprocess_block(&$variables) {
       }
 
       // Change start and end params based on query type.
-      $query_type = $block->get('field_uiowa_events_type')->value;
-      switch ($query_type) {
+      $timeframe = $block->get('field_uiowa_events_timeframe')->value;
+      switch ($timeframe) {
         case 'date_range':
           $start = $block->get('field_uiowa_events_date_range')[0]->value;
           $end = $block->get('field_uiowa_events_date_range')[0]->end_value;

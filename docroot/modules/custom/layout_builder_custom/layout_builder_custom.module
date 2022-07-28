@@ -524,6 +524,8 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
       // @todo Require date_range if type is 'date_range'
       // which doesn't work with #states js.
       // @todo Check date_range values to make sure they are within our min/max.
+      $max = strtotime('19-01-2038');
+      $min = strtotime('01-01-1970');
       break;
 
     case 'inline_block:uiowa_statistic':
@@ -822,14 +824,14 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
 
     case 'inline_block:uiowa_events':
       // Restrict access to this field until it can be removed completely.
-      // @todo Remove field_uiowa_events_past after field_uiowa_events_type is established.
-      if (isset($element['field_uiowa_events_past'])) {
-        $element['field_uiowa_events_past']['#access'] = FALSE;
-      }
+      // @todo Remove field_uiowa_events_past after field_uiowa_events_timeframe is established.
+//      if (isset($element['field_uiowa_events_past'])) {
+//        $element['field_uiowa_events_past']['#access'] = FALSE;
+//      }
       if (isset($element['field_uiowa_events_date_range'])) {
         $element['field_uiowa_events_date_range']['#states'] = [
           'visible' => [
-            ':input[name="settings[block_form][field_uiowa_events_type]"]' => [
+            ':input[name="settings[block_form][field_uiowa_events_timeframe]"]' => [
               'value' => 'date_range',
             ],
           ],
@@ -839,14 +841,14 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         // @todo Get this working or remove and rely only on server-side validation.
         $element['field_uiowa_events_date_range']['widget']['0']['time_wrapper']['value']['#states'] = [
           'required' => [
-            ':input[name="settings[block_form][field_uiowa_events_type]"]' => [
+            ':input[name="settings[block_form][field_uiowa_events_timeframe]"]' => [
               'value' => 'date_range',
             ],
           ],
         ];
         $element['field_uiowa_events_date_range']['widget']['0']['time_wrapper']['end_value']['#states'] = [
           'required' => [
-            ':input[name="settings[block_form][field_uiowa_events_type]"]' => [
+            ':input[name="settings[block_form][field_uiowa_events_timeframe]"]' => [
               'value' => 'date_range',
             ],
           ],
