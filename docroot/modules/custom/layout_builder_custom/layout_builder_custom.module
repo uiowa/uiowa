@@ -519,6 +519,13 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
       }
       break;
 
+    case 'inline_block:uiowa_events':
+      $block_form = $form_state->getValue('settings')['block_form'];
+      // @todo Require date_range if type is 'date_range'
+      // which doesn't work with #states js.
+      // @todo Check date_range values to make sure they are within our min/max.
+      break;
+
     case 'inline_block:uiowa_statistic':
       $block_form = $form_state->getValue('settings')['block_form'];
       $prefix = $block_form['field_uiowa_statistic_title_pre'][0]['value'];
@@ -814,6 +821,15 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       break;
 
     case 'inline_block:uiowa_events':
+      if (isset($element['field_uiowa_events_date_range'])) {
+        $element['field_uiowa_events_date_range']['#states'] = [
+          'visible' => [
+            ':input[name="settings[block_form][field_uiowa_events_type]"]' => [
+              'value' => 'date_range',
+            ],
+          ],
+        ];
+      }
       if (isset($element['field_collection_more_path'])) {
         $element['field_collection_more_path']['#states'] = [
           'visible' => [
