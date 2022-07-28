@@ -676,7 +676,7 @@ function uids_base_preprocess_block(&$variables) {
       return substr($v, 0, 4) === 'bttn';
     });
 
-    // Add banner--video class if bundle is a video.$block->get('field_uiowa_banner_image')->first()->get('entity')->getValue();
+    // Add banner--video class if bundle is a video.
     // @todo revisit this class when https://github.com/uiowa/uids/issues/721 is completed.
     if ($block->hasField('field_uiowa_banner_image')) {
       if (!$block->get('field_uiowa_banner_image')->isEmpty()) {
