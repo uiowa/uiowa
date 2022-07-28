@@ -1,0 +1,23 @@
+uuid: 13b9f878-336f-48e4-b591-f71b9dd51733
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_events
+    - field.storage.block_content.field_uiowa_events_type
+  module:
+    - options
+id: block_content.uiowa_events.field_uiowa_events_type
+field_name: field_uiowa_events_type
+entity_type: block_content
+bundle: uiowa_events
+label: 'Query type'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: upcoming
+default_value_callback: ''
+settings: {  }
+field_type: list_string
