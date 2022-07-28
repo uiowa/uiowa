@@ -108,10 +108,12 @@ function sitenow_events_preprocess_block(&$variables) {
           $start = $block->get('field_uiowa_events_date_range')[0]->value;
           $end = $block->get('field_uiowa_events_date_range')[0]->end_value;
           break;
+
         case 'past':
           $start = strtotime('01-01-1970');
           $end = strtotime(date('d-m-Y') . ' yesterday');
           break;
+
         default:
           $start = strtotime(date('d-m-Y') . ' now');
           $end = strtotime('19-01-2038');
