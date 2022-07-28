@@ -821,6 +821,11 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       break;
 
     case 'inline_block:uiowa_events':
+      // Restrict access to this field until it can be removed completely.
+      // @todo Remove field_uiowa_events_past after field_uiowa_events_type is established.
+      if (isset($element['field_uiowa_events_past'])) {
+        $element['field_uiowa_events_past']['#access'] = FALSE;
+      }
       if (isset($element['field_uiowa_events_date_range'])) {
         $element['field_uiowa_events_date_range']['#states'] = [
           'visible' => [
