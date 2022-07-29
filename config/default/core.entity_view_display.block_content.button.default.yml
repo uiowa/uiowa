@@ -1,0 +1,28 @@
+uuid: 3877ac7f-3eec-405e-95f3-a062498c3b30
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.button
+    - field.field.block_content.button.field_uiowa_button_link
+  module:
+    - link
+id: block_content.button.default
+targetEntityType: block_content
+bundle: button
+mode: default
+content:
+  field_uiowa_button_link:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  search_api_excerpt: true
