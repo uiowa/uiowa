@@ -794,6 +794,10 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
 
       break;
 
+    case 'inline_block:uiowa_button':
+      // Add some things here.
+      break;
+
     case 'inline_block:uiowa_card':
       if (isset($element['field_uiowa_card_button_display'])) {
         $element['field_uiowa_card_button_display']['widget']['#options']['_none'] = 'Use site default';
