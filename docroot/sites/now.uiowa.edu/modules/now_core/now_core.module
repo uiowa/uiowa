@@ -67,8 +67,9 @@ function now_core_node_presave($entity) {
     // which wasn't published.
     else {
       // @todo How to handle the case where the article was previously published?
-      //   Defaulting to set it to 'draft' still leaves a live version published.
-      //   Probably set it to 'archived' instead, then. That functionality would match,
+      //   Defaulting to set it to 'draft' still leaves a live version
+      //   published. Probably set it to 'archived' instead, then.
+      //   That functionality would match,
       //   but feels iffy what should likely be new content.
       $alt_state = ($entity->original->moderation_state->value == 'published') ? 'draft' : $entity->original->moderation_state->value;
     }
@@ -76,4 +77,3 @@ function now_core_node_presave($entity) {
     $entity->moderation_state = $alt_state;
   }
 }
-
