@@ -680,9 +680,12 @@ function uids_base_preprocess_block(&$variables) {
     // @todo revisit this class when https://github.com/uiowa/uids/issues/721 is completed.
     if ($block->hasField('field_uiowa_banner_image')) {
       if (!$block->get('field_uiowa_banner_image')->isEmpty()) {
-        $bundle_type = $block->get('field_uiowa_banner_image')->first()->get('entity')->getValue()->bundle();
-        if ($bundle_type == 'video') {
-          $variables['attributes']['class'][] = 'banner--video';
+        $bundle_value = $block->get('field_uiowa_banner_image')->first()->get('entity')->getValue();
+        if ($bundle_value) {
+          $bundle_type = $block->get('field_uiowa_banner_image')->first()->get('entity')->getValue()->bundle();
+          if ($bundle_type == 'video') {
+            $variables['attributes']['class'][] = 'banner--video';
+          }
         }
       }
     }
