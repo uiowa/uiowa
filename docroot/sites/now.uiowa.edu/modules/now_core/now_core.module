@@ -1,0 +1,39 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Now Core module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_alter().
+ */
+function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id === 'node_article_form') {
+    $form['field_achievement_category']['#states'] = [
+      'visible' => [
+        ':input[name="field_article_type"]' => [
+          'value' => 'achievement',
+        ],
+      ],
+    ];
+
+    $form['field_embargo_information']['#states'] = [
+      'visible' => [
+        ':input[name="field_article_type"]' => [
+          'value' => 'news-feature',
+        ],
+      ],
+    ];
+
+    $form['field_original_publication_date']['#states'] = [
+      'visible' => [
+        ':input[name="field_article_type"]' => [
+          'value' => 'in-the-news',
+        ],
+      ],
+    ];
+  }
+}
