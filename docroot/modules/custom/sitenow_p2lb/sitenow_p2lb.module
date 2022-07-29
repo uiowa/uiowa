@@ -515,10 +515,9 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 
       // Card body isn't required. Check or or set to array with empty value.
       $excerpt = ($paragraph->get('field_card_body')->getValue()) ?
-        $paragraph->get('field_card_body')->getValue()[0] : [
-          'value' => '',
-          'format' => 'minimal',
-        ];
+        $paragraph->get('field_card_body')->getValue()[0] : '';
+
+      $excerpt['format'] = 'minimal';
 
       $block_definition = [
         'type' => $type,
