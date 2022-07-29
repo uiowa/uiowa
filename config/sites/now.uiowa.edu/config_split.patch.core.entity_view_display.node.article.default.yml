@@ -69,11 +69,11 @@ adding:
               weight: -9
               additional: {  }
               third_party_settings: {  }
-            ee59182e-7939-4b94-997f-93a919af4204:
-              uuid: ee59182e-7939-4b94-997f-93a919af4204
+            08c61d63-1b58-45ac-a7f8-991e57044fd7:
+              uuid: 08c61d63-1b58-45ac-a7f8-991e57044fd7
               region: content
               configuration:
-                id: 'field_block:node:article:field_article_type'
+                id: 'field_block:node:article:field_achievement_category'
                 label_display: '0'
                 context_mapping:
                   entity: layout_builder.entity
@@ -85,8 +85,40 @@ adding:
               weight: -8
               additional: {  }
               third_party_settings: {  }
-            0e8636ee-1a81-4163-9194-ff3bd8eda1bb:
-              uuid: 0e8636ee-1a81-4163-9194-ff3bd8eda1bb
+            546fccbb-5b02-4727-99e2-e68a885310be:
+              uuid: 546fccbb-5b02-4727-99e2-e68a885310be
+              region: content
+              configuration:
+                id: 'field_block:node:article:field_article_type'
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+                formatter:
+                  type: list_default
+                  label: above
+                  settings: {  }
+                  third_party_settings: {  }
+              weight: -7
+              additional: {  }
+              third_party_settings: {  }
+            792dc334-b298-4d5b-823d-d131192748ad:
+              uuid: 792dc334-b298-4d5b-823d-d131192748ad
+              region: content
+              configuration:
+                id: 'field_block:node:article:field_embargo_information'
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+                formatter:
+                  type: basic_string
+                  label: above
+                  settings: {  }
+                  third_party_settings: {  }
+              weight: -6
+              additional: {  }
+              third_party_settings: {  }
+            f4c220b7-f071-44c8-b2f3-434ef55de973:
+              uuid: f4c220b7-f071-44c8-b2f3-434ef55de973
               region: content
               configuration:
                 id: 'field_block:node:article:field_original_publication_date'
@@ -99,39 +131,6 @@ adding:
                   settings:
                     timezone_override: ''
                     format_type: medium
-                  third_party_settings: {  }
-              weight: -7
-              additional: {  }
-              third_party_settings: {  }
-            4d1865cd-88a9-4e20-8d32-1b1d59432a9f:
-              uuid: 4d1865cd-88a9-4e20-8d32-1b1d59432a9f
-              region: content
-              configuration:
-                id: 'field_block:node:article:field_embargo_information'
-                label_display: '0'
-                context_mapping:
-                  entity: layout_builder.entity
-                formatter:
-                  type: string
-                  label: above
-                  settings:
-                    link_to_entity: false
-                  third_party_settings: {  }
-              weight: -6
-              additional: {  }
-              third_party_settings: {  }
-            526e4c3b-4662-4b0c-b0c5-e9e9be64ae62:
-              uuid: 526e4c3b-4662-4b0c-b0c5-e9e9be64ae62
-              region: content
-              configuration:
-                id: 'field_block:node:article:field_achievement_category'
-                label_display: '0'
-                context_mapping:
-                  entity: layout_builder.entity
-                formatter:
-                  type: list_default
-                  label: above
-                  settings: {  }
                   third_party_settings: {  }
               weight: -5
               additional: {  }
@@ -257,20 +256,19 @@ adding:
       label: above
       settings: {  }
       third_party_settings: {  }
-      weight: 12
+      weight: 9
       region: content
     field_article_type:
       type: list_default
       label: above
       settings: {  }
       third_party_settings: {  }
-      weight: 9
+      weight: 10
       region: content
     field_embargo_information:
-      type: string
+      type: basic_string
       label: above
-      settings:
-        link_to_entity: false
+      settings: {  }
       third_party_settings: {  }
       weight: 11
       region: content
@@ -281,7 +279,7 @@ adding:
         timezone_override: ''
         format_type: medium
       third_party_settings: {  }
-      weight: 10
+      weight: 12
       region: content
 removing:
   third_party_settings:
