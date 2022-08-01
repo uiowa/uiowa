@@ -2104,6 +2104,8 @@ function sitenow_update_9045() {
  * Set existing events block to be compatible with new date_range options.
  */
 function sitenow_update_9046() {
+  // Need module enabled before field operations occur.
+  \Drupal::service('module_installer')->install(['smart_date']);
 
   $config_path = DRUPAL_ROOT . '/../config/default';
   $source = new FileStorage($config_path);
@@ -2114,6 +2116,8 @@ function sitenow_update_9046() {
       'field.field.block_content.uiowa_events.field_uiowa_events_timeframe',
       'field.storage.block_content.field_uiowa_events_sort',
       'field.field.block_content.uiowa_events.field_uiowa_events_sort',
+      'field.storage.block_content.field_uiowa_events_date_range',
+      'field.field.block_content.uiowa_events.field_uiowa_events_date_range',
     ] as $config_name) {
     $config_record = $source->read($config_name);
 
@@ -2128,15 +2132,16 @@ function sitenow_update_9046() {
   drupal_flush_all_caches();
 
   _update_all_blocks_by_plugin_id('inline_block:uiowa_events', function (&$component, $block) {
+    $now = strtotime('now');
+    $block->set('field_uiowa_events_date_range', ['value' => $now, 'end_value' => $now]);
     if ($block->get('field_uiowa_events_past')->value == 1) {
       $block->set('field_uiowa_events_sort', 'DESC');
-      $block->set('field_uiowa_events_timeframe', 'past')
-        ->save();
+      $block->set('field_uiowa_events_timeframe', 'past');
     }
     else {
       $block->set('field_uiowa_events_sort', 'ASC');
-      $block->set('field_uiowa_events_timeframe', 'upcoming')
-        ->save();
+      $block->set('field_uiowa_events_timeframe', 'upcoming');
     }
+    $block->save();
   });
 }
