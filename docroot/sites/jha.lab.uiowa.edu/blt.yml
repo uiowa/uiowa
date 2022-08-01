@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labjha.uiowa.ddev.site
+    protocol: https
+  machine_name: labjha
+  human_name: jha.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labjha.prod
+drupal:
+  db:
+    database: jha_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Jha Lab'
