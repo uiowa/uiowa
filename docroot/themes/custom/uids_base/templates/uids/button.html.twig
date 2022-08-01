@@ -3,7 +3,7 @@
   {% block button_content_start %}
     {{ title_prefix }}
     {#  The below is not working because button classes is an array of different classes  #}
-    <a class="{{ button_classes[0] }}" href="{{ button_link_url }}">
+    <a {{ button_classes }} href="{{ button_link_url }}">
       {{ button_link_title }}
       <i role="presentation" class="fas fa-arrow-right"></i>
     </a>

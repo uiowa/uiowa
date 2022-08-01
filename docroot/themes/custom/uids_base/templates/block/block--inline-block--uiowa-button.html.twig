@@ -14,11 +14,9 @@
   {% endif %}
 {% endfor %}
 
-{{ devel_breakpoint() }}
-
 {% set block_button = {
   'attributes': attributes.removeClass(button_classes),
-  'button_classes': button_classes,
+  'button_classes': create_attribute().addClass(button_classes),
   'button_link_url': content.field_uiowa_button_link[0]['#url'],
   'button_link_title': content.field_uiowa_button_link[0]['#title']|render,
   'title_prefix': title_prefix,
