@@ -1,9 +1,9 @@
 {% set attributes = attributes ?: create_attribute() %}
 <div {{ attributes }}>
-  {% block button_content_start %}
+  {% block content_start %}
     {{ title_prefix }}
-    <a {{ button_classes }} href="{{ button_link_url }}">
-      {{ button_link_title }}
+    <a {{ classes }} href="{{ link_url }}">
+      {{ link_title }}
       <i role="presentation" class="fas fa-arrow-right"></i>
     </a>
   {% endblock %}

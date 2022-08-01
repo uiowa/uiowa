@@ -6,25 +6,25 @@
  * @see template_preprocess_block()
  */
 #}
-{% set button_classes = [] %}
+{% set classes = [] %}
 
 {% for style in attributes.class %}
   {% if style starts with 'bttn' %}
-    {% set button_classes = button_classes|merge([style]) %}
+    {% set classes = classes|merge([style]) %}
   {% endif %}
 {% endfor %}
 
 {% set block_button = {
-  'attributes': attributes.removeClass(button_classes),
-  'button_classes': create_attribute().addClass(button_classes),
-  'button_link_url': content.field_uiowa_button_link[0]['#url'],
-  'button_link_title': content.field_uiowa_button_link[0]['#title']|render,
+  'attributes': attributes.removeClass(classes),
+  'classes': create_attribute().addClass(classes),
+  'link_url': content.field_uiowa_button_link[0]['#url'],
+  'link_title': content.field_uiowa_button_link[0]['#title']|render,
   'title_prefix': title_prefix,
   'title_suffix': title_suffix,
 } %}
 
 {% embed '@uids_base/uids/button.html.twig' with block_button only %}
-  {% block button_content_start %}
+  {% block content_start %}
     {{ title_prefix }}
     {{ title_suffix }}
     {{ parent() }}
