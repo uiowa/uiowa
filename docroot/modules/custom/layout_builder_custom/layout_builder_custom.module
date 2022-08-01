@@ -530,8 +530,8 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
           'time_wrapper',
           'value',
         ]))) {
-          // Highlight on this field doesn't seem to work, but the error shows.
-          $form_state->setErrorByName('settings[block_form][field_uiowa_events_date_range][0][time_wrapper][value][date]',
+          // Highlight shows on all field elements...
+          $form_state->setErrorByName('settings][block_form][field_uiowa_events_date_range',
             t('Provide a date range.'));
         }
       }
