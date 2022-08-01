@@ -44,7 +44,7 @@ function now_core_node_presave($entity) {
   if (!isset($entity->moderation_state) || !isset($entity->field_embargo_information)) {
     return;
   }
-  // We only need to change things if both there is
+  // We only need to change things if there is both
   // an embargo message present and we are trying to publish.
   if (!empty($entity->field_embargo_information->value)) {
     if ($entity->moderation_state->value != 'published') {
@@ -58,14 +58,21 @@ function now_core_node_presave($entity) {
     // If it's not new, then let's set it back to it's previous state
     // which wasn't published.
     else {
-      // @todo How to handle the case where the article was previously published?
-      //   Defaulting to set it to 'draft' still leaves a live version
-      //   published. Probably set it to 'archived' instead, then.
-      //   That functionality would match,
-      //   but feels iffy what should likely be new content.
-      $alt_state = ($entity->original->moderation_state->value == 'published') ? 'draft' : $entity->original->moderation_state->value;
+      // If we are not going from a previously published state,
+      // set it to the old mod state (eg draft or review).
+      // In the case where the previous state was published,
+      // we default to archived to unpublish the page.
+      // There shouldn't be a case where this happens unless it is
+      // by accident, so this is really only a fallback.
+      $alt_state = ($entity->original->moderation_state->value == 'published') ? 'archived' : $entity->original->moderation_state->value;
     }
-    // @todo Add a user message along with changing this state.
     $entity->moderation_state = $alt_state;
+    // Add a user message along with changing this state.
+    \Drupal::messenger()->addWarning(
+      t("Content is under embargo and cannot be published at this time. It has been set to the @alt_state moderation state.",
+        [
+          '@alt_state' => $alt_state,
+        ])
+    );
   }
 }
