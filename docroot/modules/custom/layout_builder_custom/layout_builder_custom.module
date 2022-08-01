@@ -519,6 +519,24 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
       }
       break;
 
+    case 'inline_block:uiowa_events':
+      // Require time range if date_range timeframe is selected.
+      if ($form_state->getValue('settings')['block_form']['field_uiowa_events_timeframe'][0]['value'] == 'date_range') {
+        if (empty($form_state->getValue([
+          'settings',
+          'block_form',
+          'field_uiowa_events_date_range',
+          0,
+          'time_wrapper',
+          'value',
+        ]))) {
+          // Highlight on this field doesn't seem to work, but the error shows.
+          $form_state->setErrorByName('settings[block_form][field_uiowa_events_date_range][0][time_wrapper][value][date]',
+            t('Provide a date range.'));
+        }
+      }
+      break;
+
     case 'inline_block:uiowa_statistic':
       $block_form = $form_state->getValue('settings')['block_form'];
       $prefix = $block_form['field_uiowa_statistic_title_pre'][0]['value'];
