@@ -2133,7 +2133,9 @@ function sitenow_update_9046() {
 
   _update_all_blocks_by_plugin_id('inline_block:uiowa_events', function (&$component, $block) {
     $now = strtotime('now');
-    $block->set('field_uiowa_events_date_range', ['value' => $now, 'end_value' => $now]);
+    $block->set(
+      'field_uiowa_events_date_range', ['value' => $now, 'end_value' => $now]
+    );
     if ($block->get('field_uiowa_events_past')->value == 1) {
       $block->set('field_uiowa_events_sort', 'DESC');
       $block->set('field_uiowa_events_timeframe', 'past');
