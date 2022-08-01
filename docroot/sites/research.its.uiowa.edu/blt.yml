@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: itsresearch.uiowa.ddev.site
+    protocol: https
+  machine_name: itsresearch
+  human_name: research.its.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: itsresearch.prod
+drupal:
+  db:
+    database: research_its_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: akuhrich
+  site-name: 'ITS-Research Services'
