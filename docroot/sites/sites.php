@@ -4300,3 +4300,9 @@ $sites['jobscsd.uiowa.ddev.site'] = 'csd.jobs.uiowa.edu';
 $sites['jobscsd.dev.drupal.uiowa.edu'] = 'csd.jobs.uiowa.edu';
 $sites['jobscsd.stage.drupal.uiowa.edu'] = 'csd.jobs.uiowa.edu';
 $sites['jobscsd.prod.drupal.uiowa.edu'] = 'csd.jobs.uiowa.edu';
+
+// Directory aliases for research.its.uiowa.edu.
+$sites['itsresearch.uiowa.ddev.site'] = 'research.its.uiowa.edu';
+$sites['itsresearch.dev.drupal.uiowa.edu'] = 'research.its.uiowa.edu';
+$sites['itsresearch.stage.drupal.uiowa.edu'] = 'research.its.uiowa.edu';
+$sites['itsresearch.prod.drupal.uiowa.edu'] = 'research.its.uiowa.edu';
