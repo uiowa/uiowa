@@ -4342,3 +4342,9 @@ $sites['bijou.uiowa.ddev.site'] = 'bijou.uiowa.edu';
 $sites['bijou.dev.drupal.uiowa.edu'] = 'bijou.uiowa.edu';
 $sites['bijou.stage.drupal.uiowa.edu'] = 'bijou.uiowa.edu';
 $sites['bijou.prod.drupal.uiowa.edu'] = 'bijou.uiowa.edu';
+
+// Directory aliases for scope.uiowa.edu.
+$sites['scope.uiowa.ddev.site'] = 'scope.uiowa.edu';
+$sites['scope.dev.drupal.uiowa.edu'] = 'scope.uiowa.edu';
+$sites['scope.stage.drupal.uiowa.edu'] = 'scope.uiowa.edu';
+$sites['scope.prod.drupal.uiowa.edu'] = 'scope.uiowa.edu';
