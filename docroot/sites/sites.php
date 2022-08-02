@@ -4330,3 +4330,9 @@ $sites['studentlifeconnect.uiowa.ddev.site'] = 'connect.studentlife.uiowa.edu';
 $sites['studentlifeconnect.dev.drupal.uiowa.edu'] = 'connect.studentlife.uiowa.edu';
 $sites['studentlifeconnect.stage.drupal.uiowa.edu'] = 'connect.studentlife.uiowa.edu';
 $sites['studentlifeconnect.prod.drupal.uiowa.edu'] = 'connect.studentlife.uiowa.edu';
+
+// Directory aliases for svp.uiowa.edu.
+$sites['svp.uiowa.ddev.site'] = 'svp.uiowa.edu';
+$sites['svp.dev.drupal.uiowa.edu'] = 'svp.uiowa.edu';
+$sites['svp.stage.drupal.uiowa.edu'] = 'svp.uiowa.edu';
+$sites['svp.prod.drupal.uiowa.edu'] = 'svp.uiowa.edu';
