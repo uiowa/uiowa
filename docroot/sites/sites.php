@@ -4324,3 +4324,9 @@ $sites['labgebhardt.uiowa.ddev.site'] = 'gebhardt.lab.uiowa.edu';
 $sites['labgebhardt.dev.drupal.uiowa.edu'] = 'gebhardt.lab.uiowa.edu';
 $sites['labgebhardt.stage.drupal.uiowa.edu'] = 'gebhardt.lab.uiowa.edu';
 $sites['labgebhardt.prod.drupal.uiowa.edu'] = 'gebhardt.lab.uiowa.edu';
+
+// Directory aliases for connect.studentlife.uiowa.edu.
+$sites['studentlifeconnect.uiowa.ddev.site'] = 'connect.studentlife.uiowa.edu';
+$sites['studentlifeconnect.dev.drupal.uiowa.edu'] = 'connect.studentlife.uiowa.edu';
+$sites['studentlifeconnect.stage.drupal.uiowa.edu'] = 'connect.studentlife.uiowa.edu';
+$sites['studentlifeconnect.prod.drupal.uiowa.edu'] = 'connect.studentlife.uiowa.edu';
