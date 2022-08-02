@@ -4354,3 +4354,9 @@ $sites['dancemarathon.uiowa.ddev.site'] = 'dancemarathon.uiowa.edu';
 $sites['dancemarathon.dev.drupal.uiowa.edu'] = 'dancemarathon.uiowa.edu';
 $sites['dancemarathon.stage.drupal.uiowa.edu'] = 'dancemarathon.uiowa.edu';
 $sites['dancemarathon.prod.drupal.uiowa.edu'] = 'dancemarathon.uiowa.edu';
+
+// Directory aliases for lectures.uiowa.edu.
+$sites['lectures.uiowa.ddev.site'] = 'lectures.uiowa.edu';
+$sites['lectures.dev.drupal.uiowa.edu'] = 'lectures.uiowa.edu';
+$sites['lectures.stage.drupal.uiowa.edu'] = 'lectures.uiowa.edu';
+$sites['lectures.prod.drupal.uiowa.edu'] = 'lectures.uiowa.edu';
