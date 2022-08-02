@@ -4318,3 +4318,9 @@ $sites['labjha.uiowa.ddev.site'] = 'jha.lab.uiowa.edu';
 $sites['labjha.dev.drupal.uiowa.edu'] = 'jha.lab.uiowa.edu';
 $sites['labjha.stage.drupal.uiowa.edu'] = 'jha.lab.uiowa.edu';
 $sites['labjha.prod.drupal.uiowa.edu'] = 'jha.lab.uiowa.edu';
+
+// Directory aliases for gebhardt.lab.uiowa.edu.
+$sites['labgebhardt.uiowa.ddev.site'] = 'gebhardt.lab.uiowa.edu';
+$sites['labgebhardt.dev.drupal.uiowa.edu'] = 'gebhardt.lab.uiowa.edu';
+$sites['labgebhardt.stage.drupal.uiowa.edu'] = 'gebhardt.lab.uiowa.edu';
+$sites['labgebhardt.prod.drupal.uiowa.edu'] = 'gebhardt.lab.uiowa.edu';
