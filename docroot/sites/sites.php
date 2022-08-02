@@ -4318,3 +4318,45 @@ $sites['labjha.uiowa.ddev.site'] = 'jha.lab.uiowa.edu';
 $sites['labjha.dev.drupal.uiowa.edu'] = 'jha.lab.uiowa.edu';
 $sites['labjha.stage.drupal.uiowa.edu'] = 'jha.lab.uiowa.edu';
 $sites['labjha.prod.drupal.uiowa.edu'] = 'jha.lab.uiowa.edu';
+
+// Directory aliases for gebhardt.lab.uiowa.edu.
+$sites['labgebhardt.uiowa.ddev.site'] = 'gebhardt.lab.uiowa.edu';
+$sites['labgebhardt.dev.drupal.uiowa.edu'] = 'gebhardt.lab.uiowa.edu';
+$sites['labgebhardt.stage.drupal.uiowa.edu'] = 'gebhardt.lab.uiowa.edu';
+$sites['labgebhardt.prod.drupal.uiowa.edu'] = 'gebhardt.lab.uiowa.edu';
+
+// Directory aliases for connect.studentlife.uiowa.edu.
+$sites['studentlifeconnect.uiowa.ddev.site'] = 'connect.studentlife.uiowa.edu';
+$sites['studentlifeconnect.dev.drupal.uiowa.edu'] = 'connect.studentlife.uiowa.edu';
+$sites['studentlifeconnect.stage.drupal.uiowa.edu'] = 'connect.studentlife.uiowa.edu';
+$sites['studentlifeconnect.prod.drupal.uiowa.edu'] = 'connect.studentlife.uiowa.edu';
+
+// Directory aliases for svp.uiowa.edu.
+$sites['svp.uiowa.ddev.site'] = 'svp.uiowa.edu';
+$sites['svp.dev.drupal.uiowa.edu'] = 'svp.uiowa.edu';
+$sites['svp.stage.drupal.uiowa.edu'] = 'svp.uiowa.edu';
+$sites['svp.prod.drupal.uiowa.edu'] = 'svp.uiowa.edu';
+
+// Directory aliases for bijou.uiowa.edu.
+$sites['bijou.uiowa.ddev.site'] = 'bijou.uiowa.edu';
+$sites['bijou.dev.drupal.uiowa.edu'] = 'bijou.uiowa.edu';
+$sites['bijou.stage.drupal.uiowa.edu'] = 'bijou.uiowa.edu';
+$sites['bijou.prod.drupal.uiowa.edu'] = 'bijou.uiowa.edu';
+
+// Directory aliases for scope.uiowa.edu.
+$sites['scope.uiowa.ddev.site'] = 'scope.uiowa.edu';
+$sites['scope.dev.drupal.uiowa.edu'] = 'scope.uiowa.edu';
+$sites['scope.stage.drupal.uiowa.edu'] = 'scope.uiowa.edu';
+$sites['scope.prod.drupal.uiowa.edu'] = 'scope.uiowa.edu';
+
+// Directory aliases for dancemarathon.uiowa.edu.
+$sites['dancemarathon.uiowa.ddev.site'] = 'dancemarathon.uiowa.edu';
+$sites['dancemarathon.dev.drupal.uiowa.edu'] = 'dancemarathon.uiowa.edu';
+$sites['dancemarathon.stage.drupal.uiowa.edu'] = 'dancemarathon.uiowa.edu';
+$sites['dancemarathon.prod.drupal.uiowa.edu'] = 'dancemarathon.uiowa.edu';
+
+// Directory aliases for lectures.uiowa.edu.
+$sites['lectures.uiowa.ddev.site'] = 'lectures.uiowa.edu';
+$sites['lectures.dev.drupal.uiowa.edu'] = 'lectures.uiowa.edu';
+$sites['lectures.stage.drupal.uiowa.edu'] = 'lectures.uiowa.edu';
+$sites['lectures.prod.drupal.uiowa.edu'] = 'lectures.uiowa.edu';
