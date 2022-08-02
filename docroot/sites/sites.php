@@ -4336,3 +4336,9 @@ $sites['svp.uiowa.ddev.site'] = 'svp.uiowa.edu';
 $sites['svp.dev.drupal.uiowa.edu'] = 'svp.uiowa.edu';
 $sites['svp.stage.drupal.uiowa.edu'] = 'svp.uiowa.edu';
 $sites['svp.prod.drupal.uiowa.edu'] = 'svp.uiowa.edu';
+
+// Directory aliases for bijou.uiowa.edu.
+$sites['bijou.uiowa.ddev.site'] = 'bijou.uiowa.edu';
+$sites['bijou.dev.drupal.uiowa.edu'] = 'bijou.uiowa.edu';
+$sites['bijou.stage.drupal.uiowa.edu'] = 'bijou.uiowa.edu';
+$sites['bijou.prod.drupal.uiowa.edu'] = 'bijou.uiowa.edu';
