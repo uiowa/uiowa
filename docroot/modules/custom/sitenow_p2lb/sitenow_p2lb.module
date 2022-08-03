@@ -429,7 +429,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
     case 'articles':
       $type = 'views_block:article_list_block-list_article';
       $more = $paragraph->field_articles_more->value;
-      $more_path = $paragraph->field_articles_more_path->value;
+      $more_path = ($paragraph->field_articles_more_path->get(0)) ? $paragraph->field_articles_more_path->get(0)->uri : NULL;
       $title = $paragraph->field_uip_title->value;
       // Reverse the logic, because we're using it to
       // denote "hide," rather than display.
@@ -458,7 +458,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         'pager' => $pager,
         'pager_offset' => 0,
         'items_per_page' => $results,
-        // @todo Make sure $more and $more_path map correctly.
         'use_more' => $more,
         'use_more_link_url' => $more_path,
         'exposed_filter_values' => [
@@ -709,7 +708,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
     case 'people':
       $type = 'views_block:people_list_block-list_card';
       $more = $paragraph->field_people_more->value;
-      $more_path = $paragraph->field_people_more_path->value;
+      $more_path = ($paragraph->field_people_more_path->get(0)) ? $paragraph->field_people_more_path->get(0)->uri : NULL;
       $title = $paragraph->field_uip_title->value;
       // Reverse the logic, because we're using it to
       // denote "hide," rather than display.
@@ -762,7 +761,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         'pager' => $pager,
         'pager_offset' => 0,
         'items_per_page' => $results,
-        // @todo Make sure $more and $more_path map correctly.
         'use_more' => $more,
         'use_more_link_url' => $more_path,
         'sort' => $sort,
