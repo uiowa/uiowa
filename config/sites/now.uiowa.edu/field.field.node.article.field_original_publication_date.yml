@@ -1,0 +1,26 @@
+uuid: 6c45e114-34c2-4639-a158-e69e843d8b42
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_original_publication_date
+    - node.type.article
+  module:
+    - smart_date
+id: node.article.field_original_publication_date
+field_name: field_original_publication_date
+entity_type: node
+bundle: article
+label: 'Original Publication Date'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    default_duration: 0
+    default_duration_increments: '0'
+    default_date_type: now
+    default_date: ''
+default_value_callback: ''
+settings: {  }
+field_type: smartdate
