@@ -1,0 +1,87 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Now Core module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_alter().
+ */
+function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id === 'node_article_form' || $form_id === 'node_article_edit_form') {
+    $form['field_embargo_information']['#states'] = [
+      'visible' => [
+        ':input[name="field_article_type"]' => [
+          'value' => 'news-feature',
+        ],
+      ],
+    ];
+
+    $form['field_original_publication_date']['#states'] = [
+      'visible' => [
+        ':input[name="field_article_type"]' => [
+          'value' => 'in-the-news',
+        ],
+      ],
+    ];
+
+    // @todo Remove this when https://github.com/uiowa/uiowa/issues/2691
+    //   is resolved.
+    // Smart_date deals with ranges, but we only need a single date,
+    // so unset the extra "to" in the form and hide the end date.
+    // JS will update the end date to match the start date
+    // without showing clutter to the end user.
+    unset($form['field_original_publication_date']['widget'][0]['time_wrapper']['separator']);
+    $form['field_original_publication_date']['widget'][0]['time_wrapper']['end_value']['#attributes']['class'][] = 'hidden';
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function now_core_node_presave($entity) {
+  // Currently we're only interested in altering
+  // functionality for the news-feature content type.
+  // This should be updated if this gets expanded further.
+  if ($entity->getType() != 'article' || $entity->field_article_type->value != 'news-feature') {
+    return;
+  }
+  // If we don't have these, there's no functionality to alter.
+  if (!isset($entity->moderation_state) || !isset($entity->field_embargo_information)) {
+    return;
+  }
+  // We only need to change things if there is both
+  // an embargo message present and we are trying to publish.
+  if (!empty($entity->field_embargo_information->value)) {
+    if ($entity->moderation_state->value != 'published') {
+      return;
+    }
+    // If it's brand new, then we'll go ahead and set it to draft
+    // rather than publish.
+    if ($entity->isNew()) {
+      $alt_state = 'draft';
+    }
+    // If it's not new, then let's set it back to it's previous state
+    // which wasn't published.
+    else {
+      // If we are not going from a previously published state,
+      // set it to the old mod state (eg draft or review).
+      // In the case where the previous state was published,
+      // we default to archived to unpublish the page.
+      // There shouldn't be a case where this happens unless it is
+      // by accident, so this is really only a fallback.
+      $alt_state = ($entity->original->moderation_state->value == 'published') ? 'archived' : $entity->original->moderation_state->value;
+    }
+    $entity->moderation_state = $alt_state;
+    // Add a user message along with changing this state.
+    \Drupal::messenger()->addWarning(
+      t("Content is under embargo and cannot be published at this time. It has been set to the @alt_state moderation state.",
+        [
+          '@alt_state' => $alt_state,
+        ])
+    );
+  }
+}
