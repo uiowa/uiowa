@@ -4360,3 +4360,9 @@ $sites['lectures.uiowa.ddev.site'] = 'lectures.uiowa.edu';
 $sites['lectures.dev.drupal.uiowa.edu'] = 'lectures.uiowa.edu';
 $sites['lectures.stage.drupal.uiowa.edu'] = 'lectures.uiowa.edu';
 $sites['lectures.prod.drupal.uiowa.edu'] = 'lectures.uiowa.edu';
+
+// Directory aliases for attention-perception.lab.uiowa.edu.
+$sites['labattention-perception.uiowa.ddev.site'] = 'attention-perception.lab.uiowa.edu';
+$sites['labattention-perception.dev.drupal.uiowa.edu'] = 'attention-perception.lab.uiowa.edu';
+$sites['labattention-perception.stage.drupal.uiowa.edu'] = 'attention-perception.lab.uiowa.edu';
+$sites['labattention-perception.prod.drupal.uiowa.edu'] = 'attention-perception.lab.uiowa.edu';
