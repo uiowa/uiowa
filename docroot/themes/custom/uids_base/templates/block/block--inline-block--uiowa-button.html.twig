@@ -15,7 +15,7 @@
 {% endfor %}
 
 {% set block_button = {
-  'attributes': attributes.removeClass(classes),
+  'attributes': attributes.removeClass(classes).addClass('block'),
   'classes': create_attribute().addClass(classes),
   'link_url': content.field_uiowa_button_link[0]['#url'],
   'link_title': content.field_uiowa_button_link[0]['#title']|render,
