@@ -15,7 +15,7 @@ adding:
       third_party_settings: {  }
     field_embargo_information:
       type: string_textfield
-      weight: 2
+      weight: 1
       region: content
       settings:
         size: 60
@@ -37,4 +37,9 @@ adding:
         show_extra: false
         hide_date: true
       third_party_settings: {  }
-removing: {  }
+    body:
+      weight: 2
+removing:
+  content:
+    body:
+      weight: 1
