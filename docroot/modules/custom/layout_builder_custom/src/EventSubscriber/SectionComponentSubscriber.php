@@ -139,6 +139,14 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
             $build['#attached']['library'][] = 'uids_base/accessible-menu';
           }
           break;
+
+        case 'inline_block:uiowa_button':
+          $build['content']['#theme'] = 'uids_button';
+          $build['content']['#link_url'] = $build['content']['field_uiowa_button_link'][0]['#url'];
+          $build['content']['#link_title'] = $build['content']['field_uiowa_button_link'][0]['#title'];
+          $build['content']['#classes'] = $build['#attributes']['class'];
+          unset($build['#attributes']['class']);
+          break;
       }
     }
 

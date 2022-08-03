@@ -966,6 +966,13 @@ function layout_builder_custom_theme($existing, $type, $theme, $path) {
         'child_heading_size' => NULL,
       ],
     ],
+    'uids_button' => [
+      'variables' => [
+        'link_url' => NULL,
+        'link_title' => NULL,
+        'classes' => NULL,
+      ],
+    ],
   ];
   return $theme;
 }
@@ -1313,4 +1320,8 @@ function _layout_builder_custom_unique_id(array &$form, FormStateInterface $form
 
   $form['unique_id_wrapper']['unique_id']['#value'] = $unique_id;
   return $form['unique_id_wrapper'];
+}
+
+function template_preprocess_uids_button(&$variables) {
+  $variables['attributes']['class'] = $variables['classes'];
 }
