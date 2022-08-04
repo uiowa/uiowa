@@ -63,6 +63,9 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         'button_style' => [
           'default' => 'button_primary',
         ],
+        'button_size' => [
+          'default' => 'button_medium',
+        ],
         'card_image_size' => [
           'default' => 'card_image_large',
         ],
@@ -792,6 +795,10 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         }
       }
 
+      break;
+
+    case 'inline_block:uiowa_button':
+      $element['field_uiowa_button_link']['widget'][0]['title']['#maxlength'] = 25;
       break;
 
     case 'inline_block:uiowa_card':
