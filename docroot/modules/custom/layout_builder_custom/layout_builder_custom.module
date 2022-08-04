@@ -522,6 +522,46 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
       }
       break;
 
+    case 'inline_block:uiowa_events':
+      // Require time range if date_range timeframe is selected.
+      if ($form_state->getValue('settings')['block_form']['field_uiowa_events_timeframe'][0]['value'] == 'date_range') {
+        if (empty($form_state->getValue([
+          'settings',
+          'block_form',
+          'field_uiowa_events_date_range',
+          0,
+          'time_wrapper',
+          'value',
+        ]))) {
+          $form_state->setErrorByName('settings][block_form][field_uiowa_events_date_range][0][time_wrapper][value',
+            t('Provide a date range.'));
+        }
+        else {
+          // Restrict time range values.
+          $min = strtotime('01-01-1970');
+          $max = strtotime('31-12-2037');
+          $start = $form_state->getValue([
+            'settings',
+            'block_form',
+            'field_uiowa_events_date_range',
+          ])[0]['time_wrapper']['value']->format('U');
+          $end = $form_state->getValue([
+            'settings',
+            'block_form',
+            'field_uiowa_events_date_range',
+          ])[0]['time_wrapper']['end_value']->format('U');
+          if ($start < $min || $start > $max) {
+            $form_state->setErrorByName('settings][block_form][field_uiowa_events_date_range][0][time_wrapper][end_value',
+              t('Invalid start date.'));
+          }
+          if ($end < $min || $end > $max) {
+            $form_state->setErrorByName('settings][block_form][field_uiowa_events_date_range][0][time_wrapper][end_value',
+              t('Invalid end date.'));
+          }
+        }
+      }
+      break;
+
     case 'inline_block:uiowa_statistic':
       $block_form = $form_state->getValue('settings')['block_form'];
       $prefix = $block_form['field_uiowa_statistic_title_pre'][0]['value'];
@@ -821,6 +861,25 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       break;
 
     case 'inline_block:uiowa_events':
+      // @todo Remove past field https://github.com/uiowa/uiowa/issues/5518
+      // after field_uiowa_events_timeframe is established.
+      if (isset($element['field_uiowa_events_past'])) {
+        $element['field_uiowa_events_past']['#access'] = FALSE;
+      }
+      if (isset($element['field_uiowa_events_date_range'])) {
+        // Set a date picker limit to our UNIX min/max.
+        $element['field_uiowa_events_date_range']['widget'][0]['time_wrapper']['value']['#date_year_range'] = '1970:2037';
+        $element['field_uiowa_events_date_range']['widget'][0]['time_wrapper']['end_value']['#date_year_range'] = '1970:2037';
+
+        // Show date range field when timeframe is set to date_range.
+        $element['field_uiowa_events_date_range']['#states'] = [
+          'visible' => [
+            ':input[name="settings[block_form][field_uiowa_events_timeframe]"]' => [
+              'value' => 'date_range',
+            ],
+          ],
+        ];
+      }
       if (isset($element['field_collection_more_path'])) {
         $element['field_collection_more_path']['#states'] = [
           'visible' => [
