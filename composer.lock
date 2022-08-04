@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "383c77095807f0803a0b27ceea46dbe4",
+    "content-hash": "164bd218bf9ec83a26445541f3148dca",
     "packages": [
         {
             "name": "acquia/blt",
@@ -5974,32 +5974,33 @@
         },
         {
             "name": "drupal/file_mdm",
-            "version": "2.1.0",
+            "version": "2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/file_mdm.git",
-                "reference": "8.x-2.1"
+                "reference": "8.x-2.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/file_mdm-8.x-2.1.zip",
-                "reference": "8.x-2.1",
-                "shasum": "5c3d75622299ebddc0e8456bb08bb371da8771bd"
+                "url": "https://ftp.drupal.org/files/projects/file_mdm-8.x-2.4.zip",
+                "reference": "8.x-2.4",
+                "shasum": "f0611a95417d35e98b7792dfffb569afe8bd6e7c"
             },
             "require": {
-                "drupal/core": "^8.8 || ^9",
-                "lsolesen/pel": "^0.9.8",
-                "phenx/php-font-lib": "^0.5.2",
-                "php": ">=7"
+                "drupal/core": "^9.2",
+                "lsolesen/pel": "^0.9.12",
+                "phenx/php-font-lib": "^0.5.4"
             },
             "require-dev": {
-                "drupal/image_effects": "*"
+                "drupal/image_effects": "*",
+                "drupal/vendor_stream_wrapper": "^2",
+                "fileeye/linuxlibertine-fonts": "^5.3"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.1",
-                    "datestamp": "1586801064",
+                    "version": "8.x-2.4",
+                    "datestamp": "1645440700",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -8188,14 +8189,6 @@
             ],
             "authors": [
                 {
-                    "name": "Fabianx",
-                    "homepage": "https://www.drupal.org/user/693738"
-                },
-                {
-                    "name": "Jeremy",
-                    "homepage": "https://www.drupal.org/user/409"
-                },
-                {
                     "name": "bdragon",
                     "homepage": "https://www.drupal.org/user/53081"
                 },
@@ -8208,8 +8201,16 @@
                     "homepage": "https://www.drupal.org/user/1037976"
                 },
                 {
+                    "name": "Fabianx",
+                    "homepage": "https://www.drupal.org/user/693738"
+                },
+                {
                     "name": "japerry",
                     "homepage": "https://www.drupal.org/user/45640"
+                },
+                {
+                    "name": "Jeremy",
+                    "homepage": "https://www.drupal.org/user/409"
                 },
                 {
                     "name": "jvandyk",
@@ -13218,16 +13219,16 @@
         },
         {
             "name": "lsolesen/pel",
-            "version": "0.9.10",
+            "version": "0.9.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pel/pel.git",
-                "reference": "04ecb8a29e4b1628414193b0df9294232a44f8a9"
+                "reference": "b95fe29cdacf9d36330da277f10910a13648c84c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pel/pel/zipball/04ecb8a29e4b1628414193b0df9294232a44f8a9",
-                "reference": "04ecb8a29e4b1628414193b0df9294232a44f8a9",
+                "url": "https://api.github.com/repos/pel/pel/zipball/b95fe29cdacf9d36330da277f10910a13648c84c",
+                "reference": "b95fe29cdacf9d36330da277f10910a13648c84c",
                 "shasum": ""
             },
             "require": {
@@ -13272,9 +13273,9 @@
             ],
             "support": {
                 "issues": "https://github.com/pel/pel/issues",
-                "source": "https://github.com/pel/pel/tree/0.9.10"
+                "source": "https://github.com/pel/pel/tree/0.9.12"
             },
-            "time": "2021-01-01T22:15:50+00:00"
+            "time": "2022-02-18T13:20:54+00:00"
         },
         {
             "name": "masterminds/html5",
