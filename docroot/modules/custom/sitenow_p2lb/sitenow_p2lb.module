@@ -516,7 +516,9 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       $excerpt = ($paragraph->get('field_card_body')->getValue()) ?
         $paragraph->get('field_card_body')->getValue()[0] : '';
 
-      $excerpt['format'] = 'minimal';
+      if ($excerpt) {
+        $excerpt['format'] = 'minimal';
+      }
 
       $block_definition = [
         'type' => $type,
