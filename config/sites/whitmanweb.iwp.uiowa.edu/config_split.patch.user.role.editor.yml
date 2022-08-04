@@ -1,5 +1,12 @@
 adding:
+  dependencies:
+    config:
+      - node.type.writing
+      - taxonomy.vocabulary.writing_collection
+    module:
+      - content_translation
   permissions:
+    - 'create content translations'
     - 'create terms in writing_collection'
     - 'create writing content'
     - 'delete own writing content'
@@ -10,5 +17,7 @@ adding:
     - 'enter writing revision log entry'
     - 'override writing published option'
     - 'revert writing revisions'
+    - 'translate writing node'
+    - 'translate writing_collection taxonomy_term'
     - 'view writing revisions'
 removing: {  }
