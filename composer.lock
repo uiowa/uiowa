@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "164bd218bf9ec83a26445541f3148dca",
+    "content-hash": "5d1a93b6a8bcd583cd03f1b514372e25",
     "packages": [
         {
             "name": "acquia/blt",
@@ -4828,11 +4828,17 @@
         },
         {
             "name": "drupal/cshs",
-            "version": "dev-3.x",
+            "version": "3.6.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/cshs.git",
-                "reference": "fe1b07101d724e6aa5fbcd78c50ce2780534ed0f"
+                "reference": "8.x-3.6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/cshs-8.x-3.6.zip",
+                "reference": "8.x-3.6",
+                "shasum": "d3989da7d546947644fa8ad99b490e04c8a7f252"
             },
             "require": {
                 "drupal/core": "^8 || ^9",
@@ -4840,15 +4846,12 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-3.x": "3.x-dev"
-                },
                 "drupal": {
-                    "version": "8.x-3.5+4-dev",
-                    "datestamp": "1643374288",
+                    "version": "8.x-3.6",
+                    "datestamp": "1650996358",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 }
             },
@@ -8414,11 +8417,17 @@
         },
         {
             "name": "drupal/menu_link_weight",
-            "version": "dev-1.x",
+            "version": "1.0.0-beta5",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/menu_link_weight.git",
-                "reference": "20d98ece"
+                "reference": "8.x-1.0-beta5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/menu_link_weight-8.x-1.0-beta5.zip",
+                "reference": "8.x-1.0-beta5",
+                "shasum": "b68ef013573d0da2fde8d5dec04fa94758d8f70c"
             },
             "require": {
                 "drupal/core": "^8 || ^9"
@@ -8428,15 +8437,12 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
-                    "version": "8.x-1.0-beta4+4-dev",
-                    "datestamp": "1592813433",
+                    "version": "8.x-1.0-beta5",
+                    "datestamp": "1652347729",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "message": "Beta releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -9670,26 +9676,29 @@
         },
         {
             "name": "drupal/reroute_email",
-            "version": "dev-2.1.x",
+            "version": "2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/reroute_email.git",
-                "reference": "438a67caeb0b0cc47d1deb0cee50afda9a907dc8"
+                "reference": "2.1.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/reroute_email-2.1.1.zip",
+                "reference": "2.1.1",
+                "shasum": "a3ed4920867d04aa446a75f349ade90e31fd1926"
             },
             "require": {
                 "drupal/core": "^8.8 || ^9"
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-2.1.x": "2.1.x-dev"
-                },
                 "drupal": {
-                    "version": "2.1.1+4-dev",
-                    "datestamp": "1658335462",
+                    "version": "2.1.1",
+                    "datestamp": "1648587118",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 }
             },
@@ -22043,7 +22052,6 @@
         "drupal/better_exposed_filters": 10,
         "drupal/better_normalizers": 10,
         "drupal/config_split": 10,
-        "drupal/cshs": 20,
         "drupal/default_content": 15,
         "drupal/diff": 5,
         "drupal/entity_embed": 5,
@@ -22056,14 +22064,13 @@
         "drupal/media_entity_facebook": 10,
         "drupal/media_entity_file_replace": 10,
         "drupal/media_thumbnails_video": 15,
-        "drupal/menu_link_weight": 20,
+        "drupal/menu_link_weight": 10,
         "drupal/mimemail": 15,
         "drupal/node_revision_delete": 10,
         "drupal/private_content": 5,
         "drupal/purge": 10,
         "drupal/rabbit_hole": 10,
         "drupal/redirect": 20,
-        "drupal/reroute_email": 20,
         "drupal/restrict_ip": 10,
         "drupal/smart_date": 20,
         "drupal/swiftmailer": 10,
