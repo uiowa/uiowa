@@ -108,6 +108,7 @@ The packages below are locked at specific SHAs and will not update using the met
 | drupal/menu_link_weight               | No stable release since [f4a4b71b](https://git.drupalcode.org/project/menu_link_weight/-/commit/f4a4b71be5850ebc9d15a5cc742eafb76ef9cd0f). |
 | drupal/redirect                       | Need e5201ca5 from 8.x-1.x branch plus a patch. https://git.drupalcode.org/project/redirect/-/commits/8.x-1.x       |
 | drupal/reroute_email                  | No stable release since 438a67caeb0b0cc47d1deb0cee50afda9a907dc8 |
+| drupal/smart_date                     | hotfix for thesis_defense https://github.com/uiowa/uiowa/pull/5051 |
 | kartsims/easysvg                      | Need https://github.com/kartsims/easysvg/pull/27 which is not included in a release. |
 | uiowa/block_content_template          | Forked from a deprecated project. |
 
@@ -134,4 +135,3 @@ You can also run blt commands on an Acquia Cloud environment, but you must run t
 BLT projects are designed to instill software development best practices (including git workflows).
 
 Our BLT Developer documentation includes an [example workflow](https://docs.acquia.com/blt/developer/dev-workflow/#workflow-example-local-development).
-
