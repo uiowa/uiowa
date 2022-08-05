@@ -4372,3 +4372,9 @@ $sites['offcampus.uiowa.ddev.site'] = 'offcampus.uiowa.edu';
 $sites['offcampus.dev.drupal.uiowa.edu'] = 'offcampus.uiowa.edu';
 $sites['offcampus.stage.drupal.uiowa.edu'] = 'offcampus.uiowa.edu';
 $sites['offcampus.prod.drupal.uiowa.edu'] = 'offcampus.uiowa.edu';
+
+// Directory aliases for ilr.law.uiowa.edu.
+$sites['lawilr.uiowa.ddev.site'] = 'ilr.law.uiowa.edu';
+$sites['lawilr.dev.drupal.uiowa.edu'] = 'ilr.law.uiowa.edu';
+$sites['lawilr.stage.drupal.uiowa.edu'] = 'ilr.law.uiowa.edu';
+$sites['lawilr.prod.drupal.uiowa.edu'] = 'ilr.law.uiowa.edu';
