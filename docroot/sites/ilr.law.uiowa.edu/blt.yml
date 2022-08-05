@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lawilr.uiowa.ddev.site
+    protocol: https
+  machine_name: lawilr
+  human_name: ilr.law.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lawilr.prod
+drupal:
+  db:
+    database: ilr_law_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: emertz
+  site-name: 'Iowa Law Review'
