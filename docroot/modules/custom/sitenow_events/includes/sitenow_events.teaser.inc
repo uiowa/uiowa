@@ -77,7 +77,7 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
     $variables['event']['description'] = $variables['event']['summary'];
   }
 
-  else if (isset($variables['event']['description'])) {
+  elseif (isset($variables['event']['description'])) {
     // Limit what html is allowed.
     $allowed_tags = ['a', 'strong', 'em'];
     $variables['event']['description'] = Xss::filter($variables['event']['description'], $allowed_tags);
