@@ -73,7 +73,11 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
     'all_day' => $variables['event']['instance_all_day'],
   ]);
 
-  if (isset($variables['event']['description'])) {
+  if (isset($variables['event']['summary'])) {
+    $variables['event']['description'] = $variables['event']['summary'];
+  }
+
+  else if (isset($variables['event']['description'])) {
     // Limit what html is allowed.
     $allowed_tags = ['a', 'strong', 'em'];
     $variables['event']['description'] = Xss::filter($variables['event']['description'], $allowed_tags);
