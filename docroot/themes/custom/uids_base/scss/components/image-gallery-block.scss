@@ -9,12 +9,16 @@
 .pswp__caption__center {
   text-align: center;
 }
-.block-inline-blockuiowa-image-gallery .uiowa-image-gallery {
+.block-inline-blockuiowa-image-gallery .uiowa-image-gallery,
+.block-field-blocknodearticlefield-gallery-images {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   margin-left: -$gutter / 2;
   margin-right: -$gutter / 2;
+  .field--name-field-gallery-images {
+    flex-basis: 100%;
+  }
   .media--view-mode-image-gallery {
     display: table-cell;
     flex: 220px 1 1;
