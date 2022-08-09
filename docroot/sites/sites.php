@@ -4384,3 +4384,9 @@ $sites['labrodgers.uiowa.ddev.site'] = 'rodgers.lab.uiowa.edu';
 $sites['labrodgers.dev.drupal.uiowa.edu'] = 'rodgers.lab.uiowa.edu';
 $sites['labrodgers.stage.drupal.uiowa.edu'] = 'rodgers.lab.uiowa.edu';
 $sites['labrodgers.prod.drupal.uiowa.edu'] = 'rodgers.lab.uiowa.edu';
+
+// Directory aliases for pwp.org.uiowa.edu.
+$sites['orgpwp.uiowa.ddev.site'] = 'pwp.org.uiowa.edu';
+$sites['orgpwp.dev.drupal.uiowa.edu'] = 'pwp.org.uiowa.edu';
+$sites['orgpwp.stage.drupal.uiowa.edu'] = 'pwp.org.uiowa.edu';
+$sites['orgpwp.prod.drupal.uiowa.edu'] = 'pwp.org.uiowa.edu';
