@@ -74,7 +74,7 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
   ]);
 
   if (isset($variables['event']['summary'])) {
-    $variables['event']['description'] = $variables['event']['summary'];
+    $variables['event']['description'] = Xss::filter($variables['event']['summary']);
   }
 
   elseif (isset($variables['event']['description'])) {
