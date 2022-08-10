@@ -21,6 +21,7 @@ dependencies:
     - layout_builder_restrictions
     - link
     - options
+    - sitenow_articles
     - system
     - text
     - user
@@ -170,7 +171,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 9
+            weight: 12
             additional: {  }
             third_party_settings: {  }
           6dea8df6-16b2-47ef-b6fd-c8a1b9922758:
@@ -181,7 +182,7 @@ third_party_settings:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-            weight: 11
+            weight: 13
             additional: {  }
             third_party_settings: {  }
           a0aa4574-dd5c-460d-befb-8eebabd8b817:
@@ -223,7 +224,21 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 12
+            weight: 14
+            additional: {  }
+            third_party_settings:
+              layout_builder_custom:
+                unique_id: gallery
+          0b9bf989-3ef0-4021-8560-1ef08301af5d:
+            uuid: 0b9bf989-3ef0-4021-8560-1ef08301af5d
+            region: content
+            configuration:
+              id: galleryjumplink_block
+              label: null
+              label_display: null
+              provider: sitenow_articles
+              context_mapping: {  }
+            weight: 11
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
