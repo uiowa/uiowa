@@ -28,7 +28,8 @@ class GalleryJumpLink extends BlockBase {
   public function build() {
     $markup = '<span class="fas fa-image"></span> <a href="#gallery">Image Gallery</a>';
 
-    return ['#markup' => $markup,
+    return [
+      '#markup' => $markup,
       '#attributes' => ['class' => 'gallery-jump-link'],
       '#attached' => [
         'library' => [
