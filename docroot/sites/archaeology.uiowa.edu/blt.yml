@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: archaeology.uiowa.ddev.site
+    protocol: https
+  machine_name: archaeology
+  human_name: archaeology.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: archaeology.prod
+drupal:
+  db:
+    database: archaeology_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: makyea
+  site-name: 'The Office of the State Archaeologist'
