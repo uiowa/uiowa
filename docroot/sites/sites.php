@@ -4390,3 +4390,9 @@ $sites['orgpwp.uiowa.ddev.site'] = 'pwp.org.uiowa.edu';
 $sites['orgpwp.dev.drupal.uiowa.edu'] = 'pwp.org.uiowa.edu';
 $sites['orgpwp.stage.drupal.uiowa.edu'] = 'pwp.org.uiowa.edu';
 $sites['orgpwp.prod.drupal.uiowa.edu'] = 'pwp.org.uiowa.edu';
+
+// Directory aliases for archaeology.uiowa.edu.
+$sites['archaeology.uiowa.ddev.site'] = 'archaeology.uiowa.edu';
+$sites['archaeology.dev.drupal.uiowa.edu'] = 'archaeology.uiowa.edu';
+$sites['archaeology.stage.drupal.uiowa.edu'] = 'archaeology.uiowa.edu';
+$sites['archaeology.prod.drupal.uiowa.edu'] = 'archaeology.uiowa.edu';
