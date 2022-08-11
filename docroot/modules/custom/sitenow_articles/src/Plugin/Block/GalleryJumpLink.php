@@ -33,7 +33,7 @@ class GalleryJumpLink extends BlockBase {
       '#attributes' => [
         'class' => [
           'gallery-jump-link',
-          ],
+        ],
       ],
       '#attached' => [
         'library' => [
