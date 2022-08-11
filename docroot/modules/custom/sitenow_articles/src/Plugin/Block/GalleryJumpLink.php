@@ -30,7 +30,11 @@ class GalleryJumpLink extends BlockBase {
 
     return [
       '#markup' => $markup,
-      '#attributes' => ['class' => 'gallery-jump-link'],
+      '#attributes' => [
+        'class' => [
+          'gallery-jump-link',
+          ],
+      ],
       '#attached' => [
         'library' => [
           'sitenow_articles/gallery-jump-link',
