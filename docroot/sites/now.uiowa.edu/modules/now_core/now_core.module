@@ -105,6 +105,12 @@ function now_core_node_presave($entity) {
   }
 }
 
+/**
+ * Mapping for article types to their associated tags.
+ *
+ * @return int[]
+ *   Associative array of article_type => tid.
+ */
 function _article_type_tag_map() {
   return [
     'achievement' => 16,
