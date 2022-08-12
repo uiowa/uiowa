@@ -71,8 +71,8 @@ function now_core_node_presave($entity) {
     foreach ($entity->field_tags->getValue() as $delta => $item) {
       if ($item['target_id'] == $tid) {
         $in_array = TRUE;
-        // If it was new, we're done and don't need to
-        // keep iterating.
+        // If it was new or the type wasn't changing,
+        // we're done and don't need to keep iterating.
         if ($old_tid === FALSE) {
           break;
         }
@@ -86,7 +86,8 @@ function now_core_node_presave($entity) {
       }
     }
     // Remove our targeted TIDs in reverse order,
-    // so we don't mess with our deltas.
+    // so we don't mess with our deltas. Only really
+    // necessary if we found dupes of the old TID.
     rsort($to_remove);
     foreach ($to_remove as $delta) {
       $entity->field_tags->removeItem($delta);
