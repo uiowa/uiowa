@@ -46,36 +46,59 @@ function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
  */
 function now_core_node_presave($entity) {
   // Currently we're only interested in altering
-  // functionality for the articles, so return if not.
-  if ($entity->getType() != 'article') {
+  // functionality for the articles that have
+  // an article_type field, so return if not.
+  if ($entity->getType() != 'article' || !isset($entity->field_article_type)) {
     return;
   }
 
   // Add a tag according to the article type
   // so that it can be used in user-created filters.
-  // @todo Decide if this should only be on new articles,
-  //   or if it should always be a thing.
-  if ($entity->isNew() && isset($entity->field_article_type)) {
-    $tid = _article_type_tag_map($entity->field_article_type->value);
-    if ($tid !== FALSE) {
-      // Check that we didn't already have the tid
-      // before appending it to our list of tags.
-      $in_array = FALSE;
-      foreach ($entity->field_tags->getValue() as $item) {
-        if ($item['target_id'] == $tid) {
-          $in_array = TRUE;
+  $tid = _article_type_tag_map($entity->field_article_type->value);
+  if ($tid !== FALSE) {
+    // Check that we didn't already have the tid
+    // before appending it to our list of tags.
+    $in_array = FALSE;
+    // If it's new, we only need to worry about
+    // adding the new TID, but if it's an edit,
+    // we also need to check if we need to remove
+    // an old article type's TID.
+    $old_tid = (!$entity->isNew()) ? _article_type_tag_map($entity->original->field_article_type->value) : FALSE;
+    // If the old TID is the same as the new,
+    // then we can treat it like the entity is new.
+    $old_tid = ($old_tid != $tid) ? $old_tid : FALSE;
+    $to_remove = [];
+    foreach ($entity->field_tags->getValue() as $delta => $item) {
+      if ($item['target_id'] == $tid) {
+        $in_array = TRUE;
+        // If it was new, we're done and don't need to
+        // keep iterating.
+        if ($old_tid === FALSE) {
           break;
         }
       }
-      if ($in_array === FALSE) {
-        $entity->field_tags->appendItem($tid);
+      // If we have an old TID and we've matched it,
+      // add it to our list of removals.
+      if ($old_tid !== FALSE &&
+        $item['target_id'] == $old_tid
+      ) {
+        $to_remove[] = $delta;
       }
+    }
+    // Remove our targeted TIDs in reverse order,
+    // so we don't mess with our deltas.
+    rsort($to_remove);
+    foreach ($to_remove as $delta) {
+      $entity->field_tags->removeItem($delta);
+    }
+    if ($in_array === FALSE) {
+      $entity->field_tags->appendItem($tid);
     }
   }
 
   // The rest of the functionality only applies
   // to the news-feature article type, so we may be done.
-  if (isset($entity->field_article_type) && $entity->field_article_type->value != 'news-feature') {
+  if ($entity->field_article_type->value != 'news-feature') {
     return;
   }
   // If we don't have these, there's no functionality to alter.
