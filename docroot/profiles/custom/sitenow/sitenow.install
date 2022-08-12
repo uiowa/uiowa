@@ -2255,7 +2255,7 @@ function sitenow_update_9047() {
     if (!is_null($rows)) {
       foreach ($rows as $row) {
         $row = (array) $row;
-        $row[$field['format_col']] = 'minimal';
+        $row[$field['format_col']] = 'basic';
         $database
           ->insert($table)
           ->fields($row)
@@ -2265,7 +2265,7 @@ function sitenow_update_9047() {
     if (!is_null($revision_rows)) {
       foreach ($revision_rows as $row) {
         $row = (array) $row;
-        $row[$field['format_col']] = 'minimal';
+        $row[$field['format_col']] = 'basic';
         $database
           ->insert($revision_table)
           ->fields($row)
