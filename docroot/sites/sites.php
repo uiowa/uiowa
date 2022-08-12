@@ -4396,3 +4396,9 @@ $sites['archaeology.uiowa.ddev.site'] = 'archaeology.uiowa.edu';
 $sites['archaeology.dev.drupal.uiowa.edu'] = 'archaeology.uiowa.edu';
 $sites['archaeology.stage.drupal.uiowa.edu'] = 'archaeology.uiowa.edu';
 $sites['archaeology.prod.drupal.uiowa.edu'] = 'archaeology.uiowa.edu';
+
+// Directory aliases for chd.engineering.uiowa.edu.
+$sites['engineeringchd.uiowa.ddev.site'] = 'chd.engineering.uiowa.edu';
+$sites['engineeringchd.dev.drupal.uiowa.edu'] = 'chd.engineering.uiowa.edu';
+$sites['engineeringchd.stage.drupal.uiowa.edu'] = 'chd.engineering.uiowa.edu';
+$sites['engineeringchd.prod.drupal.uiowa.edu'] = 'chd.engineering.uiowa.edu';
