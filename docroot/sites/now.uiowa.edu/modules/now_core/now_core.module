@@ -58,8 +58,19 @@ function now_core_node_presave($entity) {
   if ($entity->isNew() && isset($entity->field_article_type)) {
     $map = _article_type_tag_map();
     if (isset($map[$entity->field_article_type->value])) {
-      // @todo Dedupe this, or check before appending.
-      $entity->field_tags->appendItem($map[$entity->field_article_type->value]);
+      $tid = $map[$entity->field_article_type->value];
+      // Check that we didn't already have the tid
+      // before appending it to our list of tags.
+      $in_array = FALSE;
+      foreach ($entity->field_tags->getValue() as $item) {
+        if ($item['target_id'] == $tid) {
+          $in_array = TRUE;
+          break;
+        }
+      }
+      if ($in_array === FALSE) {
+        $entity->field_tags->appendItem($tid);
+      }
     }
   }
 
