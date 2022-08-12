@@ -23,7 +23,9 @@ function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
     $form['field_original_publication_date']['#states'] = [
       'visible' => [
         ':input[name="field_article_type"]' => [
-          'value' => 'in-the-news',
+          ['value' => 'in-the-news'],
+          'or',
+          ['value' => 'spotlight'],
         ],
       ],
     ];
