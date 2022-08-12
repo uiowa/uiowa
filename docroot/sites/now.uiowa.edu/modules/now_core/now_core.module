@@ -46,9 +46,26 @@ function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
  */
 function now_core_node_presave($entity) {
   // Currently we're only interested in altering
-  // functionality for the news-feature content type.
-  // This should be updated if this gets expanded further.
-  if ($entity->getType() != 'article' || $entity->field_article_type->value != 'news-feature') {
+  // functionality for the articles, so return if not.
+  if ($entity->getType() != 'article') {
+    return;
+  }
+
+  // Add a tag according to the article type
+  // so that it can be used in user-created filters.
+  // @todo Decide if this should only be on new articles,
+  //   or if it should always be a thing.
+  if ($entity->isNew() && isset($entity->field_article_type)) {
+    $map = _article_type_tag_map();
+    if (isset($map[$entity->field_article_type->value])) {
+      // @todo Dedupe this, or check before appending.
+      $entity->field_tags->appendItem($map[$entity->field_article_type->value]);
+    }
+  }
+
+  // The rest of the functionality only applies
+  // to the news-feature article type, so we may be done.
+  if (isset($entity->field_article_type) && $entity->field_article_type->value != 'news-feature') {
     return;
   }
   // If we don't have these, there's no functionality to alter.
@@ -86,4 +103,13 @@ function now_core_node_presave($entity) {
         ])
     );
   }
+}
+
+function _article_type_tag_map() {
+  return [
+    'achievement' => 16,
+    'news-feature' => 11,
+    'in-the-news' => 21,
+    'spotlight' => 31,
+  ];
 }
