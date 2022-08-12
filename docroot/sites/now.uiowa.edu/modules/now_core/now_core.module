@@ -56,9 +56,8 @@ function now_core_node_presave($entity) {
   // @todo Decide if this should only be on new articles,
   //   or if it should always be a thing.
   if ($entity->isNew() && isset($entity->field_article_type)) {
-    $map = _article_type_tag_map();
-    if (isset($map[$entity->field_article_type->value])) {
-      $tid = $map[$entity->field_article_type->value];
+    $tid = _article_type_tag_map($entity->field_article_type->value);
+    if ($tid !== FALSE) {
       // Check that we didn't already have the tid
       // before appending it to our list of tags.
       $in_array = FALSE;
@@ -119,14 +118,18 @@ function now_core_node_presave($entity) {
 /**
  * Mapping for article types to their associated tags.
  *
- * @return int[]
- *   Associative array of article_type => tid.
+ * @param string $article_type
+ *   The article type as a machine name.
+ *
+ * @return int|bool
+ *   The associated TID or FALSE.
  */
-function _article_type_tag_map() {
-  return [
+function _article_type_tag_map(string $article_type) {
+  $map = [
     'achievement' => 16,
     'news-feature' => 11,
     'in-the-news' => 21,
     'spotlight' => 31,
   ];
+  return $map[$article_type] ?? FALSE;
 }
