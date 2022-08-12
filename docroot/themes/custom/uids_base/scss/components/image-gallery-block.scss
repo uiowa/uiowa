@@ -46,9 +46,11 @@
 
 .block-field-blocknodearticlefield-gallery-images .media--view-mode-image-gallery {
   display: block;
-  margin: 0;
+  margin: 0 .6rem 1rem;
+  @include breakpoint(sm) {
+    margin: 0;
+  }
 }
-
 
 // Masonry
 .block-inline-blockuiowa-image-gallery.image-gallery--masonry .uiowa-image-gallery {
