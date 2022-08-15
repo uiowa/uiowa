@@ -339,9 +339,22 @@ function admissions_core_preprocess_field(&$variables) {
       $term = $variables['element']['#object'];
       $name = $term->field_major_community_college->entity->name->value;
       $variables['label'] = t('@name checkpoints', ['@name' => $name]);
+
+      if (!isset($variables['title_attributes']['class'])) {
+        $variables['title_attributes']['class'] = '';
+      }
+      $variables['title_attributes']['class'] .= 'h4 headline headline--serif';
       break;
 
+    case 'field_major_responsibilities':
+    case 'field_major_uiowa_checkpoints':
+      if (!isset($variables['title_attributes']['class'])) {
+        $variables['title_attributes']['class'] = '';
+      }
+      $variables['title_attributes']['class'] .= 'h4 headline headline--serif';
+      break;
   }
+
 }
 
 /**
