@@ -140,6 +140,45 @@ function now_core_node_presave($entity) {
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function now_core_form_taxonomy_term_confirm_form_alter(&$form, FormStateInterface $form_state) {
+  // Check/prevent are auto-tags from being deleted on single delete.
+  // Only need to alter the delete operation form.
+  if ($form_state->getFormObject()->getOperation() !== 'delete') {
+    return;
+  }
+  $tag = $form_state
+    ->getFormObject()
+    ->getEntity();
+
+  if (in_array($tag->id(), [
+    11,
+    16,
+    21,
+    31,
+  ])) {
+    $form['actions']['submit']['#disabled'] = TRUE;
+    _prevent_tag_delete_message($tag->getName());
+  }
+}
+
+/**
+ * Custom warning message for auto-tag deletion detection.
+ *
+ * @param string $name
+ *   The associated tag's name.
+ *
+ * @see now_core_form_taxonomy_tag_confirm_form_alter()
+ */
+function _prevent_tag_delete_message($name) {
+  $warning_text = t('The tag <em>"@name"</em> is currently used for filter functionality of article types. It cannot be deleted.', [
+    '@name' => $name,
+  ]);
+  \Drupal::messenger()->addWarning($warning_text);
+}
+
+/**
  * Mapping for article types to their associated tags.
  *
  * @param string $article_type
