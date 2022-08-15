@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: researchcmrf.uiowa.ddev.site
+    protocol: https
+  machine_name: researchcmrf
+  human_name: cmrf.research.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: researchcmrf.prod
+drupal:
+  db:
+    database: cmrf_research_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: makyea
+  site-name: 'Central Microscopy Research Facility'
