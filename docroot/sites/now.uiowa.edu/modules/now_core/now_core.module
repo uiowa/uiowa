@@ -143,7 +143,9 @@ function now_core_node_presave($entity) {
  * Implements hook_form_FORM_ID_alter().
  */
 function now_core_form_taxonomy_term_confirm_form_alter(&$form, FormStateInterface $form_state) {
-  // Check/prevent are auto-tags from being deleted on single delete.
+  // Check/prevent tags from being deleted on single delete
+  // if they are in our list of tags used to associate
+  // article types.
   // Only need to alter the delete operation form.
   if ($form_state->getFormObject()->getOperation() !== 'delete') {
     return;
