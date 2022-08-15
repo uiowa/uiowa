@@ -152,12 +152,11 @@ function now_core_form_taxonomy_term_confirm_form_alter(&$form, FormStateInterfa
     ->getFormObject()
     ->getEntity();
 
-  if (in_array($tag->id(), [
-    11,
-    16,
-    21,
-    31,
-  ])) {
+  // Certain tags are required for auto-tagging functionality.
+  // Grab our associative TID map, and the array_values
+  // will be the list of tag ids that can't be deleted.
+  $required_tids = array_values(_article_type_tag_map());
+  if (in_array($tag->id(), $required_tids)) {
     $form['actions']['submit']['#disabled'] = TRUE;
     _prevent_tag_delete_message($tag->getName());
   }
@@ -182,17 +181,22 @@ function _prevent_tag_delete_message($name) {
  * Mapping for article types to their associated tags.
  *
  * @param string $article_type
- *   The article type as a machine name.
+ *   The article type as a machine name, or empty to fetch TIDs array.
  *
- * @return int|bool
- *   The associated TID or FALSE.
+ * @return int|bool|array
+ *   The associated TID or FALSE, or an associative array of TIDs.
  */
-function _article_type_tag_map(string $article_type) {
+function _article_type_tag_map(string $article_type = '') {
   $map = [
     'achievements' => 16,
     'featured' => 11,
     'in-the-news' => 21,
     'ui-spotlight' => 31,
   ];
+  // If we aren't getting a specific TID,
+  // then return the full map.
+  if (empty($article_type)) {
+    return $map;
+  }
   return $map[$article_type] ?? FALSE;
 }
