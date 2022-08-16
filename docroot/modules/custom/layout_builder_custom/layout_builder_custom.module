@@ -862,11 +862,6 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       break;
 
     case 'inline_block:uiowa_events':
-      // @todo Remove past field https://github.com/uiowa/uiowa/issues/5518
-      // after field_uiowa_events_timeframe is established.
-      if (isset($element['field_uiowa_events_past'])) {
-        $element['field_uiowa_events_past']['#access'] = FALSE;
-      }
       if (isset($element['field_uiowa_events_date_range'])) {
         // Set a date picker limit to our UNIX min/max.
         $element['field_uiowa_events_date_range']['widget'][0]['time_wrapper']['value']['#date_year_range'] = '1970:2037';
