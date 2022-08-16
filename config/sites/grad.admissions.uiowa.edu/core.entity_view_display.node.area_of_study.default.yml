@@ -363,8 +363,8 @@ third_party_settings:
         - layout_threecol
         - layout_fourcol
         - layout_header
-      blacklisted_blocks: {  }
-      whitelisted_blocks: {  }
+      denylisted_blocks: {  }
+      allowlisted_blocks: {  }
     entity_view_mode_restriction_by_region:
       allowed_layouts:
         - layout_onecol
@@ -372,6 +372,8 @@ third_party_settings:
         - layout_threecol
         - layout_fourcol
         - layout_header
+      allowlisted_blocks: null
+      denylisted_blocks: null
 id: node.area_of_study.default
 targetEntityType: node
 bundle: area_of_study
