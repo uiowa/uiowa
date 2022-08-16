@@ -4402,3 +4402,9 @@ $sites['engineeringchd.uiowa.ddev.site'] = 'chd.engineering.uiowa.edu';
 $sites['engineeringchd.dev.drupal.uiowa.edu'] = 'chd.engineering.uiowa.edu';
 $sites['engineeringchd.stage.drupal.uiowa.edu'] = 'chd.engineering.uiowa.edu';
 $sites['engineeringchd.prod.drupal.uiowa.edu'] = 'chd.engineering.uiowa.edu';
+
+// Directory aliases for cmrf.research.uiowa.edu.
+$sites['researchcmrf.uiowa.ddev.site'] = 'cmrf.research.uiowa.edu';
+$sites['researchcmrf.dev.drupal.uiowa.edu'] = 'cmrf.research.uiowa.edu';
+$sites['researchcmrf.stage.drupal.uiowa.edu'] = 'cmrf.research.uiowa.edu';
+$sites['researchcmrf.prod.drupal.uiowa.edu'] = 'cmrf.research.uiowa.edu';
