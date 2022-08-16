@@ -2174,7 +2174,7 @@ function sitenow_update_9047() {
     $field_definition = $storage_definitions[$field_name];
     if ($field_definition) {
       $field['table'] = $table_mapping->getDedicatedDataTableName($field_definition);
-      $field['revision_table'] = $table_mapping->getDedicatedRevisionTableName($field_definition);
+      strip_tags($field['revision_table'] = $table_mapping->getDedicatedRevisionTableName($field_definition));
     }
   }
 
