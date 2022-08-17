@@ -102,13 +102,9 @@ The packages below are locked at specific SHAs and will not update using the met
 
 | Package                               | Reason                   |
 | ------------------------------------- | ------------------------ |
-| drupal/cshs                           | No stable release since fe1b07101d724e6aa5fbcd78c50ce2780534ed0f |
 | drupal/layout_builder_styles          | Need 0d8021a8 from 8.x-1.x branch plus a patch. https://git.drupalcode.org/project/layout_builder_styles/-/commits/8.x-1.x. |
 | drupal/lb_direct_add                  | No 2.x stable release.   |
-| drupal/menu_link_weight               | No stable release since [f4a4b71b](https://git.drupalcode.org/project/menu_link_weight/-/commit/f4a4b71be5850ebc9d15a5cc742eafb76ef9cd0f). |
 | drupal/redirect                       | Need e5201ca5 from 8.x-1.x branch plus a patch. https://git.drupalcode.org/project/redirect/-/commits/8.x-1.x       |
-| drupal/reroute_email                  | No stable release since 438a67caeb0b0cc47d1deb0cee50afda9a907dc8 |
-| drupal/smart_date                     | hotfix for thesis_defense https://github.com/uiowa/uiowa/pull/5051 |
 | kartsims/easysvg                      | Need https://github.com/kartsims/easysvg/pull/27 which is not included in a release. |
 | uiowa/block_content_template          | Forked from a deprecated project. |
 
