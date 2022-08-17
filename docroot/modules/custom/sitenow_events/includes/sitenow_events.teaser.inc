@@ -73,9 +73,14 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
     'all_day' => $variables['event']['instance_all_day'],
   ]);
 
-  if (isset($variables['event']['description'])) {
-    // Limit what html is allowed.
-    $allowed_tags = ['a', 'strong', 'em'];
+  // Limit what html is allowed.
+  $allowed_tags = ['a', 'strong', 'em'];
+
+  if (isset($variables['event']['summary'])) {
+    $variables['event']['description'] = Xss::filter($variables['event']['summary'], $allowed_tags);
+  }
+
+  elseif (isset($variables['event']['description'])) {
     $variables['event']['description'] = Xss::filter($variables['event']['description'], $allowed_tags);
 
     // Use smart_trim's helper to safely truncate without breaking HTML.
