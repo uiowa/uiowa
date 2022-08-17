@@ -4372,3 +4372,39 @@ $sites['offcampus.uiowa.ddev.site'] = 'offcampus.uiowa.edu';
 $sites['offcampus.dev.drupal.uiowa.edu'] = 'offcampus.uiowa.edu';
 $sites['offcampus.stage.drupal.uiowa.edu'] = 'offcampus.uiowa.edu';
 $sites['offcampus.prod.drupal.uiowa.edu'] = 'offcampus.uiowa.edu';
+
+// Directory aliases for ilr.law.uiowa.edu.
+$sites['lawilr.uiowa.ddev.site'] = 'ilr.law.uiowa.edu';
+$sites['lawilr.dev.drupal.uiowa.edu'] = 'ilr.law.uiowa.edu';
+$sites['lawilr.stage.drupal.uiowa.edu'] = 'ilr.law.uiowa.edu';
+$sites['lawilr.prod.drupal.uiowa.edu'] = 'ilr.law.uiowa.edu';
+
+// Directory aliases for rodgers.lab.uiowa.edu.
+$sites['labrodgers.uiowa.ddev.site'] = 'rodgers.lab.uiowa.edu';
+$sites['labrodgers.dev.drupal.uiowa.edu'] = 'rodgers.lab.uiowa.edu';
+$sites['labrodgers.stage.drupal.uiowa.edu'] = 'rodgers.lab.uiowa.edu';
+$sites['labrodgers.prod.drupal.uiowa.edu'] = 'rodgers.lab.uiowa.edu';
+
+// Directory aliases for pwp.org.uiowa.edu.
+$sites['orgpwp.uiowa.ddev.site'] = 'pwp.org.uiowa.edu';
+$sites['orgpwp.dev.drupal.uiowa.edu'] = 'pwp.org.uiowa.edu';
+$sites['orgpwp.stage.drupal.uiowa.edu'] = 'pwp.org.uiowa.edu';
+$sites['orgpwp.prod.drupal.uiowa.edu'] = 'pwp.org.uiowa.edu';
+
+// Directory aliases for archaeology.uiowa.edu.
+$sites['archaeology.uiowa.ddev.site'] = 'archaeology.uiowa.edu';
+$sites['archaeology.dev.drupal.uiowa.edu'] = 'archaeology.uiowa.edu';
+$sites['archaeology.stage.drupal.uiowa.edu'] = 'archaeology.uiowa.edu';
+$sites['archaeology.prod.drupal.uiowa.edu'] = 'archaeology.uiowa.edu';
+
+// Directory aliases for chd.engineering.uiowa.edu.
+$sites['engineeringchd.uiowa.ddev.site'] = 'chd.engineering.uiowa.edu';
+$sites['engineeringchd.dev.drupal.uiowa.edu'] = 'chd.engineering.uiowa.edu';
+$sites['engineeringchd.stage.drupal.uiowa.edu'] = 'chd.engineering.uiowa.edu';
+$sites['engineeringchd.prod.drupal.uiowa.edu'] = 'chd.engineering.uiowa.edu';
+
+// Directory aliases for cmrf.research.uiowa.edu.
+$sites['researchcmrf.uiowa.ddev.site'] = 'cmrf.research.uiowa.edu';
+$sites['researchcmrf.dev.drupal.uiowa.edu'] = 'cmrf.research.uiowa.edu';
+$sites['researchcmrf.stage.drupal.uiowa.edu'] = 'cmrf.research.uiowa.edu';
+$sites['researchcmrf.prod.drupal.uiowa.edu'] = 'cmrf.research.uiowa.edu';

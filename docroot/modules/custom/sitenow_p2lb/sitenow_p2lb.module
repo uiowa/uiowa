@@ -429,7 +429,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
     case 'articles':
       $type = 'views_block:article_list_block-list_article';
       $more = $paragraph->field_articles_more->value;
-      $more_path = $paragraph->field_articles_more_path->value;
+      $more_path = ($paragraph->field_articles_more_path->get(0)) ? $paragraph->field_articles_more_path->get(0)->uri : NULL;
       $title = $paragraph->field_uip_title->value;
       // Reverse the logic, because we're using it to
       // denote "hide," rather than display.
@@ -458,7 +458,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         'pager' => $pager,
         'pager_offset' => 0,
         'items_per_page' => $results,
-        // @todo Make sure $more and $more_path map correctly.
         'use_more' => $more,
         'use_more_link_url' => $more_path,
         'exposed_filter_values' => [
@@ -472,43 +471,24 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       break;
 
     case 'blockquote':
-      // @todo Update to use the new blockquote block.
-      $type = 'uiowa_text_area';
-      $label = 'Text block';
-      $text = $paragraph->get('field_blockquote_content')->getValue()[0];
-      $text['value'] = '<blockquote>' . $text['value'] . '</blockquote>';
-      $text['format'] = 'minimal';
+      // @todo Do we need to map the alignment options?
+      $type = 'uiowa_quote';
+      $blockquote_text = $paragraph->get('field_blockquote_content')->getValue()[0];
       $blockquote_footer = ($paragraph->get('field_blockquote_footer')->getValue()) ?
         $paragraph->get('field_blockquote_footer')[0]->getValue()['value'] . ' ' : '';
       $blockquote_citation = ($paragraph->get('field_blockquote_cite')->getValue()) ?
         $paragraph->get('field_blockquote_cite')[0]->getValue() : [];
-      if (!empty($blockquote_citation)) {
-        $citation_link = '<cite><a href="' . $blockquote_citation['uri'] . '">';
-        if (isset($blockquote_citation['title'])) {
-          $citation_link = $citation_link . $blockquote_citation['title'] . '</a></cite>';
-        }
-        else {
-          $citation_link = $citation_link . $blockquote_citation['uri'] . '</a></cite>';
-        }
-      }
-      else {
-        $citation_link = '';
-      }
-      if ($blockquote_footer || $citation_link) {
-        $text['value'] = $text['value']
-          . '<p>'
-          . $blockquote_footer . $citation_link
-          . '</p>';
-      }
 
       $block_definition = [
         'type' => $type,
         'langcode' => 'en',
-        'status' => $paragraph->get('status')->getValue(),
+        'status' => $paragraph->get('status')->getString(),
+        'info' => 'Blockquote',
         'reusable' => 0,
         'default_langcode' => 1,
-        // getValue sets both the text value and the format.
-        'field_uiowa_text_area' => $text,
+        'field_uiowa_quote_footer' => $blockquote_footer,
+        'field_uiowa_quote_content' => $blockquote_text,
+        'field_uiowa_quote_citation' => $blockquote_citation,
       ];
 
       break;
@@ -534,15 +514,10 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 
       // Card body isn't required. Check or or set to array with empty value.
       $excerpt = ($paragraph->get('field_card_body')->getValue()) ?
-        $paragraph->get('field_card_body')->getValue()[0] : [
-          'value' => '',
-          'format' => 'minimal',
-        ];
+        $paragraph->get('field_card_body')->getValue()[0] : '';
 
-      // If there was a subtitle, prepend it to the body text.
-      // @todo This can be placed as the "Author" field.
-      if ($subtitle) {
-        $excerpt['value'] = '<p>' . $subtitle . '</p>' . $excerpt['value'];
+      if ($excerpt) {
+        $excerpt['format'] = 'minimal';
       }
 
       $block_definition = [
@@ -552,7 +527,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         'info' => 'Card',
         'reusable' => 0,
         'default_langcode' => 1,
-        'field_uiowa_card_author' => [],
+        'field_uiowa_card_author' => $subtitle,
         'field_uiowa_card_excerpt' => $excerpt,
         'field_uiowa_card_image' => $image,
         'field_uiowa_card_link' => $link,
@@ -735,7 +710,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
     case 'people':
       $type = 'views_block:people_list_block-list_card';
       $more = $paragraph->field_people_more->value;
-      $more_path = $paragraph->field_people_more_path->value;
+      $more_path = ($paragraph->field_people_more_path->get(0)) ? $paragraph->field_people_more_path->get(0)->uri : NULL;
       $title = $paragraph->field_uip_title->value;
       // Reverse the logic, because we're using it to
       // denote "hide," rather than display.
@@ -788,7 +763,6 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         'pager' => $pager,
         'pager_offset' => 0,
         'items_per_page' => $results,
-        // @todo Make sure $more and $more_path map correctly.
         'use_more' => $more,
         'use_more_link_url' => $more_path,
         'sort' => $sort,
@@ -1194,7 +1168,9 @@ function _sitenow_p2lb_block_styles($block_type, $paragraph = NULL) {
       ];
 
     case 'uiowa_quote':
-      return [];
+      return [
+        'quote_left',
+      ];
 
     case 'uiowa_card':
       return [
@@ -1203,6 +1179,7 @@ function _sitenow_p2lb_block_styles($block_type, $paragraph = NULL) {
         'card_media_position_stacked',
         'content_alignment_left',
         'media_format_widescreen',
+        'block_card_style_border',
       ];
 
     case 'uiowa_slider':
@@ -1227,6 +1204,7 @@ function _sitenow_p2lb_block_styles($block_type, $paragraph = NULL) {
 
     case 'views_block:people_list_block-list_card':
       return [
+        'block_background_style_light',
         'card_media_position_right',
         'media_format_circle',
         'content_alignment_left',
