@@ -30,7 +30,7 @@ third_party_settings:
         - layout_threecol
         - layout_fourcol
         - layout_page
-      blacklisted_blocks:
+      denylisted_blocks:
         'Custom block types':
           - uiowa_hero
           - uiowa_page_title_hero
@@ -39,7 +39,7 @@ third_party_settings:
           - 'inline_block:uiowa_hero'
           - 'inline_block:uiowa_page_title_hero'
           - 'inline_block:uiowa_spacer_separator'
-      whitelisted_blocks:
+      allowlisted_blocks:
         'Chaos Tools': {  }
         'Content fields':
           - 'field_block:node:page:body'
@@ -82,8 +82,8 @@ third_party_settings:
         - layout_threecol
         - layout_fourcol
         - layout_page
-      whitelisted_blocks: {  }
-      blacklisted_blocks:
+      allowlisted_blocks: {  }
+      denylisted_blocks:
         layout_fourcol:
           all_regions:
             'Custom block types':
