@@ -10,7 +10,7 @@ use Drupal\Core\Block\BlockBase;
  * @Block(
  *   id = "galleryjumplink_block",
  *   admin_label = @Translation("Gallery Jump Link Block"),
- *   category = @Translation("System")
+ *   category = @Translation("Restricted")
  * )
  */
 class GalleryJumpLink extends BlockBase {
