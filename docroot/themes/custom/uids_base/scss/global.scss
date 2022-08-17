@@ -748,3 +748,21 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .screen-reader-text {
   @include element-invisible;
 }
+
+
+// Container queries example.
+.layout--fourcol .layout__region {
+  /* Add inline container to parent */
+  container-type: inline-size;
+
+}
+
+@container (max-width: 268px) {
+  .card {
+    flex-direction: column!important;
+  }
+  .card.card--media-right .card__media--large {
+    width: 100%!important;
+    margin-bottom: 2rem;
+  }
+}

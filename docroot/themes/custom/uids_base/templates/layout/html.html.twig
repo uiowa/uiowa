@@ -40,6 +40,11 @@
     <title>{{ head_title|safe_join(' | ') }}</title>
     <css-placeholder token="{{ placeholder_token }}">
     <js-placeholder token="{{ placeholder_token }}">
+    <script type="module">
+      if (!("container" in document.documentElement.style)) {
+        import("https://unpkg.com/container-query-polyfill@^0.2.0");
+      }
+    </script>
   </head>
   <body{{ attributes.addClass(body_classes) }}>
 
