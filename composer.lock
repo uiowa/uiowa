@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5d1a93b6a8bcd583cd03f1b514372e25",
+    "content-hash": "6631a762134ed7ccf385be751db0ac68",
     "packages": [
         {
             "name": "acquia/blt",
@@ -7116,6 +7116,47 @@
                 "source": "https://www.drupal.org/project/jquery_ui_touch_punch",
                 "issues": "https://www.drupal.org/project/issues/jquery_ui_touch_punch",
                 "irc": "irc://irc.freenode.org/drupal-contribute"
+            }
+        },
+        {
+            "name": "drupal/layout_builder_limit",
+            "version": "dev-1.0.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/layout_builder_limit.git",
+                "reference": "c2e3d260d9cf21ec80826a48494b0e760c85b6f8"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.0.x": "1.0.x-dev"
+                },
+                "drupal": {
+                    "version": "1.0.x-dev",
+                    "datestamp": "1652466511",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "michaellander",
+                    "homepage": "https://www.drupal.org/user/636494"
+                }
+            ],
+            "description": "Provides limits to components in layout builder sections and regions.",
+            "homepage": "https://www.drupal.org/project/layout_builder_limit",
+            "support": {
+                "source": "https://git.drupalcode.org/project/layout_builder_limit"
             }
         },
         {
@@ -22050,6 +22091,7 @@
         "drupal/entity_usage": 10,
         "drupal/find_text": 10,
         "drupal/fullcalendar": 15,
+        "drupal/layout_builder_limit": 20,
         "drupal/layout_builder_styles": 20,
         "drupal/lb_direct_add": 20,
         "drupal/masquerade": 10,
@@ -22083,5 +22125,5 @@
     "platform-overrides": {
         "php": "7.4"
     },
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.0.0"
 }
