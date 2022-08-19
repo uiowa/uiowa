@@ -21,11 +21,47 @@
   margin-top: $mobile-height-gutter;
 }
 
-.button_block--multiple {
-  display: flex;
-  gap: 2rem;
 
-  a.bttn {
-    flex: 1;
+.layout--twocol,
+.layout--threecol,
+.layout--fourcol,
+.layout--page--left-sidebar.layout--has-sidebar {
+  .button_block--multiple .bttn {
+    margin: 0 1.5rem 1.5rem 0;
+
+    + .bttn {
+      @include breakpoint(sm) {
+        margin: 0 1.5rem 1.5rem 0;
+      }
+    }
+
+    &.bttn--full {
+      margin: 0 0 1.5rem 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+
+
+// display buttons
+.layout--onecol,
+.layout--page--left-sidebar.layout--no-sidebar,
+.region-pre-footer,
+.region-after-content {
+  .button_block--multiple {
+    flex-direction: column-reverse;
+    display: flex;
+    gap: 2rem;
+    @include breakpoint(sm) {
+      flex-direction: row;
+    }
+
+    a.bttn {
+        flex: 1;
+    }
   }
 }
