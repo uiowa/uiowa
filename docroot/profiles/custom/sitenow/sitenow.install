@@ -139,7 +139,7 @@ function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): v
         // Loop through the components in the section.
         foreach ($section->getComponents() as &$component) {
 
-          // Limit this to only the uiowa_banner block component.
+          // Limit this to only the block component.
           if ($component->getPluginId() !== $block_plugin_id) {
             continue;
           }
@@ -2174,7 +2174,7 @@ function sitenow_update_9047() {
     $field_definition = $storage_definitions[$field_name];
     if ($field_definition) {
       $field['table'] = $table_mapping->getDedicatedDataTableName($field_definition);
-      $field['revision_table'] = strip_tags($table_mapping->getDedicatedRevisionTableName($field_definition));
+      $field['revision_table'] = $table_mapping->getDedicatedRevisionTableName($field_definition);
     }
   }
 
