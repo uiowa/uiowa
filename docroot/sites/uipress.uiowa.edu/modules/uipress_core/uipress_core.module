@@ -106,13 +106,20 @@ function uipress_core_preprocess_node(&$variables) {
     $media_attributes = new Attribute();
     $media_attributes->addClass($media_styles);
 
+    if (!$node->get('field_book_author')->isEmpty()) {
+      $subtitle = $variables["content"]["field_book_author"];
+    }
+    else {
+      $subtitle = $variables["content"]["field_book_editor"];
+    }
+
     $variables['card_options'] = [
       'attributes' => $attributes,
       'media_attributes' => $media_attributes,
       'card_link_url' => $node->toUrl()->toString(),
       'card_title' => $node->getTitle(),
       'card_image' => $variables['content']['field_image'],
-      'card_subtitle' => $variables['content']['field_book_author'],
+      'card_subtitle' => $subtitle,
       'card_meta' => $variables['content']['field_book_type'],
       'headline_level' => 'h3',
       'headline_class' => 'card__title headline',
