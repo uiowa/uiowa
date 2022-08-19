@@ -14,15 +14,20 @@
   {% endif %}
 {% endfor %}
 
-{% set block_button = {
-  'classes': create_attribute().addClass(classes),
-  'link_url': content.field_uiowa_button_link[0]['#url'],
-  'link_title': content.field_uiowa_button_link[0]['#title']|render,
-} %}
-
 <div {{ attributes.removeClass(classes).addClass('block') }}>
   {{ title_prefix }}
   {{ title_suffix }}
-  {% embed '@uids_base/uids/button.html.twig' with block_button only %}
-  {% endembed %}
+
+
+  {% for link in content.field_uiowa_button_link['#items'] %}
+{#    {{ devel_breakpoint(link) }}#}
+    {% set block_button = {
+      'classes': create_attribute().addClass(classes),
+      'link_url': link.uri,
+      'link_title': link.title|render,
+    } %}
+
+    {% embed '@uids_base/uids/button.html.twig' with block_button only %}
+    {% endembed %}
+  {% endfor %}
 </div>
