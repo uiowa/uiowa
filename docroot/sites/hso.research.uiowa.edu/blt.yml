@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: researchhso.uiowa.ddev.site
+    protocol: https
+  machine_name: researchhso
+  human_name: hso.research.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: researchhso.prod
+drupal:
+  db:
+    database: hso_research_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: makyea
+  site-name: 'Human Subjects Office'

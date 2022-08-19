@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: dancemarathon.uiowa.ddev.site
+    protocol: https
+  machine_name: dancemarathon
+  human_name: dancemarathon.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: dancemarathon.prod
+drupal:
+  db:
+    database: dancemarathon_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: dquam
+  site-name: 'Dance Marathon'

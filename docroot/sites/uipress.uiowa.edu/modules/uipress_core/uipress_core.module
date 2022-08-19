@@ -5,6 +5,7 @@
  * Contains uipress_core.module.
  */
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Template\Attribute;
 
@@ -141,19 +142,19 @@ function uipress_core_preprocess_paragraph__book_type(&$variables) {
         // which can be used to compare the start and end dates.
         $timezone = date_default_timezone_get();
         $datetime = new DrupalDateTime('now', $timezone);
-        $today = $datetime->format('m-d-Y 00:00:00');
+        $today = $datetime->format('Y-m-d 00:00:00');
 
         // If the start date exists make sure that it is in the past or today.
         $start = $paragraph->get('field_book_sale_start_date')->value;
         if (isset($start)) {
-          $start = date('m-d-Y', strtotime($start));
+          $start = date('Y-m-d', strtotime($start));
           $in_range = $today >= $start;
         }
 
         // If end date exists make sure it is after today.
         $end = $paragraph->get('field_book_sale_expiry_date')->value;
         if ($in_range && isset($end)) {
-          $end = date('m-d-Y', strtotime($end));
+          $end = date('Y-m-d', strtotime($end));
           $in_range = $today < $end;
         }
         // If neither condition is true unset display of sale price.
@@ -270,4 +271,68 @@ function uipress_core_preprocess_views_view(&$variables) {
   if ($id == 'taxonomy_term') {
     $variables['attributes']['class'][] = 'grid--threecol--33-34-33';
   }
+}
+
+/**
+ * Implements hook_cron().
+ */
+function uipress_core_cron() {
+  // Check if we've run this yet today. Sales change
+  // at most daily, so once in the morning is enough.
+  $request_date = date('Y-m-d', \Drupal::time()->getRequestTime());
+  $last_run = \Drupal::state()->get('uipress_core_daily_last');
+
+  if (!$last_run || $request_date > $last_run) {
+    // Check if we should be concerned with
+    // purging as well, and if so, get it set up.
+    if ($include_purge = \Drupal::moduleHandler()->moduleExists('acquia_purge')) {
+      $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
+      $purgeQueuers = \Drupal::service('purge.queuers');
+      $purgeQueue = \Drupal::service('purge.queue');
+      $queuer = $purgeQueuers->get('coretags');
+
+      $invalidations = [];
+    }
+
+    // Get our nodes of interest and invalidate some cache tags.
+    $nids = _get_current_sales();
+    foreach ($nids as $nid) {
+      $tag = 'node:' . $nid;
+      Cache::invalidateTags([$tag]);
+      if ($include_purge) {
+        $invalidations[] = $purgeInvalidationFactory->get('tag', $tag);
+      }
+    }
+    if ($include_purge) {
+      $purgeQueue->add($queuer, $invalidations);
+    }
+
+    \Drupal::state()->set('uipress_core_daily_last', $request_date);
+  }
+}
+
+/**
+ * Return an array of node ids for books with a current sale.
+ *
+ * @return array
+ *   The NIDs of interest.
+ */
+function _get_current_sales() {
+  $today = date('Y-m-d');
+  $yesterday = date('Y-m-d', strtotime('yesterday'));
+  $pids = \Drupal::entityQuery('paragraph')
+    ->condition('type', 'book_type')
+    // If the sale starts today or started before today,
+    // we want to include it.
+    ->condition('field_book_sale_start_date', $today, '<=')
+    // We want to include sales that end in the future, or that
+    // just ended yesterday, so that we still wipe their cache
+    // and don't display a sale that has since ended.
+    ->condition('field_book_sale_expiry_date', $yesterday, '>=')
+    ->execute();
+  $nids = \Drupal::entityQuery('node')
+    ->condition('type', 'book')
+    ->condition('field_book_type', $pids, 'IN')
+    ->execute();
+  return array_values($nids);
 }

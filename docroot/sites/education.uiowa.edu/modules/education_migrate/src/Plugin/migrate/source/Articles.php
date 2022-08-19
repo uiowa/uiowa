@@ -180,8 +180,8 @@ class Articles extends BaseNodeSource {
         $body[0]['value'] = $byline . $body[0]['value'];
       }
       // Replace "btn-primary", "btn-long" with "bttn bttn--caps bttn--primary".
-      $body[0]['value'] = str_replace('btn-primary', 'bttn bttn--caps bttn--primary', $body[0]['value']);
-      $body[0]['value'] = str_replace('btn-long', 'bttn bttn--caps bttn--primary', $body[0]['value']);
+      $body[0]['value'] = str_replace('btn-primary', 'bttn bttn--primary', $body[0]['value']);
+      $body[0]['value'] = str_replace('btn-long', 'bttn bttn--primary', $body[0]['value']);
       // Add in the missing blockquote class.
       $body[0]['value'] = str_replace('<blockquote>', '<blockquote class="blockquote">', $body[0]['value']);
 

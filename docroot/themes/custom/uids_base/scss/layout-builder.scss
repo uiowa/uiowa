@@ -1,5 +1,5 @@
-@import "assets/scss/_variables.scss";
-@import "assets/scss/_utilities.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
 
 html {
   scroll-behavior: auto;
@@ -182,45 +182,6 @@ form {
   &--placeholder {
     margin: 0 !important;
     padding: $gutter 0 !important;
-  }
-
-  &.block-padding__all--extra {
-    padding: 6rem;
-  }
-
-  &.block-padding__all {
-    padding: 3rem;
-  }
-
-  &[class*="bg--gray"] {
-    background: $light;
-  }
-
-  &[class*="bg--white"] {
-    background: #fff;
-  }
-
-  &[class*="bg--black"] {
-    background: $secondary;
-  }
-
-  &[class*="bg--gold"] {
-    background: $primary;
-  }
-
-  &.bg--white--pattern--brain {
-    background: #fff url("#{$imgpath}/brain-pattern.svg");
-    background-size: auto auto;
-  }
-
-  &.bg--gold--pattern--brain {
-    background: $primary url("#{$imgpath}/brain-pattern-reversed.svg");
-    background-size: auto auto;
-  }
-
-  &.bg--black--pattern--brain {
-    background: $secondary url("#{$imgpath}/brain-pattern-black.svg");
-    background-size: auto auto;
   }
 }
 
@@ -409,15 +370,8 @@ form {
   }
 }
 
-[class*="bg--black"],
-.bg-pattern--brain-black,
-.bg-dark {
-  & .layout-builder-block--placeholder {
-    color: $white;
-  }
-}
+// layout page buttons
 
-// Layout page buttons
 .layout-builder-form .button {
   background: #f1f1f1;
   font-family: $font-family-sans-serif;
@@ -477,27 +431,6 @@ div[data-drupal-selector="edit-moderation-state-0"] {
 .uids-content.js-layout-builder-block .contextual [type=button] {
   border: 1px solid #ccc;
   padding: 0;
-}
-
-// Contrast issues within the layout edit screen
-[class*="bg--black"] [class*="bg--black"] .bttn--primary,
-[class*="bg--black"] [class*="bg--black"] .cta__wrapper[class*="bg--gold"] .bttn--primary {
-  color: #151515;
-}
-
-[class*="bg--black"] [class*="bg--black"] [class*="bg--gold"] .bttn--primary,
-[class*="bg--black"] [class*="bg--black"] .bg-pattern--brain-reversed .bttn--primary {
-  color: #fff;
-}
-
-[class*="bg--gold"] [class*="bg--gold"] .block-inline-blockuiowa-text-area .bttn--primary,
-[class*="bg--gold"] [class*="bg--gold"] .block-field-blocknodepagebody .bttn--primary,
-[class*="bg--gold"] [class*="bg--gold"] .cta__wrapper:not([class*="bg-"]) .bttn--primary{
-  color: $primary;
-}
-
-[class*="bg--black"] [class*="bg--black"]  :before {
-  color: $secondary;
 }
 
 // Adding padding overrides for blockquote.

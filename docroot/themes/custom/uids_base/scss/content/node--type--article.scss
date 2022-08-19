@@ -1,6 +1,6 @@
-@import "uids/assets/scss/_variables.scss";
-@import "uids/assets/scss/_utilities.scss";
-@import "components/card/_card-mixins.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
+@import "uids3/components/card/_card-mixins.scss";
 
 article.node--type-article,
 div[role=article].node--type-article {
@@ -145,6 +145,23 @@ article.node--type-article {
       content: '- ';
       color: $grey;
       margin: 0 $xsm;
+    }
+  }
+
+  .gallery-jump-link {
+    font-family: Zilla Slab,serif;
+    font-size: 1.2rem;
+
+    a {
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    svg {
+      margin-right: 0.3rem;
     }
   }
 }
