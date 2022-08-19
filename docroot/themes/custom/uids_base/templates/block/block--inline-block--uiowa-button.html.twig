@@ -14,7 +14,12 @@
   {% endif %}
 {% endfor %}
 
-<div {{ attributes.removeClass(classes).addClass('block') }}>
+{% set container_classes = ['block'] %}
+{% if content.field_uiowa_button_link['#items']|length > 1 %}
+  {% set container_classes = container_classes|merge(['button_block--multiple']) %}
+{% endif %}
+
+<div {{ attributes.removeClass(classes).addClass(container_classes)  }}>
   {{ title_prefix }}
   {{ title_suffix }}
 
