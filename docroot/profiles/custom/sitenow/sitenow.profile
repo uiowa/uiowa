@@ -470,7 +470,6 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form_object = $form_state->getFormObject();
   if (is_a($form_object, ContentEntityForm::class)) {
     /** @var \Drupal\Core\Entity\ContentEntityForm $form_object */
-    /** @var \Drupal\Core\Entity\ContentEntityTypeInterface $entity_type */
     if ('media' == $form_object->getEntity()->getEntityType()->id()) {
       if (isset($form['revision_information'])) {
         $form['revision_information']['#access'] = FALSE;
@@ -658,8 +657,7 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
       '#open' => TRUE,
     ];
 
-    $form['uiowa_footer_menus']['uiowa_footer_social_media_menu']['#access'] = FALSE;
-    if (!empty($social_media_menu) && $social_media_menu != 'none') {
+    if (array_key_exists($social_media_menu, $menus)) {
       $menu_link = Url::fromRoute('entity.menu.edit_form', ['menu' => $social_media_menu])->toString();
       $form['uiowa_footer_menus']['uiowa_footer_social_media_menu_help'] = [
         '#type' => 'item',
@@ -670,8 +668,7 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
       ];
     }
 
-    $form['uiowa_footer_menus']['uiowa_footer_custom_menu']['#access'] = FALSE;
-    if (!empty($custom_menu) && $custom_menu != 'none') {
+    if (array_key_exists($custom_menu, $menus)) {
       $menu_link = Url::fromRoute('entity.menu.edit_form', ['menu' => $custom_menu])->toString();
       $form['uiowa_footer_menus']['uiowa_footer_custom_menu_help'] = [
         '#type' => 'item',
@@ -682,8 +679,7 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
       ];
     }
 
-    $form['uiowa_footer_menus']['uiowa_footer_custom_menu_2']['#access'] = FALSE;
-    if (!empty($custom_menu_2) && $custom_menu_2 != 'none') {
+    if (array_key_exists($custom_menu_2, $menus)) {
       $menu_link = Url::fromRoute('entity.menu.edit_form', ['menu' => $custom_menu_2])->toString();
       $form['uiowa_footer_menus']['uiowa_footer_custom_menu_2_help'] = [
         '#type' => 'item',
@@ -694,8 +690,7 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
       ];
     }
 
-    $form['uiowa_footer_menus']['uiowa_footer_custom_menu_3']['#access'] = FALSE;
-    if (!empty($custom_menu_2) && $custom_menu_2 != 'none') {
+    if (array_key_exists($custom_menu_3, $menus)) {
       $menu_link = Url::fromRoute('entity.menu.edit_form', ['menu' => $custom_menu_3])->toString();
       $form['uiowa_footer_menus']['uiowa_footer_custom_menu_3_help'] = [
         '#type' => 'item',
@@ -708,43 +703,6 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
 
     // Hide the site slogan field, as it's not used in uids_base theme.
     $form['site_information']['site_slogan']['#access'] = FALSE;
-  }
-  else {
-    $form['uiowa_footer']['uiowa_footer_menus']['uiowa_footer_social_media_menu']['#access'] = FALSE;
-    if (!empty($social_media_menu) && $social_media_menu != 'none') {
-      $menu_link = Url::fromRoute('entity.menu.edit_form', ['menu' => $social_media_menu])->toString();
-      $form['uiowa_footer']['uiowa_footer_menus']['uiowa_footer_social_media_menu_help'] = [
-        '#type' => 'item',
-        '#markup' => t('Links in the social media section are managed via the <a href="@menu_link">@menu_name menu</a>.', [
-          '@menu_link' => $menu_link,
-          '@menu_name' => $menus[$social_media_menu],
-        ]),
-      ];
-    }
-
-    $form['uiowa_footer']['uiowa_footer_menus']['uiowa_footer_custom_menu']['#access'] = FALSE;
-    if (!empty($custom_menu) && $custom_menu != 'none') {
-      $menu_link = Url::fromRoute('entity.menu.edit_form', ['menu' => $custom_menu])->toString();
-      $form['uiowa_footer']['uiowa_footer_menus']['uiowa_footer_custom_menu_help'] = [
-        '#type' => 'item',
-        '#markup' => t('Links in the left column are managed via the <a href="@menu_link">@menu_name menu</a>.', [
-          '@menu_link' => $menu_link,
-          '@menu_name' => $menus[$custom_menu],
-        ]),
-      ];
-    }
-
-    $form['uiowa_footer']['uiowa_footer_menus']['uiowa_footer_custom_menu_2']['#access'] = FALSE;
-    if (!empty($custom_menu_2) && $custom_menu_2 != 'none') {
-      $menu_link = Url::fromRoute('entity.menu.edit_form', ['menu' => $custom_menu_2])->toString();
-      $form['uiowa_footer']['uiowa_footer_menus']['uiowa_footer_custom_menu_2_help'] = [
-        '#type' => 'item',
-        '#markup' => t('Links in the right column are managed via the <a href="@menu_link">@menu_name menu</a>.', [
-          '@menu_link' => $menu_link,
-          '@menu_name' => $menus[$custom_menu_2],
-        ]),
-      ];
-    }
   }
 }
 
