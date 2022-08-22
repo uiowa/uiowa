@@ -1,0 +1,151 @@
+uuid: 40ecd774-6a22-471a-9b7c-65bd1c772700
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.writing_collection.body
+    - field.field.node.writing_collection.field_writing_collection_pieces
+    - node.type.writing_collection
+    - system.menu.entity-hierarchy-microsite
+  module:
+    - layout_builder
+    - menu_block
+    - system
+    - text
+    - user
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    enabled: true
+    allow_custom: false
+    sections:
+      -
+        layout_id: layout_header
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+        components:
+          78434f23-7eae-468b-9572-2b9b3f1ff55e:
+            uuid: 78434f23-7eae-468b-9572-2b9b3f1ff55e
+            region: content
+            configuration:
+              id: 'field_block:node:writing_collection:title'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          821312ad-058c-4294-a484-282272ee4886:
+            uuid: 821312ad-058c-4294-a484-282272ee4886
+            region: content
+            configuration:
+              id: system_breadcrumb_block
+              label: null
+              label_display: null
+              provider: system
+              context_mapping: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+        components:
+          b552e314-4936-474e-828d-27059abeae2f:
+            uuid: b552e314-4936-474e-828d-27059abeae2f
+            region: content
+            configuration:
+              id: 'field_block:node:writing_collection:body'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          2e5efc73-1a83-40f7-92a1-1233c20a1606:
+            uuid: 2e5efc73-1a83-40f7-92a1-1233c20a1606
+            region: content
+            configuration:
+              id: 'field_block:node:writing_collection:field_writing_collection_pieces'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          65c1eeba-e686-41a0-9bfd-7a0c641d79b6:
+            uuid: 65c1eeba-e686-41a0-9bfd-7a0c641d79b6
+            region: content
+            configuration:
+              id: 'menu_block:entity-hierarchy-microsite'
+              label: null
+              label_display: null
+              provider: menu_block
+              context_mapping: {  }
+              follow: false
+              follow_parent: child
+              label_link: false
+              label_type: block
+              level: 1
+              depth: 0
+              expand_all_items: false
+              parent: 'entity-hierarchy-microsite:'
+              suggestion: entity_hierarchy_microsite
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+id: node.writing_collection.default
+targetEntityType: node
+bundle: writing_collection
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  field_writing_collection_pieces:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  search_api_excerpt: true

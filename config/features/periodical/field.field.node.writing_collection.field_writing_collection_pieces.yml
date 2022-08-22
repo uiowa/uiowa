@@ -1,0 +1,29 @@
+uuid: 756ded9d-b048-4e62-be83-07e400ca01af
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_writing_collection_pieces
+    - node.type.writing
+    - node.type.writing_collection
+id: node.writing_collection.field_writing_collection_pieces
+field_name: field_writing_collection_pieces
+entity_type: node
+bundle: writing_collection
+label: 'Writing pieces'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      writing: writing
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

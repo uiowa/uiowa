@@ -1,0 +1,34 @@
+uuid: b62be2b8-2876-40b8-999e-c8d9067089e9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_writing_collection
+    - node.type.writing
+    - node.type.writing_collection
+  module:
+    - entity_hierarchy
+id: node.writing.field_writing_collection
+field_name: field_writing_collection
+entity_type: node
+bundle: writing
+label: Collection
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      writing_collection: writing_collection
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: true
+    auto_create_bundle: ''
+  weight_min: -50
+  weight_max: 50
+  weight_label: Weight
+field_type: entity_reference_hierarchy
