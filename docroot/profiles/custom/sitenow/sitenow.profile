@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Entity\ContentEntityForm;
+use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Database\Query\AlterableInterface;
@@ -226,24 +227,26 @@ function sitenow_preprocess_block(&$variables) {
 function sitenow_form_node_confirm_form_alter(&$form, FormStateInterface $form_state) {
   // Check/prevent front page from being deleted on single delete.
   // Only need to alter the delete operation form.
-  if ($form_state->getFormObject()->getOperation() !== 'delete') {
-    return;
-  }
-  $node = $form_state
-    ->getFormObject()
-    ->getEntity();
+  $form_object = $form_state->getFormObject();
+  if ($form_object instanceof EntityFormInterface) {
+    if ($form_object->getOperation() !== 'delete') {
+      return;
+    }
+    /** @var Drupal\Core\Entity\EntityInterface $node */
+    $node = $form_object->getEntity();
 
-  // Get and dissect front page path.
-  $front = \Drupal::config('system.site')->get('page.front');
-  $url = Url::fromUri("internal:" . $front);
+    // Get and dissect front page path.
+    $front = \Drupal::config('system.site')->get('page.front');
+    $url = Url::fromUri("internal:" . $front);
 
-  if ($url->isRouted()) {
-    $params = $url->getRouteParameters();
+    if ($url->isRouted()) {
+      $params = $url->getRouteParameters();
 
-    if (isset($params['node']) && $params['node'] == $node->id()) {
-      // Disable the 'Delete' button.
-      $form['actions']['submit']['#disabled'] = TRUE;
-      _sitenow_prevent_front_delete_message($node->getTitle());
+      if (isset($params['node']) && $params['node'] == $node->id()) {
+        // Disable the 'Delete' button.
+        $form['actions']['submit']['#disabled'] = TRUE;
+        _sitenow_prevent_front_delete_message($node->getTitle());
+      }
     }
   }
 }
@@ -531,23 +534,26 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
     // Remove access to headline field in footer contact block.
     case 'block_content_uiowa_text_area_edit_form':
-      $block = $form_state->getFormObject()->getEntity();
-      $uuid = $block->uuid();
-      // For Footer Contact Information, limit non-admins to minimal and remove
-      // headline field.
-      if ($uuid == '0c0c1f36-3804-48b0-b384-6284eed8c67e') {
-        $form['field_uiowa_headline']['#access'] = FALSE;
-        /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
-        $check = \Drupal::service('uiowa_core.access_checker');
+      $form_object = $form_state->getFormObject();
+      if ($form_object instanceof EntityFormInterface) {
+        /** @var \Drupal\block\BlockInterface $block */
+        $block = $form_object->getEntity();
+        $uuid = $block->uuid();
+        // For Footer Contact Information, limit non-admins to minimal and remove
+        // headline field.
+        if ($uuid == '0c0c1f36-3804-48b0-b384-6284eed8c67e') {
+          $form['field_uiowa_headline']['#access'] = FALSE;
+          /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+          $check = \Drupal::service('uiowa_core.access_checker');
 
-        /** @var Drupal\Core\Access\AccessResultInterface $access */
-        $access = $check->access(\Drupal::currentUser()->getAccount());
+          $access = $check->access(\Drupal::currentUser()->getAccount());
 
-        if ($access->isForbidden()) {
-          $form["field_uiowa_text_area"]["widget"][0]['#allowed_formats'] = [
-            'minimal',
-            'plain_text',
-          ];
+          if ($access->isForbidden()) {
+            $form["field_uiowa_text_area"]["widget"][0]['#allowed_formats'] = [
+              'minimal',
+              'plain_text',
+            ];
+          }
         }
       }
       break;
@@ -847,13 +853,13 @@ function sitenow_preprocess_node(&$variables) {
  * Implements hook_form_BASE_FORM_ID_alter() for menu_link_content_form.
  */
 function sitenow_form_menu_link_content_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
-  /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link */
-  $menu_link = $form_state->getFormObject()->getEntity();
-  $menu_link_options = $menu_link->link->first()->options ?: [];
-  $menu = $menu_link->getMenuName();
-
-  switch ($menu) {
-    case 'social':
+  $form_object = $form_state->getFormObject();
+  if ($form_object instanceof EntityFormInterface) {
+    /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link */
+    $menu_link = $form_object->getEntity();
+    $menu_link_options = $menu_link->link->first()->options ?: [];
+    $menu = $menu_link->getMenuName();
+    if ($menu == 'social') {
       $form['fa_icon'] = [
         '#type' => 'textfield',
         '#title' => t('FontAwesome Icon'),
@@ -873,8 +879,7 @@ function sitenow_form_menu_link_content_form_alter(array &$form, FormStateInterf
       ];
 
       $form['actions']['submit']['#submit'][] = 'sitenow_form_menu_link_content_form_submit';
-
-      break;
+    }
   }
 }
 
@@ -887,15 +892,17 @@ function sitenow_form_menu_link_content_form_submit(array &$form, FormStateInter
   $options = [
     'fa_icon' => !empty($icon_field) ? Html::escape($icon_field) : '',
   ];
+  $form_object = $form_state->getFormObject();
+  if ($form_object instanceof EntityFormInterface) {
+    /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link */
+    $menu_link = $form_object->getEntity();
+    $menu_link_options = $menu_link->link->first()->options;
 
-  /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link */
-  $menu_link = $form_state->getFormObject()->getEntity();
-  $menu_link_options = $menu_link->link->first()->options;
+    $merged = array_merge($menu_link_options, $options);
 
-  $merged = array_merge($menu_link_options, $options);
-
-  $menu_link->link->first()->options = $merged;
-  $menu_link->save();
+    $menu_link->link->first()->options = $merged;
+    $menu_link->save();
+  }
 }
 
 /**
