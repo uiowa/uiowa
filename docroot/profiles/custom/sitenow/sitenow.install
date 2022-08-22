@@ -1738,6 +1738,7 @@ function sitenow_update_9047() {
     ],
   ];
   // Get the field and revision storage table names for each field.
+  /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $table_mapping */
   $table_mapping = \Drupal::service('entity_type.manager')
     ->getStorage('block_content')
     ->getTableMapping();
@@ -1784,6 +1785,7 @@ function sitenow_update_9047() {
     $new_fields = [];
     $weights = [];
     foreach ($field_storage->getBundles() as $bundle => $label) {
+      /** @var FieldConfig $old_field */
       $old_field = FieldConfig::loadByName($entity_type, $bundle, $field_name);
       $new_field = $old_field->toArray();
       $new_field['field_type'] = 'text_long';
