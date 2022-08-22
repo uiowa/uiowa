@@ -467,10 +467,10 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
  * Implements hook_form_alter().
  */
 function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form_object = $form_state->getFormObject();
   // Hide revision information on media entity add/edit forms
   // to prevent new revisions from being created. This aids our
   // file replace functionality.
-  $form_object = $form_state->getFormObject();
   if (is_a($form_object, ContentEntityForm::class)) {
     /** @var \Drupal\Core\Entity\ContentEntityForm $form_object */
     if ('media' == $form_object->getEntity()->getEntityType()->id()) {
@@ -534,7 +534,6 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
     // Remove access to headline field in footer contact block.
     case 'block_content_uiowa_text_area_edit_form':
-      $form_object = $form_state->getFormObject();
       if ($form_object instanceof EntityFormInterface) {
         /** @var \Drupal\block\BlockInterface $block */
         $block = $form_object->getEntity();
