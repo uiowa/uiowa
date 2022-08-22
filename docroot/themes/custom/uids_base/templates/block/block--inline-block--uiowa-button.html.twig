@@ -7,14 +7,17 @@
  */
 #}
 {% set classes = [] %}
+{% set container_classes = ['block'] %}
 
 {% for style in attributes.class %}
   {% if style starts with 'bttn' %}
     {% set classes = classes|merge([style]) %}
   {% endif %}
+  {% if style starts with 'bttn--full' %}
+    {% set container_classes = container_classes|merge([style]) %}
+  {% endif %}
 {% endfor %}
 
-{% set container_classes = ['block'] %}
 {% if content.field_uiowa_button_link['#items']|length > 1 %}
   {% set container_classes = container_classes|merge(['button_block--multiple']) %}
 {% endif %}
