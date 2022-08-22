@@ -942,7 +942,7 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
       /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
       $check = \Drupal::service('uiowa_core.access_checker');
 
-      /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+      /** @var Drupal\Core\Access\AccessResultInterface $access */
       $access = $check->access(\Drupal::currentUser()->getAccount());
 
       if ($access->isForbidden()) {
@@ -982,7 +982,7 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
         /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
         $check = \Drupal::service('uiowa_core.access_checker');
 
-        /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+        /** @var Drupal\Core\Access\AccessResultInterface $access */
         $access = $check->access(\Drupal::currentUser()->getAccount());
 
         if ($access->isForbidden()) {

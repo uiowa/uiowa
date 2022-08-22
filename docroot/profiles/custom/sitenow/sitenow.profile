@@ -127,7 +127,7 @@ function sitenow_query_administerusersbyrole_edit_access_alter(AlterableInterfac
   /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
   $check = \Drupal::service('uiowa_core.access_checker');
 
-  /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+  /** @var Drupal\Core\Access\AccessResultInterface $access */
   $access = $check->access(\Drupal::currentUser()->getAccount());
 
   if ($access->isForbidden()) {
@@ -281,7 +281,7 @@ function sitenow_form_views_exposed_form_alter(&$form, FormStateInterface $form_
     /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
     $check = \Drupal::service('uiowa_core.access_checker');
 
-    /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+    /** @var Drupal\Core\Access\AccessResultInterface $access */
     $access = $check->access(\Drupal::currentUser()->getAccount());
 
     if ($access->isForbidden()) {
@@ -297,7 +297,7 @@ function sitenow_form_views_form_administerusersbyrole_people_page_1_alter(&$for
   /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
   $check = \Drupal::service('uiowa_core.access_checker');
 
-  /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+  /** @var Drupal\Core\Access\AccessResultInterface $access */
   $access = $check->access(\Drupal::currentUser()->getAccount());
 
   if ($access->isForbidden()) {
@@ -484,7 +484,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
       /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
       $check = \Drupal::service('uiowa_core.access_checker');
 
-      /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+      /** @var Drupal\Core\Access\AccessResultInterface $access */
       $access = $check->access(\Drupal::currentUser()->getAccount());
 
       if ($access->isForbidden()) {
@@ -510,7 +510,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
       /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
       $check = \Drupal::service('uiowa_core.access_checker');
 
-      /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+      /** @var Drupal\Core\Access\AccessResultInterface $access */
       $access = $check->access(\Drupal::currentUser()->getAccount());
 
       if ($access->isForbidden()) {
@@ -541,7 +541,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
         $check = \Drupal::service('uiowa_core.access_checker');
 
-        /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+        /** @var Drupal\Core\Access\AccessResultInterface $access */
         $access = $check->access(\Drupal::currentUser()->getAccount());
 
         if ($access->isForbidden()) {
