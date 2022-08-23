@@ -107,10 +107,10 @@ function uipress_core_preprocess_node(&$variables) {
     $media_attributes->addClass($media_styles);
 
     if (!$node->get('field_book_author')->isEmpty()) {
-      $subtitle = $variables["content"]["field_book_author"];
+      $subtitle = $variables['content']['field_book_author'];
     }
     else {
-      $subtitle = $variables["content"]["field_book_editor"];
+      $subtitle = $variables['content']['field_book_editor'];
     }
 
     $variables['card_options'] = [
