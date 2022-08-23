@@ -4408,3 +4408,9 @@ $sites['researchcmrf.uiowa.ddev.site'] = 'cmrf.research.uiowa.edu';
 $sites['researchcmrf.dev.drupal.uiowa.edu'] = 'cmrf.research.uiowa.edu';
 $sites['researchcmrf.stage.drupal.uiowa.edu'] = 'cmrf.research.uiowa.edu';
 $sites['researchcmrf.prod.drupal.uiowa.edu'] = 'cmrf.research.uiowa.edu';
+
+// Directory aliases for boxing.org.uiowa.edu.
+$sites['orgboxing.uiowa.ddev.site'] = 'boxing.org.uiowa.edu';
+$sites['orgboxing.dev.drupal.uiowa.edu'] = 'boxing.org.uiowa.edu';
+$sites['orgboxing.stage.drupal.uiowa.edu'] = 'boxing.org.uiowa.edu';
+$sites['orgboxing.prod.drupal.uiowa.edu'] = 'boxing.org.uiowa.edu';

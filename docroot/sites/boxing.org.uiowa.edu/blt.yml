@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgboxing.uiowa.ddev.site
+    protocol: https
+  machine_name: orgboxing
+  human_name: boxing.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgboxing.prod
+drupal:
+  db:
+    database: boxing_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: myrobinson
+  site-name: 'Hawkeye Boxing Club'
