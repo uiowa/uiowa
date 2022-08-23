@@ -245,7 +245,7 @@ function sitenow_form_node_confirm_form_alter(&$form, FormStateInterface $form_s
       if (isset($params['node']) && $params['node'] == $node->id()) {
         // Disable the 'Delete' button.
         $form['actions']['submit']['#disabled'] = TRUE;
-        _sitenow_prevent_front_delete_message($node->getTitle());
+        _sitenow_prevent_front_delete_message($node->label());
       }
     }
   }
