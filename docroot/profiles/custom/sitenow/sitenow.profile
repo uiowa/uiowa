@@ -5,8 +5,10 @@
  * Profile code.
  */
 
+use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Entity\EntityFormInterface;
+use Drupal\Core\Field\FieldItemList;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Database\Query\AlterableInterface;
@@ -16,6 +18,8 @@ use Drupal\Core\Link;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
+use Drupal\menu_link_content\Form\MenuLinkContentForm;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -133,15 +137,17 @@ function sitenow_query_administerusersbyrole_edit_access_alter(AlterableInterfac
 
   if ($access->isForbidden()) {
     // Exclude the root user.
-    $query->condition('users_field_data.uid', 1, '<>');
+    if ($query instanceof SelectInterface) {
+      $query->condition('users_field_data.uid', 1, '<>');
 
-    // Get a list of uids with the administrator role.
-    $subquery = \Drupal::database()->select('user__roles', 'ur2');
-    $subquery->fields('ur2', ['entity_id']);
-    $subquery->condition('ur2.roles_target_id', 'administrator');
+      // Get a list of uids with the administrator role.
+      $subquery = \Drupal::database()->select('user__roles', 'ur2');
+      $subquery->fields('ur2', ['entity_id']);
+      $subquery->condition('ur2.roles_target_id', 'administrator');
 
-    // Exclude those uids from the result list.
-    $query->condition('users_field_data.uid', $subquery, 'NOT IN');
+      // Exclude those uids from the result list.
+      $query->condition('users_field_data.uid', $subquery, 'NOT IN');
+    }
   }
 }
 
@@ -807,41 +813,86 @@ function sitenow_preprocess_node(&$variables) {
       $revision = \Drupal::entityTypeManager()
         ->getStorage('node')
         ->loadRevision($revision_id);
-      $moderation_state = $revision->get('moderation_state')->getString();
-      $status = $revision->get('status')->value;
-      if ($status == 0) {
-        if ($moderation_state) {
-          $pre_vowel = (in_array($moderation_state[0], [
-            'a',
-            'e',
-            'i',
-            'o',
-            'u',
-          ]) ? 'n' : '');
-          $state = $moderation_state;
+      if ($revision instanceof NodeInterface) {
+        $moderation_state = $revision->get('moderation_state')->getString();
+        $status = $revision->get('status')->value;
+        if ($status == 0) {
+          if ($moderation_state) {
+            $pre_vowel = (in_array($moderation_state[0], [
+              'a',
+              'e',
+              'i',
+              'o',
+              'u',
+            ]) ? 'n' : '');
+            $state = $moderation_state;
+          }
+          else {
+            $pre_vowel = 'n';
+            $state = 'unpublished';
+          }
+          $warning_text = t('This content is currently in a@pre_vowel @state state.', [
+            '@pre_vowel' => $pre_vowel,
+            '@state' => $state,
+          ]);
+
+          switch ($variables['view_mode']) {
+            case 'teaser':
+              $variables["content"]['unpublished'] = [
+                '#type' => 'markup',
+                '#markup' => '<span class="badge badge--orange" aria-description="' . $warning_text . '">' . ucfirst($moderation_state) . '</span>',
+                '#weight' => 99,
+              ];
+              break;
+
+            case 'full':
+              \Drupal::messenger()->addWarning($warning_text);
+              break;
+
+          }
         }
-        else {
-          $pre_vowel = 'n';
-          $state = 'unpublished';
-        }
-        $warning_text = t('This content is currently in a@pre_vowel @state state.', [
-          '@pre_vowel' => $pre_vowel,
-          '@state' => $state,
-        ]);
+      }
 
-        switch ($variables['view_mode']) {
-          case 'teaser':
-            $variables["content"]['unpublished'] = [
-              '#type' => 'markup',
-              '#markup' => '<span class="badge badge--orange" aria-description="' . $warning_text . '">' . ucfirst($moderation_state) . '</span>',
-              '#weight' => 99,
-            ];
-            break;
+    }
+  }
+}
 
-          case 'full':
-            \Drupal::messenger()->addWarning($warning_text);
-            break;
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for menu_link_content_form.
+ *
+ * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+ */
+function sitenow_form_menu_link_content_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  $form_object = $form_state->getFormObject();
+  if ($form_object instanceof MenuLinkContentForm) {
+    $menu_link = $form_object->getEntity();
+    if ($menu_link instanceof MenuLinkContent) {
+      $link = $menu_link->link;
+      if ($link instanceof FieldItemList) {
+        /** @var \Drupal\Core\Field\FieldItemList $first_item */
+        $first_item = $link->first();
+        $menu_link_options = $first_item->get('options')->getValue() ?: [];
+        $menu = $menu_link->getMenuName();
+        if ($menu == 'social') {
+          $form['fa_icon'] = [
+            '#type' => 'textfield',
+            '#title' => t('FontAwesome Icon'),
+            '#default_value' => !empty($menu_link_options['fa_icon']) ? $menu_link_options['fa_icon'] : '',
+            '#attributes' => [
+              'autocomplete' => 'off',
+              'class' => [
+                'fa-iconpicker',
+              ],
+            ],
+            '#description' => t('Pick an icon to represent this link by clicking on this field. To see a list of available icons and their class names, <a href="https://fontawesome.com/icons?d=gallery&m=free">visit the FontAwesome website</a>.'),
+            '#attached' => [
+              'library' => [
+                'sitenow/fontawesome-iconpicker',
+              ],
+            ],
+          ];
 
+          $form['actions']['submit']['#submit'][] = 'sitenow_form_menu_link_content_form_submit';
         }
       }
     }
@@ -849,41 +900,9 @@ function sitenow_preprocess_node(&$variables) {
 }
 
 /**
- * Implements hook_form_BASE_FORM_ID_alter() for menu_link_content_form.
- */
-function sitenow_form_menu_link_content_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
-  $form_object = $form_state->getFormObject();
-  if ($form_object instanceof EntityFormInterface) {
-    /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link */
-    $menu_link = $form_object->getEntity();
-    $menu_link_options = $menu_link->link->first()->options ?: [];
-    $menu = $menu_link->getMenuName();
-    if ($menu == 'social') {
-      $form['fa_icon'] = [
-        '#type' => 'textfield',
-        '#title' => t('FontAwesome Icon'),
-        '#default_value' => !empty($menu_link_options['fa_icon']) ? $menu_link_options['fa_icon'] : '',
-        '#attributes' => [
-          'autocomplete' => 'off',
-          'class' => [
-            'fa-iconpicker',
-          ],
-        ],
-        '#description' => t('Pick an icon to represent this link by clicking on this field. To see a list of available icons and their class names, <a href="https://fontawesome.com/icons?d=gallery&m=free">visit the FontAwesome website</a>.'),
-        '#attached' => [
-          'library' => [
-            'sitenow/fontawesome-iconpicker',
-          ],
-        ],
-      ];
-
-      $form['actions']['submit']['#submit'][] = 'sitenow_form_menu_link_content_form_submit';
-    }
-  }
-}
-
-/**
  * Custom validation function for sitenow_form_menu_link_content_form_alter.
+ *
+ * @throws \Drupal\Core\TypedData\Exception\MissingDataException
  */
 function sitenow_form_menu_link_content_form_submit(array &$form, FormStateInterface $form_state) {
   $icon_field = $form_state->getValue('fa_icon');
@@ -892,15 +911,21 @@ function sitenow_form_menu_link_content_form_submit(array &$form, FormStateInter
     'fa_icon' => !empty($icon_field) ? Html::escape($icon_field) : '',
   ];
   $form_object = $form_state->getFormObject();
-  if ($form_object instanceof EntityFormInterface) {
-    /** @var \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link */
+  if ($form_object instanceof MenuLinkContentForm) {
     $menu_link = $form_object->getEntity();
-    $menu_link_options = $menu_link->link->first()->options;
+    if ($menu_link instanceof MenuLinkContent) {
+      $link = $menu_link->link;
+      if ($link instanceof FieldItemList) {
+        /** @var \Drupal\Core\Field\FieldItemList $first_item */
+        $first_item = $link->first();
+        $menu_link_options = $first_item->get('options')->getValue();
 
-    $merged = array_merge($menu_link_options, $options);
+        $merged = array_merge($menu_link_options, $options);
 
-    $menu_link->link->first()->options = $merged;
-    $menu_link->save();
+        $first_item->set('options', $merged);
+        $menu_link->save();
+      }
+    }
   }
 }
 
