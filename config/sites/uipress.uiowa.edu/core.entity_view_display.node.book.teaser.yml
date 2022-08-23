@@ -55,6 +55,14 @@ content:
         delimiter: ''
     weight: 1
     region: content
+  field_book_editor:
+    type: entity_reference_label
+    label: visually_hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
   field_book_type:
     type: entity_reference_revisions_entity_view
     label: hidden
@@ -83,7 +91,6 @@ hidden:
   field_book_contributors: true
   field_book_description_summary: true
   field_book_edition: true
-  field_book_editor: true
   field_book_essay_by: true
   field_book_excerpt: true
   field_book_foreword_author: true
