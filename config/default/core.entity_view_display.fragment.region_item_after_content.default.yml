@@ -1,0 +1,75 @@
+uuid: 166f16a0-5a8b-4924-a401-606846e3818b
+langcode: en
+status: true
+dependencies:
+  config:
+    - fragments.fragment_type.region_item_after_content
+  module:
+    - layout_builder
+    - layout_builder_restrictions
+    - user
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    enabled: true
+    allow_custom: true
+    sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_container_narrow
+        components: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock:
+              6: 6
+              7: 7
+          layout_builder_limit:
+            limit:
+              scope: '1'
+              scope_update: 'Update scope'
+              settings:
+                regions:
+                  content:
+                    minimum_enabled: 0
+                    minimum: ''
+                    maximum_enabled: 1
+                    maximum: '1'
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      allowed_layouts: {  }
+      denylisted_blocks: {  }
+      allowlisted_blocks:
+        'Custom block types':
+          - uiowa_button
+      restricted_categories: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts: {  }
+id: fragment.region_item_after_content.default
+targetEntityType: fragment
+bundle: region_item_after_content
+mode: default
+content:
+  title:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: -4
+    region: content
+  user_id:
+    type: author
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  search_api_excerpt: true

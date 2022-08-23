@@ -99,7 +99,10 @@ class RegionSettings extends ConfigFormBase {
         '#target_type' => 'fragment',
         '#default_value' => $fid != NULL ? $this->entityTypeManager->getStorage('fragment')->load($fid) : NULL,
         '#selection_settings' => [
-          'target_bundles' => ['region_item'],
+          'target_bundles' => [
+            'region_item',
+            'region_item_after_content',
+          ],
         ],
       ];
     }
