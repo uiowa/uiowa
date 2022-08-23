@@ -1785,7 +1785,7 @@ function sitenow_update_9047() {
     $new_fields = [];
     $weights = [];
     foreach ($field_storage->getBundles() as $bundle => $label) {
-      /** @var FieldConfig $old_field */
+      /** @var \Drupal\field\Entity\FieldConfig $old_field */
       $old_field = FieldConfig::loadByName($entity_type, $bundle, $field_name);
       $new_field = $old_field->toArray();
       $new_field['field_type'] = 'text_long';

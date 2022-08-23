@@ -28,7 +28,7 @@ class SimpleSitemapOverrideTest extends UnitTestCase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->requestStack = $this->createMock('\Symfony\Component\HttpFoundation\RequestStack');
