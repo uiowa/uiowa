@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: clasalt.uiowa.ddev.site
+    protocol: https
+  machine_name: clasalt
+  human_name: alt.clas.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: clasalt.prod
+drupal:
+  db:
+    database: alt_clas_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
