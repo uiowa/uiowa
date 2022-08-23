@@ -1038,19 +1038,21 @@ function sitenow_entity_insert(EntityInterface $entity) {
     // Load the node and grab the layout information.
     $node = \Drupal::service('entity.repository')
       ->loadEntityByUuid('node', $entity->uuid());
-    $layouts = $node->get('layout_builder__layout');
+    if ($node instanceof NodeInterface) {
+      $layouts = $node->get('layout_builder__layout');
 
-    foreach ($layouts as $layout) {
-      $section = $layout->getValue()['section'];
-      // Pull out individual components.
-      foreach ($section->getComponents() as $component) {
-        // Grab the associated block's uuid.
-        $config = $component->get('configuration');
-        if (isset($config['block_revision_id'])) {
-          $rev_id = $config['block_revision_id'];
-          $block = $block_controller->loadRevision($rev_id);
-          if ($block) {
-            $use_controller->addUsage($block->id(), $node);
+      foreach ($layouts as $layout) {
+        $section = $layout->getValue()['section'];
+        // Pull out individual components.
+        foreach ($section->getComponents() as $component) {
+          // Grab the associated block's uuid.
+          $config = $component->get('configuration');
+          if (isset($config['block_revision_id'])) {
+            $rev_id = $config['block_revision_id'];
+            $block = $block_controller->loadRevision($rev_id);
+            if ($block) {
+              $use_controller->addUsage($block->id(), $node);
+            }
           }
         }
       }
