@@ -77,10 +77,6 @@ class RegionSettings extends ConfigFormBase {
     $region_content_blocks = $query->execute();
     $region_config = $config->get('uiowa_core.region_content');
 
-    // @TODO This will change eventually with an update hook to not need to mutate pre_footer.
-    $region_items = [];
-
-
     foreach ($region_content_blocks as $key => $value) {
       $title_array = explode('_', $key);
       $title_array[0] = ucwords($title_array[0]);
