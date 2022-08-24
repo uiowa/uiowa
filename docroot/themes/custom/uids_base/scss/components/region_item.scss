@@ -3,5 +3,9 @@
   width: 100%;
   bottom: -1px;
   z-index: 99999;
-  box-shadow: 0 5px 10px #3333338a;
+  transition: box-shadow 0.15s ease-in-out;
+
+  &.after_content--is_pinned {
+    box-shadow: 0 0 10px #00000059
+  }
 }
