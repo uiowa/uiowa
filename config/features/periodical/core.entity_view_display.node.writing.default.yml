@@ -4,11 +4,9 @@ status: true
 dependencies:
   config:
     - field.field.node.writing.body
-    - field.field.node.writing.field_writing_collection
     - node.type.writing
     - system.menu.entity-hierarchy-microsite
   module:
-    - entity_hierarchy
     - layout_builder
     - layout_builder_restrictions
     - superfish
@@ -155,25 +153,7 @@ third_party_settings:
         layout_id: layout_onecol
         layout_settings:
           label: ''
-        components:
-          5dc3757b-07a2-48c7-b897-dbfaeb0b6cf5:
-            uuid: 5dc3757b-07a2-48c7-b897-dbfaeb0b6cf5
-            region: content
-            configuration:
-              id: 'field_block:node:writing:field_writing_collection'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_hierarchy_label
-                label: above
-                settings:
-                  link: true
-                  weight_output: attribute
-                third_party_settings: {  }
-            weight: 2
-            additional: {  }
-            third_party_settings: {  }
+        components: {  }
         third_party_settings: {  }
   layout_builder_restrictions:
     allowed_block_categories: {  }
@@ -195,15 +175,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 101
-    region: content
-  field_writing_collection:
-    type: entity_reference_hierarchy_label
-    label: above
-    settings:
-      link: true
-      weight_output: attribute
-    third_party_settings: {  }
-    weight: 102
     region: content
   links:
     settings: {  }

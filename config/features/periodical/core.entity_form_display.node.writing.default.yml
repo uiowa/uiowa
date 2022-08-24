@@ -4,11 +4,9 @@ status: true
 dependencies:
   config:
     - field.field.node.writing.body
-    - field.field.node.writing.field_writing_collection
     - node.type.writing
   module:
     - content_moderation
-    - entity_hierarchy
     - path
     - text
 id: node.writing.default
@@ -31,17 +29,6 @@ content:
     weight: 10
     region: content
     settings: {  }
-    third_party_settings: {  }
-  field_writing_collection:
-    type: entity_reference_hierarchy_autocomplete
-    weight: 122
-    region: content
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
-      hide_weight: true
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default

@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - field.field.node.writing_collection.body
-    - field.field.node.writing_collection.field_writing_collection_pieces
     - node.type.writing_collection
     - system.menu.entity-hierarchy-microsite
   module:
@@ -83,23 +82,6 @@ third_party_settings:
             weight: 1
             additional: {  }
             third_party_settings: {  }
-          2e5efc73-1a83-40f7-92a1-1233c20a1606:
-            uuid: 2e5efc73-1a83-40f7-92a1-1233c20a1606
-            region: content
-            configuration:
-              id: 'field_block:node:writing_collection:field_writing_collection_pieces'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: true
-                third_party_settings: {  }
-            weight: 2
-            additional: {  }
-            third_party_settings: {  }
           65c1eeba-e686-41a0-9bfd-7a0c641d79b6:
             uuid: 65c1eeba-e686-41a0-9bfd-7a0c641d79b6
             region: content
@@ -133,14 +115,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 101
-    region: content
-  field_writing_collection_pieces:
-    type: entity_reference_label
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    weight: 102
     region: content
   links:
     settings: {  }
