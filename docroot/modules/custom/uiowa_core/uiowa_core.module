@@ -400,7 +400,7 @@ function uiowa_core_google_tag_insert_alter(&$satisfied, Container $container) {
 function uiowa_core_preprocess_html(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if ($admin_context->isAdminRoute()) {
-    /** @var \Drupal\Core\Theme\ActiveTheme $active_theme */
+    /** @var \Drupal\Core\Theme\ActiveTheme $active_theme_name */
     $active_theme_name = \Drupal::service('theme.manager')->getActiveTheme()->getName();
     $default_theme_name = \Drupal::config('system.theme')->get('default');
     if ($active_theme_name === 'claro' && $default_theme_name === 'uids_base') {
