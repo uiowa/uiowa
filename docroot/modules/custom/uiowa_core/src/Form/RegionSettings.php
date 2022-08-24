@@ -8,6 +8,7 @@ use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\RendererInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Url;
 
 /**
  * Configure Uiowa Core settings for this site.
@@ -69,28 +70,30 @@ class RegionSettings extends ConfigFormBase {
     $form = parent::buildForm($form, $form_state);
     $config = $this->config('uiowa_core.settings');
 
-    $form['markup'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('<div class="form-item__description">Add a new region item to be managed below.</div>'),
+    $form['region_item_prefooter_container'] = [
+      '#type' => 'fieldset',
     ];
+
     $query = $this->entityTypeManager->getStorage('block')->getQuery();
     $query->condition('plugin', 'region_content_block');
     $region_content_blocks = $query->execute();
     $region_config = $config->get('uiowa_core.region_content');
-    $form['active_region_content_blocks'] = [
+    $form['region_item_prefooter_container']['active_region_content_blocks'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('Active region content blocks'),
+      '#title' => $this->t('Active pre footer region item'),
     ];
-    $form['active_region_content_blocks']['description'] = [
+
+    $form['region_item_prefooter_container']['active_region_content_blocks']['active_region_content_blocks_description'] = [
       '#type' => 'markup',
-      '#markup' => $this->t('<div class="form-item__description">Configure the active regions to display curated layout builder content.</div>'),
+      '#markup' => $this->t('<div class="form-item__description">Configure the active region to display curated layout builder content.</div>'),
     ];
+
     foreach ($region_content_blocks as $key => $value) {
       $title_array = explode('_', $key);
       $title_array[0] = ucwords($title_array[0]);
       $title = implode(" ", $title_array);
       $fid = $region_config[$value] ?? NULL;
-      $form['active_region_content_blocks'][$key] = [
+      $form['region_item_prefooter_container']['active_region_content_blocks'][$key] = [
         '#type' => 'entity_autocomplete',
         '#title' => $title,
         '#description' => $this->t('Enter the name of the region item you would like to place in the @title region of the site.', [
@@ -107,17 +110,53 @@ class RegionSettings extends ConfigFormBase {
       ];
     }
 
-    $form['region_items'] = [
+    $form['region_item_prefooter_container']['region_items'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Region items'),
     ];
-    $form['region_items']['description'] = [
-      '#type' => 'markup',
-      '#markup' => $this->t('<div class="form-item__description">Manage the region items that have been created. You may configure the layout for your regions here.</div>'),
+
+    $region_item_add = Url::fromRoute(
+      'entity.fragment.add_form',
+      ['fragment_type' => 'region_item'],
+      [
+        'query' => [
+          'destination' => Url::fromRoute('<current>')->toString(),
+        ],
+      ]
+    );
+    $form['region_item_prefooter_container']['region_items']['add_region_item'] = [
+      '#title' => $this
+        ->t('Add pre footer item'),
+      '#type' => 'link',
+      '#url' => $region_item_add,
+      '#attributes' => [
+        'class' => [
+          'button',
+          'button--action',
+          'button--primary',
+        ],
+      ],
     ];
+
+    $form['region_item_prefooter_container']['region_items']['add_region_item_description'] = [
+      '#type' => 'markup',
+      '#markup' => $this->t('<div class="form-item__description">Add a new pre footer region item to be managed below.</div>'),
+    ];
+
+
+
+    $form['region_item_prefooter_container']['region_items']['region_items_view_container'] = [
+      '#type' => 'fieldset',
+    ];
+
+    $form['region_item_prefooter_container']['region_items']['region_items_view_container']['description'] = [
+      '#type' => 'markup',
+      '#markup' => $this->t('<div class="form-item__description">Manage the pre footer region items that have been created. You may configure the layout for your pre footers here.</div>'),
+    ];
+
     $view = views_embed_view('region_items', 'region_items_block');
     $render = $this->renderer->render($view);
-    $form['region_items']['region_items_view'] = [
+    $form['region_item_prefooter_container']['region_items']['region_items_view_container']['region_items_view'] = [
       '#type' => 'markup',
       '#markup' => $render,
     ];
