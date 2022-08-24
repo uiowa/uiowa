@@ -1853,15 +1853,15 @@ function sitenow_update_9047() {
     foreach ($weights as $display_mode => $view_modes) {
       foreach ($view_modes as $view_mode => $weight) {
         if ($weight) {
-         $layout_display = \Drupal::entityTypeManager()
+          $layout_display = \Drupal::entityTypeManager()
             ->getStorage($display_mode)
             ->load($view_mode);
-         if ($layout_display instanceof EntityDisplayInterface) {
-           $layout_display->setComponent($field_name, [
-             'weight' => $weight,
-           ])
-             ->save();
-         }
+          if ($layout_display instanceof EntityDisplayInterface) {
+            $layout_display->setComponent($field_name, [
+              'weight' => $weight,
+            ])
+              ->save();
+          }
         }
       }
     }

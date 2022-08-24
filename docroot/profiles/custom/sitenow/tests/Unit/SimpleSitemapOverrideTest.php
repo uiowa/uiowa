@@ -21,7 +21,7 @@ class SimpleSitemapOverrideTest extends UnitTestCase {
   /**
    * Request mock.
    *
-   * @var  \Symfony\Component\HttpFoundation\Request|\PHPUnit\Framework\MockObject\MockObject
+   * @var \Symfony\Component\HttpFoundation\Request|\PHPUnit\Framework\MockObject\MockObject
    */
   protected $request;
 
