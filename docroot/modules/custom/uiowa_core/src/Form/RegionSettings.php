@@ -70,8 +70,6 @@ class RegionSettings extends ConfigFormBase {
     $form = parent::buildForm($form, $form_state);
     $config = $this->config('uiowa_core.settings');
 
-
-
     $query = $this->entityTypeManager->getStorage('block')->getQuery();
     $query->condition('plugin', 'region_content_block');
     $region_content_blocks = $query->execute();
