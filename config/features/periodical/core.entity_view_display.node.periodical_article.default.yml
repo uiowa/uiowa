@@ -3,8 +3,8 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.writing.body
-    - node.type.writing
+    - field.field.node.periodical_article.body
+    - node.type.periodical_article
   module:
     - layout_builder
     - layout_builder_restrictions
@@ -32,7 +32,7 @@ third_party_settings:
             uuid: 87d96bc9-fc2f-4e58-b969-bb4bba710184
             region: content
             configuration:
-              id: 'field_block:node:writing:title'
+              id: 'field_block:node:periodical_article:title'
               label: null
               label_display: null
               provider: layout_builder
@@ -74,7 +74,7 @@ third_party_settings:
             uuid: 3d914d9c-c2b6-4256-a806-c5ebfd2da851
             region: content
             configuration:
-              id: 'field_block:node:writing:body'
+              id: 'field_block:node:periodical_article:body'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
@@ -96,9 +96,9 @@ third_party_settings:
       restricted_categories: {  }
     entity_view_mode_restriction_by_region:
       allowed_layouts: {  }
-id: node.writing.default
+id: node.periodical_article.default
 targetEntityType: node
-bundle: writing
+bundle: periodical_article
 mode: default
 content:
   body:
