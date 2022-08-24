@@ -17,7 +17,7 @@ third_party_settings:
     allow_custom: true
     sections:
       -
-        layout_id: layout_onecol_region
+        layout_id: layout_onecol_fixed
         layout_settings:
           label: ''
           context_mapping: {  }
@@ -25,18 +25,34 @@ third_party_settings:
             - ''
             - section_margin_fixed_width_container
         components: {  }
-        third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock:
+              6: 6
+              7: 7
+          layout_builder_limit:
+            limit:
+              scope: '2'
+              scope_update: 'Update scope'
+              settings:
+                section:
+                  minimum_enabled: 0
+                  minimum: ''
+                  maximum_enabled: 1
+                  maximum: '3'
   layout_builder_restrictions:
     allowed_block_categories: {  }
     entity_view_mode_restriction:
-      allowed_layouts: {  }
+      allowed_layouts:
+        - layout_onecol_fixed
       denylisted_blocks: {  }
       allowlisted_blocks:
-        'Custom block types':
-          - uiowa_button
+        'Inline blocks':
+          - 'inline_block:uiowa_button'
       restricted_categories: {  }
     entity_view_mode_restriction_by_region:
-      allowed_layouts: {  }
+      allowed_layouts:
+        - layout_onecol_fixed
 id: fragment.region_item_after_content.default
 targetEntityType: fragment
 bundle: region_item_after_content
