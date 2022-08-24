@@ -18,6 +18,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\layout_builder\Plugin\Block\InlineBlock;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\menu_link_content\Form\MenuLinkContentForm;
 use Drupal\node\Entity\Node;
@@ -1039,19 +1040,24 @@ function sitenow_entity_insert(EntityInterface $entity) {
     $node = \Drupal::service('entity.repository')
       ->loadEntityByUuid('node', $entity->uuid());
     if ($node instanceof NodeInterface) {
-      $layouts = $node->get('layout_builder__layout');
+      /** @var \Drupal\layout_builder\Field\LayoutSectionItemList $layout */
+      $layout = $node->get('layout_builder__layout');
 
-      foreach ($layouts as $layout) {
-        $section = $layout->getValue()['section'];
+      // Loop through our sections and make sure that
+      // any inline blocks have proper usage set.
+      foreach ($layout->getSections() as $section) {
         // Pull out individual components.
         foreach ($section->getComponents() as $component) {
-          // Grab the associated block's uuid.
-          $config = $component->get('configuration');
-          if (isset($config['block_revision_id'])) {
-            $rev_id = $config['block_revision_id'];
-            $block = $block_controller->loadRevision($rev_id);
-            if ($block) {
-              $use_controller->addUsage($block->id(), $node);
+          // Grab the associated block's revision id.
+          $plugin = $component->getPlugin();
+          if ($plugin instanceof InlineBlock) {
+            $config = $plugin->getConfiguration();
+            if (isset($config['block_revision_id'])) {
+              $rev_id = $config['block_revision_id'];
+              $block = $block_controller->loadRevision($rev_id);
+              if ($block) {
+                $use_controller->addUsage($block->id(), $node);
+              }
             }
           }
         }
