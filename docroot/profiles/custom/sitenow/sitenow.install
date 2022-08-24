@@ -9,6 +9,7 @@
 use Drupal\block_content\BlockContentInterface;
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Database\Database;
+use Drupal\Core\Entity\Display\EntityDisplayInterface;
 use Drupal\layout_builder\Section;
 use Drupal\layout_builder\SectionComponent;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
@@ -1852,13 +1853,15 @@ function sitenow_update_9047() {
     foreach ($weights as $display_mode => $view_modes) {
       foreach ($view_modes as $view_mode => $weight) {
         if ($weight) {
-          \Drupal::entityTypeManager()
+         $layout_display = \Drupal::entityTypeManager()
             ->getStorage($display_mode)
-            ->load($view_mode)
-            ->setComponent($field_name, [
-              'weight' => $weight,
-            ])
-            ->save();
+            ->load($view_mode);
+         if ($layout_display instanceof EntityDisplayInterface) {
+           $layout_display->setComponent($field_name, [
+             'weight' => $weight,
+           ])
+             ->save();
+         }
         }
       }
     }
