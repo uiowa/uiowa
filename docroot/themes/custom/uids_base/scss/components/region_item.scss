@@ -3,7 +3,7 @@
 
 @include breakpoint(sm) {
   .content__container.after_content {
-    position: sticky;
+    position: fixed;
     width: 100%;
     bottom: -1px;
     // LB add block tray is z:100.
@@ -11,9 +11,9 @@
     transition: box-shadow 0.15s ease-in-out;
     //pointer-events: all;
 
-    &.after_content--is_pinned {
+    //&.after_content--is_pinned {
       box-shadow: 0 5px 10px #3333338a;
-    }
+    //}
 
     //.after_content__dismiss {
     //  display: none;
