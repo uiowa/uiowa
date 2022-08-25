@@ -5,6 +5,7 @@
  * Contains lb_enhancements.module.
  */
 
+use Drupal\layout_builder\Form\ConfigureBlockFormBase;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Form\FormStateInterface;
@@ -146,9 +147,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         ];
       }
 
-
       $form_object = $form_state->getFormObject();
-      if ($form_object instanceof \Drupal\layout_builder\Form\ConfigureBlockFormBase) {
+      if ($form_object instanceof ConfigureBlockFormBase) {
         /** @var \Drupal\layout_builder\SectionComponent $component */
         $component = $form_object->getCurrentComponent();
         $block = $component->getPlugin();
@@ -319,12 +319,12 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               // Move the layout_builder_style_menu_orientation into settings so
               // it can be placed below the admin label.
               $form['settings']['layout_builder_style_menu_orientation'] = [
-                  '#weight' => -10,
+                '#weight' => -10,
                   // We set #tree to FALSE because this value will override the
                   // value from this will override the original in the form state.
-                  '#tree' => FALSE,
-                  '#description' => t('The "Horizontal" option will look the same as the "Vertical" option if this block is being placed in something other than a one column layout.'),
-                ] + $form['layout_builder_style_menu_orientation'];
+                '#tree' => FALSE,
+                '#description' => t('The "Horizontal" option will look the same as the "Vertical" option if this block is being placed in something other than a one column layout.'),
+              ] + $form['layout_builder_style_menu_orientation'];
 
               // To get the style to process correctly, we need to leave it here
               // but make it inaccessible.
@@ -479,18 +479,18 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
  */
 function _layout_builder_custom_block_validate(array &$form, FormStateInterface $form_state) {
   $form_object = $form_state->getFormObject();
-  if ($form_object instanceof \Drupal\layout_builder\Form\ConfigureBlockFormBase) {
+  if ($form_object instanceof ConfigureBlockFormBase) {
     /** @var \Drupal\layout_builder\SectionComponent $component */
     $component = $form_object->getCurrentComponent();
 
     // Run unique_id clean for when the AJAX callback is not triggered.
     if ($unique_id = $form_state->getValue([
       'unique_id_wrapper',
-      'unique_id'
+      'unique_id',
     ])) {
       $form_state->setValue([
         'unique_id_wrapper',
-        'unique_id'
+        'unique_id',
       ], Html::cleanCssIdentifier($unique_id));
     }
 
@@ -519,13 +519,13 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
         }
         // If there is a link and no text, check if there is a title.
         if ($link_set && !empty($form_state->getValue([
-            'settings',
-            'block_form',
-            'field_uiowa_banner_title',
-            0,
-            'container',
-            'text',
-          ]))) {
+          'settings',
+          'block_form',
+          'field_uiowa_banner_title',
+          0,
+          'container',
+          'text',
+        ]))) {
           $link_text = TRUE;
         }
 
@@ -622,7 +622,7 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
  */
 function _layout_builder_custom_block_submit(array &$form, FormStateInterface $form_state) {
   $form_object = $form_state->getFormObject();
-  if ($form_object instanceof \Drupal\layout_builder\Form\ConfigureBlockFormBase) {
+  if ($form_object instanceof ConfigureBlockFormBase) {
     /** @var \Drupal\layout_builder\SectionComponent $component */
     $component = $form_object->getCurrentComponent();
     $block = $component->getPlugin();
@@ -630,7 +630,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
     // Save the third-party value if set, otherwise unset it.
     if ($unique_id = $form_state->getValue([
       'unique_id_wrapper',
-      'unique_id'
+      'unique_id',
     ])) {
       $component->setThirdPartySetting('layout_builder_custom', 'unique_id', $unique_id);
     }
@@ -751,7 +751,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
  */
 function _layout_builder_custom_process_element(array $element, FormStateInterface $form_state) {
   $form_object = $form_state->getFormObject();
-  if ($form_object instanceof \Drupal\layout_builder\Form\ConfigureBlockFormBase) {
+  if ($form_object instanceof ConfigureBlockFormBase) {
     /** @var \Drupal\layout_builder\SectionComponent $component */
     $component = $form_object->getCurrentComponent();
     $block = $component
@@ -813,33 +813,33 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         ];
 
         $element['field_uiowa_banner_image'] = [
-            '#states' => [
-              'visible' => [
-                ':input[name="settings[block_form][background_options]"]' => [
-                  'value' => 'image',
-                ],
+          '#states' => [
+            'visible' => [
+              ':input[name="settings[block_form][background_options]"]' => [
+                'value' => 'image',
               ],
+            ],
               // @todo Conditionally require media field when 'background_options'
               //   is set to 'image'. See
               //   https://github.com/uiowa/uiowa/issues/5039
-            ],
-            '#weight' => 5,
-          ] + $element['field_uiowa_banner_image'];
+          ],
+          '#weight' => 5,
+        ] + $element['field_uiowa_banner_image'];
 
         $element['field_uiowa_banner_autoplay'] = [
-            '#attributes' => [
-              'class' => [
-                'js-hide',
-              ],
-              'tabindex' => [
-                '-1',
-              ],
-              'aria-hidden' => [
-                'true',
-              ],
+          '#attributes' => [
+            'class' => [
+              'js-hide',
             ],
-            '#weight' => 6,
-          ] + $element['field_uiowa_banner_autoplay'];
+            'tabindex' => [
+              '-1',
+            ],
+            'aria-hidden' => [
+              'true',
+            ],
+          ],
+          '#weight' => 6,
+        ] + $element['field_uiowa_banner_autoplay'];
 
         unset($element['field_uiowa_banner_image']['widget']['#title']);
         unset($element['field_uiowa_banner_autoplay']['widget']['#title']);
