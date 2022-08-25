@@ -28,7 +28,6 @@ Drupal.behaviors.after_content = {
         document.addEventListener('click', function (event) {
 
           // If the clicked element doesn't have the right selector, bail
-          console.log(event);
           if (!event.target.matches('.after_content__dismiss, .after_content__dismiss svg, .after_content__dismiss path')) return;
 
           el.classList.add('after_content__dismissed');
