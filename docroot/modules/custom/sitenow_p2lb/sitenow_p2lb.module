@@ -461,6 +461,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         'use_more' => $more,
         'use_more_link_url' => $more_path,
         'exposed_filter_values' => [
+          // @todo Set these dynamically.
           'field_tags_target_id' => [],
         ],
         'layout_builder_styles' => _sitenow_p2lb_block_styles($type, $paragraph),
@@ -769,7 +770,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         'use_more_link_url' => $more_path,
         'sort' => $sort,
         'exposed_filter_values' => [
-          // @todo Should this be dynamically set?
+          // @todo Set these dynamically.
           'field_tags_target_id' => [],
         ],
         'layout_builder_styles' => _sitenow_p2lb_block_styles($type, $paragraph),
