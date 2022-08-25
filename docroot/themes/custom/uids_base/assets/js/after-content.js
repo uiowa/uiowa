@@ -17,23 +17,23 @@ Drupal.behaviors.after_content = {
 
       observer.observe(el);
 
-      // This is all the dismissal button stuff.
-      setTimeout(() => {
-        const layout_container = el.querySelector('.layout__container');
-        const dismiss_button = document.createElement('div');
-        dismiss_button.classList.add('after_content__dismiss');
-        dismiss_button.innerHTML = '<i role="presentation" class="fas fa-times"></i>';
-        layout_container.prepend(dismiss_button);
-
-        document.addEventListener('click', function (event) {
-
-          // If the clicked element doesn't have the right selector, bail
-          if (!event.target.matches('.after_content__dismiss, .after_content__dismiss svg, .after_content__dismiss path')) return;
-
-          el.classList.add('after_content__dismissed');
-
-        }, false);
-      }, 300);
+      // // This is all the dismissal button stuff.
+      // setTimeout(() => {
+      //   const layout_container = el.querySelector('.layout__container');
+      //   const dismiss_button = document.createElement('div');
+      //   dismiss_button.classList.add('after_content__dismiss');
+      //   dismiss_button.innerHTML = '<i role="presentation" class="fas fa-times"></i>';
+      //   layout_container.prepend(dismiss_button);
+      //
+      //   document.addEventListener('click', function (event) {
+      //
+      //     // If the clicked element doesn't have the right selector, bail
+      //     if (!event.target.matches('.after_content__dismiss, .after_content__dismiss svg, .after_content__dismiss path')) return;
+      //
+      //     el.classList.add('after_content__dismissed');
+      //
+      //   }, false);
+      // }, 300);
     });
   }
 }
