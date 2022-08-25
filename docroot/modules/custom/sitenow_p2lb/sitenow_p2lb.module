@@ -756,7 +756,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 
       // Build out the new view block configuration.
       $config = [
-        'id' => 'views_block:people_list_block-list_card',
+        'id' => $type,
         'label' => $label,
         'provider' => 'views',
         'label_display' => $display_label,
@@ -769,6 +769,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         'use_more_link_url' => $more_path,
         'sort' => $sort,
         'exposed_filter_values' => [
+          // @todo Should this be dynamically set?
           'field_tags_target_id' => [],
         ],
         'layout_builder_styles' => _sitenow_p2lb_block_styles($type, $paragraph),
