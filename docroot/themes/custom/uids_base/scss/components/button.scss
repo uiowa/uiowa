@@ -65,20 +65,3 @@
     flex-direction: column;
   }
 }
-
-.region-after-content {
-  .block.bttn--row:not([class*="bttn--full"])  {
-    display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-    .bttn {
-      margin: 0;
-
-      + .bttn {
-        @include breakpoint(sm) {
-          margin: 0;
-        }
-      }
-    }
-  }
-}
