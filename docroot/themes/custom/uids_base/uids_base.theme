@@ -908,7 +908,8 @@ function uids_base_preprocess_views_view_field(&$variables) {
         // Check that we can access the Advisor entity reference.
         if (!is_null($advisor_field = $node->field_pt_student_advisor) && $advisor = $advisor_field->entity) {
           // Is the advisor hidden?
-          $hide_person = $advisor->field_person_hide->value;
+          /** @var \Drupal\node\NodeInterface $advisor */
+          $hide_person = $advisor->get('field_person_hide')->value;
 
           if ($hide_person) {
             // Display advisor name as plain text.
