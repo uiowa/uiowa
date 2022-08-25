@@ -23,11 +23,11 @@
   margin-top: $mobile-height-gutter;
 }
 
-.button_block--multiple {
+.block.bttn--row {
   &.bttn--full {
     flex-direction: column;
     display: flex;
-    gap: 2rem;
+    gap: 1.5rem;
 
     @include breakpoint(sm) {
       flex-direction: row;
@@ -61,19 +61,22 @@
 .layout--threecol,
 .layout--fourcol,
 .layout--page--left-sidebar.layout--has-sidebar {
-  .button_block--multiple.bttn--full {
+  .block.bttn--row.bttn--full {
     flex-direction: column;
   }
 }
 
 .region-after-content {
-  .button_block--multiple:not([class*="bttn--full"])  {
+  .block.bttn--row:not([class*="bttn--full"])  {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
     .bttn {
-      margin: 0 1.5rem 0 0;
+      margin: 0;
 
       + .bttn {
         @include breakpoint(sm) {
-          margin: 0 1.5rem 0 0;
+          margin: 0;
         }
       }
     }

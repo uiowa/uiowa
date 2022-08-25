@@ -19,16 +19,14 @@
 {% endfor %}
 
 {% if content.field_uiowa_button_link['#items']|length > 1 %}
-  {% set container_classes = container_classes|merge(['button_block--multiple']) %}
+  {% set container_classes = container_classes|merge(['bttn--row']) %}
 {% endif %}
 
 <div {{ attributes.removeClass(classes).addClass(container_classes)  }}>
   {{ title_prefix }}
   {{ title_suffix }}
 
-
   {% for link in content.field_uiowa_button_link['#items'] %}
-{#    {{ devel_breakpoint(link) }}#}
     {% set block_button = {
       'classes': create_attribute().addClass(classes),
       'link_url': link.uri,
