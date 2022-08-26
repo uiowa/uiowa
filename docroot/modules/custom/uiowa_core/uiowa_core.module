@@ -261,7 +261,6 @@ function uiowa_core_page_attachments(&$page) {
 function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $current_route = \Drupal::routeMatch();
   $route_name = $current_route->getRouteName();
-  $form_object = $form_state->getFormObject();
 
   // Only allow certain types to be replicated.
   // Ignored config that can be custom to a site.
@@ -269,6 +268,7 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
     // Get allowed replicate entity types.
     $allowed_types = \Drupal::config('uiowa_core.settings')->get('uiowa_core.replicate_allowed');
 
+    $form_object = $form_state->getFormObject();
     if ($form_object instanceof EntityFormInterface) {
       /** @var Drupal\Core\Entity\EntityInterface $entity */
       $entity = $form_object->getEntity();
@@ -324,6 +324,7 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
     // Add delete forms as the types of protected blocks changes.
     case 'block_content_uiowa_text_area_delete_form':
       // Get current block uuid.
+      $form_object = $form_state->getFormObject();
       if ($form_object instanceof EntityFormInterface) {
         /** @var Drupal\Core\Entity\EntityInterface $block */
         $block = $form_object->getEntity();
