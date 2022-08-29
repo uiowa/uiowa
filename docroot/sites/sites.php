@@ -4426,3 +4426,9 @@ $sites['orghawksunion.uiowa.ddev.site'] = 'hawksunion.org.uiowa.edu';
 $sites['orghawksunion.dev.drupal.uiowa.edu'] = 'hawksunion.org.uiowa.edu';
 $sites['orghawksunion.stage.drupal.uiowa.edu'] = 'hawksunion.org.uiowa.edu';
 $sites['orghawksunion.prod.drupal.uiowa.edu'] = 'hawksunion.org.uiowa.edu';
+
+// Directory aliases for iowamobileclinic.org.uiowa.edu.
+$sites['orgiowamobileclinic.uiowa.ddev.site'] = 'iowamobileclinic.org.uiowa.edu';
+$sites['orgiowamobileclinic.dev.drupal.uiowa.edu'] = 'iowamobileclinic.org.uiowa.edu';
+$sites['orgiowamobileclinic.stage.drupal.uiowa.edu'] = 'iowamobileclinic.org.uiowa.edu';
+$sites['orgiowamobileclinic.prod.drupal.uiowa.edu'] = 'iowamobileclinic.org.uiowa.edu';
