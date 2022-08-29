@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.article.field_article_source_link
     - field.field.node.article.field_article_source_link_direct
     - field.field.node.article.field_article_source_org
+    - field.field.node.article.field_content_reference
     - field.field.node.article.field_featured_image_display
     - field.field.node.article.field_gallery_images
     - field.field.node.article.field_image
@@ -182,7 +183,7 @@ third_party_settings:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-            weight: 13
+            weight: 14
             additional: {  }
             third_party_settings: {  }
           a0aa4574-dd5c-460d-befb-8eebabd8b817:
@@ -224,7 +225,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 14
+            weight: 15
             additional: {  }
             third_party_settings:
               layout_builder_custom:
@@ -239,6 +240,28 @@ third_party_settings:
               provider: sitenow_articles
               context_mapping: {  }
             weight: 11
+            additional: {  }
+            third_party_settings: {  }
+          0a51402f-ade5-4198-96f3-7cafc3434aca:
+            uuid: 0a51402f-ade5-4198-96f3-7cafc3434aca
+            region: content
+            configuration:
+              id: 'field_block:node:article:field_content_reference'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: above
+                settings:
+                  view_mode: teaser
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 16
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
@@ -294,6 +317,14 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 4
+    region: content
+  field_content_reference:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 10
     region: content
   field_featured_image_display:
     type: list_default

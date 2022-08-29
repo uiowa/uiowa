@@ -117,6 +117,10 @@ function sitenow_articles_preprocess_field(&$variables) {
       $variables["attributes"]['aria-describedby'] = 'node-caption';
     }
   }
+  if ($variables['element']['#field_name'] == 'field_content_reference') {
+    $variables['attributes']['class'][] = 'inner--grid';
+    $variables['attributes']['class'][] = 'grid--threecol--33-34-33';
+  }
 }
 
 /**
