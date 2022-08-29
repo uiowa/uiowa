@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgiowamobileclinic.uiowa.ddev.site
+    protocol: https
+  machine_name: orgiowamobileclinic
+  human_name: iowamobileclinic.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgiowamobileclinic.prod
+drupal:
+  db:
+    database: iowamobileclinic_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: cyln
+  site-name: 'University of Iowa Free Mobile Clinic'

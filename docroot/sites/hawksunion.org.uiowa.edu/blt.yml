@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orghawksunion.uiowa.ddev.site
+    protocol: https
+  machine_name: orghawksunion
+  human_name: hawksunion.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orghawksunion.prod
+drupal:
+  db:
+    database: hawksunion_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: njhanson
+  site-name: hawksunion.org
