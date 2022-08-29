@@ -30,13 +30,15 @@ class ReplaceCommands extends BltTasks {
     $multisites = $this->getConfigValue('multisites');
     $run_first = $this->getConfigValue('uiowa.run_first');
 
-    // Reverse for foreach so that first listed in config is run first.
-    $run_first = array_reverse($run_first);
+    if ($run_first) {
+      // Reverse for foreach so that first listed in config is run first.
+      $run_first = array_reverse($run_first);
 
-    foreach ($run_first as $site) {
-      if ($key = array_search($site, $multisites)) {
-        unset($multisites[$key]);
-        array_unshift($multisites, $site);
+      foreach ($run_first as $site) {
+        if ($key = array_search($site, $multisites)) {
+          unset($multisites[$key]);
+          array_unshift($multisites, $site);
+        }
       }
     }
 
