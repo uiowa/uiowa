@@ -186,6 +186,10 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           $form['#attached']['library'][] = 'layout_builder_custom/banner-block-form';
           break;
 
+        case 'inline_block:uiowa_button':
+          $form['layout_builder_style_button_width']['#description'] = t('Checking this box will make multiple buttons appear equally sized inline within one column layouts. In smaller layouts the button will stretch to fill the column and stack.');
+          break;
+
         case 'inline_block:uiowa_quote':
           $form['#attached']['library'][] = 'layout_builder_custom/quote-block-form';
           break;
