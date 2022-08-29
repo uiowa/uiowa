@@ -4420,3 +4420,9 @@ $sites['clasalt.uiowa.ddev.site'] = 'alt.clas.uiowa.edu';
 $sites['clasalt.dev.drupal.uiowa.edu'] = 'alt.clas.uiowa.edu';
 $sites['clasalt.stage.drupal.uiowa.edu'] = 'alt.clas.uiowa.edu';
 $sites['clasalt.prod.drupal.uiowa.edu'] = 'alt.clas.uiowa.edu';
+
+// Directory aliases for hawksunion.org.uiowa.edu.
+$sites['orghawksunion.uiowa.ddev.site'] = 'hawksunion.org.uiowa.edu';
+$sites['orghawksunion.dev.drupal.uiowa.edu'] = 'hawksunion.org.uiowa.edu';
+$sites['orghawksunion.stage.drupal.uiowa.edu'] = 'hawksunion.org.uiowa.edu';
+$sites['orghawksunion.prod.drupal.uiowa.edu'] = 'hawksunion.org.uiowa.edu';
