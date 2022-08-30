@@ -43,6 +43,10 @@ function sitenow_articles_form_alter(&$form, FormStateInterface $form_state, $fo
   switch ($form_id) {
     case 'node_article_edit_form':
     case 'node_article_form':
+      if (isset($form['field_content_reference'])) {
+        // Set field_content_reference to node_reference group.
+        $form['field_content_reference']['#group'] = 'node_relations';
+      }
       $form['field_article_source_link_direct']['#states'] = [
         'visible' => [
           ':input[name="field_article_source_link[0][uri]"]' => ['filled' => TRUE],
