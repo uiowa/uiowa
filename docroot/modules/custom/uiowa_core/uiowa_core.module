@@ -374,8 +374,8 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       // Put active region item functionality behind permission.
       if (!\Drupal::currentUser()
         ->hasPermission('configure all region_item fragment layout overrides')) {
-        $form["region_item_after_content_container"]["active_region_content_blocks"]["after_content"]['#disabled'] = TRUE;
-        $form["region_item_pre_footer_container"]["active_region_content_blocks"]["pre_footer"]['#disabled'] = TRUE;
+        $form['region_item_after_content_container']['active_region_content_blocks']['after_content']['#disabled'] = TRUE;
+        $form['region_item_pre_footer_container']['active_region_content_blocks']['pre_footer']['#disabled'] = TRUE;
         \Drupal::messenger()
           ->addWarning(t('You do not have permission to set the active after content and pre footer items. Please contact a user with webmaster permissions.'));
       }
