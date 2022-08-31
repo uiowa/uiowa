@@ -1867,3 +1867,10 @@ function sitenow_update_9047() {
     }
   }
 }
+
+/**
+ * Flush all caches after removing 175 logo and restoring regular logo.
+ */
+function sitenow_update_9048() {
+  drupal_flush_all_caches();
+}
