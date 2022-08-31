@@ -217,10 +217,18 @@ function uiowa_core_preprocess_page(&$variables) {
               case 'headings_lists':
                 // Headings and lists are default for now. We may add more
                 // options in the future, keeping this case around.
+                unset($variables['page']['pre_footer']['views_block__related_manually_referenced_content_block_grid']);
+                break;
+
+              case 'card_grid':
+                // Headings and lists are default for now. We may add more
+                // options in the future, keeping this case around.
+                unset($variables['page']['pre_footer']['views_block__related_content_block_related_headings_lists']);
                 break;
 
               case 'do_not_display':
                 unset($variables['page']['pre_footer']['views_block__related_content_block_related_headings_lists']);
+                unset($variables['page']['pre_footer']['views_block__related_manually_referenced_content_block_grid']);
                 break;
 
               default:

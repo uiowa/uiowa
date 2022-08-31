@@ -167,8 +167,10 @@ class SettingsForm extends ConfigFormBase {
           ->t('Do not display related content'),
         'headings_lists' => $this
           ->t('Display related content titles grouped by tag'),
+        'card_grid' => $this
+          ->t('Display manually referenced related content'),
       ],
-      '#default_value' => $related_display ?: 'do_not_display',
+      '#default_value' => $related_display ?: 'card_grid',
     ];
 
     $form['global']['tags_and_related']['related_display_headings_lists_help'] = [
