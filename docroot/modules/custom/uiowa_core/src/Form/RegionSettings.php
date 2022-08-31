@@ -98,7 +98,7 @@ class RegionSettings extends ConfigFormBase {
 
       $form['region_item_' . $key . '_container']['active_region_content_blocks'] = [
         '#type' => 'fieldset',
-        '#title' => $this->t('Active @title region item', ['@title' => lcfirst($title)]),
+        '#title' => $this->t('Active @title region', ['@title' => lcfirst($title)]),
       ];
 
       $form['region_item_' . $key . '_container']['active_region_content_blocks']['active_region_content_blocks_description'] = [
