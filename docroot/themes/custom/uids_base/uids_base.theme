@@ -291,7 +291,7 @@ function uids_base_preprocess_node(&$variables) {
 
     switch ($node->getType()) {
       case 'article':
-        // Style stacked if from field_content_reference, otherwise media right.
+        // Style stacked if from field_related_content, otherwise media right.
         // Unset completely for SiteNow v2.
         $referring_item = $node->_referringItem;
         if ($referring_item) {
@@ -299,7 +299,7 @@ function uids_base_preprocess_node(&$variables) {
           $referring_field = $referring_item->getParent();
         }
 
-        if (isset($referring_field) && $referring_field->getName() == 'field_content_reference') {
+        if (isset($referring_field) && $referring_field->getName() == 'field_related_content') {
           $card_classes = [
             'card--stacked',
             'card--enclosed',

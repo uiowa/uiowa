@@ -3,14 +3,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_content_reference
+    - field.storage.node.field_related_content
     - node.type.article
-id: node.article.field_content_reference
-field_name: field_content_reference
+id: node.article.field_related_content
+field_name: field_related_content
 entity_type: node
 bundle: article
-label: 'Content references'
-description: 'Reference similar content.'
+label: 'Related content'
+description: 'Reference similar content.  Manage the display of these items at the SiteNow Articles <a href="/admin/config/sitenow/uiowa-articles">page</a>.'
 required: false
 translatable: false
 default_value: {  }

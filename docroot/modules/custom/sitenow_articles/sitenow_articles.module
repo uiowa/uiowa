@@ -43,9 +43,9 @@ function sitenow_articles_form_alter(&$form, FormStateInterface $form_state, $fo
   switch ($form_id) {
     case 'node_article_edit_form':
     case 'node_article_form':
-      if (isset($form['field_content_reference'])) {
-        // Set field_content_reference to node_reference group.
-        $form['field_content_reference']['#group'] = 'node_relations';
+      if (isset($form['field_related_content'])) {
+        // Set field_related_content to node_reference group.
+        $form['field_related_content']['#group'] = 'node_relations';
       }
       $form['field_article_source_link_direct']['#states'] = [
         'visible' => [
@@ -121,7 +121,7 @@ function sitenow_articles_preprocess_field(&$variables) {
       $variables["attributes"]['aria-describedby'] = 'node-caption';
     }
   }
-  if ($variables['element']['#field_name'] == 'field_content_reference') {
+  if ($variables['element']['#field_name'] == 'field_related_content') {
     $variables['attributes']['class'][] = 'inner--grid';
     $variables['attributes']['class'][] = 'grid--threecol--33-34-33';
   }
