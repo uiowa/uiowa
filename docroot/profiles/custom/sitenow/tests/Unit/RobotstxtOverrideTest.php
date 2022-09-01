@@ -14,21 +14,21 @@ class RobotstxtOverrideTest extends UnitTestCase {
   /**
    * RequestStack mock.
    *
-   * @var \Symfony\Component\HttpFoundation\RequestStack
+   * @var \PHPUnit\Framework\MockObject\MockObject|\Symfony\Component\HttpFoundation\RequestStack
    */
   protected $requestStack;
 
   /**
    * Request mock.
    *
-   * @var \Symfony\Component\HttpFoundation\Request
+   * @var \Symfony\Component\HttpFoundation\Request|\PHPUnit\Framework\MockObject\MockObject
    */
   protected $request;
 
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->requestStack = $this->createMock('\Symfony\Component\HttpFoundation\RequestStack');
