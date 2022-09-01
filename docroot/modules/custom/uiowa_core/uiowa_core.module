@@ -269,8 +269,11 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
     $entity = $form_state->getFormObject()->getEntity();
     $node_type = $entity->bundle();
     $node_title = $entity->getTitle();
-    // Set message and prevent replicate.
-    if (!in_array($node_type, $allowed_types)) {
+    // Set message and prevent replicate. Skip this if the submit has already
+    // been disabled.
+    // @todo Remove the disabled submit check when sitenow_v2 split is removed.
+    //   See https://github.com/uiowa/uiowa/issues/5637.
+    if (!(isset($form['actions']['submit']['#disabled']) && $form['actions']['submit']['#disabled']) && !in_array($node_type, $allowed_types)) {
       \Drupal::messenger()->addWarning(t('Replicating content of this type is not allowed. Please contact the ITS Help Desk about enabling this functionality for this content.'));
       $form['actions']['submit']['#disabled'] = TRUE;
     }
@@ -417,7 +420,7 @@ function uiowa_core_menu_local_tasks_alter(&$data, $route_name) {
     $data['tabs'][0]['entity.fragment.delete_form']['#weight'] = 110;
     $data['tabs'][0]['entity.taxonomy_term.delete_form']['#weight'] = 110;
   }
-  if (isset($data["tabs"][0]["replicate_ui.local_tasks:entity.node.replicate"])) {
+  if (isset($data['tabs'][0]['replicate_ui.local_tasks:entity.node.replicate'])) {
     $node = \Drupal::routeMatch()->getParameter('node');
     // Get allowed replicate entity types.
     if ($node) {
@@ -454,7 +457,7 @@ function uiowa_core_entity_operation_alter(array &$operations, EntityInterface $
       if ($route_name == 'uiowa_core.region_settings') {
         $operations['layout']['weight'] = 9;
         $url = Url::fromRoute($route_name)->toString();
-        $operations["layout"]["url"]->setOption('query', ['destination' => $url]);
+        $operations['layout']['url']->setOption('query', ['destination' => $url]);
       }
       break;
 

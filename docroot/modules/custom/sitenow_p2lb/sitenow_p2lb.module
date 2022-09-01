@@ -5,11 +5,35 @@
  * Contains sitenow_p2lb.module.
  */
 
+use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\layout_builder\Section;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\layout_builder\InlineBlockUsage;
-use Drupal\Core\Config\FileStorage;
+use Drupal\layout_builder\Section;
+
+/**
+ * Implements hook_form_alter().
+ */
+function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $current_route = \Drupal::routeMatch();
+  $route_name = $current_route->getRouteName();
+
+  // Only allow certain types to be replicated.
+  // Ignored config that can be custom to a site.
+  if ($route_name == 'entity.node.replicate') {
+    $entity = $form_state->getFormObject()->getEntity();
+    $node_type = $entity->bundle();
+
+    // Only proceed if this is a V3 site or sitenow_p2lb is enabled.
+    // @todo Remove check and always set after v2 is removed.
+    //   See https://github.com/uiowa/uiowa/issues/4948
+    if ($node_type === 'page' && $entity->hasField('field_v3_conversion_revision_id') && is_null($entity->field_v3_conversion_revision_id->value)) {
+      \Drupal::messenger()->addWarning(t('This content item must be converted to SiteNow V3 before it can be replicated.'));
+      $form['actions']['submit']['#disabled'] = TRUE;
+    }
+  }
+}
 
 /**
  * Check for nodes which are using paragraphs.
