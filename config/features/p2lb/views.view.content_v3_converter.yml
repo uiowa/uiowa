@@ -26,7 +26,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: 'To be converted'
+      title: 'SiteNow Converter'
       fields:
         node_bulk_form:
           id: node_bulk_form
@@ -879,8 +879,10 @@ display:
     display_options:
       display_description: ''
       display_extenders:
-        metatag_display_extender: {  }
-      path: admin/sitenow-converter/node
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
+      path: admin/content/sitenow-converter/node
       menu:
         type: 'default tab'
         title: 'To be converted'
@@ -1610,8 +1612,10 @@ display:
         filter_groups: false
       display_description: ''
       display_extenders:
-        metatag_display_extender: {  }
-      path: admin/sitenow-converter/converted
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
+      path: admin/content/sitenow-converter/converted
       menu:
         type: tab
         title: Converted
@@ -1619,7 +1623,7 @@ display:
         weight: 0
         expanded: false
         menu_name: admin
-        parent: system.admin
+        parent: sitenow_p2lb.content_converter
         context: '0'
       tab_options:
         type: normal
