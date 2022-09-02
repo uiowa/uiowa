@@ -73,7 +73,7 @@ function sitenow_articles_update_9303() {
  */
 function sitenow_articles_update_9304() {
   $config = \Drupal::configFactory()->getEditable('sitenow_articles.settings');
-  if ($config->get('related_display') == 'do_not_display') {
+  if ($config->get('related_display') !== 'headings_lists') {
     $config->set('related_display', 'card_grid')
       ->save();
   }
