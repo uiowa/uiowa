@@ -31,7 +31,12 @@ $imgpath: '../../uids/assets/images';
     max-width: 1310px;
   }
   & > div {
-    @extend %container;
+    margin: 0 $gutter;
+
+    @include breakpoint(page-container) {
+      max-width: 81.875em;
+      margin: 0 auto;
+    }
   }
 }
 
