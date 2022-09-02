@@ -29,7 +29,7 @@
   {% for link in content.field_uiowa_button_link['#items'] %}
     {% set block_button = {
       'classes': create_attribute().addClass(classes),
-      'link_url': link.uri,
+      'link_url': link.url|render,
       'link_title': link.title|render,
     } %}
 
