@@ -32,7 +32,7 @@ function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_i
       // @todo Remove check and always set after v2 is removed.
       //   See https://github.com/uiowa/uiowa/issues/4948
       if ($node_type === 'page' && $entity->hasField('field_v3_conversion_revision_id') && is_null($entity->field_v3_conversion_revision_id->value)) {
-        \Drupal::messenger()->addWarning(t('This content item must be converted to SiteNow V3 before it can be replicated.'));
+        \Drupal::messenger()->addWarning(t('This content item must be upgraded to SiteNow V3 before it can be replicated.'));
         $form['actions']['submit']['#disabled'] = TRUE;
       }
     }
@@ -42,11 +42,11 @@ function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_i
       if ($entity->hasField('field_v3_conversion_revision_id')) {
         if (is_numeric($entity->field_v3_conversion_revision_id->value)) {
           // If so, disable field_page_content_block and set a warning message.
-          \Drupal::messenger()->addWarning(t('This page has been converted to the SiteNow V3 format. To prevent conflicts, the "Sections" area below has been disabled. Please add content through the "Body" field or click the "Layout" tab to edit an advanced page layout.'));
+          \Drupal::messenger()->addWarning(t('This page has been upgraded to the SiteNow V3 format. To prevent conflicts, the "Sections" area below has been disabled. Please add content through the "Body" field or click the "Layout" tab to edit an advanced page layout.'));
           $form['field_page_content_block']['#disabled'] = TRUE;
         }
         else {
-          \Drupal::messenger()->addMessage(t('This page can be converted to the SiteNow V3 format. Please visit the SiteNow Converter tool [link] to convert this page.'));
+          \Drupal::messenger()->addMessage(t('This page can be upgraded to the SiteNow V3 format. Please visit the SiteNow Upgrader tool [link] to upgrade this page.'));
           $form['body']['#access'] = FALSE;
         }
       }
@@ -72,7 +72,7 @@ function sitenow_p2lb_paragraph_nodes() {
 }
 
 /**
- * Convert a node from paragraphs to layout builder.
+ * Upgrade a node from paragraphs to layout builder.
  *
  * @param Drupal\Core\Entity\ContentEntityInterface $node
  *   Node being processed.
@@ -110,7 +110,7 @@ function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = F
 
     // Save as a new draft.
     $node->setNewRevision(TRUE);
-    $node->revision_log = 'Converted page to v3.';
+    $node->revision_log = 'Upgraded page to v3.';
     $node->moderation_state->value = 'draft';
 
     // Set the user id for the revision.

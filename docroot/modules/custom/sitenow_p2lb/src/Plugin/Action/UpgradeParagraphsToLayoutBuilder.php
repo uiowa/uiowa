@@ -7,16 +7,16 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Session\AccountInterface;
 
 /**
- * Action to convert page nodes from Paragraphs to Layout Builder.
+ * Action to upgrade page nodes from Paragraphs to Layout Builder.
  *
  * @Action(
- *   id = "sitenow_p2lb_convert",
- *   label = @Translation("Convert V2 page to V3"),
+ *   id = "sitenow_p2lb_upgrade",
+ *   label = @Translation("Upgrade V2 page to V3"),
  *   type = "node",
  *   confirm = TRUE,
  * )
  */
-class ConvertParagraphsToLayoutBuilder extends ActionBase {
+class UpgradeParagraphsToLayoutBuilder extends ActionBase {
 
   /**
    * {@inheritdoc}
