@@ -271,7 +271,8 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
     $form_object = $form_state->getFormObject();
     if ($form_object instanceof EntityFormInterface) {
       /** @var Drupal\Core\Entity\EntityInterface $entity */
-      $entity = $form_state->getFormObject()->getEntity();
+      $entity = $form_object->getEntity();
+
       $node_type = $entity->bundle();
       $node_title = $entity->getTitle();
       // Set message and prevent replicate. Skip this if the submit has already
