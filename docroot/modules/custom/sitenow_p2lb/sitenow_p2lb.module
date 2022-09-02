@@ -113,6 +113,10 @@ function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = F
     $node->revision_log = 'Converted page to v3.';
     $node->moderation_state->value = 'draft';
 
+    // Set the user id for the revision.
+    $user_id = \Drupal::currentUser()->id();
+    $node->setRevisionUserId($user_id);
+
     $node->save();
 
     // Remove the attached paragraphs from the node.
