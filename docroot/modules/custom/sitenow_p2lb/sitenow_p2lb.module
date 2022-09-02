@@ -38,7 +38,7 @@ function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_i
     }
 
     if ($form_id === 'node_page_edit_form') {
-      // Check if field_v3_conversion_revision_id is set
+      // Check if field_v3_conversion_revision_id is set.
       if ($entity->hasField('field_v3_conversion_revision_id')) {
         if (is_numeric($entity->field_v3_conversion_revision_id->value)) {
           // If so, disable field_page_content_block and set a warning message.
