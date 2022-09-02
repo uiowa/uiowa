@@ -4438,3 +4438,9 @@ $sites['labwatkinsresearchgroup.uiowa.ddev.site'] = 'watkinsresearchgroup.lab.ui
 $sites['labwatkinsresearchgroup.dev.drupal.uiowa.edu'] = 'watkinsresearchgroup.lab.uiowa.edu';
 $sites['labwatkinsresearchgroup.stage.drupal.uiowa.edu'] = 'watkinsresearchgroup.lab.uiowa.edu';
 $sites['labwatkinsresearchgroup.prod.drupal.uiowa.edu'] = 'watkinsresearchgroup.lab.uiowa.edu';
+
+// Directory aliases for muzzio.lab.uiowa.edu.
+$sites['labmuzzio.uiowa.ddev.site'] = 'muzzio.lab.uiowa.edu';
+$sites['labmuzzio.dev.drupal.uiowa.edu'] = 'muzzio.lab.uiowa.edu';
+$sites['labmuzzio.stage.drupal.uiowa.edu'] = 'muzzio.lab.uiowa.edu';
+$sites['labmuzzio.prod.drupal.uiowa.edu'] = 'muzzio.lab.uiowa.edu';
