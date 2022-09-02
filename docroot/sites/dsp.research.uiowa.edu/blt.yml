@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: researchdsp.uiowa.ddev.site
+    protocol: https
+  machine_name: researchdsp
+  human_name: dsp.research.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: researchdsp.prod
+drupal:
+  db:
+    database: dsp_research_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: makyea
+  site-name: 'Division of Sponsored Programs'
