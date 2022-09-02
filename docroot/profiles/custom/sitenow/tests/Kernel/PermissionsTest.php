@@ -26,7 +26,7 @@ class PermissionsTest extends EntityKernelTestBase {
   /**
    * Setup tasks.
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
     $this->setInstallProfile('sitenow');
     $this->installConfig(['filter']);

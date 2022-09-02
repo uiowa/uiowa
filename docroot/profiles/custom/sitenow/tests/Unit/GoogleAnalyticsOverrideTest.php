@@ -18,7 +18,7 @@ class GoogleAnalyticsOverrideTest extends UnitTestCase {
   /**
    * Unset the environment variable after each test.
    */
-  public function tearDown() {
+  public function tearDown(): void {
     parent::tearDown();
     putenv('AH_SITE_ENVIRONMENT');
   }
