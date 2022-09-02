@@ -4432,3 +4432,21 @@ $sites['orgiowamobileclinic.uiowa.ddev.site'] = 'iowamobileclinic.org.uiowa.edu'
 $sites['orgiowamobileclinic.dev.drupal.uiowa.edu'] = 'iowamobileclinic.org.uiowa.edu';
 $sites['orgiowamobileclinic.stage.drupal.uiowa.edu'] = 'iowamobileclinic.org.uiowa.edu';
 $sites['orgiowamobileclinic.prod.drupal.uiowa.edu'] = 'iowamobileclinic.org.uiowa.edu';
+
+// Directory aliases for watkinsresearchgroup.lab.uiowa.edu.
+$sites['labwatkinsresearchgroup.uiowa.ddev.site'] = 'watkinsresearchgroup.lab.uiowa.edu';
+$sites['labwatkinsresearchgroup.dev.drupal.uiowa.edu'] = 'watkinsresearchgroup.lab.uiowa.edu';
+$sites['labwatkinsresearchgroup.stage.drupal.uiowa.edu'] = 'watkinsresearchgroup.lab.uiowa.edu';
+$sites['labwatkinsresearchgroup.prod.drupal.uiowa.edu'] = 'watkinsresearchgroup.lab.uiowa.edu';
+
+// Directory aliases for muzzio.lab.uiowa.edu.
+$sites['labmuzzio.uiowa.ddev.site'] = 'muzzio.lab.uiowa.edu';
+$sites['labmuzzio.dev.drupal.uiowa.edu'] = 'muzzio.lab.uiowa.edu';
+$sites['labmuzzio.stage.drupal.uiowa.edu'] = 'muzzio.lab.uiowa.edu';
+$sites['labmuzzio.prod.drupal.uiowa.edu'] = 'muzzio.lab.uiowa.edu';
+
+// Directory aliases for dsp.research.uiowa.edu.
+$sites['researchdsp.uiowa.ddev.site'] = 'dsp.research.uiowa.edu';
+$sites['researchdsp.dev.drupal.uiowa.edu'] = 'dsp.research.uiowa.edu';
+$sites['researchdsp.stage.drupal.uiowa.edu'] = 'dsp.research.uiowa.edu';
+$sites['researchdsp.prod.drupal.uiowa.edu'] = 'dsp.research.uiowa.edu';
