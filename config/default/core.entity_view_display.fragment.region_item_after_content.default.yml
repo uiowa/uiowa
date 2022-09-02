@@ -1,10 +1,10 @@
-uuid: c78c78b4-5ff3-4e63-8a5c-023723722a4a
+uuid: 166f16a0-5a8b-4924-a401-606846e3818b
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.fragment.region_item.layout_builder__layout
-    - fragments.fragment_type.region_item
+    - field.field.fragment.region_item_after_content.layout_builder__layout
+    - fragments.fragment_type.region_item_after_content
   module:
     - layout_builder
     - layout_builder_restrictions
@@ -17,35 +17,35 @@ third_party_settings:
     allow_custom: true
     sections:
       -
-        layout_id: layout_onecol
+        layout_id: layout_onecol_fixed
         layout_settings:
           label: ''
           context_mapping: {  }
           layout_builder_styles_style:
-            - ''
+            - section_background_style_gold
             - section_margin_fixed_width_container
         components: {  }
         third_party_settings:
           layout_builder_lock:
             lock:
+              5: 5
               6: 6
               7: 7
           layout_builder_limit:
             limit:
-              scope: '1'
+              scope: '2'
               scope_update: 'Update scope'
               settings:
-                regions:
-                  content:
-                    minimum_enabled: 0
-                    minimum: ''
-                    maximum_enabled: 1
-                    maximum: '1'
+                section:
+                  minimum_enabled: 0
+                  minimum: ''
+                  maximum_enabled: 1
+                  maximum: '1'
   layout_builder_restrictions:
     allowed_block_categories: {  }
     entity_view_mode_restriction:
       allowed_layouts:
-        - layout_onecol
+        - layout_onecol_fixed
       denylisted_blocks: {  }
       allowlisted_blocks:
         'Chaos Tools': {  }
@@ -56,11 +56,10 @@ third_party_settings:
         Forms: {  }
         'Inline blocks':
           - 'inline_block:uiowa_button'
-          - 'inline_block:uiowa_cta'
-          - 'inline_block:uiowa_text_area'
         Lists: {  }
         'Lists (Views)': {  }
         Menus: {  }
+        'Purge UI': {  }
         Restricted: {  }
         'Site custom': {  }
         'SiteNow Dispatch': {  }
@@ -68,18 +67,15 @@ third_party_settings:
         System: {  }
         'University of Iowa Alerts': {  }
         User: {  }
-        Webform:
-          - webform_block
+        Webform: {  }
         core: {  }
       restricted_categories: {  }
     entity_view_mode_restriction_by_region:
       allowed_layouts:
-        - layout_onecol
-      allowlisted_blocks: null
-      denylisted_blocks: null
-id: fragment.region_item.default
+        - layout_onecol_fixed
+id: fragment.region_item_after_content.default
 targetEntityType: fragment
-bundle: region_item
+bundle: region_item_after_content
 mode: default
 content:
   title:
