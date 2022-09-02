@@ -4432,3 +4432,9 @@ $sites['orgiowamobileclinic.uiowa.ddev.site'] = 'iowamobileclinic.org.uiowa.edu'
 $sites['orgiowamobileclinic.dev.drupal.uiowa.edu'] = 'iowamobileclinic.org.uiowa.edu';
 $sites['orgiowamobileclinic.stage.drupal.uiowa.edu'] = 'iowamobileclinic.org.uiowa.edu';
 $sites['orgiowamobileclinic.prod.drupal.uiowa.edu'] = 'iowamobileclinic.org.uiowa.edu';
+
+// Directory aliases for watkinsresearchgroup.lab.uiowa.edu.
+$sites['labwatkinsresearchgroup.uiowa.ddev.site'] = 'watkinsresearchgroup.lab.uiowa.edu';
+$sites['labwatkinsresearchgroup.dev.drupal.uiowa.edu'] = 'watkinsresearchgroup.lab.uiowa.edu';
+$sites['labwatkinsresearchgroup.stage.drupal.uiowa.edu'] = 'watkinsresearchgroup.lab.uiowa.edu';
+$sites['labwatkinsresearchgroup.prod.drupal.uiowa.edu'] = 'watkinsresearchgroup.lab.uiowa.edu';
