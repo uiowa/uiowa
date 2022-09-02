@@ -7,6 +7,7 @@
 
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -266,37 +267,41 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
   if ($route_name == 'entity.node.replicate') {
     // Get allowed replicate entity types.
     $allowed_types = \Drupal::config('uiowa_core.settings')->get('uiowa_core.replicate_allowed');
-    $entity = $form_state->getFormObject()->getEntity();
-    $node_type = $entity->bundle();
-    $node_title = $entity->getTitle();
-    // Set message and prevent replicate. Skip this if the submit has already
-    // been disabled.
-    // @todo Remove the disabled submit check when sitenow_v2 split is removed.
-    //   See https://github.com/uiowa/uiowa/issues/5637.
-    if (!(isset($form['actions']['submit']['#disabled']) && $form['actions']['submit']['#disabled']) && !in_array($node_type, $allowed_types)) {
-      \Drupal::messenger()->addWarning(t('Replicating content of this type is not allowed. Please contact the ITS Help Desk about enabling this functionality for this content.'));
-      $form['actions']['submit']['#disabled'] = TRUE;
+
+    $form_object = $form_state->getFormObject();
+    if ($form_object instanceof EntityFormInterface) {
+      /** @var Drupal\Core\Entity\EntityInterface $entity */
+      $entity = $form_state->getFormObject()->getEntity();
+      $node_type = $entity->bundle();
+      $node_title = $entity->getTitle();
+      // Set message and prevent replicate. Skip this if the submit has already
+      // been disabled.
+      // @todo Remove the disabled submit check when sitenow_v2 split is removed.
+      //   See https://github.com/uiowa/uiowa/issues/5637.
+      if (!(isset($form['actions']['submit']['#disabled']) && $form['actions']['submit']['#disabled']) && !in_array($node_type, $allowed_types)) {
+        \Drupal::messenger()->addWarning(t('Replicating content of this type is not allowed. Please contact the ITS Help Desk about enabling this functionality for this content.'));
+        $form['actions']['submit']['#disabled'] = TRUE;
+      }
+      // Customize the replicate confirm dialog to our
+      // use case (pages with titles)
+      $bundle_label = \Drupal::entityTypeManager()
+        ->getStorage('node_type')
+        ->load($entity->bundle())
+        ->label();
+
+      // Changes title to match the "Edit" action title
+      // (e.g. "<em>Edit</em> Home").
+      $form['#title'] = t('<em>Replicate @type</em> @title',
+        ['@type' => $bundle_label, '@title' => $node_title]);
+
+      // Lowercase for the rest of the form.
+      $bundle_label = strtolower($bundle_label);
+
+      $form['new_label_en']['#title'] = t("Replicated @type content's title", ['@type' => $bundle_label]);
+      $form['new_label_en']['#description'] = t('This text will be used as the title of the newly-replicated @type.', ['@type' => $bundle_label]);
+      // Removes the "This action cannot be undone" text.
+      $form['description'] = ['#markup' => ''];
     }
-    // Customize the replicate confirm dialog to our
-    // use case (pages with titles)
-    $bundle_label = \Drupal::entityTypeManager()
-      ->getStorage('node_type')
-      ->load($entity->bundle())
-      ->label();
-
-    // Changes title to match the "Edit" action title
-    // (e.g. "<em>Edit</em> Home").
-    $form['#title'] = t('<em>Replicate @type</em> @title',
-      ['@type' => $bundle_label, '@title' => $node_title]);
-
-    // Lowercase for the rest of the form.
-    $bundle_label = strtolower($bundle_label);
-
-    $form['new_label_en']['#title'] = t("Replicated @type content's title", ['@type' => $bundle_label]);
-    $form['new_label_en']['#description'] = t('This text will be used as the title of the newly-replicated @type.', ['@type' => $bundle_label]);
-    // Removes the "This action cannot be undone" text.
-    $form['description'] = ['#markup' => ''];
-
   }
 
   switch ($form_id) {
@@ -320,23 +325,26 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
     // Add delete forms as the types of protected blocks changes.
     case 'block_content_uiowa_text_area_delete_form':
       // Get current block uuid.
-      $block = $form_state
-        ->getFormObject()
-        ->getEntity();
-      $uuid = $block->uuid();
+      $form_object = $form_state->getFormObject();
+      if ($form_object instanceof EntityFormInterface) {
+        /** @var Drupal\Core\Entity\EntityInterface $block */
+        $block = $form_object->getEntity();
+        $uuid = $block->uuid();
 
-      // Get protected settings from uiowa_core.
-      $protected = \Drupal::config('uiowa_core.protected');
-      // If protected...
-      if ($protected->get('protect')) {
-        // Get uuids of protected blocks.
-        $protected_blocks = $protected->get('protected_blocks');
-        $uuids = array_keys($protected_blocks);
+        // Get protected settings from uiowa_core.
+        $protected = \Drupal::config('uiowa_core.protected');
+        // If protected...
+        if ($protected->get('protect')) {
+          // Get uuids of protected blocks.
+          $protected_blocks = $protected->get('protected_blocks');
+          $uuids = array_keys($protected_blocks);
 
-        // See if current block matches any protected and prevent deletion.
-        if (in_array($uuid, $uuids)) {
-          \Drupal::messenger()->addWarning(t('This block is protected from deletion. Remove content from the block instead.'));
-          $form['actions']['submit']['#disabled'] = TRUE;
+          // See if current block matches any protected and prevent deletion.
+          if (in_array($uuid, $uuids)) {
+            \Drupal::messenger()
+              ->addWarning(t('This block is protected from deletion. Remove content from the block instead.'));
+            $form['actions']['submit']['#disabled'] = TRUE;
+          }
         }
       }
       break;
@@ -373,6 +381,16 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       }
       break;
 
+    case 'uiowa_core_region_settings':
+      // Put active region item functionality behind permission.
+      if (!\Drupal::currentUser()
+        ->hasPermission('configure all region_item fragment layout overrides')) {
+        $form['region_item_after_content_container']['active_region_content_blocks']['after_content']['#disabled'] = TRUE;
+        $form['region_item_pre_footer_container']['active_region_content_blocks']['pre_footer']['#disabled'] = TRUE;
+        \Drupal::messenger()
+          ->addWarning(t('You do not have permission to set the active after content and pre footer items. Please contact a user with webmaster permissions.'));
+      }
+      break;
   }
 }
 
