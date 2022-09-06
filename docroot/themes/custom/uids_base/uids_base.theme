@@ -294,15 +294,9 @@ function uids_base_preprocess_node(&$variables) {
 
     switch ($node->getType()) {
       case 'article':
-        // Style stacked if from field_related_content, otherwise media right.
-        // Unset completely for SiteNow v2.
-        $referring_item = $node->_referringItem;
-        if ($referring_item) {
-          /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
-          $referring_field = $referring_item->getParent();
-        }
-
-        if (isset($referring_field) && $referring_field->getName() == 'field_related_content') {
+        // Style stacked if from related_manually_referenced_content block grid,
+        // otherwise media right. Unset completely for SiteNow v2.
+        if (isset($node->view) && $node->view->id() == 'related_manually_referenced_content' && $node->view->current_display == 'block_grid') {
           $card_classes = [
             'card--stacked',
             'card--enclosed',
