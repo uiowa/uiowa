@@ -26,7 +26,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: 'SiteNow Converter'
+      title: 'SiteNow Upgrader'
       fields:
         node_bulk_form:
           id: node_bulk_form
@@ -809,7 +809,7 @@ display:
         - 'config:workflow_list'
   moderated_content:
     id: moderated_content
-    display_title: 'To be converted'
+    display_title: 'To be upgraded'
     display_plugin: page
     position: 1
     display_options:
@@ -818,10 +818,10 @@ display:
         metatag_display_extender:
           metatags: {  }
           tokenize: false
-      path: admin/content/sitenow-converter/node
+      path: admin/content/sitenow-upgrader/node
       menu:
         type: 'default tab'
-        title: 'To be converted'
+        title: 'To be upgraded'
         description: ''
         weight: 0
         expanded: false
@@ -830,7 +830,7 @@ display:
         context: '0'
       tab_options:
         type: normal
-        title: 'SiteNow Converter'
+        title: 'SiteNow Upgrader'
         description: ''
         weight: 0
     cache_metadata:
@@ -846,11 +846,11 @@ display:
         - 'config:workflow_list'
   page_1:
     id: page_1
-    display_title: Converted
+    display_title: Upgraded
     display_plugin: page
     position: 1
     display_options:
-      title: Converted
+      title: Upgraded
       fields:
         node_bulk_form:
           id: node_bulk_form
@@ -1550,7 +1550,7 @@ display:
         metatag_display_extender:
           metatags: {  }
           tokenize: false
-      path: admin/content/sitenow-converter/converted
+      path: admin/content/sitenow-upgrader/upgraded
       menu:
         type: tab
         title: Converted
