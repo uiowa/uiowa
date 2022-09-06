@@ -19,7 +19,10 @@ function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_i
   $current_route = \Drupal::routeMatch();
   $route_name = $current_route->getRouteName();
 
-  if ($route_name == 'entity.node.replicate' || $form_id === 'node_page_edit_form') {
+  if ($route_name == 'entity.node.replicate' || in_array($form_id, [
+    'node_page_form',
+    'node_page_edit_form',
+  ])) {
     $entity = $form_state->getFormObject()->getEntity();
 
     // Only allow certain types to be replicated.
@@ -37,13 +40,17 @@ function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_i
       }
     }
 
-    if ($form_id === 'node_page_edit_form') {
+    if ($form_id === 'node_page_form') {
+      // Disable display of the Paragraph sections for new content.
+      $form['field_page_content_block']['#access'] = FALSE;
+    }
+    else if ($form_id === 'node_page_edit_form') {
       // Check if field_v3_conversion_revision_id is set.
       if ($entity->hasField('field_v3_conversion_revision_id')) {
         if (is_numeric($entity->field_v3_conversion_revision_id->value)) {
           // If so, disable field_page_content_block and set a warning message.
           \Drupal::messenger()->addWarning(t('This page has been upgraded to the SiteNow V3 format. To prevent conflicts, the "Sections" area below has been disabled. Please add content through the "Body" field or click the "Layout" tab to edit an advanced page layout.'));
-          $form['field_page_content_block']['#access'] = TRUE;
+          $form['field_page_content_block']['#access'] = FALSE;
         }
         else {
           \Drupal::messenger()->addMessage(t('This page can be upgraded to the SiteNow V3 format. Please visit the SiteNow Upgrader tool [link] to upgrade this page.'));
