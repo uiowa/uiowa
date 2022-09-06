@@ -277,9 +277,7 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       $node_title = $entity->getTitle();
       // Set message and prevent replicate. Skip this if the submit has already
       // been disabled.
-      // @todo Remove the disabled submit check when sitenow_v2 split is removed.
-      //   See https://github.com/uiowa/uiowa/issues/5637.
-      if (!(isset($form['actions']['submit']['#disabled']) && $form['actions']['submit']['#disabled']) && !in_array($node_type, $allowed_types)) {
+      if (!in_array($node_type, $allowed_types)) {
         \Drupal::messenger()->addWarning(t('Replicating content of this type is not allowed. Please contact the ITS Help Desk about enabling this functionality for this content.'));
         $form['actions']['submit']['#disabled'] = TRUE;
       }
