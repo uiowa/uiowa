@@ -441,7 +441,7 @@ display:
           admin_label: ''
           plugin_id: text_custom
           empty: true
-          content: 'No moderated content available. Only pending versions of content, such as drafts, are listed here.'
+          content: 'Hoo-ray! You have upgraded all your pages to the SiteNow V3 format.'
           tokenize: false
       sorts: {  }
       arguments: {  }
@@ -1280,6 +1280,18 @@ display:
           empty_zero: false
           hide_alter_empty: true
           destination: true
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text_custom
+          empty: true
+          content: 'You haven''t upgraded any pages to the SiteNow V3 format yet. Click the "To be upgraded" tab to get started.'
+          tokenize: false
       filters:
         type:
           id: type
@@ -1541,6 +1553,7 @@ display:
         groups:
           1: AND
       defaults:
+        empty: false
         title: false
         fields: false
         filters: false
