@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labmuzzio.uiowa.ddev.site
+    protocol: https
+  machine_name: labmuzzio
+  human_name: muzzio.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmuzzio.prod
+drupal:
+  db:
+    database: muzzio_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: mnormandin
+  site-name: 'Muzzio Lab'
