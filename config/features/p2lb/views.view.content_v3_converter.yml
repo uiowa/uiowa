@@ -81,7 +81,7 @@ display:
           action_title: Action
           include_exclude: include
           selected_actions:
-            - sitenow_p2lb_upgrade
+            - sitenow_p2lb_convert
         title:
           id: title
           table: node_field_revision
@@ -441,7 +441,7 @@ display:
           admin_label: ''
           plugin_id: text_custom
           empty: true
-          content: 'Hoo-ray! You have upgraded all your pages to the SiteNow V3 format.'
+          content: 'Hoo-ray! You have convertd all your pages to the SiteNow V3 format.'
           tokenize: false
       sorts: {  }
       arguments: {  }
@@ -809,7 +809,7 @@ display:
         - 'config:workflow_list'
   moderated_content:
     id: moderated_content
-    display_title: 'To be upgraded'
+    display_title: 'To be convertd'
     display_plugin: page
     position: 1
     display_options:
@@ -818,10 +818,10 @@ display:
         metatag_display_extender:
           metatags: {  }
           tokenize: false
-      path: admin/content/sitenow-upgrader/node
+      path: admin/content/sitenow-convertr/node
       menu:
         type: 'default tab'
-        title: 'To be upgraded'
+        title: 'To be convertd'
         description: ''
         weight: 0
         expanded: false
@@ -1290,7 +1290,7 @@ display:
           admin_label: ''
           plugin_id: text_custom
           empty: true
-          content: 'You haven''t upgraded any pages to the SiteNow V3 format yet. Click the "To be upgraded" tab to get started.'
+          content: 'You haven''t convertd any pages to the SiteNow V3 format yet. Click the "To be convertd" tab to get started.'
           tokenize: false
       filters:
         type:
@@ -1563,7 +1563,7 @@ display:
         metatag_display_extender:
           metatags: {  }
           tokenize: false
-      path: admin/content/sitenow-upgrader/upgraded
+      path: admin/content/sitenow-convertr/convertd
       menu:
         type: tab
         title: Converted

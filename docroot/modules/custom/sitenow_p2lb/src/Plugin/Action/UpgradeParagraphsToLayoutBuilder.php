@@ -7,10 +7,10 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Session\AccountInterface;
 
 /**
- * Action to upgrade page nodes from Paragraphs to Layout Builder.
+ * Action to convert page nodes from Paragraphs to Layout Builder.
  *
  * @Action(
- *   id = "sitenow_p2lb_upgrade",
+ *   id = "sitenow_p2lb_convert",
  *   label = @Translation("Upgrade V2 page to V3"),
  *   type = "node",
  *   confirm = TRUE,
