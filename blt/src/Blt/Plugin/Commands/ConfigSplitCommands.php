@@ -43,7 +43,6 @@ class ConfigSplitCommands extends BltTasks {
         if (isset($options['split']) && $options['split'] !== $id) {
           continue;
         }
-        $this->say("Updating the <comment>$id</comment> config split.");
         $this->updateSplit($split);
       }
     }
@@ -89,7 +88,9 @@ class ConfigSplitCommands extends BltTasks {
    *
    * @requireContainer
    */
-  public function updateSiteSplits() {
+  public function updateSiteSplits($options = [
+    'host' => InputOption::VALUE_OPTIONAL,
+  ]) {
     $root = $this->getConfigValue('repo.root');
     $split_name = 'config_split.config_split.site.yml';
     $finder = new Finder();
@@ -105,6 +106,9 @@ class ConfigSplitCommands extends BltTasks {
       // This assumes the finder in() context above does not change.
       $host = $split_file->getRelativePath();
       $split = YamlMunge::parseFile($split_file->getPathname());
+      if (isset($options['host']) && $options['host'] !== $host) {
+        continue;
+      }
       $alias = Multisite::getIdentifier("https://$host");
       $this->switchSiteContext($host);
       $this->updateSplit($split, $alias);
@@ -116,6 +120,7 @@ class ConfigSplitCommands extends BltTasks {
    */
   protected function updateSplit($split, $alias = 'default', $module = NULL) {
     $id = $split['id'];
+    $this->say("Updating the <comment>$id</comment> on $alias config split.");
 
     // Recreate the database in case this site has never been blt-synced before.
     $this->taskDrush()
