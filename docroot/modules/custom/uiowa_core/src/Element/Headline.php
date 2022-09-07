@@ -16,7 +16,7 @@ use Drupal\Core\Render\Element\FormElement;
  *   '#type' => 'headline',
  *   '#title' => $this->t('Headline'),
  * );
- * @end
+ * @endcode
  *
  * @see \Drupal\Core\Render\Element\Render\FormElement
  *
