@@ -11,6 +11,7 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\layout_builder\InlineBlockUsage;
 use Drupal\layout_builder\Section;
+use Drupal\Core\Url;
 
 /**
  * Implements hook_form_alter().
@@ -31,11 +32,13 @@ function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_i
       if ($entity->hasField('field_v3_conversion_revision_id')) {
         if (is_numeric($entity->field_v3_conversion_revision_id->value)) {
           // If so, disable field_page_content_block and set a warning message.
-          \Drupal::messenger()->addWarning(t('This page has been upgraded to the SiteNow V3 format. To prevent conflicts, the "Sections" area below has been disabled. Please add content through the "Body" field or click the "Layout" tab to edit an advanced page layout.'));
+          \Drupal::messenger()->addWarning(t('This page has been upgraded to the SiteNow V3 format. Please add content through the "Body" field or click the "Layout" tab to edit an advanced page layout.'));
           $form['field_page_content_block']['#access'] = FALSE;
         }
         else {
-          \Drupal::messenger()->addMessage(t('This page can be upgraded to the SiteNow V3 format. Please visit the SiteNow Upgrader tool [link] to upgrade this page.'));
+          \Drupal::messenger()->addMessage(t('This page can be upgraded to the SiteNow V3 format. Please visit the @link to upgrade this page.', [
+            '@link' => Drupal::service('link_generator')->generate('SiteNow Upgrader tool', Url::fromRoute('sitenow_p2lb.content_upgrader')),
+          ]));
           $form['body']['#access'] = FALSE;
         }
       }
