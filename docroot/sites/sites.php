@@ -2765,12 +2765,6 @@ $sites['physicshalosat.dev.drupal.uiowa.edu'] = 'halosat.physics.uiowa.edu';
 $sites['physicshalosat.stage.drupal.uiowa.edu'] = 'halosat.physics.uiowa.edu';
 $sites['physicshalosat.prod.drupal.uiowa.edu'] = 'halosat.physics.uiowa.edu';
 
-// Directory aliases for asg.clas.uiowa.edu.
-$sites['clasasg.uiowa.ddev.site'] = 'asg.clas.uiowa.edu';
-$sites['clasasg.dev.drupal.uiowa.edu'] = 'asg.clas.uiowa.edu';
-$sites['clasasg.stage.drupal.uiowa.edu'] = 'asg.clas.uiowa.edu';
-$sites['clasasg.prod.drupal.uiowa.edu'] = 'asg.clas.uiowa.edu';
-
 // Directory aliases for humanimmunology.sites.uiowa.edu.
 $sites['siteshumanimmunology.uiowa.ddev.site'] = 'humanimmunology.sites.uiowa.edu';
 $sites['siteshumanimmunology.dev.drupal.uiowa.edu'] = 'humanimmunology.sites.uiowa.edu';
