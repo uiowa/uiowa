@@ -98,8 +98,8 @@ function now_core_node_presave($entity) {
   }
 
   // The rest of the functionality only applies
-  // to the news-feature article type, so we may be done.
-  if ($entity->field_article_type->value != 'news-feature') {
+  // to the featured article type, so we may be done.
+  if ($entity->field_article_type->value != 'featured') {
     return;
   }
   // If we don't have these, there's no functionality to alter.
