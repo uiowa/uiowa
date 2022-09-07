@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "489c34ebda9e9d31e505e0910bcd89c6",
+    "content-hash": "61ece81150bcae2795f565b09603a042",
     "packages": [
         {
             "name": "acquia/blt",
@@ -4237,20 +4237,20 @@
         },
         {
             "name": "drupal/config_split",
-            "version": "2.0.0-beta5",
+            "version": "2.0.0-rc4",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/config_split.git",
-                "reference": "2.0.0-beta5"
+                "reference": "2.0.0-rc4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/config_split-2.0.0-beta5.zip",
-                "reference": "2.0.0-beta5",
-                "shasum": "b5cf4ee3d7af1ba38883bebead12678214a98f1e"
+                "url": "https://ftp.drupal.org/files/projects/config_split-2.0.0-rc4.zip",
+                "reference": "2.0.0-rc4",
+                "shasum": "d4c06efbadd34793b0c9b71772162057afa58111"
             },
             "require": {
-                "drupal/core": "^8.8 || ^9"
+                "drupal/core": "^8.8 || ^9 || ^10"
             },
             "conflict": {
                 "drush/drush": "<10"
@@ -4265,16 +4265,16 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.0.0-beta5",
-                    "datestamp": "1637101204",
+                    "version": "2.0.0-rc4",
+                    "datestamp": "1662235380",
                     "security-coverage": {
                         "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
+                        "message": "RC releases are not covered by Drupal security advisories."
                     }
                 },
                 "drush": {
                     "services": {
-                        "drush.services.yml": "^10"
+                        "drush.services.yml": "^10 || ^11"
                     }
                 }
             },
@@ -22038,7 +22038,7 @@
         "acquia/blt-multisite": 20,
         "drupal/better_exposed_filters": 10,
         "drupal/better_normalizers": 10,
-        "drupal/config_split": 10,
+        "drupal/config_split": 5,
         "drupal/default_content": 15,
         "drupal/diff": 5,
         "drupal/entity_embed": 5,
@@ -22078,5 +22078,5 @@
     "platform-overrides": {
         "php": "7.4"
     },
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.3.0"
 }
