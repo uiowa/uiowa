@@ -11,12 +11,12 @@ use Drupal\Core\Session\AccountInterface;
  *
  * @Action(
  *   id = "sitenow_p2lb_convert",
- *   label = @Translation("Upgrade V2 page to V3"),
+ *   label = @Translation("Convert V2 page to V3"),
  *   type = "node",
  *   confirm = TRUE,
  * )
  */
-class UpgradeParagraphsToLayoutBuilder extends ActionBase {
+class ConvertParagraphsToLayoutBuilder extends ActionBase {
 
   /**
    * {@inheritdoc}
