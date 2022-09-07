@@ -4,6 +4,7 @@ namespace Uiowa\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\YamlMunge;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Finder\Finder;
 use Uiowa\Multisite;
 
@@ -19,7 +20,9 @@ class ConfigSplitCommands extends BltTasks {
    *
    * @requireContainer
    */
-  public function updateFeatureSplits() {
+  public function updateFeatureSplits($options = [
+    'split' => InputOption::VALUE_OPTIONAL,
+  ]) {
     // Reference: https://github.com/uiowa/uiowa/blob/15497457c6c34c3b49c5f4d5cda259a4e67982dc/blt/src/Blt/Plugin/Commands/GitCommands.php#L212-L222
     $root = $this->getConfigValue('repo.root');
     $finder = new Finder();
@@ -35,6 +38,12 @@ class ConfigSplitCommands extends BltTasks {
     foreach ($split_files->getIterator() as $split_file) {
       if (file_exists($split_file)) {
         $split = YamlMunge::parseFile($split_file);
+        $id = $split['id'];
+
+        if (isset($options['split']) && $options['split'] !== $id) {
+          continue;
+        }
+        $this->say("Updating the <comment>$id</comment> config split.");
         $this->updateSplit($split);
       }
     }
