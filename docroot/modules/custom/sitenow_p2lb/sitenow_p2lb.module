@@ -32,12 +32,12 @@ function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_i
       if ($entity->hasField('field_v3_conversion_revision_id')) {
         if (is_numeric($entity->field_v3_conversion_revision_id->value)) {
           // If so, disable field_page_content_block and set a warning message.
-          \Drupal::messenger()->addWarning(t('This page has been convertd to the SiteNow V3 format. Please add content through the "Body" field or click the "Layout" tab to edit an advanced page layout.'));
+          \Drupal::messenger()->addWarning(t('This page has been converted to the SiteNow V3 format. Please add content through the "Body" field or click the "Layout" tab to edit an advanced page layout.'));
           $form['field_page_content_block']['#access'] = FALSE;
         }
         else {
-          \Drupal::messenger()->addMessage(t('This page can be convertd to the SiteNow V3 format. Please visit the @link to convert this page.', [
-            '@link' => Drupal::service('link_generator')->generate('SiteNow Convertr tool', Url::fromRoute('sitenow_p2lb.content_convertr')),
+          \Drupal::messenger()->addMessage(t('This page can be converted to the SiteNow V3 format. Please visit the @link to convert this page.', [
+            '@link' => Drupal::service('link_generator')->generate('SiteNow Convertr tool', Url::fromRoute('sitenow_p2lb.content_converter')),
           ]));
           $form['body']['#access'] = FALSE;
         }

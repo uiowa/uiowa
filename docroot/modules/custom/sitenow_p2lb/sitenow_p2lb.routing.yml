@@ -6,20 +6,20 @@ sitenow_p2lb.settings_form:
   requirements:
     _permission: 'administer sitenow p2lb'
 
-sitenow_p2lb.content_convertr:
-  path: '/admin/content/sitenow-convertr'
+sitenow_p2lb.content_converter:
+  path: '/admin/content/sitenow-converter'
   defaults:
     _controller: '\Drupal\system\Controller\SystemController::overview'
-    link_id: 'sitenow_p2lb.content_convertr'
+    link_id: 'sitenow_p2lb.content_converter'
     _title: 'SiteNow Convertr'
   requirements:
     _permission: 'access administration pages'
 
-sitenow_p2lb.content_convertd:
-  path: '/admin/content/sitenow-convertr/convertd'
+sitenow_p2lb.content_converted:
+  path: '/admin/content/sitenow-converter/converted'
   defaults:
     _controller: '\Drupal\system\Controller\SystemController::overview'
-    link_id: 'sitenow_p2lb.content_convertd'
+    link_id: 'sitenow_p2lb.content_converted'
     _title: 'Convertd'
   requirements:
     _permission: 'access administration pages'
