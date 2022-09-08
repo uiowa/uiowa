@@ -37,7 +37,7 @@ function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_i
         }
         else {
           \Drupal::messenger()->addMessage(t('This page can be converted to the SiteNow V3 format. Please visit the @link to convert this page.', [
-            '@link' => Drupal::service('link_generator')->generate('SiteNow Convertr tool', Url::fromRoute('sitenow_p2lb.content_converter')),
+            '@link' => Drupal::service('link_generator')->generate('SiteNow Converter tool', Url::fromRoute('sitenow_p2lb.content_converter')),
           ]));
           $form['body']['#access'] = FALSE;
         }
@@ -102,7 +102,7 @@ function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = F
 
     // Save as a new draft.
     $node->setNewRevision(TRUE);
-    $node->revision_log = 'Convertd page to v3.';
+    $node->revision_log = 'Converted page to v3.';
     $node->moderation_state->value = 'draft';
 
     // Set the user id for the revision.
