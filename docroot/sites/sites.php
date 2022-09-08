@@ -4450,3 +4450,9 @@ $sites['labcomparative-cognition.uiowa.ddev.site'] = 'comparative-cognition.lab.
 $sites['labcomparative-cognition.dev.drupal.uiowa.edu'] = 'comparative-cognition.lab.uiowa.edu';
 $sites['labcomparative-cognition.stage.drupal.uiowa.edu'] = 'comparative-cognition.lab.uiowa.edu';
 $sites['labcomparative-cognition.prod.drupal.uiowa.edu'] = 'comparative-cognition.lab.uiowa.edu';
+
+// Directory aliases for training.itaccessibility.uiowa.edu.
+$sites['itaccessibilitytraining.uiowa.ddev.site'] = 'training.itaccessibility.uiowa.edu';
+$sites['itaccessibilitytraining.dev.drupal.uiowa.edu'] = 'training.itaccessibility.uiowa.edu';
+$sites['itaccessibilitytraining.stage.drupal.uiowa.edu'] = 'training.itaccessibility.uiowa.edu';
+$sites['itaccessibilitytraining.prod.drupal.uiowa.edu'] = 'training.itaccessibility.uiowa.edu';
