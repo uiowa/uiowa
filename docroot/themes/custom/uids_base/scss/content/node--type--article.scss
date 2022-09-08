@@ -130,6 +130,11 @@ div[role=article].node--type-article {
 
 
 article.node--type-article {
+  // Remove colon being added by field.css.
+  .field--label-above .field--label-inline:after {
+    content: "";
+  }
+
   .block-extra-field-blocknodearticlearticle-created-date {
     margin: 0 0 $sm;
   }
@@ -151,6 +156,7 @@ article.node--type-article {
   .gallery-jump-link {
     font-family: Zilla Slab,serif;
     font-size: 1.2rem;
+    margin-top: 0.4rem;
 
     a {
       text-decoration: none;

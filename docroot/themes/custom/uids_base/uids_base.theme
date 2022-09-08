@@ -292,30 +292,56 @@ function uids_base_preprocess_node(&$variables) {
     //   See https://github.com/uiowa/uiowa/issues/4948
     $is_v2 = \Drupal::config('config_split.config_split.sitenow_v2')->get('status');
 
-    if ($is_v2) {
-      switch ($node->getType()) {
-        case 'page':
-          $variables['attributes']['class'][] = 'card--stacked';
+    switch ($node->getType()) {
+      case 'article':
+        // Style stacked if from related_manually_referenced_content block grid,
+        // otherwise media right. Unset completely for SiteNow v2.
+        if (isset($node->view) && $node->view->id() == 'related_manually_referenced_content' && $node->view->current_display == 'block_grid') {
+          $card_classes = [
+            'card--stacked',
+            'card--enclosed',
+            'hide-descriptions',
+            'bg--white',
+          ];
+          foreach ($card_classes as $card_class) {
+            $variables['attributes']['class'][] = $card_class;
+          }
           $variables['media_classes'] = [
             'media--widescreen',
             'card__media--large',
           ];
-        case 'article':
-          unset($variables['attributes']['class']);
-          unset($variables['media_classes']);
-      }
-    }
-    elseif (!$is_v2) {
-      switch ($node->getType()) {
-        case 'page':
-        case 'article':
+        }
+        else {
           $variables['attributes']['class'][] = 'card--media-right';
           $variables['media_classes'] = [
             'media--widescreen',
             'card__media--small',
           ];
-          break;
-      }
+        }
+        if ($is_v2) {
+          unset($variables['attributes']['class']);
+          unset($variables['media_classes']);
+        }
+        break;
+
+      // Style stacked for SiteNow v2, otherwise media right.
+      case 'page':
+        if ($is_v2) {
+          $variables['attributes']['class'][] = 'card--stacked';
+          $variables['media_classes'] = [
+            'media--widescreen',
+            'card__media--large',
+          ];
+        }
+        else {
+          $variables['attributes']['class'][] = 'card--media-right';
+          $variables['media_classes'] = [
+            'media--widescreen',
+            'card__media--small',
+          ];
+        }
+        break;
+
     }
   }
 
