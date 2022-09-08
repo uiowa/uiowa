@@ -43,6 +43,10 @@ function sitenow_articles_form_alter(&$form, FormStateInterface $form_state, $fo
   switch ($form_id) {
     case 'node_article_edit_form':
     case 'node_article_form':
+      if (isset($form['field_related_content'])) {
+        // Set field_related_content to node_reference group.
+        $form['field_related_content']['#group'] = 'node_relations';
+      }
       $form['field_article_source_link_direct']['#states'] = [
         'visible' => [
           ':input[name="field_article_source_link[0][uri]"]' => ['filled' => TRUE],
@@ -116,6 +120,10 @@ function sitenow_articles_preprocess_field(&$variables) {
     if ($node->hasField('field_image_caption') && !$node->get('field_image_caption')->isEmpty()) {
       $variables["attributes"]['aria-describedby'] = 'node-caption';
     }
+  }
+  if ($variables['element']['#field_name'] == 'field_related_content') {
+    $variables['attributes']['class'][] = 'inner--grid';
+    $variables['attributes']['class'][] = 'grid--threecol--33-34-33';
   }
 }
 

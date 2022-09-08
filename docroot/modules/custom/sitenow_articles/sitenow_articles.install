@@ -67,3 +67,14 @@ function sitenow_articles_update_9303() {
     ->set('display.feed_articles.display_options.row.options.guid_field_options.guid_field_is_permalink', FALSE)
     ->save();
 }
+
+/**
+ * Set related articles to card_grid instead of do_not_display.
+ */
+function sitenow_articles_update_9304() {
+  $config = \Drupal::configFactory()->getEditable('sitenow_articles.settings');
+  if ($config->get('related_display') !== 'headings_lists') {
+    $config->set('related_display', 'card_grid')
+      ->save();
+  }
+}

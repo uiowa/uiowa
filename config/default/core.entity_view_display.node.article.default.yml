@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.article.field_article_source_link
     - field.field.node.article.field_article_source_link_direct
     - field.field.node.article.field_article_source_org
+    - field.field.node.article.field_related_content
     - field.field.node.article.field_featured_image_display
     - field.field.node.article.field_gallery_images
     - field.field.node.article.field_image
@@ -182,7 +183,7 @@ third_party_settings:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-            weight: 13
+            weight: 14
             additional: {  }
             third_party_settings: {  }
           -
@@ -206,6 +207,28 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
+            uuid: 0b9bf989-3ef0-4021-8560-1ef08301af5d
+            region: content
+            configuration:
+              id: galleryjumplink_block
+              label: null
+              label_display: null
+              provider: sitenow_articles
+              context_mapping: {  }
+            weight: 11
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+        components:
+          -
             uuid: c46a768f-8893-49fa-9a83-9fb43fbb7916
             region: content
             configuration:
@@ -224,23 +247,11 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 14
+            weight: 0
             additional: {  }
             third_party_settings:
               layout_builder_custom:
                 unique_id: gallery
-          -
-            uuid: 0b9bf989-3ef0-4021-8560-1ef08301af5d
-            region: content
-            configuration:
-              id: galleryjumplink_block
-              label: null
-              label_display: null
-              provider: sitenow_articles
-              context_mapping: {  }
-            weight: 11
-            additional: {  }
-            third_party_settings: {  }
         third_party_settings: {  }
   layout_builder_restrictions:
     allowed_block_categories: {  }
@@ -327,6 +338,14 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 2
+    region: content
+  field_related_content:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 10
     region: content
   links:
     settings: {  }
