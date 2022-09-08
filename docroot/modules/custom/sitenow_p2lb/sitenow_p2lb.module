@@ -5,11 +5,46 @@
  * Contains sitenow_p2lb.module.
  */
 
+use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\layout_builder\Section;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\layout_builder\InlineBlockUsage;
-use Drupal\Core\Config\FileStorage;
+use Drupal\layout_builder\Section;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_form_alter().
+ */
+function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (in_array($form_id, [
+    'node_page_form',
+    'node_page_edit_form',
+  ])) {
+    $entity = $form_state->getFormObject()->getEntity();
+
+    if ($form_id === 'node_page_form') {
+      // Disable display of the Paragraph sections for new content.
+      $form['field_page_content_block']['#access'] = FALSE;
+    }
+    elseif ($form_id === 'node_page_edit_form') {
+      // Check if field_v3_conversion_revision_id is set.
+      if ($entity->hasField('field_v3_conversion_revision_id')) {
+        if (is_numeric($entity->field_v3_conversion_revision_id->value)) {
+          // If so, disable field_page_content_block and set a warning message.
+          \Drupal::messenger()->addWarning(t('This page has been converted to the SiteNow V3 format. Please add content through the "Body" field or click the "Layout" tab to edit an advanced page layout.'));
+          $form['field_page_content_block']['#access'] = FALSE;
+        }
+        else {
+          \Drupal::messenger()->addMessage(t('This page can be converted to the SiteNow V3 format. Please visit the @link to convert this page.', [
+            '@link' => Drupal::service('link_generator')->generate('SiteNow Converter tool', Url::fromRoute('sitenow_p2lb.content_converter')),
+          ]));
+          $form['body']['#access'] = FALSE;
+        }
+      }
+    }
+  }
+}
 
 /**
  * Check for nodes which are using paragraphs.
@@ -69,6 +104,10 @@ function sitenow_p2lb_node_p2lb(ContentEntityInterface $node = NULL, $remove = F
     $node->setNewRevision(TRUE);
     $node->revision_log = 'Converted page to v3.';
     $node->moderation_state->value = 'draft';
+
+    // Set the user id for the revision.
+    $user_id = \Drupal::currentUser()->id();
+    $node->setRevisionUserId($user_id);
 
     $node->save();
 
@@ -461,6 +500,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         'use_more' => $more,
         'use_more_link_url' => $more_path,
         'exposed_filter_values' => [
+          // @todo Set these dynamically.
           'field_tags_target_id' => [],
         ],
         'layout_builder_styles' => _sitenow_p2lb_block_styles($type, $paragraph),
@@ -756,7 +796,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
 
       // Build out the new view block configuration.
       $config = [
-        'id' => 'views_block:people_list_block-list_card',
+        'id' => $type,
         'label' => $label,
         'provider' => 'views',
         'label_display' => $display_label,
@@ -769,6 +809,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         'use_more_link_url' => $more_path,
         'sort' => $sort,
         'exposed_filter_values' => [
+          // @todo Set these dynamically.
           'field_tags_target_id' => [],
         ],
         'layout_builder_styles' => _sitenow_p2lb_block_styles($type, $paragraph),

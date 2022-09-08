@@ -26,7 +26,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: 'To be converted'
+      title: 'SiteNow Converter'
       fields:
         node_bulk_form:
           id: node_bulk_form
@@ -393,69 +393,6 @@ display:
           empty_zero: false
           hide_alter_empty: true
           destination: true
-        field_v3_conversion_revision_id-revision_id:
-          id: field_v3_conversion_revision_id-revision_id
-          table: node_revision__field_v3_conversion_revision_id
-          field: field_v3_conversion_revision_id-revision_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: field
-          label: 'Conversion revision ID'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: false
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
       pager:
         type: full
         options:
@@ -504,7 +441,7 @@ display:
           admin_label: ''
           plugin_id: text_custom
           empty: true
-          content: 'No moderated content available. Only pending versions of content, such as drafts, are listed here.'
+          content: 'Hoo-ray! You have converted all your pages to the SiteNow V3 format.'
           tokenize: false
       sorts: {  }
       arguments: {  }
@@ -869,7 +806,6 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:field.storage.node.field_v3_conversion_revision_id'
         - 'config:workflow_list'
   moderated_content:
     id: moderated_content
@@ -879,8 +815,10 @@ display:
     display_options:
       display_description: ''
       display_extenders:
-        metatag_display_extender: {  }
-      path: admin/sitenow-converter/node
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
+      path: admin/content/sitenow-converter/node
       menu:
         type: 'default tab'
         title: 'To be converted'
@@ -905,7 +843,6 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:field.storage.node.field_v3_conversion_revision_id'
         - 'config:workflow_list'
   page_1:
     id: page_1
@@ -1343,6 +1280,18 @@ display:
           empty_zero: false
           hide_alter_empty: true
           destination: true
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text_custom
+          empty: true
+          content: 'You haven''t converted any pages to the SiteNow V3 format yet. Click the "To be converted" tab to get started.'
+          tokenize: false
       filters:
         type:
           id: type
@@ -1604,14 +1553,17 @@ display:
         groups:
           1: AND
       defaults:
+        empty: false
         title: false
         fields: false
         filters: false
         filter_groups: false
       display_description: ''
       display_extenders:
-        metatag_display_extender: {  }
-      path: admin/sitenow-converter/converted
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
+      path: admin/content/sitenow-converter/converted
       menu:
         type: tab
         title: Converted
@@ -1619,7 +1571,7 @@ display:
         weight: 0
         expanded: false
         menu_name: admin
-        parent: system.admin
+        parent: sitenow_p2lb.content_converter
         context: '0'
       tab_options:
         type: normal
