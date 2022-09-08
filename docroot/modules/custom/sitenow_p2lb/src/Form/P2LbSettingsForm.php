@@ -80,7 +80,7 @@ class P2LbSettingsForm extends ConfigFormBase {
       '#type' => 'markup',
       '#markup' => <<< 'EOD'
         <p>These settings let you configure and use SiteNow paragraphs2layoutbuilder on this site.</p>
-        <p>Additionally, pages can be tracked and converted at <a href="/admin/sitenow-converter">/admin/sitenow-converter</a>.</p>
+        <p>Additionally, pages can be tracked and converted at <a href="/admin/content/sitenow-converter">/admin/content/sitenow-converter</a>.</p>
       EOD,
     ];
 
