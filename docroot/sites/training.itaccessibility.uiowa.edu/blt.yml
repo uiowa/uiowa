@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: itaccessibilitytraining.uiowa.ddev.site
+    protocol: https
+  machine_name: itaccessibilitytraining
+  human_name: training.itaccessibility.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: itaccessibilitytraining.prod
+drupal:
+  db:
+    database: training_itaccessibility_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: tmweiss
+  site-name: 'IT Accessibility Training'

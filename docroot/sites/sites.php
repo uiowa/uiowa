@@ -4444,3 +4444,21 @@ $sites['researchdsp.uiowa.ddev.site'] = 'dsp.research.uiowa.edu';
 $sites['researchdsp.dev.drupal.uiowa.edu'] = 'dsp.research.uiowa.edu';
 $sites['researchdsp.stage.drupal.uiowa.edu'] = 'dsp.research.uiowa.edu';
 $sites['researchdsp.prod.drupal.uiowa.edu'] = 'dsp.research.uiowa.edu';
+
+// Directory aliases for comparative-cognition.lab.uiowa.edu.
+$sites['labcomparative-cognition.uiowa.ddev.site'] = 'comparative-cognition.lab.uiowa.edu';
+$sites['labcomparative-cognition.dev.drupal.uiowa.edu'] = 'comparative-cognition.lab.uiowa.edu';
+$sites['labcomparative-cognition.stage.drupal.uiowa.edu'] = 'comparative-cognition.lab.uiowa.edu';
+$sites['labcomparative-cognition.prod.drupal.uiowa.edu'] = 'comparative-cognition.lab.uiowa.edu';
+
+// Directory aliases for training.itaccessibility.uiowa.edu.
+$sites['itaccessibilitytraining.uiowa.ddev.site'] = 'training.itaccessibility.uiowa.edu';
+$sites['itaccessibilitytraining.dev.drupal.uiowa.edu'] = 'training.itaccessibility.uiowa.edu';
+$sites['itaccessibilitytraining.stage.drupal.uiowa.edu'] = 'training.itaccessibility.uiowa.edu';
+$sites['itaccessibilitytraining.prod.drupal.uiowa.edu'] = 'training.itaccessibility.uiowa.edu';
+
+// Directory aliases for vao.physics.uiowa.edu.
+$sites['physicsvao.uiowa.ddev.site'] = 'vao.physics.uiowa.edu';
+$sites['physicsvao.dev.drupal.uiowa.edu'] = 'vao.physics.uiowa.edu';
+$sites['physicsvao.stage.drupal.uiowa.edu'] = 'vao.physics.uiowa.edu';
+$sites['physicsvao.prod.drupal.uiowa.edu'] = 'vao.physics.uiowa.edu';
