@@ -1874,3 +1874,22 @@ function sitenow_update_9047() {
 function sitenow_update_9048() {
   drupal_flush_all_caches();
 }
+
+/**
+ * Add article to replicate allowed content types.
+ */
+function sitenow_update_9049() {
+  /** @var \Drupal\config_split\Entity\ConfigSplitEntity $config_split_entities */
+  $sitenow_v2 = \Drupal::entityTypeManager()->getStorage('config_split')->load('sitenow_v2');
+  $sitenow_v2->get('status');
+
+  // This site has the 'sitenow_v2' split in config,
+  // and it is enabled.
+  if ($sitenow_v2 && $sitenow_v2->get('status')) {
+    $config_factory = \Drupal::configFactory();
+    $config = $config_factory->getEditable('uiowa_core.settings');
+    $config
+      ->set('uiowa_core.replicate_allowed', ['article'])
+      ->save();
+  }
+}
