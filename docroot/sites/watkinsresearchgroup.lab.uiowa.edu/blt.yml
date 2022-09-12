@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labwatkinsresearchgroup.uiowa.ddev.site
+    protocol: https
+  machine_name: labwatkinsresearchgroup
+  human_name: watkinsresearchgroup.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labwatkinsresearchgroup.prod
+drupal:
+  db:
+    database: watkinsresearchgroup_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: slwatkins
+  site-name: 'Watkins Research Group'

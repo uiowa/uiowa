@@ -2765,12 +2765,6 @@ $sites['physicshalosat.dev.drupal.uiowa.edu'] = 'halosat.physics.uiowa.edu';
 $sites['physicshalosat.stage.drupal.uiowa.edu'] = 'halosat.physics.uiowa.edu';
 $sites['physicshalosat.prod.drupal.uiowa.edu'] = 'halosat.physics.uiowa.edu';
 
-// Directory aliases for asg.clas.uiowa.edu.
-$sites['clasasg.uiowa.ddev.site'] = 'asg.clas.uiowa.edu';
-$sites['clasasg.dev.drupal.uiowa.edu'] = 'asg.clas.uiowa.edu';
-$sites['clasasg.stage.drupal.uiowa.edu'] = 'asg.clas.uiowa.edu';
-$sites['clasasg.prod.drupal.uiowa.edu'] = 'asg.clas.uiowa.edu';
-
 // Directory aliases for humanimmunology.sites.uiowa.edu.
 $sites['siteshumanimmunology.uiowa.ddev.site'] = 'humanimmunology.sites.uiowa.edu';
 $sites['siteshumanimmunology.dev.drupal.uiowa.edu'] = 'humanimmunology.sites.uiowa.edu';
@@ -4420,3 +4414,51 @@ $sites['clasalt.uiowa.ddev.site'] = 'alt.clas.uiowa.edu';
 $sites['clasalt.dev.drupal.uiowa.edu'] = 'alt.clas.uiowa.edu';
 $sites['clasalt.stage.drupal.uiowa.edu'] = 'alt.clas.uiowa.edu';
 $sites['clasalt.prod.drupal.uiowa.edu'] = 'alt.clas.uiowa.edu';
+
+// Directory aliases for hawksunion.org.uiowa.edu.
+$sites['orghawksunion.uiowa.ddev.site'] = 'hawksunion.org.uiowa.edu';
+$sites['orghawksunion.dev.drupal.uiowa.edu'] = 'hawksunion.org.uiowa.edu';
+$sites['orghawksunion.stage.drupal.uiowa.edu'] = 'hawksunion.org.uiowa.edu';
+$sites['orghawksunion.prod.drupal.uiowa.edu'] = 'hawksunion.org.uiowa.edu';
+
+// Directory aliases for iowamobileclinic.org.uiowa.edu.
+$sites['orgiowamobileclinic.uiowa.ddev.site'] = 'iowamobileclinic.org.uiowa.edu';
+$sites['orgiowamobileclinic.dev.drupal.uiowa.edu'] = 'iowamobileclinic.org.uiowa.edu';
+$sites['orgiowamobileclinic.stage.drupal.uiowa.edu'] = 'iowamobileclinic.org.uiowa.edu';
+$sites['orgiowamobileclinic.prod.drupal.uiowa.edu'] = 'iowamobileclinic.org.uiowa.edu';
+
+// Directory aliases for watkinsresearchgroup.lab.uiowa.edu.
+$sites['labwatkinsresearchgroup.uiowa.ddev.site'] = 'watkinsresearchgroup.lab.uiowa.edu';
+$sites['labwatkinsresearchgroup.dev.drupal.uiowa.edu'] = 'watkinsresearchgroup.lab.uiowa.edu';
+$sites['labwatkinsresearchgroup.stage.drupal.uiowa.edu'] = 'watkinsresearchgroup.lab.uiowa.edu';
+$sites['labwatkinsresearchgroup.prod.drupal.uiowa.edu'] = 'watkinsresearchgroup.lab.uiowa.edu';
+
+// Directory aliases for muzzio.lab.uiowa.edu.
+$sites['labmuzzio.uiowa.ddev.site'] = 'muzzio.lab.uiowa.edu';
+$sites['labmuzzio.dev.drupal.uiowa.edu'] = 'muzzio.lab.uiowa.edu';
+$sites['labmuzzio.stage.drupal.uiowa.edu'] = 'muzzio.lab.uiowa.edu';
+$sites['labmuzzio.prod.drupal.uiowa.edu'] = 'muzzio.lab.uiowa.edu';
+
+// Directory aliases for dsp.research.uiowa.edu.
+$sites['researchdsp.uiowa.ddev.site'] = 'dsp.research.uiowa.edu';
+$sites['researchdsp.dev.drupal.uiowa.edu'] = 'dsp.research.uiowa.edu';
+$sites['researchdsp.stage.drupal.uiowa.edu'] = 'dsp.research.uiowa.edu';
+$sites['researchdsp.prod.drupal.uiowa.edu'] = 'dsp.research.uiowa.edu';
+
+// Directory aliases for comparative-cognition.lab.uiowa.edu.
+$sites['labcomparative-cognition.uiowa.ddev.site'] = 'comparative-cognition.lab.uiowa.edu';
+$sites['labcomparative-cognition.dev.drupal.uiowa.edu'] = 'comparative-cognition.lab.uiowa.edu';
+$sites['labcomparative-cognition.stage.drupal.uiowa.edu'] = 'comparative-cognition.lab.uiowa.edu';
+$sites['labcomparative-cognition.prod.drupal.uiowa.edu'] = 'comparative-cognition.lab.uiowa.edu';
+
+// Directory aliases for training.itaccessibility.uiowa.edu.
+$sites['itaccessibilitytraining.uiowa.ddev.site'] = 'training.itaccessibility.uiowa.edu';
+$sites['itaccessibilitytraining.dev.drupal.uiowa.edu'] = 'training.itaccessibility.uiowa.edu';
+$sites['itaccessibilitytraining.stage.drupal.uiowa.edu'] = 'training.itaccessibility.uiowa.edu';
+$sites['itaccessibilitytraining.prod.drupal.uiowa.edu'] = 'training.itaccessibility.uiowa.edu';
+
+// Directory aliases for vao.physics.uiowa.edu.
+$sites['physicsvao.uiowa.ddev.site'] = 'vao.physics.uiowa.edu';
+$sites['physicsvao.dev.drupal.uiowa.edu'] = 'vao.physics.uiowa.edu';
+$sites['physicsvao.stage.drupal.uiowa.edu'] = 'vao.physics.uiowa.edu';
+$sites['physicsvao.prod.drupal.uiowa.edu'] = 'vao.physics.uiowa.edu';

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labcomparative-cognition.uiowa.ddev.site
+    protocol: https
+  machine_name: labcomparative-cognition
+  human_name: comparative-cognition.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labcomparative-cognition.prod
+drupal:
+  db:
+    database: comparative_cognition_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: wassermn
+  site-name: 'Comparative Cognition Laboratory'
