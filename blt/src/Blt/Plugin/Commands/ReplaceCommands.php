@@ -24,6 +24,7 @@ class ReplaceCommands extends BltTasks {
     $this->config->set('drush.alias', '');
 
     $app = EnvironmentDetector::getAhGroup() ?: 'local';
+    $env = EnvironmentDetector::getAhEnv() ?: 'local';
     $multisite_exception = FALSE;
 
     // Unshift sites to the beginning to run first.
@@ -69,6 +70,12 @@ class ReplaceCommands extends BltTasks {
           }
 
           try {
+            // Clear the plugin cache for discovery and potential layout issue.
+            // @see: https://github.com/uiowa/uiowa/issues/3585.
+            $this->taskDrush()
+              ->drush('cc plugin')
+              ->run();
+
             $this->invokeCommand('drupal:update');
             $this->logger->info("Finished deploying updates to <comment>{$multisite}</comment>.");
           }
