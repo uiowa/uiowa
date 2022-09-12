@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3580c82762f47f81ebb4567736b2c415",
+    "content-hash": "5218cd1170701243a611b1596236ff86",
     "packages": [
         {
             "name": "acquia/blt",
@@ -9374,28 +9374,33 @@
         },
         {
             "name": "drupal/purge",
-            "version": "dev-3.x",
+            "version": "3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/purge.git",
-                "reference": "151fe3d2a4bfe80949246c4235ed02b8bb91879e"
+                "reference": "8.x-3.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/purge-8.x-3.3.zip",
+                "reference": "8.x-3.3",
+                "shasum": "f4714b97f9ef440f0c5e2620a532f5d0174c9116"
             },
             "require": {
                 "drupal/core": "^9.2 || ^10"
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-3.x": "3.x-dev",
-                    "dev-8.x-3.x": "3.x-dev"
-                },
                 "drupal": {
-                    "version": "8.x-3.3+1-dev",
-                    "datestamp": "1662499598",
+                    "version": "8.x-3.3",
+                    "datestamp": "1661877851",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "branch-alias": {
+                    "dev-8.x-3.x": "3.x-dev"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -22112,7 +22117,6 @@
         "drupal/mimemail": 15,
         "drupal/node_revision_delete": 10,
         "drupal/private_content": 5,
-        "drupal/purge": 20,
         "drupal/rabbit_hole": 10,
         "drupal/restrict_ip": 10,
         "drupal/smart_date": 20,
