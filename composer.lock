@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cdf20c0669c83381db704949842828c6",
+    "content-hash": "3580c82762f47f81ebb4567736b2c415",
     "packages": [
         {
             "name": "acquia/blt",
@@ -9547,26 +9547,29 @@
         },
         {
             "name": "drupal/redirect",
-            "version": "dev-1.x",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/redirect.git",
-                "reference": "e5201ca519bd947ee5478d9dee88af0c5d6fec89"
+                "reference": "8.x-1.8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/redirect-8.x-1.8.zip",
+                "reference": "8.x-1.8",
+                "shasum": "a7a440423434472ff7115ae69df01553f763f839"
             },
             "require": {
                 "drupal/core": "^9.2 || ^10"
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
-                    "version": "8.x-1.8+0-dev",
-                    "datestamp": "1661806727",
+                    "version": "8.x-1.8",
+                    "datestamp": "1661806955",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 }
             },
@@ -22111,7 +22114,6 @@
         "drupal/private_content": 5,
         "drupal/purge": 20,
         "drupal/rabbit_hole": 10,
-        "drupal/redirect": 20,
         "drupal/restrict_ip": 10,
         "drupal/smart_date": 20,
         "drupal/swiftmailer": 10,
