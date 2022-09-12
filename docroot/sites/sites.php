@@ -4462,3 +4462,9 @@ $sites['physicsvao.uiowa.ddev.site'] = 'vao.physics.uiowa.edu';
 $sites['physicsvao.dev.drupal.uiowa.edu'] = 'vao.physics.uiowa.edu';
 $sites['physicsvao.stage.drupal.uiowa.edu'] = 'vao.physics.uiowa.edu';
 $sites['physicsvao.prod.drupal.uiowa.edu'] = 'vao.physics.uiowa.edu';
+
+// Directory aliases for pmril.lab.uiowa.edu.
+$sites['labpmril.uiowa.ddev.site'] = 'pmril.lab.uiowa.edu';
+$sites['labpmril.dev.drupal.uiowa.edu'] = 'pmril.lab.uiowa.edu';
+$sites['labpmril.stage.drupal.uiowa.edu'] = 'pmril.lab.uiowa.edu';
+$sites['labpmril.prod.drupal.uiowa.edu'] = 'pmril.lab.uiowa.edu';
