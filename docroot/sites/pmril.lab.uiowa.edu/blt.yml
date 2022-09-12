@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labpmril.uiowa.ddev.site
+    protocol: https
+  machine_name: labpmril
+  human_name: pmril.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labpmril.prod
+drupal:
+  db:
+    database: pmril_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: jenkinsn
+  site-name: 'Pulmonary Magnetic Resonance Imaging Research Labs (PMRIL)'
