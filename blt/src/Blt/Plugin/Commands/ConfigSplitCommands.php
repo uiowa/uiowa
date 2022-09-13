@@ -120,7 +120,7 @@ class ConfigSplitCommands extends BltTasks {
    */
   protected function updateSplit($split, $alias = 'default', $module = NULL) {
     $id = $split['id'];
-    $this->say("Updating the <comment>$id</comment> on $alias config split.");
+    $this->say("Updating the <comment>$id</comment> config split on $alias.");
 
     // Recreate the database in case this site has never been blt-synced before.
     $this->taskDrush()
