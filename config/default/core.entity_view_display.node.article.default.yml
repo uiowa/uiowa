@@ -5,19 +5,23 @@ dependencies:
   config:
     - field.field.node.article.body
     - field.field.node.article.field_article_author
+    - field.field.node.article.field_article_preserve_links
     - field.field.node.article.field_article_source_link
     - field.field.node.article.field_article_source_link_direct
     - field.field.node.article.field_article_source_org
-    - field.field.node.article.field_related_content
     - field.field.node.article.field_featured_image_display
     - field.field.node.article.field_gallery_images
     - field.field.node.article.field_image
     - field.field.node.article.field_image_caption
     - field.field.node.article.field_meta_tags
+    - field.field.node.article.field_related_content
     - field.field.node.article.field_tags
     - field.field.node.article.field_teaser
     - node.type.article
+  content:
+    - 'block_content:uiowa_text_area:1cd1bb9f-77c0-4ad2-b1ae-f544ab34212b'
   module:
+    - block_content
     - layout_builder
     - layout_builder_restrictions
     - link
@@ -69,7 +73,7 @@ third_party_settings:
                 settings:
                   view_mode: full__ultrawide
                 third_party_settings: {  }
-            weight: 0
+            weight: 1
             additional: {  }
             third_party_settings: {  }
           d75c28a9-d252-47df-86e8-206190ec5052:
@@ -118,7 +122,7 @@ third_party_settings:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-            weight: 4
+            weight: 7
             additional: {  }
             third_party_settings: {  }
           1ff4f36b-9a8d-48bd-abbd-abefa66014f1:
@@ -135,7 +139,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 7
+            weight: 9
             additional: {  }
             third_party_settings: {  }
           8c17705e-7015-4555-bee3-1d482b839802:
@@ -156,7 +160,7 @@ third_party_settings:
                   rel: ''
                   target: ''
                 third_party_settings: {  }
-            weight: 8
+            weight: 10
             additional: {  }
             third_party_settings: {  }
           e11264d2-f469-41f9-ae04-db2ce33883fa:
@@ -183,7 +187,7 @@ third_party_settings:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-            weight: 14
+            weight: 13
             additional: {  }
             third_party_settings: {  }
           a0aa4574-dd5c-460d-befb-8eebabd8b817:
@@ -203,7 +207,7 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 6
+            weight: 8
             additional: {  }
             third_party_settings: {  }
           0b9bf989-3ef0-4021-8560-1ef08301af5d:
@@ -217,6 +221,23 @@ third_party_settings:
               context_mapping: {  }
             weight: 11
             additional: {  }
+            third_party_settings: {  }
+          1ed61a70-aaf9-4464-ac40-8df97ac016e9:
+            uuid: 1ed61a70-aaf9-4464-ac40-8df97ac016e9
+            region: content
+            configuration:
+              id: 'block_content:1cd1bb9f-77c0-4ad2-b1ae-f544ab34212b'
+              label: null
+              label_display: null
+              provider: block_content
+              status: true
+              info: ''
+              view_mode: full
+              context_mapping: {  }
+            weight: 6
+            additional:
+              layout_builder_styles_style:
+                - ''
             third_party_settings: {  }
         third_party_settings: {  }
       -
@@ -285,6 +306,16 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 1
+    region: content
+  field_article_preserve_links:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 11
     region: content
   field_article_source_link:
     type: link

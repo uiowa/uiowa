@@ -232,6 +232,18 @@ function sitenow_articles_preprocess_node(&$variables) {
             }
           }
         }
+        if (in_array($variables['view_mode'], ['default', 'full'])) {
+          // Check if preserve links checkbox is checked.
+          if ($node->hasField('field_article_preserve_links') && ($node->field_article_preserve_links->value == 0)) {
+            // if it is, do not display the broken links message
+            foreach (array_reverse($variables['content']['_layout_builder'][1]['content'], TRUE) as $key => $block) {
+              if (isset($block['#plugin_id']) && $block['#plugin_id'] == 'block_content:1cd1bb9f-77c0-4ad2-b1ae-f544ab34212b') {
+                unset($variables['content']['_layout_builder'][1]['content'][$key]);
+                break;
+              }
+            }
+          }
+        }
         break;
 
     }
