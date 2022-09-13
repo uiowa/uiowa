@@ -4468,3 +4468,9 @@ $sites['labpmril.uiowa.ddev.site'] = 'pmril.lab.uiowa.edu';
 $sites['labpmril.dev.drupal.uiowa.edu'] = 'pmril.lab.uiowa.edu';
 $sites['labpmril.stage.drupal.uiowa.edu'] = 'pmril.lab.uiowa.edu';
 $sites['labpmril.prod.drupal.uiowa.edu'] = 'pmril.lab.uiowa.edu';
+
+// Directory aliases for vikram.lab.uiowa.edu.
+$sites['labvikram.uiowa.ddev.site'] = 'vikram.lab.uiowa.edu';
+$sites['labvikram.dev.drupal.uiowa.edu'] = 'vikram.lab.uiowa.edu';
+$sites['labvikram.stage.drupal.uiowa.edu'] = 'vikram.lab.uiowa.edu';
+$sites['labvikram.prod.drupal.uiowa.edu'] = 'vikram.lab.uiowa.edu';
