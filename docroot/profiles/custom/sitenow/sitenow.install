@@ -1893,3 +1893,10 @@ function sitenow_update_9049() {
       ->save();
   }
 }
+
+/**
+ * Flush all caches because reasons.
+ */
+function sitenow_update_9050() {
+  drupal_flush_all_caches();
+}

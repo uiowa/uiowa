@@ -102,7 +102,6 @@ The packages below are locked at specific SHAs and will not update using the met
 
 | Package                               | Reason                   |
 | ------------------------------------- | ------------------------ |
-| drupal/layout_builder_styles          | Need 0d8021a8 from 8.x-1.x branch plus a patch. https://git.drupalcode.org/project/layout_builder_styles/-/commits/8.x-1.x. |
 | drupal/lb_direct_add                  | No 2.x stable release.   |
 | drupal/media_thumbnails_video         | Need php 8.1 compatible dependencies, no stable release |
 | kartsims/easysvg                      | Need https://github.com/kartsims/easysvg/pull/27 which is not included in a release. |

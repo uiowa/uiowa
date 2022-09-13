@@ -2,6 +2,7 @@ adding:
   dependencies:
     config:
       - field.field.node.page.field_page_content_block
+      - field.field.node.page.layout_builder__layout
     module:
       - paragraphs
   content:
@@ -37,19 +38,17 @@ removing:
     module:
       - text
   content:
+    body:
+      settings:
+        rows: 9
+        summary_rows: 3
+        placeholder: ''
+        show_summary: false
+      type: text_textarea_with_summary
+      weight: 1
     field_publish_options:
       weight: 13
     field_teaser:
       weight: 2
     moderation_state:
       weight: 14
-    body:
-      type: text_textarea_with_summary
-      weight: 1
-      region: content
-      settings:
-        rows: 9
-        summary_rows: 3
-        placeholder: ''
-        show_summary: false
-      third_party_settings: {  }
