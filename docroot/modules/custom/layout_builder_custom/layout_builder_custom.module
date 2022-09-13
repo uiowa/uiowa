@@ -324,8 +324,9 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               // it can be placed below the admin label.
               $form['settings']['layout_builder_style_menu_orientation'] = [
                 '#weight' => -10,
-                  // We set #tree to FALSE because this value will override the
-                  // value from this will override the original in the form state.
+                  // We set #tree to FALSE because
+                  // this value will override the value from this
+                  // will override the original in the form state.
                 '#tree' => FALSE,
                 '#description' => t('The "Horizontal" option will look the same as the "Vertical" option if this block is being placed in something other than a one column layout.'),
               ] + $form['layout_builder_style_menu_orientation'];
@@ -673,7 +674,8 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
             //   https://github.com/uiowa/uiowa/issues/5013
             $form_state->unsetValue($form_media_selection);
           }
-          // Set layout_builder_style_background to value of our duplicate select.
+          // Set layout_builder_style_background to
+          // value of our duplicate select.
           $form_state->setValue('layout_builder_style_background', $background_option);
         }
         break;
