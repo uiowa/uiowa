@@ -11,7 +11,7 @@ use Drupal\Core\Url;
 /**
  * Implements hook_uip_classes_alter().
  */
-function sitenow_events_uip_classes_alter(&$options, $entity, $bundle) {
+function sitenow_events_paragraph_uip_classes_alter(&$options, $entity, $bundle) {
   switch ($bundle) {
     case 'events':
       $options['hide-descriptions'] = 'Hide Descriptions';
