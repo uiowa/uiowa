@@ -65,9 +65,11 @@ class PreservedLinksMessage extends BlockBase implements ContainerFactoryPluginI
       '#markup' => $markup,
       '#attributes' => [
         'class' => [
-          'alert alert-info',
+          'alert',
+          'alert-info',
         ],
       ],
     ];
   }
+
 }
