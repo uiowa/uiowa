@@ -18,10 +18,7 @@ dependencies:
     - field.field.node.article.field_tags
     - field.field.node.article.field_teaser
     - node.type.article
-  content:
-    - 'block_content:uiowa_text_area:1cd1bb9f-77c0-4ad2-b1ae-f544ab34212b'
   module:
-    - block_content
     - layout_builder
     - layout_builder_restrictions
     - link
@@ -122,7 +119,7 @@ third_party_settings:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-            weight: 7
+            weight: 8
             additional: {  }
             third_party_settings: {  }
           -
@@ -139,7 +136,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 9
+            weight: 10
             additional: {  }
             third_party_settings: {  }
           -
@@ -160,7 +157,7 @@ third_party_settings:
                   rel: ''
                   target: ''
                 third_party_settings: {  }
-            weight: 10
+            weight: 11
             additional: {  }
             third_party_settings: {  }
           -
@@ -176,7 +173,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 12
+            weight: 13
             additional: {  }
             third_party_settings: {  }
           -
@@ -187,7 +184,7 @@ third_party_settings:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-            weight: 13
+            weight: 14
             additional: {  }
             third_party_settings: {  }
           -
@@ -207,7 +204,7 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 8
+            weight: 9
             additional: {  }
             third_party_settings: {  }
           -
@@ -219,26 +216,20 @@ third_party_settings:
               label_display: null
               provider: sitenow_articles
               context_mapping: {  }
-            weight: 11
+            weight: 12
             additional: {  }
             third_party_settings: {  }
-          1ed61a70-aaf9-4464-ac40-8df97ac016e9:
-            uuid: 1ed61a70-aaf9-4464-ac40-8df97ac016e9
+          -
+            uuid: 110bd7d4-a607-45b2-a17d-d30d34950a37
             region: content
             configuration:
-              id: 'block_content:1cd1bb9f-77c0-4ad2-b1ae-f544ab34212b'
+              id: preservedlinksmessage_block
               label: null
               label_display: null
-              provider: block_content
-              status: true
-              info: ''
-              view_mode: full
+              provider: sitenow_articles
               context_mapping: {  }
-            weight: 6
-            additional:
-              layout_builder_styles_style:
-                0: ''
-                block_margin_bottom: block_margin_bottom
+            weight: 7
+            additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
       -
