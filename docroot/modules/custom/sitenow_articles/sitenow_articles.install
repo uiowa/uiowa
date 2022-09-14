@@ -78,3 +78,13 @@ function sitenow_articles_update_9304() {
       ->save();
   }
 }
+
+/**
+ * Add preserved link message display config setting to articles.
+ */
+function sitenow_articles_update_9305() {
+  $config = \Drupal::configFactory()->getEditable('sitenow_articles.settings');
+  $config->set('preserved_links_message_display', 'Links in this article are preserved for historical purposes, but the destination sources may have changed.');
+
+  $config->save();
+}
