@@ -93,7 +93,7 @@ class RegionSettings extends ConfigFormBase {
       $form['region_item_' . $key . '_container']['title'] = [
         '#type' => 'html_tag',
         '#tag' => 'h3',
-        '#value' => $this->t($title),
+        '#value' => $this->t('@title', ['@title' => $title]),
       ];
 
       $form['region_item_' . $key . '_container']['active_region_content_blocks'] = [
