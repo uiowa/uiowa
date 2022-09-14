@@ -4474,3 +4474,9 @@ $sites['labvikram.uiowa.ddev.site'] = 'vikram.lab.uiowa.edu';
 $sites['labvikram.dev.drupal.uiowa.edu'] = 'vikram.lab.uiowa.edu';
 $sites['labvikram.stage.drupal.uiowa.edu'] = 'vikram.lab.uiowa.edu';
 $sites['labvikram.prod.drupal.uiowa.edu'] = 'vikram.lab.uiowa.edu';
+
+// Directory aliases for speech-sensorimotor.lab.uiowa.edu.
+$sites['labspeech-sensorimotor.uiowa.ddev.site'] = 'speech-sensorimotor.lab.uiowa.edu';
+$sites['labspeech-sensorimotor.dev.drupal.uiowa.edu'] = 'speech-sensorimotor.lab.uiowa.edu';
+$sites['labspeech-sensorimotor.stage.drupal.uiowa.edu'] = 'speech-sensorimotor.lab.uiowa.edu';
+$sites['labspeech-sensorimotor.prod.drupal.uiowa.edu'] = 'speech-sensorimotor.lab.uiowa.edu';
