@@ -79,7 +79,7 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
         }
         // Show/hide person type statuses based on person type selections.
         $form['field_person_types']['widget']['#ajax'] = [
-          'callback' => '_person_types_callback',
+          'callback' => 'sitenow_people_person_types_callback',
           'event' => 'change',
           'wrapper' => 'form-ajax-wrapper',
           'speed' => 'fast',
@@ -204,7 +204,7 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
       /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
       $check = \Drupal::service('uiowa_core.access_checker');
 
-      /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+      /** @var Drupal\Core\Access\AccessResultInterface $access */
       $access = $check->access(\Drupal::currentUser()->getAccount());
 
       // Only allow admins access to the person type status filter for now.
@@ -215,7 +215,7 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
 
       // Show/hide person type statuses based on person type selections.
       $element['field_person_types_target_id']['#ajax'] = [
-        'callback' => '_person_types_callback',
+        'callback' => 'sitenow_people_person_types_callback',
         'event' => 'change',
         'wrapper' => 'form-ajax-wrapper',
         'speed' => 'fast',
@@ -258,7 +258,7 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
 
         // Set person type status options based on the type.
         if ($type) {
-          _person_type_status_filter_options($element[PersonTypeInterface::STATUS_FILTER . '_wrapper'][PersonTypeInterface::STATUS_FILTER], $type);
+          sitenow_people_person_type_status_filter_options($element[PersonTypeInterface::STATUS_FILTER . '_wrapper'][PersonTypeInterface::STATUS_FILTER], $type);
         }
       }
 
@@ -315,7 +315,7 @@ function _sitenow_people_exposed_filters_validate(array &$form, FormStateInterfa
 /**
  * Custom callback for person types field.
  */
-function _person_types_callback(array &$form, FormStateInterface $form_state) {
+function sitenow_people_person_types_callback(array &$form, FormStateInterface $form_state) {
   // @todo Do these modifications need to be scoped to just run when
   //   the triggering element is the person types filter? Currently
   //   we're skipping if we're on a node form, but scoping could be
@@ -330,7 +330,7 @@ function _person_types_callback(array &$form, FormStateInterface $form_state) {
     'field_person_types_target_id',
   ]);
 
-  _person_type_status_filter_options($form['settings']['override']['exposed_filters'][PersonTypeInterface::STATUS_FILTER . '_wrapper'][PersonTypeInterface::STATUS_FILTER], $type);
+  sitenow_people_person_type_status_filter_options($form['settings']['override']['exposed_filters'][PersonTypeInterface::STATUS_FILTER . '_wrapper'][PersonTypeInterface::STATUS_FILTER], $type);
 
   return $form;
 }
@@ -338,7 +338,7 @@ function _person_types_callback(array &$form, FormStateInterface $form_state) {
 /**
  * Helper function to remove all options except for 'Any' and $type.
  */
-function _person_type_status_filter_options(array &$field, $type) {
+function sitenow_people_person_type_status_filter_options(array &$field, $type) {
   if (isset($field['#options'])) {
 
     foreach ($field['#options'] as $key => $option) {

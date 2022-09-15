@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: physicsvao.uiowa.ddev.site
+    protocol: https
+  machine_name: physicsvao
+  human_name: vao.physics.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: physicsvao.prod
+drupal:
+  db:
+    database: vao_physics_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: gmccrory
+  site-name: 'Van Allen Observatory'

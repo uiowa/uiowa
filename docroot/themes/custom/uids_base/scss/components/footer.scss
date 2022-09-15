@@ -4,6 +4,10 @@ $imgpath: '../../../uids/assets/images';
 @import "uids3/components/branding/footer/footer.scss";
 
 .footer {
+  @include breakpoint(sm) {
+    padding: 2.5rem 0 100px;
+  }
+
   h2, h3, h4, h5, h6 {
     color: $white;
     font-weight: $font-weight-normal;

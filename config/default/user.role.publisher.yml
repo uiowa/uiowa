@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - filter.format.basic
     - filter.format.filtered_html
     - filter.format.minimal
     - media.type.audio
@@ -59,6 +60,7 @@ permissions:
   - 'access media overview'
   - 'access media_wysiwyg_browser entity browser pages'
   - 'access metatag advanced__canonical_url'
+  - 'access metatag advanced__content_language'
   - 'access metatag advanced__geo_placename'
   - 'access metatag advanced__image_src'
   - 'access metatag advanced__news_keywords'
@@ -104,6 +106,7 @@ permissions:
   - 'create panopto media'
   - 'create person content'
   - 'create region_item fragments'
+  - 'create region_item_after_content fragments'
   - 'create remote_video media'
   - 'create static_map media'
   - 'create terms in research_areas'
@@ -133,12 +136,14 @@ permissions:
   - 'delete own panopto media'
   - 'delete own person content'
   - 'delete own region_item fragments'
+  - 'delete own region_item_after_content fragments'
   - 'delete own remote_video media'
   - 'delete own static_map media'
   - 'delete own twitter media'
   - 'delete page revisions'
   - 'delete person revisions'
   - 'delete region_item fragments'
+  - 'delete region_item_after_content fragments'
   - 'edit any article content'
   - 'edit any audio media'
   - 'edit any facebook media'
@@ -184,12 +189,15 @@ permissions:
   - 'revert page revisions'
   - 'skip antibot'
   - 'update own region_item fragments'
+  - 'update own region_item_after_content fragments'
   - 'update region_item fragments'
+  - 'update region_item_after_content fragments'
   - 'use editorial transition archive'
   - 'use editorial transition archived_published'
   - 'use editorial transition create_new_draft'
   - 'use editorial transition needs_review'
   - 'use editorial transition publish'
+  - 'use text format basic'
   - 'use text format filtered_html'
   - 'use text format minimal'
   - 'view any unpublished content'

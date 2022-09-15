@@ -186,12 +186,12 @@ class SettingsForm extends ConfigFormBase {
       '#title' => $this->t('Display related content'),
       '#description' => $this->t("Set the default way to display an article's related content."),
       '#options' => [
-        'do_not_display' => $this
-          ->t('Do not display related content'),
+        'card_grid' => $this
+          ->t('Display manually referenced related content'),
         'headings_lists' => $this
           ->t('Display related content titles grouped by tag'),
       ],
-      '#default_value' => $related_display ?: 'do_not_display',
+      '#default_value' => $related_display ?: 'card_grid',
     ];
 
     $form['article_node']['related_display_headings_lists_help'] = [
