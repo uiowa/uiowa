@@ -231,9 +231,9 @@ function sitenow_articles_preprocess_node(&$variables) {
               }
             }
           }
-          // Check if preserve links checkbox is checked.
+          // Check if preserve links checkbox is unchecked.
           if ($node->hasField('field_article_preserve_links') && ($node->field_article_preserve_links->value == 0)) {
-            // If it is, do not display the broken links message.
+            // If it is unchecked, hide the broken links message.
             foreach (array_reverse($variables['content']['_layout_builder'][1]['content'], TRUE) as $key => $block) {
               if (isset($block['#plugin_id']) && $block['#plugin_id'] == 'preservedlinksmessage_block') {
                 unset($variables['content']['_layout_builder'][1]['content'][$key]);
