@@ -60,7 +60,11 @@ class PreservedLinksMessage extends BlockBase implements ContainerFactoryPluginI
   public function build() {
     $config = $this->config->get('sitenow_articles.settings');
 
-    $markup = ($config->get('preserved_links_message.display'));
+    $markup = $config->get('default_preserved_links_message_display');
+    if (!empty($config->get('preserved_links_message.display'))) {
+      $markup = $config->get('preserved_links_message.display');
+    }
+
     return [
       '#markup' => $markup,
       '#attributes' => [

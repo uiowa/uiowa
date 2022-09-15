@@ -212,8 +212,11 @@ class SettingsForm extends ConfigFormBase {
         'minimal',
       ],
       '#title' => $this->t('Preserved links message'),
-      '#description' => $this->t('Set the message to display when an article may have broken links.'),
-      '#default_value' => $config->get('preserved_links_message.display'),
+      '#description' => $this->t('Set the message to display when an article may have broken links. If no message is provided, a default message will be used.'),
+      '#default_value' => $config->get('preserved_links_message.display') ?? $config->get('default_preserved_links_message_display'),
+      '#attributes' => [
+        'placeholder' => $config->get('default_preserved_links_message_display'),
+      ],
     ];
 
     // Visual indicators aren't available on SiteNow v2.
