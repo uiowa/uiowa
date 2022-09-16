@@ -606,7 +606,7 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
 
       case 'menu_block:main':
         // If follow is checked...
-        if ($form_state->getValue(['settings', 'follow']) == 1) {
+        if ((int) $form_state->getValue(['settings', 'follow']) === 1) {
           // Set parent to default.
           $form_state->setValue(['settings', 'parent'], 'main:');
           // Set level = 2.
