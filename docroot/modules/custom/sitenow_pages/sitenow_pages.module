@@ -23,7 +23,7 @@ function sitenow_pages_preprocess_block(&$variables) {
       // @todo https://github.com/uiowa/uiowa/issues/5416
       // Consider removing additional check if default_content field null is
       // captured or the field is refactored to not repurpose null as option.
-      if ($button_display_field_value == NULL || $button_display_field_value === 'Use site default') {
+      if ($button_display_field_value === NULL || $button_display_field_value === 'Use site default') {
 
         // If it is, get the site default value.
         $site_default = \Drupal::config('sitenow_pages.settings')->get('card_link_indicator_display');

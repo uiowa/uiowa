@@ -473,7 +473,7 @@ function sitenow_people_preprocess_page(&$variables) {
     // Get the current user.
     $user = \Drupal::currentUser();
     // Check for permission.
-    if ($user->hasPermission('administer sitenow people') == TRUE) {
+    if ($user->hasPermission('administer sitenow people') === TRUE) {
       // Print warning message informing user to use SiteNow People settings.
       $url = Url::fromRoute('sitenow_people.settings_form');
       $settings_link = Link::fromTextAndUrl(t('SiteNow People'), $url)
