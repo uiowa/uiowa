@@ -233,7 +233,7 @@ function sitenow_articles_preprocess_node(&$variables) {
           }
 
           $preserved_link_message_boolean = ($node->field_article_preserve_links->value);
-          $preserved_link_message_value = (int) filter_var( $preserved_link_message_boolean, FILTER_VALIDATE_BOOLEAN);
+          $preserved_link_message_value = (int) filter_var($preserved_link_message_boolean, FILTER_VALIDATE_BOOLEAN);
           // Check if preserve links checkbox is unchecked.
           if ($node->hasField('field_article_preserve_links') && ($preserved_link_message_value === 0)) {
             // If it is unchecked, hide the broken links message.
