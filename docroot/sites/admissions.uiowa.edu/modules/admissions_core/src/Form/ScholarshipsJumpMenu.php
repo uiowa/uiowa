@@ -69,13 +69,13 @@ class ScholarshipsJumpMenu extends FormBase {
     $build_info = $form_state->getBuildInfo();
 
     if ($selectedValue = $form_state->getValue('scholarship_type')) {
-      if ($selectedValue == 'international') {
+      if ($selectedValue === 'international') {
         $url = Url::fromRoute('entity.node.canonical', ['node' => $build_info["scholarship_paths"]["international"]]);
         $response->addCommand(new InvokeCommand('#edit-scholarship-type', 'val', ['']));
         $response->addCommand(new RedirectCommand($url->toString()));
         return $response;
       }
-      if ($selectedValue == 'transfer') {
+      if ($selectedValue === 'transfer') {
         $url = Url::fromRoute('entity.node.canonical', ['node' => $build_info["scholarship_paths"]["transfer"]]);
         $response->addCommand(new InvokeCommand('#edit-scholarship-type', 'val', ['']));
         $response->addCommand(new RedirectCommand($url->toString()));
@@ -93,7 +93,7 @@ class ScholarshipsJumpMenu extends FormBase {
     $response = new AjaxResponse();
     $build_info = $form_state->getBuildInfo();
     if ($selectedValue = $form_state->getValue('resident')) {
-      if ($selectedValue == 'resident') {
+      if ($selectedValue === 'resident') {
         $url = Url::fromRoute('entity.node.canonical', ['node' => $build_info["scholarship_paths"]["resident"]]);
         $response->addCommand(new InvokeCommand('#edit-scholarship-type', 'val', ['']));
         $response->addCommand(new InvokeCommand('#edit-resident', 'val', ['']));
