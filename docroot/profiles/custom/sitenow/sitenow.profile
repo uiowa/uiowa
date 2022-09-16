@@ -96,14 +96,14 @@ function sitenow_preprocess_breadcrumb(&$variables) {
 function sitenow_preprocess_select(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if ($admin_context->isAdminRoute()) {
-    if ($variables['element']['#multiple'] == TRUE) {
+    if ($variables['element']['#multiple'] === TRUE) {
       // Use chosen for multi-selects.
       $variables['#attached']['library'][] = 'sitenow/chosen';
       // Remove none option.
       // Not the best solution, possibly look at:
       // https://www.drupal.org/files/issues/2117827-21.patch.
       if (isset($variables['options'], $variables['options'][0], $variables['options'][0]['value'])) {
-        if ($variables['options'][0]['value'] == '_none' || $variables['options'][0]['value'] == '') {
+        if ($variables['options'][0]['value'] === '_none' || $variables['options'][0]['value'] == '') {
           unset($variables['options'][0]);
         }
       }
@@ -118,7 +118,7 @@ function sitenow_module_implements_alter(&$implementations, $hook) {
   // Unset administerusersbyrole query alter which over-filters the people page.
   // @todo Refactor this to move sitenow last and then alter the altered query.
   //   See https://github.com/uiowa/uiowa/issues/5023
-  if ($hook == 'query_alter' && isset($implementations['administerusersbyrole'])) {
+  if ($hook === 'query_alter' && isset($implementations['administerusersbyrole'])) {
     unset($implementations['administerusersbyrole']);
   }
 }
@@ -157,7 +157,7 @@ function sitenow_query_administerusersbyrole_edit_access_alter(AlterableInterfac
  */
 function sitenow_form_menu_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
-  if ($form["id"]["#default_value"] == 'top-links') {
+  if ($form["id"]["#default_value"] === 'top-links') {
     $theme = \Drupal::config('system.theme')->get('default');
     if (in_array($theme, ['uids_base'])) {
       $limit = theme_get_setting('header.top_links_limit', 'uids_base');
@@ -249,7 +249,7 @@ function sitenow_form_node_confirm_form_alter(&$form, FormStateInterface $form_s
     if ($url->isRouted()) {
       $params = $url->getRouteParameters();
 
-      if (isset($params['node']) && $params['node'] == $node->id()) {
+      if (isset($params['node']) && $params['node'] === $node->id()) {
         // Disable the 'Delete' button.
         $form['actions']['submit']['#disabled'] = TRUE;
         _sitenow_prevent_front_delete_message($node->label());
@@ -271,7 +271,7 @@ function sitenow_form_node_delete_multiple_confirm_form_alter(&$form) {
     foreach ($form['entities']['#items'] as $item => $title) {
       // Formatted as {nid}:{lang}.
       $item = explode(':', $item);
-      if ($params['node'] == $item[0]) {
+      if ($params['node'] === $item[0]) {
         // Disable the 'Delete' button.
         $form['actions']['submit']['#disabled'] = TRUE;
         _sitenow_prevent_front_delete_message($title);
@@ -287,7 +287,7 @@ function sitenow_form_node_delete_multiple_confirm_form_alter(&$form) {
 function sitenow_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $view = $form_state->get('view');
 
-  if ($view && $view->id() == 'administerusersbyrole_people') {
+  if ($view && $view->id() === 'administerusersbyrole_people') {
     /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
     $check = \Drupal::service('uiowa_core.access_checker');
 
@@ -480,7 +480,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // file replace functionality.
   if (is_a($form_object, ContentEntityForm::class)) {
     /** @var \Drupal\Core\Entity\ContentEntityForm $form_object */
-    if ('media' == $form_object->getEntity()->getEntityType()->id()) {
+    if ('media' === $form_object->getEntity()->getEntityType()->id()) {
       if (isset($form['revision_information'])) {
         $form['revision_information']['#access'] = FALSE;
       }
@@ -547,7 +547,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         $uuid = $block->uuid();
         // For Footer Contact Information, limit non-admins
         // to minimal and remove headline field.
-        if ($uuid == '0c0c1f36-3804-48b0-b384-6284eed8c67e') {
+        if ($uuid === '0c0c1f36-3804-48b0-b384-6284eed8c67e') {
           $form['field_uiowa_headline']['#access'] = FALSE;
           /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
           $check = \Drupal::service('uiowa_core.access_checker');
@@ -577,7 +577,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
  */
 function _sitenow_webform_validate(array &$form, FormStateInterface $form_state) {
   // Validate the managed_file webform component.
-  if ($form_state->getValue(['properties', 'type']) == 'managed_file') {
+  if ($form_state->getValue(['properties', 'type']) === 'managed_file') {
     // Prevent non-default extensions from being added.
     $default_extensions = \Drupal::configFactory()->getEditable('webform.settings')->get('file.default_managed_file_extensions');
     $default_extensions_array = explode(' ', $default_extensions);
@@ -817,7 +817,7 @@ function sitenow_preprocess_node(&$variables) {
       if ($revision instanceof NodeInterface) {
         $moderation_state = $revision->get('moderation_state')->getString();
         $status = $revision->get('status')->value;
-        if ($status == 0) {
+        if ((int) $status === 0) {
           if ($moderation_state) {
             $pre_vowel = (in_array($moderation_state[0], [
               'a',
@@ -874,7 +874,7 @@ function sitenow_form_menu_link_content_form_alter(array &$form, FormStateInterf
         $first_item = $link->first();
         $menu_link_options = $first_item->get('options')->getValue() ?: [];
         $menu = $menu_link->getMenuName();
-        if ($menu == 'social') {
+        if ($menu === 'social') {
           $form['fa_icon'] = [
             '#type' => 'textfield',
             '#title' => t('FontAwesome Icon'),
@@ -950,7 +950,7 @@ function sitenow_link_alter(&$variables) {
 function sitenow_preprocess_field(&$variables) {
   switch ($variables["element"]["#field_name"]) {
     case 'title':
-      if ($variables["element"]["#view_mode"] == 'teaser') {
+      if ($variables["element"]["#view_mode"] === 'teaser') {
         $variables['attributes']['class'][] = 'h5';
       }
       break;
@@ -965,7 +965,7 @@ function sitenow_page_attachments(array &$attachments) {
   $admin_context = \Drupal::service('router.admin_context');
   $admin_theme = \Drupal::config('system.theme')->get('admin');
 
-  if ($admin_context->isAdminRoute() && $admin_theme == 'claro') {
+  if ($admin_context->isAdminRoute() && $admin_theme === 'claro') {
     $attachments['#attached']['library'][] = 'sitenow/admin-overrides';
   }
 }
