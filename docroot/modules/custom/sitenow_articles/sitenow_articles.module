@@ -148,7 +148,7 @@ function sitenow_articles_preprocess_page(&$variables) {
     // Get the current user.
     $user = \Drupal::currentUser();
     // Check for permission.
-    if ($user->hasPermission('administer sitenow articles') == TRUE) {
+    if ($user->hasPermission('administer sitenow articles') === TRUE) {
       // Print warning message informing user to use basic site settings.
       $url = Url::fromRoute('sitenow_articles.settings_form');
       $settings_link = Link::fromTextAndUrl(t('SiteNow Articles'), $url)
@@ -209,7 +209,7 @@ function sitenow_articles_preprocess_node(&$variables) {
           }
 
           if ($node->hasField('field_article_source_link_direct')) {
-            if ($node->field_article_source_link_direct->value == 1 && !$node->get('field_article_source_link')->isEmpty()) {
+            if ((int) $node->field_article_source_link_direct->value === 1 && !$node->get('field_article_source_link')->isEmpty()) {
               unset($variables['content']['field_article_source_link']);
             }
           }
@@ -307,14 +307,14 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
 
     foreach ($rows as $id => $row) {
       // Need to get these values regardless of whether they are hidden or not.
-      $link_direct = $row['content']['#node']->get('field_article_source_link_direct')->value;
+      $link_direct = (int) $row['content']['#node']->get('field_article_source_link_direct')->value;
       $source_link = $row['content']['#node']->get('field_article_source_link')->uri;
       $org = $row['content']['#node']->get('field_article_source_org')->value;
       $nid = $row['content']['#node']->get('nid')->value;
 
       // If source link is set and link direct is checked, set $card_link_url to
       // source link. Otherwise, $card_link_url should be set to node link.
-      if ($link_direct == 1
+      if ($link_direct === 1
         && isset($source_link) && !empty($source_link)) {
         $card_link_url = $source_link;
       }
@@ -404,7 +404,7 @@ function sitenow_articles_preprocess_paragraph(&$variables) {
 
         // Display title if it exists.
         if ($paragraph->hasField('field_uip_display_title')) {
-          if ($paragraph->field_uip_display_title->value == 1) {
+          if ((int) $paragraph->field_uip_display_title->value === 1) {
             $variables['display_title'] = TRUE;
           }
         }
@@ -461,7 +461,7 @@ function sitenow_articles_preprocess_paragraph(&$variables) {
         $pager_type = 'some';
         // Show pager if it exists and is set.
         if ($paragraph->hasField('field_uip_pager')) {
-          if ($paragraph->field_uip_pager->value == 1) {
+          if ((int) $paragraph->field_uip_pager->value === 1) {
             $pager_type = 'full';
           }
         }
@@ -477,8 +477,8 @@ function sitenow_articles_preprocess_paragraph(&$variables) {
 
         // If we have more link checked and link provided, pass it.
         if ($paragraph->hasField('field_articles_more')) {
-          $more = ($paragraph->field_articles_more->value == 1) ? TRUE : FALSE;
-          if ($more == TRUE) {
+          $more = (int) $paragraph->field_articles_more->value === 1;
+          if ($more === TRUE) {
             $variables['more'] = [
               '#type' => 'container',
               '#attributes' => [
@@ -492,7 +492,7 @@ function sitenow_articles_preprocess_paragraph(&$variables) {
             if (!empty($more_path = $paragraph->get('field_articles_more_path')->getValue())) {
               $url = Url::fromUri($more_path[0]['uri']);
             }
-            elseif ($view->getDisplay('page_articles')['display_options']['enabled'] == TRUE) {
+            elseif ($view->getDisplay('page_articles')['display_options']['enabled'] === TRUE) {
               $url = Url::fromRoute('view.articles.page_articles');
             }
             if (isset($url)) {
