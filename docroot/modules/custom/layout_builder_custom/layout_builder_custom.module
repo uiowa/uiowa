@@ -542,7 +542,7 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
 
       case 'inline_block:uiowa_events':
         // Require time range if date_range timeframe is selected.
-        if ($form_state->getValue('settings')['block_form']['field_uiowa_events_timeframe'][0]['value'] == 'date_range') {
+        if ($form_state->getValue('settings')['block_form']['field_uiowa_events_timeframe'][0]['value'] === 'date_range') {
           if (empty($form_state->getValue([
             'settings',
             'block_form',
@@ -700,7 +700,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
           }
         }
 
-        if ($block->getPluginId() == 'inline_block:uiowa_card') {
+        if ($block->getPluginId() === 'inline_block:uiowa_card') {
           // Make sure button display field is checked
           // if the link title field is filled in.
           $link_title = $form_state->getValue(
@@ -1354,7 +1354,7 @@ function layout_builder_custom_views_plugins_display_alter(&$displays) {
   //   See https://github.com/uiowa/uiowa/issues/4948
   if ($is_v2 === FALSE || $moduleHandler->moduleExists('sitenow_p2lb')) {
     // Swap the block class if it can be swapped.
-    if (!empty($displays['block']['class']) && $displays['block']['class'] == Block::class) {
+    if (!empty($displays['block']['class']) && $displays['block']['class'] === Block::class) {
       $displays['block']['class'] = ListBlock::class;
     }
   }
@@ -1369,7 +1369,7 @@ function layout_builder_custom_views_pre_build(ViewExecutable $view) {
   // @todo Allow view config to override this (non-zero pager id?).
   //   https://github.com/uiowa/uiowa/issues/5045
   $pager = $view->display_handler->getOption('pager');
-  if (isset($pager) && $pager['type'] == 'full') {
+  if (isset($pager) && $pager['type'] === 'full') {
     if ($cached = \Drupal::cache('layout_builder_custom_views_pager_elements')->get($view->dom_id)) {
       $pager['options']['id'] = $cached->data;
     }
