@@ -92,7 +92,7 @@ function sitenow_events_preprocess_block(&$variables) {
 
       // Get sort.
       $sort = $block->get('field_uiowa_events_sort')->value;
-      if ($sort && $sort == 'DESC') {
+      if ($sort && $sort === 'DESC') {
         // Past, aka reverse or descending order.
         $display_id = 'past';
       }
@@ -403,10 +403,10 @@ function sitenow_events_format_instance(array $event_instance) {
   }
 
   $is_all_day = ($event_instance['all_day'] == TRUE);
-  $is_same_day = date('Y-m-d', $start_date) == date('Y-m-d', $end_date);
-  $is_same_time = date('g:ia', $start_date) == date('g:ia', $end_date);
-  $is_same_month = $is_same_day || date('Y-m', $start_date) == date('Y-m', $end_date);
-  $is_same_year = $is_same_day || $is_same_month || (date('Y', $start_date) == date('Y', $end_date));
+  $is_same_day = date('Y-m-d', $start_date) === date('Y-m-d', $end_date);
+  $is_same_time = date('g:ia', $start_date) === date('g:ia', $end_date);
+  $is_same_month = $is_same_day || date('Y-m', $start_date) === date('Y-m', $end_date);
+  $is_same_year = $is_same_day || $is_same_month || (date('Y', $start_date) === date('Y', $end_date));
 
   if ($is_same_day && $is_all_day) {
     $start = date('l, F j, Y', $start_date) . ' (all day)';
@@ -456,7 +456,7 @@ function sitenow_events_format_instance(array $event_instance) {
  * @todo Remove this after sitenow_events_paragraph is uninstalled.
  */
 function sitenow_events_field_widget_paragraphs_form_alter(&$element, &$form_state, $context) {
-  if ($element['#paragraph_type'] == 'events') {
+  if ($element['#paragraph_type'] === 'events') {
     if (!empty($element['subform']['field_events_more'])) {
       $parents_array = $element['subform']['#parents'];
       $parents = array_shift($parents_array) . '[' . implode('][', $parents_array) . ']';
