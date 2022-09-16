@@ -4480,3 +4480,9 @@ $sites['labspeech-sensorimotor.uiowa.ddev.site'] = 'speech-sensorimotor.lab.uiow
 $sites['labspeech-sensorimotor.dev.drupal.uiowa.edu'] = 'speech-sensorimotor.lab.uiowa.edu';
 $sites['labspeech-sensorimotor.stage.drupal.uiowa.edu'] = 'speech-sensorimotor.lab.uiowa.edu';
 $sites['labspeech-sensorimotor.prod.drupal.uiowa.edu'] = 'speech-sensorimotor.lab.uiowa.edu';
+
+// Directory aliases for vapap.org.uiowa.edu.
+$sites['orgvapap.uiowa.ddev.site'] = 'vapap.org.uiowa.edu';
+$sites['orgvapap.dev.drupal.uiowa.edu'] = 'vapap.org.uiowa.edu';
+$sites['orgvapap.stage.drupal.uiowa.edu'] = 'vapap.org.uiowa.edu';
+$sites['orgvapap.prod.drupal.uiowa.edu'] = 'vapap.org.uiowa.edu';

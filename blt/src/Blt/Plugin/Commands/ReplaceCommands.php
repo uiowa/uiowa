@@ -24,7 +24,6 @@ class ReplaceCommands extends BltTasks {
     $this->config->set('drush.alias', '');
 
     $app = EnvironmentDetector::getAhGroup() ?: 'local';
-    $env = EnvironmentDetector::getAhEnv() ?: 'local';
     $multisite_exception = FALSE;
 
     // Unshift sites to the beginning to run first.
