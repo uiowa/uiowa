@@ -35,7 +35,7 @@ function sitenow_paragraphs_theme($existing, $type, $theme, $path) {
 function sitenow_paragraphs_entity_create(EntityInterface $entity) {
   /** @var \Drupal\node\NodeInterface $entity */
   // On new basic pages.
-  if ($entity->bundle() == 'page' && $entity->isNew() && $entity->hasField('field_page_content_block')) {
+  if ($entity->bundle() === 'page' && $entity->isNew() && $entity->hasField('field_page_content_block')) {
     // Create a text within a section default.
     $text = Paragraph::create([
       'type' => 'text',

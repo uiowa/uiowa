@@ -63,7 +63,7 @@ function uiowa_core_cron() {
  */
 function uiowa_core_module_implements_alter(&$implementations, $hook) {
   // Our uiowa_core_cron() needs to run before purge_processor_cron().
-  if ($hook == 'cron' && isset($implementations['purge_processor_cron'])) {
+  if ($hook === 'cron' && isset($implementations['purge_processor_cron'])) {
     $group = $implementations['purge_processor_cron'];
     unset($implementations['purge_processor_cron']);
     $implementations['purge_processor_cron'] = $group;
@@ -137,7 +137,7 @@ function template_preprocess_uiowa_core_headline(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function uiowa_core_preprocess_node(&$variables) {
-  if ($variables['view_mode'] == 'teaser') {
+  if ($variables['view_mode'] === 'teaser') {
     $show_teaser_link_indicator = FALSE;
     $node_type = $variables['node']->bundle();
     $type_map = [
@@ -186,7 +186,7 @@ function uiowa_core_preprocess_page(&$variables) {
       $related_display_config['page'] = \Drupal::configFactory()->getEditable('sitenow_pages.settings')->get('related_display');
       $related_display_config['person'] = \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('related_display');
 
-      if (empty($view_id) || $view_id == 'tags_list') {
+      if (empty($view_id) || $view_id === 'tags_list') {
         switch ($node_type) {
           case 'article':
           case 'page':
@@ -208,7 +208,7 @@ function uiowa_core_preprocess_page(&$variables) {
             break;
         }
       }
-      if (empty($view_id) || $view_id == 'related_list') {
+      if (empty($view_id) || $view_id === 'related_list') {
         switch ($node_type) {
           case 'article':
           case 'page':
@@ -265,7 +265,7 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
 
   // Only allow certain types to be replicated.
   // Ignored config that can be custom to a site.
-  if ($route_name == 'entity.node.replicate') {
+  if ($route_name === 'entity.node.replicate') {
     // Get allowed replicate entity types.
     $allowed_types = \Drupal::config('uiowa_core.settings')->get('uiowa_core.replicate_allowed');
 
@@ -366,7 +366,7 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
         // Only want folks controlling anonymous visibility.
         $options = [];
         foreach ($form["menu_per_role__hide_role"]["widget"]["#options"] as $key => $option) {
-          if ($key == 'anonymous') {
+          if ($key === 'anonymous') {
             $options[$key] = $option;
             break;
           }
@@ -472,7 +472,7 @@ function uiowa_core_entity_operation_alter(array &$operations, EntityInterface $
     case 'fragment':
       $current_route = \Drupal::routeMatch();
       $route_name = $current_route->getRouteName();
-      if ($route_name == 'uiowa_core.region_settings') {
+      if ($route_name === 'uiowa_core.region_settings') {
         $operations['layout']['weight'] = 9;
         $url = Url::fromRoute($route_name)->toString();
         $operations['layout']['url']->setOption('query', ['destination' => $url]);
