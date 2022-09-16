@@ -222,7 +222,7 @@ class Articles extends BaseNodeSource {
 
     // Convert news type to tags, default to 'news' unless media_mention.
     $news_type = $row->getSourceProperty('field_news_type')[0]['value'];
-    $tag_names[] = (!empty($news_type) && $news_type == 'media_mention') ? 'media mention' : 'news';
+    $tag_names[] = (!empty($news_type) && $news_type === 'media_mention') ? 'media mention' : 'news';
 
     // Remove any duplicates.
     $tag_names = array_unique($tag_names);
