@@ -136,8 +136,8 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
   $site_path = \Drupal::getContainer()->getParameter('site.path');
 
   if (
-    $site_path == 'sites/writinguniversity.org' ||
-    $site_path == 'sites/sandbox.uiowa.edu'
+    $site_path === 'sites/writinguniversity.org' ||
+    $site_path === 'sites/sandbox.uiowa.edu'
   ) {
     $form['fonts']['#access'] = TRUE;
   }
