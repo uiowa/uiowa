@@ -93,25 +93,25 @@ function sitenow_articles_preprocess_breadcrumb(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function sitenow_articles_preprocess_field(&$variables) {
-  if ($variables["element"]["#field_name"] === 'field_article_author') {
-    if ($variables["element"]["#formatter"] === 'entity_reference_label') {
-      $variables["element"]["#title"] = 'Written by';
+  if ($variables['element']['#field_name'] === 'field_article_author') {
+    if ($variables['element']['#formatter'] === 'entity_reference_label') {
+      $variables['element']["#title"] = 'Written by';
       $variables["label"] = 'Written by';
     }
   }
-  if ($variables["element"]["#field_name"] === 'field_article_source_org') {
-    if ($variables["element"]["#formatter"] === 'string') {
-      $variables["element"]["#title"] = 'Organization';
+  if ($variables['element']['#field_name'] === 'field_article_source_org') {
+    if ($variables['element']['#formatter'] === 'string') {
+      $variables['element']["#title"] = 'Organization';
       $variables["label"] = 'Organization';
     }
   }
-  if ($variables["element"]["#field_name"] == 'field_article_source_link') {
-    if ($variables["element"]["#formatter"] == 'link') {
-      $variables["element"]["#title"] = 'Source';
+  if ($variables['element']['#field_name'] == 'field_article_source_link') {
+    if ($variables['element']['#formatter'] == 'link') {
+      $variables['element']["#title"] = 'Source';
       $variables["label"] = 'Source';
     }
   }
-  if ($variables["element"]["#field_name"] == 'field_image_caption') {
+  if ($variables['element']['#field_name'] == 'field_image_caption') {
     $variables["attributes"]['class'][] = 'figure-caption';
     $variables["attributes"]['id'] = 'node-caption';
   }
@@ -131,8 +131,8 @@ function sitenow_articles_preprocess_field(&$variables) {
  * Implements hook_theme_suggestions_HOOK_alter().
  */
 function sitenow_articles_theme_suggestions_field_alter(array &$suggestions, array $variables) {
-  if ($variables["element"]["#field_name"] == 'field_article_author') {
-    if ($variables["element"]["#formatter"] == 'entity_reference_label') {
+  if ($variables['element']['#field_name'] == 'field_article_author') {
+    if ($variables['element']['#formatter'] == 'entity_reference_label') {
       $suggestions[] = 'field__node__field_article_author__sep';
     }
   }
