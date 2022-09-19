@@ -576,7 +576,7 @@ function sitenow_people_preprocess_paragraph(&$variables) {
 
         // Display title if it exists.
         if ($paragraph->hasField('field_uip_display_title')) {
-          if ($paragraph->field_uip_display_title->value == 1) {
+          if ((int) $paragraph->field_uip_display_title->value === 1) {
             $variables['display_title'] = TRUE;
           }
         }
@@ -640,7 +640,7 @@ function sitenow_people_preprocess_paragraph(&$variables) {
         $pager_type = 'some';
         // Show pager if it exists and is set.
         if ($paragraph->hasField('field_uip_pager')) {
-          if ($paragraph->field_uip_pager->value == 1) {
+          if ((int) $paragraph->field_uip_pager->value === 1) {
             $pager_type = 'full';
           }
         }
@@ -656,8 +656,7 @@ function sitenow_people_preprocess_paragraph(&$variables) {
 
         // If we have more link checked and link provided, pass it.
         if ($paragraph->hasField('field_people_more')) {
-          $more = ($paragraph->field_people_more->value == 1) ? TRUE : FALSE;
-          if ($more == TRUE) {
+          if ((int) $paragraph->field_people_more->value === 1) {
             $variables['more'] = [
               '#type' => 'container',
               '#attributes' => [
@@ -680,7 +679,7 @@ function sitenow_people_preprocess_paragraph(&$variables) {
             ];
 
             foreach ($displays as $display) {
-              if ($view->getDisplay($display)['display_options']['enabled'] == TRUE) {
+              if ($view->getDisplay($display)['display_options']['enabled'] === TRUE) {
                 $url = Url::fromRoute('view.people.' . $display);
                 break;
               }
