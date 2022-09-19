@@ -207,9 +207,9 @@ class SettingsForm extends ConfigFormBase {
 
     $form['article_node']['preserved_links_message_display'] = [
       '#type' => 'text_format',
-      '#format' => 'minimal',
+      '#format' => 'basic',
       '#allowed_formats' => [
-        'minimal',
+        'basic',
       ],
       '#title' => $this->t('Preserved links message'),
       '#description' => $this->t('Set the message to display when an article may have broken links. If no message is provided, a default message will be used.'),
