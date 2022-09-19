@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_view_mode.node.token
     - field.field.node.page.body
+    - field.field.node.page.field_after_content_override
     - field.field.node.page.field_featured_image_display
     - field.field.node.page.field_image
     - field.field.node.page.field_meta_tags
@@ -141,6 +142,7 @@ content:
     region: content
 hidden:
   content_moderation_control: true
+  field_after_content_override: true
   field_featured_image_display: true
   field_meta_tags: true
   field_publish_options: true
