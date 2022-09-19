@@ -214,7 +214,7 @@ class Articles extends BaseNodeSource {
 
     // Map field_news_featured_research to "faculty research" tag.
     $research = $row->getSourceProperty('field_news_featured_research')[0]['value'];
-    if ($research == '1') {
+    if ((int) $research === 1) {
       $tag_names[] = 'faculty research';
       // Make sure 'research' is in the mix. Duplicates will be removed later.
       $tag_names[] = 'research';
