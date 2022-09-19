@@ -1,0 +1,23 @@
+uuid: 8911b95e-5130-4ac0-805f-bdd5f4f3c96f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_article_preserve_links
+    - node.type.article
+id: node.article.field_article_preserve_links
+field_name: field_article_preserve_links
+entity_type: node
+bundle: article
+label: 'Preserve Links'
+description: 'Displays message that article links may be broken and are preserved for historical purposes.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
