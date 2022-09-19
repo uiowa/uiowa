@@ -354,7 +354,7 @@ function sitenow_people_person_type_status_filter_options(array &$field, $type) 
  * Implements hook_form_FORM_ID_alter().
  */
 function sitenow_people_form_views_ui_edit_display_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['options']['link_url']['#description'][2]['#items'][] = '{{ sitenow_people.path }} == SiteNow People path setting';
+  $form['options']['link_url']['#description'][2]['#markup'] = ' {{ sitenow_people.path }} is the SiteNow People path setting.';
 }
 
 /**
