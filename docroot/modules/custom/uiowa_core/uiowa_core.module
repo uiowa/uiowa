@@ -9,6 +9,7 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
@@ -174,6 +175,38 @@ function uiowa_core_preprocess_page(&$variables) {
   ];
   if (isset($node) && $node instanceof NodeInterface) {
     $node_type = $node->bundle();
+
+    // If we are on a page.
+    if ($node_type === 'page') {
+
+      // If the target ID exists...
+      if (isset($variables['node']->get('field_after_content_override')->getValue()[0]['target_id'])) {
+
+        // Load the fragment it identifies.
+        $after_content_override_id = $variables['node']->get('field_after_content_override')->getValue()[0]['target_id'];
+        $after_content_override_fragment = \Drupal::entityTypeManager()->getStorage('fragment')->load($after_content_override_id);
+
+        // If the fragment has loaded correctly, and exists...
+        if ($after_content_override_fragment != NULL) {
+
+          // Get the rendered version of the fragment.
+          $rendered_after_content_override_fragment = \Drupal::entityTypeManager()->getViewBuilder('fragment')->view($after_content_override_fragment);
+
+          // If the rendered version of the fragment is not an empty render array...
+          if (!empty($rendered_after_content_override_fragment)) {
+
+            // Override the after content render array.
+            $variables['page']['after_content'] = $rendered_after_content_override_fragment;
+          }
+        }
+      }
+
+
+
+
+      $foo = 'bar';
+    }
+
     if (in_array($node_type, $tags_related_display_allowed_types)) {
 
       $tag_display_config = [];
