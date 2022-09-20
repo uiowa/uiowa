@@ -8,6 +8,7 @@ dependencies:
     - field.field.node.page.field_featured_image_display
     - field.field.node.page.field_image
     - field.field.node.page.field_meta_tags
+    - field.field.node.page.field_pre_footer_override
     - field.field.node.page.field_publish_options
     - field.field.node.page.field_tags
     - field.field.node.page.field_teaser
@@ -313,6 +314,14 @@ content:
       link: false
     third_party_settings: {  }
     weight: 0
+    region: content
+  field_pre_footer_override:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 5
     region: content
   links:
     settings: {  }
