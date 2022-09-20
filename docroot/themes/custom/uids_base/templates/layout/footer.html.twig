@@ -6,7 +6,24 @@
   </div>
 {% endif %}
 
-<footer class="footer">
+{# Create new attributes solely for the footer, and give it base classes. #}
+{% set footer_attributes = create_attribute() %}
+{% set footer_classes = [
+  'footer'
+] %}
+
+{# If we have after content that is renderable... #}
+{% set after_content_rendered = page.after_content | render %}
+{% if after_content_rendered|striptags('<embed><hr><iframe><img><input><drupal-render-placeholder>')|trim %}
+
+  {# Add the after content spacing class to the footer_classes. #}
+  {% set footer_classes = footer_classes|merge([
+    'after-content-spacing',
+  ]) %}
+{% endif %}
+
+{# Add the footer attributes to the footer element. #}
+<footer {{ footer_attributes.addClass(footer_classes) }}>
   <div class="footer__container footer__container--flex">
     <div class="footer__links footer__links--contact">
 
