@@ -102,6 +102,7 @@ The packages below are locked at specific SHAs and will not update using the met
 
 | Package                               | Reason                   |
 | ------------------------------------- | ------------------------ |
+| acquia/blt-travis                     | No stable release to pair with blt 13.5 |
 | drupal/lb_direct_add                  | No 2.x stable release.   |
 | drupal/media_thumbnails_video         | Need php 8.1 compatible dependencies, no stable release |
 | kartsims/easysvg                      | Need https://github.com/kartsims/easysvg/pull/27 which is not included in a release. |
