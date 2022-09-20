@@ -5,6 +5,10 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.periodical_issue.body
+    - field.field.node.periodical_issue.field_image
+    - field.field.node.periodical_issue.field_issue_number
+    - field.field.node.periodical_issue.field_issue_season_year
+    - field.field.node.periodical_issue.field_issue_volume
     - node.type.periodical_issue
   module:
     - text
@@ -28,4 +32,8 @@ content:
     weight: 100
     region: content
 hidden:
+  field_image: true
+  field_issue_number: true
+  field_issue_season_year: true
+  field_issue_volume: true
   search_api_excerpt: true

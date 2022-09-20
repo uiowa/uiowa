@@ -4,31 +4,54 @@ status: true
 dependencies:
   config:
     - field.field.node.periodical_issue.body
+    - field.field.node.periodical_issue.field_image
+    - field.field.node.periodical_issue.field_issue_number
+    - field.field.node.periodical_issue.field_issue_season_year
+    - field.field.node.periodical_issue.field_issue_volume
     - node.type.periodical_issue
   module:
     - layout_builder
     - system
     - text
     - user
-  theme:
-    - uids_base
 third_party_settings:
   layout_builder:
     enabled: true
     allow_custom: false
     sections:
       -
-        layout_id: layout_header
+        layout_id: layout_twocol_section
         layout_settings:
           label: ''
           context_mapping: {  }
+          column_widths: 25-75
           layout_builder_styles_style:
             - ''
             - section_margin_fixed_width_container
         components:
           -
+            uuid: b30608ed-8311-4716-a07f-39413571154d
+            region: first
+            configuration:
+              id: 'field_block:node:periodical_issue:field_image'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: hidden
+                settings:
+                  view_mode: full__no_crop
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
             uuid: 78434f23-7eae-468b-9572-2b9b3f1ff55e
-            region: content
+            region: second
             configuration:
               id: 'field_block:node:periodical_issue:title'
               label: null
@@ -43,30 +66,24 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 0
+            weight: 1
             additional: {  }
             third_party_settings: {  }
           -
             uuid: 821312ad-058c-4294-a484-282272ee4886
-            region: content
+            region: second
             configuration:
               id: system_breadcrumb_block
               label: null
               label_display: null
               provider: system
               context_mapping: {  }
-            weight: 1
+            weight: 0
             additional: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
-      -
-        layout_id: layout_onecol
-        layout_settings:
-          label: ''
-        components:
           -
             uuid: b552e314-4936-474e-828d-27059abeae2f
-            region: content
+            region: second
             configuration:
               id: 'field_block:node:periodical_issue:body'
               label_display: '0'
@@ -77,10 +94,69 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
+            weight: 5
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 828fe502-99ec-4c71-b452-ce4f981905e7
+            region: first
+            configuration:
+              id: 'field_block:node:periodical_issue:field_issue_volume'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: number_integer
+                label: above
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
             weight: 1
             additional: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
+          -
+            uuid: be8497ef-ea4a-4539-a2ca-a281ef847fd0
+            region: first
+            configuration:
+              id: 'field_block:node:periodical_issue:field_issue_number'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: number_integer
+                label: above
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: c03eccd1-fd77-4f87-9615-ead53a800673
+            region: first
+            configuration:
+              id: 'field_block:node:periodical_issue:field_issue_season_year'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: '0'
+              scope_update: 'Update scope'
 id: node.periodical_issue.default
 targetEntityType: node
 bundle: periodical_issue
@@ -92,6 +168,40 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 101
+    region: content
+  field_image:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 104
+    region: content
+  field_issue_number:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  field_issue_season_year:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 105
+    region: content
+  field_issue_volume:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 102
     region: content
   links:
     settings: {  }

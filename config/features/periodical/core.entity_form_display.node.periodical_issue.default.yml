@@ -4,9 +4,14 @@ status: true
 dependencies:
   config:
     - field.field.node.periodical_issue.body
+    - field.field.node.periodical_issue.field_image
+    - field.field.node.periodical_issue.field_issue_number
+    - field.field.node.periodical_issue.field_issue_season_year
+    - field.field.node.periodical_issue.field_issue_volume
     - node.type.periodical_issue
   module:
     - content_moderation
+    - media_library
     - path
     - text
 id: node.periodical_issue.default
@@ -29,6 +34,35 @@ content:
     weight: 10
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_image:
+    type: media_library_widget
+    weight: 124
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+  field_issue_number:
+    type: number
+    weight: 123
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_issue_season_year:
+    type: string_textfield
+    weight: 125
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_issue_volume:
+    type: number
+    weight: 122
+    region: content
+    settings:
+      placeholder: ''
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
