@@ -96,7 +96,7 @@ class MigrateEventSubscriber implements EventSubscriberInterface {
   public function onPostRowSave(MigratePostRowSaveEvent $event) {
     $row = $event->getRow();
 
-    if ($tips = $row->getSourceProperty('field_transfer_tips')) {
+    if ($row->getSourceProperty('field_transfer_tips')) {
       $node = $this->entityTypeManager->getStorage('node')->create([
         'type' => 'transfer_tips',
         'field_transfer_tips_aos' => $event->getDestinationIdValues()[0],

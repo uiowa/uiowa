@@ -7,6 +7,7 @@
 
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -217,9 +218,10 @@ function uiowa_core_preprocess_page(&$variables) {
               case 'headings_lists':
                 // Headings and lists are default for now. We may add more
                 // options in the future, keeping this case around.
+                unset($variables['page']['pre_footer']['views_block__related_manually_referenced_content_block_grid']);
                 break;
 
-              case 'do_not_display':
+              case 'card_grid':
                 unset($variables['page']['pre_footer']['views_block__related_content_block_related_headings_lists']);
                 break;
 
@@ -266,34 +268,40 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
   if ($route_name == 'entity.node.replicate') {
     // Get allowed replicate entity types.
     $allowed_types = \Drupal::config('uiowa_core.settings')->get('uiowa_core.replicate_allowed');
-    $entity = $form_state->getFormObject()->getEntity();
-    $node_type = $entity->bundle();
-    $node_title = $entity->getTitle();
-    // Set message and prevent replicate.
-    if (!in_array($node_type, $allowed_types)) {
-      \Drupal::messenger()->addWarning(t('Replicating content of this type is not allowed. Please contact the ITS Help Desk about enabling this functionality for this content.'));
-      $form['actions']['submit']['#disabled'] = TRUE;
+
+    $form_object = $form_state->getFormObject();
+    if ($form_object instanceof EntityFormInterface) {
+      /** @var Drupal\Core\Entity\EntityInterface $entity */
+      $entity = $form_object->getEntity();
+
+      $node_type = $entity->bundle();
+      $node_title = $entity->getTitle();
+      // Set message and prevent replicate.
+      if (!in_array($node_type, $allowed_types)) {
+        \Drupal::messenger()
+          ->addWarning(t('Replicating content of this type is not allowed. Please contact the ITS Help Desk about enabling this functionality for this content.'));
+        $form['actions']['submit']['#disabled'] = TRUE;
+      }
+      // Customize the replicate confirm dialog to our
+      // use case (pages with titles)
+      $bundle_label = \Drupal::entityTypeManager()
+        ->getStorage('node_type')
+        ->load($entity->bundle())
+        ->label();
+
+      // Changes title to match the "Edit" action title
+      // (e.g. "<em>Edit</em> Home").
+      $form['#title'] = t('<em>Replicate @type</em> @title',
+        ['@type' => $bundle_label, '@title' => $node_title]);
+
+      // Lowercase for the rest of the form.
+      $bundle_label = strtolower($bundle_label);
+
+      $form['new_label_en']['#title'] = t("Replicated @type content's title", ['@type' => $bundle_label]);
+      $form['new_label_en']['#description'] = t('This text will be used as the title of the newly-replicated @type.', ['@type' => $bundle_label]);
+      // Removes the "This action cannot be undone" text.
+      $form['description'] = ['#markup' => ''];
     }
-    // Customize the replicate confirm dialog to our
-    // use case (pages with titles)
-    $bundle_label = \Drupal::entityTypeManager()
-      ->getStorage('node_type')
-      ->load($entity->bundle())
-      ->label();
-
-    // Changes title to match the "Edit" action title
-    // (e.g. "<em>Edit</em> Home").
-    $form['#title'] = t('<em>Replicate @type</em> @title',
-      ['@type' => $bundle_label, '@title' => $node_title]);
-
-    // Lowercase for the rest of the form.
-    $bundle_label = strtolower($bundle_label);
-
-    $form['new_label_en']['#title'] = t("Replicated @type content's title", ['@type' => $bundle_label]);
-    $form['new_label_en']['#description'] = t('This text will be used as the title of the newly-replicated @type.', ['@type' => $bundle_label]);
-    // Removes the "This action cannot be undone" text.
-    $form['description'] = ['#markup' => ''];
-
   }
 
   switch ($form_id) {
@@ -317,23 +325,26 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
     // Add delete forms as the types of protected blocks changes.
     case 'block_content_uiowa_text_area_delete_form':
       // Get current block uuid.
-      $block = $form_state
-        ->getFormObject()
-        ->getEntity();
-      $uuid = $block->uuid();
+      $form_object = $form_state->getFormObject();
+      if ($form_object instanceof EntityFormInterface) {
+        /** @var Drupal\Core\Entity\EntityInterface $block */
+        $block = $form_object->getEntity();
+        $uuid = $block->uuid();
 
-      // Get protected settings from uiowa_core.
-      $protected = \Drupal::config('uiowa_core.protected');
-      // If protected...
-      if ($protected->get('protect')) {
-        // Get uuids of protected blocks.
-        $protected_blocks = $protected->get('protected_blocks');
-        $uuids = array_keys($protected_blocks);
+        // Get protected settings from uiowa_core.
+        $protected = \Drupal::config('uiowa_core.protected');
+        // If protected...
+        if ($protected->get('protect')) {
+          // Get uuids of protected blocks.
+          $protected_blocks = $protected->get('protected_blocks');
+          $uuids = array_keys($protected_blocks);
 
-        // See if current block matches any protected and prevent deletion.
-        if (in_array($uuid, $uuids)) {
-          \Drupal::messenger()->addWarning(t('This block is protected from deletion. Remove content from the block instead.'));
-          $form['actions']['submit']['#disabled'] = TRUE;
+          // See if current block matches any protected and prevent deletion.
+          if (in_array($uuid, $uuids)) {
+            \Drupal::messenger()
+              ->addWarning(t('This block is protected from deletion. Remove content from the block instead.'));
+            $form['actions']['submit']['#disabled'] = TRUE;
+          }
         }
       }
       break;
@@ -370,6 +381,16 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       }
       break;
 
+    case 'uiowa_core_region_settings':
+      // Put active region item functionality behind permission.
+      if (!\Drupal::currentUser()
+        ->hasPermission('configure all region_item fragment layout overrides')) {
+        $form['region_item_after_content_container']['active_region_content_blocks']['after_content']['#disabled'] = TRUE;
+        $form['region_item_pre_footer_container']['active_region_content_blocks']['pre_footer']['#disabled'] = TRUE;
+        \Drupal::messenger()
+          ->addWarning(t('You do not have permission to set the active after content and pre footer items. Please contact a user with webmaster permissions.'));
+      }
+      break;
   }
 }
 
@@ -417,7 +438,7 @@ function uiowa_core_menu_local_tasks_alter(&$data, $route_name) {
     $data['tabs'][0]['entity.fragment.delete_form']['#weight'] = 110;
     $data['tabs'][0]['entity.taxonomy_term.delete_form']['#weight'] = 110;
   }
-  if (isset($data["tabs"][0]["replicate_ui.local_tasks:entity.node.replicate"])) {
+  if (isset($data['tabs'][0]['replicate_ui.local_tasks:entity.node.replicate'])) {
     $node = \Drupal::routeMatch()->getParameter('node');
     // Get allowed replicate entity types.
     if ($node) {
@@ -454,7 +475,7 @@ function uiowa_core_entity_operation_alter(array &$operations, EntityInterface $
       if ($route_name == 'uiowa_core.region_settings') {
         $operations['layout']['weight'] = 9;
         $url = Url::fromRoute($route_name)->toString();
-        $operations["layout"]["url"]->setOption('query', ['destination' => $url]);
+        $operations['layout']['url']->setOption('query', ['destination' => $url]);
       }
       break;
 
@@ -473,6 +494,15 @@ function uiowa_core_preprocess_block(&$variables) {
         $variables['attributes']['class'] = [''];
       }
       $variables['attributes']['class'][] .= 'layout-container tags-list__container block-padding__bottom block-padding__top';
+      break;
+
+    case 'views_block:related_manually_referenced_content-block_grid':
+      $variables['#attached']['library'][] = 'uids_base/related';
+      $variables['title_attributes']['class'] = 'h3 block__headline headline headline--underline headline--serif';
+      if (!isset($variables['attributes']['class'])) {
+        $variables['attributes']['class'] = [''];
+      }
+      $variables['attributes']['class'][] .= 'block--bg-container grid--threecol--33-34-33 bg--gray block-padding__bottom block-padding__top';
       break;
 
     case 'views_block:related_content-block_related_headings_lists':

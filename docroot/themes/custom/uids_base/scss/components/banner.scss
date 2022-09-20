@@ -144,6 +144,19 @@
   }
 }
 
+// Add more padding for play/pause button for banners with video.
+.banner.banner--video,
+.layout--onecol[class*=page__container--edge] .banner.banner--video {
+  .banner__content {
+    padding-bottom: 4rem;
+    padding-top: 4rem;
+    @include breakpoint(page-container) {
+      padding-bottom: 6rem;
+      padding-top: 6rem;
+    }
+  }
+}
+
   // Remove left/right padding if edge-to-edge is selected
   .layout--onecol[class*=page__container--edge] {
     .banner__content {

@@ -9,7 +9,7 @@
  * Implements hook_install().
  */
 function studentlife_migrate_install() {
-  module_load_install('sitenow_migrate');
+  \Drupal::moduleHandler()->loadInclude('sitenow_migrate', 'install');
   sitenow_migrate_migration_install('studentlife');
 }
 
@@ -17,6 +17,6 @@ function studentlife_migrate_install() {
  * Implements hook_uninstall().
  */
 function studentlife_migrate_uninstall() {
-  module_load_install('sitenow_migrate');
+  \Drupal::moduleHandler()->loadInclude('sitenow_migrate', 'install');
   sitenow_migrate_migration_uninstall('studentlife');
 }

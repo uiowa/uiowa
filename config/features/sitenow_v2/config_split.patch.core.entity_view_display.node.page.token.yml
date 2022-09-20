@@ -2,20 +2,18 @@ adding:
   dependencies:
     config:
       - field.field.node.page.field_page_content_block
+  content:
+    body:
+      type: text_trimmed
+      label: above
+      settings:
+        trim_length: 600
+      weight: null
   hidden:
-    body: true
     field_page_content_block: true
 removing:
-  dependencies:
-    config:
-      - field.field.node.page.layout_builder__layout
-    module:
-      - text
   content:
     body:
       type: text_default
       label: hidden
-      settings: {  }
-      third_party_settings: {  }
       weight: 2
-      region: content

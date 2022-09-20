@@ -302,7 +302,7 @@ function uipress_core_cron() {
     }
 
     // Get our nodes of interest and invalidate some cache tags.
-    $nids = _get_current_sales();
+    $nids = uipress_core_get_current_sales();
     foreach ($nids as $nid) {
       $tag = 'node:' . $nid;
       Cache::invalidateTags([$tag]);
@@ -324,7 +324,7 @@ function uipress_core_cron() {
  * @return array
  *   The NIDs of interest.
  */
-function _get_current_sales() {
+function uipress_core_get_current_sales() {
   $today = date('Y-m-d');
   $yesterday = date('Y-m-d', strtotime('yesterday'));
   $pids = \Drupal::entityQuery('paragraph')

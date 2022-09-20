@@ -25,13 +25,18 @@ $imgpath: '../../uids/assets/images';
 
 // Containers within a background color useful for views blocks.
 .block--bg-container {
-  .headline  {
+  .block__headline  {
     @extend %container;
     //hack to prevent a change in container width (which is in em) when font size isn't 1em
     max-width: 1310px;
   }
   & > div {
-    @extend %container;
+    margin: 0 $gutter;
+
+    @include breakpoint(page-container) {
+      max-width: 81.875em;
+      margin: 0 auto;
+    }
   }
 }
 

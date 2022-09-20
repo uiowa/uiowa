@@ -298,6 +298,19 @@ display:
           separator: ', '
           field_api_classes: false
       sorts:
+        sticky:
+          id: sticky
+          table: taxonomy_index
+          field: sticky
+          relationship: reverse__node__field_tags
+          group_type: group
+          admin_label: ''
+          plugin_id: standard
+          order: DESC
+          expose:
+            label: ''
+            field_identifier: ''
+          exposed: false
         name:
           id: name
           table: taxonomy_term_field_data

@@ -69,7 +69,7 @@ function sitenow_paragraphs_field_widget_paragraphs_form_alter(&$element, FormSt
   // Show clean unique ID so editors know what to target.
   if (isset($element['subform']['field_uip_id'])) {
     $element['subform']['field_uip_id']['widget'][0]['value']['#ajax'] = [
-      'callback' => 'show_clean_unique_id',
+      'callback' => 'sitenow_paragraphs_show_clean_unique_id',
       'event' => 'change',
       'wrapper' => 'clean-unique-id-description',
       'progress' => [
@@ -92,7 +92,7 @@ function sitenow_paragraphs_field_widget_paragraphs_form_alter(&$element, FormSt
   if ($element['#paragraph_type'] == 'webform') {
     if (isset($element['subform']['field_webform']['widget'][0]['target_id']['#default_value'])) {
       $element['subform']['field_webform']['widget'][0]['target_id']['#ajax'] = [
-        'callback' => 'update_webform_edit_link',
+        'callback' => 'sitenow_paragraphs_update_webform_edit_link',
         'event' => 'change',
         'wrapper' => 'edit-webform',
         'progress' => [
@@ -112,7 +112,7 @@ function sitenow_paragraphs_field_widget_paragraphs_form_alter(&$element, FormSt
 /**
  * AJAX function create clean unique id to display to editor.
  */
-function show_clean_unique_id($form, FormStateInterface $form_state) {
+function sitenow_paragraphs_show_clean_unique_id($form, FormStateInterface $form_state) {
   $clean_id = Html::getClass($form_state->getTriggeringElement()['#value']);
   $markup =
     t('<div id="clean-unique-id-description">Provide a unique identifier for this content block. Primarily used for anchor links. You can target this id by using <em>#@clean_id</em></div>', [
@@ -124,7 +124,7 @@ function show_clean_unique_id($form, FormStateInterface $form_state) {
 /**
  * AJAX function to update webform edit link to the current selection.
  */
-function update_webform_edit_link($form, FormStateInterface $form_state) {
+function sitenow_paragraphs_update_webform_edit_link($form, FormStateInterface $form_state) {
   $selectedValue = $form_state->getTriggeringElement()['#value'];
   $markup =
     t('<div id="edit-webform">Select an existing webform to place. <a target="new_blank" href="/admin/structure/webform/manage/@webform_id">Edit webform.</a></div>', [
@@ -288,7 +288,7 @@ function sitenow_paragraphs_theme_suggestions_field_alter(&$suggestions, $variab
  *
  * @see options_allowed_values()
  */
-function uip_classes_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
+function sitenow_paragraphs_uip_classes_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
   $cacheable = FALSE;
   $options = [];
 
@@ -354,7 +354,7 @@ function uip_classes_allowed_values(FieldStorageConfig $definition, ContentEntit
  *
  * @see options_allowed_values()
  */
-function uip_colwidth_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
+function sitenow_paragraphs_uip_colwidth_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
   $cacheable = FALSE;
   $options = [
     'col-md' => 'Fluid',
@@ -389,7 +389,7 @@ function uip_colwidth_allowed_values(FieldStorageConfig $definition, ContentEnti
  *
  * @see options_allowed_values()
  */
-function section_container_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
+function sitenow_paragraphs_section_container_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
   $cacheable = FALSE;
   $options = [
     'container' => 'Medium',
@@ -421,7 +421,7 @@ function section_container_allowed_values(FieldStorageConfig $definition, Conten
  *
  * @see options_allowed_values()
  */
-function section_alignitems_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
+function sitenow_paragraphs_section_alignitems_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
   $cacheable = FALSE;
   $options = [
     'align-items-center' => 'Middle',
@@ -455,7 +455,7 @@ function section_alignitems_allowed_values(FieldStorageConfig $definition, Conte
  *
  * @see options_allowed_values()
  */
-function section_justifycontent_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
+function sitenow_paragraphs_section_justifycontent_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
   $cacheable = FALSE;
   $options = [
     'justify-content-start' => 'Left',
