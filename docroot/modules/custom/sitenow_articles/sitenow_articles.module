@@ -52,7 +52,7 @@ function sitenow_articles_form_alter(&$form, FormStateInterface $form_state, $fo
           ':input[name="field_article_source_link[0][uri]"]' => ['filled' => TRUE],
         ],
       ];
-      // If article is in process of being created, hide the preserve links checkbox.
+      // If article is being created, hide the preserve links checkbox.
       if (!($form_state->getformObject()->getEntity()->id())) {
         $form['field_article_preserve_links']['#access'] = FALSE;
       }
