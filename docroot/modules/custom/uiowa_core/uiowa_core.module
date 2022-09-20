@@ -179,32 +179,32 @@ function uiowa_core_preprocess_page(&$variables) {
     // If we are on a page.
     if ($node_type === 'page') {
 
-      // If the target ID exists...
-      if (isset($variables['node']->get('field_after_content_override')->getValue()[0]['target_id'])) {
+      // Define a list of overridable regions.
+      $region_list = ['after_content', 'pre_footer'];
 
-        // Load the fragment it identifies.
-        $after_content_override_id = $variables['node']->get('field_after_content_override')->getValue()[0]['target_id'];
-        $after_content_override_fragment = \Drupal::entityTypeManager()->getStorage('fragment')->load($after_content_override_id);
+      foreach ($region_list as $value) {
+        // If the target ID exists...
+        if (isset($variables['node']->get('field_' . $value . '_override')->getValue()[0]['target_id'])) {
 
-        // If the fragment has loaded correctly, and exists...
-        if ($after_content_override_fragment != NULL) {
+          // Load the fragment it identifies.
+          $override_id = $variables['node']->get('field_' . $value . '_override')->getValue()[0]['target_id'];
+          $override_fragment = \Drupal::entityTypeManager()->getStorage('fragment')->load($override_id);
 
-          // Get the rendered version of the fragment.
-          $rendered_after_content_override_fragment = \Drupal::entityTypeManager()->getViewBuilder('fragment')->view($after_content_override_fragment);
+          // If the fragment has loaded correctly, and exists...
+          if ($override_fragment != NULL) {
 
-          // If the rendered version of the fragment is not an empty render array...
-          if (!empty($rendered_after_content_override_fragment)) {
+            // Get the rendered version of the fragment.
+            $rendered_override_fragment = \Drupal::entityTypeManager()->getViewBuilder('fragment')->view($override_fragment);
 
-            // Override the after content render array.
-            $variables['page']['after_content'] = $rendered_after_content_override_fragment;
+            // If the rendered version of the fragment is not an empty render array...
+            if (!empty($rendered_override_fragment)) {
+
+              // Override the region render array.
+              $variables['page'][$value] = $rendered_override_fragment;
+            }
           }
         }
       }
-
-
-
-
-      $foo = 'bar';
     }
 
     if (in_array($node_type, $tags_related_display_allowed_types)) {

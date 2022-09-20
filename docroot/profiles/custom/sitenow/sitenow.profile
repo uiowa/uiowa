@@ -383,6 +383,7 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
     // Set field_teaser to node_teaser group.
     $form['field_teaser']['#group'] = 'node_teaser';
   }
+
   if (isset($form['field_image'])) {
     // Create node_image group in the advanced container.
     $form['node_image'] = [
@@ -406,6 +407,7 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
       $form['field_image_caption']['#group'] = 'node_image';
     }
   }
+
   if (isset($form['field_featured_image_display'])) {
     $form['field_featured_image_display']['#group'] = 'node_image';
     $form['field_featured_image_display']['widget']['#options']['_none'] = 'Site-wide default';
@@ -420,6 +422,41 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
       ]);
     }
   }
+
+  // Region overrides.
+  if (isset($form['field_after_content_override']) || isset($form['field_pre_footer_override'])) {
+
+    // Create region_overrides group in advanced container.
+    $form['region_overrides'] = [
+      '#type' => 'details',
+      '#title' => t('Region overrides'),
+      '#group' => 'advanced',
+      '#attributes' => [
+        'class' => ['node-form-region-overrides'],
+      ],
+      '#attached' => [
+        'library' => ['node/drupal.node'],
+      ],
+      '#weight' => -10,
+      '#optional' => TRUE,
+      '#open' => FALSE,
+    ];
+
+    // If field_after_content_override is set...
+    if (isset($form['field_after_content_override'])) {
+
+      // Set field_after_content_override to region_overrides group.
+      $form['field_after_content_override']['#group'] = 'region_overrides';
+    }
+
+    // If field_pre_footer_override is set...
+    if (isset($form['field_pre_footer_override'])) {
+
+      // Set field_after_content_override to region_overrides group.
+      $form['field_pre_footer_override']['#group'] = 'region_overrides';
+    }
+  }
+
   if (isset($form['field_tags'])) {
     // Create node_relations group in the advanced container.
     $form['node_relations'] = [
@@ -439,6 +476,7 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
     // Set field_tags to node_reference group.
     $form['field_tags']['#group'] = 'node_relations';
   }
+
   if (isset($form['field_publish_options'])) {
     // Place field in advanced options group.
     if (!empty($form["field_publish_options"]["widget"]["#options"])) {
