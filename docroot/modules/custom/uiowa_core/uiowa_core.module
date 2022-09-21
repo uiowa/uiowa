@@ -200,7 +200,7 @@ function uiowa_core_preprocess_page(&$variables) {
             if (!empty($rendered_override_fragment)) {
 
               // Override the region render array.
-              $variables['page'][$value] = $rendered_override_fragment;
+              $variables['page'][$value][$value] = $rendered_override_fragment;
             }
           }
         }
