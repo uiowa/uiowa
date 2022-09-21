@@ -282,4 +282,20 @@ class MauiApi {
     ];
   }
 
+  /**
+   * Get room data based on building ID and room ID.
+   *
+   * @param string $building_id
+   *   The building id of the room.
+   *
+   * @param string $room_id
+   *   The room id of the room.
+   *
+   * @return array
+   *   JSON decoded array of response data.
+   */
+  public function getRoomData($building_id, $room_id): array {
+    return $this->request('GET', '/pub/registrar/courses/AstraRoomData/' . $building_id . "/" . $room_id);
+  }
+
 }
