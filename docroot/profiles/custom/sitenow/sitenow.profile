@@ -424,7 +424,15 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
   }
 
   // Region overrides.
-  if (isset($form['field_after_content_override']) || isset($form['field_pre_footer_override'])) {
+  $region_list = ['after_content', 'pre_footer'];
+
+  // This checks if any region in the region list exists.
+  $regions_exist = FALSE;
+  foreach ($region_list as $region) {
+    $regions_exist = $regions_exist || isset($form['field_' . $region . '_override']);
+  }
+
+  if ($regions_exist) {
 
     // Create region_overrides group in advanced container.
     $form['region_overrides'] = [
@@ -442,18 +450,13 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
       '#open' => FALSE,
     ];
 
-    // If field_after_content_override is set...
-    if (isset($form['field_after_content_override'])) {
+    foreach ($region_list as $region) {
+      // If field_after_content_override is set...
+      if (isset($form['field_' . $region . '_override'])) {
 
-      // Set field_after_content_override to region_overrides group.
-      $form['field_after_content_override']['#group'] = 'region_overrides';
-    }
-
-    // If field_pre_footer_override is set...
-    if (isset($form['field_pre_footer_override'])) {
-
-      // Set field_after_content_override to region_overrides group.
-      $form['field_pre_footer_override']['#group'] = 'region_overrides';
+        // Set region to region_overrides group.
+        $form['field_' . $region . '_override']['#group'] = 'region_overrides';
+      }
     }
   }
 
