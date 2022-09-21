@@ -53,7 +53,7 @@ function sitenow_articles_form_alter(&$form, FormStateInterface $form_state, $fo
         ],
       ];
       // If article is being created, hide the preserve links checkbox.
-      if (!($form_state->getformObject()->getEntity()->id())) {
+      if ($form_id === 'node_article_form') {
         $form['field_article_preserve_links']['#access'] = FALSE;
       }
       break;
