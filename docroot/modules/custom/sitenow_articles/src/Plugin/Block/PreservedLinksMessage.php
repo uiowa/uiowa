@@ -72,9 +72,6 @@ class PreservedLinksMessage extends BlockBase implements ContainerFactoryPluginI
           'alert',
           'alert-info',
         ],
-        'style' => [
-          'margin-bottom: 1.25rem',
-        ],
       ],
     ];
   }
