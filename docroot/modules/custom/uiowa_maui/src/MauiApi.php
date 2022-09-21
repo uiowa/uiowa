@@ -287,7 +287,6 @@ class MauiApi {
    *
    * @param string $building_id
    *   The building id of the room.
-   *
    * @param string $room_id
    *   The room id of the room.
    *
