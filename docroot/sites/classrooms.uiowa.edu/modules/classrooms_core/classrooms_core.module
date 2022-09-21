@@ -1,0 +1,51 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Uiowa Core module.
+ */
+
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function classrooms_core_entity_extra_field_info(): array {
+  $extra = [];
+
+  $extra['node']['classroom']['display']['maui_room_data'] = [
+    'label' => t('MAUI Room Data'),
+    'description' => t('Displays information from MAUI.'),
+    'weight' => 100,
+    'visible' => TRUE,
+  ];
+
+  return $extra;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function classrooms_core_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if ($display->getComponent('maui_room_data')) {
+    if ($entity->hasField('field_classroom_building_id') && $entity->hasField('field_classroom_room_id')) {
+      if (!empty($entity->get('field_classroom_building_id')->value && !empty($entity->get('field_classroom_room_id')->value))) {
+        $building_id = $entity->get('field_classroom_building_id')->value;
+        $room_id = $entity->get('field_classroom_room_id')->value;
+        $maui_api = \Drupal::service('uiowa_maui.api');
+        $data = $maui_api->getRoomData($building_id, $room_id);
+        $build['maui_room_data'] = [
+          '#type' => 'html_tag',
+          '#tag' => 'code',
+          '#value' => json_encode($data, JSON_PRETTY_PRINT),
+          '#attributes' => [
+            'class' => ['maui-data'],
+          ],
+        ];
+      }
+    }
+
+  }
+}
+

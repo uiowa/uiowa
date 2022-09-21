@@ -1,0 +1,38 @@
+uuid: 4e585298-cdff-4cac-98e5-636491a3cbc1
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.classroom.body
+    - field.field.node.classroom.field_classroom_building_id
+    - field.field.node.classroom.field_classroom_room_id
+    - field.field.node.classroom.field_meta_tags
+    - node.type.classroom
+  module:
+    - text
+    - user
+id: node.classroom.teaser
+targetEntityType: node
+bundle: classroom
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  field_classroom_building_id: true
+  field_classroom_room_id: true
+  field_meta_tags: true
+  maui_room_data: true
+  search_api_excerpt: true

@@ -1,0 +1,22 @@
+uuid: 4a4abbfd-453e-4eb3-abf8-3da1d710ecf4
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: Site
+description: 'The classrooms.uiowa.edu site split.'
+weight: 67
+stackable: true
+storage: folder
+folder: ../config/sites/classrooms.uiowa.edu
+module:
+  classrooms_core: 0
+theme: {  }
+complete_list:
+  - config_split.config_split.site
+  - node.type.classroom
+  - 'core.entity_view_display.node.classroom.*'
+  - 'field.storage.node.field_major_*'
+partial_list:
+  - 'user.role.*'
+  - 'core.entity_view_display.*'
