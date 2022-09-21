@@ -33,6 +33,16 @@
     layout_builder_enabled ? 'layout-builder-enabled' : 'layout-builder-disabled',
   ]
 %}
+{# If we have after content that is renderable... #}
+{% set after_content_rendered = page.after_content | render %}
+{% if after_content_rendered|striptags('<embed><hr><iframe><img><input><drupal-render-placeholder>')|trim %}
+
+  {# Add the after content spacing class to the footer_classes. #}
+  {% set body_classes = body_classes|merge([
+    'after-content-spacing',
+  ]) %}
+{% endif %}
+
 <!DOCTYPE html>
 <html{{ html_attributes.addclass('no-js') }}>
   <head>
