@@ -112,7 +112,7 @@ function uids_base_preprocess_html(&$variables) {
     if (isset($variables['page']['after_content'])) {
 
       // Add the class to the body.
-      $variables['attributes']['class'][] = Html::cleanCssIdentifier('after-content-spacing');
+      $variables['attributes']['class'][] = Html::cleanCssIdentifier('after_content--spacing');
     }
   }
 
