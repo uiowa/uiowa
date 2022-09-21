@@ -213,7 +213,7 @@ class SettingsForm extends ConfigFormBase {
       ],
       '#title' => $this->t('Preserved links message'),
       '#description' => $this->t('Set the message to display when an article may have broken links. If no message is provided, a default message will be used.'),
-      '#default_value' => $config->get('preserved_links_message.display') ?? $config->get('default_preserved_links_message_display'),
+      '#default_value' => $config->get('preserved_links_message_display') ?? $config->get('default_preserved_links_message_display'),
       '#attributes' => [
         'placeholder' => $config->get('default_preserved_links_message_display'),
       ],
@@ -352,7 +352,7 @@ class SettingsForm extends ConfigFormBase {
 
     $this->configFactory->getEditable(static::SETTINGS)
       // Save the message display default.
-      ->set('preserved_links_message.display', $form_state->getValue([
+      ->set('preserved_links_message_display', $form_state->getValue([
         'preserved_links_message_display',
         'value',
       ]))
