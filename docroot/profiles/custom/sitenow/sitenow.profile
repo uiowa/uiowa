@@ -71,7 +71,7 @@ function sitenow_preprocess_breadcrumb(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     $routes = [];
-    foreach ($variables["links"] as $key => $link) {
+    foreach ($variables['links'] as $key => $link) {
       $url = $link->getURL();
       // Test for external paths.
       if ($url->isRouted()) {
@@ -80,10 +80,10 @@ function sitenow_preprocess_breadcrumb(&$variables) {
     }
     // For webforms, remove all system routes and the webform route.
     if (($key = array_search("entity.webform.collection", $routes)) !== FALSE) {
-      unset($variables["breadcrumb"][$key]);
+      unset($variables['breadcrumb'][$key]);
       foreach ($routes as $key => $value) {
         if (substr($value, 0, strlen('system')) === 'system') {
-          unset($variables["breadcrumb"][$key]);
+          unset($variables['breadcrumb'][$key]);
         }
       }
     }
@@ -157,7 +157,7 @@ function sitenow_query_administerusersbyrole_edit_access_alter(AlterableInterfac
  */
 function sitenow_form_menu_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
-  if ($form["id"]["#default_value"] === 'top-links') {
+  if ($form['id']['#default_value'] === 'top-links') {
     $theme = \Drupal::config('system.theme')->get('default');
     if (in_array($theme, ['uids_base'])) {
       $limit = theme_get_setting('header.top_links_limit', 'uids_base');
@@ -176,7 +176,7 @@ function sitenow_form_menu_edit_form_alter(&$form, FormStateInterface $form_stat
  */
 function sitenow_block_form_submit($form, FormStateInterface $form_state) {
   // Get block config object.
-  $config = \Drupal::service('config.factory')->getEditable('block.block.' . $form["id"]["#default_value"]);
+  $config = \Drupal::service('config.factory')->getEditable('block.block.' . $form['id']['#default_value']);
   // Get the config object settings.
   $settings = $config->get('settings');
   // Get block_styles from form_state.
@@ -192,7 +192,7 @@ function sitenow_block_form_submit($form, FormStateInterface $form_state) {
  * Implements hook_theme_suggestions_HOOK_alter().
  */
 function sitenow_theme_suggestions_block_alter(&$suggestions, $variables) {
-  $template = $variables["elements"]["#configuration"]["block_template"] ?? FALSE;
+  $template = $variables['elements']['#configuration']['block_template'] ?? FALSE;
   if ($template) {
     $suggestions[] = 'block__' . str_replace('-', '_', $template);
   }
@@ -202,11 +202,11 @@ function sitenow_theme_suggestions_block_alter(&$suggestions, $variables) {
  * Implements hook_preprocess_block().
  */
 function sitenow_preprocess_block(&$variables) {
-  $classes = $variables["elements"]["#configuration"]["block_classes"] ?? FALSE;
+  $classes = $variables['elements']['#configuration']['block_classes'] ?? FALSE;
   if ($classes) {
-    $variables["attributes"]["class"] = array_merge($variables["attributes"]["class"], $classes);
+    $variables['attributes']['class'] = array_merge($variables['attributes']['class'], $classes);
   }
-  switch ($variables["elements"]["#plugin_id"]) {
+  switch ($variables['elements']['#plugin_id']) {
     // Visually hide page title if page option is set.
     case 'field_block:node:page:title':
     case 'page_title_block':
@@ -218,7 +218,7 @@ function sitenow_preprocess_block(&$variables) {
           if ($node->hasField('field_publish_options') && !$node->get('field_publish_options')->isEmpty()) {
             $publish_options = $node->get('field_publish_options')->getValue();
             if (array_search('title_hidden', array_column($publish_options, 'value')) !== FALSE) {
-              $variables["attributes"]['class'][] = 'element-invisible';
+              $variables['attributes']['class'][] = 'element-invisible';
             }
           }
         }
@@ -441,7 +441,7 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
   }
   if (isset($form['field_publish_options'])) {
     // Place field in advanced options group.
-    if (!empty($form["field_publish_options"]["widget"]["#options"])) {
+    if (!empty($form['field_publish_options']['widget']['#options'])) {
       // Create node_publish group in the advanced container.
       $form['node_publish'] = [
         '#type' => 'details',
@@ -464,7 +464,7 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
     }
     else {
       // If no field options, set access to false.
-      $form["field_publish_options"]['#access'] = FALSE;
+      $form['field_publish_options']['#access'] = FALSE;
     }
   }
   return $form;
@@ -480,7 +480,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // file replace functionality.
   if (is_a($form_object, ContentEntityForm::class)) {
     /** @var \Drupal\Core\Entity\ContentEntityForm $form_object */
-    if ('media' === $form_object->getEntity()->getEntityType()->id()) {
+    if ($form_object->getEntity()->getEntityType()->id() === 'media') {
       if (isset($form['revision_information'])) {
         $form['revision_information']['#access'] = FALSE;
       }
@@ -497,10 +497,10 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
       $access = $check->access(\Drupal::currentUser()->getAccount());
 
       if ($access->isForbidden()) {
-        $form["theme_settings"]['#access'] = FALSE;
-        $form["logo"]['#access'] = FALSE;
-        $form["favicon"]['#access'] = FALSE;
-        $form["layout"]['#access'] = FALSE;
+        $form['theme_settings']['#access'] = FALSE;
+        $form['logo']['#access'] = FALSE;
+        $form['favicon']['#access'] = FALSE;
+        $form['layout']['#access'] = FALSE;
       }
       break;
 
@@ -555,7 +555,7 @@ function sitenow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
           $access = $check->access(\Drupal::currentUser()->getAccount());
 
           if ($access->isForbidden()) {
-            $form["field_uiowa_text_area"]["widget"][0]['#allowed_formats'] = [
+            $form['field_uiowa_text_area']['widget'][0]['#allowed_formats'] = [
               'minimal',
               'plain_text',
             ];
@@ -807,7 +807,7 @@ function sitenow_preprocess_page(&$variables) {
 function sitenow_preprocess_node(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
-    $node = $variables["node"];
+    $node = $variables['node'];
     // Get moderation state of node.
     $revision_id = $node->getRevisionId();
     if ($revision_id) {
@@ -839,7 +839,7 @@ function sitenow_preprocess_node(&$variables) {
 
           switch ($variables['view_mode']) {
             case 'teaser':
-              $variables["content"]['unpublished'] = [
+              $variables['content']['unpublished'] = [
                 '#type' => 'markup',
                 '#markup' => '<span class="badge badge--orange" aria-description="' . $warning_text . '">' . ucfirst($moderation_state) . '</span>',
                 '#weight' => 99,
@@ -948,9 +948,9 @@ function sitenow_link_alter(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function sitenow_preprocess_field(&$variables) {
-  switch ($variables["element"]["#field_name"]) {
+  switch ($variables['element']['#field_name']) {
     case 'title':
-      if ($variables["element"]["#view_mode"] === 'teaser') {
+      if ($variables['element']['#view_mode'] === 'teaser') {
         $variables['attributes']['class'][] = 'h5';
       }
       break;
@@ -1109,11 +1109,11 @@ function sitenow_tokens($type, $tokens, array $data, array $options, BubbleableM
             $field_teaser = $data['node']->get('field_teaser')->value;
             if (empty($field_teaser)) {
               // Person content type.
-              if ($data["node"]->hasField('field_person_bio') && !empty($data['node']->get('field_person_bio')->value)) {
+              if ($data['node']->hasField('field_person_bio') && !empty($data['node']->get('field_person_bio')->value)) {
                 $replacement_value = $data['node']->get('field_person_bio')->value;
               }
               // Article content type, v3 Page content type.
-              if ($data["node"]->hasField('body') && !empty($data['node']->get('body')->value)) {
+              if ($data['node']->hasField('body') && !empty($data['node']->get('body')->value)) {
                 $replacement_value = $data['node']->get('body')->value;
               }
               if (!empty($replacement_value)) {
