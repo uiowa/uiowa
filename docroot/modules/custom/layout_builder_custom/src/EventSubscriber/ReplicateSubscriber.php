@@ -187,7 +187,7 @@ class ReplicateSubscriber implements EventSubscriberInterface {
       $current = $entity->getRevisionId();
       foreach ($vids as $vid) {
         // Skip deleting if it is the current revision.
-        if ($vid === (int) $current) {
+        if ((int) $vid === (int) $current) {
           continue;
         }
         $node_storage_manager->deleteRevision($vid);
