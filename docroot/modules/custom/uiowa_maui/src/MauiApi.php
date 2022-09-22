@@ -106,6 +106,8 @@ class MauiApi {
           '@code' => $e->getCode(),
           '@error' => $e->getMessage(),
         ]);
+
+        $data = FALSE;
       }
 
       if (isset($response)) {
@@ -290,10 +292,10 @@ class MauiApi {
    * @param string $room_id
    *   The room id of the room.
    *
-   * @return array
-   *   JSON decoded array of response data.
+   * @return mixed
+   *   The API response data.
    */
-  public function getRoomData($building_id, $room_id): array {
+  public function getRoomData($building_id, $room_id) {
     return $this->request('GET', '/pub/registrar/courses/AstraRoomData/' . $building_id . "/" . $room_id);
   }
 

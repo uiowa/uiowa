@@ -5,6 +5,8 @@ dependencies:
   config:
     - field.field.node.classroom.body
     - field.field.node.classroom.field_classroom_building_id
+    - field.field.node.classroom.field_classroom_max_occupancy
+    - field.field.node.classroom.field_classroom_max_occupancy_b
     - field.field.node.classroom.field_classroom_room_id
     - field.field.node.classroom.field_meta_tags
     - node.type.classroom
@@ -32,6 +34,15 @@ content:
     third_party_settings: {  }
     weight: 1
     region: content
+  field_classroom_max_occupancy:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
   field_classroom_room_id:
     type: string
     label: above
@@ -50,12 +61,13 @@ content:
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 5
+    weight: 6
     region: content
   maui_room_data:
     settings: {  }
     third_party_settings: {  }
-    weight: 3
+    weight: 5
     region: content
 hidden:
+  field_classroom_max_occupancy_b: true
   search_api_excerpt: true
