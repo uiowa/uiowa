@@ -728,14 +728,14 @@ function admissions_core_theme_suggestions_field_alter(array &$suggestions, arra
  */
 function admissions_core_views_pre_render(ViewExecutable $view) {
   if ($view->id() === 'student_card') {
-    if (isset($view->element["headline"]["#headline"]) && !empty($view->element["headline"]["#headline"])) {
+    if (isset($view->element['headline']['#headline']) && !empty($view->element['headline']['#headline'])) {
       $headline_markup = [
-        '#markup' => '<a href="/student-profiles">' . $view->element["headline"]["#headline"] . '</a>',
+        '#markup' => '<a href="/student-profiles">' . $view->element['headline']['#headline'] . '</a>',
       ];
-      $view->element["headline"]["#headline"] = $headline_markup;
+      $view->element['headline']['#headline'] = $headline_markup;
     }
   }
-  if ($view->id() === "counselors") {
+  if ($view->id() === 'counselors') {
     switch ($view->current_display) {
       case 'block_counselors':
       case 'page_counselors':
@@ -744,7 +744,7 @@ function admissions_core_views_pre_render(ViewExecutable $view) {
         break;
     }
   }
-  if ($view->id() === "areas_of_study") {
+  if ($view->id() === 'areas_of_study') {
     $view->element['#attached']['library'][] = 'uids_base/stat';
     $view->element['#attached']['library'][] = 'uids_base/twocol';
   }

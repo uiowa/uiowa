@@ -103,7 +103,7 @@ function sitenow_preprocess_select(&$variables) {
       // Not the best solution, possibly look at:
       // https://www.drupal.org/files/issues/2117827-21.patch.
       if (isset($variables['options'], $variables['options'][0], $variables['options'][0]['value'])) {
-        if ($variables['options'][0]['value'] === '_none' || $variables['options'][0]['value'] == '') {
+        if ($variables['options'][0]['value'] === '_none' || $variables['options'][0]['value'] === '') {
           unset($variables['options'][0]);
         }
       }
