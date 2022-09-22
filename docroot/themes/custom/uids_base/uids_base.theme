@@ -99,7 +99,7 @@ function uids_base_preprocess_html(&$variables) {
   if ($node instanceof NodeInterface && $node->getType() === 'page') {
 
     // We get our after_content_override if it exists.
-    if (isset($node->get('field_after_content_override')->getValue()[0]['target_id'])) {
+    if ($node->hasField('field_after_content_override') && isset($node->get('field_after_content_override')->getValue()[0]['target_id'])) {
       $after_content_override_fid = $node->get('field_after_content_override')->getValue()[0]['target_id'];
     }
   }
