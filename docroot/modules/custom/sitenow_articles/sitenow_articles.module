@@ -5,6 +5,7 @@
  * Article configuration for the University of Iowa.
  */
 
+use Drupal\user\Entity\User;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -57,7 +58,7 @@ function sitenow_articles_form_alter(&$form, FormStateInterface $form_state, $fo
         $form['field_article_preserve_links']['#access'] = FALSE;
       }
       if ($form_id === 'node_article_edit_form') {
-        $user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
+        $user = User::load(\Drupal::currentUser()->id());
         if (!$user->hasPermission('administer sitenow articles')) {
           $form['field_article_preserve_links']['widget']['value']['#description'] = t('Displays message that article links may be broken and are preserved for historical purposes.');
         }
