@@ -120,7 +120,7 @@ function uiowa_core_theme($existing, $type, $theme, $path) {
  * Preprocess function uiowa_core_headline.
  */
 function template_preprocess_uiowa_core_headline(&$variables) {
-  if ($variables['hide_headline'] === TRUE) {
+  if ((bool) $variables['hide_headline'] === TRUE) {
     $style = 'sr-only';
   }
   else {
