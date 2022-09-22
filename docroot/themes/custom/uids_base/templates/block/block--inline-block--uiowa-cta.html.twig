@@ -25,8 +25,16 @@
 * @see template_preprocess_block()
 */
 #}
+{%
+  set classes = [
+  'block',
+  'block-' ~ configuration.provider|clean_class,
+  'block-' ~ plugin_id|clean_class,
+]
+%}
+
 {% set cta_block = {
-  'attributes': attributes,
+  'attributes': attributes.addClass(classes),
   'cta_summary': content.field_uiowa_cta_summary[0],
   'cta_title': content.field_uiowa_cta_title[0]['#text'],
   'cta_link_url': content.field_uiowa_cta_link[0]['#url'],
