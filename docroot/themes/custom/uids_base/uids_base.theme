@@ -87,34 +87,33 @@ function uids_base_preprocess_html(&$variables) {
     $variables['attributes']['class'][] = Html::cleanCssIdentifier('layout-page-sidebars-none');
   }
 
-//  // Body classes for after content.
-//  // First, we load the global config for region_settings to check if we have a global after_content.
-//  $global_after_content_fid = \Drupal::configFactory()->get('uiowa_core.settings')->get('uiowa_core.region_content.after_content');
-//
-//  // Then, we load the node we are on so we can use its fields.
-//  $node = \Drupal::routeMatch()->getParameter('node');
-//
-//  $after_content_override_fid = NULL;
-//  // If our node is really a node, and it is of type page...
-//  if ($node instanceof NodeInterface && $node->getType() === 'page') {
-//
-//    // We get our after_content_override if it exists.
-//    if (isset($node->get('field_after_content_override')->getValue()[0]['target_id'])) {
-//      $after_content_override_fid = $node->get('field_after_content_override')->getValue()[0]['target_id'];
-//    }
-//  }
-//
-//  // Then, if either a global after_content or an after_content_override exists...
-//  if ($global_after_content_fid !== NULL || $after_content_override_fid !== NULL) {
-//
-//    // And if the page has the after_content region...
-//    if (isset($variables['page']['after_content'])) {
-//
-//      // Add the class to the body.
-//      $variables['attributes']['class'][] = Html::cleanCssIdentifier('after_content--spacing');
-//    }
-//  }
-
+  // // Body classes for after content.
+  //  // First, we load the global config for region_settings to check if we have a global after_content.
+  //  $global_after_content_fid = \Drupal::configFactory()->get('uiowa_core.settings')->get('uiowa_core.region_content.after_content');
+  //
+  //  // Then, we load the node we are on so we can use its fields.
+  //  $node = \Drupal::routeMatch()->getParameter('node');
+  //
+  //  $after_content_override_fid = NULL;
+  //  // If our node is really a node, and it is of type page...
+  //  if ($node instanceof NodeInterface && $node->getType() === 'page') {
+  //
+  //    // We get our after_content_override if it exists.
+  //    if (isset($node->get('field_after_content_override')->getValue()[0]['target_id'])) {
+  //      $after_content_override_fid = $node->get('field_after_content_override')->getValue()[0]['target_id'];
+  //    }
+  //  }
+  //
+  //  // Then, if either a global after_content or an after_content_override exists...
+  //  if ($global_after_content_fid !== NULL || $after_content_override_fid !== NULL) {
+  //
+  //    // And if the page has the after_content region...
+  //    if (isset($variables['page']['after_content'])) {
+  //
+  //      // Add the class to the body.
+  //      $variables['attributes']['class'][] = Html::cleanCssIdentifier('after_content--spacing');
+  //    }
+  //  }
   $sticky_class = 'header-not-sticky';
   // Only set to sticky if it is set and nav_style is 'toggle'.
   if (theme_get_setting('header.nav_style') === 'toggle' && theme_get_setting('header.sticky')) {
