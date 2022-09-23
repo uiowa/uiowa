@@ -12,17 +12,23 @@
 
   .bef--secondary {
     grid-area: 2 / 1 / 3 / 3;
-    margin: 0 calc(-43px - 77px) 0 0;
+    @include breakpoint(md) {
+      margin: 0 calc(-43px - 77px) 0 0;
+    }
   }
 
   [data-drupal-form-fields*=edit-reset] {
     .bef--secondary {
-      margin: 0 calc(-43px - 179px) 0 0;
+      @include breakpoint(md) {
+        margin: 0 calc(-43px - 179px) 0 0;
+      }
     }
   }
 
   .bef--secondary .details-wrapper {
-    display: flex;
+    @include breakpoint(sm) {
+      display: flex;
+    }
   }
 
   .form-actions {
