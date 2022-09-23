@@ -191,7 +191,9 @@ $imgpath: '../../uids/assets/images';
     }
 
     &__removed-bottom {
-      padding-bottom: 0;
+      @include breakpoint(sm) {
+        padding-bottom: 0;
+      }
     }
 
     &__top-restored {
