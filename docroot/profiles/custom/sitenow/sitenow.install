@@ -1902,7 +1902,7 @@ function sitenow_update_9050() {
 }
 
 /**
- * Set - None - section container options to Normal.
+ * Set Remove default component spacing section style.
  */
 function sitenow_update_9051() {
   $connection = Database::getConnection();
@@ -1910,10 +1910,10 @@ function sitenow_update_9051() {
   // We need to adjust the records for the current node
   // version and previous revisions.
   foreach ([
-             'node_revision__layout_builder__layout',
-             'node__layout_builder__layout',
-           ] as $table_name) {
-    // If the section has a "section_margin_*" style, we can ignore it.
+    'node_revision__layout_builder__layout',
+    'node__layout_builder__layout',
+  ] as $table_name) {
+    // If the section has a "remove_default_*" style, we can ignore it.
     // It already has a container style selected.
     $query = $connection->select($table_name, 'n')
       ->fields('n', ['entity_id', 'delta', 'layout_builder__layout_section'])
@@ -1935,11 +1935,11 @@ function sitenow_update_9051() {
       // Unserialize the record and extract the layout settings. Allowed classes
       // were set to FALSE for PHPCS after the update had already run.
       $stored_data = unserialize($record->layout_builder__layout_section, [
-        'allowed_classes' => FALSE,
+        'allowed_classes' => TRUE,
       ]);
 
       $layout_settings = $stored_data->getLayoutSettings();
-      // Add in the 'Normal' container style.
+      // Add in the 'Remove default component spacing' style for existing pages.
       // We only pulled records that didn't have a container style,
       // so this can simply be appended.
       $layout_settings['layout_builder_styles_style']['remove_default_component_spacing'] = 'remove_default_component_spacing';
@@ -1969,7 +1969,7 @@ function sitenow_update_9051() {
     return;
   }
 
-  // Update sections w/no section_margin_ that might be in the temp store.
+  // Update sections w/no remove_default_ that might be in the temp store.
   $query = $connection->select('key_value_expire', 'kve')
     ->fields('kve', ['name', 'value', 'expire'])
     ->condition('collection', 'tempstore.shared.layout_builder.section_storage.overrides', '=');
@@ -1989,7 +1989,7 @@ function sitenow_update_9051() {
     // Allowed classes were set to FALSE for PHPCS after the update had
     // already run.
     $stored_data = unserialize($record->value, [
-      'allowed_classes' => FALSE,
+      'allowed_classes' => TRUE,
     ]);
 
     /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
@@ -1997,9 +1997,9 @@ function sitenow_update_9051() {
     // Loop through sections in the storage.
     foreach ($section_storage->getSections() as &$section) {
       $layout_settings = $section->getLayoutSettings();
-      // Check if we have any section_margin_ layout builder styles,
+      // Check if we have any remove_default_ layout builder styles,
       // and skip if we do.
-      if (preg_match('@section_margin_@', implode(',', array_keys($layout_settings['layout_builder_styles_style'])))) {
+      if (preg_match('@remove_default_@', implode(',', array_keys($layout_settings['layout_builder_styles_style'])))) {
         continue;
       }
       $layout_settings['layout_builder_styles_style']['remove_default_component_spacing'] = 'remove_default_component_spacing';
