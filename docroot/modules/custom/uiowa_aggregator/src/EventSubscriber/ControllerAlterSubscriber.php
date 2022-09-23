@@ -49,7 +49,7 @@ class ControllerAlterSubscriber implements EventSubscriberInterface {
     $request = $event->getRequest();
     $route = $request->attributes->get('_route');
 
-    if ($route == 'aggregator.admin_overview') {
+    if ($route === 'aggregator.admin_overview') {
       $build = $event->getControllerResult();
 
       if (is_array($build)) {

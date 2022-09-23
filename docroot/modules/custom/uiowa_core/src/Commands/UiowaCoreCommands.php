@@ -82,7 +82,7 @@ class UiowaCoreCommands extends DrushCommands {
     $config = $this->configFactory->getEditable('uiowa_core.settings');
     $uiowa_core_gtag = $config->get('uiowa_core.gtag');
 
-    if ($uiowa_core_gtag == '1') {
+    if ((int) $uiowa_core_gtag === 1) {
       $this->logger->notice('Site-specific Google Tag Manager Disabled');
       $config
         ->set('uiowa_core.gtag', '0')

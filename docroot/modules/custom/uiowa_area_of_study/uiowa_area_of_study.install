@@ -57,7 +57,7 @@ function uiowa_area_of_study_update_9003(&$sandbox) {
   foreach ($batch as $nid) {
     $node = Node::load($nid);
     if ($node->hasField('field_area_of_study_link_direct')
-      && $node->get('field_area_of_study_link_direct')->value == '1') {
+      && (int) $node->get('field_area_of_study_link_direct')->value === 1) {
       $node->rh_action->value = 'page_redirect';
       $node->rh_redirect->value = '[node:field_area_of_study_source_link:uri]';
       $node->rh_redirect_response->value = '301';

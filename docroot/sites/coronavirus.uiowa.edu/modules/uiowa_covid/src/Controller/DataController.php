@@ -77,7 +77,7 @@ class DataController extends ControllerBase {
       $date = $this->getPreviousReportingDate($dow);
     }
     // If Monday, Wednesday or Friday past 10am.
-    elseif ($time >= 10 && ($dow == 'Monday' || $dow == 'Wednesday' || $dow == 'Friday')) {
+    elseif ($time >= 10 && ($dow === 'Monday' || $dow === 'Wednesday' || $dow === 'Friday')) {
       $date = date('m-d-Y');
     }
     // Anything else should go back to the previous reporting date.
