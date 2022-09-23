@@ -202,45 +202,45 @@ display:
               input_required: false
               allow_secondary: true
               secondary_label: 'Advanced options'
-              secondary_open: false
+              secondary_open: true
             filter:
               combine:
                 plugin_id: default
                 advanced:
-                  placeholder_text: ''
+                  placeholder_text: Search
                   collapsible: false
                   is_secondary: false
               field_project_partner_target_id:
                 plugin_id: default
                 advanced:
-                  placeholder_text: ''
+                  placeholder_text: Partner
                   rewrite:
                     filter_rewrite_values: ''
-                  collapsible: true
+                  collapsible: false
                   is_secondary: true
               field_project_college_department_target_id:
                 plugin_id: default
                 advanced:
-                  placeholder_text: ''
+                  placeholder_text: College/Department
                   rewrite:
                     filter_rewrite_values: ''
-                  collapsible: true
+                  collapsible: false
                   is_secondary: true
               field_tags_target_id:
                 plugin_id: default
                 advanced:
-                  placeholder_text: ''
+                  placeholder_text: Topics
                   rewrite:
                     filter_rewrite_values: ''
-                  collapsible: true
+                  collapsible: false
                   is_secondary: true
               field_academic_year_value:
                 plugin_id: default
                 advanced:
                   sort_options: false
                   rewrite:
-                    filter_rewrite_values: ''
-                  collapsible: true
+                    filter_rewrite_values: '- Any -|All academic years'
+                  collapsible: false
                   is_secondary: true
       access:
         type: perm
@@ -550,7 +550,7 @@ display:
           exposed: true
           expose:
             operator_id: field_project_college_department_target_id_op
-            label: College/Departmen
+            label: College/Department
             description: ''
             use_operator: false
             operator: field_project_college_department_target_id_op
@@ -703,6 +703,7 @@ display:
         groups:
           1: AND
       defaults:
+        css_class: false
         relationships: false
         arguments: false
         filters: false
@@ -717,6 +718,7 @@ display:
           admin_label: 'field_project_partner: Content'
           plugin_id: standard
           required: false
+      css_class: bef-exposed-form--secondary
       display_description: ''
       display_extenders:
         metatag_display_extender:
