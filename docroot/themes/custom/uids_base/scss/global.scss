@@ -57,8 +57,7 @@ $imgpath: '../../uids/assets/images';
 
 // Set spacing as the default for mobile.
 .layout__container {
-  &:not([class*="grid-"]),
-  &:not([class*="layout--title"]) {
+  &:not([class*="grid-"]):not([class*="layout--title"]) {
     .layout__region {
       .block + .block {
         margin-top: 1.5rem;
@@ -79,6 +78,7 @@ $imgpath: '../../uids/assets/images';
         }
       }
     }
+
   }
 }
 
@@ -783,4 +783,4 @@ $imgpath: '../../uids/assets/images';
   .screen-reader-text {
     @include element-invisible;
   }
-}
+
