@@ -258,7 +258,7 @@ function sitenow_p2lb_process_section($section_id, $layout, $node) {
       $block_configs = sitenow_p2lb_process_paragraph($paragraphs[$key], $node);
       foreach ($block_configs as $block_config) {
         // Onecol uses 'content', rest use region for column placement.
-        $region = ($num_cols == 1) ? 'content' : $regional[$i];
+        $region = ($num_cols === 1) ? 'content' : $regional[$i];
         $uuid = $block_config['uuid'];
         $config = $block_config['configuration'];
         $styles = $block_config['styles'];
@@ -352,7 +352,7 @@ function sitenow_p2lb_determine_columns(array $col_widths) {
 
     // Out of cols to add.
     // Take what we have and handle/add to the list.
-    if ($i == count($col_widths) - 1) {
+    if ($i === count($col_widths) - 1) {
       $sections[] = [
         'num_columns' => count($col_widths),
         'col_widths' => $col_widths,
@@ -362,7 +362,7 @@ function sitenow_p2lb_determine_columns(array $col_widths) {
 
     // Section full with no overrun.
     // Take what we have and add to the list.
-    if ($iter_adder == 12) {
+    if ($iter_adder === 12) {
       $sections = array_merge(
         sitenow_p2lb_determine_columns(array_slice($col_widths, 0, ++$i)),
         sitenow_p2lb_determine_columns(array_slice($col_widths, $i))
@@ -1022,13 +1022,13 @@ function sitenow_p2lb_multicol_settings($col_widths) {
 
     case 3:
       // If first col is half width, others are 25.
-      if ($col_widths[0] == 6) {
+      if ($col_widths[0] === 6) {
         $settings = '50-25-25';
       }
       // First col is 25, then two options are available.
-      elseif ($col_widths[0] == 3) {
+      elseif ($col_widths[0] === 3) {
         // Check the middle col to determine which gets the 50.
-        if ($col_widths[1] == 3) {
+        if ($col_widths[1] === 3) {
           $settings = '25-25-50';
         }
         else {

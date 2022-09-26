@@ -28,8 +28,8 @@ function sitenow_core_webform_element_alter(array &$element, FormStateInterface 
  * Implements hook_form_alter().
  */
 function sitenow_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if ($form_id == 'webform_submission_request_a_site_paragraph_431_add_form'
-    || $form_id == 'webform_submission_request_a_site_add_form') {
+  if ($form_id === 'webform_submission_request_a_site_paragraph_431_add_form'
+    || $form_id === 'webform_submission_request_a_site_add_form') {
     $form['#attached']['library'][] = 'sitenow_core/better-request-form';
 
     $roles = \Drupal::currentUser()->getRoles();
@@ -44,8 +44,8 @@ function sitenow_core_form_alter(&$form, FormStateInterface $form_state, $form_i
     }
   }
 
-  if ($form_id == 'webform_submission_resend') {
-    if (\Drupal::currentUser()->id() == 1) {
+  if ($form_id === 'webform_submission_resend') {
+    if ((int) \Drupal::currentUser()->id() === 1) {
       \Drupal::messenger()->addWarning('Do not send emails as user 1. Log in using your HawkID so emails are signed properly.');
     }
   }
@@ -55,7 +55,7 @@ function sitenow_core_form_alter(&$form, FormStateInterface $form_state, $form_i
  * Implements hook_module_implements_alter().
  */
 function sitenow_core_module_implements_alter(&$implementations, $hook) {
-  if ($hook == 'block_view_alter'
+  if ($hook === 'block_view_alter'
     && isset($implementations['sitenow_core'], $implementations['uiowa_auth'])) {
     $group = $implementations['sitenow_core'];
     unset($implementations['sitenow_core']);
