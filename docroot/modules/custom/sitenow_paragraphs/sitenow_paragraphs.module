@@ -35,7 +35,7 @@ function sitenow_paragraphs_theme($existing, $type, $theme, $path) {
 function sitenow_paragraphs_entity_create(EntityInterface $entity) {
   /** @var \Drupal\node\NodeInterface $entity */
   // On new basic pages.
-  if ($entity->bundle() == 'page' && $entity->isNew() && $entity->hasField('field_page_content_block')) {
+  if ($entity->bundle() === 'page' && $entity->isNew() && $entity->hasField('field_page_content_block')) {
     // Create a text within a section default.
     $text = Paragraph::create([
       'type' => 'text',
@@ -61,7 +61,7 @@ function sitenow_paragraphs_field_widget_paragraphs_form_alter(&$element, FormSt
   // Hide paragraph classes if no options.
   if (isset($element['subform']['field_uip_classes'])) {
     // If count equals one and that item is _none, disable/hide.
-    if (count($element['subform']['field_uip_classes']['widget']['#options']) == 1 && array_key_exists('_none', $element['subform']['field_uip_classes']['widget']['#options'])) {
+    if (count($element['subform']['field_uip_classes']['widget']['#options']) === 1 && array_key_exists('_none', $element['subform']['field_uip_classes']['widget']['#options'])) {
       $element['subform']['field_uip_classes']['#access'] = FALSE;
     }
   }
@@ -89,7 +89,7 @@ function sitenow_paragraphs_field_widget_paragraphs_form_alter(&$element, FormSt
     $element['subform']['field_uip_id']['widget'][0]['value']['#description'] = $description;
   }
 
-  if ($element['#paragraph_type'] == 'webform') {
+  if ($element['#paragraph_type'] === 'webform') {
     if (isset($element['subform']['field_webform']['widget'][0]['target_id']['#default_value'])) {
       $element['subform']['field_webform']['widget'][0]['target_id']['#ajax'] = [
         'callback' => 'sitenow_paragraphs_update_webform_edit_link',
@@ -138,7 +138,7 @@ function sitenow_paragraphs_update_webform_edit_link($form, FormStateInterface $
  */
 function sitenow_paragraphs_entity_presave(EntityInterface $entity) {
   $type = $entity->getEntityType();
-  if ($type->id() == 'paragraph') {
+  if ($type->id() === 'paragraph') {
     // If unique id, clean it and save it as value.
     if ($entity->hasField('field_uip_id') && !$entity->get('field_uip_id')->isEmpty()) {
       $entity->set('field_uip_id', Html::getClass($entity->get('field_uip_id')->value));
@@ -161,7 +161,7 @@ function sitenow_paragraphs_preprocess_paragraph(&$variables) {
       });
       // For featured content only.
       // Articles and Events have similar functionality that could be combined.
-      if ($paragraph->bundle() == 'featured_content') {
+      if ($paragraph->bundle() === 'featured_content') {
         // Check for grid classes otherwise add list class.
         $display_options = [
           'grid',
@@ -175,7 +175,7 @@ function sitenow_paragraphs_preprocess_paragraph(&$variables) {
       $variables['attributes']['class'] = (isset($variables['attributes']['class'])) ? array_merge($variables['attributes']['class'], $classes) : $classes;
     }
     else {
-      if ($paragraph->bundle() == 'featured_content') {
+      if ($paragraph->bundle() === 'featured_content') {
         $variables['attributes']['class'][] = 'list';
       }
     }
@@ -196,7 +196,7 @@ function sitenow_paragraphs_preprocess_paragraph(&$variables) {
 
         // Display title if it exists.
         if ($paragraph->hasField('field_uip_display_title')) {
-          if ($paragraph->field_uip_display_title->value == 1) {
+          if ((int) $paragraph->field_uip_display_title->value === 1) {
             $variables['display_title'] = TRUE;
           }
         }
@@ -209,7 +209,7 @@ function sitenow_paragraphs_preprocess_paragraph(&$variables) {
           $variables['attributes']['id'][] = Html::getClass($paragraph->field_uip_id->value);
         }
         // If section...
-        if ($paragraph->bundle() == 'section') {
+        if ($paragraph->bundle() === 'section') {
           // If section container.
           $variables["content"]["field_section_content_block"]['#attributes']['class'][] = (!$paragraph->get('field_section_container')->isEmpty()
             ? $paragraph->field_section_container->value : 'container');

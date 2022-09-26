@@ -85,13 +85,13 @@ class FilterIframe extends FilterBase {
 
           // Try to set responsive styling based on width/height attributes.
           if ($iframe->hasAttribute('width') && $iframe->hasAttribute('height')) {
-            $width = $iframe->getAttribute('width');
-            $height = $iframe->getAttribute('height');
+            $width = (int) $iframe->getAttribute('width');
+            $height = (int) $iframe->getAttribute('height');
             $aspect_ratio = round($width / $height, 3);
-            if ($aspect_ratio == '1') {
+            if ($aspect_ratio === 1.0) {
               $wrapper->setAttribute('class', 'embed-responsive embed-responsive-1by1');
             }
-            elseif ($aspect_ratio == '1.333') {
+            elseif ($aspect_ratio === 1.333) {
               $wrapper->setAttribute('class', 'embed-responsive embed-responsive-4by3');
             }
             // 16:9 has a bit of variation when rounded.

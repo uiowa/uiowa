@@ -55,7 +55,7 @@ function now_core_node_presave($entity) {
   // Add a tag according to the article type
   // so that it can be used in user-created filters.
   $tid = now_core_article_type_tag_map($entity->field_article_type->value);
-  if ($tid !== FALSE) {
+  if (is_string($tid)) {
     // Check that we didn't already have the tid
     // before appending it to our list of tags.
     $in_array = FALSE;
@@ -69,7 +69,7 @@ function now_core_node_presave($entity) {
     $old_tid = ($old_tid != $tid) ? $old_tid : FALSE;
     $to_remove = [];
     foreach ($entity->field_tags->getValue() as $delta => $item) {
-      if ($item['target_id'] == $tid) {
+      if ((string) $item['target_id'] === $tid) {
         $in_array = TRUE;
         // If it was new or the type wasn't changing,
         // we're done and don't need to keep iterating.
@@ -80,7 +80,7 @@ function now_core_node_presave($entity) {
       // If we have an old TID and we've matched it,
       // add it to our list of removals.
       if ($old_tid !== FALSE &&
-        $item['target_id'] == $old_tid
+        (string) $item['target_id'] === $old_tid
       ) {
         $to_remove[] = $delta;
       }
@@ -126,7 +126,7 @@ function now_core_node_presave($entity) {
       // we default to archived to unpublish the page.
       // There shouldn't be a case where this happens unless it is
       // by accident, so this is really only a fallback.
-      $alt_state = ($entity->original->moderation_state->value == 'published') ? 'archived' : $entity->original->moderation_state->value;
+      $alt_state = ($entity->original->moderation_state->value === 'published') ? 'archived' : $entity->original->moderation_state->value;
     }
     $entity->moderation_state = $alt_state;
     // Add a user message along with changing this state.
@@ -185,15 +185,15 @@ function now_core_prevent_tag_delete_message($name) {
  * @param string $article_type
  *   The article type as a machine name, or empty to fetch TIDs array.
  *
- * @return int|bool|array
+ * @return string|bool|array
  *   The associated TID or FALSE, or an associative array of TIDs.
  */
 function now_core_article_type_tag_map(string $article_type = '') {
   $map = [
-    'achievements' => 16,
-    'featured' => 11,
-    'in-the-news' => 21,
-    'ui-spotlight' => 31,
+    'achievements' => '16',
+    'featured' => '11',
+    'in-the-news' => '21',
+    'ui-spotlight' => '31',
   ];
   // If we aren't getting a specific TID,
   // then return the full map.
