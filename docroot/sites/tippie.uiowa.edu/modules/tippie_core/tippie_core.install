@@ -46,7 +46,7 @@ function tippie_core_update_9001() {
         $redirect_path_url = trim(\Drupal::service('path_alias.manager')->getAliasByPath(rtrim($redirect_path, "/")), "/");
 
         // And check to see if we are redirecting to the same path.
-        if ($source_path == $redirect_path_url) {
+        if ($source_path === $redirect_path_url) {
 
           // If we are, break out of the current loop and go to the next.
           continue;

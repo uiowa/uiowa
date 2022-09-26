@@ -136,7 +136,7 @@ class ListBlock extends CoreBlock {
     $block_configuration = $block->getConfiguration();
 
     // Hide headline child form elements for table displays.
-    $has_children = !($this->view->getStyle()->getPluginId() == 'table');
+    $has_children = !($this->view->getStyle()->getPluginId() === 'table');
 
     // Add general help text (if available) below the block's title.
     if (!empty($this->getOption('general_help_text'))) {
@@ -177,7 +177,7 @@ class ListBlock extends CoreBlock {
       $form['override']['pager'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Show pager'),
-        '#default_value' => ($block_configuration['pager'] == 'full'),
+        '#default_value' => ($block_configuration['pager'] === 'full'),
       ];
     }
 
@@ -200,7 +200,7 @@ class ListBlock extends CoreBlock {
             $fields_to_remove[$field] = $field;
           }
         }
-        $form["override"]["hide_fields"]["order_fields"] = array_diff_key($form["override"]["hide_fields"]["order_fields"], $fields_to_remove);
+        $form['override']['hide_fields']['order_fields'] = array_diff_key($form['override']['hide_fields']['order_fields'], $fields_to_remove);
       }
     }
 
@@ -234,7 +234,7 @@ class ListBlock extends CoreBlock {
           $exposed_filters[$handler_id]['#title'] = $exposed_info['label'];
           // The following is essentially using this patch:
           // https://www.drupal.org/project/views_block_placement_exposed_form_defaults/issues/3158789
-          if ($exposed_filters[$handler_id]['#type'] == 'entity_autocomplete') {
+          if ($exposed_filters[$handler_id]['#type'] === 'entity_autocomplete') {
             $exposed_filters[$handler_id]['#default_value'] = EntityAutocomplete::valueCallback(
               $exposed_filters[$handler_id],
               $exposed_filter_values[$handler_id],

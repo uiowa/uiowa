@@ -325,7 +325,7 @@ class AcademicDatesBlock extends BlockBase implements ContainerFactoryPluginInte
       $config['limit_dates'],
     );
 
-    if ($config['display_more_link'] == TRUE) {
+    if ($config['display_more_link'] === TRUE) {
       $more_link = $config['more_link'] ?? 'https://registrar.uiowa.edu/academic-calendar';
 
       $build['more_link'] = [

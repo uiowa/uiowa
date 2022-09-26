@@ -110,10 +110,10 @@ class Apr {
   protected function setEndpoint() {
     $endpoint = '';
 
-    if ($this->environment == 'test') {
+    if ($this->environment === 'test') {
       $endpoint = 'https://test.its.uiowa.edu/apr';
     }
-    elseif ($this->environment == 'prod') {
+    elseif ($this->environment === 'prod') {
       $endpoint = 'https://apps.its.uiowa.edu/apr';
     }
 
