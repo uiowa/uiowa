@@ -75,22 +75,23 @@
         &[data-drupal-selector*=edit-reset] {
           position: absolute;
           right: 2rem;
-          top: 87px;
-          padding: 0.5rem 1rem;
+          top: 89px;
+          padding: 0.5rem 0;
           background: none;
-          color: #000;
+          color: $link-color;
           border: none;
           font-family: inherit;
           text-transform: none;
-          font-size: 0.9rem;
+          text-decoration: underline;
+          font-size: 1rem;
           font-weight: 500;
           @include breakpoint(sm) {
-            top: 118px;
+            top: 123px;
           }
 
           &:focus,
           &:hover {
-            text-decoration: underline;
+            text-decoration: none;
           }
         }
       }
@@ -103,10 +104,12 @@
       grid-row-gap: 0;
     }
 
+    .select-wrapper {
+      margin-right: 0;
+    }
+
     details {
-      margin-bottom: $md;
-      @include breakpoint(sm) {
-        margin-bottom: 0;
+      @include breakpoint(sm) {;
         padding-top: 1.5rem;
         margin-top: 0.5rem;
       }
@@ -128,12 +131,27 @@
       summary {
         padding: 0;
         font-weight: 600;
-        font-size: 0.9rem;
+        display: block;
 
-        &::marker {
-          padding-right: 1rem;
+        &::marker,
+        &::-webkit-details-marker {
+          display: none;
         }
       }
+
+      summary::before{
+        padding: $xsm;
+        padding-right: .6rem;
+        content: "\f13a";
+        color: $brand-cool-gray;
+        @include fas();
+      }
+
+     &[open] > summary::before{
+        content: "\f139";
+      }
+
+
 
       .details-wrapper {
         padding: 0;
