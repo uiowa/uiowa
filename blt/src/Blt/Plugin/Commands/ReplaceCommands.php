@@ -243,11 +243,6 @@ EOD;
         ->append()
         ->text($text)
         ->run();
-
-      $this->taskReplaceInFile("$root/docroot/sites/$site/settings/local.settings.php")
-        ->from("\$settings['file_private_path'] = EnvironmentDetector::getRepoRoot() . '/files-private/default';")
-        ->to("\$settings['file_private_path'] = EnvironmentDetector::getRepoRoot() . '/files-private/$site';")
-        ->run();
     }
 
     $from = "$root/tmp/local.blt.yml";
