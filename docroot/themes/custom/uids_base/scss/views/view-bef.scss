@@ -10,31 +10,13 @@
     grid-area: 1 / 1 / 2 / 3;
   }
 
-  .views-exposed-form.uids-content:not(.uids-search) .form-item {
-    margin-right: 0;
-    @include breakpoint(sm) {
-      margin-right: 1em;
-    }
-
-    &.form-item-title {
-      margin-right: 0;
-    }
-  }
-
   .bef--secondary {
     grid-area: 2 / 1 / 3 / 3;
-    @include breakpoint(sm) {}
-  }
 
-  [data-drupal-form-fields*=edit-reset] {
-    .bef--secondary {
-      @include breakpoint(sm) {}
-    }
-  }
-
-  .bef--secondary .details-wrapper {
-    @include breakpoint(sm) {
-      display: flex;
+    .details-wrapper {
+      @include breakpoint(sm) {
+        display: flex;
+      }
     }
   }
 
@@ -42,13 +24,15 @@
     grid-area: 1 / 3 / 3 / 4;
   }
 
-  .uids-content .form-item {
-    margin-top: 0;
-    margin-bottom: 0;
-  }
+  .uids-content {
+    .form-item {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
 
-  .uids-content [type=submit] {
-    padding: 1rem 1.25rem;
+    [type=submit] {
+      padding: 1rem 1.25rem;
+    }
   }
 
   .views-exposed-form {
@@ -60,6 +44,14 @@
       }
 
       .form-item {
+        margin-right: 0;
+        @include breakpoint(sm) {
+          margin-right: 1em;
+        }
+
+        &.form-item-title {
+          margin-right: 0;
+        }
         &:last-child {
           margin-right: 0;
         }
@@ -75,7 +67,7 @@
         &[data-drupal-selector*=edit-reset] {
           position: absolute;
           right: 1.6rem;
-          top: 89px;
+          top: 92px;
           padding: 0.5rem 1.4rem;
           background: none;
           color: black;
@@ -83,7 +75,8 @@
           font-size: 0.9rem;
           font-weight: 400;
           letter-spacing: 0.04rem;
-          border: 1px solid #c4c4c4;
+          border: none;
+          background: #fff;
           @include breakpoint(sm) {
             top: 123px;
           }
