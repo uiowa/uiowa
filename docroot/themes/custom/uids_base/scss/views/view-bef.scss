@@ -69,29 +69,28 @@
         border: 1px solid $secondary;
 
         &[data-drupal-selector*=edit-submit] {
-          margin-left: -90px;
+          margin-left: -95px;
         }
 
         &[data-drupal-selector*=edit-reset] {
           position: absolute;
-          right: 2rem;
+          right: 1.6rem;
           top: 89px;
-          padding: 0.5rem 0;
+          padding: 0.5rem 1.4rem;
           background: none;
-          color: $link-color;
-          border: none;
+          color: black;
           font-family: inherit;
-          text-transform: none;
-          text-decoration: underline;
-          font-size: 1rem;
-          font-weight: 500;
+          font-size: 0.9rem;
+          font-weight: 400;
+          letter-spacing: 0.04rem;
+          border: 1px solid #c4c4c4;
           @include breakpoint(sm) {
             top: 123px;
           }
 
           &:focus,
           &:hover {
-            text-decoration: none;
+            text-decoration: underline;
           }
         }
       }
