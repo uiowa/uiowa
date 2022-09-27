@@ -184,7 +184,7 @@ display:
       exposed_form:
         type: bef
         options:
-          submit_button: Apply
+          submit_button: Search
           reset_button: true
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
@@ -195,13 +195,13 @@ display:
           text_input_required_format: filtered_html
           bef:
             general:
-              autosubmit: false
-              autosubmit_exclude_textfield: false
+              autosubmit: true
+              autosubmit_exclude_textfield: true
               autosubmit_textfield_delay: 500
               autosubmit_hide: false
               input_required: false
               allow_secondary: true
-              secondary_label: 'Advanced options'
+              secondary_label: Filters
               secondary_open: false
             filter:
               combine:
@@ -213,25 +213,25 @@ display:
               field_project_partner_target_id:
                 plugin_id: default
                 advanced:
-                  placeholder_text: Partner
+                  sort_options: false
                   rewrite:
-                    filter_rewrite_values: ''
+                    filter_rewrite_values: '- Any -|Partner'
                   collapsible: false
                   is_secondary: true
               field_project_college_department_target_id:
                 plugin_id: default
                 advanced:
-                  placeholder_text: College/Department
+                  sort_options: false
                   rewrite:
-                    filter_rewrite_values: ''
+                    filter_rewrite_values: '- Any -|College/Department'
                   collapsible: false
                   is_secondary: true
               field_tags_target_id:
                 plugin_id: default
                 advanced:
-                  placeholder_text: Topics
+                  sort_options: false
                   rewrite:
-                    filter_rewrite_values: ''
+                    filter_rewrite_values: '- Any -|Topics'
                   collapsible: false
                   is_secondary: true
               field_academic_year_value:
@@ -527,7 +527,7 @@ display:
             group_items: {  }
           reduce_duplicates: false
           handler: 'default:node'
-          widget: autocomplete
+          widget: select
           handler_settings:
             target_bundles:
               partner: partner
@@ -583,8 +583,8 @@ display:
             group_items: {  }
           reduce_duplicates: false
           vid: colleges_and_departments
-          type: textfield
-          hierarchy: false
+          type: select
+          hierarchy: true
           limit: true
           error_message: true
           save_lineage: false
@@ -641,7 +641,7 @@ display:
             group_items: {  }
           reduce_duplicates: false
           vid: tags
-          type: textfield
+          type: select
           hierarchy: false
           limit: true
           error_message: true
