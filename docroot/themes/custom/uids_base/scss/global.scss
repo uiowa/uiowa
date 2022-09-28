@@ -568,7 +568,7 @@ $imgpath: '../../uids/assets/images';
 // Override default for blocks adjacent to page title/breadcrumbs.
 .layout__container {
   .layout__region {
-    .block.block-system-breadcrumb-block + .block.block-field-blocknodepagetitle,
+    .block.block-system-breadcrumb-block + .block[class*="block-field-"],
     .block.block-field-blocknodepagetitle + .block[class*="block-field-"] {
       margin-top: 0;
     }
