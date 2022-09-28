@@ -33,6 +33,7 @@ class GalleryJumpLink extends BlockBase {
       '#attributes' => [
         'class' => [
           'gallery-jump-link',
+          'block-margin__default--removed',
         ],
       ],
       '#attached' => [
