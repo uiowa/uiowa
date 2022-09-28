@@ -423,6 +423,58 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
           ->addWarning(t('You do not have permission to set the active after content and pre footer items. Please contact a user with webmaster permissions.'));
       }
       break;
+
+    // Node form modifications.
+    case 'node_page_edit_form':
+    case 'node_page_form':
+    case 'node_article_edit_form':
+    case 'node_article_form':
+    case 'node_person_edit_form':
+    case 'node_person_form':
+      _uiowa_core_form_defaults($form, $form_state);
+      break;
+  }
+}
+
+/**
+ * Custom node content type form defaults.
+ */
+function _uiowa_core_form_defaults(&$form, $form_state) {
+  // Region overrides.
+  $region_list = ['after_content', 'pre_footer'];
+
+  // This checks if any region in the region list exists.
+  $regions_exist = FALSE;
+  foreach ($region_list as $region) {
+    $regions_exist = $regions_exist || isset($form['field_' . $region . '_override']);
+  }
+
+  if ($regions_exist) {
+
+    // Create region_overrides group in advanced container.
+    $form['region_overrides'] = [
+      '#type' => 'details',
+      '#title' => t('Region overrides'),
+      '#group' => 'advanced',
+      '#attributes' => [
+        'class' => ['node-form-region-overrides'],
+      ],
+      '#attached' => [
+        'library' => ['node/drupal.node'],
+      ],
+      '#weight' => -10,
+      '#optional' => TRUE,
+      '#open' => FALSE,
+    ];
+
+    foreach ($region_list as $region) {
+      // If field_after_content_override is set...
+      if (isset($form['field_' . $region . '_override'])) {
+
+        // Set region to region_overrides group.
+        $form['field_' . $region . '_override']['#group'] = 'region_overrides';
+      }
+    }
   }
 }
 
@@ -456,6 +508,34 @@ function uiowa_core_preprocess_html(&$variables) {
         $variables['attributes']['class'][] = 'text--serif';
         $variables['#attached']['library'][] = 'uids_base/global-serif';
       }
+    }
+  }
+
+  // Body classes for after content.
+  // First, we load the global config for region_settings to check if we have a global after_content.
+  $global_after_content_fid = \Drupal::configFactory()->get('uiowa_core.settings')->get('uiowa_core.region_content.after_content');
+
+  // Then, we load the node we are on so we can use its fields.
+  $node = \Drupal::routeMatch()->getParameter('node');
+
+  // If our node is really a node, and it is of type page...
+  $after_content_override_fid = NULL;
+  if ($node instanceof NodeInterface && $node->getType() === 'page') {
+
+    // We get our after_content_override if it exists.
+    if ($node->hasField('field_after_content_override') && isset($node->get('field_after_content_override')->getValue()[0]['target_id'])) {
+      $after_content_override_fid = $node->get('field_after_content_override')->getValue()[0]['target_id'];
+    }
+  }
+
+  // Then, if either a global after_content or an after_content_override exists...
+  if ($global_after_content_fid !== NULL || $after_content_override_fid !== NULL) {
+
+    // And if the page has the after_content region...
+    if (isset($variables['page']['after_content'])) {
+
+      // Add the class to the body.
+      $variables['attributes']['class'][] = 'after_content--spacing';
     }
   }
 }

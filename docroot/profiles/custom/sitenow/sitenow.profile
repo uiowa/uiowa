@@ -423,43 +423,6 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
     }
   }
 
-  // Region overrides.
-  $region_list = ['after_content', 'pre_footer'];
-
-  // This checks if any region in the region list exists.
-  $regions_exist = FALSE;
-  foreach ($region_list as $region) {
-    $regions_exist = $regions_exist || isset($form['field_' . $region . '_override']);
-  }
-
-  if ($regions_exist) {
-
-    // Create region_overrides group in advanced container.
-    $form['region_overrides'] = [
-      '#type' => 'details',
-      '#title' => t('Region overrides'),
-      '#group' => 'advanced',
-      '#attributes' => [
-        'class' => ['node-form-region-overrides'],
-      ],
-      '#attached' => [
-        'library' => ['node/drupal.node'],
-      ],
-      '#weight' => -10,
-      '#optional' => TRUE,
-      '#open' => FALSE,
-    ];
-
-    foreach ($region_list as $region) {
-      // If field_after_content_override is set...
-      if (isset($form['field_' . $region . '_override'])) {
-
-        // Set region to region_overrides group.
-        $form['field_' . $region . '_override']['#group'] = 'region_overrides';
-      }
-    }
-  }
-
   if (isset($form['field_tags'])) {
     // Create node_relations group in the advanced container.
     $form['node_relations'] = [
