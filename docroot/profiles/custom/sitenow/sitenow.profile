@@ -716,7 +716,7 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
         '#type' => 'item',
         '#markup' => t('Links in the social media section are managed via the <a href="@menu_link">@menu_name menu</a>.', [
           '@menu_link' => $menu_link,
-          '@menu_name' => $menus[$social_media_menu],
+          '@menu_name' => $menus[$social_media_menu]->label(),
         ]),
       ];
     }
@@ -727,7 +727,7 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
         '#type' => 'item',
         '#markup' => t('Links in the left column are managed via the <a href="@menu_link">@menu_name menu</a>.', [
           '@menu_link' => $menu_link,
-          '@menu_name' => $menus[$custom_menu],
+          '@menu_name' => $menus[$custom_menu]->label(),
         ]),
       ];
     }
@@ -738,7 +738,7 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
         '#type' => 'item',
         '#markup' => t('Links in the middle column are managed via the <a href="@menu_link">@menu_name menu</a>.', [
           '@menu_link' => $menu_link,
-          '@menu_name' => $menus[$custom_menu_2],
+          '@menu_name' => $menus[$custom_menu_2]->label(),
         ]),
       ];
     }
@@ -749,7 +749,7 @@ function sitenow_form_system_site_information_settings_alter(&$form, FormStateIn
         '#type' => 'item',
         '#markup' => t('Links in the right column are managed via the <a href="@menu_link">@menu_name menu</a>.', [
           '@menu_link' => $menu_link,
-          '@menu_name' => $menus[$custom_menu_3],
+          '@menu_name' => $menus[$custom_menu_3]->label(),
         ]),
       ];
     }

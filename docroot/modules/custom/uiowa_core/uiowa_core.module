@@ -725,9 +725,6 @@ function uiowa_core_academic_years_default_value(ContentEntityInterface $entity,
  */
 function uiowa_core_state_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
   $cacheable = FALSE;
-  if (method_exists($entity, 'bundle')) {
-    $bundle = $entity->bundle();
-  }
   $options = [
     'AL' => 'Alabama',
     'AK' => 'Alaska',
@@ -782,8 +779,15 @@ function uiowa_core_state_options(FieldStorageConfig $definition, ContentEntityI
     'WY' => 'Wyoming',
   ];
 
-  // Allow modules to alter options.
-  \Drupal::moduleHandler()->alter('state_options', $options, $entity, $bundle);
+  if (!is_null($entity)) {
+    $bundle = $entity->bundle();
+    // Allow modules to alter options.
+    \Drupal::moduleHandler()->alter('state_options', $options, $entity, $bundle);
+  }
+  else {
+    // Allow modules to alter options.
+    \Drupal::moduleHandler()->alter('state_options', $options);
+  }
 
   return $options;
 }

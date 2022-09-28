@@ -693,10 +693,15 @@ function uids_base_preprocess_block(&$variables) {
   }
 
   // If inner list, remove any inner grid classes.
-  if (isset($variables['attributes']['class']) && in_array('inner--list', $variables['attributes']['class'])) {
-    foreach ($variables['attributes']['class'] as $key => $style) {
-      if (substr($style, 0, strlen('inner--grid')) === 'inner--grid') {
-        unset($variables['attributes']['class'][$key]);
+  if (isset($variables['attributes']['class'])) {
+    if (is_string($variables['attributes']['class'])) {
+      $variables['attributes']['class'] = explode(' ', $variables['attributes']['class']);
+    }
+    if (in_array('inner--list', $variables['attributes']['class'])) {
+      foreach ($variables['attributes']['class'] as $key => $style) {
+        if (substr($style, 0, strlen('inner--grid')) === 'inner--grid') {
+          unset($variables['attributes']['class'][$key]);
+        }
       }
     }
   }
