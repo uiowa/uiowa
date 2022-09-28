@@ -55,33 +55,6 @@ $imgpath: '../../uids/assets/images';
   }
 }
 
-// Set spacing as the default for mobile.
-.layout__container {
-  &:not([class*="grid-"]):not([class*="layout--title"]) {
-    .layout__region {
-      .block:not([class*="block-margin"]) + .block:not([class*="block-margin"]) {
-        margin-top: 1.6rem;
-
-        &:first-child {
-          margin-top: 0;
-        }
-      }
-    }
-
-    // Remove defaults.
-    &.component-spacing__removed {
-      .layout__region {
-        .block:not([class*="block-margin__bottom"]) + .block:not([class*="block-margin--top"]) {
-          @include breakpoint(sm) {
-            margin-top: 0;
-          }
-        }
-      }
-    }
-
-  }
-}
-
   // set equal height columns
   .layout {
     .layout__region--first,
@@ -544,7 +517,54 @@ $imgpath: '../../uids/assets/images';
     }
   }
 
-  // No results text
+
+// Set spacing as the default for mobile.
+.layout__container {
+  &:not([class*="grid-"]):not([class*="layout--title"]) {
+    .layout__region {
+      .block + .block {
+        margin-top: 1.6rem;
+
+        &:first-child {
+          margin-top: 0;
+        }
+      }
+      .block + .block.block-margin__top {
+        margin-top: $md;
+      }
+      .block + .block.block-margin__top--extra {
+        margin-top: $md;
+        @include breakpoint(sm) {
+          margin-top: $mobile-height-gutter;
+        }
+      }
+      .block + .block.block-margin__default--removed {
+        margin-top: 0;
+      }
+      // Override card margins.
+      .block.card--media-right:first-child,
+      .block.card--media-left:first-child,
+      .block +.block.card--media-right,
+      .block +.block.card--media-left {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+// Override default for blocks adjacent to page title/breadcrumbs.
+.layout__container {
+  .layout__region {
+    .block.block-system-breadcrumb-block + .block.block-field-blocknodepagetitle,
+    .block.block-field-blocknodepagetitle + .block[class*="block-field-"] {
+      margin-top: 0;
+    }
+  }
+}
+
+
+
+// No results text
   .view-empty,
   .events-empty,
   .uiowa-aggregator-no-results {
