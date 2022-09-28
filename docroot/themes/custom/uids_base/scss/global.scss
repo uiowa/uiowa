@@ -168,7 +168,7 @@ $imgpath: '../../uids/assets/images';
       }
 
       &__removed-bottom {
-        padding-bottom: .05rem;
+        //padding-bottom: .05rem;
         @include breakpoint(sm) {
           padding-bottom: 0;
         }
@@ -529,6 +529,7 @@ $imgpath: '../../uids/assets/images';
           margin-top: 0;
         }
       }
+      // Allow margin top and top extra to override.
       .block + .block.block-margin__top {
         margin-top: $md;
       }
@@ -538,6 +539,7 @@ $imgpath: '../../uids/assets/images';
           margin-top: $mobile-height-gutter;
         }
       }
+      // Remove default margins style.
       .block + .block.block-margin__default--removed {
         margin-top: 0;
       }
@@ -552,6 +554,17 @@ $imgpath: '../../uids/assets/images';
   }
 }
 
+// Override card margins for layouts where
+// section padding has been removed and card margin was assumed.
+.layout__container[class*="section-padding__removed"] {
+  .layout__region {
+    .block.card--media-right:first-child:last-child,
+    .block.card--media-left:first-child:last-child {
+      margin-bottom: 1.6rem;
+    }
+  }
+}
+
 // Override default for blocks adjacent to page title/breadcrumbs.
 .layout__container {
   .layout__region {
@@ -561,8 +574,6 @@ $imgpath: '../../uids/assets/images';
     }
   }
 }
-
-
 
 // No results text
   .view-empty,
