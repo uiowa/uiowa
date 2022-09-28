@@ -49,7 +49,7 @@ class RequestASiteUriConstraint {
     foreach (['port', 'user', 'pass', 'path', 'query', 'fragment'] as $invalid) {
       if (isset($url[$invalid])) {
         $extra = '';
-        if ($invalid == 'path' && $formState->getValue('request_type') == 'Existing') {
+        if ($invalid === 'path' && $formState->getValue('request_type') === 'Existing') {
           $extra = 'URL must not contain a path.';
         }
         return $formState->setError(
@@ -64,8 +64,8 @@ class RequestASiteUriConstraint {
     }
 
     // Validate the URL pattern if this is a new site.
-    if ($formState->getValue('request_type') == 'New') {
-      if ($url['scheme'] == 'http') {
+    if ($formState->getValue('request_type') === 'New') {
+      if ($url['scheme'] === 'http') {
         return $formState->setError(
           $element,
           t('URL @value must begin with https:// scheme.', [

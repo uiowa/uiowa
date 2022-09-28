@@ -55,7 +55,7 @@ function grad_admissions_core_update_9001() {
     }
     // If we didn't make any changes, continue to the next node.
     // Else, save it and add it to our updated list.
-    if ($changed == FALSE) {
+    if ($changed === FALSE) {
       continue;
     }
     if ($node->save()) {

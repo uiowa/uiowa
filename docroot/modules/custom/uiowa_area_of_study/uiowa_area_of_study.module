@@ -93,8 +93,8 @@ function uiowa_area_of_study_preprocess_page(&$variables) {
           // Display message if content is being redirected with Rabbit Hole.
           // Using preprocess_page to avoid caching issue.
           if ($node->hasField('field_area_of_study_link_direct')
-            && $node->get('field_area_of_study_link_direct')->value == '1') {
-            if (\Drupal::currentUser()->hasPermission('rabbit hole bypass node') == TRUE) {
+            && (int) $node->get('field_area_of_study_link_direct')->value === 1) {
+            if (\Drupal::currentUser()->hasPermission('rabbit hole bypass node') === TRUE) {
               \Drupal::messenger()
                 ->addWarning(t('Visitors are being redirected to
                 the Primary Source Link'));
@@ -115,12 +115,12 @@ function uiowa_area_of_study_entity_presave(EntityInterface $entity) {
     case 'area_of_study':
       // Check for rabbit_hole functionality.
       if (\Drupal::moduleHandler()->moduleExists('rabbit_hole') && $entity->hasField('rh_action')) {
-        $link_direct = $entity->get('field_area_of_study_link_direct')->value;
+        $link_direct = (int) $entity->get('field_area_of_study_link_direct')->value;
         $source_link = $entity->get('field_area_of_study_source_link')->uri;
         // If source link and direct to source are set,
         // change the rabbit hole setting to redirect
         // and set the url to the source link token.
-        if ($link_direct == 1 && isset($source_link) && !empty($source_link)) {
+        if ($link_direct === 1 && isset($source_link) && !empty($source_link)) {
           $entity->rh_action->value = 'page_redirect';
           $entity->rh_redirect->value = '[node:field_area_of_study_source_link:uri]';
           $entity->rh_redirect_response->value = '301';
