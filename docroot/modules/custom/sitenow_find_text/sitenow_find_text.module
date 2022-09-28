@@ -68,7 +68,7 @@ function sitenow_find_text_get_text_field_tables() {
             $parent_type = ['entity_id', 'revision_id'];
             // Titles are handled a little differently, and at this time
             // are the only fields handled this way.
-            if ($field_name == 'title') {
+            if ($field_name === 'title') {
               $parent_type = ['nid'];
               $value_columns = ['title'];
             }

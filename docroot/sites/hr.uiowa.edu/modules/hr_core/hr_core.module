@@ -94,7 +94,7 @@ function hr_core_preprocess_paragraph(&$variables) {
       if (!$admin_context->isAdminRoute()) {
         // Display title if it exists.
         if ($paragraph->hasField('field_uip_display_title')) {
-          if ($paragraph->field_uip_display_title->value == 1) {
+          if ((int) $paragraph->field_uip_display_title->value === 1) {
             $variables['display_title'] = TRUE;
           }
         }
@@ -152,7 +152,7 @@ function hr_core_preprocess_node(&$variables) {
     $node = $variables["node"];
     switch ($node->getType()) {
       case 'faq':
-        if ($variables["view_mode"] == 'teaser') {
+        if ($variables["view_mode"] === 'teaser') {
           $variables['id'] = 'nid-' . $node->id();
           $variables['heading'] = 'heading-' . $node->id();
         }

@@ -214,7 +214,7 @@ class Articles extends BaseNodeSource {
 
     // Map field_news_featured_research to "faculty research" tag.
     $research = $row->getSourceProperty('field_news_featured_research')[0]['value'];
-    if ($research == '1') {
+    if ((int) $research === 1) {
       $tag_names[] = 'faculty research';
       // Make sure 'research' is in the mix. Duplicates will be removed later.
       $tag_names[] = 'research';
@@ -222,7 +222,7 @@ class Articles extends BaseNodeSource {
 
     // Convert news type to tags, default to 'news' unless media_mention.
     $news_type = $row->getSourceProperty('field_news_type')[0]['value'];
-    $tag_names[] = (!empty($news_type) && $news_type == 'media_mention') ? 'media mention' : 'news';
+    $tag_names[] = (!empty($news_type) && $news_type === 'media_mention') ? 'media mention' : 'news';
 
     // Remove any duplicates.
     $tag_names = array_unique($tag_names);

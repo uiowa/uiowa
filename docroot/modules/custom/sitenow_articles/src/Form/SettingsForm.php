@@ -114,20 +114,20 @@ class SettingsForm extends ConfigFormBase {
     $archive =& $view->getDisplay('block_articles_archive');
     $feed =& $view->getDisplay('feed_articles');
 
-    if ($feed['display_options']['displays']['page_articles'] == 'page_articles') {
+    if ($feed['display_options']['displays']['page_articles'] === 'page_articles') {
       $show_feed = 1;
     }
     else {
       $show_feed = 0;
     }
-    if ($archive['display_options']['enabled'] == TRUE) {
+    if ($archive['display_options']['enabled'] === TRUE) {
       $show_archive = 1;
     }
     else {
       $show_archive = 0;
     }
     $default =& $view->getDisplay('default');
-    if ($display['display_options']['enabled'] == TRUE) {
+    if ($display['display_options']['enabled'] === TRUE) {
       $status = 1;
     }
     else {
@@ -273,7 +273,7 @@ class SettingsForm extends ConfigFormBase {
       '#size' => 60,
     ];
 
-    if ($view->get('status') == FALSE) {
+    if ($view->get('status') === FALSE) {
       $this->messenger()->addError($this->t('Articles views page functionality has been disabled. Please contact an administrator.'));
       $form['view_page']['#disabled'] = TRUE;
     }
@@ -304,12 +304,12 @@ class SettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Get values.
-    $status = $form_state->getValue('sitenow_articles_status');
+    $status = (int) $form_state->getValue('sitenow_articles_status');
     $show_feed = $form_state->getValue('sitenow_articles_feed');
     $title = $form_state->getValue('sitenow_articles_title');
     $path = $form_state->getValue('sitenow_articles_path');
     $header_content = $form_state->getValue('sitenow_articles_header_content');
-    $show_archive = $form_state->getValue('sitenow_articles_archive');
+    $show_archive = (int) $form_state->getValue('sitenow_articles_archive');
     $featured_image_display_default = $form_state->getValue('featured_image_display_default');
     $tag_display = $form_state->getValue('tag_display');
     $related_display = $form_state->getValue('related_display');
@@ -345,7 +345,7 @@ class SettingsForm extends ConfigFormBase {
     $default =& $view->getDisplay('default');
 
     // Enable/Disable view display.
-    if ($status == 1) {
+    if ($status === 1) {
       $display['display_options']['enabled'] = TRUE;
     }
     else {
@@ -362,7 +362,7 @@ class SettingsForm extends ConfigFormBase {
 
     $archive['display_options']['arguments']['created_year_month']['summary_options']['base_path'] = $path;
 
-    if ($show_archive == 1) {
+    if ($show_archive === 1) {
       $archive['display_options']['enabled'] = TRUE;
     }
     else {
