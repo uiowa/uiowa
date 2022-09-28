@@ -1,4 +1,41 @@
 adding:
+  dependencies:
+    config:
+      - field.field.node.article.field_article_type
+      - field.field.node.article.field_contact_reference
+      - field.field.node.article.field_embargo_information
+      - field.field.node.article.field_original_publication_date
+  third_party_settings:
+    layout_builder:
+      sections:
+        -
+          components:
+            config_split_sequence_n6jcmos2j1546al1:
+              uuid: ddb27627-748b-47de-82f8-f63c7d89d1e4
+              region: content
+              configuration:
+                id: 'field_block:node:article:field_contact_reference'
+                label_display: '0'
+                context_mapping:
+                  entity: layout_builder.entity
+                formatter:
+                  type: entity_reference_label
+                  label: above
+                  settings:
+                    link: true
+                  third_party_settings: {  }
+              weight: -8
+              additional: {  }
+              third_party_settings: {  }
+  content:
+    field_contact_reference:
+      type: entity_reference_label
+      label: above
+      settings:
+        link: true
+      third_party_settings: {  }
+      weight: 11
+      region: content
   hidden:
     field_article_type: true
     field_embargo_information: true

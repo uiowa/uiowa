@@ -1,0 +1,29 @@
+uuid: a7074516-d0cf-4904-ba39-a13e1f752bcc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_contact_reference
+    - node.type.article
+    - node.type.contact
+id: node.article.field_contact_reference
+field_name: field_contact_reference
+entity_type: node
+bundle: article
+label: Contact
+description: 'The organizational contact to be referenced.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      contact: contact
+    sort:
+      field: field_contact_name
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
