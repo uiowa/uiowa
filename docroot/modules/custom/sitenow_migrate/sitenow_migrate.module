@@ -9,7 +9,7 @@
  * Implements hook_module_implements_alter().
  */
 function sitenow_migrate_module_implements_alter(&$implementations, $hook) {
-  if ($hook == 'migration_plugins_alter') {
+  if ($hook === 'migration_plugins_alter') {
     // The migrate_drupal module alter throws an error during initial migrate
     // commands. It seems to be caused by us not having the migrate database key
     // set in settings.php. In any case, we don't need the migrations defined

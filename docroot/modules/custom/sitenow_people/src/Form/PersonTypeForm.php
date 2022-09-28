@@ -156,7 +156,7 @@ class PersonTypeForm extends EntityForm {
     $this->entity->set('allow_former', $form_state->getValue('allow_former'));
     $result = parent::save($form, $form_state);
     $message_args = ['%label' => $this->entity->label()];
-    $message = $result == SAVED_NEW
+    $message = $result === SAVED_NEW
       ? $this->t('Created new person type %label.', $message_args)
       : $this->t('Updated person type %label.', $message_args);
     $this->messenger()->addStatus($message);
