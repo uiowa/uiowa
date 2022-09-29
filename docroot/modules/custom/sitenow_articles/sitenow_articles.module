@@ -105,6 +105,7 @@ function sitenow_articles_preprocess_field(&$variables) {
       $credentials = $author_entity
         ?->field_person_credential
         ?->value;
+
       if (!is_null($credentials)) {
         $variables['items'][$key]['content']['#title'] .= ', ' . $credentials;
       }
