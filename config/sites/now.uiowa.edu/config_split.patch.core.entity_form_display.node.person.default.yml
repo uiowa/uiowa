@@ -1,0 +1,23 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.person.field_contact_reference
+  content:
+    field_contact_reference:
+      type: entity_reference_autocomplete
+      weight: 25
+      region: content
+      settings:
+        match_operator: CONTAINS
+        match_limit: 10
+        size: 60
+        placeholder: ''
+      third_party_settings: {  }
+    field_meta_tags:
+      weight: 26
+      settings:
+        use_details: true
+removing:
+  content:
+    field_meta_tags:
+      weight: 25

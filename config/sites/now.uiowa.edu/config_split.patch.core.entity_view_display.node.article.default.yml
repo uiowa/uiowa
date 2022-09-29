@@ -10,21 +10,40 @@ adding:
       sections:
         -
           components:
-            config_split_sequence_n6jcmos2j1546al1:
-              uuid: ddb27627-748b-47de-82f8-f63c7d89d1e4
+            config_split_sequence_fooivcfaoc57j9ro:
+              weight: 2
+            config_split_sequence_fhb7j5n99puavn42:
+              weight: 3
+            config_split_sequence_g8g8r2ss44ug675:
+              weight: 5
+            config_split_sequence_n7r23rl7s495b455:
+              weight: 6
+            config_split_sequence_6unagl336lh12mcg:
+              weight: 8
+            config_split_sequence_n3umovqojqk1mmfr:
+              weight: 9
+            config_split_sequence_49tmrem4tc401d9e:
+              weight: 4
+            config_split_sequence_dq811qjpongaei9c:
+              weight: 7
+            config_split_sequence_qlhcar4thu30j1pd:
+              uuid: 64c09a75-0304-426a-af48-00f69ead5469
               region: content
               configuration:
                 id: 'field_block:node:article:field_contact_reference'
-                label_display: '0'
+                label: null
+                label_display: null
+                provider: layout_builder
                 context_mapping:
                   entity: layout_builder.entity
+                  view_mode: view_mode
                 formatter:
                   type: entity_reference_label
-                  label: above
+                  label: inline
                   settings:
                     link: true
                   third_party_settings: {  }
-              weight: -8
+              weight: 10
               additional: {  }
               third_party_settings: {  }
   content:
@@ -40,4 +59,25 @@ adding:
     field_article_type: true
     field_embargo_information: true
     field_original_publication_date: true
-removing: {  }
+removing:
+  third_party_settings:
+    layout_builder:
+      sections:
+        -
+          components:
+            config_split_sequence_fooivcfaoc57j9ro:
+              weight: 1
+            config_split_sequence_fhb7j5n99puavn42:
+              weight: 4
+            config_split_sequence_g8g8r2ss44ug675:
+              weight: 7
+            config_split_sequence_n7r23rl7s495b455:
+              weight: 8
+            config_split_sequence_6unagl336lh12mcg:
+              weight: 12
+            config_split_sequence_n3umovqojqk1mmfr:
+              weight: 14
+            config_split_sequence_49tmrem4tc401d9e:
+              weight: 6
+            config_split_sequence_dq811qjpongaei9c:
+              weight: 11
