@@ -1,303 +1,341 @@
 @import "uids3/assets/scss/_variables.scss";
 @import "uids3/assets/scss/_utilities.scss";
 
-@media print {
+@page {
+  margin: 1cm;
+}
 
-  @page {
-    margin: 1cm 0.75cm;
-  }
+* {
+  background: transparent!important;
+  color: #000 !important;
+  line-height: 1.3;
+  overflow: visible !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+  border-color: #7c7c7c !important;
+}
 
-  * {
-    background: transparent!important;
-    color: #000 !important;
-    line-height: 1.3;
-    // width: auto !important;
-    // float: none !important;
-    overflow: visible !important;
-    text-shadow: none !important;
-    box-shadow: none !important;
-    border-color: #7c7c7c !important;
-  }
+/* Layout
+----------------------------------------- */
+.dialog-off-canvas-main-canvas {
+  display: inherit;
+}
+.layout__container {
+  padding-top: .5rem !important;
+  padding-bottom: .5rem !important;
+}
+.layout__container.layout--title {
+  padding-bottom: .25rem;
+}
+.layout--has-sidebar .layout__region:not(:last-child) {
+  margin-bottom: 1rem;
+}
+.layout--has-sidebar .layout__spacing_container {
+  display: block !important;
+}
+.page__container--edge .layout__spacing_container,
+.page__container--edge .banner__image {
+  margin-left: 1.25rem;
+  margin-right: 1.25rem;
+}
+.block-padding__bottom {
+  padding-bottom: .5rem;
+}
+.block-padding__top {
+  padding-top: .5rem;
+}
 
-  /* Header
-  ----------------------------------------- */
-  .iowa-bar {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-  .iowa-bar__container {
-    margin: initial;
-    padding: 0 !important;
-  }
-  .iowa-bar__below {
-    border-bottom: none;
-  }
-  .iowa-bar__below .site-name {
-    padding-top: 0;
-    padding-bottom: 0;
-    padding-left: 1.25rem !important;
-    font-size: 18pt !important;
-    font-weight: 400;
-    border-left: 1px solid #000;
-  }
-  .iowa-bar__below .iowa-bar__container {
-    min-height: auto;
-  }
-  .logo--tab {
-    height: 70px !important;
-    padding: 25px 1.25rem !important;
-  }
-  .logo-icon {
-    height: 20px !important;
-    fill: #000;
-  }
+.layout__container .block--wrapper.border, .layout__container .block--wrapper[class*="bg--"], .layout__container .block--wrapper[class*="bg-pattern--"], .layout__container .block-inline-blockuiowa-text-area.border, .layout__container .block-inline-blockuiowa-text-area[class*="bg--"], .layout__container .block-inline-blockuiowa-text-area[class*="bg-pattern--"] {
+  padding: 1rem;
+}
 
-  /* Page
-  ----------------------------------------- */
-  .dialog-off-canvas-main-canvas {
-    display: inherit;
-  }
-  .layout__container {
-    padding-top: .5rem !important;
-    padding-bottom: .5rem !important;
-  }
-  .layout__container.layout--title {
-    padding-bottom: .25rem;
-  }
-  .layout--has-sidebar .layout__region:not(:last-child) {
-    margin-bottom: 1rem;
-  }
-  .layout--has-sidebar .layout__spacing_container {
-    display: block !important;
-  }
-  .page__container--edge .layout__spacing_container,
-  .page__container--edge .banner__image {
-    margin-left: 1.25rem;
-    margin-right: 1.25rem;
-  }
-  .block-padding__bottom {
-    padding-bottom: .5rem;
-  }
-  .block-padding__top {
-    padding-top: .5rem;
-  }
+/* Typography
+----------------------------------------- */
+h1,h2,h3 {
+  break-after: avoid;
+  break-inside: avoid;
+}
+h1 {
+  font-size: 28pt !important;
+}
+h2 {
+  font-size: 22pt !important;
+}
+h3 {
+  font-size: 19pt !important;
+}
+h4 {
+  font-size: 16pt !important;
+}
+h5 {
+  font-size: 15pt !important;
+}
+h6 {
+  font-size: 14pt !important;
+}
+.stat__title {
+  font-size: 50pt !important;
+}
 
-  .layout__container .block--wrapper.border, .layout__container .block--wrapper[class*="bg--"], .layout__container .block--wrapper[class*="bg-pattern--"], .layout__container .block-inline-blockuiowa-text-area.border, .layout__container .block-inline-blockuiowa-text-area[class*="bg--"], .layout__container .block-inline-blockuiowa-text-area[class*="bg-pattern--"] {
-    padding: 1rem;
+.headline--underline::after {
+  background-color: #000 !important;
+}
+
+p, ul, ol, dl {
+  font-size: 13pt;
+  line-height: 1.5;
+}
+
+.element--light-intro,
+.uids-component--light-intro,
+.uids-component--bold-intro {
+  font-size: 14pt !important;
+}
+
+/* Links and Buttons
+----------------------------------------- */
+.content__container a,
+.content__container a:visited {
+  color: $link-color !important;
+  text-decoration: underline;
+}
+
+.content__container a:not(.bttn):not(.photoswipe)[href]:after {
+  content: " (" attr(href) ")";
+  font-size: 11pt;
+}
+.content__container .bttn,
+.content__container a.bttn {
+  font-size: 11pt;
+  color: #000 !important;
+  padding: .75rem 1.5rem;
+}
+
+/*
+  * Don't show links that are fragment identifiers,
+  * or use the `javascript:` pseudo protocol
+  */
+a[href^="#"]::after,
+a[href^="javascript:"]::after {
+  content: "";
+}
+
+abbr[title]::after {
+  content: " (" attr(title) ")";
+}
+
+/* Header
+----------------------------------------- */
+.iowa-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.iowa-bar__container {
+  margin: initial;
+  padding: 0 !important;
+}
+.iowa-bar__below {
+  border-bottom: none;
+}
+.iowa-bar__below .site-name {
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 1.25rem !important;
+  font-size: 18pt !important;
+  font-weight: 400;
+  border-left: 1px solid #000;
+}
+.iowa-bar__below .iowa-bar__container {
+  min-height: auto;
+}
+.logo--tab {
+  height: 70px !important;
+  padding: 25px 1.25rem !important;
+}
+.logo-icon {
+  height: 20px !important;
+  fill: #000;
+}
+
+/* Featured Image and Banner
+----------------------------------------- */
+.banner {
+  min-height: auto;
+}
+
+.banner .media--video {
+  position: relative;
+}
+
+.banner__image img {
+  position: initial;
+}
+
+.banner {
+  display: block;
+}
+
+.banner::after {
+  display: none;
+}
+
+.banner__content {
+  padding-top: .75rem !important;
+  padding-bottom: 0 !important;
+}
+
+
+/* Tables
+----------------------------------------- */
+table {
+  width: 100% !important;
+  border-collapse: collapse;
+  break-inside: avoid;
+}
+
+table td, table th, table thead th {
+  font-size: 11pt !important;
+  line-height: 1.3 !important;
+  border: 1px solid #7c7c7c !important;
+  padding: 0.625rem;
+}
+
+table tbody tr:last-child td, table tbody tr:last-child th {
+  border-bottom-width: 1px;
+}
+
+/* Images
+----------------------------------------- */
+img {
+    break-inside: avoid;
+}
+
+/* Forms
+----------------------------------------- */
+.form-item {
+  break-inside: avoid;
+}
+
+/* iframes
+----------------------------------------- */
+.iframe,
+iframe {
+    display: none;
+    height: 0 !important;
+    width: 0 !important;
+    line-height: 0 !important;
+    overflow: hidden !important;
+    white-space: nowrap;
+}
+
+/* Blockquote
+----------------------------------------- */
+blockquote {
+  break-inside: avoid;
+  border-color: #000;
+  font-size: 15pt;
+  & p {
+    font-size: 15pt;
   }
-
-
-  // Featured Image and Banner
-  .banner {
-    min-height: auto;
+  & footer {
+    font-size: 13pt;
   }
+}
 
-  .banner .media--video {
-    position: relative;
-  }
+.blockquote-center blockquote::before,
+blockquote.blockquote--center::before,
+blockquote.blockquote--img-above .blockquote__paragraph::after {
+  background: #000;
+}
 
-  .banner__image img {
-    position: initial;
-  }
+/* Accordion
+----------------------------------------- */
+.accordion .accordion__heading button {
+  background-color: #edeceb !important;
+}
 
-  .banner {
-    display: block;
-  }
+/* Tags
+----------------------------------------- */
+.tags-list__tag {
+  background-color: $light !important;
+}
+.tags-list .views-field {
+  font-size: 12pt;
+}
 
-  .banner::after {
+/* Timeline
+----------------------------------------- */
+.timeline {
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  & .card__icon {
     display: none;
   }
+}
 
-  .banner__content {
-    padding-top: .75rem !important;
-    padding-bottom: 0 !important;
-  }
-
-  /* Typography
-  ----------------------------------------- */
-  p, h2, h3 {
-    orphans: 3;
-    widows: 3;
-  }
-
-  h2, h3 {
-    break-after: avoid;
-  }
-  h1 {
-    font-size: 32pt !important;
-  }
-  h2 {
-    font-size: 22pt !important;
-  }
-  h3 {
-    font-size: 19pt !important;
-  }
-  h4 {
-    font-size: 16pt !important;
-  }
-  h5 {
-    font-size: 15pt !important;
-  }
-  h6 {
-    font-size: 14pt !important;
-  }
-  .stat__title {
-    font-size: 50pt !important;
-  }
-
-  .headline--underline::after {
-    background-color: #000 !important;
-  }
-
-  p, ul, ol, dl {
-    font-size: 13pt;
-    line-height: 1.5;
-  }
-
-  .element--light-intro,
-  .uids-component--light-intro,
-  .uids-component--bold-intro {
-    font-size: 14pt !important;
-  }
-
-  // Links and Buttons
-  .content__container a,
-  .content__container a:visited {
-    color: $link-color !important;
-    text-decoration: underline;
-  }
-
-  .content__container a:not(.bttn):not(.photoswipe)[href]:after {
-    content: " (" attr(href) ")";
-    color: #00558C !important;
-    font-size: 11pt;
-  }
-  .content__container .bttn,
-  .content__container a.bttn {
-    font-size: 11pt;
-    color: #000 !important;
-    padding: .75rem 1.5rem;
-  }
-
-  /*
-   * Don't show links that are fragment identifiers,
-   * or use the `javascript:` pseudo protocol
-   */
-  a[href^="#"]::after,
-  a[href^="javascript:"]::after {
-    content: "";
-  }
-
-  abbr[title]::after {
-    content: " (" attr(title) ")";
-  }
-
-  pre {
-    white-space: pre-wrap !important;
-  }
-
-  table,pre, blockquote, img, tr {
-    break-inside: avoid;
-  }
-
-  // Tables
-  table {
-    width: 100% !important;
-  }
-
-  table td, table th, table thead th {
-    font-size: 11pt !important;
-    line-height: 1.3 !important;
-    border: 1px solid #7c7c7c !important;
-    padding: 0.625rem;
-  }
-  table tbody tr:last-child td, table tbody tr:last-child th {
-    border-bottom-width: 1px;
-  }
-
-  // Blockquotes
-  blockquote {
-    border-color: #000;
-    font-size: 15pt;
-    & p {
-      font-size: 15pt;
-    }
-    & footer {
-      font-size: 13pt;
-    }
-  }
-
-  .blockquote-center blockquote::before,
-  blockquote.blockquote--center::before,
-  blockquote.blockquote--img-above .blockquote__paragraph::after {
-    background: #000;
-  }
-
-  // Accordion
-  .accordion .accordion__heading button {
-    background-color: #edeceb !important;
-  }
-
-  // Tags
-  .tags-list .views-field {
-    font-size: 12pt;
-  }
-
-
-  /* Images
-  ----------------------------------------- */
-  img, object { 
-    // max-width: 300pt!important;
-  }
-
-  /* Footer
-  ----------------------------------------- */
-  .footer {
-    padding-bottom: 0;
-    padding-top: 1.5rem;
-    margin-top: 1.5rem;
-    break-after: avoid;
-    clear: both;
-    break-after: always;
-  }
-  .footer .site-name, .footer p, .socket__menu li {
-    font-size: 11pt !important;
-    font-weight: 400;
-    margin: 0;
-    line-height: 1.3;
-  }
-  .footer .site-name {
-    font-weight: bold;
-  }
-  .footer__links {
+.timeline--wrapper {
+  padding-top: 0;
+  padding-bottom: 0;
+  & .timeline--card {
+    margin-top: 0;
     margin-bottom: 0;
   }
-
-  
-
-  /* Hide Page elements
-  ----------------------------------------- */
-  .menu-wrapper,
-  .nav--horizontal,
-  #block-uids-base-socialmedia,
-  .uiowa-footer--login-link,
-  #block-uids-base-footerprimary,
-  #block-uids-base-footersecondary,
-  #block-uids-base-footer-tertiary,
-  .uiowa-footer--login-link,
-  .socket__menu li:not(:first-child),
-  .custom-alert-wrapper,
-  .hawk-alerts-wrapper,
-  .search-wrapper,
-  #block-uids-base-toplinks,
-  .parent-site-name,
-  .breadcrumb,
-  .uiowa__container,
-  .media--type-remote-video,
-  .pager,
-  .video-controls {
-    display:none !important
+  &:last-child {
+    margin-bottom: 0;
   }
-
+  & .card__title {
+    font-size: 16pt !important;
+  }
 }
+
+
+/* Footer
+----------------------------------------- */
+.footer {
+  padding-bottom: 0;
+  padding-top: 1.5rem;
+  margin-top: 1.5rem;
+  clear: both;
+  break-inside: avoid;
+}
+
+.footer .site-name, .footer p, .socket__menu li {
+  font-size: 11pt !important;
+  font-weight: 400;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.footer .site-name {
+  font-weight: bold;
+}
+
+.footer__links {
+  margin-bottom: 0;
+}
+
+/* Hide Page elements
+----------------------------------------- */
+.menu-wrapper,
+.nav--horizontal,
+#block-uids-base-socialmedia,
+.uiowa-footer--login-link,
+#block-uids-base-footerprimary,
+#block-uids-base-footersecondary,
+#block-uids-base-footer-tertiary,
+.uiowa-footer--login-link,
+.socket__menu li:not(:first-child),
+.custom-alert-wrapper,
+.hawk-alerts-wrapper,
+.search-wrapper,
+#block-uids-base-toplinks,
+.parent-site-name,
+.breadcrumb,
+.uiowa__container,
+.media--type-remote-video,
+.pager,
+.video-controls {
+  display:none !important
+}
+
