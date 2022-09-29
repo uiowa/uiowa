@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labspeech-sensorimotor.uiowa.ddev.site
+    protocol: https
+  machine_name: labspeech-sensorimotor
+  human_name: speech-sensorimotor.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labspeech-sensorimotor.prod
+drupal:
+  db:
+    database: speech_sensorimotor_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: ostrem
+  site-name: 'Speech Sensorimotor Development Lab'

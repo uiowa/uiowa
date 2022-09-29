@@ -324,8 +324,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               // it can be placed below the admin label.
               $form['settings']['layout_builder_style_menu_orientation'] = [
                 '#weight' => -10,
-                  // We set #tree to FALSE because this value will override the
-                  // value from this will override the original in the form state.
+                  // We set the #tree to FALSE because this value
+                  // will override the original in the form state.
                 '#tree' => FALSE,
                 '#description' => t('The "Horizontal" option will look the same as the "Vertical" option if this block is being placed in something other than a one column layout.'),
               ] + $form['layout_builder_style_menu_orientation'];
@@ -542,7 +542,7 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
 
       case 'inline_block:uiowa_events':
         // Require time range if date_range timeframe is selected.
-        if ($form_state->getValue('settings')['block_form']['field_uiowa_events_timeframe'][0]['value'] == 'date_range') {
+        if ($form_state->getValue('settings')['block_form']['field_uiowa_events_timeframe'][0]['value'] === 'date_range') {
           if (empty($form_state->getValue([
             'settings',
             'block_form',
@@ -606,7 +606,7 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
 
       case 'menu_block:main':
         // If follow is checked...
-        if ($form_state->getValue(['settings', 'follow']) == 1) {
+        if ((int) $form_state->getValue(['settings', 'follow']) === 1) {
           // Set parent to default.
           $form_state->setValue(['settings', 'parent'], 'main:');
           // Set level = 2.
@@ -673,7 +673,8 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
             //   https://github.com/uiowa/uiowa/issues/5013
             $form_state->unsetValue($form_media_selection);
           }
-          // Set layout_builder_style_background to value of our duplicate select.
+          // Set layout_builder_style_background to
+          // value of our duplicate select.
           $form_state->setValue('layout_builder_style_background', $background_option);
         }
         break;
@@ -699,7 +700,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
           }
         }
 
-        if ($block->getPluginId() == 'inline_block:uiowa_card') {
+        if ($block->getPluginId() === 'inline_block:uiowa_card') {
           // Make sure button display field is checked
           // if the link title field is filled in.
           $link_title = $form_state->getValue(
@@ -1111,6 +1112,9 @@ function _layout_builder_custom_add_lbs_heading(&$form) {
 function layout_builder_custom_preprocess_block(&$variables) {
   // Unset grid_columns classes if display as list.
   if (isset($variables['elements']['#attributes']['class'])) {
+    if (is_string($variables['elements']['#attributes']['class'])) {
+      $variables['elements']['#attributes']['class'] = explode(' ', $variables['elements']['#attributes']['class']);
+    }
     $is_list = array_search('inner--list', $variables['elements']['#attributes']['class']);
     if ($is_list) {
       foreach ($variables['elements']['#attributes']['class'] as $key => $style) {
@@ -1353,7 +1357,7 @@ function layout_builder_custom_views_plugins_display_alter(&$displays) {
   //   See https://github.com/uiowa/uiowa/issues/4948
   if ($is_v2 === FALSE || $moduleHandler->moduleExists('sitenow_p2lb')) {
     // Swap the block class if it can be swapped.
-    if (!empty($displays['block']['class']) && $displays['block']['class'] == Block::class) {
+    if (!empty($displays['block']['class']) && $displays['block']['class'] === Block::class) {
       $displays['block']['class'] = ListBlock::class;
     }
   }
@@ -1368,7 +1372,7 @@ function layout_builder_custom_views_pre_build(ViewExecutable $view) {
   // @todo Allow view config to override this (non-zero pager id?).
   //   https://github.com/uiowa/uiowa/issues/5045
   $pager = $view->display_handler->getOption('pager');
-  if (isset($pager) && $pager['type'] == 'full') {
+  if (isset($pager) && $pager['type'] === 'full') {
     if ($cached = \Drupal::cache('layout_builder_custom_views_pager_elements')->get($view->dom_id)) {
       $pager['options']['id'] = $cached->data;
     }

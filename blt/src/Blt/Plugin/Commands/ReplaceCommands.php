@@ -24,7 +24,6 @@ class ReplaceCommands extends BltTasks {
     $this->config->set('drush.alias', '');
 
     $app = EnvironmentDetector::getAhGroup() ?: 'local';
-    $env = EnvironmentDetector::getAhEnv() ?: 'local';
     $multisite_exception = FALSE;
 
     // Unshift sites to the beginning to run first.
@@ -243,11 +242,6 @@ EOD;
       $this->taskWriteToFile("$root/docroot/sites/$site/settings/local.settings.php")
         ->append()
         ->text($text)
-        ->run();
-
-      $this->taskReplaceInFile("$root/docroot/sites/$site/settings/local.settings.php")
-        ->from("\$settings['file_private_path'] = EnvironmentDetector::getRepoRoot() . '/files-private/default';")
-        ->to("\$settings['file_private_path'] = EnvironmentDetector::getRepoRoot() . '/files-private/$site';")
         ->run();
     }
 

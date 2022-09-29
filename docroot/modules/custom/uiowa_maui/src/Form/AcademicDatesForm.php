@@ -115,7 +115,7 @@ class AcademicDatesForm extends FormBase {
     if (!empty($data)) {
       $form['dates-wrapper']['dates'] = [
         '#theme' => 'uiowa_maui_session_dates',
-        '#data' => ($limit_dates == TRUE) ? array_slice($data, 0, $items_to_display, TRUE) : $data,
+        '#data' => ((int) $limit_dates === 1) ? array_slice($data, 0, $items_to_display, TRUE) : $data,
         '#child_heading_size' => $child_heading_size,
         '#limit_dates' => $limit_dates,
       ];

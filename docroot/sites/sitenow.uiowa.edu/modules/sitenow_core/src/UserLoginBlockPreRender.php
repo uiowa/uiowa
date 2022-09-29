@@ -32,7 +32,7 @@ class UserLoginBlockPreRender implements TrustedCallbackInterface {
 
     $path = \Drupal::service('path.current')->getPath();
 
-    if ($path == '/node/26'
+    if ($path === '/node/26'
       && isset($build['content']['hawkid'], $build['content']['hawkid']['link'])) {
       /** @var \Drupal\Core\Url $url */
       $url = $build['content']['hawkid']['link']['#url'];

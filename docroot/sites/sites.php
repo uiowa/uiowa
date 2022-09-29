@@ -4468,3 +4468,33 @@ $sites['labpmril.uiowa.ddev.site'] = 'pmril.lab.uiowa.edu';
 $sites['labpmril.dev.drupal.uiowa.edu'] = 'pmril.lab.uiowa.edu';
 $sites['labpmril.stage.drupal.uiowa.edu'] = 'pmril.lab.uiowa.edu';
 $sites['labpmril.prod.drupal.uiowa.edu'] = 'pmril.lab.uiowa.edu';
+
+// Directory aliases for vikram.lab.uiowa.edu.
+$sites['labvikram.uiowa.ddev.site'] = 'vikram.lab.uiowa.edu';
+$sites['labvikram.dev.drupal.uiowa.edu'] = 'vikram.lab.uiowa.edu';
+$sites['labvikram.stage.drupal.uiowa.edu'] = 'vikram.lab.uiowa.edu';
+$sites['labvikram.prod.drupal.uiowa.edu'] = 'vikram.lab.uiowa.edu';
+
+// Directory aliases for speech-sensorimotor.lab.uiowa.edu.
+$sites['labspeech-sensorimotor.uiowa.ddev.site'] = 'speech-sensorimotor.lab.uiowa.edu';
+$sites['labspeech-sensorimotor.dev.drupal.uiowa.edu'] = 'speech-sensorimotor.lab.uiowa.edu';
+$sites['labspeech-sensorimotor.stage.drupal.uiowa.edu'] = 'speech-sensorimotor.lab.uiowa.edu';
+$sites['labspeech-sensorimotor.prod.drupal.uiowa.edu'] = 'speech-sensorimotor.lab.uiowa.edu';
+
+// Directory aliases for vapap.org.uiowa.edu.
+$sites['orgvapap.uiowa.ddev.site'] = 'vapap.org.uiowa.edu';
+$sites['orgvapap.dev.drupal.uiowa.edu'] = 'vapap.org.uiowa.edu';
+$sites['orgvapap.stage.drupal.uiowa.edu'] = 'vapap.org.uiowa.edu';
+$sites['orgvapap.prod.drupal.uiowa.edu'] = 'vapap.org.uiowa.edu';
+
+// Directory aliases for dei-speaker-series.asian-slavic.uiowa.edu.
+$sites['asian-slavicdei-speaker-series.uiowa.ddev.site'] = 'dei-speaker-series.asian-slavic.uiowa.edu';
+$sites['asian-slavicdei-speaker-series.dev.drupal.uiowa.edu'] = 'dei-speaker-series.asian-slavic.uiowa.edu';
+$sites['asian-slavicdei-speaker-series.stage.drupal.uiowa.edu'] = 'dei-speaker-series.asian-slavic.uiowa.edu';
+$sites['asian-slavicdei-speaker-series.prod.drupal.uiowa.edu'] = 'dei-speaker-series.asian-slavic.uiowa.edu';
+
+// Directory aliases for campuscouncil.stanleymuseum.uiowa.edu.
+$sites['stanleymuseumcampuscouncil.uiowa.ddev.site'] = 'campuscouncil.stanleymuseum.uiowa.edu';
+$sites['stanleymuseumcampuscouncil.dev.drupal.uiowa.edu'] = 'campuscouncil.stanleymuseum.uiowa.edu';
+$sites['stanleymuseumcampuscouncil.stage.drupal.uiowa.edu'] = 'campuscouncil.stanleymuseum.uiowa.edu';
+$sites['stanleymuseumcampuscouncil.prod.drupal.uiowa.edu'] = 'campuscouncil.stanleymuseum.uiowa.edu';
