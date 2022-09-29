@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: asian-slavicdei-speaker-series.uiowa.ddev.site
+    protocol: https
+  machine_name: asian-slavicdei-speaker-series
+  human_name: dei-speaker-series.asian-slavic.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: asian-slavicdei-speaker-series.prod
+drupal:
+  db:
+    database: dei_speaker_series_asian_slavic_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: doden
+  site-name: 'ASLL Diversity, Equity, and Inclusion Speaker Series (2022-2023)'

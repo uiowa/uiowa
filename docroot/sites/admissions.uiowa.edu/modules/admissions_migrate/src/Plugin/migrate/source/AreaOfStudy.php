@@ -106,7 +106,7 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
     // @todo https://github.com/uiowa/uiowa/issues/3338
     $has_run = $this->state->get('admissions_migrate_post_import', FALSE);
 
-    if ($has_run == FALSE) {
+    if ($has_run === FALSE) {
       $migration = $event->getMigration();
       $map = $migration->getIdMap();
 
@@ -143,7 +143,7 @@ class AreaOfStudy extends BaseNodeSource implements ContainerFactoryPluginInterf
 
       foreach ($entity_types as $entity_type => $bundles) {
         foreach ($bundles as $bundle => $fields) {
-          $condition = ($entity_type == 'taxonomy_term') ? 'vid' : 'type';
+          $condition = ($entity_type === 'taxonomy_term') ? 'vid' : 'type';
           $query = $this->entityTypeManager->getStorage($entity_type)->getQuery();
 
           $ids = $query

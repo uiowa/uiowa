@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: stanleymuseumcampuscouncil.uiowa.ddev.site
+    protocol: https
+  machine_name: stanleymuseumcampuscouncil
+  human_name: campuscouncil.stanleymuseum.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: stanleymuseumcampuscouncil.prod
+drupal:
+  db:
+    database: campuscouncil_stanleymuseum_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: tokarski
+  site-name: 'Stanley Campus Council'

@@ -115,7 +115,7 @@ class AcademicUnitForm extends EntityForm {
       '%type' => $this->entity->get('type'),
       '%label' => $this->entity->label(),
     ];
-    $message = $result == SAVED_NEW
+    $message = $result === SAVED_NEW
       ? $this->t('Created new %type Academic Unit %label.', $message_args)
       : $this->t('Updated %type Academic Unit %label.', $message_args);
     $this->messenger()->addStatus($message);

@@ -97,7 +97,7 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
     foreach ($populations as $population) {
       $path = basename($population);
       $response = $this->dispatch->request('GET', "populations/$path");
-      if ($response->dataSourceType == "SubscriptionList") {
+      if ($response->dataSourceType === 'SubscriptionList') {
         $populationOptions[$response->id] = $response->name;
       }
     }

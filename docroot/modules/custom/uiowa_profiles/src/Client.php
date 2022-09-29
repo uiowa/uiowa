@@ -126,10 +126,10 @@ class Client {
   protected function setEndpoint() {
     $endpoint = '';
 
-    if ($this->environment == 'test') {
+    if ($this->environment === 'test') {
       $endpoint = 'https://profiles-test.uiowa.edu/api';
     }
-    elseif ($this->environment == 'prod') {
+    elseif ($this->environment === 'prod') {
       $endpoint = 'https://profiles.uiowa.edu/api';
     }
 
@@ -168,7 +168,7 @@ class Client {
       $this->logger->error($e->getMessage());
       $code = $e->getCode();
 
-      if ($code == 404) {
+      if ((int) $code === 404) {
         throw new NotFoundHttpException();
       }
       else {
