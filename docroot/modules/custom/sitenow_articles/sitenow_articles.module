@@ -98,6 +98,18 @@ function sitenow_articles_preprocess_field(&$variables) {
       $variables['element']["#title"] = 'Written by';
       $variables["label"] = 'Written by';
     }
+    // Loop through all author fields in the byline and add credentials
+    // (if available) to their names.
+    foreach ($variables['items'] as $key => $item) {
+      $author_entity = $item['content']['#options']['entity'];
+      $credentials = $author_entity
+        ?->field_person_credential
+        ?->value;
+
+      if (!is_null($credentials)) {
+        $variables['items'][$key]['content']['#title'] .= ', ' . $credentials;
+      }
+    }
   }
   if ($variables['element']['#field_name'] === 'field_article_source_org') {
     if ($variables['element']['#formatter'] === 'string') {
