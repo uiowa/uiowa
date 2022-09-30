@@ -25,13 +25,20 @@
  * @see template_preprocess_block()
  */
 #}
+{%
+  set classes = [
+  'block',
+  'block-' ~ configuration.provider|clean_class,
+  'block-' ~ plugin_id|clean_class,
+]
+%}
 {% set stat_classes = [] %}
 {% if has_hover_effect and content.field_uiowa_statistic_content[0]['#context']['value'] is not null %}
 	{% set stat_classes = 'stat stat__grid stat--transform' %}
 {% endif %}
 
 {% set stat_block = {
-  'attributes': attributes,
+  'attributes': attributes.addClass(classes),
   'stat_summary': content.field_uiowa_statistic_excerpt|render,
   'stat_content': content.field_uiowa_statistic_content|render,
   'stat_title': content.field_uiowa_statistic_title[0]['#text']|render,
