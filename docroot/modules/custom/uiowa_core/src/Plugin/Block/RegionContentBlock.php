@@ -51,7 +51,7 @@ class RegionContentBlock extends BlockBase implements ContainerFactoryPluginInte
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->config = $config_factory;
     $this->entityTypeManager = $entity_type_manager;
-    $this->route = $route_match;
+    $this->routeMatch = $route_match;
   }
 
   /**
@@ -84,7 +84,7 @@ class RegionContentBlock extends BlockBase implements ContainerFactoryPluginInte
     $build = [];
     $config = $this->getConfiguration();
     $block_id = $config['block_id'];
-    $node = $this->route->getParameter('node');
+    $node = $this->routeMatch->getParameter('node');
     $fragment = NULL;
 
     // Check if there is a fragment override for this block.
@@ -138,13 +138,11 @@ class RegionContentBlock extends BlockBase implements ContainerFactoryPluginInte
     return $build;
   }
 
-
-
   /**
    * {@inheritdoc}
    */
   public function getCacheTags() {
-    if ($node = \Drupal::routeMatch()->getParameter('node')) {
+    if ($node = $this->routeMatch->getParameter('node')) {
       return Cache::mergeTags(parent::getCacheTags(), ['node:' . $node->id()]);
     }
     else {
