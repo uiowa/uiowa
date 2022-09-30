@@ -401,8 +401,6 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
   }
 }
 
-
-
 /**
  * {@inheritdoc}
  */
@@ -437,7 +435,8 @@ function uiowa_core_preprocess_html(&$variables) {
   }
   else {
     // Body classes for after content.
-    // First, we load the global config for region_settings to check if we have a global after_content.
+    // First, we load the global config for region_settings to check if we have
+    // a global after_content.
     $global_after_content_fid = \Drupal::configFactory()
       ->get('uiowa_core.settings')
       ->get('uiowa_core.region_content.after_content');
@@ -455,7 +454,8 @@ function uiowa_core_preprocess_html(&$variables) {
         ?->target_id;
     }
 
-    // Then, if either a global after_content or an after_content_override exists...
+    // Then, if either a global after_content or an after_content_override
+    // exists...
     if (!is_null($global_after_content_fid) || !is_null($after_content_override_fid)) {
       // And if the page has the after_content region...
       if (isset($variables['page']['after_content'])) {

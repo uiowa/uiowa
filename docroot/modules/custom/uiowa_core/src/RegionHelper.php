@@ -10,7 +10,7 @@ class RegionHelper {
   /**
    * The allowed regions that can be overridden.
    */
-  const allowedRegions = [
+  const ALLOWED_REGIONS = [
     'pre_footer',
     'after_content',
   ];
@@ -18,13 +18,13 @@ class RegionHelper {
   /**
    * Custom node content type form defaults.
    */
-  static public function overrideNodeForm(&$form) {
+  public static function overrideNodeForm(&$form) {
     if (empty($form)) {
       return;
     }
     // This checks if any region in the region list exists.
     $override_fields_exist = FALSE;
-    foreach (RegionHelper::allowedRegions as $region) {
+    foreach (self::ALLOWED_REGIONS as $region) {
       $field_name = "field_{$region}_override";
       if (isset($form[$field_name])) {
         $override_fields_exist = TRUE;
@@ -51,4 +51,5 @@ class RegionHelper {
       ];
     }
   }
+
 }

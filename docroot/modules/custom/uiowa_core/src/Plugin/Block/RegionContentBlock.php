@@ -38,6 +38,7 @@ class RegionContentBlock extends BlockBase implements ContainerFactoryPluginInte
 
   /**
    * The current_route_match service.
+   *
    * @var \Drupal\Core\Routing\RouteMatchInterface
    */
   protected RouteMatchInterface $routeMatch;
@@ -91,11 +92,11 @@ class RegionContentBlock extends BlockBase implements ContainerFactoryPluginInte
       $field_name = "field_{$block_id}_override";
       $override_id = $node
         ?->{$field_name}
-        ?->target_id;
+      ?->target_id;
 
       // If we have an ID, attempt to load the fragment.
       if (!is_null($override_id)) {
-        $fragment = \Drupal::entityTypeManager()
+        $fragment = $this->entityTypeManager
           ->getStorage('fragment')
           ->load($override_id);
       }
@@ -120,7 +121,7 @@ class RegionContentBlock extends BlockBase implements ContainerFactoryPluginInte
     // If we have a fragment...
     if (!is_null($fragment)) {
       // Get the rendered display for the fragment.
-      $fragment = \Drupal::entityTypeManager()
+      $fragment = $this->entityTypeManager
         ->getViewBuilder('fragment')
         ->view($fragment);
 
