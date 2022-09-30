@@ -20,6 +20,7 @@ use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\views\Views;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Exception\RfcComplianceException;
+use Drupal\uiowa_core\RegionHelper;
 
 /**
  * Implements hook_config_schema_info_alter().
@@ -175,37 +176,6 @@ function uiowa_core_preprocess_page(&$variables) {
   if (isset($node) && $node instanceof NodeInterface) {
     $node_type = $node->bundle();
 
-    // If we are on a page.
-    if ($node_type === 'page') {
-
-      // Define a list of overridable regions.
-      $region_list = ['after_content', 'pre_footer'];
-
-      foreach ($region_list as $value) {
-        // If the target ID exists...
-        if (isset($variables['node']->get('field_' . $value . '_override')->getValue()[0]['target_id'])) {
-
-          // Load the fragment it identifies.
-          $override_id = $variables['node']->get('field_' . $value . '_override')->getValue()[0]['target_id'];
-          $override_fragment = \Drupal::entityTypeManager()->getStorage('fragment')->load($override_id);
-
-          // If the fragment has loaded correctly, and exists...
-          if ($override_fragment != NULL) {
-
-            // Get the rendered version of the fragment.
-            $rendered_override_fragment = \Drupal::entityTypeManager()->getViewBuilder('fragment')->view($override_fragment);
-
-            // If the rendered version of the fragment is not an empty render array...
-            if (!empty($rendered_override_fragment)) {
-
-              // Override the region render array.
-              $variables['page'][$value][$value] = $rendered_override_fragment;
-            }
-          }
-        }
-      }
-    }
-
     if (in_array($node_type, $tags_related_display_allowed_types)) {
 
       $tag_display_config = [];
@@ -266,7 +236,6 @@ function uiowa_core_preprocess_page(&$variables) {
       }
     }
   }
-
 }
 
 /**
@@ -424,59 +393,15 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       }
       break;
 
-    // Node form modifications.
+    // Add region settings to appropriate node forms.
     case 'node_page_edit_form':
     case 'node_page_form':
-    case 'node_article_edit_form':
-    case 'node_article_form':
-    case 'node_person_edit_form':
-    case 'node_person_form':
-      _uiowa_core_form_defaults($form, $form_state);
+      RegionHelper::overrideNodeForm($form);
       break;
   }
 }
 
-/**
- * Custom node content type form defaults.
- */
-function _uiowa_core_form_defaults(&$form, $form_state) {
-  // Region overrides.
-  $region_list = ['after_content', 'pre_footer'];
 
-  // This checks if any region in the region list exists.
-  $regions_exist = FALSE;
-  foreach ($region_list as $region) {
-    $regions_exist = $regions_exist || isset($form['field_' . $region . '_override']);
-  }
-
-  if ($regions_exist) {
-
-    // Create region_overrides group in advanced container.
-    $form['region_overrides'] = [
-      '#type' => 'details',
-      '#title' => t('Region overrides'),
-      '#group' => 'advanced',
-      '#attributes' => [
-        'class' => ['node-form-region-overrides'],
-      ],
-      '#attached' => [
-        'library' => ['node/drupal.node'],
-      ],
-      '#weight' => -10,
-      '#optional' => TRUE,
-      '#open' => FALSE,
-    ];
-
-    foreach ($region_list as $region) {
-      // If field_after_content_override is set...
-      if (isset($form['field_' . $region . '_override'])) {
-
-        // Set region to region_overrides group.
-        $form['field_' . $region . '_override']['#group'] = 'region_overrides';
-      }
-    }
-  }
-}
 
 /**
  * {@inheritdoc}
@@ -510,32 +435,33 @@ function uiowa_core_preprocess_html(&$variables) {
       }
     }
   }
+  else {
+    // Body classes for after content.
+    // First, we load the global config for region_settings to check if we have a global after_content.
+    $global_after_content_fid = \Drupal::configFactory()
+      ->get('uiowa_core.settings')
+      ->get('uiowa_core.region_content.after_content');
 
-  // Body classes for after content.
-  // First, we load the global config for region_settings to check if we have a global after_content.
-  $global_after_content_fid = \Drupal::configFactory()->get('uiowa_core.settings')->get('uiowa_core.region_content.after_content');
+    // Then, we load the node we are on so we can use its fields.
+    $node = \Drupal::routeMatch()
+      ->getParameter('node');
 
-  // Then, we load the node we are on so we can use its fields.
-  $node = \Drupal::routeMatch()->getParameter('node');
+    // If our node is really a node, and it is of type page...
+    $after_content_override_fid = NULL;
+    if ($node instanceof NodeInterface && $node->getType() === 'page') {
 
-  // If our node is really a node, and it is of type page...
-  $after_content_override_fid = NULL;
-  if ($node instanceof NodeInterface && $node->getType() === 'page') {
-
-    // We get our after_content_override if it exists.
-    if ($node->hasField('field_after_content_override') && isset($node->get('field_after_content_override')->getValue()[0]['target_id'])) {
-      $after_content_override_fid = $node->get('field_after_content_override')->getValue()[0]['target_id'];
+      $after_content_override_fid = $node
+        ?->field_after_content_override
+        ?->target_id;
     }
-  }
 
-  // Then, if either a global after_content or an after_content_override exists...
-  if ($global_after_content_fid !== NULL || $after_content_override_fid !== NULL) {
-
-    // And if the page has the after_content region...
-    if (isset($variables['page']['after_content'])) {
-
-      // Add the class to the body.
-      $variables['attributes']['class'][] = 'after_content--spacing';
+    // Then, if either a global after_content or an after_content_override exists...
+    if (!is_null($global_after_content_fid) || !is_null($after_content_override_fid)) {
+      // And if the page has the after_content region...
+      if (isset($variables['page']['after_content'])) {
+        // Add the class to the body.
+        $variables['attributes']['class'][] = 'after_content--spacing';
+      }
     }
   }
 }
