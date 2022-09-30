@@ -27,15 +27,24 @@ adding:
       settings: {  }
       third_party_settings: {  }
     field_contact_reference:
-      type: entity_reference_autocomplete
+      type: inline_entity_form_complex
       weight: 20
       region: content
       settings:
+        form_mode: minimal
+        override_labels: true
+        label_singular: 'Point of contact'
+        label_plural: 'Points of contact'
+        allow_new: true
+        allow_existing: true
         match_operator: CONTAINS
-        match_limit: 10
-        size: 60
-        placeholder: ''
-      third_party_settings: {  }
+        allow_duplicate: false
+        collapsible: true
+        collapsed: false
+        revision: false
+      third_party_settings:
+        entity_browser_entity_form:
+          entity_browser_id: _none
     field_embargo_information:
       type: string_textarea
       weight: 2
