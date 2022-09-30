@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.article.body
     - field.field.node.article.field_article_author
+    - field.field.node.article.field_article_preserve_links
     - field.field.node.article.field_article_source_link
     - field.field.node.article.field_article_source_link_direct
     - field.field.node.article.field_article_source_org
@@ -120,7 +121,7 @@ third_party_settings:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-            weight: 4
+            weight: 5
             additional: {  }
             third_party_settings: {  }
           -
@@ -137,7 +138,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 6
+            weight: 7
             additional: {  }
             third_party_settings: {  }
           -
@@ -158,7 +159,7 @@ third_party_settings:
                   rel: ''
                   target: ''
                 third_party_settings: {  }
-            weight: 7
+            weight: 8
             additional: {  }
             third_party_settings: {  }
           -
@@ -174,7 +175,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 9
+            weight: 10
             additional: {  }
             third_party_settings: {  }
           -
@@ -194,7 +195,7 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 5
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           -
@@ -218,7 +219,7 @@ third_party_settings:
                 child_heading_size: h3
               exposed_filter_values: null
               layout_builder_styles: {  }
-            weight: 11
+            weight: 12
             additional: {  }
             third_party_settings: {  }
           -
@@ -240,7 +241,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 10
+            weight: 11
             additional: {  }
             third_party_settings:
               layout_builder_custom:
@@ -254,8 +255,22 @@ third_party_settings:
               label_display: null
               provider: sitenow_articles
               context_mapping: {  }
-            weight: 8
+            weight: 9
             additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: b56ba0c2-118d-4ccb-92df-f88a9e29a4e4
+            region: content
+            configuration:
+              id: preservedlinksmessage_block
+              label: null
+              label_display: null
+              provider: sitenow_articles
+              context_mapping: {  }
+            weight: 4
+            additional:
+              layout_builder_styles_style:
+                block_margin_bottom: block_margin_bottom
             third_party_settings: {  }
         third_party_settings: {  }
   layout_builder_restrictions:
@@ -349,6 +364,7 @@ content:
     region: content
 hidden:
   field_article_author: true
+  field_article_preserve_links: true
   field_article_source_link_direct: true
   field_gallery_images: true
   field_meta_tags: true
