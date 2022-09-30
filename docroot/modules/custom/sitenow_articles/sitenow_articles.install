@@ -85,8 +85,8 @@ function sitenow_articles_update_9304() {
 function sitenow_articles_update_9305() {
   $config = \Drupal::configFactory()->getEditable('sitenow_articles.settings');
 
-  if (!$config->get('default_preserved_links_message_display')) {
-    $config->set('default_preserved_links_message_display', 'Links in this article are preserved for historical purposes, but the destination sources may have changed.')
+  if (!$config->get('preserved_links_message_display_default')) {
+    $config->set('preserved_links_message_display_default', 'Links in this article are preserved for historical purposes, but the destination sources may have changed.')
       ->save();
   }
 }

@@ -5,14 +5,15 @@
  * Article configuration for the University of Iowa.
  */
 
-use Drupal\user\Entity\User;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Field\FieldFilteredMarkup;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Url;
+use Drupal\user\Entity\User;
 use Drupal\views\Entity\View;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
@@ -43,6 +44,14 @@ function sitenow_articles_entity_extra_field_info() {
 function sitenow_articles_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
     case 'node_article_edit_form':
+      if (isset($form['field_article_preserve_links'])) {
+        // Set description message to only display when the user doesn't have
+        // the 'administer sitenow articles' permission.
+        $user = User::load(\Drupal::currentUser()->id());
+        if ($user->hasPermission('administer sitenow articles')) {
+          $form['field_article_preserve_links']['widget']['value']['#description'] = FieldFilteredMarkup::create($form['field_article_preserve_links']['widget']['value']['#description'] . ' <a href="/admin/config/sitenow/uiowa-articles" target="_blank" rel="noopener">Customize this message and other site-wide article settings.</a>');
+        }
+      }
     case 'node_article_form':
       if (isset($form['field_related_content'])) {
         // Set field_related_content to node_reference group.
@@ -56,12 +65,6 @@ function sitenow_articles_form_alter(&$form, FormStateInterface $form_state, $fo
       // If article is being created, hide the preserve links checkbox.
       if ($form_id === 'node_article_form') {
         $form['field_article_preserve_links']['#access'] = FALSE;
-      }
-      if ($form_id === 'node_article_edit_form') {
-        $user = User::load(\Drupal::currentUser()->id());
-        if (!$user->hasPermission('administer sitenow articles')) {
-          $form['field_article_preserve_links']['widget']['value']['#description'] = t('Displays message that article links may be broken and are preserved for historical purposes.');
-        }
       }
       break;
   }
