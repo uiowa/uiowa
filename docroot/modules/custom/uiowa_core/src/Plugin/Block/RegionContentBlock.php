@@ -2,6 +2,7 @@
 
 namespace Drupal\uiowa_core\Plugin\Block;
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -135,6 +136,29 @@ class RegionContentBlock extends BlockBase implements ContainerFactoryPluginInte
     }
 
     return $build;
+  }
+
+
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheTags() {
+    if ($node = \Drupal::routeMatch()->getParameter('node')) {
+      return Cache::mergeTags(parent::getCacheTags(), ['node:' . $node->id()]);
+    }
+    else {
+      return parent::getCacheTags();
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheContexts() {
+    // This module often depends on the route to know which node to load, so
+    // route should be part of the cache context.
+    return Cache::mergeContexts(parent::getCacheContexts(), ['route']);
   }
 
 }
