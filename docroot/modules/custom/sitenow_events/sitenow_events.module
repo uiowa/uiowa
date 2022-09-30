@@ -202,7 +202,7 @@ function sitenow_events_preprocess_block(&$variables) {
       }
 
       // If we have more link checked and link provided, pass it.
-      if ($block->get('field_collection_more')->value === TRUE) {
+      if ((bool) $block->get('field_collection_more')->value === TRUE) {
         if ($uri = $block->get('field_collection_more_path')->uri) {
           $url = Url::fromUri($uri);
         }
