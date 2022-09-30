@@ -74,7 +74,7 @@ function uids_base_page_attachments_alter(array &$page) {
     ],
     '#weight' => -888,
   ];
-  $page['#attached']['html_head'][] = [$font, 'Preconnect link'];
+  $page['#attached']['html_head'][] = [$font, 'Preconnect'];
   $font_crossorigin = [
     '#tag' => 'link',
     '#attributes' => [
@@ -84,7 +84,7 @@ function uids_base_page_attachments_alter(array &$page) {
     ],
     '#weight' => -888,
   ];
-  $page['#attached']['html_head'][] = [$font_crossorigin, 'Preconnect link with crossorigin'];
+  $page['#attached']['html_head'][] = [$font_crossorigin, 'Crossorigin'];
 
 }
 
