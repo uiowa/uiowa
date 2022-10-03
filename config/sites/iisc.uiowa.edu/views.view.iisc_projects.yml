@@ -164,7 +164,7 @@ display:
         type: full
         options:
           offset: 0
-          items_per_page: 8
+          items_per_page: 20
           total_pages: null
           id: 0
           tags:
@@ -727,9 +727,9 @@ display:
       block_description: Projects
       block_category: Lists
       allow:
-        items_per_page: true
-        offset: offset
-        pager: pager
+        items_per_page: false
+        offset: '0'
+        pager: '0'
         hide_fields: '0'
         sort_fields: '0'
         disable_filters: '0'
@@ -739,6 +739,8 @@ display:
       more_link_help_text: ''
       restrict_fields:
         title: 0
+        title_1: 0
+      general_help_text: ''
     cache_metadata:
       max-age: -1
       contexts:
@@ -1099,9 +1101,9 @@ display:
       block_description: 'Project colleges or departments'
       block_category: Lists
       allow:
-        items_per_page: true
-        offset: offset
-        pager: pager
+        items_per_page: false
+        offset: '0'
+        pager: '0'
         hide_fields: '0'
         sort_fields: '0'
         disable_filters: '0'
@@ -1110,7 +1112,10 @@ display:
         use_more: 0
       more_link_help_text: ''
       restrict_fields:
-        field_project_college_department: 0
+        name: 0
+        field_image: 0
+        view_taxonomy_term: 0
+      general_help_text: ''
     cache_metadata:
       max-age: -1
       contexts:
@@ -1128,27 +1133,6 @@ display:
     display_plugin: block
     position: 4
     display_options:
-      pager:
-        type: full
-        options:
-          offset: 0
-          items_per_page: 10
-          total_pages: null
-          id: 0
-          tags:
-            next: 'Next ›'
-            previous: '‹ Previous'
-            first: '« First'
-            last: 'Last »'
-          expose:
-            items_per_page: false
-            items_per_page_label: 'Items per page'
-            items_per_page_options: '5, 10, 25, 50'
-            items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
-            offset: false
-            offset_label: Offset
-          quantity: 9
       exposed_form:
         type: basic
         options:
@@ -1277,7 +1261,7 @@ display:
         groups:
           1: AND
       defaults:
-        pager: false
+        pager: true
         exposed_form: false
         sorts: false
         arguments: false
@@ -1291,9 +1275,9 @@ display:
       block_description: 'Projects by partner NID'
       block_category: Restricted
       allow:
-        items_per_page: true
-        offset: offset
-        pager: pager
+        items_per_page: false
+        offset: '0'
+        pager: '0'
         hide_fields: '0'
         sort_fields: '0'
         disable_filters: '0'
@@ -1304,6 +1288,7 @@ display:
       restrict_fields:
         title: 0
         title_1: 0
+      general_help_text: ''
     cache_metadata:
       max-age: -1
       contexts:
@@ -1733,9 +1718,9 @@ display:
       block_description: 'Project tags'
       block_category: Lists
       allow:
-        items_per_page: true
-        offset: offset
-        pager: pager
+        items_per_page: false
+        offset: '0'
+        pager: '0'
         hide_fields: '0'
         sort_fields: '0'
         disable_filters: '0'
@@ -1745,6 +1730,10 @@ display:
       more_link_help_text: ''
       restrict_fields:
         field_tags: 0
+        name: 0
+        field_image: 0
+        view_taxonomy_term: 0
+      general_help_text: ''
     cache_metadata:
       max-age: -1
       contexts:
