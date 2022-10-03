@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.taxonomy_term.teaser
     - taxonomy.vocabulary.colleges_and_departments
   module:
     - taxonomy
@@ -137,18 +138,19 @@ display:
             operator_limit_selection: false
             operator_list: {  }
       style:
-        type: grid
+        type: html_list
         options:
+          row_class: ''
+          default_row_class: true
           uses_fields: false
-          columns: 4
-          automatic_width: true
-          alignment: horizontal
-          row_class_custom: ''
-          row_class_default: true
-          col_class_custom: ''
-          col_class_default: true
+          type: ul
+          wrapper_class: item-list
+          class: ''
       row:
         type: 'entity:taxonomy_term'
+        options:
+          relationship: none
+          view_mode: teaser
       query:
         type: views_query
         options:
