@@ -28,14 +28,19 @@ function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_i
       $form['field_page_content_block']['#access'] = FALSE;
     }
     elseif ($form_id === 'node_page_edit_form') {
-      // Check if field_v3_conversion_revision_id is set.
-      if ($entity->hasField('field_v3_conversion_revision_id')) {
+      // Check if field_v3_conversion_revision_id is set,
+      // and if the user hasn't yet interacted with the form
+      // (so that we don't duplicate our messages).
+      if ($entity->hasField('field_v3_conversion_revision_id') && empty($form_state->getUserInput())) {
         if (is_numeric($entity->field_v3_conversion_revision_id->value)) {
-          // If so, disable field_page_content_block and set a warning message.
+          // If we have a revision id, the page has been converted.
+          // Disable field_page_content_block and set a warning message.
           \Drupal::messenger()->addWarning(t('This page has been converted to the SiteNow V3 format. Please add content through the "Body" field or click the "Layout" tab to edit an advanced page layout.'));
           $form['field_page_content_block']['#access'] = FALSE;
         }
         else {
+          // If we didn't have a revision id, disable access to the body field
+          // and add a message directing to the converter.
           \Drupal::messenger()->addMessage(t('This page can be converted to the SiteNow V3 format. Please visit the @link to convert this page.', [
             '@link' => Drupal::service('link_generator')->generate('SiteNow Converter tool', Url::fromRoute('sitenow_p2lb.content_converter')),
           ]));
@@ -1120,7 +1125,7 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
   // Any more links will remain in the body.
   if (preg_match('|(.*?)(<a.*?href="(.*?)".*?>(.*?)<\/a>)(.*)|is', $text['value'], $matches)) {
     // Attach the bookended content into a single value.
-    $text['value'] = $matches[1] . $matches[5];
+    $text['value'] = strip_tags($matches[1] . $matches[5]);
     // Set URI based on link being absolute or relative.
     $uri = (substr($matches[3], 0, 4) === 'http') ?
       $matches[3] : \Drupal::request()->getSchemeAndHttpHost() . $matches[3];
