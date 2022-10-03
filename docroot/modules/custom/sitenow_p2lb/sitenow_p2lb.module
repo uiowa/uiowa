@@ -272,6 +272,15 @@ function sitenow_p2lb_process_section($section_id, $layout, $node) {
           ],
           'weight' => 0,
         ];
+        // If we had a user-provided unique id,
+        // add it to the block's third-party settings.
+        if (!empty($block_config['id'])) {
+          $section_array['components'][$uuid]['third_party_settings'] = [
+            'layout_builder_custom' => [
+              'unique_id' => $block_config['id'],
+            ],
+          ];
+        }
       }
     }
     $section = Section::fromArray($section_array);
@@ -945,6 +954,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         'configuration' => $config,
         'uuid' => $uuid,
         'styles' => _sitenow_p2lb_block_styles($type, $paragraph),
+        'id' => $paragraph?->field_uip_id->value,
       ],
     ];
   }
