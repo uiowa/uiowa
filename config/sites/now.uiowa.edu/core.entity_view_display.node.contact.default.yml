@@ -9,6 +9,7 @@ dependencies:
     - node.type.contact
   module:
     - layout_builder
+    - system
     - telephone
     - user
   theme:
@@ -39,7 +40,7 @@ third_party_settings:
                 label: inline
                 settings: {  }
                 third_party_settings: {  }
-            weight: 2
+            weight: 3
             additional: {  }
             third_party_settings: {  }
           -
@@ -59,7 +60,7 @@ third_party_settings:
                 settings:
                   title: ''
                 third_party_settings: {  }
-            weight: 3
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           -
@@ -79,6 +80,18 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 41414775-8b29-47e9-9488-23b44a80f836
+            region: content
+            configuration:
+              id: system_breadcrumb_block
+              label: null
+              label_display: null
+              provider: system
+              context_mapping: {  }
             weight: 1
             additional: {  }
             third_party_settings: {  }
