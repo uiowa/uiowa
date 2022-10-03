@@ -1195,7 +1195,7 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
       if ($id = $banner_text?->field_uip_id->value) {
         $section_array['components'][$uuid]['third_party_settings'] = [
           'layout_builder_custom' => [
-            'unique_id' => $block_config['id'],
+            'unique_id' => $id,
           ],
         ];
       }
