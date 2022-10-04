@@ -1,0 +1,34 @@
+{{ attach_library('uids_base/person') }}
+{% if title %}
+  <h3>{{ title }}</h3>
+{% endif %}
+{% for row in rows %}
+  {%
+    set row_classes = [
+    default_row_class ? 'views-row',
+  ]
+  %}
+  {% set card_view = row.card_options %}
+  {% embed '@uids_base/uids/card.html.twig' with card_view only  %}
+
+    {% block card_img %}
+    {% if card_image|striptags('<img><picture>')|trim is not empty %}
+      {{ parent() }}
+    {% else %}
+      <div {{ media_attributes.addClass(media_styles, media_sizes, 'card__media') }}>
+        <div class="img--empty">&nbsp;</div>
+      </div>
+    {% endif %}
+    {% endblock %}
+
+    {% block card_meta %}
+      {% if person_email|striptags|trim is not empty %}
+        <div class="card__meta">{{ person_email }}</div>
+      {% endif %}
+      {% if person_phone|striptags|trim is not empty %}
+        <div class="card__meta">{{ person_phone }}</div>
+      {% endif %}
+    {% endblock %}
+
+  {% endembed %}
+{% endfor %}
