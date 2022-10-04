@@ -945,7 +945,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
             'configuration' => $config,
             'uuid' => $uuid,
             'styles' => $styles,
-            'id' => NULL,
+            'id' => $paragraph?->field_uip_id->value,
           ],
           [
             'configuration' => $webform_config,
