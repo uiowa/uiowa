@@ -758,7 +758,7 @@ function publish_options_allowed_values(FieldStorageConfig $definition, ContentE
   $cacheable = FALSE;
   $options = [];
 
-  if (method_exists($entity, 'bundle')) {
+  if (!is_null($entity)) {
     $bundle = $entity->bundle();
 
     switch ($bundle) {
