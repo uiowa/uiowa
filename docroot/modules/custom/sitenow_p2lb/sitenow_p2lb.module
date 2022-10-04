@@ -364,16 +364,6 @@ function sitenow_p2lb_determine_columns(array $col_widths) {
   while (TRUE) {
     $iter_adder += $col_widths[$i];
 
-    // Out of cols to add.
-    // Take what we have and handle/add to the list.
-    if ($i === count($col_widths) - 1) {
-      $sections[] = [
-        'num_columns' => count($col_widths),
-        'col_widths' => $col_widths,
-      ];
-      break;
-    }
-
     // Section full with no overrun.
     // Take what we have and add to the list.
     if ($iter_adder === 12) {
@@ -391,6 +381,17 @@ function sitenow_p2lb_determine_columns(array $col_widths) {
         sitenow_p2lb_determine_columns(array_slice($col_widths, 0, $i)),
         sitenow_p2lb_determine_columns(array_slice($col_widths, $i)),
       );
+      break;
+    }
+
+    // We didn't exactly finish a section, and
+    // didn't overrun, but we're Out of cols to add.
+    // Take what we have left and handle/add to the list.
+    if ($i === count($col_widths) - 1) {
+      $sections[] = [
+        'num_columns' => count($col_widths),
+        'col_widths' => $col_widths,
+      ];
       break;
     }
 
@@ -945,13 +946,13 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
             'configuration' => $config,
             'uuid' => $uuid,
             'styles' => $styles,
-            'id' => NULL,
+            'id' => $paragraph?->field_uip_id->value,
           ],
           [
             'configuration' => $webform_config,
             'uuid' => $webform_uuid,
             'styles' => $styles,
-            'id' => $paragraph?->field_uip_id->value,
+            'id' => NULL,
           ],
         ];
     }
