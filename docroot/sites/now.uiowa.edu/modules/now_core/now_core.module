@@ -52,6 +52,30 @@ function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 }
 
 /**
+ * Alter the fields used to represent an entity in the IEF table.
+ *
+ * @param array $fields
+ *   The fields, keyed by field name.
+ * @param array $context
+ *   An array with the following keys:
+ *   - parent_entity_type: The type of the parent entity.
+ *   - parent_bundle: The bundle of the parent entity.
+ *   - field_name: The name of the reference field on which IEF is operating.
+ *   - entity_type: The type of the referenced entities.
+ *   - allowed_bundles: Bundles allowed on the reference field.
+ *
+ * @see \Drupal\inline_entity_form\InlineFormInterface::getTableFields()
+ */
+function now_core_inline_entity_form_table_fields_alter(array &$fields, array $context) {
+  if ($context['field_name'] === 'field_contact_reference') {
+    // Clean up, minimize the person IEF form.
+    if (in_array('contact', $context['allowed_bundles']) && in_array('person', $context['allowed_bundles'])) {
+      $fields['label']['label'] = t('Contact name');
+    }
+  }
+}
+
+/**
  * Implements hook_ENTITY_TYPE_presave().
  */
 function now_core_node_presave($entity) {
