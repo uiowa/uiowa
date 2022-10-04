@@ -23,10 +23,10 @@
 
     {% block card_meta %}
       {% if person_email|striptags|trim is not empty %}
-        <div class="card__meta">{{ person_email }}</div>
+        <div class="card__meta"><i role="presentation" class="fas fa-envelope" aria-hidden="true"></i>{{ person_email }}</div>
       {% endif %}
       {% if person_phone|striptags|trim is not empty %}
-        <div class="card__meta">{{ person_phone }}</div>
+        <div class="card__meta"><i role="presentation" class="fas fa-phone" aria-hidden="true"></i>{{ person_phone }}</div>
       {% endif %}
     {% endblock %}
 
