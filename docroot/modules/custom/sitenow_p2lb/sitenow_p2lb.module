@@ -490,12 +490,12 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       // Build our headline array, because for list blocks,
       // it gets stored in the config, not in a field.
       $headline = [
-        "headline" => $title,
-        "hide_headline" => $display_title,
-        "heading_size" => "h2",
-        "headline_style" => "default",
-        "headline_alignment" => "default",
-        "child_heading_size" => "h3",
+        'headline' => $title,
+        'hide_headline' => $display_title,
+        'heading_size' => 'h2',
+        'headline_style' => 'default',
+        'headline_alignment' => 'default',
+        'child_heading_size' => 'h3',
       ];
       $pager = ($paragraph->field_uip_pager->value) ? 'full' : 'some';
       // Number of results that should be displayed.
@@ -945,13 +945,13 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
             'configuration' => $config,
             'uuid' => $uuid,
             'styles' => $styles,
-            'id' => $paragraph?->field_uip_id->value,
+            'id' => NULL,
           ],
           [
             'configuration' => $webform_config,
             'uuid' => $webform_uuid,
             'styles' => $styles,
-            'id' => NULL,
+            'id' => $paragraph?->field_uip_id->value,
           ],
         ];
     }
