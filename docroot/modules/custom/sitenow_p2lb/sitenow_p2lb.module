@@ -1164,7 +1164,7 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
     $uuid = $block->get('uuid')->getValue()[0]['value'];
     $block_config = [
       'id' => 'inline_block:uiowa_banner',
-      'label' => 'Hero',
+      'label' => '',
       'provider' => 'layout_builder',
       'label_display' => 0,
       'block_revision_id' => $block->getRevisionId(),
@@ -1172,7 +1172,7 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
     ];
     if (!empty($block_config)) {
       $layout_settings = [
-        'label' => 'Hero image',
+        'label' => '',
         'column_widths' => [],
         'layout_builder_styles_style' => [
           'section_margin_edge_to_edge' => 'section_margin_edge_to_edge',
