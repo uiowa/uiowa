@@ -4,8 +4,8 @@ status: true
 dependencies:
   config:
     - block_content.type.uiowa_image_gallery
-    - field.field.block_content.uiowa_image_gallery.field_uiowa_headline
     - field.field.block_content.uiowa_image_gallery.field_uiowa_gallery_image
+    - field.field.block_content.uiowa_image_gallery.field_uiowa_headline
   module:
     - layout_builder_custom
 id: block_content.uiowa_image_gallery.default
@@ -30,4 +30,7 @@ content:
     weight: 0
     region: content
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   search_api_excerpt: true
