@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.teaser
     - field.storage.node.field_image
     - field.storage.node.field_person_email
     - field.storage.node.field_person_phone
@@ -622,12 +621,14 @@ display:
           grouping: {  }
           row_class: ''
           default_row_class: true
-          uses_fields: true
+          uses_fields: false
       row:
-        type: 'entity:node'
+        type: fields
         options:
-          relationship: none
-          view_mode: teaser
+          default_field_elements: true
+          inline: {  }
+          separator: ''
+          hide_empty: false
       query:
         type: views_query
         options:
