@@ -11,6 +11,9 @@ dependencies:
     - field.storage.node.field_person_research_areas
     - node.type.person
     - taxonomy.vocabulary.research_areas
+    - taxonomy.vocabulary.tags
+  content:
+    - 'taxonomy_term:tags:803e8f21-d2b0-4d59-93d0-9432c58ea5c6'
   module:
     - node
     - taxonomy
@@ -428,7 +431,20 @@ display:
       cache:
         type: tag
         options: {  }
-      empty: {  }
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: true
+          content:
+            value: 'There are no results. '
+            format: filtered_html
+          tokenize: false
       sorts:
         created:
           id: created
@@ -520,6 +536,59 @@ display:
             group_items: {  }
           reduce_duplicates: false
           vid: research_areas
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: false
+          save_lineage: false
+          force_deepest: false
+          parent: null
+          level_labels: ''
+          hierarchy_depth: 0
+          required_depth: 0
+          none_label: '- Please select -'
+        field_tags_target_id:
+          id: field_tags_target_id
+          table: node__field_tags
+          field: field_tags_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value:
+            - 36
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: tags
           type: textfield
           hierarchy: false
           limit: true
