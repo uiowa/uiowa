@@ -11,6 +11,7 @@ use Drupal\Core\Form\FormStateInterface;
  * Implements hook_form_alter().
  */
 function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
   if ($form_id === 'node_article_form' || $form_id === 'node_article_edit_form') {
     $form['field_embargo_information']['#states'] = [
       'visible' => [
@@ -38,6 +39,16 @@ function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
     // without showing clutter to the end user.
     unset($form['field_original_publication_date']['widget'][0]['time_wrapper']['separator']);
     $form['field_original_publication_date']['widget'][0]['time_wrapper']['end_value']['#attributes']['class'][] = 'hidden';
+  }
+}
+
+/**
+ * Implements hook_form_views_exposed_form_alter().
+ */
+function now_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $view = $form_state->getStorage('view');
+  if ($form_id == 'views_exposed_form' && in_array($view['view']->id(), ['iowa_now_experts'])) {
+    $form_state->setErrorByName('field_person_research_areas_target_id', t('There are no matching results.'));
   }
 }
 
@@ -207,6 +218,7 @@ function now_core_article_type_tag_map(string $article_type = '') {
  * Implements hook_preprocess_HOOK().
  */
 function now_core_preprocess_views_view_unformatted(&$variables) {
+
   $view = $variables['view'];
   $variables['row_item_classes'] = [];
   if ($view->current_display === 'page_experts_list') {
