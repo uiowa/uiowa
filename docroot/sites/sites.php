@@ -4498,3 +4498,15 @@ $sites['stanleymuseumcampuscouncil.uiowa.ddev.site'] = 'campuscouncil.stanleymus
 $sites['stanleymuseumcampuscouncil.dev.drupal.uiowa.edu'] = 'campuscouncil.stanleymuseum.uiowa.edu';
 $sites['stanleymuseumcampuscouncil.stage.drupal.uiowa.edu'] = 'campuscouncil.stanleymuseum.uiowa.edu';
 $sites['stanleymuseumcampuscouncil.prod.drupal.uiowa.edu'] = 'campuscouncil.stanleymuseum.uiowa.edu';
+
+// Directory aliases for jgrj.law.uiowa.edu.
+$sites['lawjgrj.uiowa.ddev.site'] = 'jgrj.law.uiowa.edu';
+$sites['lawjgrj.dev.drupal.uiowa.edu'] = 'jgrj.law.uiowa.edu';
+$sites['lawjgrj.stage.drupal.uiowa.edu'] = 'jgrj.law.uiowa.edu';
+$sites['lawjgrj.prod.drupal.uiowa.edu'] = 'jgrj.law.uiowa.edu';
+
+// Directory aliases for iyws.clas.uiowa.edu.
+$sites['clasiyws.uiowa.ddev.site'] = 'iyws.clas.uiowa.edu';
+$sites['clasiyws.dev.drupal.uiowa.edu'] = 'iyws.clas.uiowa.edu';
+$sites['clasiyws.stage.drupal.uiowa.edu'] = 'iyws.clas.uiowa.edu';
+$sites['clasiyws.prod.drupal.uiowa.edu'] = 'iyws.clas.uiowa.edu';
