@@ -22,13 +22,13 @@ function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
       ],
     ];
 
-    // check that there are entities.
+    // Check that there are entities.
     if (isset($form['field_contact_reference']['widget']['entities'])) {
       $contacts = $form['field_contact_reference']['widget']['entities'];
 
       // For each one that exists, make sre it is one of the integer entries, which is actually an entity.
       foreach ($contacts as $key => $contact) {
-        if(is_int($key) && $contact['#entity']->getType() === 'person') {
+        if (is_int($key) && $contact['#entity']->getType() === 'person') {
 
           // Then, get the string of the first and last names.
           $first = $contact['#entity']?->get('field_person_first_name')?->getString();
@@ -41,7 +41,6 @@ function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         }
       }
     }
-
 
     $form['field_embargo_information']['#states'] = [
       'visible' => [
