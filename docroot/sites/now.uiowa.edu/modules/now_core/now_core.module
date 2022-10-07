@@ -16,35 +16,37 @@ function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
     case 'node_article_edit_form':
     case 'node_person_form':
     case 'node_person_edit_form':
-    $form['field_contact_reference']['#states'] = [
-      'visible' => [
-        ':input[name="field_article_type"]' => [
+      $form['field_contact_reference']['#states'] = [
+        'visible' => [
+          ':input[name="field_article_type"]' => [
           ['value' => 'featured'],
-          'or',
+            'or',
           ['value' => 'achievements'],
+          ],
         ],
-      ],
-    ];
+      ];
 
-    // Check that there are entities.
-    if (isset($form['field_contact_reference']['widget']['entities'])) {
-      $contacts = $form['field_contact_reference']['widget']['entities'];
+      // Check that there are entities.
+      if (isset($form['field_contact_reference']['widget']['entities'])) {
+        $contacts = $form['field_contact_reference']['widget']['entities'];
 
-      // For each one that exists, make sre it is one of the integer entries, which is actually an entity.
-      foreach ($contacts as $key => $contact) {
-        if (is_int($key) && $contact['#entity']->getType() === 'person') {
+        // For each one that exists, make sre it is one of the integer entries,
+        // which is actually an entity.
+        foreach ($contacts as $key => $contact) {
+          if (is_int($key) && $contact['#entity']->getType() === 'person') {
 
-          // Then, get the string of the first and last names.
-          $first = $contact['#entity']?->get('field_person_first_name')?->getString();
-          $last = $contact['#entity']?->get('field_person_last_name')?->getString();
+            // Then, get the string of the first and last names.
+            $first = $contact['#entity']?->get('field_person_first_name')?->getString();
+            $last = $contact['#entity']?->get('field_person_last_name')?->getString();
 
-          // And set the title, which would have been empty, to the concatenation of the two.
-          if (is_string($first) && is_string($last)) {
-            $form['field_contact_reference']['widget']['entities'][$key]['#label'] = $first . ' ' . $last;
+            // And set the title, which would have been empty,
+            // to the concatenation of the two.
+            if (is_string($first) && is_string($last)) {
+              $form['field_contact_reference']['widget']['entities'][$key]['#label'] = $first . ' ' . $last;
+            }
           }
         }
       }
-    }
       break;
   }
   if ($form_id === 'node_article_form' || $form_id === 'node_article_edit_form') {
