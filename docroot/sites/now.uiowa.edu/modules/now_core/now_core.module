@@ -48,7 +48,18 @@ function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 function now_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $view = $form_state->getStorage('view');
   if ($form_id == 'views_exposed_form' && in_array($view['view']->id(), ['iowa_now_experts'])) {
-    $form_state->setErrorByName('field_person_research_areas_target_id', t('There are no matching results.'));
+    $form['#validate'][] = 'now_core_experts_form_validate';
+  }
+}
+
+/**
+ * Custom error message for views exposed form for iowa now experts.
+ */
+function now_core_experts_form_validate($form, FormStateInterface $form_state) {
+  $expert = $form['field_person_research_areas_target_id'];
+  if (isset($expert) && $form_state->getError($expert)) {
+    $form_state->clearErrors();
+    $form_state->setErrorByName('field_person_research_areas_target_id', t('There are no matching research areas.'));
   }
 }
 
