@@ -83,7 +83,7 @@ function sitenow_events_preprocess_block(&$variables) {
   switch ($variables['elements']['#plugin_id']) {
     case 'inline_block:uiowa_events':
       // This case intentionally falls through to the next case.
-      /** @var \Drupal\Block\Entity\Block $block */
+      /** @var \Drupal\block_content\Entity\BlockContent $block */
       $block = $variables['elements']['content']['#block_content'];
 
       // Set custom time-based cache tag to clear on a regular basis.
@@ -102,22 +102,27 @@ function sitenow_events_preprocess_block(&$variables) {
       }
 
       // Change start and end params based on query type.
-      $timeframe = $block->get('field_uiowa_events_timeframe')->value;
-      switch ($timeframe) {
-        case 'date_range':
-          $start = $block->get('field_uiowa_events_date_range')[0]->value;
-          $end = $block->get('field_uiowa_events_date_range')[0]->end_value;
-          break;
+      if ($block->hasField('field_uiowa_events_timeframe') && !empty($block->get('field_uiowa_events_timeframe'))) {
+        $timeframe = $block->get('field_uiowa_events_timeframe')->value;
+      }
 
-        case 'past':
-          $start = strtotime('01-01-1970');
-          $end = strtotime(date('d-m-Y') . ' yesterday');
-          break;
+      $start = strtotime(date('d-m-Y') . ' now');
+      $end = strtotime('31-12-2037');
 
-        default:
-          $start = strtotime(date('d-m-Y') . ' now');
-          $end = strtotime('31-12-2037');
-          break;
+      if ($timeframe) {
+        switch ($timeframe) {
+          case 'date_range':
+            if ($block->hasField('field_uiowa_events_date_range') && !empty($block->get('field_uiowa_events_date_range'))) {
+              $start = $block->get('field_uiowa_events_date_range')[0]->value;
+              $end = $block->get('field_uiowa_events_date_range')[0]->end_value;
+            }
+            break;
+
+          case 'past':
+            $start = strtotime('01-01-1970');
+            $end = strtotime(date('d-m-Y') . ' yesterday');
+            break;
+        }
       }
 
       $parameters = [
