@@ -11,7 +11,11 @@ use Drupal\Core\Form\FormStateInterface;
  * Implements hook_form_alter().
  */
 function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  if ($form_id === 'node_article_form' || $form_id === 'node_article_edit_form') {
+  switch ($form_id) {
+    case 'node_article_form':
+    case 'node_article_edit_form':
+    case 'node_person_form':
+    case 'node_person_edit_form':
     $form['field_contact_reference']['#states'] = [
       'visible' => [
         ':input[name="field_article_type"]' => [
@@ -41,7 +45,9 @@ function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
         }
       }
     }
-
+      break;
+  }
+  if ($form_id === 'node_article_form' || $form_id === 'node_article_edit_form') {
     $form['field_embargo_information']['#states'] = [
       'visible' => [
         ':input[name="field_article_type"]' => [
