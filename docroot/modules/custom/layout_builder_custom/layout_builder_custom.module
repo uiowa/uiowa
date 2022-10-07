@@ -911,10 +911,6 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
 
       case 'inline_block:uiowa_events':
         if (isset($element['field_uiowa_events_date_range'])) {
-          // Set a date picker limit to our UNIX min/max.
-          $element['field_uiowa_events_date_range']['widget'][0]['time_wrapper']['value']['#date_year_range'] = '1970:2037';
-          $element['field_uiowa_events_date_range']['widget'][0]['time_wrapper']['end_value']['#date_year_range'] = '1970:2037';
-
           // Show date range field when timeframe is set to date_range.
           $element['field_uiowa_events_date_range']['#states'] = [
             'visible' => [
