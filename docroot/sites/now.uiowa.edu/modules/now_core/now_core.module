@@ -11,7 +11,44 @@ use Drupal\Core\Form\FormStateInterface;
  * Implements hook_form_alter().
  */
 function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'node_article_form':
+    case 'node_article_edit_form':
+    case 'node_person_form':
+    case 'node_person_edit_form':
+      $form['field_contact_reference']['#states'] = [
+        'visible' => [
+          ':input[name="field_article_type"]' => [
+          ['value' => 'featured'],
+            'or',
+          ['value' => 'achievements'],
+          ],
+        ],
+      ];
 
+      // Check that there are entities.
+      if (isset($form['field_contact_reference']['widget']['entities'])) {
+        $contacts = $form['field_contact_reference']['widget']['entities'];
+
+        // For each one that exists, make sre it is one of the integer entries,
+        // which is actually an entity.
+        foreach ($contacts as $key => $contact) {
+          if (is_int($key) && $contact['#entity']->getType() === 'person') {
+
+            // Then, get the string of the first and last names.
+            $first = $contact['#entity']?->get('field_person_first_name')?->getString();
+            $last = $contact['#entity']?->get('field_person_last_name')?->getString();
+
+            // And set the title, which would have been empty,
+            // to the concatenation of the two.
+            if (is_string($first) && is_string($last)) {
+              $form['field_contact_reference']['widget']['entities'][$key]['#label'] = $first . ' ' . $last;
+            }
+          }
+        }
+      }
+      break;
+  }
   if ($form_id === 'node_article_form' || $form_id === 'node_article_edit_form') {
     $form['field_embargo_information']['#states'] = [
       'visible' => [
@@ -39,6 +76,18 @@ function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
     // without showing clutter to the end user.
     unset($form['field_original_publication_date']['widget'][0]['time_wrapper']['separator']);
     $form['field_original_publication_date']['widget'][0]['time_wrapper']['end_value']['#attributes']['class'][] = 'hidden';
+  }
+}
+
+/**
+ * Implements hook_inline_entity_form_table_fields_alter().
+ */
+function now_core_inline_entity_form_table_fields_alter(array &$fields, array $context) {
+  if ($context['field_name'] === 'field_contact_reference') {
+    // Clean up, minimize the person IEF form.
+    if (in_array('contact', $context['allowed_bundles']) && in_array('person', $context['allowed_bundles'])) {
+      $fields['label']['label'] = t('Contact name');
+    }
   }
 }
 
@@ -81,11 +130,17 @@ function now_core_node_presave($entity) {
     // Check that we didn't already have the tid
     // before appending it to our list of tags.
     $in_array = FALSE;
+    $old_tid = FALSE;
     // If it's new, we only need to worry about
     // adding the new TID, but if it's an edit,
     // we also need to check if we need to remove
     // an old article type's TID.
-    $old_tid = (!$entity->isNew()) ? now_core_article_type_tag_map($entity->original->field_article_type->value) : FALSE;
+    if (!$entity->isNew()) {
+      // To account for articles created prior to requiring this field,
+      // we also need to check if the field is empty. If it was,
+      // we won't have a TID to remove.
+      $old_tid = (!empty($entity->original->field_article_type_value)) ? now_core_article_type_tag_map($entity->original->field_article_type->value) : FALSE;
+    }
     // If the old TID is the same as the new,
     // then we can treat it like the entity is new.
     $old_tid = ($old_tid != $tid) ? $old_tid : FALSE;
