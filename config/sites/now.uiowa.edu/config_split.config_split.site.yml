@@ -20,6 +20,16 @@ complete_list:
   - field.storage.node.field_article_type
   - field.storage.node.field_embargo_information
   - field.storage.node.field_original_publication_date
-partial_list:
+  - node.type.contact
+  - 'field.field.node.contact.*'
+  - 'field.storage.node.field_contact_*'
+  - 'core.base_field_override.node.contact.*'
+  - 'core.entity_view_display.node.contact.*'
+  - 'core.entity_form_display.node.contact.*'
   - 'core.entity_view_display.node.article.*'
+  - 'core.entity_view_display.node.person.*'
+partial_list:
+  - field.field.node.article.field_contact_reference
+  - field.field.node.person.field_contact_reference
   - 'core.entity_form_display.node.article.*'
+  - 'core.entity_form_display.node.person.*'
