@@ -1,0 +1,24 @@
+uuid: 07d37534-2e99-4074-9c7b-ae139cabec0b
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.contact.field_contact_email
+    - field.field.node.contact.field_contact_phone_number
+    - node.type.contact
+  module:
+    - user
+id: node.contact.teaser
+targetEntityType: node
+bundle: contact
+mode: teaser
+content: {  }
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_contact_email: true
+  field_contact_phone_number: true
+  links: true
+  search_api_excerpt: true
