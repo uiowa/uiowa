@@ -97,6 +97,7 @@ function now_core_inline_entity_form_table_fields_alter(array &$fields, array $c
 function now_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $view = $form_state->getStorage('view');
   if ($form_id == 'views_exposed_form' && in_array($view['view']->id(), ['iowa_now_experts'])) {
+    $form['field_person_research_areas_target_id']['#size'] = 10;
     $form['#validate'][] = 'now_core_experts_form_validate';
   }
 }
