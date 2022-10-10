@@ -25,7 +25,6 @@ dependencies:
     - metatag
     - path
     - smart_date
-    - smart_date_recur
     - text
 _core:
   default_config_hash: LlPkvF6k5LrVch4e5u2xzJCzsLHlHQaNBNC7lcWi9vs
@@ -113,18 +112,9 @@ content:
         120|2 hours
         custom
       show_extra: false
-      hide_date: '1'
+      hide_date: true
       add_abbreviations: ''
-    third_party_settings:
-      smart_date_recur:
-        modal: true
-        allowed_recur_freq_values:
-          MINUTELY: '0'
-          HOURLY: '0'
-          DAILY: DAILY
-          WEEKLY: WEEKLY
-          MONTHLY: MONTHLY
-          YEARLY: YEARLY
+    third_party_settings: {  }
   field_image:
     type: media_library_widget
     weight: 26
