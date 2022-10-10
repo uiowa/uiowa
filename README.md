@@ -108,8 +108,7 @@ The packages below are locked at specific SHAs and will not update using the met
 | drupal/media_thumbnails_video | Need php 8.1 compatible dependencies, no stable release                             |
 | kartsims/easysvg              | Need https://github.com/kartsims/easysvg/pull/27 which is not included in a release. |
 | uiowa/block_content_template  | Forked from a deprecated project.                                                   |
-| drupal/purge                  | Need php 8.1 compatibility fixes, no stable release                                 |
-| drupal/smart_date             | No stable release for min/max field settings.                                       |
+| drupal/purge                  | Need php 8.1 compatibility fixes, no stable release                                 |                                      |
 
 
 # Redirects
