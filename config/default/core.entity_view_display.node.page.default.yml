@@ -4,9 +4,11 @@ status: true
 dependencies:
   config:
     - field.field.node.page.body
+    - field.field.node.page.field_after_content_override
     - field.field.node.page.field_featured_image_display
     - field.field.node.page.field_image
     - field.field.node.page.field_meta_tags
+    - field.field.node.page.field_pre_footer_override
     - field.field.node.page.field_publish_options
     - field.field.node.page.field_tags
     - field.field.node.page.field_teaser
@@ -296,6 +298,14 @@ content:
     third_party_settings: {  }
     weight: 1
     region: content
+  field_after_content_override:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 4
+    region: content
   field_image:
     type: entity_reference_entity_view
     label: visually_hidden
@@ -304,6 +314,14 @@ content:
       link: false
     third_party_settings: {  }
     weight: 0
+    region: content
+  field_pre_footer_override:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 5
     region: content
   links:
     settings: {  }

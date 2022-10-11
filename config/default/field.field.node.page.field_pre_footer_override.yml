@@ -1,0 +1,29 @@
+uuid: 76388c9b-e4d8-4a64-b126-ecd059886b5e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_pre_footer_override
+    - fragments.fragment_type.region_item
+    - node.type.page
+id: node.page.field_pre_footer_override
+field_name: field_pre_footer_override
+entity_type: node
+bundle: page
+label: 'Pre footer override'
+description: 'Override the sitewide <i>Pre footer</i> region for this page. <a target="_blank" rel="noopener" href="/admin/config/sitenow/region-settings">Manage or create <i>Pre footer</i> items.</a>'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:fragment'
+  handler_settings:
+    target_bundles:
+      region_item: region_item
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
