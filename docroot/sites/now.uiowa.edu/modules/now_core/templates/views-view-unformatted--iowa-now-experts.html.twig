@@ -21,14 +21,5 @@
     {% endif %}
     {% endblock %}
 
-    {% block card_meta %}
-      {% if person_email|striptags|trim is not empty %}
-        {{ person_email }}
-      {% endif %}
-      {% if person_phone|striptags|trim is not empty %}
-        {{ person_phone }}
-      {% endif %}
-    {% endblock %}
-
   {% endembed %}
 {% endfor %}
