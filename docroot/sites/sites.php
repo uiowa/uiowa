@@ -4510,3 +4510,9 @@ $sites['clasiyws.uiowa.ddev.site'] = 'iyws.clas.uiowa.edu';
 $sites['clasiyws.dev.drupal.uiowa.edu'] = 'iyws.clas.uiowa.edu';
 $sites['clasiyws.stage.drupal.uiowa.edu'] = 'iyws.clas.uiowa.edu';
 $sites['clasiyws.prod.drupal.uiowa.edu'] = 'iyws.clas.uiowa.edu';
+
+// Directory aliases for neuropostbaccprogram.sites.uiowa.edu.
+$sites['sitesneuropostbaccprogram.uiowa.ddev.site'] = 'neuropostbaccprogram.sites.uiowa.edu';
+$sites['sitesneuropostbaccprogram.dev.drupal.uiowa.edu'] = 'neuropostbaccprogram.sites.uiowa.edu';
+$sites['sitesneuropostbaccprogram.stage.drupal.uiowa.edu'] = 'neuropostbaccprogram.sites.uiowa.edu';
+$sites['sitesneuropostbaccprogram.prod.drupal.uiowa.edu'] = 'neuropostbaccprogram.sites.uiowa.edu';
