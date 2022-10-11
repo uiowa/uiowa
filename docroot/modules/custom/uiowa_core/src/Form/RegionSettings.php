@@ -109,7 +109,7 @@ class RegionSettings extends ConfigFormBase {
       $form['region_item_' . $key . '_container']['active_region_content_blocks'][$key] = [
         '#type' => 'entity_autocomplete',
         '#title' => $title,
-        '#description' => $this->t('Enter the name of the region item you would like to place in the @title region of the site.', [
+        '#description' => $this->t('Enter the name of the region item you would like to place in the @title region of the site. This can be overriden on a page by page basis.', [
           '@title' => lcfirst($title),
         ]),
         '#target_type' => 'fragment',

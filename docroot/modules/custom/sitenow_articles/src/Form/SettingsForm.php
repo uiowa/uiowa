@@ -204,6 +204,21 @@ class SettingsForm extends ConfigFormBase {
         ],
       ],
     ];
+
+    $form['article_node']['preserved_links_message_display'] = [
+      '#type' => 'text_format',
+      '#format' => 'basic',
+      '#allowed_formats' => [
+        'basic',
+      ],
+      '#title' => $this->t('Preserved links message'),
+      '#description' => $this->t('Set the message to display when an article may have broken links. If no message is provided, a default message will be used.'),
+      '#default_value' => $config->get('preserved_links_message_display') ?? $config->get('preserved_links_message_display_default'),
+      '#attributes' => [
+        'placeholder' => $config->get('preserved_links_message_display_default'),
+      ],
+    ];
+
     // Visual indicators aren't available on SiteNow v2.
     $is_v2 = $this->config('config_split.config_split.sitenow_v2')->get('status');
     if (!$is_v2) {
@@ -331,8 +346,16 @@ class SettingsForm extends ConfigFormBase {
       ->save();
 
     $this->configFactory->getEditable(static::SETTINGS)
-      // Save the tag display default.
+      // Save the related display default.
       ->set('related_display', $related_display)
+      ->save();
+
+    $this->configFactory->getEditable(static::SETTINGS)
+      // Save the message display default.
+      ->set('preserved_links_message_display', $form_state->getValue([
+        'preserved_links_message_display',
+        'value',
+      ]))
       ->save();
     // Clean path.
     $path = $this->aliasCleaner->cleanString($path);

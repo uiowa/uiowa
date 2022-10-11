@@ -37,8 +37,8 @@
  * @see template_preprocess_field()
  */
 #}
-<p>
+<div class="block-margin__top">
   {%- for item in items -%}
     <a href="{{ item.content['#url'] }}" class="bttn bttn--transparent bttn--light-font">{{ item.content['#title']|render }}<i role="presentation" class="fas fa-arrow-right"></i></a>
   {%- endfor -%}
-</p>
+</div>
