@@ -4516,3 +4516,9 @@ $sites['sitesneuropostbaccprogram.uiowa.ddev.site'] = 'neuropostbaccprogram.site
 $sites['sitesneuropostbaccprogram.dev.drupal.uiowa.edu'] = 'neuropostbaccprogram.sites.uiowa.edu';
 $sites['sitesneuropostbaccprogram.stage.drupal.uiowa.edu'] = 'neuropostbaccprogram.sites.uiowa.edu';
 $sites['sitesneuropostbaccprogram.prod.drupal.uiowa.edu'] = 'neuropostbaccprogram.sites.uiowa.edu';
+
+// Directory aliases for hrmsf.research.uiowa.edu.
+$sites['researchhrmsf.uiowa.ddev.site'] = 'hrmsf.research.uiowa.edu';
+$sites['researchhrmsf.dev.drupal.uiowa.edu'] = 'hrmsf.research.uiowa.edu';
+$sites['researchhrmsf.stage.drupal.uiowa.edu'] = 'hrmsf.research.uiowa.edu';
+$sites['researchhrmsf.prod.drupal.uiowa.edu'] = 'hrmsf.research.uiowa.edu';
