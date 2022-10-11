@@ -4,6 +4,7 @@ namespace Drupal\Tests\uiowa_core\Unit;
 
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Entity\EntityViewBuilder;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\fragments\FragmentStorage;
 use Drupal\Tests\UnitTestCase;
 use Drupal\uiowa_core\Plugin\Block\RegionContentBlock;
@@ -36,6 +37,7 @@ class RegionContentBlockTest extends UnitTestCase {
 
     $evb = $this->createMock(EntityViewBuilder::class);
     $etm = $this->createMock(EntityTypeManager::class);
+    $route_matcher = $this->createMock(RouteMatchInterface::class);
 
     $etm->expects($this->any())
       ->method('getStorage')
@@ -45,7 +47,7 @@ class RegionContentBlockTest extends UnitTestCase {
       ->method('getViewBuilder')
       ->will($this->returnValue($evb));
 
-    $sut = new RegionContentBlock($configuration, 'region_content_block', ['provider' => 'uiowa_core'], $config_factory, $etm);
+    $sut = new RegionContentBlock($configuration, 'region_content_block', ['provider' => 'uiowa_core'], $config_factory, $etm, $route_matcher);
     $sut->setStringTranslation($this->getStringTranslationStub());
     $this->assertNotNull($sut->build());
 
