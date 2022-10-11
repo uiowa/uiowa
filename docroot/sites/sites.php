@@ -4522,3 +4522,9 @@ $sites['researchhrmsf.uiowa.ddev.site'] = 'hrmsf.research.uiowa.edu';
 $sites['researchhrmsf.dev.drupal.uiowa.edu'] = 'hrmsf.research.uiowa.edu';
 $sites['researchhrmsf.stage.drupal.uiowa.edu'] = 'hrmsf.research.uiowa.edu';
 $sites['researchhrmsf.prod.drupal.uiowa.edu'] = 'hrmsf.research.uiowa.edu';
+
+// Directory aliases for commencement.uiowa.edu.
+$sites['commencement.uiowa.ddev.site'] = 'commencement.uiowa.edu';
+$sites['commencement.dev.drupal.uiowa.edu'] = 'commencement.uiowa.edu';
+$sites['commencement.stage.drupal.uiowa.edu'] = 'commencement.uiowa.edu';
+$sites['commencement.prod.drupal.uiowa.edu'] = 'commencement.uiowa.edu';
