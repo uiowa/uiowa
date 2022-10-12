@@ -1,10 +1,19 @@
-@media (min-width: 855px) {
+.block-superfishmain .menu li:nth-child(6) a,
+.block-superfishmain .menu li:nth-child(7) a,
+.block-superfishmain .menu li:nth-child(8) a {
+  color: #63666A;
+  font-weight: 500;
+}
+
+@media (min-width: 980px) {
   .search-is-open .search-overlay .uids-search {
-    border-bottom: none;
+    border: none;
     background: #fff;
     padding-left: 1rem;
     width: 95%;
     position: relative;
+    margin-left: 0;
+    height: 2.8rem;
   }
 
   .search-overlay[aria-hidden=false] {
@@ -19,19 +28,18 @@
     justify-content: unset;
   }
 
+  .search-overlay .uids-search input[type=text] {
+    padding: 0;
+    height: auto;
+    font-size: 1.2rem;
+  }
+
   .iowa-bar--full.horizontal .logo--tab + .menu--top {
-    flex: 0 1 65%;
+    flex: 0 1 70%;
   }
 
   ul.sf-menu.menu li:nth-child(6) {
     margin-left: auto;
-  }
-
-  .block-superfishmain .menu li:nth-child(6) a,
-  .block-superfishmain .menu li:nth-child(7) a,
-  .block-superfishmain .menu li:nth-child(8) a {
-    color: #63666a;
-    font-weight: 500;
   }
 
   .block-superfishmain .menu li:nth-child(8) a {
@@ -56,5 +64,17 @@
 
   .block-superfishmain nav {
     width: 100%;
+  }
+}
+
+@media (min-width: 84.375em) {
+  .iowa-bar--full .search-overlay .uids-search {
+    margin-top: 25px;
+  }
+  .search-is-open .search-overlay .uids-search {
+    height: 2.8rem;
+  }
+  .menu--quick-links {
+    top: 1.7rem;
   }
 }

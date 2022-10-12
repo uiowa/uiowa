@@ -105,6 +105,9 @@
   color: #151515;
   font-weight: 600;
   @include breakpoint(md) {
+    padding: 1.35rem .75rem;
+  }
+  @include breakpoint(page-container) {
     padding: 1.35rem 1.5rem;
   }
 }
@@ -518,3 +521,9 @@ ul.sf-menu.sf-accordion .active-trail.sf-no-children.sf-depth-1 > .is-active {
     right: 0;
   }
 }
+
+//.block-superfish .menu li a {
+//  @include breakpoint(md) {
+//    font-size: unquote("clamp(1rem, 0.35vw + 0.61rem, 1.2rem)");
+//  }
+//}
