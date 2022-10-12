@@ -812,3 +812,26 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .screen-reader-text {
   @include element-invisible;
 }
+
+.border {
+  &--all {
+    border: 1px solid #ccc;
+    padding: 3rem;
+  }
+  &--top {
+    border-top: 1px solid #ccc;
+    padding-top: 3rem;
+  }
+  &--right {
+    border-right: 1px solid #ccc;
+    padding-right: 3rem;
+  }
+  &--bottom {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 3rem;
+  }
+  &--left {
+    border-left: 1px solid #ccc;
+    padding-left: 3rem;
+  }
+}
