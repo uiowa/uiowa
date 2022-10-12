@@ -4510,3 +4510,27 @@ $sites['clasiyws.uiowa.ddev.site'] = 'iyws.clas.uiowa.edu';
 $sites['clasiyws.dev.drupal.uiowa.edu'] = 'iyws.clas.uiowa.edu';
 $sites['clasiyws.stage.drupal.uiowa.edu'] = 'iyws.clas.uiowa.edu';
 $sites['clasiyws.prod.drupal.uiowa.edu'] = 'iyws.clas.uiowa.edu';
+
+// Directory aliases for neuropostbaccprogram.sites.uiowa.edu.
+$sites['sitesneuropostbaccprogram.uiowa.ddev.site'] = 'neuropostbaccprogram.sites.uiowa.edu';
+$sites['sitesneuropostbaccprogram.dev.drupal.uiowa.edu'] = 'neuropostbaccprogram.sites.uiowa.edu';
+$sites['sitesneuropostbaccprogram.stage.drupal.uiowa.edu'] = 'neuropostbaccprogram.sites.uiowa.edu';
+$sites['sitesneuropostbaccprogram.prod.drupal.uiowa.edu'] = 'neuropostbaccprogram.sites.uiowa.edu';
+
+// Directory aliases for hrmsf.research.uiowa.edu.
+$sites['researchhrmsf.uiowa.ddev.site'] = 'hrmsf.research.uiowa.edu';
+$sites['researchhrmsf.dev.drupal.uiowa.edu'] = 'hrmsf.research.uiowa.edu';
+$sites['researchhrmsf.stage.drupal.uiowa.edu'] = 'hrmsf.research.uiowa.edu';
+$sites['researchhrmsf.prod.drupal.uiowa.edu'] = 'hrmsf.research.uiowa.edu';
+
+// Directory aliases for commencement.uiowa.edu.
+$sites['commencement.uiowa.ddev.site'] = 'commencement.uiowa.edu';
+$sites['commencement.dev.drupal.uiowa.edu'] = 'commencement.uiowa.edu';
+$sites['commencement.stage.drupal.uiowa.edu'] = 'commencement.uiowa.edu';
+$sites['commencement.prod.drupal.uiowa.edu'] = 'commencement.uiowa.edu';
+
+// Directory aliases for sukhbinder.lab.uiowa.edu.
+$sites['labsukhbinder.uiowa.ddev.site'] = 'sukhbinder.lab.uiowa.edu';
+$sites['labsukhbinder.dev.drupal.uiowa.edu'] = 'sukhbinder.lab.uiowa.edu';
+$sites['labsukhbinder.stage.drupal.uiowa.edu'] = 'sukhbinder.lab.uiowa.edu';
+$sites['labsukhbinder.prod.drupal.uiowa.edu'] = 'sukhbinder.lab.uiowa.edu';
