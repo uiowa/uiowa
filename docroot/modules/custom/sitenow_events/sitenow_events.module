@@ -10,10 +10,8 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\node\NodeInterface;
 use Drupal\uiowa_core\HeadlineHelper;
 use GuzzleHttp\Exception\RequestException;
 
@@ -652,7 +650,6 @@ function _sitenow_events_build_options_list(array $tree, $r = 0, $p = NULL, arra
 
   return $options;
 }
-
 
 /**
  * Implements hook_schemadotorg_jsonld_schema_type_entity_alter().
