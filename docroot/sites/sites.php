@@ -4546,3 +4546,9 @@ $sites['itsteach.uiowa.ddev.site'] = 'teach.its.uiowa.edu';
 $sites['itsteach.dev.drupal.uiowa.edu'] = 'teach.its.uiowa.edu';
 $sites['itsteach.stage.drupal.uiowa.edu'] = 'teach.its.uiowa.edu';
 $sites['itsteach.prod.drupal.uiowa.edu'] = 'teach.its.uiowa.edu';
+
+// Directory aliases for innovation.uiowa.edu.
+$sites['innovation.uiowa.ddev.site'] = 'innovation.uiowa.edu';
+$sites['innovation.dev.drupal.uiowa.edu'] = 'innovation.uiowa.edu';
+$sites['innovation.stage.drupal.uiowa.edu'] = 'innovation.uiowa.edu';
+$sites['innovation.prod.drupal.uiowa.edu'] = 'innovation.uiowa.edu';
