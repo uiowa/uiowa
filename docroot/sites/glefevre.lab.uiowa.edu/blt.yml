@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labglefevre.uiowa.ddev.site
+    protocol: https
+  machine_name: labglefevre
+  human_name: glefevre.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labglefevre.prod
+drupal:
+  db:
+    database: glefevre_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: glefevre
+  site-name: 'LeFevre Research Lab'
