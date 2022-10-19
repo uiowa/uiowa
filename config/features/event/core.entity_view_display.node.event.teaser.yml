@@ -5,6 +5,9 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.event.body
+    - field.field.node.event.field_event_child
+    - field.field.node.event.field_event_parent
+    - field.field.node.event.field_event_performer
     - field.field.node.event.field_event_category
     - field.field.node.event.field_event_hide
     - field.field.node.event.field_event_location
@@ -46,7 +49,7 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 7
+    weight: 102
     region: content
   field_event_series_link_direct:
     type: boolean
@@ -81,7 +84,7 @@ content:
       add_classes: false
       time_wrapper: true
     third_party_settings: {  }
-    weight: 1
+    weight: 20
     region: content
   field_image:
     type: entity_reference_entity_view
@@ -90,7 +93,7 @@ content:
       view_mode: large__widescreen
       link: false
     third_party_settings: {  }
-    weight: 0
+    weight: 7
     region: content
   field_teaser:
     type: basic_string
@@ -110,6 +113,9 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_event_child: true
+  field_event_parent: true
+  field_event_performer: true
   field_event_category: true
   field_event_hide: true
   field_meta_tags: true

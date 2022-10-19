@@ -7,9 +7,13 @@
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\node\NodeInterface;
 use Drupal\uiowa_core\HeadlineHelper;
 use GuzzleHttp\Exception\RequestException;
 
@@ -647,4 +651,32 @@ function _sitenow_events_build_options_list(array $tree, $r = 0, $p = NULL, arra
   }
 
   return $options;
+}
+
+
+/**
+ * Implements hook_schemadotorg_jsonld_schema_type_entity_alter().
+ */
+function sitenow_events_schemadotorg_jsonld_schema_type_entity_alter(array &$data, EntityInterface $entity) {
+  if ($entity instanceof FieldableEntityInterface) {
+    $type = $entity->bundle();
+    if ($type == 'event') {
+      if ($entity->hasField('field_event_virtual') && !$entity->get('field_event_virtual')->isEmpty()) {
+        $uri = $entity->get('field_event_virtual')->getValue()[0]['uri'];
+        $virtual = [
+          '@type' => 'VirtualLocation',
+          'url' => $uri,
+        ];
+        if (isset($data['location'])) {
+          $data['location'] = [
+            $data['location'],
+            $virtual,
+          ];
+        }
+        else {
+          $data['location'] = $virtual;
+        }
+      }
+    }
+  }
 }
