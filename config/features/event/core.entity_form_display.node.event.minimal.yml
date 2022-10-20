@@ -5,14 +5,15 @@ dependencies:
   config:
     - core.entity_form_mode.node.minimal
     - field.field.node.event.body
-    - field.field.node.event.field_event_child
-    - field.field.node.event.field_event_parent
-    - field.field.node.event.field_event_performer
     - field.field.node.event.field_event_category
+    - field.field.node.event.field_event_child
     - field.field.node.event.field_event_hide
     - field.field.node.event.field_event_location
+    - field.field.node.event.field_event_parent
+    - field.field.node.event.field_event_performer
     - field.field.node.event.field_event_series_link
     - field.field.node.event.field_event_series_link_direct
+    - field.field.node.event.field_event_subtype
     - field.field.node.event.field_event_virtual
     - field.field.node.event.field_event_when
     - field.field.node.event.field_image
@@ -33,14 +34,20 @@ mode: minimal
 content:
   field_event_hide:
     type: boolean_checkbox
-    weight: 3
+    weight: 4
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
+  field_event_subtype:
+    type: options_select
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_event_when:
     type: smartdate_timezone
-    weight: 1
+    weight: 2
     region: content
     settings:
       modal: false
@@ -60,7 +67,7 @@ content:
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 2
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -75,11 +82,11 @@ content:
 hidden:
   body: true
   created: true
+  field_event_category: true
   field_event_child: true
+  field_event_location: true
   field_event_parent: true
   field_event_performer: true
-  field_event_category: true
-  field_event_location: true
   field_event_series_link: true
   field_event_series_link_direct: true
   field_event_virtual: true

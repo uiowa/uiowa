@@ -9,6 +9,7 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -221,6 +222,7 @@ function sitenow_events_preprocess_block(&$variables) {
           ],
         ];
       }
+      break;
 
     case 'views_block:events_list_block-card_list':
       if (isset($variables['attributes']['class'])) {
@@ -232,7 +234,7 @@ function sitenow_events_preprocess_block(&$variables) {
             'media',
             'hide',
           ] as $check) {
-            if (substr($style, 0, strlen($check)) === $check) {
+            if (str_starts_with($style, $check)) {
               unset($variables['attributes']['class'][$key]);
             }
           }
@@ -654,7 +656,7 @@ function _sitenow_events_build_options_list(array $tree, $r = 0, $p = NULL, arra
 /**
  * Implements hook_schemadotorg_jsonld_schema_type_entity_alter().
  */
-function sitenow_events_schemadotorg_jsonld_schema_type_entity_alter(array &$data, EntityInterface $entity) {
+function sitenow_events_schemadotorg_jsonld_schema_type_entity_alter(array &$data, EntityInterface $entity): void {
   if ($entity instanceof FieldableEntityInterface) {
     $type = $entity->bundle();
     if ($type == 'event') {
@@ -676,4 +678,36 @@ function sitenow_events_schemadotorg_jsonld_schema_type_entity_alter(array &$dat
       }
     }
   }
+}
+
+/**
+ * Set dynamic allowed values for the publish_options field.
+ *
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function sitenow_events_event_types_options_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable): array {
+  $cacheable = FALSE;
+  $options = $definition->getSetting('allowed_values');
+  $options['SessionEvent'] = 'Session Event';
+  $options['WorkshopEvent'] = 'Workshop Event';
+
+  if (!is_null($entity)) {
+    $bundle = $entity->bundle();
+
+    // Allow modules to alter options.
+    \Drupal::moduleHandler()
+      ->alter('event_type_options', $options, $entity, $bundle);
+  }
+
+  return $options;
 }

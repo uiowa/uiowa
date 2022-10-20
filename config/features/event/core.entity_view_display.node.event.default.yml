@@ -4,14 +4,15 @@ status: true
 dependencies:
   config:
     - field.field.node.event.body
-    - field.field.node.event.field_event_child
-    - field.field.node.event.field_event_parent
-    - field.field.node.event.field_event_performer
     - field.field.node.event.field_event_category
+    - field.field.node.event.field_event_child
     - field.field.node.event.field_event_hide
     - field.field.node.event.field_event_location
+    - field.field.node.event.field_event_parent
+    - field.field.node.event.field_event_performer
     - field.field.node.event.field_event_series_link
     - field.field.node.event.field_event_series_link_direct
+    - field.field.node.event.field_event_subtype
     - field.field.node.event.field_event_virtual
     - field.field.node.event.field_event_when
     - field.field.node.event.field_image
@@ -24,6 +25,7 @@ dependencies:
     - layout_builder
     - layout_builder_restrictions
     - link
+    - options
     - smart_date
     - system
     - text
@@ -221,7 +223,7 @@ third_party_settings:
                   rel: '0'
                   target: '0'
                 third_party_settings: {  }
-            weight: 5
+            weight: 7
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -290,6 +292,25 @@ third_party_settings:
             weight: 5
             additional: {  }
             third_party_settings: {  }
+          -
+            uuid: 53625b2f-fccc-41d0-8d9f-05e27c7ac312
+            region: second
+            configuration:
+              id: 'field_block:node:event:field_event_subtype'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: list_default
+                label: visually_hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 8
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -326,6 +347,13 @@ content:
     third_party_settings: {  }
     weight: 102
     region: content
+  field_event_location:
+    type: address_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
   field_event_parent:
     type: entity_reference_label
     label: above
@@ -342,13 +370,6 @@ content:
     third_party_settings: {  }
     weight: 102
     region: content
-  field_event_location:
-    type: address_default
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    weight: 2
-    region: content
   field_event_series_link:
     type: link
     label: hidden
@@ -360,6 +381,13 @@ content:
       target: '0'
     third_party_settings: {  }
     weight: 102
+    region: content
+  field_event_subtype:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 104
     region: content
   field_event_virtual:
     type: link
