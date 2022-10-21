@@ -45,6 +45,14 @@ process:
         migration: now_research_areas
         source: tid
   field_tags: tags
+  field_contact_reference:
+    plugin: sub_process
+    source: field_person_osc_contact
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: now_people
+        source: target_id
 migration_dependencies:
   required:
     - now_research_areas
