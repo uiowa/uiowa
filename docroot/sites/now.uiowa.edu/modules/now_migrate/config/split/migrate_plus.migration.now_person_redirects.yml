@@ -1,0 +1,34 @@
+id: now_person_redirects
+label: 'Person Redirects'
+dependencies:
+  enforced:
+    module:
+      - now_migrate
+migration_tags:
+  - now
+migration_group: sitenow_migrate
+source:
+  plugin: now_people
+  node_type: person
+  constants:
+    redirect_prefix: 'internal:/node/'
+    status_code: 301
+destination:
+  plugin: 'entity:redirect'
+process:
+  temp_nid:
+    plugin: migration_lookup
+    source: nid
+    migration: now_people
+  redirect_source:
+    plugin: get
+    source: alias
+  redirect_redirect:
+    plugin: concat
+    source:
+      - constants/redirect_prefix
+      - '@temp_nid'
+  status_code: constants/status_code
+migration_dependencies:
+  required:
+    - now_people
