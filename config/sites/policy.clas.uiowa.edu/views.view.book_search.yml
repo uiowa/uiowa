@@ -203,7 +203,7 @@ display:
         type: none
         options: {  }
       cache:
-        type: none
+        type: search_api_tag
         options: {  }
       empty:
         area:
@@ -356,7 +356,9 @@ display:
     display_options:
       exposed_block: true
       display_extenders:
-        metatag_display_extender: {  }
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
       path: search
     cache_metadata:
       max-age: -1
