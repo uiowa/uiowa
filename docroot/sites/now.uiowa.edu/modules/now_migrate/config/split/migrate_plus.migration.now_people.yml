@@ -29,13 +29,21 @@ process:
     plugin: default_value
     default_value: 1
   title: title
-  field_image: field_person_photo
+  field_image: field_person_photo_fid
   field_person_bio: field_person_about
   field_person_first_name: field_person_first_name
   field_person_last_name: field_person_last_name
   field_person_phone: field_telephone
   field_person_email: field_email
   field_person_position: field_person_job_title
+  field_person_research_areas:
+    plugin: sub_process
+    source: field_person_areas_of_expertise
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: now_research_areas
+        source: tid
 migration_dependencies:
   required:
     - now_research_areas
