@@ -1,87 +1,17 @@
-uuid: 66fcb303-8575-4154-8f68-bf02f444563b
+uuid: 39e3966a-fb6a-4f87-ac40-2b4e89310688
 langcode: en
 status: true
 dependencies:
   module:
     - node
-    - options
+    - taxonomy
 id: node.field_event_subtype
 field_name: field_event_subtype
 entity_type: node
-type: list_string
+type: entity_reference
 settings:
-  allowed_values:
-    -
-      value: BusinessEvent
-      label: 'Business Event'
-    -
-      value: ChildrensEvent
-      label: 'Childrens Event'
-    -
-      value: ComedyEvent
-      label: 'Comedy Event'
-    -
-      value: CourseInstance
-      label: 'Course Instance'
-    -
-      value: DanceEvent
-      label: 'Dance Event'
-    -
-      value: DeliveryEvent
-      label: 'Delivery Event'
-    -
-      value: EducationEvent
-      label: 'Education Event'
-    -
-      value: EventSeries
-      label: 'Event Series'
-    -
-      value: ExhibitionEvent
-      label: 'Exhibition Event'
-    -
-      value: Festival
-      label: Festival
-    -
-      value: FoodEvent
-      label: 'Food Event'
-    -
-      value: Hackathon
-      label: Hackathon
-    -
-      value: LiteraryEvent
-      label: 'Literary Event'
-    -
-      value: MusicEvent
-      label: 'Music Event'
-    -
-      value: PublicationEvent
-      label: 'Publication Event'
-    -
-      value: BroadcastEvent
-      label: '- Broadcast Event'
-    -
-      value: OnDemandEvent
-      label: '- On Demand Event'
-    -
-      value: SaleEvent
-      label: 'Sale Event'
-    -
-      value: ScreeningEvent
-      label: 'Screening Event'
-    -
-      value: SocialEvent
-      label: 'Social Event'
-    -
-      value: SportsEvent
-      label: 'Sports Event'
-    -
-      value: TheaterEvent
-      label: 'Theater Event'
-    -
-      value: VisualArtsEvent
-      label: 'Visual Arts Event'
-  allowed_values_function: 'sitenow_events_event_types_options_allowed_values'
-module: options
+  target_type: taxonomy_term
+module: core
 locked: false
 cardinality: 1
 translatable: true

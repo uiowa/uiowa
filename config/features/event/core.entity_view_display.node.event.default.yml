@@ -25,7 +25,6 @@ dependencies:
     - layout_builder
     - layout_builder_restrictions
     - link
-    - options
     - smart_date
     - system
     - text
@@ -76,6 +75,23 @@ third_party_settings:
                   link_to_entity: false
                 third_party_settings: {  }
             weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: a5c2cba8-524f-47e0-b3de-e44d128daa79
+            region: content
+            configuration:
+              id: 'field_block:node:event:field_event_subtype'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 3
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -272,25 +288,6 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 53625b2f-fccc-41d0-8d9f-05e27c7ac312
-            region: second
-            configuration:
-              id: 'field_block:node:event:field_event_subtype'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: list_default
-                label: visually_hidden
-                settings: {  }
-                third_party_settings: {  }
-            weight: 8
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: 6ddd0f91-02b6-47cd-adca-29b7c91dfbac
             region: first
             configuration:
@@ -378,11 +375,12 @@ content:
     weight: 102
     region: content
   field_event_subtype:
-    type: list_default
+    type: entity_reference_label
     label: above
-    settings: {  }
+    settings:
+      link: true
     third_party_settings: {  }
-    weight: 104
+    weight: 103
     region: content
   field_event_virtual:
     type: link
