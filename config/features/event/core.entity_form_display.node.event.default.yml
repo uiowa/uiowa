@@ -6,7 +6,6 @@ dependencies:
     - core.entity_form_mode.node.minimal
     - field.field.node.event.body
     - field.field.node.event.field_event_category
-    - field.field.node.event.field_event_child
     - field.field.node.event.field_event_hide
     - field.field.node.event.field_event_location
     - field.field.node.event.field_event_parent
@@ -66,25 +65,6 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  field_event_child:
-    type: inline_entity_form_complex
-    weight: 10
-    region: content
-    settings:
-      form_mode: minimal
-      override_labels: true
-      label_singular: Event
-      label_plural: Events
-      allow_new: true
-      allow_existing: true
-      match_operator: CONTAINS
-      allow_duplicate: false
-      collapsible: false
-      collapsed: false
-      revision: false
-    third_party_settings:
-      entity_browser_entity_form:
-        entity_browser_id: _none
   field_event_hide:
     type: boolean_checkbox
     weight: 24
@@ -99,21 +79,14 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_event_parent:
-    type: inline_entity_form_complex
+    type: entity_reference_autocomplete_tags
     weight: 9
     region: content
     settings:
-      form_mode: minimal
-      override_labels: true
-      label_singular: Event
-      label_plural: Events
-      allow_new: true
-      allow_existing: true
       match_operator: CONTAINS
-      allow_duplicate: false
-      collapsible: false
-      collapsed: false
-      revision: false
+      match_limit: 10
+      size: 60
+      placeholder: ''
     third_party_settings:
       entity_browser_entity_form:
         entity_browser_id: _none
