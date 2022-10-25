@@ -21,28 +21,26 @@
   display: inherit;
 }
 .layout__container {
-  padding-top: .5rem !important;
-  padding-bottom: .5rem !important;
+  padding-block: .5rem !important;
 }
 .layout__container.layout--title {
-  padding-bottom: .25rem;
+  padding-block-end: .25rem;
 }
 .layout--has-sidebar .layout__region:not(:last-child) {
-  margin-bottom: 1rem;
+  margin-block-end: 1rem;
 }
 .layout--has-sidebar .layout__spacing_container {
   display: block !important;
 }
 .page__container--edge .layout__spacing_container,
 .page__container--edge .banner__image {
-  margin-left: 1.25rem;
-  margin-right: 1.25rem;
+  margin-inline: 1.25rem;
 }
 .block-padding__bottom {
-  padding-bottom: .5rem;
+  padding-block-end: .5rem;
 }
 .block-padding__top {
-  padding-top: .5rem;
+  padding-block-start: .5rem;
 }
 
 .layout__container .block--wrapper.border, .layout__container .block--wrapper[class*="bg--"], .layout__container .block--wrapper[class*="bg-pattern--"], .layout__container .block-inline-blockuiowa-text-area.border, .layout__container .block-inline-blockuiowa-text-area[class*="bg--"], .layout__container .block-inline-blockuiowa-text-area[class*="bg-pattern--"] {
@@ -53,7 +51,6 @@
 ----------------------------------------- */
 h1,h2,h3 {
   break-after: avoid;
-  break-inside: avoid;
 }
 h1 {
   font-size: 28pt !important;
@@ -94,10 +91,12 @@ p, ul, ol, dl {
 
 /* Links and Buttons
 ----------------------------------------- */
-.content__container a,
-.content__container a:visited {
+a, a:visited {
   color: $link-color !important;
-  text-decoration: underline;
+  text-decoration: underline !important;
+  & .headline__heading {
+    color: $link-color !important;
+  }
 }
 
 .content__container a:not(.bttn):not(.photoswipe)[href]:after {
@@ -108,7 +107,8 @@ p, ul, ol, dl {
 .content__container a.bttn {
   font-size: 11pt;
   color: #000 !important;
-  padding: .75rem 1.5rem;
+  padding-block: .75rem;
+  padding-inline: 1.5rem;
 }
 
 /*
@@ -131,28 +131,40 @@ abbr[title]::after {
   flex-direction: row;
   align-items: center;
 }
+
 .iowa-bar__container {
   margin: initial;
   padding: 0 !important;
 }
+
 .iowa-bar__below {
-  border-bottom: none;
+  border-block-end: none;
 }
+
 .iowa-bar__below .site-name {
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 1.25rem !important;
+  padding-block: 0;
+  padding-inline-start: 1.25rem !important;
   font-size: 18pt !important;
   font-weight: 400;
-  border-left: 1px solid #000;
+  border-inline-start: 1px solid #000;
+  flex-basis: content !important;
+  & a {
+    color: #000 !important;
+    text-decoration: none !important;
+  }
 }
+
 .iowa-bar__below .iowa-bar__container {
   min-height: auto;
 }
+
 .logo--tab {
   height: 70px !important;
-  padding: 25px 1.25rem !important;
+  padding-block: 25px !important;
+  padding-inline: 1.25rem !important;
+  width: 109px !important;
 }
+
 .logo-icon {
   height: 20px !important;
   fill: #000;
@@ -181,8 +193,8 @@ abbr[title]::after {
 }
 
 .banner__content {
-  padding-top: .75rem !important;
-  padding-bottom: 0 !important;
+  padding-block-start: .75rem !important;
+  padding-block-end: 0 !important;
 }
 
 
@@ -191,7 +203,6 @@ abbr[title]::after {
 table {
   width: 100% !important;
   border-collapse: collapse;
-  break-inside: avoid;
 }
 
 table td, table th, table thead th {
@@ -202,20 +213,16 @@ table td, table th, table thead th {
 }
 
 table tbody tr:last-child td, table tbody tr:last-child th {
-  border-bottom-width: 1px;
+  border-block-end-width: 1px;
 }
 
 /* Images
 ----------------------------------------- */
-img {
-    break-inside: avoid;
-}
+
 
 /* Forms
 ----------------------------------------- */
-.form-item {
-  break-inside: avoid;
-}
+
 
 /* iframes
 ----------------------------------------- */
@@ -232,7 +239,6 @@ iframe {
 /* Blockquote
 ----------------------------------------- */
 blockquote {
-  break-inside: avoid;
   border-color: #000;
   font-size: 15pt;
   & p {
@@ -275,14 +281,12 @@ blockquote.blockquote--img-above .blockquote__paragraph::after {
 }
 
 .timeline--wrapper {
-  padding-top: 0;
-  padding-bottom: 0;
+  padding-block: 0;
   & .timeline--card {
-    margin-top: 0;
-    margin-bottom: 0;
+    margin-block: 0;
   }
   &:last-child {
-    margin-bottom: 0;
+    margin-block-end: 0;
   }
   & .card__title {
     font-size: 16pt !important;
@@ -293,11 +297,10 @@ blockquote.blockquote--img-above .blockquote__paragraph::after {
 /* Footer
 ----------------------------------------- */
 .footer {
-  padding-bottom: 0;
-  padding-top: 1.5rem;
-  margin-top: 1.5rem;
+  padding-block-end: 0;
+  padding-block-start: 1.5rem;
+  margin-block-start: 1.5rem;
   clear: both;
-  break-inside: avoid;
 }
 
 .footer .site-name, .footer p, .socket__menu li {
@@ -312,7 +315,19 @@ blockquote.blockquote--img-above .blockquote__paragraph::after {
 }
 
 .footer__links {
-  margin-bottom: 0;
+  margin-block-end: 0;
+}
+
+/* break-inside: avoid
+----------------------------------------- */
+h1,h2,h3,
+.footer,
+.form-item,
+.card,
+table,
+img,
+blockquote {
+  break-inside: avoid;
 }
 
 /* Hide Page elements
