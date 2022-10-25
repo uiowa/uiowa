@@ -879,7 +879,7 @@ function admissions_core_preprocess_views_view(&$variables) {
 function admissions_core_views_query_alter($view, $query) {
   // @todo Remove after https://www.drupal.org/project/drupal/issues/672606
   //   is resolved. Certain queries need specific overrides.
-  //   Core Views behavior fails when the parameters contain '/' or '-'. This
+  //   Core Views behavior fails when the parameters contain punctuation. This
   //   alters the query before it runs, fixing the known instances.
   if ($view->id() === 'majors' && $view->current_display === 'two_plus_two_majors') {
     $value = $query->where[0]['conditions'][0]['value'];
@@ -965,7 +965,7 @@ function admissions_core_preprocess_views_view_field(&$variables) {
           $title = $variables['row']->node_field_data_title;
           // Construct our path by removing slashes which will be handled
           // in our query override, and replacing spaces by dashes.
-          $href = str_replace(' ', '-', strtolower($title));
+          $href = str_replace([',', ' '], ['', '-'], strtolower($title));
           $href = str_replace('/', '', $href);
           $href = AdmissionsCoreInterface::TWO_PLUS_TWO_PATH . $href;
           $variables['output'] = ['#markup' => "<a href='{$href}'>{$title}</a>"];
