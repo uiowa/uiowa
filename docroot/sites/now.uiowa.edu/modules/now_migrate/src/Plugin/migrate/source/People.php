@@ -24,6 +24,16 @@ class People extends BaseNodeSource {
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
 
+    // Set our tagMapping if it's not already.
+    if (empty($this->tagMapping)) {
+      $this->tagMapping = \Drupal::database()
+        ->select('taxonomy_term_field_data', 't')
+        ->fields('t', ['name', 'tid'])
+        ->condition('t.vid', 'tags', '=')
+        ->execute()
+        ->fetchAllKeyed();
+    }
+
     // Process the image field.
     $image = $row->getSourceProperty('field_person_photo');
 
