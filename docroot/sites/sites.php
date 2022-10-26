@@ -4552,3 +4552,9 @@ $sites['innovation.uiowa.ddev.site'] = 'innovation.uiowa.edu';
 $sites['innovation.dev.drupal.uiowa.edu'] = 'innovation.uiowa.edu';
 $sites['innovation.stage.drupal.uiowa.edu'] = 'innovation.uiowa.edu';
 $sites['innovation.prod.drupal.uiowa.edu'] = 'innovation.uiowa.edu';
+
+// Directory aliases for iowalakesidelab.org.
+$sites['org-iowalakesidelab.uiowa.ddev.site'] = 'iowalakesidelab.org';
+$sites['org-iowalakesidelab.dev.drupal.uiowa.edu'] = 'iowalakesidelab.org';
+$sites['org-iowalakesidelab.stage.drupal.uiowa.edu'] = 'iowalakesidelab.org';
+$sites['org-iowalakesidelab.prod.drupal.uiowa.edu'] = 'iowalakesidelab.org';
