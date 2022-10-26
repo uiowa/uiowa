@@ -49,6 +49,10 @@ class People extends BaseNodeSource {
       $row->setSourceProperty('tags', $tid);
     }
 
+    $position = $row->getSourceProperty('field_person_job_title');
+    $exploded = explode('; ', $position[0]['value']);
+    $row->setSourceProperty('field_person_job_title', $exploded);
+
     return TRUE;
   }
 
