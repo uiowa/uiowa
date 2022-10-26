@@ -49,9 +49,13 @@ class People extends BaseNodeSource {
       $row->setSourceProperty('tags', $tid);
     }
 
+    // Some entries have multiple job titles separated by semicolon.
+    // If found, split these into separate job title entries.
     $position = $row->getSourceProperty('field_person_job_title');
-    $exploded = explode('; ', $position[0]['value']);
-    $row->setSourceProperty('field_person_job_title', $exploded);
+    if (isset($position[0]['value'])) {
+      $exploded = explode('; ', $position[0]['value']);
+      $row->setSourceProperty('field_person_job_title', $exploded);
+    }
 
     return TRUE;
   }
