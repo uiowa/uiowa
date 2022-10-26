@@ -66,8 +66,12 @@ body:not(.page-node-type-article, .page-node-type-page) #block-uids-base-page-ti
 .bold-headline--highlight.bold-headline--caps,
 .headline--highlight.headline--uppercase {
   span {
-  padding: clamp(2rem,.3rem 1.2rem 0.7rem 1rem, 10rem);
-    padding-top: clamp(0.3rem,0.3rem,0.5rem)!important;
-  //  padding: .3rem 1.2rem 0.7rem 1rem;
+  padding: .4rem 1.2rem .8rem;
+  }
+}
+
+.headline--large.headline--highlight.headline--uppercase span {
+  @include breakpoint(sm) {
+    padding-top: .3rem;
   }
 }
