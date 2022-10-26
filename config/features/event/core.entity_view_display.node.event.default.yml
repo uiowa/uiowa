@@ -4,14 +4,12 @@ status: true
 dependencies:
   config:
     - field.field.node.event.body
-    - field.field.node.event.field_event_category
     - field.field.node.event.field_event_hide
     - field.field.node.event.field_event_location
     - field.field.node.event.field_event_parent
     - field.field.node.event.field_event_performer
     - field.field.node.event.field_event_series_link
     - field.field.node.event.field_event_series_link_direct
-    - field.field.node.event.field_event_subtype
     - field.field.node.event.field_event_virtual
     - field.field.node.event.field_event_when
     - field.field.node.event.field_image
@@ -75,23 +73,6 @@ third_party_settings:
                   link_to_entity: false
                 third_party_settings: {  }
             weight: 2
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: a5c2cba8-524f-47e0-b3de-e44d128daa79
-            region: content
-            configuration:
-              id: 'field_block:node:event:field_event_subtype'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: true
-                third_party_settings: {  }
-            weight: 3
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -300,7 +281,7 @@ third_party_settings:
               items_per_page: none
               pager: some
               headline:
-                headline: 'Sub events'
+                headline: Schedule
                 hide_headline: 0
                 heading_size: h2
                 headline_style: default
@@ -374,14 +355,6 @@ content:
     third_party_settings: {  }
     weight: 102
     region: content
-  field_event_subtype:
-    type: entity_reference_label
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    weight: 103
-    region: content
   field_event_virtual:
     type: link
     label: above
@@ -426,7 +399,6 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
-  field_event_category: true
   field_event_hide: true
   field_event_series_link_direct: true
   field_meta_tags: true
