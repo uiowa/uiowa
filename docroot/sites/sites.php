@@ -4564,3 +4564,9 @@ $sites['org-wirrc.uiowa.ddev.site'] = 'wirrc.org';
 $sites['org-wirrc.dev.drupal.uiowa.edu'] = 'wirrc.org';
 $sites['org-wirrc.stage.drupal.uiowa.edu'] = 'wirrc.org';
 $sites['org-wirrc.prod.drupal.uiowa.edu'] = 'wirrc.org';
+
+// Directory aliases for kenny.lab.uiowa.edu.
+$sites['labkenny.uiowa.ddev.site'] = 'kenny.lab.uiowa.edu';
+$sites['labkenny.dev.drupal.uiowa.edu'] = 'kenny.lab.uiowa.edu';
+$sites['labkenny.stage.drupal.uiowa.edu'] = 'kenny.lab.uiowa.edu';
+$sites['labkenny.prod.drupal.uiowa.edu'] = 'kenny.lab.uiowa.edu';
