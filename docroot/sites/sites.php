@@ -4570,3 +4570,9 @@ $sites['labkenny.uiowa.ddev.site'] = 'kenny.lab.uiowa.edu';
 $sites['labkenny.dev.drupal.uiowa.edu'] = 'kenny.lab.uiowa.edu';
 $sites['labkenny.stage.drupal.uiowa.edu'] = 'kenny.lab.uiowa.edu';
 $sites['labkenny.prod.drupal.uiowa.edu'] = 'kenny.lab.uiowa.edu';
+
+// Directory aliases for tomchik.lab.uiowa.edu.
+$sites['labtomchik.uiowa.ddev.site'] = 'tomchik.lab.uiowa.edu';
+$sites['labtomchik.dev.drupal.uiowa.edu'] = 'tomchik.lab.uiowa.edu';
+$sites['labtomchik.stage.drupal.uiowa.edu'] = 'tomchik.lab.uiowa.edu';
+$sites['labtomchik.prod.drupal.uiowa.edu'] = 'tomchik.lab.uiowa.edu';
