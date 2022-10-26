@@ -250,8 +250,9 @@ function sitenow_events_preprocess_block(&$variables) {
  */
 function sitenow_events_preprocess_views_view_unformatted(&$variables) {
   /** @var \Drupal\views\ViewExecutable $view */
+  // @TODO: come back to scope by display id.
   $view = $variables['view'];
-  if ($view->id() === 'events_list_block') {
+  if (in_array($view->id(), ['events_list_block', 'events'])) {
     $rows = $variables['rows'];
     $style = $view->style_plugin;
 

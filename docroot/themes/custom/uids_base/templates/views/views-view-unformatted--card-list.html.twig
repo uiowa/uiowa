@@ -35,7 +35,7 @@
     {% endblock %}
 
     {% block card_meta %}
-      {% if card_meta|striptags|trim is not empty %}
+      {% if card_meta|striptags('<!>')|trim is not empty %}
         {{ card_meta }}
       {% endif %}
     {% endblock %}

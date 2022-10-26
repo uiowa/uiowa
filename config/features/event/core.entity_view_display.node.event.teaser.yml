@@ -22,6 +22,7 @@ dependencies:
     - address
     - link
     - smart_date
+    - text
     - user
 _core:
   default_config_hash: GE8vxA9J85JTlqiqDwrBsmkZq8HXuJ5QEESclO3u8N8
@@ -30,12 +31,27 @@ targetEntityType: node
 bundle: event
 mode: teaser
 content:
+  body:
+    type: text_default
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 8
+    region: content
   field_event_location:
     type: address_default
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 3
+    weight: 1
+    region: content
+  field_event_performer:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 9
     region: content
   field_event_series_link:
     type: link
@@ -47,7 +63,7 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 102
+    weight: 7
     region: content
   field_event_series_link_direct:
     type: boolean
@@ -57,7 +73,7 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 6
+    weight: 4
     region: content
   field_event_virtual:
     type: link
@@ -69,7 +85,7 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 4
+    weight: 2
     region: content
   field_event_when:
     type: smartdate_default
@@ -82,7 +98,7 @@ content:
       add_classes: false
       time_wrapper: true
     third_party_settings: {  }
-    weight: 20
+    weight: 6
     region: content
   field_image:
     type: entity_reference_entity_view
@@ -91,29 +107,27 @@ content:
       view_mode: large__widescreen
       link: false
     third_party_settings: {  }
-    weight: 7
+    weight: 5
     region: content
   field_teaser:
     type: basic_string
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 2
+    weight: 0
     region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 5
+    weight: 3
     region: content
 hidden:
-  body: true
   content_moderation_control: true
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
   field_event_hide: true
   field_event_parent: true
-  field_event_performer: true
   field_meta_tags: true
   field_tags: true
   search_api_excerpt: true

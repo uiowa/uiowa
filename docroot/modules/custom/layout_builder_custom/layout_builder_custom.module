@@ -202,6 +202,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           case 'inline_block:uiowa_aggregator':
           case 'inline_block:uiowa_events':
           case 'views_block:article_list_block-list_article':
+          case 'views_block:events-card_list':
           case 'views_block:events_list_block-card_list':
           case 'views_block:people_list_block-list_card':
             // Set '#states' for card image size.
@@ -241,6 +242,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
                 break;
 
               case 'inline_block:uiowa_events':
+              case 'views_block:events-card_list':
               case 'views_block:events_list_block-card_list':
                 $defaults['layout_builder_style_card_media_position'] = 'card_media_position_left';
                 $defaults['layout_builder_style_media_format'] = 'media_format_circle';
@@ -684,6 +686,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
       case 'inline_block:uiowa_card':
       case 'inline_block:uiowa_events':
       case 'views_block:article_list_block-list_article':
+      case 'views_block:events-card_list':
       case 'views_block:events_list_block-card_list':
       case 'views_block:people_list_block-list_card':
         $media_position = $form_state->getValue('layout_builder_style_card_media_position');
@@ -1294,6 +1297,7 @@ function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
   //   to transition existing block instances to new machine name. See
   //   https://github.com/uiowa/uiowa/issues/5044
   if (in_array($machine_name, [
+    'block_events_sub_events',
     'card_list',
     'list_article',
     // 'list_card',
