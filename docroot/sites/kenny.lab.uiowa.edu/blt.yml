@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labkenny.uiowa.ddev.site
+    protocol: https
+  machine_name: labkenny
+  human_name: kenny.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labkenny.prod
+drupal:
+  db:
+    database: kenny_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labkenny.prod.drupal.uiowa.edu'
+  requester: cpknny
+  site-name: 'Kenny Lab'
