@@ -4558,3 +4558,9 @@ $sites['org-iowalakesidelab.uiowa.ddev.site'] = 'iowalakesidelab.org';
 $sites['org-iowalakesidelab.dev.drupal.uiowa.edu'] = 'iowalakesidelab.org';
 $sites['org-iowalakesidelab.stage.drupal.uiowa.edu'] = 'iowalakesidelab.org';
 $sites['org-iowalakesidelab.prod.drupal.uiowa.edu'] = 'iowalakesidelab.org';
+
+// Directory aliases for wirrc.org.
+$sites['org-wirrc.uiowa.ddev.site'] = 'wirrc.org';
+$sites['org-wirrc.dev.drupal.uiowa.edu'] = 'wirrc.org';
+$sites['org-wirrc.stage.drupal.uiowa.edu'] = 'wirrc.org';
+$sites['org-wirrc.prod.drupal.uiowa.edu'] = 'wirrc.org';
