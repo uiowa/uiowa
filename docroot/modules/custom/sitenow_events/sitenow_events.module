@@ -250,7 +250,7 @@ function sitenow_events_preprocess_block(&$variables) {
  */
 function sitenow_events_preprocess_views_view_unformatted(&$variables) {
   /** @var \Drupal\views\ViewExecutable $view */
-  // @TODO: come back to scope by display id.
+  // @todo come back to scope by display id.
   $view = $variables['view'];
   if (in_array($view->id(), ['events_list_block', 'events'])) {
     $rows = $variables['rows'];
@@ -662,6 +662,25 @@ function sitenow_events_schemadotorg_jsonld_schema_type_entity_alter(array &$dat
   if ($entity instanceof FieldableEntityInterface) {
     $type = $entity->bundle();
     if ($type == 'event') {
+
+      // Bring in children events if any.
+      $parent_id = $entity->id();
+      $sub_event_nids = \Drupal::entityQuery('node')
+        ->accessCheck(FALSE)
+        ->condition('type', 'event')
+        ->condition('status', 1)
+        ->condition('field_event_parent', $parent_id, '=')
+        ->execute();
+
+      if ($sub_event_nids) {
+        $sub_events = [];
+        foreach ($sub_event_nids as $nid) {
+          $sub_event = Drupal::entityTypeManager()->getStorage('node')->load($nid);
+          $sub_events[] = ['@type' => 'Event', 'name' => $sub_event->label()];
+        }
+        $data['subEvent'] = $sub_events;
+      }
+
       if ($entity->hasField('field_event_virtual') && !$entity->get('field_event_virtual')->isEmpty()) {
         $uri = $entity->get('field_event_virtual')->getValue()[0]['uri'];
         $virtual = [
