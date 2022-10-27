@@ -92,31 +92,38 @@ function sitenow_events_preprocess_block(&$variables) {
 
       // Get sort.
       $sort = $block->get('field_uiowa_events_sort')->value;
-      if ($sort && $sort === 'DESC') {
-        // Past, aka reverse or descending order.
-        $display_id = 'past';
-      }
-      else {
-        // Ascending.
-        $display_id = 'events_in_progress';
-      }
-
       // Change start and end params based on query type.
       $timeframe = $block->get('field_uiowa_events_timeframe')->value;
       switch ($timeframe) {
         case 'date_range':
           $start = $block->get('field_uiowa_events_date_range')[0]->value;
           $end = $block->get('field_uiowa_events_date_range')[0]->end_value;
-          $display_id = 'events';
+          if ($sort === 'DESC') {
+            // Past, aka reverse or descending order.
+            $display_id = 'past';
+          }
+          else {
+            // Ascending.
+            $display_id = 'events';
+          }
           break;
 
         case 'past':
           $start = strtotime('01-01-1970');
           $end = strtotime(date('d-m-Y') . ' yesterday');
+          if ($sort === 'DESC') {
+            // Past, aka reverse or descending order.
+            $display_id = 'past';
+          }
+          else {
+            // Ascending.
+            $display_id = 'events';
+          }
           break;
 
         default:
           $end = strtotime('today');
+          $display_id = 'events_in_progress';
           break;
       }
 
@@ -133,7 +140,7 @@ function sitenow_events_preprocess_block(&$variables) {
         'items_per_page' => $block->get('field_collection_results')->value ?? 50,
       ];
 
-      if ($block->get('field_uiowa_events_timeframe')->value != 'upcoming') {
+      if ($timeframe != 'upcoming') {
         $parameters['filters[startdate][value][date]'] = date('m-d-Y', $start);
       }
 
