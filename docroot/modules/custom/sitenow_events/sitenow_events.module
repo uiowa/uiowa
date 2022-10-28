@@ -123,7 +123,14 @@ function sitenow_events_preprocess_block(&$variables) {
 
         default:
           $end = strtotime('today');
-          $display_id = 'events_in_progress';
+          if ($sort === 'DESC') {
+            // Past, aka reverse or descending order.
+            $display_id = 'past_upcoming';
+          }
+          else {
+            // Ascending.
+            $display_id = 'events_in_progress';
+          }
           break;
       }
 
