@@ -108,6 +108,13 @@ function _sitenow_events_form_submit(array &$form, FormStateInterface $form_stat
 function sitenow_events_preprocess_block(&$variables) {
 
   switch ($variables['elements']['#plugin_id']) {
+    case 'field_block:node:event:field_event_virtual':
+    case 'field_block:node:event:field_event_series_link':
+    case 'field_block:node:event:field_event_location':
+    case 'field_block:node:event:field_event_when':
+      $variables['attributes']['class'][] = 'fa-ul';
+      break;
+
     case 'inline_block:uiowa_events':
       // This case intentionally falls through to the next case.
       /** @var \Drupal\Block\Entity\Block $block */
@@ -302,7 +309,7 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
         '#tag' => 'div',
         '#attributes' => [
           'class' => [
-            'card__meta card__meta--icon',
+            'card__meta fa-ul',
           ],
         ],
       ];
