@@ -1347,6 +1347,12 @@ function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
         'card_date' => '',
         'headline_level' => $view->display_handler->getOption('heading_size'),
       ];
+
+      // Only if the events card_list view display is used (sub events).
+      if ($view->id() === 'events' && $machine_name === 'card_list') {
+        $variables['rows'][$id]['card_options']['attributes']->addClass('card--enclosed');
+        $variables['rows'][$id]['card_options']['card_date'] = $style->getField($id, 'field_event_when');
+      }
     }
   }
 }
