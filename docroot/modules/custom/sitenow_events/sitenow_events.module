@@ -306,36 +306,9 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
         $card_link_url = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
       }
 
-      $card_meta = [
-        '#type' => 'html_tag',
-        '#tag' => 'div',
-        '#attributes' => [
-          'class' => [
-            'card__meta fa-ul',
-          ],
-        ],
-      ];
-
-      // Add virtual event information, if it exists.
-      if (
-        $style->getField($id, 'field_event_virtual') &&
-        !$node->get('field_event_virtual')->isEmpty()
-      ) {
-        $card_meta['virtual'] = $node->field_event_virtual->view('teaser');
-      }
-
-      // Add location information, if it exists.
-      if (
-        $style->getField($id, 'field_event_location') &&
-        !$node->get('field_event_location')->isEmpty()
-      ) {
-        $card_meta['location'] = $node->field_event_location->view('teaser');
-      }
-
       // @todo Finish this logic to render the virtual details and location.
       $variables['rows'][$id]['card_options']['card_subtitle'] = $style->getField($id, 'field_event_when');
       $variables['rows'][$id]['card_options']['card_link_url'] = $card_link_url;
-      $variables['rows'][$id]['card_options']['card_meta'] = \Drupal::service('renderer')->render($card_meta);
     }
   }
 }
