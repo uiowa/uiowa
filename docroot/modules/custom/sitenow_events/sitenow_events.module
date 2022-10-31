@@ -113,6 +113,7 @@ function sitenow_events_preprocess_block(&$variables) {
     case 'field_block:node:event:field_event_location':
     case 'field_block:node:event:field_event_when':
       $variables['attributes']['class'][] = 'fa-ul';
+      $variables['attributes']['class'][] = 'card__meta';
       break;
 
     case 'inline_block:uiowa_events':
