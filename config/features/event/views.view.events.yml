@@ -530,14 +530,14 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_event_when_duration:
-          id: field_event_when_duration
+        field_event_when:
+          id: field_event_when
           table: node__field_event_when
-          field: field_event_when_duration
+          field: field_event_when
           relationship: none
           group_type: group
           admin_label: Date
-          plugin_id: numeric
+          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -579,14 +579,24 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          set_precision: false
-          precision: 0
-          decimal: .
-          separator: ','
-          format_plural: false
-          format_plural_string: !!binary MQNAY291bnQ=
-          prefix: ''
-          suffix: ''
+          click_sort_column: value
+          type: smartdate_default
+          settings:
+            timezone_override: ''
+            format: default
+            force_chronological: false
+            add_classes: false
+            time_wrapper: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
         field_teaser:
           id: field_teaser
           table: node__field_teaser
@@ -956,6 +966,7 @@ display:
       tags:
         - 'config:field.storage.node.field_event_location'
         - 'config:field.storage.node.field_event_virtual'
+        - 'config:field.storage.node.field_event_when'
         - 'config:field.storage.node.field_image'
         - 'config:field.storage.node.field_teaser'
   page_past:
