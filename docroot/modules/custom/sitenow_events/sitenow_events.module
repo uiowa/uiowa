@@ -257,6 +257,7 @@ function sitenow_events_preprocess_block(&$variables) {
       break;
 
     case 'views_block:events_list_block-card_list':
+    case 'views_block:events-card_list':
       if (isset($variables['attributes']['class'])) {
         // Unset classes meant for children.
         foreach ($variables['attributes']['class'] as $key => $style) {
