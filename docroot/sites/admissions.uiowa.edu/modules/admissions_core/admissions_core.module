@@ -142,6 +142,8 @@ function admissions_core_form_alter(&$form, FormStateInterface $form_state, $for
     case 'node_event_form':
     case 'node_event_edit_form':
       $form['field_event_category']['#group'] = 'node_relations';
+      $form['field_event_performer']['#access'] = FALSE;
+      $form['field_event_parent']['#access'] = FALSE;
       break;
 
     case 'node_student_profile_form':
