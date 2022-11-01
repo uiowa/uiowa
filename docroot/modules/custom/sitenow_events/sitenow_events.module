@@ -90,47 +90,41 @@ function sitenow_events_preprocess_block(&$variables) {
       $variables['#cache']['tags'][] = 'time:hourly';
       $variables['#cache']['max-age'] = 60;
 
-      // Get sort.
-      $sort = $block->get('field_uiowa_events_sort')->value;
+      // Get the sort and timeframe.
+      $sort = $block
+        ->get('field_uiowa_events_sort')
+        ?->value;
+      $timeframe = $block
+        ->get('field_uiowa_events_timeframe')
+        ?->value;
+
+      // Set the $display_id based on the sort.
+      $display_id = ($sort === 'DESC') ? 'past' : 'events';
+
+      // Set the start to be null by default.
+      $start = NULL;
+
       // Change start and end params based on query type.
-      $timeframe = $block->get('field_uiowa_events_timeframe')->value;
       switch ($timeframe) {
         case 'date_range':
-          $start = $block->get('field_uiowa_events_date_range')[0]->value;
-          $end = $block->get('field_uiowa_events_date_range')[0]->end_value;
-          if ($sort === 'DESC') {
-            // Past, aka reverse or descending order.
-            $display_id = 'past';
-          }
-          else {
-            // Ascending.
-            $display_id = 'events';
-          }
+          $start = $block
+            ->get('field_uiowa_events_date_range')[0]
+            ?->value;
+          $end = $block
+            ->get('field_uiowa_events_date_range')[0]
+            ?->end_value;
           break;
 
         case 'past':
           $start = strtotime('01-01-1970');
           $end = strtotime(date('d-m-Y') . ' yesterday');
-          if ($sort === 'DESC') {
-            // Past, aka reverse or descending order.
-            $display_id = 'past';
-          }
-          else {
-            // Ascending.
-            $display_id = 'events';
-          }
           break;
 
         default:
           $end = strtotime('today');
-          if ($sort === 'DESC') {
-            // Past, aka reverse or descending order.
-            $display_id = 'past_upcoming';
-          }
-          else {
-            // Ascending.
-            $display_id = 'events_in_progress';
-          }
+
+          // Override the $display_id based on the sort.
+          $display_id = ($sort === 'DESC') ? 'past_upcoming' : 'events_in_progress';
           break;
       }
 
@@ -147,7 +141,7 @@ function sitenow_events_preprocess_block(&$variables) {
         'items_per_page' => $block->get('field_collection_results')->value ?? 50,
       ];
 
-      if ($timeframe != 'upcoming') {
+      if (!is_null($start)) {
         $parameters['filters[startdate][value][date]'] = date('m-d-Y', $start);
       }
 
