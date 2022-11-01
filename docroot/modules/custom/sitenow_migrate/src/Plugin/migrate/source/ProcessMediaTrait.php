@@ -372,7 +372,8 @@ trait ProcessMediaTrait {
   public function downloadFile($filename, $source_base_path, $drupal_file_directory) {
     // Suppressing errors, because we expect there to be at least some
     // private:// files or 404 errors.
-    $raw_file = @file_get_contents($source_base_path . $filename);
+    $filepath = urlencode($source_base_path . $filename);
+    $raw_file = @file_get_contents($source_base_path . rawurlencode($filename));
     if (!$raw_file) {
       return FALSE;
     }
