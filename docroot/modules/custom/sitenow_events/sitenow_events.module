@@ -682,7 +682,11 @@ function sitenow_events_schemadotorg_jsonld_schema_type_entity_alter(array &$dat
         $sub_events = [];
         foreach ($sub_event_nids as $nid) {
           $sub_event = Drupal::entityTypeManager()->getStorage('node')->load($nid);
-          $sub_events[] = ['@type' => 'Event', 'name' => $sub_event->label()];
+          $sub_events[] = [
+            '@type' => 'Event',
+            'name' => $sub_event->label(),
+            '@url' => Url::fromRoute('entity.node.canonical', ['node' => $nid], ['absolute' => TRUE])->toString(),
+          ];
         }
         $data['subEvent'] = $sub_events;
       }
