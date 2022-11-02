@@ -147,12 +147,12 @@ function sitenow_events_preprocess_block(&$variables) {
 
       // Initial pull of data for most situations.
       $data = sitenow_events_load([$parameters]);
+      static $element = 0;
 
       // If pager, create it and re-query data based on current page.
       $show_pager = (bool) $block->get('field_collection_pager')->getString();
       if ($show_pager && isset($data['page']['total_results'])) {
         $count = $data['page']['total_results'];
-        static $element = 0;
         $element++;
         /** @var \Drupal\Core\Pager\PagerManager $pager */
         $pager = \Drupal::service('pager.manager');
@@ -204,7 +204,7 @@ function sitenow_events_preprocess_block(&$variables) {
       }
 
       // Add pager to render if checked.
-      if ($show_pager) {
+      if ($show_pager && isset($data['page']['total_results'])) {
         $variables['content']['pager'] = [
           '#type' => 'pager',
           '#element' => $element,
