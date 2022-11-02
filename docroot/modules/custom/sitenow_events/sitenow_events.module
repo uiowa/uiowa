@@ -311,6 +311,7 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
       // source link. Otherwise, $card_link_url should be set to node link.
       if ($link_direct === 1
         && isset($source_link) && !empty($source_link)) {
+        $source_link = $node->get('field_event_series_link')->get(0)->getUrl()->toString();
         $card_link_url = $source_link;
       }
       else {
