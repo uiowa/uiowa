@@ -90,7 +90,7 @@ function sitenow_intranet_restrict_ip_access_denied_page_alter(&$page) {
     $page['main']['login_link'] = [
       '#type' => 'link',
       '#title' => t('HawkID Login'),
-      '#url' => Url::fromRoute($route),
+      '#url' => Url::fromRoute($route, ['destination' => '/']),
       '#prefix' => '<p class="text-align-center">',
       '#suffix' => '</p>',
       '#attributes' => [
