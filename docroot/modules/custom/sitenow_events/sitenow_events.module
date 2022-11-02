@@ -150,7 +150,7 @@ function sitenow_events_preprocess_block(&$variables) {
 
       // If pager, create it and re-query data based on current page.
       $show_pager = (bool) $block->get('field_collection_pager')->getString();
-      if ($show_pager) {
+      if ($show_pager && isset($data['page']['total_results'])) {
         $count = $data['page']['total_results'];
         static $element = 0;
         $element++;
