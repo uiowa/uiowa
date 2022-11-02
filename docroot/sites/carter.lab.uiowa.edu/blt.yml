@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labcarter.uiowa.ddev.site
+    protocol: https
+  machine_name: labcarter
+  human_name: carter.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labcarter.prod
+drupal:
+  db:
+    database: carter_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labcarter.prod.drupal.uiowa.edu'
+  requester: bucknerl
+  site-name: Carter
