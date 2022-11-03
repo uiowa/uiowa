@@ -22,21 +22,20 @@
  * - title_suffix: Additional output populated by modules, intended to be
  *   displayed after the main title tag that appears in the template.
  *
- styles
- left = default
- right blockquote_footer
- center
-
- position
- within footer
- above content
-
  * @see template_preprocess_block()
  */
 #}
 {{ attach_library('uids_base/blockquote') }}
 {{ attach_library('uids_base/media') }}
 
+{%
+  set classes = [
+  'block',
+  'block--word-break',
+  'block-' ~ configuration.provider|clean_class,
+  'block-' ~ plugin_id|clean_class,
+]
+%}
 
 {% set position_classes = [] %}
 
@@ -49,7 +48,7 @@
 
 
 {% set block_quote = {
-  'blockquote_attributes': attributes.removeClass(position_classes).addClass('block--word-break'),
+  'blockquote_attributes': attributes.removeClass(position_classes).addClass(classes),
   'blockquote_image': content.field_uiowa_quote_image|render,
   'blockquote_content': content.field_uiowa_quote_content|render,
   'blockquote_cite': content.field_uiowa_quote_citation|render,

@@ -13,7 +13,7 @@ use Drupal\Core\Template\Attribute;
  * Implements hook_field_widget_WIDGET_TYPE_form_alter().
  */
 function uipress_core_field_widget_entity_reference_paragraphs_form_alter(&$element, &$form_state, $context) {
-  if ($element['#paragraph_type'] == 'book_type') {
+  if ($element['#paragraph_type'] === 'book_type') {
     if (isset($element['subform']['field_book_ebook_ownership'])) {
       // Set the field_book_ebook_ownership field to only be visible when ebook
       // the type of book selected.
@@ -89,7 +89,7 @@ function uipress_core_preprocess_node(&$variables) {
   // Append person credentials to the node label in the teaser view mode. This
   // happens on the full node view for all people by default in LBC.
   // @see \Drupal\layout_builder_custom/EventSubscriber\SectionComponentSubscriber
-  if ($node->getType() == 'book' && $variables['view_mode'] == 'teaser') {
+  if ($node->getType() === 'book' && $variables['view_mode'] === 'teaser') {
     $default_classes = [
       'card--list',
       'card--media-right',
@@ -275,7 +275,7 @@ function uipress_core_preprocess_views_view(&$variables) {
   $view = $variables['view'];
   $id = $view->storage->id();
 
-  if ($id == 'taxonomy_term') {
+  if ($id === 'taxonomy_term') {
     $variables['attributes']['class'][] = 'grid--threecol--33-34-33';
   }
 }

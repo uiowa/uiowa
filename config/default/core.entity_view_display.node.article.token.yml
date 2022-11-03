@@ -6,6 +6,7 @@ dependencies:
     - core.entity_view_mode.node.token
     - field.field.node.article.body
     - field.field.node.article.field_article_author
+    - field.field.node.article.field_article_preserve_links
     - field.field.node.article.field_article_source_link
     - field.field.node.article.field_article_source_link_direct
     - field.field.node.article.field_article_source_org
@@ -68,7 +69,11 @@ content:
 hidden:
   article_created_date: true
   content_moderation_control: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_article_author: true
+  field_article_preserve_links: true
   field_article_source_link: true
   field_article_source_link_direct: true
   field_article_source_org: true

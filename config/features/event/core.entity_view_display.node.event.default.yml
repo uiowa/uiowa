@@ -126,7 +126,9 @@ third_party_settings:
                   target: '0'
                 third_party_settings: {  }
             weight: 4
-            additional: {  }
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
             third_party_settings: {  }
           -
             uuid: 80301d6e-e516-4cae-a7b4-6c4f93b156a3
@@ -145,7 +147,9 @@ third_party_settings:
                 settings: {  }
                 third_party_settings: {  }
             weight: 3
-            additional: {  }
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
             third_party_settings: {  }
           -
             uuid: 57f035d2-5d1e-40c8-a1fe-673f40b55f3d
@@ -166,9 +170,12 @@ third_party_settings:
                   format: default
                   force_chronological: true
                   add_classes: false
+                  time_wrapper: true
                 third_party_settings: {  }
             weight: 2
-            additional: {  }
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
             third_party_settings: {  }
           -
             uuid: 834fd627-6768-49f1-a5a3-608c27b5bcba
@@ -212,7 +219,9 @@ third_party_settings:
                   target: '0'
                 third_party_settings: {  }
             weight: 5
-            additional: {  }
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
             third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
@@ -289,6 +298,9 @@ content:
     region: content
 hidden:
   content_moderation_control: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_event_category: true
   field_event_hide: true
   field_event_series_link: true

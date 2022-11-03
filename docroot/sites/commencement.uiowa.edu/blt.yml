@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: commencement.uiowa.ddev.site
+    protocol: https
+  machine_name: commencement
+  human_name: commencement.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: commencement.prod
+drupal:
+  db:
+    database: commencement_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: jthutchi
+  site-name: 'Commencement '

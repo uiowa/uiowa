@@ -109,7 +109,7 @@ class ThankYouForm extends FormBase {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $env = getenv('AH_SITE_ENVIRONMENT') ?: 'local';
     $email = $form_state->getValue('to_email');
-    $endpoint = ($env == 'prod' || $env == 'test') ? 'https://data.its.uiowa.edu/hris/supervisors' : 'https://data-test.its.uiowa.edu/hris/supervisors';
+    $endpoint = ($env === 'prod' || $env === 'test') ? 'https://data.its.uiowa.edu/hris/supervisors' : 'https://data-test.its.uiowa.edu/hris/supervisors';
     $config = $this->config('sitenow_dispatch.settings');
 
     // Get HR data.
@@ -132,7 +132,7 @@ class ThankYouForm extends FormBase {
       ]));
 
       // Output a specific 404 error message, otherwise a generic one.
-      if ($e->getCode() == 404) {
+      if ((int) $e->getCode() === 404) {
         $form_state->setError($form, $this->t('Could not find any university record for email @email. Double check the email address and try again.', [
           '@email' => $email,
         ]));

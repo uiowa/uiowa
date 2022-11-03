@@ -167,7 +167,7 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
    */
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
-    $moderation_state = $row->getSourceProperty('status') == 1 ? 'published' : 'draft';
+    $moderation_state = (int) $row->getSourceProperty('status') === 1 ? 'published' : 'draft';
     $row->setSourceProperty('moderation_state', $moderation_state);
     $this->processMultiValueFields($row);
     $this->processMediaFields($row);
@@ -324,7 +324,7 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function clearMemory($size = 100) {
-    if ($this->rowCount++ % $size == 0) {
+    if ($this->rowCount++ % $size === 0) {
       // First, try resetting Drupal's static storage - this frequently releases
       // plenty of memory to continue.
       drupal_static_reset();

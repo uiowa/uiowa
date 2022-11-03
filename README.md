@@ -100,12 +100,15 @@ You can run `composer update package/name` to update additional dependencies. Th
 ### Locked Packages
 The packages below are locked at specific SHAs and will not update using the method described above. They should be periodically checked for new stable releases and updated, if viable.
 
-| Package                               | Reason                   |
-| ------------------------------------- | ------------------------ |
-| drupal/lb_direct_add                  | No 2.x stable release.   |
-| drupal/redirect                       | Need e5201ca5 from 8.x-1.x branch plus a patch. https://git.drupalcode.org/project/redirect/-/commits/8.x-1.x       |
-| kartsims/easysvg                      | Need https://github.com/kartsims/easysvg/pull/27 which is not included in a release. |
-| uiowa/block_content_template          | Forked from a deprecated project. |
+| Package                       | Reason                                                                              |
+|-------------------------------|-------------------------------------------------------------------------------------|
+| acquia/blt-travis             | No stable release to pair with blt 13.5                                             |
+| drupal/diff                   | Need php 8.1 compatibility, no stable release                                       |
+| drupal/lb_direct_add          | No 2.x stable release.                                                              |
+| drupal/media_thumbnails_video | Need php 8.1 compatible dependencies, no stable release                             |
+| kartsims/easysvg              | Need https://github.com/kartsims/easysvg/pull/27 which is not included in a release. |
+| uiowa/block_content_template  | Forked from a deprecated project.                                                   |
+| drupal/purge                  | Need php 8.1 compatibility fixes, no stable release                                 |                                      |
 
 
 # Redirects

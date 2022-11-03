@@ -30,14 +30,14 @@ class ClientMock extends Client {
    * {@inheritdoc}
    */
   public function request($method, $path, array $params, array $options) {
-    if ($path == 'people/foo-bar/metadata') {
+    if ($path === 'people/foo-bar/metadata') {
       $data = (object) [
         'name' => 'Foo Bar',
         'directoryTitle' => 'People',
       ];
 
     }
-    elseif ($path == 'people/foo-bar/structured') {
+    elseif ($path === 'people/foo-bar/structured') {
       $data = (object) [
         'email' => 'foo@bar.com',
         'telephone' => '555-555-5555',

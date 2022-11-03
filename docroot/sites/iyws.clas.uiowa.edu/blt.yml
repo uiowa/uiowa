@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: clasiyws.uiowa.ddev.site
+    protocol: https
+  machine_name: clasiyws
+  human_name: iyws.clas.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: clasiyws.prod
+drupal:
+  db:
+    database: iyws_clas_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: mjcranston
+  site-name: 'Iowa Young Writers'' Studio'

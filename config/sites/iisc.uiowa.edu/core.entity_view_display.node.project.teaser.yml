@@ -40,10 +40,18 @@ content:
     type: entity_reference_entity_view
     label: above
     settings:
-      view_mode: default
-      link: true
+      view_mode: medium__widescreen
+      link: false
     third_party_settings: {  }
     weight: 2
+    region: content
+  field_project_partner:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 4
     region: content
   links:
     settings: {  }
@@ -57,6 +65,5 @@ hidden:
   field_project_deliverables: true
   field_project_led_by: true
   field_project_links: true
-  field_project_partner: true
   field_tags: true
   search_api_excerpt: true

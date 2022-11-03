@@ -90,7 +90,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
         case 'inline_block:uiowa_card':
         case 'inline_block:uiowa_image':
           if (isset($build['#attributes']['class'])) {
-            if ($build['#plugin_id'] == 'inline_block:uiowa_card') {
+            if ($build['#plugin_id'] === 'inline_block:uiowa_card') {
               // Map the layout builder styles to the view mode to be used.
               $media_formats = [
                 'media--circle' => 'large__square',
@@ -99,7 +99,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
                 'media--widescreen' => 'large__widescreen',
               ];
             }
-            if ($build['#plugin_id'] == 'inline_block:uiowa_image') {
+            if ($build['#plugin_id'] === 'inline_block:uiowa_image') {
               // Map the layout builder styles to the view mode to be used.
               $media_formats = [
                 'media--circle' => 'full__square',

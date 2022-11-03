@@ -37,7 +37,7 @@ class People extends BaseNodeSource {
       $person_types = [];
       $tags = [];
       foreach ($groups as $target_id) {
-        if ($target_id == 111) {
+        if ((int) $target_id === 111) {
           // If Community Partner is present, map to a person type.
           $person_types[] = 'community_partner';
         }

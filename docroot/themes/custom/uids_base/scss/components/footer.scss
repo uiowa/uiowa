@@ -4,10 +4,6 @@ $imgpath: '../../../uids/assets/images';
 @import "uids3/components/branding/footer/footer.scss";
 
 .footer {
-  @include breakpoint(sm) {
-    padding: 2.5rem 0 100px;
-  }
-
   h2, h3, h4, h5, h6 {
     color: $white;
     font-weight: $font-weight-normal;
@@ -29,6 +25,12 @@ $imgpath: '../../../uids/assets/images';
     background: #151515;
     padding: 0;
   }
+
+  .after_content--spacing & {
+    @include breakpoint(sm) {
+      padding: 2.5rem 0 100px;
+    }
+  }
 }
 
 .uiowa-footer--login-link {
@@ -36,8 +38,9 @@ $imgpath: '../../../uids/assets/images';
     &:before {
       @include fas();
       content: "\f2f6";
-      padding-right: $md;
-      color: $grey;
+      font-size: 0.8rem;
+      padding-right: $sm;
+      color: #999;
     }
   }
 }

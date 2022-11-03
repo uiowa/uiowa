@@ -669,7 +669,7 @@ function _convert_people_block_component(SectionComponent &$component, BlockCont
 
   // Process sorting defaults.
   $current_sort = $block->field_collection_sort->value;
-  if ($current_sort == 'block_people_sfl') {
+  if ($current_sort === 'block_people_sfl') {
     $last_name_sort = $config['sort']['field_person_last_name_value'];
     unset($config['sort']['field_person_last_name_value']);
     $config['sort']['field_person_last_name_value'] = $last_name_sort;
@@ -1712,7 +1712,7 @@ function sitenow_update_9046() {
     $block->set(
       'field_uiowa_events_date_range', ['value' => $now, 'end_value' => $now]
     );
-    if ($block->get('field_uiowa_events_past')->value == 1) {
+    if ((int) $block->get('field_uiowa_events_past')->value === 1) {
       $block->set('field_uiowa_events_sort', 'DESC');
       $block->set('field_uiowa_events_timeframe', 'past');
     }

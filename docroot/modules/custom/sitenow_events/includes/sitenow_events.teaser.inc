@@ -48,7 +48,7 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
     ];
   }
 
-  $external_link = ($config->get('event_link') == 'event-link-external');
+  $external_link = ($config->get('event_link') === 'event-link-external');
 
   if ($external_link) {
     $variables['event']['url'] = $variables['event']['events_site_url'];
@@ -58,7 +58,7 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
 
     // Add a parameter on the URL for event instances.
     foreach ($variables['event']['event_instances'] as $key => $instance) {
-      if ($variables['event']['instance_start'] == $instance['event_instance']['start']) {
+      if ($variables['event']['instance_start'] === $instance['event_instance']['start']) {
         $instance_id = $key;
       }
     }

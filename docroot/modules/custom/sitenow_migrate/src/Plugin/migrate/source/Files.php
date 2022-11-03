@@ -25,7 +25,7 @@ class Files extends File {
 
     $fileType = explode('/', $row->getSourceProperty('filemime'))[0];
 
-    if ($fileType == 'image') {
+    if ($fileType === 'image') {
       $row->setSourceProperty('meta', $this->fetchMeta($row));
     }
 
