@@ -318,7 +318,9 @@ ul.sf-menu.sf-horizontal > li.sfHover > .sf-depth-1.menuparent:before {
 }
 
 ul.sf-menu.sf-horizontal > li:first-child > .sf-depth-1 {
-  padding-left: 0;
+  @include breakpoint(md) {
+    padding-left: 0;
+  }
 }
 
 ul.sf-menu.sf-horizontal > li > .sf-depth-1.menuparent {
