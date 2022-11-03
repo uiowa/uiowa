@@ -45,12 +45,15 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
         foreach ($contacts as $key => $contact) {
           if (is_int($key) && $contact['#entity']->getType() === 'person') {
 
-            // Then, get the string of the first and last names.
-            $first = $contact['#entity']?->get('field_person_first_name')?->getString();
-            $last = $contact['#entity']?->get('field_person_last_name')?->getString();
+            // Then, get the strings of the first and last names.
+            $first = $contact['#entity']
+              ?->get('field_person_first_name')
+              ?->value;
+            $last = $contact['#entity']
+              ?->get('field_person_last_name')
+              ?->value;
 
-            // And set the title, which would have been empty,
-            // to the concatenation of the two.
+            // Set entity label to the concatenation of the two strings.
             if (is_string($first) && is_string($last)) {
               $form['field_event_performer']['widget']['entities'][$key]['#label'] = $first . ' ' . $last;
             }
