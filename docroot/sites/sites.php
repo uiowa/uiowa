@@ -4594,3 +4594,9 @@ $sites['labcarter.uiowa.ddev.site'] = 'carter.lab.uiowa.edu';
 $sites['labcarter.dev.drupal.uiowa.edu'] = 'carter.lab.uiowa.edu';
 $sites['labcarter.stage.drupal.uiowa.edu'] = 'carter.lab.uiowa.edu';
 $sites['labcarter.prod.drupal.uiowa.edu'] = 'carter.lab.uiowa.edu';
+
+// Directory aliases for productionunit.uiowa.edu.
+$sites['productionunit.uiowa.ddev.site'] = 'productionunit.uiowa.edu';
+$sites['productionunit.dev.drupal.uiowa.edu'] = 'productionunit.uiowa.edu';
+$sites['productionunit.stage.drupal.uiowa.edu'] = 'productionunit.uiowa.edu';
+$sites['productionunit.prod.drupal.uiowa.edu'] = 'productionunit.uiowa.edu';
