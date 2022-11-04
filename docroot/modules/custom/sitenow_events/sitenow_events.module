@@ -7,6 +7,8 @@
 
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -22,16 +24,46 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
     case 'node_event_edit_form':
       _sitenow_node_form_defaults($form, $form_state);
       array_unshift($form['actions']['submit']['#submit'], '_sitenow_events_form_submit');
-      $form['field_event_category']['#group'] = 'node_relations';
+
       if (isset($form['field_event_hide'])) {
         // Set field_event_hide to options group (promotion options).
         $form['field_event_hide']['#group'] = 'options';
       }
+
       $form['field_event_series_link_direct']['#states'] = [
         'visible' => [
           ':input[name="field_event_series_link[0][uri]"]' => ['filled' => TRUE],
         ],
       ];
+
+      // Because person titles are constructed
+      // in sitenow_people_entity_presave, there is no title for this
+      // IEF widget to display. This changes the label using
+      // the first and last name values.
+      if (isset($form['field_event_performer']['widget']['entities'])) {
+        $contacts = $form['field_event_performer']['widget']['entities'];
+
+        // For each one that exists, make sre it is one of the integer entries,
+        // which is actually an entity.
+        foreach ($contacts as $key => $contact) {
+          if (is_int($key) && $contact['#entity']->getType() === 'person') {
+
+            // Then, get the strings of the first and last names.
+            $first = $contact['#entity']
+              ?->get('field_person_first_name')
+              ?->value;
+            $last = $contact['#entity']
+              ?->get('field_person_last_name')
+              ?->value;
+
+            // Set entity label to the concatenation of the two strings.
+            if (is_string($first) && is_string($last)) {
+              $form['field_event_performer']['widget']['entities'][$key]['#label'] = $first . ' ' . $last;
+            }
+          }
+        }
+      }
+
       break;
 
   }
@@ -81,6 +113,14 @@ function _sitenow_events_form_submit(array &$form, FormStateInterface $form_stat
 function sitenow_events_preprocess_block(&$variables) {
 
   switch ($variables['elements']['#plugin_id']) {
+    case 'field_block:node:event:field_event_virtual':
+    case 'field_block:node:event:field_event_series_link':
+    case 'field_block:node:event:field_event_location':
+    case 'field_block:node:event:field_event_when':
+      $variables['attributes']['class'][] = 'fa-ul';
+      $variables['attributes']['class'][] = 'card__meta';
+      break;
+
     case 'inline_block:uiowa_events':
       // This case intentionally falls through to the next case.
       /** @var \Drupal\Block\Entity\Block $block */
@@ -230,8 +270,10 @@ function sitenow_events_preprocess_block(&$variables) {
           ],
         ];
       }
+      break;
 
     case 'views_block:events_list_block-card_list':
+    case 'views_block:events-card_list':
       if (isset($variables['attributes']['class'])) {
         // Unset classes meant for children.
         foreach ($variables['attributes']['class'] as $key => $style) {
@@ -241,7 +283,7 @@ function sitenow_events_preprocess_block(&$variables) {
             'media',
             'hide',
           ] as $check) {
-            if (substr($style, 0, strlen($check)) === $check) {
+            if (str_starts_with($style, $check)) {
               unset($variables['attributes']['class'][$key]);
             }
           }
@@ -256,8 +298,9 @@ function sitenow_events_preprocess_block(&$variables) {
  */
 function sitenow_events_preprocess_views_view_unformatted(&$variables) {
   /** @var \Drupal\views\ViewExecutable $view */
+  // @todo come back to scope by display id.
   $view = $variables['view'];
-  if ($view->id() === 'events_list_block') {
+  if (in_array($view->id(), ['events_list_block', 'events'])) {
     $rows = $variables['rows'];
     $style = $view->style_plugin;
 
@@ -273,41 +316,16 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
       // source link. Otherwise, $card_link_url should be set to node link.
       if ($link_direct === 1
         && isset($source_link) && !empty($source_link)) {
+        $source_link = $node->get('field_event_series_link')->get(0)->getUrl()->toString();
         $card_link_url = $source_link;
       }
       else {
         $card_link_url = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
       }
 
-      $card_meta = [
-        '#type' => 'html_tag',
-        '#tag' => 'div',
-        '#attributes' => [
-          'class' => [
-            'card__meta card__meta--icon',
-          ],
-        ],
-      ];
-
-      // Add virtual event information, if it exists.
-      if ($style->getField($id, 'field_event_virtual')) {
-        $card_meta['virtual'] = [
-          '#prefix' => '<span class="card__icon"><span role="presentation" class="fas fa-laptop"></span></span>',
-          '#markup' => $style->getField($id, 'field_event_virtual'),
-        ];
-      }
-
-      // Add location information, if it exists.
-      if ($style->getField($id, 'field_event_location')) {
-        $card_meta['location'] = [
-          '#markup' => '<div class="field--name-field-event-location"><span class="card__icon"><i role="presentation" class="fas fa-map-marker-alt" aria-hidden="true"></i></span>' . $style->getField($id, 'field_event_location') . '</div>',
-        ];
-      }
-
       // @todo Finish this logic to render the virtual details and location.
       $variables['rows'][$id]['card_options']['card_subtitle'] = $style->getField($id, 'field_event_when');
       $variables['rows'][$id]['card_options']['card_link_url'] = $card_link_url;
-      $variables['rows'][$id]['card_options']['card_meta'] = \Drupal::service('renderer')->render($card_meta);
     }
   }
 }
@@ -658,4 +676,55 @@ function _sitenow_events_build_options_list(array $tree, $r = 0, $p = NULL, arra
   }
 
   return $options;
+}
+
+/**
+ * Implements hook_schemadotorg_jsonld_schema_type_entity_alter().
+ */
+function sitenow_events_schemadotorg_jsonld_schema_type_entity_alter(array &$data, EntityInterface $entity): void {
+  if ($entity instanceof FieldableEntityInterface) {
+    $type = $entity->bundle();
+    if ($type == 'event') {
+
+      // Bring in children events if any.
+      $parent_id = $entity->id();
+      $sub_event_nids = \Drupal::entityQuery('node')
+        ->accessCheck(FALSE)
+        ->condition('type', 'event')
+        ->condition('status', 1)
+        ->condition('field_event_parent', $parent_id, '=')
+        ->execute();
+
+      if ($sub_event_nids) {
+        $sub_events = [];
+        foreach ($sub_event_nids as $nid) {
+          $sub_event = Drupal::entityTypeManager()->getStorage('node')->load($nid);
+          $sub_events[] = [
+            '@type' => 'Event',
+            'name' => $sub_event->label(),
+            '@url' => Url::fromRoute('entity.node.canonical', ['node' => $nid], ['absolute' => TRUE])->toString(),
+          ];
+        }
+        $data['subEvent'] = $sub_events;
+      }
+
+      // Add virtual location data to the schema if it's present.
+      if ($entity->hasField('field_event_virtual') && !$entity->get('field_event_virtual')->isEmpty()) {
+        $uri = $entity->get('field_event_virtual')->getValue()[0]['uri'];
+        $virtual = [
+          '@type' => 'VirtualLocation',
+          'url' => $uri,
+        ];
+        if (isset($data['location'])) {
+          $data['location'] = [
+            $data['location'],
+            $virtual,
+          ];
+        }
+        else {
+          $data['location'] = $virtual;
+        }
+      }
+    }
+  }
 }
