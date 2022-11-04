@@ -5,9 +5,10 @@ dependencies:
   config:
     - core.entity_view_mode.node.token
     - field.field.node.event.body
-    - field.field.node.event.field_event_category
     - field.field.node.event.field_event_hide
     - field.field.node.event.field_event_location
+    - field.field.node.event.field_event_parent
+    - field.field.node.event.field_event_performer
     - field.field.node.event.field_event_series_link
     - field.field.node.event.field_event_series_link_direct
     - field.field.node.event.field_event_virtual
@@ -41,14 +42,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 1
-    region: content
-  field_event_category:
-    type: entity_reference_label
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    weight: 3
     region: content
   field_event_location:
     type: address_default
@@ -117,6 +110,8 @@ hidden:
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
   field_event_hide: true
+  field_event_parent: true
+  field_event_performer: true
   field_event_series_link: true
   field_event_series_link_direct: true
   field_meta_tags: true
