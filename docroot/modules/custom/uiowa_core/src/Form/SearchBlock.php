@@ -2,8 +2,10 @@
 
 namespace Drupal\uiowa_core\Form;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Url;
 
 /**
@@ -59,7 +61,14 @@ class SearchBlock extends FormBase {
     }
 
     $url = Url::fromUri($uri, ['query' => [$values['search_config']['query_parameter'] => $query]]);
-    $form_state->setRedirectUrl($url);
+
+    if (UrlHelper::isExternal($uri)) {
+      $response = new TrustedRedirectResponse($url->toString());
+      $form_state->setResponse($response);
+    }
+    else {
+      $form_state->setRedirectUrl($url);
+    }
   }
 
 }
