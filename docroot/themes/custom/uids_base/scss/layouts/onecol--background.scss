@@ -37,17 +37,23 @@
   &.layout--title--with-background {
     .bold-headline,
     .page-title.headline {
-      @include headline-negative;
-      text-shadow: 0 1px 1px #000;
+      @include breakpoint(sm) {
+        @include headline-negative;
+        text-shadow: 0 1px 1px #000;
+      }
     }
 
     .breadcrumb {
       li {
-        color: white;
+        @include breakpoint(sm) {
+          color: white;
+        }
       }
 
       a {
-        color: white;
+        @include breakpoint(sm) {
+          color: white;
+        }
       }
     }
   }
