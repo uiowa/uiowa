@@ -36,7 +36,10 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
         ],
       ];
 
-      // Check that there are entities.
+      // Because person titles are constructed 
+      // in sitenow_people_entity_presave, there is no for this
+      // IEF widget to display. This changes the label using 
+      // the first and last name values.
       if (isset($form['field_event_performer']['widget']['entities'])) {
         $contacts = $form['field_event_performer']['widget']['entities'];
 
