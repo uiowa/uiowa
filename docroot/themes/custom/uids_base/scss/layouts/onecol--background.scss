@@ -44,6 +44,10 @@
     }
 
     .breadcrumb {
+      margin-top: 0;
+      @include breakpoint(sm) {
+        margin-top: 1.75rem;
+      }
       li {
         @include breakpoint(sm) {
           color: white;
