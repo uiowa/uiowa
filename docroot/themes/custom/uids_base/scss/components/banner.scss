@@ -155,6 +155,19 @@
       padding-top: 6rem;
     }
   }
+  &.banner--stacked {
+    .banner__content {
+      padding: 1.25rem;
+      @include breakpoint(sm) {
+        padding-bottom: 4rem;
+        padding-top: 4rem;
+      }
+      @include breakpoint(page-container) {
+        padding-bottom: 6rem;
+        padding-top: 6rem;
+      }
+    }
+  }
 }
 
   // Remove left/right padding if edge-to-edge is selected
