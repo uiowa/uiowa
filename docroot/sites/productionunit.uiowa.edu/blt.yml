@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: productionunit.uiowa.ddev.site
+    protocol: https
+  machine_name: productionunit
+  human_name: productionunit.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: productionunit.prod
+drupal:
+  db:
+    database: productionunit_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://productionunit.prod.drupal.uiowa.edu'
