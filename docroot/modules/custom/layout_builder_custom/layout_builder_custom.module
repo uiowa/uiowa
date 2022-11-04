@@ -202,6 +202,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           case 'inline_block:uiowa_aggregator':
           case 'inline_block:uiowa_events':
           case 'views_block:article_list_block-list_article':
+          case 'views_block:events-card_list':
           case 'views_block:events_list_block-card_list':
           case 'views_block:people_list_block-list_card':
             // Set '#states' for card image size.
@@ -241,6 +242,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
                 break;
 
               case 'inline_block:uiowa_events':
+              case 'views_block:events-card_list':
               case 'views_block:events_list_block-card_list':
                 $defaults['layout_builder_style_card_media_position'] = 'card_media_position_left';
                 $defaults['layout_builder_style_media_format'] = 'media_format_circle';
@@ -684,6 +686,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
       case 'inline_block:uiowa_card':
       case 'inline_block:uiowa_events':
       case 'views_block:article_list_block-list_article':
+      case 'views_block:events-card_list':
       case 'views_block:events_list_block-card_list':
       case 'views_block:people_list_block-list_card':
         $media_position = $form_state->getValue('layout_builder_style_card_media_position');
@@ -1022,9 +1025,11 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
 
       case 'uiowa_collection_item':
       case 'uiowa_slide':
-        // Pop the headline and place it in the label.
-        $headline = array_shift($element['top']['summary']['fields_info']['#summary']['content']);
-        $element['top']['type']['label']['#markup'] = $headline;
+        // If it exists, pop the headline and place it in the label.
+        if (!empty($element['top']['summary']['fields_info']['#summary']['content'])) {
+          $headline = array_shift($element['top']['summary']['fields_info']['#summary']['content']);
+          $element['top']['type']['label']['#markup'] = $headline;
+        }
         break;
 
       case 'uiowa_timeline_item':
@@ -1254,8 +1259,6 @@ function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
     $default_classes = [
       'card--list',
       'card--person-teaser',
-      'card--centered-right',
-      'card--alignment-right',
     ];
 
     // Retrieve all styles from selection(s).
@@ -1294,7 +1297,6 @@ function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
   if (in_array($machine_name, [
     'card_list',
     'list_article',
-    // 'list_card',
   ])) {
     $rows = $variables['rows'];
     $style = $view->style_plugin;
@@ -1336,7 +1338,6 @@ function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
         'card_link_url' => '',
         'card_image' => $style->getField($id, 'field_image'),
         'card_text' => $style->getField($id, 'field_teaser'),
-        'card_subtitle' => '',
         'card_tag' => '',
         'card_date' => '',
         'headline_level' => $view->display_handler->getOption('heading_size'),

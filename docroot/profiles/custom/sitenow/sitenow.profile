@@ -383,6 +383,7 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
     // Set field_teaser to node_teaser group.
     $form['field_teaser']['#group'] = 'node_teaser';
   }
+
   if (isset($form['field_image'])) {
     // Create node_image group in the advanced container.
     $form['node_image'] = [
@@ -406,6 +407,7 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
       $form['field_image_caption']['#group'] = 'node_image';
     }
   }
+
   if (isset($form['field_featured_image_display'])) {
     $form['field_featured_image_display']['#group'] = 'node_image';
     $form['field_featured_image_display']['widget']['#options']['_none'] = 'Site-wide default';
@@ -420,6 +422,7 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
       ]);
     }
   }
+
   if (isset($form['field_tags'])) {
     // Create node_relations group in the advanced container.
     $form['node_relations'] = [
@@ -439,6 +442,7 @@ function _sitenow_node_form_defaults(&$form, $form_state) {
     // Set field_tags to node_reference group.
     $form['field_tags']['#group'] = 'node_relations';
   }
+
   if (isset($form['field_publish_options'])) {
     // Place field in advanced options group.
     if (!empty($form['field_publish_options']['widget']['#options'])) {
@@ -758,7 +762,7 @@ function publish_options_allowed_values(FieldStorageConfig $definition, ContentE
   $cacheable = FALSE;
   $options = [];
 
-  if (method_exists($entity, 'bundle')) {
+  if (!is_null($entity)) {
     $bundle = $entity->bundle();
 
     switch ($bundle) {

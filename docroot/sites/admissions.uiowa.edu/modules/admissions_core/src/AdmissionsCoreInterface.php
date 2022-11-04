@@ -21,6 +21,7 @@ interface AdmissionsCoreInterface {
    */
   const AOS_QUERY_OVERRIDES = [
     'nursing rn bsn' => 'nursing rn-bsn',
+    'criminology law and justice' => 'criminology, law, and justice',
     'resilience and trauma informed perspectives certificate' => 'resilience and trauma-informed perspectives certificate',
     'interscholastic athleticactivities administration' => 'interscholastic athletic/activities administration',
   ];

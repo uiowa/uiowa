@@ -394,6 +394,7 @@ function uids_base_preprocess_node(&$variables) {
         case 'event':
           $variables['#attached']['library'][] = 'uids_base/sitenow-events-single';
           $variables['#attached']['library'][] = 'uids_base/person';
+          $variables['#attached']['library'][] = 'uids_base/card';
           break;
       }
       if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {

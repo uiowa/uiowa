@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: itsteach.uiowa.ddev.site
+    protocol: https
+  machine_name: itsteach
+  human_name: teach.its.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: itsteach.prod
+drupal:
+  db:
+    database: teach_its_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: amfranzen
+  site-name: 'Office of Teaching, Learning, and Technology'

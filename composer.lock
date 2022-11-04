@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "78eb65c4e96401a9715b608aef0c1804",
+    "content-hash": "c3b01cd9fe78182ffd5b01cd5bbdd24a",
     "packages": [
         {
             "name": "acquia/blt",
@@ -3208,24 +3208,24 @@
         },
         {
             "name": "dompdf/dompdf",
-            "version": "v2.0.0",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dompdf/dompdf.git",
-                "reference": "79573d8b8a141ec8a17312515de8740eed014fa9"
+                "reference": "c5310df0e22c758c85ea5288175fc6cd777bc085"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dompdf/dompdf/zipball/79573d8b8a141ec8a17312515de8740eed014fa9",
-                "reference": "79573d8b8a141ec8a17312515de8740eed014fa9",
+                "url": "https://api.github.com/repos/dompdf/dompdf/zipball/c5310df0e22c758c85ea5288175fc6cd777bc085",
+                "reference": "c5310df0e22c758c85ea5288175fc6cd777bc085",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
                 "ext-mbstring": "*",
                 "masterminds/html5": "^2.0",
-                "phenx/php-font-lib": "^0.5.4",
-                "phenx/php-svg-lib": "^0.3.3 || ^0.4.0",
+                "phenx/php-font-lib": ">=0.5.4 <1.0.0",
+                "phenx/php-svg-lib": ">=0.3.3 <1.0.0",
                 "php": "^7.1 || ^8.0"
             },
             "require-dev": {
@@ -3256,25 +3256,17 @@
             ],
             "authors": [
                 {
-                    "name": "Fabien Ménager",
-                    "email": "fabien.menager@gmail.com"
-                },
-                {
-                    "name": "Brian Sweeney",
-                    "email": "eclecticgeek@gmail.com"
-                },
-                {
-                    "name": "Gabriel Bull",
-                    "email": "me@gabrielbull.com"
+                    "name": "The Dompdf Community",
+                    "homepage": "https://github.com/dompdf/dompdf/blob/master/AUTHORS.md"
                 }
             ],
             "description": "DOMPDF is a CSS 2.1 compliant HTML to PDF converter",
             "homepage": "https://github.com/dompdf/dompdf",
             "support": {
                 "issues": "https://github.com/dompdf/dompdf/issues",
-                "source": "https://github.com/dompdf/dompdf/tree/v2.0.0"
+                "source": "https://github.com/dompdf/dompdf/tree/v2.0.1"
             },
-            "time": "2022-06-21T21:14:57+00:00"
+            "time": "2022-09-22T13:43:41+00:00"
         },
         {
             "name": "drupal/acquia_connector",
@@ -3341,6 +3333,10 @@
                 {
                     "name": "Mark Trapp",
                     "homepage": "https://www.drupal.org/user/212019"
+                },
+                {
+                    "name": "mglaman",
+                    "homepage": "https://www.drupal.org/user/2416470"
                 },
                 {
                     "name": "vlad.pavlovic",
@@ -9992,21 +9988,178 @@
             }
         },
         {
+            "name": "drupal/schemadotorg",
+            "version": "dev-1.0.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/schemadotorg.git",
+                "reference": "c0079f37290a80305a5d1a3dff0c8abd29b0d481"
+            },
+            "require": {
+                "drupal/core": "^9.4 || ^10.0",
+                "michelf/php-markdown": "^1.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "drupal/address": "*",
+                "drupal/admin_toolbar": "*",
+                "drupal/admin_toolbar-admin_toolbar_search": "*",
+                "drupal/admin_toolbar_tools": "*",
+                "drupal/auto_entitylabel": "*",
+                "drupal/autosave_form": "*",
+                "drupal/chosen": "*",
+                "drupal/chosen_lib": "*",
+                "drupal/ckeditor": "*",
+                "drupal/config_rewrite": "*",
+                "drupal/consumer_image_styles": "*",
+                "drupal/consumers": "*",
+                "drupal/content_browser": "*",
+                "drupal/dashboards": "*",
+                "drupal/dashboards_views": "*",
+                "drupal/default_content": "*",
+                "drupal/devel": "*",
+                "drupal/devel_generate": "*",
+                "drupal/diff": "*",
+                "drupal/dropzonejs": "*",
+                "drupal/duration_field": "*",
+                "drupal/embed": "*",
+                "drupal/entity_browser": "*",
+                "drupal/entity_browser_entity_form": "*",
+                "drupal/entity_clone": "*",
+                "drupal/entity_embed": "*",
+                "drupal/entity_print": "*",
+                "drupal/entity_reference_tree": "*",
+                "drupal/entity_usage": "*",
+                "drupal/environment_indicator": "*",
+                "drupal/features": "*",
+                "drupal/field_group": "*",
+                "drupal/flexfield": "*",
+                "drupal/focal_point": "*",
+                "drupal/inline_entity_form": "*",
+                "drupal/jsonapi_extras": "*",
+                "drupal/linkit": "*",
+                "drupal/metatag": "*",
+                "drupal/moderation_dashboard": "*",
+                "drupal/moderation_sidebar": "*",
+                "drupal/multiple_fields_remove_button": "*",
+                "drupal/next": "*",
+                "drupal/next_jsonapi": "*",
+                "drupal/node_edit_protection": "*",
+                "drupal/office_hours": "*",
+                "drupal/openapi": "*",
+                "drupal/openapi_jsonapi": "*",
+                "drupal/openapi_ui": "*",
+                "drupal/openapi_ui_redoc": "*",
+                "drupal/paragraphs": "*",
+                "drupal/paragraphs-paragraphs_library": "*",
+                "drupal/pathauto": "*",
+                "drupal/rdf": "*",
+                "drupal/revision_log_default": "*",
+                "drupal/scheduler": "~1.0",
+                "drupal/scheduler_content_moderation_integration": "*",
+                "drupal/schemadotorg_auto_entitylabel": "*",
+                "drupal/schemadotorg_content_moderation": "*",
+                "drupal/schemadotorg_demo_default_content": "*",
+                "drupal/schemadotorg_demo_standard": "*",
+                "drupal/schemadotorg_demo_standard_admin": "*",
+                "drupal/schemadotorg_demo_standard_translation": "*",
+                "drupal/schemadotorg_demo_umami_content": "*",
+                "drupal/schemadotorg_descriptions": "*",
+                "drupal/schemadotorg_devel": "*",
+                "drupal/schemadotorg_export": "*",
+                "drupal/schemadotorg_field_group": "*",
+                "drupal/schemadotorg_focal_point": "*",
+                "drupal/schemadotorg_inline_entity_form": "*",
+                "drupal/schemadotorg_jsonapi": "*",
+                "drupal/schemadotorg_jsonapi_preview": "*",
+                "drupal/schemadotorg_jsonld": "*",
+                "drupal/schemadotorg_jsonld_breadcrumb": "*",
+                "drupal/schemadotorg_jsonld_embed": "*",
+                "drupal/schemadotorg_jsonld_endpoint": "*",
+                "drupal/schemadotorg_jsonld_preview": "*",
+                "drupal/schemadotorg_mapping_set": "*",
+                "drupal/schemadotorg_media": "*",
+                "drupal/schemadotorg_metatag": "*",
+                "drupal/schemadotorg_next": "*",
+                "drupal/schemadotorg_next_components": "*",
+                "drupal/schemadotorg_office_hours": "*",
+                "drupal/schemadotorg_paragraphs": "*",
+                "drupal/schemadotorg_report": "*",
+                "drupal/schemadotorg_scheduler": "*",
+                "drupal/schemadotorg_simple_sitemap": "*",
+                "drupal/schemadotorg_smart_date": "*",
+                "drupal/schemadotorg_subtype": "*",
+                "drupal/schemadotorg_taxonomy": "*",
+                "drupal/schemadotorg_translation": "*",
+                "drupal/schemadotorg_ui": "*",
+                "drupal/schemata": "*",
+                "drupal/schemata_json_schema": "*",
+                "drupal/simple_sitemap": "*",
+                "drupal/smart_date": "*",
+                "drupal/smart_date_recur": "*",
+                "drupal/time_field": "*",
+                "drupal/toolbar_language_switcher": "*"
+            },
+            "suggest": {
+                "drupal/address": "Provides functionality for storing, validating and displaying international postal addresses.",
+                "drupal/field_group": "Provides the ability to group your fields on both form and display.",
+                "drupal/inline_entity_form": "Provides a widget for inline management (creation, modification, removal) of referenced entities.",
+                "drupal/jsonapi_extras": "Builds on top of JSON:API to deliver extra functionality.",
+                "drupal/paragraphs": "Enables the creation of paragraphs (i.e. component) entities."
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.0.x": "1.0.x-dev"
+                },
+                "drupal": {
+                    "version": "1.0.x-dev",
+                    "datestamp": "1666095009",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                },
+                "drush": {
+                    "services": {
+                        "drush.services.yml": "^10"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Jacob Rockowitz (jrockowitz)",
+                    "homepage": "https://www.drupal.org/u/jrockowitz",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Uses Schema.org types and properties as the content architecture foundation for Drupal website.",
+            "homepage": "https://drupal.org/project/schemadotorg",
+            "support": {
+                "source": "https://git.drupalcode.org/project/schemadotorg",
+                "issues": "https://drupal.org/project/issues/schemadotorg"
+            }
+        },
+        {
             "name": "drupal/search_api",
-            "version": "1.23.0",
+            "version": "1.27.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/search_api.git",
-                "reference": "8.x-1.23"
+                "reference": "8.x-1.27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.23.zip",
-                "reference": "8.x-1.23",
-                "shasum": "7de5425bba5b8daa37e98d47b677459dfb1abbe7"
+                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.27.zip",
+                "reference": "8.x-1.27",
+                "shasum": "b8c9a055fe43435c09231fd93d3e07c5d2863a46"
             },
             "require": {
-                "drupal/core": "^8.8 || ^9"
+                "drupal/core": "^9.3 || ^10.0"
             },
             "conflict": {
                 "drupal/search_api_solr": "2.* || 3.0 || 3.1"
@@ -10024,8 +10177,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.23",
-                    "datestamp": "1642935837",
+                    "version": "8.x-1.27",
+                    "datestamp": "1666211720",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -10299,14 +10452,20 @@
         },
         {
             "name": "drupal/smart_date",
-            "version": "dev-3.5.x",
+            "version": "3.6.1",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/smart_date.git",
-                "reference": "eae5f784"
+                "reference": "3.6.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/smart_date-3.6.1.zip",
+                "reference": "3.6.1",
+                "shasum": "a2ce55f5e38d046143881839f5ba0e6dcb49e823"
             },
             "require": {
-                "drupal/core": "^9",
+                "drupal/core": "^9 || ^10",
                 "php": ">=7.1",
                 "simshaun/recurr": "^4"
             },
@@ -10315,15 +10474,12 @@
             },
             "type": "drupal-module",
             "extra": {
-                "branch-alias": {
-                    "dev-3.5.x": "3.5.x-dev"
-                },
                 "drupal": {
-                    "version": "3.5.1+12-dev",
-                    "datestamp": "1658699687",
+                    "version": "3.6.1",
+                    "datestamp": "1661631736",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 },
                 "drush": {
@@ -13343,6 +13499,59 @@
             "time": "2017-05-30T13:00:18+00:00"
         },
         {
+            "name": "michelf/php-markdown",
+            "version": "1.9.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/michelf/php-markdown.git",
+                "reference": "5024d623c1a057dcd2d076d25b7d270a1d0d55f3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/michelf/php-markdown/zipball/5024d623c1a057dcd2d076d25b7d270a1d0d55f3",
+                "reference": "5024d623c1a057dcd2d076d25b7d270a1d0d55f3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": ">=4.3 <5.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Michelf\\": "Michelf/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Michel Fortin",
+                    "email": "michel.fortin@michelf.ca",
+                    "homepage": "https://michelf.ca/",
+                    "role": "Developer"
+                },
+                {
+                    "name": "John Gruber",
+                    "homepage": "https://daringfireball.net/"
+                }
+            ],
+            "description": "PHP Markdown",
+            "homepage": "https://michelf.ca/projects/php-markdown/",
+            "keywords": [
+                "markdown"
+            ],
+            "support": {
+                "issues": "https://github.com/michelf/php-markdown/issues",
+                "source": "https://github.com/michelf/php-markdown/tree/1.9.1"
+            },
+            "time": "2021-11-24T02:52:38+00:00"
+        },
+        {
             "name": "mikey179/vfsstream",
             "version": "v1.6.11",
             "source": {
@@ -14179,21 +14388,21 @@
         },
         {
             "name": "phenx/php-svg-lib",
-            "version": "0.4.1",
+            "version": "0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dompdf/php-svg-lib.git",
-                "reference": "4498b5df7b08e8469f0f8279651ea5de9626ed02"
+                "reference": "76876c6cf3080bcb6f249d7d59705108166a6685"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dompdf/php-svg-lib/zipball/4498b5df7b08e8469f0f8279651ea5de9626ed02",
-                "reference": "4498b5df7b08e8469f0f8279651ea5de9626ed02",
+                "url": "https://api.github.com/repos/dompdf/php-svg-lib/zipball/76876c6cf3080bcb6f249d7d59705108166a6685",
+                "reference": "76876c6cf3080bcb6f249d7d59705108166a6685",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
-                "php": "^7.1 || ^7.2 || ^7.3 || ^7.4 || ^8.0",
+                "php": "^7.1 || ^8.0",
                 "sabberworm/php-css-parser": "^8.4"
             },
             "require-dev": {
@@ -14219,9 +14428,9 @@
             "homepage": "https://github.com/PhenX/php-svg-lib",
             "support": {
                 "issues": "https://github.com/dompdf/php-svg-lib/issues",
-                "source": "https://github.com/dompdf/php-svg-lib/tree/0.4.1"
+                "source": "https://github.com/dompdf/php-svg-lib/tree/0.5.0"
             },
-            "time": "2022-03-07T12:52:04+00:00"
+            "time": "2022-09-06T12:16:56+00:00"
         },
         {
             "name": "php-ffmpeg/php-ffmpeg",
@@ -22041,7 +22250,7 @@
         "drupal/purge": 20,
         "drupal/rabbit_hole": 10,
         "drupal/restrict_ip": 10,
-        "drupal/smart_date": 20,
+        "drupal/schemadotorg": 20,
         "drupal/swiftmailer": 10,
         "drupal/taxonomy_path_breadcrumb": 10,
         "drupal/tvi": 5,
