@@ -705,6 +705,7 @@ function sitenow_events_schemadotorg_jsonld_schema_type_entity_alter(array &$dat
         $data['subEvent'] = $sub_events;
       }
 
+      // Add virtual location data to the schema if it's present.
       if ($entity->hasField('field_event_virtual') && !$entity->get('field_event_virtual')->isEmpty()) {
         $uri = $entity->get('field_event_virtual')->getValue()[0]['uri'];
         $virtual = [
