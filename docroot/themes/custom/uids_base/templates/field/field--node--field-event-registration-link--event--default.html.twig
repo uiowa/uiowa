@@ -1,0 +1,28 @@
+{#
+/**
+ * @file
+ * Theme override for a field.
+ *
+ * If we re-enable the event_registration_link title, use the following code:
+ */
+
+{% if node.field_event_registration_link.0.url.external %}
+  {% set url = node.field_event_registration_link.uri %}
+{% else %}
+  {% set url = path(node.field_event_registration_link.0. url.routeName, node.field_event_registration_link.0. url.routeParameters) %}
+{% endif %}
+<a href="{{ url }}" title="{{ node.field_event_registration_link.title }}" role="button" class="bttn bttn--full bttn--primary">{{ node.field_event_registration_link.title }}</a>
+
+/**
+ * Other test overrides...
+ */
+
+<button id="registration-link">
+  <a href="{{ node.field_event_registration_link.0.uri }}" role="button" class="bttn bttn--primary">Register</a>
+</button>
+
+<div class="field__item">
+  <a href="{{ node.field_event_registration_link.0.uri }}" role="button" class="bttn bttn--primary">Register</a>
+</div>
+#}
+<a href="{{ node.field_event_registration_link.0.uri }}" title="Register for this event" role="button" class="bttn bttn--full bttn--primary">Register for this event</a>
