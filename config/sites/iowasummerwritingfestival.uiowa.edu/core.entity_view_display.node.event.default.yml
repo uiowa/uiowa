@@ -108,7 +108,7 @@ third_party_settings:
                 label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 6
+            weight: 7
             additional: {  }
             third_party_settings: {  }
           -
@@ -239,7 +239,7 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 8
+            weight: 11
             additional: {  }
             third_party_settings: {  }
           -
@@ -270,7 +270,7 @@ third_party_settings:
                 4: card_media_position_left
                 5: card_image_small
                 block_card_style_border: block_card_style_border
-            weight: 9
+            weight: 12
             additional:
               layout_builder_styles_style:
                 0: ''
@@ -307,46 +307,6 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 2de9fb39-9f8c-4eeb-9337-91740b08e680
-            region: first
-            configuration:
-              id: 'field_block:node:event:field_event_genre'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: list_default
-                label: above
-                settings: {  }
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ','
-            weight: 7
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: e5731aa6-3d34-4804-b41f-7f292883534d
-            region: first
-            configuration:
-              id: 'field_block:node:event:field_event_type'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: list_default
-                label: inline
-                settings: {  }
-                third_party_settings: {  }
-            weight: 4
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: 2f4f6caf-bf44-479f-a188-7f7e0a8d06ba
             region: first
             configuration:
@@ -366,6 +326,46 @@ third_party_settings:
                   field_delimiter:
                     delimiter: ','
             weight: 5
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 3b2f866e-153f-4c36-b0e0-12564f9d9e51
+            region: first
+            configuration:
+              id: 'field_block:node:event:field_event_genre'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 9
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 5ea10660-533d-4123-a6dd-57ac022928f4
+            region: first
+            configuration:
+              id: 'field_block:node:event:field_event_type'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: list_default
+                label: inline
+                settings: {  }
+                third_party_settings: {  }
+            weight: 10
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -401,7 +401,7 @@ content:
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 104
+    weight: 106
     region: content
   field_event_location:
     type: address_default

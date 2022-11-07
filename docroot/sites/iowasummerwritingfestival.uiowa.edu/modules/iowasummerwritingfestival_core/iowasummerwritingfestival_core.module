@@ -1,0 +1,101 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Iowa Summer Writing Festival Core module.
+ */
+
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
+
+/**
+ * Set dynamic allowed values for the field_event_type field.
+ *
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function iowasummerwritingfestival_core_field_event_type_options_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = null, bool &$cacheable) : array
+{
+  $options = [];
+
+  // Set the allowed values for the field_event_type field to the following.
+  $options = [
+    'Banquet' => 'Banquet',
+    'Board Meeting' => 'Board Meeting',
+    'Colloquium' => 'Colloquium',
+    'Conference' => 'Conference',
+    'Convention' => 'Convention',
+    'Course' => 'Course',
+    'Exhibition' => 'Exhibition',
+    'Exposition' => 'Exposition',
+    'Fair' => 'Fair',
+    'Festival' => 'Festival',
+    'Fundraiser' => 'Fundraiser',
+    'Gala' => 'Gala',
+    'General Session' => 'General Session',
+    'Green Meeting' => 'Green Meeting',
+    'Meetup' => 'Meetup',
+    'Networking Event' => 'Networking Event',
+    'Party' => 'Party',
+    'Press Conference' => 'Press Conference',
+    'Product Launch' => 'Product Launch',
+    'Reception' => 'Reception',
+    'Retreat' => 'Retreat',
+    'Round-Table' => 'Round-Table',
+    'Seminar' => 'Seminar',
+    'Session' => 'Session',
+    'Social Event' => 'Social Event',
+    'Symposium' => 'Symposium',
+    'Trade Show' => 'Trade Show',
+    'Workshop' => 'Workshop',
+  ];
+  return $options;
+}
+
+/**
+ * Set dynamic allowed values for the field_event_genre field.
+ *
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function iowasummerwritingfestival_core_field_event_genre_options_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = null, bool &$cacheable) : array
+{
+  $options = [];
+
+  // Set the allowed values for the field_event_genre field to the following.
+  $options = [
+    'All Genres' => 'All Genres',
+    'Children\'s' => 'Children\'s',
+    'Essay' => 'Essay',
+    'Fiction' => 'Fiction',
+    'Hybrid Forms' => 'Hybrid Forms',
+    'Memoir' => 'Memoir',
+    'Nonfiction' => 'Nonfiction',
+    'Novel' => 'Novel',
+    'Playwriting' => 'Playwriting',
+    'Poetry' => 'Poetry',
+    'Sci-Fi/Fantasy' => 'Sci-Fi/Fantasy',
+    'Screenwriting' => 'Screenwriting',
+    'Short Story' => 'Short Story',
+    'Young Adult' => 'Young Adult',
+  ];
+  return $options;
+}

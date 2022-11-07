@@ -9,7 +9,8 @@ weight: 70
 stackable: true
 storage: folder
 folder: ../config/sites/iowasummerwritingfestival.uiowa.edu
-module: {  }
+module:
+  iowasummerwritingfestival_core: 0
 theme: {  }
 complete_list:
   - config_split.config_split.site
@@ -19,6 +20,7 @@ complete_list:
   - field.storage.node.field_event_genre
   - field.storage.node.field_event_registration_link
   - field.storage.node.field_event_type
+  - schemadotorg.schemadotorg_mapping.node.event
   - smart_date.smart_date_format.default_long_date
   - 'core.entity_view_display.node.event.*'
 partial_list:
