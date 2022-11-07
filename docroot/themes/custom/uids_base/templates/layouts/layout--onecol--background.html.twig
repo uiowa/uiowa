@@ -13,7 +13,7 @@
  */
 #}
 {%
-  set stacked_classes = [
+  set background_classes = [
   'banner--stacked',
 ]
 %}
@@ -21,7 +21,7 @@
 {% set background = content.background | render %}
 {% if background is not empty and (featured_image_display is not empty) %}
   {% embed "@uids_base/uids/banner.html.twig" with {
-    'attributes' : attributes.addClass(stacked_classes,layout.template|clean_class),
+    'attributes' : attributes.addClass(background_classes,layout.template|clean_class),
   } %}
     {% block banner_image %}
       <div class="banner__image">
