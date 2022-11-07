@@ -14,15 +14,12 @@ module:
 theme: {  }
 complete_list:
   - config_split.config_split.site
-  - field.field.node.event.field_event_genre
-  - field.field.node.event.field_event_registration_link
-  - field.field.node.event.field_event_type
   - field.storage.node.field_event_genre
   - field.storage.node.field_event_registration_link
   - field.storage.node.field_event_type
-  - schemadotorg.schemadotorg_mapping.node.event
   - smart_date.smart_date_format.default_long_date
   - 'core.entity_view_display.node.event.*'
 partial_list:
+  - schemadotorg.schemadotorg_mapping.node.event
   - views.view.events
   - 'core.entity_form_display.node.event.*'

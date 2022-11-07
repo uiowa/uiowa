@@ -23,14 +23,13 @@ use Drupal\Core\Entity\FieldableEntityInterface;
  *
  * @see options_allowed_values()
  */
-function iowasummerwritingfestival_core_field_event_type_options_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = null, bool &$cacheable) : array
-{
+function iowasummerwritingfestival_core_field_event_type_options_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable) : array {
   $options = [];
 
   // Set the allowed values for the field_event_type field to the following.
   $options = [
     'Banquet' => 'Banquet',
-    'Board Meeting' => 'Board Meeting',
+    'BoardMeeting' => 'Board Meeting',
     'Colloquium' => 'Colloquium',
     'Conference' => 'Conference',
     'Convention' => 'Convention',
@@ -41,21 +40,21 @@ function iowasummerwritingfestival_core_field_event_type_options_allowed_values(
     'Festival' => 'Festival',
     'Fundraiser' => 'Fundraiser',
     'Gala' => 'Gala',
-    'General Session' => 'General Session',
-    'Green Meeting' => 'Green Meeting',
+    'GeneralSession' => 'General Session',
+    'GreenMeeting' => 'Green Meeting',
     'Meetup' => 'Meetup',
-    'Networking Event' => 'Networking Event',
+    'NetworkingEvent' => 'Networking Event',
     'Party' => 'Party',
-    'Press Conference' => 'Press Conference',
-    'Product Launch' => 'Product Launch',
+    'PressConference' => 'Press Conference',
+    'ProductLaunch' => 'Product Launch',
     'Reception' => 'Reception',
     'Retreat' => 'Retreat',
     'Round-Table' => 'Round-Table',
     'Seminar' => 'Seminar',
     'Session' => 'Session',
-    'Social Event' => 'Social Event',
+    'SocialEvent' => 'Social Event',
     'Symposium' => 'Symposium',
-    'Trade Show' => 'Trade Show',
+    'TradeShow' => 'Trade Show',
     'Workshop' => 'Workshop',
   ];
   return $options;
@@ -76,17 +75,16 @@ function iowasummerwritingfestival_core_field_event_type_options_allowed_values(
  *
  * @see options_allowed_values()
  */
-function iowasummerwritingfestival_core_field_event_genre_options_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = null, bool &$cacheable) : array
-{
+function iowasummerwritingfestival_core_field_event_genre_options_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable) : array {
   $options = [];
 
   // Set the allowed values for the field_event_genre field to the following.
   $options = [
-    'All Genres' => 'All Genres',
-    'Children\'s' => 'Children\'s',
+    'AllGenres' => 'All Genres',
+    'Childrens' => 'Children\'s',
     'Essay' => 'Essay',
     'Fiction' => 'Fiction',
-    'Hybrid Forms' => 'Hybrid Forms',
+    'HybridForms' => 'Hybrid Forms',
     'Memoir' => 'Memoir',
     'Nonfiction' => 'Nonfiction',
     'Novel' => 'Novel',
@@ -94,8 +92,8 @@ function iowasummerwritingfestival_core_field_event_genre_options_allowed_values
     'Poetry' => 'Poetry',
     'Sci-Fi/Fantasy' => 'Sci-Fi/Fantasy',
     'Screenwriting' => 'Screenwriting',
-    'Short Story' => 'Short Story',
-    'Young Adult' => 'Young Adult',
+    'ShortStory' => 'Short Story',
+    'YoungAdult' => 'Young Adult',
   ];
   return $options;
 }
