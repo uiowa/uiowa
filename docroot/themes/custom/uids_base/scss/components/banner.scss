@@ -320,3 +320,17 @@
     }
   }
 }
+
+// @todo incorporate this into https://github.com/uiowa/uids/issues/721.
+.banner--stacked {
+  &.layout--onecol--background.banner--small {
+    .banner__image {
+      max-height: 15rem;
+      overflow: hidden;
+      @include breakpoint(sm) {
+        max-height: auto;
+        overflow: visible;
+      }
+    }
+  }
+}
