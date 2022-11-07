@@ -8,7 +8,9 @@
 use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Entity\EntityFormInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldItemList;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Database\Query\AlterableInterface;
@@ -746,9 +748,9 @@ function _sitenow_prevent_front_delete_message($title) {
 /**
  * Set dynamic allowed values for the publish_options field.
  *
- * @param \Drupal\field\Entity\FieldStorageConfig $definition
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
  *   The field definition.
- * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
  *   The entity being created if applicable.
  * @param bool $cacheable
  *   Boolean indicating if the results are cacheable.
@@ -758,19 +760,15 @@ function _sitenow_prevent_front_delete_message($title) {
  *
  * @see options_allowed_values()
  */
-function publish_options_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
+function publish_options_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable): array {
   $cacheable = FALSE;
-  $options = [];
+  $options = [
+    'title_hidden' => 'Visually hide title',
+    'no_sidebars' => 'Remove sidebar regions',
+  ];
 
   if (!is_null($entity)) {
-    $bundle = $entity->bundle();
-
-    switch ($bundle) {
-      case 'page':
-        $options['title_hidden'] = 'Visually hide title';
-        $options['no_sidebars'] = 'Remove sidebar regions';
-        break;
-    }
+    $bundle = $entity->getEntityTypeId();
 
     // Allow modules to alter options.
     \Drupal::moduleHandler()
