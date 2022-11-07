@@ -240,6 +240,7 @@ function uiowa_core_preprocess_page(&$variables) {
     // so that it won't display.
     else {
       unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
+      unset($variables['page']['pre_footer']['views_block__related_content_block_related_headings_lists']);
     }
   }
 }
