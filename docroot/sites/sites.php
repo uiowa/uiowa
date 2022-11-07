@@ -4606,3 +4606,9 @@ $sites['labjdsc.uiowa.ddev.site'] = 'jdsc.lab.uiowa.edu';
 $sites['labjdsc.dev.drupal.uiowa.edu'] = 'jdsc.lab.uiowa.edu';
 $sites['labjdsc.stage.drupal.uiowa.edu'] = 'jdsc.lab.uiowa.edu';
 $sites['labjdsc.prod.drupal.uiowa.edu'] = 'jdsc.lab.uiowa.edu';
+
+// Directory aliases for thorne.lab.uiowa.edu.
+$sites['labthorne.uiowa.ddev.site'] = 'thorne.lab.uiowa.edu';
+$sites['labthorne.dev.drupal.uiowa.edu'] = 'thorne.lab.uiowa.edu';
+$sites['labthorne.stage.drupal.uiowa.edu'] = 'thorne.lab.uiowa.edu';
+$sites['labthorne.prod.drupal.uiowa.edu'] = 'thorne.lab.uiowa.edu';
