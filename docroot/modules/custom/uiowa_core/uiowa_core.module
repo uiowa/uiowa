@@ -235,6 +235,12 @@ function uiowa_core_preprocess_page(&$variables) {
         }
       }
     }
+    // If it wasn't one of our tags related display allowed types,
+    // then we can unset the entire view from the page
+    // so that it won't display.
+    else {
+      unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
+    }
   }
 }
 
