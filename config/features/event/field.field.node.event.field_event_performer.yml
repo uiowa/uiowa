@@ -1,0 +1,29 @@
+uuid: 48da8279-7ac5-4614-b618-f2045549a703
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_event_performer
+    - node.type.event
+    - node.type.person
+id: node.event.field_event_performer
+field_name: field_event_performer
+entity_type: node
+bundle: event
+label: Presenters
+description: 'A presenter at the event&#x2014;for example, a performer, speaker, instructor, musician or actor.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      person: person
+    sort:
+      field: title
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
