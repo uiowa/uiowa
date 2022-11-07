@@ -524,14 +524,14 @@ ul.sf-menu.sf-accordion .active-trail.sf-no-children.sf-depth-1 > .is-active {
 }
 
 // Positioning adjustments.
-.sf-depth-1.sf-no-children + .sf-depth-1.menuparent > a {
+.sf-horizontal .sf-depth-1.sf-no-children + .sf-depth-1.menuparent > a {
   @include breakpoint(page-container) {
-    padding-left: 1rem !important;
+    padding-left: 1rem;
   }
 }
 
-.sf-depth-1.sf-no-children + .sf-depth-1.sf-no-children > a {
+.sf-horizontal .sf-depth-1.sf-no-children + .sf-depth-1.sf-no-children > a {
   @include breakpoint(page-container) {
-    padding-left: .9rem !important;
+    padding-left: .9rem;
   }
 }
