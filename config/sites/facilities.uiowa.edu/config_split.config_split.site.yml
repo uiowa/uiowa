@@ -1,0 +1,23 @@
+uuid: 03a83a9f-9023-4a26-9c6d-727fb46f16f5
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: facilities.uiowa.edu
+description: 'Site split for facilities.uiowa.edu'
+weight: 70
+stackable: false
+storage: folder
+folder: ../config/sites/facilities.uiowa.edu
+module: {  }
+theme: {  }
+complete_list:
+  - config_split.config_split.site
+  - metatag.metatag_defaults.node__place
+  - node.type.place
+  - views.view.building_list
+  - 'field.storage.node.field_building_*'
+partial_list:
+  - metatag.settings
+  - workflows.workflow.editorial
+  - 'user.role.*'

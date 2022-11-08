@@ -1,0 +1,18 @@
+uuid: 5e20d93d-18e7-469f-9e4e-13e6adacc0f0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.place.body
+    - field.field.node.place.field_building_address
+    - field.field.node.place.field_image
+    - node.type.place
+id: node.place
+target_entity_type_id: node
+target_bundle: place
+schema_type: Place
+schema_properties:
+  field_building_address: address
+  body: description
+  field_image: image
+  title: name
