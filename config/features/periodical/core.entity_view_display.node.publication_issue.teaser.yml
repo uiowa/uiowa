@@ -4,18 +4,18 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.field.node.periodical_issue.body
-    - field.field.node.periodical_issue.field_image
-    - field.field.node.periodical_issue.field_issue_number
-    - field.field.node.periodical_issue.field_issue_season_year
-    - field.field.node.periodical_issue.field_issue_volume
-    - node.type.periodical_issue
+    - field.field.node.publication_issue.body
+    - field.field.node.publication_issue.field_image
+    - field.field.node.publication_issue.field_issue_number
+    - field.field.node.publication_issue.field_issue_season_year
+    - field.field.node.publication_issue.field_issue_volume
+    - node.type.publication_issue
   module:
     - text
     - user
-id: node.periodical_issue.teaser
+id: node.publication_issue.teaser
 targetEntityType: node
-bundle: periodical_issue
+bundle: publication_issue
 mode: teaser
 content:
   body:
@@ -24,7 +24,7 @@ content:
     settings:
       trim_length: 600
     third_party_settings: {  }
-    weight: 101
+    weight: 5
     region: content
   links:
     settings: {  }
@@ -32,6 +32,9 @@ content:
     weight: 100
     region: content
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_image: true
   field_issue_number: true
   field_issue_season_year: true

@@ -3,12 +3,12 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.periodical_issue.body
-    - field.field.node.periodical_issue.field_image
-    - field.field.node.periodical_issue.field_issue_number
-    - field.field.node.periodical_issue.field_issue_season_year
-    - field.field.node.periodical_issue.field_issue_volume
-    - node.type.periodical_issue
+    - field.field.node.publication_issue.body
+    - field.field.node.publication_issue.field_image
+    - field.field.node.publication_issue.field_issue_number
+    - field.field.node.publication_issue.field_issue_season_year
+    - field.field.node.publication_issue.field_issue_volume
+    - node.type.publication_issue
   module:
     - layout_builder
     - system
@@ -33,7 +33,7 @@ third_party_settings:
             uuid: b30608ed-8311-4716-a07f-39413571154d
             region: first
             configuration:
-              id: 'field_block:node:periodical_issue:field_image'
+              id: 'field_block:node:publication_issue:field_image'
               label: null
               label_display: null
               provider: layout_builder
@@ -53,7 +53,7 @@ third_party_settings:
             uuid: 78434f23-7eae-468b-9572-2b9b3f1ff55e
             region: second
             configuration:
-              id: 'field_block:node:periodical_issue:title'
+              id: 'field_block:node:publication_issue:title'
               label: null
               label_display: null
               provider: layout_builder
@@ -85,7 +85,7 @@ third_party_settings:
             uuid: b552e314-4936-474e-828d-27059abeae2f
             region: second
             configuration:
-              id: 'field_block:node:periodical_issue:body'
+              id: 'field_block:node:publication_issue:body'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
@@ -101,7 +101,7 @@ third_party_settings:
             uuid: 828fe502-99ec-4c71-b452-ce4f981905e7
             region: first
             configuration:
-              id: 'field_block:node:periodical_issue:field_issue_volume'
+              id: 'field_block:node:publication_issue:field_issue_volume'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
@@ -119,7 +119,7 @@ third_party_settings:
             uuid: be8497ef-ea4a-4539-a2ca-a281ef847fd0
             region: first
             configuration:
-              id: 'field_block:node:periodical_issue:field_issue_number'
+              id: 'field_block:node:publication_issue:field_issue_number'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
@@ -137,7 +137,7 @@ third_party_settings:
             uuid: c03eccd1-fd77-4f87-9615-ead53a800673
             region: first
             configuration:
-              id: 'field_block:node:periodical_issue:field_issue_season_year'
+              id: 'field_block:node:publication_issue:field_issue_season_year'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
@@ -150,6 +150,40 @@ third_party_settings:
             weight: 3
             additional: {  }
             third_party_settings: {  }
+          -
+            uuid: 46b0e444-7ed3-4cef-832f-76a2346021dc
+            region: first
+            configuration:
+              id: 'field_block:node:publication_issue:field_issue_number'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: number_integer
+                label: above
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 4
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 0ae68162-2406-4ac7-bd09-91ebb1faad36
+            region: first
+            configuration:
+              id: 'field_block:node:publication_issue:body'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 5
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -157,9 +191,9 @@ third_party_settings:
             limit:
               scope: '0'
               scope_update: 'Update scope'
-id: node.periodical_issue.default
+id: node.publication_issue.default
 targetEntityType: node
-bundle: periodical_issue
+bundle: publication_issue
 mode: default
 content:
   body:
@@ -167,8 +201,8 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 101
-    region: content
+    weight: 5
+    region: first
   field_image:
     type: entity_reference_label
     label: above
@@ -184,8 +218,8 @@ content:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
-    weight: 103
-    region: content
+    weight: 102
+    region: first
   field_issue_season_year:
     type: string
     label: above
@@ -209,4 +243,7 @@ content:
     weight: 100
     region: content
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   search_api_excerpt: true

@@ -3,25 +3,25 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.periodical_issue.body
-    - field.field.node.periodical_issue.field_image
-    - field.field.node.periodical_issue.field_issue_number
-    - field.field.node.periodical_issue.field_issue_season_year
-    - field.field.node.periodical_issue.field_issue_volume
-    - node.type.periodical_issue
+    - field.field.node.publication_issue.body
+    - field.field.node.publication_issue.field_image
+    - field.field.node.publication_issue.field_issue_number
+    - field.field.node.publication_issue.field_issue_season_year
+    - field.field.node.publication_issue.field_issue_volume
+    - node.type.publication_issue
   module:
     - content_moderation
     - media_library
     - path
     - text
-id: node.periodical_issue.default
+id: node.publication_issue.default
 targetEntityType: node
-bundle: periodical_issue
+bundle: publication_issue
 mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 121
+    weight: 5
     region: content
     settings:
       rows: 9
@@ -31,7 +31,7 @@ content:
     third_party_settings: {  }
   created:
     type: datetime_timestamp
-    weight: 10
+    weight: 102
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -44,7 +44,7 @@ content:
     third_party_settings: {  }
   field_issue_number:
     type: number
-    weight: 123
+    weight: 102
     region: content
     settings:
       placeholder: ''
@@ -99,7 +99,7 @@ content:
     third_party_settings: {  }
   title:
     type: string_textfield
-    weight: -5
+    weight: 1
     region: content
     settings:
       size: 60
