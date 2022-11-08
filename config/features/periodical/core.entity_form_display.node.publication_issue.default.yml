@@ -5,6 +5,9 @@ dependencies:
   config:
     - field.field.node.publication_issue.body
     - field.field.node.publication_issue.field_image
+    - field.field.node.publication_issue.field_issue_contributors_notes
+    - field.field.node.publication_issue.field_issue_editors_note
+    - field.field.node.publication_issue.field_issue_masthead
     - field.field.node.publication_issue.field_issue_number
     - field.field.node.publication_issue.field_issue_season_year
     - field.field.node.publication_issue.field_issue_volume
@@ -41,6 +44,30 @@ content:
     region: content
     settings:
       media_types: {  }
+    third_party_settings: {  }
+  field_issue_contributors_notes:
+    type: text_textarea
+    weight: 128
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_issue_editors_note:
+    type: text_textarea
+    weight: 126
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_issue_masthead:
+    type: text_textarea
+    weight: 127
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
     third_party_settings: {  }
   field_issue_number:
     type: number
