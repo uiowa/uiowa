@@ -26,16 +26,24 @@
 
     [class*="block-field-blocknoderesidence-hallfield-"] {
       display: inline-block;
+      margin-bottom: 1rem;
+      @include breakpoint(sm) {
+        margin-bottom: 0;
+      }
     }
 
     .block-field-blocknoderesidence-hallfield-residence-hall-population {
-      display: inline;
+      @include breakpoint(sm) {
+        display: inline;
+      }
     }
 
     .block-field-blocknoderesidence-hallfield-residence-hall-population:before {
-      content: "";
-      display: inline-block;
-      width: 100%;
+      @include breakpoint(sm) {
+        content: "";
+        display: inline-block;
+        width: 100%;
+      }
     }
   }
 
