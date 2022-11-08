@@ -12,7 +12,15 @@ folder: ../config/features/periodical
 module: {  }
 theme: {  }
 complete_list:
+  - core.entity_view_display.node.article.default
+  - field.field.node.article.field_article_author_bio
+  - field.field.node.article.field_article_issue
+  - field.storage.node.field_article_author_bio
+  - field.storage.node.field_article_issue
   - node.type.publication_issue
   - simple_sitemap.bundle_settings.default.node.publication_issue
   - 'field.storage.node.field_issue_*'
-partial_list: {  }
+partial_list:
+  - core.entity_form_display.node.article.default
+  - node.type.article
+  - schemadotorg.schemadotorg_mapping.node.article
