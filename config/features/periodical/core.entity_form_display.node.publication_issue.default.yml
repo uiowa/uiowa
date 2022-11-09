@@ -11,10 +11,13 @@ dependencies:
     - field.field.node.publication_issue.field_issue_number
     - field.field.node.publication_issue.field_issue_season_year
     - field.field.node.publication_issue.field_issue_volume
+    - field.field.node.publication_issue.field_meta_tags
     - node.type.publication_issue
+    - workflows.workflow.editorial
   module:
     - content_moderation
     - media_library
+    - metatag
     - path
     - text
 id: node.publication_issue.default
@@ -90,6 +93,14 @@ content:
     region: content
     settings:
       placeholder: ''
+    third_party_settings: {  }
+  field_meta_tags:
+    type: metatag_firehose
+    weight: 26
+    region: content
+    settings:
+      sidebar: true
+      use_details: true
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default

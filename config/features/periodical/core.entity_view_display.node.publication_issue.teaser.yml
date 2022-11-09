@@ -12,6 +12,7 @@ dependencies:
     - field.field.node.publication_issue.field_issue_number
     - field.field.node.publication_issue.field_issue_season_year
     - field.field.node.publication_issue.field_issue_volume
+    - field.field.node.publication_issue.field_meta_tags
     - node.type.publication_issue
   module:
     - text
@@ -27,14 +28,15 @@ content:
     settings:
       trim_length: 600
     third_party_settings: {  }
-    weight: 5
+    weight: 0
     region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 100
+    weight: 1
     region: content
 hidden:
+  content_moderation_control: true
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
@@ -45,4 +47,5 @@ hidden:
   field_issue_number: true
   field_issue_season_year: true
   field_issue_volume: true
+  field_meta_tags: true
   search_api_excerpt: true

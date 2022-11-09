@@ -11,17 +11,42 @@ dependencies:
     - field.field.node.publication_issue.field_issue_number
     - field.field.node.publication_issue.field_issue_season_year
     - field.field.node.publication_issue.field_issue_volume
+    - field.field.node.publication_issue.field_meta_tags
     - node.type.publication_issue
   module:
     - layout_builder
+    - layout_builder_restrictions
     - system
     - text
     - user
+  theme:
+    - uids_base
 third_party_settings:
   layout_builder:
     enabled: true
     allow_custom: false
     sections:
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+        components:
+          -
+            uuid: 7a2dc135-88f3-43da-b3f4-3912a0221e31
+            region: content
+            configuration:
+              id: 'extra_field_block:node:publication_issue:content_moderation_control'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
       -
         layout_id: layout_twocol_section
         layout_settings:
@@ -32,26 +57,6 @@ third_party_settings:
             - ''
             - section_margin_fixed_width_container
         components:
-          -
-            uuid: b30608ed-8311-4716-a07f-39413571154d
-            region: first
-            configuration:
-              id: 'field_block:node:publication_issue:field_image'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_entity_view
-                label: hidden
-                settings:
-                  view_mode: full__no_crop
-                third_party_settings: {  }
-            weight: 0
-            additional: {  }
-            third_party_settings: {  }
           -
             uuid: 78434f23-7eae-468b-9572-2b9b3f1ff55e
             region: second
@@ -69,7 +74,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 1
+            weight: 2
             additional: {  }
             third_party_settings: {  }
           -
@@ -81,7 +86,7 @@ third_party_settings:
               label_display: null
               provider: system
               context_mapping: {  }
-            weight: 0
+            weight: 1
             additional: {  }
             third_party_settings: {  }
           -
@@ -97,12 +102,12 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 5
+            weight: 6
             additional: {  }
             third_party_settings: {  }
           -
             uuid: 828fe502-99ec-4c71-b452-ce4f981905e7
-            region: first
+            region: second
             configuration:
               id: 'field_block:node:publication_issue:field_issue_volume'
               label_display: '0'
@@ -115,30 +120,12 @@ third_party_settings:
                   thousand_separator: ''
                   prefix_suffix: true
                 third_party_settings: {  }
-            weight: 1
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: be8497ef-ea4a-4539-a2ca-a281ef847fd0
-            region: first
-            configuration:
-              id: 'field_block:node:publication_issue:field_issue_number'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: number_integer
-                label: above
-                settings:
-                  thousand_separator: ''
-                  prefix_suffix: true
-                third_party_settings: {  }
-            weight: 2
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           -
             uuid: c03eccd1-fd77-4f87-9615-ead53a800673
-            region: first
+            region: second
             configuration:
               id: 'field_block:node:publication_issue:field_issue_season_year'
               label_display: '0'
@@ -155,7 +142,7 @@ third_party_settings:
             third_party_settings: {  }
           -
             uuid: 46b0e444-7ed3-4cef-832f-76a2346021dc
-            region: first
+            region: second
             configuration:
               id: 'field_block:node:publication_issue:field_issue_number'
               label_display: '0'
@@ -168,46 +155,14 @@ third_party_settings:
                   thousand_separator: ''
                   prefix_suffix: true
                 third_party_settings: {  }
-            weight: 4
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 0ae68162-2406-4ac7-bd09-91ebb1faad36
-            region: first
-            configuration:
-              id: 'field_block:node:publication_issue:body'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: text_default
-                label: hidden
-                settings: {  }
-                third_party_settings: {  }
             weight: 5
             additional: {  }
             third_party_settings: {  }
           -
             uuid: 277d511b-3387-4582-b14d-6416f16f7fd8
-            region: first
+            region: second
             configuration:
               id: 'field_block:node:publication_issue:field_issue_editors_note'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: text_default
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: 6
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 53cf3e7c-a44a-435e-b452-d18e15e9b3d9
-            region: first
-            configuration:
-              id: 'field_block:node:publication_issue:field_issue_masthead'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
@@ -221,7 +176,7 @@ third_party_settings:
             third_party_settings: {  }
           -
             uuid: 85d0cb4e-3af8-4d75-ab25-20576a1eb976
-            region: first
+            region: second
             configuration:
               id: 'field_block:node:publication_issue:field_issue_contributors_notes'
               label_display: '0'
@@ -235,13 +190,58 @@ third_party_settings:
             weight: 8
             additional: {  }
             third_party_settings: {  }
+          -
+            uuid: 53cf3e7c-a44a-435e-b452-d18e15e9b3d9
+            region: second
+            configuration:
+              id: 'field_block:node:publication_issue:field_issue_masthead'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 9
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: b30608ed-8311-4716-a07f-39413571154d
+            region: second
+            configuration:
+              id: 'field_block:node:publication_issue:field_image'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: hidden
+                settings:
+                  view_mode: full__no_crop
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
             lock: {  }
           layout_builder_limit:
             limit:
-              scope: '0'
+              scope: disabled
               scope_update: 'Update scope'
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      allowed_layouts: {  }
+      denylisted_blocks: {  }
+      allowlisted_blocks: {  }
+      restricted_categories: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts: {  }
 id: node.publication_issue.default
 targetEntityType: node
 bundle: publication_issue
@@ -254,6 +254,11 @@ content:
     third_party_settings: {  }
     weight: 5
     region: first
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
+    region: content
   field_image:
     type: entity_reference_label
     label: above
@@ -318,4 +323,5 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_meta_tags: true
   search_api_excerpt: true
