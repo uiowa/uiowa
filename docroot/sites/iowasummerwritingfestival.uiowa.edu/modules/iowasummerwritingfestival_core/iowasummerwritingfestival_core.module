@@ -25,7 +25,7 @@ function iowasummerwritingfestival_core_form_alter(&$form, FormStateInterface $f
   switch ($form_id) {
     case 'node_event_form':
     case 'node_event_edit_form':
-      $form['#attached']['library'][] = 'iowasummerwritingfestival_core/iowasummerwritingfestival_overrides';
+    $form['field_event_genre']['#attributes']['class'][] = 'multi--column';
       break;
   }
 }
@@ -45,8 +45,8 @@ function iowasummerwritingfestival_core_theme($existing, $type, $theme, $path) {
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
-function iowasummerwritingfestival_core_theme_suggestions_field_alter(array &$suggestions, array $variables) {
-  switch ($variables["element"]["#field_name"]) {
+function iowasummerwritingfestival_core_theme_suggestions_field_alter(array &$suggestions, array &$variables) {
+  switch ($variables['element']['#field_name']) {
     case 'field_event_genre':
       $suggestions[] = 'field__comma_separated';
       break;
