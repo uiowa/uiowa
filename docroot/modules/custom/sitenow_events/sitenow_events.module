@@ -270,8 +270,9 @@ function sitenow_events_preprocess_block(&$variables) {
           ],
         ];
       }
-      break;
 
+      // The above case intentionally falls through to the next case.
+      // Do not add a break.
     case 'views_block:events_list_block-card_list':
     case 'views_block:events-card_list':
       if (isset($variables['attributes']['class'])) {
