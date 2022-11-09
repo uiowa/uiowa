@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labbeattie.uiowa.ddev.site
+    protocol: https
+  machine_name: labbeattie
+  human_name: beattie.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labbeattie.prod
+drupal:
+  db:
+    database: beattie_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labbeattie.prod.drupal.uiowa.edu'
+  requester: srbeattie
+  site-name: 'The Beattie Lab'
