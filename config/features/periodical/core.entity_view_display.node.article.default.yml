@@ -95,72 +95,6 @@ third_party_settings:
             weight: -9
             additional: {  }
             third_party_settings: {  }
-          -
-            uuid: 469e3bce-f635-4505-a57b-e7ef519b4d68
-            region: content
-            configuration:
-              id: 'field_block:node:article:field_article_issue'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_label
-                label: above
-                settings:
-                  link: true
-                third_party_settings: {  }
-            weight: -8
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 1fbe4668-8f4d-4105-8661-7153912457bf
-            region: content
-            configuration:
-              id: 'field_block:node:article:body'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: text_default
-                label: hidden
-                settings: {  }
-                third_party_settings: {  }
-            weight: -7
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: ebbedfd5-382b-40f8-9481-0cdc436ba14f
-            region: content
-            configuration:
-              id: 'field_block:node:article:field_article_author'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_label
-                label: inline
-                settings:
-                  link: true
-                third_party_settings: {  }
-            weight: -6
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: fd6bceb8-8c22-4ecc-96cd-9cb0335a5b8b
-            region: content
-            configuration:
-              id: 'field_block:node:article:field_article_author_bio'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: text_default
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: -5
-            additional: {  }
-            third_party_settings: {  }
         third_party_settings: {  }
       -
         layout_id: layout_onecol
@@ -169,17 +103,6 @@ third_party_settings:
           context_mapping: {  }
         components:
           -
-            uuid: bf4bf51c-26f8-4bbf-807f-708722bb4875
-            region: content
-            configuration:
-              id: 'extra_field_block:node:article:content_moderation_control'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-            weight: 1
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: 026a4bb8-3434-4615-9211-93eb7a12ee2d
             region: content
             configuration:
@@ -187,7 +110,7 @@ third_party_settings:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-            weight: 8
+            weight: 9
             additional: {  }
             third_party_settings: {  }
           -
@@ -204,7 +127,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 10
+            weight: 13
             additional: {  }
             third_party_settings: {  }
           -
@@ -225,23 +148,7 @@ third_party_settings:
                   rel: ''
                   target: ''
                 third_party_settings: {  }
-            weight: 11
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: e11264d2-f469-41f9-ae04-db2ce33883fa
-            region: content
-            configuration:
-              id: 'field_block:node:article:body'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: text_default
-                label: hidden
-                settings: {  }
-                third_party_settings: {  }
-            weight: 13
+            weight: 14
             additional: {  }
             third_party_settings: {  }
           -
@@ -252,7 +159,7 @@ third_party_settings:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-            weight: 14
+            weight: 18
             additional: {  }
             third_party_settings: {  }
           -
@@ -272,7 +179,7 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 9
+            weight: 11
             additional: {  }
             third_party_settings: {  }
           -
@@ -284,7 +191,7 @@ third_party_settings:
               label_display: null
               provider: sitenow_articles
               context_mapping: {  }
-            weight: 12
+            weight: 15
             additional: {  }
             third_party_settings: {  }
           -
@@ -296,10 +203,76 @@ third_party_settings:
               label_display: null
               provider: sitenow_articles
               context_mapping: {  }
-            weight: 7
+            weight: 8
             additional:
               layout_builder_styles_style:
                 block_margin_bottom: block_margin_bottom
+            third_party_settings: {  }
+          -
+            uuid: bf4bf51c-26f8-4bbf-807f-708722bb4875
+            region: content
+            configuration:
+              id: 'extra_field_block:node:article:content_moderation_control'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 7
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 469e3bce-f635-4505-a57b-e7ef519b4d68
+            region: content
+            configuration:
+              id: 'field_block:node:article:field_article_issue'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: visually_hidden
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 10
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: fd6bceb8-8c22-4ecc-96cd-9cb0335a5b8b
+            region: content
+            configuration:
+              id: 'field_block:node:article:field_article_author_bio'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: text_default
+                label: visually_hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 17
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: e11264d2-f469-41f9-ae04-db2ce33883fa
+            region: content
+            configuration:
+              id: 'field_block:node:article:body'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 16
+            additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
       -
