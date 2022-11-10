@@ -43,17 +43,25 @@
 .page-node-type-topic-collection .banner {
   .block-views-blocktopic-page-browse-by-tag-block-4  {
     .headline {
-      color: #fff;
-    }
-    .views-row  + .views-row {
-      &:before {
+      @include breakpoint(sm) {
         color: #fff;
       }
     }
+    .views-row  + .views-row {
+      &:before {
+        @include breakpoint(sm) {
+          color: #fff;
+        }
+      }
+    }
     .field__item {
-      color: #fff;
-      a {
+      @include breakpoint(sm) {
         color: #fff;
+      }
+      a {
+        @include breakpoint(sm) {
+          color: #fff;
+        }
       }
     }
   }
