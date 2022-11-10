@@ -24,29 +24,25 @@ content:
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 3
+    weight: 1
     region: content
-  content_moderation_control:
-    settings: {  }
+  field_image:
+    type: entity_reference_entity_view
+    label: visually_hidden
+    settings:
+      view_mode: default
+      link: true
     third_party_settings: {  }
     weight: 0
     region: content
-  field_image:
-    type: entity_reference_label
-    label: visually_hidden
-    settings:
-      link: true
-    third_party_settings: {  }
-    weight: 2
-    region: content
-  links:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 1
-    region: content
 hidden:
+  content_moderation_control: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_iowa_counties: true
   field_meta_tags: true
   field_partner_link: true
   field_partner_related_individual: true
+  links: true
   search_api_excerpt: true
