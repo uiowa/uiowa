@@ -25,7 +25,7 @@ function iowasummerwritingfestival_core_form_alter(&$form, FormStateInterface $f
   switch ($form_id) {
     case 'node_event_form':
     case 'node_event_edit_form':
-    $form['field_event_genre']['#attributes']['class'][] = 'multi--column';
+      $form['field_event_genre']['#attributes']['class'][] = 'multi--column';
       break;
   }
 }
