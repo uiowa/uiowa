@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.field.node.publication_issue.body
     - field.field.node.publication_issue.field_issue_number
+    - field.field.node.publication_issue.field_issue_release_date
     - node.type.publication_issue
 id: node.publication_issue
 target_entity_type_id: node
@@ -13,6 +14,7 @@ schema_type: PublicationIssue
 schema_properties:
   created: dateCreated
   changed: dateModified
+  field_issue_release_date: datePublished
   langcode: inLanguage
   field_issue_number: issueNumber
   title: name

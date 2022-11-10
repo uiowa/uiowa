@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.publication_issue.field_issue_editors_note
     - field.field.node.publication_issue.field_issue_masthead
     - field.field.node.publication_issue.field_issue_number
+    - field.field.node.publication_issue.field_issue_release_date
     - field.field.node.publication_issue.field_issue_season_year
     - field.field.node.publication_issue.field_issue_volume
     - field.field.node.publication_issue.field_meta_tags
@@ -16,6 +17,7 @@ dependencies:
     - workflows.workflow.editorial
   module:
     - content_moderation
+    - datetime
     - media_library
     - metatag
     - path
@@ -78,6 +80,12 @@ content:
     region: content
     settings:
       placeholder: ''
+    third_party_settings: {  }
+  field_issue_release_date:
+    type: datetime_default
+    weight: 27
+    region: content
+    settings: {  }
     third_party_settings: {  }
   field_issue_season_year:
     type: string_textfield
