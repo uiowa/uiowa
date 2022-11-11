@@ -6,6 +6,7 @@ use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
 use Drupal\taxonomy\Entity\Term;
+use function _PHPStan_4b01b3801\React\Promise\Stream\first;
 
 /**
  * Migrate Source plugin.
@@ -26,6 +27,36 @@ class InTheNews extends BaseNodeSource {
 
     // Process the image field.
     $image = $row->getSourceProperty('field_image');
+
+    $source_collection = $row->getSourceProperty('field_sources');
+    if (!empty($source_collection)) {
+      // Even if there are multiple sources, we can grab the first
+      // and ignore the rest.
+      $source_id = first($source_collection)['revision_id'];
+      $url = $this->select('field_data_field_url', 'url')
+        ->fields('url', ['field_url_url'])
+        ->condition('url.revision_id', $source_id, '=')
+        ->execute();
+      // @todo This could be combined into a single call.
+      $tid = $this->select('field_data_field_source', 'source')
+        ->fields('source', ['field_source_tid'])
+        ->condition('source.revision_id', $source_id, '=')
+        ->execute();
+      $source_name = $this->select('taxonomy_term_data', 't')
+        ->fields('t', ['name'])
+        ->condition('t.tid', $tid, '=')
+        ->execute();
+      $row->setSourceProperty('source_name', $source_name);
+      $row->setSourceProperty('source_url', $url);
+    }
+
+    // We use the source link to determine if this is a spotlight
+    // or in the news.
+    $article_type = 'in-the-news';
+    if (isset($url) && str_contains($url, 'uiowa.edu')) {
+      $article_type = 'spotlight';
+    }
+    $row->setSourceProperty('article_type', $article_type);
 
     if (!empty($image)) {
       $fid = $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']);
