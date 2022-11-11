@@ -39,7 +39,7 @@ class Achievement extends BaseNodeSource {
       }
       elseif ($filemime === 'video/oembed') {
         $body = $row->getSourceProperty('body');
-        // @todo Add the video to the body.
+        $body[0]['value'] = $this->createVideo($media[0]['fid']) . $body[0]['value'];
         $row->setSourceProperty('body', $body);
       }
     }
@@ -111,6 +111,58 @@ class Achievement extends BaseNodeSource {
 
     // Return tid for mapping to field.
     return $this->tagMapping[$tag_name];
+  }
+
+  /**
+   * Helper function to check for oembed videos, or create media if not.
+   */
+  private function createVideo($fid) {
+    $file_query = $this->fidQuery($fid);
+    // Get the video source.
+    $vid_uri = str_replace('oembed://', '', $file_query['uri']);
+
+    $new_id = \Drupal::database()->select('media__field_media_oembed_video', 'o')
+      ->fields('o', ['entity_id'])
+      ->condition('o.field_media_oembed_video_value', $vid_uri, '=')
+      ->execute()
+      ->fetchField();
+    if (!$new_id) {
+      // @todo Do some stuff to make it.
+      $media_entity = [
+        'langcode' => 'en',
+        'metadata' => [],
+        'bundle' => 'remote_video',
+        'field_media_oembed_video' => $vid_uri,
+      ];
+
+      $media_manager = $this->entityTypeManager->getStorage('media');
+      /** @var \Drupal\Media\MediaInterface $media */
+      $media = $media_manager->create($media_entity);
+      $media->setName($file_query['filename']);
+      $media->setOwnerId(1);
+      $media->save();
+
+      $uuid = $media->uuid();
+    }
+    else {
+      // Get the uuid.
+      $uuid = \Drupal::service('entity_type.manager')
+        ->getStorage('media')
+        ->load($new_id)
+        ->uuid();
+    }
+
+    $media = [
+      '#type' => 'html_tag',
+      '#tag' => 'drupal-media',
+      '#attributes' => [
+        'data-align' => 'center',
+        'data-entity-type' => 'media',
+        'data-entity-uuid' => $uuid,
+      ],
+    ];
+
+    return \Drupal::service('renderer')->renderPlain($media);
   }
 
 }
