@@ -25,8 +25,15 @@ class InTheNews extends BaseNodeSource {
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
 
-    // Process the image field.
-    $image = $row->getSourceProperty('field_image');
+    // Process the primary media field.
+    // @todo Need to check if this is a video,
+    //   and if so, prepend it to the body.
+    $image = $row->getSourceProperty('field_primary_media');
+
+    if (!empty($image)) {
+      $fid = $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']);
+      $row->setSourceProperty('field_primary_media', $fid);
+    }
 
     $source_collection = $row->getSourceProperty('field_sources');
     if (!empty($source_collection)) {
