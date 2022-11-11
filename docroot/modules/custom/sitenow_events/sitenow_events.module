@@ -270,8 +270,9 @@ function sitenow_events_preprocess_block(&$variables) {
           ],
         ];
       }
-      break;
 
+      // The above case intentionally falls through to the next case.
+      // Do not add a break.
     case 'views_block:events_list_block-card_list':
     case 'views_block:events-card_list':
       if (isset($variables['attributes']['class'])) {
@@ -426,6 +427,11 @@ function sitenow_events_format_instance(array $event_instance) {
 
   if (isset($event_instance['end'])) {
     $end_date = strtotime($event_instance['end']);
+  }
+  // If it's an all day event, we need to check
+  // if it spans multiple days.
+  elseif (isset($event_instance['last_date'])) {
+    $end_date = strtotime($event_instance['last_date']);
   }
   else {
     $end_date = $start_date;
