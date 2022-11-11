@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labthorne.uiowa.ddev.site
+    protocol: https
+  machine_name: labthorne
+  human_name: thorne.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labthorne.prod
+drupal:
+  db:
+    database: thorne_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labthorne.prod.drupal.uiowa.edu'
+  requester: akafer
+  site-name: Thorne
