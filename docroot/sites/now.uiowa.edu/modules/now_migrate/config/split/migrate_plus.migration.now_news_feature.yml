@@ -1,0 +1,38 @@
+id: now_news_feature
+label: News Feature
+dependencies:
+  enforced:
+    module:
+      - now_migrate
+migration_tags:
+  - now
+migration_group: sitenow_migrate
+source:
+  plugin: now_news_feature
+  node_type: news_feature
+destination:
+  plugin: 'entity:node'
+  default_bundle: article
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  moderation_state: moderation_state
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid:
+    plugin: default_value
+    default_value: 1
+  title: title
+  field_image: field_image
+  body: body
+  field_teaser: body_summary
+  field_tags: tags
+  field_article_source_org: field_by_line
+  field_article_type: 'featured'
+migration_dependencies: null
