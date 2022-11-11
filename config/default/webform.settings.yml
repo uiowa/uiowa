@@ -47,7 +47,14 @@ settings:
   default_limit_user_message: '<p>No more submissions are permitted.</p>'
   default_submission_label: '[webform_submission:submitted-to]: Submission #[webform_submission:serial]'
   default_submission_log: false
-  default_submission_views: {  }
+  default_submission_views:
+    admin:
+      title: 'Administer submissions'
+      view: 'webform_submissions:embed_administer'
+      global_routes:
+        - entity.webform_submission.collection
+      webform_routes:
+        - entity.webform.results_submissions
   default_submission_views_replace:
     global_routes:
       - entity.webform_submission.collection
