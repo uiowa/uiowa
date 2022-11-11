@@ -301,9 +301,10 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
   /** @var \Drupal\views\ViewExecutable $view */
   // @todo come back to scope by display id.
   $view = $variables['view'];
+  $rows = $variables['rows'];
+  $style = $view->style_plugin;
+
   if (in_array($view->id(), ['events_list_block', 'events'])) {
-    $rows = $variables['rows'];
-    $style = $view->style_plugin;
 
     foreach ($rows as $id => $row) {
       // Need to get these values regardless of whether they are hidden or not.
@@ -328,6 +329,62 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
       $variables['rows'][$id]['card_options']['card_subtitle'] = $style->getField($id, 'field_event_when');
       $variables['rows'][$id]['card_options']['card_link_url'] = $card_link_url;
     }
+  }
+
+  switch ($view->id()) {
+    case 'event_details_card':
+      foreach ($rows as $id => $row) {
+        // Get node path to link card with.
+        $nid = $view->result[$id]->_entity->id();
+        $node = $row["content"]["#row"]->_entity;
+        $link = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
+
+        $card_meta = [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#attributes' => [
+            'class' => [
+              'card__meta fa-ul',
+            ],
+          ],
+        ];
+
+        // Add location information, if it exists.
+        if (
+          $style->getField($id, 'field_event_location') &&
+          !$node?->get('field_event_location')?->isEmpty()
+        ) {
+          $card_meta['location'] = $node?->field_event_location?->view('teaser');
+        }
+
+        // Add virtual event information, if it exists.
+        if (
+          $style->getField($id, 'field_event_virtual') &&
+          !$node?->get('field_event_virtual')?->isEmpty()
+        ) {
+          $card_meta['virtual'] = $node->field_event_virtual?->view('teaser');
+        }
+
+        // Add source link information, if it exists.
+        if (
+          $style->getField($id, 'field_event_series_link') &&
+          !$node?->get('field_event_series_link')?->isEmpty()
+        ) {
+          $card_meta['source'] = $node?->field_event_series_link?->view('teaser');
+        }
+
+        // Initialize card_options variable.
+        $variables['rows'][$id]['card_options'] = [
+          'attributes' => $variables['rows'][$id]['attributes'],
+          'card_title' => $style->getField($id, 'title'),
+          'card_link_url' => $link,
+          'card_image' => $style->getField($id, 'field_image'),
+          'card_subtitle' => $style->getField($id, 'field_event_when'),
+          'card_meta' => \Drupal::service('renderer')->render($card_meta),
+        ];
+      }
+
+      break;
   }
 }
 

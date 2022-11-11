@@ -21,91 +21,28 @@
 {{ attach_library('uids_base/card') }}
 
 {% if title %}
-  <h3>{{ title }}</h3>
+<h3>{{ title }}</h3>
 {% endif %}
-{% for key,row in rows %}
-  {% set row_classes = [
+{% for row in rows %}
+  {%
+    set row_classes = [
     default_row_class ? 'views-row',
-  ] %}
-  <div{{ row.attributes.addClass(row_classes) }}>
+  ]
+  %}
+  {% set card_view = row.card_options %}
+  {% embed '@uids_base/uids/card.html.twig' with card_view only  %}
 
-    {% set media_attributes = media_attributes ?: create_attribute() %}
-
-    {% set event_details_card_view = {
-      'card_image': view.style_plugin.getField(key, 'field_image'),
-      'event_when': view.style_plugin.getField(key, 'field_event_when'),
-      'event_location': view.style_plugin.getField(key, 'field_event_location'),
-      'event_virtual': view.style_plugin.getField(key, 'field_event_virtual'),
-      'event_source': view.style_plugin.getField(key, 'field_event_series_link'),
-    } %}
-
-    {%
-      set classes = [
-      'card--stacked',
-      'card--centered-left',
-      'card--alignment-left',
-      'media--border',
-    ]
-    %}
-
-    {% set media_size = 'large' %}
-
-    {% set has_body = false %}
-
-    {% set card_body_fields = ['event_when', 'event_location', 'event_virtual', 'event_source'] %}
-
-    {% for check in card_body_fields %}
-      {% if event_details_card_view[check]|striptags|trim is not empty %}
-        {% set has_body = true %}
+    {% block card_img %}
+      {% if card_image|striptags('<img><picture>')|trim is not empty %}
+        {{ parent() }}
       {% endif %}
-    {% endfor %}
+    {% endblock %}
 
-    {% if has_body %}
-      {% set classes = classes|merge([
-        'bg--white',
-        'card--enclosed',
-      ]) %}
+    {% block card_meta %}
+      {% if card_meta|striptags|trim is not empty %}
+        {{ card_meta }}
+      {% endif %}
+    {% endblock %}
 
-      {% set media_size = 'medium' %}
-    {% endif %}
-
-    {% set event_details_card_view = event_details_card_view|merge({
-      'attributes': attributes.addClass(classes),
-      'media_attributes': media_attributes.addClass('media--circle card__media card__media--' ~ media_size),
-      'has_body': has_body,
-    }) %}
-
-    {% embed '@uids_base/uids/card.html.twig' with event_details_card_view only %}
-
-      {% block card_img %}
-        {% if card_image|striptags('<img><picture>')|trim is not empty %}
-          {{ parent() }}
-        {% endif %}
-      {% endblock %}
-
-      {% block card_body %}
-        {% if has_body %}
-
-          <div class="card__body">
-            {% block card_meta %}
-              {% if event_when|striptags|trim is not empty %}
-                <div class="card__meta"><span role="presentation" class="fas fa-clock"></span> {{ event_when }}</div>
-              {% endif %}
-              {% if event_location|striptags|trim is not empty %}
-                <div class="card__meta"><span role="presentation" class="fas fa-map-marker"></span> {{ event_location }}</div>
-              {% endif %}
-              {% if event_virtual|striptags|trim is not empty %}
-                <div class="card__meta"><span role="presentation" class="fas fa-desktop"></span> {{ event_virtual }}</div>
-              {% endif %}
-              {% if event_source|striptags|trim is not empty %}
-                <div class="card__meta"><span role="presentation" class="fas fa-link"></span> {{ event_source }}</div>
-              {% endif %}
-            {% endblock %}
-          </div>
-
-        {% endif %}
-      {% endblock %}
-
-    {% endembed %}
-  </div>
+  {% endembed %}
 {% endfor %}

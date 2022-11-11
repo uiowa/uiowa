@@ -10,15 +10,6 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Implements hook_preprocess_HOOK().
- */
-function iowasummerwritingfestival_core_preprocess_node(&$variables) {
-  if ($variables["node"]?->type?->entity?->label() === 'Event') {
-    $variables['#attached']['library'][] = 'iowasummerwritingfestival_core/iowasummerwritingfestival_overrides';
-  }
-}
-
-/**
  * Implements hook_form_alter().
  */
 function iowasummerwritingfestival_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
