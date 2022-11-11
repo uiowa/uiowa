@@ -74,7 +74,7 @@ class Achievement extends BaseNodeSource {
         $tid = $this->createTag($tag_name);
 
         // Add the mapped TID to match our tag name.
-        $tags[] = $this->tagMapping[$tid];
+        $tags[] = $tid;
 
       }
       $row->setSourceProperty('tags', $tags);
