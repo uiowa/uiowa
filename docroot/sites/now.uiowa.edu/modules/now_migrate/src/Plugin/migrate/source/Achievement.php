@@ -44,7 +44,13 @@ class Achievement extends BaseNodeSource {
 
     // Map various old fields into Tags.
     $tag_tids = [];
-    foreach (['field_achievement_category', 'field_news_from', 'field_news_about', 'field_news_for', 'field_news_keywords'] as $field_name) {
+    foreach ([
+      'field_achievement_category',
+      'field_news_from',
+      'field_news_about',
+      'field_news_for',
+      'field_news_keywords',
+    ] as $field_name) {
       $values = $row->getSourceProperty($field_name);
       if (!isset($values)) {
         continue;
@@ -63,20 +69,10 @@ class Achievement extends BaseNodeSource {
       $tags = [];
       foreach ($tag_results as $result) {
         $tag_name = $result['name'];
-        // Check if we have a mapping. If we don't yet,
-        // then create a new tag and add it to our map.
-        if (!isset($this->tagMapping[$tag_name])) {
-          $term = Term::create([
-            'name' => $tag_name,
-            'vid' => 'tags',
-          ]);
-          if ($term->save()) {
-            $this->tagMapping[$tag_name] = $term->id();
-          }
-        }
+        $tid = $this->createTag($tag_name);
 
         // Add the mapped TID to match our tag name.
-        $tags[] = $this->tagMapping[$tag_name];
+        $tags[] = $this->tagMapping[$tid];
 
       }
       $row->setSourceProperty('tags', $tags);
@@ -104,4 +100,5 @@ class Achievement extends BaseNodeSource {
     // Return tid for mapping to field.
     return $this->tagMapping[$tag_name];
   }
+
 }
