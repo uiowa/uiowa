@@ -25,13 +25,23 @@ class NewsFeature extends BaseNodeSource {
     parent::prepareRow($row);
 
     // Process the primary media field.
-    // @todo Need to check if this is a video,
-    //   and if so, prepend it to the body.
-    $image = $row->getSourceProperty('field_primary_media');
-
-    if (!empty($image)) {
-      $fid = $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']);
-      $row->setSourceProperty('field_primary_media', $fid);
+    $media = $row->getSourceProperty('field_primary_media');
+    if (!empty($media)) {
+      // Check if it's a video or image.
+      $filemime = $this->select('file_managed', 'fm')
+        ->fields('fm', ['filemime'])
+        ->condition('fm.fid', $media[0]['fid'], '=')
+        ->execute();
+      // If it's an image, we can handle it like normal.
+      if (str_starts_with($filemime, 'image')) {
+        $fid = $this->processImageField($media[0]['fid'], $media[0]['alt'], $media[0]['title']);
+        $row->setSourceProperty('field_primary_media', $fid);
+      }
+      elseif ($filemime === 'video/oembed') {
+        $body = $row->getSourceProperty('body');
+        // @todo Add the video to the body.
+        $row->setSourceProperty('body', $body);
+      }
     }
 
     if (!empty($image)) {
