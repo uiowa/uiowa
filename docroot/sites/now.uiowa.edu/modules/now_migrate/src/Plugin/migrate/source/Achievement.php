@@ -43,30 +43,43 @@ class Achievement extends BaseNodeSource {
     }
 
     // Map various old fields into Tags.
-    $category = $row->getSourceProperty('field_achievement_category')[0]['value'];
-    if (!empty($category)) {
-      $tid = $this->createTag($category);
-      $row->setSourceProperty('tags', $tid);
+    $tag_tids = [];
+    foreach (['field_achievement_category', 'field_news_from', 'field_news_about', 'field_news_for', 'field_news_keywords'] as $field_name) {
+      $values = $row->getSourceProperty($field_name);
+      if (!isset($values)) {
+        continue;
+      }
+      foreach ($values as $tid_array) {
+        $tag_tids[] = $tid_array['tid'];
+      }
     }
-    $news_from = $row->getSourceProperty('field_news_from')[0]['value'];
-    if (!empty($news_from)) {
-      $tid = $this->createTag($news_from);
-      $row->setSourceProperty('tags', $tid);
-    }
-    $news_about = $row->getSourceProperty('field_news_about')[0]['value'];
-    if (!empty($news_about)) {
-      $tid = $this->createTag($news_about);
-      $row->setSourceProperty('tags', $tid);
-    }
-    $news_for = $row->getSourceProperty('field_news_for')[0]['value'];
-    if (!empty($news_for)) {
-      $tid = $this->createTag($news_for);
-      $row->setSourceProperty('tags', $tid);
-    }
-    $news_keywords = $row->getSourceProperty('field_news_keywords')[0]['value'];
-    if (!empty($news_keywords)) {
-      $tid = $this->createTag($news_keywords);
-      $row->setSourceProperty('tags', $tid);
+
+    if (!empty($tag_tids)) {
+      // Fetch tag names based on TIDs from our old site.
+      $tag_results = $this->select('taxonomy_term_data', 't')
+        ->fields('t', ['name'])
+        ->condition('t.tid', $tag_tids, 'IN')
+        ->execute();
+      $tags = [];
+      foreach ($tag_results as $result) {
+        $tag_name = $result['name'];
+        // Check if we have a mapping. If we don't yet,
+        // then create a new tag and add it to our map.
+        if (!isset($this->tagMapping[$tag_name])) {
+          $term = Term::create([
+            'name' => $tag_name,
+            'vid' => 'tags',
+          ]);
+          if ($term->save()) {
+            $this->tagMapping[$tag_name] = $term->id();
+          }
+        }
+
+        // Add the mapped TID to match our tag name.
+        $tags[] = $this->tagMapping[$tag_name];
+
+      }
+      $row->setSourceProperty('tags', $tags);
     }
 
     return TRUE;
