@@ -33,5 +33,7 @@ process:
   body: body
   field_teaser: body_summary
   field_tags: tags
-  field_article_type: 'in-the-news'
+  field_article_type:
+    plugin: default_value
+    default_value: in-the-news
 migration_dependencies: null

@@ -34,6 +34,8 @@ process:
   field_teaser: body_summary
   field_tags: tags
   field_article_source_org: field_by_line
-  field_article_type: 'achievements'
+  field_article_type:
+    plugin: default_value
+    default_value: achievements
   field_article_preserve_links: field_news_broken_links_message
 migration_dependencies: null
