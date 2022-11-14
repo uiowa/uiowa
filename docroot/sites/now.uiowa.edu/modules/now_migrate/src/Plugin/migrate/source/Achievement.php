@@ -31,13 +31,14 @@ class Achievement extends BaseNodeSource {
       $filemime = $this->select('file_managed', 'fm')
         ->fields('fm', ['filemime'])
         ->condition('fm.fid', $media[0]['fid'], '=')
-        ->execute();
+        ->execute()
+        ->fetchField();
       // If it's an image, we can handle it like normal.
       if (str_starts_with($filemime, 'image')) {
         $fid = $this->processImageField($media[0]['fid'], $media[0]['alt'], $media[0]['title']);
         $row->setSourceProperty('field_primary_media', $fid);
       }
-      elseif ($filemime === 'video/oembed') {
+      elseif (in_array($filemime, ['video/oembed', 'application/octet-stream'])) {
         $body = $row->getSourceProperty('body');
         $body[0]['value'] = $this->createVideo($media[0]['fid']) . $body[0]['value'];
         $row->setSourceProperty('body', $body);
@@ -120,14 +121,13 @@ class Achievement extends BaseNodeSource {
     $file_query = $this->fidQuery($fid);
     // Get the video source.
     $vid_uri = str_replace('oembed://', '', $file_query['uri']);
-
+    $vid_uri = urldecode($vid_uri);
     $new_id = \Drupal::database()->select('media__field_media_oembed_video', 'o')
       ->fields('o', ['entity_id'])
       ->condition('o.field_media_oembed_video_value', $vid_uri, '=')
       ->execute()
       ->fetchField();
     if (!$new_id) {
-      // @todo Do some stuff to make it.
       $media_entity = [
         'langcode' => 'en',
         'metadata' => [],
