@@ -1,0 +1,50 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.event.field_event_genre
+      - field.field.node.event.field_event_registration_link
+      - field.field.node.event.field_event_type
+    module:
+      - field_delimiter
+      - options
+  content:
+    body:
+      weight: 9
+    field_event_genre:
+      type: list_default
+      label: inline
+      settings: {  }
+      third_party_settings: {  }
+      weight: 10
+      region: content
+    field_event_performer:
+      third_party_settings:
+        field_delimiter:
+          delimiter: ''
+      weight: 11
+    field_event_registration_link:
+      type: link
+      label: above
+      settings:
+        trim_length: 80
+        url_only: false
+        url_plain: false
+        rel: '0'
+        target: _blank
+      third_party_settings: {  }
+      weight: 8
+      region: content
+    field_event_when:
+      settings:
+        format: default_long_date
+  hidden:
+    field_event_type: true
+removing:
+  content:
+    body:
+      weight: 8
+    field_event_performer:
+      weight: 9
+    field_event_when:
+      settings:
+        format: default
