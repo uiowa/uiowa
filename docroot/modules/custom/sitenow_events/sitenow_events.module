@@ -349,6 +349,14 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
           ],
         ];
 
+        // Add when information, if it exists.
+        if (
+          $style->getField($id, 'field_event_when') &&
+          !$node?->get('field_event_when')?->isEmpty()
+        ) {
+          $card_meta['when'] = $node?->field_event_when?->view('teaser');
+        }
+
         // Add location information, if it exists.
         if (
           $style->getField($id, 'field_event_location') &&
@@ -379,7 +387,6 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
           'card_title' => $style->getField($id, 'title'),
           'card_link_url' => $link,
           'card_image' => $style->getField($id, 'field_image'),
-          'card_subtitle' => $style->getField($id, 'field_event_when'),
           'card_meta' => \Drupal::service('renderer')->render($card_meta),
         ];
       }

@@ -24,12 +24,12 @@
 <h3>{{ title }}</h3>
 {% endif %}
 {% for row in rows %}
-  {%
-    set row_classes = [
-    default_row_class ? 'views-row',
-  ]
+{#  {{ row.card_options.attributes.addClass('card--enclosed') }}#}
+  {% set card_view =
+    row.card_options|merge({
+      attributes: row.card_options.attributes.addClass('card--enclosed')
+    })
   %}
-  {% set card_view = row.card_options %}
   {% embed '@uids_base/uids/card.html.twig' with card_view only  %}
 
     {% block card_img %}
