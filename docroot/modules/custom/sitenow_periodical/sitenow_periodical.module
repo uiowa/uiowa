@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains sitenow_periodical.module.
+ */
+
+/**
+ * Implements hook_pathauto_pattern_alter().
+ */
+function sitenow_periodical_pathauto_pattern_alter(&$pattern, array $context) {
+  if ($context['module'] === 'node' && ($context['op'] == 'update')) {
+    $node = $context['data']['node'];
+    $issue = $node->get('field_article_issue');
+
+    //  Change URL alias pattern if article is part of an issue
+    if (!$issue->isEmpty()) {
+      $pattern->setPattern('[node:field_article_issue:entity]/[node:title]');
+    }
+    else {
+      $pattern->setPattern('news/[node:created:custom:Y]/[node:created:custom:m]/[node:title]');
+    }
+  }
+}
