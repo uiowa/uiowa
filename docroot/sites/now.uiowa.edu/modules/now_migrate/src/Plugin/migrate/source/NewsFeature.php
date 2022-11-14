@@ -45,11 +45,6 @@ class NewsFeature extends BaseNodeSource {
       }
     }
 
-    if (!empty($image)) {
-      $fid = $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']);
-      $row->setSourceProperty('field_image', $fid);
-    }
-
     $subhead = $row->getSourceProperty('field_subhead');
     if (!empty($subhead)) {
       $subhead = '<p class="uids-component--light-intro">' . $subhead[0]['value'] . '</p>';
