@@ -56,6 +56,7 @@ class InTheNews extends BaseNodeSource {
         ->condition('url.revision_id', $source_id, '=')
         ->execute()
         ->fetchField();
+      $url = $this->fixUrls($url);
       // @todo This could be combined into a single call.
       $tid = $this->select('field_data_field_source', 'source')
         ->fields('source', ['field_source_tid'])
@@ -140,6 +141,18 @@ class InTheNews extends BaseNodeSource {
 
     // Return tid for mapping to field.
     return $this->tagMapping[$tag_name];
+  }
+
+  /**
+   * Helper function to fix a few funky URLs.
+   */
+  private function fixUrls($url) {
+    $map = [
+      'bhttp://healthland.time.com/2012/11/07/researchers-solve-the-mystery-of-childs-illness/' => 'https://healthland.time.com/2012/11/08/researchers-solve-the-mystery-of-childs-illness/',
+      'bit.ly/1fYA2JK' => 'https://nonpareilonline.com/business/whitcher-takes-over-iowa-legal-aid/article_ce43df0a-2b33-11e5-8015-ab51eac75ae4.html',
+      'cnn.com' => 'https://www.cnn.com/',
+    ];
+    return (isset($map[$url])) ? $map[$url] : $url;
   }
 
 }
