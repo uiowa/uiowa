@@ -485,6 +485,11 @@ function sitenow_events_format_instance(array $event_instance) {
   if (isset($event_instance['end'])) {
     $end_date = strtotime($event_instance['end']);
   }
+  // If it's an all day event, we need to check
+  // if it spans multiple days.
+  elseif (isset($event_instance['last_date'])) {
+    $end_date = strtotime($event_instance['last_date']);
+  }
   else {
     $end_date = $start_date;
   }
