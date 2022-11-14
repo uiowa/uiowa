@@ -6,7 +6,6 @@ use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
 use Drupal\taxonomy\Entity\Term;
-use function _PHPStan_4b01b3801\React\Promise\Stream\first;
 
 /**
  * Migrate Source plugin.
@@ -91,10 +90,10 @@ class InTheNews extends BaseNodeSource {
           'value' => $timestamp,
           'end_value' => $timestamp + 86340,
           'duration' => '0',
-          'rrule' => null,
-          'rrule_index' => null,
+          'rrule' => NULL,
+          'rrule_index' => NULL,
           'timezone' => '',
-        ]
+        ],
       ]);
     }
 
@@ -131,6 +130,21 @@ class InTheNews extends BaseNodeSource {
 
       }
       $row->setSourceProperty('tags', $tags);
+    }
+
+    // Replace inline files and images in the body,
+    // and set for placement in the body and teaser fields.
+    $body = $row->getSourceProperty('body');
+    if (!empty($body)) {
+      $this->viewMode = 'medium__no_crop';
+      $this->align = 'left';
+      // Search for D7 inline embeds and replace with D8 inline entities.
+      $body[0]['value'] = $this->replaceInlineFiles($body[0]['value']);
+      // Set the format to filtered_html while we have it.
+      $body[0]['format'] = 'filtered_html';
+      $row->setSourceProperty('body', $body);
+      // Extract the summary.
+      $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));
     }
 
     return TRUE;
