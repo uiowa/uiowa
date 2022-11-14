@@ -50,20 +50,23 @@ class InTheNews extends BaseNodeSource {
     if (!empty($source_collection)) {
       // Even if there are multiple sources, we can grab the first
       // and ignore the rest.
-      $source_id = first($source_collection)['revision_id'];
+      $source_id = $source_collection[0]['revision_id'];
       $url = $this->select('field_data_field_url', 'url')
         ->fields('url', ['field_url_url'])
         ->condition('url.revision_id', $source_id, '=')
-        ->execute();
+        ->execute()
+        ->fetchField();
       // @todo This could be combined into a single call.
       $tid = $this->select('field_data_field_source', 'source')
         ->fields('source', ['field_source_tid'])
         ->condition('source.revision_id', $source_id, '=')
-        ->execute();
+        ->execute()
+        ->fetchField();
       $source_name = $this->select('taxonomy_term_data', 't')
         ->fields('t', ['name'])
         ->condition('t.tid', $tid, '=')
-        ->execute();
+        ->execute()
+        ->fetchField();
       $row->setSourceProperty('source_name', $source_name);
       $row->setSourceProperty('source_url', $url);
     }
@@ -72,7 +75,7 @@ class InTheNews extends BaseNodeSource {
     // or in the news.
     $article_type = 'in-the-news';
     if (isset($url) && str_contains($url, 'uiowa.edu')) {
-      $article_type = 'spotlight';
+      $article_type = 'ui-spotlight';
     }
     $row->setSourceProperty('article_type', $article_type);
 
