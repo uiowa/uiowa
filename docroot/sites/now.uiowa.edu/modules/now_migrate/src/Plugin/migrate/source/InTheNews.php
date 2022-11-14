@@ -80,9 +80,22 @@ class InTheNews extends BaseNodeSource {
     }
     $row->setSourceProperty('article_type', $article_type);
 
-    if (!empty($image)) {
-      $fid = $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']);
-      $row->setSourceProperty('field_image', $fid);
+    // If we have an original publication date,
+    // grab the datetime string and convert it to a timestamp,
+    // then manually construct our smart_date info.
+    $original_pub_date = $row->getSourceProperty('field_original_pub_date');
+    if (!empty($original_pub_date)) {
+      $timestamp = strtotime($original_pub_date[0]['value']);
+      $row->setSourceProperty('field_original_pub_date', [
+        0 => [
+          'value' => $timestamp,
+          'end_value' => $timestamp + 86340,
+          'duration' => '0',
+          'rrule' => null,
+          'rrule_index' => null,
+          'timezone' => '',
+        ]
+      ]);
     }
 
     // Map various old fields into Tags.
