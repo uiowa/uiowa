@@ -7,7 +7,7 @@
 
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Url;
-use Drupal\smart_trim\Truncate\TruncateHTML;
+use Drupal\smart_trim\TruncateHTML;
 
 /**
  * Theme function for an event teaser.
