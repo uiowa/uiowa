@@ -145,7 +145,7 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
             if (is_array($value_value)) {
               $value_value = implode('.', $value_value);
             }
-            else if (is_null($value_value)) {
+            elseif (is_null($value_value)) {
               $value_value = '';
             }
 
