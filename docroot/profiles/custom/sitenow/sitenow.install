@@ -21,7 +21,10 @@ use Drupal\field\Entity\FieldConfig;
 /**
  * Helper function to update all blocks of a type.
  */
-function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): void {
+function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): void {
+  if (!is_array($block_plugin_ids)) {
+    $block_plugin_ids = [$block_plugin_ids];
+  }
   $db = \Drupal::database();
   $block_storage = \Drupal::entityTypeManager()
     ->getStorage('block_content');
@@ -34,9 +37,17 @@ function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): v
   $blocks = [];
 
   foreach ($tables as $table_name) {
-    // Select instances where the section contains this type of block.
-    $query = $db->select($table_name, 'n')
-      ->condition($section_column, "%$block_plugin_id%", 'LIKE')
+    // Select DB records for our $table_name.
+    $query = $db->select($table_name, 'n');
+
+    // Match against any record that has a block matching our $block_plugin_id.
+    $or_group = $query->orConditionGroup();
+    foreach ($block_plugin_ids as $block_plugin_id) {
+      $or_group = $or_group->condition($section_column, "%$block_plugin_id%", 'LIKE');
+    }
+
+    $query = $query
+      ->condition($or_group)
       ->fields('n', ['entity_id', 'revision_id', 'delta', $section_column]);
 
     $count = $query->countQuery()->execute()->fetchField();
@@ -1899,4 +1910,66 @@ function sitenow_update_9049() {
  */
 function sitenow_update_9050() {
   drupal_flush_all_caches();
+}
+
+/**
+ * Update views list blocks to new exposed filter format.
+ */
+function sitenow_update_9051() {
+  $filter_template = [
+    'value' => '',
+    'plugin_id' => 'string',
+    'exposed' => 0,
+    'expose' => [
+      'use_operator' => FALSE,
+    ],
+  ];
+  $filter_presets = [
+    'field_tags_target_id' => [
+      'type' => 'entity_autocomplete',
+      'plugin_id' => 'taxonomy_index_tid',
+    ],
+    'field_people_research_areas_target_id' => [
+      'type' => 'entity_autocomplete',
+      'plugin_id' => 'taxonomy_index_tid',
+    ],
+    'field_person_type_status_value' => [
+      'operator' => 'or',
+      'plugin_id' => 'list_field',
+    ],
+    'field_event_category_target_id' => [
+      'type' => 'entity_autocomplete',
+      'plugin_id' => 'taxonomy_index_tid',
+    ],
+  ];
+  _update_all_blocks_by_plugin_id([
+    'views_block:article_list_block-list_article',
+    'views_block:people_list_block-list_card',
+  ], function (&$component, $block) use ($filter_template, $filter_presets) {
+    // Get block configuration.
+    $config = $component->get('configuration');
+    $new_filters = [];
+
+    // Loop through 'exposed_filter_values' from block config.
+    // @todo Loop through all possible filters for each view.
+    foreach ($config['exposed_filter_values'] as $old_filter_id => $value) {
+      $new_filter = $filter_template;
+      if (isset($filter_presets[$old_filter_id])) {
+        $new_filter = $filter_presets[$old_filter_id] + $new_filter;
+      }
+      if (!empty($value)) {
+        // @todo Handle conversion from ['target_id => $tid] for
+        //   taxonomy_term_tid type.
+        $new_filter['value'] = $value;
+      }
+      $new_filters[] = $new_filter;
+    }
+    $config['exposed'] = $new_filters;
+
+    // Delete 'exposed_filter_values' block config.
+    unset($config['exposed_filter_values']);
+
+    // Store updated configuration.
+    $component->set('configuration', $config);
+  });
 }
