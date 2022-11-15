@@ -5,6 +5,8 @@
  * Contains sitenow_periodical.module.
  */
 
+use Drupal\pathauto\Entity\PathautoPattern;
+
 /**
  * Implements hook_pathauto_pattern_alter().
  */
@@ -15,10 +17,10 @@ function sitenow_periodical_pathauto_pattern_alter(&$pattern, array $context) {
 
     // Change URL alias pattern if article is part of an issue.
     if (!$issue->isEmpty()) {
-      $new_pattern = Drupal\pathauto\Entity\PathautoPattern::load('article_publication')->getPattern();
+      $new_pattern = PathautoPattern::load('article_publication')->getPattern();
     }
     else {
-      $new_pattern = Drupal\pathauto\Entity\PathautoPattern::load('article')->getPattern();
+      $new_pattern = PathautoPattern::load('article')->getPattern();
     }
     $pattern->setPattern($new_pattern);
   }
