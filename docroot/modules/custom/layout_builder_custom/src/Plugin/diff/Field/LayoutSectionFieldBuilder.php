@@ -144,9 +144,13 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
             if (is_array($value_value)) {
               $value_value = implode('.', $value_value);
             }
-            // We need to remove newlines added to formatted text areas.
-            // They will break the results formatting if not removed.
-            $value_value = preg_replace("|\n|", "", $value_value);
+            // Check that $value_value is not null to be able to pass it to
+            // preg_replace.
+            if (!is_null($value_value)) {
+              // We need to remove newlines added to formatted text areas.
+              // They will break the results formatting if not removed.
+              $value_value = preg_replace("|\n|", '', $value_value);
+            }
             // Check if we're building onto an existing result row,
             // or if we're starting a new one off of an empty string.
             $old = $result[$counter] ?? '';
