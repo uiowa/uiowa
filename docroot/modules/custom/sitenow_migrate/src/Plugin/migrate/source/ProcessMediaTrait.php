@@ -402,7 +402,7 @@ trait ProcessMediaTrait {
       ]), FileSystemInterface::EXISTS_REPLACE);
     }
     catch (\Throwable $e) {
-      return False;
+      return FALSE;
     }
 
     // Drop the raw file out of memory for a little cleanup.
