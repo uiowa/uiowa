@@ -344,9 +344,10 @@ trait CreateMediaTrait {
       '#type' => 'html_tag',
       '#tag' => 'drupal-media',
       '#attributes' => [
-        'data-align' => 'center',
+        'data-align' => 'left',
         'data-entity-type' => 'media',
         'data-entity-uuid' => $uuid,
+        'data-view-mode' => 'medium',
       ],
     ];
 
