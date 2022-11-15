@@ -53,8 +53,8 @@ function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): 
     $count = $query->countQuery()->execute()->fetchField();
 
     \Drupal::messenger()
-      ->addMessage(t('Blocks of @type records found: @count', [
-        '@type' => $block_plugin_id,
+      ->addMessage(t('Blocks of @types records found: @count', [
+        '@types' => implode(', ', $block_plugin_ids),
         '@count' => $count,
       ]));
 
@@ -79,11 +79,10 @@ function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): 
 
         $component_arr = $component->toArray();
 
-        $revision_id = $component_arr['configuration']['block_revision_id'];
-
         $block = NULL;
 
-        if ($revision_id) {
+        if (isset($component_arr['configuration']['block_revision_id'])) {
+          $revision_id = $component_arr['configuration']['block_revision_id'];
           if (empty($blocks[$revision_id])) {
             $blocks[$revision_id] = $block_storage->loadRevision($revision_id);
           }
@@ -1915,7 +1914,7 @@ function sitenow_update_9050() {
 /**
  * Update views list blocks to new exposed filter format.
  */
-function sitenow_update_9051() {
+function sitenow_update_9052() {
   $filter_template = [
     'value' => '',
     'plugin_id' => 'string',
@@ -1958,11 +1957,19 @@ function sitenow_update_9051() {
         $new_filter = $filter_presets[$old_filter_id] + $new_filter;
       }
       if (!empty($value)) {
-        // @todo Handle conversion from ['target_id => $tid] for
-        //   taxonomy_term_tid type.
-        $new_filter['value'] = $value;
+        // Handle conversion from ['target_id => $tid] for
+        // taxonomy_term_tid type.
+        if (isset($new_filter['type']) && $new_filter['type'] === 'entity_autocomplete') {
+          $new_filter['value'] = [
+            'target_id' => $value,
+          ];
+        }
+        else {
+          $new_filter['value'] = $value;
+        }
       }
-      $new_filters[] = $new_filter;
+
+      $new_filters["filter-$old_filter_id"] = $new_filter;
     }
     $config['exposed'] = $new_filters;
 

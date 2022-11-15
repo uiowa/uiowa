@@ -2,9 +2,7 @@
 
 namespace Drupal\layout_builder_custom\Plugin\Display;
 
-use Drupal\Core\Entity\Element\EntityAutocomplete;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Form\SubformState;
 use Drupal\Core\Form\SubformStateInterface;
 use Drupal\Core\Url;
 use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
@@ -129,7 +127,7 @@ class ListBlock extends CoreBlock {
   /**
    * {@inheritdoc}
    */
-  public function blockForm(ViewsBlock $block, array &$form, FormStateInterface $form_state) {
+  public function blockForm(ViewsBlock $block, array &$form, FormStateInterface $form_state): array {
     $form = parent::blockForm($block, $form, $form_state);
 
     $allow_settings = array_filter($this->getOption('allow'));
@@ -160,7 +158,7 @@ class ListBlock extends CoreBlock {
     // Modify "Items per page" block settings form.
     if (!empty($allow_settings['items_per_page'])) {
       // @todo Remove once exposed filters patch is added.
-      // Seems to break at high numbers :grimmacing: ..
+      // Seems to break at high numbers :grimacing: ..
       $form['override']['items_per_page']['#min'] = 1;
       $form['override']['items_per_page']['#max'] = 50;
       $form['override']['items_per_page']['#title'] = $this->t('Items to display');
@@ -327,7 +325,7 @@ class ListBlock extends CoreBlock {
           ->t('Start typing the title of a piece of content to select it. You can also enter an internal path such as %add-node or an external URL such as %url. Enter %front to link to the front page.', [
             '%front' => '<front>',
             '%add-node' => '/node/add',
-            '%url' => 'http://example.com',
+            '%url' => 'https://example.com',
           ]),
         '#default_value' => isset($block_configuration['use_more_link_url']) ? LinkHelper::getUriAsDisplayableString($block_configuration['use_more_link_url']) : NULL,
         '#element_validate' => [
