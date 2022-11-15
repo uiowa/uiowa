@@ -5,7 +5,7 @@ namespace Drupal\sitenow_migrate\Plugin\migrate\process;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\Row;
-use Drupal\smart_trim\Truncate\TruncateHTML;
+use Drupal\smart_trim\TruncateHTML;
 
 /**
  * Extract a summary from a compound text field..

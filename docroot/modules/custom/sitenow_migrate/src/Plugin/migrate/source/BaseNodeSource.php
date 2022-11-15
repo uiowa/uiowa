@@ -12,7 +12,7 @@ use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
 use Drupal\node\Plugin\migrate\source\d7\Node;
-use Drupal\smart_trim\Truncate\TruncateHTML;
+use Drupal\smart_trim\TruncateHTML;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
