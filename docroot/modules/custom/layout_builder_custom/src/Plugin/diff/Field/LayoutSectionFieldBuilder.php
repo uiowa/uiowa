@@ -139,18 +139,20 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
             // so if it is, go ahead and drop it.
             $value_key = ($value_key === 'value') ? '' : $value_key;
             $indexer = $this->generateIndexer($arr_key, $field_num, $value_key);
-            // If we're still dealing with an array,
-            // combine all values into a single string.
+
+            // If we're still dealing with an array or null value, convert it to
+            // a string.
             if (is_array($value_value)) {
               $value_value = implode('.', $value_value);
             }
-            // Check that $value_value is not null to be able to pass it to
-            // preg_replace.
-            if (!is_null($value_value)) {
-              // We need to remove newlines added to formatted text areas.
-              // They will break the results formatting if not removed.
-              $value_value = preg_replace("|\n|", '', $value_value);
+            else if (is_null($value_value)) {
+              $value_value = '';
             }
+
+            // We need to remove newlines added to formatted text areas.
+            // They will break the results formatting if not removed.
+            $value_value = preg_replace("|\n|", '', $value_value);
+
             // Check if we're building onto an existing result row,
             // or if we're starting a new one off of an empty string.
             $old = $result[$counter] ?? '';
