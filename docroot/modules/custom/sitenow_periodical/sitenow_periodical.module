@@ -9,16 +9,17 @@
  * Implements hook_pathauto_pattern_alter().
  */
 function sitenow_periodical_pathauto_pattern_alter(&$pattern, array $context) {
-  if ($context['module'] === 'node' && ($context['op'] == 'update')) {
+  if ($context['module'] === 'node' && $context['bundle'] === 'article') {
     $node = $context['data']['node'];
     $issue = $node->get('field_article_issue');
 
     // Change URL alias pattern if article is part of an issue.
     if (!$issue->isEmpty()) {
-      $pattern->setPattern('[node:field_article_issue:entity]/[node:title]');
+      $new_pattern = Drupal\pathauto\Entity\PathautoPattern::load('article_publication')->getPattern();
     }
     else {
-      $pattern->setPattern('news/[node:created:custom:Y]/[node:created:custom:m]/[node:title]');
+      $new_pattern = Drupal\pathauto\Entity\PathautoPattern::load('article')->getPattern();
     }
+    $pattern->setPattern($new_pattern);
   }
 }
