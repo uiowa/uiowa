@@ -729,6 +729,28 @@ function admissions_core_theme_suggestions_field_alter(array &$suggestions, arra
 }
 
 /**
+ * Implements hook_views_pre_view().
+ */
+function admissions_core_views_pre_view(ViewExecutable $view, $display_id, array &$args) {
+  // Prevent taxonomy term view from executing on community colleges vocabulary.
+  // Results are instead rendered in an extra field in
+  // admissions_core_taxonomy_term_view().
+  if ($view->id() === 'taxonomy_term') {
+    if (\Drupal::routeMatch()
+      ->getRouteName() === 'entity.taxonomy_term.canonical' &&
+      $page_term_id = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
+      $term = \Drupal::entityTypeManager()
+        ->getStorage('taxonomy_term')
+        ->load($page_term_id);
+      if ($term->bundle() === 'community_colleges') {
+        // Trick Views into not executing the view.
+        $view->executed = TRUE;
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_views_pre_render().
  */
 function admissions_core_views_pre_render(ViewExecutable $view) {
@@ -752,19 +774,6 @@ function admissions_core_views_pre_render(ViewExecutable $view) {
   if ($view->id() === 'areas_of_study') {
     $view->element['#attached']['library'][] = 'uids_base/stat';
     $view->element['#attached']['library'][] = 'uids_base/twocol';
-  }
-
-  // Ugly way to hide related node content but not taxonomy fields.
-  if ($view->id() === 'taxonomy_term') {
-    if (\Drupal::routeMatch()->getRouteName() === 'entity.taxonomy_term.canonical' &&
-      $page_term_id = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
-      $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($page_term_id);
-      if ($term->bundle() === 'community_colleges') {
-        foreach ($view->result as $key => $value) {
-          unset($view->result[$key]);
-        }
-      }
-    }
   }
 }
 
