@@ -395,10 +395,15 @@ trait ProcessMediaTrait {
     }
 
     // Try to write the file, replacing any existing file with the same name.
-    $file = \Drupal::service('file.repository')->writeData($raw_file, implode('/', [
-      $dir,
-      $filename,
-    ]), FileSystemInterface::EXISTS_REPLACE);
+    try {
+      $file = \Drupal::service('file.repository')->writeData($raw_file, implode('/', [
+        $dir,
+        $filename,
+      ]), FileSystemInterface::EXISTS_REPLACE);
+    }
+    catch (\Throwable $e) {
+      return False;
+    }
 
     // Drop the raw file out of memory for a little cleanup.
     unset($raw_file);
