@@ -4732,3 +4732,9 @@ $sites['nanotech.uiowa.ddev.site'] = 'nanotech.uiowa.edu';
 $sites['nanotech.dev.drupal.uiowa.edu'] = 'nanotech.uiowa.edu';
 $sites['nanotech.stage.drupal.uiowa.edu'] = 'nanotech.uiowa.edu';
 $sites['nanotech.prod.drupal.uiowa.edu'] = 'nanotech.uiowa.edu';
+
+// Directory aliases for pda.uiowa.edu.
+$sites['pda.uiowa.ddev.site'] = 'pda.uiowa.edu';
+$sites['pda.dev.drupal.uiowa.edu'] = 'pda.uiowa.edu';
+$sites['pda.stage.drupal.uiowa.edu'] = 'pda.uiowa.edu';
+$sites['pda.prod.drupal.uiowa.edu'] = 'pda.uiowa.edu';
