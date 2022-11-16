@@ -25,7 +25,7 @@ class InTheNews extends BaseNodeSource {
     $query = parent::query();
     // There are two test articles and one with a malformed
     // source reference that we are skipping.
-    $query->condition('nr.nid', [15505, 29601, 26976], 'NOT IN');
+    $query->condition('nr.nid', [15505, 20961, 26976], 'NOT IN');
     return $query;
   }
 
