@@ -4702,3 +4702,9 @@ $sites['english.uiowa.ddev.site'] = 'english.uiowa.edu';
 $sites['english.dev.drupal.uiowa.edu'] = 'english.uiowa.edu';
 $sites['english.stage.drupal.uiowa.edu'] = 'english.uiowa.edu';
 $sites['english.prod.drupal.uiowa.edu'] = 'english.uiowa.edu';
+
+// Directory aliases for instructional-resources.physics.uiowa.edu.
+$sites['physicsinstructional-resources.uiowa.ddev.site'] = 'instructional-resources.physics.uiowa.edu';
+$sites['physicsinstructional-resources.dev.drupal.uiowa.edu'] = 'instructional-resources.physics.uiowa.edu';
+$sites['physicsinstructional-resources.stage.drupal.uiowa.edu'] = 'instructional-resources.physics.uiowa.edu';
+$sites['physicsinstructional-resources.prod.drupal.uiowa.edu'] = 'instructional-resources.physics.uiowa.edu';
