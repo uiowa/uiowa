@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: dance.uiowa.ddev.site
+    protocol: https
+  machine_name: dance
+  human_name: dance.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: dance.prod
+drupal:
+  db:
+    database: dance_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://dance.prod.drupal.uiowa.edu'
