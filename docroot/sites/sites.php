@@ -4666,3 +4666,9 @@ $sites['art.uiowa.ddev.site'] = 'art.uiowa.edu';
 $sites['art.dev.drupal.uiowa.edu'] = 'art.uiowa.edu';
 $sites['art.stage.drupal.uiowa.edu'] = 'art.uiowa.edu';
 $sites['art.prod.drupal.uiowa.edu'] = 'art.uiowa.edu';
+
+// Directory aliases for biology.uiowa.edu.
+$sites['biology.uiowa.ddev.site'] = 'biology.uiowa.edu';
+$sites['biology.dev.drupal.uiowa.edu'] = 'biology.uiowa.edu';
+$sites['biology.stage.drupal.uiowa.edu'] = 'biology.uiowa.edu';
+$sites['biology.prod.drupal.uiowa.edu'] = 'biology.uiowa.edu';
