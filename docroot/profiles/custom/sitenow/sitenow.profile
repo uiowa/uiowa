@@ -14,12 +14,10 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Database\Query\AlterableInterface;
-use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
-use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\layout_builder\Plugin\Block\InlineBlock;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\menu_link_content\Form\MenuLinkContentForm;
@@ -760,8 +758,7 @@ function _sitenow_prevent_front_delete_message($title) {
  *
  * @see options_allowed_values()
  */
-function publish_options_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable): array {
-  $cacheable = FALSE;
+function publish_options_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
   $options = [
     'title_hidden' => 'Visually hide title',
     'no_sidebars' => 'Remove sidebar regions',
@@ -1071,9 +1068,9 @@ function sitenow_entity_insert(EntityInterface $entity) {
 /**
  * Set dynamic allowed values for the alignment field.
  *
- * @param \Drupal\field\Entity\FieldStorageConfig $definition
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
  *   The field definition.
- * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
  *   The entity being created if applicable.
  * @param bool $cacheable
  *   Boolean indicating if the results are cacheable.
@@ -1083,7 +1080,7 @@ function sitenow_entity_insert(EntityInterface $entity) {
  *
  * @see options_allowed_values()
  */
-function featured_image_size_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+function featured_image_size_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
   $options = [
     'do_not_display' => 'Do not display',
     'small' => 'Small',

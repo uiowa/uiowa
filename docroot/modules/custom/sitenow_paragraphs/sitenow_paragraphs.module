@@ -288,8 +288,7 @@ function sitenow_paragraphs_theme_suggestions_field_alter(&$suggestions, $variab
  *
  * @see options_allowed_values()
  */
-function sitenow_paragraphs_uip_classes_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable): array {
-  $cacheable = FALSE;
+function sitenow_paragraphs_uip_classes_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = FALSE): array {
   $options = [];
 
   if (!is_null($entity)) {
@@ -358,8 +357,7 @@ function sitenow_paragraphs_uip_classes_allowed_values(FieldStorageDefinitionInt
  *
  * @see options_allowed_values()
  */
-function sitenow_paragraphs_uip_colwidth_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable): array {
-  $cacheable = FALSE;
+function sitenow_paragraphs_uip_colwidth_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = FALSE): array {
   $options = [
     'col-md' => 'Fluid',
     'col-md-3' => 'Quarter',
@@ -393,8 +391,7 @@ function sitenow_paragraphs_uip_colwidth_allowed_values(FieldStorageDefinitionIn
  *
  * @see options_allowed_values()
  */
-function sitenow_paragraphs_section_container_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable): array {
-  $cacheable = FALSE;
+function sitenow_paragraphs_section_container_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = FALSE): array {
   $options = [
     'container' => 'Medium',
     'container-fluid' => 'Large',
@@ -425,8 +422,7 @@ function sitenow_paragraphs_section_container_allowed_values(FieldStorageDefinit
  *
  * @see options_allowed_values()
  */
-function sitenow_paragraphs_section_alignitems_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable): array {
-  $cacheable = FALSE;
+function sitenow_paragraphs_section_alignitems_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = FALSE): array {
   $options = [
     'align-items-center' => 'Middle',
     'align-items-start' => 'Top',
@@ -459,8 +455,7 @@ function sitenow_paragraphs_section_alignitems_allowed_values(FieldStorageDefini
  *
  * @see options_allowed_values()
  */
-function sitenow_paragraphs_section_justifycontent_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable): array {
-  $cacheable = FALSE;
+function sitenow_paragraphs_section_justifycontent_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = FALSE): array {
   $options = [
     'justify-content-start' => 'Left',
     'justify-content-center' => 'Center',
