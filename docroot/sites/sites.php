@@ -4654,3 +4654,9 @@ $sites['rhetoric.uiowa.ddev.site'] = 'rhetoric.uiowa.edu';
 $sites['rhetoric.dev.drupal.uiowa.edu'] = 'rhetoric.uiowa.edu';
 $sites['rhetoric.stage.drupal.uiowa.edu'] = 'rhetoric.uiowa.edu';
 $sites['rhetoric.prod.drupal.uiowa.edu'] = 'rhetoric.uiowa.edu';
+
+// Directory aliases for clas.uiowa.edu.
+$sites['clas.uiowa.ddev.site'] = 'clas.uiowa.edu';
+$sites['clas.dev.drupal.uiowa.edu'] = 'clas.uiowa.edu';
+$sites['clas.stage.drupal.uiowa.edu'] = 'clas.uiowa.edu';
+$sites['clas.prod.drupal.uiowa.edu'] = 'clas.uiowa.edu';
