@@ -4696,3 +4696,9 @@ $sites['dpa.uiowa.ddev.site'] = 'dpa.uiowa.edu';
 $sites['dpa.dev.drupal.uiowa.edu'] = 'dpa.uiowa.edu';
 $sites['dpa.stage.drupal.uiowa.edu'] = 'dpa.uiowa.edu';
 $sites['dpa.prod.drupal.uiowa.edu'] = 'dpa.uiowa.edu';
+
+// Directory aliases for english.uiowa.edu.
+$sites['english.uiowa.ddev.site'] = 'english.uiowa.edu';
+$sites['english.dev.drupal.uiowa.edu'] = 'english.uiowa.edu';
+$sites['english.stage.drupal.uiowa.edu'] = 'english.uiowa.edu';
+$sites['english.prod.drupal.uiowa.edu'] = 'english.uiowa.edu';
