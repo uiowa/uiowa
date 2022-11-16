@@ -4672,3 +4672,9 @@ $sites['biology.uiowa.ddev.site'] = 'biology.uiowa.edu';
 $sites['biology.dev.drupal.uiowa.edu'] = 'biology.uiowa.edu';
 $sites['biology.stage.drupal.uiowa.edu'] = 'biology.uiowa.edu';
 $sites['biology.prod.drupal.uiowa.edu'] = 'biology.uiowa.edu';
+
+// Directory aliases for chem.uiowa.edu.
+$sites['chem.uiowa.ddev.site'] = 'chem.uiowa.edu';
+$sites['chem.dev.drupal.uiowa.edu'] = 'chem.uiowa.edu';
+$sites['chem.stage.drupal.uiowa.edu'] = 'chem.uiowa.edu';
+$sites['chem.prod.drupal.uiowa.edu'] = 'chem.uiowa.edu';
