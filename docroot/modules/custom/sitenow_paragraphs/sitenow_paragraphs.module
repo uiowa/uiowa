@@ -292,7 +292,7 @@ function sitenow_paragraphs_uip_classes_allowed_values(FieldStorageConfig $defin
   $cacheable = FALSE;
   $options = [];
 
-  if (method_exists($entity, 'bundle')) {
+  if (!is_null($entity)) {
     $bundle = $entity->bundle();
 
     switch ($bundle) {
@@ -364,7 +364,7 @@ function sitenow_paragraphs_uip_colwidth_allowed_values(FieldStorageConfig $defi
     'col-md-12' => 'Full',
   ];
 
-  if (method_exists($entity, 'bundle')) {
+  if (!is_null($entity)) {
     $bundle = $entity->bundle();
     // Allow modules to alter classes.
     \Drupal::moduleHandler()
@@ -396,7 +396,7 @@ function sitenow_paragraphs_section_container_allowed_values(FieldStorageConfig 
     'container-fluid' => 'Large',
   ];
 
-  if (method_exists($entity, 'bundle')) {
+  if (!is_null($entity)) {
     $bundle = $entity->bundle();
     // Allow modules to alter classes.
     \Drupal::moduleHandler()
@@ -465,7 +465,7 @@ function sitenow_paragraphs_section_justifycontent_allowed_values(FieldStorageCo
     'justify-content-between' => 'Space Between',
   ];
 
-  if (method_exists($entity, 'bundle')) {
+  if (!is_null($entity)) {
     $bundle = $entity->bundle();
     // Allow modules to alter classes.
     \Drupal::moduleHandler()
