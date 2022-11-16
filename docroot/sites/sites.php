@@ -4630,3 +4630,9 @@ $sites['hhp.uiowa.ddev.site'] = 'hhp.uiowa.edu';
 $sites['hhp.dev.drupal.uiowa.edu'] = 'hhp.uiowa.edu';
 $sites['hhp.stage.drupal.uiowa.edu'] = 'hhp.uiowa.edu';
 $sites['hhp.prod.drupal.uiowa.edu'] = 'hhp.uiowa.edu';
+
+// Directory aliases for philosophy.uiowa.edu.
+$sites['philosophy.uiowa.ddev.site'] = 'philosophy.uiowa.edu';
+$sites['philosophy.dev.drupal.uiowa.edu'] = 'philosophy.uiowa.edu';
+$sites['philosophy.stage.drupal.uiowa.edu'] = 'philosophy.uiowa.edu';
+$sites['philosophy.prod.drupal.uiowa.edu'] = 'philosophy.uiowa.edu';
