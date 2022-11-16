@@ -4648,3 +4648,9 @@ $sites['religion.uiowa.ddev.site'] = 'religion.uiowa.edu';
 $sites['religion.dev.drupal.uiowa.edu'] = 'religion.uiowa.edu';
 $sites['religion.stage.drupal.uiowa.edu'] = 'religion.uiowa.edu';
 $sites['religion.prod.drupal.uiowa.edu'] = 'religion.uiowa.edu';
+
+// Directory aliases for rhetoric.uiowa.edu.
+$sites['rhetoric.uiowa.ddev.site'] = 'rhetoric.uiowa.edu';
+$sites['rhetoric.dev.drupal.uiowa.edu'] = 'rhetoric.uiowa.edu';
+$sites['rhetoric.stage.drupal.uiowa.edu'] = 'rhetoric.uiowa.edu';
+$sites['rhetoric.prod.drupal.uiowa.edu'] = 'rhetoric.uiowa.edu';
