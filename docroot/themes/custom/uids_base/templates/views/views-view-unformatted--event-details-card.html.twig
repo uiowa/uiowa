@@ -24,7 +24,6 @@
 <h3>{{ title }}</h3>
 {% endif %}
 {% for row in rows %}
-{#  {{ row.card_options.attributes.addClass('card--enclosed') }}#}
   {% set card_view =
     row.card_options|merge({
       attributes: row.card_options.attributes.addClass('card--enclosed')
@@ -35,12 +34,6 @@
     {% block card_img %}
       {% if card_image|striptags('<img><picture>')|trim is not empty %}
         {{ parent() }}
-      {% endif %}
-    {% endblock %}
-
-    {% block card_meta %}
-      {% if card_meta|striptags|trim is not empty %}
-        {{ card_meta }}
       {% endif %}
     {% endblock %}
 
