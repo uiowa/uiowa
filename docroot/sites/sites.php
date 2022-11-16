@@ -4720,3 +4720,9 @@ $sites['math.uiowa.ddev.site'] = 'math.uiowa.edu';
 $sites['math.dev.drupal.uiowa.edu'] = 'math.uiowa.edu';
 $sites['math.stage.drupal.uiowa.edu'] = 'math.uiowa.edu';
 $sites['math.prod.drupal.uiowa.edu'] = 'math.uiowa.edu';
+
+// Directory aliases for music.uiowa.edu.
+$sites['music.uiowa.ddev.site'] = 'music.uiowa.edu';
+$sites['music.dev.drupal.uiowa.edu'] = 'music.uiowa.edu';
+$sites['music.stage.drupal.uiowa.edu'] = 'music.uiowa.edu';
+$sites['music.prod.drupal.uiowa.edu'] = 'music.uiowa.edu';
