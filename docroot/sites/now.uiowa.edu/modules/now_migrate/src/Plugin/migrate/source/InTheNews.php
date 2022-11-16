@@ -56,15 +56,10 @@ class InTheNews extends BaseNodeSource {
         ->execute()
         ->fetchField();
       $url = $this->fixUrls($url);
-      // @todo This could be combined into a single call.
-      $tid = $this->select('field_data_field_source', 'source')
-        ->fields('source', ['field_source_tid'])
+      $query = $this->select('field_data_field_source', 'source');
+      $query->leftJoin('taxonomy_term_data', 't', 't.tid = source.field_source_tid');
+      $source_name = $query->fields('t', ['name'])
         ->condition('source.revision_id', $source_id, '=')
-        ->execute()
-        ->fetchField();
-      $source_name = $this->select('taxonomy_term_data', 't')
-        ->fields('t', ['name'])
-        ->condition('t.tid', $tid, '=')
         ->execute()
         ->fetchField();
       $row->setSourceProperty('source_name', $source_name);
