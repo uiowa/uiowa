@@ -4684,3 +4684,9 @@ $sites['dance.uiowa.ddev.site'] = 'dance.uiowa.edu';
 $sites['dance.dev.drupal.uiowa.edu'] = 'dance.uiowa.edu';
 $sites['dance.stage.drupal.uiowa.edu'] = 'dance.uiowa.edu';
 $sites['dance.prod.drupal.uiowa.edu'] = 'dance.uiowa.edu';
+
+// Directory aliases for deltacenter.uiowa.edu.
+$sites['deltacenter.uiowa.ddev.site'] = 'deltacenter.uiowa.edu';
+$sites['deltacenter.dev.drupal.uiowa.edu'] = 'deltacenter.uiowa.edu';
+$sites['deltacenter.stage.drupal.uiowa.edu'] = 'deltacenter.uiowa.edu';
+$sites['deltacenter.prod.drupal.uiowa.edu'] = 'deltacenter.uiowa.edu';
