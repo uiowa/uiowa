@@ -430,7 +430,7 @@ function sitenow_paragraphs_section_alignitems_allowed_values(FieldStorageConfig
     'align-items-none' => 'None',
   ];
 
-  if (method_exists($entity, 'bundle')) {
+  if (!is_null($entity)) {
     $bundle = $entity->bundle();
     // Allow modules to alter classes.
     \Drupal::moduleHandler()
