@@ -4612,3 +4612,9 @@ $sites['labbeattie.uiowa.ddev.site'] = 'beattie.lab.uiowa.edu';
 $sites['labbeattie.dev.drupal.uiowa.edu'] = 'beattie.lab.uiowa.edu';
 $sites['labbeattie.stage.drupal.uiowa.edu'] = 'beattie.lab.uiowa.edu';
 $sites['labbeattie.prod.drupal.uiowa.edu'] = 'beattie.lab.uiowa.edu';
+
+// Directory aliases for linux.clas.uiowa.edu.
+$sites['claslinux.uiowa.ddev.site'] = 'linux.clas.uiowa.edu';
+$sites['claslinux.dev.drupal.uiowa.edu'] = 'linux.clas.uiowa.edu';
+$sites['claslinux.stage.drupal.uiowa.edu'] = 'linux.clas.uiowa.edu';
+$sites['claslinux.prod.drupal.uiowa.edu'] = 'linux.clas.uiowa.edu';
