@@ -4636,3 +4636,9 @@ $sites['philosophy.uiowa.ddev.site'] = 'philosophy.uiowa.edu';
 $sites['philosophy.dev.drupal.uiowa.edu'] = 'philosophy.uiowa.edu';
 $sites['philosophy.stage.drupal.uiowa.edu'] = 'philosophy.uiowa.edu';
 $sites['philosophy.prod.drupal.uiowa.edu'] = 'philosophy.uiowa.edu';
+
+// Directory aliases for politicalscience.uiowa.edu.
+$sites['politicalscience.uiowa.ddev.site'] = 'politicalscience.uiowa.edu';
+$sites['politicalscience.dev.drupal.uiowa.edu'] = 'politicalscience.uiowa.edu';
+$sites['politicalscience.stage.drupal.uiowa.edu'] = 'politicalscience.uiowa.edu';
+$sites['politicalscience.prod.drupal.uiowa.edu'] = 'politicalscience.uiowa.edu';
