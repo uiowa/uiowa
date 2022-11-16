@@ -21,6 +21,17 @@ class InTheNews extends BaseNodeSource {
   /**
    * {@inheritdoc}
    */
+  public function query() {
+    $query = parent::query();
+    // There are two test articles and one with a malformed
+    // source reference that we are skipping.
+    $query->condition('nr.nid', [15505, 29601, 26976], 'NOT IN');
+    return $query;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
 
@@ -49,10 +60,10 @@ class InTheNews extends BaseNodeSource {
     if (!empty($source_collection)) {
       // Even if there are multiple sources, we can grab the first
       // and ignore the rest.
-      $source_id = $source_collection[0]['revision_id'];
+      $source_id = $source_collection[0]['value'];
       $url = $this->select('field_data_field_url', 'url')
         ->fields('url', ['field_url_url'])
-        ->condition('url.revision_id', $source_id, '=')
+        ->condition('url.entity_id', $source_id, '=')
         ->execute()
         ->fetchField();
       $url = $this->fixUrls($url);
