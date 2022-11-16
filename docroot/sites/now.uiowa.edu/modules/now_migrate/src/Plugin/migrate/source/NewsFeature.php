@@ -113,6 +113,22 @@ class NewsFeature extends BaseNodeSource {
       $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));
     }
 
+    // Process the gallery images.
+    $gallery = $row->getSourceProperty('field_photo_gallery');
+    if (!empty($gallery)) {
+      // The d7 galleries are a separate entity, so we need to fetch it
+      // and then process the individual images attached.
+      $images = $this->select('field_data_field_gallery_photos', 'g')
+        ->fields('g')
+        ->condition('g.entity_id', $gallery[0]['target_id'], '=')
+        ->execute();
+      $new_images = [];
+      foreach ($images as $image) {
+        $new_images[] = $this->processImageField($image['field_gallery_photos_fid'], $image['field_gallery_photos_alt'], $image['field_gallery_photos_title']);
+      }
+      $row->setSourceProperty('gallery', $new_images);
+    }
+
     return TRUE;
   }
 
