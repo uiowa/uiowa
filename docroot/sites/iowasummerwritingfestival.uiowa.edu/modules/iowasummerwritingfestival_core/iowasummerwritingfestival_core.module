@@ -20,37 +20,6 @@ function iowasummerwritingfestival_core_form_alter(&$form, FormStateInterface $f
       break;
   }
 }
-/**
- * Implements hook_preprocess_HOOK().
- */
-//function iowasummerwritingfestival_core_preprocess_views_view_field(&$variables) {
-//  $view = $variables['view'];
-//  $field = $variables['field'];
-//  if (
-//    $view->storage->id() == 'events' &&
-//    $view->current_display == 'card_list' &&
-//    $field->field == 'field_event_performer')
-//  {
-//    $variables['attributes']['#class'][] = 'card__meta';
-////    $variables["row"]->_entity->fields["field_event_performer"]['attributes']['#class'][] = 'card__meta';
-//  }
-//}
-
-function iowasummerwritingfestival_core_preprocess_field(&$variables) {
-  $variables['attributes']['#class'][] = 'card__meta';
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function iowasummerwritingfestival_core_preprocess_block(&$variables) {
-  switch ($variables['plugin_id']) {
-    case 'views_block:events-card_list':
-//      $variables["content"]["#view"]->field["field_event_performer"]['attributes']['#class'][] = 'card__meta';
-//      $variables["content"]["#view"]->field["field_event_performer"]['attributes']['#class'][] = 'card__meta';
-      break;
-  }
-}
 
 /**
  * Implements hook_theme().
