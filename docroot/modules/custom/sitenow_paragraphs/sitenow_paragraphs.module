@@ -9,8 +9,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Component\Utility\Html;
 use Drupal\paragraphs\Entity\Paragraph;
-use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Template\Attribute;
@@ -336,6 +334,10 @@ function sitenow_paragraphs_uip_classes_allowed_values(FieldStorageDefinitionInt
 
     // Allow modules to alter classes.
     \Drupal::moduleHandler()->alter('uip_classes', $options, $entity, $bundle);
+  }
+  else {
+    // To resolve an issue with ListItemBase generateSampleValue.
+    $options['_none'] = '-None-';
   }
 
   return $options;
