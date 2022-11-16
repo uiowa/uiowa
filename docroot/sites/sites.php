@@ -4618,3 +4618,9 @@ $sites['claslinux.uiowa.ddev.site'] = 'linux.clas.uiowa.edu';
 $sites['claslinux.dev.drupal.uiowa.edu'] = 'linux.clas.uiowa.edu';
 $sites['claslinux.stage.drupal.uiowa.edu'] = 'linux.clas.uiowa.edu';
 $sites['claslinux.prod.drupal.uiowa.edu'] = 'linux.clas.uiowa.edu';
+
+// Directory aliases for gwss.uiowa.edu.
+$sites['gwss.uiowa.ddev.site'] = 'gwss.uiowa.edu';
+$sites['gwss.dev.drupal.uiowa.edu'] = 'gwss.uiowa.edu';
+$sites['gwss.stage.drupal.uiowa.edu'] = 'gwss.uiowa.edu';
+$sites['gwss.prod.drupal.uiowa.edu'] = 'gwss.uiowa.edu';
