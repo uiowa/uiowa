@@ -4750,3 +4750,9 @@ $sites['sloancenter.uiowa.ddev.site'] = 'sloancenter.uiowa.edu';
 $sites['sloancenter.dev.drupal.uiowa.edu'] = 'sloancenter.uiowa.edu';
 $sites['sloancenter.stage.drupal.uiowa.edu'] = 'sloancenter.uiowa.edu';
 $sites['sloancenter.prod.drupal.uiowa.edu'] = 'sloancenter.uiowa.edu';
+
+// Directory aliases for speakingcenter.uiowa.edu.
+$sites['speakingcenter.uiowa.ddev.site'] = 'speakingcenter.uiowa.edu';
+$sites['speakingcenter.dev.drupal.uiowa.edu'] = 'speakingcenter.uiowa.edu';
+$sites['speakingcenter.stage.drupal.uiowa.edu'] = 'speakingcenter.uiowa.edu';
+$sites['speakingcenter.prod.drupal.uiowa.edu'] = 'speakingcenter.uiowa.edu';
