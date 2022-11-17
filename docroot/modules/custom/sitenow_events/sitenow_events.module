@@ -338,7 +338,7 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
 
         // Get node path to link card with.
         $nid = $view->result[$id]->_entity->id();
-        $node = $row["content"]["#row"]->_entity;
+        $node = $row['content']['#row']->_entity;
         $link = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
 
         $card_meta = [
