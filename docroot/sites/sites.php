@@ -4786,3 +4786,9 @@ $sites['writersworkshop.uiowa.ddev.site'] = 'writersworkshop.uiowa.edu';
 $sites['writersworkshop.dev.drupal.uiowa.edu'] = 'writersworkshop.uiowa.edu';
 $sites['writersworkshop.stage.drupal.uiowa.edu'] = 'writersworkshop.uiowa.edu';
 $sites['writersworkshop.prod.drupal.uiowa.edu'] = 'writersworkshop.uiowa.edu';
+
+// Directory aliases for writingcenter.uiowa.edu.
+$sites['writingcenter.uiowa.ddev.site'] = 'writingcenter.uiowa.edu';
+$sites['writingcenter.dev.drupal.uiowa.edu'] = 'writingcenter.uiowa.edu';
+$sites['writingcenter.stage.drupal.uiowa.edu'] = 'writingcenter.uiowa.edu';
+$sites['writingcenter.prod.drupal.uiowa.edu'] = 'writingcenter.uiowa.edu';
