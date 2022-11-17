@@ -4618,3 +4618,9 @@ $sites['labthornell.uiowa.ddev.site'] = 'thornell.lab.uiowa.edu';
 $sites['labthornell.dev.drupal.uiowa.edu'] = 'thornell.lab.uiowa.edu';
 $sites['labthornell.stage.drupal.uiowa.edu'] = 'thornell.lab.uiowa.edu';
 $sites['labthornell.prod.drupal.uiowa.edu'] = 'thornell.lab.uiowa.edu';
+
+// Directory aliases for sociology.uiowa.edu.
+$sites['sociology.uiowa.ddev.site'] = 'sociology.uiowa.edu';
+$sites['sociology.dev.drupal.uiowa.edu'] = 'sociology.uiowa.edu';
+$sites['sociology.stage.drupal.uiowa.edu'] = 'sociology.uiowa.edu';
+$sites['sociology.prod.drupal.uiowa.edu'] = 'sociology.uiowa.edu';
