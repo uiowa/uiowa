@@ -4744,3 +4744,9 @@ $sites['psychology.uiowa.ddev.site'] = 'psychology.uiowa.edu';
 $sites['psychology.dev.drupal.uiowa.edu'] = 'psychology.uiowa.edu';
 $sites['psychology.stage.drupal.uiowa.edu'] = 'psychology.uiowa.edu';
 $sites['psychology.prod.drupal.uiowa.edu'] = 'psychology.uiowa.edu';
+
+// Directory aliases for sloancenter.uiowa.edu.
+$sites['sloancenter.uiowa.ddev.site'] = 'sloancenter.uiowa.edu';
+$sites['sloancenter.dev.drupal.uiowa.edu'] = 'sloancenter.uiowa.edu';
+$sites['sloancenter.stage.drupal.uiowa.edu'] = 'sloancenter.uiowa.edu';
+$sites['sloancenter.prod.drupal.uiowa.edu'] = 'sloancenter.uiowa.edu';
