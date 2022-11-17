@@ -4738,3 +4738,9 @@ $sites['pda.uiowa.ddev.site'] = 'pda.uiowa.edu';
 $sites['pda.dev.drupal.uiowa.edu'] = 'pda.uiowa.edu';
 $sites['pda.stage.drupal.uiowa.edu'] = 'pda.uiowa.edu';
 $sites['pda.prod.drupal.uiowa.edu'] = 'pda.uiowa.edu';
+
+// Directory aliases for psychology.uiowa.edu.
+$sites['psychology.uiowa.ddev.site'] = 'psychology.uiowa.edu';
+$sites['psychology.dev.drupal.uiowa.edu'] = 'psychology.uiowa.edu';
+$sites['psychology.stage.drupal.uiowa.edu'] = 'psychology.uiowa.edu';
+$sites['psychology.prod.drupal.uiowa.edu'] = 'psychology.uiowa.edu';
