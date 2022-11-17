@@ -4774,3 +4774,9 @@ $sites['sustainability.uiowa.ddev.site'] = 'sustainability.uiowa.edu';
 $sites['sustainability.dev.drupal.uiowa.edu'] = 'sustainability.uiowa.edu';
 $sites['sustainability.stage.drupal.uiowa.edu'] = 'sustainability.uiowa.edu';
 $sites['sustainability.prod.drupal.uiowa.edu'] = 'sustainability.uiowa.edu';
+
+// Directory aliases for theatre.uiowa.edu.
+$sites['theatre.uiowa.ddev.site'] = 'theatre.uiowa.edu';
+$sites['theatre.dev.drupal.uiowa.edu'] = 'theatre.uiowa.edu';
+$sites['theatre.stage.drupal.uiowa.edu'] = 'theatre.uiowa.edu';
+$sites['theatre.prod.drupal.uiowa.edu'] = 'theatre.uiowa.edu';
