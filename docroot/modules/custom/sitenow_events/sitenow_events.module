@@ -6,12 +6,11 @@
  */
 
 use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
-use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\uiowa_core\HeadlineHelper;
 use GuzzleHttp\Exception\RequestException;
 
@@ -578,9 +577,9 @@ function sitenow_events_field_widget_paragraphs_form_alter(&$element, &$form_sta
 /**
  * Set dynamic allowed values for multiple fields.
  *
- * @param \Drupal\field\Entity\FieldStorageConfig $definition
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
  *   The field definition.
- * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
  *   The entity being created if applicable.
  * @param bool $cacheable
  *   Boolean indicating if the results are cacheable.
@@ -590,7 +589,7 @@ function sitenow_events_field_widget_paragraphs_form_alter(&$element, &$form_sta
  *
  * @see options_allowed_values()
  */
-function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable = TRUE) {
+function _sitenow_events_get_filter_field_options(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
   $options = [];
 
   switch ($definition->getName()) {
