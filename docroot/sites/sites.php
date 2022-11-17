@@ -4768,3 +4768,9 @@ $sites['statgeemap.uiowa.ddev.site'] = 'geemap.stat.uiowa.edu';
 $sites['statgeemap.dev.drupal.uiowa.edu'] = 'geemap.stat.uiowa.edu';
 $sites['statgeemap.stage.drupal.uiowa.edu'] = 'geemap.stat.uiowa.edu';
 $sites['statgeemap.prod.drupal.uiowa.edu'] = 'geemap.stat.uiowa.edu';
+
+// Directory aliases for sustainability.uiowa.edu.
+$sites['sustainability.uiowa.ddev.site'] = 'sustainability.uiowa.edu';
+$sites['sustainability.dev.drupal.uiowa.edu'] = 'sustainability.uiowa.edu';
+$sites['sustainability.stage.drupal.uiowa.edu'] = 'sustainability.uiowa.edu';
+$sites['sustainability.prod.drupal.uiowa.edu'] = 'sustainability.uiowa.edu';
