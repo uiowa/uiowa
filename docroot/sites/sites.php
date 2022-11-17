@@ -4612,3 +4612,9 @@ $sites['labbeattie.uiowa.ddev.site'] = 'beattie.lab.uiowa.edu';
 $sites['labbeattie.dev.drupal.uiowa.edu'] = 'beattie.lab.uiowa.edu';
 $sites['labbeattie.stage.drupal.uiowa.edu'] = 'beattie.lab.uiowa.edu';
 $sites['labbeattie.prod.drupal.uiowa.edu'] = 'beattie.lab.uiowa.edu';
+
+// Directory aliases for thornell.lab.uiowa.edu.
+$sites['labthornell.uiowa.ddev.site'] = 'thornell.lab.uiowa.edu';
+$sites['labthornell.dev.drupal.uiowa.edu'] = 'thornell.lab.uiowa.edu';
+$sites['labthornell.stage.drupal.uiowa.edu'] = 'thornell.lab.uiowa.edu';
+$sites['labthornell.prod.drupal.uiowa.edu'] = 'thornell.lab.uiowa.edu';

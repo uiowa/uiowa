@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labthornell.uiowa.ddev.site
+    protocol: https
+  machine_name: labthornell
+  human_name: thornell.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labthornell.prod
+drupal:
+  db:
+    database: thornell_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labthornell.prod.drupal.uiowa.edu'
+  requester: thornelli
+  site-name: thornell.lab.uiowa.edu
