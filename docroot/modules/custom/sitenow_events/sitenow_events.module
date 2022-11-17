@@ -351,36 +351,21 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
           ],
         ];
 
-        // Add when information, if it exists.
-        if (
-          $style->getField($id, 'field_event_when') &&
-          !$node?->get('field_event_when')?->isEmpty()
-        ) {
-          $card_meta['when'] = $node?->field_event_when?->view('teaser');
-        }
+        $meta_fields = [
+          'when' => 'field_event_when',
+          'location' => 'field_event_location',
+          'virtual' => 'field_event_virtual',
+          'source' => 'field_event_series_link',
+        ];
 
-        // Add location information, if it exists.
-        if (
-          $style->getField($id, 'field_event_location') &&
-          !$node?->get('field_event_location')?->isEmpty()
-        ) {
-          $card_meta['location'] = $node?->field_event_location?->view('teaser');
-        }
-
-        // Add virtual event information, if it exists.
-        if (
-          $style->getField($id, 'field_event_virtual') &&
-          !$node?->get('field_event_virtual')?->isEmpty()
-        ) {
-          $card_meta['virtual'] = $node->field_event_virtual?->view('teaser');
-        }
-
-        // Add source link information, if it exists.
-        if (
-          $style->getField($id, 'field_event_series_link') &&
-          !$node?->get('field_event_series_link')?->isEmpty()
-        ) {
-          $card_meta['source'] = $node?->field_event_series_link?->view('teaser');
+        // Add meta fields, if they exist.
+        foreach ($meta_fields as $key => $field_name) {
+          if (
+            $style->getField($id, $field_name) &&
+            !$node->get($field_name)?->isEmpty()
+          ) {
+            $card_meta[$key] = $node?->{$field_name}?->view('teaser');
+          }
         }
 
         // Initialize card_options variable.
