@@ -105,7 +105,10 @@
   color: #151515;
   font-weight: 600;
   @include breakpoint(md) {
-    padding: 1.35rem 1.5rem;
+    padding: 1.35rem .75rem;
+  }
+  @include breakpoint(page-container) {
+    padding: 1.35rem 1.25rem;
   }
 }
 
@@ -128,7 +131,7 @@
 .block-superfish .menu > li > .sf-depth-1.menuparent:before {
   position: absolute;
   top: 50%;
-  right: 0.3125rem;
+  right: .4rem;
   margin-top: -0.4rem;
   content: "\f078";
   color: inherit;
@@ -314,8 +317,10 @@ ul.sf-menu.sf-horizontal > li.sfHover > .sf-depth-1.menuparent:before {
   content: "\f077";
 }
 
-ul.sf-menu.sf-horizontal > li:first-child > .sf-depth-1.menuparent {
-  padding-left: 0;
+ul.sf-menu.sf-horizontal > li:first-child > .sf-depth-1 {
+  @include breakpoint(md) {
+    padding-left: 0;
+  }
 }
 
 ul.sf-menu.sf-horizontal > li > .sf-depth-1.menuparent {
@@ -504,8 +509,7 @@ ul.sf-menu.sf-accordion .active-trail.sf-no-children.sf-depth-1 > .is-active {
 
 .block-superfish .menu > li > .sf-depth-1.menuparent:before {
   position: absolute;
-  top: 30px;
-  right: 0;
+  top: 31px;
 }
 
 // ie11
@@ -516,5 +520,12 @@ ul.sf-menu.sf-accordion .active-trail.sf-no-children.sf-depth-1 > .is-active {
 
   .block-superfish .menu.sf-horizontal > li > .sf-depth-1.menuparent:before {
     right: 0;
+  }
+}
+
+// Positioning adjustments.
+.sf-horizontal .sf-depth-1.sf-no-children + .sf-depth-1.sf-no-children > a {
+  @include breakpoint(page-container) {
+    padding-left: 1rem;
   }
 }

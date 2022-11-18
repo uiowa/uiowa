@@ -41,6 +41,7 @@ dependencies:
     - datetime
     - entity_reference_revisions
     - layout_builder
+    - layout_builder_restrictions
     - options
     - smart_trim
     - system
@@ -622,6 +623,15 @@ third_party_settings:
         third_party_settings:
           layout_builder_lock:
             lock: {  }
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      allowed_layouts: {  }
+      denylisted_blocks: {  }
+      allowlisted_blocks: {  }
+      restricted_categories: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts: {  }
 id: node.book.default
 targetEntityType: node
 bundle: book
@@ -847,6 +857,7 @@ content:
       more_link: false
       more_class: more-link
       more_text: More
+      more_aria_label: 'Read more about [node:title]'
       summary_handler: full
       trim_options: {  }
     third_party_settings: {  }
