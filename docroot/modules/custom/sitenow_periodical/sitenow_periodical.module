@@ -5,7 +5,22 @@
  * Contains sitenow_periodical.module.
  */
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\pathauto\Entity\PathautoPattern;
+
+/**
+ * Implements hook_entity_presave().
+ */
+function sitenow_periodical_entity_presave(EntityInterface $entity) {
+  switch ($entity->bundle()) {
+    case 'publication_issue':
+      // Setting the title with the first/last name values.
+      $output = $entity->get('field_issue_season_year')->value . " Volume " . $entity->get('field_issue_volume')->value . " Issue " . $entity->get('field_issue_number')->value;
+      $entity->setTitle($output);
+      break;
+
+  }
+}
 
 /**
  * Implements hook_pathauto_pattern_alter().
