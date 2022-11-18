@@ -5,10 +5,6 @@
 $search-mobile-img-path: '../../../uids/assets/images/search-white-01.svg';
 $search-img-path: '../../../uids/assets/images/search-01.svg';
 
-/* @todo Remove this when .hds-search class has been converted to .uids-search */
-.search-overlay .hds-search [type="submit"]::before {
-  background-image: url($search-img-path);
-}
 
 .search-overlay .uids-search [type="submit"]::before {
   background-image: url($search-mobile-img-path);
@@ -26,24 +22,6 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
     width: 100%;
   }
 }
-
-/*
-.search-overlay .uids-search {
-  margin-top: 19px;
-  @include breakpoint(md) {
-    margin-top: 18px;
-  }
-}
-*/
-/*
-.iowa-bar--narrow .search-overlay .uids-search,
-.iowa-bar--full .search-overlay .uids-search {
-  margin-top: 14px;
-  @include breakpoint(md) {
-    margin-top: 18px;
-  }
-}
-*/
 
 .iowa-bar--full .search-overlay .uids-search,
 .iowa-bar--narrow .search-overlay .uids-search {
@@ -99,3 +77,9 @@ $search-img-path: '../../../uids/assets/images/search-01.svg';
   }
 }
 
+
+@media (max-width: 980px) {
+  .search-is-open .search-overlay .uids-search {
+    width: calc(100% - 111px);
+  }
+}
