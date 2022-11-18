@@ -18,5 +18,9 @@ function tippie_core_webform_element_alter(array &$element, FormStateInterface $
         'validate',
       ];
     }
+    // With Acquia varnish, Webform can't pre-populate Google Click ID (gclid).
+    if ($element['#webform_key'] === 'gclid') {
+      $element['#attached']['library'][] = 'tippie_core/get_gclid';
+    }
   }
 }
