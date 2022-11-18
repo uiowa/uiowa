@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: writingcenter.uiowa.ddev.site
+    protocol: https
+  machine_name: writingcenter
+  human_name: writingcenter.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: writingcenter.prod
+drupal:
+  db:
+    database: writingcenter_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://writingcenter.prod.drupal.uiowa.edu'

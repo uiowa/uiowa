@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: music.uiowa.ddev.site
+    protocol: https
+  machine_name: music
+  human_name: music.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: music.prod
+drupal:
+  db:
+    database: music_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://music.prod.drupal.uiowa.edu'

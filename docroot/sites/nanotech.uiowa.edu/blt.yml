@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: nanotech.uiowa.ddev.site
+    protocol: https
+  machine_name: nanotech
+  human_name: nanotech.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: nanotech.prod
+drupal:
+  db:
+    database: nanotech_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://nanotech.prod.drupal.uiowa.edu'
