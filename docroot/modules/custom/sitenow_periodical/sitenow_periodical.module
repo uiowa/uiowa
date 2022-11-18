@@ -14,7 +14,7 @@ use Drupal\pathauto\Entity\PathautoPattern;
 function sitenow_periodical_entity_presave(EntityInterface $entity) {
   switch ($entity->bundle()) {
     case 'publication_issue':
-      // Setting the title with the first/last name values.
+      // Set title with season, volume, and issue.
       $output = $entity->get('field_issue_season_year')->value . " Volume " . $entity->get('field_issue_volume')->value . " Issue " . $entity->get('field_issue_number')->value;
       $entity->setTitle($output);
       break;
