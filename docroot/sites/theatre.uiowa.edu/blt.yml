@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: theatre.uiowa.ddev.site
+    protocol: https
+  machine_name: theatre
+  human_name: theatre.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: theatre.prod
+drupal:
+  db:
+    database: theatre_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://theatre.prod.drupal.uiowa.edu'

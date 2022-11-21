@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: rhetoric.uiowa.ddev.site
+    protocol: https
+  machine_name: rhetoric
+  human_name: rhetoric.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: rhetoric.prod
+drupal:
+  db:
+    database: rhetoric_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://rhetoric.prod.drupal.uiowa.edu'

@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: pda.uiowa.ddev.site
+    protocol: https
+  machine_name: pda
+  human_name: pda.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: pda.prod
+drupal:
+  db:
+    database: pda_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://pda.prod.drupal.uiowa.edu'
