@@ -18,6 +18,7 @@ dependencies:
   module:
     - address
     - layout_builder
+    - layout_builder_restrictions
     - link
     - metatag
     - text
@@ -38,37 +39,6 @@ third_party_settings:
             - ''
             - section_margin_edge_to_edge
         components:
-          -
-            uuid: c08c7736-7120-4ed6-83ae-4c3a1913e334
-            region: content
-            configuration:
-              id: 'field_block:node:named_building:field_image'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_entity_view
-                label: hidden
-                settings:
-                  view_mode: full__ultrawide
-                third_party_settings: {  }
-            weight: 0
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 5b777e36-779d-423f-b1f6-ccaef1fb85fb
-            region: content
-            configuration:
-              id: 'extra_field_block:node:named_building:content_moderation_control'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-            weight: 1
-            additional: {  }
-            third_party_settings: {  }
           -
             uuid: 506d3cfb-2c60-4fdf-8596-210a3fdcfc07
             region: content
@@ -112,7 +82,7 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 1
+            weight: 2
             additional: {  }
             third_party_settings: {  }
           -
@@ -171,7 +141,7 @@ third_party_settings:
                 label: above
                 settings: {  }
                 third_party_settings: {  }
-            weight: 2
+            weight: 3
             additional: {  }
             third_party_settings: {  }
           -
@@ -208,7 +178,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 3
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           -
@@ -232,7 +202,43 @@ third_party_settings:
                   rel: '0'
                   target: '0'
                 third_party_settings: {  }
-            weight: 4
+            weight: 5
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: c08c7736-7120-4ed6-83ae-4c3a1913e334
+            region: second
+            configuration:
+              id: 'field_block:node:named_building:field_image'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: hidden
+                settings:
+                  view_mode: full__ultrawide
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 74ebb053-f220-48a8-bbc7-07b72d2e2a1e
+            region: first
+            configuration:
+              id: 'field_block:node:named_building:field_building_honoree_achieve'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 3
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
@@ -242,7 +248,7 @@ third_party_settings:
           label: ''
           context_mapping: {  }
           layout_builder_styles_style:
-            - section_background_style_black
+            - ''
             - section_container_narrow
         components:
           -
@@ -269,33 +275,22 @@ third_party_settings:
             weight: 0
             additional: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
-      -
-        layout_id: layout_onecol
-        layout_settings:
-          label: ''
-          context_mapping: {  }
-          layout_builder_styles_style:
-            - section_background_white_pattern_community
-            - section_margin_fixed_width_container
-        components:
-          -
-            uuid: 74ebb053-f220-48a8-bbc7-07b72d2e2a1e
-            region: content
-            configuration:
-              id: 'field_block:node:named_building:field_building_honoree_achieve'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: text_default
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: 0
-            additional: {  }
-            third_party_settings: {  }
-        third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      allowed_layouts: {  }
+      denylisted_blocks: {  }
+      allowlisted_blocks: {  }
+      restricted_categories: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts: {  }
 id: node.named_building.default
 targetEntityType: node
 bundle: named_building
