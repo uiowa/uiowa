@@ -4,24 +4,24 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.field.node.place.body
-    - field.field.node.place.field_building_additional_info
-    - field.field.node.place.field_building_address
-    - field.field.node.place.field_building_aeriel_view_link
-    - field.field.node.place.field_building_honoree_achieve
-    - field.field.node.place.field_building_honoree_image
-    - field.field.node.place.field_building_honoree_name
-    - field.field.node.place.field_building_honoree_years
-    - field.field.node.place.field_building_year_built
-    - field.field.node.place.field_image
-    - field.field.node.place.field_meta_tags
-    - node.type.place
+    - field.field.node.named_building.body
+    - field.field.node.named_building.field_building_additional_info
+    - field.field.node.named_building.field_building_address
+    - field.field.node.named_building.field_building_aeriel_view_link
+    - field.field.node.named_building.field_building_honoree_achieve
+    - field.field.node.named_building.field_building_honoree_image
+    - field.field.node.named_building.field_building_honoree_name
+    - field.field.node.named_building.field_building_honoree_years
+    - field.field.node.named_building.field_building_year_built
+    - field.field.node.named_building.field_image
+    - field.field.node.named_building.field_meta_tags
+    - node.type.named_building
   module:
     - text
     - user
-id: node.place.teaser
+id: node.named_building.teaser
 targetEntityType: node
-bundle: place
+bundle: named_building
 mode: teaser
 content:
   body:

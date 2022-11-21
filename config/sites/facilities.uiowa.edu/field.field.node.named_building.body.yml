@@ -4,7 +4,7 @@ status: true
 dependencies:
   config:
     - field.storage.node.body
-    - node.type.place
+    - node.type.named_building
   module:
     - allowed_formats
     - text
@@ -12,10 +12,10 @@ third_party_settings:
   allowed_formats:
     allowed_formats:
       - basic
-id: node.place.body
+id: node.named_building.body
 field_name: body
 entity_type: node
-bundle: place
+bundle: named_building
 label: 'Description of facility'
 description: 'A description of the item.'
 required: false

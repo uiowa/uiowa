@@ -3,18 +3,18 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.place.body
-    - field.field.node.place.field_building_additional_info
-    - field.field.node.place.field_building_address
-    - field.field.node.place.field_building_aeriel_view_link
-    - field.field.node.place.field_building_honoree_achieve
-    - field.field.node.place.field_building_honoree_image
-    - field.field.node.place.field_building_honoree_name
-    - field.field.node.place.field_building_honoree_years
-    - field.field.node.place.field_building_year_built
-    - field.field.node.place.field_image
-    - field.field.node.place.field_meta_tags
-    - node.type.place
+    - field.field.node.named_building.body
+    - field.field.node.named_building.field_building_additional_info
+    - field.field.node.named_building.field_building_address
+    - field.field.node.named_building.field_building_aeriel_view_link
+    - field.field.node.named_building.field_building_honoree_achieve
+    - field.field.node.named_building.field_building_honoree_image
+    - field.field.node.named_building.field_building_honoree_name
+    - field.field.node.named_building.field_building_honoree_years
+    - field.field.node.named_building.field_building_year_built
+    - field.field.node.named_building.field_image
+    - field.field.node.named_building.field_meta_tags
+    - node.type.named_building
   module:
     - address
     - layout_builder
@@ -42,7 +42,7 @@ third_party_settings:
             uuid: c08c7736-7120-4ed6-83ae-4c3a1913e334
             region: content
             configuration:
-              id: 'field_block:node:place:field_image'
+              id: 'field_block:node:named_building:field_image'
               label: null
               label_display: null
               provider: layout_builder
@@ -62,7 +62,7 @@ third_party_settings:
             uuid: 5b777e36-779d-423f-b1f6-ccaef1fb85fb
             region: content
             configuration:
-              id: 'extra_field_block:node:place:content_moderation_control'
+              id: 'extra_field_block:node:named_building:content_moderation_control'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
@@ -73,7 +73,7 @@ third_party_settings:
             uuid: 506d3cfb-2c60-4fdf-8596-210a3fdcfc07
             region: content
             configuration:
-              id: 'field_block:node:place:field_meta_tags'
+              id: 'field_block:node:named_building:field_meta_tags'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
@@ -100,7 +100,7 @@ third_party_settings:
             uuid: bc81667b-0372-473f-9733-d5b0c8ae9a43
             region: second
             configuration:
-              id: 'field_block:node:place:body'
+              id: 'field_block:node:named_building:body'
               label: null
               label_display: null
               provider: layout_builder
@@ -119,7 +119,7 @@ third_party_settings:
             uuid: 52304edf-a805-4003-8371-1c60e2a44b97
             region: first
             configuration:
-              id: 'field_block:node:place:field_building_honoree_image'
+              id: 'field_block:node:named_building:field_building_honoree_image'
               label: null
               label_display: null
               provider: layout_builder
@@ -139,7 +139,7 @@ third_party_settings:
             uuid: db38c6d3-9851-459d-b3da-f6134eb58683
             region: first
             configuration:
-              id: 'field_block:node:place:field_building_honoree_name'
+              id: 'field_block:node:named_building:field_building_honoree_name'
               label: null
               label_display: null
               provider: layout_builder
@@ -159,7 +159,7 @@ third_party_settings:
             uuid: e34ef3dc-08fd-4737-880c-8a7acdbaf499
             region: second
             configuration:
-              id: 'field_block:node:place:field_building_address'
+              id: 'field_block:node:named_building:field_building_address'
               label: null
               label_display: null
               provider: layout_builder
@@ -178,7 +178,7 @@ third_party_settings:
             uuid: d9ce3d97-a41b-42b1-ab84-e65f00c9abda
             region: first
             configuration:
-              id: 'field_block:node:place:field_building_honoree_years'
+              id: 'field_block:node:named_building:field_building_honoree_years'
               label: null
               label_display: null
               provider: layout_builder
@@ -198,7 +198,7 @@ third_party_settings:
             uuid: 27febe54-e585-4782-9d38-e9096d10ce6b
             region: second
             configuration:
-              id: 'field_block:node:place:field_building_year_built'
+              id: 'field_block:node:named_building:field_building_year_built'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
@@ -215,7 +215,7 @@ third_party_settings:
             uuid: 11c47603-0586-4834-bf62-dc29cb3b9736
             region: second
             configuration:
-              id: 'field_block:node:place:field_building_additional_info'
+              id: 'field_block:node:named_building:field_building_additional_info'
               label: null
               label_display: null
               provider: layout_builder
@@ -249,7 +249,7 @@ third_party_settings:
             uuid: c6f070be-1e71-4e95-a5ac-3d07e2bf5e1b
             region: content
             configuration:
-              id: 'field_block:node:place:field_building_aeriel_view_link'
+              id: 'field_block:node:named_building:field_building_aeriel_view_link'
               label: null
               label_display: null
               provider: layout_builder
@@ -283,7 +283,7 @@ third_party_settings:
             uuid: 74ebb053-f220-48a8-bbc7-07b72d2e2a1e
             region: content
             configuration:
-              id: 'field_block:node:place:field_building_honoree_achieve'
+              id: 'field_block:node:named_building:field_building_honoree_achieve'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
@@ -296,9 +296,9 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
-id: node.place.default
+id: node.named_building.default
 targetEntityType: node
-bundle: place
+bundle: named_building
 mode: default
 content:
   body:
@@ -311,7 +311,7 @@ content:
   content_moderation_control:
     settings: {  }
     third_party_settings: {  }
-    weight: -20
+    weight: 1
     region: content
   field_building_additional_info:
     type: link

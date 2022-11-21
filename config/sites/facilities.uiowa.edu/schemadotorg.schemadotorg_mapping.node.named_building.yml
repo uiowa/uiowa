@@ -3,13 +3,13 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.place.body
-    - field.field.node.place.field_building_address
-    - field.field.node.place.field_image
-    - node.type.place
-id: node.place
+    - field.field.node.named_building.body
+    - field.field.node.named_building.field_building_address
+    - field.field.node.named_building.field_image
+    - node.type.named_building
+id: node.named_building
 target_entity_type_id: node
-target_bundle: place
+target_bundle: named_building
 schema_type: Place
 schema_properties:
   field_building_address: address

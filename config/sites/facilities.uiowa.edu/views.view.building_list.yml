@@ -4,7 +4,7 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_building_honoree_name
-    - node.type.place
+    - node.type.named_building
   module:
     - node
     - user
@@ -209,7 +209,7 @@ display:
           entity_field: type
           plugin_id: bundle
           value:
-            place: place
+            named_building: named_building
           expose:
             operator_limit_selection: false
             operator_list: {  }
