@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: sustainability.uiowa.ddev.site
+    protocol: https
+  machine_name: sustainability
+  human_name: sustainability.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sustainability.prod
+drupal:
+  db:
+    database: sustainability_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sustainability.prod.drupal.uiowa.edu'

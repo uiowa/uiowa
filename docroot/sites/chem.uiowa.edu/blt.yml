@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: chem.uiowa.ddev.site
+    protocol: https
+  machine_name: chem
+  human_name: chem.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: chem.prod
+drupal:
+  db:
+    database: chem_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://chem.prod.drupal.uiowa.edu'
