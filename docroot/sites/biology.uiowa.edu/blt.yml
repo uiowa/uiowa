@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: biology.uiowa.ddev.site
+    protocol: https
+  machine_name: biology
+  human_name: biology.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: biology.prod
+drupal:
+  db:
+    database: biology_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://biology.prod.drupal.uiowa.edu'
