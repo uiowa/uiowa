@@ -20,6 +20,7 @@ use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\views\Views;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Exception\RfcComplianceException;
+use Drupal\uiowa_core\RegionHelper;
 
 /**
  * Implements hook_config_schema_info_alter().
@@ -174,6 +175,7 @@ function uiowa_core_preprocess_page(&$variables) {
   ];
   if (isset($node) && $node instanceof NodeInterface) {
     $node_type = $node->bundle();
+
     if (in_array($node_type, $tags_related_display_allowed_types)) {
 
       $tag_display_config = [];
@@ -233,8 +235,14 @@ function uiowa_core_preprocess_page(&$variables) {
         }
       }
     }
+    // If it wasn't one of our tags related display allowed types,
+    // then we can unset the entire view from the page
+    // so that it won't display.
+    else {
+      unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
+      unset($variables['page']['pre_footer']['views_block__related_content_block_related_headings_lists']);
+    }
   }
-
 }
 
 /**
@@ -391,6 +399,12 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
           ->addWarning(t('You do not have permission to set the active after content and pre footer items. Please contact a user with webmaster permissions.'));
       }
       break;
+
+    // Add region settings to appropriate node forms.
+    case 'node_page_edit_form':
+    case 'node_page_form':
+      RegionHelper::overrideNodeForm($form);
+      break;
   }
 }
 
@@ -423,6 +437,37 @@ function uiowa_core_preprocess_html(&$variables) {
       if ($config->get('fonts.font-family') === 'serif') {
         $variables['attributes']['class'][] = 'text--serif';
         $variables['#attached']['library'][] = 'uids_base/global-serif';
+      }
+    }
+  }
+  else {
+    // Body classes for after content.
+    // First, we load the global config for region_settings to check if we have
+    // a global after_content.
+    $global_after_content_fid = \Drupal::configFactory()
+      ->get('uiowa_core.settings')
+      ->get('uiowa_core.region_content.after_content');
+
+    // Then, we load the node we are on so we can use its fields.
+    $node = \Drupal::routeMatch()
+      ->getParameter('node');
+
+    // If our node is really a node, and it is of type page...
+    $after_content_override_fid = NULL;
+    if ($node instanceof NodeInterface && $node->getType() === 'page') {
+
+      $after_content_override_fid = $node
+        ?->field_after_content_override
+        ?->target_id;
+    }
+
+    // Then, if either a global after_content or an after_content_override
+    // exists...
+    if (!is_null($global_after_content_fid) || !is_null($after_content_override_fid)) {
+      // And if the page has the after_content region...
+      if (isset($variables['page']['after_content'])) {
+        // Add the class to the body.
+        $variables['attributes']['class'][] = 'after_content--spacing';
       }
     }
   }
@@ -691,8 +736,7 @@ function uiowa_core_academic_years_default_value(ContentEntityInterface $entity,
 /**
  * Added allowed values function for student profiles territory field.
  */
-function uiowa_core_state_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
-  $cacheable = FALSE;
+function uiowa_core_state_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable = TRUE) {
   $options = [
     'AL' => 'Alabama',
     'AK' => 'Alaska',

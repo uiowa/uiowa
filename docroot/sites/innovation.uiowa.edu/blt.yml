@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: innovation.uiowa.ddev.site
+    protocol: https
+  machine_name: innovation
+  human_name: innovation.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: innovation.prod
+drupal:
+  db:
+    database: innovation_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: jjkaufmann
+  site-name: 'Office of Innovation'

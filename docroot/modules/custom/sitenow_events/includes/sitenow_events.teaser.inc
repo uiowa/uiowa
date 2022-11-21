@@ -7,7 +7,7 @@
 
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Url;
-use Drupal\smart_trim\Truncate\TruncateHTML;
+use Drupal\smart_trim\TruncateHTML;
 
 /**
  * Theme function for an event teaser.
@@ -70,6 +70,7 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
   $variables['event']['date_string'] = sitenow_events_format_instance([
     'start' => $variables['event']['instance_start'],
     'end' => $variables['event']['instance_end'],
+    'last_date' => $variables['event']['last_date'],
     'all_day' => $variables['event']['instance_all_day'],
   ]);
 

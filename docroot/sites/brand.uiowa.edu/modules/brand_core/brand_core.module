@@ -196,8 +196,10 @@ function brand_core_node_presave(EntityInterface $entity) {
     ];
     foreach ($fields as $field) {
       $value = $entity->get($field)->value;
-      $value = rtrim($value);
-      $entity->set($field, $value);
+      if (!empty($value)) {
+        $value = rtrim($value);
+        $entity->set($field, $value);
+      }
     }
   }
 }

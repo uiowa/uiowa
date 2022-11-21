@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: deltacenter.uiowa.ddev.site
+    protocol: https
+  machine_name: deltacenter
+  human_name: deltacenter.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: deltacenter.prod
+drupal:
+  db:
+    database: deltacenter_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://deltacenter.prod.drupal.uiowa.edu'

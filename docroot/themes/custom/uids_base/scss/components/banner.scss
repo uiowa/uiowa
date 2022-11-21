@@ -155,6 +155,19 @@
       padding-top: 6rem;
     }
   }
+  &.banner--stacked {
+    .banner__content {
+      padding: 1.25rem;
+      @include breakpoint(sm) {
+        padding-bottom: 4rem;
+        padding-top: 4rem;
+      }
+      @include breakpoint(page-container) {
+        padding-bottom: 6rem;
+        padding-top: 6rem;
+      }
+    }
+  }
 }
 
   // Remove left/right padding if edge-to-edge is selected
@@ -317,6 +330,20 @@
   .banner__content {
     .layout--onecol[class*="page"] & {
       padding: 2rem;
+    }
+  }
+}
+
+// @todo incorporate this into https://github.com/uiowa/uids/issues/721.
+.banner--stacked {
+  &.layout--onecol--background.banner--small {
+    .banner__image {
+      max-height: 15rem;
+      overflow: hidden;
+      @include breakpoint(sm) {
+        max-height: auto;
+        overflow: visible;
+      }
     }
   }
 }

@@ -12,7 +12,7 @@ use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate\Row;
 use Drupal\node\Plugin\migrate\source\d7\Node;
-use Drupal\smart_trim\Truncate\TruncateHTML;
+use Drupal\smart_trim\TruncateHTML;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -121,7 +121,8 @@ abstract class BaseNodeSource extends Node implements ImportAwareInterface {
    */
   public function query() {
     $query = parent::query();
-    if ($date_limiter = $this->migration->getSourceConfiguration()['date_limiter']) {
+    $source_config = $this->migration->getSourceConfiguration();
+    if (isset($source_config['date_limiter']) && $date_limiter = $source_config['date_limiter']) {
       // Only import news newer than the date limiter provided.
       $query->condition('created', strtotime($date_limiter), '>=');
     }

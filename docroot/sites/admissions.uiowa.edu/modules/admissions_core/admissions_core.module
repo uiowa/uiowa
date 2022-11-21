@@ -139,6 +139,11 @@ function admissions_core_form_alter(&$form, FormStateInterface $form_state, $for
       _sitenow_node_form_defaults($form, $form_state);
       break;
 
+    case 'node_event_form':
+    case 'node_event_edit_form':
+      $form['field_event_category']['#group'] = 'node_relations';
+      break;
+
     case 'node_student_profile_form':
     case 'node_student_profile_edit_form':
       // Set form defaults if they exist.
@@ -724,6 +729,28 @@ function admissions_core_theme_suggestions_field_alter(array &$suggestions, arra
 }
 
 /**
+ * Implements hook_views_pre_view().
+ */
+function admissions_core_views_pre_view(ViewExecutable $view, $display_id, array &$args) {
+  // Prevent taxonomy term view from executing on community colleges vocabulary.
+  // Results are instead rendered in an extra field in
+  // admissions_core_taxonomy_term_view().
+  if ($view->id() === 'taxonomy_term') {
+    if (\Drupal::routeMatch()
+      ->getRouteName() === 'entity.taxonomy_term.canonical' &&
+      $page_term_id = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
+      $term = \Drupal::entityTypeManager()
+        ->getStorage('taxonomy_term')
+        ->load($page_term_id);
+      if ($term->bundle() === 'community_colleges') {
+        // Trick Views into not executing the view.
+        $view->executed = TRUE;
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_views_pre_render().
  */
 function admissions_core_views_pre_render(ViewExecutable $view) {
@@ -747,19 +774,6 @@ function admissions_core_views_pre_render(ViewExecutable $view) {
   if ($view->id() === 'areas_of_study') {
     $view->element['#attached']['library'][] = 'uids_base/stat';
     $view->element['#attached']['library'][] = 'uids_base/twocol';
-  }
-
-  // Ugly way to hide related node content but not taxonomy fields.
-  if ($view->id() === 'taxonomy_term') {
-    if (\Drupal::routeMatch()->getRouteName() === 'entity.taxonomy_term.canonical' &&
-      $page_term_id = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
-      $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($page_term_id);
-      if ($term->bundle() === 'community_colleges') {
-        foreach ($view->result as $key => $value) {
-          unset($view->result[$key]);
-        }
-      }
-    }
   }
 }
 
@@ -879,7 +893,7 @@ function admissions_core_preprocess_views_view(&$variables) {
 function admissions_core_views_query_alter($view, $query) {
   // @todo Remove after https://www.drupal.org/project/drupal/issues/672606
   //   is resolved. Certain queries need specific overrides.
-  //   Core Views behavior fails when the parameters contain '/' or '-'. This
+  //   Core Views behavior fails when the parameters contain punctuation. This
   //   alters the query before it runs, fixing the known instances.
   if ($view->id() === 'majors' && $view->current_display === 'two_plus_two_majors') {
     $value = $query->where[0]['conditions'][0]['value'];
@@ -965,7 +979,7 @@ function admissions_core_preprocess_views_view_field(&$variables) {
           $title = $variables['row']->node_field_data_title;
           // Construct our path by removing slashes which will be handled
           // in our query override, and replacing spaces by dashes.
-          $href = str_replace(' ', '-', strtolower($title));
+          $href = str_replace([',', ' '], ['', '-'], strtolower($title));
           $href = str_replace('/', '', $href);
           $href = AdmissionsCoreInterface::TWO_PLUS_TWO_PATH . $href;
           $variables['output'] = ['#markup' => "<a href='{$href}'>{$title}</a>"];
