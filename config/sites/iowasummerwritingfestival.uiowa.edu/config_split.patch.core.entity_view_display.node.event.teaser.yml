@@ -8,20 +8,17 @@ adding:
       - field_delimiter
       - options
   content:
-    body:
-      weight: 9
     field_event_genre:
       type: list_default
       label: inline
       settings: {  }
       third_party_settings: {  }
-      weight: 10
+      weight: 11
       region: content
     field_event_performer:
       third_party_settings:
         field_delimiter:
           delimiter: ''
-      weight: 11
     field_event_registration_link:
       type: link
       label: above
@@ -32,7 +29,7 @@ adding:
         rel: '0'
         target: _blank
       third_party_settings: {  }
-      weight: 8
+      weight: 10
       region: content
     field_event_when:
       settings:
@@ -41,10 +38,6 @@ adding:
     field_event_type: true
 removing:
   content:
-    body:
-      weight: 8
-    field_event_performer:
-      weight: 9
     field_event_when:
       settings:
         format: default
