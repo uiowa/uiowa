@@ -4804,3 +4804,15 @@ $sites['writingcenter.uiowa.ddev.site'] = 'writingcenter.uiowa.edu';
 $sites['writingcenter.dev.drupal.uiowa.edu'] = 'writingcenter.uiowa.edu';
 $sites['writingcenter.stage.drupal.uiowa.edu'] = 'writingcenter.uiowa.edu';
 $sites['writingcenter.prod.drupal.uiowa.edu'] = 'writingcenter.uiowa.edu';
+
+// Directory aliases for hamann.lab.uiowa.edu.
+$sites['labhamann.uiowa.ddev.site'] = 'hamann.lab.uiowa.edu';
+$sites['labhamann.dev.drupal.uiowa.edu'] = 'hamann.lab.uiowa.edu';
+$sites['labhamann.stage.drupal.uiowa.edu'] = 'hamann.lab.uiowa.edu';
+$sites['labhamann.prod.drupal.uiowa.edu'] = 'hamann.lab.uiowa.edu';
+
+// Directory aliases for ctgl.uiowa.edu.
+$sites['ctgl.uiowa.ddev.site'] = 'ctgl.uiowa.edu';
+$sites['ctgl.dev.drupal.uiowa.edu'] = 'ctgl.uiowa.edu';
+$sites['ctgl.stage.drupal.uiowa.edu'] = 'ctgl.uiowa.edu';
+$sites['ctgl.prod.drupal.uiowa.edu'] = 'ctgl.uiowa.edu';
