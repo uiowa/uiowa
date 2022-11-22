@@ -327,8 +327,11 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
       // @todo Finish this logic to render the virtual details and location.
       $variables['rows'][$id]['card_options']['card_subtitle'] = $style->getField($id, 'field_event_when');
       $variables['rows'][$id]['card_options']['card_link_url'] = $card_link_url;
-      $performer = $node?->field_event_performer?->view('teaser');
-      if (!is_null($performer)) {
+      if (
+        $style->getField($id, 'field_event_performer') &&
+        !$node->get('field_event_performer')?->isEmpty()
+      ) {
+        $performer = $node?->field_event_performer?->view('teaser');
         $variables['rows'][$id]['card_options']['card_meta'] = \Drupal::service('renderer')->render($performer);
       }
     }
