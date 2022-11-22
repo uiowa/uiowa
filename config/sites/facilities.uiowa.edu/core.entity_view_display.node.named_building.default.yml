@@ -14,6 +14,7 @@ dependencies:
     - field.field.node.named_building.field_building_year_built
     - field.field.node.named_building.field_image
     - field.field.node.named_building.field_meta_tags
+    - field.field.node.named_building.field_named_building_building_id
     - node.type.named_building
   module:
     - address
@@ -39,22 +40,6 @@ third_party_settings:
             - ''
             - section_margin_edge_to_edge
         components:
-          -
-            uuid: 506d3cfb-2c60-4fdf-8596-210a3fdcfc07
-            region: content
-            configuration:
-              id: 'field_block:node:named_building:field_meta_tags'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: metatag_empty_formatter
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: 3
-            additional: {  }
-            third_party_settings: {  }
           -
             uuid: 34c65c17-c58e-4547-933a-3d19ab7797c1
             region: content
@@ -414,6 +399,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 10
+    region: content
+  field_named_building_building_id:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 11
     region: content
 hidden:
   entity_print_view_epub: true
