@@ -6,7 +6,8 @@ dependencies:
     - field.field.node.named_building.body
     - field.field.node.named_building.field_building_additional_info
     - field.field.node.named_building.field_building_address
-    - field.field.node.named_building.field_building_aeriel_view_link
+    - field.field.node.named_building.field_building_aerial_view_link
+    - field.field.node.named_building.field_building_building_id
     - field.field.node.named_building.field_building_honoree_achieve
     - field.field.node.named_building.field_building_honoree_image
     - field.field.node.named_building.field_building_honoree_name
@@ -14,7 +15,6 @@ dependencies:
     - field.field.node.named_building.field_building_year_built
     - field.field.node.named_building.field_image
     - field.field.node.named_building.field_meta_tags
-    - field.field.node.named_building.field_named_building_building_id
     - node.type.named_building
   module:
     - address
@@ -260,7 +260,7 @@ third_party_settings:
             uuid: c6f070be-1e71-4e95-a5ac-3d07e2bf5e1b
             region: content
             configuration:
-              id: 'field_block:node:named_building:field_building_aeriel_view_link'
+              id: 'field_block:node:named_building:field_building_aerial_view_link'
               label: null
               label_display: null
               provider: layout_builder
@@ -332,7 +332,7 @@ content:
     third_party_settings: {  }
     weight: 2
     region: content
-  field_building_aeriel_view_link:
+  field_building_aerial_view_link:
     type: link
     label: above
     settings:
@@ -343,6 +343,14 @@ content:
       target: ''
     third_party_settings: {  }
     weight: 9
+    region: content
+  field_building_building_id:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 11
     region: content
   field_building_honoree_achieve:
     type: text_default
@@ -399,14 +407,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 10
-    region: content
-  field_named_building_building_id:
-    type: string
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 11
     region: content
 hidden:
   entity_print_view_epub: true

@@ -6,7 +6,8 @@ dependencies:
     - field.field.node.named_building.body
     - field.field.node.named_building.field_building_additional_info
     - field.field.node.named_building.field_building_address
-    - field.field.node.named_building.field_building_aeriel_view_link
+    - field.field.node.named_building.field_building_aerial_view_link
+    - field.field.node.named_building.field_building_building_id
     - field.field.node.named_building.field_building_honoree_achieve
     - field.field.node.named_building.field_building_honoree_image
     - field.field.node.named_building.field_building_honoree_name
@@ -14,7 +15,6 @@ dependencies:
     - field.field.node.named_building.field_building_year_built
     - field.field.node.named_building.field_image
     - field.field.node.named_building.field_meta_tags
-    - field.field.node.named_building.field_named_building_building_id
     - node.type.named_building
   module:
     - address
@@ -80,13 +80,21 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_building_aeriel_view_link:
+  field_building_aerial_view_link:
     type: link_default
     weight: 5
     region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
+    third_party_settings: {  }
+  field_building_building_id:
+    type: string_textfield
+    weight: 27
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   field_building_honoree_achieve:
     type: text_textarea
@@ -141,14 +149,6 @@ content:
     settings:
       sidebar: true
       use_details: true
-    third_party_settings: {  }
-  field_named_building_building_id:
-    type: string_textfield
-    weight: 27
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
