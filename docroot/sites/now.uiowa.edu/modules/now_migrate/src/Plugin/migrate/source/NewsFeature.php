@@ -137,6 +137,30 @@ class NewsFeature extends BaseNodeSource {
       $row->setSourceProperty('gallery', $new_images);
     }
 
+    // Truncate the featured image caption, if needed,
+    // and add a message to the migrate table for future followup.
+    $caption = $row->getSourceProperty('field_primary_media_caption');
+    if (!empty($caption)) {
+      if (strlen($caption[0]['value']) > 255) {
+        $message = 'Field image caption truncated. Original caption was: ' . $caption[0]['value'];
+        // Need to limit to '252' to account for the three charaacter
+        // ellipsis that will be added.
+        $caption[0]['value'] = $this->extractSummaryFromText($caption[0]['value'], 252);
+        $row->setSourceProperty('field_primary_media_caption', $caption);
+        // Add a message to the migration that can be queried later.
+        // The following query can then be used:
+        // "SELECT migrate_map_now_news_feature.destid1 AS NODE_ID,
+        // migrate_message_now_news_feature.message AS MESSAGE
+        // FROM migrate_map_now_news_feature JOIN
+        // migrate_message_now_news_feature ON
+        // migrate_map_now_news_feature.source_ids_hash =
+        // migrate_message_now_news_feature.source_ids_hash;".
+        $this->migration
+          ->getIdMap()
+          ->saveMessage(['nid' => $row->getSourceProperty('nid')], $message);
+      }
+    }
+
     return TRUE;
   }
 
