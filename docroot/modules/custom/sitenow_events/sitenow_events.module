@@ -324,15 +324,37 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
         $card_link_url = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
       }
 
-      // @todo Finish this logic to render the virtual details and location.
+      $card_meta = [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#attributes' => [
+          'class' => [
+            'card__meta fa-ul',
+          ],
+        ],
+      ];
+
+      $meta_fields = [
+        'virtual' => 'field_event_virtual',
+        'location' => 'field_event_location',
+        'performer' => 'field_event_performer',
+      ];
+
+      // Add meta fields, if they exist.
+      foreach ($meta_fields as $key => $field_name) {
+        if (
+          $style->getField($id, $field_name) &&
+          !$node->get($field_name)?->isEmpty()
+        ) {
+          $card_meta[$key] = $node?->{$field_name}?->view('teaser');
+        }
+      }
+
       $variables['rows'][$id]['card_options']['card_subtitle'] = $style->getField($id, 'field_event_when');
       $variables['rows'][$id]['card_options']['card_link_url'] = $card_link_url;
-      if (
-        $style->getField($id, 'field_event_performer') &&
-        !$node->get('field_event_performer')?->isEmpty()
-      ) {
-        $performer = $node?->field_event_performer?->view('teaser');
-        $variables['rows'][$id]['card_options']['card_meta'] = \Drupal::service('renderer')->render($performer);
+
+      if (!empty($card_meta)) {
+        $variables['rows'][$id]['card_options']['card_meta'] = \Drupal::service('renderer')->render($card_meta);
       }
     }
   }
