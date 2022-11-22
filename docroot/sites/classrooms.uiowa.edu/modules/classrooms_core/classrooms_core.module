@@ -33,17 +33,21 @@ function classrooms_core_node_view(array &$build, EntityInterface $entity, Entit
   $data = $maui_api->getClassroomsData();
 
   $building = [];
+  $filters = [
+    "1) University Classrooms - Level 1",
+    "1) University Classrooms - Original",
+    "1) University Classrooms",
+    "1) University Classrooms - Study Space",
+  ];
 
   foreach ($data as $room) {
-    $category = array_intersect([
-      "1) University Classrooms - Level 1",
-      "1) University Classrooms - Original",
-      "1) University Classrooms",
-      "1) University Classrooms - Study Space",
-    ], $room->regionList);
+    $category = array_intersect($filters, $room->regionList);
 
     if ($category) {
-      array_push($building, ["room" => $room->roomNumber, "building" => $room->buildingCode]);
+      $building[] = [
+        "room" => $room->roomNumber,
+        "building" => $room->buildingCode,
+      ];
     }
   }
   $build['maui_room_data'] = [
@@ -56,7 +60,3 @@ function classrooms_core_node_view(array &$build, EntityInterface $entity, Entit
   ];
 
 }
-
-/**
- * Implements hook_ENTITY_TYPE_presave().
- */

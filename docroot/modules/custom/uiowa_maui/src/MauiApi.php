@@ -300,12 +300,7 @@ class MauiApi {
   }
 
   /**
-   * Get room data based on building ID and room ID.
-   *
-   * @param string $building_id
-   *   The building id of the room.
-   * @param string $room_id
-   *   The room id of the room.
+   * Get complete building list.
    *
    * @return mixed
    *   The API response data.
