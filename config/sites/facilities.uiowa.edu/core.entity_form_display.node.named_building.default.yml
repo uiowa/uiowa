@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.named_building.field_building_building_id
     - field.field.node.named_building.field_building_honoree_achieve
     - field.field.node.named_building.field_building_honoree_image
+    - field.field.node.named_building.field_building_honoree_last_name
     - field.field.node.named_building.field_building_honoree_name
     - field.field.node.named_building.field_building_honoree_years
     - field.field.node.named_building.field_building_year_built
@@ -31,13 +32,14 @@ third_party_settings:
       children:
         - field_building_honoree_image
         - field_building_honoree_name
+        - field_building_honoree_last_name
         - field_building_honoree_years
         - field_building_year_built
         - field_building_honoree_achieve
       label: Honoree
       region: content
       parent_name: ''
-      weight: 6
+      weight: 7
       format_type: fieldset
       format_settings:
         classes: ''
@@ -52,7 +54,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 3
+    weight: 4
     region: content
     settings:
       rows: 9
@@ -62,25 +64,11 @@ content:
     third_party_settings: {  }
   created:
     type: datetime_timestamp
-    weight: 8
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
   field_building_additional_info:
-    type: link_default
-    weight: 4
-    region: content
-    settings:
-      placeholder_url: ''
-      placeholder_title: ''
-    third_party_settings: {  }
-  field_building_address:
-    type: address_default
-    weight: 2
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  field_building_aerial_view_link:
     type: link_default
     weight: 5
     region: content
@@ -88,9 +76,23 @@ content:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
+  field_building_address:
+    type: address_default
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_building_aerial_view_link:
+    type: link_default
+    weight: 6
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
   field_building_building_id:
     type: string_textfield
-    weight: 27
+    weight: 2
     region: content
     settings:
       size: 60
@@ -98,7 +100,7 @@ content:
     third_party_settings: {  }
   field_building_honoree_achieve:
     type: text_textarea
-    weight: 17
+    weight: 19
     region: content
     settings:
       rows: 5
@@ -111,6 +113,14 @@ content:
     settings:
       media_types: {  }
     third_party_settings: {  }
+  field_building_honoree_last_name:
+    type: string_textfield
+    weight: 15
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_building_honoree_name:
     type: string_textfield
     weight: 14
@@ -121,7 +131,7 @@ content:
     third_party_settings: {  }
   field_building_honoree_years:
     type: string_textfield
-    weight: 15
+    weight: 16
     region: content
     settings:
       size: 60
@@ -129,7 +139,7 @@ content:
     third_party_settings: {  }
   field_building_year_built:
     type: string_textfield
-    weight: 16
+    weight: 18
     region: content
     settings:
       size: 60
@@ -144,7 +154,7 @@ content:
     third_party_settings: {  }
   field_meta_tags:
     type: metatag_firehose
-    weight: 26
+    weight: 16
     region: content
     settings:
       sidebar: true
@@ -152,33 +162,33 @@ content:
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 13
+    weight: 14
     region: content
     settings: {  }
     third_party_settings: {  }
   path:
     type: path
-    weight: 11
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    weight: 9
+    weight: 10
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 14
+    weight: 15
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    weight: 10
+    weight: 11
     region: content
     settings:
       display_label: true
@@ -193,7 +203,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 7
+    weight: 8
     region: content
     settings:
       match_operator: CONTAINS
@@ -202,7 +212,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   url_redirects:
-    weight: 12
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }

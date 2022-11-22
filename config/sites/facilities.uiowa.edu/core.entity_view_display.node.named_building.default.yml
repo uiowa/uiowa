@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.named_building.field_building_building_id
     - field.field.node.named_building.field_building_honoree_achieve
     - field.field.node.named_building.field_building_honoree_image
+    - field.field.node.named_building.field_building_honoree_last_name
     - field.field.node.named_building.field_building_honoree_name
     - field.field.node.named_building.field_building_honoree_years
     - field.field.node.named_building.field_building_year_built
@@ -367,6 +368,14 @@ content:
       link: false
     third_party_settings: {  }
     weight: 3
+    region: content
+  field_building_honoree_last_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 12
     region: content
   field_building_honoree_name:
     type: string
