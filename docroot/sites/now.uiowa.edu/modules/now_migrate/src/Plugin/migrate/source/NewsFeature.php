@@ -24,6 +24,14 @@ class NewsFeature extends BaseNodeSource {
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
 
+    $subhead = $row->getSourceProperty('field_subhead');
+    if (!empty($subhead)) {
+      $subhead = '<p class="uids-component--light-intro">' . $subhead[0]['value'] . '</p>';
+      $body = $row->getSourceProperty('body');
+      $body[0]['value'] = $subhead . $body[0]['value'];
+      $row->setSourceProperty('body', $body);
+    }
+
     // Process the primary media field.
     $media = $row->getSourceProperty('field_primary_media');
     if (!empty($media)) {
@@ -43,14 +51,6 @@ class NewsFeature extends BaseNodeSource {
         $body[0]['value'] = $this->createVideo($media[0]['fid']) . $body[0]['value'];
         $row->setSourceProperty('body', $body);
       }
-    }
-
-    $subhead = $row->getSourceProperty('field_subhead');
-    if (!empty($subhead)) {
-      $subhead = '<p class="uids-component--light-intro">' . $subhead[0]['value'] . '</p>';
-      $body = $row->getSourceProperty('body');
-      $body[0]['value'] = $subhead . $body[0]['value'];
-      $row->setSourceProperty('body', $body);
     }
 
     // Set our tagMapping if it's not already.
