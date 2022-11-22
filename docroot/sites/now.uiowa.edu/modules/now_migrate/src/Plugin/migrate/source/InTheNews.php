@@ -103,6 +103,16 @@ class InTheNews extends BaseNodeSource {
       ]);
     }
 
+    // Set our tagMapping if it's not already.
+    if (empty($this->tagMapping)) {
+      $this->tagMapping = \Drupal::database()
+        ->select('taxonomy_term_field_data', 't')
+        ->fields('t', ['name', 'tid'])
+        ->condition('t.vid', 'tags', '=')
+        ->execute()
+        ->fetchAllKeyed();
+    }
+
     // Map various old fields into Tags.
     $tag_tids = [];
     foreach ([
