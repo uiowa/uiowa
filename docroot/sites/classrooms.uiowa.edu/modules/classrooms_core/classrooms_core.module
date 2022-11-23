@@ -55,29 +55,38 @@ function classrooms_core_node_view(array &$build, EntityInterface $entity, Entit
 
   $maui_api = \Drupal::service('uiowa_maui.api');
   $data = $maui_api->getClassroomsData();
-
-  $building = [];
-  $filters = [
-    "1) University Classrooms - Level 1",
-    "1) University Classrooms - Original",
-    "1) University Classrooms",
-    "1) University Classrooms - Study Space",
-  ];
-
-  foreach ($data as $room) {
-    $category = array_intersect($filters, $room->regionList);
-
-    if ($category) {
-      $building[] = [
-        "room" => $room->roomNumber,
-        "building" => $room->buildingCode,
-      ];
-    }
+  $cid = "uiowa_maui:request:buildings_filtered";
+  if ($cached = \Drupal::cache('uiowa_maui')->get($cid)) {
+    $buildings = $cached->data;
   }
+  else {
+    $buildings = [];
+    $filters = [
+      "1) University Classrooms - Level 1",
+      "1) University Classrooms - Original",
+      "1) University Classrooms",
+      "1) University Classrooms - Study Space",
+    ];
+
+    foreach ($data as $room) {
+      $category = array_intersect($filters, $room->regionList);
+
+      if ($category) {
+        $buildings[] = [
+          "room" => $room->roomNumber,
+          "building" => $room->buildingCode,
+        ];
+      }
+    }
+    // Create a cache item set to 6 hours.
+    $request_time = \Drupal::time()->getRequestTime();
+    \Drupal::cache('uiowa_maui')->set($cid, $buildings, $request_time + 21600);
+  }
+
   $build['maui_room_data'] = [
     '#type' => 'html_tag',
     '#tag' => 'code',
-    '#value' => json_encode($building, JSON_PRETTY_PRINT),
+    '#value' => json_encode($buildings, JSON_PRETTY_PRINT),
     '#attributes' => [
       'class' => ['maui-data'],
     ],
