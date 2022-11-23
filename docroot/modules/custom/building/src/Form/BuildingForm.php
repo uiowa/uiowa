@@ -1,16 +1,16 @@
 <?php
 
-namespace Drupal\classrooms_core\Form;
+namespace Drupal\building\Form;
 
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Classrooms core form.
+ * Building form.
  *
- * @property \Drupal\classrooms_core\ClassroomsCoreInterface $entity
+ * @property \Drupal\building\BuildingInterface $entity
  */
-class ClassroomsCoreForm extends EntityForm {
+class BuildingForm extends EntityForm {
 
   /**
    * {@inheritdoc}
@@ -24,7 +24,7 @@ class ClassroomsCoreForm extends EntityForm {
       '#title' => $this->t('Label'),
       '#maxlength' => 255,
       '#default_value' => $this->entity->label(),
-      '#description' => $this->t('Label for the classrooms core.'),
+      '#description' => $this->t('Label for the building.'),
       '#required' => TRUE,
     ];
 
@@ -32,7 +32,7 @@ class ClassroomsCoreForm extends EntityForm {
       '#type' => 'machine_name',
       '#default_value' => $this->entity->id(),
       '#machine_name' => [
-        'exists' => '\Drupal\classrooms_core\Entity\ClassroomsCore::load',
+        'exists' => '\Drupal\building\Entity\Building::load',
       ],
       '#disabled' => !$this->entity->isNew(),
     ];
@@ -47,7 +47,7 @@ class ClassroomsCoreForm extends EntityForm {
       '#type' => 'textarea',
       '#title' => $this->t('Description'),
       '#default_value' => $this->entity->get('description'),
-      '#description' => $this->t('Description of the classrooms core.'),
+      '#description' => $this->t('Description of the building.'),
     ];
 
     return $form;
@@ -60,8 +60,8 @@ class ClassroomsCoreForm extends EntityForm {
     $result = parent::save($form, $form_state);
     $message_args = ['%label' => $this->entity->label()];
     $message = $result == SAVED_NEW
-      ? $this->t('Created new classrooms core %label.', $message_args)
-      : $this->t('Updated classrooms core %label.', $message_args);
+      ? $this->t('Created new building %label.', $message_args)
+      : $this->t('Updated building %label.', $message_args);
     $this->messenger()->addStatus($message);
     $form_state->setRedirectUrl($this->entity->toUrl('collection'));
     return $result;

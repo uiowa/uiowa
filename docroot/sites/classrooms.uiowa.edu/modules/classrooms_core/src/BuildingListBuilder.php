@@ -6,9 +6,9 @@ use Drupal\Core\Config\Entity\ConfigEntityListBuilder;
 use Drupal\Core\Entity\EntityInterface;
 
 /**
- * Provides a listing of classrooms cores.
+ * Provides a listing of buildings.
  */
-class ClassroomsCoreListBuilder extends ConfigEntityListBuilder {
+class BuildingListBuilder extends ConfigEntityListBuilder {
 
   /**
    * {@inheritdoc}
@@ -24,7 +24,7 @@ class ClassroomsCoreListBuilder extends ConfigEntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity) {
-    /** @var \Drupal\classrooms_core\ClassroomsCoreInterface $entity */
+    /** @var \Drupal\classrooms_core\BuildingInterface $entity */
     $row['label'] = $entity->label();
     $row['id'] = $entity->id();
     $row['status'] = $entity->status() ? $this->t('Enabled') : $this->t('Disabled');
