@@ -143,9 +143,10 @@ class NewsFeature extends BaseNodeSource {
     if (!empty($caption)) {
       if (strlen($caption[0]['value']) > 255) {
         $message = 'Field image caption truncated. Original caption was: ' . $caption[0]['value'];
-        // Need to limit to '252' to account for the three charaacter
-        // ellipsis that will be added.
-        $caption[0]['value'] = $this->extractSummaryFromText($caption[0]['value'], 252);
+        // Need to limit to lower than the actual 255 limit,
+        // to account for added ellipsis as well as giving
+        // some buffer room for possible encoded characters like ampersands.
+        $caption[0]['value'] = $this->extractSummaryFromText($caption[0]['value'], 245);
         $row->setSourceProperty('field_primary_media_caption', $caption);
         // Add a message to the migration that can be queried later.
         // The following query can then be used:
