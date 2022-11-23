@@ -7,6 +7,7 @@
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
 
 /**
  * Implements hook_entity_extra_field_info().
@@ -22,6 +23,29 @@ function classrooms_core_entity_extra_field_info(): array {
   ];
 
   return $extra;
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function classrooms_core_entity_presave(EntityInterface $entity) {
+  if (!$entity instanceof FieldableEntityInterface) {
+    return;
+  }
+
+  if ($entity->bundle() === 'classroom') {
+    if ($entity->hasField('field_classroom_building_id') && $entity->hasField('field_classroom_room_id')) {
+      if (!empty($entity->get('field_classroom_building_id')->value && !empty($entity->get('field_classroom_room_id')->value))) {
+
+        $building_id = $entity->get('field_classroom_building_id')->value;
+        $room_id = $entity->get('field_classroom_room_id')->value;
+
+        // Set title programmatically based on building and room id.
+        $title = $building_id . " " . $room_id;
+        $entity->setTitle($title);
+      }
+    }
+  }
 }
 
 /**
