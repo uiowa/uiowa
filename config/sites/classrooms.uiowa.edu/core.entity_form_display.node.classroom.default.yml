@@ -5,8 +5,6 @@ dependencies:
   config:
     - field.field.node.classroom.body
     - field.field.node.classroom.field_classroom_building_id
-    - field.field.node.classroom.field_classroom_max_occupancy
-    - field.field.node.classroom.field_classroom_max_occupancy_b
     - field.field.node.classroom.field_classroom_room_id
     - field.field.node.classroom.field_meta_tags
     - node.type.classroom
@@ -37,26 +35,10 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_classroom_building_id:
-    type: string_textfield
+    type: options_select
     weight: 0
     region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_classroom_max_occupancy:
-    type: number
-    weight: 12
-    region: content
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-  field_classroom_max_occupancy_b:
-    type: boolean_checkbox
-    weight: 13
-    region: content
-    settings:
-      display_label: true
+    settings: {  }
     third_party_settings: {  }
   field_classroom_room_id:
     type: string_textfield

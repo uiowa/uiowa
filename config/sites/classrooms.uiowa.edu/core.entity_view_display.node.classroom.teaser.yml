@@ -6,8 +6,6 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.field.node.classroom.body
     - field.field.node.classroom.field_classroom_building_id
-    - field.field.node.classroom.field_classroom_max_occupancy
-    - field.field.node.classroom.field_classroom_max_occupancy_b
     - field.field.node.classroom.field_classroom_room_id
     - field.field.node.classroom.field_meta_tags
     - node.type.classroom
@@ -33,10 +31,10 @@ content:
     weight: 1
     region: content
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_classroom_building_id: true
-  field_classroom_max_occupancy: true
-  field_classroom_max_occupancy_b: true
   field_classroom_room_id: true
   field_meta_tags: true
-  maui_room_data: true
   search_api_excerpt: true

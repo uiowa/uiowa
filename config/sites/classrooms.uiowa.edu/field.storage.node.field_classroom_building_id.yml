@@ -1,17 +1,16 @@
-uuid: f83ec2e1-a3c2-4fc0-9256-a95662dbca64
+uuid: e5e88ca8-f45d-4e80-a0ec-02810491940e
 langcode: en
 status: true
 dependencies:
   module:
+    - classrooms_core
     - node
 id: node.field_classroom_building_id
 field_name: field_classroom_building_id
 entity_type: node
-type: string
+type: entity_reference
 settings:
-  max_length: 255
-  case_sensitive: false
-  is_ascii: false
+  target_type: building
 module: core
 locked: false
 cardinality: 1

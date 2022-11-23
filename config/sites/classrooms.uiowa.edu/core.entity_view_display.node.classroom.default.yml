@@ -5,8 +5,6 @@ dependencies:
   config:
     - field.field.node.classroom.body
     - field.field.node.classroom.field_classroom_building_id
-    - field.field.node.classroom.field_classroom_max_occupancy
-    - field.field.node.classroom.field_classroom_max_occupancy_b
     - field.field.node.classroom.field_classroom_room_id
     - field.field.node.classroom.field_meta_tags
     - node.type.classroom
@@ -27,21 +25,12 @@ content:
     weight: 0
     region: content
   field_classroom_building_id:
-    type: string
+    type: entity_reference_label
     label: above
     settings:
-      link_to_entity: false
+      link: false
     third_party_settings: {  }
     weight: 1
-    region: content
-  field_classroom_max_occupancy:
-    type: number_integer
-    label: above
-    settings:
-      thousand_separator: ''
-      prefix_suffix: true
-    third_party_settings: {  }
-    weight: 3
     region: content
   field_classroom_room_id:
     type: string
@@ -56,18 +45,15 @@ content:
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 4
+    weight: 3
     region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 6
-    region: content
-  maui_room_data:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 5
+    weight: 4
     region: content
 hidden:
-  field_classroom_max_occupancy_b: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   search_api_excerpt: true

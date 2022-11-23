@@ -5,25 +5,8 @@
  * Primary module hooks for Uiowa Core module.
  */
 
-use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
-
-/**
- * Implements hook_entity_extra_field_info().
- */
-function classrooms_core_entity_extra_field_info(): array {
-  $extra = [];
-
-  $extra['node']['classroom']['display']['maui_room_data'] = [
-    'label' => t('MAUI Room Data'),
-    'description' => t('Displays information from MAUI.'),
-    'weight' => 100,
-    'visible' => TRUE,
-  ];
-
-  return $extra;
-}
 
 /**
  * Implements hook_entity_presave().
@@ -35,9 +18,9 @@ function classrooms_core_entity_presave(EntityInterface $entity) {
 
   if ($entity->bundle() === 'classroom') {
     if ($entity->hasField('field_classroom_building_id') && $entity->hasField('field_classroom_room_id')) {
-      if (!empty($entity->get('field_classroom_building_id')->value && !empty($entity->get('field_classroom_room_id')->value))) {
+      if (!empty($entity->get('field_classroom_building_id')->target_id && !empty($entity->get('field_classroom_room_id')->value))) {
 
-        $building_id = $entity->get('field_classroom_building_id')->value;
+        $building_id = strtoupper($entity->get('field_classroom_building_id')->target_id);
         $room_id = $entity->get('field_classroom_room_id')->value;
 
         // Set title programmatically based on building and room id.
@@ -46,50 +29,4 @@ function classrooms_core_entity_presave(EntityInterface $entity) {
       }
     }
   }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_view().
- */
-function classrooms_core_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-
-  $maui_api = \Drupal::service('uiowa_maui.api');
-  $data = $maui_api->getClassroomsData();
-  $cid = "uiowa_maui:request:buildings_filtered";
-  if ($cached = \Drupal::cache('uiowa_maui')->get($cid)) {
-    $buildings = $cached->data;
-  }
-  else {
-    $buildings = [];
-    $filters = [
-      "1) University Classrooms - Level 1",
-      "1) University Classrooms - Original",
-      "1) University Classrooms",
-      "1) University Classrooms - Study Space",
-    ];
-
-    foreach ($data as $room) {
-      $category = array_intersect($filters, $room->regionList);
-
-      if ($category) {
-        $buildings[] = [
-          "room" => $room->roomNumber,
-          "building" => $room->buildingCode,
-        ];
-      }
-    }
-    // Create a cache item set to 6 hours.
-    $request_time = \Drupal::time()->getRequestTime();
-    \Drupal::cache('uiowa_maui')->set($cid, $buildings, $request_time + 21600);
-  }
-
-  $build['maui_room_data'] = [
-    '#type' => 'html_tag',
-    '#tag' => 'code',
-    '#value' => json_encode($buildings, JSON_PRETTY_PRINT),
-    '#attributes' => [
-      'class' => ['maui-data'],
-    ],
-  ];
-
 }
