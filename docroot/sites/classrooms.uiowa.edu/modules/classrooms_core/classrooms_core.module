@@ -22,9 +22,10 @@ function classrooms_core_entity_presave(EntityInterface $entity) {
 
         $building_id = strtoupper($entity->get('field_classroom_building_id')->target_id);
         $room_id = $entity->get('field_classroom_room_id')->value;
+        $building = Drupal::entityTypeManager()->getStorage('building')->load($building_id);
 
         // Set title programmatically based on building and room id.
-        $title = $building_id . " " . $room_id;
+        $title = $building->label() . " " . $room_id;
         $entity->setTitle($title);
       }
     }

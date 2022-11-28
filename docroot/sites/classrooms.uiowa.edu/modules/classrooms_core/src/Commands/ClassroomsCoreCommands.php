@@ -70,7 +70,10 @@ class ClassroomsCoreCommands extends DrushCommands {
         $category = array_intersect($filters, $room->regionList);
 
         if ($category) {
-          $buildings[] = strtolower($room->buildingCode);
+          $buildings[$room->buildingCode] = [
+            "building_id" => $room->buildingCode,
+            "building_name" => $room->buildingName,
+          ];
         }
       }
       // Create a cache item set to 6 hours.
@@ -79,7 +82,6 @@ class ClassroomsCoreCommands extends DrushCommands {
     }
 
     if (!empty($buildings)) {
-      $buildings = array_unique($buildings);
       // Check for existing building config entities before creating.
       $query = \Drupal::entityQuery('building')
         ->accessCheck(TRUE);
@@ -88,8 +90,8 @@ class ClassroomsCoreCommands extends DrushCommands {
       foreach ($buildings as $building) {
         if (!in_array($building, $entities)) {
           $building = Building::create([
-            'id' => $building,
-            'label' => strtoupper($building),
+            'id' => $building['building_id'],
+            'label' => ucwords(strtolower($building['building_name'])),
             'status' => 1,
           ]);
           $building->save();
