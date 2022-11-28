@@ -71,7 +71,7 @@ class ClassroomsCoreCommands extends DrushCommands {
 
         if ($category) {
           $buildings[$room->buildingCode] = [
-            "building_id" => $room->buildingCode,
+            "building_id" => strtolower($room->buildingCode),
             "building_name" => $room->buildingName,
           ];
         }
