@@ -62,6 +62,8 @@ class ClassroomsCoreCommands extends DrushCommands {
         "1) University Classrooms - Original",
         "1) University Classrooms",
         "1) University Classrooms - Study Space",
+        "1) Programmed Classrooms - Level 2",
+        "Classroom-Programmed",
       ];
 
       foreach ($data as $room) {
