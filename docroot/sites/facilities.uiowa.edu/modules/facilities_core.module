@@ -1,29 +1,26 @@
 <?php
 
-use Drupal\Core\Cache\Cache;
-use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element;
-use Drupal\Core\Template\Attribute;
-use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\node\Entity\Node;
-use Drupal\node\NodeInterface;
-use Drupal\views\ViewExecutable;
-use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
-use Drupal\admissions_core\AdmissionsCoreInterface;
-
+/**
+ * @file
+ * Custom functionality the Facilities website.
+ */
 
 /**
  * Implements hook_preprocess_HOOK().
  */
-function facilities_core_preprocess_node(&$variables) {
-  $type = $variables['node']?->bundle();
-  if ($type === 'named_building') {
-    $first = $variables['node']?->field_building_honoree_name->value;
-    $last = $variables['node']?->field_building_honoree_last_name->value;
-    $variables['node']->field_building_honoree_name = t($first . ' ' . $last);
-    $foo = 'bar';
+function facilities_core_preprocess_field(&$variables) {
+  if ($variables['element']['#field_name'] === 'field_building_honoree_name') {
+    // Change label for output.
+    $variables['element']['#title'] = 'Honoree';
+    $variables['label'] = 'Honoree';
+    $node = $variables['element']['#object'];
+    // Append the last name if it exists.
+    if (!$node->get('field_building_honoree_last_name')->isEmpty()) {
+      $last = $node->get('field_building_honoree_last_name')->value;
+      // Loop through and overwrite the value.
+      foreach ($variables['items'] as $key => $item) {
+        $variables['items'][$key]['content']['#context']['value'] .= ' ' . $last;
+      }
+    }
   }
-
 }
