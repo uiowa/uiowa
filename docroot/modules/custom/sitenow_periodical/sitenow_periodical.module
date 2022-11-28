@@ -15,7 +15,7 @@ function sitenow_periodical_entity_presave(EntityInterface $entity) {
   switch ($entity->bundle()) {
     case 'publication_issue':
       // Set title with season, volume, and issue.
-      $output = $entity->get('field_issue_season_year')->value . " Volume " . $entity->get('field_issue_volume')->value . " Issue " . $entity->get('field_issue_number')->value;
+      $output = "Volume " . $entity->get('field_issue_volume')->value . ", Issue " . $entity->get('field_issue_number')->value . " | " . $entity->get('field_issue_season_year')->value;
       $entity->setTitle($output);
       break;
 
