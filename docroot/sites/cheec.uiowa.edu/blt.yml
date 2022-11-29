@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: cheec.uiowa.ddev.site
+    protocol: https
+  machine_name: cheec
+  human_name: cheec.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: cheec.prod
+drupal:
+  db:
+    database: cheec_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: dthompson2
+  site-name: 'Center for Health Effects of Environmental Contaminaton'

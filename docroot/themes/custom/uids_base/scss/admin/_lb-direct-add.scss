@@ -1,4 +1,4 @@
-// lb_direct_add overrides
+// lb_direct_add module overrides.
 
 .layout-builder__direct-add__toggle {
   border: 1px solid #ccc;
@@ -20,7 +20,7 @@
 
 .layout-builder__direct-add__list li a {
   font-size: 16px;
-  color: #000;
+  color: #000!important;
   font-weight: 500;
   font-family: BlinkMacSystemFont,-apple-system,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;
 
@@ -47,7 +47,7 @@
   border-color: transparent;
 }
 
-// Layouts not covered by lb_direct_add module
+// Layouts not covered by lb_direct_add module.
 .layout--page--left-sidebar .layout__region--main .layout-builder__add-block.open .layout-builder__direct-add__list > .links {
   @include breakpoint(sm) {
     display: grid;
@@ -56,7 +56,6 @@
   }
 }
 
-// @todo Remove this when a corresponding change is made to lb_direct_add module.
 .layout-builder__direct-add__list {
   top: auto;
 }

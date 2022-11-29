@@ -14,15 +14,18 @@ bundle: twitter
 mode: default
 content:
   field_media_twitter:
-    weight: 0
+    type: twitter_embed
     label: hidden
     settings:
       conversation: false
     third_party_settings: {  }
-    type: twitter_embed
+    weight: 0
     region: content
 hidden:
   created: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_tags: true
   name: true
   search_api_excerpt: true

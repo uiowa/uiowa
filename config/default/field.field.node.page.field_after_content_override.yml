@@ -1,0 +1,29 @@
+uuid: 12008330-781b-43ed-af2e-82eb97ceecc8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_after_content_override
+    - fragments.fragment_type.region_item_after_content
+    - node.type.page
+id: node.page.field_after_content_override
+field_name: field_after_content_override
+entity_type: node
+bundle: page
+label: 'After content override'
+description: 'Override the sitewide sticky <i>After content</i> region for this page. <a  target="_blank" rel="noopener" href="/admin/config/sitenow/region-settings">Manage or create <i>After content</i> items.</a>'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:fragment'
+  handler_settings:
+    target_bundles:
+      region_item_after_content: region_item_after_content
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

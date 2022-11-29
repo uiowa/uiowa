@@ -26,12 +26,12 @@ process:
       callable: htmlspecialchars_decode
     -
       plugin: str_replace
-      search: "&#39;"
-      replace: "'"
+      search: '&#39;'
+      replace: ''''
     -
       plugin: str_replace
-      search: "&rsquo;"
-      replace: "'"
+      search: '&rsquo;'
+      replace: ''''
   format: format
   field_college_website:
     plugin: field_link

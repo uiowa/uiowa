@@ -5,6 +5,9 @@ dependencies: {  }
 id: writinguniversity_migrate
 label: 'Writing University Migrate'
 description: 'Migrations for the Writing University'
+weight: 80
+stackable: true
+storage: folder
 folder: ./modules/custom/writinguniversity_migrate/config/split
 module:
   migrate: 0
@@ -12,11 +15,8 @@ module:
   migrate_tools: 0
   sitenow_migrate: 0
 theme: {  }
-blacklist:
+complete_list:
   - config_split.config_split.writinguniversity_migrate
   - migrate_plus.migration.d7_writinguniversity_blog
   - migrate_plus.migration.d7_writinguniversity_blog_redirect
-graylist: {  }
-graylist_dependents: true
-graylist_skip_equal: true
-weight: 80
+partial_list: {  }

@@ -1,0 +1,19 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.page.field_page_content_block
+  content:
+    body:
+      type: text_trimmed
+      label: above
+      settings:
+        trim_length: 600
+      weight: null
+  hidden:
+    field_page_content_block: true
+removing:
+  content:
+    body:
+      type: text_default
+      label: hidden
+      weight: 2

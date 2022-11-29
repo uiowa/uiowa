@@ -17,51 +17,51 @@ tips:
     id: intro
     plugin: text
     label: 'Media Overview'
-    body: '<p>This page allows you to browse your media content, see some details, edit and execute actions on it.</p><p>Let''s go step by step.</p>'
     weight: 0
+    body: '<p>This page allows you to browse your media content, see some details, edit and execute actions on it.</p><p>Let''s go step by step.</p>'
   media-view:
     id: media-view
     plugin: text
     label: 'Media View'
-    body: "<p>You can select how you would like to display your current media entities - Grid or Table view.</p><p><a\_href=\"/media/add?tour=1\">If you want to learn how to add media, click here for our guided Media tour</a></p>"
     weight: 1
-    selector: '.tabs.primary li:nth-child(2)'
     position: right-start
+    selector: '.tabs.primary li:nth-child(2)'
+    body: "<p>You can select how you would like to display your current media entities - Grid or Table view.</p><p><a\_href=\"/media/add?tour=1\">If you want to learn how to add media, click here for our guided Media tour</a></p>"
   add:
     id: add
     plugin: text
     label: 'Add Media'
-    body: "<p>When it is time to add media to your site, <a\_href=\"/media/add?tour=1\">click here for the tour</a>. You can add files, images, audio files, videos and social media posts.</p>"
     weight: 2
-    selector: .action-links
     position: bottom-start
+    selector: .action-links
+    body: "<p>When it is time to add media to your site, <a\_href=\"/media/add?tour=1\">click here for the tour</a>. You can add files, images, audio files, videos and social media posts.</p>"
   filters:
     id: filters
     plugin: text
     label: Filters
-    body: '<p>Filters can be used to search the content based on author, type, title and other parameters.</p>'
     weight: 3
-    selector: '#edit-submit-media-library'
     position: bottom-start
+    selector: '#edit-submit-media-library'
+    body: '<p>Filters can be used to search the content based on author, type, title and other parameters.</p>'
   actions:
     id: actions
     plugin: text
     label: Actions
-    body: '<p>They let you execute actions on multiple content items at once. Check which actions are offered in the drop-down.</p>'
     weight: 4
-    selector: '#edit-submit--2'
     position: bottom-start
+    selector: '#edit-submit--2'
+    body: '<p>They let you execute actions on multiple content items at once. Check which actions are offered in the drop-down.</p>'
   actions-checkbox:
     id: actions-checkbox
     plugin: text
     label: Actions
-    body: '<p>In order to define which items to execute an action on use the checkboxes. The one in the header row will select all items on a page and the ones in the rows below will select corresponding individual items.</p>'
     weight: 5
-    selector: '.views-form-media-library-page .select-all'
     position: right-start
+    selector: '.views-form-media-library-page .select-all'
+    body: '<p>In order to define which items to execute an action on use the checkboxes. The one in the header row will select all items on a page and the ones in the rows below will select corresponding individual items.</p>'
   next_step:
     id: next_step
     plugin: text
     label: 'Where to next?'
-    body: '<p><a href="/node/add/page?tour=1" class="button button--primary">Page Content</a><a href="/media/add?tour=1" class="button button--primary">Adding Media</a></p>'
     weight: 8
+    body: '<p><a href="/node/add/page?tour=1" class="button button--primary">Page Content</a><a href="/media/add?tour=1" class="button button--primary">Adding Media</a></p>'

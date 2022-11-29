@@ -11,7 +11,9 @@ use Drupal\Core\Config\FileStorage;
  * Implements hook_install().
  */
 function transportation_migrate_install() {
-  $config_path = drupal_get_path('module', 'transportation_migrate') . '/config/split';
+  /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
+  $path_resolver = \Drupal::service('extension.path.resolver');
+  $config_path = $path_resolver->getPath('module', 'transportation_migrate') . '/config/split';
   $source = new FileStorage($config_path);
 
   $config_storage = \Drupal::service('config.storage');

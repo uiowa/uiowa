@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgcssa.uiowa.ddev.site
+    protocol: https
+  machine_name: orgcssa
+  human_name: cssa.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgcssa.prod
+drupal:
+  db:
+    database: cssa_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: slyu1
+  site-name: UICSSA｜爱荷华大学中国学生学者联谊会

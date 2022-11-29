@@ -1,0 +1,25 @@
+uiowa_profiles.settings:
+  type: config_object
+  label: 'Settings for profile directories.'
+  mapping:
+    directories:
+      type: sequence
+      label: 'A directory.'
+      sequence:
+        - type: mapping
+          mapping:
+            title:
+              type: string
+            api_key:
+              type: text
+            path:
+              type: string
+            page_size:
+              type: integer
+            intro:
+              type: mapping
+              mapping:
+                value:
+                  type: string
+                format:
+                  type: string

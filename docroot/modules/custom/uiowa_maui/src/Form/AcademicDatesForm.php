@@ -50,7 +50,7 @@ class AcademicDatesForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, $session_prefilter = NULL, $category_prefilter = NULL, $child_heading_size = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, $session_prefilter = NULL, $category_prefilter = NULL, $child_heading_size = NULL, $items_to_display = NULL, $limit_dates = FALSE) {
     $current = $form_state->getValue('session') ?? $session_prefilter ?? $this->maui->getCurrentSession()->id;
     $category = $form_state->getValue('category') ?? $category_prefilter;
 
@@ -101,14 +101,13 @@ class AcademicDatesForm extends FormBase {
       ];
     }
 
-    // This ID needs to be different than the form ID.
+    // This ID needs to be different from the form ID.
     $form['dates-wrapper'] = [
       '#type' => 'container',
       '#attributes' => [
         'id' => $wrapper,
         'aria-live' => 'polite',
       ],
-      'dates' => [],
     ];
 
     $data = $this->maui->searchSessionDates($current, $category);
@@ -116,8 +115,9 @@ class AcademicDatesForm extends FormBase {
     if (!empty($data)) {
       $form['dates-wrapper']['dates'] = [
         '#theme' => 'uiowa_maui_session_dates',
-        '#data' => $data,
+        '#data' => ((int) $limit_dates === 1) ? array_slice($data, 0, $items_to_display, TRUE) : $data,
         '#child_heading_size' => $child_heading_size,
+        '#limit_dates' => $limit_dates,
       ];
     }
     else {

@@ -107,3 +107,21 @@
     }
   }
 }
+
+// Allow the details summary open/close marker to appear.
+#drupal-off-canvas details,
+#drupal-off-canvas summary {
+  list-style-position:revert;
+  list-style-image: none;
+  list-style-type: revert;
+}
+
+// Styles for smart date date range.
+#drupal-off-canvas .smartdate--time-inline {
+  @include breakpoint(sm) {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 25rem !important;
+  }
+}

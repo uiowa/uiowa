@@ -18,21 +18,24 @@ mode: preview
 content:
   field_uip_id:
     type: string
-    weight: 1
-    region: content
     label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 1
+    region: content
   field_uip_title:
-    weight: 0
+    type: string
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 0
     region: content
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_uip_classes: true
   field_uip_colwidth: true
   field_uip_display_title: true

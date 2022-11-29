@@ -1,0 +1,29 @@
+uuid: e54c7478-75db-4ec0-bc0b-5be100bcb152
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_major_area_of_study
+    - node.type.area_of_study
+    - node.type.major
+id: node.major.field_major_area_of_study
+field_name: field_major_area_of_study
+entity_type: node
+bundle: major
+label: 'Area of Study'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      area_of_study: area_of_study
+    sort:
+      field: title
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

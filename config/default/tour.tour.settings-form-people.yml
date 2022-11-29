@@ -23,56 +23,56 @@ tips:
     plugin: text
     label: Enable/Disable
     weight: 1
-    body: '<p>Toggling the "Enabled" checkbox for SiteNow People, will display/not display every published person at the configurable path below.</p>'
     selector: .form-checkbox
+    body: '<p>Toggling the "Enabled" checkbox for SiteNow People, will display/not display every published person at the configurable path below.</p>'
   title:
     id: title
     plugin: text
     label: 'People Title'
     weight: 2
-    body: '<p>First off, give your page a title. This is a required field. Other required fields are marked with a red asterisk. This will display above the published people.</p>'
-    selector: '#edit-sitenow-people-title'
     position: bottom-start
+    selector: '#edit-sitenow-people-title'
+    body: '<p>First off, give your page a title. This is a required field. Other required fields are marked with a red asterisk. This will display above the published people.</p>'
   path:
     id: path
     plugin: text
     label: 'People Path'
     weight: 3
-    body: '<p>The path where the existing entities will be displayed. The default path is YourSiteURL/people)</p>'
-    selector: '#edit-sitenow-people-path'
     position: bottom-start
+    selector: '#edit-sitenow-people-path'
+    body: '<p>The path where the existing entities will be displayed. The default path is YourSiteURL/people)</p>'
   header:
     id: header
     plugin: text
     label: 'Header Content'
     weight: 4
-    body: '<p>The Header Content text will display above the published content on the people page.</p>'
-    selector: .form-item-sitenow-people-header-content-value
     position: right-start
+    selector: .form-item-sitenow-people-header-content-value
+    body: '<p>The Header Content text will display above the published content on the people page.</p>'
   wysiwyg:
     id: wysiwyg
     plugin: text
     label: 'Text Editor (WYSIWYG) Overview'
     weight: 5
-    body: '<p>The What-You-See-Is-What-You-Get (WYSIWYG) text editor gives you the ability to add additional content to the header on the people page.</p><p>For more WYSIWYG details, <a href="https://sitenow.uiowa.edu/node/136">view our WYSIWYG documentation</a>.</p>'
-    selector: .js-form-type-textarea
     position: top-start
+    selector: .js-form-type-textarea
+    body: '<p>The What-You-See-Is-What-You-Get (WYSIWYG) text editor gives you the ability to add additional content to the header on the people page.</p><p>For more WYSIWYG details, <a href="https://sitenow.uiowa.edu/node/136">view our WYSIWYG documentation</a>.</p>'
   action-links:
     id: action-links
     plugin: text
     label: Sort
     weight: 6
-    body: '<p>You can choose how you wish to sort the people entities. Sort by last name, first name or manual sort where you can manually drag individual (person) entities into the order you wish to display them by editing the /people page.</p>'
-    selector: '#edit-sitenow-people-sort'
     position: bottom-start
+    selector: '#edit-sitenow-people-sort'
+    body: '<p>You can choose how you wish to sort the people entities. Sort by last name, first name or manual sort where you can manually drag individual (person) entities into the order you wish to display them by editing the /people page.</p>'
   page-actions:
     id: page-actions
     plugin: text
     label: 'Save Configurations'
     weight: 7
-    body: '<p>You can Save configuration here.</p><p>Site visitors will only see the people content marked as published on your desired URL path.</p>'
-    selector: '#edit-actions'
     position: top-start
+    selector: '#edit-actions'
+    body: '<p>You can Save configuration here.</p><p>Site visitors will only see the people content marked as published on your desired URL path.</p>'
   next-step:
     id: next-step
     plugin: text

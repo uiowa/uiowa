@@ -5,9 +5,22 @@
  * Primary module hooks for Uiowa Core module.
  */
 
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityFormInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\google_tag\Entity\Container;
+use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
 use Drupal\uiowa_core\HeadlineHelper;
+use Drupal\views\Views;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Exception\RfcComplianceException;
+use Drupal\uiowa_core\RegionHelper;
 
 /**
  * Implements hook_config_schema_info_alter().
@@ -15,9 +28,76 @@ use Drupal\uiowa_core\HeadlineHelper;
 function uiowa_core_config_schema_info_alter(&$definitions) {
   // Make sure that the order of filters in the config export file is always
   // the same, to avoid false positive differences.
-  // @see https://www.drupal.org/project/drupal/issues/2852557#comment-12703225
-  // @todo Remove this after https://www.drupal.org/project/drupal/issues/2855675.
+  // @todo https://github.com/uiowa/uiowa/issues/5034
   $definitions['filter.format.*']['mapping']['filters']['orderby'] = 'key';
+}
+
+/**
+ * Implements hook_cron().
+ */
+function uiowa_core_cron() {
+  $request_time = \Drupal::time()->getRequestTime();
+  $last_run = \Drupal::state()->get('uiowa_core_hourly_last');
+
+  if (!$last_run || $request_time - $last_run >= 3540) {
+    Cache::invalidateTags(['time:hourly']);
+
+    if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
+      $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
+      $purgeQueuers = \Drupal::service('purge.queuers');
+      $purgeQueue = \Drupal::service('purge.queue');
+      $queuer = $purgeQueuers->get('coretags');
+
+      $invalidations = [
+        $purgeInvalidationFactory->get('tag', 'time:hourly'),
+      ];
+
+      $purgeQueue->add($queuer, $invalidations);
+    }
+
+    \Drupal::state()->set('uiowa_core_hourly_last', $request_time);
+  }
+}
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function uiowa_core_module_implements_alter(&$implementations, $hook) {
+  // Our uiowa_core_cron() needs to run before purge_processor_cron().
+  if ($hook === 'cron' && isset($implementations['purge_processor_cron'])) {
+    $group = $implementations['purge_processor_cron'];
+    unset($implementations['purge_processor_cron']);
+    $implementations['purge_processor_cron'] = $group;
+  }
+}
+
+/**
+ * Implements hook_mail_alter().
+ */
+function uiowa_core_mail_alter(&$message) {
+  // Add header in use by email team to avoid spam/external tagging.
+  $message['headers']['X-UI-Hosted'] = 'ITS-Acquia';
+
+  // Override the from address if it doesn't match our Platform Email domain
+  // of uiowa.edu. Otherwise, the email will not be sent. We aren't handling
+  // multiple from addresses here because that doesn't seem to work currently -
+  // hook_mail_alter isn't even invoked for some reason.
+  try {
+    $from = Address::create($message['from']);
+    $domain = explode('@', $from->getAddress());
+    $domain = array_pop($domain);
+
+    if ($domain != 'uiowa.edu') {
+      $name = $from->getName() ?: \Drupal::config('system.site')->get('name');
+      $from = new Address('sitenow-noreply@uiowa.edu', $name);
+      $message['headers']['From'] = $from->toString();
+    }
+  }
+  catch (RfcComplianceException $e) {
+    \Drupal::logger('uiowa_core')->error(t('Unable to alter outgoing email using from address @from', [
+      '@from' => $message['from'],
+    ]));
+  }
 }
 
 /**
@@ -31,6 +111,7 @@ function uiowa_core_theme($existing, $type, $theme, $path) {
         'hide_headline' => FALSE,
         'heading_size' => 'h2',
         'headline_style' => 'default',
+        'headline_alignment' => 'default',
       ],
     ],
   ];
@@ -40,11 +121,13 @@ function uiowa_core_theme($existing, $type, $theme, $path) {
  * Preprocess function uiowa_core_headline.
  */
 function template_preprocess_uiowa_core_headline(&$variables) {
-  if ($variables['hide_headline'] == TRUE) {
+  if ((bool) $variables['hide_headline'] === TRUE) {
     $style = 'sr-only';
   }
   else {
     $style = HeadlineHelper::getStyles()[$variables['headline_style']];
+    $alignment = HeadlineHelper::getHeadingAlignment()[$variables['headline_alignment']];
+    $variables['headline_alignment'] = $alignment;
   }
 
   $variables['headline_style'] = $style;
@@ -61,6 +144,117 @@ function uiowa_core_library_info_alter(array &$libraries, string $extension): vo
 }
 
 /**
+ * Implements hook_preprocess_HOOK().
+ */
+function uiowa_core_preprocess_node(&$variables) {
+  if ($variables['view_mode'] === 'teaser') {
+    $show_teaser_link_indicator = FALSE;
+    $node_type = $variables['node']->bundle();
+    $type_map = [
+      'page' => 'pages',
+      'person' => 'people',
+      'article' => 'articles',
+    ];
+
+    if (isset($type_map[$node_type])) {
+      $config_name = 'sitenow_' . $type_map[$node_type] . '.settings';
+      $config = \Drupal::configFactory()->getEditable($config_name);
+
+      $show_teaser_link_indicator = $config->get('show_teaser_link_indicator');
+    }
+    $variables['show_teaser_link_indicator'] = $show_teaser_link_indicator;
+  }
+
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uiowa_core_preprocess_page(&$variables) {
+  $current_route = \Drupal::routeMatch();
+  $node = $current_route->getParameter('node');
+
+  $view_id = Drupal::request()->attributes->get('view_id');
+
+  // Tags and related display logic on core content types:
+  $tags_related_display_allowed_types = [
+    'article',
+    'page',
+    'person',
+  ];
+  if (isset($node) && $node instanceof NodeInterface) {
+    $node_type = $node->bundle();
+
+    if (in_array($node_type, $tags_related_display_allowed_types)) {
+
+      $tag_display_config = [];
+      $tag_display_config['article'] = \Drupal::configFactory()->getEditable('sitenow_articles.settings')->get('tag_display');
+      $tag_display_config['page'] = \Drupal::configFactory()->getEditable('sitenow_pages.settings')->get('tag_display');
+      $tag_display_config['person'] = \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('tag_display');
+
+      $related_display_config = [];
+      $related_display_config['article'] = \Drupal::configFactory()->getEditable('sitenow_articles.settings')->get('related_display');
+      $related_display_config['page'] = \Drupal::configFactory()->getEditable('sitenow_pages.settings')->get('related_display');
+      $related_display_config['person'] = \Drupal::configFactory()->getEditable('sitenow_people.settings')->get('related_display');
+
+      if (empty($view_id) || $view_id === 'tags_list') {
+        switch ($node_type) {
+          case 'article':
+          case 'page':
+          case 'person':
+            switch ($tag_display_config[$node_type]) {
+
+              case 'tag_buttons':
+                // Tag buttons are default for now. We may add more
+                // options in the future, keeping this case around.
+                break;
+
+              case 'do_not_display':
+                unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
+                break;
+
+              default:
+                unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
+            }
+            break;
+        }
+      }
+      if (empty($view_id) || $view_id === 'related_list') {
+        switch ($node_type) {
+          case 'article':
+          case 'page':
+          case 'person':
+            switch ($related_display_config[$node_type]) {
+
+              case 'headings_lists':
+                // Headings and lists are default for now. We may add more
+                // options in the future, keeping this case around.
+                unset($variables['page']['pre_footer']['views_block__related_manually_referenced_content_block_grid']);
+                break;
+
+              case 'card_grid':
+                unset($variables['page']['pre_footer']['views_block__related_content_block_related_headings_lists']);
+                break;
+
+              default:
+                unset($variables['page']['pre_footer']['views_block__related_content_block_related_headings_lists']);
+
+            }
+            break;
+        }
+      }
+    }
+    // If it wasn't one of our tags related display allowed types,
+    // then we can unset the entire view from the page
+    // so that it won't display.
+    else {
+      unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
+      unset($variables['page']['pre_footer']['views_block__related_content_block_related_headings_lists']);
+    }
+  }
+}
+
+/**
  * Implements hook_page_attachments().
  */
 function uiowa_core_page_attachments(&$page) {
@@ -68,7 +262,7 @@ function uiowa_core_page_attachments(&$page) {
   if (!$admin_context->isAdminRoute()) {
     // Load campus-wide Google Tag in PROD.
     $env = getenv('AH_PRODUCTION');
-    if ($env == 1) {
+    if ((int) $env === 1) {
       $page['#attached']['library'][] = 'uiowa_core/gtag';
     }
   }
@@ -83,12 +277,63 @@ function uiowa_core_page_attachments(&$page) {
  * Implements hook_form_alter().
  */
 function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $current_route = \Drupal::routeMatch();
+  $route_name = $current_route->getRouteName();
+
+  // Only allow certain types to be replicated.
+  // Ignored config that can be custom to a site.
+  if ($route_name === 'entity.node.replicate') {
+    // Get allowed replicate entity types.
+    $allowed_types = \Drupal::config('uiowa_core.settings')->get('uiowa_core.replicate_allowed');
+
+    $form_object = $form_state->getFormObject();
+    if ($form_object instanceof EntityFormInterface) {
+      /** @var Drupal\Core\Entity\EntityInterface $entity */
+      $entity = $form_object->getEntity();
+
+      $node_type = $entity->bundle();
+      $node_title = $entity->getTitle();
+      // Set message and prevent replicate.
+      if (!in_array($node_type, $allowed_types)) {
+        \Drupal::messenger()
+          ->addWarning(t('Replicating content of this type is not allowed. Please contact the ITS Help Desk about enabling this functionality for this content.'));
+        $form['actions']['submit']['#disabled'] = TRUE;
+      }
+      // Customize the replicate confirm dialog to our
+      // use case (pages with titles)
+      $bundle_label = \Drupal::entityTypeManager()
+        ->getStorage('node_type')
+        ->load($entity->bundle())
+        ->label();
+
+      // Changes title to match the "Edit" action title
+      // (e.g. "<em>Edit</em> Home").
+      $form['#title'] = t('<em>Replicate @type</em> @title',
+        ['@type' => $bundle_label, '@title' => $node_title]);
+
+      // Lowercase for the rest of the form.
+      $bundle_label = strtolower($bundle_label);
+
+      $form['new_label_en']['#title'] = t("Replicated @type content's title", ['@type' => $bundle_label]);
+      $form['new_label_en']['#description'] = t('This text will be used as the title of the newly-replicated @type.', ['@type' => $bundle_label]);
+      // Removes the "This action cannot be undone" text.
+      $form['description'] = ['#markup' => ''];
+    }
+  }
+
   switch ($form_id) {
+    case 'fragment_region_item_add_form':
+    case 'fragment_region_item_edit_form':
+      // Ensure item is published to prevent rendering issue for anonymous user.
+      $form['status']['widget']['value']['#default_value'] = TRUE;
+      $form['status']['#disabled'] = TRUE;
+      break;
+
     case 'google_tag_container':
-      $uiowa_core_gtag = \Drupal::config('uiowa_core.settings')->get('uiowa_core.gtag');
+      $uiowa_core_gtag = (int) \Drupal::config('uiowa_core.settings')->get('uiowa_core.gtag');
       // Inform on configuration form that the functionality is
       // currently being blocked from being inserted.
-      if ($uiowa_core_gtag == '0') {
+      if ($uiowa_core_gtag === 0) {
         \Drupal::messenger()
           ->addWarning(t('Local Google Tag Manager container snippets are currently blocked from being inserted on this website. Please contact the ITS Help Desk about enabling this functionality.'));
       }
@@ -97,23 +342,26 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
     // Add delete forms as the types of protected blocks changes.
     case 'block_content_uiowa_text_area_delete_form':
       // Get current block uuid.
-      $block = $form_state
-        ->getFormObject()
-        ->getEntity();
-      $uuid = $block->uuid();
+      $form_object = $form_state->getFormObject();
+      if ($form_object instanceof EntityFormInterface) {
+        /** @var Drupal\Core\Entity\EntityInterface $block */
+        $block = $form_object->getEntity();
+        $uuid = $block->uuid();
 
-      // Get protected settings from uiowa_core.
-      $protected = \Drupal::config('uiowa_core.protected');
-      // If protected...
-      if ($protected->get('protect')) {
-        // Get uuids of protected blocks.
-        $protected_blocks = $protected->get('protected_blocks');
-        $uuids = array_keys($protected_blocks);
+        // Get protected settings from uiowa_core.
+        $protected = \Drupal::config('uiowa_core.protected');
+        // If protected...
+        if ($protected->get('protect')) {
+          // Get uuids of protected blocks.
+          $protected_blocks = $protected->get('protected_blocks');
+          $uuids = array_keys($protected_blocks);
 
-        // See if current block matches any protected and prevent deletion.
-        if (in_array($uuid, $uuids)) {
-          \Drupal::messenger()->addWarning(t('This block is protected from deletion. Remove content from the block instead.'));
-          $form['actions']['submit']['#disabled'] = TRUE;
+          // See if current block matches any protected and prevent deletion.
+          if (in_array($uuid, $uuids)) {
+            \Drupal::messenger()
+              ->addWarning(t('This block is protected from deletion. Remove content from the block instead.'));
+            $form['actions']['submit']['#disabled'] = TRUE;
+          }
         }
       }
       break;
@@ -135,7 +383,7 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
         // Only want folks controlling anonymous visibility.
         $options = [];
         foreach ($form["menu_per_role__hide_role"]["widget"]["#options"] as $key => $option) {
-          if ($key == 'anonymous') {
+          if ($key === 'anonymous') {
             $options[$key] = $option;
             break;
           }
@@ -150,6 +398,22 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
       }
       break;
 
+    case 'uiowa_core_region_settings':
+      // Put active region item functionality behind permission.
+      if (!\Drupal::currentUser()
+        ->hasPermission('configure all region_item fragment layout overrides')) {
+        $form['region_item_after_content_container']['active_region_content_blocks']['after_content']['#disabled'] = TRUE;
+        $form['region_item_pre_footer_container']['active_region_content_blocks']['pre_footer']['#disabled'] = TRUE;
+        \Drupal::messenger()
+          ->addWarning(t('You do not have permission to set the active after content and pre footer items. Please contact a user with webmaster permissions.'));
+      }
+      break;
+
+    // Add region settings to appropriate node forms.
+    case 'node_page_edit_form':
+    case 'node_page_form':
+      RegionHelper::overrideNodeForm($form);
+      break;
   }
 }
 
@@ -157,10 +421,10 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
  * {@inheritdoc}
  */
 function uiowa_core_google_tag_insert_alter(&$satisfied, Container $container) {
-  $uiowa_core_gtag = \Drupal::config('uiowa_core.settings')->get('uiowa_core.gtag');
+  $uiowa_core_gtag = (int) \Drupal::config('uiowa_core.settings')->get('uiowa_core.gtag');
   $env = getenv('AH_PRODUCTION');
   // Determine if site specific Google Tag should be inserted.
-  if ($uiowa_core_gtag == '0' || $env == 0) {
+  if ($uiowa_core_gtag === 0 || (int) $env === 0) {
     $satisfied = FALSE;
   }
 }
@@ -185,15 +449,366 @@ function uiowa_core_preprocess_html(&$variables) {
       }
     }
   }
+  else {
+    // Body classes for after content.
+    // First, we load the global config for region_settings to check if we have
+    // a global after_content.
+    $global_after_content_fid = \Drupal::configFactory()
+      ->get('uiowa_core.settings')
+      ->get('uiowa_core.region_content.after_content');
+
+    // Then, we load the node we are on so we can use its fields.
+    $node = \Drupal::routeMatch()
+      ->getParameter('node');
+
+    // If our node is really a node, and it is of type page...
+    $after_content_override_fid = NULL;
+    if ($node instanceof NodeInterface && $node->getType() === 'page') {
+
+      $after_content_override_fid = $node
+        ?->field_after_content_override
+        ?->target_id;
+    }
+
+    // Then, if either a global after_content or an after_content_override
+    // exists...
+    if (!is_null($global_after_content_fid) || !is_null($after_content_override_fid)) {
+      // And if the page has the after_content region...
+      if (isset($variables['page']['after_content'])) {
+        // Add the class to the body.
+        $variables['attributes']['class'][] = 'after_content--spacing';
+      }
+    }
+  }
 }
 
 /**
  * Implements hook_local_tasks_alter().
  */
-function uiowa_core_menu_local_tasks_alter(&$variables) {
+function uiowa_core_menu_local_tasks_alter(&$data, $route_name) {
   $logged_in = \Drupal::currentUser()->isAuthenticated();
   if ($logged_in) {
-    $variables['tabs'][0]['entity.node.delete_form']['#weight'] = 100;
-    $variables['tabs'][0]['entity.taxonomy_term.delete_form']['#weight'] = 100;
+    $data['tabs'][0]['entity.node.delete_form']['#weight'] = 110;
+    $data['tabs'][0]['entity.fragment.delete_form']['#weight'] = 110;
+    $data['tabs'][0]['entity.taxonomy_term.delete_form']['#weight'] = 110;
   }
+  if (isset($data['tabs'][0]['replicate_ui.local_tasks:entity.node.replicate'])) {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    // Get allowed replicate entity types.
+    if ($node) {
+      $allowed_types = \Drupal::config('uiowa_core.settings')->get('uiowa_core.replicate_allowed');
+      $node_type = $node->bundle();
+      // Remove replicate menu item.
+      if (!in_array($node_type, $allowed_types)) {
+        $data['tabs'][0]['replicate_ui.local_tasks:entity.node.replicate']['#access'] = FALSE;
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_operation_alter().
+ */
+function uiowa_core_entity_operation_alter(array &$operations, EntityInterface $entity) {
+  // If we're using the replicate module, check if it's available.
+  // Also check if we are operating on a node.
+  if (isset($operations['replicate']) && $entity instanceof NodeInterface) {
+    // Pull our allowed types, and check against the given entity.
+    $allowed_types = \Drupal::config('uiowa_core.settings')->get('uiowa_core.replicate_allowed');
+    $type = $entity->getType();
+    // If it's not an allowed type, then remove
+    // the replicate operation.
+    if (!in_array($type, $allowed_types)) {
+      unset($operations['replicate']);
+    }
+  }
+  switch ($entity->getEntityTypeId()) {
+    case 'fragment':
+      $current_route = \Drupal::routeMatch();
+      $route_name = $current_route->getRouteName();
+      if ($route_name === 'uiowa_core.region_settings') {
+        $operations['layout']['weight'] = 9;
+        $url = Url::fromRoute($route_name)->toString();
+        $operations['layout']['url']->setOption('query', ['destination' => $url]);
+      }
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uiowa_core_preprocess_block(&$variables) {
+  switch ($variables['plugin_id']) {
+    case 'views_block:tags_list-tags_list':
+      $variables['#attached']['library'][] = 'uids_base/tags';
+      $variables['title_attributes']['class'] = 'h6 block__headline headline headline--serif';
+      if (!isset($variables['attributes']['class'])) {
+        $variables['attributes']['class'] = [''];
+      }
+      $variables['attributes']['class'][] .= 'layout-container tags-list__container block-padding__bottom block-padding__top';
+      break;
+
+    case 'views_block:related_manually_referenced_content-block_grid':
+      $variables['#attached']['library'][] = 'uids_base/related';
+      $variables['title_attributes']['class'] = 'h3 block__headline headline headline--underline headline--serif';
+      if (!isset($variables['attributes']['class'])) {
+        $variables['attributes']['class'] = [''];
+      }
+      $variables['attributes']['class'][] .= 'block--bg-container grid--threecol--33-34-33 bg--gray block-padding__bottom block-padding__top';
+      break;
+
+    case 'views_block:related_content-block_related_headings_lists':
+      $variables['#attached']['library'][] = 'uids_base/related';
+      $variables['title_attributes']['class'] = 'h3 block__headline headline headline--underline headline--serif';
+      if (!isset($variables['attributes']['class'])) {
+        $variables['attributes']['class'] = [''];
+      }
+      $variables['attributes']['class'][] .= 'block--bg-container related col--threecol--33 bg--gray block-padding__bottom block-padding__top';
+      break;
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ *
+ * Invalidate related and tag view caches on content types that
+ * support these views.
+ */
+function uiowa_core_node_presave(Node $node) {
+  $node_type = $node->getType();
+  $type_map = [
+    'article' => 'articles',
+    'page' => 'pages',
+    'person' => 'people',
+  ];
+
+  // Only proceed if this is a supported content type.
+  if (isset($type_map[$node_type])) {
+    $config_name = 'sitenow_' . $type_map[$node_type] . '.settings';
+    $config = \Drupal::configFactory()->getEditable($config_name);
+    // We'll do this for tag list and related content.
+    foreach ([
+      'tag_display' => 'tags_list',
+      'related_display' => 'related_content',
+    ] as $setting => $view_name) {
+      // Only proceed if the option is turned on for this content type.
+      if ($config->get($setting) !== 'do_not_display') {
+        // Get the view and invalidate the cache.
+        $view = Views::getView($view_name);
+        $view->storage->invalidateCaches();
+      }
+    }
+  }
+}
+
+/**
+ * Allowed values function for partner counties field.
+ */
+function uiowa_core_county_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  return [
+    'Adair',
+    'Adams',
+    'Allamakee',
+    'Appanoose',
+    'Audubon',
+    'Benton',
+    'Black Hawk',
+    'Boone',
+    'Bremer',
+    'Buchanan',
+    'Buena Vista',
+    'Butler',
+    'Calhoun',
+    'Carroll',
+    'Cass',
+    'Cedar',
+    'Cerro Gordo',
+    'Cherokee',
+    'Chickasaw',
+    'Clarke',
+    'Clay',
+    'Clayton',
+    'Clinton',
+    'Crawford',
+    'Dallas',
+    'Davis',
+    'Decatur',
+    'Delaware',
+    'Des Moines',
+    'Dickinson',
+    'Dubuque',
+    'Emmet',
+    'Fayette',
+    'Floyd',
+    'Franklin',
+    'Fremont',
+    'Greene',
+    'Grundy',
+    'Guthrie',
+    'Hamilton',
+    'Hancock',
+    'Hardin',
+    'Harrison',
+    'Henry',
+    'Howard',
+    'Humboldt',
+    'Ida',
+    'Iowa',
+    'Jackson',
+    'Jasper',
+    'Jefferson',
+    'Johnson',
+    'Jones',
+    'Keokuk',
+    'Kossuth',
+    'Lee',
+    'Linn',
+    'Louisa',
+    'Lucas',
+    'Lyon',
+    'Madison',
+    'Mahaska',
+    'Marion',
+    'Marshall',
+    'Mills',
+    'Mitchell',
+    'Monona',
+    'Monroe',
+    'Montgomery',
+    'Muscatine',
+    'O\'Brien',
+    'Osceola',
+    'Page',
+    'Palo Alto',
+    'Plymouth',
+    'Pocahontas',
+    'Polk',
+    'Pottawattamie',
+    'Poweshiek',
+    'Ringgold',
+    'Sac',
+    'Scott',
+    'Shelby',
+    'Sioux',
+    'Story',
+    'Tama',
+    'Taylor',
+    'Union',
+    'Van Buren',
+    'Wapello',
+    'Warren',
+    'Washington',
+    'Wayne',
+    'Webster',
+    'Winnebago',
+    'Winneshiek',
+    'Woodbury',
+    'Worth',
+    'Wright',
+  ];
+}
+
+/**
+ * Allowed values function for partner counties field.
+ */
+function uiowa_core_academic_years(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  $start_year = 2008;
+  $end_year = date('Y') + 1;
+  $years = [];
+  while ($end_year > $start_year) {
+    $years[$end_year - 1] = t('@start-@end', [
+      '@start' => $end_year - 1,
+      '@end' => $end_year,
+    ]);
+    $end_year--;
+  }
+  return $years;
+}
+
+/**
+ * Delivers the default value for the academic years field.
+ *
+ * @see \Drupal\Core\Field\FieldConfigBase::getDefaultValue()
+ */
+function uiowa_core_academic_years_default_value(ContentEntityInterface $entity, FieldDefinitionInterface $definition) {
+  $current_year = date('Y');
+
+  return [
+    [
+      'value' => $current_year,
+    ],
+  ];
+}
+
+/**
+ * Added allowed values function for student profiles territory field.
+ */
+function uiowa_core_state_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable = TRUE) {
+  $options = [
+    'AL' => 'Alabama',
+    'AK' => 'Alaska',
+    'AZ' => 'Arizona',
+    'AR' => 'Arkansas',
+    'CA' => 'California',
+    'CO' => 'Colorado',
+    'CT' => 'Connecticut',
+    'DE' => 'Delaware',
+    'DC' => 'District of Columbia',
+    'FL' => 'Florida',
+    'GA' => 'Georgia',
+    'HI' => 'Hawaii',
+    'ID' => 'Idaho',
+    'IL' => 'Illinois',
+    'IN' => 'Indiana',
+    'IA' => 'Iowa',
+    'KS' => 'Kansas',
+    'KY' => 'Kentucky',
+    'LA' => 'Louisiana',
+    'ME' => 'Maine',
+    'MD' => 'Maryland',
+    'MA' => 'Massachusetts',
+    'MI' => 'Michigan',
+    'MN' => 'Minnesota',
+    'MS' => 'Mississippi',
+    'MO' => 'Missouri',
+    'MT' => 'Montana',
+    'NE' => 'Nebraska',
+    'NV' => 'Nevada',
+    'NH' => 'New Hampshire',
+    'NJ' => 'New Jersey',
+    'NM' => 'New Mexico',
+    'NY' => 'New York',
+    'NC' => 'North Carolina',
+    'ND' => 'North Dakota',
+    'OH' => 'Ohio',
+    'OK' => 'Oklahoma',
+    'OR' => 'Oregon',
+    'PA' => 'Pennsylvania',
+    'RI' => 'Rhode Island',
+    'SC' => 'South Carolina',
+    'SD' => 'South Dakota',
+    'TN' => 'Tennessee',
+    'TX' => 'Texas',
+    'UT' => 'Utah',
+    'VT' => 'Vermont',
+    'VA' => 'Virginia',
+    'WA' => 'Washington',
+    'WV' => 'West Virginia',
+    'WI' => 'Wisconsin',
+    'WY' => 'Wyoming',
+  ];
+
+  if (!is_null($entity)) {
+    $bundle = $entity->bundle();
+    // Allow modules to alter options.
+    \Drupal::moduleHandler()->alter('state_options', $options, $entity, $bundle);
+  }
+  else {
+    // Allow modules to alter options.
+    \Drupal::moduleHandler()->alter('state_options', $options);
+  }
+
+  return $options;
 }

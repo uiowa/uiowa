@@ -21,8 +21,6 @@ mode: sitenow_16_9
 content:
   field_media_image:
     type: responsive_image
-    weight: 0
-    region: content
     label: hidden
     settings:
       responsive_image_style: sitenow_16_9
@@ -30,8 +28,13 @@ content:
     third_party_settings:
       lazy:
         lazy_image: '1'
+    weight: 0
+    region: content
 hidden:
   created: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_media_caption: true
   field_tags: true
   name: true

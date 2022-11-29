@@ -1,0 +1,23 @@
+uuid: null
+langcode: en
+status: true
+dependencies: {  }
+id: gradneuroscience_migrate
+label: 'gradneuroscience Migrate'
+description: 'Migrations for gradneuroscience'
+weight: 80
+stackable: true
+storage: folder
+folder: ./sites/neuroscience.grad.uiowa.edu/modules/gradneuroscience_migrate/config/split
+module:
+  gradneuroscience_migrate: 0
+  migrate: 0
+  migrate_drupal: 0
+  migrate_plus: 0
+  migrate_tools: 0
+  sitenow_migrate: 0
+theme: {  }
+complete_list:
+  - config_split.config_split.gradneuroscience_migrate
+  - 'migrate_plus.migration.gradneuroscience_*'
+partial_list: {  }

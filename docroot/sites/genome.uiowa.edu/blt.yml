@@ -1,0 +1,15 @@
+project:
+  local:
+    hostname: genome.uiowa.ddev.site
+    protocol: https
+  machine_name: genome
+  human_name: genome.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: genome.prod
+drupal:
+  db:
+    database: genome_uiowa_edu
+uiowa:
+  requester: hboileau

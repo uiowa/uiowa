@@ -1,7 +1,8 @@
 {% set headline_level = headline_level ?: 'h2' %}
 {% set headline_attributes = headline_attributes ?: create_attribute() %}
 {% set headline_class = headline_class ?: [] %}
-<{{ headline_level }}{{ headline_attributes.addClass(headline_class) }}>
+{% set headline_location = headline_location ?: 'default' %}
+<{{ headline_level }}{{ headline_attributes.addClass(headline_class, headline_location) }}>
 {% if headline_url %}
 <a href="{{ headline_url }}" {% if headline_url_class %} class="{{ headline_url_class }}"{% endif %} {% if headline_aria %}aria-describedby="{{ headline_aria }}"{% endif %}>
   {% endif %}

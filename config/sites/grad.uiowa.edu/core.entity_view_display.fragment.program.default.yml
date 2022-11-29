@@ -20,36 +20,36 @@ content:
   description:
     type: text_default
     label: above
+    settings: {  }
+    third_party_settings: {  }
     weight: 10
     region: content
-    settings: {  }
-    third_party_settings: {  }
   field_grad_degrees_offered:
-    weight: 3
+    type: list_default
     label: inline
     settings: {  }
     third_party_settings: {  }
-    type: list_default
+    weight: 3
     region: content
   field_grad_discipline:
-    weight: 4
+    type: list_default
     label: inline
     settings: {  }
     third_party_settings: {  }
-    type: list_default
+    weight: 4
     region: content
   field_program_conferred_by_grad:
-    weight: 5
+    type: boolean
     label: above
     settings:
       format: default
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    type: boolean
+    weight: 5
     region: content
   field_program_homepage:
-    weight: 1
+    type: link
     label: inline
     settings:
       trim_length: 80
@@ -58,26 +58,26 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    type: link
+    weight: 1
     region: content
   field_program_interdisciplinary:
-    weight: 2
+    type: boolean
     label: inline
     settings:
       format: default
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    type: boolean
+    weight: 2
     region: content
   title:
-    label: hidden
     type: string
-    weight: 0
-    region: content
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   created: true
   search_api_excerpt: true

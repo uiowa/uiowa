@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgethanborchard.uiowa.ddev.site
+    protocol: https
+  machine_name: orgethanborchard
+  human_name: ethanborchard.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgethanborchard.prod
+drupal:
+  db:
+    database: ethanborchard_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: eborchard
+  site-name: 'CS-UNDER PROJECT'

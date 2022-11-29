@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: sloancenter.uiowa.ddev.site
+    protocol: https
+  machine_name: sloancenter
+  human_name: sloancenter.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sloancenter.prod
+drupal:
+  db:
+    database: sloancenter_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sloancenter.prod.drupal.uiowa.edu'

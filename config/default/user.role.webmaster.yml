@@ -1,7 +1,69 @@
 uuid: 600c96e4-416f-4e01-b3da-a2c79c43b890
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - core.entity_view_display.fragment.region_item.default
+    - core.entity_view_display.node.page.default
+    - filter.format.basic
+    - filter.format.filtered_html
+    - filter.format.minimal
+    - media.type.audio
+    - media.type.facebook
+    - media.type.file
+    - media.type.image
+    - media.type.instagram
+    - media.type.panopto
+    - media.type.remote_video
+    - media.type.static_map
+    - media.type.twitter
+    - media.type.video
+    - node.type.article
+    - node.type.page
+    - node.type.person
+    - taxonomy.vocabulary.research_areas
+    - taxonomy.vocabulary.tags
+    - workflows.workflow.editorial
+  module:
+    - administerusersbyrole
+    - aggregator
+    - antibot
+    - block_content_permissions
+    - content_moderation
+    - contextual
+    - draggableviews
+    - entity_browser
+    - entity_usage
+    - file
+    - filter
+    - find_text
+    - fragments
+    - google_analytics
+    - google_tag
+    - layout_builder
+    - media
+    - menu_admin_per_menu
+    - metatag_extended_perms
+    - moderated_content_bulk_publish
+    - node
+    - override_node_options
+    - path
+    - redirect
+    - replicate_ui
+    - sitenow
+    - sitenow_articles
+    - sitenow_dispatch
+    - sitenow_events
+    - sitenow_pages
+    - sitenow_people
+    - system
+    - taxonomy
+    - theme_permission
+    - toolbar
+    - tour
+    - uiowa_alerts
+    - uiowa_search
+    - webform
 _core:
   default_config_hash: WhzjEAuCYwDo5ylDwRiZOaGR2VMEvc8J26TNS7wmZ8E
 id: webmaster
@@ -11,17 +73,19 @@ is_admin: false
 permissions:
   - 'access administration pages'
   - 'access any webform configuration'
+  - 'access content'
   - 'access content overview'
   - 'access contextual links'
   - 'access draggableviews'
   - 'access entity usage statistics'
   - 'access featured_content_browser entity browser pages'
-  - 'access file_link_browser entity browser pages'
   - 'access files overview'
+  - 'access find text'
+  - 'access fragments overview'
   - 'access media overview'
-  - 'access media_entity_browser entity browser pages'
   - 'access media_wysiwyg_browser entity browser pages'
   - 'access metatag advanced__canonical_url'
+  - 'access metatag advanced__content_language'
   - 'access metatag advanced__geo_placename'
   - 'access metatag advanced__image_src'
   - 'access metatag advanced__news_keywords'
@@ -71,7 +135,6 @@ permissions:
   - 'access tour'
   - 'access users overview'
   - 'access webform overview'
-  - 'access webform submission log'
   - 'administer basic site settings'
   - 'administer footer-primary menu items'
   - 'administer footer-secondary menu items'
@@ -86,25 +149,21 @@ permissions:
   - 'administer sitenow pages'
   - 'administer sitenow people'
   - 'administer sitenow_dispatch configuration'
-  - 'administer sitenow_find_text configuration'
   - 'administer social menu items'
   - 'administer themes'
   - 'administer themes uids_base'
   - 'administer top-links menu items'
-  - 'administer uiowa articles'
-  - 'administer uiowa events'
   - 'administer uiowa_alerts configuration'
   - 'administer uiowa_search configuration'
   - 'administer webform submission'
   - 'allow empty user mail'
-  - 'assign editor role'
-  - 'assign roles'
-  - 'assign webmaster role'
   - 'bypass node access'
   - 'cancel users by role'
   - 'configure all page node layout overrides'
+  - 'configure all region_item fragment layout overrides'
   - 'configure any layout'
   - 'configure editable page node layout overrides'
+  - 'configure editable region_item fragment layout overrides'
   - 'create and edit custom blocks'
   - 'create article content'
   - 'create audio media'
@@ -115,23 +174,24 @@ permissions:
   - 'create instagram media'
   - 'create page content'
   - 'create panopto media'
-  - 'create people block content'
   - 'create person content'
+  - 'create region_item fragments'
+  - 'create region_item_after_content fragments'
   - 'create remote_video media'
-  - 'create remote_video media'
+  - 'create static_map media'
   - 'create terms in research_areas'
   - 'create terms in tags'
   - 'create twitter media'
   - 'create uiowa_aggregator block content'
-  - 'create uiowa_articles block content'
   - 'create uiowa_banner block content'
   - 'create uiowa_card block content'
   - 'create uiowa_collection block content'
   - 'create uiowa_cta block content'
   - 'create uiowa_event block content'
   - 'create uiowa_events block content'
+  - 'create uiowa_image block content'
   - 'create uiowa_image_gallery block content'
-  - 'create uiowa_people block content'
+  - 'create uiowa_quote block content'
   - 'create uiowa_slider block content'
   - 'create uiowa_statistic block content'
   - 'create uiowa_text_area block content'
@@ -149,12 +209,11 @@ permissions:
   - 'delete any instagram media'
   - 'delete any page content'
   - 'delete any panopto media'
-  - 'delete any people block content'
   - 'delete any person content'
   - 'delete any remote_video media'
+  - 'delete any static_map media'
   - 'delete any twitter media'
   - 'delete any uiowa_aggregator block content'
-  - 'delete any uiowa_articles block content'
   - 'delete any uiowa_banner block content'
   - 'delete any uiowa_card block content'
   - 'delete any uiowa_collection block content'
@@ -162,9 +221,10 @@ permissions:
   - 'delete any uiowa_event block content'
   - 'delete any uiowa_events block content'
   - 'delete any uiowa_hero block content'
+  - 'delete any uiowa_image block content'
   - 'delete any uiowa_image_gallery block content'
   - 'delete any uiowa_page_title_hero block content'
-  - 'delete any uiowa_people block content'
+  - 'delete any uiowa_quote block content'
   - 'delete any uiowa_slider block content'
   - 'delete any uiowa_spacer_separator block content'
   - 'delete any uiowa_statistic block content'
@@ -174,7 +234,6 @@ permissions:
   - 'delete any webform'
   - 'delete any webform submission'
   - 'delete article revisions'
-  - 'delete event feed'
   - 'delete own article content'
   - 'delete own audio media'
   - 'delete own facebook media'
@@ -184,13 +243,18 @@ permissions:
   - 'delete own page content'
   - 'delete own panopto media'
   - 'delete own person content'
+  - 'delete own region_item fragments'
+  - 'delete own region_item_after_content fragments'
   - 'delete own remote_video media'
+  - 'delete own static_map media'
   - 'delete own twitter media'
   - 'delete own video media'
   - 'delete own webform'
   - 'delete own webform submission'
   - 'delete page revisions'
   - 'delete person revisions'
+  - 'delete region_item fragments'
+  - 'delete region_item_after_content fragments'
   - 'delete terms in research_areas'
   - 'delete terms in tags'
   - 'edit any article content'
@@ -203,6 +267,7 @@ permissions:
   - 'edit any panopto media'
   - 'edit any person content'
   - 'edit any remote_video media'
+  - 'edit any static_map media'
   - 'edit any twitter media'
   - 'edit any video media'
   - 'edit any webform'
@@ -217,6 +282,7 @@ permissions:
   - 'edit own panopto media'
   - 'edit own person content'
   - 'edit own remote_video media'
+  - 'edit own static_map media'
   - 'edit own twitter media'
   - 'edit own video media'
   - 'edit own webform'
@@ -232,6 +298,7 @@ permissions:
   - 'moderated content bulk publish'
   - 'moderated content bulk unpin content'
   - 'moderated content bulk unpublish'
+  - 'opt-in or out of google analytics tracking'
   - 'override article authored by option'
   - 'override article authored on option'
   - 'override article published option'
@@ -244,15 +311,15 @@ permissions:
   - 'override person authored on option'
   - 'override person published option'
   - 'override person sticky option'
+  - 'replicate entities'
   - 'revert article revisions'
   - 'revert page revisions'
   - 'revert person revisions'
   - 'role-assign users by role'
   - 'select account cancellation method'
+  - 'skip antibot'
   - 'update any featured_content block content'
-  - 'update any people block content'
   - 'update any uiowa_aggregator block content'
-  - 'update any uiowa_articles block content'
   - 'update any uiowa_banner block content'
   - 'update any uiowa_card block content'
   - 'update any uiowa_collection block content'
@@ -260,20 +327,25 @@ permissions:
   - 'update any uiowa_event block content'
   - 'update any uiowa_events block content'
   - 'update any uiowa_hero block content'
+  - 'update any uiowa_image block content'
   - 'update any uiowa_image_gallery block content'
   - 'update any uiowa_page_title_hero block content'
-  - 'update any uiowa_people block content'
+  - 'update any uiowa_quote block content'
   - 'update any uiowa_slider block content'
   - 'update any uiowa_spacer_separator block content'
   - 'update any uiowa_statistic block content'
   - 'update any uiowa_text_area block content'
   - 'update any uiowa_timeline block content'
+  - 'update own region_item fragments'
+  - 'update own region_item_after_content fragments'
+  - 'update region_item fragments'
+  - 'update region_item_after_content fragments'
   - 'use editorial transition archive'
   - 'use editorial transition archived_published'
   - 'use editorial transition create_new_draft'
   - 'use editorial transition needs_review'
   - 'use editorial transition publish'
-  - 'use siteimprove'
+  - 'use text format basic'
   - 'use text format filtered_html'
   - 'use text format minimal'
   - 'view any unpublished content'
@@ -286,5 +358,6 @@ permissions:
   - 'view own webform submission'
   - 'view page revisions'
   - 'view person revisions'
+  - 'view region_item fragments'
   - 'view the administration theme'
   - 'view users by role'

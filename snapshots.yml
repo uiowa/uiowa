@@ -1,7 +1,8 @@
-- name: Frontpage
+- name: Front page with events block hidden
   url: /
   execute: "document.querySelector('.block-inline-blockuiowa-events').parentNode.style.display = 'none';"
-- name: About with search toggle
+  waitForTimeout: 1000
+- name: About page with search input visible
   url: /about
   execute: "document.querySelector('.search-button').click()"
 - name: People
@@ -11,4 +12,5 @@
 - name: Articles
   url: /news
 - name: Article
-  url: /news/2019/09/keep-moving-forward
+  url: /news/2019/09/demo-article
+  waitForTimeout: 1000

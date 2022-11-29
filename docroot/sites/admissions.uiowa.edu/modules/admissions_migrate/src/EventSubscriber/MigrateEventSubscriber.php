@@ -53,7 +53,7 @@ class MigrateEventSubscriber implements EventSubscriberInterface {
   public function onPostRollback(MigrateRollbackEvent $event) {
     $migration = $event->getMigration();
 
-    if ($migration->id() == 'd7_admissions_aos') {
+    if ($migration->id() === 'd7_admissions_aos') {
       $entity_types = [
         'paragraph' => [
           'degree',
@@ -66,7 +66,7 @@ class MigrateEventSubscriber implements EventSubscriberInterface {
 
       foreach ($entity_types as $type => $bundles) {
         foreach ($bundles as $bundle) {
-          $field = ($type == 'taxonomy_term') ? 'vid' : 'type';
+          $field = ($type === 'taxonomy_term') ? 'vid' : 'type';
           $query = $this->entityTypeManager->getStorage($type)->getQuery();
 
           $ids = $query
@@ -96,7 +96,7 @@ class MigrateEventSubscriber implements EventSubscriberInterface {
   public function onPostRowSave(MigratePostRowSaveEvent $event) {
     $row = $event->getRow();
 
-    if ($tips = $row->getSourceProperty('field_transfer_tips')) {
+    if ($row->getSourceProperty('field_transfer_tips')) {
       $node = $this->entityTypeManager->getStorage('node')->create([
         'type' => 'transfer_tips',
         'field_transfer_tips_aos' => $event->getDestinationIdValues()[0],

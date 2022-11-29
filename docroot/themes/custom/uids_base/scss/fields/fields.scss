@@ -1,9 +1,20 @@
-@import "uids/assets/scss/_variables.scss";
-@import "uids/assets/scss/_utilities.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
 
-.field--label-above .field__label::after,
-.field--label-inline .field__label::after {
-  content: ":";
+.field--label-above,
+.field--label-inline {
+  .field--label-inline,
+  .field__label {
+    &::after {
+      content: ":";
+    }
+
+    &.headline {
+      &::after {
+        content: "";
+      }
+    }
+  }
 }
 
 .field.field--label-above {
@@ -16,6 +27,14 @@
   font-size: 1.2rem;
   margin-bottom: $xsm;
 
+  &--icon {
+    margin-right: $sm;
+  }
+
+  &.headline {
+    line-height: 1;
+  }
+
   [class*="card__"] & {
     font-size: inherit;
     line-height: inherit;
@@ -24,8 +43,9 @@
 
 .field--label-inline {
   margin-bottom: $sm;
+
   .svg-inline--fa {
-    margin-right: .3rem;
+    margin-right: 0.3rem;
   }
 }
 
@@ -39,7 +59,13 @@
   line-height: 1.7;
   margin-top: 0;
 
-  &.h1, &.h2, &.h3, &.h4, &.h5, &.h6, &[class*="element--"] {
+  &.h1,
+  &.h2,
+  &.h3,
+  &.h4,
+  &.h5,
+  &.h6,
+  &[class*="element--"] {
     line-height: inherit;
   }
 
@@ -47,13 +73,18 @@
     font-size: inherit;
     line-height: inherit;
   }
-
   @at-root {
-    div#{&},
+    div#{ &},
     p#{&} {
       font-size: 1.2rem;
+
       [class*="element--"] &,
-      .h1 &, .h2 &, .h3 &, .h4 &, .h5 &, .h6 & {
+      .h1 &,
+      .h2 &,
+      .h3 &,
+      .h4 &,
+      .h5 &,
+      .h6 & {
         font-size: inherit;
         line-height: inherit;
       }
@@ -61,9 +92,9 @@
   }
 }
 
-
 .field--label-above {
   margin-bottom: $sm;
+
   ul {
     margin-top: 0;
   }
@@ -71,11 +102,13 @@
 
 .field--label-visually_hidden {
   .svg-inline--fa {
-    margin-right: .3rem;
+    margin-right: 0.3rem;
   }
+
   .field__items {
     display: inline;
   }
+
   .field__item {
     display: inline;
   }
@@ -87,12 +120,12 @@
   }
 }
 
-.field--label-inline.field--type-string,
 .field--label-inline.field--type-entity-reference,
-.field--label-visually_hidden.field--type-entity-reference,
 .field--label-inline.field--type-link,
+.field--label-inline.field--type-string,
+.field--label-visually_hidden.field--type-entity-reference:not([class*="image"]),
 .field--label-visually_hidden.field--type-link {
-  .field__item  + .field__item {
+  .field__item + .field__item {
     &:before {
       content: ",";
       padding-right: $xsm;
@@ -121,9 +154,9 @@
   margin-top: $sm;
 }
 
-.field--label-visually_hidden + .field--label-above,
 .field--label-hidden + .field--label-above,
-.field--label-hidden + .field--label-inline {
+.field--label-hidden + .field--label-inline,
+.field--label-visually_hidden + .field--label-above {
   margin-top: $md;
 }
 
@@ -131,16 +164,21 @@
   div {
     margin-bottom: $sm;
   }
+
   p {
     margin-bottom: 0;
   }
 }
-
-// Wrap long links by allow them to break mid-word.
-// @todo When #2325 is closed, either delete this comment
-//   or remove the item below if it is no longer necessary.
+// Wrap long links by allow them to break mid-word. Global is too-scoped.
 .field--type-link {
-  // @todo Add a general mixin for link fields
-  //   and replace this with that.
   word-break: break-word;
+}
+// Address styling.
+.field p.address {
+  [class*="card__"] & {
+    font-size: 1.1rem;
+  }
+  .organization {
+    font-weight: $font-weight-bold;
+  }
 }

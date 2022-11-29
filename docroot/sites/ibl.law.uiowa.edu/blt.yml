@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: lawibl.uiowa.ddev.site
+    protocol: https
+  machine_name: lawibl
+  human_name: ibl.law.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lawibl.prod
+drupal:
+  db:
+    database: ibl_law_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: jrantanen

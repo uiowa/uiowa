@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: research.uiowa.ddev.site
+    protocol: https
+  machine_name: research
+  human_name: research.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: research.prod
+drupal:
+  db:
+    database: research_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: makyea
+  site-name: 'Office of the Vice President for Research'

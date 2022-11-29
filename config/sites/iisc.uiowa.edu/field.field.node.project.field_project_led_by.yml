@@ -1,0 +1,29 @@
+uuid: 9bc6a5fc-2440-4ee8-9121-506b806d349d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_project_led_by
+    - node.type.person
+    - node.type.project
+id: node.project.field_project_led_by
+field_name: field_project_led_by
+entity_type: node
+bundle: project
+label: 'Led by'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      person: person
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

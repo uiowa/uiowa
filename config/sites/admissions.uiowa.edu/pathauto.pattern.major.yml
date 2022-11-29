@@ -1,0 +1,22 @@
+uuid: 7af4ab03-ef85-45a8-b83f-a680afb8a39f
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: major
+label: Major
+type: 'canonical_entities:node'
+pattern: 'academics/2plus2/[node:title]'
+selection_criteria:
+  710bb2bc-6afc-4abe-983a-9ef5b9d87eb3:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 710bb2bc-6afc-4abe-983a-9ef5b9d87eb3
+    context_mapping:
+      node: node
+    bundles:
+      major: major
+selection_logic: and
+weight: -5
+relationships: {  }

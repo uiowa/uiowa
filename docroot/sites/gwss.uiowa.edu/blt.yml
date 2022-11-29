@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: gwss.uiowa.ddev.site
+    protocol: https
+  machine_name: gwss
+  human_name: gwss.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: gwss.prod
+drupal:
+  db:
+    database: gwss_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://gwss.prod.drupal.uiowa.edu'

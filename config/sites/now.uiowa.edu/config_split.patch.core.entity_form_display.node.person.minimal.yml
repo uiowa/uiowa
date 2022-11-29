@@ -1,0 +1,41 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.person.field_contact_reference
+    module:
+      - telephone
+  content:
+    field_person_email:
+      type: email_default
+      weight: 2
+      region: content
+      settings:
+        placeholder: ''
+        size: 60
+      third_party_settings: {  }
+    field_person_hide:
+      weight: 4
+    field_person_phone:
+      type: telephone_default
+      weight: 3
+      region: content
+      settings:
+        placeholder: ''
+      third_party_settings: {  }
+    moderation_state:
+      weight: 6
+    status:
+      weight: 5
+  hidden:
+    field_contact_reference: true
+removing:
+  content:
+    field_person_hide:
+      weight: 2
+    moderation_state:
+      weight: 4
+    status:
+      weight: 3
+  hidden:
+    field_person_email: true
+    field_person_phone: true

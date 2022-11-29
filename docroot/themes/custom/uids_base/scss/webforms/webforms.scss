@@ -1,12 +1,268 @@
-@import "uids/assets/scss/_variables.scss";
-@import "uids/assets/scss/_utilities.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
 
-.webform-terms-of-service-details {
-  max-height: 80vh !important;
+
+.webform-submission-form {
+  label {
+    font-size: 1.1rem;
+    font-weight: $font-weight-bold;
+    line-height: 1.6;
+  }
+  span.form-required {
+    position: relative;
+    &:after {
+      margin: 0 $xsm;
+      content: "*";
+      color: $danger;
+      vertical-align: middle;
+    }
+  }
+  .webform-options-display-two-columns div.form-item,
+  .webform-options-display-three-columns div.form-item {
+    margin-bottom: 1rem;
+  }
+  .webform-options-display-one-column,
+  .webform-options-display-side-by-side,
+  .webform-options-display-buttons-horizontal,
+  .webform-options-display-buttons-vertical {
+    margin-top: -.5rem;
+  }
+  .fieldgroup {
+    border: none;
+    padding: 0;
+    & .fieldset-legend {
+      display: block;
+      font-size: 1.1rem;
+      font-weight: $font-weight-bold;
+      line-height: 1.6;
+    }
+  }
+
+  // Make fields respect field width settings
+  input[size]:not([size='60']) {
+    width: inherit;
+  }
+
+  // --------------------------------
+  // Help/Description
+  // --------------------------------
+  .help-text,
+  .description,
+  .field-prefix,
+  .field-suffix {
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+  .description {
+    margin: $xsm 0;
+    flex-basis: 100%;
+  }
+  input + .description,
+  input + .field-prefix,
+  input + .field-suffix {
+    position: relative;
+    top: -0.75rem;
+    inset-block-start: -0.75rem;
+  }
+
+  // --------------------------------
+  // More
+  // --------------------------------
+  .webform-element-more {
+    &--content {
+      line-height: 1.6;
+    }
+  }
+  .description .webform-element-more {
+    margin-top: $xsm;
+    margin-block-start: $xsm;
+  }
+
+  // --------------------------------
+  // Checkboxes
+  // --------------------------------
+  [type=checkbox], [type=radio] {
+    height: 1.2rem;
+    width: 1.2rem;
+    margin: 0 .35rem 0 .25rem;
+    -webkit-transform: scale(1.3, 1.3);
+  }
+  .form-type-checkbox,
+  .form-type-radio {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .webform-options-display-side-by-side {
+    .form-type-checkbox,
+    .form-type-radio {
+      display: inline-flex;
+    }
+  }
+  [type='checkbox']+label,
+  [type='radio']+label {
+    font-weight: $font-weight-normal;
+  }
+  .webform-type-checkboxes,
+  .webform-checkboxes-other,
+  .webform-type-radios,
+  .webform-type-webform-radios-other {
+    & legend {
+      margin-bottom: $xsm;
+    }
+    & .fieldset-wrapper {
+      margin-left: 0;
+      margin-inline-start: 0;
+    }
+  }
+
+  // --------------------------------
+  // Details
+  // --------------------------------
+  .details-description {
+    line-height: 1.6;
+  }
+
+  // --------------------------------
+  // Flexbox
+  // --------------------------------
+  .webform-flexbox {
+    & .webform-flex--container {
+      & .form-actions [type="submit"] {
+        width: 100%; // Set button full-width.
+        height: 57px;
+      }
+    }
+  }
+
+  // --------------------------------
+  // Terms of service
+  // --------------------------------
+  .webform-terms-of-service-details {
+    max-height: 80vh !important;
+  }
+
+  // --------------------------------
+  // Prefix/suffix
+  // --------------------------------
+  .field-prefix,
+  .field-suffix {
+    display: block;
+  }
+
+  // --------------------------------
+  // Error
+  // --------------------------------
+  [type='text'].error,
+  [type='password'].error,
+  [type='date'].error,
+  [type='datetime'].error,
+  [type='datetime-local'].error,
+  [type='month'].error,
+  [type='week'].error,
+  [type='email'].error,
+  [type='number'].error,
+  [type='search'].error,
+  [type='tel'].error,
+  [type='time'].error,
+  [type='url'].error,
+  textarea.error,
+  select.error {
+    border: 1px solid $danger;
+    background-color: $danger-light;
+    &:focus {
+      border: 1px solid $danger;
+      box-shadow: 0 0 5px $danger-light;
+    }
+  }
+
+  // --------------------------------
+  // Scale
+  // --------------------------------
+  .webform-scale {
+    & input:checked + label {
+      [class*="bg--gold"] & {
+        border-color: $secondary;
+        background-color: $light;
+        color: $secondary;
+      }
+      [class*="bg--black"] & {
+        background-color: lighten($primary, 40%);
+      }
+    }
+    & input:checked:focus + label {
+      box-shadow: 0 0 5px #cacaca;
+    }
+  }
+
+  // --------------------------------
+  // Progress Wizard
+  // --------------------------------
+  .webform-button--next,
+  .webform-button--previous {
+    @include bttn--secondary;
+    [class*="bg--black"] & {
+      background: $light;
+      color: $secondary;
+    }
+  }
+  .webform-progress-tracker .progress-text,
+  .webform-progress-tracker .progress-step.is-active .progress-text,
+  .webform-progress-tracker .progress-step.is-complete .progress-text {
+    color: currentColor;
+  }
+  .webform-progress-tracker .progress-step  .progress-marker:before {
+    padding: 1rem;
+  }
+  .webform-progress-tracker .progress-step  .progress-marker:after {
+    top: .8rem;
+  }
+  .webform-progress-tracker .progress-step.is-active .progress-marker::before {
+    background-color: $primary;
+    color: $secondary;
+    [class*="bg--gold"] & {
+      background: $secondary;
+      color: #fff;
+    }
+  }
+  // --------------------------------
+  // Horizontal rules
+  // --------------------------------
+  .webform-horizontal-rule {
+    &--thin {
+      border: 0;
+      border-top: 1px solid rgba(0, 0, 0, 0.2);
+      border-block-start: 1px solid rgba(0, 0, 0, 0.2);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+      border-block-end: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    &--thick {
+      @extend .webform-horizontal-rule--thin;
+      border-top-width: 4px;
+      [class*="bg--black"] & {
+        border-top-color: rgba(255, 255, 255, 0.8);
+        border-block-start-color: rgba(255, 255, 255, 0.8);
+      }
+    }
+    &--glyph:after {
+      [class*="bg--gray"] & {
+        background-color: $light;
+      }
+      [class*="bg--gold"] & {
+        background-color: $primary;
+      }
+      [class*="bg--black"] & {
+        background-color: $secondary;
+      }
+    }
+  }
 }
 
-// webforms preview
 
+
+// --------------------------------
+// Preview
+// --------------------------------
 .node-preview-container {
   //@extend .alert;
   //@extend .alert-warning;
@@ -28,9 +284,10 @@
   }
 }
 
-// webforms tour
-
+// --------------------------------
+// Tour
 // Set above admin toolbar and superfish.
+// --------------------------------
 .joyride-tip-guide {
   z-index: 550;
 
@@ -43,3 +300,75 @@
     }
   }
 }
+
+// --------------------------------
+// Message
+// --------------------------------
+.webform-message {
+  margin: 0.625rem 0;
+
+  div[role="alert"].alert {
+    background: $info-light;
+    padding: $md 0;
+    padding-block: $md;
+    padding-inline: 0;
+    border: 1px solid;
+    border-color: rgba($info, 0.03);
+    border-bottom: 2px solid rgba($info, 0.8);
+    border-block-end: 2px solid rgba($info, 0.8);
+
+    .close:before {
+      background: rgba($info, 0.8);
+    }
+
+    &.alert-danger {
+      background: $danger-light;
+      border-color: rgba($danger, 0.03);
+      border-bottom: 2px solid rgba($danger, 0.8);
+      border-block-end: 2px solid rgba($danger, 0.8);
+
+      .close:before {
+        background: rgba($danger, 0.8);
+      }
+    }
+
+    &.alert-success {
+      background: $success-light;
+      border-color: rgba($success, 0.03);
+      border-bottom: 2px solid rgba($success, 0.8);
+      border-block-end: 2px solid rgba($success, 0.8);
+
+      .close:before {
+        background: rgba($success, 0.8);
+      }
+    }
+
+    &.alert-warning {
+      background: $warning-light;
+      border-color: rgba($warning, 0.09);
+      border-bottom: 2px solid rgba($warning, 0.8);
+      border-block-end: 2px solid rgba($warning, 0.8);
+
+      .close:before {
+        background: rgba(#000000, 0.7);
+      }
+    }
+  }
+
+  button {
+    padding: 0 0 0 0.625rem;
+    padding-block-end: 0.625rem;
+    margin-right: 0;
+    margin-inline-end: 0;
+
+    &.close:before {
+      width: 26px;
+      height: 26px;
+      margin-right: 5px;
+      margin-inline-end: 5px;
+      padding: 5px;
+      font-size: 1rem;
+    }
+  }
+}
+

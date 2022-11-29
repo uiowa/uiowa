@@ -1,0 +1,14 @@
+{{ attach_library('uids_base/toggle-nav') }}
+
+{% if page.primary_menu|render|striptags|trim is not empty %}
+  <div class="o-canvas__group">
+    <div class="o-canvas__wrapper">
+      {% include '@uids_base/navigation/toggle-nav--bttn.twig' %}
+      {% embed '@uids_base/navigation/toggle-nav--drawer.html.twig' %}
+        {% block drawer %}
+            {{ page.primary_menu }}
+        {% endblock %}
+      {% endembed %}
+    </div>
+  </div>
+{% endif %}

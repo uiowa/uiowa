@@ -31,7 +31,6 @@ default_value_callback: ''
 settings:
   handler: 'default:paragraph'
   handler_settings:
-    negate: 0
     target_bundles:
       text: text
       accordion: accordion
@@ -44,47 +43,48 @@ settings:
       webform: webform
       image_gallery: image_gallery
       people: people
+    negate: 0
     target_bundles_drag_drop:
+      accordion:
+        weight: 6
+        enabled: true
+      accordion_item:
+        weight: 7
+        enabled: false
+      articles:
+        weight: 11
+        enabled: true
+      blockquote:
+        weight: 9
+        enabled: true
+      card:
+        weight: 8
+        enabled: true
+      carousel:
+        weight: 18
+        enabled: true
+      carousel_image:
+        weight: 19
+        enabled: false
+      events:
+        weight: 10
+        enabled: true
+      featured_content:
+        weight: 16
+        enabled: true
+      image_gallery:
+        weight: 23
+        enabled: true
+      people:
+        weight: 25
+        enabled: true
       section:
         weight: 3
         enabled: false
       text:
-        enabled: true
         weight: 4
-      accordion:
         enabled: true
-        weight: 6
-      accordion_item:
-        weight: 7
-        enabled: false
-      card:
-        enabled: true
-        weight: 8
-      blockquote:
-        enabled: true
-        weight: 9
-      events:
-        enabled: true
-        weight: 10
-      articles:
-        enabled: true
-        weight: 11
-      featured_content:
-        enabled: true
-        weight: 16
-      carousel:
-        enabled: true
-        weight: 18
       webform:
-        enabled: true
         weight: 18
-      carousel_image:
-        weight: 19
-        enabled: false
-      image_gallery:
         enabled: true
-        weight: 23
-      people:
-        enabled: true
-        weight: 25
 field_type: entity_reference_revisions
