@@ -22,6 +22,7 @@ class GitCommands extends BltTasks {
    *
    * @aliases ugc
    *
+   * @requireHost
    * @requireRemoteAccess
    */
   public function clean() {
@@ -49,7 +50,7 @@ class GitCommands extends BltTasks {
       $heads = explode(PHP_EOL, $output);
 
       foreach ($heads as $head) {
-        list($sha, $ref) = explode("\t", $head);
+        [$sha, $ref] = explode("\t", $head);
         $sha = substr($sha, 0, 8);
 
         if (!in_array($ref, $keep)) {
@@ -88,6 +89,7 @@ class GitCommands extends BltTasks {
    *
    * @aliases ugd
    *
+   * @requireHost
    * @requireCredentials
    */
   public function deploy() {

@@ -1,6 +1,6 @@
-@import "uids/assets/scss/_variables.scss";
-@import "uids/assets/scss/_utilities.scss";
-@import "components/card/_card-mixins.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
+@import "uids3/components/card/_card-mixins.scss";
 
 article.node--type-article,
 div[role=article].node--type-article {
@@ -130,6 +130,11 @@ div[role=article].node--type-article {
 
 
 article.node--type-article {
+  // Remove colon being added by field.css.
+  .field--label-above .field--label-inline:after {
+    content: "";
+  }
+
   .block-extra-field-blocknodearticlearticle-created-date {
     margin: 0 0 $sm;
   }
@@ -145,6 +150,24 @@ article.node--type-article {
       content: '- ';
       color: $grey;
       margin: 0 $xsm;
+    }
+  }
+
+  .gallery-jump-link {
+    font-family: Zilla Slab,serif;
+    font-size: 1.2rem;
+    margin-top: 0.4rem;
+
+    a {
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    svg {
+      margin-right: 0.3rem;
     }
   }
 }
@@ -195,4 +218,18 @@ div[role=article].node--type-article.node--view-mode-teaser {
   box-sizing: border-box;
   -webkit-transform: translateX(calc(50vw - 50%));
   transform: translateX(calc(50vw - 50%));
+}
+
+// Arrow button spacing for article teasers
+.card.node--type-article {
+  &.card--media-right,
+  &.card--media-left {
+    .field--name-field-article-author.field--label-inline {
+      margin-bottom: 0;
+    }
+    .article-meta+.bttn,
+    .field--name-field-teaser+.bttn {
+      margin-top: 1.05rem;
+    }
+  }
 }

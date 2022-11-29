@@ -19,3 +19,16 @@ sitenow_people.person_type.*:
       label: 'Allowed fields'
       sequence:
         type: string
+sitenow_people.settings:
+  type: config_object
+  label: 'SiteNow People settings'
+  mapping:
+    tag_display:
+      type: string
+      label: Tag display
+    related_display:
+      type: string
+      label: Related display
+    show_teaser_link_indicator:
+      type: boolean
+      label: Show arrows linking to pages from lists/teasers.

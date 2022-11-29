@@ -2,15 +2,15 @@ uuid: 31b0ec18-98c7-46d7-a46a-6770be08250e
 langcode: en
 status: true
 dependencies:
-  enforced:
-    module:
-      - uiowa_book
   config:
     - search_api.index.book_content_and_tags
     - views.view.book_search
   module:
     - views
     - search_api_autocomplete
+  enforced:
+    module:
+      - uiowa_book
 _core:
   default_config_hash: 1bmWLqG6JS7sl0LKFlADF6INmKzeTFP4rZY75FO9ThY
 id: book_search
@@ -32,6 +32,6 @@ options:
   limit: 10
   min_length: 1
   show_count: false
-  autosubmit: true
-  submit_button_selector: ':submit'
   delay: null
+  submit_button_selector: ':submit'
+  autosubmit: true

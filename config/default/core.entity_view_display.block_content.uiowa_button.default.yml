@@ -1,0 +1,31 @@
+uuid: fe0d4286-379c-41fe-a8d7-e6424504473a
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_button
+    - field.field.block_content.uiowa_button.field_uiowa_button_link
+  module:
+    - link
+id: block_content.uiowa_button.default
+targetEntityType: block_content
+bundle: uiowa_button
+mode: default
+content:
+  field_uiowa_button_link:
+    type: link
+    label: above
+    settings:
+      trim_length: 25
+      url_only: false
+      url_plain: false
+      rel: '0'
+      target: '0'
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

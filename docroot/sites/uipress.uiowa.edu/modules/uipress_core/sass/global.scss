@@ -1,0 +1,43 @@
+@import "../../../../../themes/custom/uids_base/uids3/assets/scss/_variables.scss";
+@import "../../../../../themes/custom/uids_base/uids3/assets/scss/_utilities.scss";
+
+.grid--twocol--50-50 {
+  &.block-field-blocknodebookfield-book-interior-pages {
+    .list-container {
+      column-gap: 1rem;
+      .field__item {
+        margin-bottom: $mobile-width-gutter;
+        @include breakpoint(md) {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+.block-field-blocknodebookfield-image {
+  img {
+    @include breakpoint(md) {
+      width: 100%;
+    }
+  }
+}
+
+.sf-horizontal li#main-menu-link-content7e0b96a2-d3c8-436a-bbc8-010fae15664d--2 {
+  @include breakpoint(sm) {
+    position: absolute;
+    right: 0;
+    a {
+      background: $light;
+      padding-top: $xsm-sm;
+      padding-bottom: $xsm-sm;
+
+      &:before {
+        @include fas();
+        content: "\f07a";
+        position: relative;
+        left: -10px;
+      }
+    }
+  }
+}

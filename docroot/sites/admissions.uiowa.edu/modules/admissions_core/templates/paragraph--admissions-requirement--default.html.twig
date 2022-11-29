@@ -63,7 +63,7 @@
   'process_url': content.field_ar_process[0]['#url'],
   'media_sizes': 'media--circle card__media--small',
   'transfer_tip': transfer_tip,
-  'card_no_link': true,
+  'two_plus_two': two_plus_two,
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with admissions_requirement only %}
@@ -83,13 +83,16 @@
     {% if transfer_tip or requirement_url or process_url is not empty %}
       <ul class="element--list-none fa-ul">
       {% if transfer_tip is not empty %}
-        <li><a href="{{ transfer_tip }}" class=""><span class="fa-li"><i role="presentation" class="fas fa-lightbulb"></i></span> Transfer tips</a></li>
+        <li><a href="{{ transfer_tip }}" class=""><span class="fa-li text--black"><i role="presentation" class="fas fa-lightbulb"></i></span> Transfer tips</a></li>
+      {% endif %}
+      {% if two_plus_two is not empty %}
+        <li><a href="{{ two_plus_two }}" class=""><span class="fa-li text--black"><i role="presentation" class="fas fa-calendar-check"></i></span> 2 plus 2 plan</a></li>
       {% endif %}
       {% if requirement_url is not empty %}
-        <li><a href="{{ requirement_url }}" class=""><span class="fa-li"><i role="presentation" class="fas fa-arrow-right"></i></span> {{ requirement_label }} </a></li>
+        <li><a href="{{ requirement_url }}" class=""><span class="fa-li text--black"><i role="presentation" class="fas fa-arrow-right"></i></span> {{ requirement_label }} </a></li>
       {% endif %}
       {% if process_url is not empty %}
-        <li> <a href="{{ process_url }}" class=""><span class="fa-li"><i role="presentation" class="fas fa-arrow-right"></i></span>{{ process_label }}</a></li>
+        <li> <a href="{{ process_url }}" class=""><span class="fa-li text--black"><i role="presentation" class="fas fa-arrow-right"></i></span>{{ process_label }}</a></li>
       {% endif %}
       </ul>
     {% endif %}

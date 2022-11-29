@@ -4,12 +4,15 @@ namespace Uiowa\Blt\Plugin\Commands;
 
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\EnvironmentDetector;
+use Acquia\Blt\Robo\Common\YamlMunge;
 use Acquia\Blt\Robo\Exceptions\BltException;
+use Uiowa\InspectorTrait;
 
 /**
  * BLT override commands.
  */
 class ReplaceCommands extends BltTasks {
+  use InspectorTrait;
 
   /**
    * Replace the artifact:update:drupal:all-sites BLT command.
@@ -20,16 +23,23 @@ class ReplaceCommands extends BltTasks {
     // Disable alias since we are targeting a specific URI.
     $this->config->set('drush.alias', '');
 
-    $app = EnvironmentDetector::getAhGroup() ? EnvironmentDetector::getAhGroup() : 'local';
-    $env = EnvironmentDetector::getAhEnv() ? EnvironmentDetector::getAhEnv() : 'local';
+    $app = EnvironmentDetector::getAhGroup() ?: 'local';
     $multisite_exception = FALSE;
 
-    // Unshift uiowa.edu to the beginning so it runs first.
+    // Unshift sites to the beginning to run first.
     $multisites = $this->getConfigValue('multisites');
+    $run_first = $this->getConfigValue('uiowa.run_first');
 
-    if ($key = array_search('uiowa.edu', $multisites)) {
-      unset($multisites[$key]);
-      array_unshift($multisites, 'uiowa.edu');
+    if ($run_first) {
+      // Reverse for foreach so that first listed in config is run first.
+      $run_first = array_reverse($run_first);
+
+      foreach ($run_first as $site) {
+        if ($key = array_search($site, $multisites)) {
+          unset($multisites[$key]);
+          array_unshift($multisites, $site);
+        }
+      }
     }
 
     foreach ($multisites as $multisite) {
@@ -42,7 +52,7 @@ class ReplaceCommands extends BltTasks {
         continue;
       }
       else {
-        if ($this->getInspector()->isDrupalInstalled()) {
+        if ($this->isDrupalInstalled($multisite)) {
           $this->logger->info("Deploying updates to <comment>{$multisite}</comment>...");
 
           // Invalidate the Twig cache if on AH env. This happens automatically
@@ -59,21 +69,12 @@ class ReplaceCommands extends BltTasks {
           }
 
           try {
-            // Define a site-specific cache directory.
-            // @see: https://github.com/drush-ops/drush/pull/4345
-            $tmp = "/tmp/.drush-cache-{$app}/{$env}/{$multisite}";
-
             // Clear the plugin cache for discovery and potential layout issue.
             // @see: https://github.com/uiowa/uiowa/issues/3585.
             $this->taskDrush()
               ->drush('cc plugin')
-              ->option('define', "drush.paths.cache-directory={$tmp}")
               ->run();
 
-            // Ensure BLT uses the site-specific cache directory. For some
-            // reason, putenv did not work here. This would not be necessary if
-            // Drush supported per-site config file loading.
-            $_ENV['DRUSH_PATHS_CACHE_DIRECTORY'] = $tmp;
             $this->invokeCommand('drupal:update');
             $this->logger->info("Finished deploying updates to <comment>{$multisite}</comment>.");
           }
@@ -100,13 +101,11 @@ class ReplaceCommands extends BltTasks {
   public function replacePostDbCopy($site, $target_env, $db_name, $source_env) {
     foreach ($this->getConfigValue('multisites') as $multisite) {
       $this->switchSiteContext($multisite);
-
       $db = $this->getConfigValue('drupal.db.database');
 
       // Trigger drupal:update for this site.
       if ($db_name == $db) {
         $this->logger->info("Deploying updates to <comment>{$multisite}</comment>...");
-        $this->switchSiteContext($multisite);
         $this->taskDrush()->drush('cache:rebuild')->run();
         $this->invokeCommand('drupal:update');
         $this->logger->info("Finished deploying updates to <comment>{$multisite}</comment>.");
@@ -132,7 +131,7 @@ class ReplaceCommands extends BltTasks {
       "{$docroot}/profiles/custom/" => '',
       "{$docroot}/modules/custom/" => '',
       "{$docroot}/themes/custom/" => '',
-      "{$docroot}/sites/" => "{$docroot}/sites/simpletest",
+      "{$docroot}/sites/" => "$docroot/sites/simpletest,$docroot/sites/default/files",
     ];
 
     foreach ($paths as $path => $exclude) {
@@ -154,6 +153,147 @@ class ReplaceCommands extends BltTasks {
         $this->logger->notice('Review deprecation warnings and re-run.');
         throw new BltException("Drupal Check in {$path} failed.");
       }
+    }
+  }
+
+  /**
+   * Replace frontend tests command so we can do more than just a oneline exec.
+   *
+   * Note that the frontend-test command hook does not need to be in blt.yml.
+   *
+   * @hook replace-command tests:frontend:run
+   */
+  public function testsFrontend() {
+    if (EnvironmentDetector::isCiEnv()) {
+      // We don't want to snapshot develop because it could be unstable.
+      if (getenv('TRAVIS_BRANCH') != 'develop') {
+        $this->taskExecStack()
+          ->dir($this->getConfigValue('repo.root'))
+          ->exec('npx percy snapshot --base-url http://localhost:8888 snapshots.yml')
+          ->run();
+      }
+      else {
+        $this->logger->notice('Skipping percy snapshot in develop branch.');
+      }
+    }
+    else {
+      $this->logger->notice('Skipping percy snapshot in non-CI environment.');
+    }
+  }
+
+  /**
+   * Remove all local settings file beforehand, so they are recreated.
+   *
+   * The source:build:settings command will only recreate local settings files
+   * if they do not already exist. This can be confusing if you change BLT
+   * configuration and expect to see the differences in the file.
+   *
+   * @hook pre-command source:build:settings
+   */
+  public function preSourceBuildSettings() {
+    if (!$this->confirm('This will delete all local.settings.php files for all multisites. Are you sure?', TRUE)) {
+      throw new \Exception('Aborted.');
+    }
+
+    $file = $this->getConfigValue('repo.root') . '/blt/local.blt.yml';
+    $yaml = YamlMunge::parseFile($file);
+
+    if (isset($yaml['multisites']) && !empty($yaml['multisites'])) {
+      $this->logger->info('Multisites overridden in local.blt.yml file. Copying to temporary config.');
+
+      $this->taskFilesystemStack()
+        ->copy($file, $this->getConfigValue('repo.root') . '/tmp/local.blt.yml')
+        ->stopOnFail(TRUE)
+        ->run();
+
+      unset($yaml['multisites']);
+      YamlMunge::writeFile($file, $yaml);
+    }
+
+    $this->taskExecStack()
+      ->dir($this->getConfigValue('docroot'))
+      ->exec('rm sites/*/settings/default.local.settings.php')
+      ->exec('rm sites/*/settings/local.settings.php')
+      ->exec('rm sites/*/local.drush.yml')
+      ->run();
+  }
+
+  /**
+   * Copy any temporary multisites config back from pre-command hook.
+   *
+   * @hook post-command source:build:settings
+   */
+  public function postSourceBuildSettings() {
+    $root = $this->getConfigValue('repo.root');
+
+    foreach ($this->getConfigValue('multisites') as $site) {
+      $this->switchSiteContext($site);
+      $origin = $this->getConfigValue('uiowa.stage_file_proxy.origin');
+
+      if (!$origin) {
+        $origin = 'https://' . $this->getConfigValue('site');
+      }
+
+      $text = <<<EOD
+
+\$config['stage_file_proxy.settings']['origin'] = '$origin';
+EOD;
+
+      $this->taskWriteToFile("$root/docroot/sites/$site/settings/local.settings.php")
+        ->append()
+        ->text($text)
+        ->run();
+    }
+
+    $from = "$root/tmp/local.blt.yml";
+
+    if (file_exists($from)) {
+      $to = "$root/blt/local.blt.yml";
+
+      $this->taskFilesystemStack()
+        ->stopOnFail(TRUE)
+        ->remove($to)
+        ->copy($from, $to)
+        ->remove($from)
+        ->run();
+    }
+  }
+
+  /**
+   * Start chromedriver in CI environment before running Drupal tests.
+   *
+   * @see https://github.com/acquia/blt-drupal-test/issues/8
+   *
+   * @hook pre-command tests:drupal:phpunit:run
+   */
+  public function preTestsDrupalPhpunitRun() {
+    if (EnvironmentDetector::isCiEnv()) {
+      $this->logger->info("Launching chromedriver...");
+      $chromeDriverHost = 'http://localhost';
+      $chromeDriverPort = $this->getConfigValue('tests.chromedriver.port');
+
+      $this->getContainer()
+        ->get('executor')
+        ->execute("chromedriver")
+        ->background(TRUE)
+        ->printOutput(TRUE)
+        ->printMetadata(TRUE)
+        ->run();
+
+      $this->getContainer()->get('executor')->waitForUrlAvailable("$chromeDriverHost:{$chromeDriverPort}");
+    }
+  }
+
+  /**
+   * Kill chromedriver in CI after running tests.
+   *
+   * @hook post-command tests:drupal:phpunit:run
+   */
+  public function postTestsDrupalPhpunitRun() {
+    if (EnvironmentDetector::isCiEnv()) {
+      $this->logger->info("Killing running chromedriver processes...");
+      $chromeDriverPort = $this->getConfigValue('tests.chromedriver.port');
+      $this->getContainer()->get('executor')->killProcessByPort($chromeDriverPort);
     }
   }
 

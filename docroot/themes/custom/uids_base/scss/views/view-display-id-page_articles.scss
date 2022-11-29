@@ -1,48 +1,49 @@
-@import "uids/assets/scss/_variables.scss";
-@import "uids/assets/scss/_utilities.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
 
 .view-display-id-page_articles {
-  display: flex;
-  flex-wrap: wrap;
   @include margin($top: $lg);
+  @include breakpoint(sm) {
+    display: grid;
+    grid-template-columns: minmax(50%, 1fr) 25%;
+    //grid-template-columns: repeat(3, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+  }
+
   .view-header {
-    width: 100%;
+    grid-area: 1 / 1 / 2 / 4;
+    margin-bottom: $mobile-height-gutter;
   }
 
   .view-content {
-    flex: 1 0 0;
-  }
-
-  .view-empty {
-    flex: 0 0 75%;
-    max-width: 75%;
-  }
-
-  .view-footer {
-    flex: 0 0 100%;
-    max-width: 100%;
-
+    grid-area: 2 / 1 / 3 / 3;
     @include breakpoint(sm) {
-      flex: 0 0 25%;
-      max-width: 25%;
-      margin-left: $desktop-width-gutter;
-    }
-
-    .view-wrapper {
-      display: block;
-      margin: 0;
+      margin-bottom: $mobile-height-gutter;
     }
   }
 
   .pager {
-    flex: 0 0 100%;
-    max-width: 100%;
-    order: 1;
+    grid-area: 5 / 1 / 3 / 4;
+    @include breakpoint(sm) {
+      margin-bottom: 4rem;
+    }
+  }
+
+  .view-footer {
+    grid-area: 2 / 3 / 4 / 4;
+    @include breakpoint(sm) {
+      margin-left: 3rem;
+    }
+    @include breakpoint(page-container) {
+      margin-left: 6rem;
+    }
   }
 
   .feed-icons {
-    flex: 0 0 100%;
-    max-width: 100%;
-    order: 2;
+    @include breakpoint(sm) {
+      grid-area: 5 / 1 / 3 / 4;
+      margin-top: 6rem;
+    }
   }
 }

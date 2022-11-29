@@ -75,11 +75,11 @@ process:
     plugin: static_map
     source: field_program_types
     map:
-      0: major
-      1: minor
-      2: certificate
-      3: preprofessional_program
-      4: online_offcampus_program
+      - major
+      - minor
+      - certificate
+      - preprofessional_program
+      - online_offcampus_program
   field_area_of_study_majors:
     plugin: create_degrees
     source: field_degree
@@ -117,40 +117,40 @@ process:
     plugin: static_map
     source: field_track_type_name
     map:
-      0: areas_of_emphasis
-      1: areas_of_specialization
-      2: focus_areas
-      3: interest_areas
-      4: tracks
-      5: concentrations
+      - areas_of_emphasis
+      - areas_of_specialization
+      - focus_areas
+      - interest_areas
+      - tracks
+      - concentrations
   field_area_of_study_teaching:
     plugin: static_map
     source: field_teacher_license
     map:
-      0: teaching_licensure
+      - teaching_licensure
   field_area_of_study_teaching_txt: field_teaching_desc
   field_area_of_study_honors:
     plugin: static_map
     source: field_honors_courses
     map:
-      0: honors_courses
+      - honors_courses
   field_area_of_study_four_year:
     plugin: static_map
     source: field_four_year_grad
     map:
-      0: four_year_graduate_plan
+      - four_year_graduate_plan
   field_area_of_study_four_txt: field_fouryear_desc
   field_area_of_study_selective:
     plugin: static_map
     source: field_selective
     map:
-      0: selective_admission
+      - selective_admission
   field_area_of_study_select_txt: field_selective_description
   field_area_of_study_competitive:
     plugin: static_map
     source: field_competitive
     map:
-      0: competitive_admission
+      - competitive_admission
   field_area_of_study_comp_txt: field_competitive_description
   field_area_of_study_link:
     plugin: sub_process

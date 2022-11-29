@@ -1,0 +1,39 @@
+{#
+/**
+ * @file
+ * Theme override to display a block.
+ *
+ * @see template_preprocess_block()
+ */
+#}
+{% set classes = [] %}
+{% set container_classes = ['block'] %}
+
+{% for style in attributes.class %}
+  {% if style starts with 'bttn' %}
+    {% set classes = classes|merge([style]) %}
+  {% endif %}
+  {% if style starts with 'bttn--full' %}
+    {% set container_classes = container_classes|merge([style]) %}
+  {% endif %}
+{% endfor %}
+
+{% if content.field_uiowa_button_link['#items']|length > 1 %}
+  {% set container_classes = container_classes|merge(['bttn--row']) %}
+{% endif %}
+
+<div {{ attributes.removeClass(classes).addClass(container_classes)  }}>
+  {{ title_prefix }}
+  {{ title_suffix }}
+
+  {% for link in content.field_uiowa_button_link['#items'] %}
+    {% set block_button = {
+      'classes': create_attribute().addClass(classes),
+      'link_url': link.url|render,
+      'link_title': link.title|render,
+    } %}
+
+    {% embed '@uids_base/uids/button.html.twig' with block_button only %}
+    {% endembed %}
+  {% endfor %}
+</div>

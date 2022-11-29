@@ -9,7 +9,9 @@
  * @see https://www.drupal.org/node/2217931
  */
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\node\NodeInterface;
 
 /**
  * Implements hook_preprocess_HOOK().
@@ -32,6 +34,16 @@ function uiowa_area_of_study_form_alter(&$form, FormStateInterface $form_state, 
             ':input[name="field_area_of_study_source_link[0][uri]"]' => ['filled' => TRUE],
           ],
         ];
+        // Only visible to admins, but disable.
+        if (isset($form["rabbit_hole"])) {
+          $form["rabbit_hole"]['admin_notice'] = [
+            '#type' => 'markup',
+            '#markup' => t('<em>These rabbit hole settings are being set
+on presave based on primary source link/link directly to source.</em>'),
+            '#weight' => -99,
+          ];
+          $form["rabbit_hole"]['#disabled'] = TRUE;
+        }
       }
       break;
   }
@@ -61,6 +73,66 @@ function uiowa_area_of_study_preprocess_field(&$variables) {
           // Assumes single link.
           $variables['items'][0]['content']['#options']['attributes']['class'][] = 'bttn bttn--full bttn--primary bttn--caps';
           break;
+      }
+      break;
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function uiowa_area_of_study_preprocess_page(&$variables) {
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    $node = ($node ?? \Drupal::routeMatch()
+      ->getParameter('node_preview'));
+    if ($node instanceof NodeInterface) {
+      switch ($node->getType()) {
+        case 'area_of_study':
+          // Display message if content is being redirected with Rabbit Hole.
+          // Using preprocess_page to avoid caching issue.
+          if ($node->hasField('field_area_of_study_link_direct')
+            && (int) $node->get('field_area_of_study_link_direct')->value === 1) {
+            if (\Drupal::currentUser()->hasPermission('rabbit hole bypass node') === TRUE) {
+              \Drupal::messenger()
+                ->addWarning(t('Visitors are being redirected to
+                the Primary Source Link'));
+            }
+          }
+          break;
+
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function uiowa_area_of_study_entity_presave(EntityInterface $entity) {
+  switch ($entity->bundle()) {
+    case 'area_of_study':
+      // Check for rabbit_hole functionality.
+      if (\Drupal::moduleHandler()->moduleExists('rabbit_hole') && $entity->hasField('rh_action')) {
+        $link_direct = (int) $entity->get('field_area_of_study_link_direct')->value;
+        $source_link = $entity->get('field_area_of_study_source_link')->uri;
+        // If source link and direct to source are set,
+        // change the rabbit hole setting to redirect
+        // and set the url to the source link token.
+        if ($link_direct === 1 && isset($source_link) && !empty($source_link)) {
+          $entity->rh_action->value = 'page_redirect';
+          $entity->rh_redirect->value = '[node:field_area_of_study_source_link:uri]';
+          $entity->rh_redirect_response->value = '301';
+          $entity->rh_redirect_fallback_action->value = 'display_page';
+        }
+        else {
+          // Match content type settings.
+          $entity->rh_action->value = 'display_page';
+          $entity->rh_redirect->value = NULL;
+          $entity->rh_redirect_response->value = '301';
+          $entity->rh_redirect_fallback_action->value = 'bundle_default';
+        }
       }
       break;
   }

@@ -7,6 +7,8 @@ use Drupal\system\Form\SiteInformationForm;
 
 /**
  * Configure site information settings for this site.
+ *
+ * @phpstan-ignore-next-line
  */
 class UiowaCoreSiteInformationForm extends SiteInformationForm {
 
@@ -75,9 +77,7 @@ class UiowaCoreSiteInformationForm extends SiteInformationForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $has_parent = $form_state->getValue('has_parent');
     if (!$has_parent) {
-      // @todo Should these values be removed or just not used?
       $form_state
-        // @todo Should these be set to NULL or ''?
         ->setValueForElement($form['site_information']['parent']['site_parent_name'], NULL)
         ->setValueForElement($form['site_information']['parent']['site_parent_url'], NULL);
     }

@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: claslinux.uiowa.ddev.site
+    protocol: https
+  machine_name: claslinux
+  human_name: linux.clas.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: claslinux.prod
+drupal:
+  db:
+    database: linux_clas_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://claslinux.prod.drupal.uiowa.edu'

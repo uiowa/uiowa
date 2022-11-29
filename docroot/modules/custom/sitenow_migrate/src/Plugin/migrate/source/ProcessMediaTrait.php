@@ -6,12 +6,13 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\migrate\MigrateException;
+use Drupal\sitenow_migrate\Plugin\migrate\CreateMediaTrait;
 
 /**
  * Provides functions for processing media in source plugins.
  */
 trait ProcessMediaTrait {
-
+  use CreateMediaTrait;
   /**
    * The file system service.
    *
@@ -25,6 +26,20 @@ trait ProcessMediaTrait {
    * @var string
    */
   protected $viewMode = 'medium__no_crop';
+
+  /**
+   * The default image alignment.
+   *
+   * @var string
+   */
+  protected $align = 'center';
+
+  /**
+   * Minimum image dimensions to pull over.
+   *
+   * @var array
+   */
+  protected $imageSizeRestrict = [];
 
   /**
    * Get the URL of the source public files path with a trailing slash.
@@ -100,7 +115,7 @@ trait ProcessMediaTrait {
     // so the matched, non-bracketed JSON is in the [0][0] index
     // of the json_decode result.
     $file_properties = json_decode($match[0], TRUE)[0][0];
-    $align = isset($file_properties['fields']['alignment']) ? $file_properties['fields']['alignment'] : '';
+    $align = $file_properties['fields']['alignment'] ?? '';
     $file_data = $this->fidQuery($fid);
 
     if (!$file_data) {
@@ -119,8 +134,8 @@ trait ProcessMediaTrait {
         ->fetchField();
 
       $meta = [
-        'title' => isset($file_properties['attributes']['title']) ? $file_properties['attributes']['title'] : $filename,
-        'alt' => isset($file_properties['attributes']['alt']) ? $file_properties['attributes']['alt'] : explode('.', $filename)[0],
+        'title' => $file_properties['attributes']['title'] ?? $filename,
+        'alt' => $file_properties['attributes']['alt'] ?? explode('.', $filename)[0],
       ];
 
       // If there's no fid in the D8 database,
@@ -186,9 +201,7 @@ trait ProcessMediaTrait {
       // If there's no fid in the D8 database,
       // then we'll need to fetch it from the source.
       if (!$new_fid) {
-
-        // @todo Remove the hardcoding for physics.uiowa.edu/itu.
-        $new_fid = $this->downloadFile($filename, "https://physics.uiowa.edu/sites/" . $filepath . '/', $this->getDrupalFileDirectory());
+        $new_fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $filepath . '/', $this->getDrupalFileDirectory());
         if ($new_fid) {
           $id = $this->createMediaEntity($new_fid, $meta, 1);
           $uuid = $this->getMid($filename, 'file')['uuid'];
@@ -225,7 +238,7 @@ trait ProcessMediaTrait {
    *   Returns markup as a plaintext string.
    */
   public function constructInlineEntity(string $uuid, string $align, $view_mode = '') {
-    $align = isset($align) ? $align : 'center';
+    $align = !empty($align) ? $align : $this->align;
 
     $media = [
       '#type' => 'html_tag',
@@ -359,9 +372,17 @@ trait ProcessMediaTrait {
   public function downloadFile($filename, $source_base_path, $drupal_file_directory) {
     // Suppressing errors, because we expect there to be at least some
     // private:// files or 404 errors.
-    $raw_file = @file_get_contents($source_base_path . $filename);
+    $raw_file = @file_get_contents($source_base_path . rawurlencode($filename));
     if (!$raw_file) {
       return FALSE;
+    }
+    if (!empty($this->imageSizeRestrict)) {
+      if ($this->checkImageDimensions($filename, $raw_file, $this->imageSizeRestrict) === FALSE) {
+        $this->logger->notice('Image @filename did not meet the minimum dimension requirements and was not downloaded.', [
+          '@filename' => $filename,
+        ]);
+        return FALSE;
+      }
     }
 
     // Prepare directory in case it doesn't already exist.
@@ -374,7 +395,10 @@ trait ProcessMediaTrait {
     }
 
     // Try to write the file, replacing any existing file with the same name.
-    $file = file_save_data($raw_file, implode('/', [$dir, $filename]), FileSystemInterface::EXISTS_REPLACE);
+    $file = \Drupal::service('file.repository')->writeData($raw_file, implode('/', [
+      $dir,
+      $filename,
+    ]), FileSystemInterface::EXISTS_REPLACE);
 
     // Drop the raw file out of memory for a little cleanup.
     unset($raw_file);
@@ -397,108 +421,6 @@ trait ProcessMediaTrait {
   }
 
   /**
-   * Create a media entity for images.
-   *
-   * @param int $fid
-   *   File id for the media being created.
-   * @param array $meta
-   *   Associative array holding the title and alt texts.
-   * @param int $owner_id
-   *   User id for the media owner, or default to anonymous.
-   *
-   * @return false|int|string|null
-   *   Media id, if successful, or else false.
-   *
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   */
-  public function createMediaEntity($fid, array $meta, $owner_id = 1) {
-    $file_manager = $this->entityTypeManager->getStorage('file');
-    /** @var \Drupal\file\FileInterface $file */
-    $file = $file_manager->load($fid);
-
-    if ($file) {
-      // Check if we have a title/alt,
-      // and create them if not.
-      foreach (['title', 'alt'] as $name) {
-        if (empty($meta[$name])) {
-          // If no title, set it to the filename.
-          // If no alt, set it to the title
-          // (which may be the filename).
-          $meta[$name] = (isset($meta['title'])) ? $meta['title'] : $file->getFilename();
-        }
-        // Need to truncate the title prior to setting the media name
-        // due to media.name column schema restriction.
-        if (strlen($meta[$name]) > 255) {
-          // Break at a word. Doesn't make a perfect title,
-          // but preserves some of the original intention.
-          $meta[$name] = wordwrap($meta[$name], 255);
-          $meta[$name] = substr($meta[$name], 0, strpos($meta[$name], '\n'));
-        }
-      }
-      $fileType = explode('/', $file->getMimeType())[0];
-      // Currently handles images and documents.
-      // May need to check for other file types.
-      switch ($fileType) {
-
-        case 'image':
-          $media_manager = $this->entityTypeManager->getStorage('media');
-          /** @var \Drupal\Media\MediaInterface $media */
-          $media = $media_manager->create([
-            'bundle' => 'image',
-            'field_media_image' => [
-              'target_id' => $fid,
-              'alt' => $meta['alt'],
-              'title' => $meta['title'],
-            ],
-            'langcode' => 'en',
-          ]);
-
-          $media->setName($meta['title']);
-          $media->setOwnerId($owner_id);
-          $media->save();
-          $id = $media->id();
-          // Minor memory cleanup.
-          $media = NULL;
-          $file = NULL;
-          $media_manager = NULL;
-          $file_manager = NULL;
-          return $id;
-
-        case 'application':
-        case 'document':
-        case 'file':
-          $media_manager = $this->entityTypeManager->getStorage('media');
-          /** @var \Drupal\Media\MediaInterface $media */
-          $media = $media_manager->create([
-            'bundle' => 'file',
-            'field_media_file' => [
-              'target_id' => $fid,
-              'display' => 1,
-              'description' => '',
-            ],
-            'langcode' => 'en',
-            'metadata' => [],
-          ]);
-
-          $media->setName($file->getFileName());
-          $media->setOwnerId($owner_id);
-          $media->save();
-          $id = $media->id();
-          // Minor memory cleanup.
-          $media = NULL;
-          $file = NULL;
-          $media_manager = NULL;
-          $file_manager = NULL;
-          return $id;
-
-        default:
-          return FALSE;
-      }
-    }
-    return FALSE;
-  }
-
-  /**
    * Process an image field.
    *
    * @param int $fid
@@ -515,8 +437,12 @@ trait ProcessMediaTrait {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function processImageField($fid, $alt = NULL, $title = NULL) {
-    $uri = $this->fidQuery($fid)['uri'];
-    $filename_w_subdir = str_replace('public://', '', $uri);
+    $fileQuery = $this->fidQuery($fid);
+    if (!str_starts_with($fileQuery['filemime'], 'image/')) {
+      return NULL;
+    }
+    $filename_w_subdir = str_replace('public://', '', $fileQuery['uri']);
+    $fileQuery = NULL;
 
     // Split apart the filename from the subdirectory path.
     $filename_w_subdir = explode('/', $filename_w_subdir);
@@ -569,6 +495,65 @@ trait ProcessMediaTrait {
   }
 
   /**
+   * Process a file field.
+   *
+   * @param int $fid
+   *   The file ID.
+   * @param array $meta
+   *   Metadata for the file.
+   *
+   * @return int|null
+   *   The media ID or null if unable to process.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\migrate\MigrateException
+   */
+  protected function processFileField($fid, array $meta = []) {
+    $fileQuery = $this->fidQuery($fid);
+
+    $filename_w_subdir = str_replace('public://', '', $fileQuery['uri']);
+    $fileQuery = NULL;
+
+    // Split apart the filename from the subdirectory path.
+    $filename_w_subdir = explode('/', $filename_w_subdir);
+    $filename = array_pop($filename_w_subdir);
+    $subdir = implode('/', $filename_w_subdir) . '/';
+    $filename_w_subdir = NULL;
+
+    // Get a connection for the destination database
+    // and retrieve the associated fid.
+    $new_fid = \Drupal::database()->select('file_managed', 'f')
+      ->fields('f', ['fid'])
+      ->condition('f.filename', $filename)
+      ->execute()
+      ->fetchField();
+
+    // If there's no fid in the D8 database,
+    // then we'll need to fetch it from the source.
+    if (!$new_fid) {
+      // Use the filename, update the source base path with the subdirectory.
+      $new_fid = $this->downloadFile($filename, $this->getSourcePublicFilesUrl() . $subdir, $this->getDrupalFileDirectory() . $subdir);
+      $subdir = NULL;
+
+      if ($new_fid) {
+        $mid = $this->createMediaEntity($new_fid, $meta, 1);
+      }
+    }
+    else {
+      $mid = $this->getMid($filename)['mid'];
+      $filename = NULL;
+
+      // And in case we had the file, but not the media entity.
+      if (!$mid) {
+        $mid = $this->createMediaEntity($new_fid, $meta, 1);
+        $meta = NULL;
+      }
+    }
+
+    return $mid ?? NULL;
+  }
+
+  /**
    * Replace inline image tags with media references.
    *
    * Used this as reference: https://stackoverflow.com/a/3195048.
@@ -587,7 +572,7 @@ trait ProcessMediaTrait {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function replaceInlineImages(string $content, string $stub, $view_mode = '') {
-    $view_mode = isset($view_mode) ? $view_mode : $this->view_mode;
+    $view_mode = $view_mode ?? $this->view_mode;
     $drupal_file_directory = $this->getDrupalFileDirectory();
 
     // Create a HTML content fragment.
@@ -733,6 +718,23 @@ trait ProcessMediaTrait {
       ->condition('f.filename', $filename)
       ->execute()
       ->fetchField();
+  }
+
+  /**
+   * Check if image size is under a specified minimum.
+   */
+  protected function checkImageDimensions(string $filename, string $raw_file, array $minimum_dimensions) {
+    if ($dimensions = getimagesizefromstring($raw_file)) {
+      if ($dimensions[0] < $minimum_dimensions['width'] || $dimensions[1] < $minimum_dimensions['height']) {
+        $this->reporter[$this->entityId] = $filename;
+        // Return FALSE if the image should not be downloaded.
+        return isset($minimum_dimensions['skip']) ? !$minimum_dimensions['skip'] : FALSE;
+      }
+    }
+    // Either dimensions passed the minimum requirement,
+    // or we weren't able to read the dimensions, and we're
+    // erring on the side of caution in pulling it in.
+    return TRUE;
   }
 
 }

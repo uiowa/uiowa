@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labbosch.uiowa.ddev.site
+    protocol: https
+  machine_name: labbosch
+  human_name: bosch.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labbosch.prod
+drupal:
+  db:
+    database: bosch_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: eastonw
+  site-name: 'Bosch Research Lab'

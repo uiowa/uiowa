@@ -1,0 +1,29 @@
+uuid: fe593c7b-6ddd-4fd8-8bf8-52f3a0372343
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_book_preface_authors
+    - node.type.book
+    - node.type.person
+id: node.book.field_book_preface_authors
+field_name: field_book_preface_authors
+entity_type: node
+bundle: book
+label: 'Preface authors(s)'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      person: person
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

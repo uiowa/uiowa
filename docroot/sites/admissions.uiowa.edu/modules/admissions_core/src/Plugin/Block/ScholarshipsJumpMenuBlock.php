@@ -92,7 +92,7 @@ class ScholarshipsJumpMenuBlock extends BlockBase implements ContainerFactoryPlu
       '#selection_settings' => [
         'target_bundles' => ['page'],
       ],
-      '#default_value' => isset($transfer_entity) ? $transfer_entity : NULL,
+      '#default_value' => $transfer_entity ?? NULL,
       '#required' => TRUE,
     ];
     if (isset($config['international_path'])) {
@@ -107,7 +107,7 @@ class ScholarshipsJumpMenuBlock extends BlockBase implements ContainerFactoryPlu
       '#selection_settings' => [
         'target_bundles' => ['page'],
       ],
-      '#default_value' => isset($international_entity) ? $international_entity : NULL,
+      '#default_value' => $international_entity ?? NULL,
       '#required' => TRUE,
     ];
     if (isset($config['resident_path'])) {
@@ -122,7 +122,7 @@ class ScholarshipsJumpMenuBlock extends BlockBase implements ContainerFactoryPlu
       '#selection_settings' => [
         'target_bundles' => ['page'],
       ],
-      '#default_value' => isset($resident_entity) ? $resident_entity : NULL,
+      '#default_value' => $resident_entity ?? NULL,
       '#required' => TRUE,
     ];
     if (isset($config['nonresident_path'])) {
@@ -137,7 +137,7 @@ class ScholarshipsJumpMenuBlock extends BlockBase implements ContainerFactoryPlu
       '#selection_settings' => [
         'target_bundles' => ['page'],
       ],
-      '#default_value' => isset($nonresident_entity) ? $nonresident_entity : NULL,
+      '#default_value' => $nonresident_entity ?? NULL,
       '#required' => TRUE,
     ];
 

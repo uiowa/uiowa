@@ -1,35 +1,16 @@
-image_fields:
-  media--image--field_media_image--full__ultrawide: '1'
-  media--image--field_media_image--full__no_crop: '1'
-  media--image--field_media_image--full__square: '1'
-  media--image--field_media_image--full__widescreen: '1'
-  media--image--field_media_image--image_gallery: '1'
-  media--image--field_media_image--large__no_crop: '1'
-  media--image--field_media_image--large__square: '1'
-  media--image--field_media_image--large__ultrawide: '1'
-  media--image--field_media_image--large__widescreen: '1'
-  media--image--field_media_image--medium__no_crop: '1'
-  media--image--field_media_image--medium__square: '1'
-  media--image--field_media_image--medium__ultrawide: '1'
-  media--image--field_media_image--medium__widescreen: '1'
-  media--image--field_media_image--small__no_crop: '1'
-  media--image--field_media_image--small__square: '1'
-  media--image--field_media_image--small__ultrawide: '1'
-  media--image--field_media_image--small__widescreen: '1'
-  media--image--field_media_image--default: '1'
-  media--image--field_media_image--large: '1'
-  media--image--field_media_image--medium: '1'
-  media--image--field_media_image--small: '1'
-alter_tag:
-  img: img
-  iframe: '0'
-formatters:
-  lazy_image: '0'
-  lazy_responsive_image: '0'
+_core:
+  default_config_hash: 1TShnSplWum3f2DJ6uq-OQsANqeYJVltsSdViV_YY7Y
 skipClass: no-lazy
-disabled_paths: "/rss.xml\r\n/entity-browser/*\r\n/entity-embed/*\r\n/media/*\r\n/print/pdf/*"
+disable_admin: false
+visibility:
+  id: request_path
+  pages: "/rss.xml\r\n/entity-browser/*\r\n/entity-embed/*\r\n/media/*\r\n/print/pdf/*"
+  negate: 0
 placeholderSrc: ''
 preferNative: false
+cssEffect: true
+minified: false
+libraryPath: /libraries/lazysizes
 lazysizes:
   lazyClass: lazyload
   loadedClass: lazyloaded
@@ -51,6 +32,4 @@ lazysizes:
   throttleDelay: 125
   plugins:
     aspectratio: aspectratio
-_core:
-  default_config_hash: 1TShnSplWum3f2DJ6uq-OQsANqeYJVltsSdViV_YY7Y
-cssEffect: true
+disabled_paths: "/rss.xml\r\n/entity-browser/*\r\n/entity-embed/*\r\n/media/*\r\n/print/pdf/*"

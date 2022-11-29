@@ -1,0 +1,23 @@
+uuid: 00002e8d-b851-43ff-b245-e149b4df180e
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+    - node_revision_delete
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+  node_revision_delete:
+    minimum_revisions_to_keep: 10
+    minimum_age_to_delete: 0
+    when_to_delete: 0
+name: 'Costs Estimate'
+type: costs_estimate
+description: 'Estimated costs (domestic and international) for Graduate Programs'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: false

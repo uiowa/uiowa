@@ -1,4 +1,18 @@
-# Schema for the configuration files of the Stark theme.
 uids_base.settings:
   type: theme_settings
   label: 'UIDS Base settings'
+  mapping:
+    header:
+      label: 'Header settings'
+      type: mapping
+      mapping:
+        type:
+          label: 'Header type'
+          type: string
+    footer:
+      label: 'Footer settings'
+      type: mapping
+      mapping:
+        login_link:
+          label: 'Whether to display login link in footer'
+          type: boolean

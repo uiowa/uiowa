@@ -1,2 +1,7 @@
 $imgpath: '/themes/custom/uids_base/uids/assets/images/';
-@import "components/background/background.scss";
+@import "uids3/components/background/background.scss";
+
+// @todo remove once https://github.com/uiowa/uids/issues/713 is completed.
+[class*=bg--][class*="--pattern--"], [class*=bg-pattern] {
+  background-position: inherit;
+}

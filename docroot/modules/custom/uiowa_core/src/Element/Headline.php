@@ -10,14 +10,6 @@ use Drupal\Core\Render\Element\FormElement;
  * This implementation is incomplete and not in use. It is
  * provided as a jumping off point for future work.
  *
- * Example usage:
- * @code
- * $form['headline'] = array(
- *   '#type' => 'headline',
- *   '#title' => $this->t('Headline'),
- * );
- * @end
- *
  * @see \Drupal\Core\Render\Element\Render\FormElement
  *
  * @FormElement("headline")
@@ -73,6 +65,16 @@ class Headline extends FormElement {
       '#type' => 'textfield',
       '#attributes' => [
         'name' => $element['#name'] . '_size',
+      ],
+      '#required' => $element['#required'],
+      '#default_value' => NULL,
+    ];
+
+    // Headline alignment.
+    $element['alignment'] = [
+      '#type' => 'textfield',
+      '#attributes' => [
+        'name' => $element['#name'] . '_alignment',
       ],
       '#required' => $element['#required'],
       '#default_value' => NULL,

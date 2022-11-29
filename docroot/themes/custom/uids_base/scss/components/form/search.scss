@@ -1,6 +1,6 @@
-@import "assets/scss/_variables.scss";
-@import "assets/scss/_utilities.scss";
-@import "components/form/search/search.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
+@import "uids3/components/form/search/search.scss";
 
 // full width for any elements not part of the form
 
@@ -25,6 +25,9 @@
   align-items: flex-start;
   justify-content: flex-start;
   flex-wrap: wrap;
+  [type="search"]::placeholder {
+    color: $secondary;
+  }
   &.uids-content:not(.uids-search) {
     padding: 5px 0;
     .form-item {
@@ -36,7 +39,7 @@
       margin-top: 0;
     }
     [type="submit"],
-    input#edit-submit {
+    input[id^='edit-submit'] {
       .layout__container:not([class*="bg-"]) & {
         @include bttn--primary;
         border: 1px solid $primary;

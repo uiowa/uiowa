@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: fogao.uiowa.ddev.site
+    protocol: https
+  machine_name: fogao
+  human_name: gao.fo.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: fogao.prod
+drupal:
+  db:
+    database: gao_fo_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: afgingerich

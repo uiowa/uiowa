@@ -1,0 +1,23 @@
+uuid: 125ec4a8-585a-4665-9d57-5881dfbdb305
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_program_year
+    - node.type.person
+id: node.person.field_program_year
+field_name: field_program_year
+entity_type: node
+bundle: person
+label: 'Program Year'
+description: 'Enter the academic year in which the student entered the program.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 1900
+  max: 2200
+  prefix: ''
+  suffix: ''
+field_type: integer

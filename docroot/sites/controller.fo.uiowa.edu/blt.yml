@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: focontroller.uiowa.ddev.site
+    protocol: https
+  machine_name: focontroller
+  human_name: controller.fo.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: focontroller.prod
+drupal:
+  db:
+    database: controller_fo_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: lhma

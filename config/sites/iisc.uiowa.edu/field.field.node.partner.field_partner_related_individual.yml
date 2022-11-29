@@ -1,0 +1,29 @@
+uuid: 08553fdb-32b0-43d2-8188-ecf5fefeb8a6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_partner_related_individual
+    - node.type.partner
+    - node.type.person
+id: node.partner.field_partner_related_individual
+field_name: field_partner_related_individual
+entity_type: node
+bundle: partner
+label: 'Related Individuals'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      person: person
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

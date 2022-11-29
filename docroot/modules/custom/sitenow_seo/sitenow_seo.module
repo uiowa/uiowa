@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -13,9 +14,21 @@ use Drupal\Core\Form\FormStateInterface;
 function sitenow_seo_form_google_analytics_admin_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Restrict access to some Google Analytics form items for all roles
   // except administrator.
-  if (!sitenow_is_user_admin(\Drupal::currentUser())) {
-    $form['tracking']['#access'] = FALSE;
+  /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+  $check = \Drupal::service('uiowa_core.access_checker');
+
+  /** @var Drupal\Core\Access\AccessResultInterface $access */
+  $access = $check->access(\Drupal::currentUser()->getAccount());
+
+  if ($access->isForbidden()) {
     $form['advanced']['#access'] = FALSE;
+
+    // Disable access to all tracking config except dimensions and metrics.
+    foreach (Element::children($form['tracking']) as $child) {
+      if ($child != 'parameters') {
+        $form['tracking'][$child]['#access'] = FALSE;
+      }
+    }
   }
 }
 
@@ -44,49 +57,18 @@ function sitenow_seo_form_alter(&$form, FormStateInterface $form_state, $form_id
     case 'node_person_edit_form':
     case 'node_person_form':
       // Collapse inner SEO field groups.
-      if (isset($form["field_meta_tags"])) {
-        if ($form["field_meta_tags"]["widget"][0]["advanced"]) {
-          $form["field_meta_tags"]["widget"][0]["advanced"]["#open"] = FALSE;
+      if (isset($form['field_meta_tags'])) {
+        if ($form['field_meta_tags']['widget'][0]['advanced']) {
+          $form['field_meta_tags']['widget'][0]['advanced']['#open'] = FALSE;
         }
-        if (isset($form["field_meta_tags"]["widget"][0]["open_graph"])) {
-          $form["field_meta_tags"]["widget"][0]["open_graph"]["#open"] = FALSE;
+        if (isset($form['field_meta_tags']['widget'][0]['open_graph'])) {
+          $form['field_meta_tags']['widget'][0]['open_graph']['#open'] = FALSE;
         }
-        if (isset($form["field_meta_tags"]["widget"][0]["twitter_cards"])) {
-          $form["field_meta_tags"]["widget"][0]["twitter_cards"]["#open"] = FALSE;
+        if (isset($form['field_meta_tags']['widget'][0]['twitter_cards'])) {
+          $form['field_meta_tags']['widget'][0]['twitter_cards']['#open'] = FALSE;
         }
       }
       break;
 
-  }
-}
-
-/**
- * Implements hook_page_attachments_alter().
- */
-function sitenow_seo_page_attachments_alter(array &$attachments) {
-  // Unset related resources that we don't want bots to crawl.
-  $unset_html_head_link = [
-    'latest-version',
-    'delete-form',
-    'edit-form',
-    'version-history',
-    'revision',
-  ];
-
-  foreach ($attachments['#attached']['html_head_link'] as $key => $value) {
-    if (isset($value[0]['rel']) && in_array($value[0]['rel'], $unset_html_head_link)) {
-      unset($attachments['#attached']['html_head_link'][$key]);
-    }
-  }
-}
-
-/**
- * Implements hook_module_implements_alter().
- */
-function sitenow_seo_module_implements_alter(&$implementations, $hook) {
-  if ($hook === 'page_attachments_alter') {
-    $group = $implementations['sitenow_seo'];
-    unset($implementations['sitenow_seo']);
-    $implementations['sitenow_seo'] = $group;
   }
 }

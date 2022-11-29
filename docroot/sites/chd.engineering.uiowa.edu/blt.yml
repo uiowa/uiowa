@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: engineeringchd.uiowa.ddev.site
+    protocol: https
+  machine_name: engineeringchd
+  human_name: chd.engineering.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: engineeringchd.prod
+drupal:
+  db:
+    database: chd_engineering_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: hboileau
+  site-name: 'Center for Hydraulic Development '

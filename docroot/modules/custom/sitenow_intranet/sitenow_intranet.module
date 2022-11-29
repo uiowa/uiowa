@@ -1,0 +1,106 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Sitenow Intranet module.
+ *
+ * @DCG
+ * This file is no longer required in Drupal 8.
+ * @see https://www.drupal.org/node/2217931
+ */
+
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_restrict_ip_access_denied_page_alter().
+ */
+function sitenow_intranet_restrict_ip_access_denied_page_alter(&$page) {
+  $config = \Drupal::config('sitenow_intranet.settings');
+  \Drupal::service('renderer')->addCacheableDependency($page, $config);
+
+  if (isset($page['access_denied'])) {
+    unset($page['access_denied']);
+  }
+
+  // Create our own access denied page and login.
+  $page['main'] = [
+    '#type' => 'html_tag',
+    '#tag' => 'main',
+    '#attributes' => [
+      'role' => 'main',
+      'class' => 'page__container',
+    ],
+  ];
+
+  $page['main']['title_container'] = [
+    '#type' => 'html_tag',
+    '#tag' => 'div',
+    '#attributes' => [
+      'class' => [
+        'section-padding__top-extra',
+        'layout--title',
+        'layout__container',
+        'layout',
+      ],
+    ],
+  ];
+  $page['main']['title_container']['title'] = [
+    '#prefix' => '<h1 class="page-title headline--serif headline text-align-center">',
+    '#suffix' => '</h1>',
+  ];
+
+  // Display a different message to authenticated users with no other roles.
+  $roles = \Drupal::currentUser()->getRoles();
+  if (count($roles) === 1 && in_array('authenticated', $roles)) {
+    $page['main']['title_container']['title']['#markup'] = $config->get('unauthorized.title');
+
+    $page['main']['message'] = [
+      '#markup' => check_markup($config->get('unauthorized.message'), 'minimal'),
+      '#prefix' => '<div class="text-align-center">',
+      '#suffix' => '</div>',
+    ];
+
+    // If the user is authenticated but has no other roles, return a 403.
+    $page['#attached']['http_header'][] = ['Status', '403'];
+  }
+  else {
+    $page['main']['title_container']['title']['#markup'] = $config->get('access_denied.title');
+
+    $page['main']['message'] = [
+      '#markup' => check_markup($config->get('access_denied.message'), 'minimal'),
+      '#prefix' => '<div class="text-align-center">',
+      '#suffix' => '</div>',
+    ];
+
+    // If the user is not authenticated, return a 401.
+    $page['#attached']['http_header'][] = ['Status', '401'];
+  }
+
+  if (isset($page['logout_link'])) {
+    $page['main']['logout_link'] = $page['logout_link'];
+    $page['main']['logout_link']['#prefix'] = '<p class="text-align-center">';
+    $page['main']['logout_link']['#suffix'] = '</p>';
+    unset($page['logout_link']);
+  }
+
+  $route = 'samlauth.saml_controller_login';
+  $exists = count(\Drupal::service('router.route_provider')->getRoutesByNames([$route])) === 1;
+
+  if (isset($page['login_link']) && $exists) {
+    $page['main']['login_link'] = [
+      '#type' => 'link',
+      '#title' => t('HawkID Login'),
+      '#url' => Url::fromRoute($route, ['destination' => '/']),
+      '#prefix' => '<p class="text-align-center">',
+      '#suffix' => '</p>',
+      '#attributes' => [
+        'class' => [
+          'bttn',
+          'bttn--primary',
+          'bttn--caps',
+        ],
+      ],
+    ];
+    unset($page['login_link']);
+  }
+}

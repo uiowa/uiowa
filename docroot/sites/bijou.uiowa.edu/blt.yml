@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: bijou.uiowa.ddev.site
+    protocol: https
+  machine_name: bijou
+  human_name: bijou.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: bijou.prod
+drupal:
+  db:
+    database: bijou_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: dquam
+  site-name: 'Bijou Film Board'

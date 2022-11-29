@@ -1,12 +1,54 @@
-@import "uids/assets/scss/_variables.scss";
-@import "uids/assets/scss/_utilities.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
 @import "view-calendar.scss";
+@import "view-bef.scss";
 
 .views-exposed-form {
   min-height: 20px;
   padding: 19px;
-  margin-bottom: 20px;
-  background-color: $light;
+  margin-bottom: 2rem;
+
+  [type=checkbox], [type=radio] {
+    height: 1.2rem;
+    width: 1.2rem;
+    margin: 0 .35rem 0 .25rem;
+    -webkit-transform: scale(1.3, 1.3);
+  }
+  [type='checkbox']+label,
+  [type='radio']+label {
+    font-weight: $font-weight-normal;
+    flex-basis: 75%;
+  }
+
+  .form-type-checkbox {
+    display: flex;
+  }
+
+  details {
+    &.form-wrapper {
+      display: block;
+      border: 1px solid;
+      border-color: #c4c4c4;
+      flex-basis: 100%;
+      background: #fff;
+    }
+
+    .details-wrapper {
+      padding: 0 1rem 1rem;
+    }
+
+    summary {
+      position: relative;
+      padding: 1rem;
+      cursor: pointer;
+    }
+
+    &[open] summary {
+      border-bottom: 1px solid;
+      border-color: #c4c4c4;
+      margin-bottom: 1em;
+    }
+  }
 
   .form--inline {
     display: flex;
@@ -20,6 +62,9 @@
 
   .js-form-item {
     flex: auto 1 1;
+    @include breakpoint(sm) {
+      flex: 1;
+    }
   }
 
   .form-group {
@@ -41,5 +86,39 @@
   }
   .pager__item.is-active a {
     color: white;
+  }
+}
+
+// feed icons
+
+.feed-icons {
+  .bttn {
+    svg{
+      margin-left: 0;
+      margin-right: $xsm;
+    }
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+// default styles for views fields.
+.views-field {
+  line-height: 1.7;
+  margin-top: 0;
+  font-size: $content-font-size;
+}
+
+// Remove margin-bottom for last item in card--lists.
+.block-views-blockpeople-list-block-list-card {
+  .views-row:last-child .card--list {
+    margin-bottom: 0;
+  }
+}
+
+.block-inline-blockuiowa-events,
+.view-article-list-block {
+  .card--list:last-child  {
+    margin-bottom: 0;
   }
 }

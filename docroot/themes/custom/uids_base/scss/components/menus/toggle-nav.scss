@@ -1,0 +1,38 @@
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
+@import "uids3/components/menus/toggle-nav/toggle-nav.scss";
+
+.o-canvas__group .region-primary-menu {
+  height: auto;
+}
+
+.iowa-bar--full.toggle .toggle-nav__bttn {
+  @include breakpoint(page-container) {
+    padding: 19px 35px 0;
+  }
+}
+
+.sf-accordion-toggle {
+  display: none;
+}
+
+#superfish-main-accordion {
+  position: unset !important;
+  clip: auto !important;
+  height: auto !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  display: block !important;
+  margin-bottom: $md;
+}
+
+.iowa-bar--full.toggle,
+.iowa-bar--narrow.toggle {
+  .block-superfish {
+    display: block;
+  }
+  .region-primary-menu {
+    display: block;
+  }
+}
+

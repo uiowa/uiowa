@@ -1,0 +1,30 @@
+@import "../uids/assets/scss/_variables.scss";
+@import "../uids/assets/scss/_utilities.scss";
+@import "uids3/components/headline/_headline-mixins.scss";
+
+.related {
+  :is(h1, h2, h3, h4, h5, h6) a {
+    text-decoration: none;
+    font-family: $font-family-serif;
+    font-weight: $font-weight-medium-bold;
+  }
+  &.col--threecol--33 {
+    .list-container {
+      gap: $desktop-width-gutter;
+      @include breakpoint(sm) {
+        column-count: 2;
+      }
+      @include breakpoint(md) {
+        column-count: 3;
+      }
+      .item-list {
+        break-inside: avoid;
+        display: inline-block;
+        width: 100%;
+        ul {
+          break-inside: avoid;
+        }
+      }
+    }
+  }
+}
