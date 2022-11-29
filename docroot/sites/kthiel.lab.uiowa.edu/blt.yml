@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labkthiel.uiowa.ddev.site
+    protocol: https
+  machine_name: labkthiel
+  human_name: kthiel.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labkthiel.prod
+drupal:
+  db:
+    database: kthiel_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labkthiel.prod.drupal.uiowa.edu'
+  requester: emiwitt
+  site-name: kthiel

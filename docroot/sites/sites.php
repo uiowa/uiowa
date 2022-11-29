@@ -4816,3 +4816,9 @@ $sites['ctgl.uiowa.ddev.site'] = 'ctgl.uiowa.edu';
 $sites['ctgl.dev.drupal.uiowa.edu'] = 'ctgl.uiowa.edu';
 $sites['ctgl.stage.drupal.uiowa.edu'] = 'ctgl.uiowa.edu';
 $sites['ctgl.prod.drupal.uiowa.edu'] = 'ctgl.uiowa.edu';
+
+// Directory aliases for kthiel.lab.uiowa.edu.
+$sites['labkthiel.uiowa.ddev.site'] = 'kthiel.lab.uiowa.edu';
+$sites['labkthiel.dev.drupal.uiowa.edu'] = 'kthiel.lab.uiowa.edu';
+$sites['labkthiel.stage.drupal.uiowa.edu'] = 'kthiel.lab.uiowa.edu';
+$sites['labkthiel.prod.drupal.uiowa.edu'] = 'kthiel.lab.uiowa.edu';
