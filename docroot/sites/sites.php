@@ -4828,3 +4828,9 @@ $sites['labbell.uiowa.ddev.site'] = 'bell.lab.uiowa.edu';
 $sites['labbell.dev.drupal.uiowa.edu'] = 'bell.lab.uiowa.edu';
 $sites['labbell.stage.drupal.uiowa.edu'] = 'bell.lab.uiowa.edu';
 $sites['labbell.prod.drupal.uiowa.edu'] = 'bell.lab.uiowa.edu';
+
+// Directory aliases for cichella.lab.uiowa.edu.
+$sites['labcichella.uiowa.ddev.site'] = 'cichella.lab.uiowa.edu';
+$sites['labcichella.dev.drupal.uiowa.edu'] = 'cichella.lab.uiowa.edu';
+$sites['labcichella.stage.drupal.uiowa.edu'] = 'cichella.lab.uiowa.edu';
+$sites['labcichella.prod.drupal.uiowa.edu'] = 'cichella.lab.uiowa.edu';
