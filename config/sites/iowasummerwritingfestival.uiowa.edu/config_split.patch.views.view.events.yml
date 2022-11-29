@@ -5,6 +5,11 @@ adding:
     module:
       - options
   display:
+    default:
+      display_options:
+        exposed_form:
+          options:
+            reset_button: true
     page_upcoming:
       display_options:
         arguments: {  }
@@ -254,6 +259,11 @@ adding:
           - url
 removing:
   display:
+    default:
+      display_options:
+        exposed_form:
+          options:
+            reset_button: false
     page_upcoming:
       display_options:
         path: events/upcoming
