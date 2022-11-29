@@ -3,18 +3,18 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.classroom.body
-    - field.field.node.classroom.field_classroom_building_id
-    - field.field.node.classroom.field_classroom_room_id
-    - field.field.node.classroom.field_meta_tags
-    - node.type.classroom
+    - field.field.node.room.body
+    - field.field.node.room.field_meta_tags
+    - field.field.node.room.field_room_building_id
+    - field.field.node.room.field_room_room_id
+    - node.type.room
   module:
     - metatag
     - text
     - user
-id: node.classroom.default
+id: node.room.default
 targetEntityType: node
-bundle: classroom
+bundle: room
 mode: default
 content:
   body:
@@ -22,23 +22,12 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 0
+    weight: 4
     region: content
-  field_classroom_building_id:
-    type: entity_reference_label
-    label: above
-    settings:
-      link: false
+  content_moderation_control:
+    settings: {  }
     third_party_settings: {  }
-    weight: 1
-    region: content
-  field_classroom_room_id:
-    type: string
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 2
+    weight: -20
     region: content
   field_meta_tags:
     type: metatag_empty_formatter
@@ -46,6 +35,22 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 3
+    region: content
+  field_room_building_id:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_room_room_id:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
     region: content
   links:
     settings: {  }

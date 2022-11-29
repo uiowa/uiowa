@@ -16,12 +16,12 @@ function classrooms_core_entity_presave(EntityInterface $entity) {
     return;
   }
 
-  if ($entity->bundle() === 'classroom') {
-    if ($entity->hasField('field_classroom_building_id') && $entity->hasField('field_classroom_room_id')) {
-      if (!empty($entity->get('field_classroom_building_id')->target_id && !empty($entity->get('field_classroom_room_id')->value))) {
+  if ($entity->bundle() === 'room') {
+    if ($entity->hasField('field_room_building_id') && $entity->hasField('field_room_room_id')) {
+      if (!empty($entity->get('field_room_building_id')->target_id && !empty($entity->get('field_room_room_id')->value))) {
 
-        $building_id = $entity->get('field_classroom_building_id')->target_id;
-        $room_id = $entity->get('field_classroom_room_id')->value;
+        $building_id = $entity->get('field_room_building_id')->target_id;
+        $room_id = $entity->get('field_room_room_id')->value;
         $building = Drupal::entityTypeManager()->getStorage('building')->load($building_id);
 
         // Set title programmatically based on building and room id.

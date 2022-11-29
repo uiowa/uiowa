@@ -4,17 +4,17 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.field.node.classroom.body
-    - field.field.node.classroom.field_classroom_building_id
-    - field.field.node.classroom.field_classroom_room_id
-    - field.field.node.classroom.field_meta_tags
-    - node.type.classroom
+    - field.field.node.room.body
+    - field.field.node.room.field_meta_tags
+    - field.field.node.room.field_room_building_id
+    - field.field.node.room.field_room_room_id
+    - node.type.room
   module:
     - text
     - user
-id: node.classroom.teaser
+id: node.room.teaser
 targetEntityType: node
-bundle: classroom
+bundle: room
 mode: teaser
 content:
   body:
@@ -23,7 +23,12 @@ content:
     settings:
       trim_length: 600
     third_party_settings: {  }
-    weight: 0
+    weight: 4
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: -20
     region: content
   links:
     settings: {  }
@@ -34,7 +39,7 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
-  field_classroom_building_id: true
-  field_classroom_room_id: true
   field_meta_tags: true
+  field_room_building_id: true
+  field_room_room_id: true
   search_api_excerpt: true

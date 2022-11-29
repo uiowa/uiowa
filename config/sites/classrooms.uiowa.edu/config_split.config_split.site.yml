@@ -15,10 +15,14 @@ module:
 theme: {  }
 complete_list:
   - config_split.config_split.site
-  - node.type.classroom
-  - 'core.entity_view_display.node.classroom.*'
-  - 'field.storage.node.field_classroom_*'
+  - metatag.metatag_defaults.node__room
+  - node.type.room
+  - schemadotorg.schemadotorg_mapping.node.room
+  - simple_sitemap.bundle_settings.default.node.room
+  - 'core.entity_view_display.node.room.*'
+  - 'field.storage.node.field_room*'
   - 'classrooms_core.building.*'
 partial_list:
+  - metatag.settings
   - 'user.role.*'
   - 'core.entity_view_display.*'
