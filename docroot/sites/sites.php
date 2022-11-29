@@ -4882,3 +4882,9 @@ $sites['labwang.uiowa.ddev.site'] = 'wang.lab.uiowa.edu';
 $sites['labwang.dev.drupal.uiowa.edu'] = 'wang.lab.uiowa.edu';
 $sites['labwang.stage.drupal.uiowa.edu'] = 'wang.lab.uiowa.edu';
 $sites['labwang.prod.drupal.uiowa.edu'] = 'wang.lab.uiowa.edu';
+
+// Directory aliases for ankrum.lab.uiowa.edu.
+$sites['labankrum.uiowa.ddev.site'] = 'ankrum.lab.uiowa.edu';
+$sites['labankrum.dev.drupal.uiowa.edu'] = 'ankrum.lab.uiowa.edu';
+$sites['labankrum.stage.drupal.uiowa.edu'] = 'ankrum.lab.uiowa.edu';
+$sites['labankrum.prod.drupal.uiowa.edu'] = 'ankrum.lab.uiowa.edu';
