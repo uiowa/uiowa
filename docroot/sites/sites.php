@@ -4846,3 +4846,9 @@ $sites['lablamuta.uiowa.ddev.site'] = 'lamuta.lab.uiowa.edu';
 $sites['lablamuta.dev.drupal.uiowa.edu'] = 'lamuta.lab.uiowa.edu';
 $sites['lablamuta.stage.drupal.uiowa.edu'] = 'lamuta.lab.uiowa.edu';
 $sites['lablamuta.prod.drupal.uiowa.edu'] = 'lamuta.lab.uiowa.edu';
+
+// Directory aliases for davidlee.lab.uiowa.edu.
+$sites['labdavidlee.uiowa.ddev.site'] = 'davidlee.lab.uiowa.edu';
+$sites['labdavidlee.dev.drupal.uiowa.edu'] = 'davidlee.lab.uiowa.edu';
+$sites['labdavidlee.stage.drupal.uiowa.edu'] = 'davidlee.lab.uiowa.edu';
+$sites['labdavidlee.prod.drupal.uiowa.edu'] = 'davidlee.lab.uiowa.edu';
