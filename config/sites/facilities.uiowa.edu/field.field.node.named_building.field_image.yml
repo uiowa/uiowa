@@ -11,7 +11,7 @@ field_name: field_image
 entity_type: node
 bundle: named_building
 label: Image
-description: 'An image of the item. This can be a <a href="https://schema.org/URL">URL</a> or a fully described <a href="https://schema.org/ImageObject">ImageObject</a>.'
+description: 'An image of the named building.'
 required: false
 translatable: true
 default_value: {  }
@@ -23,6 +23,7 @@ settings:
       image: image
     sort:
       field: _none
+      direction: ASC
     auto_create: true
     auto_create_bundle: image
 field_type: entity_reference
