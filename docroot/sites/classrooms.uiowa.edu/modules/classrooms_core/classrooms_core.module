@@ -18,7 +18,7 @@ function classrooms_core_entity_presave(EntityInterface $entity): void {
 
   if ($entity->bundle() === 'room') {
     if ($entity->hasField('field_room_building_id') && $entity->hasField('field_room_room_id')) {
-      if (!empty($entity->get('field_room_building_id')->getValue() && !empty($entity->get('field_room_room_id')->value))) {
+      if (!empty($entity->get('field_room_building_id')->getValue()) && !empty($entity->get('field_room_room_id')->value)) {
 
         $building_id = $entity->get('field_room_building_id')->getValue()[0]['target_id'];
         $room_id = $entity->get('field_room_room_id')->value;
