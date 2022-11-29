@@ -628,6 +628,19 @@ function sitenow_articles_preprocess_block(&$variables) {
       $variables['attributes']['class'][] = 'photoswipe-gallery';
 
       break;
+
+    case 'field_block:node:article:field_article_author':
+    case 'field_block:node:article:field_article_source_link':
+    case 'field_block:node:article:field_article_source_org':
+    case 'galleryjumplink_block':
+      $variables['attributes']['class'][] = 'article--meta';
+
+      break;
+
+    case 'field_block:node:article:field_article_issue':
+      $variables['attributes']['class'][] = 'article--meta article--meta__block';
+
+      break;
   }
 }
 
