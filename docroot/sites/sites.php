@@ -4858,3 +4858,9 @@ $sites['labliu.uiowa.ddev.site'] = 'liu.lab.uiowa.edu';
 $sites['labliu.dev.drupal.uiowa.edu'] = 'liu.lab.uiowa.edu';
 $sites['labliu.stage.drupal.uiowa.edu'] = 'liu.lab.uiowa.edu';
 $sites['labliu.prod.drupal.uiowa.edu'] = 'liu.lab.uiowa.edu';
+
+// Directory aliases for nuxoll.lab.uiowa.edu.
+$sites['labnuxoll.uiowa.ddev.site'] = 'nuxoll.lab.uiowa.edu';
+$sites['labnuxoll.dev.drupal.uiowa.edu'] = 'nuxoll.lab.uiowa.edu';
+$sites['labnuxoll.stage.drupal.uiowa.edu'] = 'nuxoll.lab.uiowa.edu';
+$sites['labnuxoll.prod.drupal.uiowa.edu'] = 'nuxoll.lab.uiowa.edu';
