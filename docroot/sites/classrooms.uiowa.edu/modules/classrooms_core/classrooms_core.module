@@ -12,22 +12,22 @@ use Drupal\Core\Entity\FieldableEntityInterface;
  * Implements hook_entity_presave().
  */
 function classrooms_core_entity_presave(EntityInterface $entity): void {
-  if (!$entity instanceof FieldableEntityInterface) {
+  if (!$entity instanceof FieldableEntityInterface || $entity->bundle() !== 'room') {
     return;
   }
 
-  if ($entity->bundle() === 'room') {
-    if ($entity->hasField('field_room_building_id') && $entity->hasField('field_room_room_id')) {
-      if (!empty($entity->get('field_room_building_id')->getValue()) && !empty($entity->get('field_room_room_id')->value)) {
+  $building_id = $entity
+    ->field_room_building_id
+    ?->target_id;
+  $room_id = $entity
+    ->field_room_room_id
+    ?->value;
 
-        $building_id = $entity->get('field_room_building_id')->getValue()[0]['target_id'];
-        $room_id = $entity->get('field_room_room_id')->value;
-        $building = Drupal::entityTypeManager()->getStorage('building')->load($building_id);
+  if (!is_null($building_id) && !is_null($room_id)) {
+    $building = Drupal::entityTypeManager()->getStorage('building')->load($building_id);
 
-        // Set title programmatically based on building and room id.
-        $title = $building->label() . " " . $room_id;
-        $entity->set('title', $title);
-      }
-    }
+    // Set title programmatically based on building and room id.
+    $title = "{$building->label()} $room_id";
+    $entity->set('title', $title);
   }
 }
