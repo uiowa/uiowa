@@ -63,13 +63,6 @@ class Building extends ConfigEntityBase implements BuildingInterface {
   protected $label;
 
   /**
-   * The building status.
-   *
-   * @var bool
-   */
-  protected $status;
-
-  /**
    * The building description.
    *
    * @var string
