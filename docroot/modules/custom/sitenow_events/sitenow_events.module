@@ -109,17 +109,27 @@ function _sitenow_events_form_submit(array &$form, FormStateInterface $form_stat
 /**
  * Implements hook_preprocess_HOOK().
  */
+function sitenow_events_preprocess_field(&$variables)
+{
+  if ($variables['element']['#view_mode'] == 'teaser') {
+    switch ($variables['element']['#field_name']) {
+      case 'field_event_performer':
+      case 'field_event_virtual':
+      case 'field_event_series_link':
+      case 'field_event_location':
+        $variables['attributes']['class'] = 'fa-ul';
+        break;
+    }
+  }
+}
+
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
 function sitenow_events_preprocess_block(&$variables) {
 
   switch ($variables['elements']['#plugin_id']) {
-    case 'field_block:node:event:field_event_virtual':
-    case 'field_block:node:event:field_event_series_link':
-    case 'field_block:node:event:field_event_location':
-    case 'field_block:node:event:field_event_when':
-      $variables['attributes']['class'][] = 'fa-ul';
-      $variables['attributes']['class'][] = 'card__meta';
-      break;
-
     case 'inline_block:uiowa_events':
       // This case intentionally falls through to the next case.
       /** @var \Drupal\Block\Entity\Block $block */
@@ -329,7 +339,7 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
         '#tag' => 'div',
         '#attributes' => [
           'class' => [
-            'card__meta fa-ul',
+            'card__meta',
           ],
         ],
       ];
@@ -374,13 +384,12 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
           '#tag' => 'div',
           '#attributes' => [
             'class' => [
-              'card__meta fa-ul',
+              'card__meta',
             ],
           ],
         ];
 
         $meta_fields = [
-          'when' => 'field_event_when',
           'location' => 'field_event_location',
           'virtual' => 'field_event_virtual',
           'source' => 'field_event_series_link',
@@ -402,6 +411,7 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
           'card_title' => $style->getField($id, 'title'),
           'card_link_url' => $link,
           'card_image' => $style->getField($id, 'field_image'),
+          'card_subtitle' => $style->getField($id, 'field_event_when'),
           'card_meta' => \Drupal::service('renderer')->render($card_meta),
         ];
       }

@@ -73,14 +73,7 @@
 #}
 {%
   set classes = [
-  'node',
-  'node--type-' ~ node.bundle|clean_class,
-  node.isPromoted() ? 'node--promoted',
-  node.isSticky() ? 'node--sticky',
-  not node.isPublished() ? 'node--unpublished',
-  view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-  'event-item',
-  'card--list',
+  'card--media-left',
 ]
 %}
 
@@ -90,14 +83,6 @@
   {% set node_link = url %}
 {% endif %}
 
-{#{% if node.field_event_virtual.0.uri is not empty %}#}
-{#  {% set event_icon = '<span role="presentation" class="fas fa-laptop"></span>' %}#}
-{#  {% set event_location = 'Virtual' %}#}
-{#{% else %}#}
-{#  {% set event_icon = '<span role="presentation" class="fas fa-map-marker-alt"></span>' %}#}
-{#  {% set event_location = content.field_event_location.0.organization %}#}
-{#{% endif %}#}
-
 {% set headline_level = 'h3 '%}
 {% if view %}
   {% set headline_level = view.display_handler.getOption('heading_size') %}
@@ -106,11 +91,6 @@
   {% set headline_level = heading_size %}
 {% endif %}
 
-{{ attach_library('classy/node') }}
-{{ attach_library('uids_base/paragraphs-lists') }}
-{{ attach_library('uids_base/event') }}
-{{ attach_library('uids_base/media') }}
-
 {% set event_card = {
   'attributes': attributes.addClass(classes),
   'card_title': label,
@@ -118,21 +98,8 @@
   'card_text': content.field_teaser | render,
   'card_link_url': node_link,
   'headline_level': headline_level,
-  'card_tag': event_location|render,
   'card_meta': content.field_event_performer | render,
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with event_card only %}
-
-  {# @todo Add content_attributes.addClass('node__content media-body') #}
-
-  {% block card_tag %}
-    {% if card_tag is not empty %}
-      <div class="card__label">
-        {{ event_icon }}
-        {{ card_tag }}
-      </div>
-    {% endif %}
-  {% endblock %}
-
 {% endembed %}
