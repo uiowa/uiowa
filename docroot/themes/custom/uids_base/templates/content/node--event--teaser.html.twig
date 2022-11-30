@@ -90,13 +90,13 @@
   {% set node_link = url %}
 {% endif %}
 
-{% if node.field_event_virtual.0.uri is not empty %}
-  {% set event_icon = '<span role="presentation" class="fas fa-laptop"></span>' %}
-  {% set event_location = 'Virtual' %}
-{% else %}
-  {% set event_icon = '<span role="presentation" class="fas fa-map-marker-alt"></span>' %}
-  {% set event_location = content.field_event_location.0.organization %}
-{% endif %}
+{#{% if node.field_event_virtual.0.uri is not empty %}#}
+{#  {% set event_icon = '<span role="presentation" class="fas fa-laptop"></span>' %}#}
+{#  {% set event_location = 'Virtual' %}#}
+{#{% else %}#}
+{#  {% set event_icon = '<span role="presentation" class="fas fa-map-marker-alt"></span>' %}#}
+{#  {% set event_location = content.field_event_location.0.organization %}#}
+{#{% endif %}#}
 
 {% set headline_level = 'h3 '%}
 {% if view %}
@@ -114,12 +114,12 @@
 {% set event_card = {
   'attributes': attributes.addClass(classes),
   'card_title': label,
-  'content': content,
+  'card_subtitle': content.field_event_when | render,
+  'card_text': content.field_teaser | render,
   'card_link_url': node_link,
   'headline_level': headline_level,
-  'card_date': content.field_event_when,
-  'event_icon': event_icon|trans,
   'card_tag': event_location|render,
+  'card_meta': content.field_event_performer | render,
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with event_card only %}
@@ -133,10 +133,6 @@
         {{ card_tag }}
       </div>
     {% endif %}
-  {% endblock %}
-
-  {% block card_content %}
-    {{ content|without('field_image', 'links', 'field_event_when', 'field_event_virtual', 'field_event_location', 'field_event_series_link', 'field_event_series_link_direct') }}
   {% endblock %}
 
 {% endembed %}
