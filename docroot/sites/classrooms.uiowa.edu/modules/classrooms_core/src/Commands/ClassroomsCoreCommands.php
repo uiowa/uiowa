@@ -70,10 +70,8 @@ class ClassroomsCoreCommands extends DrushCommands {
         $category = array_intersect($filters, $room->regionList);
 
         if ($category) {
-          $buildings[$room->buildingCode] = [
-            'building_id' => strtolower($room->buildingCode),
-            'building_name' => $room->buildingName,
-          ];
+          // Get the building id and name in the format we store them in.
+          $buildings[strtolower($room->buildingCode)] = ucwords(strtolower($room->buildingName));
         }
       }
       // Create a cache item set to 6 hours.
@@ -87,11 +85,11 @@ class ClassroomsCoreCommands extends DrushCommands {
         ->accessCheck(TRUE);
       $entities = $query->execute();
 
-      foreach ($buildings as $building) {
-        if (!in_array($building, $entities)) {
+      foreach ($buildings as $building_id => $building_name) {
+        if (!in_array($building_id, $entities)) {
           $building = Building::create([
-            'id' => $building['building_id'],
-            'label' => ucwords(strtolower($building['building_name'])),
+            'id' => $building_id,
+            'label' => $building_name,
             'status' => 1,
           ]);
           $building->save();
