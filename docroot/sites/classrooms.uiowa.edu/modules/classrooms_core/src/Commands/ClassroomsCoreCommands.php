@@ -48,7 +48,7 @@ class ClassroomsCoreCommands extends DrushCommands {
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
 
-    $cid = "uiowa_maui:request:buildings_filtered";
+    $cid = 'uiowa_maui:request:buildings_filtered';
     if ($cached = \Drupal::cache('uiowa_maui')->get($cid)) {
       $buildings = $cached->data;
     }
@@ -58,12 +58,12 @@ class ClassroomsCoreCommands extends DrushCommands {
       $data = $maui_api->getClassroomsData();
       $buildings = [];
       $filters = [
-        "1) University Classrooms - Level 1",
-        "1) University Classrooms - Original",
-        "1) University Classrooms",
-        "1) University Classrooms - Study Space",
-        "1) Programmed Classrooms - Level 2",
-        "Classroom-Programmed",
+        '1) University Classrooms - Level 1',
+        '1) University Classrooms - Original',
+        '1) University Classrooms',
+        '1) University Classrooms - Study Space',
+        '1) Programmed Classrooms - Level 2',
+        'Classroom-Programmed',
       ];
 
       foreach ($data as $room) {
@@ -71,8 +71,8 @@ class ClassroomsCoreCommands extends DrushCommands {
 
         if ($category) {
           $buildings[$room->buildingCode] = [
-            "building_id" => strtolower($room->buildingCode),
-            "building_name" => $room->buildingName,
+            'building_id' => strtolower($room->buildingCode),
+            'building_name' => $room->buildingName,
           ];
         }
       }
