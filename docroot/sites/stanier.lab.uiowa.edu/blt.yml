@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labstanier.uiowa.ddev.site
+    protocol: https
+  machine_name: labstanier
+  human_name: stanier.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labstanier.prod
+drupal:
+  db:
+    database: stanier_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labstanier.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Stanier Lab'
