@@ -698,7 +698,17 @@ function sitenow_people_preprocess_paragraph(&$variables) {
           }
         }
       }
+      break;
 
+    case 'uiowa_contact':
+      $admin_context = \Drupal::service('router.admin_context');
+      if (!$admin_context->isAdminRoute()) {
+        if ($paragraph->hasField('field_uiowa_contact_address')) {
+          if ($paragraph->field_uiowa_contact_address->country_code == 'US') {
+            $variables['attributes']['class'][] = 'hide-united-states-country';
+          }
+        }
+      }
       break;
   }
 }
