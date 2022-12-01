@@ -5,6 +5,7 @@ namespace Drupal\layout_builder_custom\EventSubscriber;
 use Drupal\Component\Uuid\UuidInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Entity\TranslatableInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
 use Drupal\replicate\Events\AfterSaveEvent;
@@ -180,13 +181,13 @@ class ReplicateSubscriber implements EventSubscriberInterface {
    *   The entity with revisions to remove.
    */
   protected function removeOldRevisions(FieldableEntityInterface $entity) {
-    if ($entity->getEntityTypeId() == 'node') {
+    if ($entity->getEntityTypeId() === 'node') {
       $node_storage_manager = $this->entityTypeManager->getStorage('node');
       $vids = $node_storage_manager->revisionIds($entity);
       $current = $entity->getRevisionId();
       foreach ($vids as $vid) {
         // Skip deleting if it is the current revision.
-        if ($vid == $current) {
+        if ((int) $vid === (int) $current) {
           continue;
         }
         $node_storage_manager->deleteRevision($vid);

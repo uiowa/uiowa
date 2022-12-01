@@ -19,7 +19,8 @@ use Drupal\Core\Entity\EntityInterface;
 function grad_admissions_core_entity_presave(EntityInterface $entity) {
   switch ($entity->bundle()) {
     case 'costs_estimate':
-      // Setting the grad costs title with the title value + distinguishing if domestic or international.
+      // Setting the grad costs title with the title value + distinguishing
+      // if domestic or international.
       $output = $entity->get('field_costs_estimate_title')->value . ' - ' . $entity->get('field_costs_estimate_type')->value;
       $entity->setTitle($output);
       break;
@@ -110,7 +111,7 @@ function grad_admissions_core_preprocess_layout(&$variables) {
   // Process the header layout.
   if ($layout->id() === 'layout_header') {
     $node = \Drupal::routeMatch()->getParameter('node');
-    $node = (isset($node) ? $node : \Drupal::routeMatch()->getParameter('node_preview'));
+    $node = ($node ?? \Drupal::routeMatch()->getParameter('node_preview'));
     if ($node instanceof NodeInterface) {
       if (in_array($node->getType(), [
         'area_of_study',
@@ -123,7 +124,8 @@ function grad_admissions_core_preprocess_layout(&$variables) {
       switch ($node->getType()) {
         case 'area_of_study':
         case 'costs_estimate':
-          // @todo Move this to admissions_core_preprocess_node().
+          // @todo Move the next line to grad_admissions_core_preprocess_node(). See
+          //   https://github.com/uiowa/uiowa/issues/5020
           $variables['#attached']['library'][] = 'grad_admissions_core/area-of-study';
 
           if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
@@ -177,7 +179,7 @@ function grad_admissions_core_preprocess_views_view_field(&$variables) {
     $id = $variables['view']->id();
     switch ($id) {
       case 'areas_of_study':
-        if (isset($variables['view']->field) && $variables['field']->realField == 'nothing' && $variables['field']->options['id'] == 'nothing') {
+        if (isset($variables['view']->field) && $variables['field']->realField === 'nothing' && $variables['field']->options['id'] === 'nothing') {
           $tid = $variables['row']->_entity->get('tid')->value;
           $nids = \Drupal::entityQuery('node')
             ->condition('status', 1)
@@ -195,7 +197,7 @@ function grad_admissions_core_preprocess_views_view_field(&$variables) {
                   $term = Term::load($tid['target_id']);
                   $options = ['absolute' => TRUE];
                   $url = Url::fromRoute('entity.node.canonical', ['node' => $node->id()], $options);
-                  $degree_types .= Link::fromTextAndUrl(t($term->label()), $url)->toString() . ', ';
+                  $degree_types .= Link::fromTextAndUrl($term->label(), $url)->toString() . ', ';
                 }
               }
             }
@@ -278,7 +280,7 @@ function grad_admissions_core_theme_suggestions_field_alter(array &$suggestions,
  * Implements hook_theme_suggestions_HOOK_alter() for taxonomies.
  */
 function grad_admissions_core_theme_suggestions_taxonomy_term_alter(&$suggestions, $variables) {
-  if ($variables['elements']['#view_mode'] == 'teaser') {
+  if ($variables['elements']['#view_mode'] === 'teaser') {
     $suggestions[] = 'taxonomy_term__teaser';
   }
 }

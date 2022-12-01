@@ -1,0 +1,50 @@
+uuid: 018a21c7-db6e-4683-9848-dec78d8c8f51
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.major.body
+    - field.field.node.major.field_image
+    - field.field.node.major.field_major_area_of_study
+    - field.field.node.major.field_major_cc_checkpoints
+    - field.field.node.major.field_major_community_college
+    - field.field.node.major.field_major_responsibilities
+    - field.field.node.major.field_major_uiowa_checkpoints
+    - field.field.node.major.field_meta_tags
+    - node.type.major
+  module:
+    - user
+id: node.major.teaser
+targetEntityType: node
+bundle: major
+mode: teaser
+content:
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  pre_title:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  body: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_image: true
+  field_major_area_of_study: true
+  field_major_cc_checkpoints: true
+  field_major_community_college: true
+  field_major_responsibilities: true
+  field_major_uiowa_checkpoints: true
+  field_meta_tags: true
+  search_api_excerpt: true

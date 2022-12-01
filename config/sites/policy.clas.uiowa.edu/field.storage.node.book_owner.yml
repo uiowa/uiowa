@@ -2,11 +2,11 @@ uuid: af95d18e-bba6-40a8-a139-3dbe9a00a2d7
 langcode: en
 status: true
 dependencies:
+  module:
+    - node
   enforced:
     module:
       - uiowa_book
-  module:
-    - node
 _core:
   default_config_hash: KA_qzDAYiRVjSYlQ2fQXnGlRTGfz8Gf9lssMn8HBrE8
 id: node.book_owner
@@ -15,8 +15,8 @@ entity_type: node
 type: string
 settings:
   max_length: 255
-  is_ascii: false
   case_sensitive: false
+  is_ascii: false
 module: core
 locked: false
 cardinality: -1

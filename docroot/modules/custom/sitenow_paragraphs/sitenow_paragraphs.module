@@ -9,8 +9,8 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Component\Utility\Html;
 use Drupal\paragraphs\Entity\Paragraph;
-use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Template\Attribute;
 
 /**
@@ -35,7 +35,7 @@ function sitenow_paragraphs_theme($existing, $type, $theme, $path) {
 function sitenow_paragraphs_entity_create(EntityInterface $entity) {
   /** @var \Drupal\node\NodeInterface $entity */
   // On new basic pages.
-  if ($entity->bundle() == 'page' && $entity->isNew() && $entity->hasField('field_page_content_block')) {
+  if ($entity->bundle() === 'page' && $entity->isNew() && $entity->hasField('field_page_content_block')) {
     // Create a text within a section default.
     $text = Paragraph::create([
       'type' => 'text',
@@ -61,7 +61,7 @@ function sitenow_paragraphs_field_widget_paragraphs_form_alter(&$element, FormSt
   // Hide paragraph classes if no options.
   if (isset($element['subform']['field_uip_classes'])) {
     // If count equals one and that item is _none, disable/hide.
-    if (count($element['subform']['field_uip_classes']['widget']['#options']) == 1 && array_key_exists('_none', $element['subform']['field_uip_classes']['widget']['#options'])) {
+    if (count($element['subform']['field_uip_classes']['widget']['#options']) === 1 && array_key_exists('_none', $element['subform']['field_uip_classes']['widget']['#options'])) {
       $element['subform']['field_uip_classes']['#access'] = FALSE;
     }
   }
@@ -69,7 +69,7 @@ function sitenow_paragraphs_field_widget_paragraphs_form_alter(&$element, FormSt
   // Show clean unique ID so editors know what to target.
   if (isset($element['subform']['field_uip_id'])) {
     $element['subform']['field_uip_id']['widget'][0]['value']['#ajax'] = [
-      'callback' => 'show_clean_unique_id',
+      'callback' => 'sitenow_paragraphs_show_clean_unique_id',
       'event' => 'change',
       'wrapper' => 'clean-unique-id-description',
       'progress' => [
@@ -89,10 +89,10 @@ function sitenow_paragraphs_field_widget_paragraphs_form_alter(&$element, FormSt
     $element['subform']['field_uip_id']['widget'][0]['value']['#description'] = $description;
   }
 
-  if ($element['#paragraph_type'] == 'webform') {
+  if ($element['#paragraph_type'] === 'webform') {
     if (isset($element['subform']['field_webform']['widget'][0]['target_id']['#default_value'])) {
       $element['subform']['field_webform']['widget'][0]['target_id']['#ajax'] = [
-        'callback' => 'update_webform_edit_link',
+        'callback' => 'sitenow_paragraphs_update_webform_edit_link',
         'event' => 'change',
         'wrapper' => 'edit-webform',
         'progress' => [
@@ -112,7 +112,7 @@ function sitenow_paragraphs_field_widget_paragraphs_form_alter(&$element, FormSt
 /**
  * AJAX function create clean unique id to display to editor.
  */
-function show_clean_unique_id($form, FormStateInterface $form_state) {
+function sitenow_paragraphs_show_clean_unique_id($form, FormStateInterface $form_state) {
   $clean_id = Html::getClass($form_state->getTriggeringElement()['#value']);
   $markup =
     t('<div id="clean-unique-id-description">Provide a unique identifier for this content block. Primarily used for anchor links. You can target this id by using <em>#@clean_id</em></div>', [
@@ -124,7 +124,7 @@ function show_clean_unique_id($form, FormStateInterface $form_state) {
 /**
  * AJAX function to update webform edit link to the current selection.
  */
-function update_webform_edit_link($form, FormStateInterface $form_state) {
+function sitenow_paragraphs_update_webform_edit_link($form, FormStateInterface $form_state) {
   $selectedValue = $form_state->getTriggeringElement()['#value'];
   $markup =
     t('<div id="edit-webform">Select an existing webform to place. <a target="new_blank" href="/admin/structure/webform/manage/@webform_id">Edit webform.</a></div>', [
@@ -138,7 +138,7 @@ function update_webform_edit_link($form, FormStateInterface $form_state) {
  */
 function sitenow_paragraphs_entity_presave(EntityInterface $entity) {
   $type = $entity->getEntityType();
-  if ($type->id() == 'paragraph') {
+  if ($type->id() === 'paragraph') {
     // If unique id, clean it and save it as value.
     if ($entity->hasField('field_uip_id') && !$entity->get('field_uip_id')->isEmpty()) {
       $entity->set('field_uip_id', Html::getClass($entity->get('field_uip_id')->value));
@@ -161,7 +161,7 @@ function sitenow_paragraphs_preprocess_paragraph(&$variables) {
       });
       // For featured content only.
       // Articles and Events have similar functionality that could be combined.
-      if ($paragraph->bundle() == 'featured_content') {
+      if ($paragraph->bundle() === 'featured_content') {
         // Check for grid classes otherwise add list class.
         $display_options = [
           'grid',
@@ -175,7 +175,7 @@ function sitenow_paragraphs_preprocess_paragraph(&$variables) {
       $variables['attributes']['class'] = (isset($variables['attributes']['class'])) ? array_merge($variables['attributes']['class'], $classes) : $classes;
     }
     else {
-      if ($paragraph->bundle() == 'featured_content') {
+      if ($paragraph->bundle() === 'featured_content') {
         $variables['attributes']['class'][] = 'list';
       }
     }
@@ -196,7 +196,7 @@ function sitenow_paragraphs_preprocess_paragraph(&$variables) {
 
         // Display title if it exists.
         if ($paragraph->hasField('field_uip_display_title')) {
-          if ($paragraph->field_uip_display_title->value == 1) {
+          if ((int) $paragraph->field_uip_display_title->value === 1) {
             $variables['display_title'] = TRUE;
           }
         }
@@ -209,7 +209,7 @@ function sitenow_paragraphs_preprocess_paragraph(&$variables) {
           $variables['attributes']['id'][] = Html::getClass($paragraph->field_uip_id->value);
         }
         // If section...
-        if ($paragraph->bundle() == 'section') {
+        if ($paragraph->bundle() === 'section') {
           // If section container.
           $variables["content"]["field_section_content_block"]['#attributes']['class'][] = (!$paragraph->get('field_section_container')->isEmpty()
             ? $paragraph->field_section_container->value : 'container');
@@ -276,9 +276,9 @@ function sitenow_paragraphs_theme_suggestions_field_alter(&$suggestions, $variab
 /**
  * Set dynamic allowed values for the uip_classes field.
  *
- * @param \Drupal\field\Entity\FieldStorageConfig $definition
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
  *   The field definition.
- * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
  *   The entity being created if applicable.
  * @param bool $cacheable
  *   Boolean indicating if the results are cacheable.
@@ -288,11 +288,10 @@ function sitenow_paragraphs_theme_suggestions_field_alter(&$suggestions, $variab
  *
  * @see options_allowed_values()
  */
-function uip_classes_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
-  $cacheable = FALSE;
+function sitenow_paragraphs_uip_classes_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = FALSE): array {
   $options = [];
 
-  if (method_exists($entity, 'bundle')) {
+  if (!is_null($entity)) {
     $bundle = $entity->bundle();
 
     switch ($bundle) {
@@ -335,6 +334,10 @@ function uip_classes_allowed_values(FieldStorageConfig $definition, ContentEntit
     // Allow modules to alter classes.
     \Drupal::moduleHandler()->alter('uip_classes', $options, $entity, $bundle);
   }
+  else {
+    // To resolve an issue with ListItemBase generateSampleValue.
+    $options['_none'] = '-None-';
+  }
 
   return $options;
 }
@@ -342,9 +345,9 @@ function uip_classes_allowed_values(FieldStorageConfig $definition, ContentEntit
 /**
  * Set dynamic allowed values for the uip_colwidth field.
  *
- * @param \Drupal\field\Entity\FieldStorageConfig $definition
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
  *   The field definition.
- * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
  *   The entity being created if applicable.
  * @param bool $cacheable
  *   Boolean indicating if the results are cacheable.
@@ -354,8 +357,7 @@ function uip_classes_allowed_values(FieldStorageConfig $definition, ContentEntit
  *
  * @see options_allowed_values()
  */
-function uip_colwidth_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
-  $cacheable = FALSE;
+function sitenow_paragraphs_uip_colwidth_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = FALSE): array {
   $options = [
     'col-md' => 'Fluid',
     'col-md-3' => 'Quarter',
@@ -364,7 +366,7 @@ function uip_colwidth_allowed_values(FieldStorageConfig $definition, ContentEnti
     'col-md-12' => 'Full',
   ];
 
-  if (method_exists($entity, 'bundle')) {
+  if (!is_null($entity)) {
     $bundle = $entity->bundle();
     // Allow modules to alter classes.
     \Drupal::moduleHandler()
@@ -377,9 +379,9 @@ function uip_colwidth_allowed_values(FieldStorageConfig $definition, ContentEnti
 /**
  * Set dynamic allowed values for the section_container field.
  *
- * @param \Drupal\field\Entity\FieldStorageConfig $definition
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
  *   The field definition.
- * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
  *   The entity being created if applicable.
  * @param bool $cacheable
  *   Boolean indicating if the results are cacheable.
@@ -389,14 +391,13 @@ function uip_colwidth_allowed_values(FieldStorageConfig $definition, ContentEnti
  *
  * @see options_allowed_values()
  */
-function section_container_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
-  $cacheable = FALSE;
+function sitenow_paragraphs_section_container_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = FALSE): array {
   $options = [
     'container' => 'Medium',
     'container-fluid' => 'Large',
   ];
 
-  if (method_exists($entity, 'bundle')) {
+  if (!is_null($entity)) {
     $bundle = $entity->bundle();
     // Allow modules to alter classes.
     \Drupal::moduleHandler()
@@ -409,9 +410,9 @@ function section_container_allowed_values(FieldStorageConfig $definition, Conten
 /**
  * Set dynamic allowed values for the section_alignitems field.
  *
- * @param \Drupal\field\Entity\FieldStorageConfig $definition
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
  *   The field definition.
- * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
  *   The entity being created if applicable.
  * @param bool $cacheable
  *   Boolean indicating if the results are cacheable.
@@ -421,8 +422,7 @@ function section_container_allowed_values(FieldStorageConfig $definition, Conten
  *
  * @see options_allowed_values()
  */
-function section_alignitems_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
-  $cacheable = FALSE;
+function sitenow_paragraphs_section_alignitems_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = FALSE): array {
   $options = [
     'align-items-center' => 'Middle',
     'align-items-start' => 'Top',
@@ -430,7 +430,7 @@ function section_alignitems_allowed_values(FieldStorageConfig $definition, Conte
     'align-items-none' => 'None',
   ];
 
-  if (method_exists($entity, 'bundle')) {
+  if (!is_null($entity)) {
     $bundle = $entity->bundle();
     // Allow modules to alter classes.
     \Drupal::moduleHandler()
@@ -443,9 +443,9 @@ function section_alignitems_allowed_values(FieldStorageConfig $definition, Conte
 /**
  * Set dynamic allowed values for the section_justifycontent field.
  *
- * @param \Drupal\field\Entity\FieldStorageConfig $definition
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
  *   The field definition.
- * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
  *   The entity being created if applicable.
  * @param bool $cacheable
  *   Boolean indicating if the results are cacheable.
@@ -455,8 +455,7 @@ function section_alignitems_allowed_values(FieldStorageConfig $definition, Conte
  *
  * @see options_allowed_values()
  */
-function section_justifycontent_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
-  $cacheable = FALSE;
+function sitenow_paragraphs_section_justifycontent_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = FALSE): array {
   $options = [
     'justify-content-start' => 'Left',
     'justify-content-center' => 'Center',
@@ -465,7 +464,7 @@ function section_justifycontent_allowed_values(FieldStorageConfig $definition, C
     'justify-content-between' => 'Space Between',
   ];
 
-  if (method_exists($entity, 'bundle')) {
+  if (!is_null($entity)) {
     $bundle = $entity->bundle();
     // Allow modules to alter classes.
     \Drupal::moduleHandler()

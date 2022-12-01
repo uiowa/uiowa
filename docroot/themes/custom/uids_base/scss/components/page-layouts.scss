@@ -1,6 +1,6 @@
-@import "assets/scss/_variables.scss";
-@import "assets/scss/_utilities.scss";
-@import "assets/scss/layout-main.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
+@import "uids3/assets/scss/layout-main.scss";
 
 .block-inline-blockuiowa-spacer-separator {
   @include margin($top: $sm, $bottom: $sm);
@@ -96,7 +96,7 @@ main {
   >:nth-child(3) {
     order: 4;
 
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       order: 3;
     }
   }
@@ -104,7 +104,7 @@ main {
   >:nth-child(4) {
     order: 3;
 
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       order: 4;
     }
   }
@@ -117,7 +117,7 @@ main {
     grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
   }
 
-  @include breakpoint(container) {
+  @include breakpoint(page-container) {
     grid-template-columns: repeat(auto-fit, minmax(33.3%, 1fr));
   }
 }

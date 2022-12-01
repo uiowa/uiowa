@@ -22,161 +22,161 @@ tips:
     plugin: text
     label: Page
     weight: 0
+    position: top-start
     attributes: {  }
     body: '<p>On this tour, we''ll explain the different parts of a page.</p><p>Let''s get going!</p>'
-    position: top-start
   title:
     id: title
     plugin: text
     label: 'Page Title'
     weight: 1
-    body: '<p>First off, give your page a title. This is a required field. Other required fields are marked with a red asterisk.</p>'
-    selector: '#edit-title-wrapper'
     position: bottom-start
+    selector: '#edit-title-wrapper'
+    body: '<p>First off, give your page a title. This is a required field. Other required fields are marked with a red asterisk.</p>'
   page-summary:
     id: page-summary
     plugin: text
     label: 'Page Summary'
     weight: 2
-    body: '<p>If text is added to the body field, it will be displayed as static text in the “Main Section” of the Layout tab.</p>'
-    selector: '#edit-body-wrapper'
     position: top-start
+    selector: '#edit-body-wrapper'
+    body: '<p>If text is added to the body field, it will be displayed as static text in the “Main Section” of the Layout tab.</p>'
   page-advanced:
     id: page-advanced
     plugin: text
     label: Advanced
     weight: 3
-    body: '<p>There are a lot of optional advanced settings for the page tucked away here. You will use this part when dealing with menu placement, the URL path of the page, relationships and custom SEO settings.</p><p>Click on the section titles to expand them and see what they offer.</p>'
-    selector: '#edit-meta-published'
     position: left-start
+    selector: '#edit-meta-published'
+    body: '<p>There are a lot of optional advanced settings for the page tucked away here. You will use this part when dealing with menu placement, the URL path of the page, relationships and custom SEO settings.</p><p>Click on the section titles to expand them and see what they offer.</p>'
   content-blocks-actions:
     id: content-blocks-actions
     plugin: text
     label: 'Content Block Actions'
     weight: 4
-    body: '<p>Each content block comes with actions which let you edit, remove or duplicate the content block.</p><p>Duplicating a content block will attempt to make a copy of everything within it, even other content blocks!action-links <a href="/admin/structure/forum/add/forum"></a></p>'
-    selector: .paragraphs-dropdown
     position: right-start
+    selector: .paragraphs-dropdown
+    body: '<p>Each content block comes with actions which let you edit, remove or duplicate the content block.</p><p>Duplicating a content block will attempt to make a copy of everything within it, even other content blocks!action-links <a href="/admin/structure/forum/add/forum"></a></p>'
   page-teaser-text:
     id: page-teaser-text
     plugin: text
     label: 'Content Description'
     weight: 5
-    body: '<p>One important advanced setting is the Content Description. Type a short summary of your content here. It will be used if there are any displays around the site that reference this content. By default, this is also used by search engines when they crawl and index your site.</p><p>To learn more about Search Engine Optimization (SEO) for your site, <a href="https://sitenow.uiowa.edu/node/81">view our documentation section about SEO</a>.</p>'
-    selector: '#edit-node-teaser'
     position: right-start
+    selector: '#edit-node-teaser'
+    body: '<p>One important advanced setting is the Content Description. Type a short summary of your content here. It will be used if there are any displays around the site that reference this content. By default, this is also used by search engines when they crawl and index your site.</p><p>To learn more about Search Engine Optimization (SEO) for your site, <a href="https://sitenow.uiowa.edu/node/81">view our documentation section about SEO</a>.</p>'
   page-image-entity:
     id: page-image-entity
     plugin: text
     label: 'Featured Image'
     weight: 6
-    body: '<p>A featured image can optionally be added to a page. Select ''Browse media'' or ''Add media'' to add an image from your computer or from your existing media from the Media library.</p><p>Additionally, add a caption to give the user more information on the picture.</p>'
-    selector: '#edit-node-image'
     position: left-start
+    selector: '#edit-node-image'
+    body: '<p>A featured image can optionally be added to a page. Select ''Browse media'' or ''Add media'' to add an image from your computer or from your existing media from the Media library.</p><p>Additionally, add a caption to give the user more information on the picture.</p>'
   page-relationships:
     id: page-relationships
     plugin: text
     label: Relationships
     weight: 7
-    body: '<p>You can create relationships to taxonomy terms. Commonly used to organize and classify content behind the scenes. You can reference existing (autocomplete) or create new tags by typing comma-separate terms. Additionally, to view existing tags, go to the <a href="/admin/structure/taxonomy/manage/tags/overview">Tags taxonomy page</a></p>'
-    selector: '#edit-node-relations'
     position: right-start
+    selector: '#edit-node-relations'
+    body: '<p>You can create relationships to taxonomy terms. Commonly used to organize and classify content behind the scenes. You can reference existing (autocomplete) or create new tags by typing comma-separate terms. Additionally, to view existing tags, go to the <a href="/admin/structure/taxonomy/manage/tags/overview">Tags taxonomy page</a></p>'
   content-blocks-admin-title:
     id: content-blocks-admin-title
     plugin: text
     label: 'Section Administrative Title'
     weight: 8
-    body: '<p>Give your section an administrative label. This isn''t displayed to users, but is helpful when working with more than one section on a page.</p>'
-    selector: '#edit-field-page-content-block-0-subform-field-section-title-wrapper'
     position: bottom-start
+    selector: '#edit-field-page-content-block-0-subform-field-section-title-wrapper'
+    body: '<p>Give your section an administrative label. This isn''t displayed to users, but is helpful when working with more than one section on a page.</p>'
   content-blocks:
     id: content-blocks
     plugin: text
     label: 'Content Blocks'
     weight: 9
-    body: '<p>Content blocks make up the content of the page. There is just so much that can be done with these. We will step through the basics.</p><p>To get a more detailed overview, <a href="https://sitenow.uiowa.edu/node/176">view our documentation section about content blocks</a>.</p>'
-    selector: '#edit-field-page-content-block-0-subform-field-section-content-block-add-more'
     position: right-start
+    selector: '#edit-field-page-content-block-0-subform-field-section-content-block-add-more'
+    body: '<p>Content blocks make up the content of the page. There is just so much that can be done with these. We will step through the basics.</p><p>To get a more detailed overview, <a href="https://sitenow.uiowa.edu/node/176">view our documentation section about content blocks</a>.</p>'
   content-blocks-settings:
     id: content-block-settings
     plugin: text
     label: 'Content Block Settings'
     weight: 10
-    body: '<p>Each content block comes with a set of advanced settings. Click the arrow to expand and then click next. I''ll wait for you.</p>'
-    selector: '.paragraphs-subform .field-group-details'
     position: right-start
+    selector: '.paragraphs-subform .field-group-details'
+    body: '<p>Each content block comes with a set of advanced settings. Click the arrow to expand and then click next. I''ll wait for you.</p>'
   wysiwyg:
     id: wysiwyg
     plugin: text
     label: 'Text Editor (WYSIWYG) Overview'
     weight: 11
-    body: '<p>The What-You-See-Is-What-You-Get (WYSIWYG) text editor gives you the ability to format your content and add links/media. This editor is available on most text areas around the site.</p><p>For more details, <a href="https://sitenow.uiowa.edu/node/136">view our documentation section about the WYSIWYG</a>.</p>'
-    selector: .field--widget-text-textarea
     position: right-start
+    selector: .field--widget-text-textarea
+    body: '<p>The What-You-See-Is-What-You-Get (WYSIWYG) text editor gives you the ability to format your content and add links/media. This editor is available on most text areas around the site.</p><p>For more details, <a href="https://sitenow.uiowa.edu/node/136">view our documentation section about the WYSIWYG</a>.</p>'
   entity-embed:
     id: entity-embed
     plugin: text
     label: 'Media Entity Embed'
     weight: 12
-    body: '<p>This allows you to add new or existing images, videos from a URL, audio files, Tweets, Instagram and Facebook posts to your content. A separate configuration window will load. <a href="https://sitenow.uiowa.edu/node/141">Click here for media documentation</a>.</p>'
-    selector: .cke_button__media_entity_embed
     position: bottom-start
+    selector: .cke_button__media_entity_embed
+    body: '<p>This allows you to add new or existing images, videos from a URL, audio files, Tweets, Instagram and Facebook posts to your content. A separate configuration window will load. <a href="https://sitenow.uiowa.edu/node/141">Click here for media documentation</a>.</p>'
   content-blocks-drag:
     id: content-blocks-drag
     plugin: text
     label: Reorder
     weight: 13
-    body: '<p>Content blocks can be reordered using this handle.</p><p><strong>Note</strong>: You cannot drag an item to another level of nesting.</p>'
-    selector: .handle
     position: right-start
+    selector: .handle
+    body: '<p>Content blocks can be reordered using this handle.</p><p><strong>Note</strong>: You cannot drag an item to another level of nesting.</p>'
   content-blocks-section-settings:
     id: content-blocks-section-settings
     plugin: text
     label: 'Section Settings'
     weight: 14
-    body: '<p>Each section can optionally be configured to have a background image. You can additionally change the width, style and alignment of sections. </p>'
-    selector: '.field-add-more-submit paragraphs-add-wrapper button js-form-submit form-submit'
     position: right-start
+    selector: '.field-add-more-submit paragraphs-add-wrapper button js-form-submit form-submit'
+    body: '<p>Each section can optionally be configured to have a background image. You can additionally change the width, style and alignment of sections. </p>'
   content-blocks-colwidth:
     id: content-blocks-colwidth
     plugin: text
     label: 'Column Width'
     weight: 15
-    body: '<p>The content blocks within a section each have a column width setting that defaults to "Full." Cards default to "Fluid," which means it will fill the horizontal space unless another content block within the same section gets in the way.</p><p>Two or more fluid content blocks will create divide the horizontal space up equally.</p><p>The other options, Quarter, Third, and Half will set and respect certain widths.</p>'
-    selector: .field--name-field-section-container
     position: bottom-start
+    selector: .field--name-field-section-container
+    body: '<p>The content blocks within a section each have a column width setting that defaults to "Full." Cards default to "Fluid," which means it will fill the horizontal space unless another content block within the same section gets in the way.</p><p>Two or more fluid content blocks will create divide the horizontal space up equally.</p><p>The other options, Quarter, Third, and Half will set and respect certain widths.</p>'
   content-blocks-add-more:
     id: content-blocks-add-more
     plugin: text
     label: 'Add Another Content Block'
     weight: 16
-    body: '<p>Use this button to add another content block. Click the dropbutton arrow and see what other types are available. If you want to learn more about our Content Blocks, <a href="//sitenow.uiowa.edu/node/176"> view our documentation</a> for more information </p>'
-    selector: '#edit-field-page-content-block-0-subform-field-section-content-block-add-more'
     position: top-start
+    selector: '#edit-field-page-content-block-0-subform-field-section-content-block-add-more'
+    body: '<p>Use this button to add another content block. Click the dropbutton arrow and see what other types are available. If you want to learn more about our Content Blocks, <a href="//sitenow.uiowa.edu/node/176"> view our documentation</a> for more information </p>'
   content-blocks-add-section:
     id: content-blocks-add-section
     plugin: text
     label: 'Add Section'
     weight: 17
-    body: '<p>Use this button to add another section.</p>'
-    selector: '#field-page-content-block-section-add-more'
     position: top-start
+    selector: '#field-page-content-block-section-add-more'
+    body: '<p>Use this button to add another section.</p>'
   page-actions:
     id: page-actions
     plugin: text
     label: 'Page Options'
     weight: 18
-    body: '<p>You can save the page unpublished as a draft, select that it''s ready for review or publish the page here.</p><p>Content automatically saves as a draft which will not be visible to site visitors. Site visitors will only see content marked as published.</p>'
-    selector: '#edit-moderation-state-0-state'
     position: top-start
+    selector: '#edit-moderation-state-0-state'
+    body: '<p>You can save the page unpublished as a draft, select that it''s ready for review or publish the page here.</p><p>Content automatically saves as a draft which will not be visible to site visitors. Site visitors will only see content marked as published.</p>'
   layout-builder-step:
     id: layout-builder-step
     plugin: text
     label: 'Layout Builder Blocks'
     weight: 19
-    body: '<p>You will have access to the Layout Builder blocks once the page is saved with a Title. </p>'
-    selector: '#edit-body-wrapper'
     position: top-start
+    selector: '#edit-body-wrapper'
+    body: '<p>You will have access to the Layout Builder blocks once the page is saved with a Title. </p>'
   content-add-next-step:
     id: content-add-next-step
     plugin: text

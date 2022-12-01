@@ -1,6 +1,6 @@
-@import "assets/scss/_variables.scss";
-@import "assets/scss/_utilities.scss";
-@import "components/menus/top/top.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
+@import "uids3/components/menus/top/top.scss";
 
 // Iowa Bar Full adjustments
 .iowa-bar--full.mega,
@@ -14,7 +14,7 @@
       align-self: center;
       justify-content: flex-start;
     }
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       margin-top: 4px;
       justify-content: flex-end;
     }
@@ -48,7 +48,7 @@
           text-align: center;
 
           &:after {
-            @include breakpoint(container) {
+            @include breakpoint(page-container) {
               content: "";
               position: absolute;
               left: 50%;
@@ -63,16 +63,16 @@
           }
           &:hover, &:focus {
             text-decoration: underline;
-            @include breakpoint(container) {
+            @include breakpoint(page-container) {
               //background: #fff;
             }
           }
           &:focus:after, &:hover:after {
-            @include breakpoint(container) {
+            @include breakpoint(page-container) {
               transform: translate(-50%) scaleX(1);
             }
           }
-          @include breakpoint(container) {
+          @include breakpoint(page-container) {
             padding: .325rem 1.05rem;
             font-weight: 300;
           }
@@ -87,7 +87,7 @@
     @include breakpoint(md) {
       flex: auto;
     }
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       margin-right: calc(10% - 40vw);
       flex: 1;
     }
@@ -96,7 +96,7 @@
     @include breakpoint(md) {
       flex: 1;
     }
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       right: calc(50% - 40vw);
       flex: 0 1 25%;
     }
@@ -192,7 +192,7 @@
 
   &.horizontal, &.mega {
     .nav.menu--top {
-      @include breakpoint(container) {
+      @include breakpoint(page-container) {
         top: -50px;
       }
     }

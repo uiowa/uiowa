@@ -112,7 +112,13 @@ class SettingsForm extends ConfigFormBase {
 
     $featured_image_display_default = $config->get('featured_image_display_default');
 
-    $form['global']['featured_image_display_default'] = [
+    $form['global']['featured_image'] = [
+      '#type' => 'fieldset',
+      '#title' => 'Featured image',
+      '#collapsible' => FALSE,
+    ];
+
+    $form['global']['featured_image']['featured_image_display_default'] = [
       '#type' => 'select',
       '#title' => $this->t('Display featured image'),
       '#description' => $this->t('Set the default behavior for how to display a featured image.'),
@@ -129,6 +135,82 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => $featured_image_display_default ?: 'large',
     ];
 
+    $form['global']['tags_and_related'] = [
+      '#type' => 'fieldset',
+      '#title' => 'Tags and related content',
+      '#collapsible' => FALSE,
+    ];
+
+    $tag_display = $config->get('tag_display');
+
+    $form['global']['tags_and_related']['tag_display'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Display tags in pages'),
+      '#description' => $this->t("Set the default way to display a page's tags in the page itself."),
+      '#options' => [
+        'do_not_display' => $this
+          ->t('Do not display tags'),
+        'tag_buttons' => $this
+          ->t('Display tag buttons'),
+      ],
+      '#default_value' => $tag_display ?: 'do_not_display',
+    ];
+
+    $related_display = $config->get('related_display');
+
+    $form['global']['tags_and_related']['related_display'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Display related content'),
+      '#description' => $this->t("Set the default way to display a page's related content."),
+      '#options' => [
+        'do_not_display' => $this
+          ->t('Do not display related content'),
+        'headings_lists' => $this
+          ->t('Display related content titles grouped by tag'),
+      ],
+      '#default_value' => $related_display ?: 'do_not_display',
+    ];
+
+    $form['global']['tags_and_related']['related_display_headings_lists_help'] = [
+      '#type' => 'item',
+      '#title' => 'How related content is displayed:',
+      '#description' => $this->t("Related content will display above the page's footer as sections of headings (tags) above bulleted lists of a maximum of 30 tagged items. Tagged items are sorted by most recently edited."),
+      '#states' => [
+        'visible' => [
+          ':input[name="related_display"]' => ['value' => 'headings_lists'],
+        ],
+      ],
+    ];
+
+    // Visual indicators aren't available on SiteNow v2.
+    $is_v2 = $this->config('config_split.config_split.sitenow_v2')->get('status');
+    if (!$is_v2) {
+      $form['global']['teaser'] = [
+        '#type' => 'fieldset',
+        '#title' => 'Teaser display',
+        '#collapsible' => FALSE,
+      ];
+      $show_teaser_link_indicator = $config->get('show_teaser_link_indicator');
+      $form['global']['teaser']['show_teaser_link_indicator'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t("Display arrows linking to pages from lists/teasers."),
+        '#default_value' => $show_teaser_link_indicator ?: FALSE,
+      ];
+
+      $form['global']['block_settings'] = [
+        '#type' => 'fieldset',
+        '#title' => 'Block Settings',
+        '#collapsible' => FALSE,
+      ];
+
+      $form['global']['block_settings']['card_link_indicator_display'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Display card arrow button'),
+        '#description' => $this->t('Set the default behavior the card arrow button.'),
+        '#default_value' => $config->get('card_link_indicator_display') ?? TRUE,
+      ];
+    }
+
     return $form;
   }
 
@@ -136,11 +218,36 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+
     $featured_image_display_default = $form_state->getValue('featured_image_display_default');
+    $tag_display = $form_state->getValue('tag_display');
+    $related_display = $form_state->getValue('related_display');
+    $show_teaser_link_indicator = $form_state->getValue('show_teaser_link_indicator');
+    $card_link_indicator_display = $form_state->getValue('card_link_indicator_display');
 
     $this->configFactory->getEditable(static::SETTINGS)
       // Save the featured image display default.
       ->set('featured_image_display_default', $featured_image_display_default)
+      ->save();
+
+    $this->configFactory->getEditable(static::SETTINGS)
+      // Save the tag display default.
+      ->set('tag_display', $tag_display)
+      ->save();
+
+    $this->configFactory->getEditable(static::SETTINGS)
+      // Save the tag display default.
+      ->set('related_display', $related_display)
+      ->save();
+
+    $this->configFactory->getEditable(static::SETTINGS)
+      // Save the tag display default.
+      ->set('show_teaser_link_indicator', $show_teaser_link_indicator)
+      ->save();
+
+    $this->configFactory->getEditable(static::SETTINGS)
+      // Save the default card button selection.
+      ->set('card_link_indicator_display', $card_link_indicator_display)
       ->save();
 
     parent::submitForm($form, $form_state);

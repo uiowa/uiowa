@@ -17,8 +17,8 @@ dependencies:
     - uids_base
 third_party_settings:
   layout_builder:
-    allow_custom: false
     enabled: true
+    allow_custom: false
     sections:
       -
         layout_id: layout_onecol
@@ -31,19 +31,19 @@ third_party_settings:
             configuration:
               id: 'field_block:node:costs_estimate:title'
               label: null
-              provider: layout_builder
               label_display: null
-              formatter:
-                label: hidden
-                type: string
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
-            additional: {  }
+              formatter:
+                type: string
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
             weight: 1
+            additional: {  }
         third_party_settings: {  }
 id: node.costs_estimate.teaser
 targetEntityType: node
@@ -52,12 +52,12 @@ mode: teaser
 content:
   field_costs_estimate_title:
     type: string
-    weight: 0
-    region: content
     label: hidden
     settings:
       link_to_entity: true
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   field_costs_estimate_info: true
   field_costs_estimate_type: true

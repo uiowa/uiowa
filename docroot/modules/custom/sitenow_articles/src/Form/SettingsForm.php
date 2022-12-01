@@ -114,20 +114,20 @@ class SettingsForm extends ConfigFormBase {
     $archive =& $view->getDisplay('block_articles_archive');
     $feed =& $view->getDisplay('feed_articles');
 
-    if ($feed['display_options']['displays']['page_articles'] == 'page_articles') {
+    if ($feed['display_options']['displays']['page_articles'] === 'page_articles') {
       $show_feed = 1;
     }
     else {
       $show_feed = 0;
     }
-    if ($archive['display_options']['enabled'] == TRUE) {
+    if ($archive['display_options']['enabled'] === TRUE) {
       $show_archive = 1;
     }
     else {
       $show_archive = 0;
     }
     $default =& $view->getDisplay('default');
-    if ($display['display_options']['enabled'] == TRUE) {
+    if ($display['display_options']['enabled'] === TRUE) {
       $status = 1;
     }
     else {
@@ -164,6 +164,76 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => $featured_image_display_default ?: 'large',
     ];
 
+    $tag_display = $config->get('tag_display');
+
+    $form['article_node']['tag_display'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Display tags'),
+      '#description' => $this->t("Set the default way to display an article's tags in the article itself."),
+      '#options' => [
+        'do_not_display' => $this
+          ->t('Do not display tags'),
+        'tag_buttons' => $this
+          ->t('Display tag buttons'),
+      ],
+      '#default_value' => $tag_display ?: 'do_not_display',
+    ];
+
+    $related_display = $config->get('related_display');
+
+    $form['article_node']['related_display'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Display related content'),
+      '#description' => $this->t("Set the default way to display an article's related content."),
+      '#options' => [
+        'card_grid' => $this
+          ->t('Display manually referenced related content'),
+        'headings_lists' => $this
+          ->t('Display related content titles grouped by tag'),
+      ],
+      '#default_value' => $related_display ?: 'card_grid',
+    ];
+
+    $form['article_node']['related_display_headings_lists_help'] = [
+      '#type' => 'item',
+      '#title' => 'How related content is displayed:',
+      '#description' => $this->t("Related content will display above the page's footer as sections of headings (tags) above bulleted lists of a maximum of 30 tagged items. Tagged items are sorted by most recently edited."),
+      '#states' => [
+        'visible' => [
+          ':input[name="related_display"]' => ['value' => 'headings_lists'],
+        ],
+      ],
+    ];
+
+    $form['article_node']['preserved_links_message_display'] = [
+      '#type' => 'text_format',
+      '#format' => 'basic',
+      '#allowed_formats' => [
+        'basic',
+      ],
+      '#title' => $this->t('Preserved links message'),
+      '#description' => $this->t('Set the message to display when an article may have broken links. If no message is provided, a default message will be used.'),
+      '#default_value' => $config->get('preserved_links_message_display') ?? $config->get('preserved_links_message_display_default'),
+      '#attributes' => [
+        'placeholder' => $config->get('preserved_links_message_display_default'),
+      ],
+    ];
+
+    // Visual indicators aren't available on SiteNow v2.
+    $is_v2 = $this->config('config_split.config_split.sitenow_v2')->get('status');
+    if (!$is_v2) {
+      $form['global']['teaser'] = [
+        '#type' => 'fieldset',
+        '#title' => 'Teaser display',
+        '#collapsible' => FALSE,
+      ];
+      $show_teaser_link_indicator = $config->get('show_teaser_link_indicator');
+      $form['global']['teaser']['show_teaser_link_indicator'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t("Display arrows linking to pages from lists/teasers."),
+        '#default_value' => $show_teaser_link_indicator ?: FALSE,
+      ];
+    }
     $form['view_page'] = [
       '#type' => 'fieldset',
       '#title' => 'View Page Settings',
@@ -218,7 +288,7 @@ class SettingsForm extends ConfigFormBase {
       '#size' => 60,
     ];
 
-    if ($view->get('status') == FALSE) {
+    if ($view->get('status') === FALSE) {
       $this->messenger()->addError($this->t('Articles views page functionality has been disabled. Please contact an administrator.'));
       $form['view_page']['#disabled'] = TRUE;
     }
@@ -249,19 +319,44 @@ class SettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Get values.
-    $status = $form_state->getValue('sitenow_articles_status');
+    $status = (int) $form_state->getValue('sitenow_articles_status');
     $show_feed = $form_state->getValue('sitenow_articles_feed');
     $title = $form_state->getValue('sitenow_articles_title');
     $path = $form_state->getValue('sitenow_articles_path');
     $header_content = $form_state->getValue('sitenow_articles_header_content');
-    $show_archive = $form_state->getValue('sitenow_articles_archive');
+    $show_archive = (int) $form_state->getValue('sitenow_articles_archive');
     $featured_image_display_default = $form_state->getValue('featured_image_display_default');
+    $tag_display = $form_state->getValue('tag_display');
+    $related_display = $form_state->getValue('related_display');
+    $show_teaser_link_indicator = $form_state->getValue('show_teaser_link_indicator');
+
+    $this->configFactory->getEditable(static::SETTINGS)
+      // Save the tag display default.
+      ->set('show_teaser_link_indicator', $show_teaser_link_indicator)
+      ->save();
 
     $this->configFactory->getEditable(static::SETTINGS)
       // Save the featured image display default.
       ->set('featured_image_display_default', $featured_image_display_default)
       ->save();
 
+    $this->configFactory->getEditable(static::SETTINGS)
+      // Save the tag display default.
+      ->set('tag_display', $tag_display)
+      ->save();
+
+    $this->configFactory->getEditable(static::SETTINGS)
+      // Save the related display default.
+      ->set('related_display', $related_display)
+      ->save();
+
+    $this->configFactory->getEditable(static::SETTINGS)
+      // Save the message display default.
+      ->set('preserved_links_message_display', $form_state->getValue([
+        'preserved_links_message_display',
+        'value',
+      ]))
+      ->save();
     // Clean path.
     $path = $this->aliasCleaner->cleanString($path);
 
@@ -273,7 +368,7 @@ class SettingsForm extends ConfigFormBase {
     $default =& $view->getDisplay('default');
 
     // Enable/Disable view display.
-    if ($status == 1) {
+    if ($status === 1) {
       $display['display_options']['enabled'] = TRUE;
     }
     else {
@@ -290,7 +385,7 @@ class SettingsForm extends ConfigFormBase {
 
     $archive['display_options']['arguments']['created_year_month']['summary_options']['base_path'] = $path;
 
-    if ($show_archive == 1) {
+    if ($show_archive === 1) {
       $archive['display_options']['enabled'] = TRUE;
     }
     else {

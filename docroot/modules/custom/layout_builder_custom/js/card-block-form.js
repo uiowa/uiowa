@@ -9,7 +9,6 @@
       $('.media-library-widget', context).once('media-form-attach').each(function () {
 
         // Check that we can access the next field.
-        // @todo Add a class to this field widget wrapper so that we can target it more precisely.
         const $form_wrapper = $(this).parent().parent().parent();
         const $image_format_field = $form_wrapper.find('.form-item-layout-builder-style-media-format').find('select');
         const $image_size_field_default = $form_wrapper.find('.form-item-layout-builder-style-card-image-size').find('select');

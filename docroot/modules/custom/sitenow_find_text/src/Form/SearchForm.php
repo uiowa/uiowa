@@ -164,7 +164,7 @@ class SearchForm extends ConfigFormBase {
       ->getStorage('node');
     foreach ($results as $mod_key => $matches) {
       $exploded = explode('-', $mod_key);
-      list($type, $id) = $exploded;
+      [$type, $id] = $exploded;
       switch ($type) {
         case 'block_content':
         case 'paragraph':

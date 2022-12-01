@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Tippie Core module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_webform_element_alter().
+ */
+function tippie_core_webform_element_alter(array &$element, FormStateInterface $form_state, array $context) {
+  if (isset($element['#webform_key'])) {
+    if ($element['#webform_key'] === 'visitorid') {
+      $element['#element_validate'][] = [
+        'Drupal\tippie_core\Validate\PardotVisitorIdConstraint',
+        'validate',
+      ];
+    }
+  }
+}

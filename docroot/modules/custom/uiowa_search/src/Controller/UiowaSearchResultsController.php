@@ -14,7 +14,7 @@ class UiowaSearchResultsController extends ControllerBase {
   /**
    * Builds the response.
    *
-   * @param Symfony\Component\HttpFoundation\Request $request
+   * @param \Symfony\Component\HttpFoundation\Request $request
    *   The request.
    *
    * @return array

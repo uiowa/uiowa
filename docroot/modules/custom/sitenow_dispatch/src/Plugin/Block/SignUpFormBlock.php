@@ -97,7 +97,7 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
     foreach ($populations as $population) {
       $path = basename($population);
       $response = $this->dispatch->request('GET', "populations/$path");
-      if ($response->dataSourceType == "SubscriptionList") {
+      if ($response->dataSourceType === 'SubscriptionList') {
         $populationOptions[$response->id] = $response->name;
       }
     }
@@ -107,6 +107,7 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
       'hide_headline' => $this->configuration['hide_headline'] ?? 0,
       'heading_size' => $this->configuration['heading_size'] ?? 'h2',
       'headline_style' => $this->configuration['headline_style'] ?? 'default',
+      'headline_alignment' => $this->configuration['headline_alignment'] ?? 'default',
     ], FALSE);
 
     $form['population'] = [
@@ -146,6 +147,7 @@ class SignUpFormBlock extends BlockBase implements ContainerFactoryPluginInterfa
         '#hide_headline' => $this->configuration['hide_headline'],
         '#heading_size' => $this->configuration['heading_size'],
         '#headline_style' => $this->configuration['headline_style'],
+        '#headline_alignment' => $this->configuration['headline_alignment'] ?? 'default',
       ];
 
       $build['form'] = $this->formBuilder->getForm('Drupal\sitenow_dispatch\Form\SubscribeForm', $this->configuration['population']);

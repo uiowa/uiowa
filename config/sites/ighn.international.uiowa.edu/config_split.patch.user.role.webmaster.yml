@@ -1,4 +1,12 @@
 adding:
+  dependencies:
+    config:
+      - node.type.ighn_person
+      - taxonomy.vocabulary.ighn_department
+      - taxonomy.vocabulary.ighn_global_regions
+      - taxonomy.vocabulary.ighn_language_expertise
+      - taxonomy.vocabulary.ighn_primary_college
+      - taxonomy.vocabulary.ighn_primary_focus_areas
   weight: -5
   permissions:
     - 'create ighn_person content'
@@ -31,33 +39,17 @@ adding:
 removing:
   weight: -4
   permissions:
-    - 'administer news feeds'
-    - 'configure all page node layout overrides'
-    - 'configure any layout'
-    - 'configure editable page node layout overrides'
-    - 'create and edit custom blocks'
     - 'create featured_content block content'
     - 'create uiowa_aggregator block content'
-    - 'create uiowa_articles block content'
     - 'create uiowa_events block content'
-    - 'create uiowa_people block content'
-    - 'create video media'
     - 'delete any featured_content block content'
     - 'delete any uiowa_aggregator block content'
-    - 'delete any uiowa_articles block content'
     - 'delete any uiowa_events block content'
     - 'delete any uiowa_page_title_hero block content'
-    - 'delete any uiowa_people block content'
     - 'delete any uiowa_spacer_separator block content'
-    - 'delete any video media'
-    - 'delete own video media'
-    - 'edit any video media'
-    - 'edit own video media'
     - 'revert person revisions'
     - 'update any featured_content block content'
     - 'update any uiowa_aggregator block content'
-    - 'update any uiowa_articles block content'
     - 'update any uiowa_events block content'
     - 'update any uiowa_page_title_hero block content'
-    - 'update any uiowa_people block content'
     - 'update any uiowa_spacer_separator block content'

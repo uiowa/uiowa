@@ -20,7 +20,7 @@ class MauiApiTest extends UnitTestCase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     $this->maui = $this->createPartialMock('\Drupal\uiowa_maui\MauiApi', ['request']);
   }

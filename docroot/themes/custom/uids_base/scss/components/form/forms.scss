@@ -1,5 +1,5 @@
-@import "assets/scss/_variables.scss";
-@import "assets/scss/_utilities.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
 
 .uids-content {
 
@@ -209,7 +209,7 @@
     box-sizing: border-box;
   }
 
-  input#edit-submit,
+  input[id^='edit-submit'][type='submit'],
   input#edit-actions-submit {
     @include bttn--primary;
   }
@@ -353,7 +353,6 @@
 
   .description {
     margin: 0.5rem 0;
-
     .webform-element-more {
       margin-top: 0.3rem;
     }
@@ -616,63 +615,8 @@
     // }
   }
 
-  .webform-message {
-    margin: 0.625rem 0;
-
-    div[role="alert"].alert {
-      background: $info-light;
-      padding: $md 0;
-      border: 1px solid;
-      border-color: rgba($info, 0.03);
-      border-bottom: 2px solid rgba($info, 0.8);
-
-      .close:before {
-        background: rgba($info, 0.8);
-      }
-
-      &.alert-danger {
-        background: $danger-light;
-        border-color: rgba($danger, 0.03);
-        border-bottom: 2px solid rgba($danger, 0.8);
-
-        .close:before {
-          background: rgba($danger, 0.8);
-        }
-      }
-
-      &.alert-success {
-        background: $success-light;
-        border-color: rgba($success, 0.03);
-        border-bottom: 2px solid rgba($success, 0.8);
-
-        .close:before {
-          background: rgba($success, 0.8);
-        }
-      }
-
-      &.alert-warning {
-        background: $warning-light;
-        border-color: rgba($warning, 0.09);
-        border-bottom: 2px solid rgba($warning, 0.8);
-
-        .close:before {
-          background: rgba(#000000, 0.7);
-        }
-      }
-    }
-
-    button {
-      padding: 0 0 0 0.625rem;
-      margin-right: 0;
-
-      &.close:before {
-        width: 26px;
-        height: 26px;
-        margin-right: 5px;
-        padding: 5px;
-        font-size: 1rem;
-      }
-    }
+  input.form-autocomplete {
+    background-position: 98% center;
   }
 }
 
@@ -765,17 +709,6 @@
   & .block-webform[class*="bg--white"] {
     .description {
       color: inherit;
-    }
-  }
-}
-
-// Adjusts submit button size if using webform flex layout.
-.webform-flexbox {
-  // Set button full-width.
-  .webform-flex--container {
-    .form-actions [type="submit"] {
-      width: 100%;
-      height: 57px;
     }
   }
 }

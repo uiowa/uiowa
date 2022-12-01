@@ -26,13 +26,23 @@
  */
 #}
 
+{%
+  set classes = [
+  'block',
+  'block-' ~ configuration.provider|clean_class,
+  'block-' ~ plugin_id|clean_class,
+]
+%}
+
 {% set block_banner = {
   'banner_image': content.field_uiowa_banner_image,
-  'banner_summary': content.field_uiowa_banner_excerpt,
-  'attributes': attributes.removeClass(headline_classes,background_classes),
+  'banner_summary': content.field_uiowa_banner_excerpt|render,
+  'attributes': attributes.removeClass(headline_classes,background_classes,button_classes).addClass(classes),
+  'banner_pre_title': content.field_uiowa_banner_pre_title,
   'banner_title': content.field_uiowa_banner_title[0]['#text'],
   'headline_level': content.field_uiowa_banner_title[0]['#size'],
   'headline_class' : headline_classes,
+  'button_classes' : button_classes,
   'banner_aria_describedby': content.field_uiowa_banner_title[0]['#text']|clean_id,
   'links': links,
   'title_prefix': title_prefix,

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labsheffield.uiowa.ddev.site
+    protocol: https
+  machine_name: labsheffield
+  human_name: sheffield.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labsheffield.prod
+drupal:
+  db:
+    database: sheffield_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: andfuller
+  site-name: 'Sheffield Laboratory'

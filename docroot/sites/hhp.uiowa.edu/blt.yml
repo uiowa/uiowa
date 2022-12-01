@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: hhp.uiowa.ddev.site
+    protocol: https
+  machine_name: hhp
+  human_name: hhp.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: hhp.prod
+drupal:
+  db:
+    database: hhp_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://hhp.prod.drupal.uiowa.edu'

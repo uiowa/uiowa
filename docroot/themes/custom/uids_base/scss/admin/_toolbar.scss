@@ -42,13 +42,13 @@
 // admin styles for search toggle
 body.toolbar-vertical.toolbar-tray-open {
   .search-button {
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       right: 294px;
     }
   }
 
   .search-is-open .search-overlay .hds-search {
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       margin-right: 209px;
     }
   }
@@ -188,18 +188,5 @@ body.toolbar-vertical.toolbar-tray-open {
 .header-sticky.toolbar-horizontal.toolbar-tray-open {
   header {
     top: 80px;
-  }
-}
-
-.toolbar-horizontal,
-.toolbar-vertical {
-  .ui-dialog-off-canvas.ui-dialog-position-side {
-    top: 39px !important;
-  }
-}
-
-.toolbar-horizontal.toolbar-tray-open {
-  .ui-dialog-off-canvas.ui-dialog-position-side {
-    top: 69px !important;
   }
 }

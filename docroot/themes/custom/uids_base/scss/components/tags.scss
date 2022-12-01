@@ -1,0 +1,43 @@
+@import "../uids/assets/scss/_variables.scss";
+@import "../uids/assets/scss/_utilities.scss";
+@import "uids3/components/headline/_headline-mixins.scss";
+
+.tags-list {
+  margin: 0;
+
+  &__container {
+    .headline {
+      display: inline-block;
+      margin-right: 1rem;
+    }
+
+    & > div {
+      display: inline-block;
+    }
+  }
+
+  &__tag {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    font-weight: lighter;
+    padding: 0 1rem;
+    background: $light;
+    display: inline-block;
+    border-radius: 3px;
+    margin-right: 0.5rem;
+
+    a {
+      text-decoration: none;
+      color: #151515;
+
+      &:focus,
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+
+}
+
+

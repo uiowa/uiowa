@@ -4,7 +4,6 @@ namespace Drupal\uiowa_profiles\Controller;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Breadcrumb\BreadcrumbManager;
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -24,13 +23,6 @@ class DirectoryController extends ControllerBase {
    * @var \Drupal\uiowa_profiles\Client
    */
   protected $profiles;
-
-  /**
-   * The uiowa_profiles config.
-   *
-   * @var \Drupal\Core\Config\ImmutableConfig
-   */
-  protected $config;
 
   /**
    * The breadcrumb manager service.
@@ -58,16 +50,13 @@ class DirectoryController extends ControllerBase {
    *
    * @param \Drupal\uiowa_profiles\Client $profiles
    *   The Profiles service.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config
-   *   The config factory service.
    * @param \Drupal\Core\Breadcrumb\BreadcrumbManager $breadcrumb
    *   The Guzzle HTTP client.
    * @param \Drupal\Core\Routing\RouteMatchInterface $routeMatch
    *   The current route match.
    */
-  public function __construct(Client $profiles, ConfigFactoryInterface $config, BreadcrumbManager $breadcrumb, RouteMatchInterface $routeMatch) {
+  public function __construct(Client $profiles, BreadcrumbManager $breadcrumb, RouteMatchInterface $routeMatch) {
     $this->profiles = $profiles;
-    $this->config = $config->get('uiowa_profiles.settings');
     $this->breadcrumb = $breadcrumb;
     $this->logger = $this->getLogger('uiowa_profiles');
     $this->routeMatch = $routeMatch;
@@ -79,7 +68,6 @@ class DirectoryController extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('uiowa_profiles.client'),
-      $container->get('config.factory'),
       $container->get('breadcrumb'),
       $container->get('current_route_match')
     );
@@ -99,7 +87,7 @@ class DirectoryController extends ControllerBase {
    *   The render array.
    */
   public function build(Request $request, $key, $slug = NULL) {
-    $directory = $this->config->get('directories')[$key];
+    $directory = $this->config('uiowa_profiles.settings')->get('directories')[$key];
 
     $build = [
       '#attached' => [
@@ -111,7 +99,9 @@ class DirectoryController extends ControllerBase {
           'uiowaProfiles' => [
             'basePath' => Html::escape($directory['path']),
             'api_key' => Html::escape($directory['api_key']),
-            'environment' => $this->profiles->environment,
+            'endpoint' => $this->profiles->endpoint,
+            'siteName' => $this->config('system.site')->get('name'),
+            'directoryTitle' => Html::escape($directory['title']),
           ],
         ],
       ],
@@ -183,6 +173,90 @@ class DirectoryController extends ControllerBase {
 
     if ($slug) {
       $build['uiprof']['client']['#attributes']['slug'] = Html::escape($slug);
+
+      $options = [
+        'headers' => [
+          'Accept' => 'application/json',
+        ],
+      ];
+
+      $params = [
+        'api-key' => $directory['api_key'],
+      ];
+
+      $metadata = $this->profiles->request('GET', "people/$slug/metadata", $params, $options);
+      $structured = $this->profiles->request('GET', "people/$slug/structured", $params, $options);
+
+      if (isset($metadata)) {
+        $meta = json_decode($metadata);
+
+        $title = [
+          '#tag' => 'title',
+          '#value' => $this->t('@name | @site_name', [
+            '@name' => $meta->name,
+            '@site_name' => $this->config('system.site')->get('name'),
+          ]),
+        ];
+
+        $description = [
+          '#tag' => 'meta',
+          '#attributes' => [
+            'name' => 'description',
+            'content' => $this->t('@name - @title - The University of Iowa', [
+              '@name' => $meta->name,
+              '@title' => $meta->directoryTitle,
+            ]),
+          ],
+        ];
+      }
+
+      if (isset($structured)) {
+        $schema = [
+          '#tag' => 'script',
+          '#value' => $structured,
+          '#attributes' => [
+            'type' => 'application/ld+json',
+          ],
+        ];
+
+        $build['#attached']['html_head'][] = [
+          $schema,
+          'schema',
+        ];
+      }
+    }
+    else {
+      $title = [
+        '#tag' => 'title',
+        '#value' => $this->t('@title | @site_name', [
+          '@title' => $directory['title'],
+          '@site_name' => $this->config('system.site')->get('name'),
+        ]),
+      ];
+
+      $description = [
+        '#tag' => 'meta',
+        '#attributes' => [
+          'name' => 'description',
+          'content' => $this->t('@title - The University of Iowa', [
+            '@title' => $directory['title'],
+          ]),
+        ],
+      ];
+    }
+
+    if (isset($title)) {
+      $build['#attached']['html_head']['title'] = [
+        $title,
+        'title',
+      ];
+    }
+
+    if (isset($description)) {
+      $build['#attached']['html_head'][] = [
+        $description,
+        'description',
+      ];
     }
 
     return $build;

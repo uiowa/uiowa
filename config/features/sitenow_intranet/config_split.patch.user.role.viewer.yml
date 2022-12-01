@@ -1,7 +1,21 @@
 adding:
+  dependencies:
+    module:
+      - restrict_ip
   permissions:
     - 'bypass ip restriction'
 removing:
+  dependencies:
+    module:
+      - content_moderation
+      - entity_usage
+      - file
+      - node
+      - override_node_options
+    config:
+      - node.type.article
+      - node.type.page
+      - node.type.person
   permissions:
     - 'access entity usage statistics'
     - 'access files overview'

@@ -10,13 +10,13 @@ type: 'canonical_entities:node'
 pattern: 'cost/[node:title]'
 selection_criteria:
   8ac33ef5-a7a3-411f-b795-7f93a10bbd69:
-    id: node_type
-    bundles:
-      costs_estimate: costs_estimate
+    id: 'entity_bundle:node'
     negate: false
+    uuid: 8ac33ef5-a7a3-411f-b795-7f93a10bbd69
     context_mapping:
       node: node
-    uuid: 8ac33ef5-a7a3-411f-b795-7f93a10bbd69
+    bundles:
+      costs_estimate: costs_estimate
 selection_logic: and
 weight: -5
 relationships: {  }

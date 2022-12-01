@@ -104,6 +104,7 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
       '#hide_headline' => $config['hide_headline'],
       '#heading_size' => $config['heading_size'],
       '#headline_style' => $config['headline_style'],
+      '#headline_alignment' => $config['headline_alignment'] ?? 'default',
     ];
 
     $build['form'] = $this->formBuilder->getForm('Drupal\uiowa_hours\Form\HoursFilterForm', $config);
@@ -139,6 +140,7 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
       'hide_headline' => $config['hide_headline'] ?? 0,
       'heading_size' => $config['heading_size'] ?? 'h2',
       'headline_style' => $config['headline_style'] ?? 'default',
+      'headline_alignment' => $config['headline_alignment'] ?? 'default',
       'child_heading_size' => $config['child_heading_size'] ?? 'h3',
     ]);
 
@@ -165,7 +167,6 @@ class HoursBlock extends BlockBase implements ContainerFactoryPluginInterface {
       '#default_value' => $this->configuration['display_datepicker'] ?? FALSE,
     ];
 
-    // @todo Create config to render quick links like tomorrow, next week, etc.
     return $form;
 
   }

@@ -1,5 +1,5 @@
-@import "assets/scss/_variables.scss";
-@import 'assets/scss/_utilities';
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities";
 
 .top-scroll main {
   position: relative;
@@ -13,6 +13,13 @@
   bottom: -5em;
   width: 3em;
   pointer-events: none;
+
+  .after_content--spacing & {
+    ul {
+
+      top: calc(100vh - 5rem - 100px);
+    }
+  }
 
   ul {
     list-style: none;

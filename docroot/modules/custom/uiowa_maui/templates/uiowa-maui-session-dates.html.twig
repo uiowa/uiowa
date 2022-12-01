@@ -36,6 +36,7 @@
       {% set date_heading = {
         'headline_level': child_heading_size ?: 'h3',
         'headline_class': 'card__title headline',
+        'headline_location': headline_alignment ?: 'default',
         'headline_text': date.start != date.end ? date.start ~ ' - ' ~ date.end : date.start,
       } %}
       {% include '@uids_base/uids/headline.html.twig' with date_heading only %}

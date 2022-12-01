@@ -1,0 +1,49 @@
+uuid: fd5e8297-6977-4a17-89e9-5a070bb93a19
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: iisc.uiowa.edu
+description: 'Custom settings for iisc.uiowa.edu.'
+weight: 70
+stackable: true
+storage: folder
+folder: ../config/sites/iisc.uiowa.edu
+module:
+  better_exposed_filters: 0
+  iisc_core: 0
+  jquery_ui: 0
+  jquery_ui_datepicker: 0
+  jquery_ui_slider: 0
+  jquery_ui_touch_punch: 0
+theme: {  }
+complete_list:
+  - config_split.config_split.site
+  - core.entity_view_display.node.article.default
+  - field.field.node.article.field_related_content
+  - field.storage.node.field_academic_year
+  - field.storage.node.field_iowa_counties
+  - field.storage.taxonomy_term.field_website
+  - metatag.metatag_defaults.node__partner
+  - metatag.metatag_defaults.node__project
+  - node.type.partner
+  - node.type.project
+  - pathauto.pattern.partner
+  - pathauto.pattern.project
+  - simple_sitemap.bundle_settings.default.node.partner
+  - simple_sitemap.bundle_settings.default.node.project
+  - simple_sitemap.bundle_settings.default.taxonomy_term.colleges_and_departments
+  - taxonomy.vocabulary.colleges_and_departments
+  - views.view.article_related_content
+  - views.view.iisc_colleges_and_departments
+  - views.view.iisc_partners
+  - views.view.iisc_projects
+  - 'field.storage.node.field_partner_*'
+  - 'field.storage.node.field_project_*'
+partial_list:
+  - metatag.settings
+  - workflows.workflow.editorial
+  - 'user.role.*'
+  - 'sitenow_people.person_type.*'
+  - 'core.entity_form_display.taxonomy_term.tags.*'
+  - 'core.entity_view_display.*'

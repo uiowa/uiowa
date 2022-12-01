@@ -1,0 +1,23 @@
+id: now_research_areas
+label: 'Research areas taxonomy term migration.'
+dependencies:
+  enforced:
+    module:
+      - now_migrate
+migration_tags:
+  - now
+migration_group: sitenow_migrate
+source:
+  plugin: d7_taxonomy_term
+  bundle: areas_of_expertise
+destination:
+  plugin: 'entity:taxonomy_term'
+  default_bundle: research_areas
+process:
+  name: name
+  description:
+    plugin: callback
+    callable: strip_tags
+    source: description
+  format: format
+migration_dependencies: null

@@ -1,0 +1,32 @@
+local:
+  root: /var/www/html/docroot
+  uri: labcomparative-cognition.uiowa.ddev.site
+  paths:
+    files: sites/comparative-cognition.lab.uiowa.edu/files
+dev:
+  uri: labcomparative-cognition.dev.drupal.uiowa.edu
+  host: uiowa03dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/comparative-cognition.lab.uiowa.edu/files
+  root: /var/www/html/uiowa03.dev/docroot
+  user: uiowa03.dev
+prod:
+  uri: comparative-cognition.lab.uiowa.edu
+  host: uiowa03.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/comparative-cognition.lab.uiowa.edu/files
+  root: /var/www/html/uiowa03.prod/docroot
+  user: uiowa03.prod
+test:
+  uri: labcomparative-cognition.stage.drupal.uiowa.edu
+  host: uiowa03stg.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/comparative-cognition.lab.uiowa.edu/files
+  root: /var/www/html/uiowa03.test/docroot
+  user: uiowa03.test

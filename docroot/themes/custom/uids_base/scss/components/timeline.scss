@@ -1,5 +1,5 @@
-@import "assets/scss/_variables.scss";
-@import "assets/scss/_utilities.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
 
 // Timeline block
 .timeline {
@@ -99,7 +99,7 @@
       bottom: 48%;
       width: 90%;
     }
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       width: 100%;
     }
     [class*=bg--black] & {
@@ -123,22 +123,22 @@
         margin-left: -130%;
         text-align: right;
       }
-      @include breakpoint(container) {
+      @include breakpoint(page-container) {
         margin-left: -125%;
       }
       .page__container--narrow & {
-        @include breakpoint(container) {
+        @include breakpoint(page-container) {
           margin-left: -130%;
         }
       }
       .page__container--extended & {
-        @include breakpoint(container) {
+        @include breakpoint(page-container) {
           margin-left: -122%;
         }
       }
       .page__container--full &,
       .page__container--edge &{
-        @include breakpoint(container) {
+        @include breakpoint(page-container) {
           margin-left: -120%;
         }
       }
@@ -174,11 +174,11 @@
       @include breakpoint(md) {
         margin-left: 125%;
       }
-      @include breakpoint(container) {
+      @include breakpoint(page-container) {
         margin-left: 113%;
       }
       .page__container--narrow & {
-        @include breakpoint(container) {
+        @include breakpoint(page-container) {
           margin-left: 118%;
         }
       }

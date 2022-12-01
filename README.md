@@ -92,7 +92,7 @@ Testing a uids change in uiowa:
 6. `yarn workspace uids_base gulp --development`
 
 ## Core
-Follow the `drupal/core-recommended` [instructions](https://github.com/drupal/core-recommended#upgrading) on updating.
+Run `composer update "drupal/core-*" --with-all-dependencies`.
 
 ## Contrib
 You can run `composer update package/name` to update additional dependencies. The output from the Composer commands can be used as the long text for commit messages. Ideally, each package update would be one commit for clarity and easier reverting.
@@ -100,15 +100,15 @@ You can run `composer update package/name` to update additional dependencies. Th
 ### Locked Packages
 The packages below are locked at specific SHAs and will not update using the method described above. They should be periodically checked for new stable releases and updated, if viable.
 
-| Package                               | Reason                   |
-| ------------------------------------- | ------------------------ |
-| drupal/cshs                           | No stable release since fe1b07101d724e6aa5fbcd78c50ce2780534ed0f |
-| drupal/lb_direct_add                  | No 2.x stable release.   |
-| drupal/menu_link_weight               | No stable release since [f4a4b71b](https://git.drupalcode.org/project/menu_link_weight/-/commit/f4a4b71be5850ebc9d15a5cc742eafb76ef9cd0f). |
-| drupal/redirect                       | Need e5201ca5 from 8.x-1.x branch plus a patch. https://git.drupalcode.org/project/redirect/-/commits/8.x-1.x       |
-| kartsims/easysvg                      | Need https://github.com/kartsims/easysvg/pull/27 which is not included in a release. |
-| uiowa/block_content_template          | Forked from a deprecated project. |
-| dompdf/dompdf                         | https://www.drupal.org/project/entity_print/issues/3169624 |
+| Package                       | Reason                                                                                                                         |
+|-------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| acquia/blt-travis             | No stable release to pair with blt 13.5. See https://github.com/acquia/blt-travis/issues/3                                     |
+| drupal/media_thumbnails_video | Need php 8.1 compatible dependencies, no stable release                                                                        |
+| uiowa/block_content_template  | Forked from a deprecated project.                                                                                              |
+| drupal/purge                  | Need php 8.1 compatibility fixes, no stable release                                                                            |
+| drupal/smart_date             | Need to wait for upstream issue to be part of stable release or we need to patch it https://github.com/uiowa/uiowa/issues/5664 |
+
+
 
 # Redirects
 Redirects can be added to the docroot/.htaccess file. The .htaccess file be will deployed to all applications, regardless of the domain. Therefore, creating per-site redirects using the Redirect module is preferred.

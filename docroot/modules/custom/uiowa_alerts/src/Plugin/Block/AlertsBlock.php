@@ -114,7 +114,7 @@ class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
               "alert-{$level}",
             ],
             'role' => 'region',
-            'aria-label' => ($level == 'danger') ? 'alert message' : "{$level} message",
+            'aria-label' => ($level === 'danger') ? 'alert message' : "{$level} message",
           ],
           'message_wrapper' => [
             '#type' => 'container',

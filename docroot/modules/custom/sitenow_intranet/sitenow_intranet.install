@@ -11,7 +11,6 @@ use Drupal\Core\Config\FileStorage;
  * Implements hook_install().
  */
 function sitenow_intranet_install() {
-
   // Enable the 'sitenow_intranet' split.
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('config_split.config_split.sitenow_intranet');
@@ -30,20 +29,35 @@ function sitenow_intranet_install() {
     'type' => 'white',
     'path' => '/saml/*',
   ]);
+
   $database->execute();
+
   $database = \Drupal::database()->insert('restrict_ip_paths')->fields([
     'type' => 'white',
     'path' => '/admin/*',
   ]);
+
   $database->execute();
 
-  $config_factory = \Drupal::configFactory();
-  $config = $config_factory->getEditable('uiowa_search.settings');
-  if ($config) {
-    // Turn off the search bar display.
-    $config->set('uiowa_search.display_search', 0)
-      ->save();
-  }
+  $database = \Drupal::database()->insert('restrict_ip_paths')->fields([
+    'type' => 'white',
+    'path' => '/robots.txt',
+  ]);
+
+  $database->execute();
+
+  // Set some sane default configuration.
+  $config_factory->getEditable('sitenow_intranet.settings')
+    ->set('unauthorized.title', 'Unauthorized')
+    ->set('unauthorized.message', '<p>You do not have sufficient privileges to access this page. Please contact an administrator.</p>')
+    ->set('access_denied.title', 'Access denied')
+    ->set('access_denied.message', '<p>You must log in to access this page.</p>')
+    ->save();
+
+  $config_factory->getEditable('uids_base.settings')
+    ->set('footer.login_link', FALSE)
+    ->save();
+
   \Drupal::messenger()->addStatus(__FUNCTION__);
 }
 

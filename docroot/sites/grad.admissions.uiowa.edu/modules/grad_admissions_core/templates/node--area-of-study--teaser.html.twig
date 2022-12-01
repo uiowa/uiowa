@@ -23,7 +23,8 @@
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with aos_card only %}
-  {# @todo Add content_attributes.addClass('node__content media-body') #}
+  {# @todo Add content_attributes.addClass('node__content media-body'), See #}
+  {#   https://github.com/uiowa/uiowa/issues/5030 #}
   {% block card_content %}
     {{ content|without('links') }}
   {% endblock %}

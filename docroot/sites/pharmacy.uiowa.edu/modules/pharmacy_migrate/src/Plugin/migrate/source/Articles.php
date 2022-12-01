@@ -215,7 +215,7 @@ class Articles extends BaseNodeSource {
       634 => '/people/matthew-j-witry',
     ];
 
-    return isset($map[$nid]) ? $map[$nid] : FALSE;
+    return $map[$nid] ?? FALSE;
   }
 
 }

@@ -6,10 +6,11 @@
  */
 
 use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
-use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\uiowa_core\HeadlineHelper;
 use GuzzleHttp\Exception\RequestException;
 
@@ -22,16 +23,46 @@ function sitenow_events_form_alter(&$form, FormStateInterface $form_state, $form
     case 'node_event_edit_form':
       _sitenow_node_form_defaults($form, $form_state);
       array_unshift($form['actions']['submit']['#submit'], '_sitenow_events_form_submit');
-      $form['field_event_category']['#group'] = 'node_relations';
+
       if (isset($form['field_event_hide'])) {
         // Set field_event_hide to options group (promotion options).
         $form['field_event_hide']['#group'] = 'options';
       }
+
       $form['field_event_series_link_direct']['#states'] = [
         'visible' => [
           ':input[name="field_event_series_link[0][uri]"]' => ['filled' => TRUE],
         ],
       ];
+
+      // Because person titles are constructed
+      // in sitenow_people_entity_presave, there is no title for this
+      // IEF widget to display. This changes the label using
+      // the first and last name values.
+      if (isset($form['field_event_performer']['widget']['entities'])) {
+        $contacts = $form['field_event_performer']['widget']['entities'];
+
+        // For each one that exists, make sre it is one of the integer entries,
+        // which is actually an entity.
+        foreach ($contacts as $key => $contact) {
+          if (is_int($key) && $contact['#entity']->getType() === 'person') {
+
+            // Then, get the strings of the first and last names.
+            $first = $contact['#entity']
+              ?->get('field_person_first_name')
+              ?->value;
+            $last = $contact['#entity']
+              ?->get('field_person_last_name')
+              ?->value;
+
+            // Set entity label to the concatenation of the two strings.
+            if (is_string($first) && is_string($last)) {
+              $form['field_event_performer']['widget']['entities'][$key]['#label'] = $first . ' ' . $last;
+            }
+          }
+        }
+      }
+
       break;
 
   }
@@ -81,23 +112,62 @@ function _sitenow_events_form_submit(array &$form, FormStateInterface $form_stat
 function sitenow_events_preprocess_block(&$variables) {
 
   switch ($variables['elements']['#plugin_id']) {
+    case 'field_block:node:event:field_event_virtual':
+    case 'field_block:node:event:field_event_series_link':
+    case 'field_block:node:event:field_event_location':
+    case 'field_block:node:event:field_event_when':
+      $variables['attributes']['class'][] = 'fa-ul';
+      $variables['attributes']['class'][] = 'card__meta';
+      break;
+
     case 'inline_block:uiowa_events':
       // This case intentionally falls through to the next case.
       /** @var \Drupal\Block\Entity\Block $block */
       $block = $variables['elements']['content']['#block_content'];
 
-      // Defaults to upcoming.
-      $display_id = 'events';
-      $start = 'now';
-      $end = '+365 days';
+      // Set custom time-based cache tag to clear on a regular basis.
+      $variables['#cache']['tags'][] = 'time:hourly';
+      $variables['#cache']['max-age'] = 60;
 
-      if ($block->get('field_uiowa_events_past')->value == TRUE) {
-        $display_id = 'past';
-        $start = '-365 days';
-        $end = 'yesterday';
+      // Get the sort and timeframe.
+      $sort = $block
+        ->get('field_uiowa_events_sort')
+        ?->value;
+      $timeframe = $block
+        ->get('field_uiowa_events_timeframe')
+        ?->value;
+
+      // Set the $display_id based on the sort.
+      $display_id = ($sort === 'DESC') ? 'past' : 'events';
+
+      // Set the start to be null by default.
+      $start = NULL;
+
+      // Change start and end params based on query type.
+      switch ($timeframe) {
+        case 'date_range':
+          $start = $block
+            ->get('field_uiowa_events_date_range')[0]
+            ?->value;
+          $end = $block
+            ->get('field_uiowa_events_date_range')[0]
+            ?->end_value;
+          break;
+
+        case 'past':
+          $start = strtotime('01-01-1970');
+          $end = strtotime(date('d-m-Y') . ' yesterday');
+          break;
+
+        default:
+          $end = strtotime('today');
+
+          // Override the $display_id based on the sort.
+          $display_id = ($sort === 'DESC') ? 'past_upcoming' : 'events_in_progress';
+          break;
       }
 
-      $data = sitenow_events_load([
+      $parameters = [
         'display_id' => $display_id,
         'filters[department]' => $block->get('field_uiowa_events_department')->getString(),
         'filters[audiences]' => $block->get('field_uiowa_events_audiences')->getString(),
@@ -105,11 +175,32 @@ function sitenow_events_preprocess_block(&$variables) {
         'filters[types]' => $block->get('field_uiowa_events_types')->getString(),
         'filters[keywords]' => $block->get('field_uiowa_events_keywords')->getString(),
         'filters[place]' => $block->get('field_uiowa_events_place')->getString(),
-        'filters[startdate][value][date]' => date('m-d-Y', strtotime(date('d-m-Y') . $start)),
-        'filters[enddate][value][date]' => date('m-d-Y', strtotime(date('d-m-Y') . $end)),
+        'filters[enddate][value][date]' => date('m-d-Y', $end),
         'page' => 0,
         'items_per_page' => $block->get('field_collection_results')->value ?? 50,
-      ]);
+      ];
+
+      if (!is_null($start)) {
+        $parameters['filters[startdate][value][date]'] = date('m-d-Y', $start);
+      }
+
+      // Initial pull of data for most situations.
+      $data = sitenow_events_load([$parameters]);
+      static $element = 0;
+
+      // If pager, create it and re-query data based on current page.
+      $show_pager = (bool) $block->get('field_collection_pager')->getString();
+      if ($show_pager && isset($data['page']['total_results'])) {
+        $count = $data['page']['total_results'];
+        $element++;
+        /** @var \Drupal\Core\Pager\PagerManager $pager */
+        $pager = \Drupal::service('pager.manager');
+        $current = $pager->createPager($count, $block->get('field_collection_results')->value, $element)->getCurrentPage();
+        if ($current != $parameters['page']) {
+          $parameters['page'] = $current;
+          $data = sitenow_events_load([$parameters]);
+        }
+      }
 
       if (isset($data['events'])) {
         // Get block layout builder styles if they exist.
@@ -134,7 +225,7 @@ function sitenow_events_preprocess_block(&$variables) {
         foreach ($data['events'] as $value) {
           // The API nests each event as an array.
           $event = $value['event'];
-          $event['heading_size'] = isset($heading_size) ? $heading_size : 'h3';
+          $event['heading_size'] = $heading_size ?? 'h3';
           // Pass the parent block's layout_builder_styles to each item.
           if (!empty($parent_lb_styles)) {
             $event['parent_lb_styles'] = $parent_lb_styles;
@@ -151,8 +242,17 @@ function sitenow_events_preprocess_block(&$variables) {
         ];
       }
 
+      // Add pager to render if checked.
+      if ($show_pager && isset($data['page']['total_results'])) {
+        $variables['content']['pager'] = [
+          '#type' => 'pager',
+          '#element' => $element,
+          '#quantity' => 3,
+        ];
+      }
+
       // If we have more link checked and link provided, pass it.
-      if ($block->get('field_collection_more')->value == TRUE) {
+      if ((bool) $block->get('field_collection_more')->value === TRUE) {
         if ($uri = $block->get('field_collection_more_path')->uri) {
           $url = Url::fromUri($uri);
         }
@@ -170,7 +270,10 @@ function sitenow_events_preprocess_block(&$variables) {
         ];
       }
 
+      // The above case intentionally falls through to the next case.
+      // Do not add a break.
     case 'views_block:events_list_block-card_list':
+    case 'views_block:events-card_list':
       if (isset($variables['attributes']['class'])) {
         // Unset classes meant for children.
         foreach ($variables['attributes']['class'] as $key => $style) {
@@ -180,7 +283,7 @@ function sitenow_events_preprocess_block(&$variables) {
             'media',
             'hide',
           ] as $check) {
-            if (substr($style, 0, strlen($check)) === $check) {
+            if (str_starts_with($style, $check)) {
               unset($variables['attributes']['class'][$key]);
             }
           }
@@ -195,8 +298,9 @@ function sitenow_events_preprocess_block(&$variables) {
  */
 function sitenow_events_preprocess_views_view_unformatted(&$variables) {
   /** @var \Drupal\views\ViewExecutable $view */
+  // @todo come back to scope by display id.
   $view = $variables['view'];
-  if ($view->id() === 'events_list_block') {
+  if (in_array($view->id(), ['events_list_block', 'events'])) {
     $rows = $variables['rows'];
     $style = $view->style_plugin;
 
@@ -205,48 +309,23 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
       /** @var \Drupal\node\NodeInterface $node */
       $node = $row['content']['#node'];
       $nid = $node->get('nid')->value;
-      $link_direct = $node->get('field_event_series_link_direct')->value;
+      $link_direct = (int) $node->get('field_event_series_link_direct')->value;
       $source_link = $node->get('field_event_series_link')->uri;
 
       // If source link is set and link direct is checked, set $card_link_url to
       // source link. Otherwise, $card_link_url should be set to node link.
-      if ($link_direct == 1
+      if ($link_direct === 1
         && isset($source_link) && !empty($source_link)) {
+        $source_link = $node->get('field_event_series_link')->get(0)->getUrl()->toString();
         $card_link_url = $source_link;
       }
       else {
         $card_link_url = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
       }
 
-      $card_meta = [
-        '#type' => 'html_tag',
-        '#tag' => 'div',
-        '#attributes' => [
-          'class' => [
-            'card__meta card__meta--icon',
-          ],
-        ],
-      ];
-
-      // Add virtual event information, if it exists.
-      if ($style->getField($id, 'field_event_virtual')) {
-        $card_meta['virtual'] = [
-          '#prefix' => '<span class="card__icon"><span role="presentation" class="fas fa-laptop"></span></span>',
-          '#markup' => $style->getField($id, 'field_event_virtual'),
-        ];
-      }
-
-      // Add location information, if it exists.
-      if ($style->getField($id, 'field_event_location')) {
-        $card_meta['location'] = [
-          '#markup' => '<div class="field--name-field-event-location"><span class="card__icon"><i role="presentation" class="fas fa-map-marker-alt" aria-hidden="true"></i></span>' . $style->getField($id, 'field_event_location') . '</div>',
-        ];
-      }
-
       // @todo Finish this logic to render the virtual details and location.
       $variables['rows'][$id]['card_options']['card_subtitle'] = $style->getField($id, 'field_event_when');
       $variables['rows'][$id]['card_options']['card_link_url'] = $card_link_url;
-      $variables['rows'][$id]['card_options']['card_meta'] = render($card_meta);
     }
   }
 }
@@ -298,7 +377,7 @@ function sitenow_events_load(array $params = [
     if (isset($request)) {
       $data = json_decode($request->getBody()->getContents(), TRUE);
 
-      // Create a cache item set to 300 seconds (5 minutes).
+      // Create a cache item set to 5 minutes.
       if ($cache !== FALSE) {
         $request_time = \Drupal::time()->getRequestTime();
         \Drupal::cache('uievents')->set($endpoint, $data, $request_time + 300);
@@ -348,15 +427,20 @@ function sitenow_events_format_instance(array $event_instance) {
   if (isset($event_instance['end'])) {
     $end_date = strtotime($event_instance['end']);
   }
+  // If it's an all day event, we need to check
+  // if it spans multiple days.
+  elseif (isset($event_instance['last_date'])) {
+    $end_date = strtotime($event_instance['last_date']);
+  }
   else {
     $end_date = $start_date;
   }
 
-  $is_all_day = ($event_instance['all_day'] == TRUE);
-  $is_same_day = date('Y-m-d', $start_date) == date('Y-m-d', $end_date);
-  $is_same_time = date('g:ia', $start_date) == date('g:ia', $end_date);
-  $is_same_month = $is_same_day || date('Y-m', $start_date) == date('Y-m', $end_date);
-  $is_same_year = $is_same_day || $is_same_month || (date('Y', $start_date) == date('Y', $end_date));
+  $is_all_day = ($event_instance['all_day'] === TRUE);
+  $is_same_day = date('Y-m-d', $start_date) === date('Y-m-d', $end_date);
+  $is_same_time = date('g:ia', $start_date) === date('g:ia', $end_date);
+  $is_same_month = $is_same_day || date('Y-m', $start_date) === date('Y-m', $end_date);
+  $is_same_year = $is_same_day || $is_same_month || (date('Y', $start_date) === date('Y', $end_date));
 
   if ($is_same_day && $is_all_day) {
     $start = date('l, F j, Y', $start_date) . ' (all day)';
@@ -406,7 +490,7 @@ function sitenow_events_format_instance(array $event_instance) {
  * @todo Remove this after sitenow_events_paragraph is uninstalled.
  */
 function sitenow_events_field_widget_paragraphs_form_alter(&$element, &$form_state, $context) {
-  if ($element['#paragraph_type'] == 'events') {
+  if ($element['#paragraph_type'] === 'events') {
     if (!empty($element['subform']['field_events_more'])) {
       $parents_array = $element['subform']['#parents'];
       $parents = array_shift($parents_array) . '[' . implode('][', $parents_array) . ']';
@@ -426,9 +510,9 @@ function sitenow_events_field_widget_paragraphs_form_alter(&$element, &$form_sta
 /**
  * Set dynamic allowed values for multiple fields.
  *
- * @param \Drupal\field\Entity\FieldStorageConfig $definition
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
  *   The field definition.
- * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
  *   The entity being created if applicable.
  * @param bool $cacheable
  *   Boolean indicating if the results are cacheable.
@@ -438,7 +522,7 @@ function sitenow_events_field_widget_paragraphs_form_alter(&$element, &$form_sta
  *
  * @see options_allowed_values()
  */
-function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable = TRUE) {
+function _sitenow_events_get_filter_field_options(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
   $options = [];
 
   switch ($definition->getName()) {
@@ -545,13 +629,13 @@ function _sitenow_events_get_filter_field_options(FieldStorageConfig $definition
  * @return array
  *   Returns an associative array options tree.
  *
- * @todo Replace with an API endpoint that outputs an entire vocabulary tree.
+ * @todo https://github.com/uiowa/uiowa/issues/5028
  */
-function _sitenow_events_build_options_tree(array $data, $parent = 0) {
+function _sitenow_events_build_options_tree(array $data, int $parent = 0) {
   $tree = [];
 
   foreach ($data as $d) {
-    if ($d['parent_id'] == $parent) {
+    if ((int) $d['parent_id'] === $parent) {
       $children = _sitenow_events_build_options_tree($data, $d['id']);
 
       if (!empty($children)) {
@@ -577,16 +661,16 @@ function _sitenow_events_build_options_tree(array $data, $parent = 0) {
  *   Options array to be passed recursively.
  *
  * @return array
- *   Returns options with children prefixed with dashes.
+ *   Return options with children prefixed with dashes.
  *
- * @todo Replace with an API endpoint that outputs an entire vocabulary tree.
+ * @todo https://github.com/uiowa/uiowa/issues/5028
  */
 function _sitenow_events_build_options_list(array $tree, $r = 0, $p = NULL, array &$options = []) {
   foreach ($tree as $t) {
-    $dash = ($t['parent_id'] == 0) ? '' : str_repeat('-', $r) . ' ';
+    $dash = ((int) $t['parent_id'] === 0) ? '' : str_repeat('-', $r) . ' ';
     $options[$t['id']] = $dash . $t['name'];
 
-    if ($t['parent_id'] == $p) {
+    if ((int) $t['parent_id'] === $p) {
       // Reset $r.
       $r = 0;
     }
@@ -597,4 +681,55 @@ function _sitenow_events_build_options_list(array $tree, $r = 0, $p = NULL, arra
   }
 
   return $options;
+}
+
+/**
+ * Implements hook_schemadotorg_jsonld_schema_type_entity_alter().
+ */
+function sitenow_events_schemadotorg_jsonld_schema_type_entity_alter(array &$data, EntityInterface $entity): void {
+  if ($entity instanceof FieldableEntityInterface) {
+    $type = $entity->bundle();
+    if ($type == 'event') {
+
+      // Bring in children events if any.
+      $parent_id = $entity->id();
+      $sub_event_nids = \Drupal::entityQuery('node')
+        ->accessCheck(FALSE)
+        ->condition('type', 'event')
+        ->condition('status', 1)
+        ->condition('field_event_parent', $parent_id, '=')
+        ->execute();
+
+      if ($sub_event_nids) {
+        $sub_events = [];
+        foreach ($sub_event_nids as $nid) {
+          $sub_event = Drupal::entityTypeManager()->getStorage('node')->load($nid);
+          $sub_events[] = [
+            '@type' => 'Event',
+            'name' => $sub_event->label(),
+            '@url' => Url::fromRoute('entity.node.canonical', ['node' => $nid], ['absolute' => TRUE])->toString(),
+          ];
+        }
+        $data['subEvent'] = $sub_events;
+      }
+
+      // Add virtual location data to the schema if it's present.
+      if ($entity->hasField('field_event_virtual') && !$entity->get('field_event_virtual')->isEmpty()) {
+        $uri = $entity->get('field_event_virtual')->getValue()[0]['uri'];
+        $virtual = [
+          '@type' => 'VirtualLocation',
+          'url' => $uri,
+        ];
+        if (isset($data['location'])) {
+          $data['location'] = [
+            $data['location'],
+            $virtual,
+          ];
+        }
+        else {
+          $data['location'] = $virtual;
+        }
+      }
+    }
+  }
 }

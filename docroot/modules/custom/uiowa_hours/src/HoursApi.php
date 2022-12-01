@@ -183,6 +183,7 @@ class HoursApi {
 
     // This isn't used and borks the foreach loop. Unset it.
     unset($data['$id']);
+    unset($data['resourceAlias']);
 
     return [
       'data' => $data,

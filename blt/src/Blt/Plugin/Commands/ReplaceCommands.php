@@ -6,11 +6,13 @@ use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\EnvironmentDetector;
 use Acquia\Blt\Robo\Common\YamlMunge;
 use Acquia\Blt\Robo\Exceptions\BltException;
+use Uiowa\InspectorTrait;
 
 /**
  * BLT override commands.
  */
 class ReplaceCommands extends BltTasks {
+  use InspectorTrait;
 
   /**
    * Replace the artifact:update:drupal:all-sites BLT command.
@@ -22,15 +24,22 @@ class ReplaceCommands extends BltTasks {
     $this->config->set('drush.alias', '');
 
     $app = EnvironmentDetector::getAhGroup() ?: 'local';
-    $env = EnvironmentDetector::getAhEnv() ?: 'local';
     $multisite_exception = FALSE;
 
-    // Unshift uiowa.edu to the beginning so it runs first.
+    // Unshift sites to the beginning to run first.
     $multisites = $this->getConfigValue('multisites');
+    $run_first = $this->getConfigValue('uiowa.run_first');
 
-    if ($key = array_search('uiowa.edu', $multisites)) {
-      unset($multisites[$key]);
-      array_unshift($multisites, 'uiowa.edu');
+    if ($run_first) {
+      // Reverse for foreach so that first listed in config is run first.
+      $run_first = array_reverse($run_first);
+
+      foreach ($run_first as $site) {
+        if ($key = array_search($site, $multisites)) {
+          unset($multisites[$key]);
+          array_unshift($multisites, $site);
+        }
+      }
     }
 
     foreach ($multisites as $multisite) {
@@ -43,7 +52,7 @@ class ReplaceCommands extends BltTasks {
         continue;
       }
       else {
-        if ($this->getInspector()->isDrupalInstalled()) {
+        if ($this->isDrupalInstalled($multisite)) {
           $this->logger->info("Deploying updates to <comment>{$multisite}</comment>...");
 
           // Invalidate the Twig cache if on AH env. This happens automatically
@@ -60,11 +69,12 @@ class ReplaceCommands extends BltTasks {
           }
 
           try {
-            // Define a site-specific cache directory. For some reason, putenv
-            // did not work here. This would not be necessary if Drush
-            // supported per-site config file loading.
-            // @see: https://github.com/drush-ops/drush/pull/4345
-            $_ENV['DRUSH_PATHS_CACHE_DIRECTORY'] = "/tmp/.drush-cache-{$app}/{$env}/{$multisite}";
+            // Clear the plugin cache for discovery and potential layout issue.
+            // @see: https://github.com/uiowa/uiowa/issues/3585.
+            $this->taskDrush()
+              ->drush('cc plugin')
+              ->run();
+
             $this->invokeCommand('drupal:update');
             $this->logger->info("Finished deploying updates to <comment>{$multisite}</comment>.");
           }
@@ -119,7 +129,7 @@ class ReplaceCommands extends BltTasks {
     $paths = [
       "{$root}/tests/" => '',
       "{$docroot}/profiles/custom/" => '',
-      "{$docroot}/modules/custom/" => "$docroot/modules/custom/uiowa_core/src/Form/UiowaCoreSiteInformationForm.php",
+      "{$docroot}/modules/custom/" => '',
       "{$docroot}/themes/custom/" => '',
       "{$docroot}/sites/" => "$docroot/sites/simpletest,$docroot/sites/default/files",
     ];
@@ -232,11 +242,6 @@ EOD;
       $this->taskWriteToFile("$root/docroot/sites/$site/settings/local.settings.php")
         ->append()
         ->text($text)
-        ->run();
-
-      $this->taskReplaceInFile("$root/docroot/sites/$site/settings/local.settings.php")
-        ->from("\$settings['file_private_path'] = EnvironmentDetector::getRepoRoot() . '/files-private/default';")
-        ->to("\$settings['file_private_path'] = EnvironmentDetector::getRepoRoot() . '/files-private/$site';")
         ->run();
     }
 
