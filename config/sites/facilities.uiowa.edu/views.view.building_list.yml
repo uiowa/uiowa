@@ -25,10 +25,10 @@ display:
     display_options:
       title: 'Building list'
       fields:
-        field_building_honoree_last_name:
-          id: field_building_honoree_last_name
-          table: node__field_building_honoree_last_name
-          field: field_building_honoree_last_name
+        field_building_honoree_name:
+          id: field_building_honoree_name
+          table: node__field_building_honoree_name
+          field: field_building_honoree_name
           relationship: none
           group_type: group
           admin_label: ''
@@ -37,7 +37,7 @@ display:
           exclude: true
           alter:
             alter_text: false
-            text: ''
+            text: '{{ field_building_honoree_last_name }}, {{ field_building_honoree_name }}'
             make_link: false
             path: ''
             absolute: false
@@ -88,10 +88,10 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        field_building_honoree_name:
-          id: field_building_honoree_name
-          table: node__field_building_honoree_name
-          field: field_building_honoree_name
+        field_building_honoree_last_name:
+          id: field_building_honoree_last_name
+          table: node__field_building_honoree_last_name
+          field: field_building_honoree_last_name
           relationship: none
           group_type: group
           admin_label: ''
@@ -333,12 +333,20 @@ display:
           row_class: ''
           default_row_class: true
           columns:
+            field_building_honoree_last_name: field_building_honoree_last_name
             field_building_honoree_name: field_building_honoree_name
             title: title
-          default: field_building_honoree_name
+          default: field_building_honoree_last_name
           info:
-            field_building_honoree_name:
+            field_building_honoree_last_name:
               sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_building_honoree_name:
+              sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
