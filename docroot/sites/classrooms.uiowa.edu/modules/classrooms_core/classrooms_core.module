@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Uiowa Core module.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
+
+/**
+ * Implements hook_entity_presave().
+ */
+function classrooms_core_entity_presave(EntityInterface $entity): void {
+  if (!$entity instanceof FieldableEntityInterface || $entity->bundle() !== 'room') {
+    return;
+  }
+
+  $building_id = $entity
+    ->field_room_building_id
+    ?->target_id;
+  $room_id = $entity
+    ->field_room_room_id
+    ?->value;
+
+  if (!is_null($building_id) && !is_null($room_id)) {
+    $building = Drupal::entityTypeManager()->getStorage('building')->load($building_id);
+
+    // Set title programmatically based on building and room id.
+    $title = "{$building->label()} $room_id";
+    $entity->set('title', $title);
+  }
+}
