@@ -91,7 +91,8 @@ class MauiApi {
     // Create a hash for the CID. Can always be decoded for debugging purposes.
     $hash = base64_encode($uri . serialize($options));
     $cid = "uiowa_maui:request:{$hash}";
-    $data = [];
+    // Default $data to FALSE in case of API fetch failure.
+    $data = FALSE;
 
     if ($cache = $this->cache->get($cid)) {
       $data = $cache->data;
@@ -106,8 +107,6 @@ class MauiApi {
           '@code' => $e->getCode(),
           '@error' => $e->getMessage(),
         ]);
-
-        $data = FALSE;
       }
 
       if (isset($response)) {
