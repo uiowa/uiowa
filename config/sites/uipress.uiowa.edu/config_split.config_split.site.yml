@@ -1,0 +1,52 @@
+uuid: 7dedf6ad-efd3-4c2f-ad83-c38d4c1a4ae1
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: uipress.uiowa.edu
+description: 'Custom settings for uipress.uiowa.edu.'
+weight: 70
+stackable: true
+storage: folder
+folder: ../config/sites/uipress.uiowa.edu
+module:
+  uipress_core: 0
+theme: {  }
+complete_list:
+  - config_split.config_split.site
+  - core.entity_view_display.node.person.default
+  - core.entity_view_mode.paragraph.teaser
+  - field.storage.node.field_pages_art_trim
+  - metatag.metatag_defaults.node__book
+  - node.type.book
+  - paragraphs.paragraphs_type.book_type
+  - pathauto.pattern.book_alias
+  - simple_sitemap.bundle_settings.default.node.book
+  - sitenow_people.person_type.afterword_author
+  - sitenow_people.person_type.author
+  - sitenow_people.person_type.contributor
+  - sitenow_people.person_type.editor
+  - sitenow_people.person_type.essay_by
+  - sitenow_people.person_type.foreword_author
+  - sitenow_people.person_type.illustrator
+  - sitenow_people.person_type.introduction_author
+  - sitenow_people.person_type.photographer
+  - sitenow_people.person_type.preface_author
+  - sitenow_people.person_type.translator
+  - taxonomy.vocabulary.season
+  - taxonomy.vocabulary.series
+  - taxonomy.vocabulary.subjects
+  - views.view.author_of
+  - views.view.author_page
+  - views.view.books
+  - views.view.homepage_books
+  - views.view.uipress_vocabulary_lists
+  - 'field.storage.node.field_book_*'
+  - 'field.storage.paragraph.field_book_*'
+  - 'core.entity_view_display.paragraph.book_type.*'
+partial_list:
+  - core.entity_form_display.node.person.default
+  - core.entity_view_display.node.page.default
+  - workflows.workflow.editorial
+  - 'user.role.*'
+  - 'sitenow_people.person_type.*'

@@ -1,12 +1,55 @@
+@import "../../../../../themes/custom/uids_base/uids3/assets/scss/_variables.scss";
+@import "../../../../../themes/custom/uids_base/uids3/assets/scss/_utilities.scss";
+@import "../../../../../themes/custom/uids_base/uids3/assets/scss/_grid.scss";
+
 .block-views-blockstudent-card-block-student-grid {
+  &[class*="grid"].hide-details {
+    .view-content.list-container {
+      gap: 0 !important;
+    }
+
+    .card__body {
+      display: none;
+    }
+
+    &.grid__mobile {
+      &.grid--threecol--33-34-33,
+      &.grid--twocol--50-50 {
+        .list-container {
+          @include display-grid;
+
+          .card {
+            margin-bottom: 0;
+          }
+        }
+      }
+
+      &.grid--threecol--33-34-33 {
+        .list-container {
+          @include threecol-grid;
+        }
+      }
+
+      &.grid--twocol--50-50 {
+        .list-container {
+          @include twocol-grid;
+          gap: $desktop-width-gutter;
+        }
+      }
+
+    }
+  }
+
   .views-col {
     display: flex;
     align-items: stretch;
+
     a:not(:empty) {
       display: flex;
       justify-content: center;
       align-items: center;
       width: 100%;
+
       .empty-img {
         width: 100%;
         padding-top: (1 / 1) * 100%;
@@ -17,6 +60,7 @@
       }
     }
   }
+
   .views-row {
     display: flex;
   }

@@ -1,0 +1,32 @@
+local:
+  root: /var/www/html/docroot
+  uri: studiocryptco.uiowa.ddev.site
+  paths:
+    files: sites/cryptco.studio.uiowa.edu/files
+dev:
+  uri: studiocryptco.dev.drupal.uiowa.edu
+  host: uiowa03dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/cryptco.studio.uiowa.edu/files
+  root: /var/www/html/uiowa03.dev/docroot
+  user: uiowa03.dev
+prod:
+  uri: cryptco.studio.uiowa.edu
+  host: uiowa03.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/cryptco.studio.uiowa.edu/files
+  root: /var/www/html/uiowa03.prod/docroot
+  user: uiowa03.prod
+test:
+  uri: studiocryptco.stage.drupal.uiowa.edu
+  host: uiowa03stg.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/cryptco.studio.uiowa.edu/files
+  root: /var/www/html/uiowa03.test/docroot
+  user: uiowa03.test

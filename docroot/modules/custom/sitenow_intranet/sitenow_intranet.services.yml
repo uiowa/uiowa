@@ -1,0 +1,5 @@
+services:
+  sitenow_intranet.robotstxt_override:
+    class: Drupal\sitenow_intranet\ConfigOverride\RobotstxtOverride
+    tags:
+      - { name: config.factory.override, priority: 100 }

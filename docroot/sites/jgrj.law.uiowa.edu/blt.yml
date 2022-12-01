@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lawjgrj.uiowa.ddev.site
+    protocol: https
+  machine_name: lawjgrj
+  human_name: jgrj.law.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lawjgrj.prod
+drupal:
+  db:
+    database: jgrj_law_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: gtobn
+  site-name: 'Journal of Gender, Race & Justice'

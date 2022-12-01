@@ -21,50 +21,50 @@ bundle: project
 mode: default
 content:
   body:
-    label: hidden
     type: text_default
-    weight: 1
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 1
     region: content
   field_project_category:
-    weight: 3
+    type: list_default
     label: inline
     settings: {  }
     third_party_settings: {  }
-    type: list_default
+    weight: 3
     region: content
   field_project_date:
-    weight: 2
+    type: daterange_default
     label: hidden
     settings:
       timezone_override: ''
       format_type: medium_date
       separator: '-'
     third_party_settings: {  }
-    type: daterange_default
+    weight: 2
     region: content
   field_project_finished:
-    weight: 4
+    type: boolean
     label: visually_hidden
     settings:
       format: custom
-      format_custom_true: 'This project has finished.'
       format_custom_false: ''
+      format_custom_true: 'This project has finished.'
     third_party_settings: {  }
-    type: boolean
+    weight: 4
     region: content
   field_project_reports:
-    weight: 5
+    type: file_default
     label: above
     settings:
       use_description_as_link_text: true
     third_party_settings: {  }
-    type: file_default
+    weight: 5
     region: content
   links:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden: {  }

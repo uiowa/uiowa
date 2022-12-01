@@ -18,7 +18,7 @@ class GoogleAnalyticsOverrideTest extends UnitTestCase {
   /**
    * Unset the environment variable after each test.
    */
-  public function tearDown() {
+  public function tearDown(): void {
     parent::tearDown();
     putenv('AH_SITE_ENVIRONMENT');
   }
@@ -39,14 +39,14 @@ class GoogleAnalyticsOverrideTest extends UnitTestCase {
    *
    * @dataProvider envProvider
    */
-  public function testConfigOverriddenInNonProd($env) {
+  public function testConfigSetToEmptyStringInNonProd($env) {
     if ($env) {
       putenv("AH_SITE_ENVIRONMENT={$env}");
     }
 
     $override = new GoogleAnalyticsOverride();
     $overrides = $override->loadOverrides(['google_analytics.settings']);
-    $this->assertEquals(NULL, $overrides['google_analytics.settings']['account']);
+    $this->assertEquals('', $overrides['google_analytics.settings']['account']);
   }
 
   /**

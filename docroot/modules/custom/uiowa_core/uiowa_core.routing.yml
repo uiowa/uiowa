@@ -5,10 +5,17 @@ uiowa_core.settings_form:
     _form: 'Drupal\uiowa_core\Form\SettingsForm'
   requirements:
     _permission: 'administer uiowa core'
+uiowa_core.region_settings:
+  path: '/admin/config/sitenow/region-settings'
+  defaults:
+    _title: 'Region Settings'
+    _form: 'Drupal\uiowa_core\Form\RegionSettings'
+  requirements:
+    _permission: 'configure editable region_item fragment layout overrides'
 system.admin_config_sitenow:
   path: '/admin/config/sitenow'
   defaults:
     _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
     _title: 'SiteNow'
   requirements:
-    _permission: 'access administration pages'
+    _permission: 'administer basic site settings'

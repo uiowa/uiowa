@@ -1,0 +1,25 @@
+id: iisc_colleges_departments
+label: 'Colleges and Departments taxonomy term migration.'
+dependencies:
+  enforced:
+    module:
+      - iisc_migrate
+migration_tags:
+  - iisc
+migration_group: sitenow_migrate
+source:
+  plugin: d7_taxonomy_term
+  bundle: colleges_and_departments
+destination:
+  plugin: 'entity:taxonomy_term'
+  default_bundle: colleges_and_departments
+process:
+  name: name
+  description:
+    plugin: callback
+    callable: strip_tags
+    source: description
+  format: format
+  field_image: field_image_fid # Needs work
+  field_website: field_cd_url # Needs work
+migration_dependencies: null

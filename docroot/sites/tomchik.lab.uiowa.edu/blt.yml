@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labtomchik.uiowa.ddev.site
+    protocol: https
+  machine_name: labtomchik
+  human_name: tomchik.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labtomchik.prod
+drupal:
+  db:
+    database: tomchik_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labtomchik.prod.drupal.uiowa.edu'
+  requester: bucknerl
+  site-name: 'https://tomchik.lab.uiowa.edu/'

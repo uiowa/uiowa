@@ -14,3 +14,7 @@ services:
     decorates: 'entity_print.filename_generator'
     decoration_priority: 9
     arguments: ['@admissions_core.mailcode_filename_generator.inner',  '@transliteration' ]
+  admissions_core.dompdf_override:
+    class: Drupal\admissions_core\ConfigOverride\DompdfOverride
+    tags:
+      - { name: config.factory.override, priority: 5 }

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesrace-and-comics.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesrace-and-comics
+  human_name: race-and-comics.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesrace-and-comics.prod
+drupal:
+  db:
+    database: race_and_comics_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: jhammeri
+  site-name: '2022-23 Sawyer Seminar: Racial Reckoning through Comics'

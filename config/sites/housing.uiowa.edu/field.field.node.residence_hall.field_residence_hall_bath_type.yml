@@ -1,0 +1,29 @@
+uuid: 5780f23a-d785-4b0b-8ddc-7e6c0840a716
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_residence_hall_bath_type
+    - node.type.residence_hall
+    - taxonomy.vocabulary.bathroom_type
+id: node.residence_hall.field_residence_hall_bath_type
+field_name: field_residence_hall_bath_type
+entity_type: node
+bundle: residence_hall
+label: 'Bathroom type'
+description: 'Add options on the taxonomy <a href="/admin/structure/taxonomy">page</a>.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      bathroom_type: bathroom_type
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

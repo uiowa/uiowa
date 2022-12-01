@@ -24,7 +24,7 @@
   'aggregator-item',
 ]
 %}
-
+{{ attach_library('uids_base/aggregator-feed') }}
 {% set style_classes = [] %}
 {% set size_classes = [] %}
 {% for style in parent_lb_styles %}
@@ -53,8 +53,8 @@
   'title_prefix': title_prefix,
   'title_suffix': title_suffix,
   'card_link_url': url,
-  'card_date': post_date,
-  'card_tag': content.author|render,
+  'card_subtitle': post_date,
+  'card_meta': content.author|render,
   'event_icon': event_icon|trans,
   'headline_level': heading_size,
   'card_text': content.description|render,
@@ -62,11 +62,11 @@
 
 {% embed '@uids_base/uids/card.html.twig' with aggregator_card only %}
 
-{% block card_tag %}
-	{% if card_tag is not empty %}
-		<div class="card__label">
+{% block card_meta %}
+	{% if card_meta is not empty %}
+		<div class="card__meta">
 			{{ event_icon }}
-			{{ card_tag }}
+			{{ card_meta }}
 		</div>
 	{% endif %}
 {% endblock %}

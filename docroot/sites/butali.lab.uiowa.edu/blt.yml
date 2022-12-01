@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labbutali.uiowa.ddev.site
+    protocol: https
+  machine_name: labbutali
+  human_name: butali.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labbutali.prod
+drupal:
+  db:
+    database: butali_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: rpetrin
+  site-name: 'https://butali.lab.uiowa.edu'

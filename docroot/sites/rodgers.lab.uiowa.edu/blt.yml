@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labrodgers.uiowa.ddev.site
+    protocol: https
+  machine_name: labrodgers
+  human_name: rodgers.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labrodgers.prod
+drupal:
+  db:
+    database: rodgers_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: vincent
+  site-name: 'Rodgers Lab'

@@ -1,6 +1,6 @@
-@import "uids/assets/scss/_variables.scss";
-@import "uids/assets/scss/_utilities.scss";
-@import "components/card/_card-mixins.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
+@import "uids3/components/card/_card-mixins.scss";
 
 .paragraph--type--articles,
 .paragraph--type--events,
@@ -235,7 +235,7 @@
   .field--name-field-featured-content {
     margin-top: $gutter;
 
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       display: flex;
       flex-wrap: wrap;
     }
@@ -246,7 +246,7 @@
       margin-bottom: $mobile-width-gutter;
     }
 
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       flex: 0 0 calc(50% - 1.5rem);
       margin-bottom: $desktop-width-gutter;
 
@@ -260,7 +260,7 @@
       }
     }
 
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       flex: 0 0 calc(34.5% - 3rem);
       margin-bottom: $desktop-width-gutter;
 
@@ -333,7 +333,7 @@
   .view-content {
     margin-top: $gutter;
 
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       display: flex;
       flex-wrap: wrap;
     }
@@ -344,7 +344,7 @@
       margin-bottom: $mobile-width-gutter;
     }
 
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       flex: 0 0 calc(50% - 1.5rem);
       margin-bottom: $desktop-width-gutter;
 
@@ -358,7 +358,7 @@
       }
     }
 
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       flex: 0 0 calc(34.5% - 3rem);
       margin-bottom: $desktop-width-gutter;
 
@@ -401,7 +401,7 @@
 // Events Grid
 .paragraph--type--events.grid {
   .uiowa-events {
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       display: flex;
       flex-wrap: wrap;
     }
@@ -418,7 +418,7 @@
       margin-bottom: $mobile-width-gutter;
     }
 
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       flex: 0 0 calc(50% - 1.5rem);
       margin-bottom: $desktop-width-gutter;
 
@@ -432,7 +432,7 @@
       }
     }
 
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       flex: 0 0 calc(34.5% - 3rem);
       margin-bottom: $desktop-width-gutter;
 

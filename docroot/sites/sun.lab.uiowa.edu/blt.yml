@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labsun.uiowa.ddev.site
+    protocol: https
+  machine_name: labsun
+  human_name: sun.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labsun.prod
+drupal:
+  db:
+    database: sun_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: hlsun
+  site-name: 'Sun Lab of Podocyte Disease'

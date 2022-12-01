@@ -1,0 +1,36 @@
+uuid: 10abdb75-6ea9-4a6d-bdd5-aee0de9a98ee
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_book_edition
+field_name: field_book_edition
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: 1st
+      label: 1st
+    -
+      value: 2nd
+      label: 2nd
+    -
+      value: 3rd
+      label: 3rd
+    -
+      value: 4th
+      label: 4th
+    -
+      value: 5th
+      label: 5th
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

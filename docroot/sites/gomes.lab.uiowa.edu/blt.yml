@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labgomes.uiowa.ddev.site
+    protocol: https
+  machine_name: labgomes
+  human_name: gomes.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labgomes.prod
+drupal:
+  db:
+    database: gomes_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labgomes.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Gomes Lab'

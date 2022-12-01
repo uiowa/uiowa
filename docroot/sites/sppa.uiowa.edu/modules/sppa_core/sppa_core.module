@@ -9,71 +9,18 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 
 /**
- * Implements hook_allowed_values_function().
+ * Implements hook_state_options_alter().
  */
-function sppa_locations_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
-  $options = [
-    'AL' => 'Alabama',
-    'AK' => 'Alaska',
-    'AZ' => 'Arizona',
-    'AR' => 'Arkansas',
-    'CA' => 'California',
-    'CO' => 'Colorado',
-    'CT' => 'Connecticut',
-    'DE' => 'Delaware',
-    'DC' => 'District of Columbia',
-    'FL' => 'Florida',
-    'GA' => 'Georgia',
-    'HI' => 'Hawaii',
-    'ID' => 'Idaho',
-    'IL' => 'Illinois',
-    'IN' => 'Indiana',
-    'IA' => 'Iowa',
-    'KS' => 'Kansas',
-    'KY' => 'Kentucky',
-    'LA' => 'Louisiana',
-    'ME' => 'Maine',
-    'MD' => 'Maryland',
-    'MA' => 'Massachusetts',
-    'MI' => 'Michigan',
-    'MN' => 'Minnesota',
-    'MS' => 'Mississippi',
-    'MO' => 'Missouri',
-    'MT' => 'Montana',
-    'NE' => 'Nebraska',
-    'NV' => 'Nevada',
-    'NH' => 'New Hampshire',
-    'NJ' => 'New Jersey',
-    'NM' => 'New Mexico',
-    'NY' => 'New York',
-    'NC' => 'North Carolina',
-    'ND' => 'North Dakota',
-    'OH' => 'Ohio',
-    'OK' => 'Oklahoma',
-    'OR' => 'Oregon',
-    'PA' => 'Pennsylvania',
-    'RI' => 'Rhode Island',
-    'SC' => 'South Carolina',
-    'SD' => 'South Dakota',
-    'TN' => 'Tennessee',
-    'TX' => 'Texas',
-    'UT' => 'Utah',
-    'VT' => 'Vermont',
-    'VA' => 'Virginia',
-    'WA' => 'Washington',
-    'WV' => 'West Virginia',
-    'WI' => 'Wisconsin',
-    'WY' => 'Wyoming',
-    'US' => 'United States',
-    'INTL' => 'International',
-  ];
-  return $options;
+function sppa_core_state_options_alter(&$options, $entity, $bundle) {
+  // Add additional options to states list for SPPA.
+  $options['US'] = 'United States';
+  $options['INTL'] = 'International';
 }
 
 /**
  * Implements hook_allowed_values_function().
  */
-function sppa_opportunity_types_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+function sppa_core_opportunity_types_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
   $options = [
     'jobs' => 'Jobs',
     'internships' => 'Internships',
@@ -85,7 +32,7 @@ function sppa_opportunity_types_allowed_values(FieldStorageConfig $definition, C
 /**
  * Implements hook_allowed_values_function().
  */
-function sppa_degrees_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+function sppa_core_degrees_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
   $options = [
     'URP' => 'URP',
     'MPA' => 'MPA',

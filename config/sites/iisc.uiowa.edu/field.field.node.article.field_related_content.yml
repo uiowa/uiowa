@@ -1,0 +1,33 @@
+uuid: ddb54c39-37f2-430d-b724-983edb74f79e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_related_content
+    - node.type.article
+    - node.type.partner
+    - node.type.person
+    - node.type.project
+id: node.article.field_related_content
+field_name: field_related_content
+entity_type: node
+bundle: article
+label: 'Related content'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      partner: partner
+      person: person
+      project: project
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: partner
+field_type: entity_reference

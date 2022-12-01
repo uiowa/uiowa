@@ -5,24 +5,26 @@ dependencies: {  }
 id: site
 label: Site
 description: 'The sppa.uiowa.edu site split.'
+weight: 70
+stackable: true
+storage: folder
 folder: ../config/sites/sppa.uiowa.edu
 module:
   private_content: 0
   sppa_core: 0
 theme: {  }
-blacklist:
+complete_list:
   - config_split.config_split.site
+  - core.entity_view_display.node.article.default
   - node.type.opportunity
   - pathauto.pattern.opportunities
   - simple_sitemap.bundle_settings.default.node.opportunity
+  - sitenow_people.person_type.adjunct_faculty
   - user.role.requester
   - user.role.student
   - 'field.storage.node.field_opportunity_*'
-graylist:
+partial_list:
   - administerusersbyrole.settings
   - uiowa_auth.settings
   - 'user.role.*'
   - 'core.entity_view_display.*'
-graylist_dependents: false
-graylist_skip_equal: true
-weight: 90

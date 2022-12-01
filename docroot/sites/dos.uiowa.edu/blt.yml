@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: dos.uiowa.ddev.site
+    protocol: https
+  machine_name: dos
+  human_name: dos.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: dos.prod
+drupal:
+  db:
+    database: dos_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: dquam

@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: sitesfutureofficework.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesfutureofficework
+  human_name: futureofficework.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesfutureofficework.prod
+drupal:
+  db:
+    database: futureofficework_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: ppennathur

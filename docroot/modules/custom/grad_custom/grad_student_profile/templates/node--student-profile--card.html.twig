@@ -67,7 +67,8 @@
  *
  * @todo Remove the id attribute (or make it a class), because if that gets
  *   rendered twice on a page this is invalid CSS for example: two lists
- *   in different view modes.
+ *   in different view modes. See
+ *   https://github.com/uiowa/uiowa/issues/4995
  */
 #}
 
@@ -99,7 +100,7 @@ set classes = [
   'attributes': attributes.addClass(classes),
   'card_image': content.field_image|render,
   'card_text': content|without('field_image', 'field_person_credential', 'field_person_distinction', 'links')|render,
-  'card_date': content.field_person_distinction|render,
+  'card_subtitle': content.field_person_distinction|render,
   'card_title': label|render,
   'card_link_url': url,
   'card_link_title': 'Read more'|t,

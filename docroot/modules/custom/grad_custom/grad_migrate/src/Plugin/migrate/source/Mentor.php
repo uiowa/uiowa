@@ -122,7 +122,7 @@ class Mentor extends BaseNodeSource {
     $program = $row->getSourceProperty('field_mentor_department_value');
     // Loop through our helper array.
     foreach (_grad_custom_program_list() as $program_info) {
-      if ($program == $program_info['label']) {
+      if ($program === $program_info['label']) {
         $program_code = $program_info['maui_code'];
         break;
       }

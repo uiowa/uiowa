@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lablamuta.uiowa.ddev.site
+    protocol: https
+  machine_name: lablamuta
+  human_name: lamuta.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lablamuta.prod
+drupal:
+  db:
+    database: lamuta_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://lablamuta.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Smart Multifunctional Material Systems Lab'

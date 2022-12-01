@@ -1,0 +1,29 @@
+uuid: 2ae6f9af-b2ff-4a91-9915-8a2e7bb882ec
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_area_of_study_area
+    - node.type.area_of_study
+    - taxonomy.vocabulary.grad_areas_of_study
+id: node.area_of_study.field_area_of_study_area
+field_name: field_area_of_study_area
+entity_type: node
+bundle: area_of_study
+label: 'Area of Study'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      grad_areas_of_study: grad_areas_of_study
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

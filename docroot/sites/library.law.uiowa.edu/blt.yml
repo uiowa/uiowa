@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: lawlibrary.uiowa.ddev.site
+    protocol: https
+  machine_name: lawlibrary
+  human_name: library.law.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lawlibrary.prod
+drupal:
+  db:
+    database: library_law_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: koopmann

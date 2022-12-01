@@ -24,65 +24,65 @@ bundle: opportunity
 mode: default
 content:
   body:
-    weight: 1
+    type: text_default
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 1
     region: content
   field_opportunity_city:
-    weight: 4
+    type: string
     label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 4
     region: content
   field_opportunity_deadline:
-    weight: 6
+    type: string
     label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 6
     region: content
   field_opportunity_degree:
-    weight: 5
+    type: list_default
     label: above
     settings: {  }
     third_party_settings:
       field_delimiter:
         delimiter: ', '
-    type: list_default
+    weight: 5
     region: content
   field_opportunity_length:
-    weight: 7
+    type: string
     label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 7
     region: content
   field_opportunity_locations:
-    weight: 3
+    type: list_default
     label: above
     settings: {  }
     third_party_settings:
       field_delimiter:
         delimiter: ', '
-    type: list_default
+    weight: 3
     region: content
   field_opportunity_type:
-    weight: 0
+    type: list_default
     label: above
     settings: {  }
     third_party_settings:
       field_delimiter:
         delimiter: ', '
-    type: list_default
+    weight: 0
     region: content
   field_opportunity_website:
-    weight: 2
+    type: link
     label: visually_hidden
     settings:
       trim_length: 80
@@ -91,13 +91,13 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    type: link
+    weight: 2
     region: content
   links:
-    weight: 8
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 8
+    region: content
 hidden:
   private: true
   search_api_excerpt: true

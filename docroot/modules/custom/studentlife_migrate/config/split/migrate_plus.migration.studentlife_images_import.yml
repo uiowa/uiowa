@@ -1,0 +1,81 @@
+id: studentlife_images_import
+label: 'Import files from SilverStripe XML export'
+migration_group: studentlife
+source:
+  plugin: url
+  data_fetcher_plugin: http
+  data_parser_plugin: xml
+  item_selector: /rss/channel/image
+  constants:
+    file_dest_uri: 'public://featured_images'
+  fields:
+    -
+      name: title
+      label: 'Attachment title'
+      selector: title
+    -
+      name: post_id
+      label: 'Unique content ID'
+      selector: 'wp:post_id'
+    -
+      name: content
+      label: 'Description of the file'
+      selector: 'content:encoded'
+    -
+      name: excerpt
+      label: 'Caption for the file'
+      selector: 'excerpt:encoded'
+    -
+      name: pubDate
+      label: 'Publish date of the file'
+      selector: pubDate
+    -
+      name: post_date
+      label: 'Post date of the file'
+      selector: 'wp:post_date'
+    -
+      name: creator
+      label: 'Username of the content creator'
+      selector: 'dc:creator'
+    -
+      name: attachment_url
+      label: 'Full URL of the file on the source system'
+      selector: 'wp:attachment_url'
+    -
+      name: alt
+      label: 'Alt text for an image'
+      selector: 'wp:postmeta[wp:meta_key=''_wp_attachment_image_alt'']/wp:meta_value'
+  ids:
+    post_id:
+      type: integer
+process:
+  destination_file:
+    plugin: callback
+    callable: basename
+    source: attachment_url
+  filename: '@destination_file'
+  destination_full_path:
+    -
+      plugin: concat
+      delimiter: /
+      source:
+        - constants/file_dest_uri
+        - '@destination_file'
+    -
+      plugin: urlencode
+  uri:
+    plugin: file_copy
+    source:
+      - attachment_url
+      - '@destination_full_path'
+  created:
+    plugin: callback
+    source: post_date
+    callable: strtotime
+  changed: '@created'
+  status:
+    plugin: default_value
+    default_value: 1
+destination:
+  plugin: 'entity:file'
+migration_dependencies: {  }

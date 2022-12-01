@@ -1,0 +1,27 @@
+uuid: 5ec4b18d-f9b6-404a-b6bc-836ca376f46a
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.field_book_ebook_ownership
+field_name: field_book_ebook_ownership
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: '120 day'
+      label: '120 day'
+    -
+      value: Perpetual
+      label: Perpetual
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

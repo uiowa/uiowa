@@ -5,19 +5,19 @@ dependencies: {  }
 id: itu_physics_migrate
 label: 'ITU Physics Migrate'
 description: 'Migrations for ITU Physics'
+weight: 80
+stackable: true
+storage: folder
 folder: ./sites/itu.physics.uiowa.edu/modules/itu_physics_migrate/config/split
 module:
+  itu_physics_migrate: 0
   migrate: 0
   migrate_drupal: 0
   migrate_plus: 0
   migrate_tools: 0
-  itu_physics_migrate: 0
   sitenow_migrate: 0
 theme: {  }
-blacklist:
+complete_list:
   - config_split.config_split.itu_physics_migrate
   - 'migrate_plus.migration.itu_physics_*'
-graylist: {  }
-graylist_dependents: true
-graylist_skip_equal: true
-weight: 80
+partial_list: {  }

@@ -1,0 +1,21 @@
+uuid: e940be3f-963c-41ca-afeb-74da3bbe9336
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_residence_hall_neighborhd
+    - node.type.residence_hall
+  module:
+    - options
+id: node.residence_hall.field_residence_hall_neighborhd
+field_name: field_residence_hall_neighborhd
+entity_type: node
+bundle: residence_hall
+label: Neighborhood
+description: 'Which side of the river this location is on.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

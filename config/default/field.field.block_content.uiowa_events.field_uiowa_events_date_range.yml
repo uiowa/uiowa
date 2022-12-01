@@ -1,0 +1,26 @@
+uuid: c9bc0108-724e-47e3-9501-a8d315b2dd7a
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_events
+    - field.storage.block_content.field_uiowa_events_date_range
+  module:
+    - smart_date
+id: block_content.uiowa_events.field_uiowa_events_date_range
+field_name: field_uiowa_events_date_range
+entity_type: block_content
+bundle: uiowa_events
+label: 'Date Range'
+description: 'A minimum and maximum date of 1970 to 2037 is enforced.'
+required: false
+translatable: false
+default_value:
+  -
+    default_duration: 60
+    default_duration_increments: "30\r\n60|1 hour\r\n90\r\n120|2 hours\r\ncustom"
+    default_date_type: relative
+    default_date: now
+default_value_callback: ''
+settings: {  }
+field_type: smartdate

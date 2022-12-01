@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: fotax.uiowa.ddev.site
+    protocol: https
+  machine_name: fotax
+  human_name: tax.fo.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: fotax.prod
+drupal:
+  db:
+    database: tax_fo_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: lhma

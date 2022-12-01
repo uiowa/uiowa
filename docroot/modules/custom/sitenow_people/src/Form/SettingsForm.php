@@ -17,6 +17,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class SettingsForm extends ConfigFormBase {
 
   /**
+   * Config settings.
+   *
+   * @var string
+   */
+  const SETTINGS = 'sitenow_people.settings';
+  /**
    * The alias cleaner.
    *
    * @var \Drupal\pathauto\AliasCleanerInterface
@@ -100,6 +106,7 @@ class SettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $config = $this->config(static::SETTINGS);
     $form = parent::buildForm($form, $form_state);
     $view = $this->entityTypeManager->getStorage('view')->load('people');
 
@@ -111,7 +118,7 @@ class SettingsForm extends ConfigFormBase {
     foreach ($displays as $display) {
       $sort_options[$display['id']] = $display['display_title'];
       // Override the default sort value. Assumes only one display is enabled...
-      if (isset($display['display_options']['enabled']) && $display['display_options']['enabled'] == 1) {
+      if (isset($display['display_options']['enabled']) && (int) $display['display_options']['enabled'] === 1) {
         $default_sort = $display['id'];
       }
     }
@@ -124,7 +131,7 @@ class SettingsForm extends ConfigFormBase {
     $enabled_display =& $view->getDisplay($default_sort);
 
     // Get view_people status.
-    if ($view->get('status') == TRUE) {
+    if ($view->get('status') === TRUE) {
       $status = 1;
     }
     else {
@@ -211,6 +218,68 @@ class SettingsForm extends ConfigFormBase {
       '#description' => $this->t('Choose the sorting preference for the people listing.'),
     ];
 
+    $form['global']['tags_and_related'] = [
+      '#type' => 'fieldset',
+      '#title' => 'Tags and related content',
+      '#collapsible' => FALSE,
+    ];
+    $tag_display = $config->get('tag_display');
+
+    $form['global']['tags_and_related']['tag_display'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Display tags'),
+      '#description' => $this->t("Set the default way to display a person's tags in their page."),
+      '#options' => [
+        'do_not_display' => $this
+          ->t('Do not display tags'),
+        'tag_buttons' => $this
+          ->t('Display tag buttons'),
+      ],
+      '#default_value' => $tag_display ?: 'do_not_display',
+    ];
+
+    $related_display = $config->get('related_display');
+
+    $form['global']['tags_and_related']['related_display'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Display related content'),
+      '#description' => $this->t("Set the default way to display a person's related content."),
+      '#options' => [
+        'do_not_display' => $this
+          ->t('Do not display related content'),
+        'headings_lists' => $this
+          ->t('Display related content titles grouped by tag'),
+      ],
+      '#default_value' => $related_display ?: 'do_not_display',
+    ];
+
+    $form['global']['tags_and_related']['related_display_headings_lists_help'] = [
+      '#type' => 'item',
+      '#title' => 'How related content is displayed:',
+      '#description' => $this->t("Related content will display above the page's footer as sections of headings (tags) above bulleted lists of a maximum of 30 tagged items. Tagged items are sorted by most recently edited."),
+      '#states' => [
+        'visible' => [
+          ':input[name="related_display"]' => ['value' => 'headings_lists'],
+        ],
+      ],
+    ];
+
+    // show_teaser_link_indicator.
+    $is_v2 = $this->config('config_split.config_split.sitenow_v2')->get('status');
+    // Visual indicators aren't available on SiteNow v2.
+    if (!$is_v2) {
+      $form['global']['teaser'] = [
+        '#type' => 'fieldset',
+        '#title' => 'Teaser display',
+        '#collapsible' => FALSE,
+      ];
+      $show_teaser_link_indicator = $config->get('show_teaser_link_indicator');
+      $form['global']['teaser']['show_teaser_link_indicator'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t("Display arrows linking to a person's page from lists/teasers."),
+        '#default_value' => $show_teaser_link_indicator ?: FALSE,
+      ];
+    }
     return $form;
   }
 
@@ -238,7 +307,7 @@ class SettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Get values.
     $filters = [];
-    $status = $form_state->getValue('sitenow_people_status');
+    $status = (int) $form_state->getValue('sitenow_people_status');
     $title = $form_state->getValue('sitenow_people_title');
     $path = $form_state->getValue('sitenow_people_path');
     $header_content = $form_state->getValue('sitenow_people_header_content');
@@ -246,7 +315,9 @@ class SettingsForm extends ConfigFormBase {
     $filters['field_person_types_target_id'] = $form_state->getValue('filter_type');
     $filters['field_person_research_areas_target_id'] = $form_state->getValue('filter_research');
     $sort = $form_state->getValue('sitenow_people_sort');
-
+    $tag_display = $form_state->getValue('tag_display');
+    $related_display = $form_state->getValue('related_display');
+    $show_teaser_link_indicator = $form_state->getValue('show_teaser_link_indicator');
     // Clean path.
     $path = $this->aliasCleaner->cleanString($path);
 
@@ -271,7 +342,7 @@ class SettingsForm extends ConfigFormBase {
     $default['display_options']['header']['area']['content']['value'] = $header_content['value'];
 
     // Enable/Disable view_people and set selected "sort" as enabled display.
-    if ($status == 1) {
+    if ($status === 1) {
       $view->set('status', TRUE);
       $enabled_display =& $view->getDisplay($sort);
       $enabled_display["display_options"]["enabled"] = TRUE;
@@ -282,8 +353,8 @@ class SettingsForm extends ConfigFormBase {
       foreach ($filters as $key => $filter) {
         // Unset all so that they stay in order.
         unset($default["display_options"]["filters"][$key]);
-        if ($filter == 1) {
-          if ($key == 'combine') {
+        if ((int) $filter === 1) {
+          if ($key === 'combine') {
             $default["display_options"]["filters"][$key] = [
               'id' => 'combine',
               'table' => 'views',
@@ -337,7 +408,7 @@ class SettingsForm extends ConfigFormBase {
               'plugin_id' => 'combine',
             ];
           }
-          if ($key == 'field_person_types_target_id') {
+          if ($key === 'field_person_types_target_id') {
             $default["display_options"]["filters"][$key] = [
               'id' => 'field_person_types_target_id',
               'table' => 'node__field_person_types',
@@ -388,7 +459,7 @@ class SettingsForm extends ConfigFormBase {
               'plugin_id' => 'string',
             ];
           }
-          if ($key == 'field_person_research_areas_target_id') {
+          if ($key === 'field_person_research_areas_target_id') {
             $default["display_options"]["filters"][$key] = [
               'id' => 'field_person_research_areas_target_id',
               'table' => 'node__field_person_research_areas',
@@ -481,7 +552,21 @@ class SettingsForm extends ConfigFormBase {
       }
     }
 
+    $this->configFactory->getEditable(static::SETTINGS)
+      // Save the tag display default.
+      ->set('tag_display', $tag_display)
+      ->save();
+
+    $this->configFactory->getEditable(static::SETTINGS)
+      // Save the tag display default.
+      ->set('related_display', $related_display)
+      ->save();
     parent::submitForm($form, $form_state);
+
+    $this->configFactory->getEditable(static::SETTINGS)
+      // Save the tag display default.
+      ->set('show_teaser_link_indicator', $show_teaser_link_indicator)
+      ->save();
 
     // Clear cache.
     drupal_flush_all_caches();

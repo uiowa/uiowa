@@ -1,6 +1,13 @@
+{%
+  set classes = [
+  'block',
+  'block-' ~ configuration.provider|clean_class,
+  'block-' ~ plugin_id|clean_class,
+]
+%}
 {{ attach_library('uids_base/timeline') }}
-{{ content.field_uiowa_headline }}
 <div{{ attributes.addClass(classes) }}>
+  {{ content.field_uiowa_headline }}
   <div class="timeline-line">
     <div class="timeline-line__mask">
       <div class="timeline-line__fill">

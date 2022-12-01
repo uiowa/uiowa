@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: labworthington.uiowa.ddev.site
+    protocol: https
+  machine_name: labworthington
+  human_name: worthington.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labworthington.prod
+drupal:
+  db:
+    database: worthington_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: laverman
