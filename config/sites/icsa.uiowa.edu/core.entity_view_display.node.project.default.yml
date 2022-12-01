@@ -1,0 +1,70 @@
+uuid: ec9a5fc9-ebb8-4062-a49b-2d7d235ffbcc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.project.body
+    - field.field.node.project.field_project_category
+    - field.field.node.project.field_project_date
+    - field.field.node.project.field_project_finished
+    - field.field.node.project.field_project_reports
+    - node.type.project
+  module:
+    - datetime_range
+    - file
+    - options
+    - text
+    - user
+id: node.project.default
+targetEntityType: node
+bundle: project
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_project_category:
+    type: list_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_project_date:
+    type: daterange_default
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: medium_date
+      separator: '-'
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_project_finished:
+    type: boolean
+    label: visually_hidden
+    settings:
+      format: custom
+      format_custom_false: ''
+      format_custom_true: 'This project has finished.'
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_project_reports:
+    type: file_default
+    label: above
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

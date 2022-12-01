@@ -1,0 +1,81 @@
+id: studentlife_images_to_media
+label: 'Import Media Images from images'
+migration_tags: null
+migration_group: studentlife
+source:
+  plugin: url
+  data_fetcher_plugin: http
+  data_parser_plugin: xml
+  item_selector: /rss/channel/image
+  fields:
+    -
+      name: title
+      label: 'Attachment title'
+      selector: title
+    -
+      name: post_id
+      label: 'Unique content ID'
+      selector: 'wp:post_id'
+    -
+      name: content
+      label: 'Description of the file'
+      selector: 'content:encoded'
+    -
+      name: excerpt
+      label: 'Caption for the file'
+      selector: 'excerpt:encoded'
+    -
+      name: pubDate
+      label: 'Publish date of the file'
+      selector: pubDate
+    -
+      name: post_date
+      label: 'Post date of the file'
+      selector: 'wp:post_date'
+    -
+      name: creator
+      label: 'Username of the content creator'
+      selector: 'dc:creator'
+    -
+      name: attachment_url
+      label: 'Full URL of the file on the source system'
+      selector: 'wp:attachment_url'
+    -
+      name: alt
+      label: 'Alt text for an image'
+      selector: 'wp:postmeta[wp:meta_key=''_wp_attachment_image_alt'']/wp:meta_value'
+  ids:
+    post_id:
+      type: integer
+process:
+  pseudo_destination_filename:
+    -
+      plugin: callback
+      callable: basename
+      source: attachment_url
+    -
+      plugin: skip_on_empty
+      method: row
+      message: 'Cannot import empty filename.'
+  pseudo_destination_path:
+    -
+      plugin: concat
+      source:
+        - '@pseudo_destination_filename'
+  name: '@pseudo_destination_filename'
+  field_media_image/target_id:
+    plugin: migration_lookup
+    migration: studentlife_images_import
+    source: post_id
+  field_media_image/alt:
+    -
+      plugin: default_value
+      default_value: title
+      source: alt
+  thumbnail/target_id:
+    plugin: migration_lookup
+    migration: studentlife_images_import
+    source: post_id
+destination:
+  plugin: 'entity:media'
+  default_bundle: image

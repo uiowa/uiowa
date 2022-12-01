@@ -4,14 +4,71 @@ $imgpath: '../../uids/assets/images';
 @import "../uids/assets/scss/_local-fonts.scss";
 @import "../uids/assets/scss/_base.scss";
 
+// Word break classes.
+.block--word-break,
+.block-inline-blockuiowa-text-area,
+.block-field-blocknodepagebody {
+  a {
+    word-break: break-word;
+  }
+  .headline {
+    a {
+      word-break: unset;
+    }
+  }
+}
+
+// Bust out of container.
+.block--edge-to-edge {
+  margin: 0 calc(50% - 50vw);
+}
+
+// Containers within a background color useful for views blocks.
+.block--bg-container {
+  .block__headline  {
+    @extend %container;
+    //hack to prevent a change in container width (which is in em) when font size isn't 1em
+    max-width: 1310px;
+  }
+  & > div {
+    margin: 0 $gutter;
+
+    @include breakpoint(page-container) {
+      max-width: 81.875em;
+      margin: 0 auto;
+    }
+  }
+}
 
 // Flex basis for all blocks and views
 
 .layout__region {
 
   .block,
-  .view {
+  .view,
+  .card,
+  .banner,
+  .cta__wrapper,
+  .slider,
+  .stat {
     flex-basis: 100%;
+  }
+}
+
+// set equal height columns
+.layout {
+  .layout__region--first,
+  .layout__region--second,
+  .layout__region--third,
+  .layout__region--fourth {
+    @include breakpoint(sm) {
+      display: grid;
+    }
+  }
+  &.section-alignment__start {
+    .layout__region {
+      display: inherit;
+    }
   }
 }
 
@@ -23,20 +80,25 @@ $imgpath: '../../uids/assets/images';
 }
 
 // Layout container padding
-
 .layout__container {
   margin-top: 0;
   padding-bottom: $mobile-width-gutter;
   // This will be overridden by a subsequent style for 1+n containers.
   padding-top: $mobile-width-gutter;
 
-  @include breakpoint(container) {
+  @include breakpoint(sm) {
     padding-top: $desktop-width-gutter;
     padding-bottom: $desktop-width-gutter;
   }
 
   &:first-child {
     padding-top: 0;
+    .region-pre-footer & {
+      padding-top: $mobile-width-gutter;
+      @include breakpoint(sm) {
+        padding-top: $desktop-width-gutter;
+      }
+    }
   }
 
   // @todo Should this be moved to the header layout scss file?
@@ -100,6 +162,9 @@ $imgpath: '../../uids/assets/images';
   &.section-padding {
     &__removed-top {
       padding-top: 0;
+      .region-pre-footer & {
+        padding-top: 0;
+      }
     }
 
     &__removed-bottom {
@@ -112,6 +177,9 @@ $imgpath: '../../uids/assets/images';
 
     &__top-extra {
       padding-top: 6rem;
+      .region-pre-footer & {
+        padding-top: 6rem;
+      }
     }
 
     &__bottom-extra {
@@ -120,21 +188,32 @@ $imgpath: '../../uids/assets/images';
   }
 
   // @todo Where should this live?
+  .block--wrapper,
   .block-inline-blockuiowa-text-area {
-    //width: 100%;
-    //flex: 1 0 auto;
-    flex-basis: 100%;
     min-width: 0;
 
+    &.border,
     &[class*="bg--"],
     &[class*="bg-pattern--"] {
       padding: $desktop-width-gutter;
     }
+    &.border.block-padding__all--extra,
     &[class*="bg--"].block-padding__all--extra,
     &[class*="bg-pattern--"].block-padding__all--extra {
       padding: 6rem;
     }
   }
+}
+
+// @todo remove when https://github.com/uiowa/uids/issues/714 is complete.
+.border {
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+// For sidebars: remove padding from adjacent blocks if they are the same and don't have a margin top set
+.block[class*="bg--gray"].block-padding__all + .block[class*="bg--gray"].block-padding__all:not(.block-margin__top) {
+  margin-top: -1.5rem;
+  padding-top: 0;
 }
 
 // default spacing for pages without layout builder
@@ -159,7 +238,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .layout-builder-disabled main.page__container {
   margin: 0 $mobile-width-gutter $mobile-width-gutter;
 
-  @include breakpoint(container) {
+  @include breakpoint(page-container) {
     margin: 0 auto;
     width: 100%;
   }
@@ -168,7 +247,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .layout-builder-disabled .uiowa-bar .page__container {
   margin-top: 0;
 
-  @include breakpoint(container) {
+  @include breakpoint(page-container) {
     margin: 0 auto;
   }
 }
@@ -181,12 +260,14 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
 .content__container {
   .layout__spacing_container {
-    @extend %container;
+    @include container-width;
   }
 
-  .page__container--extended {
+  .page__container--extended,
+  .page__container--extended.layout--has-sidebar,
+  .page__container--extended.sidebar-invisible {
     .layout__spacing_container {
-      @include breakpoint(container) {
+      @include breakpoint(page-container) {
         max-width: 100em;
         padding-right: $lg;
         padding-left: $lg;
@@ -194,7 +275,9 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     }
   }
 
-  .page__container--narrow {
+  .page__container--narrow,
+  .page__container--narrow.layout--has-sidebar,
+  .page__container--narrow.sidebar-invisible {
     .layout__spacing_container {
       @include breakpoint(md) {
         max-width: 63.75em;
@@ -202,7 +285,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
         padding-right: 1.25rem;
         padding-left: 1.25rem;
       }
-      @include breakpoint(container) {
+      @include breakpoint(page-container) {
         padding-right: 0;
         padding-left: 0;
       }
@@ -213,22 +296,153 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 // default left/right gutter spacing for full width settings without layout builder
 // settings if page container full or edge is selected on section
 
-.page__container--full.layout__container .layout__spacing_container {
-  margin-right: $mobile-width-gutter;
-  margin-left: $mobile-width-gutter;
-  max-width: 100%;
+.page__container--full.layout__container,
+.page__container--full.layout--has-sidebar,
+.page__container--full.sidebar-invisible {
+  .layout__spacing_container {
+    margin-right: $mobile-width-gutter;
+    margin-left: $mobile-width-gutter;
+    max-width: 100%;
 
-  @include breakpoint(menu) {
-    margin-right: $desktop-width-gutter;
-    margin-left: $desktop-width-gutter;
+    @include breakpoint(md) {
+      margin-right: $desktop-width-gutter;
+      margin-left: $desktop-width-gutter;
+    }
   }
 }
 
-.page__container--edge {
+.page__container--edge,
+.page__container--edge.layout--has-sidebar,
+.page__container--edge.sidebar-invisible {
   .layout__spacing_container {
     max-width: 100%;
     margin-right: 0;
     margin-left: 0;
+  }
+}
+
+// Reverse column order lb style
+
+.section-order__reversed {
+  // sidebar layout
+  &.layout--has-sidebar {
+    .layout__spacing_container {
+      flex-direction: column-reverse;
+      @include breakpoint(md) {
+        flex-direction: unset;
+      }
+    }
+  }
+  // two column
+  &.layout--twocol {
+    .layout__spacing_container {
+      display: grid;
+
+      .layout__region--first,
+      .layout__region--sidebar {
+        order: 2;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+
+      .layout__region--second,
+      .layout__region--content {
+        order: 1;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+    }
+  }
+  // three col reverse column order lb style
+  &.layout--threecol {
+    .layout__spacing_container {
+      display: grid;
+
+      .layout__region--first {
+        order: 3;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+
+      .layout__region--second {
+        order: 2;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+
+      .layout__region--third {
+        order: 1;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+    }
+  }
+  // four col reverse column order lb style
+  &.layout--fourcol {
+    .layout__spacing_container {
+      display: grid;
+
+      .layout__region--first {
+        order: 4;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+
+      .layout__region--second {
+        order: 3;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+
+      .layout__region--third {
+        order: 2;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+
+      .layout__region--fourth {
+        order: 1;
+        @include breakpoint(md) {
+          order: inherit;
+        }
+      }
+    }
+  }
+}
+
+// Add margins for all stacked layout regions for mobile.
+
+.layout--fourcol,
+.layout--threecol,
+.layout--twocol,
+.layout--has-sidebar {
+  .layout__region:not(:last-child) {
+    margin-bottom: $mobile-height-gutter;
+    @include breakpoint(md) {
+      margin-bottom: 0;
+    }
+  }
+
+  // If section order is reversed, add margin back into last-child.
+  &.section-order__reversed {
+    .layout__region:last-child {
+      margin-bottom: $mobile-height-gutter;
+      @include breakpoint(md) {
+        margin-bottom: 0;
+      }
+    }
+
+    .layout__region:first-child {
+      margin-bottom: 0;
+    }
   }
 }
 
@@ -237,7 +451,6 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .layout__spacing_container {
   min-width: 0;
 }
-
 
 // Block Margins / Padding
 
@@ -259,6 +472,9 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   }
   &__all--extra {
     padding: 6rem;
+  }
+  &__all--md {
+    padding: 2rem;
   }
 }
 
@@ -282,6 +498,13 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
   &__bottom {
     margin-bottom: $md;
+
+    &--extra {
+      margin-bottom: $md;
+      @include breakpoint(sm) {
+        margin-bottom: $mobile-height-gutter;
+      }
+    }
   }
 
   &__left {
@@ -291,14 +514,78 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   }
 }
 
-// mobile search
+// Set spacing as the default for mobile.
+.layout__container {
+  &:not([class*="grid-"]):not([class*="layout--title"]) {
+    .layout__region {
+      .block + .block {
+        margin-top: 1.6rem;
 
+        &:first-child {
+          margin-top: 0;
+        }
+      }
+      // Allow margin top and top extra to override.
+      .block + .block.block-margin__top {
+        margin-top: $md;
+      }
+      .block + .block.block-margin__top--extra {
+        margin-top: $md;
+        @include breakpoint(sm) {
+          margin-top: $mobile-height-gutter;
+        }
+      }
+      // Remove default margins style.
+      .block + .block.block-margin__default--removed {
+        margin-top: 0;
+      }
+      // Override card margins.
+      .block.card--media-right,
+      .block.card--media-left,
+      .block +.block.card--media-right,
+      .block +.block.card--media-left {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+// Override card margins for layouts where
+// section padding has been removed and card margin was assumed.
+.layout__container[class*="section-padding__removed"] {
+  .layout__region {
+    .block.card--media-right:first-child:last-child,
+    .block.card--media-left:first-child:last-child {
+      margin-bottom: 1.6rem;
+    }
+  }
+}
+
+// Override default for blocks adjacent to page title/breadcrumbs.
+.layout__container {
+  .layout__region {
+    .block.block-system-breadcrumb-block + .block[class*="block-field-"],
+    .block.block-field-blocknodepagetitle + .block[class*="block-field-"] {
+      margin-top: 0;
+    }
+  }
+}
+
+// No results text
+.view-empty,
+.events-empty,
+.uiowa-aggregator-no-results {
+  p {
+    font-size: 1rem;
+  }
+}
+
+// mobile search
 .search-button[aria-expanded="true"] {
   margin-left: auto;
 }
 
 // skip link
-
 .skip-link-region {
   text-align: center;
   background: #f1f1f1;
@@ -312,7 +599,6 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 }
 
 // todo move back to uids as toc style also create tag style for term edit
-
 .view-a-z-list,
 .view-book-a-z-list,
 .view-book-search,
@@ -383,7 +669,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       text-align: center;
       margin: 0 $sm $sm 0;
 
-      @include breakpoint(container) {
+      @include breakpoint(page-container) {
         border-right: none;
         margin: 0;
         flex: 1;
@@ -405,7 +691,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
       &:last-child {
         a {
-          @include breakpoint(container) {
+          @include breakpoint(page-container) {
             border-right: 1px solid $grey-light;
           }
         }
@@ -413,16 +699,6 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     }
   }
 }
-
-.views-element-container {
-  @include margin($top: $lg);
-  flex-basis: 100%;
-
-  .views-element-container {
-    margin-top: inherit;
-  }
-}
-
 
 // @todo remove
 

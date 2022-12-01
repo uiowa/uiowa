@@ -27,11 +27,11 @@
 #}
 {%
   set classes = [
-  'bg--gray',
-  'block-padding__all',
+  'block--wrapper',
   'block',
   'block-' ~ configuration.provider|clean_class,
   'block-' ~ plugin_id|clean_class,
+  'grid__mobile',
 ]
 %}
 {% set content_rendered = content|render %}

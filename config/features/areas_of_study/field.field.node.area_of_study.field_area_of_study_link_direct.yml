@@ -1,0 +1,23 @@
+uuid: 74594e7b-ce66-4f0f-8458-75951803655d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_area_of_study_link_direct
+    - node.type.area_of_study
+id: node.area_of_study.field_area_of_study_link_direct
+field_name: field_area_of_study_link_direct
+entity_type: node
+bundle: area_of_study
+label: 'Link directly to source'
+description: 'If checked, teaser displays of this content will link directly to the primary source instead of this content.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

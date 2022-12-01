@@ -1,0 +1,29 @@
+uuid: ee320e7b-298c-45cb-a482-632dd760d8a2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_image
+    - media.type.image
+    - node.type.event_series
+id: node.event_series.field_image
+field_name: field_image
+entity_type: node
+bundle: event_series
+label: 'Featured Image'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

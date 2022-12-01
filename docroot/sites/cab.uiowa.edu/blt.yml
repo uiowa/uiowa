@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: cab.uiowa.ddev.site
+    protocol: https
+  machine_name: cab
+  human_name: cab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: cab.prod
+drupal:
+  db:
+    database: cab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: dquam

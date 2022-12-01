@@ -1,0 +1,38 @@
+styles:
+  css:
+    theme:
+      assets/css/styles.css: { }
+
+client.test:
+  remote: https://profiles-test.uiowa.edu
+  version: VERSION
+  license: MIT
+  js:
+    js/uiowa-profiles.js: { }
+    https://cdn.jsdelivr.net/npm/vue/dist/vue.js: { type: external, minified: true }
+    https://profiles-test.uiowa.edu/api/lib/profiles-client.umd.min.js: { type: external, minified: true }
+  dependencies:
+    - core/drupalSettings
+  css:
+    theme:
+      https://profiles-test.uiowa.edu/api/lib/profiles-client.css: { type: external, minified: true }
+
+client.prod:
+  remote: https://profiles.uiowa.edu
+  version: VERSION
+  license: MIT
+  js:
+    js/uiowa-profiles.js: { }
+    https://cdn.jsdelivr.net/npm/vue/dist/vue.js: { type: external, minified: true }
+    https://profiles.uiowa.edu/api/lib/profiles-client.umd.min.js: { type: external, minified: true }
+  dependencies:
+    - core/drupalSettings
+  css:
+    theme:
+      https://profiles.uiowa.edu/api/lib/profiles-client.css: { type: external, minified: true }
+settings-form:
+  js:
+    js/uiowa-profiles-settings-form.js: {}
+  css:
+    theme:
+      css/uiowa-profiles-settings-form.css: {}

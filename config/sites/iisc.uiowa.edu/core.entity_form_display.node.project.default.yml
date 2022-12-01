@@ -1,0 +1,190 @@
+uuid: 93738d5f-462f-407f-8865-46456cec4399
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.node.minimal
+    - field.field.node.project.body
+    - field.field.node.project.field_academic_year
+    - field.field.node.project.field_image
+    - field.field.node.project.field_meta_tags
+    - field.field.node.project.field_project_college_department
+    - field.field.node.project.field_project_deliverables
+    - field.field.node.project.field_project_led_by
+    - field.field.node.project.field_project_links
+    - field.field.node.project.field_project_partner
+    - field.field.node.project.field_tags
+    - node.type.project
+    - workflows.workflow.editorial
+  module:
+    - content_moderation
+    - entity_browser_entity_form
+    - inline_entity_form
+    - link
+    - media_library
+    - metatag
+    - path
+    - text
+id: node.project.default
+targetEntityType: node
+bundle: project
+mode: default
+content:
+  body:
+    type: text_textarea_with_summary
+    weight: 121
+    region: content
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+      show_summary: false
+    third_party_settings: {  }
+  created:
+    type: datetime_timestamp
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_academic_year:
+    type: options_select
+    weight: 130
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_image:
+    type: media_library_widget
+    weight: 122
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+  field_meta_tags:
+    type: metatag_firehose
+    weight: 129
+    region: content
+    settings:
+      sidebar: true
+      use_details: true
+    third_party_settings: {  }
+  field_project_college_department:
+    type: entity_reference_autocomplete
+    weight: 123
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_project_deliverables:
+    type: media_library_widget
+    weight: 124
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+  field_project_led_by:
+    type: inline_entity_form_complex
+    weight: 126
+    region: content
+    settings:
+      form_mode: minimal
+      override_labels: true
+      label_singular: leader
+      label_plural: leaders
+      allow_new: true
+      allow_existing: true
+      match_operator: CONTAINS
+      allow_duplicate: false
+      collapsible: true
+      collapsed: false
+      revision: true
+    third_party_settings:
+      entity_browser_entity_form:
+        entity_browser_id: _none
+  field_project_links:
+    type: link_default
+    weight: 127
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  field_project_partner:
+    type: entity_reference_autocomplete
+    weight: 125
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_tags:
+    type: entity_reference_autocomplete
+    weight: 128
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 40
+      placeholder: ''
+    third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
+    weight: 100
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  promote:
+    type: boolean_checkbox
+    weight: 15
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 120
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  sticky:
+    type: boolean_checkbox
+    weight: 16
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 5
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  url_redirects:
+    weight: 50
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

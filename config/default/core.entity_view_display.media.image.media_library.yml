@@ -6,6 +6,7 @@ dependencies:
     - core.entity_view_mode.media.media_library
     - field.field.media.image.field_media_caption
     - field.field.media.image.field_media_image
+    - field.field.media.image.field_tags
     - image.style.square__384_x_384
     - media.type.image
   module:
@@ -20,19 +21,25 @@ mode: media_library
 content:
   thumbnail:
     type: image
-    weight: 0
-    region: content
     label: hidden
     settings:
-      image_style: square__384_x_384
       image_link: ''
+      image_style: square__384_x_384
+      image_loading:
+        attribute: lazy
     third_party_settings:
       lazy:
         lazy_image: '0'
+    weight: 0
+    region: content
 hidden:
   created: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_media_caption: true
   field_media_image: true
+  field_tags: true
   name: true
   search_api_excerpt: true
   uid: true

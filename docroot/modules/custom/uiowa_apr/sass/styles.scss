@@ -1,8 +1,8 @@
-@import "../../../themes/custom/uids_base/uids/assets/scss/variables";
-@import "../../../themes/custom/uids_base/uids/assets/scss/utilities";
-@import "../../../themes/custom/uids_base/uids/components/card/_card-mixins.scss";
-@import "../../../themes/custom/uids_base/uids/components/headline/headline-mixins";
-@import "../../../themes/custom/uids_base/uids/components/pagination/pagination";
+@import "../../../themes/custom/uids_base/uids3/assets/scss/variables";
+@import "../../../themes/custom/uids_base/uids3/assets/scss/utilities";
+@import "../../../themes/custom/uids_base/uids3/components/card/_card-mixins.scss";
+@import "../../../themes/custom/uids_base/uids3/components/headline/headline-mixins";
+@import "../../../themes/custom/uids_base/uids3/components/pagination/pagination";
 
 
 .apr-filter {
@@ -29,16 +29,16 @@
 
   .form-group {
     flex: 0 1 100%;
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       flex: 0 1 auto;
       margin: 0 1rem 1rem 0;
     }
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       flex: auto 1 1;
       margin: 0;
     }
     + .form-group {
-      @include breakpoint(container) {
+      @include breakpoint(page-container) {
         margin-left: 1rem;
       }
     }
@@ -121,7 +121,7 @@
         display: block;
       }
     }
-  } 
+  }
 
   .apr-profile
 

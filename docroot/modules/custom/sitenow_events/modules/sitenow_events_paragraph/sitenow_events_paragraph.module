@@ -11,7 +11,7 @@ use Drupal\Core\Url;
 /**
  * Implements hook_uip_classes_alter().
  */
-function sitenow_events_uip_classes_alter(&$options, $entity, $bundle) {
+function sitenow_events_paragraph_uip_classes_alter(&$options, $entity, $bundle) {
   switch ($bundle) {
     case 'events':
       $options['hide-descriptions'] = 'Hide Descriptions';
@@ -47,7 +47,7 @@ function sitenow_events_paragraph_preprocess_paragraph(&$variables) {
 
         // Display title if it exists.
         if ($paragraph->hasField('field_uip_display_title')) {
-          if ($paragraph->field_uip_display_title->value == 1) {
+          if ((int) $paragraph->field_uip_display_title->value === 1) {
             $variables['display_title'] = TRUE;
           }
         }
@@ -85,7 +85,7 @@ function sitenow_events_paragraph_preprocess_paragraph(&$variables) {
         $start = 'now';
         $end = '+365 days';
 
-        if ($paragraph->get('field_events_past')->value == TRUE) {
+        if ($paragraph->get('field_events_past')->value === TRUE) {
           $display_id = 'past';
           $start = '-365 days';
           $end = 'yesterday';
@@ -135,7 +135,7 @@ function sitenow_events_paragraph_preprocess_paragraph(&$variables) {
         }
 
         // If we have more link checked and link provided, pass it.
-        if ($paragraph->get('field_events_more')->value == TRUE) {
+        if ((bool) $paragraph->get('field_events_more')->value === TRUE) {
           $variables['more'] = [
             '#type' => 'container',
             '#attributes' => [

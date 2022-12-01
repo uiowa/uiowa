@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains grad_srop.module.
+ * Contains grad_custom.module.
  */
 
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -24,7 +24,7 @@ function grad_custom_preprocess_node(&$variables) {
           case 'teaser':
             // Show trimmed body/bio if no teaser is provided.
             if ($node->get('field_teaser')->isEmpty()) {
-              $field = ($type == 'person' ? 'field_person_bio' : 'body');
+              $field = ($type === 'person' ? 'field_person_bio' : 'body');
               $variables['content']['field_teaser'] = $variables['node']->$field->view([
                 'label' => 'hidden',
                 'type' => 'smart_trim',
@@ -94,7 +94,7 @@ function grad_custom_programs_phd_allowed_values() {
 /**
  * Implements hook_allowed_values_function().
  */
-function grad_degrees_offered_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+function grad_custom_degrees_offered_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
   return [
     'Au.D.' => 'Au.D.',
     'Certificate' => 'Certificate',
@@ -143,7 +143,7 @@ function grad_degrees_offered_allowed_values(FieldStorageConfig $definition, Con
 /**
  * Implements hook_allowed_values_function().
  */
-function grad_disciplines_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+function grad_custom_disciplines_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
   return [
     'Applied Health Sciences' => 'Applied Health Sciences',
     'Biomedical and Life Sciences' => 'Biomedical and Life Sciences',
@@ -158,7 +158,7 @@ function grad_disciplines_allowed_values(FieldStorageConfig $definition, Content
 /**
  * Implements hook_allowed_values_function().
  */
-function srop_year_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+function grad_custom_srop_year_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
   // Available srop year values.
   $thisyear = date('Y');
   $i = 2000;

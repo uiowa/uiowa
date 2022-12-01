@@ -6,6 +6,7 @@ dependencies:
     - core.entity_view_mode.media.image_large
     - field.field.media.image.field_media_caption
     - field.field.media.image.field_media_image
+    - field.field.media.image.field_tags
     - image.style.large
     - media.type.image
   module:
@@ -20,18 +21,24 @@ mode: image_large
 content:
   field_media_image:
     type: image
-    weight: 0
-    region: content
     label: hidden
     settings:
-      image_style: large
       image_link: ''
+      image_style: large
+      image_loading:
+        attribute: lazy
     third_party_settings:
       lazy:
         lazy_image: '1'
+    weight: 0
+    region: content
 hidden:
   created: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_media_caption: true
+  field_tags: true
   name: true
   search_api_excerpt: true
   thumbnail: true

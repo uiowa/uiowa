@@ -1,0 +1,42 @@
+<?php
+
+/**
+ * @file
+ * Contains grad_thesis_defense.module.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Implements hook_entity_presave().
+ */
+function grad_thesis_defense_entity_presave(EntityInterface $entity) {
+  switch ($entity->bundle()) {
+    case 'thesis_defense':
+      // Setting the title with the first/last name values.
+      $output = $entity->get('field_person_first_name')->value . ' ' . $entity->get('field_person_last_name')->value;
+      $entity->setTitle($output);
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function grad_thesis_defense_theme($existing, $type, $theme, $path) {
+  return [
+    'field__field_thesis_defense_date' => [
+      'template' => 'field--node--field-thesis-defense-date',
+      'base hook' => 'field',
+    ],
+    'field__field_thesis_defense_location' => [
+      'template' => 'field--node--field-thesis-defense-location',
+      'base hook' => 'field',
+    ],
+    'node__thesis_defense__teaser' => [
+      'template' => 'node--thesis-defense--teaser',
+      'base hook' => 'node',
+    ],
+  ];
+}

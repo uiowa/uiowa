@@ -1,0 +1,81 @@
+uuid: b290394d-e90a-4c01-9a75-728b362b2d3f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.faqs.field_reference
+    - field.field.paragraph.faqs.field_uip_classes
+    - field.field.paragraph.faqs.field_uip_colwidth
+    - field.field.paragraph.faqs.field_uip_display_title
+    - field.field.paragraph.faqs.field_uip_id
+    - field.field.paragraph.faqs.field_uip_title
+    - paragraphs.paragraphs_type.faqs
+  module:
+    - field_group
+third_party_settings:
+  field_group:
+    group_faq_settings:
+      children:
+        - field_uip_colwidth
+        - field_uip_classes
+        - field_uip_id
+      label: 'FAQs Settings'
+      region: content
+      parent_name: ''
+      weight: 3
+      format_type: details
+      format_settings:
+        classes: ''
+        id: ''
+        open: false
+        required_fields: true
+id: paragraph.faqs.default
+targetEntityType: paragraph
+bundle: faqs
+mode: default
+content:
+  field_reference:
+    type: options_select
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_uip_classes:
+    type: options_select
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_uip_colwidth:
+    type: options_select
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_uip_display_title:
+    type: boolean_checkbox
+    weight: 1
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_uip_id:
+    type: string_textfield
+    weight: 5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_uip_title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true
+  uid: true

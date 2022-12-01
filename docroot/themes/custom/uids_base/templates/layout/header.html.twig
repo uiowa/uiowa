@@ -39,6 +39,8 @@
 
 {% block horizontal_nav %}
   {% if header_nav in ['horizontal', 'mega'] %}
+    {{ attach_library('uids_base/mega-menu') }}
+    {{ attach_library('uids_base/horizontal-menu') }}
     {% set nav_attributes = create_attribute() %}
     {% set nav_classes = [
       'nav--horizontal',

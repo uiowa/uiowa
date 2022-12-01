@@ -1,0 +1,153 @@
+uuid: e450ec00-f76c-4d0f-bab5-b2e9b6defc64
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.colleges.field_college_website
+    - field.field.taxonomy_term.colleges.field_image
+    - taxonomy.vocabulary.colleges
+  module:
+    - layout_builder
+    - layout_builder_restrictions
+    - link
+    - text
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    enabled: true
+    allow_custom: false
+    sections:
+      -
+        layout_id: layout_twocol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          column_widths: 67-33
+          layout_builder_styles_style:
+            0: ''
+            1: ''
+            section_alignment_start: section_alignment_start
+        components:
+          -
+            uuid: b73229a7-eeac-4600-8347-c36f0425f635
+            region: first
+            configuration:
+              id: 'field_block:taxonomy_term:colleges:description'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+          -
+            uuid: b053c2f6-e58d-4cba-8d72-edf2555fd20a
+            region: second
+            configuration:
+              id: 'field_block:taxonomy_term:colleges:field_image'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: hidden
+                settings:
+                  view_mode: medium__widescreen
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+          -
+            uuid: f9210829-cad9-4b74-88b8-e9404e802d10
+            region: first
+            configuration:
+              id: 'field_block:taxonomy_term:colleges:field_college_website'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: link
+                label: hidden
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: '0'
+                  target: '0'
+                third_party_settings: {  }
+            weight: 0
+            additional:
+              layout_builder_styles_style:
+                block_margin_bottom: block_margin_bottom
+                block_margin_top: block_margin_top
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: ''
+            1: ''
+            remove_default_bottom_padding: remove_default_bottom_padding
+        components: {  }
+        third_party_settings: {  }
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      allowed_layouts: {  }
+      denylisted_blocks: {  }
+      allowlisted_blocks: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts: {  }
+      allowlisted_blocks: null
+      denylisted_blocks: null
+id: taxonomy_term.colleges.default
+targetEntityType: taxonomy_term
+bundle: colleges
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_college_website:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: '0'
+      target: '0'
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_image:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

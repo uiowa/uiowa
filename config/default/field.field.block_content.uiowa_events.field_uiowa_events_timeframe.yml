@@ -1,0 +1,23 @@
+uuid: 13b9f878-336f-48e4-b591-f71b9dd51733
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_events
+    - field.storage.block_content.field_uiowa_events_timeframe
+  module:
+    - options
+id: block_content.uiowa_events.field_uiowa_events_timeframe
+field_name: field_uiowa_events_timeframe
+entity_type: block_content
+bundle: uiowa_events
+label: Timeframe
+description: 'Upcoming will display events starting today and later as well as in-progress events that have a start date that occurred before today but an end date of today or later. Past will display events that occurred yesterday and earlier. Date range allows a specific start and end date.'
+required: true
+translatable: false
+default_value:
+  -
+    value: upcoming
+default_value_callback: ''
+settings: {  }
+field_type: list_string

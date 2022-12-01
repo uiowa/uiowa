@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labwang.uiowa.ddev.site
+    protocol: https
+  machine_name: labwang
+  human_name: wang.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labwang.prod
+drupal:
+  db:
+    database: wang_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labwang.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Laboratory for IoT-enabled Data Analytics and System Informatics'

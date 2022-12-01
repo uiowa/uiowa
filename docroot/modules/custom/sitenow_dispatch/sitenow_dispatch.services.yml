@@ -1,0 +1,7 @@
+services:
+  logger.channel.sitenow_dispatch:
+    parent: logger.channel_base
+    arguments: [ 'sitenow_dispatch' ]
+  sitenow_dispatch.dispatch:
+    class: Drupal\sitenow_dispatch\Dispatch
+    arguments: ['@http_client', '@config.factory', '@logger.channel.sitenow_dispatch']

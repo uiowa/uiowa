@@ -2,6 +2,7 @@
 
 namespace Drupal\sitenow_migrate\EventSubscriber;
 
+use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\migrate\Event\MigrateEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -21,13 +22,23 @@ class PostRowSaveEvent implements EventSubscriberInterface {
   protected $entityTypeManager;
 
   /**
+   * The active database connection.
+   *
+   * @var \Drupal\Core\Database\Connection
+   */
+  protected $database;
+
+  /**
    * PostRowSaveEvent constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeManager $entityTypeManager
    *   The EntityTypeManager service.
+   * @param \Drupal\Core\Database\Connection $database
+   *   The active database connection.
    */
-  public function __construct(EntityTypeManager $entityTypeManager) {
+  public function __construct(EntityTypeManager $entityTypeManager, Connection $database) {
     $this->entityTypeManager = $entityTypeManager;
+    $this->database = $database;
   }
 
   /**
@@ -73,14 +84,24 @@ class PostRowSaveEvent implements EventSubscriberInterface {
 
         case 'image':
           $meta = $row->getSourceProperty('meta');
+          $title = 'field_file_image_title_text_value';
+          $alt = 'field_file_image_alt_text_value';
+          foreach ([$title, $alt] as $name) {
+            if (empty($meta[$name])) {
+              // If no title, set it to the filename.
+              // If no alt, set it to the title
+              // (which may be the filename).
+              $meta[$name] = (isset($meta[$title])) ? $meta[$title] : $file->getFilename();
+            }
+          }
 
           /** @var \Drupal\Media\MediaInterface $media */
           $media = $this->entityTypeManager->getStorage('media')->create([
             'bundle' => 'image',
             'field_media_image' => [
               'target_id' => $fids[0],
-              'alt' => $meta['field_file_image_alt_text_value'],
-              'title' => $meta['field_file_image_title_text_value'],
+              'alt' => $meta[$alt],
+              'title' => $meta[$title],
             ],
             'langcode' => 'en',
           ]);

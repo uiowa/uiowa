@@ -1,0 +1,39 @@
+uuid: c11a8454-c6a4-4145-9582-a40d4e815e38
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.media.panopto.field_media_panopto_url
+    - field.field.media.panopto.field_tags
+    - media.type.panopto
+  module:
+    - sitenow_media_wysiwyg
+id: media.panopto.default
+targetEntityType: media
+bundle: panopto
+mode: default
+content:
+  field_media_panopto_url:
+    type: panopto_url_widget
+    weight: 0
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  field_tags:
+    type: entity_reference_autocomplete
+    weight: 26
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 40
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  name: true
+  path: true
+  status: true
+  uid: true

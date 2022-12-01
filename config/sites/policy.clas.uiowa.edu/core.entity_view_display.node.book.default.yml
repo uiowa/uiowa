@@ -1,0 +1,56 @@
+uuid: d5c6d773-a3fd-4d93-9483-9eb38fe1cdff
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.book.body
+    - field.field.node.book.book_amended_date
+    - field.field.node.book.book_owner
+    - field.field.node.book.book_tags
+    - node.type.book
+  module:
+    - datetime
+    - text
+    - user
+_core:
+  default_config_hash: UWTnZUj-u-jp8I_S1C1nUCTlM5iIV2QKdxm37ehFjoI
+id: node.book.default
+targetEntityType: node
+bundle: book
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  book_amended_date:
+    type: datetime_default
+    label: visually_hidden
+    settings:
+      timezone_override: ''
+      format_type: month_year
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  book_owner:
+    type: string
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  book_tags:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+hidden:
+  links: true
+  search_api_excerpt: true

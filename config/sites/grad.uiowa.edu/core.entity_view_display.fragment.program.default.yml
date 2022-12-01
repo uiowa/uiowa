@@ -1,0 +1,86 @@
+uuid: cd5b6ae2-19ce-433b-b258-e026d0047b5c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.fragment.program.field_grad_degrees_offered
+    - field.field.fragment.program.field_grad_discipline
+    - field.field.fragment.program.field_program_conferred_by_grad
+    - field.field.fragment.program.field_program_homepage
+    - field.field.fragment.program.field_program_interdisciplinary
+    - fragments.fragment_type.program
+  module:
+    - link
+    - options
+id: fragment.program.default
+targetEntityType: fragment
+bundle: program
+mode: default
+content:
+  description:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  field_grad_degrees_offered:
+    type: list_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_grad_discipline:
+    type: list_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_program_conferred_by_grad:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_program_homepage:
+    type: link
+    label: inline
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_program_interdisciplinary:
+    type: boolean
+    label: inline
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  created: true
+  search_api_excerpt: true
+  status: true
+  uid: true
+  user_id: true

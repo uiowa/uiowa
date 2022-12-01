@@ -6,6 +6,7 @@ dependencies:
     - core.entity_view_mode.media.sitenow_16_9
     - field.field.media.image.field_media_caption
     - field.field.media.image.field_media_image
+    - field.field.media.image.field_tags
     - media.type.image
     - responsive_image.styles.sitenow_16_9
   module:
@@ -20,8 +21,6 @@ mode: sitenow_16_9
 content:
   field_media_image:
     type: responsive_image
-    weight: 0
-    region: content
     label: hidden
     settings:
       responsive_image_style: sitenow_16_9
@@ -29,9 +28,15 @@ content:
     third_party_settings:
       lazy:
         lazy_image: '1'
+    weight: 0
+    region: content
 hidden:
   created: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_media_caption: true
+  field_tags: true
   name: true
   search_api_excerpt: true
   thumbnail: true

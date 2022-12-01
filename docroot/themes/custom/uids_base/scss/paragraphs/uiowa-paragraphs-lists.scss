@@ -1,6 +1,6 @@
-@import "uids/assets/scss/_variables.scss";
-@import "uids/assets/scss/_utilities.scss";
-@import "components/card/_card-mixins.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
+@import "uids3/components/card/_card-mixins.scss";
 
 .paragraph--type--articles,
 .paragraph--type--events,
@@ -53,10 +53,11 @@
     }
   }
 
-  .node--type-article,
-  .card--list {
+  .node--type-article {
     display: flex;
-    flex-direction: row-reverse;
+    @include breakpoint(sm) {
+      flex-direction: row-reverse;
+    }
   }
 }
 
@@ -65,10 +66,6 @@
   .field--name-field-featured-content {
     @include list-group;
     @include list-group-flush;
-  }
-
-  .featured-content-item {
-    // @include list-group-item;
   }
 
   .content-image,
@@ -127,20 +124,22 @@
     }
   }
 
-  /*
-  .node--view-mode-teaser.media {
-    flex-direction: row-reverse;
-    flex-wrap: wrap-reverse;
-    @include breakpoint(sm) {
-      flex-direction: inherit;
+  .card--list {
+    &.card--person-teaser {
+      @include breakpoint(sm) {
+        margin-top: 1.6rem;
+      }
     }
   }
-*/
-  .node--type-article,
-  .card--list {
+  .node--type-article {
     @include breakpoint(sm) {
       display: flex;
       flex-direction: row-reverse;
+    }
+    &.card--person-teaser {
+      @include breakpoint(sm) {
+        margin-top: 1.6rem;
+      }
     }
   }
 }
@@ -153,14 +152,14 @@
   .card--person-teaser {
     @include breakpoint(sm) {
       padding: 2rem!important;
+      margin-top: 0;
     }
   }
 }
 
 // Articles List
 .paragraph--type--articles.list,
-.paragraph--type--people.list,
-.view-display-id-page_articles {
+.paragraph--type--people.list {
   .view-content {
     @include list-group;
     @include list-group-flush;
@@ -168,7 +167,6 @@
   }
 
   .views-row {
-    @include list-group-item;
 
     &:first-child {
       border-top: none;
@@ -237,7 +235,7 @@
   .field--name-field-featured-content {
     margin-top: $gutter;
 
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       display: flex;
       flex-wrap: wrap;
     }
@@ -248,7 +246,7 @@
       margin-bottom: $mobile-width-gutter;
     }
 
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       flex: 0 0 calc(50% - 1.5rem);
       margin-bottom: $desktop-width-gutter;
 
@@ -262,7 +260,7 @@
       }
     }
 
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       flex: 0 0 calc(34.5% - 3rem);
       margin-bottom: $desktop-width-gutter;
 
@@ -335,7 +333,7 @@
   .view-content {
     margin-top: $gutter;
 
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       display: flex;
       flex-wrap: wrap;
     }
@@ -346,7 +344,7 @@
       margin-bottom: $mobile-width-gutter;
     }
 
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       flex: 0 0 calc(50% - 1.5rem);
       margin-bottom: $desktop-width-gutter;
 
@@ -360,7 +358,7 @@
       }
     }
 
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       flex: 0 0 calc(34.5% - 3rem);
       margin-bottom: $desktop-width-gutter;
 
@@ -403,7 +401,7 @@
 // Events Grid
 .paragraph--type--events.grid {
   .uiowa-events {
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       display: flex;
       flex-wrap: wrap;
     }
@@ -420,7 +418,7 @@
       margin-bottom: $mobile-width-gutter;
     }
 
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       flex: 0 0 calc(50% - 1.5rem);
       margin-bottom: $desktop-width-gutter;
 
@@ -434,7 +432,7 @@
       }
     }
 
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       flex: 0 0 calc(34.5% - 3rem);
       margin-bottom: $desktop-width-gutter;
 

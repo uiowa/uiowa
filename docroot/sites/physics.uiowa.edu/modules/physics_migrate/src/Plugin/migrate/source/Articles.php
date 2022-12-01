@@ -166,7 +166,7 @@ class Articles extends BaseNodeSource {
       3 => 96,
     ];
 
-    return isset($map[$tid]) ? $map[$tid] : FALSE;
+    return $map[$tid] ?? FALSE;
   }
 
 }

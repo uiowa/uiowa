@@ -1,0 +1,24 @@
+uuid: f40981ca-ffb9-4b3f-9a25-1409e350bf68
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: Site
+description: 'The ighn.international.uiowa.edu site split.'
+weight: 70
+stackable: true
+storage: folder
+folder: ../config/sites/ighn.international.uiowa.edu
+module:
+  ighn_core: 0
+theme: {  }
+complete_list:
+  - config_split.config_split.site
+  - node.type.ighn_person
+  - simple_sitemap.bundle_settings.default.node.ighn_person
+  - views.view.ighn_person_view
+  - 'block.block.ighn_*'
+  - 'field.storage.node.field_ighn_*'
+  - 'taxonomy.vocabulary.ighn_*'
+partial_list:
+  - 'user.role.*'

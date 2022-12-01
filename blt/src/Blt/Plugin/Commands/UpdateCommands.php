@@ -284,7 +284,7 @@ EOD;
       $file = "{$root}/docroot/sites/{$site}/blt.yml";
       $id = Multisite::getIdentifier("https://{$site}");
       $yaml = YamlMunge::parseFile($file);
-      $yaml['project']['local']['hostname'] = "{$id}.local.drupal.uiowa.edu";
+      $yaml['project']['local']['hostname'] = "{$id}.uiowa.ddev.site";
       file_put_contents("{$root}/docroot/sites/{$site}/blt.yml", Yaml::dump($yaml, 10, 2));
 
       $file = "{$root}/docroot/sites/{$site}/local.drush.yml";
@@ -549,6 +549,55 @@ EOD;
     }
 
     $this->setSchemaVersion(1014);
+  }
+
+  /**
+   * Update 1015.
+   *
+   * @Update(
+   *   version = "1015",
+   *   description = "Delete empty config split directories."
+   * )
+   */
+  protected function update1015() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+
+    foreach ($sites as $site) {
+      $config_dir = "{$root}/config/{$site}";
+
+      if (!file_exists("{$config_dir}/.htaccess")) {
+        $empty[] = $site;
+        $this->taskFilesystemStack()
+          ->remove($config_dir)
+          ->run();
+      }
+    }
+
+    $this->setSchemaVersion(1015);
+  }
+
+  /**
+   * Update 1016.
+   *
+   * @Update(
+   *   version = "1016",
+   *   description = "Update local Drush alias root path."
+   * )
+   */
+  protected function update1016() {
+    $root = $this->getConfigValue('repo.root');
+    $sites = Multisite::getAllSites($root);
+
+    foreach ($sites as $host) {
+      $id = Multisite::getIdentifier("https://$host");
+      $path = "$root/drush/sites/$id.site.yml";
+      $yaml = YamlMunge::parseFile($path);
+      $yaml['local']['root'] = '/var/www/html/docroot';
+      YamlMunge::writeFile($path, $yaml);
+    }
+
+    $this->setSchemaVersion(1016);
   }
 
 }

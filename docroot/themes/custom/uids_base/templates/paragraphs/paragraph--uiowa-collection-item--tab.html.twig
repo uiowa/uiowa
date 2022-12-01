@@ -39,15 +39,15 @@
  */
 #}
 {{ attach_library('uids_base/tabs') }}
-{% set tab_item_id = 'tab-select-' ~ delta %}
 
-<div id="{{ tab_item_id }}"
-  aria-labelledby="{{ tab_item_id }}-heading"
-  role="tabpanel"
-  class="tab__content"
-  {% if not delta == 0 %}
-    hidden="hidden"
-  {% endif %}
+{% set tab_item_id = 'tabs--' ~ parent_id ~ '__panel--' ~ delta %}
+{% set tab_labelled_by = 'tabs--' ~ parent_id ~ '__' ~ delta %}
+<div tabindex="0"
+     role="tabpanel"
+     id="{{ tab_item_id }}"
+     aria-labelledby="{{ tab_labelled_by }}"
+     class="tab__content"
+  {{ (delta == 0) ? '': 'hidden="hidden"' }}
 >
   {% block tab_content %}
     {{ content.field_collection_body }}

@@ -10,8 +10,8 @@ dependencies:
     - smart_date_recur
 third_party_settings:
   smart_date_recur:
-    allow_recurring: 0
-    month_limit: '12'
+    allow_recurring: false
+    month_limit: 12
 _core:
   default_config_hash: '-YVyZixV2I1tWIn_wfTHXM8AlzQDnuH0mF0epUpxXiY'
 id: node.event.field_event_when
@@ -24,10 +24,10 @@ required: true
 translatable: false
 default_value:
   -
+    default_duration: 60
+    default_duration_increments: "30\r\n60|1 hour\r\n90\r\n120|2 hours\r\ncustom"
     default_date_type: next_hour
     default_date: ''
-    default_duration_increments: "30\r\n60|1 hour\r\n90\r\n120|2 hours\r\ncustom"
-    default_duration: 60
 default_value_callback: ''
 settings: {  }
 field_type: smartdate

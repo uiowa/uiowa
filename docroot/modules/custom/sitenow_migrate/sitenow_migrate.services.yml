@@ -4,6 +4,6 @@ services:
     arguments: ['sitenow_migrate']
   post_rowsave_subscriber:
     class: 'Drupal\sitenow_migrate\EventSubscriber\PostRowSaveEvent'
-    arguments: [ '@entity_type.manager' ]
+    arguments: [ '@entity_type.manager', '@database' ]
     tags:
       - { name: 'event_subscriber' }

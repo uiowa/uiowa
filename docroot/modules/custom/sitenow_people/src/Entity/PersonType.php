@@ -103,7 +103,7 @@ class PersonType extends ConfigEntityBase implements PersonTypeInterface {
    * {@inheritdoc}
    */
   public function getAllowedFields() {
-    return isset($this->allowed_fields) ? $this->allowed_fields : [];
+    return $this->allowed_fields ?? [];
   }
 
 }

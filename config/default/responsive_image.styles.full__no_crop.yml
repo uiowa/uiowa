@@ -15,8 +15,6 @@ id: full__no_crop
 label: 'Full - No crop'
 image_style_mappings:
   -
-    breakpoint_id: responsive_image.viewport_sizing
-    multiplier: 1x
     image_mapping_type: sizes
     image_mapping:
       sizes: '(min-width:1310px) 1310px, 100vw'
@@ -27,5 +25,7 @@ image_style_mappings:
         - no_crop__2592w
         - no_crop__384w
         - no_crop__768w
+    breakpoint_id: responsive_image.viewport_sizing
+    multiplier: 1x
 breakpoint_group: responsive_image
 fallback_image_style: no_crop__1024w

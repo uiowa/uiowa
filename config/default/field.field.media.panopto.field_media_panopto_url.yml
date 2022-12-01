@@ -1,0 +1,23 @@
+uuid: 27645fd5-689f-411a-9b50-9ad1826e1c01
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_media_panopto_url
+    - media.type.panopto
+  module:
+    - sitenow_media_wysiwyg
+id: media.panopto.field_media_panopto_url
+field_name: field_media_panopto_url
+entity_type: media
+bundle: panopto
+label: 'Panopto URL'
+description: 'A valid URL for a Panopto video from UICapture.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: '16'
+  title: '0'
+field_type: panopto_url

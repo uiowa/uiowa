@@ -1,0 +1,100 @@
+uuid: bca957a7-f937-4438-bfd6-8007caa98363
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.lockup
+  module:
+    - content_moderation
+    - workbench_email
+  enforced:
+    config:
+      0: workbench_email.workbench_email_template.approved_author
+      2: workbench_email.workbench_email_template.denied_author
+third_party_settings:
+  workbench_email:
+    workbench_email_templates:
+      publish:
+        approved_author: approved_author
+id: lockup
+label: Lockup
+type: content_moderation
+type_settings:
+  states:
+    archived:
+      label: Archived
+      weight: 1
+      published: false
+      default_revision: true
+    denied:
+      label: Denied
+      weight: -1
+      published: false
+      default_revision: true
+    draft:
+      label: Draft
+      weight: -3
+      published: false
+      default_revision: false
+    published:
+      label: Approved
+      weight: 0
+      published: true
+      default_revision: true
+    review:
+      label: Review
+      weight: -2
+      published: false
+      default_revision: false
+  transitions:
+    archive:
+      label: Archive
+      from:
+        - denied
+        - published
+      to: archived
+      weight: 1
+    archived_published:
+      label: 'Restore from archive'
+      from:
+        - archived
+      to: published
+      weight: 2
+    create_new_draft:
+      label: 'Create New Draft'
+      from:
+        - archived
+        - denied
+        - draft
+        - published
+        - review
+      to: draft
+      weight: -3
+    deny:
+      label: Deny
+      from:
+        - draft
+        - published
+        - review
+      to: denied
+      weight: -1
+    needs_review:
+      label: 'Needs Review'
+      from:
+        - denied
+        - draft
+        - review
+      to: review
+      weight: -2
+    publish:
+      label: Approve
+      from:
+        - draft
+        - published
+        - review
+      to: published
+      weight: 0
+  entity_types:
+    node:
+      - lockup
+  default_moderation_state: review

@@ -13,7 +13,7 @@ field_name: field_uiowa_slider_slides
 entity_type: block_content
 bundle: uiowa_slider
 label: Slides
-description: 'Add Slides to the Slider to increase the amount of content.'
+description: 'Add up to 4 slides.'
 required: false
 translatable: false
 default_value: {  }
@@ -21,9 +21,9 @@ default_value_callback: ''
 settings:
   handler: 'default:paragraph'
   handler_settings:
-    negate: 0
     target_bundles:
       uiowa_slide: uiowa_slide
+    negate: 0
     target_bundles_drag_drop:
       uiowa_collection_item:
         weight: 4
@@ -32,6 +32,9 @@ settings:
         weight: 5
         enabled: false
       uiowa_slide:
-        enabled: true
         weight: 31
+        enabled: true
+      uiowa_timeline_item:
+        weight: 8
+        enabled: false
 field_type: entity_reference_revisions

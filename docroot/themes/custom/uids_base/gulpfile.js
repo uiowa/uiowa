@@ -2,11 +2,12 @@
  * @file
  * Include gulp.
  */
-
 const { src, dest, parallel, series, watch } = require('gulp');
 
 // Include plugins.
-const sass = require('gulp-sass');
+const gulpSass = require('gulp-sass');
+const nodeSass = require('node-sass');
+const sass = gulpSass(nodeSass);
 const del = require ('del');
 const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
@@ -20,12 +21,21 @@ const mode = require('gulp-mode')();
  */
 const paths = {
   src: `${__dirname}/scss/**/*.scss`,
-  dest: `${__dirname}/assets`
+  dest: `${__dirname}/assets`,
+  node: `../../../../node_modules/`,
 };
 
+const uids3 = {
+  src: `${paths.node}@uiowa/uids/src`,
+  dest: `${__dirname}/uids3/`,
+}
+
 const uids = {
-  src: '../../../../node_modules/@uiowa/uids/src',
+  src: `${paths.node}@uiowa/uids4/src`,
   dest: `${__dirname}/uids/`,
+  readylist: [
+    'button',
+  ],
 }
 
 // Clean
@@ -45,6 +55,15 @@ function copyUids() {
   ])
     .pipe(dest(`${uids.dest}`));
 }
+function copyUids3() {
+  return src([
+    `${uids3.src}/**/*.scss`,
+    `${uids3.src}/**/*.js`,
+    `${uids3.src}/**/*.{jpg,png,svg}`,
+    `${uids3.src}/**/*.{woff,woff2}`,
+  ])
+    .pipe(dest(`${uids3.dest}`));
+}
 
 function fontCopy() {
   return src([`${uids.src}/assets/fonts/*.{woff,woff2}`])
@@ -59,7 +78,6 @@ function css() {
     .pipe(sass({
         includePaths: [
           "./node_modules",
-          "./uids/",
         ]
       }).on('error', sass.logError))
     .pipe(postcss([ autoprefixer(), cssnano()]))
@@ -69,18 +87,10 @@ function css() {
 
 // Watch files.
 function watchFiles() {
-  // Only use polling if the user running it is vagrant.
-  let polling = false;
-
-  if (process.env.USER === 'vagrant') {
-    polling = true;
-  }
-
-  watch(paths.src, { usePolling: polling }, compile);
-  // @todo Watch other changes?
+  watch(paths.src, compile);
 }
 
-const copy = parallel(copyUids, fontCopy);
+const copy = parallel(copyUids3, copyUids, fontCopy);
 const compile = series(clean, copy, css);
 
 exports.copy = copy;

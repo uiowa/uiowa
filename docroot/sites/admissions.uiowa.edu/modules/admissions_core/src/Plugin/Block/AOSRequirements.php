@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @Block(
  *   id = "aosrequirements_block",
  *   admin_label = @Translation("Area of Study Requirements Heading Block"),
- *   category = @Translation("Area of Study")
+ *   category = @Translation("Site custom")
  * )
  */
 class AOSRequirements extends BlockBase implements ContainerFactoryPluginInterface {
@@ -89,8 +89,8 @@ class AOSRequirements extends BlockBase implements ContainerFactoryPluginInterfa
     if ($show) {
       return [
         '#markup' => $this->t('Admission Process'),
-        '#prefix' => '<div class="element--bold-intro text-align-center">',
-        '#suffix' => '</div>',
+        '#prefix' => '<div class="h2 headline headline--serif element--bold-intro text-align-center">',
+        '#suffix' => '</div><hr class="element--spacer-separator" />',
       ];
     }
     return [];

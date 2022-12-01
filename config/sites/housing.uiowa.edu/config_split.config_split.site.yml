@@ -1,0 +1,50 @@
+uuid: f2c9a84f-7ad8-4fda-89a7-932041c1fd52
+langcode: en
+status: true
+dependencies: {  }
+id: site
+label: Site
+description: 'The housing.uiowa.edu site split.'
+weight: 70
+stackable: true
+storage: folder
+folder: ../config/sites/housing.uiowa.edu
+module:
+  better_exposed_filters: 0
+  housing_core: 0
+  jquery_ui: 0
+  jquery_ui_datepicker: 0
+  jquery_ui_slider: 0
+  jquery_ui_touch_punch: 0
+  rabbit_hole: 0
+  rh_taxonomy: 0
+  uiowa_maui: 0
+theme: {  }
+complete_list:
+  - config_split.config_split.site
+  - core.entity_form_display.paragraph.housing_cta.default
+  - core.entity_view_display.paragraph.housing_cta.default
+  - metatag.metatag_defaults.node__residence_hall
+  - node.type.residence_hall
+  - pathauto.pattern.residence_hall
+  - rabbit_hole.behavior_settings.taxonomy_vocabulary_building_type
+  - simple_sitemap.bundle_settings.default.node.residence_hall
+  - taxonomy.vocabulary.amenities
+  - taxonomy.vocabulary.bathroom_type
+  - taxonomy.vocabulary.building_type
+  - taxonomy.vocabulary.furnishings
+  - taxonomy.vocabulary.room_type
+  - taxonomy.vocabulary.who_lives_here
+  - views.view.residence_halls
+  - 'paragraphs.paragraphs_type.housing_*'
+  - 'field.field.node.residence_hall*'
+  - 'field.storage.node.field_residence_hall_*'
+  - 'field.storage.paragraph.field_housing_*'
+  - 'rabbit_hole.behavior_settings.taxonomy_vocabulary_*'
+  - 'core.entity_form_display.paragraph.housing_*'
+  - 'core.entity_view_display.paragraph_housing_*'
+partial_list:
+  - core.entity_view_display.node.page.default
+  - metatag.settings
+  - workflows.workflow.editorial
+  - 'user.role.*'

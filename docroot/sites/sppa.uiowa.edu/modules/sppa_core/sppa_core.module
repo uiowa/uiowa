@@ -1,0 +1,41 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for SPPA Core module.
+ */
+
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\field\Entity\FieldStorageConfig;
+
+/**
+ * Implements hook_state_options_alter().
+ */
+function sppa_core_state_options_alter(&$options, $entity, $bundle) {
+  // Add additional options to states list for SPPA.
+  $options['US'] = 'United States';
+  $options['INTL'] = 'International';
+}
+
+/**
+ * Implements hook_allowed_values_function().
+ */
+function sppa_core_opportunity_types_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  $options = [
+    'jobs' => 'Jobs',
+    'internships' => 'Internships',
+    'fellowships' => 'Fellowships',
+  ];
+  return $options;
+}
+
+/**
+ * Implements hook_allowed_values_function().
+ */
+function sppa_core_degrees_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  $options = [
+    'URP' => 'URP',
+    'MPA' => 'MPA',
+  ];
+  return $options;
+}

@@ -1,7 +1,7 @@
-@import "assets/scss/_variables.scss";
-@import "assets/scss/_utilities.scss";
-@import "components/event/event.scss";
-@import "components/card/_card-mixins.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
+@import "uids3/components/event/event.scss";
+@import "uids3/components/card/_card-mixins.scss";
 
 
 .layout--fourcol,
@@ -10,11 +10,6 @@
   .card__row {
     flex: 1 1 100%;
   }
-}
-
-// Events.
-.block-inline-blockuiowa-events {
-  margin-top: $gutter;
 }
 
 // Event block
@@ -26,7 +21,7 @@
 
   .layout--fourcol &,
   .layout--threecol & {
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       padding: 1.5rem;
     }
   }
@@ -36,14 +31,6 @@
 .block-inline-blockuiowa-events,
 .uiowa-events,
 .uiowa-card-event {
-  .card {
-    @include breakpoint(sm) {
-
-      &__title.headline {
-        font-size: 1.4rem;
-      }
-    }
-  }
 
   .card {
     &__row {

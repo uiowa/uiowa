@@ -1,29 +1,17 @@
-@import "assets/scss/_variables.scss";
-@import "assets/scss/_utilities.scss";
-@import "components/button/button.scss";
-
-// @todo is this still necessary?
-a.bttn {
-  span {
-    margin-left: $sm;
-    color: $primary;
-  }
-
-  &.bttn--primary {
-    span {
-      color: white;
-    }
-  }
-}
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
+@import "uids/components/button/button.scss";
 
 .block-inline-blockuiowa-text-area,
 .block-field-blocknodepagebody {
   .bttn {
     margin: 0 1rem 1rem 0;
+
     @include breakpoint(sm) {
       margin: inherit;
     }
-    + .bttn {
+
+    +.bttn {
       @include breakpoint(sm) {
         margin: inherit;
       }
@@ -31,8 +19,54 @@ a.bttn {
   }
 }
 
-[class*=bg--] {
-  .bttn--secondary {
-    color: $white;
+.bttn--full {
+  flex-basis: 100%;
+  height: min-content;
+}
+
+.more-link {
+  margin-top: $mobile-height-gutter;
+}
+
+.block.bttn--row {
+  &.bttn--full {
+    flex-direction: column;
+    display: flex;
+    gap: 1.5rem;
+
+    @include breakpoint(sm) {
+      flex-direction: row;
+    }
+
+    a.bttn {
+      width: 100%;
+    }
+  }
+
+  .bttn {
+    margin: 0 1.5rem 1.5rem 0;
+
+    +.bttn {
+      @include breakpoint(sm) {
+        margin: 0 1.5rem 1.5rem 0;
+      }
+    }
+
+    &.bttn--full {
+      margin: 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.layout--twocol,
+.layout--threecol,
+.layout--fourcol,
+.layout--page--left-sidebar.layout--has-sidebar {
+  .block.bttn--row.bttn--full {
+    flex-direction: column;
   }
 }

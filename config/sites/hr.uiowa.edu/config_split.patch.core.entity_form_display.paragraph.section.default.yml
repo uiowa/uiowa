@@ -1,0 +1,27 @@
+adding:
+  dependencies:
+    config:
+      - field.field.paragraph.section.field_section_content_block
+    module:
+      - paragraphs
+  content:
+    field_section_content_block:
+      type: paragraphs
+      weight: 1
+      region: content
+      settings:
+        title: 'Content Block'
+        title_plural: 'Content Blocks'
+        edit_mode: closed
+        closed_mode: preview
+        autocollapse: all
+        closed_mode_threshold: 2
+        add_mode: dropdown
+        form_display_mode: default
+        default_paragraph_type: _none
+        features:
+          add_above: '0'
+          collapse_edit_all: '0'
+          duplicate: duplicate
+      third_party_settings: {  }
+removing: {  }

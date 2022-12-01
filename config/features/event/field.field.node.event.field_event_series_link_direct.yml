@@ -1,0 +1,23 @@
+uuid: d7bba8c8-8f83-4b8d-a766-dbc2c467b867
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_event_series_link_direct
+    - node.type.event
+id: node.event.field_event_series_link_direct
+field_name: field_event_series_link_direct
+entity_type: node
+bundle: event
+label: 'Link directly to source'
+description: 'If checked, teaser displays of this content will link directly to the source instead of the event instance on this site.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

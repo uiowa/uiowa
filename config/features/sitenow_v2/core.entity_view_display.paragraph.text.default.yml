@@ -18,13 +18,16 @@ bundle: text
 mode: default
 content:
   field_text_body:
-    weight: 0
+    type: text_default
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 0
     region: content
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_uip_classes: true
   field_uip_colwidth: true
   field_uip_id: true

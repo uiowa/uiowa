@@ -1,0 +1,25 @@
+uuid: 1d49f3b7-6aff-438d-b121-1bd53bd95f08
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+    - node_revision_delete
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+  node_revision_delete:
+    minimum_revisions_to_keep: 10
+    minimum_age_to_delete: 0
+    when_to_delete: 0
+_core:
+  default_config_hash: _m2UYwa7gm8vL2c6-lfbh7oq1ccaxj0o2nCK1sRxNIU
+name: 'Topic collection'
+type: topic_collection
+description: 'Use <em>topic collections</em> to present tags and tagged content on one page.'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: false

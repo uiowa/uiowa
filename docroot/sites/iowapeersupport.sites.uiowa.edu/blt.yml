@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesiowapeersupport.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesiowapeersupport
+  human_name: iowapeersupport.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesiowapeersupport.prod
+drupal:
+  db:
+    database: iowapeersupport_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: kmccrory
+  site-name: 'Iowa Peer Workforce Collaborative'

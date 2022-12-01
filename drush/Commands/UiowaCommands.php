@@ -9,7 +9,6 @@ use Consolidation\AnnotatedCommand\AnnotationData;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\SiteAlias\SiteAliasManagerAwareInterface;
 use Consolidation\SiteAlias\SiteAliasManagerAwareTrait;
-use Consolidation\SiteProcess\SiteProcess;
 use Drush\Drupal\Commands\sql\SanitizePluginInterface;
 use Symfony\Component\Console\Input\InputInterface;
 
@@ -21,7 +20,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
   use ProcessManagerAwareTrait;
 
   /**
-   * Configuration that should sanitized.
+   * Configuration that should be sanitized.
    *
    * @var array
    */
@@ -58,7 +57,6 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
     $defaults = $annotationData->getList('default-fields');
 
     // If no specific fields were requested, add ours to the defaults.
-    // @todo Is there a more-defined context for when to do this?
     if ($fields == $defaults) {
       $annotationData->append('field-labels', "\n application: Application");
       array_unshift($defaults, 'application');
@@ -114,12 +112,17 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
    *   size: Size
    *
    * @return string
+   *   The size of the database in megabytes.
    */
   public function databaseSize() {
     $selfRecord = $this->siteAliasManager()->getSelf();
 
-    /** @var SiteProcess $process */
-    $process = $this->processManager()->drush($selfRecord, 'core-status', [], ['fields' => 'db-name', 'format' => 'json']);
+    /** @var \Consolidation\SiteProcess\SiteProcess $process */
+    $process = $this->processManager()->drush($selfRecord, 'core-status', [], [
+      'fields' => 'db-name',
+      'format' => 'json',
+    ]);
+
     $process->run();
     $result = $process->getOutputAsJson();
 
@@ -167,7 +170,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
     $output = explode(PHP_EOL, $output);
     foreach ($output as $line) {
       if (!empty($line)) {
-        list($table, $table_size) = explode("\t", $line);
+        [$table, $table_size] = explode("\t", $line);
 
         $rows[] = [
           'table' => $table,
@@ -197,7 +200,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
     $record = $this->siteAliasManager()->getSelf();
 
     foreach ($this->sanitizedConfig as $config) {
-      /** @var SiteProcess $process */
+      /** @var \Consolidation\SiteProcess\SiteProcess $process */
       $process = $this->processManager()->drush($record, 'config:delete', [
         $config,
       ]);
@@ -227,10 +230,11 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
 
     $configs = [
       'migrate_plus.migration_group.sitenow_migrate',
+      'sitenow_dispatch.settings',
     ];
 
     foreach ($configs as $config) {
-      /** @var SiteProcess $process */
+      /** @var \Consolidation\SiteProcess\SiteProcess $process */
       $process = $this->processManager()->drush($record, 'config:get', [
         $config,
       ]);
@@ -246,4 +250,5 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
       }
     }
   }
+
 }

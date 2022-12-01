@@ -71,21 +71,21 @@ class ScholarshipsBlock extends BlockBase {
       '#title' => $this->t('Type'),
       '#description' => $this->t('Filter scholarships by these types. Leave blank for all. Multiple selections are treated like ORs.'),
       '#options' => [
-        'first-year' => 'First Year',
-        'transfer' => 'Transfer',
-        'international' => 'International',
+        'first-year' => $this->t('First Year'),
+        'transfer' => $this->t('Transfer'),
+        'international' => $this->t('International'),
       ],
-      '#default_value' => isset($config['scholarship_type']) ? $config['scholarship_type'] : '',
+      '#default_value' => $config['scholarship_type'] ?? '',
     ];
     $form['resident'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Resident'),
       '#description' => $this->t('Filter scholarships by resident statuses. Leave blank for all. Multiple selections are treated like ORs.'),
       '#options' => [
-        'resident' => 'Resident',
-        'nonresident' => 'Non-Resident',
+        'resident' => $this->t('Resident'),
+        'nonresident' => $this->t('Non-Resident'),
       ],
-      '#default_value' => isset($config['resident']) ? $config['resident'] : '',
+      '#default_value' => $config['resident'] ?? '',
     ];
 
     return $form;

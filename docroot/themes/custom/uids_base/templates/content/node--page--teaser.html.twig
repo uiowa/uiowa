@@ -67,7 +67,8 @@
  *
  * @todo Remove the id attribute (or make it a class), because if that gets
  *   rendered twice on a page this is invalid CSS for example: two lists
- *   in different view modes.
+ *   in different view modes. See
+ *   https://github.com/uiowa/uiowa/issues/4995
  */
 #}
 {%
@@ -78,26 +79,34 @@
     node.isSticky() ? 'node--sticky',
     not node.isPublished() ? 'node--unpublished',
     view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-    'media'
+    'card--list',
 ]
 %}
+
+{% set headline_level = heading_size ?: 'h3' %}
+
 {{ attach_library('classy/node') }}
 {{ attach_library('uids_base/node-type-page') }}
-<article{{ attributes.addClass(classes) }}>
-  {% if content.field_image %}
-    <figure class="content-image">
-      {{ content.field_image }}
-    </figure>
-  {% endif %}
-  <div{{ content_attributes.addClass('node__content media-body') }}>
-    {{ title_prefix }}
-    {% if not page %}
-      <h3{{ title_attributes }}>
-        <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-      </h3>
-    {% endif %}
-    {{ title_suffix }}
 
-    {{ content|without('field_image', 'links') }}
-  </div>
-</article>
+{% set page_card = {
+  'attributes': attributes.addClass(classes),
+  'card_image' : content.field_image|render,
+  'card_title': label,
+  'content': content.field_teaser|render,
+  'card_link_url': url,
+  'media_styles': media_classes,
+  'headline_level': headline_level,
+  'visible_button': show_teaser_link_indicator
+} %}
+
+{% embed '@uids_base/uids/card.html.twig' with page_card only %}
+
+  {# @todo Add content_attributes.addClass('node__content media-body') #}
+
+  {% block card_content %}
+    {% if content is not empty %}
+      <div class="card__description">{{ content }}</div>
+    {% endif %}
+  {% endblock %}
+
+{% endembed %}

@@ -1,8 +1,11 @@
-@import "assets/scss/_variables.scss";
-@import "assets/scss/_utilities.scss";
-@import "components/grid/grid.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
+@import "uids3/components/grid/grid.scss";
 
 .list-container {
+  [class*="grid--"].view & {
+    margin-bottom: $mobile-height-gutter;;
+  }
   .card {
     height: 100%;
     .section-alignment__start & {
@@ -29,4 +32,36 @@
 .inner--grid.grid--threecol--33-34-33 .list-container,
 .inner--grid.grid--twocol--50-50 .list-container{
   grid-template-columns: inherit;
+  gap: $mobile-height-gutter;
+}
+
+.inner--grid .more-link {
+  margin-top: $mobile-height-gutter;
+}
+
+.grid--twocol--50-50 .list-container {
+  @include breakpoint(sm) {
+    row-gap: $desktop-width-gutter;
+  }
+}
+
+// Additional grid classes.
+.grid--fourcol--25 {
+  .list-container {
+    @include grid-base;
+    @include breakpoint(md) {
+      @include fourcol-grid;
+    }
+  }
+}
+
+// For use only for images.
+.grid--fivecol--20 {
+  .list-container {
+    @include grid-base;
+    @include breakpoint(sm) {
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(17%, 1fr));
+    }
+  }
 }

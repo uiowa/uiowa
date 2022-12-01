@@ -1,0 +1,29 @@
+uuid: 5c953558-8a2c-4859-92a0-d5db17d28cfc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_residence_hall_meet_us
+    - node.type.person
+    - node.type.residence_hall
+id: node.residence_hall.field_residence_hall_meet_us
+field_name: field_residence_hall_meet_us
+entity_type: node
+bundle: residence_hall
+label: 'Meet us'
+description: 'Select the person node(s) that you would like to reference and display.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      person: person
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

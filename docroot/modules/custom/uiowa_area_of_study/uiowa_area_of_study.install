@@ -1,0 +1,82 @@
+<?php
+
+/**
+ * @file
+ * Install tasks.
+ */
+
+use Drupal\Core\Config\FileStorage;
+use Drupal\node\Entity\Node;
+
+/**
+ * Clear all caches after block constructor change.
+ */
+function uiowa_area_of_study_update_9001() {
+  drupal_flush_all_caches();
+}
+
+/**
+ * Import rabbit hole config for programmatic save.
+ */
+function uiowa_area_of_study_update_9002() {
+  \Drupal::service('module_installer')->install(['rabbit_hole', 'rh_node']);
+  $config_path = DRUPAL_ROOT . '/../config/features/areas_of_study';
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('rabbit_hole.behavior_settings.default', $source->read('rabbit_hole.behavior_settings.default'));
+  $config_storage->write('rabbit_hole.behavior_settings.default_bundle', $source->read('rabbit_hole.behavior_settings.default_bundle'));
+  $config_storage->write('rabbit_hole.behavior_settings.node_type_area_of_study', $source->read('rabbit_hole.behavior_settings.node_type_area_of_study'));
+}
+
+/**
+ * Re-save all AoS nodes.
+ */
+function uiowa_area_of_study_update_9003(&$sandbox) {
+  // Process all nodes.
+  if (!isset($sandbox['total'])) {
+    $query = \Drupal::entityQuery('node')
+      ->condition('type', 'area_of_study')
+      ->execute();
+    $sandbox['total'] = count($query);
+    $sandbox['current'] = 0;
+    $sandbox['query'] = $query;
+
+    if (empty($sandbox['total'])) {
+      $sandbox['#finished'] = 1;
+      return;
+    }
+  }
+  // Loop through the same nodes in batches.
+  $nodes_per_batch = 25;
+  $batch = array_slice($sandbox['query'], $sandbox['current'], $sandbox['current'] + $nodes_per_batch);
+  if (empty($batch)) {
+    $sandbox['#finished'] = 1;
+    return;
+  }
+
+  foreach ($batch as $nid) {
+    $node = Node::load($nid);
+    if ($node->hasField('field_area_of_study_link_direct')
+      && (int) $node->get('field_area_of_study_link_direct')->value === 1) {
+      $node->rh_action->value = 'page_redirect';
+      $node->rh_redirect->value = '[node:field_area_of_study_source_link:uri]';
+      $node->rh_redirect_response->value = '301';
+      $node->rh_redirect_fallback_action->value = 'display_page';
+      // Set revision message and save.
+      $node->setRevisionLogMessage('Automated save');
+      $node->save();
+    }
+    $sandbox['current']++;
+  }
+
+  \Drupal::messenger()
+    ->addMessage($sandbox['current'] . ' nodes processed.');
+
+  if ($sandbox['current'] >= $sandbox['total']) {
+    $sandbox['#finished'] = 1;
+    drupal_flush_all_caches();
+  }
+  else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  }
+}

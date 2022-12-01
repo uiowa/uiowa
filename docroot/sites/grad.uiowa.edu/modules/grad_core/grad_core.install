@@ -2,8 +2,10 @@
 
 /**
  * @file
- * Install tasks.
+ * Installation functions for grad_core module.
  */
+
+use Drupal\Core\Config\FileStorage;
 
 /**
  * Resave mentor titles without credentials.
@@ -23,4 +25,26 @@ function grad_core_update_9001() {
     $node->setTitle($title);
     $node->save();
   }
+}
+
+/**
+ * Enable new thesis_defense config split.
+ */
+function grad_core_update_9002() {
+  // This site does not have the 'thesis_defense' split enabled.
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+
+  // Create the split in active config and import config_ignore settings
+  // otherwise the status will be imported as false (and everything will be
+  // deleted on cim) since that is what exists in the default split config.
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('config_split.config_split.thesis_defense', $source->read('config_split.config_split.thesis_defense'));
+  $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
+
+  // Enable the 'thesis_defense' split.
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('config_split.config_split.thesis_defense');
+  $config->set('status', TRUE);
+  $config->save(TRUE);
 }

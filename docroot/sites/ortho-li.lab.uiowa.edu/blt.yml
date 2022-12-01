@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labortho-li.uiowa.ddev.site
+    protocol: https
+  machine_name: labortho-li
+  human_name: ortho-li.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labortho-li.prod
+drupal:
+  db:
+    database: ortho_li_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: hongshli
+  site-name: 'Ortho Li lab'

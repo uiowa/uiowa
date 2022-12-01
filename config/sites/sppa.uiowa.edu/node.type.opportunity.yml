@@ -1,0 +1,26 @@
+uuid: b944ee79-7278-410f-b7be-81712912d173
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+    - node_revision_delete
+    - private_content
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+  node_revision_delete:
+    minimum_revisions_to_keep: 10
+    minimum_age_to_delete: 0
+    when_to_delete: 0
+  private_content:
+    private: 3
+name: Opportunity
+type: opportunity
+description: 'Use <em>opportunities</em> to post records of resources for finding opportunities (Jobs, Internships, and Fellowships).'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: false

@@ -1,0 +1,131 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - sppa_migrate
+id: sppa_potential_employer
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags:
+  - sppa
+migration_group: sitenow_migrate
+label: Employers
+source:
+  plugin: sitenow_node
+  node_type: employer
+  constants:
+    uid_admin: 1
+    format: minimal
+    degrees:
+      - URP
+      - MPA
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  moderation_state:
+    plugin: default_value
+    default_value: published
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid: constants/uid_admin
+  title: title
+  body:
+    plugin: sub_process
+    source: field_pot_empl_desc
+    process:
+      value: value
+      summary: summary
+      format:
+        plugin: static_map
+        source: format
+        map:
+          full_html: minimal
+          filtered_html: minimal
+          plain_text: minimal
+          null: minimal
+          2: minimal
+  field_opportunity_locations:
+    plugin: static_map
+    source: field_pot_empl_loc
+    map:
+      Alabama: AL
+      Alaska: AK
+      Arizona: AZ
+      Arkansas: AR
+      California: CA
+      Colorado: CO
+      Connecticut: CT
+      Delaware: DE
+      District Of Columbia: DC
+      Florida: FL
+      Georgia: GA
+      Hawaii: HI
+      Idaho: ID
+      Illinois: IL
+      Indiana: IN
+      Iowa: IA
+      Kansas: KS
+      Kentucky: KY
+      Louisiana: LA
+      Maine: ME
+      Maryland: MD
+      Massachusetts: MA
+      Michigan: MI
+      Minnesota: MN
+      Mississippi: MN
+      Missouri: MO
+      Montana: MT
+      Nebraska: NE
+      Nevada: NV
+      New Hampshire: NH
+      New Jersey: NJ
+      New Mexico: NM
+      New York: NY
+      North Carolina: NC
+      North Dakota: ND
+      Ohio: OH
+      Oklahoma: OK
+      Oregon: OR
+      Pennsylvania: PA
+      Rhode Island: RI
+      South Carolina: SC
+      South Dakota: SD
+      Tennessee: TN
+      Texas: TX
+      Utah: UT
+      Vermont: VT
+      Virginia: VA
+      Washington: WA
+      West Virginia: WV
+      Wisconsin: WI
+      Wyoming: WY
+      Guam: INTL
+      International: INTL
+      Puerto Rico: INTL
+      United States: US
+  field_opportunity_website:
+    plugin: field_link
+    source: field_pot_empl_url
+  field_opportunity_type:
+    plugin: static_map
+    source: field_pot_empl_type
+    map:
+      J: jobs
+      I: internships
+      H: fellowships
+      null: null
+  field_opportunity_degree: constants/degrees
+destination:
+  plugin: 'entity:node'
+  default_bundle: opportunity
+migration_dependencies:
+  required:
+    - sppa_tags

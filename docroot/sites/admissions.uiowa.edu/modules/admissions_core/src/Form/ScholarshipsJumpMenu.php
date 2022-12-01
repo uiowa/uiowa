@@ -29,11 +29,11 @@ class ScholarshipsJumpMenu extends FormBase {
       '#type' => 'select',
       '#title' => $this->t('Type of Student'),
       '#options' => [
-        'first-year' => 'First Year',
-        'transfer' => 'Transfer',
-        'international' => 'International',
+        'first-year' => $this->t('First Year'),
+        'transfer' => $this->t('Transfer'),
+        'international' => $this->t('International'),
       ],
-      "#empty_option" => t('- Select -'),
+      "#empty_option" => $this->t('- Select -'),
       '#ajax' => [
         'callback' => [$this, 'scholarshipTypeCallback'],
         'event' => 'change',
@@ -43,10 +43,10 @@ class ScholarshipsJumpMenu extends FormBase {
       '#type' => 'select',
       '#title' => $this->t('Resident'),
       '#options' => [
-        'resident' => 'From Iowa',
-        'nonresident' => 'From Outside Iowa',
+        'resident' => $this->t('From Iowa'),
+        'nonresident' => $this->t('From Outside Iowa'),
       ],
-      "#empty_option" => t('- Select Residency -'),
+      "#empty_option" => $this->t('- Select Residency -'),
       '#states' => [
         'visible' => [
           ':input[name="scholarship_type"]' => ['value' => 'first-year'],
@@ -69,13 +69,13 @@ class ScholarshipsJumpMenu extends FormBase {
     $build_info = $form_state->getBuildInfo();
 
     if ($selectedValue = $form_state->getValue('scholarship_type')) {
-      if ($selectedValue == 'international') {
+      if ($selectedValue === 'international') {
         $url = Url::fromRoute('entity.node.canonical', ['node' => $build_info["scholarship_paths"]["international"]]);
         $response->addCommand(new InvokeCommand('#edit-scholarship-type', 'val', ['']));
         $response->addCommand(new RedirectCommand($url->toString()));
         return $response;
       }
-      if ($selectedValue == 'transfer') {
+      if ($selectedValue === 'transfer') {
         $url = Url::fromRoute('entity.node.canonical', ['node' => $build_info["scholarship_paths"]["transfer"]]);
         $response->addCommand(new InvokeCommand('#edit-scholarship-type', 'val', ['']));
         $response->addCommand(new RedirectCommand($url->toString()));
@@ -93,7 +93,7 @@ class ScholarshipsJumpMenu extends FormBase {
     $response = new AjaxResponse();
     $build_info = $form_state->getBuildInfo();
     if ($selectedValue = $form_state->getValue('resident')) {
-      if ($selectedValue == 'resident') {
+      if ($selectedValue === 'resident') {
         $url = Url::fromRoute('entity.node.canonical', ['node' => $build_info["scholarship_paths"]["resident"]]);
         $response->addCommand(new InvokeCommand('#edit-scholarship-type', 'val', ['']));
         $response->addCommand(new InvokeCommand('#edit-resident', 'val', ['']));

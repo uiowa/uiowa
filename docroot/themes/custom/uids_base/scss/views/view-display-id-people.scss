@@ -1,12 +1,15 @@
-@import "uids/assets/scss/_variables.scss";
-@import "uids/assets/scss/_utilities.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
 
 .view-id-people {
+  @include margin($top: $lg);
   .view-header {
     width: 100%;
   }
   .card__media {
-    margin-top: 0;
+    @include breakpoint(sm) {
+      margin-top: 0;
+    }
   }
   .view-content {
     @include list-group;
@@ -28,6 +31,15 @@
 
 
 .view-display-id-page_people_table {
+  table {
+    @include breakpoint(sm) {
+      display: block;
+    }
+    tbody tr:not(.is-selected):nth-child(2n),
+    tbody tr:not(.is-selected):nth-child(2n) th {
+      background-color: #fff;
+    }
+  }
   .tabledrag-changed-warning {
     // @extend .alert;
     // @extend .alert-warning;

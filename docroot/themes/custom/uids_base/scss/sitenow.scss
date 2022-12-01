@@ -1,7 +1,7 @@
-@import "uids/assets/scss/_variables.scss";
-@import "uids/assets/scss/_utilities.scss";
-@import "components/typography/headings/headings.scss";
-@import "components/headline/headline.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
+@import "uids3/components/typography/headings/headings.scss";
+@import "uids3/components/headline/headline.scss";
 
 html {
   box-sizing: border-box;
@@ -59,7 +59,7 @@ html {
   .block-page-title-block,
   .block-local-tasks-block,
   .content-moderation-entity-moderation-form {
-    @extend %container;
+    @include container-width;
     clear: both;
   }
 }
@@ -168,35 +168,35 @@ html {
 
 
 .col-md {
-  @include breakpoint(menu) {
+  @include breakpoint(md) {
     @include flex(1, 0, 0);
     max-width: 100%;
   }
 }
 
 .col-md-3 {
-  @include breakpoint(menu) {
+  @include breakpoint(md) {
     flex: 0 0 25%;
     max-width: 25%;
   }
 }
 
 .col-md-4 {
-  @include breakpoint(menu) {
+  @include breakpoint(md) {
     flex: 0 0 33.333333%;
     max-width: 33.333333%;
   }
 }
 
 .col-md-6 {
-  @include breakpoint(menu) {
+  @include breakpoint(md) {
     flex: 0 0 50%;
     max-width: 50%;
   }
 }
 
 .col-md-12 {
-  @include breakpoint(menu) {
+  @include breakpoint(md) {
     flex: 0 0 100%;
     max-width: 100%;
   }
@@ -343,12 +343,6 @@ html {
   padding-bottom: 3rem !important;
 }
 
-// feed icons
-
-.feed-icons {
-  padding: 1rem 0;
-}
-
 // node
 
 .node--unpublished {
@@ -464,15 +458,118 @@ figure.caption .embedded-entity+figcaption {
   }
 }
 
-// Page left sidebar 
+// Page left sidebar
 .layout--has-sidebar .layout__region--main {
   overflow: auto;
 }
 
-.bttn--primary {
-  color: $secondary !important;
+// Primary button
+.bg-dark .bttn--primary,
+.bg-black .bttn--primary {
+  color: $secondary;
 }
 
-.bttn--secondary {
-  color: $white !important;
+.bg-yellow .bttn--primary {
+  color: $white;
+  background: $secondary;
+  border: 1px solid $secondary;
+  &:after {
+    background-color: $primary;
+  }
+}
+
+// Secondary button
+.bg-yellow .bttn--secondary,
+.bg-light .bttn--secondary {
+  color: $white;
+}
+
+.bg-black .bttn--secondary {
+  background-color: $primary;
+  color: $secondary;
+  border: 1px solid $primary;
+  svg {
+    color: $white;
+  }
+  &:after {
+    background-color: $secondary;
+  }
+}
+
+// Nested background colors
+.bg-dark .bg-light {
+  .bttn--secondary {
+    color: $white;
+  }
+  .bttn--primary, .bttn--secondary {
+    svg {
+      color: $white!important;
+    }
+  }
+}
+
+.bg-light .bg-light {
+  .bttn--secondary {
+    color: $white;
+  }
+}
+
+.bg-dark .bg-dark,
+.bg-black .bg-dark,
+.bg-light .bg-dark {
+  .bttn--primary {
+    color: $secondary;
+  }
+}
+
+.bg-black .bg-dark, {
+  .bttn--secondary {
+    color: $secondary;
+  }
+}
+
+.bg-black .bg-black {
+  .bttn--primary, .bttn--secondary {
+    color: $secondary;
+  }
+}
+
+.bg-yellow .bg-yellow,
+.bg-dark .bg-yellow,
+.bg-black .bg-yellow {
+  .bttn--primary, .bttn--secondary {
+    color: $white;
+    background: $secondary;
+    svg {
+      color: $primary;
+    }
+    &:after {
+      background: $primary;
+    }
+  }
+}
+
+.bg-yellow .bg-light,
+.bg-light .bg-yellow {
+  .bttn--primary, .bttn--secondary {
+    color: $white;
+  }
+}
+
+.bg-light .bg-black,
+.bg-yellow .bg-black,
+.bg-dark .bg-black{
+  .bttn--primary, .bttn--secondary {
+    color: $secondary;
+    background: $primary;
+    border: 1px solid $primary;
+
+    &:after {
+      background-color: $secondary;
+    }
+
+    svg {
+      color: white;
+    }
+  }
 }

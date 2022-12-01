@@ -5,14 +5,13 @@ dependencies: {  }
 id: apr
 label: APR
 description: 'APR module and configuration. This feature requires an APR API key and previous data setup with APR team.'
+weight: 80
+stackable: true
+storage: folder
 folder: ../config/features/apr
 module:
   uiowa_apr: 0
 theme: {  }
-blacklist:
-  - uiowa_apr.settings
-graylist:
+complete_list: {  }
+partial_list:
   - user.role.webmaster
-graylist_dependents: true
-graylist_skip_equal: true
-weight: 80

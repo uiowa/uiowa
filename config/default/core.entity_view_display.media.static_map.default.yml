@@ -1,0 +1,35 @@
+uuid: 8b10e199-126f-4599-bf7e-700ee3a500b3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.media.static_map.field_media_static_map
+    - media.type.static_map
+  module:
+    - sitenow_media_wysiwyg
+id: media.static_map.default
+targetEntityType: media
+bundle: static_map
+mode: default
+content:
+  field_media_static_map:
+    type: static_map_url_formatter
+    label: visually_hidden
+    settings:
+      trim_length: '80'
+      url_only: ''
+      url_plain: ''
+      rel: 0
+      target: 0
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  created: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  name: true
+  search_api_excerpt: true
+  thumbnail: true
+  uid: true

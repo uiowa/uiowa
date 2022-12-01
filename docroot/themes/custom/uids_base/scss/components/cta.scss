@@ -1,6 +1,6 @@
-@import "assets/scss/_variables.scss";
-@import "assets/scss/_utilities.scss";
-@import "components/cta/cta.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
+@import "uids3/components/cta/cta.scss";
 
 
 .layout__region--first,
@@ -18,20 +18,6 @@
       margin: 1.05rem 0;
     }
   }
-
-  .cta__container {
-    .cta__title {
-      //margin-left: 1.05rem;
-    }
-
-    .cta__content {
-      //margin-left: 1.05rem;
-    }
-
-    .cta__link {
-      //margin-right: 1.05rem;
-    }
-  }
 }
 
 .cta__content p {
@@ -42,7 +28,7 @@
 @media all and (-ms-high-contrast: none),
 (-ms-high-contrast: active) {
   .cta__container>div {
-    @include breakpoint(container) {
+    @include breakpoint(page-container) {
       margin: 1.05rem 0;
     }
   }
@@ -60,25 +46,78 @@
   margin: .5rem 0 0 0;
 }
 
-.bg--black,
-.bg-pattern--brain-black,
-.bg-dark {
-  .cta__wrapper:not(.bg--black):not(.bg-pattern--brain-black):not(.bg--gold):not(.bg--gray) {
-    .bold-headline {
-      color: $primary;
+// @todo remove once https://github.com/uiowa/uiowa/issues/5149 is completed.
+
+.cta__link {
+  .bttn--primary {
+
+    &:after {
+      [class*="bg--gold"] & {
+        background: $primary;
+      }
     }
 
-    .cta__summary {
-      color: $white;
+    i,
+    svg {
+      [class*="bg--gold"] & {
+        color: $primary;
+      }
+    }
+
+    [class*="bg--gray"] &,
+    [class*="bg--white"] &,
+    .bg-pattern--brain & {
+      border: none;
+    }
+
+    [class*="bg--black"] [class*="bg--gold"] &,
+    [class*="bg--white"] [class*="bg--gold"] &,
+    [class*="bg--gray"] [class*="bg--gold"] &,
+    [class*="bg--gold"] [class*="bg--gold"] &,
+    .bg-pattern--brain-reversed &,
+    [class*="bg--gold"] & {
+      background: $secondary;
+      color: #fff;
+    }
+
+    .bg-pattern--brain-reversed [class*="bg--gray"] &,
+    [class*="bg--gold"] [class*="bg--gray"] &,
+    .bg-pattern--brain-reversed [class*="bg--white"] &,
+    [class*="bg--gold"] [class*="bg--white"] & {
+      background: $primary;
+      color: $secondary;
+      border: none;
+
+      i,
+      svg {
+        color: #fff;
+      }
+
+      &:after {
+        background: $secondary;
+      }
+    }
+
+    [class*="bg--gold"] [class*="bg--black"] & {
+      background: $primary;
+      color: $secondary;
+
+      i,
+      svg {
+        color: #fff;
+      }
+
+      &:after {
+        background: $secondary;
+      }
+    }
+
+    [class*="bg--black"] [class*="bg--black"] &,
+    [class*="bg--white"] [class*="bg--black"] &,
+    [class*="bg--gray"] [class*="bg--black"] &,
+    .bg-pattern--brain-black &,
+    [class*="bg--black"] & {
+      color: $secondary;
     }
   }
-}
-
-.cta__wrapper.bg--black .bttn,
-.cta__wrapper.bg-pattern--brain-black .bttn {
-  background: $primary;
-}
-
-.cta__wrapper.bg--gold .bttn {
-  color: $secondary;
 }

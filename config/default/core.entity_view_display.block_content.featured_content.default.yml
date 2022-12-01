@@ -14,20 +14,23 @@ bundle: featured_content
 mode: default
 content:
   field_featured_content_item:
-    weight: 1
+    type: entity_reference_entity_view
     label: hidden
     settings:
       view_mode: teaser
       link: false
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    weight: 1
     region: content
   field_uiowa_headline:
-    weight: 0
+    type: uiowa_headline_formatter
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: uiowa_headline_formatter
+    weight: 0
     region: content
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   search_api_excerpt: true

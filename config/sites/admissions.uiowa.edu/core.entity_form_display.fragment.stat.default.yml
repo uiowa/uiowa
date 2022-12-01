@@ -1,0 +1,93 @@
+uuid: b377c09c-f456-4b08-88ca-90ec43c6d1ea
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.fragment.stat.field_stat_content
+    - field.field.fragment.stat.field_stat_excerpt
+    - field.field.fragment.stat.field_stat_figure
+    - field.field.fragment.stat.field_stat_figure_pre
+    - field.field.fragment.stat.field_stat_figure_suf
+    - fragments.fragment_type.stat
+  module:
+    - field_group
+    - heading
+third_party_settings:
+  field_group:
+    group_statistic_figure:
+      children:
+        - field_stat_figure_pre
+        - field_stat_figure
+        - field_stat_figure_suf
+      label: 'Statistical Figure'
+      region: content
+      parent_name: ''
+      weight: 1
+      format_type: fieldset
+      format_settings:
+        classes: ''
+        id: ''
+        description: ''
+        required_fields: true
+id: fragment.stat.default
+targetEntityType: fragment
+bundle: stat
+mode: default
+content:
+  field_stat_content:
+    type: string_textarea
+    weight: 3
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_stat_excerpt:
+    type: string_textarea
+    weight: 2
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_stat_figure:
+    type: heading
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_stat_figure_pre:
+    type: string_textfield
+    weight: 5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_stat_figure_suf:
+    type: string_textfield
+    weight: 7
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  user_id:
+    type: entity_reference_autocomplete
+    weight: 4
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

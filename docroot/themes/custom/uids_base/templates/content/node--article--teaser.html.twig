@@ -67,7 +67,8 @@
  *
  * @todo Remove the id attribute (or make it a class), because if that gets
  *   rendered twice on a page this is invalid CSS for example: two lists
- *   in different view modes.
+ *   in different view modes. See
+ *   https://github.com/uiowa/uiowa/issues/4995
  */
 #}
 {%
@@ -79,7 +80,6 @@
   not node.isPublished() ? 'node--unpublished',
   view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
   'card--list',
-  'card--media-right',
 ]
 %}
 
@@ -89,9 +89,12 @@
   {% set node_link = url %}
 {% endif %}
 
-{% set headline_level = heading_size ?: 'h3' %}
+{% set headline_level = 'h3 '%}
 {% if view %}
   {% set headline_level = view.display_handler.getOption('heading_size') %}
+{% endif %}
+{% if heading_size %}
+  {% set headline_level = heading_size %}
 {% endif %}
 
 {{ attach_library('classy/node') }}
@@ -104,8 +107,9 @@
   'card_title': label,
   'content': content,
   'card_link_url': node_link,
-  'media_styles': ['media--widescreen', 'card__media--small'],
+  'media_styles': media_classes,
   'headline_level': headline_level,
+  'visible_button': show_teaser_link_indicator
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with article_card only %}

@@ -1,0 +1,255 @@
+uuid: cdba22cc-e70f-4904-8f29-b26df511c4b1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.event_series.body
+    - field.field.node.event_series.field_event_series_button_link
+    - field.field.node.event_series.field_event_series_summary
+    - field.field.node.event_series.field_image
+    - field.field.node.event_series.field_meta_tags
+    - node.type.event_series
+  module:
+    - admissions_core
+    - layout_builder
+    - layout_builder_restrictions
+    - link
+    - metatag
+    - system
+    - text
+    - user
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    enabled: true
+    allow_custom: false
+    sections:
+      -
+        layout_id: layout_header
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style: {  }
+        components:
+          -
+            uuid: abd7062b-38b4-428c-9833-bfa66edfb688
+            region: background
+            configuration:
+              id: 'field_block:node:event_series:field_image'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: hidden
+                settings:
+                  view_mode: full__ultrawide
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+          -
+            uuid: 3ff442b4-712e-47e2-9c38-13f178f28440
+            region: content
+            configuration:
+              id: system_breadcrumb_block
+              label: Breadcrumbs
+              label_display: '0'
+              provider: system
+              context_mapping: {  }
+            weight: -10
+            additional: {  }
+          -
+            uuid: d75c28a9-d252-47df-86e8-206190ec5052
+            region: content
+            configuration:
+              id: 'field_block:node:event_series:title'
+              label: Title
+              label_display: '0'
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: visually_hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: -9
+            additional: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_twocol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          column_widths: 75-25
+          layout_builder_styles_style:
+            section_alignment_start: section_alignment_start
+        components:
+          -
+            uuid: 6cdd28d1-0503-462a-ab27-7338b23e2295
+            region: first
+            configuration:
+              id: 'field_block:node:event_series:body'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
+          -
+            uuid: a52f2e6a-1104-4879-8e67-1b4036e9ee17
+            region: second
+            configuration:
+              id: 'field_block:node:event_series:field_event_series_summary'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 3
+            additional:
+              layout_builder_styles_style:
+                block_background_style_gray: block_background_style_gray
+                block_padding_all: block_padding_all
+          -
+            uuid: 06f1244d-4a4d-439b-afc8-b8db0e679b8c
+            region: first
+            configuration:
+              id: 'extra_field_block:node:event_series:links'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 0
+            additional: {  }
+          -
+            uuid: 0df26ed5-dd2e-430a-831a-5b6c8a18ef5d
+            region: second
+            configuration:
+              id: admissions_core_event_series_events
+              label: 'Event Details'
+              label_display: '1'
+              provider: admissions_core
+              context_mapping: {  }
+            weight: 1
+            additional:
+              layout_builder_styles_style:
+                block_background_style_gray: block_background_style_gray
+                block_padding_all: block_padding_all
+          -
+            uuid: fdcd85e2-46ad-4565-9d21-fe66d87d8033
+            region: second
+            configuration:
+              id: 'field_block:node:event_series:field_event_series_button_link'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: link
+                label: visually_hidden
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: '0'
+                  target: '0'
+                third_party_settings: {  }
+            weight: 4
+            additional:
+              layout_builder_styles_style:
+                block_background_style_gray: block_background_style_gray
+                block_padding_all: block_padding_all
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+        components: {  }
+        third_party_settings: {  }
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      allowed_layouts: {  }
+      denylisted_blocks: {  }
+      allowlisted_blocks: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts: {  }
+      allowlisted_blocks: null
+      denylisted_blocks: null
+id: node.event_series.default
+targetEntityType: node
+bundle: event_series
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  field_event_series_button_link:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 105
+    region: content
+  field_event_series_summary:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  field_image:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 102
+    region: content
+  field_meta_tags:
+    type: metatag_empty_formatter
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 104
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

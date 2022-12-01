@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labbrain-registry.uiowa.ddev.site
+    protocol: https
+  machine_name: labbrain-registry
+  human_name: brain-registry.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labbrain-registry.prod
+drupal:
+  db:
+    database: brain_registry_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: cdeifeltstreese
+  site-name: 'Iowa Neurological Patient Registry'
