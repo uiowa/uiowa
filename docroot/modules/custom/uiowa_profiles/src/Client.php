@@ -2,8 +2,14 @@
 
 namespace Drupal\uiowa_profiles;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
 use Psr\Log\LoggerInterface;
+use GuzzleHttp\Client as HttpClient;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * The profiles client sets some dynamic properties based on the environment.
@@ -41,18 +47,28 @@ class Client {
   protected $endpoint;
 
   /**
+   * The guzzle client.
+   *
+   * @var \GuzzleHttp\Client
+   */
+  protected $httpClient;
+
+  /**
    * Constructs a Profiles service object.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The config factory.
    * @param \Psr\Log\LoggerInterface $logger
    *   The uiowa_profiles logger channel.
+   * @param \GuzzleHttp\Client $httpClient
+   *   The http client service.
    *
    * @throws \Exception
    */
-  public function __construct(ConfigFactoryInterface $config_factory, LoggerInterface $logger) {
+  public function __construct(ConfigFactoryInterface $config_factory, LoggerInterface $logger, HttpClient $httpClient) {
     $this->config = $config_factory->get('uiowa_profiles.settings');
     $this->logger = $logger;
+    $this->httpClient = $httpClient;
     $this->environment = $this->setEnvironment();
     $this->endpoint = $this->setEndpoint();
   }
@@ -110,10 +126,10 @@ class Client {
   protected function setEndpoint() {
     $endpoint = '';
 
-    if ($this->environment == 'test') {
+    if ($this->environment === 'test') {
       $endpoint = 'https://profiles-test.uiowa.edu/api';
     }
-    elseif ($this->environment == 'prod') {
+    elseif ($this->environment === 'prod') {
       $endpoint = 'https://profiles.uiowa.edu/api';
     }
 
@@ -124,6 +140,43 @@ class Client {
     }
 
     return $endpoint;
+  }
+
+  /**
+   * Make an API request.
+   *
+   * @param string $method
+   *   The request type.
+   * @param string $path
+   *   The URL path to query.
+   * @param array $params
+   *   The request parameters as an array. The api-key must be set.
+   * @param array $options
+   *   The request options as an array. The expected Accept header must be set.
+   *
+   * @return string
+   *   The API response data.
+   */
+  public function request($method, $path, array $params, array $options) {
+    $path = ltrim($path, '/');
+    $params = UrlHelper::buildQuery($params);
+
+    try {
+      $response = $this->httpClient->request($method, "$this->endpoint/$path?$params", $options);
+    }
+    catch (RequestException | GuzzleException $e) {
+      $this->logger->error($e->getMessage());
+      $code = $e->getCode();
+
+      if ((int) $code === 404) {
+        throw new NotFoundHttpException();
+      }
+      else {
+        throw new HttpException($code, 'An error occurred while retrieving profile information.');
+      }
+    }
+
+    return $response->getBody()->getContents();
   }
 
 }

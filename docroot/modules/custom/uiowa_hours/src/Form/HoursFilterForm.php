@@ -76,7 +76,7 @@ class HoursFilterForm extends FormBase {
     ];
 
     // Date field with custom delayed ajax callback.
-    if ($config['display_datepicker'] == 1) {
+    if ((int) $config['display_datepicker'] === 1) {
       $form['#attached']['library'][] = 'uiowa_hours/finishedinput';
 
       // The default value will be set via JS.
@@ -198,7 +198,7 @@ class HoursFilterForm extends FormBase {
           'child_heading_size' => $block_config['child_heading_size'],
           'date' => $this->t('@start@end', [
             '@start' => date('F j, Y', $start),
-            '@end' => $end == $start ? NULL : ' - ' . date('F j, Y', $end),
+            '@end' => $end === $start ? NULL : ' - ' . date('F j, Y', $end),
           ]),
           'times' => [
             '#markup' => $this->t('<span class="badge badge--orange">Closed</span>'),
@@ -237,7 +237,6 @@ class HoursFilterForm extends FormBase {
           ],
         ];
 
-        // @todo Add block config to get categories and render them here.
         foreach ($date as $time) {
           $markup = $this->t('<span class="badge badge--green">Open</span> @start - @end', [
             '@start' => date('g:ia', strtotime($time['startHour'])),
@@ -245,7 +244,7 @@ class HoursFilterForm extends FormBase {
           ]);
 
           // Display time summary alongside hours info if block is set to do so.
-          if ($block_config['display_summary'] == TRUE) {
+          if ($block_config['display_summary'] === TRUE) {
             $markup .= ' - ' . $time['summary'];
           }
 

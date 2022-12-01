@@ -51,6 +51,7 @@
       'media_styles': style_classes,
       'media_sizes': size_classes,
       'card_title': view.style_plugin.getField(key, 'title'),
+      'card_link_url': view.style_plugin.getField(key, 'view_node')|striptags|trim,
       'card_image': view.style_plugin.getField(key, 'field_image'),
       'card_meta': view.style_plugin.getField(key, 'field_person_email'),
       'card_text': view.style_plugin.getField(key, 'field_teaser'),

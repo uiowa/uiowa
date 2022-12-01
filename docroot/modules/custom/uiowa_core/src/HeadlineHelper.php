@@ -50,13 +50,10 @@ class HeadlineHelper {
 
   /**
    * Get a list of valid heading alignments.
-   *
-   * @todo Change default to not be empty spaces. headline--left?
-   * https://github.com/uiowa/uiowa/pull/4834#discussion_r818112810
    */
   public static function getHeadingAlignment() {
     return [
-      'default' => ' ',
+      'default' => 'headline--left',
       'headline_alignment_center' => 'headline--center',
     ];
   }

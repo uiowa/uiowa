@@ -1,6 +1,6 @@
-@import "assets/scss/_variables.scss";
-@import "assets/scss/_utilities.scss";
-@import "components/cta/cta.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
+@import "uids3/components/cta/cta.scss";
 
 
 .layout__region--first,
@@ -16,20 +16,6 @@
   .cta__container>div {
     @include breakpoint(sm) {
       margin: 1.05rem 0;
-    }
-  }
-
-  .cta__container {
-    .cta__title {
-      //margin-left: 1.05rem;
-    }
-
-    .cta__content {
-      //margin-left: 1.05rem;
-    }
-
-    .cta__link {
-      //margin-right: 1.05rem;
     }
   }
 }
@@ -60,17 +46,78 @@
   margin: .5rem 0 0 0;
 }
 
+// @todo remove once https://github.com/uiowa/uiowa/issues/5149 is completed.
 
+.cta__link {
+  .bttn--primary {
 
-.cta__wrapper[class*="bg--black"] .bttn {
-  background: $primary;
-}
+    &:after {
+      [class*="bg--gold"] & {
+        background: $primary;
+      }
+    }
 
-.cta__wrapper[class*="bg--gold"] .bttn {
-  color: $secondary;
-}
+    i,
+    svg {
+      [class*="bg--gold"] & {
+        color: $primary;
+      }
+    }
 
-// @todo remove and add back to UIDS.
-.cta__wrapper .headline--uppercase {
-  font-size: 2.8rem;
+    [class*="bg--gray"] &,
+    [class*="bg--white"] &,
+    .bg-pattern--brain & {
+      border: none;
+    }
+
+    [class*="bg--black"] [class*="bg--gold"] &,
+    [class*="bg--white"] [class*="bg--gold"] &,
+    [class*="bg--gray"] [class*="bg--gold"] &,
+    [class*="bg--gold"] [class*="bg--gold"] &,
+    .bg-pattern--brain-reversed &,
+    [class*="bg--gold"] & {
+      background: $secondary;
+      color: #fff;
+    }
+
+    .bg-pattern--brain-reversed [class*="bg--gray"] &,
+    [class*="bg--gold"] [class*="bg--gray"] &,
+    .bg-pattern--brain-reversed [class*="bg--white"] &,
+    [class*="bg--gold"] [class*="bg--white"] & {
+      background: $primary;
+      color: $secondary;
+      border: none;
+
+      i,
+      svg {
+        color: #fff;
+      }
+
+      &:after {
+        background: $secondary;
+      }
+    }
+
+    [class*="bg--gold"] [class*="bg--black"] & {
+      background: $primary;
+      color: $secondary;
+
+      i,
+      svg {
+        color: #fff;
+      }
+
+      &:after {
+        background: $secondary;
+      }
+    }
+
+    [class*="bg--black"] [class*="bg--black"] &,
+    [class*="bg--white"] [class*="bg--black"] &,
+    [class*="bg--gray"] [class*="bg--black"] &,
+    .bg-pattern--brain-black &,
+    [class*="bg--black"] & {
+      color: $secondary;
+    }
+  }
 }

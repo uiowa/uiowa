@@ -1,0 +1,29 @@
+uuid: 540c4118-50aa-46e0-9d5a-5bebca4dc251
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_image
+    - media.type.image
+    - taxonomy.vocabulary.colleges_and_departments
+id: taxonomy_term.colleges_and_departments.field_image
+field_name: field_image
+entity_type: taxonomy_term
+bundle: colleges_and_departments
+label: Image
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

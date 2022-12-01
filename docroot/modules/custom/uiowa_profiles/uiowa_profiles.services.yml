@@ -4,4 +4,4 @@ services:
     arguments: ['uiowa_profiles']
   uiowa_profiles.client:
     class: Drupal\uiowa_profiles\Client
-    arguments: ['@config.factory', '@logger.channel.uiowa_profiles']
+    arguments: ['@config.factory', '@logger.channel.uiowa_profiles', '@http_client']

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lead.uiowa.ddev.site
+    protocol: https
+  machine_name: lead
+  human_name: lead.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lead.prod
+drupal:
+  db:
+    database: lead_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: clrson
+  site-name: 'Lead at Iowa'

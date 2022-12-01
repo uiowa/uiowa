@@ -67,7 +67,8 @@
  *
  * @todo Remove the id attribute (or make it a class), because if that gets
  *   rendered twice on a page this is invalid CSS for example: two lists
- *   in different view modes.
+ *   in different view modes. See
+ *   https://github.com/uiowa/uiowa/issues/4995
  */
 #}
 
@@ -102,6 +103,7 @@
   'card_title': label,
   'card_link_url': url,
   'headline_level': headline_level,
+  'visible_button': show_teaser_link_indicator
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with person_card only %}

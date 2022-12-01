@@ -27,7 +27,7 @@ class ApplyButton extends BlockBase {
    */
   public function build() {
     $markup = '<div class="layout-builder-block">
-        <a class="bttn bttn--full bttn--primary bttn--caps" href="https://apply.admissions.uiowa.edu/admissions/login.page">
+        <a class="bttn bttn--full bttn--primary" href="https://apply.admissions.uiowa.edu/admissions/login.page">
             Apply Now <span class="fa-arrow-right fas"></span>
         </a>
     </div>';

@@ -19,7 +19,7 @@ use Drupal\Core\Database\Database;
  * @return array
  *   The field names => info mapping for all text-based fields.
  */
-function get_text_field_tables() {
+function sitenow_find_text_get_text_field_tables() {
   $entity_field_manager = \Drupal::service('entity_field.manager');
   $entity_type_manager = \Drupal::entityTypeManager();
   $fields = [];
@@ -55,8 +55,8 @@ function get_text_field_tables() {
         foreach (array_intersect_key($field_storage_definitions, $field_map) as $field_storage_definition) {
           $field_name = $field_storage_definition->getName();
           // @todo Find a better way to handle this. Currently skipping rabbit hole
-          //   fields, because they are appended to node_field_data, and would need
-          //   to be handled separately, similar to title fields.
+          //   fields, because they are appended to node_field_data, and would
+          //   need to be handled separately, similar to title fields.
           if (str_starts_with($field_name, 'rh_')) {
             continue;
           }
@@ -68,7 +68,7 @@ function get_text_field_tables() {
             $parent_type = ['entity_id', 'revision_id'];
             // Titles are handled a little differently, and at this time
             // are the only fields handled this way.
-            if ($field_name == 'title') {
+            if ($field_name === 'title') {
               $parent_type = ['nid'];
               $value_columns = ['title'];
             }
@@ -131,7 +131,7 @@ function get_text_field_tables() {
  * @return array
  *   The search results.
  */
-function search_fields(string $needle, bool $regexed = FALSE, bool $render = FALSE) {
+function sitenow_find_text_search_fields(string $needle, bool $regexed = FALSE, bool $render = FALSE) {
   $results = [];
   $tables = get_text_field_tables();
   $db = Database::getConnection();
@@ -268,7 +268,7 @@ function search_fields(string $needle, bool $regexed = FALSE, bool $render = FAL
  * @return string[]
  *   An array of value columns to retreive from the database table.
  */
-function value_columns(string $name, string $type) {
+function sitenow_find_text_value_columns(string $name, string $type) {
   switch ($type) {
     case 'link':
       return [
@@ -301,7 +301,7 @@ function value_columns(string $name, string $type) {
  * @param array $tables
  *   List of tables to clean up.
  */
-function cleanup_tables(array &$tables) {
+function sitenow_find_text_cleanup_tables(array &$tables) {
   // At this time, these tables are not needed,
   // and will lead to errors in how we grab the value columns
   // later on in the process.
@@ -325,7 +325,7 @@ function cleanup_tables(array &$tables) {
  * @param string $type
  *   The entity type for which to search.
  */
-function fetch_parent(array $ids, string $type) {
+function sitenow_find_text_fetch_parent(array $ids, string $type) {
   $db = Database::getConnection();
   switch ($type) {
     case 'paragraph':
@@ -412,7 +412,7 @@ function fetch_parent(array $ids, string $type) {
  * @return string
  *   The more readable string.
  */
-function prettify_machine_name(string $machine_name) {
+function sitenow_find_text_prettify_machine_name(string $machine_name) {
   // Drop 'field' and 'uiowa' designators,
   // which don't really add anything for the editor.
   // Ditto with all the extra "values" that get added.

@@ -1,6 +1,6 @@
-@import "assets/scss/_variables.scss";
-@import "assets/scss/_utilities.scss";
-@import "components/card/card.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
+@import "uids3/components/card/card.scss";
 
 // @todo move back to UIDS
 
@@ -20,89 +20,32 @@
     margin-top: 1.05rem;
   }
 
+  &__details + .bttn {
+    margin-top: .425rem;
+  }
+
   &__title+.bttn {
     margin-top: .55rem;
+  }
+
+  &.card--media-right,
+  &.card--media-left {
+    .card__title+.bttn {
+      margin-top: .925rem;
+    }
+  }
+
+  &.card--media-right.card__list,
+  &.card--media-left.card__list {
+    .card__title+.bttn {
+      margin-top: .85rem;
+    }
   }
 
   &__description {
     font-size: 1rem;
     word-wrap: anywhere;
     overflow-wrap: anywhere;
-  }
-
-  // Circle button.
-
-  &[class*="bg--black"] {
-    .bttn--outline:not(.bttn--circle) {
-      &:hover:after,
-      &:focus:after {
-        [class*="bg--gray"] &,
-        [class*="bg--gold"] & {
-          background: $primary;
-        }
-      }
-    }
-    .bttn--outline.bttn--circle {
-      &:hover:after,
-      &:focus:after {
-        [class*="bg--gray"] &,
-        [class*="bg--gold"] &{
-          border-color: $primary;
-        }
-      }
-    }
-  }
-
-  &[class*="bg--gold"] {
-    .bttn--outline.bttn--circle {
-        &:hover:after,
-        &:focus:after {
-          border-color: $light;
-        }
-      }
-    }
-
-  &:not([class*="bg-"]) {
-    .bttn--outline.bttn--circle {
-      &:hover:after,
-      &:focus:after {
-        border-color: $primary;
-        [class*="bg--gold"] & {
-          border-color: $light;
-        }
-      }
-    }
-  }
-
-  .bttn--outline.bttn--circle {
-    padding: .55rem .7em;
-    border-radius: 50%;
-    transform: none;
-    line-height: 1;
-
-    &:after {
-      left: 0;
-      top: 0;
-      height: 100%;
-      width: 100%;
-      border-radius: 50%;
-      background-color: transparent;
-      transition: border-color .3s ease-in-out;
-      border: 3px solid transparent;
-      transform: none;
-      position: absolute;
-    }
-
-    &:hover:after,
-    &:focus:after {
-      transform: none;
-      border-color: $primary;
-      background-color: transparent;
-    }
-
-    svg {
-      margin: 0;
-    }
   }
 
   &.card--button-position {
@@ -125,6 +68,38 @@
     }
   }
 }
+
+// Circle button.
+.card {
+  .bttn--transparent.bttn--circle {
+    padding: .55rem .7em;
+    border-radius: 50%;
+    transform: none;
+    line-height: 1;
+
+    &:after {
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      border-radius: 50%;
+      background-color: transparent;
+      transition: border-color .3s ease-in-out;
+      transform: none;
+      position: absolute;
+    }
+
+    &:hover:after,
+    &:focus:after {
+      transform: none;
+      transition: none;
+      border: 3px solid;
+      border-color: inherit;
+      background-color: transparent;
+    }
+  }
+}
+
 
 // ie11
 @media all and (-ms-high-contrast: none),
@@ -195,36 +170,6 @@
   }
 }
 
-.card[class*="bg--gold"],
-.card[class*="bg--gray"] {
-  .bttn--sans-serif {
-    border-color: rgba(0,0,0,.225);
-  }
-}
-
-// Border color adjustment for cards not using a bg color
-.card:not([class*="bg-"]) {
-  border-color: rgba(0,0,0,.125);
-  .bg-pattern--brain-black &,
-  [class*="bg--black"] & {
-    border-color: rgba(255,255,255,.325);
-    .bttn--sans-serif {
-      border-color: rgba(255,255,255,.325);
-    }
-  }
-  .bttn--sans-serif {
-    border-color: rgba(0,0,0,.225);
-  }
-}
-
-.card:not([class*="bg-"]) {
-  .layout__container:not([class*="bg-"]) & {
-    .bttn--sans-serif {
-      border-color: rgba(0,0,0,.125);
-    }
-  }
-}
-
 // Set background for all v2 cards
 .paragraph--type--section {
   &[class*=bg-] {
@@ -284,7 +229,8 @@
 
   &.hide-descriptions {
     .card__description,
-    .item-description {
+    .item-description,
+    .field--name-field-teaser {
       display: none;
     }
   }
@@ -363,7 +309,6 @@
 .card--media-left.card--list .card__title, .card--media-right.card--list .card__title {
   margin: 0 0 .125rem
 }
-
 
 // Flexbox for centered icons
 .card__meta.card__meta--icon {

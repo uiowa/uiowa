@@ -30,15 +30,24 @@ third_party_settings:
             lock:
               6: 6
               7: 7
+          layout_builder_limit:
+            limit:
+              scope: '1'
+              scope_update: 'Update scope'
+              settings:
+                regions:
+                  content:
+                    minimum_enabled: 0
+                    minimum: ''
+                    maximum_enabled: 1
+                    maximum: '1'
   layout_builder_restrictions:
     allowed_block_categories: {  }
     entity_view_mode_restriction:
       allowed_layouts:
-        - layout_twocol_section
-        - layout_threecol_section
         - layout_onecol
-      blacklisted_blocks: {  }
-      whitelisted_blocks:
+      denylisted_blocks: {  }
+      allowlisted_blocks:
         'Chaos Tools': {  }
         'Content fields': {  }
         'Custom block types': {  }
@@ -46,6 +55,7 @@ third_party_settings:
         Devel: {  }
         Forms: {  }
         'Inline blocks':
+          - 'inline_block:uiowa_button'
           - 'inline_block:uiowa_cta'
           - 'inline_block:uiowa_text_area'
         Lists: {  }
@@ -61,11 +71,12 @@ third_party_settings:
         Webform:
           - webform_block
         core: {  }
+      restricted_categories: {  }
     entity_view_mode_restriction_by_region:
       allowed_layouts:
-        - layout_twocol_section
-        - layout_threecol_section
         - layout_onecol
+      allowlisted_blocks: null
+      denylisted_blocks: null
 id: fragment.region_item.default
 targetEntityType: fragment
 bundle: region_item
@@ -87,5 +98,8 @@ content:
     weight: 0
     region: content
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   layout_builder__layout: true
   search_api_excerpt: true

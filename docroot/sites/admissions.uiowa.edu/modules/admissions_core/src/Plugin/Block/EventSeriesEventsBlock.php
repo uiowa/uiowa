@@ -107,6 +107,7 @@ class EventSeriesEventsBlock extends BlockBase implements ContainerFactoryPlugin
               '#markup' => '<span class="fa-li"><span class="fa-angle-right text--gold fas"></span></span>' . $date,
             ];
             $dates[$nid] = $markup;
+
           }
         }
       }
@@ -118,18 +119,22 @@ class EventSeriesEventsBlock extends BlockBase implements ContainerFactoryPlugin
       }
       $block = [
         '#prefix' => $this->t('<div class="block-margin__top field__label"><span class="fa-calendar far"></span> &nbsp; Available dates:</div>'),
-        '#theme' => 'item_list',
-        '#list_type' => 'ul',
-        '#attributes' => ['class' => 'element--list-none fa-ul'],
+        $listUl = [
+          '#theme' => 'item_list',
+          '#list_type' => 'ul',
+          '#attributes' => ['class' => 'element--list-none fa-ul'],
+          '#items' => $dates,
+        ],
         '#cache' => [
           'tags' => ['node_type:event'],
         ],
-        '#items' => $dates,
+        '#items' => $listUl,
         '#attached' => [
           'library' => [
             'admissions_core/event-series',
           ],
         ],
+
       ];
 
     }

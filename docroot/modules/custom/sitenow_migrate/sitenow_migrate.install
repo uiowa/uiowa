@@ -60,7 +60,12 @@ function sitenow_migrate_migration_install($sitename) {
   }
 
   $config_path = $module_path . '/config/split';
-  // @todo Do we need to catch if this directory doesn't exist?
+
+  // If the config path does not exist, we cannot read any config from it.
+  if (!file_exists($config_path)) {
+    throw new \Exception("Config directory does not exist at $config_path.");
+  }
+
   $source = new FileStorage($config_path);
 
   $config_storage = \Drupal::service('config.storage');

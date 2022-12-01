@@ -1,0 +1,34 @@
+id: iisc_partner_redirects
+label: 'Partner Redirects'
+dependencies:
+  enforced:
+    module:
+      - iisc_migrate
+migration_tags:
+  - iisc
+migration_group: sitenow_migrate
+source:
+  plugin: iisc_partners
+  node_type: partner
+  constants:
+    redirect_prefix: 'internal:/node/'
+    status_code: 301
+destination:
+  plugin: 'entity:redirect'
+process:
+  temp_nid:
+    plugin: migration_lookup
+    source: nid
+    migration: iisc_partners
+  redirect_source:
+    plugin: get
+    source: alias
+  redirect_redirect:
+    plugin: concat
+    source:
+      - constants/redirect_prefix
+      - '@temp_nid'
+  status_code: constants/status_code
+migration_dependencies:
+  required:
+    - iisc_partners

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lawheli.uiowa.ddev.site
+    protocol: https
+  machine_name: lawheli
+  human_name: heli.law.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lawheli.prod
+drupal:
+  db:
+    database: heli_law_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: brupe
+  site-name: 'Hubbell Environmental Law Initiative'

@@ -8,6 +8,7 @@ dependencies:
     - field.field.block_content.uiowa_banner.field_uiowa_banner_excerpt
     - field.field.block_content.uiowa_banner.field_uiowa_banner_image
     - field.field.block_content.uiowa_banner.field_uiowa_banner_link
+    - field.field.block_content.uiowa_banner.field_uiowa_banner_pre_title
     - field.field.block_content.uiowa_banner.field_uiowa_banner_title
   module:
     - heading
@@ -28,14 +29,14 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 4
+    weight: 5
     region: content
   field_uiowa_banner_excerpt:
     type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 1
+    weight: 2
     region: content
   field_uiowa_banner_image:
     type: entity_reference_entity_view
@@ -44,7 +45,7 @@ content:
       view_mode: full__ultrawide
       link: false
     third_party_settings: {  }
-    weight: 3
+    weight: 4
     region: content
   field_uiowa_banner_link:
     type: link_separate
@@ -56,14 +57,25 @@ content:
       rel: '0'
       target: '0'
     third_party_settings: {  }
-    weight: 2
+    weight: 3
+    region: content
+  field_uiowa_banner_pre_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
     region: content
   field_uiowa_banner_title:
     type: heading
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 0
+    weight: 1
     region: content
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   search_api_excerpt: true

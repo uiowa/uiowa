@@ -1,0 +1,37 @@
+{{ attach_library('uids_base/cta') }}
+<div class="cta__wrapper {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
+  {% block cta_container_start %}
+    <div class="cta__container">
+      {% block heading %}
+        {% if cta_title is not empty %}
+          <div class="cta__title">
+            {% set cta_headline = {
+              'headline_level' : headline_level,
+              'headline_class' : 'headline headline--uppercase',
+              'headline_text' : cta_title,
+            } %}
+            {% include '@uids_base/uids/headline.html.twig' with cta_headline only %}
+          </div>
+        {% endif %}
+      {% endblock %}
+
+      {% block cta_content %}
+        {% if cta_summary is not empty %}
+          <div class="cta__content">
+            <p class="cta__summary">{{ cta_summary }}</p>
+          </div>
+        {% endif %}
+      {% endblock %}
+
+      {% block cta_link %}
+        {% if cta_link_url is not empty %}
+          <div class="cta__link">
+            <a href="{{ cta_link_url }}" class="bttn bttn--primary">{{ cta_link_title }}
+              <i role="presentation" class="fas fa-arrow-right"></i>
+            </a>
+          </div>
+        {% endif %}
+      {% endblock %}
+    </div>
+  {% endblock %}
+</div>

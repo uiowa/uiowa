@@ -1,0 +1,25 @@
+sitenow_p2lb.settings_form:
+  path: '/admin/config/sitenow/p2lb'
+  defaults:
+    _title: 'P2Lb'
+    _form: '\Drupal\sitenow_p2lb\Form\P2LbSettingsForm'
+  requirements:
+    _permission: 'administer sitenow p2lb'
+
+sitenow_p2lb.content_converter:
+  path: '/admin/content/sitenow-converter'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::overview'
+    link_id: 'sitenow_p2lb.content_converter'
+    _title: 'SiteNow Converter'
+  requirements:
+    _permission: 'administer basic site settings'
+
+sitenow_p2lb.content_converted:
+  path: '/admin/content/sitenow-converter/converted'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::overview'
+    link_id: 'sitenow_p2lb.content_converted'
+    _title: 'Converted'
+  requirements:
+    _permission: 'administer basic site settings'

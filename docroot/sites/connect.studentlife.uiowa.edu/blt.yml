@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: studentlifeconnect.uiowa.ddev.site
+    protocol: https
+  machine_name: studentlifeconnect
+  human_name: connect.studentlife.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: studentlifeconnect.prod
+drupal:
+  db:
+    database: connect_studentlife_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: dquam
+  site-name: 'Student Life Connect'

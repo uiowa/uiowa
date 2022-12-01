@@ -23,7 +23,7 @@ class EventsController extends ControllerBase {
    */
   public function build($event_id, $event_instance) {
     // If the configuration is to link out, make all event pages 404.
-    if ($this->config('sitenow_events.settings')->get('event_link') == 'event-link-external') {
+    if ($this->config('sitenow_events.settings')->get('event_link') === 'event-link-external') {
       throw new NotFoundHttpException();
     }
     else {
@@ -37,7 +37,7 @@ class EventsController extends ControllerBase {
           '#theme' => 'sitenow_events_single_event',
           '#event' => $event,
           '#cache' => [
-            'tags' => ['time:hours_3'],
+            'tags' => ['time:hourly'],
             'max-age' => 60,
           ],
         ];

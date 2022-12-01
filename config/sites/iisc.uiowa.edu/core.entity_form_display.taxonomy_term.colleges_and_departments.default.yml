@@ -1,0 +1,63 @@
+uuid: c49b3a15-b3cd-4978-9d26-5c0fce2ddda4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.colleges_and_departments.field_image
+    - field.field.taxonomy_term.colleges_and_departments.field_website
+    - taxonomy.vocabulary.colleges_and_departments
+  module:
+    - link
+    - media_library
+    - path
+    - text
+id: taxonomy_term.colleges_and_departments.default
+targetEntityType: taxonomy_term
+bundle: colleges_and_departments
+mode: default
+content:
+  description:
+    type: text_textarea
+    weight: 2
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_image:
+    type: media_library_widget
+    weight: 1
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+  field_website:
+    type: link_default
+    weight: 3
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 5
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+hidden: {  }

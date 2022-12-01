@@ -1,0 +1,69 @@
+<?php
+
+/**
+ * @file
+ * Install tasks.
+ */
+
+use Drupal\redirect\Entity\Redirect;
+
+/**
+ * Import provided redirects.
+ */
+function tippie_core_update_9001() {
+  /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
+  $path_resolver = \Drupal::service('extension.path.resolver');
+  $path = $path_resolver->getPath('module', 'tippie_core');
+  $csv = array_map('str_getcsv', file($path . '/redirects/2022_tippie_redirects.csv'));
+  $header = FALSE;
+
+  if ($header === TRUE) {
+    unset($csv[0]);
+  }
+
+  foreach ($csv as $redirect) {
+    /*
+     * The preg_replace() here is to remove non-printable unicode characters.
+     * The way this was set up before allowed for BOF, EOF, etc. to be
+     * bundled in with the redirect strings, which bricked some redirects.
+     */
+    $source_path = preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', $redirect[0]);
+    $redirect_path = preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', $redirect[1]);
+    $existing = \Drupal::service('redirect.repository')->findBySourcePath($source_path);
+    if (empty($existing)) {
+
+      /* If we have a /node/NODE_ID path AND the two paths are not the same...
+       * I know this looks silly to evaluate `X === 1`,
+       * but this is required with preg_match().
+       * See: https://www.php.net/manual/en/function.preg-match.php#refsect1-function.preg-match-returnvalues.
+       */
+      if (
+        preg_match('/^\/node\/.*/', $redirect_path) === 1 &&
+        trim($redirect_path, "/") != trim($source_path, "/")
+      ) {
+
+        // Get the URL for that node...
+        $redirect_path_url = trim(\Drupal::service('path_alias.manager')->getAliasByPath(rtrim($redirect_path, "/")), "/");
+
+        // And check to see if we are redirecting to the same path.
+        if ($source_path === $redirect_path_url) {
+
+          // If we are, break out of the current loop and go to the next.
+          continue;
+        }
+      }
+
+      $redir = Redirect::create([
+        'language' => 'en',
+        'status_code' => '301',
+      ]);
+
+      /* These setX() methods are used to make sure that
+       * we are setting the proper variable arrays for each DB entry.
+       */
+      $redir->setSource($source_path);
+      $redir->setRedirect($redirect_path);
+      $redir->save();
+    }
+  }
+}

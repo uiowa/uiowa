@@ -1,0 +1,32 @@
+local:
+  root: /var/www/html/docroot
+  uri: english.uiowa.ddev.site
+  paths:
+    files: sites/english.uiowa.edu/files
+dev:
+  uri: english.dev.drupal.uiowa.edu
+  host: uiowa04dev.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/english.uiowa.edu/files
+  root: /var/www/html/uiowa04.dev/docroot
+  user: uiowa04.dev
+prod:
+  uri: english.uiowa.edu
+  host: uiowa04.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/english.uiowa.edu/files
+  root: /var/www/html/uiowa04.prod/docroot
+  user: uiowa04.prod
+test:
+  uri: english.stage.drupal.uiowa.edu
+  host: uiowa04stg.ssh.prod.acquia-sites.com
+  options: {  }
+  paths:
+    dump-dir: /mnt/tmp
+    files: sites/english.uiowa.edu/files
+  root: /var/www/html/uiowa04.test/docroot
+  user: uiowa04.test

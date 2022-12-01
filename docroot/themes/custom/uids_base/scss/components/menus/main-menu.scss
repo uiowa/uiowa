@@ -1,140 +1,342 @@
-@import "assets/scss/_variables.scss";
-@import "assets/scss/_utilities.scss";
-@import "components/menus/main-menu/main-menu.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
+@import "uids3/components/menus/main-menu/main-menu.scss";
 
-// @todo remove from UIDS.
-.main--secondary--horizontal {
-  @include breakpoint(sm) {
-    margin: 0;
-  }
-}
-
-// @todo remove in https://github.com/uiowa/uiowa/pull/4667.
-
-.nav {
-  @include breakpoint(sm) {
-    align-items: center;
-    @include flexbox;
-  }
-
-  .menu {
-    overflow: visible;
-    font-size: $base-font-size;
-    @extend %no-ul-list;
-    @include flexbox;
-
-    a,
-    span {
-      position: relative;
-      display: inline-block;
-      transition: background 0.8s ease-out;
-      text-decoration: none;
-      color: $secondary;
-      @extend %font-smoothing-on;
-    }
-  }
-}
-// vertical and horiztonal
-.main--secondary--horizontal,
-.main--secondary--vertical {
-  display: block;
-
-  > .menu > li.menu-item--expanded > a + ul {
-    padding-bottom: $md;
-  }
-
-  .menu {
-    position: relative;
-    width: 100%;
-    @include flexbox;
-    @include flex-direction(column);
-
-    li {
-      display: block;
-      width: 100%;
-      margin-bottom: 0;
-      font-size: 1.3rem;
-      line-height: 1.3;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-      @include breakpoint(sm) {
-        width: auto;
-        margin-bottom: 0;
-      }
-
-      li {
-        font-size: 1.1rem;
-
-        a {
-          color: #333;
+// set horizontal only if used in layout--onecol section.
+@include breakpoint(sm) {
+  .layout--onecol {
+    .menu-wrapper--horizontal {
+      padding: 0;
+      @include container-width;
+      margin: 0;
+      border-top: none;
+      // top-level only
+      > .menu {
+        > li {
           border-bottom: none;
-          @include padding($top: $xsm, $right: $sm, $bottom: $xsm, $left: 0);
-        }
-      }
+          display: flex;
+          // override default styles reducing padding on first-child.
+          &:first-child a {
+            //padding-top: 1.475rem;
+          }
 
-      &:last-child {
-        border-bottom: none;
-      }
+          a,
+          span {
+            height: 100%;
+            display: flex;
+          }
 
-      a,
-      span {
-        position: relative;
-        width: 100%;
-        word-break: break-word;
-        @include padding($top: $md, $right: $md, $bottom: $md, $left: 0);
+          &:first-of-type a {
+            margin-left: 0;
+          }
 
-        &.is-active {
-          font-weight: bold;
+          &:last-of-type a {
+            margin-right: 0;
+          }
 
-          &:after {
-            background: transparent;
-            content: "";
+          > a,
+          > span {
+            @include bttn--focus;
+            position: relative;
+            width: auto;
+            text-align: center;
+            border: 0;
+            background-color: transparent;
+            padding: 1.475rem 1.375rem;
+            margin: 0;
+            align-items: center;
+            word-break: unset;
+
+            &:focus,
+            &:hover {
+              text-decoration: none;
+            }
+          }
+
+          &:before {
             position: absolute;
-            left: 50%;
-            bottom: 0;
-            width: 100%;
-            height: 4px;
-            transform-origin: center;
-            transition: transform 0.3s ease-in-out;
-            transform: translate(-50%, 0) scaleX(1);
+            bottom: 35%;
+            width: 1px;
+            height: 25%;
+            content: "";
+            background: $primary;
+            right: -1px;
           }
-        }
 
-        &:focus,
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-
-      &.menu-item--expanded {
-        a {
-          &.is-active {
-            border-bottom: none;
-            padding-bottom: $sm;
+          &:last-child {
+            &:before {
+              background: transparent;
+            }
           }
-        }
 
-        ul {
-          display: block;
-          padding-left: 2.2rem;
+          > a.is-active {
+            background-color: $light;
+            margin: 0;
+            padding-bottom: 1.475rem;
 
-          & li {
-            border-bottom: none;
-            font-size: $base-font-size;
+            &:before {
+              width: 20px;
+              height: 20px;
+              content: "";
+              position: absolute;
+              left: calc(50% - 10px);
+              top: calc(100% - 1px);
+              background-color: transparent;
+              border-top: 10px solid $primary;
+              border-right: 10px solid transparent;
+              border-left: 10px solid transparent;
+              border-bottom: 10px solid transparent;
+              z-index: 1;
+            }
 
-            & a,
-            & span {
-              @include padding($top: $sm, $right: $md, $bottom: $sm, $left: 0);
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
+            &:after {
+              background: $primary;
+              content: "";
+              position: absolute;
+              left: 50%;
+              bottom: 0;
+              width: 100%;
+              height: 5px;
+              transform-origin: center;
+              transition: transform 0.3s ease-in-out;
+              transform: translate(-50%, 0) scaleX(1);
+            }
+          }
+
+          &.menu-item--active-trail {
+            &:before {
+              background: transparent;
+            }
+
+            > a,
+            > span {
+              background-color: $light;
+              margin: 0;
+              padding-bottom: 1.475rem;
 
               &:before {
-                content: "\f105";
+                width: 20px;
+                height: 20px;
+                content: "";
                 position: absolute;
+                left: calc(50% - 10px);
+                top: calc(100% - 1px);
+                background-color: transparent;
+                border-top: 10px solid $primary;
+                border-right: 10px solid transparent;
+                border-left: 10px solid transparent;
+                border-bottom: 10px solid transparent;
+                z-index: 1;
+              }
+
+              &:after {
+                background: $primary;
+                content: "";
+                position: absolute;
+                left: 50%;
+                bottom: 0;
+                width: 100%;
+                height: 5px;
+                transform-origin: center;
+                transition: transform 0.3s ease-in-out;
+                transform: translate(-50%, 0) scaleX(1);
+              }
+            }
+          }
+
+          &.menu-item.menu-item--expanded {
+            > a.is-active {
+              &:before {
+                left: calc(64% - 10px);
+              }
+            }
+          }
+
+          &.menu-item--expanded.menu-item--active-trail {
+            > span {
+              &:before {
+                width: 20px;
+                height: 20px;
+                content: "";
+                position: absolute;
+                left: calc(50% - 10px);
+                top: calc(100% - 1px);
+                background-color: transparent;
+                border-top: 10px solid $primary;
+                border-right: 10px solid transparent;
+                border-left: 10px solid transparent;
+                border-bottom: 10px solid transparent;
+                z-index: 1;
+              }
+            }
+
+            > a,
+            > span {
+              &:before {
+                left: calc(64% - 10px);
+              }
+            }
+          }
+
+          &.menu-item--expanded {
+            background-color: transparent;
+            align-items: center;
+
+            &:before {
+              right: -6px;
+            }
+
+            > span,
+            > a {
+              padding: 1.475rem 0.5rem 1.475rem 1.375rem;
+              margin-right: -1px;
+            }
+          }
+        }
+      }
+
+      .menu {
+        flex-direction: row;
+
+        ul {
+          position: absolute;
+          width: 260px;
+          left: 0;
+          background: #fff;
+          box-shadow: -3px 3px 10px -2px rgba(0, 0, 0, .1);
+          z-index: 100;
+          top: 100%;
+          padding-bottom: 0;
+          // override the list-style disc from main-menu.scss
+          ul.menu {
+            list-style: none;
+            margin-left: 0;
+            position: relative;
+            width: auto;
+            background: transparent;
+            box-shadow: none;
+
+            li {
+              list-style: none;
+
+              & > a {
+                @include padding($top: $sm, $right: $xsm, $bottom: $xsm, $left: 2.2rem);
                 font-size: 0.9rem;
-                left: -$md;
-                right: $md;
-                @include fas();
+
+                &:after {
+                  height: 1px;
+                }
+
+                &::before {
+                  content: "\f111";
+                  position: absolute;
+                  font-size: 0.3rem;
+                  left: 1.2rem;
+                  top: 1rem;
+                  @include fas();
+                  color: $brand-cool-gray;
+                }
+              }
+            }
+          }
+        }
+
+        li {
+          position: relative;
+
+          a:after {
+            background-color: $brand-cool-gray;
+          }
+
+          &.menu-item--expanded {
+            li {
+              a,
+              span {
+                text-align: left;
+
+                &::before {
+                  content: "";
+                }
+
+                &:after {
+                  content: "";
+                }
+              }
+
+              &.menu-item--expanded {
+                display: flex;
+                flex-wrap: wrap;
+
+                > a,
+                > span {
+                  flex-basis: 82%;
+                }
+              }
+            }
+          }
+
+          li {
+            span {
+              padding: 0.625rem 1.05rem 0.625rem 1.2rem;
+            }
+
+            a,
+            span {
+              &:focus,
+              &:hover {
+                background: $light;
+              }
+
+              &:after {
+                height: 2px;
+                background-color: $light-gray;
+              }
+            }
+          }
+        }
+      }
+    }
+    // Background colors
+    &[class*="bg--black"],
+    &[class*="bg--gold"],
+    &[class*="bg--gray"] {
+      .menu-wrapper--horizontal {
+        > .menu {
+          > li > a.is-active {
+            background: #fff;
+            color: $secondary;
+          }
+          > li.menu-item--active-trail {
+            > a,
+            > span {
+              background: #fff;
+              color: $secondary;
+            }
+          }
+        }
+      }
+    }
+
+    &[class*="bg--black"] {
+      .menu-wrapper--horizontal {
+        > .menu {
+          li a {
+            &:after {
+              bottom: 0;
+            }
+          }
+
+          li.menu-item--active-trail {
+            a {
+              color: $secondary;
+            }
+          }
+
+          li.menu-item--expanded {
+            ul li {
+              a,
+              span {
+                color: $secondary;
               }
             }
           }
@@ -142,183 +344,135 @@
       }
     }
 
-    [class*="bg--black"] &,
-    .bg-pattern--brain-black & {
-      li {
-        border-color: rgba(255, 255, 255, 0.225);
-
-        a {
-          color: #fff;
-        }
-      }
-    }
-
-    li:not(.menu-item--expanded) ul {
-      display: none;
-    }
-  }
-}
-// horizontal only
-@include breakpoint(sm) {
-  .main--secondary--horizontal {
-    padding: 0;
-    @include container-width;
-    border-top: none;
-
-    .menu {
-      flex-direction: row;
-
-      ul {
-        display: none;
-      }
-
-      li {
-        font-size: calc(100% + 0.1vw);
-        display: flex;
-        border-bottom: none;
-
-        &:first-of-type a {
-          margin-left: 0;
-        }
-
-        &:last-of-type a {
-          margin-right: 0;
-        }
-
-        a,
-        span {
-          @include bttn--focus;
-          position: relative;
-          width: auto;
-          text-align: center;
-          text-transform: uppercase;
-          border: 0;
-          background-color: transparent;
-          font-weight: $font-weight-medium-bold;
-          padding: 1.475rem 1.375rem;
-          margin: 0;
-          @include center(both);
-          word-break: unset;
-
-          &:focus,
-          &:hover {
-            text-decoration: none;
+    &[class*="bg--gold"] {
+      .menu-wrapper--horizontal {
+        > .menu > {
+          li:before {
+            background: #fff;
+            width: 2px;
+          }
+          li:last-child:before {
+            background: transparent;
           }
         }
-
-        a.is-active {
-          background-color: #f3f3f3;
-          margin: 0;
-          padding-right: 1.875rem;
-          padding-left: 1.875rem;
-
-          &:before {
-            width: 20px;
-            height: 20px;
-            content: "";
-            position: absolute;
-            left: calc(50% - 10px);
-            top: calc(100% - 1px);
-            background-color: transparent;
-            border-top: 10px solid $primary;
-            border-right: 10px solid transparent;
-            border-left: 10px solid transparent;
-            border-bottom: 10px solid transparent;
-            z-index: 1;
-          }
-
-          &:after {
-            background: $primary;
-            content: "";
-            position: absolute;
-            left: 50%;
-            bottom: 0;
-            width: 100%;
-            height: 6px;
-            transform-origin: center;
-            transition: transform 0.3s ease-in-out;
-            transform: translate(-50%, 0) scaleX(1);
-          }
-        }
-
-        &.menu-item--expanded {
-          background-color: transparent;
-
-          a {
-            &.is-active {
-              padding-bottom: 1.475rem;
+        > .menu {
+          > li > a,
+          > li > span {
+            &:before {
+              background-color: $brand-cool-gray;
             }
           }
 
-          ul {
-            display: none;
+          > li,
+          > li.menu-item--active-trail {
+            > a.is-active,
+            > a,
+            > span {
+              &:before {
+                border-top-color: $brand-cool-gray;
+                background-color: transparent;
+              }
+
+              &:after {
+                background-color: $brand-cool-gray;
+              }
+            }
           }
         }
       }
+    }
+  }
+}
 
-      li a:before {
-        position: absolute;
-        bottom: 35%;
-        width: 1px;
-        height: 25%;
-        content: "";
-        background: $primary;
-        right: -1px;
+// hide toggle button if menu is used outside of onecol layout.
+@include breakpoint(sm) {
+  .layout:not(.layout--onecol) {
+    .menu-wrapper--horizontal {
+      button {
+        display: none;
       }
+    }
+  }
+}
+// menu button styles
+.menu-wrapper--horizontal {
+  > .menu {
 
-      li a:after {
-        background-color: $brand-cool-gray;
+    ul {
+      display: none;
+
+      &.show {
+        display: block;
       }
+    }
 
-      li:last-of-type a {
-        &:before {
-          width: 0;
+    > ul > ul.menu {
+      display: none;
+
+      &.show {
+        display: block;
+      }
+    }
+
+    li {
+      a {
+        width: 80%;
+        @include breakpoint(sm) {
+          width: 100%;
         }
       }
-
-      [class*="bg--black"] &,
-      [class*="bg--gold"] &,
-      [class*="bg--gray"] &,
-      .bg-pattern--brain-black &,
-      .bg-pattern--brain-reversed & {
-        li {
-          a.is-active {
-            background: #fff;
-          }
-        }
+      display: flex;
+      flex-wrap: wrap;
+      position: relative;
+      @include breakpoint(sm) {
+        flex-wrap: inherit;
       }
+    }
 
-      [class*="bg--black"] &,
-      .bg-pattern--brain-black & {
-        li a {
-          &:after {
-            bottom: 0;
-          }
-        }
-
-        li {
-          a.is-active {
+    li.menu-item--expanded li {
+      button {
+        &::after {
+          [class*="bg--black"] & {
             color: $secondary;
           }
         }
       }
+    }
 
-      [class*="bg--gold"] &,
-      .bg-pattern--brain-reversed & {
-        li a {
-          &:before {
-            background-color: $brand-cool-gray;
+
+    > li.menu-item--active-trail {
+      @include breakpoint(sm) {
+
+        > button  {
+          background: $light;
+
+          [class*="bg--black"] &,
+          [class*="bg--gold"] &,
+          [class*="bg--gray"] & {
+            background: #fff;
           }
-        }
 
-        li {
-          a.is-active {
+          &:focus,
+          &:hover,
+          &[aria-expanded="true"] {
             &:before {
-              border-top-color: $brand-cool-gray;
-              background-color: transparent;
+              background-color: $brand-cool-gray;
             }
+          }
 
-            &:after {
+          &:before {
+            background: #ffcd00;
+            content: "";
+            position: absolute;
+            left: 48%;
+            bottom: 0;
+            width: 100%;
+            height: 5px;
+            transform-origin: center;
+            transition: transform 0.3s ease-in-out;
+            transform: translate(-50%) scaleX(1);
+
+            [class*="bg--gold"] & {
               background-color: $brand-cool-gray;
             }
           }
@@ -326,18 +480,201 @@
       }
     }
 
-    [class*="bg--gold"] &,
-    .bg-pattern--brain-reversed & {
-      border-top: none;
+    > li {
+      @include breakpoint(sm) {
+        button {
+          right: 0;
+
+          &::after {
+            [class*="bg--black"] & {
+              color: $secondary;
+            }
+          }
+        }
+
+        > .is-active + button  {
+          background: $light;
+
+          [class*="bg--black"] &,
+          [class*="bg--gold"] &,
+          [class*="bg--gray"] & {
+            background: #fff;
+          }
+
+          &:focus,
+          &:hover,
+          &[aria-expanded="true"] {
+            &:before {
+              background-color: $brand-cool-gray;
+            }
+          }
+
+          &:before {
+            background: #ffcd00;
+            content: "";
+            position: absolute;
+            left: 48%;
+            bottom: 0;
+            width: 100%;
+            height: 5px;
+            transform-origin: center;
+            transition: transform 0.3s ease-in-out;
+            transform: translate(-50%) scaleX(1);
+
+            [class*="bg--gold"] & {
+              background-color: $brand-cool-gray;
+            }
+          }
+        }
+      }
+    }
+
+    button {
+      align-items: center;
+      background-color: transparent;
+      border: none;
+      padding: 0 .5rem;
+      top: 0;
+      height: 3.5rem;
+      width: 3rem;
+      justify-content: center;
+      display: flex;
+
+      @include breakpoint(sm) {
+        height: 100%;
+        top: 5px;
+        width: auto;
+        margin: 0 auto;
+      }
+      position: absolute;
+      right: 0;
+      @include breakpoint(sm) {
+        position: relative;
+        top: 0;
+      }
+
+      &:before {
+        @include breakpoint(sm) {
+          content: '';
+          position: absolute;
+          left: 50%;
+          bottom: 0;
+          width: 100%;
+          height: 4px;
+          background-color: $brand-cool-gray;
+          transform-origin: center;
+          transform: translate(-50%, 0) scaleX(0);
+          transition: transform 0.3s ease-in-out;
+        }
+      }
+
+      &:focus,
+      &:hover,
+      &[aria-expanded="true"] {
+        //background: darken($light, 5%);
+
+        &:after {
+          background: darken($light, 25%);
+          [class*="bg--black"] & {
+            color: $secondary;
+          }
+        }
+
+
+        &:before {
+          transform: translate(-50%, 0) scaleX(1);
+        }
+      }
+
+      &[aria-expanded="true"]::after {
+        content: "\f077";
+      }
+
+      &::after {
+        content: "\f078";
+        bottom: 0;
+        font-size: 0.7rem;
+        @include fas();
+        line-height: 2;
+        @include center(both);
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: darken($light, 8%);
+      }
+    }
+
+    .menu-item--expanded a + button::after {
+      margin-left: 0;
+    }
+    .menu-item--expanded + .menu-item--active-trail {
+      margin-left: .3rem;
+    }
+  }
+
+  > .menu .menu {
+    button {
+      height: 2.5rem;
+
+      &::after {
+        font-size: .7rem;
+        width: 20px;
+        height: 20px;
+      }
+      &:before {
+        height: 0;
+      }
+    }
+  }
+
+  [class*="bg--black"] & {
+    li.menu-item--expanded {
+      color: $secondary;
     }
   }
 }
 
-// ie11
-@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-  .main--secondary--horizontal .menu li {
-    @include breakpoint(sm) {
-      font-size: 1rem;
-    }
+// Show/hide menu toggle
+.menu-wrapper--horizontal > .menu.hide {
+  display: none;
+  @include breakpoint(sm) {
+    display: inherit;
+  }
+}
+
+button#main-menu-toggle {
+  @include breakpoint(sm) {
+    display: none;
+  }
+  width: 100%;
+  text-align: left;
+  height: 60px;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  letter-spacing: 0.03rem;
+  text-transform: uppercase;
+  font-size: 1rem;
+  font-weight: bold;
+  background: none;
+  padding: 0;
+
+  &:before {
+    content: "\f0c9";
+    @include fas();
+    font-weight: 900;
+    line-height: 0.8;
+    margin-right: 15px;
+    padding: 7px;
+    width: 25px;
+    height: 25px;
+  }
+
+  &[aria-expanded="true"]:before {
+    content: "\f00d";
+    color: #fff;
+    border-radius: 50%;
+    background: #999;
   }
 }

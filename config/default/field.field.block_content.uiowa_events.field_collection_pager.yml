@@ -1,0 +1,23 @@
+uuid: dff1f3ff-c442-4893-b8cc-ff31e3ff2669
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_events
+    - field.storage.block_content.field_collection_pager
+id: block_content.uiowa_events.field_collection_pager
+field_name: field_collection_pager
+entity_type: block_content
+bundle: uiowa_events
+label: 'Show pager'
+description: 'Check this to show all items paged by the <em>Number of results</em> value.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

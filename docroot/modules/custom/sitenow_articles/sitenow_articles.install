@@ -45,3 +45,48 @@ function sitenow_articles_update_9301() {
 
   $config->save();
 }
+
+/**
+ * Add link indicator on teasers config setting to pages.
+ */
+function sitenow_articles_update_9302() {
+  $config = \Drupal::configFactory()->getEditable('sitenow_pages.settings');
+  $config->set('show_teaser_link_indicator', FALSE);
+
+  $config->save();
+}
+
+/**
+ * Update articles feed guid permalink to false.
+ */
+function sitenow_articles_update_9303() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('views.view.articles');
+
+  $config
+    ->set('display.feed_articles.display_options.row.options.guid_field_options.guid_field_is_permalink', FALSE)
+    ->save();
+}
+
+/**
+ * Set related articles to card_grid instead of do_not_display.
+ */
+function sitenow_articles_update_9304() {
+  $config = \Drupal::configFactory()->getEditable('sitenow_articles.settings');
+  if ($config->get('related_display') !== 'headings_lists') {
+    $config->set('related_display', 'card_grid')
+      ->save();
+  }
+}
+
+/**
+ * Add preserved link message display config setting to articles.
+ */
+function sitenow_articles_update_9305() {
+  $config = \Drupal::configFactory()->getEditable('sitenow_articles.settings');
+
+  if (!$config->get('preserved_links_message_display_default')) {
+    $config->set('preserved_links_message_display_default', 'Links in this article are preserved for historical purposes, but the destination sources may have changed.')
+      ->save();
+  }
+}

@@ -1,0 +1,54 @@
+# Migration configuration for iisc_articles content.
+id: iisc_articles
+label: Articles
+dependencies:
+  enforced:
+    module:
+      - iisc_migrate
+migration_tags:
+  - iisc
+migration_group: sitenow_migrate
+source:
+  plugin: iisc_articles
+  node_type: article
+destination:
+  plugin: 'entity:node'
+  default_bundle: article
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  moderation_state: moderation_state
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid:
+    plugin: default_value
+    default_value: 1
+  title: title
+  field_image:
+    plugin: create_media_from_file_field
+    source: field_image
+  body: body
+  field_teaser:
+    plugin: extract_summary
+    source: body
+  field_article_source_org: field_article_publication_source/0/value
+  field_article_source_link: field_article_external_url/0/url
+  field_related_content:
+    plugin: migration_lookup
+    migration:
+      - iisc_people
+      - iisc_projects
+      - iisc_partners
+    source: field_related_content
+# Enable if dependencies exist.
+migration_dependencies:
+  required:
+    - iisc_people
+    - iisc_partners
+    - iisc_projects

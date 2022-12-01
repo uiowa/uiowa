@@ -194,7 +194,7 @@ function admissions_core_update_9001() {
 
       foreach ($links as $link) {
         if ($url = parse_url($link->getAttribute('href'))) {
-          if ($url['host'] == 'uiowa.orgsync.com') {
+          if ($url['host'] === 'uiowa.orgsync.com') {
             $link->setAttribute('href', "https://uiowa.campuslabs.com/engage");
             $link->parentNode->replaceChild($link, $link);
 
@@ -538,6 +538,7 @@ function admissions_core_update_9007() {
        */
       foreach ($section->getComponents() as $component) {
         if ($component->getPluginId() === 'views_block:student_card-block_student_grid') {
+          // @phpstan-ignore-next-line
           $default_styles = $component->get('layout_builder_styles_style');
           $styles = [
             'block_background_style_gray',
@@ -549,6 +550,7 @@ function admissions_core_update_9007() {
             $styles = array_merge($default_styles, $styles);
           }
 
+          // @phpstan-ignore-next-line
           $component->set('layout_builder_styles_style', $styles);
 
           $section_arr['components'][$i] = $component->toArray();

@@ -25,52 +25,31 @@
 * @see template_preprocess_block()
 */
 #}
+{%
+  set classes = [
+  'block',
+  'block-' ~ configuration.provider|clean_class,
+  'block-' ~ plugin_id|clean_class,
+]
+%}
 
-{% block content %}
+{% set cta_block = {
+  'attributes': attributes.addClass(classes),
+  'cta_summary': content.field_uiowa_cta_summary[0],
+  'cta_title': content.field_uiowa_cta_title[0]['#text'],
+  'cta_link_url': content.field_uiowa_cta_link[0]['#url'],
+  'cta_link_title' : content.field_uiowa_cta_link[0]['#title'],
+  'headline_level': content.field_uiowa_cta_title[0]['#size'],
+  'title_prefix': title_prefix,
+  'title_suffix': title_suffix,
+} %}
 
-  {{ attach_library('uids_base/cta') }}
+{% embed '@uids_base/uids/cta.html.twig' with cta_block only %}
 
-	{% block cta_container_start %}
-		<div class="cta__wrapper {{ attributes ? attributes.class }}" {{ attributes ? attributes|without('class') }}>
-			{{ title_prefix }}
-			{{ title_suffix }}
+  {% block cta_container_start %}
+    {{ title_prefix }}
+    {{ title_suffix }}
+    {{ parent() }}
+  {% endblock %}
 
-			<div class="cta__container">
-			{% endblock %}
-
-			{% block heading %}
-				{% if content.field_uiowa_cta_title[0]['#text'] is not empty %}
-					<div class="cta__title">
-            {% set cta_headline = {
-              "headline_level" : content.field_uiowa_cta_title[0]['#size'],
-              "headline_class" : 'headline headline--uppercase',
-              "headline_text" : content.field_uiowa_cta_title[0]['#text'],
-            } %}
-					{% include '@uids_base/uids/headline.html.twig' with cta_headline only %}
-					</div>
-				{% endif %}
-			{% endblock %}
-
-			{% block cta_content %}
-				{% if content.field_uiowa_cta_summary[0] is not empty %}
-					<div class="cta__content">
-						<p class="cta__summary">{{ content.field_uiowa_cta_summary }}</p>
-					</div>
-				{% endif %}
-			{% endblock %}
-
-			{% block cta_link %}
-				{% if content.field_uiowa_cta_link[0]['#url'] is not empty %}
-					<div class="cta__link">
-						<a href="{{ content.field_uiowa_cta_link[0]['#url'] }}" class="bttn bttn--primary bttn--caps">{{ content.field_uiowa_cta_link[0]['#title'] }}
-							<i role="presentation" class="fas fa-arrow-right"></i>
-						</a>
-					</div>
-				{% endif %}
-			{% endblock %}
-
-		</div>
-	</div>
-
-{% endblock %}
-
+{% endembed %}

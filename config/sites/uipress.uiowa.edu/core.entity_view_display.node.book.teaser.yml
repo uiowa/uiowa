@@ -14,9 +14,9 @@ dependencies:
     - field.field.node.book.field_book_editor
     - field.field.node.book.field_book_essay_by
     - field.field.node.book.field_book_excerpt
-    - field.field.node.book.field_book_file_uploads
     - field.field.node.book.field_book_foreword_author
     - field.field.node.book.field_book_illustrator
+    - field.field.node.book.field_book_interior_pages
     - field.field.node.book.field_book_introduction_author
     - field.field.node.book.field_book_pages
     - field.field.node.book.field_book_photographer
@@ -34,6 +34,7 @@ dependencies:
     - field.field.node.book.field_book_type
     - field.field.node.book.field_image
     - field.field.node.book.field_meta_tags
+    - field.field.node.book.field_pages_art_trim
     - node.type.book
   module:
     - entity_reference_revisions
@@ -53,6 +54,14 @@ content:
       field_delimiter:
         delimiter: ''
     weight: 1
+    region: content
+  field_book_editor:
+    type: entity_reference_label
+    label: visually_hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 3
     region: content
   field_book_type:
     type: entity_reference_revisions_entity_view
@@ -75,18 +84,18 @@ content:
     weight: 0
     region: content
 hidden:
+  content_moderation_control: true
   field_book_afterword_author: true
   field_book_art: true
   field_book_awards: true
   field_book_contributors: true
   field_book_description_summary: true
   field_book_edition: true
-  field_book_editor: true
   field_book_essay_by: true
   field_book_excerpt: true
-  field_book_file_uploads: true
   field_book_foreword_author: true
   field_book_illustrator: true
+  field_book_interior_pages: true
   field_book_introduction_author: true
   field_book_pages: true
   field_book_photographer: true
@@ -102,5 +111,6 @@ hidden:
   field_book_translator: true
   field_book_trim_size: true
   field_meta_tags: true
+  field_pages_art_trim: true
   links: true
   search_api_excerpt: true

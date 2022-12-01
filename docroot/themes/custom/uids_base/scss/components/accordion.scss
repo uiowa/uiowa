@@ -1,6 +1,6 @@
-@import "assets/scss/_variables.scss";
-@import "assets/scss/_utilities.scss";
-@import "components/accordion/accordion.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
+@import "uids3/components/accordion/accordion.scss";
 
 .collection--accordion .accordion__content {
   background-color: $white;
@@ -12,4 +12,9 @@
       color: $link-color;
     }
   }
+}
+
+// @todo remove when https://github.com/uiowa/uids/issues/714 is complete.
+.accordion .accordion__heading button.border {
+  border: 1px solid rgba(0, 0, 0, 0.25);
 }

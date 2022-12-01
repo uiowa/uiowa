@@ -38,7 +38,7 @@ class AccessTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     // Set uids_base header type to avoid Twig error. There is some additional

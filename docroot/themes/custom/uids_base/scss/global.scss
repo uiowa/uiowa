@@ -25,13 +25,18 @@ $imgpath: '../../uids/assets/images';
 
 // Containers within a background color useful for views blocks.
 .block--bg-container {
-  .headline  {
+  .block__headline  {
     @extend %container;
     //hack to prevent a change in container width (which is in em) when font size isn't 1em
     max-width: 1310px;
   }
   & > div {
-    @extend %container;
+    margin: 0 $gutter;
+
+    @include breakpoint(page-container) {
+      max-width: 81.875em;
+      margin: 0 auto;
+    }
   }
 }
 
@@ -187,15 +192,22 @@ $imgpath: '../../uids/assets/images';
   .block-inline-blockuiowa-text-area {
     min-width: 0;
 
+    &.border,
     &[class*="bg--"],
     &[class*="bg-pattern--"] {
       padding: $desktop-width-gutter;
     }
+    &.border.block-padding__all--extra,
     &[class*="bg--"].block-padding__all--extra,
     &[class*="bg-pattern--"].block-padding__all--extra {
       padding: 6rem;
     }
   }
+}
+
+// @todo remove when https://github.com/uiowa/uids/issues/714 is complete.
+.border {
+  border: 1px solid rgba(0, 0, 0, 0.25);
 }
 
 // For sidebars: remove padding from adjacent blocks if they are the same and don't have a margin top set
@@ -248,7 +260,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 
 .content__container {
   .layout__spacing_container {
-    @extend %container;
+    @include container-width;
   }
 
   .page__container--extended,
@@ -320,20 +332,6 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
         flex-direction: unset;
       }
     }
-    .layout__region--sidebar,
-    .layout__region--content {
-       flex-basis: 100%;
-     }
-    .layout__region--sidebar {
-      @include breakpoint(md) {
-        flex-basis: 24.25%;
-      }
-    }
-    .layout__region--content {
-      @include breakpoint(md) {
-        flex-basis: 72.75%;
-      }
-    }
   }
   // two column
   &.layout--twocol {
@@ -384,7 +382,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       }
     }
   }
- // four col reverse column order lb style
+  // four col reverse column order lb style
   &.layout--fourcol {
     .layout__spacing_container {
       display: grid;
@@ -512,6 +510,63 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   &__left {
     @include breakpoint(sm) {
       margin-left: $md;
+    }
+  }
+}
+
+// Set spacing as the default for mobile.
+.layout__container {
+  &:not([class*="grid-"]):not([class*="layout--title"]) {
+    .layout__region {
+      .block + .block {
+        margin-top: 1.6rem;
+
+        &:first-child {
+          margin-top: 0;
+        }
+      }
+      // Allow margin top and top extra to override.
+      .block + .block.block-margin__top {
+        margin-top: $md;
+      }
+      .block + .block.block-margin__top--extra {
+        margin-top: $md;
+        @include breakpoint(sm) {
+          margin-top: $mobile-height-gutter;
+        }
+      }
+      // Remove default margins style.
+      .block + .block.block-margin__default--removed {
+        margin-top: 0;
+      }
+      // Override card margins.
+      .block.card--media-right,
+      .block.card--media-left,
+      .block +.block.card--media-right,
+      .block +.block.card--media-left {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+// Override card margins for layouts where
+// section padding has been removed and card margin was assumed.
+.layout__container[class*="section-padding__removed"] {
+  .layout__region {
+    .block.card--media-right:first-child:last-child,
+    .block.card--media-left:first-child:last-child {
+      margin-bottom: 1.6rem;
+    }
+  }
+}
+
+// Override default for blocks adjacent to page title/breadcrumbs.
+.layout__container {
+  .layout__region {
+    .block.block-system-breadcrumb-block + .block[class*="block-field-"],
+    .block.block-field-blocknodepagetitle + .block[class*="block-field-"] {
+      margin-top: 0;
     }
   }
 }

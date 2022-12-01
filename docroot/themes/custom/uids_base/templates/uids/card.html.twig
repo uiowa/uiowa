@@ -3,7 +3,7 @@
 {% set attributes = attributes ?: create_attribute() %}
 {% set card_classes = ['card', 'click-container', 'block--word-break'] %}
 {% set button_attributes = button_attributes ?: create_attribute() %}
-{% set card_button_classes = ['bttn', 'bttn--outline', 'bttn--sans-serif'] %}
+{% set card_button_classes = ['bttn', 'bttn--primary', 'bttn--transparent', 'bttn--light-font'] %}
 {% set media_attributes = media_attributes ?: create_attribute() %}
 {% set visible_button = visible_button ?: false %}
 
@@ -12,7 +12,7 @@
 {% if card_link_url is not empty %}
   {# Add bttn--circle class if link title is empty. #}
   {% if card_link_title is empty %}
-    {% set card_button_classes = card_button_classes|merge(['bttn--circle']) %}
+    {% set card_button_classes = card_button_classes|merge(['bttn--circle', 'bttn--no-text']) %}
   {% endif %}
   {% if card_title is not empty %}
     {# Title is set, use it as the linking element.  #}
@@ -34,7 +34,7 @@
 {% endif %}
 
 {# Do not show the aria-describedby attribute if title AND link text are not both present. #}
-{% if link_element != 'title' or card_link_title == ''%}
+{% if link_element != 'title' or card_link_title == '' %}
   {% set card_aria_describedby = '' %}
 {% endif %}
 

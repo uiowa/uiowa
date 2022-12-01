@@ -5,6 +5,7 @@ dependencies:
   config:
     - block_content.type.uiowa_card
     - field.field.block_content.uiowa_card.field_uiowa_card_author
+    - field.field.block_content.uiowa_card.field_uiowa_card_button_display
     - field.field.block_content.uiowa_card.field_uiowa_card_excerpt
     - field.field.block_content.uiowa_card.field_uiowa_card_image
     - field.field.block_content.uiowa_card.field_uiowa_card_link
@@ -12,6 +13,7 @@ dependencies:
   module:
     - heading
     - link
+    - options
     - text
 _core:
   default_config_hash: FVCsCd-0IpApFOBsBVnax1xAb3UO94cIAtksGnBVygE
@@ -27,6 +29,13 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 4
+    region: content
+  field_uiowa_card_button_display:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
     region: content
   field_uiowa_card_excerpt:
     type: text_default
@@ -64,4 +73,7 @@ content:
     weight: 0
     region: content
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   search_api_excerpt: true

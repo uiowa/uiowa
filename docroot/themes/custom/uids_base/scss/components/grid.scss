@@ -1,6 +1,6 @@
-@import "assets/scss/_variables.scss";
-@import "assets/scss/_utilities.scss";
-@import "components/grid/grid.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
+@import "uids3/components/grid/grid.scss";
 
 .list-container {
   [class*="grid--"].view & {
@@ -39,13 +39,29 @@
   margin-top: $mobile-height-gutter;
 }
 
-// @todo Move to UIDS
+.grid--twocol--50-50 .list-container {
+  @include breakpoint(sm) {
+    row-gap: $desktop-width-gutter;
+  }
+}
+
+// Additional grid classes.
 .grid--fourcol--25 {
   .list-container {
     @include grid-base;
+    @include breakpoint(md) {
+      @include fourcol-grid;
+    }
+  }
+}
+
+// For use only for images.
+.grid--fivecol--20 {
+  .list-container {
+    @include grid-base;
     @include breakpoint(sm) {
-      gap: $desktop-width-gutter;
-      grid-template-columns: repeat(auto-fill, minmax(21%, 1fr));
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(17%, 1fr));
     }
   }
 }

@@ -16,15 +16,20 @@ use AcquiaCloudApi\Endpoints\SslCertificates;
 use AcquiaCloudApi\Exception\ApiErrorException;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
+use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\ClientException;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Yaml\Yaml;
+use Uiowa\InspectorTrait;
 use Uiowa\Multisite;
 
 /**
  * Global multisite commands.
  */
 class MultisiteCommands extends BltTasks {
+
+  use InspectorTrait;
 
   /**
    * A no-op command.
@@ -72,8 +77,6 @@ class MultisiteCommands extends BltTasks {
       $app = EnvironmentDetector::getAhGroup() ?: 'local';
       $env = EnvironmentDetector::getAhEnv() ?: 'local';
 
-      $this->sendNotification("Command `drush {$cmd}` *started* on {$app} {$env}.");
-
       foreach ($this->getConfigValue('multisites') as $multisite) {
         $this->switchSiteContext($multisite);
         $db = $this->getConfigValue('drupal.db.database');
@@ -87,22 +90,20 @@ class MultisiteCommands extends BltTasks {
         if (!in_array($multisite, $options['exclude'])) {
           $this->say("<info>Executing on {$multisite}...</info>");
 
-          // Define a site-specific cache directory.
-          // @see: https://github.com/drush-ops/drush/pull/4345
-          $tmp = "/tmp/.drush-cache-{$app}/{$env}/{$multisite}";
-
-          $this->taskDrush()
+          $result = $this->taskDrush()
             ->drush($cmd)
-            ->option('define', "drush.paths.cache-directory={$tmp}")
             ->printMetadata(FALSE)
             ->run();
+
+          if (!$result->wasSuccessful()) {
+            $error = $result->getMessage();
+            $this->sendNotification("*Error* running command `drush {$cmd}` on app $app $env for site $multisite. ```$error```");
+          }
         }
         else {
           $this->logger->info("Skipping excluded site {$multisite}.");
         }
       }
-
-      $this->sendNotification("Command `drush {$cmd}` *finished* on {$app} {$env}.");
     }
   }
 
@@ -163,7 +164,7 @@ class MultisiteCommands extends BltTasks {
         continue;
       }
 
-      if (!$this->getInspector()->isDrupalInstalled()) {
+      if (!$this->isDrupalInstalled($multisite)) {
         $uninstalled[] = $multisite;
       }
     }
@@ -249,6 +250,10 @@ class MultisiteCommands extends BltTasks {
     $this->switchSiteContext($dir);
     $db = $this->getConfigValue('drupal.db.database');
 
+    if ($db != Multisite::getDatabaseName($dir)) {
+      throw new \Exception('Database does not match expected value.');
+    }
+
     $id = Multisite::getIdentifier("https://{$dir}");
     $local = Multisite::getInternalDomains($id)['local'];
     $dev = Multisite::getInternalDomains($id)['dev'];
@@ -258,6 +263,7 @@ class MultisiteCommands extends BltTasks {
     $this->say("Selected site <comment>{$dir}</comment>.");
 
     $properties = [
+      'files' => "docroot/sites/$dir/files",
       'database' => $db,
       'domains' => [
         $dev,
@@ -272,7 +278,14 @@ class MultisiteCommands extends BltTasks {
       throw new \Exception('Aborted.');
     }
     else {
+      $app = $this->getApplicationFromDrushRemote($id);
+
       if (!$options['simulate']) {
+        // Iterate over each environment and delete files.
+        foreach (['dev', 'test', 'prod'] as $env) {
+          $this->deleteRemoteMultisiteFiles($id, $app, $env, $dir);
+        }
+
         /** @var \AcquiaCloudApi\Connector\Client $client */
         $client = $this->getAcquiaCloudApiClient();
 
@@ -311,7 +324,7 @@ class MultisiteCommands extends BltTasks {
 
       // Delete the site code.
       $this->taskFilesystemStack()
-        ->remove("{$root}/config/{$dir}")
+        ->remove("{$root}/config/sites/{$dir}")
         ->remove("{$root}/docroot/sites/{$dir}")
         ->remove("{$root}/drush/sites/{$id}.site.yml")
         ->run();
@@ -331,16 +344,18 @@ EOD
         ->to('')
         ->run();
 
-      $this->taskGit()
+      $task = $this->taskGit()
         ->dir($root)
         ->add('docroot/sites/sites.php')
         ->add("docroot/sites/{$dir}/")
         ->add("drush/sites/{$id}.site.yml")
-        ->add("config/{$dir}/")
-        ->commit("Delete {$dir} multisite on {$name}")
-        ->interactive(FALSE)
-        ->printOutput(FALSE)
-        ->printMetadata(FALSE)
+        ->interactive(FALSE);
+
+      if (file_exists("$root/config/sites/$dir")) {
+        $task->add("config/sites/$dir");
+      }
+
+      $task->commit("Delete {$dir} multisite on {$name}")
         ->run();
 
       $this->say("Committed deletion of site <comment>{$dir}</comment> code.");
@@ -400,6 +415,8 @@ EOD
    *   The HawkID of the original requester. Will be granted webmaster access.
    * @option split
    *   The name of a config split to activate and import after installation.
+   * @option site-name
+   *   The desired site name within quotes.
    *
    * @command uiowa:multisite:create
    *
@@ -417,6 +434,7 @@ EOD
     'no-db' => FALSE,
     'requester' => InputOption::VALUE_REQUIRED,
     'split' => InputOption::VALUE_REQUIRED,
+    'site-name' => InputOption::VALUE_REQUIRED,
   ]) {
     $db = Multisite::getDatabaseName($host);
     $applications = $this->getConfigValue('uiowa.applications');
@@ -596,6 +614,7 @@ EOD
     $blt['project']['local']['hostname'] = $local;
     $blt['drupal']['db']['database'] = $db;
     $blt['drush']['aliases']['local'] = 'self';
+    $blt['uiowa']['stage_file_proxy']['origin'] = "https://$prod";
 
     // Add custom options to the site's BLT settings.
     if (isset($options['requester'])) {
@@ -604,6 +623,10 @@ EOD
 
     if (isset($options['split'])) {
       $blt['uiowa']['config']['split'] = $options['split'];
+    }
+
+    if (isset($options['site-name'])) {
+      $blt['uiowa']['site-name'] = $options['site-name'];
     }
 
     $this->taskWriteToFile("{$root}/docroot/sites/{$host}/blt.yml")
@@ -709,22 +732,7 @@ EOD;
     $site = $this->askChoice('Select which site to transfer.', $sites);
     $id = Multisite::getIdentifier("https://$site");
     $mode = $options['test-mode'] ? 'test' : 'prod';
-
-    $result = $this->taskDrush()
-      ->alias("$id.$mode")
-      ->drush('status')
-      ->options([
-        'field' => 'application',
-      ])
-      ->printMetadata(FALSE)
-      ->printOutput(FALSE)
-      ->run();
-
-    if (!$result->wasSuccessful()) {
-      return new CommandError('Unable to get current application with Drush.');
-    }
-
-    $old = trim($result->getMessage());
+    $old = $this->getApplicationFromDrushRemote($id, $mode);
 
     // Get the applications and unset the current as an option.
     $applications = $this->config->get('uiowa.applications');
@@ -940,16 +948,7 @@ EOD;
         $this->logger->warning("Test mode. Skipping database deletion.");
       }
 
-      // Delete files on old application environment. Note that we CD into the
-      // file system first and THEN delete the site files directory. If we just
-      // rm -rf the directory and $site is ever empty, the entire sites
-      // directory would be deleted.
-      $this->taskDrush()
-        ->alias("$old.$mode")
-        ->drush('ssh')
-        ->arg("rm -rf $site")
-        ->option('cd', "/mnt/gfs/$old.$mode/sites/")
-        ->run();
+      $this->deleteRemoteMultisiteFiles($id, $old, $mode, $site);
     }
 
     $this->say('Transfer process complete. Transfer additional sites if needed and deploy this branch as per the usual release process.');
@@ -968,13 +967,14 @@ EOD;
 
       // The site name option used during drush site:install is
       // overwritten if installed from existing configuration.
+      $site_name = ($this->getConfigValue('uiowa.site-name') ? $this->getConfigValue('uiowa.site-name') : $multisite);
       $this->taskDrush()
         ->stopOnFail(FALSE)
         ->drush('config:set')
         ->args([
           'system.site',
           'name',
-          $multisite,
+          $site_name,
         ])
         ->run();
 
@@ -1034,19 +1034,21 @@ EOD;
     $webhook_url = getenv('SLACK_WEBHOOK_URL');
 
     if ($webhook_url && $env == 'prod' || $env == 'local') {
-      $payload = [
+      $data = [
         'username' => 'Acquia Cloud',
         'text' => $message,
-        'icon_emoji' => ':acquia:',
       ];
 
-      $data = "payload=" . json_encode($payload);
-      $ch = curl_init($webhook_url);
-      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-      curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-      curl_exec($ch);
-      curl_close($ch);
+      $client = new GuzzleClient();
+
+      try {
+        $client->post($webhook_url, [
+          'body' => json_encode($data),
+        ]);
+      }
+      catch (ClientException $e) {
+        $this->logger->warning('Error attempting to send Slack notification: ' . $e->getMessage());
+      }
     }
     else {
       $this->logger->warning("Slack webhook URL not configured. Cannot send message: {$message}");
@@ -1079,6 +1081,72 @@ EOD;
     } while ($notification->status == 'in-progress');
 
     return $notification;
+  }
+
+  /**
+   * Get the application from the prod remote Drush alias.
+   *
+   * @param string $id
+   *   The multisite identifier.
+   * @param string $env
+   *   The environment to use for the Drush alias. Defaults to prod.
+   *
+   * @return string
+   *   The application name.
+   *
+   * @throws \Robo\Exception\TaskException
+   */
+  protected function getApplicationFromDrushRemote(string $id, string $env = 'prod') {
+    $result = $this->taskDrush()
+      ->alias("$id.$env")
+      ->drush('status')
+      ->options([
+        'field' => 'application',
+      ])
+      ->printMetadata(FALSE)
+      ->printOutput(FALSE)
+      ->run();
+
+    if (!$result->wasSuccessful()) {
+      throw new \Exception('Unable to get current application with Drush.');
+    }
+
+    return trim($result->getMessage());
+  }
+
+  /**
+   * Delete files on application environment.
+   *
+   * Note that we CD into the file system first and THEN delete the site files
+   * directory. If we just rm -rf the directory and $site is ever empty, the
+   * entire sites directory would be deleted.
+   *
+   * @param string $id
+   *   The multisite identifier.
+   * @param string $app
+   *   THe application to use for Drush alias.
+   * @param string $env
+   *   The environment to use for the Drush alias.
+   * @param string $site
+   *   The multisite files directory to delete.
+   *
+   * @throws \Robo\Exception\TaskException
+   */
+  protected function deleteRemoteMultisiteFiles(string $id, string $app, string $env, string $site): void {
+    if ($site == '.' || $site == '*') {
+      throw new \Exception('Deleting current directory or wildcard is not allowed.');
+    }
+
+    $result = $this->taskDrush()
+      ->alias("$id.$env")
+      ->drush('ssh')
+      ->arg("rm -rf $site")
+      ->option('cd', "/mnt/gfs/$app.$env/sites/")
+      ->run();
+
+    if (!$result->wasSuccessful()) {
+      throw \Exception("Unable to delete multisite files for $site on $app.$env.");
+    }
   }
 
 }

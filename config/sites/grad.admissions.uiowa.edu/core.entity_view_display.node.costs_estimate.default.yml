@@ -34,7 +34,7 @@ third_party_settings:
             1: section_margin_edge_to_edge
             remove_default_bottom_padding: remove_default_bottom_padding
         components:
-          -
+          e0e746e6-23c4-4a36-b565-fd986ba15507:
             uuid: e0e746e6-23c4-4a36-b565-fd986ba15507
             region: content
             configuration:
@@ -52,7 +52,7 @@ third_party_settings:
                 third_party_settings: {  }
             weight: -4
             additional: {  }
-          -
+          8f57e8f4-1cf0-49a5-b008-f30a80e0b709:
             uuid: 8f57e8f4-1cf0-49a5-b008-f30a80e0b709
             region: content
             configuration:
@@ -75,16 +75,16 @@ third_party_settings:
           layout_builder_lock:
             lock: {  }
       -
-        layout_id: layout_header
+        layout_id: layout_onecol
         layout_settings:
           label: ''
           context_mapping: {  }
           layout_builder_styles_style:
             0: ''
-            1: section_margin_edge_to_edge
+            1: section_margin_fixed_width_container
             remove_default_top_padding: remove_default_top_padding
         components:
-          -
+          da1f3ff0-07d8-4e3c-bfa7-07774c7a2685:
             uuid: da1f3ff0-07d8-4e3c-bfa7-07774c7a2685
             region: content
             configuration:
@@ -107,9 +107,7 @@ third_party_settings:
               layout_builder_styles_style:
                 block_menu_horizontal: block_menu_horizontal
                 0: null
-        third_party_settings:
-          layout_builder_lock:
-            lock: {  }
+        third_party_settings: {  }
       -
         layout_id: layout_onecol
         layout_settings:
@@ -119,7 +117,7 @@ third_party_settings:
             - ''
             - section_margin_fixed_width_container
         components:
-          -
+          60c3b524-d3c5-4ecd-8449-a6899ecca12d:
             uuid: 60c3b524-d3c5-4ecd-8449-a6899ecca12d
             region: content
             configuration:
@@ -138,7 +136,7 @@ third_party_settings:
                 third_party_settings: {  }
             weight: 6
             additional: {  }
-          -
+          845d0e4f-a3f3-4f81-a4ce-def1a344f5fb:
             uuid: 845d0e4f-a3f3-4f81-a4ce-def1a344f5fb
             region: content
             configuration:
@@ -156,7 +154,7 @@ third_party_settings:
                 third_party_settings: {  }
             weight: 7
             additional: {  }
-          -
+          27faaed8-13d2-487b-9ad7-3da5f873b1a4:
             uuid: 27faaed8-13d2-487b-9ad7-3da5f873b1a4
             region: content
             configuration:
@@ -194,8 +192,8 @@ third_party_settings:
         - layout_threecol
         - layout_fourcol
         - layout_header
-      blacklisted_blocks: {  }
-      whitelisted_blocks: {  }
+      denylisted_blocks: {  }
+      allowlisted_blocks: {  }
     entity_view_mode_restriction_by_region:
       allowed_layouts:
         - layout_onecol
@@ -203,6 +201,8 @@ third_party_settings:
         - layout_threecol
         - layout_fourcol
         - layout_header
+      allowlisted_blocks: null
+      denylisted_blocks: null
 id: node.costs_estimate.default
 targetEntityType: node
 bundle: costs_estimate

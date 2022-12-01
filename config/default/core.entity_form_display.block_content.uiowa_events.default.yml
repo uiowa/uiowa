@@ -6,18 +6,22 @@ dependencies:
     - block_content.type.uiowa_events
     - field.field.block_content.uiowa_events.field_collection_more
     - field.field.block_content.uiowa_events.field_collection_more_path
+    - field.field.block_content.uiowa_events.field_collection_pager
     - field.field.block_content.uiowa_events.field_collection_results
     - field.field.block_content.uiowa_events.field_uiowa_events_audiences
+    - field.field.block_content.uiowa_events.field_uiowa_events_date_range
     - field.field.block_content.uiowa_events.field_uiowa_events_department
     - field.field.block_content.uiowa_events.field_uiowa_events_interests
     - field.field.block_content.uiowa_events.field_uiowa_events_keywords
-    - field.field.block_content.uiowa_events.field_uiowa_events_past
     - field.field.block_content.uiowa_events.field_uiowa_events_place
+    - field.field.block_content.uiowa_events.field_uiowa_events_sort
+    - field.field.block_content.uiowa_events.field_uiowa_events_timeframe
     - field.field.block_content.uiowa_events.field_uiowa_events_types
     - field.field.block_content.uiowa_events.field_uiowa_headline
   module:
     - layout_builder_custom
     - link
+    - smart_date
 id: block_content.uiowa_events.default
 targetEntityType: block_content
 bundle: uiowa_events
@@ -25,18 +29,25 @@ mode: default
 content:
   field_collection_more:
     type: boolean_checkbox
-    weight: 10
+    weight: 14
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   field_collection_more_path:
     type: link_default
-    weight: 11
+    weight: 15
     region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
+    third_party_settings: {  }
+  field_collection_pager:
+    type: boolean_checkbox
+    weight: 9
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   field_collection_results:
     type: number
@@ -50,6 +61,22 @@ content:
     weight: 3
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_uiowa_events_date_range:
+    type: smartdate_only
+    weight: 12
+    region: content
+    settings:
+      hide_date: '1'
+      modal: false
+      default_duration: 60
+      default_duration_increments: |-
+        30
+        60|1 hour
+        90
+        120|2 hours
+        custom
+      show_extra: false
     third_party_settings: {  }
   field_uiowa_events_department:
     type: options_select
@@ -69,16 +96,21 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_uiowa_events_past:
-    type: boolean_checkbox
-    weight: 9
-    region: content
-    settings:
-      display_label: true
-    third_party_settings: {  }
   field_uiowa_events_place:
     type: options_select
     weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_uiowa_events_sort:
+    type: options_buttons
+    weight: 13
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_uiowa_events_timeframe:
+    type: options_select
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }

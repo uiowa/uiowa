@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies: {  }
+id: iisc_migrate
+label: 'IISC Migrate'
+description: 'Migrations for IISC'
+weight: 80
+stackable: true
+storage: folder
+folder: ./sites/iisc.uiowa.edu/modules/iisc_migrate/config/split
+module:
+  iisc_migrate: 0
+  migrate: 0
+  migrate_drupal: 0
+  migrate_plus: 0
+  migrate_tools: 0
+  sitenow_migrate: 0
+theme: {  }
+complete_list:
+  - config_split.config_split.iisc_migrate
+  - 'migrate_plus.migration.iisc_*'
+partial_list: {  }

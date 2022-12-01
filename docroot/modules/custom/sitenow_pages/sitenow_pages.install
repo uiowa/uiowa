@@ -15,3 +15,23 @@ function sitenow_pages_update_9301() {
 
   $config->save();
 }
+
+/**
+ * Add link indicator on teasers config setting to pages.
+ */
+function sitenow_pages_update_9302() {
+  $config = \Drupal::configFactory()->getEditable('sitenow_pages.settings');
+  $config->set('show_teaser_link_indicator', FALSE);
+
+  $config->save();
+}
+
+/**
+ * Set site default for card arrow button.
+ */
+function sitenow_pages_update_9303() {
+  $config = \Drupal::configFactory()->getEditable('sitenow_pages.settings');
+  $config->set('card_link_indicator_display', TRUE);
+
+  $config->save();
+}

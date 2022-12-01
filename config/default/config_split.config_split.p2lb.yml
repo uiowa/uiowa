@@ -1,0 +1,24 @@
+uuid: 64378c36-ca38-40a7-9d87-74fe791760de
+langcode: en
+status: false
+dependencies: {  }
+id: p2lb
+label: P2LB
+description: ''
+weight: 75
+stackable: true
+storage: folder
+folder: ../config/features/p2lb
+module:
+  sitenow_p2lb: 0
+theme: {  }
+complete_list:
+  - core.entity_view_display.node.page.default
+  - field.field.node.page.field_v3_conversion_revision_id
+  - field.storage.node.field_v3_conversion_revision_id
+  - system.action.sitenow_p2lb_convert
+  - views.view.content_v3_converter
+partial_list:
+  - core.entity_form_display.node.page.default
+  - core.entity_view_display.node.page.teaser
+  - core.entity_view_display.node.page.token
