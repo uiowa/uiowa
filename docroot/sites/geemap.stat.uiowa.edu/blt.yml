@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: statgeemap.uiowa.ddev.site
+    protocol: https
+  machine_name: statgeemap
+  human_name: geemap.stat.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: statgeemap.prod
+drupal:
+  db:
+    database: geemap_stat_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://statgeemap.prod.drupal.uiowa.edu'

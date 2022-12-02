@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: writersworkshop.uiowa.ddev.site
+    protocol: https
+  machine_name: writersworkshop
+  human_name: writersworkshop.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: writersworkshop.prod
+drupal:
+  db:
+    database: writersworkshop_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://writersworkshop.prod.drupal.uiowa.edu'
