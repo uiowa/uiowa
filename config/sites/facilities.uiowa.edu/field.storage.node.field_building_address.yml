@@ -1,16 +1,18 @@
-uuid: a0da4021-f9a6-4baa-865f-a0c534c2c106
+uuid: b08594de-de06-4eb3-92aa-c7820cca53a1
 langcode: en
 status: true
 dependencies:
   module:
-    - address
     - node
 id: node.field_building_address
 field_name: field_building_address
 entity_type: node
-type: address
-settings: {  }
-module: address
+type: string
+settings:
+  max_length: 255
+  case_sensitive: false
+  is_ascii: false
+module: core
 locked: false
 cardinality: 1
 translatable: true
