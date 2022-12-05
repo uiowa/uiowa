@@ -19,7 +19,7 @@
 
     // Create the FontAwesone icon.
     var toggleicon = document.createElement('i');
-    toggleicon.setAttribute('role', 'presentation');
+    toggleicon.setAttribute('role', 'status');
     toggleicon.setAttribute('class', 'fas fa-info-circle');
 
     // Place the FontAwesome icon in the button,
