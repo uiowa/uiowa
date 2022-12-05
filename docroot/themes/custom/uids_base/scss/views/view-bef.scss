@@ -76,7 +76,7 @@
           font-weight: 400;
           letter-spacing: 0.04rem;
           border: none;
-          background: #fff;
+          background: $white;
           @include breakpoint(sm) {
             top: 123px;
           }
@@ -102,22 +102,24 @@
 
     details.bef--secondary {
       @include breakpoint(sm) {
-        padding-top: 1.5rem;
-        margin-top: 0.5rem;
+        padding-top: #{3 * $xsm-sm};
+        margin-top: $xsm-sm;
       }
 
       &.form-wrapper {
         border: none;
+
         @include breakpoint(sm) {
-          border-top: 1px solid #ccc;
+          border-top: 1px solid $grey-light;
         }
+
         background: none;
       }
 
       &[open]>summary {
         border-bottom: none;
         margin-bottom: 0;
-        padding: 0 0 1rem;
+        padding: 0 0 #{2 * $xsm-sm};
       }
 
       >summary {
@@ -148,6 +150,8 @@
       }
 
       details {
+        --elemHeight: 3.5rem;
+
         flex: 1;
         background: unset;
         border: unset;
@@ -162,13 +166,13 @@
           align-items: center;
           box-sizing: border-box;
           width: 100%;
-          height: 3.5rem;
+          height: var(--elemHeight);
           padding: 0.5rem;
           margin: 0 0 1rem;
           transition: box-shadow .5s,border-color .25s ease-in-out;
-          color: #63666a;
-          border: 1px solid #cacaca;
-          background-color: #fefefe;
+          color: $grey;
+          border: 1px solid $grey-light;
+          background-color: $white;
           box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
           font-family: inherit;
           font-size: 1rem;
@@ -184,16 +188,39 @@
         }
 
         .details-wrapper {
+          overflow: auto;
           max-height: 346px;
           z-index: 500;
           display: flex;
           flex-direction: column;
-          background: #fff;
-          border: 1px solid #cacaca;
+          background: $white;
+          border: 1px solid $grey-light;
           position: absolute;
-          padding: 0rem;
-          top: calc(3.5rem - 1px);
+          padding: 0;
+          top: calc(var(--elemHeight) - 1px);
           width: calc(100% - 2px);
+          box-shadow: 0 0 7px rgba(0, 0, 0, 0.15);
+
+          .bef-toggle {
+            padding: #{2 * $xsm-sm} $xsm-sm;
+            display: block;
+            border: none;
+            border-bottom: 1px solid $grey-light;
+            text-decoration: none;
+            font-size: 0.8rem;
+            color: $grey;
+          }
+
+          .bef-checkboxes {
+            padding: 0.5rem 0;
+          }
+
+          .form-type-checkbox {
+            padding: 0.5rem;
+            margin-right: 0;
+            display: flex;
+            align-items: center;
+          }
         }
       }
     }
