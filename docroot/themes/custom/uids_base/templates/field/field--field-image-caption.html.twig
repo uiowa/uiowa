@@ -1,7 +1,5 @@
-{% embed '@uids_base/uids/image-caption.html.twig' %}
-  {% block caption %}
-    {% for item in items %}
-      {{ item.content }}
-    {% endfor %}
-  {% endblock %}
-{% endembed %}
+{% for item in items %}
+  <p data-toggletip>
+    {{ item.content }}
+  </p>
+{% endfor %}
