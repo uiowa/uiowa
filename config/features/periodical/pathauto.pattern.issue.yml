@@ -1,18 +1,18 @@
-uuid: 5f75a897-31dc-48c5-b13c-60178b38abc7
+uuid: af0ebc33-8d36-426c-9a4d-36cd3d0122af
 langcode: en
 status: true
 dependencies:
   module:
     - node
-id: publication_issue
-label: 'Publication Issue'
+id: issue
+label: Issue
 type: 'canonical_entities:node'
-pattern: '[node:title]'
+pattern: 'issue/[node:title]'
 selection_criteria:
-  2c729390-159c-4a09-a198-fb4b81ad4a9c:
+  06ba0d15-f6ad-4359-a864-029ae68c0076:
     id: 'entity_bundle:node'
     negate: false
-    uuid: 2c729390-159c-4a09-a198-fb4b81ad4a9c
+    uuid: 06ba0d15-f6ad-4359-a864-029ae68c0076
     context_mapping:
       node: node
     bundles:

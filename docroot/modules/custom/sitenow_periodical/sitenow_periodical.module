@@ -27,16 +27,28 @@ function sitenow_periodical_entity_presave(EntityInterface $entity) {
  */
 function sitenow_periodical_pathauto_pattern_alter(&$pattern, array $context) {
   if ($context['module'] === 'node' && $context['bundle'] === 'article') {
+    /** @var \Drupal\node\NodeInterface $node */
     $node = $context['data']['node'];
     $issue = $node->get('field_article_issue');
 
     // Change URL alias pattern if article is part of an issue.
     if (!$issue->isEmpty()) {
-      $new_pattern = PathautoPattern::load('article_publication')->getPattern();
+      $new_pattern = PathautoPattern::load('article_publication');
+      if (!is_null($new_pattern)) {
+        $pattern = $new_pattern;
+      }
     }
-    else {
-      $new_pattern = PathautoPattern::load('article')->getPattern();
-    }
-    $pattern->setPattern($new_pattern);
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_periodical_preprocess_block(&$variables) {
+  switch ($variables['elements']['#plugin_id']) {
+    case 'field_block:node:article:field_article_issue':
+      $variables['attributes']['class'][] = 'article--meta article--meta__block';
+
+      break;
   }
 }
