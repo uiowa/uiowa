@@ -16,9 +16,15 @@
     toggletip.setAttribute('type', 'button');
     toggletip.setAttribute('aria-label', 'more info');
     toggletip.setAttribute('data-toggletip-content', toggletipText.textContent);
-    toggletip.textContent = 'i';
 
-    // Place the button element in the container
+    // Create the FontAwesone icon.
+    var toggleicon = document.createElement('i');
+    toggleicon.setAttribute('role', 'presentation');
+    toggleicon.setAttribute('class', 'fas fa-info-circle');
+
+    // Place the FontAwesome icon in the button,
+    // and the button element in the container.
+    toggletip.appendChild(toggleicon);
     container.appendChild(toggletip);
 
     // Create the live region
