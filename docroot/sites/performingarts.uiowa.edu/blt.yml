@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: performingarts.uiowa.ddev.site
+    protocol: https
+  machine_name: performingarts
+  human_name: performingarts.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: performingarts.prod
+drupal:
+  db:
+    database: performingarts_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://performingarts.prod.drupal.uiowa.edu'
+  requester: rclie
+  site-name: 'Performing Arts at Iowa'
