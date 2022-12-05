@@ -235,17 +235,24 @@ div[role=article].node--type-article.node--view-mode-teaser {
 }
 
 .toggletip-container {
-  position: relative;
+  position: absolute;
   display: inline-block;
   z-index: 3;
+  top: 0;
+  right: 0;
+  padding: 2rem 2rem 2rem 1rem;
 
-  //p {
-  //  line-height: 1.2;
-  //  margin: 0 auto;
-  //  font-size: 1rem;
-  //  max-width: 81.375rem;
-  //  color: #fff;
-  //}
+  button {
+      width: 2em;
+      height: 2em;
+      border-radius: 50%;
+      border: 0;
+      background: rgba(0, 0, 0, 0.75);
+      font-family: serif;
+      font-weight: bold;
+      color: #fff;
+  }
+
 }
 
 /* the bubble element, added inside the toggletip live region */
@@ -253,36 +260,11 @@ div[role=article].node--type-article.node--view-mode-teaser {
 .toggletip-bubble {
   display: inline-block;
   position: absolute;
-  left: 100%;
-  top: 0;
+  right: 100%;
+  top: 2rem;
+  width: 15rem;
+  padding: 0.5rem;
+  background: rgba(0, 0, 0, 0.75);
   color: #fff;
-
-  z-index: 3;
-  padding-top: 50px 100px;
-  bottom: 0;
-  background: #333333e0;
-  padding: 20px;
-  width: 100%;
+  border-radius: 10px;
 }
-//
-///* boilerplate; nothing really to see here */
-//
-//html {
-//  font-size: 150%;
-//  font-family: sans-serif;
-//}
-//
-//* {
-//  font-size: inherit;
-//}
-//
-//button {
-//  width: 2em;
-//  height: 2em;
-//  border-radius: 50%;
-//  border: 0;
-//  background: #000;
-//  font-family: serif;
-//  font-weight: bold;
-//  color: #fff;
-//}
