@@ -433,9 +433,17 @@ function uids_base_preprocess_field(&$variables) {
       // If the global caption is set on the media object,
       // use that.
       if (isset($variables['element'][0]) && isset($variables['element'][0]['#media'])) {
+        // If the caption is not set yet, attempt to set it from
+        // the 'field_image_caption' field.
+        if ((NULL !== $node = $variables['element']['#object']) && $node->hasField('field_image_caption')) {
+          $caption = $node->get('field_image_caption');
+        }
+        // If the global caption is set on the media object,
+        // and we didn't have a node-specific caption,
+        // use the media one.
         /** @var \Drupal\media\Entity\Media $media */
         $media = $variables['element'][0]['#media'];
-        if ($media && $media->hasField('field_media_caption')) {
+        if (!$caption && $media && $media->hasField('field_media_caption')) {
           $caption = $media->get('field_media_caption');
         }
       }
