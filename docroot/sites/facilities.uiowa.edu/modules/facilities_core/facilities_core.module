@@ -39,3 +39,36 @@ function facilities_core_preprocess_field(&$variables) {
     }
   }
 }
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function facilities_core_preprocess_layout(&$variables) {
+  /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
+  $layout = $variables['layout'];
+
+  // Process the header layout.
+  if ($layout->id() === 'layout_header') {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    $node = ($node ?? \Drupal::routeMatch()->getParameter('node_preview'));
+    if ($node instanceof NodeInterface) {
+      if (in_array($node->getType(), [
+        'named_building',
+      ])) {
+        if (!isset($variables['banner_attributes'])) {
+          $variables['banner_settings'] = [];
+        }
+      }
+      switch ($node->getType()) {
+        case 'named_building':
+          if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+
+            // Set the featured image display.
+            $variables['featured_image_display'] = 'medium';
+          }
+          break;
+
+      }
+    }
+  }
+}
