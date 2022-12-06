@@ -221,16 +221,16 @@ div[role=article].node--type-article.node--view-mode-teaser {
   button {
     font-size: 24px;
     background: transparent;
-    opacity: 0;
     border: none;
-    transform: translateX(100px);
-    transition: all 0.3s ease-in-out;
-    transition-property: opacity, transform;
 
     svg {
       background: rgba(255, 255, 255, 0.8);
       border-radius: 50%;
       border: 1px solid white;
+      opacity: 0;
+      transform: translateX(100px);
+      transition: all 0.3s ease-in-out;
+      transition-property: opacity, transform;
     }
   }
 }
@@ -248,7 +248,7 @@ div[role=article].node--type-article.node--view-mode-teaser {
 }
 
 .layout--title--with-background:hover, .layout--title--with-background:focus-within {
-  .toggletip-container > button {
+  .toggletip-container > button > svg {
     opacity: 0.8;
     transform: translateX(0px)
   }
