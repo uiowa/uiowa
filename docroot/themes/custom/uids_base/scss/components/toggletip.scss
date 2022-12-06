@@ -1,0 +1,56 @@
+// The tooltip container and its button.
+.toggletip-container {
+  position: absolute;
+  display: inline-block;
+  z-index: 3;
+  top: 6px;
+  right: 6px;
+
+  button {
+    font-size: 24px;
+    background: transparent;
+    border: none;
+
+    svg {
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      border: 1px solid white;
+      opacity: 0;
+      transform: translateX(100px);
+      transition: all 0.3s ease-in-out;
+      transition-property: opacity, transform;
+    }
+  }
+}
+
+// The bubble element, added inside the toggletip live region,
+// and in which the caption hangs out.
+.toggletip-bubble {
+  display: inline-block;
+  position: absolute;
+  right: 100%;
+  width: 15rem;
+  padding: 0.5rem;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+}
+
+.layout--title--with-background:hover, .layout--title--with-background:focus-within {
+  .toggletip-container > button > svg {
+    opacity: 0.8;
+    transform: translateX(0px)
+  }
+}
+
+.toggletip-bubble:after {
+  left: 100%;
+  top: 14px;
+  content: "";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border: 6px solid rgba(0, 0, 0, 0);
+  border-left-color: rgba(0, 0, 0, 0.8);
+  margin-top: -6px;
+}

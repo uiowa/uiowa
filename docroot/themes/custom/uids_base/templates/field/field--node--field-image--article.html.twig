@@ -43,9 +43,9 @@
 {% endfor %}
 
 {# Limit this to articles only. #}
-{#{% if element['#view_mode'] == '_custom' %}#}
-{#  {% if caption|render %}#}
-{#    {{ caption }}#}
-{#  {% endif %}#}
-{#{% endif %}#}
+{% if element['#view_mode'] == '_custom' %}
+  {% if caption|render %}
+    {{ caption }}
+  {% endif %}
+{% endif %}
 
