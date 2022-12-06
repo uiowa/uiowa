@@ -41,11 +41,10 @@
 {% for item in items %}
   {{ item.content }}
 {% endfor %}
-
-{# Limit this to articles only. #}
+{# Only show on lb full. #}
 {#{% if element['#view_mode'] == '_custom' %}#}
 {#  {% if caption|render %}#}
-{#    {{ caption }}#}
+{#      {{ caption }}#}
 {#  {% endif %}#}
 {#{% endif %}#}
 
