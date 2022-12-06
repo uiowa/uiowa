@@ -202,6 +202,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           case 'inline_block:uiowa_aggregator':
           case 'inline_block:uiowa_events':
           case 'views_block:article_list_block-list_article':
+          case 'views_block:events-card_list':
           case 'views_block:events_list_block-card_list':
           case 'views_block:people_list_block-list_card':
             // Set '#states' for card image size.
@@ -241,6 +242,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
                 break;
 
               case 'inline_block:uiowa_events':
+              case 'views_block:events-card_list':
               case 'views_block:events_list_block-card_list':
                 $defaults['layout_builder_style_card_media_position'] = 'card_media_position_left';
                 $defaults['layout_builder_style_media_format'] = 'media_format_circle';
@@ -453,6 +455,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       $single_select_groups = [
         'layout_builder_style_background',
         'layout_builder_style_container',
+        'layout_builder_style_components',
       ];
 
       foreach ($single_select_groups as $group) {
@@ -542,7 +545,7 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
 
       case 'inline_block:uiowa_events':
         // Require time range if date_range timeframe is selected.
-        if ($form_state->getValue('settings')['block_form']['field_uiowa_events_timeframe'][0]['value'] == 'date_range') {
+        if ($form_state->getValue('settings')['block_form']['field_uiowa_events_timeframe'][0]['value'] === 'date_range') {
           if (empty($form_state->getValue([
             'settings',
             'block_form',
@@ -606,7 +609,7 @@ function _layout_builder_custom_block_validate(array &$form, FormStateInterface 
 
       case 'menu_block:main':
         // If follow is checked...
-        if ($form_state->getValue(['settings', 'follow']) == 1) {
+        if ((int) $form_state->getValue(['settings', 'follow']) === 1) {
           // Set parent to default.
           $form_state->setValue(['settings', 'parent'], 'main:');
           // Set level = 2.
@@ -683,6 +686,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
       case 'inline_block:uiowa_card':
       case 'inline_block:uiowa_events':
       case 'views_block:article_list_block-list_article':
+      case 'views_block:events-card_list':
       case 'views_block:events_list_block-card_list':
       case 'views_block:people_list_block-list_card':
         $media_position = $form_state->getValue('layout_builder_style_card_media_position');
@@ -700,7 +704,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
           }
         }
 
-        if ($block->getPluginId() == 'inline_block:uiowa_card') {
+        if ($block->getPluginId() === 'inline_block:uiowa_card') {
           // Make sure button display field is checked
           // if the link title field is filled in.
           $link_title = $form_state->getValue(
@@ -1021,9 +1025,11 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
 
       case 'uiowa_collection_item':
       case 'uiowa_slide':
-        // Pop the headline and place it in the label.
-        $headline = array_shift($element['top']['summary']['fields_info']['#summary']['content']);
-        $element['top']['type']['label']['#markup'] = $headline;
+        // If it exists, pop the headline and place it in the label.
+        if (!empty($element['top']['summary']['fields_info']['#summary']['content'])) {
+          $headline = array_shift($element['top']['summary']['fields_info']['#summary']['content']);
+          $element['top']['type']['label']['#markup'] = $headline;
+        }
         break;
 
       case 'uiowa_timeline_item':
@@ -1112,6 +1118,9 @@ function _layout_builder_custom_add_lbs_heading(&$form) {
 function layout_builder_custom_preprocess_block(&$variables) {
   // Unset grid_columns classes if display as list.
   if (isset($variables['elements']['#attributes']['class'])) {
+    if (is_string($variables['elements']['#attributes']['class'])) {
+      $variables['elements']['#attributes']['class'] = explode(' ', $variables['elements']['#attributes']['class']);
+    }
     $is_list = array_search('inner--list', $variables['elements']['#attributes']['class']);
     if ($is_list) {
       foreach ($variables['elements']['#attributes']['class'] as $key => $style) {
@@ -1250,8 +1259,6 @@ function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
     $default_classes = [
       'card--list',
       'card--person-teaser',
-      'card--centered-right',
-      'card--alignment-right',
     ];
 
     // Retrieve all styles from selection(s).
@@ -1290,7 +1297,6 @@ function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
   if (in_array($machine_name, [
     'card_list',
     'list_article',
-    // 'list_card',
   ])) {
     $rows = $variables['rows'];
     $style = $view->style_plugin;
@@ -1332,7 +1338,6 @@ function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
         'card_link_url' => '',
         'card_image' => $style->getField($id, 'field_image'),
         'card_text' => $style->getField($id, 'field_teaser'),
-        'card_subtitle' => '',
         'card_tag' => '',
         'card_date' => '',
         'headline_level' => $view->display_handler->getOption('heading_size'),
@@ -1354,7 +1359,7 @@ function layout_builder_custom_views_plugins_display_alter(&$displays) {
   //   See https://github.com/uiowa/uiowa/issues/4948
   if ($is_v2 === FALSE || $moduleHandler->moduleExists('sitenow_p2lb')) {
     // Swap the block class if it can be swapped.
-    if (!empty($displays['block']['class']) && $displays['block']['class'] == Block::class) {
+    if (!empty($displays['block']['class']) && $displays['block']['class'] === Block::class) {
       $displays['block']['class'] = ListBlock::class;
     }
   }
@@ -1369,7 +1374,7 @@ function layout_builder_custom_views_pre_build(ViewExecutable $view) {
   // @todo Allow view config to override this (non-zero pager id?).
   //   https://github.com/uiowa/uiowa/issues/5045
   $pager = $view->display_handler->getOption('pager');
-  if (isset($pager) && $pager['type'] == 'full') {
+  if (isset($pager) && $pager['type'] === 'full') {
     if ($cached = \Drupal::cache('layout_builder_custom_views_pager_elements')->get($view->dom_id)) {
       $pager['options']['id'] = $cached->data;
     }

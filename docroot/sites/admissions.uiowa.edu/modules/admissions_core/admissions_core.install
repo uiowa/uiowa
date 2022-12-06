@@ -194,7 +194,7 @@ function admissions_core_update_9001() {
 
       foreach ($links as $link) {
         if ($url = parse_url($link->getAttribute('href'))) {
-          if ($url['host'] == 'uiowa.orgsync.com') {
+          if ($url['host'] === 'uiowa.orgsync.com') {
             $link->setAttribute('href', "https://uiowa.campuslabs.com/engage");
             $link->parentNode->replaceChild($link, $link);
 

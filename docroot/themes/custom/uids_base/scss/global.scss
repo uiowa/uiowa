@@ -210,7 +210,7 @@ $imgpath: '../../uids/assets/images';
   border: 1px solid rgba(0, 0, 0, 0.25);
 }
 
-  // For sidebars: remove padding from adjacent blocks if they are the same and don't have a margin top set
+// For sidebars: remove padding from adjacent blocks if they are the same and don't have a margin top set
 .block[class*="bg--gray"].block-padding__all + .block[class*="bg--gray"].block-padding__all:not(.block-margin__top) {
   margin-top: -1.5rem;
   padding-top: 0;
@@ -382,7 +382,7 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
       }
     }
   }
- // four col reverse column order lb style
+  // four col reverse column order lb style
   &.layout--fourcol {
     .layout__spacing_container {
       display: grid;
@@ -510,6 +510,63 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   &__left {
     @include breakpoint(sm) {
       margin-left: $md;
+    }
+  }
+}
+
+// Set spacing as the default for mobile.
+.layout__container {
+  &:not([class*="grid-"]):not([class*="layout--title"]) {
+    .layout__region {
+      .block + .block {
+        margin-top: 1.6rem;
+
+        &:first-child {
+          margin-top: 0;
+        }
+      }
+      // Allow margin top and top extra to override.
+      .block + .block.block-margin__top {
+        margin-top: $md;
+      }
+      .block + .block.block-margin__top--extra {
+        margin-top: $md;
+        @include breakpoint(sm) {
+          margin-top: $mobile-height-gutter;
+        }
+      }
+      // Remove default margins style.
+      .block + .block.block-margin__default--removed {
+        margin-top: 0;
+      }
+      // Override card margins.
+      .block.card--media-right,
+      .block.card--media-left,
+      .block +.block.card--media-right,
+      .block +.block.card--media-left {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+// Override card margins for layouts where
+// section padding has been removed and card margin was assumed.
+.layout__container[class*="section-padding__removed"] {
+  .layout__region {
+    .block.card--media-right:first-child:last-child,
+    .block.card--media-left:first-child:last-child {
+      margin-bottom: 1.6rem;
+    }
+  }
+}
+
+// Override default for blocks adjacent to page title/breadcrumbs.
+.layout__container {
+  .layout__region {
+    .block.block-system-breadcrumb-block + .block[class*="block-field-"],
+    .block.block-field-blocknodepagetitle + .block[class*="block-field-"] {
+      margin-top: 0;
     }
   }
 }

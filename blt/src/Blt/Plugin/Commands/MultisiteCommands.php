@@ -572,7 +572,7 @@ EOD
 
     // Remove some files that we don't need or will be regenerated below.
     $files = [
-      "{$root}/config/sites/{$host}",
+      "{$root}/config/{$host}",
       "{$root}/docroot/sites/{$host}/default.services.yml",
       "{$root}/docroot/sites/{$host}/services.yml",
       "{$root}/drush/sites/{$host}.site.yml",
@@ -614,6 +614,7 @@ EOD
     $blt['project']['local']['hostname'] = $local;
     $blt['drupal']['db']['database'] = $db;
     $blt['drush']['aliases']['local'] = 'self';
+    $blt['uiowa']['stage_file_proxy']['origin'] = "https://$prod";
 
     // Add custom options to the site's BLT settings.
     if (isset($options['requester'])) {

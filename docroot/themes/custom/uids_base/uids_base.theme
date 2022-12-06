@@ -51,13 +51,13 @@ function uids_base_form_alter(&$form, $form_state, $form_id) {
  */
 function uids_base_form_views_exposed_form_alter(&$form, $form_state, $form_id) {
   // For all views with exposed filters.
-  if ($form_id == 'views_exposed_form') {
+  if ($form_id === 'views_exposed_form') {
     $form['#attributes']['class'][] = 'uids-content bg--gray';
   }
   // For these views specifically.
   $view_ids = ['book_toc', 'book_search'];
   $view = $form_state->getStorage('view');
-  if ($form_id == 'views_exposed_form' && in_array($view['view']->id(), $view_ids)) {
+  if ($form_id === 'views_exposed_form' && in_array($view['view']->id(), $view_ids)) {
     $form['#attributes']['class'][] = 'uids-search';
   }
 }
@@ -271,7 +271,7 @@ function uids_base_preprocess_node(&$variables) {
    */
   $node = $variables['node'];
 
-  if ($variables['view_mode'] == 'teaser') {
+  if ($variables['view_mode'] === 'teaser') {
     // Append person credentials to the node label in the teaser view mode.
     if ($node->hasField('field_person_credential') && $creds = $node->get('field_person_credential')->getString()) {
       $title = $node->getTitle();
@@ -296,7 +296,7 @@ function uids_base_preprocess_node(&$variables) {
       case 'article':
         // Style stacked if from related_manually_referenced_content block grid,
         // otherwise media right. Unset completely for SiteNow v2.
-        if (isset($node->view) && $node->view->id() == 'related_manually_referenced_content' && $node->view->current_display == 'block_grid') {
+        if (isset($node->view) && $node->view->id() === 'related_manually_referenced_content' && $node->view->current_display === 'block_grid') {
           $card_classes = [
             'card--stacked',
             'card--enclosed',
@@ -359,7 +359,7 @@ function uids_base_preprocess_node(&$variables) {
     $node = ($node ?? \Drupal::routeMatch()->getParameter('node_preview'));
 
     if ($node instanceof NodeInterface) {
-      $node = $variables["node"];
+      $node = $variables['node'];
       switch ($node->getType()) {
         case 'person':
           $variables['#attached']['library'][] = 'uids_base/person';
@@ -368,6 +368,7 @@ function uids_base_preprocess_node(&$variables) {
         case 'event':
           $variables['#attached']['library'][] = 'uids_base/sitenow-events-single';
           $variables['#attached']['library'][] = 'uids_base/person';
+          $variables['#attached']['library'][] = 'uids_base/card';
           break;
       }
       if (class_exists('\Drupal\layout_builder_custom\LayoutBuilderHelper')) {
@@ -388,7 +389,7 @@ function uids_base_preprocess_media(array &$variables) {
   $media_type = $variables['media']->bundle();
 
   // $variables;
-  if ($media_type == 'video') {
+  if ($media_type === 'video') {
     $referring_item = $media->_referringItem;
     if ($referring_item) {
       /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
@@ -465,7 +466,7 @@ function uids_base_preprocess_field(&$variables) {
   }
 
   // Add an extra class variable to uiowa_headline instances.
-  if ($variables['element']['#field_type'] == 'uiowa_headline') {
+  if ($variables['element']['#field_type'] === 'uiowa_headline') {
     $bundle = $variables['element']['#bundle'];
     $variables['headline_class'] = str_replace('_', '-', $bundle) . '--headline';
   }
@@ -554,7 +555,7 @@ function uids_base_preprocess_layout(&$variables) {
                 break;
               }
             }
-            elseif ($region == 'background') {
+            elseif ($region === 'background') {
               // If there is anything in this region, then we have a background.
               if (!empty(Element::children($variables['content'][$region][$block_uuid]))) {
                 $contains_background = TRUE;
@@ -665,10 +666,15 @@ function uids_base_preprocess_block(&$variables) {
   }
 
   // If inner list, remove any inner grid classes.
-  if (isset($variables["attributes"]["class"]) && in_array('inner--list', $variables["attributes"]["class"])) {
-    foreach ($variables["attributes"]["class"] as $key => $style) {
-      if (substr($style, 0, strlen('inner--grid')) === 'inner--grid') {
-        unset($variables["attributes"]["class"][$key]);
+  if (isset($variables['attributes']['class'])) {
+    if (is_string($variables['attributes']['class'])) {
+      $variables['attributes']['class'] = explode(' ', $variables['attributes']['class']);
+    }
+    if (in_array('inner--list', $variables['attributes']['class'])) {
+      foreach ($variables['attributes']['class'] as $key => $style) {
+        if (substr($style, 0, strlen('inner--grid')) === 'inner--grid') {
+          unset($variables['attributes']['class'][$key]);
+        }
       }
     }
   }
@@ -693,7 +699,7 @@ function uids_base_preprocess_block(&$variables) {
     $variables['breadcrumb'] = $plugin_block->build();
   }
 
-  if ($variables['derivative_plugin_id'] == 'uiowa_banner') {
+  if ($variables['derivative_plugin_id'] === 'uiowa_banner') {
     $block = $variables['elements']['content']['#block_content'];
 
     // Remove headline classes from attributes.
@@ -713,7 +719,7 @@ function uids_base_preprocess_block(&$variables) {
         $bundle_value = $block->get('field_uiowa_banner_image')->first()->get('entity')->getValue();
         if ($bundle_value) {
           $bundle_type = $block->get('field_uiowa_banner_image')->first()->get('entity')->getValue()->bundle();
-          if ($bundle_type == 'video') {
+          if ($bundle_type === 'video') {
             $variables['attributes']['class'][] = 'banner--video';
           }
         }
@@ -733,12 +739,12 @@ function uids_base_preprocess_block(&$variables) {
   }
 
   // Check if the hover effect should be applied on the stat block.
-  if ($variables['derivative_plugin_id'] == 'uiowa_statistic' && isset($variables['elements']['#attributes']['class'])) {
+  if ($variables['derivative_plugin_id'] === 'uiowa_statistic' && isset($variables['elements']['#attributes']['class'])) {
     $variables['has_hover_effect'] = !in_array('stat--static', $variables['elements']['#attributes']['class']);
   }
 
   // Check for blockquote image placement.
-  if ($variables['derivative_plugin_id'] == 'uiowa_quote' && isset($variables['elements']['#attributes']['class'])) {
+  if ($variables['derivative_plugin_id'] === 'uiowa_quote' && isset($variables['elements']['#attributes']['class'])) {
     $variables['has_image_below'] = !in_array('blockquote--img-above', $variables['elements']['#attributes']['class']);
     $variables['has_image_above'] = !in_array('blockquote--img-below', $variables['elements']['#attributes']['class']);
   }
@@ -775,7 +781,7 @@ function uids_base_preprocess_block_content__uiowa_collection__accordion(&$varia
   // pass "true" for use in constructing the accordion.
   // "False" designates a single-select accordion.
   $variables['multiselect'] = (!isset($block->field_accordion_type->value) ||
-    $block->field_accordion_type->value == 'multi_select') ? 'true' : 'false';
+    $block->field_accordion_type->value === 'multi_select') ? 'true' : 'false';
 }
 
 /**
@@ -893,7 +899,7 @@ function uids_base_preprocess_paragraph(&$variables) {
 
       // If our bundle is the collection item and we have a
       // 'field_automatically_open' value set...
-      if ($paragraph->bundle() == 'uiowa_collection_item' &&
+      if ($paragraph->bundle() === 'uiowa_collection_item' &&
         $opened = $paragraph->field_automatically_open->value) {
         // Pass a true or false based upon the value to the template.
         // Template: docroot/themes/custom/uids_base/uids_base.theme .
@@ -953,7 +959,7 @@ function uids_base_preprocess_views_view_field(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function uids_base_preprocess_aggregator_feed(&$variables) {
-  if (\Drupal::routeMatch()->getRouteName() == 'entity.aggregator_feed.canonical') {
+  if (\Drupal::routeMatch()->getRouteName() === 'entity.aggregator_feed.canonical') {
     $variables['#attached']['library'][] = 'uids_base/aggregator-feed';
 
     /** @var Drupal\aggregator\Entity\Feed $feed */
@@ -996,8 +1002,8 @@ function uids_base_preprocess_aggregator_item(&$variables) {
   if (\Drupal::routeMatch()->getRouteName() != 'entity.aggregator_feed.canonical') {
     // Set the heading level size for use in the template.
     $variables['heading_size'] = $variables['elements']['#heading_size'] ?? 'h3';
-    if (isset($variables["elements"]["#parent_lb_styles"]) && !empty($variables["elements"]["#parent_lb_styles"])) {
-      $variables['parent_lb_styles'] = $variables["elements"]["#parent_lb_styles"];
+    if (isset($variables['elements']['#parent_lb_styles']) && !empty($variables['elements']['#parent_lb_styles'])) {
+      $variables['parent_lb_styles'] = $variables['elements']['#parent_lb_styles'];
     }
 
     /** @var Drupal\aggregator\Entity\Feed $feed */
@@ -1027,8 +1033,8 @@ function uids_base_preprocess_aggregator_item(&$variables) {
     // A local feed image should take precedence.
     if ($media = Media::load($mid)) {
       $variables['feed_image'] = \Drupal::entityTypeManager()->getViewBuilder('media')->view($media, $image_view_mode);
-      if (!in_array($image_view_mode, $variables["feed_image"]["#cache"]["keys"])) {
-        unset($variables["feed_image"]["#cache"]["keys"]);
+      if (!in_array($image_view_mode, $variables['feed_image']['#cache']['keys'])) {
+        unset($variables['feed_image']['#cache']['keys']);
       }
     }
     else {
@@ -1055,7 +1061,7 @@ function uids_base_preprocess_aggregator_item(&$variables) {
  */
 function uids_base_preprocess_form(&$variables) {
   // Add 'uids-content' and 'uids-search' classes to search-block-form.
-  if (isset($variables['attributes']['id']) && $variables['attributes']['id'] == 'search-block-form') {
+  if (isset($variables['attributes']['id']) && $variables['attributes']['id'] === 'search-block-form') {
     $variables['attributes']['class'][] = 'uids-content uids-search';
   }
 }
@@ -1100,7 +1106,7 @@ function uids_base_preprocess_superfish_menu_items(array &$variables) {
   if (isset($variables['menu_items'])) {
     foreach ($variables['menu_items'] as $i => $menu_item) {
       if (isset($menu_item['link_menuparent'])) {
-        if ($menu_item['link']['#url']->isRouted() && $menu_item['link']['#url']->getRouteName() == '<nolink>') {
+        if ($menu_item['link']['#url']->isRouted() && $menu_item['link']['#url']->getRouteName() === '<nolink>') {
           $variables['menu_items'][$i]['link_menuparent']['#options']['attributes']['tabindex'] = '0';
         }
 
@@ -1136,7 +1142,7 @@ function uids_base_theme_suggestions_form_element_alter(array &$suggestions, arr
 function uids_base_theme_suggestions_input_alter(&$suggestions, array $variables) {
   $element = $variables['element'];
 
-  if (isset($element['#name']) && $element['#name'] == 'btnG') {
+  if (isset($element['#name']) && $element['#name'] === 'btnG') {
     $suggestions[] = 'input__uiowa_search__' . $element['#type'];
   }
 }

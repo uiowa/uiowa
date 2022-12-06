@@ -7,7 +7,7 @@
 
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Url;
-use Drupal\smart_trim\Truncate\TruncateHTML;
+use Drupal\smart_trim\TruncateHTML;
 
 /**
  * Theme function for an event teaser.
@@ -48,7 +48,7 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
     ];
   }
 
-  $external_link = ($config->get('event_link') == 'event-link-external');
+  $external_link = ($config->get('event_link') === 'event-link-external');
 
   if ($external_link) {
     $variables['event']['url'] = $variables['event']['events_site_url'];
@@ -58,7 +58,7 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
 
     // Add a parameter on the URL for event instances.
     foreach ($variables['event']['event_instances'] as $key => $instance) {
-      if ($variables['event']['instance_start'] == $instance['event_instance']['start']) {
+      if ($variables['event']['instance_start'] === $instance['event_instance']['start']) {
         $instance_id = $key;
       }
     }
@@ -70,6 +70,7 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
   $variables['event']['date_string'] = sitenow_events_format_instance([
     'start' => $variables['event']['instance_start'],
     'end' => $variables['event']['instance_end'],
+    'last_date' => $variables['event']['last_date'],
     'all_day' => $variables['event']['instance_all_day'],
   ]);
 

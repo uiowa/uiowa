@@ -51,7 +51,7 @@ class MigrateEventSubscriber implements EventSubscriberInterface {
   public function onPostRollback(MigrateRollbackEvent $event) {
     $migration = $event->getMigration();
 
-    if ($migration->id() == 'uipress_books') {
+    if ($migration->id() === 'uipress_books') {
       $entity_types = [
         'paragraph' => [
           'book_type',
@@ -60,7 +60,7 @@ class MigrateEventSubscriber implements EventSubscriberInterface {
 
       foreach ($entity_types as $type => $bundles) {
         foreach ($bundles as $bundle) {
-          $field = ($type == 'taxonomy_term') ? 'vid' : 'type';
+          $field = ($type === 'taxonomy_term') ? 'vid' : 'type';
           $query = $this->entityTypeManager->getStorage($type)->getQuery();
 
           $ids = $query

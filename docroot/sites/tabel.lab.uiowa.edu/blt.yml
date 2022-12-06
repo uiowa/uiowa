@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labtabel.uiowa.ddev.site
+    protocol: https
+  machine_name: labtabel
+  human_name: tabel.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labtabel.prod
+drupal:
+  db:
+    database: tabel_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labtabel.prod.drupal.uiowa.edu'
+  requester: bucknerl
+  site-name: 'https://tabel.lab.uiowa.edu/'

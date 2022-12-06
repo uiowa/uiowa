@@ -91,10 +91,10 @@ function ighn_core_preprocess_page_title(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     $route_name = \Drupal::routeMatch()->getRouteName();
-    if ($route_name == 'entity.node.canonical') {
+    if ($route_name === 'entity.node.canonical') {
       $node = \Drupal::routeMatch()->getParameter('node');
     }
-    elseif ($route_name == 'entity.node.preview') {
+    elseif ($route_name === 'entity.node.preview') {
       $node = \Drupal::routeMatch()->getParameter('node_preview');
     }
     if (isset($node)) {

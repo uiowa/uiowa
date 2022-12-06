@@ -36,10 +36,12 @@ content:
       more_link: false
       more_class: more-link
       more_text: More
+      more_aria_label: 'Read more about [node:title]'
       summary_handler: full
       trim_options:
         text: true
         trim_zero: false
+        replace_tokens: false
     third_party_settings: {  }
     weight: 3
     region: content
@@ -49,6 +51,8 @@ content:
     settings:
       image_link: ''
       image_style: paragraph_preview
+      image_loading:
+        attribute: lazy
     third_party_settings: {  }
     weight: 0
     region: content
@@ -77,6 +81,9 @@ content:
     weight: 4
     region: content
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_card_link: true
   field_uip_classes: true
   field_uip_colwidth: true

@@ -28,14 +28,19 @@ function sitenow_p2lb_form_alter(&$form, FormStateInterface $form_state, $form_i
       $form['field_page_content_block']['#access'] = FALSE;
     }
     elseif ($form_id === 'node_page_edit_form') {
-      // Check if field_v3_conversion_revision_id is set.
-      if ($entity->hasField('field_v3_conversion_revision_id')) {
+      // Check if field_v3_conversion_revision_id is set,
+      // and if the user hasn't yet interacted with the form
+      // (so that we don't duplicate our messages).
+      if ($entity->hasField('field_v3_conversion_revision_id') && empty($form_state->getUserInput())) {
         if (is_numeric($entity->field_v3_conversion_revision_id->value)) {
-          // If so, disable field_page_content_block and set a warning message.
+          // If we have a revision id, the page has been converted.
+          // Disable field_page_content_block and set a warning message.
           \Drupal::messenger()->addWarning(t('This page has been converted to the SiteNow V3 format. Please add content through the "Body" field or click the "Layout" tab to edit an advanced page layout.'));
           $form['field_page_content_block']['#access'] = FALSE;
         }
         else {
+          // If we didn't have a revision id, disable access to the body field
+          // and add a message directing to the converter.
           \Drupal::messenger()->addMessage(t('This page can be converted to the SiteNow V3 format. Please visit the @link to convert this page.', [
             '@link' => Drupal::service('link_generator')->generate('SiteNow Converter tool', Url::fromRoute('sitenow_p2lb.content_converter')),
           ]));
@@ -258,7 +263,7 @@ function sitenow_p2lb_process_section($section_id, $layout, $node) {
       $block_configs = sitenow_p2lb_process_paragraph($paragraphs[$key], $node);
       foreach ($block_configs as $block_config) {
         // Onecol uses 'content', rest use region for column placement.
-        $region = ($num_cols == 1) ? 'content' : $regional[$i];
+        $region = ($num_cols === 1) ? 'content' : $regional[$i];
         $uuid = $block_config['uuid'];
         $config = $block_config['configuration'];
         $styles = $block_config['styles'];
@@ -272,6 +277,15 @@ function sitenow_p2lb_process_section($section_id, $layout, $node) {
           ],
           'weight' => 0,
         ];
+        // If we had a user-provided unique id,
+        // add it to the block's third-party settings.
+        if (!empty($block_config['id'])) {
+          $section_array['components'][$uuid]['third_party_settings'] = [
+            'layout_builder_custom' => [
+              'unique_id' => $block_config['id'],
+            ],
+          ];
+        }
       }
     }
     $section = Section::fromArray($section_array);
@@ -350,19 +364,9 @@ function sitenow_p2lb_determine_columns(array $col_widths) {
   while (TRUE) {
     $iter_adder += $col_widths[$i];
 
-    // Out of cols to add.
-    // Take what we have and handle/add to the list.
-    if ($i == count($col_widths) - 1) {
-      $sections[] = [
-        'num_columns' => count($col_widths),
-        'col_widths' => $col_widths,
-      ];
-      break;
-    }
-
     // Section full with no overrun.
     // Take what we have and add to the list.
-    if ($iter_adder == 12) {
+    if ($iter_adder === 12) {
       $sections = array_merge(
         sitenow_p2lb_determine_columns(array_slice($col_widths, 0, ++$i)),
         sitenow_p2lb_determine_columns(array_slice($col_widths, $i))
@@ -377,6 +381,17 @@ function sitenow_p2lb_determine_columns(array $col_widths) {
         sitenow_p2lb_determine_columns(array_slice($col_widths, 0, $i)),
         sitenow_p2lb_determine_columns(array_slice($col_widths, $i)),
       );
+      break;
+    }
+
+    // We didn't exactly finish a section, and
+    // didn't overrun, but we're Out of cols to add.
+    // Take what we have left and handle/add to the list.
+    if ($i === count($col_widths) - 1) {
+      $sections[] = [
+        'num_columns' => count($col_widths),
+        'col_widths' => $col_widths,
+      ];
       break;
     }
 
@@ -476,12 +491,12 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
       // Build our headline array, because for list blocks,
       // it gets stored in the config, not in a field.
       $headline = [
-        "headline" => $title,
-        "hide_headline" => $display_title,
-        "heading_size" => "h2",
-        "headline_style" => "default",
-        "headline_alignment" => "default",
-        "child_heading_size" => "h3",
+        'headline' => $title,
+        'hide_headline' => $display_title,
+        'heading_size' => 'h2',
+        'headline_style' => 'default',
+        'headline_alignment' => 'default',
+        'child_heading_size' => 'h3',
       ];
       $pager = ($paragraph->field_uip_pager->value) ? 'full' : 'some';
       // Number of results that should be displayed.
@@ -931,11 +946,13 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
             'configuration' => $config,
             'uuid' => $uuid,
             'styles' => $styles,
+            'id' => $paragraph?->field_uip_id->value,
           ],
           [
             'configuration' => $webform_config,
             'uuid' => $webform_uuid,
             'styles' => $styles,
+            'id' => NULL,
           ],
         ];
     }
@@ -945,6 +962,7 @@ function sitenow_p2lb_process_paragraph($paragraph, $node) {
         'configuration' => $config,
         'uuid' => $uuid,
         'styles' => _sitenow_p2lb_block_styles($type, $paragraph),
+        'id' => $paragraph?->field_uip_id->value,
       ],
     ];
   }
@@ -1022,13 +1040,13 @@ function sitenow_p2lb_multicol_settings($col_widths) {
 
     case 3:
       // If first col is half width, others are 25.
-      if ($col_widths[0] == 6) {
+      if ($col_widths[0] === 6) {
         $settings = '50-25-25';
       }
       // First col is 25, then two options are available.
-      elseif ($col_widths[0] == 3) {
+      elseif ($col_widths[0] === 3) {
         // Check the middle col to determine which gets the 50.
-        if ($col_widths[1] == 3) {
+        if ($col_widths[1] === 3) {
           $settings = '25-25-50';
         }
         else {
@@ -1108,7 +1126,7 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
   // Any more links will remain in the body.
   if (preg_match('|(.*?)(<a.*?href="(.*?)".*?>(.*?)<\/a>)(.*)|is', $text['value'], $matches)) {
     // Attach the bookended content into a single value.
-    $text['value'] = $matches[1] . $matches[5];
+    $text['value'] = strip_tags($matches[1] . $matches[5]);
     // Set URI based on link being absolute or relative.
     $uri = (substr($matches[3], 0, 4) === 'http') ?
       $matches[3] : \Drupal::request()->getSchemeAndHttpHost() . $matches[3];
@@ -1146,7 +1164,7 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
     $uuid = $block->get('uuid')->getValue()[0]['value'];
     $block_config = [
       'id' => 'inline_block:uiowa_banner',
-      'label' => 'Hero',
+      'label' => '',
       'provider' => 'layout_builder',
       'label_display' => 0,
       'block_revision_id' => $block->getRevisionId(),
@@ -1154,7 +1172,7 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
     ];
     if (!empty($block_config)) {
       $layout_settings = [
-        'label' => 'Hero image',
+        'label' => '',
         'column_widths' => [],
         'layout_builder_styles_style' => [
           'section_margin_edge_to_edge' => 'section_margin_edge_to_edge',
@@ -1178,6 +1196,15 @@ function sitenow_p2lb_section_image($section_image_fid, $banner_text, $node) {
         ],
         'weight' => 0,
       ];
+      // If there was a unique id set on the text paragraph,
+      // we should set it on our banner config.
+      if ($id = $banner_text?->field_uip_id->value) {
+        $section_array['components'][$uuid]['third_party_settings'] = [
+          'layout_builder_custom' => [
+            'unique_id' => $id,
+          ],
+        ];
+      }
     }
 
     // Update the block usage to the node.

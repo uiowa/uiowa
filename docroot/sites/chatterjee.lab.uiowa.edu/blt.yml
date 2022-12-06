@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labchatterjee.uiowa.ddev.site
+    protocol: https
+  machine_name: labchatterjee
+  human_name: chatterjee.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labchatterjee.prod
+drupal:
+  db:
+    database: chatterjee_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labchatterjee.prod.drupal.uiowa.edu'
+  requester: bucknerl
+  site-name: Chatterjee

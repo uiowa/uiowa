@@ -12,7 +12,6 @@ folder: ../config/sites/admissions.uiowa.edu
 module:
   admissions_core: 0
   better_exposed_filters: 0
-  entity_print: 0
   entity_print_views: 0
   fullcalendar_view: 0
   jquery_ui: 0
@@ -26,6 +25,7 @@ theme: {  }
 complete_list:
   - block_content.type.area_of_study_search
   - config_split.config_split.site
+  - core.entity_form_display.node.event.default
   - core.entity_form_display.node.major.default
   - core.entity_view_display.node.event.default
   - core.entity_view_display.node.major.default
@@ -33,6 +33,7 @@ complete_list:
   - core.entity_view_display.node.page.default
   - core.entity_view_display.node.person.default
   - core.entity_view_mode.node.pdf
+  - field.storage.node.field_event_category
   - field.storage.node.field_event_series_button_link
   - field.storage.node.field_event_series_summary
   - field.storage.taxonomy_term.field_academic_groups_media
@@ -65,6 +66,7 @@ complete_list:
   - taxonomy.vocabulary.academic_groups
   - taxonomy.vocabulary.colleges
   - taxonomy.vocabulary.community_colleges
+  - taxonomy.vocabulary.event_categories
   - views.view.academic_groups_block
   - views.view.academic_groups_taxonomy_term
   - views.view.areas_of_study
@@ -113,6 +115,7 @@ partial_list:
   - metatag.settings
   - sitenow_people.person_type.student
   - views.view.events
+  - views.view.events_list_block
   - views.view.person_card
   - views.view.scholarships
   - views.view.student_card

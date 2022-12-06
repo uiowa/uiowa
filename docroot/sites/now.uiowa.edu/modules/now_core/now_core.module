@@ -11,6 +11,44 @@ use Drupal\Core\Form\FormStateInterface;
  * Implements hook_form_alter().
  */
 function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'node_article_form':
+    case 'node_article_edit_form':
+    case 'node_person_form':
+    case 'node_person_edit_form':
+      $form['field_contact_reference']['#states'] = [
+        'visible' => [
+          ':input[name="field_article_type"]' => [
+          ['value' => 'featured'],
+            'or',
+          ['value' => 'achievements'],
+          ],
+        ],
+      ];
+
+      // Check that there are entities.
+      if (isset($form['field_contact_reference']['widget']['entities'])) {
+        $contacts = $form['field_contact_reference']['widget']['entities'];
+
+        // For each one that exists, make sre it is one of the integer entries,
+        // which is actually an entity.
+        foreach ($contacts as $key => $contact) {
+          if (is_int($key) && $contact['#entity']->getType() === 'person') {
+
+            // Then, get the string of the first and last names.
+            $first = $contact['#entity']?->get('field_person_first_name')?->getString();
+            $last = $contact['#entity']?->get('field_person_last_name')?->getString();
+
+            // And set the title, which would have been empty,
+            // to the concatenation of the two.
+            if (is_string($first) && is_string($last)) {
+              $form['field_contact_reference']['widget']['entities'][$key]['#label'] = $first . ' ' . $last;
+            }
+          }
+        }
+      }
+      break;
+  }
   if ($form_id === 'node_article_form' || $form_id === 'node_article_edit_form') {
     $form['field_embargo_information']['#states'] = [
       'visible' => [
@@ -42,6 +80,40 @@ function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 }
 
 /**
+ * Implements hook_inline_entity_form_table_fields_alter().
+ */
+function now_core_inline_entity_form_table_fields_alter(array &$fields, array $context) {
+  if ($context['field_name'] === 'field_contact_reference') {
+    // Clean up, minimize the person IEF form.
+    if (in_array('contact', $context['allowed_bundles']) && in_array('person', $context['allowed_bundles'])) {
+      $fields['label']['label'] = t('Contact name');
+    }
+  }
+}
+
+/**
+ * Implements hook_form_views_exposed_form_alter().
+ */
+function now_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $view = $form_state->getStorage('view');
+  if ($form_id == 'views_exposed_form' && in_array($view['view']->id(), ['iowa_now_experts'])) {
+    $form['field_person_research_areas_target_id']['#size'] = 10;
+    $form['#validate'][] = 'now_core_experts_form_validate';
+  }
+}
+
+/**
+ * Custom error message for views exposed form for iowa now experts.
+ */
+function now_core_experts_form_validate($form, FormStateInterface $form_state) {
+  $expert = $form['field_person_research_areas_target_id'];
+  if (isset($expert) && $form_state->getError($expert)) {
+    $form_state->clearErrors();
+    $form_state->setErrorByName('field_person_research_areas_target_id', t('There are no matching research areas.'));
+  }
+}
+
+/**
  * Implements hook_ENTITY_TYPE_presave().
  */
 function now_core_node_presave($entity) {
@@ -55,21 +127,27 @@ function now_core_node_presave($entity) {
   // Add a tag according to the article type
   // so that it can be used in user-created filters.
   $tid = now_core_article_type_tag_map($entity->field_article_type->value);
-  if ($tid !== FALSE) {
+  if (is_string($tid)) {
     // Check that we didn't already have the tid
     // before appending it to our list of tags.
     $in_array = FALSE;
+    $old_tid = FALSE;
     // If it's new, we only need to worry about
     // adding the new TID, but if it's an edit,
     // we also need to check if we need to remove
     // an old article type's TID.
-    $old_tid = (!$entity->isNew()) ? now_core_article_type_tag_map($entity->original->field_article_type->value) : FALSE;
+    if (!$entity->isNew()) {
+      // To account for articles created prior to requiring this field,
+      // we also need to check if the field is empty. If it was,
+      // we won't have a TID to remove.
+      $old_tid = (!empty($entity->original->field_article_type_value)) ? now_core_article_type_tag_map($entity->original->field_article_type->value) : FALSE;
+    }
     // If the old TID is the same as the new,
     // then we can treat it like the entity is new.
     $old_tid = ($old_tid != $tid) ? $old_tid : FALSE;
     $to_remove = [];
     foreach ($entity->field_tags->getValue() as $delta => $item) {
-      if ($item['target_id'] == $tid) {
+      if ((string) $item['target_id'] === $tid) {
         $in_array = TRUE;
         // If it was new or the type wasn't changing,
         // we're done and don't need to keep iterating.
@@ -80,7 +158,7 @@ function now_core_node_presave($entity) {
       // If we have an old TID and we've matched it,
       // add it to our list of removals.
       if ($old_tid !== FALSE &&
-        $item['target_id'] == $old_tid
+        (string) $item['target_id'] === $old_tid
       ) {
         $to_remove[] = $delta;
       }
@@ -126,7 +204,7 @@ function now_core_node_presave($entity) {
       // we default to archived to unpublish the page.
       // There shouldn't be a case where this happens unless it is
       // by accident, so this is really only a fallback.
-      $alt_state = ($entity->original->moderation_state->value == 'published') ? 'archived' : $entity->original->moderation_state->value;
+      $alt_state = ($entity->original->moderation_state->value === 'published') ? 'archived' : $entity->original->moderation_state->value;
     }
     $entity->moderation_state = $alt_state;
     // Add a user message along with changing this state.
@@ -185,15 +263,17 @@ function now_core_prevent_tag_delete_message($name) {
  * @param string $article_type
  *   The article type as a machine name, or empty to fetch TIDs array.
  *
- * @return int|bool|array
+ * @return string|bool|array
  *   The associated TID or FALSE, or an associative array of TIDs.
  */
 function now_core_article_type_tag_map(string $article_type = '') {
   $map = [
-    'achievements' => 16,
-    'featured' => 11,
-    'in-the-news' => 21,
-    'ui-spotlight' => 31,
+    'achievements' => '16',
+    'featured' => '11',
+    'in-the-news' => '21',
+    'ui-spotlight' => '31',
+    'expert' => '66',
+    'staff' => '71',
   ];
   // If we aren't getting a specific TID,
   // then return the full map.
@@ -201,4 +281,62 @@ function now_core_article_type_tag_map(string $article_type = '') {
     return $map;
   }
   return $map[$article_type] ?? FALSE;
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function now_core_preprocess_views_view_unformatted(&$variables) {
+
+  $view = $variables['view'];
+  $variables['row_item_classes'] = [];
+  if ($view->current_display === 'page_experts_list') {
+    $style = $view->style_plugin;
+    $rows = $variables['rows'];
+
+    $default_classes = [
+      'card--list',
+      'card--media-left',
+      'card--person-teaser',
+    ];
+
+    $variables['row_item_classes'] = array_merge($default_classes, array_values($variables['row_item_classes']));
+    foreach ($rows as $id => $row) {
+      // Set remaining row_item_classes as attributes on each row.
+      if (isset($variables['row_item_classes'])) {
+        $variables['rows'][$id]['attributes']->addClass($variables['row_item_classes']);
+      }
+      // Get node path to link card with.
+      $nid = $view->result[$id]->_entity->id();
+      $link = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
+
+      $meta_combined = $style->getField($id, 'field_person_phone') . " " . $style->getField($id, 'field_person_email');
+      $meta = ['#markup' => $meta_combined];
+
+      // Initialize card_options variable.
+      $variables['rows'][$id]['card_options'] = [
+        'attributes' => $variables['rows'][$id]['attributes'],
+        'media_styles' => ['media--circle', 'media--border'],
+        'media_sizes' => ['card__media--small'],
+        'card_image' => $style->getField($id, 'field_image'),
+        'card_title' => $style->getField($id, 'title'),
+        'card_link_url' => $link,
+        'card_subtitle' => $style->getField($id, 'field_person_position'),
+        'card_meta' => $meta,
+        'card_text' => $style->getField($id, 'field_person_research_areas'),
+      ];
+    }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function now_core_theme($existing, $type, $theme, $path) {
+  return [
+    'views_view_unformatted__iowa_now_experts' => [
+      'template' => 'views-view-unformatted--iowa-now-experts',
+      'base hook' => 'view',
+    ],
+  ];
 }

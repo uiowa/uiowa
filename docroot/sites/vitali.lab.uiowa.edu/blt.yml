@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labvitali.uiowa.ddev.site
+    protocol: https
+  machine_name: labvitali
+  human_name: vitali.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labvitali.prod
+drupal:
+  db:
+    database: vitali_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labvitali.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Human Instrumentation and Robotics Lab'

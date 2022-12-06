@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: art.uiowa.ddev.site
+    protocol: https
+  machine_name: art
+  human_name: art.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: art.prod
+drupal:
+  db:
+    database: art_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://art.prod.drupal.uiowa.edu'
