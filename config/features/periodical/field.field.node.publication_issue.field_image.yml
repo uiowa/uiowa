@@ -1,0 +1,29 @@
+uuid: a932081b-2760-4223-8ec2-706cc7f64632
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_image
+    - media.type.image
+    - node.type.publication_issue
+id: node.publication_issue.field_image
+field_name: field_image
+entity_type: node
+bundle: publication_issue
+label: 'Cover image'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference
