@@ -4894,3 +4894,9 @@ $sites['performingarts.uiowa.ddev.site'] = 'performingarts.uiowa.edu';
 $sites['performingarts.dev.drupal.uiowa.edu'] = 'performingarts.uiowa.edu';
 $sites['performingarts.stage.drupal.uiowa.edu'] = 'performingarts.uiowa.edu';
 $sites['performingarts.prod.drupal.uiowa.edu'] = 'performingarts.uiowa.edu';
+
+// Directory aliases for gencounsel.uiowa.edu.
+$sites['gencounsel.uiowa.ddev.site'] = 'gencounsel.uiowa.edu';
+$sites['gencounsel.dev.drupal.uiowa.edu'] = 'gencounsel.uiowa.edu';
+$sites['gencounsel.stage.drupal.uiowa.edu'] = 'gencounsel.uiowa.edu';
+$sites['gencounsel.prod.drupal.uiowa.edu'] = 'gencounsel.uiowa.edu';
