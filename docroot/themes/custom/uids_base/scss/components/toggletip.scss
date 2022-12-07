@@ -33,6 +33,7 @@
   padding: 0.5rem;
   background: rgba(0, 0, 0, 0.8);
   color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.8);
 }
 
 .layout--title--with-background:hover, .layout--title--with-background:focus-within {
@@ -42,15 +43,26 @@
   }
 }
 
-.toggletip-bubble:after {
+.toggletip-bubble:after, .toggletip-bubble:before {
   left: 100%;
   top: 14px;
+  border: solid transparent;
   content: "";
   height: 0;
   width: 0;
   position: absolute;
   pointer-events: none;
-  border: 6px solid rgba(0, 0, 0, 0);
+}
+
+.toggletip-bubble:after {
+  border-color: rgba(0, 0, 0, 0);
   border-left-color: rgba(0, 0, 0, 0.8);
-  margin-top: -6px;
+  border-width: 8px;
+  margin-top: -8px;
+}
+.toggletip-bubble:before {
+  border-color: rgba(255, 255, 255, 0);
+  border-left-color: rgba(255, 255, 255, 0.8);
+  border-width: 9px;
+  margin-top: -9px;
 }
