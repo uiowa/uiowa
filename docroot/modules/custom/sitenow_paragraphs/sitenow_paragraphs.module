@@ -289,6 +289,10 @@ function sitenow_paragraphs_theme_suggestions_field_alter(&$suggestions, $variab
  * @see options_allowed_values()
  */
 function sitenow_paragraphs_uip_classes_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = FALSE): array {
+  // Need to make sure this isn't cached. As we have run into issues
+  // where the selected option is not a valid choice.
+  $cacheable = FALSE;
+
   $options = [];
 
   if (!is_null($entity)) {
