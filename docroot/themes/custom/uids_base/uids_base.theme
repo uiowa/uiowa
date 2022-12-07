@@ -453,14 +453,15 @@ function uids_base_preprocess_field(&$variables) {
         $caption = $node->get('field_image_caption');
       }
 
-      // If the caption has been set, render it.
+      // If the caption has been set, render it
+      // and include the associated libraries.
       if ($caption && $caption->count()) {
         $caption = $caption->view();
+        $variables['#attached']['library'][] = 'uids_base/toggletip';
       }
       else {
         $caption = NULL;
       }
-
       $variables['caption'] = $caption;
       break;
   }
