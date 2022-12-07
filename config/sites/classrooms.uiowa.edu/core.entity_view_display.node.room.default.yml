@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.node.room.body
+    - field.field.node.room.field_image
     - field.field.node.room.field_meta_tags
     - field.field.node.room.field_room_building_id
     - field.field.node.room.field_room_room_id
@@ -21,12 +22,20 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 2
+    weight: 3
     region: content
   content_moderation_control:
     settings: {  }
     third_party_settings: {  }
     weight: -20
+    region: content
+  field_image:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 0
     region: content
   field_room_building_id:
     type: entity_reference_label
@@ -34,7 +43,7 @@ content:
     settings:
       link: false
     third_party_settings: {  }
-    weight: 0
+    weight: 1
     region: content
   field_room_room_id:
     type: string
@@ -42,7 +51,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 1
+    weight: 2
     region: content
 hidden:
   entity_print_view_epub: true

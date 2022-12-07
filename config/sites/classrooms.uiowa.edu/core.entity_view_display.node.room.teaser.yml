@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.room.body
+    - field.field.node.room.field_image
     - field.field.node.room.field_meta_tags
     - field.field.node.room.field_room_building_id
     - field.field.node.room.field_room_room_id
@@ -23,12 +24,20 @@ content:
     settings:
       trim_length: 600
     third_party_settings: {  }
-    weight: 0
+    weight: 1
     region: content
   content_moderation_control:
     settings: {  }
     third_party_settings: {  }
     weight: -20
+    region: content
+  field_image:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 0
     region: content
 hidden:
   entity_print_view_epub: true
