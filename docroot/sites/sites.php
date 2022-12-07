@@ -4888,3 +4888,21 @@ $sites['labankrum.uiowa.ddev.site'] = 'ankrum.lab.uiowa.edu';
 $sites['labankrum.dev.drupal.uiowa.edu'] = 'ankrum.lab.uiowa.edu';
 $sites['labankrum.stage.drupal.uiowa.edu'] = 'ankrum.lab.uiowa.edu';
 $sites['labankrum.prod.drupal.uiowa.edu'] = 'ankrum.lab.uiowa.edu';
+
+// Directory aliases for performingarts.uiowa.edu.
+$sites['performingarts.uiowa.ddev.site'] = 'performingarts.uiowa.edu';
+$sites['performingarts.dev.drupal.uiowa.edu'] = 'performingarts.uiowa.edu';
+$sites['performingarts.stage.drupal.uiowa.edu'] = 'performingarts.uiowa.edu';
+$sites['performingarts.prod.drupal.uiowa.edu'] = 'performingarts.uiowa.edu';
+
+// Directory aliases for gencounsel.uiowa.edu.
+$sites['gencounsel.uiowa.ddev.site'] = 'gencounsel.uiowa.edu';
+$sites['gencounsel.dev.drupal.uiowa.edu'] = 'gencounsel.uiowa.edu';
+$sites['gencounsel.stage.drupal.uiowa.edu'] = 'gencounsel.uiowa.edu';
+$sites['gencounsel.prod.drupal.uiowa.edu'] = 'gencounsel.uiowa.edu';
+
+// Directory aliases for saah-design.studio.uiowa.edu.
+$sites['studiosaah-design.uiowa.ddev.site'] = 'saah-design.studio.uiowa.edu';
+$sites['studiosaah-design.dev.drupal.uiowa.edu'] = 'saah-design.studio.uiowa.edu';
+$sites['studiosaah-design.stage.drupal.uiowa.edu'] = 'saah-design.studio.uiowa.edu';
+$sites['studiosaah-design.prod.drupal.uiowa.edu'] = 'saah-design.studio.uiowa.edu';
