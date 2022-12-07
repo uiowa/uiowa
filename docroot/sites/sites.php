@@ -4900,3 +4900,9 @@ $sites['gencounsel.uiowa.ddev.site'] = 'gencounsel.uiowa.edu';
 $sites['gencounsel.dev.drupal.uiowa.edu'] = 'gencounsel.uiowa.edu';
 $sites['gencounsel.stage.drupal.uiowa.edu'] = 'gencounsel.uiowa.edu';
 $sites['gencounsel.prod.drupal.uiowa.edu'] = 'gencounsel.uiowa.edu';
+
+// Directory aliases for saah-design.studio.uiowa.edu.
+$sites['studiosaah-design.uiowa.ddev.site'] = 'saah-design.studio.uiowa.edu';
+$sites['studiosaah-design.dev.drupal.uiowa.edu'] = 'saah-design.studio.uiowa.edu';
+$sites['studiosaah-design.stage.drupal.uiowa.edu'] = 'saah-design.studio.uiowa.edu';
+$sites['studiosaah-design.prod.drupal.uiowa.edu'] = 'saah-design.studio.uiowa.edu';
