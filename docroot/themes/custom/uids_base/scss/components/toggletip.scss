@@ -1,10 +1,15 @@
 // The tooltip container and its button.
 .toggletip-container {
+  --standard-transition: all 0.3s ease-in-out;
+
   position: absolute;
   display: inline-block;
   z-index: 3;
   top: 6px;
   right: 6px;
+  opacity: 0;
+  transition: var(--standard-transition);
+  transition-property: opacity;
 
   button {
     font-size: 24px;
@@ -12,13 +17,12 @@
     border: none;
 
     svg {
-      background: rgba(255, 255, 255, 0.8);
+      background: white;
       border-radius: 50%;
       border: 1px solid white;
-      opacity: 0;
       transform: translateX(100px);
-      transition: all 0.3s ease-in-out;
-      transition-property: opacity, transform;
+      transition: var(--standard-transition);
+      transition-property: transform;
     }
   }
 }
@@ -28,18 +32,23 @@
 .toggletip-bubble {
   display: inline-block;
   position: absolute;
-  right: 100%;
+  right: calc(100% + 5px);
   width: 15rem;
   padding: 0.5rem;
-  background: rgba(0, 0, 0, 0.8);
+  background: black;
   color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  border: 1px solid white;
+  border-radius: 3px;
+  animation: toggletip-in 0.2s;
 }
 
 .layout--title--with-background:hover, .layout--title--with-background:focus-within {
-  .toggletip-container > button > svg {
+  .toggletip-container {
     opacity: 0.8;
-    transform: translateX(0px)
+
+    & > button > svg {
+      transform: translateX(0px)
+    }
   }
 }
 
@@ -55,14 +64,24 @@
 }
 
 .toggletip-bubble:after {
-  border-color: rgba(0, 0, 0, 0);
-  border-left-color: rgba(0, 0, 0, 0.8);
+  border-color: transparent;
+  border-left-color: black;
   border-width: 8px;
   margin-top: -8px;
 }
 .toggletip-bubble:before {
-  border-color: rgba(255, 255, 255, 0);
-  border-left-color: rgba(255, 255, 255, 0.8);
+  border-color: transparent;
+  border-left-color: white;
   border-width: 9px;
   margin-top: -9px;
+}
+
+@keyframes toggletip-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
