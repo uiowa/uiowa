@@ -93,7 +93,7 @@
 
 {% set event_card = {
   'attributes': attributes.addClass(classes),
-  'card_image': content.field_image,
+  'card_image': content.field_image|render,
   'card_meta': content.field_event_performer | render,
   'card_title': label,
   'card_subtitle': content.field_event_when | render,
@@ -104,13 +104,10 @@
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with event_card only %}
+  {# @todo Resolve this with the base card template. #}
   {% block card_img %}
-    {% if card_image is not empty %}
+    {% if card_image|striptags('<embed><hr><iframe><img><input><drupal-render-placeholder>')|trim is not empty %}
       {{ parent() }}
-    {% else %}
-      <div {{ media_attributes.addClass(media_styles, media_sizes, 'card__media') }}>
-        <div class="img--empty">&nbsp;</div>
-      </div>
     {% endif %}
   {% endblock %}
 {% endembed %}
