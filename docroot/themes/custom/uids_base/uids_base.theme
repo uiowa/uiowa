@@ -457,7 +457,6 @@ function uids_base_preprocess_field(&$variables) {
       // and include the associated libraries.
       if ($caption && $caption->count()) {
         $caption = $caption->view();
-        $variables['#attached']['library'][] = 'uids_base/toggletip';
       }
       else {
         $caption = NULL;
