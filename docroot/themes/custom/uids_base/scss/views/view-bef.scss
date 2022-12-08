@@ -6,7 +6,7 @@
     @include element-invisible;
   }
 
-  .form-item-title {
+  .form-type-textfield {
     grid-area: 1 / 1 / 2 / 3;
   }
 
@@ -47,12 +47,12 @@
         margin-right: 0;
         @include breakpoint(sm) {
           margin-right: 1em;
+          &:last-child {
+            margin-right: 0;
+          }
         }
 
-        &.form-item-title {
-          margin-right: 0;
-        }
-        &:last-child {
+        > &.form-type-textfield:first-of-type {
           margin-right: 0;
         }
       }
@@ -61,7 +61,8 @@
         border: 1px solid $secondary;
 
         &[data-drupal-selector*=edit-submit] {
-          margin-left: -95px;
+          right: 25px;
+          position: absolute;
         }
 
         &[data-drupal-selector*=edit-reset] {
@@ -76,7 +77,7 @@
           font-weight: 400;
           letter-spacing: 0.04rem;
           border: none;
-          background: $white;
+          text-transform: none;
           @include breakpoint(sm) {
             top: 123px;
           }
