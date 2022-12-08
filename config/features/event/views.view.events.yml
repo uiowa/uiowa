@@ -1040,16 +1040,16 @@ display:
                   placeholder_text: Search
                   collapsible: false
                   is_secondary: false
-              field_event_when_value:
-                plugin_id: bef_datepicker
-                advanced:
-                  placeholder_text: 'Starts on'
-                  collapsible: false
-                  is_secondary: true
               field_event_when_end_value:
                 plugin_id: bef_datepicker
                 advanced:
-                  placeholder_text: 'Ends on'
+                  placeholder_text: 'Starts on or after'
+                  collapsible: false
+                  is_secondary: true
+              field_event_when_value:
+                plugin_id: bef_datepicker
+                advanced:
+                  placeholder_text: 'Ends on or before'
                   collapsible: false
                   is_secondary: true
               field_event_performer_target_id_1:
@@ -1224,58 +1224,6 @@ display:
           fields:
             title: title
             field_teaser: field_teaser
-        field_event_when_value:
-          id: field_event_when_value
-          table: node__field_event_when
-          field: field_event_when_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: date
-          operator: '<='
-          value:
-            min: ''
-            max: ''
-            value: ''
-            type: date
-            granularity: second
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_event_when_value_op
-            label: Starts
-            description: ''
-            use_operator: false
-            operator: field_event_when_value_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: field_event_when_value
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              viewer: '0'
-              editor: '0'
-              publisher: '0'
-              webmaster: '0'
-              administrator: '0'
-            min_placeholder: ''
-            max_placeholder: ''
-            placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
         field_event_when_end_value:
           id: field_event_when_end_value
           table: node__field_event_when
@@ -1331,6 +1279,58 @@ display:
               1: {  }
               2: {  }
               3: {  }
+        field_event_when_value:
+          id: field_event_when_value
+          table: node__field_event_when
+          field: field_event_when_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: date
+          operator: '<='
+          value:
+            min: ''
+            max: ''
+            value: ''
+            type: date
+            granularity: second
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_event_when_value_op
+            label: Starts
+            description: ''
+            use_operator: false
+            operator: field_event_when_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_event_when_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              viewer: '0'
+              editor: '0'
+              publisher: '0'
+              webmaster: '0'
+              administrator: '0'
+            min_placeholder: ''
+            max_placeholder: ''
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
         field_event_performer_target_id_1:
           id: field_event_performer_target_id_1
           table: node__field_event_performer
