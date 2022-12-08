@@ -136,7 +136,6 @@ third_party_settings:
             0: ''
             1: section_container_narrow
             section_padding_bottom_extra: section_padding_bottom_extra
-            section_padding_top_extra: section_padding_top_extra
             section_alignment_start: section_alignment_start
         components:
           -
@@ -164,12 +163,15 @@ third_party_settings:
             region: second
             configuration:
               id: 'field_block:node:named_building:field_building_honoree_achieve'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
                 type: text_default
-                label: above
+                label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
             weight: 0
