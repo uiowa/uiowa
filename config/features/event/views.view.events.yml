@@ -13,7 +13,6 @@ dependencies:
   module:
     - better_exposed_filters
     - node
-    - options
     - smart_date
     - user
 _core:
@@ -1225,27 +1224,32 @@ display:
           fields:
             title: title
             field_teaser: field_teaser
-        field_event_performer_target_id_1:
-          id: field_event_performer_target_id_1
-          table: node__field_event_performer
-          field: field_event_performer_target_id
+        field_event_when_value:
+          id: field_event_when_value
+          table: node__field_event_when
+          field: field_event_when_value
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: entity_reference
-          operator: or
-          value: {  }
+          plugin_id: date
+          operator: '<='
+          value:
+            min: ''
+            max: ''
+            value: ''
+            type: date
+            granularity: second
           group: 1
           exposed: true
           expose:
-            operator_id: field_event_performer_target_id_1_op
-            label: Presenters
+            operator_id: field_event_when_value_op
+            label: 'When - End'
             description: ''
             use_operator: false
-            operator: field_event_performer_target_id_1_op
+            operator: field_event_when_value_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: field_event_performer_target_id_1
+            identifier: field_event_when_value
             required: false
             remember: false
             multiple: false
@@ -1257,7 +1261,9 @@ display:
               publisher: '0'
               webmaster: '0'
               administrator: '0'
-            reduce: false
+            min_placeholder: ''
+            max_placeholder: ''
+            placeholder: ''
           is_grouped: false
           group_info:
             label: ''
@@ -1270,14 +1276,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          reduce_duplicates: false
-          handler: views
-          widget: autocomplete
-          handler_settings:
-            view:
-              view_name: event_presenters
-              display_name: entity_reference_1
-              arguments: {  }
         field_event_when_end_value:
           id: field_event_when_end_value
           table: node__field_event_when
@@ -1333,32 +1331,27 @@ display:
               1: {  }
               2: {  }
               3: {  }
-        field_event_when_value:
-          id: field_event_when_value
-          table: node__field_event_when
-          field: field_event_when_value
+        field_event_performer_target_id_1:
+          id: field_event_performer_target_id_1
+          table: node__field_event_performer
+          field: field_event_performer_target_id
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: date
-          operator: '<='
-          value:
-            min: ''
-            max: ''
-            value: ''
-            type: date
-            granularity: second
+          plugin_id: entity_reference
+          operator: or
+          value: {  }
           group: 1
           exposed: true
           expose:
-            operator_id: field_event_when_value_op
-            label: 'When - End'
+            operator_id: field_event_performer_target_id_1_op
+            label: Presenters
             description: ''
             use_operator: false
-            operator: field_event_when_value_op
+            operator: field_event_performer_target_id_1_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: field_event_when_value
+            identifier: field_event_performer_target_id_1
             required: false
             remember: false
             multiple: false
@@ -1370,9 +1363,7 @@ display:
               publisher: '0'
               webmaster: '0'
               administrator: '0'
-            min_placeholder: ''
-            max_placeholder: ''
-            placeholder: ''
+            reduce: false
           is_grouped: false
           group_info:
             label: ''
@@ -1385,6 +1376,14 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          reduce_duplicates: false
+          handler: views
+          widget: autocomplete
+          handler_settings:
+            view:
+              view_name: event_presenters
+              display_name: entity_reference_1
+              arguments: {  }
       filter_groups:
         operator: AND
         groups:
