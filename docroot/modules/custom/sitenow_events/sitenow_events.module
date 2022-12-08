@@ -370,7 +370,7 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
   switch ($view->id()) {
     case 'event_details_card':
       foreach ($rows as $id => $row) {
-        $row['attributes']['class'][] = 'card--enclosed';
+        $row['attributes']['class'][] = 'card--enclosed card--list';
 
         // Get node path to link card with.
         $nid = $view->result[$id]->_entity->id();
