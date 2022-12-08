@@ -17,6 +17,7 @@ dependencies:
     - field.field.node.named_building.field_image
     - field.field.node.named_building.field_meta_tags
     - node.type.named_building
+    - views.view.honoree
   module:
     - layout_builder
     - layout_builder_restrictions
@@ -25,6 +26,7 @@ dependencies:
     - system
     - text
     - user
+    - views
   theme:
     - uids_base
 third_party_settings:
@@ -158,46 +160,6 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: db38c6d3-9851-459d-b3da-f6134eb58683
-            region: first
-            configuration:
-              id: 'field_block:node:named_building:field_building_honoree_name'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: string
-                label: visually_hidden
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 1
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: d9ce3d97-a41b-42b1-ab84-e65f00c9abda
-            region: first
-            configuration:
-              id: 'field_block:node:named_building:field_building_honoree_years'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: string
-                label: visually_hidden
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 2
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: 74ebb053-f220-48a8-bbc7-07b72d2e2a1e
             region: second
             configuration:
@@ -211,6 +173,31 @@ third_party_settings:
                 settings: {  }
                 third_party_settings: {  }
             weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: f3ef6973-9700-4ca2-85a5-3058c3e63f30
+            region: first
+            configuration:
+              id: 'views_block:honoree-block_honoree'
+              label: null
+              label_display: null
+              provider: views
+              context_mapping:
+                nid: layout_builder.entity
+              views_label: ''
+              items_per_page: none
+              pager: some
+              headline:
+                headline: ''
+                hide_headline: 0
+                heading_size: h2
+                headline_style: default
+                headline_alignment: default
+                child_heading_size: h3
+              exposed_filter_values: null
+              layout_builder_styles: {  }
+            weight: 1
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
