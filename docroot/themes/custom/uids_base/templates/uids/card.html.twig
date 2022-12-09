@@ -43,7 +43,6 @@
   {{ title_suffix }}
   {% block card_img %}
     {% if card_image is not empty %}
-      {# @todo Add image template #}
       <div {{ media_attributes.addClass(media_styles, media_sizes, 'card__media') }}>
         {% if link_element == 'image' %}
         <a href="{{ card_link_url }}">
@@ -82,7 +81,7 @@
               {% endif %}
             {% endblock %}
             {% block card_meta %}
-              {% if card_meta is not empty %}
+              {% if card_meta|striptags|trim is not empty %}
                 <div class="card__meta">
                   {{ card_meta }}
                 </div>
