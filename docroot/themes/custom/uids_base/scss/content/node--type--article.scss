@@ -144,9 +144,20 @@ article.node--type-article {
   }
 
   .gallery-jump-link {
-    display: block;
     svg {
       margin-right: 0.3rem;
+    }
+  }
+
+
+  .block-field-blocknodearticlefield-image-caption {
+    font-style: italic;
+  }
+  .gallery-jump-link+.block-field-blocknodearticlefield-image-caption {
+    &:before {
+      content: "| ";
+      color: #737373;
+      margin: 0 .325rem;
     }
   }
 }
