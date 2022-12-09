@@ -1,4 +1,4 @@
-uuid: 3cf3fa85-f92c-4909-a38c-d6c480e79c0d
+uuid: 550015ed-d902-40d7-8681-6c262119a833
 langcode: en
 status: true
 dependencies:
@@ -10,8 +10,8 @@ dependencies:
   module:
     - node
     - user
-id: honoree
-label: Honoree
+id: named_buildings
+label: 'Named Buildings'
 module: views
 description: ''
 tag: ''
@@ -323,10 +323,11 @@ display:
         - 'config:field.storage.node.field_building_honoree_years'
   block_honoree:
     id: block_honoree
-    display_title: Block
+    display_title: 'Honoree Info'
     display_plugin: block
     position: 1
     display_options:
+      display_description: ''
       display_extenders:
         metatag_display_extender:
           metatags: {  }
