@@ -152,7 +152,14 @@ article.node--type-article {
 
   .block-field-blocknodearticlefield-image-caption {
     font-style: italic;
+
+    &:not(:has(+ .gallery-jump-link)):before {
+      @include fas();
+      content: "\f03e";
+      margin-right: 0.3rem;
+    }
   }
+
   .gallery-jump-link+.block-field-blocknodearticlefield-image-caption {
     &:before {
       content: "| ";
