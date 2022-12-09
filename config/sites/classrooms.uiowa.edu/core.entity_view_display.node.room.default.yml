@@ -8,12 +8,14 @@ dependencies:
     - field.field.node.room.field_image
     - field.field.node.room.field_meta_tags
     - field.field.node.room.field_room_building_id
+    - field.field.node.room.field_room_link
     - field.field.node.room.field_room_room_id
     - field.field.node.room.field_room_seating_chart
     - field.field.node.room.field_room_video
     - node.type.room
   module:
     - file
+    - link
     - text
     - user
 id: node.room.default
@@ -59,6 +61,18 @@ content:
       link: false
     third_party_settings: {  }
     weight: 1
+    region: content
+  field_room_link:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 7
     region: content
   field_room_room_id:
     type: string
