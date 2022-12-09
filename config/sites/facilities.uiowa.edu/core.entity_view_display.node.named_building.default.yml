@@ -216,112 +216,34 @@ third_party_settings:
           context_mapping: {  }
           layout_builder_styles_style:
             0: section_background_white_pattern_community
-            1: section_margin_fixed_width_container
+            1: section_container_narrow
             section_padding_bottom_extra: section_padding_bottom_extra
             section_padding_top_extra: section_padding_top_extra
+            section_alignment_start: section_alignment_start
         components:
           -
-            uuid: e34ef3dc-08fd-4737-880c-8a7acdbaf499
+            uuid: 577f857f-8063-47e5-95c1-2dd12a4d3d64
             region: content
             configuration:
-              id: 'field_block:node:named_building:field_building_address'
+              id: 'views_block:named_buildings-block_building'
               label: null
               label_display: null
-              provider: layout_builder
+              provider: views
               context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: string
-                label: inline
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
+                nid: layout_builder.entity
+              views_label: ''
+              items_per_page: none
+              pager: some
+              headline:
+                headline: ''
+                hide_headline: 0
+                heading_size: h2
+                headline_style: default
+                headline_alignment: default
+                child_heading_size: h3
+              exposed_filter_values: null
+              layout_builder_styles: {  }
             weight: 0
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 27febe54-e585-4782-9d38-e9096d10ce6b
-            region: content
-            configuration:
-              id: 'field_block:node:named_building:field_building_year_built'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: string
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 2
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 11c47603-0586-4834-bf62-dc29cb3b9736
-            region: content
-            configuration:
-              id: 'field_block:node:named_building:field_building_additional_info'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: link
-                label: inline
-                settings:
-                  trim_length: 80
-                  url_only: false
-                  url_plain: false
-                  rel: '0'
-                  target: '0'
-                third_party_settings: {  }
-            weight: 1
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: bc81667b-0372-473f-9733-d5b0c8ae9a43
-            region: content
-            configuration:
-              id: 'field_block:node:named_building:body'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: text_default
-                label: above
-                settings: {  }
-                third_party_settings: {  }
-            weight: 3
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: c6f070be-1e71-4e95-a5ac-3d07e2bf5e1b
-            region: content
-            configuration:
-              id: 'field_block:node:named_building:field_building_aerial_view_link'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: link
-                label: hidden
-                settings:
-                  trim_length: 80
-                  url_only: false
-                  url_plain: false
-                  rel: '0'
-                  target: '0'
-                third_party_settings: {  }
-            weight: 4
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
