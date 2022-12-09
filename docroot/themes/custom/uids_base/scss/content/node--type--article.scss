@@ -144,6 +144,7 @@ article.node--type-article {
   }
 
   .gallery-jump-link {
+    display: block;
     svg {
       margin-right: 0.3rem;
     }
@@ -153,18 +154,10 @@ article.node--type-article {
   .block-field-blocknodearticlefield-image-caption {
     font-style: italic;
 
-    &:not(:has(+ .gallery-jump-link)):before {
+    &:before {
       @include fas();
       content: "\f03e";
       margin-right: 0.3rem;
-    }
-  }
-
-  .gallery-jump-link+.block-field-blocknodearticlefield-image-caption {
-    &:before {
-      content: "| ";
-      color: #737373;
-      margin: 0 .325rem;
     }
   }
 }
