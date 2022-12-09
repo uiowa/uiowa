@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.room.field_room_building_id
     - field.field.node.room.field_room_room_id
     - field.field.node.room.field_room_seating_chart
+    - field.field.node.room.field_room_video
     - node.type.room
   module:
     - content_moderation
@@ -81,6 +82,13 @@ content:
     region: content
     settings:
       progress_indicator: throbber
+    third_party_settings: {  }
+  field_room_video:
+    type: media_library_widget
+    weight: 27
+    region: content
+    settings:
+      media_types: {  }
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
