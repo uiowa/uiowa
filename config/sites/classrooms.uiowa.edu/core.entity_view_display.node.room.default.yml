@@ -9,9 +9,11 @@ dependencies:
     - field.field.node.room.field_meta_tags
     - field.field.node.room.field_room_building_id
     - field.field.node.room.field_room_room_id
+    - field.field.node.room.field_room_seating_chart
     - node.type.room
   module:
     - field_delimiter
+    - file
     - text
     - user
 id: node.room.default
@@ -65,6 +67,14 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 2
+    region: content
+  field_room_seating_chart:
+    type: file_default
+    label: above
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    weight: 5
     region: content
 hidden:
   entity_print_view_epub: true
