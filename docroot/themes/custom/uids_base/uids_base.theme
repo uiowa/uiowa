@@ -485,12 +485,12 @@ function uids_base_preprocess_field(&$variables) {
  */
 function uids_base_preprocess_layout(&$variables) {
   $node = $variables['content']['#entity'] ?: NULL;
+  $route_matcher = \Drupal::routeMatch();
   // If we don't have the node yet, attempt
   // to grab it from the route.
   // @todo Is this necessary? Possibly we can
   //   remove it.
   if (!$node) {
-    $route_matcher = \Drupal::routeMatch();
     $node = $route_matcher->getParameter('node');
     $node = ($node ?? $route_matcher->getParameter('node_preview'));
   }
@@ -517,21 +517,35 @@ function uids_base_preprocess_layout(&$variables) {
         if (!isset($variables['featured_image_display'])) {
           $variables['featured_image_display'] = FALSE;
 
-          // Check if the featured image exists.
-          if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
-            // Check value of 'field_featured_image_display'.
-            if ($node->hasField('field_featured_image_display') && !$node->field_featured_image_display->isEmpty()) {
-              if ($node->field_featured_image_display->value !== 'do_not_display') {
-                // Use the node setting.
-                $variables['featured_image_display'] = $node->field_featured_image_display->value;
-              }
-            }
-            else {
+          if ($node->hasField('field_image')) {
+            // Check if the route matches 'layout_builder.defaults.node.view'.
+            // If it does, skip checking node properties.
+            if ($route_matcher->getRouteName() === 'layout_builder.defaults.node.view') {
               $site_wide_setting = \Drupal::config("sitenow_{$node->getType()}s.settings")->get('featured_image_display_default');
               if ($site_wide_setting && $site_wide_setting !== 'do_not_display') {
                 // Use the site-wide default.
                 $variables['featured_image_display'] = $site_wide_setting;
               }
+            }
+            else {
+              // Check if the featured image exists.
+              if (!$node->get('field_image')->isEmpty()) {
+                // Check value of 'field_featured_image_display'.
+                if ($node->hasField('field_featured_image_display') && !$node->field_featured_image_display->isEmpty()) {
+                  if ($node->field_featured_image_display->value !== 'do_not_display') {
+                    // Use the node setting.
+                    $variables['featured_image_display'] = $node->field_featured_image_display->value;
+                  }
+                }
+                else {
+                  $site_wide_setting = \Drupal::config("sitenow_{$node->getType()}s.settings")->get('featured_image_display_default');
+                  if ($site_wide_setting && $site_wide_setting !== 'do_not_display') {
+                    // Use the site-wide default.
+                    $variables['featured_image_display'] = $site_wide_setting;
+                  }
+                }
+              }
+
             }
           }
         }
