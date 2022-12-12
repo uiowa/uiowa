@@ -155,15 +155,16 @@ article.node--type-article {
     color: #fff;
     z-index: 3;
     position: relative;
-    background: #333333e0;
+    background: $dark-gray;
     padding: 10px 20px;
     order: 1;
-    margin: -22.5px -22.5px 1rem -22.5px;
+    margin: -22.5px -22.5px $gutter -22.5px;
 
     @include breakpoint(sm) {
-      padding: 20px;
+      padding: $gutter;
       order: 3;
-      margin: 0 -22.5px -22.5px -22.5px;
+      margin: $gutter -22.5px -22.5px -22.5px;
+      background: #333333e0;
     }
   }
 
