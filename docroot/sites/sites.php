@@ -4906,3 +4906,9 @@ $sites['studiosaah-design.uiowa.ddev.site'] = 'saah-design.studio.uiowa.edu';
 $sites['studiosaah-design.dev.drupal.uiowa.edu'] = 'saah-design.studio.uiowa.edu';
 $sites['studiosaah-design.stage.drupal.uiowa.edu'] = 'saah-design.studio.uiowa.edu';
 $sites['studiosaah-design.prod.drupal.uiowa.edu'] = 'saah-design.studio.uiowa.edu';
+
+// Directory aliases for happybrain.sites.uiowa.edu.
+$sites['siteshappybrain.uiowa.ddev.site'] = 'happybrain.sites.uiowa.edu';
+$sites['siteshappybrain.dev.drupal.uiowa.edu'] = 'happybrain.sites.uiowa.edu';
+$sites['siteshappybrain.stage.drupal.uiowa.edu'] = 'happybrain.sites.uiowa.edu';
+$sites['siteshappybrain.prod.drupal.uiowa.edu'] = 'happybrain.sites.uiowa.edu';
