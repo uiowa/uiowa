@@ -155,11 +155,36 @@ article.node--type-article {
     font-style: italic;
     color: #fff;
     z-index: 3;
-    position: absolute;
-    bottom: 0;
+    position: relative;
     background: #333333e0;
-    padding: 20px;
-    width: 100%;
+    width: 110%;
+    padding: 10px 20px;
+    order: 1;
+    margin: -22.5px 0 1rem -22.5px;
+
+    @include breakpoint(sm) {
+      padding: 20px;
+      order: 3;
+      margin: 0 0 -22.5px -22.5px;
+    }
+  }
+
+  .block-system-breadcrumb-block {
+    order: 2;
+    @include breakpoint(sm) {
+      order: 1;
+    }
+  }
+
+  .block-field-blocknodearticletitle {
+    order: 3;
+    @include breakpoint(sm) {
+      order: 2;
+    }
+  }
+  .banner__content {
+    display: flex;
+    flex-direction: column;
   }
 }
 
