@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: psychology.uiowa.ddev.site
+    protocol: https
+  machine_name: psychology
+  human_name: psychology.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: psychology.prod
+drupal:
+  db:
+    database: psychology_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://psychology.prod.drupal.uiowa.edu'
