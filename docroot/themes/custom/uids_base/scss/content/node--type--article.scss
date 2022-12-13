@@ -152,18 +152,16 @@ article.node--type-article {
 
   .block-field-blocknodearticlefield-image-caption {
     font-style: italic;
-    color: #fff;
     z-index: 3;
     position: relative;
-    background: $dark-gray;
-    padding: $mobile-height-gutter $mobile-width-gutter;
+    padding: 1rem $mobile-width-gutter;
     margin: -22.5px -22.5px $gutter -22.5px;
 
     @include breakpoint(sm) {
-      padding: $gutter;
+      color: #fff;
+      padding: 10px $gutter $gutter $gutter;
       order: 3;
-      margin: $gutter -22.5px -22.5px -22.5px;
-      background: #333333e0;
+      margin: 0 -22.5px -22.5px -22.5px;
     }
   }
 
