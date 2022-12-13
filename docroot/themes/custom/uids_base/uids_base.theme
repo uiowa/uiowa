@@ -552,6 +552,33 @@ function uids_base_preprocess_layout(&$variables) {
 
         if (!$variables['featured_image_display']) {
           unset($variables['content']['background']);
+          // If we don't have a featured image,
+          // but have a featured image caption set,
+          // find it and unset it.
+          if ($node->hasField('field_image_caption') && !$node->field_image_caption->isEmpty()) {
+            // Loop through regions in the layout.
+            foreach (Element::children($variables['content']) as $region) {
+              // Loop through blocks in that region.
+              foreach (Element::children($variables['content'][$region]) as $block_uuid) {
+                if ($region === 'content'
+                  && isset($variables['content'][$region][$block_uuid])
+                  && isset($variables['content'][$region][$block_uuid]['#plugin_id'])
+                ) {
+                  // Check if this block plugin_id matches the pattern for a
+                  // page title block.
+                  $plugin_id = $variables['content'][$region][$block_uuid]['#plugin_id'];
+                  $start_check = 'field_block:node:';
+                  $end_check = ':field_image_caption';
+                  if (str_starts_with($plugin_id, $start_check)
+                    && str_ends_with($plugin_id, $end_check)
+                  ) {
+                    unset($variables['content'][$region][$block_uuid]);
+                    break;
+                  }
+                }
+              }
+            }
+          }
         }
         else {
           $variables['attributes']['class'][] = 'banner--' . $variables['featured_image_display'];
