@@ -154,16 +154,14 @@ article.node--type-article {
     font-style: italic;
     z-index: 3;
     position: relative;
-    padding: 1rem $mobile-width-gutter;
-    margin: -22.5px -22.5px $gutter -22.5px;
-    order: -1;
+    margin-bottom: $mobile-height-gutter;
     line-height: 1.3;
 
     @include breakpoint(sm) {
       color: #fff;
-      padding: 10px $gutter $gutter $gutter;
-      order: 3;
-      margin: 0 -22.5px -22.5px -22.5px;
+      order: 2;
+      margin-bottom: unset;
+      margin-top: $gutter;
     }
   }
 
