@@ -156,23 +156,13 @@ article.node--type-article {
     position: relative;
     padding: 1rem $mobile-width-gutter;
     margin: -22.5px -22.5px $gutter -22.5px;
+    order: -1;
 
     @include breakpoint(sm) {
       color: #fff;
       padding: 10px $gutter $gutter $gutter;
       order: 3;
       margin: 0 -22.5px -22.5px -22.5px;
-    }
-  }
-
-  .block-system-breadcrumb-block {
-    order: 2;
-  }
-
-  .block-field-blocknodearticletitle {
-    order: 3;
-    @include breakpoint(sm) {
-      order: 2;
     }
   }
 
