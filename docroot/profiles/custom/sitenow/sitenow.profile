@@ -625,7 +625,6 @@ function sitenow_webform_element_alter(array &$element, FormStateInterface $form
   }
 }
 
-
 /**
  * Implements hook_form_FORM_ID_alter().
  */
