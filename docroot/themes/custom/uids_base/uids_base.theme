@@ -555,7 +555,7 @@ function uids_base_preprocess_layout(&$variables) {
           // If we don't have a featured image,
           // but have a featured image caption set,
           // find it and unset it.
-          if ($node->hasField('field_image_caption') && !$node->field_image_caption->isEmpty()) {
+          if ($node->hasField('field_image_caption') && !$node->field_image_caption?->isEmpty()) {
             // Loop through regions in the layout.
             foreach (Element::children($variables['content']) as $region) {
               // Loop through blocks in that region.
