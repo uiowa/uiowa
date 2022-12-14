@@ -8,7 +8,6 @@ dependencies:
     - field.field.node.room.field_image
     - field.field.node.room.field_meta_tags
     - field.field.node.room.field_room_building_id
-    - field.field.node.room.field_room_link
     - field.field.node.room.field_room_map
     - field.field.node.room.field_room_room_id
     - field.field.node.room.field_room_seating_chart
@@ -18,7 +17,6 @@ dependencies:
   module:
     - content_moderation
     - file
-    - link
     - media_library
     - metatag
     - path
@@ -71,14 +69,6 @@ content:
     weight: 0
     region: content
     settings: {  }
-    third_party_settings: {  }
-  field_room_link:
-    type: link_default
-    weight: 28
-    region: content
-    settings:
-      placeholder_url: ''
-      placeholder_title: ''
     third_party_settings: {  }
   field_room_map:
     type: media_library_widget
