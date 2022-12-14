@@ -4912,3 +4912,9 @@ $sites['siteshappybrain.uiowa.ddev.site'] = 'happybrain.sites.uiowa.edu';
 $sites['siteshappybrain.dev.drupal.uiowa.edu'] = 'happybrain.sites.uiowa.edu';
 $sites['siteshappybrain.stage.drupal.uiowa.edu'] = 'happybrain.sites.uiowa.edu';
 $sites['siteshappybrain.prod.drupal.uiowa.edu'] = 'happybrain.sites.uiowa.edu';
+
+// Directory aliases for iowageologicalsurvey.uiowa.edu.
+$sites['iowageologicalsurvey.uiowa.ddev.site'] = 'iowageologicalsurvey.uiowa.edu';
+$sites['iowageologicalsurvey.dev.drupal.uiowa.edu'] = 'iowageologicalsurvey.uiowa.edu';
+$sites['iowageologicalsurvey.stage.drupal.uiowa.edu'] = 'iowageologicalsurvey.uiowa.edu';
+$sites['iowageologicalsurvey.prod.drupal.uiowa.edu'] = 'iowageologicalsurvey.uiowa.edu';
