@@ -615,11 +615,9 @@ function sitenow_webform_element_alter(array &$element, FormStateInterface $form
     // Google/Facebook Click IDs (gclid, fbclid).
     if ($element['#type'] === 'hidden') {
       if ($element['#prepopulate']) {
-        if ($element['#webform_key'] === 'gclid') {
-          $element['#attached']['library'][] = 'sitenow/get_gclid';
-        }
-        if ($element['#webform_key'] === 'fbclid') {
-          $element['#attached']['library'][] = 'sitenow/get_fbclid';
+        $element['#attributes']['prepopulate'] = 'true';
+        if ($element['#webform_key'] === 'gclid' || $element['#webform_key'] === 'fbclid') {
+          $element['#attached']['library'][] = 'sitenow/get_clickid';
         }
       }
     }
