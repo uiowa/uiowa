@@ -565,7 +565,7 @@ function uids_base_preprocess_layout(&$variables) {
                   && isset($variables['content'][$region][$block_uuid]['#plugin_id'])
                 ) {
                   // Check if this block plugin_id matches the pattern for a
-                  // page title block.
+                  // field_image_caption block.
                   $plugin_id = $variables['content'][$region][$block_uuid]['#plugin_id'];
                   $start_check = 'field_block:node:';
                   $end_check = ':field_image_caption';
