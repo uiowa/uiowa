@@ -4918,3 +4918,9 @@ $sites['iowageologicalsurvey.uiowa.ddev.site'] = 'iowageologicalsurvey.uiowa.edu
 $sites['iowageologicalsurvey.dev.drupal.uiowa.edu'] = 'iowageologicalsurvey.uiowa.edu';
 $sites['iowageologicalsurvey.stage.drupal.uiowa.edu'] = 'iowageologicalsurvey.uiowa.edu';
 $sites['iowageologicalsurvey.prod.drupal.uiowa.edu'] = 'iowageologicalsurvey.uiowa.edu';
+
+// Directory aliases for iasdl.lab.uiowa.edu.
+$sites['labiasdl.uiowa.ddev.site'] = 'iasdl.lab.uiowa.edu';
+$sites['labiasdl.dev.drupal.uiowa.edu'] = 'iasdl.lab.uiowa.edu';
+$sites['labiasdl.stage.drupal.uiowa.edu'] = 'iasdl.lab.uiowa.edu';
+$sites['labiasdl.prod.drupal.uiowa.edu'] = 'iasdl.lab.uiowa.edu';
