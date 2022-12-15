@@ -14,20 +14,19 @@
           if (params.get(param)) {
             if (context.querySelectorAll('input[prepopulate="true"][type="hidden"][name="' + param + '"]').length) {
               query.push('input[prepopulate="true"][type="hidden"][name="' + param + '"]');
+              console.log(context.querySelectorAll('input[prepopulate="true"][type="hidden"][name="' + param + '"]').value);
             }
           }
         }
       )
 
       // If there are params matching our target elements, loop through and
-      // populate the value if a default value does not already exist.
+      // populate the value.
       if (query.length) {
         let queryString = query.join(',');
         $('.webform-submission-form', context).once('get_clickid').each(function (index) {
           context.querySelectorAll(queryString).forEach(function (input) {
-            if (!input.value) {
               input.value = params.get(input.name);
-            }
           })
         });
       }
