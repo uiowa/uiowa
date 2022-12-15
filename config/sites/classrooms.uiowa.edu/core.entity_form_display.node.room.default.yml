@@ -4,13 +4,20 @@ status: true
 dependencies:
   config:
     - field.field.node.room.body
+    - field.field.node.room.field_gallery_images
+    - field.field.node.room.field_image
     - field.field.node.room.field_meta_tags
     - field.field.node.room.field_room_building_id
+    - field.field.node.room.field_room_map
     - field.field.node.room.field_room_room_id
+    - field.field.node.room.field_room_seating_chart
+    - field.field.node.room.field_room_video
     - node.type.room
     - workflows.workflow.editorial
   module:
     - content_moderation
+    - file
+    - media_library
     - metatag
     - path
     - text
@@ -21,7 +28,7 @@ mode: default
 content:
   body:
     type: text_textarea_with_summary
-    weight: 4
+    weight: 7
     region: content
     settings:
       rows: 9
@@ -31,13 +38,27 @@ content:
     third_party_settings: {  }
   created:
     type: datetime_timestamp
-    weight: 3
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_gallery_images:
+    type: media_library_widget
+    weight: 3
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+  field_image:
+    type: media_library_widget
+    weight: 2
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
   field_meta_tags:
     type: metatag_firehose
-    weight: 11
+    weight: 13
     region: content
     settings:
       sidebar: true
@@ -49,6 +70,13 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_room_map:
+    type: media_library_widget
+    weight: 29
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
   field_room_room_id:
     type: string_textfield
     weight: 1
@@ -57,42 +85,56 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_room_seating_chart:
+    type: file_generic
+    weight: 26
+    region: content
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+  field_room_video:
+    type: media_library_widget
+    weight: 27
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 8
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
   path:
     type: path
-    weight: 6
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    weight: 4
+    weight: 6
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 9
+    weight: 12
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    weight: 5
+    weight: 8
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 2
+    weight: 4
     region: content
     settings:
       match_operator: CONTAINS
@@ -101,7 +143,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   url_redirects:
-    weight: 7
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
