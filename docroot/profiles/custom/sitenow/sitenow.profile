@@ -613,12 +613,12 @@ function sitenow_webform_element_alter(array &$element, FormStateInterface $form
   if (isset($element['#webform_key'])) {
     // With Acquia varnish, Webform can't pre-populate
     // Google/Facebook Click IDs (gclid, fbclid).
-      if (isset($element['#prepopulate'])) {
-        $element['#attributes']['prepopulate'] = 'true';
-        if ($element['#webform_key'] === 'gclid' || $element['#webform_key'] === 'fbclid') {
-          $element['#attached']['library'][] = 'sitenow/get_clickid';
-        }
+    if (isset($element['#prepopulate'])) {
+      $element['#attributes']['prepopulate'] = 'true';
+      if ($element['#webform_key'] === 'gclid' || $element['#webform_key'] === 'fbclid') {
+        $element['#attached']['library'][] = 'sitenow/get_clickid';
       }
+    }
   }
 }
 
