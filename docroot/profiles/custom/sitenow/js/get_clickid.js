@@ -25,7 +25,7 @@
         let queryString = query.join(',');
         $('.webform-submission-form', context).once('get_clickid').each(function (index) {
           context.querySelectorAll(queryString).forEach(function (input) {
-              input.value = params.get(input.name);
+            input.value = params.get(input.name);
           })
         });
       }
