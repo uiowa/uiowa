@@ -1900,3 +1900,22 @@ function sitenow_update_9049() {
 function sitenow_update_9050() {
   drupal_flush_all_caches();
 }
+
+/**
+ * Set existing banner blocks with a default button style value.
+ */
+function sitenow_update_9051() {
+  // Loop through our newly updated banner blocks.
+  foreach ([
+             'inline_block:uiowa_card',
+           ] as $block_plugin_id) {
+    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
+
+      // Change the format for the card excerpt.
+      if (!is_null($block)) {
+        $block->field_uiowa_card_excerpt->format = 'minimal_plus';
+        $block->save();
+      }
+    });
+  }
+}
