@@ -12,9 +12,8 @@
       // Prepopulate is a custom attribute added in sitenow.profile sitenow_webform_element_alter().
       ['gclid', 'fbclid'].forEach(function (param) {
           if (params.get(param)) {
-            if (context.querySelectorAll('input[prepopulate="true"][type="hidden"][name="' + param + '"]').length) {
-              query.push('input[prepopulate="true"][type="hidden"][name="' + param + '"]');
-              console.log(context.querySelectorAll('input[prepopulate="true"][type="hidden"][name="' + param + '"]').value);
+            if (context.querySelectorAll('input[prepopulate="true"][name="' + param + '"]').length) {
+              query.push('input[prepopulate="true"][name="' + param + '"]');
             }
           }
         }
