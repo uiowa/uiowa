@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.room.field_meta_tags
     - field.field.node.room.field_room_building_id
     - field.field.node.room.field_room_features
+    - field.field.node.room.field_room_instruction_category
     - field.field.node.room.field_room_map
     - field.field.node.room.field_room_max_occupancy
     - field.field.node.room.field_room_name
@@ -21,6 +22,7 @@ dependencies:
     - node.type.room
   module:
     - file
+    - options
     - text
     - user
 id: node.room.default
@@ -74,6 +76,13 @@ content:
       link: true
     third_party_settings: {  }
     weight: 12
+    region: content
+  field_room_instruction_category:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 16
     region: content
   field_room_map:
     type: entity_reference_entity_view
