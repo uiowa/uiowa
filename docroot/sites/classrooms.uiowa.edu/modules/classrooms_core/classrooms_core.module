@@ -22,6 +22,7 @@ function classrooms_core_form_alter(&$form, FormStateInterface $form_state, $for
 
   }
 }
+
 /**
  * Set dynamic allowed values for the instructional room category field.
  *
@@ -85,15 +86,14 @@ function classrooms_core_entity_presave(EntityInterface $entity): void {
       }
     }
 
-// Select list field not working yet.
-//    if ($entity->hasField('field_room_instruction_category') && isset($data[0]->roomCategory)) {
-//      $field_definition = $entity->getFieldDefinition('field_room_instruction_category')->getFieldStorageDefinition();
-//      $field_allowed_options = options_allowed_values($field_definition, $entity);
-//      if (in_array($data[0]->roomCategory, $field_allowed_options)) {
-//        $entity->set('field_room_instruction_category', $data[0]->roomCategory);
-//      }
-//    }
+    // Select list field not working yet.
+    //    if ($entity->hasField('field_room_instruction_category') && isset($data[0]->roomCategory)) {
+    //      $field_definition = $entity->getFieldDefinition('field_room_instruction_category')->getFieldStorageDefinition();
+    //      $field_allowed_options = options_allowed_values($field_definition, $entity);
+    //      if (in_array($data[0]->roomCategory, $field_allowed_options)) {
+    //        $entity->set('field_room_instruction_category', $data[0]->roomCategory);
+    //      }
+    //    }.
   }
-
 
 }
