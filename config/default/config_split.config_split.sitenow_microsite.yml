@@ -1,0 +1,28 @@
+uuid: b0a29870-9438-4945-9047-09b22e22f240
+langcode: en
+status: true
+dependencies: {  }
+id: sitenow_microsite
+label: 'SiteNow Microsite'
+description: ''
+weight: 80
+stackable: true
+storage: folder
+folder: ../config/features/sitenow_microsite
+module:
+  sitenow_microsite: 0
+theme: {  }
+complete_list:
+  - core.entity_form_display.paragraph.subpage.default
+  - core.entity_view_display.paragraph.subpage.default
+  - field.storage.node.field_microsite_subpages
+  - node.type.microsite
+  - schemadotorg.schemadotorg_mapping.node.microsite
+  - simple_sitemap.bundle_settings.default.node.microsite
+  - 'core.entity_view_display.node.microsite.*'
+  - 'core.entity_form_display.node.microsite.*'
+  - 'field.storage.node.field_microsite_*'
+  - 'field.storage.paragraph.field_subpage_*'
+  - paragraphs.paragraphs_type.subpage
+partial_list:
+  - 'user.role.*'

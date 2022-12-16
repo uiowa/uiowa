@@ -1,0 +1,23 @@
+uuid: c681042c-ed1e-4c52-8f56-f65d67f16bd7
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+    - node_revision_delete
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+  node_revision_delete:
+    minimum_revisions_to_keep: 10
+    minimum_age_to_delete: 0
+    when_to_delete: 0
+name: Microsite
+type: microsite
+description: ''
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: false

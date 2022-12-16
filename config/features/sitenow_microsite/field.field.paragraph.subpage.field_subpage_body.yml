@@ -1,0 +1,28 @@
+uuid: b78951b2-4dc5-4e3a-a866-3261d8e1e5d2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_subpage_body
+    - paragraphs.paragraphs_type.subpage
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    allowed_formats:
+      - filtered_html
+id: paragraph.subpage.field_subpage_body
+field_name: field_subpage_body
+entity_type: paragraph
+bundle: subpage
+label: Body
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+  required_summary: false
+field_type: text_with_summary
