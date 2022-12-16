@@ -7,6 +7,7 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -20,6 +21,28 @@ function classrooms_core_form_alter(&$form, FormStateInterface $form_state, $for
       break;
 
   }
+}
+/**
+ * Set dynamic allowed values for the instructional room category field.
+ *
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function classrooms_core_room_category_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = TRUE): array {
+  $options = [
+    'UNIVERSITY_CLASSROOM' => 'University Classroom',
+    'PROGRAMMED_CLASSROOM' => 'Programmed Classroom',
+  ];
+  return $options;
 }
 
 /**
@@ -44,4 +67,33 @@ function classrooms_core_entity_presave(EntityInterface $entity): void {
     $title = "{$building->label()} $room_id";
     $entity->set('title', $title);
   }
+
+  // Grab MAUI room data.
+  $maui_api = \Drupal::service('uiowa_maui.api');
+  $data = $maui_api->getRoomData($building_id, $room_id);
+  if ($data) {
+    // Set the Maximum Occupancy field
+    // if data exists/integer and not overridden.
+    if ($entity->hasField('field_room_max_occupancy') && isset($data[0]->maxOccupancy)) {
+      if (filter_var($data[0]->maxOccupancy, FILTER_VALIDATE_INT) !== FALSE) {
+        $entity->set('field_room_max_occupancy', $data[0]->maxOccupancy);
+      }
+    }
+    if ($entity->hasField('field_room_name') && isset($data[0]->roomName)) {
+      if (strlen($data[0]->roomName) > 1) {
+        $entity->set('field_room_name', $data[0]->roomName);
+      }
+    }
+
+// Select list field not working yet.
+//    if ($entity->hasField('field_room_instruction_category') && isset($data[0]->roomCategory)) {
+//      $field_definition = $entity->getFieldDefinition('field_room_instruction_category')->getFieldStorageDefinition();
+//      $field_allowed_options = options_allowed_values($field_definition, $entity);
+//      if (in_array($data[0]->roomCategory, $field_allowed_options)) {
+//        $entity->set('field_room_instruction_category', $data[0]->roomCategory);
+//      }
+//    }
+  }
+
+
 }
