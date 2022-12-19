@@ -136,7 +136,7 @@ function classrooms_core_entity_presave(EntityInterface $entity): void {
         ->getStorage('taxonomy_term')
         ->loadByProperties([
           'name' => $data[0]->acadOrgUnitName,
-          'vid' => 'units'
+          'vid' => 'units',
         ]);
       if (!empty($term)) {
         // Set based on first (and hopefully only) result.
