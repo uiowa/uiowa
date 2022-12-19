@@ -140,5 +140,39 @@ function classrooms_core_entity_presave(EntityInterface $entity): void {
         $entity->set('field_room_responsible_unit', [$new_term->id()]);
       }
     }
+
+    if (isset($data[0]->featureList)) {
+      $query = \Drupal::entityQuery('taxonomy_term')->orConditionGroup()
+        ->condition('vid', 'room_features')
+        ->condition('vid', 'technology_features');
+
+      $tids = \Drupal::entityQuery('taxonomy_term')
+        ->condition($query)
+        ->execute();
+      if ($tids) {
+        $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+        $terms = $storage->loadMultiple($tids);
+        $room_features = [];
+        $tech_features = [];
+        foreach ($terms as $term) {
+          if ($api_mapping = $term->get('field_api_mapping')?->value) {
+            if (in_array($api_mapping, $data[0]->featureList)) {
+              if ($term->bundle() === 'room_features') {
+                $room_features[] = $term->id();
+              }
+              else {
+                $tech_features[] = $term->id();
+              }
+            }
+          }
+        }
+        if (!empty($room_features)) {
+          $entity->set('field_room_features', $room_features);
+        }
+        if (!empty($tech_features)) {
+          $entity->set('field_room_technology_features', $tech_features);
+        }
+      }
+    }
   }
 }
