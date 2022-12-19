@@ -1,0 +1,64 @@
+uuid: 0fef852a-3ae6-491d-b83a-327ee0ea7155
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.minimal_plus
+  module:
+    - ckeditor
+format: minimal_plus
+editor: ckeditor
+settings:
+  toolbar:
+    rows:
+      -
+        -
+          name: Formatting
+          items:
+            - Bold
+            - Underline
+            - Italic
+            - Strike
+            - JustifyLeft
+            - JustifyRight
+            - JustifyCenter
+            - JustifyBlock
+            - Superscript
+            - Subscript
+            - SpecialChar
+        -
+          name: Lists
+          items:
+            - BulletedList
+            - NumberedList
+        -
+          name: Links
+          items:
+            - DrupalLink
+            - DrupalUnlink
+        -
+          name: Media
+          items:
+            - Blockquote
+        -
+          name: Tools
+          items:
+            - Source
+            - Undo
+            - Redo
+        -
+          name: Format
+          items:
+            - Format
+  plugins:
+    drupallink:
+      linkit_enabled: true
+      linkit_profile: default
+image_upload:
+  status: false
+  scheme: public
+  directory: inline-images
+  max_size: ''
+  max_dimensions:
+    width: null
+    height: null
