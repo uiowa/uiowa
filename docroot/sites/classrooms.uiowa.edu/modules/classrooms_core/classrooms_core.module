@@ -98,19 +98,22 @@ function classrooms_core_entity_presave(EntityInterface $entity): void {
       }
     }
 
-    // @todo Get finalized list of room types and their TIDs.
     // Mapping the Room Type field to the roomType value from endpoint.
     if ($entity->hasField('field_room_type') && isset($data[0]->roomType)) {
-      $room_types = [
-        2 => 'Auditorium',
-        3 => 'Classroom-Lecture',
-        4 => 'Office',
-      ];
-      foreach ($room_types as $key => $room_type) {
-        if ($room_type === $data[0]->roomType) {
-          $entity->set('field_room_type', [$key]);
-          break;
-        }
+      // Returns all terms matching name within vocabulary.
+      $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['name' => $data[0]->roomType, 'vid' => 'room_types']);
+      if (!empty($term)) {
+        // Set based on first (and hopefully only) result.
+        $entity->set('field_room_type', [array_key_first($term)]);
+      }
+      else {
+        // If term does not exist create it.
+        $new_term = Term::create([
+          'vid' => 'room_types',
+          'name' => $data[0]->roomType,
+        ]);
+        $new_term->save();
+        $entity->set('field_room_type', [$new_term->id()]);
       }
     }
 
