@@ -106,7 +106,7 @@ function classrooms_core_entity_presave(EntityInterface $entity): void {
         3 => 'Classroom-Lecture',
         4 => 'Office',
       ];
-      foreach($room_types as $key => $room_type) {
+      foreach ($room_types as $key => $room_type) {
         if ($room_type === $data[0]->roomType) {
           $entity->set('field_room_type', [$key]);
           break;
