@@ -80,20 +80,19 @@ function classrooms_core_entity_presave(EntityInterface $entity): void {
         $entity->set('field_room_max_occupancy', $data[0]->maxOccupancy);
       }
     }
+
     if ($entity->hasField('field_room_name') && isset($data[0]->roomName)) {
       if (strlen($data[0]->roomName) > 1) {
         $entity->set('field_room_name', $data[0]->roomName);
       }
     }
 
-    // Select list field not working yet.
-    //    if ($entity->hasField('field_room_instruction_category') && isset($data[0]->roomCategory)) {
-    //      $field_definition = $entity->getFieldDefinition('field_room_instruction_category')->getFieldStorageDefinition();
-    //      $field_allowed_options = options_allowed_values($field_definition, $entity);
-    //      if (in_array($data[0]->roomCategory, $field_allowed_options)) {
-    //        $entity->set('field_room_instruction_category', $data[0]->roomCategory);
-    //      }
-    //    }.
+    if ($entity->hasField('field_room_instruction_category') && isset($data[0]->roomCategory)) {
+      $field_definition = $entity->getFieldDefinition('field_room_instruction_category')->getFieldStorageDefinition();
+      $field_allowed_options = options_allowed_values($field_definition, $entity);
+      if (array_key_exists($data[0]->roomCategory, $field_allowed_options)) {
+        $entity->set('field_room_instruction_category', $data[0]->roomCategory);
+      }
+    }
   }
-
 }
