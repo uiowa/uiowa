@@ -101,7 +101,9 @@ function classrooms_core_entity_presave(EntityInterface $entity): void {
     // Mapping the Room Type field to the roomType value from endpoint.
     if ($entity->hasField('field_room_type') && isset($data[0]->roomType)) {
       // Returns all terms matching name within vocabulary.
-      $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['name' => $data[0]->roomType, 'vid' => 'room_types']);
+      $term = \Drupal::entityTypeManager()
+          ->getStorage('taxonomy_term')
+          ->loadByProperties(['name' => $data[0]->roomType, 'vid' => 'room_types']);
       if (!empty($term)) {
         // Set based on first (and hopefully only) result.
         $entity->set('field_room_type', [array_key_first($term)]);
@@ -121,7 +123,9 @@ function classrooms_core_entity_presave(EntityInterface $entity): void {
     // acadOrgUnitName value from endpoint.
     if ($entity->hasField('field_room_responsible_unit') && isset($data[0]->acadOrgUnitName)) {
       // Returns all terms matching name within vocabulary.
-      $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['name' => $data[0]->acadOrgUnitName, 'vid' => 'units']);
+      $term = \Drupal::entityTypeManager()
+          ->getStorage('taxonomy_term')
+          ->loadByProperties(['name' => $data[0]->acadOrgUnitName, 'vid' => 'units']);
       if (!empty($term)) {
         // Set based on first (and hopefully only) result.
         $entity->set('field_room_responsible_unit', [array_key_first($term)]);
