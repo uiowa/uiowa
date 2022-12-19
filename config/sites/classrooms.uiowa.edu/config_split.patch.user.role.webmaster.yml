@@ -2,13 +2,25 @@ adding:
   dependencies:
     config:
       - node.type.room
+      - taxonomy.vocabulary.room_features
+      - taxonomy.vocabulary.technology_features
+      - taxonomy.vocabulary.units
   permissions:
     - 'create room content'
+    - 'create terms in room_features'
+    - 'create terms in technology_features'
+    - 'create terms in units'
     - 'delete any room content'
     - 'delete own room content'
     - 'delete room revisions'
+    - 'delete terms in room_features'
+    - 'delete terms in technology_features'
+    - 'delete terms in units'
     - 'edit any room content'
     - 'edit own room content'
+    - 'edit terms in room_features'
+    - 'edit terms in technology_features'
+    - 'edit terms in units'
     - 'enter room revision log entry'
     - 'override room authored by option'
     - 'override room authored on option'
