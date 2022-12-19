@@ -125,7 +125,10 @@ function classrooms_core_entity_presave(EntityInterface $entity): void {
       // Returns all terms matching name within vocabulary.
       $term = \Drupal::entityTypeManager()
         ->getStorage('taxonomy_term')
-        ->loadByProperties(['name' => $data[0]->acadOrgUnitName, 'vid' => 'units']);
+        ->loadByProperties([
+          'name' => $data[0]->acadOrgUnitName,
+          'vid' => 'units'
+        ]);
       if (!empty($term)) {
         // Set based on first (and hopefully only) result.
         $entity->set('field_room_responsible_unit', [array_key_first($term)]);
