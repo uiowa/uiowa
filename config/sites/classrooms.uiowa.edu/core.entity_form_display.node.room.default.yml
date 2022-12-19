@@ -23,11 +23,35 @@ dependencies:
     - workflows.workflow.editorial
   module:
     - content_moderation
+    - field_group
     - file
     - media_library
     - metatag
     - path
     - text
+third_party_settings:
+  field_group:
+    group_imported:
+      children:
+        - field_room_instruction_category
+        - field_room_max_occupancy
+        - field_room_responsible_unit
+        - field_room_features
+        - field_room_name
+        - field_room_type
+        - field_room_technology_features
+      label: Imported
+      region: content
+      parent_name: ''
+      weight: 23
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: false
+        description: 'These fields are imported from MAUI''s Astra room data on save.'
+        required_fields: true
 id: node.room.default
 targetEntityType: node
 bundle: room
@@ -79,7 +103,7 @@ content:
     third_party_settings: {  }
   field_room_features:
     type: entity_reference_autocomplete
-    weight: 33
+    weight: 26
     region: content
     settings:
       match_operator: CONTAINS
@@ -89,27 +113,27 @@ content:
     third_party_settings: {  }
   field_room_instruction_category:
     type: options_select
-    weight: 37
+    weight: 23
     region: content
     settings: {  }
     third_party_settings: {  }
   field_room_map:
     type: media_library_widget
-    weight: 29
+    weight: 16
     region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
   field_room_max_occupancy:
     type: number
-    weight: 35
+    weight: 24
     region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
   field_room_name:
     type: string_textfield
-    weight: 32
+    weight: 27
     region: content
     settings:
       size: 60
@@ -117,7 +141,7 @@ content:
     third_party_settings: {  }
   field_room_responsible_unit:
     type: entity_reference_autocomplete
-    weight: 36
+    weight: 25
     region: content
     settings:
       match_operator: CONTAINS
@@ -135,14 +159,14 @@ content:
     third_party_settings: {  }
   field_room_seating_chart:
     type: file_generic
-    weight: 26
+    weight: 14
     region: content
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
   field_room_technology_features:
     type: entity_reference_autocomplete
-    weight: 34
+    weight: 29
     region: content
     settings:
       match_operator: CONTAINS
@@ -152,7 +176,7 @@ content:
     third_party_settings: {  }
   field_room_type:
     type: entity_reference_autocomplete
-    weight: 30
+    weight: 28
     region: content
     settings:
       match_operator: CONTAINS
@@ -162,7 +186,7 @@ content:
     third_party_settings: {  }
   field_room_video:
     type: media_library_widget
-    weight: 27
+    weight: 15
     region: content
     settings:
       media_types: {  }
