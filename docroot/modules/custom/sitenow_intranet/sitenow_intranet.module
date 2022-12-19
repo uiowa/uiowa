@@ -87,10 +87,14 @@ function sitenow_intranet_restrict_ip_access_denied_page_alter(&$page) {
   $exists = count(\Drupal::service('router.route_provider')->getRoutesByNames([$route])) === 1;
 
   if (isset($page['login_link']) && $exists) {
+    $destination = '/';
+    if ($_GET['destination']) {
+      $destination = $_GET['destination'];
+    }
     $page['main']['login_link'] = [
       '#type' => 'link',
       '#title' => t('HawkID Login'),
-      '#url' => Url::fromRoute($route, ['destination' => '/']),
+      '#url' => Url::fromRoute($route, ['destination' => $destination]),
       '#prefix' => '<p class="text-align-center">',
       '#suffix' => '</p>',
       '#attributes' => [
