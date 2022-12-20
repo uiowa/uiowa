@@ -3,7 +3,6 @@
 namespace Drupal\sitenow_intranet\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -13,16 +12,6 @@ use Drupal\Core\Url;
  * Sitenow intranet event subscriber.
  */
 class SitenowIntranetSubscriber implements EventSubscriberInterface {
-
-  /**
-   * Kernel request event handler.
-   *
-   * @param \Symfony\Component\HttpKernel\Event\RequestEvent $event
-   *   Response event.
-   */
-  public function onKernelRequest(RequestEvent $event) {
-    // @todo Place code here.
-  }
 
   /**
    * Kernel response event handler.
@@ -50,7 +39,6 @@ class SitenowIntranetSubscriber implements EventSubscriberInterface {
    */
   public static function getSubscribedEvents() {
     return [
-      KernelEvents::REQUEST => ['onKernelRequest'],
       KernelEvents::RESPONSE => ['onKernelResponse'],
     ];
   }
