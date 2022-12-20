@@ -15,6 +15,7 @@ dependencies:
     - field.field.node.room.field_room_name
     - field.field.node.room.field_room_responsible_unit
     - field.field.node.room.field_room_room_id
+    - field.field.node.room.field_room_scheduling_regions
     - field.field.node.room.field_room_seating_chart
     - field.field.node.room.field_room_technology_features
     - field.field.node.room.field_room_type
@@ -154,6 +155,16 @@ content:
     weight: 1
     region: content
     settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_room_scheduling_regions:
+    type: entity_reference_autocomplete
+    weight: 30
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
