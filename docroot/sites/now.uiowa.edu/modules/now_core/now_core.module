@@ -14,8 +14,6 @@ function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   switch ($form_id) {
     case 'node_article_form':
     case 'node_article_edit_form':
-    case 'node_person_form':
-    case 'node_person_edit_form':
       $form['field_contact_reference']['#states'] = [
         'visible' => [
           ':input[name="field_article_type"]' => [
@@ -25,7 +23,13 @@ function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
           ],
         ],
       ];
+      break;
 
+    // Article contacts are taken care of in sitenow_articles.module,
+    // but person nodes with contact references need extra processing
+    // in order to display newly created person names.
+    case 'node_person_form':
+    case 'node_person_edit_form':
       // Check that there are entities.
       if (isset($form['field_contact_reference']['widget']['entities'])) {
         $contacts = $form['field_contact_reference']['widget']['entities'];
@@ -47,7 +51,7 @@ function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
           }
         }
       }
-      break;
+
   }
   if ($form_id === 'node_article_form' || $form_id === 'node_article_edit_form') {
     $form['field_embargo_information']['#states'] = [
@@ -76,18 +80,6 @@ function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
     // without showing clutter to the end user.
     unset($form['field_original_publication_date']['widget'][0]['time_wrapper']['separator']);
     $form['field_original_publication_date']['widget'][0]['time_wrapper']['end_value']['#attributes']['class'][] = 'hidden';
-  }
-}
-
-/**
- * Implements hook_inline_entity_form_table_fields_alter().
- */
-function now_core_inline_entity_form_table_fields_alter(array &$fields, array $context) {
-  if ($context['field_name'] === 'field_contact_reference') {
-    // Clean up, minimize the person IEF form.
-    if (in_array('contact', $context['allowed_bundles']) && in_array('person', $context['allowed_bundles'])) {
-      $fields['label']['label'] = t('Contact name');
-    }
   }
 }
 
