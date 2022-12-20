@@ -574,6 +574,7 @@ function uiowa_core_preprocess_block(&$variables) {
       }
       $variables['attributes']['class'][] .= 'block--bg-container related col--threecol--33 bg--gray block-padding__bottom block-padding__top';
       break;
+
     case 'system_main_block':
       $current_route = \Drupal::routeMatch();
       if ($current_route->getRouteName() === 'system.401') {

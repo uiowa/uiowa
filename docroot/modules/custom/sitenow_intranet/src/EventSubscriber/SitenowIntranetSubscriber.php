@@ -26,8 +26,13 @@ class SitenowIntranetSubscriber implements EventSubscriberInterface {
         ?->get('exception')
         ?->getStatusCode();
       if (is_null($status_code) || !($status_code === 401 && $event->getRequestType() === HttpKernelInterface::SUB_REQUEST)) {
-        $route_name = $event->getRequest()->attributes->get('_route');
-        if (!in_array($route_name, ['user.reset.login', 'samlauth.saml_controller_login'])) {
+        $route_name = $event->getRequest()
+          ?->attributes
+          ?->get('_route');
+        if (!in_array($route_name, [
+          'user.reset.login',
+          'samlauth.saml_controller_login',
+        ])) {
           throw new UnauthorizedHttpException('Login, yo!');
         }
       }
