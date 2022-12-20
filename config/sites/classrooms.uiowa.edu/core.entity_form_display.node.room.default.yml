@@ -40,6 +40,7 @@ third_party_settings:
         - field_room_features
         - field_room_name
         - field_room_type
+        - field_room_scheduling_regions
         - field_room_technology_features
       label: Imported
       region: content
@@ -160,7 +161,7 @@ content:
     third_party_settings: {  }
   field_room_scheduling_regions:
     type: entity_reference_autocomplete
-    weight: 30
+    weight: 29
     region: content
     settings:
       match_operator: CONTAINS
@@ -177,7 +178,7 @@ content:
     third_party_settings: {  }
   field_room_technology_features:
     type: entity_reference_autocomplete
-    weight: 29
+    weight: 30
     region: content
     settings:
       match_operator: CONTAINS
