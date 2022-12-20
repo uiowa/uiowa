@@ -30,6 +30,9 @@ function sitenow_intranet_restrict_ip_access_denied_page_alter(&$page) {
       'role' => 'main',
       'class' => 'page__container',
     ],
+    '#cache' => [
+      'max-age' => 0,
+    ],
   ];
 
   $page['main']['title_container'] = [
