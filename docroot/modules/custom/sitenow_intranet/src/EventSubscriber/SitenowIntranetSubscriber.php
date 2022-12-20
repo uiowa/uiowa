@@ -31,18 +31,18 @@ class SitenowIntranetSubscriber implements EventSubscriberInterface {
    *   Response event.
    */
   public function onKernelResponse(ResponseEvent $event) {
-
-    $entrance = \Drupal::request()->query->get('entrance');
-    $originalRequest = \Drupal::request()->getRequestUri();
-    if (empty($entrance) && $originalRequest !== '/restrict_ip/access_denied') {
-      $url = Url::fromRoute('restrict_ip.access_denied_page', [], [
-        'query' => [
-          'entrance' => $originalRequest,
-        ],
-      ]);
-      $event->setResponse(new RedirectResponse($url->toString()));
+    if (\Drupal::currentUser()->isAnonymous()) {
+      $entrance = \Drupal::request()->query->get('entrance');
+      $originalRequest = \Drupal::request()->getRequestUri();
+      if (empty($entrance) && $originalRequest !== '/restrict_ip/access_denied') {
+        $url = Url::fromRoute('restrict_ip.access_denied_page', [], [
+          'query' => [
+            'entrance' => $originalRequest,
+          ],
+        ]);
+        $event->setResponse(new RedirectResponse($url->toString()));
+      }
     }
-
   }
 
   /**
