@@ -88,7 +88,7 @@ function sitenow_intranet_restrict_ip_access_denied_page_alter(&$page) {
 
   if (isset($page['login_link']) && $exists) {
     $destination = '/';
-    $get_destination = \Drupal::request()->query->get('destination');
+    $get_destination = \Drupal::request()->query->get('entrance');
     if ($get_destination) {
       $destination = $get_destination;
     }
