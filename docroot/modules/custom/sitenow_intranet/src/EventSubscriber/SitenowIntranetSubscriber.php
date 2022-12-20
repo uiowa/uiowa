@@ -30,8 +30,9 @@ class SitenowIntranetSubscriber implements EventSubscriberInterface {
           ?->attributes
           ?->get('_route');
         if (!in_array($route_name, [
-          'user.reset.login',
+          'robotstxt.content',
           'samlauth.saml_controller_login',
+          'user.reset.login',
         ])) {
           throw new UnauthorizedHttpException('Login, yo!');
         }
