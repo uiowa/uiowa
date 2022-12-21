@@ -47,7 +47,7 @@ content:
     region: content
   field_event_performer:
     type: entity_reference_label
-    label: inline
+    label: visually_hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -55,7 +55,7 @@ content:
     region: content
   field_event_series_link:
     type: link
-    label: above
+    label: visually_hidden
     settings:
       trim_length: 80
       url_only: false
@@ -85,11 +85,11 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 1
+    weight: 6
     region: content
   field_event_when:
     type: smartdate_default
-    label: inline
+    label: visually_hidden
     settings:
       timezone_override: ''
       format_type: medium
@@ -98,13 +98,13 @@ content:
       add_classes: false
       time_wrapper: true
     third_party_settings: {  }
-    weight: 6
+    weight: 0
     region: content
   field_image:
     type: entity_reference_entity_view
     label: hidden
     settings:
-      view_mode: large__widescreen
+      view_mode: large__square
       link: false
     third_party_settings: {  }
     weight: 5
@@ -114,7 +114,7 @@ content:
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 0
+    weight: 1
     region: content
   links:
     settings: {  }

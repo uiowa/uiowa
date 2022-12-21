@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labiasdl.uiowa.ddev.site
+    protocol: https
+  machine_name: labiasdl
+  human_name: iasdl.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labiasdl.prod
+drupal:
+  db:
+    database: iasdl_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labiasdl.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Iowa Atmospheric Sensor Development Lab'

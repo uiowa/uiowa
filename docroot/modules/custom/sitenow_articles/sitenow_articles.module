@@ -66,6 +66,31 @@ function sitenow_articles_form_alter(&$form, FormStateInterface $form_state, $fo
       if ($form_id === 'node_article_form') {
         $form['field_article_preserve_links']['#access'] = FALSE;
       }
+
+      // If a new person is being created for the contact field,
+      // they don't have a "title" yet, and so we need to fetch
+      // their first and last names and combine in order to display.
+      // Check that there are entities.
+      if (isset($form['field_contact_reference']['widget']['entities'])) {
+        $contacts = $form['field_contact_reference']['widget']['entities'];
+
+        // For each one that exists, make sre it is one of the integer entries,
+        // which is actually an entity.
+        foreach ($contacts as $key => $contact) {
+          if (is_int($key) && $contact['#entity']->getType() === 'person') {
+
+            // Then, get the string of the first and last names.
+            $first = $contact['#entity']?->get('field_person_first_name')?->getString();
+            $last = $contact['#entity']?->get('field_person_last_name')?->getString();
+
+            // And set the title, which would have been empty,
+            // to the concatenation of the two.
+            if (is_string($first) && is_string($last)) {
+              $form['field_contact_reference']['widget']['entities'][$key]['#label'] = $first . ' ' . $last;
+            }
+          }
+        }
+      }
       break;
   }
 }
@@ -598,6 +623,18 @@ function sitenow_articles_field_widget_paragraphs_form_alter(&$element, &$form_s
 }
 
 /**
+ * Implements hook_inline_entity_form_table_fields_alter().
+ */
+function sitenow_articles_inline_entity_form_table_fields_alter(array &$fields, array $context) {
+  if ($context['field_name'] === 'field_contact_reference') {
+    // Clean up, minimize the person IEF form.
+    if (in_array('person', $context['allowed_bundles'])) {
+      $fields['label']['label'] = t('Contact name');
+    }
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK().
  */
 function sitenow_articles_preprocess_block(&$variables) {
@@ -633,6 +670,7 @@ function sitenow_articles_preprocess_block(&$variables) {
     case 'field_block:node:article:field_article_source_link':
     case 'field_block:node:article:field_article_source_org':
     case 'galleryjumplink_block':
+    case 'field_block:node:article:field_image_caption':
       $variables['attributes']['class'][] = 'article--meta';
 
       break;

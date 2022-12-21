@@ -12,6 +12,7 @@ dependencies:
     - field.field.node.article.field_article_source_link_direct
     - field.field.node.article.field_article_source_org
     - field.field.node.article.field_article_translator
+    - field.field.node.article.field_contact_reference
     - field.field.node.article.field_featured_image_display
     - field.field.node.article.field_gallery_images
     - field.field.node.article.field_image
@@ -164,7 +165,7 @@ third_party_settings:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-            weight: 20
+            weight: 21
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -304,6 +305,28 @@ third_party_settings:
                 settings: {  }
                 third_party_settings: {  }
             weight: 19
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 037fc737-cc00-4b07-9ee8-f16508ec1de0
+            region: content
+            configuration:
+              id: 'field_block:node:article:field_contact_reference'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: inline
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 20
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
@@ -485,6 +508,7 @@ hidden:
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
   field_article_source_link_direct: true
+  field_contact_reference: true
   field_meta_tags: true
   field_tags: true
   field_teaser: true
