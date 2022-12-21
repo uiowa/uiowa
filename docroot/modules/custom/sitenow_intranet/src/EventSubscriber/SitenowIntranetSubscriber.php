@@ -4,6 +4,7 @@ namespace Drupal\sitenow_intranet\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -20,21 +21,48 @@ class SitenowIntranetSubscriber implements EventSubscriberInterface {
    *   Response event.
    */
   public function onKernelRequest(RequestEvent $event) {
-    if (\Drupal::currentUser()->isAnonymous()) {
-      $status_code = $event->getRequest()
+    $status_codes_to_skip = [
+      401,
+      403
+    ];
+    $status_code = $event->getRequest()
+      ?->attributes
+      ?->get('exception')
+      ?->getStatusCode();
+    // The code below prevents us from getting into redirect loops when this
+    // event subscriber throws an exception below. Essentially we are checking
+    // to see if the request contains one of the codes we have thrown and
+    // whether it is a sub-request (which is what happens when you throw the
+    // HttpException classes).
+    if (is_null($status_code) || !(in_array($status_code, $status_codes_to_skip) && $event->getRequestType() === HttpKernelInterface::SUB_REQUEST)) {
+      $current_user = \Drupal::currentUser();
+      $route_name = $event->getRequest()
         ?->attributes
-        ?->get('exception')
-        ?->getStatusCode();
-      if (is_null($status_code) || !($status_code === 401 && $event->getRequestType() === HttpKernelInterface::SUB_REQUEST)) {
-        $route_name = $event->getRequest()
-          ?->attributes
-          ?->get('_route');
+        ?->get('_route');
+      // Deny anonymous users unless they are hitting routes that need to be
+      // accessible.
+      if ($current_user->isAnonymous()) {
         if (!in_array($route_name, [
           'robotstxt.content',
           'samlauth.saml_controller_login',
           'user.reset.login',
         ])) {
           throw new UnauthorizedHttpException('Login, yo!');
+        }
+      }
+      // If the user isn't ID # 1 and their only role is authenticated, they are
+      // Denied access.
+      // Even though the id() method shows that it is supposed to return an int,
+      // it sometimes does not, so we are casting the value to an int to ensure
+      // it matches.
+      elseif ((int) $current_user->id() !== 1 && $current_user->getRoles() === ['authenticated']) {
+        if (!in_array($route_name, [
+          'robotstxt.content',
+          'entity.user.edit_form',
+          'entity.user.canonical',
+          'user.logout',
+        ])) {
+          throw new AccessDeniedHttpException('Access denied, yo!');
         }
       }
     }

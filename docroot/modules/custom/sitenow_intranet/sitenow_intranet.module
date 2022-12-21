@@ -12,6 +12,88 @@
 use Drupal\Core\Url;
 
 /**
+ * Implements hook_preprocess_page().
+ */
+function sitenow_intranet_preprocess_block(&$variables) {
+  switch ($variables['plugin_id']) {
+    case 'system_main_block':
+      $status_code = \Drupal::request()
+      ?->attributes
+      ?->get('exception')
+      ?->getStatusCode();
+
+      if (!is_null($status_code)) {
+        $config = \Drupal::config('sitenow_intranet.settings');
+        switch ($status_code) {
+          case 403:
+            $variables['content'] = [
+              '#markup' => check_markup($config->get('access_denied.message'), 'minimal'),
+              '#prefix' => '<div class="text-align-center">',
+              '#suffix' => '</div>',
+            ];
+            break;
+          case 401:
+            $variables['content'] = [
+              '#markup' => check_markup($config->get('unauthorized.message'), 'minimal'),
+              '#prefix' => '<div class="text-align-center">',
+              '#suffix' => '</div>',
+            ];
+            break;
+
+        }
+      }
+
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function sitenow_intranet_preprocess_page(&$variables) {
+  $status_code = \Drupal::request()
+    ?->attributes
+    ?->get('exception')
+    ?->getStatusCode();
+
+  if (!is_null($status_code)) {
+    switch ($status_code) {
+      case 403:
+      case 401:
+        $variables['action_menu']['#access'] = FALSE;
+        $variables['primary_menu']['#access'] = FALSE;
+        // @todo Do we need to set cache max-age to 0 here?
+        break;
+
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_page_title().
+ */
+function sitenow_intranet_preprocess_page_title(&$variables) {
+  $status_code = \Drupal::request()
+    ?->attributes
+    ?->get('exception')
+    ?->getStatusCode();
+
+  if (!is_null($status_code)) {
+    $config = \Drupal::config('sitenow_intranet.settings');
+    switch ($status_code) {
+      case 403:
+        $variables['title'] = $config->get('access_denied.title');
+        break;
+
+      case 401:
+        $variables['title'] = $config->get('unauthorized.title');
+        break;
+
+    }
+  }
+}
+
+/**
  * Implements hook_restrict_ip_access_denied_page_alter().
  */
 function sitenow_intranet_restrict_ip_access_denied_page_alter(&$page) {
