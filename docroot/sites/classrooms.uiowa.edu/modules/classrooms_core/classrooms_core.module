@@ -193,26 +193,20 @@ function classrooms_core_entity_presave(EntityInterface $entity): void {
     // Mapping the Scheduling Regions field to the
     // regionList value from endpoint.
     if (isset($data[0]->regionList)) {
-      $query = \Drupal::entityQuery('taxonomy_term')->orConditionGroup()
-        ->condition('vid', 'scheduling_regions');
-
-      $tids = \Drupal::entityQuery('taxonomy_term')
-        ->condition($query)
+      $query = \Drupal::entityQuery('taxonomy_term')
+        ->condition('vid', 'scheduling_regions')
         ->execute();
 
-      if ($tids) {
+      if ($query) {
         $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
-        $terms = $storage->loadMultiple($tids);
-        $scheduling_regions = [];
+        $terms = $storage->loadMultiple($query);
         foreach ($terms as $term) {
           if ($api_mapping = $term->get('field_api_mapping')?->value) {
             if (in_array($api_mapping, $data[0]->regionList)) {
-              $scheduling_regions[] = $term->id();
+              $entity->set('field_room_scheduling_regions', $term->id());
+              break;
             }
           }
-        }
-        if (!empty($scheduling_regions)) {
-          $entity->set('field_room_scheduling_regions', $scheduling_regions);
         }
       }
     }
