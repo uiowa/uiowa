@@ -45,6 +45,7 @@ class SitenowIntranetSubscriber implements EventSubscriberInterface {
         if (!in_array($route_name, [
           'robotstxt.content',
           'samlauth.saml_controller_login',
+          'user.login',
           'user.reset.login',
         ])) {
           throw new UnauthorizedHttpException('Login, yo!');
@@ -57,9 +58,9 @@ class SitenowIntranetSubscriber implements EventSubscriberInterface {
       // it matches.
       elseif ((int) $current_user->id() !== 1 && $current_user->getRoles() === ['authenticated']) {
         if (!in_array($route_name, [
-          'robotstxt.content',
           'entity.user.edit_form',
           'entity.user.canonical',
+          'robotstxt.content',
           'user.logout',
         ])) {
           throw new AccessDeniedHttpException('Access denied, yo!');
