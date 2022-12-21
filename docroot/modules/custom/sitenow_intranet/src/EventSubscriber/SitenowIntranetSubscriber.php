@@ -23,7 +23,7 @@ class SitenowIntranetSubscriber implements EventSubscriberInterface {
   public function onKernelRequest(RequestEvent $event) {
     $status_codes_to_skip = [
       401,
-      403
+      403,
     ];
     $status_code = $event->getRequest()
       ?->attributes
