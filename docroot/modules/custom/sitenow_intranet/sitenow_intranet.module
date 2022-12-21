@@ -113,7 +113,6 @@ function sitenow_intranet_preprocess_page_title(&$variables) {
 
       case 401:
         $variables['title'] = $config->get('unauthorized.title');
-        $variables['title_attributes']['class'][] = 'page-title';
         break;
 
     }
