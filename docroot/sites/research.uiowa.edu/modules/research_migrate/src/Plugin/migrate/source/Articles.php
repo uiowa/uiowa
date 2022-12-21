@@ -82,7 +82,7 @@ class Articles extends BaseNodeSource {
       $row->setSourceProperty('field_article_source_link_direct', 1);
     }
 
-    if ($image = $row->getSourceProperty('field_news_image')) {
+    if ($image = $row->getSourceProperty('field_ovpred_article_image')) {
       $row->setSourceProperty('field_image', $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']));
     }
     return TRUE;

@@ -33,7 +33,10 @@ process:
   uid: constants/uid_admin
   title: title
   body: body
-  field_image: field_ovpred_article_image
+  field_image: field_image
+  field_featured_image_display:
+    plugin: default_value
+    default_value: do_not_display
   field_teaser: body_summary
   field_article_source_org: field_ovpred_article_by_line
   field_article_source_link/uri: custom_source_link
