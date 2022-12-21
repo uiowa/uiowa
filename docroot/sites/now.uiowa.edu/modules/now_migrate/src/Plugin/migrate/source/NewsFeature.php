@@ -172,6 +172,19 @@ class NewsFeature extends BaseNodeSource {
       if (str_starts_with($filemime, 'image')) {
         $fid = $this->processImageField($media[0]['fid'], $media[0]['alt'], $media[0]['title']);
         $row->setSourceProperty('field_primary_media', $fid);
+        // Check the aspect ratio of the featured image.
+        // If it's 3:2 or wider, set the display to use
+        // the site-wide-default. If it's more square or taller,
+        // or if we can't determine it,
+        // set it to not display.
+        if (!empty($media[0]['width'])
+          && !empty($media[0]['height']
+          && $media[0]['width'] / $media[0]['height'] >= 1.5)) {
+          $row->setSourceProperty('featured_image_display', '');
+        }
+        else {
+          $row->setSourceProperty('featured_image_display', 'do_not_display');
+        }
       }
       elseif (in_array($filemime, ['video/oembed', 'application/octet-stream'])) {
         $body = $row->getSourceProperty('body');
@@ -236,7 +249,8 @@ class NewsFeature extends BaseNodeSource {
       14772, 14811, 14866, 14957, 14969, 14999,
       15068, 15322, 15567, 15579, 15587, 15589,
       15597, 16097, 16181, 16231, 17108, 17836,
-      18946, 19126, 20661, 21601, 22891
+      18946, 19126, 20661, 21601, 22891,
     ];
   }
+
 }
