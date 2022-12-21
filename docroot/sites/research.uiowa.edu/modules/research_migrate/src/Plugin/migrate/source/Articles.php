@@ -89,6 +89,41 @@ class Articles extends BaseNodeSource {
   }
 
   /**
+   * Helper function to map contacts.
+   */
+  private function contactMapping($nid) {
+    // D7 contact => D9 contact.
+    // If 0, contact will be skipped.
+    $mapping = [
+      8201 => 756,
+      4026 => 61,
+      7501 => 241,
+      2291 => 61,
+      2736 => 216,
+      6126 => 141,
+      7796 => 61,
+      6316 => 226,
+      6511 => 141,
+      5921 => 236,
+      5551 => 766,
+      5036 => 416,
+      4821 => 0,
+      1123 => 61,
+      3116 => 361,
+      2566 => 0,
+      1766 => 61,
+      1657 => 771,
+      1658 => 0,
+      1121 => 61,
+      1104 => 291,
+      1101 => 776,
+      1086 => 61,
+    ];
+
+    return $mapping[$nid] ?? NULL;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function postImport(MigrateImportEvent $event) {
