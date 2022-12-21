@@ -22,6 +22,29 @@ class NewsFeature extends BaseNodeSource {
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
+
+    // @TODO: THIS IS TEST CODE YOU NEED TO REMOVE IT IF YOU SEE THIS COMMENT!!!!!
+    // Not even sure this works :( .
+    // Comment it out if you need to.
+    // vvvvv
+    parent::prepareRow($row);
+    $body = $row->getSourceProperty('body');
+    if($body) {
+      $this->logger->notice('!!!~~~ Body value is @body ~~~!!!', [
+        '@body' => $body[0]['value'],
+      ]);
+    }
+    if (preg_match('/drupal-media/', $body[0]['value']) > 0) {
+      $this->logger->notice('!!!~~~ NID is @nid ~~~!!!', [
+        '@nid' => $row->getSourceProperty('nid'),
+      ]);
+    }
+    else {
+      return FALSE;
+    }
+    // ^^^^^
+    // THIS IS TEST CODE YOU NEED TO REMOVE IT IF YOU SEE THIS COMMENT!!!!!
+
     parent::prepareRow($row);
 
     $subhead = $row->getSourceProperty('field_subhead');
@@ -48,7 +71,17 @@ class NewsFeature extends BaseNodeSource {
       }
       elseif (in_array($filemime, ['video/oembed', 'application/octet-stream'])) {
         $body = $row->getSourceProperty('body');
-        $body[0]['value'] = $this->createVideo($media[0]['fid']) . $body[0]['value'];
+
+        // Check to see if body has media in it, then set alignment.
+        $video = '';
+        if (preg_match('/drupal-media/', $body[0]['value']) > 0) {
+          $video = $this->createVideo($media[0]['fid'], 'left');
+        }
+        else {
+          $video = $this->createVideo($media[0]['fid']);
+        }
+
+        $body[0]['value'] = $video . $body[0]['value'];
         $row->setSourceProperty('body', $body);
       }
     }
