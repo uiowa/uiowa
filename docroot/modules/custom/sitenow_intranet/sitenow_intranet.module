@@ -9,6 +9,7 @@
  * @see https://www.drupal.org/node/2217931
  */
 
+use Drupal\Core\Link;
 use Drupal\Core\Url;
 
 /**
@@ -31,9 +32,13 @@ function sitenow_intranet_preprocess_block(&$variables) {
         //      ] classes to it.
         // @todo Add 'page-title headline--serif headline text-align-center'
         //   classes to the title.
+        if (!isset($variables['content']['#title_attributes']['class'])) {
+          $variables['content']['#title_attributes']['class'] = [];
+        }
+        $variables['content']['#title_attributes']['class'][] = 'text-align-center';
         break;
+
       case 'system_main_block':
-        // @todo Do we need to add a log out link?
         $config = \Drupal::config('sitenow_intranet.settings');
         switch ($status_code) {
           case 403:
@@ -42,7 +47,19 @@ function sitenow_intranet_preprocess_block(&$variables) {
               '#prefix' => '<div class="text-align-center">',
               '#suffix' => '</div>',
             ];
+
+            // If the user is logged in, show a logout link.
+            if(\Drupal::currentUser()->isAuthenticated()) {
+              $url = Url::fromRoute('user.logout');
+              $link = Link::fromTextAndUrl(t('Logout'), $url);
+              $variables['content']['logout_link'] = [
+                '#markup' => $link->toString(),
+                '#prefix' => '<p class="text-align-center">',
+                '#suffix' => '</p>',
+              ];
+            }
             break;
+
           case 401:
             $variables['content'] = [
               '#markup' => check_markup($config->get('unauthorized.message'), 'minimal'),
@@ -52,7 +69,6 @@ function sitenow_intranet_preprocess_block(&$variables) {
             break;
 
         }
-
         break;
 
     }
