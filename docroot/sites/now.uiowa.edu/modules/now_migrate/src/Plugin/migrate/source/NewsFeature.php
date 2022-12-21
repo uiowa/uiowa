@@ -18,7 +18,9 @@ use Drupal\taxonomy\Entity\Term;
 class NewsFeature extends BaseNodeSource {
   use ProcessMediaTrait;
 
-  // @todo Remove this when video testing is done.
+  /**
+   * @todo Remove this when video testing is done.
+   */
   public function query() {
     $query = parent::query();
     $query->condition('n.nid', $this->withVideos(), 'IN');
@@ -67,6 +69,7 @@ class NewsFeature extends BaseNodeSource {
     }
 
     if (!empty($tag_tids)) {
+
       // Fetch tag names based on TIDs from our old site.
       $tag_results = $this->select('taxonomy_term_data', 't')
         ->fields('t', ['name'])
@@ -90,8 +93,10 @@ class NewsFeature extends BaseNodeSource {
     if (!empty($body)) {
       $this->viewMode = 'medium__no_crop';
       $this->align = 'left';
+
       // Search for D7 inline embeds and replace with D8 inline entities.
       $body[0]['value'] = $this->replaceInlineFiles($body[0]['value']);
+
       // Set the format to filtered_html while we have it.
       $body[0]['format'] = 'filtered_html';
 
@@ -103,6 +108,7 @@ class NewsFeature extends BaseNodeSource {
       ], $body[0]['value']);
 
       $row->setSourceProperty('body', $body);
+
       // Extract the summary.
       $row->setSourceProperty('body_summary', $this->getSummaryFromTextField($body));
     }
@@ -110,6 +116,7 @@ class NewsFeature extends BaseNodeSource {
     // Process the gallery images.
     $gallery = $row->getSourceProperty('field_photo_gallery');
     if (!empty($gallery)) {
+
       // The d7 galleries are a separate entity, so we need to fetch it
       // and then process the individual images attached.
       $images = $this->select('field_data_field_gallery_photos', 'g')
@@ -129,11 +136,13 @@ class NewsFeature extends BaseNodeSource {
     if (!empty($caption)) {
       if (strlen($caption[0]['value']) > 255) {
         $message = 'Field image caption truncated. Original caption was: ' . $caption[0]['value'];
+
         // Need to limit to lower than the actual 255 limit,
         // to account for added ellipsis as well as giving
         // some buffer room for possible encoded characters like ampersands.
         $caption[0]['value'] = $this->extractSummaryFromText($caption[0]['value'], 245);
         $row->setSourceProperty('field_primary_media_caption', $caption);
+
         // Add a message to the migration that can be queried later.
         // The following query can then be used:
         // "SELECT migrate_map_now_news_feature.destid1 AS NODE_ID,
@@ -151,12 +160,14 @@ class NewsFeature extends BaseNodeSource {
     // Process the primary media field.
     $media = $row->getSourceProperty('field_primary_media');
     if (!empty($media)) {
+
       // Check if it's a video or image.
       $filemime = $this->select('file_managed', 'fm')
         ->fields('fm', ['filemime'])
         ->condition('fm.fid', $media[0]['fid'], '=')
         ->execute()
         ->fetchField();
+
       // If it's an image, we can handle it like normal.
       if (str_starts_with($filemime, 'image')) {
         $fid = $this->processImageField($media[0]['fid'], $media[0]['alt'], $media[0]['title']);
@@ -188,6 +199,7 @@ class NewsFeature extends BaseNodeSource {
    * Helper function to add an image caption during a preg_replace.
    */
   private function captionReplace($match) {
+
     // Match[1] is most of the drupal-media element,
     // and match[2] is the image caption.
     // Here we're adding the caption and then re-closing
@@ -199,6 +211,7 @@ class NewsFeature extends BaseNodeSource {
    * Helper function to check for existing tags and create if they don't exist.
    */
   private function createTag($tag_name) {
+
     // Check if we have a mapping. If we don't yet,
     // then create a new tag and add it to our map.
     if (!isset($this->tagMapping[$tag_name])) {
@@ -215,9 +228,15 @@ class NewsFeature extends BaseNodeSource {
     return $this->tagMapping[$tag_name];
   }
 
-  // @todo Remove this when video testing is done.
+  /**
+   * @todo Remove this when video testing is done.
+   */
   private function withVideos() {
-    return [14772, 14811, 14866, 14957, 14969, 14999, 15068, 15322, 15567, 15579, 15587, 15589, 15597, 16097, 16181, 16231, 17108, 17836, 18946, 19126, 20661, 21601, 22891];
+    return [
+      14772, 14811, 14866, 14957, 14969, 14999,
+      15068, 15322, 15567, 15579, 15587, 15589,
+      15597, 16097, 16181, 16231, 17108, 17836,
+      18946, 19126, 20661, 21601, 22891
+    ];
   }
-
 }
