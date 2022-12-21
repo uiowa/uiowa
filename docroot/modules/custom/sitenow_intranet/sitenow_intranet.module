@@ -103,9 +103,10 @@ function sitenow_intranet_preprocess_page_title(&$variables) {
 }
 
 /**
- * Return an array of status codes mapped to setting label fragments.
+ * Return an array of status codes mapped to config labels.
  *
  * @return string[]
+ *  The array of codes mapped to their config labels.
  */
 function sitenow_intranet_map_status_codes(): array {
   return [
@@ -117,9 +118,11 @@ function sitenow_intranet_map_status_codes(): array {
 /**
  * Check a status code to set if it isn't null and is in our map.
  *
- * @param int $code
+ * @param int|null $code
+ *  The code to check.
  *
  * @return bool
+ *  Whether the status code is relevant for further processing.
  */
 function sitenow_intranet_check_status_code(int $code = NULL): bool {
   return !is_null($code) && in_array($code, array_keys(sitenow_intranet_map_status_codes()));
