@@ -24,18 +24,11 @@ function sitenow_intranet_preprocess_block(&$variables) {
   if (!is_null($status_code)) {
     switch ($variables['plugin_id']) {
       case 'page_title_block':
-        // @todo Add a title container and add [
-        //        'section-padding__top-extra',
-        //        'layout--title',
-        //        'layout__container',
-        //        'layout',
-        //      ] classes to it.
-        // @todo Add 'page-title headline--serif headline text-align-center'
-        //   classes to the title.
-        if (!isset($variables['content']['#title_attributes']['class'])) {
-          $variables['content']['#title_attributes']['class'] = [];
-        }
-        $variables['content']['#title_attributes']['class'][] = 'text-align-center';
+        $variables['attributes']['class'][] = 'block-padding__top';
+        break;
+
+      case 'system_breadcrumb_block':
+        unset($variables['content']);
         break;
 
       case 'system_main_block':
@@ -49,7 +42,7 @@ function sitenow_intranet_preprocess_block(&$variables) {
             ];
 
             // If the user is logged in, show a logout link.
-            if(\Drupal::currentUser()->isAuthenticated()) {
+            if (\Drupal::currentUser()->isAuthenticated()) {
               $url = Url::fromRoute('user.logout');
               $link = Link::fromTextAndUrl(t('Logout'), $url);
               $variables['content']['logout_link'] = [
@@ -111,10 +104,16 @@ function sitenow_intranet_preprocess_page_title(&$variables) {
     switch ($status_code) {
       case 403:
         $variables['title'] = $config->get('access_denied.title');
+        $variables['title_attributes']['class'][] = 'text-align-center';
+        if (!isset($variables['#title_attributes']['class'])) {
+          $variables['#title_attributes']['class'] = [];
+        }
+        $variables['#title_attributes']['class'][] = 'text-align-center';
         break;
 
       case 401:
         $variables['title'] = $config->get('unauthorized.title');
+        $variables['title_attributes']['class'][] = 'page-title';
         break;
 
     }
