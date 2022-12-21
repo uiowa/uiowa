@@ -5,10 +5,7 @@
 
 # Setup
 
-- Enable module first:
   ```
   drush en sitenow_periodical
-  drush cim
+  drush config-split:activate periodical
   ```
-
-- Enable feature split through site UI and import config again
