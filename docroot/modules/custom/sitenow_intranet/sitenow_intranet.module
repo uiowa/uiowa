@@ -16,12 +16,9 @@ use Drupal\Core\Url;
  * Implements hook_preprocess_page().
  */
 function sitenow_intranet_preprocess_block(&$variables) {
-  $status_code = \Drupal::request()
-    ?->attributes
-    ?->get('exception')
-    ?->getStatusCode();
+  $code = sitenow_intranet_get_status_code();
 
-  if (sitenow_intranet_check_status_code($status_code)) {
+  if (sitenow_intranet_check_status_code($code)) {
     switch ($variables['plugin_id']) {
       case 'page_title_block':
         $variables['attributes']['class'][] = 'block-padding__top';
@@ -33,34 +30,24 @@ function sitenow_intranet_preprocess_block(&$variables) {
 
       case 'system_main_block':
         $config = \Drupal::config('sitenow_intranet.settings');
-        switch ($status_code) {
-          case 401:
-            $variables['content'] = [
-              '#markup' => check_markup($config->get('unauthorized.message'), 'minimal'),
-              '#prefix' => '<div class="text-align-center">',
-              '#suffix' => '</div>',
-            ];
-            break;
+        $status_code_map = sitenow_intranet_map_status_codes();
 
-          case 403:
-            $variables['content'] = [
-              '#markup' => check_markup($config->get('access_denied.message'), 'minimal'),
-              '#prefix' => '<div class="text-align-center">',
-              '#suffix' => '</div>',
-            ];
+        $variables['content'] = [
+          '#markup' => check_markup($config->get("{$status_code_map[$code]}.message"), 'minimal'),
+          '#prefix' => '<div class="text-align-center">',
+          '#suffix' => '</div>',
+        ];
 
-            // If the user is logged in, show a logout link.
-            if (\Drupal::currentUser()->isAuthenticated()) {
-              $url = Url::fromRoute('user.logout');
-              $link = Link::fromTextAndUrl(t('Logout'), $url);
-              $variables['content']['logout_link'] = [
-                '#markup' => $link->toString(),
-                '#prefix' => '<p class="text-align-center">',
-                '#suffix' => '</p>',
-              ];
-            }
-            break;
-
+        // If the user is logged-in, show a logout link on the access denied
+        // page.
+        if ($code === 403 && \Drupal::currentUser()->isAuthenticated()) {
+          $url = Url::fromRoute('user.logout');
+          $link = Link::fromTextAndUrl(t('Logout'), $url);
+          $variables['content']['logout_link'] = [
+            '#markup' => $link->toString(),
+            '#prefix' => '<p class="text-align-center">',
+            '#suffix' => '</p>',
+          ];
         }
         break;
 
@@ -72,14 +59,11 @@ function sitenow_intranet_preprocess_block(&$variables) {
  * Implements hook_preprocess_page().
  */
 function sitenow_intranet_preprocess_page(&$variables) {
-  $status_code = \Drupal::request()
-    ?->attributes
-    ?->get('exception')
-    ?->getStatusCode();
+  $code = sitenow_intranet_get_status_code();
 
-  if (sitenow_intranet_check_status_code($status_code)) {
-    $variables['action_menu']['#access'] = FALSE;
-    $variables['primary_menu']['#access'] = FALSE;
+  if (sitenow_intranet_check_status_code($code)) {
+    unset($variables['page']['action_menu']);
+    unset($variables['page']['primary_menu']);
     // @todo Do we need to set cache max-age to 0 here?
   }
 }
@@ -88,18 +72,28 @@ function sitenow_intranet_preprocess_page(&$variables) {
  * Implements hook_preprocess_page_title().
  */
 function sitenow_intranet_preprocess_page_title(&$variables) {
-  $status_code = \Drupal::request()
-    ?->attributes
-    ?->get('exception')
-    ?->getStatusCode();
+  $code = sitenow_intranet_get_status_code();
 
   $status_code_map = sitenow_intranet_map_status_codes();
 
-  if (sitenow_intranet_check_status_code($status_code)) {
+  if (sitenow_intranet_check_status_code($code)) {
     $config = \Drupal::config('sitenow_intranet.settings');
-    $variables['title'] = $config->get("{$status_code_map[$status_code]}.title");
+    $variables['title'] = $config->get("{$status_code_map[$code]}.title");
     $variables['title_attributes']['class'][] = 'text-align-center';
   }
+}
+
+/**
+ * Returns the current exception status code or null if one doesn't exist.
+ *
+ * @return int|null
+ *   The status code.
+ */
+function sitenow_intranet_get_status_code() {
+  return \Drupal::request()
+    ?->attributes
+    ?->get('exception')
+    ?->getStatusCode();
 }
 
 /**
@@ -119,10 +113,10 @@ function sitenow_intranet_map_status_codes(): array {
  * Check a status code to set if it isn't null and is in our map.
  *
  * @param int|null $code
- *   The code to check.
+ *   The status code.
  *
  * @return bool
- *   Whether the status code is relevant for further processing.
+ *   Whether the code exists and is in the map.
  */
 function sitenow_intranet_check_status_code(int $code = NULL): bool {
   return !is_null($code) && in_array($code, array_keys(sitenow_intranet_map_status_codes()));
