@@ -2,7 +2,11 @@
 
 namespace Drupal\sitenow_intranet;
 
+/**
+ * Methods to facilitate checking HTTP status codes.
+ */
 class IntranetHelper {
+
   /**
    * Returns the current exception status code or null if one doesn't exist.
    *
@@ -41,4 +45,5 @@ class IntranetHelper {
   public static function checkStatusCode(int $code = NULL): bool {
     return !is_null($code) && in_array($code, array_keys(self::getStatusCodeMap()));
   }
+
 }
