@@ -1,6 +1,6 @@
 # Functionality
 
-- Uses restrict_ip with the bypass role configuration to lock down access to the site to users with the viewer role and above.
+- Functionality to lock down access to the site to users with the viewer role and above.
 - Local database search has been added to override our default Google search for private searching.
 - Unlike other feature splits, this is a module enable first setup:
 
