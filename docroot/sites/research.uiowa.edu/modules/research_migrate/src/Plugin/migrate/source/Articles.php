@@ -7,6 +7,7 @@ use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\LinkReplaceTrait;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Migrate Source plugin.
@@ -19,6 +20,20 @@ use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
 class Articles extends BaseNodeSource {
   use ProcessMediaTrait;
   use LinkReplaceTrait;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $multiValueFields = [
+    'field_ovpred_article_tags' => 'tid',
+  ];
+
+  /**
+   * Tag-to-name mapping for keywords.
+   *
+   * @var array
+   */
+  protected $tagMapping;
 
   /**
    * {@inheritdoc}
@@ -44,6 +59,39 @@ class Articles extends BaseNodeSource {
     // Return TRUE because the row should be created.
     if ($this->migration->id() === 'research_articles_redirects') {
       return TRUE;
+    }
+
+    // Establish an array to eventually map to field_tags.
+    $tids = [];
+
+    // Set our tagMapping if it's not already.
+    if (empty($this->tagMapping)) {
+      $this->tagMapping = \Drupal::database()
+        ->select('taxonomy_term_field_data', 't')
+        ->fields('t', ['name', 'tid'])
+        ->condition('t.vid', 'tags', '=')
+        ->execute()
+        ->fetchAllKeyed();
+    }
+
+    // Migrate tags from old site, by getting term name and
+    // comparing to existing tags before creating new.
+    $tag_tids = $row->getSourceProperty('field_ovpred_article_tags_tid');
+    if (!empty($tag_tids)) {
+      // Fetch tag names based on TIDs from our old site.
+      $tag_results = $this->select('taxonomy_term_data', 't')
+        ->fields('t', ['name'])
+        ->condition('t.tid', $tag_tids, 'IN')
+        ->execute();
+
+      foreach ($tag_results as $result) {
+        $tid = $this->createTag($result['name']);
+        $tids[] = $tid;
+      }
+      // Send all final tids to field_tags.
+      if (!empty($tids)) {
+        $row->setSourceProperty('tags', $tids);
+      }
     }
 
     $body = $row->getSourceProperty('body');
@@ -86,6 +134,26 @@ class Articles extends BaseNodeSource {
       $row->setSourceProperty('field_image', $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']));
     }
     return TRUE;
+  }
+
+  /**
+   * Helper function to check for existing tags and create if they don't exist.
+   */
+  private function createTag($tag_name) {
+    // Check if we have a mapping. If we don't yet,
+    // then create a new tag and add it to our map.
+    if (!isset($this->tagMapping[$tag_name])) {
+      $term = Term::create([
+        'name' => $tag_name,
+        'vid' => 'tags',
+      ]);
+      if ($term->save()) {
+        $this->tagMapping[$tag_name] = $term->id();
+      }
+    }
+
+    // Return tid for mapping to field.
+    return $this->tagMapping[$tag_name];
   }
 
   /**
