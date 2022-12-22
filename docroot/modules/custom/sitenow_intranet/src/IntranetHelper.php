@@ -14,10 +14,13 @@ class IntranetHelper {
    *   The status code.
    */
   public static function getStatusCode(): ?int {
-    return \Drupal::request()
+    $exception = \Drupal::request()
       ?->attributes
-      ?->get('exception')
-      ?->getStatusCode();
+      ?->get('exception');
+    if (!is_null($exception) && method_exists($exception, 'getStatusCode')) {
+      return $exception->getStatusCode;
+    }
+    return NULL;
   }
 
   /**
