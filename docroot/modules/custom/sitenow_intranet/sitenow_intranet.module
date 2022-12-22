@@ -69,8 +69,16 @@ function sitenow_intranet_preprocess_page(&$variables) {
   $code = IntranetHelper::getStatusCode();
 
   if (IntranetHelper::checkStatusCode($code)) {
-    unset($variables['page']['action_menu']);
-    unset($variables['page']['primary_menu']);
+    foreach ([
+      'action_menu',
+      'footer_first',
+      'footer_second',
+      'primary_menu',
+    ] as $region) {
+      if (isset($variables['page'][$region])) {
+        unset($variables['page'][$region]);
+      }
+    }
     // @todo Do we need to set cache max-age to 0 here?
   }
 }
