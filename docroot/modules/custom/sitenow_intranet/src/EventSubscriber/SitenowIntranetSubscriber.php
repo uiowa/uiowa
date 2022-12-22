@@ -2,6 +2,7 @@
 
 namespace Drupal\sitenow_intranet\EventSubscriber;
 
+use Drupal\sitenow_intranet\IntranetHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -21,20 +22,14 @@ class SitenowIntranetSubscriber implements EventSubscriberInterface {
    *   Response event.
    */
   public function onKernelRequest(RequestEvent $event) {
-    $status_codes_to_skip = [
-      401,
-      403,
-    ];
-    $status_code = $event->getRequest()
-      ?->attributes
-      ?->get('exception')
-      ?->getStatusCode();
+    $code = IntranetHelper::getStatusCode();
+    $status_code_map = IntranetHelper::getStatusCodeMap();
     // The code below prevents us from getting into redirect loops when this
     // event subscriber throws an exception below. Essentially we are checking
     // to see if the request contains one of the codes we have thrown and
     // whether it is a sub-request (which is what happens when you throw the
     // HttpException classes).
-    if (is_null($status_code) || !(in_array($status_code, $status_codes_to_skip) && $event->getRequestType() === HttpKernelInterface::SUB_REQUEST)) {
+    if (is_null($code) || !(in_array($code, array_keys($status_code_map)) && $event->getRequestType() === HttpKernelInterface::SUB_REQUEST)) {
       $current_user = \Drupal::currentUser();
       $route_name = $event->getRequest()
         ?->attributes

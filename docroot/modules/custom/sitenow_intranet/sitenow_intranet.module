@@ -9,16 +9,16 @@
  * @see https://www.drupal.org/node/2217931
  */
 
-use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\sitenow_intranet\IntranetHelper;
 
 /**
  * Implements hook_preprocess_page().
  */
 function sitenow_intranet_preprocess_block(&$variables) {
-  $code = sitenow_intranet_get_status_code();
+  $code = IntranetHelper::getStatusCode();
 
-  if (sitenow_intranet_check_status_code($code)) {
+  if (IntranetHelper::checkStatusCode($code)) {
     switch ($variables['plugin_id']) {
       case 'page_title_block':
         $variables['attributes']['class'][] = 'block-padding__top';
@@ -30,7 +30,7 @@ function sitenow_intranet_preprocess_block(&$variables) {
 
       case 'system_main_block':
         $config = \Drupal::config('sitenow_intranet.settings');
-        $status_code_map = sitenow_intranet_map_status_codes();
+        $status_code_map = IntranetHelper::getStatusCodeMap();
 
         $variables['content'] = [
           '#markup' => check_markup($config->get("{$status_code_map[$code]}.message"), 'minimal'),
@@ -41,12 +41,19 @@ function sitenow_intranet_preprocess_block(&$variables) {
         // If the user is logged-in, show a logout link on the access denied
         // page.
         if ($code === 403 && \Drupal::currentUser()->isAuthenticated()) {
-          $url = Url::fromRoute('user.logout');
-          $link = Link::fromTextAndUrl(t('Logout'), $url);
           $variables['content']['logout_link'] = [
-            '#markup' => $link->toString(),
+            '#type' => 'link',
+            '#title' => t('Logout'),
+            '#url' => Url::fromRoute('user.logout') ,
             '#prefix' => '<p class="text-align-center">',
             '#suffix' => '</p>',
+            '#attributes' => [
+              'class' => [
+                'bttn',
+                'bttn--primary',
+                'bttn--caps',
+              ],
+            ],
           ];
         }
         break;
@@ -59,9 +66,9 @@ function sitenow_intranet_preprocess_block(&$variables) {
  * Implements hook_preprocess_page().
  */
 function sitenow_intranet_preprocess_page(&$variables) {
-  $code = sitenow_intranet_get_status_code();
+  $code = IntranetHelper::getStatusCode();
 
-  if (sitenow_intranet_check_status_code($code)) {
+  if (IntranetHelper::checkStatusCode($code)) {
     unset($variables['page']['action_menu']);
     unset($variables['page']['primary_menu']);
     // @todo Do we need to set cache max-age to 0 here?
@@ -72,52 +79,14 @@ function sitenow_intranet_preprocess_page(&$variables) {
  * Implements hook_preprocess_page_title().
  */
 function sitenow_intranet_preprocess_page_title(&$variables) {
-  $code = sitenow_intranet_get_status_code();
+  $code = IntranetHelper::getStatusCode();
 
-  $status_code_map = sitenow_intranet_map_status_codes();
-
-  if (sitenow_intranet_check_status_code($code)) {
+  if (IntranetHelper::checkStatusCode($code)) {
     $config = \Drupal::config('sitenow_intranet.settings');
+    $status_code_map = IntranetHelper::getStatusCodeMap();
+
+    // Override title and add class to center it.
     $variables['title'] = $config->get("{$status_code_map[$code]}.title");
     $variables['title_attributes']['class'][] = 'text-align-center';
   }
-}
-
-/**
- * Returns the current exception status code or null if one doesn't exist.
- *
- * @return int|null
- *   The status code.
- */
-function sitenow_intranet_get_status_code() {
-  return \Drupal::request()
-    ?->attributes
-    ?->get('exception')
-    ?->getStatusCode();
-}
-
-/**
- * Return an array of status codes mapped to config labels.
- *
- * @return string[]
- *   The array of codes mapped to their config labels.
- */
-function sitenow_intranet_map_status_codes(): array {
-  return [
-    401 => 'unauthorized',
-    403 => 'access_denied',
-  ];
-}
-
-/**
- * Check a status code to set if it isn't null and is in our map.
- *
- * @param int|null $code
- *   The status code.
- *
- * @return bool
- *   Whether the code exists and is in the map.
- */
-function sitenow_intranet_check_status_code(int $code = NULL): bool {
-  return !is_null($code) && in_array($code, array_keys(sitenow_intranet_map_status_codes()));
 }

@@ -577,7 +577,7 @@ function uiowa_core_preprocess_block(&$variables) {
 
     case 'system_main_block':
       $current_route = \Drupal::routeMatch();
-      if (in_array($current_route->getRouteName(), ['system.401', 'system.403'])) {
+      if (\Drupal::currentUser()->isAnonymous() && in_array($current_route->getRouteName(), ['system.401', 'system.403'])) {
         $variables['content']['login_link'] = [
           '#type' => 'link',
           '#title' => t('HawkID Login'),
