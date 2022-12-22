@@ -18,9 +18,9 @@ function sitenow_intranet_install() {
   // Set some sane default configuration.
   $config_factory->getEditable('sitenow_intranet.settings')
     ->set('unauthorized.title', 'Unauthorized')
-    ->set('unauthorized.message', '<p>You do not have sufficient privileges to access this page. Please contact an administrator.</p>')
+    ->set('unauthorized.message', '<p>You must log in to access this page.</p>')
     ->set('access_denied.title', 'Access denied')
-    ->set('access_denied.message', '<p>You must log in to access this page.</p>')
+    ->set('access_denied.message', '<p>You do not have sufficient privileges to access this page. Please contact an administrator.</p>')
     ->save();
 
   $config_factory->getEditable('uids_base.settings')
