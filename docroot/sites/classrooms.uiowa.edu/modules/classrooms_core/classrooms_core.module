@@ -7,6 +7,20 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_alter().
+ */
+function classrooms_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'node_room_form':
+    case 'node_room_edit_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      break;
+
+  }
+}
 
 /**
  * Implements hook_entity_presave().
