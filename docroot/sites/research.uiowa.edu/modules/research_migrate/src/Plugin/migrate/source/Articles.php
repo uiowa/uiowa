@@ -4,6 +4,7 @@ namespace Drupal\research_migrate\Plugin\migrate\source;
 
 use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Row;
+use Drupal\node\Entity\Node;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\LinkReplaceTrait;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
@@ -26,6 +27,7 @@ class Articles extends BaseNodeSource {
    */
   protected $multiValueFields = [
     'field_ovpred_article_tags' => 'tid',
+    'field_ovpred_article_contact' => 'target_id',
   ];
 
   /**
@@ -34,6 +36,13 @@ class Articles extends BaseNodeSource {
    * @var array
    */
   protected $tagMapping;
+
+  /**
+   * Mapping for article contacts.
+   *
+   * @var array
+   */
+  protected $contactMap;
 
   /**
    * {@inheritdoc}
@@ -133,6 +142,64 @@ class Articles extends BaseNodeSource {
     if ($image = $row->getSourceProperty('field_ovpred_article_image')) {
       $row->setSourceProperty('field_image', $this->processImageField($image[0]['fid'], $image[0]['alt'], $image[0]['title']));
     }
+
+    // Establish an array to eventually map to field_contact_reference.
+    $nids = [];
+
+    // Set our contactMap of person nodes if it's not already.
+    if (empty($this->contactMap)) {
+      $this->contactMap = \Drupal::database()
+        ->select('node_field_data', 'n')
+        ->fields('n', ['title', 'nid'])
+        ->condition('n.type', 'person', '=')
+        ->execute()
+        ->fetchAllKeyed();
+    }
+
+    // Migrate article contacts from old site
+    // and do some re-mapping in the process.
+    $contact_nids = $row->getSourceProperty('field_ovpred_article_contact_target_id');
+    if (!empty($contact_nids)) {
+      // Fetch node data using NIDs from our old site.
+      $contact_results = $this->select('node', 'n')
+        ->fields('n', ['title', 'nid'])
+        ->condition('n.nid', $contact_nids, 'IN')
+        ->execute();
+
+      foreach ($contact_results as $result) {
+        // Check contactMapping and create node.
+        $mapping_result = $this->contactMapping($result['nid']);
+        if ($mapping_result != NULL) {
+          if ($mapping_result != '0') {
+            // There is a mapping result, so switch to use that target_id.
+            $nids[] = $mapping_result;
+          }
+          else {
+            // This contact should be skipped and not attached to the content.
+            break;
+          }
+        }
+        else {
+          // Create person nodes if not mapped but are POCs on source.
+          $explode_name = explode(' ', $result['title']);
+          $node = Node::create([
+            'title' => $result['title'],
+            'field_person_first_name' => $explode_name[0],
+            'field_person_last_name' => $explode_name[1],
+            'type' => 'person',
+            'status' => 0,
+          ]);
+          if ($node->save()) {
+            $nids[] = $node->id();
+          }
+        }
+      }
+      // Send all final nids to field_contact_reference.
+      if (!empty($nids)) {
+        $row->setSourceProperty('contacts', $nids);
+      }
+    }
+
     return TRUE;
   }
 
@@ -163,29 +230,29 @@ class Articles extends BaseNodeSource {
     // D7 contact => D9 contact.
     // If 0, contact will be skipped.
     $mapping = [
-      8201 => 756,
-      4026 => 61,
-      7501 => 241,
-      2291 => 61,
-      2736 => 216,
-      6126 => 141,
-      7796 => 61,
-      6316 => 226,
-      6511 => 141,
-      5921 => 236,
-      5551 => 766,
-      5036 => 416,
-      4821 => 0,
-      1123 => 61,
-      3116 => 361,
-      2566 => 0,
-      1766 => 61,
-      1657 => 771,
-      1658 => 0,
-      1121 => 61,
-      1104 => 291,
-      1101 => 776,
-      1086 => 61,
+      '8201' => '756',
+      '4026' => '61',
+      '7501' => '241',
+      '2291' => '61',
+      '2736' => '216',
+      '6126' => '141',
+      '7796' => '61',
+      '6316' => '226',
+      '6511' => '141',
+      '5921' => '236',
+      '5551' => '766',
+      '5036' => '416',
+      '4821' => '0',
+      '1123' => '61',
+      '3116' => '361',
+      '2566' => '0',
+      '1766' => '61',
+      '1657' => '771',
+      '1658' => '0',
+      '1121' => '61',
+      '1104' => '291',
+      '1101' => '776',
+      '1086' => '61',
     ];
 
     return $mapping[$nid] ?? NULL;
