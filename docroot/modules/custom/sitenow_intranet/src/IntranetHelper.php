@@ -2,6 +2,8 @@
 
 namespace Drupal\sitenow_intranet;
 
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+
 /**
  * Methods to facilitate checking HTTP status codes.
  */
@@ -17,8 +19,8 @@ class IntranetHelper {
     $exception = \Drupal::request()
       ?->attributes
       ?->get('exception');
-    if (!is_null($exception) && method_exists($exception, 'getStatusCode')) {
-      return $exception->getStatusCode;
+    if ($exception instanceof HttpExceptionInterface) {
+      return $exception->getStatusCode();
     }
     return NULL;
   }
