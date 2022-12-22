@@ -4924,3 +4924,15 @@ $sites['labiasdl.uiowa.ddev.site'] = 'iasdl.lab.uiowa.edu';
 $sites['labiasdl.dev.drupal.uiowa.edu'] = 'iasdl.lab.uiowa.edu';
 $sites['labiasdl.stage.drupal.uiowa.edu'] = 'iasdl.lab.uiowa.edu';
 $sites['labiasdl.prod.drupal.uiowa.edu'] = 'iasdl.lab.uiowa.edu';
+
+// Directory aliases for freeman.lab.uiowa.edu.
+$sites['labfreeman.uiowa.ddev.site'] = 'freeman.lab.uiowa.edu';
+$sites['labfreeman.dev.drupal.uiowa.edu'] = 'freeman.lab.uiowa.edu';
+$sites['labfreeman.stage.drupal.uiowa.edu'] = 'freeman.lab.uiowa.edu';
+$sites['labfreeman.prod.drupal.uiowa.edu'] = 'freeman.lab.uiowa.edu';
+
+// Directory aliases for midwestdnarepair.conference.uiowa.edu.
+$sites['conferencemidwestdnarepair.uiowa.ddev.site'] = 'midwestdnarepair.conference.uiowa.edu';
+$sites['conferencemidwestdnarepair.dev.drupal.uiowa.edu'] = 'midwestdnarepair.conference.uiowa.edu';
+$sites['conferencemidwestdnarepair.stage.drupal.uiowa.edu'] = 'midwestdnarepair.conference.uiowa.edu';
+$sites['conferencemidwestdnarepair.prod.drupal.uiowa.edu'] = 'midwestdnarepair.conference.uiowa.edu';
