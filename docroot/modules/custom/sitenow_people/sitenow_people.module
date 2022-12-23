@@ -89,6 +89,13 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
           ],
         ];
 
+        // Show 'Link directly to website' checkbox only if a site is added.
+        $form['field_person_website_link_direct']['#states'] = [
+          'visible' => [
+            ':input[name="field_person_website[0][uri]"]' => ['filled' => TRUE],
+          ],
+        ];
+
         $type_selections = [];
 
         if (!empty($form_state->getValue('field_person_types'))) {
