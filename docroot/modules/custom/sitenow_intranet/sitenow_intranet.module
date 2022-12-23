@@ -58,6 +58,14 @@ function sitenow_intranet_preprocess_block(&$variables) {
         }
         break;
 
+      // Unset any custom alerts, but leave the uiowa_alerts_block
+      // because it may have hawk_alerts attached.
+      case 'uiowa_alerts_block':
+        if (isset($variables['content']['wrapper']['custom_alert'])) {
+          unset($variables['content']['wrapper']['custom_alert']);
+        }
+        break;
+
     }
   }
 }
@@ -71,7 +79,6 @@ function sitenow_intranet_preprocess_page(&$variables) {
   if (IntranetHelper::checkStatusCode($code)) {
     foreach ([
       'action_menu',
-      'alert',
       'footer_first',
       'footer_second',
       'pre_footer',
