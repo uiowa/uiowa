@@ -73,7 +73,9 @@ function sitenow_intranet_preprocess_page(&$variables) {
       'action_menu',
       'footer_first',
       'footer_second',
+      'pre_footer',
       'primary_menu',
+      'region_content',
     ] as $region) {
       if (isset($variables['page'][$region])) {
         unset($variables['page'][$region]);
