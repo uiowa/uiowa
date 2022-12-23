@@ -58,11 +58,15 @@ function sitenow_intranet_preprocess_block(&$variables) {
         }
         break;
 
-      // Unset any custom alerts, but leave the uiowa_alerts_block
-      // because it may have hawk_alerts attached.
       case 'uiowa_alerts_block':
-        if (isset($variables['content']['wrapper']['custom_alert'])) {
-          unset($variables['content']['wrapper']['custom_alert']);
+        foreach ($variables['content']['wrapper'] as $wrapper => $content) {
+          // Check that it's a content element and not a block property,
+          // and skip if it's the hawk alert content,
+          // as we want that to always display.
+          if (str_starts_with($wrapper, '#') || $wrapper === 'hawk_alerts') {
+            continue;
+          }
+          unset($variables['content']['wrapper'][$wrapper]);
         }
         break;
 
