@@ -299,6 +299,27 @@ class MauiApi {
   }
 
   /**
+   * Return the schedule for a classroom for a date range.
+   *
+   * GET /pub/registrar/courses/AstraRoomSchedule/{startDate}/{endDate}/{bldgCode}/{roomNumber}.
+   *
+   * @param string $startdate
+   *   Date formated as YYYY-MM-DD.
+   * @param string $enddate
+   *   Date formated as YYYY-MM-DD.
+   * @param string $building_id
+   *   The building code needs to match the code as it is entered in Astra.
+   * @param string $room_id
+   *   The room number needs to match the code as it is entered in Astra.
+   *
+   * @return array
+   *   JSON decoded array of response data.
+   */
+  public function getRoomSchedule($startdate, $enddate, $building_id, $room_id) {
+    return $this->request('GET', '/pub/registrar/courses/AstraRoomSchedule/' . $startdate . '/' . $enddate . '/' . $building_id . "/" . $room_id);
+  }
+
+  /**
    * Get complete building list.
    *
    * @return mixed

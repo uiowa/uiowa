@@ -8,13 +8,25 @@ dependencies:
     - field.field.node.room.field_image
     - field.field.node.room.field_meta_tags
     - field.field.node.room.field_room_building_id
+    - field.field.node.room.field_room_classroom_furniture
+    - field.field.node.room.field_room_design_details
+    - field.field.node.room.field_room_features
+    - field.field.node.room.field_room_instruction_category
     - field.field.node.room.field_room_map
+    - field.field.node.room.field_room_max_occupancy
+    - field.field.node.room.field_room_name
+    - field.field.node.room.field_room_responsible_unit
     - field.field.node.room.field_room_room_id
+    - field.field.node.room.field_room_scheduling_regions
     - field.field.node.room.field_room_seating_chart
+    - field.field.node.room.field_room_technology_features
+    - field.field.node.room.field_room_tile_details
+    - field.field.node.room.field_room_type
     - field.field.node.room.field_room_video
     - node.type.room
   module:
     - file
+    - options
     - text
     - user
 id: node.room.default
@@ -61,6 +73,39 @@ content:
     third_party_settings: {  }
     weight: 1
     region: content
+  field_room_classroom_furniture:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 20
+    region: content
+  field_room_design_details:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 19
+    region: content
+  field_room_features:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: false
+    third_party_settings:
+      field_delimiter:
+        delimiter: ''
+    weight: 12
+    region: content
+  field_room_instruction_category:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 16
+    region: content
   field_room_map:
     type: entity_reference_entity_view
     label: above
@@ -70,6 +115,31 @@ content:
     third_party_settings: {  }
     weight: 8
     region: content
+  field_room_max_occupancy:
+    type: number_integer
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 14
+    region: content
+  field_room_name:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 11
+    region: content
+  field_room_responsible_unit:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 15
+    region: content
   field_room_room_id:
     type: string
     label: above
@@ -78,6 +148,16 @@ content:
     third_party_settings: {  }
     weight: 2
     region: content
+  field_room_scheduling_regions:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: false
+    third_party_settings:
+      field_delimiter:
+        delimiter: ''
+    weight: 17
+    region: content
   field_room_seating_chart:
     type: file_default
     label: above
@@ -85,6 +165,32 @@ content:
       use_description_as_link_text: true
     third_party_settings: {  }
     weight: 5
+    region: content
+  field_room_technology_features:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: false
+    third_party_settings:
+      field_delimiter:
+        delimiter: ''
+    weight: 13
+    region: content
+  field_room_tile_details:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 18
+    region: content
+  field_room_type:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 9
     region: content
   field_room_video:
     type: entity_reference_entity_view

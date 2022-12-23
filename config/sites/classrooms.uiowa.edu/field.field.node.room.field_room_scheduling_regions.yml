@@ -1,0 +1,29 @@
+uuid: 341d2317-a399-44ff-b74c-b0f7c01273bb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_room_scheduling_regions
+    - node.type.room
+    - taxonomy.vocabulary.scheduling_regions
+id: node.room.field_room_scheduling_regions
+field_name: field_room_scheduling_regions
+entity_type: node
+bundle: room
+label: 'Scheduling Regions'
+description: 'This field is populated using terms from <a href="/admin/structure/taxonomy/manage/scheduling_regions/overview">Scheduling regions</a>.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      scheduling_regions: scheduling_regions
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
