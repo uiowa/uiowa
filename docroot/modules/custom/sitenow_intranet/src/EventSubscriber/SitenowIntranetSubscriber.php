@@ -39,6 +39,7 @@ class SitenowIntranetSubscriber implements EventSubscriberInterface {
       if ($current_user->isAnonymous()) {
         if (!in_array($route_name, [
           'robotstxt.content',
+          'samlauth.saml_controller_acs',
           'samlauth.saml_controller_login',
           'user.login',
           'user.reset.login',
@@ -56,7 +57,6 @@ class SitenowIntranetSubscriber implements EventSubscriberInterface {
           'entity.user.edit_form',
           'entity.user.canonical',
           'robotstxt.content',
-          'samlauth.saml_controller_acs',
           'user.logout',
         ])) {
           throw new AccessDeniedHttpException('Access denied, yo!');
