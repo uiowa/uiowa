@@ -1914,3 +1914,23 @@ function sitenow_update_9051() {
     }
   });
 }
+
+/**
+ * Update layout builder styles applied to cards.
+ */
+function sitenow_update_9052() {
+  _update_all_blocks_by_plugin_id('inline_block:uiowa_card', function (&$component, $block) {
+
+    $styles = $component->get('layout_builder_styles_style');
+    // If card border style is set...
+    if ($border_index = array_search('block_card_style_border', $styles)) {
+      // Unset it.
+      unset($styles[$border_index]);
+    }
+    else {
+      // Add style for no border option.
+      $styles[] = 'no_border';
+    }
+    $component->set('layout_builder_styles_style', $styles);
+  });
+}
