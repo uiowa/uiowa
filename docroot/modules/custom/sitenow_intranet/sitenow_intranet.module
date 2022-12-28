@@ -81,6 +81,8 @@ function sitenow_intranet_preprocess_page(&$variables) {
   $code = IntranetHelper::getStatusCode();
 
   if (IntranetHelper::checkStatusCode($code)) {
+    $config = \Drupal::config('sitenow_intranet.settings');
+    \Drupal::service('renderer')->addCacheableDependency($variables, $config);
     foreach ([
       'action_menu',
       'footer_first',
