@@ -607,6 +607,22 @@ function _sitenow_webform_validate(array &$form, FormStateInterface $form_state)
 }
 
 /**
+ * Implements hook_webform_element_alter().
+ */
+function sitenow_webform_element_alter(array &$element, FormStateInterface $form_state, array $context) {
+  if (isset($element['#webform_key'])) {
+    // With Acquia varnish, Webform can't pre-populate
+    // Google/Facebook Click IDs (gclid, fbclid).
+    if (isset($element['#prepopulate'])) {
+      $element['#attributes']['prepopulate'] = 'true';
+      if ($element['#webform_key'] === 'gclid' || $element['#webform_key'] === 'fbclid') {
+        $element['#attached']['library'][] = 'sitenow/get_clickid';
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_form_FORM_ID_alter().
  */
 function sitenow_form_revision_overview_form_alter(&$form, FormStateInterface $form_state, $form_id) {

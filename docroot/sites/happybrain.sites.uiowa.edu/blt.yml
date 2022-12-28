@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: siteshappybrain.uiowa.ddev.site
+    protocol: https
+  machine_name: siteshappybrain
+  human_name: happybrain.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: siteshappybrain.prod
+drupal:
+  db:
+    database: happybrain_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://siteshappybrain.prod.drupal.uiowa.edu'
+  requester: ekroska
+  site-name: 'The HAPPY Brain Study'

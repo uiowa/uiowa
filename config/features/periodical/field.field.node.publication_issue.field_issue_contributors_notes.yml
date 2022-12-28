@@ -1,0 +1,26 @@
+uuid: 53428025-f939-47bf-af00-b40cec858fee
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_issue_contributors_notes
+    - node.type.publication_issue
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    allowed_formats:
+      - filtered_html
+id: node.publication_issue.field_issue_contributors_notes
+field_name: field_issue_contributors_notes
+entity_type: node
+bundle: publication_issue
+label: 'Contributors'' Notes'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

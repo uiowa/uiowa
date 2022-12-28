@@ -1,0 +1,29 @@
+uuid: 5460eff7-3a83-416f-a521-55e2703a45f0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_building_honoree_image
+    - media.type.image
+    - node.type.named_building
+id: node.named_building.field_building_honoree_image
+field_name: field_building_honoree_image
+entity_type: node
+bundle: named_building
+label: 'Honoree image'
+description: 'An image of the Honoree'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference
