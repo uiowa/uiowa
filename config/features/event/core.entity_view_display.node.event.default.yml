@@ -17,6 +17,7 @@ dependencies:
     - field.field.node.event.field_tags
     - field.field.node.event.field_teaser
     - node.type.event
+    - views.view.event_details_card
     - views.view.events
   module:
     - address
@@ -108,117 +109,6 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 592c2dc2-3673-4f54-b1a9-8dd226b18956
-            region: second
-            configuration:
-              id: 'field_block:node:event:field_event_virtual'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: link
-                label: visually_hidden
-                settings:
-                  trim_length: 80
-                  url_only: false
-                  url_plain: false
-                  rel: '0'
-                  target: '0'
-                third_party_settings: {  }
-            weight: 4
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 80301d6e-e516-4cae-a7b4-6c4f93b156a3
-            region: second
-            configuration:
-              id: 'field_block:node:event:field_event_location'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: address_default
-                label: visually_hidden
-                settings: {  }
-                third_party_settings: {  }
-            weight: 3
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 57f035d2-5d1e-40c8-a1fe-673f40b55f3d
-            region: second
-            configuration:
-              id: 'field_block:node:event:field_event_when'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: smartdate_default
-                label: visually_hidden
-                settings:
-                  timezone_override: ''
-                  format: default
-                  force_chronological: true
-                  add_classes: false
-                  time_wrapper: true
-                third_party_settings: {  }
-            weight: 2
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 834fd627-6768-49f1-a5a3-608c27b5bcba
-            region: second
-            configuration:
-              id: 'field_block:node:event:field_image'
-              label: 'Featured Image'
-              label_display: '0'
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_entity_view
-                label: visually_hidden
-                settings:
-                  view_mode: full__ultrawide
-                third_party_settings: {  }
-            weight: 1
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: a2156fb3-3292-49e6-8f38-84428cc124a9
-            region: second
-            configuration:
-              id: 'field_block:node:event:field_event_series_link'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: link
-                label: hidden
-                settings:
-                  trim_length: 80
-                  url_only: false
-                  url_plain: false
-                  rel: '0'
-                  target: '0'
-                third_party_settings: {  }
-            weight: 7
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: 2f4f6caf-bf44-479f-a188-7f7e0a8d06ba
             region: first
             configuration:
@@ -281,24 +171,46 @@ third_party_settings:
                 child_heading_size: h3
               exposed_filter_values: null
               layout_builder_styles:
-                0: content_alignment_left
-                1: list_format_list
-                2: block_grid_threecol_33_34_33
-                3: media_format_circle
-                4: card_media_position_left
-                5: card_image_small
-                block_card_style_border: block_card_style_border
+                - content_alignment_left
+                - list_format_list
+                - block_grid_threecol_33_34_33
+                - media_format_circle
+                - card_media_position_left
+                - card_image_small
             weight: 5
             additional:
               layout_builder_styles_style:
-                0: ''
-                1: content_alignment_left
-                2: list_format_list
-                3: block_grid_threecol_33_34_33
-                4: media_format_circle
-                5: card_media_position_left
-                6: card_image_small
-                block_card_style_border: block_card_style_border
+                - ''
+                - content_alignment_left
+                - list_format_list
+                - block_grid_threecol_33_34_33
+                - media_format_circle
+                - card_media_position_left
+                - card_image_small
+            third_party_settings: {  }
+          -
+            uuid: b96bfe46-807e-4c59-bad7-56108c2d4899
+            region: second
+            configuration:
+              id: 'views_block:event_details_card-card_list'
+              label: null
+              label_display: null
+              provider: views
+              context_mapping: {  }
+              views_label: ''
+              items_per_page: none
+              pager: some
+              headline:
+                headline: ''
+                hide_headline: 0
+                heading_size: h2
+                headline_style: default
+                headline_alignment: default
+                child_heading_size: h3
+              exposed_filter_values: null
+              layout_builder_styles: {  }
+            weight: 0
+            additional: {  }
             third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:

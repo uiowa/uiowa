@@ -1912,6 +1912,20 @@ function sitenow_update_9050() {
 }
 
 /**
+ * Update card excerpt field format to the new minimal_plus format.
+ */
+function sitenow_update_9051() {
+  _update_all_blocks_by_plugin_id('inline_block:uiowa_card', function (&$component, $block) {
+
+    // Change the format for the card excerpt.
+    if (!is_null($block)) {
+      $block->field_uiowa_card_excerpt->format = 'minimal_plus';
+      $block->save();
+    }
+  });
+}
+
+/**
  * Update views list blocks to new exposed filter format.
  */
 function sitenow_update_9052() {
