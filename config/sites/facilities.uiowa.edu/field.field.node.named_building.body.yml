@@ -1,0 +1,28 @@
+uuid: 0523a244-9f94-44e2-9a34-5715e4180e90
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.named_building
+  module:
+    - allowed_formats
+    - text
+third_party_settings:
+  allowed_formats:
+    allowed_formats:
+      - minimal_plus
+id: node.named_building.body
+field_name: body
+entity_type: node
+bundle: named_building
+label: 'Description of facility'
+description: 'A description of the item.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: false
+  required_summary: false
+field_type: text_with_summary
