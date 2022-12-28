@@ -1,0 +1,29 @@
+uuid: 4596f491-4708-4ef6-92e5-ba43dd55fe82
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_room_type
+    - node.type.room
+    - taxonomy.vocabulary.room_types
+id: node.room.field_room_type
+field_name: field_room_type
+entity_type: node
+bundle: room
+label: 'Room Type'
+description: 'This field is populated using terms from <a href="/admin/structure/taxonomy/manage/room_types/overview">Room types</a>.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      room_types: room_types
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
