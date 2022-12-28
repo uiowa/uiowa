@@ -131,7 +131,7 @@
 
     {% embed '@uids_base/uids/card.html.twig' with person_card_view only %}
 
-    {% block card_img %}
+    {% block media %}
         {% if card_image|striptags('<img><picture>')|trim is not empty %}
             {{ parent() }}
         {% endif %}

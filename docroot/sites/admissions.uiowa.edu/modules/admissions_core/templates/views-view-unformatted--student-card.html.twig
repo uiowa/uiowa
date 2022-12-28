@@ -28,7 +28,7 @@
   {% set card_view = row.card_options %}
   {% embed '@uids_base/uids/card.html.twig' with card_view only  %}
 
-    {% block card_img %}
+    {% block media %}
       {% if card_image|striptags('<img><picture>')|trim is not empty %}
         {{ parent() }}
       {% endif %}

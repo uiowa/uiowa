@@ -106,7 +106,7 @@
 
 {% embed '@uids_base/uids/card.html.twig' with event_card only %}
   {# @todo Resolve this with the base card template. #}
-  {% block card_img %}
+  {% block media %}
     {% if card_image|striptags('<embed><hr><iframe><img><input><drupal-render-placeholder>')|trim is not empty %}
       {{ parent() }}
     {% endif %}
