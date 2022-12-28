@@ -1931,6 +1931,10 @@ function sitenow_update_9052() {
       // Add style for no border option.
       $styles[] = 'no_border';
     }
+    // If card stacked style is set...
+    if ($stacked_index = array_search('card_media_position_stacked', $styles)) {
+      unset($styles[$stacked_index]);
+    }
     $component->set('layout_builder_styles_style', $styles);
   });
 }

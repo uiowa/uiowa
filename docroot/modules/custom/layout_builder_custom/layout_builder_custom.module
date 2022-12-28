@@ -71,7 +71,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           'default' => 'card_image_large',
         ],
         'card_media_position' => [
-          'default' => 'card_media_position_stacked',
+          'empty_label' => t('Stacked (default)'),
         ],
         'content_alignment' => [
           'default' => 'content_alignment_left',
@@ -114,6 +114,11 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               if (isset($lbs_extra_options[$group]['default'])) {
                 $form[$group_key]['#default_value'] = [$lbs_extra_options[$group]['default']];
               }
+            }
+            // If an alternative label has been added for the empty option,
+            // use it instead.
+            if (isset($lbs_extra_options[$group]['empty_label']) && isset($form[$group_key]['#empty_option'])) {
+              $form[$group_key]['#empty_option'] = $lbs_extra_options[$group]['none_label'];
             }
           }
         }
