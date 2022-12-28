@@ -179,20 +179,6 @@ class Articles extends BaseNodeSource {
             break;
           }
         }
-        else {
-          // Create person nodes if not mapped but are POCs on source.
-          $explode_name = explode(' ', $result['title']);
-          $node = Node::create([
-            'title' => $result['title'],
-            'field_person_first_name' => $explode_name[0],
-            'field_person_last_name' => $explode_name[1],
-            'type' => 'person',
-            'status' => 0,
-          ]);
-          if ($node->save()) {
-            $nids[] = $node->id();
-          }
-        }
       }
       // Send all final nids to field_contact_reference.
       if (!empty($nids)) {
