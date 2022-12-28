@@ -1,6 +1,7 @@
 version: 2
 updates:
 - package-ecosystem: composer
+  rebase-strategy: "disabled"
   directory: "/"
   schedule:
     interval: monthly
@@ -8,9 +9,6 @@ updates:
     timezone: America/Chicago
   open-pull-requests-limit: 10
   ignore:
-  - dependency-name: uiowa/uiowa_bar
-    versions:
-    - ">= 7.a, < 8"
   - dependency-name: drupal/core-composer-scaffold
     versions:
     - 9.1.5
@@ -24,6 +22,7 @@ updates:
     versions:
     - 2.6.0
 - package-ecosystem: npm
+  rebase-strategy: "disabled"
   directory: "/"
   schedule:
     interval: monthly

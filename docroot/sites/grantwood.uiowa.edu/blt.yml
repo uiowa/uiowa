@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: grantwood.uiowa.ddev.site
+    protocol: https
+  machine_name: grantwood
+  human_name: grantwood.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: grantwood.prod
+drupal:
+  db:
+    database: grantwood_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: pilchr

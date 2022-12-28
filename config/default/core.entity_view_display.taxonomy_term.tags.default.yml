@@ -1,0 +1,35 @@
+uuid: 33f98220-d1f3-4c5f-8b41-bec92ae23108
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.tags.field_image
+    - taxonomy.vocabulary.tags
+  module:
+    - text
+id: taxonomy_term.tags.default
+targetEntityType: taxonomy_term
+bundle: tags
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_image:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

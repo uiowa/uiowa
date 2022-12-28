@@ -1,6 +1,6 @@
-@import "assets/scss/_variables.scss";
-@import "assets/scss/_utilities.scss";
-@import "components/card/card.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
+@import "uids3/components/card/card.scss";
 
 // @todo move back to UIDS
 
@@ -15,10 +15,31 @@
     font-weight: normal;
   }
 
-  .card__description + .btn,
-  .card__description + .bttn,
-  &__title + .bttn {
+  &__description + .btn,
+  &__description + .bttn {
     margin-top: 1.05rem;
+  }
+
+  &__details + .bttn {
+    margin-top: .425rem;
+  }
+
+  &__title+.bttn {
+    margin-top: .55rem;
+  }
+
+  &.card--media-right,
+  &.card--media-left {
+    .card__title+.bttn {
+      margin-top: .925rem;
+    }
+  }
+
+  &.card--media-right.card__list,
+  &.card--media-left.card__list {
+    .card__title+.bttn {
+      margin-top: .85rem;
+    }
   }
 
   &__description {
@@ -26,11 +47,81 @@
     word-wrap: anywhere;
     overflow-wrap: anywhere;
   }
+
+  &.card--button-position {
+    .card__body {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      div:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .card__description {
+      margin-bottom: 1.05rem;
+    }
+
+    .bttn {
+      margin-top: auto;
+    }
+  }
 }
+
+// Circle button.
+.card {
+  .bttn--transparent.bttn--circle {
+    padding: .55rem .7em;
+    border-radius: 50%;
+    transform: none;
+    line-height: 1;
+
+    &:after {
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      border-radius: 50%;
+      background-color: transparent;
+      transition: border-color .3s ease-in-out;
+      transform: none;
+      position: absolute;
+    }
+
+    &:hover:after,
+    &:focus:after {
+      transform: none;
+      transition: none;
+      border: 3px solid;
+      border-color: inherit;
+      background-color: transparent;
+    }
+  }
+}
+
 
 // ie11
 @media all and (-ms-high-contrast: none),
 (-ms-high-contrast: active) {
+  .card.card--button-position {
+    .card__body {
+      display: block;
+
+      div:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .card__description {
+      margin-bottom: 0;
+    }
+
+    .bttn {
+      margin-top: 1.05rem;
+    }
+  }
+
   .card__body .media {
     flex-shrink: 0;
     width: 100%;
@@ -79,37 +170,6 @@
   }
 }
 
-.card[class*="bg--gold"],
-.card[class*="bg--gray"] {
-  .bttn--sans-serif {
-    border-color: rgba(0,0,0,.225);
-  }
-}
-
-// Border color adjustment for cards not using a bg color
-.card:not([class*="bg-"]) {
-  border-color: rgba(0,0,0,.125);
-  .bg--black--pattern--brain &,
-  .bg-pattern--brain-black &,
-  [class*="bg--black"] & {
-    border-color: rgba(255,255,255,.325);
-    .bttn--sans-serif {
-      border-color: rgba(255,255,255,.325);
-    }
-  }
-  .bttn--sans-serif {
-    border-color: rgba(0,0,0,.225);
-  }
-}
-
-.card:not([class*="bg-"]) {
-  .layout__container:not([class*="bg-"]) & {
-    .bttn--sans-serif {
-      border-color: rgba(0,0,0,.125);
-    }
-  }
-}
-
 // Set background for all v2 cards
 .paragraph--type--section {
   &[class*=bg-] {
@@ -130,6 +190,25 @@
 }
 
 .card {
+  .card__meta,
+  .card__subtitle {
+    .svg-inline--fa {
+      margin-right: .3rem;
+    }
+    a {
+      text-decoration: none;
+    }
+  }
+
+  .card__meta {
+    .fontawesome-icons {
+      display: inline-block;
+    }
+    .svg-inline--fa {
+      font-size: 1rem;
+      line-height: 1.2;
+    }
+  }
 
   &__label {
     position: relative;
@@ -150,7 +229,8 @@
 
   &.hide-descriptions {
     .card__description,
-    .item-description {
+    .item-description,
+    .field--name-field-teaser {
       display: none;
     }
   }
@@ -159,7 +239,7 @@
       display: none;
     }
     .card__body {
-      @include breakpoint(menu) {
+      @include breakpoint(sm) {
         padding: 0 !important;
       }
     }
@@ -167,6 +247,12 @@
   &.hide-details .card__details {
     display: none;
   }
+}
+
+// Fix for adding padding if images are hidden within stack format.
+.card.hide-images.card--stacked.card--enclosed .card__body,
+.card.hide-images.card--stacked.card--enclosed .card__media + .card__body {
+  padding: 2rem!important;
 }
 
 // Card__head styles
@@ -180,7 +266,7 @@
     @include breakpoint(sm) {
       padding: 0 0 2rem;
     }
-    @include breakpoint(menu) {
+    @include breakpoint(md) {
       margin: 0;
       display: block;
     }
@@ -212,5 +298,32 @@
       margin: 0;
       padding: 0;
     }
+  }
+}
+
+// Card list styles
+.card--list .card__meta {
+  margin-top: .3rem;
+}
+
+.card__meta {
+  .field + .field {
+    margin-top: .3rem
+  }
+}
+
+.card--media-left.card--list .card__title, .card--media-right.card--list .card__title {
+  margin: 0 0 .125rem
+}
+
+// Flexbox for centered icons
+.card__meta.card__meta--icon {
+  display: flex;
+  flex-wrap: wrap;
+  .card__icon {
+    flex: 0 1 $lg;
+    display: flex;
+    justify-content: center;
+    padding-top: .135rem;
   }
 }

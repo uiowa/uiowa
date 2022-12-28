@@ -1,6 +1,6 @@
-@import "../../../../../themes/custom/uids_base/uids/assets/scss/_variables.scss";
-@import "../../../../../themes/custom/uids_base/uids/assets/scss/_utilities.scss";
-@import "../../../../../themes/custom/uids_base/uids/components/card/_card-mixins.scss";
+@import "../../../../../themes/custom/uids_base/uids3/assets/scss/_variables.scss";
+@import "../../../../../themes/custom/uids_base/uids3/assets/scss/_utilities.scss";
+@import "../../../../../themes/custom/uids_base/uids3/components/card/_card-mixins.scss";
 
 .path-frontpage .page-title {
   margin-top: $gutter;
@@ -28,7 +28,7 @@ div[role=article].node--type-ighn-person.node--view-mode-full {
     &.col-md-6 {
       padding: 0;
 
-      @include breakpoint(menu) {
+      @include breakpoint(md) {
         padding-right: $desktop-width-gutter;
         flex: 0 0 33%;
       }
@@ -52,7 +52,7 @@ div[role=article].node--type-ighn-person.node--view-mode-full {
       padding: 0;
       margin-top: $gutter;
 
-      @include breakpoint(menu) {
+      @include breakpoint(md) {
         flex: 0 0 67%;
         max-width: 67%;
         margin-top: 0;
@@ -83,7 +83,7 @@ div[role=article].node--type-ighn-person.node--view-mode-full {
         margin-top: $lg;
       }
 
-      @include breakpoint(menu) {
+      @include breakpoint(md) {
         display: flex;
         flex-wrap: wrap;
       }
@@ -101,7 +101,7 @@ div[role=article].node--type-ighn-person.node--view-mode-full {
           margin-bottom: $mobile-width-gutter;
         }
 
-        @include breakpoint(menu) {
+        @include breakpoint(md) {
           flex: 0 0 calc(50% - 1.5rem);
           margin-bottom: $desktop-width-gutter;
 
@@ -114,7 +114,7 @@ div[role=article].node--type-ighn-person.node--view-mode-full {
           }
         }
 
-        @include breakpoint(container) {
+        @include breakpoint(page-container) {
           flex: 0 0 calc(34.5% - 3rem);
           margin-bottom: $desktop-width-gutter;
 

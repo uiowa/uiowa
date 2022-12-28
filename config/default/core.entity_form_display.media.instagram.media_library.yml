@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_form_mode.media.media_library
     - field.field.media.instagram.field_media_instagram
+    - field.field.media.instagram.field_tags
     - media.type.instagram
   module:
     - media
@@ -18,6 +19,16 @@ content:
     weight: 0
     region: content
     settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_tags:
+    type: entity_reference_autocomplete_tags
+    weight: 1
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }

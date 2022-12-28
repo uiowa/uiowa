@@ -1,0 +1,158 @@
+uuid: 13ceb635-8d8e-4ac6-803b-e4a540643395
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.ighn_person.field_ighn_person_biography
+    - field.field.node.ighn_person.field_ighn_person_credentials
+    - field.field.node.ighn_person.field_ighn_person_cv_link
+    - field.field.node.ighn_person.field_ighn_person_department
+    - field.field.node.ighn_person.field_ighn_person_first_name
+    - field.field.node.ighn_person.field_ighn_person_focus_areas
+    - field.field.node.ighn_person.field_ighn_person_global_regions
+    - field.field.node.ighn_person.field_ighn_person_image
+    - field.field.node.ighn_person.field_ighn_person_language
+    - field.field.node.ighn_person.field_ighn_person_last_name
+    - field.field.node.ighn_person.field_ighn_person_position_title
+    - field.field.node.ighn_person.field_ighn_primary_college
+    - node.type.ighn_person
+  module:
+    - link
+    - media_library
+    - path
+    - text
+id: node.ighn_person.default
+targetEntityType: node
+bundle: ighn_person
+mode: default
+content:
+  field_ighn_person_biography:
+    type: text_textarea
+    weight: 11
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_ighn_person_credentials:
+    type: string_textfield
+    weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_ighn_person_cv_link:
+    type: link_default
+    weight: 12
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  field_ighn_person_department:
+    type: entity_reference_autocomplete_tags
+    weight: 5
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_ighn_person_first_name:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_ighn_person_focus_areas:
+    type: entity_reference_autocomplete_tags
+    weight: 7
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_ighn_person_global_regions:
+    type: entity_reference_autocomplete_tags
+    weight: 8
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_ighn_person_image:
+    type: media_library_widget
+    weight: 0
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+  field_ighn_person_language:
+    type: entity_reference_autocomplete_tags
+    weight: 9
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_ighn_person_last_name:
+    type: string_textfield
+    weight: 2
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_ighn_person_position_title:
+    type: string_textfield
+    weight: 6
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_ighn_primary_college:
+    type: entity_reference_autocomplete_tags
+    weight: 4
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 13
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 15
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  url_redirects:
+    weight: 14
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  moderation_state: true
+  promote: true
+  sticky: true
+  title: true
+  uid: true

@@ -14,21 +14,21 @@ bundle: featured_content
 mode: default
 content:
   field_featured_content_item:
+    type: entity_reference_autocomplete
     weight: 2
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_uiowa_headline:
+    type: uiowa_headline_widget
     weight: 1
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: uiowa_headline_widget
-    region: content
   info:
     type: string_textfield
     weight: 0

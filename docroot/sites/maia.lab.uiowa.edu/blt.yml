@@ -1,0 +1,17 @@
+project:
+  local:
+    hostname: labmaia.uiowa.ddev.site
+    protocol: https
+  machine_name: labmaia
+  human_name: maia.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmaia.prod
+drupal:
+  db:
+    database: maia_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: edestruel

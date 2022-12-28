@@ -1,0 +1,59 @@
+uuid: 58c6eac4-e329-4c1a-822a-55c362ce76bc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.transfer_tips.body
+    - field.field.node.transfer_tips.field_meta_tags
+    - field.field.node.transfer_tips.field_transfer_tips_aos
+    - node.type.transfer_tips
+  module:
+    - layout_builder
+    - layout_builder_restrictions
+    - text
+    - user
+third_party_settings:
+  layout_builder:
+    enabled: false
+    allow_custom: false
+  layout_builder_restrictions:
+    allowed_block_categories: {  }
+    entity_view_mode_restriction:
+      allowed_layouts: {  }
+      denylisted_blocks: {  }
+      allowlisted_blocks: {  }
+    entity_view_mode_restriction_by_region:
+      allowed_layouts: {  }
+      allowlisted_blocks: null
+      denylisted_blocks: null
+id: node.transfer_tips.default
+targetEntityType: node
+bundle: transfer_tips
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_transfer_tips_aos:
+    type: entity_reference_label
+    label: visually_hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_meta_tags: true
+  search_api_excerpt: true

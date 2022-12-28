@@ -1,12 +1,12 @@
-@import "../../../themes/custom/uids_base/uids/assets/scss/variables";
-@import "../../../themes/custom/uids_base/uids/assets/scss/utilities";
+@import "../../../themes/custom/uids_base/uids3/assets/scss/variables";
+@import "../../../themes/custom/uids_base/uids3/assets/scss/utilities";
 
 .banner .uiowa-search-form.uids-content:not(.uids-search) input#edit-submit {
   border: 1px solid $primary;
 }
 
 .page-node-type-topic-collection .layout--onecol--background .block-uiowa-core-search-block,
-.page-node-type-topic-collection .layout--onecol--background .field--name-field-topic-collection-tags {
+.page-node-type-topic-collection .layout--onecol--background .block-views-blocktopic-page-browse-by-tag-block-4  {
   max-width: 700px;
   margin: 0 auto;
 }
@@ -26,14 +26,42 @@
   }
 }
 
+.block-views-blocktopic-page-browse-by-tag-block-4 {
+  .headline {
+    font-size: 1.2rem;
+  }
+}
+
+.topic-page--tag {
+  .views-row,
+  .field__item {
+    display: inline;
+    padding-right: 0.2rem;
+  }
+}
+
 .page-node-type-topic-collection .banner {
-  .field--name-field-topic-collection-tags {
-    .field__label {
-      color: white;
-    }
-    .field__items {
-      a {
+  .block-views-blocktopic-page-browse-by-tag-block-4  {
+    .headline {
+      @include breakpoint(sm) {
         color: #fff;
+      }
+    }
+    .views-row  + .views-row {
+      &:before {
+        @include breakpoint(sm) {
+          color: #fff;
+        }
+      }
+    }
+    .field__item {
+      @include breakpoint(sm) {
+        color: #fff;
+      }
+      a {
+        @include breakpoint(sm) {
+          color: #fff;
+        }
       }
     }
   }
@@ -57,35 +85,6 @@
   font-size: 16px;
 }
 
-[class*=block-views-blocktopic] {
-  .views-element-container {
-    margin-top: 0;
-  }
-}
-
-.page-node-type-topic-collection .bg--gray :is(h1, h2, h3, h4, h5, h6) a {
-  color: $link-color;
-  text-decoration: none;
-  font-family: $font-family-serif;
-  font-weight: $font-weight-medium-bold;
-}
-
 .grid--fourcol--25.topic-page--count .list-container {
   gap: 1.5rem;
-}
-
-.col--threecol--33.topic-page--all .list-container {
-  gap: $desktop-width-gutter;
-  @include breakpoint(sm) {
-    column-count: 2;
-  }
-  @include breakpoint(menu) {
-    column-count: 3;
-  }
-  .item-list {
-    break-inside: avoid;
-    ul {
-      break-inside: avoid;
-    }
-  }
 }

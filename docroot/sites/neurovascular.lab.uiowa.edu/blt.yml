@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labneurovascular.uiowa.ddev.site
+    protocol: https
+  machine_name: labneurovascular
+  human_name: neurovascular.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labneurovascular.prod
+drupal:
+  db:
+    database: neurovascular_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: ecryn
+  site-name: 'Neurovascular Lab'

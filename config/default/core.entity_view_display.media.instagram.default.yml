@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.field.media.instagram.field_media_instagram
+    - field.field.media.instagram.field_tags
     - media.type.instagram
   module:
     - media_entity_instagram
@@ -13,16 +14,20 @@ bundle: instagram
 mode: default
 content:
   field_media_instagram:
-    weight: 0
+    type: instagram_embed
     label: hidden
     settings:
       max_width: 0
-      max_height: null
+      hidecaption: false
     third_party_settings: {  }
-    type: instagram_embed
+    weight: 0
     region: content
 hidden:
   created: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_tags: true
   name: true
   search_api_excerpt: true
   thumbnail: true

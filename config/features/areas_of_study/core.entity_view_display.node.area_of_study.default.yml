@@ -26,8 +26,8 @@ dependencies:
     - uids_base
 third_party_settings:
   layout_builder:
-    allow_custom: false
     enabled: true
+    allow_custom: false
     sections:
       -
         layout_id: layout_header
@@ -43,30 +43,32 @@ third_party_settings:
             configuration:
               id: system_breadcrumb_block
               label: null
-              provider: system
               label_display: null
+              provider: system
               context_mapping: {  }
-            additional: {  }
             weight: 0
+            additional: {  }
+            third_party_settings: {  }
           -
             uuid: df5471dc-43b4-4a02-820c-1128fee17f11
             region: content
             configuration:
               id: 'field_block:node:area_of_study:title'
               label: null
-              provider: layout_builder
               label_display: null
-              formatter:
-                label: hidden
-                type: string
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
-            additional: {  }
+              formatter:
+                type: string
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
             weight: 7
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings: {  }
       -
         layout_id: layout_twocol
@@ -82,45 +84,50 @@ third_party_settings:
             uuid: bd18ff33-3031-499c-97e8-bfa321c9dd68
             region: first
             configuration:
+              id: 'field_block:node:area_of_study:body'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:body'
               formatter:
-                label: hidden
                 type: text_default
+                label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            additional: {  }
             weight: 0
+            additional: {  }
+            third_party_settings: {  }
           -
             uuid: d5628205-7805-460b-b65e-9d15b3d94e71
             region: second
             configuration:
+              id: 'field_block:node:area_of_study:field_image'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_image'
               formatter:
+                type: entity_reference_entity_view
                 label: hidden
                 settings:
                   view_mode: medium__square
                   link: false
                 third_party_settings: {  }
-                type: entity_reference_entity_view
-            additional: {  }
             weight: 0
+            additional: {  }
+            third_party_settings: {  }
           -
             uuid: ea4ae76a-a7d5-4dae-a3ed-ac60ba415b10
             region: second
             configuration:
               id: 'field_block:node:area_of_study:field_area_of_study_source_link'
               label: null
-              provider: layout_builder
               label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
-                label: visually_hidden
                 type: link
+                label: visually_hidden
                 settings:
                   trim_length: 80
                   url_only: false
@@ -128,43 +135,43 @@ third_party_settings:
                   rel: '0'
                   target: '0'
                 third_party_settings: {  }
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-            additional: {  }
             weight: 4
+            additional: {  }
+            third_party_settings: {  }
           -
             uuid: 6f234918-3d0f-4023-8908-6e151ead2bf9
             region: first
             configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_degree_types'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_area_of_study_degree_types'
               formatter:
+                type: entity_reference_label
                 label: above
                 settings:
                   link: true
                 third_party_settings: {  }
-                type: entity_reference_label
-            additional: {  }
             weight: 1
+            additional: {  }
+            third_party_settings: {  }
           -
             uuid: 7d3d7aba-b341-4099-89ef-0b93624dce5e
             region: first
             configuration:
+              id: 'field_block:node:area_of_study:field_area_of_study_locations'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-              id: 'field_block:node:area_of_study:field_area_of_study_locations'
               formatter:
+                type: entity_reference_label
                 label: above
                 settings:
                   link: true
                 third_party_settings: {  }
-                type: entity_reference_label
-            additional: {  }
             weight: 2
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -189,7 +196,14 @@ third_party_settings:
       - Webform
       - core
     entity_view_mode_restriction:
-      whitelisted_blocks:
+      allowed_layouts:
+        - layout_onecol
+        - layout_twocol
+        - layout_threecol
+        - layout_fourcol
+        - layout_header
+      denylisted_blocks: {  }
+      allowlisted_blocks:
         'Chaos Tools': {  }
         'Content fields':
           - 'field_block:node:area_of_study:body'
@@ -211,13 +225,6 @@ third_party_settings:
         User: {  }
         Webform: {  }
         core: {  }
-      blacklisted_blocks: {  }
-      allowed_layouts:
-        - layout_onecol
-        - layout_twocol
-        - layout_threecol
-        - layout_fourcol
-        - layout_header
     entity_view_mode_restriction_by_region:
       allowed_layouts:
         - layout_onecol
@@ -225,53 +232,55 @@ third_party_settings:
         - layout_threecol
         - layout_fourcol
         - layout_header
+      allowlisted_blocks: null
+      denylisted_blocks: null
 id: node.area_of_study.default
 targetEntityType: node
 bundle: area_of_study
 mode: default
 content:
   body:
-    label: hidden
     type: text_default
-    weight: 2
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 2
     region: content
   field_area_of_study_degree_types:
-    weight: 17
+    type: entity_reference_label
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 17
     region: content
   field_area_of_study_delivery:
-    weight: 20
+    type: list_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: list_default
+    weight: 20
     region: content
   field_area_of_study_link_direct:
-    weight: 14
+    type: boolean
     label: above
     settings:
       format: default
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    type: boolean
+    weight: 14
     region: content
   field_area_of_study_locations:
-    weight: 16
+    type: entity_reference_label
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 16
     region: content
   field_area_of_study_source_link:
-    weight: 15
+    type: link
     label: above
     settings:
       trim_length: 80
@@ -280,35 +289,38 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    type: link
+    weight: 15
     region: content
   field_area_of_study_synonyms:
-    weight: 19
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    weight: 19
     region: content
   field_image:
-    weight: 1
+    type: entity_reference_entity_view
     label: hidden
     settings:
       view_mode: medium__square
       link: false
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    weight: 1
     region: content
   field_meta_tags:
-    weight: 18
+    type: metatag_empty_formatter
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: metatag_empty_formatter
+    weight: 18
     region: content
   links:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   search_api_excerpt: true

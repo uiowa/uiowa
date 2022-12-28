@@ -1,9 +1,19 @@
-@import "uids/assets/scss/_variables.scss";
-@import "uids/assets/scss/_utilities.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
 
 .view-taxonomy-term {
-  &.grid--threecol--33-34-33,
-  &.grid--twocol--50-50 {
+  .content {
+    .field--name-field-image {
+      @include breakpoint(sm) {
+        float: right;
+        width: 35%;
+        margin-left: $mobile-height-gutter;
+        margin-bottom: $mobile-height-gutter;
+      }
+    }
+  }
+  @include margin($top: $lg);
+  &[class*="grid--"] {
     .view-content.list-container {
       .views-row {
         border: none;
@@ -26,10 +36,6 @@
       }
       &:first-child {
         border-top: none;
-        .card--media-left,
-        .card--media-right {
-          margin-top: 0;
-        }
       }
     }
   }

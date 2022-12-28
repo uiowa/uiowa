@@ -1,0 +1,68 @@
+uuid: 6c3d8ba9-bc8a-4bd3-bf47-281b6e44fd6f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.admissions_card.field_admissions_card_content
+    - field.field.paragraph.admissions_card.field_admissions_card_link
+    - field.field.paragraph.admissions_card.field_admissions_card_media
+    - field.field.paragraph.admissions_card.field_admissions_card_subtitle
+    - field.field.paragraph.admissions_card.field_admissions_card_title
+    - paragraphs.paragraphs_type.admissions_card
+  module:
+    - link
+    - text
+id: paragraph.admissions_card.default
+targetEntityType: paragraph
+bundle: admissions_card
+mode: default
+content:
+  field_admissions_card_content:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_admissions_card_link:
+    type: link_separate
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_admissions_card_media:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_admissions_card_subtitle:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_admissions_card_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

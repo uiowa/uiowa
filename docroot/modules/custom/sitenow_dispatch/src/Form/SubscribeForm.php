@@ -2,7 +2,6 @@
 
 namespace Drupal\sitenow_dispatch\Form;
 
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -12,7 +11,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Configure sitenow_dispatch settings for this site.
  */
 class SubscribeForm extends ConfigFormBase {
-
   /**
    * The HTTP client.
    *
@@ -23,7 +21,7 @@ class SubscribeForm extends ConfigFormBase {
   /**
    * The config factory service.
    *
-   * @var Dispatch
+   * @var \Drupal\sitenow_dispatch\Dispatch
    */
   protected $dispatch;
 
@@ -93,49 +91,34 @@ class SubscribeForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-
-    $email      = $form_state->getValue('email');
-    $first      = $form_state->getValue('first');
-    $last       = $form_state->getValue('last');
-    $api_key    = $this->configFactory->get('sitenow_dispatch.settings')->get('api_key');
+    $email = $form_state->getValue('email');
+    $first = $form_state->getValue('first');
+    $last = $form_state->getValue('last');
     $population = $form_state->getValue('population');
 
-    // This try block will add someone to the subscriber list.
-    try {
-      $this->client->request('POST', 'https://apps.its.uiowa.edu/dispatch/api/v1/populations/' . $population . '/subscribers', [
-        'headers' => [
-          'Accept' => 'application/json',
-          'x-dispatch-api-key' => $api_key,
-        ],
-        'body' => json_encode([
-          "toAddress" => $email,
-          "firstName" => $first,
-          "lastName" => $last,
-        ]),
-      ]);
-    }
-    catch (RequestException | GuzzleException $e) {
-      $this->logger->error($e->getMessage());
-    }
+    $this->dispatch->request('POST', "populations/$population/subscribers", [], [
+      'body' => json_encode([
+        "toAddress" => $email,
+        "firstName" => $first,
+        "lastName" => $last,
+      ]),
+    ]);
 
-    $this->messenger()->addStatus(
-      $this->t(
-        '@email has been added to the subscription list.', [
-          '@email' => $email,
-        ]
-      )
-    );
+    $this->messenger()->addStatus($this->t('@email has been added to the subscription list.', [
+      '@email' => $email,
+    ]));
   }
 
   /**
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    $email         = $form_state->getValue('email');
-    $population    = $form_state->getValue('population');
-    $encoded_email = UrlHelper::buildQuery(['search' => $email]);
+    $email = $form_state->getValue('email');
+    $population = $form_state->getValue('population');
 
-    $response = $this->dispatch->getFromDispatch('https://apps.its.uiowa.edu/dispatch/api/v1/populations/' . $population . '/subscribers?' . $encoded_email);
+    $response = $this->dispatch->request('GET', "populations/$population/subscribers", [
+      'search' => $email,
+    ]);
 
     if ($response->recordsReturned > 0) {
       $form_state->setErrorByName('email', 'This email is already subscribed to the related subscription list.');

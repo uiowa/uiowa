@@ -1,12 +1,32 @@
-@import "assets/scss/_variables.scss";
-@import "assets/scss/_utilities.scss";
-@import "components/typography/lists/lists.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
+@import "uids3/components/typography/lists/lists.scss";
 
 .element--list-none {
-  &.fa-ul {
-    margin-left: 1.875rem;
+  svg.fa-li {
+    top: .4rem;
+    &.h2, &.h3, &.h4, &.h5, &.h6 {
+      top: 0;
+    }
   }
   &.element--margin-none {
     margin: 0;
   }
+}
+
+// Target text areas that use list items
+.block-inline-blockuiowa-collection,
+.block-inline-blockuiowa-text-area,
+.block--wrapper {
+ ul li {
+   margin-bottom: .5rem;
+ }
+}
+
+.fa-ul {
+  position: relative;
+}
+
+.card__meta .fa-ul {
+  margin-left: 2rem;
 }

@@ -1,0 +1,329 @@
+uuid: 4334fce6-24ca-4728-9746-3cbccbe5383b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.mentor.field_grad_program_all_degree
+    - field.field.node.mentor.field_image
+    - field.field.node.mentor.field_person_credential
+    - field.field.node.mentor.field_person_email
+    - field.field.node.mentor.field_person_first_name
+    - field.field.node.mentor.field_person_last_name
+    - field.field.node.mentor.field_person_mentor_qualif
+    - field.field.node.mentor.field_person_mentor_ug_role
+    - field.field.node.mentor.field_person_phone
+    - field.field.node.mentor.field_person_position
+    - field.field.node.mentor.field_person_research_assistants
+    - field.field.node.mentor.field_person_website
+    - field.field.node.mentor.field_scholar_bio
+    - field.field.node.mentor.field_scholar_bio_headline
+    - field.field.node.mentor.field_uiowa_college
+    - node.type.mentor
+    - views.view.mentor_card
+  module:
+    - layout_builder
+    - link
+    - options
+    - system
+    - text
+    - uiowa_entities
+    - user
+    - views
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    enabled: true
+    allow_custom: false
+    sections:
+      -
+        layout_id: layout_twocol
+        layout_settings:
+          label: Content
+          context_mapping: {  }
+          column_widths: 67-33
+          layout_builder_styles_style:
+            section_alignment_start: section_alignment_start
+        components:
+          -
+            uuid: a86c1e4a-4fb9-4be9-a354-70e5166e3083
+            region: first
+            configuration:
+              id: 'field_block:node:mentor:field_grad_program_all_degree'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: visually_hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 6
+            additional:
+              layout_builder_styles_style:
+                block_margin_top: block_margin_top
+          -
+            uuid: 1e130784-692b-447b-b7e5-8fe749c354b9
+            region: first
+            configuration:
+              id: 'field_block:node:mentor:field_person_mentor_qualif'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 10
+            additional: {  }
+          -
+            uuid: 8e7bd06d-b317-422c-bbbc-0dbfb6b72dc7
+            region: first
+            configuration:
+              id: 'field_block:node:mentor:field_person_mentor_ug_role'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 11
+            additional: {  }
+          -
+            uuid: 297bb165-e5db-4fec-a1f4-a69e7637377b
+            region: first
+            configuration:
+              id: 'field_block:node:mentor:field_scholar_bio_headline'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: heading_text
+                label: visually_hidden
+                settings:
+                  size: h3
+                third_party_settings: {  }
+            weight: 7
+            additional: {  }
+          -
+            uuid: 9242bc32-9e2b-491c-9b65-c53569f9ce9c
+            region: first
+            configuration:
+              id: 'field_block:node:mentor:field_scholar_bio'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: text_default
+                label: visually_hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 8
+            additional: {  }
+          -
+            uuid: 08e1c521-09e2-4640-968c-e01eec96c20f
+            region: first
+            configuration:
+              id: 'field_block:node:mentor:field_person_research_assistants'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: inline
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 9
+            additional: {  }
+          -
+            uuid: b0048174-792d-4298-a8af-a3343e0b7fb4
+            region: first
+            configuration:
+              id: 'field_block:node:mentor:field_uiowa_college'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: uiowa_academic_units_formatter
+                label: visually_hidden
+                settings: {  }
+                third_party_settings: {  }
+            weight: 5
+            additional: {  }
+          -
+            uuid: ea6c6fe6-713c-407b-9389-bc6638854cf5
+            region: first
+            configuration:
+              id: system_breadcrumb_block
+              label: Breadcrumbs
+              label_display: '0'
+              provider: system
+              context_mapping: {  }
+            weight: 2
+            additional: {  }
+          -
+            uuid: 67a1e643-c773-4015-a856-3609f77513e8
+            region: first
+            configuration:
+              id: 'field_block:node:page:title'
+              label: Title
+              label_display: '0'
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: visually_hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 3
+            additional: {  }
+          -
+            uuid: 706e8d8e-380c-43af-8cdb-44e40d8055ea
+            region: first
+            configuration:
+              id: 'field_block:node:mentor:field_person_position'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 4
+            additional: {  }
+          -
+            uuid: 371069fc-372e-4f83-927a-7c5995918c8b
+            region: second
+            configuration:
+              id: 'views_block:mentor_card-block_1'
+              label: null
+              label_display: null
+              provider: views
+              context_mapping: {  }
+              views_label: ''
+              items_per_page: '1'
+            weight: 0
+            additional:
+              layout_builder_styles_style:
+                block_margin_top: block_margin_top
+        third_party_settings: {  }
+id: node.mentor.default
+targetEntityType: node
+bundle: mentor
+mode: default
+content:
+  field_grad_program_all_degree:
+    type: list_default
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_image:
+    type: entity_reference_entity_view
+    label: visually_hidden
+    settings:
+      view_mode: large__square
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_person_email:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  field_person_mentor_qualif:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  field_person_mentor_ug_role:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  field_person_phone:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 11
+    region: content
+  field_person_position:
+    type: string
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_person_research_assistants:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_person_website:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 12
+    region: content
+  field_scholar_bio:
+    type: text_default
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 9
+    region: content
+  field_scholar_bio_headline:
+    type: string
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_uiowa_college:
+    type: uiowa_academic_units_formatter
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+hidden:
+  field_person_credential: true
+  field_person_first_name: true
+  field_person_last_name: true
+  links: true
+  search_api_excerpt: true

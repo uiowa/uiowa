@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: ctgl.uiowa.ddev.site
+    protocol: https
+  machine_name: ctgl
+  human_name: ctgl.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: ctgl.prod
+drupal:
+  db:
+    database: ctgl_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://ctgl.prod.drupal.uiowa.edu'
+  requester: atlewis
+  site-name: 'Center for Translation and Global Literacy'

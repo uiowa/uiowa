@@ -1,0 +1,27 @@
+uuid: 64de8f9a-9adf-4fd4-8044-6f52c6709324
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_project_reports
+    - node.type.project
+  module:
+    - file
+id: node.project.field_project_reports
+field_name: field_project_reports
+entity_type: node
+bundle: project
+label: Reports
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:file'
+  handler_settings: {  }
+  file_directory: projects
+  file_extensions: 'txt doc docx pdf'
+  max_filesize: '15 MB'
+  description_field: false
+field_type: file

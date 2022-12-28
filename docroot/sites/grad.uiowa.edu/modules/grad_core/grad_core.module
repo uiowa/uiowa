@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains grad_srop.module.
+ * Contains grad_core.module.
  */
 
 use Drupal\Core\Entity\EntityInterface;
@@ -46,10 +46,10 @@ function grad_core_preprocess_page_title(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     $route_name = \Drupal::routeMatch()->getRouteName();
-    if ($route_name == 'entity.node.canonical') {
+    if ($route_name === 'entity.node.canonical') {
       $node = \Drupal::routeMatch()->getParameter('node');
     }
-    elseif ($route_name == 'entity.node.preview') {
+    elseif ($route_name === 'entity.node.preview') {
       $node = \Drupal::routeMatch()->getParameter('node_preview');
     }
     if (isset($node)) {
@@ -72,6 +72,10 @@ function grad_core_theme($existing, $type, $theme, $path) {
   return [
     'field__field_person_email' => [
       'template' => 'field--node--field-person-email',
+      'base hook' => 'field',
+    ],
+    'field__field_person_education' => [
+      'template' => 'field--node--field-person-education',
       'base hook' => 'field',
     ],
     'field__field_person_phone' => [
@@ -111,7 +115,7 @@ function grad_core_preprocess_node(&$variables) {
   // Append person credentials to the node label in the teaser view mode. This
   // happens on the full node view for all people by default in LBC.
   // @see \Drupal\layout_builder_custom/EventSubscriber\SectionComponentSubscriber
-  if ($node->getType() == 'mentor' && $variables['view_mode'] == 'teaser') {
+  if ($node->getType() === 'mentor' && $variables['view_mode'] === 'teaser') {
     if ($node->hasField('field_person_credential') && $creds = $node->get('field_person_credential')->getString()) {
       $title = $node->getTitle();
       $variables['label'] = t('@title, @creds', [

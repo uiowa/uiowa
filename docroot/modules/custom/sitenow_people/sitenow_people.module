@@ -79,7 +79,7 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
         }
         // Show/hide person type statuses based on person type selections.
         $form['field_person_types']['widget']['#ajax'] = [
-          'callback' => '_person_types_callback',
+          'callback' => 'sitenow_people_person_types_callback',
           'event' => 'change',
           'wrapper' => 'form-ajax-wrapper',
           'speed' => 'fast',
@@ -204,7 +204,7 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
       /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
       $check = \Drupal::service('uiowa_core.access_checker');
 
-      /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+      /** @var Drupal\Core\Access\AccessResultInterface $access */
       $access = $check->access(\Drupal::currentUser()->getAccount());
 
       // Only allow admins access to the person type status filter for now.
@@ -215,7 +215,7 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
 
       // Show/hide person type statuses based on person type selections.
       $element['field_person_types_target_id']['#ajax'] = [
-        'callback' => '_person_types_callback',
+        'callback' => 'sitenow_people_person_types_callback',
         'event' => 'change',
         'wrapper' => 'form-ajax-wrapper',
         'speed' => 'fast',
@@ -258,7 +258,7 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
 
         // Set person type status options based on the type.
         if ($type) {
-          _person_type_status_filter_options($element[PersonTypeInterface::STATUS_FILTER . '_wrapper'][PersonTypeInterface::STATUS_FILTER], $type);
+          sitenow_people_person_type_status_filter_options($element[PersonTypeInterface::STATUS_FILTER . '_wrapper'][PersonTypeInterface::STATUS_FILTER], $type);
         }
       }
 
@@ -315,7 +315,7 @@ function _sitenow_people_exposed_filters_validate(array &$form, FormStateInterfa
 /**
  * Custom callback for person types field.
  */
-function _person_types_callback(array &$form, FormStateInterface $form_state) {
+function sitenow_people_person_types_callback(array &$form, FormStateInterface $form_state) {
   // @todo Do these modifications need to be scoped to just run when
   //   the triggering element is the person types filter? Currently
   //   we're skipping if we're on a node form, but scoping could be
@@ -330,7 +330,7 @@ function _person_types_callback(array &$form, FormStateInterface $form_state) {
     'field_person_types_target_id',
   ]);
 
-  _person_type_status_filter_options($form['settings']['override']['exposed_filters'][PersonTypeInterface::STATUS_FILTER . '_wrapper'][PersonTypeInterface::STATUS_FILTER], $type);
+  sitenow_people_person_type_status_filter_options($form['settings']['override']['exposed_filters'][PersonTypeInterface::STATUS_FILTER . '_wrapper'][PersonTypeInterface::STATUS_FILTER], $type);
 
   return $form;
 }
@@ -338,7 +338,7 @@ function _person_types_callback(array &$form, FormStateInterface $form_state) {
 /**
  * Helper function to remove all options except for 'Any' and $type.
  */
-function _person_type_status_filter_options(array &$field, $type) {
+function sitenow_people_person_type_status_filter_options(array &$field, $type) {
   if (isset($field['#options'])) {
 
     foreach ($field['#options'] as $key => $option) {
@@ -354,7 +354,7 @@ function _person_type_status_filter_options(array &$field, $type) {
  * Implements hook_form_FORM_ID_alter().
  */
 function sitenow_people_form_views_ui_edit_display_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['options']['link_url']['#description'][2]['#items'][] = '{{ sitenow_people.path }} == SiteNow People path setting';
+  $form['options']['link_url']['#description'][2]['#markup'] = ' {{ sitenow_people.path }} is the SiteNow People path setting.';
 }
 
 /**
@@ -413,7 +413,7 @@ function sitenow_people_entity_view_alter(array &$build, EntityInterface $entity
  * @see \Drupal\inline_entity_form\InlineFormInterface::getTableFields()
  */
 function sitenow_people_inline_entity_form_table_fields_alter(array &$fields, array $context) {
-  if ($context['entity_type'] == 'node') {
+  if ($context['field_name'] === 'field_article_author') {
     // Clean up, minimize the person IEF form.
     if (in_array('person', $context['allowed_bundles'])) {
       unset($fields['label']);
@@ -444,10 +444,10 @@ function sitenow_people_preprocess_page_title(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     $route_name = \Drupal::routeMatch()->getRouteName();
-    if ($route_name == 'entity.node.canonical') {
+    if ($route_name === 'entity.node.canonical') {
       $node = \Drupal::routeMatch()->getParameter('node');
     }
-    elseif ($route_name == 'entity.node.preview') {
+    elseif ($route_name === 'entity.node.preview') {
       $node = \Drupal::routeMatch()->getParameter('node_preview');
     }
     if (isset($node)) {
@@ -473,12 +473,12 @@ function sitenow_people_preprocess_page(&$variables) {
     // Get the current user.
     $user = \Drupal::currentUser();
     // Check for permission.
-    if ($user->hasPermission('administer sitenow people') == TRUE) {
+    if ($user->hasPermission('administer sitenow people') === TRUE) {
       // Print warning message informing user to use SiteNow People settings.
       $url = Url::fromRoute('sitenow_people.settings_form');
       $settings_link = Link::fromTextAndUrl(t('SiteNow People'), $url)
         ->toString();
-      if ($route_name == 'view.people.page_people_table') {
+      if ($route_name === 'view.people.page_people_table') {
         $message_text = t('This page can be configured here: @settings_link.
         This page is currently manually sorted.
         You can adjust the order by dragging the arrows up/down and then clicking "Save order" at the bottom of this page.', [
@@ -538,26 +538,6 @@ function sitenow_people_preprocess_node(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_HOOK().
- */
-function sitenow_people_preprocess_field(&$variables) {
-  switch ($variables["element"]["#field_name"]) {
-    // Change header class for person position based on view mode.
-    case 'field_person_position':
-      switch ($variables["element"]["#view_mode"]) {
-        case 'full':
-          $variables['attributes']['class'][] = 'h5';
-          break;
-
-        case 'teaser':
-          $variables['attributes']['class'][] = 'h6';
-          break;
-      }
-      break;
-  }
-}
-
-/**
  * Implements hook_uip_classes_alter().
  */
 function sitenow_people_uip_classes_alter(&$options, $entity, $bundle) {
@@ -577,7 +557,7 @@ function sitenow_people_uip_classes_alter(&$options, $entity, $bundle) {
 function sitenow_people_views_pre_render(ViewExecutable $view) {
   // Add <th> label for Draggable Views, otherwise it is flagged
   // for accessibility.
-  if ($view->id() == 'people' && $view->current_display == 'page_people_table') {
+  if ($view->id() === 'people' && $view->current_display === 'page_people_table') {
     $view->field['draggableviews']->options['label'] = 'Sort Control';
   }
   // Add replacement token for people page path.
@@ -596,7 +576,7 @@ function sitenow_people_preprocess_paragraph(&$variables) {
 
         // Display title if it exists.
         if ($paragraph->hasField('field_uip_display_title')) {
-          if ($paragraph->field_uip_display_title->value == 1) {
+          if ((int) $paragraph->field_uip_display_title->value === 1) {
             $variables['display_title'] = TRUE;
           }
         }
@@ -628,11 +608,11 @@ function sitenow_people_preprocess_paragraph(&$variables) {
         }
 
         if ($paragraph->hasField('field_people_sort') && !$paragraph->get('field_people_sort')->isEmpty()) {
-          if ($paragraph->field_people_sort->value == 'block_people_slf') {
+          if ($paragraph->field_people_sort->value === 'block_people_slf') {
             $view = Views::getView('people_block');
             $view->setDisplay('block_people_slf');
           }
-          elseif ($paragraph->field_people_sort->value == 'block_people_sfl') {
+          elseif ($paragraph->field_people_sort->value === 'block_people_sfl') {
             $view = Views::getView('people_block');
             $view->setDisplay('block_people_sfl');
           }
@@ -660,7 +640,7 @@ function sitenow_people_preprocess_paragraph(&$variables) {
         $pager_type = 'some';
         // Show pager if it exists and is set.
         if ($paragraph->hasField('field_uip_pager')) {
-          if ($paragraph->field_uip_pager->value == 1) {
+          if ((int) $paragraph->field_uip_pager->value === 1) {
             $pager_type = 'full';
           }
         }
@@ -676,8 +656,7 @@ function sitenow_people_preprocess_paragraph(&$variables) {
 
         // If we have more link checked and link provided, pass it.
         if ($paragraph->hasField('field_people_more')) {
-          $more = ($paragraph->field_people_more->value == 1) ? TRUE : FALSE;
-          if ($more == TRUE) {
+          if ((int) $paragraph->field_people_more->value === 1) {
             $variables['more'] = [
               '#type' => 'container',
               '#attributes' => [
@@ -700,7 +679,7 @@ function sitenow_people_preprocess_paragraph(&$variables) {
             ];
 
             foreach ($displays as $display) {
-              if ($view->getDisplay($display)['display_options']['enabled'] == TRUE) {
+              if ($view->getDisplay($display)['display_options']['enabled'] === TRUE) {
                 $url = Url::fromRoute('view.people.' . $display);
                 break;
               }
@@ -729,8 +708,8 @@ function sitenow_people_preprocess_paragraph(&$variables) {
  */
 function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $view = $form_state->get('view');
-  if ($view->id() == 'people_block') {
-    if ($view->current_display == 'block_people_sfl' || $view->current_display == 'block_people_slf') {
+  if ($view->id() === 'people_block') {
+    if ($view->current_display === 'block_people_sfl' || $view->current_display === 'block_people_slf') {
       $exposed_input = $view->getExposedInput();
       if (isset($exposed_input['items_per_page'])) {
         $form['items_per_page']['#options'] = [$exposed_input['items_per_page'] => $exposed_input['items_per_page']];
@@ -739,7 +718,7 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
     }
   }
 
-  if ($view->id() == 'people') {
+  if ($view->id() === 'people') {
     $person_type_filter = 'type';
     if (isset($form[$person_type_filter])) {
       _sitenow_people_person_type_filter_select($form[$person_type_filter]);
@@ -778,7 +757,7 @@ function _sitenow_people_person_type_filter_select(array &$form) {
  * Implements hook_field_widget_WIDGET_TYPE_form_alter().
  */
 function sitenow_people_field_widget_paragraphs_form_alter(&$element, &$form_state, $context) {
-  if ($element["#paragraph_type"] == 'people') {
+  if ($element['#paragraph_type'] === 'people') {
     if (!empty($element['subform']['field_people_more'])) {
       $parents_array = $element['subform']['#parents'];
       $parents = array_shift($parents_array) . '[' . implode('][', $parents_array) . ']';
@@ -910,7 +889,7 @@ function sitenow_people_token_info(): array {
  */
 function sitenow_people_tokens($type, $tokens, array $data, array $options, BubbleableMetadata $bubbleable_metadata) {
   $replacements = [];
-  if ($type == 'sitenow_people') {
+  if ($type === 'sitenow_people') {
 
     foreach ($tokens as $name => $original) {
       // Find the desired token by name.

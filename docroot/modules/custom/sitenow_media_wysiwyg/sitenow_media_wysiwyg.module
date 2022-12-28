@@ -7,6 +7,9 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\FileInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\file\Entity\File;
+use Drupal\image\Entity\ImageStyle;
 
 /**
  * Implements hook_field_widget_WIDGET_TYPE_form_alter().
@@ -26,10 +29,13 @@ function sitenow_media_wysiwyg_field_widget_panopto_url_widget_form_alter(&$elem
  * Implements hook_editor_js_settings_alter().
  */
 function sitenow_media_wysiwyg_editor_js_settings_alter(array &$settings) {
+  /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
+  $path_resolver = \Drupal::service('extension.path.resolver');
+
   foreach (array_keys($settings['editor']['formats']) as $text_format_id) {
     if ($settings['editor']['formats'][$text_format_id]['editor'] === 'ckeditor') {
       $settings['editor']['formats'][$text_format_id]['editorSettings']['customConfig'] =
-        base_path() . drupal_get_path('module', 'sitenow_media_wysiwyg') . '/js/ckeditor_config.js';
+        base_path() . $path_resolver->getPath('module', 'sitenow_media_wysiwyg') . '/js/ckeditor_config.js';
     }
   }
 }
@@ -55,7 +61,7 @@ function sitenow_media_wysiwyg_form_entity_embed_dialog_alter(&$form, FormStateI
     $uuid = $input['editor_object']['data-entity-uuid'];
     $entity = \Drupal::service('entity.repository')->loadEntityByUuid($entity_type, $uuid);
   }
-  if (isset($entity, $entity_type) && $entity_type == 'media') {
+  if (isset($entity, $entity_type) && $entity_type === 'media') {
     $bundle = $entity->bundle();
     switch ($bundle) {
       case 'image':
@@ -69,8 +75,8 @@ function sitenow_media_wysiwyg_form_entity_embed_dialog_alter(&$form, FormStateI
  * Implements hook_inline_entity_form_entity_form_alter().
  */
 function sitenow_media_wysiwyg_inline_entity_form_entity_form_alter(&$entity_form, &$form_state) {
-  if ($entity_form["#entity_type"] == 'media' && $entity_form["#bundle"] == 'file') {
-    if ($entity_form["#op"] == 'add') {
+  if ($entity_form["#entity_type"] === 'media' && $entity_form["#bundle"] === 'file') {
+    if ($entity_form["#op"] === 'add') {
       $entity_form["revision_log_message"]["#access"] = FALSE;
     }
   }
@@ -98,7 +104,7 @@ function sitenow_media_wysiwyg_form_media_library_add_form_alter(&$form, FormSta
 function sitenow_media_wysiwyg_file_presave(FileInterface $file) {
   // FMDM only parses jpeg correctly for EXIF, not TIFF. Luckily,
   // should see very few TIFF orientation issues.
-  if ($file->isNew() && $file->getMimeType() == 'image/jpeg') {
+  if ($file->isNew() && $file->getMimeType() === 'image/jpeg') {
     /** @var \Drupal\file_mdm\FileMetadataManager $fmdm */
     $fmdm = \Drupal::service('file_metadata_manager');
 
@@ -148,29 +154,44 @@ function sitenow_media_wysiwyg_file_presave(FileInterface $file) {
 }
 
 /**
- * Implements hook_oembed_providers_alter().
+ * Implements hook_ENTITY_TYPE_update().
  */
-function sitenow_media_wysiwyg_oembed_providers_alter(array &$providers) {
-  // Add "University of Iowa" Kalutra/MediaSpace provider.
-  $providers[] = [
-    'provider_name' => 'University of Iowa',
-    'provider_url' => 'http://mediaspace.uiowa.edu',
-    'endpoints' => [
-      [
-        'schemes' => [
-          'http://mediaspace.uiowa.edu/*',
-          'https://mediaspace.uiowa.edu/*',
-        ],
-        'url' => 'http://mediaspace.uiowa.edu/oembed',
-        'discovery' => 'true',
-      ],
-    ],
-  ];
-}
+function sitenow_media_wysiwyg_media_update(EntityInterface $entity) {
+  // If not local, try to clear the varnish cache for the file.
+  if (\Drupal::moduleHandler()->moduleExists('acquia_purge')) {
+    $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
+    $purgeQueuers = \Drupal::service('purge.queuers');
+    $purgeQueue = \Drupal::service('purge.queue');
+    $queuer = $purgeQueuers->get('coretags');
+    $invalidations = [];
 
-/**
- * Implements hook_media_source_info_alter().
- */
-function sitenow_media_wysiwyg_media_source_info_alter(array &$sources) {
-  $sources["oembed:video"]["providers"][] = 'University of Iowa';
+    switch ($entity->bundle()) {
+      case 'file':
+        $field = 'field_media_file';
+        break;
+
+      case 'audio':
+        $field = 'field_media_audio_file';
+        break;
+
+      case 'image':
+        $field = 'field_media_image';
+        $styles = ImageStyle::loadMultiple();
+        break;
+    }
+
+    if (isset($field) && $entity->hasField($field)) {
+      $file = File::load($entity->$field->target_id);
+      $invalidations[] = $purgeInvalidationFactory->get('url', $file->createFileUrl(FALSE));
+
+      // Note that media_entity_file_replace flushes derivative images.
+      if (isset($styles)) {
+        foreach ($styles as $style) {
+          $invalidations[] = $purgeInvalidationFactory->get('url', $style->buildUrl($file->getFileUri()));
+        }
+      }
+
+      $purgeQueue->add($queuer, $invalidations);
+    }
+  }
 }

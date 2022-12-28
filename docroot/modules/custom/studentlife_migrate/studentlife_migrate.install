@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @file
+ * Install tasks.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function studentlife_migrate_install() {
+  \Drupal::moduleHandler()->loadInclude('sitenow_migrate', 'install');
+  sitenow_migrate_migration_install('studentlife');
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function studentlife_migrate_uninstall() {
+  \Drupal::moduleHandler()->loadInclude('sitenow_migrate', 'install');
+  sitenow_migrate_migration_uninstall('studentlife');
+}

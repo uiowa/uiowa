@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labherrmann.uiowa.ddev.site
+    protocol: https
+  machine_name: labherrmann
+  human_name: herrmann.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labherrmann.prod
+drupal:
+  db:
+    database: herrmann_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: jhrrmnn
+  site-name: 'Herrmann Respiratory Dynamics Lab'

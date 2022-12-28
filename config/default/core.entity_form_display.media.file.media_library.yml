@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_form_mode.media.media_library
     - field.field.media.file.field_media_file
+    - field.field.media.file.field_tags
     - media.type.file
   module:
     - file
@@ -21,6 +22,16 @@ content:
     region: content
     settings:
       progress_indicator: throbber
+    third_party_settings: {  }
+  field_tags:
+    type: entity_reference_autocomplete_tags
+    weight: 2
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   name:
     type: string_textfield

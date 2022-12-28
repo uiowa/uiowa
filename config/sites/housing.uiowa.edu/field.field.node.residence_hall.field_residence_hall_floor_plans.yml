@@ -1,0 +1,46 @@
+uuid: 17885fd9-2144-4778-ba01-70b62612ced6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_residence_hall_floor_plans
+    - node.type.residence_hall
+    - paragraphs.paragraphs_type.housing_floor_plan
+  module:
+    - entity_reference_revisions
+id: node.residence_hall.field_residence_hall_floor_plans
+field_name: field_residence_hall_floor_plans
+entity_type: node
+bundle: residence_hall
+label: 'Floor plans and 3D view'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      housing_floor_plan: housing_floor_plan
+    negate: 0
+    target_bundles_drag_drop:
+      housing_cta:
+        weight: 7
+        enabled: false
+      housing_floor_plan:
+        weight: 8
+        enabled: true
+      uiowa_collection_item:
+        weight: 9
+        enabled: false
+      uiowa_contact:
+        weight: 10
+        enabled: false
+      uiowa_slide:
+        weight: 11
+        enabled: false
+      uiowa_timeline_item:
+        weight: 12
+        enabled: false
+field_type: entity_reference_revisions

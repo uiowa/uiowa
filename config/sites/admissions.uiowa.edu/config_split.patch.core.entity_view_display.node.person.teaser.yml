@@ -1,0 +1,20 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.person.field_person_territory
+    module:
+      - options
+  content:
+    field_person_territory:
+      type: list_default
+      label: inline
+      settings: {  }
+      third_party_settings: {  }
+      weight: 5
+      region: content
+    links:
+      weight: 6
+removing:
+  content:
+    links:
+      weight: 5

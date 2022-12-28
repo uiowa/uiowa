@@ -6,6 +6,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\brand_core\BrandSVG;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Extension\ExtensionPathResolver;
 use Drupal\Core\File\FileSystemInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -30,16 +31,26 @@ class LockupController extends ControllerBase {
   protected $fs;
 
   /**
+   * The extension.path.resolver service.
+   *
+   * @var \Drupal\Core\Extension\ExtensionPathResolver
+   */
+  protected $extensionPathResolver;
+
+  /**
    * Lockup controller constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity_type.manager service.
    * @param \Drupal\Core\File\FileSystemInterface $fileSystem
    *   The file_system service.
+   * @param \Drupal\Core\Extension\ExtensionPathResolver $extensionPathResolver
+   *   The extension.path.resolver service.
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, FileSystemInterface $fileSystem) {
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, FileSystemInterface $fileSystem, ExtensionPathResolver $extensionPathResolver) {
     $this->entityTypeManager = $entityTypeManager;
     $this->fs = $fileSystem;
+    $this->extensionPathResolver = $extensionPathResolver;
   }
 
   /**
@@ -48,7 +59,8 @@ class LockupController extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('entity_type.manager'),
-      $container->get('file_system')
+      $container->get('file_system'),
+      $container->get('extension.path.resolver')
     );
   }
 
@@ -121,7 +133,7 @@ class LockupController extends ControllerBase {
       $zip->addFile($tmp_dir . '/' . $lockup_horizontal_reversed_file, $name . "-Lockup/" . $lockup_horizontal_reversed_file);
 
       // Read the instructions.
-      $instructions = drupal_get_path('module', 'brand_core') . '/lockup-instructions.docx';
+      $instructions = $this->extensionPathResolver->getPath('module', 'brand_core') . '/lockup-instructions.docx';
       $zip->addFile($instructions, $name . "-Lockup/lockup-instructions.docx");
       $zip->close();
 
@@ -143,8 +155,8 @@ class LockupController extends ControllerBase {
    */
   public function generateLockup($node, $iowa_color, $text_color, $type) {
     // Load all of the needed assets to create the graphics.
-    $bold = drupal_get_path('module', 'brand_core') . '/fonts/Iowa-RobotoBold.svg';
-    $regular = drupal_get_path('module', 'brand_core') . '/fonts/Iowa-RobotoRegular.svg';
+    $bold = $this->extensionPathResolver->getPath('module', 'brand_core') . '/fonts/Iowa-RobotoBold.svg';
+    $regular = $this->extensionPathResolver->getPath('module', 'brand_core') . '/fonts/Iowa-RobotoRegular.svg';
     $psize = 8;
     $pline_height = 9.5;
     $pletter_spacing = 0;

@@ -1,0 +1,61 @@
+uuid: dfb6bfaa-cdcc-4deb-805b-0a996170e87c
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.uiowa_vertical_video
+    - field.field.block_content.uiowa_vertical_video.field_uiowa_vertical_video
+    - field.field.block_content.uiowa_vertical_video.field_uiowa_vertical_video_cap
+    - field.field.block_content.uiowa_vertical_video.field_uiowa_vertical_video_image
+    - field.field.block_content.uiowa_vertical_video.field_uiowa_vertical_video_sub
+    - field.field.block_content.uiowa_vertical_video.field_uiowa_vertical_video_title
+id: block_content.uiowa_vertical_video.default
+targetEntityType: block_content
+bundle: uiowa_vertical_video
+mode: default
+content:
+  field_uiowa_vertical_video:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_uiowa_vertical_video_cap:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_uiowa_vertical_video_image:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_uiowa_vertical_video_sub:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_uiowa_vertical_video_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  search_api_excerpt: true

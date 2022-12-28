@@ -1,0 +1,54 @@
+uuid: a8283c78-2001-4947-a72d-0e8505bdd618
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.media.static_map.field_media_static_map
+    - media.type.static_map
+  module:
+    - path
+    - sitenow_media_wysiwyg
+id: media.static_map.default
+targetEntityType: media
+bundle: static_map
+mode: default
+content:
+  created:
+    type: datetime_timestamp
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_media_static_map:
+    type: static_map_url_widget
+    weight: 0
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 4
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 1
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  name: true

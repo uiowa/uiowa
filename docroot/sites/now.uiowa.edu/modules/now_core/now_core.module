@@ -1,0 +1,334 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Now Core module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_alter().
+ */
+function now_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'node_article_form':
+    case 'node_article_edit_form':
+      $form['field_contact_reference']['#states'] = [
+        'visible' => [
+          ':input[name="field_article_type"]' => [
+          ['value' => 'featured'],
+            'or',
+          ['value' => 'achievements'],
+          ],
+        ],
+      ];
+      break;
+
+    // Article contacts are taken care of in sitenow_articles.module,
+    // but person nodes with contact references need extra processing
+    // in order to display newly created person names.
+    case 'node_person_form':
+    case 'node_person_edit_form':
+      // Check that there are entities.
+      if (isset($form['field_contact_reference']['widget']['entities'])) {
+        $contacts = $form['field_contact_reference']['widget']['entities'];
+
+        // For each one that exists, make sre it is one of the integer entries,
+        // which is actually an entity.
+        foreach ($contacts as $key => $contact) {
+          if (is_int($key) && $contact['#entity']->getType() === 'person') {
+
+            // Then, get the string of the first and last names.
+            $first = $contact['#entity']?->get('field_person_first_name')?->getString();
+            $last = $contact['#entity']?->get('field_person_last_name')?->getString();
+
+            // And set the title, which would have been empty,
+            // to the concatenation of the two.
+            if (is_string($first) && is_string($last)) {
+              $form['field_contact_reference']['widget']['entities'][$key]['#label'] = $first . ' ' . $last;
+            }
+          }
+        }
+      }
+
+  }
+  if ($form_id === 'node_article_form' || $form_id === 'node_article_edit_form') {
+    $form['field_embargo_information']['#states'] = [
+      'visible' => [
+        ':input[name="field_article_type"]' => [
+          'value' => 'featured',
+        ],
+      ],
+    ];
+
+    $form['field_original_publication_date']['#states'] = [
+      'visible' => [
+        ':input[name="field_article_type"]' => [
+          ['value' => 'in-the-news'],
+          'or',
+          ['value' => 'ui-spotlight'],
+        ],
+      ],
+    ];
+
+    // @todo Remove this when https://github.com/uiowa/uiowa/issues/2691
+    //   is resolved.
+    // Smart_date deals with ranges, but we only need a single date,
+    // so unset the extra "to" in the form and hide the end date.
+    // JS will update the end date to match the start date
+    // without showing clutter to the end user.
+    unset($form['field_original_publication_date']['widget'][0]['time_wrapper']['separator']);
+    $form['field_original_publication_date']['widget'][0]['time_wrapper']['end_value']['#attributes']['class'][] = 'hidden';
+  }
+}
+
+/**
+ * Implements hook_form_views_exposed_form_alter().
+ */
+function now_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $view = $form_state->getStorage('view');
+  if ($form_id == 'views_exposed_form' && in_array($view['view']->id(), ['iowa_now_experts'])) {
+    $form['field_person_research_areas_target_id']['#size'] = 10;
+    $form['#validate'][] = 'now_core_experts_form_validate';
+  }
+}
+
+/**
+ * Custom error message for views exposed form for iowa now experts.
+ */
+function now_core_experts_form_validate($form, FormStateInterface $form_state) {
+  $expert = $form['field_person_research_areas_target_id'];
+  if (isset($expert) && $form_state->getError($expert)) {
+    $form_state->clearErrors();
+    $form_state->setErrorByName('field_person_research_areas_target_id', t('There are no matching research areas.'));
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave().
+ */
+function now_core_node_presave($entity) {
+  // Currently we're only interested in altering
+  // functionality for the articles that have
+  // an article_type field, so return if not.
+  if ($entity->getType() != 'article' || !isset($entity->field_article_type)) {
+    return;
+  }
+
+  // Add a tag according to the article type
+  // so that it can be used in user-created filters.
+  $tid = now_core_article_type_tag_map($entity->field_article_type->value);
+  if (is_string($tid)) {
+    // Check that we didn't already have the tid
+    // before appending it to our list of tags.
+    $in_array = FALSE;
+    $old_tid = FALSE;
+    // If it's new, we only need to worry about
+    // adding the new TID, but if it's an edit,
+    // we also need to check if we need to remove
+    // an old article type's TID.
+    if (!$entity->isNew()) {
+      // To account for articles created prior to requiring this field,
+      // we also need to check if the field is empty. If it was,
+      // we won't have a TID to remove.
+      $old_tid = (!empty($entity->original->field_article_type_value)) ? now_core_article_type_tag_map($entity->original->field_article_type->value) : FALSE;
+    }
+    // If the old TID is the same as the new,
+    // then we can treat it like the entity is new.
+    $old_tid = ($old_tid != $tid) ? $old_tid : FALSE;
+    $to_remove = [];
+    foreach ($entity->field_tags->getValue() as $delta => $item) {
+      if ((string) $item['target_id'] === $tid) {
+        $in_array = TRUE;
+        // If it was new or the type wasn't changing,
+        // we're done and don't need to keep iterating.
+        if ($old_tid === FALSE) {
+          break;
+        }
+      }
+      // If we have an old TID and we've matched it,
+      // add it to our list of removals.
+      if ($old_tid !== FALSE &&
+        (string) $item['target_id'] === $old_tid
+      ) {
+        $to_remove[] = $delta;
+      }
+    }
+    // Remove our targeted TIDs in reverse order,
+    // so we don't mess with our deltas. Only really
+    // necessary if we found dupes of the old TID.
+    rsort($to_remove);
+    foreach ($to_remove as $delta) {
+      $entity->field_tags->removeItem($delta);
+    }
+    if ($in_array === FALSE) {
+      $entity->field_tags->appendItem($tid);
+    }
+  }
+
+  // The rest of the functionality only applies
+  // to the featured article type, so we may be done.
+  if ($entity->field_article_type->value != 'featured') {
+    return;
+  }
+  // If we don't have these, there's no functionality to alter.
+  if (!isset($entity->moderation_state) || !isset($entity->field_embargo_information)) {
+    return;
+  }
+  // We only need to change things if there is both
+  // an embargo message present and we are trying to publish.
+  if (!empty($entity->field_embargo_information->value)) {
+    if ($entity->moderation_state->value != 'published') {
+      return;
+    }
+    // If it's brand new, then we'll go ahead and set it to draft
+    // rather than publish.
+    if ($entity->isNew()) {
+      $alt_state = 'draft';
+    }
+    // If it's not new, then let's set it back to it's previous state
+    // which wasn't published.
+    else {
+      // If we are not going from a previously published state,
+      // set it to the old mod state (eg draft or review).
+      // In the case where the previous state was published,
+      // we default to archived to unpublish the page.
+      // There shouldn't be a case where this happens unless it is
+      // by accident, so this is really only a fallback.
+      $alt_state = ($entity->original->moderation_state->value === 'published') ? 'archived' : $entity->original->moderation_state->value;
+    }
+    $entity->moderation_state = $alt_state;
+    // Add a user message along with changing this state.
+    \Drupal::messenger()->addWarning(
+      t("Content is under embargo and cannot be published at this time. It has been set to the @alt_state moderation state.",
+        [
+          '@alt_state' => $alt_state,
+        ])
+    );
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function now_core_form_taxonomy_term_confirm_form_alter(&$form, FormStateInterface $form_state) {
+  // Check/prevent tags from being deleted on single delete
+  // if they are in our list of tags used to associate
+  // article types.
+  // Only need to alter the delete operation form.
+  if ($form_state->getFormObject()->getOperation() !== 'delete') {
+    return;
+  }
+  $tag = $form_state
+    ->getFormObject()
+    ->getEntity();
+
+  // Certain tags are required for auto-tagging functionality.
+  // Grab our associative TID map, and the array_values
+  // will be the list of tag ids that can't be deleted.
+  $required_tids = array_values(now_core_article_type_tag_map());
+  if (in_array($tag->id(), $required_tids)) {
+    $form['actions']['submit']['#disabled'] = TRUE;
+    now_core_prevent_tag_delete_message($tag->getName());
+  }
+}
+
+/**
+ * Custom warning message for auto-tag deletion detection.
+ *
+ * @param string $name
+ *   The associated tag's name.
+ *
+ * @see now_core_form_taxonomy_tag_confirm_form_alter()
+ */
+function now_core_prevent_tag_delete_message($name) {
+  $warning_text = t('The tag <em>"@name"</em> is currently used for filter functionality of article types. It cannot be deleted.', [
+    '@name' => $name,
+  ]);
+  \Drupal::messenger()->addWarning($warning_text);
+}
+
+/**
+ * Mapping for article types to their associated tags.
+ *
+ * @param string $article_type
+ *   The article type as a machine name, or empty to fetch TIDs array.
+ *
+ * @return string|bool|array
+ *   The associated TID or FALSE, or an associative array of TIDs.
+ */
+function now_core_article_type_tag_map(string $article_type = '') {
+  $map = [
+    'achievements' => '16',
+    'featured' => '11',
+    'in-the-news' => '21',
+    'ui-spotlight' => '31',
+    'expert' => '66',
+    'staff' => '71',
+  ];
+  // If we aren't getting a specific TID,
+  // then return the full map.
+  if (empty($article_type)) {
+    return $map;
+  }
+  return $map[$article_type] ?? FALSE;
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function now_core_preprocess_views_view_unformatted(&$variables) {
+
+  $view = $variables['view'];
+  $variables['row_item_classes'] = [];
+  if ($view->current_display === 'page_experts_list') {
+    $style = $view->style_plugin;
+    $rows = $variables['rows'];
+
+    $default_classes = [
+      'card--list',
+      'card--media-left',
+      'card--person-teaser',
+    ];
+
+    $variables['row_item_classes'] = array_merge($default_classes, array_values($variables['row_item_classes']));
+    foreach ($rows as $id => $row) {
+      // Set remaining row_item_classes as attributes on each row.
+      if (isset($variables['row_item_classes'])) {
+        $variables['rows'][$id]['attributes']->addClass($variables['row_item_classes']);
+      }
+      // Get node path to link card with.
+      $nid = $view->result[$id]->_entity->id();
+      $link = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
+
+      $meta_combined = $style->getField($id, 'field_person_phone') . " " . $style->getField($id, 'field_person_email');
+      $meta = ['#markup' => $meta_combined];
+
+      // Initialize card_options variable.
+      $variables['rows'][$id]['card_options'] = [
+        'attributes' => $variables['rows'][$id]['attributes'],
+        'media_styles' => ['media--circle', 'media--border'],
+        'media_sizes' => ['card__media--small'],
+        'card_image' => $style->getField($id, 'field_image'),
+        'card_title' => $style->getField($id, 'title'),
+        'card_link_url' => $link,
+        'card_subtitle' => $style->getField($id, 'field_person_position'),
+        'card_meta' => $meta,
+        'card_text' => $style->getField($id, 'field_person_research_areas'),
+      ];
+    }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function now_core_theme($existing, $type, $theme, $path) {
+  return [
+    'views_view_unformatted__iowa_now_experts' => [
+      'template' => 'views-view-unformatted--iowa-now-experts',
+      'base hook' => 'view',
+    ],
+  ];
+}

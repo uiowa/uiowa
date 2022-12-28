@@ -1,0 +1,14 @@
+uuid: 702ca76d-635e-4625-884b-ddef23630634
+langcode: en
+status: true
+dependencies:
+  module:
+    - search_api_db
+id: sitenow_intranet_search_server
+name: 'Sitenow Intranet Search Server'
+description: ''
+backend: search_api_db
+backend_config:
+  database: 'default:default'
+  min_chars: 3
+  matching: words

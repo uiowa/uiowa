@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies: {  }
+id: uipress_migrate
+label: 'UI Press Migrate'
+description: 'Migrations for UI Press'
+weight: 80
+stackable: true
+storage: folder
+folder: ./sites/uipress.uiowa.edu/modules/uipress_migrate/config/split
+module:
+  uipress_migrate: 0
+  migrate: 0
+  migrate_drupal: 0
+  migrate_plus: 0
+  migrate_tools: 0
+  sitenow_migrate: 0
+theme: {  }
+complete_list:
+  - config_split.config_split.uipress_migrate
+  - 'migrate_plus.migration.uipress_*'
+partial_list: {  }

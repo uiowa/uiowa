@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for IISC Core module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_alter().
+ */
+function iisc_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    // Node form modifications.
+    case 'node_partner_edit_form':
+    case 'node_partner_form':
+    case 'node_project_edit_form':
+    case 'node_project_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      break;
+
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function iisc_core_theme($existing, $type, $theme, $path) {
+  return [
+    'views_view_unformatted__projects_college_department' => [
+      'template' => 'views-view-unformatted--projects-college-department',
+      'base hook' => 'view',
+    ],
+    'views_view_unformatted__partners_recent_block' => [
+      'template' => 'views-view-unformatted--partners-recent',
+      'base hook' => 'view',
+    ],
+    'views_view_unformatted__projects_topic' => [
+      'template' => 'views-view-unformatted--projects-topic',
+      'base hook' => 'view',
+    ],
+  ];
+}

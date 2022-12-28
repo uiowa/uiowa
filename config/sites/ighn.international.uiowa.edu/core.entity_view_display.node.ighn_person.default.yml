@@ -1,0 +1,135 @@
+uuid: 29efc4ec-45bd-46fa-b9c3-7f3a443f1740
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.ighn_person.field_ighn_person_biography
+    - field.field.node.ighn_person.field_ighn_person_credentials
+    - field.field.node.ighn_person.field_ighn_person_cv_link
+    - field.field.node.ighn_person.field_ighn_person_department
+    - field.field.node.ighn_person.field_ighn_person_first_name
+    - field.field.node.ighn_person.field_ighn_person_focus_areas
+    - field.field.node.ighn_person.field_ighn_person_global_regions
+    - field.field.node.ighn_person.field_ighn_person_image
+    - field.field.node.ighn_person.field_ighn_person_language
+    - field.field.node.ighn_person.field_ighn_person_last_name
+    - field.field.node.ighn_person.field_ighn_person_position_title
+    - field.field.node.ighn_person.field_ighn_primary_college
+    - node.type.ighn_person
+  module:
+    - field_group
+    - link
+    - text
+    - user
+third_party_settings:
+  field_group:
+    group_ighn_person_main_header:
+      children: {  }
+      label: 'IGHN Person Main Header'
+      parent_name: ''
+      region: hidden
+      weight: 13
+      format_type: html_element
+      format_settings:
+        classes: ighn-main-info
+        id: ''
+        element: div
+        show_label: false
+        label_element: h3
+        label_element_classes: ''
+        attributes: ''
+        effect: none
+        speed: fast
+id: node.ighn_person.default
+targetEntityType: node
+bundle: ighn_person
+mode: default
+content:
+  field_ighn_person_biography:
+    type: text_default
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  field_ighn_person_credentials:
+    type: string
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 9
+    region: content
+  field_ighn_person_cv_link:
+    type: link
+    label: visually_hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  field_ighn_person_department:
+    type: entity_reference_label
+    label: visually_hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_ighn_person_focus_areas:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_ighn_person_global_regions:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_ighn_person_image:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: large__square
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_ighn_person_language:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_ighn_person_position_title:
+    type: string
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_ighn_primary_college:
+    type: entity_reference_label
+    label: visually_hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden:
+  field_ighn_person_first_name: true
+  field_ighn_person_last_name: true
+  links: true

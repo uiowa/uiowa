@@ -1,0 +1,43 @@
+uuid: 0578822f-6916-43bf-85fe-4b47fcb68011
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_residence_hall_bldg_links
+    - node.type.residence_hall
+    - paragraphs.paragraphs_type.housing_cta
+  module:
+    - entity_reference_revisions
+id: node.residence_hall.field_residence_hall_bldg_links
+field_name: field_residence_hall_bldg_links
+entity_type: node
+bundle: residence_hall
+label: 'Building Links'
+description: 'Use this field for the "Dining menu" and "Place a work order" links.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      housing_cta: housing_cta
+    negate: 0
+    target_bundles_drag_drop:
+      housing_cta:
+        weight: 6
+        enabled: true
+      uiowa_collection_item:
+        weight: 7
+        enabled: false
+      uiowa_contact:
+        weight: 8
+        enabled: false
+      uiowa_slide:
+        weight: 9
+        enabled: false
+      uiowa_timeline_item:
+        weight: 10
+        enabled: false
+field_type: entity_reference_revisions
