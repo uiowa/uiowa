@@ -1,56 +1,29 @@
 {{ attach_library('uids_base/card') }}
 {{ attach_library('uids_base/media') }}
 {% set attributes = attributes ?: create_attribute() %}
-{% set card_classes = ['card', 'click-container', 'block--word-break'] %}
 {% set button_attributes = button_attributes ?: create_attribute() %}
 {% set card_button_classes = ['bttn', 'bttn--primary', 'bttn--transparent', 'bttn--light-font'] %}
 {% set media_attributes = media_attributes ?: create_attribute() %}
 {% set visible_button = visible_button ?: false %}
 
-{# The following code is to determine where a link should be attached, if it exists. #}
-{% set linked_element = false %}
-{% if card_link_url is not empty %}
-  {# Add bttn--circle class if link title is empty. #}
-  {% if card_link_title is empty %}
-    {% set card_button_classes = card_button_classes|merge(['bttn--circle', 'bttn--no-text']) %}
-  {% endif %}
-  {% if card_title is not empty %}
-    {# Title is set, use it as the linking element.  #}
-    {% set linked_element = 'title' %}
-    {# If we also have link text, then we'll show a psuedo-button. #}
-{#    {% if card_link_title is not empty %}#}
-{#      {% set linked_element = 'button' %}#}
-{#    {% endif %}#}
-  {% elseif card_link_title is not empty %}
-    {# Title is not set, but there is link text, so use that instead. #}
-    {% set linked_element = 'button' %}
-  {% elseif card_image is not empty %}
-    {# If the image exists, use that as the linking element. #}
-    {% set linked_element = 'image' %}
-  {% else %}
-    {# Nothing else to use, so wrap the whole card. #}
-    {% set linked_element = 'card' %}
-  {% endif %}
-{% endif %}
-
 {# Do not show the aria-describedby attribute if title AND link text are not both present. #}
-{% if linked_element != 'title' or card_link_title == '' %}
+{% if linked_element != 'title' or link_title == '' %}
   {% set card_aria_describedby = '' %}
 {% endif %}
 
-<div{{ attributes.addclass(card_classes) }}{% if card_link_url is empty %} data-uids-no-link{% endif %}>
+<div{{ attributes }}{% if url is empty %} data-uids-no-link{% endif %}>
   {{ title_prefix }}
   {{ title_suffix }}
   {% block media %}
-    {% if card_image is not empty %}
+    {% if media is not empty %}
       <div {{ media_attributes.addClass(media_styles, media_sizes, 'card__media') }}>
         <div class="media__inner">
           {% if linked_element == 'image' %}
-          <a href="{{ card_link_url }}">
-            {{ card_image }}
+          <a href="{{ url }}">
+            {{ media }}
           </a>
           {% else %}
-            {{ card_image }}
+            {{ media }}
           {% endif %}
         </div>
       </div>
@@ -60,14 +33,14 @@
   {% block body %}
     <div class="card__body">
       {% block heading %}
-        {% if card_title %}
+        {% if title %}
           <header>
             {# @todo Determine if it is better to programatically set level and class via preprocess. #}
             {% set card_heading = {
               'headline_level': headline_level ?: 'h2',
               'headline_class': headline_class ?: 'card__title headline',
-              'headline_text': card_title,
-              'headline_url': card_link_url,
+              'headline_text': title,
+              'headline_url': url,
               'headline_aria': card_aria_describedby,
               'headline_url_class': linked_element == 'title' ? 'click-target' : null,
             } %}
@@ -77,19 +50,19 @@
       {% endblock %}
 
       {% block details %}
-        {% if card_subtitle or card_meta is not empty %}
+        {% if subtitle or meta is not empty %}
           <div class="card__details">
-            {% block card_subtitle %}
-              {% if card_subtitle is not empty %}
+            {% block subtitle %}
+              {% if subtitle is not empty %}
                 <div class="card__subtitle">
-                  {{ card_subtitle }}
+                  {{ subtitle }}
                 </div>
               {% endif %}
             {% endblock %}
-            {% block card_meta %}
-              {% if card_meta|striptags|trim is not empty %}
+            {% block meta %}
+              {% if meta is not empty %}
                 <div class="card__meta">
-                  {{ card_meta }}
+                  {{ meta }}
                 </div>
               {% endif %}
             {% endblock %}
@@ -97,25 +70,25 @@
         {% endif %}
       {% endblock %}
 
-      {% block card_content %}
-        {% if card_text|striptags|trim is not empty %}
-          {{ card_text }}
+      {% block content %}
+        {% if content is not empty %}
+          {{ content }}
         {% endif %}
       {% endblock %}
 
       {% block card_button %}
-        {% if card_link_url is not empty and visible_button  %}
+        {% if url is not empty and link_indicator  %}
           <footer>
             {% if linked_element == 'button' %}
               {# Display as a link. #}
-              <a {{ button_attributes.addclass(card_button_classes, 'click-target') }} href="{{ card_link_url }}">
-                {{ card_link_title }}
+              <a {{ button_attributes.addclass(card_button_classes, 'click-target') }} href="{{ url }}">
+                {{ link_title }}
                 <i role="presentation" class="fas fa-arrow-right"></i>
               </a>
             {% else %}
               {# Display as a pseudo-link. #}
               <div aria-hidden="true" {{ button_attributes.addclass(card_button_classes) }}  {% if (card_aria_describedby != '') %} id="{{ card_aria_describedby }}"{% endif %}>
-                {{ card_link_title }}
+                {{ link_title }}
                 <i role="presentation" class="fas fa-arrow-right"></i>
               </div>
             {% endif %}

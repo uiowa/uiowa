@@ -5,6 +5,7 @@
  * Primary module hooks for Uiowa Core module.
  */
 
+use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityFormInterface;
@@ -105,6 +106,9 @@ function uiowa_core_mail_alter(&$message) {
  */
 function uiowa_core_theme($existing, $type, $theme, $path) {
   return [
+    'card' => [
+      'render element' => 'element',
+    ],
     'uiowa_core_headline' => [
       'variables' => [
         'headline' => NULL,
@@ -132,6 +136,46 @@ function template_preprocess_uiowa_core_headline(&$variables) {
 
   $variables['headline_style'] = $style;
 
+}
+
+/**
+ * Preprocess function for card.
+ */
+function template_preprocess_card(&$variables) {
+  $element = $variables['element'];
+
+  foreach ([
+    'attributes',
+    'media',
+    'title',
+    'subtitle',
+    'content',
+    'meta',
+    'url',
+    'link_title',
+    'link_indicator',
+  ] as $prop) {
+    if (isset($element["#$prop"])) {
+      $variables[$prop] = $element["#$prop"];
+    }
+  }
+
+  // Determine the linked element.
+  $linked_element = FALSE;
+
+  // If there is no URL, then it is not linked.
+  if (!empty($variables['url'])) {
+    if (!empty($variables['title'])) {
+      $linked_element = 'title';
+    }
+    elseif (!empty($variables['link_text'])) {
+      $linked_element = 'button';
+    }
+    elseif (!empty($variables['media'])) {
+      $linked_element = 'image';
+    }
+  }
+  $variables['linked_element'] = $linked_element;
 }
 
 /**
@@ -548,6 +592,11 @@ function uiowa_core_entity_operation_alter(array &$operations, EntityInterface $
  */
 function uiowa_core_preprocess_block(&$variables) {
   switch ($variables['plugin_id']) {
+    case 'inline_block:uiowa_card':
+      $variables['elements']['#type'] = 'card';
+      unset($variables['elements']['#theme']);
+      $test = 'thing';
+      break;
     case 'views_block:tags_list-tags_list':
       $variables['#attached']['library'][] = 'uids_base/tags';
       $variables['title_attributes']['class'] = 'h6 block__headline headline headline--serif';
