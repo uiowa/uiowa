@@ -12,6 +12,7 @@ use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\google_tag\Entity\Container;
@@ -147,12 +148,13 @@ function template_preprocess_card(&$variables) {
   foreach ([
     'attributes',
     'media',
+    'media_attributes',
     'title',
     'subtitle',
     'content',
     'meta',
     'url',
-    'link_title',
+    'link_text',
     'link_indicator',
   ] as $prop) {
     if (isset($element["#$prop"])) {
@@ -177,20 +179,6 @@ function template_preprocess_card(&$variables) {
   }
   $variables['linked_element'] = $linked_element;
 
-  $variables['media_attributes'] = new \Drupal\Core\Template\Attribute();
-
-  $media_classes = [];
-
-  foreach ($variables['attributes']['class'] as $index => $style) {
-    if (str_starts_with($style, 'media')) {
-      $media_classes[] = $style;
-      unset($variables['attributes']['class'][$index]);
-    }
-  }
-
-  if (!empty($media_classes)) {
-    $variables['media_attributes']->addClass($media_classes);
-  }
 }
 
 /**

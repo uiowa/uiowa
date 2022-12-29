@@ -3,6 +3,7 @@
 namespace Drupal\layout_builder_custom\EventSubscriber;
 
 use Drupal\Core\Block\BlockPluginInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Render\PreviewFallbackInterface;
 use Drupal\layout_builder\Event\SectionComponentBuildRenderArrayEvent;
 use Drupal\layout_builder\LayoutBuilderEvents;
@@ -94,12 +95,10 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
 
           $content = $build['content'];
           $mapping = [
-            'meta' => [
-              'field_uiowa_card_author',
-            ],
             'media' => 'field_uiowa_card_image',
             'title' => 'field_uiowa_card_title',
             'link_indicator' => 'field_uiowa_card_button_display',
+            'subtitle' => 'field_uiowa_card_author',
           ];
 
           // Map fields to the card parts.
@@ -109,11 +108,13 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
               foreach ($fields as $field) {
                 if (isset($content[$field])) {
                   $build["#$prop"][] = $content[$field];
+                  unset($content[$field]);
                 }
               }
             }
             else {
-              if (isset($content[$fields])) {
+              // @todo Refine this to remove fields if they are empty.
+              if (isset($content[$fields]) && count(Element::children($content[$fields])) > 0) {
                 $build["#$prop"] = $content[$fields];
                 unset($content[$fields]);
               }
@@ -126,7 +127,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
             'url' => 'url',
             'title' => 'link_text',
           ] as $field_link_prop => $link_prop) {
-            if (isset($content['field_uiowa_card_link'][0]["#$link_prop"])) {
+            if (isset($content['field_uiowa_card_link'][0]["#$field_link_prop"])) {
               $build["#$link_prop"] = $content['field_uiowa_card_link'][0]["#$field_link_prop"];
             }
           }
