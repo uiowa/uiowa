@@ -109,41 +109,4 @@ class UiowaCoreCommands extends DrushCommands {
     }
   }
 
-  /**
-   * Prints non-default role_mappings.
-   *
-   * @command uiowa_core:roles
-   * @aliases uicore-roles
-   */
-  public function roleMappings() {
-    $config = $this->configFactory->getEditable('uiowa_auth.settings');
-    $role_mappings = $config->get('role_mappings');
-
-    if ((int) $uiowa_core_gtag === 1) {
-      $this->logger->notice('Site-specific Google Tag Manager Disabled');
-      $config
-        ->set('uiowa_core.gtag', '0')
-        ->save();
-    }
-    else {
-      $this->logger->notice('Site-specific Google Tag Manager Enabled');
-      $config
-        ->set('uiowa_core.gtag', '1')
-        ->save();
-    }
-    // Flush site cache.
-    drupal_flush_all_caches();
-
-    // If available (not Local), try to clear the varnish cache for the files.
-    if ($this->moduleHandler->moduleExists('purge')) {
-      $queuer = $this->purgeQueuer->get('coretags');
-
-      $invalidations = [
-        $this->purgeInvalidations->get('everything'),
-      ];
-
-      $this->purgeQueue->add($queuer, $invalidations);
-    }
-  }
-
 }
