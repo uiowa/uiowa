@@ -1914,3 +1914,13 @@ function sitenow_update_9051() {
     }
   });
 }
+
+/**
+ * Import updated config ignore before site specific config is removed.
+ */
+function sitenow_update_9052() {
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
+}
