@@ -88,6 +88,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
     if (isset($build['#plugin_id'])) {
       switch ($build['#plugin_id']) {
         case 'inline_block:uiowa_card':
+          // Use the card render element.
           $build['#type'] = 'card';
           unset($build['#theme']);
 

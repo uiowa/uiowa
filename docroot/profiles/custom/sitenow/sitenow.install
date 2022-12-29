@@ -1923,7 +1923,8 @@ function sitenow_update_9052() {
 
     $styles = $component->get('layout_builder_styles_style');
     // If card border style is set...
-    if ($border_index = array_search('block_card_style_border', $styles)) {
+    $border_index = array_search('block_card_style_border', $styles);
+    if ($border_index !== FALSE) {
       // Unset it.
       unset($styles[$border_index]);
     }
@@ -1931,10 +1932,20 @@ function sitenow_update_9052() {
       // Add style for no border option.
       $styles[] = 'no_border';
     }
-    // If card stacked style is set...
-    if ($stacked_index = array_search('card_media_position_stacked', $styles)) {
+    // Remove card stacked, if set.
+    $stacked_index = array_search('card_media_position_stacked', $styles);
+    if ($stacked_index !== FALSE) {
       unset($styles[$stacked_index]);
     }
-    $component->set('layout_builder_styles_style', $styles);
+    // Update card_image_* to media_size_*.
+    foreach (['card_image_large', 'card_image_medium', 'card_image_small'] as $card_image_size) {
+      $card_image_size_index = array_search($card_image_size, $styles);
+      if ($card_image_size_index !== FALSE) {
+        $size = str_replace('card_image_', '', $styles[$card_image_size_index]);
+        $styles[] = "media_size_$size";
+        unset($styles[$card_image_size_index]);
+      }
+    }
+    $component->set('layout_builder_styles_style', array_values($styles));
   });
 }

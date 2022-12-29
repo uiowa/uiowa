@@ -172,10 +172,25 @@ function template_preprocess_card(&$variables) {
       $linked_element = 'button';
     }
     elseif (!empty($variables['media'])) {
-      $linked_element = 'image';
+      $linked_element = 'media';
     }
   }
   $variables['linked_element'] = $linked_element;
+
+  $variables['media_attributes'] = new \Drupal\Core\Template\Attribute();
+
+  $media_classes = [];
+
+  foreach ($variables['attributes']['class'] as $index => $style) {
+    if (str_starts_with($style, 'media')) {
+      $media_classes[] = $style;
+      unset($variables['attributes']['class'][$index]);
+    }
+  }
+
+  if (!empty($media_classes)) {
+    $variables['media_attributes']->addClass($media_classes);
+  }
 }
 
 /**

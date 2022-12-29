@@ -1,9 +1,7 @@
 {{ attach_library('uids_base/card') }}
 {{ attach_library('uids_base/media') }}
-{% set attributes = attributes ?: create_attribute() %}
 {% set button_attributes = button_attributes ?: create_attribute() %}
 {% set card_button_classes = ['bttn', 'bttn--primary', 'bttn--transparent', 'bttn--light-font'] %}
-{% set media_attributes = media_attributes ?: create_attribute() %}
 {% set visible_button = visible_button ?: false %}
 
 {# Do not show the aria-describedby attribute if title AND link text are not both present. #}
@@ -16,9 +14,9 @@
   {{ title_suffix }}
   {% block media %}
     {% if media is not empty %}
-      <div {{ media_attributes.addClass(media_styles, media_sizes, 'card__media') }}>
+      <div {{ media_attributes }}>
         <div class="media__inner">
-          {% if linked_element == 'image' %}
+          {% if linked_element == 'media' %}
           <a href="{{ url }}">
             {{ media }}
           </a>
@@ -38,7 +36,7 @@
             {# @todo Determine if it is better to programatically set level and class via preprocess. #}
             {% set card_heading = {
               'headline_level': headline_level ?: 'h2',
-              'headline_class': headline_class ?: 'card__title headline',
+              'headline_class': headline_class ?: 'headline',
               'headline_text': title,
               'headline_url': url,
               'headline_aria': card_aria_describedby,
