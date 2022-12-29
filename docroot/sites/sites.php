@@ -4942,3 +4942,9 @@ $sites['clastech.uiowa.ddev.site'] = 'tech.clas.uiowa.edu';
 $sites['clastech.dev.drupal.uiowa.edu'] = 'tech.clas.uiowa.edu';
 $sites['clastech.stage.drupal.uiowa.edu'] = 'tech.clas.uiowa.edu';
 $sites['clastech.prod.drupal.uiowa.edu'] = 'tech.clas.uiowa.edu';
+
+// Directory aliases for storyteller.studio.uiowa.edu.
+$sites['studiostoryteller.uiowa.ddev.site'] = 'storyteller.studio.uiowa.edu';
+$sites['studiostoryteller.dev.drupal.uiowa.edu'] = 'storyteller.studio.uiowa.edu';
+$sites['studiostoryteller.stage.drupal.uiowa.edu'] = 'storyteller.studio.uiowa.edu';
+$sites['studiostoryteller.prod.drupal.uiowa.edu'] = 'storyteller.studio.uiowa.edu';

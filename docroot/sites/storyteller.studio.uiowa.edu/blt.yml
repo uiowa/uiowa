@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: studiostoryteller.uiowa.ddev.site
+    protocol: https
+  machine_name: studiostoryteller
+  human_name: storyteller.studio.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: studiostoryteller.prod
+drupal:
+  db:
+    database: storyteller_studio_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://studiostoryteller.prod.drupal.uiowa.edu'
+  requester: msillman
+  site-name: Storyteller
