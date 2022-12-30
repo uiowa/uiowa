@@ -15,6 +15,7 @@ use Drupal\layout_builder\Section;
 use Drupal\layout_builder\SectionComponent;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\node\Entity\Node;
+use Drupal\media\Entity\Media;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\field\Entity\FieldConfig;
@@ -1936,6 +1937,7 @@ function sitenow_update_9052() {
       $media = $medias->item($i);
       $align = $media->getAttribute('data-align');
       $view_mode = $media->getAttribute('data-view-mode');
+      $to_replace = FALSE;
       // @todo Should we check for other view-modes here?
       //   For instance, what if we have an 'original' image or video?
       //   If the media is left- or right-aligned,
@@ -1943,9 +1945,25 @@ function sitenow_update_9052() {
       if (in_array($align, ['left', 'right'])
         && in_array($view_mode, ['large'])
       ) {
-        $media->setAttribute('data-align', 'center');
-        $media->parentNode->replaceChild($media, $media);
-        $updated = TRUE;
+        $uuid = $media->getAttribute('data-entity-uuid');
+        $media_entity = \Drupal::service('entity_type.manager')
+          ->getStorage('media')
+          ->loadByProperties(['uuid' => $uuid]);
+        $media_entity = reset($media_entity);
+        if ($media_entity->bundle() === 'image') {
+          $image = $media_entity?->field_media_image?->getValue();
+          if (isset($image[0]['width'])) {
+            $to_replace = ($image[0]['width'] >= 800);
+          }
+        }
+        elseif ($media_entity->bundle() === 'remote_video') {
+          $to_replace = TRUE;
+        }
+        if ($to_replace) {
+          $media->setAttribute('data-align', 'center');
+          $media->parentNode->replaceChild($media, $media);
+          $updated = TRUE;
+        }
       }
       $i--;
     }
