@@ -1921,9 +1921,9 @@ function sitenow_update_9051() {
  */
 function sitenow_update_9052() {
   $nids = \Drupal::entityQuery('node')
-    ->condition('type','article')
+    ->condition('type', 'article')
     ->execute();
-  $nodes =  Node::loadMultiple($nids);
+  $nodes = Node::loadMultiple($nids);
   foreach ($nodes as $node) {
     // Grab the body, convert it to a parseable DOM,
     // and search for any media entities.
@@ -1936,8 +1936,10 @@ function sitenow_update_9052() {
       $media = $medias->item($i);
       $align = $media->getAttribute('data-align');
       $view_mode = $media->getAttribute('data-view-mode');
-      // If the media is left- or right-aligned,
-      // and large, then change alignment to center.
+      // @todo Should we check for other view-modes here?
+      //   For instance, what if we have an 'original' image or video?
+      //   If the media is left- or right-aligned,
+      //   and large, then change alignment to center.
       if (in_array($align, ['left', 'right'])
         && in_array($view_mode, ['large'])
       ) {
