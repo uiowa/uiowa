@@ -7,6 +7,7 @@
  */
 
 use Drupal\block_content\BlockContentInterface;
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\Display\EntityDisplayInterface;
@@ -1913,4 +1914,48 @@ function sitenow_update_9051() {
       $block->save();
     }
   });
+}
+
+/**
+ * Update large, left- or right-aligned media to center-aligned..
+ */
+function sitenow_update_9052() {
+  $nids = \Drupal::entityQuery('node')
+    ->condition('type','article')
+    ->execute();
+  $nodes =  Node::loadMultiple($nids);
+  foreach ($nodes as $node) {
+    // Grab the body, convert it to a parseable DOM,
+    // and search for any media entities.
+    $updated = FALSE;
+    $body = $node->body->getValue();
+    $doc = Html::load($body[0]['value']);
+    $medias = $doc->getElementsByTagName('drupal-media');
+    $i = $medias->length - 1;
+    while ($i >= 0) {
+      $media = $medias->item($i);
+      $align = $media->getAttribute('data-align');
+      $view_mode = $media->getAttribute('data-view-mode');
+      // If the media is left- or right-aligned,
+      // and large, then change alignment to center.
+      if (in_array($align, ['left', 'right'])
+        && in_array($view_mode, ['large'])
+      ) {
+        $media->setAttribute('data-align', 'center');
+        $media->parentNode->replaceChild($media, $media);
+        $updated = TRUE;
+      }
+      $i--;
+    }
+    // If we updated any media entity alignments,
+    // then re-set the body, set a revision,
+    // and save the node.
+    if ($updated === TRUE) {
+      $body[0]['value'] = Html::serialize($doc);
+      $node->body->setValue($body);
+      $node->setNewRevision(TRUE);
+      $node->revision_log = 'Updated large left- or right-aligned media to center-aligned.';
+      $node->save();
+    }
+  }
 }
