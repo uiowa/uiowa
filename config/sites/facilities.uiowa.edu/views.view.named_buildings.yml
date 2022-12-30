@@ -602,7 +602,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '<a href="{{ field_building_aerial_view_link__uri }}" class="bttn bttn--primary bttn--medium">Aerial View <span class="fa-arrow-right fas" role="presentation"></span></a>'
+            text: '<a href="{{ field_building_aerial_view_link }}" class="bttn bttn--primary bttn--medium">Aerial View <span class="fa-arrow-right fas" role="presentation"></span></a>'
             make_link: false
             path: ''
             absolute: false
@@ -642,9 +642,9 @@ display:
           click_sort_column: uri
           type: link
           settings:
-            trim_length: 80
-            url_only: false
-            url_plain: false
+            trim_length: null
+            url_only: true
+            url_plain: true
             rel: '0'
             target: '0'
           group_column: ''
