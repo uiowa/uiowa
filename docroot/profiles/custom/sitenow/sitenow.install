@@ -1919,8 +1919,11 @@ function sitenow_update_9051() {
  * Update layout builder styles applied to cards.
  */
 function sitenow_update_9052() {
+  // @todo Apply these same updates to 'inline_block:uiowa_events',
+  //   'inline_block:uiowa_aggregator',
+  //   'views_block:article_list_block-list_article',
+  //   and 'views_block:people_list_block-list_card'
   _update_all_blocks_by_plugin_id('inline_block:uiowa_card', function (&$component, $block) {
-
     $styles = $component->get('layout_builder_styles_style');
     // If card border style is set...
     $border_index = array_search('block_card_style_border', $styles);
