@@ -114,12 +114,12 @@ class UiowaCoreCommands extends DrushCommands {
   /**
    * Displays custom role mappings if any.
    *
-   * @command uiowa_core:role_mappings
-   * @aliases uicore-roles
+   * @command uiowa_core:custom_role_mappings
+   * @aliases uicore-crm
    *
-   * @usage uiowa_core:role_mappings
+   * @usage uiowa_core:custom_role_mappings
    */
-  public function roleMappings() {
+  public function customRoleMappings() {
     if ($this->moduleHandler->moduleExists('uiowa_auth')) {
       // Get site's role_mapping values from uiowa_auth module.
       $config = $this->configFactory->getEditable('uiowa_auth.settings');
@@ -129,11 +129,11 @@ class UiowaCoreCommands extends DrushCommands {
       $config_path = DRUPAL_ROOT . '/../config/default';
       $source = new FileStorage($config_path);
       $uiowa_auth = $source->read('uiowa_auth.settings');
-      $default_roles = $uiowa_auth['role_mappings'];
+      $default_mappings = $uiowa_auth['role_mappings'];
 
-      if (!empty($role_mappings) && !empty($default_roles)) {
+      if (!empty($role_mappings) && !empty($default_mappings)) {
         // Compare site to default mappings.
-        $diff = array_diff($role_mappings, $default_roles);
+        $diff = array_diff($role_mappings, $default_mappings);
 
         if ($diff) {
           // Prettify and dump result.
