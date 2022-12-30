@@ -623,6 +623,11 @@ function uids_base_preprocess_layout(&$variables) {
           'vertical_align' => 'bottom',
         ];
 
+        // Adjust the defaults if it's an article.
+        if ($node->getType() === 'article') {
+          $defaults['horizontal_align'] = 'center';
+        }
+
         $variables['banner_settings'] = $variables['banner_settings'] + $defaults;
 
         // Set default for banner gradient.
