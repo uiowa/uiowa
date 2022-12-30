@@ -737,12 +737,6 @@ $sites['orgaudit.dev.drupal.uiowa.edu'] = 'audit.org.uiowa.edu';
 $sites['orgaudit.stage.drupal.uiowa.edu'] = 'audit.org.uiowa.edu';
 $sites['orgaudit.prod.drupal.uiowa.edu'] = 'audit.org.uiowa.edu';
 
-// Directory aliases for ui-lsamp.sites.uiowa.edu.
-$sites['sitesui-lsamp.uiowa.ddev.site'] = 'ui-lsamp.sites.uiowa.edu';
-$sites['sitesui-lsamp.dev.drupal.uiowa.edu'] = 'ui-lsamp.sites.uiowa.edu';
-$sites['sitesui-lsamp.stage.drupal.uiowa.edu'] = 'ui-lsamp.sites.uiowa.edu';
-$sites['sitesui-lsamp.prod.drupal.uiowa.edu'] = 'ui-lsamp.sites.uiowa.edu';
-
 // Directory aliases for museumstudies.sites.uiowa.edu.
 $sites['sitesmuseumstudies.uiowa.ddev.site'] = 'museumstudies.sites.uiowa.edu';
 $sites['sitesmuseumstudies.dev.drupal.uiowa.edu'] = 'museumstudies.sites.uiowa.edu';
