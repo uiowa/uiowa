@@ -25,6 +25,7 @@
 {% if view %}
   {% set headline_size = view.display_handler.getOption('heading_size') %}
 {% endif %}
+
 {% for key,row in rows %}
   {% set row_classes = [
     default_row_class ? 'views-row',
@@ -42,6 +43,11 @@
     {% endif %}
 
   {% endfor %}
+  {% if view.style_plugin.getField(key, 'field_person_website_link_direct')|striptags|trim  == 'On' %}
+    {% set node_link = view.style_plugin.getField(key, 'field_person_website')|striptags|trim %}
+  {% else %}
+    {% set node_link = view.style_plugin.getField(key, 'view_node')|striptags|trim %}
+  {% endif %}
   <div{{ row.attributes.addClass(row_classes) }}>
 
     {% set media_attributes = media_attributes ?: create_attribute() %}
@@ -51,7 +57,7 @@
       'media_styles': style_classes,
       'media_sizes': size_classes,
       'card_title': view.style_plugin.getField(key, 'title'),
-      'card_link_url': view.style_plugin.getField(key, 'view_node')|striptags|trim,
+      'card_link_url': node_link,
       'card_image': view.style_plugin.getField(key, 'field_image'),
       'card_meta': view.style_plugin.getField(key, 'field_person_email'),
       'card_text': view.style_plugin.getField(key, 'field_teaser'),
