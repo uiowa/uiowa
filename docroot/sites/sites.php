@@ -4942,3 +4942,9 @@ $sites['studiostoryteller.uiowa.ddev.site'] = 'storyteller.studio.uiowa.edu';
 $sites['studiostoryteller.dev.drupal.uiowa.edu'] = 'storyteller.studio.uiowa.edu';
 $sites['studiostoryteller.stage.drupal.uiowa.edu'] = 'storyteller.studio.uiowa.edu';
 $sites['studiostoryteller.prod.drupal.uiowa.edu'] = 'storyteller.studio.uiowa.edu';
+
+// Directory aliases for emfisis.sites.uiowa.edu.
+$sites['sitesemfisis.uiowa.ddev.site'] = 'emfisis.sites.uiowa.edu';
+$sites['sitesemfisis.dev.drupal.uiowa.edu'] = 'emfisis.sites.uiowa.edu';
+$sites['sitesemfisis.stage.drupal.uiowa.edu'] = 'emfisis.sites.uiowa.edu';
+$sites['sitesemfisis.prod.drupal.uiowa.edu'] = 'emfisis.sites.uiowa.edu';
