@@ -4948,3 +4948,9 @@ $sites['sitesemfisis.uiowa.ddev.site'] = 'emfisis.sites.uiowa.edu';
 $sites['sitesemfisis.dev.drupal.uiowa.edu'] = 'emfisis.sites.uiowa.edu';
 $sites['sitesemfisis.stage.drupal.uiowa.edu'] = 'emfisis.sites.uiowa.edu';
 $sites['sitesemfisis.prod.drupal.uiowa.edu'] = 'emfisis.sites.uiowa.edu';
+
+// Directory aliases for gurnett.physics.uiowa.edu.
+$sites['physicsgurnett.uiowa.ddev.site'] = 'gurnett.physics.uiowa.edu';
+$sites['physicsgurnett.dev.drupal.uiowa.edu'] = 'gurnett.physics.uiowa.edu';
+$sites['physicsgurnett.stage.drupal.uiowa.edu'] = 'gurnett.physics.uiowa.edu';
+$sites['physicsgurnett.prod.drupal.uiowa.edu'] = 'gurnett.physics.uiowa.edu';
