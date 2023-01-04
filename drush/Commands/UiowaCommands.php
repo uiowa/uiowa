@@ -279,8 +279,11 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
       $prod_alias,
       '@self',
     ], [
-      // @phpstan-ignore-next-line
+      // Adding the comment below because PHPCS doesn't like the use of the
+      // spread operator.
+      // phpcs:disable
       ...$options,
+      // phpcs:enable
       'create-db' => TRUE,
     ]);
     $process->mustRun($process->showRealtime());
