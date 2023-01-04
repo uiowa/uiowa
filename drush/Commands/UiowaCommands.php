@@ -279,6 +279,7 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
       $prod_alias,
       '@self',
     ], [
+      // @phpstan-ignore-next-line
       ...$options,
       'create-db' => TRUE,
     ]);
