@@ -252,18 +252,18 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
   }
 
   /**
-   * Show the database size.
+   * Prepare a site to run update hooks.
    *
    * @command uiowa:debug:update-hook
    *
    * @aliases udu
-   *
-   * @return void
    */
   public function setupSiteForDebuggingUpdate() {
     $selfRecord = $this->siteAliasManager()->getSelf();
 
-    // This doesn't actually make a difference at this point, but
+    // This doesn't actually make a difference at this point, but is good to
+    // have in case they eventually make it so that commands run inside another
+    // command can actually respond to interaction.
     $options = [
       'yes' => TRUE,
     ];
@@ -275,7 +275,10 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
 
     // Sync from prod.
     $prod_alias = str_replace('.local', '.prod', $selfRecord->name());
-    $process = $this->processManager()->drush($selfRecord, 'sql-sync', [$prod_alias, '@self'], $options);
+    $process = $this->processManager()->drush($selfRecord, 'sql-sync', [
+      $prod_alias,
+      '@self',
+    ], $options);
     $process->mustRun($process->showRealtime());
 
     // Rebuild cache.
