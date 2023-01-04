@@ -637,7 +637,7 @@ function uiowa_core_preprocess_block(&$variables) {
           '#type' => 'link',
           '#title' => t('HawkID Login'),
           '#url' => Url::fromRoute('samlauth.saml_controller_login', [
-            'destination' => \Drupal::request()->getRequestUri()
+            'destination' => \Drupal::request()->getRequestUri(),
           ]),
           '#prefix' => '<p class="text-align-center">',
           '#suffix' => '</p>',

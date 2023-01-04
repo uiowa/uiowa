@@ -91,14 +91,14 @@ function facilities_core_preprocess_layout(&$variables) {
  */
 function facilities_core_preprocess_block(&$variables) {
   switch ($variables['plugin_id']) {
-    case 'views_block:named_buildings-block_honoree':
+    case 'views_block:named_building_details-block_honoree':
       if (!isset($variables['attributes']['class'])) {
         $variables['attributes']['class'] = [''];
       }
       $variables['attributes']['class'][] .= 'bg--gray block-padding__all block-margin__default--removed';
       break;
 
-    case 'views_block:named_buildings-block_building':
+    case 'views_block:named_building_details-block_building':
       if (!isset($variables['attributes']['class'])) {
         $variables['attributes']['class'] = [''];
       }

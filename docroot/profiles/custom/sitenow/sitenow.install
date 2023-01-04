@@ -1916,9 +1916,19 @@ function sitenow_update_9051() {
 }
 
 /**
- * Update layout builder styles applied to cards.
+ * Import updated config ignore before site specific config is removed.
  */
 function sitenow_update_9052() {
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
+}
+
+/**
+ * Update layout builder styles applied to cards.
+ */
+function sitenow_update_9053() {
   // @todo Apply these same updates to 'inline_block:uiowa_events',
   //   'inline_block:uiowa_aggregator',
   //   'views_block:article_list_block-list_article',
