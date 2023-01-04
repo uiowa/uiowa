@@ -43,7 +43,8 @@
     {% endif %}
 
   {% endfor %}
-  {% if view.style_plugin.getField(key, 'field_person_website_link_direct')|striptags|trim  == 'On' %}
+
+  {% if '1' in row.content['#node'].fields.field_person_website_link_direct.value  %}
     {% set node_link = view.style_plugin.getField(key, 'field_person_website')|striptags|trim %}
   {% else %}
     {% set node_link = view.style_plugin.getField(key, 'view_node')|striptags|trim %}
