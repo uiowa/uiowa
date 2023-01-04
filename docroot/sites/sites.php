@@ -737,12 +737,6 @@ $sites['orgaudit.dev.drupal.uiowa.edu'] = 'audit.org.uiowa.edu';
 $sites['orgaudit.stage.drupal.uiowa.edu'] = 'audit.org.uiowa.edu';
 $sites['orgaudit.prod.drupal.uiowa.edu'] = 'audit.org.uiowa.edu';
 
-// Directory aliases for ui-lsamp.sites.uiowa.edu.
-$sites['sitesui-lsamp.uiowa.ddev.site'] = 'ui-lsamp.sites.uiowa.edu';
-$sites['sitesui-lsamp.dev.drupal.uiowa.edu'] = 'ui-lsamp.sites.uiowa.edu';
-$sites['sitesui-lsamp.stage.drupal.uiowa.edu'] = 'ui-lsamp.sites.uiowa.edu';
-$sites['sitesui-lsamp.prod.drupal.uiowa.edu'] = 'ui-lsamp.sites.uiowa.edu';
-
 // Directory aliases for museumstudies.sites.uiowa.edu.
 $sites['sitesmuseumstudies.uiowa.ddev.site'] = 'museumstudies.sites.uiowa.edu';
 $sites['sitesmuseumstudies.dev.drupal.uiowa.edu'] = 'museumstudies.sites.uiowa.edu';
@@ -4942,3 +4936,21 @@ $sites['clastech.uiowa.ddev.site'] = 'tech.clas.uiowa.edu';
 $sites['clastech.dev.drupal.uiowa.edu'] = 'tech.clas.uiowa.edu';
 $sites['clastech.stage.drupal.uiowa.edu'] = 'tech.clas.uiowa.edu';
 $sites['clastech.prod.drupal.uiowa.edu'] = 'tech.clas.uiowa.edu';
+
+// Directory aliases for storyteller.studio.uiowa.edu.
+$sites['studiostoryteller.uiowa.ddev.site'] = 'storyteller.studio.uiowa.edu';
+$sites['studiostoryteller.dev.drupal.uiowa.edu'] = 'storyteller.studio.uiowa.edu';
+$sites['studiostoryteller.stage.drupal.uiowa.edu'] = 'storyteller.studio.uiowa.edu';
+$sites['studiostoryteller.prod.drupal.uiowa.edu'] = 'storyteller.studio.uiowa.edu';
+
+// Directory aliases for emfisis.sites.uiowa.edu.
+$sites['sitesemfisis.uiowa.ddev.site'] = 'emfisis.sites.uiowa.edu';
+$sites['sitesemfisis.dev.drupal.uiowa.edu'] = 'emfisis.sites.uiowa.edu';
+$sites['sitesemfisis.stage.drupal.uiowa.edu'] = 'emfisis.sites.uiowa.edu';
+$sites['sitesemfisis.prod.drupal.uiowa.edu'] = 'emfisis.sites.uiowa.edu';
+
+// Directory aliases for gurnett.physics.uiowa.edu.
+$sites['physicsgurnett.uiowa.ddev.site'] = 'gurnett.physics.uiowa.edu';
+$sites['physicsgurnett.dev.drupal.uiowa.edu'] = 'gurnett.physics.uiowa.edu';
+$sites['physicsgurnett.stage.drupal.uiowa.edu'] = 'gurnett.physics.uiowa.edu';
+$sites['physicsgurnett.prod.drupal.uiowa.edu'] = 'gurnett.physics.uiowa.edu';
