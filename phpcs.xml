@@ -29,6 +29,9 @@
   <rule ref="DrupalPractice">
     <!-- Ignore specific sniffs. -->
     <exclude name="DrupalPractice.InfoFiles.NamespacedDependency"/>
+    <!-- @todo Remove these once https://github.com/squizlabs/PHP_CodeSniffer/issues/3557 is resolved. -->
+    <exclude name="Squiz.Arrays.ArrayDeclaration.KeySpecified"/>
+    <exclude name="Squiz.Arrays.ArrayDeclaration.NoKeySpecified"/>
   </rule>
   <rule ref="PHPCompatibility"/>
 
