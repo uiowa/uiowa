@@ -278,7 +278,10 @@ class UiowaCommands extends DrushCommands implements SiteAliasManagerAwareInterf
     $process = $this->processManager()->drush($selfRecord, 'sql-sync', [
       $prod_alias,
       '@self',
-    ], $options);
+    ], [
+      ...$options,
+      'create-db' => TRUE,
+    ]);
     $process->mustRun($process->showRealtime());
 
     // Rebuild cache.
