@@ -1,0 +1,14 @@
+uuid: 932a71cf-347c-4df1-ac96-e7ac4393b04f
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.person
+id: node_type_person
+entity_type_id: node_type
+entity_id: person
+action: page_redirect
+allow_override: 1
+redirect: '[node:field_person_website:0:uri]'
+redirect_code: 301
+redirect_fallback_action: display_page
