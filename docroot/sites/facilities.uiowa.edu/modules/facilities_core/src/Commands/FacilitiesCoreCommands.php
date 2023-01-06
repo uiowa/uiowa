@@ -46,12 +46,12 @@ class FacilitiesCoreCommands extends DrushCommands {
    *  Ideally this is done as a crontab that is only run once a day.
    */
   public function importBuildings() {
+    // Switch to the admin user to pass access check.
+    $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
+
     $entities_created = 0;
     $entities_updated = 0;
     $entities_deleted = 0;
-
-    // Switch to the admin user to pass access check.
-    $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
 
     // Request from Facilities API to get buildings. Add/update/remove.
     $facilities_api = \Drupal::service('uiowa_facilities.api');
@@ -70,7 +70,7 @@ class FacilitiesCoreCommands extends DrushCommands {
       foreach ($nodes as $nid => $node) {
         if ($node instanceof FieldableEntityInterface) {
           if ($node->hasField('field_building_number') && !$node->get('field_building_number')->isEmpty()) {
-            $existing_nodes[$nid] = $node->get('field_building_number')->getValue();
+            $existing_nodes[$nid] = $node->get('field_building_number')->value;
           }
         }
       }
