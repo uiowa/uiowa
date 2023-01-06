@@ -1,0 +1,38 @@
+uuid: b51d8dce-4510-40b4-90c5-71650cfdd900
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.building.field_building_abbreviation
+    - field.field.node.building.field_building_number
+    - node.type.building
+  module:
+    - user
+id: node.building.teaser
+targetEntityType: node
+bundle: building
+mode: teaser
+content:
+  field_building_abbreviation:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_building_number:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  links: true
+  search_api_excerpt: true
