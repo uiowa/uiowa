@@ -5,8 +5,6 @@
  * Custom functionality the Facilities website.
  */
 
-use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\NodeInterface;
 
@@ -107,17 +105,5 @@ function facilities_core_preprocess_block(&$variables) {
       $variables['attributes']['class'][] .= 'bg--white block-padding__all border';
       break;
 
-  }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_view().
- */
-function facilities_core_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  // Grab Buildings.
-  $facilities_api = \Drupal::service('uiowa_facilities.api');
-  $data = $facilities_api->getBuildings();
-  if ($data) {
-    print_r(json_encode($data));
   }
 }
