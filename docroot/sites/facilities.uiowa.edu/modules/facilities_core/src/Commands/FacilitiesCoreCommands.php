@@ -84,14 +84,23 @@ class FacilitiesCoreCommands extends DrushCommands {
         $buildings[] = $building->buildingNumber;
         // Get building number and check to see if existing node exists.
         if (isset($existing_nodes) && $existing_nid = array_search($building->buildingNumber, $existing_nodes)) {
-          // If existing, update values.
+          // If existing, update values if different.
           $node = $storage->load($existing_nid);
           if ($node instanceof NodeInterface) {
-            $node->set('title', $building->buildingCommonName);
-            $node->set('field_building_number', $building->buildingNumber);
-            $node->set('field_building_abbreviation', $building->buildingAbbreviation);
-            $node->save();
-            $entities_updated++;
+            $changed = FALSE;
+            if ($node->get('title')->value !== $building->buildingCommonName) {
+              $node->set('title', $building->buildingCommonName);
+              $changed = TRUE;
+            }
+            if ($node->get('field_building_abbreviation')->value !== $building->buildingAbbreviation) {
+              $node->set('field_building_abbreviation', $building->buildingAbbreviation);
+              $changed = TRUE;
+            }
+
+            if ($changed) {
+              $node->save();
+              $entities_updated++;
+            }
           }
         }
         else {
