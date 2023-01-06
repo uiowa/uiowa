@@ -49,6 +49,7 @@ class FacilitiesCoreCommands extends DrushCommands {
     // Switch to the admin user to pass access check.
     $this->accountSwitcher->switchTo(new UserSession(['uid' => 1]));
 
+    // Establish some counts for message at the end.
     $entities_created = 0;
     $entities_updated = 0;
     $entities_deleted = 0;
@@ -63,6 +64,7 @@ class FacilitiesCoreCommands extends DrushCommands {
       ->accessCheck(TRUE);
     $entities = $query->execute();
 
+    // Retrieve building number values from existing nodes.
     if ($entities) {
       $storage = \Drupal::getContainer()->get('entity_type.manager')->getStorage('node');
       $nodes = $storage->loadMultiple($entities);
@@ -105,6 +107,8 @@ class FacilitiesCoreCommands extends DrushCommands {
           $entities_created++;
         }
       }
+
+      // Loop through to remove nodes that no longer exist in API data.
       if ($entities) {
         foreach ($existing_nodes as $nid => $existing_node) {
           if (!in_array($existing_node, $buildings)) {
