@@ -30,6 +30,7 @@ class Card extends RenderElement {
       ],
       '#media' => NULL,
       '#title' => NULL,
+      '#title_heading_size' => 'h2',
       '#subtitle' => NULL,
       '#meta' => [],
       '#content' => NULL,

@@ -35,7 +35,7 @@
           <header>
             {# @todo Determine if it is better to programatically set level and class via preprocess. #}
             {% set card_heading = {
-              'headline_level': headline_level ?: 'h2',
+              'headline_level': title_heading_size ?: 'h2',
               'headline_class': headline_class ?: 'headline',
               'headline_text': title,
               'headline_url': url,

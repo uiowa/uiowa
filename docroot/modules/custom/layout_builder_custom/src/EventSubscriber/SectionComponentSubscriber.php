@@ -96,7 +96,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           $content = $build['content'];
           $mapping = [
             'media' => 'field_uiowa_card_image',
-            'title' => 'field_uiowa_card_title',
+//            'title' => 'field_uiowa_card_title',
             'link_indicator' => 'field_uiowa_card_button_display',
             'subtitle' => 'field_uiowa_card_author',
           ];
@@ -132,6 +132,12 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
             }
           }
           unset($content['field_uiowa_card_link']);
+
+          if (isset($content['field_uiowa_card_title']) && count(Element::children($content['field_uiowa_card_title'])) > 0) {
+            $build['#title'] = $content['field_uiowa_card_title'][0]['#text'];
+            $build['#title_heading_size'] = $content['field_uiowa_card_title'][0]['#size'];
+            unset($content['field_uiowa_card_title']);
+          }
 
           $build['#content'] = $content;
           unset($build['content']);
