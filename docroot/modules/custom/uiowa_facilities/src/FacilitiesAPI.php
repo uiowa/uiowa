@@ -143,4 +143,23 @@ class FacilitiesAPI {
     ]);
   }
 
+  /**
+   * Get building coordinators by building number.
+   *
+   * @return array
+   *   The building coordinators object.
+   */
+  public function getBuildingCoordinators($building_number) {
+    $data = $this->request('GET', 'bldgCoordinators');
+    $contact = [];
+
+    foreach ($data as $d) {
+      if ($building_number === $d->buildingNumber) {
+        $contact = $d;
+      }
+    }
+
+    return $contact;
+  }
+
 }
