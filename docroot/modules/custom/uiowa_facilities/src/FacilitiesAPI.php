@@ -14,7 +14,7 @@ use Psr\Log\LoggerInterface;
  */
 class FacilitiesAPI {
 
-  const BASE = 'https://bizhub.facilities.uiowa.edu/bizhub/';
+  const BASE = 'https://bizhub.facilities.uiowa.edu/bizhub/ext/';
 
   /**
    * The uiowa_facilities logger channel.
@@ -128,7 +128,19 @@ class FacilitiesAPI {
    *   The buildings object.
    */
   public function getBuildings() {
-    return $this->request('GET', '/ext/buildings');
+    return $this->request('GET', 'buildings');
+  }
+
+  /**
+   * Get single building by number.
+   *
+   * @return array
+   *   The building object.
+   */
+  public function getBuilding($building_number) {
+    return $this->request('GET', 'building', [
+      'bldgnumber' => $building_number,
+    ]);
   }
 
 }
