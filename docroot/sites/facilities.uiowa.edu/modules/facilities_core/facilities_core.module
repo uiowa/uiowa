@@ -18,6 +18,16 @@ function facilities_core_form_alter(&$form, FormStateInterface $form_state, $for
       _sitenow_node_form_defaults($form, $form_state);
       break;
 
+    case 'node_building_form':
+    case 'node_building_edit_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      // Display a message to admins that this content type is not available
+      // to site roles other than admins and is managed by a drush command
+      // `facilities_core:buildings_import`.
+      \Drupal::messenger()->addWarning('This content type is managed by a Drush command.
+      Any buildings created or modified that are not in the source data will be overwritten.');
+      break;
+
   }
 }
 
