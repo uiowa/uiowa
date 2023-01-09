@@ -4960,3 +4960,9 @@ $sites['labdaly.uiowa.ddev.site'] = 'daly.lab.uiowa.edu';
 $sites['labdaly.dev.drupal.uiowa.edu'] = 'daly.lab.uiowa.edu';
 $sites['labdaly.stage.drupal.uiowa.edu'] = 'daly.lab.uiowa.edu';
 $sites['labdaly.prod.drupal.uiowa.edu'] = 'daly.lab.uiowa.edu';
+
+// Directory aliases for icarepostbac.sites.uiowa.edu.
+$sites['sitesicarepostbac.uiowa.ddev.site'] = 'icarepostbac.sites.uiowa.edu';
+$sites['sitesicarepostbac.dev.drupal.uiowa.edu'] = 'icarepostbac.sites.uiowa.edu';
+$sites['sitesicarepostbac.stage.drupal.uiowa.edu'] = 'icarepostbac.sites.uiowa.edu';
+$sites['sitesicarepostbac.prod.drupal.uiowa.edu'] = 'icarepostbac.sites.uiowa.edu';
