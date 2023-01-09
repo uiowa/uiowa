@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labdaly.uiowa.ddev.site
+    protocol: https
+  machine_name: labdaly
+  human_name: daly.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labdaly.prod
+drupal:
+  db:
+    database: daly_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labdaly.prod.drupal.uiowa.edu'
+  requester: srdaly
+  site-name: 'Daly Research Group'
