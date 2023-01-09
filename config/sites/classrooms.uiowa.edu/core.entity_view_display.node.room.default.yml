@@ -28,6 +28,7 @@ dependencies:
     - file
     - layout_builder
     - options
+    - system
     - text
     - user
   theme:
@@ -37,15 +38,17 @@ third_party_settings:
     enabled: true
     allow_custom: false
     sections:
-      - layout_id: layout_header
+      -
+        layout_id: layout_header
         layout_settings:
           label: Header
-          context_mapping: { }
+          context_mapping: {  }
           layout_builder_styles_style:
             - ''
             - section_margin_edge_to_edge
         components:
-          - uuid: c08c7736-7120-4ed6-83ae-4c3a1913e334
+          -
+            uuid: c08c7736-7120-4ed6-83ae-4c3a1913e334
             region: background
             configuration:
               id: 'field_block:node:room:field_image'
@@ -60,22 +63,24 @@ third_party_settings:
                 label: visually_hidden
                 settings:
                   view_mode: full__ultrawide
-                third_party_settings: { }
+                third_party_settings: {  }
             weight: 0
-            additional: { }
-            third_party_settings: { }
-          - uuid: c7573ec7-09af-4378-a150-987c97bf9fd4
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: c7573ec7-09af-4378-a150-987c97bf9fd4
             region: content
             configuration:
               id: system_breadcrumb_block
               label: Breadcrumbs
               label_display: '0'
               provider: system
-              context_mapping: { }
+              context_mapping: {  }
             weight: 0
-            additional: { }
-            third_party_settings: { }
-          - uuid: c5c2026e-4c4a-4fa5-86cf-11fb192af5d4
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: c5c2026e-4c4a-4fa5-86cf-11fb192af5d4
             region: content
             configuration:
               id: 'field_block:node:room:title'
@@ -90,11 +95,11 @@ third_party_settings:
                 label: visually_hidden
                 settings:
                   link_to_entity: false
-                third_party_settings: { }
-            weight: 1
-            additional: { }
-            third_party_settings: { }
-        third_party_settings: { }
+                third_party_settings: {  }
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
       -
         layout_id: layout_twocol_section
         layout_settings:
@@ -109,23 +114,6 @@ third_party_settings:
             remove_default_bottom_padding: remove_default_bottom_padding
         components:
           -
-            uuid: 8ac2bfe3-9164-4455-9927-9927d110de98
-            region: first
-            configuration:
-              id: 'field_block:node:room:field_image'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_label
-                label: hidden
-                settings:
-                  link: true
-                third_party_settings: {  }
-            weight: 2
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: edf3e377-d37d-4bc5-8c42-0452540acb5d
             region: first
             configuration:
@@ -139,7 +127,7 @@ third_party_settings:
                 settings:
                   link: false
                 third_party_settings: {  }
-            weight: 6
+            weight: 7
             additional: {  }
             third_party_settings: {  }
           -
@@ -157,7 +145,7 @@ third_party_settings:
                   thousand_separator: ''
                   prefix_suffix: true
                 third_party_settings: {  }
-            weight: 7
+            weight: 8
             additional: {  }
             third_party_settings: {  }
           -
@@ -177,7 +165,7 @@ third_party_settings:
                 settings:
                   use_description_as_link_text: false
                 third_party_settings: {  }
-            weight: 8
+            weight: 9
             additional: {  }
             third_party_settings: {  }
           -
@@ -198,6 +186,26 @@ third_party_settings:
                   link_to_entity: false
                 third_party_settings: {  }
             weight: 3
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 8ac2bfe3-9164-4455-9927-9927d110de98
+            region: first
+            configuration:
+              id: 'field_block:node:room:field_image'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: hidden
+                settings:
+                  view_mode: medium__widescreen
+                third_party_settings: {  }
+            weight: 6
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }

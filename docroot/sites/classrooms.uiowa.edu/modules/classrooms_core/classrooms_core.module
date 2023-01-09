@@ -55,7 +55,7 @@ function classrooms_core_preprocess_layout(&$variables) {
         }
       }
       switch ($node->getType()) {
-        case 'named_building':
+        case 'room':
           if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
 
             // Set the featured image display.
