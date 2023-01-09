@@ -37,6 +37,64 @@ third_party_settings:
     enabled: true
     allow_custom: false
     sections:
+      - layout_id: layout_header
+        layout_settings:
+          label: Header
+          context_mapping: { }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_edge_to_edge
+        components:
+          - uuid: c08c7736-7120-4ed6-83ae-4c3a1913e334
+            region: background
+            configuration:
+              id: 'field_block:node:room:field_image'
+              label: 'Featured Image'
+              label_display: '0'
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: visually_hidden
+                settings:
+                  view_mode: full__ultrawide
+                third_party_settings: { }
+            weight: 0
+            additional: { }
+            third_party_settings: { }
+          - uuid: c7573ec7-09af-4378-a150-987c97bf9fd4
+            region: content
+            configuration:
+              id: system_breadcrumb_block
+              label: Breadcrumbs
+              label_display: '0'
+              provider: system
+              context_mapping: { }
+            weight: 0
+            additional: { }
+            third_party_settings: { }
+          - uuid: c5c2026e-4c4a-4fa5-86cf-11fb192af5d4
+            region: content
+            configuration:
+              id: 'field_block:node:room:title'
+              label: Title
+              label_display: '0'
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: visually_hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: { }
+            weight: 1
+            additional: { }
+            third_party_settings: { }
+        third_party_settings: { }
       -
         layout_id: layout_twocol_section
         layout_settings:
