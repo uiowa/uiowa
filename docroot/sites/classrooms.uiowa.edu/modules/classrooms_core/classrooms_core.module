@@ -213,8 +213,10 @@ function classrooms_core_entity_presave(EntityInterface $entity): void {
   }
 }
 
-function classroom_core_theme($existing, $type, $theme, $path)
-{
+/**
+ * Implements hook_theme().
+ */
+function classrooms_core_classroom_core_theme($existing, $type, $theme, $path) {
   return [
     'field__node__field_room_type' => [
       'template' => 'field--node--field-room-type',
