@@ -4966,3 +4966,9 @@ $sites['sitesicarepostbac.uiowa.ddev.site'] = 'icarepostbac.sites.uiowa.edu';
 $sites['sitesicarepostbac.dev.drupal.uiowa.edu'] = 'icarepostbac.sites.uiowa.edu';
 $sites['sitesicarepostbac.stage.drupal.uiowa.edu'] = 'icarepostbac.sites.uiowa.edu';
 $sites['sitesicarepostbac.prod.drupal.uiowa.edu'] = 'icarepostbac.sites.uiowa.edu';
+
+// Directory aliases for idream.sites.uiowa.edu.
+$sites['sitesidream.uiowa.ddev.site'] = 'idream.sites.uiowa.edu';
+$sites['sitesidream.dev.drupal.uiowa.edu'] = 'idream.sites.uiowa.edu';
+$sites['sitesidream.stage.drupal.uiowa.edu'] = 'idream.sites.uiowa.edu';
+$sites['sitesidream.prod.drupal.uiowa.edu'] = 'idream.sites.uiowa.edu';
