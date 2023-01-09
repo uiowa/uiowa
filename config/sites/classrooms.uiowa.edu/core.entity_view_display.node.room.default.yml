@@ -99,23 +99,9 @@ third_party_settings:
             weight: 2
             additional: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
-      -
-        layout_id: layout_twocol_section
-        layout_settings:
-          label: ''
-          context_mapping: {  }
-          column_widths: 67-33
-          layout_builder_styles_style:
-            0: section_background_style_black
-            1: section_margin_edge_to_edge
-            section_padding_remove_default_padding: section_padding_remove_default_padding
-            remove_default_top_padding: remove_default_top_padding
-            remove_default_bottom_padding: remove_default_bottom_padding
-        components:
           -
             uuid: edf3e377-d37d-4bc5-8c42-0452540acb5d
-            region: first
+            region: content
             configuration:
               id: 'field_block:node:room:field_room_type'
               label_display: '0'
@@ -127,12 +113,12 @@ third_party_settings:
                 settings:
                   link: false
                 third_party_settings: {  }
-            weight: 7
+            weight: 3
             additional: {  }
             third_party_settings: {  }
           -
             uuid: c40799fa-83a4-444e-9b3a-ef70664861a3
-            region: first
+            region: content
             configuration:
               id: 'field_block:node:room:field_room_max_occupancy'
               label_display: '0'
@@ -145,12 +131,12 @@ third_party_settings:
                   thousand_separator: ''
                   prefix_suffix: true
                 third_party_settings: {  }
-            weight: 8
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           -
             uuid: cc14a9ed-ac97-41fc-a1c3-6aa30276b7da
-            region: first
+            region: content
             configuration:
               id: 'field_block:node:room:field_room_seating_chart'
               label: null
@@ -165,47 +151,7 @@ third_party_settings:
                 settings:
                   use_description_as_link_text: false
                 third_party_settings: {  }
-            weight: 9
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 7c91c356-6e17-4c6a-8b65-537978658b84
-            region: first
-            configuration:
-              id: 'field_block:node:room:title'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: string
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 3
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 8ac2bfe3-9164-4455-9927-9927d110de98
-            region: first
-            configuration:
-              id: 'field_block:node:room:field_image'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_entity_view
-                label: hidden
-                settings:
-                  view_mode: medium__widescreen
-                third_party_settings: {  }
-            weight: 6
+            weight: 5
             additional: {  }
             third_party_settings: {  }
         third_party_settings: {  }
