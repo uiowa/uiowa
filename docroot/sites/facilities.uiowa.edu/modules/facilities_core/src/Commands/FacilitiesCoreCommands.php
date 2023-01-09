@@ -94,6 +94,8 @@ class FacilitiesCoreCommands extends DrushCommands {
             }
             // There is at least one building with a blank space instead of
             // NULL for this value.
+            // @todo Remove if FM can clean up their source.
+            // https://github.com/uiowa/uiowa/issues/6084
             if ($building->buildingAbbreviation === '') {
               $building->buildingAbbreviation = NULL;
             }
