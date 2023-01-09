@@ -92,6 +92,11 @@ class FacilitiesCoreCommands extends DrushCommands {
               $node->set('title', $building->buildingCommonName);
               $changed = TRUE;
             }
+            // There is at least one building with a blank space instead of
+            // NULL for this value.
+            if ($building->buildingAbbreviation === '') {
+              $building->buildingAbbreviation = NULL;
+            }
             if ($node->get('field_building_abbreviation')->value !== $building->buildingAbbreviation) {
               $node->set('field_building_abbreviation', $building->buildingAbbreviation);
               $changed = TRUE;
