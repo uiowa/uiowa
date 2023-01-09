@@ -4954,3 +4954,9 @@ $sites['physicsgurnett.uiowa.ddev.site'] = 'gurnett.physics.uiowa.edu';
 $sites['physicsgurnett.dev.drupal.uiowa.edu'] = 'gurnett.physics.uiowa.edu';
 $sites['physicsgurnett.stage.drupal.uiowa.edu'] = 'gurnett.physics.uiowa.edu';
 $sites['physicsgurnett.prod.drupal.uiowa.edu'] = 'gurnett.physics.uiowa.edu';
+
+// Directory aliases for daly.lab.uiowa.edu.
+$sites['labdaly.uiowa.ddev.site'] = 'daly.lab.uiowa.edu';
+$sites['labdaly.dev.drupal.uiowa.edu'] = 'daly.lab.uiowa.edu';
+$sites['labdaly.stage.drupal.uiowa.edu'] = 'daly.lab.uiowa.edu';
+$sites['labdaly.prod.drupal.uiowa.edu'] = 'daly.lab.uiowa.edu';
