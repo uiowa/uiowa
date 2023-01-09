@@ -74,7 +74,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           'empty_label' => t('Stacked (default)'),
         ],
         'content_alignment' => [
-          'default' => 'content_alignment_left',
+          'empty_label' => t('Left (default)'),
         ],
         'grid_columns' => [
           'default' => 'block_grid_threecol_33_34_33',
@@ -965,8 +965,8 @@ function _layout_builder_custom_process_element(array $element, FormStateInterfa
         }
 
         // Default to multiselect and remove the empty option.
-        $element["field_accordion_type"]["widget"]["#default_value"] = $element["field_accordion_type"]["widget"]["#default_value"] ?? 'multi_select';
-        unset($element["field_accordion_type"]["widget"]["#options"]["_none"]);
+        $element['field_accordion_type']['widget']['#default_value'] = $element['field_accordion_type']['widget']['#default_value'] ?? 'multi_select';
+        unset($element['field_accordion_type']['widget']['#options']['_none']);
         // Only show the "accordion type" field if accordion view mode
         // has been selected.
         $element['field_accordion_type']['widget']['#states'] = [
@@ -1045,17 +1045,17 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
         $access = $check->access(\Drupal::currentUser()->getAccount());
 
         if ($access->isForbidden()) {
-          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["style"]['#disabled'] = TRUE;
-          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["size"]['#disabled'] = TRUE;
-          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["fixed-width"]['#disabled'] = TRUE;
-          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["border"]['#disabled'] = TRUE;
-          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["invert"]['#disabled'] = TRUE;
-          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["animation"]['#disabled'] = TRUE;
-          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["additional_classes"]['#disabled'] = TRUE;
-          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["duotone"]['#disabled'] = TRUE;
-          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["masking"]['#disabled'] = TRUE;
-          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["power_transforms"]['#disabled'] = TRUE;
-          $element["subform"]["field_timeline_icon"]["widget"][0]["settings"]["pull"]['#disabled'] = TRUE;
+          $element['subform']['field_timeline_icon']['widget'][0]['settings']['size']['#disabled'] = TRUE;
+          $element['subform']['field_timeline_icon']['widget'][0]['settings']['style']['#disabled'] = TRUE;
+          $element['subform']['field_timeline_icon']['widget'][0]['settings']['fixed-width']['#disabled'] = TRUE;
+          $element['subform']['field_timeline_icon']['widget'][0]['settings']['border']['#disabled'] = TRUE;
+          $element['subform']['field_timeline_icon']['widget'][0]['settings']['invert']['#disabled'] = TRUE;
+          $element['subform']['field_timeline_icon']['widget'][0]['settings']['animation']['#disabled'] = TRUE;
+          $element['subform']['field_timeline_icon']['widget'][0]['settings']['additional_classes']['#disabled'] = TRUE;
+          $element['subform']['field_timeline_icon']['widget'][0]['settings']['duotone']['#disabled'] = TRUE;
+          $element['subform']['field_timeline_icon']['widget'][0]['settings']['masking']['#disabled'] = TRUE;
+          $element['subform']['field_timeline_icon']['widget'][0]['settings']['power_transforms']['#disabled'] = TRUE;
+          $element['subform']['field_timeline_icon']['widget'][0]['settings']['pull']['#disabled'] = TRUE;
         }
 
         break;
