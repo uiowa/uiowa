@@ -1,10 +1,5 @@
 {% embed '@uids_base/field/field.html.twig' %}
   {% block field_icon %}
-    <span role="presentation" class="fa-building"></span> &nbsp;
-  {% endblock %}
-  {% block field_items %}
-    {% for item in items %}
-      <{{ item_tag }}{{ item.attributes.addClass('field__item') }}>{{ item.content }} Type</{{ item_tag }}>
-    {% endfor %}
+    <span role="presentation" class="fa-building fas"></span> &nbsp;
   {% endblock %}
 {% endembed %}
