@@ -26,9 +26,490 @@ dependencies:
     - node.type.room
   module:
     - file
+    - layout_builder
     - options
     - text
     - user
+  theme:
+    - uids_base
+third_party_settings:
+  layout_builder:
+    enabled: true
+    allow_custom: false
+    sections:
+      -
+        layout_id: layout_twocol_section
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          column_widths: 67-33
+          layout_builder_styles_style:
+            0: section_background_style_black
+            1: section_margin_edge_to_edge
+            section_padding_remove_default_padding: section_padding_remove_default_padding
+            remove_default_top_padding: remove_default_top_padding
+            remove_default_bottom_padding: remove_default_bottom_padding
+        components:
+          -
+            uuid: 8ac2bfe3-9164-4455-9927-9927d110de98
+            region: first
+            configuration:
+              id: 'field_block:node:room:field_image'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: hidden
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: edf3e377-d37d-4bc5-8c42-0452540acb5d
+            region: first
+            configuration:
+              id: 'field_block:node:room:field_room_type'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: false
+                third_party_settings: {  }
+            weight: 6
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: c40799fa-83a4-444e-9b3a-ef70664861a3
+            region: first
+            configuration:
+              id: 'field_block:node:room:field_room_max_occupancy'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: number_integer
+                label: above
+                settings:
+                  thousand_separator: ''
+                  prefix_suffix: true
+                third_party_settings: {  }
+            weight: 7
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: cc14a9ed-ac97-41fc-a1c3-6aa30276b7da
+            region: first
+            configuration:
+              id: 'field_block:node:room:field_room_seating_chart'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: file_default
+                label: above
+                settings:
+                  use_description_as_link_text: false
+                third_party_settings: {  }
+            weight: 8
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 7c91c356-6e17-4c6a-8b65-537978658b84
+            region: first
+            configuration:
+              id: 'field_block:node:room:title'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_fourcol_section
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: ''
+            1: section_margin_full_width_container
+            section_alignment_start: section_alignment_start
+        components:
+          -
+            uuid: 67a6c347-3087-48b3-becb-c34669bf4f85
+            region: first
+            configuration:
+              id: 'field_block:node:room:field_room_classroom_furniture'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 2
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 9c41beba-4bcb-4d91-b48a-e08bd81063d1
+            region: second
+            configuration:
+              id: 'field_block:node:room:field_room_tile_details'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 044d7de7-ef84-4fd2-8244-bf823909267e
+            region: third
+            configuration:
+              id: 'field_block:node:room:field_room_design_details'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: ab27114d-dabc-47e3-b514-367b2b5bb7ca
+            region: first
+            configuration:
+              id: 'field_block:node:room:field_room_features'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: false
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_twocol_section
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          column_widths: 50-50
+          layout_builder_styles_style:
+            0: ''
+            1: section_margin_full_width_container
+            section_alignment_start: section_alignment_start
+        components:
+          -
+            uuid: b0f42ec1-c0ce-45ae-bfb8-80fca2ec97e5
+            region: first
+            configuration:
+              id: 'field_block:node:room:field_gallery_images'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 4861e416-3919-4cbb-af33-8a137b935db3
+            region: first
+            configuration:
+              id: 'field_block:node:room:field_room_technology_features'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: false
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_twocol_section
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          column_widths: 50-50
+          layout_builder_styles_style:
+            0: ''
+            1: section_margin_full_width_container
+            section_alignment_start: section_alignment_start
+        components:
+          -
+            uuid: c93cdb78-9217-465d-b749-583c592243c5
+            region: first
+            configuration:
+              id: 'field_block:node:room:field_room_map'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: hidden
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 9a03b69a-1cbd-4e73-a8ae-da7840c9090d
+            region: first
+            configuration:
+              id: 'field_block:node:room:field_room_scheduling_regions'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 1
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+        components:
+          -
+            uuid: 916ba0eb-574a-4df4-95bc-6d22910fa6fa
+            region: content
+            configuration:
+              id: 'extra_field_block:node:room:content_moderation_control'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 5
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 2d9e49ef-c90b-4063-a240-446d12ba8536
+            region: content
+            configuration:
+              id: 'field_block:node:room:field_room_video'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                  link: false
+                third_party_settings: {  }
+            weight: 12
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 3042a104-cbb6-496f-b0d0-5970d4669677
+            region: content
+            configuration:
+              id: 'field_block:node:room:field_room_map'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                  link: false
+                third_party_settings: {  }
+            weight: 13
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 76a5a2b7-e515-4140-bec1-4a8b9c1f833b
+            region: content
+            configuration:
+              id: 'field_block:node:room:field_room_name'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 14
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 406d5071-ce09-4e6c-a74f-69fd4975fe19
+            region: content
+            configuration:
+              id: 'field_block:node:room:field_room_responsible_unit'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings: {  }
+            weight: 15
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 06adb92b-3d83-4fde-ba7b-ad56ea55a092
+            region: content
+            configuration:
+              id: 'field_block:node:room:field_room_instruction_category'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: list_default
+                label: above
+                settings: {  }
+                third_party_settings: {  }
+            weight: 16
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: fae534c3-556e-457a-bfff-0a9cb3e3bf96
+            region: content
+            configuration:
+              id: 'field_block:node:room:field_room_scheduling_regions'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: false
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 17
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+      -
+        layout_id: layout_twocol_section
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          column_widths: 50-50
+          layout_builder_styles_style:
+            0: ''
+            1: section_margin_full_width_container
+            section_alignment_start: section_alignment_start
+        components:
+          -
+            uuid: 20313c49-1b07-47f8-a780-a134adc16d8e
+            region: first
+            configuration:
+              id: 'field_block:node:room:field_room_map'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: above
+                settings:
+                  view_mode: default
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
 id: node.room.default
 targetEntityType: node
 bundle: room
