@@ -103,6 +103,10 @@ class FacilitiesCoreCommands extends DrushCommands {
             }
 
             if ($changed) {
+              $node->setNewRevision(TRUE);
+              $node->revision_log = 'Updated building from source';
+              $node->setRevisionCreationTime(REQUEST_TIME);
+              $node->setRevisionUserId(1);
               $node->save();
               $entities_updated++;
             }
