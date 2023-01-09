@@ -252,8 +252,8 @@ function classrooms_core_entity_presave(EntityInterface $entity): void {
  */
 function classrooms_core_classroom_core_theme($existing, $type, $theme, $path) {
   return [
-    'field__node__field_room_type' => [
-      'template' => 'field--node--field-room-type',
+    'field__node__field_room_type__room__default' => [
+      'template' => 'field--node--field-room-type--room--default',
       'base hook' => 'field',
     ],
     'field__node__field_room_max_occupancy' => [
@@ -290,6 +290,10 @@ function classrooms_core_classroom_core_theme($existing, $type, $theme, $path) {
     ],
     'field__node__field_room_map' => [
       'template' => 'field--node--field-room-map',
+      'base hook' => 'field',
+    ],
+    'field__node__field_image' => [
+      'template' => 'field--node--field-image',
       'base hook' => 'field',
     ],
   ];
