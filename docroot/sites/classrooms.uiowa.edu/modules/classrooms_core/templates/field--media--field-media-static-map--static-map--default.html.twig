@@ -1,9 +1,0 @@
-{% embed '@uids_base/field/field.html.twig'  %}
-  {% block field_icon %}
-    <div class="badge badge--primary">
-      {%- for item in items -%}
-        <div {{ attributes.addClass(classes, 'field__item') }}><a href="{{ item.content }}">Map</a></div>
-      {%- endfor -%}
-    </div>
-  {% endblock %}
-{% endembed %}

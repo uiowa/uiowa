@@ -36,6 +36,28 @@ function classrooms_core_form_alter(&$form, FormStateInterface $form_state, $for
 }
 
 /**
+ * Implements hook_preprocess_field().
+ */
+function classrooms_core_preprocess_field(&$variables, $hook) {
+  switch ($variables['element']['#field_name']) {
+    case 'field_room_map':
+      $node = $variables["element"]["#object"];
+      $variables['room_map_url'] = FALSE;
+      if (!$node->get('field_room_map')->isEmpty()) {
+        $room_url_map = $node->field_room_map
+          ->first()
+          ->get('entity')
+          ->getValue()
+          ->field_media_static_map
+          ->uri;
+      }
+      $variables['room_map_url'] = $room_url_map;
+      break;
+
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK().
  */
 function classrooms_core_preprocess_layout(&$variables) {
@@ -292,8 +314,8 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--field-room-technology-features',
       'base hook' => 'field',
     ],
-    'field__media__field_media_static_map__static-map__default' => [
-      'template' => 'field--media--field-media-static-map--static-map--default',
+    'field__node__field_room_map__room__default' => [
+      'template' => 'field--node--field-room-map--room--default',
       'base hook' => 'field',
     ],
   ];
