@@ -4954,3 +4954,21 @@ $sites['physicsgurnett.uiowa.ddev.site'] = 'gurnett.physics.uiowa.edu';
 $sites['physicsgurnett.dev.drupal.uiowa.edu'] = 'gurnett.physics.uiowa.edu';
 $sites['physicsgurnett.stage.drupal.uiowa.edu'] = 'gurnett.physics.uiowa.edu';
 $sites['physicsgurnett.prod.drupal.uiowa.edu'] = 'gurnett.physics.uiowa.edu';
+
+// Directory aliases for daly.lab.uiowa.edu.
+$sites['labdaly.uiowa.ddev.site'] = 'daly.lab.uiowa.edu';
+$sites['labdaly.dev.drupal.uiowa.edu'] = 'daly.lab.uiowa.edu';
+$sites['labdaly.stage.drupal.uiowa.edu'] = 'daly.lab.uiowa.edu';
+$sites['labdaly.prod.drupal.uiowa.edu'] = 'daly.lab.uiowa.edu';
+
+// Directory aliases for icarepostbac.sites.uiowa.edu.
+$sites['sitesicarepostbac.uiowa.ddev.site'] = 'icarepostbac.sites.uiowa.edu';
+$sites['sitesicarepostbac.dev.drupal.uiowa.edu'] = 'icarepostbac.sites.uiowa.edu';
+$sites['sitesicarepostbac.stage.drupal.uiowa.edu'] = 'icarepostbac.sites.uiowa.edu';
+$sites['sitesicarepostbac.prod.drupal.uiowa.edu'] = 'icarepostbac.sites.uiowa.edu';
+
+// Directory aliases for idream.sites.uiowa.edu.
+$sites['sitesidream.uiowa.ddev.site'] = 'idream.sites.uiowa.edu';
+$sites['sitesidream.dev.drupal.uiowa.edu'] = 'idream.sites.uiowa.edu';
+$sites['sitesidream.stage.drupal.uiowa.edu'] = 'idream.sites.uiowa.edu';
+$sites['sitesidream.prod.drupal.uiowa.edu'] = 'idream.sites.uiowa.edu';
