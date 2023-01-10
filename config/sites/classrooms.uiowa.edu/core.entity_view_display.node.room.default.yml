@@ -7,6 +7,7 @@ dependencies:
     - field.field.node.room.field_gallery_images
     - field.field.node.room.field_image
     - field.field.node.room.field_meta_tags
+    - field.field.node.room.field_room_accessibility
     - field.field.node.room.field_room_building_id
     - field.field.node.room.field_room_classroom_furniture
     - field.field.node.room.field_room_design_details
@@ -131,10 +132,9 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
               formatter:
-                type: file_default
+                type: file_url_plain
                 label: inline
-                settings:
-                  use_description_as_link_text: false
+                settings: {  }
                 third_party_settings: {  }
             weight: 12
             additional: {  }
@@ -160,22 +160,61 @@ third_party_settings:
             weight: 11
             additional: {  }
             third_party_settings: {  }
+          -
+            uuid: bbc5bddf-c82d-4f6f-ba68-d2eb192ddcdf
+            region: content
+            configuration:
+              id: 'field_block:node:room:field_room_accessibility'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                type: string
+                label: above
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 13
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings: {  }
       -
-        layout_id: layout_fourcol_section
+        layout_id: layout_threecol
         layout_settings:
           label: ''
           context_mapping: {  }
+          column_widths: 33-34-33
           layout_builder_styles_style:
-            0: ''
-            1: section_margin_full_width_container
-            section_alignment_start: section_alignment_start
+            - ''
+            - section_margin_full_width_container
         components:
           -
-            uuid: 67a6c347-3087-48b3-becb-c34669bf4f85
+            uuid: 4651c42c-0b5b-436c-81c2-5f67d1e976d5
             region: first
             configuration:
-              id: 'field_block:node:room:field_room_classroom_furniture'
+              id: 'field_block:node:room:field_room_features'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_label
+                label: above
+                settings:
+                  link: true
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 044d7de7-ef84-4fd2-8244-bf823909267e
+            region: first
+            configuration:
+              id: 'field_block:node:room:field_room_design_details'
               label: null
               label_display: null
               provider: layout_builder
@@ -190,7 +229,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 2
+            weight: 1
             additional: {  }
             third_party_settings: {  }
           -
@@ -212,14 +251,14 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 1
+            weight: 0
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 044d7de7-ef84-4fd2-8244-bf823909267e
+            uuid: 67a6c347-3087-48b3-becb-c34669bf4f85
             region: third
             configuration:
-              id: 'field_block:node:room:field_room_design_details'
+              id: 'field_block:node:room:field_room_classroom_furniture'
               label: null
               label_display: null
               provider: layout_builder
@@ -234,9 +273,20 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 3
+            weight: 0
             additional: {  }
             third_party_settings: {  }
+        third_party_settings: {  }
+      -
+        layout_id: layout_fourcol_section
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: ''
+            1: section_margin_full_width_container
+            section_alignment_start: section_alignment_start
+        components:
           -
             uuid: ab27114d-dabc-47e3-b514-367b2b5bb7ca
             region: first
@@ -259,7 +309,11 @@ third_party_settings:
             weight: 1
             additional: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
+        third_party_settings:
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
       -
         layout_id: layout_twocol_section
         layout_settings:
@@ -453,25 +507,6 @@ third_party_settings:
             weight: 17
             additional: {  }
             third_party_settings: {  }
-          -
-            uuid: 8a4c4dd5-72a8-435f-a8e9-e25d908c2d61
-            region: content
-            configuration:
-              id: 'field_block:node:room:field_room_seating_chart'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: file_url_plain
-                label: inline
-                settings: {  }
-                third_party_settings: {  }
-            weight: 18
-            additional: {  }
-            third_party_settings: {  }
         third_party_settings:
           layout_builder_limit:
             limit:
@@ -544,6 +579,14 @@ content:
       link: true
     third_party_settings: {  }
     weight: 0
+    region: content
+  field_room_accessibility:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 21
     region: content
   field_room_building_id:
     type: entity_reference_label

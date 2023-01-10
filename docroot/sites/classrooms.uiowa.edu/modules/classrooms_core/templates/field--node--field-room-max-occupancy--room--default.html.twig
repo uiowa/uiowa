@@ -1,5 +1,6 @@
 {% embed '@uids_base/field/field.html.twig' %}
   {% block field_icon %}
-    <span role="presentation" class="fa-user fas"></span> &nbsp;
+    <span role="presentation" class="fa-building fas"></span> &nbsp;
   {% endblock %}
+  {% set attributes = attributes.addClass('badge badge--primary') %}
 {% endembed %}

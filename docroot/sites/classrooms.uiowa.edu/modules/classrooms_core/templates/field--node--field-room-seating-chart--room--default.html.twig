@@ -1,7 +1,10 @@
 {% embed '@uids_base/field/field.html.twig'  %}
   {% block field_icon %}
-    <span role="presentation" class="fa-file-pdf fas"></span> &nbsp;
-    {{ content.field_room_seating_chart.0['#url'] }}
+    <div class="badge badge--primary">
+      {%- for item in items -%}
+        <div {{ attributes.addClass(classes, 'field__item') }}><i role="presentation" class="fa-file-pdf fas"></i> <a href="{{ item.content }}">Seating Chart</a></div>
+      {%- endfor -%}
+    </div>
   {% endblock %}
 {% endembed %}
 
