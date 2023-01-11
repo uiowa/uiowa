@@ -63,7 +63,7 @@ function classrooms_core_node_view(array &$build, EntityInterface $node, EntityV
       ->uri;
 
     $build['field_room_map_link'] = [
-      '#markup' => '<a href="' . $room_url_map . '">Link</a>',
+      '#markup' => '<div class="field field--label-inline"><div class="field__label">Map</div><div class="field__item"> <a href="' . $room_url_map . '">Campus Maps</a></div>',
     ];
   }
 }
