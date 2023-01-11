@@ -33,7 +33,7 @@ class AdditionalInfoButtons extends BlockBase {
       <a class="bttn bttn--full bttn--secondary" href="https://workflow.uiowa.edu/entry/new/667/">
         Request this Room <span class="fa-arrow-right fas"></span>
       </a>
-      <a class="bttn bttn--full bttn--secondary" href="https://classrooms.prod.drupal.uiowa.edu/classroom-assistance">
+      <a class="bttn bttn--full bttn--primary" href="https://classrooms.prod.drupal.uiowa.edu/classroom-assistance">
         Report an Issue <span class="fa-arrow-right fas"></span>
       </a>
     </div>';

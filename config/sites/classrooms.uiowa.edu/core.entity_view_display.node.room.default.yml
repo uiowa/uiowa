@@ -26,6 +26,7 @@ dependencies:
     - field.field.node.room.field_room_video
     - node.type.room
   module:
+    - classrooms_core
     - file
     - layout_builder
     - options
@@ -491,6 +492,18 @@ third_party_settings:
               context_mapping:
                 entity: layout_builder.entity
             weight: 6
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: b5188b1d-849a-4217-bb08-702995c21c8e
+            region: second
+            configuration:
+              id: requestinfobutton_block
+              label: null
+              label_display: null
+              provider: classrooms_core
+              context_mapping: {  }
+            weight: 7
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
