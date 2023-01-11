@@ -168,8 +168,11 @@ third_party_settings:
           context_mapping: {  }
           column_widths: 33-34-33
           layout_builder_styles_style:
-            - ''
-            - section_margin_full_width_container
+            0: section_background_white_pattern_community
+            1: section_margin_fixed_width_container
+            section_padding_bottom_extra: section_padding_bottom_extra
+            section_padding_top_extra: section_padding_top_extra
+            section_alignment_start: section_alignment_start
         components:
           -
             uuid: 9c41beba-4bcb-4d91-b48a-e08bd81063d1
@@ -303,15 +306,21 @@ third_party_settings:
             weight: 1
             additional: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
       -
         layout_id: layout_onecol
         layout_settings:
           label: ''
           context_mapping: {  }
           layout_builder_styles_style:
-            - ''
-            - section_margin_full_width_container
+            - section_background_style_gray
+            - section_margin_fixed_width_container
         components:
           -
             uuid: b0f42ec1-c0ce-45ae-bfb8-80fca2ec97e5
@@ -335,7 +344,13 @@ third_party_settings:
             weight: 0
             additional: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
       -
         layout_id: layout_twocol
         layout_settings:
@@ -343,8 +358,10 @@ third_party_settings:
           context_mapping: {  }
           column_widths: 50-50
           layout_builder_styles_style:
-            - ''
-            - section_margin_edge_to_edge
+            0: ''
+            1: section_margin_edge_to_edge
+            remove_default_bottom_padding: remove_default_bottom_padding
+            section_alignment_start: section_alignment_start
         components:
           -
             uuid: 9a03b69a-1cbd-4e73-a8ae-da7840c9090d
