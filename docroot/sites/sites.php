@@ -4978,3 +4978,9 @@ $sites['jobsengineering-dean.uiowa.ddev.site'] = 'engineering-dean.jobs.uiowa.ed
 $sites['jobsengineering-dean.dev.drupal.uiowa.edu'] = 'engineering-dean.jobs.uiowa.edu';
 $sites['jobsengineering-dean.stage.drupal.uiowa.edu'] = 'engineering-dean.jobs.uiowa.edu';
 $sites['jobsengineering-dean.prod.drupal.uiowa.edu'] = 'engineering-dean.jobs.uiowa.edu';
+
+// Directory aliases for sowers.lab.uiowa.edu.
+$sites['labsowers.uiowa.ddev.site'] = 'sowers.lab.uiowa.edu';
+$sites['labsowers.dev.drupal.uiowa.edu'] = 'sowers.lab.uiowa.edu';
+$sites['labsowers.stage.drupal.uiowa.edu'] = 'sowers.lab.uiowa.edu';
+$sites['labsowers.prod.drupal.uiowa.edu'] = 'sowers.lab.uiowa.edu';
