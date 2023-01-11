@@ -4972,3 +4972,9 @@ $sites['sitesidream.uiowa.ddev.site'] = 'idream.sites.uiowa.edu';
 $sites['sitesidream.dev.drupal.uiowa.edu'] = 'idream.sites.uiowa.edu';
 $sites['sitesidream.stage.drupal.uiowa.edu'] = 'idream.sites.uiowa.edu';
 $sites['sitesidream.prod.drupal.uiowa.edu'] = 'idream.sites.uiowa.edu';
+
+// Directory aliases for engineering-dean.jobs.uiowa.edu.
+$sites['jobsengineering-dean.uiowa.ddev.site'] = 'engineering-dean.jobs.uiowa.edu';
+$sites['jobsengineering-dean.dev.drupal.uiowa.edu'] = 'engineering-dean.jobs.uiowa.edu';
+$sites['jobsengineering-dean.stage.drupal.uiowa.edu'] = 'engineering-dean.jobs.uiowa.edu';
+$sites['jobsengineering-dean.prod.drupal.uiowa.edu'] = 'engineering-dean.jobs.uiowa.edu';
