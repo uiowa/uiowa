@@ -40,23 +40,18 @@ content:
     settings:
       trim_length: 600
     third_party_settings: {  }
-    weight: 1
+    weight: 2
     region: content
   content_moderation_control:
     settings: {  }
     third_party_settings: {  }
-    weight: -20
+    weight: 0
     region: content
   field_image:
     type: entity_reference_label
     label: hidden
     settings:
       link: true
-    third_party_settings: {  }
-    weight: 0
-    region: content
-  field_room_map_link:
-    settings: {  }
     third_party_settings: {  }
     weight: 1
     region: content
@@ -73,6 +68,7 @@ hidden:
   field_room_features: true
   field_room_instruction_category: true
   field_room_map: true
+  field_room_map_link: true
   field_room_max_occupancy: true
   field_room_name: true
   field_room_responsible_unit: true

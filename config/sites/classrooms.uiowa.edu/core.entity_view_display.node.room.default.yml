@@ -160,17 +160,6 @@ third_party_settings:
             weight: 11
             additional: {  }
             third_party_settings: {  }
-          -
-            uuid: cad4f6ac-a65d-42c4-9e00-e6ba9b055f2f
-            region: content
-            configuration:
-              id: 'extra_field_block:node:room:field_room_map_link'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-            weight: 13
-            additional: {  }
-            third_party_settings: {  }
         third_party_settings: {  }
       -
         layout_id: layout_threecol
@@ -355,7 +344,7 @@ third_party_settings:
           column_widths: 50-50
           layout_builder_styles_style:
             - ''
-            - section_margin_full_width_container
+            - section_margin_edge_to_edge
         components:
           -
             uuid: 9a03b69a-1cbd-4e73-a8ae-da7840c9090d
@@ -376,7 +365,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 1
+            weight: 2
             additional: {  }
             third_party_settings: {  }
           -
@@ -396,7 +385,7 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 2
+            weight: 3
             additional: {  }
             third_party_settings: {  }
           -
@@ -432,7 +421,7 @@ third_party_settings:
                 label: inline
                 settings: {  }
                 third_party_settings: {  }
-            weight: 3
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           -
@@ -452,7 +441,7 @@ third_party_settings:
                 settings:
                   link: true
                 third_party_settings: {  }
-            weight: 4
+            weight: 5
             additional: {  }
             third_party_settings: {  }
           -
@@ -475,7 +464,24 @@ third_party_settings:
             weight: 0
             additional: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
+          -
+            uuid: cad4f6ac-a65d-42c4-9e00-e6ba9b055f2f
+            region: second
+            configuration:
+              id: 'extra_field_block:node:room:field_room_map_link'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 6
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
       -
         layout_id: layout_onecol
         layout_settings:
