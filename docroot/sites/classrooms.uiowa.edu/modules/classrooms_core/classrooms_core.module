@@ -14,6 +14,20 @@ use Drupal\taxonomy\Entity\Term;
 use Drupal\node\NodeInterface;
 
 /**
+ * Implements hook_entity_extra_field_info().
+ */
+function classrooms_core_entity_extra_field_info() {
+  $extra = [];
+  $extra['node']['room']['display']['field_room_map_link'] = [
+    'label' => t('Map Link'),
+    'description' => t('A url link to the campus map.'),
+    'weight' => 1,
+    'visible' => TRUE,
+  ];
+  return $extra;
+}
+
+/**
  * Implements hook_form_alter().
  */
 function classrooms_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
@@ -37,34 +51,22 @@ function classrooms_core_form_alter(&$form, FormStateInterface $form_state, $for
 }
 
 /**
- * Implements hook_entity_extra_field_info().
- */
-function classrooms_core_entity_extra_field_info() {
-  $extra = [];
-  $extra['node']['room']['display']['field_room_map_link'] = [
-    'label' => t('Map Link'),
-    'description' => t('A url link to the campus map.'),
-    'weight' => 1,
-    'visible' => TRUE,
-  ];
-  return $extra;
-}
-
-/**
  * Implements hook_ENTITY_TYPE_view().
  */
 function classrooms_core_node_view(array &$build, EntityInterface $node, EntityViewDisplayInterface $display, $view_mode) {
   if ($node->bundle() === "room") {
-    $room_url_map = $node->field_room_map
-      ->first()
-      ->get('entity')
-      ->getValue()
-      ->field_media_static_map
-      ->uri;
+    if (!$node->get('field_room_map')->isEmpty()) {
+      $room_url_map = $node->field_room_map
+        ->first()
+        ->get('entity')
+        ->getValue()
+        ->field_media_static_map
+        ->uri;
 
-    $build['field_room_map_link'] = [
-      '#markup' => '<div class="field field--label-inline"><div class="field__label">Map</div><div class="field__item"> <a href="' . $room_url_map . '">Campus Maps</a></div>',
-    ];
+      $build['field_room_map_link'] = [
+        '#markup' => '<div class="field field--label-inline"><div class="field__label">Map</div><div class="field__item"> <a href="' . $room_url_map . '">Campus Maps</a></div>',
+      ];
+    }
   }
 }
 
