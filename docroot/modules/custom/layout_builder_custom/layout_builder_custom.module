@@ -118,7 +118,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             // If an alternative label has been added for the empty option,
             // use it instead.
             if (isset($lbs_extra_options[$group]['empty_label']) && isset($form[$group_key]['#empty_option'])) {
-              $form[$group_key]['#empty_option'] = $lbs_extra_options[$group]['none_label'];
+              $form[$group_key]['#empty_option'] = $lbs_extra_options[$group]['empty_label'];
             }
           }
         }
@@ -211,7 +211,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           case 'views_block:events_list_block-card_list':
           case 'views_block:people_list_block-list_card':
             // Set '#states' for card image size.
-            $form['layout_builder_style_card_image_size']['#states'] = [
+            $form['layout_builder_style_media_size']['#states'] = [
               'visible' => [
                 // Always show when media format is set to 'circle'.
                 [
@@ -219,10 +219,10 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
                     'value' => 'media_format_circle',
                   ],
                 ],
-                // Always show when card media position is not 'stacked'.
+                // Show when a media position is selected.
                 [
                   ':input[name="layout_builder_style_card_media_position"]' => [
-                    '!value' => 'card_media_position_stacked',
+                    '!value' => '',
                   ],
                 ],
               ],
@@ -236,14 +236,13 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               'layout_builder_style_media_format' => 'media_format_widescreen',
             ];
 
-            $form['layout_builder_style_card_media_position']['#options']['card_media_position_stacked'] = 'Stacked';
-
             switch ($block->getPluginId()) {
               case 'inline_block:uiowa_aggregator':
                 break;
 
               case 'inline_block:uiowa_card':
-                $defaults['layout_builder_style_card_media_position'] = 'card_media_position_stacked';
+                // @todo Figure out what this should be.
+                unset($defaults['layout_builder_style_card_media_position']);
                 break;
 
               case 'inline_block:uiowa_events':
@@ -697,16 +696,16 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
         $media_position = $form_state->getValue('layout_builder_style_card_media_position');
         $media_format = $form_state->getValue('layout_builder_style_media_format');
 
-        if ($media_position === 'card_media_position_stacked') {
-          if (in_array($media_format, [
-            'media_format_widescreen',
-            'media_format_square',
-          ])) {
-            $form_state->setValue('layout_builder_style_card_image_size', 'card_image_large');
-            // @todo Should we set a message here to let the user
-            //   know the image size was changed? See
-            //   https://github.com/uiowa/uiowa/issues/5036
-          }
+        // If the media position is stacked and the media format is square or
+        // widescreen, set the media size to large.
+        if ($media_position === '' && in_array($media_format, [
+          'media_format_widescreen',
+          'media_format_square',
+        ])) {
+          $form_state->setValue('layout_builder_style_media_size', 'media_size_large');
+          // @todo Should we set a message here to let the user
+          //   know the image size was changed? See
+          //   https://github.com/uiowa/uiowa/issues/5036
         }
 
         if ($block->getPluginId() === 'inline_block:uiowa_card') {
