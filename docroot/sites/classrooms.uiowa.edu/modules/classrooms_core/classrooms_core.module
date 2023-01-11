@@ -138,6 +138,8 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
     case 'field_room_tile_details':
     case 'field_room_design_details':
     case 'field_room_classroom_furniture':
+    case 'field_room_accessibility':
+    case 'field_room_features':
       if (!isset($variables['title_attributes']['class'])) {
         $variables['title_attributes']['class'] = '';
       }
@@ -375,7 +377,7 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--field-room-seating-chart--room--default',
       'base hook' => 'field',
     ],
-    'field__node__field-room_accessibility__room__default' => [
+    'field__node__field_room_accessibility__room__default' => [
       'template' => 'field--node--field-room-accessibility--room--default',
       'base hook' => 'field',
     ],
