@@ -10,15 +10,15 @@
  */
 
 use Drupal\Component\Utility\Html;
-use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
-use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\sitenow_people\PersonTypeInterface;
 use Drupal\views\Entity\View;
 use Drupal\views\ViewExecutable;
@@ -855,21 +855,35 @@ function _sitenow_people_person_form_submit(array &$form, FormStateInterface $fo
 }
 
 /**
- * Implements hook_allowed_values_function().
+ * Set dynamic allowed values person type status.
+ *
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @see options_allowed_values()
  */
-function sitenow_people_person_type_statuses_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
-  $allowed_types = \Drupal::entityTypeManager()
-    ->getStorage('person_type')->loadByProperties([
-      'status' => TRUE,
-      'allow_former' => TRUE,
-    ]);
-
+function sitenow_people_person_type_statuses_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = FALSE): array {
   $types = [];
 
-  foreach ($allowed_types as $type) {
-    $types[$type->id()] = t('Former @type', [
-      '@type' => $type->label(),
-    ]);
+  if (!is_null($entity)) {
+    $allowed_types = \Drupal::entityTypeManager()
+      ->getStorage('person_type')->loadByProperties([
+        'status' => TRUE,
+        'allow_former' => TRUE,
+      ]);
+    foreach ($allowed_types as $type) {
+      $types[$type->id()] = t('Former @type', [
+        '@type' => $type->label(),
+      ]);
+    }
+  }
+  else {
+    // To resolve an issue with ListItemBase generateSampleValue.
+    $types['_none'] = '-None-';
   }
 
   return $types;
