@@ -161,6 +161,17 @@ third_party_settings:
             weight: 11
             additional: {  }
             third_party_settings: {  }
+          -
+            uuid: 67be6465-a6ea-4a12-a6ea-054acc0b69be
+            region: content
+            configuration:
+              id: 'extra_field_block:node:room:field_room_section_heading'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 13
+            additional: {  }
+            third_party_settings: {  }
         third_party_settings: {  }
       -
         layout_id: layout_threecol
@@ -421,7 +432,7 @@ third_party_settings:
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
-            weight: 0
+            weight: 1
             additional: {  }
             third_party_settings: {  }
           -
@@ -504,6 +515,22 @@ third_party_settings:
               provider: classrooms_core
               context_mapping: {  }
             weight: 7
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 3612ec07-2479-441a-881d-aeb5edd098c9
+            region: second
+            configuration:
+              id: 'extra_field_block:node:room:field_room_section_heading'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                settings: {  }
+                third_party_settings: {  }
+            weight: 0
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -705,6 +732,11 @@ content:
       use_description_as_link_text: true
     third_party_settings: {  }
     weight: 5
+    region: content
+  field_room_section_heading:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
     region: content
   field_room_technology_features:
     type: entity_reference_label
