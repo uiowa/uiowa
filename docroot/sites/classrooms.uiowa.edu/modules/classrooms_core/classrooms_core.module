@@ -119,6 +119,13 @@ function classrooms_core_preprocess_block(&$variables) {
       $variables['attributes']['class'][] = 'grid--fivecol--20 photoswipe-gallery';
       break;
 
+    // Add inline class for blocks to appear inline.
+    case 'field_block:node:room:field_room_type':
+    case 'field_block:node:room:field_room_seating_chart':
+    case 'field_block:node:room:field_room_max_occupancy':
+      $variables['attributes']['class'][] = 'block--inline block-margin__top';
+      break;
+
   }
 }
 

@@ -23,6 +23,14 @@ $imgpath: '../../uids/assets/images';
   margin: 0 calc(50% - 50vw);
 }
 
+// Set an element to display inline.
+.block--inline {
+  @include breakpoint(sm) {
+    display: inline-flex;
+    margin-inline-end: $sm;
+  }
+}
+
 // Containers within a background color useful for views blocks.
 .block--bg-container {
   .block__headline  {
@@ -810,3 +818,4 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
 .screen-reader-text {
   @include element-invisible;
 }
+
