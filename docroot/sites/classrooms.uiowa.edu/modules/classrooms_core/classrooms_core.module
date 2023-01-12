@@ -116,14 +116,28 @@ function classrooms_core_preprocess_block(&$variables) {
 
     // Add fivecol grid class to image gallery.
     case 'field_block:node:room:field_gallery_images':
-      $variables['attributes']['class'][] = 'grid--fivecol--20 photoswipe-gallery';
+      if (!isset($variables['attributes']['class'])) {
+        $variables['attributes']['class'] = [''];
+      }
+      $variables['attributes']['class'][] .= 'grid--fivecol--20 photoswipe-gallery';
       break;
 
     // Add inline class for blocks to appear inline.
     case 'field_block:node:room:field_room_type':
     case 'field_block:node:room:field_room_seating_chart':
     case 'field_block:node:room:field_room_max_occupancy':
-      $variables['attributes']['class'][] = 'block--inline block-margin__top';
+      if (!isset($variables['attributes']['class'])) {
+        $variables['attributes']['class'] = [''];
+      }
+      $variables['attributes']['class'][] .= 'element--inline block-margin__top';
+      break;
+
+    // Add inline class for blocks to appear inline.
+    case 'field_block:node:room:field_room_map':
+      if (!isset($variables['attributes']['class'])) {
+        $variables['attributes']['class'] = [''];
+      }
+      $variables['attributes']['class'][] .= 'element--cover';
       break;
 
   }
@@ -183,6 +197,21 @@ function classrooms_core_preprocess_layout(&$variables) {
           }
           break;
 
+      }
+    }
+  }
+
+  if ($layout->id() === 'layout_twocol') {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    $node = ($node ?? \Drupal::routeMatch()->getParameter('node_preview'));
+    if ($node instanceof NodeInterface) {
+      switch ($node->getType()) {
+        case 'room':
+          // Add the custom class to the second column.
+          if (isset($variables['region_attributes']['second'])) {
+            $variables['region_attributes']['second']->addClass('element--align-top element--padding__all');
+          }
+          break;
       }
     }
   }
@@ -416,6 +445,5 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
       'template' => 'taxonomy-term--technology-features',
       'base hook' => 'taxonomy',
     ],
-
   ];
 }
