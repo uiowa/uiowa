@@ -18,15 +18,17 @@ use Drupal\node\NodeInterface;
  */
 function classrooms_core_entity_extra_field_info() {
   $extra = [];
+  // Adding an extra field to render a link to the campus map.
   $extra['node']['room']['display']['field_room_map_link'] = [
     'label' => t('Map Link'),
     'description' => t('A url link to the campus map.'),
     'weight' => 1,
     'visible' => TRUE,
   ];
+  // Adding an extra field to display a section heading.
   $extra['node']['room']['display']['field_room_section_heading'] = [
     'label' => t('Additional Information'),
-    'description' => t('A heading for the Additional information section.'),
+    'description' => t('A heading for the additional information section.'),
     'weight' => 1,
     'visible' => TRUE,
   ];
