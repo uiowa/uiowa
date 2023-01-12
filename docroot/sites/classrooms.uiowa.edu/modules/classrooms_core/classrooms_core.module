@@ -145,6 +145,13 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
       }
       $variables['title_attributes']['class'] .= 'h6 headline headline--serif headline--underline';
       break;
+
+    case 'field_technology_features_icon':
+      if (!isset($variables['attributes']['class'])) {
+        $variables['attributes']['class'] = '';
+      }
+      $variables['attributes']['class'] .= 'fa-li';
+      break;
   }
 }
 
