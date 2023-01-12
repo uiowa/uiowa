@@ -53,6 +53,30 @@ function classrooms_core_form_alter(&$form, FormStateInterface $form_state, $for
       $form['field_room_scheduling_regions']['#disabled'] = TRUE;
       break;
 
+    case 'taxonomy_term_technology_features_form':
+
+      // Disable font awesome extra settings.
+      /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
+      $check = \Drupal::service('uiowa_core.access_checker');
+
+      /** @var Drupal\Core\Access\AccessResultInterface $access */
+      $access = $check->access(\Drupal::currentUser()->getAccount());
+
+      if ($access->isForbidden()) {
+        $form['field_technology_features_icon']['widget'][0]['settings']['style']['#disabled'] = TRUE;
+        $form['field_technology_features_icon']['widget'][0]['settings']['size']['#disabled'] = TRUE;
+        $form['field_technology_features_icon']['widget'][0]['settings']['fixed-width']['#disabled'] = TRUE;
+        $form['field_technology_features_icon']['widget'][0]['settings']['border']['#disabled'] = TRUE;
+        $form['field_technology_features_icon']['widget'][0]['settings']['invert']['#disabled'] = TRUE;
+        $form['field_technology_features_icon']['widget'][0]['settings']['animation']['#disabled'] = TRUE;
+        $form['field_technology_features_icon']['widget'][0]['settings']['additional_classes']['#disabled'] = TRUE;
+        $form['field_technology_features_icon']['widget'][0]['settings']['duotone']['#disabled'] = TRUE;
+        $form['field_technology_features_icon']['widget'][0]['settings']['masking']['#disabled'] = TRUE;
+        $form['field_technology_features_icon']['widget'][0]['settings']['power_transforms']['#disabled'] = TRUE;
+        $form['field_technology_features_icon']['widget'][0]['settings']['pull']['#disabled'] = TRUE;
+      }
+      break;
+
   }
 }
 
