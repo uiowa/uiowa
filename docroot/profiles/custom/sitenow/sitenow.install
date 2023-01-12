@@ -1924,3 +1924,18 @@ function sitenow_update_9052() {
   $config_storage = \Drupal::service('config.storage');
   $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
 }
+
+/**
+ * Re-run of 9051 to pick up newly provisioned sites
+ * that didn't have the correct format.
+ */
+function sitenow_update_9053() {
+  _update_all_blocks_by_plugin_id('inline_block:uiowa_card', function (&$component, $block) {
+
+    // Change the format for the card excerpt.
+    if (!is_null($block)) {
+      $block->field_uiowa_card_excerpt->format = 'minimal_plus';
+      $block->save();
+    }
+  });
+}
