@@ -100,7 +100,8 @@ function classrooms_core_node_view(array &$build, EntityInterface $node, EntityV
         ->uri;
 
       $build['field_room_map_link'] = [
-        '#markup' => '<div class="field field--label-inline"><div class="field__label">Map</div><div class="field__item"> <a href="' . $room_url_map . '">Campus Maps</a></div>',
+        '#theme' => 'room_map_link',
+        '#room_url_map' => $room_url_map,
       ];
     }
   }
@@ -476,6 +477,10 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
     'taxonomy_term__technology_features' => [
       'template' => 'taxonomy-term--technology-features',
       'base hook' => 'taxonomy',
+    ],
+    'room_map_link' => [
+      'variables' => ['room_url_map' => NULL],
+      'template' => 'room-map-link',
     ],
   ];
 }
