@@ -1933,8 +1933,10 @@ function sitenow_update_9053() {
 
     // Change the format for the card excerpt.
     if (!is_null($block)) {
-      $block->field_uiowa_card_excerpt->format = 'minimal_plus';
-      $block->save();
+      if ($block->get('field_uiowa_card_excerpt')->format !== 'minimal_plus') {
+        $block->field_uiowa_card_excerpt->format = 'minimal_plus';
+        $block->save();
+      }
     }
   });
 }
