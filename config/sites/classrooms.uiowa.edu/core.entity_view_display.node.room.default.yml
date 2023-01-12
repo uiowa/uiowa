@@ -522,6 +522,42 @@ third_party_settings:
         layout_id: layout_onecol
         layout_settings:
           label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - section_background_style_gray
+            - section_container_narrow
+        components:
+          -
+            uuid: 2d9e49ef-c90b-4063-a240-446d12ba8536
+            region: content
+            configuration:
+              id: 'field_block:node:room:field_room_video'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: visually_hidden
+                settings:
+                  view_mode: full
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
         components:
           -
             uuid: 916ba0eb-574a-4df4-95bc-6d22910fa6fa
@@ -532,24 +568,6 @@ third_party_settings:
               context_mapping:
                 entity: layout_builder.entity
             weight: 5
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 2d9e49ef-c90b-4063-a240-446d12ba8536
-            region: content
-            configuration:
-              id: 'field_block:node:room:field_room_video'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-              formatter:
-                type: entity_reference_entity_view
-                label: above
-                settings:
-                  view_mode: default
-                  link: false
-                third_party_settings: {  }
-            weight: 15
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
