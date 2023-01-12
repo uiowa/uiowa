@@ -1926,8 +1926,7 @@ function sitenow_update_9052() {
 }
 
 /**
- * Re-run of 9051 to pick up newly provisioned sites
- * that didn't have the correct format.
+ * Re-run of 9051 to fix recently provisioned sites.
  */
 function sitenow_update_9053() {
   _update_all_blocks_by_plugin_id('inline_block:uiowa_card', function (&$component, $block) {
