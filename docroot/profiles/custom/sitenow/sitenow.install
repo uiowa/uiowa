@@ -1926,9 +1926,25 @@ function sitenow_update_9052() {
 }
 
 /**
- * Update layout builder styles applied to cards.
+ * Re-run of 9051 to fix recently provisioned sites.
  */
 function sitenow_update_9053() {
+  _update_all_blocks_by_plugin_id('inline_block:uiowa_card', function (&$component, $block) {
+
+    // Change the format for the card excerpt.
+    if (!is_null($block)) {
+      if ($block->get('field_uiowa_card_excerpt')->format !== 'minimal_plus') {
+        $block->field_uiowa_card_excerpt->format = 'minimal_plus';
+        $block->save();
+      }
+    }
+  });
+}
+
+/**
+ * Update layout builder styles applied to cards.
+ */
+function sitenow_update_9054() {
   // @todo Apply these same updates to 'inline_block:uiowa_events',
   //   'inline_block:uiowa_aggregator',
   //   'views_block:article_list_block-list_article',
