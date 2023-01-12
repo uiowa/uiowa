@@ -27,14 +27,14 @@ class AdditionalInfoButtons extends BlockBase {
    */
   public function build() {
     $markup = '<div class="block bttn--row">
-      <a class="bttn bttn--secondary" role="presentation" href="http://classroomscheduling.registrar.uiowa.edu/AdAstra7Prod/Portal/GuestPortal.aspx">
-          Check Availability <span class="fa-arrow-right fas"></span>
+      <a class="bttn bttn--secondary" href="http://classroomscheduling.registrar.uiowa.edu/AdAstra7Prod/Portal/GuestPortal.aspx">
+          Check Availability <span class="fa-arrow-right fas" role="presentation"></span>
       </a>
-      <a class="bttn bttn--secondary" role="presentation" href="https://workflow.uiowa.edu/entry/new/667/">
-        Request this Room <span class="fa-arrow-right fas"></span>
+      <a class="bttn bttn--secondary" href="https://workflow.uiowa.edu/entry/new/667/">
+        Request this Room <span class="fa-arrow-right fas" role="presentation"></span>
       </a>
-      <a class="bttn bttn--primary" role="presentation" href="https://classrooms.prod.drupal.uiowa.edu/classroom-assistance">
-        Report an Issue <span class="fa-arrow-right fas"></span>
+      <a class="bttn bttn--primary" href="https://classrooms.prod.drupal.uiowa.edu/classroom-assistance">
+        Report an Issue <span class="fa-arrow-right fas" role="presentation"></span>
       </a>
     </div>';
 
