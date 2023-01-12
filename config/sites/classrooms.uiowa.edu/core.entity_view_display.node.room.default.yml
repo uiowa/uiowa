@@ -40,6 +40,27 @@ third_party_settings:
     allow_custom: false
     sections:
       -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+        components:
+          -
+            uuid: 916ba0eb-574a-4df4-95bc-6d22910fa6fa
+            region: content
+            configuration:
+              id: 'extra_field_block:node:room:content_moderation_control'
+              label_display: '0'
+              context_mapping:
+                entity: layout_builder.entity
+            weight: 7
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
+      -
         layout_id: layout_header
         layout_settings:
           label: Header
@@ -148,7 +169,11 @@ third_party_settings:
             weight: 11
             additional: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
+        third_party_settings:
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
       -
         layout_id: layout_threecol
         layout_settings:
@@ -546,17 +571,6 @@ third_party_settings:
                 settings: {  }
                 third_party_settings: {  }
             weight: 0
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 916ba0eb-574a-4df4-95bc-6d22910fa6fa
-            region: second
-            configuration:
-              id: 'extra_field_block:node:room:content_moderation_control'
-              label_display: '0'
-              context_mapping:
-                entity: layout_builder.entity
-            weight: 7
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
