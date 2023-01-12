@@ -1,7 +1,6 @@
-<div class="bg--gold block-padding__all--sm">
-  {%- for item in items -%}
-    <div {{ attributes.addClass(classes, 'field__item') }}><i role="presentation" class="fa-file-pdf fas"></i> &nbsp;<a href="{{ item.content|render }}">Seating Chart</a></div>
-  {%- endfor -%}
-</div>
+{%- for item in items -%}
+  <a class="bttn bttn--primary bttn--light-font bttn--small" href="{{ item.content|render }}"><i role="presentation" class="fa-file-pdf fas"></i> &nbsp;Seating Chart</a>
+{%- endfor -%}
+
 
 
