@@ -5,24 +5,24 @@
  * Primary module hooks for Uiowa Core module.
  */
 
-use Drupal\Core\Block\BlockPluginInterface;
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element;
+use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\google_tag\Entity\Container;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\uiowa_core\HeadlineHelper;
+use Drupal\uiowa_core\RegionHelper;
 use Drupal\views\Views;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Exception\RfcComplianceException;
-use Drupal\uiowa_core\RegionHelper;
 
 /**
  * Implements hook_config_schema_info_alter().
@@ -157,6 +157,7 @@ function template_preprocess_card(&$variables) {
     'url',
     'link_text',
     'link_indicator',
+    'aria_described_by',
   ] as $prop) {
     if (isset($element["#$prop"])) {
       $variables[$prop] = $element["#$prop"];
@@ -180,6 +181,35 @@ function template_preprocess_card(&$variables) {
   }
   $variables['linked_element'] = $linked_element;
 
+  $variables['button_attributes'] = new Attribute();
+  $variables['button_attributes']->addClass([
+    'bttn',
+    'bttn--primary',
+    'bttn--transparent',
+    'bttn--light-font',
+  ]);
+  if ($variables['linked_element'] === 'button') {
+    $variables['button_attributes']->addClass('click-target');
+  }
+  else {
+    $variables['button_attributes']->setAttribute('aria-hidden', TRUE);
+  }
+
+  // If title and link text are set, set a button id attribute for
+  // aria-describedby.
+  if (!empty($element['title']) && !empty($element['link_text'])) {
+    $aria_id = Html::getUniqueId($element['#title']);
+    $variables['aria_describedby'] = $aria_id;
+    $variables['button_attributes']->setAttribute('id', $aria_id);
+  }
+
+  // Add link indicator classes if relevant.
+  if ($variables['link_indicator']) {
+    $variables['button_attributes']->addClass([
+      'bttn--circle',
+      'bttn--no-text',
+    ]);
+  }
 }
 
 /**

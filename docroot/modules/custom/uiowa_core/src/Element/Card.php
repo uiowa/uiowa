@@ -2,6 +2,7 @@
 
 namespace Drupal\uiowa_core\Element;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Render\Element\RenderElement;
 use Drupal\Core\Template\Attribute;
@@ -34,10 +35,11 @@ class Card extends RenderElement {
       '#subtitle' => NULL,
       '#meta' => [],
       '#content' => NULL,
-      '#linked_element' => FALSE,
       '#url' => NULL,
       '#link_text' => NULL,
       '#link_indicator' => FALSE,
+      '#linked_element' => FALSE,
+      '#aria_describedby' => '',
     ];
   }
 
@@ -45,12 +47,6 @@ class Card extends RenderElement {
     // Add standard card classes.
     foreach (['card', 'click-container', 'block--word-break'] as $class) {
       $element['#attributes']['class'][] = $class;
-    }
-
-    // Add link indicator classes if relevant.
-    if ($element['#link_indicator']) {
-      $element['##attributes']['class'][] = 'bttn--circle';
-      $element['##attributes']['class'][] = 'bttn--no-text';
     }
 
     // Create a set of media classes in case its needed.
@@ -66,7 +62,7 @@ class Card extends RenderElement {
     }
 
     // If there is a media element, add the media library and classes.
-    // @todo Update this Element:isEmpty() in
+    // @todo Update this to Element:isEmpty() in
     //   https://github.com/uiowa/uiowa/issues/6061.
     if (isset($element['#media']) && count(Element::children($element['#media'])) > 0) {
       $element['#attached']['library'][] = 'uids_base/media';
