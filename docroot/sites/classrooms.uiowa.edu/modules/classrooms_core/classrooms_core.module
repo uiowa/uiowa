@@ -12,6 +12,7 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\node\NodeInterface;
+use Drupal\Core\Field\FieldItemList;
 
 /**
  * Implements hook_entity_extra_field_info().
@@ -405,5 +406,10 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--field-room-technology-features',
       'base hook' => 'field',
     ],
+    'taxonomy_term__technology_features' => [
+      'template' => 'taxonomy-term--technology-features',
+      'base hook' => 'taxonomy',
+    ],
+
   ];
 }
