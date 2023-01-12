@@ -26,7 +26,7 @@ class AdditionalInfoButtons extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-    $markup = '<div class="layout-builder-block">
+    $markup = '<div class="block bttn--row">
       <a class="bttn bttn--secondary" role="presentation" href="http://classroomscheduling.registrar.uiowa.edu/AdAstra7Prod/Portal/GuestPortal.aspx">
           Check Availability <span class="fa-arrow-right fas"></span>
       </a>
