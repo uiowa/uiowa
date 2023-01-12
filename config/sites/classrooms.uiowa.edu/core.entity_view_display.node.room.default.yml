@@ -342,6 +342,44 @@ third_party_settings:
               scope: disabled
               scope_update: 'Update scope'
       -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            0: section_background_white_pattern_community
+            1: section_container_narrow
+            section_padding_bottom_extra: section_padding_bottom_extra
+            section_padding_top_extra: section_padding_top_extra
+        components:
+          -
+            uuid: 2d9e49ef-c90b-4063-a240-446d12ba8536
+            region: content
+            configuration:
+              id: 'field_block:node:room:field_room_video'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: visually_hidden
+                settings:
+                  view_mode: large
+                third_party_settings: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
+      -
         layout_id: layout_twocol
         layout_settings:
           label: ''
@@ -491,7 +529,7 @@ third_party_settings:
               label_display: null
               provider: classrooms_core
               context_mapping: {  }
-            weight: 7
+            weight: 8
             additional: {  }
             third_party_settings: {  }
           -
@@ -510,82 +548,24 @@ third_party_settings:
             weight: 0
             additional: {  }
             third_party_settings: {  }
-        third_party_settings:
-          layout_builder_lock:
-            lock: {  }
-          layout_builder_limit:
-            limit:
-              scope: disabled
-              scope_update: 'Update scope'
-      -
-        layout_id: layout_onecol
-        layout_settings:
-          label: ''
-          context_mapping: {  }
-          layout_builder_styles_style:
-            - section_background_style_gray
-            - section_container_narrow
-        components:
-          -
-            uuid: 2d9e49ef-c90b-4063-a240-446d12ba8536
-            region: content
-            configuration:
-              id: 'field_block:node:room:field_room_video'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_entity_view
-                label: visually_hidden
-                settings:
-                  view_mode: full
-                third_party_settings: {  }
-            weight: 0
-            additional: {  }
-            third_party_settings: {  }
-        third_party_settings:
-          layout_builder_lock:
-            lock: {  }
-          layout_builder_limit:
-            limit:
-              scope: disabled
-              scope_update: 'Update scope'
-      -
-        layout_id: layout_onecol
-        layout_settings:
-          label: ''
-        components:
           -
             uuid: 916ba0eb-574a-4df4-95bc-6d22910fa6fa
-            region: content
+            region: second
             configuration:
               id: 'extra_field_block:node:room:content_moderation_control'
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-            weight: 5
+            weight: 7
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
+          layout_builder_lock:
+            lock: {  }
           layout_builder_limit:
             limit:
               scope: disabled
               scope_update: 'Update scope'
-      -
-        layout_id: layout_twocol_section
-        layout_settings:
-          label: ''
-          context_mapping: {  }
-          column_widths: 50-50
-          layout_builder_styles_style:
-            0: ''
-            1: section_margin_full_width_container
-            section_alignment_start: section_alignment_start
-        components: {  }
-        third_party_settings: {  }
 id: node.room.default
 targetEntityType: node
 bundle: room
