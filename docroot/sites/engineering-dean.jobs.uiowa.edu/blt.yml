@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: jobsengineering-dean.uiowa.ddev.site
+    protocol: https
+  machine_name: jobsengineering-dean
+  human_name: engineering-dean.jobs.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: jobsengineering-dean.prod
+drupal:
+  db:
+    database: engineering_dean_jobs_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://jobsengineering-dean.prod.drupal.uiowa.edu'
+  requester: kjhughes
+  site-name: VPMA
