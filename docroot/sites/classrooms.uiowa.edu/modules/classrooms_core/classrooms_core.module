@@ -476,5 +476,13 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
       'variables' => ['room_url_map' => NULL],
       'template' => 'room-map-link',
     ],
+    'requestinfobutton_block' => [
+      'template' => 'requestinfobutton-block',
+      'variables' => [
+        'check_availability_link' => NULL,
+        'request_link' => NULL,
+        'report_issue_link' => NULL,
+      ],
+    ],
   ];
 }
