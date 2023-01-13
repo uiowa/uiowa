@@ -195,20 +195,35 @@ function template_preprocess_card(&$variables) {
     $variables['button_attributes']->setAttribute('aria-hidden', TRUE);
   }
 
-  // If title and link text are set, set a button id attribute for
-  // aria-describedby.
-  if (!empty($element['title']) && !empty($element['link_text'])) {
-    $aria_id = Html::getUniqueId($element['#title']);
-    $variables['aria_describedby'] = $aria_id;
-    $variables['button_attributes']->setAttribute('id', $aria_id);
-  }
-
   // Add link indicator classes if relevant.
   if ($variables['link_indicator']) {
     $variables['button_attributes']->addClass([
       'bttn--circle',
       'bttn--no-text',
     ]);
+  }
+
+  if (!empty($variables['title'])) {
+    $variables['headline'] = [
+      'headline_text' => $variables['title'],
+      'headline_level' => $variables['title_heading_size'] ?: 'h2',
+      'headline_class' => 'headline',
+    ];
+
+    // @todo Set headline_url based on link being set.
+    // Set 'click-target' class on headline URL if title is the linked element.
+    if ($variables['linked_element'] === 'title') {
+      $variables['headline']['headline_url'] = $variables['url'];
+      $variables['headline']['headline_url_class'] = 'click-target';
+    }
+  }
+
+  // If title and link text are set, set a button id attribute for
+  // aria-describedby.
+  if (!empty($variables['title']) && !empty($variables['link_text'])) {
+    $aria_id = Html::getUniqueId($variables['#title']);
+    $variables['headline']['headline_aria'] = $aria_id;
+    $variables['button_attributes']->setAttribute('id', $aria_id);
   }
 }
 

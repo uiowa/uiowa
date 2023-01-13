@@ -20,18 +20,9 @@
   {% block body %}
     <div class="card__body">
       {% block heading %}
-        {% if title %}
+        {% if headline %}
           <header>
-            {# @todo Determine if it is better to programatically set level and class via preprocess. #}
-            {% set card_heading = {
-              'headline_level': title_heading_size ?: 'h2',
-              'headline_class': headline_class ?: 'headline',
-              'headline_text': title,
-              'headline_url': url,
-              'headline_aria': aria_describedby,
-              'headline_url_class': linked_element == 'title' ? 'click-target' : null,
-            } %}
-            {% include '@uids_base/uids/headline.html.twig' with card_heading only %}
+            {% include '@uids_base/uids/headline.html.twig' with headline only %}
           </header>
         {% endif %}
       {% endblock %}
@@ -58,9 +49,7 @@
       {% endblock %}
 
       {% block content %}
-        {% if content is not empty %}
           {{ content }}
-        {% endif %}
       {% endblock %}
 
       {% block card_button %}
