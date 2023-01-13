@@ -181,6 +181,12 @@ function template_preprocess_card(&$variables) {
   }
   $variables['linked_element'] = $linked_element;
 
+  // If there is no URL, set a data attribute so our click a11y script knows to
+  // ignore this card.
+  if (empty($variables['url'])) {
+    $variables['attributes']['data-uids-no-link'] = TRUE;
+  }
+
   $variables['button_attributes'] = new Attribute();
   $variables['button_attributes']->addClass([
     'bttn',
