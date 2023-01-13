@@ -205,6 +205,15 @@ class NewsFeature extends BaseNodeSource {
       }
     }
 
+    // If there's a byline, prepend 'By: ' to it
+    // since it is being added to the article source field,
+    // and would otherwise be unlabeled.
+    $byline = $row->getSourceProperty('field_by_line');
+    if (!empty($byline)) {
+      $byline = 'Written by: ' . $byline[0]['value'];
+      $row->setSourceProperty('field_by_line', $byline);
+    }
+
     return TRUE;
   }
 
