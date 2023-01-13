@@ -65,7 +65,6 @@ function classrooms_core_form_alter(&$form, FormStateInterface $form_state, $for
       $access = $check->access(\Drupal::currentUser()->getAccount());
 
       if ($access->isForbidden()) {
-        $form['field_technology_features_icon']['widget'][0]['settings']['style']['#disabled'] = TRUE;
         $form['field_technology_features_icon']['widget'][0]['settings']['size']['#disabled'] = TRUE;
         $form['field_technology_features_icon']['widget'][0]['settings']['fixed-width']['#disabled'] = TRUE;
         $form['field_technology_features_icon']['widget'][0]['settings']['border']['#disabled'] = TRUE;
