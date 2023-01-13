@@ -434,6 +434,8 @@ trait ProcessMediaTrait {
    *   The image alt text.
    * @param string $title
    *   The optional image title.
+   * @param string $global_caption
+   *   The optional image global caption.
    *
    * @return int|null
    *   The media ID or null if unable to process.
@@ -441,7 +443,7 @@ trait ProcessMediaTrait {
    * @throws \Drupal\migrate\MigrateException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  protected function processImageField($fid, $alt = NULL, $title = NULL) {
+  protected function processImageField($fid, $alt = NULL, $title = NULL, $global_caption = NULL) {
     $fileQuery = $this->fidQuery($fid);
     if (!str_starts_with($fileQuery['filemime'], 'image/')) {
       return NULL;
@@ -482,7 +484,7 @@ trait ProcessMediaTrait {
       $subdir = NULL;
 
       if ($new_fid) {
-        $mid = $this->createMediaEntity($new_fid, $meta, 1);
+        $mid = $this->createMediaEntity($new_fid, $meta, 1, $global_caption);
       }
     }
     else {

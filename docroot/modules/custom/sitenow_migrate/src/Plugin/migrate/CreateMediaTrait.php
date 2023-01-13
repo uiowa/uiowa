@@ -28,13 +28,15 @@ trait CreateMediaTrait {
    *   Associative array metadata for the file such as alt and title.
    * @param int $owner_id
    *   User id for the media owner, or default to the administrator account.
+   * @param string $global_caption
+   *   The optional image global caption.
    *
    * @return false|int|string|null
    *   Media id, if successful, or else false.
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function createMediaEntity($fid, array $meta = [], $owner_id = 1) {
+  public function createMediaEntity($fid, array $meta = [], $owner_id = 1, $global_caption = NULL) {
     $file_manager = $this->entityTypeManager->getStorage('file');
     /** @var \Drupal\file\FileInterface $file */
     $file = $file_manager->load($fid);
@@ -78,6 +80,12 @@ trait CreateMediaTrait {
             'alt' => $meta['alt'],
             'title' => $meta['title'],
           ];
+          if ($global_caption) {
+            $media_entity['field_media_caption'] = [
+              'value' => $global_caption,
+              'format' => 'minimal',
+            ];
+          }
           break;
 
         case 'application':
