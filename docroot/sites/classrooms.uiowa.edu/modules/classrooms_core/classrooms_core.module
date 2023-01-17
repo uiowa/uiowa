@@ -12,6 +12,7 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\node\NodeInterface;
+use Drupal\Core\Render\Element;
 
 /**
  * Implements hook_entity_extra_field_info().
@@ -65,16 +66,13 @@ function classrooms_core_form_alter(&$form, FormStateInterface $form_state, $for
       $access = $check->access(\Drupal::currentUser()->getAccount());
 
       if ($access->isForbidden()) {
-        $form['field_technology_features_icon']['widget'][0]['settings']['size']['#disabled'] = TRUE;
-        $form['field_technology_features_icon']['widget'][0]['settings']['fixed-width']['#disabled'] = TRUE;
-        $form['field_technology_features_icon']['widget'][0]['settings']['border']['#disabled'] = TRUE;
-        $form['field_technology_features_icon']['widget'][0]['settings']['invert']['#disabled'] = TRUE;
-        $form['field_technology_features_icon']['widget'][0]['settings']['animation']['#disabled'] = TRUE;
-        $form['field_technology_features_icon']['widget'][0]['settings']['additional_classes']['#disabled'] = TRUE;
-        $form['field_technology_features_icon']['widget'][0]['settings']['duotone']['#disabled'] = TRUE;
-        $form['field_technology_features_icon']['widget'][0]['settings']['masking']['#disabled'] = TRUE;
-        $form['field_technology_features_icon']['widget'][0]['settings']['power_transforms']['#disabled'] = TRUE;
-        $form['field_technology_features_icon']['widget'][0]['settings']['pull']['#disabled'] = TRUE;
+
+        foreach (Element::children($form['field_technology_features_icon']['widget'][0]['settings']) as $index) {
+          if ($index === 'style') {
+            continue;
+          }
+          $form['field_technology_features_icon']['widget'][0]['settings'][$index]['#disabled'] = TRUE;
+        }
       }
       break;
 
@@ -218,7 +216,7 @@ function classrooms_core_preprocess_layout(&$variables) {
       if (in_array($node->getType(), [
         'room',
       ])) {
-        if (!isset($variables['banner_attributes'])) {
+        if (!isset($variables['banner_settings'])) {
           $variables['banner_settings'] = [];
         }
       }
