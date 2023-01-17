@@ -4996,3 +4996,9 @@ $sites['labmast.uiowa.ddev.site'] = 'mast.lab.uiowa.edu';
 $sites['labmast.dev.drupal.uiowa.edu'] = 'mast.lab.uiowa.edu';
 $sites['labmast.stage.drupal.uiowa.edu'] = 'mast.lab.uiowa.edu';
 $sites['labmast.prod.drupal.uiowa.edu'] = 'mast.lab.uiowa.edu';
+
+// Directory aliases for safety.uiowa.edu.
+$sites['safety.uiowa.ddev.site'] = 'safety.uiowa.edu';
+$sites['safety.dev.drupal.uiowa.edu'] = 'safety.uiowa.edu';
+$sites['safety.stage.drupal.uiowa.edu'] = 'safety.uiowa.edu';
+$sites['safety.prod.drupal.uiowa.edu'] = 'safety.uiowa.edu';
