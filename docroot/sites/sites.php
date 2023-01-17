@@ -4984,3 +4984,9 @@ $sites['sitesauditorytrainingindex.uiowa.ddev.site'] = 'auditorytrainingindex.si
 $sites['sitesauditorytrainingindex.dev.drupal.uiowa.edu'] = 'auditorytrainingindex.sites.uiowa.edu';
 $sites['sitesauditorytrainingindex.stage.drupal.uiowa.edu'] = 'auditorytrainingindex.sites.uiowa.edu';
 $sites['sitesauditorytrainingindex.prod.drupal.uiowa.edu'] = 'auditorytrainingindex.sites.uiowa.edu';
+
+// Directory aliases for hiew.lab.uiowa.edu.
+$sites['labhiew.uiowa.ddev.site'] = 'hiew.lab.uiowa.edu';
+$sites['labhiew.dev.drupal.uiowa.edu'] = 'hiew.lab.uiowa.edu';
+$sites['labhiew.stage.drupal.uiowa.edu'] = 'hiew.lab.uiowa.edu';
+$sites['labhiew.prod.drupal.uiowa.edu'] = 'hiew.lab.uiowa.edu';
