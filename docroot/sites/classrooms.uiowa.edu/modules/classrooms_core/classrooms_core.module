@@ -119,7 +119,7 @@ function classrooms_core_preprocess_block(&$variables) {
     case 'field_block:node:room:field_room_building_id':
     case 'extra_field_block:node:room:field_room_map_link':
       if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = [''];
+        $variables['attributes']['class'] = [];
       }
       $variables['attributes']['class'][] .= 'block-margin__default--removed';
       break;
