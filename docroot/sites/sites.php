@@ -4990,3 +4990,9 @@ $sites['labhiew.uiowa.ddev.site'] = 'hiew.lab.uiowa.edu';
 $sites['labhiew.dev.drupal.uiowa.edu'] = 'hiew.lab.uiowa.edu';
 $sites['labhiew.stage.drupal.uiowa.edu'] = 'hiew.lab.uiowa.edu';
 $sites['labhiew.prod.drupal.uiowa.edu'] = 'hiew.lab.uiowa.edu';
+
+// Directory aliases for mast.lab.uiowa.edu.
+$sites['labmast.uiowa.ddev.site'] = 'mast.lab.uiowa.edu';
+$sites['labmast.dev.drupal.uiowa.edu'] = 'mast.lab.uiowa.edu';
+$sites['labmast.stage.drupal.uiowa.edu'] = 'mast.lab.uiowa.edu';
+$sites['labmast.prod.drupal.uiowa.edu'] = 'mast.lab.uiowa.edu';
