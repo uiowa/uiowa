@@ -94,11 +94,11 @@ function classrooms_core_node_view(array &$build, EntityInterface $node, EntityV
     }
     if (!$node->get('field_room_map')->isEmpty()) {
       $room_url_map = $node->field_room_map
-        ->first()
-        ->get('entity')
-        ->getValue()
-        ->field_media_static_map
-        ->uri;
+        ?->first()
+        ?->get('entity')
+        ?->getValue()
+        ?->field_media_static_map
+        ?->uri;
 
       $build['field_room_map_link'] = [
         '#theme' => 'room_map_link',
