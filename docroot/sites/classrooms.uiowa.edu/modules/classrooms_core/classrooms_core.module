@@ -66,7 +66,7 @@ function classrooms_core_form_alter(&$form, FormStateInterface $form_state, $for
       $access = $check->access(\Drupal::currentUser()->getAccount());
 
       if ($access->isForbidden()) {
-
+      // Disable all settings fields except the style setting.
         foreach (Element::children($form['field_technology_features_icon']['widget'][0]['settings']) as $index) {
           if ($index === 'style') {
             continue;
