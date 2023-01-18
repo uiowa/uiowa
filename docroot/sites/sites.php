@@ -5020,3 +5020,9 @@ $sites['siteshccc-summer-undergrad.uiowa.ddev.site'] = 'hccc-summer-undergrad.si
 $sites['siteshccc-summer-undergrad.dev.drupal.uiowa.edu'] = 'hccc-summer-undergrad.sites.uiowa.edu';
 $sites['siteshccc-summer-undergrad.stage.drupal.uiowa.edu'] = 'hccc-summer-undergrad.sites.uiowa.edu';
 $sites['siteshccc-summer-undergrad.prod.drupal.uiowa.edu'] = 'hccc-summer-undergrad.sites.uiowa.edu';
+
+// Directory aliases for interoception.lab.uiowa.edu.
+$sites['labinteroception.uiowa.ddev.site'] = 'interoception.lab.uiowa.edu';
+$sites['labinteroception.dev.drupal.uiowa.edu'] = 'interoception.lab.uiowa.edu';
+$sites['labinteroception.stage.drupal.uiowa.edu'] = 'interoception.lab.uiowa.edu';
+$sites['labinteroception.prod.drupal.uiowa.edu'] = 'interoception.lab.uiowa.edu';
