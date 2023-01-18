@@ -35,7 +35,8 @@
     line-height: 1;
   }
 
-  [class*="card__"] & {
+  [class*="card__"] &,
+  [class*="bttn"] & {
     font-size: inherit;
     line-height: inherit;
   }
@@ -65,11 +66,13 @@
   &.h4,
   &.h5,
   &.h6,
-  &[class*="element--"] {
+  &.element--bold-intro,
+  &.element--light-intro {
     line-height: inherit;
   }
 
-  [class*="card__"] & {
+  [class*="card__"] &,
+  [class*="bttn"] & {
     font-size: inherit;
     line-height: inherit;
   }
@@ -78,7 +81,8 @@
     p#{&} {
       font-size: 1.2rem;
 
-      [class*="element--"] &,
+      .element--bold-intro &,
+      .element--light-intro &,
       .h1 &,
       .h2 &,
       .h3 &,
