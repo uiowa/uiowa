@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -ev
+
+blt artifact:deploy:check-dirty --ansi --branch "${TRAVIS_BRANCH}-build" --no-interaction --verbose
+
+set +v
