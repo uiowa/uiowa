@@ -167,7 +167,7 @@ function classrooms_core_preprocess_block(&$variables) {
     // Center video.
     case 'field_block:node:room:field_room_video':
       if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = [''];
+        $variables['attributes']['class'] = [];
       }
       $variables['attributes']['class'][] .= 'align-center';
       break;
