@@ -5008,3 +5008,9 @@ $sites['sitesasce.uiowa.ddev.site'] = 'asce.sites.uiowa.edu';
 $sites['sitesasce.dev.drupal.uiowa.edu'] = 'asce.sites.uiowa.edu';
 $sites['sitesasce.stage.drupal.uiowa.edu'] = 'asce.sites.uiowa.edu';
 $sites['sitesasce.prod.drupal.uiowa.edu'] = 'asce.sites.uiowa.edu';
+
+// Directory aliases for malkova.lab.uiowa.edu.
+$sites['labmalkova.uiowa.ddev.site'] = 'malkova.lab.uiowa.edu';
+$sites['labmalkova.dev.drupal.uiowa.edu'] = 'malkova.lab.uiowa.edu';
+$sites['labmalkova.stage.drupal.uiowa.edu'] = 'malkova.lab.uiowa.edu';
+$sites['labmalkova.prod.drupal.uiowa.edu'] = 'malkova.lab.uiowa.edu';
