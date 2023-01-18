@@ -1,4 +1,5 @@
 language: php
+os: linux
 dist: xenial
 php: '8.1'
 env:
@@ -35,22 +36,23 @@ install:
 script:
 - blt blt:telemetry:disable --no-interaction
 - source ${BLT_TRAVIS_DIR}/scripts/run_tests
+- rm LICENSE.chromedriver
 deploy:
 - provider: script
   script: "${BLT_TRAVIS_DIR}/scripts/deploy_branch"
-  skip_cleanup: true
+  cleanup: false
   on:
     branch: develop
     php: 8.1
 - provider: script
   script: "${BLT_TRAVIS_DIR}/scripts/deploy_branch"
-  skip_cleanup: true
+  cleanup: false
   on:
     branch: main
     php: 8.1
 - provider: script
   script: "${BLT_TRAVIS_DIR}/scripts/deploy_tag"
-  skip_cleanup: true
+  cleanup: false
   on:
     tags: true
     php: 8.1
