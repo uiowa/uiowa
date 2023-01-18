@@ -49,7 +49,7 @@ class AccessTest extends BrowserTestBase {
   }
 
   /**
-   * Test hook_restrict_ip_access_denied_page_alter in sitenow_intranet.
+   * Test 401 response in sitenow_intranet.
    */
   public function testAccessDeniedResponseCode() {
     $node = $this->drupalCreateNode();
