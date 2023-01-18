@@ -71,3 +71,13 @@
   }
 }
 
+.bttn--disabled {
+  cursor: default;
+  &:focus,
+  &:hover {
+    transform: none;
+  }
+  &:after {
+    background: none;
+  }
+}
