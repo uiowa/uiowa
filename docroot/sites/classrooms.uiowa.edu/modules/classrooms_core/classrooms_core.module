@@ -110,68 +110,62 @@ function classrooms_core_node_view(array &$build, EntityInterface $node, EntityV
  * Implements hook_preprocess_HOOK().
  */
 function classrooms_core_preprocess_block(&$variables) {
+  $classes = [];
+  $title_classes = [];
   switch ($variables['plugin_id']) {
     case 'field_block:node:room:field_room_scheduling_regions':
     case 'field_block:node:room:field_room_responsible_unit':
     case 'field_block:node:room:field_room_instruction_category':
     case 'field_block:node:room:field_room_building_id':
     case 'extra_field_block:node:room:field_room_map_link':
-      if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = [];
-      }
-      $variables['attributes']['class'][] .= 'block-margin__default--removed';
+      $classes[] = 'block-margin__default--removed';
       break;
 
     case 'requestinfobutton_block':
     case 'extra_field_block:node:room:field_room_section_heading':
-      if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = [];
-      }
-      $variables['attributes']['class'][] .= 'block-margin__top--extra';
+      $classes[] = 'block-margin__top--extra';
       break;
 
     case 'field_block:node:room:field_room_technology_features':
-      if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = [];
-      }
-      $variables['attributes']['class'][] .= 'bg--gray block-padding__all';
-      $variables['title_attributes']['class'] = 'h4 headline headline--serif headline--underline';
+      $classes[] = 'bg--gray block-padding__all';
+      $title_classes[] = 'h4 headline headline--serif headline--underline';
       break;
 
     // Add fivecol grid class to image gallery.
     case 'field_block:node:room:field_gallery_images':
-      if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = [];
-      }
-      $variables['attributes']['class'][] .= 'grid--fivecol--20 photoswipe-gallery';
+      $classes[] = 'grid--fivecol--20 photoswipe-gallery';
       break;
 
     // Add inline class for blocks to appear inline.
     case 'field_block:node:room:field_room_type':
     case 'field_block:node:room:field_room_seating_chart':
     case 'field_block:node:room:field_room_max_occupancy':
-      if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = [];
-      }
-      $variables['attributes']['class'][] .= 'element--inline block-margin__top';
+      $classes[] = 'element--inline block-margin__top';
       break;
 
     // Add inline class for blocks to appear inline.
     case 'field_block:node:room:field_room_map':
-      if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = [];
-      }
-      $variables['attributes']['class'][] .= 'element--cover';
+      $classes[] .= 'element--cover';
       break;
 
     // Center video.
     case 'field_block:node:room:field_room_video':
-      if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = [];
-      }
-      $variables['attributes']['class'][] .= 'align-center';
+      $classes[] .= 'align-center';
       break;
 
+  }
+  if (!empty($classes)) {
+    if (!isset($variables['attributes']['class'])) {
+      $variables['attributes']['class'] = [];
+    }
+    $variables['attributes']['class'] += $classes;
+  }
+
+  if (!empty($title_classes)) {
+    if (!isset($variables['title_attributes']['class'])) {
+      $variables['title_attributes']['class'] = [];
+    }
+    $variables['title_attributes']['class'] += $title_classes;
   }
 }
 
