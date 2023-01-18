@@ -5014,3 +5014,9 @@ $sites['labmalkova.uiowa.ddev.site'] = 'malkova.lab.uiowa.edu';
 $sites['labmalkova.dev.drupal.uiowa.edu'] = 'malkova.lab.uiowa.edu';
 $sites['labmalkova.stage.drupal.uiowa.edu'] = 'malkova.lab.uiowa.edu';
 $sites['labmalkova.prod.drupal.uiowa.edu'] = 'malkova.lab.uiowa.edu';
+
+// Directory aliases for hccc-summer-undergrad.sites.uiowa.edu.
+$sites['siteshccc-summer-undergrad.uiowa.ddev.site'] = 'hccc-summer-undergrad.sites.uiowa.edu';
+$sites['siteshccc-summer-undergrad.dev.drupal.uiowa.edu'] = 'hccc-summer-undergrad.sites.uiowa.edu';
+$sites['siteshccc-summer-undergrad.stage.drupal.uiowa.edu'] = 'hccc-summer-undergrad.sites.uiowa.edu';
+$sites['siteshccc-summer-undergrad.prod.drupal.uiowa.edu'] = 'hccc-summer-undergrad.sites.uiowa.edu';
