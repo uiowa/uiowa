@@ -8,6 +8,7 @@ use Drupal\Core\Render\PreviewFallbackInterface;
 use Drupal\layout_builder\Event\SectionComponentBuildRenderArrayEvent;
 use Drupal\layout_builder\LayoutBuilderEvents;
 use Drupal\layout_builder\Plugin\Block\FieldBlock;
+use Drupal\uiowa_core\Element\Card;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -104,20 +105,15 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
 
           // Map fields to the card parts.
           foreach ($mapping as $prop => $fields) {
-            if (is_array($fields)) {
-              $build["#$prop"] = [];
-              foreach ($fields as $field) {
-                if (isset($content[$field])) {
-                  $build["#$prop"][] = $content[$field];
-                  unset($content[$field]);
-                }
-              }
+            if (!is_array($fields)) {
+              $fields = [$fields];
             }
-            else {
+            $build["#$prop"] = [];
+            foreach ($fields as $field) {
               // @todo Refine this to remove fields if they are empty.
-              if (isset($content[$fields]) && count(Element::children($content[$fields])) > 0) {
-                $build["#$prop"] = $content[$fields];
-                unset($content[$fields]);
+              if (isset($content[$field]) && count(Element::children($content[$field])) > 0) {
+                $build["#$prop"][] = $content[$field];
+                unset($content[$field]);
               }
             }
           }
@@ -172,6 +168,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
             $build['#attached']['library'][] = 'uids_base/accessible-menu';
           }
           break;
+
       }
 
       if (isset($media_formats) && isset($build['#attributes']['class'])) {

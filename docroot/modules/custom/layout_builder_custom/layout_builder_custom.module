@@ -1272,7 +1272,7 @@ function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
 
     foreach ($row_styles as $style_id) {
       // Account for incorrectly configured component configuration which may
-      // have a NULL style ID. We cannot pass NULL to the storage handler or
+      // have a NULL style ID. We cannot pass NULL to the storage handler, or
       // it will throw an exception.
       if (empty($style_id)) {
         continue;

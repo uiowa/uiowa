@@ -12,12 +12,14 @@ use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\google_tag\Entity\Container;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
+use Drupal\uiowa_core\Element\Card;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\uiowa_core\RegionHelper;
 use Drupal\views\Views;
@@ -99,6 +101,77 @@ function uiowa_core_mail_alter(&$message) {
     \Drupal::logger('uiowa_core')->error(t('Unable to alter outgoing email using from address @from', [
       '@from' => $message['from'],
     ]));
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function uiowa_core_node_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
+  if ($entity->bundle() === 'article' && $view_mode === 'teaser') {
+
+    $mapping = [
+      '#media' => 'field_image',
+      '#title' => 'title',
+      '#subtitle' => 'field_article_author',
+      '#content' => 'field_teaser',
+    ];
+
+    // Map fields to the card parts.
+    foreach ($mapping as $prop => $fields) {
+      if (!is_array($fields)) {
+        $fields = [$fields];
+      }
+      $build["$prop"] = [];
+      foreach ($fields as $field) {
+        // @todo Refine this to remove fields if they are empty.
+        if (isset($build[$field]) && count(Element::children($build[$field])) > 0) {
+          $build["$prop"][] = $build[$field];
+          unset($build[$field]);
+        }
+      }
+    }
+  }
+
+  if ($view_mode === 'teaser') {
+    $link_indicator = FALSE;
+    $node_type = $entity->bundle();
+    $type_map = [
+      'page' => 'pages',
+      'person' => 'people',
+      'article' => 'articles',
+    ];
+
+    if (isset($type_map[$node_type])) {
+      $config_name = 'sitenow_' . $type_map[$node_type] . '.settings';
+      $config = \Drupal::configFactory()->getEditable($config_name);
+
+      $link_indicator = $config->get('show_teaser_link_indicator');
+    }
+    $build['#link_indicator'] = $link_indicator;
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+//function uiowa_core_node_view_alter(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display) {
+//  $test = 'thing';
+//}
+
+/**
+ * Implements hook_ENTITY_TYPE_build_defaults_alter().
+ */
+function uiowa_core_node_build_defaults_alter(array &$build, \Drupal\Core\Entity\EntityInterface $entity, $view_mode) {
+  if ($entity->bundle() === 'article' && $view_mode === 'teaser') {
+    $build['#type'] = 'card';
+    unset($build['#theme']);
+    $build['#pre_render'] = [
+      [
+        Card::class,
+        'preRenderCard',
+      ],
+    ];
   }
 }
 
@@ -340,6 +413,42 @@ function uiowa_core_preprocess_page(&$variables) {
     else {
       unset($variables['page']['pre_footer']['views_block__tags_list_tags_list']);
       unset($variables['page']['pre_footer']['views_block__related_content_block_related_headings_lists']);
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uiowa_core_preprocess_views_view(&$variables) {
+  $test = 'thing';
+  // @todo Limit to set list of views.
+  if (isset($variables['rows'][0]['#rows'])) {
+    foreach ($variables['rows'][0]['#rows'] as &$row) {
+      $row['#type'] = 'card';
+      unset($row['#theme']);
+      $node = $row['#node'];
+      $mapping = [
+        'media' => 'field_uiowa_card_image',
+        'link_indicator' => 'field_uiowa_card_button_display',
+        'subtitle' => 'field_uiowa_card_author',
+      ];
+
+      // Map fields to the card parts.
+      foreach ($mapping as $prop => $fields) {
+        if (!is_array($fields)) {
+          $fields = [$fields];
+        }
+
+        $row["#$prop"] = [];
+        foreach ($fields as $field) {
+          // @todo Refine this to remove fields if they are empty.
+          $field_value = $node->{$field};
+          if (!is_null($field_value) && count(Element::children($field_value)) > 0) {
+            $row["#$prop"][] = $field_value;
+          }
+        }
+      }
     }
   }
 }

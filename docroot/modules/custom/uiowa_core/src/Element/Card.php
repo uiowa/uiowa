@@ -29,6 +29,7 @@ class Card extends RenderElement {
           'uids_base/card',
         ],
       ],
+      '#attributes' => [],
       '#media' => NULL,
       '#title' => NULL,
       '#title_heading_size' => 'h2',
