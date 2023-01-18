@@ -37,13 +37,13 @@ script:
 - source ${BLT_TRAVIS_DIR}/scripts/run_tests
 deploy:
 - provider: script
-  script: "${BLT_TRAVIS_DIR}/scripts/deploy_branch"
+  script: "$TRAVIS_BUILD_DIR/scripts/deploy_branch"
   skip_cleanup: true
   on:
     branch: develop
     php: 8.1
 - provider: script
-  script: "${BLT_TRAVIS_DIR}/scripts/deploy_branch"
+  script: "$TRAVIS_BUILD_DIR/scripts/deploy_branch"
   skip_cleanup: true
   on:
     branch: main
