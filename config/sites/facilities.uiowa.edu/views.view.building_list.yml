@@ -1,16 +1,16 @@
-uuid: 314228cf-9bf0-404f-a34e-970ab6bd8ce1
+uuid: 6627f4bc-0641-48b2-9918-ed9390351bf6
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_building_honoree_last_name
-    - field.storage.node.field_building_honoree_name
-    - node.type.named_building
+    - field.storage.node.field_building_abbreviation
+    - field.storage.node.field_building_number
+    - node.type.building
   module:
     - node
     - user
-id: named_building_list
-label: 'Named building list'
+id: building_list
+label: 'Building list'
 module: views
 description: ''
 tag: ''
@@ -23,84 +23,21 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: 'Named building list'
+      title: 'Building list'
       fields:
-        field_building_honoree_name:
-          id: field_building_honoree_name
-          table: node__field_building_honoree_name
-          field: field_building_honoree_name
+        field_building_number:
+          id: field_building_number
+          table: node__field_building_number
+          field: field_building_number
           relationship: none
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: '{{ field_building_honoree_last_name }}, {{ field_building_honoree_name }}'
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: false
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        field_building_honoree_last_name:
-          id: field_building_honoree_last_name
-          table: node__field_building_honoree_last_name
-          field: field_building_honoree_last_name
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: field
-          label: Honoree
+          label: 'Building number'
           exclude: false
           alter:
-            alter_text: true
-            text: '{{ field_building_honoree_last_name }}, {{ field_building_honoree_name }}'
+            alter_text: false
+            text: ''
             make_link: false
             path: ''
             absolute: false
@@ -214,6 +151,69 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+        field_building_abbreviation:
+          id: field_building_abbreviation
+          table: node__field_building_abbreviation
+          field: field_building_abbreviation
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: 'Building abbreviation'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
       pager:
         type: none
         options:
@@ -236,20 +236,7 @@ display:
         type: tag
         options: {  }
       empty: {  }
-      sorts:
-        field_building_honoree_name_value:
-          id: field_building_honoree_name_value
-          table: node__field_building_honoree_name
-          field: field_building_honoree_name_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: standard
-          order: ASC
-          expose:
-            label: ''
-            field_identifier: ''
-          exposed: false
+      sorts: {  }
       arguments: {  }
       filters:
         status:
@@ -269,14 +256,44 @@ display:
           id: type
           table: node_field_data
           field: type
+          relationship: none
+          group_type: group
+          admin_label: ''
           entity_type: node
           entity_field: type
           plugin_id: bundle
+          operator: in
           value:
-            named_building: named_building
+            building: building
+          group: 1
+          exposed: false
           expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
             operator_limit_selection: false
             operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
         combine:
           id: combine
           table: views
@@ -291,7 +308,7 @@ display:
           exposed: true
           expose:
             operator_id: combine_op
-            label: Search
+            label: Filter
             description: ''
             use_operator: false
             operator: combine_op
@@ -309,7 +326,7 @@ display:
               publisher: '0'
               webmaster: '0'
               administrator: '0'
-            placeholder: Search
+            placeholder: ''
           is_grouped: false
           group_info:
             label: ''
@@ -323,9 +340,9 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           fields:
-            field_building_honoree_last_name: field_building_honoree_last_name
-            field_building_honoree_name: field_building_honoree_name
+            field_building_number: field_building_number
             title: title
+            field_building_abbreviation: field_building_abbreviation
       style:
         type: table
         options:
@@ -333,26 +350,26 @@ display:
           row_class: ''
           default_row_class: true
           columns:
-            field_building_honoree_last_name: field_building_honoree_last_name
-            field_building_honoree_name: field_building_honoree_name
+            field_building_number: field_building_number
             title: title
-          default: field_building_honoree_last_name
+            field_building_abbreviation: field_building_abbreviation
+          default: title
           info:
-            field_building_honoree_last_name:
+            field_building_number:
               sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-            field_building_honoree_name:
-              sortable: false
+            title:
+              sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-            title:
+            field_building_abbreviation:
               sortable: true
               default_sort_order: asc
               align: ''
@@ -391,10 +408,10 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:field.storage.node.field_building_honoree_last_name'
-        - 'config:field.storage.node.field_building_honoree_name'
-  block_1:
-    id: block_1
+        - 'config:field.storage.node.field_building_abbreviation'
+        - 'config:field.storage.node.field_building_number'
+  block_buildings:
+    id: block_buildings
     display_title: Block
     display_plugin: block
     position: 1
@@ -429,5 +446,5 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:field.storage.node.field_building_honoree_last_name'
-        - 'config:field.storage.node.field_building_honoree_name'
+        - 'config:field.storage.node.field_building_abbreviation'
+        - 'config:field.storage.node.field_building_number'
