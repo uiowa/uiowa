@@ -207,29 +207,24 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
 function classrooms_core_preprocess_layout(&$variables) {
   /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
   $layout = $variables['layout'];
-
-  if (in_array($layout->id(), ['layout_header', 'layout_twocol'])) {
-    $node = \Drupal::routeMatch()->getParameter('node');
-    $node = ($node ?? \Drupal::routeMatch()->getParameter('node_preview'));
-    if ($node instanceof NodeInterface && $node->getType() === 'room') {
-      // Process the header layout.
-      if ($layout->id() === 'layout_header') {
+  $node = \Drupal::routeMatch()->getParameter('node');
+  $node = ($node ?? \Drupal::routeMatch()->getParameter('node_preview'));
+  if ($node instanceof NodeInterface && $node->getType() === 'room') {
+    switch ($layout->id()) {
+      case 'layout_header':
         if (!isset($variables['banner_settings'])) {
           $variables['banner_settings'] = [];
         }
         if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
-          // Set the featured image display.
           $variables['featured_image_display'] = 'medium';
         }
-      }
-    }
+        break;
 
-    // Process the custom class to the two column layout.
-    if ($layout->id() === 'layout_twocol') {
-
-      if (isset($variables['region_attributes']['second'])) {
-        $variables['region_attributes']['second']->addClass('element--align-top element--padding__all');
-      }
+      case 'layout_twocol':
+        if (isset($variables['region_attributes']['second'])) {
+          $variables['region_attributes']['second']->addClass('element--align-top element--padding__all');
+        }
+        break;
     }
   }
 }
