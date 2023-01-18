@@ -168,7 +168,21 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
             $build['#attached']['library'][] = 'uids_base/accessible-menu';
           }
           break;
+        case 'views_block:article_list_block-list_article':
+          if (isset($block->getConfiguration()['fields'])) {
+            $hide_fields = [];
+            foreach ($block->getConfiguration()['fields'] as $field_name => $hide_field) {
+              if ((int) $hide_field['hide'] === 1) {
+                $hide_fields[] = $field_name;
+              }
+            }
 
+            if (isset($build['content']['view_build']['#rows'][0]['#rows'])) {
+              foreach ($build['content']['view_build']['#rows'][0]['#rows'] as &$row) {
+                $row['#hide_fields'] = $hide_fields;
+              }
+            }
+          }
       }
 
       if (isset($media_formats) && isset($build['#attributes']['class'])) {

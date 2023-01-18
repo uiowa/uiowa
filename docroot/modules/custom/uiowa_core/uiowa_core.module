@@ -117,17 +117,21 @@ function uiowa_core_node_view(array &$build, \Drupal\Core\Entity\EntityInterface
       '#content' => 'field_teaser',
     ];
 
+    $hide_fields = $build['#hide_fields'] ?? [];
+
     // Map fields to the card parts.
     foreach ($mapping as $prop => $fields) {
       if (!is_array($fields)) {
         $fields = [$fields];
       }
       $build["$prop"] = [];
-      foreach ($fields as $field) {
+      foreach ($fields as $field_name) {
         // @todo Refine this to remove fields if they are empty.
-        if (isset($build[$field]) && count(Element::children($build[$field])) > 0) {
-          $build["$prop"][] = $build[$field];
-          unset($build[$field]);
+        if (isset($build[$field_name]) && count(Element::children($build[$field_name])) > 0) {
+          if (!in_array($field_name, $hide_fields)) {
+            $build["$prop"][] = $build[$field_name];
+          }
+          unset($build[$field_name]);
         }
       }
     }
@@ -151,13 +155,6 @@ function uiowa_core_node_view(array &$build, \Drupal\Core\Entity\EntityInterface
     $build['#link_indicator'] = $link_indicator;
   }
 }
-
-/**
- * Implements hook_ENTITY_TYPE_view_alter().
- */
-//function uiowa_core_node_view_alter(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display) {
-//  $test = 'thing';
-//}
 
 /**
  * Implements hook_ENTITY_TYPE_build_defaults_alter().
