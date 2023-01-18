@@ -145,12 +145,12 @@ function classrooms_core_preprocess_block(&$variables) {
 
     // Add inline class for blocks to appear inline.
     case 'field_block:node:room:field_room_map':
-      $classes[] .= 'element--cover';
+      $classes[] = 'element--cover';
       break;
 
     // Center video.
     case 'field_block:node:room:field_room_video':
-      $classes[] .= 'align-center';
+      $classes[] = 'align-center';
       break;
 
   }
