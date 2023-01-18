@@ -159,7 +159,7 @@ function classrooms_core_preprocess_block(&$variables) {
     // Add inline class for blocks to appear inline.
     case 'field_block:node:room:field_room_map':
       if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = [''];
+        $variables['attributes']['class'] = [];
       }
       $variables['attributes']['class'][] .= 'element--cover';
       break;
