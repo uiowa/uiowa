@@ -141,7 +141,7 @@ function classrooms_core_preprocess_block(&$variables) {
     // Add fivecol grid class to image gallery.
     case 'field_block:node:room:field_gallery_images':
       if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = [''];
+        $variables['attributes']['class'] = [];
       }
       $variables['attributes']['class'][] .= 'grid--fivecol--20 photoswipe-gallery';
       break;
