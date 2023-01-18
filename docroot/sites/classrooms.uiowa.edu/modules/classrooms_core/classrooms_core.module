@@ -132,7 +132,7 @@ function classrooms_core_preprocess_block(&$variables) {
 
     case 'field_block:node:room:field_room_technology_features':
       if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = [''];
+        $variables['attributes']['class'] = [];
       }
       $variables['attributes']['class'][] .= 'bg--gray block-padding__all';
       $variables['title_attributes']['class'] = 'h4 headline headline--serif headline--underline';
