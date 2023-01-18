@@ -5002,3 +5002,9 @@ $sites['safety.uiowa.ddev.site'] = 'safety.uiowa.edu';
 $sites['safety.dev.drupal.uiowa.edu'] = 'safety.uiowa.edu';
 $sites['safety.stage.drupal.uiowa.edu'] = 'safety.uiowa.edu';
 $sites['safety.prod.drupal.uiowa.edu'] = 'safety.uiowa.edu';
+
+// Directory aliases for asce.sites.uiowa.edu.
+$sites['sitesasce.uiowa.ddev.site'] = 'asce.sites.uiowa.edu';
+$sites['sitesasce.dev.drupal.uiowa.edu'] = 'asce.sites.uiowa.edu';
+$sites['sitesasce.stage.drupal.uiowa.edu'] = 'asce.sites.uiowa.edu';
+$sites['sitesasce.prod.drupal.uiowa.edu'] = 'asce.sites.uiowa.edu';
