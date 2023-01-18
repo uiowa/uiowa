@@ -40,19 +40,19 @@ script:
 deploy:
 - provider: script
   script: "${BLT_TRAVIS_DIR}/scripts/deploy_branch"
-  cleanup: false
+  skip_cleanup: true
   on:
     branch: develop
     php: 8.1
 - provider: script
   script: "${BLT_TRAVIS_DIR}/scripts/deploy_branch"
-  cleanup: false
+  skip_cleanup: true
   on:
     branch: main
     php: 8.1
 - provider: script
   script: "${BLT_TRAVIS_DIR}/scripts/deploy_tag"
-  cleanup: false
+  skip_cleanup: true
   on:
     tags: true
     php: 8.1
