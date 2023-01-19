@@ -23,7 +23,7 @@ class NewsFeature extends BaseNodeSource {
    */
   public function query() {
     $query = parent::query();
-    $query->condition('n.nid', $this->withGallery(), 'IN');
+    $query->condition('n.nid', $this->withCallout(), 'IN');
     return $query;
   }
 
@@ -105,6 +105,12 @@ class NewsFeature extends BaseNodeSource {
       $body[0]['value'] = preg_replace_callback('|<div class=\"image-.*?\">(<drupal-media.*?)><\/drupal-media>(.*?)<\/div>|is', [
         $this,
         'captionReplace',
+      ], $body[0]['value']);
+      // Check for callouts in the source,
+      // and construct the proper format for the destination.
+      $body[0]['value'] = preg_replace_callback('|<div class=\"(.*?)-callout\">(.*?)<\/div>|is', [
+        $this,
+        'calloutReplace',
       ], $body[0]['value']);
 
       $row->setSourceProperty('body', $body);
@@ -239,6 +245,32 @@ class NewsFeature extends BaseNodeSource {
   }
 
   /**
+   * Helper function to update a callout during a preg_replace.
+   */
+  private function calloutReplace($match) {
+    // Match[1] is the "left" or "right" of the callout
+    // alignment. Match[2] is the interior content of the <div>.
+    // Extra spacings have been added in various places
+    // for visual spacing. Remove them, or they'll throw
+    // things off in the new callout component.
+    $match[2] = preg_replace('|(<br>)+|is', '<br>', $match[2]);
+
+    // Look for a headline to use in the callout, as well as any additional
+    // line breaks. Like before, here they are unnecessary.
+    $headline = '';
+    if (preg_match('|<strong>(.*?)<\/strong>(<br>)*|is', $match[2], $headline_matches)) {
+      // @todo Update this with proper callout headline construction.
+      $headline = '<h3>' . $headline_matches[1] . '</h3>';
+      // If we're adding the headline separately,
+      // remove it from the rest of the text, so we don't duplicate.
+      $match[2] = str_replace($headline_matches[0], '', $match[2]);
+    }
+
+    // @todo Update this with proper callout construction.
+    return '<div class="callout">' . $headline . $match[2] . '</div>';
+  }
+
+  /**
    * Helper function to check for existing tags and create if they don't exist.
    */
   private function createTag($tag_name) {
@@ -309,6 +341,15 @@ class NewsFeature extends BaseNodeSource {
       31406, 32181, 32431, 32461, 32471, 32571, 32971, 33021,
       33081, 33261, 33301, 33486, 33561, 33791, 33846, 33871,
       33916, 33931, 34036, 34086, 34236,
+    ];
+  }
+
+  /**
+   * @todo Remove this when photo gallery testing is done.
+   */
+  private function withCallout() {
+    return [
+      34276, 34241,
     ];
   }
 

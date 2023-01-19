@@ -108,6 +108,12 @@ class Achievement extends BaseNodeSource {
         $this,
         'captionReplace',
       ], $body[0]['value']);
+      // Check for callouts in the source,
+      // and construct the proper format for the destination.
+      $body[0]['value'] = preg_replace_callback('|<div class=\"(.*?)-callout\">(.*?)<\/div>|is', [
+        $this,
+        'calloutReplace',
+      ], $body[0]['value']);
 
       $row->setSourceProperty('body', $body);
       // Extract the summary.
@@ -159,6 +165,32 @@ class Achievement extends BaseNodeSource {
     // Here we're adding the caption and then re-closing
     // the drupal-media element.
     return $match[1] . ' data-caption="' . trim($match[2]) . '"></drupal-media>';
+  }
+
+  /**
+   * Helper function to update a callout during a preg_replace.
+   */
+  private function calloutReplace($match) {
+    // Match[1] is the "left" or "right" of the callout
+    // alignment. Match[2] is the interior content of the <div>.
+    // Extra spacings have been added in various places
+    // for visual spacing. Remove them, or they'll throw
+    // things off in the new callout component.
+    $match[2] = preg_replace('|(<br>)+|is', '<br>', $match[2]);
+
+    // Look for a headline to use in the callout, as well as any additional
+    // line breaks. Like before, here they are unnecessary.
+    $headline = '';
+    if (preg_match('|<strong>(.*?)<\/strong>(<br>)*|is', $match[2], $headline_matches)) {
+      // @todo Update this with proper callout headline construction.
+      $headline = '<h3>' . $headline_matches[1] . '</h3>';
+      // If we're adding the headline separately,
+      // remove it from the rest of the text, so we don't duplicate.
+      $match[2] = str_replace($headline_matches[0], '', $match[2]);
+    }
+
+    // @todo Update this with proper callout construction.
+    return '<div class="callout">' . $headline . $match[2] . '</div>';
   }
 
   /**
