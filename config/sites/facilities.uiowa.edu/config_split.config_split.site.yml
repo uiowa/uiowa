@@ -11,16 +11,22 @@ storage: folder
 folder: ../config/sites/facilities.uiowa.edu
 module:
   facilities_core: 0
+  uiowa_facilities: 0
 theme: {  }
 complete_list:
   - config_split.config_split.site
   - metatag.metatag_defaults.node__named_building
+  - node.type.building
   - node.type.named_building
+  - pathauto.pattern.building
   - pathauto.pattern.named_building
+  - schemadotorg.schemadotorg_mapping.node.building
   - schemadotorg.schemadotorg_mapping.node.named_building
+  - simple_sitemap.bundle_settings.default.node.building
   - simple_sitemap.bundle_settings.default.node.named_building
-  - views.view.named_building_list
+  - views.view.building_list
   - views.view.named_building_details
+  - views.view.named_building_list
   - 'field.storage.node.field_building_*'
 partial_list:
   - metatag.settings
