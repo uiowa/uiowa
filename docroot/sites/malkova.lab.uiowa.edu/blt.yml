@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labmalkova.uiowa.ddev.site
+    protocol: https
+  machine_name: labmalkova
+  human_name: malkova.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labmalkova.prod
+drupal:
+  db:
+    database: malkova_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labmalkova.prod.drupal.uiowa.edu'
+  requester: twarowski
+  site-name: 'Malkova Lab'
