@@ -15,7 +15,7 @@ use Drupal\Core\Block\BlockBase;
  *   category = @Translation("Site custom")
  * )
  */
-class TodayScheduleBlock extends BlockBase {
+class TodaySchedule extends BlockBase {
 
   /**
    * {@inheritdoc}
@@ -30,7 +30,7 @@ class TodayScheduleBlock extends BlockBase {
   public function build() {
     return [
       '#markup' =>
-        '<span>' . $this->t("Today's Schedule") . '</span>',
+      '<span>' . $this->t("Today's Schedule") . '</span>',
     ];
   }
 
