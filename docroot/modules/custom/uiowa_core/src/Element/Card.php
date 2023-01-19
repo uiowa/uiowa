@@ -46,31 +46,17 @@ class Card extends RenderElement {
 
   public static function preRenderCard($element) {
     // Add standard card classes.
-    foreach (['card', 'click-container', 'block--word-break'] as $class) {
-      $element['#attributes']['class'][] = $class;
+    if (!isset($element['#attributes'])) {
+      $element['#attributes'] = new Attribute();
     }
-
-    // Create a set of media classes in case its needed.
-    $media_classes = ['media'];
-
-    // Loop through all classes, add any media classes to the array and remove
-    // them from the card classes.
-    foreach ($element['#attributes']['class'] as $index => $style) {
-      if (str_starts_with($style, 'media')) {
-        $media_classes[] = $style;
-        unset($element['#attributes']['class'][$index]);
-      }
+    elseif (!$element['#attributes'] instanceof Attribute) {
+      $element['#attributes'] = new Attribute($element['#attributes']);
     }
-
-    // If there is a media element, add the media library and classes.
-    // @todo Update this to Element:isEmpty() in
-    //   https://github.com/uiowa/uiowa/issues/6061.
-    if (isset($element['#media']) && count(Element::children($element['#media'])) > 0) {
-      $element['#attached']['library'][] = 'uids_base/media';
-      $element['#media_attributes'] = new Attribute();
-
-      $element['#media_attributes']->addClass($media_classes);
-    }
+    $element['#attributes']->addClass([
+      'card',
+      'click-container',
+      'block--word-break',
+    ]);
 
     return $element;
   }

@@ -219,7 +219,7 @@ function sitenow_articles_preprocess_node(&$variables) {
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
 
-    $node = $variables["node"];
+    $node = $variables['node'];
     switch ($node->getType()) {
       case 'article':
         $variables['content']['article_author'] = $node->field_article_author->view([
@@ -228,24 +228,24 @@ function sitenow_articles_preprocess_node(&$variables) {
           'settings' => [],
         ]);
         if (!$node->get('field_article_source_org')->isEmpty() && !$node->get('field_article_source_link')->isEmpty()) {
-          $variables["content"]["field_article_source_link"][0]["#title"] = $node->field_article_source_org->value;
+          $variables['content']['field_article_source_link'][0]['#title'] = $node->field_article_source_org->value;
           switch ($variables['view_mode']) {
             case 'teaser':
               // Unset source link if directly linking out to prevent
               // redundant links.
               if ($node->hasField('field_article_source_link_direct')) {
                 if ((int) $node->field_article_source_link_direct->value === 1 && !$node->get('field_article_source_link')->isEmpty()) {
-                  unset($variables["content"]["field_article_source_link"]);
+                  unset($variables['content']['field_article_source_link']);
                 }
                 else {
-                  unset($variables["content"]["field_article_source_org"]);
+                  unset($variables['content']['field_article_source_org']);
                 }
               }
               break;
 
             case 'full':
             case 'default':
-              unset($variables["content"]["field_article_source_org"]);
+              unset($variables['content']['field_article_source_org']);
               break;
 
           }
@@ -255,7 +255,7 @@ function sitenow_articles_preprocess_node(&$variables) {
           $current_route = \Drupal::routeMatch();
           $route_name = $current_route->getRouteName();
           $variables['#cache']['contexts'][] = 'route.name';
-          if (strpos($route_name, 'view.articles.') === 0) {
+          if (str_starts_with($route_name, 'view.articles.')) {
             $variables['heading_size'] = 'h2';
           }
 
@@ -349,8 +349,8 @@ function sitenow_articles_preprocess_views_view(&$variables) {
  * Implements hook_preprocess_views_view_summary().
  */
 function sitenow_articles_preprocess_views_view_summary(&$variables) {
-  if ($variables["view"]->current_display === 'block_articles_archive') {
-    foreach ($variables["rows"] as $row) {
+  if ($variables['view']->current_display === 'block_articles_archive') {
+    foreach ($variables['rows'] as $row) {
       $explode = explode('/', $row->url);
       unset($explode[3]);
       $explode[2] = substr_replace($explode[2], '/', 4, 0);
@@ -421,10 +421,10 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
         ];
       }
 
-      $variables['rows'][$id]['card_options']['card_link_url'] = $card_link_url;
-      $variables['rows'][$id]['card_options']['card_subtitle'] = $style->getField($id, 'created');
-      $variables['rows'][$id]['card_options']['card_tag'] = \Drupal::service('renderer')->render($card_tag);
-      $variables['rows'][$id]['card_options']['card_meta'] = $style->getField($id, 'field_article_author');
+      $variables['rows'][$id]['content']['#url'] = $card_link_url;
+      $variables['rows'][$id]['content']['#subtitle'] = $style->getField($id, 'created');
+      $variables['rows'][$id]['content']['#meta'][] = \Drupal::service('renderer')->render($card_tag);
+      $variables['rows'][$id]['content']['#meta'][] = $style->getField($id, 'field_article_author');
     }
   }
 }

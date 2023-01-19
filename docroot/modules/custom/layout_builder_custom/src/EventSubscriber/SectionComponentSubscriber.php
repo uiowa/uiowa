@@ -99,7 +99,6 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           $content = $build['content'];
           $mapping = [
             'media' => 'field_uiowa_card_image',
-            'link_indicator' => 'field_uiowa_card_button_display',
             'subtitle' => 'field_uiowa_card_author',
           ];
 
@@ -116,6 +115,14 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
                 unset($content[$field]);
               }
             }
+          }
+
+          $link_indicator = $block
+            ?->field_uiowa_card_button_display
+            ?->value;
+
+          if (!is_null($link_indicator)) {
+            $build['#link_indicator'] = (bool) $link_indicator;
           }
 
           // @todo Capture the parts of the URL. This isn't working with
@@ -194,7 +201,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
             $build['content']['field_' . $build['#derivative_plugin_id'] . '_image'][0]['#view_mode'] = $view_mode;
             // Important: Delete the cache keys to prevent this from being
             // applied to all the instances of the same image.
-            if (isset($build['content']['field_' . $build['#derivative_plugin_id'] . '_image'][0]['#cache']) && isset($build['content']['field_' . $build['#derivative_plugin_id'] . '_image'][0]['#cache']['keys'])) {
+            if (isset($build['content']['field_' . $build['#derivative_plugin_id'] . '_image'][0]['#cache']['keys'])) {
               unset($build['content']['field_' . $build['#derivative_plugin_id'] . '_image'][0]['#cache']['keys']);
             }
 
