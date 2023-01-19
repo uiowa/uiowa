@@ -53,7 +53,7 @@
       {% endblock %}
 
       {% block card_button %}
-        {% if url is not empty and link_indicator or link_text is not empty %}
+        {% if url is not empty and linked_element == 'button' %}
           <footer>
             {% if linked_element == 'button' %}
               {# Display as a link. #}

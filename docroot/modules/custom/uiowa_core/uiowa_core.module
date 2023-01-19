@@ -228,7 +228,6 @@ function template_preprocess_card(&$variables) {
     'meta',
     'url',
     'link_text',
-    'link_indicator',
     'aria_described_by',
   ] as $prop) {
     if (isset($element["#$prop"])) {
@@ -240,11 +239,14 @@ function template_preprocess_card(&$variables) {
   $linked_element = FALSE;
 
   // If there is no URL, then it is not linked.
-  if (!empty($variables['url'])) {
-    if (!empty($variables['title'])) {
+  if (!is_null($variables['url'])) {
+    if (!isset($variables['link_text']) && $element['#link_indicator']) {
+      $linked_element = 'button';
+    }
+    elseif (!is_null($variables['title'])) {
       $linked_element = 'title';
     }
-    elseif (!empty($variables['link_text'])) {
+    elseif (isset($variables['link_text'])) {
       $linked_element = 'button';
     }
     elseif (!empty($variables['media'])) {
@@ -295,8 +297,9 @@ function template_preprocess_card(&$variables) {
     $variables['button_attributes']->setAttribute('aria-hidden', TRUE);
   }
 
-  // Add link indicator classes if relevant.
-  if ($variables['link_indicator']) {
+  // Set appropriate button classes if there is a URL, no link text, and link
+  // indicator should be shown.
+  if (isset($variables['url']) && !isset($variables['link_text']) && $element['#link_indicator']) {
     $variables['button_attributes']->addClass([
       'bttn--circle',
       'bttn--no-text',
@@ -325,6 +328,7 @@ function template_preprocess_card(&$variables) {
     $variables['headline']['headline_aria'] = $aria_id;
     $variables['button_attributes']->setAttribute('id', $aria_id);
   }
+  $test = 'thing';
 }
 
 /**

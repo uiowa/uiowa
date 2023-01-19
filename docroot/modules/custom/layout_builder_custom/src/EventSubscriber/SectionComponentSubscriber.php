@@ -131,13 +131,23 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
 
           // Pull the button display value directly from the block content since
           // the field is hidden.
-          if (isset($build['#url']) && !isset($build['#link_text']) && isset($build['content']['#block_content'])) {
+          if (isset($build['content']['#block_content'])) {
             $link_indicator = $build['content']['#block_content']
               ?->field_uiowa_card_button_display
               ?->value;
 
-            if (!is_null($link_indicator)) {
-              $build['#link_indicator'] = (bool) $link_indicator;
+            // Check if it is site default.
+            // Covering default_content with `Use site default` check.
+            // @todo https://github.com/uiowa/uiowa/issues/5416
+            // Consider removing additional check if default_content field null is
+            // captured or the field is refactored to not repurpose null as option.
+            if ($link_indicator === NULL || $link_indicator === 'Use site default') {
+              // Set boolean to site default value.
+              $link_indicator = \Drupal::config('sitenow_pages.settings')->get('card_link_indicator_display');
+            }
+
+            if ($link_indicator === 'Show' || $link_indicator === TRUE) {
+              $build['#link_indicator'] = TRUE;
             }
           }
 
