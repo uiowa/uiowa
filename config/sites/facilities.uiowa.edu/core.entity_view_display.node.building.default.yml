@@ -1,0 +1,39 @@
+uuid: 4fbb3195-1287-4aae-9933-6ecf6b66f3ce
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.building.field_building_abbreviation
+    - field.field.node.building.field_building_number
+    - field.field.node.building.field_meta_tags
+    - node.type.building
+  module:
+    - user
+id: node.building.default
+targetEntityType: node
+bundle: building
+mode: default
+content:
+  field_building_abbreviation:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_building_number:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_meta_tags: true
+  links: true
+  search_api_excerpt: true

@@ -4,8 +4,10 @@ status: true
 dependencies:
   config:
     - field.field.taxonomy_term.technology_features.field_api_mapping
+    - field.field.taxonomy_term.technology_features.field_technology_features_icon
     - taxonomy.vocabulary.technology_features
   module:
+    - fontawesome
     - path
     - text
 id: taxonomy_term.technology_features.default
@@ -28,6 +30,12 @@ content:
     settings:
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  field_technology_features_icon:
+    type: fontawesome_icon_widget
+    weight: 5
+    region: content
+    settings: {  }
     third_party_settings: {  }
   name:
     type: string_textfield
