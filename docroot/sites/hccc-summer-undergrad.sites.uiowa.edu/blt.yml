@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: siteshccc-summer-undergrad.uiowa.ddev.site
+    protocol: https
+  machine_name: siteshccc-summer-undergrad
+  human_name: hccc-summer-undergrad.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: siteshccc-summer-undergrad.prod
+drupal:
+  db:
+    database: hccc_summer_undergrad_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://siteshccc-summer-undergrad.prod.drupal.uiowa.edu'
+  requester: mczmeyer
+  site-name: 'HCCC Summer Undergraduate Program'
