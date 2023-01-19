@@ -15,7 +15,7 @@ use Drupal\Core\Block\BlockBase;
  *   category = @Translation("Site custom")
  * )
  */
-class SiteNowBlock extends BlockBase {
+class TodayScheduleBlock extends BlockBase {
 
   /**
    * {@inheritdoc}
