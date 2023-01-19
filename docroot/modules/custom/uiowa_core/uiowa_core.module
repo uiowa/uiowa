@@ -745,11 +745,6 @@ function uiowa_core_entity_operation_alter(array &$operations, EntityInterface $
  */
 function uiowa_core_preprocess_block(&$variables) {
   switch ($variables['plugin_id']) {
-    case 'inline_block:uiowa_card':
-      $variables['elements']['#type'] = 'card';
-      unset($variables['elements']['#theme']);
-      $test = 'thing';
-      break;
     case 'views_block:tags_list-tags_list':
       $variables['#attached']['library'][] = 'uids_base/tags';
       $variables['title_attributes']['class'] = 'h6 block__headline headline headline--serif';
