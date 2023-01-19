@@ -471,3 +471,17 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
     ],
   ];
 }
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function classrooms_core_node_view(array &$build, EntityInterface $node, EntityViewDisplayInterface $display, $view_mode) {
+  if ($node->bundle() === 'room' && $view_mode === 'full') {
+    if ($display->getComponent('field_room_section_heading')) {
+      $build['field_room_section_heading'] = [
+        '#type' => 'markup',
+        '#markup' => '<h2 class="headline headline--serif headline--underline">' . t("Today's Schedule") . '</h2>',
+      ];
+    }
+  }
+}
