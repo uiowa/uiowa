@@ -117,14 +117,6 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
             }
           }
 
-          $link_indicator = $block
-            ?->field_uiowa_card_button_display
-            ?->value;
-
-          if (!is_null($link_indicator)) {
-            $build['#link_indicator'] = (bool) $link_indicator;
-          }
-
           // @todo Capture the parts of the URL. This isn't working with
           //   caching.
           foreach ([
@@ -136,6 +128,18 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
             }
           }
           unset($content['field_uiowa_card_link']);
+
+          // Pull the button display value directly from the block content since
+          // the field is hidden.
+          if (isset($build['#url']) && !isset($build['#link_text']) && isset($build['content']['#block_content'])) {
+            $link_indicator = $build['content']['#block_content']
+              ?->field_uiowa_card_button_display
+              ?->value;
+
+            if (!is_null($link_indicator)) {
+              $build['#link_indicator'] = (bool) $link_indicator;
+            }
+          }
 
           // Handle the title field.
           if (isset($content['field_uiowa_card_title']) && count(Element::children($content['field_uiowa_card_title'])) > 0) {
