@@ -142,6 +142,11 @@ trait ProcessMediaTrait {
       // then we'll need to fetch it from the source.
       if (!$new_fid) {
         $uri = $file_data['uri'];
+        // If it's an embedded video, divert
+        // to the oembed video creation process.
+        if (str_starts_with($uri, 'oembed')) {
+          return $this->createVideo($fid, $align);
+        }
         $filename_w_subdir = str_replace('public://', '', $uri);
 
         // Split apart the filename from the subdirectory path.
