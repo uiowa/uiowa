@@ -67,8 +67,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         'button_size' => [
           'default' => 'button_medium',
         ],
-        'card_image_size' => [
-          'default' => 'card_image_large',
+        'media_size' => [
+          'default' => 'media_size_large',
         ],
         'card_media_position' => [
           'empty_label' => t('Stacked (default)'),
@@ -230,7 +230,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
             $defaults = [
               'layout_builder_style_background' => 'block_background_style_light',
-              'layout_builder_style_card_image_size' => 'card_image_small',
+              'layout_builder_style_media_size' => 'media_size_small',
               'layout_builder_style_card_media_position' => 'card_media_position_right',
               'layout_builder_style_content_alignment' => 'content_alignment_left',
               'layout_builder_style_media_format' => 'media_format_widescreen',
@@ -253,7 +253,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
                 break;
 
               case 'views_block:article_list_block-list_article':
-                $defaults['layout_builder_style_card_image_size'] = 'card_image_medium';
+                $defaults['layout_builder_style_media_size'] = 'card_image_medium';
                 break;
 
               case 'views_block:people_list_block-list_card':

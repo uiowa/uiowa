@@ -1981,8 +1981,7 @@ function sitenow_update_9054() {
       $card_image_size_index = array_search($card_image_size, $styles);
       if ($card_image_size_index !== FALSE) {
         $size = str_replace('card_image_', '', $styles[$card_image_size_index]);
-        $styles[] = "media_size_$size";
-        unset($styles[$card_image_size_index]);
+        $styles[$card_image_size_index] = "media_size_$size";
       }
     }
 
