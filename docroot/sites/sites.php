@@ -5026,3 +5026,9 @@ $sites['labinteroception.uiowa.ddev.site'] = 'interoception.lab.uiowa.edu';
 $sites['labinteroception.dev.drupal.uiowa.edu'] = 'interoception.lab.uiowa.edu';
 $sites['labinteroception.stage.drupal.uiowa.edu'] = 'interoception.lab.uiowa.edu';
 $sites['labinteroception.prod.drupal.uiowa.edu'] = 'interoception.lab.uiowa.edu';
+
+// Directory aliases for iowafloodcenter.uiowa.edu.
+$sites['iowafloodcenter.uiowa.ddev.site'] = 'iowafloodcenter.uiowa.edu';
+$sites['iowafloodcenter.dev.drupal.uiowa.edu'] = 'iowafloodcenter.uiowa.edu';
+$sites['iowafloodcenter.stage.drupal.uiowa.edu'] = 'iowafloodcenter.uiowa.edu';
+$sites['iowafloodcenter.prod.drupal.uiowa.edu'] = 'iowafloodcenter.uiowa.edu';
