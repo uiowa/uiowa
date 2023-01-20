@@ -224,14 +224,17 @@ function template_preprocess_card(&$variables) {
     'title',
     'title_heading_size',
     'subtitle',
-    'content',
     'meta',
+    'content',
     'url',
     'link_text',
     'aria_described_by',
   ] as $prop) {
     if (isset($element["#$prop"])) {
       $variables[$prop] = $element["#$prop"];
+    }
+    else {
+      $variables[$prop] = NULL;
     }
   }
 
@@ -328,7 +331,6 @@ function template_preprocess_card(&$variables) {
     $variables['headline']['headline_aria'] = $aria_id;
     $variables['button_attributes']->setAttribute('id', $aria_id);
   }
-  $test = 'thing';
 }
 
 /**

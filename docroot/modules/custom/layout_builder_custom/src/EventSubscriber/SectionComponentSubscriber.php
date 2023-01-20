@@ -162,22 +162,17 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           unset($build['content']);
 
           // Map the layout builder styles to the view mode to be used.
-          $media_formats = [
-            'media--circle' => 'large__square',
-            'media--square' => 'large__square',
-            'media--ultrawide' => 'large__ultrawide',
-            'media--widescreen' => 'large__widescreen',
-          ];
+          if (isset($build['#attributes']['class'])) {
+            $this->setMediaViewModeFromStyle($build['#media'][0], 'large', $build['#attributes']['class']);
+          }
           break;
 
         case 'inline_block:uiowa_image':
           // Map the layout builder styles to the view mode to be used.
-          $media_formats = [
-            'media--circle' => 'full__square',
-            'media--square' => 'full__square',
-            'media--ultrawide' => 'full__ultrawide',
-            'media--widescreen' => 'full__widescreen',
-          ];
+          if (isset($build['#attributes']['class'])) {
+            $this->setMediaViewModeFromStyle($build['content']['field_uiowa_image_image'], 'full', $build['#attributes']['class']);
+          }
+
           break;
 
         case 'menu_block:main':
@@ -189,6 +184,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
             $build['#attached']['library'][] = 'uids_base/accessible-menu';
           }
           break;
+
         case 'views_block:article_list_block-list_article':
           if (isset($block->getConfiguration()['fields'])) {
             $hide_fields = [];
@@ -204,29 +200,40 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
               }
             }
           }
-      }
+          break;
 
-      if (isset($media_formats) && isset($build['#attributes']['class'])) {
-        // Loop through the map to check if any of them are being used and
-        // adjust the view mode accordingly.
-        foreach ($media_formats as $style => $view_mode) {
-          if (in_array($style, $build['#attributes']['class'])) {
-            // Change the view mode to match the format.
-            $build['content']['field_' . $build['#derivative_plugin_id'] . '_image'][0]['#view_mode'] = $view_mode;
-            // Important: Delete the cache keys to prevent this from being
-            // applied to all the instances of the same image.
-            if (isset($build['content']['field_' . $build['#derivative_plugin_id'] . '_image'][0]['#cache']['keys'])) {
-              unset($build['content']['field_' . $build['#derivative_plugin_id'] . '_image'][0]['#cache']['keys']);
-            }
-
-            // We only want this to execute once.
-            break;
-          }
-        }
       }
     }
 
     $event->setBuild($build);
+  }
+
+  private function setMediaViewModeFromStyle(array &$build, $size, array $classes = []) {
+    $media_formats = [
+      'media--circle' => 'square',
+      'media--square' => 'square',
+      'media--ultrawide' => 'ultrawide',
+      'media--widescreen' => 'widescreen',
+    ];
+
+
+    // Loop through the map to check if any of them are being used and
+    // adjust the view mode accordingly.
+    foreach ($media_formats as $style => $shape) {
+      $view_mode = "{$size}__$shape";
+      if (in_array($style, $classes)) {
+        // Change the view mode to match the format.
+        $build[0]['#view_mode'] = $view_mode;
+        // Important: Delete the cache keys to prevent this from being
+        // applied to all the instances of the same image.
+        if (isset($build[0]['#cache']['keys'])) {
+          unset($build[0]['#cache']['keys']);
+        }
+
+        // We only want this to execute once.
+        break;
+      }
+    }
   }
 
 }
