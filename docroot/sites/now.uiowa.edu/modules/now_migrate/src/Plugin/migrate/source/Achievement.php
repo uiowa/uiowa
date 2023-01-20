@@ -104,7 +104,7 @@ class Achievement extends BaseNodeSource {
 
       // Check for captions in the old format, and if found,
       // manually insert them into the drupal-media element.
-      $body[0]['value'] = preg_replace_callback('|<div class=\"image-.*?\">(<drupal-media.*?)><\/drupal-media>(.*?)<\/div>|is', [
+      $body[0]['value'] = preg_replace_callback('%<div class=\"(image|video)-(.*?)-(.*?)\">(<drupal-media.*?)><\/drupal-media>(.*?)<\/div>%is', [
         $this,
         'captionReplace',
       ], $body[0]['value']);
@@ -160,11 +160,45 @@ class Achievement extends BaseNodeSource {
    * Helper function to add an image caption during a preg_replace.
    */
   private function captionReplace($match) {
-    // Match[1] is most of the drupal-media element,
-    // and match[2] is the image caption.
+
+    // Match[1] denotes whether it is an image or video.
+    // Match[2] is the alignment in the source.
+    // Match[3] is the pixel-width in the source.
+    // Match[4] is most of the drupal-media element,
+    // and match[5] is the image caption.
     // Here we're adding the caption and then re-closing
     // the drupal-media element.
-    return $match[1] . ' data-caption="' . trim($match[2]) . '"></drupal-media>';
+    // First, remove extra breaks that were used in source for
+    // visual spacing.
+    $match[5] = preg_replace('%(<br>|<br \/>)%is', ' ', $match[5]);
+    // Then remove any extraneous spaces.
+    $match[5] = trim(preg_replace('/\s\s+/', ' ', $match[5]));
+
+    // Process the alignment and size in here as well.
+    // Because they are part of a wrapper div, it has to be processed
+    // here, as our base tooling can't currently handle wrappers.
+    switch ($match[1]) {
+      case 'video':
+        $size = match ($match[3]) {
+          '320' => 'small',
+          // 640 or default should go to medium.
+          default => 'medium',
+        };
+        break;
+
+      case 'image':
+      default:
+        $size = match ($match[3]) {
+          '150' => 'small__no_crop',
+          '640' => 'large__no_crop',
+          // 320 or default should go to medium.
+          default => 'medium__no_crop',
+        };
+    }
+    $match[4] = preg_replace('%(data-align=\")(.*?)(\")%is', '$1' . $match[2] . '$3', $match[4]);
+    $match[4] = preg_replace('%(data-view-mode=\")(.*?)(\")%is', '$1' . $size . '$3', $match[4]);
+
+    return $match[4] . ' data-caption="' . $match[5] . '"></drupal-media>';
   }
 
   /**
