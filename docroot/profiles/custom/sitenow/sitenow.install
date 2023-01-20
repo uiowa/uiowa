@@ -21,7 +21,10 @@ use Drupal\field\Entity\FieldConfig;
 /**
  * Helper function to update all blocks of a type.
  */
-function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): void {
+function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): void {
+  if (!is_array($block_plugin_ids)) {
+    $block_plugin_ids = [$block_plugin_ids];
+  }
   $db = \Drupal::database();
   $block_storage = \Drupal::entityTypeManager()
     ->getStorage('block_content');
@@ -34,16 +37,24 @@ function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): v
   $blocks = [];
 
   foreach ($tables as $table_name) {
-    // Select instances where the section contains this type of block.
-    $query = $db->select($table_name, 'n')
-      ->condition($section_column, "%$block_plugin_id%", 'LIKE')
+    // Select DB records for our $table_name.
+    $query = $db->select($table_name, 'n');
+
+    // Match against any record that has a block matching our $block_plugin_id.
+    $or_group = $query->orConditionGroup();
+    foreach ($block_plugin_ids as $block_plugin_id) {
+      $or_group = $or_group->condition($section_column, "%$block_plugin_id%", 'LIKE');
+    }
+
+    $query = $query
+      ->condition($or_group)
       ->fields('n', ['entity_id', 'revision_id', 'delta', $section_column]);
 
     $count = $query->countQuery()->execute()->fetchField();
 
     \Drupal::messenger()
-      ->addMessage(t('Blocks of @type records found: @count', [
-        '@type' => $block_plugin_id,
+      ->addMessage(t('Blocks of @types records found: @count', [
+        '@types' => implode(', ', $block_plugin_ids),
         '@count' => $count,
       ]));
 
@@ -68,11 +79,10 @@ function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): v
 
         $component_arr = $component->toArray();
 
-        $revision_id = $component_arr['configuration']['block_revision_id'];
-
         $block = NULL;
 
-        if ($revision_id) {
+        if (isset($component_arr['configuration']['block_revision_id'])) {
+          $revision_id = $component_arr['configuration']['block_revision_id'];
           if (empty($blocks[$revision_id])) {
             $blocks[$revision_id] = $block_storage->loadRevision($revision_id);
           }
@@ -1945,11 +1955,14 @@ function sitenow_update_9053() {
  * Update layout builder styles applied to cards.
  */
 function sitenow_update_9054() {
-  // @todo Apply these same updates to 'inline_block:uiowa_events',
-  //   'inline_block:uiowa_aggregator',
-  //   'views_block:article_list_block-list_article',
-  //   and 'views_block:people_list_block-list_card'
-  _update_all_blocks_by_plugin_id('inline_block:uiowa_card', function (&$component, $block) {
+  // Apply updates to all blocks that are styled using card styles.
+  _update_all_blocks_by_plugin_id([
+    'inline_block:uiowa_card',
+    'inline_block:uiowa_events',
+    'inline_block:uiowa_aggregator',
+    'views_block:article_list_block-list_article',
+    'views_block:people_list_block-list_card',
+  ], function (&$component, $block) {
     $styles = $component->get('layout_builder_styles_style');
 
     // If card border style is set...

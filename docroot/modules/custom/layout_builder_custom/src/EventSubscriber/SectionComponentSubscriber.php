@@ -98,8 +98,8 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
 
           $content = $build['content'];
           $mapping = [
-            'media' => 'field_uiowa_card_image',
-            'subtitle' => 'field_uiowa_card_author',
+            '#media' => 'field_uiowa_card_image',
+            '#subtitle' => 'field_uiowa_card_author',
           ];
 
           // Map fields to the card parts.
@@ -107,12 +107,14 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
             if (!is_array($fields)) {
               $fields = [$fields];
             }
-            $build["#$prop"] = [];
-            foreach ($fields as $field) {
+            if (!isset($build[$prop])) {
+              $build[$prop] = [];
+            }
+            foreach ($fields as $field_name) {
               // @todo Refine this to remove fields if they are empty.
-              if (isset($content[$field]) && count(Element::children($content[$field])) > 0) {
-                $build["#$prop"][] = $content[$field];
-                unset($content[$field]);
+              if (isset($content[$field_name]) && count(Element::children($content[$field_name])) > 0) {
+                $build[$prop][$field_name] = $content[$field_name];
+                unset($content[$field_name]);
               }
             }
           }
@@ -162,8 +164,8 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           unset($build['content']);
 
           // Map the layout builder styles to the view mode to be used.
-          if (isset($build['#attributes']['class'])) {
-            $this->setMediaViewModeFromStyle($build['#media'][0], 'large', $build['#attributes']['class']);
+          if (!empty($build['#media']) && isset($build['#attributes']['class'])) {
+            $this->setMediaViewModeFromStyle($build['#media']['field_uiowa_card_image'], 'large', $build['#attributes']['class']);
           }
           break;
 
