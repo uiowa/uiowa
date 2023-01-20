@@ -100,7 +100,7 @@ class NewsFeature extends BaseNodeSource {
 
       // Check for captions in the old format, and if found,
       // manually insert them into the drupal-media element.
-      $body[0]['value'] = preg_replace_callback('|<div class=\"(image|video)-(.*?)-(.*?)\">(<drupal-media.*?)><\/drupal-media>(.*?)<\/div>|is', [
+      $body[0]['value'] = preg_replace_callback('%<div class=\"(image|video)-(.*?)-(.*?)\">(<drupal-media.*?)><\/drupal-media>(.*?)<\/div>%is', [
         $this,
         'captionReplace',
       ], $body[0]['value']);
