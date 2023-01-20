@@ -33,14 +33,6 @@ class NewsFeature extends BaseNodeSource {
   public function prepareRow(Row $row) {
     parent::prepareRow($row);
 
-    $subhead = $row->getSourceProperty('field_subhead');
-    if (!empty($subhead)) {
-      $subhead = '<p class="uids-component--light-intro">' . $subhead[0]['value'] . '</p>';
-      $body = $row->getSourceProperty('body');
-      $body[0]['value'] = $subhead . $body[0]['value'];
-      $row->setSourceProperty('body', $body);
-    }
-
     // Set our tagMapping if it's not already.
     if (empty($this->tagMapping)) {
       $this->tagMapping = \Drupal::database()
@@ -91,6 +83,12 @@ class NewsFeature extends BaseNodeSource {
     // and set for placement in the body and teaser fields.
     $body = $row->getSourceProperty('body');
     if (!empty($body)) {
+      // Check for a subhead, and prepend it to the body if so.
+      $subhead = $row->getSourceProperty('field_subhead');
+      if (!empty($subhead)) {
+        $subhead = '<p class="uids-component--light-intro">' . $subhead[0]['value'] . '</p>';
+        $body[0]['value'] = $subhead . $body[0]['value'];
+      }
       $this->viewMode = 'medium__no_crop';
       $this->align = 'left';
 
