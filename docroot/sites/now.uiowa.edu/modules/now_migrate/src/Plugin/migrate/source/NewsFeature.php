@@ -100,12 +100,7 @@ class NewsFeature extends BaseNodeSource {
 
       // Check for captions in the old format, and if found,
       // manually insert them into the drupal-media element.
-      // The first is for images, the second for videos.
-      $body[0]['value'] = preg_replace_callback('|<div class=\"image-.*?\">(<drupal-media.*?)><\/drupal-media>(.*?)<\/div>|is', [
-        $this,
-        'captionReplace',
-      ], $body[0]['value']);
-      $body[0]['value'] = preg_replace_callback('|<div class=\"video-.*?\">(<drupal-media.*?)><\/drupal-media>(.*?)<\/div>|is', [
+      $body[0]['value'] = preg_replace_callback('|<div class=\"(image|video)-(.*?)-(.*?)\">(<drupal-media.*?)><\/drupal-media>(.*?)<\/div>|is', [
         $this,
         'captionReplace',
       ], $body[0]['value']);
@@ -240,16 +235,19 @@ class NewsFeature extends BaseNodeSource {
    */
   private function captionReplace($match) {
 
-    // Match[1] is most of the drupal-media element,
-    // and match[2] is the image caption.
+    // Match[1] denotes whether it is an image or video.
+    // Match[2] is the alignment in the source.
+    // Match[3] is the pixel-width in the source.
+    // Match[4] is most of the drupal-media element,
+    // and match[5] is the image caption.
     // Here we're adding the caption and then re-closing
     // the drupal-media element.
     // First, remove extra breaks that were used in source for
     // visual spacing.
-    $match[2] = preg_replace('%(<br>|<br \/>)%is', ' ', $match[2]);
+    $match[5] = preg_replace('%(<br>|<br \/>)%is', ' ', $match[5]);
     // Then remove any extraneous spaces.
-    $match[2] = trim(preg_replace('/\s\s+/', ' ', $match[2]));
-    return $match[1] . ' data-caption="' . $match[2] . '"></drupal-media>';
+    $match[5] = trim(preg_replace('/\s\s+/', ' ', $match[5]));
+    return $match[4] . ' data-caption="' . $match[5] . '"></drupal-media>';
   }
 
   /**
