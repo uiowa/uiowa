@@ -247,9 +247,15 @@ class NewsFeature extends BaseNodeSource {
     $match[5] = preg_replace('%(<br>|<br \/>)%is', ' ', $match[5]);
     // Then remove any extraneous spaces.
     $match[5] = trim(preg_replace('/\s\s+/', ' ', $match[5]));
-    // @todo Process the alignment and size in here as well.
-    //   Because they are part of a wrapper div, it has to be processed
-    //   here, as our base tooling can't currently handle wrappers.
+
+    // Process the alignment and size in here as well.
+    // Because they are part of a wrapper div, it has to be processed
+    // here, as our base tooling can't currently handle wrappers.
+    // @todo Process sizing here.
+    $size = 'small';
+    $match[4] = preg_replace('%(data-align=\")(.*?)(\")%is', '$1' . $match[2] . '$3', $match[4]);
+    $match[4] = preg_replace('%(data-view-mode=\")(.*?)(\")%is', '$1' . $size . '$3', $match[4]);
+
     return $match[4] . ' data-caption="' . $match[5] . '"></drupal-media>';
   }
 
