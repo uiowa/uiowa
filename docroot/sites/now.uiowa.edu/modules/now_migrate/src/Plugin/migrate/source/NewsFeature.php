@@ -21,11 +21,11 @@ class NewsFeature extends BaseNodeSource {
   /**
    * @todo Remove this when photo gallery testing is done.
    */
-  public function query() {
-    $query = parent::query();
-    $query->condition('n.nid', $this->withCallout(), 'IN');
-    return $query;
-  }
+//  public function query() {
+//    $query = parent::query();
+//    $query->condition('n.nid', $this->withCallout(), 'IN');
+//    return $query;
+//  }
 
   /**
    * {@inheritdoc}
@@ -239,7 +239,12 @@ class NewsFeature extends BaseNodeSource {
     // and match[2] is the image caption.
     // Here we're adding the caption and then re-closing
     // the drupal-media element.
-    return $match[1] . ' data-caption="' . trim($match[2]) . '"></drupal-media>';
+    // First, remove extra breaks that were used in source for
+    // visual spacing.
+    $match[2] = preg_replace('%(<br>|<br \/>)%is', ' ', $match[2]);
+    // Then remove any extraneous spaces.
+    $match[2] = trim(preg_replace('/\s\s+/', ' ', $match[2]));
+    return $match[1] . ' data-caption="' . $match[2] . '"></drupal-media>';
   }
 
   /**
