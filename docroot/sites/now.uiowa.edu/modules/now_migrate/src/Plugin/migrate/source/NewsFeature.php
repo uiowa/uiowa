@@ -345,7 +345,7 @@ class NewsFeature extends BaseNodeSource {
   }
 
   /**
-   * @todo Remove this when photo gallery testing is done.
+   * @todo Remove this when inline callout testing is done.
    */
   private function withCallout() {
     return [
