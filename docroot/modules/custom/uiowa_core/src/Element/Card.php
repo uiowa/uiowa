@@ -13,7 +13,7 @@ use Drupal\Core\Template\Attribute;
 class Card extends RenderElement {
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
   public function getInfo() {
     $class = static::class;
