@@ -1,0 +1,29 @@
+uuid: 27476c61-42d1-47a0-98b6-cc1d3fd0a180
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_article_issue
+    - node.type.article
+    - node.type.publication_issue
+id: node.article.field_article_issue
+field_name: field_article_issue
+entity_type: node
+bundle: article
+label: Issue
+description: 'The publication issue the article belongs to.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      publication_issue: publication_issue
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

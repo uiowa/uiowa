@@ -3,10 +3,12 @@
 @import "view-calendar.scss";
 @import "view-bef.scss";
 
+
 .views-exposed-form {
   min-height: 20px;
   padding: 19px;
   margin-bottom: 2rem;
+  position: relative;
 
   [type=checkbox], [type=radio] {
     height: 1.2rem;
@@ -23,6 +25,35 @@
   .form-type-checkbox {
     display: flex;
   }
+
+  &.uids-content:not(.uids-search) {
+    padding: 5px 19px;
+
+    .form--inline {
+      align-items: flex-start;
+    }
+
+    .form-item:not(:last-child),
+    .form-actions:not(:last-child) {
+      @include breakpoint(sm) {
+        margin-right: 1em;
+      }
+    }
+
+    .form-actions {
+      @include breakpoint(sm) {
+        margin-top: 2.5em;
+      }
+    }
+
+    .button {
+      @include bttn--secondary;
+      border: 0;
+      padding-top: 13px;
+      padding-bottom: 13px;
+    }
+  }
+
 
   details {
     &.form-wrapper {
@@ -51,12 +82,10 @@
   }
 
   .form--inline {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-end;
-    flex-wrap: wrap;
     @include breakpoint(sm) {
-      flex-wrap: unset;
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-end;
     }
   }
 

@@ -9,8 +9,8 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Component\Utility\Html;
 use Drupal\paragraphs\Entity\Paragraph;
-use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Template\Attribute;
 
 /**
@@ -276,9 +276,9 @@ function sitenow_paragraphs_theme_suggestions_field_alter(&$suggestions, $variab
 /**
  * Set dynamic allowed values for the uip_classes field.
  *
- * @param \Drupal\field\Entity\FieldStorageConfig $definition
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
  *   The field definition.
- * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
  *   The entity being created if applicable.
  * @param bool $cacheable
  *   Boolean indicating if the results are cacheable.
@@ -288,11 +288,14 @@ function sitenow_paragraphs_theme_suggestions_field_alter(&$suggestions, $variab
  *
  * @see options_allowed_values()
  */
-function sitenow_paragraphs_uip_classes_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
+function sitenow_paragraphs_uip_classes_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = FALSE): array {
+  // Need to make sure this isn't cached. As we have run into issues
+  // where the selected option is not a valid choice.
   $cacheable = FALSE;
+
   $options = [];
 
-  if (method_exists($entity, 'bundle')) {
+  if (!is_null($entity)) {
     $bundle = $entity->bundle();
 
     switch ($bundle) {
@@ -335,6 +338,10 @@ function sitenow_paragraphs_uip_classes_allowed_values(FieldStorageConfig $defin
     // Allow modules to alter classes.
     \Drupal::moduleHandler()->alter('uip_classes', $options, $entity, $bundle);
   }
+  else {
+    // To resolve an issue with ListItemBase generateSampleValue.
+    $options['_none'] = '-None-';
+  }
 
   return $options;
 }
@@ -342,9 +349,9 @@ function sitenow_paragraphs_uip_classes_allowed_values(FieldStorageConfig $defin
 /**
  * Set dynamic allowed values for the uip_colwidth field.
  *
- * @param \Drupal\field\Entity\FieldStorageConfig $definition
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
  *   The field definition.
- * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
  *   The entity being created if applicable.
  * @param bool $cacheable
  *   Boolean indicating if the results are cacheable.
@@ -354,8 +361,7 @@ function sitenow_paragraphs_uip_classes_allowed_values(FieldStorageConfig $defin
  *
  * @see options_allowed_values()
  */
-function sitenow_paragraphs_uip_colwidth_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
-  $cacheable = FALSE;
+function sitenow_paragraphs_uip_colwidth_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = FALSE): array {
   $options = [
     'col-md' => 'Fluid',
     'col-md-3' => 'Quarter',
@@ -364,7 +370,7 @@ function sitenow_paragraphs_uip_colwidth_allowed_values(FieldStorageConfig $defi
     'col-md-12' => 'Full',
   ];
 
-  if (method_exists($entity, 'bundle')) {
+  if (!is_null($entity)) {
     $bundle = $entity->bundle();
     // Allow modules to alter classes.
     \Drupal::moduleHandler()
@@ -377,9 +383,9 @@ function sitenow_paragraphs_uip_colwidth_allowed_values(FieldStorageConfig $defi
 /**
  * Set dynamic allowed values for the section_container field.
  *
- * @param \Drupal\field\Entity\FieldStorageConfig $definition
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
  *   The field definition.
- * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
  *   The entity being created if applicable.
  * @param bool $cacheable
  *   Boolean indicating if the results are cacheable.
@@ -389,14 +395,13 @@ function sitenow_paragraphs_uip_colwidth_allowed_values(FieldStorageConfig $defi
  *
  * @see options_allowed_values()
  */
-function sitenow_paragraphs_section_container_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
-  $cacheable = FALSE;
+function sitenow_paragraphs_section_container_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = FALSE): array {
   $options = [
     'container' => 'Medium',
     'container-fluid' => 'Large',
   ];
 
-  if (method_exists($entity, 'bundle')) {
+  if (!is_null($entity)) {
     $bundle = $entity->bundle();
     // Allow modules to alter classes.
     \Drupal::moduleHandler()
@@ -409,9 +414,9 @@ function sitenow_paragraphs_section_container_allowed_values(FieldStorageConfig 
 /**
  * Set dynamic allowed values for the section_alignitems field.
  *
- * @param \Drupal\field\Entity\FieldStorageConfig $definition
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
  *   The field definition.
- * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
  *   The entity being created if applicable.
  * @param bool $cacheable
  *   Boolean indicating if the results are cacheable.
@@ -421,8 +426,7 @@ function sitenow_paragraphs_section_container_allowed_values(FieldStorageConfig 
  *
  * @see options_allowed_values()
  */
-function sitenow_paragraphs_section_alignitems_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
-  $cacheable = FALSE;
+function sitenow_paragraphs_section_alignitems_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = FALSE): array {
   $options = [
     'align-items-center' => 'Middle',
     'align-items-start' => 'Top',
@@ -430,7 +434,7 @@ function sitenow_paragraphs_section_alignitems_allowed_values(FieldStorageConfig
     'align-items-none' => 'None',
   ];
 
-  if (method_exists($entity, 'bundle')) {
+  if (!is_null($entity)) {
     $bundle = $entity->bundle();
     // Allow modules to alter classes.
     \Drupal::moduleHandler()
@@ -443,9 +447,9 @@ function sitenow_paragraphs_section_alignitems_allowed_values(FieldStorageConfig
 /**
  * Set dynamic allowed values for the section_justifycontent field.
  *
- * @param \Drupal\field\Entity\FieldStorageConfig $definition
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
  *   The field definition.
- * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
  *   The entity being created if applicable.
  * @param bool $cacheable
  *   Boolean indicating if the results are cacheable.
@@ -455,8 +459,7 @@ function sitenow_paragraphs_section_alignitems_allowed_values(FieldStorageConfig
  *
  * @see options_allowed_values()
  */
-function sitenow_paragraphs_section_justifycontent_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, &$cacheable) {
-  $cacheable = FALSE;
+function sitenow_paragraphs_section_justifycontent_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = FALSE): array {
   $options = [
     'justify-content-start' => 'Left',
     'justify-content-center' => 'Center',
@@ -465,7 +468,7 @@ function sitenow_paragraphs_section_justifycontent_allowed_values(FieldStorageCo
     'justify-content-between' => 'Space Between',
   ];
 
-  if (method_exists($entity, 'bundle')) {
+  if (!is_null($entity)) {
     $bundle = $entity->bundle();
     // Allow modules to alter classes.
     \Drupal::moduleHandler()

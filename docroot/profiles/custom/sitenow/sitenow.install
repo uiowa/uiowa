@@ -1900,3 +1900,43 @@ function sitenow_update_9049() {
 function sitenow_update_9050() {
   drupal_flush_all_caches();
 }
+
+/**
+ * Update card excerpt field format to the new minimal_plus format.
+ */
+function sitenow_update_9051() {
+  _update_all_blocks_by_plugin_id('inline_block:uiowa_card', function (&$component, $block) {
+
+    // Change the format for the card excerpt.
+    if (!is_null($block)) {
+      $block->field_uiowa_card_excerpt->format = 'minimal_plus';
+      $block->save();
+    }
+  });
+}
+
+/**
+ * Import updated config ignore before site specific config is removed.
+ */
+function sitenow_update_9052() {
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
+}
+
+/**
+ * Re-run of 9051 to fix recently provisioned sites.
+ */
+function sitenow_update_9053() {
+  _update_all_blocks_by_plugin_id('inline_block:uiowa_card', function (&$component, $block) {
+
+    // Change the format for the card excerpt.
+    if (!is_null($block)) {
+      if ($block->get('field_uiowa_card_excerpt')->format !== 'minimal_plus') {
+        $block->field_uiowa_card_excerpt->format = 'minimal_plus';
+        $block->save();
+      }
+    }
+  });
+}

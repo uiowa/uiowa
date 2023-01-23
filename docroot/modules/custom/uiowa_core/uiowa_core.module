@@ -405,6 +405,22 @@ function uiowa_core_form_alter(&$form, FormStateInterface $form_state, $form_id)
     case 'node_page_form':
       RegionHelper::overrideNodeForm($form);
       break;
+
+    // Add multi column to person types.
+    case 'node_person_edit_form':
+    case 'node_person_form':
+      $form['field_person_types']['#attributes']['class'][] = 'multi--column';
+      break;
+
+    // Fixes a bug with BEF, details here:
+    // https://www.drupal.org/project/better_exposed_filters/issues/3264403#comment-14803047
+    case 'views_exposed_form':
+      foreach ($form as $k => $v) {
+        if (str_contains($k, '_collapsible')) {
+          $form[$k]['#open'] = FALSE;
+        }
+      }
+      break;
   }
 }
 
@@ -558,6 +574,35 @@ function uiowa_core_preprocess_block(&$variables) {
       }
       $variables['attributes']['class'][] .= 'block--bg-container related col--threecol--33 bg--gray block-padding__bottom block-padding__top';
       break;
+
+    case 'system_main_block':
+      $current_route = \Drupal::routeMatch();
+      if (\Drupal::currentUser()->isAnonymous() && in_array($current_route->getRouteName(), [
+        'system.401',
+        'system.403',
+      ])) {
+        $variables['content']['login_link'] = [
+          '#type' => 'link',
+          '#title' => t('HawkID Login'),
+          '#url' => Url::fromRoute('samlauth.saml_controller_login', [
+            'destination' => \Drupal::request()->getRequestUri(),
+          ]),
+          '#prefix' => '<p class="text-align-center">',
+          '#suffix' => '</p>',
+          '#attributes' => [
+            'class' => [
+              'bttn',
+              'bttn--primary',
+              'bttn--caps',
+            ],
+          ],
+          '#cache' => [
+            'max-age' => 0,
+          ],
+        ];
+      }
+      break;
+
   }
 }
 
@@ -736,8 +781,7 @@ function uiowa_core_academic_years_default_value(ContentEntityInterface $entity,
 /**
  * Added allowed values function for student profiles territory field.
  */
-function uiowa_core_state_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
-  $cacheable = FALSE;
+function uiowa_core_state_options(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable = TRUE) {
   $options = [
     'AL' => 'Alabama',
     'AK' => 'Alaska',

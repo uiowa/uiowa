@@ -49,7 +49,7 @@ class AccessTest extends BrowserTestBase {
   }
 
   /**
-   * Test hook_restrict_ip_access_denied_page_alter in sitenow_intranet.
+   * Test 401 response in sitenow_intranet.
    */
   public function testAccessDeniedResponseCode() {
     $node = $this->drupalCreateNode();
@@ -154,7 +154,7 @@ class AccessTest extends BrowserTestBase {
   }
 
   /**
-   * Test the title and message functionality for a 401 response.
+   * Test the title and message functionality for a 403 response.
    */
   public function testAccessDeniedTitleMessage() {
     $this->config('sitenow_intranet.settings')
@@ -163,6 +163,8 @@ class AccessTest extends BrowserTestBase {
       ->save();
 
     $this->setUpFilter();
+    $user = $this->createUser();
+    $this->drupalLogin($user);
     $node = $this->drupalCreateNode();
     $this->drupalGet('node/' . $node->id());
     $this->assertSession()->pageTextContains('Access Denied');
@@ -170,7 +172,7 @@ class AccessTest extends BrowserTestBase {
   }
 
   /**
-   * Test the title and message functionality for a 403 response.
+   * Test the title and message functionality for a 401 response.
    */
   public function testUnauthorizedTitleMessage() {
     $this->config('sitenow_intranet.settings')
@@ -179,8 +181,6 @@ class AccessTest extends BrowserTestBase {
       ->save();
 
     $this->setUpFilter();
-    $user = $this->createUser();
-    $this->drupalLogin($user);
     $node = $this->drupalCreateNode();
     $this->drupalGet('node/' . $node->id());
     $this->assertSession()->pageTextContains('Unauthorized');

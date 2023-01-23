@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: philosophy.uiowa.ddev.site
+    protocol: https
+  machine_name: philosophy
+  human_name: philosophy.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: philosophy.prod
+drupal:
+  db:
+    database: philosophy_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://philosophy.prod.drupal.uiowa.edu'

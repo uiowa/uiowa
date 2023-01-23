@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: physicsinstructional-resources.uiowa.ddev.site
+    protocol: https
+  machine_name: physicsinstructional-resources
+  human_name: instructional-resources.physics.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: physicsinstructional-resources.prod
+drupal:
+  db:
+    database: instructional_resources_physics_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://physicsinstructional-resources.prod.drupal.uiowa.edu'

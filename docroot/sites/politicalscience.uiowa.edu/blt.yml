@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: politicalscience.uiowa.ddev.site
+    protocol: https
+  machine_name: politicalscience
+  human_name: politicalscience.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: politicalscience.prod
+drupal:
+  db:
+    database: politicalscience_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://politicalscience.prod.drupal.uiowa.edu'

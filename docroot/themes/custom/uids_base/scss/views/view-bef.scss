@@ -2,11 +2,11 @@
 @import "uids3/assets/scss/_utilities.scss";
 
 .bef-exposed-form--secondary {
-  label {
+  label:not(.option) {
     @include element-invisible;
   }
 
-  .form-item-title {
+  .form-type-textfield {
     grid-area: 1 / 1 / 2 / 3;
   }
 
@@ -47,12 +47,12 @@
         margin-right: 0;
         @include breakpoint(sm) {
           margin-right: 1em;
+          &:last-child {
+            margin-right: 0;
+          }
         }
 
-        &.form-item-title {
-          margin-right: 0;
-        }
-        &:last-child {
+        > &.form-type-textfield:first-of-type {
           margin-right: 0;
         }
       }
@@ -61,7 +61,8 @@
         border: 1px solid $secondary;
 
         &[data-drupal-selector*=edit-submit] {
-          margin-left: -95px;
+          right: 25px;
+          position: absolute;
         }
 
         &[data-drupal-selector*=edit-reset] {
@@ -76,7 +77,7 @@
           font-weight: 400;
           letter-spacing: 0.04rem;
           border: none;
-          background: #fff;
+          text-transform: none;
           @include breakpoint(sm) {
             top: 123px;
           }
@@ -100,27 +101,29 @@
       margin-right: 0;
     }
 
-    details {
-      @include breakpoint(sm) {;
-        padding-top: 1.5rem;
-        margin-top: 0.5rem;
+    details.bef--secondary {
+      @include breakpoint(sm) {
+        padding-top: #{3 * $xsm-sm};
+        margin-top: $xsm-sm;
       }
 
       &.form-wrapper {
         border: none;
+
         @include breakpoint(sm) {
-          border-top: 1px solid #ccc;
+          border-top: 1px solid $grey-light;
         }
+
         background: none;
       }
 
-      &[open] summary {
+      &[open]>summary {
         border-bottom: none;
         margin-bottom: 0;
-        padding: 0 0 1rem;
+        padding: 0 0 #{2 * $xsm-sm};
       }
 
-      summary {
+      >summary {
         padding: 0;
         font-weight: 600;
         display: block;
@@ -139,14 +142,92 @@
         @include fas();
       }
 
-     &[open] > summary::before{
+      &[open] > summary::before{
         content: "\f139";
       }
 
-
-
-      .details-wrapper {
+      >.details-wrapper {
         padding: 0;
+      }
+
+      details {
+        --elemHeight: 3.5rem;
+
+        flex: 1;
+        background: unset;
+        border: unset;
+        position: relative;
+
+        &[open] > summary::before{
+          content: "\f139";
+        }
+
+        summary {
+          display: flex;
+          align-items: center;
+          box-sizing: border-box;
+          width: 100%;
+          height: var(--elemHeight);
+          padding: 0.5rem;
+          margin: 0 0 1rem;
+          transition: box-shadow .5s,border-color .25s ease-in-out;
+          color: $grey;
+          border: 1px solid $grey-light;
+          background-color: $white;
+          box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
+          font-family: inherit;
+          font-size: 1rem;
+          font-weight: 400;
+          line-height: 1.5;
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
+
+          &:before {
+            padding-left: 0;
+          }
+        }
+
+        .details-wrapper {
+          overflow: auto;
+          max-height: 346px;
+          z-index: 500;
+          display: flex;
+          flex-direction: column;
+          background: $white;
+          border: 1px solid $grey-light;
+          position: absolute;
+          padding: 0;
+          top: calc(var(--elemHeight) - 1px);
+          width: calc(100% - 2px);
+          box-shadow: 0 0 7px rgba(0, 0, 0, 0.15);
+
+          .bef-toggle {
+            padding: #{2 * $xsm-sm} $xsm-sm;
+            display: block;
+            border: none;
+            border-bottom: 1px solid $grey-light;
+            text-decoration: none;
+            font-size: 0.8rem;
+            color: $grey;
+
+            &:focus {
+              font-weight: bold;
+              text-decoration: underline;
+            }
+          }
+
+          .bef-checkboxes {
+            padding: 0.5rem 0;
+          }
+
+          .form-type-checkbox {
+            padding: 0.5rem;
+            margin-right: 0;
+            display: flex;
+            align-items: center;
+          }
+        }
       }
     }
   }

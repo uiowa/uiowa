@@ -16,12 +16,6 @@
 // person layout
 .page-node-type-person.layout-builder-enabled {
   .layout__region--first {
-    .field__item {
-      line-height: 1.7;
-      font-size: 1.2rem;
-      margin-top: 0;
-    }
-
     .field--name-field-person-territory {
       .field__items, .field__item {
         font-size: $small-font-size;
@@ -46,8 +40,8 @@
   .field--name-field-person-position {
     margin-top: .6rem;
     .field__item {
-      font-size: 2.3rem;
-      line-height: 1;
+      font-size: containerClamp(1.8rem, 2.3rem);
+      line-height: 1.1;
       font-weight: 300;
       margin-bottom: .5rem;
     }
