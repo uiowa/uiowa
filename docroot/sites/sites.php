@@ -5032,3 +5032,9 @@ $sites['iowafloodcenter.uiowa.ddev.site'] = 'iowafloodcenter.uiowa.edu';
 $sites['iowafloodcenter.dev.drupal.uiowa.edu'] = 'iowafloodcenter.uiowa.edu';
 $sites['iowafloodcenter.stage.drupal.uiowa.edu'] = 'iowafloodcenter.uiowa.edu';
 $sites['iowafloodcenter.prod.drupal.uiowa.edu'] = 'iowafloodcenter.uiowa.edu';
+
+// Directory aliases for oehsai.org.uiowa.edu.
+$sites['orgoehsai.uiowa.ddev.site'] = 'oehsai.org.uiowa.edu';
+$sites['orgoehsai.dev.drupal.uiowa.edu'] = 'oehsai.org.uiowa.edu';
+$sites['orgoehsai.stage.drupal.uiowa.edu'] = 'oehsai.org.uiowa.edu';
+$sites['orgoehsai.prod.drupal.uiowa.edu'] = 'oehsai.org.uiowa.edu';
