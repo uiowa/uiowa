@@ -71,7 +71,9 @@ class RoomSchedule extends BlockBase {
     }
     else {
       return [
-        '#markup' => $this->t('No schedule found for this room.'),
+        '#prefix' => '<div class="room-schedule__no-results">',
+        '#suffix' => '</div>',
+        '#markup' => '<h2 class="h4 block__headline headline headline--serif headline--underline">Today\'s Schedule</h2><p class="room-schedule__no-results__message">There are no scheduled events for this room today.</p>',
       ];
     }
   }

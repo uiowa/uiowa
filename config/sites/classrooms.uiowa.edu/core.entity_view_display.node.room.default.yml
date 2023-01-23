@@ -195,8 +195,10 @@ third_party_settings:
           label: ''
           context_mapping: {  }
           layout_builder_styles_style:
-            - ''
-            - section_margin_fixed_width_container
+            0: ''
+            1: section_margin_fixed_width_container
+            section_padding_bottom_extra: section_padding_bottom_extra
+            section_padding_top_extra: section_padding_top_extra
         components:
           -
             uuid: b9425791-5cfd-4c05-ae8f-76e16536eff7
@@ -210,7 +212,13 @@ third_party_settings:
             weight: 0
             additional: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
       -
         layout_id: layout_threecol
         layout_settings:
