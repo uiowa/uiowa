@@ -5,6 +5,7 @@
  * Primary module hooks for Uiowa Core module.
  */
 
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -107,7 +108,7 @@ function uiowa_core_mail_alter(&$message) {
 /**
  * Implements hook_ENTITY_TYPE_view().
  */
-function uiowa_core_node_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
+function uiowa_core_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
   if ($entity->bundle() === 'article' && $view_mode === 'teaser') {
 
     $mapping = [
@@ -163,7 +164,7 @@ function uiowa_core_node_view(array &$build, \Drupal\Core\Entity\EntityInterface
 /**
  * Implements hook_ENTITY_TYPE_build_defaults_alter().
  */
-function uiowa_core_node_build_defaults_alter(array &$build, \Drupal\Core\Entity\EntityInterface $entity, $view_mode) {
+function uiowa_core_node_build_defaults_alter(array &$build, EntityInterface $entity, $view_mode) {
   if ($entity->bundle() === 'article' && $view_mode === 'teaser') {
     $build['#type'] = 'card';
     unset($build['#theme']);

@@ -8,7 +8,6 @@ use Drupal\Core\Render\PreviewFallbackInterface;
 use Drupal\layout_builder\Event\SectionComponentBuildRenderArrayEvent;
 use Drupal\layout_builder\LayoutBuilderEvents;
 use Drupal\layout_builder\Plugin\Block\FieldBlock;
-use Drupal\uiowa_core\Element\Card;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -210,6 +209,9 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
     $event->setBuild($build);
   }
 
+  /**
+   * Change the media view mode based on the selected format.
+   */
   private function setMediaViewModeFromStyle(array &$build, $size, array $classes = []) {
     $media_formats = [
       'media--circle' => 'square',
@@ -217,7 +219,6 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
       'media--ultrawide' => 'ultrawide',
       'media--widescreen' => 'widescreen',
     ];
-
 
     // Loop through the map to check if any of them are being used and
     // adjust the view mode accordingly.

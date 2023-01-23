@@ -2,8 +2,6 @@
 
 namespace Drupal\uiowa_core\Element;
 
-use Drupal\Component\Utility\Html;
-use Drupal\Core\Render\Element;
 use Drupal\Core\Render\Element\RenderElement;
 use Drupal\Core\Template\Attribute;
 
@@ -45,6 +43,9 @@ class Card extends RenderElement {
     ];
   }
 
+  /**
+   * Pre-render callback: Renders a card into #markup.
+   */
   public static function preRenderCard($element) {
     // Add standard card classes.
     if (!isset($element['#attributes'])) {
