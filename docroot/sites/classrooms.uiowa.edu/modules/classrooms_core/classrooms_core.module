@@ -80,6 +80,25 @@ function classrooms_core_form_alter(&$form, FormStateInterface $form_state, $for
 }
 
 /**
+ * Implements hook_field_base_field_info().
+ */
+function classrooms_core_field_base_field_info(FieldStorageDefinitionInterface $field_definition) {
+  if ($field_definition->getName() === 'field_room_guide') {
+    $field_definition->setDefaultValueCallback('classrooms_core_classrooms_guide_link');
+  }
+}
+
+/**
+ * Callback function for setting the default value of the link field.
+ *
+ * @return string
+ *   The default value for the link field.
+ */
+function classrooms_core_classrooms_guide_link() {
+  return 'https://teach.uiowa.edu/basic-university-classroom-guide';
+}
+
+/**
  * Implements hook_ENTITY_TYPE_view().
  */
 function classrooms_core_node_view(array &$build, EntityInterface $node, EntityViewDisplayInterface $display, $view_mode) {
