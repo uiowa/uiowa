@@ -1,0 +1,20 @@
+<h2 class="h6 headline headline--serif headline--underline field__label">Today's Schedule</h2>
+<div class="list-container">
+  {% for item in items %}
+    {%
+      set classes = [
+      'card--media-left',
+    ]
+    %}
+
+    {% set block_card = {
+      'attributes': attributes.addClass(classes),
+      'card_title': item.title,
+      'card_subtitle': item.startTime,
+      'visible_button': false,
+    } %}
+
+    {% embed '@uids_base/uids/card.html.twig' with block_card only %}{% endembed %}
+
+  {% endfor %}
+</div>

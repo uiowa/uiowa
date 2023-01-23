@@ -184,23 +184,33 @@ third_party_settings:
             weight: 5
             additional: {  }
             third_party_settings: {  }
-          -
-            uuid: 515ec178-1092-41f5-84a6-c2cfef39d2f5
-            region: content
-            configuration:
-              id: todayschedule_block
-              label: null
-              label_display: null
-              provider: classrooms_core
-              context_mapping: {  }
-            weight: 10
-            additional: {  }
-            third_party_settings: {  }
         third_party_settings:
           layout_builder_limit:
             limit:
               scope: disabled
               scope_update: 'Update scope'
+      -
+        layout_id: layout_onecol
+        layout_settings:
+          label: ''
+          context_mapping: {  }
+          layout_builder_styles_style:
+            - ''
+            - section_margin_fixed_width_container
+        components:
+          -
+            uuid: b9425791-5cfd-4c05-ae8f-76e16536eff7
+            region: content
+            configuration:
+              id: roomschedule_block
+              label: null
+              label_display: null
+              provider: classrooms_core
+              context_mapping: {  }
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings: {  }
       -
         layout_id: layout_threecol
         layout_settings:

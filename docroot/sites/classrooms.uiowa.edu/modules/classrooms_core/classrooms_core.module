@@ -153,6 +153,11 @@ function classrooms_core_preprocess_block(&$variables) {
       $classes[] = 'align-center';
       break;
 
+    // Add grid to events block.
+    case 'roomschedule_block':
+      $classes[] = 'grid--threecol--33-34-33 grid--first-item-full-width';
+      break;
+
   }
   if (!empty($classes)) {
     if (!isset($variables['attributes']['class'])) {
@@ -446,6 +451,10 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
     'room_map_link' => [
       'variables' => ['room_url_map' => NULL],
       'template' => 'room-map-link',
+    ],
+    'room_schedule_list' => [
+      'variables' => ['items' => []],
+      'template' => 'room-schedule-list',
     ],
     'requestinfobutton_block' => [
       'template' => 'requestinfobutton-block',
