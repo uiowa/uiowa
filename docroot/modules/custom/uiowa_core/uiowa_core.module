@@ -137,6 +137,24 @@ function template_preprocess_uiowa_core_headline(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
+function uiowa_core_preprocess_media(&$variables) {
+  $view_mode = $variables['view_mode'];
+  if (str_starts_with($view_mode, 'large')) {
+    $variables['attributes']['class'][] = 'element--size-large';
+  }
+
+  elseif (str_starts_with($view_mode, 'medium')) {
+    $variables['attributes']['class'][] = 'element--size-medium';
+  }
+
+  elseif (str_starts_with($view_mode, 'small')) {
+    $variables['attributes']['class'][] = 'element--size-small';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
 function uiowa_core_preprocess_node(&$variables) {
   if ($variables['view_mode'] === 'teaser') {
     $show_teaser_link_indicator = FALSE;

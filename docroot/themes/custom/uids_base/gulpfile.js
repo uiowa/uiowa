@@ -35,6 +35,7 @@ const uids = {
   dest: `${__dirname}/uids/`,
   readylist: [
     'button',
+    "size",
   ],
 }
 
