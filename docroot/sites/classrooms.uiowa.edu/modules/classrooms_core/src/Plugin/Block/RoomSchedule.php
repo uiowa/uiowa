@@ -11,9 +11,6 @@ use Drupal\Core\Block\BlockBase;
  *   id = "roomschedule_block",
  *   admin_label = @Translation("Room Schedule"),
  *   category = @Translation("Room"),
- *   context = {
- *     "node" = @ContextDefinition("entity:node", label = @Translation("Node"))
- *   }
  * )
  */
 class RoomSchedule extends BlockBase {
