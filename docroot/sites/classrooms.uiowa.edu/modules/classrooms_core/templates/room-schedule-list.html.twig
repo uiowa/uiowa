@@ -10,7 +10,7 @@
     {% set block_card = {
       'attributes': attributes.addClass(classes),
       'card_title': item.title,
-      'card_subtitle': item.startTime,
+      'card_subtitle': item.startTime ~ ' - ' ~ item.endTime,
       'visible_button': false,
     } %}
 
