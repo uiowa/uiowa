@@ -10,6 +10,7 @@
       'attributes': attributes.addClass(classes),
       'card_title': item.title,
       'card_subtitle': item.startTime ~ ' - ' ~ item.endTime,
+      'card_text': item.activity,
     } %}
     {% embed '@uids_base/uids/card.html.twig' with block_card only %}{% endembed %}
   {% endfor %}
