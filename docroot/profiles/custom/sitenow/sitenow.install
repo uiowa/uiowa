@@ -53,8 +53,9 @@ function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): 
     $count = $query->countQuery()->execute()->fetchField();
 
     \Drupal::messenger()
-      ->addMessage(t('Sections with blocks of @types records found: @count', [
+      ->addMessage(t('Sections with blocks of @types records found in @table: @count', [
         '@types' => implode(', ', $block_plugin_ids),
+        '@table' => $table_name,
         '@count' => $count,
       ]));
 
@@ -1956,65 +1957,67 @@ function sitenow_update_9053() {
  */
 function sitenow_update_9054() {
   // Apply updates to all blocks that are styled using card styles.
-  _update_all_blocks_by_plugin_id([
+  foreach ([
     'inline_block:uiowa_card',
     'inline_block:uiowa_event',
     'inline_block:uiowa_events',
     'inline_block:uiowa_aggregator',
     'views_block:article_list_block-list_article',
     'views_block:people_list_block-list_card',
-  ], function (&$component, $block) {
-    $styles = $component->get('layout_builder_styles_style');
+  ] as $plugin_id) {
+    _update_all_blocks_by_plugin_id($plugin_id, function (&$component, $block) {
+      $styles = $component->get('layout_builder_styles_style');
 
-    // If styles aren't set, then initialize them.
-    if (empty($styles)) {
-      $styles = [];
-    }
-
-    // If card border style is set...
-    $border_index = array_search('block_card_style_border', $styles);
-    if ($border_index !== FALSE) {
-      // Unset it.
-      unset($styles[$border_index]);
-    }
-    else {
-      // Add style for no border option.
-      $styles[] = 'no_border';
-    }
-
-    // Update card_image_* to media_size_*.
-    $media_size_set = FALSE;
-    foreach ([
-      'card_image_large',
-      'card_image_medium',
-      'card_image_small'
-    ] as $card_image_size) {
-      $card_image_size_index = array_search($card_image_size, $styles);
-      if ($card_image_size_index !== FALSE) {
-        $size = str_replace('card_image_', '', $styles[$card_image_size_index]);
-        $styles[$card_image_size_index] = "media_size_$size";
-        $media_size_set = TRUE;
+      // If styles aren't set, then initialize them.
+      if (empty($styles)) {
+        $styles = [];
       }
-    }
 
-    // Set a default media size if not already set.
-    if (!$media_size_set) {
-      $styles[] = 'media_size_small';
-    }
-
-    // Remove these styles, if set.
-    foreach ([
-      'card_media_position_stacked',
-      'content_alignment_left',
-    ] as $remove_style) {
-      $remove_style_index = array_search($remove_style, $styles);
-      if ($remove_style_index !== FALSE) {
-        unset($styles[$remove_style_index]);
+      // If card border style is set...
+      $border_index = array_search('block_card_style_border', $styles);
+      if ($border_index !== FALSE) {
+        // Unset it.
+        unset($styles[$border_index]);
       }
-    }
+      else {
+        // Add style for no border option.
+        $styles[] = 'no_border';
+      }
 
-    // @todo Set defaults for media_padded LB style.
-    // Save updated styles.
-    $component->set('layout_builder_styles_style', array_filter($styles));
-  });
+      // Update card_image_* to media_size_*.
+      $media_size_set = FALSE;
+      foreach ([
+                 'card_image_large',
+                 'card_image_medium',
+                 'card_image_small'
+               ] as $card_image_size) {
+        $card_image_size_index = array_search($card_image_size, $styles);
+        if ($card_image_size_index !== FALSE) {
+          $size = str_replace('card_image_', '', $styles[$card_image_size_index]);
+          $styles[$card_image_size_index] = "media_size_$size";
+          $media_size_set = TRUE;
+        }
+      }
+
+      // Set a default media size if not already set.
+      if (!$media_size_set) {
+        $styles[] = 'media_size_small';
+      }
+
+      // Remove these styles, if set.
+      foreach ([
+                 'card_media_position_stacked',
+                 'content_alignment_left',
+               ] as $remove_style) {
+        $remove_style_index = array_search($remove_style, $styles);
+        if ($remove_style_index !== FALSE) {
+          unset($styles[$remove_style_index]);
+        }
+      }
+
+      // @todo Set defaults for media_padded LB style.
+      // Save updated styles.
+      $component->set('layout_builder_styles_style', array_filter($styles));
+    });
+  }
 }
