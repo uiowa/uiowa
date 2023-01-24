@@ -372,8 +372,8 @@ display:
           text_input_required_format: filtered_html
           bef:
             general:
-              autosubmit: false
-              autosubmit_exclude_textfield: false
+              autosubmit: true
+              autosubmit_exclude_textfield: true
               autosubmit_textfield_delay: 500
               autosubmit_hide: false
               input_required: false
@@ -387,6 +387,11 @@ display:
                   placeholder_text: ''
                   collapsible: false
                   is_secondary: false
+              field_room_max_occupancy_value:
+                plugin_id: default
+                advanced:
+                  collapsible: false
+                  is_secondary: true
               field_room_building_id_target_id:
                 plugin_id: default
                 advanced:
@@ -398,7 +403,7 @@ display:
                 advanced:
                   sort_options: false
                   rewrite:
-                    filter_rewrite_values: ''
+                    filter_rewrite_values: '- Any -|Features'
                   collapsible: false
                   is_secondary: true
               field_room_type_target_id:
@@ -406,7 +411,7 @@ display:
                 advanced:
                   sort_options: false
                   rewrite:
-                    filter_rewrite_values: ''
+                    filter_rewrite_values: '- Any -|Type'
                   collapsible: false
                   is_secondary: true
               field_room_scheduling_regions_target_id:
@@ -414,19 +419,15 @@ display:
                 advanced:
                   sort_options: false
                   rewrite:
-                    filter_rewrite_values: ''
+                    filter_rewrite_values: '- Any -|Scheduling Region'
                   collapsible: false
                   is_secondary: true
               field_room_technology_features_target_id:
                 plugin_id: default
                 advanced:
+                  sort_options: false
                   rewrite:
-                    filter_rewrite_values: ''
-                  collapsible: false
-                  is_secondary: true
-              field_room_max_occupancy_value:
-                plugin_id: default
-                advanced:
+                    filter_rewrite_values: '- Any -|Technology features'
                   collapsible: false
                   is_secondary: true
       access:
@@ -759,12 +760,12 @@ display:
           admin_label: ''
           plugin_id: taxonomy_index_tid
           operator: or
-          value: null
+          value: {  }
           group: 1
           exposed: true
           expose:
             operator_id: field_room_technology_features_target_id_op
-            label: 'Technology Features'
+            label: 'Technology features'
             description: ''
             use_operator: false
             operator: field_room_technology_features_target_id_op
@@ -797,7 +798,7 @@ display:
             group_items: {  }
           reduce_duplicates: false
           vid: technology_features
-          type: cshs
+          type: select
           hierarchy: false
           limit: true
           error_message: true
@@ -843,8 +844,8 @@ display:
               publisher: '0'
               webmaster: '0'
               administrator: '0'
-            min_placeholder: ''
-            max_placeholder: ''
+            min_placeholder: 'Minimum Capacity'
+            max_placeholder: 'Maximum Capacity'
             placeholder: ''
           is_grouped: false
           group_info:

@@ -498,7 +498,7 @@ function _classrooms_core_building_filter_select(array &$form) {
   // Rebuild the building text filter as select list.
   $form['#type'] = 'select';
   $form['#multiple'] = FALSE;
-  $form['#empty_option'] = t('- Any -');
+  $form['#empty_option'] = t('Building');
   $form['#options'] = $options;
   unset($form['#size']);
 }
