@@ -139,19 +139,12 @@ function template_preprocess_uiowa_core_headline(&$variables) {
  */
 function uiowa_core_preprocess_media(&$variables) {
   $view_mode = $variables['view_mode'];
-  if (str_starts_with($view_mode, 'large')) {
-    $variables['#attached']['library'][] = 'uids_base/size';
-    $variables['attributes']['class'][] = 'element--size-large';
-  }
-
-  elseif (str_starts_with($view_mode, 'medium')) {
-    $variables['#attached']['library'][] = 'uids_base/size';
-    $variables['attributes']['class'][] = 'element--size-medium';
-  }
-
-  elseif (str_starts_with($view_mode, 'small')) {
-    $variables['#attached']['library'][] = 'uids_base/size';
-    $variables['attributes']['class'][] = 'element--size-small';
+  $accepted_view_modes = ['large', 'medium', 'small'];
+  foreach ($accepted_view_modes as &$value) {
+    if (str_starts_with($view_mode, $value)) {
+      $variables['#attached']['library'][] = 'uids_base/size';
+      $variables['attributes']['class'][] = 'element--size-' . $value;
+    }
   }
 }
 
