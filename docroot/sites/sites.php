@@ -5044,3 +5044,9 @@ $sites['labmcgowan.uiowa.ddev.site'] = 'mcgowan.lab.uiowa.edu';
 $sites['labmcgowan.dev.drupal.uiowa.edu'] = 'mcgowan.lab.uiowa.edu';
 $sites['labmcgowan.stage.drupal.uiowa.edu'] = 'mcgowan.lab.uiowa.edu';
 $sites['labmcgowan.prod.drupal.uiowa.edu'] = 'mcgowan.lab.uiowa.edu';
+
+// Directory aliases for proteinfolding.lab.uiowa.edu.
+$sites['labproteinfolding.uiowa.ddev.site'] = 'proteinfolding.lab.uiowa.edu';
+$sites['labproteinfolding.dev.drupal.uiowa.edu'] = 'proteinfolding.lab.uiowa.edu';
+$sites['labproteinfolding.stage.drupal.uiowa.edu'] = 'proteinfolding.lab.uiowa.edu';
+$sites['labproteinfolding.prod.drupal.uiowa.edu'] = 'proteinfolding.lab.uiowa.edu';
