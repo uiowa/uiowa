@@ -5,18 +5,19 @@
  * Contains lb_enhancements.module.
  */
 
-use Drupal\layout_builder\Form\ConfigureBlockFormBase;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
+use Drupal\ctools_views\Plugin\Display\Block;
+use Drupal\layout_builder\Form\ConfigureBlockFormBase;
 use Drupal\layout_builder_custom\LayoutBuilderPreRender;
 use Drupal\layout_builder_custom\Plugin\Display\ListBlock;
 use Drupal\layout_builder_styles\Entity\LayoutBuilderStyleGroup;
 use Drupal\layout_builder_styles\LayoutBuilderStyleInterface;
 use Drupal\uiowa_core\HeadlineHelper;
-use Drupal\ctools_views\Plugin\Display\Block;
 use Drupal\views\ViewExecutable;
 
 /**
@@ -228,6 +229,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               ],
             ];
 
+            // A map of default styles for LB style groups.
             $defaults = [
               'layout_builder_style_background' => 'block_background_style_light',
               'layout_builder_style_media_size' => 'media_size_small',
@@ -236,33 +238,46 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               'layout_builder_style_media_format' => 'media_format_widescreen',
             ];
 
+            // Set defaults for blocks with card-related styles.
             switch ($block->getPluginId()) {
-              case 'inline_block:uiowa_aggregator':
-                break;
-
+              // The card block has the empty option as the default.
               case 'inline_block:uiowa_card':
                 // @todo Figure out what this should be.
-                unset($defaults['layout_builder_style_card_media_position']);
+                $defaults['layout_builder_style_card_media_position'] = '[empty]';
                 break;
 
+              // Media left is the default. These cases pass through to the next
+              // case.
               case 'inline_block:uiowa_events':
               case 'views_block:events-card_list':
               case 'views_block:events_list_block-card_list':
                 $defaults['layout_builder_style_card_media_position'] = 'card_media_position_left';
+
+              // Circle image is the default.
+              case 'views_block:people_list_block-list_card':
                 $defaults['layout_builder_style_media_format'] = 'media_format_circle';
                 break;
 
+              // Medium image size is the default.
               case 'views_block:article_list_block-list_article':
                 $defaults['layout_builder_style_media_size'] = 'card_image_medium';
                 break;
-
-              case 'views_block:people_list_block-list_card':
-                $defaults['layout_builder_style_media_format'] = 'media_format_circle';
             }
 
+            // Loop through map of default styles and append text indicating
+            // that they are the defaults if appropriate.
             foreach ($defaults as $key => $default) {
-              if (isset($form[$key]) && isset($form[$key]['#options'][$default])) {
-                $form[$key]['#options'][$default] .= ' (default)';
+              // If the style group is set...
+              if (isset($form[$key])) {
+                // If the default option is exists, add the text there.
+                if (isset($form[$key]['#options'][$default])) {
+                  $form[$key]['#options'][$default] .= ' (default)';
+                }
+                // Otherwise, if the empty option should be the default, add
+                // the text there.
+                elseif ($default === '[empty]' && $form[$key]['#empty_option'] instanceof TranslatableMarkup) {
+                  $form[$key]['#empty_option'] = t($form[$key]['#empty_option']->getUntranslatedString() . ' (default)');
+                }
               }
             }
 
@@ -278,10 +293,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
               switch ($block->getPluginId()) {
                 case 'views_block:article_list_block-list_article':
-                  $form['settings']['override']['items_per_page']['#default_value'] = 10;
                   $form['settings']['override']['hide_fields']['order_fields']['field_article_source_link']['hide']['#default_value'] = 1;
-                  break;
-
                 case 'views_block:people_list_block-list_card':
                   $form['settings']['override']['items_per_page']['#default_value'] = 10;
                   break;
