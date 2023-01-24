@@ -5050,3 +5050,9 @@ $sites['labproteinfolding.uiowa.ddev.site'] = 'proteinfolding.lab.uiowa.edu';
 $sites['labproteinfolding.dev.drupal.uiowa.edu'] = 'proteinfolding.lab.uiowa.edu';
 $sites['labproteinfolding.stage.drupal.uiowa.edu'] = 'proteinfolding.lab.uiowa.edu';
 $sites['labproteinfolding.prod.drupal.uiowa.edu'] = 'proteinfolding.lab.uiowa.edu';
+
+// Directory aliases for anthonyfischer.lab.uiowa.edu.
+$sites['labanthonyfischer.uiowa.ddev.site'] = 'anthonyfischer.lab.uiowa.edu';
+$sites['labanthonyfischer.dev.drupal.uiowa.edu'] = 'anthonyfischer.lab.uiowa.edu';
+$sites['labanthonyfischer.stage.drupal.uiowa.edu'] = 'anthonyfischer.lab.uiowa.edu';
+$sites['labanthonyfischer.prod.drupal.uiowa.edu'] = 'anthonyfischer.lab.uiowa.edu';
