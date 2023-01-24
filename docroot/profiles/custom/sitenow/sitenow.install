@@ -72,7 +72,7 @@ function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): 
       /** @var \Drupal\layout_builder\SectionComponent $component */
       foreach ($section->getComponents() as &$component) {
 
-        // Limit this to only the block component.
+        // Limit this to only the initial list of block plugins.
         if (!in_array($component->getPluginId(), $block_plugin_ids)) {
           continue;
         }
@@ -146,8 +146,8 @@ function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): 
         // Loop through the components in the section.
         foreach ($section->getComponents() as &$component) {
 
-          // Limit this to only the block component.
-          if ($component->getPluginId() !== $block_plugin_id) {
+          // Limit this to only the initial list of block plugins.
+          if (!in_array($component->getPluginId(), $block_plugin_ids)) {
             continue;
           }
 
@@ -1966,46 +1966,55 @@ function sitenow_update_9054() {
   ], function (&$component, $block) {
     $styles = $component->get('layout_builder_styles_style');
 
-    // Only process styles if they are set.
-    if (!empty($styles)) {
-      // If card border style is set...
-      $border_index = array_search('block_card_style_border', $styles);
-      if ($border_index !== FALSE) {
-        // Unset it.
-        unset($styles[$border_index]);
-      }
-      else {
-        // Add style for no border option.
-        $styles[] = 'no_border';
-      }
-
-      // Update card_image_* to media_size_*.
-      foreach ([
-        'card_image_large',
-        'card_image_medium',
-        'card_image_small'
-      ] as $card_image_size) {
-        $card_image_size_index = array_search($card_image_size, $styles);
-        if ($card_image_size_index !== FALSE) {
-          $size = str_replace('card_image_', '', $styles[$card_image_size_index]);
-          $styles[$card_image_size_index] = "media_size_$size";
-        }
-      }
-
-      // Remove these styles, if set.
-      foreach ([
-        'card_media_position_stacked',
-        'content_alignment_left',
-      ] as $remove_style) {
-        $remove_style_index = array_search($remove_style, $styles);
-        if ($remove_style_index !== FALSE) {
-          unset($styles[$remove_style_index]);
-        }
-      }
-
-      // @todo Set defaults for media_padded LB style.
-      // Save updated styles.
-      $component->set('layout_builder_styles_style', array_values($styles));
+    // If styles aren't set, then initialize them.
+    if (empty($styles)) {
+      $styles = [];
     }
+
+    // If card border style is set...
+    $border_index = array_search('block_card_style_border', $styles);
+    if ($border_index !== FALSE) {
+      // Unset it.
+      unset($styles[$border_index]);
+    }
+    else {
+      // Add style for no border option.
+      $styles[] = 'no_border';
+    }
+
+    // Update card_image_* to media_size_*.
+    $media_size_set = FALSE;
+    foreach ([
+      'card_image_large',
+      'card_image_medium',
+      'card_image_small'
+    ] as $card_image_size) {
+      $card_image_size_index = array_search($card_image_size, $styles);
+      if ($card_image_size_index !== FALSE) {
+        $size = str_replace('card_image_', '', $styles[$card_image_size_index]);
+        $styles[$card_image_size_index] = "media_size_$size";
+        $media_size_set = TRUE;
+      }
+    }
+
+    // Set a default media size if not already set.
+    if (!$media_size_set) {
+      $styles[] = 'media_size_small';
+    }
+
+    // Remove these styles, if set.
+    foreach ([
+      'card_media_position_stacked',
+      'content_alignment_left',
+    ] as $remove_style) {
+      $remove_style_index = array_search($remove_style, $styles);
+      if ($remove_style_index !== FALSE) {
+        unset($styles[$remove_style_index]);
+      }
+    }
+
+    // @todo Set defaults for media_padded LB style.
+    // Save updated styles.
+    $component->set('layout_builder_styles_style', array_filter($styles));
   });
 }
