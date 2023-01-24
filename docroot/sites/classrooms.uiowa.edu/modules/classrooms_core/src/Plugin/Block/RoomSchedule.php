@@ -31,24 +31,16 @@ class RoomSchedule extends BlockBase {
     $room_id = 0;
 
     $node = \Drupal::routeMatch()->getParameter('node');
+
     if (!empty($node)) {
       if ($node->hasField('field_room_building_id') && $node->hasField('field_room_room_id')) {
         $building_id = $node->get('field_room_building_id')?->first()?->getValue()["target_id"];
         $room_id = $node->get('field_room_room_id')?->first()?->getValue()["value"];
       }
 
-      $cid = 'roomschedule_block:' . $building_id . ':' . $room_id;
-      if ($cache = \Drupal::cache()->get($cid)) {
-        $data = $cache->data;
-      }
-      else {
-        // Grab MAUI room data.
-        $maui_api = \Drupal::service('uiowa_maui.api');
-        $data = $maui_api->getRoomSchedule(date('Y-m-d'), date('Y-m-d'), $building_id, $room_id);
-
-        // Save data to cache.
-        \Drupal::cache()->set($cid, $data, time() + 3600, ['roomschedule_block']);
-      }
+      // Grab MAUI room data.
+      $maui_api = \Drupal::service('uiowa_maui.api');
+      $data = $maui_api->getRoomSchedule(date('Y-m-d'), date('Y-m-d'), $building_id, $room_id);
 
       if (!empty($data)) {
         $items = [];
@@ -63,6 +55,10 @@ class RoomSchedule extends BlockBase {
             'library' => [
               'classrooms_core/room_schedule_list',
             ],
+          ],
+          '#cache' => [
+            'tags' => ['time:hourly'],
+            'max-age' => 60,
           ],
         ];
       }
