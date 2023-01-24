@@ -53,15 +53,17 @@ multisites:
 ```
 
 ### Common Tasks
-Multisites will not be able to bootstrap without a `local.settings.php` file. The `blt:init:settings` (or `bis` for short) command will generate local settings files _only_ for the multisite defined in BLT configuration. By default, this is all multisites but be aware that the `local.blt.yml` change documented above will override that. You can temporarily remove that override if you need to generate settings files for all multisites.
+Multisites will not be able to bootstrap without a `local.settings.php` file. The `blt:init:settings` (or `bis` for short) command will generate local settings files for all multisites.
+
+Local configuration overrides can be set in a local.blt.yml file for each multisite as that file is not tracked in git. For example, to configure stage file proxy in the way it would normally be defined in local.settings.php (`$config['stage_file_proxy.settings']['origin'] = 'https://sandbox.prod.drupal.uiowa.edu';`) you would enter it in the local.blt.yml file like:
+
+```
+uiowa:
+  stage_file_proxy:
+    origin: https://sandbox.prod.drupal.uiowa.edu
+```
 
 The `blt frontend` command will install and compile frontend assets.
-
-Local configuration overrides can be set in the local.settings.php file for each multisite. For example, to configure stage file proxy:
-```
-$config['stage_file_proxy.settings']['origin'] = 'https://mysite.com';
-$config['stage_file_proxy.settings']['hotlink'] = TRUE;
-```
 
 ## Multisite Management
 There are a few custom BLT commands to manage multisites. Run `blt list uiowa` to see all the commands in the `uiowa` namespace. Then run `blt CMD --help` for more information on specific commands.
