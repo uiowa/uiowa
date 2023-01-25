@@ -13,6 +13,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Render\Element;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_entity_extra_field_info().
@@ -517,4 +518,22 @@ function _classrooms_core_building_filter_select(array &$form) {
   $form['#empty_option'] = t('Building');
   $form['#options'] = $options;
   unset($form['#size']);
+}
+
+/**
+ * Implements hook_views_pre_view().
+ */
+function classrooms_core_views_pre_view(ViewExecutable $view, $display_id, array &$args) {
+  // Grid display of Rooms on Units vocab.
+  if ($view->id() === 'taxonomy_term') {
+    if (\Drupal::routeMatch()->getRouteName() === 'entity.taxonomy_term.canonical' &&
+      $page_term_id = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
+      $term = \Drupal::entityTypeManager()
+        ->getStorage('taxonomy_term')
+        ->load($page_term_id);
+      if ($term->bundle() === 'units') {
+        $view->display_handler->setOption('css_class', 'grid--fourcol--25');
+      }
+    }
+  }
 }
