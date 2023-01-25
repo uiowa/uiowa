@@ -69,3 +69,20 @@
     }
   }
 }
+
+.grid--twocol--67-33 {
+    @include grid-base;
+    @include breakpoint(md) {
+      grid-template-columns: repeat(3, 1fr);
+      .view-content {
+        grid-area: 1/2/6/4;
+        min-width: 0;
+      }
+
+      .view-filters {
+        grid-area: 1/1/6/2;
+        min-width: 0;
+      }
+    }
+}
+

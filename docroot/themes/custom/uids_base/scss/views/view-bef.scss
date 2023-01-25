@@ -1,7 +1,7 @@
 @import "uids3/assets/scss/_variables.scss";
 @import "uids3/assets/scss/_utilities.scss";
 
-.bef-exposed-form--secondary {
+.bef-form {
   label:not(.option) {
     @include element-invisible;
   }
@@ -16,6 +16,24 @@
     .details-wrapper {
       @include breakpoint(sm) {
         display: flex;
+      }
+    }
+  }
+
+  // Sidebar display.
+  &.bef-form--sidebar {
+    .views-exposed-form {
+      &.uids-content:not(.uids-search) {
+        .form-item {
+          margin-right: 0;
+        }
+      }
+    }
+    .bef--secondary {
+      .details-wrapper {
+        @include breakpoint(sm) {
+          display: block;
+        }
       }
     }
   }
