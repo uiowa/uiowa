@@ -4,8 +4,10 @@ status: true
 dependencies:
   config:
     - field.field.taxonomy_term.technology_features.field_api_mapping
+    - field.field.taxonomy_term.technology_features.field_technology_features_icon
     - taxonomy.vocabulary.technology_features
   module:
+    - fontawesome
     - text
 id: taxonomy_term.technology_features.default
 targetEntityType: taxonomy_term
@@ -21,9 +23,17 @@ content:
     region: content
   field_api_mapping:
     type: string
-    label: above
+    label: hidden
     settings:
       link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_technology_features_icon:
+    type: fontawesome_icon_formatter
+    label: hidden
+    settings:
+      layers: false
     third_party_settings: {  }
     weight: 1
     region: content

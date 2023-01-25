@@ -314,7 +314,7 @@ function now_core_preprocess_views_view_unformatted(&$variables) {
         'card_title' => $style->getField($id, 'title'),
         'card_link_url' => $link,
         'card_subtitle' => $style->getField($id, 'field_person_position'),
-        'card_meta' => $meta,
+        'card_meta' => \Drupal::service('renderer')->render($meta),
         'card_text' => $style->getField($id, 'field_person_research_areas'),
       ];
     }

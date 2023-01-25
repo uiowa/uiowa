@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labinteroception.uiowa.ddev.site
+    protocol: https
+  machine_name: labinteroception
+  human_name: interoception.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labinteroception.prod
+drupal:
+  db:
+    database: interoception_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labinteroception.prod.drupal.uiowa.edu'
+  requester: ahaarer
+  site-name: 'Interoception Lab'
