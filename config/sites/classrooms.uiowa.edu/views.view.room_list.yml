@@ -450,15 +450,26 @@ display:
           content: 'There are currently no results to display.'
           tokenize: false
       sorts:
-        title:
-          id: title
-          table: node_field_data
-          field: title
+        field_room_building_id_target_id:
+          id: field_room_building_id_target_id
+          table: node__field_room_building_id
+          field: field_room_building_id_target_id
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: node
-          entity_field: title
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: ''
+          exposed: false
+        field_room_room_id_value:
+          id: field_room_room_id_value
+          table: node__field_room_room_id
+          field: field_room_room_id_value
+          relationship: none
+          group_type: group
+          admin_label: ''
           plugin_id: standard
           order: ASC
           expose:
