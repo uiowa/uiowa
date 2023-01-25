@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: iowafloodcenter.uiowa.ddev.site
+    protocol: https
+  machine_name: iowafloodcenter
+  human_name: iowafloodcenter.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: iowafloodcenter.prod
+drupal:
+  db:
+    database: iowafloodcenter_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://iowafloodcenter.prod.drupal.uiowa.edu'
+  requester: hboileau
+  site-name: 'Iowa Flood Center'
