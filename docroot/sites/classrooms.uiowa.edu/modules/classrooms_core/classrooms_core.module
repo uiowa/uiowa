@@ -21,6 +21,13 @@ use Drupal\views\ViewExecutable;
  */
 function classrooms_core_entity_extra_field_info() {
   $extra = [];
+  // Building link.
+  $extra['node']['room']['display']['field_room_building_link'] = [
+    'label' => t('Building Link'),
+    'description' => t('A url link to the building.'),
+    'weight' => 1,
+    'visible' => TRUE,
+  ];
   // Adding an extra field to render a link to the campus map.
   $extra['node']['room']['display']['field_room_map_link'] = [
     'label' => t('Map Link'),
@@ -105,6 +112,16 @@ function classrooms_core_node_view(array &$build, EntityInterface $node, EntityV
         '#room_url_map' => $room_url_map,
       ];
     }
+
+    // Building link.
+    $building_id = $node->get('field_room_building_id')->target_id;
+    $building = Drupal::entityTypeManager()->getStorage('building')->load($building_id);
+    $url = Url::fromUri('base:/buildings/' . $building_id)->toString();
+    $build['field_room_building_link'] = [
+      '#theme' => 'building_link',
+      '#building_link' => $url,
+      '#building_name' => $building->label(),
+    ];
   }
 }
 
@@ -118,7 +135,7 @@ function classrooms_core_preprocess_block(&$variables) {
     case 'field_block:node:room:field_room_scheduling_regions':
     case 'field_block:node:room:field_room_responsible_unit':
     case 'field_block:node:room:field_room_instruction_category':
-    case 'field_block:node:room:field_room_building_id':
+    case 'extra_field_block:node:room:field_room_building_link':
     case 'extra_field_block:node:room:field_room_map_link':
       $classes[] = 'block-margin__default--removed';
       break;
@@ -176,12 +193,6 @@ function classrooms_core_preprocess_block(&$variables) {
  */
 function classrooms_core_preprocess_field(&$variables, $hook) {
   switch ($variables['element']['#field_name']) {
-    case 'field_room_building_id':
-      $node = $variables["element"]["#object"];
-      $building_id = $node->get('field_room_building_id')->target_id;
-      $variables['items'][0]['content']['#url'] = Url::fromUri('base:/buildings/' . $building_id);
-      break;
-
     case 'field_room_scheduling_regions':
       $variables['items'][0]['content']['#url'] = Url::fromRoute('entity.node.canonical', ['node' => 151]);
       break;
@@ -470,6 +481,13 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
     'taxonomy_term__technology_features' => [
       'template' => 'taxonomy-term--technology-features',
       'base hook' => 'taxonomy',
+    ],
+    'building_link' => [
+      'variables' => [
+        'building_link' => NULL,
+        'building_name' => NULL,
+      ],
+      'template' => 'building-link',
     ],
     'room_map_link' => [
       'variables' => ['room_url_map' => NULL],
