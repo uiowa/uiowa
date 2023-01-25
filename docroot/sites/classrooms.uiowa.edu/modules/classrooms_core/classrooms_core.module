@@ -10,9 +10,11 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Render\Element;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_entity_extra_field_info().
@@ -174,6 +176,16 @@ function classrooms_core_preprocess_block(&$variables) {
  */
 function classrooms_core_preprocess_field(&$variables, $hook) {
   switch ($variables['element']['#field_name']) {
+    case 'field_room_building_id':
+      $node = $variables["element"]["#object"];
+      $building_id = $node->get('field_room_building_id')->target_id;
+      $variables['items'][0]['content']['#url'] = Url::fromUri('base:/buildings/' . $building_id);
+      break;
+
+    case 'field_room_scheduling_regions':
+      $variables['items'][0]['content']['#url'] = Url::fromRoute('entity.node.canonical', ['node' => 151]);
+      break;
+
     case 'field_room_technology_features':
     case 'field_room_tile_details':
     case 'field_room_design_details':
@@ -482,7 +494,11 @@ function classrooms_core_form_views_exposed_form_alter(&$form, FormStateInterfac
   if ($view->id() === 'room_list') {
     $building_filter = 'field_room_building_id_target_id';
     if (isset($form[$building_filter])) {
-      _classrooms_core_building_filter_select($form[$building_filter]);
+      uiowa_core_config_entity_filter_select($form[$building_filter], 'building');
+
+      // Change the label from default `- Any -`.
+      $form[$building_filter]['#empty_option'] = t('Building');
+
       // Hack to further treat this field as a select as it relates to BEF.
       // Assumes `field_room_type_target_id` is present
       // on the form and is a select.
@@ -493,28 +509,19 @@ function classrooms_core_form_views_exposed_form_alter(&$form, FormStateInterfac
 }
 
 /**
- * Helper function to add buildings as select options.
+ * Implements hook_views_pre_view().
  */
-function _classrooms_core_building_filter_select(array &$form) {
-  // Get available building configuration entities.
-  $storage = Drupal::getContainer()->get('entity_type.manager')->getStorage('building');
-  $types = $storage->getQuery();
-  $types = $types->condition('status', 1)
-    ->sort('title')
-    ->execute();
-
-  // Build a list of building options.
-  $options = [];
-  $buildings = $storage->loadMultiple($types);
-  foreach ($buildings as $type) {
-    $options[$type->id()] = $type->label();
+function classrooms_core_views_pre_view(ViewExecutable $view, $display_id, array &$args) {
+  // Grid display of Rooms on Units vocab.
+  if ($view->id() === 'taxonomy_term') {
+    if (\Drupal::routeMatch()->getRouteName() === 'entity.taxonomy_term.canonical' &&
+      $page_term_id = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
+      $term = \Drupal::entityTypeManager()
+        ->getStorage('taxonomy_term')
+        ->load($page_term_id);
+      if ($term->bundle() === 'units') {
+        $view->display_handler->setOption('css_class', 'grid--fourcol--25');
+      }
+    }
   }
-  asort($options);
-
-  // Rebuild the building text filter as select list.
-  $form['#type'] = 'select';
-  $form['#multiple'] = FALSE;
-  $form['#empty_option'] = t('Building');
-  $form['#options'] = $options;
-  unset($form['#size']);
 }
