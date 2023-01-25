@@ -19,6 +19,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
+use Drupal\node\NodeInterface;
 use Drupal\sitenow_people\PersonTypeInterface;
 use Drupal\views\Entity\View;
 use Drupal\views\ViewExecutable;
@@ -533,6 +534,29 @@ function sitenow_people_preprocess_page(&$variables) {
       }
 
       \Drupal::messenger()->addStatus($message_text);
+    }
+  }
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    $node = ($node ?? \Drupal::routeMatch()
+      ->getParameter('node_preview'));
+    if ($node instanceof NodeInterface) {
+      switch ($node->getType()) {
+        case 'person':
+          // Display message if content is being redirected with Rabbit Hole.
+          // Using preprocess_page to avoid caching issue.
+          if ($node->hasField('field_person_website_link_direct')
+            && (int) $node->get('field_person_website_link_direct')->value === 1) {
+            if (\Drupal::currentUser()
+              ->hasPermission('rabbit hole bypass node') === TRUE) {
+              \Drupal::messenger()
+                ->addWarning(t('Visitors are being redirected to
+the first website link.'));
+            }
+          }
+          break;
+      }
     }
   }
 }
