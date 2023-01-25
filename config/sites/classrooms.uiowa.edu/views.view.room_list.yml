@@ -373,7 +373,7 @@ display:
           bef:
             general:
               autosubmit: true
-              autosubmit_exclude_textfield: true
+              autosubmit_exclude_textfield: false
               autosubmit_textfield_delay: 500
               autosubmit_hide: false
               input_required: false
@@ -387,11 +387,6 @@ display:
                   placeholder_text: ''
                   collapsible: false
                   is_secondary: false
-              field_room_max_occupancy_value:
-                plugin_id: default
-                advanced:
-                  collapsible: false
-                  is_secondary: true
               field_room_building_id_target_id:
                 plugin_id: default
                 advanced:
@@ -403,7 +398,7 @@ display:
                 advanced:
                   sort_options: false
                   rewrite:
-                    filter_rewrite_values: '- Any -|Features'
+                    filter_rewrite_values: '- Any -|Room features'
                   collapsible: false
                   is_secondary: true
               field_room_type_target_id:
@@ -419,7 +414,7 @@ display:
                 advanced:
                   sort_options: false
                   rewrite:
-                    filter_rewrite_values: '- Any -|Scheduling Region'
+                    filter_rewrite_values: '- Any -|Scheduling region'
                   collapsible: false
                   is_secondary: true
               field_room_technology_features_target_id:
@@ -430,6 +425,11 @@ display:
                     filter_rewrite_values: '- Any -|Technology features'
                   collapsible: false
                   is_secondary: true
+              field_room_max_occupancy_value:
+                plugin_id: default
+                advanced:
+                  collapsible: false
+                  is_secondary: true
       access:
         type: perm
         options:
@@ -437,7 +437,18 @@ display:
       cache:
         type: tag
         options: {  }
-      empty: {  }
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text_custom
+          empty: true
+          content: 'There are currently no results to display.'
+          tokenize: false
       sorts:
         title:
           id: title
@@ -591,7 +602,7 @@ display:
           exposed: true
           expose:
             operator_id: field_room_features_target_id_op
-            label: Features
+            label: 'Room features'
             description: ''
             use_operator: false
             operator: field_room_features_target_id_op
@@ -886,7 +897,7 @@ display:
           replica: false
           query_tags: {  }
       relationships: {  }
-      css_class: bef-exposed-form--secondary
+      css_class: 'bef-exposed-form--secondary grid--fourcol--25 inner--grid'
       use_ajax: true
       header: {  }
       footer: {  }

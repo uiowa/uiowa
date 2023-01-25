@@ -224,6 +224,18 @@ function classrooms_core_preprocess_layout(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_HOOK().
+ */
+function classrooms_core_preprocess_node(&$variables): void {
+  /** @var \Drupal\node\Entity\Node $node */
+  $node = $variables['node'];
+  if ($node->getType() === 'room' && $variables['view_mode'] === 'teaser') {
+    // Combine required fields to form card title.
+    $variables['card_title'] = $node->get('field_room_room_id')->value . ' ' . strtoupper($node->get('field_room_building_id')->target_id);
+  }
+}
+
+/**
  * Set dynamic allowed values for the instructional room category field.
  *
  * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
@@ -438,6 +450,10 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
     'field__node__field_room_design_details' => [
       'template' => 'field--node--field-room-design-details',
       'base hook' => 'field',
+    ],
+    'node__room__teaser' => [
+      'template' => 'node--room--teaser',
+      'base hook' => 'node',
     ],
     'taxonomy_term__technology_features' => [
       'template' => 'taxonomy-term--technology-features',
