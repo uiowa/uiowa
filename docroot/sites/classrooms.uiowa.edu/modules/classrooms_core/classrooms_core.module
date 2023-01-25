@@ -550,7 +550,6 @@ function classrooms_core_views_pre_view(ViewExecutable $view, $display_id, array
 function classrooms_core_preprocess_views_view(&$variables) {
   $view = $variables['view'];
   $id = $view->storage->id();
-  $variables['filter_classes'] = [];
   switch ($id) {
     case 'room_list':
       $variables['views_filter_classes'][] = 'grid__column';

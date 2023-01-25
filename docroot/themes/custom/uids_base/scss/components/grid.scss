@@ -43,6 +43,7 @@
 .grid--twocol--50-50 .list-container {
   @include breakpoint(sm) {
     row-gap: $desktop-width-gutter;
+    align-self: self-start;
   }
 }
 
@@ -75,12 +76,12 @@
     @include grid-base;
     @include breakpoint(md) {
       grid-template-columns: repeat(4,1fr);
-      .view-filters {
+      .grid__column:first-child {
         grid-area: 1/1/6/2;
         min-width: 0;
       }
 
-      .view-content {
+      .grid__column:last-child {
         grid-area: 1/2/6/5;
         min-width: 0;
       }
