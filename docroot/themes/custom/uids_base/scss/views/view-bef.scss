@@ -22,6 +22,12 @@
 
   // Sidebar display.
   &.bef-form--sidebar {
+    .views-exposed-form.uids-content:not(.uids-search) .button[data-drupal-selector*=edit-reset] {
+      @include breakpoint(sm) {
+        top: 120px;
+      }
+    }
+
     .views-exposed-form {
       fieldset legend {
         text-align: center;
