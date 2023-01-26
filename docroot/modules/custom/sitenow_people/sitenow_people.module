@@ -396,7 +396,7 @@ function sitenow_people_entity_presave(EntityInterface $entity) {
         // and set the url to the source link token.
         if ($link_direct === 1 && isset($source_link) && !empty($source_link)) {
           $entity->rh_action->value = 'page_redirect';
-          $entity->rh_redirect->value = '[node:field_person_website[0][uri]]';
+          $entity->rh_redirect->value = '[node:field_person_website:0:uri]';
           $entity->rh_redirect_response->value = '301';
           $entity->rh_redirect_fallback_action->value = 'display_page';
         }
@@ -548,11 +548,13 @@ function sitenow_people_preprocess_page(&$variables) {
           // Using preprocess_page to avoid caching issue.
           if ($node->hasField('field_person_website_link_direct')
             && (int) $node->get('field_person_website_link_direct')->value === 1) {
-            if (\Drupal::currentUser()
-              ->hasPermission('rabbit hole bypass node') === TRUE) {
-              \Drupal::messenger()
-                ->addWarning(t('Visitors are being redirected to
+            if ($node->hasField('field_person_website') && !$node->get('field_person_website')->isEmpty()) {
+              if (\Drupal::currentUser()
+                  ->hasPermission('rabbit hole bypass node') === TRUE) {
+                \Drupal::messenger()
+                  ->addWarning(t('Visitors are being redirected to
 the first website link.'));
+              }
             }
           }
           break;
