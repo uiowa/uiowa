@@ -279,10 +279,10 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 4861e416-3919-4cbb-af33-8a137b935db3
-            region: second
+            uuid: 0ba61ab7-7c09-4da3-a84e-a04a5eb88f6a
+            region: first
             configuration:
-              id: 'field_block:node:room:field_room_technology_features'
+              id: 'field_block:node:room:field_room_features'
               label: null
               label_display: null
               provider: layout_builder
@@ -290,43 +290,19 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
               formatter:
-                type: entity_reference_entity_view
+                type: entity_reference_label
                 label: above
                 settings:
-                  view_mode: teaser
+                  link: false
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 0
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 63975313-6f6b-4134-b23d-f9c9a0befdd3
-            region: second
-            configuration:
-              id: 'field_block:node:room:field_room_guide'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: link
-                label: visually_hidden
-                settings:
-                  trim_length: 80
-                  url_only: false
-                  url_plain: false
-                  rel: '0'
-                  target: '0'
-                third_party_settings: {  }
             weight: 1
             additional: {  }
             third_party_settings: {  }
           -
             uuid: eb6a84bd-e382-46df-8abd-f8a174aefd37
-            region: third
+            region: second
             configuration:
               id: 'field_block:node:room:field_room_accessibility'
               label: null
@@ -348,31 +324,9 @@ third_party_settings:
             third_party_settings: {  }
           -
             uuid: 044d7de7-ef84-4fd2-8244-bf823909267e
-            region: third
+            region: second
             configuration:
               id: 'field_block:node:room:field_room_design_details'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: string
-                label: above
-                settings:
-                  link_to_entity: false
-                third_party_settings:
-                  field_delimiter:
-                    delimiter: ''
-            weight: 1
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 67a6c347-3087-48b3-becb-c34669bf4f85
-            region: third
-            configuration:
-              id: 'field_block:node:room:field_room_classroom_furniture'
               label: null
               label_display: null
               provider: layout_builder
@@ -391,10 +345,10 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 0ba61ab7-7c09-4da3-a84e-a04a5eb88f6a
-            region: first
+            uuid: 67a6c347-3087-48b3-becb-c34669bf4f85
+            region: second
             configuration:
-              id: 'field_block:node:room:field_room_features'
+              id: 'field_block:node:room:field_room_classroom_furniture'
               label: null
               label_display: null
               provider: layout_builder
@@ -402,13 +356,59 @@ third_party_settings:
                 entity: layout_builder.entity
                 view_mode: view_mode
               formatter:
-                type: entity_reference_label
+                type: string
                 label: above
                 settings:
-                  link: false
+                  link_to_entity: false
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
+            weight: 3
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 4861e416-3919-4cbb-af33-8a137b935db3
+            region: third
+            configuration:
+              id: 'field_block:node:room:field_room_technology_features'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: entity_reference_entity_view
+                label: above
+                settings:
+                  view_mode: teaser
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
+            weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 63975313-6f6b-4134-b23d-f9c9a0befdd3
+            region: third
+            configuration:
+              id: 'field_block:node:room:field_room_guide'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: link
+                label: visually_hidden
+                settings:
+                  trim_length: 80
+                  url_only: false
+                  url_plain: false
+                  rel: '0'
+                  target: '0'
+                third_party_settings: {  }
             weight: 1
             additional: {  }
             third_party_settings: {  }
