@@ -248,7 +248,7 @@ function classrooms_core_preprocess_layout(&$variables) {
         break;
 
       case 'layout_twocol':
-        if (isset($variables['region_attributes']['second'])) {
+        if (isset($variables['region_attributes']['second']) && ($variables["content"]["#settings"]["label"] == "Map")) {
           $variables['region_attributes']['second']->addClass('element--align-top element--padding__all');
         }
         break;

@@ -56,16 +56,24 @@
 }
 
 // For use only for images.
-.grid--fivecol--20 {
+.grid--fivecol--20.photoswipe-gallery {
   .list-container {
-    display: grid;
-    gap: 1rem;
     @include breakpoint(sm) {
       @include threecol-grid;
     }
     @include breakpoint(md) {
-      gap: 1rem;
       grid-template-columns: repeat(auto-fill, minmax(17%, 1fr));
+    }
+  }
+}
+
+.grid--fivecol--20.photoswipe-gallery,
+.grid--threecol--33-34-33.photoswipe-gallery {
+  .list-container {
+    display: grid;
+    gap: 1rem;
+    @include breakpoint(md) {
+      gap: 1.5rem;
     }
   }
 }
