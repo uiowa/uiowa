@@ -14,7 +14,6 @@ use Drupal\Core\Url;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Render\Element;
-use Drupal\Core\Render\Markup;
 
 /**
  * Implements hook_entity_extra_field_info().
@@ -200,12 +199,6 @@ function classrooms_core_preprocess_block(&$variables) {
 function classrooms_core_preprocess_field(&$variables, $hook) {
   switch ($variables['element']['#field_name']) {
     case 'field_room_type':
-      $link_items = $variables['items'];
-      foreach ($link_items as &$item) {
-        $item['content']['#options']['attributes']['class'][] = 'bttn bttn--primary bttn--light-font bttn--no-text bttn--small';
-        $item['content']['#title'] = Markup::create('<i role="presentation" class="fa-building fas"></i>&nbsp; <span class="field__label">Room Type:</span>&nbsp; ' . $item['content']['#title']);
-      }
-      $variables['items'] = $link_items;
       $variables['items'][0]['content']['#url'] = Url::fromRoute('entity.node.canonical', ['node' => 206]);
       break;
 
@@ -228,14 +221,6 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
       $variables['attributes']['class'] .= 'fa-li';
       break;
 
-    case 'field_room_guide':
-      $link_items = $variables['items'];
-      foreach ($link_items as &$item) {
-        $item['content']['#options']['attributes']['class'][] = 'bttn bttn--light-font bttn--transparent bttn--full';
-        $item['content']['#title'] = Markup::create($item['content']['#title'] . '<i role="presentation" class="fas fa-arrow-right"></i>');
-      }
-      $variables['items'] = $link_items;
-      break;
   }
 }
 
@@ -451,6 +436,10 @@ function classrooms_core_entity_presave(EntityInterface $entity): void {
  */
 function classrooms_core_theme($existing, $type, $theme, $path) {
   return [
+    'field__node__field_room_type__room__default' => [
+      'template' => 'field--node--field-room-type--room--default',
+      'base hook' => 'field',
+    ],
     'field__node__field_room_max_occupancy__room__default' => [
       'template' => 'field--node--field-room-max-occupancy--room--default',
       'base hook' => 'field',
@@ -473,6 +462,10 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
     ],
     'field__node__field_room_tile_details' => [
       'template' => 'field--node--field-room-tile-details',
+      'base hook' => 'field',
+    ],
+    'field__node__field_room_guide__room__default' => [
+      'template' => 'field--node--field-room-guide--room--default',
       'base hook' => 'field',
     ],
     'field__node__field_room_design_details' => [
