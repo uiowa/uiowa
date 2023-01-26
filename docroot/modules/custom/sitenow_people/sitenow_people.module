@@ -550,7 +550,7 @@ function sitenow_people_preprocess_page(&$variables) {
             && (int) $node->get('field_person_website_link_direct')->value === 1) {
             if ($node->hasField('field_person_website') && !$node->get('field_person_website')->isEmpty()) {
               if (\Drupal::currentUser()
-                  ->hasPermission('rabbit hole bypass node') === TRUE) {
+                ->hasPermission('rabbit hole bypass node') === TRUE) {
                 \Drupal::messenger()
                   ->addWarning(t('Visitors are being redirected to
 the first website link.'));
