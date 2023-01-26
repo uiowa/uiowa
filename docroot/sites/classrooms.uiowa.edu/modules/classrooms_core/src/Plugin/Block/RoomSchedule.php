@@ -32,11 +32,9 @@ class RoomSchedule extends BlockBase {
 
     $node = \Drupal::routeMatch()->getParameter('node');
 
-    if (!empty($node)) {
-      if ($node->hasField('field_room_building_id') && $node->hasField('field_room_room_id')) {
-        $building_id = $node->get('field_room_building_id')?->first()?->getValue()["target_id"];
-        $room_id = $node->get('field_room_room_id')?->first()?->getValue()["value"];
-      }
+    if (!empty($node) && $node->hasField('field_room_building_id') && $node->hasField('field_room_room_id')) {
+      $building_id = $node->get('field_room_building_id')?->first()?->getValue()["target_id"];
+      $room_id = $node->get('field_room_room_id')?->first()?->getValue()["value"];
 
       // Grab MAUI room data.
       $maui_api = \Drupal::service('uiowa_maui.api');
@@ -62,13 +60,13 @@ class RoomSchedule extends BlockBase {
           ],
         ];
       }
-      else {
-        return [
-          '#prefix' => '<div class="room-schedule__no-results">',
-          '#suffix' => '</div>',
-          '#markup' => '<h2 class="h4 block__headline headline headline--serif headline--underline">Today\'s Schedule</h2><p class="room-schedule__no-results__message">There are no scheduled events for this room today.</p>',
-        ];
-      }
+    }
+    else {
+      return [
+        '#prefix' => '<div class="room-schedule__no-results">',
+        '#suffix' => '</div>',
+        '#markup' => '<h2 class="h4 block__headline headline headline--serif headline--underline">Today\'s Schedule</h2><p class="room-schedule__no-results__message">There are no scheduled events for this room today.</p>',
+      ];
     }
   }
 

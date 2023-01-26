@@ -157,7 +157,7 @@ function classrooms_core_preprocess_block(&$variables) {
 
     // Add fivecol grid class to image gallery.
     case 'field_block:node:room:field_gallery_images':
-      $classes[] = 'grid--fivecol--20 photoswipe-gallery';
+      $classes[] = 'grid--threecol--33-34-33 photoswipe-gallery';
       break;
 
     // Add inline class for blocks to appear inline.
@@ -175,11 +175,6 @@ function classrooms_core_preprocess_block(&$variables) {
     // Center video.
     case 'field_block:node:room:field_room_video':
       $classes[] = 'align-center';
-      break;
-
-    // Add grid to events block.
-    case 'roomschedule_block':
-      $classes[] = 'grid--threecol--33-34-33';
       break;
 
   }
@@ -476,6 +471,14 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
     'field__node__field_room_design_details' => [
       'template' => 'field--node--field-room-design-details',
       'base hook' => 'field',
+    ],
+    'field__taxonomy_term__name__room_types' => [
+      'template' => 'field--taxonomy-term--name--room-types',
+      'base hook' => 'field',
+    ],
+    'taxonomy_term__room_types' => [
+      'template' => 'taxonomy-term--room-types',
+      'base hook' => 'taxonomy',
     ],
     'taxonomy_term__technology_features' => [
       'template' => 'taxonomy-term--technology-features',
