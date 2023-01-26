@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgoehsai.uiowa.ddev.site
+    protocol: https
+  machine_name: orgoehsai
+  human_name: oehsai.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgoehsai.prod
+drupal:
+  db:
+    database: oehsai_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://orgoehsai.prod.drupal.uiowa.edu'
+  requester: tanthny
+  site-name: OEHSAI
