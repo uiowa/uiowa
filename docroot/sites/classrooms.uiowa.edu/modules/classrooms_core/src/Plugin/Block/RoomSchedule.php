@@ -3,6 +3,7 @@
 namespace Drupal\classrooms_core\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Cache\CacheableMetadata;
 
 /**
  * A 'Room Schedule' block.
@@ -39,14 +40,14 @@ class RoomSchedule extends BlockBase {
       // Grab MAUI room data.
       $maui_api = \Drupal::service('uiowa_maui.api');
       $data = $maui_api->getRoomSchedule(date('Y-m-d'), date('Y-m-d'), $building_id, $room_id);
-
+      $build = [];
       if (!empty($data)) {
         $items = [];
         // Iterate through the data and push the values to the $items array.
         foreach ($data as $item) {
           $items[] = $item;
         }
-        return [
+        $build = [
           '#theme' => 'room_schedule_list',
           '#items' => $items,
           '#attached' => [
@@ -60,14 +61,20 @@ class RoomSchedule extends BlockBase {
           ],
         ];
       }
+      else {
+        $build = [
+          '#prefix' => '<div class="room-schedule__no-results">',
+          '#suffix' => '</div>',
+          '#markup' => '<h2 class="h4 block__headline headline headline--serif headline--underline">Today\'s Schedule</h2><p class="room-schedule__no-results__message">There are no scheduled events for this room today.</p>',
+        ];
+      }
+
+      $cache = new CacheableMetadata();
+      $cache->setCacheTags(['time:hourly']);
+      $cache->applyTo($build);
+      return $build;
     }
-    else {
-      return [
-        '#prefix' => '<div class="room-schedule__no-results">',
-        '#suffix' => '</div>',
-        '#markup' => '<h2 class="h4 block__headline headline headline--serif headline--underline">Today\'s Schedule</h2><p class="room-schedule__no-results__message">There are no scheduled events for this room today.</p>',
-      ];
-    }
+    return [];
   }
 
 }
