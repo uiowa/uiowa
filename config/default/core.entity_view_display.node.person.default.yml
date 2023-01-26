@@ -20,6 +20,7 @@ dependencies:
     - field.field.node.person.field_person_type_status
     - field.field.node.person.field_person_types
     - field.field.node.person.field_person_website
+    - field.field.node.person.field_person_website_link_direct
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
     - node.type.person
@@ -291,6 +292,16 @@ content:
       target: '0'
     third_party_settings: {  }
     weight: 4
+    region: content
+  field_person_website_link_direct:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 13
     region: content
   links:
     settings: {  }

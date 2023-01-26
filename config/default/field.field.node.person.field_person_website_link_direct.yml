@@ -1,0 +1,23 @@
+uuid: cf49a2c0-7db6-43e5-b62f-b4ff93627b1f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_person_website_link_direct
+    - node.type.person
+id: node.person.field_person_website_link_direct
+field_name: field_person_website_link_direct
+entity_type: node
+bundle: person
+label: 'Link directly to website'
+description: 'If checked, teaser displays of this content will link directly to the first listed website instead of the person node.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean
