@@ -244,7 +244,7 @@ function classrooms_core_preprocess_layout(&$variables) {
         break;
 
       case 'layout_twocol':
-        if (isset($variables['region_attributes']['second']) && ($variables["content"]["#settings"]["label"] == "Map")) {
+        if (isset($variables['region_attributes']['second']) && ($variables['content']['#settings']['label'] === 'Map')) {
           $variables['region_attributes']['second']->addClass('element--align-top element--padding__all');
         }
         break;
@@ -481,7 +481,9 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
       'template' => 'room-map-link',
     ],
     'room_schedule_list' => [
-      'variables' => ['items' => []],
+      'variables' => [
+        'items' => [],
+      ],
       'template' => 'room-schedule-list',
     ],
     'requestinfobutton_block' => [
