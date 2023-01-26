@@ -1,0 +1,48 @@
+id: now_in_the_news
+label: In the News
+dependencies:
+  enforced:
+    module:
+      - now_migrate
+migration_tags:
+  - now
+migration_group: sitenow_migrate
+source:
+  plugin: now_in_the_news
+  node_type: in_the_news
+destination:
+  plugin: 'entity:node'
+  default_bundle: article
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  moderation_state: moderation_state
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid:
+    plugin: default_value
+    default_value: 1
+  title: title
+  field_image: field_primary_media
+  field_featured_image_display:
+    plugin: default_value
+    default_value: do_not_display
+  field_image_caption: field_primary_media_caption/0/value
+  body: body
+  field_teaser: body_summary
+  field_tags: tags
+  field_article_source_org: source_name
+  field_article_source_link: source_url
+  field_article_type: article_type
+  field_article_preserve_links: field_news_broken_links_message
+  field_original_publication_date: field_original_pub_date
+  field_article_source_link_direct:
+    plugin: default_value
+    default_value: 1
+migration_dependencies: null
