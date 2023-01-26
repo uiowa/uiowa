@@ -21,6 +21,7 @@ dependencies:
     - field.field.node.person.field_person_type_status
     - field.field.node.person.field_person_types
     - field.field.node.person.field_person_website
+    - field.field.node.person.field_person_website_link_direct
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
     - node.type.person
@@ -61,6 +62,7 @@ third_party_settings:
                 entity: layout_builder.entity
             weight: 0
             additional: {  }
+            third_party_settings: {  }
         third_party_settings: {  }
       -
         layout_id: layout_onecol
@@ -82,6 +84,7 @@ third_party_settings:
               context_mapping: {  }
             weight: 1
             additional: {  }
+            third_party_settings: {  }
           -
             uuid: 67a1e643-c773-4015-a856-3609f77513e8
             region: content
@@ -101,6 +104,7 @@ third_party_settings:
                 third_party_settings: {  }
             weight: 2
             additional: {  }
+            third_party_settings: {  }
           -
             uuid: 479fe452-b32a-4e0b-917b-64a1a1b69792
             region: content
@@ -117,6 +121,7 @@ third_party_settings:
                 third_party_settings: {  }
             weight: 3
             additional: {  }
+            third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -144,6 +149,7 @@ third_party_settings:
                 third_party_settings: {  }
             weight: -9
             additional: {  }
+            third_party_settings: {  }
           -
             uuid: 532de6e6-fc41-4b7d-a135-5d1cf2c63cf3
             region: first
@@ -160,6 +166,7 @@ third_party_settings:
                 third_party_settings: {  }
             weight: 3
             additional: {  }
+            third_party_settings: {  }
           -
             uuid: 234062aa-1d55-4cb2-a398-7cdf98e7de79
             region: second
@@ -173,6 +180,7 @@ third_party_settings:
               items_per_page: none
             weight: 0
             additional: {  }
+            third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -182,6 +190,7 @@ third_party_settings:
       allowed_layouts: {  }
       denylisted_blocks: {  }
       allowlisted_blocks: {  }
+      restricted_categories: {  }
     entity_view_mode_restriction_by_region:
       allowed_layouts: {  }
       allowlisted_blocks: null
@@ -299,12 +308,16 @@ content:
     weight: 8
     region: content
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_person_credential: true
   field_person_first_name: true
   field_person_hide: true
   field_person_hometown: true
   field_person_last_name: true
   field_person_type_status: true
+  field_person_website_link_direct: true
   field_tags: true
   field_teaser: true
   search_api_excerpt: true
