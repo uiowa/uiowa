@@ -1,3 +1,6 @@
 {%- for item in items -%}
-  <a class="bttn bttn--primary bttn--light-font bttn--no-text bttn--small" href="{{ item.content|render }}"><i role="presentation" class="fa-file-pdf fas"></i> &nbsp;Seating Chart</a>
+  <div class="bg--gold bttn bttn--primary bttn--disabled bttn--light-font bttn--no-text bttn--small">
+    <i role="presentation" class="fa-file-pdf fas"></i>&nbsp;
+    <a  href="{{ item.content|render }}">Seating Chart</a>
+  </div>
 {%- endfor -%}
