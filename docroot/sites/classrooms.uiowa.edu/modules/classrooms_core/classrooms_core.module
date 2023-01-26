@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Render\Element;
@@ -198,6 +199,16 @@ function classrooms_core_preprocess_block(&$variables) {
  */
 function classrooms_core_preprocess_field(&$variables, $hook) {
   switch ($variables['element']['#field_name']) {
+    case 'field_room_type':
+      $link_items = $variables['items'];
+      foreach ($link_items as &$item) {
+        $item['content']['#options']['attributes']['class'][] = 'bttn bttn--primary bttn--light-font bttn--no-text bttn--small';
+        $item['content']['#title'] = Markup::create('<i role="presentation" class="fa-building fas"></i>&nbsp; <span class="field__label">Room Type:</span>&nbsp; ' . $item['content']['#title']);
+      }
+      $variables['items'] = $link_items;
+      $variables['items'][0]['content']['#url'] = Url::fromRoute('entity.node.canonical', ['node' => 206]);
+      break;
+
     case 'field_room_technology_features':
     case 'field_room_tile_details':
     case 'field_room_design_details':
@@ -440,10 +451,6 @@ function classrooms_core_entity_presave(EntityInterface $entity): void {
  */
 function classrooms_core_theme($existing, $type, $theme, $path) {
   return [
-    'field__node__field_room_type__room__default' => [
-      'template' => 'field--node--field-room-type--room--default',
-      'base hook' => 'field',
-    ],
     'field__node__field_room_max_occupancy__room__default' => [
       'template' => 'field--node--field-room-max-occupancy--room--default',
       'base hook' => 'field',
@@ -471,14 +478,6 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
     'field__node__field_room_design_details' => [
       'template' => 'field--node--field-room-design-details',
       'base hook' => 'field',
-    ],
-    'field__taxonomy_term__name__room_types' => [
-      'template' => 'field--taxonomy-term--name--room-types',
-      'base hook' => 'field',
-    ],
-    'taxonomy_term__room_types' => [
-      'template' => 'taxonomy-term--room-types',
-      'base hook' => 'taxonomy',
     ],
     'taxonomy_term__technology_features' => [
       'template' => 'taxonomy-term--technology-features',
