@@ -5625,24 +5625,25 @@
         },
         {
             "name": "drupal/entity_usage",
-            "version": "2.0.0-beta6",
+            "version": "2.0.0-beta8",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/entity_usage.git",
-                "reference": "8.x-2.0-beta6"
+                "reference": "8.x-2.0-beta8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/entity_usage-8.x-2.0-beta6.zip",
-                "reference": "8.x-2.0-beta6",
-                "shasum": "b641f9549fc3edaa81f0548f0fc209ece3ed369c"
+                "url": "https://ftp.drupal.org/files/projects/entity_usage-8.x-2.0-beta8.zip",
+                "reference": "8.x-2.0-beta8",
+                "shasum": "02985c643f5283793e753f8cbdeaa0ec40250cf3"
             },
             "require": {
-                "drupal/core": "^8.8 || ^9"
+                "drupal/core": "^9.1 || ^10"
             },
             "require-dev": {
                 "drupal/block_field": "~1.0",
-                "drupal/dynamic_entity_reference": "~1.0",
+                "drupal/ckeditor": "^1.0",
+                "drupal/dynamic_entity_reference": "~1.0 || ^2.0 || ^4.0",
                 "drupal/entity_browser": "~2.0",
                 "drupal/entity_browser_block": "~1.0",
                 "drupal/entity_embed": "~1.0",
@@ -5654,8 +5655,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.0-beta6",
-                    "datestamp": "1633676588",
+                    "version": "8.x-2.0-beta8",
+                    "datestamp": "1674236921",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -5663,7 +5664,7 @@
                 },
                 "drush": {
                     "services": {
-                        "drush.services.yml": "^9"
+                        "drush.services.yml": "^9 || ^10 || ^11"
                     }
                 }
             },
@@ -22174,7 +22175,6 @@
         "drupal/config_split": 5,
         "drupal/default_content": 15,
         "drupal/entity_embed": 5,
-        "drupal/entity_usage": 10,
         "drupal/find_text": 10,
         "drupal/fullcalendar": 15,
         "drupal/layout_builder_limit": 10,
