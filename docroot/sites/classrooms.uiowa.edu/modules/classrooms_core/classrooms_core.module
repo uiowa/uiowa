@@ -172,10 +172,26 @@ function classrooms_core_preprocess_block(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_file_link().
+ */
+function classrooms_core_preprocess_file_link(&$variables) {
+  unset($variables['attributes']['class']);
+}
+
+/**
  * Implements hook_preprocess_field().
  */
 function classrooms_core_preprocess_field(&$variables, $hook) {
   switch ($variables['element']['#field_name']) {
+    case 'field_room_seating_chart':
+      if (!empty($variables['items'][0]['content']['#file'])) {
+        $new_filename = 'Seating Chart';
+        $file = $variables['items'][0]['content']['#file'];
+        $file->setFilename($new_filename);
+        $file->save();
+      }
+      break;
+
     case 'field_room_type':
       $variables['items'][0]['content']['#url'] = Url::fromRoute('entity.node.canonical', ['node' => 206]);
       break;
