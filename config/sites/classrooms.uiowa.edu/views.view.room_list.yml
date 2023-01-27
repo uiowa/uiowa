@@ -381,6 +381,7 @@ display:
               allow_secondary: true
               secondary_label: Filters
               secondary_open: true
+              reset_button_always_show: false
             filter:
               combine:
                 plugin_id: default
@@ -429,6 +430,9 @@ display:
               field_room_max_occupancy_value:
                 plugin_id: default
                 advanced:
+                  placeholder_text: ''
+                  rewrite:
+                    filter_rewrite_values: '- Any -|Maximum occupancy'
                   collapsible: false
                   is_secondary: true
       access:
@@ -840,7 +844,7 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: numeric
-          operator: between
+          operator: '='
           value:
             min: ''
             max: ''
@@ -849,8 +853,8 @@ display:
           exposed: true
           expose:
             operator_id: field_room_max_occupancy_value_op
-            label: 'Max Occupancy'
-            description: ''
+            label: 'Max Occupancy (field_room_max_occupancy)'
+            description: null
             use_operator: false
             operator: field_room_max_occupancy_value_op
             operator_limit_selection: false
@@ -861,27 +865,70 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-              anonymous: '0'
-              viewer: '0'
-              editor: '0'
-              publisher: '0'
-              webmaster: '0'
-              administrator: '0'
-            min_placeholder: 'Minimum Capacity'
-            max_placeholder: 'Maximum Capacity'
-            placeholder: ''
-          is_grouped: false
+            min_placeholder: null
+            max_placeholder: null
+            placeholder: null
+          is_grouped: true
           group_info:
-            label: ''
+            label: 'Max Occupancy'
             description: ''
-            identifier: ''
+            identifier: field_room_max_occupancy_value
             optional: true
             widget: select
             multiple: false
             remember: false
             default_group: All
             default_group_multiple: {  }
-            group_items: {  }
+            group_items:
+              1:
+                title: '25 or less'
+                operator: between
+                value:
+                  min: ''
+                  max: '25'
+                  value: '25'
+              2:
+                title: 26-50
+                operator: between
+                value:
+                  min: '26'
+                  max: '50'
+                  value: 26-50
+              3:
+                title: 51-75
+                operator: between
+                value:
+                  min: '51'
+                  max: '75'
+                  value: '75'
+              4:
+                title: 76-100
+                operator: between
+                value:
+                  min: '76'
+                  max: '100'
+                  value: '100'
+              5:
+                title: 101-150
+                operator: between
+                value:
+                  min: '101'
+                  max: '150'
+                  value: '150'
+              6:
+                title: 151-200
+                operator: between
+                value:
+                  min: '151'
+                  max: '200'
+                  value: '200'
+              7:
+                title: '201 or more'
+                operator: '>='
+                value:
+                  min: '201'
+                  max: ''
+                  value: '201'
         field_room_instruction_category_value:
           id: field_room_instruction_category_value
           table: node__field_room_instruction_category
