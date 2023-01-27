@@ -9,14 +9,11 @@ $imgpath: '../../uids/assets/images';
 .block-inline-blockuiowa-text-area,
 .block-field-blocknodepagebody {
   a {
-    //word-break: break-word;
-    hyphens: auto;
-    hyphenate-limit-chars: auto;
+    word-break: break-word;
   }
   .headline {
     a {
-      //word-break: unset;
-      //hyphens: auto;
+      word-break: unset;
     }
   }
 }
@@ -75,6 +72,7 @@ $imgpath: '../../uids/assets/images';
   .slider,
   .stat {
     flex-basis: 100%;
+    min-width: 0;
   }
 }
 
