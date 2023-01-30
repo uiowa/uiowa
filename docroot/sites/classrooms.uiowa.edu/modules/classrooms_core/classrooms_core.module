@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Render\Element;
@@ -127,13 +128,14 @@ function classrooms_core_preprocess_block(&$variables) {
       break;
 
     case 'field_block:node:room:field_room_technology_features':
+    case 'field_block:node:room:field_room_guide':
       $classes[] = 'bg--gray block-padding__all';
       $title_classes[] = 'h4 headline headline--serif headline--underline';
       break;
 
     // Add fivecol grid class to image gallery.
     case 'field_block:node:room:field_gallery_images':
-      $classes[] = 'grid--fivecol--20 photoswipe-gallery';
+      $classes[] = 'grid--threecol--33-34-33 photoswipe-gallery';
       break;
 
     // Add inline class for blocks to appear inline.
@@ -170,10 +172,35 @@ function classrooms_core_preprocess_block(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_file_link().
+ */
+function classrooms_core_preprocess_file_link(&$variables) {
+  unset($variables['attributes']['class']);
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function classrooms_core_node_presave(EntityInterface $entity) {
+  if ($entity->bundle() == 'room') {
+    $seating_chart = $entity->get('field_room_seating_chart')->referencedEntities();
+    if (!empty($seating_chart)) {
+      $file = reset($seating_chart);
+      $file->setFilename('Seating Chart');
+      $file->save();
+    }
+  }
+}
+
+/**
  * Implements hook_preprocess_field().
  */
 function classrooms_core_preprocess_field(&$variables, $hook) {
   switch ($variables['element']['#field_name']) {
+    case 'field_room_type':
+      $variables['items'][0]['content']['#url'] = Url::fromRoute('entity.node.canonical', ['node' => 206]);
+      break;
+
     case 'field_room_technology_features':
     case 'field_room_tile_details':
     case 'field_room_design_details':
@@ -192,6 +219,7 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
       }
       $variables['attributes']['class'] .= 'fa-li';
       break;
+
   }
 }
 
@@ -215,7 +243,7 @@ function classrooms_core_preprocess_layout(&$variables) {
         break;
 
       case 'layout_twocol':
-        if (isset($variables['region_attributes']['second'])) {
+        if (isset($variables['region_attributes']['second']) && ($variables['content']['#settings']['label'] === 'Map')) {
           $variables['region_attributes']['second']->addClass('element--align-top element--padding__all');
         }
         break;
@@ -435,6 +463,10 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--field-room-tile-details',
       'base hook' => 'field',
     ],
+    'field__node__field_room_guide__room__default' => [
+      'template' => 'field--node--field-room-guide--room--default',
+      'base hook' => 'field',
+    ],
     'field__node__field_room_design_details' => [
       'template' => 'field--node--field-room-design-details',
       'base hook' => 'field',
@@ -446,6 +478,12 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
     'room_map_link' => [
       'variables' => ['room_url_map' => NULL],
       'template' => 'room-map-link',
+    ],
+    'room_schedule_list' => [
+      'variables' => [
+        'items' => [],
+      ],
+      'template' => 'room-schedule-list',
     ],
     'requestinfobutton_block' => [
       'template' => 'requestinfobutton-block',
