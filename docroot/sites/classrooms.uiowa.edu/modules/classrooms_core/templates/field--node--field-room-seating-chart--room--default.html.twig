@@ -1,6 +1,8 @@
-{%- for item in items -%}
-  <a class="bttn bttn--primary bttn--light-font bttn--no-text bttn--small" href="{{ item.content|render }}"><i role="presentation" class="fa-file-pdf fas"></i> &nbsp;Seating Chart</a>
-{%- endfor -%}
+{% extends '@uids_base/field/field.html.twig' %}
 
+{% set attributes = attributes.addClass('bg--gold padding--block--sm padding--inline--md') %}
 
-
+{# Override field icon. #}
+{% block field_icon %}
+  <span role="presentation" class="fa-file-pdf fas"></span>
+{% endblock %}
