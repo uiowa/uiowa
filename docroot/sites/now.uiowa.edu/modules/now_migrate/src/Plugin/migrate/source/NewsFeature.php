@@ -84,37 +84,41 @@ class NewsFeature extends BaseNodeSource {
     // and set for placement in the body and teaser fields.
     $body = $row->getSourceProperty('body');
 
-    // First check for empty body and if it
-    // has a redirect so that we can set the source link to it.
+    // Before doing anything with the body, check if empty.
+    // If empty, check for external redirects.
     if (empty($body) || $body[0]['value'] == '') {
       $nid = $row->getSourceProperty('nid');
       $node_path = 'node/' . $nid;
+
+      // Establish an array of paths to check for redirects.
+      $paths = [$node_path];
+
       $aliases = $this->select('url_alias', 'a')
         ->fields('a', ['alias'])
         ->condition('a.source', $node_path, 'IN')
         ->execute();
 
-      $paths = [$node_path];
-
+      // Add any results to the paths to check against array.
       if ($aliases) {
-        // Should just be one, but use the last one.
         foreach ($aliases as $result) {
           $paths[] = $result['alias'];
         }
       }
 
+      // Check and return any redirects for the paths in our array.
       $redirects = $this->select('redirect', 'r')
         ->fields('r', ['redirect'])
         ->condition('r.source', $paths, 'IN')
         ->execute();
 
       if ($redirects) {
-        // Take the last one if multiple.
+        // There should just be one, but use the external/last one.
         foreach ($redirects as $redirect) {
-          $target = $redirect['redirect'];
+          if (UrlHelper::isExternal($redirect['redirect'])) {
+            $target = $redirect['redirect'];
+          }
         }
-        // Only if the redirect is external.
-        if (UrlHelper::isExternal($target)) {
+        if ($target) {
           $row->setSourceProperty('field_article_source_link_direct', 1);
           $row->setSourceProperty('custom_source_link', $target);
           $this->logger->notice($this->t('From original node @nid, added source link based on @redirect redirect.', [
