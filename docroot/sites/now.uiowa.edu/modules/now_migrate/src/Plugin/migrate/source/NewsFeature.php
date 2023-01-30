@@ -20,15 +20,6 @@ class NewsFeature extends BaseNodeSource {
   use ProcessMediaTrait;
 
   /**
-   * @todo Remove this when redirect testing is done.
-   */
-  public function query() {
-    $query = parent::query();
-    $query->condition('n.nid', $this->withRedirects(), 'IN');
-    return $query;
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function prepareRow(Row $row) {
@@ -99,7 +90,7 @@ class NewsFeature extends BaseNodeSource {
         ->execute();
 
       // Add any results to the paths to check against array.
-      if ($aliases) {
+      if (isset($aliases)) {
         foreach ($aliases as $result) {
           $paths[] = $result['alias'];
         }
@@ -118,7 +109,7 @@ class NewsFeature extends BaseNodeSource {
             $target = $redirect['redirect'];
           }
         }
-        if ($target) {
+        if (isset($target)) {
           $row->setSourceProperty('field_article_source_link_direct', 1);
           $row->setSourceProperty('custom_source_link', $target);
           $this->logger->notice($this->t('From original node @nid, added source link based on @redirect redirect.', [
@@ -367,13 +358,6 @@ class NewsFeature extends BaseNodeSource {
 
     // Return tid for mapping to field.
     return $this->tagMapping[$tag_name];
-  }
-
-  /**
-   * @todo Remove this when redirect testing is done.
-   */
-  private function withRedirects(): array {
-    return [23636, 24251, 24456, 25131, 25136, 25271, 25891, 26591, 26696, 26861, 27531, 27786, 27981, 28096, 28786, 28791, 29146, 29231, 29841, 30161, 30296, 30346, 30511, 30716, 31096, 31101, 31106, 31111, 31116, 31386, 31451, 31556, 31691, 31886, 32251, 32376, 32406, 32411, 32481, 32636, 32851, 32931, 32991, 33211, 33246, 33351, 33376, 33451, 33606, 33696, 33716, 33861, 33896, 34116];
   }
 
 }
