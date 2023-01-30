@@ -2,6 +2,7 @@
 
 namespace Drupal\now_migrate\Plugin\migrate\source;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
@@ -17,6 +18,15 @@ use Drupal\taxonomy\Entity\Term;
  */
 class NewsFeature extends BaseNodeSource {
   use ProcessMediaTrait;
+
+  /**
+   * @todo Remove this when redirect testing is done.
+   */
+  public function query() {
+    $query = parent::query();
+    $query->condition('n.nid', $this->withRedirects(), 'IN');
+    return $query;
+  }
 
   /**
    * {@inheritdoc}
@@ -73,6 +83,48 @@ class NewsFeature extends BaseNodeSource {
     // Replace inline files and images in the body,
     // and set for placement in the body and teaser fields.
     $body = $row->getSourceProperty('body');
+
+    // First check for empty body and if it
+    // has a redirect so that we can set the source link to it.
+    if (empty($body) || $body[0]['value'] == '') {
+      $nid = $row->getSourceProperty('nid');
+      $node_path = 'node/' . $nid;
+      $aliases = $this->select('url_alias', 'a')
+        ->fields('a', ['alias'])
+        ->condition('a.source', $node_path, 'IN')
+        ->execute();
+
+      $paths = [$node_path];
+
+      if ($aliases) {
+        // Should just be one, but use the last one.
+        foreach ($aliases as $result) {
+          $paths[] = $result['alias'];
+        }
+      }
+
+      $redirects = $this->select('redirect', 'r')
+        ->fields('r', ['redirect'])
+        ->condition('r.source', $paths, 'IN')
+        ->execute();
+
+      if ($redirects) {
+        // Take the last one if multiple.
+        foreach ($redirects as $redirect) {
+          $target = $redirect['redirect'];
+        }
+        // Only if the redirect is external.
+        if (UrlHelper::isExternal($target)) {
+          $row->setSourceProperty('field_article_source_link_direct', 1);
+          $row->setSourceProperty('custom_source_link', $target);
+          $this->logger->notice($this->t('From original node @nid, added source link based on @redirect redirect.', [
+            '@redirect' => $target,
+            '@nid' => $nid,
+          ]));
+        }
+      }
+    }
+
     if (!empty($body)) {
       // Check for a subhead, and prepend it to the body if so.
       $subhead = $row->getSourceProperty('field_subhead');
@@ -311,6 +363,13 @@ class NewsFeature extends BaseNodeSource {
 
     // Return tid for mapping to field.
     return $this->tagMapping[$tag_name];
+  }
+
+  /**
+   * @todo Remove this when redirect testing is done.
+   */
+  private function withRedirects(): array {
+    return [23636, 24251, 24456, 25131, 25136, 25271, 25891, 26591, 26696, 26861, 27531, 27786, 27981, 28096, 28786, 28791, 29146, 29231, 29841, 30161, 30296, 30346, 30511, 30716, 31096, 31101, 31106, 31111, 31116, 31386, 31451, 31556, 31691, 31886, 32251, 32376, 32406, 32411, 32481, 32636, 32851, 32931, 32991, 33211, 33246, 33351, 33376, 33451, 33606, 33696, 33716, 33861, 33896, 34116];
   }
 
 }
