@@ -549,26 +549,6 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: 0f614a4e-fb38-4907-928b-73ddd3b59dbd
-            region: second
-            configuration:
-              id: 'field_block:node:room:field_room_building_id'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: entity_reference_label
-                label: inline
-                settings:
-                  link: true
-                third_party_settings: {  }
-            weight: 5
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: 1c8b4714-2a4e-4062-9afc-b2676cd35a65
             region: first
             configuration:
@@ -596,7 +576,7 @@ third_party_settings:
               label_display: '0'
               context_mapping:
                 entity: layout_builder.entity
-            weight: 6
+            weight: 7
             additional: {  }
             third_party_settings: {  }
           -
@@ -625,6 +605,22 @@ third_party_settings:
                 settings: {  }
                 third_party_settings: {  }
             weight: 0
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: af8991d9-cb77-49de-a52e-e9862587bd1f
+            region: second
+            configuration:
+              id: 'extra_field_block:node:room:field_room_building_link'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+              formatter:
+                settings: {  }
+                third_party_settings: {  }
+            weight: 6
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -684,6 +680,11 @@ content:
     label: above
     settings:
       link: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_room_building_link:
+    settings: {  }
     third_party_settings: {  }
     weight: 1
     region: content
