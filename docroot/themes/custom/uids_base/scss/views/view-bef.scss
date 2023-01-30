@@ -1,7 +1,7 @@
 @import "uids3/assets/scss/_variables.scss";
 @import "uids3/assets/scss/_utilities.scss";
 
-.bef-exposed-form--secondary {
+.bef-form {
   label:not(.option) {
     @include element-invisible;
   }
@@ -16,6 +16,40 @@
     .details-wrapper {
       @include breakpoint(sm) {
         display: flex;
+      }
+    }
+  }
+
+  // Sidebar display.
+  &.bef-form--sidebar {
+    .views-exposed-form.uids-content:not(.uids-search) .button[data-drupal-selector*=edit-reset] {
+      @include breakpoint(sm) {
+        top: 120px;
+      }
+    }
+
+    .views-exposed-form {
+      fieldset legend {
+        text-align: center;
+      }
+      &.uids-content:not(.uids-search) {
+        .form-item {
+          margin-right: 0;
+        }
+        fieldset.form-wrapper {
+          display: flex;
+          flex-direction: column;
+        }
+        fieldset.form-wrapper .fieldset-wrapper {
+          padding: 1rem 1rem 0 1rem;
+        }
+      }
+    }
+    .bef--secondary {
+      .details-wrapper {
+        @include breakpoint(sm) {
+          display: block;
+        }
       }
     }
   }
