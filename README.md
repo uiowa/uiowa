@@ -135,4 +135,3 @@ BLT projects are designed to instill software development best practices (includ
 
 Our BLT Developer documentation includes an [example workflow](https://docs.acquia.com/blt/developer/dev-workflow/#workflow-example-local-development).
 
-
