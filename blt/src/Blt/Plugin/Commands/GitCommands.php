@@ -142,19 +142,6 @@ class GitCommands extends BltTasks {
         }
       }
     }
-
-  }
-
-  /**
-   * Output the version of uiowa/uids after installing frontend requirements.
-   *
-   * @hook post-command source:build:frontend-reqs
-   */
-  public function postFrontend() {
-    $this->taskExecStack()
-      ->dir($this->getConfigValue('repo.root'))
-      ->exec('yarn why @uiowa/uids')
-      ->run();
   }
 
   /**
