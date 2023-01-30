@@ -788,36 +788,9 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
   if ($view->id() === 'people') {
     $person_type_filter = 'type';
     if (isset($form[$person_type_filter])) {
-      _sitenow_people_person_type_filter_select($form[$person_type_filter]);
+      uiowa_core_config_entity_filter_select($form[$person_type_filter], 'person_type');
     }
   }
-}
-
-/**
- * Helper function to add person types as select options.
- */
-function _sitenow_people_person_type_filter_select(array &$form) {
-  // Get available person type configuration entities.
-  $storage = Drupal::getContainer()->get('entity_type.manager')->getStorage('person_type');
-  $types = $storage->getQuery();
-  $types = $types->condition('status', 1)
-    ->sort('title')
-    ->execute();
-
-  // Build a list of person type options.
-  $options = [];
-  $person_types = $storage->loadMultiple($types);
-  foreach ($person_types as $type) {
-    $options[$type->id()] = $type->label();
-  }
-  asort($options);
-
-  // Rebuild the person type text filter as select list.
-  $form['#type'] = 'select';
-  $form['#multiple'] = FALSE;
-  $form['#empty_option'] = t('- Any -');
-  $form['#options'] = $options;
-  unset($form['#size']);
 }
 
 /**

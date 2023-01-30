@@ -6,7 +6,8 @@
   [class*="grid--"].view & {
     margin-bottom: $mobile-height-gutter;;
   }
-  .card {
+  .card,
+  .views-field {
     height: 100%;
     .section-alignment__start & {
       height: auto;
@@ -42,6 +43,7 @@
 .grid--twocol--50-50 .list-container {
   @include breakpoint(sm) {
     row-gap: $desktop-width-gutter;
+    align-self: self-start;
   }
 }
 
