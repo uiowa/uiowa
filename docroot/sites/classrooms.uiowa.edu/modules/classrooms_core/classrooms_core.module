@@ -546,20 +546,64 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
  */
 function classrooms_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $view = $form_state->get('view');
-  if ($view->id() === 'room_list') {
-    $building_filter = 'field_room_building_id_target_id';
-    if (isset($form[$building_filter])) {
-      uiowa_core_config_entity_filter_select($form[$building_filter], 'building');
+  $view_id = $view->id();
 
-      // Change the label from default `- Any -`.
-      $form[$building_filter]['#empty_option'] = t('Building');
+  switch ($view_id) {
+    case 'room_list':
+      $building_filter = 'field_room_building_id_target_id';
+      if (isset($form[$building_filter])) {
+        uiowa_core_config_entity_filter_select($form[$building_filter], 'building');
 
-      // Hack to further treat this field as a select as it relates to BEF.
-      // Assumes `field_room_type_target_id` is present
-      // on the form and is a select.
-      $form[$building_filter]['#process'] = $form['field_room_type_target_id']['#process'];
-      $form[$building_filter]['#pre_render'] = $form['field_room_type_target_id']['#pre_render'];
-    }
+        // Change the label from default `- Any -`.
+        $form[$building_filter]['#empty_option'] = t('Building');
+
+        // Hack to further treat this field as a select as it relates to BEF.
+        // Assumes `field_room_type_target_id` is present
+        // on the form and is a select.
+        $form[$building_filter]['#process'] = $form['field_room_type_target_id']['#process'];
+        $form[$building_filter]['#pre_render'] = $form['field_room_type_target_id']['#pre_render'];
+      }
+      break;
+    case 'programmed_classrooms_list':
+      $building_filter = 'field_room_building_id_target_id';
+      if (isset($form[$building_filter])) {
+        uiowa_core_config_entity_filter_select($form[$building_filter], 'building');
+
+        // Change the label from default `- Any -`.
+        $form[$building_filter]['#empty_option'] = t('Building');
+
+        // Hack to further treat this field as a select as it relates to BEF.
+        $form[$building_filter]['#process'] = [
+          [
+            'Drupal\Core\Render\Element\Select',
+            'processSelect',
+          ],
+          [
+            'Drupal\Core\Render\Element\Select',
+            'processAjaxForm',
+          ],
+          [
+            'Drupal\inline_form_errors\RenderElementHelper',
+            'processElement',
+          ],
+          [
+            '\Drupal\Core\Render\Element\RenderElement',
+            'processGroup',
+          ],
+        ];
+        $form[$building_filter]['#pre_render'] = [
+          [
+            'Drupal\Core\Render\Element\Select',
+            'preRenderSelect',
+          ],
+          [
+            '\Drupal\Core\Render\Element\RenderElement',
+            'preRenderGroup',
+          ],
+        ];
+      }
+      break;
+
   }
 }
 
