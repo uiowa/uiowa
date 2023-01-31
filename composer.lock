@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "acquia/blt",
-            "version": "13.5.2",
+            "version": "13.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/acquia/blt.git",
-                "reference": "c02c3e3e87907b7612112892798bc62c392d1fe7"
+                "reference": "c6429b8052d03de7146dc93fefe5c69b96438d33"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/acquia/blt/zipball/c02c3e3e87907b7612112892798bc62c392d1fe7",
-                "reference": "c02c3e3e87907b7612112892798bc62c392d1fe7",
+                "url": "https://api.github.com/repos/acquia/blt/zipball/c6429b8052d03de7146dc93fefe5c69b96438d33",
+                "reference": "c6429b8052d03de7146dc93fefe5c69b96438d33",
                 "shasum": ""
             },
             "require": {
@@ -26,7 +26,7 @@
                 "composer-runtime-api": "^2.0",
                 "consolidation/comments": "^1.0",
                 "consolidation/config": "^1.0.0 || ^2.0.0",
-                "consolidation/robo": "^3",
+                "consolidation/robo": "^3 || ^4",
                 "dflydev/dot-access-data": "^1.1.0 || ^2 || ^3",
                 "doctrine/annotations": "^1.10.0",
                 "drupal/core": "^9.0.0-alpha1 || ^10.0.0-alpha1",
@@ -41,6 +41,7 @@
                 "symfony/console": "^4.4.6 || ^6",
                 "symfony/twig-bridge": "^3.4 || ^4 || ^5 || ^6",
                 "symfony/yaml": "^4.4 || ^5 || ^6",
+                "webmozart/path-util": "^2.3",
                 "zumba/amplitude-php": "^1.0.3"
             },
             "conflict": {
@@ -89,15 +90,14 @@
                 "automation",
                 "deployment",
                 "drupal",
-                "template",
-                "testing"
+                "template"
             ],
             "support": {
                 "docs": "https://docs.acquia.com/blt/",
                 "issues": "https://github.com/acquia/blt/issues",
-                "source": "https://github.com/acquia/blt/tree/13.5.2"
+                "source": "https://github.com/acquia/blt/tree/13.7.0"
             },
-            "time": "2022-08-23T19:00:44+00:00"
+            "time": "2022-11-21T18:57:34+00:00"
         },
         {
             "name": "acquia/blt-drupal-test",
@@ -22174,6 +22174,7 @@
         "drupal/config_split": 5,
         "drupal/default_content": 15,
         "drupal/entity_embed": 5,
+        "drupal/entity_usage": 10,
         "drupal/find_text": 10,
         "drupal/fullcalendar": 15,
         "drupal/layout_builder_limit": 10,
