@@ -546,10 +546,11 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
  */
 function classrooms_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $view = $form_state->get('view');
-  $view_id = $view->id();
+  $view_display = $view->getDisplay();
+  $block_id = $view_display->display['id'];
 
-  switch ($view_id) {
-    case 'room_list':
+  switch ($block_id) {
+    case 'block_rooms':
       $building_filter = 'field_room_building_id_target_id';
       if (isset($form[$building_filter])) {
         uiowa_core_config_entity_filter_select($form[$building_filter], 'building');
@@ -565,7 +566,7 @@ function classrooms_core_form_views_exposed_form_alter(&$form, FormStateInterfac
       }
       break;
 
-    case 'programmed_classrooms_list':
+    case 'block_programmed_rooms_list':
       $building_filter = 'field_room_building_id_target_id';
       if (isset($form[$building_filter])) {
         uiowa_core_config_entity_filter_select($form[$building_filter], 'building');
