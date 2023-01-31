@@ -241,6 +241,10 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
                 $defaults['layout_builder_style_card_media_position'] = 'card_media_position_stacked';
                 break;
 
+              case 'inline_block:uiowa_image':
+                $defaults['layout_builder_style_media_format'] = 'media_format_widescreen';
+                break;
+
               case 'inline_block:uiowa_events':
               case 'views_block:events-card_list':
               case 'views_block:events_list_block-card_list':
