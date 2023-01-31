@@ -2,6 +2,7 @@
 
 namespace Drupal\now_migrate\Plugin\migrate\source;
 
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
@@ -73,6 +74,52 @@ class NewsFeature extends BaseNodeSource {
     // Replace inline files and images in the body,
     // and set for placement in the body and teaser fields.
     $body = $row->getSourceProperty('body');
+
+    // Before doing anything with the body, check if empty.
+    // If empty, check for external redirects.
+    if (empty($body) || $body[0]['value'] == '') {
+      $nid = $row->getSourceProperty('nid');
+      $node_path = 'node/' . $nid;
+
+      // Establish an array of paths to check for redirects.
+      $paths = [$node_path];
+
+      $aliases = $this->select('url_alias', 'a')
+        ->fields('a', ['alias'])
+        ->condition('a.source', $node_path, 'IN')
+        ->execute();
+
+      // Add any results to the paths to check against array.
+      if (isset($aliases)) {
+        foreach ($aliases as $result) {
+          $paths[] = $result['alias'];
+        }
+      }
+
+      // Check and return any redirects for the paths in our array.
+      $redirects = $this->select('redirect', 'r')
+        ->fields('r', ['redirect'])
+        ->condition('r.source', $paths, 'IN')
+        ->execute();
+
+      if ($redirects) {
+        // There should just be one, but use the external/last one.
+        foreach ($redirects as $redirect) {
+          if (UrlHelper::isExternal($redirect['redirect'])) {
+            $target = $redirect['redirect'];
+          }
+        }
+        if (isset($target)) {
+          $row->setSourceProperty('field_article_source_link_direct', 1);
+          $row->setSourceProperty('custom_source_link', $target);
+          $this->logger->notice($this->t('From original node @nid, added source link based on @redirect redirect.', [
+            '@redirect' => $target,
+            '@nid' => $nid,
+          ]));
+        }
+      }
+    }
+
     if (!empty($body)) {
       // Check for a subhead, and prepend it to the body if so.
       $subhead = $row->getSourceProperty('field_subhead');
