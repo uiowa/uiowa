@@ -8,8 +8,8 @@ use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Mail\MailManagerInterface;
 use Drupal\Core\Session\AccountSwitcherInterface;
 use Drupal\Core\Session\UserSession;
-use Drush\Commands\DrushCommands;
 use Drupal\Core\Url;
+use Drush\Commands\DrushCommands;
 
 /**
  * A Drush commandfile.
