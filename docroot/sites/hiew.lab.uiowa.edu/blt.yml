@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labhiew.uiowa.ddev.site
+    protocol: https
+  machine_name: labhiew
+  human_name: hiew.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labhiew.prod
+drupal:
+  db:
+    database: hiew_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labhiew.prod.drupal.uiowa.edu'
+  requester: thiew
+  site-name: 'Hiew Lab'

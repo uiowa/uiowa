@@ -10,15 +10,16 @@
  */
 
 use Drupal\Component\Utility\Html;
-use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
-use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\node\NodeInterface;
 use Drupal\sitenow_people\PersonTypeInterface;
 use Drupal\views\Entity\View;
 use Drupal\views\ViewExecutable;
@@ -88,6 +89,25 @@ function sitenow_people_form_alter(&$form, FormStateInterface $form_state, $form
             'message' => t('Please wait...'),
           ],
         ];
+
+        if (isset($form['field_person_website_link_direct'])) {
+          // Show 'Link directly to website' checkbox only if a site is added.
+          $form['field_person_website_link_direct']['#states'] = [
+            'visible' => [
+              ':input[name="field_person_website[0][uri]"]' => ['filled' => TRUE],
+            ],
+          ];
+          // Only visible to admins, but disable.
+          if (isset($form["rabbit_hole"])) {
+            $form["rabbit_hole"]['admin_notice'] = [
+              '#type' => 'markup',
+              '#markup' => t('<em>These rabbit hole settings are being set
+on presave based on first website link and the link directly to website checkbox.</em>'),
+              '#weight' => -99,
+            ];
+            $form["rabbit_hole"]['#disabled'] = TRUE;
+          }
+        }
 
         $type_selections = [];
 
@@ -366,6 +386,28 @@ function sitenow_people_entity_presave(EntityInterface $entity) {
       // Setting the title with the first/last name values.
       $output = $entity->get('field_person_first_name')->value . " " . $entity->get('field_person_last_name')->value;
       $entity->setTitle($output);
+
+      // Check for rabbit_hole functionality.
+      if (\Drupal::moduleHandler()->moduleExists('rabbit_hole') && $entity->hasField('rh_action')) {
+        $link_direct = (int) $entity->get('field_person_website_link_direct')->value;
+        $source_link = $entity->get('field_person_website')->uri;
+        // If source link and direct to source are set,
+        // change the rabbit hole setting to redirect
+        // and set the url to the source link token.
+        if ($link_direct === 1 && isset($source_link) && !empty($source_link)) {
+          $entity->rh_action->value = 'page_redirect';
+          $entity->rh_redirect->value = '[node:field_person_website:0:uri]';
+          $entity->rh_redirect_response->value = '301';
+          $entity->rh_redirect_fallback_action->value = 'display_page';
+        }
+        else {
+          // Match content type settings.
+          $entity->rh_action->value = 'display_page';
+          $entity->rh_redirect->value = NULL;
+          $entity->rh_redirect_response->value = '301';
+          $entity->rh_redirect_fallback_action->value = 'bundle_default';
+        }
+      }
       break;
 
   }
@@ -492,6 +534,31 @@ function sitenow_people_preprocess_page(&$variables) {
       }
 
       \Drupal::messenger()->addStatus($message_text);
+    }
+  }
+  $admin_context = \Drupal::service('router.admin_context');
+  if (!$admin_context->isAdminRoute()) {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    $node = ($node ?? \Drupal::routeMatch()
+      ->getParameter('node_preview'));
+    if ($node instanceof NodeInterface) {
+      switch ($node->getType()) {
+        case 'person':
+          // Display message if content is being redirected with Rabbit Hole.
+          // Using preprocess_page to avoid caching issue.
+          if ($node->hasField('field_person_website_link_direct')
+            && (int) $node->get('field_person_website_link_direct')->value === 1) {
+            if ($node->hasField('field_person_website') && !$node->get('field_person_website')->isEmpty()) {
+              if (\Drupal::currentUser()
+                ->hasPermission('rabbit hole bypass node') === TRUE) {
+                \Drupal::messenger()
+                  ->addWarning(t('Visitors are being redirected to
+the first website link.'));
+              }
+            }
+          }
+          break;
+      }
     }
   }
 }
@@ -721,36 +788,9 @@ function sitenow_people_form_views_exposed_form_alter(&$form, FormStateInterface
   if ($view->id() === 'people') {
     $person_type_filter = 'type';
     if (isset($form[$person_type_filter])) {
-      _sitenow_people_person_type_filter_select($form[$person_type_filter]);
+      uiowa_core_config_entity_filter_select($form[$person_type_filter], 'person_type');
     }
   }
-}
-
-/**
- * Helper function to add person types as select options.
- */
-function _sitenow_people_person_type_filter_select(array &$form) {
-  // Get available person type configuration entities.
-  $storage = Drupal::getContainer()->get('entity_type.manager')->getStorage('person_type');
-  $types = $storage->getQuery();
-  $types = $types->condition('status', 1)
-    ->sort('title')
-    ->execute();
-
-  // Build a list of person type options.
-  $options = [];
-  $person_types = $storage->loadMultiple($types);
-  foreach ($person_types as $type) {
-    $options[$type->id()] = $type->label();
-  }
-  asort($options);
-
-  // Rebuild the person type text filter as select list.
-  $form['#type'] = 'select';
-  $form['#multiple'] = FALSE;
-  $form['#empty_option'] = t('- Any -');
-  $form['#options'] = $options;
-  unset($form['#size']);
 }
 
 /**
@@ -848,21 +888,35 @@ function _sitenow_people_person_form_submit(array &$form, FormStateInterface $fo
 }
 
 /**
- * Implements hook_allowed_values_function().
+ * Set dynamic allowed values person type status.
+ *
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\FieldableEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @see options_allowed_values()
  */
-function sitenow_people_person_type_statuses_allowed_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
-  $allowed_types = \Drupal::entityTypeManager()
-    ->getStorage('person_type')->loadByProperties([
-      'status' => TRUE,
-      'allow_former' => TRUE,
-    ]);
-
+function sitenow_people_person_type_statuses_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = FALSE): array {
   $types = [];
 
-  foreach ($allowed_types as $type) {
-    $types[$type->id()] = t('Former @type', [
-      '@type' => $type->label(),
-    ]);
+  if (!is_null($entity)) {
+    $allowed_types = \Drupal::entityTypeManager()
+      ->getStorage('person_type')->loadByProperties([
+        'status' => TRUE,
+        'allow_former' => TRUE,
+      ]);
+    foreach ($allowed_types as $type) {
+      $types[$type->id()] = t('Former @type', [
+        '@type' => $type->label(),
+      ]);
+    }
+  }
+  else {
+    // To resolve an issue with ListItemBase generateSampleValue.
+    $types['_none'] = '-None-';
   }
 
   return $types;

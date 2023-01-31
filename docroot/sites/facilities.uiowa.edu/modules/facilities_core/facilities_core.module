@@ -18,6 +18,16 @@ function facilities_core_form_alter(&$form, FormStateInterface $form_state, $for
       _sitenow_node_form_defaults($form, $form_state);
       break;
 
+    case 'node_building_form':
+    case 'node_building_edit_form':
+      _sitenow_node_form_defaults($form, $form_state);
+      // Display a message to admins that this content type is not available
+      // to site roles other than admins and is managed by a drush command
+      // `facilities_core:buildings_import`.
+      \Drupal::messenger()->addWarning('This content type is managed through an automated process.
+      Any buildings created or modified that are not in the source data will be overwritten.');
+      break;
+
   }
 }
 
@@ -91,14 +101,14 @@ function facilities_core_preprocess_layout(&$variables) {
  */
 function facilities_core_preprocess_block(&$variables) {
   switch ($variables['plugin_id']) {
-    case 'views_block:named_buildings-block_honoree':
+    case 'views_block:named_building_details-block_honoree':
       if (!isset($variables['attributes']['class'])) {
         $variables['attributes']['class'] = [''];
       }
       $variables['attributes']['class'][] .= 'bg--gray block-padding__all block-margin__default--removed';
       break;
 
-    case 'views_block:named_buildings-block_building':
+    case 'views_block:named_building_details-block_building':
       if (!isset($variables['attributes']['class'])) {
         $variables['attributes']['class'] = [''];
       }

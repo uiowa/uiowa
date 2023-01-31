@@ -1,0 +1,8 @@
+{% extends '@uids_base/field/field.html.twig' %}
+
+{% set attributes = attributes.addClass('bg--gold padding--block--sm padding--inline--md') %}
+
+{# Override field icon. #}
+{% block field_icon %}
+  <span role="presentation" class="fa-user fas"></span>
+{% endblock %}

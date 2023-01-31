@@ -66,7 +66,7 @@ function copyUids3() {
 }
 
 function fontCopy() {
-  return src([`${uids.src}/assets/fonts/*.{woff,woff2}`])
+  return src([`${uids3.src}/assets/fonts/*.{woff,woff2}`])
     .pipe(dest('./assets/fonts'));
 }
 
