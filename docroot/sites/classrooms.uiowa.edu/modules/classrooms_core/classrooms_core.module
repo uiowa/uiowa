@@ -564,6 +564,7 @@ function classrooms_core_form_views_exposed_form_alter(&$form, FormStateInterfac
         $form[$building_filter]['#pre_render'] = $form['field_room_type_target_id']['#pre_render'];
       }
       break;
+
     case 'programmed_classrooms_list':
       $building_filter = 'field_room_building_id_target_id';
       if (isset($form[$building_filter])) {
@@ -603,7 +604,6 @@ function classrooms_core_form_views_exposed_form_alter(&$form, FormStateInterfac
         ];
       }
       break;
-
   }
 }
 
