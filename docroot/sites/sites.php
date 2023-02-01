@@ -5050,3 +5050,9 @@ $sites['lawels.uiowa.ddev.site'] = 'els.law.uiowa.edu';
 $sites['lawels.dev.drupal.uiowa.edu'] = 'els.law.uiowa.edu';
 $sites['lawels.stage.drupal.uiowa.edu'] = 'els.law.uiowa.edu';
 $sites['lawels.prod.drupal.uiowa.edu'] = 'els.law.uiowa.edu';
+
+// Directory aliases for accohpsychotherapy.org.uiowa.edu.
+$sites['orgaccohpsychotherapy.uiowa.ddev.site'] = 'accohpsychotherapy.org.uiowa.edu';
+$sites['orgaccohpsychotherapy.dev.drupal.uiowa.edu'] = 'accohpsychotherapy.org.uiowa.edu';
+$sites['orgaccohpsychotherapy.stage.drupal.uiowa.edu'] = 'accohpsychotherapy.org.uiowa.edu';
+$sites['orgaccohpsychotherapy.prod.drupal.uiowa.edu'] = 'accohpsychotherapy.org.uiowa.edu';
