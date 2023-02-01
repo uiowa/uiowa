@@ -5044,3 +5044,9 @@ $sites['orgmcatprep.uiowa.ddev.site'] = 'mcatprep.org.uiowa.edu';
 $sites['orgmcatprep.dev.drupal.uiowa.edu'] = 'mcatprep.org.uiowa.edu';
 $sites['orgmcatprep.stage.drupal.uiowa.edu'] = 'mcatprep.org.uiowa.edu';
 $sites['orgmcatprep.prod.drupal.uiowa.edu'] = 'mcatprep.org.uiowa.edu';
+
+// Directory aliases for els.law.uiowa.edu.
+$sites['lawels.uiowa.ddev.site'] = 'els.law.uiowa.edu';
+$sites['lawels.dev.drupal.uiowa.edu'] = 'els.law.uiowa.edu';
+$sites['lawels.stage.drupal.uiowa.edu'] = 'els.law.uiowa.edu';
+$sites['lawels.prod.drupal.uiowa.edu'] = 'els.law.uiowa.edu';
