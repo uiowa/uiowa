@@ -682,8 +682,8 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
           'card_title' => $style->getField($id, 'title'),
           'card_link_url' => $link,
           'card_link_title' => 'Room details',
-          'card_subtitle' => $style->getField($id,'field_room_type'),
-          'card_text' => $style->getField($id,'field_room_max_occupancy'),
+          'card_subtitle' => $style->getField($id, 'field_room_type'),
+          'card_text' => $style->getField($id, 'field_room_max_occupancy'),
           'visible_button' => TRUE,
         ];
       }
@@ -705,7 +705,7 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
           'card_title' => $style->getField($id, 'title'),
           'card_link_url' => $link,
           'card_link_title' => 'View more information',
-          'card_text' => $style->getField($id,'field_room_max_occupancy'),
+          'card_text' => $style->getField($id, 'field_room_max_occupancy'),
           'visible_button' => TRUE,
         ];
       }
