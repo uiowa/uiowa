@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lawels.uiowa.ddev.site
+    protocol: https
+  machine_name: lawels
+  human_name: els.law.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lawels.prod
+drupal:
+  db:
+    database: els_law_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://lawels.prod.drupal.uiowa.edu'
+  requester: brupe
+  site-name: 'Environmental Law Society'
