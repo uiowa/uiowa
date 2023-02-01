@@ -106,6 +106,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
                 'media--square' => 'full__square',
                 'media--ultrawide' => 'full__ultrawide',
                 'media--widescreen' => 'full__widescreen',
+                'media--no-crop' => 'full__no_crop',
               ];
             }
           }
