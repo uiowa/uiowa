@@ -538,6 +538,10 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
         'report_issue_link' => NULL,
       ],
     ],
+    'views_view_unformatted__room_list' => [
+      'template' => 'views-view-unformatted--room-list',
+      'base hook' => 'view',
+    ],
   ];
 }
 
@@ -637,5 +641,75 @@ function classrooms_core_preprocess_views_view(&$variables) {
       $variables['views_filter_classes'][] = 'grid__column';
       $variables['views_content_classes'][] = 'grid__column';
       break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function classrooms_core_preprocess_views_view_unformatted(&$variables) {
+  $view = $variables['view'];
+  $variables['row_item_classes'] = [];
+  $display_block = $view->current_display;
+
+  $style = $view->style_plugin;
+  $rows = $variables['rows'];
+
+  $attribute_classes = [
+    'card--centered',
+    'card--stacked',
+    'card--alignment-center',
+    'card--enclosed',
+    'media--widescreen',
+  ];
+
+  switch ($display_block) {
+    case 'block_rooms':
+      $variables['row_item_classes'] = array_merge($attribute_classes, array_values($variables['row_item_classes']));
+      foreach ($rows as $id => $row) {
+        // Set remaining row_item_classes as attributes on each row.
+        $variables['rows'][$id]['attributes']->addClass($variables['row_item_classes']);
+
+        // Get node path to link card with.
+        $nid = $view->result[$id]->_entity->id();
+        $link = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
+
+        // Initialize card_options variable.
+        $variables['rows'][$id]['card_options'] = [
+          'attributes' => $variables['rows'][$id]['attributes'],
+          'media_sizes' => ['card__media--large'],
+          'card_image' => $style->getField($id, 'field_image'),
+          'card_title' => $style->getField($id, 'title'),
+          'card_link_url' => $link,
+          'card_link_title' => 'Room details',
+          'card_subtitle' => $style->getField($id,'field_room_type'),
+          'card_text' => $style->getField($id,'field_room_max_occupancy'),
+          'visible_button' => TRUE,
+        ];
+      }
+      break;
+
+    case 'block_programmed_rooms_list':
+      $variables['row_item_classes'] = array_merge($attribute_classes, array_values($variables['row_item_classes']));
+      foreach ($rows as $id => $row) {
+        // Set remaining row_item_classes as attributes on each row.
+        $variables['rows'][$id]['attributes']->addClass($variables['row_item_classes']);
+
+        // Get node path to link card with.
+        $nid = $view->result[$id]->_entity->id();
+        $link = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
+
+        // Initialize card_options variable.
+        $variables['rows'][$id]['card_options'] = [
+          'attributes' => $variables['rows'][$id]['attributes'],
+          'card_title' => $style->getField($id, 'title'),
+          'card_link_url' => $link,
+          'card_link_title' => 'View more information',
+          'card_text' => $style->getField($id,'field_room_max_occupancy'),
+          'visible_button' => TRUE,
+        ];
+      }
+      break;
+
   }
 }
