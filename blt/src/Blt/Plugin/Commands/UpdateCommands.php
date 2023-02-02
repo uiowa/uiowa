@@ -2,15 +2,15 @@
 
 namespace Uiowa\Blt\Plugin\Commands;
 
-use Acquia\Blt\Robo\BltTasks;
-use Acquia\Blt\Robo\Common\YamlWriter;
-use Acquia\Blt\Robo\Common\YamlMunge;
-use Doctrine\Common\Annotations\AnnotationReader;
-use Symfony\Component\Yaml\Yaml;
-use Uiowa\Multisite;
 // Needed for BLT annotation updates to work.
 // phpcs:disable
 use Acquia\Blt\Annotations\Update;
+use Acquia\Blt\Robo\BltTasks;
+use Acquia\Blt\Robo\Common\YamlMunge;
+use Acquia\Blt\Robo\Common\YamlWriter;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Symfony\Component\Yaml\Yaml;
+use Uiowa\Multisite;
 // phpcs:enable
 
 /**

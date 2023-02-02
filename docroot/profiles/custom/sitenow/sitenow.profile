@@ -5,26 +5,26 @@
  * Profile code.
  */
 
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Database\Query\SelectInterface;
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Entity\EntityFormInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldItemList;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
-use Drupal\Core\Render\BubbleableMetadata;
-use Drupal\Component\Utility\Html;
-use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
+use Drupal\layout_builder\InlineBlockUsage;
 use Drupal\layout_builder\Plugin\Block\InlineBlock;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\menu_link_content\Form\MenuLinkContentForm;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\layout_builder\InlineBlockUsage;
 use Drupal\system\Entity\Menu;
 
 /**
