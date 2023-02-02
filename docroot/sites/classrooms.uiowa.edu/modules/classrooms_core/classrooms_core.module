@@ -677,13 +677,15 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
         // Combine fields to display.
         $text_combined = $style->getField($id, 'field_room_type') . "<br />" . $style->getField($id, 'field_room_max_occupancy');
         $text = ['#markup' => $text_combined];
+        $title_combined = $style->getField($id, 'field_room_room_id')  . ' ' . strtoupper($view->result[$id]->node__field_room_building_id_field_room_building_id_target_i);
+        $title = ['#markup' => $title_combined];
 
         // Initialize card_options variable.
         $variables['rows'][$id]['card_options'] = [
           'attributes' => $variables['rows'][$id]['attributes'],
           'media_sizes' => ['card__media--large'],
           'card_image' => $style->getField($id, 'field_image'),
-          'card_title' => $style->getField($id, 'title'),
+          'card_title' => \Drupal::service('renderer')->render($title),
           'card_link_url' => $link,
           'card_link_title' => 'Room details',
           'card_text' => \Drupal::service('renderer')->render($text),
@@ -705,11 +707,13 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
         // Combine fields to display.
         $text_combined = $style->getField($id, 'field_room_name') . "<br />" . $style->getField($id, 'field_room_max_occupancy') . "<br />" . $style->getField($id, 'field_room_responsible_unit');
         $text = ['#markup' => $text_combined];
+        $title_combined = $style->getField($id, 'field_room_room_id')  . ' ' . strtoupper($view->result[$id]->node__field_room_building_id_field_room_building_id_target_i);
+        $title = ['#markup' => $title_combined];
 
         // Initialize card_options variable.
         $variables['rows'][$id]['card_options'] = [
           'attributes' => $variables['rows'][$id]['attributes'],
-          'card_title' => $style->getField($id, 'title'),
+          'card_title' => \Drupal::service('renderer')->render($title),
           'card_link_url' => $link,
           'card_link_title' => 'View more information',
           'card_text' => \Drupal::service('renderer')->render($text),
