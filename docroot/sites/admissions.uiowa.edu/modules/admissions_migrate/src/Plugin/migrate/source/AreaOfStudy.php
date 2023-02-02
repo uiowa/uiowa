@@ -10,9 +10,9 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\State\StateInterface;
 use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Plugin\MigrationInterface;
+use Drupal\migrate\Row;
 use Drupal\pathauto\AliasCleanerInterface;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
-use Drupal\migrate\Row;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

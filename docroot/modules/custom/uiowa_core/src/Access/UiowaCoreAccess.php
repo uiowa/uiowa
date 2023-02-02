@@ -2,9 +2,9 @@
 
 namespace Drupal\uiowa_core\Access;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Routing\Access\AccessInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Access\AccessResult;
 
 /**
  * Uiowa specific access checker.

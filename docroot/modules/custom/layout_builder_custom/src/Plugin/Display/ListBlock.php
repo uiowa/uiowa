@@ -7,11 +7,11 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
 use Drupal\Core\Form\SubformStateInterface;
 use Drupal\Core\Url;
+use Drupal\ctools_views\Plugin\Display\Block as CoreBlock;
 use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\uiowa_core\LinkHelper;
 use Drupal\views\Plugin\Block\ViewsBlock;
-use Drupal\ctools_views\Plugin\Display\Block as CoreBlock;
 
 /**
  * Provides a List Block display plugin override.

@@ -5,8 +5,10 @@
  * Primary module hooks for Admissions Core module.
  */
 
+use Drupal\admissions_core\AdmissionsCoreInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
@@ -15,8 +17,6 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\views\ViewExecutable;
-use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
-use Drupal\admissions_core\AdmissionsCoreInterface;
 
 /**
  * Implements hook_entity_extra_field_info().
