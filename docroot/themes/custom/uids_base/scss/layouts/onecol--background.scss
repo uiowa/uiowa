@@ -62,14 +62,23 @@
     }
   }
 
-  // When a narrow container is set on the featured image.
-  // Change the breadcrumb color back to black.
+  // Breadcrumb adjustments for narrow container.
+  &.layout--onecol--background.page__container--narrow {
+    .breadcrumb {
+      @include breakpoint(sm) {
+        background: #00000059;
+      }
+    }
+    .border {
+      @include breakpoint(sm) {
+        border-color: #fff;
+      }
+    }
+  }
   &.layout--onecol--background.page__container--narrow {
     .breadcrumb {
       a {
         @include breakpoint(sm) {
-          color: $secondary;
-          font-size: $base-font-size;
           font-weight: $font-weight-medium;
         }
       }
@@ -88,15 +97,9 @@
         @include container-width;
       }
     }
-    &--no--background.page__container--narrow {
-      .layout__spacing_container {
-        @include breakpoint(md) {
-          max-width: 63.75em;
-        }
-      }
-    }
     &--background.page__container--narrow {
-      .banner__container {
+      .banner__container,
+      .layout__spacing_container {
         @include breakpoint(md) {
           max-width: 63.75em;
         }

@@ -152,15 +152,16 @@ function template_preprocess_uiowa_core_headline(&$variables) {
  */
 function uiowa_core_preprocess_breadcrumb(&$variables) {
   $node = \Drupal::routeMatch()->getParameter('node');
-  if (uiowa_core_is_article_narrow_split_enabled() && $node->getType() === 'article') {
-    if ($node && $node->bundle() == 'article') {
+  if ($node && uiowa_core_is_article_narrow_split_enabled() && $node->getType() === 'article') {
+    if ($node->bundle() == 'article') {
       // Remove the first item from the breadcrumb.
       array_shift($variables['breadcrumb']);
       // Add classes to style the breadcrumb link.
-      $variables['attributes']['class'] = 'element--inline bg--gold padding--block--sm padding--inline--md';
+      $variables['attributes']['class'] = 'element--inline border padding--block--sm padding--inline--md';
     }
   }
 }
+
 
 /**
  * Implements hook_preprocess_HOOK().
