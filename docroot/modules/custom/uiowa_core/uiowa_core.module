@@ -154,8 +154,8 @@ function uiowa_core_preprocess_breadcrumb(&$variables) {
   $node = \Drupal::routeMatch()->getParameter('node');
   if ($node && uiowa_core_is_article_narrow_split_enabled() && $node->getType() === 'article') {
     if ($node->bundle() == 'article') {
-      // Remove the first item from the breadcrumb.
-      array_shift($variables['breadcrumb']);
+      // Set the breadcrumb array to contain only the last item.
+      $variables['breadcrumb'] = [end($variables['breadcrumb'])];
       // Add classes to style the breadcrumb link.
       $variables['attributes']['class'] = 'element--inline border padding--block--sm padding--inline--md';
     }
