@@ -2,7 +2,6 @@
 
 namespace Uiowa\Blt\Plugin\Commands;
 
-use AcquiaCloudApi\Response\OperationResponse;
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\EnvironmentDetector;
 use Acquia\Blt\Robo\Common\YamlMunge;
@@ -14,6 +13,7 @@ use AcquiaCloudApi\Endpoints\Domains;
 use AcquiaCloudApi\Endpoints\Environments;
 use AcquiaCloudApi\Endpoints\SslCertificates;
 use AcquiaCloudApi\Exception\ApiErrorException;
+use AcquiaCloudApi\Response\OperationResponse;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
 use GuzzleHttp\Client as GuzzleClient;
