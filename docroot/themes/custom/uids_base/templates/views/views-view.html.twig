@@ -59,7 +59,7 @@
   {% endif %}
   {% if exposed %}
     {% set views_filter_attributes = views_filter_attributes ?: create_attribute() %}
-    <div {{ views_filter_attributes.addclass(views_filter_classes, 'views-filters') }}>
+    <div {{ views_filter_attributes.addclass(views_filter_classes, 'view-filters') }}>
       {{ exposed }}
     </div>
   {% endif %}
