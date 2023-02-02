@@ -64,11 +64,13 @@
 
   // When a narrow container is set on the featured image.
   // Change the breadcrumb color back to black.
-  &.layout--title--with-background.page__container--narrow {
+  &.layout--onecol--background.page__container--narrow {
     .breadcrumb {
       a {
         @include breakpoint(sm) {
           color: $secondary;
+          font-size: $base-font-size;
+          font-weight: $font-weight-medium;
         }
       }
     }

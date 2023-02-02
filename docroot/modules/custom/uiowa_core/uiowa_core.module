@@ -650,6 +650,22 @@ function uiowa_core_preprocess_block(&$variables) {
       $variables['attributes']['class'][] .= 'block--bg-container grid--threecol--33-34-33 bg--gray block-padding__bottom block-padding__top';
       break;
 
+    case 'system_breadcrumb_block':
+      if (uiowa_core_is_article_narrow_split_enabled()) {
+        // Get the current node.
+        $node = \Drupal::routeMatch()->getParameter('node');
+
+        // Check if the current node is of type 'article'.
+        if ($node && $node->getType() == 'article') {
+          if (!isset($variables['attributes']['class'])) {
+            $variables['attributes']['class'] = [''];
+          }
+          $variables['attributes']['class'][] .= 'block-margin__bottom';
+
+        }
+      }
+      break;
+
     case 'views_block:related_content-block_related_headings_lists':
       $variables['#attached']['library'][] = 'uids_base/related';
       $variables['title_attributes']['class'] = 'h3 block__headline headline headline--underline headline--serif';
