@@ -63,7 +63,7 @@
   }
 
   // Breadcrumb adjustments for narrow container.
-  &.layout--onecol--background.page__container--narrow {
+  &.layout--title--with-background.page__container--narrow {
     .breadcrumb {
       @include breakpoint(sm) {
         background: #00000059;
@@ -75,11 +75,12 @@
       }
     }
   }
-  &.layout--onecol--background.page__container--narrow {
+  &.layout--onecol--no--background.page__container--narrow {
     .breadcrumb {
       a {
         @include breakpoint(sm) {
           font-weight: $font-weight-medium;
+          color: $secondary;
         }
       }
     }
