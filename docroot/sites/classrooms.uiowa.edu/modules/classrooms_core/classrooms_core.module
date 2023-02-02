@@ -674,6 +674,10 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
         $nid = $view->result[$id]->_entity->id();
         $link = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
 
+        // Combine fields to display.
+        $text_combined = $style->getField($id, 'field_room_type') . "<br />" . $style->getField($id, 'field_room_max_occupancy');
+        $text = ['#markup' => $text_combined];
+
         // Initialize card_options variable.
         $variables['rows'][$id]['card_options'] = [
           'attributes' => $variables['rows'][$id]['attributes'],
@@ -682,8 +686,7 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
           'card_title' => $style->getField($id, 'title'),
           'card_link_url' => $link,
           'card_link_title' => 'Room details',
-          'card_subtitle' => $style->getField($id, 'field_room_type'),
-          'card_text' => $style->getField($id, 'field_room_max_occupancy'),
+          'card_text' => \Drupal::service('renderer')->render($text),
           'visible_button' => TRUE,
         ];
       }
