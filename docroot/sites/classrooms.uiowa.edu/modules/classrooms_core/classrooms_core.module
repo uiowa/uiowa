@@ -655,16 +655,17 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
   $style = $view->style_plugin;
   $rows = $variables['rows'];
 
-  $attribute_classes = [
-    'card--centered',
-    'card--stacked',
-    'card--alignment-center',
-    'card--enclosed',
-    'media--widescreen',
-  ];
-
   switch ($display_block) {
     case 'block_rooms':
+
+      $attribute_classes = [
+        'card--centered',
+        'card--stacked',
+        'card--alignment-center',
+        'card--enclosed',
+        'media--widescreen',
+      ];
+
       $variables['row_item_classes'] = array_merge($attribute_classes, array_values($variables['row_item_classes']));
       foreach ($rows as $id => $row) {
         // Set remaining row_item_classes as attributes on each row.
@@ -695,6 +696,14 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
       break;
 
     case 'block_programmed_rooms_list':
+
+      $attribute_classes = [
+        'card--left',
+        'card--stacked',
+        'card--alignment-left',
+        'card--enclosed',
+      ];
+
       $variables['row_item_classes'] = array_merge($attribute_classes, array_values($variables['row_item_classes']));
       foreach ($rows as $id => $row) {
         // Set remaining row_item_classes as attributes on each row.
@@ -705,7 +714,7 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
         $link = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
 
         // Combine fields to display.
-        $text_combined = $style->getField($id, 'field_room_name') . "<br />" . $style->getField($id, 'field_room_max_occupancy') . "<br />" . $style->getField($id, 'field_room_responsible_unit');
+        $text_combined = '<strong>Room name:</strong> ' . $style->getField($id, 'field_room_name') . "<br /><strong>Capacity:</strong> " . $style->getField($id, 'field_room_max_occupancy') . "<br /><strong>Responsible Unit:</strong> " . $style->getField($id, 'field_room_responsible_unit');
         $text = ['#markup' => $text_combined];
         $title_combined = $style->getField($id, 'field_room_room_id')  . ' ' . strtoupper($view->result[$id]->node__field_room_building_id_field_room_building_id_target_i);
         $title = ['#markup' => $title_combined];
