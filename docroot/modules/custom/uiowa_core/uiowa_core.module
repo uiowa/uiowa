@@ -179,6 +179,7 @@ function uiowa_core_preprocess_layout(&$variables) {
 
         if (uiowa_core_is_article_narrow_split_enabled()) {
           $site_wide_setting = \Drupal::config("sitenow_articles.settings")->get('featured_image_display_default');
+          $variables['attributes']['class'][] = 'page__container--narrow';
           if (
             ($node->hasField('field_image') && $node->get('field_image')->isEmpty()) ||
             $node->get('field_featured_image_display')->value == "do_not_display" ||
