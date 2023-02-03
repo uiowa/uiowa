@@ -8,7 +8,6 @@
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -102,62 +101,6 @@ function uiowa_core_mail_alter(&$message) {
     \Drupal::logger('uiowa_core')->error(t('Unable to alter outgoing email using from address @from', [
       '@from' => $message['from'],
     ]));
-  }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_view().
- */
-function uiowa_core_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  if ($entity->bundle() === 'article' && $view_mode === 'teaser') {
-
-    $mapping = [
-      '#media' => 'field_image',
-      '#title' => 'title',
-      '#subtitle' => 'field_article_author',
-      '#content' => 'field_teaser',
-    ];
-
-    $hide_fields = $build['#hide_fields'] ?? [];
-
-    // Map fields to the card parts.
-    foreach ($mapping as $prop => $fields) {
-      if (!is_array($fields)) {
-        $fields = [$fields];
-      }
-      if (!isset($build[$prop])) {
-        $build[$prop] = [];
-      }
-      foreach ($fields as $field_name) {
-        // @todo Refine this to remove fields if they are empty.
-        if (isset($build[$field_name]) && count(Element::children($build[$field_name])) > 0) {
-          if (!in_array($field_name, $hide_fields)) {
-            $build[$prop][$field_name] = $build[$field_name];
-          }
-          unset($build[$field_name]);
-        }
-      }
-    }
-
-    $build['#url'] = !$entity->isNew() ? $entity->toUrl('canonical')->toString() : NULL;
-  }
-
-  if ($view_mode === 'teaser') {
-    $link_indicator = FALSE;
-    $node_type = $entity->bundle();
-    $type_map = [
-      'page' => 'pages',
-      'person' => 'people',
-      'article' => 'articles',
-    ];
-
-    if (isset($type_map[$node_type])) {
-      $config_name = 'sitenow_' . $type_map[$node_type] . '.settings';
-      $config = \Drupal::configFactory()->getEditable($config_name);
-
-      $link_indicator = $config->get('show_teaser_link_indicator');
-    }
-    $build['#link_indicator'] = $link_indicator;
   }
 }
 
@@ -1076,4 +1019,49 @@ function uiowa_core_config_entity_filter_select(array &$form, $entity_id) {
   $form['#empty_option'] = t('- Any -');
   $form['#options'] = $options;
   unset($form['#size']);
+}
+
+/**
+ * Helper function to build card for node_view.
+ */
+function uiowa_core_node_view_build_card(&$build, $entity, $mapping) {
+  $hide_fields = $build['#hide_fields'] ?? [];
+
+  // Map fields to the card parts.
+  foreach ($mapping as $prop => $fields) {
+    if (!is_array($fields)) {
+      $fields = [$fields];
+    }
+    if (!isset($build[$prop])) {
+      $build[$prop] = [];
+    }
+    foreach ($fields as $field_name) {
+      // @todo Refine this to remove fields if they are empty.
+      if (isset($build[$field_name]) && count(Element::children($build[$field_name])) > 0) {
+        if (!in_array($field_name, $hide_fields)) {
+          $build[$prop][$field_name] = $build[$field_name];
+        }
+        unset($build[$field_name]);
+      }
+    }
+  }
+  $link_indicator = FALSE;
+  $node_type = $entity->bundle();
+  $type_map = [
+    'page' => 'pages',
+    'person' => 'people',
+    'article' => 'articles',
+  ];
+
+  if (isset($type_map[$node_type])) {
+    $config_name = 'sitenow_' . $type_map[$node_type] . '.settings';
+    $config = \Drupal::configFactory()->getEditable($config_name);
+
+    $link_indicator = $config->get('show_teaser_link_indicator');
+  }
+  $build['#link_indicator'] = $link_indicator;
+
+  $build['#url'] = !$entity->isNew() ? $entity->toUrl('canonical')->toString() : NULL;
+
+  return $build;
 }

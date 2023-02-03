@@ -981,3 +981,19 @@ function _sitenow_people_path_token_value() {
   // @todo Is this appropriate when there is no value?
   return '';
 }
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function sitenow_people_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if ($entity->bundle() === 'person' && $view_mode === 'teaser') {
+    $mapping = [
+      '#media' => 'field_image',
+      '#title' => 'title',
+      '#content' => 'field_teaser',
+    ];
+
+    $build = uiowa_core_node_view_build_card($build, $entity, $mapping);
+
+  }
+}
