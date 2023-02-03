@@ -316,15 +316,6 @@ function sitenow_articles_node_view(array &$build, EntityInterface $entity, Enti
           '#markup' => '<span class="article-created-date">' . $date . '</span>',
         ];
       }
-      if ($view_mode === 'teaser') {
-        $mapping = [
-          '#media' => 'field_image',
-          '#title' => 'title',
-          '#content' => 'field_teaser',
-        ];
-
-        $build = uiowa_core_node_view_build_card($build, $entity, $mapping);
-      }
       break;
 
   }
