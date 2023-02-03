@@ -61,30 +61,6 @@
       }
     }
   }
-
-  // Breadcrumb adjustments for narrow container.
-  &.layout--title--with-background.page__container--narrow {
-    .breadcrumb {
-      @include breakpoint(sm) {
-        background: #00000059;
-      }
-    }
-    .border {
-      @include breakpoint(sm) {
-        border-color: #fff;
-      }
-    }
-  }
-  &.layout--onecol--no--background.page__container--narrow {
-    .breadcrumb {
-      a {
-        @include breakpoint(sm) {
-          font-weight: $font-weight-medium;
-          color: $secondary;
-        }
-      }
-    }
-  }
 }
 
 .content__container {
@@ -96,14 +72,6 @@
     &--no--background.page__container--edge.sidebar-invisible {
       .layout__spacing_container {
         @include container-width;
-      }
-    }
-    &--background.page__container--narrow {
-      .banner__container,
-      .layout__spacing_container {
-        @include breakpoint(md) {
-          max-width: 63.75em;
-        }
       }
     }
   }
