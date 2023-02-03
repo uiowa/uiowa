@@ -5,5 +5,5 @@
 # Setup
 
   ```
-  drush config-split:activate article_narrow
+  drush config-split:activate articles_narrow
   ```
