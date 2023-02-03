@@ -10,15 +10,24 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\taxonomy\Entity\Term;
-use Drupal\node\NodeInterface;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Url;
+use Drupal\node\NodeInterface;
+use Drupal\taxonomy\Entity\Term;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_entity_extra_field_info().
  */
 function classrooms_core_entity_extra_field_info() {
   $extra = [];
+  // Building link.
+  $extra['node']['room']['display']['field_room_building_link'] = [
+    'label' => t('Building Link'),
+    'description' => t('A url link to the building.'),
+    'weight' => 1,
+    'visible' => TRUE,
+  ];
   // Adding an extra field to render a link to the campus map.
   $extra['node']['room']['display']['field_room_map_link'] = [
     'label' => t('Map Link'),
@@ -103,6 +112,16 @@ function classrooms_core_node_view(array &$build, EntityInterface $node, EntityV
         '#room_url_map' => $room_url_map,
       ];
     }
+
+    // Building link.
+    $building_id = $node->get('field_room_building_id')->target_id;
+    $building = Drupal::entityTypeManager()->getStorage('building')->load($building_id);
+    $url = Url::fromUri('base:/buildings/' . $building_id)->toString();
+    $build['field_room_building_link'] = [
+      '#theme' => 'building_link',
+      '#building_link' => $url,
+      '#building_name' => $building->label(),
+    ];
   }
 }
 
@@ -116,7 +135,7 @@ function classrooms_core_preprocess_block(&$variables) {
     case 'field_block:node:room:field_room_scheduling_regions':
     case 'field_block:node:room:field_room_responsible_unit':
     case 'field_block:node:room:field_room_instruction_category':
-    case 'field_block:node:room:field_room_building_id':
+    case 'extra_field_block:node:room:field_room_building_link':
     case 'extra_field_block:node:room:field_room_map_link':
       $classes[] = 'block-margin__default--removed';
       break;
@@ -127,13 +146,14 @@ function classrooms_core_preprocess_block(&$variables) {
       break;
 
     case 'field_block:node:room:field_room_technology_features':
+    case 'field_block:node:room:field_room_guide':
       $classes[] = 'bg--gray block-padding__all';
       $title_classes[] = 'h4 headline headline--serif headline--underline';
       break;
 
     // Add fivecol grid class to image gallery.
     case 'field_block:node:room:field_gallery_images':
-      $classes[] = 'grid--fivecol--20 photoswipe-gallery';
+      $classes[] = 'grid--threecol--33-34-33 photoswipe-gallery';
       break;
 
     // Add inline class for blocks to appear inline.
@@ -170,10 +190,39 @@ function classrooms_core_preprocess_block(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_file_link().
+ */
+function classrooms_core_preprocess_file_link(&$variables) {
+  unset($variables['attributes']['class']);
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function classrooms_core_node_presave(EntityInterface $entity) {
+  if ($entity->bundle() == 'room') {
+    $seating_chart = $entity->get('field_room_seating_chart')->referencedEntities();
+    if (!empty($seating_chart)) {
+      $file = reset($seating_chart);
+      $file->setFilename('Seating Chart');
+      $file->save();
+    }
+  }
+}
+
+/**
  * Implements hook_preprocess_field().
  */
 function classrooms_core_preprocess_field(&$variables, $hook) {
   switch ($variables['element']['#field_name']) {
+    case 'field_room_type':
+      $variables['items'][0]['content']['#url'] = Url::fromRoute('entity.node.canonical', ['node' => 206]);
+      break;
+
+    case 'field_room_scheduling_regions':
+      $variables['items'][0]['content']['#url'] = Url::fromRoute('entity.node.canonical', ['node' => 151]);
+      break;
+
     case 'field_room_technology_features':
     case 'field_room_tile_details':
     case 'field_room_design_details':
@@ -192,6 +241,7 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
       }
       $variables['attributes']['class'] .= 'fa-li';
       break;
+
   }
 }
 
@@ -215,11 +265,23 @@ function classrooms_core_preprocess_layout(&$variables) {
         break;
 
       case 'layout_twocol':
-        if (isset($variables['region_attributes']['second'])) {
+        if (isset($variables['region_attributes']['second']) && ($variables['content']['#settings']['label'] === 'Map')) {
           $variables['region_attributes']['second']->addClass('element--align-top element--padding__all');
         }
         break;
     }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function classrooms_core_preprocess_node(&$variables): void {
+  /** @var \Drupal\node\Entity\Node $node */
+  $node = $variables['node'];
+  if ($node->getType() === 'room' && $variables['view_mode'] === 'teaser') {
+    // Combine required fields to form card title.
+    $variables['card_title'] = $node->get('field_room_room_id')->value . ' ' . strtoupper($node->get('field_room_building_id')->target_id);
   }
 }
 
@@ -435,17 +497,38 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--field-room-tile-details',
       'base hook' => 'field',
     ],
+    'field__node__field_room_guide__room__default' => [
+      'template' => 'field--node--field-room-guide--room--default',
+      'base hook' => 'field',
+    ],
     'field__node__field_room_design_details' => [
       'template' => 'field--node--field-room-design-details',
       'base hook' => 'field',
+    ],
+    'node__room__teaser' => [
+      'template' => 'node--room--teaser',
+      'base hook' => 'node',
     ],
     'taxonomy_term__technology_features' => [
       'template' => 'taxonomy-term--technology-features',
       'base hook' => 'taxonomy',
     ],
+    'building_link' => [
+      'variables' => [
+        'building_link' => NULL,
+        'building_name' => NULL,
+      ],
+      'template' => 'building-link',
+    ],
     'room_map_link' => [
       'variables' => ['room_url_map' => NULL],
       'template' => 'room-map-link',
+    ],
+    'room_schedule_list' => [
+      'variables' => [
+        'items' => [],
+      ],
+      'template' => 'room-schedule-list',
     ],
     'requestinfobutton_block' => [
       'template' => 'requestinfobutton-block',
@@ -456,4 +539,58 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
       ],
     ],
   ];
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function classrooms_core_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $view = $form_state->get('view');
+  if ($view->id() === 'room_list') {
+    $building_filter = 'field_room_building_id_target_id';
+    if (isset($form[$building_filter])) {
+      uiowa_core_config_entity_filter_select($form[$building_filter], 'building');
+
+      // Change the label from default `- Any -`.
+      $form[$building_filter]['#empty_option'] = t('Building');
+
+      // Hack to further treat this field as a select as it relates to BEF.
+      // Assumes `field_room_type_target_id` is present
+      // on the form and is a select.
+      $form[$building_filter]['#process'] = $form['field_room_type_target_id']['#process'];
+      $form[$building_filter]['#pre_render'] = $form['field_room_type_target_id']['#pre_render'];
+    }
+  }
+}
+
+/**
+ * Implements hook_views_pre_view().
+ */
+function classrooms_core_views_pre_view(ViewExecutable $view, $display_id, array &$args) {
+  // Grid display of Rooms on Units vocab.
+  if ($view->id() === 'taxonomy_term') {
+    if (\Drupal::routeMatch()->getRouteName() === 'entity.taxonomy_term.canonical' &&
+      $page_term_id = \Drupal::routeMatch()->getRawParameter('taxonomy_term')) {
+      $term = \Drupal::entityTypeManager()
+        ->getStorage('taxonomy_term')
+        ->load($page_term_id);
+      if ($term->bundle() === 'units') {
+        $view->display_handler->setOption('css_class', 'grid--fourcol--25');
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_views_view().
+ */
+function classrooms_core_preprocess_views_view(&$variables) {
+  $view = $variables['view'];
+  $id = $view->storage->id();
+  switch ($id) {
+    case 'room_list':
+      $variables['views_filter_classes'][] = 'grid__column';
+      $variables['views_content_classes'][] = 'grid__column';
+      break;
+  }
 }

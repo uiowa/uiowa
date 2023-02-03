@@ -58,21 +58,18 @@
     .headline--large.headline--serif:not([class*="banner__pre-title"]),
     .headline--large:not([class*="banner__pre-title"]) {
       font-size: 2.6rem;
-      font-size: containerClamp(2.6rem, 2.6rem);
     }
 
     // Set medium heading size
     .headline--medium.headline--serif:not([class*="banner__pre-title"]),
     .headline--medium:not([class*="banner__pre-title"]) {
       font-size: 2.2rem;
-      font-size: containerClamp(2.1rem, 2.1rem);
     }
 
     // Set small heading size
     .headline--small.headline--serif:not([class*="banner__pre-title"]),
     .headline--small:not([class*="banner__pre-title"]) {
       font-size: 1.8rem;
-      font-size: containerClamp(1.6rem, 1.6rem);
     }
   }
 
@@ -183,7 +180,8 @@
 .layout--title.banner .bold-headline,
 .layout--title.banner .headline.page-title {
   font-size: 4.7rem;
-  font-size: containerClamp(2.5rem, 4.7rem);
+  // https://garyridgway.github.io/clampCalculator/?minWidth=600&maxWidth=1310&minFontSize=2.5&maxFontSize=4.7&auto
+  font-size: clamp(2.5rem, calc(4.9577vw + 0.6408rem), 4.7rem);
 }
 
 .banner__image {

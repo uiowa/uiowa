@@ -4,9 +4,9 @@ namespace Drupal\sitenow_migrate\Plugin\migrate;
 
 use Drupal\migrate\MigrateException;
 use Drupal\migrate\Row;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\ServerException;
-use GuzzleHttp\Exception\ClientException;
 
 /**
  * A trait for handling on-demand media creation.

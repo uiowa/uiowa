@@ -3,15 +3,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.taxonomy_term.units.field_unit_description
     - field.field.taxonomy_term.units.field_unit_email
     - field.field.taxonomy_term.units.field_unit_link
-    - field.field.taxonomy_term.units.field_unit_name
     - field.field.taxonomy_term.units.field_unit_phone
     - field.field.taxonomy_term.units.field_unit_scheduler
     - taxonomy.vocabulary.units
   module:
     - link
+    - telephone
     - text
 id: taxonomy_term.units.default
 targetEntityType: taxonomy_term
@@ -25,23 +24,16 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
-  field_unit_description:
-    type: text_default
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    weight: 5
-    region: content
   field_unit_email:
     type: basic_string
-    label: above
+    label: inline
     settings: {  }
     third_party_settings: {  }
     weight: 2
     region: content
   field_unit_link:
     type: link
-    label: above
+    label: inline
     settings:
       trim_length: 80
       url_only: false
@@ -51,24 +43,17 @@ content:
     third_party_settings: {  }
     weight: 4
     region: content
-  field_unit_name:
-    type: string
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 1
-    region: content
   field_unit_phone:
-    type: basic_string
-    label: above
-    settings: {  }
+    type: telephone_link
+    label: inline
+    settings:
+      title: ''
     third_party_settings: {  }
     weight: 3
     region: content
   field_unit_scheduler:
     type: text_default
-    label: above
+    label: inline
     settings: {  }
     third_party_settings: {  }
     weight: 6

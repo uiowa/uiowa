@@ -71,6 +71,7 @@ $imgpath: '../../uids/assets/images';
   .slider,
   .stat {
     flex-basis: 100%;
+    min-width: 0;
   }
 }
 
@@ -496,6 +497,15 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   &__all--md {
     padding: 2rem;
   }
+}
+
+// CSS logical property padding utility classes.
+.padding--block--sm {
+  padding-block: 0.5rem;
+}
+
+.padding--inline--md {
+  padding-inline: 1rem;
 }
 
 .block-margin {

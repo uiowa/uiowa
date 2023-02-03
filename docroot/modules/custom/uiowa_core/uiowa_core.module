@@ -1050,3 +1050,30 @@ function uiowa_core_state_options(FieldStorageConfig $definition, ContentEntityI
 
   return $options;
 }
+
+/**
+ * Helper function convert exposed filter to select dropdown.
+ */
+function uiowa_core_config_entity_filter_select(array &$form, $entity_id) {
+  // Get available configuration entities.
+  $storage = Drupal::getContainer()->get('entity_type.manager')->getStorage($entity_id);
+  $entities = $storage->getQuery();
+  $entities = $entities->condition('status', 1)
+    ->sort('title')
+    ->execute();
+
+  // Build a list of options.
+  $options = [];
+  $config_entities = $storage->loadMultiple($entities);
+  foreach ($config_entities as $item) {
+    $options[$item->id()] = $item->label();
+  }
+  asort($options);
+
+  // Rebuild the text filter as select list dropdown.
+  $form['#type'] = 'select';
+  $form['#multiple'] = FALSE;
+  $form['#empty_option'] = t('- Any -');
+  $form['#options'] = $options;
+  unset($form['#size']);
+}
