@@ -1987,10 +1987,10 @@ function sitenow_update_9054() {
       // Update card_image_* to media_size_*.
       $media_size_set = FALSE;
       foreach ([
-                 'card_image_large',
-                 'card_image_medium',
-                 'card_image_small'
-               ] as $card_image_size) {
+        'card_image_large',
+        'card_image_medium',
+        'card_image_small',
+      ] as $card_image_size) {
         $card_image_size_index = array_search($card_image_size, $styles);
         if ($card_image_size_index !== FALSE) {
           $size = str_replace('card_image_', '', $styles[$card_image_size_index]);
@@ -2006,9 +2006,9 @@ function sitenow_update_9054() {
 
       // Remove these styles, if set.
       foreach ([
-                 'card_media_position_stacked',
-                 'content_alignment_left',
-               ] as $remove_style) {
+        'card_media_position_stacked',
+        'content_alignment_left',
+      ] as $remove_style) {
         $remove_style_index = array_search($remove_style, $styles);
         if ($remove_style_index !== FALSE) {
           unset($styles[$remove_style_index]);
