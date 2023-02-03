@@ -265,39 +265,44 @@ function sitenow_articles_preprocess_node(&$variables) {
             }
           }
         }
-//        if (in_array($variables['view_mode'], ['default', 'full'])) {
-//          // Check if we don't have any gallery images.
-//          if ($node->hasField('field_gallery_images') &&
-//            empty($node->get('field_gallery_images')->getValue())) {
-//            // Loop through our article layout blocks and look for
-//            // the gallery jump link block (defined by this module).
-//            // We expect it to be the last block in most cases,
-//            // so we iterate in reverse.
-//            if (isset($variables['content']['_layout_builder'][1]['content']) && is_array($variables['content']['_layout_builder'][1]['content'])) {
-//              foreach ($variables['content']['_layout_builder'][1]['content'] as $key => $block) {
-//                if (isset($block['#plugin_id']) && $block['#plugin_id'] === 'galleryjumplink_block') {
-//                  unset($variables['content']['_layout_builder'][1]['content'][$key]);
-//                  // There should only be one instance of the jump link,
-//                  // so if we've already unset it, finish the loop.
-//                  break;
-//                }
-//              }
-//            }
-//          }
-//
-//          if ($node->hasField('field_article_preserve_links')) {
-//            // Check if preserve links checkbox is checked.
-//            if ((int) filter_var($node->field_article_preserve_links->value, FILTER_VALIDATE_BOOLEAN) !== 1) {
-//              // If it isn't checked, hide the broken links message.
-//              foreach (array_reverse($variables['content']['_layout_builder'][1]['content'], TRUE) as $key => $block) {
-//                if (isset($block['#plugin_id']) && $block['#plugin_id'] == 'preservedlinksmessage_block') {
-//                  unset($variables['content']['_layout_builder'][1]['content'][$key]);
-//                  break;
-//                }
-//              }
-//            }
-//          }
-//        }
+        if (in_array($variables['view_mode'], ['default', 'full'])) {
+          // Check if we don't have any gallery images.
+          if ($node->hasField('field_gallery_images') &&
+            empty($node->get('field_gallery_images')->getValue())) {
+            // Loop through the layout builder blocks and look for
+            // the gallery jump link block.
+            $layout_parts = ['content', 'first'];
+            foreach ($layout_parts as $layout_part) {
+              if (isset($variables['content']['_layout_builder'][1][$layout_part])) {
+                foreach ($variables['content']['_layout_builder'][1][$layout_part] as $key => $block) {
+                  if (isset($block['#plugin_id']) && $block['#plugin_id'] === 'galleryjumplink_block') {
+                    unset($variables['content']['_layout_builder'][1][$layout_part][$key]);
+                    break 2;
+                  }
+                }
+              }
+            }
+          }
+
+          if ($node->hasField('field_article_preserve_links')) {
+            // Check if preserve links checkbox is checked.
+            if ((int) filter_var($node->field_article_preserve_links->value, FILTER_VALIDATE_BOOLEAN) !== 1) {
+              // If it isn't checked, hide the broken links message.
+              $layout_parts = ['content', 'first'];
+              foreach ($layout_parts as $layout_part) {
+                if (isset($variables['content']['_layout_builder'][1][$layout_part])) {
+                  foreach ($variables['content']['_layout_builder'][1][$layout_part] as $key => $block) {
+                    if (isset($block['#plugin_id']) && $block['#plugin_id'] == 'preservedlinksmessage_block') {
+                      unset($variables['content']['_layout_builder'][1][$layout_part][$key]);
+                      break;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+        }
         break;
 
     }
