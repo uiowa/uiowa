@@ -266,45 +266,47 @@ function sitenow_articles_preprocess_node(&$variables) {
           }
         }
         if (in_array($variables['view_mode'], ['default', 'full'])) {
+          $layout_parts = ['content', 'first'];
+
           // Check if we don't have any gallery images.
           if ($node->hasField('field_gallery_images') &&
             empty($node->get('field_gallery_images')->getValue())) {
-            // Loop through the layout builder blocks and look for
-            // the gallery jump link block.
-            $layout_parts = ['content', 'first'];
-            foreach ($layout_parts as $layout_part) {
-              if (isset($variables['content']['_layout_builder'][1][$layout_part])) {
-                foreach ($variables['content']['_layout_builder'][1][$layout_part] as $key => $block) {
-                  if (isset($block['#plugin_id']) && $block['#plugin_id'] === 'galleryjumplink_block') {
-                    unset($variables['content']['_layout_builder'][1][$layout_part][$key]);
-                    break 2;
-                  }
-                }
-              }
-            }
+            sitenow_articles_unset_block($variables, $layout_parts, 'galleryjumplink_block');
           }
 
           if ($node->hasField('field_article_preserve_links')) {
             // Check if preserve links checkbox is checked.
             if ((int) filter_var($node->field_article_preserve_links->value, FILTER_VALIDATE_BOOLEAN) !== 1) {
               // If it isn't checked, hide the broken links message.
-              $layout_parts = ['content', 'first'];
-              foreach ($layout_parts as $layout_part) {
-                if (isset($variables['content']['_layout_builder'][1][$layout_part])) {
-                  foreach ($variables['content']['_layout_builder'][1][$layout_part] as $key => $block) {
-                    if (isset($block['#plugin_id']) && $block['#plugin_id'] == 'preservedlinksmessage_block') {
-                      unset($variables['content']['_layout_builder'][1][$layout_part][$key]);
-                      break;
-                    }
-                  }
-                }
-              }
+              sitenow_articles_unset_block($variables, $layout_parts, 'preservedlinksmessage_block');
             }
           }
-
         }
         break;
 
+    }
+  }
+}
+
+/**
+ * Unsets a block from the given layout builder parts.
+ *
+ * @param array &$variables
+ *   The variables array.
+ * @param array $layout_parts
+ *   The layout parts to loop through.
+ * @param string $block_id
+ *   The block ID to unset.
+ */
+function sitenow_articles_unset_block(array &$variables, array $layout_parts, string $block_id) {
+  foreach ($layout_parts as $layout_part) {
+    if (isset($variables['content']['_layout_builder'][1][$layout_part])) {
+      foreach ($variables['content']['_layout_builder'][1][$layout_part] as $key => $block) {
+        if (isset($block['#plugin_id']) && $block['#plugin_id'] === $block_id) {
+          unset($variables['content']['_layout_builder'][1][$layout_part][$key]);
+          break 2;
+        }
+      }
     }
   }
 }
