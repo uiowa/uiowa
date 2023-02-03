@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\sitenow\Unit;
 
-use Drupal\Tests\UnitTestCase;
 use Drupal\sitenow\ConfigOverride\AcquiaConnectorOverride;
+use Drupal\Tests\UnitTestCase;
 
 /**
  * AC config override test.

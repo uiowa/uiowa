@@ -6,12 +6,12 @@ use Drupal\Component\Uuid\UuidInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Entity\TranslatableInterface;
+use Drupal\Core\Path\CurrentPathStack;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage;
 use Drupal\replicate\Events\AfterSaveEvent;
 use Drupal\replicate\Events\ReplicatorEvents;
 use Drupal\views\Plugin\Block\ViewsBlock;
-use Drupal\Core\Path\CurrentPathStack;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -168,7 +168,7 @@ class ReplicateSubscriber implements EventSubscriberInterface {
     }
     $entity->setRevisionLogMessage($message);
     $entity->setRevisionUserId($this->currentUser->id());
-    $entity->setRevisionCreationTime($_SERVER['REQUEST_TIME']);
+    $entity->setRevisionCreationTime(\Drupal::request()->server->get('REQUEST_TIME'));
     // @todo Possibly remove in the future?
     // https://www.drupal.org/project/drupal/issues/2769741
     $entity->setRevisionTranslationAffected(TRUE);
