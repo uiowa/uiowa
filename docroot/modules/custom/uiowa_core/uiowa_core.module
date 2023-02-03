@@ -23,19 +23,6 @@ use Symfony\Component\Mime\Exception\RfcComplianceException;
 use Drupal\uiowa_core\RegionHelper;
 
 /**
- * Helper function to check if the "article_narrow" split is enabled.
- *
- * @return bool
- *   Returns TRUE if the split is enabled, FALSE otherwise.
- */
-function uiowa_core_is_article_narrow_split_enabled() {
-  /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
-  $config_factory = \Drupal::service('config.factory');
-  $article_narrow_split_config = $config_factory->get('config_split.config_split.article_narrow');
-  return ($article_narrow_split_config->get('status') === TRUE);
-}
-
-/**
  * Implements hook_config_schema_info_alter().
  */
 function uiowa_core_config_schema_info_alter(&$definitions) {
@@ -145,77 +132,6 @@ function template_preprocess_uiowa_core_headline(&$variables) {
 
   $variables['headline_style'] = $style;
 
-}
-
-/**
- * Implements hook_preprocess_HOOK() for breadcrumb.
- */
-function uiowa_core_preprocess_breadcrumb(&$variables) {
-  $node = \Drupal::routeMatch()->getParameter('node');
-  if ($node && uiowa_core_is_article_narrow_split_enabled() && $node->getType() === 'article') {
-    if ($node->bundle() == 'article') {
-      // Set the breadcrumb array to contain only the last item.
-      $variables['breadcrumb'] = [end($variables['breadcrumb'])];
-      // Add classes to style the breadcrumb link.
-      $variables['attributes']['class'] = 'element--inline border padding--block--sm padding--inline--md';
-    }
-  }
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function uiowa_core_preprocess_layout(&$variables) {
-  /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
-  $layout = $variables['layout'];
-  $node = \Drupal::routeMatch()->getParameter('node');
-  $node = ($node ?? \Drupal::routeMatch()->getParameter('node_preview'));
-  if ($node instanceof NodeInterface && $node->getType() === 'article') {
-    switch ($layout->id()) {
-      case 'layout_header':
-        if (!isset($variables['banner_settings'])) {
-          $variables['banner_settings'] = [];
-        }
-
-        if (uiowa_core_is_article_narrow_split_enabled()) {
-          $site_wide_setting = \Drupal::config("sitenow_articles.settings")->get('featured_image_display_default');
-          $variables['attributes']['class'][] = 'page__container--narrow';
-          if (
-            ($node->hasField('field_image') && $node->get('field_image')->isEmpty()) ||
-            $node->get('field_featured_image_display')->value == "do_not_display" ||
-            $site_wide_setting == "do_not_display"
-          ) {
-            $variables['banner_settings']['transparent'] = TRUE;
-            $variables['attributes']['class'][] = 'bg--gray';
-            $variables['attributes']['class'][] = 'text-align-center';
-            $variables['attributes']['class'][] = 'section-padding__bottom-extra';
-            $variables['attributes']['class'][] = 'section-padding__top-extra';
-            $variables['attributes']['class'][] = 'block-margin__bottom--extra';
-          }
-
-          if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
-
-            // Set banner defaults.
-            $variables['banner_settings']['horizontal_align'] = 'center';
-            $variables['banner_settings']['vertical_align'] = 'bottom';
-          }
-        }
-        break;
-
-    }
-  }
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function uiowa_core_preprocess_field(&$variables) {
-  if (uiowa_core_is_article_narrow_split_enabled()) {
-    if ($variables['element']['#field_name'] == 'title' && $variables['element']['#object']->getType() == 'article') {
-      // Add the updated classes to the attributes variable.
-      $variables['attributes']['class'] = 'headline--large';
-    }
-  }
 }
 
 /**
@@ -648,22 +564,6 @@ function uiowa_core_preprocess_block(&$variables) {
         $variables['attributes']['class'] = [''];
       }
       $variables['attributes']['class'][] .= 'block--bg-container grid--threecol--33-34-33 bg--gray block-padding__bottom block-padding__top';
-      break;
-
-    case 'system_breadcrumb_block':
-      if (uiowa_core_is_article_narrow_split_enabled()) {
-        // Get the current node.
-        $node = \Drupal::routeMatch()->getParameter('node');
-
-        // Check if the current node is of type 'article'.
-        if ($node && $node->getType() == 'article') {
-          if (!isset($variables['attributes']['class'])) {
-            $variables['attributes']['class'] = [''];
-          }
-          $variables['attributes']['class'][] .= 'block-margin__bottom';
-
-        }
-      }
       break;
 
     case 'views_block:related_content-block_related_headings_lists':
