@@ -4,3 +4,24 @@
  * @file
  * Primary module hooks for sitenow_articles_narrow module.
  */
+
+use Drupal\node\NodeInterface;
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function sitenow_articles_narrow_preprocess_layout(&$variables) {
+  /** @var \Drupal\Core\Layout\LayoutDefinition $layout */
+  $layout = $variables['layout'];
+  $node = \Drupal::routeMatch()->getParameter('node');
+  $node = ($node ?? \Drupal::routeMatch()->getParameter('node_preview'));
+  if ($node instanceof NodeInterface && $node->getType() === 'article') {
+    switch ($layout->id()) {
+      case 'layout_twocol':
+        if (isset($variables['region_attributes']['second']) && ($variables['content']['#settings']['label'] === 'Content')) {
+          $variables['region_attributes']['second']->addClass('border--left block-margin__top element--padding__left');
+        }
+        break;
+    }
+  }
+}
