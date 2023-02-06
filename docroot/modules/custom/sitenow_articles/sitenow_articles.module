@@ -13,6 +13,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Url;
+use Drupal\uiowa_core\Element\Card;
 use Drupal\user\Entity\User;
 use Drupal\views\Entity\View;
 use Drupal\views\ViewExecutable;
@@ -749,4 +750,20 @@ function _sitenow_articles_path_token_value() {
 
   // @todo Is this appropriate when there is no value?
   return '';
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_build_defaults_alter().
+ */
+function sitenow_articles_node_build_defaults_alter(array &$build, EntityInterface $entity, $view_mode) {
+  if ($entity->bundle() === 'article' && $view_mode === 'teaser') {
+    $build['#type'] = 'card';
+    unset($build['#theme']);
+    $build['#pre_render'] = [
+      [
+        Card::class,
+        'preRenderCard',
+      ],
+    ];
+  }
 }

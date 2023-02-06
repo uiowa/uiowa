@@ -187,6 +187,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           break;
 
         case 'views_block:article_list_block-list_article':
+        case 'views_block:people_list_block-list_card':
           if (isset($block->getConfiguration()['fields'])) {
             $hide_fields = [];
             foreach ($block->getConfiguration()['fields'] as $field_name => $hide_field) {

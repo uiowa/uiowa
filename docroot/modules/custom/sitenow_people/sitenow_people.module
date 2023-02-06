@@ -21,6 +21,7 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Drupal\sitenow_people\PersonTypeInterface;
+use Drupal\uiowa_core\Element\Card;
 use Drupal\views\Entity\View;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
@@ -994,5 +995,21 @@ function sitenow_people_node_view(array &$build, EntityInterface $entity, Entity
 
     $build = uiowa_core_node_view_build_card($build, $entity, $mapping);
 
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_build_defaults_alter().
+ */
+function sitenow_people_node_build_defaults_alter(array &$build, EntityInterface $entity, $view_mode) {
+  if ($entity->bundle() === 'person' && $view_mode === 'teaser') {
+    $build['#type'] = 'card';
+    unset($build['#theme']);
+    $build['#pre_render'] = [
+      [
+        Card::class,
+        'preRenderCard',
+      ],
+    ];
   }
 }
