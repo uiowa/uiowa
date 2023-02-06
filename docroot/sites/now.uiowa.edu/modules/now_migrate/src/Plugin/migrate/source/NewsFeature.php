@@ -121,12 +121,6 @@ class NewsFeature extends BaseNodeSource {
     }
 
     if (!empty($body)) {
-      // Check for a subhead, and prepend it to the body if so.
-      $subhead = $row->getSourceProperty('field_subhead');
-      if (!empty($subhead)) {
-        $subhead = '<p class="uids-component--light-intro">' . $subhead[0]['value'] . '</p>';
-        $body[0]['value'] = $subhead . $body[0]['value'];
-      }
       $this->viewMode = 'medium__no_crop';
       $this->align = 'left';
 
