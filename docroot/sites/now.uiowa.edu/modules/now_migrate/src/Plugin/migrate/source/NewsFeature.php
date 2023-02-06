@@ -41,7 +41,7 @@ class NewsFeature extends BaseNodeSource {
       'field_news_from',
       'field_news_about',
       'field_news_for',
-      'field_news_keywords',
+      'field_keywords',
     ] as $field_name) {
       $values = $row->getSourceProperty($field_name);
       if (!isset($values)) {
