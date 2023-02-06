@@ -489,6 +489,14 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--field-room-responsible-unit--room--teaser',
       'base hook' => 'field',
     ],
+    'field__node__field_room_type__room__teaser' => [
+      'template' => 'field--node--field-room-type--room--teaser',
+      'base hook' => 'field',
+    ],
+    'field__node__field_room_name__room__teaser' => [
+      'template' => 'field--node--field-room-name--room--teaser',
+      'base hook' => 'field',
+    ],
     'field__node__field_room_features__room__default' => [
       'template' => 'field--node--field-room-features--room--default',
       'base hook' => 'field',
@@ -661,44 +669,6 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
 
   switch ($display_block) {
     case 'block_rooms':
-
-      $attribute_classes = [
-        'card--centered',
-        'card--stacked',
-        'card--alignment-center',
-        'card--enclosed',
-        'media--widescreen',
-      ];
-
-      $variables['row_item_classes'] = array_merge($attribute_classes, array_values($variables['row_item_classes']));
-      foreach ($rows as $id => $row) {
-        // Set remaining row_item_classes as attributes on each row.
-        $variables['rows'][$id]['attributes']->addClass($variables['row_item_classes']);
-
-        // Get node path to link card with.
-        $nid = $view->result[$id]->_entity->id();
-        $link = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
-
-        // Combine fields to display.
-        $text_combined = $style->getField($id, 'field_room_type') . "<br />" . $style->getField($id, 'field_room_max_occupancy');
-        $text = ['#markup' => $text_combined];
-        $title_combined = $style->getField($id, 'field_room_room_id') . ' ' . strtoupper($view->result[$id]->node__field_room_building_id_field_room_building_id_target_i);
-        $title = ['#markup' => $title_combined];
-
-        // Initialize card_options variable.
-        $variables['rows'][$id]['card_options'] = [
-          'attributes' => $variables['rows'][$id]['attributes'],
-          'media_sizes' => ['card__media--large'],
-          'card_image' => $style->getField($id, 'field_image'),
-          'card_title' => \Drupal::service('renderer')->render($title),
-          'card_link_url' => $link,
-          'card_link_title' => 'Room details',
-          'card_text' => \Drupal::service('renderer')->render($text),
-          'visible_button' => TRUE,
-        ];
-      }
-      break;
-
     case 'block_programmed_rooms_list':
 
       $attribute_classes = [
@@ -706,6 +676,15 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
         'card--stacked',
         'card--alignment-left',
         'card--enclosed',
+        'card--button-position',
+      ];
+
+      $headline_classes = [
+        'h4',
+        'headline',
+        'block__headline',
+        'headline--serif',
+        'headline--underline',
       ];
 
       $variables['row_item_classes'] = array_merge($attribute_classes, array_values($variables['row_item_classes']));
@@ -734,9 +713,46 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
         ];
 
         $meta_fields = [
+          'type' => 'field_room_type',
+          'name' => 'field_room_name',
           'occupancy' => 'field_room_max_occupancy',
           'unit' => 'field_room_responsible_unit',
         ];
+
+        // Loop through the taxonomy and get items that start with "Seats".
+        $taxonomy = $node->get('field_room_features')->referencedEntities();
+        $seats = [];
+        foreach ($taxonomy as $term) {
+          if (strpos($term->getName(), 'Seats') === 0) {
+            $seats[] = $term->getName();
+          }
+        }
+
+        // Add the seats to the $meta_fields array.
+        if (!empty($seats) && $display_block == 'block_programmed_rooms_list') {
+          $card_meta['seats'] = [
+            '#type' => 'container',
+            '#attributes' => [
+              'class' => ['field--label-inline'],
+            ],
+            'label' => [
+              '#type' => 'html_tag',
+              '#tag' => 'div',
+              '#value' => '<span class="fa-chair fas" role="presentation"></span> Seating type',
+              '#attributes' => [
+                'class' => ['field__label'],
+              ],
+            ],
+            'value' => [
+              '#type' => 'html_tag',
+              '#tag' => 'div',
+              '#value' => str_replace('Seats - ', '', implode(', ', $seats)),
+              '#attributes' => [
+                'class' => ['value'],
+              ],
+            ],
+          ];
+        }
 
         // Add meta fields, if they exist.
         foreach ($meta_fields as $key => $field_name) {
@@ -751,13 +767,21 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
         // Initialize card_options variable.
         $variables['rows'][$id]['card_options'] = [
           'attributes' => $variables['rows'][$id]['attributes'],
+          'media_sizes' => ['card__media--large'],
+          'card_image' => $style->getField($id, 'field_image'),
           'card_title' => \Drupal::service('renderer')->render($title),
           'card_link_url' => $link,
-          'card_link_title' => 'View more information',
+          'headline_class' => $headline_classes,
+          'card_link_title' => 'Room details',
           'card_meta' => \Drupal::service('renderer')->render($card_meta),
           'visible_button' => TRUE,
         ];
+
       }
+      break;
+
+    case 'block_rooms':
+      unset($seats);
       break;
 
   }
