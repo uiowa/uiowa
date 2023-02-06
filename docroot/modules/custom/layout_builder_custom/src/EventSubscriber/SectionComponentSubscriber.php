@@ -188,6 +188,20 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
 
         case 'views_block:article_list_block-list_article':
         case 'views_block:people_list_block-list_card':
+          $row_classes = [];
+          foreach ($build['#attributes']['class'] as $key => $style) {
+            foreach ([
+                       'bg',
+                       'card',
+                       'media',
+                       'hide',
+                     ] as $check) {
+              if (substr($style, 0, strlen($check)) === $check) {
+                $row_classes[] = $style;
+              }
+            }
+          }
+          $row_classes = array_unique($row_classes);
           if (isset($block->getConfiguration()['fields'])) {
             $hide_fields = [];
             foreach ($block->getConfiguration()['fields'] as $field_name => $hide_field) {
@@ -196,9 +210,11 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
               }
             }
 
+
             if (isset($build['content']['view_build']['#rows'][0]['#rows'])) {
               foreach ($build['content']['view_build']['#rows'][0]['#rows'] as &$row) {
                 $row['#hide_fields'] = $hide_fields;
+                $row['#attributes']['class'] = $row_classes;
               }
             }
           }
