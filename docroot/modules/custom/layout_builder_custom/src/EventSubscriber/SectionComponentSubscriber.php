@@ -189,14 +189,14 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
         case 'views_block:article_list_block-list_article':
         case 'views_block:people_list_block-list_card':
           $row_classes = [];
-          foreach ($build['#attributes']['class'] as $key => $style) {
+          foreach ($build['#attributes']['class'] as $style) {
             foreach ([
-                       'bg',
-                       'card',
-                       'media',
-                       'hide',
-                     ] as $check) {
-              if (substr($style, 0, strlen($check)) === $check) {
+              'bg',
+              'card',
+              'media',
+              'borderless',
+            ] as $check) {
+              if (str_starts_with($style, $check)) {
                 $row_classes[] = $style;
               }
             }
@@ -209,7 +209,6 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
                 $hide_fields[] = $field_name;
               }
             }
-
 
             if (isset($build['content']['view_build']['#rows'][0]['#rows'])) {
               foreach ($build['content']['view_build']['#rows'][0]['#rows'] as &$row) {
