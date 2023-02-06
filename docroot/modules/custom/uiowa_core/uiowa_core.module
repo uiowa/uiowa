@@ -1065,3 +1065,11 @@ function uiowa_core_node_view_build_card(&$build, $entity, $mapping) {
 
   return $build;
 }
+
+function uiowa_core_html_cleanup($string, $allowed_tags = NULL) {
+  return trim(strip_tags($string, $allowed_tags));
+}
+
+function uiowa_core_html_empty_after_cleanup($string, $allowed_tags = NULL) {
+  return uiowa_core_html_cleanup($string, $allowed_tags) === '';
+}
