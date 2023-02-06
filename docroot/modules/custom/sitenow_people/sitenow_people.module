@@ -991,7 +991,7 @@ function sitenow_people_node_view(array &$build, EntityInterface $entity, Entity
       '#media' => 'field_image',
       '#title' => 'title',
       '#subtitle' => 'field_person_position',
-      '#meta' => 'field_person_email',
+      '#meta' => ['field_person_email', 'field_person_phone'],
       '#content' => 'field_teaser',
     ];
 
