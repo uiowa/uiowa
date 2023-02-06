@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.teaser
     - field.storage.node.field_image
     - field.storage.node.field_room_building_id
     - field.storage.node.field_room_max_occupancy
@@ -993,17 +994,14 @@ display:
       style:
         type: default
         options:
-          grouping: {  }
           row_class: ''
           default_row_class: true
-          uses_fields: false
+          uses_fields: true
       row:
-        type: fields
+        type: 'entity:node'
         options:
-          default_field_elements: true
-          inline: {  }
-          separator: ''
-          hide_empty: false
+          relationship: none
+          view_mode: teaser
       query:
         type: views_query
         options:
@@ -1357,7 +1355,7 @@ display:
           delta_first_last: false
           multi_type: separator
           separator: ', '
-          field_api_classes: false
+          field_api_classes: true
         field_room_name_1:
           id: field_room_name_1
           table: node__field_room_name
@@ -1483,7 +1481,7 @@ display:
           delta_first_last: false
           multi_type: separator
           separator: ', '
-          field_api_classes: false
+          field_api_classes: true
       filters:
         status:
           id: status

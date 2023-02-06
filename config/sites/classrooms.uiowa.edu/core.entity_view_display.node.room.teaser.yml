@@ -52,12 +52,20 @@ content:
     region: content
   field_room_max_occupancy:
     type: number_integer
-    label: visually_hidden
+    label: inline
     settings:
       thousand_separator: ''
-      prefix_suffix: true
+      prefix_suffix: false
     third_party_settings: {  }
     weight: 4
+    region: content
+  field_room_responsible_unit:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 5
     region: content
   field_room_room_id:
     type: string
@@ -93,7 +101,6 @@ hidden:
   field_room_map: true
   field_room_map_link: true
   field_room_name: true
-  field_room_responsible_unit: true
   field_room_scheduling_regions: true
   field_room_seating_chart: true
   field_room_section_heading: true

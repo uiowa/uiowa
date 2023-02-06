@@ -477,12 +477,16 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--field-room-max-occupancy--room--default',
       'base hook' => 'field',
     ],
-    'field__node__field_room_seating_chart__room__default' => [
-      'template' => 'field--node--field-room-seating-chart--room--default',
+    'field__node__field_room_max_occupancy__room__teaser' => [
+      'template' => 'field--node--field-room-max-occupancy--room--teaser',
       'base hook' => 'field',
     ],
     'field__node__field_room_accessibility__room__default' => [
       'template' => 'field--node--field-room-accessibility--room--default',
+      'base hook' => 'field',
+    ],
+    'field__node__field_room_responsible_unit__room__teaser' => [
+      'template' => 'field--node--field-room-responsible-unit--room--teaser',
       'base hook' => 'field',
     ],
     'field__node__field_room_features__room__default' => [
@@ -706,6 +710,8 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
 
       $variables['row_item_classes'] = array_merge($attribute_classes, array_values($variables['row_item_classes']));
       foreach ($rows as $id => $row) {
+        /** @var \Drupal\node\NodeInterface $node */
+        $node = $row['content']['#node'];
         // Set remaining row_item_classes as attributes on each row.
         $variables['rows'][$id]['attributes']->addClass($variables['row_item_classes']);
 
@@ -714,10 +720,33 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
         $link = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
 
         // Combine fields to display.
-        $text_combined = $view->field['field_room_name']->options['label'] . $style->getField($id, 'field_room_name') . "<br />" . $view->field['field_room_max_occupancy']->options['label'] . $style->getField($id, 'field_room_max_occupancy') . "<br />" . $view->field['field_room_responsible_unit']->options['label'] . $style->getField($id, 'field_room_responsible_unit');
-        $text = ['#markup' => $text_combined];
         $title_combined = $style->getField($id, 'field_room_room_id') . ' ' . strtoupper($view->result[$id]->node__field_room_building_id_field_room_building_id_target_i);
         $title = ['#markup' => $title_combined];
+
+        $card_meta = [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#attributes' => [
+            'class' => [
+              'card__meta',
+            ],
+          ],
+        ];
+
+        $meta_fields = [
+          'occupancy' => 'field_room_max_occupancy',
+          'unit' => 'field_room_responsible_unit',
+        ];
+
+        // Add meta fields, if they exist.
+        foreach ($meta_fields as $key => $field_name) {
+          if (
+            $style->getField($id, $field_name) &&
+            !$node->get($field_name)?->isEmpty()
+          ) {
+            $card_meta[$key] = $node?->{$field_name}?->view('teaser');
+          }
+        }
 
         // Initialize card_options variable.
         $variables['rows'][$id]['card_options'] = [
@@ -725,7 +754,7 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
           'card_title' => \Drupal::service('renderer')->render($title),
           'card_link_url' => $link,
           'card_link_title' => 'View more information',
-          'card_text' => \Drupal::service('renderer')->render($text),
+          'card_meta' => \Drupal::service('renderer')->render($card_meta),
           'visible_button' => TRUE,
         ];
       }
