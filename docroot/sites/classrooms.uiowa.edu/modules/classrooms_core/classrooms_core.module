@@ -477,6 +477,10 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--field-room-max-occupancy--room--default',
       'base hook' => 'field',
     ],
+    'field__node__field_room_seating_chart__room__default' => [
+      'template' => 'field--node--field-room-seating-chart--room--default',
+      'base hook' => 'field',
+    ],
     'field__node__field_room_max_occupancy__room__teaser' => [
       'template' => 'field--node--field-room-max-occupancy--room--teaser',
       'base hook' => 'field',
@@ -531,6 +535,13 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
         'building_name' => NULL,
       ],
       'template' => 'building-link',
+    ],
+    'building_link_teaser' => [
+      'variables' => [
+        'building_link' => NULL,
+        'building_name' => NULL,
+      ],
+      'template' => 'building-link-teaser',
     ],
     'room_map_link' => [
       'variables' => ['room_url_map' => NULL],
@@ -660,10 +671,12 @@ function classrooms_core_preprocess_views_view(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function classrooms_core_preprocess_views_view_unformatted(&$variables) {
+  // Get the view and its current display.
   $view = $variables['view'];
-  $variables['row_item_classes'] = [];
   $display_block = $view->current_display;
 
+  // Initialize the row item classes and the view's style plugin.
+  $variables['row_item_classes'] = [];
   $style = $view->style_plugin;
   $rows = $variables['rows'];
 
@@ -671,6 +684,7 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
     case 'block_rooms':
     case 'block_programmed_rooms_list':
 
+      // Define the common attribute classes.
       $attribute_classes = [
         'card--left',
         'card--stacked',
@@ -678,7 +692,7 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
         'card--enclosed',
         'card--button-position',
       ];
-
+      // Define the common headline classes.
       $headline_classes = [
         'h4',
         'headline',
@@ -687,31 +701,35 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
         'headline--underline',
       ];
 
+      // Add the attribute classes to the row item classes.
       $variables['row_item_classes'] = array_merge($attribute_classes, array_values($variables['row_item_classes']));
+      // Loop through the rows.
       foreach ($rows as $id => $row) {
         /** @var \Drupal\node\NodeInterface $node */
         $node = $row['content']['#node'];
-        // Set remaining row_item_classes as attributes on each row.
+        // Add the row item classes to the row attributes.
         $variables['rows'][$id]['attributes']->addClass($variables['row_item_classes']);
 
         // Get node path to link card with.
         $nid = $view->result[$id]->_entity->id();
         $link = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
 
-        // Combine fields to display.
+        // Combine the room ID and building ID fields to display.
         $title_combined = $style->getField($id, 'field_room_room_id') . ' ' . strtoupper($view->result[$id]->node__field_room_building_id_field_room_building_id_target_i);
         $title = ['#markup' => $title_combined];
 
+        // Define the card meta container.
         $card_meta = [
           '#type' => 'html_tag',
           '#tag' => 'div',
           '#attributes' => [
             'class' => [
-              'card__meta',
+              'card__meta fa-ul element--list-none element--margin-none',
             ],
           ],
         ];
 
+        // Define the meta fields.
         $meta_fields = [
           'type' => 'field_room_type',
           'name' => 'field_room_name',
@@ -719,13 +737,28 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
           'unit' => 'field_room_responsible_unit',
         ];
 
-        // Loop through the taxonomy and get items that start with "Seats".
+        // Get the seat taxonomy terms from the features taxonomy.
         $taxonomy = $node->get('field_room_features')->referencedEntities();
+
+        // Loop through the taxonomy and get items that start with "Seats".
         $seats = [];
         foreach ($taxonomy as $term) {
           if (strpos($term->getName(), 'Seats') === 0) {
             $seats[] = $term->getName();
           }
+        }
+
+        // Add the building link.
+        if ($display_block == 'block_programmed_rooms_list') {
+          $building_id = $node->get('field_room_building_id')->target_id;
+          $building = Drupal::entityTypeManager()->getStorage('building')->load($building_id);
+          $url = Url::fromUri('base:/buildings/' . $building_id)->toString();
+          $build['field_room_building_link'] = [
+            '#theme' => 'building_link_teaser',
+            '#building_link' => $url,
+            '#building_name' => $building->label(),
+          ];
+          $building_link = Drupal::service('renderer')->renderPlain($build['field_room_building_link']);
         }
 
         // Add the seats to the $meta_fields array.
@@ -738,7 +771,7 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
             'label' => [
               '#type' => 'html_tag',
               '#tag' => 'div',
-              '#value' => '<span class="fa-chair fas" role="presentation"></span> Seating type',
+              '#value' => '<span class="fa-li"><span class="fa-chair fas" role="presentation"></span></span> Seating type',
               '#attributes' => [
                 'class' => ['field__label'],
               ],
@@ -764,6 +797,14 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
           }
         }
 
+        // Add building_link to card_meta.
+        if ($display_block == 'block_programmed_rooms_list') {
+          $card_meta['building_link'] = [
+            '#type' => 'markup',
+            '#markup' => $building_link,
+          ];
+        }
+
         // Initialize card_options variable.
         $variables['rows'][$id]['card_options'] = [
           'attributes' => $variables['rows'][$id]['attributes'],
@@ -772,7 +813,6 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
           'card_title' => \Drupal::service('renderer')->render($title),
           'card_link_url' => $link,
           'headline_class' => $headline_classes,
-          'card_link_title' => 'Room details',
           'card_meta' => \Drupal::service('renderer')->render($card_meta),
           'visible_button' => TRUE,
         ];
