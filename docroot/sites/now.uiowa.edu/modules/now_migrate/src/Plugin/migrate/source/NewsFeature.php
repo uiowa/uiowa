@@ -22,7 +22,23 @@ class NewsFeature extends BaseNodeSource {
   /**
    * {@inheritdoc}
    */
+  public function query() {
+    $query = parent::query();
+    // Make sure our nodes are retrieved in order,
+    // and force a highwater mark of our last-most migrated node.
+    $query->orderBy('nid');
+    return $query;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function prepareRow(Row $row) {
+    // Skip this node if it comes after our last migrated.
+    if ($row->getSourceProperty('nid') < $this->getLastMigrated()) {
+      return FALSE;
+    }
+
     parent::prepareRow($row);
 
     // Set our tagMapping if it's not already.
