@@ -190,7 +190,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
         case 'views_block:people_list_block-list_card':
           $row_classes = [];
           $build['#attributes']['class'] = array_unique($build['#attributes']['class']);
-          foreach ($build['#attributes']['class'] as $style) {
+          foreach ($build['#attributes']['class'] as $key => $style) {
             foreach ([
               'bg',
               'card',
@@ -199,6 +199,9 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
             ] as $check) {
               if (str_starts_with($style, $check)) {
                 $row_classes[] = $style;
+                // Removes class so that wrapper is not affected.
+                // This includes lb preview things like contextual links.
+                unset($build['#attributes']['class'][$key]);
               }
             }
           }
