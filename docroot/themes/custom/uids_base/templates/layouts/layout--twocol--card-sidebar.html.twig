@@ -24,7 +24,7 @@
   settings.extra_classes,
 ]
 %}
-{{ attach_library('uids_base/page--left-sidebar') }}
+{{ attach_library('uids_base/card') }}
 
 {% set attributes = attributes.addClass(classes) %}
 
@@ -43,9 +43,11 @@
         attributes: create_attribute().addClass('card', 'layout__region-container'),
         region_attributes: region_attributes,
         content: content,
+        subtitle: content.card_subtitle,
+        meta: content.card_meta,
       } %}
       {% embed '@uids_base/uids/card.html.twig' with card only %}
-        {%  if content.card_media %}
+        {% if content.card_media %}
           {% block media %}
             <div {{ region_attributes.card_media.addClass('layout__region', 'layout__region--card-media', 'media') }}>
               <div class="media__inner">
@@ -55,7 +57,7 @@
           {% endblock %}
         {% endif %}
 
-        {%  if content.card_title %}
+        {% if content.card_title %}
           {% block heading %}
             <header {{ region_attributes.card_title.addClass('layout__region', 'layout__region--card-title') }}>
               {{ content.card_title }}
@@ -63,7 +65,7 @@
           {% endblock %}
         {% endif %}
 
-        {%  if content.card_content %}
+        {% if content.card_content %}
           {% block content %}
             <div {{ region_attributes.card_content.addClass('layout__region', 'layout__region--card-content') }}>
               {{ content.card_content }}
@@ -71,9 +73,7 @@
           {% endblock %}
         {% endif %}
 
-
-
-        {%  if content.card_subtitle %}
+        {% if content.card_subtitle %}
           {% block subtitle %}
             <div {{ region_attributes.card_subtitle.addClass('layout__region', 'layout__region--card-subtitle', 'card__subtitle') }}>
               {{ content.card_subtitle }}
@@ -81,7 +81,7 @@
           {% endblock %}
         {% endif %}
 
-        {%  if content.card_meta %}
+        {% if content.card_meta %}
           {% block meta %}
             <div {{ region_attributes.card_meta.addClass('layout__region', 'layout__region--card-meta', 'card__meta') }}>
               {{ content.card_meta }}
@@ -89,7 +89,7 @@
           {% endblock %}
         {% endif %}
 
-        {%  if content.card_button %}
+        {% if content.card_button %}
           {% block button %}
             <footer {{ region_attributes.card_button.addClass('layout__region', 'layout__region--card-button') }}>
               {{ content.card_button }}

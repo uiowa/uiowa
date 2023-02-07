@@ -134,6 +134,10 @@ function grad_student_profile_preprocess_views_view_unformatted(&$variables) {
  */
 function grad_student_profile_theme($existing, $type, $theme, $path) {
   return [
+    'field__node__field_grad_program_all_degree__student_profile__default' => [
+      'template' => 'field--node--field-grad-program-all-degree--student-profile--default',
+      'base hook' => 'field',
+    ],
     'field__node__field_person_bio_headline__student_profile__default' => [
       'template' => 'field--node--field-person-bio-headline--student-profile--default',
       'base hook' => 'field',
@@ -158,9 +162,5 @@ function grad_student_profile_theme($existing, $type, $theme, $path) {
       'template' => 'node--student-profile--card',
       'base hook' => 'field',
     ],
-//    'views_view_unformatted__student_profile_card' => [
-//      'template' => 'views-view-unformatted--student-profile-card',
-//      'base hook' => 'view',
-//    ],
   ];
 }
