@@ -1318,7 +1318,6 @@ function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
   //   https://github.com/uiowa/uiowa/issues/5044
   if (in_array($machine_name, [
     'card_list',
-    'list_article',
   ])) {
     foreach ($variables['rows'] as $id => &$row) {
       // Set remaining row_item_classes as attributes on each row.
