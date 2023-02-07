@@ -189,6 +189,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
         case 'views_block:article_list_block-list_article':
         case 'views_block:people_list_block-list_card':
           $row_classes = [];
+          $build['#attributes']['class'] = array_unique($build['#attributes']['class']);
           foreach ($build['#attributes']['class'] as $style) {
             foreach ([
               'bg',
@@ -201,7 +202,6 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
               }
             }
           }
-          $row_classes = array_unique($row_classes);
           if (isset($block->getConfiguration()['fields'])) {
             $hide_fields = [];
             foreach ($block->getConfiguration()['fields'] as $field_name => $hide_field) {
