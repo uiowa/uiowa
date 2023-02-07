@@ -78,8 +78,9 @@ third_party_settings:
           label: ''
           context_mapping: {  }
           layout_builder_styles_style:
-            - ''
-            - section_margin_fixed_width_container
+            0: ''
+            1: section_margin_fixed_width_container
+            section_alignment_start: section_alignment_start
         components:
           -
             uuid: 78b94ec0-2587-4646-a668-c8b44259563e
@@ -99,45 +100,6 @@ third_party_settings:
                   view_mode: medium__square
                 third_party_settings: {  }
             weight: 0
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 07adcc6c-a516-4207-a47c-0fd2e875576a
-            region: card_content
-            configuration:
-              id: 'field_block:node:student_profile:field_grad_program_all_degree'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: list_default
-                label: hidden
-                settings: {  }
-                third_party_settings: {  }
-            weight: 0
-            additional: {  }
-            third_party_settings: {  }
-          -
-            uuid: 008fd4a1-a84e-46ef-8fbb-d53252560d7b
-            region: card_content
-            configuration:
-              id: 'field_block:node:student_profile:field_person_hometown'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: string
-                label: inline
-                settings:
-                  link_to_entity: false
-                third_party_settings: {  }
-            weight: 1
             additional: {  }
             third_party_settings: {  }
           -
@@ -232,7 +194,52 @@ third_party_settings:
             weight: 4
             additional: {  }
             third_party_settings: {  }
-        third_party_settings: {  }
+          -
+            uuid: 07adcc6c-a516-4207-a47c-0fd2e875576a
+            region: card_meta
+            configuration:
+              id: 'field_block:node:student_profile:field_grad_program_all_degree'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: list_default
+                label: inline
+                settings: {  }
+                third_party_settings: {  }
+            weight: -9
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 008fd4a1-a84e-46ef-8fbb-d53252560d7b
+            region: card_meta
+            configuration:
+              id: 'field_block:node:student_profile:field_person_hometown'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: inline
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: -10
+            additional: {  }
+            third_party_settings: {  }
+        third_party_settings:
+          layout_builder_lock:
+            lock: {  }
+          layout_builder_limit:
+            limit:
+              scope: disabled
+              scope_update: 'Update scope'
   layout_builder_restrictions:
     allowed_block_categories: {  }
     entity_view_mode_restriction:
