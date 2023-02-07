@@ -6,6 +6,7 @@
  */
 
 use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
@@ -103,6 +104,27 @@ function _sitenow_events_form_submit(array &$form, FormStateInterface $form_stat
         }
       }
     }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function sitenow_events_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if ($entity->bundle() === 'event' && $view_mode === 'teaser') {
+    $mapping = [
+      '#media' => 'field_image',
+      '#title' => 'title',
+      '#content' => 'field_teaser',
+      '#meta' => [
+        'field_event_virtual',
+        'field_event_location',
+        'field_event_performer',
+      ],
+    ];
+
+    $build = uiowa_core_node_view_build_card($build, $entity, $mapping);
+
   }
 }
 
@@ -264,7 +286,6 @@ function sitenow_events_preprocess_block(&$variables) {
 
       // The above case intentionally falls through to the next case.
       // Do not add a break.
-    case 'views_block:events_list_block-card_list':
     case 'views_block:events-card_list':
       if (isset($variables['attributes']['class'])) {
         // Unset classes meant for children.
