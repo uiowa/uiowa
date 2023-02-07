@@ -1313,9 +1313,7 @@ function layout_builder_custom_preprocess_views_view_unformatted(&$variables) {
 
   $machine_name = $view->getDisplay()->display['id'];
 
-  // @todo Change this to just match 'card_list' once there is an update hook
-  //   to transition existing block instances to new machine name. See
-  //   https://github.com/uiowa/uiowa/issues/5044
+  // Only target card_list with these modifications.
   if (in_array($machine_name, [
     'card_list',
   ])) {
