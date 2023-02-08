@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labstone.uiowa.ddev.site
+    protocol: https
+  machine_name: labstone
+  human_name: stone.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labstone.prod
+drupal:
+  db:
+    database: stone_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://labstone.prod.drupal.uiowa.edu'
+  requester: eastone
+  site-name: 'Stone Research Group'
