@@ -145,9 +145,12 @@ function classrooms_core_preprocess_block(&$variables) {
       $classes[] = 'block-margin__top--extra';
       break;
 
-    case 'field_block:node:room:field_room_technology_features':
     case 'field_block:node:room:field_room_guide':
       $classes[] = 'bg--gray block-padding__all';
+      $title_classes[] = 'h4 headline headline--serif headline--underline';
+      break;
+
+    case 'field_block:node:room:field_room_technology_features':
       $title_classes[] = 'h4 headline headline--serif headline--underline';
       break;
 
