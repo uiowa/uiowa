@@ -49,6 +49,7 @@
       {% embed '@uids_base/uids/card.html.twig' with card only %}
         {% if content.card_media %}
           {% block media %}
+            {{ attach_library('uids_base/media') }}
             <div {{ region_attributes.card_media.addClass('layout__region', 'layout__region--card-media', 'media') }}>
               <div class="media__inner">
                 {{ content.card_media }}
