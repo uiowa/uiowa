@@ -19,6 +19,19 @@ use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
 
 /**
+ * Helper function to check if the "articles_narrow" split is enabled.
+ *
+ * @return bool
+ *   Returns TRUE if the split is enabled, FALSE otherwise.
+ */
+function sitenow_articles_is_articles_narrow_split_enabled() {
+  /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
+  $config_factory = \Drupal::service('config.factory');
+  $articles_narrow_split_config = $config_factory->get('config_split.config_split.articles_narrow');
+  return ($articles_narrow_split_config->get('status') === TRUE);
+}
+
+/**
  * Implements hook_entity_extra_field_info().
  */
 function sitenow_articles_entity_extra_field_info() {
@@ -321,9 +334,39 @@ function sitenow_articles_node_view(array &$build, EntityInterface $entity, Enti
         $created = $entity->get('created')->value;
         $date = \Drupal::service('date.formatter')->format($created, 'medium');
         $build['article_created_date'] = [
-          '#type' => 'markup',
-          '#markup' => '<div class="field__label">Published:</div> <span class="article-created-date">' . $date . '</span>',
+          '#type' => 'container',
+          '#attributes' => [
+            'class' => ['article-created-date'],
+          ],
+          'date' => [
+            '#type' => 'markup',
+            '#markup' => $date,
+          ],
         ];
+      }
+
+      if ($display->getComponent('article_created_date') && sitenow_articles_is_articles_narrow_split_enabled()) {
+        $created = $entity->get('created')->value;
+        $date = \Drupal::service('date.formatter')->format($created, 'medium');
+        $build['article_created_date'] = [
+          '#type' => 'container',
+          '#attributes' => [
+            'class' => ['article-created-date'],
+          ],
+          'title' => [
+            '#type' => 'html_tag',
+            '#tag' => 'div',
+            '#value' => t('Published'),
+            '#attributes' => [
+              'class' => ['field__label'],
+            ],
+          ],
+          'date' => [
+            '#type' => 'markup',
+            '#markup' => $date,
+          ],
+        ];
+
       }
       break;
 
@@ -680,7 +723,6 @@ function sitenow_articles_preprocess_block(&$variables) {
     case 'field_block:node:article:field_article_source_org':
     case 'galleryjumplink_block':
     case 'field_block:node:article:field_image_caption':
-    case 'extra_field_block:node:article:article_created_date':
       $variables['attributes']['class'][] = 'article--meta';
 
       break;
