@@ -5056,3 +5056,9 @@ $sites['orgaccohpsychotherapy.uiowa.ddev.site'] = 'accohpsychotherapy.org.uiowa.
 $sites['orgaccohpsychotherapy.dev.drupal.uiowa.edu'] = 'accohpsychotherapy.org.uiowa.edu';
 $sites['orgaccohpsychotherapy.stage.drupal.uiowa.edu'] = 'accohpsychotherapy.org.uiowa.edu';
 $sites['orgaccohpsychotherapy.prod.drupal.uiowa.edu'] = 'accohpsychotherapy.org.uiowa.edu';
+
+// Directory aliases for stone.lab.uiowa.edu.
+$sites['labstone.uiowa.ddev.site'] = 'stone.lab.uiowa.edu';
+$sites['labstone.dev.drupal.uiowa.edu'] = 'stone.lab.uiowa.edu';
+$sites['labstone.stage.drupal.uiowa.edu'] = 'stone.lab.uiowa.edu';
+$sites['labstone.prod.drupal.uiowa.edu'] = 'stone.lab.uiowa.edu';
