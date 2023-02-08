@@ -1173,6 +1173,26 @@ function uids_base_preprocess_superfish_menu_items(array &$variables) {
 }
 
 /**
+ * Implements hook_theme().
+ */
+function uids_base_theme($existing, $type, $theme, $path) {
+  return [
+    'field__field_person_email' => [
+      'template' => 'field--node--field-person-email',
+      'base hook' => 'field',
+    ],
+    'field__field_person_education' => [
+      'template' => 'field--node--field-person-education',
+      'base hook' => 'field',
+    ],
+    'field__field_person_phone' => [
+      'template' => 'field--node--field-person-phone',
+      'base hook' => 'field',
+    ],
+  ];
+}
+
+/**
  * Implements hook_theme_suggestions_HOOK().
  */
 function uids_base_theme_suggestions_field_alter(array &$suggestions, array $variables) {

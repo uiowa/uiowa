@@ -47,7 +47,7 @@
         meta: content.card_meta,
       } %}
       {% embed '@uids_base/uids/card.html.twig' with card only %}
-        {% if content.card_media %}
+        {% if content.card_media is not empty %}
           {% block media %}
             {{ attach_library('uids_base/media') }}
             <div {{ region_attributes.card_media.addClass('layout__region', 'layout__region--card-media', 'media') }}>
@@ -84,7 +84,7 @@
 
         {% if content.card_meta %}
           {% block meta %}
-            <div {{ region_attributes.card_meta.addClass('layout__region', 'layout__region--card-meta', 'card__meta') }}>
+            <div {{ region_attributes.card_meta.addClass('layout__region', 'layout__region--card-meta', 'card__meta card__meta fa-ul element--list-none') }}>
               {{ content.card_meta }}
             </div>
           {% endblock %}
