@@ -214,10 +214,50 @@ function classrooms_core_node_presave(EntityInterface $entity) {
 }
 
 /**
+ * Processes the attributes and field label icon for fields in teaser view mode.
+ *
+ * @param array $variables
+ *   The field variables array.
+ * @param string $icon
+ *   The Font Awesome class for the field label icon.
+ */
+function classrooms_core_preprocess_field_set_teaser_classes(array &$variables, $icon) {
+  $variables['field_label_icon'] = "{$icon} fas fa-li";
+  if (!isset($variables['attributes']['class'])) {
+    $variables['attributes']['class'] = '';
+  }
+  $variables['attributes']['class'] .= 'fa-ul';
+}
+
+/**
  * Implements hook_preprocess_field().
  */
 function classrooms_core_preprocess_field(&$variables, $hook) {
   switch ($variables['element']['#field_name']) {
+    case 'field_room_name':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        classrooms_core_preprocess_field_set_teaser_classes($variables, 'fa-door-closed');
+      }
+      break;
+
+    case 'field_room_responsible_unit':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        classrooms_core_preprocess_field_set_teaser_classes($variables, 'fa-key');
+      }
+      break;
+
+    case 'field_room_max_occupancy':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        classrooms_core_preprocess_field_set_teaser_classes($variables, 'fa-user');
+      }
+      break;
+
+    case 'field_room_type':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        classrooms_core_preprocess_field_set_teaser_classes($variables, 'fa-info-circle');
+      }
+      break;
+
     case 'field_room_type':
       $variables['items'][0]['content']['#url'] = Url::fromRoute('entity.node.canonical', ['node' => 206]);
       break;
@@ -484,24 +524,8 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--field-room-seating-chart--room--default',
       'base hook' => 'field',
     ],
-    'field__node__field_room_max_occupancy__room__teaser' => [
-      'template' => 'field--node--field-room-max-occupancy--room--teaser',
-      'base hook' => 'field',
-    ],
     'field__node__field_room_accessibility__room__default' => [
       'template' => 'field--node--field-room-accessibility--room--default',
-      'base hook' => 'field',
-    ],
-    'field__node__field_room_responsible_unit__room__teaser' => [
-      'template' => 'field--node--field-room-responsible-unit--room--teaser',
-      'base hook' => 'field',
-    ],
-    'field__node__field_room_type__room__teaser' => [
-      'template' => 'field--node--field-room-type--room--teaser',
-      'base hook' => 'field',
-    ],
-    'field__node__field_room_name__room__teaser' => [
-      'template' => 'field--node--field-room-name--room--teaser',
       'base hook' => 'field',
     ],
     'field__node__field_room_features__room__default' => [
@@ -650,7 +674,7 @@ function classrooms_core_views_pre_view(ViewExecutable $view, $display_id, array
         ->getStorage('taxonomy_term')
         ->load($page_term_id);
       if ($term->bundle() === 'units') {
-        $view->display_handler->setOption('css_class', 'grid--fourcol--25');
+        $view->display_handler->setOption('css_class', 'grid--threecol--33-34-33');
       }
     }
   }
@@ -725,17 +749,12 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
         $card_meta = [
           '#type' => 'html_tag',
           '#tag' => 'div',
-          '#attributes' => [
-            'class' => [
-              'card__meta fa-ul element--list-none element--margin-none',
-            ],
-          ],
         ];
 
         // Define the meta fields.
         $meta_fields = [
-          'type' => 'field_room_type',
           'name' => 'field_room_name',
+          'type' => 'field_room_type',
           'occupancy' => 'field_room_max_occupancy',
           'unit' => 'field_room_responsible_unit',
         ];
@@ -751,30 +770,17 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
           }
         }
 
-        // Add the building link.
-        if ($display_block == 'block_programmed_rooms_list') {
-          $building_id = $node->get('field_room_building_id')->target_id;
-          $building = Drupal::entityTypeManager()->getStorage('building')->load($building_id);
-          $url = Url::fromUri('base:/buildings/' . $building_id)->toString();
-          $build['field_room_building_link'] = [
-            '#theme' => 'building_link_teaser',
-            '#building_link' => $url,
-            '#building_name' => $building->label(),
-          ];
-          $building_link = Drupal::service('renderer')->renderPlain($build['field_room_building_link']);
-        }
-
         // Add the seats to the $meta_fields array.
         if (!empty($seats) && $display_block == 'block_programmed_rooms_list') {
           $card_meta['seats'] = [
             '#type' => 'container',
             '#attributes' => [
-              'class' => ['field--label-inline'],
+              'class' => ['field--label-inline fa-ul'],
             ],
             'label' => [
               '#type' => 'html_tag',
               '#tag' => 'div',
-              '#value' => '<span class="fa-li"><span class="fa-chair fas" role="presentation"></span></span> Seating type',
+              '#value' => '<span class="fa-chair fas fa-li" role="presentation"></span> Seating type',
               '#attributes' => [
                 'class' => ['field__label'],
               ],
@@ -788,6 +794,19 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
               ],
             ],
           ];
+        }
+
+        // Add the building link.
+        if ($display_block == 'block_programmed_rooms_list') {
+          $building_id = $node->get('field_room_building_id')->target_id;
+          $building = Drupal::entityTypeManager()->getStorage('building')->load($building_id);
+          $url = Url::fromUri('base:/buildings/' . $building_id)->toString();
+          $build['field_room_building_link'] = [
+            '#theme' => 'building_link_teaser',
+            '#building_link' => $url,
+            '#building_name' => $building->label(),
+          ];
+          $building_link = Drupal::service('renderer')->renderPlain($build['field_room_building_link']);
         }
 
         // Add meta fields, if they exist.
