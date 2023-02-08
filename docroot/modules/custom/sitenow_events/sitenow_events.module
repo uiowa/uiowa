@@ -12,6 +12,7 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\uiowa_core\Element\Card;
 use Drupal\uiowa_core\HeadlineHelper;
 use GuzzleHttp\Exception\RequestException;
 
@@ -125,6 +126,22 @@ function sitenow_events_node_view(array &$build, EntityInterface $entity, Entity
 
     $build = uiowa_core_node_view_build_card($build, $entity, $mapping);
 
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_build_defaults_alter().
+ */
+function sitenow_events_node_build_defaults_alter(array &$build, EntityInterface $entity, $view_mode) {
+  if ($entity->bundle() === 'event' && $view_mode === 'teaser') {
+    $build['#type'] = 'card';
+    unset($build['#theme']);
+    $build['#pre_render'] = [
+      [
+        Card::class,
+        'preRenderCard',
+      ],
+    ];
   }
 }
 
