@@ -971,6 +971,10 @@ function sitenow_people_node_view(array &$build, EntityInterface $entity, Entity
 
     $build = uiowa_core_node_view_build_card($build, $entity, $mapping);
 
+    // Handle link directly to source functionality.
+    $url = uiowa_core_source_link_direct('field_person_website_link_direct', 'field_person_website', $entity);
+    $build['#url'] = $url;
+
   }
 }
 

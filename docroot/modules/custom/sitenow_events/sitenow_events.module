@@ -127,6 +127,10 @@ function sitenow_events_node_view(array &$build, EntityInterface $entity, Entity
 
     $build = uiowa_core_node_view_build_card($build, $entity, $mapping);
 
+    // Handle link directly to source functionality.
+    $url = uiowa_core_source_link_direct('field_event_series_link_direct', 'field_event_series_link', $entity);
+    $build['#url'] = $url;
+
   }
 }
 
@@ -356,20 +360,6 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
       // Need to get these values regardless of whether they are hidden or not.
       /** @var \Drupal\node\NodeInterface $node */
       $node = $row['content']['#node'];
-      $nid = $node->get('nid')->value;
-      $link_direct = (int) $node->get('field_event_series_link_direct')->value;
-      $source_link = $node->get('field_event_series_link')->uri;
-
-      // If source link is set and link direct is checked, set $card_link_url to
-      // source link. Otherwise, $card_link_url should be set to node link.
-      if ($link_direct === 1
-        && isset($source_link) && !empty($source_link)) {
-        $source_link = $node->get('field_event_series_link')->get(0)->getUrl()->toString();
-        $card_link_url = $source_link;
-      }
-      else {
-        $card_link_url = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
-      }
 
       $card_meta = [
         '#type' => 'html_tag',
@@ -398,7 +388,6 @@ function sitenow_events_preprocess_views_view_unformatted(&$variables) {
       }
 
       $variables['rows'][$id]['card_options']['card_subtitle'] = $style->getField($id, 'field_event_when');
-      $variables['rows'][$id]['card_options']['card_link_url'] = $card_link_url;
 
       if (!empty($card_meta)) {
         $variables['rows'][$id]['card_options']['card_meta'] = \Drupal::service('renderer')->render($card_meta);

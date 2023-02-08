@@ -1074,3 +1074,30 @@ function uiowa_core_html_cleanup($string, $allowed_tags = NULL): string {
 function uiowa_core_html_empty_after_cleanup($string, $allowed_tags = NULL): bool {
   return uiowa_core_html_cleanup($string, $allowed_tags) === '';
 }
+
+/**
+ * Helper function to construct link directly to source functionality.
+ *
+ * @param string $source_link_direct
+ *   The field name of the boolean field controlling the functionality.
+ * @param string $source_link
+ *   The field name of the link field providing the source link.
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *   The entity object.
+ *
+ * @return string
+ *   The url used to link the view mode.
+ *
+ * @throws \Drupal\Core\Entity\EntityMalformedException
+ */
+function uiowa_core_source_link_direct(string $source_link_direct, string $source_link, EntityInterface $entity): string {
+  $link_direct = (int) $entity->get($source_link_direct)->value;
+  $link = $entity->get($source_link)->uri;
+  if ($link_direct === 1 && isset($link) && !empty($link)) {
+    $url = $entity->get($source_link)->get(0)->getUrl()->toString();
+  }
+  else {
+    $url = !$entity->isNew() ? $entity->toUrl('canonical')->toString() : NULL;
+  }
+  return $url;
+}

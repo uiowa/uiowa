@@ -325,6 +325,10 @@ function sitenow_articles_node_view(array &$build, EntityInterface $entity, Enti
         ];
 
         $build = uiowa_core_node_view_build_card($build, $entity, $mapping);
+
+        // Handle link directly to source functionality.
+        $url = uiowa_core_source_link_direct('field_article_source_link_direct', 'field_article_source_link', $entity);
+        $build['#url'] = $url;
       }
       break;
 
@@ -386,16 +390,6 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
       $org = $row['content']['#node']->get('field_article_source_org')->value;
       $nid = $row['content']['#node']->get('nid')->value;
 
-      // If source link is set and link direct is checked, set $card_link_url to
-      // source link. Otherwise, $card_link_url should be set to node link.
-      if ($link_direct === 1
-        && isset($source_link) && !empty($source_link)) {
-        $card_link_url = $source_link;
-      }
-      else {
-        $card_link_url = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
-      }
-
       $card_tag = [
         '#type' => 'html_tag',
         '#tag' => 'span',
@@ -431,7 +425,6 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
         ];
       }
 
-      $variables['rows'][$id]['content']['#url'] = $card_link_url;
       $variables['rows'][$id]['content']['#subtitle'] = $style->getField($id, 'created');
       $variables['rows'][$id]['content']['#meta']['tag'] = $card_tag;
       $variables['rows'][$id]['content']['#meta']['field_article_author']['#markup'] = $style->getField($id, 'field_article_author');
