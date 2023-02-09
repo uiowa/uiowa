@@ -264,9 +264,6 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
       if ($variables['element']['#view_mode'] == 'teaser') {
         classrooms_core_preprocess_field_set_teaser_classes($variables, 'fa-info-circle');
       }
-      break;
-
-    case 'field_room_type':
       $variables['items'][0]['content']['#url'] = Url::fromRoute('entity.node.canonical', ['node' => 206]);
       break;
 
@@ -773,7 +770,7 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
         // Loop through the taxonomy and get items that start with "Seats".
         $seats = [];
         foreach ($taxonomy as $term) {
-          if (strpos($term->getName(), 'Seats') === 0) {
+          if (str_starts_with($term->getName(), 'Seats')) {
             $seats[] = $term->getName();
           }
         }
