@@ -132,6 +132,14 @@ function classrooms_core_preprocess_block(&$variables) {
   $classes = [];
   $title_classes = [];
   switch ($variables['plugin_id']) {
+    // Unset request info buttons.
+    case 'requestinfobutton_block':
+      $node = \Drupal::routeMatch()->getParameter('node');
+      if (!$node || $node->get('field_room_instruction_category')->value != 'UNIVERSITY_CLASSROOM') {
+        $variables['content'] = [];
+      }
+      break;
+
     case 'field_block:node:room:field_room_scheduling_regions':
     case 'field_block:node:room:field_room_responsible_unit':
     case 'field_block:node:room:field_room_instruction_category':
@@ -781,7 +789,7 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
             'label' => [
               '#type' => 'html_tag',
               '#tag' => 'div',
-              '#value' => '<span class="fa-chair fas fa-li" role="presentation"></span>' . \Drupal::translation()->translate('Seating type', [], ['context' => 'Seating type for a room']),
+              '#value' => '<span class="fa-chair fas fa-li" role="presentation"></span>' . \Drupal::translation()->translate('Seating Type'),
               '#attributes' => [
                 'class' => ['field__label'],
               ],
