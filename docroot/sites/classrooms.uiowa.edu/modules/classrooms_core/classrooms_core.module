@@ -772,7 +772,8 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
 
         // Add the seats to the $meta_fields array.
         if (!empty($seats) && $display_block == 'block_programmed_rooms_list') {
-          $card_meta['seats'] = [
+          // Add the seats to a separate variable.
+          $seating_type = [
             '#type' => 'container',
             '#attributes' => [
               'class' => ['field--label-inline fa-ul'],
@@ -827,6 +828,24 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
           ];
         }
 
+        $card_meta_combined = [[
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#attributes' => [
+            'class' => ['card-meta-container'],
+          ],
+          '#value' => \Drupal::service('renderer')->render($card_meta),
+        ],
+          [
+            '#type' => 'html_tag',
+            '#tag' => 'div',
+            '#attributes' => [
+              'class' => ['seating-type-container'],
+            ],
+            '#value' => \Drupal::service('renderer')->render($seating_type),
+          ],
+        ];
+
         // Initialize card_options variable.
         $variables['rows'][$id]['card_options'] = [
           'attributes' => $variables['rows'][$id]['attributes'],
@@ -835,7 +854,7 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
           'card_title' => \Drupal::service('renderer')->render($title),
           'card_link_url' => $link,
           'headline_class' => $headline_classes,
-          'card_meta' => \Drupal::service('renderer')->render($card_meta),
+          'card_meta' => \Drupal::service('renderer')->render($card_meta_combined),
           'visible_button' => TRUE,
         ];
 
