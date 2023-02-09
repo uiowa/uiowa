@@ -5062,3 +5062,9 @@ $sites['labstone.uiowa.ddev.site'] = 'stone.lab.uiowa.edu';
 $sites['labstone.dev.drupal.uiowa.edu'] = 'stone.lab.uiowa.edu';
 $sites['labstone.stage.drupal.uiowa.edu'] = 'stone.lab.uiowa.edu';
 $sites['labstone.prod.drupal.uiowa.edu'] = 'stone.lab.uiowa.edu';
+
+// Directory aliases for dsri.uiowa.edu.
+$sites['dsri.uiowa.ddev.site'] = 'dsri.uiowa.edu';
+$sites['dsri.dev.drupal.uiowa.edu'] = 'dsri.uiowa.edu';
+$sites['dsri.stage.drupal.uiowa.edu'] = 'dsri.uiowa.edu';
+$sites['dsri.prod.drupal.uiowa.edu'] = 'dsri.uiowa.edu';
