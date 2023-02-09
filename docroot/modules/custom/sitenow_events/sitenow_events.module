@@ -131,6 +131,21 @@ function sitenow_events_node_view(array &$build, EntityInterface $entity, Entity
     $url = uiowa_core_source_link_direct('field_event_series_link_direct', 'field_event_series_link', $entity);
     $build['#url'] = $url;
 
+    // Add view specific classes.
+    if (isset($entity->view)) {
+      if ($entity->view->id() === 'events') {
+        $media_attributes = [
+          'card--layout-left',
+          'card--list',
+          'media--circle',
+          'media--small',
+          'media--border',
+          'borderless',
+        ];
+        $build['#attributes']->addClass($media_attributes);
+      }
+    }
+
   }
 }
 
@@ -349,51 +364,9 @@ function sitenow_events_preprocess_field(&$variables) {
  */
 function sitenow_events_preprocess_views_view_unformatted(&$variables) {
   /** @var \Drupal\views\ViewExecutable $view */
-  // @todo come back to scope by display id.
   $view = $variables['view'];
   $rows = $variables['rows'];
   $style = $view->style_plugin;
-
-  if (in_array($view->id(), ['events_list_block', 'events'])) {
-
-    foreach ($rows as $id => $row) {
-      // Need to get these values regardless of whether they are hidden or not.
-      /** @var \Drupal\node\NodeInterface $node */
-      $node = $row['content']['#node'];
-
-      $card_meta = [
-        '#type' => 'html_tag',
-        '#tag' => 'div',
-        '#attributes' => [
-          'class' => [
-            'card__meta',
-          ],
-        ],
-      ];
-
-      $meta_fields = [
-        'virtual' => 'field_event_virtual',
-        'location' => 'field_event_location',
-        'performer' => 'field_event_performer',
-      ];
-
-      // Add meta fields, if they exist.
-      foreach ($meta_fields as $key => $field_name) {
-        if (
-          $style->getField($id, $field_name) &&
-          !$node->get($field_name)?->isEmpty()
-        ) {
-          $card_meta[$key] = $node?->{$field_name}?->view('teaser');
-        }
-      }
-
-      $variables['rows'][$id]['card_options']['card_subtitle'] = $style->getField($id, 'field_event_when');
-
-      if (!empty($card_meta)) {
-        $variables['rows'][$id]['card_options']['card_meta'] = \Drupal::service('renderer')->render($card_meta);
-      }
-    }
-  }
 
   switch ($view->id()) {
     case 'event_details_card':

@@ -975,6 +975,21 @@ function sitenow_people_node_view(array &$build, EntityInterface $entity, Entity
     $url = uiowa_core_source_link_direct('field_person_website_link_direct', 'field_person_website', $entity);
     $build['#url'] = $url;
 
+    // Add view specific classes.
+    if (isset($entity->view)) {
+      if ($entity->view->id() === 'people') {
+        $media_attributes = [
+          'card--layout-left',
+          'card--list',
+          'media--circle',
+          'media--small',
+          'media--border',
+          'borderless',
+        ];
+        $build['#attributes']->addClass($media_attributes);
+      }
+    }
+
   }
 }
 

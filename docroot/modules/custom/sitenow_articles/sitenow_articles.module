@@ -329,6 +329,20 @@ function sitenow_articles_node_view(array &$build, EntityInterface $entity, Enti
         // Handle link directly to source functionality.
         $url = uiowa_core_source_link_direct('field_article_source_link_direct', 'field_article_source_link', $entity);
         $build['#url'] = $url;
+
+        // Add view specific classes.
+        if (isset($entity->view)) {
+          if ($entity->view->id() === 'articles') {
+            $media_attributes = [
+              'card--layout-right',
+              'card--list',
+              'media--widescreen',
+              'media--small',
+              'borderless',
+            ];
+            $build['#attributes']->addClass($media_attributes);
+          }
+        }
       }
       break;
 
