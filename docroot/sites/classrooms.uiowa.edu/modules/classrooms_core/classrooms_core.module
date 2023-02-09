@@ -781,7 +781,7 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
             'label' => [
               '#type' => 'html_tag',
               '#tag' => 'div',
-              '#value' => '<span class="fa-chair fas fa-li" role="presentation"></span> Seating type',
+              '#value' => '<span class="fa-chair fas fa-li" role="presentation"></span>' . \Drupal::translation()->translate('Seating type', [], ['context' => 'Seating type for a room']),
               '#attributes' => [
                 'class' => ['field__label'],
               ],
@@ -828,6 +828,7 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
           ];
         }
 
+        // Combine card_meta and seating_type so seating_type renders last.
         $card_meta_combined = [[
           '#type' => 'html_tag',
           '#tag' => 'div',
