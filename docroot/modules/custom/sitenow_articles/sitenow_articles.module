@@ -109,9 +109,10 @@ function sitenow_articles_form_views_ui_edit_display_form_alter(&$form, FormStat
 function sitenow_articles_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
   switch ($entity->getType()) {
     case 'article':
+      $created = $entity->get('created')->value;
+      $date = \Drupal::service('date.formatter')->format($created, 'medium');
+
       if ($display->getComponent('article_created_date')) {
-        $created = $entity->get('created')->value;
-        $date = \Drupal::service('date.formatter')->format($created, 'medium');
         $build['article_created_date'] = [
           '#type' => 'markup',
           '#markup' => '<span class="article-created-date">' . $date . '</span>',
@@ -119,6 +120,8 @@ function sitenow_articles_node_view(array &$build, EntityInterface $entity, Enti
       }
 
       if ($view_mode === 'teaser') {
+        // Add date.
+        $build['#subtitle'] = $date;
         // Handle link directly to source functionality.
         $build['#url'] = uiowa_core_source_link_direct('field_article_source_link_direct', 'field_article_source_link', $entity);
 
@@ -431,7 +434,6 @@ function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
         ];
       }
 
-      $variables['rows'][$id]['content']['#subtitle'] = $style->getField($id, 'created');
       $variables['rows'][$id]['content']['#meta']['tag'] = $card_tag;
       $variables['rows'][$id]['content']['#meta']['field_article_author']['#markup'] = $style->getField($id, 'field_article_author');
     }
