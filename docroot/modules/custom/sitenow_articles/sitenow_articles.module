@@ -104,6 +104,44 @@ function sitenow_articles_form_views_ui_edit_display_form_alter(&$form, FormStat
 }
 
 /**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function sitenow_articles_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  switch ($entity->getType()) {
+    case 'article':
+      if ($display->getComponent('article_created_date')) {
+        $created = $entity->get('created')->value;
+        $date = \Drupal::service('date.formatter')->format($created, 'medium');
+        $build['article_created_date'] = [
+          '#type' => 'markup',
+          '#markup' => '<span class="article-created-date">' . $date . '</span>',
+        ];
+      }
+
+      if ($view_mode === 'teaser') {
+        // Handle link directly to source functionality.
+        $build['#url'] = uiowa_core_source_link_direct('field_article_source_link_direct', 'field_article_source_link', $entity);
+
+        // Add view specific classes.
+        if (isset($entity->view)) {
+          if ($entity->view->id() === 'articles') {
+            $media_attributes = [
+              'card--layout-right',
+              'card--list',
+              'media--widescreen',
+              'media--small',
+              'borderless',
+            ];
+            $build['#attributes']->addClass($media_attributes);
+          }
+        }
+      }
+      break;
+
+  }
+}
+
+/**
  * Implements hook_preprocess_HOOK().
  */
 function sitenow_articles_preprocess_breadcrumb(&$variables) {
@@ -300,52 +338,6 @@ function sitenow_articles_preprocess_node(&$variables) {
         break;
 
     }
-  }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_view().
- */
-function sitenow_articles_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  switch ($entity->getType()) {
-    case 'article':
-      if ($display->getComponent('article_created_date')) {
-        $created = $entity->get('created')->value;
-        $date = \Drupal::service('date.formatter')->format($created, 'medium');
-        $build['article_created_date'] = [
-          '#type' => 'markup',
-          '#markup' => '<span class="article-created-date">' . $date . '</span>',
-        ];
-      }
-      if ($view_mode === 'teaser') {
-        $mapping = [
-          '#media' => 'field_image',
-          '#title' => 'title',
-          '#content' => 'field_teaser',
-        ];
-
-        $build = uiowa_core_node_view_build_card($build, $entity, $mapping);
-
-        // Handle link directly to source functionality.
-        $url = uiowa_core_source_link_direct('field_article_source_link_direct', 'field_article_source_link', $entity);
-        $build['#url'] = $url;
-
-        // Add view specific classes.
-        if (isset($entity->view)) {
-          if ($entity->view->id() === 'articles') {
-            $media_attributes = [
-              'card--layout-right',
-              'card--list',
-              'media--widescreen',
-              'media--small',
-              'borderless',
-            ];
-            $build['#attributes']->addClass($media_attributes);
-          }
-        }
-      }
-      break;
-
   }
 }
 
@@ -739,20 +731,4 @@ function _sitenow_articles_path_token_value() {
 
   // @todo Is this appropriate when there is no value?
   return '';
-}
-
-/**
- * Implements hook_ENTITY_TYPE_build_defaults_alter().
- */
-function sitenow_articles_node_build_defaults_alter(array &$build, EntityInterface $entity, $view_mode) {
-  if ($entity->bundle() === 'article' && $view_mode === 'teaser') {
-    $build['#type'] = 'card';
-    unset($build['#theme']);
-    $build['#pre_render'] = [
-      [
-        Card::class,
-        'preRenderCard',
-      ],
-    ];
-  }
 }
