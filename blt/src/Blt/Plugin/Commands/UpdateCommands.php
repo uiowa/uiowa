@@ -2,8 +2,6 @@
 
 namespace Uiowa\Blt\Plugin\Commands;
 
-// Needed for BLT annotation updates to work.
-// phpcs:disable
 use Acquia\Blt\Annotations\Update;
 use Acquia\Blt\Robo\BltTasks;
 use Acquia\Blt\Robo\Common\YamlMunge;
@@ -11,7 +9,6 @@ use Acquia\Blt\Robo\Common\YamlWriter;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\Yaml\Yaml;
 use Uiowa\Multisite;
-// phpcs:enable
 
 /**
  * Define update commands.
@@ -36,7 +33,7 @@ class UpdateCommands extends BltTasks {
     $updates = [];
 
     foreach ($methods as $method) {
-      $annotation = $reader->getMethodAnnotation($method, 'Acquia\Blt\Annotations\Update');
+      $annotation = $reader->getMethodAnnotation($method, Update::class);
 
       if ($annotation && $annotation->version > $schema) {
         $updates[$method->name] = $annotation->description;
