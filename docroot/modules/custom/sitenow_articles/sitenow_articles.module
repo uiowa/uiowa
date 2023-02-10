@@ -390,64 +390,6 @@ function sitenow_articles_preprocess_views_view_summary(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_views_view_unformatted().
- */
-function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
-  /** @var \Drupal\views\ViewExecutable $view */
-  $view = $variables['view'];
-  if ($view->id() === 'article_list_block') {
-    $rows = $variables['rows'];
-    $style = $view->style_plugin;
-
-    foreach ($rows as $id => $row) {
-      // Need to get these values regardless of whether they are hidden or not.
-      $link_direct = (int) $row['content']['#node']->get('field_article_source_link_direct')->value;
-      $source_link = $row['content']['#node']->get('field_article_source_link')->uri;
-      $org = $row['content']['#node']->get('field_article_source_org')->value;
-      $nid = $row['content']['#node']->get('nid')->value;
-
-      $card_tag = [
-        '#type' => 'html_tag',
-        '#tag' => 'span',
-        '#attributes' => [
-          'class' => [
-            'field--name-field-article-source-link',
-          ],
-        ],
-      ];
-      if ($org && $style->getField($id, 'field_article_source_org')) {
-        $org = $style->getField($id, 'field_article_source_org');
-        // If source link is hidden...
-        if ($style->getField($id, 'field_article_source_link') === NULL) {
-          // But source_link has value...
-          if ($source_link) {
-            // Wrap org in the source link.
-            $org = Link::fromTextAndUrl($style->getField($id, 'field_article_source_org'), Url::fromUri($source_link))
-              ->toString();
-          }
-        }
-
-        $card_tag['org'] = [
-          '#prefix' => '<span class="views-field-article-source-link">',
-          '#markup' => $org,
-          '#suffix' => '</span>',
-        ];
-      }
-      if ($source_link && $style->getField($id, 'field_article_source_link')) {
-        $card_tag['source_link'] = [
-          '#prefix' => '<span class="views-field-article-source-link">',
-          '#markup' => $style->getField($id, 'field_article_source_link'),
-          '#suffix' => '</span>',
-        ];
-      }
-
-      $variables['rows'][$id]['content']['#meta']['tag'] = $card_tag;
-      $variables['rows'][$id]['content']['#meta']['field_article_author']['#markup'] = $style->getField($id, 'field_article_author');
-    }
-  }
-}
-
-/**
  * Implements hook_uip_classes_alter().
  */
 function sitenow_articles_uip_classes_alter(&$options, $entity, $bundle) {
