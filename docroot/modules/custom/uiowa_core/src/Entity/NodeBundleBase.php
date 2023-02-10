@@ -30,7 +30,7 @@ abstract class NodeBundleBase extends Node implements TeaserCardInterface {
    */
   public function buildCard(array &$build) {
     foreach ($this->getDefaultStyles() as $style) {
-      $build['attributes']['class'][] = $style;
+      $build['#attributes']['class'][] = $style;
     }
     // Add shared fields to card.
     $this->mapFieldsToCardBuild($build, [
