@@ -789,3 +789,8 @@ require DRUPAL_ROOT . "/../vendor/acquia/blt/settings/blt.settings.php";
 if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'admin/structure/menu') !== false ) {
   ini_set('memory_limit', '256M');
 }
+
+
+if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'admin/structure/menu') !== false ) {
+  ini_set('memory_limit', '256M');
+}
