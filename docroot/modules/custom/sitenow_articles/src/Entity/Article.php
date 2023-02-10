@@ -28,9 +28,8 @@ class Article extends NodeBundleBase implements TeaserCardInterface {
       ],
     ]);
 
-    // Construct organization.
-    $build['#meta'][] = $this->getByline($build);
-    $foo = $build;
+    // Construct remaining byline.
+    $build['#meta']['byline'] = $this->getByline($build);
   }
 
   /**
@@ -78,9 +77,11 @@ class Article extends NodeBundleBase implements TeaserCardInterface {
       ];
     }
     if ($source_link && !in_array('field_article_source_link', $hide_fields)) {
+      $link = Link::fromTextAndUrl($source_link, Url::fromUri($source_link))
+        ->toString();
       $byline['source_link'] = [
         '#prefix' => '<span class="views-field-article-source-link">',
-        '#markup' => $source_link,
+        '#markup' => $link,
         '#suffix' => '</span>',
       ];
     }
