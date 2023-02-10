@@ -143,42 +143,42 @@ function classrooms_core_preprocess_block(&$variables) {
     case 'field_block:node:room:field_room_instruction_category':
     case 'extra_field_block:node:room:field_room_building_link':
     case 'extra_field_block:node:room:field_room_map_link':
-      uiowa_core_set_classes($variables, NULL, 'block-margin__default--removed');
+      uiowa_core_set_classes($variables, '', 'block-margin__default--removed');
       break;
 
     case 'requestinfobutton_block':
     case 'extra_field_block:node:room:field_room_section_heading':
-      uiowa_core_set_classes($variables, NULL, 'block-margin__top--extra');
+      uiowa_core_set_classes($variables, '', 'block-margin__top--extra');
       break;
 
     case 'field_block:node:room:field_room_guide':
-      uiowa_core_set_classes($variables, NULL, 'bg--gray block-padding__all', 'h4 headline headline--serif headline--underline');
+      uiowa_core_set_classes($variables, '', 'bg--gray block-padding__all', 'h4 headline headline--serif headline--underline');
       break;
 
     case 'field_block:node:room:field_room_technology_features':
-      uiowa_core_set_classes($variables, NULL, NULL, 'h4 headline headline--serif headline--underline');
+      uiowa_core_set_classes($variables, '', [], 'h4 headline headline--serif headline--underline');
       break;
 
     // Add fivecol grid class to image gallery.
     case 'field_block:node:room:field_gallery_images':
-      uiowa_core_set_classes($variables, NULL, 'grid--threecol--33-34-33 photoswipe-gallery');
+      uiowa_core_set_classes($variables, '', 'grid--threecol--33-34-33 photoswipe-gallery');
       break;
 
     // Add inline class for blocks to appear inline.
     case 'field_block:node:room:field_room_type':
     case 'field_block:node:room:field_room_seating_chart':
     case 'field_block:node:room:field_room_max_occupancy':
-      uiowa_core_set_classes($variables, NULL, 'element--inline block-margin__top');
+      uiowa_core_set_classes($variables, '', 'element--inline block-margin__top');
       break;
 
     // Add inline class for blocks to appear inline.
     case 'field_block:node:room:field_room_map':
-      uiowa_core_set_classes($variables, NULL, 'element--cover');
+      uiowa_core_set_classes($variables, '', 'element--cover');
       break;
 
     // Center video.
     case 'field_block:node:room:field_room_video':
-      uiowa_core_set_classes($variables, NULL, 'align-center');
+      uiowa_core_set_classes($variables, '', 'align-center');
       break;
 
   }
@@ -245,11 +245,11 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
     case 'field_room_classroom_furniture':
     case 'field_room_accessibility':
     case 'field_room_features':
-      uiowa_core_set_classes($variables, NULL, NULL, 'h6 headline headline--serif headline--underline');
+      uiowa_core_set_classes($variables, '', [], 'h6 headline headline--serif headline--underline');
       break;
 
     case 'field_technology_features_icon':
-      uiowa_core_set_classes($variables, NULL, 'fa-li');
+      uiowa_core_set_classes($variables, '', 'fa-li');
       break;
 
   }
