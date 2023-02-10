@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * @file
+ * Page functionality for the SiteNow platform.
+ */
+
+use Drupal\sitenow_pages\Entity\Page;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function sitenow_pages_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['page'])) {
+    $bundles['node']['page']['class'] = Page::class;
+  }
+}

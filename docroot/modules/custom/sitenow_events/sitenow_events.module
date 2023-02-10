@@ -12,9 +12,18 @@ use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
-use Drupal\uiowa_core\Element\Card;
+use Drupal\sitenow_events\Entity\Event;
 use Drupal\uiowa_core\HeadlineHelper;
 use GuzzleHttp\Exception\RequestException;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function sitenow_events_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['event'])) {
+    $bundles['node']['event']['class'] = Event::class;
+  }
+}
 
 /**
  * Implements hook_form_alter().
@@ -113,17 +122,6 @@ function _sitenow_events_form_submit(array &$form, FormStateInterface $form_stat
  */
 function sitenow_events_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
   if ($entity->bundle() === 'event' && $view_mode === 'teaser') {
-    // Process card mapping.
-    $mapping = [
-      '#subtitle' => 'field_event_when',
-      '#meta' => [
-        'field_event_virtual',
-        'field_event_location',
-        'field_event_performer',
-      ],
-    ];
-
-    uiowa_core_node_view_build_card($build, $entity, $mapping);
 
     // Handle link directly to source functionality.
     $url = uiowa_core_source_link_direct('field_event_series_link_direct', 'field_event_series_link', $entity);

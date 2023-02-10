@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Article configuration for the University of Iowa.
+ * Article functionality for the SiteNow platform.
  */
 
 use Drupal\Component\Utility\Html;
@@ -13,11 +13,20 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Url;
-use Drupal\uiowa_core\Element\Card;
+use Drupal\sitenow_articles\Entity\Article;
 use Drupal\user\Entity\User;
 use Drupal\views\Entity\View;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function sitenow_articles_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['article'])) {
+    $bundles['node']['article']['class'] = Article::class;
+  }
+}
 
 /**
  * Implements hook_entity_extra_field_info().
