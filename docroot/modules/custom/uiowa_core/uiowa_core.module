@@ -885,16 +885,14 @@ function uiowa_core_config_entity_filter_select(array &$form, $entity_id) {
  *   The Font Awesome class for the field label icon.
  */
 function uiowa_core_set_field_label_icon(array &$variables, string $icon_classes) : void {
-  if (!empty($icon_classes)) {
-    if (!isset($variables['field_label_icon'])) {
-      $variables['field_label_icon'] = '';
-    }
-    $variables['field_label_icon'] = implode(' ',
-      [
-        $variables['field_label_icon'],
-        $icon_classes,
-      ]);
+  if (!isset($variables['field_label_icon'])) {
+    $variables['field_label_icon'] = '';
   }
+  $variables['field_label_icon'] = implode(' ',
+    [
+      $variables['field_label_icon'],
+      $icon_classes,
+    ]);
 }
 
 /**
@@ -905,10 +903,7 @@ function uiowa_core_set_field_label_icon(array &$variables, string $icon_classes
  * @param array|string $classes
  *   The class(es) to be added to the block/field's attributes.
  */
-function uiowa_core_set_attributes(array &$variables, array|string $classes = []) : void {
-  if (empty($classes)) {
-    return;
-  }
+function uiowa_core_set_attributes(array &$variables, array|string $classes) : void {
   if (!isset($variables['attributes']['class'])) {
     $variables['attributes']['class'] = [];
   }
@@ -926,10 +921,7 @@ function uiowa_core_set_attributes(array &$variables, array|string $classes = []
  * @param array|string $title_classes
  *   The class(es) to be added to the block/field's title attributes.
  */
-function uiowa_core_set_title_attributes(array &$variables, array|string $title_classes = []): void {
-  if (empty($title_classes)) {
-    return;
-  }
+function uiowa_core_set_title_attributes(array &$variables, array|string $title_classes): void {
   if (!isset($variables['title_attributes']['class'])) {
     $variables['title_attributes']['class'] = [];
   }
