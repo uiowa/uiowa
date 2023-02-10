@@ -889,7 +889,7 @@ function uiowa_core_set_field_label_icon(array &$variables, $icon_classes) {
     if (!isset($variables['field_label_icon'])) {
       $variables['field_label_icon'] = '';
     }
-    $variables['field_label_icon'] = $icon_classes;
+    $variables['field_label_icon'] = implode(' ', [$variables['field_label_icon'], $icon_classes]);
   }
 }
 
@@ -898,16 +898,20 @@ function uiowa_core_set_field_label_icon(array &$variables, $icon_classes) {
  *
  * @param array $variables
  *   The block/field variables array.
- * @param string $classes
- *   The classes to be added to the block/field's attributes.
+ * @param array|string $classes
+ *   The class(es) to be added to the block/field's attributes.
  */
-function uiowa_core_set_attributes(array &$variables, $classes = []) {
-  if (!empty($classes)) {
-    if (!isset($variables['attributes']['class'])) {
-      $variables['attributes']['class'] = [];
-    }
-    $variables['attributes']['class'] = [$classes];
+function uiowa_core_set_attributes(array &$variables, array|string $classes = []) : void {
+  if (empty($classes)) {
+    return;
   }
+  if (!isset($variables['attributes']['class'])) {
+    $variables['attributes']['class'] = [];
+  }
+  if (!is_array($classes)) {
+    $classes = [$classes];
+  }
+  $variables['attributes']['class'] = array_unique(array_merge($variables['attributes']['class'], $classes));
 }
 
 /**
@@ -915,14 +919,18 @@ function uiowa_core_set_attributes(array &$variables, $classes = []) {
  *
  * @param array $variables
  *   The block/field variables array.
- * @param string $title_classes
- *   The classes to be added to the block/field's title attributes.
+ * @param array|string $title_classes
+ *   The class(es) to be added to the block/field's title attributes.
  */
-function uiowa_core_set_title_attributes(array &$variables, $title_classes = []) {
-  if (!empty($title_classes)) {
-    if (!isset($variables['title_attributes']['class'])) {
-      $variables['title_attributes']['class'] = [];
-    }
-    $variables['title_attributes']['class'] = [$title_classes];
+function uiowa_core_set_title_attributes(array &$variables, array|string $title_classes = []): void {
+  if (empty($title_classes)) {
+    return;
   }
+  if (!isset($variables['title_attributes']['class'])) {
+    $variables['title_attributes']['class'] = [];
+  }
+  if (!is_array($title_classes)) {
+    $title_classes = [$title_classes];
+  }
+  $variables['title_attributes']['class'] = array_unique(array_merge($variables['title_attributes']['class'], $title_classes));
 }
