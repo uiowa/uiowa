@@ -55,6 +55,7 @@ class Article extends NodeBundleBase implements TeaserCardInterface {
     $byline = [
       '#type' => 'html_tag',
       '#tag' => 'span',
+      '#weight' => 99,
       '#attributes' => [
         'class' => [
           'field--name-field-article-source-link',
