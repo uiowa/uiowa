@@ -80,7 +80,6 @@
   not node.isPublished() ? 'node--unpublished',
   view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
   'card--list',
-  'card--media-left',
 ]
 %}
 
@@ -90,20 +89,9 @@
 {{ attach_library('uids_base/node-view-teaser') }}
 
 {% set node_card = {
-  'attributes': attributes.addClass(classes),
-  'card_image' : content.field_image|render,
-  'card_title': label,
-  'card_text':  content | without('field_image', 'links') | render,
-  'card_link_url': url,
-  'media_styles': 'card__media--small',
   'headline_level': headline_level,
   'visible_button': true,
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with node_card only %}
-  {% block card_content %}
-    {% if card_text is not empty %}
-      <div class="card__description">{{ card_text }}</div>
-    {% endif %}
-  {% endblock %}
 {% endembed %}
