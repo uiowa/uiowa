@@ -70,6 +70,7 @@ if (extension_loaded('newrelic')) {
   newrelic_set_appname("{$site_name};{$ah_group}.{$ah_env}", '', 'true');
 }
 
+// Memory increase for large menu pages so that webmasters can save changes.
 if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'admin/structure/menu') !== false ) {
   ini_set('memory_limit', '256M');
 }
