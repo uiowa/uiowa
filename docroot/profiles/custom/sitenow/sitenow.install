@@ -7,6 +7,7 @@
  */
 
 use Drupal\block_content\BlockContentInterface;
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\Display\EntityDisplayInterface;
@@ -1939,4 +1940,117 @@ function sitenow_update_9053() {
       }
     }
   });
+}
+
+/**
+ * Remove all Large, Medium, and Small image view modes and replace them with relevant alternatives.
+ */
+function sitenow_update_9054() {
+  $entity_types = [
+    'block_content',
+    'media',
+    'node',
+    'paragraph',
+  ];
+
+  $media_view_mode_map = [
+    'small' => 'small__no_crop',
+    'medium' => 'small__no_crop',
+    'large' => 'medium__no_crop',
+  ];
+  $media_view_mode_map_keys = array_keys($media_view_mode_map);
+
+  foreach ($entity_types as $entity_type) {
+    $bundles = \Drupal::service('entity_type.bundle.info')
+      ->getBundleInfo($entity_type);
+
+    // @todo Handle case where no bundles exist?
+    foreach ($bundles as $bundle => $bundle_label) {
+      /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager */
+      $entityFieldManager = \Drupal::service('entity_field.manager');
+      $fields = $entityFieldManager->getFieldDefinitions($entity_type, $bundle);
+      $field_check = [];
+      /**
+       * @var string $field_name
+       * @var \Drupal\field\Entity\FieldConfig $definition
+       */
+      foreach ($fields as $field_name => $definition) {
+        if (in_array($definition->getType(), [
+          'text_long',
+          'text_with_summary',
+        ])) {
+          $field_check[$field_name] = $definition;
+        }
+      }
+
+      // Only need to run the following if we found fields to check against.
+      if (!empty($field_check)) {
+
+        // Retrieve all entities of this bundle type;.
+        // Media is listed as 'bundle,' but other entity types
+        // are listed as 'type'.
+        $type = $entity_type == 'media' ? 'bundle' : 'type';
+        $entities = \Drupal::entityTypeManager()->getStorage($entity_type)
+          ->loadByProperties([$type => $bundle]);
+
+        // Loop through the loaded entities.
+        foreach ($entities as $entity) {
+          $needs_save = FALSE;
+
+          // Loop through the fields we defined before.
+          foreach ($field_check as $name => $definition) {
+            // If the field has a value (or values).
+            if (!$entity->get($name)->isEmpty()) {
+              $updated_values = [];
+              $field_values = $entity->{$name}->getValue();
+
+              foreach ($field_values as $field_value) {
+
+                // @todo Any special handling for text_with_summary fields?
+                $document = Html::load($field_value['value']);
+
+                // Get all <drupal-media> instances.
+                $dm_instances = $document->getElementsByTagName('drupal-media');
+
+                // Built with this as a template.
+                // https://github.com/uiowa/uiowa/pull/3048/commits/5b95c9912aaa2b235cf06787a8c673a0f2cb17d7
+                $i = $dm_instances->length - 1;
+
+                while ($i >= 0) {
+                  // The current inline image element.
+                  $old_dm_instance = $dm_instances->item($i);
+                  $new_dm_instance = $old_dm_instance;
+
+                  $view_mode = $old_dm_instance->getAttribute('data-view-mode');
+                  $is_relevant_view_mode = in_array($view_mode, $media_view_mode_map_keys);
+                  if ($is_relevant_view_mode) {
+                    $new_dm_instance->setAttribute('data-view-mode',$media_view_mode_map[$view_mode]);
+
+                    $old_dm_instance->parentNode->replaceChild($new_dm_instance, $old_dm_instance);
+                  }
+
+                  $i--;
+                }
+
+                $updated_values[] = [
+                  'value' => Html::serialize($document),
+                  'format' => $field_value['format'],
+                ];
+              }
+
+              if (count($updated_values) === 1) {
+                $updated_values = $updated_values[0];
+              }
+
+              $entity->{$name} = $updated_values;
+              $needs_save = TRUE;
+            }
+          }
+          if ($needs_save) {
+            $entity->save();
+          }
+        }
+      }
+    }
+  }
 }
