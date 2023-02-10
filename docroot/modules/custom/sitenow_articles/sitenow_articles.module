@@ -724,11 +724,6 @@ function sitenow_articles_preprocess_block(&$variables) {
     case 'field_block:node:article:field_article_source_org':
     case 'galleryjumplink_block':
     case 'field_block:node:article:field_image_caption':
-      $variables['attributes']['class'][] = 'article--meta element--inline';
-
-      break;
-
-    case 'extra_field_block:node:article:article_created_date':
       $variables['attributes']['class'][] = 'article--meta';
 
       break;
