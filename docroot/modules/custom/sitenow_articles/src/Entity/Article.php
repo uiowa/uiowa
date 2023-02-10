@@ -30,6 +30,25 @@ class Article extends NodeBundleBase implements TeaserCardInterface {
 
     // Construct remaining byline.
     $build['#meta']['byline'] = $this->getByline($build);
+
+    // Add the published date.
+    $created = $this->get('created')->value;
+    $date = \Drupal::service('date.formatter')->format($created, 'medium');
+    $build['#subtitle'] = $date;
+
+    // Add view specific classes.
+    if (isset($this->view)) {
+      if ($this->view->id() === 'articles') {
+        $media_attributes = [
+          'card--layout-right',
+          'card--list',
+          'media--widescreen',
+          'media--small',
+          'borderless',
+        ];
+        $build['#attributes']->addClass($media_attributes);
+      }
+    }
   }
 
   /**

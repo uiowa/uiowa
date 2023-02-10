@@ -24,6 +24,21 @@ class Person extends NodeBundleBase implements TeaserCardInterface {
       '#subtitle' => 'field_person_position',
       '#meta' => ['field_person_email', 'field_person_phone'],
     ]);
+
+    // Add view specific classes.
+    if (isset($this->view)) {
+      if ($this->view->id() === 'people') {
+        $media_attributes = [
+          'card--layout-left',
+          'card--list',
+          'media--circle',
+          'media--small',
+          'media--border',
+          'borderless',
+        ];
+        $build['#attributes']->addClass($media_attributes);
+      }
+    }
   }
 
   /**
