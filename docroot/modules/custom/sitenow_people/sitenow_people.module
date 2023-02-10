@@ -495,10 +495,6 @@ function sitenow_people_inline_entity_form_table_fields_alter(array &$fields, ar
 function sitenow_people_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
   if ($entity->bundle() === 'person' && $view_mode === 'teaser') {
 
-    // Handle link directly to source functionality.
-    $url = uiowa_core_source_link_direct('field_person_website_link_direct', 'field_person_website', $entity);
-    $build['#url'] = $url;
-
     // Add view specific classes.
     if (isset($entity->view)) {
       if ($entity->view->id() === 'people') {

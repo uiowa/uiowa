@@ -123,10 +123,6 @@ function _sitenow_events_form_submit(array &$form, FormStateInterface $form_stat
 function sitenow_events_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
   if ($entity->bundle() === 'event' && $view_mode === 'teaser') {
 
-    // Handle link directly to source functionality.
-    $url = uiowa_core_source_link_direct('field_event_series_link_direct', 'field_event_series_link', $entity);
-    $build['#url'] = $url;
-
     // Add view specific classes.
     if (isset($entity->view)) {
       if ($entity->view->id() === 'events') {

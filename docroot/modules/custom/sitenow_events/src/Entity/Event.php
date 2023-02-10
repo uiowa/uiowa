@@ -15,6 +15,10 @@ class Event extends NodeBundleBase implements TeaserCardInterface {
    */
   public function buildCard(array &$build) {
     parent::buildCard($build);
+
+    // Handle link directly to source functionality.
+    $build['#url'] = $this->generateNodeLink('field_event_series_link_direct', 'field_event_series_link');
+
     // Process additional card mappings.
     $this->mapFieldsToCardBuild($build, [
       '#subtitle' => 'field_event_when',

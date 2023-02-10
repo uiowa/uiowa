@@ -87,4 +87,29 @@ abstract class NodeBundleBase extends Node implements TeaserCardInterface {
     $build['#url'] = !$this->isNew() ? $this->toUrl()->toString() : NULL;
   }
 
+  /**
+   * Helper function to construct link directly to source functionality.
+   *
+   * @param string $source_link_direct
+   *   The field name of the boolean field controlling the functionality.
+   * @param string $source_link
+   *   The field name of the link field providing the source link.
+   *
+   * @return string
+   *   The url used to link the view mode.
+   *
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException|\Drupal\Core\Entity\EntityMalformedException
+   */
+  public function generateNodeLink(string $source_link_direct, string $source_link): string {
+    $link_direct = (int) $this->get($source_link_direct)->value;
+    $link = $this->get($source_link)->uri;
+    if ($link_direct === 1 && isset($link) && !empty($link)) {
+      $url = $this->get($source_link)->get(0)->getUrl()->toString();
+    }
+    else {
+      $url = !$this->isNew() ? $this->toUrl('canonical')->toString() : NULL;
+    }
+    return $url;
+  }
+
 }

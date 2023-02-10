@@ -131,8 +131,6 @@ function sitenow_articles_node_view(array &$build, EntityInterface $entity, Enti
       if ($view_mode === 'teaser') {
         // Add date.
         $build['#subtitle'] = $date;
-        // Handle link directly to source functionality.
-        $build['#url'] = uiowa_core_source_link_direct('field_article_source_link_direct', 'field_article_source_link', $entity);
 
         // Add view specific classes.
         if (isset($entity->view)) {
