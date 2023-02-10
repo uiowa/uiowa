@@ -311,13 +311,7 @@ function uids_base_preprocess_node(&$variables) {
             'card__media--large',
           ];
         }
-        else {
-          $variables['attributes']['class'][] = 'card--media-right';
-          $variables['media_classes'] = [
-            'media--widescreen',
-            'card__media--small',
-          ];
-        }
+
         if ($is_v2) {
           unset($variables['attributes']['class']);
           unset($variables['media_classes']);
@@ -331,13 +325,6 @@ function uids_base_preprocess_node(&$variables) {
           $variables['media_classes'] = [
             'media--widescreen',
             'card__media--large',
-          ];
-        }
-        else {
-          $variables['attributes']['class'][] = 'card--media-right';
-          $variables['media_classes'] = [
-            'media--widescreen',
-            'card__media--small',
           ];
         }
         break;

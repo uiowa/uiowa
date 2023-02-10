@@ -33,6 +33,17 @@ class Article extends NodeBundleBase implements TeaserCardInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function getDefaultStyles(): array {
+    return [
+      ...parent::getDefaultStyles(),
+      'media_size' => 'media--small',
+      'media_format' => 'media--widescreen',
+    ];
+  }
+
+  /**
    * Constructs the byline for an article based on several fields.
    *
    * If there is an organization and not hidden, include it.

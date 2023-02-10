@@ -26,4 +26,15 @@ class Person extends NodeBundleBase implements TeaserCardInterface {
     ]);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getDefaultStyles(): array {
+    return [
+      ...parent::getDefaultStyles(),
+      'card_media_position' => 'card--layout-left',
+      'media_format' => 'media--circle',
+    ];
+  }
+
 }
