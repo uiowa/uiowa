@@ -9,17 +9,6 @@
   ]
   %}
 
-  {% embed '@uids_base/uids/card.html.twig' with row.card_options %}
-
-    {% block card_img %}
-      {% if card_image|striptags('<img><picture>')|trim is not empty %}
-        {{ parent() }}
-      {% else %}
-        <div {{ media_attributes.addClass(media_styles, media_sizes, 'card__media') }}>
-          <div class="img--empty">&nbsp;</div>
-        </div>
-      {% endif %}
-    {% endblock %}
-
-  {% endembed %}
+  {% include '@uids_base/uids/card.html.twig' with row.card_options %}
+  
 {% endfor %}
