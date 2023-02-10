@@ -6,6 +6,9 @@ use Drupal\Core\Render\Element;
 use Drupal\node\Entity\Node;
 use Drupal\uiowa_core\Element\Card;
 
+/**
+ * Bundle-specific subclass of Node.
+ */
 abstract class NodeBundleBase extends Node implements TeaserCardInterface {
 
   /**
@@ -25,7 +28,7 @@ abstract class NodeBundleBase extends Node implements TeaserCardInterface {
   /**
    * {@inheritdoc}
    */
-  public function buildCard(&$build) {
+  public function buildCard(array &$build) {
     foreach ($this->getDefaultStyles() as $style) {
       $build['attributes']['class'][] = $style;
     }
@@ -52,8 +55,6 @@ abstract class NodeBundleBase extends Node implements TeaserCardInterface {
    *
    * @param array $build
    *   A renderable array representing the entity content.
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity object.
    * @param array $mapping
    *   Array of field names.
    *

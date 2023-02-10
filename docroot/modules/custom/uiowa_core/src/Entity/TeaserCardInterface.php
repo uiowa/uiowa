@@ -2,21 +2,26 @@
 
 namespace Drupal\uiowa_core\Entity;
 
+/**
+ * Defines the interface for content types use teaser view modes.
+ */
 interface TeaserCardInterface {
 
   /**
    * Set the build to render as a card.
    *
    * @param array $build
+   *   The renderable build array.
    */
   public function addCardBuildInfo(array &$build);
 
   /**
    * Build card teaser render array.
    *
-   * @param $build
+   * @param array $build
+   *   The renderable build array.
    */
-  public function buildCard(&$build);
+  public function buildCard(array &$build);
 
   /**
    * Return an array mapping card style group names to classes.
@@ -24,4 +29,5 @@ interface TeaserCardInterface {
    * @return array
    */
   public function getDefaultStyles(): array;
+
 }

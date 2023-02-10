@@ -3,8 +3,10 @@
 namespace Drupal\sitenow_pages\Entity;
 
 use Drupal\uiowa_core\Entity\NodeBundleBase;
-use Drupal\uiowa_core\Entity\TeaserCardInterface;
 
+/**
+ * Provides an interface for page entries.
+ */
 class Page extends NodeBundleBase {
 
 }
