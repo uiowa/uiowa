@@ -169,18 +169,20 @@ third_party_settings:
             region: second
             configuration:
               id: 'field_block:node:article:field_article_author'
-              label: 'Article Authors'
-              label_display: '0'
+              label: null
+              label_display: null
               provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
                 view_mode: view_mode
               formatter:
                 type: entity_reference_label
-                label: inline
+                label: above
                 settings:
                   link: true
-                third_party_settings: {  }
+                third_party_settings:
+                  field_delimiter:
+                    delimiter: ''
             weight: 1
             additional:
               layout_builder_styles_style:
@@ -191,12 +193,15 @@ third_party_settings:
             region: second
             configuration:
               id: 'field_block:node:article:field_article_source_org'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
                 type: string
-                label: hidden
+                label: above
                 settings:
                   link_to_entity: false
                 third_party_settings: {  }
@@ -210,34 +215,23 @@ third_party_settings:
             region: second
             configuration:
               id: 'field_block:node:article:field_article_source_link'
-              label_display: '0'
+              label: null
+              label_display: null
+              provider: layout_builder
               context_mapping:
                 entity: layout_builder.entity
+                view_mode: view_mode
               formatter:
                 type: link
-                label: hidden
+                label: above
                 settings:
                   trim_length: 80
                   url_only: false
                   url_plain: false
-                  rel: ''
-                  target: ''
+                  rel: '0'
+                  target: '0'
                 third_party_settings: {  }
             weight: 3
-            additional:
-              layout_builder_styles_style:
-                block_margin_default_removed: block_margin_default_removed
-            third_party_settings: {  }
-          -
-            uuid: 0b9bf989-3ef0-4021-8560-1ef08301af5d
-            region: first
-            configuration:
-              id: galleryjumplink_block
-              label: null
-              label_display: null
-              provider: sitenow_articles
-              context_mapping: {  }
-            weight: 2
             additional:
               layout_builder_styles_style:
                 block_margin_default_removed: block_margin_default_removed
@@ -279,6 +273,20 @@ third_party_settings:
                     delimiter: ''
             weight: 4
             additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: 0b9bf989-3ef0-4021-8560-1ef08301af5d
+            region: second
+            configuration:
+              id: galleryjumplink_block
+              label: null
+              label_display: null
+              provider: sitenow_articles
+              context_mapping: {  }
+            weight: 4
+            additional:
+              layout_builder_styles_style:
+                block_margin_default_removed: block_margin_default_removed
             third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
