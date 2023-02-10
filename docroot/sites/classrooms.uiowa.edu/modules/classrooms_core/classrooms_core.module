@@ -230,12 +230,24 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
         uiowa_core_set_field_label_icon($variables, 'fa-user fa-li');
         uiowa_core_set_attributes($variables, 'fa-ul');
       }
+      else {
+        uiowa_core_set_field_label_icon($variables, 'fa-user');
+        uiowa_core_set_attributes($variables, 'bg--gold padding--block--sm padding--inline--md');
+      }
+      break;
+
+    case 'field_room_seating_chart':
+      uiowa_core_set_attributes($variables, 'bg--gold padding--block--sm padding--inline--md');
       break;
 
     case 'field_room_type':
       if ($variables['element']['#view_mode'] == 'teaser') {
-        uiowa_core_set_field_label_icon($variables, 'fa-info-circle fa-li');
+        uiowa_core_set_field_label_icon($variables, 'fa-building fa-li');
         uiowa_core_set_attributes($variables, 'fa-ul');
+      }
+      else {
+        uiowa_core_set_field_label_icon($variables, 'fa-building');
+        uiowa_core_set_attributes($variables, 'bg--gold padding--block--sm padding--inline--md');
       }
       $variables['items'][0]['content']['#url'] = Url::fromRoute('entity.node.canonical', ['node' => 206]);
       break;
@@ -484,14 +496,6 @@ function classrooms_core_entity_presave(EntityInterface $entity): void {
  */
 function classrooms_core_theme($existing, $type, $theme, $path) {
   return [
-    'field__node__field_room_type__room__default' => [
-      'template' => 'field--node--field-room-type--room--default',
-      'base hook' => 'field',
-    ],
-    'field__node__field_room_max_occupancy__room__default' => [
-      'template' => 'field--node--field-room-max-occupancy--room--default',
-      'base hook' => 'field',
-    ],
     'field__node__field_room_seating_chart__room__default' => [
       'template' => 'field--node--field-room-seating-chart--room--default',
       'base hook' => 'field',
