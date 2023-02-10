@@ -1047,48 +1047,6 @@ function uiowa_core_config_entity_filter_select(array &$form, $entity_id) {
 }
 
 /**
- * Helper function to build card for node_view.
- *
- * @param array $build
- *   A renderable array representing the entity content.
- * @param \Drupal\Core\Entity\EntityInterface $entity
- *   The entity object.
- * @param array $mapping
- *   Array of field names.
- *
- * @return array
- *   The node_view renderable build array.
- *
- * @throws \Drupal\Core\Entity\EntityMalformedException
- */
-function uiowa_core_node_view_build_card(array &$build, EntityInterface $entity, array $mapping): array {
-  $hide_fields = $build['#hide_fields'] ?? [];
-
-  // Map fields to the card parts.
-  foreach ($mapping as $prop => $fields) {
-    if (!is_array($fields)) {
-      $fields = [$fields];
-    }
-    if (!isset($build[$prop])) {
-      $build[$prop] = [];
-    }
-    foreach ($fields as $field_name) {
-      // @todo Refine this to remove fields if they are empty.
-      if (isset($build[$field_name]) && count(Element::children($build[$field_name])) > 0) {
-        if (!in_array($field_name, $hide_fields)) {
-          $build[$prop][$field_name] = $build[$field_name];
-        }
-        unset($build[$field_name]);
-      }
-    }
-  }
-
-  $build['#url'] = !$entity->isNew() ? $entity->toUrl('canonical')->toString() : NULL;
-
-  return $build;
-}
-
-/**
  * Helper function to clean up html tags.
  */
 function uiowa_core_html_cleanup($string, $allowed_tags = NULL): string {
