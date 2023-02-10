@@ -884,12 +884,16 @@ function uiowa_core_config_entity_filter_select(array &$form, $entity_id) {
  * @param string $icon_classes
  *   The Font Awesome class for the field label icon.
  */
-function uiowa_core_set_field_label_icon(array &$variables, $icon_classes) {
+function uiowa_core_set_field_label_icon(array &$variables, string $icon_classes) : void {
   if (!empty($icon_classes)) {
     if (!isset($variables['field_label_icon'])) {
       $variables['field_label_icon'] = '';
     }
-    $variables['field_label_icon'] = implode(' ', [$variables['field_label_icon'], $icon_classes]);
+    $variables['field_label_icon'] = implode(' ',
+      [
+        $variables['field_label_icon'],
+        $icon_classes,
+      ]);
   }
 }
 
