@@ -579,32 +579,25 @@ function classrooms_core_form_views_exposed_form_alter(&$form, FormStateInterfac
   $view_display = $view->getDisplay();
   $block_id = $view_display->display['id'];
 
-  switch ($block_id) {
-    case 'block_rooms':
-      $building_filter = 'field_room_building_id_target_id';
-      if (isset($form[$building_filter])) {
-        uiowa_core_config_entity_filter_select($form[$building_filter], 'building');
+  if (in_array($block_id, ['block_rooms', 'block_programmed_rooms_list'])) {
+    $building_filter = 'field_room_building_id_target_id';
+    if (isset($form[$building_filter])) {
+      uiowa_core_config_entity_filter_select($form[$building_filter], 'building');
 
-        // Change the label from default `- Any -`.
-        $form[$building_filter]['#empty_option'] = t('Building');
+      // Change the label from default `- Any -`.
+      $form[$building_filter]['#empty_option'] = t('Building');
 
-        // Hack to further treat this field as a select as it relates to BEF.
-        // Assumes `field_room_type_target_id` is present
-        // on the form and is a select.
+      // Hack to further treat this field as a select as it relates to BEF.
+      // Use the `field_room_type_target_id` if it is present
+      // on the form, assuming it is a select.
+      if (isset($form['field_room_type_target_id'])) {
         $form[$building_filter]['#process'] = $form['field_room_type_target_id']['#process'];
         $form[$building_filter]['#pre_render'] = $form['field_room_type_target_id']['#pre_render'];
       }
-      break;
-
-    case 'block_programmed_rooms_list':
-      $building_filter = 'field_room_building_id_target_id';
-      if (isset($form[$building_filter])) {
-        uiowa_core_config_entity_filter_select($form[$building_filter], 'building');
-
-        // Change the label from default `- Any -`.
-        $form[$building_filter]['#empty_option'] = t('Building');
-
-        // Hack to further treat this field as a select as it relates to BEF.
+      // If the `field_room_type_target_id` field isn't there,
+      // build it from scratch, but this is dependent on BEF
+      // select fields not changing in structure.
+      else {
         $form[$building_filter]['#process'] = [
           [
             'Drupal\Core\Render\Element\Select',
@@ -634,7 +627,7 @@ function classrooms_core_form_views_exposed_form_alter(&$form, FormStateInterfac
           ],
         ];
       }
-      break;
+    }
   }
 }
 
