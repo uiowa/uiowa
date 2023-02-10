@@ -877,32 +877,48 @@ function uiowa_core_config_entity_filter_select(array &$form, $entity_id) {
 }
 
 /**
- * Helper function to processes the attributes and field label icon, title_attributes, and attributes.
+ * Helper function to set the field label icon.
  *
  * @param array $variables
  *   The block/field variables array.
  * @param string $icon_classes
  *   The Font Awesome class for the field label icon.
- * @param string $classes
- *   The classes to be added to the block/field's attributes.
- * @param string $title_classes
- *   The classes to be added to the block/field's title attributes.
  */
-function uiowa_core_set_classes(array &$variables, $icon_classes, $classes = [], $title_classes = []) {
+function uiowa_core_set_field_label_icon(array &$variables, $icon_classes = []) {
   if (!empty($icon_classes)) {
     if (!isset($variables['field_label_icon'])) {
-      $variables['field_label_icon'] = '';
+      $variables['field_label_icon'] = [];
     }
-    $variables['field_label_icon'] = "{$icon_classes} fas fa-li";
+    $variables['field_label_icon'] = $icon_classes;
   }
+}
 
+/**
+ * Helper function to set the block/field's attributes.
+ *
+ * @param array $variables
+ *   The block/field variables array.
+ * @param string $classes
+ *   The classes to be added to the block/field's attributes.
+ */
+function uiowa_core_set_attributes(array &$variables, $classes = []) {
   if (!empty($classes)) {
     if (!isset($variables['attributes']['class'])) {
       $variables['attributes']['class'] = [];
     }
     $variables['attributes']['class'] = $classes;
   }
+}
 
+/**
+ * Helper function to set the block/field's title attributes.
+ *
+ * @param array $variables
+ *   The block/field variables array.
+ * @param string $title_classes
+ *   The classes to be added to the block/field's title attributes.
+ */
+function uiowa_core_set_title_attributes(array &$variables, $title_classes = []) {
   if (!empty($title_classes)) {
     if (!isset($variables['title_attributes']['class'])) {
       $variables['title_attributes']['class'] = [];
