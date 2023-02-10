@@ -69,3 +69,7 @@ ini_set('newrelic.loglevel', 'error');
 if (extension_loaded('newrelic')) {
   newrelic_set_appname("{$site_name};{$ah_group}.{$ah_env}", '', 'true');
 }
+
+if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'admin/structure/menu') !== false ) {
+  ini_set('memory_limit', '256M');
+}
