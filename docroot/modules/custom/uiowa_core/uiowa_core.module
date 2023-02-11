@@ -262,7 +262,7 @@ function template_preprocess_card(&$variables) {
   $variables['linked_element'] = $linked_element;
 
   // Create a set of media classes in case its needed.
-  $media_classes = ['media'];
+  $media_classes = [];
 
   // Loop through all classes, add any media classes to the array and remove
   // them from the card classes.
@@ -278,7 +278,6 @@ function template_preprocess_card(&$variables) {
   //   https://github.com/uiowa/uiowa/issues/6061.
   if (isset($variables['media'])) {
     $variables['#attached']['library'][] = 'uids_base/media';
-    $variables['media_attributes'] = new Attribute();
 
     $variables['media_attributes']->addClass($media_classes);
   }

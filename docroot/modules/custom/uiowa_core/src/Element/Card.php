@@ -55,7 +55,6 @@ class Card extends RenderElement {
       $element['#attributes'] = new Attribute($element['#attributes']);
     }
     $element['#attributes']->addClass([
-      'card',
       'click-container',
       'block--word-break',
     ]);

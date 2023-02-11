@@ -1,9 +1,9 @@
-<div{{ attributes }}>
+<div{{ attributes.addClass('card') }}>
   {{ title_prefix }}
   {{ title_suffix }}
   {% block media %}
     {% if media is not empty %}
-      <div {{ media_attributes }}>
+      <div {{ media_attributes.addClass('media') }}>
         <div class="media__inner">
           {% if linked_element == 'media' %}
           <a href="{{ url }}">

@@ -74,12 +74,12 @@
   {% else %}
     {# This is a card and can be handled as such. #}
     {% set paragraph_card = {
-      'attributes': card_attributes.addClass(['card--enclosed']),
-      'card_image': content.field_card_image|render,
-      'card_text': content.field_card_body|render,
-      'card_subtitle': content.field_card_subtitle,
-      'card_title': content.field_card_title|render,
-      'card_link_url': content.field_card_link[0]['#url'],
+      'attributes': card_attributes,
+      'media': content.field_card_image|render,
+      'content': content.field_card_body|render,
+      'subtitle': content.field_card_subtitle,
+      'title': content.field_card_title,
+      'link_url': content.field_card_link[0]['#url'],
       'headline_level': 'h2',
       'paragraph': paragraph,
     } %}
