@@ -278,6 +278,7 @@ function template_preprocess_card(&$variables) {
   //   https://github.com/uiowa/uiowa/issues/6061.
   if (isset($variables['media'])) {
     $variables['#attached']['library'][] = 'uids_base/media';
+    $variables['media_attributes'] = new Attribute();
 
     $variables['media_attributes']->addClass($media_classes);
   }
