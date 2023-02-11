@@ -46,8 +46,9 @@ abstract class NodeBundleBase extends Node implements TeaserCardInterface {
   public function getDefaultStyles(): array {
     return [
       'card_media_position' => 'card--layout-right',
-      'media_size' => 'media--small',
       'media_format' => 'media--widescreen',
+      'media_size' => 'media--small',
+      'styles' => 'borderless',
     ];
   }
 

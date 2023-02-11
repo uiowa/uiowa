@@ -29,12 +29,7 @@ class Person extends NodeBundleBase implements TeaserCardInterface {
     if (isset($this->view)) {
       if ($this->view->id() === 'people') {
         $media_attributes = [
-          'card--layout-left',
           'card--list',
-          'media--circle',
-          'media--small',
-          'media--border',
-          'borderless',
         ];
         $build['#attributes']->addClass($media_attributes);
       }
@@ -48,6 +43,7 @@ class Person extends NodeBundleBase implements TeaserCardInterface {
     return [
       ...parent::getDefaultStyles(),
       'card_media_position' => 'card--layout-left',
+      'media_border' => 'media--border',
       'media_format' => 'media--circle',
     ];
   }

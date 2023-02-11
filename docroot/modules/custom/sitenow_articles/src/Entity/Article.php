@@ -40,11 +40,7 @@ class Article extends NodeBundleBase implements TeaserCardInterface {
     if (isset($this->view)) {
       if ($this->view->id() === 'articles') {
         $media_attributes = [
-          'card--layout-right',
           'card--list',
-          'media--widescreen',
-          'media--small',
-          'borderless',
         ];
         $build['#attributes']->addClass($media_attributes);
       }
