@@ -58,6 +58,7 @@ class Person extends NodeBundleBase implements TeaserCardInterface {
         'card_media_position' => 'card--layout-left',
         'media_border' => 'media--border',
         'media_format' => 'media--circle',
+        'media_size' => 'media--small',
       ];
 
       if ($this->view?->id() === 'people') {

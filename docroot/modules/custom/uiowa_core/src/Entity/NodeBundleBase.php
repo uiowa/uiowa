@@ -75,7 +75,7 @@ abstract class NodeBundleBase extends Node implements TeaserCardInterface {
     return [
       'card_media_position' => 'card--layout-right',
       'media_format' => 'media--widescreen',
-      'media_size' => 'media--small',
+      'media_size' => 'media--medium',
       'styles' => 'borderless',
     ];
   }
