@@ -32,6 +32,18 @@ abstract class NodeBundleBase extends Node implements TeaserCardInterface {
     foreach ($this->getDefaultStyles() as $style) {
       $build['#attributes']['class'][] = $style;
     }
+    // @todo Do we still need a '.card--list' class? Or could this be handled
+    //   a more generic `.view .card` definition? If we still need it, we need
+    //   to figure out how to handle adding it conditionally based on the
+    //   card being in a view or other list.
+    // @todo How to handle setting the headline size?
+    // @todo Do we need any of the '.node' or '.node--*' classes? E.g.:
+    //   'node',
+    //   'node--type-' ~ node.bundle|clean_class,
+    //   node.isPromoted() ? 'node--promoted',
+    //   node.isSticky() ? 'node--sticky',
+    //   not node.isPublished() ? 'node--unpublished',
+    //   view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
     // Add shared fields to card.
     $this->mapFieldsToCardBuild($build, [
       '#media' => 'field_image',
