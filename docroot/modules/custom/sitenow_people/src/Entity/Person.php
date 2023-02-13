@@ -41,27 +41,30 @@ class Person extends NodeBundleBase implements TeaserCardInterface {
     // Handle link directly to source functionality.
     $build['#url'] = $this->getNodeUrl();
 
-    // Add view specific classes.
-    if (isset($this->view)) {
-      if ($this->view->id() === 'people') {
-        $media_attributes = [
-          'card--list',
-        ];
-        $build['#attributes']->addClass($media_attributes);
-      }
-    }
   }
 
   /**
    * {@inheritdoc}
    */
   public function getDefaultStyles(): array {
-    return [
-      ...parent::getDefaultStyles(),
-      'card_media_position' => 'card--layout-left',
-      'media_border' => 'media--border',
-      'media_format' => 'media--circle',
-    ];
+    // If ListBlock, otherwise provide node and person teaser defaults.
+    if ($this->view?->id() === 'people_list_block') {
+      return [];
+    }
+    else {
+      $default_classes = [
+        ...parent::getDefaultStyles(),
+        'card_media_position' => 'card--layout-left',
+        'media_border' => 'media--border',
+        'media_format' => 'media--circle',
+      ];
+
+      if ($this->view?->id() === 'people') {
+        $default_classes['card_list'] = 'card--list';
+      }
+
+      return $default_classes;
+    }
   }
 
 }
