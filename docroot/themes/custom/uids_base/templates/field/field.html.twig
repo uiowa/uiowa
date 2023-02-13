@@ -75,7 +75,7 @@
     {% endif %}
 
     {% block field_items %}
-    {% block field_icon %}{% if field_icon %}<span role="presentation" class="field__label--icon fas {{ field_icon }}"></span>{% endif %}{% endblock %}
+    {% block field_icon %}{% if field_icon %}<span role="presentation" class="field__icon fas {{ field_icon }}"></span>{% endif %}{% endblock %}
     {% for item in items %}
       <{{ item_tag }}{{ item.attributes.addClass('field__item') }}>{{ item.content }}</{{ item_tag }}>
     {% endfor %}
