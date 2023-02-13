@@ -52,26 +52,30 @@ class Article extends NodeBundleBase implements TeaserCardInterface {
     $date = \Drupal::service('date.formatter')->format($created, 'medium');
     $build['#subtitle'] = $date;
 
-    // Add view specific classes.
-    if (isset($this->view)) {
-      if ($this->view->id() === 'articles') {
-        $media_attributes = [
-          'card--list',
-        ];
-        $build['#attributes']->addClass($media_attributes);
-      }
-    }
   }
 
   /**
    * {@inheritdoc}
    */
   public function getDefaultStyles(): array {
-    return [
-      ...parent::getDefaultStyles(),
-      'media_size' => 'media--small',
-      'media_format' => 'media--widescreen',
-    ];
+    // If ListBlock, otherwise provide node and person teaser defaults.
+    // @todo Establish a better identifier for block controlled classes.
+    if ($this->view?->id() === 'article_list_block') {
+      return [];
+    }
+    else {
+      $default_classes = [
+        ...parent::getDefaultStyles(),
+        'media_size' => 'media--small',
+        'media_format' => 'media--widescreen',
+      ];
+
+      if ($this->view?->id() === 'articles') {
+        $default_classes['card_list'] = 'card--list';
+      }
+
+      return $default_classes;
+    }
   }
 
   /**
