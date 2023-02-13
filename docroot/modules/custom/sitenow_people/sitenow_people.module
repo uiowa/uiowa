@@ -214,7 +214,7 @@ function _sitenow_people_process_people_block_filters(array $element, FormStateI
       }
 
       // Display person types as a select list.
-      _sitenow_people_person_type_filter_select($element['field_person_types_target_id']);
+      uiowa_core_config_entity_filter_select($element['field_person_types_target_id'], 'person_type');
 
       // Only continue if person type status filter exists.
       if (!isset($element[PersonTypeInterface::STATUS_FILTER])) {
@@ -902,20 +902,19 @@ function _sitenow_people_person_form_submit(array &$form, FormStateInterface $fo
 function sitenow_people_person_type_statuses_allowed_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, bool &$cacheable = FALSE): array {
   $types = [];
 
-  if (!is_null($entity)) {
-    $allowed_types = \Drupal::entityTypeManager()
-      ->getStorage('person_type')->loadByProperties([
-        'status' => TRUE,
-        'allow_former' => TRUE,
-      ]);
-    foreach ($allowed_types as $type) {
-      $types[$type->id()] = t('Former @type', [
-        '@type' => $type->label(),
-      ]);
-    }
+  $allowed_types = \Drupal::entityTypeManager()
+    ->getStorage('person_type')->loadByProperties([
+      'status' => TRUE,
+      'allow_former' => TRUE,
+    ]);
+  foreach ($allowed_types as $type) {
+    $types[$type->id()] = t('Former @type', [
+      '@type' => $type->label(),
+    ]);
   }
-  else {
-    // To resolve an issue with ListItemBase generateSampleValue.
+
+  // To resolve an issue with ListItemBase generateSampleValue.
+  if (empty($types)) {
     $types['_none'] = '-None-';
   }
 

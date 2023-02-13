@@ -17,10 +17,10 @@ use Drupal\google_tag\Entity\Container;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\uiowa_core\HeadlineHelper;
+use Drupal\uiowa_core\RegionHelper;
 use Drupal\views\Views;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Exception\RfcComplianceException;
-use Drupal\uiowa_core\RegionHelper;
 
 /**
  * Implements hook_config_schema_info_alter().
@@ -904,4 +904,59 @@ function uiowa_core_config_entity_filter_select(array &$form, $entity_id) {
   $form['#empty_option'] = t('- Any -');
   $form['#options'] = $options;
   unset($form['#size']);
+}
+
+/**
+ * Helper function to set the field label icon.
+ *
+ * @param array $variables
+ *   The field variables array.
+ * @param string $icon_classes
+ *   The Font Awesome class for the field label icon.
+ */
+function uiowa_core_set_field_label_icon(array &$variables, string $icon_classes) : void {
+  if (!isset($variables['field_label_icon'])) {
+    $variables['field_label_icon'] = '';
+  }
+  $variables['field_label_icon'] = implode(' ',
+    [
+      $variables['field_label_icon'],
+      $icon_classes,
+    ]);
+}
+
+/**
+ * Helper function to set the block/field's attributes.
+ *
+ * @param array $variables
+ *   The block/field variables array.
+ * @param array|string $classes
+ *   The class(es) to be added to the block/field's attributes.
+ */
+function uiowa_core_set_attributes(array &$variables, array|string $classes) : void {
+  if (!isset($variables['attributes']['class'])) {
+    $variables['attributes']['class'] = [];
+  }
+  if (!is_array($classes)) {
+    $classes = [$classes];
+  }
+  $variables['attributes']['class'] = array_unique(array_merge($variables['attributes']['class'], $classes));
+}
+
+/**
+ * Helper function to set the block/field's title attributes.
+ *
+ * @param array $variables
+ *   The block/field variables array.
+ * @param array|string $title_classes
+ *   The class(es) to be added to the block/field's title attributes.
+ */
+function uiowa_core_set_title_attributes(array &$variables, array|string $title_classes): void {
+  if (!isset($variables['title_attributes']['class'])) {
+    $variables['title_attributes']['class'] = [];
+  }
+  if (!is_array($title_classes)) {
+    $title_classes = [$title_classes];
+  }
+  $variables['title_attributes']['class'] = array_unique(array_merge($variables['title_attributes']['class'], $title_classes));
 }
