@@ -2024,7 +2024,7 @@ function sitenow_update_9054() {
                   $view_mode = $old_dm_instance->getAttribute('data-view-mode');
                   $is_relevant_view_mode = in_array($view_mode, $media_view_mode_map_keys);
                   if ($is_relevant_view_mode) {
-                    $new_dm_instance->setAttribute('data-view-mode',$media_view_mode_map[$view_mode]);
+                    $new_dm_instance->setAttribute('data-view-mode', $media_view_mode_map[$view_mode]);
 
                     $old_dm_instance->parentNode->replaceChild($new_dm_instance, $old_dm_instance);
                   }
