@@ -41,23 +41,39 @@ content:
       view_mode: large__widescreen
       link: false
     third_party_settings: {  }
-    weight: 0
+    weight: 4
     region: content
   field_room_building_id:
     type: entity_reference_entity_id
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 2
+    weight: 0
     region: content
   field_room_max_occupancy:
     type: number_integer
-    label: visually_hidden
+    label: inline
     settings:
       thousand_separator: ''
-      prefix_suffix: true
+      prefix_suffix: false
     third_party_settings: {  }
-    weight: 4
+    weight: 2
+    region: content
+  field_room_name:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_room_responsible_unit:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 3
     region: content
   field_room_room_id:
     type: string
@@ -65,15 +81,15 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 1
+    weight: 5
     region: content
   field_room_type:
     type: entity_reference_label
-    label: visually_hidden
+    label: inline
     settings:
       link: false
     third_party_settings: {  }
-    weight: 3
+    weight: 6
     region: content
 hidden:
   body: true
@@ -92,8 +108,6 @@ hidden:
   field_room_instruction_category: true
   field_room_map: true
   field_room_map_link: true
-  field_room_name: true
-  field_room_responsible_unit: true
   field_room_scheduling_regions: true
   field_room_seating_chart: true
   field_room_section_heading: true
