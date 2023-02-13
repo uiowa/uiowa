@@ -37,33 +37,33 @@
   'attributes': attributes.addClass(classes).removeClass(style_classes, size_classes),
   'media_styles': style_classes,
   'media_sizes': size_classes,
-  'card_image': event.image|render,
-  'card_title': event.title|render,
+  'media': event.image|render,
+  'title': event.title|render,
   'title_prefix': title_prefix,
   'title_suffix': title_suffix,
-  'card_link_url': event.url,
-  'card_subtitle': event.date_string,
+  'link_url': event.url,
+  'subtitle': event.date_string,
   'headline_level': event.heading_size,
-  'card_text': event.description|render|trim|t,
+  'content': event.description|render|trim|t,
   'event_icon': event_icon|trans,
-  'card_meta': event_location|render,
+  'meta': event_location|render,
   'canceled': event.canceled,
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with block_card only %}
 
-  {% block card_meta %}
-    {% if card_meta is not empty %}
+  {% block meta %}
+    {% if meta is not empty %}
       <div class="card__meta">
         {{ event_icon }}
-        {{ card_meta }}
+        {{ meta }}
       </div>
     {% endif %}
   {% endblock %}
 
-  {% block card_content %}
-    {% if card_text is not empty %}
-      <div class="card__description">{{ card_text }}</div>
+  {% block content %}
+    {% if content is not empty %}
+      <div class="card__description">{{ content }}</div>
     {% endif %}
     {% if canceled %}
       <span class="badge badge--orange">Canceled</span>
