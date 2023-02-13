@@ -48,6 +48,7 @@ class Person extends NodeBundleBase implements TeaserCardInterface {
    */
   public function getDefaultStyles(): array {
     // If ListBlock, otherwise provide node and person teaser defaults.
+    // @todo Establish a better identifier for block controlled classes.
     if ($this->view?->id() === 'people_list_block') {
       return [];
     }
