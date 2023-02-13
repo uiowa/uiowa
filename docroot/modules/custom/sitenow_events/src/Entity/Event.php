@@ -11,13 +11,26 @@ use Drupal\uiowa_core\Entity\TeaserCardInterface;
 class Event extends NodeBundleBase implements TeaserCardInterface {
 
   /**
+   * If entity has link directly to source field.
+   *
+   * @var string|null
+   *   field name or null.
+   */
+  protected $source_link_direct = 'field_event_series_link_direct';
+
+  /**
+   * If entity has source link field.
+   *
+   * @var string|null
+   *   field name or null.
+   */
+  protected $source_link = 'field_event_series_link';
+
+  /**
    * {@inheritdoc}
    */
   public function buildCard(array &$build) {
     parent::buildCard($build);
-
-    // Handle link directly to source functionality.
-    $build['#url'] = $this->generateNodeLink('field_event_series_link_direct', 'field_event_series_link');
 
     // Process additional card mappings.
     $this->mapFieldsToCardBuild($build, [
@@ -28,6 +41,9 @@ class Event extends NodeBundleBase implements TeaserCardInterface {
         'field_event_performer',
       ],
     ]);
+
+    // Handle link directly to source functionality.
+    $build['#url'] = $this->getNodeUrl();
   }
 
 }

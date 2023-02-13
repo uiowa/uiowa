@@ -11,19 +11,35 @@ use Drupal\uiowa_core\Entity\TeaserCardInterface;
 class Person extends NodeBundleBase implements TeaserCardInterface {
 
   /**
+   * If entity has link directly to source field.
+   *
+   * @var string|null
+   *   field name or null.
+   */
+  protected $source_link_direct = 'field_person_website_link_direct';
+
+  /**
+   * If entity has source link field.
+   *
+   * @var string|null
+   *   field name or null.
+   */
+  protected $source_link = 'field_person_website';
+
+  /**
    * {@inheritdoc}
    */
   public function buildCard(array &$build) {
     parent::buildCard($build);
-
-    // Handle link directly to source functionality.
-    $build['#url'] = $this->generateNodeLink('field_person_website_link_direct', 'field_person_website');
 
     // Process additional card mappings.
     $this->mapFieldsToCardBuild($build, [
       '#subtitle' => 'field_person_position',
       '#meta' => ['field_person_email', 'field_person_phone'],
     ]);
+
+    // Handle link directly to source functionality.
+    $build['#url'] = $this->getNodeUrl();
 
     // Add view specific classes.
     if (isset($this->view)) {

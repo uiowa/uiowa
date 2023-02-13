@@ -13,13 +13,26 @@ use Drupal\uiowa_core\Entity\TeaserCardInterface;
 class Article extends NodeBundleBase implements TeaserCardInterface {
 
   /**
+   * If entity has link directly to source field.
+   *
+   * @var string|null
+   *   field name or null.
+   */
+  protected $source_link_direct = 'field_article_source_link_direct';
+
+  /**
+   * If entity has source link field.
+   *
+   * @var string|null
+   *   field name or null.
+   */
+  protected $source_link = 'field_article_source_link';
+
+  /**
    * {@inheritdoc}
    */
   public function buildCard(array &$build) {
     parent::buildCard($build);
-
-    // Handle link directly to source functionality.
-    $build['#url'] = $this->generateNodeLink('field_article_source_link_direct', 'field_article_source_link');
 
     // Process additional card mappings.
     $this->mapFieldsToCardBuild($build, [
@@ -27,6 +40,9 @@ class Article extends NodeBundleBase implements TeaserCardInterface {
         'field_article_author',
       ],
     ]);
+
+    // Handle link directly to source functionality.
+    $build['#url'] = $this->getNodeUrl('field_article_source_link_direct', 'field_article_source_link');
 
     // Construct remaining byline.
     $build['#meta']['byline'] = $this->getByline($build);

@@ -12,6 +12,22 @@ use Drupal\uiowa_core\Element\Card;
 abstract class NodeBundleBase extends Node implements TeaserCardInterface {
 
   /**
+   * If entity has link directly to source field.
+   *
+   * @var string|null
+   *   field name or null.
+   */
+  protected $source_link_direct = NULL;
+
+  /**
+   * If entity has source link field.
+   *
+   * @var string|null
+   *   field name or null.
+   */
+  protected $source_link = NULL;
+
+  /**
    * {@inheritdoc}
    */
   public function addCardBuildInfo(array &$build): void {
@@ -104,24 +120,27 @@ abstract class NodeBundleBase extends Node implements TeaserCardInterface {
   /**
    * Helper function to construct link directly to source functionality.
    *
-   * @param string $source_link_direct
-   *   The field name of the boolean field controlling the functionality.
-   * @param string $source_link
-   *   The field name of the link field providing the source link.
-   *
    * @return string
    *   The url used to link the view mode.
    *
    * @throws \Drupal\Core\TypedData\Exception\MissingDataException|\Drupal\Core\Entity\EntityMalformedException
    */
-  public function generateNodeLink(string $source_link_direct, string $source_link): string {
-    $link_direct = (int) $this->get($source_link_direct)->value;
-    $link = $this->get($source_link)->uri;
-    if ($link_direct === 1 && isset($link) && !empty($link)) {
-      $url = $this->get($source_link)->get(0)->getUrl()->toString();
+  public function getNodeUrl(): string {
+    $source_link_direct = $this->source_link_direct;
+    $source_link = $this->source_link;
+
+    if (is_null($source_link_direct) || is_null($source_link)) {
+      $url = !$this->isNew() ? $this->toUrl('canonical')->toString() : NULL;
     }
     else {
-      $url = !$this->isNew() ? $this->toUrl('canonical')->toString() : NULL;
+      $link_direct = (int) $this->get($source_link_direct)->value;
+      $link = $this->get($source_link)->uri;
+      if ($link_direct === 1 && isset($link) && !empty($link)) {
+        $url = $this->get($source_link)->get(0)->getUrl()->toString();
+      }
+      else {
+        $url = !$this->isNew() ? $this->toUrl('canonical')->toString() : NULL;
+      }
     }
     return $url;
   }
