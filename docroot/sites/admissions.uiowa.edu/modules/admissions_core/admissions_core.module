@@ -361,6 +361,11 @@ function admissions_core_preprocess_field(&$variables) {
       if ($variables['element']['#entity_type'] == 'node' && $variables['element']['#bundle'] == 'student_profile') {
         uiowa_core_set_field_icon($variables, 'fa-map-marker-alt');
       }
+      break;
+
+    case 'title':
+
+      break;
   }
 
 }
@@ -371,6 +376,7 @@ function admissions_core_preprocess_field(&$variables) {
 function admissions_core_preprocess_field__node__title(&$variables) {
   if ($variables['element']['#bundle'] === 'major') {
     $variables['pre_title'] = AdmissionsCoreInterface::TWO_PLUS_TWO_TITLE;
+    uiowa_core_set_attributes($variables, 'headline--uppercase headline--negative');
   }
   if ($variables['element']['#bundle'] === 'student_profile') {
     uiowa_core_set_attributes($variables, 'text-align-center headline headline--serif headline--highlight');
@@ -611,14 +617,6 @@ function admissions_core_theme($existing, $type, $theme, $path) {
     'node__view__student_profiles' => [
       'template' => 'node--view--student-profiles',
       'base hook' => 'node',
-    ],
-    'field__node__title__area_of_study___custom' => [
-      'template' => 'field--node--title--centered-highlighted',
-      'base hook' => 'field',
-    ],
-    'field__node__title__major___custom' => [
-      'template' => 'field--node--title--centered-pre-title-highlighted',
-      'base hook' => 'field',
     ],
     'field__node__field_area_of_study_stat' => [
       'template' => 'field--node--field-area-of-study-stat',

@@ -483,6 +483,10 @@ function uids_base_preprocess_field(&$variables) {
       }
       break;
 
+    case 'title':
+      $variables['attributes']['class'] = 'page-title headline--serif headline';
+      break;
+
   }
 
   // @todo Is this code still necessary?
