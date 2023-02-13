@@ -67,7 +67,7 @@
 
   <div{{ attributes.addClass(classes) }}>
     <div{{ title_attributes.addClass(title_classes).removeClass(remove_classes) }}>
-      {% block field_label_icon %}{% if field_label_icon %}<span role="presentation" class="field__label--icon {{ field_label_icon }}"></span>{% endif %}{% endblock %}{{ label }}
+      {% block field_label_icon %}{% if field_label_icon %}<span role="presentation" class="field__label--icon fas {{ field_label_icon }}"></span>{% endif %}{% endblock %}{{ label }}
     </div>
 
     {% if multiple %}
@@ -75,7 +75,7 @@
     {% endif %}
 
     {% block field_items %}
-    {% block field_icon %}{% endblock %}
+    {% block field_icon %}{% if field_icon %}<span role="presentation" class="field__label--icon fas {{ field_icon }}"></span>{% endif %}{% endblock %}
     {% for item in items %}
       <{{ item_tag }}{{ item.attributes.addClass('field__item') }}>{{ item.content }}</{{ item_tag }}>
     {% endfor %}

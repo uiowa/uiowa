@@ -451,8 +451,24 @@ function uids_base_preprocess_field(&$variables) {
       $variables['caption'] = $caption;
       break;
 
+    case 'field_person_email':
+      uiowa_core_set_field_icon($variables, 'fa-envelope fa-li');
+      uiowa_core_set_attributes($variables, 'fa-ul');
+      break;
+
+    case 'field_person_phone':
+      uiowa_core_set_field_icon($variables, 'fa-phone fa-li');
+      uiowa_core_set_attributes($variables, 'fa-ul');
+      break;
+
+    case 'field_person_website':
+      uiowa_core_set_field_icon($variables, 'fa-fw fa-desktop fa-li');
+      uiowa_core_set_attributes($variables, 'fa-ul');
+      break;
+
     case 'field_person_education':
-      $test = 'thing';
+      uiowa_core_set_field_icon($variables, 'fa-university fa-li');
+      uiowa_core_set_attributes($variables, 'fa-ul');
       break;
   }
 
