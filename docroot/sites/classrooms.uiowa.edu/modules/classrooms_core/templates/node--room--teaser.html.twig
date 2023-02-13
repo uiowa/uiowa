@@ -94,22 +94,21 @@
 
 {%
   set classes = [
-  'card--centered',
+  'card--left',
   'card--stacked',
-  'card--alignment-center',
+  'card--alignment-left',
   'card--enclosed',
-  'media--widescreen',
+  'card--button-position',
   ]
 %}
 {% set card_options = {
   'attributes': attributes.addClass(classes),
   'card_image': content.field_image|render,
-  'card_text': content|without('field_image', 'field_room_room_id', 'field_room_building_id')|render,
+  'card_meta': content|without('field_image', 'field_room_room_id', 'field_room_building_id')|render,
   'card_title': card_title,
   'card_link_url': url,
-  'card_link_title': 'Room details'|t,
   'headline_level': h3,
-  'headline_class': 'card__title headline',
+  'headline_class': 'h4 headline block__headline headline--serif headline--underline',
   'media_sizes' : 'card__media--large',
   'visible_button': TRUE,
 } %}
