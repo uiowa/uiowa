@@ -46,4 +46,29 @@ class Event extends NodeBundleBase implements TeaserCardInterface {
     $build['#url'] = $this->getNodeUrl();
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getDefaultStyles(): array {
+    // If ListBlock, otherwise provide node and event teaser defaults.
+    // @todo Establish a better identifier for block controlled classes.
+    if ($this->view?->id() === 'events_list_block') {
+      return [];
+    }
+    else {
+      $default_classes = [
+        ...parent::getDefaultStyles(),
+        'card_media_position' => 'card--layout-left',
+        'media_border' => 'media--border',
+        'media_format' => 'media--circle',
+      ];
+
+      if ($this->view?->id() === 'events') {
+        $default_classes['card_list'] = 'card--list';
+      }
+
+      return $default_classes;
+    }
+  }
+
 }
