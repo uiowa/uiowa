@@ -145,7 +145,7 @@ function uiowa_core_preprocess_media(&$variables) {
     $accepted_view_modes = ['large', 'medium', 'small'];
 
     foreach ($accepted_view_modes as $value) {
-      if (str_starts_with($view_mode, $value) && $view_mode !== $value) {
+      if (str_starts_with($view_mode, $value)) {
         uiowa_core_prefix_alignment_classes('align-left', $variables['attributes']['class']);
         uiowa_core_prefix_alignment_classes('align-right', $variables['attributes']['class']);
         uiowa_core_prefix_alignment_classes('align-center', $variables['attributes']['class']);
