@@ -345,19 +345,22 @@ function admissions_core_preprocess_field(&$variables) {
       $name = $term->field_major_community_college->entity->name->value;
       $variables['label'] = t('@name checkpoints', ['@name' => $name]);
 
-      if (!isset($variables['title_attributes']['class'])) {
-        $variables['title_attributes']['class'] = '';
-      }
-      $variables['title_attributes']['class'] .= 'h4 headline headline--serif';
+      uiowa_core_set_title_attributes($variables, 'h4 headline headline--serif');
       break;
 
     case 'field_major_responsibilities':
     case 'field_major_uiowa_checkpoints':
-      if (!isset($variables['title_attributes']['class'])) {
-        $variables['title_attributes']['class'] = '';
-      }
-      $variables['title_attributes']['class'] .= 'h4 headline headline--serif';
+      uiowa_core_set_title_attributes($variables, 'h4 headline headline--serif');
       break;
+
+    case 'field_student_profile_major':
+      uiowa_core_set_field_icon($variables, 'fa-book');
+      break;
+
+    case 'field_person_hometown':
+      if ($variables['element']['#entity_type'] == 'node' && $variables['element']['#bundle'] == 'student_profile') {
+        uiowa_core_set_field_icon($variables, 'fa-map-marker-alt');
+      }
   }
 
 }
@@ -368,6 +371,9 @@ function admissions_core_preprocess_field(&$variables) {
 function admissions_core_preprocess_field__node__title(&$variables) {
   if ($variables['element']['#bundle'] === 'major') {
     $variables['pre_title'] = AdmissionsCoreInterface::TWO_PLUS_TWO_TITLE;
+  }
+  if ($variables['element']['#bundle'] === 'student_profile') {
+    uiowa_core_set_attributes($variables, 'text-align-center headline headline--serif headline--highlight');
   }
 }
 
@@ -648,18 +654,6 @@ function admissions_core_theme($existing, $type, $theme, $path) {
     ],
     'field__field_student_profile_blurb' => [
       'template' => 'field--field-student-profile-blurb',
-      'base hook' => 'field',
-    ],
-    'field__node__field_person_hometown__student_profile' => [
-      'template' => 'field--node--field-person-hometown--student-profile',
-      'base hook' => 'field',
-    ],
-    'field__node__field_student_profile_major__student_profile' => [
-      'template' => 'field--node--field-student-profile-major--student-profile',
-      'base hook' => 'field',
-    ],
-    'field__node__title__student_profile__default' => [
-      'template' => 'field--node--title--student-profile--default',
       'base hook' => 'field',
     ],
     'field__taxonomy_term__field_college_website__colleges__default' => [

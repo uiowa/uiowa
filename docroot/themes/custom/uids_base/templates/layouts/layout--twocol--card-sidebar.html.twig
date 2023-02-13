@@ -40,7 +40,7 @@
 
     {% if content.card_media or content.card_title or content.card_subtitle or content.card_meta or content.card_content or content.card_button %}
       {% set card = {
-        attributes: create_attribute().addClass('card', 'layout__region-container'),
+        attributes: create_attribute().addClass('card', 'bg--white', 'layout__region-container'),
         region_attributes: region_attributes,
         content: content,
         subtitle: content.card_subtitle,
@@ -50,7 +50,7 @@
         {% if content.card_media is not empty %}
           {% block media %}
             {{ attach_library('uids_base/media') }}
-            <div {{ region_attributes.card_media.addClass('layout__region', 'layout__region--card-media', 'media') }}>
+            <div {{ region_attributes.card_media.addClass('layout__region', 'layout__region--card-media', 'media', 'media--medium') }}>
               <div class="media__inner">
                 {{ content.card_media }}
               </div>
@@ -84,7 +84,7 @@
 
         {% if content.card_meta %}
           {% block meta %}
-            <div {{ region_attributes.card_meta.addClass('layout__region', 'layout__region--card-meta', 'card__meta card__meta fa-ul element--list-none') }}>
+            <div {{ region_attributes.card_meta.addClass('layout__region', 'layout__region--card-meta', 'card__meta') }}>
               {{ content.card_meta }}
             </div>
           {% endblock %}

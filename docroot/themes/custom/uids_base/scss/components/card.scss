@@ -138,64 +138,73 @@
 }
 
 .card {
-  .card__meta,
-  .card__subtitle {
-    .svg-inline--fa {
-      margin-right: .3rem;
-    }
-    a {
-      text-decoration: none;
-    }
-  }
-
   .card__meta {
-    .fontawesome-icons {
-      display: inline-block;
-    }
-    .svg-inline--fa {
-      font-size: 1rem;
-      line-height: 1.2;
-    }
-  }
-
-  &__label {
-    position: relative;
-
-    .svg-inline--fa {
-      height: 100%;
-    }
-  }
-  &--alignment-center {
-    .card__label {
-      padding-left: 0;
-
-      .svg-inline--fa {
-        @include element-invisible;
-      }
-    }
-  }
-
-  &.hide-descriptions {
-    .card__description,
-    .item-description,
-    .field--name-field-teaser {
-      display: none;
-    }
-  }
-  &.hide-images {
-    .card__media {
-      display: none;
-    }
-    .card__body {
-      @include breakpoint(sm) {
-        padding: 0 !important;
-      }
-    }
-  }
-  &.hide-details .card__details {
-    display: none;
-  }
+  a {
+    text-decoration: none;
+   }
+ }
 }
+
+//.card {
+//  .card__meta,
+//  .card__subtitle {
+//    .svg-inline--fa {
+//      margin-right: .3rem;
+//    }
+//    a {
+//      text-decoration: none;
+//    }
+//  }
+//
+//  .card__meta {
+//    .fontawesome-icons {
+//      display: inline-block;
+//    }
+//    .svg-inline--fa {
+//      font-size: 1rem;
+//      line-height: 1.2;
+//    }
+//  }
+//
+//  &__label {
+//    position: relative;
+//
+//    .svg-inline--fa {
+//      height: 100%;
+//    }
+//  }
+//  &--alignment-center {
+//    .card__label {
+//      padding-left: 0;
+//
+//      .svg-inline--fa {
+//        @include element-invisible;
+//      }
+//    }
+//  }
+//
+//  &.hide-descriptions {
+//    .card__description,
+//    .item-description,
+//    .field--name-field-teaser {
+//      display: none;
+//    }
+//  }
+//  &.hide-images {
+//    .card__media {
+//      display: none;
+//    }
+//    .card__body {
+//      @include breakpoint(sm) {
+//        padding: 0 !important;
+//      }
+//    }
+//  }
+//  &.hide-details .card__details {
+//    display: none;
+//  }
+//}
+
 
 // Fix for adding padding if images are hidden within stack format.
 .card.hide-images.card--stacked.card--enclosed .card__body,
