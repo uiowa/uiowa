@@ -186,6 +186,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           }
           break;
 
+        case 'inline_block:uiowa_events':
         case 'views_block:article_list_block-list_article':
         case 'views_block:events_list_block-card_list':
         case 'views_block:people_list_block-list_card':
