@@ -28,6 +28,6 @@ interface TeaserCardInterface {
    *
    * @return array
    */
-  public function getDefaultStyles(): array;
+  public function getDefaultCardStyles(): array;
 
 }

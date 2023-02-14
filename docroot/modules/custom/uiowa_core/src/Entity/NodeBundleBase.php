@@ -45,7 +45,7 @@ abstract class NodeBundleBase extends Node implements TeaserCardInterface {
    * {@inheritdoc}
    */
   public function buildCard(array &$build) {
-    foreach ($this->getDefaultStyles() as $style) {
+    foreach ($this->getDefaultCardStyles() as $style) {
       $build['#attributes']['class'][] = $style;
     }
     // @todo Do we still need a '.card--list' class? Or could this be handled
@@ -71,7 +71,7 @@ abstract class NodeBundleBase extends Node implements TeaserCardInterface {
   /**
    * {@inheritdoc}
    */
-  public function getDefaultStyles(): array {
+  public function getDefaultCardStyles(): array {
     return [
       'card_media_position' => 'card--layout-right',
       'media_format' => 'media--widescreen',
