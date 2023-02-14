@@ -81,6 +81,16 @@ abstract class NodeBundleBase extends Node implements TeaserCardInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function overrideDefaultCardStyles($styles): array {
+    return [
+      $this->getDefaultCardStyles(),
+      $styles,
+    ];
+  }
+
+  /**
    * Map build fields to card properties.
    *
    * @param array $build

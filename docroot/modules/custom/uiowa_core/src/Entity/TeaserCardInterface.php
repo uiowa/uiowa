@@ -30,4 +30,13 @@ interface TeaserCardInterface {
    */
   public function getDefaultCardStyles(): array;
 
+  /**
+   * Provides overriding of default card styles.
+   *
+   * @param $styles
+   *   The styles that should be overridden.
+   *
+   * @return array
+   */
+  public function overrideDefaultCardStyles($styles): array;
 }
