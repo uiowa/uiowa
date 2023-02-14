@@ -49,14 +49,26 @@
 }
 
 
-// Remove padding if no section background and bg--white is set on card
-.layout__container:not([class*="bg-"]) {
+// Remove padding if no section background and bg--white is set on card.
+.layout__container:not([class*="bg--"]) {
   .card[class*="bg--white"][class*="borderless"] {
     padding: 0;
   }
 }
 
-// Allow cards to be stacked within layouts
+// Remove padding if section background matches card background with borderless.
+$bg-colors: "white", "gray", "black", "gold";
+
+@each $color in $bg-colors {
+  .layout__container[class*="bg--#{$color}"] {
+    .card[class*="bg--#{$color}"][class*="borderless"] {
+      padding: 0;
+    }
+  }
+}
+
+
+// Allow cards to be stacked within layouts.
 .layout--fourcol,
 .layout--threecol,
 .layout--twocol {
@@ -100,7 +112,7 @@
   }
 }
 
-// V2 - Set background for all v2 cards
+// V2 - Set background for all v2 cards.
 .paragraph--type--section {
   .card {
     background: #fff;
