@@ -29,6 +29,19 @@ function sitenow_articles_entity_bundle_info_alter(array &$bundles) {
 }
 
 /**
+ * Helper function to check if the "articles_narrow" split is enabled.
+ *
+ * @return bool
+ *   Returns TRUE if the split is enabled, FALSE otherwise.
+ */
+function sitenow_articles_is_articles_narrow_split_enabled() {
+  /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
+  $config_factory = \Drupal::service('config.factory');
+  $articles_narrow_split_config = $config_factory->get('config_split.config_split.articles_narrow');
+  return ($articles_narrow_split_config->get('status') === TRUE);
+}
+
+/**
  * Implements hook_entity_extra_field_info().
  */
 function sitenow_articles_entity_extra_field_info() {
@@ -296,39 +309,98 @@ function sitenow_articles_preprocess_node(&$variables) {
           }
         }
         if (in_array($variables['view_mode'], ['default', 'full'])) {
+
           // Check if we don't have any gallery images.
           if ($node->hasField('field_gallery_images') &&
             empty($node->get('field_gallery_images')->getValue())) {
-            // Loop through our article layout blocks and look for
-            // the gallery jump link block (defined by this module).
-            // We expect it to be the last block in most cases,
-            // so we iterate in reverse.
-            foreach (array_reverse($variables['content']['_layout_builder'][1]['content'], TRUE) as $key => $block) {
-              if (isset($block['#plugin_id']) && $block['#plugin_id'] === 'galleryjumplink_block') {
-                unset($variables['content']['_layout_builder'][1]['content'][$key]);
-                // There should only be one instance of the jump link,
-                // so if we've already unset it, finish the loop.
-                break;
-              }
-            }
+            $layout_parts = ['content', 'second'];
+            sitenow_articles_unset_block($variables, $layout_parts, 'galleryjumplink_block');
           }
 
           if ($node->hasField('field_article_preserve_links')) {
+            $layout_parts = ['content', 'first'];
             // Check if preserve links checkbox is checked.
             if ((int) filter_var($node->field_article_preserve_links->value, FILTER_VALIDATE_BOOLEAN) !== 1) {
               // If it isn't checked, hide the broken links message.
-              foreach (array_reverse($variables['content']['_layout_builder'][1]['content'], TRUE) as $key => $block) {
-                if (isset($block['#plugin_id']) && $block['#plugin_id'] == 'preservedlinksmessage_block') {
-                  unset($variables['content']['_layout_builder'][1]['content'][$key]);
-                  break;
-                }
-              }
+              sitenow_articles_unset_block($variables, $layout_parts, 'preservedlinksmessage_block');
             }
           }
         }
         break;
 
     }
+  }
+}
+
+/**
+ * Unsets a block from the given layout builder parts.
+ *
+ * @param array &$variables
+ *   The variables array.
+ * @param array $layout_parts
+ *   The layout parts to loop through.
+ * @param string $block_id
+ *   The block ID to unset.
+ */
+function sitenow_articles_unset_block(array &$variables, array $layout_parts, string $block_id) {
+  foreach ($layout_parts as $layout_part) {
+    if (isset($variables['content']['_layout_builder'][1][$layout_part])) {
+      foreach ($variables['content']['_layout_builder'][1][$layout_part] as $key => $block) {
+        if (isset($block['#plugin_id']) && $block['#plugin_id'] === $block_id) {
+          unset($variables['content']['_layout_builder'][1][$layout_part][$key]);
+          break 2;
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function sitenow_articles_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  switch ($entity->getType()) {
+    case 'article':
+      if ($display->getComponent('article_created_date')) {
+        $created = $entity->get('created')->value;
+        $date = \Drupal::service('date.formatter')->format($created, 'medium');
+        $build['article_created_date'] = [
+          '#type' => 'container',
+          '#attributes' => [
+            'class' => ['article-created-date'],
+          ],
+          'date' => [
+            '#type' => 'markup',
+            '#markup' => $date,
+          ],
+        ];
+      }
+
+      if ($display->getComponent('article_created_date') && sitenow_articles_is_articles_narrow_split_enabled() && $view_mode != 'teaser') {
+        $created = $entity->get('created')->value;
+        $date = \Drupal::service('date.formatter')->format($created, 'medium');
+        $build['article_created_date'] = [
+          '#type' => 'container',
+          '#attributes' => [
+            'class' => ['article-created-date'],
+          ],
+          'title' => [
+            '#type' => 'html_tag',
+            '#tag' => 'div',
+            '#value' => t('Published:'),
+            '#attributes' => [
+              'class' => ['field__label'],
+            ],
+          ],
+          'date' => [
+            '#type' => 'markup',
+            '#markup' => $date,
+          ],
+        ];
+
+      }
+      break;
+
   }
 }
 
@@ -605,6 +677,13 @@ function sitenow_articles_preprocess_block(&$variables) {
 
     case 'field_block:node:article:field_contact_reference':
       $variables['attributes']['class'][] = 'article--meta article--meta__block';
+
+      break;
+
+    case 'field_block:node:article:body':
+      if (sitenow_articles_is_articles_narrow_split_enabled()) {
+        $variables['attributes']['class'][] = 'block-margin__default--removed';
+      }
 
       break;
   }
