@@ -484,7 +484,11 @@ function uids_base_preprocess_field(&$variables) {
       break;
 
     case 'title':
-      uiowa_core_set_attributes($variables, ['page-title', 'headline--serif', 'headline']);
+      uiowa_core_set_attributes($variables, [
+        'page-title',
+        'headline--serif',
+        'headline',
+      ]);
       break;
 
   }
