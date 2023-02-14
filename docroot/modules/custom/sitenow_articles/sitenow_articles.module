@@ -737,6 +737,13 @@ function sitenow_articles_preprocess_block(&$variables) {
       $variables['attributes']['class'][] = 'article--meta article--meta__block';
 
       break;
+
+    case 'field_block:node:article:body':
+      if (sitenow_articles_is_articles_narrow_split_enabled()) {
+        $variables['attributes']['class'][] = 'block-margin__default--removed';
+      }
+
+      break;
   }
 }
 

@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.article.field_article_source_link
     - field.field.node.article.field_article_source_link_direct
     - field.field.node.article.field_article_source_org
+    - field.field.node.article.field_article_subhead
     - field.field.node.article.field_contact_reference
     - field.field.node.article.field_featured_image_display
     - field.field.node.article.field_gallery_images
@@ -244,7 +245,7 @@ third_party_settings:
                 label: hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 3
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           -
@@ -266,7 +267,7 @@ third_party_settings:
                 third_party_settings:
                   field_delimiter:
                     delimiter: ''
-            weight: 4
+            weight: 5
             additional: {  }
             third_party_settings: {  }
           -
@@ -279,6 +280,26 @@ third_party_settings:
               provider: sitenow_articles
               context_mapping: {  }
             weight: 4
+            additional: {  }
+            third_party_settings: {  }
+          -
+            uuid: bab77b5c-d487-4df3-a575-3170e05ef600
+            region: first
+            configuration:
+              id: 'field_block:node:article:field_article_subhead'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: string
+                label: hidden
+                settings:
+                  link_to_entity: false
+                third_party_settings: {  }
+            weight: 3
             additional: {  }
             third_party_settings: {  }
         third_party_settings:
@@ -461,6 +482,7 @@ hidden:
   entity_print_view_word_docx: true
   field_article_author: true
   field_article_source_link_direct: true
+  field_article_subhead: true
   field_meta_tags: true
   field_tags: true
   field_teaser: true
