@@ -209,6 +209,13 @@
 }
 
 // V2 Styles.
+.paragraph--type--articles.list {
+  .field--name-field-teaser {
+    @include card-paragraph;
+    margin: 0.5rem 0 0;
+  }
+}
+
 .grid.paragraph--type--articles,
 .masonry.paragraph--type--articles {
   .node--type-article.node--view-mode-teaser {
@@ -222,3 +229,4 @@
     }
   }
 }
+
