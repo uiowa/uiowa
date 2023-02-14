@@ -22,18 +22,24 @@ class NewsFeature extends BaseNodeSource {
   /**
    * {@inheritdoc}
    */
-  public function prepareRow(Row $row) {
-    parent::prepareRow($row);
+  public function query() {
+    $query = parent::query();
+    // Make sure our nodes are retrieved in order,
+    // and force a highwater mark of our last-most migrated node.
+    $query->orderBy('nid');
+    return $query;
+  }
 
-    // Set our tagMapping if it's not already.
-    if (empty($this->tagMapping)) {
-      $this->tagMapping = \Drupal::database()
-        ->select('taxonomy_term_field_data', 't')
-        ->fields('t', ['name', 'tid'])
-        ->condition('t.vid', 'tags', '=')
-        ->execute()
-        ->fetchAllKeyed();
+  /**
+   * {@inheritdoc}
+   */
+  public function prepareRow(Row $row) {
+    // Skip this node if it comes after our last migrated.
+    if ($row->getSourceProperty('nid') < $this->getLastMigrated()) {
+      return FALSE;
     }
+
+    parent::prepareRow($row);
 
     // Map various old fields into Tags.
     $tag_tids = [];
@@ -41,7 +47,7 @@ class NewsFeature extends BaseNodeSource {
       'field_news_from',
       'field_news_about',
       'field_news_for',
-      'field_news_keywords',
+      'field_keywords',
     ] as $field_name) {
       $values = $row->getSourceProperty($field_name);
       if (!isset($values)) {
@@ -62,10 +68,12 @@ class NewsFeature extends BaseNodeSource {
       $tags = [];
       foreach ($tag_results as $result) {
         $tag_name = $result['name'];
-        $tid = $this->createTag($tag_name);
+        $tid = $this->createTag($tag_name, $row);
 
         // Add the mapped TID to match our tag name.
-        $tags[] = $tid;
+        if ($tid) {
+          $tags[] = $tid;
+        }
 
       }
       $row->setSourceProperty('tags', $tags);
@@ -121,12 +129,6 @@ class NewsFeature extends BaseNodeSource {
     }
 
     if (!empty($body)) {
-      // Check for a subhead, and prepend it to the body if so.
-      $subhead = $row->getSourceProperty('field_subhead');
-      if (!empty($subhead)) {
-        $subhead = '<p class="uids-component--light-intro">' . $subhead[0]['value'] . '</p>';
-        $body[0]['value'] = $subhead . $body[0]['value'];
-      }
       $this->viewMode = 'medium__no_crop';
       $this->align = 'left';
 
@@ -342,22 +344,35 @@ class NewsFeature extends BaseNodeSource {
   /**
    * Helper function to check for existing tags and create if they don't exist.
    */
-  private function createTag($tag_name) {
-
-    // Check if we have a mapping. If we don't yet,
-    // then create a new tag and add it to our map.
-    if (!isset($this->tagMapping[$tag_name])) {
-      $term = Term::create([
-        'name' => $tag_name,
-        'vid' => 'tags',
-      ]);
-      if ($term->save()) {
-        $this->tagMapping[$tag_name] = $term->id();
-      }
+  private function createTag($tag_name, $row) {
+    // Check if we already have the tag in the destination.
+    $result = \Drupal::database()
+      ->select('taxonomy_term_field_data', 't')
+      ->fields('t', ['tid'])
+      ->condition('t.vid', 'tags', '=')
+      ->condition('t.name', $tag_name, '=')
+      ->execute()
+      ->fetchField();
+    if ($result) {
+      return $result;
+    }
+    // If we didn't have the tag already,
+    // then create a new tag and return its id.
+    $term = Term::create([
+      'name' => $tag_name,
+      'vid' => 'tags',
+    ]);
+    if ($term->save()) {
+      return $term->id();
     }
 
-    // Return tid for mapping to field.
-    return $this->tagMapping[$tag_name];
+    // If we didn't save for some reason, add a notice
+    // to the migration, and return a null.
+    $message = 'Taxonomy term failed to migrate. Missing term was: ' . $tag_name;
+    $this->migration
+      ->getIdMap()
+      ->saveMessage(['nid' => $row->getSourceProperty('nid')], $message);
+    return FALSE;
   }
 
 }
