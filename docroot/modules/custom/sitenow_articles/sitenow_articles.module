@@ -126,26 +126,6 @@ function sitenow_articles_form_views_ui_edit_display_form_alter(&$form, FormStat
 }
 
 /**
- * Implements hook_ENTITY_TYPE_view().
- */
-function sitenow_articles_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  switch ($entity->getType()) {
-    case 'article':
-      $created = $entity->get('created')->value;
-      $date = \Drupal::service('date.formatter')->format($created, 'medium');
-
-      if ($display->getComponent('article_created_date')) {
-        $build['article_created_date'] = [
-          '#type' => 'markup',
-          '#markup' => '<span class="article-created-date">' . $date . '</span>',
-        ];
-      }
-      break;
-
-  }
-}
-
-/**
  * Implements hook_preprocess_HOOK().
  */
 function sitenow_articles_preprocess_breadcrumb(&$variables) {
