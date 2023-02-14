@@ -452,39 +452,39 @@ function uids_base_preprocess_field(&$variables) {
       break;
 
     case 'field_person_email':
-      uiowa_core_set_field_icon($variables, 'fa-envelope fa-li');
+      uiowa_core_set_field_icon($variables, ['fa-envelope', 'fa-li']);
       uiowa_core_set_attributes($variables, 'fa-ul');
       break;
 
     case 'field_person_phone':
-      uiowa_core_set_field_icon($variables, 'fa-phone fa-li');
+      uiowa_core_set_field_icon($variables, ['fa-phone', 'fa-li']);
       uiowa_core_set_attributes($variables, 'fa-ul');
       break;
 
     case 'field_person_website':
-      uiowa_core_set_field_icon($variables, 'fa-desktop fa-li');
+      uiowa_core_set_field_icon($variables, ['fa-desktop', 'fa-li']);
       uiowa_core_set_attributes($variables, 'fa-ul');
       break;
 
     case 'field_person_education':
-      uiowa_core_set_field_icon($variables, 'fa-university fa-li');
+      uiowa_core_set_field_icon($variables, ['fa-university', 'fa-li']);
       uiowa_core_set_attributes($variables, 'fa-ul');
       break;
 
     case 'field_person_contact_information':
-      uiowa_core_set_field_icon($variables, 'fa-map-marker fa-li');
+      uiowa_core_set_field_icon($variables, ['fa-map-marker', 'fa-li']);
       uiowa_core_set_attributes($variables, 'fa-ul');
       break;
 
     case 'field_person_hometown':
       if ($variables['element']['#entity_type'] == 'node' && $variables['element']['#bundle'] == 'person') {
-        uiowa_core_set_field_icon($variables, 'fa-globe-americas fa-li');
+        uiowa_core_set_field_icon($variables, ['fa-globe-americas', 'fa-li']);
         uiowa_core_set_attributes($variables, 'fa-ul');
       }
       break;
 
     case 'title':
-      $variables['attributes']['class'] = 'page-title headline--serif headline';
+      uiowa_core_set_attributes($variables, ['page-title', 'headline--serif', 'headline']);
       break;
 
   }
