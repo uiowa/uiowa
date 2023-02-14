@@ -49,67 +49,38 @@
 }
 
 
-// ie11
-//@media all and (-ms-high-contrast: none),
-//(-ms-high-contrast: active) {
-//  .card.card--button-position {
-//    .card__body {
-//      display: block;
-//
-//      div:last-child {
-//        margin-bottom: 0;
-//      }
-//    }
-//
-//    .card__description {
-//      margin-bottom: 0;
-//    }
-//
-//    .bttn {
-//      margin-top: 1.05rem;
-//    }
-//  }
-//
-//  .card__body .media {
-//    flex-shrink: 0;
-//    width: 100%;
-//    min-height: 1px;
-//  }
-//
-//  .card__body .media img {
-//    flex-shrink: 0;
-//    width: 100%;
-//    min-height: 1px;
-//  }
-//}
+.card--centered {
+  .fa-li {
+    left: 0;
+    position: relative;
+  }
 
-// Remove padding if no section background and bg--white is set on card
-//.layout__container:not([class*="bg-"]) {
-//  .card--media-left[class*="bg--white"]:not([class*="card--enclosed"]) {
-//    .card__media + .card__body {
-//      @include breakpoint(sm) {
-//        padding: 0 0 $md 2rem;
-//      }
-//    }
-//  }
-//  .card--media-right[class*="bg--white"]:not([class*="card--enclosed"]) {
-//    .card__media + .card__body {
-//      @include breakpoint(sm) {
-//        padding: 0 2rem $md 0;
-//      }
-//    }
-//  }
-//  .card--media-left[class*="bg--white"]:not([class*="card--enclosed"]),
-//  .card--media-right[class*="bg--white"]:not([class*="card--enclosed"]) {
-//    .card__body {
-//      padding-left: 0;
-//      padding-right: 0;
-//      padding-bottom: 0;
-//    }
-//  }
-//}
+  .fa-ul {
+    margin-left: 0;
+  }
+}
 
-// Allow cards to be stacked within layouts
+// Remove padding if no section background and bg--white is set on card.
+.layout__container:not([class*="bg--"]),
+.view-display-id-page_articles:not([class*="bg--"]) {
+  .card[class*="bg--white"][class*="borderless"] {
+    padding: 0;
+  }
+}
+
+// Remove padding if section background matches card background with borderless.
+$bg-colors: "white", "gray", "black", "gold";
+
+@each $color in $bg-colors {
+  .layout__container[class*="bg--#{$color}"] {
+    .card[class*="bg--#{$color}"][class*="borderless"] {
+      padding: 0;
+    }
+  }
+}
+
+
+// Allow cards to be stacked within layouts.
 .layout--fourcol,
 .layout--threecol,
 .layout--twocol {
@@ -118,14 +89,43 @@
   }
 }
 
-// Set background for all v2 cards
-.paragraph--type--section {
-  &[class*=bg-] {
-    .card {
-      //color: $secondary;
+// Add extra spacing if icon is used.
+.card {
+  .card__meta,
+  .card__subtitle {
+    .svg-inline--fa {
+      margin-right: .3rem;
+    }
+
+    a {
+      text-decoration: none;
     }
   }
+}
 
+
+// Hide styles used in events list block.
+.card {
+  &.hide-descriptions {
+    .item-description,
+    .field--name-field-teaser {
+      display: none;
+    }
+  }
+  &.hide-images {
+    .media__inner {
+      display: none;
+    }
+  }
+  &.hide-details {
+    .card__details {
+      display: none;
+    }
+  }
+}
+
+// V2 - Set background for all v2 cards.
+.paragraph--type--section {
   .card {
     background: #fff;
   }
@@ -136,78 +136,3 @@
     }
   }
 }
-
-.card {
-  .card__meta {
-  a {
-    text-decoration: none;
-   }
- }
-}
-
-//.card {
-//  .card__meta,
-//  .card__subtitle {
-//    .svg-inline--fa {
-//      margin-right: .3rem;
-//    }
-//    a {
-//      text-decoration: none;
-//    }
-//  }
-//
-//  .card__meta {
-//    .fontawesome-icons {
-//      display: inline-block;
-//    }
-//    .svg-inline--fa {
-//      font-size: 1rem;
-//      line-height: 1.2;
-//    }
-//  }
-//
-//  &__label {
-//    position: relative;
-//
-//    .svg-inline--fa {
-//      height: 100%;
-//    }
-//  }
-//  &--alignment-center {
-//    .card__label {
-//      padding-left: 0;
-//
-//      .svg-inline--fa {
-//        @include element-invisible;
-//      }
-//    }
-//  }
-//
-//  &.hide-descriptions {
-//    .card__description,
-//    .item-description,
-//    .field--name-field-teaser {
-//      display: none;
-//    }
-//  }
-//  &.hide-images {
-//    .card__media {
-//      display: none;
-//    }
-//    .card__body {
-//      @include breakpoint(sm) {
-//        padding: 0 !important;
-//      }
-//    }
-//  }
-//  &.hide-details .card__details {
-//    display: none;
-//  }
-//}
-
-
-// Fix for adding padding if images are hidden within stack format.
-//.card.hide-images.card--stacked.card--enclosed .card__body,
-//.card.hide-images.card--stacked.card--enclosed .card__media + .card__body {
-//  padding: 2rem!important;
-//}
