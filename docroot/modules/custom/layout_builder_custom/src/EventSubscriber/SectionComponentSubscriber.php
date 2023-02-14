@@ -191,7 +191,6 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
         case 'views_block:events_list_block-card_list':
         case 'views_block:people_list_block-list_card':
           $row_classes = [];
-          $build['#attributes']['class'] = array_unique($build['#attributes']['class']);
           foreach ($build['#attributes']['class'] as $key => $style) {
             foreach ([
               'bg',
