@@ -50,64 +50,64 @@
 
 
 // ie11
-@media all and (-ms-high-contrast: none),
-(-ms-high-contrast: active) {
-  .card.card--button-position {
-    .card__body {
-      display: block;
-
-      div:last-child {
-        margin-bottom: 0;
-      }
-    }
-
-    .card__description {
-      margin-bottom: 0;
-    }
-
-    .bttn {
-      margin-top: 1.05rem;
-    }
-  }
-
-  .card__body .media {
-    flex-shrink: 0;
-    width: 100%;
-    min-height: 1px;
-  }
-
-  .card__body .media img {
-    flex-shrink: 0;
-    width: 100%;
-    min-height: 1px;
-  }
-}
+//@media all and (-ms-high-contrast: none),
+//(-ms-high-contrast: active) {
+//  .card.card--button-position {
+//    .card__body {
+//      display: block;
+//
+//      div:last-child {
+//        margin-bottom: 0;
+//      }
+//    }
+//
+//    .card__description {
+//      margin-bottom: 0;
+//    }
+//
+//    .bttn {
+//      margin-top: 1.05rem;
+//    }
+//  }
+//
+//  .card__body .media {
+//    flex-shrink: 0;
+//    width: 100%;
+//    min-height: 1px;
+//  }
+//
+//  .card__body .media img {
+//    flex-shrink: 0;
+//    width: 100%;
+//    min-height: 1px;
+//  }
+//}
 
 // Remove padding if no section background and bg--white is set on card
-.layout__container:not([class*="bg-"]) {
-  .card--media-left[class*="bg--white"]:not([class*="card--enclosed"]) {
-    .card__media + .card__body {
-      @include breakpoint(sm) {
-        padding: 0 0 $md 2rem;
-      }
-    }
-  }
-  .card--media-right[class*="bg--white"]:not([class*="card--enclosed"]) {
-    .card__media + .card__body {
-      @include breakpoint(sm) {
-        padding: 0 2rem $md 0;
-      }
-    }
-  }
-  .card--media-left[class*="bg--white"]:not([class*="card--enclosed"]),
-  .card--media-right[class*="bg--white"]:not([class*="card--enclosed"]) {
-    .card__body {
-      padding-left: 0;
-      padding-right: 0;
-      padding-bottom: 0;
-    }
-  }
-}
+//.layout__container:not([class*="bg-"]) {
+//  .card--media-left[class*="bg--white"]:not([class*="card--enclosed"]) {
+//    .card__media + .card__body {
+//      @include breakpoint(sm) {
+//        padding: 0 0 $md 2rem;
+//      }
+//    }
+//  }
+//  .card--media-right[class*="bg--white"]:not([class*="card--enclosed"]) {
+//    .card__media + .card__body {
+//      @include breakpoint(sm) {
+//        padding: 0 2rem $md 0;
+//      }
+//    }
+//  }
+//  .card--media-left[class*="bg--white"]:not([class*="card--enclosed"]),
+//  .card--media-right[class*="bg--white"]:not([class*="card--enclosed"]) {
+//    .card__body {
+//      padding-left: 0;
+//      padding-right: 0;
+//      padding-bottom: 0;
+//    }
+//  }
+//}
 
 // Allow cards to be stacked within layouts
 .layout--fourcol,
@@ -207,35 +207,7 @@
 
 
 // Fix for adding padding if images are hidden within stack format.
-.card.hide-images.card--stacked.card--enclosed .card__body,
-.card.hide-images.card--stacked.card--enclosed .card__media + .card__body {
-  padding: 2rem!important;
-}
-
-// Card list styles
-.card--list .card__meta {
-  margin-top: .3rem;
-}
-
-.card__meta {
-  .field + .field {
-    margin-top: .3rem
-  }
-}
-
-.card--media-left.card--list .card__title,
-.card--media-right.card--list .card__title {
-  margin: 0 0 .125rem
-}
-
-// Flexbox for centered icons
-.card__meta.card__meta--icon {
-  display: flex;
-  flex-wrap: wrap;
-  .card__icon {
-    flex: 0 1 $lg;
-    display: flex;
-    justify-content: center;
-    padding-top: .135rem;
-  }
-}
+//.card.hide-images.card--stacked.card--enclosed .card__body,
+//.card.hide-images.card--stacked.card--enclosed .card__media + .card__body {
+//  padding: 2rem!important;
+//}

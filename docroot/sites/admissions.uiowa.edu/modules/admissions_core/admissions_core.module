@@ -309,6 +309,8 @@ function admissions_core_preprocess_field(&$variables) {
       break;
 
     case 'field_area_of_study_link':
+      uiowa_core_set_field_label_icon($variables, 'fa-link');
+      uiowa_core_set_title_attributes($variables, 'h4 headline headline--serif headline--underline');
       $node = $variables['element']['#object'];
       // Add field_area_of_study_college to the end of field_area_of_study_link.
       if ($node->hasField('field_area_of_study_college') && !$node->get('field_area_of_study_college')->isEmpty()) {
@@ -333,11 +335,24 @@ function admissions_core_preprocess_field(&$variables) {
       $variables['label'] = t('Why Iowa?');
       break;
 
+    case 'field_area_of_study_scholarship':
+      uiowa_core_set_field_label_icon($variables, 'fa-link');
+      uiowa_core_set_title_attributes($variables, 'h4 headline headline--serif headline--underline');
+      break;
+
     case 'field_cc_contact_info':
       // Prepend community college term name to contact info field label.
       $term = $variables['element']['#object'];
       $name = $term->getName();
       $variables['label'] = t('@name Contact Information', ['@name' => $name]);
+      break;
+
+    case 'field_event_series_button_link':
+      uiowa_core_set_attributes($variables, 'bttn bttn--primary bttn--full');
+      break;
+
+    case 'field_event_series_summary':
+      uiowa_core_set_field_label_icon($variables, 'fa-clock');
       break;
 
     case 'field_major_cc_checkpoints':
@@ -511,9 +526,6 @@ function admissions_core_preprocess_layout(&$variables) {
       }
       switch ($node->getType()) {
         case 'area_of_study':
-          // @todo Move the next line to admissions_core_preprocess_node(). See
-          //   https://github.com/uiowa/uiowa/issues/5020
-          $variables['#attached']['library'][] = 'admissions_core/area-of-study';
 
           if ($node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
 
@@ -626,20 +638,8 @@ function admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--field-area-of-study-subtitle--area-of-study--default',
       'base hook' => 'field',
     ],
-    'field__node__field_area_of_study_link__area_of_study__default' => [
-      'template' => 'field--node--field-area-of-study-link--area-of-study--default',
-      'base hook' => 'field',
-    ],
     'field__node__field_area_of_study_scholarship__area_of_study__default' => [
       'template' => 'field--node--field-area-of-study-scholarship--area-of-study--default',
-      'base hook' => 'field',
-    ],
-    'field__node__field_event_series_button_link__event_series' => [
-      'template' => 'field--node--field-event-series-button-link--event-series--default',
-      'base hook' => 'field',
-    ],
-    'field__node__field_event_series_summary__event_series' => [
-      'template' => 'field--node--field-event-series-summary--event-series--default',
       'base hook' => 'field',
     ],
     'field__node__field_major_area_of_study__major' => [
@@ -786,6 +786,15 @@ function admissions_core_preprocess_node(&$variables) {
   if (!$admin_context->isAdminRoute()) {
     $node = $variables["node"];
     switch ($node->getType()) {
+
+      case 'area_of_study':
+        $variables['#attached']['library'][] = 'admissions_core/area-of-study';
+        break;
+
+      case 'person':
+        $variables['#attached']['library'][] = 'admissions_core/person';
+        break;
+
       case 'major':
 
         switch ($variables['view_mode']) {
