@@ -229,21 +229,21 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
   switch ($variables['element']['#field_name']) {
     case 'field_room_name':
       if ($variables['element']['#view_mode'] == 'teaser') {
-        uiowa_core_set_field_label_icon($variables, ['fa-door-closed', 'fa-li']);
+        uiowa_core_set_field_label_icon($variables, 'fa-door-closed fa-li');
         uiowa_core_set_attributes($variables, 'fa-ul');
       }
       break;
 
     case 'field_room_responsible_unit':
       if ($variables['element']['#view_mode'] == 'teaser') {
-        uiowa_core_set_field_label_icon($variables, ['fa-key', 'fa-li']);
+        uiowa_core_set_field_label_icon($variables, 'fa-key fa-li');
         uiowa_core_set_attributes($variables, 'fa-ul');
       }
       break;
 
     case 'field_room_max_occupancy':
       if ($variables['element']['#view_mode'] == 'teaser') {
-        uiowa_core_set_field_label_icon($variables, ['fa-user', 'fa-li']);
+        uiowa_core_set_field_label_icon($variables, 'fa-user fa-li');
         uiowa_core_set_attributes($variables, 'fa-ul');
       }
       else {
@@ -266,7 +266,7 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
 
     case 'field_room_type':
       if ($variables['element']['#view_mode'] == 'teaser') {
-        uiowa_core_set_field_label_icon($variables, ['fa-building', 'fa-li']);
+        uiowa_core_set_field_label_icon($variables, 'fa-building fa-li');
         uiowa_core_set_attributes($variables, 'fa-ul');
       }
       else {
