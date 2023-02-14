@@ -1092,7 +1092,6 @@ function uiowa_core_set_field_icon(array &$variables, string $icon_classes) : vo
  *   The class(es) to be added to the block/field's attributes.
  */
 function uiowa_core_set_attributes(array &$variables, array|string $classes) : void {
-  $variables['attributes']['class'] = [];
   if (!isset($variables['attributes']['class'])) {
     $variables['attributes']['class'] = [];
   }
