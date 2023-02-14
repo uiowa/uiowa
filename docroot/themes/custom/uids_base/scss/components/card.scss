@@ -50,7 +50,8 @@
 
 
 // Remove padding if no section background and bg--white is set on card.
-.layout__container:not([class*="bg--"]) {
+.layout__container:not([class*="bg--"]),
+.view-display-id-page_articles:not([class*="bg--"]) {
   .card[class*="bg--white"][class*="borderless"] {
     padding: 0;
   }

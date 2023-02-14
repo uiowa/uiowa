@@ -1149,6 +1149,7 @@ function layout_builder_custom_preprocess_block(&$variables) {
 
   switch ($variables['elements']['#plugin_id']) {
     case 'inline_block:featured_content':
+      $variables['#attached']['library'][] = 'uids_base/node-type-article';
       // Take control of the referenced entity renders to pass in heading size.
       unset($variables['content']['field_featured_content_item']);
       $variables['content']['referenced_items'] = [];
