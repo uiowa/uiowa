@@ -68,6 +68,11 @@ abstract class NodeBundleBase extends Node implements TeaserCardInterface {
     // Handle link directly to source functionality.
     $build['#url'] = $this->getNodeUrl();
 
+    // Determine whether the link indicator should be set.
+    $config_name = 'sitenow_' . $this->bundle() . '.settings';
+    $config = \Drupal::configFactory()->getEditable($config_name);
+    $link_indicator = $config->get('show_teaser_link_indicator') ?? FALSE;
+    $build['#link_indicator'] = $link_indicator;
   }
 
   /**

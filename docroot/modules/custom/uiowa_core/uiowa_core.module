@@ -158,22 +158,6 @@ function uiowa_core_node_view(array &$build, EntityInterface $entity, EntityView
     if ($entity instanceof TeaserCardInterface) {
       $entity->buildCard($build);
     }
-
-    $link_indicator = FALSE;
-    $node_type = $entity->bundle();
-    $type_map = [
-      'page' => 'pages',
-      'person' => 'people',
-      'article' => 'articles',
-    ];
-
-    if (isset($type_map[$node_type])) {
-      $config_name = 'sitenow_' . $type_map[$node_type] . '.settings';
-      $config = \Drupal::configFactory()->getEditable($config_name);
-
-      $link_indicator = $config->get('show_teaser_link_indicator');
-    }
-    $build['#link_indicator'] = $link_indicator;
   }
 }
 
