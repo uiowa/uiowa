@@ -158,7 +158,7 @@ function sitenow_articles_preprocess_breadcrumb(&$variables) {
 function sitenow_articles_preprocess_field(&$variables) {
   if ($variables['element']['#field_name'] === 'field_article_author') {
     if ($variables['element']['#view_mode'] == 'teaser') {
-      uiowa_core_set_field_icon($variables, 'fas fa-user text--gray', 'far fa-circle text--gray');
+      uiowa_core_set_field_icon($variables, 'fas fa-user fa-inverse', 'fas text--gray fa-circle');
     }
     if ($variables['element']['#formatter'] === 'entity_reference_label') {
       $variables['element']["#title"] = 'Written by';
