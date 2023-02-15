@@ -240,6 +240,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           $style_map = $this->getListBlockStyleMap($selected_styles);
           // Filter the style map to just classes related to the card.
           $style_map = Card::filterCardStyles($style_map);
+          // @todo Account for unset styles that still need to provide defaults.
 
           // Check if there are view rows to act upon.
           if (isset($build['content']['view_build']['#rows'][0]['#rows'])) {
