@@ -310,7 +310,12 @@ function admissions_core_preprocess_field(&$variables) {
 
     case 'field_area_of_study_link':
       uiowa_core_set_field_label_icon($variables, 'fa-link');
-      uiowa_core_set_title_attributes($variables, ['h4', 'headline', 'headline--serif', 'headline--underline']);
+      uiowa_core_set_title_attributes($variables, [
+        'h4',
+        'headline',
+        'headline--serif',
+        'headline--underline',
+      ]);
       $node = $variables['element']['#object'];
       // Add field_area_of_study_college to the end of field_area_of_study_link.
       if ($node->hasField('field_area_of_study_college') && !$node->get('field_area_of_study_college')->isEmpty()) {
@@ -337,7 +342,12 @@ function admissions_core_preprocess_field(&$variables) {
 
     case 'field_area_of_study_scholarship':
       uiowa_core_set_field_label_icon($variables, 'fa-link');
-      uiowa_core_set_title_attributes($variables, ['h4', 'headline', 'headline--serif', 'headline--underline']);
+      uiowa_core_set_title_attributes($variables, [
+        'h4',
+        'headline',
+        'headline--serif',
+        'headline--underline',
+      ]);
       break;
 
     case 'field_cc_contact_info':
@@ -348,7 +358,11 @@ function admissions_core_preprocess_field(&$variables) {
       break;
 
     case 'field_event_series_button_link':
-      uiowa_core_set_attributes($variables, ['bttn', 'bttn--primary', 'bttn--full']);
+      uiowa_core_set_attributes($variables, [
+        'bttn',
+        'bttn--primary',
+        'bttn--full',
+      ]);
       break;
 
     case 'field_event_series_summary':
@@ -360,12 +374,20 @@ function admissions_core_preprocess_field(&$variables) {
       $name = $term->field_major_community_college->entity->name->value;
       $variables['label'] = t('@name checkpoints', ['@name' => $name]);
 
-      uiowa_core_set_title_attributes($variables, ['h4', 'headline', 'headline--serif']);
+      uiowa_core_set_title_attributes($variables, [
+        'h4',
+        'headline',
+        'headline--serif',
+      ]);
       break;
 
     case 'field_major_responsibilities':
     case 'field_major_uiowa_checkpoints':
-      uiowa_core_set_title_attributes($variables, ['h4', 'headline', 'headline--serif']);
+      uiowa_core_set_title_attributes($variables, [
+        'h4',
+        'headline',
+        'headline--serif',
+      ]);
       break;
 
     case 'field_student_profile_major':
@@ -394,13 +416,20 @@ function admissions_core_preprocess_field__node__title(&$variables) {
     // Remove existing page title classes.
     $variables['attributes']['class'] = [];
     // Add new page title classes.
-    uiowa_core_set_attributes($variables, ['headline--uppercase', 'headline--negative']);
+    uiowa_core_set_attributes($variables, [
+      'headline--uppercase',
+      'headline--negative',
+    ]);
   }
   if ($variables['element']['#bundle'] === 'student_profile') {
     // Remove existing page title classes.
     $variables['attributes']['class'] = [];
     // Add new page title classes.
-    uiowa_core_set_attributes($variables, ['text-align-center', 'headline headline--serif', 'headline--highlight']);
+    uiowa_core_set_attributes($variables, [
+      'text-align-center',
+      'headline headline--serif',
+      'headline--highlight',
+    ]);
   }
 }
 
