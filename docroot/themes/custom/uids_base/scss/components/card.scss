@@ -50,6 +50,11 @@
 
 // Icons.
 .card--centered {
+  .fa-circle {
+    border: 1px solid black;
+    padding: 2px;
+    border-radius: 50%;
+  }
   .fa-li {
     left: 0;
     position: relative;
@@ -60,83 +65,97 @@
   }
 }
 
-.card__meta .svg-inline--fa {
-  font-size: 1rem;
-}
-
-
-// Remove padding if no section background and bg--white is set on card.
-.layout__container:not([class*="bg--"]) {
-  .card[class*="bg--white"][class*="borderless"] {
-    padding: 0;
+.card__meta {
+  .svg-inline--fa {
+    font-size: 1rem;
+    margin-right: .3rem;
+    margin-left: 0;
+  }
+  .fa-stack {
+    display: inline-block;
+    width: 1.5rem;
+  }
+  .svg-inline--fa.fa-stack-2x {
+    height: 1.5em;
+    width: 1.5em;
+  }
+  .svg-inline--fa.fa-stack-1x {
+    height: 0.75em;
+    font-size: .8rem;
+    width: 1.5rem;
   }
 }
 
-// Remove padding if section background matches card background with borderless.
-$bg-colors: "white", "gray", "black", "gold";
 
-@each $color in $bg-colors {
-  .layout__container[class*="bg--#{$color}"] {
-    .card[class*="bg--#{$color}"][class*="borderless"] {
+  // Remove padding if no section background and bg--white is set on card.
+  .layout__container:not([class*="bg--"]) {
+    .card[class*="bg--white"][class*="borderless"] {
       padding: 0;
     }
   }
-}
 
+  // Remove padding if section background matches card background with borderless.
+  $bg-colors: "white", "gray", "black", "gold";
 
-// Allow cards to be stacked within layouts.
-.layout--fourcol,
-.layout--threecol,
-.layout--twocol {
-  .card {
-    flex: 1 1 100%;
-  }
-}
-
-// Add extra spacing if icon is used.
-.card {
-  .card__meta,
-  .card__subtitle {
-    .svg-inline--fa {
-      margin-right: .3rem;
-    }
-
-    a {
-      text-decoration: none;
+  @each $color in $bg-colors {
+    .layout__container[class*="bg--#{$color}"] {
+      .card[class*="bg--#{$color}"][class*="borderless"] {
+        padding: 0;
+      }
     }
   }
-}
 
 
-// Hide styles used in events list block.
-.card {
-  &.hide-descriptions {
-    .item-description,
-    .field--name-field-teaser {
-      display: none;
-    }
-  }
-  &.hide-images {
-    .media__inner {
-      display: none;
-    }
-  }
-  &.hide-details {
-    .card__details {
-      display: none;
-    }
-  }
-}
-
-// V2 - Set background for all v2 cards.
-.paragraph--type--section {
-  .card {
-    background: #fff;
-  }
-
-  .paragraph--type--card {
+  // Allow cards to be stacked within layouts.
+  .layout--fourcol,
+  .layout--threecol,
+  .layout--twocol {
     .card {
-      border: 1px solid rgba(0, 0, 0, .125);
+      flex: 1 1 100%;
     }
   }
-}
+
+  // Remove text decoration.
+  .card {
+    .card__meta,
+    .card__subtitle {
+      a {
+        text-decoration: none;
+      }
+    }
+  }
+
+
+  // Hide styles used in events list block.
+  .card {
+    &.hide-descriptions {
+      .item-description,
+      .field--name-field-teaser {
+        display: none;
+      }
+    }
+    &.hide-images {
+      .media__inner {
+        display: none;
+      }
+    }
+    &.hide-details {
+      .card__details {
+        display: none;
+      }
+    }
+  }
+
+  // V2 - Set background for all v2 cards.
+  .paragraph--type--section {
+    .card {
+      background: #fff;
+    }
+
+    .paragraph--type--card {
+      .card {
+        border: 1px solid rgba(0, 0, 0, .125);
+      }
+    }
+  }
+

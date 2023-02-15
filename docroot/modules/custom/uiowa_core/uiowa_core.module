@@ -1052,8 +1052,10 @@ function uiowa_core_config_entity_filter_select(array &$form, $entity_id) {
  *   The field variables array.
  * @param string $icon_classes
  *   The Font Awesome class for the field label icon.
+ * @param string $icon_bg_classes
+ *   The Font Awesome class for the background of the field label icon.
  */
-function uiowa_core_set_field_label_icon(array &$variables, string $icon_classes) : void {
+function uiowa_core_set_field_label_icon(array &$variables, string $icon_classes, string $icon_bg_classes = '') : void {
   if (!isset($variables['field_label_icon'])) {
     $variables['field_label_icon'] = '';
   }
@@ -1062,6 +1064,9 @@ function uiowa_core_set_field_label_icon(array &$variables, string $icon_classes
       $variables['field_label_icon'],
       $icon_classes,
     ]);
+  if (!empty($icon_bg_classes)) {
+    $variables['field_label_icon_bg'] = $icon_bg_classes;
+  }
 }
 
 /**
@@ -1070,9 +1075,11 @@ function uiowa_core_set_field_label_icon(array &$variables, string $icon_classes
  * @param array $variables
  *   The field variables array.
  * @param string $icon_classes
- *   The Font Awesome class for the field label icon.
+ *   The Font Awesome class for the field icon.
+ * @param string $icon_bg_classes
+ *   The Font Awesome class for the background of the field icon.
  */
-function uiowa_core_set_field_icon(array &$variables, string $icon_classes) : void {
+function uiowa_core_set_field_icon(array &$variables, string $icon_classes, string $icon_bg_classes = '') : void {
   if (!isset($variables['field_icon'])) {
     $variables['field_icon'] = '';
   }
@@ -1081,6 +1088,9 @@ function uiowa_core_set_field_icon(array &$variables, string $icon_classes) : vo
       $variables['field_icon'],
       $icon_classes,
     ]);
+  if (!empty($icon_bg_classes)) {
+    $variables['field_icon_bg'] = $icon_bg_classes;
+  }
 }
 
 /**

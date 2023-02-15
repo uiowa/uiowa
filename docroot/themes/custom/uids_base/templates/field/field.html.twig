@@ -66,19 +66,42 @@
   {% else %}
 
   <div{{ attributes.addClass(classes) }}>
-    <div{{ title_attributes.addClass(title_classes).removeClass(remove_classes) }}>
-      {% block field_label_icon %}{% if field_label_icon %}<span role="presentation" class="field__label--icon fas {{ field_label_icon }}"></span>{% endif %}{% endblock %}{{ label }}
+    <div{{ title_attributes.addclass(title_classes).removeclass(remove_classes) }}>
+      {% block field_label_icon %}
+        {% if field_label_icon %}
+          {% if field_label_icon_bg %}
+            <span role="presentation" class="fa-stack fa-1x">
+              <span role="presentation" class="{{ field_icon_bg }} fa-stack-2x"></span>
+              <span role="presentation" class="{{ field_icon }} fa-stack-1x"></span>
+            </span>
+          {% else %}
+            <span role="presentation" class="field__label--icon fas {{ field_label_icon }}"></span>
+          {% endif %}
+        {% endif %}
+      {% endblock %}
+      {{ label }}
     </div>
 
     {% if multiple %}
-      <div class="field__items {{ field_container_classes }}">
-    {% endif %}
+    <div class="field__items {{ field_container_classes }}">
+  {% endif %}
 
     {% block field_items %}
-    {% block field_icon %}{% if field_icon %}<span role="presentation" class="field__icon fas {{ field_icon }}"></span>{% endif %}{% endblock %}
+    {% block field_icon %}
+      {% if field_icon %}
+        {% if field_icon_bg %}
+          <span role="presentation" class="fa-stack fa-1x">
+            <span role="presentation" class="{{ field_icon_bg }} fa-stack-2x"></span>
+            <span role="presentation" class="{{ field_icon }} fa-stack-1x"></span>
+          </span>
+        {% else %}
+          <span role="presentation" class="field__icon fas {{ field_icon }}"></span>
+        {% endif %}
+      {% endif %}
+    {% endblock %}
     {% for item in items %}
-      <{{ item_tag }}{{ item.attributes.addClass('field__item') }}>{{ item.content }}</{{ item_tag }}>
-    {% endfor %}
+    <{{ item_tag }}{{ item.attributes.addClass('field__item') }}>{{ item.content }}</{{ item_tag }}>
+  {% endfor %}
     {% endblock %}
 
     {% if multiple %}
