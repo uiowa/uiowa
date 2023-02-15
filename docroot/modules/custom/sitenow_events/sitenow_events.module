@@ -236,6 +236,7 @@ function sitenow_events_preprocess_block(&$variables) {
         foreach ($data['events'] as $key => $value) {
           // The API nests each event as an array.
           $event = $value['event'];
+          $event['attributes'] = $attributes;
           $event['heading_size'] = $heading_size ?? 'h3';
 
           $external_link = ($config->get('event_link') === 'event-link-external');
@@ -264,92 +265,9 @@ function sitenow_events_preprocess_block(&$variables) {
             'all_day' => $event['instance_all_day'],
           ]);
 
-          $variables['content'][$key] = [
-            '#type' => 'card',
-            '#attributes' => $attributes,
-            '#title' => $event['title'],
-            '#subtitle' => $event['date_string'],
-            '#url' => $event['url'],
-            '#headline_level' => $event['heading_size'],
-          ];
-          if (isset($variables['event']['media'][0]['original_image'])) {
-            // Establish default view mode if layout_builder_styles don't exist.
-            $image_view_mode = 'large__square';
-
-            // Map layout builder styles to the view mode that should be used.
-            $media_formats = [
-              'media--widescreen' => 'large__widescreen',
-              'media--square' => 'large__square',
-              'media--circle' => 'large__square',
-            ];
-            // Loop through the map to check if any of them are being used and
-            // adjust the view mode accordingly. Last one wins out.
-            if (isset($parent_lb_styles)) {
-              foreach ($media_formats as $style => $view_mode) {
-                if (in_array($style, $parent_lb_styles)) {
-                  $image_view_mode = $view_mode;
-                }
-              }
-            }
-            // @todo Not currently working because it is expecting a URL?
-            $variables['content'][$key]['#media'] = [
-              '#theme' => 'imagecache_external_responsive',
-              '#uri' => $event['media'][0]['original_image'],
-              '#responsive_image_style_id' => $image_view_mode,
-              '#attributes' => [
-                'data-lazy' => TRUE,
-                'alt' => t('@title promotional image', ['@title' => $event['title']]),
-              ],
-            ];
-          }
-
-          if ($event['virtual'] === TRUE) {
-            $variables['content'][$key]['#meta']['icon'] = [
-              '#type' => 'markup',
-              '#markup' => '<span role="presentation" class="fas fa-laptop"></span>',
-            ];
-            $variables['content'][$key]['#meta']['location'] = [
-              '#type' => 'markup',
-              '#markup' => t('Virtual'),
-            ];
-          }
-          else {
-            $variables['content'][$key]['#meta']['icon'] = [
-              '#type' => 'markup',
-              '#markup' => '<span role="presentation" class="fas fa-map-marker-alt"></span>',
-            ];
-            $variables['content'][$key]['#meta']['location'] = [
-              '#type' => 'markup',
-              '#markup' => $event['location_name'],
-            ];
-          }
-
-          // Limit what html is allowed.
-          $allowed_tags = ['a', 'strong', 'em'];
-
-          if (isset($event['summary'])) {
-            $variables['content'][$key]['#content']['description'] = Xss::filter($event['summary'], $allowed_tags);
-          }
-
-          elseif (isset($event['description'])) {
-            $event['description'] = Xss::filter($event['description'], $allowed_tags);
-
-            // Use smart_trim's helper to safely truncate without breaking HTML.
-            $truncate = new TruncateHTML();
-            $trim_suffix = '...';
-            $variables['content'][$key]['#content']['description'] = [
-              '#type' => 'markup',
-              '#markup' => $truncate->truncateChars($event['description'], 500, $trim_suffix),
-            ];
-          }
-
-          if ($event['canceled'] === TRUE) {
-            $variables['content'][$key]['#content'][] = [
-              '#type' => 'html_tag',
-              '#tag' => 'div',
-              '#value' => '<span class="badge badge--orange">Canceled</span>',
-            ];
-          }
+          // Pass off to helper function to build card render.
+          $card = sitenow_events_build_card($event);
+          $variables['content'][$key] = $card;
         }
       }
       else {
@@ -387,6 +305,99 @@ function sitenow_events_preprocess_block(&$variables) {
       }
       break;
   }
+}
+
+/**
+ * Helper function to build out card renders from event data.
+ */
+function sitenow_events_build_card(array $event): array {
+  $card = [
+    '#type' => 'card',
+    '#attributes' => $event['attributes'],
+    '#title' => $event['title'],
+    '#subtitle' => $event['date_string'],
+    '#url' => $event['url'],
+    '#headline_level' => $event['heading_size'],
+  ];
+  if (isset($event['media'][0]['original_image'])) {
+    // Establish default view mode if layout_builder_styles don't exist.
+    $image_view_mode = 'large__square';
+
+    // Map layout builder styles to the view mode that should be used.
+    $media_formats = [
+      'media--widescreen' => 'large__widescreen',
+      'media--square' => 'large__square',
+      'media--circle' => 'large__square',
+    ];
+    // Loop through the map to check if any of them are being used and
+    // adjust the view mode accordingly. Last one wins out.
+    if (isset($parent_lb_styles)) {
+      foreach ($media_formats as $style => $view_mode) {
+        if (in_array($style, $parent_lb_styles)) {
+          $image_view_mode = $view_mode;
+        }
+      }
+    }
+    $card['#media']['external_image'] = [
+      '#theme' => 'imagecache_external_responsive',
+      '#uri' => $event['media'][0]['original_image'],
+      '#responsive_image_style_id' => $image_view_mode,
+      '#attributes' => [
+        'data-lazy' => TRUE,
+        'alt' => t('@title promotional image', ['@title' => $event['title']]),
+      ],
+    ];
+  }
+
+  if ($event['virtual'] === TRUE) {
+    $card['#meta']['icon'] = [
+      '#type' => 'markup',
+      '#markup' => '<span role="presentation" class="fas fa-laptop"></span>',
+    ];
+    $card['#meta']['location'] = [
+      '#type' => 'markup',
+      '#markup' => t('Virtual'),
+    ];
+  }
+  else {
+    $card['#meta']['icon'] = [
+      '#type' => 'markup',
+      '#markup' => '<span role="presentation" class="fas fa-map-marker-alt"></span>',
+    ];
+    $card['#meta']['location'] = [
+      '#type' => 'markup',
+      '#markup' => $event['location_name'],
+    ];
+  }
+
+  // Limit what html is allowed.
+  $allowed_tags = ['a', 'strong', 'em'];
+
+  if (isset($event['summary'])) {
+    $card['#content']['description'] = Xss::filter($event['summary'], $allowed_tags);
+  }
+
+  elseif (isset($event['description'])) {
+    $event['description'] = Xss::filter($event['description'], $allowed_tags);
+
+    // Use smart_trim's helper to safely truncate without breaking HTML.
+    $truncate = new TruncateHTML();
+    $trim_suffix = '...';
+    $card['#content']['description'] = [
+      '#type' => 'markup',
+      '#markup' => $truncate->truncateChars($event['description'], 500, $trim_suffix),
+    ];
+  }
+
+  if ($event['canceled'] === TRUE) {
+    $card['#content']['canceled'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'div',
+      '#value' => '<span class="badge badge--orange">Canceled</span>',
+    ];
+  }
+
+  return $card;
 }
 
 /**
