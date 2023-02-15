@@ -31,12 +31,10 @@ interface TeaserCardInterface {
   public function getDefaultCardStyles(): array;
 
   /**
-   * Provides overriding of default card styles.
+   * Add card styles to the build array.
    *
-   * @param $styles
-   *   The styles that should be overridden.
-   *
-   * @return array
+   * @param $build
+   *   The build array that is being updated.
    */
-  public function overrideDefaultCardStyles($styles): array;
+  public function buildCardStyles(array &$build);
 }

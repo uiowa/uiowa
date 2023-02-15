@@ -3,17 +3,49 @@
 namespace Drupal\layout_builder_custom\EventSubscriber;
 
 use Drupal\Core\Block\BlockPluginInterface;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Render\PreviewFallbackInterface;
 use Drupal\layout_builder\Event\SectionComponentBuildRenderArrayEvent;
 use Drupal\layout_builder\LayoutBuilderEvents;
 use Drupal\layout_builder\Plugin\Block\FieldBlock;
+use Drupal\layout_builder_custom\Plugin\Display\ListBlock;
+use Drupal\uiowa_core\Element\Card;
+use Drupal\views\Plugin\Block\ViewsBlock;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Add an HTML class to blocks that are displaying placeholder text.
  */
 class SectionComponentSubscriber implements EventSubscriberInterface {
+
+  /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * Drupal\Core\Config\ConfigFactoryInterface definition.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * BlockComponentRenderArraySubscriber constructor.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   Access configuration.
+   */
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, ConfigFactoryInterface $config_factory) {
+    $this->entityTypeManager = $entityTypeManager;
+    $this->configFactory = $config_factory;
+  }
 
   /**
    * {@inheritdoc}
@@ -41,8 +73,8 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
     $build = $event->getBuild();
 
     if ($event->inPreview()) {
-      if ($block instanceof PreviewFallbackInterface && isset($build['content']) && isset($build['content']['#markup'])) {
-        $is_placeholder = (strpos($build['content']['#markup'], 'Placeholder for the ') === 0);
+      if ($block instanceof PreviewFallbackInterface && isset($build['content']['#markup'])) {
+        $is_placeholder = (str_starts_with($build['content']['#markup'], 'Placeholder for the '));
 
         if ($is_placeholder) {
           $build['#attributes']['class'][] = 'layout-builder-block--placeholder';
@@ -190,22 +222,24 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
         case 'views_block:article_list_block-list_article':
         case 'views_block:events_list_block-card_list':
         case 'views_block:people_list_block-list_card':
+
+          $selected_styles = $event->getComponent()->get('layout_builder_styles_style');
+          $style_map = $this->getListBlockStyleMap($selected_styles);
           $row_classes = [];
-          foreach ($build['#attributes']['class'] as $key => $style) {
-            foreach ([
-              'bg',
-              'card',
-              'media',
-              'borderless',
-            ] as $check) {
-              if (str_starts_with($style, $check)) {
-                $row_classes[] = $style;
-                // Removes class so that wrapper is not affected.
-                // This includes lb preview things like contextual links.
+          // Filter the style map to just classes related to the card.
+          $style_map = Card::filterCardStyles($style_map);
+
+          if ($block instanceof ViewsBlock && isset($build['content']['view_build']['#rows'][0]['#rows'])) {
+            foreach ($style_map as $class) {
+              if (FALSE !== $key = array_search($class, $build['#attributes']['class'])) {
                 unset($build['#attributes']['class'][$key]);
               }
             }
+            foreach ($build['content']['view_build']['#rows'][0]['#rows'] as &$row_build) {
+              $row_build['#override_styles'] = $style_map;
+            }
           }
+
           if (isset($block->getConfiguration()['fields'])) {
             $hide_fields = [];
             foreach ($block->getConfiguration()['fields'] as $field_name => $hide_field) {
@@ -257,6 +291,33 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
         break;
       }
     }
+  }
+
+  /**
+   * @param $styles
+   *
+   * @return array
+   */
+  private function getListBlockStyleMap($styles): array {
+    $style_map = [];
+    foreach ($styles as $style_id) {
+      // Account for incorrectly configured component configuration which may
+      // have a NULL style ID. We cannot pass NULL to the storage handler, or
+      // it will throw an exception.
+      if (empty($style_id)) {
+        continue;
+      }
+      /** @var \Drupal\layout_builder_styles\LayoutBuilderStyleInterface $style */
+      $style = $this
+        ?->entityTypeManager
+        ?->getStorage('layout_builder_style')
+        ?->load($style_id);
+      if ($style) {
+        $style_map[$style->getGroup()] = implode(\preg_split('(\r\n|\r|\n)', $style->getClasses()));
+      }
+    }
+
+    return $style_map;
   }
 
 }
