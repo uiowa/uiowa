@@ -14,6 +14,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Url;
 use Drupal\sitenow_articles\Entity\Article;
+use Drupal\sitenow_articles\Entity\ArticleInterface;
 use Drupal\user\Entity\User;
 use Drupal\views\Entity\View;
 use Drupal\views\ViewExecutable;
@@ -243,6 +244,10 @@ function sitenow_articles_preprocess_node(&$variables) {
   if (!$admin_context->isAdminRoute()) {
 
     $node = $variables['node'];
+
+    if ($node instanceof ArticleInterface) {
+      $variables['content']['byline'] = $node->getByline();
+    }
     switch ($node->getType()) {
       case 'article':
         $variables['content']['article_author'] = $node->field_article_author->view([
@@ -250,6 +255,8 @@ function sitenow_articles_preprocess_node(&$variables) {
           'label' => 'inline',
           'settings' => [],
         ]);
+        // @todo Is this still necessary based on addition of getByline() or
+        //   getNodeUrl()?
         if (!$node->get('field_article_source_org')->isEmpty() && !$node->get('field_article_source_link')->isEmpty()) {
           $variables['content']['field_article_source_link'][0]['#title'] = $node->field_article_source_org->value;
           switch ($variables['view_mode']) {
@@ -273,6 +280,7 @@ function sitenow_articles_preprocess_node(&$variables) {
 
           }
         }
+        // @todo End section being evaluated for cleanup.
         if ($variables['view_mode'] === 'teaser') {
           // Heading needs to change based on placement. Defaults to h3 in twig.
           $current_route = \Drupal::routeMatch();
@@ -281,7 +289,8 @@ function sitenow_articles_preprocess_node(&$variables) {
           if (str_starts_with($route_name, 'view.articles.')) {
             $variables['heading_size'] = 'h2';
           }
-
+          // @todo Is this still necessary based on addition of getByline() or
+          //   getNodeUrl()?
           if ($node->hasField('field_article_source_link_direct')) {
             if ((int) $node->field_article_source_link_direct->value === 1 && !$node->get('field_article_source_link')->isEmpty()) {
               unset($variables['content']['field_article_source_link']);

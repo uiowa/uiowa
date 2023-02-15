@@ -10,7 +10,7 @@ use Drupal\uiowa_core\Entity\TeaserCardInterface;
 /**
  * Provides an interface for article entries.
  */
-class Article extends NodeBundleBase implements TeaserCardInterface {
+class Article extends NodeBundleBase implements ArticleInterface, TeaserCardInterface {
 
   /**
    * If entity has link directly to source field.

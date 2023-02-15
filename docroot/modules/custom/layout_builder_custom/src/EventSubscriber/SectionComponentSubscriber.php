@@ -223,38 +223,42 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
         case 'views_block:events_list_block-card_list':
         case 'views_block:people_list_block-list_card':
 
-          $selected_styles = $event->getComponent()->get('layout_builder_styles_style');
-          $style_map = $this->getListBlockStyleMap($selected_styles);
-          $row_classes = [];
-          // Filter the style map to just classes related to the card.
-          $style_map = Card::filterCardStyles($style_map);
-
-          if ($block instanceof ViewsBlock && isset($build['content']['view_build']['#rows'][0]['#rows'])) {
-            foreach ($style_map as $class) {
-              if (FALSE !== $key = array_search($class, $build['#attributes']['class'])) {
-                unset($build['#attributes']['class'][$key]);
-              }
-            }
-            foreach ($build['content']['view_build']['#rows'][0]['#rows'] as &$row_build) {
-              $row_build['#override_styles'] = $style_map;
-            }
-          }
+          // If fields can be hidden, build the list.
+          $hide_fields = [];
 
           if (isset($block->getConfiguration()['fields'])) {
-            $hide_fields = [];
             foreach ($block->getConfiguration()['fields'] as $field_name => $hide_field) {
               if ((int) $hide_field['hide'] === 1) {
                 $hide_fields[] = $field_name;
               }
             }
+          }
 
-            if (isset($build['content']['view_build']['#rows'][0]['#rows'])) {
-              foreach ($build['content']['view_build']['#rows'][0]['#rows'] as &$row) {
-                $row['#hide_fields'] = $hide_fields;
-                $row['#attributes']['class'] = $row_classes;
+          // Get LB styles from the component.
+          $selected_styles = $event->getComponent()->get('layout_builder_styles_style');
+          // Convert the style list into a map that can be used for overriding
+          // style defaults later.
+          $style_map = $this->getListBlockStyleMap($selected_styles);
+          // Filter the style map to just classes related to the card.
+          $style_map = Card::filterCardStyles($style_map);
+
+          // Check if there are view rows to act upon.
+          if (isset($build['content']['view_build']['#rows'][0]['#rows'])) {
+            // Loop through the filtered card style map and remove those classes
+            // from the block.
+            foreach ($style_map as $class) {
+              if (FALSE !== $key = array_search($class, $build['#attributes']['class'])) {
+                unset($build['#attributes']['class'][$key]);
               }
             }
+            // Loop through view rows and set styles to override and hidden
+            // fields.
+            foreach ($build['content']['view_build']['#rows'][0]['#rows'] as &$row_build) {
+              $row_build['#override_styles'] = $style_map;
+              $row_build['#hide_fields'] = $hide_fields;
+            }
           }
+
           break;
 
       }
