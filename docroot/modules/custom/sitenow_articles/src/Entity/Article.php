@@ -84,7 +84,7 @@ class Article extends NodeBundleBase implements ArticleInterface, TeaserCardInte
    * @return array
    *   The appropriate byline sent as a render array.
    */
-  public function getByline(array $build): array {
+  public function getByline(array $build = []): array {
     // Need to get these values regardless of whether they are hidden or not.
     $source_link = $this->get('field_article_source_link')->uri;
     $org = $this->get('field_article_source_org')->value;

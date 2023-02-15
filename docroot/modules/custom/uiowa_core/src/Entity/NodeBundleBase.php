@@ -126,10 +126,6 @@ abstract class NodeBundleBase extends Node implements TeaserCardInterface {
         }
       }
     }
-
-    // @todo Move this to someplace it will only run once. Possibly in a
-    //   preprocess function.
-    $build['#url'] = !$this->isNew() ? $this->toUrl()->toString() : NULL;
   }
 
   /**

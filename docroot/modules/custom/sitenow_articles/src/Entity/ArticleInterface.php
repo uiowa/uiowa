@@ -9,5 +9,5 @@ interface ArticleInterface {
    *
    * @return array
    */
-  public function getByline(): array;
+  public function getByline(array $build = []): array;
 }

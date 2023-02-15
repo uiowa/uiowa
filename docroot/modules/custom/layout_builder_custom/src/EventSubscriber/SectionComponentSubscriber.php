@@ -222,7 +222,6 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
         case 'views_block:article_list_block-list_article':
         case 'views_block:events_list_block-card_list':
         case 'views_block:people_list_block-list_card':
-
           // If fields can be hidden, build the list.
           $hide_fields = [];
 
