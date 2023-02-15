@@ -272,7 +272,7 @@ function sitenow_events_preprocess_block(&$variables) {
             '#url' => $event['url'],
             '#headline_level' => $event['heading_size'],
           ];
-          if (isset($variables['event']['media'][0]['original_image'])) {
+          if (isset($event['media'][0]['original_image'])) {
             // Establish default view mode if layout_builder_styles don't exist.
             $image_view_mode = 'large__square';
 
@@ -291,8 +291,7 @@ function sitenow_events_preprocess_block(&$variables) {
                 }
               }
             }
-            // @todo Not currently working because it is expecting a URL?
-            $variables['content'][$key]['#media'] = [
+            $variables['content'][$key]['#media']['external_image'] = [
               '#theme' => 'imagecache_external_responsive',
               '#uri' => $event['media'][0]['original_image'],
               '#responsive_image_style_id' => $image_view_mode,
@@ -344,7 +343,7 @@ function sitenow_events_preprocess_block(&$variables) {
           }
 
           if ($event['canceled'] === TRUE) {
-            $variables['content'][$key]['#content'][] = [
+            $variables['content'][$key]['#content']['canceled'] = [
               '#type' => 'html_tag',
               '#tag' => 'div',
               '#value' => '<span class="badge badge--orange">Canceled</span>',
