@@ -63,10 +63,6 @@ class Event extends NodeBundleBase implements TeaserCardInterface {
         'media_format' => 'media--circle',
       ];
 
-      if ($this->view?->id() === 'events') {
-        $default_classes['card_list'] = 'card--list';
-      }
-
       return $default_classes;
     }
   }

@@ -212,7 +212,6 @@ function sitenow_events_preprocess_block(&$variables) {
         if (isset($variables['elements']['#attributes']['class']) && !empty($variables['elements']['#attributes']['class'])) {
           $parent_lb_styles = array_merge($variables['elements']['#attributes']['class'], [
             'list-item',
-            'card--list',
             'event-item',
           ]);
           $attributes->addClass($parent_lb_styles);
