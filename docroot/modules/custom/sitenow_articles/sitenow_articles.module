@@ -160,6 +160,11 @@ function sitenow_articles_preprocess_field(&$variables) {
     if ($variables['element']['#formatter'] === 'entity_reference_label') {
       $variables['element']["#title"] = 'Written by';
       $variables["label"] = 'Written by';
+      // Remove the label for article teasers.
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_title_attributes($variables, 'visually-hidden');
+        uiowa_core_set_attributes($variables, 'field--label-visually_hidden');
+      }
     }
     // Loop through all author fields in the byline and add credentials
     // (if available) to their names.
