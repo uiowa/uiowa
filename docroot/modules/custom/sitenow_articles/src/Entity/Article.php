@@ -61,12 +61,6 @@ class Article extends NodeBundleBase implements ArticleInterface, TeaserCardInte
       'media_format' => 'media--widescreen',
     ];
 
-    // @todo Remove this when we have alternative solution for implementing the
-    //   styles provided by the 'card--list' class.
-    if ($this->view?->id() === 'articles') {
-      $default_classes['card_list'] = 'card--list';
-    }
-
     return $default_classes;
   }
 

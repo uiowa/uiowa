@@ -46,10 +46,6 @@ abstract class NodeBundleBase extends Node implements TeaserCardInterface {
    */
   public function buildCard(array &$build) {
     $this->buildCardStyles($build);
-    // @todo Do we still need a '.card--list' class? Or could this be handled
-    //   a more generic `.view .card` definition? If we still need it, we need
-    //   to figure out how to handle adding it conditionally based on the
-    //   card being in a view or other list.
     // @todo How to handle setting the headline size?
     // @todo Do we need any of the '.node' or '.node--*' classes? E.g.:
     //   'node',
