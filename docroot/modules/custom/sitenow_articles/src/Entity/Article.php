@@ -10,7 +10,7 @@ use Drupal\uiowa_core\Entity\TeaserCardInterface;
 /**
  * Provides an interface for article entries.
  */
-class Article extends NodeBundleBase implements TeaserCardInterface {
+class Article extends NodeBundleBase implements ArticleInterface, TeaserCardInterface {
 
   /**
    * If entity has link directly to source field.
@@ -41,9 +41,6 @@ class Article extends NodeBundleBase implements TeaserCardInterface {
       ],
     ]);
 
-    // Handle link directly to source functionality.
-    $build['#url'] = $this->getNodeUrl('field_article_source_link_direct', 'field_article_source_link');
-
     // Construct remaining byline.
     $build['#meta']['byline'] = $this->getByline($build);
 
@@ -58,24 +55,19 @@ class Article extends NodeBundleBase implements TeaserCardInterface {
    * {@inheritdoc}
    */
   public function getDefaultCardStyles(): array {
-    // If ListBlock, otherwise provide node and person teaser defaults.
-    // @todo Establish a better identifier for block controlled classes.
-    if ($this->view?->id() === 'article_list_block') {
-      return [];
-    }
-    else {
-      $default_classes = [
-        ...parent::getDefaultCardStyles(),
-        'media_size' => 'media--small',
-        'media_format' => 'media--widescreen',
-      ];
+    $default_classes = [
+      ...parent::getDefaultCardStyles(),
+      'media_size' => 'media--small',
+      'media_format' => 'media--widescreen',
+    ];
 
-      if ($this->view?->id() === 'articles') {
-        $default_classes['card_list'] = 'card--list';
-      }
-
-      return $default_classes;
+    // @todo Remove this when we have alternative solution for implementing the
+    //   styles provided by the 'card--list' class.
+    if ($this->view?->id() === 'articles') {
+      $default_classes['card_list'] = 'card--list';
     }
+
+    return $default_classes;
   }
 
   /**

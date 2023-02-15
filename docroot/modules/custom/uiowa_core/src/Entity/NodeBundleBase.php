@@ -45,9 +45,7 @@ abstract class NodeBundleBase extends Node implements TeaserCardInterface {
    * {@inheritdoc}
    */
   public function buildCard(array &$build) {
-    foreach ($this->getDefaultCardStyles() as $style) {
-      $build['#attributes']['class'][] = $style;
-    }
+    $this->buildCardStyles($build);
     // @todo Do we still need a '.card--list' class? Or could this be handled
     //   a more generic `.view .card` definition? If we still need it, we need
     //   to figure out how to handle adding it conditionally based on the
@@ -66,6 +64,10 @@ abstract class NodeBundleBase extends Node implements TeaserCardInterface {
       '#title' => 'title',
       '#content' => 'field_teaser',
     ]);
+
+    // Handle link directly to source functionality.
+    $build['#url'] = $this->getNodeUrl();
+
   }
 
   /**
@@ -78,6 +80,19 @@ abstract class NodeBundleBase extends Node implements TeaserCardInterface {
       'media_size' => 'media--medium',
       'styles' => 'borderless',
     ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildCardStyles(array &$build) {
+    $override_styles = $build['#override_styles'] ?? [];
+    foreach([
+      ...$this->getDefaultCardStyles(),
+      ...$override_styles,
+    ] as $style) {
+      $build['#attributes']['class'][] = $style;
+    }
   }
 
   /**
@@ -120,29 +135,29 @@ abstract class NodeBundleBase extends Node implements TeaserCardInterface {
   /**
    * Helper function to construct link directly to source functionality.
    *
-   * @return string
+   * @return string|null
    *   The url used to link the view mode.
    *
-   * @throws \Drupal\Core\TypedData\Exception\MissingDataException|\Drupal\Core\Entity\EntityMalformedException
+   * @throws \Drupal\Core\Entity\EntityMalformedException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
-  public function getNodeUrl(): string {
+  public function getNodeUrl(): ?string {
     $source_link_direct = $this->source_link_direct;
     $source_link = $this->source_link;
 
-    if (is_null($source_link_direct) || is_null($source_link)) {
-      $url = !$this->isNew() ? $this->toUrl('canonical')->toString() : NULL;
-    }
-    else {
+    if (!is_null($source_link_direct) || !is_null($source_link)) {
       $link_direct = (int) $this->get($source_link_direct)->value;
       $link = $this->get($source_link)->uri;
       if ($link_direct === 1 && isset($link) && !empty($link)) {
-        $url = $this->get($source_link)->get(0)->getUrl()->toString();
-      }
-      else {
-        $url = !$this->isNew() ? $this->toUrl('canonical')->toString() : NULL;
+        return $this
+          ->get($source_link)
+          ?->get(0)
+          ?->getUrl()
+          ?->toString();
       }
     }
-    return $url;
+
+    return !$this->isNew() ? $this->toUrl()->toString() : NULL;
   }
 
 }

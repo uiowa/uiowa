@@ -47,26 +47,21 @@ class Person extends NodeBundleBase implements TeaserCardInterface {
    * {@inheritdoc}
    */
   public function getDefaultCardStyles(): array {
-    // If ListBlock, otherwise provide node and person teaser defaults.
-    // @todo Establish a better identifier for block controlled classes.
-    if ($this->view?->id() === 'people_list_block') {
-      return [];
-    }
-    else {
-      $default_classes = [
-        ...parent::getDefaultCardStyles(),
-        'card_media_position' => 'card--layout-left',
-        'media_border' => 'media--border',
-        'media_format' => 'media--circle',
-        'media_size' => 'media--small',
-      ];
+    $default_classes = [
+      ...parent::getDefaultCardStyles(),
+      'card_media_position' => 'card--layout-left',
+      'media_border' => 'media--border',
+      'media_format' => 'media--circle',
+      'media_size' => 'media--small',
+    ];
 
-      if ($this->view?->id() === 'people') {
-        $default_classes['card_list'] = 'card--list';
-      }
-
-      return $default_classes;
+    // @todo Remove this when we have alternative solution for implementing the
+    //   styles provided by the 'card--list' class.
+    if ($this->view?->id() === 'people') {
+      $default_classes['card_list'] = 'card--list';
     }
+
+    return $default_classes;
   }
 
 }

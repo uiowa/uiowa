@@ -62,4 +62,29 @@ class Card extends RenderElement {
     return $element;
   }
 
+  /**
+   * Filters a list of styles to just those used by cards.
+   *
+   * @param array $styles
+   *
+   * @return array
+   */
+  public static function filterCardStyles(array $styles): array {
+    $filtered_styles = [];
+    foreach ($styles as $key => $style) {
+      foreach ([
+        'bg',
+        'card',
+        'media',
+        'borderless',
+      ] as $check) {
+        if (str_starts_with($style, $check)) {
+          $filtered_styles[$key] = $style;
+        }
+      }
+    }
+
+    return $filtered_styles;
+  }
+
 }

@@ -6,13 +6,15 @@
  */
 
 use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\sitenow_events\Entity\Event;
+use Drupal\smart_trim\TruncateHTML;
 use Drupal\uiowa_core\HeadlineHelper;
 use GuzzleHttp\Exception\RequestException;
 
@@ -205,10 +207,15 @@ function sitenow_events_preprocess_block(&$variables) {
       }
 
       if (isset($data['events'])) {
+        $attributes = new Attribute();
         // Get block layout builder styles if they exist.
         if (isset($variables['elements']['#attributes']['class']) && !empty($variables['elements']['#attributes']['class'])) {
-          $parent_lb_styles = $variables['elements']['#attributes']['class'];
-          $parent_lb_styles[] = 'list-item';
+          $parent_lb_styles = array_merge($variables['elements']['#attributes']['class'], [
+            'list-item',
+            'card--list',
+            'event-item',
+          ]);
+          $attributes->addClass($parent_lb_styles);
         }
 
         if ($block->hasField('field_uiowa_headline')) {
@@ -224,18 +231,125 @@ function sitenow_events_preprocess_block(&$variables) {
           }
         }
 
-        foreach ($data['events'] as $value) {
+        $config = \Drupal::config('sitenow_events.settings');
+
+        foreach ($data['events'] as $key => $value) {
           // The API nests each event as an array.
           $event = $value['event'];
           $event['heading_size'] = $heading_size ?? 'h3';
-          // Pass the parent block's layout_builder_styles to each item.
-          if (!empty($parent_lb_styles)) {
-            $event['parent_lb_styles'] = $parent_lb_styles;
+
+          $external_link = ($config->get('event_link') === 'event-link-external');
+
+          if ($external_link) {
+            $event['url'] = $event['events_site_url'];
           }
-          $variables['content'][] = [
-            '#theme' => 'sitenow_events_teaser',
-            '#event' => $event,
+          else {
+            $single_event_path = $config->get('single_event_path');
+
+            // Add a parameter on the URL for event instances.
+            foreach ($event['event_instances'] as $instance_key => $instance) {
+              if ($event['instance_start'] === $instance['event_instance']['start']) {
+                $instance_id = $instance_key;
+              }
+            }
+
+            $event_path = isset($instance_id) ? "{$event['id']}/{$instance_id}" : $event['id'];
+            $event['url'] = Url::fromUri("internal:/{$single_event_path}/{$event_path}", ['alias' => TRUE]);
+          }
+
+          $event['date_string'] = sitenow_events_format_instance([
+            'start' => $event['instance_start'],
+            'end' => $event['instance_end'],
+            'last_date' => $event['last_date'],
+            'all_day' => $event['instance_all_day'],
+          ]);
+
+          $variables['content'][$key] = [
+            '#type' => 'card',
+            '#attributes' => $attributes,
+            '#title' => $event['title'],
+            '#subtitle' => $event['date_string'],
+            '#url' => $event['url'],
+            '#headline_level' => $event['heading_size'],
           ];
+          if (isset($variables['event']['media'][0]['original_image'])) {
+            // Establish default view mode if layout_builder_styles don't exist.
+            $image_view_mode = 'large__square';
+
+            // Map layout builder styles to the view mode that should be used.
+            $media_formats = [
+              'media--widescreen' => 'large__widescreen',
+              'media--square' => 'large__square',
+              'media--circle' => 'large__square',
+            ];
+            // Loop through the map to check if any of them are being used and
+            // adjust the view mode accordingly. Last one wins out.
+            if (isset($parent_lb_styles)) {
+              foreach ($media_formats as $style => $view_mode) {
+                if (in_array($style, $parent_lb_styles)) {
+                  $image_view_mode = $view_mode;
+                }
+              }
+            }
+            // @todo Not currently working because it is expecting a URL?
+            $variables['content'][$key]['#media'] = [
+              '#theme' => 'imagecache_external_responsive',
+              '#uri' => $event['media'][0]['original_image'],
+              '#responsive_image_style_id' => $image_view_mode,
+              '#attributes' => [
+                'data-lazy' => TRUE,
+                'alt' => t('@title promotional image', ['@title' => $event['title']]),
+              ],
+            ];
+          }
+
+          if ($event['virtual'] === TRUE) {
+            $variables['content'][$key]['#meta']['icon'] = [
+              '#type' => 'markup',
+              '#markup' => '<span role="presentation" class="fas fa-laptop"></span>',
+            ];
+            $variables['content'][$key]['#meta']['location'] = [
+              '#type' => 'markup',
+              '#markup' => t('Virtual'),
+            ];
+          }
+          else {
+            $variables['content'][$key]['#meta']['icon'] = [
+              '#type' => 'markup',
+              '#markup' => '<span role="presentation" class="fas fa-map-marker-alt"></span>',
+            ];
+            $variables['content'][$key]['#meta']['location'] = [
+              '#type' => 'markup',
+              '#markup' => $event['location_name'],
+            ];
+          }
+
+          // Limit what html is allowed.
+          $allowed_tags = ['a', 'strong', 'em'];
+
+          if (isset($event['summary'])) {
+            $variables['content'][$key]['#content']['description'] = Xss::filter($event['summary'], $allowed_tags);
+          }
+
+          elseif (isset($event['description'])) {
+            $event['description'] = Xss::filter($event['description'], $allowed_tags);
+
+            // Use smart_trim's helper to safely truncate without breaking HTML.
+            $truncate = new TruncateHTML();
+            $trim_suffix = '...';
+            $variables['content'][$key]['#content']['description'] = [
+              '#type' => 'markup',
+              '#markup' => $truncate->truncateChars($event['description'], 500, $trim_suffix),
+            ];
+          }
+
+          if ($event['canceled'] === TRUE) {
+            $variables['content'][$key]['#content'][] = [
+              '#type' => 'html_tag',
+              '#tag' => 'div',
+              '#value' => '<span class="badge badge--orange">Canceled</span>',
+            ];
+          }
         }
       }
       else {
@@ -270,22 +384,6 @@ function sitenow_events_preprocess_block(&$variables) {
             'class' => ['more-link', 'bttn', 'bttn--primary', 'bttn--caps'],
           ],
         ];
-      }
-
-      if (isset($variables['attributes']['class'])) {
-        // Unset classes meant for children.
-        foreach ($variables['attributes']['class'] as $key => $style) {
-          foreach ([
-            'bg',
-            'card',
-            'media',
-            'hide',
-          ] as $check) {
-            if (str_starts_with($style, $check)) {
-              unset($variables['attributes']['class'][$key]);
-            }
-          }
-        }
       }
       break;
   }
@@ -374,12 +472,6 @@ function sitenow_events_load(array $params = [
  */
 function sitenow_events_theme($existing, $type, $theme, $path) {
   return [
-    'sitenow_events_teaser' => [
-      'path' => $path,
-      'template' => 'templates/sitenow-events-teaser',
-      'file' => 'includes/sitenow_events.teaser.inc',
-      'variables' => ['event' => NULL],
-    ],
     'sitenow_events_single_event' => [
       'path' => $path,
       'template' => 'templates/sitenow-events-single-event',

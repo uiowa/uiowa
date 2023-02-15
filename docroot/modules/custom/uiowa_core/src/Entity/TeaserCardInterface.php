@@ -30,4 +30,11 @@ interface TeaserCardInterface {
    */
   public function getDefaultCardStyles(): array;
 
+  /**
+   * Add card styles to the build array.
+   *
+   * @param $build
+   *   The build array that is being updated.
+   */
+  public function buildCardStyles(array &$build);
 }
