@@ -323,30 +323,6 @@ function template_preprocess_card(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function uiowa_core_preprocess_node(&$variables) {
-  if ($variables['view_mode'] === 'teaser') {
-    $show_teaser_link_indicator = FALSE;
-    $node_type = $variables['node']->bundle();
-    $type_map = [
-      'page' => 'pages',
-      'person' => 'people',
-      'article' => 'articles',
-    ];
-
-    if (isset($type_map[$node_type])) {
-      $config_name = 'sitenow_' . $type_map[$node_type] . '.settings';
-      $config = \Drupal::configFactory()->getEditable($config_name);
-
-      $show_teaser_link_indicator = $config->get('show_teaser_link_indicator');
-    }
-    $variables['show_teaser_link_indicator'] = $show_teaser_link_indicator;
-  }
-
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
 function uiowa_core_preprocess_page(&$variables) {
   $current_route = \Drupal::routeMatch();
   $node = $current_route->getParameter('node');
