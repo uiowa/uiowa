@@ -32,22 +32,6 @@ div[role=article].node--type-person.node--view-mode-teaser {
   }
 }
 
-.grid.paragraph--type--featured,
-.masonry.paragraph--type--featured {
-
-  article.node--type-person.node--view-mode-teaser,
-  div[role=article].node--type-person.node--view-mode-teaser {
-    .content-image {
-      margin-left: 0;
-    }
-
-    .content-image img {
-      margin-left: 0 !important;
-      max-width: 100%;
-    }
-  }
-}
-
 
 .field--name-field-person-contact-information {
   margin-bottom: .7rem;
@@ -64,7 +48,25 @@ div[role=article].node--type-person.node--view-mode-teaser {
   }
 }
 
-// paragraph teaser
+
+// V2 Styles.
+.grid.paragraph--type--featured,
+.masonry.paragraph--type--featured {
+
+  article.node--type-person.node--view-mode-teaser,
+  div[role=article].node--type-person.node--view-mode-teaser {
+    .content-image {
+      margin-left: 0;
+    }
+
+    .content-image img {
+      margin-left: 0 !important;
+      max-width: 100%;
+    }
+  }
+}
+
+// V2 Styles paragraph teaser
 .paragraph--type--people {
   p {
     display: none;
