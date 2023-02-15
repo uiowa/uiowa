@@ -394,6 +394,10 @@ function admissions_core_preprocess_field(&$variables) {
       uiowa_core_set_field_icon($variables, 'fa-book');
       break;
 
+    case 'field_college_website':
+      uiowa_core_set_field_icon($variables, 'fa-desktop fas');
+      break;
+
     case 'field_person_hometown':
       if ($variables['element']['#entity_type'] == 'node' && $variables['element']['#bundle'] == 'student_profile') {
         uiowa_core_set_field_icon($variables, 'fa-map-marker-alt');
@@ -683,10 +687,6 @@ function admissions_core_theme($existing, $type, $theme, $path) {
     ],
     'field__field_student_profile_blurb' => [
       'template' => 'field--field-student-profile-blurb',
-      'base hook' => 'field',
-    ],
-    'field__taxonomy_term__field_college_website__colleges__default' => [
-      'template' => 'field--taxonomy-term--field-college-website--colleges--default',
       'base hook' => 'field',
     ],
     'fragment__stat' => [
