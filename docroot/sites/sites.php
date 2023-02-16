@@ -5056,3 +5056,9 @@ $sites['laballen.uiowa.ddev.site'] = 'allen.lab.uiowa.edu';
 $sites['laballen.dev.drupal.uiowa.edu'] = 'allen.lab.uiowa.edu';
 $sites['laballen.stage.drupal.uiowa.edu'] = 'allen.lab.uiowa.edu';
 $sites['laballen.prod.drupal.uiowa.edu'] = 'allen.lab.uiowa.edu';
+
+// Directory aliases for irrc.education.uiowa.edu.
+$sites['educationirrc.uiowa.ddev.site'] = 'irrc.education.uiowa.edu';
+$sites['educationirrc.dev.drupal.uiowa.edu'] = 'irrc.education.uiowa.edu';
+$sites['educationirrc.stage.drupal.uiowa.edu'] = 'irrc.education.uiowa.edu';
+$sites['educationirrc.prod.drupal.uiowa.edu'] = 'irrc.education.uiowa.edu';
