@@ -3,6 +3,7 @@
 namespace Drupal\layout_builder_custom\EventSubscriber;
 
 use Drupal\Core\Block\BlockPluginInterface;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Render\Element;
@@ -258,6 +259,11 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
             // Loop through view rows and set styles to override and hidden
             // fields.
             foreach ($build['content']['view_build']['#rows'][0]['#rows'] as &$row_build) {
+
+              if (!isset($row_build['#cache']['tags'])) {
+                $row_build['#cache']['tags'] = [];
+              }
+              $row_build['#cache']['tags'][] = 'layout_builder_component:' . $event->getComponent()->getUuid();
               $row_build['#override_styles'] = $style_map;
               $row_build['#hide_fields'] = $hide_fields;
             }
@@ -321,7 +327,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
         ?->getStorage('layout_builder_style')
         ?->load($style_id);
       if ($style) {
-        $style_map[$style->getGroup()] = implode(\preg_split('(\r\n|\r|\n)', $style->getClasses()));
+        $style_map[$style->getGroup()] = implode(' ', \preg_split('(\r\n|\r|\n)', $style->getClasses()));
       }
     }
 
