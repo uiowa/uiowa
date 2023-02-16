@@ -2,15 +2,24 @@
 
 .field--name-field-person-territory {
   .field__label {
-    font-size: $small-font-size;
-    margin-bottom: 0;
-    margin-top: $gutter;
+    [class*=card__] & {
+      font-size: $small-font-size;
+      margin-bottom: 0;
+      margin-top: $gutter;
+    }
   }
   .field__items, .field__item {
     font-size: $small-font-size;
     color: $text-muted;
   }
 }
+
+
+[class*=card__] .field__label {
+  font-size: inherit;
+  line-height: inherit;
+}
+
 
 // person layout
 .page-node-type-person.layout-builder-enabled {
