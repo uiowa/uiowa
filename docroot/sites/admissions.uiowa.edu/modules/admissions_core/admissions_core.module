@@ -7,6 +7,7 @@
 
 use Drupal\admissions_core\AdmissionsCoreInterface;
 use Drupal\admissions_core\Entity\AdmissionsPerson;
+use Drupal\admissions_core\Entity\AreaStudy;
 use Drupal\admissions_core\Entity\StudentProfile;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -33,6 +34,10 @@ function admissions_core_entity_bundle_info_alter(array &$bundles) {
 
         case 'node:student_profile':
           $bundle_info['class'] = StudentProfile::class;
+          break;
+
+        case 'node:area_of_study':
+          $bundle_info['class'] = AreaStudy::class;
           break;
       }
     }
@@ -734,17 +739,9 @@ function admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'entity-print--node--page',
       'base hook' => 'entity_print',
     ],
-    'node__area_of_study__teaser' => [
-      'template' => 'node--area-of-study--teaser',
-      'base hook' => 'node',
-    ],
     'page__kiosk' => [
       'template' => 'page--kiosk',
       'base hook' => 'page',
-    ],
-    'taxonomy_term__teaser' => [
-      'template' => 'taxonomy-term--teaser',
-      'base hook' => 'taxonomy_term',
     ],
   ];
 }
