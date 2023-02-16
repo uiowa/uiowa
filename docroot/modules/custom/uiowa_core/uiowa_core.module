@@ -139,8 +139,13 @@ function template_preprocess_uiowa_core_headline(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function uiowa_core_preprocess_media(&$variables) {
+  $is_figure = FALSE;
+  if (isset($variables["attributes"]["data-figure"])) {
+    $is_figure = filter_var($variables["attributes"]["data-figure"], FILTER_VALIDATE_BOOLEAN);
+  }
+
   // Check to see if the media element is an embed.
-  if (isset($variables['elements']['#embed']) && $variables['elements']['#embed']) {
+  if (!$is_figure && isset($variables['elements']['#embed']) && $variables['elements']['#embed']) {
     if (isset($variables['view_mode'])) {
       $view_mode = $variables['view_mode'];
       $view_mode_modified = uiowa_core_inline_viewmode_map($view_mode);
@@ -177,7 +182,11 @@ function uiowa_core_preprocess_filter_caption(&$variables) {
       $classes = implode(' ', $classes_array);
       $variables['#attached']['library'][] = $view_mode_modified['library'];
       $variables['classes'] = $classes;
-      $variables['node'] = FilteredMarkup::create(preg_replace('/data-view-mode=".*"/i', '', $variables["node"]));
+      $variables['node'] = FilteredMarkup::create(preg_replace(
+        '/<drupal-media /i',
+        '<drupal-media data-figure="true" ',
+        $variables["node"]));
+      $variables;
     }
   }
 }
