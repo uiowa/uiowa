@@ -136,23 +136,33 @@ function template_preprocess_uiowa_core_headline(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_HOOK().
+ * Implements hook_preprocess_media().
  */
 function uiowa_core_preprocess_media(&$variables) {
+
+  // Detect if this is a figure and if it is, it has already been processed for inline sizing and alignment.
   $is_figure = FALSE;
   if (isset($variables["attributes"]["data-figure"])) {
     $is_figure = filter_var($variables["attributes"]["data-figure"], FILTER_VALIDATE_BOOLEAN);
   }
 
-  // Check to see if the media element is an embed.
+  // Check to see if the media element has been processed, or if it is an embed.
   if (!$is_figure && isset($variables['elements']['#embed']) && $variables['elements']['#embed']) {
+
+    // If we have a view mode set...
     if (isset($variables['view_mode'])) {
       $view_mode = $variables['view_mode'];
+
+      // Process the view mode classes.
       $view_mode_modified = uiowa_core_inline_viewmode_map($view_mode);
 
+      // If we have relevant view mode classes...
       if(!empty($view_mode_modified)) {
+
+        // Process any alignment classes.
         $variables['attributes']['class'] = uiowa_core_prefix_alignment_classes($variables['attributes']['class']);
 
+        // Attach the inline sizing library and assign the classes.
         $variables['#attached']['library'][] = $view_mode_modified['library'];
         $variables['attributes']['class'][] = $view_mode_modified['class'];
       }
@@ -160,43 +170,89 @@ function uiowa_core_preprocess_media(&$variables) {
   }
 }
 
+/**
+ * Implements hook_preprocess_filter_caption().
+ */
 function uiowa_core_preprocess_filter_caption(&$variables) {
+  // Get the '<drupal-media>' tag string.
   $drupal_media_markup = strval($variables['node']);
+
+  // Define some $replacement_strings to remove.
   $replacement_strings = ['<drupal-media ', '></drupal-media>'];
+
+  // Remove the $replacement_strings
   $drupal_media_attributes_string = str_replace($replacement_strings, '', $drupal_media_markup);
+
+  // Separate the attributes of the tag string in to an array of attribute strings.
+  // Ex: ['foo="bar"', 'ban="baz"'].
   $drupal_media_attributes_strings = explode(" ", $drupal_media_attributes_string);
+
+  // Create a new array to be used later for the associative media attributes data.
   $associative_drupal_media_attributes_strings = [];
+
+  // For each of the media attributes strings...
   foreach ($drupal_media_attributes_strings as $value) {
+
+    // Separate them in to two parts, clean them up, and add them to the associative array.
     $attribute__value = explode('=', $value);
     $associative_drupal_media_attributes_strings[$attribute__value[0]] = str_replace('"', '', $attribute__value[1]);
   }
 
+  // If we have a view mode set...
   if(isset($associative_drupal_media_attributes_strings['data-view-mode'])) {
 
+    // Process the view mode classes.
     $view_mode_modified = uiowa_core_inline_viewmode_map($associative_drupal_media_attributes_strings['data-view-mode']);
 
+    // If we have relevant view mode classes...
     if(!empty($view_mode_modified)) {
+
+      // Get the current classes of the '<drupal-media>' element.
       $classes_array = explode(' ', $variables['classes']);
+
+      // Process any alignment classes.
       $classes_array = uiowa_core_prefix_alignment_classes($classes_array);
+
+      // Add the relevant modified inline view mode class.
       $classes_array[] = $view_mode_modified['class'];
+
+      // Re-concatenate the $classes_array back in to a string,
+      // which is what the '<drupal-media>' element wants.
       $classes = implode(' ', $classes_array);
+
+      // Attach the inline sizing library and assign the classes.
       $variables['#attached']['library'][] = $view_mode_modified['library'];
       $variables['classes'] = $classes;
+
+      // Then, add a custom attribute to the '<drupal-media>' markup to show that it is a figure.
       $variables['node'] = FilteredMarkup::create(preg_replace(
         '/<drupal-media /i',
         '<drupal-media data-figure="true" ',
         $variables["node"]));
-      $variables;
     }
   }
 }
 
+/**
+ * Provides mapping for a $view_mode to an inline view mode.
+ *
+ * If the $view_mode starts with any one of the $accepted_view_modes:
+ *  Returns an array containing the string reference to
+ *  the inline library and the inline sizing class.
+ * Otherwise, returns an empty array.
+ *
+ * @param string $view_mode  - A string that is going to be checked
+ *                             as a view mode, often looks something
+ *                             like 'medium__no_crop'.
+ * @return array
+ */
 function uiowa_core_inline_viewmode_map($view_mode): array {
   $accepted_view_modes = ['large', 'medium', 'small'];
 
   foreach ($accepted_view_modes as $value) {
     if (str_starts_with($view_mode, $value)) {
 
+      // We return a string reference to the inline library and a modified view mode class.
       return [
         "library" => 'uids_base/inline',
         "class" => 'inline--size-' . $value,
@@ -209,19 +265,33 @@ function uiowa_core_inline_viewmode_map($view_mode): array {
 
 /**
  * Prefixes any alignment classes with the 'inline--' prefixed version.
+ *
+ * If the $class_array has any of the $accepted_alignment suffixed alignment classes:
+ *  modify them to be inline classes.
+ *
+ * @param array $class_array  - An array of classes.
+ *
+ * @return array
  */
 function uiowa_core_prefix_alignment_classes($class_array): array {
+
+  // This checks if the class array has a single empty string,
+  // And if it does, it returns early. No processing needed.
   if ($class_array === ['']) {
     return [];
   }
 
   $accepted_alignments = ['left', 'center', 'right'];
+
+  // Create a copy ofd the class array to be modified and returned later.
   $modified_class_array = $class_array;
 
   foreach($class_array as $class) {
     if(str_starts_with($class, 'align-')) {
       foreach ($accepted_alignments as $alignment) {
         if ($class === 'align-' . $alignment) {
+
+          // If we find an alignment class, replace it with the inline version.
           $index = array_search($class, $class_array);
           $modified_class_array[$index] = 'inline--' . $class;
         }
