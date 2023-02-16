@@ -142,8 +142,8 @@ function uiowa_core_preprocess_media(&$variables) {
 
   // Detect if this is a figure and if it is, it has already been processed for inline sizing and alignment.
   $is_figure = FALSE;
-  if (isset($variables["attributes"]["data-figure"])) {
-    $is_figure = filter_var($variables["attributes"]["data-figure"], FILTER_VALIDATE_BOOLEAN);
+  if (isset($variables['attributes']['data-figure'])) {
+    $is_figure = filter_var($variables['attributes']['data-figure'], FILTER_VALIDATE_BOOLEAN);
   }
 
   // Check to see if the media element has been processed, or if it is an embed.
@@ -185,7 +185,7 @@ function uiowa_core_preprocess_filter_caption(&$variables) {
 
   // Separate the attributes of the tag string in to an array of attribute strings.
   // Ex: ['foo="bar"', 'ban="baz"'].
-  $drupal_media_attributes_strings = explode(" ", $drupal_media_attributes_string);
+  $drupal_media_attributes_strings = explode(' ', $drupal_media_attributes_string);
 
   // Create a new array to be used later for the associative media attributes data.
   $associative_drupal_media_attributes_strings = [];
@@ -228,7 +228,7 @@ function uiowa_core_preprocess_filter_caption(&$variables) {
       $variables['node'] = FilteredMarkup::create(preg_replace(
         '/<drupal-media /i',
         '<drupal-media data-figure="true" ',
-        $variables["node"]));
+        $variables['node']));
     }
   }
 }
@@ -254,8 +254,8 @@ function uiowa_core_inline_viewmode_map($view_mode): array {
 
       // We return a string reference to the inline library and a modified view mode class.
       return [
-        "library" => 'uids_base/inline',
-        "class" => 'inline--size-' . $value,
+        'library' => 'uids_base/inline',
+        'class' => 'inline--size-' . $value,
       ];
     }
   }
