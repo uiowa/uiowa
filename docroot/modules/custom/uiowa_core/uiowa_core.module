@@ -13,6 +13,7 @@ use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\filter\Render\FilteredMarkup;
 use Drupal\google_tag\Entity\Container;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
@@ -138,33 +139,88 @@ function template_preprocess_uiowa_core_headline(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function uiowa_core_preprocess_media(&$variables) {
-
   // Check to see if the media element is an embed.
   if (isset($variables['elements']['#embed']) && $variables['elements']['#embed']) {
-    $view_mode = $variables['view_mode'];
-    $accepted_view_modes = ['large', 'medium', 'small'];
+    if (isset($variables['view_mode'])) {
+      $view_mode = $variables['view_mode'];
+      $view_mode_modified = uiowa_core_inline_viewmode_map($view_mode);
 
-    foreach ($accepted_view_modes as $value) {
-      if (str_starts_with($view_mode, $value)) {
-        uiowa_core_prefix_alignment_classes('align-left', $variables['attributes']['class']);
-        uiowa_core_prefix_alignment_classes('align-right', $variables['attributes']['class']);
-        uiowa_core_prefix_alignment_classes('align-center', $variables['attributes']['class']);
+      if(!empty($view_mode_modified)) {
+        $variables['attributes']['class'] = uiowa_core_prefix_alignment_classes($variables['attributes']['class']);
 
-        $variables['#attached']['library'][] = 'uids_base/inline';
-        $variables['attributes']['class'][] = 'inline--size-' . $value;
+        $variables['#attached']['library'][] = $view_mode_modified['library'];
+        $variables['attributes']['class'][] = $view_mode_modified['class'];
       }
     }
   }
 }
 
+function uiowa_core_preprocess_filter_caption(&$variables) {
+  $drupal_media_markup = strval($variables['node']);
+  $replacement_strings = ['<drupal-media ', '></drupal-media>'];
+  $drupal_media_attributes_string = str_replace($replacement_strings, '', $drupal_media_markup);
+  $drupal_media_attributes_strings = explode(" ", $drupal_media_attributes_string);
+  $associative_drupal_media_attributes_strings = [];
+  foreach ($drupal_media_attributes_strings as $value) {
+    $attribute__value = explode('=', $value);
+    $associative_drupal_media_attributes_strings[$attribute__value[0]] = str_replace('"', '', $attribute__value[1]);
+  }
+
+  if(isset($associative_drupal_media_attributes_strings['data-view-mode'])) {
+
+    $view_mode_modified = uiowa_core_inline_viewmode_map($associative_drupal_media_attributes_strings['data-view-mode']);
+
+    if(!empty($view_mode_modified)) {
+      $classes_array = explode(' ', $variables['classes']);
+      $classes_array = uiowa_core_prefix_alignment_classes($classes_array);
+      $classes_array[] = $view_mode_modified['class'];
+      $classes = implode(' ', $classes_array);
+      $variables['#attached']['library'][] = $view_mode_modified['library'];
+      $variables['classes'] = $classes;
+      $variables['node'] = FilteredMarkup::create(preg_replace('/data-view-mode=".*"/i', '', $variables["node"]));
+    }
+  }
+}
+
+function uiowa_core_inline_viewmode_map($view_mode): array {
+  $accepted_view_modes = ['large', 'medium', 'small'];
+
+  foreach ($accepted_view_modes as $value) {
+    if (str_starts_with($view_mode, $value)) {
+
+      return [
+        "library" => 'uids_base/inline',
+        "class" => 'inline--size-' . $value,
+      ];
+    }
+  }
+
+  return [];
+}
+
 /**
  * Prefixes any alignment classes with the 'inline--' prefixed version.
  */
-function uiowa_core_prefix_alignment_classes($class, &$class_array): void {
-  if (in_array($class, $class_array)) {
-    $index = array_search($class, $class_array);
-    $class_array[$index] = 'inline--' . $class;
+function uiowa_core_prefix_alignment_classes($class_array): array {
+  if ($class_array === ['']) {
+    return [];
   }
+
+  $accepted_alignments = ['left', 'center', 'right'];
+  $modified_class_array = $class_array;
+
+  foreach($class_array as $class) {
+    if(str_starts_with($class, 'align-')) {
+      foreach ($accepted_alignments as $alignment) {
+        if ($class === 'align-' . $alignment) {
+          $index = array_search($class, $class_array);
+          $modified_class_array[$index] = 'inline--' . $class;
+        }
+      }
+    }
+  }
+
+  return $modified_class_array;
 }
 
 /**
