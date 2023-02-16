@@ -70,7 +70,7 @@
       {% block field_label_icon %}
         {% if field_label_icon %}
           {% if field_label_icon_bg %}
-            <span role="presentation" class="fa-stack fa-1x">
+            <span role="presentation" class="fa-stack {% if 'fa-ul' in attributes.class %}fa-li{% endif %} fa-1x">
               <span role="presentation" class="{{ field_icon_bg }} fa-stack-2x"></span>
               <span role="presentation" class="{{ field_icon }} fa-stack-1x"></span>
             </span>
@@ -90,7 +90,7 @@
     {% block field_icon %}
       {% if field_icon %}
         {% if field_icon_bg %}
-          <span role="presentation" class="fa-stack fa-1x">
+          <span role="presentation" class="fa-stack {% if 'fa-ul' in attributes.class %}fa-li{% endif %} fa-1x">
             <span role="presentation" class="{{ field_icon_bg }} fa-stack-2x"></span>
             <span role="presentation" class="{{ field_icon }} fa-stack-1x"></span>
           </span>
