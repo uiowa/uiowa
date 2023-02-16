@@ -25,22 +25,14 @@ use Drupal\views\ViewExecutable;
  * Implements hook_entity_bundle_info_alter().
  */
 function admissions_core_entity_bundle_info_alter(array &$bundles) {
-  foreach ($bundles as $entity_type => &$entity_bundles) {
-    foreach ($entity_bundles as $bundle_name => &$bundle_info) {
-      switch ("$entity_type:$bundle_name") {
-        case 'node:person':
-          $bundle_info['class'] = AdmissionsPerson::class;
-          break;
-
-        case 'node:student_profile':
-          $bundle_info['class'] = StudentProfile::class;
-          break;
-
-        case 'node:area_of_study':
-          $bundle_info['class'] = AreaStudy::class;
-          break;
-      }
-    }
+  if (isset($bundles['node']['person'])) {
+    $bundles['node']['person']['class'] = AdmissionsPerson::class;
+  }
+  if (isset($bundles['node']['student_profile'])) {
+    $bundles['node']['student_profile']['class'] = StudentProfile::class;
+  }
+  if (isset($bundles['node']['area_of_study'])) {
+    $bundles['node']['area_of_study']['class'] = AreaStudy::class;
   }
 }
 
