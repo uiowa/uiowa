@@ -6,6 +6,7 @@
  */
 
 use Drupal\admissions_core\AdmissionsCoreInterface;
+use Drupal\admissions_core\Entity\AdmissionsPerson;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
@@ -17,6 +18,15 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\views\ViewExecutable;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function admissions_core_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['person'])) {
+    $bundles['node']['person']['class'] = AdmissionsPerson::class;
+  }
+}
 
 /**
  * Implements hook_entity_extra_field_info().
