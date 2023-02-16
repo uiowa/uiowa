@@ -157,7 +157,7 @@ function uiowa_core_preprocess_media(&$variables) {
       $view_mode_modified = uiowa_core_inline_viewmode_map($view_mode);
 
       // If we have relevant view mode classes...
-      if(!empty($view_mode_modified)) {
+      if (!empty($view_mode_modified)) {
 
         // Process any alignment classes.
         $variables['attributes']['class'] = uiowa_core_prefix_alignment_classes($variables['attributes']['class']);
@@ -180,7 +180,7 @@ function uiowa_core_preprocess_filter_caption(&$variables) {
   // Define some $replacement_strings to remove.
   $replacement_strings = ['<drupal-media ', '></drupal-media>'];
 
-  // Remove the $replacement_strings
+  // Remove the $replacement_strings.
   $drupal_media_attributes_string = str_replace($replacement_strings, '', $drupal_media_markup);
 
   // Separate the attributes of the tag string in to an array of attribute strings.
@@ -199,13 +199,13 @@ function uiowa_core_preprocess_filter_caption(&$variables) {
   }
 
   // If we have a view mode set...
-  if(isset($associative_drupal_media_attributes_strings['data-view-mode'])) {
+  if (isset($associative_drupal_media_attributes_strings['data-view-mode'])) {
 
     // Process the view mode classes.
     $view_mode_modified = uiowa_core_inline_viewmode_map($associative_drupal_media_attributes_strings['data-view-mode']);
 
     // If we have relevant view mode classes...
-    if(!empty($view_mode_modified)) {
+    if (!empty($view_mode_modified)) {
 
       // Get the current classes of the '<drupal-media>' element.
       $classes_array = explode(' ', $variables['classes']);
@@ -241,9 +241,11 @@ function uiowa_core_preprocess_filter_caption(&$variables) {
  *  the inline library and the inline sizing class.
  * Otherwise, returns an empty array.
  *
- * @param string $view_mode  - A string that is going to be checked
- *                             as a view mode, often looks something
+ * @param string $view_mode
+ *   - A string that is going to be checked
+ *   as a view mode, often looks something
  *                             like 'medium__no_crop'.
+ *
  * @return array
  */
 function uiowa_core_inline_viewmode_map($view_mode): array {
@@ -269,7 +271,8 @@ function uiowa_core_inline_viewmode_map($view_mode): array {
  * If the $class_array has any of the $accepted_alignment suffixed alignment classes:
  *  modify them to be inline classes.
  *
- * @param array $class_array  - An array of classes.
+ * @param array $class_array
+ *   - An array of classes.
  *
  * @return array
  */
@@ -286,8 +289,8 @@ function uiowa_core_prefix_alignment_classes($class_array): array {
   // Create a copy ofd the class array to be modified and returned later.
   $modified_class_array = $class_array;
 
-  foreach($class_array as $class) {
-    if(str_starts_with($class, 'align-')) {
+  foreach ($class_array as $class) {
+    if (str_starts_with($class, 'align-')) {
       foreach ($accepted_alignments as $alignment) {
         if ($class === 'align-' . $alignment) {
 
@@ -321,9 +324,9 @@ function uiowa_core_preprocess_node(&$variables) {
 
       $show_teaser_link_indicator = $config->get('show_teaser_link_indicator');
     }
+
     $variables['show_teaser_link_indicator'] = $show_teaser_link_indicator;
   }
-
 }
 
 /**
