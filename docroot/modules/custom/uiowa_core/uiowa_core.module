@@ -252,17 +252,17 @@ function template_preprocess_card(&$variables) {
 
   // Loop through all classes, add any media and headline classes to the array and remove
   // them from the card classes.
+
   foreach ($variables['attributes']['class'] as $index => $style) {
-    if (str_starts_with($style, 'media')) {
+    if (!is_null($style) && str_starts_with($style, 'media')) {
       $media_classes[] = $style;
       unset($variables['attributes']['class'][$index]);
     }
-    if (str_starts_with($style, 'headline')) {
+    if (!is_null($style) && str_starts_with($style, 'headline')) {
       $headline_classes[] = $style;
       unset($variables['attributes']['class'][$index]);
     }
   }
-
   // If there is a media element, add the media library and classes.
   // @todo Update this to Element:isEmpty() in
   //   https://github.com/uiowa/uiowa/issues/6061.
