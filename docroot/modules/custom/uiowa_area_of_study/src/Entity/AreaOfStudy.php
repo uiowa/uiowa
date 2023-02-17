@@ -34,12 +34,6 @@ class AreaOfStudy extends NodeBundleBase implements TeaserCardInterface {
   public function buildCard(array &$build) {
     parent::buildCard($build);
 
-    // Process additional card mappings.
-//    $this->mapFieldsToCardBuild($build, [
-//      '#subtitle' => 'field_person_position',
-//      '#meta' => ['field_person_email', 'field_person_phone'],
-//    ]);
-
     // Handle link directly to source functionality.
     $build['#url'] = $this->getNodeUrl();
 
