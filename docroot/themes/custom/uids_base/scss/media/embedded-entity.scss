@@ -14,17 +14,8 @@
   }
 }
 
-
 .embedded-entity+p {
   margin-top: $md !important;
-}
-
-.embedded-entity.align-center,
-.media.align-center {
-  .field--name-field-media-oembed-video iframe,
-  .field--name-field-media-instagram iframe {
-    margin: 0 auto !important;
-  }
 }
 
 figure.caption {
@@ -32,14 +23,6 @@ figure.caption {
 
   @include breakpoint(sm) {
     display: table;
-  }
-
-  margin: 0;
-  margin-bottom: .5rem;
-
-  &.align-center {
-    margin-right: auto;
-    margin-left: auto;
   }
 
   figcaption {
@@ -54,45 +37,11 @@ figure.caption {
   }
 }
 
-.align-left,
-figure.align-left,
-.align-left.embedded-entity,
-.align-left .embedded-entity {
-  float: none;
-  margin: 0;
-
-  @include breakpoint(sm) {
-    margin-right: 1.5rem;
-    margin-bottom: .5rem;
-    float: left;
-  }
-}
-
-.align-right,
-figure.align-right,
-.align-right.embedded-entity,
-.align-right .embedded-entity {
-  float: none;
-  margin: 0;
-
-  @include breakpoint(sm) {
-    margin-left: 1.5rem;
-    margin-bottom: .5rem;
-    float: right;
-  }
-}
-
 figure.caption .embedded-entity+figcaption {
   font-size: 90%;
   color: $grey;
   margin-top: $sm;
   margin-bottom: $sm;
-}
-
-figure.caption.align-right .embedded-entity+figcaption {
-  @include breakpoint(sm) {
-    text-align: right;
-  }
 }
 
 .alert {
