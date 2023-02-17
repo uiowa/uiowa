@@ -8,7 +8,7 @@ use Drupal\uiowa_core\Entity\TeaserCardInterface;
 /**
  * Provides an interface for student profile page entries.
  */
-class AreaStudy extends NodeBundleBase implements TeaserCardInterface {
+class AreaOfStudy extends NodeBundleBase implements TeaserCardInterface {
 
   /**
    * {@inheritdoc}
