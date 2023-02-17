@@ -247,12 +247,18 @@ function template_preprocess_card(&$variables) {
 
   // Create a set of media classes in case its needed.
   $media_classes = [];
+  // Create a set of title headline classes in case its needed.
+  $title_headline_classes = [];
 
-  // Loop through all classes, add any media classes to the array and remove
+  // Loop through all classes, add any media and headline classes to the array and remove
   // them from the card classes.
   foreach ($variables['attributes']['class'] as $index => $style) {
     if (str_starts_with($style, 'media')) {
       $media_classes[] = $style;
+      unset($variables['attributes']['class'][$index]);
+    }
+    if (str_starts_with($style, 'headline')) {
+      $title_headline_classes[] = $style;
       unset($variables['attributes']['class'][$index]);
     }
   }
@@ -300,7 +306,7 @@ function template_preprocess_card(&$variables) {
     $variables['headline'] = [
       'headline_text' => $variables['title'],
       'headline_level' => $variables['title_heading_size'] ?: 'h2',
-      'headline_class' => 'headline',
+      'headline_class' => $title_headline_classes ?: 'headline',
     ];
 
     // @todo Set headline_url based on link being set.

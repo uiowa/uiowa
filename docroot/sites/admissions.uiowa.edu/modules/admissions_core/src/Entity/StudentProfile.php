@@ -38,6 +38,8 @@ class StudentProfile extends NodeBundleBase implements TeaserCardInterface {
       'media_border' => 'media--border',
       'media_format' => 'media--circle',
       'media_size' => 'media--medium',
+      'headline_class' => 'headline--uppercase headline',
+      'styles' => '',
     ];
 
     return $default_classes;
