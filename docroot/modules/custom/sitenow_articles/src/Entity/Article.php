@@ -5,12 +5,12 @@ namespace Drupal\sitenow_articles\Entity;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\uiowa_core\Entity\NodeBundleBase;
-use Drupal\uiowa_core\Entity\TeaserCardInterface;
+use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 
 /**
  * Provides an interface for article entries.
  */
-class Article extends NodeBundleBase implements ArticleInterface, TeaserCardInterface {
+class Article extends NodeBundleBase implements ArticleInterface, RendersAsCardInterface {
 
   /**
    * If entity has link directly to source field.

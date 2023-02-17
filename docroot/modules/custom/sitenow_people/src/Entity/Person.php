@@ -3,12 +3,12 @@
 namespace Drupal\sitenow_people\Entity;
 
 use Drupal\uiowa_core\Entity\NodeBundleBase;
-use Drupal\uiowa_core\Entity\TeaserCardInterface;
+use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 
 /**
  * Provides an interface for person entries.
  */
-class Person extends NodeBundleBase implements TeaserCardInterface {
+class Person extends NodeBundleBase implements RendersAsCardInterface {
 
   /**
    * If entity has link directly to source field.

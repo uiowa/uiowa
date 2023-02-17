@@ -19,7 +19,7 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\google_tag\Entity\Container;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
-use Drupal\uiowa_core\Entity\TeaserCardInterface;
+use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\uiowa_core\RegionHelper;
 use Drupal\views\Views;
@@ -110,7 +110,7 @@ function uiowa_core_mail_alter(&$message) {
 function uiowa_core_node_build_defaults_alter(array &$build, EntityInterface $entity, $view_mode) {
   if ($view_mode === 'teaser') {
     // All teasers default to rendering as a card.
-    if ($entity instanceof TeaserCardInterface) {
+    if ($entity instanceof RendersAsCardInterface) {
       // Add card build info.
       $entity->addCardBuildInfo($build);
     }
@@ -121,8 +121,7 @@ function uiowa_core_node_build_defaults_alter(array &$build, EntityInterface $en
  * Implements hook_ENTITY_TYPE_build_defaults_alter().
  */
 function uiowa_core_paragraph_build_defaults_alter(array &$build, EntityInterface $entity, $view_mode) {
-  // All teasers default to rendering as a card.
-  if ($entity instanceof AdmissionsRequirement) {
+  if ($entity instanceof RendersAsCardInterface) {
     // Add card build info.
     $entity->addCardBuildInfo($build);
   }
@@ -166,7 +165,7 @@ function uiowa_core_node_presave(Node $node) {
  */
 function uiowa_core_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
   if ($view_mode === 'teaser') {
-    if ($entity instanceof TeaserCardInterface) {
+    if ($entity instanceof RendersAsCardInterface) {
       $entity->buildCard($build);
     }
   }
@@ -176,7 +175,7 @@ function uiowa_core_node_view(array &$build, EntityInterface $entity, EntityView
  * Implements hook_ENTITY_TYPE_view().
  */
 function uiowa_core_paragraph_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  if ($entity instanceof AdmissionsRequirement) {
+  if ($entity instanceof RendersAsCardInterface) {
     $entity->buildCard($build);
   }
 }

@@ -3,12 +3,12 @@
 namespace Drupal\admissions_core\Entity;
 
 use Drupal\uiowa_core\Entity\NodeBundleBase;
-use Drupal\uiowa_core\Entity\TeaserCardInterface;
+use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 
 /**
  * Provides an interface for student profile page entries.
  */
-class StudentProfile extends NodeBundleBase implements TeaserCardInterface {
+class StudentProfile extends NodeBundleBase implements RendersAsCardInterface {
 
   /**
    * {@inheritdoc}

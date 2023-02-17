@@ -5,7 +5,7 @@ namespace Drupal\uiowa_core\Entity;
 /**
  * Defines the interface for content types use teaser view modes.
  */
-interface TeaserCardInterface {
+interface RendersAsCardInterface {
 
   /**
    * Set the build to render as a card.

@@ -6,9 +6,9 @@ use Drupal\Core\Render\Element;
 use Drupal\uiowa_core\Element\Card;
 
 /**
- *
+ * Provides functionality related to rendering entities as cards.
  */
-trait RendersAsCard {
+trait RendersAsCardTrait {
 
   /**
    * {@inheritdoc}
@@ -51,8 +51,6 @@ trait RendersAsCard {
    *   A renderable array representing the entity content.
    * @param array $mapping
    *   Array of field names.
-   *
-   * @throws \Drupal\Core\Entity\EntityMalformedException
    */
   protected function mapFieldsToCardBuild(array &$build, array $mapping): void {
     $hide_fields = $build['#hide_fields'] ?? [];

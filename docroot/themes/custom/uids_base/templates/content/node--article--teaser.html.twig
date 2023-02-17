@@ -72,12 +72,6 @@
  */
 #}
 
-{% if '1' in content.field_article_source_link_direct.0 and node.field_article_source_link.0.uri %}
-  {% set node_link = node.field_article_source_link.0.uri %}
-{% else %}
-  {% set node_link = url %}
-{% endif %}
-
 {% set headline_level = 'h3 '%}
 {% if view %}
   {% set headline_level = view.display_handler.getOption('heading_size') %}
@@ -91,7 +85,6 @@
 
 {% set article_card = {
   'content': content,
-  'card_link_url': node_link,
   'media_styles': media_classes,
   'headline_level': headline_level,
   'visible_button': show_teaser_link_indicator

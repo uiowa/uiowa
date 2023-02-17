@@ -7,9 +7,9 @@ use Drupal\node\Entity\Node;
 /**
  * Bundle-specific subclass of Node.
  */
-abstract class NodeBundleBase extends Node implements TeaserCardInterface {
+abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
 
-  use RendersAsCard;
+  use RendersAsCardTrait;
 
   /**
    * If entity has link directly to source field.
