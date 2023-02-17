@@ -18,7 +18,7 @@ class AreaOfStudy extends NodeBundleBase implements TeaserCardInterface {
    * @var string|null
    *   field name or null.
    */
-  protected $source_link_direct = 'field_person_website_link_direct';
+  protected $source_link_direct = 'field_area_of_study_link_direct';
 
   /**
    * If entity has source link field.
@@ -26,7 +26,7 @@ class AreaOfStudy extends NodeBundleBase implements TeaserCardInterface {
    * @var string|null
    *   field name or null.
    */
-  protected $source_link = 'field_person_website';
+  protected $source_link = 'field_area_of_study_source_link';
 
   /**
    * {@inheritdoc}
@@ -35,10 +35,10 @@ class AreaOfStudy extends NodeBundleBase implements TeaserCardInterface {
     parent::buildCard($build);
 
     // Process additional card mappings.
-    $this->mapFieldsToCardBuild($build, [
-      '#subtitle' => 'field_person_position',
-      '#meta' => ['field_person_email', 'field_person_phone'],
-    ]);
+//    $this->mapFieldsToCardBuild($build, [
+//      '#subtitle' => 'field_person_position',
+//      '#meta' => ['field_person_email', 'field_person_phone'],
+//    ]);
 
     // Handle link directly to source functionality.
     $build['#url'] = $this->getNodeUrl();

@@ -19,7 +19,7 @@ use Drupal\node\NodeInterface;
  */
 function uiowa_area_of_study_entity_bundle_info_alter(array &$bundles) {
   if (isset($bundles['node']['area_of_study'])) {
-    $bundles['node']['person']['class'] = AreaOfStudy::class;
+    $bundles['node']['area_of_study']['class'] = AreaOfStudy::class;
   }
 }
 
