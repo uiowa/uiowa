@@ -3,12 +3,13 @@
 namespace Drupal\admissions_core\Entity;
 
 use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 use Drupal\uiowa_core\Entity\RendersAsCardTrait;
 
 /**
  * Provides an interface for student profile page entries.
  */
-class AdmissionsRequirement extends Paragraph {
+class AdmissionsRequirement extends Paragraph implements RendersAsCardInterface {
 
   use RendersAsCardTrait;
 
@@ -33,7 +34,6 @@ class AdmissionsRequirement extends Paragraph {
     return [
       'headline_class' => 'headline--serif',
     ];
-
   }
 
 }

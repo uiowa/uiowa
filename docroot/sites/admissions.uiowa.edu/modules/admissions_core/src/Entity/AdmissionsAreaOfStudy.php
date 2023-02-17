@@ -8,7 +8,7 @@ use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 /**
  * Provides an interface for student profile page entries.
  */
-class AreaOfStudy extends NodeBundleBase implements RendersAsCardInterface {
+class AdmissionsAreaOfStudy extends NodeBundleBase implements RendersAsCardInterface {
 
   /**
    * {@inheritdoc}

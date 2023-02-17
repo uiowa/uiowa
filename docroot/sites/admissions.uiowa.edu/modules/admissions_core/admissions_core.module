@@ -8,7 +8,7 @@
 use Drupal\admissions_core\AdmissionsCoreInterface;
 use Drupal\admissions_core\Entity\AdmissionsPerson;
 use Drupal\admissions_core\Entity\AdmissionsRequirement;
-use Drupal\admissions_core\Entity\AreaOfStudy;
+use Drupal\admissions_core\Entity\AdmissionsAreaOfStudy;
 use Drupal\admissions_core\Entity\StudentProfile;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -33,7 +33,7 @@ function admissions_core_entity_bundle_info_alter(array &$bundles) {
     $bundles['node']['student_profile']['class'] = StudentProfile::class;
   }
   if (isset($bundles['node']['area_of_study'])) {
-    $bundles['node']['area_of_study']['class'] = AreaOfStudy::class;
+    $bundles['node']['area_of_study']['class'] = AdmissionsAreaOfStudy::class;
   }
   if (isset($bundles['paragraph']['admissions_requirement'])) {
     $bundles['paragraph']['admissions_requirement']['class'] = AdmissionsRequirement::class;
