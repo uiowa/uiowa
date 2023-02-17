@@ -30,8 +30,7 @@
     .views-row {
       @include list-group-item;
       padding: 0;
-      .card--media-left,
-      .card--media-right {
+      .card[class*="card--layout"] {
         margin-top: 1.6rem;
       }
       &:first-child {
