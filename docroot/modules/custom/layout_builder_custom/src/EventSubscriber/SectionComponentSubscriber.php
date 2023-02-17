@@ -260,12 +260,11 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
             // fields.
             foreach ($build['content']['view_build']['#rows'][0]['#rows'] as &$row_build) {
 
-              if (!isset($row_build['#cache']['tags'])) {
-                $row_build['#cache']['tags'] = [];
-              }
-              $row_build['#cache']['tags'][] = 'layout_builder_component:' . $event->getComponent()->getUuid();
               $row_build['#override_styles'] = $style_map;
               $row_build['#hide_fields'] = $hide_fields;
+              if (isset($row_build['#cache']['keys'])) {
+                unset($row_build['#cache']['keys']);
+              }
             }
           }
 
