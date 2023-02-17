@@ -795,7 +795,6 @@ function admissions_core_views_pre_render(ViewExecutable $view) {
     switch ($view->current_display) {
       case 'block_counselors':
       case 'page_counselors':
-        $view->element['#attached']['library'][] = 'admissions_core/counselors-list';
         $view->element['#attached']['library'][] = 'admissions_core/person';
         break;
     }
