@@ -1835,12 +1835,6 @@ $sites['labfiegel.dev.drupal.uiowa.edu'] = 'fiegel.lab.uiowa.edu';
 $sites['labfiegel.stage.drupal.uiowa.edu'] = 'fiegel.lab.uiowa.edu';
 $sites['labfiegel.prod.drupal.uiowa.edu'] = 'fiegel.lab.uiowa.edu';
 
-// Directory aliases for nads.uiowa.edu.
-$sites['nads.uiowa.ddev.site'] = 'nads.uiowa.edu';
-$sites['nads.dev.drupal.uiowa.edu'] = 'nads.uiowa.edu';
-$sites['nads.stage.drupal.uiowa.edu'] = 'nads.uiowa.edu';
-$sites['nads.prod.drupal.uiowa.edu'] = 'nads.uiowa.edu';
-
 // Directory aliases for pchs.lhpdc.law.uiowa.edu.
 $sites['lawlhpdcpchs.uiowa.ddev.site'] = 'pchs.lhpdc.law.uiowa.edu';
 $sites['lawlhpdcpchs.dev.drupal.uiowa.edu'] = 'pchs.lhpdc.law.uiowa.edu';
@@ -5062,3 +5056,15 @@ $sites['laballen.uiowa.ddev.site'] = 'allen.lab.uiowa.edu';
 $sites['laballen.dev.drupal.uiowa.edu'] = 'allen.lab.uiowa.edu';
 $sites['laballen.stage.drupal.uiowa.edu'] = 'allen.lab.uiowa.edu';
 $sites['laballen.prod.drupal.uiowa.edu'] = 'allen.lab.uiowa.edu';
+
+// Directory aliases for irrc.education.uiowa.edu.
+$sites['educationirrc.uiowa.ddev.site'] = 'irrc.education.uiowa.edu';
+$sites['educationirrc.dev.drupal.uiowa.edu'] = 'irrc.education.uiowa.edu';
+$sites['educationirrc.stage.drupal.uiowa.edu'] = 'irrc.education.uiowa.edu';
+$sites['educationirrc.prod.drupal.uiowa.edu'] = 'irrc.education.uiowa.edu';
+
+// Directory aliases for environmentalsymposium2023.conference.uiowa.edu.
+$sites['conferenceenvironmentalsymposium2023.uiowa.ddev.site'] = 'environmentalsymposium2023.conference.uiowa.edu';
+$sites['conferenceenvironmentalsymposium2023.dev.drupal.uiowa.edu'] = 'environmentalsymposium2023.conference.uiowa.edu';
+$sites['conferenceenvironmentalsymposium2023.stage.drupal.uiowa.edu'] = 'environmentalsymposium2023.conference.uiowa.edu';
+$sites['conferenceenvironmentalsymposium2023.prod.drupal.uiowa.edu'] = 'environmentalsymposium2023.conference.uiowa.edu';
