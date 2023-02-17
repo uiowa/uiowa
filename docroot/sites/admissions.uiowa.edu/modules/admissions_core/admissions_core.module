@@ -417,6 +417,40 @@ function admissions_core_preprocess_field(&$variables) {
       break;
 
     case 'field_person_hometown':
+      if ($variables['element']['#bundle'] === 'student_profile') {
+        // Check if this is the 'field_person_hometown' field.
+        // Get the raw field values.
+        $hometown = $variables['element']['#object']->field_person_hometown->getValue();
+        $state = $variables['element']['#object']->field_student_profile_state->getValue();
+        $country = $variables['element']['#object']->field_student_profile_country->getValue();
+
+        $home_location = [];
+
+        // Add hometown, if it exists.
+        if (!empty($hometown)) {
+          $home_location[] = $hometown[0]['value'];
+        }
+
+        // Check the country.
+        // Add the state if it exists and the country is the US.
+        // Otherwise, add the country.
+        $countryManager = \Drupal::service('country_manager');
+        if (!empty($country)) {
+          if ($country[0]['value'] === 'US' && !empty($state)) {
+            $home_location[] = $state[0]['value'];
+          } else {
+            $country_value = $countryManager->getList()[$country[0]['value']]->__toString();
+            $home_location[] = $country_value;
+          }
+        } elseif (!empty($state)) {
+          $home_location[] = $state[0]['value'];
+        }
+
+        // Update the field value with the new location.
+        if (!empty($home_location)) {
+          $variables['items'][0]['content'] = implode(', ', $home_location);
+        }
+      }
       if ($variables['element']['#entity_type'] == 'node' && $variables['element']['#bundle'] == 'student_profile') {
         uiowa_core_set_field_icon($variables, 'fa-map-marker-alt');
       }
@@ -556,6 +590,10 @@ function admissions_core_preprocess_block(&$variables) {
 
     case 'admissions_core_event_series_events':
       $variables['title_attributes']['class'] = 'h4 headline headline--serif headline--underline';
+      break;
+
+    case 'field_block:node:student_profile:field_person_hometown':
+      uiowa_core_set_attributes($variables, ['block-margin__default--removed']);
       break;
   }
 }
@@ -699,8 +737,8 @@ function admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--field-transfer-tips-aos--transfer-tips',
       'base hook' => 'field',
     ],
-    'field__field_student_profile_blurb' => [
-      'template' => 'field--field-student-profile-blurb',
+    'field__node__field_student_profile_blurb__student_profile__default' => [
+      'template' => 'field--node--field-student-profile-blurb--student-profile--default',
       'base hook' => 'field',
     ],
     'fragment__stat' => [

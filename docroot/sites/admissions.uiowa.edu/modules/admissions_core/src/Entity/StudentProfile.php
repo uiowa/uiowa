@@ -21,9 +21,9 @@ class StudentProfile extends NodeBundleBase implements TeaserCardInterface {
       '#media' => 'field_student_profile_image',
       '#subtitle' => 'field_student_profile_major',
       '#meta' => [
-        'field_student_profile_state',
-        'field_student_profile_country',
+        'field_person_hometown',
       ],
+      '#content' => 'field_student_profile_blurb',
     ]);
 
   }
