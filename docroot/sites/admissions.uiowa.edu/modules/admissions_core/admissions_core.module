@@ -7,6 +7,7 @@
 
 use Drupal\admissions_core\AdmissionsCoreInterface;
 use Drupal\admissions_core\Entity\AdmissionsPerson;
+use Drupal\admissions_core\Entity\AdmissionsRequirement;
 use Drupal\admissions_core\Entity\AreaOfStudy;
 use Drupal\admissions_core\Entity\StudentProfile;
 use Drupal\Core\Cache\Cache;
@@ -33,6 +34,9 @@ function admissions_core_entity_bundle_info_alter(array &$bundles) {
   }
   if (isset($bundles['node']['area_of_study'])) {
     $bundles['node']['area_of_study']['class'] = AreaOfStudy::class;
+  }
+  if (isset($bundles['paragraph']['admissions_requirement'])) {
+    $bundles['paragraph']['admissions_requirement']['class'] = AdmissionsRequirement::class;
   }
 }
 
@@ -438,11 +442,13 @@ function admissions_core_preprocess_field(&$variables) {
         if (!empty($country)) {
           if ($country[0]['value'] === 'US' && !empty($state)) {
             $home_location[] = $state[0]['value'];
-          } else {
+          }
+          else {
             $country_value = $countryManager->getList()[$country[0]['value']]->__toString();
             $home_location[] = $country_value;
           }
-        } elseif (!empty($state)) {
+        }
+        elseif (!empty($state)) {
           $home_location[] = $state[0]['value'];
         }
 
@@ -701,10 +707,6 @@ function admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'node--transfer-tips--teaser',
       'base hook' => 'node',
     ],
-    'views_view_list__majors__two_plus_two_majors' => [
-      'template' => 'views-view-list--majors--two-plus-two-majors',
-      'base hook' => 'view',
-    ],
     'views_view_unformatted__scholarships__block_scholarships' => [
       'template' => 'views-view-unformatted--scholarships--block-scholarships',
       'base hook' => 'view',
@@ -739,10 +741,6 @@ function admissions_core_theme($existing, $type, $theme, $path) {
     ],
     'paragraph__admissions_card__default' => [
       'template' => 'paragraph--admissions-card--default',
-      'base hook' => 'paragraph',
-    ],
-    'paragraph__admissions_requirement__default' => [
-      'template' => 'paragraph--admissions-requirement--default',
       'base hook' => 'paragraph',
     ],
     'entity_print__node__area_of_study' => [
