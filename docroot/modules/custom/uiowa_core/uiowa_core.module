@@ -254,11 +254,11 @@ function template_preprocess_card(&$variables) {
   // them from the card classes.
 
   foreach ($variables['attributes']['class'] as $index => $style) {
-    if (!is_null($style) && str_starts_with($style, 'media')) {
+    if (str_starts_with($style, 'media')) {
       $media_classes[] = $style;
       unset($variables['attributes']['class'][$index]);
     }
-    if (!is_null($style) && str_starts_with($style, 'headline')) {
+    if (str_starts_with($style, 'headline')) {
       $headline_classes[] = $style;
       unset($variables['attributes']['class'][$index]);
     }
