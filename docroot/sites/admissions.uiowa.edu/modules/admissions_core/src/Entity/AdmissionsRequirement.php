@@ -54,6 +54,7 @@ class AdmissionsRequirement extends Paragraph implements RendersAsCardInterface 
       'card_media_position' => 'card--layout-left',
       'media_format' => 'media--circle',
       'media_size' => 'media--small',
+      'borderless' => 'borderless',
     ];
   }
 
