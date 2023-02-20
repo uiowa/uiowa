@@ -6,10 +6,10 @@
  */
 
 use Drupal\admissions_core\AdmissionsCoreInterface;
+use Drupal\admissions_core\Entity\AdmissionsAreaOfStudy;
 use Drupal\admissions_core\Entity\AdmissionsCard;
 use Drupal\admissions_core\Entity\AdmissionsPerson;
 use Drupal\admissions_core\Entity\AdmissionsRequirement;
-use Drupal\admissions_core\Entity\AdmissionsAreaOfStudy;
 use Drupal\admissions_core\Entity\StudentProfile;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
@@ -506,65 +506,6 @@ function admissions_core_preprocess_field__node__title(&$variables) {
       'headline headline--serif',
       'headline--highlight',
     ]);
-  }
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function admissions_core_preprocess_paragraph__admissions_requirement(&$variables) {
-  $admin_context = \Drupal::service('router.admin_context');
-  if (!$admin_context->isAdminRoute()) {
-    $paragraph = $variables['paragraph'];
-    $parent = $paragraph->getParentEntity();
-    if ($parent instanceof ContentEntityInterface) {
-      $admissions_requirements = [
-        'field_area_of_study_first_year' => t('First-Year'),
-        'field_area_of_study_transfer' => t('Transfer'),
-        'field_area_of_study_intl' => t('International'),
-      ];
-      $id = $paragraph->id();
-      foreach ($admissions_requirements as $requirement => $label) {
-        if ($parent->hasField($requirement)) {
-          foreach ($parent->get($requirement)->getValue() as $item) {
-            if ($item['target_id'] === $id) {
-              $variables['requirement_card_label'] = $label;
-              // Look up any published transfer tips with the AoS id.
-              if ($requirement === 'field_area_of_study_transfer') {
-                $query = \Drupal::entityQuery('node')
-                  ->condition('status', 1)
-                  ->condition('type', 'transfer_tips')
-                  ->condition('field_transfer_tips_aos', $parent->id());
-                $nids = $query->execute();
-
-                if (!empty($nids)) {
-                  // Get the first array item. We aren't going for perfection.
-                  $transfer_tip = reset($nids);
-                  // Get and pass the transfer tip path to the template
-                  // if it exists.
-                  $variables['transfer_tip'] = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $transfer_tip);
-                }
-                $query = \Drupal::entityQuery('node')
-                  ->condition('type', 'major')
-                  ->condition('status', 1)
-                  ->condition('field_major_area_of_study', $parent->id(), '=');
-                // We only really need to know if there areas of study,
-                // and not which or how many, because the link will just be
-                // based on the aos id.
-                $count = $query->count()->execute();
-                if ($count > 0) {
-                  // Get the link to the 2 Plus 2 community college
-                  // aggregator page using area of study title.
-                  $area_of_study_title = $parent->getTitle();
-                  $slug = \Drupal::service('pathauto.alias_cleaner')->cleanString($area_of_study_title);
-                  $variables['two_plus_two'] = \Drupal::service('path_alias.manager')->getAliasByPath(AdmissionsCoreInterface::TWO_PLUS_TWO_PATH . $slug);
-                }
-              }
-            }
-          }
-        }
-      }
-    }
   }
 }
 
