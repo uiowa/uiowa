@@ -7,7 +7,21 @@
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\housing_core\Entity\HousingCTA;
+use Drupal\housing_core\Entity\HousingResidenceHall;
 use Drupal\node\NodeInterface;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function housing_core_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['residence_hall'])) {
+    $bundles['node']['residence_hall']['class'] = HousingResidenceHall::class;
+  }
+  if (isset($bundles['paragraph']['housing_cta'])) {
+    $bundles['paragraph']['housing_cta']['class'] = HousingCTA::class;
+  }
+}
 
 /**
  * Implements hook_form_alter().
