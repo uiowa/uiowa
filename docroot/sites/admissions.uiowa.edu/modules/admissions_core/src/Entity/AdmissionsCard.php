@@ -7,7 +7,7 @@ use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 use Drupal\uiowa_core\Entity\RendersAsCardTrait;
 
 /**
- * Provides an interface for student profile page entries.
+ * Provides an interface for paragraph cards on the area of study page entries.
  */
 class AdmissionsCard extends Paragraph implements RendersAsCardInterface {
 

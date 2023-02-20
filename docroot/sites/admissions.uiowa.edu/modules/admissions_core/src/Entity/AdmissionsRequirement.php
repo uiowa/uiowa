@@ -7,7 +7,7 @@ use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 use Drupal\uiowa_core\Entity\RendersAsCardTrait;
 
 /**
- * Provides an interface for student profile page entries.
+ * Provides an interface for paragraph admissions requirements on area of study page entries.
  */
 class AdmissionsRequirement extends Paragraph implements RendersAsCardInterface {
 
