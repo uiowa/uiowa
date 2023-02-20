@@ -98,6 +98,10 @@ class FilterIframe extends FilterBase {
             elseif ($aspect_ratio >= 1.775 && $aspect_ratio <= 1.779) {
               $wrapper->setAttribute('class', 'embed-responsive embed-responsive-16by9');
             }
+            // 21:9 has a bit of variation when rounded.
+            elseif ($aspect_ratio >= 2.332 && $aspect_ratio <= 2.395) {
+              $wrapper->setAttribute('class', 'embed-responsive embed-responsive-21by9');
+            }
           }
 
           $iframe->parentNode->replaceChild($wrapper, $iframe);

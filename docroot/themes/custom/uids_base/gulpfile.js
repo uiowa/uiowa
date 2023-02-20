@@ -15,6 +15,7 @@ const cssnano = require('cssnano')
 const glob = require('gulp-sass-glob');
 const sourcemaps = require('gulp-sourcemaps');
 const mode = require('gulp-mode')();
+const log = require('fancy-log')();
 
 /*
  * Directories here
@@ -35,7 +36,7 @@ const uids = {
   dest: `${__dirname}/uids/`,
   readylist: [
     'button',
-    "size",
+    'size',
   ],
 }
 

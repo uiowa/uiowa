@@ -20,7 +20,8 @@
     view_mode ? 'media--view-mode-' ~ view_mode|clean_class,
   ]
 %}
- {{ attach_library('uids_base/remote-video') }}
+{{ attach_library('uids_base/remote-video') }}
+{{ attach_library('uids_base/media') }}
 <div{{ attributes.addClass(classes) }}>
   {{ title_suffix.contextual_links }}
   {% if content %}
