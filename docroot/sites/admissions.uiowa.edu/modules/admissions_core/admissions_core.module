@@ -487,6 +487,16 @@ function admissions_core_preprocess_field__node__title(&$variables) {
       'headline--negative',
     ]);
   }
+  if ($variables['element']['#bundle'] === 'area_of_study') {
+    // Remove existing page title classes.
+    $variables['attributes']['class'] = [];
+    // Add new page title classes.
+    uiowa_core_set_attributes($variables, [
+      'headline--uppercase',
+      'headline--negative',
+      'headline--highlight',
+    ]);
+  }
   if ($variables['element']['#bundle'] === 'student_profile') {
     // Remove existing page title classes.
     $variables['attributes']['class'] = [];
