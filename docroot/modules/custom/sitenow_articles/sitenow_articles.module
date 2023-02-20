@@ -411,6 +411,41 @@ function sitenow_articles_preprocess_views_view_summary(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_views_view_unformatted().
+ */
+function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
+  $view = $variables['view'];
+
+  if ($view->id() === 'articles') {
+    foreach ($variables['rows'] as &$row_build) {
+      $row_build['content']['#title_heading_size'] = 'h2';
+    }
+  }
+  // Style stacked if from related_manually_referenced_content block grid,
+  // otherwise media right. Unset completely for SiteNow v2.
+  elseif ($view->id() === 'related_manually_referenced_content' && $view->current_display === 'block_grid') {
+
+    // Add appropriate card styles for v2/3 teaser view modes.
+    // @todo Remove after v2 dies.
+    //   See https://github.com/uiowa/uiowa/issues/4948
+    $is_v2 = \Drupal::config('config_split.config_split.sitenow_v2')->get('status');
+
+    if (!$is_v2) {
+      foreach ($variables['rows'] as &$row_build) {
+        $row_build['content']['#override_styles'] = [
+          'card_media_position' => 'card--stacked',
+          'bg' => 'bg--white',
+          'media_format' => 'media--widescreen',
+          'media_size' => 'media--large',
+          // @todo Should we just unset the field?
+          'hide_descriptions' => 'hide-descriptions',
+        ];
+      }
+    }
+  }
+}
+
+/**
  * Implements hook_uip_classes_alter().
  */
 function sitenow_articles_uip_classes_alter(&$options, $entity, $bundle) {

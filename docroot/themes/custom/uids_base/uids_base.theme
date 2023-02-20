@@ -272,15 +272,6 @@ function uids_base_preprocess_node(&$variables) {
   $node = $variables['node'];
 
   if ($variables['view_mode'] === 'teaser') {
-    // Append person credentials to the node label in the teaser view mode.
-    if ($node->hasField('field_person_credential') && $creds = $node->get('field_person_credential')->getString()) {
-      $title = $node->getTitle();
-      $variables['label'] = t('@title, @creds', [
-        '@title' => $title,
-        '@creds' => $creds,
-      ]);
-    }
-
     // Create heading_size variable for node teaser templates if a
     // corresponding render property was set.
     if (isset($variables['elements']['#heading_size'])) {
@@ -292,42 +283,15 @@ function uids_base_preprocess_node(&$variables) {
     //   See https://github.com/uiowa/uiowa/issues/4948
     $is_v2 = \Drupal::config('config_split.config_split.sitenow_v2')->get('status');
 
-    switch ($node->getType()) {
-      case 'article':
-        // Style stacked if from related_manually_referenced_content block grid,
-        // otherwise media right. Unset completely for SiteNow v2.
-        if (isset($node->view) && $node->view->id() === 'related_manually_referenced_content' && $node->view->current_display === 'block_grid') {
-          $card_classes = [
-            'card--stacked',
-            'card--enclosed',
-            'hide-descriptions',
-            'bg--white',
-          ];
-          foreach ($card_classes as $card_class) {
-            $variables['attributes']['class'][] = $card_class;
-          }
-          $variables['media_classes'] = [
-            'media--widescreen',
-            'card__media--large',
-          ];
-        }
-
-        if ($is_v2) {
-          unset($variables['attributes']['class']);
-          unset($variables['media_classes']);
-        }
-        break;
-
+    if ($node->getType() === 'page') {
       // Style stacked for SiteNow v2, otherwise media right.
-      case 'page':
-        if ($is_v2) {
-          $variables['attributes']['class'][] = 'card--stacked';
-          $variables['media_classes'] = [
-            'media--widescreen',
-            'card__media--large',
-          ];
-        }
-        break;
+      if ($is_v2) {
+        $variables['attributes']['class'][] = 'card--stacked';
+        $variables['media_classes'] = [
+          'media--widescreen',
+          'card__media--large',
+        ];
+      }
 
     }
   }

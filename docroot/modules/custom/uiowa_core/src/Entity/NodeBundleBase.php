@@ -50,6 +50,13 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
     // Handle link directly to source functionality.
     $build['#url'] = $this->getNodeUrl();
 
+
+    // Create heading_size variable for node teaser templates if a
+    // corresponding render property was set.
+    if (isset($variables['elements']['#heading_size'])) {
+      $building['heading_size'] = $variables['elements']['#heading_size'];
+    }
+
     // Determine whether the link indicator should be set.
     $config_name = 'sitenow_' . $this->bundle() . '.settings';
     $config = \Drupal::configFactory()->getEditable($config_name);
