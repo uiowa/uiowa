@@ -25,16 +25,14 @@ class AdmissionsCard extends Paragraph implements RendersAsCardInterface {
       '#media' => 'field_admissions_card_media',
       '#title' => 'field_admissions_card_title',
       '#subtitle' => 'field_admissions_card_subtitle',
-      '#url' => $this->get('field_admissions_card_link')->uri,
-      '#link_text' => $this->get('field_admissions_card_link')->title,
-      '#link_indicator' => TRUE,
-      '#linked_element' => TRUE,
-      '#meta' => [
-        'field_ar_requirement',
-        'field_ar_process',
-      ],
     ]);
+
+    $build['#url'] = $this->get('field_admissions_card_link')->uri;
+    $build['#link_text'] = $this->get('field_admissions_card_link')->title;
+    $build['#link_indicator'] = TRUE;
+
   }
+
 
   /**
    * {@inheritdoc}
