@@ -27,8 +27,7 @@ class AdmissionsCard extends Paragraph implements RendersAsCardInterface {
       '#subtitle' => 'field_admissions_card_subtitle',
     ]);
 
-    $build['#url'] = $this->get('field_admissions_card_link')->uri;
-    $build['#link_text'] = $this->get('field_admissions_card_link')->title;
+    $build['#url'] = $this->get('field_admissions_card_link')?->get(0)?->getUrl()?->toString();
     $build['#link_indicator'] = TRUE;
 
   }
@@ -38,8 +37,12 @@ class AdmissionsCard extends Paragraph implements RendersAsCardInterface {
    * {@inheritdoc}
    */
   public function getDefaultCardStyles(): array {
+    $card_id = $this->id();
+    $card_media_position = $card_id % 2 == 0 ? 'card--layout-right' : 'card--layout-left';
     return [
       'headline_class' => 'headline--serif',
+      'card_media_position' => $card_media_position,
+      'styles' => 'bg--white',
     ];
   }
 
