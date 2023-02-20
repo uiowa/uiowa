@@ -13,18 +13,6 @@ class HousingResidenceHall extends NodeBundleBase implements RendersAsCardInterf
   /**
    * {@inheritdoc}
    */
-  public function buildCard(array &$build) {
-    parent::buildCard($build);
-
-    // Process additional card mappings.
-    $this->mapFieldsToCardBuild($build, [
-      '#content' => 'body',
-    ]);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getDefaultCardStyles(): array {
     $default_classes = [
       ...parent::getDefaultCardStyles(),
