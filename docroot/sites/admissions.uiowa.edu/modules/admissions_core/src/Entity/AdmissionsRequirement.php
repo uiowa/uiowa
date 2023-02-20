@@ -22,8 +22,11 @@ class AdmissionsRequirement extends Paragraph implements RendersAsCardInterface 
     // Process additional card mappings.
     $this->mapFieldsToCardBuild($build, [
       '#content' => 'field_ar_intro',
-      '#title' => 'field_ar_requirement',
-      '#link_text' => 'field_ar_process',
+      '#title' => 'requirement_card_label',
+      '#meta' => [
+        'field_ar_requirement',
+        'field_ar_process',
+      ],
     ]);
   }
 
