@@ -6,6 +6,7 @@
  */
 
 use Drupal\admissions_core\AdmissionsCoreInterface;
+use Drupal\admissions_core\Entity\AdmissionsCard;
 use Drupal\admissions_core\Entity\AdmissionsPerson;
 use Drupal\admissions_core\Entity\AdmissionsRequirement;
 use Drupal\admissions_core\Entity\AdmissionsAreaOfStudy;
@@ -37,6 +38,9 @@ function admissions_core_entity_bundle_info_alter(array &$bundles) {
   }
   if (isset($bundles['paragraph']['admissions_requirement'])) {
     $bundles['paragraph']['admissions_requirement']['class'] = AdmissionsRequirement::class;
+  }
+  if (isset($bundles['paragraph']['admissions_card'])) {
+    $bundles['paragraph']['admissions_card']['class'] = AdmissionsCard::class;
   }
 }
 
