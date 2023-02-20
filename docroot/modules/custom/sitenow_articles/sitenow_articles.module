@@ -416,14 +416,9 @@ function sitenow_articles_preprocess_views_view_summary(&$variables) {
 function sitenow_articles_preprocess_views_view_unformatted(&$variables) {
   $view = $variables['view'];
 
-  if ($view->id() === 'articles') {
-    foreach ($variables['rows'] as &$row_build) {
-      $row_build['content']['#title_heading_size'] = 'h2';
-    }
-  }
   // Style stacked if from related_manually_referenced_content block grid,
   // otherwise media right. Unset completely for SiteNow v2.
-  elseif ($view->id() === 'related_manually_referenced_content' && $view->current_display === 'block_grid') {
+  if ($view->id() === 'related_manually_referenced_content' && $view->current_display === 'block_grid') {
 
     // Add appropriate card styles for v2/3 teaser view modes.
     // @todo Remove after v2 dies.
