@@ -18,7 +18,7 @@ class Project extends NodeBundleBase implements RendersAsCardInterface {
 
     // Process additional card mappings.
     $this->mapFieldsToCardBuild($build, [
-      '#content' => 'body',
+      '#content' => ['body', 'field_project_partner'],
     ]);
 
   }
