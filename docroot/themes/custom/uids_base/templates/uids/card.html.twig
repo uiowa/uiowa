@@ -53,7 +53,7 @@
       {% endblock %}
 
       {% block button %}
-        {% if url is not empty and linked_element == 'button' %}
+        {% if url is not empty and (link_text is not empty or link_indicator) %}
           <footer>
             {% if linked_element == 'button' %}
               {# Display as a link. #}
