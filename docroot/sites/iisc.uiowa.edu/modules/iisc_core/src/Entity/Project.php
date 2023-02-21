@@ -15,6 +15,12 @@ class Project extends NodeBundleBase implements RendersAsCardInterface {
    */
   public function buildCard(array &$build) {
     parent::buildCard($build);
+
+    // Process additional card mappings.
+    $this->mapFieldsToCardBuild($build, [
+      '#content' => 'body',
+    ]);
+
   }
 
   /**
