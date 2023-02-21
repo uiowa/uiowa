@@ -28,6 +28,9 @@ class AdmissionsCard extends Paragraph implements RendersAsCardInterface {
     ]);
 
     $build['#url'] = $this->get('field_admissions_card_link')?->get(0)?->getUrl()?->toString();
+    if (!empty($this->get('field_admissions_card_link')->title)) {
+      $build['#link_text'] = $this->get('field_admissions_card_link')->title;
+    }
     $build['#link_indicator'] = TRUE;
 
   }
