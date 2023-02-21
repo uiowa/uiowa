@@ -6,7 +6,7 @@ use Drupal\uiowa_core\Entity\NodeBundleBase;
 use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 
 /**
- * Provides an interface for student profile page entries.
+ * Provides an interface for area of study page entries.
  */
 class AdmissionsAreaOfStudy extends NodeBundleBase implements RendersAsCardInterface {
 
