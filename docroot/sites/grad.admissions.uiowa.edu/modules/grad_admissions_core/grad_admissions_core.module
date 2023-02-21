@@ -5,6 +5,7 @@
  * Contains grad_admissions_core.module.
  */
 
+use Drupal\grad_admissions_core\Entity\GradAdmissionsAreaOfStudy;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
@@ -12,6 +13,15 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Drupal\taxonomy\Entity\Term;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function grad_admissions_core_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['area_of_study'])) {
+    $bundles['node']['area_of_study']['class'] = GradAdmissionsAreaOfStudy::class;
+  }
+}
 
 /**
  * Implements hook_entity_presave().
@@ -250,10 +260,10 @@ function grad_admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'taxonomy-term--teaser',
       'base hook' => 'node',
     ],
-    'node__area_of_study__teaser' => [
-      'template' => 'node--area-of-study--teaser',
-      'base hook' => 'node',
-    ],
+//    'node__area_of_study__teaser' => [
+//      'template' => 'node--area-of-study--teaser',
+//      'base hook' => 'node',
+//    ],
   ];
 }
 
