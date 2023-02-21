@@ -6,9 +6,9 @@ use Drupal\uiowa_core\Entity\NodeBundleBase;
 use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 
 /**
- * Provides an interface for IISC project entries.
+ * Provides an interface for IISC Partner entries.
  */
-class Project extends NodeBundleBase implements RendersAsCardInterface {
+class Partner extends NodeBundleBase implements RendersAsCardInterface {
 
   /**
    * {@inheritdoc}
@@ -34,7 +34,7 @@ class Project extends NodeBundleBase implements RendersAsCardInterface {
     $default_classes = [
       ...parent::getDefaultCardStyles(),
       'media_size' => 'media--small',
-      'media_format' => 'media--widescreen',
+      'media_format' => 'media--square',
       'card_media_position' => 'card--layout-left',
     ];
 
