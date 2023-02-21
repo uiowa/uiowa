@@ -6,6 +6,7 @@
  */
 
 use Drupal\admissions_core\AdmissionsCoreInterface;
+use Drupal\admissions_core\Entity\AcademicGroups;
 use Drupal\admissions_core\Entity\AdmissionsAreaOfStudy;
 use Drupal\admissions_core\Entity\AdmissionsCard;
 use Drupal\admissions_core\Entity\AdmissionsPerson;
@@ -41,6 +42,9 @@ function admissions_core_entity_bundle_info_alter(array &$bundles) {
   }
   if (isset($bundles['paragraph']['admissions_card'])) {
     $bundles['paragraph']['admissions_card']['class'] = AdmissionsCard::class;
+  }
+  if (isset($bundles['taxonomy_term']['academic_groups'])) {
+    $bundles['taxonomy_term']['academic_groups']['class'] = AcademicGroups::class;
   }
 }
 
@@ -763,15 +767,6 @@ function admissions_core_views_pre_render(ViewExecutable $view) {
   if ($view->id() === 'areas_of_study') {
     $view->element['#attached']['library'][] = 'uids_base/stat';
     $view->element['#attached']['library'][] = 'uids_base/twocol';
-  }
-}
-
-/**
- * Implements hook_theme_suggestions_HOOK_alter() for taxonomies.
- */
-function admissions_core_theme_suggestions_taxonomy_term_alter(&$suggestions, $variables) {
-  if ($variables['elements']['#view_mode'] === 'teaser') {
-    $suggestions[] = 'taxonomy_term__teaser';
   }
 }
 

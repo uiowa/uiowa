@@ -35,7 +35,6 @@ class AdmissionsCard extends Paragraph implements RendersAsCardInterface {
 
   }
 
-
   /**
    * {@inheritdoc}
    */
