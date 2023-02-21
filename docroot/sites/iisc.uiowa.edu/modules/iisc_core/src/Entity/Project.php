@@ -21,6 +21,10 @@ class Project extends NodeBundleBase implements RendersAsCardInterface {
       '#content' => ['body', 'field_project_partner'],
     ]);
 
+    // Update to set the link indicator, otherwise
+    // it will use the site-wide teaser setting.
+    $build['#link_indicator'] = TRUE;
+
   }
 
   /**
