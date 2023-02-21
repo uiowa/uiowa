@@ -1,14 +1,14 @@
 <?php
 
-namespace Drupal\admissions_core\Entity;
+namespace Drupal\grad_admissions_core\Entity;
 
 use Drupal\uiowa_core\Entity\NodeBundleBase;
 use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 
 /**
- * Provides an interface for area of study page entries.
+ * Provides an interface for areas of study page entries.
  */
-class AdmissionsAreaOfStudy extends NodeBundleBase implements RendersAsCardInterface {
+class GradAdmissionsAreaOfStudy extends NodeBundleBase implements RendersAsCardInterface {
 
   /**
    * {@inheritdoc}

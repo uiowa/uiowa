@@ -8,7 +8,7 @@ use Drupal\uiowa_core\Entity\NodeBundleBase;
 use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 
 /**
- * Provides an interface for article entries.
+ * Provides an interface for area of study entries.
  */
 class AreaOfStudy extends NodeBundleBase implements RendersAsCardInterface {
 
