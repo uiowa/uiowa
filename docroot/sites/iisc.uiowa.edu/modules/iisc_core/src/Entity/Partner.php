@@ -6,7 +6,7 @@ use Drupal\uiowa_core\Entity\NodeBundleBase;
 use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 
 /**
- * Provides an interface for IISC Partner entries.
+ * Provides an interface for IISC partner entries.
  */
 class Partner extends NodeBundleBase implements RendersAsCardInterface {
 
