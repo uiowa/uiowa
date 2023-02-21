@@ -25,17 +25,4 @@ class NowPerson extends Person implements RendersAsCardInterface {
 
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getDefaultCardStyles(): array {
-    if ($this->view?->id() === 'iowa_now_experts') {
-      return parent::getDefaultCardStyles();
-    }
-    else {
-      return parent::getDefaultCardStyles();
-    }
-
-  }
-
 }
