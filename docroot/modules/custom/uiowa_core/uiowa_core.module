@@ -234,6 +234,7 @@ function template_preprocess_card(&$variables) {
     'content',
     'url',
     'link_text',
+    'link_indicator',
     'aria_described_by',
   ] as $prop) {
     if (isset($element["#$prop"])) {
@@ -249,7 +250,7 @@ function template_preprocess_card(&$variables) {
 
   // If there is no URL, then it is not linked.
   if (!is_null($variables['url'])) {
-    if (!isset($variables['link_text']) && $element['#link_indicator']) {
+    if (!isset($variables['link_text']) && $variables['link_indicator']) {
       $linked_element = 'button';
     }
     elseif (!is_null($variables['title'])) {
