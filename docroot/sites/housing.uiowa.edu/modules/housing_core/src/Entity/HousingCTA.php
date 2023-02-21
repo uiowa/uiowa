@@ -28,6 +28,9 @@ class HousingCTA extends Paragraph implements RendersAsCardInterface {
     ]);
 
     $build['#url'] = $this->get('field_housing_cta_link')?->get(0)?->getUrl()?->toString();
+    if (!empty($this->get('field_housing_cta_link')->title)) {
+      $build['#link_text'] = $this->get('field_housing_cta_link')->title;
+    }
     $build['#link_indicator'] = TRUE;
 
   }
@@ -43,7 +46,7 @@ class HousingCTA extends Paragraph implements RendersAsCardInterface {
       $parent = $this->getParentEntity();
       if ($parent instanceof ContentEntityInterface) {
         $field_map = [
-          'field_residence_hall_cta' => 'card--centered',
+          'field_residence_hall_cta' => 'card--centered bg--white',
           'field_residence_hall_contact' => 'card--layout-left borderless',
           'field_residence_hall_bldg_links' => 'card--layout-left borderless',
         ];
