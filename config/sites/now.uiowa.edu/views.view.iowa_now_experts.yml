@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.teaser
     - field.storage.node.field_image
     - field.storage.node.field_person_email
     - field.storage.node.field_person_phone
@@ -12,7 +13,7 @@ dependencies:
     - taxonomy.vocabulary.research_areas
     - taxonomy.vocabulary.tags
   content:
-    - 'taxonomy_term:tags:803e8f21-d2b0-4d59-93d0-9432c58ea5c6'
+    - 'taxonomy_term:tags:2ee5ae7d-8931-43b1-bf50-6cfe92d8bba1'
   module:
     - node
     - taxonomy
@@ -623,12 +624,10 @@ display:
           default_row_class: true
           uses_fields: false
       row:
-        type: fields
+        type: 'entity:node'
         options:
-          default_field_elements: true
-          inline: {  }
-          separator: ''
-          hide_empty: false
+          relationship: none
+          view_mode: teaser
       query:
         type: views_query
         options:
