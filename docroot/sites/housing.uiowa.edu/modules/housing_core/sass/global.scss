@@ -78,6 +78,13 @@
 // Residence Hall search page.
 
 .view-residence-halls {
+  .views-exposed-form.uids-content:not(.uids-search) .form-item:not(:last-child) {
+    margin-right: 0;
+  }
+  .views-exposed-form details.form-wrapper {
+    width: 100%;
+  }
+
   @include breakpoint(sm) {
     display: flex;
     flex-wrap: wrap;

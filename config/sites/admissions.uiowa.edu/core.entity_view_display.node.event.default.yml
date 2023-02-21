@@ -168,30 +168,6 @@ third_party_settings:
             additional: {  }
             third_party_settings: {  }
           -
-            uuid: af06cabb-465a-4fbc-903a-be4ae2f2e0b9
-            region: card_subtitle
-            configuration:
-              id: 'field_block:node:event:field_event_when'
-              label: null
-              label_display: null
-              provider: layout_builder
-              context_mapping:
-                entity: layout_builder.entity
-                view_mode: view_mode
-              formatter:
-                type: smartdate_default
-                label: visually_hidden
-                settings:
-                  timezone_override: ''
-                  format: default
-                  force_chronological: false
-                  add_classes: false
-                  time_wrapper: true
-                third_party_settings: {  }
-            weight: 0
-            additional: {  }
-            third_party_settings: {  }
-          -
             uuid: e6948358-7fe9-460f-93a0-e1923362036a
             region: card_meta
             configuration:
@@ -212,7 +188,7 @@ third_party_settings:
                   rel: '0'
                   target: '0'
                 third_party_settings: {  }
-            weight: 2
+            weight: 3
             additional: {  }
             third_party_settings: {  }
           -
@@ -231,7 +207,7 @@ third_party_settings:
                 label: visually_hidden
                 settings: {  }
                 third_party_settings: {  }
-            weight: 1
+            weight: 2
             additional: {  }
             third_party_settings: {  }
           -
@@ -255,7 +231,7 @@ third_party_settings:
                   rel: '0'
                   target: '0'
                 third_party_settings: {  }
-            weight: 3
+            weight: 4
             additional: {  }
             third_party_settings: {  }
           -
@@ -295,6 +271,30 @@ third_party_settings:
                 - media_format_circle
                 - card_media_position_left
                 - card_image_small
+            third_party_settings: {  }
+          -
+            uuid: af06cabb-465a-4fbc-903a-be4ae2f2e0b9
+            region: card_meta
+            configuration:
+              id: 'field_block:node:event:field_event_when'
+              label: null
+              label_display: null
+              provider: layout_builder
+              context_mapping:
+                entity: layout_builder.entity
+                view_mode: view_mode
+              formatter:
+                type: smartdate_default
+                label: visually_hidden
+                settings:
+                  timezone_override: ''
+                  format: default
+                  force_chronological: false
+                  add_classes: false
+                  time_wrapper: true
+                third_party_settings: {  }
+            weight: 1
+            additional: {  }
             third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
