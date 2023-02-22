@@ -2,8 +2,6 @@
 
 namespace Drupal\uiowa_area_of_study\Entity;
 
-use Drupal\Core\Link;
-use Drupal\Core\Url;
 use Drupal\uiowa_core\Entity\NodeBundleBase;
 use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 
