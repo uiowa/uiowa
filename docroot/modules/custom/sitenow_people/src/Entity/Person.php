@@ -33,7 +33,7 @@ class Person extends NodeBundleBase implements RendersAsCardInterface {
     parent::buildCard($build);
 
     // Add the person library.
-    $build['#attached']['library'] = 'uids_base/person';
+    $build['#attached']['library'][] = 'uids_base/person';
 
     // Handle the case when there is no image.
     if (empty($build['#media'])) {
