@@ -8,6 +8,16 @@
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Template\Attribute;
+use Drupal\uipress_core\Entity\Book;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function uipress_core_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['book'])) {
+    $bundles['node']['book']['class'] = Book::class;
+  }
+}
 
 /**
  * Implements hook_field_widget_WIDGET_TYPE_form_alter().
