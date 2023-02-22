@@ -99,7 +99,7 @@ class FilterIframe extends FilterBase {
               $wrapper->setAttribute('class', 'media--16-9');
             }
             // 21:9 has a bit of variation when rounded.
-            elseif ($aspect_ratio >= 2.332 && $aspect_ratio <= 2.395) {
+            elseif ($aspect_ratio >= 2.25 && $aspect_ratio <= 2.395) {
               $wrapper->setAttribute('class', 'media--21-9');
             }
           }
