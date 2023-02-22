@@ -56,7 +56,7 @@ class CardElementTest extends BrowserTestBase {
     // Assert card has no title.
     $assert_session->pageTextNotContains('Continue Your Story at Iowa');
 
-    // Check faux button: Card has title, URL, and link text.
+    // Check pseudo-button: card has title, URL, and link text.
     $this->drupalGet('/card_test_element', [
       'query' => [
         'title' => TRUE,
@@ -76,7 +76,7 @@ class CardElementTest extends BrowserTestBase {
 
     $assert_session->pageTextContains('Continue Your Story at Iowa');
 
-    // Check indicator button.
+    // Check indicator button: card has URL and link indicator.
     $this->drupalGet('/card_test_element', [
       'query' => [
         'url' => TRUE,
@@ -101,7 +101,8 @@ class CardElementTest extends BrowserTestBase {
    * Return the card element if it exists.
    */
   protected function cardExists(): NodeElement {
-    return $this->assertSession()->elementExists('css', '.card');
+    return $this->assertSession()
+      ->elementExists('css', '.card');
   }
 
   /**
