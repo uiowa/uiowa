@@ -5068,3 +5068,9 @@ $sites['conferenceenvironmentalsymposium2023.uiowa.ddev.site'] = 'environmentals
 $sites['conferenceenvironmentalsymposium2023.dev.drupal.uiowa.edu'] = 'environmentalsymposium2023.conference.uiowa.edu';
 $sites['conferenceenvironmentalsymposium2023.stage.drupal.uiowa.edu'] = 'environmentalsymposium2023.conference.uiowa.edu';
 $sites['conferenceenvironmentalsymposium2023.prod.drupal.uiowa.edu'] = 'environmentalsymposium2023.conference.uiowa.edu';
+
+// Directory aliases for buchakjian.lab.uiowa.edu.
+$sites['labbuchakjian.uiowa.ddev.site'] = 'buchakjian.lab.uiowa.edu';
+$sites['labbuchakjian.dev.drupal.uiowa.edu'] = 'buchakjian.lab.uiowa.edu';
+$sites['labbuchakjian.stage.drupal.uiowa.edu'] = 'buchakjian.lab.uiowa.edu';
+$sites['labbuchakjian.prod.drupal.uiowa.edu'] = 'buchakjian.lab.uiowa.edu';
