@@ -15,6 +15,7 @@
 {%
   set classes = [
     'media',
+    'media--16-9',
     'media--type-' ~ media.bundle()|clean_class,
     not media.isPublished() ? 'media--unpublished',
     view_mode ? 'media--view-mode-' ~ view_mode|clean_class,
