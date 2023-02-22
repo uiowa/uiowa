@@ -159,9 +159,6 @@ function uiowa_core_preprocess_media(&$variables) {
       // If we have relevant view mode classes...
       if (!empty($view_mode_modified)) {
 
-        // Process any alignment classes.
-        $variables['attributes']['class'] = uiowa_core_prefix_alignment_classes($variables['attributes']['class']);
-
         // Attach the inline sizing library and assign the classes.
         $variables['#attached']['library'][] = $view_mode_modified['library'];
         $variables['attributes']['class'][] = $view_mode_modified['class'];
@@ -209,9 +206,6 @@ function uiowa_core_preprocess_filter_caption(&$variables) {
 
       // Get the current classes of the '<drupal-media>' element.
       $classes_array = explode(' ', $variables['classes']);
-
-      // Process any alignment classes.
-      $classes_array = uiowa_core_prefix_alignment_classes($classes_array);
 
       // Add the relevant modified inline view mode class.
       $classes_array[] = $view_mode_modified['class'];
@@ -262,48 +256,6 @@ function uiowa_core_inline_viewmode_map(string $view_mode): array {
   }
 
   return [];
-}
-
-/**
- * Prefixes any alignment classes with the 'inline--' prefixed version.
- *
- * If the $class_array has any of the $accepted_alignment suffixed alignment classes:
- *  modify them to be inline classes.
- *
- * @param array $class_array
- *   An array of classes.
- *
- * @return array
- *   If the $class_array has any of the $accepted_alignment suffixed alignment classes:
- *    modify them to be inline classes.
- */
-function uiowa_core_prefix_alignment_classes(array $class_array): array {
-
-  // This checks if the class array has a single empty string,
-  // And if it does, it returns early. No processing needed.
-  if ($class_array === ['']) {
-    return [];
-  }
-
-  $accepted_alignments = ['left', 'center', 'right'];
-
-  // Create a copy ofd the class array to be modified and returned later.
-  $modified_class_array = $class_array;
-
-  foreach ($class_array as $class) {
-    if (str_starts_with($class, 'align-')) {
-      foreach ($accepted_alignments as $alignment) {
-        if ($class === 'align-' . $alignment) {
-
-          // If we find an alignment class, replace it with the inline version.
-          $index = array_search($class, $class_array);
-          $modified_class_array[$index] = 'inline--' . $class;
-        }
-      }
-    }
-  }
-
-  return $modified_class_array;
 }
 
 /**
