@@ -5,12 +5,12 @@
  * Contains grad_admissions_core.module.
  */
 
-use Drupal\grad_admissions_core\Entity\GradAdmissionsAreaOfStudy;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
+use Drupal\grad_admissions_core\Entity\GradAdmissionsAreaOfStudy;
 use Drupal\node\NodeInterface;
 use Drupal\taxonomy\Entity\Term;
 
@@ -260,10 +260,6 @@ function grad_admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'taxonomy-term--teaser',
       'base hook' => 'node',
     ],
-//    'node__area_of_study__teaser' => [
-//      'template' => 'node--area-of-study--teaser',
-//      'base hook' => 'node',
-//    ],
   ];
 }
 
