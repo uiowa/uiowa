@@ -706,169 +706,26 @@ function classrooms_core_preprocess_views_view(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function classrooms_core_preprocess_views_view_unformatted(&$variables) {
-  // Get the view and its current display.
   $view = $variables['view'];
-  $display_block = $view->current_display;
-
-  // Initialize the row item classes and the view's style plugin.
   $variables['row_item_classes'] = [];
-  $style = $view->style_plugin;
-  $rows = $variables['rows'];
-
-  switch ($display_block) {
-    case 'block_rooms':
-    case 'block_programmed_rooms_list':
-
-      // Define the common attribute classes.
-      $attribute_classes = [
-        'card--left',
-        'card--stacked',
-        'card--alignment-left',
-        'card--enclosed',
-        'card--button-position',
-      ];
-      // Define the common headline classes.
-      $headline_classes = [
-        'h4',
-        'headline',
-        'block__headline',
-        'headline--serif',
-        'headline--underline',
-      ];
-
-      // Add the attribute classes to the row item classes.
-      $variables['row_item_classes'] = array_merge($attribute_classes, array_values($variables['row_item_classes']));
-      // Loop through the rows.
-      foreach ($rows as $id => $row) {
-        /** @var \Drupal\node\NodeInterface $node */
-        $node = $row['content']['#node'];
-        // Add the row item classes to the row attributes.
-        $variables['rows'][$id]['attributes']->addClass($variables['row_item_classes']);
-
-        // Get node path to link card with.
-        $nid = $view->result[$id]->_entity->id();
-        $link = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
-
-        // Combine the room ID and building ID fields to display.
-        $title_combined = $style->getField($id, 'field_room_room_id') . ' ' . strtoupper($view->result[$id]->node__field_room_building_id_field_room_building_id_target_i);
-        $title = ['#markup' => $title_combined];
-
-        // Define the card meta container.
-        $card_meta = [
-          '#type' => 'html_tag',
-          '#tag' => 'div',
-        ];
-
-        // Define the meta fields.
-        $meta_fields = [
-          'name' => 'field_room_name',
-          'type' => 'field_room_type',
-          'occupancy' => 'field_room_max_occupancy',
-          'unit' => 'field_room_responsible_unit',
-        ];
-
-        // Get the seat taxonomy terms from the features taxonomy.
-        $taxonomy = $node->get('field_room_features')->referencedEntities();
-
-        // Loop through the taxonomy and get items that start with "Seats".
-        $seats = [];
-        foreach ($taxonomy as $term) {
-          if (str_starts_with($term->getName(), 'Seats')) {
-            $seats[] = $term->getName();
-          }
-        }
-
-        // Add the seats to the $meta_fields array.
-        if (!empty($seats) && $display_block == 'block_programmed_rooms_list') {
-          // Add the seats to a separate variable.
-          $seating_type = [
-            '#type' => 'container',
-            '#attributes' => [
-              'class' => ['field--label-inline fa-ul'],
-            ],
-            'label' => [
-              '#type' => 'html_tag',
-              '#tag' => 'div',
-              '#value' => '<span class="fa-chair fas fa-li" role="presentation"></span>' . \Drupal::translation()->translate('Seating Type'),
-              '#attributes' => [
-                'class' => ['field__label'],
-              ],
-            ],
-            'value' => [
-              '#type' => 'html_tag',
-              '#tag' => 'div',
-              '#value' => str_replace('Seats - ', '', implode(', ', $seats)),
-              '#attributes' => [
-                'class' => ['value'],
-              ],
-            ],
-          ];
-        }
-
-        // Add the building link.
-        if ($display_block == 'block_programmed_rooms_list') {
-          $building_id = $node->get('field_room_building_id')->target_id;
-          $building = Drupal::entityTypeManager()->getStorage('building')->load($building_id);
-          $url = Url::fromUri('base:/buildings/' . $building_id)->toString();
-          $build['field_room_building_link'] = [
-            '#theme' => 'building_link_teaser',
-            '#building_link' => $url,
-            '#building_name' => $building->label(),
-          ];
-          $building_link = Drupal::service('renderer')->renderPlain($build['field_room_building_link']);
-        }
-
-        // Add meta fields, if they exist.
-        foreach ($meta_fields as $key => $field_name) {
-          if (
-            $style->getField($id, $field_name) &&
-            !$node->get($field_name)?->isEmpty()
-          ) {
-            $card_meta[$key] = $node?->{$field_name}?->view('teaser');
-          }
-        }
-
-        // Add building_link to card_meta.
-        if ($display_block == 'block_programmed_rooms_list') {
-          $card_meta['building_link'] = [
-            '#type' => 'markup',
-            '#markup' => $building_link,
-          ];
-        }
-
-        // Combine card_meta and seating_type so seating_type renders last.
-        $card_meta_combined = [[
-          '#type' => 'html_tag',
-          '#tag' => 'div',
-          '#attributes' => [
-            'class' => ['card-meta-container'],
-          ],
-          '#value' => \Drupal::service('renderer')->render($card_meta),
-        ],
-          [
-            '#type' => 'html_tag',
-            '#tag' => 'div',
-            '#attributes' => [
-              'class' => ['seating-type-container'],
-            ],
-            '#value' => \Drupal::service('renderer')->render($seating_type),
-          ],
-        ];
-
-        // Initialize card_options variable.
-        $variables['rows'][$id]['card_options'] = [
-          'attributes' => $variables['rows'][$id]['attributes'],
-          'media_sizes' => ['card__media--large'],
-          'card_image' => $style->getField($id, 'field_image'),
-          'card_title' => \Drupal::service('renderer')->render($title),
-          'card_link_url' => $link,
-          'headline_class' => $headline_classes,
-          'card_meta' => \Drupal::service('renderer')->render($card_meta_combined),
-          'visible_button' => TRUE,
-        ];
-
+  if ($view->current_display === 'block_programmed_rooms_list') {
+    foreach ($variables['rows'] as &$row_build) {
+      if (!isset($row_build['content']['#meta'])) {
+        $row_build['content']['#meta'] = [];
       }
-      break;
+      // Get the node object.
+      $node = $row_build['content']['#node'];
 
+      // Add the building link field value to the #meta array.
+      $building_id = $node->get('field_room_building_id')->target_id;
+      $building = Drupal::entityTypeManager()->getStorage('building')->load($building_id);
+      $url = Url::fromUri('base:/buildings/' . $building_id)->toString();
+      $row_build['content']['#meta'][] = [
+        '#theme' => 'building_link_teaser',
+        '#building_link' => $url,
+        '#building_name' => $building->label(),
+      ];
+
+    }
   }
 }

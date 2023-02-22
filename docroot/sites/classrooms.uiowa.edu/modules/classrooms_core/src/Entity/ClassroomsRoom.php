@@ -26,14 +26,14 @@ class ClassroomsRoom extends NodeBundleBase implements RendersAsCardInterface {
       ],
     ]);
 
-    // Get the building ID and room ID fields.
     $building_id = $this->get('field_room_building_id')->target_id;
+
+    // Get the building ID and room ID fields.
     $room_id = $this->get('field_room_room_id')->value;
 
     // Combine the fields to create the title.
     $title_combined = strtoupper($building_id) . ' ' . $room_id;
     $title = ['#markup' => $title_combined];
-
     $build['#title'] = $title;
 
   }
