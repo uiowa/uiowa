@@ -216,7 +216,6 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           }
           break;
 
-        case 'inline_block:uiowa_events':
         case 'views_block:article_list_block-list_article':
         case 'views_block:events_list_block-card_list':
         case 'views_block:people_list_block-list_card':
@@ -246,13 +245,9 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
 
           // Check if there are view rows to act upon.
           if (isset($build['content']['view_build']['#rows'][0]['#rows'])) {
-            // Loop through the filtered card style map and remove those classes
-            // from the block.
-            foreach ($style_map as $class) {
-              if (FALSE !== $key = array_search($class, $build['#attributes']['class'])) {
-                unset($build['#attributes']['class'][$key]);
-              }
-            }
+
+            $this->removeCardStylesFromBlock($build, $style_map);
+
             // Loop through view rows and set styles to override and hidden
             // fields.
             foreach ($build['content']['view_build']['#rows'][0]['#rows'] as &$row_build) {
@@ -265,6 +260,25 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
             }
           }
 
+          break;
+
+        case 'inline_block:uiowa_events':
+          // Get LB styles from the component.
+          $selected_styles = $event->getComponent()->get('layout_builder_styles_style');
+          // Convert the style list into a map that can be used for overriding
+          // style defaults later.
+          $style_map = $this->getListBlockStyleMap($selected_styles);
+          // Filter the style map to just classes related to the card.
+          $style_map = Card::filterCardStyles($style_map);
+          // Work-around for stacked card option meaning that
+          // card_media_position is not set.
+          if (!isset($style_map['card_media_position'])) {
+            $style_map['card_media_position'] = '';
+          }
+
+          $this->removeCardStylesFromBlock($build, $style_map);
+
+          $build['#override_styles'] = $style_map;
           break;
 
       }
@@ -332,6 +346,20 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
     }
 
     return $style_map;
+  }
+
+  /**
+   * Unset card classes from block level wrapper.
+   */
+  private function removeCardStylesFromBlock(array $build, array $style_map) {
+    // Loop through the filtered card style map and remove those classes
+    // from the block.
+    // @todo Adjust so that multi-class styles are treated separately. (e.g. 'media--circle media--border').
+    foreach ($style_map as $class) {
+      if (FALSE !== $key = array_search($class, $build['#attributes']['class'])) {
+        unset($build['#attributes']['class'][$key]);
+      }
+    }
   }
 
 }
