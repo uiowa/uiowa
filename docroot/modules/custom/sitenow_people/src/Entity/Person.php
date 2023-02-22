@@ -32,10 +32,20 @@ class Person extends NodeBundleBase implements RendersAsCardInterface {
   public function buildCard(array &$build) {
     parent::buildCard($build);
 
+    // Handle the case when there is no image.
+    if (empty($build['#media'])) {
+      $build['#media']['empty'] = [
+        '#markup' => '<div class="img--empty">&nbsp;</div>',
+      ];
+    }
+
     // Process additional card mappings.
     $this->mapFieldsToCardBuild($build, [
       '#subtitle' => 'field_person_position',
-      '#meta' => ['field_person_email', 'field_person_phone'],
+      '#meta' => [
+        'field_person_email',
+        'field_person_phone',
+      ],
     ]);
 
     // Handle link directly to source functionality.
