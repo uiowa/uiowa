@@ -1943,9 +1943,19 @@ function sitenow_update_9053() {
 }
 
 /**
- * Remove all Large, Medium, and Small image view modes and replace them with relevant alternatives.
+ * Import updated acquia_connector.settings around config_ignore.
  */
 function sitenow_update_9054() {
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('acquia_connector.settings', $source->read('acquia_connector.settings'));
+}
+
+/**
+ * Remove all Large, Medium, and Small image view modes and replace them with relevant alternatives.
+ */
+function sitenow_update_9055() {
   $entity_types = [
     'block_content',
     'media',
