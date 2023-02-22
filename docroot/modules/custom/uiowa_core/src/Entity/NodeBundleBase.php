@@ -17,7 +17,7 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
    * @var string|null
    *   field name or null.
    */
-  protected $source_link_direct = NULL;
+  protected $sourceLinkDirect = NULL;
 
   /**
    * If entity has source link field.
@@ -25,7 +25,7 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
    * @var string|null
    *   field name or null.
    */
-  protected $source_link = NULL;
+  protected $sourceLink = NULL;
 
   /**
    * {@inheritdoc}
@@ -49,7 +49,6 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
 
     // Handle link directly to source functionality.
     $build['#url'] = $this->getNodeUrl();
-
 
     // Create heading_size variable for node teaser templates if a
     // corresponding render property was set.
@@ -86,8 +85,8 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
    * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function getNodeUrl(): ?string {
-    $source_link_direct = $this->source_link_direct;
-    $source_link = $this->source_link;
+    $source_link_direct = $this->sourceLinkDirect;
+    $source_link = $this->sourceLink;
 
     if (!is_null($source_link_direct) || !is_null($source_link)) {
       $link_direct = (int) $this->get($source_link_direct)->value;

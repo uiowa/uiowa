@@ -65,8 +65,10 @@ class Card extends RenderElement {
    * Filters a list of styles to just those used by cards.
    *
    * @param array $styles
+   *   The styles being filtered.
    *
    * @return array
+   *   The filtered styles.
    */
   public static function filterCardStyles(array $styles): array {
     $filtered_styles = [];

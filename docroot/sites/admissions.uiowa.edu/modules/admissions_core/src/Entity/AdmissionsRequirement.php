@@ -4,6 +4,7 @@ namespace Drupal\admissions_core\Entity;
 
 use Drupal\admissions_core\AdmissionsCoreInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 use Drupal\uiowa_core\Entity\RendersAsCardTrait;
@@ -14,6 +15,7 @@ use Drupal\uiowa_core\Entity\RendersAsCardTrait;
 class AdmissionsRequirement extends Paragraph implements RendersAsCardInterface {
 
   use RendersAsCardTrait;
+  use StringTranslationTrait;
 
   /**
    * {@inheritdoc}
@@ -69,9 +71,9 @@ class AdmissionsRequirement extends Paragraph implements RendersAsCardInterface 
       $parent = $this->getParentEntity();
       if ($parent instanceof ContentEntityInterface) {
         $admissions_requirements = [
-          'field_area_of_study_first_year' => t('First-Year'),
-          'field_area_of_study_transfer' => t('Transfer'),
-          'field_area_of_study_intl' => t('International'),
+          'field_area_of_study_first_year' => $this->t('First-Year'),
+          'field_area_of_study_transfer' => $this->t('Transfer'),
+          'field_area_of_study_intl' => $this->t('International'),
         ];
         $id = $this->id();
         foreach ($admissions_requirements as $requirement => $label) {

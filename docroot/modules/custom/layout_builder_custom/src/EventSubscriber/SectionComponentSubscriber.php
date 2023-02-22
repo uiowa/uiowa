@@ -3,7 +3,6 @@
 namespace Drupal\layout_builder_custom\EventSubscriber;
 
 use Drupal\Core\Block\BlockPluginInterface;
-use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Render\Element;
@@ -11,9 +10,7 @@ use Drupal\Core\Render\PreviewFallbackInterface;
 use Drupal\layout_builder\Event\SectionComponentBuildRenderArrayEvent;
 use Drupal\layout_builder\LayoutBuilderEvents;
 use Drupal\layout_builder\Plugin\Block\FieldBlock;
-use Drupal\layout_builder_custom\Plugin\Display\ListBlock;
 use Drupal\uiowa_core\Element\Card;
-use Drupal\views\Plugin\Block\ViewsBlock;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -307,11 +304,15 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * @param $styles
+   * Helper method to provide a key-value map of styles for list blocks.
+   *
+   * @param array $styles
+   *   The styles to provide a map for.
    *
    * @return array
+   *   The style map.
    */
-  private function getListBlockStyleMap($styles): array {
+  private function getListBlockStyleMap(array $styles): array {
     $style_map = [];
     foreach ($styles as $style_id) {
       // Account for incorrectly configured component configuration which may

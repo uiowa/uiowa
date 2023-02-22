@@ -2,8 +2,8 @@
 
 namespace Drupal\uiowa_core_test\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
 use Drupal\Core\Controller\ControllerBase;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Provides route responses for card test element.

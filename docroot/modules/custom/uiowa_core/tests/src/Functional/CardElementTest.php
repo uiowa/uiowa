@@ -57,14 +57,16 @@ class CardElementTest extends BrowserTestBase {
     $assert_session->pageTextNotContains('Continue Your Story at Iowa');
 
     // Check faux button: Card has title, URL, and link text.
-    $this->drupalGet('/card_test_element', ['query' => [
-      'title' => TRUE,
-      'url' => TRUE,
-      'link_text' => TRUE,
-    ]]);
+    $this->drupalGet('/card_test_element', [
+      'query' => [
+        'title' => TRUE,
+        'url' => TRUE,
+        'link_text' => TRUE,
+      ],
+    ]);
 
     // The card should not have the click-container class since there is no URL.
-    // $this->assertTrue($this->cardExists()->hasClass('click-container'), 'Card should not have the .click-container class.');
+    // @todo Add assertTrue check that card as click-container class.
     $this->assertFalse($this->cardExists()->hasAttribute('data-uids-no-link'), 'Card should have the data-uids-no-link attribute');
 
     // Check only pseudo-button is showing.
@@ -75,13 +77,15 @@ class CardElementTest extends BrowserTestBase {
     $assert_session->pageTextContains('Continue Your Story at Iowa');
 
     // Check indicator button.
-    $this->drupalGet('/card_test_element', ['query' => [
-      'url' => TRUE,
-      'link_indicator' => TRUE,
-    ]]);
+    $this->drupalGet('/card_test_element', [
+      'query' => [
+        'url' => TRUE,
+        'link_indicator' => TRUE,
+      ],
+    ]);
 
     // The card should not have the click-container class since there is no URL.
-    // $this->assertTrue($this->cardExists()->hasClass('click-container'), 'Card should not have the .click-container class.');
+    // @todo Add assertTrue check that card as click-container class.
     $this->assertFalse($this->cardExists()->hasAttribute('data-uids-no-link'), 'Card should have the data-uids-no-link attribute');
 
     // Check only pseudo-button is showing.
@@ -95,9 +99,6 @@ class CardElementTest extends BrowserTestBase {
 
   /**
    * Return the card element if it exists.
-   *
-   * @return \Behat\Mink\Element\NodeElement
-   * @throws \Behat\Mink\Exception\ElementNotFoundException
    */
   protected function cardExists(): NodeElement {
     return $this->assertSession()->elementExists('css', '.card');
@@ -105,8 +106,6 @@ class CardElementTest extends BrowserTestBase {
 
   /**
    * Checks if the card has a linked button.
-   * @return bool
-   * @throws \Behat\Mink\Exception\ElementNotFoundException
    */
   protected function cardHasLinkedButton(): bool {
     $button = $this->getCardButton();
@@ -118,9 +117,6 @@ class CardElementTest extends BrowserTestBase {
 
   /**
    * Check if the card has a pseudo-button.
-   *
-   * @return bool
-   * @throws \Behat\Mink\Exception\ElementNotFoundException
    */
   protected function cardHasPseudoButton(): bool {
     $button = $this->getCardButton();
@@ -132,8 +128,6 @@ class CardElementTest extends BrowserTestBase {
 
   /**
    * Check if the card has an indicator button.
-   * @return bool
-   * @throws \Behat\Mink\Exception\ElementNotFoundException
    */
   protected function cardHasIndicatorButton(): bool {
     $button = $this->getCardButton();
@@ -145,8 +139,7 @@ class CardElementTest extends BrowserTestBase {
   }
 
   /**
-   * @return \Behat\Mink\Element\NodeElement|null
-   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   * Get the card button, if it exists.
    */
   protected function getCardButton(): ?NodeElement {
     return $this->cardExists()

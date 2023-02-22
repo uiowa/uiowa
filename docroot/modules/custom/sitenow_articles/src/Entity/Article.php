@@ -18,7 +18,7 @@ class Article extends NodeBundleBase implements ArticleInterface, RendersAsCardI
    * @var string|null
    *   field name or null.
    */
-  protected $source_link_direct = 'field_article_source_link_direct';
+  protected $sourceLinkDirect = 'field_article_source_link_direct';
 
   /**
    * If entity has source link field.
@@ -26,7 +26,7 @@ class Article extends NodeBundleBase implements ArticleInterface, RendersAsCardI
    * @var string|null
    *   field name or null.
    */
-  protected $source_link = 'field_article_source_link';
+  protected $sourceLink = 'field_article_source_link';
 
   /**
    * {@inheritdoc}

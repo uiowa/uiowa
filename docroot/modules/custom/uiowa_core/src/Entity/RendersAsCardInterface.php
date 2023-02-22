@@ -3,7 +3,7 @@
 namespace Drupal\uiowa_core\Entity;
 
 /**
- * Defines the interface for content types use teaser view modes.
+ * Defines the interface for entity types that can render as cards.
  */
 interface RendersAsCardInterface {
 
@@ -27,14 +27,16 @@ interface RendersAsCardInterface {
    * Return an array mapping card style group names to classes.
    *
    * @return array
+   *   The styles default card styles.
    */
   public function getDefaultCardStyles(): array;
 
   /**
    * Add card styles to the build array.
    *
-   * @param $build
+   * @param array $build
    *   The build array that is being updated.
    */
   public function buildCardStyles(array &$build);
+
 }
