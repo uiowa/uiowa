@@ -27,18 +27,6 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Exception\RfcComplianceException;
 
 /**
- * Implements hook_config_schema_info_alter().
- */
-function uiowa_core_config_schema_info_alter(&$definitions) {
-  // Make sure that the order of filters in the config export file is always
-  // the same, to avoid false positive differences.
-  // @todo https://github.com/uiowa/uiowa/issues/5034
-  // @todo Figure out whether this is necesary and how to do it without
-  //   trigger an exception during a test.
-  // $definitions['filter.format.*']['mapping']['filters']['orderby'] = 'key';
-}
-
-/**
  * Implements hook_cron().
  */
 function uiowa_core_cron() {
