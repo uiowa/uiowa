@@ -448,12 +448,19 @@ function admissions_core_preprocess_field(&$variables) {
         // Otherwise, add the country.
         $countryManager = \Drupal::service('country_manager');
         if (!empty($country)) {
-          if ($country[0]['value'] === 'US' && !empty($state)) {
+          $country_code = $country[0]['value'] ?? NULL;
+          if ($country_code === 'US' && !empty($state)) {
             $home_location[] = $state[0]['value'];
           }
           else {
-            $country_value = $countryManager->getList()[$country[0]['value']]->__toString();
-            $home_location[] = $country_value;
+            $country_value = NULL;
+            $country_list = $countryManager->getList();
+            if ($country_code !== NULL && isset($country_list[$country_code])) {
+              $country_value = $country_list[$country_code]->__toString();
+            }
+            if ($country_value !== NULL) {
+              $home_location[] = $country_value;
+            }
           }
         }
         elseif (!empty($state)) {
@@ -1035,6 +1042,17 @@ function admissions_core_preprocess_views_view_field(&$variables) {
 function admissions_core_preprocess_views_view_unformatted(&$variables) {
   $view = $variables['view'];
   $variables['row_item_classes'] = [];
+  if ($view->current_display === 'student_profile_page') {
+    foreach ($variables['rows'] as &$row_build) {
+      if (!isset($row_build['content']['#content'])) {
+        $row_build['content']['#content'] = [];
+      }
+      if (isset($row_build['content']['#node'])) {
+        $row_build['content']['#content'][] = $row_build['content']['#node']->field_student_profile_blurb?->view('teaser');
+      }
+    }
+  }
+
   if ($view->current_display === 'block_student_grid') {
     $style = $view->style_plugin;
     $row_styles = $view->display_handler->getOption('row_styles');
