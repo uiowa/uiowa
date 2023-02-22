@@ -5,6 +5,7 @@
  * Primary module hooks for Uiowa Core module.
  */
 
+use Drupal\classrooms_core\Entity\ClassroomsRoom;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
@@ -15,6 +16,15 @@ use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\views\ViewExecutable;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function classrooms_core_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['room'])) {
+    $bundles['node']['room']['class'] = ClassroomsRoom::class;
+  }
+}
 
 /**
  * Implements hook_entity_extra_field_info().
@@ -596,10 +606,6 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
         'request_link' => NULL,
         'report_issue_link' => NULL,
       ],
-    ],
-    'views_view_unformatted__room_list' => [
-      'template' => 'views-view-unformatted--room-list',
-      'base hook' => 'view',
     ],
   ];
 }
