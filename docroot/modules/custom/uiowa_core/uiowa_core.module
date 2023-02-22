@@ -5,6 +5,7 @@
  * Primary module hooks for Uiowa Core module.
  */
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
@@ -32,7 +33,9 @@ function uiowa_core_config_schema_info_alter(&$definitions) {
   // Make sure that the order of filters in the config export file is always
   // the same, to avoid false positive differences.
   // @todo https://github.com/uiowa/uiowa/issues/5034
-  $definitions['filter.format.*']['mapping']['filters']['orderby'] = 'key';
+  // @todo Figure out whether this is necesary and how to do it without
+  //   trigger an exception during a test.
+  // $definitions['filter.format.*']['mapping']['filters']['orderby'] = 'key';
 }
 
 /**
@@ -271,6 +274,7 @@ function template_preprocess_card(&$variables) {
   $linked_element = FALSE;
 
   // If there is no URL, then it is not linked.
+  // @todo Add click-container class if there is a link.
   if (!is_null($variables['url'])) {
     if (!isset($variables['link_text']) && $variables['link_indicator']) {
       $linked_element = 'button';
@@ -360,9 +364,9 @@ function template_preprocess_card(&$variables) {
 
   // If title and link text are set, set a button id attribute for
   // aria-describedby.
-  if (!empty($variables['title']) && !empty($variables['link_text'])) {
+  if (is_string($variables['title']) && !empty($variables['link_text'])) {
     // @todo get this working with paragraphs.
-    // $aria_id = Html::getUniqueId($variables['title']);
+    $aria_id = Html::getUniqueId($variables['title']);
     $variables['headline']['headline_aria'] = $aria_id;
     $variables['button_attributes']->setAttribute('id', $aria_id);
   }
