@@ -27,6 +27,8 @@ class Book extends NodeBundleBase implements RendersAsCardInterface {
       '#meta' => 'field_book_type',
     ]);
 
+    $build['#title_heading_size'] = 'h3';
+
   }
 
   /**
