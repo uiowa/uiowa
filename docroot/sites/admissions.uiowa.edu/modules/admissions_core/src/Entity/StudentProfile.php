@@ -22,7 +22,6 @@ class StudentProfile extends NodeBundleBase implements RendersAsCardInterface {
       '#meta' => [
         'field_person_hometown',
       ],
-      '#content' => 'field_student_profile_blurb',
     ]);
 
   }

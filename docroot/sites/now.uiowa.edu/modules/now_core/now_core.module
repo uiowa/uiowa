@@ -6,16 +6,6 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\now_core\Entity\NowPerson;
-
-/**
- * Implements hook_entity_bundle_info_alter().
- */
-function now_core_entity_bundle_info_alter(array &$bundles) {
-  if (isset($bundles['node']['person'])) {
-    $bundles['node']['person']['class'] = NowPerson::class;
-  }
-}
 
 /**
  * Implements hook_form_alter().
@@ -217,6 +207,28 @@ function now_core_node_presave($entity) {
         ])
     );
   }
+}
+
+/**
+ * Implements hook_preprocess_views_view_unformatted().
+ */
+function now_core_preprocess_views_view_unformatted(&$variables) {
+  /** @var \Drupal\views\ViewExecutable $view */
+  $view = $variables['view'];
+
+  // If it's the experts list, we need to add the
+  // research areas as well.
+  if ($view->id() === 'iowa_now_experts') {
+    foreach ($variables['rows'] as &$row_build) {
+      if (!isset($row_build['content']['#content'])) {
+        $row_build['content']['#content'] = [];
+      }
+      if (isset($row_build['content']['#node'])) {
+        $row_build['content']['#content'][] = $row_build['content']['#node']->field_person_research_areas?->view();
+      }
+    }
+  }
+
 }
 
 /**
