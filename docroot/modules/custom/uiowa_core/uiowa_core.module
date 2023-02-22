@@ -195,36 +195,38 @@ function uiowa_core_preprocess_filter_caption(&$variables) {
     $associative_drupal_media_attributes_strings[$attribute__value[0]] = str_replace('"', '', $attribute__value[1]);
   }
 
+  $view_mode_class = 'inline--size-default';
+
   // If we have a view mode set...
   if (isset($associative_drupal_media_attributes_strings['data-view-mode'])) {
-
     // Process the view mode classes.
     $view_mode_modified = uiowa_core_inline_viewmode_map($associative_drupal_media_attributes_strings['data-view-mode']);
 
-    // If we have relevant view mode classes...
     if (!empty($view_mode_modified)) {
 
-      // Get the current classes of the '<drupal-media>' element.
-      $classes_array = explode(' ', $variables['classes']);
-
-      // Add the relevant modified inline view mode class.
-      $classes_array[] = $view_mode_modified['class'];
-
-      // Re-concatenate the $classes_array back in to a string,
-      // which is what the '<drupal-media>' element wants.
-      $classes = implode(' ', $classes_array);
-
-      // Attach the inline sizing library and assign the classes.
-      $variables['#attached']['library'][] = $view_mode_modified['library'];
-      $variables['classes'] = $classes;
-
-      // Then, add a custom attribute to the '<drupal-media>' markup to show that it is a figure.
-      $variables['node'] = FilteredMarkup::create(preg_replace(
-        '/<drupal-media /i',
-        '<drupal-media data-figure="true" ',
-        $variables['node']));
+      // Replace the $view_mode_class with the relevant modified inline view mode class.
+      $view_mode_class = $view_mode_modified['class'];
     }
   }
+  // Get the current classes of the '<drupal-media>' element.
+  $classes_array = explode(' ', $variables['classes']);
+
+  // Add the view mode to the classes.
+  $classes_array[] = $view_mode_class;
+
+  // Re-concatenate the $classes_array back in to a string,
+  // which is what the '<drupal-media>' element wants.
+  $classes = implode(' ', $classes_array);
+
+  // Attach the inline sizing library and assign the classes.
+  $variables['#attached']['library'][] = 'uids_base/inline';
+  $variables['classes'] = $classes;
+
+  // Then, add a custom attribute to the '<drupal-media>' markup to show that it is a figure.
+  $variables['node'] = FilteredMarkup::create(preg_replace(
+    '/<drupal-media /i',
+    '<drupal-media data-figure="true" ',
+    $variables['node']));
 }
 
 /**
@@ -242,7 +244,7 @@ function uiowa_core_preprocess_filter_caption(&$variables) {
  *   Otherwise, returns an empty array.
  */
 function uiowa_core_inline_viewmode_map(string $view_mode): array {
-  $accepted_view_modes = ['large', 'medium', 'small'];
+  $accepted_view_modes = ['default', 'large', 'medium', 'small'];
 
   foreach ($accepted_view_modes as $value) {
     if (str_starts_with($view_mode, $value)) {
