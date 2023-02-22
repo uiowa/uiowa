@@ -351,7 +351,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
   /**
    * Unset card classes from block level wrapper.
    */
-  private function removeCardStylesFromBlock(array $build, array $style_map) {
+  private function removeCardStylesFromBlock(array &$build, array $style_map) {
     // Loop through the filtered card style map and remove those classes
     // from the block.
     // @todo Adjust so that multi-class styles are treated separately. (e.g. 'media--circle media--border').
