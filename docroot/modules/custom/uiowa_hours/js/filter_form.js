@@ -10,7 +10,10 @@
           $('.uiowa-hours-container', this).html('<p>Placeholder for ' + hoursConfig[0] + ' data</p>');
         }
         else {
-          let today = new Date().toLocaleDateString('en-CA', {timeZone: 'America/Chicago'});
+          let date = new Date();
+          let today = new Date(date.getTime() - (date.getTimezoneOffset() * 60000 ))
+            .toISOString()
+            .split("T")[0];
           $('input[type="date"]', this).val(today);
           $('input[type="submit"]', this).mousedown();
         }
