@@ -19,11 +19,23 @@ class ClassroomsRoom extends NodeBundleBase implements RendersAsCardInterface {
     // Process additional card mappings.
     $this->mapFieldsToCardBuild($build, [
       '#meta' => [
+        'field_room_name',
         'field_room_type',
         'field_room_max_occupancy',
+        'field_room_responsible_unit',
       ],
     ]);
-    $build['#link_indicator'] = TRUE;
+
+    // Get the building ID and room ID fields.
+    $building_id = $this->get('field_room_building_id')->target_id;
+    $room_id = $this->get('field_room_room_id')->value;
+
+    // Combine the fields to create the title.
+    $title_combined = strtoupper($building_id) . ' ' . $room_id;
+    $title = ['#markup' => $title_combined];
+
+    $build['#title'] = $title;
+
   }
 
   /**
