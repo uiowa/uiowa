@@ -89,18 +89,18 @@ class FilterIframe extends FilterBase {
             $height = (int) $iframe->getAttribute('height');
             $aspect_ratio = round($width / $height, 3);
             if ($aspect_ratio === 1.0) {
-              $wrapper->setAttribute('class', 'embed-responsive embed-responsive-1by1');
+              $wrapper->setAttribute('class', 'media--1-1');
             }
             elseif ($aspect_ratio === 1.333) {
-              $wrapper->setAttribute('class', 'embed-responsive embed-responsive-4by3');
+              $wrapper->setAttribute('class', 'media--4-3');
             }
             // 16:9 has a bit of variation when rounded.
             elseif ($aspect_ratio >= 1.775 && $aspect_ratio <= 1.779) {
-              $wrapper->setAttribute('class', 'embed-responsive embed-responsive-16by9');
+              $wrapper->setAttribute('class', 'media--16-9');
             }
             // 21:9 has a bit of variation when rounded.
             elseif ($aspect_ratio >= 2.332 && $aspect_ratio <= 2.395) {
-              $wrapper->setAttribute('class', 'embed-responsive embed-responsive-21by9');
+              $wrapper->setAttribute('class', 'media--21-9');
             }
           }
 
@@ -119,7 +119,7 @@ class FilterIframe extends FilterBase {
     $text = Html::serialize($dom);
     $result = new FilterProcessResult($text);
     $result->setAttachments([
-      'library' => ['uids_base/embed'],
+      'library' => ['uids_base/media'],
     ]);
     return $result;
   }
