@@ -258,12 +258,14 @@ function template_preprocess_card(&$variables) {
     }
   }
 
-  // Determine the linked element.
   $linked_element = FALSE;
 
   // If there is no URL, then it is not linked.
-  // @todo Add click-container class if there is a link.
-  if (!is_null($variables['url'])) {
+  if (!empty($variables['url'])) {
+    // Add click-container class if there is a link.
+    $variables['attributes']->addClass('click-container');
+
+    // Determine the linked element.
     if (!isset($variables['link_text']) && $variables['link_indicator']) {
       $linked_element = 'button';
     }
@@ -276,6 +278,11 @@ function template_preprocess_card(&$variables) {
     elseif (!empty($variables['media'])) {
       $linked_element = 'media';
     }
+  }
+  else {
+    // If there is no URL, set a data attribute so our click a11y script knows to
+    // ignore this card.
+    $variables['attributes']->setAttribute('data-uids-no-link', TRUE);
   }
   $variables['linked_element'] = $linked_element;
 
@@ -306,12 +313,6 @@ function template_preprocess_card(&$variables) {
     $variables['media_attributes']->addClass($media_classes);
   }
 
-  // If there is no URL, set a data attribute so our click a11y script knows to
-  // ignore this card.
-  if (empty($variables['url'])) {
-    $variables['attributes']['data-uids-no-link'] = TRUE;
-  }
-
   $variables['button_attributes'] = new Attribute();
   $variables['button_attributes']->addClass([
     'bttn',
@@ -319,6 +320,7 @@ function template_preprocess_card(&$variables) {
     'bttn--transparent',
     'bttn--light-font',
   ]);
+
   if ($variables['linked_element'] === 'button') {
     $variables['button_attributes']->addClass('click-target');
   }

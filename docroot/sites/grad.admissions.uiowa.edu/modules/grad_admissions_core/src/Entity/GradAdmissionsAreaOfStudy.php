@@ -16,6 +16,8 @@ class GradAdmissionsAreaOfStudy extends NodeBundleBase implements RendersAsCardI
   public function buildCard(array &$build) {
     parent::buildCard($build);
 
+    $build['#attached']['library'][] = 'grad_admissions_core/area-of-study';
+
     // Process additional card mappings.
     $this->mapFieldsToCardBuild($build, [
       '#content' => 'body',
