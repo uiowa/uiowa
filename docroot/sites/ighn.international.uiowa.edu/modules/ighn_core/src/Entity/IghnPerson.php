@@ -23,7 +23,7 @@ class IghnPerson extends NodeBundleBase implements RendersAsCardInterface {
     $this->mapFieldsToCardBuild($build, [
       '#media' => 'field_ighn_person_image',
       '#subtitle' => 'field_ighn_person_credentials',
-//      '#url' => 'field_ighn_person_cv_link',
+      // '#url' => 'field_ighn_person_cv_link',
       '#title_heading_size' => 'h3',
       '#content' => [
         'field_ighn_person_position_title',

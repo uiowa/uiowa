@@ -662,8 +662,6 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
       $component->unsetThirdPartySetting('layout_builder_custom', 'unique_id');
     }
 
-    Cache::invalidateTags(['layout_builder_component:' . $component->getUuid()]);
-
     switch ($block->getPluginId()) {
       case 'inline_block:uiowa_banner':
         $background_option = $form_state->getValue([
