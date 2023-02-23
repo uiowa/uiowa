@@ -1953,9 +1953,19 @@ function sitenow_update_9053() {
 }
 
 /**
- * Update layout builder styles applied to cards.
+ * Import updated acquia_connector.settings around config_ignore.
  */
 function sitenow_update_9054() {
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('acquia_connector.settings', $source->read('acquia_connector.settings'));
+}
+
+/**
+ * Update layout builder styles applied to cards.
+ */
+function sitenow_update_9055() {
   // Apply updates to all blocks that are styled using card styles.
   foreach ([
     'inline_block:uiowa_card',
