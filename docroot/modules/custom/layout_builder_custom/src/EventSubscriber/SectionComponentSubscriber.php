@@ -89,8 +89,8 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
       switch ($build['#plugin_id']) {
         case 'inline_block:uiowa_card':
           // Map the layout builder styles to the view mode to be used.
-          if (isset($build['#attributes']['class'])) {
-            $this->setMediaViewModeFromStyle($build['content']['field_uiowa_image_image'], 'large', $build['#attributes']['class']);
+          if (isset($build['content']['field_uiowa_card_image']) && isset($build['#attributes']['class'])) {
+            $this->setMediaViewModeFromStyle($build['content']['field_uiowa_card_image'], 'large', $build['#attributes']['class']);
           }
           break;
 
