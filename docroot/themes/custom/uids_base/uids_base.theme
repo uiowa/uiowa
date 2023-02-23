@@ -415,66 +415,6 @@ function uids_base_preprocess_field(&$variables) {
       $variables['caption'] = $caption;
       break;
 
-    case 'field_person_email':
-      uiowa_core_set_field_icon($variables, 'fa-envelope fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
-      break;
-
-    case 'field_person_phone':
-      uiowa_core_set_field_icon($variables, 'fa-phone fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
-      break;
-
-    case 'field_person_website':
-      uiowa_core_set_field_icon($variables, 'fa-desktop fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
-      break;
-
-    case 'field_person_education':
-      uiowa_core_set_field_icon($variables, 'fa-university fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
-      break;
-
-    case 'field_person_contact_information':
-      uiowa_core_set_field_icon($variables, 'fa-map-marker fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
-      break;
-
-    case 'field_person_hometown':
-      if ($variables['element']['#entity_type'] == 'node' && $variables['element']['#bundle'] == 'person') {
-        uiowa_core_set_field_icon($variables, 'fa-globe-americas fa-li');
-        uiowa_core_set_attributes($variables, 'fa-ul');
-      }
-      break;
-
-    case 'field_event_series_link':
-      uiowa_core_set_field_icon($variables, 'fas fa-link fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
-      break;
-
-    case 'field_event_location':
-      uiowa_core_set_field_icon($variables, 'fas fa-map-marker-alt fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
-      break;
-
-    case 'field_event_virtual':
-      uiowa_core_set_field_icon($variables, 'fas fa-desktop fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
-      break;
-
-    case 'field_event_when':
-      uiowa_core_set_field_icon($variables, 'fa-calendar far fa-li');
-      uiowa_core_set_attributes($variables, 'fa-ul');
-      break;
-
-    case 'title':
-      uiowa_core_set_attributes($variables, [
-        'page-title',
-        'headline--serif',
-        'headline',
-      ]);
-      break;
-
   }
 
   // @todo Is this code still necessary?

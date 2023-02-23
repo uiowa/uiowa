@@ -726,6 +726,10 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
         '#building_name' => $building->label(),
       ];
 
+      if (isset($row_build['content']['#node'])) {
+        $row_build['content']['#meta'][] = $row_build['content']['#node']->field_room_type?->view('teaser');
+      }
+
       // Get the seat taxonomy terms from the features taxonomy.
       $taxonomy = $node->get('field_room_features')->referencedEntities();
 
