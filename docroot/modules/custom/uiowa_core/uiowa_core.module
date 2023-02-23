@@ -173,7 +173,8 @@ function uiowa_core_preprocess_filter_caption(&$variables) {
 
   // Separate the attributes of the tag string in to an array of attribute strings.
   // Ex: ['foo="bar"', 'ban="baz"'].
-  preg_match_all('%\s?([^"]*)="([^"]*)%is', $drupal_media_markup, $matches);
+  // Regex101 explanation: https://regex101.com/r/TdXcpT/1
+  preg_match_all('%\s([^"]*)="([^"]*)"%is', $drupal_media_markup, $matches);
 
   // Create a new array to be used later for the associative media attributes data.
   $attributes = [];
