@@ -236,6 +236,17 @@ function uiowa_core_get_inline_size_class_from_view_mode(string $view_mode): ?st
   return NULL;
 }
 
+/**
+ * Returns the attributes of a drupal media element.
+ *
+ * @param object|string $drupal_media_markup
+ *   A string or object representing a drupal
+ *   media element in "<drupal-media>" tags
+ *
+ * @return array
+ *   An associative array of name-value pairs
+ *   of attributes on the drupal media element.
+ */
 function uiowa_core_drupal_media_attributes(object|string $drupal_media_markup): array {
 
   // Get the '<drupal-media>' tag.
