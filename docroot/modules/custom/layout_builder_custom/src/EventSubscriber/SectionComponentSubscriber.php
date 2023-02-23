@@ -3,6 +3,8 @@
 namespace Drupal\layout_builder_custom\EventSubscriber;
 
 use Drupal\Core\Block\BlockPluginInterface;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Render\PreviewFallbackInterface;
 use Drupal\layout_builder\Event\SectionComponentBuildRenderArrayEvent;
 use Drupal\layout_builder\LayoutBuilderEvents;
@@ -13,6 +15,33 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * Add an HTML class to blocks that are displaying placeholder text.
  */
 class SectionComponentSubscriber implements EventSubscriberInterface {
+
+  /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * Drupal\Core\Config\ConfigFactoryInterface definition.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * BlockComponentRenderArraySubscriber constructor.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   Access configuration.
+   */
+  public function __construct(EntityTypeManagerInterface $entityTypeManager, ConfigFactoryInterface $config_factory) {
+    $this->entityTypeManager = $entityTypeManager;
+    $this->configFactory = $config_factory;
+  }
 
   /**
    * {@inheritdoc}

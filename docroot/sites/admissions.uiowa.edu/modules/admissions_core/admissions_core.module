@@ -309,6 +309,13 @@ function admissions_core_preprocess_field(&$variables) {
       break;
 
     case 'field_area_of_study_link':
+      uiowa_core_set_field_label_icon($variables, 'fa-link');
+      uiowa_core_set_title_attributes($variables, [
+        'h4',
+        'headline',
+        'headline--serif',
+        'headline--underline',
+      ]);
       $node = $variables['element']['#object'];
       // Add field_area_of_study_college to the end of field_area_of_study_link.
       if ($node->hasField('field_area_of_study_college') && !$node->get('field_area_of_study_college')->isEmpty()) {
@@ -333,6 +340,16 @@ function admissions_core_preprocess_field(&$variables) {
       $variables['label'] = t('Why Iowa?');
       break;
 
+    case 'field_area_of_study_scholarship':
+      uiowa_core_set_field_label_icon($variables, 'fa-link');
+      uiowa_core_set_title_attributes($variables, [
+        'h4',
+        'headline',
+        'headline--serif',
+        'headline--underline',
+      ]);
+      break;
+
     case 'field_cc_contact_info':
       // Prepend community college term name to contact info field label.
       $term = $variables['element']['#object'];
@@ -340,23 +357,41 @@ function admissions_core_preprocess_field(&$variables) {
       $variables['label'] = t('@name Contact Information', ['@name' => $name]);
       break;
 
+    case 'field_event_series_button_link':
+      uiowa_core_set_attributes($variables, [
+        'bttn',
+        'bttn--primary',
+        'bttn--full',
+      ]);
+      break;
+
+    case 'field_event_series_summary':
+      uiowa_core_set_field_label_icon($variables, 'fa-clock');
+      break;
+
     case 'field_major_cc_checkpoints':
       $term = $variables['element']['#object'];
       $name = $term->field_major_community_college->entity->name->value;
       $variables['label'] = t('@name checkpoints', ['@name' => $name]);
 
-      if (!isset($variables['title_attributes']['class'])) {
-        $variables['title_attributes']['class'] = '';
-      }
-      $variables['title_attributes']['class'] .= 'h4 headline headline--serif';
+      uiowa_core_set_title_attributes($variables, [
+        'h4',
+        'headline',
+        'headline--serif',
+      ]);
       break;
 
     case 'field_major_responsibilities':
     case 'field_major_uiowa_checkpoints':
-      if (!isset($variables['title_attributes']['class'])) {
-        $variables['title_attributes']['class'] = '';
-      }
-      $variables['title_attributes']['class'] .= 'h4 headline headline--serif';
+      uiowa_core_set_title_attributes($variables, [
+        'h4',
+        'headline',
+        'headline--serif',
+      ]);
+      break;
+
+    case 'field_student_profile_major':
+      uiowa_core_set_field_icon($variables, 'fa-book');
       break;
   }
 
@@ -622,22 +657,6 @@ function admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--field-area-of-study-subtitle--area-of-study--default',
       'base hook' => 'field',
     ],
-    'field__node__field_area_of_study_link__area_of_study__default' => [
-      'template' => 'field--node--field-area-of-study-link--area-of-study--default',
-      'base hook' => 'field',
-    ],
-    'field__node__field_area_of_study_scholarship__area_of_study__default' => [
-      'template' => 'field--node--field-area-of-study-scholarship--area-of-study--default',
-      'base hook' => 'field',
-    ],
-    'field__node__field_event_series_button_link__event_series' => [
-      'template' => 'field--node--field-event-series-button-link--event-series--default',
-      'base hook' => 'field',
-    ],
-    'field__node__field_event_series_summary__event_series' => [
-      'template' => 'field--node--field-event-series-summary--event-series--default',
-      'base hook' => 'field',
-    ],
     'field__node__field_major_area_of_study__major' => [
       'template' => 'field--node--field-major-area-of-study--major',
       'base hook' => 'field',
@@ -652,10 +671,6 @@ function admissions_core_theme($existing, $type, $theme, $path) {
     ],
     'field__node__field_person_hometown__student_profile' => [
       'template' => 'field--node--field-person-hometown--student-profile',
-      'base hook' => 'field',
-    ],
-    'field__node__field_student_profile_major__student_profile' => [
-      'template' => 'field--node--field-student-profile-major--student-profile',
       'base hook' => 'field',
     ],
     'field__node__title__student_profile__default' => [
