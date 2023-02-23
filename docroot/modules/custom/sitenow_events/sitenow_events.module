@@ -360,7 +360,7 @@ function sitenow_events_build_card(array $event): array {
       '#markup' => t('Virtual'),
     ];
   }
-  else {
+  elseif (!is_null($event["location_name"])) {
     $card['#meta']['icon'] = [
       '#type' => 'markup',
       '#markup' => '<span role="presentation" class="fas fa-map-marker-alt"></span>',
@@ -375,7 +375,10 @@ function sitenow_events_build_card(array $event): array {
   $allowed_tags = ['a', 'strong', 'em'];
 
   if (isset($event['summary'])) {
-    $card['#content']['description'] = Xss::filter($event['summary'], $allowed_tags);
+    $card['#content']['description'] = [
+      '#type' => 'markup',
+      '#markup' => Xss::filter($event['summary'], $allowed_tags),
+    ];
   }
   elseif (isset($event['description'])) {
     $event['description'] = Xss::filter($event['description'], $allowed_tags);
