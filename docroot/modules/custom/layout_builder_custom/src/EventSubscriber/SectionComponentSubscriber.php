@@ -17,33 +17,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class SectionComponentSubscriber implements EventSubscriberInterface {
 
   /**
-   * The entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  /**
-   * Drupal\Core\Config\ConfigFactoryInterface definition.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected $configFactory;
-
-  /**
-   * BlockComponentRenderArraySubscriber constructor.
-   *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   The entity type manager.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   Access configuration.
-   */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager, ConfigFactoryInterface $config_factory) {
-    $this->entityTypeManager = $entityTypeManager;
-    $this->configFactory = $config_factory;
-  }
-
-  /**
    * {@inheritdoc}
    */
   public static function getSubscribedEvents() {
