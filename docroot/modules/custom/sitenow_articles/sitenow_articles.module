@@ -35,7 +35,7 @@ function sitenow_articles_entity_bundle_info_alter(array &$bundles) {
  * @return bool
  *   Returns TRUE if the split is enabled, FALSE otherwise.
  */
-function sitenow_articles_is_articles_narrow_split_enabled() {
+function sitenow_articles_narrow_is_enabled(): bool {
   /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
   $config_factory = \Drupal::service('config.factory');
   $articles_narrow_split_config = $config_factory->get('config_split.config_split.articles_narrow');
@@ -134,7 +134,7 @@ function sitenow_articles_preprocess_breadcrumb(&$variables) {
   // Waiting for https://www.drupal.org/project/drupal/issues/2966004,
   // https://www.drupal.org/project/drupal/issues/2787051...
   $routes = [];
-  foreach ($variables["links"] as $key => $link) {
+  foreach ($variables['links'] as $key => $link) {
     $url = $link->getURL();
     // Test for external paths.
     if ($url->isRouted()) {
@@ -144,9 +144,9 @@ function sitenow_articles_preprocess_breadcrumb(&$variables) {
   // For breadcrumb links built from view articles path, reduce duplicates.
   if (in_array('view.articles.page_articles', $routes)) {
     $unique_routes = array_keys(array_unique($routes, SORT_REGULAR));
-    foreach ($variables["breadcrumb"] as $key => $value) {
+    foreach ($variables['breadcrumb'] as $key => $value) {
       if (!in_array($key, $unique_routes)) {
-        unset($variables["breadcrumb"][$key]);
+        unset($variables['breadcrumb'][$key]);
       }
     }
   }
@@ -161,8 +161,8 @@ function sitenow_articles_preprocess_field(&$variables) {
       uiowa_core_set_field_icon($variables, 'fas fa-user-circle');
     }
     if ($variables['element']['#formatter'] === 'entity_reference_label') {
-      $variables['element']["#title"] = 'Written by';
-      $variables["label"] = 'Written by';
+      $variables['element']['#title'] = 'Written by';
+      $variables['label'] = 'Written by';
       // Remove the label for article teasers.
       if ($variables['element']['#view_mode'] == 'teaser') {
         uiowa_core_set_title_attributes($variables, 'visually-hidden');
@@ -184,24 +184,24 @@ function sitenow_articles_preprocess_field(&$variables) {
   }
   if ($variables['element']['#field_name'] === 'field_article_source_org') {
     if ($variables['element']['#formatter'] === 'string') {
-      $variables['element']["#title"] = 'Organization';
-      $variables["label"] = 'Organization';
+      $variables['element']['#title'] = 'Organization';
+      $variables['label'] = 'Organization';
     }
   }
   if ($variables['element']['#field_name'] === 'field_article_source_link') {
     if ($variables['element']['#formatter'] === 'link') {
-      $variables['element']["#title"] = 'Source';
-      $variables["label"] = 'Source';
+      $variables['element']['#title'] = 'Source';
+      $variables['label'] = 'Source';
     }
   }
   if ($variables['element']['#field_name'] === 'field_image_caption') {
-    $variables["attributes"]['class'][] = 'figure-caption';
-    $variables["attributes"]['id'] = 'node-caption';
+    $variables['attributes']['class'][] = 'figure-caption';
+    $variables['attributes']['id'] = 'node-caption';
   }
   if ($variables['element']['#field_name'] === 'field_image') {
     $node = $variables['element']['#object'];
     if ($node->hasField('field_image_caption') && !$node->get('field_image_caption')->isEmpty()) {
-      $variables["attributes"]['aria-describedby'] = 'node-caption';
+      $variables['attributes']['aria-describedby'] = 'node-caption';
     }
   }
   if ($variables['element']['#field_name'] === 'field_related_content') {
@@ -340,33 +340,23 @@ function sitenow_articles_node_view(array &$build, EntityInterface $entity, Enti
           'date' => [
             '#type' => 'markup',
             '#markup' => $date,
+            '#weight' => 0,
           ],
         ];
-      }
 
-      if ($display->getComponent('article_created_date') && sitenow_articles_is_articles_narrow_split_enabled() && $view_mode != 'teaser') {
-        $created = $entity->get('created')->value;
-        $date = \Drupal::service('date.formatter')->format($created, 'medium');
-        $build['article_created_date'] = [
-          '#type' => 'container',
-          '#attributes' => [
-            'class' => ['article-created-date'],
-          ],
-          'title' => [
+        if ($view_mode !== 'teaser' && sitenow_articles_narrow_is_enabled()) {
+          $build['article_created_date']['title'] = [
             '#type' => 'html_tag',
             '#tag' => 'div',
             '#value' => t('Published:'),
             '#attributes' => [
               'class' => ['field__label'],
             ],
-          ],
-          'date' => [
-            '#type' => 'markup',
-            '#markup' => $date,
-          ],
-        ];
-
+            '#weight' => -10,
+          ];
+        }
       }
+
       break;
 
   }
@@ -679,7 +669,7 @@ function sitenow_articles_preprocess_block(&$variables) {
       break;
 
     case 'field_block:node:article:body':
-      if (sitenow_articles_is_articles_narrow_split_enabled()) {
+      if (sitenow_articles_narrow_is_enabled()) {
         $variables['attributes']['class'][] = 'block-margin__default--removed';
       }
 
