@@ -567,11 +567,11 @@ the first website link.'));
  * Implements hook_preprocess_HOOK().
  */
 function sitenow_people_preprocess_views_view(&$variables) {
-  switch ($variables["id"]) {
+  switch ($variables['id']) {
     case 'people':
       // Unset header content if empty.
-      if (empty($variables["header"]["area"]["#text"])) {
-        unset($variables["header"]["area"]);
+      if (empty($variables['header']['area']['#text'])) {
+        unset($variables['header']['area']);
       }
       break;
 
@@ -973,10 +973,8 @@ function _sitenow_people_path_token_value() {
       continue;
     }
 
-    // @todo Do we need to do anything besides this?
     return '/' . $display['display_options']['path'];
   }
 
-  // @todo Is this appropriate when there is no value?
   return '';
 }
