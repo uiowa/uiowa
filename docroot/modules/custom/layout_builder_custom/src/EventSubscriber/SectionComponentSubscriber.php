@@ -231,6 +231,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           }
 
           // Get LB styles from the component.
+          // @phpstan-ignore-next-line
           $selected_styles = $event->getComponent()->get('layout_builder_styles_style');
           // Convert the style list into a map that can be used for overriding
           // style defaults later.
@@ -264,6 +265,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
 
         case 'inline_block:uiowa_events':
           // Get LB styles from the component.
+          // @phpstan-ignore-next-line
           $selected_styles = $event->getComponent()->get('layout_builder_styles_style');
           // Convert the style list into a map that can be used for overriding
           // style defaults later.
