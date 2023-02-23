@@ -241,7 +241,7 @@ function uiowa_core_get_inline_size_class_from_view_mode(string $view_mode): ?st
  *
  * @param object|string $drupal_media_markup
  *   A string or object representing a drupal
- *   media element in "<drupal-media>" tags
+ *   media element in "<drupal-media>" tags.
  *
  * @return array
  *   An associative array of name-value pairs
@@ -259,18 +259,21 @@ function uiowa_core_drupal_media_attributes(object|string $drupal_media_markup):
       $markup_interface = 'Drupal\Component\Render\MarkupInterface';
       if (in_array($markup_interface, $implements_classes, TRUE)) {
 
-        // Use the `MarkupInterface` `__toString()` function to convert it to a string.
+        // Use the `MarkupInterface` `__toString()` function
+        // to convert it to a string.
         $markup = $drupal_media_markup->__toString();
       }
     }
   }
 
-  // Separate the attributes of the tag string in to an array of attribute strings, defined as `$matches`.
+  // Separate the attributes of the tag string in to an array
+  // of attribute strings, defined as `$matches`.
   // Ex: ['foo' => 'bar', 'ban' => 'baz'].
   // Regex101 explanation: https://regex101.com/r/TdXcpT/1
   preg_match_all('%\s([^"]*)="([^"]*)"%is', $markup, $matches);
 
-  // Create a new array to be used later for the associative media attributes data.
+  // Create a new array to be used later for the
+  // associative media attributes data.
   $attributes = [];
 
   // Format the array using the matches as $key => $value.
