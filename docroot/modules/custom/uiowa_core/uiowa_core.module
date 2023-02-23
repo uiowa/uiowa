@@ -142,6 +142,7 @@ function uiowa_core_preprocess_media(&$variables) {
 
   // Detect if this is a figure and if it is, it has already been processed for inline sizing and alignment.
   $is_figure = FALSE;
+
   if (isset($variables['attributes']['data-figure'])) {
     $is_figure = filter_var($variables['attributes']['data-figure'], FILTER_VALIDATE_BOOLEAN);
   }
@@ -151,17 +152,13 @@ function uiowa_core_preprocess_media(&$variables) {
 
     // If we have a view mode set...
     if (isset($variables['view_mode'])) {
-      $view_mode = $variables['view_mode'];
-
-      // Process the view mode classes.
-      $view_mode_modified = uiowa_core_inline_viewmode_map($view_mode);
 
       // If we have relevant view mode classes...
-      if (!empty($view_mode_modified)) {
+      if (!is_null($add_class = uiowa_core_get_inline_size_class_from_view_mode($variables['view_mode']))) {
 
         // Attach the inline sizing library and assign the classes.
-        $variables['#attached']['library'][] = $view_mode_modified['library'];
-        $variables['attributes']['class'][] = $view_mode_modified['class'];
+        $variables['#attached']['library'][] = 'uids_base/inline';
+        $variables['attributes']['class'][] = $add_class;
       }
     }
   }
@@ -174,45 +171,35 @@ function uiowa_core_preprocess_filter_caption(&$variables) {
   // Get the '<drupal-media>' tag string.
   $drupal_media_markup = strval($variables['node']);
 
-  // Define some $replacement_strings to remove.
-  $replacement_strings = ['<drupal-media ', '></drupal-media>'];
-
-  // Remove the $replacement_strings.
-  $drupal_media_attributes_string = str_replace($replacement_strings, '', $drupal_media_markup);
-
   // Separate the attributes of the tag string in to an array of attribute strings.
   // Ex: ['foo="bar"', 'ban="baz"'].
-  $drupal_media_attributes_strings = explode(' ', $drupal_media_attributes_string);
+  preg_match_all('%\s?([^"]*)="([^"]*)%is', $drupal_media_markup, $matches);
 
   // Create a new array to be used later for the associative media attributes data.
-  $associative_drupal_media_attributes_strings = [];
+  $attributes = [];
 
-  // For each of the media attributes strings...
-  foreach ($drupal_media_attributes_strings as $value) {
-
-    // Separate them in to two parts, clean them up, and add them to the associative array.
-    $attribute__value = explode('=', $value);
-    $associative_drupal_media_attributes_strings[$attribute__value[0]] = str_replace('"', '', $attribute__value[1]);
+  for ($i = 0; $i < count($matches[0]); $i++) {
+    $attributes[$matches[1][$i]] = $matches[2][$i];
   }
 
-  $view_mode_class = 'inline--size-default';
+  $inline_class = 'inline--size-default';
 
   // If we have a view mode set...
-  if (isset($associative_drupal_media_attributes_strings['data-view-mode'])) {
+  if (isset($attributes['data-view-mode'])) {
     // Process the view mode classes.
-    $view_mode_modified = uiowa_core_inline_viewmode_map($associative_drupal_media_attributes_strings['data-view-mode']);
 
-    if (!empty($view_mode_modified)) {
+    // Check if the inline class needs to be changed.
+    if (!is_null($override_inline_class = uiowa_core_get_inline_size_class_from_view_mode($attributes['data-view-mode']))) {
 
-      // Replace the $view_mode_class with the relevant modified inline view mode class.
-      $view_mode_class = $view_mode_modified['class'];
+      // Replace the $inline_class with the relevant modified inline view mode class.
+      $inline_class = $override_inline_class;
     }
   }
   // Get the current classes of the '<drupal-media>' element.
   $classes_array = explode(' ', $variables['classes']);
 
   // Add the view mode to the classes.
-  $classes_array[] = $view_mode_class;
+  $classes_array[] = $inline_class;
 
   // Re-concatenate the $classes_array back in to a string,
   // which is what the '<drupal-media>' element wants.
@@ -237,27 +224,24 @@ function uiowa_core_preprocess_filter_caption(&$variables) {
  *   as a view mode, often looks something
  *   like 'medium__no_crop'.
  *
- * @return array
+ * @return string|null
  *   If the $view_mode starts with any one of the $accepted_view_modes:
  *    Returns an array containing the string reference to
  *    the inline library and the inline sizing class.
  *   Otherwise, returns an empty array.
  */
-function uiowa_core_inline_viewmode_map(string $view_mode): array {
+function uiowa_core_get_inline_size_class_from_view_mode(string $view_mode): ?string {
   $accepted_view_modes = ['default', 'large', 'medium', 'small'];
 
   foreach ($accepted_view_modes as $value) {
     if (str_starts_with($view_mode, $value)) {
 
-      // We return a string reference to the inline library and a modified view mode class.
-      return [
-        'library' => 'uids_base/inline',
-        'class' => 'inline--size-' . $value,
-      ];
+      // Return the class that needs to be added.
+      return "inline--size-$value";
     }
   }
 
-  return [];
+  return NULL;
 }
 
 /**
