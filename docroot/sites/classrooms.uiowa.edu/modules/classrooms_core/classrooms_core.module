@@ -726,6 +726,46 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
         '#building_name' => $building->label(),
       ];
 
+      // Get the seat taxonomy terms from the features taxonomy.
+      $taxonomy = $node->get('field_room_features')->referencedEntities();
+
+      // Loop through the taxonomy and get items that start with "Seats".
+      $seats = [];
+      foreach ($taxonomy as $term) {
+        if (str_starts_with($term->getName(), 'Seats')) {
+          $seats[] = $term->getName();
+        }
+      }
+
+      // Add the seats to a separate variable.
+      if (!empty($seats)) {
+        $seating_type = [
+          '#type' => 'container',
+          '#attributes' => [
+            'class' => ['field--label-inline fa-ul'],
+          ],
+          'label' => [
+            '#type' => 'html_tag',
+            '#tag' => 'div',
+            '#value' => '<span class="fa-chair fas fa-li" role="presentation"></span>' . \Drupal::translation()->translate('Seating Type'),
+            '#attributes' => [
+              'class' => ['field__label'],
+            ],
+          ],
+          'value' => [
+            '#type' => 'html_tag',
+            '#tag' => 'div',
+            '#value' => str_replace('Seats - ', '', implode(', ', $seats)),
+            '#attributes' => [
+              'class' => ['value'],
+            ],
+          ],
+        ];
+
+        // Add the seating type to the #meta array.
+        $row_build['content']['#meta'][] = $seating_type;
+
+      }
     }
   }
 }
