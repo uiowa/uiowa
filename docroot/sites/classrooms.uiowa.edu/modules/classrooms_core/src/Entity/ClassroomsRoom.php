@@ -20,7 +20,6 @@ class ClassroomsRoom extends NodeBundleBase implements RendersAsCardInterface {
     $this->mapFieldsToCardBuild($build, [
       '#meta' => [
         'field_room_name',
-        'field_room_type',
         'field_room_max_occupancy',
         'field_room_responsible_unit',
       ],
