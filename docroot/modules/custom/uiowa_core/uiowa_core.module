@@ -169,22 +169,9 @@ function uiowa_core_preprocess_media(&$variables) {
  * Implements hook_preprocess_filter_caption().
  */
 function uiowa_core_preprocess_filter_caption(&$variables) {
-  // Get the '<drupal-media>' tag string.
-  $drupal_media_markup = strval($variables['node']);
 
-  // Separate the attributes of the tag string
-  // in to an array of attribute strings.
-  // Ex: ['foo="bar"', 'ban="baz"'].
-  // Regex101 explanation: https://regex101.com/r/TdXcpT/1
-  preg_match_all('%\s([^"]*)="([^"]*)"%i', $drupal_media_markup, $matches);
-
-  // Create a new array to be used later
-  // for the associative media attributes data.
-  $attributes = [];
-
-  for ($i = 0; $i < count($matches[0]); $i++) {
-    $attributes[$matches[1][$i]] = $matches[2][$i];
-  }
+  // Get an associative array of attributes from the `<drupal-media>` node.
+  $attributes = uiowa_core_drupal_media_attributes($variables['node']);
 
   $inline_class = 'inline--size-default';
 
@@ -247,6 +234,40 @@ function uiowa_core_get_inline_size_class_from_view_mode(string $view_mode): ?st
   }
 
   return NULL;
+}
+
+function uiowa_core_drupal_media_attributes(object|string $drupal_media_markup): array {
+
+  // Get the '<drupal-media>' tag.
+  $markup = $drupal_media_markup;
+
+  // If we have an object, and it implements `MarkupInterface`...
+  if (gettype($drupal_media_markup) === 'object') {
+    if ($implements_classes = class_implements($drupal_media_markup)) {
+
+      $markup_interface = 'Drupal\Component\Render\MarkupInterface';
+      if (in_array($markup_interface, $implements_classes, TRUE)) {
+
+        // Use the `MarkupInterface` `__toString()` function to convert it to a string.
+        $markup = $drupal_media_markup->__toString();
+      }
+    }
+  }
+
+  // Separate the attributes of the tag string in to an array of attribute strings, defined as `$matches`.
+  // Ex: ['foo' => 'bar', 'ban' => 'baz'].
+  // Regex101 explanation: https://regex101.com/r/TdXcpT/1
+  preg_match_all('%\s([^"]*)="([^"]*)"%is', $markup, $matches);
+
+  // Create a new array to be used later for the associative media attributes data.
+  $attributes = [];
+
+  // Format the array using the matches as $key => $value.
+  for ($i = 0; $i < count($matches[0]); $i++) {
+    $attributes[$matches[1][$i]] = $matches[2][$i];
+  }
+
+  return $attributes;
 }
 
 /**
