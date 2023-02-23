@@ -393,6 +393,10 @@ function admissions_core_preprocess_field(&$variables) {
     case 'field_student_profile_major':
       uiowa_core_set_field_icon($variables, 'fa-book');
       break;
+
+    case 'field_college_website':
+      uiowa_core_set_field_icon($variables, 'fa-desktop fas');
+      break;
   }
 
 }
@@ -641,14 +645,6 @@ function admissions_core_theme($existing, $type, $theme, $path) {
       'template' => 'node--view--student-profiles',
       'base hook' => 'node',
     ],
-    'field__node__title__area_of_study___custom' => [
-      'template' => 'field--node--title--centered-highlighted',
-      'base hook' => 'field',
-    ],
-    'field__node__title__major___custom' => [
-      'template' => 'field--node--title--centered-pre-title-highlighted',
-      'base hook' => 'field',
-    ],
     'field__node__field_area_of_study_stat' => [
       'template' => 'field--node--field-area-of-study-stat',
       'base hook' => 'field',
@@ -667,18 +663,6 @@ function admissions_core_theme($existing, $type, $theme, $path) {
     ],
     'field__field_student_profile_blurb' => [
       'template' => 'field--field-student-profile-blurb',
-      'base hook' => 'field',
-    ],
-    'field__node__field_person_hometown__student_profile' => [
-      'template' => 'field--node--field-person-hometown--student-profile',
-      'base hook' => 'field',
-    ],
-    'field__node__title__student_profile__default' => [
-      'template' => 'field--node--title--student-profile--default',
-      'base hook' => 'field',
-    ],
-    'field__taxonomy_term__field_college_website__colleges__default' => [
-      'template' => 'field--taxonomy-term--field-college-website--colleges--default',
       'base hook' => 'field',
     ],
     'fragment__stat' => [
