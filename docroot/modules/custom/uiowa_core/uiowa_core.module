@@ -140,7 +140,8 @@ function template_preprocess_uiowa_core_headline(&$variables) {
  */
 function uiowa_core_preprocess_media(&$variables) {
 
-  // Detect if this is a figure and if it is, it has already been processed for inline sizing and alignment.
+  // Detect if this is a figure and if it is,
+  // it has already been processed for inline sizing and alignment.
   $is_figure = FALSE;
 
   if (isset($variables['attributes']['data-figure'])) {
@@ -171,12 +172,14 @@ function uiowa_core_preprocess_filter_caption(&$variables) {
   // Get the '<drupal-media>' tag string.
   $drupal_media_markup = strval($variables['node']);
 
-  // Separate the attributes of the tag string in to an array of attribute strings.
+  // Separate the attributes of the tag string
+  // in to an array of attribute strings.
   // Ex: ['foo="bar"', 'ban="baz"'].
   // Regex101 explanation: https://regex101.com/r/TdXcpT/1
-  preg_match_all('%\s([^"]*)="([^"]*)"%is', $drupal_media_markup, $matches);
+  preg_match_all('%\s([^"]*)="([^"]*)"%i', $drupal_media_markup, $matches);
 
-  // Create a new array to be used later for the associative media attributes data.
+  // Create a new array to be used later
+  // for the associative media attributes data.
   $attributes = [];
 
   for ($i = 0; $i < count($matches[0]); $i++) {
@@ -188,11 +191,11 @@ function uiowa_core_preprocess_filter_caption(&$variables) {
   // If we have a view mode set...
   if (isset($attributes['data-view-mode'])) {
     // Process the view mode classes.
-
     // Check if the inline class needs to be changed.
     if (!is_null($override_inline_class = uiowa_core_get_inline_size_class_from_view_mode($attributes['data-view-mode']))) {
 
-      // Replace the $inline_class with the relevant modified inline view mode class.
+      // Replace the $inline_class with the relevant
+      // modified inline view mode class.
       $inline_class = $override_inline_class;
     }
   }
@@ -210,7 +213,8 @@ function uiowa_core_preprocess_filter_caption(&$variables) {
   $variables['#attached']['library'][] = 'uids_base/inline';
   $variables['classes'] = $classes;
 
-  // Then, add a custom attribute to the '<drupal-media>' markup to show that it is a figure.
+  // Then, add a custom attribute to the '<drupal-media>'
+  // markup to show that it is a figure.
   $variables['node'] = FilteredMarkup::create(preg_replace(
     '/<drupal-media /i',
     '<drupal-media data-figure="true" ',
