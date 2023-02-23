@@ -210,12 +210,11 @@ function sitenow_events_preprocess_block(&$variables) {
         $attributes = new Attribute();
         // Get block layout builder override styles if they exist.
         // @todo Check for other default styles to mix here.
-        // @todo Adjust so that string keys are not passed along.
         if (isset($variables['elements']['#override_styles']) && !empty($variables['elements']['#override_styles'])) {
-          $parent_lb_styles = array_merge($variables['elements']['#override_styles'], [
-            'list-item' => 'list-item',
-            'event-item' => 'event-item',
-          ]);
+          $parent_lb_styles = array_values(array_merge($variables['elements']['#override_styles'], [
+            'list-item',
+            'event-item',
+          ]));
           $attributes->addClass($parent_lb_styles);
         }
 
