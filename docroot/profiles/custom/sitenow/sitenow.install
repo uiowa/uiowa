@@ -2095,28 +2095,66 @@ function sitenow_update_9055() {
     $results = $query
       ->execute();
     foreach ($results as $record) {
+      // Unserialize and replace the section in question with our updated one.
+      $stored_data = unserialize($record->value, [
+        'allowed_classes' => TRUE,
+      ]);
 
-      // If we only need to replace the data-view-mode, we can do a
-      // targeted preg_replace directly on the serialized data.
-      // Example data and Regex101 tester: https://regex101.com/r/xmaiY3/1
-      $value = preg_replace_callback(
-        '%(<drupal-media.*?data-view-mode=")(small|medium|large)(".*?<\/drupal-media>)%is',
-        function ($matches) {
-          $media_view_mode_map = [
-            'small' => 'small__no_crop',
-            'medium' => 'small__no_crop',
-            'large' => 'medium__no_crop',
-          ];
-          return $matches[1] . $media_view_mode_map[$matches[2]] . $matches[3];
-        },
-        $record->value
-      );
-      // Insert the updated tempstore.
+      /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
+      $section_storage = $stored_data->data['section_storage'];
+
+      // Iterate down into the individual components,
+      // which will contain our blocks of interest.
+      foreach ($section_storage->getSections() as &$section) {
+        foreach ($section->getComponents() as &$component) {
+          // Convert to an array for easier processing.
+          $component_array = $component->toArray();
+          // We only need to worry about serialized blocks.
+          // Otherwise, the component references a saved
+          // block revision, and that is already updated.
+          if (isset($component_array['configuration']['block_serialized'])) {
+            // More unserializing...
+            $content = unserialize($component_array['configuration']['block_serialized'], [
+              'allowed_classes' => TRUE,
+            ]);
+            foreach ($content->getFields() as $field_name => $value) {
+              // There are lots of fields we don't need. If they
+              // aren't a "field_" field, or if it's a "field_" field
+              // that isn't of the two types we care about, skip it.
+              if (str_starts_with($field_name, 'field_') && in_array($content->$field_name?->getFieldDefinition()?->getType(), ['text_long', 'text_with_summary'])) {
+                // Regex to replace any "small", "medium", or "large"
+                // entity view modes with their respective inline counterparts.
+                $content->$field_name->value = preg_replace_callback(
+                  '%(<drupal-media.*?data-view-mode=")(small|medium|large)(".*?<\/drupal-media>)%is',
+                  function ($matches) {
+                    $media_view_mode_map = [
+                      'small' => 'small__no_crop',
+                      'medium' => 'small__no_crop',
+                      'large' => 'medium__no_crop',
+                    ];
+                    return $matches[1] . $media_view_mode_map[$matches[2]] . $matches[3];
+                  },
+                  $content->$field_name->value
+                );
+                // Re-serialize the content and place it back in the array.
+                $component_array['configuration']['block_serialized'] = serialize($content);
+              }
+            }
+
+            // Re-set the component configuration with our updates.
+            $component->setConfiguration($component_array['configuration']);
+          }
+        }
+      }
+
+      // Finally, set the data and insert into the database
+      // after serializing again.
+      $stored_data->data['section_storage'] = $section_storage;
       $database->update('key_value_expire')
         ->condition('name', $record->name, '=')
         ->condition('expire', $record->expire, '=')
         ->fields([
-          'value' => $value,
+          'value' => serialize($stored_data),
         ])
         ->execute();
     }
