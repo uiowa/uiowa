@@ -173,7 +173,7 @@ function uiowa_core_preprocess_filter_caption(&$variables) {
   // Get an associative array of attributes from the `<drupal-media>` node.
   $attributes = uiowa_core_drupal_media_attributes($variables['node']);
 
-  $inline_class = 'inline--size-default';
+  $inline_class = 'inline--size-full';
 
   // If we have a view mode set...
   if (isset($attributes['data-view-mode'])) {
@@ -223,7 +223,7 @@ function uiowa_core_preprocess_filter_caption(&$variables) {
  *   Otherwise, returns an empty array.
  */
 function uiowa_core_get_inline_size_class_from_view_mode(string $view_mode): ?string {
-  $accepted_view_modes = ['default', 'large', 'medium', 'small'];
+  $accepted_view_modes = ['large', 'medium', 'small'];
 
   foreach ($accepted_view_modes as $value) {
     if (str_starts_with($view_mode, $value)) {
@@ -231,6 +231,13 @@ function uiowa_core_get_inline_size_class_from_view_mode(string $view_mode): ?st
       // Return the class that needs to be added.
       return "inline--size-$value";
     }
+  }
+
+  // If we have a `default` view mode, set full.
+  if (str_starts_with('default', $value)) {
+
+    // Return the class that needs to be added.
+    return 'inline--size-full';
   }
 
   return NULL;
