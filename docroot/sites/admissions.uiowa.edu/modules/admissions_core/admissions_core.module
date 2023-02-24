@@ -399,6 +399,18 @@ function admissions_core_preprocess_field(&$variables) {
       uiowa_core_set_field_label_icon($variables, 'fa-clock');
       break;
 
+    case 'field_event_series_button_link':
+      uiowa_core_set_attributes($variables, [
+        'bttn',
+        'bttn--primary',
+        'bttn--full',
+      ]);
+      break;
+
+    case 'field_event_series_summary':
+      uiowa_core_set_field_label_icon($variables, 'fa-clock');
+      break;
+
     case 'field_major_cc_checkpoints':
       $term = $variables['element']['#object'];
       $name = $term->field_major_community_college->entity->name->value;
