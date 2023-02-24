@@ -1992,7 +1992,13 @@ function sitenow_update_9055() {
       // We're only interested in specific field types
       // which may have embeds. If it's not one of these,
       // go ahead and drop it from our definitions.
-      if (!in_array($field_storage_definition->getType(), ['text_long', 'text_with_summary'])) {
+      if (!in_array(
+        $field_storage_definition->getType(),
+        [
+          'text_long',
+          'text_with_summary',
+        ]
+      )) {
         unset($storage_definitions[$field_name]);
       }
       else {
@@ -2069,5 +2075,43 @@ function sitenow_update_9055() {
       }
     }
   }
-  // @todo Update the tempstore as well.
+
+  // Check if we need to update key_value_expire.
+  if ($database->schema()->tableExists('key_value_expire')) {
+    // Check if we have a temp store records that need to be updated.
+    // Temp store is saved in the db in the key_value_expire,
+    // And holds a serialized blob with the unsaved changes.
+    $query = $database->select('key_value_expire', 'kve')
+      ->fields('kve', ['name', 'value', 'expire'])
+      ->condition('collection', 'tempstore.shared.layout_builder.section_storage.overrides', '=')
+      ->condition('value', '%<drupal-media%', 'LIKE');
+
+    $count = $query->countQuery()->execute()->fetchField();
+    \Drupal::messenger()
+      ->addMessage(t('Tempstore records for blocks with embeds records found: @count', [
+        '@count' => $count,
+      ]));
+
+    $results = $query
+      ->execute();
+    foreach ($results as $record) {
+
+      // If we only need to replace the data-view-mode, we can do a
+      // targeted preg_replace directly on the serialized data.
+      // Example data and Regex101 tester: https://regex101.com/r/xmaiY3/1
+      $value = preg_replace(
+        '%(<drupal-media.*?data-view-mode=")(small|medium|large)(".*?<\/drupal-media>)%is',
+        '$1$2__no_crop$3',
+        $record->value
+      );
+      // Insert the updated tempstore.
+      $database->update('key_value_expire')
+        ->condition('name', $record->name, '=')
+        ->condition('expire', $record->expire, '=')
+        ->fields([
+          'value' => $value,
+        ])
+        ->execute();
+    }
+  }
 }
