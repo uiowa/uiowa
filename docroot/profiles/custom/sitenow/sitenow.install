@@ -1940,3 +1940,13 @@ function sitenow_update_9053() {
     }
   });
 }
+
+/**
+ * Import updated acquia_connector.settings around config_ignore.
+ */
+function sitenow_update_9054() {
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('acquia_connector.settings', $source->read('acquia_connector.settings'));
+}
