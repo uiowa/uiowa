@@ -2121,7 +2121,18 @@ function sitenow_update_9055() {
               // There are lots of fields we don't need. If they
               // aren't a "field_" field, or if it's a "field_" field
               // that isn't of the two types we care about, skip it.
-              if (str_starts_with($field_name, 'field_') && in_array($content->$field_name?->getFieldDefinition()?->getType(), ['text_long', 'text_with_summary'])) {
+              if (
+                str_starts_with(
+                  $field_name,
+                  'field_'
+                ) &&
+                in_array(
+                  $content->$field_name?->getFieldDefinition()?->getType(),
+                  ['text_long',
+                    'text_with_summary',
+                  ]
+                )
+              ) {
                 // Regex to replace any "small", "medium", or "large"
                 // entity view modes with their respective inline counterparts.
                 $content->$field_name->value = preg_replace_callback(
