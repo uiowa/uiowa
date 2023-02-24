@@ -7,6 +7,11 @@
 // Set container query max-width sizes for images.
 @supports (contain: inline-size) {
   @container column (min-width: #{$break-xxsm}) {
+    .align-center {
+      margin-inline-start: auto;
+      margin-inline-end: auto;
+    }
+
     .inline--size-small {
       &.align-left {
         margin-inline-end: var(--inline-margin-md);
