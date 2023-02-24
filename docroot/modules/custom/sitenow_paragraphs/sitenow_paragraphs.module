@@ -12,6 +12,16 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\sitenow_paragraphs\Entity\ParagraphsCard;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function sitenow_paragraphs_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['paragraph']['card'])) {
+    $bundles['paragraph']['card']['class'] = ParagraphsCard::class;
+  }
+}
 
 /**
  * Implements hook_theme().
