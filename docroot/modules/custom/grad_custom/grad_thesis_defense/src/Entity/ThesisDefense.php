@@ -1,30 +1,14 @@
 <?php
 
-namespace Drupal\sitenow_people\Entity;
+namespace Drupal\grad_thesis_defense\Entity;
 
 use Drupal\uiowa_core\Entity\NodeBundleBase;
 use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 
 /**
- * Provides an interface for person entries.
+ * Provides an interface for grad.uiowa.edu thesis defense entries.
  */
-class Person extends NodeBundleBase implements RendersAsCardInterface {
-
-  /**
-   * If entity has link directly to source field.
-   *
-   * @var string|null
-   *   field name or null.
-   */
-  protected $sourceLinkDirect = 'field_person_website_link_direct';
-
-  /**
-   * If entity has source link field.
-   *
-   * @var string|null
-   *   field name or null.
-   */
-  protected $sourceLink = 'field_person_website';
+class ThesisDefense extends NodeBundleBase implements RendersAsCardInterface {
 
   /**
    * {@inheritdoc}
@@ -46,25 +30,13 @@ class Person extends NodeBundleBase implements RendersAsCardInterface {
 
     // Process additional card mappings.
     $this->mapFieldsToCardBuild($build, [
-      '#subtitle' => 'field_person_position',
+      '#subtitle' => 'field_thesis_defense_title',
       '#meta' => [
-        'field_person_email',
-        'field_person_phone',
+        'field_thesis_defense_date',
+        'field_thesis_defense_location',
       ],
+      '#content' => 'field_thesis_defense_chairs',
     ]);
-
-    // Handle link directly to source functionality.
-    $build['#url'] = $this->getNodeUrl();
-
-    // Append person credentials to the node label in the teaser view mode.
-    if ($creds = $this->get('field_person_credential')?->getString()) {
-      $title = $this->getTitle();
-      $build['#title'] = t('@title, @creds', [
-        '@title' => $title,
-        '@creds' => $creds,
-      ]);
-    }
-
   }
 
   /**
@@ -74,6 +46,8 @@ class Person extends NodeBundleBase implements RendersAsCardInterface {
     $default_classes = [
       ...parent::getDefaultCardStyles(),
       'card_media_position' => 'card--layout-left',
+      'styles' => 'borderless',
+      'headline_class' => 'headline--serif',
       'media_border' => 'media--border',
       'media_format' => 'media--circle',
       'media_size' => 'media--small',
