@@ -57,6 +57,10 @@ class RoomSchedule extends BlockBase {
             'header' => [
               '#markup' => '<h2 class="h4 block__headline headline headline--serif headline--underline">Today\'s Schedule</h2>',
             ],
+            '#cache' => [
+              'tags' => ['time:hourly'],
+              'max-age' => 60,
+            ],
           ];
 
           // Iterate through the $items array.
