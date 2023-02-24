@@ -7,6 +7,16 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\grad_core\Entity\GradScholar;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function grad_core_entity_bundle_info_alter(array &$bundles) {
+  if (isset($bundles['node']['scholar'])) {
+    $bundles['node']['scholar']['class'] = GradScholar::class;
+  }
+}
 
 /**
  * Implements hook_entity_presave().
