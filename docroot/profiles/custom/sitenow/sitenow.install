@@ -1953,7 +1953,11 @@ function sitenow_update_9054() {
 }
 
 /**
- * Remove all Large, Medium, and Small image view modes and replace them with relevant alternatives.
+ * Replace deprecated view modes.
+ *
+ * Remove all Large, Medium, and Small image view modes
+ * in all fields which allow embed content,
+ * and replace them with relevant inline alternatives.
  */
 function sitenow_update_9055() {
   $entity_types = [
