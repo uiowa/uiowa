@@ -721,6 +721,7 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
       ];
 
       if (isset($row_build['content']['#node'])) {
+        $row_build['content']['#meta'][] = $row_build['content']['#node']->field_room_name?->view('teaser');
         $row_build['content']['#meta'][] = $row_build['content']['#node']->field_room_type?->view('teaser');
       }
 
