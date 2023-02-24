@@ -7,6 +7,7 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\grad_core\Entity\GradMentor;
 use Drupal\grad_core\Entity\GradScholar;
 
 /**
@@ -15,6 +16,9 @@ use Drupal\grad_core\Entity\GradScholar;
 function grad_core_entity_bundle_info_alter(array &$bundles) {
   if (isset($bundles['node']['scholar'])) {
     $bundles['node']['scholar']['class'] = GradScholar::class;
+  }
+  if (isset($bundles['node']['mentor'])) {
+    $bundles['node']['mentor']['class'] = GradMentor::class;
   }
 }
 
