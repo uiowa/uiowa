@@ -36,6 +36,23 @@ class IghnPerson extends NodeBundleBase implements RendersAsCardInterface {
       ],
     ]);
 
+    // IGHN Person does not have an option to link direct
+    // to source or not. If a link exists,
+    // always add it as a link directly to source.
+    $source_link = 'field_ighn_person_cv_link';
+    $link = $this->get($source_link)->uri;
+    if (isset($link) && !empty($link)) {
+      $build['#url'] = $this
+        ->get($source_link)
+        ?->get(0)
+        ?->getUrl()
+        ?->toString();
+    }
+    // If we don't have a link set,
+    // then we don't want the card linked at all.
+    else {
+      $build['#url'] = '';
+    }
   }
 
   /**
