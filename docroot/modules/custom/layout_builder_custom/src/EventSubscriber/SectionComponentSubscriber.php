@@ -119,78 +119,8 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
     if (isset($build['#plugin_id'])) {
       switch ($build['#plugin_id']) {
         case 'inline_block:uiowa_card':
-          // Use the card render element.
-          $build['#type'] = 'card';
-          unset($build['#theme']);
 
-          $build['#attributes']['class'][] = 'block';
-
-          $content = $build['content'];
-          $mapping = [
-            '#media' => 'field_uiowa_card_image',
-            '#subtitle' => 'field_uiowa_card_author',
-          ];
-
-          // Map fields to the card parts.
-          foreach ($mapping as $prop => $fields) {
-            if (!is_array($fields)) {
-              $fields = [$fields];
-            }
-            if (!isset($build[$prop])) {
-              $build[$prop] = [];
-            }
-            foreach ($fields as $field_name) {
-              // @todo Refine this to remove fields if they are empty.
-              if (isset($content[$field_name]) && count(Element::children($content[$field_name])) > 0) {
-                $build[$prop][$field_name] = $content[$field_name];
-                unset($content[$field_name]);
-              }
-            }
-          }
-
-          // @todo Capture the parts of the URL. This isn't working with
-          //   caching.
-          foreach ([
-            'url' => 'url',
-            'title' => 'link_text',
-          ] as $field_link_prop => $link_prop) {
-            if (isset($content['field_uiowa_card_link'][0]["#$field_link_prop"])) {
-              $build["#$link_prop"] = $content['field_uiowa_card_link'][0]["#$field_link_prop"];
-            }
-          }
-          unset($content['field_uiowa_card_link']);
-
-          // Pull the button display value directly from the block content since
-          // the field is hidden.
-          if (isset($build['content']['#block_content'])) {
-            $link_indicator = $build['content']['#block_content']
-              ?->field_uiowa_card_button_display
-              ?->value;
-
-            // Check if it is site default.
-            // Covering default_content with `Use site default` check.
-            // @todo https://github.com/uiowa/uiowa/issues/5416
-            // Consider removing additional check if default_content field null is
-            // captured or the field is refactored to not repurpose null as option.
-            if ($link_indicator === NULL || $link_indicator === 'Use site default') {
-              // Set boolean to site default value.
-              $link_indicator = \Drupal::config('sitenow_pages.settings')->get('card_link_indicator_display');
-            }
-
-            if ($link_indicator === 'Show' || $link_indicator === TRUE) {
-              $build['#link_indicator'] = TRUE;
-            }
-          }
-
-          // Handle the title field.
-          if (isset($content['field_uiowa_card_title']) && count(Element::children($content['field_uiowa_card_title'])) > 0) {
-            $build['#title'] = $content['field_uiowa_card_title'][0]['#text'];
-            $build['#title_heading_size'] = $content['field_uiowa_card_title'][0]['#size'];
-            unset($content['field_uiowa_card_title']);
-          }
-
-          $build['#content'] = $content;
-          unset($build['content']);
+          unset($build['content']['#theme']);
 
           // Map the layout builder styles to the view mode to be used.
           if (!empty($build['#media']) && isset($build['#attributes']['class'])) {
