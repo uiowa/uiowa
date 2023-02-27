@@ -299,13 +299,29 @@ function classrooms_core_preprocess_field(&$variables, $hook) {
     case 'field_room_design_details':
     case 'field_room_classroom_furniture':
     case 'field_room_accessibility':
-    case 'field_room_features':
       uiowa_core_set_title_attributes($variables, [
         'h6',
         'headline',
         'headline--serif',
         'headline--underline',
       ]);
+      break;
+
+    case 'field_room_features':
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        // Modify the field label.
+        $variables['label'] = t('Seating type');
+        uiowa_core_set_field_label_icon($variables, 'fa-chair fa-li');
+        uiowa_core_set_attributes($variables, 'fa-ul');
+      }
+      if ($variables['element']['#view_mode'] == 'full') {
+        uiowa_core_set_title_attributes($variables, [
+          'h6',
+          'headline',
+          'headline--serif',
+          'headline--underline',
+        ]);
+      }
       break;
 
     case 'field_technology_features_icon':
@@ -720,51 +736,27 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
         '#building_name' => $building->label(),
       ];
 
-      if (isset($row_build['content']['#node'])) {
-        $row_build['content']['#meta'][] = $row_build['content']['#node']->field_room_name?->view('teaser');
-        $row_build['content']['#meta'][] = $row_build['content']['#node']->field_room_type?->view('teaser');
-      }
-
-      // Get the seat taxonomy terms from the features taxonomy.
+      // Remove all terms except ones with "Seats" in field_room_features.
       $taxonomy = $node->get('field_room_features')->referencedEntities();
-
-      // Loop through the taxonomy and get items that start with "Seats".
       $seats = [];
+
       foreach ($taxonomy as $term) {
         if (str_starts_with($term->getName(), 'Seats')) {
-          $seats[] = $term->getName();
+          $name = str_replace('Seats - ', '', $term->getName());
+          $term->setName($name);
+          $seats[] = $term;
         }
       }
 
-      // Add the seats to a separate variable.
-      if (!empty($seats)) {
-        $seating_type = [
-          '#type' => 'container',
-          '#weight' => 99,
-          '#attributes' => [
-            'class' => ['field--label-inline fa-ul'],
-          ],
-          'label' => [
-            '#type' => 'html_tag',
-            '#tag' => 'div',
-            '#value' => '<span class="fa-chair fas fa-li" role="presentation"></span>' . t('Seating Type'),
-            '#attributes' => [
-              'class' => ['field__label'],
-            ],
-          ],
-          'value' => [
-            '#type' => 'html_tag',
-            '#tag' => 'div',
-            '#value' => str_replace('Seats - ', '', implode(', ', $seats)),
-            '#attributes' => [
-              'class' => ['value'],
-            ],
-          ],
-        ];
+      // Update the field value with the new list of seats.
+      $node->set('field_room_features', $seats);
 
-        // Add the seating type to the #meta array.
-        $row_build['content']['#meta'][] = $seating_type;
+      if (isset($row_build['content']['#node'])) {
+        $row_build['content']['#meta'][] = $row_build['content']['#node']->field_room_name?->view('teaser');
+        $row_build['content']['#meta'][] = $row_build['content']['#node']->field_room_type?->view('teaser');
+        $row_build['content']['#meta'][] = $row_build['content']['#node']->field_room_features?->view('teaser');
       }
+
     }
   }
 }
