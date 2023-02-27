@@ -740,13 +740,14 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
       if (!empty($seats)) {
         $seating_type = [
           '#type' => 'container',
+          '#weight' => 99,
           '#attributes' => [
             'class' => ['field--label-inline fa-ul'],
           ],
           'label' => [
             '#type' => 'html_tag',
             '#tag' => 'div',
-            '#value' => '<span class="fa-chair fas fa-li" role="presentation"></span>' . \Drupal::translation()->translate('Seating Type'),
+            '#value' => '<span class="fa-chair fas fa-li" role="presentation"></span>' . t('Seating Type'),
             '#attributes' => [
               'class' => ['field__label'],
             ],
