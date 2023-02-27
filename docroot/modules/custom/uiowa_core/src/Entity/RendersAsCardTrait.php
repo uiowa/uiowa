@@ -14,8 +14,15 @@ trait RendersAsCardTrait {
    * {@inheritdoc}
    */
   public function addCardBuildInfo(array &$build): void {
+    // Set the type to card.
     $build['#type'] = 'card';
-    unset($build['#theme']);
+
+    // If there is an existing '#theme' setting, unset it.
+    if (isset($build['#theme'])) {
+      unset($build['#theme']);
+    }
+
+    // Add the card pre-render function.
     $build['#pre_render'] = [
       [
         Card::class,
