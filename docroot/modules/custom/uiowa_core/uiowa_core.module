@@ -142,14 +142,13 @@ function uiowa_core_preprocess_media(&$variables) {
 
   // Detect if this is a figure and if it is,
   // it has already been processed for inline sizing and alignment.
-  $is_figure = FALSE;
-
-  if (isset($variables['attributes']['data-figure'])) {
-    $is_figure = filter_var($variables['attributes']['data-figure'], FILTER_VALIDATE_BOOLEAN);
+  if (isset($variables['attributes']['data-figure']) &&
+    filter_var($variables['attributes']['data-figure'], FILTER_VALIDATE_BOOLEAN) === FALSE) {
+    return;
   }
 
   // Check to see if the media element has been processed, or if it is an embed.
-  if (!$is_figure && isset($variables['elements']['#embed']) && $variables['elements']['#embed']) {
+  if (isset($variables['elements']['#embed']) && $variables['elements']['#embed']) {
 
     // If we have a view mode set...
     if (isset($variables['view_mode'])) {
