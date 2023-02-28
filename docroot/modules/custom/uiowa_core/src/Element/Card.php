@@ -2,6 +2,7 @@
 
 namespace Drupal\uiowa_core\Element;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Render\Element\RenderElement;
 use Drupal\Core\Template\Attribute;
 
@@ -120,6 +121,22 @@ class Card extends RenderElement {
     }
 
     $element['#linked_element'] = $linked_element;
+
+    $element['#button_attributes'] = new Attribute();
+
+    // Set 'aria-hidden' on the button if it is not linked.
+    if ($element['#linked_element'] !== 'button') {
+      $element['#button_attributes']->setAttribute('aria-hidden', TRUE);
+    }
+
+    // If title and link text are set, set a button id attribute for
+    // aria-describedby.
+    if (is_string($element['#title']) && !empty($element['#link_text'])) {
+      // @todo get this working with paragraphs.
+      $aria_id = Html::getUniqueId($element['#title']);
+      $element['#headline']['headline_aria'] = $aria_id;
+      $element['#button_attributes']->setAttribute('id', $aria_id);
+    }
 
     return $element;
   }

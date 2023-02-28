@@ -275,6 +275,28 @@ function template_preprocess_uiowa_core_headline(&$variables) {
 function template_preprocess_card(&$variables) {
   $element = $variables['element'];
 
+  foreach ([
+    'attributes',
+    'button_attributes',
+    'media',
+    'media_attributes',
+    'headline',
+    'subtitle',
+    'meta',
+    'content',
+    'url',
+    'link_text',
+    'link_indicator',
+    'linked_element',
+  ] as $prop) {
+    if (isset($element["#$prop"])) {
+      $variables[$prop] = $element["#$prop"];
+    }
+    else {
+      $variables[$prop] = NULL;
+    }
+  }
+
   if (!empty($element['#url'])) {
     // Add click-container class if there is a link.
     $variables['attributes']['class'][] = 'click-container';
@@ -285,32 +307,9 @@ function template_preprocess_card(&$variables) {
     $variables['attributes']->setAttribute('data-uids-no-link', TRUE);
   }
 
-  foreach ([
-    'attributes',
-    'media',
-    'media_attributes',
-    'title',
-    'title_heading_size',
-    'subtitle',
-    'meta',
-    'content',
-    'url',
-    'link_text',
-    'link_indicator',
-    'linked_element',
-    'aria_described_by',
-  ] as $prop) {
-    if (isset($element["#$prop"])) {
-      $variables[$prop] = $element["#$prop"];
-    }
-    else {
-      $variables[$prop] = NULL;
-    }
-  }
-
   $element['attributes']['class'][] = 'block--word-break';
 
-  $variables['button_attributes'] = new Attribute();
+  // Add default button classes.
   $variables['button_attributes']->addClass([
     'bttn',
     'bttn--primary',
@@ -318,11 +317,9 @@ function template_preprocess_card(&$variables) {
     'bttn--light-font',
   ]);
 
+  // Add the 'click-target' class to the button if it is linked.
   if ($variables['linked_element'] === 'button') {
     $variables['button_attributes']->addClass('click-target');
-  }
-  else {
-    $variables['button_attributes']->setAttribute('aria-hidden', TRUE);
   }
 
   // Set appropriate button classes if there is a URL, no link text, and link
@@ -332,15 +329,6 @@ function template_preprocess_card(&$variables) {
       'bttn--circle',
       'bttn--no-text',
     ]);
-  }
-
-  // If title and link text are set, set a button id attribute for
-  // aria-describedby.
-  if (is_string($variables['title']) && !empty($variables['link_text'])) {
-    // @todo get this working with paragraphs.
-    $aria_id = Html::getUniqueId($variables['title']);
-    $variables['headline']['headline_aria'] = $aria_id;
-    $variables['button_attributes']->setAttribute('id', $aria_id);
   }
 }
 
