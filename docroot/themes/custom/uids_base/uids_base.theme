@@ -159,7 +159,7 @@ function uids_base_preprocess_page(&$variables) {
   $variables['site_parent_name'] = $config->get('parent.name');
   $variables['site_parent_url'] = $config->get('parent.url');
 
-  if (theme_get_setting('logo.use_default') !== 1) {
+  if (theme_get_setting('logo.use_default') != 1) {
     $variables['logo_path'] = theme_get_setting('logo.path');
   }
 
