@@ -163,6 +163,10 @@ function uids_base_preprocess_page(&$variables) {
     $variables['logo_path'] = theme_get_setting('logo.path');
   }
 
+  if ((theme_get_setting('logo.use_default') != 1) && empty(theme_get_setting('logo.path'))) {
+    $variables['no_logo'] = TRUE;
+  }
+
   // Add variables for the image and path of the UIOWA block logo.
   /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
   $path_resolver = \Drupal::service('extension.path.resolver');

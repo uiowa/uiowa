@@ -9,6 +9,8 @@
 
 {% if logo_path %}
   <img src ="{{ logo_path }}" />
+{% elseif no_logo %}
+  <h1>Site Name</h1>
 {% else %}
   <div class="{{ classes }}">
     <a href="{{ path }}">
