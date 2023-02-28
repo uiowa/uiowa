@@ -26,13 +26,14 @@ class Card extends BlockContent implements RendersAsCardInterface {
     // @todo Capture the parts of the URL. This isn't working with
     //   caching.
     foreach ([
-               'url' => 'url',
-               'title' => 'link_text',
-             ] as $field_link_prop => $link_prop) {
+        'url' => 'url',
+        'title' => 'link_text',
+      ] as $field_link_prop => $link_prop) {
       if (isset($build['field_uiowa_card_link'][0]["#$field_link_prop"])) {
         $build["#$link_prop"] = $build['field_uiowa_card_link'][0]["#$field_link_prop"];
       }
     }
+    unset($build['field_uiowa_card_link']);
 
     // Handle the title field.
     if (isset($build['field_uiowa_card_title']) && count(Element::children($build['field_uiowa_card_title'])) > 0) {
@@ -41,26 +42,23 @@ class Card extends BlockContent implements RendersAsCardInterface {
       unset($build['field_uiowa_card_title']);
     }
 
-    // Pull the button display value directly from the block content since
-    // the field is hidden.
-    if (isset($build['content']['#block_content'])) {
-      $link_indicator = $this->field_uiowa_card_button_display
-        ?->value;
+    // Pull the button display value from the entity.
+    $link_indicator = (bool) $this->field_uiowa_card_button_display
+      ?->value;
 
-      // Check if it is site default.
-      // Covering default_content with `Use site default` check.
-      // @todo https://github.com/uiowa/uiowa/issues/5416
-      // Consider removing additional check if default_content field null is
-      // captured or the field is refactored to not repurpose null as option.
-      if ($link_indicator === NULL || $link_indicator === 'Use site default') {
-        // Set boolean to site default value.
-        $link_indicator = \Drupal::config('sitenow_pages.settings')
-          ->get('card_link_indicator_display');
-      }
+    // Check if it is site default.
+    // Covering default_content with `Use site default` check.
+    // @todo https://github.com/uiowa/uiowa/issues/5416
+    // Consider removing additional check if default_content field null is
+    // captured or the field is refactored to not repurpose null as option.
+    if ($link_indicator === NULL || $link_indicator === 'Use site default') {
+      // Set boolean to site default value.
+      $link_indicator = \Drupal::config('sitenow_pages.settings')
+        ->get('card_link_indicator_display');
+    }
 
-      if ($link_indicator === 'Show' || $link_indicator === TRUE) {
-        $build['#link_indicator'] = TRUE;
-      }
+    if ($link_indicator === 'Show' || $link_indicator === TRUE) {
+      $build['#link_indicator'] = TRUE;
     }
   }
 
