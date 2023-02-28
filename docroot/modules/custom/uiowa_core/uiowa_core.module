@@ -234,7 +234,7 @@ function uiowa_core_get_inline_size_class_from_view_mode(string $view_mode): ?st
   }
 
   // If we have a `default` view mode, set full.
-  if (str_starts_with('default', $value)) {
+  if ($view_mode === 'default') {
 
     // Return the class that needs to be added.
     return 'inline--size-full';
