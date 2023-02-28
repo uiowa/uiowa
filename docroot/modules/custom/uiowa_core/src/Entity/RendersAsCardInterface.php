@@ -39,4 +39,15 @@ interface RendersAsCardInterface {
    */
   public function buildCardStyles(array &$build);
 
+  /**
+   * Determine whether a view mode should be rendered as a card.
+   *
+   * @param string $view_mode
+   *   The view mode being checked.
+   *
+   * @return bool
+   *   Whether the view mode should render as a card.
+   */
+  public function viewModeShouldRenderAsCard(string $view_mode): bool;
+
 }

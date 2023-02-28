@@ -53,7 +53,7 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
     // Create heading_size variable for node teaser templates if a
     // corresponding render property was set.
     if (isset($variables['elements']['#heading_size'])) {
-      $building['heading_size'] = $variables['elements']['#heading_size'];
+      $build['heading_size'] = $variables['elements']['#heading_size'];
     }
 
     // Determine whether the link indicator should be set.
@@ -101,6 +101,17 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
     }
 
     return !$this->isNew() ? $this->toUrl()->toString() : NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function viewModeShouldRenderAsCard(string $view_mode): bool {
+    return in_array($view_mode, $this->getCardViewModes());
+  }
+
+  protected function getCardViewModes(): array {
+    return ['teaser'];
   }
 
 }

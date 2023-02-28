@@ -82,4 +82,11 @@ trait RendersAsCardTrait {
     }
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function viewModeShouldRenderAsCard(string $view_mode): bool {
+    return TRUE;
+  }
+
 }
