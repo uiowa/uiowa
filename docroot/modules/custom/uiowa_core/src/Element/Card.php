@@ -47,19 +47,16 @@ class Card extends RenderElement {
    * Pre-render callback: Renders a card into #markup.
    */
   public static function preRenderCard($element) {
-    // Prevent processing multiple times.
-    if (!isset($element['#processed']) || !$element['#processed']) {
-      // Add standard card classes.
-      if (!isset($element['#attributes'])) {
-        $element['#attributes'] = new Attribute();
-      }
-      elseif (!$element['#attributes'] instanceof Attribute) {
-        $element['#attributes'] = new Attribute($element['#attributes']);
-      }
-      $element['#attributes']->addClass([
-        'block--word-break',
-      ]);
+    // Add standard card classes.
+    if (!isset($element['#attributes'])) {
+      $element['#attributes'] = new Attribute();
     }
+    elseif (!$element['#attributes'] instanceof Attribute) {
+      $element['#attributes'] = new Attribute($element['#attributes']);
+    }
+    $element['#attributes']->addClass([
+      'block--word-break',
+    ]);
 
     return $element;
   }
