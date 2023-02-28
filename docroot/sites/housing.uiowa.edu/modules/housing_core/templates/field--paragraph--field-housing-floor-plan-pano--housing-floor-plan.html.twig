@@ -40,7 +40,7 @@
 
 {% for item in items %}
   {{ attach_library('uids_base/media') }}
-  <div class="media--16-9">
+  <div class="media media--16-9">
     <iframe title="{{ pano_image_title }}" allowfullscreen src="/libraries/pannellum/build/pannellum.htm#panorama={{ pano_image_url }}&autoLoad=true"></iframe>
   </div>
 {% endfor %}
