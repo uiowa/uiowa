@@ -2,6 +2,10 @@
 @import "uids3/assets/scss/_utilities.scss";
 
 // Timeline block
+.block-inline-blockuiowa-timeline {
+  position: relative;
+}
+
 .timeline {
   transition: all 0.4s ease;
   position: relative;
@@ -219,9 +223,16 @@ li:first-child .timeline--card.js-scroll {
 }
 
 .timeline-line {
+  top: 0;
   position: absolute;
   left: 50%;
   height: 100%;
+}
+
+
+.headline + .timeline-line .timeline-line__mask {
+  height: 95%;
+  top: 5%;
 }
 
 .timeline-line__mask {
