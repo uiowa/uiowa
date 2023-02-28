@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -16,12 +17,18 @@ function sitenow_seo_form_google_analytics_admin_settings_alter(&$form, FormStat
   /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
   $check = \Drupal::service('uiowa_core.access_checker');
 
-  /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+  /** @var Drupal\Core\Access\AccessResultInterface $access */
   $access = $check->access(\Drupal::currentUser()->getAccount());
 
   if ($access->isForbidden()) {
-    $form['tracking']['#access'] = FALSE;
     $form['advanced']['#access'] = FALSE;
+
+    // Disable access to all tracking config except dimensions and metrics.
+    foreach (Element::children($form['tracking']) as $child) {
+      if ($child != 'parameters') {
+        $form['tracking'][$child]['#access'] = FALSE;
+      }
+    }
   }
 }
 
@@ -50,15 +57,15 @@ function sitenow_seo_form_alter(&$form, FormStateInterface $form_state, $form_id
     case 'node_person_edit_form':
     case 'node_person_form':
       // Collapse inner SEO field groups.
-      if (isset($form["field_meta_tags"])) {
-        if ($form["field_meta_tags"]["widget"][0]["advanced"]) {
-          $form["field_meta_tags"]["widget"][0]["advanced"]["#open"] = FALSE;
+      if (isset($form['field_meta_tags'])) {
+        if ($form['field_meta_tags']['widget'][0]['advanced']) {
+          $form['field_meta_tags']['widget'][0]['advanced']['#open'] = FALSE;
         }
-        if (isset($form["field_meta_tags"]["widget"][0]["open_graph"])) {
-          $form["field_meta_tags"]["widget"][0]["open_graph"]["#open"] = FALSE;
+        if (isset($form['field_meta_tags']['widget'][0]['open_graph'])) {
+          $form['field_meta_tags']['widget'][0]['open_graph']['#open'] = FALSE;
         }
-        if (isset($form["field_meta_tags"]["widget"][0]["twitter_cards"])) {
-          $form["field_meta_tags"]["widget"][0]["twitter_cards"]["#open"] = FALSE;
+        if (isset($form['field_meta_tags']['widget'][0]['twitter_cards'])) {
+          $form['field_meta_tags']['widget'][0]['twitter_cards']['#open'] = FALSE;
         }
       }
       break;

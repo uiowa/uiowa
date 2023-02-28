@@ -5,9 +5,10 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.event.body
-    - field.field.node.event.field_event_category
     - field.field.node.event.field_event_hide
     - field.field.node.event.field_event_location
+    - field.field.node.event.field_event_parent
+    - field.field.node.event.field_event_performer
     - field.field.node.event.field_event_series_link
     - field.field.node.event.field_event_series_link_direct
     - field.field.node.event.field_event_virtual
@@ -21,6 +22,7 @@ dependencies:
     - address
     - link
     - smart_date
+    - text
     - user
 _core:
   default_config_hash: GE8vxA9J85JTlqiqDwrBsmkZq8HXuJ5QEESclO3u8N8
@@ -29,16 +31,31 @@ targetEntityType: node
 bundle: event
 mode: teaser
 content:
+  body:
+    type: text_default
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 8
+    region: content
   field_event_location:
     type: address_default
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 3
+    weight: 2
+    region: content
+  field_event_performer:
+    type: entity_reference_label
+    label: visually_hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 9
     region: content
   field_event_series_link:
     type: link
-    label: above
+    label: visually_hidden
     settings:
       trim_length: 80
       url_only: false
@@ -56,11 +73,11 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 6
+    weight: 4
     region: content
   field_event_virtual:
     type: link
-    label: inline
+    label: visually_hidden
     settings:
       trim_length: 80
       url_only: false
@@ -68,11 +85,11 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    weight: 4
+    weight: 6
     region: content
   field_event_when:
     type: smartdate_default
-    label: inline
+    label: visually_hidden
     settings:
       timezone_override: ''
       format_type: medium
@@ -81,34 +98,36 @@ content:
       add_classes: false
       time_wrapper: true
     third_party_settings: {  }
-    weight: 1
+    weight: 0
     region: content
   field_image:
     type: entity_reference_entity_view
     label: hidden
     settings:
-      view_mode: large__widescreen
+      view_mode: large__square
       link: false
     third_party_settings: {  }
-    weight: 0
+    weight: 5
     region: content
   field_teaser:
     type: basic_string
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 2
+    weight: 1
     region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 5
+    weight: 3
     region: content
 hidden:
-  body: true
   content_moderation_control: true
-  field_event_category: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_event_hide: true
+  field_event_parent: true
   field_meta_tags: true
   field_tags: true
   search_api_excerpt: true

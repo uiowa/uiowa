@@ -30,7 +30,7 @@ third_party_settings:
           label: ''
           layout_builder_styles_style: {  }
         components:
-          d75c28a9-d252-47df-86e8-206190ec5052:
+          -
             uuid: d75c28a9-d252-47df-86e8-206190ec5052
             region: content
             configuration:
@@ -49,7 +49,8 @@ third_party_settings:
                 third_party_settings: {  }
             weight: -9
             additional: {  }
-          abd7062b-38b4-428c-9833-bfa66edfb688:
+            third_party_settings: {  }
+          -
             uuid: abd7062b-38b4-428c-9833-bfa66edfb688
             region: background
             configuration:
@@ -68,7 +69,8 @@ third_party_settings:
                 third_party_settings: {  }
             weight: 4
             additional: {  }
-          9ea10fa1-6f6b-448a-974f-5fff1b257d5b:
+            third_party_settings: {  }
+          -
             uuid: 9ea10fa1-6f6b-448a-974f-5fff1b257d5b
             region: content
             configuration:
@@ -83,7 +85,8 @@ third_party_settings:
               search_label: Search
             weight: -6
             additional: {  }
-          0276b159-ed1e-43b2-a750-7c4b61c86cad:
+            third_party_settings: {  }
+          -
             uuid: 0276b159-ed1e-43b2-a750-7c4b61c86cad
             region: content
             configuration:
@@ -98,7 +101,8 @@ third_party_settings:
                 third_party_settings: {  }
             weight: -4
             additional: {  }
-          d78149d2-01f4-4531-bf35-146375560830:
+            third_party_settings: {  }
+          -
             uuid: d78149d2-01f4-4531-bf35-146375560830
             region: content
             configuration:
@@ -120,6 +124,7 @@ third_party_settings:
               layout_builder_styles: {  }
             weight: -2
             additional: {  }
+            third_party_settings: {  }
         third_party_settings: {  }
       -
         layout_id: layout_onecol
@@ -129,7 +134,7 @@ third_party_settings:
             - ''
             - section_margin_fixed_width_container
         components:
-          6cdd28d1-0503-462a-ab27-7338b23e2295:
+          -
             uuid: 6cdd28d1-0503-462a-ab27-7338b23e2295
             region: content
             configuration:
@@ -144,6 +149,7 @@ third_party_settings:
                 third_party_settings: {  }
             weight: 3
             additional: {  }
+            third_party_settings: {  }
         third_party_settings: {  }
       -
         layout_id: layout_onecol
@@ -153,7 +159,7 @@ third_party_settings:
             - ''
             - section_margin_fixed_width_container
         components:
-          72d44709-fdb0-4d69-bf47-f40d1ab69262:
+          -
             uuid: 72d44709-fdb0-4d69-bf47-f40d1ab69262
             region: content
             configuration:
@@ -175,6 +181,7 @@ third_party_settings:
               layout_builder_styles: {  }
             weight: 0
             additional: {  }
+            third_party_settings: {  }
         third_party_settings: {  }
       -
         layout_id: layout_onecol
@@ -185,7 +192,7 @@ third_party_settings:
             1: section_margin_fixed_width_container
             section_alignment_start: section_alignment_start
         components:
-          5fde834e-0dd0-4ace-8d35-e08d22cba5cf:
+          -
             uuid: 5fde834e-0dd0-4ace-8d35-e08d22cba5cf
             region: content
             configuration:
@@ -207,6 +214,7 @@ third_party_settings:
               layout_builder_styles: {  }
             weight: 0
             additional: {  }
+            third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -214,10 +222,12 @@ third_party_settings:
     allowed_block_categories: {  }
     entity_view_mode_restriction:
       allowed_layouts: {  }
-      blacklisted_blocks: {  }
-      whitelisted_blocks: {  }
+      denylisted_blocks: {  }
+      allowlisted_blocks: {  }
     entity_view_mode_restriction_by_region:
       allowed_layouts: {  }
+      allowlisted_blocks: null
+      denylisted_blocks: null
 id: node.topic_collection.default
 targetEntityType: node
 bundle: topic_collection

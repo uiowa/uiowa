@@ -5,13 +5,15 @@
  * Contains uipress_core.module.
  */
 
+use Drupal\Core\Cache\Cache;
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Template\Attribute;
 
 /**
  * Implements hook_field_widget_WIDGET_TYPE_form_alter().
  */
 function uipress_core_field_widget_entity_reference_paragraphs_form_alter(&$element, &$form_state, $context) {
-  if ($element['#paragraph_type'] == 'book_type') {
+  if ($element['#paragraph_type'] === 'book_type') {
     if (isset($element['subform']['field_book_ebook_ownership'])) {
       // Set the field_book_ebook_ownership field to only be visible when ebook
       // the type of book selected.
@@ -34,12 +36,13 @@ function uipress_core_field_widget_entity_reference_paragraphs_form_alter(&$elem
 function uipress_core_preprocess_block(&$variables) {
   switch ($variables['elements']['#plugin_id']) {
     // Display book interior images in a two column grid.
-    case 'field_block:node:book:field_book_file_uploads':
-      if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = [''];
-      }
-      $variables['attributes']['class'][] .= 'grid--twocol--50-50';
-      $variables['attributes']['class'][] .= 'block-margin__top';
+    case 'field_block:node:book:field_book_interior_pages':
+      $variables['attributes']['class'][] = 'grid--twocol--50-50';
+      $variables['attributes']['class'][] = 'block-margin__top';
+      break;
+
+    case 'field_block:node:book:field_book_subtitle':
+      $variables['attributes']['class'][] = 'element--light-intro';
       break;
   }
 }
@@ -63,9 +66,64 @@ function uipress_core_preprocess_field(&$variables, $hook) {
       $variables['field_container_classes'] = 'list-container';
       break;
 
-    case 'field_book_file_uploads':
+    case 'field_book_interior_pages':
       $variables['field_container_classes'] = 'list-container';
       break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for html.html.twig.
+ */
+function uipress_core_preprocess_html(&$variables) {
+  $variables['#attached']['library'][] = 'uipress_core/global';
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function uipress_core_preprocess_node(&$variables) {
+  /** @var \Drupal\node\Entity\Node $node */
+  $node = $variables['node'];
+
+  // Append person credentials to the node label in the teaser view mode. This
+  // happens on the full node view for all people by default in LBC.
+  // @see \Drupal\layout_builder_custom/EventSubscriber\SectionComponentSubscriber
+  if ($node->getType() === 'book' && $variables['view_mode'] === 'teaser') {
+    $default_classes = [
+      'card--list',
+      'card--media-right',
+      'card--centered-left',
+    ];
+
+    $media_styles = [
+      'card__media--medium',
+      'card__media',
+    ];
+    $attributes = new Attribute($variables['attributes']);
+    $attributes->addClass($default_classes);
+
+    $media_attributes = new Attribute();
+    $media_attributes->addClass($media_styles);
+
+    if (!$node->get('field_book_author')->isEmpty()) {
+      $subtitle = $variables['content']['field_book_author'];
+    }
+    else {
+      $subtitle = $variables['content']['field_book_editor'];
+    }
+
+    $variables['card_options'] = [
+      'attributes' => $attributes,
+      'media_attributes' => $media_attributes,
+      'card_link_url' => $node->toUrl()->toString(),
+      'card_title' => $node->getTitle(),
+      'card_image' => $variables['content']['field_image'],
+      'card_subtitle' => $subtitle,
+      'card_meta' => \Drupal::service('renderer')->render($variables['content']['field_book_type']),
+      'headline_level' => 'h3',
+      'headline_class' => 'card__title headline',
+    ];
   }
 }
 
@@ -87,18 +145,24 @@ function uipress_core_preprocess_paragraph__book_type(&$variables) {
       if (!$paragraph->get('field_book_sale_price')->isEmpty()) {
         // If start date exists make sure current date is after start date.
         $in_range = TRUE;
-        $now = date('m-d-Y');
+        // Create a variable for start of today based on the site's timezone
+        // which can be used to compare the start and end dates.
+        $timezone = date_default_timezone_get();
+        $datetime = new DrupalDateTime('now', $timezone);
+        $today = $datetime->format('Y-m-d 00:00:00');
+
+        // If the start date exists make sure that it is in the past or today.
         $start = $paragraph->get('field_book_sale_start_date')->value;
         if (isset($start)) {
-          $start = date('m-d-Y', strtotime($start));
-          $in_range = $now >= $start;
+          $start = date('Y-m-d', strtotime($start));
+          $in_range = $today >= $start;
         }
 
-        // If end date exists make sure current date is before end date.
+        // If end date exists make sure it is after today.
         $end = $paragraph->get('field_book_sale_expiry_date')->value;
         if ($in_range && isset($end)) {
-          $end = date('m-d-Y', strtotime($end));
-          $in_range = $now < $end;
+          $end = date('Y-m-d', strtotime($end));
+          $in_range = $today < $end;
         }
         // If neither condition is true unset display of sale price.
         if (!$in_range) {
@@ -121,54 +185,6 @@ function uipress_core_preprocess_paragraph__book_type(&$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function uipress_core_preprocess_node(&$variables) {
-  /** @var \Drupal\node\Entity\Node $node */
-  $node = $variables['node'];
-
-  // Append person credentials to the node label in the teaser view mode. This
-  // happens on the full node view for all people by default in LBC.
-  // @see \Drupal\layout_builder_custom/EventSubscriber\SectionComponentSubscriber
-  if ($node->getType() == 'book' && $variables['view_mode'] == 'teaser') {
-    $default_classes = [
-      'card--list',
-      'card--media-right',
-      'card--centered-left',
-    ];
-
-    $media_styles = [
-      'card__media--medium',
-      'card__media',
-    ];
-    $attributes = new Attribute($variables['attributes']);
-    $attributes->addClass($default_classes);
-
-    $media_attributes = new Attribute();
-    $media_attributes->addClass($media_styles);
-
-    $variables['card_options'] = [
-      'attributes' => $attributes,
-      'media_attributes' => $media_attributes,
-      'card_link_url' => $node->toUrl()->toString(),
-      'card_title' => $node->getTitle(),
-      'card_image' => $variables['content']['field_image'],
-      'card_subtitle' => $variables['content']['field_book_author'],
-      'card_meta' => $variables['content']['field_book_type'],
-      'headline_level' => 'h3',
-      'headline_class' => 'card__title headline',
-    ];
-  }
-}
-
-/**
- * Implements hook_preprocess_HOOK() for html.html.twig.
- */
-function uipress_core_preprocess_html(&$variables) {
-  $variables['#attached']['library'][] = 'uipress_core/global';
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
 function uipress_core_preprocess_views_view_unformatted(&$variables) {
   /** @var \Drupal\views\ViewExecutable $view */
   $view = $variables['view'];
@@ -180,7 +196,7 @@ function uipress_core_preprocess_views_view_unformatted(&$variables) {
       $row['template_options'] = [
         'attributes' => $row['attributes'],
         'accordion_item_content' => $row['content'],
-        'accordion_item_expanded' => 'true',
+        'accordion_item_expanded' => 'false',
         'accordion_item_id' => "book-details-$id",
         'accordion_item_label' => $view->getTitle(),
         'accordion_multiselectable' => TRUE,
@@ -259,7 +275,71 @@ function uipress_core_preprocess_views_view(&$variables) {
   $view = $variables['view'];
   $id = $view->storage->id();
 
-  if ($id == 'taxonomy_term') {
+  if ($id === 'taxonomy_term') {
     $variables['attributes']['class'][] = 'grid--threecol--33-34-33';
   }
+}
+
+/**
+ * Implements hook_cron().
+ */
+function uipress_core_cron() {
+  // Check if we've run this yet today. Sales change
+  // at most daily, so once in the morning is enough.
+  $request_date = date('Y-m-d', \Drupal::time()->getRequestTime());
+  $last_run = \Drupal::state()->get('uipress_core_daily_last');
+
+  if (!$last_run || $request_date > $last_run) {
+    // Check if we should be concerned with
+    // purging as well, and if so, get it set up.
+    if ($include_purge = \Drupal::moduleHandler()->moduleExists('acquia_purge')) {
+      $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
+      $purgeQueuers = \Drupal::service('purge.queuers');
+      $purgeQueue = \Drupal::service('purge.queue');
+      $queuer = $purgeQueuers->get('coretags');
+
+      $invalidations = [];
+    }
+
+    // Get our nodes of interest and invalidate some cache tags.
+    $nids = uipress_core_get_current_sales();
+    foreach ($nids as $nid) {
+      $tag = 'node:' . $nid;
+      Cache::invalidateTags([$tag]);
+      if ($include_purge) {
+        $invalidations[] = $purgeInvalidationFactory->get('tag', $tag);
+      }
+    }
+    if ($include_purge) {
+      $purgeQueue->add($queuer, $invalidations);
+    }
+
+    \Drupal::state()->set('uipress_core_daily_last', $request_date);
+  }
+}
+
+/**
+ * Return an array of node ids for books with a current sale.
+ *
+ * @return array
+ *   The NIDs of interest.
+ */
+function uipress_core_get_current_sales() {
+  $today = date('Y-m-d');
+  $yesterday = date('Y-m-d', strtotime('yesterday'));
+  $pids = \Drupal::entityQuery('paragraph')
+    ->condition('type', 'book_type')
+    // If the sale starts today or started before today,
+    // we want to include it.
+    ->condition('field_book_sale_start_date', $today, '<=')
+    // We want to include sales that end in the future, or that
+    // just ended yesterday, so that we still wipe their cache
+    // and don't display a sale that has since ended.
+    ->condition('field_book_sale_expiry_date', $yesterday, '>=')
+    ->execute();
+  $nids = \Drupal::entityQuery('node')
+    ->condition('type', 'book')
+    ->condition('field_book_type', $pids, 'IN')
+    ->execute();
+  return array_values($nids);
 }

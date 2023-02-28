@@ -1,0 +1,69 @@
+uuid: 3945884a-5932-4d4d-9f77-148129e2e761
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.project.body
+    - field.field.node.project.field_academic_year
+    - field.field.node.project.field_image
+    - field.field.node.project.field_meta_tags
+    - field.field.node.project.field_project_college_department
+    - field.field.node.project.field_project_deliverables
+    - field.field.node.project.field_project_led_by
+    - field.field.node.project.field_project_links
+    - field.field.node.project.field_project_partner
+    - field.field.node.project.field_tags
+    - node.type.project
+  module:
+    - text
+    - user
+id: node.project.teaser
+targetEntityType: node
+bundle: project
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_image:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: medium__widescreen
+      link: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_project_partner:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  field_academic_year: true
+  field_meta_tags: true
+  field_project_college_department: true
+  field_project_deliverables: true
+  field_project_led_by: true
+  field_project_links: true
+  field_tags: true
+  search_api_excerpt: true

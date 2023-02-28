@@ -2,10 +2,10 @@
 
 namespace Drupal\uiowa_graph\Plugin\Block;
 
+use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Component\Utility\Xss;
-use Drupal\Component\Utility\Html;
 
 /**
  * Provides the Graph block.
@@ -72,7 +72,7 @@ class GraphBlock extends BlockBase {
     $build['graph_container']['graph_details']['graph_table']['#rows'] = [];
 
     foreach ($rows as $row_key => $row) {
-      if ($row_key == 0) {
+      if ($row_key === 0) {
         foreach (explode(',', $row) as $column) {
           array_push($build['graph_container']['graph_details']['graph_table']['#header'], ['data' => $column]);
         }

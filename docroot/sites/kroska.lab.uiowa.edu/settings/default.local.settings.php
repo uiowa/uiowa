@@ -25,7 +25,6 @@ $databases['default']['default'] = [
 
 // Use development service parameters.
 $settings['container_yamls'][] = EnvironmentDetector::getRepoRoot() . '/docroot/sites/development.services.yml';
-$settings['container_yamls'][] = EnvironmentDetector::getRepoRoot() . '/docroot/sites/blt.development.services.yml';
 
 // Allow access to update.php.
 $settings['update_free_access'] = TRUE;
@@ -133,7 +132,7 @@ $settings['skip_permissions_hardening'] = TRUE;
 /**
  * Files paths.
  */
-$settings['file_private_path'] = EnvironmentDetector::getRepoRoot() . '/files-private/default';
+$settings['file_private_path'] = EnvironmentDetector::getRepoRoot() . '/files-private/' . EnvironmentDetector::getSiteName($site_path);
 /**
  * Site path.
  *

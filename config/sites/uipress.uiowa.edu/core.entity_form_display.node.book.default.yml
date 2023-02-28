@@ -13,9 +13,9 @@ dependencies:
     - field.field.node.book.field_book_editor
     - field.field.node.book.field_book_essay_by
     - field.field.node.book.field_book_excerpt
-    - field.field.node.book.field_book_file_uploads
     - field.field.node.book.field_book_foreword_author
     - field.field.node.book.field_book_illustrator
+    - field.field.node.book.field_book_interior_pages
     - field.field.node.book.field_book_introduction_author
     - field.field.node.book.field_book_pages
     - field.field.node.book.field_book_photographer
@@ -33,13 +33,13 @@ dependencies:
     - field.field.node.book.field_book_type
     - field.field.node.book.field_image
     - field.field.node.book.field_meta_tags
-    - image.style.thumbnail
+    - field.field.node.book.field_pages_art_trim
     - node.type.book
+    - workflows.workflow.editorial
   module:
     - content_moderation
     - datetime
     - field_group
-    - image
     - media_library
     - metatag
     - paragraphs
@@ -50,11 +50,11 @@ third_party_settings:
     group_book_images:
       children:
         - field_image
-        - field_book_file_uploads
+        - field_book_interior_pages
       label: 'Book Images'
       region: content
       parent_name: ''
-      weight: 5
+      weight: 6
       format_type: tab
       format_settings:
         classes: ''
@@ -79,7 +79,7 @@ third_party_settings:
       label: Collaborators
       region: content
       parent_name: ''
-      weight: 1
+      weight: 2
       format_type: tab
       format_settings:
         classes: ''
@@ -91,6 +91,7 @@ third_party_settings:
     group_publication_details:
       children:
         - field_book_publication_date
+        - field_pages_art_trim
         - field_book_pages
         - field_book_art
         - field_book_trim_size
@@ -98,7 +99,7 @@ third_party_settings:
       label: 'Publication Details'
       region: content
       parent_name: ''
-      weight: 15
+      weight: 16
       format_type: tab
       format_settings:
         classes: ''
@@ -114,7 +115,7 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 7
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -130,7 +131,7 @@ content:
     third_party_settings: {  }
   field_book_art:
     type: string_textfield
-    weight: 16
+    weight: 17
     region: content
     settings:
       size: 60
@@ -148,7 +149,7 @@ content:
     third_party_settings: {  }
   field_book_awards:
     type: text_textarea
-    weight: 22
+    weight: 23
     region: content
     settings:
       rows: 5
@@ -156,7 +157,7 @@ content:
     third_party_settings: {  }
   field_book_contributors:
     type: text_textarea
-    weight: 19
+    weight: 20
     region: content
     settings:
       rows: 5
@@ -164,7 +165,7 @@ content:
     third_party_settings: {  }
   field_book_description_summary:
     type: text_textarea
-    weight: 17
+    weight: 18
     region: content
     settings:
       rows: 5
@@ -172,7 +173,7 @@ content:
     third_party_settings: {  }
   field_book_edition:
     type: options_select
-    weight: 18
+    weight: 20
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -198,19 +199,11 @@ content:
     third_party_settings: {  }
   field_book_excerpt:
     type: text_textarea
-    weight: 21
+    weight: 22
     region: content
     settings:
       rows: 5
       placeholder: ''
-    third_party_settings: {  }
-  field_book_file_uploads:
-    type: image_image
-    weight: 4
-    region: content
-    settings:
-      progress_indicator: throbber
-      preview_image_style: thumbnail
     third_party_settings: {  }
   field_book_foreword_author:
     type: entity_reference_autocomplete
@@ -232,6 +225,13 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_book_interior_pages:
+    type: media_library_widget
+    weight: 4
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
   field_book_introduction_author:
     type: entity_reference_autocomplete
     weight: 20
@@ -244,7 +244,7 @@ content:
     third_party_settings: {  }
   field_book_pages:
     type: string_textfield
-    weight: 15
+    weight: 16
     region: content
     settings:
       size: 60
@@ -278,7 +278,7 @@ content:
     third_party_settings: {  }
   field_book_related_reads:
     type: entity_reference_autocomplete
-    weight: 23
+    weight: 24
     region: content
     settings:
       match_operator: CONTAINS
@@ -288,33 +288,13 @@ content:
     third_party_settings: {  }
   field_book_reviews_blurbs:
     type: text_textarea
-    weight: 18
+    weight: 19
     region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
   field_book_season:
-    type: entity_reference_autocomplete_tags
-    weight: 3
-    region: content
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_book_series:
-    type: entity_reference_autocomplete_tags
-    weight: 2
-    region: content
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_book_subject:
     type: entity_reference_autocomplete_tags
     weight: 4
     region: content
@@ -324,9 +304,37 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_book_series:
+    type: entity_reference_autocomplete_tags
+    weight: 3
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_book_subject:
+    type: entity_reference_autocomplete_tags
+    weight: 5
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_book_subtitle:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_book_table_of_contents:
     type: text_textarea
-    weight: 20
+    weight: 21
     region: content
     settings:
       rows: 5
@@ -344,7 +352,7 @@ content:
     third_party_settings: {  }
   field_book_trim_size:
     type: string_textfield
-    weight: 17
+    weight: 19
     region: content
     settings:
       size: 60
@@ -352,7 +360,7 @@ content:
     third_party_settings: {  }
   field_book_type:
     type: entity_reference_paragraphs
-    weight: 16
+    weight: 17
     region: content
     settings:
       title: Paragraph
@@ -371,40 +379,49 @@ content:
     third_party_settings: {  }
   field_meta_tags:
     type: metatag_firehose
-    weight: 14
+    weight: 15
     region: content
     settings:
       sidebar: true
+      use_details: true
+    third_party_settings: {  }
+  field_pages_art_trim:
+    type: string_textfield
+    weight: 15
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 12
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
   path:
     type: path
-    weight: 10
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    weight: 8
+    weight: 9
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 13
+    weight: 14
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    weight: 9
+    weight: 10
     region: content
     settings:
       display_label: true
@@ -419,7 +436,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete_tags
-    weight: 6
+    weight: 7
     region: content
     settings:
       match_operator: CONTAINS
@@ -428,9 +445,8 @@ content:
       placeholder: ''
     third_party_settings: {  }
   url_redirects:
-    weight: 11
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden:
-  field_book_subtitle: true
+hidden: {  }

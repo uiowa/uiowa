@@ -31,7 +31,7 @@ function uiowa_aggregator_form_aggregator_feed_form_alter(&$form, FormStateInter
   /** @var Drupal\uiowa_core\Access\UiowaCoreAccess $check */
   $check = \Drupal::service('uiowa_core.access_checker');
 
-  /** @var Drupal\Core\Access\AccessResultInterface $is_admin */
+  /** @var Drupal\Core\Access\AccessResultInterface $access */
   $access = $check->access(\Drupal::currentUser()->getAccount());
 
   // Set the minimum feed refresh to match our hourly cron job so that
@@ -50,7 +50,7 @@ function uiowa_aggregator_form_aggregator_feed_form_alter(&$form, FormStateInter
  * Implements hook_preprocess_HOOK().
  */
 function uiowa_aggregator_preprocess_block(&$variables) {
-  if ($variables['elements']['#plugin_id'] == 'inline_block:uiowa_aggregator') {
+  if ($variables['elements']['#plugin_id'] === 'inline_block:uiowa_aggregator') {
     /** @var \Drupal\Block\Entity\Block $block */
     $block = $variables['elements']['content']['#block_content'];
 

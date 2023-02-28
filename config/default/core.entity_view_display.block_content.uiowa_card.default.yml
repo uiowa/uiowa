@@ -5,6 +5,7 @@ dependencies:
   config:
     - block_content.type.uiowa_card
     - field.field.block_content.uiowa_card.field_uiowa_card_author
+    - field.field.block_content.uiowa_card.field_uiowa_card_button_display
     - field.field.block_content.uiowa_card.field_uiowa_card_excerpt
     - field.field.block_content.uiowa_card.field_uiowa_card_image
     - field.field.block_content.uiowa_card.field_uiowa_card_link
@@ -64,4 +65,8 @@ content:
     weight: 0
     region: content
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_uiowa_card_button_display: true
   search_api_excerpt: true

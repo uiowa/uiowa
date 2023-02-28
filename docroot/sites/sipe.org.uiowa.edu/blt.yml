@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgsipe.uiowa.ddev.site
+    protocol: https
+  machine_name: orgsipe
+  human_name: sipe.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgsipe.prod
+drupal:
+  db:
+    database: sipe_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: dquam
+  site-name: 'Students for Interprofessional Practice and Education'

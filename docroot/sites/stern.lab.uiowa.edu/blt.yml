@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labstern.uiowa.ddev.site
+    protocol: https
+  machine_name: labstern
+  human_name: stern.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labstern.prod
+drupal:
+  db:
+    database: stern_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: laverman
+  site-name: 'Stern Lab'

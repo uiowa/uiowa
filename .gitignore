@@ -10,6 +10,7 @@ local.blt.yml
 sites.local.php
 deploy_key
 .ddev/config.web_environment.yaml
+docroot/sites/development.services.yml
 
 # Ignore drupal core.
 docroot/core
@@ -32,7 +33,7 @@ drush/Commands/contrib
 **/assets/css
 **/assets/js
 docroot/themes/custom/*/uids
-docroot/themes/custom/*/styleguide
+docroot/themes/custom/*/uids3
 
 # Ignore build artifacts
 deployment_identifier
@@ -145,6 +146,9 @@ drush/sites/.checksums
 # Deprecation detector rules
 .rules
 
-# Ignore customized PHPUnit configuration.
+# PHPCS
+.phpcs-cache
+
+# PHPUnit
 phpunit.xml
 .phpunit.result.cache

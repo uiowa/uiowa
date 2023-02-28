@@ -109,6 +109,7 @@
   'card_link_url': node_link,
   'media_styles': media_classes,
   'headline_level': headline_level,
+  'visible_button': show_teaser_link_indicator
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with article_card only %}
@@ -116,7 +117,7 @@
   {# @todo Add content_attributes.addClass('node__content media-body') #}
 
   {% block card_details %}
-    <div class="article-meta">
+    <div class="article--meta">
       {{ content.article_created_date }}{{ content.article_author }}{{ content.field_article_source_org }}{{ content.field_article_source_link }}
     </div>
   {% endblock %}

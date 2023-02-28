@@ -7,7 +7,7 @@
 
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Url;
-use Drupal\smart_trim\Truncate\TruncateHTML;
+use Drupal\smart_trim\TruncateHTML;
 
 /**
  * Theme function for an event teaser.
@@ -17,14 +17,6 @@ use Drupal\smart_trim\Truncate\TruncateHTML;
  */
 function template_preprocess_sitenow_events_teaser(array &$variables) {
   $config = \Drupal::config('sitenow_events.settings');
-
-  if ($variables['event']['canceled'] == TRUE) {
-    $variables['event']['subtitle'] = [
-      '#markup' => 'Canceled',
-      '#prefix' => '<span class="badge badge--orange">',
-      '#suffix' => '</span>',
-    ];
-  }
 
   if (isset($variables['event']['media'][0]['original_image'])) {
     // Establish default view mode if layout_builder_styles don't exist.
@@ -56,7 +48,7 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
     ];
   }
 
-  $external_link = ($config->get('event_link') == 'event-link-external');
+  $external_link = ($config->get('event_link') === 'event-link-external');
 
   if ($external_link) {
     $variables['event']['url'] = $variables['event']['events_site_url'];
@@ -66,7 +58,7 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
 
     // Add a parameter on the URL for event instances.
     foreach ($variables['event']['event_instances'] as $key => $instance) {
-      if ($variables['event']['instance_start'] == $instance['event_instance']['start']) {
+      if ($variables['event']['instance_start'] === $instance['event_instance']['start']) {
         $instance_id = $key;
       }
     }
@@ -78,12 +70,18 @@ function template_preprocess_sitenow_events_teaser(array &$variables) {
   $variables['event']['date_string'] = sitenow_events_format_instance([
     'start' => $variables['event']['instance_start'],
     'end' => $variables['event']['instance_end'],
+    'last_date' => $variables['event']['last_date'],
     'all_day' => $variables['event']['instance_all_day'],
   ]);
 
-  if (isset($variables['event']['description'])) {
-    // Limit what html is allowed.
-    $allowed_tags = ['a', 'strong', 'em'];
+  // Limit what html is allowed.
+  $allowed_tags = ['a', 'strong', 'em'];
+
+  if (isset($variables['event']['summary'])) {
+    $variables['event']['description'] = Xss::filter($variables['event']['summary'], $allowed_tags);
+  }
+
+  elseif (isset($variables['event']['description'])) {
     $variables['event']['description'] = Xss::filter($variables['event']['description'], $allowed_tags);
 
     // Use smart_trim's helper to safely truncate without breaking HTML.

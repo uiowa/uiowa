@@ -10,52 +10,61 @@ stackable: true
 storage: folder
 folder: ../config/sites/admissions.uiowa.edu
 module:
-  admissions_core: 0
   better_exposed_filters: 0
-  entity_print: 0
   entity_print_views: 0
   fullcalendar_view: 0
   jquery_ui: 0
   jquery_ui_datepicker: 0
   jquery_ui_slider: 0
   jquery_ui_touch_punch: 0
+  taxonomy_path_breadcrumb: 0
   weight: 0
+  admissions_core: 10
   tvi: 15
 theme: {  }
 complete_list:
   - block_content.type.area_of_study_search
   - config_split.config_split.site
+  - core.entity_form_display.node.major.default
   - core.entity_view_display.node.event.default
+  - core.entity_view_display.node.major.default
+  - core.entity_view_display.node.major.teaser
   - core.entity_view_display.node.page.default
   - core.entity_view_display.node.person.default
   - core.entity_view_mode.node.pdf
+  - field.storage.node.field_event_category
   - field.storage.node.field_event_series_button_link
   - field.storage.node.field_event_series_summary
   - field.storage.taxonomy_term.field_academic_groups_media
-  - field.storage.taxonomy_term.field_image
   - fragments.fragment_type.stat
   - metatag.metatag_defaults.node__area_of_study
-  - metatag.metatag_defaults.node__event
   - metatag.metatag_defaults.node__event_series
+  - metatag.metatag_defaults.node__major
   - metatag.metatag_defaults.node__student_profile
   - metatag.metatag_defaults.node__transfer_tips
   - node.type.area_of_study
   - node.type.event_series
+  - node.type.major
   - node.type.student_profile
   - node.type.transfer_tips
   - paragraphs.paragraphs_type.admissions_card
   - paragraphs.paragraphs_type.admissions_requirement
   - paragraphs.paragraphs_type.degree
   - pathauto.pattern.areas_of_study
+  - pathauto.pattern.community_colleges
+  - pathauto.pattern.major
   - pathauto.pattern.student_profiles
   - pathauto.pattern.transfer_tips
   - simple_sitemap.bundle_settings.default.node.area_of_study
+  - simple_sitemap.bundle_settings.default.node.major
   - simple_sitemap.bundle_settings.default.node.student_profile
   - simple_sitemap.bundle_settings.default.node.transfer_tips
   - simple_sitemap.bundle_settings.default.taxonomy_term.colleges
   - sitenow_people.person_type.counselor
   - taxonomy.vocabulary.academic_groups
   - taxonomy.vocabulary.colleges
+  - taxonomy.vocabulary.community_colleges
+  - taxonomy.vocabulary.event_categories
   - views.view.academic_groups_block
   - views.view.academic_groups_taxonomy_term
   - views.view.areas_of_study
@@ -63,18 +72,26 @@ complete_list:
   - views.view.areas_of_study_kiosk
   - views.view.area_of_study_college_block
   - views.view.colleges_taxonomy_term
+  - views.view.community_colleges
   - views.view.counselors
+  - views.view.majors
   - views.view.student_profiles
   - views.view.transfer_tips_list
+  - 'core.entity_view_display.node.major.*'
+  - views.view.2_plus_2_majors
+  - views.view.community_colleges_taxonomy_term
   - 'field.storage.fragment.field_stat_*'
   - 'field.storage.node.field_area_of_study_*'
+  - 'field.storage.node.field_major_*'
   - 'field.storage.node.field_student_profile_*'
   - 'field.storage.node.field_transfer_tips_*'
   - 'field.storage.paragraph.field_degree*'
   - 'field.storage.paragraph.field_admissions_card_*'
   - 'field.storage.paragraph.field_ar_*'
   - 'field.storage.taxonomy_term.field_college_*'
+  - 'field.storage.taxonomy_term.field_cc_*'
 partial_list:
+  - core.entity_form_display.node.event.default
   - core.entity_view_display.block_content.uiowa_events.default
   - core.entity_view_display.node.page.pdf
   - core.entity_view_mode.media.grid_gallery
@@ -94,14 +111,17 @@ partial_list:
   - layout_builder_styles.style.block_hide_details
   - layout_builder_styles.style.list_format_grid
   - layout_builder_styles.style.list_format_list
+  - metatag.metatag_defaults.node__event
   - metatag.settings
   - sitenow_people.person_type.student
   - views.view.events
+  - views.view.events_list_block
   - views.view.person_card
   - views.view.scholarships
   - views.view.student_card
   - workflows.workflow.editorial
   - 'core.entity_form_display.node.person.*'
   - 'core.entity_form_display.node.scholarship.*'
-  - 'core.entity_view_display.*'
+  - 'core.entity_form_display.taxonomy_term.tags.*'
+  - 'core.entity_view_display.node.*'
   - 'user.role.*'

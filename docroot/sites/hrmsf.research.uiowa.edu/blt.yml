@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: researchhrmsf.uiowa.ddev.site
+    protocol: https
+  machine_name: researchhrmsf
+  human_name: hrmsf.research.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: researchhrmsf.prod
+drupal:
+  db:
+    database: hrmsf_research_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: makyea
+  site-name: 'High Resolution Mass Spectrometry Facility'

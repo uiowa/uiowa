@@ -3,8 +3,8 @@
 namespace Drupal\Tests\sitenow_events\Kernel;
 
 use Drupal\Tests\BrowserTestBase;
-use Drupal\Tests\uiowa_core\Traits\ConfigSplitTestTrait;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
+use Drupal\Tests\uiowa_core\Traits\ConfigSplitTestTrait;
 
 /**
  * Events kernel test.
@@ -111,12 +111,12 @@ class EventFeatureTest extends BrowserTestBase {
         ],
       ];
 
-      if ($max === 1 || $randomness % 2 == 0) {
+      if ($max === 1 || $randomness % 2 === 0) {
         $node_data['field_event_virtual'] = [
           'uri' => '<front>',
         ];
       }
-      if ($max === 1 || ($max % $randomness) % 2 == 0) {
+      if ($max === 1 || ($max % $randomness) % 2 === 0) {
         $node_data['field_event_location'] = [
           'country_code' => 'AD',
           'locality' => 'Canillo',

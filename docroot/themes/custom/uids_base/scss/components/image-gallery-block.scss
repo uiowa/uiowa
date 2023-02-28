@@ -1,5 +1,5 @@
-@import "assets/scss/_variables.scss";
-@import "assets/scss/_utilities.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
 
 .pswp {
   a {
@@ -9,12 +9,22 @@
 .pswp__caption__center {
   text-align: center;
 }
-.block-inline-blockuiowa-image-gallery .uiowa-image-gallery {
+.block-inline-blockuiowa-image-gallery .uiowa-image-gallery,
+.block-field-blocknodearticlefield-gallery-images {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   margin-left: -$gutter / 2;
   margin-right: -$gutter / 2;
+
+  .page-node-type-article & {
+    margin-left: unset;
+    margin-right: unset;
+  }
+
+  .field--name-field-gallery-images {
+    flex-basis: 100%;
+  }
   .media--view-mode-image-gallery {
     display: table-cell;
     flex: 220px 1 1;
@@ -31,6 +41,14 @@
       height: 220px;
       width: 100%;
     }
+  }
+}
+
+.block-field-blocknodearticlefield-gallery-images .media--view-mode-image-gallery {
+  display: block;
+  margin: 0 .6rem 1rem;
+  @include breakpoint(sm) {
+    margin: 0;
   }
 }
 
@@ -57,10 +75,10 @@
 }
 
 @supports (overflow:-webkit-marquee) and (justify-content:inherit) {
-    /*
-      Define here the CSS styles applied only to the Safari 9 version when
-      running in any device
-     */
+  /*
+    Define here the CSS styles applied only to the Safari 9 version when
+    running in any device
+   */
 
   .block-inline-blockuiowa-image-gallery.image-gallery--masonry .uiowa-image-gallery .media--view-mode-image-gallery {
     display: inline-flex;

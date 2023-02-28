@@ -7,12 +7,11 @@
  */
 
 use Drupal\block_content\BlockContentInterface;
-use Drupal\Component\Utility\Html;
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Database\Database;
-use Drupal\Core\Entity\Sql\SqlContentEntityStorage;
-use Drupal\Core\Entity\Sql\SqlContentEntityStorageException;
-use Drupal\file\Entity\File;
+use Drupal\Core\Entity\Display\EntityDisplayInterface;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\layout_builder\Section;
 use Drupal\layout_builder\SectionComponent;
 use Drupal\menu_link_content\Entity\MenuLinkContent;
@@ -59,7 +58,7 @@ function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): v
       ]);
 
       // Loop through the components in the section.
-      /** @var \Drupal\layout_builder\Section $section */
+      /** @var \Drupal\layout_builder\SectionComponent $component */
       foreach ($section->getComponents() as &$component) {
 
         // Limit this to only the block component.
@@ -137,7 +136,7 @@ function _update_all_blocks_by_plugin_id($block_plugin_id, callable $process): v
         // Loop through the components in the section.
         foreach ($section->getComponents() as &$component) {
 
-          // Limit this to only the uiowa_banner block component.
+          // Limit this to only the block component.
           if ($component->getPluginId() !== $block_plugin_id) {
             continue;
           }
@@ -191,6 +190,7 @@ function sitenow_update_9001() {
 
     foreach ($results as $nid) {
       $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+      /** @var \Drupal\layout_builder\Field\LayoutSectionItemList $layout */
       $layout = $node->get('layout_builder__layout');
 
       // Grab the sections. We'll set updated ones back in below.
@@ -214,9 +214,12 @@ function sitenow_update_9001() {
          */
         foreach ($section->getComponents() as $component) {
           if ($component->getPluginId() === 'inline_block:' . $block_type) {
+            // @phpstan-ignore-next-line
             $styles = $component->get('layout_builder_styles_style');
             $styles[] = 'list_format_list';
             $styles[] = 'block_grid_threecol_33_34_33';
+
+            // @phpstan-ignore-next-line
             $component->set('layout_builder_styles_style', $styles);
             $section_arr['components'][$i] = $component->toArray();
             $section_is_updated = TRUE;
@@ -530,272 +533,21 @@ function sitenow_update_9006(&$sandbox) {
  * Update button classes.
  */
 function sitenow_update_9007() {
-  $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
-
-  // Limit to just sites running uids_base.
-  if ($active_theme->getName() === 'uids_base') {
-
-    $secondary = 'bttn--secondary bttn--caps';
-    $search_replace = [
-      'btn-primary' => 'bttn--primary bttn--caps',
-      'btn-secondary' => $secondary,
-      'btn-success' => $secondary,
-      'btn-danger' => $secondary,
-      'btn-info' => $secondary,
-      'btn-warning' => $secondary,
-      'btn-light' => $secondary,
-      'btn-dark' => $secondary,
-      'btn-link' => '',
-      'btn-lg' => '',
-      'btn-sm' => '',
-      'btn-block' => '',
-      'btn' => 'bttn',
-    ];
-    // Table classes to remove.
-    $table_search = [
-      'table--static',
-      'table--is-striped',
-      'is-striped',
-      'table',
-    ];
-    $entity_type_manager = \Drupal::entityTypeManager();
-    $entity_field_manager = \Drupal::service('entity_field.manager');
-    $text_long = $entity_field_manager->getFieldMapByFieldType('text_long');
-    $text_with_summary = $entity_field_manager->getFieldMapByFieldType('text_with_summary');
-    $entity_field_map = array_merge($text_long, $text_with_summary);
-
-    foreach ($entity_field_map as $entity_type_id => $field_map) {
-      $entity_storage = $entity_type_manager->getStorage($entity_type_id);
-      if (!($entity_storage instanceof SqlContentEntityStorage)) {
-        continue;
-      }
-
-      $entity_type = $entity_type_manager->getDefinition($entity_type_id);
-      $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
-      $table_mapping = $entity_storage->getTableMapping($field_storage_definitions);
-      foreach (array_intersect_key($field_storage_definitions, $field_map) as $field_storage_definition) {
-        $tables = [];
-        $field_name = $field_storage_definition->getName();
-        try {
-          $tables[] = $table_mapping->getFieldTableName($field_name);
-          $value_column = $table_mapping->getFieldColumnName($field_storage_definition, 'value');
-        }
-        catch (SqlContentEntityStorageException $e) {
-          continue;
-        }
-        // See if the field has a revision table.
-        $revision_table = NULL;
-        if ($entity_type->isRevisionable() && $field_storage_definition->isRevisionable()) {
-          if ($table_mapping->requiresDedicatedTableStorage($field_storage_definition)) {
-            $revision_table = $table_mapping->getDedicatedRevisionTableName($field_storage_definition);
-          }
-          elseif ($table_mapping->allowsSharedTableStorage($field_storage_definition)) {
-            $revision_table = $entity_type->getRevisionDataTable() ?: $entity_type->getRevisionTable();
-          }
-          $tables[] = $revision_table;
-        }
-        if (!empty($tables)) {
-          $db = \Drupal::database();
-
-          foreach ($tables as $table) {
-            $update_count = 0;
-            $query = $db->select($table, 't')
-              ->fields('t');
-
-            $or_group = $query->orConditionGroup();
-
-            foreach ($search_replace as $needle => $string) {
-              $or_group->condition($value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE');
-            }
-
-            foreach ($table_search as $needle) {
-              $or_group->condition($value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE');
-            }
-
-            $results = $query->condition($or_group)
-              ->execute();
-
-            foreach ($results as $record) {
-
-              $document = Html::load($record->{$value_column});
-
-              foreach (['a', 'table'] as $tag) {
-                $instances = $document->getElementsByTagName($tag);
-
-                // We don't actually need the regressive loop
-                // here, but its copied/pasted.
-                $i = $instances->length - 1;
-
-                while ($i >= 0) {
-                  // The current inline image element.
-                  $dom_element = $instances->item($i);
-
-                  $class = $dom_element->getAttribute('class');
-
-                  switch ($tag) {
-                    case 'a':
-                      foreach ($search_replace as $needle => $replace) {
-                        $class = str_replace($needle, $replace, $class);
-                      }
-                      break;
-
-                    case 'table':
-                      foreach ($table_search as $needle) {
-                        $class = str_replace($needle, '', $class);
-                      }
-                      break;
-                  }
-
-                  if (trim($class)) {
-                    $dom_element->setAttribute('class', $class);
-                  }
-                  else {
-                    $dom_element->removeAttribute('class');
-                  }
-
-                  $i--;
-                }
-              }
-
-              // Run database update to store updated $value_column as
-              // Html::serialize($document).
-              $db->update($table)
-                ->fields([
-                  $value_column => Html::serialize($document),
-                ])
-                ->condition('entity_id', $record->entity_id)
-                ->condition('revision_id', $record->revision_id)
-                ->execute();
-
-              $update_count++;
-            }
-
-            if ($update_count) {
-              \Drupal::messenger()
-                ->addMessage('Processed ' . $update_count . ' update(s) for ' . $table . ' table ' . $value_column . ' column.');
-            }
-          }
-        }
-      }
-    }
-
-    // Loop through SiteNow config ignored views.
-    $views = ['articles', 'people'];
-    foreach ($views as $view) {
-      $view = \Drupal::entityTypeManager()->getStorage('view')->load('people');
-      $default =& $view->getDisplay('default');
-      $header_content = $default["display_options"]["header"]["area"]["content"]["value"];
-      foreach ($search_replace as $needle => $string) {
-        $header_content = str_replace($needle, $string, $header_content);
-      }
-      $default["display_options"]["header"]["area"]["content"]["value"] = $header_content;
-      $view->save();
-    }
-
-  }
+  // Removed as part of https://github.com/uiowa/uiowa/pull/5324
 }
 
 /**
  * Fix table classes that were inadvertently broken.
  */
 function sitenow_update_9008() {
-  $active_theme = \Drupal::service('theme.manager')->getActiveTheme();
-
-  // Limit to just sites running uids_base.
-  if ($active_theme->getName() === 'uids_base') {
-
-    $table_search = [
-      '--gray-borders' => 'table--gray-borders',
-      '--hover-highlight' => 'table--hover-highlight',
-      '--width-default' => 'table--width-default',
-    ];
-    $entity_type_manager = \Drupal::entityTypeManager();
-    $entity_field_manager = \Drupal::service('entity_field.manager');
-    $text_long = $entity_field_manager->getFieldMapByFieldType('text_long');
-    $text_with_summary = $entity_field_manager->getFieldMapByFieldType('text_with_summary');
-    $entity_field_map = array_merge($text_long, $text_with_summary);
-
-    foreach ($entity_field_map as $entity_type_id => $field_map) {
-      $entity_storage = $entity_type_manager->getStorage($entity_type_id);
-      if (!($entity_storage instanceof SqlContentEntityStorage)) {
-        continue;
-      }
-
-      $entity_type = $entity_type_manager->getDefinition($entity_type_id);
-      $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
-      $table_mapping = $entity_storage->getTableMapping($field_storage_definitions);
-      foreach (array_intersect_key($field_storage_definitions, $field_map) as $field_storage_definition) {
-        $tables = [];
-        $field_name = $field_storage_definition->getName();
-        try {
-          $tables[] = $table_mapping->getFieldTableName($field_name);
-          $value_column = $table_mapping->getFieldColumnName($field_storage_definition, 'value');
-        }
-        catch (SqlContentEntityStorageException $e) {
-          continue;
-        }
-        // See if the field has a revision table.
-        $revision_table = NULL;
-        if ($entity_type->isRevisionable() && $field_storage_definition->isRevisionable()) {
-          if ($table_mapping->requiresDedicatedTableStorage($field_storage_definition)) {
-            $revision_table = $table_mapping->getDedicatedRevisionTableName($field_storage_definition);
-          }
-          elseif ($table_mapping->allowsSharedTableStorage($field_storage_definition)) {
-            $revision_table = $entity_type->getRevisionDataTable() ?: $entity_type->getRevisionTable();
-          }
-          $tables[] = $revision_table;
-        }
-        if (!empty($tables)) {
-          $db = \Drupal::database();
-
-          foreach ($tables as $table) {
-            $update_count = 0;
-
-            foreach ($table_search as $needle => $replace) {
-              $update_count += $db->update($table)
-                ->condition($value_column, '%' . $db->escapeLike($needle) . '%', 'LIKE')
-                ->expression($value_column, "REPLACE($value_column, :old, :new)", [
-                  ':old' => $needle,
-                  ':new' => $replace,
-                ])
-                ->execute();
-            }
-
-            if ($update_count) {
-              \Drupal::messenger()
-                ->addMessage(t('Processed @update_count update(s) for @table table @value_column column.', [
-                  '@update_count' => $update_count,
-                  '@table' => $table,
-                  '@value_column' => $value_column,
-                ]));
-
-              $fix_count = $db->update($table)
-                ->condition($value_column, '%' . $db->escapeLike('tabletable--') . '%', 'LIKE')
-                ->expression($value_column, "REPLACE($value_column, :old, :new)", [
-                  ':old' => 'tabletable--',
-                  ':new' => 'table--',
-                ])
-                ->execute();
-
-              \Drupal::messenger()
-                ->addMessage(t('Fixed @fix_count instance(s) where the customer had manually changed the table class in @table table @value_column column.', [
-                  '@fix_count' => $fix_count,
-                  '@table' => $table,
-                  '@value_column' => $value_column,
-                ]));
-            }
-          }
-        }
-      }
-    }
-  }
+  // Removed as part of https://github.com/uiowa/uiowa/pull/5324
 }
 
 /**
  * Helper function to convert an existing people block to a list view block.
  */
 function _convert_people_block_component(SectionComponent &$component, BlockContentInterface $block) {
-
+  // @phpstan-ignore-next-line
   $styles = $component->get('layout_builder_styles_style');
 
   // Default LB styles for new block.
@@ -917,7 +669,7 @@ function _convert_people_block_component(SectionComponent &$component, BlockCont
 
   // Process sorting defaults.
   $current_sort = $block->field_collection_sort->value;
-  if ($current_sort == 'block_people_sfl') {
+  if ($current_sort === 'block_people_sfl') {
     $last_name_sort = $config['sort']['field_person_last_name_value'];
     unset($config['sort']['field_person_last_name_value']);
     $config['sort']['field_person_last_name_value'] = $last_name_sort;
@@ -925,6 +677,8 @@ function _convert_people_block_component(SectionComponent &$component, BlockCont
 
   // Repurpose the existing component and set new styles.
   $component->setConfiguration($config);
+
+  // @phpstan-ignore-next-line
   $component->set('layout_builder_styles_style', $new_styles);
 }
 
@@ -1274,10 +1028,14 @@ function sitenow_update_9012() {
         }
 
         // Pull the layout builder styles from the component.
+        // @phpstan-ignore-next-line
         $styles = $component->get('layout_builder_styles_style');
+
         // Add key for new layout builder style.
         $styles[] = 'headline_large';
+
         // Set the layout builder styles on the component.
+        // @phpstan-ignore-next-line
         $component->set('layout_builder_styles_style', $styles);
 
       }
@@ -1335,10 +1093,14 @@ function sitenow_update_9012() {
             }
 
             // Pull the layout builder styles from the component.
+            // @phpstan-ignore-next-line
             $styles = $component->get('layout_builder_styles_style');
+
             // Add key for new layout builder style.
             $styles[] = 'headline_large';
+
             // Set the layout builder styles on the component.
+            // @phpstan-ignore-next-line
             $component->set('layout_builder_styles_style', $styles);
           }
         }
@@ -1390,35 +1152,7 @@ function sitenow_update_9014() {
  * Clear cache for lazy update and update engineering migrated files metadata.
  */
 function sitenow_update_9015() {
-  drupal_flush_all_caches();
-
-  $site_path = \Drupal::getContainer()->getParameter('site.path');
-
-  if ($site_path == 'sites/engineering.uiowa.edu') {
-    $query = \Drupal::entityTypeManager()->getStorage('media')->getQuery();
-
-    $ids = $query
-      ->condition('bundle', 'image')
-      ->condition('name', 'title')
-      ->execute();
-
-    if ($ids) {
-      $controller = \Drupal::entityTypeManager()->getStorage('media');
-      $entities = $controller->loadMultiple($ids);
-
-      /** @var \Drupal\media\Entity\Media $media */
-      foreach ($entities as $media) {
-        $file = File::load($media->get('field_media_image')->target_id);
-
-        if ($file && $filename = $file->getFilename()) {
-          $no_ext = pathinfo($filename, PATHINFO_FILENAME);
-          $media->field_media_image->alt = $no_ext;
-          $media->setName($no_ext);
-          $media->save();
-        }
-      }
-    }
-  }
+  // Removed as part of https://github.com/uiowa/uiowa/pull/5324
 }
 
 /**
@@ -1555,11 +1289,7 @@ function sitenow_update_9023() {
  * Remove headline content from footer block before setting perms.
  */
 function sitenow_update_9024() {
-  $block = \Drupal::service('entity.repository')->loadEntityByUuid('block_content', '0c0c1f36-3804-48b0-b384-6284eed8c67e');
-  if (!empty($block->get('field_uiowa_headline')->getValue())) {
-    $block->set('field_uiowa_headline', '')
-      ->save();
-  }
+  // Removed as part of https://github.com/uiowa/uiowa/pull/5324
 }
 
 /**
@@ -1729,14 +1459,7 @@ function sitenow_update_9027() {
  * Change footer content block to minimal format.
  */
 function sitenow_update_9028() {
-  $format = 'minimal';
-  $block = \Drupal::service('entity.repository')
-    ->loadEntityByUuid('block_content', '0c0c1f36-3804-48b0-b384-6284eed8c67e');
-
-  if ($block) {
-    $block->field_uiowa_text_area->format = $format;
-    $block->save();
-  }
+  // Removed as part of https://github.com/uiowa/uiowa/pull/5324
 }
 
 /**
@@ -1892,4 +1615,338 @@ function sitenow_update_9039() {
  */
 function sitenow_update_9040() {
   drupal_flush_all_caches();
+}
+
+/**
+ * Set existing banner blocks with a default button style value.
+ */
+function sitenow_update_9041() {
+  // Loop through our newly updated banner blocks.
+  foreach ([
+    'inline_block:uiowa_banner',
+  ] as $block_plugin_id) {
+    _update_all_blocks_by_plugin_id($block_plugin_id, function (&$component, $block) {
+
+      $styles = $component->get('layout_builder_styles_style');
+      // We shouldn't, but check if we have a button style already set.
+      // If we do, we shouldn't make any changes.
+      $style_exists = FALSE;
+      foreach ($styles as $style) {
+        if (str_starts_with($style, 'button_')) {
+          $style_exists = TRUE;
+        }
+      }
+      // If no button style was set, then add our new
+      // default style and re-set the new complete styles.
+      if (!$style_exists) {
+        $styles[] = 'button_primary';
+        $component->set('layout_builder_styles_style', $styles);
+      }
+
+    });
+
+  }
+}
+
+/**
+ * Flush all caches so drupal finds uiowa_auth module.
+ */
+function sitenow_update_9042() {
+  drupal_flush_all_caches();
+}
+
+/**
+ * Uninstall sitenow_find_text.
+ */
+function sitenow_update_9043() {
+  \Drupal::service('module_installer')->uninstall(['sitenow_find_text']);
+}
+
+/**
+ * Update button classes again.
+ */
+function sitenow_update_9044() {
+  // Removed as part of https://github.com/uiowa/uiowa/pull/5324
+}
+
+/**
+ * Flush all caches after the template changes in UIDS 4 pull request.
+ */
+function sitenow_update_9045() {
+  drupal_flush_all_caches();
+}
+
+/**
+ * Set existing events block to be compatible with new date_range options.
+ */
+function sitenow_update_9046() {
+  // Need module enabled before field operations occur.
+  \Drupal::service('module_installer')->install(['smart_date']);
+
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+  // See https://www.drupal.org/project/drupal/issues/2944144#comment-12481021.
+  foreach (
+    [
+      'field.storage.block_content.field_uiowa_events_timeframe',
+      'field.field.block_content.uiowa_events.field_uiowa_events_timeframe',
+      'field.storage.block_content.field_uiowa_events_sort',
+      'field.field.block_content.uiowa_events.field_uiowa_events_sort',
+      'field.storage.block_content.field_uiowa_events_date_range',
+      'field.field.block_content.uiowa_events.field_uiowa_events_date_range',
+    ] as $config_name) {
+    $config_record = $source->read($config_name);
+
+    $entity_type = \Drupal::service('config.manager')
+      ->getEntityTypeIdByName($config_name);
+    /** @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $storage */
+    $storage = \Drupal::entityTypeManager()->getStorage($entity_type);
+    $entity = $storage->createFromStorageRecord($config_record);
+    $entity->save();
+  }
+
+  drupal_flush_all_caches();
+
+  _update_all_blocks_by_plugin_id('inline_block:uiowa_events', function (&$component, $block) {
+    $now = strtotime('now');
+    $block->set(
+      'field_uiowa_events_date_range', ['value' => $now, 'end_value' => $now]
+    );
+    if ((int) $block->get('field_uiowa_events_past')->value === 1) {
+      $block->set('field_uiowa_events_sort', 'DESC');
+      $block->set('field_uiowa_events_timeframe', 'past');
+    }
+    else {
+      $block->set('field_uiowa_events_sort', 'ASC');
+      $block->set('field_uiowa_events_timeframe', 'upcoming');
+    }
+    $block->save();
+  });
+}
+
+/**
+ * Update several fields from plain text to formatted basic text.
+ */
+function sitenow_update_9047() {
+
+  // Statically defining our fields to be updated. More can be added here.
+  $fields = [
+    'field_uiowa_quote_content' => [
+      'format_col' => 'field_uiowa_quote_content_format',
+    ],
+    'field_uiowa_quote_footer' => [
+      'format_col' => 'field_uiowa_quote_footer_format',
+    ],
+  ];
+  // Get the field and revision storage table names for each field.
+  /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $table_mapping */
+  $table_mapping = \Drupal::service('entity_type.manager')
+    ->getStorage('block_content')
+    ->getTableMapping();
+  $storage_definitions = \Drupal::service('entity_field.manager')
+    ->getActiveFieldStorageDefinitions('block_content');
+  foreach ($fields as $field_name => &$field) {
+    $field_definition = $storage_definitions[$field_name];
+    if ($field_definition) {
+      $field['table'] = $table_mapping->getDedicatedDataTableName($field_definition);
+      $field['revision_table'] = $table_mapping->getDedicatedRevisionTableName($field_definition);
+    }
+  }
+
+  $database = \Drupal::database();
+
+  foreach ($fields as $field_name => &$field) {
+    $table = $field['table'];
+    $revision_table = $field['revision_table'];
+    $entity_type = 'block_content';
+
+    $field_storage = FieldStorageConfig::loadByName($entity_type, $field_name);
+    if (is_null($field_storage)) {
+      continue;
+    }
+
+    // Fetch data currently stored in the field and save for later.
+    $rows = NULL;
+    $revision_rows = NULL;
+    if ($database->schema()->tableExists($table)) {
+      $rows = $database
+        ->select($table, 't')
+        ->fields('t')
+        ->execute()
+        ->fetchAll();
+      if ($database->schema()->tableExists($revision_table)) {
+        $revision_rows = $database
+          ->select($revision_table, 'r')
+          ->fields('r')
+          ->execute()
+          ->fetchAll();
+      }
+    }
+
+    $new_fields = [];
+    $weights = [];
+    foreach ($field_storage->getBundles() as $bundle => $label) {
+      /** @var \Drupal\field\Entity\FieldConfig $old_field */
+      $old_field = FieldConfig::loadByName($entity_type, $bundle, $field_name);
+      $new_field = $old_field->toArray();
+      $new_field['field_type'] = 'text_long';
+      $new_field['settings'] = [];
+      $new_fields[] = $new_field;
+      // Get the view display weights so we can re-set them later.
+      $entity_view = $entity_type . '.' . $bundle . '.default';
+      $view_display = \Drupal::entityTypeManager()
+        ->getStorage('entity_view_display')
+        ->load($entity_view)
+        ->getComponent($field_name);
+      $weights['entity_view_display'][$entity_view] = $view_display['weight'];
+      // Get the form display weights so we can re-set them later.
+      $form_display = \Drupal::entityTypeManager()
+        ->getStorage('entity_form_display')
+        ->load($entity_type . '.' . $bundle . '.default')
+        ->getComponent($field_name);
+      $weights['entity_form_display'][$entity_type . '.' . $bundle . '.default'] = $form_display['weight'];
+    }
+
+    // Store the old field settings and update to text_long.
+    $new_field_storage = $field_storage->toArray();
+    $new_field_storage['type'] = 'text_long';
+    $new_field_storage['settings'] = [];
+    // Deleting at the field_storage level takes care of the bundles as well.
+    $field_storage->delete();
+
+    // Purge in order for new field to be created after deleting the old.
+    field_purge_batch(100);
+
+    // Save our new, updated field storage.
+    $new_field_storage = FieldStorageConfig::create($new_field_storage);
+    $new_field_storage->save();
+
+    // Create our new fields to match the field storages.
+    foreach ($new_fields as $new_field) {
+      $new_field_config = FieldConfig::create($new_field);
+      $new_field_config->save();
+    }
+
+    // Replace into the new fields data we saved from the old fields.
+    if (!is_null($rows)) {
+      foreach ($rows as $row) {
+        $row = (array) $row;
+        $row[$field['format_col']] = 'basic';
+        $database
+          ->insert($table)
+          ->fields($row)
+          ->execute();
+      }
+    }
+    if (!is_null($revision_rows)) {
+      foreach ($revision_rows as $row) {
+        $row = (array) $row;
+        $row[$field['format_col']] = 'basic';
+        $database
+          ->insert($revision_table)
+          ->fields($row)
+          ->execute();
+      }
+    }
+
+    // Update the view and form display weights, which enables the new fields.
+    foreach ($weights as $display_mode => $view_modes) {
+      foreach ($view_modes as $view_mode => $weight) {
+        if ($weight) {
+          $layout_display = \Drupal::entityTypeManager()
+            ->getStorage($display_mode)
+            ->load($view_mode);
+          if ($layout_display instanceof EntityDisplayInterface) {
+            $layout_display->setComponent($field_name, [
+              'weight' => $weight,
+            ])
+              ->save();
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Flush all caches after removing 175 logo and restoring regular logo.
+ */
+function sitenow_update_9048() {
+  drupal_flush_all_caches();
+}
+
+/**
+ * Add article to replicate allowed content types.
+ */
+function sitenow_update_9049() {
+  /** @var \Drupal\config_split\Entity\ConfigSplitEntity $config_split_entities */
+  $sitenow_v2 = \Drupal::entityTypeManager()->getStorage('config_split')->load('sitenow_v2');
+  $sitenow_v2->get('status');
+
+  // This site has the 'sitenow_v2' split in config,
+  // and it is enabled.
+  if ($sitenow_v2 && $sitenow_v2->get('status')) {
+    $config_factory = \Drupal::configFactory();
+    $config = $config_factory->getEditable('uiowa_core.settings');
+    $config
+      ->set('uiowa_core.replicate_allowed', ['article'])
+      ->save();
+  }
+}
+
+/**
+ * Flush all caches because reasons.
+ */
+function sitenow_update_9050() {
+  drupal_flush_all_caches();
+}
+
+/**
+ * Update card excerpt field format to the new minimal_plus format.
+ */
+function sitenow_update_9051() {
+  _update_all_blocks_by_plugin_id('inline_block:uiowa_card', function (&$component, $block) {
+
+    // Change the format for the card excerpt.
+    if (!is_null($block)) {
+      $block->field_uiowa_card_excerpt->format = 'minimal_plus';
+      $block->save();
+    }
+  });
+}
+
+/**
+ * Import updated config ignore before site specific config is removed.
+ */
+function sitenow_update_9052() {
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('config_ignore.settings', $source->read('config_ignore.settings'));
+}
+
+/**
+ * Re-run of 9051 to fix recently provisioned sites.
+ */
+function sitenow_update_9053() {
+  _update_all_blocks_by_plugin_id('inline_block:uiowa_card', function (&$component, $block) {
+
+    // Change the format for the card excerpt.
+    if (!is_null($block)) {
+      if ($block->get('field_uiowa_card_excerpt')->format !== 'minimal_plus') {
+        $block->field_uiowa_card_excerpt->format = 'minimal_plus';
+        $block->save();
+      }
+    }
+  });
+}
+
+/**
+ * Import updated acquia_connector.settings around config_ignore.
+ */
+function sitenow_update_9054() {
+  $config_path = DRUPAL_ROOT . '/../config/default';
+  $source = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_storage->write('acquia_connector.settings', $source->read('acquia_connector.settings'));
 }

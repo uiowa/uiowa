@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: lectures.uiowa.ddev.site
+    protocol: https
+  machine_name: lectures
+  human_name: lectures.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: lectures.prod
+drupal:
+  db:
+    database: lectures_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: dquam
+  site-name: 'University Lecture Committee'

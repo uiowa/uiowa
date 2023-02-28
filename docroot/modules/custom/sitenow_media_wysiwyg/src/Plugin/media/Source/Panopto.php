@@ -6,18 +6,18 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Field\FieldTypePluginManagerInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\media\MediaInterface;
 use Drupal\media\MediaSourceBase;
-use Drupal\media\MediaTypeInterface;
 use Drupal\media\MediaSourceFieldConstraintsInterface;
+use Drupal\media\MediaTypeInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\RedirectMiddleware;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Field\FieldTypePluginManagerInterface;
 
 /**
  * Provides media type plugin for Panopto.
@@ -65,7 +65,7 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
    *   Entity type manager service.
    * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
    *   Entity field manager service.
-   * @param \Drupal\Core\Field\FieldTypePluginManagerInterface|\Drupal\media_entity_panopto\Plugin\media\Source\FieldTypePluginManagerInterface $field_type_manager
+   * @param \Drupal\Core\Field\FieldTypePluginManagerInterface $field_type_manager
    *   The field type plugin manager service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   Config factory service.
@@ -153,7 +153,7 @@ class Panopto extends MediaSourceBase implements MediaSourceFieldConstraintsInte
           $redirects = $response->getHeader(RedirectMiddleware::HISTORY_HEADER);
           $source = end($redirects);
           $scheme = $this->configFactory->get('system.file')->get('default_scheme');
-          $destination = $scheme . 'panopto_thumbnails/';
+          $destination = $scheme . '://panopto_thumbnails/';
           $realpath = $this->fs->realpath($destination);
 
           if ($this->fs->prepareDirectory($realpath, FileSystemInterface::CREATE_DIRECTORY)) {

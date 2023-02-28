@@ -1,0 +1,22 @@
+uuid: ddda657c-69c6-4843-bfb0-8047224e7aa8
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: partner
+label: Partner
+type: 'canonical_entities:node'
+pattern: 'partners/[node:title]'
+selection_criteria:
+  667ca8a5-88e6-42d8-824c-7869982424ae:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 667ca8a5-88e6-42d8-824c-7869982424ae
+    context_mapping:
+      node: node
+    bundles:
+      partner: partner
+selection_logic: and
+weight: -5
+relationships: {  }

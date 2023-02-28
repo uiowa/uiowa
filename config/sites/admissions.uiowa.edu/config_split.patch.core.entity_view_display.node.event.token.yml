@@ -1,6 +1,13 @@
 adding:
-  hidden:
-    entity_print_view_epub: true
-    entity_print_view_pdf: true
-    entity_print_view_word_docx: true
+  dependencies:
+    config:
+      - field.field.node.event.field_event_category
+  content:
+    field_event_category:
+      type: entity_reference_label
+      label: above
+      settings:
+        link: true
+      weight: 3
+      region: content
 removing: {  }

@@ -37,7 +37,7 @@ third_party_settings:
             - ''
             - section_margin_edge_to_edge
         components:
-          7854f557-9ad7-4592-aabe-78b46d93e510:
+          -
             uuid: 7854f557-9ad7-4592-aabe-78b46d93e510
             region: content
             configuration:
@@ -48,7 +48,8 @@ third_party_settings:
               context_mapping: {  }
             weight: 0
             additional: {  }
-          df5471dc-43b4-4a02-820c-1128fee17f11:
+            third_party_settings: {  }
+          -
             uuid: df5471dc-43b4-4a02-820c-1128fee17f11
             region: content
             configuration:
@@ -67,6 +68,7 @@ third_party_settings:
                 third_party_settings: {  }
             weight: 7
             additional: {  }
+            third_party_settings: {  }
         third_party_settings: {  }
       -
         layout_id: layout_twocol
@@ -78,7 +80,7 @@ third_party_settings:
             1: section_margin_fixed_width_container
             section_alignment_start: section_alignment_start
         components:
-          bd18ff33-3031-499c-97e8-bfa321c9dd68:
+          -
             uuid: bd18ff33-3031-499c-97e8-bfa321c9dd68
             region: first
             configuration:
@@ -93,7 +95,8 @@ third_party_settings:
                 third_party_settings: {  }
             weight: 0
             additional: {  }
-          d5628205-7805-460b-b65e-9d15b3d94e71:
+            third_party_settings: {  }
+          -
             uuid: d5628205-7805-460b-b65e-9d15b3d94e71
             region: second
             configuration:
@@ -110,7 +113,8 @@ third_party_settings:
                 third_party_settings: {  }
             weight: 0
             additional: {  }
-          ea4ae76a-a7d5-4dae-a3ed-ac60ba415b10:
+            third_party_settings: {  }
+          -
             uuid: ea4ae76a-a7d5-4dae-a3ed-ac60ba415b10
             region: second
             configuration:
@@ -133,7 +137,8 @@ third_party_settings:
                 third_party_settings: {  }
             weight: 4
             additional: {  }
-          6f234918-3d0f-4023-8908-6e151ead2bf9:
+            third_party_settings: {  }
+          -
             uuid: 6f234918-3d0f-4023-8908-6e151ead2bf9
             region: first
             configuration:
@@ -149,7 +154,8 @@ third_party_settings:
                 third_party_settings: {  }
             weight: 1
             additional: {  }
-          7d3d7aba-b341-4099-89ef-0b93624dce5e:
+            third_party_settings: {  }
+          -
             uuid: 7d3d7aba-b341-4099-89ef-0b93624dce5e
             region: first
             configuration:
@@ -165,6 +171,7 @@ third_party_settings:
                 third_party_settings: {  }
             weight: 2
             additional: {  }
+            third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
             lock: {  }
@@ -195,8 +202,8 @@ third_party_settings:
         - layout_threecol
         - layout_fourcol
         - layout_header
-      blacklisted_blocks: {  }
-      whitelisted_blocks:
+      denylisted_blocks: {  }
+      allowlisted_blocks:
         'Chaos Tools': {  }
         'Content fields':
           - 'field_block:node:area_of_study:body'
@@ -225,6 +232,8 @@ third_party_settings:
         - layout_threecol
         - layout_fourcol
         - layout_header
+      allowlisted_blocks: null
+      denylisted_blocks: null
 id: node.area_of_study.default
 targetEntityType: node
 bundle: area_of_study
@@ -311,4 +320,7 @@ content:
     weight: 0
     region: content
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   search_api_excerpt: true

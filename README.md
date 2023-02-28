@@ -53,15 +53,17 @@ multisites:
 ```
 
 ### Common Tasks
-Multisites will not be able to bootstrap without a `local.settings.php` file. The `blt:init:settings` (or `bis` for short) command will generate local settings files _only_ for the multisite defined in BLT configuration. By default, this is all multisites but be aware that the `local.blt.yml` change documented above will override that. You can temporarily remove that override if you need to generate settings files for all multisites.
+Multisites will not be able to bootstrap without a `local.settings.php` file. The `blt:init:settings` (or `bis` for short) command will generate local settings files for all multisites.
+
+Local configuration overrides can be set in a local.blt.yml file for each multisite as that file is not tracked in git. For example, to configure stage file proxy in the way it would normally be defined in local.settings.php (`$config['stage_file_proxy.settings']['origin'] = 'https://sandbox.prod.drupal.uiowa.edu';`) you would enter it in the local.blt.yml file like:
+
+```
+uiowa:
+  stage_file_proxy:
+    origin: https://sandbox.prod.drupal.uiowa.edu
+```
 
 The `blt frontend` command will install and compile frontend assets.
-
-Local configuration overrides can be set in the local.settings.php file for each multisite. For example, to configure stage file proxy:
-```
-$config['stage_file_proxy.settings']['origin'] = 'https://mysite.com';
-$config['stage_file_proxy.settings']['hotlink'] = TRUE;
-```
 
 ## Multisite Management
 There are a few custom BLT commands to manage multisites. Run `blt list uiowa` to see all the commands in the `uiowa` namespace. Then run `blt CMD --help` for more information on specific commands.
@@ -92,7 +94,7 @@ Testing a uids change in uiowa:
 6. `yarn workspace uids_base gulp --development`
 
 ## Core
-Follow the `drupal/core-recommended` [instructions](https://github.com/drupal/core-recommended#upgrading) on updating.
+Run `composer update "drupal/core-*" --with-all-dependencies`.
 
 ## Contrib
 You can run `composer update package/name` to update additional dependencies. The output from the Composer commands can be used as the long text for commit messages. Ideally, each package update would be one commit for clarity and easier reverting.
@@ -100,17 +102,15 @@ You can run `composer update package/name` to update additional dependencies. Th
 ### Locked Packages
 The packages below are locked at specific SHAs and will not update using the method described above. They should be periodically checked for new stable releases and updated, if viable.
 
-| Package                               | Reason                   |
-| ------------------------------------- | ------------------------ |
-| drupal/cshs                           | No stable release since fe1b07101d724e6aa5fbcd78c50ce2780534ed0f |
-| drupal/layout_builder_styles          | Need 0d8021a8 from 8.x-1.x branch plus a patch. https://git.drupalcode.org/project/layout_builder_styles/-/commits/8.x-1.x. |
-| drupal/lb_direct_add                  | No 2.x stable release.   |
-| drupal/menu_link_weight               | No stable release since [f4a4b71b](https://git.drupalcode.org/project/menu_link_weight/-/commit/f4a4b71be5850ebc9d15a5cc742eafb76ef9cd0f). |
-| drupal/redirect                       | Need e5201ca5 from 8.x-1.x branch plus a patch. https://git.drupalcode.org/project/redirect/-/commits/8.x-1.x       |
-| drupal/reroute_email                  | No stable release since 438a67caeb0b0cc47d1deb0cee50afda9a907dc8 |
-| kartsims/easysvg                      | Need https://github.com/kartsims/easysvg/pull/27 which is not included in a release. |
-| uiowa/block_content_template          | Forked from a deprecated project. |
-| dompdf/dompdf                         | https://www.drupal.org/project/entity_print/issues/3169624 |
+| Package                       | Reason                                                                                                                         |
+|-------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| acquia/blt-travis             | No stable release to pair with blt 13.5. See https://github.com/acquia/blt-travis/issues/3                                     |
+| drupal/media_thumbnails_video | Need php 8.1 compatible dependencies, no stable release                                                                        |
+| uiowa/block_content_template  | Forked from a deprecated project.                                                                                              |
+| drupal/purge                  | Need php 8.1 compatibility fixes, no stable release                                                                            |
+| drupal/smart_date             | Need to wait for upstream issue to be part of stable release or we need to patch it https://github.com/uiowa/uiowa/issues/5664 |
+
+
 
 # Redirects
 Redirects can be added to the docroot/.htaccess file. The .htaccess file be will deployed to all applications, regardless of the domain. Therefore, creating per-site redirects using the Redirect module is preferred.

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesicarepostbac.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesicarepostbac
+  human_name: icarepostbac.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesicarepostbac.prod
+drupal:
+  db:
+    database: icarepostbac_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesicarepostbac.prod.drupal.uiowa.edu'
+  requester: mczmeyer
+  site-name: 'Iowa Cancer Research Experience (ICARE) Post-Baccalaureate Program'

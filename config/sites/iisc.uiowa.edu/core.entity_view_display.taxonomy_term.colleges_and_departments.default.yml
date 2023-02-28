@@ -1,0 +1,46 @@
+uuid: 9c4e46d9-1dcd-4ee1-9bb8-24db15b7d611
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.colleges_and_departments.field_image
+    - field.field.taxonomy_term.colleges_and_departments.field_website
+    - taxonomy.vocabulary.colleges_and_departments
+  module:
+    - link
+    - text
+id: taxonomy_term.colleges_and_departments.default
+targetEntityType: taxonomy_term
+bundle: colleges_and_departments
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_image:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_website:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  search_api_excerpt: true

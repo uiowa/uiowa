@@ -2,8 +2,8 @@
 
 namespace Drupal\uiowa_alerts\Plugin\Block;
 
-use Drupal\Core\Cache\Cache;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -114,7 +114,7 @@ class AlertsBlock extends BlockBase implements ContainerFactoryPluginInterface {
               "alert-{$level}",
             ],
             'role' => 'region',
-            'aria-label' => ($level == 'danger') ? 'alert message' : "{$level} message",
+            'aria-label' => ($level === 'danger') ? 'alert message' : "{$level} message",
           ],
           'message_wrapper' => [
             '#type' => 'container',

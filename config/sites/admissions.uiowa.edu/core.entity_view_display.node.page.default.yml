@@ -4,9 +4,11 @@ status: true
 dependencies:
   config:
     - field.field.node.page.body
+    - field.field.node.page.field_after_content_override
     - field.field.node.page.field_featured_image_display
     - field.field.node.page.field_image
     - field.field.node.page.field_meta_tags
+    - field.field.node.page.field_pre_footer_override
     - field.field.node.page.field_publish_options
     - field.field.node.page.field_tags
     - field.field.node.page.field_teaser
@@ -44,6 +46,7 @@ third_party_settings:
                 entity: layout_builder.entity
             weight: 0
             additional: {  }
+            third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
             lock:
@@ -74,6 +77,7 @@ third_party_settings:
               context_mapping: {  }
             weight: 0
             additional: {  }
+            third_party_settings: {  }
           -
             uuid: 56a58312-d93e-4d32-84a0-39b2a2fc89fb
             region: content
@@ -93,6 +97,7 @@ third_party_settings:
                 third_party_settings: {  }
             weight: 1
             additional: {  }
+            third_party_settings: {  }
           -
             uuid: b444f835-62e1-4e31-b433-22fe88ef3372
             region: background
@@ -112,6 +117,7 @@ third_party_settings:
                 third_party_settings: {  }
             weight: 0
             additional: {  }
+            third_party_settings: {  }
         third_party_settings:
           layout_builder_lock:
             lock:
@@ -143,6 +149,7 @@ third_party_settings:
                 third_party_settings: {  }
             weight: 0
             additional: {  }
+            third_party_settings: {  }
         third_party_settings: {  }
   layout_builder_restrictions:
     entity_view_mode_restriction:
@@ -152,7 +159,7 @@ third_party_settings:
         - layout_threecol
         - layout_fourcol
         - layout_page
-      blacklisted_blocks:
+      denylisted_blocks:
         'Custom block types':
           - uiowa_hero
           - uiowa_page_title_hero
@@ -161,7 +168,7 @@ third_party_settings:
           - 'inline_block:uiowa_hero'
           - 'inline_block:uiowa_page_title_hero'
           - 'inline_block:uiowa_spacer_separator'
-      whitelisted_blocks:
+      allowlisted_blocks:
         'Chaos Tools': {  }
         'Content fields':
           - 'field_block:node:page:body'
@@ -179,12 +186,13 @@ third_party_settings:
           - 'views_block:academic_groups_block-block_1'
           - 'views_block:areas_of_study_block-block_information'
           - 'views_block:area_of_study_college_block-block_1'
+          - 'views_block:community_colleges-block_community_colleges'
           - 'views_block:counselors-block_counselors'
+          - 'views_block:majors-block_majors'
           - 'views_block:student_card-block_student_grid'
           - 'views_block:transfer_tips_list-block_transfer_tips'
         Menus:
           - 'menu_block:main'
-          - 'system_menu_block:main'
         Restricted: {  }
         Superfish: {  }
         System:
@@ -195,6 +203,7 @@ third_party_settings:
         Webform:
           - webform_block
         core: {  }
+      restricted_categories: {  }
       allowed_blocks: {  }
     allowed_block_categories:
       - 'Chaos Tools'
@@ -224,8 +233,8 @@ third_party_settings:
         - layout_threecol
         - layout_fourcol
         - layout_page
-      whitelisted_blocks: {  }
-      blacklisted_blocks:
+      allowlisted_blocks: {  }
+      denylisted_blocks:
         layout_fourcol:
           all_regions:
             'Custom block types':
@@ -234,7 +243,6 @@ third_party_settings:
             'Inline blocks':
               - 'inline_block:uiowa_slider'
               - 'inline_block:uiowa_timeline'
-        layout_onecol: {  }
         layout_page:
           all_regions:
             'Custom block types':
@@ -296,8 +304,10 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_after_content_override: true
   field_featured_image_display: true
   field_meta_tags: true
+  field_pre_footer_override: true
   field_publish_options: true
   field_tags: true
   field_teaser: true

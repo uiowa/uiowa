@@ -1,0 +1,71 @@
+adding:
+  dependencies:
+    config:
+      - field.field.node.page.field_v3_conversion_revision_id
+    module:
+      - text
+  content:
+    body:
+      type: text_textarea_with_summary
+      weight: 2
+      settings:
+        rows: 9
+        summary_rows: 3
+        placeholder: ''
+        show_summary: false
+    created:
+      weight: 7
+    field_featured_image_display:
+      weight: 16
+    field_image:
+      weight: 5
+    field_meta_tags:
+      weight: 13
+      settings:
+        use_details: true
+    field_page_content_block:
+      weight: 3
+    field_tags:
+      weight: 4
+    path:
+      weight: 10
+    promote:
+      weight: 8
+    status:
+      weight: 12
+    sticky:
+      weight: 9
+    uid:
+      weight: 6
+    url_redirects:
+      weight: 11
+  hidden:
+    field_v3_conversion_revision_id: true
+removing:
+  content:
+    created:
+      weight: 5
+    field_featured_image_display:
+      weight: 26
+    field_image:
+      weight: 3
+    field_meta_tags:
+      weight: 12
+    field_page_content_block:
+      weight: 2
+    field_tags:
+      weight: 6
+    path:
+      weight: 9
+    promote:
+      weight: 7
+    status:
+      weight: 11
+    sticky:
+      weight: 8
+    uid:
+      weight: 4
+    url_redirects:
+      weight: 10
+  hidden:
+    body: true

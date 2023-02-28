@@ -1,0 +1,50 @@
+id: iisc_partners
+label: Partners
+dependencies:
+  enforced:
+    module:
+      - iisc_migrate
+migration_tags:
+  - iisc
+migration_group: sitenow_migrate
+source:
+  plugin: iisc_partners
+  node_type: partner
+destination:
+  plugin: 'entity:node'
+  default_bundle: partner
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  moderation_state: moderation_state
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid:
+    plugin: default_value
+    default_value: 1
+  title: title
+  body: body
+  field_image:
+    plugin: create_media_from_file_field
+    source: field_image
+  field_iowa_counties: counties
+  field_partner_related_individual:
+    plugin: sub_process
+    source: field_ref_persons
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: iisc_people
+        source: target_id
+  field_partner_link:
+    plugin: field_link
+    source: field_partner_urls
+migration_dependencies:
+  required:
+    - iisc_people

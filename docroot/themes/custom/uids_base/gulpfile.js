@@ -2,7 +2,6 @@
  * @file
  * Include gulp.
  */
-
 const { src, dest, parallel, series, watch } = require('gulp');
 
 // Include plugins.
@@ -22,12 +21,21 @@ const mode = require('gulp-mode')();
  */
 const paths = {
   src: `${__dirname}/scss/**/*.scss`,
-  dest: `${__dirname}/assets`
+  dest: `${__dirname}/assets`,
+  node: `../../../../node_modules/`,
 };
 
+const uids3 = {
+  src: `${paths.node}@uiowa/uids/src`,
+  dest: `${__dirname}/uids3/`,
+}
+
 const uids = {
-  src: '../../../../node_modules/@uiowa/uids/src',
+  src: `${paths.node}@uiowa/uids4/src`,
   dest: `${__dirname}/uids/`,
+  readylist: [
+    'button',
+  ],
 }
 
 // Clean
@@ -47,9 +55,18 @@ function copyUids() {
   ])
     .pipe(dest(`${uids.dest}`));
 }
+function copyUids3() {
+  return src([
+    `${uids3.src}/**/*.scss`,
+    `${uids3.src}/**/*.js`,
+    `${uids3.src}/**/*.{jpg,png,svg}`,
+    `${uids3.src}/**/*.{woff,woff2}`,
+  ])
+    .pipe(dest(`${uids3.dest}`));
+}
 
 function fontCopy() {
-  return src([`${uids.src}/assets/fonts/*.{woff,woff2}`])
+  return src([`${uids3.src}/assets/fonts/*.{woff,woff2}`])
     .pipe(dest('./assets/fonts'));
 }
 
@@ -61,7 +78,6 @@ function css() {
     .pipe(sass({
         includePaths: [
           "./node_modules",
-          "./uids/",
         ]
       }).on('error', sass.logError))
     .pipe(postcss([ autoprefixer(), cssnano()]))
@@ -74,7 +90,7 @@ function watchFiles() {
   watch(paths.src, compile);
 }
 
-const copy = parallel(copyUids, fontCopy);
+const copy = parallel(copyUids3, copyUids, fontCopy);
 const compile = series(clean, copy, css);
 
 exports.copy = copy;

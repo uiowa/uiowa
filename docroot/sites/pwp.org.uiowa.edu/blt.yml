@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: orgpwp.uiowa.ddev.site
+    protocol: https
+  machine_name: orgpwp
+  human_name: pwp.org.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: orgpwp.prod
+drupal:
+  db:
+    database: pwp_org_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: dkhalast
+  site-name: 'Iowa Prison Writing Project'

@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesemfisis.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesemfisis
+  human_name: emfisis.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesemfisis.prod
+drupal:
+  db:
+    database: emfisis_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesemfisis.prod.drupal.uiowa.edu'
+  requester: dgcrawfo
+  site-name: EMFISIS

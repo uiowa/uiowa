@@ -1,5 +1,5 @@
-@import "uids/assets/scss/_variables.scss";
-@import "uids/assets/scss/_utilities.scss";
+@import "uids3/assets/scss/_variables.scss";
+@import "uids3/assets/scss/_utilities.scss";
 
 .field--label-above,
 .field--label-inline {
@@ -35,7 +35,8 @@
     line-height: 1;
   }
 
-  [class*="card__"] & {
+  [class*="card__"] &,
+  [class*="bttn"] & {
     font-size: inherit;
     line-height: inherit;
   }
@@ -65,11 +66,13 @@
   &.h4,
   &.h5,
   &.h6,
-  &[class*="element--"] {
+  &.element--bold-intro,
+  &.element--light-intro {
     line-height: inherit;
   }
 
-  [class*="card__"] & {
+  [class*="card__"] &,
+  [class*="bttn"] & {
     font-size: inherit;
     line-height: inherit;
   }
@@ -78,7 +81,8 @@
     p#{&} {
       font-size: 1.2rem;
 
-      [class*="element--"] &,
+      .element--bold-intro &,
+      .element--light-intro &,
       .h1 &,
       .h2 &,
       .h3 &,
@@ -123,7 +127,7 @@
 .field--label-inline.field--type-entity-reference,
 .field--label-inline.field--type-link,
 .field--label-inline.field--type-string,
-.field--label-visually_hidden.field--type-entity-reference,
+.field--label-visually_hidden.field--type-entity-reference:not([class*="image"]),
 .field--label-visually_hidden.field--type-link {
   .field__item + .field__item {
     &:before {
@@ -172,4 +176,13 @@
 // Wrap long links by allow them to break mid-word. Global is too-scoped.
 .field--type-link {
   word-break: break-word;
+}
+// Address styling.
+.field p.address {
+  [class*="card__"] & {
+    font-size: 1.1rem;
+  }
+  .organization {
+    font-weight: $font-weight-bold;
+  }
 }

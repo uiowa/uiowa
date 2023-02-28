@@ -84,6 +84,7 @@
 %}
 
 {% set headline_level = heading_size ?: 'h3' %}
+
 {{ attach_library('classy/node') }}
 {{ attach_library('uids_base/node-type-page') }}
 
@@ -91,10 +92,11 @@
   'attributes': attributes.addClass(classes),
   'card_image' : content.field_image|render,
   'card_title': label,
-  'content': content,
+  'content': content.field_teaser|render,
   'card_link_url': url,
   'media_styles': media_classes,
   'headline_level': headline_level,
+  'visible_button': show_teaser_link_indicator
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with page_card only %}
@@ -102,7 +104,9 @@
   {# @todo Add content_attributes.addClass('node__content media-body') #}
 
   {% block card_content %}
-    {{ content|without('field_image', 'links') }}
+    {% if content is not empty %}
+      <div class="card__description">{{ content }}</div>
+    {% endif %}
   {% endblock %}
 
 {% endembed %}

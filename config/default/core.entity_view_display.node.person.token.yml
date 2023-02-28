@@ -21,6 +21,7 @@ dependencies:
     - field.field.node.person.field_person_type_status
     - field.field.node.person.field_person_types
     - field.field.node.person.field_person_website
+    - field.field.node.person.field_person_website_link_direct
     - field.field.node.person.field_tags
     - field.field.node.person.field_teaser
     - node.type.person
@@ -37,10 +38,12 @@ third_party_settings:
     allowed_block_categories: {  }
     entity_view_mode_restriction:
       allowed_layouts: {  }
-      blacklisted_blocks: {  }
-      whitelisted_blocks: {  }
+      denylisted_blocks: {  }
+      allowlisted_blocks: {  }
     entity_view_mode_restriction_by_region:
       allowed_layouts: {  }
+      allowlisted_blocks: null
+      denylisted_blocks: null
 id: node.person.token
 targetEntityType: node
 bundle: person
@@ -71,6 +74,9 @@ content:
     region: content
 hidden:
   content_moderation_control: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   field_meta_tags: true
   field_person_contact_information: true
   field_person_credential: true
@@ -86,6 +92,7 @@ hidden:
   field_person_type_status: true
   field_person_types: true
   field_person_website: true
+  field_person_website_link_direct: true
   field_tags: true
   links: true
   search_api_excerpt: true

@@ -91,7 +91,8 @@ class MauiApi {
     // Create a hash for the CID. Can always be decoded for debugging purposes.
     $hash = base64_encode($uri . serialize($options));
     $cid = "uiowa_maui:request:{$hash}";
-    $data = [];
+    // Default $data to FALSE in case of API fetch failure.
+    $data = FALSE;
 
     if ($cache = $this->cache->get($cid)) {
       $data = $cache->data;
@@ -150,8 +151,8 @@ class MauiApi {
     ]);
 
     // Sort by start date.
-    usort($data, function ($a, $b) {
-      return strtotime($a->startDate) > strtotime($b->startDate);
+    usort($data, function ($a, $b): int {
+      return strtotime($a->startDate) <=> strtotime($b->startDate);
     });
 
     return $data;
@@ -280,6 +281,52 @@ class MauiApi {
         'UNIVERSITY_OFFICES_CLOSED' => 'University Offices Closed',
       ],
     ];
+  }
+
+  /**
+   * Get room data based on building ID and room ID.
+   *
+   * @param string $building_id
+   *   The building id of the room.
+   * @param string $room_id
+   *   The room id of the room.
+   *
+   * @return mixed
+   *   The API response data.
+   */
+  public function getRoomData($building_id, $room_id) {
+    return $this->request('GET', '/pub/registrar/courses/AstraRoomData/' . $building_id . "/" . $room_id);
+  }
+
+  /**
+   * Return the schedule for a classroom for a date range.
+   *
+   * GET /pub/registrar/courses/AstraRoomSchedule/{startDate}/{endDate}/{bldgCode}/{roomNumber}.
+   *
+   * @param string $startdate
+   *   Date formated as YYYY-MM-DD.
+   * @param string $enddate
+   *   Date formated as YYYY-MM-DD.
+   * @param string $building_id
+   *   The building code needs to match the code as it is entered in Astra.
+   * @param string $room_id
+   *   The room number needs to match the code as it is entered in Astra.
+   *
+   * @return array
+   *   JSON decoded array of response data.
+   */
+  public function getRoomSchedule($startdate, $enddate, $building_id, $room_id) {
+    return $this->request('GET', '/pub/registrar/courses/AstraRoomSchedule/' . $startdate . '/' . $enddate . '/' . $building_id . "/" . $room_id);
+  }
+
+  /**
+   * Get complete building list.
+   *
+   * @return mixed
+   *   The API response data.
+   */
+  public function getClassroomsData() {
+    return $this->request('GET', '/pub/registrar/courses/AstraBldgRmCompleteList/list');
   }
 
 }

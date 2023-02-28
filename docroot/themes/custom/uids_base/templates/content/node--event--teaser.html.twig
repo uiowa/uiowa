@@ -73,13 +73,7 @@
 #}
 {%
   set classes = [
-  'node',
-  'node--type-' ~ node.bundle|clean_class,
-  node.isPromoted() ? 'node--promoted',
-  node.isSticky() ? 'node--sticky',
-  not node.isPublished() ? 'node--unpublished',
-  view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-  'event-item',
+  'card--media-left',
   'card--list',
 ]
 %}
@@ -90,14 +84,6 @@
   {% set node_link = url %}
 {% endif %}
 
-{% if node.field_event_virtual.0.uri is not empty %}
-  {% set event_icon = '<span role="presentation" class="fas fa-laptop"></span>' %}
-  {% set event_location = 'Virtual' %}
-{% else %}
-  {% set event_icon = '<span role="presentation" class="fas fa-map-marker-alt"></span>' %}
-  {% set event_location = content.field_event_location.0.organization %}
-{% endif %}
-
 {% set headline_level = 'h3 '%}
 {% if view %}
   {% set headline_level = view.display_handler.getOption('heading_size') %}
@@ -106,37 +92,23 @@
   {% set headline_level = heading_size %}
 {% endif %}
 
-{{ attach_library('classy/node') }}
-{{ attach_library('uids_base/paragraphs-lists') }}
-{{ attach_library('uids_base/event') }}
-{{ attach_library('uids_base/media') }}
-
 {% set event_card = {
   'attributes': attributes.addClass(classes),
+  'card_image': content.field_image|render,
+  'card_meta': content.field_event_performer | render,
   'card_title': label,
-  'content': content,
+  'card_subtitle': content.field_event_when | render,
+  'card_text': content.field_teaser | render,
   'card_link_url': node_link,
   'headline_level': headline_level,
-  'card_date': content.field_event_when,
-  'event_icon': event_icon|trans,
-  'card_tag': event_location|render,
+  'media_styles': ['media--circle', 'card__media--small', 'media--border'],
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with event_card only %}
-
-  {# @todo Add content_attributes.addClass('node__content media-body') #}
-
-  {% block card_tag %}
-    {% if card_tag is not empty %}
-      <div class="card__label">
-        {{ event_icon }}
-        {{ card_tag }}
-      </div>
+  {# @todo Resolve this with the base card template. #}
+  {% block card_img %}
+    {% if card_image|striptags('<embed><hr><iframe><img><input><drupal-render-placeholder>')|trim is not empty %}
+      {{ parent() }}
     {% endif %}
   {% endblock %}
-
-  {% block card_content %}
-    {{ content|without('field_image', 'links', 'field_event_when', 'field_event_virtual', 'field_event_location', 'field_event_series_link', 'field_event_series_link_direct') }}
-  {% endblock %}
-
 {% endembed %}

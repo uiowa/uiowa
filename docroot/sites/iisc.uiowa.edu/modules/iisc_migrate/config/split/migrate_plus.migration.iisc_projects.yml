@@ -1,0 +1,82 @@
+id: iisc_projects
+label: Projects
+dependencies:
+  enforced:
+    module:
+      - iisc_migrate
+migration_tags:
+  - iisc
+migration_group: sitenow_migrate
+source:
+  plugin: iisc_projects
+  node_type: project
+  multi_value_fields:
+    field_ref_academic_year: target_id
+destination:
+  plugin: 'entity:node'
+  default_bundle: project
+process:
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  moderation_state: moderation_state
+  created: created
+  changed: changed
+  status: status
+  promote: promote
+  uid:
+    plugin: default_value
+    default_value: 1
+  title: title
+  body: body
+  field_image:
+    plugin: create_media_from_file_field
+    source: field_image
+  field_tags:
+    plugin: sub_process
+    source: field_tags
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: iisc_tags
+        source: tid
+  field_academic_year: field_ref_academic_year_target_id
+  field_project_college_department:
+    plugin: sub_process
+    source: field_project_college_dept
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: iisc_colleges_departments
+        source: tid
+  field_project_deliverables: # Needs work
+    plugin: create_media_from_file_field
+    source: field_files
+  field_project_led_by:
+    plugin: sub_process
+    source: field_ref_persons
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: iisc_people
+        source: target_id
+  field_project_links: # Needs work
+    plugin: field_link
+    source: field_project_urls
+  field_project_partner:
+    plugin: sub_process
+    source: field_ref_partner
+    process:
+      target_id:
+        plugin: migration_lookup
+        migration: iisc_partners
+        source: target_id
+migration_dependencies:
+  required:
+    - iisc_people
+    - iisc_partners
+    - iisc_colleges_departments
+    - iisc_tags

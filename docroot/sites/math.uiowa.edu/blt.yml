@@ -1,0 +1,16 @@
+project:
+  local:
+    hostname: math.uiowa.ddev.site
+    protocol: https
+  machine_name: math
+  human_name: math.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: math.prod
+drupal:
+  db:
+    database: math_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://math.prod.drupal.uiowa.edu'

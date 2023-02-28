@@ -1,0 +1,30 @@
+uuid: 65114ab2-7d3b-4b0e-8382-7e33ef8a97f7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_contact_reference
+    - node.type.contact
+    - node.type.person
+id: node.person.field_contact_reference
+field_name: field_contact_reference
+entity_type: node
+bundle: person
+label: 'Point(s) of contact'
+description: 'The <i>Point of contact</i> for this piece of content. When adding a new contact to reference, select whether this should be created as a <i>Contact</i> or a <i>Person</i>.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      contact: contact
+      person: person
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: contact
+field_type: entity_reference

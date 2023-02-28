@@ -198,6 +198,9 @@ fields:
     field_tags:
       type: hidden
       settings: {  }
+    field_media_static_map:
+      type: hidden
+      settings: {  }
   node:
     langcode:
       type: core_field_diff_builder
@@ -403,6 +406,12 @@ fields:
       settings:
         show_header: 1
         markdown: filter_xss_all
+    field_gallery_images:
+      type: entity_reference_field_diff_builder
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+        compare_entity_reference: 1
   taxonomy_term:
     langcode:
       type: core_field_diff_builder
@@ -444,6 +453,12 @@ fields:
     revision_translation_affected:
       type: hidden
       settings: {  }
+    field_image:
+      type: entity_reference_field_diff_builder
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+        compare_entity_reference: 1
   menu_link_content:
     langcode:
       type: core_field_diff_builder
@@ -1004,9 +1019,6 @@ fields:
     field_uiowa_events_keywords:
       type: hidden
       settings: {  }
-    field_uiowa_events_past:
-      type: hidden
-      settings: {  }
     field_uiowa_events_place:
       type: hidden
       settings: {  }
@@ -1146,6 +1158,52 @@ fields:
       settings:
         show_header: 1
         markdown: drupal_html_to_text
+    field_collection_pager:
+      type: hidden
+      settings: {  }
+    field_uiowa_aggregator_pager:
+      type: hidden
+      settings: {  }
+    field_uiowa_banner_pre_title:
+      type: core_field_diff_builder
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+    field_uiowa_button_link:
+      type: link_field_diff_builder
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+        compare_title: 0
+        compare_uri: 1
+    field_uiowa_card_button_display:
+      type: list_field_diff_builder
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+        compare: key
+    field_uiowa_events_date_range:
+      type: hidden
+      settings: {  }
+    field_uiowa_events_sort:
+      type: hidden
+      settings: {  }
+    field_uiowa_events_timeframe:
+      type: hidden
+      settings: {  }
+    field_uiowa_image_image:
+      type: entity_reference_field_diff_builder
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+        compare_entity_reference: 1
+    field_uiowa_image_link:
+      type: link_field_diff_builder
+      settings:
+        show_header: 1
+        markdown: drupal_html_to_text
+        compare_title: 0
+        compare_uri: 1
   fragment:
     langcode:
       type: core_field_diff_builder

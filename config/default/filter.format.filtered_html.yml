@@ -25,6 +25,8 @@ dependencies:
   module:
     - editor
     - entity_embed
+    - iframe_title_filter
+    - lazy
     - linkit
     - media
     - responsive_table_filter
@@ -57,7 +59,7 @@ filters:
     id: filter_autop
     provider: filter
     status: false
-    weight: -42
+    weight: -37
     settings: {  }
   filter_caption:
     id: filter_caption
@@ -71,20 +73,20 @@ filters:
     status: true
     weight: -49
     settings:
-      allowed_html: '<a href hreflang title class id target aria-label rel data-*> <em> <strong> <cite> <blockquote class cite> <code> <ul type class> <ol start type class> <li> <dl> <dt> <dd> <h2 id class> <h3 id class> <h4 id class> <h5 id class> <h6 id class> <s> <sup> <sub> <p class> <pre class> <div class> <span class> <hr class> <table class border summary id role="presentation, grid" aria-label aria-labelledby> <caption id> <tbody class> <thead class> <tfoot class> <th id align valign colspan rowspan scope class> <td align valign colspan rowspan class headers> <tr align valign class> <drupal-media data-entity-type data-entity-uuid data-align data-caption data-view-mode title alt> <br> <mark> <small class> <iframe src width height allowfullscreen title loading="lazy" seamless sandbox="allow-same-origin allow-scripts allow-popups">'
+      allowed_html: '<em> <strong> <cite> <blockquote cite class=""> <code> <ul type class=""> <ol start type class=""> <li> <dl> <dt> <dd> <s> <sup> <sub> <pre class=""> <span class=""> <hr class=""> <table border summary id role="presentation, grid" aria-label aria-labelledby class=""> <caption id> <tbody class=""> <thead class=""> <tfoot class=""> <th id align valign colspan rowspan scope class=""> <td align valign colspan rowspan headers class=""> <tr align valign class=""> <drupal-media data-entity-type data-entity-uuid data-align data-caption data-view-mode title alt> <br> <mark> <small class=""> <iframe src width height allowfullscreen title loading="lazy" seamless sandbox="allow-same-origin allow-scripts allow-popups"> <a href hreflang title id target aria-label rel data-* class=""> <p class=""> <h2 id class=""> <h3 id class=""> <h4 id class=""> <h5 id class=""> <h6 id class=""> <div class="">'
       filter_html_help: true
       filter_html_nofollow: false
   filter_html_escape:
     id: filter_html_escape
     provider: filter
     status: false
-    weight: -43
+    weight: -38
     settings: {  }
   filter_html_image_secure:
     id: filter_html_image_secure
     provider: filter
     status: false
-    weight: -40
+    weight: -35
     settings: {  }
   filter_htmlcorrector:
     id: filter_htmlcorrector
@@ -96,20 +98,26 @@ filters:
     id: filter_icon
     provider: uiowa_core
     status: true
-    weight: -30
+    weight: -42
     settings: {  }
   filter_iframe:
     id: filter_iframe
     provider: uiowa_core
     status: true
-    weight: -40
+    weight: -43
     settings:
       allowed_sources: "https://www.candidcareer.com/embed.php\r\nhttps://www.google.com/maps/embed"
+  filter_iframe_title:
+    id: filter_iframe_title
+    provider: iframe_title_filter
+    status: true
+    weight: -39
+    settings: {  }
   filter_responsive_table:
     id: filter_responsive_table
     provider: responsive_table_filter
     status: true
-    weight: 0
+    weight: -41
     settings:
       wrapper_element: div
       wrapper_classes: table-responsive
@@ -117,9 +125,17 @@ filters:
     id: filter_url
     provider: filter
     status: false
-    weight: -41
+    weight: -36
     settings:
       filter_url_length: 72
+  lazy_filter:
+    id: lazy_filter
+    provider: lazy
+    status: false
+    weight: -34
+    settings:
+      image: true
+      iframe: true
   linkit:
     id: linkit
     provider: linkit
@@ -131,7 +147,7 @@ filters:
     id: media_embed
     provider: media
     status: true
-    weight: 100
+    weight: -40
     settings:
       default_view_mode: default
       allowed_view_modes:
@@ -162,4 +178,5 @@ filters:
         instagram: instagram
         panopto: panopto
         remote_video: remote_video
+        static_map: static_map
         twitter: twitter

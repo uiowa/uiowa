@@ -88,6 +88,12 @@
   {% set headline_level = heading_size %}
 {% endif %}
 
+{% if '1' in node.field_person_website_link_direct.0.value and node.field_person_website.0.uri %}
+  {% set node_link = node.field_person_website.0.uri %}
+{% else %}
+  {% set node_link = url %}
+{% endif %}
+
 {{ attach_library('classy/node') }}
 {{ attach_library('uids_base/paragraphs-lists') }}
 {{ attach_library('uids_base/person') }}
@@ -101,8 +107,9 @@
   'person_phone': content.field_person_phone | render,
   'media_styles': ['media--circle', 'card__media--small', 'media--border'],
   'card_title': label,
-  'card_link_url': url,
+  'card_link_url': node_link,
   'headline_level': headline_level,
+  'visible_button': show_teaser_link_indicator
 } %}
 
 {% embed '@uids_base/uids/card.html.twig' with person_card only %}

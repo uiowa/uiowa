@@ -3,8 +3,8 @@
 namespace Drupal\layout_builder_custom\Plugin\diff\Field;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\diff\FieldDiffBuilderBase;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\diff\FieldDiffBuilderBase;
 use Drupal\layout_builder\Section;
 
 /**
@@ -109,7 +109,7 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
       $lb_styles = array_filter($section_array['layout_settings']['layout_builder_styles_style']);
       $lb_styles = implode(', ', $lb_styles);
       // Create a simple prefix.
-      $prefix = "Section " . $id . " Configuration: ";
+      $prefix = "Section $id Configuration: ";
       return $prefix . $lb_styles;
     }
     return FALSE;
@@ -137,16 +137,22 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
           foreach ($field as $value_key => $value_value) {
             // The value key isn't very helpful if it's just "value,"
             // so if it is, go ahead and drop it.
-            $value_key = ($value_key == 'value') ? '' : $value_key;
+            $value_key = ($value_key === 'value') ? '' : $value_key;
             $indexer = $this->generateIndexer($arr_key, $field_num, $value_key);
-            // If we're still dealing with an array,
-            // combine all values into a single string.
+
+            // If we're still dealing with an array or null value, convert it to
+            // a string.
             if (is_array($value_value)) {
               $value_value = implode('.', $value_value);
             }
+            elseif (is_null($value_value)) {
+              $value_value = '';
+            }
+
             // We need to remove newlines added to formatted text areas.
             // They will break the results formatting if not removed.
-            $value_value = preg_replace("|\n|", "", $value_value);
+            $value_value = preg_replace("|\n|", '', $value_value);
+
             // Check if we're building onto an existing result row,
             // or if we're starting a new one off of an empty string.
             $old = $result[$counter] ?? '';
@@ -197,7 +203,7 @@ class LayoutSectionFieldBuilder extends FieldDiffBuilderBase {
           foreach ($field_values as $value_key => $value_value) {
             // The value key isn't very helpful if it's just "value,"
             // so if it is, go ahead and drop it.
-            $value_key = ($value_key == 'value') ? '' : $value_key;
+            $value_key = ($value_key === 'value') ? '' : $value_key;
             $indexer = ucwords($this->generateIndexer($field_name, 0, $value_key));
             $old = $result[$counter] ?? '';
             $result[$counter] = $old . "\r" . implode(': ', [

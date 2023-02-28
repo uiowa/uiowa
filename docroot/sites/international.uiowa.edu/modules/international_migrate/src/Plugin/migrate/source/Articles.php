@@ -3,13 +3,13 @@
 namespace Drupal\international_migrate\Plugin\migrate\source;
 
 use Drupal\Component\Utility\Html;
+use Drupal\layout_builder\Section;
 use Drupal\migrate\Event\MigrateImportEvent;
 use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\LinkReplaceTrait;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
 use Drupal\taxonomy\Entity\Term;
-use Drupal\layout_builder\Section;
 
 /**
  * Migrate Source plugin.
@@ -216,9 +216,11 @@ class Articles extends BaseNodeSource {
           if ($term->save()) {
             $this->tagMapping[$tag_name] = $term->id();
           }
-          // Add the mapped TID to match our tag name.
-          $tags[] = $this->tagMapping[$tag_name];
         }
+
+        // Add the mapped TID to match our tag name.
+        $tags[] = $this->tagMapping[$tag_name];
+
       }
       $row->setSourceProperty('tags', $tags);
     }
@@ -276,6 +278,8 @@ class Articles extends BaseNodeSource {
     /** @var \Drupal\Core\Entity\EntityStorageInterface $entity_manager */
     $entity_manager = \Drupal::service('entity_type.manager')
       ->getStorage('node');
+
+    /** @var \Drupal\Core\Entity\EntityStorageInterface $block_manager */
     $block_manager = \Drupal::service('entity_type.manager')
       ->getStorage('block_content');
 
@@ -300,45 +304,47 @@ class Articles extends BaseNodeSource {
       $uuid = array_keys($section_array['components'])[0];
       $component = $section_array['components'][$uuid];
       $revision_id = $component['configuration']['block_revision_id'];
-      $block = $block_manager->loadRevision($revision_id);
-      $block_text = $block->field_uiowa_text_area->value;
 
-      $doc = Html::load($block_text);
-      // Parse links.
-      $links = $doc->getElementsByTagName('a');
-      $i = $links->length - 1;
-      while ($i >= 0) {
-        $link = $links->item($i);
-        $href = $link->getAttribute('href');
-        if (strpos($href, '/node/') === 0 || stristr($href, 'international.uiowa.edu/node/')) {
-          $nid = explode('node/', $href)[1];
-          if ($lookup = $map[$nid]) {
-            $link->setAttribute('href', '/node/' . $lookup);
-            $link->parentNode->replaceChild($link, $link);
+      if ($block = $block_manager->loadRevision($revision_id)) {
+        $block_text = $block->field_uiowa_text_area->value;
+
+        $doc = Html::load($block_text);
+        // Parse links.
+        $links = $doc->getElementsByTagName('a');
+        $i = $links->length - 1;
+        while ($i >= 0) {
+          $link = $links->item($i);
+          $href = $link->getAttribute('href');
+          if (strpos($href, '/node/') === 0 || stristr($href, 'international.uiowa.edu/node/')) {
+            $nid = explode('node/', $href)[1];
+            if ($lookup = $map[$nid]) {
+              $link->setAttribute('href', '/node/' . $lookup);
+              $link->parentNode->replaceChild($link, $link);
+            }
+            else {
+              $text = $doc->createTextNode($link->nodeValue);
+              $link->parentNode->replaceChild($text, $link);
+            }
           }
-          else {
-            $text = $doc->createTextNode($link->nodeValue);
-            $link->parentNode->replaceChild($text, $link);
-          }
+          $i--;
         }
-        $i--;
+        // Re-serialize the DOM and set into the body text.
+        $block_text = Html::serialize($doc);
+        $block->field_uiowa_text_area->value = $block_text;
+        $block->save();
+        // Set the new revision in the component
+        // and place it back into the section array.
+        $component['configuration']['block_revision_id'] = $block->getRevisionId();
+        $section_array['components'][$uuid] = $component;
+        // Remove the old section and append our new one.
+        $layout->removeSection($section_delta);
+        $layout->appendSection(Section::fromArray($section_array));
+        // Place the new layout back into the node field and save.
+        $node->set('layout_builder__layout', $layout->getSections());
+        $node->setNewRevision(TRUE);
+        $node->revision_log = 'Auto-updated links during news migration.';
+        $node->save();
       }
-      // Re-serialize the DOM and set into the body text.
-      $block_text = Html::serialize($doc);
-      $block->field_uiowa_text_area->value = $block_text;
-      $block->save();
-      // Set the new revision in the component
-      // and place it back into the section array.
-      $component['configuration']['block_revision_id'] = $block->getRevisionId();
-      $section_array['components'][$uuid] = $component;
-      // Remove the old section and append our new one.
-      $layout->removeSection($section_delta);
-      $layout->appendSection(Section::fromArray($section_array));
-      // Place the new layout back into the node field and save.
-      $node->set('layout_builder__layout', $layout->getSections());
-      $node->setNewRevision(TRUE);
-      $node->revision_log = 'Auto-updated links during news migration.';
-      $node->save();
     }
     return TRUE;
   }

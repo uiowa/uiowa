@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: labattention-perception.uiowa.ddev.site
+    protocol: https
+  machine_name: labattention-perception
+  human_name: attention-perception.lab.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: labattention-perception.prod
+drupal:
+  db:
+    database: attention_perception_lab_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://default.prod.drupal.uiowa.edu'
+  requester: cmmoor
+  site-name: 'Iowa Attention Perception Lab'
