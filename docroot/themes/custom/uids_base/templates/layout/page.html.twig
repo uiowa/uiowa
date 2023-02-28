@@ -61,10 +61,6 @@
   {% endif %}
 {% endif %}
 
-{% if not default_logo %}
-  {% set header_type = 'custom-logo' %}
-{%  endif %}
-
 {% include '@uids_base/layout/header--' ~ header_type ~ '.html.twig' %}
 
 {% if page.alert %}

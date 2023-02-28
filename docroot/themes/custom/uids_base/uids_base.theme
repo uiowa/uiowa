@@ -109,8 +109,8 @@ function uids_base_preprocess_html(&$variables) {
   $variables['layout_builder_enabled'] = FALSE;
 
   // Only set 'theme--gray' if 'style.style-selector' setting is set to gray.
-  if (theme_get_setting('style.style-selector') === 'gray') {
-    $variables['attributes']['class'][] = 'theme--gray';
+  if (theme_get_setting('style.style-selector') === 'neutral') {
+    $variables['attributes']['class'][] = 'theme--neutral';
     $variables['#attached']['library'][] = 'uids_base/theme-overrides';
   }
 
@@ -158,6 +158,10 @@ function uids_base_preprocess_page(&$variables) {
   $variables['site_has_parent'] = $config->get('has_parent');
   $variables['site_parent_name'] = $config->get('parent.name');
   $variables['site_parent_url'] = $config->get('parent.url');
+
+  if (theme_get_setting('logo.use_default') !== 1) {
+    $variables['logo_path'] = theme_get_setting('logo.path');
+  }
 
   // Add variables for the image and path of the UIOWA block logo.
   /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */

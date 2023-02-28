@@ -126,7 +126,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#description' => t('This option changes the primary gold theme color.'),
     '#options' => [
       'gold' => t('Gold'),
-      'gray' => t('Gray'),
+      'neutral' => t('Neutral'),
     ],
     '#default_value' => theme_get_setting('style.style-selector'),
   ];
