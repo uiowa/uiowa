@@ -110,6 +110,27 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#default_value' => ($top_links_limit ? $top_links_limit : 2),
   ];
 
+  // Change theme style.
+  $form['style'] = [
+    '#type' => 'details',
+    '#title' => t('Theme settings'),
+    '#description' => t('Configure various theme settings for the uids_base theme.'),
+    '#weight' => -1000,
+    '#open' => TRUE,
+    '#tree' => TRUE,
+  ];
+
+  $form['style']['style-selector'] = [
+    '#type' => 'select',
+    '#title' => t('Style'),
+    '#description' => t('This option changes the primary gold theme color.'),
+    '#options' => [
+      'gold' => t('Gold'),
+      'gray' => t('Gray'),
+    ],
+    '#default_value' => theme_get_setting('style.style-selector'),
+  ];
+
   // These fields are only available to writing university for now.
   $form['fonts'] = [
     '#type' => 'details',
