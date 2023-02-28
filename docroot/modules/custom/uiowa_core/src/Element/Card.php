@@ -47,16 +47,79 @@ class Card extends RenderElement {
    * Pre-render callback: Renders a card into #markup.
    */
   public static function preRenderCard($element) {
-    // Add standard card classes.
+    // Set up attributes if not already set up.
     if (!isset($element['#attributes'])) {
       $element['#attributes'] = new Attribute();
     }
     elseif (!$element['#attributes'] instanceof Attribute) {
       $element['#attributes'] = new Attribute($element['#attributes']);
     }
-    $element['#attributes']->addClass([
-      'block--word-break',
-    ]);
+
+    // Create a set of media classes in case its needed.
+    $media_classes = [];
+    // Create a set of title headline classes in case its needed.
+    $headline_classes = ['headline'];
+
+    // Loop through all classes, add any media and headline classes to the array and remove
+    // them from the card classes.
+    foreach ($element['#attributes']['class'] as $index => $style) {
+      if (str_starts_with($style, 'media')) {
+        $media_classes[] = $style;
+        unset($element['#attributes']['class'][$index]);
+      }
+      if (str_starts_with($style, 'headline')) {
+        $headline_classes[] = $style;
+        unset($element['#attributes']['class'][$index]);
+      }
+    }
+
+    // If there is a media element, add the media library and classes.
+    if (isset($element['#media'])) {
+      $element['#attached']['library'][] = 'uids_base/media';
+      if (empty($element['#media_attributes'])) {
+        $element['#media_attributes'] = new Attribute();
+      }
+      if (!empty($media_classes)) {
+        $element['#media_attributes']->addClass($media_classes);
+      }
+    }
+
+    if (!empty($element['#title'])) {
+      $element['#headline'] = [
+        'headline_text' => $element['#title'],
+        'headline_level' => $element['#title_heading_size'] ?: 'h2',
+        'headline_class' => $headline_classes,
+      ];
+
+      // @todo Set headline_url based on link being set.
+      // Set 'click-target' class on headline URL if title is the linked element.
+      if ($element['#linked_element'] === 'title') {
+        $element['#headline']['headline_url'] = $element['#url'];
+        $element['#headline']['headline_url_class'] = 'click-target';
+      }
+    }
+
+    $linked_element = FALSE;
+
+    // If there is no URL, then it is not linked.
+    if (!empty($element['#url'])) {
+
+      // Determine the linked element.
+      if (!isset($element['#link_text']) && $element['#link_indicator']) {
+        $linked_element = 'button';
+      }
+      elseif (!is_null($element['#title'])) {
+        $linked_element = 'title';
+      }
+      elseif (isset($element['#link_text'])) {
+        $linked_element = 'button';
+      }
+      elseif (!empty($element['#media'])) {
+        $linked_element = 'media';
+      }
+    }
+
+    $element['#linked_element'] = $linked_element;
 
     return $element;
   }

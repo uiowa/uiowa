@@ -107,16 +107,6 @@ function uiowa_core_mail_alter(&$message) {
 /**
  * Implements hook_ENTITY_TYPE_build_defaults_alter().
  */
-function uiowa_core_block_content_build_defaults_alter(array &$build, EntityInterface $entity, $view_mode) {
-  if ($entity instanceof RendersAsCardInterface) {
-    // Add card build info.
-    $entity->addCardBuildInfo($build);
-  }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_build_defaults_alter().
- */
 function uiowa_core_node_build_defaults_alter(array &$build, EntityInterface $entity, $view_mode) {
   if ($view_mode === 'teaser') {
     // All teasers default to rendering as a card.
@@ -189,6 +179,16 @@ function uiowa_core_node_presave(Node $node) {
         $view->storage->invalidateCaches();
       }
     }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function uiowa_core_block_content_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if ($entity instanceof RendersAsCardInterface) {
+    // Add card build info.
+    $entity->addCardBuildInfo($build);
   }
 }
 
@@ -275,6 +275,16 @@ function template_preprocess_uiowa_core_headline(&$variables) {
 function template_preprocess_card(&$variables) {
   $element = $variables['element'];
 
+  if (!empty($element['#url'])) {
+    // Add click-container class if there is a link.
+    $variables['attributes']['class'][] = 'click-container';
+  }
+  else {
+    // If there is no URL, set a data attribute so our click a11y script knows to
+    // ignore this card.
+    $variables['attributes']->setAttribute('data-uids-no-link', TRUE);
+  }
+
   foreach ([
     'attributes',
     'media',
@@ -287,6 +297,7 @@ function template_preprocess_card(&$variables) {
     'url',
     'link_text',
     'link_indicator',
+    'linked_element',
     'aria_described_by',
   ] as $prop) {
     if (isset($element["#$prop"])) {
@@ -297,61 +308,7 @@ function template_preprocess_card(&$variables) {
     }
   }
 
-  $linked_element = FALSE;
-
-  // If there is no URL, then it is not linked.
-  if (!empty($variables['url'])) {
-    // Add click-container class if there is a link.
-    $variables['attributes']->addClass('click-container');
-
-    // Determine the linked element.
-    if (!isset($variables['link_text']) && $variables['link_indicator']) {
-      $linked_element = 'button';
-    }
-    elseif (!is_null($variables['title'])) {
-      $linked_element = 'title';
-    }
-    elseif (isset($variables['link_text'])) {
-      $linked_element = 'button';
-    }
-    elseif (!empty($variables['media'])) {
-      $linked_element = 'media';
-    }
-  }
-  else {
-    // If there is no URL, set a data attribute so our click a11y script knows to
-    // ignore this card.
-    $variables['attributes']->setAttribute('data-uids-no-link', TRUE);
-  }
-  $variables['linked_element'] = $linked_element;
-
-  // Create a set of media classes in case its needed.
-  $media_classes = [];
-  // Create a set of title headline classes in case its needed.
-  $headline_classes = ['headline'];
-
-  // Loop through all classes, add any media and headline classes to the array and remove
-  // them from the card classes.
-  foreach ($variables['attributes']['class'] as $index => $style) {
-    if (str_starts_with($style, 'media')) {
-      $media_classes[] = $style;
-      unset($variables['attributes']['class'][$index]);
-    }
-    if (str_starts_with($style, 'headline')) {
-      $headline_classes[] = $style;
-      unset($variables['attributes']['class'][$index]);
-    }
-  }
-  // If there is a media element, add the media library and classes.
-  // @todo Update this to Element:isEmpty() in
-  //   https://github.com/uiowa/uiowa/issues/6061.
-  if (isset($variables['media'])) {
-    $variables['#attached']['library'][] = 'uids_base/media';
-    if (empty($variables['media_attributes']) && !empty($media_classes)) {
-      $variables['media_attributes'] = new Attribute();
-      $variables['media_attributes']->addClass($media_classes);
-    }
-  }
+  $element['attributes']['class'][] = 'block--word-break';
 
   $variables['button_attributes'] = new Attribute();
   $variables['button_attributes']->addClass([
@@ -375,21 +332,6 @@ function template_preprocess_card(&$variables) {
       'bttn--circle',
       'bttn--no-text',
     ]);
-  }
-
-  if (!empty($variables['title'])) {
-    $variables['headline'] = [
-      'headline_text' => $variables['title'],
-      'headline_level' => $variables['title_heading_size'] ?: 'h2',
-      'headline_class' => $headline_classes,
-    ];
-
-    // @todo Set headline_url based on link being set.
-    // Set 'click-target' class on headline URL if title is the linked element.
-    if ($variables['linked_element'] === 'title') {
-      $variables['headline']['headline_url'] = $variables['url'];
-      $variables['headline']['headline_url_class'] = 'click-target';
-    }
   }
 
   // If title and link text are set, set a button id attribute for
