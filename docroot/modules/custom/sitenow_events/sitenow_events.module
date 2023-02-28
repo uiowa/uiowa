@@ -171,6 +171,7 @@ function sitenow_events_preprocess_block(&$variables) {
           break;
       }
 
+      // Construct parameters to pass to sitenow_events_load().
       $parameters = [
         'display_id' => $display_id,
         'filters[department]' => $block->get('field_uiowa_events_department')->getString(),
@@ -184,6 +185,7 @@ function sitenow_events_preprocess_block(&$variables) {
         'items_per_page' => $block->get('field_collection_results')->value ?? 50,
       ];
 
+      // Provide a start date filter parameter if it exists.
       if (!is_null($start)) {
         $parameters['filters[startdate][value][date]'] = date('m-d-Y', $start);
       }
@@ -207,17 +209,8 @@ function sitenow_events_preprocess_block(&$variables) {
       }
 
       if (isset($data['events'])) {
-        $attributes = new Attribute();
-        // Get block layout builder override styles if they exist.
-        // @todo Check for other default styles to mix here.
-        if (isset($variables['elements']['#override_styles']) && !empty($variables['elements']['#override_styles'])) {
-          $parent_lb_styles = array_values(array_merge($variables['elements']['#override_styles'], [
-            'list-item',
-            'event-item',
-          ]));
-          $attributes->addClass($parent_lb_styles);
-        }
 
+        // Construct individual event headings.
         if ($block->hasField('field_uiowa_headline')) {
           $headline_fields = $block->get('field_uiowa_headline')->getValue();
           foreach ($headline_fields as $headline_field) {
@@ -231,16 +224,37 @@ function sitenow_events_preprocess_block(&$variables) {
           }
         }
 
+        // Combine block, override and UI events specific styles.
+        $card_attributes = new Attribute();
+        $media_attributes = new Attribute();
+        if (isset($variables['elements']['#override_styles']) && !empty($variables['elements']['#override_styles'])) {
+          $combined_styles = array_values(array_merge($variables['elements']['#override_styles'], [
+            'list-item',
+            'event-item',
+          ]));
+
+          // Work around for template_preprocess_card firing multiple times
+          // causing classes to get stripped before we can reference them.
+          foreach ($combined_styles as $style) {
+            if (str_starts_with($style, 'media')) {
+              $media_attributes->addClass($style);
+            }
+          }
+          $card_attributes->addClass($combined_styles);
+        }
+
+        // Get site-wide configuration for use with constructing event link.
         $config = \Drupal::config('sitenow_events.settings');
 
         foreach ($data['events'] as $key => $value) {
           // The API nests each event as an array.
           $event = $value['event'];
-          $event['attributes'] = $attributes;
+          $event['attributes'] = $card_attributes;
+          $event['media_attributes'] = $media_attributes;
           $event['heading_size'] = $heading_size ?? 'h3';
 
+          // Construct event link based on site-wide configuration.
           $external_link = ($config->get('event_link') === 'event-link-external');
-
           if ($external_link) {
             $event['url'] = $event['events_site_url'];
           }
@@ -258,6 +272,7 @@ function sitenow_events_preprocess_block(&$variables) {
             $event['url'] = Url::fromUri("internal:/{$single_event_path}/{$event_path}", ['alias' => TRUE]);
           }
 
+          // Construct date string.
           $event['date_string'] = sitenow_events_format_instance([
             'start' => $event['instance_start'],
             'end' => $event['instance_end'],
@@ -266,8 +281,7 @@ function sitenow_events_preprocess_block(&$variables) {
           ]);
 
           // Pass off to helper function to build card render.
-          $card = sitenow_events_build_card($event);
-          $variables['content'][$key] = $card;
+          $variables['content'][$key] = sitenow_events_build_card($event);
         }
       }
       else {
@@ -314,6 +328,7 @@ function sitenow_events_build_card(array $event): array {
   $card = [
     '#type' => 'card',
     '#attributes' => $event['attributes'],
+    '#media_attributes' => $event['media_attributes'],
     '#title' => $event['title'],
     '#subtitle' => $event['date_string'],
     '#url' => $event['url'],
