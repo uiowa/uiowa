@@ -253,9 +253,6 @@ function sitenow_articles_preprocess_node(&$variables) {
 
     $node = $variables['node'];
 
-    if ($node instanceof ArticleInterface) {
-      $variables['content']['byline'] = $node->getByline();
-    }
     switch ($node->getType()) {
       case 'article':
         $variables['content']['article_author'] = $node->field_article_author->view([
@@ -265,8 +262,6 @@ function sitenow_articles_preprocess_node(&$variables) {
         ]);
 
         if (in_array($variables['view_mode'], ['default', 'full'])) {
-          // Unset the byline that's only needed for card displays.
-          unset($variables['content']['byline']);
 
           // Check if we don't have any gallery images.
           if ($node->hasField('field_gallery_images') &&
