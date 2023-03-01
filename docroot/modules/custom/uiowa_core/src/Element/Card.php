@@ -77,6 +77,7 @@ class Card extends RenderElement {
     // If there is a media element, add the media library and classes.
     if (isset($element['#media'])) {
       $element['#attached']['library'][] = 'uids_base/media';
+      // Media attributes could already be set during render array construction.
       if (empty($element['#media_attributes'])) {
         $element['#media_attributes'] = new Attribute();
       }
