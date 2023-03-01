@@ -96,12 +96,10 @@ class Article extends NodeBundleBase implements ArticleInterface, RendersAsCardI
     ];
 
     if ($org && !in_array('field_article_source_org', $hide_fields)) {
-      if (in_array('field_article_source_link', $hide_fields)) {
-        if ($source_link) {
-          // Wrap org in the source link.
-          $org = Link::fromTextAndUrl($org, Url::fromUri($source_link))
-            ->toString();
-        }
+      if ($source_link && !in_array('field_article_source_link', $hide_fields)) {
+        // Wrap org in the source link.
+        $org = Link::fromTextAndUrl($org, Url::fromUri($source_link))
+          ->toString();
       }
       $byline['org'] = [
         '#prefix' => '<span class="views-field-article-source-link">',
@@ -109,7 +107,7 @@ class Article extends NodeBundleBase implements ArticleInterface, RendersAsCardI
         '#suffix' => '</span>',
       ];
     }
-    if ($source_link && !in_array('field_article_source_link', $hide_fields)) {
+    if (!$org && $source_link && !in_array('field_article_source_link', $hide_fields)) {
       $link = Link::fromTextAndUrl($source_link, Url::fromUri($source_link))
         ->toString();
       $byline['source_link'] = [
