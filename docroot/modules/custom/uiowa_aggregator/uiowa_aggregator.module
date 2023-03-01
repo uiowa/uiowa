@@ -52,13 +52,14 @@ function uiowa_aggregator_form_aggregator_feed_form_alter(&$form, FormStateInter
  */
 
 function uiowa_aggregator_preprocess_aggregator_item(&$variables) {
-  $variables['elements'] = [
-    '#meta' => [
-      'author' => $variables['elements']['author'],
-    ],
-    '#content' => $variables['elements']['description'],
-    '#subtitle' => $variables['elements']['timestamp'],
-  ];
+
+  $variables['elements']['#type'] = 'card';
+  unset($variables['elements']['#theme']);
+
+  $variables['elements']['#meta']['author'] = $variables['elements']['author'];
+  $variables['elements']['#content'] = $variables['elements']['description'];
+  $variables['elements']['#subtitle'] = $variables['elements']['timestamp'];
+
   unset($variables['elements']['author']);
   unset($variables['elements']['description']);
   unset($variables['elements']['timestamp']);
