@@ -385,9 +385,14 @@ function sitenow_events_build_card(array $event): array {
   $allowed_tags = ['a', 'strong', 'em'];
 
   if (isset($event['summary'])) {
+    // @todo remove 'card__description' attribute once v2 is no longer.
     $card['#content']['description'] = [
-      '#type' => 'markup',
-      '#markup' => Xss::filter($event['summary'], $allowed_tags),
+      '#type' => 'html_tag',
+      '#tag' => 'div',
+      '#value' => Xss::filter($event['summary'], $allowed_tags),
+      '#attributes' => [
+        'class' => 'card__description',
+      ],
     ];
   }
   elseif (isset($event['description'])) {
@@ -396,9 +401,14 @@ function sitenow_events_build_card(array $event): array {
     // Use smart_trim's helper to safely truncate without breaking HTML.
     $truncate = new TruncateHTML();
     $trim_suffix = '...';
+    // @todo remove 'card__description' attribute once v2 is no longer.
     $card['#content']['description'] = [
-      '#type' => 'markup',
-      '#markup' => $truncate->truncateChars($event['description'], 500, $trim_suffix),
+      '#type' => 'html_tag',
+      '#tag' => 'div',
+      '#value' => $truncate->truncateChars($event['description'], 500, $trim_suffix),
+      '#attributes' => [
+        'class' => 'card__description',
+      ],
     ];
   }
 
