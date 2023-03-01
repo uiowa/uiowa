@@ -113,8 +113,8 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
   // Change theme style.
   $form['style'] = [
     '#type' => 'details',
-    '#title' => t('Theme settings'),
-    '#description' => t('Configure various theme settings for the uids_base theme.'),
+    '#title' => t('Color Palette'),
+    '#description' => t('Configure the color palette for the uids_base theme.'),
     '#weight' => -1000,
     '#open' => TRUE,
     '#tree' => TRUE,
@@ -125,11 +125,19 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#title' => t('Style'),
     '#description' => t('This option changes the primary gold theme color.'),
     '#options' => [
-      'gold' => t('Gold'),
-      'neutral' => t('Neutral'),
+      'on-brand' => t('Iowa brand'),
+      'off-brand-beige' => t('Beige'),
+      'off-brand-blue' => t('Blue'),
+      'off-brand-gray' => t('Gray'),
     ],
     '#default_value' => theme_get_setting('style.style-selector'),
   ];
+
+  // Only allow access to this field for users with the 'administer site configuration'
+  // permission.
+  if (!\Drupal::currentUser()->hasPermission('administer site configuration')) {
+    $form['style']['#access'] = FALSE;
+  }
 
   // These fields are only available to writing university for now.
   $form['fonts'] = [

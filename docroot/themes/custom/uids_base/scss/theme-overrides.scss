@@ -2,10 +2,32 @@
 @import "../uids/assets/scss/_utilities.scss";
 
 
-.theme--neutral {
+.off-brand--beige {
   // brand-gold luminosity is 64% https://planetcalc.com/7779/.
-  // gray with 67%.
-  //--brand-primary: #d7d7d7;
   // beige with 84% luminosity.
-  --brand-primary: #f1ede6;
+  --brand-primary: #f1e3cb;
+}
+
+.off-brand--blue {
+  --brand-primary: #8ecfec;
+}
+
+.off-brand--gray {
+  --brand-primary: #d7d7d7;
+}
+
+[class*="off-brand"] {
+
+  .iowa-bar--narrow.horizontal > .iowa-bar__container,
+  .iowa-bar--narrow.toggle > .iowa-bar__container {
+    height: 50px;
+  }
+
+  .site-name {
+    padding: 15px 20px 15px 0;
+  }
+
+  .site-name img {
+    width: 20%;
+  }
 }

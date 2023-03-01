@@ -108,10 +108,19 @@ function uids_base_preprocess_html(&$variables) {
   // Set a variable for whether layout builder is enabled.
   $variables['layout_builder_enabled'] = FALSE;
 
-  // Only set 'theme--gray' if 'style.style-selector' setting is set to gray.
-  if (theme_get_setting('style.style-selector') === 'neutral') {
-    $variables['attributes']['class'][] = 'theme--neutral';
+  $style_selector = theme_get_setting('style.style-selector');
+  if ($style_selector !== NULL && preg_match('/off-brand-/', $style_selector)) {
     $variables['#attached']['library'][] = 'uids_base/theme-overrides';
+  }
+
+  if (theme_get_setting('style.style-selector') === 'off-brand-beige') {
+    $variables['attributes']['class'][] = 'off-brand--beige';
+  }
+  if (theme_get_setting('style.style-selector') === 'off-brand-blue') {
+    $variables['attributes']['class'][] = 'off-brand--blue';
+  }
+  if (theme_get_setting('style.style-selector') === 'off-brand-gray') {
+    $variables['attributes']['class'][] = 'off-brand--gray';
   }
 
   // Only set 'text--serif' if 'fonts.font-family' setting is set to serif.
@@ -159,12 +168,24 @@ function uids_base_preprocess_page(&$variables) {
   $variables['site_parent_name'] = $config->get('parent.name');
   $variables['site_parent_url'] = $config->get('parent.url');
 
-  if (theme_get_setting('logo.use_default') != 1) {
-    $variables['logo_path'] = theme_get_setting('logo.path');
+  $variables['uiowa_logo'] = TRUE;
+  $variables['is_off_brand'] = FALSE;
+
+  $style_selector = theme_get_setting('style.style-selector');
+  if (!empty($style_selector) && preg_match('/off-brand-/', $style_selector)) {
+    $variables['uiowa_logo'] = FALSE;
+    $variables['is_off_brand'] = TRUE;
   }
 
-  if ((theme_get_setting('logo.use_default') != 1) && empty(theme_get_setting('logo.path'))) {
-    $variables['no_logo'] = TRUE;
+  if (theme_get_setting('logo.use_default') != 1) {
+    $logo_path = theme_get_setting('logo.path');
+    if (!empty($logo_path)) {
+      $logo_url = file_create_url($logo_path);
+      $variables['logo_path'] = $logo_url;
+    }
+    else {
+      $variables['logo_path'] = '';
+    }
   }
 
   // Add variables for the image and path of the UIOWA block logo.

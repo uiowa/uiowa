@@ -10,6 +10,7 @@
   <div class="footer__container footer__container--flex">
     <div class="footer__links footer__links--contact">
 
+      {% if uiowa_logo is not empty %}
       {{ attach_library('uids_base/logo') }}
       {% include '@uids_base/uids/logo.twig' with {
         path: uiowa_url,
@@ -18,14 +19,21 @@
         logo_classes: 'logo--footer',
         logo_id: 'footer',
       } %}
+      {% endif %}
 
       {% block site_name %}
         {% if site_name %}
           {# @todo Remove header_type condition when uiowa sub-theme is functional. #}
           {% if header_type != 'homepage' %}
-            <a class="site-name-link" href="{{ path('<front>') }}">
-              <h2 class="site-name">{{ site_name }}</h2>
-            </a>
+            {% if logo_path and is_off_brand %}
+              <div class="site-name">
+                <a href="{{ path('<front>') }}"><img alt="{{ site_name }}" src ="{{ logo_path }}" /></a>
+              </div>
+            {% else %}
+              <a class="site-name-link" href="{{ path('<front>') }}">
+                <h2 class="site-name">{{ site_name }}</h2>
+              </a>
+            {% endif %}
           {% endif %}
         {% endif %}
       {% endblock %}
@@ -62,7 +70,9 @@
 
   </div>
   <div class="footer__container">
+    {% if uiowa_logo is not empty %}
     {% include '@uids_base/uids/footer--socket-menu.twig' %}
+    {% endif %}
   </div>
 
 </footer>
