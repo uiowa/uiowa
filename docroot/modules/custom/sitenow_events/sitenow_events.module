@@ -224,7 +224,7 @@ function sitenow_events_preprocess_block(&$variables) {
           }
         }
 
-        // Base styles
+        // Base styles.
         $styles = [
           'list-item',
           'event-item',
@@ -314,7 +314,6 @@ function sitenow_events_build_card(array $event): array {
   $card = [
     '#type' => 'card',
     '#attributes' => $event['attributes'],
-//    '#media_attributes' => $event['media_attributes'],
     '#title' => $event['title'],
     '#url' => $event['url'],
     '#headline_level' => $event['heading_size'],

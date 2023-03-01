@@ -113,26 +113,18 @@ function sitenow_events_paragraph_preprocess_paragraph(&$variables) {
             // The API nests each event as an array.
             $event = $value['event'];
 
-            // Combine block, override and UI events specific styles.
-            $card_attributes = new Attribute();
-            $card_attributes->addClass([
+            // Base styles.
+            $styles = [
               'card--list',
               'card__row',
               'card--layout-left',
               'borderless',
-            ]);
-            // Workaround for Card::preRenderCard potentially firing multiple
-            // times which can classes to get stripped before they are
-            // in place on the media wrapper.
-            $media_attributes = new Attribute();
-            $media_attributes->addClass([
               'media--circle',
               'media--border',
               'media--small',
-            ]);
+            ];
 
-            $event['attributes'] = $card_attributes;
-            $event['media_attributes'] = $media_attributes;
+            $event['attributes'] = (new Attribute())->addClass($styles);
             $event['heading_size'] = 'h2';
 
             // Pass off to helper function to build card render.
