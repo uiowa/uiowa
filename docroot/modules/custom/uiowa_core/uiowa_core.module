@@ -300,8 +300,8 @@ function template_preprocess_card(&$variables) {
     $variables['attributes']['class'][] = 'click-container';
   }
   else {
-    // If there is no URL, set a data attribute so our click a11y script knows to
-    // ignore this card.
+    // If there is no URL, set a data attribute so our click a11y script knows
+    // to ignore this card.
     $variables['attributes']->setAttribute('data-uids-no-link', TRUE);
   }
 
