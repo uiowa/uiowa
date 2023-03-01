@@ -1,0 +1,16 @@
+diff --git a/docroot/sites/development.services.yml b/docroot/sites/development.services.yml
+index d2857c66f..dff0a4dc4 100644
+--- a/docroot/sites/development.services.yml
++++ b/docroot/sites/development.services.yml
+@@ -4,6 +4,11 @@
+ # 'example.settings.local.php' file, which sits next to this file.
+ parameters:
+   http.response.debug_cacheability_headers: true
++  # Enable twig debugging.
++  twig.config:
++    debug: true
++    auto_reload: true
++    cache: false
+ services:
+   cache.backend.null:
+     class: Drupal\Core\Cache\NullBackendFactory
