@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: researchpark.uiowa.ddev.site
+    protocol: https
+  machine_name: researchpark
+  human_name: researchpark.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: researchpark.prod
+drupal:
+  db:
+    database: researchpark_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://researchpark.prod.drupal.uiowa.edu'
+  requester: crdon
+  site-name: 'UI Research Park'
