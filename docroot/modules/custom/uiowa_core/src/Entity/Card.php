@@ -5,12 +5,15 @@ namespace Drupal\uiowa_core\Entity;
 use Drupal\block_content\Entity\BlockContent;
 use Drupal\Core\Render\Element;
 
+/**
+ * A bundle entity class for card block content.
+ */
 class Card extends BlockContent implements RendersAsCardInterface {
 
   use RendersAsCardTrait;
 
   /**
-   * @inheritDoc
+   * {@inheritdoc}
    */
   public function buildCard(array &$build) {
     $this->buildCardStyles($build);
@@ -22,13 +25,12 @@ class Card extends BlockContent implements RendersAsCardInterface {
       '#content' => 'field_uiowa_card_excerpt',
     ]);
 
-
     // @todo Capture the parts of the URL. This isn't working with
     //   caching.
     foreach ([
-        'url' => 'url',
-        'title' => 'link_text',
-      ] as $field_link_prop => $link_prop) {
+      'url' => 'url',
+      'title' => 'link_text',
+    ] as $field_link_prop => $link_prop) {
       if (isset($build['field_uiowa_card_link'][0]["#$field_link_prop"])) {
         $build["#$link_prop"] = $build['field_uiowa_card_link'][0]["#$field_link_prop"];
       }
@@ -61,12 +63,5 @@ class Card extends BlockContent implements RendersAsCardInterface {
       $build['#link_indicator'] = TRUE;
     }
   }
-
-  /**
-   * @inheritDoc
-   */
-//  public function getDefaultCardStyles(): array {
-//    // TODO: Implement getDefaultCardStyles() method.
-//  }
 
 }

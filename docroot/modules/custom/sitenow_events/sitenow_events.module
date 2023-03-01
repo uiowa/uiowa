@@ -228,10 +228,10 @@ function sitenow_events_preprocess_block(&$variables) {
         $card_attributes = new Attribute();
         $media_attributes = new Attribute();
         if (isset($variables['elements']['#override_styles']) && !empty($variables['elements']['#override_styles'])) {
-          $combined_styles = array_values(array_merge($variables['elements']['#override_styles'], [
+          $combined_styles = array_merge(array_values($variables['elements']['#override_styles']), [
             'list-item',
             'event-item',
-          ]));
+          ]);
 
           // Work around for template_preprocess_card firing multiple times
           // causing classes to get stripped before we can reference them.

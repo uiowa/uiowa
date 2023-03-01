@@ -139,7 +139,6 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
 
           $build['content']['#override_styles'] = $style_map;
 
-
           // Map the layout builder styles to the view mode to be used.
           if (!empty($build['#media']) && isset($build['#attributes']['class'])) {
             $this->setMediaViewModeFromStyle($build['#media']['field_uiowa_card_image'], 'large', $build['#attributes']['class']);

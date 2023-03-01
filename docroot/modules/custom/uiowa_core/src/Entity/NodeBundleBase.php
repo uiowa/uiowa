@@ -3,6 +3,7 @@
 namespace Drupal\uiowa_core\Entity;
 
 use Drupal\node\Entity\Node;
+use Drupal\uiowa_core\Element\Card;
 
 /**
  * Bundle-specific subclass of Node.
@@ -26,6 +27,13 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
    *   field name or null.
    */
   protected $sourceLink = NULL;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function addCardPreRenderToBuild(array &$build) {
+    // We don't want this to do anything.
+  }
 
   /**
    * {@inheritdoc}
@@ -61,6 +69,11 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
     $config = \Drupal::configFactory()->getEditable($config_name);
     $link_indicator = $config->get('show_teaser_link_indicator') ?? FALSE;
     $build['#link_indicator'] = $link_indicator;
+
+    // Workaround for the fact that if the Card::preRenderCard is added to a
+    // node teaser $build object early enough that it actually fires, it fires
+    // before we can trigger the buildCard method, which needs to run first.
+    $build = Card::preRenderCard($build);
   }
 
   /**
@@ -110,6 +123,12 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
     return in_array($view_mode, $this->getCardViewModes());
   }
 
+  /**
+   * Get view modes that should be rendered as a card.
+   *
+   * @return string[]
+   *   The list of view modes.
+   */
   protected function getCardViewModes(): array {
     return ['teaser'];
   }
