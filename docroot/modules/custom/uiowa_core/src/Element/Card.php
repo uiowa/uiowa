@@ -48,44 +48,41 @@ class Card extends RenderElement {
    * Pre-render callback: Renders a card into #markup.
    */
   public static function preRenderCard($element) {
-    // Set up attributes if not already set up.
-    if (!isset($element['#attributes'])) {
-      $element['#attributes'] = new Attribute();
-    }
-    elseif (!$element['#attributes'] instanceof Attribute) {
-      $element['#attributes'] = new Attribute($element['#attributes']);
+    // Set up various attributes if not already set up.
+    foreach ([
+      'attributes',
+      'button_attributes',
+      'media_attributes',
+    ] as $attributes_type) {
+      if (!isset($element["#$attributes_type"])) {
+        $element["#$attributes_type"] = new Attribute();
+      }
+      elseif (!$element["#$attributes_type"] instanceof Attribute) {
+        $element["#$attributes_type"] = new Attribute($element["#$attributes_type"]);
+      }
     }
 
-    // Create a set of media classes in case its needed.
-    $media_classes = [];
     // Create a set of title headline classes in case its needed.
     $headline_classes = ['headline'];
 
     // Loop through all classes, add any media and headline classes to the array and remove
     // them from the card classes.
     if (isset($element['#attributes']['class'])) {
-      foreach ($element['#attributes']['class'] as $index => $style) {
+      foreach ($element['#attributes']['class'] as $style) {
         if (str_starts_with($style, 'media')) {
-          $media_classes[] = $style;
-          unset($element['#attributes']['class'][$index]);
+          $element['#media_attributes']->addClass($style);
+          $element['#attributes']->removeClass($style);
         }
         if (str_starts_with($style, 'headline')) {
           $headline_classes[] = $style;
-          unset($element['#attributes']['class'][$index]);
+          $element['#attributes']->removeClass($style);
         }
       }
     }
 
-    // If there is a media element, add the media library and classes.
+    // If there is a media element, add the media library.
     if (isset($element['#media'])) {
       $element['#attached']['library'][] = 'uids_base/media';
-      // Media attributes could already be set during render array construction.
-      if (empty($element['#media_attributes'])) {
-        $element['#media_attributes'] = new Attribute();
-      }
-      if (!empty($media_classes)) {
-        $element['#media_attributes']->addClass($media_classes);
-      }
     }
 
     if (!empty($element['#title'])) {

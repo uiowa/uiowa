@@ -224,24 +224,18 @@ function sitenow_events_preprocess_block(&$variables) {
           }
         }
 
-        // Combine block, override and UI events specific styles.
-        $card_attributes = new Attribute();
-        $media_attributes = new Attribute();
-        if (isset($variables['elements']['#override_styles']) && !empty($variables['elements']['#override_styles'])) {
-          $combined_styles = array_merge(array_values($variables['elements']['#override_styles']), [
-            'list-item',
-            'event-item',
-          ]);
+        // Base styles
+        $styles = [
+          'list-item',
+          'event-item',
+        ];
 
-          // Workaround for Card::preRenderCard potentially firing multiple
-          // times which can classes to get stripped before they are
-          // in place on the media wrapper.
-          foreach ($combined_styles as $style) {
-            if (str_starts_with($style, 'media')) {
-              $media_attributes->addClass($style);
-            }
-          }
-          $card_attributes->addClass($combined_styles);
+        // If there are override styles from the block, add them in.
+        if (isset($variables['elements']['#override_styles']) && !empty($variables['elements']['#override_styles'])) {
+          $styles = [
+            ...$styles,
+            ...array_values($variables['elements']['#override_styles']),
+          ];
         }
 
         // Get site-wide configuration for use with constructing event link.
@@ -250,8 +244,7 @@ function sitenow_events_preprocess_block(&$variables) {
         foreach ($data['events'] as $key => $value) {
           // The API nests each event as an array.
           $event = $value['event'];
-          $event['attributes'] = $card_attributes;
-          $event['media_attributes'] = $media_attributes;
+          $event['attributes'] = (new Attribute())->addClass($styles);
           $event['heading_size'] = $heading_size ?? 'h3';
 
           // Construct event link based on site-wide configuration.
@@ -321,11 +314,13 @@ function sitenow_events_build_card(array $event): array {
   $card = [
     '#type' => 'card',
     '#attributes' => $event['attributes'],
-    '#media_attributes' => $event['media_attributes'],
+//    '#media_attributes' => $event['media_attributes'],
     '#title' => $event['title'],
     '#url' => $event['url'],
     '#headline_level' => $event['heading_size'],
   ];
+
+  $card['#media_attributes'] = new Attribute();
 
   // Construct date string.
   $card['#subtitle'] = sitenow_events_format_instance([
