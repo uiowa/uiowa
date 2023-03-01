@@ -45,6 +45,9 @@ function sitenow_events_paragraph_preprocess_paragraph(&$variables) {
     case 'events':
       $admin_context = \Drupal::service('router.admin_context');
       if (!$admin_context->isAdminRoute()) {
+        $variables['#attached']['library'][] = 'uids_base/paragraphs-lists';
+        $variables['#attached']['library'][] = 'uids_base/event';
+        $variables['#attached']['library'][] = 'uids_base/media';
 
         // Display title if it exists.
         if ($paragraph->hasField('field_uip_display_title')) {
@@ -112,30 +115,25 @@ function sitenow_events_paragraph_preprocess_paragraph(&$variables) {
 
             // Combine block, override and UI events specific styles.
             $card_attributes = new Attribute();
+            $card_attributes->addClass([
+              'card--list',
+              'card__row',
+              'card--layout-left',
+              'borderless',
+            ]);
+            // Workaround for Card::preRenderCard potentially firing multiple
+            // times which can classes to get stripped before they are
+            // in place on the media wrapper.
             $media_attributes = new Attribute();
-            if (isset($variables['elements']['#override_styles']) && !empty($variables['elements']['#override_styles'])) {
-              $combined_styles = array_merge(array_values($variables['elements']['#override_styles']), [
-                'card--list',
-                'card__row',
-                'card--media-left',
-                'media--circle',
-                'media--border',
-                'media--small',
-              ]);
-
-              // Workaround for Card::preRenderCard potentially firing multiple
-              // times which can classes to get stripped before they are
-              // in place on the media wrapper.
-              foreach ($combined_styles as $style) {
-                if (str_starts_with($style, 'media')) {
-                  $media_attributes->addClass($style);
-                }
-              }
-              $card_attributes->addClass($combined_styles);
-            }
+            $media_attributes->addClass([
+              'media--circle',
+              'media--border',
+              'media--small',
+            ]);
 
             $event['attributes'] = $card_attributes;
             $event['media_attributes'] = $media_attributes;
+            $event['heading_size'] = 'h2';
 
             // Pass off to helper function to build card render.
             $variables['list'][$key] = sitenow_events_build_card($event);

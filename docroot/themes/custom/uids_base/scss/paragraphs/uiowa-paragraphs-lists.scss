@@ -22,7 +22,7 @@
 .paragraph--type--people,
 .paragraph--type--featured-content {
 
-  &.hide-images .card__media,
+  &.hide-images .media,
   &.hide-images .content-image {
     display: none;
   }
@@ -34,7 +34,7 @@
 .view-display-id-page_articles,
 .view-id-people {
 
-  .card__media {
+  .media {
     @include card-media-horizontal-right;
 
     @include breakpoint(sm) {
@@ -69,7 +69,7 @@
   }
 
   .content-image,
-  .card__media {
+  .media {
     @include card-media-horizontal-right;
 
     @include breakpoint(sm) {
@@ -224,7 +224,7 @@
     margin-top: $gutter;
   }
 
-  .card__media {
+  .media {
     margin-bottom: $gutter;
   }
 }
