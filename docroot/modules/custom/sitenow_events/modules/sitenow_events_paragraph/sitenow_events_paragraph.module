@@ -6,6 +6,7 @@
  */
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 
 /**
@@ -105,25 +106,40 @@ function sitenow_events_paragraph_preprocess_paragraph(&$variables) {
         ]);
 
         if (!empty($data['events'])) {
-          foreach ($data['events'] as $value) {
+          foreach ($data['events'] as $key => $value) {
             // The API nests each event as an array.
             $event = $value['event'];
 
-            // Provide default v2 style classes.
-            $v2_defaults = [
-              'card--list',
-              'card__row',
-              'card--media-left',
-              'media--circle',
-              'media--border',
-              'media--small',
-            ];
-            $event['parent_lb_styles'] = $v2_defaults;
+            // Combine block, override and UI events specific styles.
+            $card_attributes = new Attribute();
+            $media_attributes = new Attribute();
+            if (isset($variables['elements']['#override_styles']) && !empty($variables['elements']['#override_styles'])) {
+              $combined_styles = array_merge(array_values($variables['elements']['#override_styles']), [
+                'card--list',
+                'card__row',
+                'card--media-left',
+                'media--circle',
+                'media--border',
+                'media--small',
+              ]);
 
-            $variables['list'][] = [
-              '#theme' => 'sitenow_events_teaser',
-              '#event' => $event,
-            ];
+              // Workaround for Card::preRenderCard potentially firing multiple
+              // times which can classes to get stripped before they are
+              // in place on the media wrapper.
+              foreach ($combined_styles as $style) {
+                if (str_starts_with($style, 'media')) {
+                  $media_attributes->addClass($style);
+                }
+              }
+              $card_attributes->addClass($combined_styles);
+            }
+
+            $event['attributes'] = $card_attributes;
+            $event['media_attributes'] = $media_attributes;
+
+            // Pass off to helper function to build card render.
+            $variables['list'][$key] = sitenow_events_build_card($event);
+
           }
         }
         else {

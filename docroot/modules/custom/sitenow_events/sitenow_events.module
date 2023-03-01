@@ -273,14 +273,6 @@ function sitenow_events_preprocess_block(&$variables) {
             $event['url'] = Url::fromUri("internal:/{$single_event_path}/{$event_path}", ['alias' => TRUE]);
           }
 
-          // Construct date string.
-          $event['date_string'] = sitenow_events_format_instance([
-            'start' => $event['instance_start'],
-            'end' => $event['instance_end'],
-            'last_date' => $event['last_date'],
-            'all_day' => $event['instance_all_day'],
-          ]);
-
           // Pass off to helper function to build card render.
           $variables['content'][$key] = sitenow_events_build_card($event);
         }
@@ -331,10 +323,18 @@ function sitenow_events_build_card(array $event): array {
     '#attributes' => $event['attributes'],
     '#media_attributes' => $event['media_attributes'],
     '#title' => $event['title'],
-    '#subtitle' => $event['date_string'],
     '#url' => $event['url'],
     '#headline_level' => $event['heading_size'],
   ];
+
+  // Construct date string.
+  $card['#subtitle'] = sitenow_events_format_instance([
+    'start' => $event['instance_start'],
+    'end' => $event['instance_end'],
+    'last_date' => $event['last_date'],
+    'all_day' => $event['instance_all_day'],
+  ]);
+
   if (isset($event['media'][0]['original_image'])) {
     // Establish default view mode if layout_builder_styles don't exist.
     $image_view_mode = 'large__square';

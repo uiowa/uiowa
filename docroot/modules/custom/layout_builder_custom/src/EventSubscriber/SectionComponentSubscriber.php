@@ -5,7 +5,6 @@ namespace Drupal\layout_builder_custom\EventSubscriber;
 use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Render\Element;
 use Drupal\Core\Render\PreviewFallbackInterface;
 use Drupal\layout_builder\Event\SectionComponentBuildRenderArrayEvent;
 use Drupal\layout_builder\LayoutBuilderEvents;
