@@ -7,17 +7,8 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
-use Drupal\uiowa_aggregator\Entity\AggregatorItem;
 use Drupal\uiowa_core\HeadlineHelper;
 
-/**
- * Implements hook_entity_bundle_info_alter().
- */
-function uiowa_aggregator_entity_bundle_info_alter(array &$bundles) {
-  if (isset($bundles['aggregator_item']['class'])) {
-    $bundles['aggregator_item']['class'] = AggregatorItem::class;
-  }
-}
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -54,6 +45,24 @@ function uiowa_aggregator_form_aggregator_feed_form_alter(&$form, FormStateInter
       }
     }
   }
+}
+
+/**
+ * Implements hook_preprocess_aggregator_item.
+ */
+
+function uiowa_aggregator_preprocess_aggregator_item(&$variables) {
+  $variables['elements'] = [
+    '#meta' => [
+      'author' => $variables['elements']['author'],
+    ],
+    '#content' => $variables['elements']['description'],
+    '#subtitle' => $variables['elements']['timestamp'],
+  ];
+  unset($variables['elements']['author']);
+  unset($variables['elements']['description']);
+  unset($variables['elements']['timestamp']);
+
 }
 
 /**
