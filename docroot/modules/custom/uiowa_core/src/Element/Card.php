@@ -63,14 +63,16 @@ class Card extends RenderElement {
 
     // Loop through all classes, add any media and headline classes to the array and remove
     // them from the card classes.
-    foreach ($element['#attributes']['class'] as $index => $style) {
-      if (str_starts_with($style, 'media')) {
-        $media_classes[] = $style;
-        unset($element['#attributes']['class'][$index]);
-      }
-      if (str_starts_with($style, 'headline')) {
-        $headline_classes[] = $style;
-        unset($element['#attributes']['class'][$index]);
+    if (isset($element['#attributes']['class'])) {
+      foreach ($element['#attributes']['class'] as $index => $style) {
+        if (str_starts_with($style, 'media')) {
+          $media_classes[] = $style;
+          unset($element['#attributes']['class'][$index]);
+        }
+        if (str_starts_with($style, 'headline')) {
+          $headline_classes[] = $style;
+          unset($element['#attributes']['class'][$index]);
+        }
       }
     }
 
