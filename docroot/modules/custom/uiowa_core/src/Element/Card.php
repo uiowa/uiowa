@@ -85,21 +85,6 @@ class Card extends RenderElement {
       $element['#attached']['library'][] = 'uids_base/media';
     }
 
-    if (!empty($element['#title'])) {
-      $element['#headline'] = [
-        'headline_text' => $element['#title'],
-        'headline_level' => $element['#title_heading_size'] ?: 'h2',
-        'headline_class' => $headline_classes,
-      ];
-
-      // @todo Set headline_url based on link being set.
-      // Set 'click-target' class on headline URL if title is the linked element.
-      if ($element['#linked_element'] === 'title') {
-        $element['#headline']['headline_url'] = $element['#url'];
-        $element['#headline']['headline_url_class'] = 'click-target';
-      }
-    }
-
     $linked_element = FALSE;
 
     // If there is no URL, then it is not linked.
@@ -121,6 +106,21 @@ class Card extends RenderElement {
     }
 
     $element['#linked_element'] = $linked_element;
+
+    if (!empty($element['#title'])) {
+      $element['#headline'] = [
+        'headline_text' => $element['#title'],
+        'headline_level' => $element['#title_heading_size'] ?: 'h2',
+        'headline_class' => $headline_classes,
+      ];
+
+      // @todo Set headline_url based on link being set.
+      // Set 'click-target' class on headline URL if title is the linked element.
+      if ($element['#linked_element'] === 'title') {
+        $element['#headline']['headline_url'] = $element['#url'];
+        $element['#headline']['headline_url_class'] = 'click-target';
+      }
+    }
 
     $element['#button_attributes'] = new Attribute();
 

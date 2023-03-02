@@ -4,6 +4,7 @@ namespace Drupal\uiowa_core\Entity;
 
 use Drupal\block_content\Entity\BlockContent;
 use Drupal\Core\Render\Element;
+use Drupal\uiowa_core\Element\Card;
 
 /**
  * A bundle entity class for card block content.
@@ -20,7 +21,7 @@ class Event extends BlockContent implements RendersAsCardInterface {
 
     // Add fields to card.
     $this->mapFieldsToCardBuild($build, [
-      '#media' => 'field_uiowa_image_image',
+      '#media' => 'field_uiowa_event_image',
       '#subtitle' => 'field_uiowa_event_date',
       '#meta' => [
         'field_uiowa_event_icon',
