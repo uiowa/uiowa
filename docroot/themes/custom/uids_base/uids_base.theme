@@ -214,7 +214,10 @@ function uids_base_preprocess_page(&$variables) {
   if (theme_get_setting('logo.use_default') != 1) {
     $logo_path = theme_get_setting('logo.path');
     if (!empty($logo_path)) {
-      $logo_url = file_create_url($logo_path);
+      $file_system = \Drupal::service('file_system');
+      $logo_uri = $file_system->realpath($logo_path);
+      $public_stream_wrapper = \Drupal::service('stream_wrapper.public');
+      $logo_url = $public_stream_wrapper->getExternalUrl($logo_uri);
       $variables['logo_path'] = $logo_url;
     }
     else {
