@@ -97,7 +97,7 @@ function uids_base_preprocess_html(&$variables) {
     $variables['has_enabled_links'] = $has_enabled_links;
     // Add the 'has_top_links' variable to the variables array, to be used in templates.
     // If there are enabled links, set the variable to 'has-top-links', otherwise set it to 'no-top-links'.
-    $variables['has_top_links'] = $has_enabled_links ? 'has-top-links' : '';
+    $variables['has_top_links'] = $has_enabled_links ? 'has-top-links' : 'no-top-links';
   }
 
   // Body classes for sidebars.
@@ -141,7 +141,20 @@ function uids_base_preprocess_html(&$variables) {
   }
 
   if (theme_get_setting('style.style_selector') === 'gray') {
-    $variables['attributes']['class'][] = 'off-brand--gray';
+    $variables['attributes']['class'][] = 'off-brand';
+    $css = ':root {--brand-primary: #d7d7d7!important;}';
+    $variables['#attached']['html_head'][] = [
+      [
+        '#type' => 'html_tag',
+        '#tag' => 'style',
+        '#value' => $css,
+        '#attributes' => [
+          'type' => 'text/css',
+        ],
+        '#weight' => 100,
+      ],
+      'custom_css',
+    ];
   }
 
   // Only set 'text--serif' if 'fonts.font-family' setting is set to serif.
