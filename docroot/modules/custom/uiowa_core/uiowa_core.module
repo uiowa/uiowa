@@ -18,6 +18,7 @@ use Drupal\google_tag\Entity\Container;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
 use Drupal\uiowa_core\Entity\Card;
+use Drupal\uiowa_core\Entity\Event;
 use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\uiowa_core\RegionHelper;
@@ -60,7 +61,7 @@ function uiowa_core_entity_bundle_info_alter(array &$bundles) {
     $bundles['block_content']['uiowa_card']['class'] = Card::class;
   }
   if (isset($bundles['block_content']['uiowa_event'])) {
-    $bundles['block_content']['uiowa_event']['class'] = Drupal\uiowa_core\Entity\Event::class;
+    $bundles['block_content']['uiowa_event']['class'] = Event::class;
   }
 }
 
@@ -102,6 +103,16 @@ function uiowa_core_mail_alter(&$message) {
     \Drupal::logger('uiowa_core')->error(t('Unable to alter outgoing email using from address @from', [
       '@from' => $message['from'],
     ]));
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_build_defaults_alter().
+ */
+function uiowa_core_block_content_build_defaults_alter(array &$build, EntityInterface $entity, $view_mode) {
+  if ($entity instanceof RendersAsCardInterface) {
+    // Add card build info.
+    $entity->addCardBuildInfo($build);
   }
 }
 
@@ -180,16 +191,6 @@ function uiowa_core_node_presave(Node $node) {
         $view->storage->invalidateCaches();
       }
     }
-  }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_view().
- */
-function uiowa_core_block_content_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  if ($entity instanceof RendersAsCardInterface) {
-    // Add card build info.
-    $entity->addCardBuildInfo($build);
   }
 }
 
