@@ -1957,6 +1957,6 @@ function sitenow_update_9054() {
 function sitenow_update_9055() {
   $config_factory = \Drupal::configFactory();
   $config = $config_factory->getEditable('uids_base.settings');
-  $config->set('style.style-selector', 'on-brand');
+  $config->set('style.style_selector', 'brand');
   $config->save();
 }
