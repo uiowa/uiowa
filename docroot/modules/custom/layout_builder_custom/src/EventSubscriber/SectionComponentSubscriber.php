@@ -231,6 +231,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           break;
 
         case 'inline_block:uiowa_events':
+        case 'inline_block:uiowa_aggregator':
           // Get LB styles from the component.
           // @phpstan-ignore-next-line
           $selected_styles = $event->getComponent()->get('layout_builder_styles_style');

@@ -5,8 +5,10 @@
  * Primary module hooks for uiowa_aggregator module.
  */
 
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element;
+use Drupal\uiowa_core\Element\Card;
 use Drupal\uiowa_core\HeadlineHelper;
 
 /**
@@ -47,20 +49,31 @@ function uiowa_aggregator_form_aggregator_feed_form_alter(&$form, FormStateInter
 }
 
 /**
- * Implements hook_preprocess_aggregator_item.
+ * Implements hook_ENTITY_TYPE_build_defaults_alter().
  */
-function uiowa_aggregator_preprocess_aggregator_item(&$variables) {
+function uiowa_aggregator_aggregator_item_build_defaults_alter(array &$build, EntityInterface $entity, $view_mode) {
+  $build['#type'] = 'card';
+  $build['#pre_render'] = [
+    [
+      Card::class,
+      'preRenderCard',
+    ],
+  ];
+  unset($build['#theme']);
+}
 
-  $variables['elements']['#type'] = 'card';
-  unset($variables['elements']['#theme']);
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function uiowa_aggregator_aggregator_item_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  $build['#meta']['author'] = $build['author'];
+  $build['#content'] = $build['description'];
+  $build['#subtitle'] = $build['timestamp'];
 
-  $variables['elements']['#meta']['author'] = $variables['elements']['author'];
-  $variables['elements']['#content'] = $variables['elements']['description'];
-  $variables['elements']['#subtitle'] = $variables['elements']['timestamp'];
+  unset($build['author']);
+  unset($build['description']);
+  unset($build['timestamp']);
 
-  unset($variables['elements']['author']);
-  unset($variables['elements']['description']);
-  unset($variables['elements']['timestamp']);
 }
 
 /**
@@ -153,14 +166,6 @@ function uiowa_aggregator_preprocess_block(&$variables) {
                 unset($variables['attributes']['class'][$key]);
               }
             }
-          }
-        }
-
-        foreach (Element::children($variables['content']['aggregator']['items']) as $child) {
-          $variables['content']['aggregator']['items'][$child]['#heading_size'] = $heading_size ?? 'h3';
-          // Pass the parent block's layout_builder_styles to each item.
-          if (!empty($parent_lb_styles)) {
-            $variables['content']['aggregator']['items'][$child]['#parent_lb_styles'] = $parent_lb_styles;
           }
         }
 
