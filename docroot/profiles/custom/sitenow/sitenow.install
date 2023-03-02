@@ -1950,3 +1950,13 @@ function sitenow_update_9054() {
   $config_storage = \Drupal::service('config.storage');
   $config_storage->write('acquia_connector.settings', $source->read('acquia_connector.settings'));
 }
+
+/**
+ * Set new font-family theme setting.
+ */
+function sitenow_update_9056() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('uids_base.settings');
+  $config->set('style.style-selector', 'on-brand');
+  $config->save();
+}

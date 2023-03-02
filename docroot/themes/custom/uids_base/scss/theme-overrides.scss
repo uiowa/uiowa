@@ -6,12 +6,22 @@
 }
 
 [class*="off-brand"] {
+  // Without the block Iowa logo, the top bar will not render on some headers.
+  // Sticky headers.
   &.no-top-links.header-sticky.below {
     @include breakpoint(md) {
       padding-top: 90px;
     }
   }
 
+  &.header-sticky.scroll-down .iowa-bar__below .iowa-bar__container,
+  &.header-sticky.scroll-up .iowa-bar__below .iowa-bar__container {
+    .site-name img {
+      max-height: 50px;
+      padding-top: 5px;
+    }
+  }
+  // Toggle nav absolute positioning for header without top-links.
   &.no-top-links .iowa-bar.iowa-bar--narrow .toggle-nav__bttn {
     @include breakpoint(page-container) {
       top: 0;
@@ -24,6 +34,7 @@
     }
   }
 
+  // Added a top-bar div to maintain the height of the top-links bar.
   .iowa-bar--full,
   .iowa-bar--narrow {
     .top-bar {
@@ -35,13 +46,14 @@
       }
     }
   }
-
+  // Adjust height for top bar on narrow header.
   &.has-top-links .iowa-bar--narrow .top-bar {
     @include breakpoint(md) {
       height: 50px;
     }
   }
 
+  // Setting container to block on mobile to get elements to stack.
   .iowa-bar--full .iowa-bar__container {
     display: block;
     @include breakpoint(md) {
@@ -51,7 +63,7 @@
 
   .iowa-bar--full .menu--top {
     @include breakpoint(page-container) {
-      margin-top: 21px;
+      margin-top: 14px;
     }
   }
 
@@ -71,7 +83,7 @@
       padding: 25px 20px 15px;
     }
     @include breakpoint(page-container) {
-      padding: 25px 20px 15px 0;
+      padding-left: 0;
     }
   }
 
@@ -89,11 +101,4 @@
     max-height: 70px;
   }
 
-  &.header-sticky.scroll-down .iowa-bar__below .iowa-bar__container,
-  &.header-sticky.scroll-up .iowa-bar__below .iowa-bar__container {
-    .site-name img {
-      max-height: 50px;
-      padding-top: 5px;
-    }
-  }
 }
