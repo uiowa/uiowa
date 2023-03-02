@@ -125,8 +125,8 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#title' => t('Style'),
     '#description' => t('This option changes the primary gold theme color.'),
     '#options' => [
-      'on-brand' => t('Iowa brand'),
-      'off-brand-gray' => t('Gray'),
+      'brand' => t('Iowa brand'),
+      'gray' => t('Gray'),
     ],
     '#default_value' => theme_get_setting('style.style-selector'),
   ];
