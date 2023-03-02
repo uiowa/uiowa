@@ -1,33 +1,99 @@
 @import "../uids/assets/scss/_variables.scss";
 @import "../uids/assets/scss/_utilities.scss";
-
-
-.off-brand--beige {
-  // brand-gold luminosity is 64% https://planetcalc.com/7779/.
-  // beige with 84% luminosity.
-  --brand-primary: #f1e3cb;
-}
-
-.off-brand--blue {
-  --brand-primary: #8ecfec;
-}
-
 .off-brand--gray {
+  // brand-gold luminosity is 64% https://planetcalc.com/7779/.
   --brand-primary: #d7d7d7;
 }
 
 [class*="off-brand"] {
-
-  .iowa-bar--narrow.horizontal > .iowa-bar__container,
-  .iowa-bar--narrow.toggle > .iowa-bar__container {
-    height: 50px;
+  &.no-top-links.header-sticky.below {
+    @include breakpoint(md) {
+      padding-top: 90px;
+    }
   }
 
-  .site-name {
-    padding: 15px 20px 15px 0;
+  &.no-top-links .iowa-bar.iowa-bar--narrow .toggle-nav__bttn {
+    @include breakpoint(page-container) {
+      top: 0;
+    }
+  }
+
+  &.no-top-links .iowa-bar.iowa-bar--narrow .o-canvas--open .o-canvas__drawer {
+    @include breakpoint(md) {
+      top: 90px;
+    }
+  }
+
+  .iowa-bar--full,
+  .iowa-bar--narrow {
+    .top-bar {
+      height: 70px;
+      background: $secondary;
+      @include breakpoint(md) {
+        height: auto;
+        background: none;
+      }
+    }
+  }
+
+  &.has-top-links .iowa-bar--narrow .top-bar {
+    @include breakpoint(md) {
+      height: 50px;
+    }
+  }
+
+  .iowa-bar--full .iowa-bar__container {
+    display: block;
+    @include breakpoint(md) {
+      display: flex;
+    }
+  }
+
+  .iowa-bar--full .menu--top {
+    @include breakpoint(page-container) {
+      margin-top: 21px;
+    }
+  }
+
+  div.site-name {
+    padding-left: 20px;
+    @include breakpoint(md) {
+      padding: 10px 20px;
+    }
+    @include breakpoint(page-container) {
+      padding: 10px 20px 10px 0;
+    }
+  }
+
+  h1.site-name {
+    padding-left: 20px;
+    @include breakpoint(md) {
+      padding: 25px 20px 15px;
+    }
+    @include breakpoint(page-container) {
+      padding: 25px 20px 15px 0;
+    }
+  }
+
+  .iowa-bar--full {
+    .site-name img {
+      max-height: 60px;
+    }
+
+    .site-name {
+      margin-top: 0;
+    }
   }
 
   .site-name img {
-    width: 20%;
+    max-height: 70px;
+  }
+
+  &.header-sticky.scroll-down .iowa-bar__below .iowa-bar__container,
+  &.header-sticky.scroll-up .iowa-bar__below .iowa-bar__container {
+    .site-name img {
+      max-height: 50px;
+      padding-top: 5px;
+    }
   }
 }
