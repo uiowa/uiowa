@@ -120,7 +120,7 @@ function uids_base_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#tree' => TRUE,
   ];
 
-  $form['style']['style-selector'] = [
+  $form['style']['style_selector'] = [
     '#type' => 'select',
     '#title' => t('Style'),
     '#description' => t('This option changes the primary gold theme color.'),
