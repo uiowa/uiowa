@@ -4,6 +4,13 @@
 .off-brand {
   // Without the block Iowa logo, the top bar will not render on some headers.
   // Sticky headers.
+
+  &.no-top-links.header-sticky.toolbar-horizontal.toolbar-tray-open.below {
+    @include breakpoint(md) {
+      padding-top: 171px !important;
+    }
+  }
+
   &.no-top-links.header-sticky.below {
     @include breakpoint(md) {
       padding-top: 90px;
@@ -47,6 +54,10 @@
     @include breakpoint(md) {
       height: 50px;
     }
+  }
+
+  &.no-top-links .iowa-bar--narrow .parent-site-name {
+    min-height: 50px;
   }
 
   // Setting container to block on mobile to get elements to stack.
