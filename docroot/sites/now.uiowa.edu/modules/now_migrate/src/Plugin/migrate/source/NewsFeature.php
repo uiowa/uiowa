@@ -7,6 +7,7 @@ use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
 use Drupal\taxonomy\Entity\Term;
+use function PHPUnit\Framework\isEmpty;
 
 /**
  * Migrate Source plugin.
@@ -103,9 +104,10 @@ class NewsFeature extends BaseNodeSource {
         }
       }
 
-      // Check and return any redirects for the paths in our array.
+      // Check and return any redirects for the paths in our array,
+      // as well as any redirect options.
       $redirects = $this->select('redirect', 'r')
-        ->fields('r', ['redirect'])
+        ->fields('r', ['redirect', 'redirect_options'])
         ->condition('r.source', $paths, 'IN')
         ->execute();
 
@@ -114,6 +116,24 @@ class NewsFeature extends BaseNodeSource {
         foreach ($redirects as $redirect) {
           if (UrlHelper::isExternal($redirect['redirect'])) {
             $target = $redirect['redirect'];
+            // We need to unserialize the options,
+            // and then check if there is a query (there are
+            // other options possible we don't need).
+            $options = unserialize($redirect['redirect_options']);
+            if (!empty($options) && isset($options['query'])) {
+              // Start our query string, and
+              // if we're not the first query parameter,
+              // we need to include an extra '&',
+              // so initialize 'first' as a check for this.
+              $query_string = '?';
+              $first = TRUE;
+              foreach ($options['query'] as $prop => $val) {
+                $query_string .= ($first) ? '' : '&';
+                $first = FALSE;
+                $query_string .= "{$prop}={$val}";
+              }
+              $target .= $query_string;
+            }
           }
         }
         if (isset($target)) {
