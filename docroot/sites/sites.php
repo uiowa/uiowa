@@ -5074,3 +5074,15 @@ $sites['labbuchakjian.uiowa.ddev.site'] = 'buchakjian.lab.uiowa.edu';
 $sites['labbuchakjian.dev.drupal.uiowa.edu'] = 'buchakjian.lab.uiowa.edu';
 $sites['labbuchakjian.stage.drupal.uiowa.edu'] = 'buchakjian.lab.uiowa.edu';
 $sites['labbuchakjian.prod.drupal.uiowa.edu'] = 'buchakjian.lab.uiowa.edu';
+
+// Directory aliases for researchpark.uiowa.edu.
+$sites['researchpark.uiowa.ddev.site'] = 'researchpark.uiowa.edu';
+$sites['researchpark.dev.drupal.uiowa.edu'] = 'researchpark.uiowa.edu';
+$sites['researchpark.stage.drupal.uiowa.edu'] = 'researchpark.uiowa.edu';
+$sites['researchpark.prod.drupal.uiowa.edu'] = 'researchpark.uiowa.edu';
+
+// Directory aliases for holoreality.lab.uiowa.edu.
+$sites['labholoreality.uiowa.ddev.site'] = 'holoreality.lab.uiowa.edu';
+$sites['labholoreality.dev.drupal.uiowa.edu'] = 'holoreality.lab.uiowa.edu';
+$sites['labholoreality.stage.drupal.uiowa.edu'] = 'holoreality.lab.uiowa.edu';
+$sites['labholoreality.prod.drupal.uiowa.edu'] = 'holoreality.lab.uiowa.edu';
