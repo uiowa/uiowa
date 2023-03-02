@@ -59,6 +59,9 @@ function uiowa_core_entity_bundle_info_alter(array &$bundles) {
   if (isset($bundles['block_content']['uiowa_card'])) {
     $bundles['block_content']['uiowa_card']['class'] = Card::class;
   }
+  if (isset($bundles['block_content']['uiowa_event'])) {
+    $bundles['block_content']['uiowa_event']['class'] = Drupal\uiowa_core\Entity\Event::class;
+  }
 }
 
 /**

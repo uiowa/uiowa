@@ -43,15 +43,15 @@
 
 {% set event_block = {
   'attributes': attributes.addClass(classes),
-  'card_title': content.field_uiowa_event_title[0]['#text']|render,
-  'card_image': content.field_uiowa_event_image|render,
+  'title': content.field_uiowa_event_title[0]['#text']|render,
+  'media': content.field_uiowa_event_image|render,
   'media_styles': 'media--circle',
   'media_sizes': 'card__media--small',
-  'card_meta': content.field_uiowa_event_location[0]['#context']['value'],
-  'card_icon': content.field_uiowa_event_icon|render,
-  'card_subtitle': content.field_uiowa_event_date|render,
+  'meta': content.field_uiowa_event_location[0]['#context']['value'],
+  'icon': content.field_uiowa_event_icon|render,
+  'subtitle': content.field_uiowa_event_date|render,
   'heading_level': content.field_uiowa_event_title[0]['#size'],
-  'card_link_url': content.field_uiowa_event_link[0]['#url'],
+  'link_url': content.field_uiowa_event_link[0]['#url'],
   'title_prefix': title_prefix,
   'title_suffix': title_suffix,
 } %}
@@ -64,11 +64,11 @@
     {{ title_suffix }}
   {% endblock %}
 
-  {% block card_meta %}
-    {% if card_meta is not empty %}
+  {% block meta %}
+    {% if meta is not empty %}
       <div class="card__meta">
-        {{ card_icon }}
-        {{ card_meta }}
+        {{ icon }}
+        {{ meta }}
       </div>
     {% endif %}
   {% endblock %}
