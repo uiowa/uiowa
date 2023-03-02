@@ -7,7 +7,6 @@ use Drupal\migrate\Row;
 use Drupal\sitenow_migrate\Plugin\migrate\source\BaseNodeSource;
 use Drupal\sitenow_migrate\Plugin\migrate\source\ProcessMediaTrait;
 use Drupal\taxonomy\Entity\Term;
-use function PHPUnit\Framework\isEmpty;
 
 /**
  * Migrate Source plugin.
@@ -119,7 +118,9 @@ class NewsFeature extends BaseNodeSource {
             // We need to unserialize the options,
             // and then check if there is a query (there are
             // other options possible we don't need).
-            $options = unserialize($redirect['redirect_options']);
+            $options = unserialize($redirect['redirect_options'], [
+              'allowed_classes' => TRUE,
+            ]);
             if (!empty($options) && isset($options['query'])) {
               // Start our query string, and
               // if we're not the first query parameter,
