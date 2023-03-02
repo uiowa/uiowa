@@ -192,8 +192,8 @@ function uids_base_preprocess_page(&$variables) {
   $variables['uiowa_logo'] = TRUE;
   $variables['is_off_brand'] = FALSE;
 
-  $style_selector = theme_get_setting('style.style-selector');
-  if (!empty($style_selector) && preg_match('/off-brand-/', $style_selector)) {
+  $style_selector = theme_get_setting('style.style_selector');
+  if (!empty($style_selector) && $style_selector !== 'brand') {
     $variables['uiowa_logo'] = FALSE;
     $variables['is_off_brand'] = TRUE;
   }
