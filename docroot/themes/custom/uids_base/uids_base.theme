@@ -140,7 +140,7 @@ function uids_base_preprocess_html(&$variables) {
     $variables['#attached']['library'][] = 'uids_base/theme-overrides';
   }
 
-  if (theme_get_setting('style.style-selector') === 'off-brand-gray') {
+  if (theme_get_setting('style.style_selector') === 'gray') {
     $variables['attributes']['class'][] = 'off-brand--gray';
   }
 
