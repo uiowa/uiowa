@@ -135,8 +135,8 @@ function uids_base_preprocess_html(&$variables) {
   // Set a variable for whether layout builder is enabled.
   $variables['layout_builder_enabled'] = FALSE;
 
-  $style_selector = theme_get_setting('style.style-selector');
-  if ($style_selector !== NULL && preg_match('/off-brand-/', $style_selector)) {
+  $style_selector = theme_get_setting('style.style_selector');
+  if ($style_selector !== NULL && $style_selector !== 'brand') {
     $variables['#attached']['library'][] = 'uids_base/theme-overrides';
   }
 
