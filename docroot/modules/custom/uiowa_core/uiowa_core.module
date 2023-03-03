@@ -25,6 +25,7 @@ use Drupal\uiowa_core\RegionHelper;
 use Drupal\views\Views;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Exception\RfcComplianceException;
+use Drupal\Core\Template\Attribute;
 
 /**
  * Implements hook_cron().
@@ -256,7 +257,7 @@ function template_preprocess_uiowa_core_headline(&$variables) {
  * Preprocess function for card.
  */
 function template_preprocess_card(&$variables) {
-  $element = &$variables['element'];
+  $element = $variables['element'];
 
   if (!empty($element['#url'])) {
     // Add click-container class if there is a link.
@@ -320,6 +321,10 @@ function template_preprocess_card(&$variables) {
     'linked_element',
   ] as $prop) {
     if (isset($element["#$prop"])) {
+      // If this is an attributes array, convert it to an Attribute first.
+      if (str_ends_with($prop, 'attributes') && !$element["#$prop"] instanceof Attribute) {
+        $element["#$prop"] = new Attribute($element["#$prop"]);
+      }
       $variables[$prop] = $element["#$prop"];
     }
     else {
