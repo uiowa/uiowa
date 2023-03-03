@@ -143,7 +143,7 @@ function uiowa_core_preprocess_media(&$variables) {
   // Detect if this is a figure and if it is,
   // it has already been processed for inline sizing and alignment.
   if (isset($variables['attributes']['data-figure']) &&
-    filter_var($variables['attributes']['data-figure'], FILTER_VALIDATE_BOOLEAN) === FALSE) {
+    filter_var($variables['attributes']['data-figure'], FILTER_VALIDATE_BOOLEAN)) {
     return;
   }
 
