@@ -41,8 +41,40 @@ class Article extends NodeBundleBase implements ArticleInterface, RendersAsCardI
       ],
     ]);
 
-    // Construct remaining byline.
-    $build['#meta']['byline'] = $this->getByline($build);
+    // If there is an organization and not hidden, include it.
+    // If there is an organization and not hidden, while there is a source link,
+    // but it is hidden, wrap the org in the source link.
+    // If there is a source link and not hidden, include it.
+    // Need to get these values regardless of whether they are hidden or not.
+    $source_link = $this->get('field_article_source_link')->uri;
+    $org = $this->get('field_article_source_org')->value;
+    $hide_fields = $build['#hide_fields'] ?? [];
+
+    if ($org && !in_array('field_article_source_org', $hide_fields)) {
+      if (in_array('field_article_source_link', $hide_fields)) {
+        if ($source_link) {
+          // Wrap org in the source link.
+          $org = Link::fromTextAndUrl($org, Url::fromUri($source_link))
+            ->toString();
+        }
+      }
+      $build['#meta']['org'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#value' => $org,
+        '#weight' => 1,
+      ];
+    }
+    if ($source_link && !in_array('field_article_source_link', $hide_fields)) {
+      $link = Link::fromTextAndUrl($source_link, Url::fromUri($source_link))
+        ->toString();
+      $build['#meta']['source_link'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#value' => $link,
+        '#weight' => 1,
+      ];
+    }
 
     // Add the published date.
     $created = $this->get('created')->value;
@@ -62,66 +94,6 @@ class Article extends NodeBundleBase implements ArticleInterface, RendersAsCardI
     ];
 
     return $default_classes;
-  }
-
-  /**
-   * Constructs the byline for an article based on several fields.
-   *
-   * If there is an organization and not hidden, include it.
-   * If there is an organization and not hidden, while there is a source link,
-   * but it is hidden, wrap the org in the source link.
-   * If there is a source link and not hidden, include it.
-   *
-   * @param array $build
-   *   A renderable array representing the entity content.
-   *
-   * @return array
-   *   The appropriate byline sent as a render array.
-   */
-  public function getByline(array $build = []): array {
-    // Need to get these values regardless of whether they are hidden or not.
-    $source_link = $this->get('field_article_source_link')->uri;
-    $org = $this->get('field_article_source_org')->value;
-    $hide_fields = $build['#hide_fields'] ?? [];
-
-    $byline = [
-      '#type' => 'html_tag',
-      '#tag' => 'span',
-      '#weight' => 99,
-      '#attributes' => [
-        'class' => [
-          'field--name-field-article-source-link',
-        ],
-      ],
-    ];
-
-    if ($org && !in_array('field_article_source_org', $hide_fields)) {
-      if ($source_link && !in_array('field_article_source_link', $hide_fields)) {
-        // Wrap org in the source link.
-        $org = Link::fromTextAndUrl($org, Url::fromUri($source_link))
-          ->toString();
-      }
-      $byline['org'] = [
-        '#prefix' => '<span class="views-field-article-source-link">',
-        '#markup' => $org,
-        '#suffix' => '</span>',
-      ];
-    }
-    if (!$org && $source_link && !in_array('field_article_source_link', $hide_fields)) {
-      $link = Link::fromTextAndUrl($source_link, Url::fromUri($source_link))
-        ->toString();
-      $byline['source_link'] = [
-        '#prefix' => '<span class="views-field-article-source-link">',
-        '#markup' => $link,
-        '#suffix' => '</span>',
-      ];
-    }
-
-    if (isset($byline['org']) || isset($byline['source_link'])) {
-      return $byline;
-    }
-
-    return [];
   }
 
 }
