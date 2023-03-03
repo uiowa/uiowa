@@ -338,7 +338,7 @@ function sitenow_events_build_card(array $event): array {
     ];
     // Loop through the map to check if any of them are being used and
     // adjust the view mode accordingly. Last one wins out.
-    $classes = $event['attributes']->toArray()['class'];
+    $classes = $event['attributes']['class'];
     if (isset($classes)) {
       foreach ($media_formats as $style => $view_mode) {
         if (in_array($style, $classes)) {
