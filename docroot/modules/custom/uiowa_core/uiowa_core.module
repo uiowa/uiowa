@@ -256,8 +256,55 @@ function template_preprocess_uiowa_core_headline(&$variables) {
  * Preprocess function for card.
  */
 function template_preprocess_card(&$variables) {
-  $element = $variables['element'];
+  $element = &$variables['element'];
 
+  if (!empty($element['#url'])) {
+    // Add click-container class if there is a link.
+    $element['#attributes']['class'][] = 'click-container';
+  }
+  else {
+    // If there is no URL, set a data attribute so our click a11y script knows
+    // to ignore this card.
+    $element['#attributes']['data-uids-no-link'] = TRUE;
+  }
+
+  $element['#attributes']['class'][] = 'block--word-break';
+
+  // Initialize a list of button classes we need to use.
+  $button_classes = [
+    'bttn',
+    'bttn--primary',
+    'bttn--transparent',
+    'bttn--light-font',
+  ];
+
+  // Add the 'click-target' class to the button if it is linked.
+  if ($element['#linked_element'] === 'button') {
+    $button_classes[] = 'click-target';
+  }
+
+  // Set appropriate button classes if there is a URL, no link text, and link
+  // indicator should be shown.
+  if (isset($element['#url']) && !isset($element['#link_text']) && $element['#link_indicator']) {
+    $button_classes = [
+      ...$button_classes,
+      'bttn--circle',
+      'bttn--no-text',
+    ];
+  }
+
+  // Add button classes.
+  if (!isset($element['#button_attributes']['class'])) {
+    $element['#button_attributes']['class'] = [];
+  }
+
+  $element['#button_attributes']['class'] = [
+    ...$element['#button_attributes']['class'],
+    ...$button_classes,
+  ];
+
+  // Transfer properties and slots from the render element to variables for
+  // processing in the template.
   foreach ([
     'attributes',
     'button_attributes',
@@ -278,40 +325,6 @@ function template_preprocess_card(&$variables) {
     else {
       $variables[$prop] = NULL;
     }
-  }
-
-  if (!empty($element['#url'])) {
-    // Add click-container class if there is a link.
-    $variables['attributes']->addClass('click-container');
-  }
-  else {
-    // If there is no URL, set a data attribute so our click a11y script knows
-    // to ignore this card.
-    $variables['attributes']->setAttribute('data-uids-no-link', TRUE);
-  }
-
-  $element['attributes']->addClass('block--word-break');
-
-  // Add default button classes.
-  $variables['button_attributes']->addClass([
-    'bttn',
-    'bttn--primary',
-    'bttn--transparent',
-    'bttn--light-font',
-  ]);
-
-  // Add the 'click-target' class to the button if it is linked.
-  if ($variables['linked_element'] === 'button') {
-    $variables['button_attributes']->addClass('click-target');
-  }
-
-  // Set appropriate button classes if there is a URL, no link text, and link
-  // indicator should be shown.
-  if (isset($variables['url']) && !isset($variables['link_text']) && $element['#link_indicator']) {
-    $variables['button_attributes']->addClass([
-      'bttn--circle',
-      'bttn--no-text',
-    ]);
   }
 }
 
@@ -720,8 +733,8 @@ function uiowa_core_entity_operation_alter(array &$operations, EntityInterface $
  */
 function uiowa_core_preprocess_block(&$variables) {
   if (isset($variables['base_plugin_id']) && $variables['base_plugin_id'] === 'inline_block') {
-    if (isset($variables['content']['#block_content']) && $variables['content']['#block_content'] instanceof RendersAsCardInterface) {
-      $variables['content']['#block_content']->buildCard($variables['content']);
+    if (isset($variables['elements']['#block_content']) && $variables['elements']['#block_content'] instanceof RendersAsCardInterface) {
+      $variables['elements']['#block_content']->buildCard($variables['elements']);
     }
   }
   switch ($variables['plugin_id']) {

@@ -55,10 +55,7 @@ class Card extends RenderElement {
       'media_attributes',
     ] as $attributes_type) {
       if (!isset($element["#$attributes_type"])) {
-        $element["#$attributes_type"] = new Attribute();
-      }
-      elseif (!$element["#$attributes_type"] instanceof Attribute) {
-        $element["#$attributes_type"] = new Attribute($element["#$attributes_type"]);
+        $element["#$attributes_type"] = [];
       }
     }
 
@@ -68,14 +65,14 @@ class Card extends RenderElement {
     // Loop through all classes, add any media and headline classes to the array and remove
     // them from the card classes.
     if (isset($element['#attributes']['class'])) {
-      foreach ($element['#attributes']['class'] as $style) {
+      foreach ($element['#attributes']['class'] as $key => $style) {
         if (str_starts_with($style, 'media')) {
-          $element['#media_attributes']->addClass($style);
-          $element['#attributes']->removeClass($style);
+          $element['#media_attributes']['class'][] = $style;
+          unset($element['#attributes']['class'][$key]);
         }
         if (str_starts_with($style, 'headline')) {
           $headline_classes[] = $style;
-          $element['#attributes']->removeClass($style);
+          unset($element['#attributes']['class'][$key]);
         }
       }
     }
@@ -122,11 +119,9 @@ class Card extends RenderElement {
       }
     }
 
-    $element['#button_attributes'] = new Attribute();
-
     // Set 'aria-hidden' on the button if it is not linked.
     if ($element['#linked_element'] !== 'button') {
-      $element['#button_attributes']->setAttribute('aria-hidden', TRUE);
+      $element['#button_attributes']['aria-hidden'] = TRUE;
     }
 
     // If title and link text are set, set a button id attribute for
@@ -135,7 +130,7 @@ class Card extends RenderElement {
       // @todo get this working with paragraphs.
       $aria_id = Html::getUniqueId($element['#title']);
       $element['#headline']['headline_aria'] = $aria_id;
-      $element['#button_attributes']->setAttribute('id', $aria_id);
+      $element['#button_attributes']['id'] = $aria_id;
     }
 
     return $element;
