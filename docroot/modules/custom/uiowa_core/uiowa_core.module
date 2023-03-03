@@ -738,8 +738,8 @@ function uiowa_core_entity_operation_alter(array &$operations, EntityInterface $
  */
 function uiowa_core_preprocess_block(&$variables) {
   if (isset($variables['base_plugin_id']) && $variables['base_plugin_id'] === 'inline_block') {
-    if (isset($variables['elements']['#block_content']) && $variables['elements']['#block_content'] instanceof RendersAsCardInterface) {
-      $variables['elements']['#block_content']->buildCard($variables['elements']);
+    if (isset($variables['content']['#block_content']) && $variables['content']['#block_content'] instanceof RendersAsCardInterface) {
+      $variables['content']['#block_content']->buildCard($variables['content']);
     }
   }
   switch ($variables['plugin_id']) {
