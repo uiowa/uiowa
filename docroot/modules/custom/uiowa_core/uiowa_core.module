@@ -282,7 +282,7 @@ function template_preprocess_card(&$variables) {
 
   if (!empty($element['#url'])) {
     // Add click-container class if there is a link.
-    $variables['attributes']['class'][] = 'click-container';
+    $variables['attributes']->addClass('click-container');
   }
   else {
     // If there is no URL, set a data attribute so our click a11y script knows
@@ -290,7 +290,7 @@ function template_preprocess_card(&$variables) {
     $variables['attributes']->setAttribute('data-uids-no-link', TRUE);
   }
 
-  $element['attributes']['class'][] = 'block--word-break';
+  $element['attributes']->addClass('block--word-break');
 
   // Add default button classes.
   $variables['button_attributes']->addClass([
