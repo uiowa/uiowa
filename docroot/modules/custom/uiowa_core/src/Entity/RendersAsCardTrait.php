@@ -52,10 +52,12 @@ trait RendersAsCardTrait {
    */
   public function buildCardStyles(array &$build) {
     $override_styles = $build['#override_styles'] ?? [];
-    foreach ([
-      ...$this->getDefaultCardStyles(),
+    $default_styles = $this->getDefaultCardStyles();
+    $styles = [
+      ...$default_styles,
       ...$override_styles,
-    ] as $style) {
+    ];
+    foreach ($styles as $style) {
       $build['#attributes']['class'][] = $style;
     }
   }

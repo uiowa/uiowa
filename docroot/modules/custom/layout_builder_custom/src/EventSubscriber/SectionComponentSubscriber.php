@@ -154,11 +154,6 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           $style_map = $this->getLayoutBuilderStylesMap($selected_styles);
           // Filter the style map to just classes related to the card.
           $style_map = Card::filterCardStyles($style_map);
-          // Work-around for stacked card option meaning that
-          // card_media_position is not set.
-          if (!isset($style_map['card_media_position'])) {
-            $style_map['card_media_position'] = '';
-          }
 
           $this->removeCardStylesFromBlock($build, $style_map);
 

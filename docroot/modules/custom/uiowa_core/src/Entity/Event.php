@@ -29,15 +29,9 @@ class Event extends BlockContent implements RendersAsCardInterface {
       ],
     ]);
 
-    // @todo Capture the parts of the URL. This isn't working with
-    //   caching.
-    foreach ([
-      'url' => 'url',
-      'title' => 'link_text',
-    ] as $field_link_prop => $link_prop) {
-      if (isset($build['field_uiowa_event_link'][0]["#$field_link_prop"])) {
-        $build["#$link_prop"] = $build['field_uiowa_event_link'][0]["#$field_link_prop"];
-      }
+    // Get the link.
+    if (isset($build['field_uiowa_event_link'][0]['#url'])) {
+      $build['#url'] = $build['field_uiowa_event_link'][0]['#url'];
     }
     unset($build['field_uiowa_event_link']);
 
@@ -57,6 +51,7 @@ class Event extends BlockContent implements RendersAsCardInterface {
       'card_media_position' => 'card--layout-left',
       'media_format' => 'media--circle',
       'media_size' => 'media--small',
+      'media_border' => 'media--border',
     ];
   }
 
