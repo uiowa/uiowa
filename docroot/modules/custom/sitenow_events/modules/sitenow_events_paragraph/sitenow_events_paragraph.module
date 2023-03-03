@@ -124,7 +124,7 @@ function sitenow_events_paragraph_preprocess_paragraph(&$variables) {
               'media--small',
             ];
 
-            $event['attributes'] = (new Attribute())->addClass($styles);
+            $event['attributes']['class'] = $styles;
             $event['heading_size'] = 'h2';
 
             // Pass off to helper function to build card render.
