@@ -28,7 +28,6 @@
 }
 
 // Events List
-.block-inline-blockuiowa-events,
 .uiowa-events,
 .uiowa-card-event {
 
@@ -52,7 +51,7 @@
     }
   }
 
-  &.image-right .card__media.media--circle {
+  &.image-right .media.media--circle {
     @include breakpoint(sm) {
       margin-left: 15px;
       margin-right: 0;
@@ -68,7 +67,7 @@
   &.hide-images,
   .paragraph--type--events.hide-images &,
     {
-    .card__media.media--circle {
+    .media.media--circle {
       display: none;
 
       &+.card__body {
@@ -92,9 +91,12 @@
         border: none;
       }
 
-      &__media {
+      .media {
         max-width: 165px;
         margin: 0 auto 1.25rem;
+        .media__inner {
+          margin-right: 0 !important;
+        }
       }
 
       &__body {
@@ -111,9 +113,12 @@
         border: none;
       }
 
-      &__media {
+      .media {
         max-width: 165px;
         margin: 0 auto 1.25rem;
+        .media__inner {
+          margin-right: 0 !important;
+        }
       }
 
       &__body {
