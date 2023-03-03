@@ -4,7 +4,6 @@ namespace Drupal\uiowa_core\Element;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Render\Element\RenderElement;
-use Drupal\Core\Template\Attribute;
 
 /**
  * Provides a render element to display a card.
