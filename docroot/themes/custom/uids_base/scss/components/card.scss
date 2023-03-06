@@ -116,20 +116,15 @@
   .layout__container:not([class*="bg--"]) {
     .card[class*="bg--white"][class*="borderless"] {
       padding: 0;
-    }
-  }
-
-  // Remove padding if section background matches card background with borderless.
-  $bg-colors: "white", "gray", "black", "gold";
-
-  @each $color in $bg-colors {
-    .layout__container[class*="bg--#{$color}"] {
-      .card[class*="bg--#{$color}"][class*="borderless"] {
-        padding: 0;
+      &:not([class*="card--layout"]) {
+        .media__inner {
+          margin-left: 0;
+          margin-right: 0;
+          margin-top: 0;
+        }
       }
     }
   }
-
 
   // Allow cards to be stacked within layouts.
   .layout--fourcol,
