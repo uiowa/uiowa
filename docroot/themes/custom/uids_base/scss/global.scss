@@ -27,7 +27,6 @@ $imgpath: '../../uids/assets/images';
 .element--inline {
   @include breakpoint(sm) {
     display: inline-flex;
-    margin-inline-end: $sm;
   }
 }
 
@@ -547,6 +546,20 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
   &__left {
     @include breakpoint(sm) {
       margin-left: $md;
+    }
+  }
+}
+
+// List container spacing.
+// @todo we would need to add inner--list wrapper class to all views, articles list, and taxonomy lists.
+.inner--list {
+  .list-container {
+    > div + div {
+      margin-top: 1.6rem;
+
+      &:first-child {
+        margin-top: 0;
+      }
     }
   }
 }
