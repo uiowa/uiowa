@@ -2,6 +2,13 @@
 # Apache/PHP/Drupal settings:
 #
 
+<ifmodule mod_setenvif.c>
+SetEnvIf AH_CLIENT_IP ^193\.42\.33\.66$ DENY=1
+Order allow,deny
+Allow From All
+Deny from env=DENY
+</ifmodule>
+
 # Protect files and directories from prying eyes.
 <FilesMatch "\.(engine|inc|install|make|module|profile|po|sh|.*sql|theme|twig|tpl(\.php)?|xtmpl|yml)(~|\.sw[op]|\.bak|\.orig|\.save)?$|^(\.(?!well-known).*|Entries.*|Repository|Root|Tag|Template|composer\.(json|lock)|web\.config)$|^#.*#$|\.php(~|\.sw[op]|\.bak|\.orig|\.save)$">
   <IfModule mod_authz_core.c>
