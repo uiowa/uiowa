@@ -362,6 +362,8 @@ function sitenow_articles_node_view(array &$build, EntityInterface $entity, Enti
 function sitenow_articles_preprocess_views_view(&$variables) {
   switch ($variables['id']) {
     case 'articles':
+      $variables['#attached']['library'][] = 'uids_base/view-articles-list';
+
       /** @var  \Drupal\views\ViewExecutable $view */
       $view = $variables['view'];
 
@@ -375,6 +377,10 @@ function sitenow_articles_preprocess_views_view(&$variables) {
         $variables['feed_icons'] = [];
       }
 
+      break;
+
+    case 'article_list_block':
+      $variables['#attached']['library'][] = 'uids_base/view-articles-list';
       break;
 
   }

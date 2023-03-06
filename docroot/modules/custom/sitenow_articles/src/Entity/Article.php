@@ -50,6 +50,17 @@ class Article extends NodeBundleBase implements ArticleInterface, RendersAsCardI
     $org = $this->get('field_article_source_org')->value;
     $hide_fields = $build['#hide_fields'] ?? [];
 
+    $byline = [
+      '#type' => 'html_tag',
+      '#tag' => 'span',
+      '#weight' => 99,
+      '#attributes' => [
+        'class' => [
+          'field--name-field-article-source-link',
+        ],
+      ],
+    ];
+
     if ($org && !in_array('field_article_source_org', $hide_fields)) {
       if (in_array('field_article_source_link', $hide_fields)) {
         if ($source_link) {
@@ -58,22 +69,24 @@ class Article extends NodeBundleBase implements ArticleInterface, RendersAsCardI
             ->toString();
         }
       }
-      $build['#meta']['org'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'div',
-        '#value' => $org,
-        '#weight' => 1,
+      $byline['org'] = [
+        '#prefix' => '<span class="views-field-article-source-link">',
+        '#markup' => $org,
+        '#suffix' => '</span>',
       ];
     }
     if ($source_link && !in_array('field_article_source_link', $hide_fields)) {
       $link = Link::fromTextAndUrl($source_link, Url::fromUri($source_link))
         ->toString();
-      $build['#meta']['source_link'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'div',
-        '#value' => $link,
-        '#weight' => 1,
+      $byline['source_link'] = [
+        '#prefix' => '<span class="views-field-article-source-link">',
+        '#markup' => $link,
+        '#suffix' => '</span>',
       ];
+    }
+
+    if (isset($byline['org']) || isset($byline['source_link'])) {
+      $build['#meta']['byline'] = $byline;
     }
 
     // Add the published date.
