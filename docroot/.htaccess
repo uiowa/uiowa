@@ -2,6 +2,8 @@
 # Apache/PHP/Drupal settings:
 #
 
+# Block these IP addresses.
+# https://docs.acquia.com/cloud-platform/arch/security/restrict/#blocking-by-ip-with-mod-rewrite-in-htaccess
 <ifmodule mod_setenvif.c>
 SetEnvIf AH_CLIENT_IP ^193\.42\.33\.66$ DENY=1
 Order allow,deny
