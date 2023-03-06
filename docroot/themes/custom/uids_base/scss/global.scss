@@ -27,7 +27,6 @@ $imgpath: '../../uids/assets/images';
 .element--inline {
   @include breakpoint(sm) {
     display: inline-flex;
-    margin-inline-end: $sm;
   }
 }
 
@@ -548,6 +547,15 @@ body:not(.page-node-type-article, .page-node-type-page).layout-builder-disabled 
     @include breakpoint(sm) {
       margin-left: $md;
     }
+  }
+}
+
+// Set spacing for cards in lists
+.block + .block {
+  margin-top: 1.6rem;
+
+  &:first-child {
+    margin-top: 0;
   }
 }
 
