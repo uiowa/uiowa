@@ -2089,7 +2089,7 @@ function sitenow_update_9056(&$sandbox) {
       foreach ($section->getComponents() as &$component) {
 
         // Limit this to only the initial list of block plugins.
-        if ($component->getPluginId()!== $block_plugin_id) {
+        if ($component->getPluginId() !== $block_plugin_id) {
           $all_cards = FALSE;
         }
       }
@@ -2155,7 +2155,7 @@ function sitenow_update_9056(&$sandbox) {
         foreach ($section->getComponents() as &$component) {
 
           // Limit this to only the initial list of block plugins.
-          if ($component->getPluginId()!== $block_plugin_id) {
+          if ($component->getPluginId() !== $block_plugin_id) {
             $all_cards = FALSE;
           }
         }
