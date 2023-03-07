@@ -4,7 +4,7 @@
 
 .block-views-blockstudent-card-block-student-grid {
   &[class*="grid"].hide-details {
-    .view-content.list-container {
+    .view-content.list-container__inner {
       gap: 0 !important;
     }
 
@@ -15,7 +15,7 @@
     &.grid__mobile {
       &.grid--threecol--33-34-33,
       &.grid--twocol--50-50 {
-        .list-container {
+        .list-container__inner {
           @include display-grid;
 
           .card {
@@ -25,13 +25,13 @@
       }
 
       &.grid--threecol--33-34-33 {
-        .list-container {
+        .list-container__inner {
           @include threecol-grid;
         }
       }
 
       &.grid--twocol--50-50 {
-        .list-container {
+        .list-container__inner {
           @include twocol-grid;
           gap: $desktop-width-gutter;
         }

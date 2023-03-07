@@ -671,9 +671,9 @@ function uids_base_preprocess_block(&$variables) {
     if (is_string($variables['attributes']['class'])) {
       $variables['attributes']['class'] = explode(' ', $variables['attributes']['class']);
     }
-    if (in_array('inner--list', $variables['attributes']['class'])) {
+    if (in_array('list-container', $variables['attributes']['class'])) {
       foreach ($variables['attributes']['class'] as $key => $style) {
-        if (str_starts_with($style, 'inner--grid')) {
+        if (str_starts_with($style, 'list-container--grid')) {
           unset($variables['attributes']['class'][$key]);
         }
       }
