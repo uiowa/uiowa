@@ -71,7 +71,7 @@
 
   {% if rows %}
     {% set views_content_attributes = views_content_attributes ?: create_attribute() %}
-    <div {{ views_content_attributes.addclass(views_content_classes, 'view-content list-container') }}>
+    <div {{ views_content_attributes.addclass(views_content_classes, 'view-content list-container__inner') }}>
       {{ rows }}
     </div>
   {% elseif empty %}

@@ -2,7 +2,18 @@
 @import "uids3/assets/scss/_utilities.scss";
 @import "uids3/components/grid/grid.scss";
 
+// List container spacing.
+// @todo we would need to add list-container wrapper class to all views, articles list, and taxonomy lists.
 .list-container {
+  .list-container__inner {
+    > div + div {
+      margin-top: 1.6rem;
+    }
+  }
+}
+
+
+.list-container__inner {
   [class*="grid--"].view & {
     margin-bottom: $mobile-height-gutter;;
   }
@@ -17,7 +28,7 @@
 
 // Set first item within list-container to full width
 .grid--first-item-full-width {
-  .list-container {
+  .list-container__inner {
     :first-child {
       grid-column: 1 / -1;
     }
@@ -25,22 +36,22 @@
 }
 
   // These override the grid settings in grid.scss from UIDS
-.inner--list.grid--threecol--33-34-33 .list-container,
-.inner--list.grid--twocol--50-50 .list-container {
+.list-container.grid--threecol--33-34-33 .list-container__inner,
+.list-container.grid--twocol--50-50 .list-container__inner {
   display: inherit;
 }
 
-.inner--grid.grid--threecol--33-34-33 .list-container,
-.inner--grid.grid--twocol--50-50 .list-container{
+.list-container--grid.grid--threecol--33-34-33 .list-container__inner,
+.list-container--grid.grid--twocol--50-50 .list-container__inner {
   grid-template-columns: inherit;
   gap: $mobile-height-gutter;
 }
 
-.inner--grid .more-link {
+.list-container--grid .more-link {
   margin-top: $mobile-height-gutter;
 }
 
-.grid--twocol--50-50 .list-container {
+.grid--twocol--50-50. list-container__inner {
   @include breakpoint(sm) {
     row-gap: $desktop-width-gutter;
     align-self: self-start;
@@ -49,7 +60,7 @@
 
 // Additional grid classes.
 .grid--fourcol--25 {
-  .list-container {
+  .list-container__inner {
     @include grid-base;
     @include breakpoint(md) {
       @include fourcol-grid;
@@ -59,7 +70,7 @@
 
 // For use only for images.
 .grid--fivecol--20.photoswipe-gallery {
-  .list-container {
+  .list-container__inner {
     @include breakpoint(sm) {
       @include threecol-grid;
     }
@@ -71,7 +82,7 @@
 
 .grid--fivecol--20.photoswipe-gallery,
 .grid--threecol--33-34-33.photoswipe-gallery {
-  .list-container {
+  .list-container__inner {
     display: grid;
     gap: 1rem;
     @include breakpoint(md) {
