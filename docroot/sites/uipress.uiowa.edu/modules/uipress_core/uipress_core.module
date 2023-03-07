@@ -72,11 +72,11 @@ function uipress_core_preprocess_field(&$variables, $hook) {
       }
       $variables['attributes']['class'] .= 'grid--threecol--33-34-33';
 
-      $variables['field_container_classes'] = 'list-container';
+      $variables['field_container_classes'] = 'list-container__inner';
       break;
 
     case 'field_book_interior_pages':
-      $variables['field_container_classes'] = 'list-container';
+      $variables['field_container_classes'] = 'list-container__inner';
       break;
   }
 }

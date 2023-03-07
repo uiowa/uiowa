@@ -541,9 +541,9 @@ function admissions_core_preprocess_block(&$variables) {
       $variables['#attached']['library'][] = 'admissions_core/student-profile';
 
       // Need to unset for "mobile grid" functionality.
-      if (isset($variables['attributes']['class']) && in_array('inner--grid', $variables['attributes']['class'])) {
+      if (isset($variables['attributes']['class']) && in_array('list-container--grid', $variables['attributes']['class'])) {
         foreach ($variables['attributes']['class'] as $key => $style) {
-          if (str_starts_with($style, 'inner--grid')) {
+          if (str_starts_with($style, 'list-container--grid')) {
             unset($variables['attributes']['class'][$key]);
           }
         }
