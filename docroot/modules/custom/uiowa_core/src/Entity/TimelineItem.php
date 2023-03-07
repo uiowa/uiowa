@@ -28,8 +28,16 @@ class TimelineItem extends Paragraph implements RendersAsCardInterface {
       '#content' => 'field_timeline_body',
       '#subtitle' => 'field_timeline_date',
       '#media' => 'field_timeline_media',
-      '#meta' => 'field_timeline_icon',
     ]);
+    $build['#meta'] = $this->get('field_timeline_icon')?->view([
+      'label' => 'hidden',
+    ]);
+    $build['#meta']['#prefix'] = '<div class="card__icon-wrapper"><div class="card__icon">';
+    $build['#meta']['#suffix'] = '</div></div>';
+    unset($build['field_timeline_icon']);
+
+    $build['#prefix'] = '<li class="timeline--wrapper">';
+    $build['#suffix'] = '</li>';
 
     // Check if the timeline card should be linked.
     $source_link = 'field_timeline_link';
@@ -40,6 +48,7 @@ class TimelineItem extends Paragraph implements RendersAsCardInterface {
         ?->get(0)
         ?->getUrl()
         ?->toString();
+      unset($build['field_timeline_link']);
     }
     // If we don't have a link set,
     // then we don't want the card linked at all.
