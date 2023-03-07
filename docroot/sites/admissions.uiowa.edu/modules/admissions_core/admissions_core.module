@@ -861,7 +861,7 @@ function admissions_core_preprocess_views_view(&$variables) {
   switch ($id) {
     case 'academic_groups_block':
     case 'academic_groups_taxonomy_term':
-      $variables['attributes']['class'][] = 'grid--threecol--33-34-33 list-container--grid';
+      $variables['attributes']['class'][] = 'grid--threecol--33-34-33';
       break;
 
     case 'areas_of_study':
@@ -1062,60 +1062,6 @@ function admissions_core_preprocess_views_view_unformatted(&$variables) {
       if (isset($row_build['content']['#node'])) {
         $row_build['content']['#content'][] = $row_build['content']['#node']->field_student_profile_blurb?->view('teaser');
       }
-    }
-  }
-
-  if ($view->current_display === 'block_student_grid') {
-    $style = $view->style_plugin;
-    $row_styles = $view->display_handler->getOption('row_styles');
-    $rows = $variables['rows'];
-
-    $default_classes = [
-      'card--person-teaser',
-      'card--list',
-      'card--centered-left',
-      'card--alignment-left',
-    ];
-
-    $variables['row_item_classes'] = array_merge($default_classes, array_values($variables['row_item_classes']));
-    $style_classes = [];
-    $size_classes = [];
-    if (!empty($row_styles)) {
-      foreach ($row_styles as $style_class) {
-        // Change our image alignment and style.
-        if ($style_class === 'list_format_grid') {
-          if (!in_array('block_hide_details', $row_styles)) {
-            $variables['row_item_classes'][] = 'bg--white';
-            $variables['row_item_classes'][] = 'card--enclosed';
-          }
-          $variables['row_item_classes'][] = 'card--stacked';
-        }
-        elseif ($style_class === 'list_format_list') {
-          $variables['row_item_classes'][] = 'card--media-left';
-          $style_classes = ['media--circle', 'media--border'];
-          $size_classes = ['card--media-left', 'card__media--small'];
-        }
-      }
-    }
-    foreach ($rows as $id => $row) {
-      // Set remaining row_item_classes as attributes on each row.
-      if (isset($variables['row_item_classes'])) {
-        $variables['rows'][$id]['attributes']->addClass($variables['row_item_classes']);
-      }
-      // Get node path to link card with.
-      $nid = $view->result[$id]->_entity->id();
-      $link = \Drupal::service('path_alias.manager')->getAliasByPath('/node/' . $nid);
-
-      // Initialize card_options variable.
-      $variables['rows'][$id]['card_options'] = [
-        'attributes' => $variables['rows'][$id]['attributes'],
-        'media_styles' => $style_classes,
-        'media_sizes' => $size_classes,
-        'card_title' => $style->getField($id, 'title'),
-        'card_link_url' => $link,
-        'card_image' => $style->getField($id, 'field_student_profile_image'),
-        'card_subtitle' => $style->getField($id, 'field_student_profile_major'),
-      ];
     }
   }
 }
