@@ -2096,7 +2096,7 @@ function sitenow_update_9056(&$sandbox) {
 
       if ($all_cards) {
         $config = $section->getLayoutSettings();
-        if (!is_null($key = array_search('remove_default_bottom_padding', $config['layout_builder_styles_style']))) {
+        if (isset($config['layout_builder_styles_style']) && !is_null($key = array_search('remove_default_bottom_padding', $config['layout_builder_styles_style']))) {
           unset($config['layout_builder_styles_style'][$key]);
           $section->setLayoutSettings($config);
         }
