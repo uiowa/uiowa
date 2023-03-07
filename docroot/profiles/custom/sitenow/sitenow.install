@@ -120,7 +120,7 @@ function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): 
     // Match against any record that has a block matching our $block_plugin_id.
     $or_group = $query->orConditionGroup();
     foreach ($block_plugin_ids as $block_plugin_id) {
-      $or_group = $or_group->condition($section_column, "%$block_plugin_id%", 'LIKE');
+      $or_group = $or_group->condition('value', "%$block_plugin_id%", 'LIKE');
     }
 
     $query = $query->condition('collection', 'tempstore.shared.layout_builder.section_storage.overrides', '=')
