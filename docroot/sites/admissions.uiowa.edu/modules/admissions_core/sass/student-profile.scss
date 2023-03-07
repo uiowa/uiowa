@@ -3,44 +3,25 @@
 @import "../../../../../themes/custom/uids_base/uids3/assets/scss/_grid.scss";
 
 .block-views-blockstudent-card-block-student-grid {
-  &[class*="grid"].hide-details {
+  &[class*="grid"] {
     .view-content.list-container__inner {
       gap: 0 !important;
     }
 
-    .card__body {
-      display: none;
-    }
 
     &.grid__mobile {
-      &.grid--threecol--33-34-33,
-      &.grid--twocol--50-50 {
-        .list-container__inner {
-          @include display-grid;
-
-          .card {
-            margin-bottom: 0;
-          }
-        }
-      }
-
       &.grid--threecol--33-34-33 {
         .list-container__inner {
+          @include display-grid;
           @include threecol-grid;
         }
       }
 
-      &.grid--twocol--50-50 {
-        .list-container__inner {
-          @include twocol-grid;
-          gap: $desktop-width-gutter;
-        }
-      }
 
     }
   }
 
-  .views-col {
+  .views-row {
     display: flex;
     align-items: stretch;
 

@@ -4,7 +4,7 @@
 
 // List container spacing.
 // @todo we would need to add list-container wrapper class to all views, articles list, and taxonomy lists.
-.list-container {
+.list-container:not([class*="grid"]) {
   .list-container__inner {
     > div + div {
       margin-top: 1.6rem;
@@ -35,12 +35,13 @@
   }
 }
 
-  // These override the grid settings in grid.scss from UIDS
-.list-container.grid--threecol--33-34-33 .list-container__inner,
-.list-container.grid--twocol--50-50 .list-container__inner {
+// These lines help the inner-grid mixin.
+.list-container--list.grid--threecol--33-34-33 .list-container__inner,
+.list-container--list.grid--twocol--50-50 .list-container__inner {
   display: inherit;
 }
 
+// These lines help the inner-grid mixin.
 .list-container--grid.grid--threecol--33-34-33 .list-container__inner,
 .list-container--grid.grid--twocol--50-50 .list-container__inner {
   grid-template-columns: inherit;

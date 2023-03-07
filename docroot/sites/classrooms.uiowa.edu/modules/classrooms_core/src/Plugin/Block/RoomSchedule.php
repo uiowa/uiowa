@@ -52,14 +52,17 @@ class RoomSchedule extends BlockBase {
             $items[] = $item;
           }
 
-          // Set up the build.
           $build = [
             'header' => [
               '#markup' => '<h2 class="h4 block__headline headline headline--serif headline--underline">Today\'s Schedule</h2>',
             ],
-            '#cache' => [
-              'tags' => ['time:hourly'],
-              'max-age' => 60,
+            'container' => [
+              '#type' => 'container',
+              '#attributes' => ['class' => ['list-container__inner']],
+              '#cache' => [
+                'tags' => ['time:hourly'],
+                'max-age' => 60,
+              ],
             ],
           ];
 
@@ -72,7 +75,7 @@ class RoomSchedule extends BlockBase {
             ];
             $attributes->addClass($card_classes);
 
-            $build['schedule'][] = [
+            $build['container']['schedule'][] = [
               '#type' => 'card',
               '#attributes' => $attributes,
               '#subtitle' => $item->startTime . ' - ' . $item->endTime,
