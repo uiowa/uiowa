@@ -1,0 +1,11 @@
+@import "uids/assets/scss/_variables.scss";
+
+.field--name-field-article-author+.field--name-field-article-source-link,
+.field--name-field-article-author+.views-field-article-source-link,
+.views-field-article-source-link+.views-field-article-source-link {
+  &:before {
+    content: '- ';
+    color: $grey;
+    margin: 0 $xsm;
+  }
+}

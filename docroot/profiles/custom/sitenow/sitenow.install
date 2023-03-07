@@ -46,8 +46,7 @@ function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): 
       $or_group = $or_group->condition($section_column, "%$block_plugin_id%", 'LIKE');
     }
 
-    $query = $query
-      ->condition($or_group)
+    $query = $query->condition($or_group)
       ->fields('n', ['entity_id', 'revision_id', 'delta', $section_column]);
 
     $count = $query->countQuery()->execute()->fetchField();
@@ -65,7 +64,7 @@ function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): 
     foreach ($results as $record) {
       // Unserialize the section field into it's class object.
       /** @var \Drupal\layout_builder\Section $section */
-      $section = unserialize($record->layout_builder__layout_section, [
+      $section = unserialize($record->{$section_column}, [
         'allowed_classes' => TRUE,
       ]);
 
@@ -116,10 +115,17 @@ function _update_all_blocks_by_plugin_id($block_plugin_ids, callable $process): 
     // And holds a serialized blob with the unsaved changes.
     // Might be a better method of accessing this through the Layout
     // Builder API and layoutTempstoreRepository, but have not found it yet.
-    $query = $db->select('key_value_expire', 'kve')
-      ->fields('kve')
-      ->condition('collection', 'tempstore.shared.layout_builder.section_storage.overrides', '=')
-      ->condition('value', "%$block_plugin_id%", 'LIKE');
+    $query = $db->select('key_value_expire', 'kve');
+
+    // Match against any record that has a block matching our $block_plugin_id.
+    $or_group = $query->orConditionGroup();
+    foreach ($block_plugin_ids as $block_plugin_id) {
+      $or_group = $or_group->condition($section_column, "%$block_plugin_id%", 'LIKE');
+    }
+
+    $query = $query->condition('collection', 'tempstore.shared.layout_builder.section_storage.overrides', '=')
+      ->condition($or_group)
+      ->fields('kve');
 
     $count = $query->countQuery()->execute()->fetchField();
 
@@ -1967,67 +1973,211 @@ function sitenow_update_9054() {
  */
 function sitenow_update_9055() {
   // Apply updates to all blocks that are styled using card styles.
-  foreach ([
+  _update_all_blocks_by_plugin_id([
     'inline_block:uiowa_card',
     'inline_block:uiowa_event',
     'inline_block:uiowa_events',
     'inline_block:uiowa_aggregator',
     'views_block:article_list_block-list_article',
     'views_block:people_list_block-list_card',
-  ] as $plugin_id) {
-    _update_all_blocks_by_plugin_id($plugin_id, function (&$component, $block) {
-      $styles = $component->get('layout_builder_styles_style');
+  ], function (&$component, $block) {
+    $styles = $component->get('layout_builder_styles_style');
 
-      // If styles aren't set, then initialize them.
-      if (empty($styles)) {
-        $styles = [];
-      }
+    // If styles aren't set, then initialize them.
+    if (empty($styles)) {
+      $styles = [];
+    }
 
-      // If card border style is set...
-      $border_index = array_search('block_card_style_border', $styles);
-      if ($border_index !== FALSE) {
-        // Unset it.
-        unset($styles[$border_index]);
-      }
-      else {
-        // Add style for no border option.
-        $styles[] = 'no_border';
-      }
+    // If card border style is set...
+    $border_index = array_search('block_card_style_border', $styles);
+    if ($border_index !== FALSE) {
+      // Unset it.
+      unset($styles[$border_index]);
+    }
+    else {
+      // Add style for no border option.
+      $styles[] = 'no_border';
+    }
 
-      // Update card_image_* to media_size_*.
-      $media_size_set = FALSE;
-      foreach ([
-        'card_image_large',
-        'card_image_medium',
-        'card_image_small',
-      ] as $card_image_size) {
-        $card_image_size_index = array_search($card_image_size, $styles);
-        if ($card_image_size_index !== FALSE) {
-          $size = str_replace('card_image_', '', $styles[$card_image_size_index]);
-          $styles[$card_image_size_index] = "media_size_$size";
-          $media_size_set = TRUE;
+    // Update card_image_* to media_size_*.
+    $media_size_set = FALSE;
+    foreach ([
+      'card_image_large',
+      'card_image_medium',
+      'card_image_small',
+    ] as $card_image_size) {
+      $card_image_size_index = array_search($card_image_size, $styles);
+      if ($card_image_size_index !== FALSE) {
+        $size = str_replace('card_image_', '', $styles[$card_image_size_index]);
+        $styles[$card_image_size_index] = "media_size_$size";
+        $media_size_set = TRUE;
+      }
+    }
+
+    // Set a default media size if not already set.
+    if (!$media_size_set) {
+      $styles[] = 'media_size_small';
+    }
+
+    // Remove these styles, if set.
+    foreach ([
+      'card_media_position_stacked',
+      'content_alignment_left',
+    ] as $remove_style) {
+      $remove_style_index = array_search($remove_style, $styles);
+      if ($remove_style_index !== FALSE) {
+        unset($styles[$remove_style_index]);
+      }
+    }
+
+    // @todo Set defaults for media_padded LB style.
+    // Save updated styles.
+    $component->set('layout_builder_styles_style', array_filter($styles));
+  });
+}
+
+/**
+ * Update sections with only cards to remove "Remove bottom spacing" style.
+ */
+function sitenow_update_9056(&$sandbox) {
+
+  $block_plugin_id = 'inline_block:uiowa_card';
+
+  $db = \Drupal::database();
+  $block_storage = \Drupal::entityTypeManager()
+    ->getStorage('block_content');
+
+  $section_column = 'layout_builder__layout_section';
+  $tables = [
+    'node__layout_builder__layout',
+    'node_revision__layout_builder__layout',
+  ];
+  $blocks = [];
+
+  foreach ($tables as $table_name) {
+    // Select DB records for our $table_name.
+    $query = $db->select($table_name, 'n');
+
+    $query = $query
+      ->condition($section_column, "%$block_plugin_id%", 'LIKE')
+      ->condition($section_column, '%remove_default_bottom_padding%', 'LIKE')
+      ->fields('n', ['entity_id', 'revision_id', 'delta', $section_column]);
+
+    $count = $query->countQuery()->execute()->fetchField();
+
+    \Drupal::messenger()
+      ->addMessage(t('Sections with blocks of @types records found in @table: @count', [
+        '@types' => $block_plugin_id,
+        '@table' => $table_name,
+        '@count' => $count,
+      ]));
+
+    $results = $query->execute();
+
+    // Loop through the results.
+    foreach ($results as $record) {
+      // Unserialize the section field into it's class object.
+      /** @var \Drupal\layout_builder\Section $section */
+      $section = unserialize($record->{$section_column}, [
+        'allowed_classes' => TRUE,
+      ]);
+
+      $all_cards = TRUE;
+
+      // Loop through the components in the section.
+      /** @var \Drupal\layout_builder\SectionComponent $component */
+      foreach ($section->getComponents() as &$component) {
+
+        // Limit this to only the initial list of block plugins.
+        if ($component->getPluginId() !== $block_plugin_id) {
+          $all_cards = FALSE;
         }
       }
 
-      // Set a default media size if not already set.
-      if (!$media_size_set) {
-        $styles[] = 'media_size_small';
-      }
-
-      // Remove these styles, if set.
-      foreach ([
-        'card_media_position_stacked',
-        'content_alignment_left',
-      ] as $remove_style) {
-        $remove_style_index = array_search($remove_style, $styles);
-        if ($remove_style_index !== FALSE) {
-          unset($styles[$remove_style_index]);
+      if ($all_cards) {
+        $config = $section->getLayoutSettings();
+        if (!is_null($key = array_search('remove_default_bottom_padding', $config['layout_builder_styles_style']))) {
+          unset($config['layout_builder_styles_style'][$key]);
+          $section->setLayoutSettings($config);
         }
       }
+      // Serialize section component and update section component db record.
+      // Replace the old section with our newly created one.
+      $db->update($table_name)
+        ->condition('revision_id', $record->revision_id)
+        ->condition('delta', $record->delta)
+        ->fields([
+          $section_column => serialize($section),
+        ])
+        ->execute();
+    }
+  }
 
-      // @todo Set defaults for media_padded LB style.
-      // Save updated styles.
-      $component->set('layout_builder_styles_style', array_filter($styles));
-    });
+  // Only continue with this section if we have a key_value_expire
+  // table to work with.
+  if ($db->schema()->tableExists('key_value_expire')) {
+    // Check if we have a tempstore of this node.
+    // Temp store is saved in the db in the key_value_expire,
+    // And holds a serialized blob with the unsaved changes.
+    // Might be a better method of accessing this through the Layout
+    // Builder API and layoutTempstoreRepository, but have not found it yet.
+    $query = $db->select('key_value_expire', 'kve')
+      ->fields('kve')
+      ->condition('collection', 'tempstore.shared.layout_builder.section_storage.overrides', '=')
+      ->condition('value', "%$block_plugin_id%", 'LIKE');
+
+    $count = $query->countQuery()->execute()->fetchField();
+
+    \Drupal::messenger()
+      ->addMessage(t('Tempstore records for sections with blocks of @types records found: @count', [
+        '@types' => $block_plugin_id,
+        '@count' => $count,
+      ]));
+
+    $results = $query
+      ->execute();
+
+    foreach ($results as $record) {
+
+      // Unserialize and replace the section in question with our updated one.
+      $stored_data = unserialize($record->value, [
+        'allowed_classes' => TRUE,
+      ]);
+
+      /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
+      $section_storage = $stored_data->data['section_storage'];
+
+      // Loop through sections in the storage.
+      foreach ($section_storage->getSections() as &$section) {
+
+        $all_cards = TRUE;
+        // Loop through the components in the section.
+        foreach ($section->getComponents() as &$component) {
+
+          // Limit this to only the initial list of block plugins.
+          if ($component->getPluginId() !== $block_plugin_id) {
+            $all_cards = FALSE;
+          }
+        }
+
+        if ($all_cards) {
+          $config = $section->getLayoutSettings();
+          if (!is_null($key = array_search('remove_default_bottom_padding', $config['layout_builder_styles_style']))) {
+            unset($config['layout_builder_styles_style'][$key]);
+            $section->setLayoutSettings($config);
+          }
+        }
+      }
+      $stored_data->data['section_storage'] = $section_storage;
+
+      // Insert the updated tempstore.
+      $db->update('key_value_expire')
+        ->condition('name', $record->name, '=')
+        ->condition('expire', $record->expire, '=')
+        ->fields([
+          'value' => serialize($stored_data),
+        ])
+        ->execute();
+    }
   }
 }
