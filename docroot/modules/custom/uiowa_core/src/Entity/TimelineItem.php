@@ -2,11 +2,8 @@
 
 namespace Drupal\uiowa_core\Entity;
 
-use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\paragraphs\Entity\Paragraph;
-use Drupal\uiowa_core\Entity\RendersAsCardInterface;
-use Drupal\uiowa_core\Entity\RendersAsCardTrait;
 
 /**
  * Provides an interface for paragraph timeline items.
@@ -73,6 +70,8 @@ class TimelineItem extends Paragraph implements RendersAsCardInterface {
     return [
       'media_size' => 'media--large',
       'timeline--card' => 'timeline--card',
+      'js-scroll' => 'js-scroll',
+      'bg--white' => 'bg--white',
     ];
   }
 
