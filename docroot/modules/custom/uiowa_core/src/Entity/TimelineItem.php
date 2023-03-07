@@ -24,20 +24,23 @@ class TimelineItem extends Paragraph implements RendersAsCardInterface {
 
     // Process additional card mappings.
     $this->mapFieldsToCardBuild($build, [
-      '#title' => 'field_timeline_heading',
       '#content' => 'field_timeline_body',
       '#subtitle' => 'field_timeline_date',
       '#media' => 'field_timeline_media',
     ]);
-    $build['#meta'] = $this->get('field_timeline_icon')?->view([
-      'label' => 'hidden',
-    ]);
-    $build['#meta']['#prefix'] = '<div class="card__icon-wrapper"><div class="card__icon">';
-    $build['#meta']['#suffix'] = '</div></div>';
-    unset($build['field_timeline_icon']);
 
-    $build['#prefix'] = '<li class="timeline--wrapper">';
-    $build['#suffix'] = '</li>';
+    $build['#title'] = $this->get('field_timeline_heading')
+      ?->get(0)
+      ?->getString();
+
+    if ($icon = $this->get('field_timeline_icon')?->view([
+      'label' => 'hidden',
+    ])) {
+      $build['#meta'] = $icon;
+      $build['#meta']['#prefix'] = '<div class="card__icon-wrapper"><div class="card__icon">';
+      $build['#meta']['#suffix'] = '</div></div>';
+      unset($build['field_timeline_icon']);
+    }
 
     // Check if the timeline card should be linked.
     $source_link = 'field_timeline_link';
@@ -56,6 +59,11 @@ class TimelineItem extends Paragraph implements RendersAsCardInterface {
       $build['#url'] = '';
     }
 
+    // Each card is part of a timeline list, so add
+    // our timeline wrapper list item.
+    $build['#prefix'] = '<li class="timeline--wrapper">';
+    $build['#suffix'] = '</li>';
+
   }
 
   /**
@@ -63,7 +71,6 @@ class TimelineItem extends Paragraph implements RendersAsCardInterface {
    */
   public function getDefaultCardStyles(): array {
     return [
-      'headline_class' => 'headline--serif',
       'media_size' => 'media--large',
       'timeline--card' => 'timeline--card',
     ];
