@@ -59,101 +59,6 @@
   }
 }
 
-// Featured content list
-.paragraph--type--featured-content.list {
-  .field--name-field-featured-content {
-    @include list-group;
-    @include list-group-flush;
-  }
-
-  .content-image,
-  .media {
-    @include card-media-horizontal-right;
-
-    @include breakpoint(sm) {
-      margin-top: $lg;
-    }
-    &.media--circle {
-      @include breakpoint(sm) {
-        margin-top: 0;
-      }
-    }
-  }
-}
-
-.paragraph--type--featured-content {
-  @include breakpoint(sm) {
-    margin-top: $lg;
-  }
-
-  figure {
-    margin: 0;
-
-    img {
-      margin-bottom: 0;
-    }
-  }
-
-  .media-body h3 {
-    @include card-header;
-  }
-
-  .node--view-mode-teaser.media {
-    @include card;
-  }
-
-  .field--name-field-teaser {
-    @include card-paragraph;
-    margin-top: $gutter;
-  }
-
-  .media-body {
-    @include card-body;
-  }
-
-
-  .card__body {
-    flex: 1;
-  }
-
-  .card__title {
-    @include breakpoint(sm) {
-      padding: 0;
-    }
-  }
-
-  .card--list {
-    &.card--person-teaser {
-      @include breakpoint(sm) {
-        margin-top: 1.6rem;
-      }
-    }
-  }
-  .node--type-article {
-    @include breakpoint(sm) {
-      display: flex;
-      flex-direction: row-reverse;
-    }
-    &.card--person-teaser {
-      @include breakpoint(sm) {
-        margin-top: 1.6rem;
-      }
-    }
-  }
-}
-
-.paragraph--type--featured-content.grid,
-.paragraph--type--featured-content.masonry {
-  .media-body {
-    padding: 2rem;
-  }
-  .card--person-teaser {
-    @include breakpoint(sm) {
-      padding: 2rem!important;
-      margin-top: 0;
-    }
-  }
-}
 
 // Articles List
 .paragraph--type--articles.list,
@@ -211,7 +116,7 @@
   }
 }
 
-// Feature Content Grid
+// Feature Content Grid with card_4x adjustments.
 
 .paragraph--type--featured-content.grid {
   .field--name-field-featured-content {
@@ -266,32 +171,18 @@
     display: flex;
   }
 
-  .card,
-  .node--view-mode-teaser.media {
-    @include card-enclosed;
-    border: 1px solid rgba(0,0,0,.125)!important;
-    .media--circle {
-      margin-top: 2rem;
-      @include breakpoint(sm) {
-        margin-top: 0;
+  .card {
+    display: block;
+
+    .media {
+      width: 100%;
+      .media__inner {
+        margin: 0;
       }
     }
-    &.card--person-teaser {
-      .card__body {
-        @include breakpoint(sm) {
-          padding: 0;
-        }
-      }
+    .card__body {
+      padding: 2rem;
     }
-  }
-}
-
-.paragraph--type--featured-content.list .node--type-page.node--view-mode-teaser.media {
-  display: flex;
-
-  @include breakpoint(sm) {
-    flex-direction: row-reverse;
-    flex-wrap: wrap-reverse;
   }
 }
 
@@ -445,12 +336,11 @@
 }
 
 
-// Masonry Featured Content
+// Masonry Featured Content with card_4x adjustments.
 .paragraph--type--featured-content.masonry {
   .field--name-field-featured-content {
     margin-top: $gutter;
 
-    //@include card-columns;
     @include breakpoint(sm) {
       column-count: 3;
       column-gap: 1.25rem;
@@ -460,41 +350,25 @@
 
   .featured-content-item {
     display: inline-block;
-    @include card-enclosed;
-    border: none!important;
+    border: 1px solid rgba(0,0,0,.125) !important;
     width: 100%;
-    margin-bottom: $gutter;
-    .card.card--person-teaser {
-      .card__body {
-        @include breakpoint(sm) {
-          padding: 0;
+    margin-bottom: 1.25rem;
+    .card {
+      display: block;
+
+      .media {
+        width: 100%;
+        .media__inner {
+          margin: 0;
         }
       }
-    }
-    .card, .node--view-mode-teaser.media  {
-      border: 1px solid;
-      border-color: rgba(0,0,0,.125) !important;
       .media--circle {
         margin-top: 2rem;
-        @include breakpoint(sm) {
-          margin-top: 0;
-        }
+      }
+      .card__body {
+        padding: 2rem;
       }
     }
-  }
-
-  .node--type-article {
-    display: flex;
-  }
-
-  figure img {
-    @include card-img-top;
-    max-width: 100%;
-    margin: 0;
-  }
-
-  .node__content .field--name-title {
-    @include card-title;
   }
 }
 
