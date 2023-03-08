@@ -5098,3 +5098,9 @@ $sites['orgpih-engage.uiowa.ddev.site'] = 'pih-engage.org.uiowa.edu';
 $sites['orgpih-engage.dev.drupal.uiowa.edu'] = 'pih-engage.org.uiowa.edu';
 $sites['orgpih-engage.stage.drupal.uiowa.edu'] = 'pih-engage.org.uiowa.edu';
 $sites['orgpih-engage.prod.drupal.uiowa.edu'] = 'pih-engage.org.uiowa.edu';
+
+// Directory aliases for nola.lab.uiowa.edu.
+$sites['labnola.uiowa.ddev.site'] = 'nola.lab.uiowa.edu';
+$sites['labnola.dev.drupal.uiowa.edu'] = 'nola.lab.uiowa.edu';
+$sites['labnola.stage.drupal.uiowa.edu'] = 'nola.lab.uiowa.edu';
+$sites['labnola.prod.drupal.uiowa.edu'] = 'nola.lab.uiowa.edu';
