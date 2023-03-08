@@ -5104,3 +5104,9 @@ $sites['labnola.uiowa.ddev.site'] = 'nola.lab.uiowa.edu';
 $sites['labnola.dev.drupal.uiowa.edu'] = 'nola.lab.uiowa.edu';
 $sites['labnola.stage.drupal.uiowa.edu'] = 'nola.lab.uiowa.edu';
 $sites['labnola.prod.drupal.uiowa.edu'] = 'nola.lab.uiowa.edu';
+
+// Directory aliases for shakespeare400.sites.uiowa.edu.
+$sites['sitesshakespeare400.uiowa.ddev.site'] = 'shakespeare400.sites.uiowa.edu';
+$sites['sitesshakespeare400.dev.drupal.uiowa.edu'] = 'shakespeare400.sites.uiowa.edu';
+$sites['sitesshakespeare400.stage.drupal.uiowa.edu'] = 'shakespeare400.sites.uiowa.edu';
+$sites['sitesshakespeare400.prod.drupal.uiowa.edu'] = 'shakespeare400.sites.uiowa.edu';
