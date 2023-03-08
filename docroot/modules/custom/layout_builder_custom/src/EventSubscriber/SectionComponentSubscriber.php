@@ -135,7 +135,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
             $style_map['card_media_position'] = '';
           }
 
-          LayoutBuilderStylesHelper::removeStylesFromAttributes($build['##attributes'], $style_map);
+          LayoutBuilderStylesHelper::removeStylesFromAttributes($build['#attributes'], $style_map);
 
           $build['content']['#override_styles'] = $style_map;
 
@@ -156,7 +156,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           // Filter the style map to just classes related to the card.
           $style_map = Card::filterCardStyles($style_map);
 
-          LayoutBuilderStylesHelper::removeStylesFromAttributes($build['##attributes'], $style_map);
+          LayoutBuilderStylesHelper::removeStylesFromAttributes($build['#attributes'], $style_map);
 
           $build['content']['#override_styles'] = $style_map;
           break;
@@ -210,7 +210,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           // Check if there are view rows to act upon.
           if (isset($build['content']['view_build']['#rows'][0]['#rows'])) {
 
-            LayoutBuilderStylesHelper::removeStylesFromAttributes($build['##attributes'], $style_map);
+            LayoutBuilderStylesHelper::removeStylesFromAttributes($build['#attributes'], $style_map);
 
             // Loop through view rows and set styles to override and hidden
             // fields.
@@ -242,7 +242,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
             $style_map['card_media_position'] = '';
           }
 
-          LayoutBuilderStylesHelper::removeStylesFromAttributes($build['##attributes'], $style_map);
+          LayoutBuilderStylesHelper::removeStylesFromAttributes($build['#attributes'], $style_map);
 
           $build['#override_styles'] = $style_map;
           break;
