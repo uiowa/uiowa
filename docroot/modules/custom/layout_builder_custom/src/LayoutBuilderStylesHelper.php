@@ -5,8 +5,10 @@ namespace Drupal\layout_builder_custom;
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 
+/**
+ * Helper class for doing common processing related to Layout Builder styles.
+ */
 class LayoutBuilderStylesHelper {
-
 
   /**
    * Helper method to provide a key-value map of styles for list blocks.
@@ -32,7 +34,7 @@ class LayoutBuilderStylesHelper {
         $style_map[$style->getGroup()] = implode(' ', \preg_split('(\r\n|\r|\n)', $style->getClasses()));
       }
     }
-    catch (InvalidPluginDefinitionException|PluginNotFoundException $e) {
+    catch (InvalidPluginDefinitionException | PluginNotFoundException $e) {
       // I don't think we do anything here except not add the style.
     }
 
@@ -60,12 +62,13 @@ class LayoutBuilderStylesHelper {
     });
   }
 
-
   /**
-   * Filters a list of styles to just those used by cards.
+   * Filters a style map to remove any that match a list of prefixes.
    *
    * @param array $style_map
+   *   A style map of Layout Builder styles.
    * @param array $removal_list
+   *   The list prefixes to filter out.
    *
    * @return array
    *   The filtered styles.
@@ -82,4 +85,5 @@ class LayoutBuilderStylesHelper {
 
     return $filtered_styles;
   }
+
 }
