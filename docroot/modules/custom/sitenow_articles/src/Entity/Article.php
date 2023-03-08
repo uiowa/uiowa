@@ -86,7 +86,7 @@ class Article extends NodeBundleBase implements ArticleInterface, RendersAsCardI
             'field--name-field-article-source-link',
           ],
         ],
-        ...$byline
+        ...$byline,
       ];
     }
 
