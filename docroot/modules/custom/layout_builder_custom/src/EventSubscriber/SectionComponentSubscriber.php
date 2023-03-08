@@ -9,6 +9,7 @@ use Drupal\Core\Render\PreviewFallbackInterface;
 use Drupal\layout_builder\Event\SectionComponentBuildRenderArrayEvent;
 use Drupal\layout_builder\LayoutBuilderEvents;
 use Drupal\layout_builder\Plugin\Block\FieldBlock;
+use Drupal\layout_builder_custom\LayoutBuilderStylesHelper;
 use Drupal\uiowa_core\Element\Card;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -125,7 +126,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           $selected_styles = $event->getComponent()->get('layout_builder_styles_style');
           // Convert the style list into a map that can be used for overriding
           // style defaults later.
-          $style_map = $this->getLayoutBuilderStylesMap($selected_styles);
+          $style_map = LayoutBuilderStylesHelper::getLayoutBuilderStylesMap($selected_styles);
           // Filter the style map to just classes related to the card.
           $style_map = Card::filterCardStyles($style_map);
           // Work-around for stacked card option meaning that
@@ -134,7 +135,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
             $style_map['card_media_position'] = '';
           }
 
-          $this->removeCardStylesFromBlock($build, $style_map);
+          LayoutBuilderStylesHelper::removeStylesFromAttributes($build['##attributes'], $style_map);
 
           $build['content']['#override_styles'] = $style_map;
 
@@ -151,11 +152,11 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           $selected_styles = $event->getComponent()->get('layout_builder_styles_style');
           // Convert the style list into a map that can be used for overriding
           // style defaults later.
-          $style_map = $this->getLayoutBuilderStylesMap($selected_styles);
+          $style_map = LayoutBuilderStylesHelper::getLayoutBuilderStylesMap($selected_styles);
           // Filter the style map to just classes related to the card.
           $style_map = Card::filterCardStyles($style_map);
 
-          $this->removeCardStylesFromBlock($build, $style_map);
+          LayoutBuilderStylesHelper::removeStylesFromAttributes($build['##attributes'], $style_map);
 
           $build['content']['#override_styles'] = $style_map;
           break;
@@ -197,7 +198,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           $selected_styles = $event->getComponent()->get('layout_builder_styles_style');
           // Convert the style list into a map that can be used for overriding
           // style defaults later.
-          $style_map = $this->getLayoutBuilderStylesMap($selected_styles);
+          $style_map = LayoutBuilderStylesHelper::getLayoutBuilderStylesMap($selected_styles);
           // Filter the style map to just classes related to the card.
           $style_map = Card::filterCardStyles($style_map);
           // Work-around for stacked card option meaning that
@@ -209,7 +210,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           // Check if there are view rows to act upon.
           if (isset($build['content']['view_build']['#rows'][0]['#rows'])) {
 
-            $this->removeCardStylesFromBlock($build, $style_map);
+            LayoutBuilderStylesHelper::removeStylesFromAttributes($build['##attributes'], $style_map);
 
             // Loop through view rows and set styles to override and hidden
             // fields.
@@ -232,7 +233,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           $selected_styles = $event->getComponent()->get('layout_builder_styles_style');
           // Convert the style list into a map that can be used for overriding
           // style defaults later.
-          $style_map = $this->getLayoutBuilderStylesMap($selected_styles);
+          $style_map = LayoutBuilderStylesHelper::getLayoutBuilderStylesMap($selected_styles);
           // Filter the style map to just classes related to the card.
           $style_map = Card::filterCardStyles($style_map);
           // Work-around for stacked card option meaning that
@@ -241,7 +242,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
             $style_map['card_media_position'] = '';
           }
 
-          $this->removeCardStylesFromBlock($build, $style_map);
+          LayoutBuilderStylesHelper::removeStylesFromAttributes($build['##attributes'], $style_map);
 
           $build['#override_styles'] = $style_map;
           break;
@@ -278,51 +279,6 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
 
         // We only want this to execute once.
         break;
-      }
-    }
-  }
-
-  /**
-   * Helper method to provide a key-value map of styles for list blocks.
-   *
-   * @param array $styles
-   *   The styles to provide a map for.
-   *
-   * @return array
-   *   The style map.
-   */
-  private function getLayoutBuilderStylesMap(array $styles): array {
-    $style_map = [];
-    foreach ($styles as $style_id) {
-      // Account for incorrectly configured component configuration which may
-      // have a NULL style ID. We cannot pass NULL to the storage handler, or
-      // it will throw an exception.
-      if (empty($style_id)) {
-        continue;
-      }
-      /** @var \Drupal\layout_builder_styles\LayoutBuilderStyleInterface $style */
-      $style = $this
-        ?->entityTypeManager
-        ?->getStorage('layout_builder_style')
-        ?->load($style_id);
-      if ($style) {
-        $style_map[$style->getGroup()] = implode(' ', \preg_split('(\r\n|\r|\n)', $style->getClasses()));
-      }
-    }
-
-    return $style_map;
-  }
-
-  /**
-   * Unset card classes from block level wrapper.
-   */
-  private function removeCardStylesFromBlock(array &$build, array $style_map) {
-    // Loop through the filtered card style map and remove those classes
-    // from the block.
-    // @todo Adjust so that multi-class styles are treated separately. (e.g. 'media--circle media--border').
-    foreach ($style_map as $class) {
-      if (FALSE !== $key = array_search($class, $build['#attributes']['class'])) {
-        unset($build['#attributes']['class'][$key]);
       }
     }
   }
