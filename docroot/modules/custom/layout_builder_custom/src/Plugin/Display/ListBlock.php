@@ -530,8 +530,9 @@ class ListBlock extends CoreBlock {
     $config = $block->getConfiguration();
     [, $display_id] = explode('-', $block->getDerivativeId(), 2);
 
+    // Add Layout Builder styles from the block, if they have been set.
     if (!empty($config['layout_builder_styles'])) {
-      $this->view->display_handler->setOption('row_styles', $config['layout_builder_styles']);
+      $this->view->display_handler->setOption('block_layout_builder_styles', $config['layout_builder_styles']);
     }
 
     // Attach the headline, if configured.
