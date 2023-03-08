@@ -5086,3 +5086,9 @@ $sites['labholoreality.uiowa.ddev.site'] = 'holoreality.lab.uiowa.edu';
 $sites['labholoreality.dev.drupal.uiowa.edu'] = 'holoreality.lab.uiowa.edu';
 $sites['labholoreality.stage.drupal.uiowa.edu'] = 'holoreality.lab.uiowa.edu';
 $sites['labholoreality.prod.drupal.uiowa.edu'] = 'holoreality.lab.uiowa.edu';
+
+// Directory aliases for dholterhaus.sites.uiowa.edu.
+$sites['sitesdholterhaus.uiowa.ddev.site'] = 'dholterhaus.sites.uiowa.edu';
+$sites['sitesdholterhaus.dev.drupal.uiowa.edu'] = 'dholterhaus.sites.uiowa.edu';
+$sites['sitesdholterhaus.stage.drupal.uiowa.edu'] = 'dholterhaus.sites.uiowa.edu';
+$sites['sitesdholterhaus.prod.drupal.uiowa.edu'] = 'dholterhaus.sites.uiowa.edu';
