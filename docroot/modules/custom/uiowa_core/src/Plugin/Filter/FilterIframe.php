@@ -82,6 +82,7 @@ class FilterIframe extends FilterBase {
           }
 
           $wrapper = $dom->createElement('div');
+          $classes = 'media';
 
           // Try to set responsive styling based on width/height attributes.
           if ($iframe->hasAttribute('width') && $iframe->hasAttribute('height')) {
@@ -89,17 +90,22 @@ class FilterIframe extends FilterBase {
             $height = (int) $iframe->getAttribute('height');
             $aspect_ratio = round($width / $height, 3);
             if ($aspect_ratio === 1.0) {
-              $wrapper->setAttribute('class', 'embed-responsive embed-responsive-1by1');
+              $classes .= ' media--1-1';
             }
             elseif ($aspect_ratio === 1.333) {
-              $wrapper->setAttribute('class', 'embed-responsive embed-responsive-4by3');
+              $classes .= ' media--4-3';
             }
             // 16:9 has a bit of variation when rounded.
             elseif ($aspect_ratio >= 1.775 && $aspect_ratio <= 1.779) {
-              $wrapper->setAttribute('class', 'embed-responsive embed-responsive-16by9');
+              $classes .= ' media--16-9';
+            }
+            // 21:9 has a bit of variation when rounded.
+            elseif ($aspect_ratio >= 2.25 && $aspect_ratio <= 2.395) {
+              $classes .= ' media--21-9';
             }
           }
 
+          $wrapper->setAttribute('class', $classes);
           $iframe->parentNode->replaceChild($wrapper, $iframe);
           $wrapper->appendChild($iframe);
         }
@@ -115,7 +121,7 @@ class FilterIframe extends FilterBase {
     $text = Html::serialize($dom);
     $result = new FilterProcessResult($text);
     $result->setAttachments([
-      'library' => ['uids_base/embed'],
+      'library' => ['uids_base/media'],
     ]);
     return $result;
   }

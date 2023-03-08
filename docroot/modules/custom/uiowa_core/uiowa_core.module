@@ -13,6 +13,7 @@ use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\filter\Render\FilteredMarkup;
 use Drupal\google_tag\Entity\Container;
 use Drupal\node\Entity\Node;
 use Drupal\node\NodeInterface;
@@ -135,6 +136,161 @@ function template_preprocess_uiowa_core_headline(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_media().
+ */
+function uiowa_core_preprocess_media(&$variables) {
+
+  // Detect if this is a figure and if it is,
+  // it has already been processed for inline sizing and alignment.
+  if (isset($variables['attributes']['data-figure']) &&
+    filter_var($variables['attributes']['data-figure'], FILTER_VALIDATE_BOOLEAN)) {
+    return;
+  }
+
+  // Check to see if the media element has been processed, or if it is an embed.
+  if (isset($variables['elements']['#embed']) && $variables['elements']['#embed']) {
+
+    // If we have a view mode set...
+    if (isset($variables['view_mode'])) {
+
+      // If we have relevant view mode classes...
+      if (!is_null($add_class = uiowa_core_get_inline_size_class_from_view_mode($variables['view_mode']))) {
+
+        // Attach the inline sizing library and assign the classes.
+        $variables['#attached']['library'][] = 'uids_base/inline';
+        $variables['attributes']['class'][] = $add_class;
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_filter_caption().
+ */
+function uiowa_core_preprocess_filter_caption(&$variables) {
+
+  // Get an associative array of attributes from the `<drupal-media>` node.
+  $attributes = uiowa_core_drupal_media_attributes($variables['node']);
+
+  $inline_class = 'inline--size-full';
+
+  // If we have a view mode set...
+  if (isset($attributes['data-view-mode'])) {
+    // Process the view mode classes.
+    // Check if the inline class needs to be changed.
+    if (!is_null($override_inline_class = uiowa_core_get_inline_size_class_from_view_mode($attributes['data-view-mode']))) {
+
+      // Replace the $inline_class with the relevant
+      // modified inline view mode class.
+      $inline_class = $override_inline_class;
+    }
+  }
+  // Get the current classes of the '<drupal-media>' element.
+  $classes_array = explode(' ', $variables['classes']);
+
+  // Add the view mode to the classes.
+  $classes_array[] = $inline_class;
+
+  // Re-concatenate the $classes_array back in to a string,
+  // which is what the '<drupal-media>' element wants.
+  $classes = implode(' ', $classes_array);
+
+  // Attach the inline sizing library and assign the classes.
+  $variables['#attached']['library'][] = 'uids_base/inline';
+  $variables['classes'] = $classes;
+
+  // Then, add a custom attribute to the '<drupal-media>'
+  // markup to show that it is a figure.
+  $variables['node'] = FilteredMarkup::create(preg_replace(
+    '/<drupal-media /i',
+    '<drupal-media data-figure="true" ',
+    $variables['node']));
+}
+
+/**
+ * Provides mapping for a $view_mode to an inline view mode.
+ *
+ * @param string $view_mode
+ *   A string that is going to be checked
+ *   as a view mode, often looks something
+ *   like 'medium__no_crop'.
+ *
+ * @return string|null
+ *   If the $view_mode starts with any one of the $accepted_view_modes:
+ *    Returns an array containing the string reference to
+ *    the inline library and the inline sizing class.
+ *   Otherwise, returns an empty array.
+ */
+function uiowa_core_get_inline_size_class_from_view_mode(string $view_mode): ?string {
+  $accepted_view_modes = ['large', 'medium', 'small'];
+
+  foreach ($accepted_view_modes as $value) {
+    if (str_starts_with($view_mode, $value)) {
+
+      // Return the class that needs to be added.
+      return "inline--size-$value";
+    }
+  }
+
+  // If we have a `default` view mode, set full.
+  if ($view_mode === 'default') {
+
+    // Return the class that needs to be added.
+    return 'inline--size-full';
+  }
+
+  return NULL;
+}
+
+/**
+ * Returns the attributes of a drupal media element.
+ *
+ * @param object|string $drupal_media_markup
+ *   A string or object representing a drupal
+ *   media element in "<drupal-media>" tags.
+ *
+ * @return array
+ *   An associative array of name-value pairs
+ *   of attributes on the drupal media element.
+ */
+function uiowa_core_drupal_media_attributes(object|string $drupal_media_markup): array {
+
+  // Get the '<drupal-media>' tag.
+  $markup = $drupal_media_markup;
+
+  // If we have an object, and it implements `MarkupInterface`...
+  if (gettype($drupal_media_markup) === 'object') {
+    if ($implements_classes = class_implements($drupal_media_markup)) {
+
+      $markup_interface = 'Drupal\Component\Render\MarkupInterface';
+      if (in_array($markup_interface, $implements_classes, TRUE)) {
+
+        // Use the `MarkupInterface` `__toString()` function
+        // to convert it to a string.
+        $markup = $drupal_media_markup->__toString();
+      }
+    }
+  }
+
+  // Separate the attributes of the tag string in to an array
+  // of attribute strings, defined as `$matches`.
+  // Ex: ['foo' => 'bar', 'ban' => 'baz'].
+  // Regex101 explanation: https://regex101.com/r/TdXcpT/1
+  preg_match_all('%\s([^"]*)="([^"]*)"%is', $markup, $matches);
+
+  // Create a new array to be used later for the
+  // associative media attributes data.
+  $attributes = [];
+
+  // Format the array using the matches as $key => $value.
+  for ($i = 0; $i < count($matches[0]); $i++) {
+    $attributes[$matches[1][$i]] = $matches[2][$i];
+  }
+
+  return $attributes;
+}
+
+/**
  * Implements hook_preprocess_HOOK().
  */
 function uiowa_core_preprocess_field(&$variables) {
@@ -168,9 +324,9 @@ function uiowa_core_preprocess_node(&$variables) {
 
       $show_teaser_link_indicator = $config->get('show_teaser_link_indicator');
     }
+
     $variables['show_teaser_link_indicator'] = $show_teaser_link_indicator;
   }
-
 }
 
 /**

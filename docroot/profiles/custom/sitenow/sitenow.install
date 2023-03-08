@@ -7,6 +7,7 @@
  */
 
 use Drupal\block_content\BlockContentInterface;
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\Display\EntityDisplayInterface;
@@ -1949,4 +1950,224 @@ function sitenow_update_9054() {
   $source = new FileStorage($config_path);
   $config_storage = \Drupal::service('config.storage');
   $config_storage->write('acquia_connector.settings', $source->read('acquia_connector.settings'));
+}
+
+/**
+ * Replace deprecated view modes.
+ *
+ * Remove all Large, Medium, and Small image view modes
+ * in all fields which allow embed content,
+ * and replace them with relevant inline alternatives.
+ */
+function sitenow_update_9055() {
+  $entity_types = [
+    'block_content',
+    'media',
+    'node',
+    'paragraph',
+  ];
+
+  $media_view_mode_map = [
+    'small' => 'small__no_crop',
+    'medium' => 'small__no_crop',
+    'large' => 'medium__no_crop',
+  ];
+  $media_view_mode_map_keys = array_keys($media_view_mode_map);
+
+  $tables = [];
+  $revision_tables = [];
+
+  // Each entity needs to be checked to fetch all the
+  // relevant field tables.
+  foreach ($entity_types as $entity_type) {
+    // Get the field and revision storage table names for each field
+    // attached to this entity.
+    $table_mapping = \Drupal::service('entity_type.manager')
+      ->getStorage($entity_type)
+      ->getTableMapping();
+    $storage_definitions = \Drupal::service('entity_field.manager')
+      ->getActiveFieldStorageDefinitions($entity_type);
+
+    foreach ($storage_definitions as $field_name => $field_storage_definition) {
+      // We're only interested in specific field types
+      // which may have embeds. If it's not one of these,
+      // go ahead and drop it from our definitions.
+      if (!in_array(
+        $field_storage_definition->getType(),
+        [
+          'text_long',
+          'text_with_summary',
+        ]
+      )) {
+        unset($storage_definitions[$field_name]);
+      }
+      else {
+        // Fetch both the field table and its
+        // respective revision table.
+        $tables[$field_name] = $table_mapping->getDedicatedDataTableName($field_storage_definition);
+        $revision_tables[$field_name] = $table_mapping->getDedicatedRevisionTableName($field_storage_definition);
+      }
+    }
+  }
+
+  $database = \Drupal::database();
+
+  // Loop through both the field tables and the revision tables
+  // looking for relevant view modes, and update where necessary.
+  foreach ([$tables, $revision_tables] as $table_list) {
+    foreach ($table_list as $field_name => $table) {
+      // If no data has been saved yet, the table won't exist,
+      // in which case we're done.
+      if (!$database->schema()->tableExists($table)) {
+        continue;
+      }
+      // Any predefined field we're currently working with
+      // which would allow embed content is formatted the same,
+      // with a field_name_value column for its stored value.
+      $value_column = "{$field_name}_value";
+      // Limit the results to ones with embedded media content.
+      $rows = $database->select($table, 't')
+        ->fields('t')
+        ->condition("t.{$value_column}", '%<drupal-media%', 'LIKE')
+        ->execute()
+        ->fetchAll();
+      foreach ($rows as $row) {
+        // Load the content as an HTML dom, as it'll be easier
+        // to ensure we end up with usable content after
+        // the replacement.
+        $document = Html::load($row->$value_column);
+
+        // Get all <drupal-media> instances.
+        $dm_instances = $document->getElementsByTagName('drupal-media');
+
+        // Built with this as a template.
+        // https://github.com/uiowa/uiowa/pull/3048/commits/5b95c9912aaa2b235cf06787a8c673a0f2cb17d7
+        $i = $dm_instances->length - 1;
+
+        while ($i >= 0) {
+          // The current inline image element.
+          $old_dm_instance = $dm_instances->item($i);
+          $new_dm_instance = $old_dm_instance;
+
+          $view_mode = $old_dm_instance->getAttribute('data-view-mode');
+          $is_relevant_view_mode = in_array($view_mode, $media_view_mode_map_keys);
+          if ($is_relevant_view_mode) {
+            $new_dm_instance->setAttribute('data-view-mode', $media_view_mode_map[$view_mode]);
+
+            $old_dm_instance->parentNode->replaceChild($new_dm_instance, $old_dm_instance);
+          }
+
+          $i--;
+        }
+
+        $new_value = Html::serialize($document);
+
+        // Update the row in the database with our new value.
+        // For ease, we can just insert into the row with the old value,
+        // and if we happen to hit multiple rows, they would have needed
+        // updating as well.
+        $database->update($table)
+          ->condition("{$value_column}", $row->$value_column, '=')
+          ->fields([
+            $value_column => $new_value,
+          ])
+          ->execute();
+      }
+    }
+  }
+
+  // Check if we need to update key_value_expire.
+  if ($database->schema()->tableExists('key_value_expire')) {
+    // Check if we have a temp store records that need to be updated.
+    // Temp store is saved in the db in the key_value_expire,
+    // And holds a serialized blob with the unsaved changes.
+    $query = $database->select('key_value_expire', 'kve')
+      ->fields('kve', ['name', 'value', 'expire'])
+      ->condition('collection', 'tempstore.shared.layout_builder.section_storage.overrides', '=')
+      ->condition('value', '%<drupal-media%', 'LIKE');
+
+    $count = $query->countQuery()->execute()->fetchField();
+    \Drupal::messenger()
+      ->addMessage(t('Tempstore records for blocks with embeds records found: @count', [
+        '@count' => $count,
+      ]));
+
+    $results = $query
+      ->execute();
+    foreach ($results as $record) {
+      // Unserialize and replace the section in question with our updated one.
+      $stored_data = unserialize($record->value, [
+        'allowed_classes' => TRUE,
+      ]);
+
+      /** @var \Drupal\layout_builder\Plugin\SectionStorage\OverridesSectionStorage $section_storage */
+      $section_storage = $stored_data->data['section_storage'];
+
+      // Iterate down into the individual components,
+      // which will contain our blocks of interest.
+      foreach ($section_storage->getSections() as &$section) {
+        foreach ($section->getComponents() as &$component) {
+          // Convert to an array for easier processing.
+          $component_array = $component->toArray();
+          // We only need to worry about serialized blocks.
+          // Otherwise, the component references a saved
+          // block revision, and that is already updated.
+          if (isset($component_array['configuration']['block_serialized'])) {
+            // More unserializing...
+            $content = unserialize($component_array['configuration']['block_serialized'], [
+              'allowed_classes' => TRUE,
+            ]);
+            foreach ($content->getFields() as $field_name => $value) {
+              // There are lots of fields we don't need. If they
+              // aren't a "field_" field, or if it's a "field_" field
+              // that isn't of the two types we care about, skip it.
+              if (
+                str_starts_with(
+                  $field_name,
+                  'field_'
+                ) &&
+                in_array(
+                  $content->$field_name?->getFieldDefinition()?->getType(),
+                  ['text_long',
+                    'text_with_summary',
+                  ]
+                )
+              ) {
+                // Regex to replace any "small", "medium", or "large"
+                // entity view modes with their respective inline counterparts.
+                $content->$field_name->value = preg_replace_callback(
+                  '%(<drupal-media.*?data-view-mode=")(small|medium|large)(".*?<\/drupal-media>)%is',
+                  function ($matches) {
+                    $media_view_mode_map = [
+                      'small' => 'small__no_crop',
+                      'medium' => 'small__no_crop',
+                      'large' => 'medium__no_crop',
+                    ];
+                    return $matches[1] . $media_view_mode_map[$matches[2]] . $matches[3];
+                  },
+                  $content->$field_name->value
+                );
+                // Re-serialize the content and place it back in the array.
+                $component_array['configuration']['block_serialized'] = serialize($content);
+              }
+            }
+
+            // Re-set the component configuration with our updates.
+            $component->setConfiguration($component_array['configuration']);
+          }
+        }
+      }
+
+      // Finally, set the data and insert into the database
+      // after serializing again.
+      $stored_data->data['section_storage'] = $section_storage;
+      $database->update('key_value_expire')
+        ->condition('name', $record->name, '=')
+        ->condition('expire', $record->expire, '=')
+        ->fields([
+          'value' => serialize($stored_data),
+        ])
+        ->execute();
+    }
+  }
 }

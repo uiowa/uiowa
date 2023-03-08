@@ -1,0 +1,50 @@
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
+@import "uids/components/inline/inline.scss";
+
+// Overriding because we are not pulling in the uids alignment classes.
+// Ex: 'inline--align-left', 'inline--align-right'.
+// Set container query max-width sizes for images.
+@supports (contain: inline-size) {
+  @container column (min-width: #{$break-xxsm}) {
+    .align-center {
+      margin-inline-start: auto;
+      margin-inline-end: auto;
+    }
+
+    .inline--size-small {
+      &.align-left {
+        margin-inline-end: var(--inline-margin-md);
+      }
+
+      &.align-right {
+        margin-inline-start: var(--inline-margin-md);
+      }
+    }
+  }
+
+  @container column (min-width: #{$break-xsm}) {
+    .inline--size-medium {
+      &.align-left {
+        margin-inline-end: var(--inline-margin-md);
+      }
+
+      &.align-right {
+        margin-inline-start: var(--inline-margin-md);
+      }
+    }
+  }
+
+  @container column (min-width: #{$break-md}) {
+    .inline--size-large {
+      &.align-left {
+        margin-inline-end: var(--inline-margin-md);
+      }
+
+      &.align-right {
+        margin-inline-start: var(--inline-margin-md);
+      }
+    }
+  }
+}
+// === End: element media sizes === //

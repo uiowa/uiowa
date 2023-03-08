@@ -103,7 +103,7 @@ class FilterIframeTest extends UnitTestCase {
     /** @var \DOMElement $iframe */
     $iframe = $html->getElementsByTagName('iframe')->item(0);
     $classes = explode(' ', $iframe->parentNode->getAttribute('class'));
-    $this->assertContains("embed-responsive-{$aspectRatio}", $classes);
+    $this->assertContains("media--{$aspectRatio}", $classes);
   }
 
   /**
@@ -111,9 +111,9 @@ class FilterIframeTest extends UnitTestCase {
    */
   public function providerDimensions() {
     return [
-      ['1by1', 500, 500],
-      ['4by3', 1024, 768],
-      ['16by9', 1920, 1080],
+      ['1-1', 500, 500],
+      ['4-3', 1024, 768],
+      ['16-9', 1920, 1080],
     ];
   }
 

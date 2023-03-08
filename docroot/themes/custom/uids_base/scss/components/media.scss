@@ -1,23 +1,15 @@
-@import "uids3/assets/scss/_variables.scss";
-@import "uids3/assets/scss/_utilities.scss";
-@import "uids3/components/media/_media-mixins.scss";
-
-.media {
-  &--border {
-      img {
-          @include media-border;
-      }
-  }
-
-  &--circle {
-      img, .img--empty  {
-          @include media-circle;
-      }
-  }
-}
+@import "uids/assets/scss/_variables.scss";
+@import "uids/assets/scss/_utilities.scss";
+@import "uids/components/media/media.scss";
 
 .media--border img {
   [class*="bg--black"] & {
     border-color: rgba(255,255,255,.425);
   }
+}
+
+.media--circle .img--empty {
+  border-radius:50%;
+  margin-top:0;
+  height:auto;
 }
