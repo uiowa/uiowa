@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesshakespeare400.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesshakespeare400
+  human_name: shakespeare400.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesshakespeare400.prod
+drupal:
+  db:
+    database: shakespeare400_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesshakespeare400.prod.drupal.uiowa.edu'
+  requester: bgretema
+  site-name: 'Iowa Celebrates Shakespeare @400'
