@@ -3,7 +3,6 @@
 namespace Drupal\uiowa_core\Entity;
 
 use Drupal\node\Entity\Node;
-use Drupal\uiowa_core\Element\Card;
 
 /**
  * Bundle-specific subclass of Node.

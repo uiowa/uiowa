@@ -2,6 +2,7 @@
 
 namespace Drupal\sitenow_people\Entity;
 
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\uiowa_core\Entity\NodeBundleBase;
 use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 
@@ -9,6 +10,8 @@ use Drupal\uiowa_core\Entity\RendersAsCardInterface;
  * Provides an interface for person entries.
  */
 class Person extends NodeBundleBase implements RendersAsCardInterface {
+
+  use StringTranslationTrait;
 
   /**
    * If entity has link directly to source field.
@@ -59,7 +62,7 @@ class Person extends NodeBundleBase implements RendersAsCardInterface {
     // Append person credentials to the node label in the teaser view mode.
     if ($creds = $this->get('field_person_credential')?->getString()) {
       $title = $this->getTitle();
-      $build['#title'] = t('@title, @creds', [
+      $build['#title'] = $this->t('@title, @creds', [
         '@title' => $title,
         '@creds' => $creds,
       ]);

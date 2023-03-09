@@ -3,7 +3,6 @@
 namespace Drupal\uiowa_core\Entity;
 
 use Drupal\Core\Render\Element;
-use Drupal\uiowa_core\Element\Card;
 
 /**
  * Provides functionality related to rendering entities as cards.

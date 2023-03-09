@@ -2044,15 +2044,12 @@ function sitenow_update_9056(&$sandbox) {
   $block_plugin_id = 'inline_block:uiowa_card';
 
   $db = \Drupal::database();
-  $block_storage = \Drupal::entityTypeManager()
-    ->getStorage('block_content');
 
   $section_column = 'layout_builder__layout_section';
   $tables = [
     'node__layout_builder__layout',
     'node_revision__layout_builder__layout',
   ];
-  $blocks = [];
 
   foreach ($tables as $table_name) {
     // Select DB records for our $table_name.

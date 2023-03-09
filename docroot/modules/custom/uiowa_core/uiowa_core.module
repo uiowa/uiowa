@@ -222,8 +222,8 @@ function template_preprocess_card(&$variables) {
   // Create a set of title headline classes in case its needed.
   $headline_classes = ['headline'];
 
-  // Loop through all classes, add any media and headline classes to the array and remove
-  // them from the card classes.
+  // Loop through all classes, add any media and headline classes
+  // to the array and remove them from the card classes.
   if (isset($element['#attributes']['class'])) {
     foreach ($element['#attributes']['class'] as $key => $style) {
       if (str_starts_with($style, 'media')) {

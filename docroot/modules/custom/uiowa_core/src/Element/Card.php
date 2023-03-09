@@ -2,7 +2,6 @@
 
 namespace Drupal\uiowa_core\Element;
 
-use Drupal\Component\Utility\Html;
 use Drupal\Core\Render\Element\RenderElement;
 
 /**
