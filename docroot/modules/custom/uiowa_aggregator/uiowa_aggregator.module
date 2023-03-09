@@ -54,12 +54,6 @@ function uiowa_aggregator_form_aggregator_feed_form_alter(&$form, FormStateInter
  */
 function uiowa_aggregator_aggregator_item_build_defaults_alter(array &$build, EntityInterface $entity, $view_mode) {
   $build['#type'] = 'card';
-  $build['#pre_render'] = [
-    [
-      Card::class,
-      'preRenderCard',
-    ],
-  ];
   unset($build['#theme']);
 }
 
@@ -67,12 +61,10 @@ function uiowa_aggregator_aggregator_item_build_defaults_alter(array &$build, En
  * Implements hook_ENTITY_TYPE_view().
  */
 function uiowa_aggregator_aggregator_item_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  $build['#media']['feed_image'] = $build['feed_image'];
   $build['#meta']['author'] = $build['author'];
   $build['#content'] = $build['description'];
   $build['#subtitle'] = $build['timestamp'];
 
-  unset($build['feed_image']);
   unset($build['author']);
   unset($build['description']);
   unset($build['timestamp']);
@@ -81,126 +73,124 @@ function uiowa_aggregator_aggregator_item_view(array &$build, EntityInterface $e
 /**
  * Implements hook_preprocess_HOOK().
  */
-function uiowa_aggregator_preprocess_block(&$variables) {
-  if ($variables['elements']['#plugin_id'] === 'inline_block:uiowa_aggregator') {
-    /** @var \Drupal\Block\Entity\Block $block */
-    $block = $variables['elements']['content']['#block_content'];
+function uiowa_aggregator_preprocess_block__inline_block__uiowa_aggregator(&$variables) {
+  /** @var \Drupal\Block\Entity\Block $block */
+  $block = $variables['elements']['content']['#block_content'];
 
-    if ($block->hasField('field_uiowa_headline')) {
-      $headline_fields = $block->get('field_uiowa_headline')->getValue();
-      foreach ($headline_fields as $headline_field) {
-        // There isn't a headline, so set the children to this heading size.
-        if (empty($headline_field['headline'])) {
-          $heading_size = $headline_field['child_heading_size'];
-        }
-        else {
-          $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
-        }
+  if ($block->hasField('field_uiowa_headline')) {
+    $headline_fields = $block->get('field_uiowa_headline')->getValue();
+    foreach ($headline_fields as $headline_field) {
+      // There isn't a headline, so set the children to this heading size.
+      if (empty($headline_field['headline'])) {
+        $heading_size = $headline_field['child_heading_size'];
+      }
+      else {
+        $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
       }
     }
+  }
 
-    $feeds = [];
+  $feeds = [];
 
-    foreach ($block->get('field_uiowa_aggregator_feeds')->getIterator() as $list_string_item) {
-      $feeds[] = $list_string_item->getString();
-    }
+  foreach ($block->get('field_uiowa_aggregator_feeds')->getIterator() as $list_string_item) {
+    $feeds[] = $list_string_item->getString();
+  }
 
-    $per_page = (int) $block->get('field_uiowa_aggregator_count')->getString();
-    $show_pager = (bool) $block->get('field_uiowa_aggregator_pager')->getString();
+  $per_page = (int) $block->get('field_uiowa_aggregator_count')->getString();
+  $show_pager = (bool) $block->get('field_uiowa_aggregator_pager')->getString();
 
-    $query = \Drupal::entityTypeManager()->getStorage('aggregator_item')->getQuery()
-      ->condition('fid', $feeds, 'IN')
-      ->sort('timestamp', 'DESC')
-      ->sort('iid', 'DESC');
+  $query = \Drupal::entityTypeManager()->getStorage('aggregator_item')->getQuery()
+    ->condition('fid', $feeds, 'IN')
+    ->sort('timestamp', 'DESC')
+    ->sort('iid', 'DESC');
 
-    if (!$show_pager) {
-      $query->range(0, $per_page);
-    }
+  if (!$show_pager) {
+    $query->range(0, $per_page);
+  }
 
-    $result = $query->execute();
+  $result = $query->execute();
 
-    $variables['content']['aggregator'] = [
-      '#type' => 'container',
-      '#attributes' => [
-        'class' => [
-          'aggregator-wrapper',
-          'uiowa-aggregator',
-          'list-container__inner',
-        ],
+  $variables['content']['aggregator'] = [
+    '#type' => 'container',
+    '#attributes' => [
+      'class' => [
+        'aggregator-wrapper',
+        'uiowa-aggregator',
+        'list-container__inner',
       ],
-    ];
+    ],
+  ];
 
-    if ($result) {
-      $variables['content']['aggregator']['feed_source'] = ['#markup' => ''];
-      $items = \Drupal::entityTypeManager()->getStorage('aggregator_item')->loadMultiple($result);
+  if ($result) {
+    $variables['content']['aggregator']['feed_source'] = ['#markup' => ''];
+    $items = \Drupal::entityTypeManager()->getStorage('aggregator_item')->loadMultiple($result);
 
-      if ($items) {
-        // If output is paged, overwrite $items with the current chunk.
-        if ($show_pager) {
-          $count = count($items);
-          static $element = 0;
-          $element++;
-          /** @var \Drupal\Core\Pager\PagerManager $pager */
-          $pager = \Drupal::service('pager.manager');
-          $chunks = array_chunk($items, $per_page);
-          $current = $pager->createPager($count, $per_page, $element)->getCurrentPage();
-          $items = $chunks[$current];
-        }
-
-        // @todo Implement default card styles.
-        $default_card_styles = [
-          'headline_class' => 'headline--serif',
-          'card_media_position' => 'card--layout-left',
-          'styles' => 'bg--white',
-        ];
-
-        $variables['content']['aggregator']['items'] = \Drupal::entityTypeManager()->getViewBuilder('aggregator_item')->viewMultiple($items, 'default');
-
-        foreach (Element::children($variables['content']['aggregator']['items']) as $id) {
-          $variables['content']['aggregator']['items'][$id]['#override_styles'] = [
-            ...$default_card_styles,
-            ...$variables['elements']['#override_styles'],
-          ];
-        }
-
-        if ($show_pager) {
-          $variables['content']['pager'] = [
-            '#type' => 'pager',
-            '#element' => $element,
-            '#quantity' => 3,
-          ];
-        }
+    if ($items) {
+      // If output is paged, overwrite $items with the current chunk.
+      if ($show_pager) {
+        $count = count($items);
+        static $element = 0;
+        $element++;
+        /** @var \Drupal\Core\Pager\PagerManager $pager */
+        $pager = \Drupal::service('pager.manager');
+        $chunks = array_chunk($items, $per_page);
+        $current = $pager->createPager($count, $per_page, $element)->getCurrentPage();
+        $items = $chunks[$current];
       }
-    }
-    else {
-      $variables['content']['no_results'] = [
-        '#markup' => $block->get('field_uiowa_aggregator_text')->first()->value,
-        '#prefix' => '<div class="uiowa-aggregator-no-results">',
-        '#suffix' => '</div>',
+
+      // @todo Implement default card styles.
+      $default_card_styles = [
+        'headline_class' => 'headline--serif',
+        'card_media_position' => 'card--layout-left',
+        'styles' => 'bg--white',
       ];
-    }
 
-    // Unset classes meant for children.
-    if (isset($variables['attributes']['class'])) {
-      foreach ($variables['attributes']['class'] as $key => $style) {
-        foreach ([
-          'bg',
-          'card',
-          'media',
-          'hide',
-        ] as $check) {
-          if (str_starts_with($style, $check)) {
-            unset($variables['attributes']['class'][$key]);
-          }
-        }
+      $variables['content']['aggregator']['items'] = \Drupal::entityTypeManager()->getViewBuilder('aggregator_item')->viewMultiple($items, 'default');
+
+      foreach (Element::children($variables['content']['aggregator']['items']) as $id) {
+        $variables['content']['aggregator']['items'][$id]['#override_styles'] = [
+          ...$default_card_styles,
+          ...$variables['elements']['#override_styles'],
+        ];
+      }
+
+      if ($show_pager) {
+        $variables['content']['pager'] = [
+          '#type' => 'pager',
+          '#element' => $element,
+          '#quantity' => 3,
+        ];
       }
     }
-
-    $variables['#attached']['feed'][] = [
-      'aggregator/rss',
-      \Drupal::configFactory()->get('system.site')->get('name') . ' ' . t('aggregator'),
+  }
+  else {
+    $variables['content']['no_results'] = [
+      '#markup' => $block->get('field_uiowa_aggregator_text')->first()->value,
+      '#prefix' => '<div class="uiowa-aggregator-no-results">',
+      '#suffix' => '</div>',
     ];
   }
+
+  // Unset classes meant for children.
+  if (isset($variables['attributes']['class'])) {
+    foreach ($variables['attributes']['class'] as $key => $style) {
+      foreach ([
+        'bg',
+        'card',
+        'media',
+        'hide',
+      ] as $check) {
+        if (str_starts_with($style, $check)) {
+          unset($variables['attributes']['class'][$key]);
+        }
+      }
+    }
+  }
+
+  $variables['#attached']['feed'][] = [
+    'aggregator/rss',
+    \Drupal::configFactory()->get('system.site')->get('name') . ' ' . t('aggregator'),
+  ];
 }
 
 /**
