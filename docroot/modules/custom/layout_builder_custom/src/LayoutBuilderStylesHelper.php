@@ -32,6 +32,12 @@ class LayoutBuilderStylesHelper {
 
       foreach ($styles as $style) {
         $classes = implode(' ', \preg_split('(\r\n|\r|\n)', $style->getClasses()));
+
+        // Remove grid classes if list format is set.
+        if (str_starts_with($classes, 'grid--') && isset($styles['list_format_list'])) {
+          break;
+        }
+
         if (empty($style_map[$style->getGroup()])) {
           $style_map[$style->getGroup()] = $classes;
         }
