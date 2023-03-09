@@ -31,7 +31,13 @@ class LayoutBuilderStylesHelper {
         ?->loadMultiple(array_filter($styles));
 
       foreach ($styles as $style) {
-        $style_map[$style->getGroup()] = implode(' ', \preg_split('(\r\n|\r|\n)', $style->getClasses()));
+        $classes = implode(' ', \preg_split('(\r\n|\r|\n)', $style->getClasses()));
+        if (empty($style_map[$style->getGroup()])) {
+          $style_map[$style->getGroup()] = $classes;
+        }
+        else {
+          $style_map[$style->getGroup()] .= " $classes";
+        }
       }
     }
     catch (InvalidPluginDefinitionException | PluginNotFoundException $e) {
