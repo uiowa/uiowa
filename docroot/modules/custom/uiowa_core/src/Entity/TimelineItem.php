@@ -21,6 +21,7 @@ class TimelineItem extends Paragraph implements RendersAsCardInterface {
 
     // Process additional card mappings.
     $this->mapFieldsToCardBuild($build, [
+      '#title' => 'field_timeline_heading',
       '#content' => 'field_timeline_body',
       '#subtitle' => 'field_timeline_date',
       '#media' => 'field_timeline_media',
