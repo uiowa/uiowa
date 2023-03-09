@@ -9,6 +9,7 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
+use Drupal\media\Entity\Media;
 use Drupal\uiowa_core\Element\Card;
 use Drupal\uiowa_core\HeadlineHelper;
 
@@ -63,11 +64,63 @@ function uiowa_aggregator_aggregator_item_build_defaults_alter(array &$build, En
 function uiowa_aggregator_aggregator_item_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
   $build['#meta']['author'] = $build['author'];
   $build['#content'] = $build['description'];
-  $build['#subtitle'] = $build['timestamp'];
+  $build['#subtitle']['timestamp'] = \Drupal::service('date.formatter')->format((int) $build['timestamp']);
 
   unset($build['author']);
   unset($build['description']);
   unset($build['timestamp']);
+
+  // Only add the feed image  and heading size to the aggregator item if we're
+  // not on the canonical feed page.
+  if (\Drupal::routeMatch()->getRouteName() !== 'entity.aggregator_feed.canonical') {
+    // Set the heading level size for use in the template.
+    $build['#title_heading_size'] = $variables['elements']['#heading_size'] ?? 'h3';
+
+    /** @var Drupal\aggregator\Entity\Feed $feed */
+    $feed = \Drupal::entityTypeManager()
+      ->getStorage('aggregator_feed')
+      ->load($entity->getFeedId());
+    $mid = $feed->field_aggregator_feed_image
+      ?->target_id;
+
+    // Establish default view mode if layout_builder_styles don't exist.
+    $image_view_mode = 'large__square';
+
+    // Map the layout builder styles to the view mode that should be used.
+    $media_formats = [
+      'media--widescreen' => 'large__widescreen',
+      'media--square' => 'large__square',
+      'media--circle' => 'large__square',
+    ];
+
+    // Set the view mode based on the media format.
+    if (isset($build['#override_styles']['media_format']) && isset($media_formats[$build['#override_styles']['media_format']])) {
+      $image_view_mode = $media_formats[$build['#override_styles']['media_format']];
+    }
+
+    // A local feed image should take precedence.
+    if (!is_null($media = Media::load($mid))) {
+      $feed_image = \Drupal::entityTypeManager()->getViewBuilder('media')->view($media, $image_view_mode);
+      if (!in_array($image_view_mode, $feed_image['#cache']['keys'])) {
+        unset($feed_image['#cache']['keys']);
+      }
+      $build['#media']['field_aggregator_feed_image'] = $feed_image;
+    }
+    elseif ($image = $feed->getImage()) {
+      $build['#meta']['feed_image_external'] = [
+        '#theme' => 'imagecache_external_responsive',
+        '#uri' => $image,
+        '#responsive_image_style_id' => $image_view_mode,
+        '#attributes' => [
+          'data-lazy' => TRUE,
+          'alt' => t('@title feed image', ['@title' => $feed->get('title')->getString()]),
+          'class' => [
+            'feed-image',
+          ],
+        ],
+      ];
+    }
+  }
 }
 
 /**
