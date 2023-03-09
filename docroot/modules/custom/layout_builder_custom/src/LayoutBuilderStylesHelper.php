@@ -35,7 +35,7 @@ class LayoutBuilderStylesHelper {
 
         // Remove grid classes if list format is set.
         if (str_starts_with($classes, 'grid--') && isset($styles['list_format_list'])) {
-          break;
+          continue;
         }
 
         if (empty($style_map[$style->getGroup()])) {
