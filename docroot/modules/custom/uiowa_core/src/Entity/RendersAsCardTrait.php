@@ -34,6 +34,7 @@ trait RendersAsCardTrait {
    */
   public function buildCardStyles(array &$build) {
     $override_styles = $build['#override_styles'] ?? [];
+
     $default_styles = $this->getDefaultCardStyles();
     $styles = [
       ...$default_styles,
