@@ -105,13 +105,6 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function viewModeShouldRenderAsCard(string $view_mode): bool {
-    return in_array($view_mode, $this->getCardViewModes());
-  }
-
-  /**
    * Get view modes that should be rendered as a card.
    *
    * @return string[]

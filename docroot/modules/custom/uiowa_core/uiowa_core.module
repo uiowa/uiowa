@@ -152,44 +152,10 @@ function uiowa_core_node_presave(Node $node) {
   }
 }
 
-/**
- * Implements hook_ENTITY_TYPE_view().
- */
-function uiowa_core_block_content_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  if ($entity instanceof RendersAsCardInterface) {
+function uiowa_core_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if ($entity instanceof RendersAsCardInterface && $entity->viewModeShouldRenderAsCard($view_mode)) {
     // Build the card.
     $entity->buildCard($build);
-  }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_view().
- */
-function uiowa_core_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  if ($view_mode === 'teaser') {
-    if ($entity instanceof RendersAsCardInterface) {
-      $entity->buildCard($build);
-    }
-  }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_view().
- */
-function uiowa_core_paragraph_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  if ($entity instanceof RendersAsCardInterface) {
-    $entity->buildCard($build);
-  }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_view().
- */
-function uiowa_core_taxonomy_term_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  if ($view_mode === 'teaser') {
-    if ($entity instanceof RendersAsCardInterface) {
-      $entity->buildCard($build);
-    }
   }
 }
 

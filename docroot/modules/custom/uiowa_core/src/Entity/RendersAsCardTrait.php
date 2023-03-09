@@ -80,7 +80,21 @@ trait RendersAsCardTrait {
    * {@inheritdoc}
    */
   public function viewModeShouldRenderAsCard(string $view_mode): bool {
-    return TRUE;
+    if (empty($this->getCardViewModes())) {
+      return TRUE;
+    }
+
+    return in_array($view_mode, $this->getCardViewModes());
+  }
+
+  /**
+   * Get view modes that should be rendered as a card.
+   *
+   * @return string[]
+   *   The list of view modes.
+   */
+  protected function getCardViewModes(): array {
+    return [];
   }
 
 }
