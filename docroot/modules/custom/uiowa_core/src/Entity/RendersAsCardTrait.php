@@ -16,21 +16,11 @@ trait RendersAsCardTrait {
   public function addCardBuildInfo(array &$build) {
     // Set the type to card.
     $build['#type'] = 'card';
-  }
 
-  /**
-   * Add Card::preRenderCard method as a '#pre_render' property of the build.
-   *
-   * @param array $build
-   *   The build render array.
-   */
-  public function addCardPreRenderToBuild(array &$build) {
-    $build['#pre_render'] = [
-      [
-        Card::class,
-        'preRenderCard',
-      ],
-    ];
+    // If there is an existing '#theme' setting, unset it.
+    if (isset($build['#theme'])) {
+      unset($build['#theme']);
+    }
   }
 
   /**

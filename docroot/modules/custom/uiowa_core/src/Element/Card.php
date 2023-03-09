@@ -16,7 +16,6 @@ class Card extends RenderElement {
    * {@inheritdoc}
    */
   public function getInfo() {
-    $class = static::class;
     return [
       '#attached' => [
         'library' => [

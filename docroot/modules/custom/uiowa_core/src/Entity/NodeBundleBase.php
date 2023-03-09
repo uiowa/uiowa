@@ -31,13 +31,6 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
   /**
    * {@inheritdoc}
    */
-  public function addCardPreRenderToBuild(array &$build) {
-    // We don't want this to do anything.
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function buildCard(array &$build) {
     $this->buildCardStyles($build);
     // @todo How to handle setting the headline size?
@@ -69,11 +62,6 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
     $config = \Drupal::configFactory()->getEditable($config_name);
     $link_indicator = $config->get('show_teaser_link_indicator') ?? FALSE;
     $build['#link_indicator'] = $link_indicator;
-
-    // Workaround for the fact that if the Card::preRenderCard is added to a
-    // node teaser $build object early enough that it actually fires, it fires
-    // before we can trigger the buildCard method, which needs to run first.
-    $build = Card::preRenderCard($build);
   }
 
   /**
