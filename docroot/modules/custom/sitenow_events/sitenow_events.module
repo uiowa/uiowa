@@ -125,6 +125,8 @@ function sitenow_events_preprocess_block(&$variables) {
 
   switch ($variables['elements']['#plugin_id']) {
     case 'inline_block:uiowa_events':
+      $variables['attributes']['class'][] = 'list-container';
+
       /** @var \Drupal\Block\Entity\Block $block */
       $block = $variables['elements']['content']['#block_content'];
 

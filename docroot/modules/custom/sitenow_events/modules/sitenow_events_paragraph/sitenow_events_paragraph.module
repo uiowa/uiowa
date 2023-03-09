@@ -47,6 +47,7 @@ function sitenow_events_paragraph_preprocess_paragraph(&$variables) {
         $variables['#attached']['library'][] = 'uids_base/paragraphs-lists';
         $variables['#attached']['library'][] = 'uids_base/event';
         $variables['#attached']['library'][] = 'uids_base/media';
+        $variables['attributes']['class'][] = 'list-container';
 
         // Display title if it exists.
         if ($paragraph->hasField('field_uip_display_title')) {
