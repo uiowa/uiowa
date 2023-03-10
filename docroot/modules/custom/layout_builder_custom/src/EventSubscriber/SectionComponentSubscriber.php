@@ -244,6 +244,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
 
           LayoutBuilderStylesHelper::removeStylesFromAttributes($build['#attributes'], $style_map);
 
+          // Pass override styles through to the aggregator items.
           $build['#override_styles'] = $style_map;
           break;
 
