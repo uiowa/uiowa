@@ -154,6 +154,12 @@ function uiowa_aggregator_preprocess_block__inline_block__uiowa_aggregator(&$var
     }
   }
 
+  if (!isset($variables['attributes']['class'])) {
+    $variables['attributes']['class'] = [];
+  }
+
+  $variables['attributes']['class'][] = 'list-container';
+
   $feeds = [];
 
   foreach ($block->get('field_uiowa_aggregator_feeds')->getIterator() as $list_string_item) {
@@ -180,7 +186,7 @@ function uiowa_aggregator_preprocess_block__inline_block__uiowa_aggregator(&$var
       'class' => [
         'aggregator-wrapper',
         'uiowa-aggregator',
-        'list-container',
+        'list-container__inner',
       ],
     ],
   ];

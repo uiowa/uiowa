@@ -5,6 +5,7 @@ namespace Drupal\layout_builder_custom\EventSubscriber;
 use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Render\PreviewFallbackInterface;
 use Drupal\layout_builder\Event\SectionComponentBuildRenderArrayEvent;
 use Drupal\layout_builder\LayoutBuilderEvents;
@@ -140,7 +141,7 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           $build['content']['#override_styles'] = $style_map;
 
           // Map the layout builder styles to the view mode to be used.
-          if (!empty($build['content']['field_uiowa_card_image']) && isset($style_map['media_format'])) {
+          if (count(Element::children($build['content']['field_uiowa_card_image'])) > 0 && isset($style_map['media_format'])) {
             LayoutBuilderStylesHelper::setMediaViewModeFromStyle($build['content']['field_uiowa_card_image'][0], 'large', $style_map['media_format']);
           }
           break;
