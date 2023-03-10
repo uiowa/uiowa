@@ -5122,3 +5122,9 @@ $sites['orgscgsa.uiowa.ddev.site'] = 'scgsa.org.uiowa.edu';
 $sites['orgscgsa.dev.drupal.uiowa.edu'] = 'scgsa.org.uiowa.edu';
 $sites['orgscgsa.stage.drupal.uiowa.edu'] = 'scgsa.org.uiowa.edu';
 $sites['orgscgsa.prod.drupal.uiowa.edu'] = 'scgsa.org.uiowa.edu';
+
+// Directory aliases for anstig.org.uiowa.edu.
+$sites['organstig.uiowa.ddev.site'] = 'anstig.org.uiowa.edu';
+$sites['organstig.dev.drupal.uiowa.edu'] = 'anstig.org.uiowa.edu';
+$sites['organstig.stage.drupal.uiowa.edu'] = 'anstig.org.uiowa.edu';
+$sites['organstig.prod.drupal.uiowa.edu'] = 'anstig.org.uiowa.edu';
