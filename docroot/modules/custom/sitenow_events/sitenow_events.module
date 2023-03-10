@@ -433,7 +433,10 @@ function sitenow_events_preprocess_field(&$variables) {
       break;
 
     case 'field_event_performer':
-      $variables['attributes']['class'] = 'fa-ul';
+      if ($variables['element']['#view_mode'] == 'teaser') {
+        uiowa_core_set_field_icon($variables, 'fas fa-user-circle fa-li');
+        uiowa_core_set_attributes($variables, 'fa-ul');
+      }
       break;
 
     case 'field_event_series_link':
