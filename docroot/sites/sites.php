@@ -5110,3 +5110,9 @@ $sites['sitesshakespeare400.uiowa.ddev.site'] = 'shakespeare400.sites.uiowa.edu'
 $sites['sitesshakespeare400.dev.drupal.uiowa.edu'] = 'shakespeare400.sites.uiowa.edu';
 $sites['sitesshakespeare400.stage.drupal.uiowa.edu'] = 'shakespeare400.sites.uiowa.edu';
 $sites['sitesshakespeare400.prod.drupal.uiowa.edu'] = 'shakespeare400.sites.uiowa.edu';
+
+// Directory aliases for wallrath.lab.uiowa.edu.
+$sites['labwallrath.uiowa.ddev.site'] = 'wallrath.lab.uiowa.edu';
+$sites['labwallrath.dev.drupal.uiowa.edu'] = 'wallrath.lab.uiowa.edu';
+$sites['labwallrath.stage.drupal.uiowa.edu'] = 'wallrath.lab.uiowa.edu';
+$sites['labwallrath.prod.drupal.uiowa.edu'] = 'wallrath.lab.uiowa.edu';
