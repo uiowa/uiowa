@@ -1139,25 +1139,13 @@ function layout_builder_custom_preprocess_block(&$variables) {
       $variables['attributes']['class'] = explode(' ', $variables['attributes']['class']);
     }
 
-    // If this is a views block...
-    if ($variables['base_plugin_id'] === 'views_block') {
-      // Get a list of styles that will be displayed on the view instead of the
-      // block and remove them.
-      $filtered_styles = LayoutBuilderStylesHelper::filterStyles($variables['attributes']['class'], [
-        'grid',
-        'inner',
-        'list',
-      ]);
-      LayoutBuilderStylesHelper::removeStylesFromAttributes($variables['attributes'], $filtered_styles);
-    }
-    else {
-      // Otherwise, remove grid classes if this is a list.
-      if (in_array('list-container', $variables['attributes']['class'])) {
-        $variables['attributes']['class'] = array_filter($variables['attributes']['class'], function ($class) {
-          return !str_starts_with($class, 'grid--');
-        });
-      }
-    }
+    // Get a list of formatting styles that will be displayed on an element
+    // inside the block and remove them.
+    $filtered_styles = LayoutBuilderStylesHelper::filterStyles($variables['attributes']['class'], [
+      'grid',
+      'list-container',
+    ]);
+    LayoutBuilderStylesHelper::removeStylesFromAttributes($variables['attributes'], $filtered_styles);
   }
 
   switch ($variables['elements']['#plugin_id']) {

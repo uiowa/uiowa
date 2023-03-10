@@ -34,6 +34,8 @@ class LayoutBuilderStylesHelper {
         $classes = implode(' ', \preg_split('(\r\n|\r|\n)', $style->getClasses()));
 
         // Remove grid classes if list format is set.
+        // @todo Find a better place for this logic so that this method is not
+        //   opinionated about what is passed into it.
         if (str_starts_with($classes, 'grid--') && isset($styles['list_format_list'])) {
           continue;
         }
