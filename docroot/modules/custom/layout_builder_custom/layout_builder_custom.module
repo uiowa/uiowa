@@ -1152,7 +1152,7 @@ function layout_builder_custom_preprocess_block(&$variables) {
     }
     else {
       // Otherwise, remove grid classes if this is a list.
-      if (in_array('inner--list', $variables['attributes']['class'])) {
+      if (in_array('list-container', $variables['attributes']['class'])) {
         $variables['attributes']['class'] = array_filter($variables['attributes']['class'], function ($class) {
           return !str_starts_with($class, 'grid--');
         });
@@ -1285,10 +1285,10 @@ function layout_builder_custom_preprocess_views_view(&$variables) {
     $style_map = LayoutBuilderStylesHelper::getLayoutBuilderStylesMap($block_layout_builder_styles);
 
     // A list of styles to pull from the block to display on the view.
-    $filter_prefixes = ['inner', 'list'];
+    $filter_prefixes = ['list'];
 
     // If this is meant to display as a grid, add that prefix.
-    if (!in_array('inner--list', $style_map)) {
+    if (!in_array('list-container', $style_map)) {
       $filter_prefixes[] = 'grid';
     }
 
