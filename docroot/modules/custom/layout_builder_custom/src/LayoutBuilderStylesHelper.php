@@ -98,4 +98,35 @@ class LayoutBuilderStylesHelper {
     return $filtered_styles;
   }
 
+
+  /**
+   * Change the media view mode based on the selected format.
+   *
+   * @param array $build
+   *   The build to adjust.
+   * @param string $size
+   *   The size of the media view mode.
+   * @param string $format
+   *   The format of the media view mode.
+   */
+  public static function setMediaViewModeFromStyle(array &$build, string $size, string $format) {
+    $media_formats = [
+      'media--circle' => 'square',
+      'media--square' => 'square',
+      'media--ultrawide' => 'ultrawide',
+      'media--widescreen' => 'widescreen',
+    ];
+
+    if (isset($media_formats[$format])) {
+      $view_mode = "{$size}__$media_formats[$format]";
+      // Change the view mode to match the format.
+      $build['#view_mode'] = $view_mode;
+      // Important: Delete the cache keys to prevent this from being
+      // applied to all the instances of the same image.
+      if (isset($build['#cache']['keys'])) {
+        unset($build['#cache']['keys']);
+      }
+    }
+  }
+
 }

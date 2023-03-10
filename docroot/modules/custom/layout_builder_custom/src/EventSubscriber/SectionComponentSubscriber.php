@@ -140,8 +140,8 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           $build['content']['#override_styles'] = $style_map;
 
           // Map the layout builder styles to the view mode to be used.
-          if (!empty($build['#media']) && isset($build['#attributes']['class'])) {
-            $this->setMediaViewModeFromStyle($build['#media']['field_uiowa_card_image'], 'large', $build['#attributes']['class']);
+          if (!empty($build['content']['field_uiowa_card_image']) && isset($style_map['media_format'])) {
+            LayoutBuilderStylesHelper::setMediaViewModeFromStyle($build['content']['field_uiowa_card_image'][0], 'large', $style_map['media_format']);
           }
           break;
 
@@ -164,7 +164,21 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
         case 'inline_block:uiowa_image':
           // Map the layout builder styles to the view mode to be used.
           if (isset($build['#attributes']['class'])) {
-            $this->setMediaViewModeFromStyle($build['content']['field_uiowa_image_image'], 'full', $build['#attributes']['class']);
+            $formats = [
+              'media--circle' => 'square',
+              'media--square' => 'square',
+              'media--ultrawide' => 'ultrawide',
+              'media--widescreen' => 'widescreen',
+            ];
+
+            $shape = 'widescreen';
+
+            foreach ($build['#attributes']['class'] as $class) {
+              if (isset($formats[$class])) {
+                $shape = $formats[$class];
+              }
+            }
+            LayoutBuilderStylesHelper::setMediaViewModeFromStyle($build['content']['field_uiowa_image_image'][0], 'full', $shape);
           }
 
           break;
@@ -252,36 +266,6 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
     }
 
     $event->setBuild($build);
-  }
-
-  /**
-   * Change the media view mode based on the selected format.
-   */
-  private function setMediaViewModeFromStyle(array &$build, $size, array $classes = []) {
-    $media_formats = [
-      'media--circle' => 'square',
-      'media--square' => 'square',
-      'media--ultrawide' => 'ultrawide',
-      'media--widescreen' => 'widescreen',
-    ];
-
-    // Loop through the map to check if any of them are being used and
-    // adjust the view mode accordingly.
-    foreach ($media_formats as $style => $shape) {
-      $view_mode = "{$size}__$shape";
-      if (in_array($style, $classes)) {
-        // Change the view mode to match the format.
-        $build[0]['#view_mode'] = $view_mode;
-        // Important: Delete the cache keys to prevent this from being
-        // applied to all the instances of the same image.
-        if (isset($build[0]['#cache']['keys'])) {
-          unset($build[0]['#cache']['keys']);
-        }
-
-        // We only want this to execute once.
-        break;
-      }
-    }
   }
 
 }
