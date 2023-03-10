@@ -5116,3 +5116,9 @@ $sites['labwallrath.uiowa.ddev.site'] = 'wallrath.lab.uiowa.edu';
 $sites['labwallrath.dev.drupal.uiowa.edu'] = 'wallrath.lab.uiowa.edu';
 $sites['labwallrath.stage.drupal.uiowa.edu'] = 'wallrath.lab.uiowa.edu';
 $sites['labwallrath.prod.drupal.uiowa.edu'] = 'wallrath.lab.uiowa.edu';
+
+// Directory aliases for scgsa.org.uiowa.edu.
+$sites['orgscgsa.uiowa.ddev.site'] = 'scgsa.org.uiowa.edu';
+$sites['orgscgsa.dev.drupal.uiowa.edu'] = 'scgsa.org.uiowa.edu';
+$sites['orgscgsa.stage.drupal.uiowa.edu'] = 'scgsa.org.uiowa.edu';
+$sites['orgscgsa.prod.drupal.uiowa.edu'] = 'scgsa.org.uiowa.edu';
