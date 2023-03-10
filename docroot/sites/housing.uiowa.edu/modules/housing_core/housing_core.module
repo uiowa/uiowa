@@ -41,6 +41,10 @@ function housing_core_form_alter(&$form, FormStateInterface $form_state, $form_i
  */
 function housing_core_preprocess_block(&$variables) {
   switch ($variables['elements']['#plugin_id']) {
+    case 'field_block:node:residence_hall:field_residence_hall_contact':
+      uiowa_core_set_attributes($variables, ['list-container']);
+      break;
+
     // Display residence hall building links in a two column grid.
     case 'field_block:node:residence_hall:field_residence_hall_bldg_links':
       $variables['attributes']['class'][] = 'grid--twocol--50-50';
@@ -163,6 +167,12 @@ function housing_core_preprocess_field(&$variables, $hook) {
       ]);
       uiowa_core_set_attributes($variables, 'list-container');
 
+      break;
+
+    case 'field_residence_hall_contact':
+      uiowa_core_set_attributes($variables, [
+        'list-container__inner',
+      ]);
       break;
 
     case 'field_residence_hall_floor_plans':
