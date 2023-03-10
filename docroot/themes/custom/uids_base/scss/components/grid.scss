@@ -56,6 +56,8 @@
 // Additional grid classes.
 .grid--fourcol--25 {
   .list-container__inner {
+    display: grid;
+    gap: $mobile-height-gutter;
     @include grid-base;
     @include breakpoint(md) {
       @include fourcol-grid;
