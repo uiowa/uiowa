@@ -62,13 +62,36 @@ function uiowa_aggregator_aggregator_item_build_defaults_alter(array &$build, En
  * Implements hook_ENTITY_TYPE_view().
  */
 function uiowa_aggregator_aggregator_item_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  $build['#meta']['author'] = $build['author'];
-  $build['#content'] = $build['description'];
-  $build['#subtitle']['timestamp'] = \Drupal::service('date.formatter')->format((int) $build['timestamp']);
+  $build['#attached']['library'][] = 'uids_base/aggregator-feed';
+  $build['#attached']['library'][] = 'uids_base/card';
 
+  $build['#title'] = $entity->label();
+
+  $build['#meta']['author'] = [
+    ...$build['author'],
+    '#prefix' => '<span role="presentation" class="fas fa-user"></span>',
+  ];
   unset($build['author']);
+  $build['#content'] = $build['description'];
   unset($build['description']);
+  // To be a valid render array, this needs to have '#markup' set.
+  $build['#subtitle']['timestamp'] = [
+    '#markup' => \Drupal::service('date.formatter')->format((int) $entity->getPostedTime(), 'medium')
+  ];
   unset($build['timestamp']);
+
+  $override_styles = $build['#override_styles'] ?? [];
+
+  $style_map = [
+    'card_media_position' => 'card--layout-right',
+    'media_format' => 'media--widescreen',
+    'media_size' => 'media--small',
+    'styles' => 'borderless',
+    ...$override_styles,
+    'aggregator_item' => 'aggregator-item',
+  ];
+
+  $build['#attributes']['class'] = array_values($style_map);
 
   // Only add the feed image  and heading size to the aggregator item if we're
   // not on the canonical feed page.
@@ -94,8 +117,8 @@ function uiowa_aggregator_aggregator_item_view(array &$build, EntityInterface $e
     ];
 
     // Set the view mode based on the media format.
-    if (isset($build['#override_styles']['media_format']) && isset($media_formats[$build['#override_styles']['media_format']])) {
-      $image_view_mode = $media_formats[$build['#override_styles']['media_format']];
+    if (isset($media_formats[$style_map['media_format']])) {
+      $image_view_mode = $media_formats[$style_map['media_format']];
     }
 
     // A local feed image should take precedence.
@@ -107,18 +130,7 @@ function uiowa_aggregator_aggregator_item_view(array &$build, EntityInterface $e
       $build['#media']['field_aggregator_feed_image'] = $feed_image;
     }
     elseif ($image = $feed->getImage()) {
-      $build['#meta']['feed_image_external'] = [
-        '#theme' => 'imagecache_external_responsive',
-        '#uri' => $image,
-        '#responsive_image_style_id' => $image_view_mode,
-        '#attributes' => [
-          'data-lazy' => TRUE,
-          'alt' => t('@title feed image', ['@title' => $feed->get('title')->getString()]),
-          'class' => [
-            'feed-image',
-          ],
-        ],
-      ];
+      $build['#meta']['feed_image_external'] = uiowa_aggregator_build_external_image($image, $image_view_mode, $feed->get('title')->getString());
     }
   }
 }
@@ -261,18 +273,7 @@ function uiowa_aggregator_preprocess_aggregator_feed(&$variables) {
     // it with the feed image if that is set.
     if ($image->isEmpty()) {
       if ($image = $feed->getImage()) {
-        $variables['content']['field_aggregator_feed_image'] = [
-          '#theme' => 'imagecache_external_responsive',
-          '#uri' => $image,
-          '#responsive_image_style_id' => 'small__square',
-          '#attributes' => [
-            'data-lazy' => TRUE,
-            'alt' => t('@title feed image', ['@title' => $feed->get('title')->getString()]),
-            'class' => [
-              'feed-image',
-            ],
-          ],
-        ];
+        $variables['content']['field_aggregator_feed_image'] = uiowa_aggregator_build_external_image($image, 'small__square', $feed->get('title')->getString());
       }
     }
   }
@@ -290,4 +291,32 @@ function _uiowa_aggregator_get_feeds() {
   }
 
   return $options;
+}
+
+/**
+ * Builds a render array for a feed's external image.
+ *
+ * @param string $image
+ *   The image URL.
+ * @param string $view_mode
+ *   The view mode.
+ * @param string $title
+ *   The title.
+ *
+ * @return array
+ *    The render array for a feed's external image.
+ */
+function uiowa_aggregator_build_external_image($image, $view_mode, $title) {
+  return [
+    '#theme' => 'imagecache_external_responsive',
+    '#uri' => $image,
+    '#responsive_image_style_id' => $view_mode,
+    '#attributes' => [
+      'data-lazy' => TRUE,
+      'alt' => t('@title feed image', ['@title' => $title]),
+      'class' => [
+        'feed-image',
+      ],
+    ],
+  ];
 }
