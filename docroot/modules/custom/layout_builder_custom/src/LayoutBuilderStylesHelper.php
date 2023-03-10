@@ -98,7 +98,6 @@ class LayoutBuilderStylesHelper {
     return $filtered_styles;
   }
 
-
   /**
    * Change the media view mode based on the selected format.
    *

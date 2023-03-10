@@ -10,7 +10,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\media\Entity\Media;
-use Drupal\uiowa_core\Element\Card;
 use Drupal\uiowa_core\HeadlineHelper;
 
 /**
@@ -76,7 +75,7 @@ function uiowa_aggregator_aggregator_item_view(array &$build, EntityInterface $e
   unset($build['description']);
   // To be a valid render array, this needs to have '#markup' set.
   $build['#subtitle']['timestamp'] = [
-    '#markup' => \Drupal::service('date.formatter')->format((int) $entity->getPostedTime(), 'medium')
+    '#markup' => \Drupal::service('date.formatter')->format((int) $entity->getPostedTime(), 'medium'),
   ];
   unset($build['timestamp']);
 
@@ -282,7 +281,7 @@ function _uiowa_aggregator_get_feeds() {
  *   The title.
  *
  * @return array
- *    The render array for a feed's external image.
+ *   The render array for a feed's external image.
  */
 function uiowa_aggregator_build_external_image($image, $view_mode, $title) {
   return [
