@@ -696,7 +696,7 @@ function classrooms_core_views_pre_view(ViewExecutable $view, $display_id, array
         ->getStorage('taxonomy_term')
         ->load($page_term_id);
       if ($term->bundle() === 'units') {
-        $view->display_handler->setOption('css_class', 'grid--threecol--33-34-33 list-container--grid');
+        $view->display_handler->setOption('css_class', 'grid--threecol--33-34-33');
       }
     }
   }
