@@ -295,6 +295,39 @@
   }
 }
 
+// People list overrides to keep left image sized with card_4x.
+.paragraph--type--people.list {
+  .media--circle {
+    margin-top: 0;
+  }
+  .media.media--type-image {
+    flex: none;
+    max-width: 100%;
+    margin: 0;
+  }
+}
+
+// Grid/Masonry People overrides to keep image left with card_4x.
+.paragraph--type--people.grid,
+.paragraph--type--people.masonry {
+  .views-row {
+    .card {
+      display: flex;
+      .media {
+        .media__inner {
+          margin-right: 1rem;
+        }
+      }
+      .media--circle {
+        margin-top: 0;
+      }
+      .card__body {
+        padding: 0;
+      }
+    }
+  }
+}
+
 
 // Hide Images
 .paragraph--type--articles,
