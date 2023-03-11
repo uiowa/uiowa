@@ -141,19 +141,6 @@ function uiowa_aggregator_preprocess_block__inline_block__uiowa_aggregator(&$var
   /** @var \Drupal\Block\Entity\Block $block */
   $block = $variables['elements']['content']['#block_content'];
 
-  if ($block->hasField('field_uiowa_headline')) {
-    $headline_fields = $block->get('field_uiowa_headline')->getValue();
-    foreach ($headline_fields as $headline_field) {
-      // There isn't a headline, so set the children to this heading size.
-      if (empty($headline_field['headline'])) {
-        $heading_size = $headline_field['child_heading_size'];
-      }
-      else {
-        $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
-      }
-    }
-  }
-
   if (!isset($variables['attributes']['class'])) {
     $variables['attributes']['class'] = [];
   }
@@ -180,22 +167,37 @@ function uiowa_aggregator_preprocess_block__inline_block__uiowa_aggregator(&$var
 
   $result = $query->execute();
 
-  $variables['content']['aggregator'] = [
-    '#type' => 'container',
-    '#attributes' => [
-      'class' => [
-        'aggregator-wrapper',
-        'uiowa-aggregator',
-        'list-container__inner',
-      ],
-    ],
-  ];
-
   if ($result) {
+    $variables['content']['aggregator'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => [
+          'aggregator-wrapper',
+          'uiowa-aggregator',
+          'list-container__inner',
+        ],
+      ],
+    ];
     $variables['content']['aggregator']['feed_source'] = ['#markup' => ''];
     $items = \Drupal::entityTypeManager()->getStorage('aggregator_item')->loadMultiple($result);
 
     if ($items) {
+      // Determine heading size for child items.
+      $heading_size = 'h3';
+
+      $headline = $block->field_uiowa_headline
+        ?->first();
+
+      // Get the appropriate heading size.
+      if (!is_null($headline)) {
+        if (empty($headline['headline'])) {
+          $heading_size = $headline['child_heading_size'];
+        }
+        else {
+          $heading_size = HeadlineHelper::getHeadingSizeUp($headline['heading_size']);
+        }
+      }
+
       // If output is paged, overwrite $items with the current chunk.
       if ($show_pager) {
         $count = count($items);
@@ -210,10 +212,11 @@ function uiowa_aggregator_preprocess_block__inline_block__uiowa_aggregator(&$var
 
       $variables['content']['aggregator']['items'] = \Drupal::entityTypeManager()->getViewBuilder('aggregator_item')->viewMultiple($items, 'default');
 
-      // If they exist, pass the override styles from the block down to the
-      // individual feed items.
-      if (isset($variables['elements']['#override_styles'])) {
-        foreach (Element::children($variables['content']['aggregator']['items']) as $id) {
+      foreach (Element::children($variables['content']['aggregator']['items']) as $id) {
+        $variables['content']['aggregator']['items'][$id]['#heading_size'] = $heading_size;
+        // If they exist, pass the override styles from the block down to the
+        // individual feed items.
+        if (isset($variables['elements']['#override_styles'])) {
           $variables['content']['aggregator']['items'][$id]['#override_styles'] = $variables['elements']['#override_styles'];
         }
       }
