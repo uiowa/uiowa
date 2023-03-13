@@ -2,24 +2,19 @@
 
 namespace Drupal\uiowa_core\Form;
 
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\CloseModalDialogCommand;
+use Drupal\Core\Config\ConfigFactory;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\editor\Entity\Editor;
-use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\editor\Ajax\EditorDialogSave;
-use Drupal\Core\Ajax\CloseModalDialogCommand;
+use Drupal\editor\Entity\Editor;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Url;
-use Drupal\Core\Link;
-use Drupal\Core\Config\ConfigFactory;
-use Drupal\fontawesome\FontAwesomeManagerInterface;
 
 /**
  * Provides a Font Awesome icon dialog for text editors.
  */
-class EditorCalloutDialog extends FormBase
-{
+class EditorCalloutDialog extends FormBase {
   /**
    * Drupal configuration service container.
    *
@@ -28,25 +23,16 @@ class EditorCalloutDialog extends FormBase
   protected $configFactory;
 
   /**
-   * Drupal Font Awesome manager service.
-   *
-   * @var \Drupal\fontawesome\FontAwesomeManagerInterface
-   */
-  protected $fontAwesomeManager;
-
-  /**
    * {@inheritdoc}
    */
-  public function __construct(ConfigFactory $config_factory)
-  {
+  public function __construct(ConfigFactory $config_factory) {
     $this->configFactory = $config_factory;
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container)
-  {
+  public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
     );
@@ -55,8 +41,7 @@ class EditorCalloutDialog extends FormBase
   /**
    * {@inheritdoc}
    */
-  public function getFormId()
-  {
+  public function getFormId() {
     return 'callout_dialog';
   }
 
@@ -71,9 +56,6 @@ class EditorCalloutDialog extends FormBase
    *   The text editor to which this dialog corresponds.
    */
   public function buildForm(array $form, FormStateInterface $form_state, Editor $editor = NULL) {
-    // Load the configuration settings.
-//    $configuration_settings = $this->configFactory->get('fontawesome.settings');
-
     $form['#tree'] = TRUE;
 
     $form['heading'] = [
@@ -152,16 +134,16 @@ class EditorCalloutDialog extends FormBase
     $values = [];
 
     $wrapper_class = implode(' ', [
-        'callout',
-        $item['alignment'],
-        $item['size']]
-    );
+      'callout',
+      $item['alignment'],
+      $item['size'],
+    ]);
     $wrapper_class .= ($item['bg-color'] === 'none') ? '' : ' ' . $item['bg-color'];
 
     $values['wrapper']['tag'] = 'div';
     $values['wrapper']['attributes'] = [
       'class' => [
-        $wrapper_class
+        $wrapper_class,
       ],
     ];
 
@@ -174,7 +156,8 @@ class EditorCalloutDialog extends FormBase
           'block__headline',
           'headline--serif',
           'headline--underline',
-          'headline--center']),
+          'headline--center',
+        ]),
       ],
     ];
 
@@ -184,7 +167,7 @@ class EditorCalloutDialog extends FormBase
     $response->addCommand(new EditorDialogSave($values));
     $response->addCommand(new CloseModalDialogCommand());
 
-  return $response;
+    return $response;
 
   }
 
