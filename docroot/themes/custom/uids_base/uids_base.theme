@@ -14,7 +14,6 @@ use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\fragments\Entity\FragmentInterface;
-use Drupal\media\Entity\Media;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\uiowa_core\HeadlineHelper;
@@ -741,6 +740,7 @@ function uids_base_preprocess_block(&$variables) {
   }
 
   // If inner list, remove any inner grid classes.
+  // @todo Is this needed anymore? as list_format should only be one or the other.
   if (isset($variables['attributes']['class'])) {
     if (is_string($variables['attributes']['class'])) {
       $variables['attributes']['class'] = explode(' ', $variables['attributes']['class']);

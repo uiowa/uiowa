@@ -33,13 +33,6 @@ class LayoutBuilderStylesHelper {
       foreach ($styles as $style) {
         $classes = implode(' ', \preg_split('(\r\n|\r|\n)', $style->getClasses()));
 
-        // Remove grid classes if list format is set.
-        // @todo Find a better place for this logic so that this method is not
-        //   opinionated about what is passed into it.
-        if (str_starts_with($classes, 'grid--') && isset($styles['list_format_list'])) {
-          continue;
-        }
-
         if (empty($style_map[$style->getGroup()])) {
           $style_map[$style->getGroup()] = $classes;
         }
@@ -126,6 +119,22 @@ class LayoutBuilderStylesHelper {
       // applied to all the instances of the same image.
       if (isset($build['#cache']['keys'])) {
         unset($build['#cache']['keys']);
+      }
+    }
+  }
+
+  /**
+   * Remove grid classes if set as list.
+   *
+   * @param array $attributes
+   *   The attributes array to be processed.
+   */
+  public static function processGridClasses(array &$attributes) {
+    if (in_array('list-container', $attributes['class'])) {
+      foreach ($attributes['class'] as $key => $style) {
+        if (str_starts_with($style, 'grid')) {
+          unset($attributes['class'][$key]);
+        }
       }
     }
   }

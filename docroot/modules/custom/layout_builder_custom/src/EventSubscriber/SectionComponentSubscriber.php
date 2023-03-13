@@ -282,6 +282,8 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
             $style_map['card_media_position'] = '';
           }
 
+          LayoutBuilderStylesHelper::processGridClasses($build['#attributes']);
+
           LayoutBuilderStylesHelper::removeStylesFromAttributes($build['#attributes'], $style_map);
 
           // Pass override styles through to the aggregator items.

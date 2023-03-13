@@ -226,10 +226,7 @@ function sitenow_events_preprocess_block(&$variables) {
         }
 
         // Base styles.
-        $styles = [
-          'list-item',
-          'event-item',
-        ];
+        $styles = [];
 
         // If there are override styles from the block, add them in.
         if (isset($variables['elements']['#override_styles']) && !empty($variables['elements']['#override_styles'])) {
