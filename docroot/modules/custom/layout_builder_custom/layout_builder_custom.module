@@ -1114,9 +1114,6 @@ function _layout_builder_custom_add_lbs_heading(&$form) {
 function layout_builder_custom_preprocess_block(&$variables) {
   // Unset grid_columns classes if display as list.
   if (isset($variables['attributes']['class'])) {
-    if (is_string($variables['attributes']['class'])) {
-      $variables['attributes']['class'] = explode(' ', $variables['attributes']['class']);
-    }
 
     // If this is a views block...
     if ($variables['base_plugin_id'] === 'views_block') {

@@ -781,27 +781,27 @@ function uiowa_core_preprocess_block(&$variables) {
       $variables['#attached']['library'][] = 'uids_base/tags';
       $variables['title_attributes']['class'] = 'h6 block__headline headline headline--serif';
       if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = [''];
+        $variables['attributes']['class'] = [];
       }
-      $variables['attributes']['class'][] .= 'layout-container tags-list__container block-padding__bottom block-padding__top';
+      $variables['attributes']['class'][] = 'layout-container tags-list__container block-padding__bottom block-padding__top';
       break;
 
     case 'views_block:related_manually_referenced_content-block_grid':
       $variables['#attached']['library'][] = 'uids_base/related';
       $variables['title_attributes']['class'] = 'h3 block__headline headline headline--underline headline--serif';
       if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = [''];
+        $variables['attributes']['class'] = [];
       }
-      $variables['attributes']['class'][] .= 'block--bg-container grid--threecol--33-34-33 bg--gray block-padding__bottom block-padding__top';
+      $variables['attributes']['class'][] = 'block--bg-container grid--threecol--33-34-33 bg--gray block-padding__bottom block-padding__top';
       break;
 
     case 'views_block:related_content-block_related_headings_lists':
       $variables['#attached']['library'][] = 'uids_base/related';
       $variables['title_attributes']['class'] = 'h3 block__headline headline headline--underline headline--serif';
       if (!isset($variables['attributes']['class'])) {
-        $variables['attributes']['class'] = [''];
+        $variables['attributes']['class'] = [];
       }
-      $variables['attributes']['class'][] .= 'block--bg-container related col--threecol--33 bg--gray block-padding__bottom block-padding__top';
+      $variables['attributes']['class'][] = 'block--bg-container related col--threecol--33 bg--gray block-padding__bottom block-padding__top';
       break;
 
     case 'system_main_block':
