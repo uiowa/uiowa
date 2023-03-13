@@ -86,31 +86,56 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
       $build['#attributes']['id'] = $unique_id;
     }
 
-    if ($block instanceof FieldBlock && $block->getPluginId() === 'field_block:node:page:title') {
-
-      $contexts = $event->getContexts();
-      if (isset($contexts['layout_builder.entity'])) {
-        /** @var \Drupal\node\Entity\Node $node */
-        if ($node = $contexts['layout_builder.entity']->getContextValue()) {
-          $credentials = $node->hasField('field_person_credential') ? $node->field_person_credential->value : NULL;
-          if ($credentials) {
-            $node->setTitle("{$node->getTitle()}, $credentials");
-            $content = $block->build();
-
-            // @todo Remove the duplicate section of code below once the
-            //   following issue is resolved:
-            //   https://github.com/uiowa/uiowa/issues/4993
-            $build = [
-              '#theme' => 'block',
-              '#configuration' => $block->getConfiguration(),
-              '#plugin_id' => $block->getPluginId(),
-              '#base_plugin_id' => $block->getBaseId(),
-              '#derivative_plugin_id' => $block->getDerivativeId(),
-              '#weight' => $event->getComponent()->getWeight(),
-              'content' => $content,
-            ];
+    if ($block instanceof FieldBlock) {
+      $content = NULL;
+      switch ($block->getDerivativeId()) {
+        case 'node:page:title':
+          $contexts = $event->getContexts();
+          if (isset($contexts['layout_builder.entity'])) {
+            /** @var \Drupal\node\Entity\Node $node */
+            if ($node = $contexts['layout_builder.entity']->getContextValue()) {
+              $credentials = $node->hasField('field_person_credential') ? $node->field_person_credential->value : NULL;
+              if ($credentials) {
+                $node->setTitle("{$node->getTitle()}, $credentials");
+                $content = $block->build();
+              }
+            }
           }
-        }
+
+          break;
+
+        case 'node:person:field_image':
+          // If there is no image, use the empty image.
+          if (empty($build)) {
+            $content = [
+              '#type' => 'image_empty_person',
+            ];
+            $contexts = $event->getContexts();
+            if (isset($contexts['layout_builder.entity'])) {
+              /** @var \Drupal\node\Entity\Node $node */
+              if ($node = $contexts['layout_builder.entity']->getContextValue()) {
+                $content['#alt'] = $node->getTitle();
+              }
+            }
+          }
+          break;
+
+      }
+
+      // If an alteration has been made, re-build the block.
+      if (!is_null($content)) {
+        // @todo Remove the duplicate section of code below once the
+        //   following issue is resolved:
+        //   https://github.com/uiowa/uiowa/issues/4993
+        $build = [
+          '#theme' => 'block',
+          '#configuration' => $block->getConfiguration(),
+          '#plugin_id' => $block->getPluginId(),
+          '#base_plugin_id' => $block->getBaseId(),
+          '#derivative_plugin_id' => $block->getDerivativeId(),
+          '#weight' => $event->getComponent()->getWeight(),
+          'content' => $content,
+        ];
       }
     }
 
