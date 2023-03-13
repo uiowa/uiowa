@@ -739,21 +739,6 @@ function uids_base_preprocess_block(&$variables) {
     }
   }
 
-  // If inner list, remove any inner grid classes.
-  // @todo Is this needed anymore? as list_format should only be one or the other.
-  if (isset($variables['attributes']['class'])) {
-    if (is_string($variables['attributes']['class'])) {
-      $variables['attributes']['class'] = explode(' ', $variables['attributes']['class']);
-    }
-    if (in_array('list-container', $variables['attributes']['class'])) {
-      foreach ($variables['attributes']['class'] as $key => $style) {
-        if (str_starts_with($style, 'list-container--grid')) {
-          unset($variables['attributes']['class'][$key]);
-        }
-      }
-    }
-  }
-
   // Add the system breadcrumb to the page title hero block.
   if ($variables['derivative_plugin_id'] === 'uiowa_page_title_hero') {
     $block_manager = \Drupal::service('plugin.manager.block');
