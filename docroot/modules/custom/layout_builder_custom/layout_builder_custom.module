@@ -1076,27 +1076,6 @@ function layout_builder_custom_field_widget_paragraphs_form_alter(array &$elemen
 }
 
 /**
- * Implements hook_theme().
- *
- * @todo Test to see if this is needed anymore. See
- * https://github.com/uiowa/uiowa/issues/5040
- */
-function layout_builder_custom_theme($existing, $type, $theme, $path) {
-  $theme = [
-    'uiowa_headline_widget' => [
-      'variables' => [
-        'headline' => NULL,
-        'heading_size' => NULL,
-        'hide_headline' => NULL,
-        'headline_alignment' => NULL,
-        'child_heading_size' => NULL,
-      ],
-    ],
-  ];
-  return $theme;
-}
-
-/**
  * Add an element to delineate the layout builder styles form section.
  *
  * The weights are important here. The layout_builder_custom module weighs all
