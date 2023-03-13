@@ -10,6 +10,7 @@ use Drupal\block_content\Entity\BlockContent;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\Plugin\DataType\EntityAdapter;
+use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\fragments\Entity\FragmentInterface;
@@ -73,6 +74,34 @@ function uids_base_preprocess(&$variables, $hook) {
  * Implements hook_preprocess_HOOK() for html.html.twig.
  */
 function uids_base_preprocess_html(&$variables) {
+  // Body class for top links.
+  // Load the uids_base_toplinks block entity.
+  if (class_exists('\Drupal\block\Entity\Block')) {
+    $block = Block::load('uids_base_toplinks');
+    if ($block) {
+      // Initialize a variable to count the number of enabled menu links.
+      $enabled_links = 0;
+      // Load the 'top-links' menu tree.
+      $menu_links = \Drupal::menuTree()->load('top-links', new MenuTreeParameters());
+      // Iterate through the menu links.
+      foreach ($menu_links as $menu_link) {
+        // If the link is disabled, skip to the next link.
+        if (!$menu_link->link->isEnabled()) {
+          continue;
+        }
+        // Increment the number of enabled links.
+        $enabled_links++;
+      }
+      // Check if there are any enabled links in the menu.
+      $has_enabled_links = ($enabled_links > 0);
+      // Add the 'has_enabled_links' variable to the variables array, to be used in templates.
+      $variables['has_enabled_links'] = $has_enabled_links;
+      // Add the 'has_top_links' variable to the variables array, to be used in templates.
+      // If there are enabled links, set the variable to 'has-top-links', otherwise set it to 'no-top-links'.
+      $variables['has_top_links'] = $has_enabled_links ? 'has-top-links' : 'no-top-links';
+    }
+  }
+
   // Body classes for sidebars.
   if (isset($variables['page']['sidebar_first']) && isset($variables['page']['sidebar_second'])) {
     $variables['attributes']['class'][] = Html::cleanCssIdentifier('layout-page-sidebars-both');
@@ -107,6 +136,28 @@ function uids_base_preprocess_html(&$variables) {
 
   // Set a variable for whether layout builder is enabled.
   $variables['layout_builder_enabled'] = FALSE;
+
+  $style_selector = theme_get_setting('style.style_selector');
+  if ($style_selector !== NULL && $style_selector !== 'brand') {
+    $variables['#attached']['library'][] = 'uids_base/theme-overrides';
+  }
+
+  if (theme_get_setting('style.style_selector') === 'gray') {
+    $variables['attributes']['class'][] = 'off-brand';
+    $css = ':root {--brand-primary: #d7d7d7!important;}';
+    $variables['#attached']['html_head'][] = [
+      [
+        '#type' => 'html_tag',
+        '#tag' => 'style',
+        '#value' => $css,
+        '#attributes' => [
+          'type' => 'text/css',
+        ],
+        '#weight' => 100,
+      ],
+      'custom_css',
+    ];
+  }
 
   // Only set 'text--serif' if 'fonts.font-family' setting is set to serif.
   if (theme_get_setting('fonts.font-family') === 'serif') {
@@ -152,6 +203,29 @@ function uids_base_preprocess_page(&$variables) {
   $variables['site_has_parent'] = $config->get('has_parent');
   $variables['site_parent_name'] = $config->get('parent.name');
   $variables['site_parent_url'] = $config->get('parent.url');
+
+  $variables['uiowa_logo'] = TRUE;
+  $variables['is_off_brand'] = FALSE;
+
+  $style_selector = theme_get_setting('style.style_selector');
+  if (!empty($style_selector) && $style_selector !== 'brand') {
+    $variables['uiowa_logo'] = FALSE;
+    $variables['is_off_brand'] = TRUE;
+  }
+
+  if (theme_get_setting('logo.use_default') != 1) {
+    $logo_path = theme_get_setting('logo.path');
+    if (!empty($logo_path)) {
+      $file_system = \Drupal::service('file_system');
+      $logo_uri = $file_system->realpath($logo_path);
+      $public_stream_wrapper = \Drupal::service('stream_wrapper.public');
+      $logo_url = $public_stream_wrapper->getExternalUrl($logo_uri);
+      $variables['logo_path'] = $logo_url;
+    }
+    else {
+      $variables['logo_path'] = '';
+    }
+  }
 
   // Add variables for the image and path of the UIOWA block logo.
   /** @var \Drupal\Core\Extension\ExtensionPathResolver $path_resolver */
