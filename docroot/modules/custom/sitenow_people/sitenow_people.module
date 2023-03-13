@@ -921,6 +921,42 @@ function sitenow_people_person_type_statuses_allowed_values(FieldStorageDefiniti
 }
 
 /**
+ * Implements hook_theme().
+ */
+function sitenow_people_theme($existing, $type, $theme, $path) {
+  return [
+    'image_empty_person' => [
+      'variables' => [
+        'responsive_image_style_id' => NULL,
+        'alt' => '',
+        'title' => '',
+      ]
+    ],
+  ];
+}
+
+/**
+ * Template preprocess function for image_empty_person.
+ */
+function template_preprocess_image_empty_person(&$variables) {
+  $variables['responsive_image_style_id'] = $variables['responsive_image_style_id'] ?? 'large__square';
+
+  $path = \Drupal::service('extension.list.theme')->getPath('uids_base');
+
+  $path = \Drupal::service('file_url_generator')->generateAbsoluteString($path . '/assets/images/person-one.png');
+
+  $variables['image_empty_person'] = [
+    '#theme' => 'imagecache_external_responsive',
+    '#uri' => $path,
+    '#responsive_image_style_id' => $variables['responsive_image_style_id'],
+    '#attributes' => [
+      'data-lazy' => TRUE,
+      'alt' => t('@title promotional image', ['@title' => 'FIX THIS']),
+    ],
+  ];
+}
+
+/**
  * Implements hook_token_info().
  */
 function sitenow_people_token_info(): array {

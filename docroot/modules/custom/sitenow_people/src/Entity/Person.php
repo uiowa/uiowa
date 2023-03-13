@@ -43,7 +43,7 @@ class Person extends NodeBundleBase implements RendersAsCardInterface {
     // Handle the case when there is no image.
     if (empty($build['#media'])) {
       $build['#media']['empty'] = [
-        '#markup' => '<div class="img--empty">&nbsp;</div>',
+        '#theme' => 'image_empty_person',
       ];
     }
 
