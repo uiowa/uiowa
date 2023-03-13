@@ -44,7 +44,7 @@
   view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
   not paragraph.isPublished() ? 'paragraph--unpublished'
 ] %}
-{{ attach_library('uids_base/card') }}
+
 {% set card_attributes = create_attribute() %}
 
 {% set test = content.field_card_title.isEmpty() %}
@@ -54,9 +54,9 @@
 
   {% if no_body %}
     {#
-          sitenow_card includes the ability to have just an image and a link.
-          This isn't considered a card in UIDS, so in that case we just output
-          an image wrapped in a link.
+      The V2 card includes the ability to have just an image and a link.
+      This isn't considered a card in UIDS, so in that case we just output
+      an image wrapped in a link.
     #}
     {% set paragraph_card_link = {
       'link_url': content.field_card_link[0]['#url'],
