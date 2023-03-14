@@ -5128,3 +5128,9 @@ $sites['organstig.uiowa.ddev.site'] = 'anstig.org.uiowa.edu';
 $sites['organstig.dev.drupal.uiowa.edu'] = 'anstig.org.uiowa.edu';
 $sites['organstig.stage.drupal.uiowa.edu'] = 'anstig.org.uiowa.edu';
 $sites['organstig.prod.drupal.uiowa.edu'] = 'anstig.org.uiowa.edu';
+
+// Directory aliases for ci-electrophysiology.lab.uiowa.edu.
+$sites['labci-electrophysiology.uiowa.ddev.site'] = 'ci-electrophysiology.lab.uiowa.edu';
+$sites['labci-electrophysiology.dev.drupal.uiowa.edu'] = 'ci-electrophysiology.lab.uiowa.edu';
+$sites['labci-electrophysiology.stage.drupal.uiowa.edu'] = 'ci-electrophysiology.lab.uiowa.edu';
+$sites['labci-electrophysiology.prod.drupal.uiowa.edu'] = 'ci-electrophysiology.lab.uiowa.edu';
