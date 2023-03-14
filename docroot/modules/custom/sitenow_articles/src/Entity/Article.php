@@ -41,52 +41,38 @@ class Article extends NodeBundleBase implements ArticleInterface, RendersAsCardI
       ],
     ]);
 
-    // If there is an organization and not hidden, include it.
-    // If there is an organization and not hidden, while there is a source link,
-    // but it is hidden, wrap the org in the source link.
-    // If there is a source link and not hidden, include it.
-    // Need to get these values regardless of whether they are hidden or not.
-    $source_link = $this->get('field_article_source_link')->uri;
-    $org = $this->get('field_article_source_org')->value;
+    // Add a byline
+    // Check if hidden field have been provided.
     $hide_fields = $build['#hide_fields'] ?? [];
-    $byline = [];
+    // If the source link is hidden or not set, its value is NULL.
+    $source_link = !in_array('field_article_source_link', $hide_fields) ? $this->get('field_article_source_link')->uri : NULL;
+    // If the source org is hidden or not set, its value is NULL.
+    $source_org = !in_array('field_article_source_org', $hide_fields) ? $this->get('field_article_source_org')->value : NULL;
 
-    if ($org && !in_array('field_article_source_org', $hide_fields)) {
-      if (in_array('field_article_source_link', $hide_fields)) {
-        if ($source_link) {
-          // Wrap org in the source link.
-          $org = Link::fromTextAndUrl($org, Url::fromUri($source_link))
-            ->toString();
-        }
+    // The link text should be the org, if set, or the source link, if set. It
+    // will be NULL otherwise.
+    $source_output = $source_org ?? $source_link;
+
+    // If there is a source link, then turn the link text into a link.
+    // Otherwise, it will just be rendered as text.
+    if ($source_output) {
+      if ($source_link) {
+        $source_output = Link::fromTextAndUrl($source_output, Url::fromUri($source_link))
+          ->toString();
       }
-      $byline['org'] = [
-        '#prefix' => '<span class="views-field-article-source-link">',
-        '#markup' => $org,
-        '#suffix' => '</span>',
-      ];
-    }
-
-    if ($source_link && !in_array('field_article_source_link', $hide_fields)) {
-      $link = Link::fromTextAndUrl($source_link, Url::fromUri($source_link))
-        ->toString();
-      $byline['source_link'] = [
-        '#prefix' => '<span class="views-field-article-source-link">',
-        '#markup' => $link,
-        '#suffix' => '</span>',
-      ];
-    }
-
-    if (!empty($byline)) {
+      // Add the output for whatever we've generated up to this point.
       $build['#meta']['byline'] = [
         '#type' => 'html_tag',
         '#tag' => 'span',
         '#weight' => 99,
         '#attributes' => [
           'class' => [
-            'field--name-field-article-source-link',
+            'field--article-byline',
           ],
         ],
-        ...$byline,
+        'source' => [
+          '#markup' => $source_output,
+        ],
       ];
     }
 
@@ -94,7 +80,6 @@ class Article extends NodeBundleBase implements ArticleInterface, RendersAsCardI
     $created = $this->get('created')->value;
     $date = \Drupal::service('date.formatter')->format($created, 'medium');
     $build['#subtitle'] = $date;
-
   }
 
   /**
