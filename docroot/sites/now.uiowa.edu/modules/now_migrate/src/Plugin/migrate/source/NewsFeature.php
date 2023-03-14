@@ -370,7 +370,7 @@ class NewsFeature extends BaseNodeSource {
     // Build the callout wrapper and return.
     // We're defaulting to medium size, but taking the
     // alignment from the source.
-    $wrapper_classes = 'callout inline--size-medium inline--size-' . $match[1];
+    $wrapper_classes = 'callout inline--size-medium inline--align-' . $match[1];
     return '<div class="' . $wrapper_classes . '">' . $headline . $match[2] . '</div>';
   }
 
