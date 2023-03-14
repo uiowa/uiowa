@@ -12,22 +12,22 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
   use RendersAsCardTrait;
 
   /**
-   * If entity has link directly to source field.
+   * Link directly to source field name, if it exists.
    *
    * @var string|null
-   *   field name or null.
    */
   protected $sourceLinkDirect = NULL;
 
   /**
-   * If entity has source link field.
+   * Source link field name, if it exists.
    *
    * @var string|null
-   *   field name or null.
    */
   protected $sourceLink = NULL;
 
   /**
+   * The config settings name, if one exists.
+   *
    * @var string
    */
   protected $configSettings = '';
