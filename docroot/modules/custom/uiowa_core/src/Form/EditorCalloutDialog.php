@@ -93,7 +93,7 @@ class EditorCalloutDialog extends FormBase {
       ],
       '#default_value' => 'inline--size-small',
     ];
-    $form['bg-color'] = [
+    $form['bg_color'] = [
       '#type' => 'select',
       '#title' => $this->t('Background Color'),
       '#options' => [
