@@ -21,7 +21,7 @@ class GradStudentProfile extends NodeBundleBase implements RendersAsCardInterfac
       '#meta' => [
         'field_person_distinction',
       ],
-      '#content' => 'body',
+      '#content' => 'field_person_bio_headline',
     ]);
   }
 
@@ -29,14 +29,45 @@ class GradStudentProfile extends NodeBundleBase implements RendersAsCardInterfac
    * {@inheritdoc}
    */
   public function getDefaultCardStyles(): array {
-    $default_classes = [
+    $even = $this->getDelta() % 2 !== 0;
+    return [
       ...parent::getDefaultCardStyles(),
-      'card_media_position' => 'card--layout-left',
+      'card_media_position' => $even ? 'card--layout-right': 'card--layout-left',
       'styles' => 'borderless',
-      'headline_class' => 'headline--serif',
+      'headline_class' => 'headline--serif headline--uppercase h1',
+      'bg' => $even ? 'bg--white': 'bg--gray',
     ];
+  }
 
-    return $default_classes;
+  /**
+   * Get view modes that should be rendered as a card.
+   *
+   * @return string[]
+   *   The list of view modes.
+   */
+  protected function getCardViewModes(): array {
+    return ['card', 'teaser'];
+  }
+
+  public function getDelta(): int {
+    if (!is_null($referring_item = $this->_referringItem)) {
+      /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */
+      $referring_field = $referring_item->getParent();
+      if ($referring_field) {
+        $parent_entity = $referring_field->getParent();
+        $parent_entity = $parent_entity->getEntity();
+        if ($parent_entity->hasField('field_content_list_items')) {
+          /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $er_list */
+          $er_list = $parent_entity->field_content_list_items;
+          foreach ($er_list->referencedEntities() as $delta => $entity) {
+            if ($this->id() === $entity->id()) {
+              return (int) $delta;
+            }
+          }
+        }
+      }
+    }
+    return 0;
   }
 
 }
