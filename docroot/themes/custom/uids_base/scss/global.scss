@@ -62,7 +62,6 @@ $imgpath: '../../uids/assets/images';
 // Flex basis for all blocks and views
 
 .layout__region {
-
   .block,
   .view,
   .card,
@@ -73,6 +72,14 @@ $imgpath: '../../uids/assets/images';
     flex-basis: 100%;
     min-width: 0;
   }
+}
+
+// This chooses the proper container for rendered content vs building in layout builder.
+.fragment .layout__region,
+.node__content .layout__region,
+.layout-builder .layout-builder-block {
+  container-type: inline-size;
+  container-name: column;
 }
 
 // set equal height columns
