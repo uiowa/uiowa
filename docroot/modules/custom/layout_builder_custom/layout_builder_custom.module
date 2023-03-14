@@ -1129,48 +1129,6 @@ function layout_builder_custom_preprocess_block(&$variables) {
 
   switch ($variables['elements']['#plugin_id']) {
     case 'inline_block:featured_content':
-      $variables['#attached']['library'][] = 'uids_base/node-type-article';
-      // Take control of the referenced entity renders to pass in heading size.
-      unset($variables['content']['field_featured_content_item']);
-      $variables['content']['referenced_items'] = [];
-
-      /** @var \Drupal\block_content\Entity\BlockContent $block */
-      $block = $variables['content']['#block_content'];
-
-      // This is a single value field.
-      $headline_field = $block->get('field_uiowa_headline')->getValue()[0];
-
-      if (empty($headline_field['headline'])) {
-        $heading_size = $headline_field['child_heading_size'];
-      }
-      else {
-        $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
-      }
-
-      foreach ($block->get('field_featured_content_item') as $item) {
-        $target = $item->getProperties(TRUE)['entity']->getTarget();
-        if ($target) {
-          $entity = $target->getEntity();
-
-          // Associate the block's cache tags with each entity so that the
-          // appropriate render cache ID is cleared when the block changes.
-          $cache_tags = $block->getCacheTags();
-          $entity->addCacheTags($cache_tags);
-          // Grab a fresh copy of the node.
-          $id = $entity->id();
-          Cache::invalidateTags(['node:' . $id]);
-
-          // Construct the entity teaser markup manually to pass in the heading
-          // size variable for the template and append it to the block content.
-          $build = \Drupal::entityTypeManager()->getViewBuilder($entity->getEntityTypeId())->view($entity, 'teaser');
-          $build['#heading_size'] = $heading_size;
-          $render = \Drupal::service('renderer')->render($build);
-
-          $variables['content']['referenced_items'][] = [
-            '#markup' => $render,
-          ];
-        }
-      }
 
       break;
 
@@ -1183,6 +1141,54 @@ function layout_builder_custom_preprocess_block(&$variables) {
         Cache::invalidateTags(['media:' . $id]);
       }
       break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function layout_builder_custom_preprocess_block__inline_block__featured_content(&$variables) {
+  $variables['#attached']['library'][] = 'uids_base/node-type-article';
+  // Take control of the referenced entity renders to pass in heading size.
+  unset($variables['content']['field_featured_content_item']);
+  $variables['content']['referenced_items'] = [];
+
+  /** @var \Drupal\block_content\Entity\BlockContent $block */
+  $block = $variables['content']['#block_content'];
+
+  // This is a single value field.
+  $headline_field = $block->get('field_uiowa_headline')->getValue()[0];
+
+  if (empty($headline_field['headline'])) {
+    $heading_size = $headline_field['child_heading_size'];
+  }
+  else {
+    $heading_size = HeadlineHelper::getHeadingSizeUp($headline_field['heading_size']);
+  }
+
+  foreach ($block->get('field_featured_content_item') as $item) {
+    $target = $item->getProperties(TRUE)['entity']->getTarget();
+    if ($target) {
+      $entity = $target->getEntity();
+
+      // Associate the block's cache tags with each entity so that the
+      // appropriate render cache ID is cleared when the block changes.
+      $cache_tags = $block->getCacheTags();
+      $entity->addCacheTags($cache_tags);
+      // Grab a fresh copy of the node.
+      $id = $entity->id();
+      Cache::invalidateTags(['node:' . $id]);
+
+      // Construct the entity teaser markup manually to pass in the heading
+      // size variable for the template and append it to the block content.
+      $build = \Drupal::entityTypeManager()->getViewBuilder($entity->getEntityTypeId())->view($entity, 'teaser');
+      $build['#heading_size'] = $heading_size;
+      $render = \Drupal::service('renderer')->render($build);
+
+      $variables['content']['referenced_items'][] = [
+        '#markup' => $render,
+      ];
+    }
   }
 }
 
@@ -1242,7 +1248,9 @@ function layout_builder_custom_preprocess_views_view(&$variables) {
   /** @var \Drupal\views\ViewExecutable $view */
   $view = $variables['view'];
 
-  if (!is_null($block_layout_builder_styles = $view?->display_handler?->getOption('block_layout_builder_styles'))) {
+  if (!is_null($block_layout_builder_styles = $view
+    ?->display_handler
+    ?->getOption('block_layout_builder_styles'))) {
     // Initialize the class list, if it doesn't exist.
     if (!isset($variables['attributes']['class'])) {
       $variables['attributes']['class'] = [];
