@@ -36,6 +36,7 @@ class GradStudentProfile extends NodeBundleBase implements RendersAsCardInterfac
       'styles' => 'borderless',
       'headline_class' => 'headline--serif headline--uppercase h1',
       'bg' => $even ? 'bg--white': 'bg--gray',
+      'media_size' => 'media--large',
     ];
   }
 
