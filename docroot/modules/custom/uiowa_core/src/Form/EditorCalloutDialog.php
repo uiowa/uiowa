@@ -138,7 +138,7 @@ class EditorCalloutDialog extends FormBase {
       $item['alignment'],
       $item['size'],
     ]);
-    $wrapper_class .= ($item['bg-color'] === 'none') ? '' : ' ' . $item['bg-color'];
+    $wrapper_class .= ($item['bg_color'] === 'none') ? '' : ' ' . $item['bg_color'];
 
     $values['wrapper']['tag'] = 'div';
     $values['wrapper']['attributes'] = [
