@@ -42,7 +42,7 @@ class SettingsForm extends ConfigFormBase {
     ];
     $form['display_search_all_uiowa'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Display the "Search all University of Iowa for <i>TERM</i>" link'),
+      '#title' => $this->t('Display the "Search all University of Iowa for ..." link'),
       '#default_value' => $config->get('uiowa_search.display_search_all_uiowa') ?? TRUE,
     ];
     $form['cse_engine_id'] = [
