@@ -545,19 +545,16 @@ function admissions_core_preprocess_block(&$variables) {
   switch ($variables['plugin_id']) {
     case 'views_block:student_card-block_student_grid':
       $variables['#attached']['library'][] = 'admissions_core/student-profile';
-
-      // Need to unset for "mobile grid" functionality.
-      if (isset($variables['attributes']['class']) && in_array('list-container--grid', $variables['attributes']['class'])) {
-        foreach ($variables['attributes']['class'] as $key => $style) {
-          if (str_starts_with($style, 'list-container--grid')) {
-            unset($variables['attributes']['class'][$key]);
-          }
-        }
-      }
+      uiowa_core_set_attributes($variables, ['grid--threecol--33-34-33']);
       break;
 
     case 'admissions_core_event_series_events':
-      $variables['title_attributes']['class'] = 'h4 headline headline--serif headline--underline';
+      uiowa_core_set_title_attributes($variables, [
+        'h4',
+        'headline',
+        'headline--serif',
+        'headline--underline',
+      ]);
       break;
 
     case 'field_block:node:student_profile:field_person_hometown':
