@@ -32,10 +32,10 @@ class GradStudentProfile extends NodeBundleBase implements RendersAsCardInterfac
     $even = $this->getDelta() % 2 !== 0;
     return [
       ...parent::getDefaultCardStyles(),
-      'card_media_position' => $even ? 'card--layout-right': 'card--layout-left',
+      'card_media_position' => $even ? 'card--layout-right' : 'card--layout-left',
       'styles' => 'borderless',
       'headline_class' => 'headline--serif headline--uppercase h1',
-      'bg' => $even ? 'bg--white': 'bg--gray',
+      'bg' => $even ? 'bg--white' : 'bg--gray',
       'media_size' => 'media--large',
     ];
   }
@@ -50,6 +50,9 @@ class GradStudentProfile extends NodeBundleBase implements RendersAsCardInterfac
     return ['card', 'teaser'];
   }
 
+  /**
+   * Get the delta of this item from the parent ER list.
+   */
   public function getDelta(): int {
     if (!is_null($referring_item = $this->_referringItem)) {
       /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $referring_field */

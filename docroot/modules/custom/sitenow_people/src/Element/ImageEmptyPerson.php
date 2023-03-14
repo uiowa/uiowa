@@ -30,14 +30,14 @@ class ImageEmptyPerson extends RenderElement {
   /**
    * Adds form element theming to details.
    *
-   * @param $element
+   * @param array $element
    *   An associative array containing the properties and children of the
    *   details.
    *
-   * @return
+   * @return array
    *   The modified element.
    */
-  public static function preRenderImageEmptyPerson($element) {
+  public static function preRenderImageEmptyPerson(array $element): array {
     $path = \Drupal::service('extension.list.theme')->getPath('uids_base');
     $path = \Drupal::service('file_url_generator')->generateAbsoluteString($path . '/assets/images/person-one.png');
     $element['#uri'] = $path;
