@@ -207,15 +207,28 @@ class Achievement extends BaseNodeSource {
     // line breaks. Like before, here they are unnecessary.
     $headline = '';
     if (preg_match('|<strong>(.*?)<\/strong>(<br>)*|is', $match[2], $headline_matches)) {
-      // @todo Update this with proper callout headline construction.
-      $headline = '<h3>' . $headline_matches[1] . '</h3>';
+      // Build the headline if we found one.
+      $headline_classes = implode(' ', [
+        'headline',
+        'block__headline',
+        'headline--serif',
+        'headline--underline',
+        'headline--center',
+      ]);
+      $headline = '<h4 class="' . $headline_classes . '">';
+      $headline .= '<span class="headline__heading">';
+      $headline .= $headline_matches[1];
+      $headline .= '</span></h4>';
       // If we're adding the headline separately,
       // remove it from the rest of the text, so we don't duplicate.
       $match[2] = str_replace($headline_matches[0], '', $match[2]);
     }
 
-    // @todo Update this with proper callout construction.
-    return '<div class="callout">' . $headline . $match[2] . '</div>';
+    // Build the callout wrapper and return.
+    // We're defaulting to medium size, but taking the
+    // alignment from the source.
+    $wrapper_classes = 'callout inline--size-medium inline--size-' . $match[1];
+    return '<div class="' . $wrapper_classes . '">' . $headline . $match[2] . '</div>';
   }
 
   /**
