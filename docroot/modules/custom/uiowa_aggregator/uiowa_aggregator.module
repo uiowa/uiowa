@@ -138,7 +138,7 @@ function uiowa_aggregator_aggregator_item_view(array &$build, EntityInterface $e
  * Implements hook_preprocess_HOOK().
  */
 function uiowa_aggregator_preprocess_block__inline_block__uiowa_aggregator(&$variables) {
-  /** @var \Drupal\Block\Entity\Block $block */
+  /** @var \Drupal\block_content\BlockContentInterface $block */
   $block = $variables['elements']['content']['#block_content'];
 
   if (!isset($variables['attributes']['class'])) {
@@ -185,8 +185,9 @@ function uiowa_aggregator_preprocess_block__inline_block__uiowa_aggregator(&$var
       // Determine heading size for child items.
       $heading_size = 'h3';
 
-      $headline = $block->field_uiowa_headline
-        ?->first();
+      $headline = $block->get('field_uiowa_headline')
+        ?->first()
+        ?->getValue();
 
       // Get the appropriate heading size.
       if (!is_null($headline)) {
@@ -232,7 +233,7 @@ function uiowa_aggregator_preprocess_block__inline_block__uiowa_aggregator(&$var
   }
   else {
     $variables['content']['no_results'] = [
-      '#markup' => $block->get('field_uiowa_aggregator_text')->first()->value,
+      '#markup' => $block->field_uiowa_aggregator_text?->value,
       '#prefix' => '<div class="uiowa-aggregator-no-results">',
       '#suffix' => '</div>',
     ];
