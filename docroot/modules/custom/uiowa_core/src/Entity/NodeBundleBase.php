@@ -28,6 +28,11 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
   protected $sourceLink = NULL;
 
   /**
+   * @var string
+   */
+  protected $configSettings = '';
+
+  /**
    * {@inheritdoc}
    */
   public function buildCard(array &$build) {
@@ -56,11 +61,12 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
       $build['heading_size'] = $variables['elements']['#heading_size'];
     }
 
-    // Determine whether the link indicator should be set.
-    $config_name = 'sitenow_' . $this->bundle() . '.settings';
-    $config = \Drupal::configFactory()->getEditable($config_name);
-    $link_indicator = $config->get('show_teaser_link_indicator') ?? FALSE;
-    $build['#link_indicator'] = $link_indicator;
+    if (!empty($this->configSettings)) {
+      // Determine whether the link indicator should be set.
+      $config = \Drupal::configFactory()->getEditable($this->configSettings);
+      $link_indicator = $config->get('show_teaser_link_indicator') ?? FALSE;
+      $build['#link_indicator'] = $link_indicator;
+    }
   }
 
   /**

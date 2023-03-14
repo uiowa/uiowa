@@ -32,6 +32,11 @@ class Person extends NodeBundleBase implements RendersAsCardInterface {
   /**
    * {@inheritdoc}
    */
+  protected $configSettings = 'sitenow_people.settings';
+
+  /**
+   * {@inheritdoc}
+   */
   public function buildCard(array &$build) {
     parent::buildCard($build);
 

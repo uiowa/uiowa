@@ -13,20 +13,19 @@ use Drupal\uiowa_core\Entity\RendersAsCardInterface;
 class Article extends NodeBundleBase implements ArticleInterface, RendersAsCardInterface {
 
   /**
-   * If entity has link directly to source field.
-   *
-   * @var string|null
-   *   field name or null.
+   * {@inheritdoc}
    */
   protected $sourceLinkDirect = 'field_article_source_link_direct';
 
   /**
-   * If entity has source link field.
-   *
-   * @var string|null
-   *   field name or null.
+   * {@inheritdoc}
    */
   protected $sourceLink = 'field_article_source_link';
+
+  /**
+   * {@inheritdoc}
+   */
+  protected $configSettings = 'sitenow_articles.settings';
 
   /**
    * {@inheritdoc}

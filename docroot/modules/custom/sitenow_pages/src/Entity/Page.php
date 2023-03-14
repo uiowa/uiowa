@@ -9,4 +9,9 @@ use Drupal\uiowa_core\Entity\NodeBundleBase;
  */
 class Page extends NodeBundleBase {
 
+  /**
+   * {@inheritdoc}
+   */
+  protected $configSettings = 'sitenow_pages.settings';
+
 }
