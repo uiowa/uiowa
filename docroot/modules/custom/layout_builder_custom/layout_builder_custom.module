@@ -1149,6 +1149,10 @@ function layout_builder_custom_preprocess_block(&$variables) {
  */
 function layout_builder_custom_preprocess_block__inline_block__featured_content(&$variables) {
   $variables['#attached']['library'][] = 'uids_base/node-type-article';
+  if (!isset($variables['attributes']['class'])) {
+    $variables['attributes']['class'] = [];
+  }
+  $variables['attributes']['class'][] = 'list-container';
   // Take control of the referenced entity renders to pass in heading size.
   unset($variables['content']['field_featured_content_item']);
   $variables['content']['referenced_items'] = [];
