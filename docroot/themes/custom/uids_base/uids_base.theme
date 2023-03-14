@@ -213,7 +213,7 @@ function uids_base_preprocess_page(&$variables) {
     $variables['is_off_brand'] = TRUE;
   }
 
-  if (theme_get_setting('logo.use_default') != 1) {
+  if (!theme_get_setting('logo.use_default')) {
     $logo_path = theme_get_setting('logo.path');
     if (!empty($logo_path)) {
       $file_system = \Drupal::service('file_system');
