@@ -5110,3 +5110,27 @@ $sites['sitesshakespeare400.uiowa.ddev.site'] = 'shakespeare400.sites.uiowa.edu'
 $sites['sitesshakespeare400.dev.drupal.uiowa.edu'] = 'shakespeare400.sites.uiowa.edu';
 $sites['sitesshakespeare400.stage.drupal.uiowa.edu'] = 'shakespeare400.sites.uiowa.edu';
 $sites['sitesshakespeare400.prod.drupal.uiowa.edu'] = 'shakespeare400.sites.uiowa.edu';
+
+// Directory aliases for wallrath.lab.uiowa.edu.
+$sites['labwallrath.uiowa.ddev.site'] = 'wallrath.lab.uiowa.edu';
+$sites['labwallrath.dev.drupal.uiowa.edu'] = 'wallrath.lab.uiowa.edu';
+$sites['labwallrath.stage.drupal.uiowa.edu'] = 'wallrath.lab.uiowa.edu';
+$sites['labwallrath.prod.drupal.uiowa.edu'] = 'wallrath.lab.uiowa.edu';
+
+// Directory aliases for scgsa.org.uiowa.edu.
+$sites['orgscgsa.uiowa.ddev.site'] = 'scgsa.org.uiowa.edu';
+$sites['orgscgsa.dev.drupal.uiowa.edu'] = 'scgsa.org.uiowa.edu';
+$sites['orgscgsa.stage.drupal.uiowa.edu'] = 'scgsa.org.uiowa.edu';
+$sites['orgscgsa.prod.drupal.uiowa.edu'] = 'scgsa.org.uiowa.edu';
+
+// Directory aliases for anstig.org.uiowa.edu.
+$sites['organstig.uiowa.ddev.site'] = 'anstig.org.uiowa.edu';
+$sites['organstig.dev.drupal.uiowa.edu'] = 'anstig.org.uiowa.edu';
+$sites['organstig.stage.drupal.uiowa.edu'] = 'anstig.org.uiowa.edu';
+$sites['organstig.prod.drupal.uiowa.edu'] = 'anstig.org.uiowa.edu';
+
+// Directory aliases for ci-electrophysiology.lab.uiowa.edu.
+$sites['labci-electrophysiology.uiowa.ddev.site'] = 'ci-electrophysiology.lab.uiowa.edu';
+$sites['labci-electrophysiology.dev.drupal.uiowa.edu'] = 'ci-electrophysiology.lab.uiowa.edu';
+$sites['labci-electrophysiology.stage.drupal.uiowa.edu'] = 'ci-electrophysiology.lab.uiowa.edu';
+$sites['labci-electrophysiology.prod.drupal.uiowa.edu'] = 'ci-electrophysiology.lab.uiowa.edu';
