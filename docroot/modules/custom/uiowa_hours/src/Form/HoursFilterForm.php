@@ -241,7 +241,7 @@ class HoursFilterForm extends FormBase {
           ]);
 
           // Display time summary alongside hours info if block is set to do so.
-          if ($block_config['display_summary'] === TRUE) {
+          if ($block_config['display_summary'] == 1) {
             $markup .= ' - ' . $time['summary'];
           }
 
