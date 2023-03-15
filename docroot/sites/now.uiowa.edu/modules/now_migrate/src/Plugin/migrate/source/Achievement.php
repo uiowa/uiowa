@@ -203,10 +203,11 @@ class Achievement extends BaseNodeSource {
     // things off in the new callout component.
     $match[2] = preg_replace('|(<br>)+|is', '<br>', $match[2]);
 
-    // Look for a headline to use in the callout, as well as any additional
+    // Look for a headline to use in the callout, which are bolded strings
+    // at the start of the callout. Also look for any additional
     // line breaks. Like before, here they are unnecessary.
     $headline = '';
-    if (preg_match('|<strong>(.*?)<\/strong>(<br>)*|is', $match[2], $headline_matches)) {
+    if (preg_match('|^<strong>(.*?)<\/strong>(<br>)*|is', $match[2], $headline_matches)) {
       // Build the headline if we found one.
       $headline_classes = implode(' ', [
         'headline',
