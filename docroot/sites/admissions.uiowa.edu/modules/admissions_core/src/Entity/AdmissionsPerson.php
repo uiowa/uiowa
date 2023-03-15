@@ -28,7 +28,6 @@ class AdmissionsPerson extends Person {
   public function getDefaultCardStyles(): array {
     $default_classes = [
       ...parent::getDefaultCardStyles(),
-      'headline_class' => 'headline--serif',
     ];
 
     return $default_classes;

@@ -42,7 +42,7 @@ class AdmissionsCard extends Paragraph implements RendersAsCardInterface {
     $card_id = $this->id();
     $card_media_position = $card_id % 2 == 0 ? 'card--layout-right' : 'card--layout-left';
     return [
-      'headline_class' => 'headline--serif',
+      'card_headline_style' => 'headline--serif',
       'card_media_position' => $card_media_position,
       'styles' => 'bg--white',
     ];

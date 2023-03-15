@@ -36,7 +36,7 @@ class StudentProfile extends NodeBundleBase implements RendersAsCardInterface {
       'media_border' => 'media--border',
       'media_format' => 'media--circle',
       'media_size' => 'media--medium',
-      'headline_class' => 'headline--uppercase',
+      'card_headline_style' => 'headline--uppercase',
       'styles' => 'bg--white',
     ];
 

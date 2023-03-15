@@ -51,7 +51,7 @@ class AdmissionsRequirement extends Paragraph implements RendersAsCardInterface 
    */
   public function getDefaultCardStyles(): array {
     return [
-      'headline_class' => 'headline--serif',
+      'card_headline_style' => 'headline--serif',
       'card_media_position' => 'card--layout-left',
       'media_format' => 'media--circle',
       'media_size' => 'media--small',
