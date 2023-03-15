@@ -74,6 +74,7 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
    */
   public function getDefaultCardStyles(): array {
     return [
+      'card_headline_style' => 'headline--serif',
       'card_media_position' => 'card--layout-right',
       'media_format' => 'media--widescreen',
       'media_size' => 'media--medium',
