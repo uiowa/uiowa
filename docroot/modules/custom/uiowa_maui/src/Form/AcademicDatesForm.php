@@ -3,8 +3,10 @@
 namespace Drupal\uiowa_maui\Form;
 
 use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Template\Attribute;
 use Drupal\uiowa_maui\MauiApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -107,18 +109,63 @@ class AcademicDatesForm extends FormBase {
       '#attributes' => [
         'id' => $wrapper,
         'aria-live' => 'polite',
+        'class' => 'list-container__inner',
       ],
     ];
 
     $data = $this->maui->searchSessionDates($current, $category);
 
     if (!empty($data)) {
-      $form['dates-wrapper']['dates'] = [
-        '#theme' => 'uiowa_maui_session_dates',
-        '#data' => ((int) $limit_dates === 1) ? array_slice($data, 0, $items_to_display, TRUE) : $data,
-        '#child_heading_size' => $child_heading_size,
-        '#limit_dates' => $limit_dates,
-      ];
+      $data = ((int) $limit_dates === 1) ? array_slice($data, 0, $items_to_display, TRUE) : $data;
+
+      foreach ($data as $date) {
+        $start = strtotime($date->beginDate);
+        $end = strtotime($date->endDate);
+        $key = $start . $end;
+
+        $attributes = new Attribute();
+        $attributes->addClass([
+          'borderless',
+        ]);
+
+        // Web description is not always set. The subsession takes priority if set.
+        $subsession = $date->subSession ?? FALSE;
+
+        $item = [
+          '#type' => 'container',
+          '#attributes' => [
+            'class' => 'session',
+          ],
+        ];
+        $item['description'] = [
+          '#type' => 'markup',
+          '#markup' => Xss::filter($date->dateLookup->webDescription ?? $date->dateLookup->description),
+        ];
+        $item['session_badge'] = [
+          '#type' => 'html_tag',
+          '#tag' => 'span',
+          '#value' => Xss::filter($subsession ?: $date->session->shortDescription),
+          '#attributes' => [
+            'class' => $subsession ? 'badge badge--primary subsession' : 'badge badge--primary session',
+          ],
+        ];
+
+
+        // Group items by date.
+        if (isset($form['dates-wrapper']['dates'][$key])) {
+          $form['dates-wrapper']['dates'][$key]['#meta'][] = $item;
+        }
+        else {
+          $form['dates-wrapper']['dates'][$key] = [
+            '#type' => 'card',
+            '#attributes' => $attributes,
+            '#title' => $this->t('@start@end', [
+              '@start' => date('F j, Y', $start),
+              '@end' => $end === $start ? NULL : ' - ' . date('F j, Y', $end)]),
+            '#meta' => [$item],
+          ];
+        }
+      }
     }
     else {
       $form['dates-wrapper']['dates'] = [
