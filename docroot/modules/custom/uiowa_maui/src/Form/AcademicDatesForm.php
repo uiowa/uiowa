@@ -6,7 +6,6 @@ use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Template\Attribute;
 use Drupal\uiowa_maui\MauiApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -123,8 +122,11 @@ class AcademicDatesForm extends FormBase {
         $end = strtotime($date->endDate);
         $key = $start . $end;
 
-        $attributes = new Attribute();
-        $attributes['class'] = ['borderless'];
+        $attributes = [];
+        $attributes['class'] = [
+          'borderless',
+          'headline--serif',
+        ];
 
         // Web description is not always set. The subsession takes priority if set.
         $subsession = $date->subSession ?? FALSE;
