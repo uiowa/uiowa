@@ -47,6 +47,7 @@ class Event extends BlockContent implements RendersAsCardInterface {
    */
   public function getDefaultCardStyles(): array {
     return [
+      'card_headline_style' => 'headline--serif',
       'card_media_position' => 'card--layout-left',
       'media_format' => 'media--circle',
       'media_size' => 'media--small',
