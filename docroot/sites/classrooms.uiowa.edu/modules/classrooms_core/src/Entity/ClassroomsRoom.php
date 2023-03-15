@@ -33,6 +33,7 @@ class ClassroomsRoom extends NodeBundleBase implements RendersAsCardInterface {
     $title_combined = strtoupper($building_id) . ' ' . $room_id;
     $title = ['#markup' => $title_combined];
     $build['#title'] = $title;
+    $build['#link_indicator'] = TRUE;
 
   }
 
@@ -45,7 +46,7 @@ class ClassroomsRoom extends NodeBundleBase implements RendersAsCardInterface {
       'card_media_position' => '',
       'media_size' => 'media--large',
       'headline_class' => 'headline--serif headline--underline h4 block__headline',
-      'styles' => '',
+      'styles' => 'card--button-align-bottom',
     ];
 
     return $default_classes;
