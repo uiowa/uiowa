@@ -242,12 +242,7 @@ function template_preprocess_card(&$variables) {
 
   // If there is no URL, then it is not linked.
   if (!empty($element['#url'])) {
-
-    // Determine the linked element.
-    if (!isset($element['#link_text']) && $element['#link_indicator']) {
-      $linked_element = 'button';
-    }
-    elseif (!is_null($element['#title'])) {
+    if (!is_null($element['#title'])) {
       $linked_element = 'title';
     }
     elseif (isset($element['#link_text'])) {
