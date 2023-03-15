@@ -2009,44 +2009,46 @@ function sitenow_update_9056() {
       $styles[] = 'no_border';
     }
 
-    // Update card_image_* to media_size_*.
-    $media_size_set = FALSE;
-    foreach ([
-      'card_image_large',
-      'card_image_medium',
-      'card_image_small',
-    ] as $card_image_size) {
-      $card_image_size_index = array_search($card_image_size, $styles);
-      if ($card_image_size_index !== FALSE) {
-        $size = str_replace('card_image_', '', $styles[$card_image_size_index]);
-        $styles[$card_image_size_index] = "media_size_$size";
-        $media_size_set = TRUE;
+    if ($component->getPluginId() !== 'inline_block:uiowa_event') {
+      // Update card_image_* to media_size_*.
+      $media_size_set = FALSE;
+      foreach ([
+        'card_image_large',
+        'card_image_medium',
+        'card_image_small',
+      ] as $card_image_size) {
+        $card_image_size_index = array_search($card_image_size, $styles);
+        if ($card_image_size_index !== FALSE) {
+          $size = str_replace('card_image_', '', $styles[$card_image_size_index]);
+          $styles[$card_image_size_index] = "media_size_$size";
+          $media_size_set = TRUE;
+        }
       }
-    }
 
-    // Set a default media size if not already set.
-    if (!$media_size_set) {
-      $styles[] = 'media_size_small';
-    }
-
-    // Set default headline styles for card blocks.
-    if ($component->getPluginId() === 'inline_block:uiowa_card') {
-      if (in_array('card_media_position_stacked', $styles)) {
-        $styles[] = 'card_headline_style_sans_serif';
+      // Set a default media size if not already set.
+      if (!$media_size_set) {
+        $styles[] = 'media_size_small';
       }
-      else {
-        $styles[] = 'card_headline_style_serif';
-      }
-    }
 
-    // Remove these styles, if set.
-    foreach ([
-      'card_media_position_stacked',
-      'content_alignment_left',
-    ] as $remove_style) {
-      $remove_style_index = array_search($remove_style, $styles);
-      if ($remove_style_index !== FALSE) {
-        unset($styles[$remove_style_index]);
+      // Set default headline styles for card blocks.
+      if ($component->getPluginId() === 'inline_block:uiowa_card') {
+        if (in_array('card_media_position_stacked', $styles)) {
+          $styles[] = 'card_headline_style_sans_serif';
+        }
+        else {
+          $styles[] = 'card_headline_style_serif';
+        }
+      }
+
+      // Remove these styles, if set.
+      foreach ([
+        'card_media_position_stacked',
+        'content_alignment_left',
+      ] as $remove_style) {
+        $remove_style_index = array_search($remove_style, $styles);
+        if ($remove_style_index !== FALSE) {
+          unset($styles[$remove_style_index]);
+        }
       }
     }
 
