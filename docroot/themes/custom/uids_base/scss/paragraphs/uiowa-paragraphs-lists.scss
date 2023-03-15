@@ -117,8 +117,7 @@
 }
 
 // List People
-.paragraph--type--people.list,
-.view-id-people {
+.paragraph--type--people.list {
 
   .media {
     @include card-media-horizontal-right;
@@ -145,22 +144,22 @@
 }
 
 // Table People
-.view-display-id-page_people_table {
-
-  table td,
-  table th {
-    padding: 0;
-  }
-
-  .field--name-field-teaser {
-    @include card-paragraph;
-    margin-top: $gutter;
-  }
-
-  .media {
-    margin-bottom: $gutter;
-  }
-}
+//.view-display-id-page_people_table {
+//
+//  table td,
+//  table th {
+//    padding: 0;
+//  }
+//
+//  .field--name-field-teaser {
+//    @include card-paragraph;
+//    margin-top: $gutter;
+//  }
+//
+//  .media {
+//    margin-bottom: $gutter;
+//  }
+//}
 
 // Grid/Masonry People
 .paragraph--type--people.grid,
@@ -296,7 +295,6 @@
 }
 
 // People list overrides to keep left image sized with card_4x.
-.view-id-people,
 .paragraph--type--people.list {
   .media--circle {
     margin-top: 0;
