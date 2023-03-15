@@ -56,6 +56,7 @@ class Card extends RenderElement {
         'media',
         'borderless',
         'hide',
+        'headline',
       ] as $check) {
         if (str_starts_with($style, $check)) {
           $filtered_styles[$key] = $style;

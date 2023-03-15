@@ -69,8 +69,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         'button_size' => [
           'default' => 'button_medium',
         ],
-        'media_size' => [
-          'default' => 'media_size_large',
+        'card_headline_style' => [
+          'default' => 'card_headline_style_serif',
         ],
         'card_media_position' => [
           'empty_label' => t('Stacked'),
@@ -92,6 +92,9 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
         ],
         'media_format' => [
           'default' => 'media_format_widescreen',
+        ],
+        'media_size' => [
+          'default' => 'media_size_large',
         ],
         'menu_orientation' => [
           'default' => 'block_menu_vertical',
@@ -233,10 +236,11 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
             // A map of default styles for LB style groups.
             $defaults = [
               'layout_builder_style_background' => 'block_background_style_light',
-              'layout_builder_style_media_size' => 'media_size_small',
+              'layout_builder_style_card_headline_style' => 'card_headline_style_serif',
               'layout_builder_style_card_media_position' => 'card_media_position_right',
               'layout_builder_style_content_alignment' => 'content_alignment_left',
               'layout_builder_style_media_format' => 'media_format_widescreen',
+              'layout_builder_style_media_size' => 'media_size_small',
             ];
 
             // Set defaults for blocks with card-related styles.

@@ -170,8 +170,9 @@ class HoursFilterForm extends FormBase {
     $card_classes = [
       'uiowa-hours',
       'card--layout-right',
+      'headline--serif',
     ];
-    $attributes->addClass($card_classes);
+    $attributes['class'] = $card_classes;
 
     $render = [
       '#type' => 'container',
