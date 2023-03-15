@@ -713,7 +713,7 @@ function uids_base_preprocess_block(&$variables) {
     'menu_block',
   ])) {
 
-    // Add the region to the a block's available attributes.
+    // Add the region to the block's available attributes.
     if (isset($variables['elements']['#id'])) {
       $region = Block::load($variables['elements']['#id'])->getRegion();
       if ($region === 'footer_second') {

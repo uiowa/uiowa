@@ -106,23 +106,24 @@ function uiowa_aggregator_aggregator_item_view(array &$build, EntityInterface $e
     $mid = $feed->field_aggregator_feed_image
       ?->target_id;
 
-    // Establish default view mode if layout_builder_styles don't exist.
-    $image_view_mode = 'large__square';
-
-    // Map the layout builder styles to the view mode that should be used.
-    $media_formats = [
-      'media--widescreen' => 'large__widescreen',
-      'media--square' => 'large__square',
-      'media--circle' => 'large__square',
-    ];
-
-    // Set the view mode based on the media format.
-    if (isset($media_formats[$style_map['media_format']])) {
-      $image_view_mode = $media_formats[$style_map['media_format']];
-    }
-
     // A local feed image should take precedence.
-    if (!is_null($media = Media::load($mid))) {
+    if (!is_null($mid) && !is_null($media = Media::load($mid))) {
+
+      // Establish default view mode if layout_builder_styles don't exist.
+      $image_view_mode = 'large__square';
+
+      // Map the layout builder styles to the view mode that should be used.
+      $media_formats = [
+        'media--widescreen' => 'large__widescreen',
+        'media--square' => 'large__square',
+        'media--circle' => 'large__square',
+      ];
+
+      // Set the view mode based on the media format.
+      if (isset($media_formats[$style_map['media_format']])) {
+        $image_view_mode = $media_formats[$style_map['media_format']];
+      }
+
       $feed_image = \Drupal::entityTypeManager()->getViewBuilder('media')->view($media, $image_view_mode);
       if (!in_array($image_view_mode, $feed_image['#cache']['keys'])) {
         unset($feed_image['#cache']['keys']);
