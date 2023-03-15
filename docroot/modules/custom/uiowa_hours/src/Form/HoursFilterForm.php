@@ -7,7 +7,6 @@ use Drupal\Core\Ajax\AnnounceCommand;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Template\Attribute;
 use Drupal\uiowa_core\HeadlineHelper;
 use Drupal\uiowa_hours\HoursApi;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -166,13 +165,12 @@ class HoursFilterForm extends FormBase {
     $start = $result['query']['start'];
     $end = $result['query']['end'];
 
-    $attributes = new Attribute();
-    $card_classes = [
+    $attributes = [];
+    $attributes['class'] = [
       'uiowa-hours',
       'card--layout-right',
       'headline--serif',
     ];
-    $attributes['class'] = $card_classes;
 
     $render = [
       '#type' => 'container',
