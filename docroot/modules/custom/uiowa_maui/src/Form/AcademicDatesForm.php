@@ -124,9 +124,7 @@ class AcademicDatesForm extends FormBase {
         $key = $start . $end;
 
         $attributes = new Attribute();
-        $attributes->addClass([
-          'borderless',
-        ]);
+        $attributes['class'] = ['borderless'];
 
         // Web description is not always set. The subsession takes priority if set.
         $subsession = $date->subSession ?? FALSE;
@@ -150,10 +148,9 @@ class AcademicDatesForm extends FormBase {
           ],
         ];
 
-
         // Group items by date.
         if (isset($form['dates-wrapper']['dates'][$key])) {
-          $form['dates-wrapper']['dates'][$key]['#meta'][] = $item;
+          $form['dates-wrapper']['dates'][$key]['#subtitle'][] = $item;
         }
         else {
           $form['dates-wrapper']['dates'][$key] = [
@@ -161,8 +158,9 @@ class AcademicDatesForm extends FormBase {
             '#attributes' => $attributes,
             '#title' => $this->t('@start@end', [
               '@start' => date('F j, Y', $start),
-              '@end' => $end === $start ? NULL : ' - ' . date('F j, Y', $end)]),
-            '#meta' => [$item],
+              '@end' => $end === $start ? NULL : ' - ' . date('F j, Y', $end),
+            ]),
+            '#subtitle' => [$item],
           ];
         }
       }
