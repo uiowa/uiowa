@@ -2029,6 +2029,16 @@ function sitenow_update_9056() {
       $styles[] = 'media_size_small';
     }
 
+    // Set default headline styles for card blocks.
+    if ($component->getPluginId() === 'inline_block:uiowa_card') {
+      if (in_array('card_media_position_stacked', $styles)) {
+        $styles[] = 'card_headline_style_sans_serif';
+      }
+      else {
+        $styles[] = 'card_headline_style_serif';
+      }
+    }
+
     // Remove these styles, if set.
     foreach ([
       'card_media_position_stacked',
