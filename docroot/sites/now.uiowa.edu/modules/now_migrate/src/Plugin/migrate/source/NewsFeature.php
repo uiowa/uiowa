@@ -346,19 +346,33 @@ class NewsFeature extends BaseNodeSource {
     // things off in the new callout component.
     $match[2] = preg_replace('|(<br>)+|is', '<br>', $match[2]);
 
-    // Look for a headline to use in the callout, as well as any additional
+    // Look for a headline to use in the callout, which are bolded strings
+    // at the start of the callout. Also look for any additional
     // line breaks. Like before, here they are unnecessary.
     $headline = '';
-    if (preg_match('|<strong>(.*?)<\/strong>(<br>)*|is', $match[2], $headline_matches)) {
-      // @todo Update this with proper callout headline construction.
-      $headline = '<h3>' . $headline_matches[1] . '</h3>';
+    if (preg_match('|^<strong>(.*?)<\/strong>(<br>)*|is', $match[2], $headline_matches)) {
+      // Build the headline if we found one.
+      $headline_classes = implode(' ', [
+        'headline',
+        'block__headline',
+        'headline--serif',
+        'headline--underline',
+        'headline--center',
+      ]);
+      $headline = '<h4 class="' . $headline_classes . '">';
+      $headline .= '<span class="headline__heading">';
+      $headline .= $headline_matches[1];
+      $headline .= '</span></h4>';
       // If we're adding the headline separately,
       // remove it from the rest of the text, so we don't duplicate.
       $match[2] = str_replace($headline_matches[0], '', $match[2]);
     }
 
-    // @todo Update this with proper callout construction.
-    return '<div class="callout">' . $headline . $match[2] . '</div>';
+    // Build the callout wrapper and return.
+    // We're defaulting to medium size, but taking the
+    // alignment from the source.
+    $wrapper_classes = 'callout inline--size-small inline--align-' . $match[1];
+    return '<div class="' . $wrapper_classes . '">' . $headline . $match[2] . '</div>';
   }
 
   /**
