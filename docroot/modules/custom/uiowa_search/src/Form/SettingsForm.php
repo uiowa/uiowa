@@ -40,6 +40,11 @@ class SettingsForm extends ConfigFormBase {
       '#title' => $this->t('Display search box'),
       '#default_value' => $config->get('uiowa_search.display_search'),
     ];
+    $form['display_search_all_uiowa'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Display the "Search all University of Iowa for ..." link'),
+      '#default_value' => $config->get('uiowa_search.display_search_all_uiowa') ?? TRUE,
+    ];
     $form['cse_engine_id'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Search Engine ID'),
@@ -67,6 +72,7 @@ class SettingsForm extends ConfigFormBase {
       ->set('uiowa_search.cse_engine_id', $form_state->getValue('cse_engine_id'))
       ->set('uiowa_search.cse_scope', $form_state->getValue('cse_scope'))
       ->set('uiowa_search.display_search', $form_state->getValue('display_search'))
+      ->set('uiowa_search.display_search_all_uiowa', $form_state->getValue('display_search_all_uiowa'))
       ->save();
     parent::submitForm($form, $form_state);
 
