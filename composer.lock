@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fd45011539a3abbe4e52ba67eef4ce65",
+    "content-hash": "56d27a201c2b95f95eded496777bbf7f",
     "packages": [
         {
             "name": "acquia/blt",
@@ -138,6 +138,7 @@
                 "issues": "https://github.com/acquia/blt-drupal-test/issues",
                 "source": "https://github.com/acquia/blt-drupal-test/tree/v1.0.0"
             },
+            "abandoned": true,
             "time": "2020-11-03T23:25:11+00:00"
         },
         {
@@ -180,6 +181,7 @@
                 "issues": "https://github.com/acquia/blt-multisite/issues",
                 "source": "https://github.com/acquia/blt-multisite/tree/v1.0.0"
             },
+            "abandoned": true,
             "time": "2021-11-19T22:23:41+00:00"
         },
         {
@@ -631,7 +633,7 @@
             "version": "v4.1.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/dimsemenov/PhotoSwipe.git",
+                "url": "git@github.com:dimsemenov/PhotoSwipe.git",
                 "reference": "80607e12542a1a54ecefa837649e862b35dffd25"
             },
             "dist": {
@@ -3336,6 +3338,10 @@
                     "homepage": "https://www.drupal.org/user/45640"
                 },
                 {
+                    "name": "kaynen",
+                    "homepage": "https://www.drupal.org/user/733308"
+                },
+                {
                     "name": "kolafson",
                     "homepage": "https://www.drupal.org/user/822402"
                 },
@@ -5066,6 +5072,10 @@
                     "role": "Maintainer"
                 },
                 {
+                    "name": "lhangea",
+                    "homepage": "https://www.drupal.org/user/2743803"
+                },
+                {
                     "name": "miro_dietiker",
                     "homepage": "https://www.drupal.org/user/227761"
                 },
@@ -5664,7 +5674,7 @@
             "extra": {
                 "drupal": {
                     "version": "8.x-2.0-beta8",
-                    "datestamp": "1674236921",
+                    "datestamp": "1675691312",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -6291,6 +6301,10 @@
                 {
                     "name": "japerry",
                     "homepage": "https://www.drupal.org/user/45640"
+                },
+                {
+                    "name": "mglaman",
+                    "homepage": "https://www.drupal.org/user/2416470"
                 },
                 {
                     "name": "pfaocle",
@@ -7596,6 +7610,10 @@
                 {
                     "name": "johnwebdev",
                     "homepage": "https://www.drupal.org/user/3331569"
+                },
+                {
+                    "name": "mark_fullmer",
+                    "homepage": "https://www.drupal.org/user/2612816"
                 }
             ],
             "description": "Linkit - Enriched linking experience",
@@ -7925,20 +7943,20 @@
             ],
             "authors": [
                 {
-                    "name": "Drupal Media Team",
-                    "homepage": "https://www.drupal.org/user/3260690"
-                },
-                {
-                    "name": "Primsi",
-                    "homepage": "https://www.drupal.org/user/282629"
-                },
-                {
                     "name": "chr.fritsch",
                     "homepage": "https://www.drupal.org/user/2103716"
                 },
                 {
                     "name": "designesse",
                     "homepage": "https://www.drupal.org/user/854012"
+                },
+                {
+                    "name": "Drupal Media Team",
+                    "homepage": "https://www.drupal.org/user/3260690"
+                },
+                {
+                    "name": "Primsi",
+                    "homepage": "https://www.drupal.org/user/282629"
                 },
                 {
                     "name": "slashrsm",
@@ -8480,6 +8498,10 @@
                 {
                     "name": "johnwebdev",
                     "homepage": "https://www.drupal.org/user/3331569"
+                },
+                {
+                    "name": "Ludo.R",
+                    "homepage": "https://www.drupal.org/user/374670"
                 },
                 {
                     "name": "rutiolma",
@@ -10007,7 +10029,6 @@
             },
             "require": {
                 "drupal/core": "^9.4 || ^10.0",
-                "michelf/php-markdown": "^1.0",
                 "php": "^8.0"
             },
             "require-dev": {
@@ -10015,6 +10036,7 @@
                 "drupal/allowed_formats": "*",
                 "drupal/auto_entitylabel": "*",
                 "drupal/ckeditor": "~1.0",
+                "drupal/custom_field": "*",
                 "drupal/devel": "*",
                 "drupal/entity_reference_revisions": "*",
                 "drupal/entity_usage": "~2.0",
@@ -10038,14 +10060,17 @@
                 "drupal/schemadotorg_paragraphs": "*",
                 "drupal/simple_sitemap": "*",
                 "drupal/smart_date": "*",
-                "drupal/smart_date_recur": "*"
+                "drupal/smart_date_recur": "*",
+                "drupal/token": "~1.0",
+                "michelf/php-markdown": "^1.0"
             },
             "suggest": {
                 "drupal/address": "Provides functionality for storing, validating and displaying international postal addresses.",
                 "drupal/field_group": "Provides the ability to group your fields on both form and display.",
                 "drupal/inline_entity_form": "Provides a widget for inline management (creation, modification, removal) of referenced entities.",
                 "drupal/jsonapi_extras": "Builds on top of JSON:API to deliver extra functionality.",
-                "drupal/paragraphs": "Enables the creation of paragraphs (i.e. component) entities."
+                "drupal/paragraphs": "Enables the creation of paragraphs (i.e. component) entities.",
+                "michelf/php-markdown": "Improve display of Markdown-format text in the help system."
             },
             "type": "drupal-module",
             "extra": {
@@ -10053,8 +10078,8 @@
                     "dev-1.0.x": "1.0.x-dev"
                 },
                 "drupal": {
-                    "version": "1.0.x-dev",
-                    "datestamp": "1674923853",
+                    "version": "1.0.0-alpha1+21-dev",
+                    "datestamp": "1678911082",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -11257,20 +11282,8 @@
             ],
             "authors": [
                 {
-                    "name": "davisben",
-                    "homepage": "https://www.drupal.org/user/1204214"
-                },
-                {
-                    "name": "deviantintegral",
-                    "homepage": "https://www.drupal.org/user/71291"
-                },
-                {
-                    "name": "Harry Slaughter",
-                    "homepage": "https://www.drupal.org/user/28233"
-                },
-                {
-                    "name": "jjeff",
-                    "homepage": "https://www.drupal.org/user/17190"
+                    "name": "heddn",
+                    "homepage": "https://www.drupal.org/user/1463982"
                 },
                 {
                     "name": "kevinquillen",
@@ -11285,12 +11298,8 @@
                     "homepage": "https://www.drupal.org/user/3580850"
                 },
                 {
-                    "name": "Shreya Shetty",
-                    "homepage": "https://www.drupal.org/user/2943029"
-                },
-                {
-                    "name": "ziomizar",
-                    "homepage": "https://www.drupal.org/user/814348"
+                    "name": "VladimirAus",
+                    "homepage": "https://www.drupal.org/user/673120"
                 }
             ],
             "description": "Allows arbitrary ordering of entities.",
@@ -11350,6 +11359,10 @@
                 {
                     "name": "larowlan",
                     "homepage": "https://www.drupal.org/user/395439"
+                },
+                {
+                    "name": "mstrelan",
+                    "homepage": "https://www.drupal.org/user/314289"
                 },
                 {
                     "name": "teknic",
