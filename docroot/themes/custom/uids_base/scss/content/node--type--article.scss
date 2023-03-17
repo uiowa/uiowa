@@ -183,7 +183,7 @@
   display: inline-block;
 
   &:after {
-    display: inline-block;
+    //display: inline-block;
   }
 }
 
@@ -206,7 +206,9 @@
   }
 }
 
-.field--name-field-article-author + .field--name-field-article-source-link {
+.field--name-field-article-author + .field--name-field-article-source-link,
+.field--name-field-article-author + .field--article-byline,
+.block-field-blocknodearticlefield-article-author + .block-field-blocknodearticlefield-article-source-link {
   &:before {
     content: '- ';
     color: $grey;
