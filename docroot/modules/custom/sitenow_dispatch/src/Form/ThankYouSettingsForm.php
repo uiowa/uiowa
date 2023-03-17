@@ -178,7 +178,19 @@ class ThankYouSettingsForm extends ConfigFormBase {
         '#description' => $this->t('An additional email address to send a copy to.'),
         '#default_value' => $config->get('thanks.email'),
       ];
+
+      $form['thanks']['approval'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Approval'),
+        '#states' => [
+          'invisible' => [
+            ':checkbox[name="approval"]' => ['checked' => TRUE],
+          ],
+        ],
+        '#description' => $this->t('Display approval checkbox for publicly sharing thank you.'),
+      ];
     }
+
     else {
       $form['thanks']['#description'] = $this->t('The Thank You email is not configured properly. Please contact the <a href=":link">ITS Help Desk</a>.', [
         ':link' => 'https://its.uiowa.edu/contact',

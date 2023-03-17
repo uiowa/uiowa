@@ -91,6 +91,11 @@ class ThankYouForm extends FormBase {
       '#required' => TRUE,
     ];
 
+    $form['placeholder']['approval'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t("<div><em>This thank you can be shared in our promotions, i.e. newsletters, social media, websites, etc.</em></div>"),
+    ];
+
     if ($this->config('sitenow_dispatch.settings')->get('thanks.supervisor')) {
       $form['placeholder']['message']['#description'] = $this->t("<div><em>A copy of this message will be sent to the employee's supervisor(s).</em></div>");
     }
