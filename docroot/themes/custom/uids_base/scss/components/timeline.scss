@@ -6,6 +6,11 @@
   position: relative;
 }
 
+// Unset height: 100% for equal height cards.
+.layout__region .card.timeline--card {
+  height: auto;
+}
+
 .timeline {
   transition: all 0.4s ease;
   position: relative;
@@ -18,12 +23,22 @@
 .timeline--wrapper {
   position: relative;
   list-style: none;
+
+  .card {
+    .card__details + footer .bttn {
+      margin-top: 0;
+    }
+    header + .card__details + footer .bttn {
+      margin-top: 2rem;
+    }
+  }
+
   .card__details {
     @include breakpoint(md) {
       margin: 0;
     }
   }
-  .card__icon {
+  .timeline__icon {
     position: absolute;
     font-size: 25px;
     background: $light;
@@ -33,7 +48,7 @@
     border-radius: 50%;
     width: 60px;
     height: 60px;
-    top: -90px;
+    top: -80px;
     right: -31px;
     [class*=bg--gray] & {
       background: $grey-light;
@@ -48,7 +63,7 @@
       margin-left: 0;
     }
   }
-  .card__icon-wrapper {
+  .timeline__icon-wrapper {
     position: absolute;
     top: 0;
     left: 50%;
@@ -122,7 +137,7 @@
     @include breakpoint(md) {
       margin-left: auto;
     }
-    .card__icon {
+    .timeline__icon {
       @include breakpoint(md) {
         right: 25px;
       }
@@ -153,7 +168,7 @@
       }
 
     }
-    .card__icon-wrapper {
+    .timeline__icon-wrapper {
       @include breakpoint(md) {
         left: 0;
       }
@@ -174,7 +189,7 @@
     @include breakpoint(md) {
       margin-right: auto;
     }
-    .card__icon {
+    .timeline__icon {
       @include breakpoint(md) {
         right: -90px;
       }
@@ -192,7 +207,7 @@
         }
       }
     }
-    .card__icon-wrapper {
+    .timeline__icon-wrapper {
       @include breakpoint(md) {
         right: 0;
       }

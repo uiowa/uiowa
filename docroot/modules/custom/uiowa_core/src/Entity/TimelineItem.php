@@ -35,7 +35,7 @@ class TimelineItem extends Paragraph implements RendersAsCardInterface {
       'label' => 'hidden',
     ])) {
       $build['#meta'] = $icon;
-      $build['#meta']['#prefix'] = '<div class="card__icon-wrapper"><div class="card__icon">';
+      $build['#meta']['#prefix'] = '<div class="timeline__icon-wrapper"><div class="timeline__icon">';
       $build['#meta']['#suffix'] = '</div></div>';
       unset($build['field_timeline_icon']);
     }
@@ -43,14 +43,18 @@ class TimelineItem extends Paragraph implements RendersAsCardInterface {
     // Check if the timeline card should be linked.
     $source_link = 'field_timeline_link';
     $link = $this->get($source_link)->uri;
+
     if (isset($link) && !empty($link)) {
-      $build['#url'] = $this
-        ->get($source_link)
-        ?->get(0)
-        ?->getUrl()
-        ?->toString();
-      unset($build['field_timeline_link']);
+      $build['#url'] = $this->get('field_timeline_link')?->get(0)?->getUrl()?->toString();
+      if (!empty($this->get('field_timeline_link')->title)) {
+        $build['#link_text'] = $this->get('field_timeline_link')->title;
+        $build['#link_indicator'] = TRUE;
+      }
+      elseif (!empty($build['#title'])) {
+        $build['#link_indicator'] = TRUE;
+      }
     }
+
     // If we don't have a link set,
     // then we don't want the card linked at all.
     else {
