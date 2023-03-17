@@ -182,11 +182,8 @@ class ThankYouSettingsForm extends ConfigFormBase {
       $form['thanks']['approval'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Approval'),
-        '#states' => [
-          'invisible' => [
-            ':checkbox[name="approval"]' => ['checked' => TRUE],
-          ],
-        ],
+        '#default_value' => $config->get('thanks.approval') ?? TRUE,
+        '#required' => FALSE,
         '#description' => $this->t('Display approval checkbox for publicly sharing thank you.'),
       ];
     }
@@ -208,6 +205,7 @@ class ThankYouSettingsForm extends ConfigFormBase {
     $bools = [
       ['thanks', 'enabled'],
       ['thanks', 'supervisor'],
+      ['thanks', 'approval'],
     ];
 
     foreach ($bools as $bool) {
@@ -227,6 +225,7 @@ class ThankYouSettingsForm extends ConfigFormBase {
         'placeholder' => $form_state->getValue(['thanks', 'placeholder']),
         'supervisor' => $form_state->getValue(['thanks', 'supervisor']),
         'email' => $form_state->getValue(['thanks', 'email']),
+        'approval' => $form_state->getValue(['thanks', 'approval']),
       ])
       ->save();
 

@@ -61,7 +61,8 @@ class ThankYouForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state)
+  {
     // Set the form tree so we can access all the placeholders easily later.
     $form['#tree'] = TRUE;
 
@@ -91,10 +92,12 @@ class ThankYouForm extends FormBase {
       '#required' => TRUE,
     ];
 
-    $form['placeholder']['approval'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t("<div><em>Please feel free to include this thank-you in staff recognition events or materials.</em></div>"),
-    ];
+    if ($this->config('sitenow_dispatch.settings')->get('thanks.approval')) {
+      $form['placeholder']['approval'] = [
+        '#type' => 'checkbox',
+        '#title' => $this->t("<div><em>Please feel free to include this thank-you in staff recognition events or materials.</em></div>"),
+      ];
+    }
 
     if ($this->config('sitenow_dispatch.settings')->get('thanks.supervisor')) {
       $form['placeholder']['message']['#description'] = $this->t("<div><em>A copy of this message will be sent to the employee's supervisor(s).</em></div>");
