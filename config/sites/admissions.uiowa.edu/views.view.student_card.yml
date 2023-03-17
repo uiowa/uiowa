@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.teaser
     - field.storage.node.field_student_profile_image
     - field.storage.node.field_student_profile_major
     - node.type.student_profile
@@ -545,20 +544,9 @@ display:
     display_plugin: block
     position: 1
     display_options:
-      style:
-        type: default
-        options:
-          grouping: {  }
-          row_class: ''
-          default_row_class: true
-      row:
-        type: 'entity:node'
-        options:
-          relationship: none
-          view_mode: teaser
       defaults:
-        style: false
-        row: false
+        style: true
+        row: true
       display_description: ''
       display_extenders:
         metatag_display_extender:
@@ -771,4 +759,3 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.node.field_student_profile_image'
-        - 'config:field.storage.node.field_student_profile_major'
