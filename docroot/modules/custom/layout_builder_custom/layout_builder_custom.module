@@ -748,6 +748,34 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function layout_builder_custom_form_entity_view_display_edit_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  // This submission handler needs to run before the existing one.
+  array_unshift($form['actions']['submit']['#submit'], 'layout_builder_custom_form_entity_view_display_edit_form_submit');
+}
+
+/**
+ * Custom submit handler for entity view display edit form.
+ */
+function layout_builder_custom_form_entity_view_display_edit_form_submit(array &$form, FormStateInterface $form_state) {
+  $set_enabled = (bool) $form_state->getValue(['layout', 'enabled'], FALSE);
+  if ($set_enabled) {
+    /** @var \Drupal\layout_builder\Entity\LayoutBuilderEntityViewDisplay $entity_view_display */
+    if (!is_null($entity_view_display = $form_state->getFormObject()?->getEntity())) {
+      $content = $entity_view_display->get('content');
+      if (!empty($content)) {
+        // Collect data for 'regular' fields.
+        foreach ($entity_view_display->get('content') as $field_name => $field) {
+          $entity_view_display->removeComponent($field_name);
+        }
+        $entity_view_display->save();
+      }
+    }
+  }
+}
+
+/**
  * Custom process block form elements.
  *
  * @param array $element
