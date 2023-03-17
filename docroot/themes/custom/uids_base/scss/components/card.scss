@@ -111,21 +111,6 @@
   }
 }
 
-
-  // Remove padding if no section background and bg--white is set on card.
-  .layout__container:not([class*="bg--"]) {
-    .card[class*="bg--white"][class*="borderless"] {
-      padding: 0;
-      &:not([class*="card--layout"]) {
-        .media__inner {
-          margin-left: 0;
-          margin-right: 0;
-          margin-top: 0;
-        }
-      }
-    }
-  }
-
   // Allow cards to be stacked within layouts.
   .layout--fourcol,
   .layout--threecol,
