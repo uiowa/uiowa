@@ -375,6 +375,26 @@ function uiowa_core_preprocess_field(&$variables) {
       ]);
       break;
   }
+
+  // Check for filtered_html or full_html textareas
+  // that might contain a callout, and if found,
+  // add the associated uids_base library.
+  switch ($variables['field_type']) {
+    case 'text_with_summary':
+    case 'text_long':
+      if (isset($variables['element'][0]['#format']) &&
+        in_array($variables['element'][0]['#format'],
+          [
+            'filtered_html',
+            'full_html',
+          ])) {
+        if (isset($variables['element'][0]['#text']) && preg_match('%<div.*?class=".*?callout.*?">%is', $variables['element'][0]['#text'])) {
+          $variables['#attached']['library'][] = 'uids_base/callout';
+        }
+      }
+      break;
+  }
+
 }
 
 /**
