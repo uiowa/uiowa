@@ -751,7 +751,7 @@ function _layout_builder_custom_block_submit(array &$form, FormStateInterface $f
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function layout_builder_custom_form_entity_view_display_edit_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+function layout_builder_custom_form_entity_view_display_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // This submission handler needs to run before the existing one.
   array_unshift($form['actions']['submit']['#submit'], 'layout_builder_custom_form_entity_view_display_edit_form_submit');
 }
