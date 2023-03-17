@@ -8,7 +8,6 @@ dependencies:
   module:
     - layout_builder
     - layout_builder_restrictions
-    - user
   theme:
     - uids_base
 third_party_settings:
@@ -77,25 +76,12 @@ id: fragment.region_item_after_content.default
 targetEntityType: fragment
 bundle: region_item_after_content
 mode: default
-content:
-  title:
-    type: string
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: -4
-    region: content
-  user_id:
-    type: author
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 0
-    region: content
+content: {  }
 hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
   layout_builder__layout: true
   search_api_excerpt: true
+  title: true
+  user_id: true

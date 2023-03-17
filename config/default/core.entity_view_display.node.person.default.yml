@@ -26,14 +26,9 @@ dependencies:
     - node.type.person
     - views.view.person_card
   module:
-    - entity_reference_revisions
     - layout_builder
     - layout_builder_restrictions
-    - link
-    - metatag
     - system
-    - telephone
-    - text
     - user
     - views
   theme:
@@ -197,127 +192,31 @@ id: node.person.default
 targetEntityType: node
 bundle: person
 mode: default
-content:
-  content_moderation_control:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 0
-    region: content
-  field_image:
-    type: entity_reference_entity_view
-    label: hidden
-    settings:
-      view_mode: large__square
-      link: false
-    third_party_settings: {  }
-    weight: 9
-    region: content
-  field_meta_tags:
-    type: metatag_empty_formatter
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    weight: 12
-    region: content
-  field_person_bio:
-    type: text_default
-    label: visually_hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 5
-    region: content
-  field_person_contact_information:
-    type: entity_reference_revisions_entity_view
-    label: hidden
-    settings:
-      view_mode: default
-      link: ''
-    third_party_settings: {  }
-    weight: 10
-    region: content
-  field_person_education:
-    type: basic_string
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    weight: 6
-    region: content
-  field_person_email:
-    type: email_mailto
-    label: inline
-    settings: {  }
-    third_party_settings: {  }
-    weight: 2
-    region: content
-  field_person_phone:
-    type: telephone_link
-    label: inline
-    settings:
-      title: ''
-    third_party_settings: {  }
-    weight: 3
-    region: content
-  field_person_position:
-    type: string
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 1
-    region: content
-  field_person_research_areas:
-    type: entity_reference_label
-    label: above
-    settings:
-      link: false
-    third_party_settings: {  }
-    weight: 7
-    region: content
-  field_person_types:
-    type: entity_reference_label
-    label: inline
-    settings:
-      link: false
-    third_party_settings: {  }
-    weight: 11
-    region: content
-  field_person_website:
-    type: link
-    label: inline
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: '0'
-      target: '0'
-    third_party_settings: {  }
-    weight: 4
-    region: content
-  field_person_website_link_direct:
-    type: boolean
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    weight: 13
-    region: content
-  links:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 8
-    region: content
+content: {  }
 hidden:
+  content_moderation_control: true
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_image: true
+  field_meta_tags: true
+  field_person_bio: true
+  field_person_contact_information: true
   field_person_credential: true
+  field_person_education: true
+  field_person_email: true
   field_person_first_name: true
   field_person_hide: true
   field_person_hometown: true
   field_person_last_name: true
+  field_person_phone: true
+  field_person_position: true
+  field_person_research_areas: true
   field_person_type_status: true
+  field_person_types: true
+  field_person_website: true
+  field_person_website_link_direct: true
   field_tags: true
   field_teaser: true
+  links: true
   search_api_excerpt: true
