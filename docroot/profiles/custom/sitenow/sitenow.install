@@ -10,6 +10,7 @@ use Drupal\block_content\BlockContentInterface;
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\Display\EntityDisplayInterface;
+use Drupal\Core\Entity\Sql\SqlEntityStorageInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\layout_builder\Section;
@@ -1959,4 +1960,76 @@ function sitenow_update_9055() {
   $config = $config_factory->getEditable('uids_base.settings');
   $config->set('style.style_selector', 'brand');
   $config->save();
+}
+
+/**
+ * Convert layout_section fields' 'section' column to a long blob.
+ */
+function sitenow_update_9056() {
+  $schema = Database::getConnection()->schema();
+  $entity_type_manager = \Drupal::entityTypeManager();
+  /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager */
+  $entity_field_manager = \Drupal::service('entity_field.manager');
+  $field_map = $entity_field_manager->getFieldMapByFieldType('layout_section');
+  $storage_schema = \Drupal::keyValue('entity.storage_schema.sql');
+  /** @var \Drupal\Core\Entity\EntityLastInstalledSchemaRepositoryInterface $last_installed_schema */
+  $last_installed_schema = \Drupal::service('entity.last_installed_schema.repository');
+
+  // The new schema to use for the section column.
+  $new_column_schema = [
+    'type' => 'blob',
+    'size' => 'big',
+    'serialize' => TRUE,
+  ];
+  foreach ($field_map as $entity_type_id => $layout_section_fields) {
+    $entity_storage = $entity_type_manager->getStorage($entity_type_id);
+
+    // Skip this entity type if it does not use SQL-based storage.
+    if (!$entity_storage instanceof SqlEntityStorageInterface) {
+      continue;
+    }
+
+    $entity_type = $entity_type_manager->getDefinition($entity_type_id);
+    // Load all field storage definitions for the entity type.
+    $field_storage_definitions = $entity_field_manager->getFieldStorageDefinitions($entity_type_id);
+    /** @var \Drupal\Core\Entity\Sql\DefaultTableMapping $table_mapping */
+    $table_mapping = $entity_storage->getTableMapping($field_storage_definitions);
+
+    // Get the field storage definitions for all the layout_section fields.
+    $field_storage_definitions = array_intersect_key($field_storage_definitions, $layout_section_fields);
+
+    // Iterate over each layout_section field definition.
+    /** @var \Drupal\Core\Field\FieldStorageDefinitionInterface $field_storage_definition */
+    foreach ($field_storage_definitions as $field_storage_definition) {
+      $field_name = $field_storage_definition->getName();
+
+      // Determine which tables we need to update.
+      $tables = [
+        $table_mapping->getFieldTableName($field_name),
+      ];
+      if ($entity_type->isRevisionable() && $field_storage_definition->isRevisionable()) {
+        $tables[] = $table_mapping->getDedicatedRevisionTableName($field_storage_definition);
+      }
+
+      // Alter the database column for each of the tables.
+      $column_name = $table_mapping->getColumnNames($field_name)['section'];
+      foreach ($tables as $table) {
+        $schema->changeField($table, $column_name, $column_name, $new_column_schema);
+      }
+
+      // Update the tracked entity table schema.
+      $schema_key = "$entity_type_id.field_schema_data.$field_name";
+      $schema_data = $storage_schema->get($schema_key);
+      foreach ($schema_data as $table_name => $field_schema) {
+        $schema_data[$table_name]['fields'][$column_name]['size'] = 'big';
+      }
+      $storage_schema->set($schema_key, $schema_data);
+
+      // Update cached entity definitions for entity types with
+      // single-cardinality base fields.
+      if ($table_mapping->allowsSharedTableStorage($field_storage_definition)) {
+        $last_installed_schema->setLastInstalledFieldStorageDefinition($field_storage_definition);
+      }
+    }
+  }
 }
