@@ -1041,7 +1041,7 @@ function admissions_core_preprocess_views_view_field(&$variables) {
 function admissions_core_preprocess_views_view_unformatted(&$variables) {
   $view = $variables['view'];
   $variables['row_item_classes'] = [];
-  if ($view->current_display === 'block_student_grid') {
+  if (in_array($view->current_display, ['block_student_grid', 'block_1'])) {
     $style = $view->style_plugin;
     $row_styles = $view->display_handler->getOption('row_styles');
     $rows = $variables['rows'];
