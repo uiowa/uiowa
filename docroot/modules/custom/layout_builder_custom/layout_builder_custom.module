@@ -251,15 +251,12 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
                 $defaults['layout_builder_style_card_media_position'] = '[empty]';
                 break;
 
-              // Media left is the default. These cases pass through to the next
-              // case.
+              // Media left, circle are the defaults.
               case 'inline_block:uiowa_events':
               case 'views_block:events-card_list':
               case 'views_block:events_list_block-card_list':
-                $defaults['layout_builder_style_card_media_position'] = 'card_media_position_left';
-
-                // Circle image is the default.
               case 'views_block:people_list_block-list_card':
+                $defaults['layout_builder_style_card_media_position'] = 'card_media_position_left';
                 $defaults['layout_builder_style_media_format'] = 'media_format_circle';
                 break;
 
