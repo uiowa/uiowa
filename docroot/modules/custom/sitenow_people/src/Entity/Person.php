@@ -67,11 +67,13 @@ class Person extends NodeBundleBase implements RendersAsCardInterface {
 
     // Append person credentials to the node label in the teaser view mode.
     if (!is_null($creds = $this->get('field_person_credential')?->getString())) {
-      $title = $this->getTitle();
-      $build['#title'] = $this->t('@title, @creds', [
-        '@title' => $title,
-        '@creds' => $creds,
-      ]);
+      if (!empty($creds)) {
+        $title = $this->getTitle();
+        $build['#title'] = $this->t('@title, @creds', [
+          '@title' => $title,
+          '@creds' => $creds,
+        ]);
+      }
     }
 
   }
