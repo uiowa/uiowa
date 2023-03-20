@@ -88,7 +88,6 @@ class Article extends NodeBundleBase implements ArticleInterface, RendersAsCardI
     $default_classes = [
       ...parent::getDefaultCardStyles(),
       'media_size' => 'media--small',
-      'media_format' => 'media--widescreen',
     ];
 
     return $default_classes;
