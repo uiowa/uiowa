@@ -33,7 +33,7 @@ class GradStudentProfile extends NodeBundleBase implements RendersAsCardInterfac
     return [
       ...parent::getDefaultCardStyles(),
       'card_media_position' => $even ? 'card--layout-right' : 'card--layout-left',
-      'styles' => 'borderless',
+      'border' => 'borderless',
       'headline_class' => 'headline--serif headline--uppercase h1',
       'bg' => $even ? 'bg--white' : 'bg--gray',
       'media_size' => 'media--large',

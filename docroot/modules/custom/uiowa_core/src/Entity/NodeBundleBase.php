@@ -78,7 +78,7 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
       'card_media_position' => 'card--layout-right',
       'media_format' => 'media--widescreen',
       'media_size' => 'media--medium',
-      'styles' => 'borderless',
+      'border' => 'borderless',
     ];
   }
 

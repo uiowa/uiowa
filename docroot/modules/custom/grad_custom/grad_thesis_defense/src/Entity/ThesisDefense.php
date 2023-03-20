@@ -46,7 +46,7 @@ class ThesisDefense extends NodeBundleBase implements RendersAsCardInterface {
     $default_classes = [
       ...parent::getDefaultCardStyles(),
       'card_media_position' => 'card--layout-left',
-      'styles' => 'borderless',
+      'border' => 'borderless',
       'headline_class' => 'headline--serif',
       'media_border' => 'media--border',
       'media_format' => 'media--circle',
