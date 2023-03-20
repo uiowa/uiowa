@@ -407,6 +407,33 @@ function admissions_core_preprocess_field(&$variables) {
 function admissions_core_preprocess_field__node__title(&$variables) {
   if ($variables['element']['#bundle'] === 'major') {
     $variables['pre_title'] = AdmissionsCoreInterface::TWO_PLUS_TWO_TITLE;
+    // Remove existing page title classes.
+    $variables['attributes']['class'] = [];
+    // Add new page title classes.
+    uiowa_core_set_attributes($variables, [
+      'headline--uppercase',
+      'headline--negative',
+    ]);
+  }
+  if ($variables['element']['#bundle'] === 'area_of_study') {
+    // Remove existing page title classes.
+    $variables['attributes']['class'] = [];
+    // Add new page title classes.
+    uiowa_core_set_attributes($variables, [
+      'headline--uppercase',
+      'headline--negative',
+      'headline--highlight',
+    ]);
+  }
+  if ($variables['element']['#bundle'] === 'student_profile') {
+    // Remove existing page title classes.
+    $variables['attributes']['class'] = [];
+    // Add new page title classes.
+    uiowa_core_set_attributes($variables, [
+      'text-align-center',
+      'headline headline--serif',
+      'headline--highlight',
+    ]);
   }
 }
 
@@ -511,6 +538,10 @@ function admissions_core_preprocess_block(&$variables) {
 
     case 'admissions_core_event_series_events':
       $variables['title_attributes']['class'] = 'h4 headline headline--serif headline--underline';
+      break;
+
+    case 'field_block:node:student_profile:field_person_hometown':
+      uiowa_core_set_attributes($variables, ['block-margin__default--removed']);
       break;
   }
 }
@@ -1041,7 +1072,10 @@ function admissions_core_preprocess_views_view_field(&$variables) {
 function admissions_core_preprocess_views_view_unformatted(&$variables) {
   $view = $variables['view'];
   $variables['row_item_classes'] = [];
-  if ($view->current_display === 'block_student_grid') {
+  if (in_array($view->current_display, [
+    'block_student_grid',
+    'block_student_card',
+  ])) {
     $style = $view->style_plugin;
     $row_styles = $view->display_handler->getOption('row_styles');
     $rows = $variables['rows'];
