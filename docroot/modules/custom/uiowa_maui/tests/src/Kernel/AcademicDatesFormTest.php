@@ -73,11 +73,27 @@ class AcademicDatesFormTest extends KernelTestBase {
       ->will($this->returnValue([
         (object) [
           'name' => 'foo',
-          'date' => '1/1/2021',
+          'beginDate' => '1/1/2021',
+          'endDate' => '1/1/2021',
+          'session' => (object) [
+            'shortDescription' => 'A short description',
+          ],
+          'dateLookup' => (object) [
+            'description' => 'A description',
+            'webDescription' => 'A description',
+          ],
         ],
         (object) [
           'name' => 'bar',
-          'date' => '1/2/2021',
+          'beginDate' => '1/2/2021',
+          'endDate' => '1/2/2021',
+          'session' => (object) [
+            'shortDescription' => 'A short description',
+          ],
+          'dateLookup' => (object) [
+            'description' => 'A description',
+            'webDescription' => 'A description',
+          ],
         ],
       ]));
 
