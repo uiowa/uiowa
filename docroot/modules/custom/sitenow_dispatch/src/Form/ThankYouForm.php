@@ -92,7 +92,7 @@ class ThankYouForm extends FormBase {
     ];
 
     if ($this->config('sitenow_dispatch.settings')->get('thanks.approval')) {
-      $form['placeholder']['approval'] = [
+      $form['approval'] = [
         '#type' => 'checkbox',
         '#title' => $this->t("<div><em>Please feel free to include this thank-you in staff recognition events or materials.</em></div>"),
       ];
@@ -182,6 +182,11 @@ class ThankYouForm extends FormBase {
       ],
       'includeBatchResponse' => FALSE,
     ];
+
+    // Appending a statement to the footer if approved to be included in promotional materials.
+    if ($config->get('thanks.approval') && $form_state->getValue('approval') == 1) {
+      $data['members'][0]['footer_statement'] .= ' This message has been approved to be included in staff recognition events or materials.';
+    }
 
     // Add the placeholders to the recipient (first) member.
     foreach ($placeholders as $key => $value) {
