@@ -251,6 +251,9 @@ function template_preprocess_card(&$variables) {
     elseif (!empty($element['#media'])) {
       $linked_element = 'media';
     }
+    else {
+      $linked_element = 'button';
+    }
   }
 
   $element['#linked_element'] = $linked_element;
