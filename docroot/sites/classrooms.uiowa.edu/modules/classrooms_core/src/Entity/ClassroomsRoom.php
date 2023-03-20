@@ -43,7 +43,7 @@ class ClassroomsRoom extends NodeBundleBase implements RendersAsCardInterface {
   public function getDefaultCardStyles(): array {
     $default_classes = [
       ...parent::getDefaultCardStyles(),
-      'card_media_position' => '',
+      'card_media_position' => 'card--stacked',
       'media_size' => 'media--large',
       'headline_class' => 'headline--serif headline--underline h4 block__headline',
       'styles' => 'card--button-align-bottom',

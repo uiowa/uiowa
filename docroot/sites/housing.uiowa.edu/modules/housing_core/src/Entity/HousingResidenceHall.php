@@ -16,7 +16,7 @@ class HousingResidenceHall extends NodeBundleBase implements RendersAsCardInterf
   public function getDefaultCardStyles(): array {
     $default_classes = [
       ...parent::getDefaultCardStyles(),
-      'card_media_position' => '',
+      'card_media_position' => 'card--stacked',
       'media_size' => 'media--large',
       'styles' => '',
     ];

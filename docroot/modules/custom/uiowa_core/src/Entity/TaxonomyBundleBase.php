@@ -37,7 +37,7 @@ abstract class TaxonomyBundleBase extends Term implements RendersAsCardInterface
    */
   public function getDefaultCardStyles(): array {
     return [
-      'card_media_position' => 'stacked',
+      'card_media_position' => 'card--stacked',
       'media_size' => 'media--large',
       'styles' => '',
     ];

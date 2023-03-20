@@ -32,7 +32,7 @@ class StudentProfile extends NodeBundleBase implements RendersAsCardInterface {
   public function getDefaultCardStyles(): array {
     $default_classes = [
       ...parent::getDefaultCardStyles(),
-      'card_media_position' => '',
+      'card_media_position' => 'card--stacked',
       'media_border' => 'media--border',
       'media_format' => 'media--circle',
       'media_size' => 'media--medium',
