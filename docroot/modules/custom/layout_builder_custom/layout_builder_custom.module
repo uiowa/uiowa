@@ -73,7 +73,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
           'default' => 'card_headline_style_serif',
         ],
         'card_media_position' => [
-          'empty_label' => t('Stacked'),
+          'default' => 'card_media_position_stacked',
         ],
         'content_alignment' => [
           'empty_label' => t('Left'),
@@ -245,10 +245,9 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
 
             // Set defaults for blocks with card-related styles.
             switch ($block->getPluginId()) {
-              // The card block has the empty option as the default.
+              // The card block is stacked by default.
               case 'inline_block:uiowa_card':
-                // @todo Figure out what this should be.
-                $defaults['layout_builder_style_card_media_position'] = '[empty]';
+                $defaults['layout_builder_style_card_media_position'] = 'card_media_position_stacked';
                 break;
 
               // Media left, circle are the defaults.

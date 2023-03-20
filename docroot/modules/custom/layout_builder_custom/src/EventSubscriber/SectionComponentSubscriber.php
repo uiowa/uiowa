@@ -155,11 +155,6 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           $style_map = LayoutBuilderStylesHelper::getLayoutBuilderStylesMap($selected_styles);
           // Filter the style map to just classes related to the card.
           $style_map = Card::filterCardStyles($style_map);
-          // Work-around for stacked card option meaning that
-          // card_media_position is not set.
-          if (!isset($style_map['card_media_position'])) {
-            $style_map['card_media_position'] = '';
-          }
 
           LayoutBuilderStylesHelper::removeStylesFromAttributes($build['#attributes'], $style_map);
 
@@ -241,11 +236,6 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           $style_map = LayoutBuilderStylesHelper::getLayoutBuilderStylesMap($selected_styles);
           // Filter the style map to just classes related to the card.
           $style_map = Card::filterCardStyles($style_map);
-          // Work-around for stacked card option meaning that
-          // card_media_position is not set.
-          if (!isset($style_map['card_media_position'])) {
-            $style_map['card_media_position'] = '';
-          }
 
           // Check if there are view rows to act upon.
           if (isset($build['content']['view_build']['#rows'][0]['#rows'])) {
@@ -276,11 +266,6 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
           $style_map = LayoutBuilderStylesHelper::getLayoutBuilderStylesMap($selected_styles);
           // Filter the style map to just classes related to the card.
           $style_map = Card::filterCardStyles($style_map);
-          // Work-around for stacked card option meaning that
-          // card_media_position is not set.
-          if (!isset($style_map['card_media_position'])) {
-            $style_map['card_media_position'] = '';
-          }
 
           LayoutBuilderStylesHelper::processGridClasses($build['#attributes']);
 
