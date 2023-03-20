@@ -162,7 +162,7 @@ class AcademicDatesFormTest extends KernelTestBase {
     $sut = new AcademicDatesForm($this->maui);
     $form_state = new FormState();
     $form = $sut->buildForm([], $form_state, NULL, NULL, NULL, $number, $limit);
-    $this->assertCount($expected_count, $form['dates-wrapper']['dates']['#data']);
+    $this->assertCount($expected_count, $form['dates-wrapper']['dates']);
   }
 
   /**
