@@ -85,12 +85,10 @@ class Article extends NodeBundleBase implements ArticleInterface, RendersAsCardI
    * {@inheritdoc}
    */
   public function getDefaultCardStyles(): array {
-    $default_classes = [
+    return [
       ...parent::getDefaultCardStyles(),
       'media_size' => 'media--small',
     ];
-
-    return $default_classes;
   }
 
 }
