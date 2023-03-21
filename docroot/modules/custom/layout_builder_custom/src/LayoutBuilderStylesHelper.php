@@ -148,7 +148,7 @@ class LayoutBuilderStylesHelper {
   public static function getExtraSettings() {
     return [
       'background' => [
-        'default' => 'block_background_style_light',
+        'default' => '[empty]'
       ],
       'banner_gradient' => [
         'default' => 'banner_gradient_dark',
@@ -169,9 +169,10 @@ class LayoutBuilderStylesHelper {
         'default' => 'card_headline_style_serif',
       ],
       'card_media_position' => [
-        'default' => 'card_media_position_stacked',
+        'default' => 'card_media_position_right',
       ],
       'content_alignment' => [
+        'default' => '[empty]',
         'empty_label' => t('Left'),
       ],
       'grid_columns' => [
