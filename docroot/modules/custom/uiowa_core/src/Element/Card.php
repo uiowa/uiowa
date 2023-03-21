@@ -64,6 +64,10 @@ class Card extends RenderElement {
       }
     }
 
+    if (!isset($filtered_styles['border'])) {
+      $filtered_styles['border'] = '';
+    }
+
     return $filtered_styles;
   }
 
