@@ -53,81 +53,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
       // @todo Write a patch for layout_builder_styles that adds these options. See
       //   https://github.com/uiowa/uiowa/issues/5010
       // An array of options for altering Layout Builder Styles behavior.
-      $lbs_extra_options = [
-        'banner_gradient' => [
-          'default' => 'banner_gradient_dark',
-        ],
-        'banner_height' => [
-          'default' => 'banner_medium',
-        ],
-        'banner_type' => [
-          'default' => 'banner_centered_left',
-        ],
-        'button_style' => [
-          'default' => 'button_primary',
-        ],
-        'button_size' => [
-          'default' => 'button_medium',
-        ],
-        'card_headline_style' => [
-          'default' => 'card_headline_style_serif',
-        ],
-        'card_media_position' => [
-          'default' => 'card_media_position_stacked',
-        ],
-        'content_alignment' => [
-          'empty_label' => t('Left'),
-        ],
-        'grid_columns' => [
-          'default' => 'block_grid_threecol_33_34_33',
-        ],
-        'headline_type' => [
-          'default' => 'headline_bold_serif',
-        ],
-        'headline_size' => [
-          'default' => 'headline_large',
-        ],
-        'list_format' => [
-          'default' => 'list_format_list',
-        ],
-        'media_format' => [
-          'default' => 'media_format_widescreen',
-        ],
-        'media_size' => [
-          'default' => 'media_size_large',
-        ],
-        'menu_orientation' => [
-          'default' => 'block_menu_vertical',
-        ],
-      ];
-
-      $groups = LayoutBuilderStyleGroup::loadMultiple();
-
-      // Loop through layout builder style groups.
-      foreach (array_keys($groups) as $group) {
-
-        // Check if we have extra options defined.
-        if (isset($lbs_extra_options[$group])) {
-          // The key that is used in the form array.
-          $group_key = 'layout_builder_style_' . $group;
-
-          // Check if the style group is set in the form.
-          if (isset($form[$group_key])) {
-
-            if ($form_id === 'layout_builder_add_block') {
-              // Set default for this group if it exists.
-              if (isset($lbs_extra_options[$group]['default'])) {
-                $form[$group_key]['#default_value'] = [$lbs_extra_options[$group]['default']];
-              }
-            }
-            // If an alternative label has been added for the empty option,
-            // use it instead.
-            if (isset($lbs_extra_options[$group]['empty_label']) && isset($form[$group_key]['#empty_option'])) {
-              $form[$group_key]['#empty_option'] = $lbs_extra_options[$group]['empty_label'];
-            }
-          }
-        }
-      }
+      $lb_styles_extra_settings = LayoutBuilderStylesHelper::getExtraSettings();
 
       // Always set title field to not be required.
       $form['settings']['label']['#required'] = FALSE;
@@ -233,21 +159,11 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               ],
             ];
 
-            // A map of default styles for LB style groups.
-            $defaults = [
-              'layout_builder_style_background' => 'block_background_style_light',
-              'layout_builder_style_card_headline_style' => 'card_headline_style_serif',
-              'layout_builder_style_card_media_position' => 'card_media_position_right',
-              'layout_builder_style_content_alignment' => 'content_alignment_left',
-              'layout_builder_style_media_format' => 'media_format_widescreen',
-              'layout_builder_style_media_size' => 'media_size_small',
-            ];
-
             // Set defaults for blocks with card-related styles.
             switch ($block->getPluginId()) {
               // The card block is stacked by default.
               case 'inline_block:uiowa_card':
-                $defaults['layout_builder_style_card_media_position'] = 'card_media_position_stacked';
+                $lb_styles_extra_settings['card_media_position']['default'] = 'card_media_position_stacked';
                 break;
 
               // Media left, circle are the defaults.
@@ -255,57 +171,27 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               case 'views_block:events-card_list':
               case 'views_block:events_list_block-card_list':
               case 'views_block:people_list_block-list_card':
-                $defaults['layout_builder_style_card_media_position'] = 'card_media_position_left';
-                $defaults['layout_builder_style_media_format'] = 'media_format_circle';
+                $lb_styles_extra_settings['card_media_position']['default'] = 'card_media_position_left';
+                $lb_styles_extra_settings['media_format']['default'] = 'media_format_circle';
                 break;
 
               // Medium image size is the default.
               case 'views_block:article_list_block-list_article':
-                $defaults['layout_builder_style_media_size'] = 'card_image_medium';
+                $lb_styles_extra_settings['media_size']['default'] = 'card_image_medium';
                 break;
             }
 
-            // Loop through map of default styles and append text indicating
-            // that they are the defaults if appropriate.
-            foreach ($defaults as $key => $default) {
-              // If the style group is set...
-              if (isset($form[$key])) {
-                // If the default option is exists, add the text there.
-                if (isset($form[$key]['#options'][$default])) {
-                  $form[$key]['#options'][$default] .= ' (default)';
-                }
-                // Otherwise, if the empty option should be the default, add
-                // the text there.
-                elseif ($default === '[empty]' && $form[$key]['#empty_option'] instanceof TranslatableMarkup) {
-                  $form[$key]['#empty_option'] = t($form[$key]['#empty_option']->getUntranslatedString() . ' (default)');
-                }
-              }
+            // Make some block-specific form adjustments.
+            switch ($block->getPluginId()) {
+              case 'views_block:article_list_block-list_article':
+                $form['settings']['override']['hide_fields']['order_fields']['field_article_source_link']['hide']['#default_value'] = 1;
+                break;
+
+              case 'views_block:people_list_block-list_card':
+                $form['settings']['override']['items_per_page']['#default_value'] = 10;
+                break;
             }
 
-            // Set layout builder style default settings.
-            if ($form_id === 'layout_builder_add_block') {
-
-              if (isset($form['layout_builder_style_list_format'])) {
-                $form['layout_builder_style_list_format']['#default_value'] = 'list_format_list';
-              }
-              if (isset($form['layout_builder_style_grid_columns'])) {
-                $form['layout_builder_style_grid_columns']['#default_value'] = 'block_grid_threecol_33_34_33';
-              }
-
-              switch ($block->getPluginId()) {
-                case 'views_block:article_list_block-list_article':
-                  $form['settings']['override']['hide_fields']['order_fields']['field_article_source_link']['hide']['#default_value'] = 1;
-                case 'views_block:people_list_block-list_card':
-                  $form['settings']['override']['items_per_page']['#default_value'] = 10;
-                  break;
-              }
-
-              foreach ($defaults as $key => $default) {
-                if (isset($form[$key])) {
-                  $form[$key]['#default_value'] = $default;
-                }
-              }
-            }
             break;
 
           case 'inline_block:uiowa_collection':
@@ -440,6 +326,40 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               $form['actions']['submit']['#access'] = FALSE;
             }
             break;
+        }
+      }
+
+      // Loop through map of default styles and append text indicating
+      // that they are the defaults if appropriate.
+      foreach ($lb_styles_extra_settings as $key => $settings) {
+        // The key that is used in the form array.
+        $key = 'layout_builder_style_' . $key;
+        // If the style group is set...
+        if (isset($form[$key])) {
+          if (isset($settings['default'])) {
+            // If an alternative label has been added for the empty option,
+            // use it instead.
+            if (isset($settings['empty_label']) && isset($form[$key]['#empty_option'])) {
+              $form[$key]['#empty_option'] = t('@label', [
+                '@label' => $settings['empty_label'],
+              ]);
+            }
+
+            // If the default option is exists, add the text there.
+            if (isset($form[$key]['#options'][$settings['default']])) {
+              $form[$key]['#options'][$settings['default']] .= ' (default)';
+            }
+            // Otherwise, if the empty option should be the default, add
+            // the text there.
+            elseif ($settings['default'] === '[empty]' && $form[$key]['#empty_option'] instanceof TranslatableMarkup) {
+              $form[$key]['#empty_option'] = t($form[$key]['#empty_option']->getUntranslatedString() . ' (default)');
+            }
+          }
+
+          // Set layout builder style default settings.
+          if ($form_id === 'layout_builder_add_block') {
+            $form[$key]['#default_value'] = $settings['default'];
+          }
         }
       }
 

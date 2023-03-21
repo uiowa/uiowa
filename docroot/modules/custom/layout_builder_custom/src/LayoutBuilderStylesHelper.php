@@ -139,4 +139,63 @@ class LayoutBuilderStylesHelper {
     }
   }
 
+  /**
+   * Return an array of additional settings keyed by group ID.
+   *
+   * @return array
+   *   The extra settings.
+   */
+  public static function getExtraSettings() {
+    return [
+      'background' => [
+        'default' => 'block_background_style_light',
+      ],
+      'banner_gradient' => [
+        'default' => 'banner_gradient_dark',
+      ],
+      'banner_height' => [
+        'default' => 'banner_medium',
+      ],
+      'banner_type' => [
+        'default' => 'banner_centered_left',
+      ],
+      'button_size' => [
+        'default' => 'button_medium',
+      ],
+      'button_style' => [
+        'default' => 'button_primary',
+      ],
+      'card_headline_style' => [
+        'default' => 'card_headline_style_serif',
+      ],
+      'card_media_position' => [
+        'default' => 'card_media_position_stacked',
+      ],
+      'content_alignment' => [
+        'empty_label' => t('Left'),
+      ],
+      'grid_columns' => [
+        'default' => 'block_grid_threecol_33_34_33',
+      ],
+      'headline_type' => [
+        'default' => 'headline_bold_serif',
+      ],
+      'headline_size' => [
+        'default' => 'headline_large',
+      ],
+      'list_format' => [
+        'default' => 'list_format_list',
+      ],
+      'media_format' => [
+        'default' => 'media_format_widescreen',
+      ],
+      'media_size' => [
+        'default' => 'media_size_small',
+      ],
+      'menu_orientation' => [
+        'default' => 'block_menu_vertical',
+      ],
+    ];
+  }
+
 }
