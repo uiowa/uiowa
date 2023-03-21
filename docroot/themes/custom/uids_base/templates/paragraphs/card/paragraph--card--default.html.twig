@@ -80,11 +80,23 @@
       'subtitle': content.field_card_subtitle,
       'title': content.field_card_title,
       'link_url': content.field_card_link[0]['#url'],
-      'headline_level': 'h2',
       'paragraph': paragraph,
     } %}
 
     {% embed '@uids_base/uids/card.html.twig' with paragraph_card only %}
+
+      {% block heading %}
+        {% set headline = {
+          'headline_level': 'h2',
+          'headline_class': 'headline',
+          'headline_text': title,
+          'headline_url': link_url,
+          'headline_url_class': (title and link_url) ? 'click-target' : null,
+        } %}
+        <header>
+          {% include '@uids_base/uids/headline.html.twig' with headline only %}
+        </header>
+      {% endblock %}
 
       {# We override this because the text is formatted already. #}
       {% block card_content %}
