@@ -16,7 +16,7 @@ class LayoutBuilderStylesHelper {
    * @param array $styles
    *   The styles to provide a map for.
    *
-   * @return array
+   * @return string[]
    *   The style map.
    */
   public static function getLayoutBuilderStylesMap(array $styles): array {
@@ -77,7 +77,7 @@ class LayoutBuilderStylesHelper {
    * @param array $removal_list
    *   The list prefixes to filter out.
    *
-   * @return array
+   * @return string[]
    *   The filtered styles.
    */
   public static function filterStyles(array $style_map, array $removal_list = []): array {
@@ -142,13 +142,13 @@ class LayoutBuilderStylesHelper {
   /**
    * Return an array of additional settings keyed by group ID.
    *
-   * @return array
+   * @return array[]
    *   The extra settings.
    */
-  public static function getExtraSettings() {
+  public static function getExtraSettings(): array {
     return [
       'background' => [
-        'default' => '[empty]'
+        'default' => '[empty]',
       ],
       'banner_gradient' => [
         'default' => 'banner_gradient_dark',

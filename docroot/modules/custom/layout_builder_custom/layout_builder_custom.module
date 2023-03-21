@@ -173,6 +173,8 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
               case 'views_block:people_list_block-list_card':
                 $lb_styles_extra_settings['card_media_position']['default'] = 'card_media_position_left';
                 $lb_styles_extra_settings['media_format']['default'] = 'media_format_circle';
+                $lb_styles_extra_settings['border']['default'] = 'no_border';
+                break;
 
               // Medium image size is the default.
               case 'views_block:article_list_block-list_article':
