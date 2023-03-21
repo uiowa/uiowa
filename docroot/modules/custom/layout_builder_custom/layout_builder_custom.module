@@ -153,7 +153,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
                 // Show when a media position is selected.
                 [
                   ':input[name="layout_builder_style_card_media_position"]' => [
-                    '!value' => '',
+                    '!value' => 'card_media_position_stacked',
                   ],
                 ],
               ],
@@ -166,7 +166,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
                 $lb_styles_extra_settings['card_media_position']['default'] = 'card_media_position_stacked';
                 break;
 
-              // Media left, circle are the defaults.
+              // Media left, media circle, and no border are the defaults.
               case 'inline_block:uiowa_events':
               case 'views_block:events-card_list':
               case 'views_block:events_list_block-card_list':
@@ -176,7 +176,7 @@ function layout_builder_custom_form_alter(&$form, FormStateInterface $form_state
                 $lb_styles_extra_settings['border']['default'] = 'no_border';
                 break;
 
-              // Medium image size is the default.
+              // No border is the default.
               case 'views_block:article_list_block-list_article':
                 $lb_styles_extra_settings['border']['default'] = 'no_border';
                 break;
