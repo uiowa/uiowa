@@ -81,14 +81,4 @@ class Article extends NodeBundleBase implements ArticleInterface, RendersAsCardI
     $build['#subtitle'] = $date;
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getDefaultCardStyles(): array {
-    return [
-      ...parent::getDefaultCardStyles(),
-      'media_size' => 'media--small',
-    ];
-  }
-
 }
