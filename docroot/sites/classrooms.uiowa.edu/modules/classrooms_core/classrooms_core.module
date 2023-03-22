@@ -587,10 +587,6 @@ function classrooms_core_theme($existing, $type, $theme, $path) {
       'template' => 'field--node--field-room-design-details',
       'base hook' => 'field',
     ],
-    'node__room__teaser' => [
-      'template' => 'node--room--teaser',
-      'base hook' => 'node',
-    ],
     'taxonomy_term__technology_features' => [
       'template' => 'taxonomy-term--technology-features',
       'base hook' => 'taxonomy',
@@ -756,8 +752,7 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
       $node->set('field_room_features', $seats);
 
       if (isset($row_build['content']['#node'])) {
-        $row_build['content']['#meta'][] = $row_build['content']['#node']->field_room_name?->view('teaser');
-        $row_build['content']['#meta'][] = $row_build['content']['#node']->field_room_type?->view('teaser');
+        $row_build['content']['#meta'][] = $row_build['content']['#node']->field_room_responsible_unit?->view('teaser');
         $row_build['content']['#meta'][] = $row_build['content']['#node']->field_room_features?->view('teaser');
       }
 
