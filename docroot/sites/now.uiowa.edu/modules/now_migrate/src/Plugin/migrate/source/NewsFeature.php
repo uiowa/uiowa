@@ -388,7 +388,7 @@ class NewsFeature extends BaseNodeSource {
     // Build the callout wrapper and return.
     // We're defaulting to medium size, but taking the
     // alignment from the source.
-    $wrapper_classes = 'callout bg--gray inline--size-small inline--align-' . $match[1];
+    $wrapper_classes = 'block--word-break callout bg--gray inline--size-small inline--align-' . $match[1];
     return '<div class="' . $wrapper_classes . '">' . $headline . '<p>' . $match[2] . '</p>' . '</div>';
   }
 
