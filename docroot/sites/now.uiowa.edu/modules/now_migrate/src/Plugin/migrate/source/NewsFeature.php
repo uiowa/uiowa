@@ -346,11 +346,10 @@ class NewsFeature extends BaseNodeSource {
     // Extra spacings have been added in various places
     // for visual spacing. Remove them, or they'll throw
     // things off in the new callout component.
-
-    // remove anything after the first '<br>',
+    // Remove anything after the first '<br>',
     // as it is not in the same '<strong>' group
     // as the ones on the first line.
-    $headline_match_string = preg_replace('%(<br>|<br \/>|<br\/>).*%is','', $match[2]);
+    $headline_match_string = preg_replace('%(<br>|<br \/>|<br\/>).*%is', '', $match[2]);
 
     // Look for a headline to use in the callout, which are bolded strings
     // at the start of the callout. Also look for any additional
