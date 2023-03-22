@@ -340,7 +340,6 @@ class NewsFeature extends BaseNodeSource {
    * Helper function to update a callout during a preg_replace.
    */
   private function calloutReplace($match) {
-    $nid = \Drupal::routeMatch()->getRawParameter('node');
     // Match[1] is the "left" or "right" of the callout
     // alignment. Match[2] is the interior content of the <div>.
     // Extra spacings have been added in various places
