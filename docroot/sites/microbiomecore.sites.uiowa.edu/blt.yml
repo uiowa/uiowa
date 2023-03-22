@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesmicrobiomecore.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesmicrobiomecore
+  human_name: microbiomecore.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesmicrobiomecore.prod
+drupal:
+  db:
+    database: microbiomecore_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesmicrobiomecore.prod.drupal.uiowa.edu'
+  requester: lguilr
+  site-name: 'Microbiome Core - University of Iowa'

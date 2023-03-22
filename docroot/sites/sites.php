@@ -5140,3 +5140,9 @@ $sites['sitesclimate-change-lung-health.uiowa.ddev.site'] = 'climate-change-lung
 $sites['sitesclimate-change-lung-health.dev.drupal.uiowa.edu'] = 'climate-change-lung-health.sites.uiowa.edu';
 $sites['sitesclimate-change-lung-health.stage.drupal.uiowa.edu'] = 'climate-change-lung-health.sites.uiowa.edu';
 $sites['sitesclimate-change-lung-health.prod.drupal.uiowa.edu'] = 'climate-change-lung-health.sites.uiowa.edu';
+
+// Directory aliases for microbiomecore.sites.uiowa.edu.
+$sites['sitesmicrobiomecore.uiowa.ddev.site'] = 'microbiomecore.sites.uiowa.edu';
+$sites['sitesmicrobiomecore.dev.drupal.uiowa.edu'] = 'microbiomecore.sites.uiowa.edu';
+$sites['sitesmicrobiomecore.stage.drupal.uiowa.edu'] = 'microbiomecore.sites.uiowa.edu';
+$sites['sitesmicrobiomecore.prod.drupal.uiowa.edu'] = 'microbiomecore.sites.uiowa.edu';
