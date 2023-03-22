@@ -183,7 +183,8 @@ class ThankYouForm extends FormBase {
       'includeBatchResponse' => FALSE,
     ];
 
-    // Appending a statement to the footer if approved to be included in promotional materials.
+    // Appending a statement to the footer if approved to be included in
+    // promotional materials.
     if ($config->get('thanks.approval') && $form_state->getValue('approval') == 1) {
       $data['members'][0]['footer_statement'] .= ' This message has been approved to be included in staff recognition events or materials.';
     }
