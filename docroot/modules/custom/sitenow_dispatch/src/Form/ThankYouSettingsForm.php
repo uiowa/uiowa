@@ -182,7 +182,7 @@ class ThankYouSettingsForm extends ConfigFormBase {
       $form['thanks']['approval'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Approval'),
-        '#default_value' => $config->get('thanks.approval') ?? TRUE,
+        '#default_value' => $config->get('thanks.approval') ?? FALSE,
         '#required' => FALSE,
         '#description' => $this->t('Display approval checkbox for publicly sharing thank you.'),
       ];
