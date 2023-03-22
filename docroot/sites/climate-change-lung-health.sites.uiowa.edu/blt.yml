@@ -1,0 +1,18 @@
+project:
+  local:
+    hostname: sitesclimate-change-lung-health.uiowa.ddev.site
+    protocol: https
+  machine_name: sitesclimate-change-lung-health
+  human_name: climate-change-lung-health.sites.uiowa.edu
+drush:
+  aliases:
+    local: self
+    remote: sitesclimate-change-lung-health.prod
+drupal:
+  db:
+    database: climate_change_lung_health_sites_uiowa_edu
+uiowa:
+  stage_file_proxy:
+    origin: 'https://sitesclimate-change-lung-health.prod.drupal.uiowa.edu'
+  requester: jensenjl
+  site-name: 'Climate Change and Lung Health Training Program'
