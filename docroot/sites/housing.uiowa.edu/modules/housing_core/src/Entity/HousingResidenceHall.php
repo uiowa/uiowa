@@ -14,14 +14,14 @@ class HousingResidenceHall extends NodeBundleBase implements RendersAsCardInterf
    * {@inheritdoc}
    */
   public function getDefaultCardStyles(): array {
-    $default_classes = [
+    return [
       ...parent::getDefaultCardStyles(),
+      'card_headline_style' => 'default',
       'card_media_position' => 'card--stacked',
       'media_size' => 'media--large',
       'styles' => '',
+      'border' => '',
     ];
-
-    return $default_classes;
   }
 
 }
