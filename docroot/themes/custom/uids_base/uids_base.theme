@@ -974,6 +974,15 @@ function uids_base_preprocess_paragraph__card(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function uids_base_preprocess_paragraph(&$variables) {
+
+  $paragraph = $variables['paragraph'];
+  // Get the value of the collection headline field.
+  if ($paragraph->getType() == 'uiowa_slide') {
+    $uiowa_slide_headline = $paragraph->get('field_collection_headline')->getValue()[0]['value'];
+    // Strip tags.
+    $variables['slide_headline'] = strip_tags($uiowa_slide_headline);
+  }
+
   $admin_context = \Drupal::service('router.admin_context');
   if (!$admin_context->isAdminRoute()) {
     /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
