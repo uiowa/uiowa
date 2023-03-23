@@ -248,9 +248,6 @@ class SectionComponentSubscriber implements EventSubscriberInterface {
 
               $row_build['#override_styles'] = $style_map;
               $row_build['#hide_fields'] = $hide_fields;
-              if (isset($row_build['#cache']['keys'])) {
-                unset($row_build['#cache']['keys']);
-              }
             }
           }
 
