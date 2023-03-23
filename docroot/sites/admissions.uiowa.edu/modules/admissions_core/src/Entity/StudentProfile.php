@@ -19,9 +19,8 @@ class StudentProfile extends NodeBundleBase implements RendersAsCardInterface {
     $this->mapFieldsToCardBuild($build, [
       '#media' => 'field_student_profile_image',
       '#subtitle' => 'field_student_profile_major',
-      '#meta' => [
-        'field_person_hometown',
-      ],
+      '#meta' => 'field_person_hometown',
+      '#content' => 'field_student_profile_blurb',
     ]);
 
   }
@@ -30,7 +29,7 @@ class StudentProfile extends NodeBundleBase implements RendersAsCardInterface {
    * {@inheritdoc}
    */
   public function getDefaultCardStyles(): array {
-    $default_classes = [
+    return [
       ...parent::getDefaultCardStyles(),
       'card_media_position' => 'card--stacked',
       'media_border' => 'media--border',
@@ -38,9 +37,8 @@ class StudentProfile extends NodeBundleBase implements RendersAsCardInterface {
       'media_size' => 'media--medium',
       'card_headline_style' => 'headline--uppercase',
       'styles' => 'bg--white',
+      'border' => '',
     ];
-
-    return $default_classes;
   }
 
 }
