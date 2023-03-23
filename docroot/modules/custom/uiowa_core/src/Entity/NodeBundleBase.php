@@ -67,6 +67,12 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
       $link_indicator = $config->get('show_teaser_link_indicator') ?? FALSE;
       $build['#link_indicator'] = $link_indicator;
     }
+
+    if (!is_null($this->view)) {
+      if (isset($build['#cache']['keys'])) {
+        unset($build['#cache']['keys']);
+      }
+    }
   }
 
   /**
