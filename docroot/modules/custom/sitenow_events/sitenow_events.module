@@ -124,6 +124,14 @@ function _sitenow_events_form_submit(array &$form, FormStateInterface $form_stat
 function sitenow_events_preprocess_block(&$variables) {
 
   switch ($variables['elements']['#plugin_id']) {
+    case 'field_block:node:event:field_event_location':
+    case 'field_block:node:event:field_event_virtual':
+    case 'field_block:node:event:field_event_series_link':
+      uiowa_core_set_attributes($variables, [
+        'block-margin__top',
+      ]);
+      break;
+
     case 'inline_block:uiowa_events':
       $variables['attributes']['class'][] = 'list-container';
 
