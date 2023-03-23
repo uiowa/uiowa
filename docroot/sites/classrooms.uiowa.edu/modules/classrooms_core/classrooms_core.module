@@ -720,9 +720,15 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
   $variables['row_item_classes'] = [];
   if ($view->current_display === 'block_programmed_rooms_list') {
     foreach ($variables['rows'] as &$row_build) {
+
+      // Establish meta and hide_fields if they don't already exist.
       if (!isset($row_build['content']['#meta'])) {
         $row_build['content']['#meta'] = [];
       }
+      if (!isset($row_build['content']['#hide_fields'])) {
+        $row_build['content']['#hide_fields'] = [];
+      }
+
       // Get the node object.
       $node = $row_build['content']['#node'];
 
@@ -752,10 +758,20 @@ function classrooms_core_preprocess_views_view_unformatted(&$variables) {
       $node->set('field_room_features', $seats);
 
       if (isset($row_build['content']['#node'])) {
-        $row_build['content']['#meta'][] = $row_build['content']['#node']->field_room_responsible_unit?->view('teaser');
+        $row_build['content']['#hide_fields'][] = 'field_room_type';
         $row_build['content']['#meta'][] = $row_build['content']['#node']->field_room_features?->view('teaser');
       }
 
+    }
+  }
+  if ($view->current_display === 'block_rooms') {
+    foreach ($variables['rows'] as &$row_build) {
+      if (!isset($row_build['content']['#hide_fields'])) {
+        $row_build['content']['#hide_fields'] = [];
+      }
+      if (isset($row_build['content']['#node'])) {
+        $row_build['content']['#hide_fields'][] = 'field_room_responsible_unit';
+      }
     }
   }
 }

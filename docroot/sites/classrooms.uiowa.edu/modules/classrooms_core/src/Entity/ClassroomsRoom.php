@@ -16,30 +16,13 @@ class ClassroomsRoom extends NodeBundleBase implements RendersAsCardInterface {
   public function buildCard(array &$build) {
     parent::buildCard($build);
 
-    // Default meta fields.
-    $meta_fields = [
-      'field_room_name',
-      'field_room_max_occupancy',
-    ];
-
-    // View specific fields.
-    if ($this->view) {
-      // Units taxonomy.
-      if ($this->view->id() === 'taxonomy_term') {
-        $meta_fields[] = 'field_room_type';
-        $meta_fields[] = 'field_room_responsible_unit';
-      }
-      // Find a classroom.
-      if ($this->view->id() === 'room_list') {
-        if ($this->view->current_display === 'block_rooms') {
-          $meta_fields[] = 'field_room_type';
-        }
-      }
-    }
-
-    // Process additional card mappings.
     $this->mapFieldsToCardBuild($build, [
-      '#meta' => $meta_fields,
+      '#meta' => [
+        'field_room_name',
+        'field_room_max_occupancy',
+        'field_room_type',
+        'field_room_responsible_unit',
+      ],
     ]);
 
     $building_id = $this->get('field_room_building_id')->target_id;
