@@ -55,12 +55,6 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
     // Handle link directly to source functionality.
     $build['#url'] = $this->getNodeUrl();
 
-    // Create heading_size variable for node teaser templates if a
-    // corresponding render property was set.
-    if (isset($variables['elements']['#heading_size'])) {
-      $build['heading_size'] = $variables['elements']['#heading_size'];
-    }
-
     if (!empty($this->configSettings)) {
       // Determine whether the link indicator should be set.
       $config = \Drupal::configFactory()->getEditable($this->configSettings);
