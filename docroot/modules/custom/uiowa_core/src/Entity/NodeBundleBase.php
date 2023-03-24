@@ -55,6 +55,10 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
       $build['#link_indicator'] = $link_indicator;
     }
 
+    // If this is a view, there is a chance that the teasers can be displayed in
+    // more than one place. Unsetting the cache keys prevents the same cached
+    // version from being shared from instance to instance in case we are
+    // hiding fields or overriding styles.
     if (!is_null($this->view)) {
       if (isset($build['#cache']['keys'])) {
         unset($build['#cache']['keys']);
