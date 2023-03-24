@@ -66,8 +66,8 @@ class CardElementTest extends BrowserTestBase {
     ]);
 
     // The card should not have the click-container class since there is no URL.
-    // @todo Add assertTrue check that card as click-container class.
-    $this->assertFalse($this->cardExists()->hasAttribute('data-uids-no-link'), 'Card should have the data-uids-no-link attribute');
+    $this->assertFalse($this->cardExists()->hasAttribute('data-uids-no-link'), 'Card should not have the data-uids-no-link attribute.');
+    $this->assertTrue($this->cardExists()->hasClass('click-container'), 'Card should have the .click-container class.');
 
     // Check only pseudo-button is showing.
     $this->assertFalse($this->cardHasLinkedButton());
@@ -85,8 +85,8 @@ class CardElementTest extends BrowserTestBase {
     ]);
 
     // The card should not have the click-container class since there is no URL.
-    // @todo Add assertTrue check that card as click-container class.
     $this->assertFalse($this->cardExists()->hasAttribute('data-uids-no-link'), 'Card should have the data-uids-no-link attribute');
+    $this->assertTrue($this->cardExists()->hasClass('click-container'), 'Card should have the .click-container class.');
 
     // Check only pseudo-button is showing.
     $this->assertFalse($this->cardHasLinkedButton());
