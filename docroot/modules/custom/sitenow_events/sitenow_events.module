@@ -407,6 +407,7 @@ function sitenow_events_build_card(array $event): array {
     $truncate = new TruncateHTML();
     $trim_suffix = '...';
     // @todo remove 'card__description' attribute once v2 is no longer.
+    // https://github.com/uiowa/uiowa/issues/6288
     $card['#content']['description'] = [
       '#type' => 'html_tag',
       '#tag' => 'div',
