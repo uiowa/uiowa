@@ -50,20 +50,13 @@ class Event extends NodeBundleBase implements RendersAsCardInterface {
    * {@inheritdoc}
    */
   public function getDefaultCardStyles(): array {
-    // If ListBlock, otherwise provide node and event teaser defaults.
-    // @todo Establish a better identifier for block controlled classes.
-    if ($this->view?->id() === 'events_list_block') {
-      return [];
-    }
-    else {
-      return [
-        ...parent::getDefaultCardStyles(),
-        'card_media_position' => 'card--layout-left',
-        'media_border' => 'media--border',
-        'media_format' => 'media--circle',
-        'media_size' => 'media--small',
-      ];
-    }
+    return [
+      ...parent::getDefaultCardStyles(),
+      'card_media_position' => 'card--layout-left',
+      'media_border' => 'media--border',
+      'media_format' => 'media--circle',
+      'media_size' => 'media--small',
+    ];
   }
 
 }
