@@ -33,14 +33,14 @@ trait RendersAsCardTrait {
    * {@inheritdoc}
    */
   public function buildCardStyles(array &$build) {
+    // Check for override styles.
     $override_styles = $build['#override_styles'] ?? [];
 
-    $default_styles = $this->getDefaultCardStyles();
-    $styles = [
-      ...$default_styles,
+    // Loop through combined default and override styles and add them.
+    foreach ([
+      ...$this->getDefaultCardStyles(),
       ...$override_styles,
-    ];
-    foreach ($styles as $style) {
+    ] as $style) {
       $build['#attributes']['class'][] = $style;
     }
   }
