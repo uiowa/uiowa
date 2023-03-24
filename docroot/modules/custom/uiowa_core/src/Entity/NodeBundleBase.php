@@ -38,13 +38,6 @@ abstract class NodeBundleBase extends Node implements RendersAsCardInterface {
   public function buildCard(array &$build) {
     $this->buildCardStyles($build);
     // @todo How to handle setting the headline size?
-    // @todo Do we need any of the '.node' or '.node--*' classes? E.g.:
-    //   'node',
-    //   'node--type-' ~ node.bundle|clean_class,
-    //   node.isPromoted() ? 'node--promoted',
-    //   node.isSticky() ? 'node--sticky',
-    //   not node.isPublished() ? 'node--unpublished',
-    //   view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
     // Add shared fields to card.
     $this->mapFieldsToCardBuild($build, [
       '#media' => 'field_image',
