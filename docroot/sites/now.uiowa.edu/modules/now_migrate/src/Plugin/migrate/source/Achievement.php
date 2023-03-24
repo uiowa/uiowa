@@ -25,7 +25,6 @@ class Achievement extends BaseNodeSource {
     $query = parent::query();
     // Make sure our nodes are retrieved in order,
     // and force a highwater mark of our last-most migrated node.
-    $query->condition('n.nid', ['32981', '24576', '24581', '24561', '24176', '23211', '23206', '21686', '20636', '19296'], 'IN');
     $query->orderBy('nid');
     return $query;
   }
