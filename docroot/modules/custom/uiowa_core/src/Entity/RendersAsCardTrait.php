@@ -58,18 +58,24 @@ trait RendersAsCardTrait {
 
     // Map fields to the card parts.
     foreach ($mapping as $prop => $fields) {
-      if (!is_array($fields)) {
-        $fields = [$fields];
-      }
+      // If the prop hasn't been added yet, add it.
       if (!isset($build[$prop])) {
         $build[$prop] = [];
       }
+      // For convenience, fields can be passed as strings. Convert strings to
+      // an array.
+      if (!is_array($fields)) {
+        $fields = [$fields];
+      }
+      // Loop through fields.
       foreach ($fields as $field_name) {
-        // @todo Refine this to remove fields if they are empty.
-        if (isset($build[$field_name]) && count(Element::children($build[$field_name])) > 0) {
-          if (!in_array($field_name, $hide_fields)) {
+        // If the field exists, it can be rendered, and should not be hidden,
+        // add it to the appropriate prop.
+        if (isset($build[$field_name])) {
+          if (count(Element::children($build[$field_name])) > 0 && !in_array($field_name, $hide_fields)) {
             $build[$prop][$field_name] = $build[$field_name];
           }
+          // Unset the field, so it doesn't get accidentally displayed.
           unset($build[$field_name]);
         }
       }
