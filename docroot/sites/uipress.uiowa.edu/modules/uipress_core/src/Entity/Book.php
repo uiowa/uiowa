@@ -4,7 +4,6 @@ namespace Drupal\uipress_core\Entity;
 
 use Drupal\uiowa_core\Entity\NodeBundleBase;
 use Drupal\uiowa_core\Entity\RendersAsCardInterface;
-use function PHPUnit\Framework\isEmpty;
 
 /**
  * Provides an interface for book entries.
@@ -19,7 +18,7 @@ class Book extends NodeBundleBase implements RendersAsCardInterface {
 
     // Map the author if the field has been filled,
     // else we want the editor.
-    $subtitle = ($this->get('field_book_author')?->isEmpty()) ? 'field_book_editor' : 'field_book_author';
+    $subtitle = ($this->get('field_book_author')?->get(0)) ? 'field_book_author' : 'field_book_editor';
 
     // Process additional card mappings.
     $this->mapFieldsToCardBuild($build, [
