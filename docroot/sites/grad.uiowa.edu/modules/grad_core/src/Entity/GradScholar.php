@@ -48,8 +48,7 @@ class GradScholar extends NodeBundleBase implements RendersAsCardInterface {
       'card_media_position' => 'card--layout-left',
       'border' => 'borderless',
       'headline_class' => 'headline--serif',
-      'media_border' => 'media--border',
-      'media_format' => 'media--circle',
+      'media_format' => 'media--circle media--border',
       'media_size' => 'media--small',
     ];
 

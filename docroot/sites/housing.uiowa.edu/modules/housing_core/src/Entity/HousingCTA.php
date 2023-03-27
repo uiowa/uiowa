@@ -70,8 +70,7 @@ class HousingCTA extends Paragraph implements RendersAsCardInterface {
       'headline_class' => 'headline--serif',
       'styles' => $ctaCardClasses,
       'card_media_position' => 'card--stacked',
-      'media_border' => 'media--border',
-      'media_format' => 'media--circle',
+      'media_format' => 'media--circle media--border',
       'media_size' => 'media--small',
     ];
   }

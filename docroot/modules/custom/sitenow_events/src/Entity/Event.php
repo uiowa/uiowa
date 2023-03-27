@@ -53,8 +53,7 @@ class Event extends NodeBundleBase implements RendersAsCardInterface {
     return [
       ...parent::getDefaultCardStyles(),
       'card_media_position' => 'card--layout-left',
-      'media_border' => 'media--border',
-      'media_format' => 'media--circle',
+      'media_format' => 'media--circle media--border',
       'media_size' => 'media--small',
     ];
   }

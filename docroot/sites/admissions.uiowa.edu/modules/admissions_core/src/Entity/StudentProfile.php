@@ -32,8 +32,7 @@ class StudentProfile extends NodeBundleBase implements RendersAsCardInterface {
     return [
       ...parent::getDefaultCardStyles(),
       'card_media_position' => 'card--stacked',
-      'media_border' => 'media--border',
-      'media_format' => 'media--circle',
+      'media_format' => 'media--circle media--border',
       'media_size' => 'media--medium',
       'card_headline_style' => 'headline--uppercase',
       'styles' => 'bg--white',
