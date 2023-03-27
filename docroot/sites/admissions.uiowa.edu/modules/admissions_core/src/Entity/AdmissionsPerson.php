@@ -19,16 +19,6 @@ class AdmissionsPerson extends Person {
     $this->mapFieldsToCardBuild($build, [
       '#meta' => ['field_person_territory'],
     ]);
-
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getDefaultCardStyles(): array {
-    return [
-      ...parent::getDefaultCardStyles(),
-    ];
   }
 
 }
