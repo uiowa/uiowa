@@ -26,14 +26,12 @@ class AdmissionsAreaOfStudy extends NodeBundleBase implements RendersAsCardInter
    * {@inheritdoc}
    */
   public function getDefaultCardStyles(): array {
-    $default_classes = [
+    return [
       ...parent::getDefaultCardStyles(),
       'card_media_position' => 'card--stacked',
       'media_size' => 'media--large',
       'styles' => '',
     ];
-
-    return $default_classes;
   }
 
 }

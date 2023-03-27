@@ -43,7 +43,7 @@ class GradMentor extends NodeBundleBase implements RendersAsCardInterface {
    * {@inheritdoc}
    */
   public function getDefaultCardStyles(): array {
-    $default_classes = [
+    return [
       ...parent::getDefaultCardStyles(),
       'card_media_position' => 'card--layout-left',
       'border' => 'borderless',
@@ -51,8 +51,6 @@ class GradMentor extends NodeBundleBase implements RendersAsCardInterface {
       'media_format' => 'media--circle media--border',
       'media_size' => 'media--small',
     ];
-
-    return $default_classes;
   }
 
 }

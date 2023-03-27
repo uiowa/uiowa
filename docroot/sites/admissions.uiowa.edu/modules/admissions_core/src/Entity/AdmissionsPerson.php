@@ -26,11 +26,9 @@ class AdmissionsPerson extends Person {
    * {@inheritdoc}
    */
   public function getDefaultCardStyles(): array {
-    $default_classes = [
+    return [
       ...parent::getDefaultCardStyles(),
     ];
-
-    return $default_classes;
   }
 
 }
