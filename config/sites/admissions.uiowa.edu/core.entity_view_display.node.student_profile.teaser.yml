@@ -22,6 +22,7 @@ dependencies:
     - node.type.student_profile
   module:
     - address
+    - field_delimiter
     - options
     - text
     - user
@@ -71,7 +72,9 @@ content:
     label: visually_hidden
     settings:
       link: true
-    third_party_settings: {  }
+    third_party_settings:
+      field_delimiter:
+        delimiter: ','
     weight: 1
     region: content
   field_student_profile_state:
