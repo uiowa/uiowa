@@ -1064,12 +1064,24 @@ function admissions_core_preprocess_views_view_unformatted(&$variables) {
     'block_student_card',
     'student_profile_page',
   ])) {
+    $lb_styles = $view?->display_handler
+      ?->getOption('block_layout_builder_styles');
+
     foreach ($variables['rows'] as &$row_build) {
       if ($view->current_display === 'block_student_card') {
         if (!isset($row_build['content']['#hide_fields'])) {
           $row_build['content']['#hide_fields'] = [];
         }
         $row_build['content']['#hide_fields'][] = 'field_student_profile_blurb';
+
+        if (!is_null($lb_styles) && in_array('list_format_list', $lb_styles)) {
+          if (!isset($row_build['content']['#override_styles'])) {
+            $row_build['content']['#overrides_styles'] = [];
+          }
+          $row_build['content']['#override_styles']['card_media_position'] = 'card--layout-left';
+          $row_build['content']['#override_styles']['media_size'] = 'media--small';
+          $row_build['content']['#override_styles']['border'] = 'borderless';
+        }
       }
       elseif ($view->current_display === 'student_profile_page') {
         $row_build['content']['#content']['spacer'] = [
