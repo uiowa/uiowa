@@ -160,7 +160,7 @@ class AcademicDatesForm extends FormBase {
             '#attributes' => $attributes,
             '#title' => $this->t('@start@end', [
               '@start' => date('F j, Y', $start),
-              '@end' => $end === $start ? NULL : ' - ' . date('F j, Y', $end),
+              '@end' => $end === $start ? '' : ' - ' . date('F j, Y', $end),
             ]),
             '#subtitle' => [$item],
           ];
