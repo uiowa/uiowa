@@ -25,8 +25,7 @@ class Card extends BlockContent implements RendersAsCardInterface {
       '#content' => 'field_uiowa_card_excerpt',
     ]);
 
-    // @todo Capture the parts of the URL. This isn't working with
-    //   caching.
+    // Capture the parts of the URL.
     foreach ([
       'url' => 'url',
       'title' => 'link_text',
