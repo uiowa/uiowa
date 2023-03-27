@@ -28,13 +28,9 @@ class GradAdmissionsAreaOfStudy extends NodeBundleBase implements RendersAsCardI
    * {@inheritdoc}
    */
   public function getDefaultCardStyles(): array {
-    $default_classes = [
+    return [
       ...parent::getDefaultCardStyles(),
-      'card_media_position' => 'card--layout-right',
-      'styles' => '',
     ];
-
-    return $default_classes;
   }
 
 }
