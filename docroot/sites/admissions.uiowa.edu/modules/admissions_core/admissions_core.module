@@ -1060,12 +1060,22 @@ function admissions_core_preprocess_views_view_field(&$variables) {
  */
 function admissions_core_preprocess_views_view_unformatted(&$variables) {
   $view = $variables['view'];
-  if ($view->current_display === 'block_student_card') {
+  if (in_array($view->current_display, [
+    'block_student_card',
+    'student_profile_page',
+  ])) {
     foreach ($variables['rows'] as &$row_build) {
-      if (!isset($row_build['content']['#hide_fields'])) {
-        $row_build['content']['#hide_fields'] = [];
+      if ($view->current_display === 'block_student_card') {
+        if (!isset($row_build['content']['#hide_fields'])) {
+          $row_build['content']['#hide_fields'] = [];
+        }
+        $row_build['content']['#hide_fields'][] = 'field_student_profile_blurb';
       }
-      $row_build['content']['#hide_fields'][] = 'field_student_profile_blurb';
+      elseif ($view->current_display === 'student_profile_page') {
+        $row_build['content']['#content']['spacer'] = [
+          '#markup' => '<hr class="element--spacer-gold">',
+        ];
+      }
     }
   }
 }
