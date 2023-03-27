@@ -58,14 +58,12 @@ class IghnPerson extends NodeBundleBase implements RendersAsCardInterface {
    * {@inheritdoc}
    */
   public function getDefaultCardStyles(): array {
-    $default_classes = [
+    return [
       ...parent::getDefaultCardStyles(),
       'media_format' => 'media',
       'media_size' => 'media',
       'styles' => '',
     ];
-
-    return $default_classes;
   }
 
 }
